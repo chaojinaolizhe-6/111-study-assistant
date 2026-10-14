@@ -171,9 +171,22 @@ def rebase_in_progress(root: Path) -> bool:
 
 
 def conflicted_files(root: Path) -> list[str]:
-    """当前处于未合并（冲突）状态的路径。"""
-    rc, out, _ = run_git(["diff", "--name-only", "--diff-filter=U"], root, check=False)
-    return [l.strip() for l in out.splitlines() if l.strip()] if rc == 0 else []
+    """当前处于未合并（冲突）状态的路径。
+
+    用 `ls-files --unmerged` 而非 `diff --diff-filter=U`：后者在 rebase 的
+    某些中间状态下会**返回空**（实测：`rebase --continue` 明确报
+    "You must edit all merge conflicts"，而 diff 查询却是空的），
+    会使自愈逻辑误判为「没有冲突」而直接失败。
+    加 `-z` 以免非 ASCII 路径被引号转义。
+    """
+    rc, out, _ = run_git(["ls-files", "--unmerged", "-z"], root, check=False, raw=True)
+    if rc == 0 and out:
+        paths = {f.split("\t", 1)[1] for f in out.split("\0") if "\t" in f}
+        if paths:
+            return sorted(paths)
+    # 回退：从 porcelain 状态里找 U / AA / DD
+    fallback = [p for code, p in list_changes(root) if "U" in code or code in ("AA", "DD")]
+    return sorted(set(fallback))
 
 
 def large_non_lfs_files(root: Path) -> list[tuple[str, float]]:
@@ -227,6 +240,7 @@ def heal_conflicts(root: Path, max_rounds: int = 12) -> tuple[bool, str]:
                 run_git(["checkout", "--theirs", "--", p], root, check=False)
                 run_git(["add", "--", p], root, check=False)
             print(f"      自动化解派生文件冲突 {len(auto)} 个：{'、'.join(auto)}")
+            continue  # 回到循环顶部，确认已无残留冲突再 advance
 
         rc, out, err = run_git(["rebase", "--continue"], root, check=False)
         if not rebase_in_progress(root):
