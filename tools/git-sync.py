@@ -257,6 +257,30 @@ def changed_between(root: Path, old: str, new: str, prefix: str) -> list[str]:
     return [l.strip() for l in out.splitlines() if l.strip().startswith(prefix)] if rc == 0 else []
 
 
+def regen_gemini_index(root: Path) -> None:
+    """同步前重建 GEMINI-INDEX.md（云端 AI 的秒读入口）。
+
+    必须在 `git add` **之前**执行，否则本次提交里带的是上一轮的索引。
+    失败不阻断同步——索引是便利设施，不是事实源。
+    """
+    script = root / "tools" / "make-gemini-index.py"
+    if not script.is_file():
+        return
+    try:
+        proc = subprocess.run(
+            [sys.executable, "-B", str(script), "--root", str(root)],
+            cwd=str(root), capture_output=True, text=True,
+            encoding="utf-8", errors="replace", timeout=300,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"[WARN] GEMINI-INDEX 生成失败：{exc}")
+        return
+    if proc.returncode == 0:
+        print(f"[OK  ] {(proc.stdout or '').strip()}")
+    else:
+        print(f"[WARN] GEMINI-INDEX 生成失败（rc={proc.returncode}）：{(proc.stderr or '').strip()[:200]}")
+
+
 def run_session_close(root: Path) -> tuple[bool, str]:
     """调用收尾唯一入口重算派生状态。返回 (是否全部通过, 摘要)。"""
     script = root / "tools" / "session-close.py"
@@ -362,6 +386,9 @@ def do_sync(root: Path, message: str | None, push: bool, check_only: bool) -> in
 
     with SyncLock(root):
         branch = current_branch(root)
+
+        # 0) 先重建云端 AI 秒读入口（必须在 add 之前，否则本次提交是旧索引）
+        regen_gemini_index(root)
 
         # 1) 暂存
         run_git(["add", "-A"], root)
