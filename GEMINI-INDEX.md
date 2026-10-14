@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-14 2026-10-14 20:10（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-14 2026-10-14 23:11（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -296,7 +296,7 @@
 **必须遵守的提醒**：⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-10-14.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+**`plan/today-2026-10-14.md` 已存在** —— 当天时间窗与清单以它为准（人工安排，不经脚本生成）。
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -366,7 +366,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（2519 个文件）
+## 3. 文件直达 URL 索引（2521 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -393,7 +393,7 @@
 - `学习进度.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6.txt
 - `数学动机地图-解薛定谔方程需要什么数学.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E6%95%B0%E5%AD%A6%E5%8A%A8%E6%9C%BA%E5%9C%B0%E5%9B%BE-%E8%A7%A3%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%95%B0%E5%AD%A6.md
 
-### learning（84 个）
+### learning（85 个）
 
 - `learning/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/README.md
 - `learning/attempts.jsonl` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/attempts.jsonl
@@ -425,6 +425,7 @@
 - `learning/repair-queue.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/repair-queue.json
 - `learning/task-windows.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/task-windows.json
 - `learning/tasks/_template.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/_template.md
+- `learning/tasks/de-gap-attack-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/de-gap-attack-01.md
 - `learning/tasks/de-midterm-diag-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/de-midterm-diag-01.md
 - `learning/tasks/ee-c2-diag-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/ee-c2-diag-01.md
 - `learning/tasks/ee-c2h1-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/ee-c2h1-01.md
@@ -515,7 +516,7 @@
 - `plan/week-plan.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/week-plan.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（482 个）
+### subjects（483 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -593,6 +594,7 @@
 - `subjects/03-微分方程/作业/20261013-ODE-L14-15-改正-第2-3题.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261013-ODE-L14-15-%E6%94%B9%E6%AD%A3-%E7%AC%AC2-3%E9%A2%98.jpg
 - `subjects/03-微分方程/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/03-微分方程/作业/c514c5ceaa591ffb89833d1b89043e77.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/c514c5ceaa591ffb89833d1b89043e77.png
+- `subjects/03-微分方程/期中模拟卷-Gemini出卷提示词-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E6%9C%9F%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%8D%B7-Gemini%E5%87%BA%E5%8D%B7%E6%8F%90%E7%A4%BA%E8%AF%8D-20261014.md
 - `subjects/03-微分方程/讲义/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/INDEX.md
 - `subjects/03-微分方程/讲义/准齐次方程-精讲-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%87%86%E9%BD%90%E6%AC%A1%E6%96%B9%E7%A8%8B-%E7%B2%BE%E8%AE%B2-20261014.md
 - `subjects/03-微分方程/讲义/方程组章-精讲-20261008.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%96%B9%E7%A8%8B%E7%BB%84%E7%AB%A0-%E7%B2%BE%E8%AE%B2-20261008.md
