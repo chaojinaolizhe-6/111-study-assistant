@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-14 2026-10-14 15:01（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-14 2026-10-14 15:09（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6`　分支：`main`
 
@@ -364,10 +364,10 @@
 
 ---
 
-## 3. 文件直达 URL 索引（2551 个文件）
+## 3. 文件直达 URL 索引（2519 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
-（另有 3 个超过 60 MB 的文件未索引）
+（另有 1 个超过 60 MB 的文件未索引）
 
 ### 根目录（19 个）
 
@@ -998,7 +998,7 @@
 - `subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/INDEX.md
 - `subjects/学习进度-自述-2026-09-26.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6-%E8%87%AA%E8%BF%B0-2026-09-26.md
 
-### obsidian（1645 个）
+### obsidian（1611 个）
 
 - `obsidian/.obsidian/app.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/.obsidian/app.json
 - `obsidian/.obsidian/appearance.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/.obsidian/appearance.json
@@ -2611,40 +2611,6 @@
 - `obsidian/obsidian知识库/知识库_数物方法_柯朗希尔伯特_Vol2/逐节/第四章_§4.7_肖德尔先验估计及其应用.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/obsidian%E7%9F%A5%E8%AF%86%E5%BA%93/%E7%9F%A5%E8%AF%86%E5%BA%93_%E6%95%B0%E7%89%A9%E6%96%B9%E6%B3%95_%E6%9F%AF%E6%9C%97%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_Vol2/%E9%80%90%E8%8A%82/%E7%AC%AC%E5%9B%9B%E7%AB%A0_%C2%A74.7_%E8%82%96%E5%BE%B7%E5%B0%94%E5%85%88%E9%AA%8C%E4%BC%B0%E8%AE%A1%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.md
 - `obsidian/obsidian知识库/知识库_数物方法_柯朗希尔伯特_Vol2/逐节/第四章_§4.8_贝尔特拉米方程求解.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/obsidian%E7%9F%A5%E8%AF%86%E5%BA%93/%E7%9F%A5%E8%AF%86%E5%BA%93_%E6%95%B0%E7%89%A9%E6%96%B9%E6%B3%95_%E6%9F%AF%E6%9C%97%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_Vol2/%E9%80%90%E8%8A%82/%E7%AC%AC%E5%9B%9B%E7%AB%A0_%C2%A74.8_%E8%B4%9D%E5%B0%94%E7%89%B9%E6%8B%89%E7%B1%B3%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3.md
 - `obsidian/obsidian知识库/知识库_数物方法_柯朗希尔伯特_Vol2/逐节/第四章_§4.9_拟线性椭圆型方程与勒雷-肖德尔方法.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/obsidian%E7%9F%A5%E8%AF%86%E5%BA%93/%E7%9F%A5%E8%AF%86%E5%BA%93_%E6%95%B0%E7%89%A9%E6%96%B9%E6%B3%95_%E6%9F%AF%E6%9C%97%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_Vol2/%E9%80%90%E8%8A%82/%E7%AC%AC%E5%9B%9B%E7%AB%A0_%C2%A74.9_%E6%8B%9F%E7%BA%BF%E6%80%A7%E6%A4%AD%E5%9C%86%E5%9E%8B%E6%96%B9%E7%A8%8B%E4%B8%8E%E5%8B%92%E9%9B%B7-%E8%82%96%E5%BE%B7%E5%B0%94%E6%96%B9%E6%B3%95.md
-- `obsidian/教材库/.obsidian/app.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/.obsidian/app.json
-- `obsidian/教材库/.obsidian/appearance.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/.obsidian/appearance.json
-- `obsidian/教材库/.obsidian/core-plugins.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/.obsidian/core-plugins.json
-- `obsidian/教材库/.obsidian/workspace.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/.obsidian/workspace.json
-- `obsidian/教材库/01_数学物理方法/Arfken_Weber_Mathematical_Methods_for_Physicists.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/Arfken_Weber_Mathematical_Methods_for_Physicists.pdf
-- `obsidian/教材库/01_数学物理方法/Mathematical_Methods_for_Physicists_Arfken.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/Mathematical_Methods_for_Physicists_Arfken.pdf
-- `obsidian/教材库/01_数学物理方法/Visual_Complex_Analysis_Tristan_Needham.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/Visual_Complex_Analysis_Tristan_Needham.pdf
-- `obsidian/教材库/01_数学物理方法/数学物理方法_梁昆淼_第四版.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95_%E6%A2%81%E6%98%86%E6%B7%BC_%E7%AC%AC%E5%9B%9B%E7%89%88.pdf
-- `obsidian/教材库/01_数学物理方法/柯朗_希尔伯特_数学物理方法/Courant_Hilbert_Methods_of_Mathematical_Physics_Vol1.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/%E6%9F%AF%E6%9C%97_%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/Courant_Hilbert_Methods_of_Mathematical_Physics_Vol1.pdf
-- `obsidian/教材库/01_数学物理方法/柯朗_希尔伯特_数学物理方法/Courant_Hilbert_Methods_of_Mathematical_Physics_Vol2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/%E6%9F%AF%E6%9C%97_%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/Courant_Hilbert_Methods_of_Mathematical_Physics_Vol2.pdf
-- `obsidian/教材库/01_数学物理方法/梁昆淼配套资料/《数学物理方法》各章节作业题2022版第五版.doc` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/%E6%A2%81%E6%98%86%E6%B7%BC%E9%85%8D%E5%A5%97%E8%B5%84%E6%96%99/%E3%80%8A%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95%E3%80%8B%E5%90%84%E7%AB%A0%E8%8A%82%E4%BD%9C%E4%B8%9A%E9%A2%982022%E7%89%88%E7%AC%AC%E4%BA%94%E7%89%88.doc
-- `obsidian/教材库/01_数学物理方法/梁昆淼配套资料/留数定理和傅里叶变换习题.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/01_%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%95/%E6%A2%81%E6%98%86%E6%B7%BC%E9%85%8D%E5%A5%97%E8%B5%84%E6%96%99/%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%92%8C%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E4%B9%A0%E9%A2%98.pdf
-- `obsidian/教材库/02_概率论与数理统计/Casella_Berger_Statistical_Inference_2ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/02_%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/Casella_Berger_Statistical_Inference_2ed.pdf
-- `obsidian/教材库/03_热学与热力学统计物理/Blundell_Concepts_in_Thermal_Physics_2ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/03_%E7%83%AD%E5%AD%A6%E4%B8%8E%E7%83%AD%E5%8A%9B%E5%AD%A6%E7%BB%9F%E8%AE%A1%E7%89%A9%E7%90%86/Blundell_Concepts_in_Thermal_Physics_2ed.pdf
-- `obsidian/教材库/04_电磁学/Purcell_Electricity_and_Magnetism_Berkeley_Physics_Vol2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/04_%E7%94%B5%E7%A3%81%E5%AD%A6/Purcell_Electricity_and_Magnetism_Berkeley_Physics_Vol2.pdf
-- `obsidian/教材库/05_力学与理论力学/Landau_Lifshitz_Course_of_Theoretical_Physics_Vol1_Mechanics_3ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/05_%E5%8A%9B%E5%AD%A6%E4%B8%8E%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/Landau_Lifshitz_Course_of_Theoretical_Physics_Vol1_Mechanics_3ed.pdf
-- `obsidian/教材库/06_量子力学/Griffiths_Schroeter_Introduction_to_Quantum_Mechanics_3ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/06_%E9%87%8F%E5%AD%90%E5%8A%9B%E5%AD%A6/Griffiths_Schroeter_Introduction_to_Quantum_Mechanics_3ed.pdf
-- `obsidian/教材库/06_量子力学/Sakurai_Napolitano_Modern_Quantum_Mechanics_3ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/06_%E9%87%8F%E5%AD%90%E5%8A%9B%E5%AD%A6/Sakurai_Napolitano_Modern_Quantum_Mechanics_3ed.pdf
-- `obsidian/教材库/07_实验数据处理与误差分析/Taylor_Introduction_to_Error_Analysis_2ed_Core.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/07_%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E8%AF%AF%E5%B7%AE%E5%88%86%E6%9E%90/Taylor_Introduction_to_Error_Analysis_2ed_Core.pdf
-- `obsidian/教材库/07_实验数据处理与误差分析/Young_Statistical_Treatment_of_Experimental_Data_McGrawHill.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/07_%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E8%AF%AF%E5%B7%AE%E5%88%86%E6%9E%90/Young_Statistical_Treatment_of_Experimental_Data_McGrawHill.pdf
-- `obsidian/教材库/08_光学/Pedrotti_Introduction_to_Optics_3ed.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/08_%E5%85%89%E5%AD%A6/Pedrotti_Introduction_to_Optics_3ed.pdf
-- `obsidian/教材库/10_变分法/Gelfand_Fomin_Calculus_of_Variations.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/10_%E5%8F%98%E5%88%86%E6%B3%95/Gelfand_Fomin_Calculus_of_Variations.pdf
-- `obsidian/教材库/C. Constanda.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/C.%20Constanda.pdf
-- `obsidian/教材库/E.A.  Coddington.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/E.A.%20%20Coddington.pdf
-- `obsidian/教材库/M.V. Makarets, V. Yu _Reshetnyak.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/M.V.%20Makarets%2C%20V.%20Yu%20_Reshetnyak.pdf
-- `obsidian/教材库/M.V. Soare, P.P. Teodorescu, I. Toma.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/M.V.%20Soare%2C%20P.P.%20Teodorescu%2C%20I.%20Toma.pdf
-- `obsidian/教材库/S.L. Ross.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/S.L.%20Ross.pdf
-- `obsidian/教材库/常微分方程/Ordinary_Differential_Equations_V_I_Arnold.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/Ordinary_Differential_Equations_V_I_Arnold.pdf
-- `obsidian/教材库/数学分析/卓里奇-数学分析-第一卷.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/%E5%8D%93%E9%87%8C%E5%A5%87-%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90-%E7%AC%AC%E4%B8%80%E5%8D%B7.pdf
-- `obsidian/教材库/数学分析/卓里奇-数学分析-第二卷.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/%E5%8D%93%E9%87%8C%E5%A5%87-%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90-%E7%AC%AC%E4%BA%8C%E5%8D%B7.pdf
-- `obsidian/教材库/数学分析/托马斯微积分（第10版） (Finney Weir Giordano) (Z-Library).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/%E6%89%98%E9%A9%AC%E6%96%AF%E5%BE%AE%E7%A7%AF%E5%88%86%EF%BC%88%E7%AC%AC10%E7%89%88%EF%BC%89%20%28Finney%20Weir%20Giordano%29%20%28Z-Library%29.pdf
-- `obsidian/教材库/未命名 1.base` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%9C%AA%E5%91%BD%E5%90%8D%201.base
-- `obsidian/教材库/未命名 2.base` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%9C%AA%E5%91%BD%E5%90%8D%202.base
-- `obsidian/教材库/未命名.base` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/%E6%95%99%E6%9D%90%E5%BA%93/%E6%9C%AA%E5%91%BD%E5%90%8D.base
 
 ### .tutor（105 个）
 
@@ -2760,7 +2726,7 @@
 - `.dsh/skills/ielts-session/references/rubrics.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/ielts-session/references/rubrics.md
 - `.dsh/skills/tutor-assistant/SKILL.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/tutor-assistant/SKILL.md
 
-### tools（33 个）
+### tools（35 个）
 
 - `tools/append_attempt.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/append_attempt.py
 - `tools/chapter_guide.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/chapter_guide.py
@@ -2774,6 +2740,7 @@
 - `tools/handoff.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/handoff.py
 - `tools/init-course.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/init-course.py
 - `tools/learninglib.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/learninglib.py
+- `tools/make-gemini-index.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/make-gemini-index.py
 - `tools/make_handout.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/make_handout.py
 - `tools/material_reader.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/material_reader.py
 - `tools/observations.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/observations.py
@@ -2784,6 +2751,7 @@
 - `tools/render_corrections.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/render_corrections.py
 - `tools/reviews.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/reviews.py
 - `tools/schedule_reviews.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/schedule_reviews.py
+- `tools/session-close-and-sync.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/session-close-and-sync.py
 - `tools/session-close.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/session-close.py
 - `tools/sync_status.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/sync_status.py
 - `tools/test_tutor.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/test_tutor.py
