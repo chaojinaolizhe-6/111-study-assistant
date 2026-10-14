@@ -1,42 +1,79 @@
 # ============================================================
 # 111学习助手 · Git 属性
-# 建立：2026-10-14
+# 建立 2026-10-14 ／ 2026-10-14 依审查意见修订（见文末「为什么不能收窄 -text」）
 # ============================================================
 
 # ------------------------------------------------------------
-# 【最重要的一条】禁止任何行尾转换。
+# 【红线 1】禁止任何行尾转换。
 #
-# 为什么：tools/session-close.py 的一致性核对（第 10 步）会比对
-#   learning/attempts.jsonl 的 sha256 指纹。
-# 实测现状（2026-10-14）：
-#   learning/attempts.jsonl     CRLF=30 + 纯LF=19  ← 行尾是混的！
-#   learning/corrections.jsonl  CRLF=0  + 纯LF=55
-#   learning/hurdles.jsonl      CRLF=3  + 纯LF=0
-# 一旦 git 做 LF↔CRLF 归一化，这三个事实源同时变形，文件字节改变，
-# 指纹立刻失配 → 每次收尾都会 FAIL，而且历史事件无法重算。
+# 这是全仓库范围的**必需**约束，不是保守的默认值。原因：
+# 本工作区有多处「文件内容 sha256 被登记并校验」的机制，任何 LF↔CRLF
+# 归一化都会改变字节 → 校验失败。已核实的三处：
 #
-# `-text` = 不做任何 EOL 转换，按原始字节存取。diff 照常可用。
-# 本行必须排在所有 LFS 规则之前，后续规则可覆盖它。
+#   ① tools/derive_state.py: source_fingerprint()
+#        哈希 learning/attempts.jsonl 原始字节（sha256）
+#        以及 corrections.jsonl / hurdles.jsonl / goals.yaml / policy.yml
+#        / task-windows.json / learning/tasks/**/*.md
+#      → 变动会使 session-close.py 第 10 步一致性核对 FAIL
+#
+#   ② tools/chapter_guide.py:32  → 校验章节地图 sources 的 sha256
+#        来源可以是 .md！实测 learning/chapter-guides/tm-topic-04.json 引用了
+#        obsidian/obsidian知识库/Obsidian知识库_理论力学_v2/章节/第02章_06_能量守恒.md
+#        该文件是**纯 CRLF**（174 CRLF / 0 LF）。
+#        归一化为 LF 后 sha256 由 2d3ead0f… 变为 ec7468b3…，
+#        chapter_guide.py check 会抛 "STALE source"。
+#
+#   ③ tools/curriculum.py:44  → 校验 learning/materials.json 登记资料的 sha256
+#        （当前 54 项全为 PDF，属 LFS 不在此列；但机制上不允许归一化）
+#
+# ⚠ 因此**不要**把本行改成 `* text=auto eol=lf`，也**不要**把 -text 收窄到
+#   `learning/*.jsonl`——那样会漏掉 ② 与 learning/tasks/**/*.md，直接打坏系统。
+# 实测数据：全库 1325 个纯 CRLF 文件、14 个混合行尾文件。
 # ------------------------------------------------------------
 * -text
 
 # ------------------------------------------------------------
+# 【红线 2】追加型事实源用 union 合并。
+#
+# 跨设备场景：两台机器各自 append 了新事件，rebase 时同一文件尾部的
+# 改动区重叠 → 普通合并必然冲突。union 驱动会把两侧新增行拼接起来，
+# 这正是追加型日志需要的语义。
+#
+# 安全性：validate_attempts.py 会拒绝重复的 event_id / submission_id
+#   （validate_attempts.py:96-108），所以万一 union 产生重复行，
+#   收尾时会**报错暴露**，不会静默污染能力事实。
+#
+# 注意 `diff`：`-text` 会让 git 倾向于按二进制处理，显式声明 diff
+#   才能确保按文本做三方合并。
+# ------------------------------------------------------------
+learning/attempts.jsonl      -text merge=union diff
+learning/corrections.jsonl   -text merge=union diff
+learning/hurdles.jsonl       -text merge=union diff
+learning/observations.jsonl  -text merge=union diff
+
+# ------------------------------------------------------------
 # Git LFS 规则：所有二进制走 LFS，仓库本体只留文本。
 # 免费额度：10 GB 存储 / 10 GB 月流量（GitHub Free，2026-10 核实）
-# 当前 LFS 总量约 1.28 GB —— 额度内。
+# 当前 LFS 总量约 1.18 GB —— 额度内。
 #
-# 代价提示：每次完整克隆消耗约 1.28 GB 流量，
-# 免费 10 GB/月 ≈ 每月 7 次完整克隆。多端频繁拉取需留意。
+# 代价提示：每次完整克隆消耗约 1.18 GB 流量 ≈ 每月 7~8 次完整克隆。
+# 带宽紧张时可用（**不要设为默认**，否则 PDF 会变成指针文件、
+# 被 AI 误读为正文）：
+#     git config lfs.fetchexclude "*"
+#     或单次：GIT_LFS_SKIP_SMUDGE=1 git clone …
+#   需要某个文件时再：git lfs pull --include="路径"
 # ------------------------------------------------------------
 
 # 教材、课件、论文
 *.pdf   filter=lfs diff=lfs merge=lfs -text
 
-# 音频（TED 听力材料）
+# 音频（TED 听力材料）与视频
 *.mp3   filter=lfs diff=lfs merge=lfs -text
 *.m4a   filter=lfs diff=lfs merge=lfs -text
 *.wav   filter=lfs diff=lfs merge=lfs -text
 *.flac  filter=lfs diff=lfs merge=lfs -text
+*.mp4   filter=lfs diff=lfs merge=lfs -text
+*.mov   filter=lfs diff=lfs merge=lfs -text
 
 # 图片（作业照片、扫描件、教材解构配图）
 *.png   filter=lfs diff=lfs merge=lfs -text
@@ -63,5 +100,4 @@
 # 以下**保持普通文本**，不进 LFS（便于 diff 与逐行合并）：
 #   *.md  *.json  *.jsonl  *.py  *.yml  *.yaml  *.txt
 #   *.srt *.html *.svg *.csv
-# 说明：.srt 字幕与 .svg 矢量图均为纯文本，走 LFS 反而失去可读 diff。
 # ------------------------------------------------------------
