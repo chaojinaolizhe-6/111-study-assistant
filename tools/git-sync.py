@@ -59,8 +59,14 @@ class GitError(RuntimeError):
     pass
 
 
-def run_git(args: list[str], root: Path, check: bool = True, timeout: int = 600) -> tuple[int, str, str]:
-    """调用 git。GIT_TERMINAL_PROMPT=0 保证凭据缺失时**快速失败而非挂起**。"""
+def run_git(args: list[str], root: Path, check: bool = True, timeout: int = 600,
+            raw: bool = False) -> tuple[int, str, str]:
+    """调用 git。GIT_TERMINAL_PROMPT=0 保证凭据缺失时**快速失败而非挂起**。
+
+    raw=True：**不裁剪输出**。`git status --porcelain` 的状态码首位可能就是空格
+    （` M` = 已修改未暂存）——对整个输出 strip 会吃掉它，导致解析出的路径
+    被截掉第一个字符（实测：`AUDIT-…md` 被解析成 `UDIT-…md`）。
+    """
     env = dict(os.environ)
     env["GIT_TERMINAL_PROMPT"] = "0"       # 禁止交互式要密码/令牌
     env["GCM_INTERACTIVE"] = "never"       # 禁止 Git Credential Manager 弹窗
@@ -75,10 +81,38 @@ def run_git(args: list[str], root: Path, check: bool = True, timeout: int = 600)
         env=env,
         timeout=timeout,
     )
-    out, err = (proc.stdout or "").strip(), (proc.stderr or "").strip()
+    out, err = proc.stdout or "", proc.stderr or ""
+    if not raw:
+        out, err = out.strip(), err.strip()
     if check and proc.returncode != 0:
-        raise GitError(f"git {' '.join(args)} 失败（rc={proc.returncode}）：{err or out}")
+        raise GitError(f"git {' '.join(args)} 失败（rc={proc.returncode}）：{err.strip() or out.strip()}")
     return proc.returncode, out, err
+
+
+def list_changes(root: Path) -> list[tuple[str, str]]:
+    """返回 [(两位状态码, 路径)]。
+
+    用 `-z` 分隔而非换行：① 路径不做引号与八进制转义，中文路径原样返回；
+    ② 首行的前导空格不会被破坏（这正是 strip 版实现出过的 bug）。
+    """
+    rc, out, _ = run_git(["status", "--porcelain", "-z"], root, check=False, raw=True)
+    if rc != 0:
+        return []
+    fields = [f for f in out.split("\0") if f]
+    entries: list[tuple[str, str]] = []
+    i = 0
+    while i < len(fields):
+        entry = fields[i]
+        if len(entry) < 4:
+            i += 1
+            continue
+        code, path = entry[:2], entry[3:]
+        # 重命名/复制：-z 格式下原路径是紧随其后的一个独立字段
+        if "R" in code or "C" in code:
+            i += 1
+        entries.append((code, path))
+        i += 1
+    return entries
 
 
 def is_repo(root: Path) -> bool:
@@ -147,15 +181,10 @@ class SyncLock:
 
 
 # ---------------------------------------------------------------- 报告
-def summarize_changes(root: Path, porcelain: str) -> str:
+def summarize_changes(entries: list[tuple[str, str]]) -> str:
     """按顶层目录统计变更，生成人类可读的提交摘要。"""
     buckets: dict[str, int] = {}
-    for line in porcelain.splitlines():
-        if len(line) < 4:
-            continue
-        path = line[3:].strip().strip('"')
-        if " -> " in path:                      # rename
-            path = path.split(" -> ", 1)[1]
+    for _code, path in entries:
         top = path.split("/", 1)[0] if "/" in path else path
         buckets[top] = buckets.get(top, 0) + 1
     parts = [f"{k}×{v}" for k, v in sorted(buckets.items(), key=lambda kv: -kv[1])]
@@ -165,8 +194,7 @@ def summarize_changes(root: Path, porcelain: str) -> str:
 def report_status(root: Path) -> int:
     branch = current_branch(root)
     url = remote_url(root)
-    rc, porcelain, _ = run_git(["status", "--porcelain"], root, check=False)
-    changes = [l for l in porcelain.splitlines() if l.strip()]
+    changes = list_changes(root)
 
     rc_lfs, lfs_out, _ = run_git(["lfs", "ls-files"], root, check=False)
     lfs_count = len(lfs_out.splitlines()) if rc_lfs == 0 and lfs_out else 0
@@ -176,7 +204,7 @@ def report_status(root: Path) -> int:
     print(f"  远端      : {url or '（未配置）'}")
     print(f"  未提交    : {len(changes)} 个文件")
     if changes:
-        print(f"  分布      : {summarize_changes(root, porcelain)}")
+        print(f"  分布      : {summarize_changes(changes)}")
     print(f"  LFS 跟踪  : {lfs_count} 个文件" + ("（LFS 可能未生效！）" if lfs_count == 0 else ""))
 
     rc_ahead, ahead, _ = run_git(["rev-list", "--count", f"origin/{branch}..HEAD"], root, check=False)
@@ -202,17 +230,16 @@ def do_sync(root: Path, message: str | None, push: bool, check_only: bool) -> in
 
         # 1) 暂存
         run_git(["add", "-A"], root)
-        rc, porcelain, _ = run_git(["status", "--porcelain"], root, check=False)
-        staged = [l for l in porcelain.splitlines() if l.strip()]
+        staged = list_changes(root)
 
         if not staged:
             print("[OK  ] 无变化，无需提交。")
         else:
             print(f"== 待提交：{len(staged)} 个文件 ==")
-            print(f"  分布：{summarize_changes(root, porcelain)}")
+            print(f"  分布：{summarize_changes(staged)}")
             if check_only:
-                for line in staged[:40]:
-                    print(f"    {line}")
+                for code, path in staged[:40]:
+                    print(f"    {code} {path}")
                 if len(staged) > 40:
                     print(f"    …另有 {len(staged) - 40} 个")
                 print("\n[CHECK] 未提交（--check 模式）。")
