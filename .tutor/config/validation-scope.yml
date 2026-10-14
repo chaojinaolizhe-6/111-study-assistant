@@ -1,0 +1,12 @@
+# 校验范围配置（tools/validate_study_scoped.py 读取）
+#
+# 这些路径被排除出"范围内错误"，但在报告里**单列跳过条数**，不伪装为通过。
+# 每条都要写理由，不允许用来掩盖真实失败。
+
+out_of_scope_paths:
+  - obsidian/     # 外部只读同步的教材解构知识库：数学记号（如 M[u] 紧跟 (P)）被链接正则误判；不改其正文
+  - eval/         # 导出记录（派生产物）：内含被引用的对话原文，其中的正则/链接写法必然被误判，与学习内容无关
+
+# 信息项：这些行只是"可选能力未启用"，不是内容/一致性缺陷，不计入范围内错误，也不掩盖其它失败
+informational_patterns:
+  - no paths.instance_validator configured

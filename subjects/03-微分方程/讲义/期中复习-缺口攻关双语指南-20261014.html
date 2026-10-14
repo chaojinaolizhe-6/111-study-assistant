@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>微分方程 期中复习 · 缺口攻关双语指南（含 L1–12 知识点总清单）</title>
+<style>
+  @page { size: A4; margin: 12mm 11mm 14mm 11mm; }
+  body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; font-size: 10.5pt; line-height: 1.5; color: #111; margin: 0; }
+  h1 { font-size: 17pt; margin: 0 0 4px 0; }
+  h2 { font-size: 13.5pt; margin: 16px 0 6px 0; padding: 3px 6px; background: #eceff3; border-left: 5px solid #333; }
+  h3 { font-size: 12pt; margin: 12px 0 4px 0; color: #123; }
+  h4 { font-size: 10.5pt; margin: 8px 0 3px 0; }
+  p { margin: 4px 0; }
+  ul, ol { margin: 4px 0; padding-left: 20px; }
+  li { margin: 2px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 6px 0; }
+  th, td { border: 1px solid #777; padding: 3px 5px; vertical-align: top; }
+  th { background: #eee; }
+  .meta { font-size: 9.5pt; color: #333; }
+  .kp { border: 1px solid #333; margin: 10px 0 16px 0; padding: 0; }
+  .kp .hd { background: #333; color: #fff; padding: 4px 8px; font-weight: bold; font-size: 11pt; }
+  .kp .bd { padding: 8px 10px; }
+  .en { border-left: 4px solid #357; background: #f4f8fd; padding: 5px 9px; margin: 6px 0; font-size: 9.8pt; }
+  .ex { border: 1px solid #2a7; background: #f6fdf9; padding: 6px 9px; margin: 6px 0; }
+  .sol { border: 1px solid #999; background: #fafafa; padding: 6px 9px; margin: 6px 0; }
+  .warn { border: 1px solid #c00; border-left: 5px solid #c00; background: #fff5f5; padding: 6px 9px; margin: 6px 0; }
+  .avoid { break-inside: avoid; }
+  .small { font-size: 9pt; color: #444; }
+  code { font-family: Consolas, "Microsoft YaHei", monospace; background: #f0f0f0; padding: 0 2px; }
+  .ok { color: #170; font-weight: bold; }
+  .gap { color: #b00; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>微分方程 · 期中复习缺口攻关双语指南</h1>
+<p class="meta">
+生成：<b>2026-10-13</b>　|　依据：<b>期中定位卷 A/B 判读</b>（11 题，2026-10-08 作答、2026-10-13 判读，入账 <code>attempt-50</code>）＋<b>Lecture 1–12 课件逐页扫描</b><br>
+考试：<b>2026-10-22（周四）18:30–20:10</b>（课程群公告；原记 10-20 作废）　|　范围证据：<b>L12 复习讲的九块目录</b>（见第三部分）<br>
+用法：第一部分＝<b>8 个缺口知识点</b>（每个：知识点 → 方法 → 例题 → 解答，中英双语）；第二部分＝<b>L1–12 全部知识点清单</b>（逐讲逐页，用来查漏）；第三部分＝范围与自检表。
+</p>
+
+<h2>第一部分　缺口知识点：方法 + 例题 + 解答</h2>
+
+<!-- ================= 1 ================= -->
+<div class="kp">
+<div class="hd">缺口 1｜常系数齐次：m 重根（含复根重根）的解组 　m-fold roots</div>
+<div class="bd">
+<p><b>知识点</b>：特征方程 p(λ) = 0 的根按<b>重数</b>产出基本解，解的总个数必须等于方程阶数 n。</p>
+<table class="avoid">
+<tr><th>特征根</th><th>它贡献的解</th></tr>
+<tr><td>实单根 λ</td><td>e^(λx)</td></tr>
+<tr><td>实 m 重根 λ</td><td>e^(λx), x e^(λx), x² e^(λx), …, x^(m−1) e^(λx)　（<b>共 m 个</b>）</td></tr>
+<tr><td>复单根 α ± iβ</td><td>e^(αx)cos βx, e^(αx)sin βx</td></tr>
+<tr><td>复 m 重根 α ± iβ</td><td>e^(αx)x^j cos βx, e^(αx)x^j sin βx，j = 0…m−1　（<b>共 2m 个</b>）</td></tr>
+</table>
+<p><b>方法（五步）</b>：① 写特征方程；② 因式分解求<b>全部根与重数</b>（有理根定理 + 综合除法）；③ 按上表逐根产出解，<b>重根必须一路给到 x^(m−1)</b>；④ <b>数个数</b>：解的总数 = n（这一步是自检，专治"重根少给 x 的幂"）；⑤ 通解 = 这些解的线性组合。</p>
+<div class="en"><b>Method (EN)</b> — Write the characteristic equation, factor it completely and record every root <b>with its multiplicity</b>. Each real root λ of multiplicity m contributes e^(λx), x e^(λx), …, x^(m−1)e^(λx); each complex pair α ± iβ of multiplicity m contributes e^(αx)x^j cos βx and e^(αx)x^j sin βx for j = 0…m−1. <b>Check by counting: the number of independent solutions must equal n.</b></div>
+<div class="ex"><b>例题</b>　y''' + 9y'' + 27y' + 27y = 0<br><span class="small">（＝定位卷 A5；你的特征方程写对了，但解的第三项疑似漏了 x²）</span></div>
+<div class="sol"><b>解答</b><br>
+① p(λ) = λ³ + 9λ² + 27λ + 27 = 0　② 分解：(λ + 3)³ = 0 ⟹ <b>λ = −3 是三重根</b>（m = 3）<br>
+③ 三重根贡献三个解：e^(−3x)、x e^(−3x)、<b>x² e^(−3x)</b>　④ 自检：3 个解 = 3 阶 ✓<br>
+⑤ <b>通解 y = (C₁ + C₂x + C₃x²) e^(−3x)</b><br>
+<span class="small">⚠ 常见错法：写成 C₁e^(−3x) + C₂xe^(−3x) + C₃xe^(−3x) —— 后两项重复，实际只有 2 个独立解，解空间少一维。</span></div>
+</div>
+</div>
+
+<!-- ================= 2 ================= -->
+<div class="kp">
+<div class="hd">缺口 2｜可分离方程的收尾：积分常数、隐式解、丢解检查</div>
+<div class="bd">
+<p><b>知识点</b>：分离变量后两边各自积分，<b>常数 C 在积分时就产生</b>；对数结果要合并成"乘积 = 常数"的形式；分离时若除以了可能为零的因子，必须回头检查丢掉的常数解。</p>
+<p><b>方法（五步）</b>：① 把方程写成 f(x)dx = g(y)dy；② 两边积分，<b>立即写 +C</b>；③ 合并对数：<b>ln|A| = ln|B| + C ⟹ A = ±e^C·B</b>（把 ±e^C 记成新常数 C）⟹ 得到 <b>隐式解</b>（不必强行解出 y）；④ <b>丢解检查</b>：凡是被除掉的因子取零，代回原方程看是否恒成立；⑤ 有初值就代入定 C。</p>
+<div class="en"><b>Method (EN)</b> — Separate, integrate <b>and keep the constant of integration</b>. Combine logarithms into a product equal to a constant and rename e^C as a new constant; an implicit answer is acceptable. If you divided by a factor that can vanish, test that factor separately — it may give extra (singular) solutions. Apply the initial condition to fix C.</div>
+<div class="ex"><b>例题</b>　(e^v + 1) cos u du + e^v (sin u + 1) dv = 0<br><span class="small">（＝定位卷 A1：你分离与积分全对，卡在"要化成什么样"）</span></div>
+<div class="sol"><b>解答</b><br>
+① 分离：(e^v + 1)cos u du = −e^v(sin u + 1) dv ⟹ <b>cos u/(sin u + 1) du = −e^v/(e^v + 1) dv</b><br>
+② 积分（补上 C）：ln|sin u + 1| = −ln|e^v + 1| + C<br>
+③ 合并对数：ln[(sin u + 1)(e^v + 1)] = C ⟹ <b>(sin u + 1)(e^v + 1) = C</b>（隐式通解）<br>
+④ 丢解检查：第 ① 步除以了 (sin u + 1) ⟹ 令 sin u + 1 = 0，即 <b>u = −π/2 + 2kπ</b>；代回原式左边两项同为 0，恒成立 ⟹ <b>它也是解（常数解）</b>，要单独写出。<br>
+<span class="small">（严格说：若允许常数 C = 0，这条常数解已被 (sin u + 1)(e^v + 1) = C 覆盖；但按采分点，"<b>除以了什么、丢了什么</b>"显式写出来最稳妥，保持现有写法。）</span><br>
+⑤（若有初值）代入定 C。</div>
+</div>
+</div>
+
+<!-- ================= 3 ================= -->
+<div class="kp">
+<div class="hd">缺口 3｜一阶线性的收尾：通解公式的乘除方向 ＋ 三角积分（∫cos²θ / ∫cos³θ）</div>
+<div class="bd">
+<p><b>知识点</b>：一阶线性方程解到最后会遇到两种"小麻烦"：① 通解公式里 <b>μ 是乘还是除</b>、<b>积分号里要不要再乘 μ</b>（这正是定位卷 B1 踩的坑）；② 收尾那个三角积分走哪条路线。</p>
+
+<h4>① 先把公式链锁死（三行，不许背错）</h4>
+<div class="ru" style="border-left-color:#c00;background:#fff5f5">
+r' + P(θ)·r = Q(θ)　⟹　<b>μ(θ) = e^(∫P dθ)</b>　⟹　两边乘 μ：<b>(μ r)' = μ Q</b>　⟹　<b>r = (1/μ)·( ∫ μ·Q dθ + C )</b>
+</div>
+<p>★ 两个最容易错的地方：<b>(a) 括号外是 1/μ，不是 μ；(b) 积分号里必须乘上 μ</b> —— 因为凑出来的导数是 (μr)'，右端就是 μQ，不是 Q。</p>
+
+<h4>② 三角积分的三条路线</h4>
+<table class="avoid">
+<tr><th>形状</th><th>标准动作</th><th>例</th></tr>
+<tr><td><b>偶次幂</b>（cos²、sin²、cos⁴…）</td><td><b>倍角降幂</b>：cos²θ = (1 + cos2θ)/2，sin²θ = (1 − cos2θ)/2</td><td>∫cos²θ dθ = θ/2 + sin2θ/4</td></tr>
+<tr><td><b>奇次幂</b>（cos³、sin³…）</td><td><b>拆一个因子给微分</b>：cos³θ = cosθ(1 − sin²θ)，配 d(sinθ)</td><td>∫cos³θ dθ = sinθ − sin³θ/3</td></tr>
+<tr><td>含 tan / sec</td><td>sec²θ = d(tanθ)、tan²θ = sec²θ − 1</td><td>∫tanθ dθ = ln|secθ|</td></tr>
+</table>
+<div class="en"><b>Method (EN)</b> — Lock the linear formula first: μ = e^(∫P dθ); multiply through to get (μ r)' = μ Q; then <b>r = (1/μ)(∫ μ Q dθ + C)</b> — note the 1/μ <b>outside</b> and the μQ <b>inside</b>. For the trigonometric integral that remains: even powers → double-angle reduction; odd powers → split off one factor and use cos² = 1 − sin² so that the rest fits d(sin θ).</div>
+<div class="ex"><b>例题（＝定位卷 B1）</b>　cos θ dr + (r sin θ − cos⁴θ) dθ = 0<br><span class="small">⚠ 前一版指南在这一步把公式用反了（括号外写了 μ，且积分号里漏乘 μ），导致结果错误；本版已修正并逐行验算。</span></div>
+<div class="sol"><b>解答</b><br>
+① 化成标准形（两边同除 cos θ dθ）：<b>r' + tanθ·r = cos³θ</b>（P = tanθ，Q = cos³θ）<br>
+② 积分因子：μ = e^(∫tanθ dθ) = e^(ln|secθ|) = <b>1/cosθ</b><br>
+③ 两边乘 μ：<b>(r/cosθ)' = (1/cosθ)·cos³θ = cos²θ</b>　← 右端是 μQ；注意这里已经变成 <b>偶次幂</b><br>
+④ 积分（走偶次幂路线）：r/cosθ = ∫cos²θ dθ + C = ∫(1 + cos2θ)/2 dθ + C = <b>θ/2 + sin2θ/4 + C</b><br>
+⑤ <b>通解 r = cosθ·( θ/2 + sin2θ/4 + C )</b><br>
+<span class="small">验算（代回原式）：r' + tanθ·r = cosθ·(1/2 + cos2θ/2) = cosθ·cos²θ = cos³θ ✓　（sympy：dsolve 给出 (4C₁ + 2θ + sin2θ)cosθ/4，即同一结果）</span></div>
+<div class="box avoid"><b>附：奇次幂小练（另一条路线，考试同样会考）</b><br>
+∫cos³θ dθ = ∫cosθ(1 − sin²θ) dθ = ∫(1 − sin²θ) d(sinθ) = <b>sinθ − sin³θ/3 + C</b><br>
+<span class="small">判别口诀：<b>幂次为偶 → 降幂；幂次为奇 → 拆一个配微分</b>。B1 收尾出现的是 cos²θ（偶），所以走降幂路线；若收尾是 cos³θ，则走拆因子路线。</span></div>
+</div>
+</div>
+
+<!-- ================= 4 ================= -->
+<div class="kp">
+<div class="hd">缺口 4｜Riccati 方程：用"观察法"找特解</div>
+<div class="bd">
+<p><b>知识点</b>：Riccati 形如 y' = P(x) + Q(x)y + R(x)y²。它不能直接积，<b>但只要你能"看出"一个特解 y₁</b>，令 y = y₁ + 1/v 就能化成<b>线性</b>方程。（所以题目一定给得出特解——通常是单项式。）</p>
+<p><b>方法（五步）</b>：① 整理成标准形 y' = P + Qy + Ry²；② <b>试单项式特解 y₁ = c xⁿ</b>（也试常数 c、c/xⁿ）；把 y₁ 代进去，比较各项 x 的幂次，解出 n 与 c；③ 令 <b>y = y₁ + 1/v</b>；④ 代入后得到线性方程 <b>v' + (Q + 2R y₁)v = −R</b>（记住这个式子，比每次重推快）；⑤ 解线性方程得 v，代回 y = y₁ + 1/v。</p>
+<div class="en"><b>Method (EN)</b> — Put the equation in the standard form y' = P + Qy + Ry². Look for a particular solution <b>by inspection</b>, trying y₁ = c xⁿ (or c, or c/xⁿ); match powers of x to find n and c. Then set y = y₁ + 1/v, which turns the equation into the linear ODE <b>v' + (Q + 2R y₁)v = −R</b>. Solve for v and substitute back.</div>
+<div class="ex"><b>例题</b>　x³y' + 2x²y + 2x⁴y² = 18　(x ≠ 0)<br><span class="small">（＝定位卷 A4：你写"找不到特解，也用不上洛卡蒂"）</span></div>
+<div class="sol"><b>解答</b><br>
+① 除以 x³：<b>y' + (2/x)y + 2x y² = 18/x³</b>（P = 18/x³，Q = −2/x，R = −2x）<br>
+② <b>观察法</b>：右端是常数 18，前两项是一次的 y —— 试 <b>y₁ = c/x²</b>（让 x³y'、2x²y 都变成常数项）：<br>
+　　y₁' = −2c/x³ ⟹ x³(−2c/x³) + 2x²(c/x²) + 2x⁴(c²/x⁴) = −2c + 2c + 2c² = <b>2c² = 18</b> ⟹ c = ±3 ⟹ 取 <b>y₁ = 3/x²</b><br>
+③ 令 y = 3/x² + 1/v；④ 代入公式：Q + 2Ry₁ = −2/x + 2(−2x)(3/x²) = −2/x − 12/x = −14/x，−R = 2x<br>
+　　⟹ <b>v' − (14/x)v = 2x</b>（一阶线性）<br>
+⑤ 积分因子 μ = x^(−14)：v = C x^14 − x²/6 ⟹ <b>y = 3/x² + 1/(C x^14 − x²/6)</b><br>
+<span class="small">自检：把 y₁ = 3/x² 单独代回原式：−6 + 6 + 18 = 18 ✓</span></div>
+</div>
+</div>
+
+<!-- ================= 5 ================= -->
+<div class="kp">
+<div class="hd">缺口 5｜待定系数法 + 共振（为什么乘 x^s）+ 初值收尾</div>
+<div class="bd">
+<p><b>知识点</b>：常系数非齐次 a y'' + b y' + c y = f(x)，按 <b>f(x) 的形状</b>设 y_p；<b>若设出来的形式已经是齐次解</b>（即 f 的"指数"撞上特征根），必须<b>乘 x^s</b>，s ＝ 该特征根的重数（撞一次乘 x，撞两次乘 x²）。</p>
+<table class="avoid">
+<tr><th>f(x) 的形状</th><th>设 y_p</th><th>s 的取法</th></tr>
+<tr><td>P_m(x)（m 次多项式）</td><td>x^s·Q_m(x)</td><td>s = 0 的重数（0 是不是特征根）</td></tr>
+<tr><td>P_m(x) e^(αx)</td><td>x^s·Q_m(x) e^(αx)</td><td>s = α 作为特征根的重数</td></tr>
+<tr><td>e^(αx)(A cos βx + B sin βx)</td><td>x^s e^(αx)(C cos βx + D sin βx)</td><td>s = (α ± iβ) 作为特征根的重数</td></tr>
+<tr><td>f = f₁ + f₂（和）</td><td>y_p = y_p1 + y_p2（<b>叠加，分别设</b>）</td><td>逐个判断</td></tr>
+</table>
+<div class="en"><b>Method (EN)</b> — Guess y_p from the shape of f. <b>If the guess duplicates a solution of the homogeneous equation, multiply it by x^s, where s is the multiplicity of the corresponding characteristic root.</b> For a sum f₁ + f₂, find a particular solution for each part and add them. Finally <b>apply the initial conditions to the general solution</b> to get the constants.</div>
+<div class="ex"><b>例题</b>　y'' + 4y = 12x + 8cos 2x，　y(0) = 0，　y'(0) = 5<br><span class="small">（＝定位卷 B4：你会拆解，但"为什么这样设"不清；系数疑似写成 −2；初值没代）</span></div>
+<div class="sol"><b>解答</b><br>
+① 齐次：λ² + 4 = 0 ⟹ λ = ±2i ⟹ <b>y_h = C₁cos2x + C₂sin2x</b><br>
+② <b>f₁ = 12x</b>（多项式）：0 不是特征根（特征根是 ±2i）⟹ s = 0 ⟹ 设 y_p1 = Ax + B ⟹ 代入：4Ax + 4B = 12x ⟹ A = 3，B = 0 ⟹ <b>y_p1 = 3x</b><br>
+③ <b>f₂ = 8cos2x</b>：这里的 α ± iβ = <b>±2i 正是特征根</b>（单根）⟹ <b>s = 1</b> ⟹ 设 y_p2 = x(C cos2x + D sin2x)<br>
+　　⟹ 代入左端：−4C sin2x + 4D cos2x = 8cos2x ⟹ C = 0，D = 2 ⟹ <b>y_p2 = 2x sin 2x</b><br>
+　　<span class="small">★ 为什么必须乘 x：不乘的话 y_p = C cos2x + D sin2x 本身就是齐次解，代入左端恒为 0，永远凑不出 8cos2x。乘 x 之后多出的那一项恰好补上右端。</span><br>
+④ 通解：y = C₁cos2x + C₂sin2x + 3x + <b>2x sin2x</b><br>
+⑤ <b>代初值</b>：y(0) = C₁ = 0；y' = −2C₁sin2x + 2C₂cos2x + 3 + 2sin2x + 4x cos2x ⟹ y'(0) = 2C₂ + 3 = 5 ⟹ <b>C₂ = 1</b><br>
+⑥ <b>y = sin2x + 2x sin2x + 3x = (1 + 2x) sin 2x + 3x</b><br>
+<span class="small">自检：y'' + 4y = (−4sin2x + 8cos2x − 8x sin2x) + (4sin2x + 8x sin2x + 12x) = 8cos2x + 12x ✓</span></div>
+</div>
+</div>
+
+<!-- ================= 6 ================= -->
+<div class="kp">
+<div class="hd">缺口 6｜准齐次（广义齐次）方程：识别与换元</div>
+<div class="bd">
+<p><b>知识点</b>：普通齐次要求"分子分母同次"（令 u = y/x）；<b>准齐次</b>是"加权同次"——给 x 记权重 a、y 记权重 b，若所有项在变换 x → k^a x、y → k^b y 下乘同一个因子，则令 <b>u = y / x^(b/a)</b>（即 y = x^(b/a)·u）可化为可分离。</p>
+<div class="warn"><b>★ 关键关系（先记住这一条，方法就不会乱）</b>：<b>y' = dy/dx 的权重恒等于 b − a</b>（分子一次、分母一次）。<br>
+所以<b>不要把"y' 的权重"当成自由参数去设</b>；归一化请固定 <b>a = 1</b>（x 的权重），于是 y' 自动是 <b>b − 1</b>，全方程只剩 <b>b 一个未知数</b>。</div>
+<p><b>方法（四步）</b>：① <b>固定 a = 1</b>（x 的权重），设 y 的权重为 b；则 <b>y' 的权重自动 = b − 1</b>；② 逐项写权重：项 x^m y^n 的权重 = m + n·b，含 y' 的项按 y' → b − 1 计；<b>令所有项权重相等</b> → 解出 b；③ 令 <b>y = x^b·u</b>（例：b = 2 → y = x²u）；④ 代入后方程变成可分离 → 分离积分 → <b>代回 u = y/x^b</b>。</p>
+<div class="en"><b>Method (EN)</b> — Fix the weight of x as <b>a = 1</b> and let the weight of y be b. Then y' = dy/dx automatically has weight <b>b − 1</b> (do not treat it as a free parameter). Write the weight of every term — a term x^m y^n has weight m + n·b, and any y' counts as b − 1 — and set them all equal; this gives one equation for b. Then substitute <b>y = x^b u</b>; the equation becomes separable. Integrate and substitute u back.</div>
+<div class="ex"><b>例题</b>　y' = y/x + x³/y　(x ≠ 0, y ≠ 0)<br><span class="small">（＝定位卷 A2：你写"不会"——关键就是认出它不是普通齐次）</span></div>
+<div class="sol"><b>解答</b><br>
+① 归一化：固定 x 权重 <b>a = 1</b>，设 y 权重 <b>b</b> ⟹ <b>y' 的权重自动 = b − 1</b><br>
+② 逐项写权重：y' → b − 1；　y/x → b − 1（自动与 y' 同次 ✓）；　x³/y → 3 − b<br>
+　　令各项同次：<b>b − 1 = 3 − b</b> ⟹ 2b = 4 ⟹ <b>b = 2</b>（即 y ~ x²）<br>
+③ 令 <b>y = x² u</b> ⟹ y' = 2xu + x²u' ⟹ 代入：2xu + x²u' = xu + x/u<br>
+　　⟹ x²u' = −xu + x/u ⟹ <b>u' = (1 − u²)/(x u)</b>（可分离）<br>
+④ 分离：u du/(1 − u²) = dx/x ⟹ −½ ln|1 − u²| = ln|x| + C ⟹ (1 − u²)x² = C<br>
+　⑤ 代回 u = y/x²：x² − y²/x² = C ⟹ <b>y² = x⁴ − Cx²</b>（等价写法 y² = x⁴ + Cx²）<br>
+<span class="small">另一条路（也通）：看成 Bernoulli y' − (1/x)y = x³y^(−1)（n = −1），令 v = y² 化线性，结果一致（sympy 复核：代入 = 0 ✓）。</span></div>
+</div>
+</div>
+
+<!-- ================= 7 ================= -->
+<div class="kp">
+<div class="hd">缺口 7｜不含 x 的高阶降阶 + "凑导数"识别</div>
+<div class="bd">
+<p><b>知识点</b>：高阶方程若缺变量，可降阶；非线性方程常常要先<b>除以一个因子把左边凑成某个函数的导数</b>，再换元。</p>
+<table class="avoid">
+<tr><th>缺什么 / 看到什么</th><th>换元或凑法</th></tr>
+<tr><td>缺 x（不含 x）</td><td>令 p = y'，则 <b>y'' = p·dp/dy</b>（把 y 当自变量）</td></tr>
+<tr><td>缺 y</td><td>直接令 z = y'（或 z = y^(k)）降一阶</td></tr>
+<tr><td>出现 y y'' − y'²</td><td>除以 y² ⟹ <b>(y'/y)' = (y y'' − y'²)/y²</b>；令 z = y'/y 或 <b>z = ln y</b></td></tr>
+<tr><td>出现 y''/y'（不含 x）</td><td>除以 y' ⟹ (ln|y'|)'；或用 p dp/dy 形式</td></tr>
+</table>
+<div class="en"><b>Method (EN)</b> — If x is missing, set p = y' and use y'' = p·dp/dy. If y is missing, set z = y'. When you see combinations such as y y'' − y'², <b>divide by a suitable factor to create a derivative</b> — e.g. (y'/y)' = (y y'' − y'²)/y² — and then set z = y'/y or z = ln y.</div>
+<div class="ex"><b>例题</b>　y y'' − y'² = y² ln y　(y > 0, y' > 0)<br><span class="small">（＝定位卷 B3：设 w = y'、y'' = w·w' 都对，随后卡住）</span></div>
+<div class="sol"><b>解答</b><br>
+① 两边除以 y²：<b>(y y'' − y'²)/y² = ln y</b> ⟹ <b>(y'/y)' = ln y</b>（左边正好是 (y'/y) 的导数）<br>
+② 令 <b>z = ln y</b> ⟹ z' = y'/y，z'' = (y'/y)' ⟹ 方程变成 <b>z'' = z</b><br>
+③ 常系数齐次：λ² − 1 = 0 ⟹ λ = ±1 ⟹ z = C₁e^(x) + C₂e^(−x)<br>
+④ 回代：<b>y = e^z = exp(C₁ e^(x) + C₂ e^(−x))</b>（自动满足 y > 0 ✓）</div>
+</div>
+</div>
+
+<!-- ================= 8 ================= -->
+<div class="kp">
+<div class="hd">缺口 8｜Clairaut 方程与奇解（别忘了第二支）</div>
+<div class="bd">
+<p><b>知识点</b>：Clairaut 方程形如 <b>y = x p + φ(p)</b>（p = y'）。对 x 求导后<b>必然分成两支</b>：一支给通解（直线族），另一支给<b>奇解</b>（直线族的包络）。<b>奇解是最常被漏掉的部分。</b></p>
+<p><b>方法（五步）</b>：① 令 p = y'，写成 y = xp + φ(p)；② 两边对 x 求导（注意 p 是 x 的函数）：p = p + (x + φ'(p))p'；③ 移项因式分解：<b>(x + φ'(p))·p' = 0</b>；④ <b>支 1</b>：p' = 0 ⟹ p = C ⟹ 通解 y = Cx + φ(C)；⑤ <b>支 2</b>：x + φ'(p) = 0 与 y = xp + φ(p) 联立、消去 p ⟹ 奇解。有初值时要判断它落在哪一支上。</p>
+<div class="en"><b>Method (EN)</b> — Write the equation as y = xp + φ(p) with p = y' and differentiate with respect to x. This factors as (x + φ'(p))·p' = 0. The branch p' = 0 gives the general solution y = Cx + φ(C); the branch x + φ'(p) = 0, combined with the original equation, gives the <b>singular solution</b> (the envelope). Do not omit it.</div>
+<div class="ex"><b>例题</b>　y = x y' − y'²　（＝定位卷 B2）</div>
+<div class="sol"><b>解答</b><br>
+① 令 p = y' ⟹ y = xp − p²（φ(p) = −p²）<br>
+② 对 x 求导：p = p + x p' − 2p p' ⟹ <b>(x − 2p) p' = 0</b><br>
+③ <b>支 1</b>：p' = 0 ⟹ p = C ⟹ <b>通解 y = Cx − C²</b>（直线族）<br>
+④ <b>支 2</b>：x − 2p = 0 ⟹ p = x/2 ⟹ y = x(x/2) − (x/2)² = <b>x²/4</b>（<b>奇解</b>，是直线族的包络）<br>
+<span class="small">自检：y = x²/4 时 y' = x/2 = p ✓，xy' − y'² = x²/2 − x²/4 = x²/4 = y ✓</span></div>
+</div>
+</div>
+
+<h2>第二部分　Lecture 1–12 知识点总清单（逐讲逐页，用来查漏）</h2>
+<p class="small">来源：12 份课件逐页扫描（`_scratch/ode-l1-12-outline.md`）。状态列：<span class="ok">✅</span> 定位卷已确认会｜<span class="gap">🔴</span> 定位卷暴露缺口（本指南第一部分已覆盖）｜⬜ 未测（要自查）。</p>
+
+<h3>L1（1.pdf，34 页）——基本概念与 Euler 方法</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td>区间与多元函数基础、偏导数与高阶偏导（p3–p7）</td><td>⬜</td></tr>
+<tr><td>微分方程的基本记号与定义（DEFINITION 9/12、阶、线性/非线性）（p9–p16）</td><td>⬜</td></tr>
+<tr><td>解、通解、特解、初值问题（DEFINITION 13/14）（p11–p20）</td><td>⬜</td></tr>
+<tr><td>一阶 DE 的标准形式（Standard forms of first-order DE）（p21）</td><td>⬜</td></tr>
+<tr><td><b>Euler 方法</b>（数值解）（p22–p23）</td><td>⬜</td></tr>
+<tr><td><b>存在唯一性定理</b>（含不唯一的例子 y₀ = 0）（p24–p27）</td><td>⬜</td></tr>
+<tr><td>DE 的来源与应用（Newton 冷却定律等）（p28–p31）</td><td>⬜</td></tr>
+</table>
+
+<h3>L2（2(2).pdf，48 页）——可分离 · 齐次 · 可化为齐次</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>可分离方程</b>与 Cauchy 问题（p3–p12）</td><td><span class="gap">🔴</span> 收尾（缺口 2）</td></tr>
+<tr><td>不易分离但可化为可分离的情形（p13–p18）</td><td>⬜</td></tr>
+<tr><td><b>三个细节</b>：定义域、x → 0⁺ 的行为、<b>有限时间爆破</b>（p19–p21）</td><td>⬜</td></tr>
+<tr><td>可分离模型：<b>人口增长</b>（p22–p23）</td><td>⬜</td></tr>
+<tr><td><b>齐次方程</b>（换元 y = vx、定理与推导）（p24–p35）</td><td><span class="gap">🔴</span> 准齐次（缺口 6）</td></tr>
+<tr><td><b>可化为齐次的方程</b>（常数项处理：解线性方程组平移原点）（p36–p41）</td><td>⬜</td></tr>
+</table>
+
+<h3>L3（3(2).pdf，43 页）——飞行轨迹模型 · 准齐次 · 恰当方程</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td>齐次方程模型：<b>飞行轨迹</b>（p3–p7）</td><td>⬜</td></tr>
+<tr><td><b>准齐次（广义齐次）DE</b>：缩放权重 α、β 与标准换元（p8–p17）</td><td><span class="gap">🔴</span> 缺口 6</td></tr>
+<tr><td><b>恰当微分方程</b>：定义、判据 ∂M/∂y = ∂N/∂x、求 F、<b>分组法</b>（p18–p28）</td><td><span class="ok">✅</span> A3 全对</td></tr>
+</table>
+
+<h3>L4（4(3).pdf，49 页）——积分因子 · 一阶线性</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>积分因子</b>：μ 的方程、<b>特例 μ(x)、μ(y)</b>（p3–p15）</td><td>⬜</td></tr>
+<tr><td><b>一阶线性 DE</b>：齐次解、<b>常数变易</b>、积分因子公式、定理（p16–p31）</td><td><span class="gap">🔴</span> 积分收尾（缺口 3）</td></tr>
+<tr><td>同解曲线的条件、可化为线性的情形（p32–p35）</td><td>⬜</td></tr>
+<tr><td>Summary（p47）＋ Homework（p48–49）</td><td>⬜</td></tr>
+</table>
+
+<h3>L5（5(1).pdf，55 页）——Bernoulli · Riccati · 关于 y' 未解出</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>Bernoulli 方程</b>：乘 y^(−n)、z = y^(1−n)（p3–p15）；<b>除法丢解检查</b>（p16）；x 为未知函数的变体（一般 z = x^(1−n)；课件 p12 的例子是 n = 2 的特例 z = x^(−1)）（p11–p20）</td><td>⬜</td></tr>
+<tr><td><b>Riccati 方程</b>：标准形、观察法找特解、y = y₁ + 1/v、矩阵版本（p22–p27）</td><td><span class="gap">🔴</span> 缺口 4</td></tr>
+<tr><td><b>关于 y' 未解出的一阶 DE</b>：p = y'、对 x 求导；φ 不依赖 x 的情形；<b>例外情形</b>（2p − x = 0 型奇解）（p28–p36）</td><td>⬜</td></tr>
+</table>
+
+<h3>L6（6(1).pdf，49 页）——Clairaut · Lagrange · 关于 x 解出</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>Clairaut 方程</b>：y = xp + φ(p)、通解直线族、<b>奇解</b>、初值多解讨论（p3–p10）</td><td><span class="gap">🔴</span> 缺口 8</td></tr>
+<tr><td><b>Lagrange 方程</b>：参数式通解、积分因子、<b>例外情形 p = 1 / p = −1</b>（p11–p22）</td><td>⬜</td></tr>
+<tr><td>参数式 <b>Cauchy 问题</b>（p23）</td><td>⬜</td></tr>
+<tr><td><b>关于 x 解出的一阶 DE</b>：dx = dy/p、φ 不依赖 y 的情形、p = −1 例外（p24–p33）</td><td>⬜</td></tr>
+</table>
+
+<h3>L7（7(1).pdf，47 页）——高阶降阶四型</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td>最简形式 y⁽ⁿ⁾ = f(x)：连积 n 次（p3–p7）</td><td>⬜</td></tr>
+<tr><td><b>不含 x</b>：p = y'、y'' = p dp/dy（p8–p13）</td><td><span class="gap">🔴</span> 缺口 7</td></tr>
+<tr><td><b>不含 y, y', …, y^(k−1)</b>：令 z = y^(k)（p14–p17）</td><td>⬜</td></tr>
+<tr><td><b>高阶齐次方程</b>：F(x, ky, ky', ky'') 判据、换元 z = y'/y（p18–p24）</td><td>⬜</td></tr>
+<tr><td><b>广义齐次高阶方程的降阶</b>（p25–p36）</td><td>⬜</td></tr>
+</table>
+
+<h3>L8（8(1).pdf，53 页）——n 阶线性方程与参数变易法</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>n 阶线性齐次</b>：解的结构、线性组合（DEFINITION 1/2）（p3–p8）</td><td>⬜</td></tr>
+<tr><td><b>线性相关/无关</b>、<b>Wronski 行列式</b>、<b>基本解组</b>（DEFINITION 4、Theorem 3）（p9–p14）</td><td>⬜</td></tr>
+<tr><td><b>n 阶线性非齐次</b>：解的结构（THEOREM 4）（p15–p16）</td><td>⬜</td></tr>
+<tr><td><b>参数变易法</b>：y_p = Σcᵢ(x)yᵢ、Wronski 方程组（p17–p30）</td><td>⬜</td></tr>
+<tr><td>附加材料：Wronski 的更多性质（p50–p53）</td><td>⬜</td></tr>
+</table>
+
+<h3>L9（9(1).pdf，43 页）——常系数齐次（上）：特征方程与实根</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td>常系数齐次与<b>特征方程/特征多项式</b>（DEFINITION 2、复共轭根定理）（p3–p7）</td><td><span class="ok">✅</span></td></tr>
+<tr><td>实单根 ⟹ e^(λx)（THEOREM 1）与例题（p8–p13）</td><td><span class="ok">✅</span></td></tr>
+<tr><td><b>有理根定理 + 综合除法</b>求根（p14–p19）</td><td>⬜</td></tr>
+<tr><td><b>重根</b>情形与例题（p16–p20）</td><td><span class="gap">🔴</span> 缺口 1</td></tr>
+<tr><td>用<b>参数变易法</b>处理常系数非齐次（p21–p31）</td><td>⬜</td></tr>
+</table>
+
+<h3>L10（10(1).pdf，48 页）——常系数齐次（下）：重根/复根 · Cauchy–Euler</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td><b>多重根的一般定理</b>（THEOREM 2：x^j e^(λx)）（p4–p7）</td><td><span class="gap">🔴</span> 缺口 1</td></tr>
+<tr><td>复根 ⟹ e^(αx)cos βx、e^(αx)sin βx（含重根的 x^j）（p8–p19）</td><td><span class="ok">✅</span> A6 全对</td></tr>
+<tr><td>复数的三角形式与辐角（p13–p15）</td><td>⬜</td></tr>
+<tr><td><b>Cauchy–Euler 方程</b>：x = e^t 换元 → 常系数；含非齐次（p20–p31）</td><td>⬜</td></tr>
+</table>
+
+<h3>L11（11(1).pdf，54 页）——常系数非齐次：参数变易 + 待定系数</h3>
+<table class="avoid">
+<tr><th style="width:62%">知识点（页码）</th><th>状态</th></tr>
+<tr><td>参数变易法处理常系数非齐次（p3–p13）</td><td>⬜</td></tr>
+<tr><td><b>待定系数法 · 情形 1</b>：f = P(x) 多项式（p14–p15）</td><td><span class="ok">✅</span> A7 全对</td></tr>
+<tr><td><b>情形 2</b>：f = P(x)e^(αx)（p16–p25）</td><td>⬜</td></tr>
+<tr><td><b>情形 3</b>：f = e^(αx)(A cos βx + B sin βx)（p26–p35）</td><td><span class="gap">🔴</span> 缺口 5（共振）</td></tr>
+<tr><td><b>考试要求页</b>（书写清楚、写全计算过程、写出答案）（p36）</td><td>📌 必读</td></tr>
+</table>
+
+<h3>L12（12(1).pdf，56 页）——复习讲（<b>目录＝考试范围清单</b>）</h3>
+<table class="avoid">
+<tr><th style="width:62%">复习块（＝范围）</th><th>状态</th></tr>
+<tr><td>① 齐次 DE / <b>准齐次 DE</b>（含"可化为齐次"的平移技巧）</td><td><span class="gap">🔴</span> 缺口 6</td></tr>
+<tr><td>② <b>积分因子</b></td><td>⬜</td></tr>
+<tr><td>③ <b>Bernoulli DE</b></td><td>⬜</td></tr>
+<tr><td>④ <b>Riccati DE</b></td><td><span class="gap">🔴</span> 缺口 4</td></tr>
+<tr><td>⑤ <b>关于 y 解出的 DE</b>（y = f(x, y')）</td><td>⬜</td></tr>
+<tr><td>⑥ <b>关于 x 解出的 DE</b>（x = f(y, y')）</td><td>⬜</td></tr>
+<tr><td>⑦ <b>降阶</b>：最简形式／不含 x／不含 y…y^(k−1)／齐次</td><td><span class="gap">🔴</span> 缺口 7</td></tr>
+<tr><td>⑧ <b>常系数 n 阶线性齐次 + Cauchy–Euler</b></td><td><span class="gap">🔴</span> 缺口 1；复根 ✅</td></tr>
+<tr><td>⑨ <b>常系数 n 阶线性非齐次</b>（参数变易 + 待定系数）</td><td><span class="gap">🔴</span> 缺口 5；多项式型 ✅</td></tr>
+</table>
+
+<h2>第三部分　范围、考试要求与自检</h2>
+<div class="box avoid">
+<b>范围证据</b><br>
+· <b>L12 复习讲的目录（p2）就是九大块</b>：齐次/准齐次 · 积分因子 · Bernoulli · Riccati · 关于 y 解出 · 关于 x 解出 · 降阶（四型）· 常系数齐次 + Cauchy–Euler · 常系数非齐次。<br>
+· 这九块<b>全部落在 Lecture 1–12 之内</b>，<b>不含方程组（L13+）与矩阵指数（L16–17）</b> ⟹ 与"前十二讲"一致。<br>
+· ⚠ 但考试日期已改到 <b>10-22</b>、且老师 10-13 又发了 L16–17 课件 ⟹ <b>仍建议向老师确认一句范围是否扩大</b>（`[待确认]`，不擅自改）。
+</div>
+<div class="warn avoid">
+<b>考试要求（L11 p36 原文要点）</b>：① <b>书写工整清楚</b>——不要把字写小、不要行距过密；② <b>详细解题，写出全部计算过程</b>；③ <b>写出最终答案</b>。
+</div>
+<div class="box avoid">
+<b>自查勾选表（每块都要能闭卷做到两件事：说出"识别特征 → 标准动作"，并独立做完一题）</b>
+<table>
+<tr><th style="width:40%">块</th><th>识别特征 → 标准动作</th><th>自检</th></tr>
+<tr><td>可分离</td><td>f(x)dx = g(y)dy → 积分 + 补 C + 查丢解</td><td>☐</td></tr>
+<tr><td>齐次 / 准齐次</td><td>同次 → u = y/x；加权同次 → u = y/x^(β/α)</td><td>☐</td></tr>
+<tr><td>恰当 / 积分因子</td><td>M_y = N_x → 求 F；否则找 μ(x) 或 μ(y)</td><td>☐</td></tr>
+<tr><td>一阶线性 / Bernoulli</td><td>y' + p y = q → <b>μ = e^∫p dx → (μy)' = μq → y = (1/μ)(∫ μq dx + C)</b>（括号外 1/μ、括号内 μq，别写反）<br>带 y^n → v = y^(1−n)</td><td>☐</td></tr>
+<tr><td>Riccati</td><td>y' = P + Qy + Ry² → 观察特解 y₁ → y = y₁ + 1/v</td><td>☐</td></tr>
+<tr><td>关于 y' 未解出</td><td>p = y' → 对 x 求导 → 分离（含例外情形）</td><td>☐</td></tr>
+<tr><td>Clairaut / Lagrange</td><td>y = xp + φ(p) → 两支（通解 + 奇解）</td><td>☐</td></tr>
+<tr><td>降阶</td><td>缺 x → p、p dp/dy；缺 y → z = y'；凑导数 → z = y'/y 或 ln y</td><td>☐</td></tr>
+<tr><td>常系数齐次</td><td>特征方程 → 单根/重根(x^j)/复根(e^(αx)cos,sin)</td><td>☐</td></tr>
+<tr><td>Cauchy–Euler</td><td>x = e^t → 常系数</td><td>☐</td></tr>
+<tr><td>常系数非齐次</td><td>参数变易 或 待定系数（<b>撞特征根乘 x^s</b>）→ 最后代初值</td><td>☐</td></tr>
+</table>
+</div>
+
+<p class="small">本指南为复习材料，不含考试原题；例题中 A1–A7、B1–B4 取自你自己的期中定位卷（老师课件 Homework 页）。第二部分清单来自 12 份课件的逐页扫描，若某页标题被扫描噪声吞掉，以课件原文为准。</p>
+
+<div class="warn avoid">
+<b>修订记录（v2，2026-10-14）——按外部评审意见逐条核验后修改</b>
+<table style="margin-top:4px">
+<tr><th style="width:20%">位置</th><th style="width:40%">v1 的问题</th><th>v2 的处理</th></tr>
+<tr><td><b>缺口 3 · 例题（B1）</b></td><td><b>严重公式错误</b>：一阶线性通解写成 r = (1/cosθ)(∫cos³θ dθ + C) —— 括号外该是 1/μ = cosθ 却写了 μ；积分号里该是 μQ = cos²θ 却漏乘 μ 写成 Q</td><td><b>已重做</b>：补全公式链 μ → (μr)' = μQ → r = (1/μ)(∫μQ dθ + C)；正确解 <b>r = cosθ(θ/2 + sin2θ/4 + C)</b>；sympy 复核（dsolve 同结果、代回 = 0）。另把"奇次幂 ∫cos³θ"降为附例，避免与 B1 的偶次幂路线混淆</td></tr>
+<tr><td>缺口 2 · 方法③</td><td>对数合并写成 ln A = ln B + C ⟹ A = B·e^C（缺绝对值与 ± 说明）</td><td>改为 <b>ln|A| = ln|B| + C ⟹ A = ±e^C·B</b>；例题补一句"C = 0 时常数解已被覆盖，但显式写出丢解检查是采分点"</td></tr>
+<tr><td>缺口 6 · 权重约定</td><td>中文说"把 y' 的权重记为 1"，英文写"y' → b − a"，例题又按 b − a = 1 联立 —— <b>三种说法混用</b>，遇无 y/x 项的题易错</td><td>统一为：<b>固定 a = 1，y' 权重恒为 b − 1</b>（新增警示框）；例题改成一步解 b − 1 = 3 − b ⟹ b = 2</td></tr>
+<tr><td>自查勾选表</td><td>"一阶线性"只写到 μ = e^∫p</td><td>补全 <b>(μy)' = μq → y = (1/μ)(∫μq dx + C)</b></td></tr>
+<tr><td>全篇撇号</td><td>y′/y″/y‴ 用 Unicode 撇号，PDF 渲染后难以分辨（被读成少一撇）</td><td>全篇改为 ASCII 撇号 y' / y'' / y'''</td></tr>
+<tr><td>缺口 1 · 标题</td><td>"方法（四步）"却列了 ①–⑤</td><td>改为"方法（五步）"</td></tr>
+<tr><td>L5 · 第 1 行</td><td>"z = x^(−1)"未说明它是一般式 n = 2 的特例</td><td>补为"一般 z = x^(1−n)；课件 p12 的例子是 n = 2 的特例 z = x^(−1)"</td></tr>
+</table>
+<b>未改动</b>：缺口 1、4、5、7、8 的推导与结果 —— 已逐个用 sympy 复核（A5 三重根、Riccati 通解、B4 方程与初值、B3 通解、B2 奇解代入均为 0），与评审结论一致。
+</div>
+
+</body>
+</html>

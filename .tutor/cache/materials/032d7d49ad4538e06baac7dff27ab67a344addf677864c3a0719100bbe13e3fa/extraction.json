@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/14_16_Linear-DE-systems-with-constant-coefficients.pdf",
+  "sha256": "032d7d49ad4538e06baac7dff27ab67a344addf677864c3a0719100bbe13e3fa",
+  "page_count": 36,
+  "outline": [
+    [
+      1,
+      "Review: Eigenvalues and Eigenvectors",
+      3
+    ],
+    [
+      1,
+      "Homogeneous Linear Systems with Constant Coefficients",
+      8
+    ],
+    [
+      2,
+      "Case 1. Distinct Real Eigenvalues",
+      9
+    ],
+    [
+      2,
+      "Case 2. Distinct Real and Complex Eigenvalues",
+      16
+    ],
+    [
+      2,
+      "Case 3. Repeated Eigenvalues",
+      30
+    ],
+    [
+      2,
+      "g=m",
+      31
+    ],
+    [
+      2,
+      "1g<m",
+      1
+    ],
+    [
+      1,
+      "Homework",
+      1
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": null,
+      "text": "                   Diﬀerential Equations\n   Lecture 14-16 Homogeneous Linear System with Constant Coeﬃcients\n\n\n                        W. Y.\n\n                          DLUT\n                              September 29, 2026\n                                October 8, 2026\n                               October 13, 2026\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": null,
+      "text": "  Outline\n\n\n\n1  Review: Eigenvalues and Eigenvectors\n\n\n2  Homogeneous Linear Systems with Constant Coeﬃcients\n     Case 1. Distinct Real Eigenvalues\n     Case 2. Distinct Real and Complex Eigenvalues\n     Case 3. Repeated Eigenvalues\n\n     g = m\n     1 g < m\n\n3  Homework\n\n\n\n\n                                                                               September 29, 2026 October 8, 2026 October 13, 2\n       W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": null,
+      "text": "          Review: Eigenvalues and Eigenvectors\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": null,
+      "text": "Homogeneous Linear System with Constant Coeﬃcients\n\n              Xn\n                                             y0k =    akjyj, k = 1, · · · , n.                                      (1)\n                                           j=1\n\n\n\n                                     dY\n                              = AY,                                               (2)\n                                      dx\nwhere            0 1    0          1\n                                 y1            a11   a12        a1n                B C    B                  · · ·   C                B C    B          C\n                B y2 C    B a21   a22        a1n C                                  C                Y = BB CC , A = BB                  · · ·                                  C , aij  R for i, j = 1, 2, . . . , n.                  (3)\n                B                  C                       B                                        2                @    ...                  A                       @ · · ·     · · ·     · · ·   CA\n                              yn           an1  an2    · · ·  ann\nFor n = 1, (2) is a single ﬁrst-order DE\n\n                                             y0 = ay, a = constants 6= 0.\nThe GS of (2) is\n                                            y(x) = ceax.\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": null,
+      "text": "                                    Y 0(x) = AY.                                              (2)\n\n\n\nSeek a solution in the form\n                         Y (x) = V eλx, V = constant vector    −!0 .                               (4)                                                                             6=\n\nSubstitution:\n                        Y 0(x) = (V eλx)0 = V λeλx = AY = AV eλx\n\n\n\n\n                                AV = λV.\n\n\n                      9\n              λ is eigenvalue;     =\n                                      Y (x) = V eλx is a solution to Y 0 = AY .                      ; =)              V (V     −!0 ) is eigenvector.                           6=\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": null,
+      "text": " Eigenvalues and Eigenvectors\n\n\n                     AV = λV =) AV −λV = (A −λE)V = 0,\nwhere                           0       1\n                                                       1  0       0                              B           · · ·  C\n                              B       C\n                              B 0  1       0 C                                                                                                              · · ·  C                                 E = BB                                      C\n                              B                                      C                              @ ...              ...    ...              ...                                      A\n                                                       0  0    · · ·  1\nInterpretation: (A −λE)V = 0 is homogeneous algebraic system respect to v1, v2, · · · , vn with\nV = (v1,      , vn)T . For the homogeneous system, we will either have exactly one solution (V = −!0 ) or we will              · · ·\nhave inﬁnitely many nonzero solutions (det(A −λE) = 0).\nCharacteristic equation:\n                                       det(A −λE) = 0\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": null,
+      "text": "Characteristic polynomial:\n\n                     det(A −λE) = (λ −λ1)m1(λ −λ2)m2 · · · (λ −λk)mk, k n.\nIf A is a n ⇥n matrix then the order of characteristic polynomial is n, that is,\n\n                            m1 + m2 + · · · + mk = n.\n    mj is algebraic multiplicity of the eigenvalue λj(j = 1, · · · , k) .\n    When mj = 1, λj is called a simple eigenvalue.\n        If λi 6= λj, then their corresponding eigenvectors Vi and Vj are linearly independent.\n        If λ1, · · · , λk are the simple eigenvalues with the corresponding eigenvectors V1, · · · , Vk, then the\n     eigenvectors are all linearly independent.\n\n        If λj has gj linearly independent eigenvectors, then λ has geometric multiplicity gj. Moreover,\n     1 gj mj.\n        If λ is an eigenvalue of multiplicity k > 1 then λ will have anywhere from 1 to k linearly independent\n     eigenvectors/generalized eigenvectors.\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": null,
+      "text": " Homogeneous Linear Systems with Constant Coeﬃcients\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": null,
+      "text": "            Case 1. Distinct Real Eigenvalues\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": null,
+      "text": "Case 1. Distinct Real Eigenvalues\n\nCharacteristic equation:\n\n           det(A −λE) = (λ −λ1)(λ −λ2) · · · (λ −λn) = 0, λk 2 R, λk 6= λj, k, j = 1, · · · , n.\n\nEigenvectors:\n                                  (A −λkE)Vk = 0.\n\nTheorem 2.1\nIf the eigenvalues of A are distinct, then the solutions of system Y 0 = AY obtained from\nY1(x) = V1eλ1x,  . . . , Yn(x) = Vneλnx are linearly independent.\n\nGeneral solution\n               Xn\n                                Y (x) =    ckVkeλkx.\n\n                                              k=1\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": null,
+      "text": "Example 1                       8\n                               = y1 −y2 + y3,                       >>>>>< dy1dx\n                                             dy2\n                               = y1 + y2                                                    −y3,\n                       >>>>>: dy3dx  = 2y1                                       dx       −y2.\n\nSolution. First, we rewrite the system in the form of matrix equation:\n\n                     0 1  0      1 0 1    0      1\n                                          y1       1        1     y1          1        1                                C                                 B                                    C                                        B                                               C                        d BB CC  BB  −1                                C                                 B                                    C                                        B  −1                                               C\n                     B y2 C = B 1   1   C B y2 C A = B 1   1   C                       dx @ A  @      −1 A @  A,   @      −1 A\n                                          y3       2  −1   0     y3          2  −1   0\n\nSecond, we consider the characteristic equation of A to ﬁnd eigenvalues:\n\n                   1 −λ  −1    1\n                    1    1 −λ  −1 = (2 −λ)(1 −λ)(λ + 1) = 0 =) λ1 = 2, λ2 = 1, λ3 = −1.                                                                                                                                                                                                                                                  /////////  2                                                                                                                                                                                      /////////                     −1  −λ\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": null,
+      "text": "Third, we will ﬁnd the eigenvectors.\n\n                                             λ1 = 2.\n\n\n\n                          0 1  0       1 0 1  0 1\n                                                     v1                 1     v1       0                          B                            C                               B                                       C                                        B                                          C                                            B                                              C\n                          B                            C                               B −1  −1                                       C                                        B                                          C                                            B\n                        (A −2E) B@ v2 CA = B@ 1  −1  −1 CA B@ v2 CA = B@ 0 CCA\n                                                     v3        2  −1  −2    v3       0\n              0       1       0      1        0      1\n                                    1                         1                           1\n              B                      C                             B                                    C                                             B                                                    C              B −1  −1                      C                             B −1  −1                                    C                                             B −1  −1                                                    C\n              B 1      C R2 + R1  B 0        0 C        B 0    1   0 C              @    −1  −1 A     ⇠ @    −2  A  −R2/2 ⇠ @      A\n                           2  −1  −2  R3 + 2R1      0  −3  0  R3 −3/2R2      0    0   0\n                        8             8\n                                         0                                          1\n                                                  v1 = v3                     + v3 = 0                                                                         1                        >>>>><             >>>>>< −v1 −v2                                         B                                          C\n                                         B C\n                              =                                                 0                                                  v2                                          CA(Y1(x) = V1eλ1x)                              =) V1 = B@ 0\n                                                                         1                        >>>>>:             >>>>>: v2v3 == 0v3      =)                              =                                                  v3                                                       v3\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": null,
+      "text": "                                   λ2 = 1.\n\n\n\n                   0 1  0      1 0 1  0 1\n                                        v1       0        1     v1       0                   B                     C                        B                               C                                B                                  C                                     B                                       C\n                   B                     C                        B  −1                               C                                B                                  C                                     B\n                 (A −E) B@ v2 CA = B@ 1   0  −1 CA B@ v2 CA = B@ 0 CCA\n                                        v3       2  −1  −1    v3       0\n         0      1       0      1      0      1\n                 0        1                0        1               0        1\n         B                C                       B                              C                                     B                                            C         B  −1                C                       B  −1                              C                                     B  −1                                            C\n         B 1   0   C       B 1   0   C      B 1   0   C         @      −1 A     ⇠ @      −1 A    ⇠ @      −1 A\n                 2  −1  −1  R3 −2R2     0  −1   1  R3 −R1     0   0    0\n       8                    8\n                                 0                                   1\n                                           v1 = v3                                                            1       >>>>>< −v2           + v3 = 0    >>>>><                                 B                                   C\n                                 B C\n                                                            1               v1                                 @                                   CA(Y2(x) = V2eλ2x)             −v3\n                                                            1       >>>>>:             = 0  =) >>>>>: v2v3 == v3v3  =) V2 = B               v3          = v3\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": null,
+      "text": "                                  λ3 = −1.\n\n\n                   0 1  0      1 0 1  0 1\n                                        v1       2        1     v1       0                   B                     C                        B                               C                                B                                  C                                     B                                       C\n                   B                     C                        B  −1                               C                                B                                  C                                     B                 (A + E) B v2 C = B 1   2   C B v2 C = B 0 CC                   @ A  @      −1 A @ A  @ A\n                                        v3       2  −1   1     v3       0\n         0      1      0      1       0      1\n                 2        1               2        1  R1           0        3         B                C                       B                              C                                     B                                            C         B  −1                C                       B  −1                              C  −2R2                                     B  −5                                            C\n         B 1   2   C      B 1   2   C       B 1   2   C         @      −1 A    ⇠ @      −1 A     ⇠ @      −1 A\n                 2  −1   1  R3 −R1     0   0    0                0   0    0\n    8             8\n                                    0                                      1\n        + 3v3 = 0                                    v1 = −1/5v3    >>>>>< −5v2                 >>>>><                                    B                                      C                                    B −1                                      C\n                                                                 3       +         v1             2v2                                    @                                      CA(Y3(x) = V3eλ3x)\n                                                                 5    >>>>>:       =         v3              v3             −v3 = 0  =) >>>>>: v2v3 == 3/5v3v3    =) V3 = B\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": null,
+      "text": "      Y (x) = c1Y1(x) + c2Y2(x) + c3Y3(x) = c1V1eλ1x + c2V2eλ2x + c3V3eλ3x.\n\n\n                    0 1     0 1    0 1\n                                    1            1\n                    B                     C                           B                             C                                  B                                     C\n                    B                     C                           B                             C                                  B −1                Y (x) = c1 B 0 C  + c2 B 1 C  + c3 B 3 CC                    @ Ae2x   @ Aex   @  Ae−x.\n                                    1            1            5\n\n\n               8\n                               y1(x) = c1e2x + c2ex −c3e−x,               >>>>><\n                               y2(x) = c2ex + 3c3e−x,\n               >>>>>: y3(x) = c1e2x + c2ex + 5c3e−x.\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": null,
+      "text": "      Case 2. Distinct Real and Complex Eigenvalues\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": null,
+      "text": "Example 2 Find a fundamental set of real-valued solutions of the system\n                              0      1\n                                Y 0 = @−1/2    1 AY.\n                                            −1   −1/2\nSolution. The characteristic equation is\n\n                                 −1/2 −λ      1   = (λ + 1/2)2 + 1 = 0,                                                                                                                                                                                                                                                                                                                                         //////                                                                                                                                                                       //////                               −1    −1/2 −λ\ntherefore, the eigenvalues are λ1 = −1/2 + i and λ2 = −1/2 −i.\nFor λ1 = −1/2 + i, the 0equation (A −λE)V1 = 0 becomes0 1  0    1 0 1  0 1\n                    @−1/2 −λ      1  A          @v1 A = @−i   1 A @v1 A = @0 A.                                                                                                                                                                                                                                                                                            /////               v2                    v2       0                       −1    −1/2 −λ                   −1  −i                                         λ1=−1/2+i\nThe matrix equation is equivalent to the single scalar equation\n                                        0 1\n                         + v2 = 0.    V1 = @1 A.                                  −iv1      =)            i\n                               0 1\nSimilarly, a corresponding eigenvector of λ2 is V2 = @ 1 A.\n                                                  −i                      September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": null,
+      "text": "The eigenvalues and eigenvectors are\n\n                              0 1              0 1\n                        λ1 =    + i, V1 = @1 A; λ2 =          V2 = @ 1 A.                         −1/2                   i       −1/2 −i,                                                                          −i\n\nHence a fundamental set of solutions of the system is\n\n                        0 1        0 1\n                   Y1(x) = V1eλ1x = @1 Ae(−1/2+i)x = @1 A(cos x + i sin x)e−1/2x\n                                                                i                          i\n                     0   1      0  1\n                                             cos x               x               = e−x/2 @   A + ie−x/2 @sin A,\n                                    −sin0 x 1            cos x   0   1      0  1\n                                            1                            cos x               x\n                                                                            A.                   Y2(x) = V2eλ2x = @  Ae(−1/2−i)x = e−x/2 @\n                                                                  x                                           A −ie−x/2 @sincos x                                       −i                      −sin\n\nThey are not real-valued functions! How to obtain real-valued solutions?\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": null,
+      "text": "According to the principle of superposition, a pair of real-valued solutions of the given system is obtained by\n\n                                         0   1\n                                                                                    cos x\n                          U(x) = (Y1(x) + Y2(x))/2 = e−x/2 @     A,\n                                          0−sin x1\n                        V (x) = (Y1(x)       = e−x/2 @sin x A.                                        −Y2(x))/2i            cos x\n\nThe Wronskian of U and V  is\n\n                                        e−x/2 cos x   e−x/2 sin x\n              W[U, V ](x) =             = e−x(cos2 x + sin2 x) = e−x   0                                                                                                                                                                                                                                                                                                                                        //////        sin x  e−x/2 cos x //////                                  6=                                   −e−x/2\n\nSo U(x) and V (x) constitute a fundamental set of solutions of the system.\n\n\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": null,
+      "text": "Case 2. Distinct Real and Complex Eigenvalues\n\nCharacteristic equation:\n\n               det(A −λE) = (λ −λ1)(λ −λ2) · · · (λ −λn) = 0, λk 6= λj, k, j = 1, · · · , n.\n\nSuppose that λ1 = a + ib and λ2 = a −ib (b 6= 0). By\n\n                                  (A −λ1E)V1 = 0,\n\nwe have the associated eigenvector of λ1.\nGeneral Solution Let λ1, · · · , λn be distinct eigenvalues, λ1 = ¯λ2, and λk 2 R for k = 3, · · · , n. Then the GS\ncan be expressed as\n\n                            Xn\n  Y (x) = c1 eax(Re(V1) cos(bx)          sin(bx)) +c2 eax(Im(V1) cos(bx) + Re(V1) sin(bx)) +    ckVkeλkx.             |                {z−Im(V1)       }     |                {z                }\n                          Re(eλ1xV1)                               Im(eλ1xV1)              k=3\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": null,
+      "text": "Remark.\n     IfA is real-valued, then the coeﬃcients in the characteristic equation det(A −λE) = 0 for λ are\n      real-valued, and any complex-valued eigenvalues must occur in conjugate pairs.\n\n                                                                                  1 is an eigenvector of λ2.     Let λ1 = ¯λ2 = a + ib(b 6= 0).  If V1 is an eigenvector of λ1, then V2 = V\n                                                            dY\n     V1eλ1x and V2eλ2x (V2 = V1, λ2 = λ1) are solutions of the system L[Y ] = dx −AY = 0, and\n     V1eλ1x = V2eλ2x.\n     eax(Re(V1) cos(bx) −Im(V1) sin(bx)) and eax(Im(V1) cos(bx) + Re(V1) sin(bx)) are the solutions of\n    L[Y ] = 0. Moreover, they are linearly independent.\nInterpret:\n    1) Since V1eλ1x and V2eλ2x are solutions of the system L[Y ] = 0, (V1eλ1x + V2eλ2x)/2 and\n(V1eλ1x −V2eλ2x)/2i are solutions of the system L[Y ] = 0.\n    2) Two vectors U and W are linearly dependent if and only if there exists a constant c 6= 0 such that\nU = cW.\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": null,
+      "text": "Example 3                      8\n\n                             = 2y1 + y2,                      >>>>>< dy1dx\n                                           dy2\n                             = y1 + 3y2                                                  −y3,\n                      >>>>>: dy3dx =   + 2y2                                     + 3y3.                                     dx   −y1\nSolution.               0 1  0      1 0 1    0      1\n                                          y1        2   1   0     y1           2   1   0\n                        d BB CC  BB      CC BB CC    BB      CC\n                    B y2 C = B 1   3   C B y2 C A = B 1   3   C                       dx @ A  @      −1 A @  A,   @      −1 A.\n                                          y3     −1  2   3     y3        −1  2   3\nCharacteristic equation:\n\n                                       2 −λ    1      0\n                 det(A −λE) =   1    3 −λ  −1 = 0 =) (2 −λ)(λ2 −6λ + 10) = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         /////////         2    3                                                 /////////                               −1       −λ\n                                  =) λ1 = 2, λ2,3 = 3 ± i.\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": null,
+      "text": "                                   λ1 = 2.\n\n\n\n                   0 1  0      1 0 1  0 1\n                                         v1        0   1   0     v1       0                   B C  B      C B C  B C\n                 (A −2E) BB@ v2 CCA = BB@ 1   1  −1 CCA BB@ v2 CCA = BB@ 0 CCA\n                                         v3     −1  2   1     v3       0\n         0      1      0     1       0     1\n                   0   1   0                0   1  0                0   1  0\n         B      C      B     C       B     C\n         B      C      B     C       B     C\n         B 1   1   C  + R3  B 0   3  0 C       B 0   0  0 C         @      −1 AR2   ⇠ @       AR2 −3R1 ⇠ @     A\n              −1  2   1            −1  2  1  R3 −2R1    −1  0  1\n         8          8\n                                          1                    v2 = 0,                                           v1 = v3,        0\n                                                                        1         >>>>><                    >>>>><                                        B                                          C\n                                        B C\n                                          C                                                                        0                    v3 =                         v3                                        @                                          A\n                                                                        1         >>>>>:              +                          v3 = 0,                    =) >>>>>: v2v3 == v30,  =) V1 = B                −v1\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": null,
+      "text": "                                  λ2 = 3 + i\n\n\n                    0 1  0        1 0 1  0 1\n                                          v1               1    0     v1       0                    B                      C                         B                                  C                                   B                                     C                                        B                                          C\n                    B                      C                         B −1 −i                                  C                                   B                                     C                                        B\n             (A −(3 + i)E) B@ v2 CA = B@  1    −i  −1 CA B@ v2 CA = B@ 0 CCA\n                                          v3       −1    2   −i    v3       0\n     0        1         0         1  0         1\n                    1    0  R1 + (1 + i)R2     0  2                  0  2     B               C                         B                                   C                                      B                                               C     B −1 −i               C                         B   −i  −1 −i                                   C                                      B   −i  −1 −i                                               C\n     B  1       C         B 1        C  B 1        C     @       −i  −1 A       ⇠ @    −i    −1 A ⇠ @    −i    −1 A\n          −1    2   −i    R3 + R2        0  2 −i  −1 −i       0    0      0\n   8                 8\n                                           1                                               0                                                 1                                           v1 = 1,          0\n                                                                           1                                                                                    0       (2 −i)v2 + (−1 −i)v3 = 0,   >>>>><                    >>>>><                                          B                                           C                                               B                                                 C\n                                          B C  B C\n                                           C                                        + i B                                                                           1       v1                                          @                                           A                                               @                                                                                    1 CA.        −iv2\n                                                                           2                                                                 −1   >>>>>:       v3      = v3,           −v3 = 0,       =) >>>>>: v2v3 == 12 + i,  =) V2 = B                                         −i.\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": null,
+      "text": "  Y (x) = c1V1eλ1x + c2Re(V2eλ2x) + c3Im(V2eλ2x)\n        0 1       0 1     0 1         0 1     0 1\n               1                                 1                                               0                                                                    1                                                                                 0\n        B         C       B                   C     B                            C         B                                       C     B                                                C         .\n    = c1 BB 0 CC  + c2e3x( BB 1 CC cos x  BB 1 CC sin x) + c3e3x( BB 1 CC sin x + BB 1 CC cos x)        @ Ae2x      @ A   − @ A         @ A     @ A\n               1                 2          −1                   2         −1\n\n     8\n            y1(x) = c1e2x + c2e3x cos x + c3e3x sin x     >>>>><\n            y2(x) = c2e3x(cos x     x) + c3e3x(cos x + sin x)                         −sin\n     >>>>>: y3(x) = c1e2x + c2e3x(2                                    cos x + sin x) + c3e3x(2 sin x −cos x)\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": null,
+      "text": "Multiple Spring-Mass system\n\n\n\n\n                                                       d2x1\n                                        m1   =   + k2)x1 + k2x2 + F1(t),                                                              dt2    −(k1\n                                                       d2x2\n                                        m2   =        + k3)x2 + F2(t).                                                              dt2   −k2x1 −(k2\n\nSuppose that m1 = 2, m2 = 9/4, k1 = 1, k2 = 3, k3 = 15/4, F1(t) = F2(t) = 0. So these equations become\n\n                    8\n                    >< d2x1  =    + 3/2x2,                                           dt2     −2x1\n                    >: d2x2                            =                                           dt2     −4/3x1 −3x2.\n\nLet y1 = x1, y2 = x2, y01 = y3, y02 = y4. Then the above system is transformed into a system of four ﬁrst-order\nequations.\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 1,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": null,
+      "text": "Example 4. Solve the system\n                        0 1  0        1 0 1\n                                                          y01        0    0   1  0    y1                        B C  B        C B C\n                        B C  B        C B C\n                        B                             B                                        B                                                      0    0   0  1 C                                                                                y2 C                        B                                                          y02 CC                             B                                       C                                        B                                          C\n                        B                          C =                             B                                       C                                        B                                          C\n                        B y03 C  B     3/2  0  0 C B y3 C                        @ A  @ −2       A @ A\n                                                          y04       4/3  −3  0  0    y4\nSolution. The characteristic equation is\n\n                             −λ   0    1    0\n\n                 det(A    =                                        0  −λ   0    1 = λ4 + 5λ2 + 4 = (λ2 + 1)(λ2 + 4),                −λE)         3/2        0                               −2      −λ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //////////// 4/3        0                                                                                                        ////////////                                   −3     −λ\nso the eigenvalues are λ1 = i, λ2 = −i, λ3 = 2i, λ4 = −2i. The corresponding eigenvectors are\n                     0 1    0  1    0  1    0  1\n                                       3            3             3             3\n                     B C    B  C    B  C    B  C\n                     B C    B  C    B  C    B  C\n                     B 2 C    B 2 C    B  C    B  C                                        C                                                C                          V1 = BB CC , V2 = BB  CC , V3 = BB −4                                        C , V4 = BB −4                                                C .\n                     B 3i C    B  C    B 6i C    B  C                     @ A    @ −3i A    @  A    @ −6i A\n                                              2i          −2i          −8i              8i\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": null,
+      "text": "Note              0 1            0    1  0   1\n                                3                         3 cos t        3 sin t\n                 B C            B    C  B   C\n                 B C            B    C  B   C\n                 B 2 C            B 2 cos t C  B 2 sin t C\n                    V1eit = BB CC (cos t + i sin t) = BB    CC + i BB   CC = U1(t) + iV1(t),\n                 B 3i C            B    sin t C  B 3 cos t C                 @ A            @ −3  A  @   A\n                                     2i                   −2 sin t       2 cos t\nwhere U1(t) and V1(t) are real-valued solutions of the given system.\nIn a similar way, we obtain\n\n               0  1             0    1  0    1\n                             3                             3 cos 2t         3 sin 2t\n               B  C             B    C  B    C\n               B  C             B    C  B    C\n               B  C             B   cos 2t C  B    sin 2t C                  C                                     C                                              C                V3e2it = BB −4                  C (cos 2t + i sin 2t) = BB −4                                     C + i BB −4                                              C = U2(t) + iV2(t).\n               B 6i C             B    sin 2t C  B 6 cos 2t C               @  A             @ −6   A  @    A\n                          −8i                            8 sin 2t      −8 cos 2t\n\nWe leave it to you to verify that U1, V1, U2, and V2 are linearly independent and therefore form a fundamental\nset of solutions.\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": null,
+      "text": "Thus the general solution of the system is\n\n              0 1   0    1   0   1   0    1   0    1\n                              y1          3 cos t          3 sin t          3 cos 2t          3 sin 2t              B C   B    C   B   C   B    C   B    C\n              B C   B    C   B   C   B    C   B    C\n              B y2 C   B 2 cos t C   B 2 sin t C   B   cos 2t C   B    sin 2t C              B                C                                          C                                                    C\n              B                C = c1 BB    CC + c2 BB   CC + c3 BB −4                                          C + c4 BB −4                                                    C ,\n              B y3 C   B    sin t C   B 3 cos t C   B    sin 2t C   B 6 cos 2t C              @ A   @ −3  A   @   A   @ −6   A   @    A\n                              y4       −2 sin t         2 cos t          8 sin 2t        −8 cos 2t\n\nwhere c1, c2, c3, and c4 are arbitrary constants.\n\n\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": null,
+      "text": "             Case 3. Repeated Eigenvalues\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": null,
+      "text": "Case 3a. Repeated Eigenvalues g=m(n linearly independent eigenvectors).\n\n\nCharacteristic equation:\n\n                      det(A −λE) = (λ −λ1)m1(λ −λm1+1) · · · (λ −λn) = 0.\n\nDeﬁnition 2.2\n\n                                         g1 = n −rank(A −λ1E).\n\ng1 is called geometric multiplicity of λ1.\n\nTheorem 2.3\nIf g1 = m1, then there are m1 linearly independent eigenvectors V1, · · · , Vm1 associated with λ1.\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": null,
+      "text": "Characteristic equation:\n\n                      det(A −λE) = (λ −λ1)m1(λ −λm1+1) · · · (λ −λn) = 0.\n\nEigenvectors:\n                               (A −λ1E)Vj = 0, j = 1, · · · , m1,\n                           (A −λkE)Vk = 0, k = m1 + 1, · · · , n,\nwhere V1, · · · , Vn are linearly independent.\nGeneral solution\n                     Xn\n                 Y (x) = (c1V1 + c2V2 + · · · + cm1Vm1)eλ1x +        ckVkeλkx.\n                                                       k=m1+1\n\n\n\n\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": null,
+      "text": "Example 5                    8\n                           = 4y1 −y2 −y3,                    >>>>>< dy1dx\n                                       dy2\n                           = y1 + 2y2                                              −y3,\n                    >>>>>: dy3dx = y1   +                                                             2y3,                                  dx    −y2\n Solution.               0 1  0      1 0 1    0      1\n                                          y1       4               y1          4                                C                                 B                                    C                                        B                                               C                        d BB CC  BB  −1  −1                                C                                 B                                    C                                        B  −1  −1                                               C\n                     B y2 C = B 1   2   C B y2 C A = B 1   2   C                       dx @ A  @      −1 A @  A,   @      −1 A\n                                          y3       1  −1   2     y3          1  −1   2\nCharacteristic equation:\n\n                                       4 −λ  −1   −1\n                 det(A −λE) =   1    2 −λ  −1 = 0 =) (3 −λ)(λ −3)(λ −2) = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /////////  1           2                                                 /////////                                     −1   −λ\n                            =) λ1 = 2, m1 = 1; λ2 = 3, m2 = 2.\n\n                                                                                    September 29, 2026 October 8, 2026 October 13, 2\n           W.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": null,
+      "text": "                               λ1 = 2, m1 = 1.\n\n\n                   0 1  0      1 0 1  0 1\n                                         v1       2               v1       0                   B                      C                        B                               C                                B                                   C                                     B                                       C\n                   B                      C                        B  −1  −1                               C                                B                                   C                                     B\n                 (A −2E) B@ v2 CA = B@ 1   0  −1 CA B@ v2 CA = B@ 0 CCA\n                                         v3       0  −1   1     v3       0\n         0      1       0      1      0      1\n                 2                         0        1               0        1\n         B                C                              C                                     B                                            C         B  −1  −1                C R1     BB  −1                              C                                     B  −1                                            C         B 1   0   C  −2R2  B 1   0   C      B 1   0   C         @      −1 A     ⇠ @      −1 A    ⇠ @      −1 A\n                 0  −1   1                0  −1   1  R3 −R1     0   0    0\n         8          8\n                                          1              + v3 = 0,                                           v1 = v3,        0\n                                                                        1         >>>>>< −v2                    >>>>><                                        B                                          C\n                                        B C\n                                          C                                                                        1                    v1                                        @                                          A                −v3\n                                                                        1         >>>>>:                    v3             = v3                = 0,   =) >>>>>: v2v3 == v3v3  =) V1 = B\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": null,
+      "text": "                               λ2 = 3, m2 = 2.\n\n                   0 1  0      1 0 1  0 1\n                                         v1       1               v1       0                   B                      C                        B                               C                                B                                   C                                     B                                       C\n                   B                      C                        B  −1  −1                               C                                B                                   C                                     B\n                 (A −3E) B@ v2 CA = B@ 1  −1  −1 CA B@ v2 CA = B@ 0 CCA\n                                         v3       1  −1  −1    v3       0\n                  0      1  0      1\n                                 1                1\n                  B                         C                            B                                   C                  B  −1  −1                         C                            B  −1  −1                                   C\n                  B 1     C  B 0   0    0 C                  @  −1  −1 A ⇠ @      A\n                                 1  −1  −1       0   0    0\n\n                                          v1 = v2 + v3,\n\n                              v2 = 1, v3 = 0 =) v1 = 1\n                              v2 = 0, v3\n                        0 1                       = 1 =) 0v1 1= 1\n                                            1           1\n                        B C    B C\n                             V2 = BB 1 CC V3 = BB 0 CC                        @ A,    @ A\n                                            0           1\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": null,
+      "text": "                 Y (x) = c1V1eλ1x + c2V2eλ2x + c3V3eλ2x\n                    0 1     0 1     0 1\n                                     1            1            1\n                    B C     B C     B C\n                = c1 BB 1 CC  + c2 BB 1 CC  + c3 BB 0 CC                    @ Ae3x   @ Ae2x   @ Ae2x\n                                     1            0            1\n\n\n             8\n                           y1(x) = c1e2x + c2e3x + c3e3x             >>>>><\n                           y2(x) = c1e2x + c2e3x\n             >>>>>: y3(x) = c1e2x + c3e3x\n\n\n\n\n\n                                                                        September 29, 2026 October 8, 2026 October 13, 2\nW.Y. (DLUT)                                   Lecture 14-16                                                      / 60",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

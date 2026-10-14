@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/6(1).pdf",
+  "sha256": "fc5939503af31bc815e41281bd9716b986e6ad08137c5031121a5fa526d0ffab",
+  "page_count": 49,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Clairaut's DE",
+      3
+    ],
+    [
+      1,
+      "Lagrange’s DE",
+      11
+    ],
+    [
+      1,
+      " DE is resolved by x",
+      24
+    ],
+    [
+      1,
+      "Lecture 5. Homework",
+      34
+    ],
+    [
+      1,
+      "Homework",
+      49
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 6.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 10, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Clairaut’s DE\n\n\n2  Lagrange’s DE\n\n\n3  DE is resolved by x\n\n\n4  Lecture 5. Homework\n\n\n5 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 2 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Clairaut’s equation.\n\nDEFINITION 1. Differential equation\n                                        y = xy ′ + ϕ(y ′)                                        (1)\n\nis called Clairaut’s equation.\nWe see that DE (1) is linear in both x and y, but it is not explicit with respect to y ′. Using the change\ny ′(x) = p(x), (1) reads\n                                        y = xp + ϕ(p).                                         (2)\n\nDifferentiating this equation with respect to x, we obtain\n\n                                 p = p + xp′ + ϕ′(p)p′,\n\nwhence\n                                           p′(x + ϕ′(p)) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 3 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "If p′ = 0, then p = C, where C are arbitrary constants. Introducing this in (2), we get the general\nsolution of Clairaut’s equation\n                                        y = Cx + ϕ(C).                                        (3)\n\nThe second possibility, x = −ϕ′(p), yields the singular solution, expressed in parametric form\n\n                               x = −ϕ′(p),   y = −pϕ′(p) + ϕ(p).\n\nIndeed, this solution cannot be obtained from the general one by giving particular value to C.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 4 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "EXAMPLE 1\nFind the general solution of Clairaut’s equation\n\n                                       y = xy ′ + exp(y ′).                                       (4)\n\n\nTo solve this equation, we introduce the substitution p(x) = y ′(x), which transforms (4) into\n\n                                       y = xp + exp(p).                                        (5)\n\nDifferentiating this relation with respect to x and using the fact that p is a function of x, we obtain\n\n                                p = p + xp′ + exp(p)p′,\n\nso that after cancellation,\n                                             p′ x + exp(p) = 0.\n\nThis factored form gives two distinct possibilities. The first arises when p′ = 0, which means p = C for\nsome arbitrary constant C. Substituting this back into (5) yields the general solution of Clairaut’s\nequation,\n                                       y = Cx + exp(C).\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 5 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "This family of straight lines represents the general solution, parameterized by the constant C.\nThe second possibility comes from setting the other factor to zero, namely x + exp(p) = 0, which gives\nx = −exp(p). Substituting this into (5) leads to the singular solution, expressed in parametric form as\n\n                    x = −exp(p),     y = −p exp(p) + exp(p) = exp(p)(1 −p),\n\nwhere p serves as the parameter.\nTo obtain an explicit representation, we eliminate the parameter p by noting that p = ln(−x).\nSubstituting this into the expression for y yields the singular solution in explicit form,\n\n                                      y = −x 1 −ln(−x) .\n\nThis singular solution is not contained in the general family y = Cx + exp(C) for any finite value of C.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 6 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "EXAMPLE 2\nSolve the initial value problem for Clairaut’s equation\n\n                                y = xy ′ + (y ′)3 −3y ′,   y(0) = 0.\n\n We consider Clairaut’s equation with cubic nonlinearity\n\n                                     y = xy ′ + (y ′)3 −3y ′.\n\nHere ϕ(p) = p3 −3p. The function ϕ(p) attains a local maximum at p = −1 with value 2, and a local\nminimum at p = 1 with value −2.\nIntroduce the substitution p = y ′. The equation becomes\n\n                                       y = xp + p3 −3p.\n\nDifferentiate this relation with respect to x:\n\n                               p = p + xp′ + (3p2 −3)p′.\n\nAfter canceling p, we obtain\n                                            p′ x + 3p2 −3 = 0.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 7 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "This factored form yields two distinct possibilities.\nThe first possibility is p′ = 0, which gives p = C, where C is an arbitrary constant. Substituting this\nback yields the general solution:\n                                      y = Cx + C 3 −3C.\n\nThis represents a family of straight lines, each characterized by its slope C.\nThe second possibility is x + 3p2 −3 = 0, hence\n\n                                         x = 3 −3p2.\n\nSubstituting x = 3 −3p2 into the expression for y, we get\n\n                        y = xp + p3 −3p = p(3 −3p2) + p3 −3p = −2p3.\n\nThus the singular solution is given parametrically by\n\n                                  x = 3 −3p2,     y = −2p3.\n\nEliminating the parameter p, we obtain the explicit form\n\n                                    2\n                                y = ± √ (3 −x)3/2,     x ≤3.\n                                   3  3\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 8 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "Substitute the initial condition y(0) = 0 into the general solution:\n\n                              0 = 0 · C + C 3 −3C = C 3 −3C.\n\nThis gives the equation\n                      C 3 −3C = 0   or  C(C 2 −3) = 0.\n\nWe find three roots:                         √       √\n                      C = 0,   C =   3,   C = −  3.\n\nEach root corresponds to a distinct solution of the Cauchy problem.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 9 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "               √     √\nThe three roots C = 0, C =   3, C = −  3 yield the following solutions:\n\n                                            y1(x) = 0,\n                           √\n                                           y2(x) =  3 x,\n                           √\n                                          y3(x) = −  3 x.\n\n\nAll three solutions pass through the origin (0, 0), but they have different slopes.\nAt x = 0, the singular solution gives\n\n                                  2            2  √\n                             y = ± √   · 33/2 = ± √   · 3  3 = ±2.\n                                3  3          3  3\n\nThus y(0) = ±2 ̸= 0, so the singular solution does not pass through the origin and therefore does not\nyield an additional solution to the Cauchy problem.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                10 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "Lagrange’s equation.\n\nDEFINITION 2. Differential equation\n\n                               A(y ′)y + B(y ′)x + C(y ′) = 0                                 (6)\n\nis called Lagrange’s equation.\nSupposing that A(y ′) ̸= 0, we divide by it and thus (6) reads\n\n                                      y = ϕ(y ′)x + ψ(y ′).                                      (7)\n\nSometimes DE (7) is called Lagrange’s equation. We see that, in fact, Lagrange’s equation is a\ngeneralization of Clairaut’s equation (ϕ(y ′) = y ′). The method of solving (7) is the same: we use the\nchange y ′(x) = p(x), thus getting\n                                       y = ϕ(p)x + ψ(p),                                       (8)\n\nthen we differentiate this, and, taking into account that y ′ = p, we deduce\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                11 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "                              p = xϕ′(p)p′ + ϕ(p) + ψ′(p)p′\n\nor\n                               [ϕ(p) −p] + [xϕ′(p) + ψ′(p)]dp = 0.                              (9)\n                                                      dx\nIf ϕ(p) is a constant, then (9) is an DE with separable variables.  If ϕ(p) is not constant and ϕ(p) ̸= p,\nthen (9) may be written in the form\n\n              dx                   [ϕ(p) −p] + [xϕ′(p) + ψ′(p)] = 0 ⇒dx +  ϕ′(p)  x =  ψ′(p)              dp                               dp   ϕ(p) −p    p −ϕ(p),\n\nwhich is a first order linear nonhomogeneous ODE, that can be solved by using the method described in\nLecture 4. We get x as a function of p\n\n                                       x = α(p)C + β(p)\n\nwith C an arbitrary constant. Getting back to (8), we deduce\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                12 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "                                y = ϕ(p)[α(p)C + β(p)] + ψ(p),\n\nso that the general solution of Lagrange’s equation, written in parametric form, is\n\n                      x = α(p)C + β(p),   y = ϕ(p)[α(p)C + β(p)] + ψ(p).\n\nNow we suppose that for some value pi\n                                             ϕ(pi) = pi.                                        (10)\n\nThen p(x) ≡pi is the solution of DE (9) and we find from (8) and (10)\n\n                           y = ϕ(pi)x + ψ(pi)   or   y = xpi + ψ(pi),\n\nalso representing solution of Lagrange’s equation.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                13 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "EXAMPLE 1\nFind the general solution of the Lagrange’s equation\n\n                                       xy ′2 −y ′ −y = 0.                                    (11)\n\n Let p(x) = y ′(x) is a new function of x alone. Then\n\n                                         y = xp2 −p.                                       (12)\n\nDifferentiating (12) with respect to x then yields\n\n                          p = p2 + 2xpp′ −p′ = p2 + p′(2xp −1).\n\nHence\n                    (2xp −1)dp = p −p2 ⇒dx = 2xp −1   since  dp = 1\n                           dx            dp    p −p2          dx     dx\n                                                                                       dp\n\nand we obtain linear DE in a standard form:\n\n                                  dx     2x        1\n                       +    =                                           (13)                                dp   p −1   p(p −1).\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                14 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "Note that p ̸= 0 and p ̸= 1 here. First of all we determine an integrating factor\n\n                   Z   2\n                 exp         dp = exp (2 ln |p −1| + ln c) = c(p −1)2, c > 0.\n                       p −1\n\nPutting c = 1 and multiplying DE (13) by (p −1)2, we have\n\n                                      dx              p −1\n                                 (p −1)2  + 2(p −1)x =\n                                    dp               p\n\nor\n                                 d             p −1\n                                         (p −1)2x =          .\n                                dp               p\n\nWe now integrate to obtain\n\n                      Z p −1                                 Z\n               (p −1)2x =                               dp =                                         1 −1  dp = p −ln |p| + C,  C ∈R.\n                            p              p\n\nThus an one-parameter family of solutions of DE (13) is\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                15 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "                                       p −ln |p| + C\n                                    x(p) =                       .\n                                                (p −1)2\n\nHence\n                       p −ln |p| + C              p −ln |p| + C\n                      x =                       , y = xp2 −p =              p2 −p\n                             (p −1)2                     (p −1)2\n\nis the general solution of the given equation in the parametric form.\nWe supposed that p ̸= 0 and p ̸= 1. Let p = 0. Then y ′(x) = 0 or y(x) = c1, c1 ∈R. Substituting to\n(11), we have\n                          xy ′2 −y ′ −y = 0 −0 −c1 = 0 ⇒   c1 = 0\nand y(x) ≡0 is singular solution of (11). Now let p = 1. Then y ′(x) = 1 or y(x) = x + c2, c2 ∈R.\nSubstituting to (11), we obtain\n\n                        xy ′2 −y ′ −y = x −1 −x −c2 = 0 ⇒   c2 = −1\n\nand y(x) = x −1 is singular solution of (11).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                16 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "EXAMPLE 2\nSolve the initial-value problem:\n\n                               y = x(y ′)2 + y ′ −(y ′)3,   y(0) = 0.\n\n\nIntroduce the substitution p = y ′:\n                                       y = xp2 + p −p3.\n\nDifferentiate with respect to x:\n                              p = p2 + 2xpp′ + p′ −3p2p′.\n\nRearranging terms:\n                               p −p2 = p′(2xp + 1 −3p2).\n\nThus we obtain:\n                                  p′(2xp + 1 −3p2) = p(1 −p).                               (14)\n\nWe note that (derivative of inverse function)\n\n                                              1\n                                           p′(x) = x′(p).\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                17 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "For p ̸= 0, 1, we divide the equation (14) by p(1 −p):\n\n                                   dx   2xp + 1 −3p2\n                        =                       .\n                                  dp      p(1 −p)\n\nThis is a linear nonhomogeneous equation in x:\n\n                                 dx     2      1 −3p2\n                       −      x =                                          (15)                                dp   1 −p    p(1 −p).\n\nThe cases p = 0 and p = 1 must be considered separately, since we divided by p(1 −p).\nThe integrating factor is:\n\n                Z   2             Z d(1 −p)\n     µ(p) = exp −       dp = exp  2        = exp (2 ln |1 −p| + ln C) = C(1 −p)2,\n                    1 −p                 1 −p\n\nwhere C ∈R, C > 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                18 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "Let µ(p) = (1 −p)2. Multiplying (15) by µ(p) we obtain\n\n                            d                (1 −p)(1 −3p2)\n                                 x(1 −p)2 =                           .\n                            dp                   p\n\nIntegrating:\n                                   Z  (1 −p)(1 −3p2)\n                             x(1 −p)2 =                    dp.\n                                              p\n\nExpanding the numerator:\n                               (1 −p)(1 −3p2)   1\n                           =  −1 −3p + 3p2.\n                                 p         p\n\nIntegrating term by term, we obtain:\n\n                            x(1 −p)2 = ln |p| −p −3p2 + p3 + C.\n                                                 2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                19 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "Thus the general solution in parametric form is:\n\n                                              ln |p| −p −3p22 + p3 + C                                 x =                                        ,\n                                               (1 −p)2\n\n                                                   ln |p| −p −3p22 + p3 + C !                   y = xp2 + p −p3 = p2                + p −p3.\n                                                   (1 −p)2\n\nHere C is an arbitrary constant and p is the parameter. This solution is valid for p ̸= 0, 1.\nSince we divided by p(1 −p), we must check p = 0 and p = 1 separately.\nIf p = 0, then y ′ = p = 0, so y = const.\nSubstitute into the original equation:\n\n                       y = xp2 + p −p3 ⇒   const = x · 02 + 0 −0 = 0.\n\nThus we obtain the singular solution\n                                            y ≡0.\n\n\nCheck the initial condition: y(0) = 0. It is satisfied!\nSo y = 0 is one solution of the Cauchy problem.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                20 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "If p = 1, then y ′ = p = 1, so y = x + C.\nSubstitute into the original equation:\n\n                      y = xp2 + p −p3 ⇒   x + C = x · 12 + 1 −13 = x.\n\nHence C = 0. We obtain the singular solution\n\n                                            y = x.\n\n Check the initial condition: y(0) = 0. It is satisfied! So y = x is another solution of the Cauchy\nproblem.\nNow substitute y(0) = 0 into the parametric general solution:\n\n                      y = xp2 + p −p3 ⇒   0 = 0 · p2 + p −p3 = p −p3.\n\nThis gives the equation:\n                               p3 −p = 0  =⇒   p(p2 −1) = 0.\n\nThus we find three values of p:\n                             p = 0,    p = 1,    p = −1.\n\nThe cases p = 0 and p = 1 have already been handled. Now we consider p = −1.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                21 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "For p = −1, we find the corresponding constant C.\nSubstituting in\n                                              ln |p| −p −3p22 + p3 + C                                  x =\n                                               (1 −p)2\n\nvalues x = 0 and p = −1, we obtain:\n\n                                       ln | −1| + 1 −32 −1 + C   −32 + C                          0 =              =              .\n                                        (1 −(−1))2            4\n\nTherefore:\n                                             3\n                                C = 2.\nFor p = −1 and C = 3/2, we obtain a third solution in parametric form:\n\n                                              ln |p| −p −3p22 + p3 + 32                                 x =                                       ,\n                                               (1 −p)2\n\n                                       y = xp2 + p −p3.\n\nThis solution passes through (0, 0) because x = 0 when p = −1, and then y = 0.\nThus we have a third solution, distinct from the singular solutions y = 0 and y = x.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                22 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "The Cauchy problem\n                              y = x(y ′)2 + y ′ −(y ′)3,     y(0) = 0\n\nhas exactly three solutions:\n                                            y ≡0,\n\n                                            y = x,\n                                  ln |p| −p −3p22 + p3 + 32                        x =                                       ,   y = xp2 + p −p3.\n                                     (1 −p)2\n\n The first two are singular solutions. The third is a member of the general parametric family. All three\npass through the origin but have different slopes: 0, 1, and −1, respectively.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                23 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "First-order DE which is resolved with respect to x.\n\nNow we consider DE in the following form\n\n                                         x = ϕ(y, y ′).                                       (16)\n\nLet p(y) = y ′(x) is a new function of y alone. Then\n\n                                          x = ϕ(y, p).                                       (17)\n\nTaking into account\n                                 dp(y)   dp(y) dy\n                        =      = pp′(y),\n                                  dx      dy  dx\n\na differentiation of DE (17) with respect to x then yields,\n\n                 1 = ϕ′y(y, p)dy + ϕ′p(y, p)dp(y) = ϕ′y(y, p)p + ϕ′p(y, p)pp′(y).\n                            dx            dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                24 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "Hence\n                                         1 −pϕ′y(y, p)                                       p′(y) =                      .                                  (18)\n                                                     pϕ′p(y, p)\nThis differential equation is resolved with respect to the derivative p′(y). If an explicit function\np = p(y, C) is a general solution of (18), then by substituting this function in (17) one find a general\nsolution of (16) as an explicit function x = ϕ(y, p(y, C)).\n\nIf an inverse function y = y(p, C) is a general solution of (18), then this function together with (17)\ngive a general solution in the parametric form y = y(p, C), x = ϕ(y(p, C), p), where p is a parameter.\n\nIf an implicit expression ψ(y, p, C) = 0 is a general solution of (18), then we have a general solution of\n(16) as an implicit parametric relation x = ϕ(y, p), ψ(y, p, C) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                25 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "Suppose that in (16) function ϕ(y, y ′) does not depend on y :\n\n                                          x = ϕ(y ′).                                        (19)\n\nHence DE (18) becomes separable\n                                     dp      1\n                          =\n                                       dy    pϕ′(p)\n\nand then\n                                           Z\n                         dy = pϕ′(p)dp ⇒   y =   pϕ′(p) dp + C\n\nwhere C is arbitrary constant. As a result we have general solutions of (19) in the parametric form\n\n                                      Z\n                                x = ϕ(p), y =   pϕ′(p) dp + C,\n\n\nwhere p is a parameter.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                26 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "EXAMPLES\n\n1. Find the general solution of the differential equation\n\n                                        y ′3 −y −x = 0.                                     (20)\n\n Proceeding as stated above we obtain\n\n                                 x = y ′3 −y  or  x = p3 −y,\n\nwhere p(y) = y ′(x). Since\n                                   dp   dp dy\n                         =    = p′p\n                                     dx   dy dx\na differentiation of last equality with respect to x then yields\n\n                        dp(y)             dp(y)               dp\n                1 = 3p2    −y ′(x) = 3p3    −p  =⇒   3p3  = p + 1.\n                         dx                dy                 dy\n\nInstead of solving for dydp , we treat y as a function of p:\n\n                                       dy      1\n                          =           .\n                                     dp   dp/dy\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                27 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "Then we have\n                     dy    3p3    3(p3 + 1) −3                   3\n               =    =        = 3(p2 −p + 1) −                    dp   p + 1      p + 1                    p + 1,\n\nwhere p ̸= −1. Integrating DE, we obtain the general solution of the given equation in the parametric\nform\n               y = p3 −3  + 3p −3 ln |p + 1| + C, x = 3  −3p + 3 ln |p + 1| −C,                     2p2                        2p2\nwhere C is an arbitrary constant. At p = −1 we find the singular solution y = −x −1.\nWe can solve (20) by another method also if we rewrite (20) in the form\n\n                                          y = y ′3 −x\n\nand set p(x) = y ′(x). Then the equation becomes:\n\n                                          y = p3 −x.                                       (21)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                28 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "Differentiating (21) with respect to x (keeping in mind that p depends on x):\n\n                                     dy      dp\n                         = 3p2   −1.\n                                     dx      dx\nSince dydx = p, we obtain:\n                                          dp\n                                    p = 3p2   −1.\n                                             dx\n\nRearranging gives:\n                                              dp\n                                    p + 1 = 3p2     .\n                                                dx\n\nInstead of solving for dpdx , we treat x as a function of p:\n\n                                       dx     1\n                          =           .\n                                     dp   dp/dx\n\nThis yields a separable equation that can be integrated directly:\n\n                                        dx    3p2\n                           =                                             (22)\n                                     dp   p + 1\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                29 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "Equation (22) is valid for p ̸= −1; the exceptional case will be considered later.\n\nIntegrating (22) with respect to p:\n                                    Z  3p2\n                                        x =         dp.\n                                         p + 1\n\nUsing polynomial division:\n                                    3p2              3\n                         = 3p −3 +                                p + 1           p + 1.\n\nTherefore:\n                                    3p2\n                                x =   −3p + 3 ln |p + 1| + C.                             (23)\n                                   2\n\nNow, we substitute (23) into the equation y = p3 −x to get\n\n                              y = p3 −3p2 + 3p −3 ln |p + 1| −C.\n                                     2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                30 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "General solution (parametric form):\n\n                  3p2\n              x =  2 −3p + 3 ln |p + 1| + C,\n                          −3p2                         + 3p −3 ln |p + 1| −C,              y = p3                                     2\n\nwhere p is a parameter and C is an arbitrary constant.\n\nSingular solution: The parametric solution fails when p + 1 = 0, i.e. when p = −1, because dpdx has a\nsingularity.\n\nSubstituting p = −1 into the original equation y = p3 −x gives y = (−1)3 −x = −1 −x.\n\nVerification:  If y = −x −1, then y ′ = −1. The left-hand side of the equation y = y ′3 −x is\ny = −x −1, and the right-hand side is\n\n                                   (y ′)3 −x = (−1)3 −x = −1 −x.\n\nBoth sides match, so y = −x −1 is indeed a singular solution.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                31 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "2. Find the general solution of the differential equation\n\n                                      xy ′2 −2y ′ −x = 0.                                    (24)\n\n\nDE (24) could be resolved with respect to x. We put p(y) = y ′(x). Then from (24) we have\n\n                                       xp2 −2p −x = 0                                     (25)\n\nor\n                                        2p\n                                      x =        p2 ̸= 1.                                   (26)                                          p2 −1,\n\nNote from (25) that p2 ̸= 1. A differentiation of (26) with respect to x then yields\n\n                    2p′p(p2 −1) −2p2pp′p                                             2p′p(p2 −1 −2p2)\n              1 =                         =                                     = −2p′p(p2 + 1)\n                            (p2 −1)2               (p2 −1)2            (p2 −1)2\n\n                            dp\n          =⇒   p′(y) =                    = −(p2 −1)2  =⇒   dy = −2p(p2 + 1) dp\n                             dy     2p(p2 + 1)                  (p2 −1)2\n\nIntegrating last differential equation, we obtain\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                32 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "             Z  2p(p2 + 1)       Z   p2 + 1             Z  (p2 −1) + 2\n      y(p) = −            dp = −            d(p2 −1) = −              d(p2 −1) =\n                    (p2 −1)2            (p2 −1)2                    (p2 −1)2\n\n                  Z  d(p2 −1)    Z  d(p2 −1)                  2\n          = −        −2        = −ln |p2 −1| +    + C,\n                          p2 −1         (p2 −1)2                 p2 −1\n\nwhere C is arbitrary constant. Now we have the general solution of DE (24) in the parametric form\n\n                             2p                        2\n                          x =          y = −ln |p2 −1| +    + C.                              p2 −1,                     p2 −1\n\nWe note that DE (24) has not solutions if p2 = 1. Let p = 1. Then we obtain from (24) x −2 −x = 0.\nFor p = −1 we have x + 2 −x = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                33 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "Lecture 5. Homework\n\nI. Solve the differential equation:\n                                                2     dy         dy                                  x3y  sin y   −2y = x     .                                (27)\n                                          dx         dx\n\nSince\n                                         dy    1\n                            =\n                                         dx     dx\n                                                              dy\n\nwe can rewrite DE (27) in the following form\n\n                                                  2         dx                                    x3y  sin y −2y  = x\n                                                dy\n\nor\n                                dx    1     y sin y\n                      +   x =       x3, y ̸= 0.                               (28)\n                                dy   2y       2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                34 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "This is a Bernoulli differential equation. We first multiply DE (28) through by 2x−3, thereby expressing\nit in the equivalent form\n                                      dx   1\n                                2x−3  +  x−2 = y sin y.\n                                      dy   y\n\nIf we let v = x−2, then\n                                      dv         dx\n                          = −2x−3\n                                      dy         dy\n\nand the preceding differential equation transforms into the linear equation\n\n                                    dv −1 v = −y sin y.                                   (29)\n                                    dy   y\n\nWe see that an integrating factor for this equation is\n\n              Z                Z  1\n            exp    p(y) dy = exp −     dy = exp(−ln |y| + ln c) = c|y|−1, c > 0.\n                                         y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                35 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "Multiplying DE (29) by y −1, we find\n\n                                   1 dv −1 v = −sin y\n                                     y dy   y 2\n\nor\n                                   d   v\n                            = −sin y.\n                                    dy   y\n\nIntegrating, we obtain\n                                  v     Z\n                     = −    sin y dy = cos y + C\n                                  y\nor\n                                   1 = x2y(C + cos y),\n\n where C is arbitrary constant. Note that y(x) ≡0 is the singular solution.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                36 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "II. Find a particular solution by inspection; find the general solution of the following Riccati’s equations.\n\n                              x3y ′ + 2x2y + 2x4y 2 = 18, x ̸= 0.                             (30)\n\n This is Ricatti’s equation. It is easy to guess that DE has a particular solution in the following form:\n\n                                  A\n                                               yp =     .\n                                                x2\n\nTo determine the constant A we substitute yp in DE:\n\n        x3 −2A + 2x2 A + 2x4  A   2 = 18 ⇒  −2A + 2A + 2A2 = 18 ⇒A = ±3.\n              x3        x2        x2\n\nLet A = 3. We rewrite Ricatti’s equation in a standard form\n\n                                     y ′ =                                       18 −2y −2xy 2.                                  (31)\n                                          x3    x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                37 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "Substituting in DE (31)\n                                           3    1\n                                         y =  +\n                                              x2  w\nwe have\n            y ′ = −6 −w ′ = 18 −6 −2 −18 −12 −2x ⇒−w ′ = −14 −2x\n                  x3  w 2    x3   x3   xw   x3   xw  w 2    w 2    xw  w 2\nor\n                           w ′ −14 w = 2x.                                     (32)\n                                             x\nThis is linear DE with p(x) = −14/x. Then (32) possesses an integrating factor\n\n                  Z                Z 14\n                exp    p(x) dx = exp −      dx = exp(−14 ln |x|) = |x|−14.\n                                              x\n\nHence, DE (32) possesses an integrating factors x−14. Multiplying (15) by x−14 gives\n\n                              x−14w ′ −14x−15w = 2x−13\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                38 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "which is precisely\n                                  d\n                                     (x−14w) = 2x−13.\n                                    dx\nIntegrating this we obtain\n\n                 x−14w = −x−12 + c ⇒  w = −x2 + cx14 = Cx14 −x2 ,\n                             6                   6             6\n\nwhere c is an arbitrary constant, C = 6c. Whence the general solution of the original equation is\n\n                                  3    1    3       6\n                                y =  +  =  +                 .\n                                     x2  w    x2   Cx14 −x2\n\nMoreover, DE (30) has a singular solution\n                                             3\n                                            y =     .\n                                                x2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                39 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "III. Solve the differential equation\n\n                                2x3y ′2 −2xy ′ −y = 0, x ̸= 0.                               (33)\n\n We rewrite (33) in the form\n                                       y = 2x3y ′2 −2xy ′\n\nand set p(x) = y ′(x). Then\n                                       y = 2x3p2 −2xp.                                     (34)\n\nDifferentiating this equation with respect to x, we obtain\n\n                             p = 6x2p2 + 4x3pp′ −2p −2xp′\n\nor\n\n6x2p2 + 4x3pp′ −3p −2xp′ = 0 ⇒3p(2x2p −1) + 2xp′(2x2p −1) = 0 ⇒(3p + 2xp′)(2x2p −1) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                40 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "Then\n                                     3p + 2xp′ = 0                                      (35)\n\nor\n                                      2x2p −1 = 0.                                      (36)\n\nLet first 3p + 2xp′ = 0. Then\n\n           dp         = −3p ⇒   dp = −3dx  ⇒ln |p| = −3 ln |x| + ln C,  C > 0 ⇒\n            dx     2x        p      2x               2\n\n                            C                  c1\n            ⇒   |p| =    ⇒  p =          , c1 ̸= 0.\n                                              |x|3/2               |x|3/2\n\nIt is obvious, p(x) ≡0 is a solution of (35 ). Then the general solution of (35 ) is\n\n                                                    c2\n                                    p(x) =          , c2 ∈R.                                  (37)\n                                                      |x|3/2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                41 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "Now we substitute values of p from (37) to (34) and obtain the general solution of (33)\n\n                                             c2    2        c2              2c2\n              y = 2x3p2 −2xp = 2x3       −2x    =  2c22 −         sign x,                                               |x|3/2          |x|3/2             |x|1/2\n\nwhere sign x = 1 for x > 0 and sign x = −1 for x < 0. If (36) holds then p = 1/(2x2) and\n\n                               y = 2x3p2 −2xp =                                              1 −1 = −1 .\n                                               2x   x     2x\n\nThis is singular solution of (33).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                42 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "IV. Solve the differential equation\n                                      y = xy ′ + (y ′)2 −4.                                   (38)\n\n Using the change y ′ = p, (38) reads\n                                        y = xp + p2 −4.                                     (39)\n\nDifferentiating this equation with respect to x, we obtain\n\n                                  p = p + xp′ + 2pp′,\n\nwhence\n                                            p′(x + 2p) = 0.\n\nThen p′ = 0 and p = C, where C is arbitrary constant. Introducing this in (39), we get the general\nsolution of the equation (38)\n                                       y = Cx + C 2 −4.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                43 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 44,
+      "printed_label": "<FEFF00340034>",
+      "text": "The second possibility, x = −2p. Now we substitute p = −x/2 in (39) and obtain the singular solution\n\n                                 y = −x2 + x2 −4 = −x2 −4.\n                                    2    4         4\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                44 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 45,
+      "printed_label": "<FEFF00340035>",
+      "text": "V. Solve the differential equation\n                                        y = 2xy ′ −4y ′3.                                     (40)\n\n Let p(x) = y ′(x) is a new function of x alone. Then\n\n                                        y = 2xp −4p3.                                      (41)\n\nDifferentiating (41) with respect to x then yields\n\n                        p = 2p + 2xp′ −12p2p′ = 2p + 2p′(x −6p2).\n\nHence\n                           dp\n                    =                                   p   ⇒dx = 2(6p2 −x)\n                            dx    2(6p2 −x)   dp       p\n\nand we obtain linear DE in a standard form:\n\n                                      dx   2x\n                         +  = 12p.                                     (42)\n                                    dp   p\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                45 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 46,
+      "printed_label": "<FEFF00340036>",
+      "text": "We take the corresponding homogeneous equation\n\n                                       dx   2x\n                          +  = 0.                                      (43)\n                                     dp   p\n\nand separate the variables\n                                       dx                           = −2dp .\n                                          x      p\n\nAfter integration we have\n\n                   Z dx    Z 2dp\n                 = −     ⇒ln |x| = −2 ln |p| + ln c1, c1 > 0\n                          x         p\n\n                ⇒ln |x| = ln(c1|p|−2) ⇒|x| = c1p−2 ⇒x = c2p−2,\n\nwhere c2 ̸= 0. We divided (43) by x and lost a solution x ≡0. Thus\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                46 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 47,
+      "printed_label": "<FEFF00340037>",
+      "text": "                                     x(p) = cp−2, c ∈R                                    (44)\n\nis the general solution of (43).\nNow to solve DE (42) we will use the method of variation of parameters. We assume that c is a\nfunction of p in (44), i.e.,\n                                       x(p) = c(p)p−2                                      (45)\n\nand substitute(45) into (42). We obtain\n\n                             c′(p)p−2 −2c(p)p−3 + 2c(p)p−3 = 12p\n\nwhich is the same as\n                                            c′(p) = 12p3.                                       (46)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                47 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 48,
+      "printed_label": "<FEFF00340038>",
+      "text": "Integrating (46), we obtain the required function\n\n                                  Z\n                                 c(p) =   12p3 dp = 3p4 + c,\n\n\nwhere c is an arbitrary constant. Now substituting this c(p) in (45), we find the solution of the\nequation in (42) as\n                                                               c\n                               x(p) = (3p4 + c)p−2 = 3p2 +     .\n                                                            p2\n\nHence\n                              c                              c                 2c\n               x(p) = 3p2 +     , y = 2xp −4p3 = 2p  3p2 +    −4p3 = 2p3 +\n                            p2                            p2               p\n\nis the general solution of the given equation in the parametric form.  If p = 0 we find the singular\nsolution y(x) ≡0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                48 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 49,
+      "printed_label": "<FEFF00340039>",
+      "text": "Homework\n\nFor reading:\n\n   PDF presentation,\n\n    M. V. Makarets, V. Yu. Reshetnyak, pp. 56–59.\n\n    M.V. Soare, P.P. Teodorescu and I. Toma, pp. 254–256.\n\nProblems\n\nI. Solve the differential equation\n                                         y = xy ′ −y ′2.\n\nII. Solve the differential equation\n                                        y = xy ′2 −2y ′3.\n\nIII. Find the solutions of the differential equations\n\n                                      a) ln y ′ + sin y ′ −x = 0,\n\n                                   b) y ′2 −exp(y ′) + x = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                49 / 49",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

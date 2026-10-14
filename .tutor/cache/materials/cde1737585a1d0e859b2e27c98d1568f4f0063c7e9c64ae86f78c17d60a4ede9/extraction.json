@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/7(1).pdf",
+  "sha256": "cde1737585a1d0e859b2e27c98d1568f4f0063c7e9c64ae86f78c17d60a4ede9",
+  "page_count": 47,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      " Reduction of order",
+      3
+    ],
+    [
+      2,
+      "Higher-order DE in a simplest form",
+      3
+    ],
+    [
+      2,
+      "DE not containing the variable x",
+      8
+    ],
+    [
+      2,
+      "DE not containing the variables y, y',... ,y(k-1)",
+      13
+    ],
+    [
+      2,
+      "Homogeneous differential equations",
+      18
+    ],
+    [
+      2,
+      "Generalized homogeneous differential equations",
+      25
+    ],
+    [
+      2,
+      "Linear differential equations",
+      30
+    ],
+    [
+      1,
+      "Lecture 6. Homework",
+      37
+    ],
+    [
+      1,
+      "Homework",
+      46
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 7.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 15, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Reduction of order\n     Higher-order DE in a simplest form\n   DE not containing the variable x\n   DE not containing the variables y, y ′, ..., y (k−1)\n    Homogeneous differential equations\n     Generalized homogeneous differential equations\n     Linear differential equations\n\n\n2  Lecture 6. Homework\n\n\n3 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 2 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Higher-order ordinary differential equations\n\nHigher-order ordinary differential equations are DE that involve derivatives other than the first. One of\nthe simplifications of higher-order DE is to reduce its order.\nReduction of order of higher-order DE\n\nThere are several general cases of the reduction of the order for DE.\n1. Higher-order DE in a simplest form\nLet us consider n-th order DE has the following form:\n\n                                        y (n)(x) = f (x).                                         (1)\n\nThen we can reduce the order of (1) by the integration\n\n                                      Z\n                                   y (n−1)(x) =     f (x) dx + c,\n\n\n                                Z  Z\n                            y (n−2)(x) =           f (x) dx  dx + cx + C,\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 3 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "                                           ......................................................................\n\n                  Z Z   Z\n               y(x) =         ...    f (x) dx dx...dx + c1xn−1 + c2xn−2 + ... + cn−1 + cn,\n\n                       |   {zn   }\n\nwhere ci, i = 1, ..., n are arbitrary constants. In the case of the Cauchy problem for (1) with initial\nconditions\n                            y(x0) = y0, y ′(x0) = y1, ..., y (n−1)(x0) = yn−1\n\nwe can obtain the solution by integrating (1) n times over [x0, x] :\n\n                             Z x                      Z x\n            y (n−1)(x) −y (n−1)(x0) =      f (x) dx ⇒   y (n−1)(x) =      f (x) dx + yn−1,\n                                                        x0                                          x0\n\n                                 Z x  Z x\n                 y (n−2)(x) −y (n−2)(x0) =              f (x) dx  dx + yn−1(x −x0) ⇒\n                                                               x0      x0\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 4 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "                            Z x  Z x\n         ⇒y (n−2)(x) =              f (x) dx  dx + yn−1(x −x0) + yn−2,\n                                                     x0      x0\n                                           ......................................................................\n\n      Z x Z x  Z x                yn−1                 yn−2\ny(x) =             ...      f (x) dx...dx +          −x0)n−1 +          −x0)n−2 + ... + y1(x −x0) + y0.             x0   x0       x0               (n −1)!(x            (n −2)!(x\n       |    {zn     }\n\nEXAMPLE 1.\nSolve the differential equation\n                                         y ′′′ = x cos x.\n\n We integrate DE to find y ′′ :\n\n                       Z           Z                Z\n                    y ′′(x) =   x cos x dx =   x d sin x = x sin x −    sin x dx =\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 5 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "                    = x sin x + cos x + c1, c1 ∈R.\n\nNow we integrate last DE to find y ′ :\n\n                    Z                       Z\n                y ′(x) =   (x sin x + cos x + c1) dx = −   x d cos x + sin x + c1x =\n\n       = −x cos x + sin x + sin x + c1x + c2 = −x cos x + 2 sin x + c1x + c2, c2 ∈R.\n\nLast integration give us y :\n\n             Z                               Z\n        y(x) =   (−x cos x + 2 sin x + c1x + c2) dx = −   x d sin x −2 cos x + c3x2 + c2x =\n\n     = −x sin x −cos x −2 cos x + c3x2 + c2x + c4 = −x sin x −3 cos x + c3x2 + c2x + c4,\n\nwhere c3, c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 6 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "EXAMPLE 2.\nSolve the initial value problem\n\n                              y ′′ = exp(5x), y(0) = 1, y ′(0) = −1.\n\n We integrate DE over [0, x] to find y ′ :\n\n                                        1                                                               1                       Z x\n            y ′(x) −y ′(0) =                              exp(5x) dx =                                       −1) ⇒y ′(x) =                                                                      exp(5x) −6                                   0              5(exp(5x)               5           5.\n\nWe integrate last DE over [0, x] to find y :\n\n                        Z x  1\n               y(x) −y(0) =                                    exp(5x) −6  dx = 1       −1) −6 ⇒                                      0   5          5        25(exp(5x)      5x\n\n                                        1               24              ⇒   y(x) =    exp(5x) −6 +                                       25         5x   25.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 7 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "2. DE not containing the variable x.\nThen n-th order DE has the following form:\n\n                                    F(y, y ′, ..., y (n)) = 0.                                      (2)\n\nBy the substitution p(y) = y ′(x), where p(y) is a new function, the order of (2) is reduced by unity.\nIndeed,\n\n                dp   dp dy                  d(p′p)   d(p′p) dy\n          y ′′(x) =  =    = p′p,   y ′′′(x) =     =      = (p′′p + (p′)2)p, ...\n                 dx   dy dx                   dx       dy  dx\n\n                                  y (n)(x) = g(p, p′, ..., p(n−1))\n\nand we can rewrite (2) in the form\n\n                                  Φ(y, p, p′, ..., p(n−1)) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 8 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "EXAMPLES.\n1. Find the general solution of the differential equation\n\n                                         yy ′′ −y ′2 = 0.\n\n We put p(y) = y ′(x). Then y ′′(x) = p′p and we obtain\n\n                                          yp′p −p2 = 0                                         (3)\n\nor\n                           dp           dp   dy\n                            y  = p ⇒    =      , p ̸= 0, y ̸= 0.\n                            dy            p     y\n\nAn integration of this equation yields\n\n                    ln |p(y)| = ln |y| + ln c1 = ln(c1|y|) ⇒|p(y)| = c1|y| ⇒p(y) = c2y,\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 9 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "where c1 > 0, c2 ̸= 0. We add the solution p(y) ≡0 and thus\n\n                                      p(y) = cy, c ∈R\n\nis a general solution of (3). Now we solve DE\n\n                y ′(x) = cy ⇒dy = cy ⇒dy = cdx ⇒ln |y| = cx + c3, c3 ∈R ⇒\n                            dx          y\n\n                      |y(x)| = c4 exp(cx),  c4 = exp c3 > 0 ⇒y(x) = ±c4 exp(cx),\n\nthat leads to the general solution of the given equation (y(x) ≡0 is a solution of DE)\n\n                                      y(x) = C exp(cx),\n\nwhere c, C are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                10 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "2. Find the general solution of the differential equation\n\n                                   8y ′′ −exp y −y ′2 = 0.\n\n We put p(y) = y ′(x). Then y ′′(x) = p′p and we obtain\n\n                        8p′p −exp y −p2 = 0 ⇒, 4(p2)′ −exp y −p2 = 0\n\nor\n                                            (p2)′ −p2 = exp y .                                      (4)\n                                          4     4\nThis is linear nonhomogeneous first order DE for function p2. We compute an integrating factor\n\n\n                              exp                              Z  −1  dy = exp −y    .\n                                       4               4\n\nWe take one integrating factor. Multiplying DE (4) through by integrating factor, we have\n\n                         exp −y  (p2)′ −exp −y  p2 = 1 exp  3y\n                              4               4   4    4      4\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                11 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "or\n                            d h                                  exp −y  p2i = 1 exp  3y    .\n                             dy        4        4      4\n\nWe now integrate to obtain a one-parameter family of solutions of equation (4) in the form\n\n                           exp −y  p2 = 1 exp  3y  + c1, c1 ∈R\n                                4       3      4\n\nor\n                                     1               y\n                                  p2 =  exp y + c1 exp        .\n                                     3              4\nSubstituting y ′(x) instead of p, we have\n\n                             dy      1               y    1/2\n                    = ±   exp y + c1 exp               .\n                             dx      3              4\n\nSeparating variables, we obtain\n\n                                              dy\n                              dx = ±                                      .\n                                                  1                    y   1/2\n                                                  3 exp y + c1 exp  4\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                12 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "After integration we solve DE in quadratures\n\n                      Z   1               y   −1/2\n                    x = ±      exp y + c1 exp          dy + c2, c1, c2 ∈R.\n                            3              4\n\n 3. DE not containing the variables y, y ′, ..., y (k−1).\n\nThen n-th order DE has the following form:\n\n                           F(x, y (k), y (k+1), ..., y (n)) = 0, 1 ≤k ≤n.                            (5)\n\nBy the substitution z(x) = y (k)(x), where z(x) is a new function, the order of (5) is reduced up to n −k:\n\n                                   F(x, z, z′..., z(n−k)) = 0.                                    (6)\n\nEXAMPLE 1.\n\nFind the general solution of the differential equation\n\n                                       y ′′′ −y ′′ = exp(x).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                13 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "By making change of variable y ′′(x) = z(x) we have\n\n                                                 z′ −z = exp(x),\n\nthat is, the linear nonhomogeneous first order DE with p(x) = −1. Multiplying DE by integrating factor\nis exp(−x), we obtain\n                                     exp(−x)(z′ −z) = 1\n\nor\n                                   d\n                                       (exp(−x)z) = 1.\n                                    dx\nAn integration of this equation yields\n\n                       exp(−x)z = x + C1 ⇒z = y ′′ = (x + C1) exp(x),\n\nwhere C1 is an arbitrary constant. A two-fold integration then yields\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                14 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "                              y = x exp(x) + C2 exp(x) + C3x + C4,\n\nwhere Ci, i = 2, 3, 4 are arbitrary constants.\n\nEXAMPLE 2.\nFind the general solution of the differential equation\n\n                              1 + y ′′2 = 2y ′y ′′′     if   y ′ > 0.                                (7)\n\n By making change of variable y ′(x) = z(x) we have\n\n                                     1 + z′2 = 2zz′′.\n\nDE does not contain the variable x. We put p(z) = z′(x). Then z′′(x) = p′p and we obtain\n\n                     1 + p2 = 2zp′p ⇒1 + p2 = z(p2)′ ⇒dp2 = 1 + p2 .\n                                                         dz       z\n\nor\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                15 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "                                      d(p2 + 1)   dz\n                             =      .\n                                         p2 + 1      z\n\nSince z > 0 an integration of this equation yields\n                                       √\n                 ln(p2 + 1) = ln z + ln c1, c1 > 0 ⇒p2 + 1 = c1z ⇒p = ±  c1z −1.\n\nSubstituting z′(x) instead of p, we obtain\n\n                 dz   √              dz               −1)            = ±  c1z −1 ⇒      = ±dx ⇒d(c1z   = ±c1dx.                 dx                √c1z −1          √c1z −1\n\nIntegrating last equality, we have\n\n    √                                     (±c1x + c2)2        (±c1x + c2)2   1\n      2  c1z −1 = ±c1x + c2, c2 ∈R ⇒c1z −1 =       ⇒z =        +     .\n                                                   4                   4c1         c1\n\nNow we substitute y ′(x) instead of z(x) :\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                16 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "                                  dy   (±c1x + c2)2   1\n                       =        +     .\n                                  dx         4c1         c1\n\nAfter integration we obtain the general solution of (7)\n\n                                        1                    Z   (±c1x + c2)2\n                 y(x) =                        +                                             dx = ±(±c1x + c2)3 + x + c3,\n                                   4c1         c1             12c21        c1\n\nwhere c3 is arbitrary constant.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                17 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "4. Homogeneous differential equations.\n\nDEFINITION 1.\nLet D be a domain in Rn+2. A function F(x, y0, y1, ..., yn) : D →R is called homogeneous of degree\nm ∈R with respect to (y0, ..., yn) in D  if\n\n              F(x, ky0, ky1, ..., kyn) = kmF(x, y0, y1, ..., yn)   for any   k, x, y0, ..., yn\n\n                      such that (x, y0, ..., yn) ∈D, (x, ky0, ky1, ..., kyn) ∈D.\n\nDEFINITION 2.\nDE\n                                   F(x, y, y ′, ..., y (n)) = 0                                     (8)\nis called homogeneous of degree m ∈R with respect to (y, y ′, ..., y (n)) in D  if F(x, y, y ′, ..., y (n)) is\nhomogeneous function of degree m ∈R with respect to (y, y ′, ..., y (n)) in D.\nEXAMPLE\nCheck that the following DE\n                                 xyy ′2y ′′2 + 2y 3y ′′2 −5x3y 5 = 0\nis homogeneous of degree 5 with respect to (y, y ′, y ′′) in R4.\nWe put F(x, y, y ′, y ′′) = xyy ′2y ′′2 + 2y 3y ′′2 −5x3y 5. Indeed, the function F  is homogeneous of degree\n5 with respect to (y, y ′, y ′′) in R4, since\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                18 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "                 F(x, ky, ky ′, ky ′′) = xky(ky ′)2(ky ′′)2 + 2(ky)3(ky ′′)2 −5x3(ky)5\n\n             = k5(xyy ′2y ′′2 + 2y 3y ′′2 −5x3y 5) = k5F(x, y, y ′, y ′′).\n\nIf DE (8) is homogeneous with respect to (y, y ′, ..., y (n)) then by the substitution z(x) = y ′(x)/y(x),\nwhere z(x) is a new function, the order of (8) is reduced by unity. We find:\n\n                                       y ′(x) = y(x)z(x),\n\n                      y ′′(x) = y ′(x)z(x) + y(x)z′(x) = y(x)(z2(x) + z′(x)),\n\n                       y ′′′(x) = y ′(x)(z2(x) + z′(x)) + y(x)(z2(x) + z′(x))′\n\n   = y(x)z(x)(z2(x) + z′(x)) + y(x)(2z(x)z′(x) + z′′(x)) = y(x)(z3(x) + 3z(x)z′(x) + z′′(x)),\n\n                                        .............................................................................\n\n                                 y (n)(x) = ygn(z, z′, ..., z(n−1)),\n\nSubstituting derivatives in (8) and using then definition of homogeneous function with k = y, we obtain\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                19 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "               0 = F(x, y, yz, y(z2 + z′), y(z3 + 3zz′ + z′′), ..., ygn(z, z′, ..., z(n−1)))\n          = y mF(x, 1, z, (z2 + z′), (z3 + 3zz′ + z′′), ..., gn(z, z′, ..., z(n−1))).\n\nHence\n                 F(x, 1, z, (z2 + z′), (z3 + 3zz′ + z′′), ..., gn(z, z′, ..., z(n−1))) = 0.\n\nWe note that y(x) ≡0 is a solution of (8).\n\nEXAMPLES.\n1. Solve the differential equation\n                                       xyy ′′ −xy ′2 = yy ′.                                       (9)\n\n Let F(x, y, y ′, y ′′) = xyy ′′ −xy ′2 −yy ′. We check that (9) is homogeneous equation of degree 2 with\nrespect to y, y ′, y ′′:\n\n     F(x, ky, ky ′, ky ′′) = xkyky ′′ −x(ky ′)2 −kyky ′ = k2(xyy ′′ −xy ′2 −yy ′) = k2F(x, y, y ′, y ′′).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                20 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "Now we introduce new unknown function z(x) = y ′(x)/y(x) (note that y ≡0 is the solution). Then\ny ′(x) = y(x)z(x),\n\n                y ′′(x) = (y(x)z(x))′ = y ′(x)z(x) + y(x)z′(x) = y(x)(z2(x) + z′(x))\n\nand\n                   xy 2(z2 + z′) −xy 2z2 = y 2z ⇒xy 2z2 + xy 2z′ −xy 2z2 = y 2z\n\nor\n                xz′ = z ⇒dz = dx ⇒ln |z| = ln |x| + ln c, c > 0 ⇒z = c1x, c1 ∈R.\n                            z     x\nSubstituting z(x) = y ′(x)/y(x), we find\n\n      y ′(x) = c1xy(x) ⇒dy = c1xdx ⇒ln |y| = c2x2 + c3, c2, c3 ∈R ⇒y(x) = c4 exp(c2x2),\n                         y\n\nwhere c2 and c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                21 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "2. Solve the differential equation\n\n                              y 2y ′′′ −3yy ′y ′′ + 2y ′3 + y 3 sin x = 0.                           (10)\n\n Let F(x, y, y ′, y ′′, y ′′′) = y 2y ′′′ −3yy ′y ′′ + 2y ′3 + y 3 sin x. We check that (10) is homogeneous\nequation of degree 3 with respect to y, y ′, y ′′, y ′′′:\n\n             F(x, ky, ky ′, ky ′′, ky ′′′) = (ky)2ky ′′′ −3kyky ′ky ′′ + 2(ky ′)3 + (ky)3 sin x =\n\n           = k3(y 2y ′′′ −3yy ′y ′′ + 2y ′3 + y 3 sin x) = k3F(x, y, y ′, y ′′, y ′′′).\n\nNow we introduce new unknown function z(x) = y ′(x)/y(x) (note that y ≡0 is the solution). Then\ny ′(x) = y(x)z(x),\n                         y ′′ = (yz)′ = y ′z + yz′ = yz2 + yz′ = y(z2 + z′),\n\n           y ′′′ = [y(z2 + z′)]′ = y ′(z2 + z′) + y(2zz′ + z′′) = yz(z2 + z′) + 2yzz′ + yz′′ =\n\n               = yz3 + yzz′ + 2yzz′ + yz′′ = y[z3 + 3zz′ + z′′].\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                22 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "Now we substitute derivatives to DE (10) and obtain\n\n                               y 2y ′′′ −3yy ′y ′′ + 2y ′3 + y 3 sin x =\n\n           = y 3[z3 + 3zz′ + z′′] −3yyz[y(z2 + z′)] + 2(yz)3 + y 3 sin x =\n\n    = y 3z3 + 3y 3zz′ + y 3z′′ −3y 3z3 −3y 3zz′ + 2y 3z3 + y 3 sin x = y 3z′′ + y 3 sin x = 0 ⇒\n\n                 ⇒   z′′(x) = −sin x.\n\nIntegrating, we have\n\n                  z′(x) = cos x + c1, c1 ∈R  and  z(x) = sin x + c1x + c2, c2 ∈R.\n\nSubstituting z(x) = y ′(x)/y(x), we find\n\n                   1  dy                        dy\n                = sin x + c1x + c2 ⇒    = (sin x + c1x + c2)dx.\n                  y(x) dx                          y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                23 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "We separated variables. Integrating, we obtain\n\n            Z\n         ln |y| =   (sin x + c1x + c2) dx = −cos x + c3x2 + c2x + ln c4 (c3 = c1/2, c4 > 0) ⇒\n\n   ⇒   |y| = c4 exp(−cos x + c3x2 + c2x) ⇒   y = c5 exp(−cos x + c3x2 + c2x), c5 ̸= 0.\n\nAdding solution y(x) ≡0, we find the general solution of (10)\n\n                                y = c6 exp(−cos x + c3x2 + c2x),\n\nwhere c2, c3 and c6 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                24 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "Reduction of the order of generalized homogeneous equation.\n\nDEFINITION 1.\nLet D be a domain in Rn+2. A function F(x, y0, y1, ..., yn) : D →R is called generalized homogeneous\nin D  if for some constant α and m\n\n         F(kx, kαy0, kα−1y1, ..., kα−nyn) = kmF(x, y0, y1, ..., yn)   for any   k, x, y0, ..., yn\n\n                 such that (x, y0, ..., yn) ∈D, (kx, kαy0, kα−1y1, ..., kα−nyn) ∈D.\n\nDEFINITION 2.\nDE\n                                   F(x, y, y ′, ..., y (n)) = 0                                  (11)\n\nis called generalized homogeneous  in D if F(x, y0, y1, ..., yn) is generalized homogeneous function in D.\n\nFirst we should investigate whether an equation is generalized homogeneous or not.  If (11) is\ngeneralized homogeneous equation, then by substitution x = exp(u), y = v(u) exp(αu) into (11) we\nobtain a new n-th order differential equation for v(u) which does not contain u.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                25 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "EXAMPLE\nSolve the following Cauchy problem\n\n                          4x2y 3y ′′ = −y 4 −x2, y(1) = 1, y ′(1) = 1.                         (12)\n\n We rewrite DE in (12) in the form\n                                   4x2y 3y ′′ + y 4 + x2 = 0.                                  (13)\n\nLet F(x, y, y ′, y ′′) = 4x2y 3y ′′ + y 4 + x2. First we investigate whether an equation is generalized\nhomogeneous or not:\n\n               F(kx, kαy, kα−1y ′, kα−2y ′′) = 4(kx)2(kαy)3kα−2y ′′ + (kαy)4 + (kx)2\n\n                                                 ′′         4                                           1\n       = 4k4αx2y 3y + k4αy + k2x2 = k2F(x, y, y ′, y ′′)    if  4α = 2 ⇒α = 2.\n To solve the equation we substitute x = exp(u), y = v(u) exp(u/2) into (13). We note that\n\n                         u = ln x ⇒du = 1 =   1  = exp(−u)\n                                     dx    x    exp(u)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                26 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "Now we calculate the derivatives of y(x) :\n\n                       d[v(u) exp(u/2)] du           ′           1                y ′(x) =            = (v exp(u/2) +    exp(u/2)) exp(−u)                           du       dx               2v\n\n                                                                                  ′   1\n                      = (v + 2v) exp(−u/2),                                 (14)\n\n                                                              1                    d[(v ′ + 12v) exp(−u/2)] du                          =  v ′′ +                                                 1   ′ −1  v                                                                                                                               ′ +                                                                   exp(−3u/2)           y ′′(x) =                          du          dx         2v   2      2v\n                     =  v ′′ −1   exp(−3u/2).                                     4v\n\nChanging the variables in DE (13), we obtain (x = exp(u), y = v(u) exp(u/2))\n\n               4x2y 3y ′′ + y 4 + x2 = 4 exp(2u)v 3 exp(3u/2)  v ′′ −1   exp(−3u/2)                                                      4v\n\n    +v 4 exp(2u) + exp(2u) =  4v 3  v ′′ −1  + v 4 + 1  exp(2u) =  4v 3v ′′ + 1 exp(2u) = 0                                   4v\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                27 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "or\n                                        4v 3v ′′ = −1.                                       (15)\n\nNow we find the initial condition for (15). Since x = exp(u), y = v(u) exp(u/2) we have u = 0 if x = 1\nand y(1) = v(0) = 1.\nPut x = 1 and u = 0 in (14) and taking into account the condition y ′(1) = 1, we obtain\n\n                                          1           1\n                                1 = v ′(0) + ⇒v ′(0) =                                          2            2.\n\nDE (15) does not contain u. By the substitution p(v) = v ′(u), where p(v) is a new function, the order\nof (15) is reduced by unity. Indeed,\n\n                                      dp(v)   dp(v) dv\n                                v ′′(u) =    =      = p′p\n                                     du      dv  du\n\nand we can rewrite (15) in the following form\n\n                        4v 3pp′ = −1 ⇒4pp′ = −v −3 ⇒4(p2)′ = −2v −3\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                28 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "or\n                                       4p2 = v −2 + C,                                     (16)\n\nwhere C is arbitrary constant. Since v(0) = 1 and v ′(0) = 1/2 we put u = 0 in the equality\np(v) = v ′(u) to obtain p(1) = 1/2. Now from (16) we find C :\n\n                              41 = 1 + C ⇒C = 0.\n                                   4\n\nThen 4p2 = v −2 and we obtain DE\n\n                               −2            ′   1                      2                     4(v ′(u))2 = v  ⇒2v =  ⇒2vdv = du ⇒v = u + c,\n                                             v\n\nwhere c is arbitrary constant. Here we use that v > 0 and v ′ > 0 in some neighborhood of the initial\npoint u = 0. Using the initial condition v(0) = 1 we find c = 1. Returning to the origin variables\nu = ln x, v = y exp(−u/2) = y/p exp(u) = y/√x, we present solution of (12) in the form\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                29 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "                                y 2                  2                     = ln x + 1 ⇒y = x(ln x + 1).\n                                x\nIn some neighborhood of the point (1, 1) we have y > 0 and thus\n\n                                    y(x) = px(ln x + 1).\n\nReduction of the order of linear differential equations.\n\nLet us consider linear DE\n\n                 a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = 0.             (17)\n\nThe order of DE (17) is reduced by unity by the substitution\n\n                                        Z\n                                   y(x) = yp(x)   z(x) dx,                                 (18)\n\nwhere yp(x) is a nontrivial particular solution of (17), and z(x) is a new function.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                30 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "EXAMPLE 1.\nReduce the order of the differential equation\n\n                                  x3y ′′ + (x −1)y ′ −y = 0.                                (19)\n\nSolve obtained first order DE.\nIt is not difficult to guess that there exists linear particular solution of (19), namely y = x −1. We use\nsubstitution (18):\n                                         Z\n                                  y(x) = (x −1)   z(x) dx.                                 (20)\n\nThen\n\n         Z\n   y ′(x) =   z(x) dx + (x −1)z(x),   y ′′(x) = z(x) + z(x) + (x −1)z′(x) = 2z(x) + (x −1)z′(x)\n\n\nand\n                                   x3y ′′ + (x −1)y ′ −y =\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                31 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "                               Z                          Z\n     = x3(2z + (x −1)z′) + (x −1)   z(x) dx + (x −1)2z(x) −(x −1)   z(x) dx = 0 ⇒\n\n          ⇒x3(x −1)z′ + [2x3 + (x −1)2]z = 0 ⇒dz = −2x3 + (x −1)2 z.\n                                                     dx        x3(x −1)\n\nLast DE we can solve as separable equation. Separating variables and integrating, we obtain:\n\n                  dz     + (x −1)2           2     x −1             = −2x3          dx = −     +        dx, z ̸= 0 ⇒\n                     z        x3(x −1)            x −1     x3\n\n                                           1    1\n                               ln |z| = −2 ln |x −1| +  −   + c, c ∈R ⇒\n                                               x   2x2\n                                1        1    1\n                          z = c1        exp  −          , c1 ∈R, c1 ̸= 0.\n                                  (x −1)2      x   2x2\n\nWe add trivial solution z(x) ≡0 and obtain\n\n                                   1        1    1\n                              z = c2        exp  −          , c2 ∈R.\n                                      (x −1)2      x   2x2\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                32 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "By (20) we have\n\n                     Z                  Z    1        1    1\n           y(x) = (x −1)   z(x) dx = c2(x −1)             exp  −      dx + c3   .\n                                                       (x −1)2      x   2x2\n\nwhere c2, c3 are arbitrary constants.\n\nEXAMPLE 2.\nReduce the order of the differential equation\n                                    y ′′ + xy ′ −(x + 1)y = 0                                 (21)\n\nSolve obtained first order DE.\nLet us check that yp(x) = exp x is a particular solution of (21). We have\n                                y p(x)′  = exp x,     y p′′ (x) = exp x.\n\nSubstitution into the differential equation gives\n                    y p′′ + xy p′ −(x + 1)yp = exp x + x exp x −(x + 1) exp x = 0.\nTherefore, yp = exp x is indeed a particular solution. We will use the substitution\n\n                                        Z\n                                   y(x) = yp(x)   z(x) dx.\n\nThis substitution reduces the order of the equation. Set\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                33 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "                                               Z\n                           y(x) = exp x v(x),     v(x) =   z(x) dx.\n\nThen\n                                      y ′ = exp x (v ′ + v),\n\nand\n                                   y ′′ = exp x (v ′′ + 2v ′ + v).\n\nSubstituting into the original equation gives\n\n        y ′′ + xy ′ −(x + 1)y = exp x (v ′′ + 2v ′ + v) + x exp x (v ′ + v) −(x + 1) exp x v = 0.\n\nSince exp x ̸= 0, we obtain\n                             v ′′ + 2v ′ + v + xv ′ + xv −xv −v = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                34 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "The terms containing v cancel:\n                                      v ′′ + (x + 2)v ′ = 0.\n\nSince\n                                      v ′ = z,     v ′′ = z′,\n\nthe equation becomes\n                                                z′ + (x + 2)z = 0.                                    (22)\n\nThus, the original second-order equation has been reduced to a first-order equation. For z ̸= 0,\n                                                   z′\n                          = −x −2.\n                                            z\nAfter integration,\n                                        ln |z| = −x2 −2x + C, C ∈R.\n                                       2\nConsequently,\n                             |z(x)| = C2 exp  −x2 −2x    , C2 = exp C > 0.\n                                         2\nThen\n                              z(x) = C3 exp  −x2 −2x    , C3 ̸= 0.\n                                            2\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                35 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "It is easy to see that z(x) ≡0 is a solution of (22). Therefore,\n\n                              z(x) = C4 exp  −x2 −2x    , C4 ∈R\n                                            2\n\nis the general solution of (22).\nSince z = v ′, we have\n                                 Z                         v(x) = C5 + C4   exp  −x2 −2x   dx, C5 ∈R\n                                              2\n\nRecall that\n                                          y = exp x v.\n\nTherefore, the general solution is\n\n                                      Z                                               exp  −x2 −2x   dx,   .                        y(x) = exp x  C5 + C4\n                                                   2\n\n where C4, C5 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                36 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "Lecture 6. Homework\n\nI. Solve the differential equation\n                                         y = xy ′ −y ′2.                                      (23)\n\n This is Clairaut’s equation. Using the change y ′ = p, (23) reads\n\n                                         y = xp −p2.                                       (24)\n\nDifferentiating this equation with respect to x, we obtain\n\n                                  p = p + xp′ −2pp′,\n\nwhence\n                                            p′(x −2p) = 0.\n\nThen p′ = 0 and p = C, where C is arbitrary constant. Introducing this in (24), we get the general\nsolution of Clairaut’s equation\n                                         y = Cx −C 2.\n\nSo the general solution is a family of straight lines.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                37 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "The second possibility, x = 2p. Now we substitute p = x/2 in (24) and obtain the singular solution\n\n                                          x     x  2   x2\n                                     y = x −    =     .\n                                       2    2      4\nII. Solve the differential equation\n                                        y = xy ′2 −2y ′3.                                     (25)\n This is Lagrange’s equation. Let p(x) = y ′(x) is a new function of x alone. Then\n\n                                        y = xp2 −2p3.                                      (26)\n\nDifferentiating (26) with respect to x then yields\n\n                                p = p2 + 2xpp′ −6p2p′.\n\nHence\n                                  p(1 −p) = 2pp′(x −3p)\n\nor\n                              p (1 −p) −2p′(x −3p) = 0.\n\nSo either:\n    1  p = 0, or\n    2  1 −p = 2p′(x −3p).\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                38 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "If p = 0, then y ′ = 0, so y = C, C is arbitrary constant.\nSubstitute into the original equation:\n\n                         y = xy ′2 −2y ′3  =⇒   y = x · 02 −2 · 03 = 0.\n\nThus C = 0. So we get the trivial solution:\n\n                                            y ≡0.\n\nAssume p ̸= 0. From\n                                   1 −p = 2p′(x −3p),\n\nwe can solve for p′:\n                                   dp     1 −p\n                         =                                                (27)                                     dx    2(x −3p).\n\nDE (27) can be written as follows\n\n                           dx    1    2(x −3p)     2       6p\n                   =  =      =      x −\n                         dp     dp     1 −p     1 −p    1 −p\n                                           dx\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                39 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "Writing this linear equation in the standard form\n\n                                  dx     2                       −      x = −6p                                   (28)\n                                dp   1 −p      1 −p\n\nwe see that an integrating factor for this equation is\n\n           Z   2             Z d(1 −p)\n     exp −        dp = exp  2        = exp(2 ln |1 −p| + ln c) = c(1 −p)2, c > 0.\n              1 −p                 1 −p\n\nPutting c = 1 and multiplying DE (28) by (1 −p)2, we find\n\n                                    dx\n                                (1 −p)2   −2(1 −p)x = 6p(p −1)\n                                  dp\n\nor\n                               d\n                                        (1 −p)2x = 6p(p −1).\n                               dp\nIntegrating by p, we obtain\n\n                               Z\n                          (1 −p)2x =   (6p2 −6p) dp = 2p3 −3p2 + c1,\n\nor\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                40 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "    2p3 −3p2 + c1   2p3 −3p2 + 1     c1 −1    (2p + 1)(1 −p)2       c          c\nx =         =         +     =          +     =     + 2p + 1,\n        (1 −p)2          (1 −p)2      (1 −p)2        (1 −p)2       (1 −p)2    (1 −p)2\n\nwhere c = c1 −1 is an arbitrary constant. Hence\n\n                c                                    c                            cp2\n     x(p) =     + 2p + 1, y = xp2 −2p3 =      + 2p + 1  p2 −2p3 =     + p2\n            (1 −p)2                             (1 −p)2                       (1 −p)2\n\nis the general solution of the given equation in the parametric form.\nDuring the solution process, we divided by 1 −p. We must check whether this division excluded any\nsolutions. Consider p = 1. Then y ′(x) = 1. Substituting in the equation\n\n                                        y = xy ′2 −2y ′3,\n\nwe obtain y = x −2. This function is the solution of the original equation. So, we have two singular\nsolutions: y = x −2 and y(x) ≡0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                41 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "III. Find the solution of the differential equation\n\n                                      a) ln y ′ + sin y ′ −x = 0.\n\n This is DE which resolved with respect to x. Let p(y) = y ′(x) is a new function of y alone. Then we\nrewrite DE as follows\n                                        x = ln p + sin p.                                     (29)\n\nA differentiation of (29) with respect to x then yields, taking\n\n                                 dp   dp dy\n                        =    = pp′(y)\n                                   dx   dy dx\n\ninto account,\n                               pp′                    dp\n                       1 =   + pp′ cos p   or   1 =    (1 + p cos p).\n                           p                      dy\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                42 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "Separating variables, we obtain\n                                   dy = (1 + p cos p)dp.\n\nAfter integration we find\n                                  y = p + cos p + p sin p + C,\n\nwhere C is an arbitrary constant. Hence DE has the general solution in the parametric form\n\n                           x = ln p + sin p, y = p + cos p + p sin p + C.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                43 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 44,
+      "printed_label": "<FEFF00340034>",
+      "text": "III. Find the solution of the differential equation\n\n                                   b) y ′2 −exp(y ′) + x = 0.\n\n At first we resolve DE with respect to x :\n\n                                       x = exp(y ′) −y ′2.\n\nLet p(y) = y ′(x) is a new function of y alone. Then we rewrite DE as follows\n\n                                        x = exp p −p2.                                      (30)\n\nA differentiation of (30) with respect to x then yields, taking\n\n                                 dp   dp dy\n                        =    = pp′(y)\n                                   dx   dy dx\n\ninto account,\n                          1 = pp′ exp p −2p2p′ = pp′(exp p −2p).\n\nor\n                                   dp\n                                 p   (exp p −2p) = 1.\n                                     dy\nThis is separable equation. We separate variables and integrate obtained equation\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                44 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 45,
+      "printed_label": "<FEFF00340035>",
+      "text": "                                        Z                 Z\n                    p(exp p −2p)dp = dy ⇒     (p exp p −2p2)dp =   dy\n\nand\n                    Z                                Z\n                    y =                        p d exp p −2                                         p2 dp = p exp p −exp p −2  + C,                                                           3p3\n\nwhere C is an arbitrary constant.\nHence DE has the general solution in the parametric form\n\n                         x = exp p −p2, y = p exp p −exp p −2  + C.                                                      3p3\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                45 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 46,
+      "printed_label": "<FEFF00340036>",
+      "text": "Homework\n\nFor reading:\n   PDF presentation,\n    M. V. Makarets, V. Yu. Reshetnyak, pp. 77–87.\n\nProblems\n\nI. Solve the initial value problem\n\n                         y ′′′ = cos2(2x), y(0) = 1, y ′(0) = 1, y ′′(0) = 2.\n\nII. Reduce the order of the following differential equations and solve obtained equations\n                                        a)  y ′′′ −1  ′′4 = 0.                                         3y\n                          b)  yy ′′ −y ′2 = y 2 ln y     if   y > 0, y ′ > 0,\n                                 c)  9x2yy ′′ −(y −3xy ′)2 = 0.\n\nIII. Reduce the order of the following linear differential equation using the particular solution\nyp(x) = exp(x)/x. Solve obtained first order equation.\n                                      xy ′′ + 2y ′ −xy = 0.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                46 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 47,
+      "printed_label": "<FEFF00340037>",
+      "text": "IV. Solve DE\n                                   x4y ′′ + (xy ′ −y)3 = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                47 / 47",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

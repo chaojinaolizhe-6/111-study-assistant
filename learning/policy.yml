@@ -1,0 +1,8 @@
+# 能力等级判定参数（工程初值，可调；由 tools/derive_state.py 读取）
+
+independent_pass:
+  require_closed_book: true   # 独立通过要求闭卷；开卷通过单独统计(open_book_pass_dates)
+  min_dates: 2                # 独立通过所需的不同日期数（"有稳定证据"下限）
+  min_variant_passes: 1       # 未见变式通过次数（首次作答该题即无提示通过）
+  min_delay_days: 2           # 两次独立通过的**日期跨度**下限：不到 2 天不算"延迟"证据（工程初值，可调）
+                              # 说明：跨午夜几分钟不构成延迟检验；此值只影响"延迟通过/迁移通过"是否成立

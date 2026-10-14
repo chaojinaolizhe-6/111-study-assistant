@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/12(1).pdf",
+  "sha256": "974e80f3e67ed32eb456892eb0fadb27af817f6651e6c51ae18b6d4f9cfa3493",
+  "page_count": 56,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Homogeneous DE. Quasi-Homogeneous DE",
+      3
+    ],
+    [
+      1,
+      "Integrating factor ",
+      10
+    ],
+    [
+      1,
+      " Bernoulli DE",
+      14
+    ],
+    [
+      1,
+      "Ricatti's DE",
+      17
+    ],
+    [
+      1,
+      "DE resolved for y",
+      21
+    ],
+    [
+      1,
+      "DE is resolved by x",
+      25
+    ],
+    [
+      1,
+      "Reduction of order",
+      28
+    ],
+    [
+      2,
+      "Higher-order DE in a simplest form",
+      28
+    ],
+    [
+      2,
+      "DE not containing the variable x",
+      31
+    ],
+    [
+      2,
+      "DE not containing the variables y, y',...,y(k-1)",
+      33
+    ],
+    [
+      2,
+      "Homogeneous DE",
+      35
+    ],
+    [
+      1,
+      "Linear homogeneous DE of order n with constant coefficients. The Cauchy-Euler DE",
+      37
+    ],
+    [
+      1,
+      "Linear nonhomogeneous DE of order n with constant coefficients",
+      47
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                 Lecture 12.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 23, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Homogeneous DE. Quasi-Homogeneous DE\n\n2  Integrating factor\n\n3   Bernoulli DE\n\n4  Ricatti’s DE\n\n5 DE resolved for y\n\n6 DE is resolved by x\n\n7  Reduction of order\n     Higher-order DE in a simplest form\n   DE not containing the variable x\n   DE not containing the variables y, y ′, . . . , y (k−1)\n    Homogeneous DE\n\n8  Linear homogeneous DE of order n with constant coefficients. The Cauchy-Euler DE\n\n9  Linear nonhomogeneous DE of order n with constant coefficients\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 2 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "We will not consider equations with separable variables separately, since they will appear\nbelow in the solutions to many problems.\nHomogeneous DE\nSolve DE\n                                 dy   1 2x −y −2\n                       =                     , x ̸= 4.                                  (1)\n                                 dx   4   x −4\n Homogeneous differential equation can be written in the following form\n\n                                       dy       y\n                          = g         .\n                                       dx       x\nDE (1) is not homogeneous. However, (1) is reduced to homogeneous DE. We compose the system of\nlinear equations\n                      (                                    2h −k −2 = 0,\n                                   h −4 = 0.\n\nThis system has a solution h = 4, k = 6. Now the transformation x = u + h = u + 4,\ny = v + k = v + 6 changes the given DE to the form\n\n          dv               d(v + 6)                          dy                               1  2u + 8 −v −6 −2                                                      1  2u −v                                                                    1\n        =               =                  =                                                                       2 −v    .                                 =                                          =\n         du   d(u + 4)   dx   4      u + 4 −4         4    u       4     u\n\nWe obtained homogeneous DE. Now we introduce the change of functions v = zu. Then v ′ = z + uz′,\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 3 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "which implies\n                                        1                                                   1 −z                                    z + uz′ =                                               (2 −z) =\n                                        4          2   4\nor\n                                        dz   2 −5z\n                                    u  =            .                                        (2)\n                                     du     4\nWe separate variables and integrate obtained equation\n\n     dz           du                     Z   dz                               Z du\n  4      =          =⇒   4                     =                          =⇒  −4 ln |2 −5z| = ln |u| + ln C, C ∈R, C > 0.\n   2 −5z    u             2 −5z      u           5\n\nNow we find\n                                                                 2\n       |2 −5z| = (C|u|)−54  =⇒   2 −5z = C1|u|−5                                                                                    4 , C1 ̸= 0  =⇒   z =  −C2|u|−5                                                                                                                                            4 , C2 ̸= 0\n                                                                 5\nWe note that z = 52 is a solution of (2). Then the general solution of (2) is\n                                    2\n                                     z =  −C3|u|−5                                                                                       4 , C3 ∈R.\n                                    5\nSince v = zu, v = y −6, u = x −4 we obtain finally the general solution of (1)\n\n                                2                         2\n                                                                                                                                      4 + 3.           y = v + 3 = zu + 3 = u    −C3|u|−5                                                                              4 + 3 = (x −4)   −C3|x −4|−5\n                                5                         5\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 4 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "Quasi-Homogeneous DE\nDEFINITION. A first-order DE\n                                          y ′ = f (x, y)\n\nis called quasi-homogeneous if there exist real numbers α and β such that under the scaling\n\n                                    x 7→kαx,     y 7→kβy,\n\nthe function f (x, y) transforms as\n\n                                                    f (kαx, kβy) = kβ−αf (x, y).\n\nTo solve quasi-homogeneous DE we introduce new unknown function\n\n                                                y\n                                      u =         .\n                                           xβ/α\n\nKey observation:\n\n       If α = β, we get the classical homogeneous equation.\n       If α ̸= β, the equation is genuinely quasi-homogeneous.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 5 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "Solve DE\n                                 2x dy + (x2y 4 + 1)y dx = 0.                                  (3)\n\n We rewrite DE (3) in the following form\n\n                                    dy                        = −y(x2y 4 + 1) .                                      (4)\n                                    dx         2x\n\nWe put\n                                                      f (x, y) = −y(x2y 4 + 1) .\n                                                 2x\nLet’s check that the equation (3) is quasi-homogeneous:\n\n                      kβy[(kαx)2(kβy)4 + 1]         y k2α+4βx2y 4 + 1\n              f (kαx, kβy) =              = kβ−α            = kβ−αf (x, y)\n                            2kαx                        2x\n\nif\n                                 2α + 4β = 0.\n\nChoose\n                           α = −2,    β = 1.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 6 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "With weights α = −2, β = 1, the standard substitution is\n\n                                            y       y\n                                  u =    =\n                                        xβ/α   x−1/2\nor\n                                  y = ux−1/2  and  u = y√x.\n\nDifferentiating the last equality, we obtain:\n\n                                dy = x−1/2 du −12u x−3/2 dx.\n\nSubstitute y = ux−1/2 and dy = x−1/2du −12ux−3/2dx into the equation\n\n                                 2x dy + (x2y 4 + 1)y dx = 0.\n\nFirst,\n                                2x dy = 2x1/2 du −u x−1/2 dx.\n\nNext, since\n                                   x2y 4 = x2(u4x−2) = u4,\n\nwe have\n                                 (x2y 4 + 1)y = (u4 + 1)u x−1/2.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 7 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "Thus the equation becomes\n\n                          2x1/2 du −u x−1/2 dx + u(u4 + 1)x−1/2 dx = 0.\n\nCombine the dx-terms:\n                              2x1/2 du + x−1/2 u(u4 + 1) −u dx = 0.\n\nSince u(u4 + 1) −u = u5, after multiplication by x1/2 we obtain\n\n                                     2x du + u5 dx = 0.\n\nNow we separate variables\n                                      2 du                           = −dx .\n                                          u5       x\nIntegrating, we have\n\n             Z          Z dx       u−4\n             2   u−5 du = −   ⇒2 ·   = −ln |x| + C1 ⇒u−4 = 2 ln |x| + C,\n                                x      −4\n\nwhere C, C1 are arbitrary constants.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 8 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "Recall that u = y√x. After substituting we obtain\n\n                                     y −4x−2 = 2 ln |x| + C.\n\nThus\n                                           4         1                                  y =                          , x ̸= 0.\n                                      x2 2 ln |x| + C\n\n This is the general solution of the quasi-homogeneous equation (3) in an implicit form.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                 9 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "We will not consider exact equation separately, since we will solve it in the problem with\nthe integrating factor.\nIntegrating factor\n\nDEFINITION.\nA nonzero function µ(x, y) is called an integrating factor for DE\n\n                             M(x, y)dx + N(x, y)dy = 0\n\nif the following DE\n                            µ(x, y)M(x, y)dx + µ(x, y)N(x, y)dy = 0\n\nis exact.\n\nTHEOREM.\n\n                          ∂M\n                                    ∂y −∂N∂x\n               Suppose that              depend only on one variable x. Then\n                       N\n\n                                        ∂M\n                                     Z                                                       ∂y −∂N∂x  !\n                               µ(x) = exp             dx    .\n                                 N\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                10 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "                        ∂N\n                              ∂x −∂M∂y\n                              If            depend only on one variable y. Then\n               M\n\n                                            ∂N\n                                     Z                                                       ∂x −∂M∂y  !\n                               µ(y) = exp             dy    .\n                           M\n\nSolve DE\n                                (3xy + y 2) dx + (x2 + xy) dy = 0.                               (5)\n\n\nWrite it in standard form\n                             M(x, y) dx + N(x, y) dy = 0,                                  (6)\n\nwhere\n                       M(x, y) = 3xy + y 2,    N(x, y) = x2 + xy.\n\nThe differential equation (6) is exact in D if and only if\n\n                           ∂M   ∂N\n                            =                                               (7)\n                                      ∂y    ∂x\n\nat each point of D. Compute the partial derivatives:\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                11 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "                    ∂M            ∂N\n                     = 3x + 2y,     = 2x + y.\n                            ∂y               ∂x\n\nSince\n                                     3x + 2y ̸= 2x + y,\n\nthe equation (5) is not exact. We calculate and obtain that\n\n\n                        ∂M\n                                  ∂y −∂N∂x    (3x + 2y) −(2x + y)   1\n                       =             =\n                     N             x2 + xy          x\n\nis a function of x only. Hence, from the above theorem we find one integrating factor\n\n                              ∂N\n                        Z                                    ∂x −∂M∂y  !       Z  1\n                µ(y) = exp             dy  = exp      dx = exp ln |x| = |x|.\n                  M                   x\n\nThus, the DE\n                              (3x2y + xy 2) dx + (x3 + x2y) dy = 0.                             (8)\n\nis exact. Since left-hand side of (8) is total differential of some function F, then Fx = 3x2y + xy 2 and\nFy = x3 + x2y. From the first of these, we obtain\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                12 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "                           Z                        x2y 2\n                      F(x, y) =   (3x2y + xy 2) dx = x3y +   + g(y).\n                                                        2\nNow we find Fy == x3 + x2y + g′(y). Therefore g′(y) = 0 and g(y) = c1, c1 ∈R. Thus\n\n                                                x2y 2\n                                 F(x, y) = x3y +   + c1.\n                                                2\nThe one - parameter family of solutions F(x, y) = c2, c2 ∈R or\n\n                                            x2y 2\n                                      x3y +   = C,\n                                           2\n\n where C = c2 −c1 is arbitrary constant.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                13 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "Linear differential equation will not be treated separately here, since we will solve one in\nthe problem involving the Bernoulli differential equation.\nBernoulli differential equation\nSolve DE\n                                    x2y ′ + 2xy −y 3 = 0.                                      (9)\n\n DE (9) has the form\n                                     y ′ + p(x)y = q(x)y n.                                   (10)\nSo this is a Bernoulli differential equation, where n = 3. We first devide the equation through by y 3,\nthereby expressing it in the equivalent form\n\n                                     1 dy      −2                                     x2    + 2xy  = 1\n                                        y 3 dx\n\nand, setting v = y −2, we have\n                                              −3 dy                          −1 dv = y                                                                                           .\n                                      2 dx       dx\nHence we obtain the linear equation\n                          −x2 dv + 2xv = 1                                    (11)\n                                      2 dx\nsince it has the following form\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                14 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "                                       y ′ + p(x)y = q(x).\n\nTo find the general solution of (11) we will use the method of variation of parameters.\nSolving the corresponding homogeneous equation\n\n                             −x2 dv + 2xv = 0\n                                      2 dx\n\nwe have\n                                        dv                           = 4dx ,\n                                           v      x\nor\n                                           v = Cx4.\n\nThen the general solution of (11) is of the form\n\n                                          v = A(x)x4.\n\n\nSubstituting for v in (11) gives\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                15 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "                                    dv\n                         = 4Ax3 + A′x4,\n                                    dx\n                        −x2  4Ax3 + A′x4 + 2xAx4 = 1,\n                                2\nor\n                                           A′ = −2 .\n                                                x6\nIntegrating,\n                                         2\n                           A = 5x−5 + C1,\nwhere C1 is an arbitrary constant.\n\nHence the solution of (11) is\n                                            2\n                                     v =  C1 + 5x−5  x4.\n\nFinally, substituting for v in terms of y gives the general solution of the original equation in the form\n\n                                      2             −1/2\n                                    y =  5x−1 + C1x4\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                16 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "Ricatti’s differential equation\nDEFINITION. Differential equation\n                                y ′(x) = q0(x) + q1(x)y + q2(x)y 2                             (12)\n\nwhere q0, q1, and q2 are given functions, with q0, q2 ̸≡0 is called Ricatti’s equation.\nTo find the general solution of (12) we use the substitution\n\n                                               1\n                                          y = yp +    ,\n                                                   v\nwhere yp is a particular solution of (12)and v is new unknown function.\nEXAMPLE.\nSolve the initial value problem\n\n                                                  ′                   1                   10                        y = −1 −x2 + 2  x +    y −y 2,     y(1) =     .\n                                              x                    7\n This is the Riccati’s equation with q0(x) = −1 −x2, q1(x) = 2 x + x1   , q2(x) = −1. We find that\ny = x is a solution of the differential equation. Indeed,\n\n                                    1\n                1 = −1 −x2 + 2  x +    x −x2 = −1 −x2 + 2x2 + 2 −x2 = 1.\n                                      x\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                17 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "Substituting\n                                               1\n                                          y = x +\n                                                   v\nwe have\n                dy            = 1 −1 dv = −1 −x2 + 2  x + 1    x + 1 −  x + 1  2 .\n                dx       v 2 dx                     x        v          v\n\n                                          2                                      2x\n                         +                                  −x2 −2x −1 = 1 + 2 −1          = −1 −x2 + 2x2 + 2 +\n                                        v    xv         v    v 2       xv   v 2\nSimplifying, we have\n                                      dv                          = −2v + 1.\n                                      dx      x\n\nRearranging, we obtain the linear equation\n\n                                       dv   2\n                          +  v = 1.\n                                       dx   x\n\nThe integrating factor is\n                                 Z  2\n                          µ(x) = exp      dx = exp (2 ln |x|) = x2.\n                                          x\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                18 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "Multiplying the equation by x2:\n                                       dv\n                                      x2  + 2xv = x2.\n                                       dx\nThe left-hand side is the derivative of the product x2v:\n\n                                    d\n                                          x2v = x2.\n                                      dx\n\nIntegrate both sides with respect to x:\n\n                                  Z         x3\n                                  x2v =   x2 dx =  + C,\n                                                3\n\nwhere C is an arbitrary constant.\nDivide by x2:\n                                              x   C\n                                         v =  +     .\n                                          3   x2\nRecall that y = x + v1 . Therefore\n                                              1\n                                       y = x +             .\n                                                x   C\n                             +\n                                            3   x2\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                19 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "Simplify the fraction:\n                                1         1         3x2\n                        =      =              .\n                                 x   C    x3 + 3C    x3 + 3C\n                    +\n                              3   x2      3x2\n\nWriting K = 3C, we obtain the general solution of the equation\n\n                                               3x2\n                                       y = x +             .\n                                               x3 + K\n\n                             10\nUsing the initial condition y(1) =     , we obtain\n                             7\n\n                       10       3 · 12          3\n                 = 1 +     = 1 +     =⇒  K = 6.\n                        7        13 + K       1 + K\n\nSubstituting K = 6 gives the solution of the initial value problem:\n\n                                               3x2\n                                        y = x +                                               x3 + 6.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                20 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "Differential equation resolved by y\nClairaut’s equation.\n\nDEFINITION. Differential equation\n                                        y = xy ′ + ϕ(y ′)                                     (13)\n\nis called Clairaut’s equation.\nLagrange’s equation.\n\nDEFINITION. Differential equation\n\n                               A(y ′)y + B(y ′)x + C(y ′) = 0                               (14)\n\nis called Lagrange’s equation.\nSupposing that A(y ′) ̸= 0, we divide by it and thus (14) reads\n\n                                      y = ϕ(y ′)x + ψ(y ′).                                   (15)\n\nSometimes DE (15) is called Lagrange’s equation. We see that, in fact, Lagrange’s equation is a\ngeneralization of Clairaut’s equation (ϕ(y ′) = y ′). The method of solving first-order DE which resolved\nwith respect to y is the following: we use the change y ′(x) = p(x).\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                21 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "Find the solutions of the following differential equation\n\n                                    y ′ sin y ′ + cos y ′ −y = 0.\n\n\nWe rewrite it in the form\n                                      y = y ′ sin y ′ + cos y ′.\n\nand set p(x) = y ′(x). Then\n                                       y = p sin p + cos p.\n\nDifferentiating this equation with respect to x, we obtain\n\n                            p = p′ sin p + p p′ cos p −p′ sin p.\n\nFor p ̸= 0, divide by p:\n                                      1 = p′ cos p,\n\nhence\n                                     dp     1\n                           =         .\n                                       dx    cos p\n\nThis is separable equation. Separating the variables\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                22 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "                                          cos p dp = dx.\n\nand integrating both sides\n                                Z         Z\n                                          cos p dp =   dx,\n\nwe obtain:\n                                                 sin p + C = x,\n\nwhere C is an arbitrary constant.\nThe general solution in parametric form is\n\n                     (x = sin p + C,\n\n                                      y = p sin p + cos p,\n\n where p is a parameter and C is an arbitrary constant.\n\nEquivalently, from sin p = x + C we have p = arcsin(x + C) (with |x + C| ≤1), which can be\nsubstituted into the expression for y:\n\n                     y = arcsin(x + C) sin(arcsin(x + C)) + cos(arcsin(x + C)).\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                23 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "Consider the case p = 0. Then\n                                    y = 0 · sin 0 + cos 0 = 1.\n\nCheck: y = 1, y ′ = 0, and\n                            0 · sin 0 + cos 0 −1 = 0 + 1 −1 = 0.\n\n\nHence the singular solution is\n                                            y ≡1.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                24 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "DE is resolved by x\n\nNow we consider DE in the following form\n\n                                         x = ϕ(y, y ′).\n\nTo solve it we apply a substitution p(y) = y ′(x).\n\nFind the solution of the differential equation\n\n                                      xy ′3 −yy ′2 −1 = 0.\n\n This is DE which can be resolved with respect to x. Let p(y) = y ′(x) is a new function of y alone.\nThen we rewrite DE as follows\n                                        xp3 = yp2 + 1\n\nor\n                                          y    1\n                                      x =  +     , p ̸= 0.                                   (16)\n                                      p   p3\nA differentiation of (16) with respect to x then yields, taking\n\n                                 dp   dp dy\n                        =    = pp′(y)\n                                   dx   dy dx\n\ninto account,\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                25 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "                                  1 = 1 −y p′ −3 p′.\n                                        p     p3\nThen\n                                           y    3\n                                             p′   +   = 0.                                    (17)\n                                      p   p3\nThe equation (17) splits into two cases:\n    Case 1: p′ = 0, i.e. p = C, C is arbitrary constant.\n             y    3\n    Case 2:  +  = 0, i.e. yp2 + 3 = 0.\n            p   p3\nIf p = C, then from (16),\n                                              y    1\n                                         x =  +      .\n                                 C  C 3\nSolving for y:\n                                 y = C  x −1  = Cx −1  .\n                                 C 3       C 2\nHence the general solution is\n                              y = Cx −1  , C is arbitrary constant.\n                            C 2\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                26 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "If\n                                         yp2 + 3 = 0,\n\nthen\n                                           y = −3 .\n                                                p2\n\nSubstituting into (16):\n                                    y                                      1\n                               x =                      +                          = −3 + 1 = −2 .\n                                p   p3     p3   p3     p3\n\nEliminating p:\n                                 p3 = −2 ,     p2 =  2  2/3 ,\n                                         x             x\n                                    y = −3 = −3  x  2/3 .\n                                          p2       2\n\nThus the singular solution is\n                                                x  2/3\n                                        y = −3             .\n                                             2\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                27 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "Higher-order DE in a simplest form\n\nSolve the initial value problem\n\n                         y ′′′ = x sin(2x), y(0) = 0, y ′(0) = 0, y ′′(0) = 1.\n\n We integrate DE over [0, x] to find y ′′ :\n                                        Z x\n                                y ′′(x) −y ′′(0) =     t sin(2t) dt.\n                                                             0\n\nIntegrating by parts with u = t, v = −cos(2t)/2 (dv = sin(2t) dt):\n          Z x                    t sin(2t) dt = −t cos(2t) x + 1 Z x cos(2t) dt = −x cos(2x) + 1 sin(2x).\n                0               2          0   2  0              2          4\n\nHence\n                               y ′′(x) = 1 −x cos(2x) + 1 sin(2x).\n                                        2          4\nWe integrate over [0, x] to find y ′ :\n\n                                Z x\n                        y ′(x) −y ′(0) =                                        1 −t cos(2t) + 1 sin(2t)  dt\n                                                 0       2         4\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                28 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "Compute the three integrals:\n                                  Z x\n                                         1 dt = x,\n                                                     0\n\n                                     t         Z x t\n                  cos(2t) dt =                                   sin(2t)                                                   x −1 Z x sin(2t) dt = x sin(2x) + 1 cos(2x) −1               0  2            4         0   4  0            4         8           8,\n                          Z x 1                                         sin(2t) dt = −1 cos(2x) + 1                                        0  4             8           8.\nAdding up:\n\n      y ′(x) = x −x sin(2x) −1 cos(2x) + 1 −1 cos(2x) + 1 = x −x sin(2x) −1 cos(2x) + 1                4         8          8   8          8       4         4           4.\n\nWe integrate once more over [0, x] to find y :\n\n                              Z x\n                     y(x) −y(0) =                                                    t −t sin(2t) −1 cos(2t) + 1  dt.\n                                              0      4         4         4\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                29 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "Compute the integrals:\n                                  Z x       x2\n                                                         t dt =     ,\n                                                    0        2\n                      Z x t                                     sin(2t) dt = −x cos(2x) + 1 sin(2x),\n                                   0  4             8          16\n                     Z x 1            1          Z x 1      x\n                                 cos(2t) dt =   sin(2x),           dt =    .\n                                 0  4            8                 0  4     4\nHence\n\n             x2                  x\n     y(x) =         +                    cos(2x) −1 sin(2x) −1 sin(2x) + x = x2 + x + x cos(2x) −3 sin(2x).\n            2   8          16         8         4    2   4   8          16\n\nThus\n                                   x2                                         x                                             x\n                           y(x) =                       +                         +                                                cos(2x) −3 sin(2x).\n                                 2   4   8          16\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                30 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "DE not containing the variable x\n\nFind the general solution of the differential equation\n\n                                       yy ′′ + 2(y ′)2 = 0.\n\n\nWe put p(y) = y ′(x). Then y ′′(x) = p′p and we obtain\n\n                                         yp′p + 2p2 = 0                                      (18)\n\nor\n                        dp                    dp      dy                         y  = −2p, p ̸= 0 ⇒    = −2     , y ̸= 0.\n                         dy                    p       y\n\nAn integration of last equation yields\n\n                                                     c1              c1             c2\n                     ln |p(y)| = −2 ln |y| + ln c1 = ln  2 ⇒|p(y)| =   2 ⇒p(y) =   2 ,                                               y             y            y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                31 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "where c1 > 0, c2 ̸= 0. We add the solution p(y) ≡0 and thus\n\n                                                 c\n                                      p(y) =     , c ∈R\n                                              y 2\n\nis the general solution of (18). Now we solve DE\n\n                          c\n                y ′(x) =               ⇒dy = c                     ⇒y 2 dy = c dx ⇒y 3 = cx + c3, c3 ∈R.                                2                                               2                        y     dx    y                   3\n\nHence\n                                  y 3(x) = 3cx + 3c3 = Cx + D.\n\nThis leads to the general solution of the given equation (y(x) ≡0 is a solution of DE)\n                                                   3√\n                                      y(x) =  Cx + D,\n\nwhere C, D are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                32 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "DE not containing the variables y, y ′, ..., y (k−1)\nFind the general solution of the differential equation\n                                       y ′′′ + y ′′ = x + 1.                                     (19)\n DE (19) does not contain the variables y and y ′. By making change of variable y ′′(x) = z(x) we have\n                                                 z′ + z = x + 1,\n\nthat is, the linear nonhomogeneous first order DE with p(x) = 1. Multiplying DE by integrating factor\nexp(x), we obtain\n                                   exp(x)(z′ + z) = exp(x)(x + 1)\n\nor\n                              d\n                                     (exp(x)z) = exp(x)(x + 1).\n                                dx\nAn integration of this equation yields\n\n                                    Z\n                                 exp(x)z =   exp(x)(x + 1) dx.\n\nIntegrating by parts with u = x + 1, v = exp(x) (dv = exp(x) dx):\n\n     Z                             Z\n        exp(x)(x + 1) dx = (x + 1) exp(x) −   exp(x) dx = (x + 1) exp(x) −exp(x) = x exp(x).\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                33 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "Hence\n                                    exp(x)z = x exp(x) + C1,\n\nso\n                                     z = y ′′ = x + C1 exp(−x),\n\nwhere C1 is an arbitrary constant.\nIntegrating once to find y ′ :\n\n                                               ′  Z                       x2\n                      y =   (x + C1 exp(−x)) dx =   −C1 exp(−x) + C2.\n                                                2\n\nIntegrating once more to find y :\n\n                Z   x2                         x3\n                y =     −C1 exp(−x) + C2  dx =  + C1 exp(−x) + C2x + C3.\n                       2                         6\n\nHence\n                                   x3\n                               y =  + C1 exp(−x) + C2x + C3,\n                                  6\nwhere C1, C2, C3 are arbitrary constants.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                34 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "Homogeneous higher-order differential equations\nSolve the differential equation\n                                  x2yy ′′ −x2(y ′)2 = 2xyy ′.                                 (20)\n\n\nLet F(x, y, y ′, y ′′) = x2yy ′′ −x2(y ′)2 −2xyy ′. We check that (20) is homogeneous equation of degree 2\nwith respect to y, y ′, y ′′ :\n\n     F(x, ky, ky ′, ky ′′) = x2ky ky ′′ −x2(ky ′)2 −2xky ky ′ = k2(x2yy ′′ −x2(y ′)2 −2xyy ′) = k2F.\n\nNow we introduce new unknown function z(x) = y ′(x)/y(x) (note that y ≡0 is the solution). Then\ny ′(x) = y(x)z(x),\n\n                y ′′(x) = (y(x)z(x))′ = y ′(x)z(x) + y(x)z′(x) = y(x)(z2(x) + z′(x))\n\nand\n                       x2y 2(z2 + z′) −x2y 2z2 = 2xy 2z ⇒x2y 2z′ = 2xy 2z\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                35 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "or\n              xz′ = 2z ⇒dz = 2 dx ⇒ln |z| = 2 ln |x| + ln c, c > 0 ⇒z = c1x2, c1 ∈R.\n                           z     x\nWe added the solution z(x) ≡0. Substituting z(x) = y ′(x)/y(x), we find\n\n                 y ′(x) = c1x2y(x) ⇒dy = c1x2dx ⇒ln |y| = c2x3 + c3, c2, c3 ∈R.\n                                     y\n\nAdding trivial solution y(x) ≡0, we obtain the general solution of 20)\n\n                                     y(x) = c4 exp(c2x3),\n\nwhere c2 and c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                36 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "Linear homogeneous DE of order n with constant coefficients\n\nEXAMPLE I. Solve DE\n                                       y ′′ + 4y ′ −5y = 0.\n\n\nThe characteristic equation of the given differential equation is\n\n                                      λ2 + 4λ −5 = 0.\n\nHence\n                            −4 ± √16 + 20  −4 ± 6\n                                     λ1,2 =         =\n                                         2            2\nand\n                                      λ1 = 1, λ2 = −5.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                37 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "The roots are real and distinct. Thus functions exp(x) and exp(−5x) are a fundamental set of solutions\nfor the given DE and the general solution may be written in the form\n\n                               y(x) = c1 exp(x) + c2 exp(−5x),\n\n where c1, c2 are arbitrary constants.\n\nEXAMPLE II. Solve the initial-value problem\n\n                    y ′′′ −7y ′′ + 14y ′ −8y = 0, y(0) = 1, y ′(0) = 0, y ′′(0) = 0.                 (21)\n\n The characteristic equation of the given differential equation is\n\n                                   λ3 −7λ2 + 14λ −8 = 0.                                 (22)\n\nThe equation (22) could have only the following rational roots\n\n                                   ±1, ±2, ±4, ±8.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                38 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "By inspection we find that λ1 = 1 is a root of the equation (22). Dividing polynomial in the left-hand\nside of (22) by λ −1, we obtain\n\n               λ3 −7λ2 + 14λ −8 = (λ −1)(λ2 −6λ + 8) = (λ −1)(λ −2)(λ −4).\n\nHence the characteristic equation (22) has real distinct roots\n\n                                   λ1 = 1, λ2 = 2, λ3 = 4.\n\nThus functions\n                                      exp(x), exp(2x), exp(4x)\n\nare a fundamental set of solutions for the given DE and the general solution may be written in the form\n\n                          y(x) = c1 exp(x) + c2 exp(2x) + c3 exp(4x),                        (23)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                39 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "where c1, c2, c3 are arbitrary constants. Now we put in (23) x = 0, y = 1 :\n\n                                             c1 + c2 + c3 = 1.\n\nTo satisfy other initial conditions in (21) we find derivatives\n\n                          y ′(x) = c1 exp(x) + 2c2 exp(2x) + 4c3 exp(4x),\n\n                         y ′′(x) = c1 exp(x) + 4c2 exp(2x) + 16c3 exp(4x).\n\nSubstituting the initial conditions from (21), we obtain the following system\n\n                  c1 + c2 + c3 = 1\n                                                          c1 + 2c2 + 4c3 = 0                                      (24)\n                  c1 + 4c2 + 16c3 = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                40 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "Subtracting the first equation from the second, we have c2 + 3c3 = −1. Subtracting the first equation\nfrom the third, we have 3c2 + 15c3 = −1. Multiplying the first of these by 3 and subtracting from the\nsecond, we obtain\n                                                  1\n                                         6c3 = 2 ⇒c3 = 3.\nThen c2 = −1 −3c3 = −2, and from the first equation\n                                   c1 = 1 −c2 −c3 = 1 + 2 −1 = 8                                                    3    3.\n\nThus the problem (21) has a solution\n\n                                 8                   1\n                           y(x) =   exp(x) −2 exp(2x) +   exp(4x).\n                                 3                   3\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                41 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "EXAMPLE III.\nFind the general solution of the following differential equation\n\n                                       y ′′ + 2y ′ + 5y = 0.\n\n The characteristic equation of the given differential equation is\n\n                                      λ2 + 2λ + 5 = 0.\n\nWe find the roots\n                                 λ1 = −1 + 2i, λ2 = −1 −2i.\n\nThe roots are the conjugate complex numbers α ± iβ, where α = −1, β = 2. Thus exp(−x) sin 2x and\nexp(−x) cos 2x are a fundamental set of solutions for the given DE and the general solution may be\nwritten in the form\n                             y(x) = exp(−x)[c1 sin 2x + c2 cos 2x],\n\n where c1, c2 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                42 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "EXAMPLE IV.\nFind the general solution of DE\n                                   y (6) −3y (4) + 3y ′′ −y = 0.\n\n\nThe characteristic equation is\n                                   λ6 −3λ4 + 3λ2 −1 = 0\n\nor\n                                 (λ2 −1)3 = (λ −1)3(λ + 1)3 = 0.\n\nFrom\n                                       (λ −1)3 = 0\n\nwe find the triple real root 1, and from\n                                       (λ + 1)3 = 0\n\nwe find the triple real root −1.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                43 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 44,
+      "printed_label": "<FEFF00340034>",
+      "text": "Thus the roots of the characteristic equation are\n\n                           1 (multiplicity 3),  −1 (multiplicity 3).\n\nThe general solution of the DE is\n\n                    y = (c1 + c2x + c3x2) exp(x) + (c4 + c5x + c6x2) exp(−x),\n\n where ci, i = 1, ..., 6 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                44 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 45,
+      "printed_label": "<FEFF00340035>",
+      "text": "The Cauchy-Euler differential equation.\nFind the general solution of DE\n                                   x2y ′′ + 5xy ′ + 4y = 0.                                  (25)\n\n This is an equation of the form\n\n                a0xny (n)(x) + a1xn−1y (n−1)(x) + ... + an−1xy ′(x) + any(x) = f (x),\n\nwhere a0, a1, ..., an are real constants, f (x) is a continuous function. So (25) is the Cauchy-Euler\ndifferential equation. Let x = exp t. Then, assuming x > 0, we have t = ln x, and\n\n                                    dy   dy dt   1 dy\n                        =    =         ,\n                                    dx    dt dx    x dt\n\n                       d2y                 = −1 dy + 1 d2y dt = 1   d2y −dy    .\n                        dx2     x2 dt   x dt2 dx    x2   dt2    dt\n\nThus equation (25) becomes\n                                d2y −dy + 5dy + 4y = 0\n                                     dt2    dt     dt\nor\n                                   d2y                         + 4dy + 4y = 0.                                   (26)\n                                       dt2     dt\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                45 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 46,
+      "printed_label": "<FEFF00340036>",
+      "text": "The characteristic equation of the given differential equation is\n\n                               λ2 + 4λ + 4 = 0 ⇒(λ + 2)2 = 0.\n\nWe find the roots\n                                       λ1 = λ2 = −2.\n\nThe root is real and repeated. Thus two functions y1(t) = exp(−2t) and y2(t) = t exp(−2t) are a\nfundamental set of solutions for the DE (26) and the general solution for this equation may be written\nin the form\n                       y(t) = c1y1(t) + c2y2(t) = c1 exp(−2t) + c2t exp(−2t),\n\nwhere c1, c2 are arbitrary constants. Since t = ln x, we find\n\n                                                             c1 + c2 ln x\n                              y = c1x−2 + c2x−2 ln x =                  .\n                                                         x2\n\n This is the general solution of the given equation (25) for x > 0. For x < 0 we need to use the\nsubstitution x = −exp t.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                46 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 47,
+      "printed_label": "<FEFF00340037>",
+      "text": "Linear nonhomogeneous DE of order n with constant coefficients\n\nMethod of variation of parameters\n\nFind the general solution of DE\n                                       y ′′ + y = 2 sec x.                                     (27)\n\n\nConsider the corresponding to (27) homogeneous differential equation\n\n                                          y ′′ + y = 0.                                       (28)\n\nThe characteristic equation of the given differential equation is\n\n                                         λ2 + 1 = 0.\n\nWe find the roots\n                                      λ1 = i, λ2 = −i.\n\nThus functions y1 = sin x, y2 = cos x are a fundamental set of solutions for the DE (28) and the general\nsolution for this equation may be written in the form\n\n                                    yh(x) = c1 sin x + c2 cos x,\n\nwhere c1, c2 are arbitrary constants. We will look for a particular solution of (27) in the form\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                47 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 48,
+      "printed_label": "<FEFF00340038>",
+      "text": "                                 yp(x) = c1(x)y1(x) + c2(x)y2(x).                             (29)\nWe suppose that\n                                          c′1(x)y1(x) + c′2(x)y2(x) = 0                                (30)\nand find the derivatives of yp :\n                          y p′ = c′1y1 + c1y 1′ + c′2y2 + c2y 2′ = c1y 1′ + c2y 2,′\n                                y p′′ = c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ .\nNow we substitute obtained derivatives to the left-hand side of the equation (27)\n y p′′ + yp = (c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ ) + (c1y1 + c2y2) = (c′1y 1′ + c′2y 2)′ + c1(y 1′′ + y1) + c2(y 2′′ + y2) =\n                        = c′1y 1′ + c′2y 2.′\nNow to satisfy the equation (27) we require that\n                                              c′1y 1′ + c′2y 2′ = 2 sec x.\n\nSince\n                                   y 1′ = cos x,   y 2′ = −sin x,\nwe obtain DE\n                                          c′1 cos x −c′2 sin x = 2 sec x.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                48 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 49,
+      "printed_label": "<FEFF00340039>",
+      "text": "Hence, the function yp in (29) is a particular solution of (27) if the functions c′1, c′2 satisfy the following\nlinear system of the equations\n                                         c′1 sin x + c′2 cos x = 0                                                                                              (31)\n                                         c′1 cos x −c′2 sin x = 2 sec x.\n\nWe find the determinant of the system (31)\n\n                                             sin x    cos x\n                 W(sin x, cos x) =          = −sin2 x −cos2 x = −1.\n                                      cos x  −sin x\n\nNow we obtain that\n                                 0      cos x\n                               2 sec x  −sin x    −2 sec x cos x\n                             c′1(x) =            =        = 2,                 W (sin x, cos x)       −1\n\n                                        sin x     0\n                                  cos x  2 sec x     2 sin x sec x\n                            c′2(x) =           =       = −2 tan x.                W (sin x, cos x)      −1\nUsing indefinite integral, we find c1, and c2\n                                     Z\n                                       c1(x) =   2 dx = 2x,\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                49 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 50,
+      "printed_label": "<FEFF00350030>",
+      "text": "                                  Z\n                                c2(x) = −2   tan x dx = 2 ln | cos x|.\n\nSince we need only one particular solution we put constants of integration equal to zero. Substituting\nc1, c2 into (29), we obtain a particular solution of (27)\n\n                   yp(x) = c1(x) sin x + c2(x) cos x = 2x sin x + 2 cos x ln | cos x|.\n\nHence DE (27) has the general solution in the form\n\n                  y = yh + yp(x) = c1 sin x + c2 cos x + 2x sin x + 2 cos x ln | cos x|,\n\n where c1, c2 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                50 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 51,
+      "printed_label": "<FEFF00350031>",
+      "text": "Method of undetermined coefficients\n\nSolve DE\n                              y (4) −y ′′ = 12x + 4 exp(−x) + 2 sin x.                           (32)\n\n The corresponding homogeneous equation is\n\n                                         y (4) −y ′′ = 0.                                      (33)\n\nThe characteristic equation of the DE (33) is\n\n                                        λ4 −λ2 = 0.                                       (34)\n\nThe roots of (34) are 0, ±1, and the root 0 has multiplicity 2. Thus 1, x, exp(x) and exp(−x) are a\nfundamental set of solutions and the general solution of DE (33) is\n\n                           y(x) = c1 + c2x + c3 exp(x) + c4 exp(−x),\n\nwhere c1, c2, c3, c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                51 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 52,
+      "printed_label": "<FEFF00350032>",
+      "text": "Let us consider three DE\n                                        y (4) −y ′′ = 12x,                                     (35)\n\n                                     y (4) −y ′′ = 4 exp(−x),                                  (36)\n\nand\n                                       y (4) −y ′′ = 2 sin x.                                    (37)\n\nLet yp1 be a particular solution of (35), yp2 be a particular solution of (36) and yp3 be a particular\nsolution of (37). Then y = yp1 + yp2 + yp3 is a particular solution of (32). Indeed,\n\n   y (4) −y ′′ = (yp1 + yp2 + yp3)(4) −(yp1 + yp2 + yp3)′′ = (y p1(4) −y p1)′′ + (y p2(4) −y p2)′′ + (y p3(4) −y p3)′′\n\n                    = 12x + 4 exp(−x) + 2 sin x.\n\nFor the first equation (35), since 0 is a root of the characteristic equation (34) of the multiplicity 2, we\nassume that\n                                       yp1(x) = x2(Cx + D).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                52 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 53,
+      "printed_label": "<FEFF00350033>",
+      "text": "For the second equation (36), since −1 is a simple root of the characteristic equation (34), we look for\na particular solution of the form\n                                       yp2(x) = Ex exp(−x).\n\nFor the third equation (37), since i is not a root of the characteristic equation (34), we look for a\nparticular solution of the form\n                                     yp3(x) = H sin x + G cos x.\n\nHence for DE (32) we look for a particular solution of the form\n\n                 yp = yp1 + yp2 + yp3 = Cx3 + Dx2 + Ex exp(−x) + H sin x + G cos x.\n\nNow we find the derivatives of yp :\n\n                     y p′ = 3Cx2 + 2Dx + E(1 −x) exp(−x) + H cos x −G sin x,\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                53 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 54,
+      "printed_label": "<FEFF00350034>",
+      "text": "                     y p′′ = 6Cx + 2D + E(x −2) exp(−x) −H sin x −G cos x,\n                        y p′′′ = 6C + E(3 −x) exp(−x) −H cos x + G sin x,\n                           y p(4) = E(x −4) exp(−x) + H sin x + G cos x.\n\nSubstituting derivatives into the original equation (32), we obtain\n\n            y p(4) −y p′′ = [E(x −4) −E(x −2)] exp(−x) + 2H sin x + 2G cos x −6Cx −2D\n\n      = −2E exp(−x) + 2H sin x + 2G cos x −6Cx −2D = 12x + 4 exp(−x) + 2 sin x.\n\nEquating coefficients of like terms in the left and right hand sides, we have\n\n                  −6C = 12, −2D = 0, −2E = 4, 2H = 2, 2G = 0\n\n               =⇒  C = −2, D = 0, E = −2, H = 1, G = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                54 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 55,
+      "printed_label": "<FEFF00350035>",
+      "text": "Hence\n\n         yp(x) = Cx3 + Dx2 + Ex exp(−x) + H sin x + G cos x = −2x3 −2x exp(−x) + sin x.\n\nNow the general solution of the given DE (32) may be written in the form\n\n               y(x) = c1 + c2x + c3 exp(x) + c4 exp(−x) −2x3 −2x exp(−x) + sin x,\n\n where c1, c2, c3, c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                55 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 56,
+      "printed_label": "<FEFF00350036>",
+      "text": "Good luck on the mid-term exam!\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 23, 2026                56 / 56",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/3(2).pdf",
+  "sha256": "9a060b594f44b429c89637e3ea003cce4d4099da72363ffb3da0ae3424a98e34",
+  "page_count": 43,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Model with homogeneous equations ",
+      3
+    ],
+    [
+      1,
+      "Quasi-Homogeneous DE ",
+      8
+    ],
+    [
+      1,
+      "Exact differential equations ",
+      18
+    ],
+    [
+      1,
+      "Lecture 2. Homework",
+      29
+    ],
+    [
+      1,
+      "Homework",
+      43
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 3.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 3, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Model with homogeneous equations\n\n\n2  Quasi-Homogeneous DE\n\n\n3  Exact differential equations\n\n\n4  Lecture 2. Homework\n\n\n5 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 2 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Model with homogeneous equations. Flight trajectories\nSuppose that an airplane departs from the point (a, 0) located due east of its intended – an airport\nlocated at the origin (0, 0). The plane travels with constant speed v0 relative to the wind, which is\nblowing due north with constant speed w. As indicated in Figure 1., we assume that the plane’s pilot\nmaintains its heading directly toward the origin.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 3 / 43",
+      "images": 2,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "Figure 2. helps us derive the plane’s velocity components relative to the ground. They are\n\n                               dx                    v0x\n                      = −v0 cos θ = −                ,\n                                   dt        px2 + y 2\n\n                           dy                        v0y\n                   = −v0 sin θ + w = −      + w.\n                               dt         p x2 + y 2\n\nHence the trajectory y = f (x) of the plane satisfies the differential equation\n\n                              dy   dy/dt    v0y −w p x2 + y 2\n                    =    =                             .                               (1)\n                              dx   dx/dt           v0x\n\nIf we set\n                                 w\n                                         k =\n                                                      v0\n\nthe ratio of the windspeed to the plane’s airspeed, then DE (1) takes the homogeneous form\n\n                                dy    y           y  2  1/2\n                      =  −k  1 +                .\n                                dx    x           x\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 4 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "Now we substitute y = xv, y ′ = v + xv ′ to obtain\n\n                                    v + xv ′ = v −k p1 + v 2\n\nor\n                                     dv\n                                      x  = −k p1 + v 2.\n                                     dx\nSeparating variables we have\n                                       dv                      √    = −kdx .\n                                      1 + v 2      x\n\nIntegrating both sides and using a table for the integrals, we find that\n\n                                      ln(v + p 1 + v 2) = −k ln x + C                                 (2)\n\nand the initial condition v(a) = y(a)/a = 0 yields\n\n                               C = k ln a.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 5 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "Now from (2) we obtain that\n\n                                                                x                         x  −k\nln(v + p 1 + v 2) = −k ln x + k ln a ⇒   ln(v + p 1 + v 2) = −k ln  ⇒   v + p 1 + v 2 =\n                                                             a                       a\n\nThen\n                                                 x  −k\n                 p1 + v 2 =     −v\n                                               a\nand\n                                            2     x  −2k       x  −k                            1 + v =      −2v     + v 2.\n                                       a           a\nNow we find that\n                                     −2k                                              x                        −1   1   x  −k    x  k                                            a                            v =       =      −            .\n                                2  xa −k     2   a        a\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 6 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "Because y = xv, we finally obtain\n\n                                      a   x  1−k    x  1+k\n                               y(x) =       −                .                                (3)\n                                     2   a         a\n\nfor the equation of the plane’s trajectory.\nNote that only in the case k < 1 (that is, w < v0) does the curve in (3) pass through the origin, so that\nthe plane reaches its destination.  If w = v0 (so that k = 1), then (3) takes the form\n\n                                         1\n                                    y(x) =                                             1 −x2    ,                                     2a      a2\n\nso the plane’s trajectory approaches the point (0, a/2) rather than (0, 0). If w > v0 (so k > 1) then\ny →+∞as x →0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 7 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "Quasi-Homogeneous (Generalised Homogeneous) DE\n\nDefinition\nA first-order DE\n                                          y ′ = f (x, y)\n\nis called quasi-homogeneous if there exist real numbers α and β such that under the scaling\n\n                                    x 7→kαx,     y 7→kβy,\n\nthe function f (x, y) transforms as\n\n                                                    f (kαx, kβy) = kβ−αf (x, y).\n\nTo solve quasi-homogeneous DE we introduce new unknown function\n                                                 y\n                                      u =         .\n                                            xβ/α\nKey observation:\n       If α = β, we get the classical homogeneous equation.\n       If α ̸= β, the equation is genuinely quasi-homogeneous.\n\n Alexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 8 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "EXAMPLE.\nSolve the differential equation:\n\n                                                                  ′   y    x                                y =  +     ,     x ̸= 0,   y ̸= 0.                               (4)\n                                     x   y 2\n\n\nQuestion: Is this equation homogeneous?\n\nClassical Homogeneity Test\nFirst, let us test whether the equation (4) is homogeneous in the classical sense.\nApply the scaling x 7→kx, y 7→ky (i.e., α = β = 1):\n\n                                    ky    y\n                        =     (unchanged),\n                                    kx    x\nbut\n                             kx     1   x\n                    =     ·     (changes by factor 1/k).\n                             (ky)2   k  y 2\n\nConclusion: The equation (4) is not classically homogeneous because the two terms scale differently.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                 9 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "We seek a quasi-homogeneous scaling:\n\n                                    x 7→kαx,     y 7→kβy.\n\nApply this scaling to each term of the equation:\n\n                                   y                     y\n                                         transforms as kβ−α   ,\n                                   x                     x\n                                   x                      x\n                                         transforms as kα−2β     .\n                                  y 2                     y 2\n\nFor the equation to be quasi-homogeneous, all terms must transform with the same power β −α of k:\n\n                                                    β   2\n                  α −2β = β −α =⇒  3β = 2α  =⇒   =                                              α    3.\n\nChoose α = 3, β = 2. Then the scaling is:\n\n                                    x 7→k3x,     y 7→k2y.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                10 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "From the scaling x 7→k3x, y 7→k2y, we observe that the ratio\n\n                                               y\n                                                 x2/3\n\nis invariant under this scaling:\n                                   k2y       k2y      y\n                          =     =        .\n                                     (k3x)2/3    k2x2/3    x2/3\n\nThis motivates the substitution\n\n                                      y\n                             u =      =⇒   y = x2/3u,                                (5)\n                                        x2/3\n\nwhere u = u(x) is a new function.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                11 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "From y = x2/3u, differentiate with respect to x:\n\n                                                                           ′   2\n                                    y = 3x−1/3u + x2/3u′.\nWe will now substitute this into the original equation.\nSubstitute (5) into (4):\n\n                                      ′   y    x           2                  x2/3u      x                  y =  +     =⇒       + x2/3u′ =    +              .                       x   y 2           3x−1/3u             x      (x2/3u)2\n\nSimplify the right-hand side:\n\n                            x2/3u                  x\n                    = x−1/3u,        = x−1/3u−2.\n                             x                  (x2/3u)2\n\n\nThus:\n                           2\n                          3x−1/3u + x2/3u′ = x−1/3u + x−1/3u−2.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                12 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "To simplify the equation we multiply both sides by x1/3:\n\n                                   2\n                               3u + xu′ = u + u−2.\n\nTherefore\n                           1                            1\n                          xu′ = 3u + u−2   =⇒   xu′ = u−2  3u3 + 1   .\n\nNow the equation is separable! Separate the variables we have:\n\n                                  u2        dx    1\n                                        1      du =      ,    + 1 ̸= 0.                                              3u3                               3u3 + 1       x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                13 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "Integrate both sides:\n                              Z    u2       Z dx\n                                                 1      du =          .\n                                      3u3 + 1         x\nTo find the integral in the left side we introduce new variable\n\n                                   1\n                                 v = 3u3 + 1,    dv = u2 du.\n\nThen\n                      Z    u2       Z dv\n                                     1      du =    = ln |v| + C1, C1 ∈R.\n                             3u3 + 1         v\nand we obtain\n                                        ln |v| + C1 = ln |x| + C2, C2 ∈R.\n\nExponentiate both sides of the last equality we have\n\n                           1\n                          3u3 + 1 = C3|x|,  C3 = exp(C2 −C1).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                14 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "Absorbing the sign into the constant:\n\n                             1\n                            3u3 + 1 = Cx,   C ∈R, C ̸= 0.\n\nThus,\n                                        u3 = 3(Cx −1).\n\nRecall that u = y/x2/3. Substitute:\n                                        y    3\n                           = 3(Cx −1).\n                                          x2/3\nSimplify:\n                                        y 3\n                         = 3(Cx −1).\n                                        x2\nMultiply by x2:\n                                       y 3 = 3x2(Cx −1).\n\nTaking the cube root:\n                           y(x) = 3p3x2(Cx −1),   C ∈R, C ̸= 0.                           (6)\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                15 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "Note that x ̸= 0 and x ̸= C1 .\nDuring separation, we divided by:\n    u2 (case u = 0),\n      13u3 + 1 (case u3 = −3).\nThus, we could have lost solutions.\n\nCase 1: u = 0 ⇒y = 0. But in the problem statement y ̸= 0. Thus, y ≡0 is not a solution.\n           1                     3√\nCase 2: 3u3 + 1 = 0 ⇒u = −  3. Then:\n                                                     3√\n                                      y(x) = −  3 x2/3.\n\nCompute the derivative:\n                                       y ′ = −2 3√ 3 x−1/3.\n                                          3\nCompute the right-hand side:\n\n            y    x      3√          1                      31/3               3√        +  = −  3 x−1/3 +     x−1/3 =  −31/3 +       x−1/3 = −2  3 x−1/3.\n            x   y 2                  32/3                  3            3\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                16 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "Thus:\n                                  y                                       x\n                     +                         = −2 3√ 3 x−1/3 = y ′.\n                                  x   y 2     3\n\nAlthough the value C = 0 was excluded during the separation of variables (because we divided by\n3u31  + 1), the corresponding function                                                     3√\n                                      y(x) = −  3 x2/3\n\nis still a solution of the original ODE.\n\nImportant: This solution is not singular because it is obtained from the general solution\n\n                                       y 3 = 3x2(Cx −1)\n\nby setting C = 0.\n\nConclusion: The equation\n                                                                                     ′   y    x                                         y =  +\n                                              x   y 2\n\nhas the general solution\n                              y(x) = 3p 3x2(Cx −1),   C ∈R.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                17 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "Exact differential equations\nDEFINITION 1.\nLet F be a function of two real variables x and y such that F(x, y) has continuous first order partial\nderivatives in a domain D. The total differential (or differential) dF(x, y) of the function F(x, y) is\ndefined by the formula\n\n                           ∂F(x, y)     ∂F(x, y)\n                  dF(x, y) =        dx +        dy    for all   (x, y) ∈D.\n                             ∂x          ∂y\n\n EXAMPLE\nFind the total differential of F(x, y) = xy 2 + 2x3y for all real (x, y).\nWe find partial derivatives of F(x, y) :\n\n                       ∂F(x, y)     2          ∂F(x, y)                    = y + 6x2y,       = 2xy + 2x3.\n                         ∂x                   ∂y\n\nThen the total differential dF  is defined by\n\n                          dF(x, y) = (y 2 + 6x2y)dx + (2xy + 2x3)dy\n\nfor all real (x, y).\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                18 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "DEFINITION 2.\nA differential equation\n                             M(x, y)dx + N(x, y)dy = 0                                  (7)\n\nis called an exact in a domain D  if there exists a function F(x, y) such that\n\n                              dF(x, y) = M(x, y)dx + N(x, y)dy\n\nfor all (x, y) ∈D.\nIf DE (7) is an exact in D then\n\n                       ∂F(x, y)                  ∂F(x, y)\n                    = M(x, y)  and       = N(x, y)\n                        ∂x                      ∂y\n\nfor all (x, y) ∈D. Moreover,\n                                       dF(x, y) = 0,\n\nand its solutions are defined implicitly by\n\n                                        F(x, y) = C,\n\nwhere C is an arbitrary constant.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                19 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "EXAMPLE\nDetermine whether or not DE\n                                       y 2dx + 2xydy = 0                                       (8)\n\nis exact.\nThe differential equation (8) is exact, since the expression y 2dx + 2xydy is the differential of the\nfunction F defined for all (x, y) by\n                                       F(x, y) = xy 2,\n\nsince the coefficient of dx is ∂F(x, y)/∂x = y 2 and that of dy is ∂F(x, y)/∂y = 2xy. Therefore\n\n                                 dF(x, y) = y 2dx + 2xydy.\n\nIt is interesting that more simple equation\n\n                                      ydx + 2xdy = 0,\n\nobtained from (8) by dividing through by y, is not exact.\nIt is clear that we need a simple test to determine whether or not a given differential equation is exact.\nThis is given by the following theorem.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                20 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "THEOREM.\n\nSuppose that the functions M(x, y) and N(x, y) are continuous and have continuous first-order partial\nderivatives in the open rectangle D = {a < x < b, c < y < d}. Then the differential equation\n\n                             M(x, y)dx + N(x, y)dy = 0                                  (9)\n\nis exact in D  if and only if\n                           ∂M   ∂N\n                            =                                            (10)\n                                      ∂y    ∂x\n\nat each point of D. The solution of the equation (9) is\n\n                          Z y          Z x\n                                N(x, t) dt +    M(s, y0) ds = c                            (11)\n                                                 y0                     x0\n\nor\n                         Z x           Z y\n                              M(s, y) ds +    N(x0, t) dt = c,                           (12)\n                                                x0                      y0\nwhere (x0, y0) ∈D, c ∈R.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                21 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "EXAMPLES\n1. Solve DE\n                                (y + 2x exp y) + x(1 + x exp y)y ′ = 0.                           (13)\n\n We can rewrite (13) as\n                               (y + 2x exp y)dx + x(1 + x exp y)dy = 0.                         (14)\nThen M = y + 2x exp y and N = x(1 + x exp y), so that My = Nx = 1 + 2x exp y for all (x, y) ∈R2.\nThus, the given DE is exact in R2. Taking (x0, y0) = (0, 0) in (11), we obtain\n\n Z y               Z x                             y       x\n     (x + x2 exp t) dt +    2s ds = (xt + x2 exp t) + s2 = xy + x2 exp y −x2 + x2 = xy + x2 exp y\n   0                         0                            0       0\n\nand the solution of the given DE is\n\n                                   xy + x2 exp y = C, C ∈R.                                (15)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                22 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "We can find a general solution of (14) by the following way also. Since left-hand side of (14) is total\ndifferential of some function F then Fx = M = y + 2x exp y and Fy = N = x + x2 exp y. From the first\nof these, we find\n                          Z\n                     F(x, y) =   (y + 2x exp y) dx = xy + x2 exp y + C(y).\n\nLet us check the result of the integration\n\n                        Fx(x, y) = (xy + x2 exp y + C(y))x = y + 2x exp y.\n\nNow we find partial derivative Fy = x + x2 exp y + C ′(y) and equate it to the function\nN = x + x2 exp y. Therefore C ′(y) = 0 and C(y) = c1, c1 ∈R. Thus\n\n                                 F(x, y) = xy + x2 exp y + c1.\n\n The one - parameter family of solutions F(x, y) = c2, c2 ∈R  is (15), where C = c2 −c1.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                23 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": " 2. Solve the exact differential equation\n\n                       2xy 3 + 3x2y 2 + y dx + 3x2y 2 + 2x3y + x dy = 0,\n\nwith the initial condition\n                                          y(1) = −1.\n\n\nHere M = 2xy 3 + 3x2y 2 + y and N = 3x2y 2 + 2x3y + x. The equation is exact because\n\n                       ∂M        2                        = 6xy + 6x2y + 1\n                                 ∂y\n\nand\n                          ∂N        2                        = 6xy + 6x2y + 1\n                                 ∂x\nare identically equal. Therefore there exists a function F(x, y) such that dF = M dx + N dy and,\nmoreover, Fx = M = 2xy 3 + 3x2y 2 + y, Fy = N = 3x2y 2 + 2x3y + x.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                24 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "Integrating M with respect to x gives\n\n                       Z      3         2                 3        2                 F(x, y) =   (2xy + 3x2y + y) dx = x2y + x3y + xy + φ(y).\n\n\nDifferentiating with respect to y and comparing with N,\n\n                ∂F          2                                      2              = 3x2y + 2x3y + x + φ′(y) = N = 3x2y + 2x3y + x,\n                  ∂y\n\nso φ′(y) = 0 and φ(y) is constant. The general solution is therefore\n\n                                   x2y 3 + x3y 2 + xy = C.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                25 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "Substituting the initial condition y(1) = −1 into the left-hand side of the general solution yields\n\n                        12 · (−1)3 + 13 · (−1)2 + 1 · (−1) = −1 + 1 −1 = −1.\n\nThus C = −1, and the solution of the Cauchy problem is given implicitly by\n\n                                   x2y 3 + x3y 2 + xy = −1,\n\nor equivalently,\n                                  x2y 3 + x3y 2 + xy + 1 = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                26 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "Some problems for exact equations can be solved simply using the grouping method.\n 3. Solve DE\n                               (3x2 + 4xy)dx + (2x2 + 2y)dy = 0.                            (16)\n\n First, expand the expression:\n                             3x2 dx + 4xy dx + 2x2 dy + 2y dy = 0.\n\nNow group the terms to recognize exact differentials:\n                             3x2 dx + 4xy dx + 2x2 dy + 2y dy = 0.\n                               | d(x3){z }  |     d(2x2y){z     }  |d(y{z2)}\n\nSince\n               d(x3) = 3x2 dx,    d(y 2) = 2y dy,    d(2x2y) = 4xy dx + 2x2 dy,\n\nwe can rewrite the equation as\n                                 d(x3) + d(y 2) + d(2x2y) = 0.\n\nTherefore,\n                                   d(x3 + y 2 + 2x2y) = 0.\n\nand the solutions of (16) are defined implicitly by\n                                  x3 + y 2 + 2x2y = C, C ∈R.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                27 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": " 4. Solve DE\n                                       2y + xy ′ = 0.                                       (17)\n\n The equation (17) is not exact. Indeed, we rewrite (17) in the form\n\n                                      2ydx + xdy = 0\n\nand put M = 2y and N = x. Then My = 2 and Nx = 1. Hence My ̸= Nx and by theorem (17) is not\nexact. But if we multiply it by x, then M = 2yx N = x2 and My = Nx = 2x. Hence\n\n                                     2xydx + x2dy = 0\n\nis an exact DE and taking (x0, y0) = (0, 0) we obtain from (11) the general solution of the given DE\n\n  Z y          Z x               Z y      Z x                      C\n     N(x, t) dt +    M(s, 0) ds = C ⇒    x2 dt +    0 ds = C ⇒x2y = C and y =     , x ̸= 0.\n    0                  0                          0            0                               x2\n\nThe multiplier x here is called an integrating factor.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                28 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "Lecture 2. Homework\nI. Solve DE\n                         a)  (exp(v) + 1) cos udu + exp(v)(sin u + 1)dv = 0.\n\n This equation is separable. We first separate variables to obtain\n\n                               cos udu                      = −exp(v)dv     sin u ̸= −1.                                   sin u + 1     exp(v) + 1,\n\nNext we integrate:\n\n          Z  cos udu     Z  exp(v)dv    Z  d(sin u + 1)    Z  d(exp(v) + 1)\n              = −      ⇒         = −        ⇒\n                   sin u + 1        exp(v) + 1          sin u + 1           exp(v) + 1\n\n                                   ln(sin u + 1) = −ln(exp(v) + 1) + ln C,\n\nwhere C is arbitrary positive constant. We simplify to obtain\n\n                    ln[(sin u + 1)(exp(v) + 1)] = ln C ⇒(sin u + 1)(exp(v) + 1)] = C ⇒\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                29 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "                              C              C\n                  ⇒exp(v) + 1 =        ⇒exp(v) =      −1 ⇒                  (18)\n                                              sin u + 1                sin u + 1\n\n                               C\n                                v = ln       −1   , C > 0,                              (19)\n                                                 sin u + 1\nwhere u ̸= −π2 + 2πn, n ∈Z. We note that origin DE is written in differential form.  If u is unknown\nfunction then we can express u from (18) and obtain a general solution of DE\n\n                C                    C\n              sin u =       −1 ⇒u = arcsin        −1 + 2πn, n ∈Z, C > 0.\n                   exp(v) + 1                   exp(v) + 1\n\nNow we should add solutions\n                                 u = −π + 2πn, n ∈Z.\n                                        2\nJoining solutions we obtain\n\n                            C\n                     u = arcsin        −1 + 2πn, n ∈Z, C ≥0.\n                                   exp(v) + 1\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                30 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "I. Solve DE\n                        b)  (x + 4)(y 2 + 1)dx + 2y(x2 + 3x + 2)dy = 0.                      (20)\n\n This equation is separable. We first separate variables to obtain\n\n                                        (x + 4)dx                            = −2ydy                                    x2 + 3x + 2     y 2 + 1.\n\nNext we integrate:\n                        Z  2y dy   Z  d(y 2 + 1)         2                       =        = ln(y + 1).\n                                y 2 + 1       y 2 + 1\n\nTo integrate left hand side we use partial fractions. We have\n\n                 x + 4          x + 4      A     B     A(x + 2) + B(x + 1)\n               =         =    +    =\n              x2 + 3x + 2    (x + 1)(x + 2)   x + 1   x + 2       (x + 1)(x + 2)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                31 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "and deduce that\n                                  x + 4 = A(x + 2) + B(x + 1).\n\nThen x = −1 gives A = 3 and x = −2 gives B = −2. Thus we find\n\n       Z   (x + 4) dx     Z   dx     Z   dx                                        |x + 1|3\n              = 3     −2     = 3 ln |x + 1| −2 ln |x + 2| = ln              .\n            x2 + 3x + 2       x + 1       x + 2                                 (x + 2)2\n\nHence, we obtain solutions in the form\n\n                                            |x + 1|3         2\n                                        ln     + ln(y + 1) = ln C1.\n                                      (x + 2)2\n\nHere we write ln C1 (C1 > 0) for the arbitrary constant, since each term on the left is a ln term. We\nsimplify to obtain\n                                              |x + 1|3(y 2 + 1)\n                                          ln          = ln C1.\n                                            (x + 2)2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                32 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "Now from this, we have\n                                          |x + 1|3(y 2 + 1) = C1(x + 2)2.\n\nWe note DE (20) has differential form. We may actually regard either variable as the dependent one\nand the other as the independent. As we divided (20) by (x + 1)(x + 2) we should suppose that x ̸= −1\nand x ̸= −2. It is easy to check that functions x(y) ≡−1 and x(y) ≡−2 are solutions of (20). Then\n\n                                      |x + 1|3(y 2 + 1) = C(x + 2)2, C ≥0\n\nis general solution and x(y) ≡−2  is a singular one.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                33 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "II. Solve the initial-value problem:\n\n                     a)  (3x2 + 9xy + 5y 2)dx −(6x2 + 4xy)dy = 0, y(2) = −6.\n\n Since we solve the initial-value problem we could suppose that x > 0 and y < 0. We first write DE in\nthe form\n                                                       2                    y        y  2                       dy                                                                                 x + 5                                                                                          x                 =                              3x2 + 9xy + 5y ⇒dy = 3 + 9                                                                                       y\n                       dx      6x2 + 4xy       dx       6 + 4 x\nWe recognize that this DE is homogeneous. We let y = vx, and then\n\n                                      dy        dv\n                          = v + x     .\n                                      dx        dx\n\nMaking substitution, the DE becomes\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                34 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "                                       dv   3 + 9v + 5v 2\n                                    v + x  =\n                                       dx      6 + 4v\nor\n                            dv   3 + 9v + 5v 2       v 2 + 3v + 3\n                            x  =         −v =                    .\n                            dx      6 + 4v            4v + 6\nWe now separate variables to obtain\n\n                         2v + 3        dx                2 + 3v + 3)   dx                    2        =   ⇒  2d(v       =      .                        v 2 + 3v + 3dv    x            v                                                                    2 + 3v + 3     x\n\nIntegrating, we find\n                           2 ln |v 2 + 3v + 3| = ln |x| + ln C, C > 0,\n\nor\n                                       ln(v 2 + 3v + 3)2 = ln(C|x|).\n\nFrom this,\n                                        (v 2 + 3v + 3)2 = C|x|.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                35 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "Now we substitute v = y/x to obtain\n\n                                              2                 2                                    y + 3xy + 3x2\n                               = C|x|.\n                                          x2\n\nSince x > 0 we simplify to obtain\n                                      (y 2 + 3xy + 3x2)2 = Cx5.\n\nApplying the initial condition y(2) = −6, we let x = 2, y = −6 and find 144 = 32C or C = 9/2. We\nthus obtain the particular solution\n\n                                    2(y 2 + 3xy + 3x2)2 = 9x5.                                (21)\n\n We found the solution in implicit form. To find the solution in explicit form we solve (21) with respect\nto y :\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                36 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "                 2               3                    1    q     √             y + 3xy + 3x2 = √ x5/2 ⇒   y±(x) =   −3x ±  −3x2 + 6  2x5/2   .\n                             2                   2\n\nSolving the quadratic equation for y has introduced a spurious solution that does not satisfy the initial\nconditions. We test:\n                                1 h   √        i  −6 + 6                          y+(2) =   −6 +  −12 + 48 =     = 0\n                                2                       2\nand\n                               1 h   √        i  −6 −6                        y−(2) =   −6 −  −12 + 48 =     = −6.\n                               2                       2\nOnly the second function satisfies the initial condition, so that the unique solution to the initial value\nproblem is\n                                  1    q     √\n                           y−(x) =   −3x −  −3x2 + 6  2x5/2   .\n                                  2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                37 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "II. Solve the initial-value problem:\n\n                      b)  (5x + 2y + 1)dx + (2x + y + 1)dy = 0, y(0) = 1.                   (22)\n\n We rewrite DE in (22) as\n                                    dy                        = −5x + 2y + 1 .                                   (23)\n                                    dx      2x + y + 1\nWe solve the Cauchy problem with initial condition y(1) = 1. So we can suppose that x > 0, y > 0 in\nsome neighborhood of point (1, 1). Then 2x + y + 1 ̸= 0. DE (23) has the following form\n\n                                 dy       a1x + b1y + c1\n                       = f\n                                 dx       a2x + b2y + c2\n\nwith f (z) = −z, a1 = 5, b1 = 2, a2 = 2, b2 = 1. Since ∆= a1b2 −a2b1 = 5 −4 = 1 ̸= 0 we will use\nthe transformation\n                                     x = u + h, y = v + k,\n\nwhere h and k are the solutions of the system of linear equations\n\n                     (                                     a1h + b1k + c1 = 0,\n                                     a2h + b2k + c2 = 0\n\nor\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                38 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "                     (                                   5h + 2k + 1 = 0,\n                                   2h + k + 1 = 0.\n\nThe solution of this system is h = 1, k = −3 and so the transformation is\n\n                                     x = u + 1, y = v −3.\n\nSubstituting these values to the original DE in (22), we have\n\n              (5(u + 1) + 2(v −3) + 1)d(u + 1) + (2(u + 1) + v −3 + 1)d(v −3) = 0\n\nor\n                                (5u + 2v)du + (2u + v)dv = 0.\n\nDividing last DE by udu, we obtain\n\n                                                   v  dv                                5 + 2v +  2 +    = 0.\n                                   u         u  du\n\nWe write this in the form\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                39 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "                                      dv\n                                                                u                                      (24)                          = −5 + 2vv\n                                    du     2 + u\n\nDE (24) is homogeneous. We let v = zu to obtain\n\n                                         dz\n                                        z + u                           = −5 + 2z .\n                                      du     2 + z\n\nThis reduces to\n                              dz\n                           u                    = −5 + 2z −z = −z2 + 4z + 5\n                            du     2 + z            2 + z\nor\n                          z + 2                     = −du ⇒   1 d(z2 + 4z + 5) = −du .                      z2 + 4z + 5dz    du        2  z2 + 4z + 5      du\nIntegrating we find\n                                  ln |z2 + 4z + 5| = −2 ln |u| + ln c1, c1 > 0\n\nor\n                                          ln |z2 + 4z + 5| = ln(c1u−2).\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                40 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "From this,\n                                            |z2 + 4z + 5| = c1u−2.\n\nNow replacing z by v/u and simplifying, we obtain\n\n                                              |v 2 + 4vu + 5u2| = c1.\n\nFinally replacing u by x −1 and v by y + 3, we obtain the solutions of the original D.E. in the form\n\n                                |(y + 3)2 + 4(y + 3)(x −1) + 5(x −1)2| = c1\n\nor\n                               y 2 + 2y + 4xy + 5x2 + 2x + 2 = c1.\n\nWe omitted modulus since x > 0, y > 0. Now we use the initial condition y(0) = 1 to find c1 = 5.\nTherefore\n                                 y 2 + 2y + 4xy + 5x2 + 2x = 3\n\n is a solution of (22). We obtained solution of (22) in implicit form.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                41 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "IMPORTANT REMARK\n\n\nTO SOLVE DIFFERENTIAL EQUATIONS YOU SHOULD KNOW WELL:\n\nMETHODS OF INTEGRATION OF FUNCTIONS\n\nTABLE OF STANDARD INTEGRALS\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                42 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "Homework\n\nFor reading:\n\n   PDF presentation.\n\n    M. V. Makarets, V. Yu. Reshetnyak, pp. 16–24.\n\n     S.L. Ross, pp. 25–35.\n\nProblems\nI. Solve the initial-value problem in two ways\n\n                  (2y sin x cos x + y 2 sin x)dx + (sin2 x −2y cos x)dy = 0, y(0) = 3.\n\nII. Determine the constant A such that the equation is exact, and solve the resulting exact equation\n\n                            (Ax3y + y 3)dx + (x4 + 3xy 2)dy = 0.\n\nIII. Solve the following differential equation\n\n                                                                  ′   y   x3                                y =  +     ,     x ̸= 0,   y ̸= 0.\n                                     x    y\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 3, 2026                43 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

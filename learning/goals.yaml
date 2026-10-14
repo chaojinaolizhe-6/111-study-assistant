@@ -1,0 +1,127 @@
+# 能力目标（goals.yaml）
+
+# 说明：
+# - 目标 = 可观察行为（例："不给公式，解释为什么乘以 μ 后左端可合并成导数"），不是"了解XX"。
+# - 无考试日期时，用四周能力里程碑代替（milestone 字段）。
+# - 真实考试范围、题型、时间约束均为未知，尚未提供——不编造。
+
+goals:
+  - id: ee-ac-circuits
+    title: 独立求解电工电子技术 交流电路（Chapter Two）计算题
+    subject: 06-电工电子技术
+    targets:
+      - ee.ac.reactance
+      - ee.ac.phasor-impedance
+      - ee.ac.series-rlc
+      - ee.ac.resonance
+    acceptance:
+      - 无提示完成 C2H2 五道计算题并写出完整过程（含单位换算）
+      - 能解释"电流与总电压同相 ⟹ 谐振"，并判断频率变化后电路呈阻性/感性/容性
+    deadline: null
+    milestone: 2026-10-24
+    status: active
+    note: 2026-09-26 建立。作业 C2H1（9 单选）/C2H2（5 计算）已读图登记；**截止日期未知**（学习者待确认）。学习者自述"电工学得还行，但非常容易忘"→ 需并入 SM-2 复习。
+
+  - id: tm-t4-conservation-laws
+    title: 独立求解理论力学 Topic 4 守恒定律问题
+    subject: 01-理论力学
+    targets:
+      - tm.t4.cyclic-momentum
+      - tm.t4.energy-integral
+      - tm.t4.energy-criteria
+      - tm.t4.direct-check
+      - tm.t4.angular-momentum-integral
+      - tm.t4.mechanical-similarity
+      - tm.t3.lagrangian-construction
+    acceptance:
+      - 无提示写出给定系统的全部运动积分，并说清每一项的成立条件
+      - 能说出能量守恒的两条判据（L 不显含 t；T 为广义速度二次齐次/约束稳定）并据此判断具体系统
+      - 能用拉格朗日方程直接验证 dE/dt = 0
+      - 能用循环坐标或质心系简化问题并解出所求量
+    deadline: null
+    milestone: 2026-10-23    # 四周能力里程碑（2026-09-25 起）
+    status: active
+    note: 2026-09-25 建立；2026-09-26 补充 energy-criteria / direct-check 两个目标（来自 HW H4.1 的实际缺口）。学习者 2026-09-26 更正自述为"课件 4 还没掌握，正在自行推导"。
+
+  - id: tm-t5-1d-motion
+    title: 独立求解理论力学 Topic 5 一维势场中的运动（能量积分）
+    subject: 01-理论力学
+    targets:
+      - tm.t5.potential-analysis
+      - tm.t5.turning-points
+      - tm.t5.law-of-motion
+      - tm.t5.effective-potential
+      - tm.t5.central-motion-types
+    acceptance:
+      - 能画出给定 U(x) 的草图（驻点、极小值、零点、两端行为）
+      - 能由 U(x) 的形状判定允许的能量范围与运动类型（束缚 / 无界 / 临界 / 静止）
+      - 能由 U(x) = E 解出转向点并写成 E 的函数
+      - 能用能量积分 t = ∫dx/√((2/m)(E−U(x))) 求出运动规律（含积分常数与符号分支）
+    deadline: null
+    milestone: 2026-11-08    # 四周能力里程碑（2026-10-11 起）
+    status: active
+    note: 2026-10-11 建立（HW H5.1，due 2026-10-12）。课件 TM_Topic_05_1_2026_student.pdf（15 页，p15＝Homework；p10–p11 给了转向点与能量积分 t=±∫dx/√(2(E−U)/m)）。⚠ **2026-10-11 学习者明确：Topic 5 内容尚未学习**（首轮误按"已学"直接布置作业，已纠正）→ 先补讲再做题；真实三态见 `subjects/01-理论力学/progress.md`。
+
+  - id: ode-systems-const-coeff
+    title: 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）
+    subject: 03-微分方程
+    targets:
+      - ode.sys.eigen-basic
+      - ode.sys.case-complex
+      - ode.sys.case-repeated
+      - ode.sys.ivp
+    acceptance:
+      - 能由 det(A − λE) = 0 求全部特征值与代数重数，并对每个 λ 解 (A − λE)V = 0 得特征向量
+      - 能算出几何重数 g = n − rank(A − λE) 并据此判断走哪个分支
+      - 复根情形能由 Ve^(λx) 取实部/虚部得到两个实值解
+      - 重根且 g < m 时能补广义特征向量链 (A − λE)V_{k+1} = V_k，并写成多项式乘 e^(λx) 的形式
+      - 给初值 Y(x₀) = Y₀ 能解出常数 c₁…cₙ
+    deadline: null
+    milestone: 2026-11-09    # 四周能力里程碑（2026-10-12 起）
+    status: active
+    note: 2026-10-12 建立（HW Lecture 14–15，due 2026-10-18；方程组章**不在 10-20 期中范围**）。课件 `14_15_Linear-DE-systems-with-constant-coefficients.pdf`（64 页，Case 1/2/3a/3b）；讲义 `subjects/03-微分方程/讲义/方程组章-精讲-20261008.md`。首次作答（2026-10-12）：特征方程/特征值/特征向量、复根情形全对；**重根情形漏了广义特征向量**（写成 x·Ve^{λx}，代入不是解）→ 见 `attempt-48`。
+
+  - id: pilot-ode-integrating-factor
+    title: 独立解一阶线性 ODE（试点）
+    subject: 03-微分方程
+    targets:
+      - ode.integrating-factor
+    acceptance:
+      - 无提示独立推导积分因子并完成求解
+      - 能代回原方程与初值条件验证
+    deadline: null           # 无考试日期
+    milestone: 2026-10-22    # 四周能力里程碑（试点起点 2026-09-24 起 4 周）
+    status: active           # proposed | active | done | dropped
+    note: 2026-09-24 用户确认试点主题。基线题 learning/tasks/ode-if-baseline-01.md。
+
+  - id: ielts-english-75
+    title: 雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）
+    subject: 11-英语-雅思
+    targets:
+      - en.listen.decoding       # 听觉识别/解码；短段诊断按需，不用95%当IELTS8指标
+      - en.listen.structure      # 一遍后复述论证结构与说话人态度
+      - en.read.timed            # 目标8；现有雅思阅读水平未测
+      - en.write.tr              # Task Response / Task Achievement
+      - en.write.cc              # Coherence and Cohesion
+      - en.write.lr              # Lexical Resource
+      - en.write.gra             # Grammatical Range and Accuracy
+      - en.speak.fc              # Fluency and Coherence
+      - en.speak.lr              # Lexical Resource
+      - en.speak.gra             # Grammatical Range and Accuracy
+      - en.speak.pr              # Pronunciation（**导师无音频输入，须外部评分证据**）
+    acceptance:
+      - 听力：完整可靠IELTS套题在对应规则下稳定达到目标8；短段理解/听写用于诊断，不以95%替代官方答题成绩
+      - 阅读：限时 60 分钟完整一套，正确率对应 8 档（检查点测）
+      - 写作：换新题、限时、闭卷、无帮助条件下，TR/CC/LR/GRA 四项稳定 ≥6.5 并向 7.0 推进
+      - 口语：换新题、限时、闭卷、无帮助条件下，FC/LR/GRA 稳定 ≥7.0；PR 用外部评分证据
+      - 正式完整产出才按适用维度记录参考分档，训练如实记录局部进展；错因仅据证据，不从文本diff编造百分比
+    deadline: null             # 无考试日期：以"达到门槛才报名"替代倒计时（门槛见训练计划 §5）
+    milestone: null            # 2026-10-04取消导师自设的四周强制节点，按实际进展检查
+    status: active
+    note: >-
+      2026-10-02 建立。学习者现大二，考试不着急，可在大三中期或末期考，以训练水平为主、不赶进度；
+      学期每周 5 小时、假期可加量（约 15–20h/周）；口语目标 7，写作"能高就高"（兴趣驱动：喜欢用英语与 AI 交流），
+      听力以 8 为方向；外部发音/写作反馈由学习者自寻线上资源。计划与原理见 subjects/11-英语-雅思/。
+      ⚠ 导师无音频输入 → `en.speak.pr` 在接入外部评分前只能记"未测"，**不得由逐字转写推断发音**。
+      ⚠ 对话/示例可作训练；提示与本题曝光按实际记录，不因普通互动或通用方法学习自动捏造帮助；不凭文字聊天宣称完整口语水平。
+      ⚠ 均分算术：8.0+8.0+6.5+7.0 = 29.5 → 7.5；仅当其余实际科目也达到该组合时总分为7.5，不由写作一项锁定总分，写作上限由兴趣决定。

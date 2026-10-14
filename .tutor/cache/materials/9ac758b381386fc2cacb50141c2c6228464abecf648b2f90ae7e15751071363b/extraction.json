@@ -1,0 +1,426 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/5(1).pdf",
+  "sha256": "9ac758b381386fc2cacb50141c2c6228464abecf648b2f90ae7e15751071363b",
+  "page_count": 55,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Bernoulli differential equation",
+      3
+    ],
+    [
+      1,
+      "Ricatti's DE",
+      22
+    ],
+    [
+      1,
+      " DE resolved by y",
+      28
+    ],
+    [
+      1,
+      "Lecture 4. Homework ",
+      37
+    ],
+    [
+      1,
+      "Homework",
+      54
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 5.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 10, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Bernoulli differential equation\n\n\n2  Ricatti’s DE\n\n\n3  DE resolved by y\n\n\n4  Lecture 4. Homework\n\n\n5 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 2 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Bernoulli differential equation\n\nWe now consider a rather special type of equation that can be reduced to a linear equation by an\nappropriate transformation. This is the so-called Bernoulli equation.\nDEFINITION 1.\nAn equation of the form\n                                      y ′ + p(x)y = q(x)y n                                      (1)\n\nis called a Bernoulli differential equation.\nWe observe that if n = 0 or n = 1, then the Bernoulli equation (1) is actually a linear equation and is\ntherefore readily solvable as such. However, in the general case in which n ̸= 0 or n ̸= 1, this simple\nsituation does not hold and we must proceed in a different manner. We now state and prove theorem,\nwhich gives a method of solution in the general case.\nTHEOREM.\nSuppose n ̸= 0 and n ̸= 1. Then the transformation v = y 1−n reduces the Bernoulli equation (1) to a\nlinear equation in v.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 3 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "Proof. We first multiply Equation (1) by y −n, thereby expressing it in the equivalent form\n\n                                   y −ny ′ + p(x)y 1−n = q(x).                                   (2)\n\nIf we let v = y 1−n, then\n                                    dv          −n dy                        = (1 −n)y\n                                    dx             dx\nand equation (2) transforms into\n                                   1  dv\n                          + p(x)v = q(x)\n                                 1 −n dx\nor, equivalently,\n                              dv\n                     + (1 −n)p(x)v = (1 −n)q(x).\n                              dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 4 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "Letting\n                                       p1(x) = (1 −n)p(x)\n\nand\n                                       q1(x) = (1 −n)q(x)\n\nthis may be written\n                                    dv\n                        + p1(x)v = q1(x)\n                                    dx\nwhich is linear in v. Theorem is proved.\nNote that if n < 0 then y ̸= 0 and n > 0 then y ≡0 is a particular solution of (1).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 5 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "EXAMPLE 1\nSolve DE\n                                      dy\n                          + y = xy 3.                                         (3)\n                                      dx\n This is a Bernoulli differential equation, where n = 3. We first multiply the equation through by y −3,\nthereby expressing it in the equivalent form\n\n                                     −3 dy    −2                                       y   + y  = x.\n                                        dx\n\nIf we let v = y 1−n = y −2, then\n                                      dv       −3 dy                          = −2y\n                                      dx         dx\nand the preceding differential equation transforms into the linear equation\n\n                          −1 dv + v = x.\n                                       2 dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 6 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "Writing this linear equation in the standard form\n\n                                      dv\n                              −2v = −2x,                                        (4)\n                                      dx\n\nwe see that an integrating factor for this equation is\n\n                    Z                Z\n                  exp    p(x) dx = exp −   2 dx = exp(−2x + c), c ∈R.\n\n\nPutting c = 0 and multiplying DE (4) by exp(−2x), we find\n\n                        exp(−2x)dv −2 exp(−2x)v = −2x exp(−2x)\n                                 dx\n\nor\n                             d\n                                 (exp(−2x)v) = −2x exp(−2x).\n                              dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 7 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "Integrating, we obtain\n\n                 Z                  Z                        Z\n       exp(−2x)v =   (−2x exp(−2x)) dx =   x d exp(−2x) = x exp(−2x) −   exp(−2x) dx\n\n\n                           1 Z                               1\n        = x exp(−2x) +     exp(−2x) d(−2x) = x exp(−2x) +  exp(−2x) + C\n                           2                                 2\n\n                                           1\n                ⇒   v = x +  + C exp(2x),\n                                           2\nwhere C is an arbitrary constant. But\n                                             1\n                                            v =     .\n                                                y 2\n\nThus we obtain the solutions of (3) in the form\n\n                                  1       1\n                       = x +  + C exp(2x).\n                                    y 2       2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 8 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "EXAMPLE 2\nSolve DE\n                                  dy        y\n                       =                 , x ̸= 0.\n                                  dx   2x + x2y 4\n\n At first inspection, this equation does not resemble any standard form. It is not separable, not linear,\nand not a Bernoulli equation with respect to y(x) because of the term x2y 4 appearing in the\ndenominator. However, a surprising simplification occurs if we treat x as a function of y instead of the\nother way around. This change of perspective will reveal that the equation is actually a classical\nBernoulli equation in disguise. We begin by recalling the fundamental relationship between the\nderivatives of inverse functions:\n                                        dy    1\n                           =      .\n                                        dx     dx\n                                                              dy\n\nApplying this to the given equation yields\n\n                                     1        y\n                         =                 .\n                                                  dx    2x + x2y 4\n                                                  dy\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                 9 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": " Taking reciprocals on both sides gives\n\n                                     dx   2x + x2y 4\n                         =                 .\n                                     dy        y\n\nSplitting the fraction into two terms, we obtain\n\n                               dx   2x   x2y 4   2\n                     =  +   =  x + y 3x2.\n                               dy    y     y     y\n\nTherefore, the equation can be rewritten as\n\n                                     dx −2 x = y 3x2.\n                                     dy   y\n\nThis is precisely the standard form of a Bernoulli equation in the variable x(y) with coefficients\np(y) = −2y , q(y) = y 3, and the exponent is n = 2.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                10 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": " For a Bernoulli equation of the form\n                                   dx\n                        + p(y)x = q(y)xn,\n                                   dy\nthe standard substitution is\n                                             z = x1−n.\n\nIn our case, n = 2, so we set\n                                                1\n                                           z = x1−2 =    .\n                                                    x\nWe now compute the derivative of z with respect to y:\n                                       dz        dx\n                          = −x−2     .\n                                      dy        dy\nSubstituting these expressions into the Bernoulli equation will transform it into a linear differential\nequation for z(y). Starting from\n                                     dx −2 x = y 3x2,\n                                     dy   y\nwe divide both sides by x2:\n                                 x−2                                       dx −2 x−1 = y 3.\n                                       dy   y\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                11 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": " Using the substitution z = x−1 and x−2 dydx = −dzdy , we obtain\n\n                             −dz −2 z = y 3.\n                                       dy   y\n\nMultiplying the entire equation by −1 gives the linear form\n\n                                      dz   2\n                         +  z = −y 3.\n                                     dy   y\n\nThis equation is now linear in z and can be solved using the method of integrating factors. For the\nlinear equation\n                                      dz   2\n                         +  z = −y 3,\n                                     dy   y\n\nwe compute the integrating factor µ(y) as follows:\n\n                                 Z  2\n                          µ(y) = exp      dy = exp(2 ln |y|) = y 2.\n                                          y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                12 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": " Multiplying the linear equation by µ(y) yields\n\n                                                 2 dz                                      y   + 2yz = −y 5.\n                                      dy\n\nThe left-hand side is now recognized as the derivative of the product y 2z:\n\n                                    d\n                                            y 2z = −y 5.\n                                     dy\n\nIntegrating both sides with respect to y gives\n\n                                 Z\n                                  y 2z =                               −y 5 dy = −y 6 + C,\n                                                  6\n\nwhere C is an arbitrary constant of integration.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                13 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": " From the previous step, we have\n                                        y 2z = −y 6 + C.\n                                            6\nSolving for z, we get\n\n                                           z =                                 C −y 4 .\n                                             y 2    6\nRecall that z = x−1 = x1 . Therefore,\n                                      1\n                         =                                 C −y 4 .\n                                         x    y 2    6\n\nTaking reciprocals gives the explicit solution for x as a function of y:\n\n                                         1        6y 2\n                                 x(y) =                             =                                                                                                   .\n                                         C                                          6C −y 6\n                                                        y                                                                          2 −y64\n\nThis expression represents the general solution, where y is the independent variable.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                14 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": " Although the explicit form x(y) is perfectly valid, we usually prefer to express the solution in terms of\nthe original variable x and function y. Starting from\n\n                                      1\n                         =                                 C −y 4 ,\n                                         x    y 2    6\n\nwe multiply both sides by 6y 2:\n                                      6y 2\n                          = 6C −y 6.\n                                         x\nMultiplying through by x gives\n                                      6y 2 = 6Cx −xy 6.\n\nEquivalently, we may write\n                                    xy 6 + 6y 2 = 6Cx, C ∈R.\n\n This is the correct implicit general solution of the differential equation.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                15 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": " During the solution process, we divided by x2 and y. We must check whether this division excluded any\nsolutions. Consider y = 0 since x ̸= 0. Substituting this directly into the original equation gives\n\n                                d          0\n                                          (0) =       = 0,\n                                  dx      2x + x2 · 0\n\nso the equation is satisfied identically. Therefore, y = 0 is a solution. It is important to note that y = 0\nis not a singular solution. It is obtained from the general implicit solution by setting C = 0. Indeed,\nwhen C = 0, the general solution becomes\n\n                                        xy 6 + 6y 2 = 0,\n\nwhich factors as\n                                        y 2(xy 4 + 6) = 0.\n\nThis gives both y = 0 and the branch xy 4 + 6 = 0. Thus y = 0 is a particular solution corresponding to\nthe special choice C = 0, not a singular solution that is lost during the algebraic manipulations.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                16 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "Consider the equation\n                                      df (y) dy\n                         + p(x)f (y) = q(x),                                 (5)\n                                 dy  dx\n\nwhere f  is a known function of y. Letting v = f (y), we have\n\n                                  dv   dv dy    df (y) dy\n                       =    =               ,\n                                  dx   dy dx     dy  dx\n\nand equation (5) becomes\n                                    dv\n                         + p(x)v = q(x),\n                                    dx\nwhich is linear in v. We now observe that the Bernoulli differential equation (1) is a special case of\nequation (5). Writing (1) in the form\n\n                                    y −ny ′ + p(x)y 1−n = q(x)\n\nand then multiplying through by (1 −n), we have\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                17 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "                                (1 −n)y −ny ′ + p1(x)y 1−n = q1(x),\nwhere p1(x) = (1 −n)p(x) and q1(x) = (1 −n)q(x). This is of the form (5), where f (y) = y 1−n.\nLetting v = y 1−n, it becomes\n                                   dv\n                        + p1(x)v = q1(x),\n                                   dx\nwhich is linear in v.\nEXAMPLE\nSolve initial value problem\n                               dy\n                     + 4 = exp(x −y), y(0) = 0.                                (6)\n                               dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                18 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "We multiply DE in (6) by exp(y)\n\n                                exp(y)dy + 4 exp(y) = exp(x).                                (7)\n                                     dx\n\nNow DE (7) has the form of DE (5). Letting v = exp(y), we have\n\n                                  dv   dv dy                       =    = exp(y)dy ,\n                                  dx   dy dx         dx\n\nand equation (7) becomes\n                                     dv\n                         + 4v = exp(x),                                       (8)\n                                     dx\nwhich is linear in v. We see that an integrating factor for this equation is\n\n                     Z               Z\n                    exp    p(x) dx = exp    4 dx = exp(4x + c), c ∈R.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                19 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "Putting c = 0 and multiplying DE (8) by exp(4x), we find\n\n                              exp(4x)dv + 4 exp(4x)v = exp(5x)\n                                    dx\n\nor\n                                d\n                                       (exp(4x)v) = exp(5x).\n                                  dx\nIntegrating, we obtain\n\n                    Z             1                  1\n             exp(4x)v =   exp(5x) dx =   exp(5x) + C ⇒v =   exp(x) + C exp(−4x),\n                                    5                  5\n\nwhere C is an arbitrary constant. But v = exp(y) and thus we have the solution of DE in (6)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                20 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "in the form\n                                      1\n                             y(x) = ln    exp(x) + C exp(−4x)   .\n                                      5\n\nWe put x = 0 and y = 0 and find C = 4/5. Then we have\n\n                                       1             4\n                                0 = ln  + C ⇒C =\n                                       5             5\n\nand the solutions of (6) is\n                                      1         4\n                             y(x) = ln    exp(x) +  exp(−4x)   .\n                                      5         5\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                21 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "Ricatti’s Equation\nDEFINITION 2. Differential equation\n\n                                y ′(x) = q0(x) + q1(x)y + q2(x)y 2                               (9)\n\nwhere q0, q1, and q2 are given functions, with q0, q2 ̸≡0 is called Ricatti’s equation.\nIf q0 or q2 vanish identically on I, then (9) is reduced either to a Bernoulli equation for n = 2 or to a\nlinear first order DE, both of them previously studied.\nIn general, the solution of (9) cannot be obtained by means of integrals or, by another words, (9) is not\nsolved in quadratures (its general solution is not expressed through one or more integrals). However,\nwhen we know a particular solution yp of (9), we are able to compute the general solution of that\nequation by reducing it to a linear first-order DE by means of the substitution\n\n                                               1\n                                         y = yp +     .                                       (10)\n                                  w\n\nIn view of (9) and (10), we then have\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                22 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "                                                 1                                                                  1   2\n                                                                                                                              .                   = q0(x) + q1(x)  yp +                                  + q2(x)  yp +                  y ′ = y p′ −w 2′                   w                w           w\n\nSince yp is a solution of (9), it follows that\n\n                                                        q1(x)\n                     = q0(x) + q1(x)yp +     q0(x) + q1(x)yp + q2(x)y p2 −w 2′                                    + q2(x)y p2 + 2q2(x)yp + q2(x)2                      w                w            w     w\n\nor\n                 −w ′ = q1(x) + 2q2(x)yp + q2(x)\n                      w 2   w      w     w 2\nwhich, after a rearrangement of the terms, becomes\n\n                       w ′ + (q1 + 2q2yp)w = −q2.\n\nLast equation is now solved by the methods for linear DE. Then solution of (9) is\n\n                                           1\n                                     y = yp +     ,   y = yp.\n                               w\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                23 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "The matrix version of the Riccati’s equation occurs in optimal control. Its practical importance and the\nfact that it cannot be solved in quadratures have led to the development of the so-called qualitative\ntheory of differential equations.\nEXAMPLE 1.\nSolve the differential equation\n                                    y ′ = 1 + x2 −2xy + y 2.\n\n This is the Riccati’s equation with q0(x) = 1 + x2, q1(x) = −2x, q2(x) = 1. We find that y = x is a\nsolution. Substituting\n                                               1\n                                          y = x +\n                                  w\nwe have\n             y ′ = 1 −w ′ = 1 + x2 −2x2 −2x + x2 + 2x + 1    or  −w ′ =  1  .\n               w 2            w      w  w 2        w 2  w 2\nSimplifying, we obtain\n                     w ′ = −1 ⇒  w(x) = −x + C,\n\nwhere C is an arbitrary constant. Whence the general solution of the original equation is\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                24 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "                                              1\n                                        y = x +           .\n                                   C −x\nNote that y = x is the singular solution.\nEXAMPLE 2.\nSolve the differential equation\n                                                                        ′   2 cos2 x −sin2 x + y 2                                   y =                                  .                                (11)\n                                           2 cos x\n Let us rewrite (11) in the following form\n\n                                                                  ′   2 cos2 x −sin2 x     1                                y =         +       y 2.\n                                      2 cos x       2 cos x\n\nThis is the Riccati’s equation with\n\n                            2 cos2 x −sin2 x                     1\n                       q0(x) =                          , q1(x) ≡0, q2(x) =            .\n                                2 cos x                      2 cos x\n\nIt is easy to see that y = sin x is a solution. Substituting\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                25 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "                                                1\n                                         y = sin x +\n                                   w\nwe have\n              y ′ = cos x −w ′ = 2 cos2 x −sin2 x +   1      sin2 x + 2 sin x + 1  =\n                 w 2       2 cos x       2 cos x        w    w 2\n\n                              sin x 1     1   1                         ′     sin x 1     1   1         = cos x +     +      ⇒  −w =     +                 .\n                          cos x w   2 cos x w 2       w 2    cos x w   2 cos x w 2\nSimplifying, we obtain\n                                                                           ′    sin x         1                        w +    w = −           .                                 (12)\n                                           cos x      2 cos x\nAn integrating factor is\n\n                   Z               Z  sin x            Z d cos x\n                 exp    p(x) dx = exp         dx = exp −       =\n                                              cos x                   cos x\n\n                                        C\n                = exp (−ln | cos x| + ln C) =       C > 0.\n                                                                                         | cos x|\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                26 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "Putting C = 1 and multiplying DE (12) by 1/ cos x, we have\n\n                               1  dw     sin x          1\n                        +    w = −\n                                  cos x dx    cos2 x      2 cos2 x\n\nor\n                                d    1            1\n                              w = −            .\n                                 dx  cos x        2 cos2 x\n\nWe now integrate to obtain a one-parameter family of solutions of equation (12) in the form\n\n                   1       Z    dx        Z                x                w = −      = −1   d tan x = −tan + C, C ∈R\n                   cos x         2 cos2 x     2               2\n\nor\n                         w = −sin x + C cos x.\n                                          2\nWhence the general solution of the original equation is\n\n                                    1                1\n                            y = sin x +  = sin x +                          w       C cos x −sin x/2.\n\nThe function y = sin x is the singular solution.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                27 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "First order DE not resolved with respect to the derivative.\n\nWe considered some methods of integration of first-order DE resolved with respect to the derivative.\nNow we consider first-order DE which resolved with respect to dependent or independent variables.\nFirst-order DE which resolved with respect to y.\n\nLet we have DE in the following form\n                                         y = ϕ(x, y ′).                                       (13)\n\nLet p(x) = y ′(x) is a new function of x alone. Now we rewrite (13) in the following form\n\n                                          y = ϕ(x, p).                                       (14)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                28 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "Differentiating (14) with respect to x then yields\n\n                                p(x) = ϕ′x(x, p) + ϕ′p(x, p)p′(x).\n\nHence\n                                        p −ϕ′x(x, p)                                        p′(x) =                    .                                   (15)\n                                                         ϕ′p(x, p)\nThis differential equation is resolved with respect to the derivative p′.\nIf an explicit function p = p(x, C) is a general solution of (15), then by substituting this function in\n(14) one find a general solution of (13) as an explicit function y = ϕ(x, p(x, C)).\nIf an inverse function x = x(p, C) is a general solution of (15), then this function together with (14)\ngive a general solution in the parametric form x = x(p, C), y = ϕ(x(p, C), p), where p is a parameter.\nIf an implicit expression ψ(x, p, C) = 0 is a general solution of (15), then we have a general solution of\n(13) as an implicit parametric relation y = ϕ(x, p), ψ(x, p, C) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                29 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "Suppose that in (13) function ϕ(x, y ′) does not depend on x :\n\n                                          y = ϕ(y ′).                                        (16)\n\nThen we introduce p = y ′ and obtain\n\n                                  y = ϕ(p) ⇒  p = ϕ′(p)p′.\n\nLast DE is separable one.\n                                     dp     p\n                           =\n                                        dx    ϕ′(p)\n\nand then\n                                  ϕ′(p)            Z  ϕ′(p)\n                          dx =     dp ⇒   x =        dp + C,\n                               p                   p\n\nwhere C are arbitrary constants. As a result we have general solutions of (16) in the parametric form\n\n                                      Z  ϕ′(p)\n                                 y = ϕ(p), x =        dp + C,\n                                             p\n\nwhere p is a parameter. Note that y = ϕ(0) is a solution of (16).\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                30 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "EXAMPLE 1.\nFind the solutions of the following differential equation\n\n                                     2y ′3 + y ′2 −y = 0.\n\n We rewrite it in the form\n                                         y = 2y ′3 + y ′2\n\nand set p(x) = y ′(x). Then\n                                         y = 2p3 + p2.\n\nDifferentiating this equation with respect to x, we obtain\n\n                             p = 6p2p′ + 2pp′ = 2pp′(3p + 1)\n\nor\n                                   2(3p + 1)dp = 1, p ̸= 0.\n                                          dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                31 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "This is DE with separable variables. We solve the DE by separating variables and integrating\n\n                               Z            Z\n           2(3p + 1)dp = dx ⇒   2  (3p + 1) dp =   dx ⇒   x = 3p2 + 2p + C,\n\n\nwhere C is an arbitrary constant. Hence the general solution of the given equation has the parametric\nform\n                               x = 3p2 + 2p + C,   y = 2p3 + p2,\n\nwhere p is a parameter. Note that solving the equation we divided it by p = y ′ and lost the solution\ny(x) ≡0. This solution is singular.\nIn some problems we can exclude a parameter and obtain a solution in an explicit form.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                32 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "EXAMPLE 2.\nFind the solutions of the following differential equation\n\n                                                         ′2          ′       x2                                    y  −xy −y +  = 0.                                  (17)\n                                                2\n\n We rewrite it in the form\n                                                                   ′2          ′   x2                                      y = y  −xy +\n                                                  2\nand set p(x) = y ′(x). Then\n                                                     x2\n                                       y = p2 −xp +     .                                    (18)\n                                                 2\nDifferentiating this equation with respect to x, we obtain\n\n                                 p = 2pp′ −p −xp′ + x                                  (19)\n\nor\n                      2p −x = p′(2p −x) ⇒   (p′ −1)(2p −x) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                33 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "Then\n                                                    p′ = 1\n\nor\n                                      2p −x = 0.                                       (20)\n\nLet first p′ = 1. Then\n                                  p = x + C,  C ∈R.                                   (21)\n\nNow we substitute values of p from (21) to (18) and obtain the general solution of (17)\n\n               x2                         x2                    2             x2    x2 y = p2 −xp +  = (x + C)2 −x(x + C) +  = x2 + 2Cx + C −x2 −Cx +  =  + Cx + C 2.\n               2                        2                            2    2\n\nIf (20) holds then p = x/2 and\n\n                                          x2\n                            y = p2 −xp +                           =                                               x2 −x2 + x2 = x2 .\n                                       2    4    2    2    4\n\nThis is singular solution of (17).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                34 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "Solving this problem you must be careful. Let us consider another completion of this problem. Suppose\nthat p′ = 1. We substitute in (21) y ′ instead of p :\n\n                                        y ′(x) = x + C.\n\nIntegrating last equality, we obtain.\n\n                                       x2\n                               y(x) =  + Cx + C1,  C1 ∈R.                             (22)\n                                     2\n\nSo the general solution of (17) depend on two arbitrary constants. But the general solution of a first\norder DE must depend on one arbitrary constant only! There are spurious solutions in (22). To\neliminate them we substitute(22) to DE (17)\n\n                        ′2          ′       x2                           x2               x2              y  −xy −y +  = (x + C)2 −x(x + C) −   + Cx + C1 +  =\n                            2                          2               2\n\n          = x2 + 2Cx + C 2 −x2 −Cx −x2 −Cx −C1 + x2 = C                                                                                    2 −C1 = 0\n                                          2             2\nif C1 = C 2.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                35 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "Suppose that 2p −x = 0. Substituting here y ′ instead of p, we have\n\n                                                  x\n                                          y ′(x) = 2.\n\nIntegrating, we obtain.\n                                          x2\n                                  y(x) =  + C2,  C2 ∈R.                                (23)\n                                       4\nSolution in (23) contains spurious again. To eliminate them we substitute(23) to DE (17)\n\n                              ′2          ′       x2    x2    x     x2          x2\n                  y  −xy −y +  =  −x −   + C2 +  = −C2 = 0\n                               2    4     2     4          2\n\nif C2 = 0.\nWhy did we obtain spurious solutions? The fact of the matter is that we can get (19) not only from\n(18). Differentiating the following DE\n\n                                             x2\n                               y = p2 −xp +  + C3,  C3 ∈R,\n                                          2\n\nwe obtain (19) also.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                36 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "Lecture 4. Homework\nI. Let f (z) be differentiable function. Show that 1/(x2 + y 2) is an integrating factor of the following\nequation\n                               [y + xf (x2 + y 2)]dx + [yf (x2 + y 2) −x]dy = 0.                      (24)\n\n\nLet us multiply (24) by 1/(x2 + y 2)\n\n                           y + xf (x2 + y 2)       yf (x2 + y 2) −x\n                                       dx +               dy = 0                       (25)\n                               x2 + y 2             x2 + y 2\n\nand show that DE (25) is exact. We put\n\n                               y + xf (x2 + y 2)                yf (x2 + y 2) −x\n                 M(x, y) =                          ,  N(x, y) =                          .\n                                  x2 + y 2                     x2 + y 2\n\nThen\n                                [1 + xf ′(x2 + y 2)2y](x2 + y 2) −2y[y + xf (x2 + y 2)]\n               My(x, y) =                              =\n                                                 (x2 + y 2)2\n                        2xy(x2 + y 2)f ′(x2 + y 2) −2xyf (x2 + y 2) + x2 −y 2\n             =                                                                                ,\n                                              (x2 + y 2)2\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                37 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "                                    [yf ′(x2 + y 2)2x −1](x2 + y 2) −2x[yf (x2 + y 2) −x]\n                Nx(x, y) =                             =\n                                                 (x2 + y 2)2\n\n                        2xy(x2 + y 2)f ′(x2 + y 2) −2xyf (x2 + y 2) + x2 −y 2\n             =                                                                                .\n                                              (x2 + y 2)2\n\nThus My(x, y) = Nx(x, y) and DE (25) is exact.\n\nII. Use the result of Problem I to solve the equation\n\n                               [y + x(x2 + y 2)2]dx + [y(x2 + y 2)2 −x]dy = 0.\n\n\nFrom the result of Problem I, we know that 1/(x2 + y 2) is an integrating factor of the given D.E. Hence\nwe multiply the given D.E. through by 1/(x2 + y 2) to obtain the equivalent D.E.\n\n                       y                                       x\n                 + x(x2 + y 2) dx +  y(x2 + y 2) −         dy = 0.               (26)\n                    x2 + y 2                                 x2 + y 2\n\nwhich is therefore exact. Here\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                38 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "                             y                                            x\n             M(x, y) =     + x(x2 + y 2),  N(x, y) = y(x2 + y 2) −             .\n                          x2 + y 2                                      x2 + y 2\n\nTaking (x0, y0) = (1, 0), in general formula\n\n                         Z y          Z x\n                               N(x, t) dt +    M(s, y0) ds = C,                           (27)\n                                                y0                     x0\n\nwe find left-hand side of (27)\n\n        Z y               x        Z x        x2y 2   y 4           y     x4                tx2 + t3 −          dt +    s3 ds =   +   −arctan   +  −1 =\n              0             x2 + t2          1          2     4           x     4   4\n\n                                     (x2 + y 2)2                                                       y −1                   =                                        −arctan                                    4               x     4.\nThus we have the one - parameter family of solutions\n\n                        (x2 + y 2)2           y                      1\n                              −arctan   = c, c ∈R   c = C +       .                    (28)\n                         4               x                      4\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                39 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "Let us find a general solution of (26) by the following way. Since left-hand side of (26) is total\ndifferential of some function F, then\n\n                                             y\n                                 Fx = M =         2 + x(x2 + y 2)                                          x2 + y\n\nand\n                                                         x\n                                Fy = N = y(x2 + y 2) −        2 .                                                      x2 + y\n\nFrom the first of these, we find\n\n                 Z      y                               x     x4   x2y 2\n           F(x, y) =       + x(x2 + y 2)  dx = arctan   +  +   + C(y).\n                         x2 + y 2                            y     4     2\n\nFrom this,\n                       1                                                          x                  −x                      + x2y + C ′(y) = −                                     + x2y + C ′(y).                  Fy =                                          2                                                                            2                                     x2\n                     1 + y 2     y                      x2 + y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                40 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "Therefore C ′(y) = y 3 and C(y) = y 4/4 + c1. Thus\n\n                           x     x4   x2y 2   y 4                x     (x2 + y 2)2\n          F(x, y) = arctan   +  +   +  + c1 = arctan   +       + c1.\n                           y     4     2     4                y         4\n\nThe one - parameter family of solutions (26) is\n\n                               (x2 + y 2)2           x\n                        + arctan    = C, C ∈R.                          (29)\n                               4               y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                41 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340031>",
+      "text": "Therefore C ′(y) = y 3 and C(y) = y 4/4 + c1. Thus\n\n                           x     x4   x2y 2   y 4                x     (x2 + y 2)2\n          F(x, y) = arctan   +  +   +  + c1 = arctan   +       + c1.\n                           y     4     2     4                y         4\n\nThe one - parameter family of solutions (26) is\n\n                               (x2 + y 2)2           x\n                        + arctan    = C, C ∈R.                          (29)\n                               4               y\n\n\nBoth answers (28) and (29) are correct since\n\n                                       1   π\n                                      arctan  =   −arctan t.\n                                                      t   2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                41 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340032>",
+      "text": "III. Solve the given differential equation:\n\n                                 cos θdr + (r sin θ −cos4 θ)dθ = 0.\n\n\nThis D.E. is linear in r. We first divide DE by dθ to obtain\n\n                                         dr\n                                   cos θ  + r sin θ −cos4 θ = 0\n                                 dθ\n\nor\n                                           dr\n                                     cos θ  + r sin θ = cos4 θ.\n                                  dθ\nNext we divide obtained DE by cos θ to put the equation in the standard form\n\n                                        dr\n                        + (tan θ)r = cos3 θ.                                  (30)\n                               dθ\n\nBy standard denotations p(θ) = tan θ and q(θ) = cos3 θ. An integrating factor is\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                42 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 44,
+      "printed_label": "<FEFF00340033>",
+      "text": "          Z               Z                 Z d cos θ\n       exp     p(θ) dθ = exp     tan θ dθ = exp −       = exp(−ln | cos θ| + c) =\n                                                           cos θ\n\n                       1\n        = exp  ln     = exp(ln | sec θ|) = | sec θ| = ± sec θ    if we put  c = 0\n                                      | cos θ|\n\n                                       ′′          4k −1        4k + 1                        +′′      if        π < θ <            for some integer   k,\n                                2             2\n\n                                           ′′           4k + 1        4k + 3             and     −′′      if        π < θ <            for some integer   k    .\n                                  2             2\n\nIn any case, upon multiplying (30) by the integrating factor, we obtain\n\n                                        dr\n                                   sec θ  + sec θ(tan θ)r = cos2 θ,\n                               dθ\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                43 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 45,
+      "printed_label": "<FEFF00340034>",
+      "text": "that is\n                                  d\n                                                    (r sec θ) = cos2 θ.\n                                dθ\nUpon integrating, we find\n\n                      Z          Z 1 + cos(2θ)      θ   1\n                        r sec θ =   cos2 θ dθ =            dθ =  +   sin(2θ) + C,\n                                            2          2   4\n\nwhere C is an arbitrary constant. Finally, we multiply last equality by cos θ to obtain\n\n                                       θ   1\n                                 r(θ) =   +   sin(2θ) + C  cos θ.\n                                     2   4\n\n We divided DE by cos θ and lost solutions θ(r) = π/2 + πn, n ∈Z.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                44 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 46,
+      "printed_label": "<FEFF00340035>",
+      "text": "IV. Solve the initial-value problem:\n\n                                   dx\n                                  a)   −x = sin(2t), x(0) = 1.                              (31)\n                                       dt\n\n\nWe take the corresponding homogeneous equation\n\n                                        dx\n                             −x = 0                                       (32)\n                                            dt\n\nand separate the variables\n                                         dx\n                            = dt.\n                                            x\nAfter integration we have\n\n                        ln |x| = t + ln c1, c1 > 0 ⇒|x| = c1 exp(t) ⇒x = c2 exp(t),\n\nwhere c2 ̸= 0. We divided (32) by x and lost a solution x ≡0. Thus\n\n                                       x(t) = c exp(t), c ∈R                                  (33)\n\nis a general solution of (32).\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                45 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 47,
+      "printed_label": "<FEFF00340036>",
+      "text": "Now to solve the equation in (31) we will use the method of variation of parameters. We assume that c\nis a function of t in (33), i.e.,\n                                         x(t) = c(t) exp(t)                                    (34)\n\nand substitute(34) into (31). We obtain\n\n                             c′(t) exp(t) + c(t) exp(t) −c(t) exp(t) = sin(2t)\n\nwhich is the same as\n                                          c′(t) exp(t) = sin(2t).                                   (35)\n\nIntegrating (35), we obtain\n                                  Z\n                                    c(t) =   exp(−t) sin(2t) dt.                               (36)\n\nTo find the integral I in (36) we use the integration by parts several times:\n\n         Z                                Z\n        I = −   sin(2t) d exp(−t) = −exp(−t) sin(2t) +   exp(−t) d sin(2t) = −exp(−t) sin(2t)+\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                46 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 48,
+      "printed_label": "<FEFF00340037>",
+      "text": "              Z                                  Z\n          +2   exp(−t) cos(2t) dt = −exp(−t) sin(2t) −2   cos(2t) d exp(−t) =\n\n                                               Z\n          = −exp(−t) sin(2t) −2 exp(−t) cos(2t) + 2   exp(−t) d cos(2t) =\n\n                = −exp(−t) sin(2t) −2 exp(−t) cos(2t) −4I\n\nThus,\n                                         I = −1          sin(2t) + 2 exp(−t) cos(2t)] + c,                             5[exp(−t)\nwhere c is an arbitrary constant. From (34), (36) we obtain the general solution of DE in (31)\n\n                             x(t) = −1    + 2 cos(2t)] + c exp(t).                                        5[sin(2t)\n\nPutting here t = 0, x = 1, we have\n\n                               1 = −1 + 2] + c ⇒c = 7                                       5[0                 5.\n\nThus the initial-value problem (31) has the following solution\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                47 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 49,
+      "printed_label": "<FEFF00340038>",
+      "text": "                             x(t) = −1    + 2 cos(2t)] + 7 exp(t).                                        5[sin(2t)             5\n We can solve (31) by another way. An integrating factor for DE in (31) is\n\n                           Z\n                           exp    (−1) dt = exp(−t + C), C ∈R.\n\n\nPutting C = 0 and multiplying DE in (31) through by this integrating factor, we have\n\n                          exp(−t)dx −exp(−t)x = exp(−t) sin(2t)\n                                      dt\n\nor\n                             d\n                                    [exp(−t)x] = exp(−t) sin(2t).\n                                  dt\nWe now integrate to obtain a one-parameter family of solutions of DE in (31) in the form\n\n                                     Z\n                              exp(−t)x(t) =   exp(−t) sin(2t) dt.\n\n\nThe completion of the solving of the problem is the same as in the previous case.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                48 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 50,
+      "printed_label": "<FEFF00340039>",
+      "text": "IV. Solve the initial-value problem:\n\n                                   dy\n                                b)   + y = f (x),   y(0) = 1,\n                                   dx\n\nwhere\n                      (exp(−x)  0 ≤x < 1,\n                                                f (x) =\n                                      exp(−1)  x ≥1.\n\nWe actually have two initial-value problems:\n\n        For   0 ≤x < 1,                For   x ≥1,\n        dy                        dy             (I)                     dx + y = exp(−x),                              (II)   dx + y = exp(−1),\n       y(0) = 1,                   y(1) = a,\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                49 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 51,
+      "printed_label": "<FEFF00350030>",
+      "text": "where a = limx→1−ϕ(x) and ϕ(x) denotes the solution of (I). This is prescribed so that the solution of\nthe entire problem will be continuous at x = 1.\nWe first solve (I). The D.E. of this problem is linear in standard form with p(x) = 1, q(x) = exp(−x).\nAn integrating factor is\n\n                      Z               Z\n                     exp    p(x) dx = exp     dx = exp(x + C), C ∈R.\n\n\nWe putt C = 0 and multiply DE of (I) by exp(x) to obtain\n\n                       exp(x)dy + exp(x)y = 1   or   d  [y exp(x)] = 1.\n                            dx                     dx\n\nIntegrating we get\n                        y exp(x) = x + C   or   y(x) = exp(−x) [x + C] ,\n\nwhere C is an arbitrary constant. We apply the initial condition of (I), y(0) = 1 to this, obtaining\n1 = 1[0 + C], or C = 1. Thus the solution of problem (I) is\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                50 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 52,
+      "printed_label": "<FEFF00350031>",
+      "text": "                                   y(x) = exp(−x) (x + 1) .\n\nThis is valid for 0 ≤x < 1.\nLetting ϕ(x) denote the solution just obtained, we find\n\n                      a = x→1−ϕ(x)lim    = x→1−exp(−x)lim          (x + 1) = 2 exp(−1).\n\nThus the initial condition of (II) is y(1) = 2 exp(−1). Now solve (II). The D.E. of this problem is linear\nin standard form with p(x) = 1, q(x) = exp(−1). An integrating factor, as in Problem (I), is exp(x).\nWe multiply DE by this to obtain\n\n              exp(x)dy + exp(x)y = exp(x −1)   or   d  [y exp(x)] = exp(x −1).\n                    dx                             dx\n\nWe integrate to obtain\n\n                 y exp(x) = exp(x −1) + C   or   y(x) = C exp(−x) + exp(−1),\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                51 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 53,
+      "printed_label": "<FEFF00350032>",
+      "text": "where C is an arbitrary constant. Now apply the initial condition of (II), y(1) = 2 exp(−1), to this. We\nobtain 2 exp(−1) = C exp(−1) + exp(−1), from which C = 1.\nThus the particular solution of problem (II)\n\n                                  y(x) = exp(−x) + exp(−1).\n\nThis is valid for x ≥1.\nWe write the solution of the entire problem, showing intervals where each part is valid, as\n\n                    (exp(−x) (x + 1) ,  0 ≤x < 1,\n                           y(x) =\n                                 exp(−x) + exp(−1),   x ≥1.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                52 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 54,
+      "printed_label": "<FEFF00350033>",
+      "text": "Homework\nFor reading:\n\n   PDF presentation,\n\n    M. V. Makarets, V. Yu. Reshetnyak, pp. 41–44, 46–50, 54–57.\n\n    M.V. Soare, P.P. Teodorescu and I. Toma, pp. 256–259.\n\nProblems\nI. Solve the differential equation:\n                                                2     dy         dy                                  x3y  sin y   −2y = x     .\n                                          dx         dx\nII. Find a particular solution by inspection; find the general solution of the following Riccati’s equations.\n\n                              x3y ′ + 2x2y + 2x4y 2 = 18, x ̸= 0.\n\nIII. Solve the differential equation\n\n                                2x3y ′2 −2xy ′ −y = 0, x ̸= 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                53 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 55,
+      "printed_label": "<FEFF00350034>",
+      "text": "IV. Solve the differential equation\n                                      y = xy ′ + (y ′)2 −4.\n\nV. Solve the differential equation\n                                        y = 2xy ′ −4y ′3.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 10, 2026                54 / 54",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

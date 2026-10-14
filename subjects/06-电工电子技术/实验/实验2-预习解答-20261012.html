@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>电工实验2（DC Circuit）预习解答 · 教材核对版 v2</title>
+<style>
+  @page { size: A4; margin: 12mm 11mm 14mm 11mm; }
+  body { font-family: "Microsoft YaHei", "Segoe UI", sans-serif; font-size: 10.5pt; line-height: 1.55; color: #111; margin: 0; }
+  h1 { font-size: 17pt; margin: 0 0 4px 0; }
+  h2 { font-size: 13pt; margin: 16px 0 6px 0; padding-bottom: 2px; border-bottom: 2px solid #333; }
+  h3 { font-size: 11.5pt; margin: 12px 0 4px 0; }
+  h4 { font-size: 10.5pt; margin: 9px 0 3px 0; }
+  p { margin: 4px 0; }
+  ul, ol { margin: 4px 0; padding-left: 20px; }
+  li { margin: 2px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 6px 0; }
+  th, td { border: 1px solid #777; padding: 3px 5px; vertical-align: top; }
+  th { background: #eeeeee; font-weight: bold; }
+  td.c, th.c { text-align: center; }
+  .meta { font-size: 9.5pt; color: #333; }
+  .box { border: 1px solid #999; background: #fafafa; padding: 7px 10px; margin: 8px 0; }
+  .warn { border: 1px solid #c00; border-left: 5px solid #c00; background: #fff5f5; padding: 7px 10px; margin: 8px 0; }
+  .ok { border: 1px solid #2a7; border-left: 5px solid #2a7; background: #f4fbf7; padding: 7px 10px; margin: 8px 0; }
+  .en { border: 1px solid #357; border-left: 5px solid #357; background: #f4f8fd; padding: 6px 10px; margin: 6px 0; }
+  .en p { margin: 3px 0; }
+  .book { border: 1px solid #a80; border-left: 5px solid #a80; background: #fffdf4; padding: 6px 10px; margin: 6px 0; font-size: 9.5pt; }
+  .avoid { break-inside: avoid; }
+  .formula { font-family: "Cambria Math", "Microsoft YaHei", serif; }
+  code { font-family: Consolas, "Microsoft YaHei", monospace; background: #f2f2f2; padding: 0 2px; }
+  .small { font-size: 9pt; color: #444; }
+  .check { font-family: Consolas, monospace; }
+</style>
+</head>
+<body>
+
+<h1>电工实验 2（DC Circuit Experiment）预习解答</h1>
+<p class="meta">
+<b>教材核对版 v2 · 2026-10-13</b>（v1 生成于 2026-10-12，本版按教材逐条核对并全文加双语）<br>
+课程：电工电子技术（2502 班）　|　<b>2026-10-13（周二）15:30–17:45 @综合一号教学楼 117</b>　|　Operation 满分 5 分，<code>Preparation</code> 单列 5 分<br>
+教材：<b>《电工学实验教程》（第2版）刘凤春、王林 主编，高等教育出版社</b>（学习者 2026-10-13 提供电子版，已存入 <code>subjects/06-电工电子技术/实验/教材-电工学实验教程-刘凤春-第2版.pdf</code>）<br>
+本次内容＝教材 <b>§2.1 直流电路基础实验（书 p.23–29）</b>；报告语言＝<b>英文</b>，故凡要写进报告的内容本文一律给<b>中英双语</b>（蓝框＝可直接抄的英文）。
+</p>
+
+<div class="warn">
+<b>先看三条：</b>
+<ol style="margin:4px 0 0 0">
+  <li><b>本版不再是"照书填"的占位稿</b>：电路、表格、实验条件、报告问题都已按教材落实（教材 §2.1 全文已核读）。仍属<b>导师给的解答</b> → 按示例学习记账（<code>solution_seen = true</code>），不算你的独立掌握。</li>
+  <li><b>册子与教材的编号不同</b>：册 p05 的 <code>Figure 2.1.1 a) Experimental Circuit</code> ＝ 教材 <b>图 2.1.3 a) 实验电路</b>；册 p05/p06 的 <code>Table 2.1.2／2.1.3／2.1.4</code> 与教材 <b>表 2.1.2／2.1.3／2.1.4</b> 一一对应。</li>
+  <li>⚠ <b>册 p06 写的 "Section 3.1" 在教材里是"万用表的设计实验"（第3章），与本次实验无关</b>；"电源等效变换"在教材里是 <b>§2.1.5 电源外特性与实际电源两种模型的等效变换</b>。本版按 §2.1.5 做。[待确认]（老师可能用的是另一版编排，课上可问一句）。</li>
+</ol>
+</div>
+
+<h2>一、教材定位与实验内容（书 §2.1）</h2>
+
+<table class="avoid">
+<tr><th style="width:22%">教材小节</th><th style="width:12%">书页</th><th>内容</th><th style="width:18%">本次做不做</th></tr>
+<tr><td><b>2.1.1</b> 实验目的及设备</td><td>p.24</td><td>仪器与元器件一览（表 2.1.1）</td><td>—</td></tr>
+<tr><td><b>2.1.2</b> 预习要求</td><td>p.24</td><td><b>课前要回答的问题</b>（复习理论 4 问 + 预习内容 6 项 + 实验设计 3 项）</td><td><b>课前必须完成</b></td></tr>
+<tr><td><b>2.1.3</b> 直流电路测量原理</td><td>p.25–26</td><td>基尔霍夫定律与叠加定理、戴维宁定理与等效参数、电源等效变换（<b>U_S = R₀ I_S</b>）</td><td>读懂</td></tr>
+<tr><td><b>2.1.4</b> 基尔霍夫定律与叠加定理的验证</td><td>p.26–28</td><td>(1) 测电阻 → 表 2.1.2；(2) 验证 KCL → 表 2.1.3；(3) 故障检测；叠加定理 → 表 2.1.4（含 R₃ 换 1N4007）</td><td><b>本次主体</b></td></tr>
+<tr><td><b>2.1.5</b> 电源外特性与实际电源两种模型的等效变换</td><td>p.28</td><td>① 测电压源/电流源外特性；② <b>验证等效变换条件</b>（课前自行设计方案）</td><td><b>本次主体</b></td></tr>
+<tr><td><b>2.1.6</b> 戴维宁定理的验证</td><td>p.28–29</td><td>图 2.1.4 被测含源二端网络（330 Ω／510 Ω／510 Ω／10 Ω；U_S = 12 V、I_S = 10 mA）</td><td>册子未列 [待确认]；若老师要求，见 §五.4 提纲</td></tr>
+<tr><td><b>2.1.7</b> 实验报告及问题讨论</td><td>p.29–30</td><td><b>报告必须回答的 7 个问题</b></td><td>课后写（§五 已双语列出）</td></tr>
+</table>
+
+<h3>表 2.1.1　仪器与元器件一览（书 p.24，现场设备以此为准）</h3>
+
+<div class="box avoid">
+<b>★ 本份 ↔ 册子栏目 ↔ 教材：一页对照（照这个往报告里填）</b>
+<table style="margin-top:4px">
+<tr><th style="width:30%">本份的章节</th><th style="width:40%">册子（英文手册）里的位置</th><th>教材</th></tr>
+<tr><td>§二 课前问答 Q1–Q7</td><td><b>p04　I. Preliminary Work</b> 的四问答案</td><td>§2.1.2 预习要求</td></tr>
+<tr><td>§3.1 电路图（我按书重画）</td><td><b>p05</b>「draw the experimental schematic diagram」→ 手绘进 <b>Figure 2.1.1 a)</b></td><td>图 2.1.3 a)</td></tr>
+<tr><td>§3.2 表 2.1.2</td><td><b>p05　Table 2.1.2</b>（Nominal／Measured／Relative error）</td><td>表 2.1.2</td></tr>
+<tr><td>§3.3 表 2.1.3（含预算好的"计算值"）</td><td><b>p05　Table 2.1.3</b>，表头要写 <code>Experimental conditions: U_S1 = 6 V, U_S2 = 12 V</code></td><td>表 2.1.3</td></tr>
+<tr><td>§3.4 表 2.1.4</td><td><b>p06　2.(1)　Table 2.1.4</b></td><td>表 2.1.4</td></tr>
+<tr><td>§3.5 R₃ 换二极管的结论写法</td><td><b>p06　2.(2)</b>（R₃ → 1N4007 那小题）</td><td>§2.1.4 之 4)</td></tr>
+<tr><td><b>§四 等效变换设计（电路＋数据表＋逐条步骤）</b></td><td><b>p06　第 3 项「3. Verification of Equivalent-transformation Conditions for Voltage Sources and Current Sources」</b>——册子原文就要求<b>课前自行设计</b>电路、数据表格、测试步骤；现场数据记进 <b>p07 的三栏</b>（①原理图 ②步骤简述 ③数据记录）</td><td><b>§2.1.5</b>（书 p.28）</td></tr>
+<tr><td>§4.5 四条外特性曲线</td><td><b>p08 讨论第 5 问</b>（画出理想/实际电源的四条外特性曲线）</td><td>§2.1.7 第 5 问</td></tr>
+<tr><td>§五 报告问题（双语题目＋要点）</td><td><b>p08　Discussion of Results</b> 的 5 问</td><td>§2.1.7 七问</td></tr>
+</table>
+</div>
+
+<table class="avoid">
+<tr><th>名称</th><th>型号或规格</th><th>名称</th><th>型号或规格</th></tr>
+<tr><td>直流电路实验装置</td><td>提供实验电路模块</td><td>电阻</td><td>51 Ω/8 W ～ 1 000 Ω/8 W</td></tr>
+<tr><td>可调直流稳压电源</td><td><b>0～30 V，0～1 A/双路输出</b></td><td>可调电阻</td><td><b>0～99 999.9 Ω/5 W</b></td></tr>
+<tr><td>可调直流电流源</td><td><b>0～500 mA</b></td><td>二极管</td><td>1N4007</td></tr>
+<tr><td>直流电压表</td><td>0～200 V</td><td>电流插孔、插头</td><td>—</td></tr>
+<tr><td>直流电流表</td><td>0～200 mA</td><td>开关</td><td>双刀双掷开关</td></tr>
+<tr><td>万用表</td><td>数字式</td><td>导线</td><td>若干</td></tr>
+</table>
+
+<h2>二、课前问答（教材 §2.1.2 预习要求）—— 逐题双语</h2>
+
+<div class="box avoid">
+<b>⚠ 编号对照（册子那四问没有改，只是被按教材拆/并了）</b>
+<table style="margin-top:4px">
+<tr><th style="width:46%">册 p04（英文册子上的四问）</th><th>本文（按教材 §2.1.2 编号）</th></tr>
+<tr><td>Q1　基尔霍夫定律与元件线性/非线性有关吗？叠加定理呢？</td><td><b>Q1</b>（线性部分）＋ <b>Q4</b>（叠加定理条件与功率）</td></tr>
+<tr><td>Q2　电压源不用时开路还是短路？电流源呢？</td><td><b>Q3</b></td></tr>
+<tr><td>Q3　电压表串联还是并联？接反有什么后果？</td><td><b>Q5</b>（接法）＋ <b>Q6</b>（接错与指针反偏）</td></tr>
+<tr><td>Q4　相对误差怎么算？拿不到真值怎么办？</td><td><b>Q7</b></td></tr>
+<tr><td>（册子没问，但<b>教材 §2.1.2 问了</b>）</td><td><b>Q2</b>：理想/实际电源的区别、能否等效互换；纯理想电压源回路、纯理想电流源结点</td></tr>
+</table>
+<b>结论</b>：<b>只写册子那四问也够进实验室的门槛</b>（答案分别是本文 Q1＋Q4／Q3／Q5＋Q6／Q7）；Q2 是教材额外要求的，写上属加分、也防老师按书抽查。
+</div>
+
+<p class="small">每题：先中文讲解（理解用），再蓝框英文（<b>直接抄进预习报告</b>）。</p>
+
+<h3>Q1　基尔霍夫定律与电路元件的性质（线性与非线性）有关系吗？电路中能否出现单纯由理想电压源构成的回路？能否出现单纯由理想电流源构成的结点？为什么？<span class="fill">（＝册 p04 第 1 问前半）</span></h3>
+<p><b>答：基尔霍夫定律与元件是否线性无关；两种"纯理想源"的结构都不允许出现。</b></p>
+<ul>
+  <li><b>KCL</b> 来自电荷守恒、<b>KVL</b> 来自能量守恒，只依赖电路的<b>连接方式（拓扑）</b>与<b>参考方向</b>，支路里装电阻、电容还是二极管都照样成立。</li>
+  <li><b>单纯由理想电压源构成的回路不允许</b>：KVL 要求沿回路 ΣU = 0，而理想电压源的电压由自身钉住、与电流无关，这样的回路一般写不出 ΣU = 0（等价说法：两个电压值不同的理想电压源<b>不能并联</b>）。</li>
+  <li><b>单纯由理想电流源构成的结点不允许</b>：KCL 要求结点上 ΣI = 0，而理想电流源的电流由自身钉住、与端电压无关，只有各源电流恰好相等且方向配合才可能（等价说法：两个电流值不同的理想电流源<b>不能串联</b>）。</li>
+</ul>
+<div class="en">
+<b>EN — Q1</b>
+<p>Kirchhoff's laws are independent of whether the elements are linear or nonlinear: KCL follows from conservation of charge and KVL from conservation of energy, so they depend only on the circuit topology and on the reference directions. A loop consisting only of ideal voltage sources cannot exist, because KVL would require the sum of the voltages around the loop to be zero, while each ideal voltage source fixes its own voltage independently of the current (equivalently, two ideal voltage sources of different values cannot be connected in parallel). A node connected only to ideal current sources cannot exist either, because KCL would require the sum of the currents at that node to be zero, while each ideal current source fixes its own current independently of the voltage (equivalently, two ideal current sources of different values cannot be connected in series).</p>
+</div>
+
+<h3>Q2　理想电压源与实际电压源有什么区别？理想电流源与实际电流源有什么区别？理想电压源与理想电流源能否等效互换？实际电压源与实际电流源能否等效互换？为什么？<span class="fill">（教材附加；册子未问）</span></h3>
+<table class="avoid">
+<tr><th style="width:20%">元件</th><th>模型</th><th>外特性</th></tr>
+<tr><td>理想电压源</td><td>U_S（内阻 R₀ = 0）</td><td>端电压恒为 U_S，<b>与电流无关</b>（水平线）</td></tr>
+<tr><td>实际电压源</td><td>U_S 与内阻 <b>R₀ 串联</b></td><td>U = U_S − I R₀，<b>随电流增大而下降</b></td></tr>
+<tr><td>理想电流源</td><td>I_S（内阻 R₀ = ∞）</td><td>输出电流恒为 I_S，<b>与端电压无关</b>（垂直线）</td></tr>
+<tr><td>实际电流源</td><td>I_S 与内阻 <b>R₀ 并联</b></td><td>I = I_S − U/R₀，<b>随端电压升高而减小</b></td></tr>
+</table>
+<ul>
+  <li><b>理想电压源 ⇄ 理想电流源：不能</b>等效互换。一个是"电压恒定"，一个是"电流恒定"，外特性是两条不同的线（水平 vs 垂直）。</li>
+  <li><b>实际电压源 ⇄ 实际电流源：能</b>等效互换，条件是<b>内阻相同</b>且 <b>U_S = R₀ I_S</b>（书 p.26 原式）。此时两者端口的 U–I 关系完全相同 ⇒ 对<b>外电路</b>等效；对电源<b>内部</b>（内部电流、内部功率）不等效。</li>
+</ul>
+<div class="en">
+<b>EN — Q2</b>
+<p>An ideal voltage source keeps a constant terminal voltage U_S that is independent of the current (internal resistance R₀ = 0), whereas a real voltage source is an ideal source U_S in series with an internal resistance R₀, so its terminal voltage falls as the current increases: U = U_S − I·R₀. In the same way, an ideal current source delivers a constant current I_S independent of the terminal voltage (R₀ = ∞), whereas a real current source is an ideal source I_S in parallel with R₀, so its output current decreases as the terminal voltage rises: I = I_S − U/R₀.</p>
+<p>An ideal voltage source and an ideal current source <b>cannot</b> be transformed into each other, because their external characteristics are completely different (constant voltage versus constant current). A real voltage source and a real current source <b>can</b> be transformed into each other if they have the same internal resistance and satisfy <b>U_S = R₀·I_S</b>; then the two models have exactly the same terminal U–I relation, i.e. they are equivalent as seen from the external circuit (but not internally).</p>
+</div>
+
+<h3>Q3　电压源与电流源不使用时应该怎样处理？应该置于开路状态还是短路状态？为什么？<span class="fill">（＝册 p04 第 2 问）</span></h3>
+<p><b>答：不使用的电压源应<b>短路</b>（移出电路并用短路线代替）；不使用的电流源应<b>开路</b>（移出电路）。</b></p>
+<ul>
+  <li>书 p.25 原话：*"在验证叠加定理时，每测量一个电源作用时的响应，其余所有不作用的<b>理想电压源应移出电路，并用短路线代替</b>，切记不能将电压源短路；对于所有不作用的<b>理想电流源也应移出电路，即用开路代替</b>。"*</li>
+  <li>理由：要把电源"置零"——理想电压源输出 0 V ⇒ 相当于一根<b>导线</b>（串联内阻 0）；理想电流源输出 0 A ⇒ 相当于<b>断开</b>（并联内阻 ∞）。</li>
+  <li>⚠ <b>实验台操作</b>：真实稳压电源<b>不能</b>把输出端直接短接；书上要求的是"<b>移出电路</b>＋用短路线代替（或用开关 S₁／S₂ 切换到另一侧，让它不接入电路）"。本实验正是用开关 S₁、S₂ 实现这一点。</li>
+</ul>
+<div class="en">
+<b>EN — Q3</b>
+<p>A voltage source that is not in use must be <b>removed from the circuit and replaced by a short circuit</b>, while a current source that is not in use must be <b>removed from the circuit, i.e. replaced by an open circuit</b>. Setting a source to zero means: an ideal voltage source gives 0 V, which is equivalent to a piece of wire (its internal resistance is zero), and an ideal current source gives 0 A, which is equivalent to a break (its internal resistance is infinite). In this experiment the two sources are set to zero by switching S₁ and S₂ so that the corresponding source is not connected to the circuit; the output terminals of a real stabilized supply must never be short-circuited directly.</p>
+</div>
+
+<h3>Q4　简述叠加定理的应用条件，说明为什么功率不能用叠加方法计算。<span class="fill">（＝册 p04 第 1 问后半）</span></h3>
+<ul>
+  <li><b>应用条件</b>：电路必须是<b>线性</b>的（各元件伏安关系为过原点的直线），且可以含多个独立电源；求某个电源单独作用时把其余电源置零（Q3 的规则）。</li>
+  <li><b>为什么功率不行</b>：功率 P = I²R（或 U²/R）是电流（电压）的<b>二次</b>关系，(I₁ + I₂)² ≠ I₁² + I₂²，所以"各电源单独作用时的功率之和"≠"共同作用时的功率"。</li>
+</ul>
+<div class="en">
+<b>EN — Q4</b>
+<p>The Superposition Theorem applies only to <b>linear</b> circuits: for each source acting alone the other independent sources must be set to zero (unused voltage sources short-circuited, unused current sources open-circuited), and the total response is the algebraic sum of the individual responses. It cannot be used for power, because power is a quadratic function of current or voltage (P = I²R or U²/R) and (I₁ + I₂)² ≠ I₁² + I₂².</p>
+</div>
+
+<h3>Q5　电流表应该与被测支路＿＿（a. 并联, b. 串联），电压表应该与被测支路＿＿（a. 并联, b. 串联）。<span class="fill">（＝册 p04 第 3 问前半）</span></h3>
+<p><b>答：电流表 — <u>b. 串联</u>；电压表 — <u>a. 并联</u>。</b>（电流表内阻很小，串联接入才不会改变支路电流；电压表内阻很大，并联接入才几乎不分流。）</p>
+<div class="en">
+<b>EN — Q5</b>
+<p>The ammeter must be connected <b>in series</b> with the branch being measured (b), and the voltmeter must be connected <b>in parallel</b> with it (a).</p>
+</div>
+
+<h3>Q6　如果电压表与电流表接错了会产生什么后果？测量时若出现仪表指针反向偏转现象应该如何处理？<span class="fill">（＝册 p04 第 3 问后半）</span></h3>
+<ul>
+  <li><b>电流表错接成并联</b>：内阻极小 → 近似把被测支路<b>短路</b>，电流表过流、可能烧表，同时电路工作状态被破坏。</li>
+  <li><b>电压表错接成串联</b>：内阻极大 → 支路电流被压到近 0，电路等于<b>断路</b>，读数无意义。</li>
+  <li><b>指针反向偏转</b>：说明仪表极性接反（直流表"+"端应接高电位）。处理：<b>断电 → 调换仪表两根表笔（接线极性）→ 重新测量</b>；读数按参考方向取<b>负值</b>。数字式仪表可直接读出正负，不必调换。</li>
+</ul>
+<div class="en">
+<b>EN — Q6</b>
+<p>If an ammeter is connected in parallel by mistake, its very small resistance nearly short-circuits the branch: the meter is overloaded and may be damaged, and the circuit no longer works normally. If a voltmeter is connected in series by mistake, its very large resistance reduces the branch current almost to zero, so the circuit is effectively broken and the reading is meaningless. If the pointer deflects in the reverse direction, the polarity of the meter is reversed: switch the supply off, interchange the two leads of the meter (the "+" terminal must be connected to the higher potential) and measure again; the measured value is then recorded as negative with respect to the assumed reference direction. A digital meter reads the sign directly, so no interchange is needed.</p>
+</div>
+
+<h3>Q7　相对误差怎么算？拿不到"真值"时怎么算？（＝册 p04 第 4 问）</h3>
+<p><b>答：γ =（测量值 − 真值）/ 真值 × 100%；真值拿不到时，用约定参考值（标称值／理论计算值）代替。</b></p>
+<ul>
+  <li>绝对误差 Δ = 测量值 − 真值（带单位）；相对误差 γ = Δ / 真值 × 100%（工程上常取绝对值）。</li>
+  <li>本实验的两类参考值：① 电阻测量 → 电阻的<b>标称值</b>（表 2.1.2 的"标称值/Ω"）；② 电流、电压 → 由电路理论<b>计算出的值</b>（表 2.1.3 的"计算值"）。写清参考值取自何处。</li>
+  <li>数据保留一位小数；凡计算题写"公式 → 代入 → 结果 + 单位"（书 §2.1.7 与册 p08 均如此要求）。</li>
+</ul>
+<div class="en">
+<b>EN — Q7</b>
+<p>Relative error: γ = (measured value − true value) / true value × 100%, where the absolute error is Δ = measured value − true value (with a unit). Since the true value cannot be obtained in practice, a conventional <b>reference value</b> is used instead: the <b>nominal value</b> of the resistor for resistance measurements (Table 2.1.2) and the value <b>calculated from circuit theory</b> (nodal or mesh analysis) for currents and voltages (Table 2.1.3). Hence γ = |measured − reference| / |reference| × 100%, and the reference actually used must be stated in the report. Record measured data to one decimal place and write every calculation as formula → substitution → result with unit.</p>
+</div>
+
+<h2>三、课前要画好的电路图与要准备的表格</h2>
+
+<h3>3.1　图 2.1.3 a) 实验电路（按教材重画；册子上叫 Figure 2.1.1 a)）</h3>
+<div class="avoid" style="text-align:center">
+<svg width="700" height="380" viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#111" stroke-width="2">
+    <!-- top rail -->
+    <line x1="120" y1="80" x2="170" y2="80"/>
+    <line x1="200" y1="80" x2="230" y2="80"/>
+    <rect x="230" y="70" width="70" height="20"/>
+    <line x1="300" y1="80" x2="640" y2="80"/>
+    <rect x="470" y="70" width="70" height="20"/>
+    <line x1="540" y1="80" x2="555" y2="80"/>
+    <line x1="585" y1="80" x2="640" y2="80"/>
+    <!-- middle branch -->
+    <line x1="380" y1="80" x2="380" y2="130"/>
+    <line x1="380" y1="160" x2="380" y2="190"/>
+    <rect x="370" y="190" width="20" height="70"/>
+    <line x1="380" y1="260" x2="380" y2="340"/>
+    <!-- left branch -->
+    <line x1="120" y1="80" x2="120" y2="170"/>
+    <line x1="120" y1="215" x2="120" y2="240"/>
+    <circle cx="120" cy="268" r="22"/>
+    <line x1="120" y1="290" x2="120" y2="340"/>
+    <!-- right branch -->
+    <line x1="640" y1="80" x2="640" y2="170"/>
+    <line x1="640" y1="215" x2="640" y2="240"/>
+    <circle cx="640" cy="268" r="22"/>
+    <line x1="640" y1="290" x2="640" y2="340"/>
+    <!-- bottom rail -->
+    <line x1="120" y1="340" x2="230" y2="340"/>
+    <rect x="230" y="330" width="70" height="20"/>
+    <line x1="300" y1="340" x2="470" y2="340"/>
+    <rect x="470" y="330" width="70" height="20"/>
+    <line x1="540" y1="340" x2="640" y2="340"/>
+    <!-- switch blade (S1) -->
+    <line x1="120" y1="170" x2="120" y2="178"/>
+    <line x1="120" y1="178" x2="136" y2="206"/>
+    <line x1="120" y1="215" x2="120" y2="222"/>
+    <!-- switch blade (S2) -->
+    <line x1="640" y1="170" x2="640" y2="178"/>
+    <line x1="640" y1="178" x2="656" y2="206"/>
+    <line x1="640" y1="215" x2="640" y2="222"/>
+    <!-- current sockets -->
+    <circle cx="185" cy="80" r="9"/><line x1="179" y1="74" x2="191" y2="86"/><line x1="191" y1="74" x2="179" y2="86"/>
+    <circle cx="570" cy="80" r="9"/><line x1="564" y1="74" x2="576" y2="86"/><line x1="576" y1="74" x2="564" y2="86"/>
+    <circle cx="380" cy="145" r="9"/><line x1="374" y1="139" x2="386" y2="151"/><line x1="386" y1="139" x2="374" y2="151"/>
+  </g>
+  <g fill="#111" stroke="#111" stroke-width="2">
+    <circle cx="120" cy="80" r="3.5"/><circle cx="380" cy="80" r="3.5"/><circle cx="640" cy="80" r="3.5"/>
+    <circle cx="120" cy="340" r="3.5"/><circle cx="380" cy="340" r="3.5"/><circle cx="640" cy="340" r="3.5"/>
+    <line x1="150" y1="130" x2="150" y2="104"/><polygon points="150,96 145,110 155,110"/>
+    <line x1="610" y1="130" x2="610" y2="104"/><polygon points="610,96 605,110 615,110"/>
+    <line x1="405" y1="100" x2="405" y2="126"/><polygon points="405,134 400,120 410,120"/>
+  </g>
+  <g font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#111">
+    <text x="112" y="66" text-anchor="end">F</text><text x="380" y="66" text-anchor="middle">A</text><text x="648" y="66">B</text>
+    <text x="112" y="362" text-anchor="end">E</text><text x="380" y="362" text-anchor="middle">D</text><text x="648" y="362">C</text>
+    <text x="265" y="62" text-anchor="middle">R₁</text>
+    <text x="505" y="62" text-anchor="middle">R₂</text>
+    <text x="392" y="232">R₃</text>
+    <text x="265" y="322" text-anchor="middle">R₄</text>
+    <text x="505" y="322" text-anchor="middle">R₅</text>
+    <text x="66" y="262" text-anchor="middle">U<tspan dy="4" font-size="11">S1</tspan></text>
+    <text x="686" y="262" text-anchor="middle">U<tspan dy="4" font-size="11">S2</tspan></text>
+    <text x="100" y="252" font-size="12">+</text><text x="100" y="292" font-size="12">−</text>
+    <text x="662" y="252" font-size="12">+</text><text x="662" y="292" font-size="12">−</text>
+    <text x="146" y="238" font-size="14">S₁</text>
+    <text x="664" y="238" font-size="14">S₂</text>
+    <text x="158" y="112" font-size="14">I₁</text><text x="618" y="112" font-size="14">I₂</text><text x="412" y="112" font-size="14">I₃</text>
+    <text x="222" y="404" font-size="13">a) 实验电路 / Experimental circuit</text>
+  </g>
+</svg>
+<p class="small" style="margin-top:0">⊗ = <b>电流插孔</b>（三条支路各一个）；插入电流插头即把电流表串入该支路（书 图 2.1.3 b)）。<br>
+参考方向：<b>I₁ 由 E 侧流向 A</b>、<b>I₂ 由 C 侧流向 B</b>、<b>I₃ 由 A 流向 D</b>；实测与箭头相反时记<b>负值</b>。<br>
+节点：上排 F—A—B，下排 E—D—C；元件：R₁(F–A)、R₂(A–B)、R₃(A–D)、R₄(E–D)、R₅(D–C)（<b>共 5 个电阻</b>）。</p>
+</div>
+<p class="small">⚠ 册子 p05 的表 2.1.2 印到 R₁…R₇，但<b>本实验电路只有 R₁–R₅</b>（书 表 2.1.2 也只到 R₅）——多出的列空着或划掉，按实际元件填。</p>
+<div class="en">
+<b>EN — 画图说明（可写在报告里）</b>
+<p>The experimental circuit (Fig. 2.1.3 a) contains two adjustable DC stabilized supplies U<sub>S1</sub> and U<sub>S2</sub>, switches S₁ and S₂, five resistors R₁–R₅ (R₁ between F and A, R₂ between A and B, R₃ between A and D, R₄ between E and D, R₅ between D and C) and three current sockets, one in each branch, so that an ammeter can be inserted in series without rewiring. The assumed reference directions are: I₁ from E to A, I₂ from C to B and I₃ from A to D; measured values opposite to these directions are recorded as negative.</p>
+</div>
+
+<h3>3.2　表 2.1.2　电阻的实验数据（书 p.27）</h3>
+<table class="avoid">
+<tr><th>被测电阻<br>Resistor</th><th class="c">R₁</th><th class="c">R₂</th><th class="c">R₃</th><th class="c">R₄</th><th class="c">R₅</th></tr>
+<tr><td>标称值/Ω　Nominal value/Ω</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>实测值/Ω　Measured value/Ω</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>相对误差　Relative error（册子要求时填）</td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<div class="book">
+<b>书 p.26 的两条注意（照做）</b>：① 测量时被测电阻<b>不能与电路其他部分有连接</b>（要测独立电阻），更不能带电测量；② 根据标称值<b>选择合适量程</b>，且必须<b>经过调零</b>后再测。提示：可以换不同电阻挡测同一电阻，观察阻值是否不同（说明量程对测量的影响）。
+</div>
+<div class="en">
+<b>EN — 表 2.1.2 填写说明</b>
+<p>Measure every resistor with the ohmmeter of the multimeter and record the measured values in Table 2.1.2 together with the nominal values; compare them and judge the error series of the resistors used. The resistor must be disconnected from the rest of the circuit during measurement, an appropriate range must be selected according to the nominal value, and the ohmmeter must be zeroed before each measurement.</p>
+</div>
+
+<h3>3.3　表 2.1.3　基尔霍夫定律实验数据（书 p.27）—— 课前要先把"计算值"算出来</h3>
+<table class="avoid">
+<tr><th>被测量<br>Quantity</th><th class="c">U<sub>S1</sub>/V</th><th class="c">U<sub>S2</sub>/V</th><th class="c">I₁/mA</th><th class="c">I₂/mA</th><th class="c">I₃/mA</th><th class="c">U<sub>AB</sub>/V</th><th class="c">U<sub>CD</sub>/V</th><th class="c">U<sub>AD</sub>/V</th><th class="c">U<sub>DE</sub>/V</th><th class="c">U<sub>FA</sub>/V</th></tr>
+<tr><td>测量值 Measured</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>计算值 Calculated</td><td class="c">6</td><td class="c">12</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>相对误差 Relative error</td><td colspan="10"></td></tr>
+</table>
+<div class="book">
+<b>实验条件（书 p.27 原文）</b>：两路稳压电源设定 <b>U<sub>S1</sub> = 6 V、U<sub>S2</sub> = 12 V</b>，开关 S₁、S₂ 分别切换至电源一侧。<br>
+<b>注意</b>：① 稳压源的输出电压要用<b>电压表实测</b>，不取电源自带的显示值；接线时稳压电源两个输出端<b>不能短路</b>。② 仪表接法、极性、量程必须正确；量程按最高电源电压或被测量的理论计算值选取，每次测量核实验程。③ 指针反偏 → 调换极性重测，按参考方向记负值。
+</div>
+<p><b>计算值怎么来</b>（课前算完填表）：以 A、D 为两个节点，对 A 点写 KCL：I₁ + I₂ + I₃ = 0；每条支路电流用节点电位差／该支路总电阻表示（左支路 A→F→U<sub>S1</sub>→E→R₄→D；右支路 A→R₂→B→U<sub>S2</sub>→C→R₅→D；中间 A→R₃→D）。<b>需要 5 个电阻的标称值</b>（来自实验台实物）⟹ 先照 §3.2 记下标称值，再解方程得 I₁、I₂、I₃ 与 U<sub>AB</sub>、U<sub>CD</sub>、U<sub>AD</sub>、U<sub>DE</sub>、U<sub>FA</sub>。</p>
+<div class="en">
+<b>EN — 表 2.1.3 说明</b>
+<p>With U<sub>S1</sub> = 6 V and U<sub>S2</sub> = 12 V, measure all branch currents and the voltages across every resistor and record them in Table 2.1.3 (measured values). Before the lab, calculate the same quantities from the nominal resistor values by nodal analysis (KCL at nodes A and D) and fill in the "calculated" row; then compute the relative errors γ = |measured − calculated| / |calculated| × 100%. Choose the ranges according to the calculated values, and record a value as negative when it is opposite to the assumed reference direction.</p>
+</div>
+
+<h3>3.4　表 2.1.4　叠加定理实验数据（书 p.28）</h3>
+<table class="avoid">
+<tr><th>实验内容<br>Case</th><th class="c">U<sub>S1</sub>/V</th><th class="c">U<sub>S2</sub>/V</th><th class="c">I₁/mA</th><th class="c">I₂/mA</th><th class="c">I₃/mA</th><th class="c">U<sub>AB</sub>/V</th><th class="c">U<sub>CD</sub>/V</th><th class="c">U<sub>AD</sub>/V</th><th class="c">U<sub>DE</sub>/V</th><th class="c">U<sub>FA</sub>/V</th></tr>
+<tr><td>U<sub>S1</sub> 单独作用<br>U<sub>S1</sub> acting alone</td><td class="c">12</td><td class="c">0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>U<sub>S2</sub> 单独作用<br>U<sub>S2</sub> acting alone</td><td class="c">0</td><td class="c">6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>U<sub>S1</sub>、U<sub>S2</sub> 共同作用<br>acting together</td><td class="c">12</td><td class="c">6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>2U<sub>S2</sub> 单独作用<br>2U<sub>S2</sub> acting alone</td><td class="c">0</td><td class="c">12</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<div class="book">
+<b>书 p.27–28 原文条件</b>：叠加定理实验把电源<b>换成 U<sub>S1</sub> = 12 V、U<sub>S2</sub> = 6 V</b>（注意与 KCL 那一步刚好互换）；分四步测：① U<sub>S1</sub> 单独作用；② U<sub>S2</sub> 单独作用；③ 两者共同作用；④ <b>U<sub>S2</sub> 取原设定值的 2 倍</b>（= 12 V）单独作用。<br>
+⑤ 把 <b>R₃ 换成二极管 1N4007</b>，重复测量电流与电压，验证叠加定理是否成立，<b>自行设计表格</b>记录。<br>
+<b>注意</b>：换接线路时<b>必须关闭电源开关</b>。
+</div>
+<div class="en">
+<b>EN — 表 2.1.4 说明</b>
+<p>Set the two supplies to U<sub>S1</sub> = 12 V and U<sub>S2</sub> = 6 V. Measure the branch currents (I₁, I₂, I₃) and the resistor voltages four times: with U<sub>S1</sub> acting alone, with U<sub>S2</sub> acting alone, with both sources acting together, and with 2U<sub>S2</sub> (= 12 V) acting alone. A source that does not act is set to zero by switching it out of the circuit and replacing it by a short circuit. Then replace R₃ by a 1N4007 diode, repeat the measurements and check whether the Superposition Theorem still holds (design your own data table). Always switch the supply off before changing the connections.</p>
+</div>
+
+<h2>四、§2.1.5 电源外特性与"两种模型等效变换"的课前设计</h2>
+
+<h4>4.1　书上的等效条件（p.26 原式）</h4>
+<div class="box">
+<p style="margin:2px 0" class="formula">
+实际电压源（U<sub>S</sub> 串 R₀）与实际电流源（I<sub>S</sub> 并 R₀）等效 ⟺ <b>U<sub>S</sub> = R₀ I<sub>S</sub></b>，且两者<b>内阻 R₀ 相同</b>。<br>
+外特性同一条直线：U = U<sub>S</sub> − I R₀（电压源式）＝ (I<sub>S</sub> − I) R₀（电流源式）。
+</p>
+<p style="margin:2px 0"><b>白话版</b>：<b>从负载两端往里看</b>，这两种接法是同一个东西 —— 测出来的 U–I 数据落在<b>同一条直线</b>上就是"等效"。<br>
+换算只有一句：<b>I<sub>S</sub> = U<sub>S</sub> / R₀</b>（本设计：12 V ÷ 1 kΩ = <b>12 mA</b>）。<br>
+⚠ 符号别混：<b>I<sub>S</sub></b> ＝ 电流源自身的电流（定值）；<b>I</b> ＝ 流过负载的电流（随负载变，如 R<sub>L</sub> = 1 kΩ 时 I = 6 mA）。</p>
+</div>
+
+<h4>4.2　教材指定的实验条件（书 p.28）</h4>
+<table class="avoid">
+<tr><th style="width:26%">项目</th><th>书上的规定</th></tr>
+<tr><td>稳压电源输出</td><td><b>12 V</b>（测外特性时负载电阻由大至小变化）</td></tr>
+<tr><td>理想电流源输出</td><td><b>10 mA</b>，负载电阻由 <b>0～1 kΩ</b> 变化（测外特性用）</td></tr>
+<tr><td>实际电源</td><td>电压源要<b>串限流电阻</b>；电流源要<b>并内阻</b>（即"模拟实际电源"）</td></tr>
+<tr><td>注意</td><td>测电压源外特性<b>别忘测空载</b>输出电压；测电流源外特性<b>别忘测短路</b>输出电流；<b>电流源切忌开路</b>；电流源负载电压不超过 20 V；电压源测量要串限流电阻以免损坏电源</td></tr>
+<tr><td>验证等效变换</td><td>负载<b>不变</b>：先按电压源接法记录负载的 U、I；再按电流源接法，<b>调节 I<sub>S</sub></b> 使负载上的 U、I 与电压源时相等，记录此时的 I<sub>S</sub></td></tr>
+</table>
+
+<h4>4.3　我给的方案（可直接照做，数字好算；元件都取自表 2.1.1）</h4>
+
+<div class="warn avoid">
+<b>⚠ 先看这张表怎么读（别把两步的数值当成矛盾）</b>
+<ul style="margin:4px 0 0 0">
+  <li>上面表里的「<b>10 mA</b>」「负载 <b>0–1 kΩ</b>」是书上给 <b>第一步（测外特性）</b> 的规定；</li>
+  <li><b>第二步（验证等效变换）书上没给数值</b>，只要求"负载不变、调 I<sub>S</sub> 使负载上的 U、I 与电压源供电时相等" ⟹ 这里的 I<sub>S</sub> 是<b>由等效条件算出来的</b>：I<sub>S</sub> = U<sub>S</sub>/R₀ = 12 V ÷ 1 kΩ = <b>12 mA</b>；</li>
+  <li>所以本设计同时出现 <b>10 mA（第一步）</b> 与 <b>12 mA（第二步）</b> —— <b>不是自相矛盾，是两步的实验条件不同</b>；</li>
+  <li>负载取 500 / 1 000 / 2 000 / 3 000 Ω 是<b>本设计选的</b>（数字整）；书上只要求"负载不变"。负载 3 kΩ 时 U = 9 V < 20 V ✓（书上的电流源负载电压上限）。</li>
+</ul>
+</div>
+
+<p><b>参数</b>：U<sub>S</sub> = 12 V，内阻 <b>R₀ = 1 kΩ</b>（表 2.1.1 里有 1 000 Ω/8 W 电阻）⟹ 等效电流源 <b>I<sub>S</sub> = U<sub>S</sub>/R₀ = 12 mA</b>（< 500 mA ✓）。负载用可调电阻箱（0～99 999.9 Ω），取 <b>R<sub>L</sub> = 0（短接）、500、1 000、2 000、3 000 Ω</b>。</p>
+<table class="avoid">
+<tr><th>负载 R<sub>L</sub>/Ω</th><th class="c">0（短接）</th><th class="c">500</th><th class="c">1 000</th><th class="c">2 000</th><th class="c">3 000</th><th class="c">空载 ∞</th></tr>
+<tr><td>电压源组 U/V（= 12 R<sub>L</sub>/(1000+R<sub>L</sub>)）</td><td class="c">0</td><td class="c">4.0</td><td class="c">6.0</td><td class="c">8.0</td><td class="c">9.0</td><td class="c">12.0</td></tr>
+<tr><td>电压源组 I/mA（= 12 000/(1000+R<sub>L</sub>)）</td><td class="c">12.0</td><td class="c">8.0</td><td class="c">6.0</td><td class="c">4.0</td><td class="c">3.0</td><td class="c">0</td></tr>
+<tr><td>电流源组 U/V（= (I<sub>S</sub>−I)R₀）</td><td class="c">0</td><td class="c">4.0</td><td class="c">6.0</td><td class="c">8.0</td><td class="c">9.0</td><td class="c">禁止开路</td></tr>
+<tr><td>电流源组 I/mA</td><td class="c">12.0</td><td class="c">8.0</td><td class="c">6.0</td><td class="c">4.0</td><td class="c">3.0</td><td class="c">—</td></tr>
+</table>
+<div class="avoid" style="text-align:center">
+<svg width="360" height="230" viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#111" stroke-width="1.6">
+    <line x1="50" y1="180" x2="295" y2="180"/><line x1="50" y1="180" x2="50" y2="14"/>
+    <line x1="50" y1="44.3" x2="255.7" y2="180"/>
+  </g>
+  <g fill="#111">
+    <circle cx="91.1" cy="73.4" r="3.2"/><circle cx="118.6" cy="92.9" r="3.2"/>
+    <circle cx="152.9" cy="117.1" r="3.2"/><circle cx="187.1" cy="141.4" r="3.2"/>
+  </g>
+  <g font-family="Microsoft YaHei, sans-serif" font-size="11" fill="#111">
+    <text x="30" y="48" text-anchor="end">12</text><text x="30" y="94">8</text><text x="30" y="142">4</text>
+    <text x="91" y="196" text-anchor="middle">4</text><text x="118" y="196" text-anchor="middle">6</text>
+    <text x="153" y="196" text-anchor="middle">8</text><text x="187" y="196" text-anchor="middle">10</text>
+    <text x="270" y="196">I/mA</text><text x="8" y="16">U/V</text>
+    <text x="120" y="46">U = 12 − 1·I[mA]</text>
+  </g>
+</svg>
+<p class="small" style="margin-top:0">两组数据应落在<b>同一条直线</b>：截距 = U<sub>S</sub> = 12 V，斜率 = −R₀ = −1 kΩ ⟹ 两种模型对外等效。</p>
+</div>
+
+<h4>4.4　测试步骤（双语，写进预习报告）</h4>
+<table class="avoid">
+<tr><th style="width:50%">中文</th><th>English</th></tr>
+<tr><td>① 按设计的电路接线：稳压电源 12 V 串 R₀ = 1 kΩ 后接负载电阻箱；电压表并联在负载两端，电流表串联在负载支路。请老师/同组同学检查后再通电。</td>
+<td>① Build the circuit: the 12 V stabilized supply in series with R₀ = 1 kΩ, feeding the resistance box used as the load; connect the voltmeter in parallel with the load and the ammeter in series with the load branch. Have the wiring checked before switching on.</td></tr>
+<tr><td>② 断开负载（空载），读开路电压 U<sub>oc</sub> ≈ 12 V，记入表格（电压源组）。</td>
+<td>② With the load disconnected (no-load), read the open-circuit voltage U<sub>oc</sub> ≈ 12 V and record it in the table (voltage-source set).</td></tr>
+<tr><td>③ 取 R<sub>L</sub> = 3 000、2 000、1 000、500 Ω，每次等读数稳定后读 U 与 I，记入表格；<b>每次改接线路前先断电</b>。</td>
+<td>③ Set R<sub>L</sub> = 3 000, 2 000, 1 000 and 500 Ω; for each setting read U and I after the readings are steady and record them. Switch the supply off before every change of wiring.</td></tr>
+<tr><td>④ 拆掉电压源组，改接电流源组：电流源输出调到 <b>I<sub>S</sub> = 12 mA</b>，与 R₀ = 1 kΩ <b>并联</b>后接同一个 R<sub>L</sub>（保持负载不变）。⚠ 电流源严禁开路。</td>
+<td>④ Replace the voltage-source set by the current-source set: set the current source to I<sub>S</sub> = 12 mA, connect R₀ = 1 kΩ in parallel with it and feed the same load R<sub>L</sub> (the load must not be changed). The current source must never be left open-circuited.</td></tr>
+<tr><td>⑤ 重复 ③ 的负载取值，测 U、I 填右半表。</td><td>⑤ Repeat the same load settings and record U and I in the right-hand half of the table.</td></tr>
+<tr><td>⑥ 数据处理：以 I 为横轴、U 为纵轴，把两组数据画在同一张图上；读出截距（应 = U<sub>S</sub> = 12 V）与斜率（应 = −R₀ = −1 kΩ）。</td>
+<td>⑥ Data processing: plot U against I for both sets of data on the same graph and read off the intercept (should be U<sub>S</sub> = 12 V) and the slope (should be −R₀ = −1 kΩ).</td></tr>
+<tr><td>⑦ 结论：两组数据落在同一条直线上 ⟹ 两种模型对外等效；等效条件为 R₀ 相同且 <b>U<sub>S</sub> = R₀ I<sub>S</sub></b>（本设计：12 V = 1 kΩ × 12 mA ✓）。</td>
+<td>⑦ Conclusion: since both sets of data lie on the same straight line, the two models are equivalent as seen from the load; the conditions are the same internal resistance R₀ and U<sub>S</sub> = R₀ I<sub>S</sub> (here 12 V = 1 kΩ × 12 mA).</td></tr>
+<tr><td>⑧（附加）用一组数据说明等效只对外电路成立：两种接法下 R₀ 上的电流/功率一般不同。</td>
+<td>⑧ (Additional) Use one set of data to show that the equivalence holds only for the external circuit: the current and power in R₀ are generally different in the two connections.</td></tr>
+</table>
+
+<h4>4.5　顺带：外特性曲线要画四条（书 §2.1.7 第 5 问）</h4>
+<p>理想电压源（水平 U = 12 V）、实际电压源（下降，斜率 −R₀）、理想电流源（垂直 I = 10 mA）、实际电流源（下降，I = I<sub>S</sub> − U/R₀）。四条曲线画在同一张 U–I 图上，横轴 I、纵轴 U。</p>
+
+<h2>五、报告要写什么（双语题目 + 作答要点）</h2>
+<p class="small">题目按教材 §2.1.7（书 p.29–30）；册 p08 的 5 问是其中一部分。<b>答案要用实验数据</b>，这里只给双语题目与作答方向。</p>
+<table class="avoid">
+<tr><th style="width:48%">题目（中文）</th><th>Question (English) — 写报告用 / 作答要点</th></tr>
+<tr><td>1) 在图 2.1.3a) 中选定一个结点，用实验数据验证 KCL；选定一个闭合回路，用实验数据验证 KVL。计算相对误差填入表 2.1.3。</td>
+<td>Choose one node of Fig. 2.1.3 a) and verify KCL with the measured data; choose one closed loop and verify KVL. Calculate the relative errors and fill them in Table 2.1.3.<br><span class="small">要点：结点 A（或 D）上 ΣI = 0；回路取 U<sub>S1</sub>–R₁–R₃–R₄（外左回路），ΣU = 0。</span></td></tr>
+<tr><td>2) 根据实验数据，验证线性电路的叠加性与齐次性。</td>
+<td>Verify the additivity and homogeneity of the linear circuit from the measured data.<br><span class="small">要点：共同作用值 ≈ 单独作用值之和（叠加性）；2U<sub>S2</sub> 单独作用值 ≈ 2 × U<sub>S2</sub> 单独作用值（齐次性）。</span></td></tr>
+<tr><td>3) 选一组实验数据说明电阻所消耗的功率能否用叠加定理计算得出？为什么？</td>
+<td>Use one set of data to show whether the power consumed by a resistor can be obtained by superposition, and explain why.<br><span class="small">要点：不能；P = I²R 是二次关系，(I′+I″)² ≠ I′²+I″²。</span></td></tr>
+<tr><td>4) 实验电路中若有一个电阻改为二极管，叠加定理的叠加性与齐次性还成立吗？为什么？</td>
+<td>If one resistor is replaced by a diode, do additivity and homogeneity still hold? Why?<br><span class="small">要点：不成立；二极管非线性，伏安关系不过原点、不是直线。</span></td></tr>
+<tr><td>5) 根据实验数据绘出电压源和电流源在理想状态和实际状态的四条外特性曲线，总结各类电源的特性。</td>
+<td>Plot the four external characteristics (ideal/real voltage source, ideal/real current source) and summarise the properties of each type.<br><span class="small">要点：理想 = 水平/垂直；实际 = 下降；内阻是唯一起作用的参数。</span></td></tr>
+<tr><td>6) 说明实际电压源与电流源的外特性为什么呈下降变化趋势；稳压源和恒流源的输出在任何负载下是否保持恒值？</td>
+<td>Explain why the characteristics of real sources slope downwards, and whether a stabilized supply or a constant-current source keeps a constant output for any load.<br><span class="small">要点：内阻分压/分流；负载越重偏离越大；稳压源在额定范围内近似恒压，恒流源在允许负载范围内近似恒流，超出范围都不成立。</span></td></tr>
+<tr><td>7) 对测量有源二端网络开路电压和等效内阻的各种方法进行比较，比较其优缺点和产生误差的原因。（若做 2.1.6）</td>
+<td>Compare the various methods of measuring the open-circuit voltage and equivalent resistance of an active two-terminal network, including their advantages, disadvantages and error sources.</td></tr>
+</table>
+
+<h4>册 p08 的五个英文小题（＝上面 1)–4) 的英文版，直接对照写）</h4>
+<table class="avoid">
+<tr><th style="width:52%">Manual (English)</th><th>对应/要点</th></tr>
+<tr><td>1. Calculate the relative error between the calculated and measured values in Table 2.1.3.</td><td>＝中文 1)</td></tr>
+<tr><td>2. Choose a node in the schematic and verify KCL using the data of Table 2.1.3.</td><td>＝中文 1)</td></tr>
+<tr><td>3. Take one set of data from Table 2.1.4 and check whether additivity and homogeneity are satisfied.</td><td>＝中文 2)</td></tr>
+<tr><td>4. Take one set of data from Table 2.1.4 and show whether the power of a resistor can be calculated by superposition.</td><td>＝中文 3)</td></tr>
+<tr><td>5. After replacing R₃ by a diode, does the Superposition Theorem still hold?</td><td>＝中文 4)</td></tr>
+</table>
+
+<h2>六、现场速查（双语）</h2>
+<table class="avoid">
+<tr><th style="width:32%">事项</th><th>要点</th></tr>
+<tr><td>接法与量程</td><td>电流表<b>串联</b>、电压表<b>并联</b>；量程按计算值选，先大后小；每次测量核实验程。</td></tr>
+<tr><td>"单独作用"</td><td>不用的电源用<b>开关切出电路</b>（电压源位置用短路线、电流源位置断开），<b>不是</b>把真实电源短路。</td></tr>
+<tr><td>改接线路</td><td><b>必须先关电源开关</b>；稳压电源两输出端不能短路；电流源不能开路。</td></tr>
+<tr><td>读数</td><td>一位小数、标单位；指针反偏 → 断电换极性重测，数据记负值。</td></tr>
+<tr><td>老师批改</td><td>所有记录须指导教师确认批改，否则无效；抄数据/编数据记 0 分。</td></tr>
+</table>
+
+<h2>七、出门前清单</h2>
+<p class="check">
+[ ] 教材《电工学实验教程》第2版（刘凤春、王林主编）—— <b>不带不让进</b><br>
+[ ] <b>预习报告</b>（本份 §二 的四问答案 + §三 的三张表 + §3.1 电路图 + §四 等效变换设计）—— 不合格不让做实验<br>
+[ ] 纸质实验册（成绩记在册上）<br>
+[ ] 铅笔、直尺、橡皮、计算器<br>
+[ ] 智慧树（知到）平台：查本次实验的预习任务与中文预习题（老师会推送）<br>
+[ ] 若老师收实验1 报告：其缺的 L₁ = 25 mH 波形需在机房 Multisim 补
+</p>
+
+<h2>八、待确认（不编造）</h2>
+<ol>
+  <li><b>R₁–R₅ 的标称值</b>：教材表 2.1.2 只留空白行，实际数值由实验台提供的元件决定（51 Ω～1 000 Ω 范围）⟹ 现场照实物填，表 2.1.3 的"计算值"要等有了标称值才能解出。</li>
+  <li><b>册 p06 的 "Section 3.1"</b>：教材 §3.1 是"万用表的设计实验"，与本次无关；等效变换在教材 <b>§2.1.5</b>。按 §2.1.5 做，课上可向老师确认一句。</li>
+  <li><b>是否做 §2.1.6 戴维宁定理的验证</b>：教材有、册子未列 ⟹ 待老师说明。</li>
+  <li><b>故障检测环节（§2.1.4 (3)）</b>：由老师在电路中设一处故障（元件短路或断路），现场用仪表查出并分析 ⟹ 预习时只需知道流程。</li>
+  <li>册 p04 那 4 个英文问题与教材 §2.1.2 的中文问题并非逐字对应：册 Q1←教材 1.1)、册 Q2←教材 1.3)、册 Q3←教材 2.4)+2.5)、册 Q4←教材 §1.4.2 误差分析。两者本次都已覆盖。</li>
+</ol>
+
+<div class="warn">
+<b>帮助史（记账用）</b>：本份解答由导师给出（含英文译文与等效变换设计），按<b>示例学习</b>记账（<code>solution_seen = true</code>），<b>不作为独立掌握证据</b>；实验现场数据与实验后的未见题复测才计入能力账。
+</div>
+
+</body>
+</html>

@@ -1,0 +1,5093 @@
+{
+  "generated_at": "2026-10-14",
+  "rule": "独立通过按**目标**判定：该目标结果正确+**明确无提示**+`needs_verify` 不为真+未见解答+非示例学习+闭卷；目标级字段（target_results[tid]）优先，缺失回退事件级；提示级别未知（null）不计独立通过；needs_verify=true 的目标**不得升级**；exposure_timing=after_attempt 的曝光不阻断。≥2 个不同日期且日期跨度 ≥2 天=延迟通过；另含 ≥1 次未见变式通过=迁移通过（**仅迁移通过计为稳定证据**）。未见变式=题目在整份日志中首次被作答（任何目标）+该版本 kind 为变式类。参数来自 learning/policy.yml，为工程初值。",
+  "warnings": [
+    "line 41: task_version mismatch for en-write-t2-fix-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）"
+  ],
+  "source": {
+    "attempts_sha256": "a588116da077cc60d89332c1f0fb87feb8a4014b3f98125e0c6c6be8d923c085",
+    "attempts_events": 49,
+    "corrections_events": 55,
+    "decision_inputs_sha256": "d290101fabd4a36eb4f075bca43cf8a7ea1b7fc3c1e96b8acd282d958da0e26c"
+  },
+  "summary": {
+    "targets": 68,
+    "by_level": {
+      "未测": 26,
+      "需支持": 31,
+      "曾独立完成": 10,
+      "延迟通过": 1,
+      "迁移通过": 0
+    },
+    "stable_evidence": 0,
+    "open_hurdles": 2,
+    "hurdle_bad_lines": [],
+    "coverage": {
+      "已独立通过·待延迟复测": 11,
+      "已作答·需补练": 30,
+      "未安排（无题目）": 8,
+      "已安排·未作答": 18,
+      "已作答·开卷/受助通过": 1
+    },
+    "targets_without_tasks": [
+      "en.listen.decoding",
+      "en.listen.structure",
+      "en.read.timed",
+      "en.speak.fc",
+      "en.speak.gra",
+      "en.speak.lr",
+      "en.speak.pr",
+      "ode.sys.ivp"
+    ],
+    "measured_minutes_global": 7.0,
+    "estimated_minutes_global": 1163.0,
+    "time_note": "measured=actual/self_reported；estimated 单独统计；未知不给值"
+  },
+  "targets": {
+    "ee.ac.phasor-impedance": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 5,
+      "independent_pass_dates": [
+        "2026-09-28"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 5
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 105.0,
+      "needs_verify_events": 3,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-8",
+          "ts": "2026-09-28",
+          "why": [
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-35",
+          "ts": "2026-09-30",
+          "why": [
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "ee-ac-circuits",
+        "title": "独立求解电工电子技术 交流电路（Chapter Two）计算题",
+        "subject": "06-电工电子技术",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ee-c2-diag-01",
+          "kind": "baseline",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h1-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h2-01",
+          "kind": "practice",
+          "status": "done",
+          "due": ""
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 4,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 3
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ee.ac.reactance": {
+      "level": "延迟通过",
+      "stable_evidence": false,
+      "attempts": 5,
+      "independent_pass_dates": [
+        "2026-09-28",
+        "2026-09-30"
+      ],
+      "delay_days": 2,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 5
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 105.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-12",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "ee-ac-circuits",
+        "title": "独立求解电工电子技术 交流电路（Chapter Two）计算题",
+        "subject": "06-电工电子技术",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ee-c2-diag-01",
+          "kind": "baseline",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h1-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h2-01",
+          "kind": "practice",
+          "status": "done",
+          "due": ""
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 4,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28",
+            "2026-09-30"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 2,
+          "satisfied": true
+        }
+      }
+    },
+    "ee.ac.resonance": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 6,
+      "independent_pass_dates": [
+        "2026-09-28"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 3,
+        "h4": 2,
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 250.0,
+      "needs_verify_events": 5,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-9",
+          "ts": "2026-09-28",
+          "why": [
+            "待核验",
+            "曝光=partial@unknown"
+          ]
+        },
+        {
+          "event_id": "attempt-22",
+          "ts": "2026-09-29",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-23",
+          "ts": "2026-09-30",
+          "why": [
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-35",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "ee-ac-circuits",
+        "title": "独立求解电工电子技术 交流电路（Chapter Two）计算题",
+        "subject": "06-电工电子技术",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ee-c2-diag-01",
+          "kind": "baseline",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h2-01",
+          "kind": "practice",
+          "status": "done",
+          "due": ""
+        },
+        {
+          "id": "ee-lab1-prep-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-lab1-report-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 5,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 5
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ee.ac.series-rlc": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 7,
+      "independent_pass_dates": [
+        "2026-09-28"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 4,
+        "h4": 3
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 265.0,
+      "needs_verify_events": 5,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-9",
+          "ts": "2026-09-28",
+          "why": [
+            "提示H4",
+            "待核验",
+            "曝光=partial@during_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-22",
+          "ts": "2026-09-29",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-23",
+          "ts": "2026-09-30",
+          "why": [
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-35",
+          "ts": "2026-09-30",
+          "why": [
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "ee-ac-circuits",
+        "title": "独立求解电工电子技术 交流电路（Chapter Two）计算题",
+        "subject": "06-电工电子技术",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ee-c2-diag-01",
+          "kind": "baseline",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h1-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "ee-c2h2-01",
+          "kind": "practice",
+          "status": "done",
+          "due": ""
+        },
+        {
+          "id": "ee-lab1-prep-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-lab1-report-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 6,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 5
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ee.dc.kcl": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 4,
+      "independent_pass_dates": [
+        "2026-09-30"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 2,
+        "h4": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 183.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-20",
+          "ts": "2026-09-29",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-22",
+          "ts": "2026-09-29",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-23",
+          "ts": "2026-09-30",
+          "why": [
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ee-lab1-prep-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-lab1-report-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-30"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 3
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ee.dc.source-vs-load": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 5,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1,
+        "h4": 2,
+        "h0": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 201.0,
+      "needs_verify_events": 4,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-21",
+          "ts": "2026-09-29",
+          "why": [
+            "结果=incorrect",
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-22",
+          "ts": "2026-09-29",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-23",
+          "ts": "2026-09-30",
+          "why": [
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-35",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ee-lab1-prep-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-lab1-report-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 5
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ee.dc.steady-state": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 4,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h4": 2,
+        "h0": 1,
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 193.0,
+      "needs_verify_events": 4,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-22",
+          "ts": "2026-09-29",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-23",
+          "ts": "2026-09-30",
+          "why": [
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-34",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-35",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=not_attempted",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ee-lab1-prep-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-lab1-report-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-29"
+        },
+        {
+          "id": "ee-variant-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 4
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.listen.decoding": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.listen.structure": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.read.timed": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.speak.fc": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.speak.gra": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.speak.lr": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.speak.pr": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.write.cc": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 1,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 40.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-41",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-42",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-04",
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "en-write-t2-baseline-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-fix-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-variant-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.write.gra": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 1,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 40.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-41",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-42",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-04",
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "en-write-t2-baseline-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-fix-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-variant-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.write.lr": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 1,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 40.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-41",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-42",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-04",
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "en-write-t2-baseline-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-fix-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-variant-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "en.write.tr": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 1,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 40.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-41",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-42",
+          "ts": "2026-10-04",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-04",
+      "goal": {
+        "id": "ielts-english-75",
+        "title": "雅思训练：听力 8.0 / 口语 7.0 / 写作冲高（均分 7.5 通路）",
+        "subject": "11-英语-雅思",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "en-write-t2-baseline-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-fix-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "en-write-t2-variant-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.delta-function": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch5-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.fourier-series": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch5-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.fourier-transform": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch5-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.isolated-singularity": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 8,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h4": 1,
+        "h1": 1,
+        "h2": 2,
+        "h0": 2,
+        "h3": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 89.0,
+      "needs_verify_events": 4,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-10",
+          "ts": "2026-09-28",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-27",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial",
+            "提示H1",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-28",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-29",
+          "ts": "2026-09-30",
+          "why": [
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-30",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-31",
+          "ts": "2026-09-30",
+          "why": [
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-39",
+          "ts": "2026-10-03",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-40",
+          "ts": "2026-10-03",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-03",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch3-hw-01",
+          "kind": "worked-example",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-quiz-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-sing-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-30"
+        },
+        {
+          "id": "mp1-ch3-sing-02",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        },
+        {
+          "id": "mp1-ch3-sing-03",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        },
+        {
+          "id": "mp1-ch3-sing-04",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-10-03"
+        },
+        {
+          "id": "mp1-ch3-variant-02",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 7,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 8
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.laplace-inverse": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch6-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.laplace-ode": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch6-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.laplace-transform": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch6-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-16"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.laurent-expansion": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 5,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h4": 1,
+        "h3": 2,
+        "h0": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 117.0,
+      "needs_verify_events": 3,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-10",
+          "ts": "2026-09-28",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-17",
+          "ts": "2026-09-29",
+          "why": [
+            "结果=partial",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-18",
+          "ts": "2026-09-29",
+          "why": [
+            "非闭卷",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-19",
+          "ts": "2026-09-29",
+          "why": [
+            "结果=incorrect"
+          ]
+        },
+        {
+          "event_id": "attempt-38",
+          "ts": "2026-10-03",
+          "why": [
+            "结果=partial"
+          ]
+        }
+      ],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-2",
+          "status": "awaiting_retest",
+          "observed_at": "2026-09-28",
+          "evidence_ref": "会话 2026-09-28（学习者原话：『我不会😭』）；相关任务 learning/tasks/mp1-ch3-hw-01.md（attempt-10 为示例学习，四个 mp 目标全部 needs_verify）、learning/tasks/mp1-ch3-quiz-01.md（验收蓝图，§② 为最终更正版）"
+        }
+      ],
+      "last_attempt": "2026-10-03",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch3-hw-01",
+          "kind": "worked-example",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-quiz-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-variant-01",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": false,
+        "concept_hurdles": {
+          "open": [
+            "hurdle-2"
+          ],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 5
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.power-series-radius": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 4,
+      "independent_pass_dates": [
+        "2026-10-03"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h4": 1,
+        "h0": 2,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 91.0,
+      "needs_verify_events": 3,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-10",
+          "ts": "2026-09-28",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-15",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-16",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-03",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch3-hw-01",
+          "kind": "worked-example",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-quiz-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-variant-01",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-10-03"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 3
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.residue-applications": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 165.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-36",
+          "ts": "2026-10-01",
+          "why": [
+            "结果=not_attempted",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-46",
+          "ts": "2026-10-09",
+          "why": [
+            "结果=partial",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-09",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch4-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        },
+        {
+          "id": "mp1-ch4-quiz-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-01"
+        },
+        {
+          "id": "mp1-ch4-residue-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.residue-computation": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [
+        "2026-10-01"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h4": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 165.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-46",
+          "ts": "2026-10-09",
+          "why": [
+            "结果=partial",
+            "提示H4",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-09",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch4-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        },
+        {
+          "id": "mp1-ch4-quiz-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-01"
+        },
+        {
+          "id": "mp1-ch4-residue-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-10-01"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.residue-definition": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 165.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-36",
+          "ts": "2026-10-01",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-46",
+          "ts": "2026-10-09",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-09",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch4-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        },
+        {
+          "id": "mp1-ch4-quiz-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-01"
+        },
+        {
+          "id": "mp1-ch4-residue-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "mp.taylor-expansion": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 3,
+      "independent_pass_dates": [
+        "2026-10-03"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h4": 1,
+        "h0": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 85.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-10",
+          "ts": "2026-09-28",
+          "why": [
+            "示例学习",
+            "非闭卷",
+            "提示H4",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-15",
+          "ts": "2026-09-28",
+          "why": [
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-2",
+          "status": "awaiting_retest",
+          "observed_at": "2026-09-28",
+          "evidence_ref": "会话 2026-09-28（学习者原话：『我不会😭』）；相关任务 learning/tasks/mp1-ch3-hw-01.md（attempt-10 为示例学习，四个 mp 目标全部 needs_verify）、learning/tasks/mp1-ch3-quiz-01.md（验收蓝图，§② 为最终更正版）"
+        }
+      ],
+      "last_attempt": "2026-10-03",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "mp1-ch3-hw-01",
+          "kind": "worked-example",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-quiz-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "mp1-ch3-variant-01",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": false,
+        "concept_hurdles": {
+          "open": [
+            "hurdle-2"
+          ],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-10-03"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.clairaut": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=incorrect",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.const-coeff-homogeneous": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.exact-integ factor": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [
+        "2026-10-08"
+      ],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·开卷/受助通过",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [
+            "2026-10-08"
+          ],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.first-order-linear": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.homogeneous": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=incorrect",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.integrating-factor": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "pilot-ode-integrating-factor",
+        "title": "独立解一阶线性 ODE（试点）",
+        "subject": "03-微分方程",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ode-if-baseline-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.order-reduction": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.riccati": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.separable": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.case-complex": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 115.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-48",
+          "ts": "2026-10-12",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-49",
+          "ts": "2026-10-13",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-13",
+      "goal": {
+        "id": "ode-systems-const-coeff",
+        "title": "独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）",
+        "subject": "03-微分方程",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ode-l15-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-18"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.case-repeated": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 115.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-48",
+          "ts": "2026-10-12",
+          "why": [
+            "结果=incorrect",
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-49",
+          "ts": "2026-10-13",
+          "why": [
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-13",
+      "goal": {
+        "id": "ode-systems-const-coeff",
+        "title": "独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）",
+        "subject": "03-微分方程",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ode-l15-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-18"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.cayley-hamilton": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ode-l16-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.eigen-basic": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 115.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-48",
+          "ts": "2026-10-12",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-49",
+          "ts": "2026-10-13",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-13",
+      "goal": {
+        "id": "ode-systems-const-coeff",
+        "title": "独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）",
+        "subject": "03-微分方程",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ode-l15-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-18"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.ivp": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ode-systems-const-coeff",
+        "title": "独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）",
+        "subject": "03-微分方程",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.sys.matrix-exp": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ode-l16-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.system-reduction": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 12.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-11",
+          "ts": "2026-09-28",
+          "why": [
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-28",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ode-sys-hw-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ode.undetermined-coefficients": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 90.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-50",
+          "ts": "2026-10-08",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "de-midterm-diag-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.adj-agreement": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-02",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.noun-forms": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h2": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 15.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-44",
+          "ts": "2026-10-08",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-45",
+          "ts": "2026-10-08",
+          "why": [
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-02",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        },
+        {
+          "id": "ru-plural-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-13"
+        }
+      ],
+      "task_count": 2,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.noun-gender": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 2
+      },
+      "measured_minutes": 7.0,
+      "estimated_minutes": 15.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-26",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-43",
+          "ts": "2026-10-08",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-adj-qword-01",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        },
+        {
+          "id": "ru-hw-02",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-09"
+        },
+        {
+          "id": "ru-level-check-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": "2026-10-13"
+        },
+        {
+          "id": "ru-noun-gender-fix-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 4,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.qword-agreement": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 2,
+      "independent_pass_dates": [
+        "2026-09-30"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 2
+      },
+      "measured_minutes": 7.0,
+      "estimated_minutes": 15.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-43",
+          "ts": "2026-10-08",
+          "why": [
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-3",
+          "status": "teaching",
+          "observed_at": "2026-09-30",
+          "evidence_ref": "讲法见 subjects/07-俄语/topics/topic-02-疑问词какой在问什么.md；对照证据＝attempt-26（同一批 9 题里 ru.qword-agreement 8/8 与自判性一致，程序层判独立通过）"
+        }
+      ],
+      "last_attempt": "2026-10-08",
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-adj-qword-01",
+          "kind": "delayed-variant",
+          "status": "done",
+          "due": "2026-10-02"
+        },
+        {
+          "id": "ru-level-check-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": "2026-10-13"
+        },
+        {
+          "id": "ru-qword-meaning-01",
+          "kind": "delayed-variant",
+          "status": "open",
+          "due": "2026-10-02"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": false,
+        "concept_hurdles": {
+          "open": [
+            "hurdle-3"
+          ],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-30"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.qword.kakoy-agreement": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-04",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.syntax.chto-clause": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-04",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.syntax.potomy-chto": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-04",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ru.verb.znat-dumat": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": null,
+        "title": null,
+        "subject": null,
+        "status": null
+      },
+      "tasks": [
+        {
+          "id": "ru-hw-04",
+          "kind": "practice",
+          "status": "open",
+          "due": "null"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t3.lagrangian-construction": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-t4-diag-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.angular-momentum-integral": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 10.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-37",
+          "ts": "2026-10-01",
+          "why": [
+            "结果=partial",
+            "待核验"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-01",
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-t4-angular-momentum-01",
+          "kind": "mixed",
+          "status": "blocked",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.cyclic-momentum": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 4,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 3,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 60.0,
+      "needs_verify_events": 4,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-4",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-7",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "待核验",
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-32",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-33",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h4-03",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "tm-t4-diag-01",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "tm-t4-momentum-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 4
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.direct-check": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 3,
+      "independent_pass_dates": [
+        "2026-09-28"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1,
+        "h0": 2
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 65.0,
+      "needs_verify_events": 2,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-2",
+          "ts": "2026-09-26",
+          "why": [
+            "结果=partial",
+            "提示H3",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-6",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-28",
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h4-01-fix-01",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-27"
+        },
+        {
+          "id": "tm-h4-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-27"
+        },
+        {
+          "id": "tm-h4-03",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "tm-t4-criteria-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 4,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 2
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.energy-criteria": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 6,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1,
+        "h0": 4,
+        "h2": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 86.0,
+      "needs_verify_events": 4,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-3",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "提示H3",
+            "待核验"
+          ]
+        },
+        {
+          "event_id": "attempt-5",
+          "ts": "2026-09-28",
+          "why": [
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-6",
+          "ts": "2026-09-28",
+          "why": [
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-13",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=blocked",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-14",
+          "ts": "2026-09-28",
+          "why": [
+            "结果=partial",
+            "提示H2",
+            "待核验",
+            "曝光=partial@during_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-25",
+          "ts": "2026-09-30",
+          "why": [
+            "结果=partial"
+          ]
+        }
+      ],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-1",
+          "status": "verified",
+          "observed_at": "2026-09-26",
+          "evidence_ref": "eval/会话原文-20260926.md；state/mistakes.md 同条记录；subjects/01-理论力学/讲义/T04-判据二讲解-1.png（4 步推导图）"
+        }
+      ],
+      "last_attempt": "2026-09-30",
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h4-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-27"
+        },
+        {
+          "id": "tm-t4-criteria-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "tm-t4-criteria-02",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        },
+        {
+          "id": "tm-t4-criteria-03",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "tm-t4-criteria-04",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-29"
+        }
+      ],
+      "task_count": 5,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": [
+            "hurdle-1"
+          ]
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 6
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.energy-integral": {
+      "level": "曾独立完成",
+      "stable_evidence": false,
+      "attempts": 6,
+      "independent_pass_dates": [
+        "2026-09-28"
+      ],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 1,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 5,
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 120.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-1",
+          "ts": "2026-09-26",
+          "why": [
+            "结果=partial"
+          ]
+        },
+        {
+          "event_id": "attempt-2",
+          "ts": "2026-09-26",
+          "why": [
+            "提示H3"
+          ]
+        },
+        {
+          "event_id": "attempt-4",
+          "ts": "2026-09-28",
+          "why": [
+            "曝光=full@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-6",
+          "ts": "2026-09-28",
+          "why": [
+            "曝光=partial@before_attempt"
+          ]
+        },
+        {
+          "event_id": "attempt-7",
+          "ts": "2026-09-28",
+          "why": [
+            "曝光=full@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-09-28",
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h4-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-09-27"
+        },
+        {
+          "id": "tm-h4-03",
+          "kind": "practice",
+          "status": "done",
+          "due": "2026-09-28"
+        },
+        {
+          "id": "tm-t4-criteria-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 3,
+      "coverage": "已独立通过·待延迟复测",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [
+            "2026-09-28"
+          ],
+          "open_book_only": [],
+          "helped_or_exposed_events": 5
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t4.mechanical-similarity": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "tm-t4-conservation-laws",
+        "title": "独立求解理论力学 Topic 4 守恒定律问题",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-t4-similarity-01",
+          "kind": "mixed",
+          "status": "open",
+          "due": "2026-09-30"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t5.central-motion-types": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "tm-t5-1d-motion",
+        "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h5-02",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t5.effective-potential": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "tm-t5-1d-motion",
+        "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h5-02",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t5.law-of-motion": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 60.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-47",
+          "ts": "2026-10-12",
+          "why": [
+            "结果=partial",
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-12",
+      "goal": {
+        "id": "tm-t5-1d-motion",
+        "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h5-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t5.potential-analysis": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 60.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-47",
+          "ts": "2026-10-12",
+          "why": [
+            "提示H3",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-12",
+      "goal": {
+        "id": "tm-t5-1d-motion",
+        "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h5-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "tm.t5.turning-points": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1
+      },
+      "measured_minutes": 0.0,
+      "estimated_minutes": 60.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-47",
+          "ts": "2026-10-12",
+          "why": [
+            "提示H3",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
+      "open_hurdles": [],
+      "last_attempt": "2026-10-12",
+      "goal": {
+        "id": "tm-t5-1d-motion",
+        "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
+        "subject": "01-理论力学",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "tm-h5-01",
+          "kind": "practice",
+          "status": "open",
+          "due": "2026-10-15"
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已作答·需补练",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 1
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    }
+  }
+}

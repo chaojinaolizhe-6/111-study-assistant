@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/9(1).pdf",
+  "sha256": "1a6c86de23fe173c00ea363378ebb9530255a2419e7381efca758a8f2e7e2ab1",
+  "page_count": 43,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Linear homogeneous DE of order n with constant coefficients",
+      3
+    ],
+    [
+      1,
+      "Lecture 8. Homework",
+      32
+    ],
+    [
+      1,
+      "Homework",
+      42
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 9.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 15, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Linear homogeneous DE of order n with constant coefficients\n\n\n\n2  Lecture 8. Homework\n\n\n\n3 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 2 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Linear homogeneous DE of order n with constant coefficients\nNow we will consider linear homogeneous differential equation of order n with constant coefficients\n\n                   L(y) ≡y (n)(x) + a1y (n−1)(x) + ... + an−1y ′(x) + any(x) = 0,                  (1)\n\nwhere a1, ..., an are real constants. We would like to solve (1) by trying an exponential exp(λx). We see\nthat\n         d                     d2                        dn\n            exp(λx) = λ exp(λx),     exp(λx) = λ2 exp(λx), ...,     exp(λx) = λn exp(λx).\n         dx                     dx2                        dxn\nThen\n           L(exp(λx)) = λn exp(λx) + a1λn−1 exp(λx) + ... + an−1λ exp(λx) + an exp(λx)\n                = (λn + a1λn−1 + ... + an−1λ + an) exp(λx)\n\nand hence\n                                  L(exp(λx)) = p(λ) exp(λx),                                  (2)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 3 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "where\n                            p(λ) = λn + a1λn−1 + ... + an−1λ + an.                             (3)\n\nWe call p(λ) the characteristic polynomial of L. Since exp(λx) ̸= 0, we obtain that if exp(λx) is a\nsolution of (1) then the constant λ must satisfy the equation p(λ) = 0 or\n\n                             λn + a1λn−1 + a2λn−2 + ... + an = 0.                              (4)\n\nThis equation is called the characteristic equation of the given differential equation (1). Hence, to solve\n(1), we write the characteristic equation (4) and solve it for λ. Observe that (4) is formally obtained\nfrom (1) by merely replacing the k-th derivative in (1) by λk (k = 0, 1, 2, ..., n).\n             ..................................................................................................................................\nWe need some information from algebra.\nDEFINITION 1.\nWe say that polynomial p(λ) has a root λ1 if\n\n                                    p(λ) = (λ −λ1)q(λ)                                      (5)\n\nand q(λ) is another polynomial.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 4 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "DEFINITION 2.\nWe say that a root λ1 of polynomial p(λ) has multiplicity m1 if\n\n                                   p(λ) = (λ −λ1)m1q(λ)                                     (6)\n\nand q(λ) is a such polynomial that q(λ1) ̸= 0.\nEXAMPLE.\nLet us consider polynomial\n                                   p(λ) = λ3 −λ2 −λ + 1.\n\nIt is not difficult to check that\n\n                p(λ) = λ2(λ −1) −(λ −1) = (λ2 −1)(λ −1) = (λ −1)2(λ + 1).\n\nThe root λ1 = 1 of polynomial p(λ) has multiplicity 2 and the root λ2 = −1 of polynomial p(λ) has\nmultiplicity 1.\nFrom the Fundamental Theorem of Algebra we know that a polynomial of degree n always has n\ncomplex roots (including multiplicity). Some or all roots may be real.\nFor conjugate to z complex number we use notation z. If z = a + ib then z = a −ib. Here i is\nimaginary unit, i2 = −1.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 5 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "The complex conjugate root theorem states that if p is a polynomial in one variable with real\ncoefficients, and a + ib is a root of p with a and b real numbers (b ̸= 0 ), then its complex conjugate\na −ib is also a root of p.\nMoreover, if a + ib is the root of multiplicity k, then its complex conjugate a −ib is also the root of the\nsame multiplicity k.\n\nEXAMPLE.\nLet us consider polynomial\n                                    p(λ) = λ4 + 2λ2 + 1.\n\nIt is not difficult to check that\n\n               p(λ) = (λ2 + 1)2 = (λ2 −i2)2 = [(λ + i)(λ −i)]2 = (λ −i)2(λ + i)2.\n\nThe polynomial p(λ) has complex conjugate roots λ1 = i and λ2 = −i of multiplicity 2.\n             ..................................................................................................................................\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 6 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "THEOREM 1.\nLet λ1, λ2, ..., λs be the distinct real roots of the characteristic equation (4) and suppose λi has\nmultiplicity mi and m1 + m2 + ... + ms = n. Then n functions\n\n                           exp(λ1x), x exp(λ1x), ..., xm1−1 exp(λ1x);\n                           exp(λ2x), x exp(λ2x), ..., xm2−1 exp(λ2x);\n                                                                                                   (7)\n                                           ................................................................\n                           exp(λsx), x exp(λsx), ..., xms−1 exp(λsx)\n\nare a fundamental set of solutions of (1).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 7 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "Suppose all roots of the characteristic equation (4) are real numbers. Then the set of all solutions of\nDE (1) on any interval I can be expressed as a linear combination\n\n                                                                   s  mi−1\n                                y(x) = X X cijxj exp(λix),                                 (8)\n                                               i=1 j=0\n\nwhere i = 1, ..., s, j = 0, ..., mi −1 and cij are arbitrary constants. In particular, if all roots of (4) are\ndistinct real numbers λ1, λ2, ..., λn, then the general solution of (DE (1) is\n\n                                                                                n\n              y(x) = c1 exp(λ1x) + c2 exp(λ2x) + ... + cn exp(λnx) = X ci exp(λix),             (9)\n                                                                            i=1\n\nwhere c1, c2, ..., cn are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 8 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "EXAMPLE 1.\nSolve DE\n                                      y ′′ −2y ′ −15y = 0.\n\n The characteristic equation of the given differential equation is\n\n                                      λ2 −2λ −15 = 0.\n\nHence                            √\n                              2 ± p22 −4(−15)   2 ±  64\n                              λ1,2 =           =      = 1 ± 4\n                                     2              2\nand\n                                      λ1 = 5, λ2 = −3.\n\nThe roots are real and distinct. Thus functions exp(5x) and exp(−3x) are a fundamental set of\nsolutions for the given DE and the general solution may be written in the form (9)\n\n                               y(x) = c1 exp(5x) + c2 exp(−3x),\n\n where c1, c2 are arbitrary constants.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 9 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "EXAMPLE 2.\nSolve DE\n                                    y ′′′ −4y ′′ + y ′ + 6y = 0.\n\n The characteristic equation of the given differential equation is\n\n                                    λ3 −4λ2 + λ + 6 = 0.\n\nWe observe that λ = −1 is a root of this equation. Then\n\n                               λ3 −4λ2 + λ + 6 = (λ + 1)q(λ),\n\nwhere q(λ) is some polynomial of the second order. We divide polynomial in the left-hand by (λ + 1)\nand obtain\n                                    q(λ) = λ2 −5λ + 6.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                10 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "Now finding the roots of quadratic equation, we have all roots of the characteristic equation\n\n                                  λ1 = −1, λ2 = 2, λ3 = 3.\n\nThe roots are real and distinct. Thus functions exp(−x), exp(2x), and exp(3x) are a fundamental set\nof solutions for the given DE and the general solution may be written in the form (9)\n\n                          y(x) = c1 exp(−x) + c2 exp(2x) + c3 exp(3x),\n\n where c1, c2, c3 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                11 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "EXAMPLE 3.\nSolve DE\n                              y (4) −7y (3) + 18y ′′ −20y ′ + 8y = 0.\n\n\nThe characteristic equation of the given differential equation is\n\n                               λ4 −7λ3 + 18λ2 −20λ + 8 = 0.\n\nWe observe that λ = 1 is a root of this equation. Then\n\n                           λ4 −7λ3 + 18λ2 −20λ + 8 = (λ −1)q(λ),\n\nwhere q(λ) is some polynomial of the third order.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                12 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "We divide polynomial in the left-hand by (λ −1) and obtain\n\n                            q(λ) = λ3 −6λ2 + 12λ −8 = (λ −2)3.\n\nWe found roots of the characteristic equation λ1 = 1 and λ2 = 2. The roots are real, but second root\nhas multiplicity 3. Thus functions\n\n                               exp(x), exp(2x), x exp(2x), x2 exp(2x),\n\nare a fundamental set of solutions for the given DE and the general solution may be written in the form\n(8)\n                   y(x) = c1 exp(x) + c2 exp(2x) + c3x exp(2x) + c4x2 exp(2x),\n\n where c1, c2, c3, c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                13 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "To solve linear homogeneous differential equation of order n we need find the roots of polynomial of the\nsame order. There is a simple test to find rational roots for polynomial with integer coefficients.\nTHEOREM 3.\nIf a polynomial with integer coefficients\n\n                      P(x) = a0xn + a1xn−1 + a2xn−2 + ... + an−1x + an\n\nhas a rational root x0 = p/q (p/q is not cancellable fraction) then the number q is a divisor of the\nnumber a0, and the number p is a divisor of the number an.\nProof. Indeed, since x0 = p/q is a root of the polynomial P(x) then\n\n                   p  n      p  n−1      p  n−2            p\n                   a0    + a1     + a2     + ... + an−1   + an = 0.\n                   q         q           q                 q\n\nMultiplying both sides of this equation by qn, we obtain\n\n                     a0pn + a1pn−1q + a2pn−2q2 + ... + an−1pqn−1 + anqn = 0\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                14 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "or\n                    a0pn = −q(a1pn−1 + a2pn−2q + ... + an−1pqn−2 + anqn−1).\n\nSince a0, a1, ..., an−1, an are integers, then the number in brackets is an integer. Hence, the right-hand\nside of this equality is divided by q, since q is included in it as a factor. This means that the left-hand\nside is divided by q. The numbers p and q as well as pn and q do not have a common factors, since\notherwise the fraction p/q would be cancellable. Hence a0 is divided by q.\nConsidering the equation\n\n                   anqn = −p(a0pn−1 + a1pn−2q + a2pn−3q2 + ... + an−1qn−1),\n\nwe can prove in a similar way that an is divided by p.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                15 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "EXAMPLE 4.\nSolve DE\n                                 3y ′′′ + y ′′ −10y ′ + 8y = 0.\n\n The characteristic equation of the given differential equation is\n\n                                  3λ3 + λ2 −10λ −8 = 0.                                 (10)\n\nWe try find rational root of the equation (10). Divisors of 8 are ±1, ±2, ±4, ±8 and divisors of 3 are\n±1, ±3. By Theorem 3 the equation (10) could have only the following rational roots\n\n                           ±1, ±2, ±4, ±8, ±1 ±2 ±4 ±8                                                  3,   3,   3,   3.\n\nBy inspection we find that λ1 = 2 is a root of the equation (10). Dividing polynomial in the left-hand\nside of (10) by λ −2, we obtain\n\n                         3λ3 + λ2 −10λ −8 = (λ −2)(3λ2 + 7λ + 4).\n\nSolving quadratic equation\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                16 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "                                     3λ2 + 7λ + 4 = 0,\n\nwe find other roots λ2 = −1 and λ3 = −4/3. The roots are real and distinct. Thus exp(2x), exp(−x),\nand exp(−4x/3) are a fundamental set of solutions for the given DE and the general solution may be\nwritten in the form (9)\n\n                        y(x) = c1 exp(2x) + c2 exp(−x) + c3 exp −4x    ,\n                                                             3\n\n where c1, c2, c3 are arbitrary constants.\nEXAMPLE 5.\nSolve DE\n                            4y (4) −8y ′′′ −43y ′′ + 47y ′ −12y = 0.\n\n The characteristic equation of the given differential equation is\n\n                              4λ4 −8λ3 −43λ2 + 47λ −12 = 0.                             (11)\n\nDivisors of 12 are ±1, ±2, ±3, ±4, ±6, ±12 and divisors of 4 are ±1, ±2, ±4.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                17 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "By Theorem 3 the equation (11) could have only the following rational roots\n\n                       ±1, ±2, ±3, ±4, ±6, ±12, ±1 ±3 ±1 ±3                                                       2,   2,   4,   4.\n\nBy inspection we find that λ1 = −3 is a root of the equation (11). Dividing polynomial in the left-hand\nside of (11) by λ + 3, we obtain\n\n                 4λ4 −8λ3 −43λ2 + 47λ −12 = (λ + 3)(4λ3 −20λ2 + 17λ −4).\n\nTo find rational roots of the following cubic equation\n\n                                 4λ3 −20λ2 + 17λ −4 = 0                                (12)\n\nwe use the theorem again. The equation (12) could have only the following rational roots\n\n                                 ±1, ±2, ±4, ±1 ±1                                                    2,   4.\n\nBy inspection we find that λ2 = 4 is a root of the equation (12). Dividing polynomial in the left-hand\nside of (12) by λ −4, we obtain\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                18 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "                        4λ3 −20λ2 + 17λ −4 = (λ −4)(4λ2 −4λ + 1).\n\nSolving quadratic equation\n                                     4λ2 −4λ + 1 = 0,\n\nwe find real root λ3 = 1/2 of multiplicity 2. Thus\n\n                                                    x          x\n                            exp(−3x), exp(4x), exp        , x exp\n                                                2         2\n\nare a fundamental set of solutions for the given DE and the general solution may be written in the form\n\n                                                          x             x\n                  y(x) = c1 exp(−3x) + c2 exp(4x) + c3 exp   + c4x exp        ,\n                                                      2            2\n\n where c1, c2, c3, c4 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                19 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "EXAMPLE 6.\nSolve DE\n                                                                             ′′          ′       exp x                                     y −2y + y =          .                                  (13)\n                                                      x\n First we consider corresponding to (13) linear homogeneous differential equation\n\n                                       y ′′ −2y ′ + y = 0.                                    (14)\n\nThe characteristic equation of DE (14) equation is\n\n                             λ2 −2λ + 1 = 0  or  (λ −1)2 = 0.                            (15)\n\nThe root λ1 = 1 of the characteristic equation (15) has multiplicity 2. Thus functions\n\n                                        exp x, x exp x\n\nare a fundamental set of solutions for the DE (14) and the general solution may be written as follows\n\n                                  y(x) = c1 exp x + c2x exp x,\n\nwhere c1, c2 are arbitrary constants. We will look for a particular solution of (13) in the form\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                20 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "                                yp(x) = c1(x) exp x + c2(x)x exp x.                            (16)\n\nWe suppose that\n                                         c′1(x) exp x + c′2(x)x exp x = 0\n\nand find the derivatives of yp :\n\n              y p′ = c′1(x) exp x + c1(x) exp x + c′2(x)x exp x + c2(x)(exp x + x exp x) =\n\n                  = c1(x) exp x + c2(x)(exp x + x exp x),\n              y p′′ = [c1(x) exp x + c2(x)(exp x + x exp x)]′ = c′1(x) exp x + c1(x) exp x+\n                      +c′2(x)(exp x + x exp x) + c2(x)(2 exp x + x exp x).\n\nNow we substitute obtained derivatives to the left-hand side of the equation (13)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                21 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "    y p′′ −2y p′ + yp = c′1(x) exp x + c1(x) exp x + c′2(x)(exp x + x exp x) + c2(x)(2 exp x + x exp x)−\n\n              −2c1(x) exp x −2c2(x)(exp x + x exp x) + c1(x) exp x + c2(x)x exp x =\n                  = c′1(x) exp x + c′2(x)(exp x + x exp x).\n\nNow to satisfy the equation (13) we require that\n\n                                                             exp x\n                                 c′1(x) exp x + c′2(x)(exp x + x exp x) =          .\n                                                                x\n\nHence, the function yp in (16) a particular solution of (13) if the functions c′1, c′2 satisfy the following\nsystem of the equations\n\n                               c′1(x) exp x + c′2(x)x exp x = 0                                                                                exp x                           (17)\n                               c′1(x) exp x + c′2(x)(exp x + x exp x) =   x   .\n\nThe system (17) is linear for c′1, c′2. First of all we divide both equation of the system by exp x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                22 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "                                         c′1(x) + c′2(x)x = 0                                                                     1                                   (18)\n                                         c′1(x) + c′2(x)(1 + x) = x .\n\nWe express c′1(x) from the first equation and substitute in the second\n\n                                                               1\n                              c′1(x) = −c′2(x)x,  −c′2(x)x + c′2(x)(1 + x) =    .\n                                                                    x\n\nHence\n                                      1\n                                        c′2(x) =    and   c′1(x) = −1.\n                                         x\nIntegrating equation, we obtain\n\n                           Z  1\n                          c2(x) =     dx = ln |x| + c3,   c1(x) = −x + c4,\n                                   x\n\nwhere c3, c4 are arbitrary constants. Substituting c1(x), c2(x) to (16), we find a particular solution of\n(13)\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                23 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "              yp(x) = c1(x) exp x + c2(x)x exp x = (c4 −x) exp x + (ln |x| + c3)x exp x.\n\nSince we need only one particular solution of (13) let us put c3 = 0, c4 = 0. Now we are ready to write\nthe general solution of (13)\n\n      y(x) = c1 exp x + c2x exp x −x exp x + x ln |x| exp x = c1 exp x + c5x exp x + x ln |x| exp x,\n\n where c1, c5 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                24 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "EXAMPLE 7.\nSolve DE\n                                  y ′′′ −6y ′′ + 11y ′ −6y = 6x.                               (19)\n\n\nFirst, solve corresponding to (19) linear homogeneous equation:\n\n                                   y ′′′ −6y ′′ + 11y ′ −6y = 0.\n\nThe characteristic equation of the given differential equation is\n\n                                   λ3 −6λ2 + 11λ −6 = 0.                                 (20)\n\nDivisors of 6 are ±1, ±2, ±3, ±6 and divisors of 1 are ±1. By Theorem 3 the equation (20) could have\nonly the following rational roots\n                                   ±1, ±2, ±3, ±6.\n\nBy inspection we find that λ1 = 1 is a root of the equation (20). Dividing polynomial in the left-hand\nside of (20) by λ −1, we obtain\n\n               λ3 −6λ2 + 11λ −6 = (λ −1)(λ2 −5λ + 6) = (λ −1)(λ −2)(λ −3).\n\nThus\n                                    exp x, exp(2x), exp(3x)\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                25 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "are a fundamental set of solutions for the given DE and the general solution may be written in the form\n\n                            yh(x) = C1 exp x + C2 exp(2x) + C3 exp(3x),\n\n where C1, C2, C3 are arbitrary constants.\nTo solve (19) we use the method of variation of parameters (Lagrange method) again. We will look\nfor a particular solution of (19) in the form\n\n                       yp(x) = C1(x) exp x + C2(x) exp(2x) + C3(x) exp(3x).\n\nThat is, we replace the constants C1, C2, C3 by functions C1(x), C2(x), C3(x). We have three unknown\nfunctions, but only one differential equation. Thus, we have the option to add two additional\nconditions to simplify the derivatives.\nCompute the first derivative:\n\n          y p′ = C1′ exp x + C2′ exp(2x) + C3′ exp(3x) + C1 exp x + 2C2 exp(2x) + 3C3 exp(3x).\n\nTo keep the expression simple (as if the Ci were constants), we impose:\n                     C1′ exp x + C2′ exp(2x) + C3′ exp(3x) = 0.                          (21)\n\nThen:\n                           y p′ = C1 exp x + 2C2 exp(2x) + 3C3 exp(3x).\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                26 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "Differentiate again:\n\n         y p′′ = C1′ exp x + 2C2′ exp(2x) + 3C3′ exp(3x) + C1 exp x + 4C2 exp(2x) + 9C3 exp(3x).\n\nAgain, we impose a condition to remove the terms with Ci′ :\n\n                    C1′ exp x + 2C2′ exp(2x) + 3C3′ exp(3x) = 0.                         (22)\n\nThen:\n                           y p′′ = C1 exp x + 4C2 exp(2x) + 9C3 exp(3x).\n\nThe third derivative is computed without any extra condition:\n\n        y p′′′ = C1′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x) + C1 exp x + 8C2 exp(2x) + 27C3 exp(3x).\n\nWe will now substitute yp, y p,′ y p′′ , y p′′′ into the original DE.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                27 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "Substitute yp into the left-hand side of the equation (19)\n\ny p′′′ −6y p′′ + 11y p′ −6yp = C1′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x) + C1 exp x + 8C2 exp(2x) + 27C3 exp(3x)\n\n       −6(C1 exp x + 4C2 exp(2x) + 9C3 exp(3x)) + 11(C1 exp x + 2C2 exp(2x) + 3C3 exp(3x))\n\n                         −6(C1 exp x + C2 exp(2x) + C3 exp(3x))\n                 = C1′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x)\n\n     +C1 exp x(1 −6 + 11 −6) + C2 exp(2x)(8 −24 + 22 −6) + C3 exp(3x)(27 −54 + 33 −6)\n                 = C1′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x)\n\nAfter substitution, all terms containing C1, C2, C3 cancel out because the functions\nexp x, exp(2x), exp(3x) satisfy the homogeneous equation. Thus we obtain the equation:\n\n                    C1′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x) = 6x.                        (23)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                28 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "Combining (21), (22), and (23), we obtain the system:\n\n             C1′ exp x + C2′ exp(2x) + C3′ exp(3x) = 0,\n                ′                     ′                          ′\n                    C1 exp x + 2C2 exp(2x) + 3C3 exp(3x) = 0,                          (24)\n\n                                                          ′ exp x + 4C2′ exp(2x) + 9C3′ exp(3x) = 6x.             C1\n\nIts determinant is the Wronskian of the fundamental system exp x, exp(2x), exp(3x), which is never\nzero.\n\n                              exp x   exp(2x)    exp(3x)                         1  1  1\n W(exp x, exp(2x), exp(3x)) =  exp x  2 exp(2x)  3 exp(3x) = exp x exp(2x) exp(3x)  1  2  3\n                              exp x  4 exp(2x)  9 exp(3x)                        1  4  9\n\n            2  3      1  3      1  2\n= exp(6x)      −     +      = exp(6x){(18−12)+(9−3)+(4−2)} = 14 exp(6x) ̸= 0.\n            4  9      1  9      1  4\n\nLet\n                     u = C1′ exp x,   v = C2′ exp(2x),  w = C3′ exp(3x).\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                29 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "Then the system (24) becomes:\n                   u + v + w = 0,\n                                                     u + 2v + 3w = 0,\n                   u + 4v + 9w = 6x.\nSubtract the first from the second:\n\n                                 v + 2w = 0 ⇒   v = −2w.\n\nSubtract the second from the third:\n                                       2v + 6w = 6x.\n\nSubstitute v = −2w:\n                 −4w + 6w = 6x ⇒  2w = 6x ⇒  w = 3x.\n\nHence\n                                      v = −6x,  u = 3x.\n\nFrom u, v, w we get:\n                          u = C1′ exp x = 3x ⇒  C1′ = 3xe−x,\n                          v = C2′ exp(2x) = −6x ⇒  C2′ = −6xe−2x,\n                   w = C3′ exp(3x) = 3x ⇒  C3′ = 3xe−3x.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                30 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "Integrate each expression:\n\n                          Z\n                        C1 =   3x exp(−x) dx = −3(x + 1) exp(−x),\n\n                      Z                                3\n                    C2 =  −6x exp(−2x) dx = 3x exp(−2x) +  exp(−2x),\n                                                         2\n                      Z                            3x exp(−3x) dx = −x exp(−3x) −1 exp(−3x).                    C3 =\n                                                         3\n(We omit the constants of integration since they contribute to the homogeneous solution.)\nSubstitute C1, C2, C3 into yp:\n\n                                                                3         1\n            yp = C1 exp x + C2 exp(2x) + C3 exp(3x) = −3(x + 1) +  3x +  −  x +\n                                                                2         3\n\n                                  3\n           = −3x −3 + 3x +                        −x −1 = −x −3 + 3 −1 = −x −11 .\n                                  2      3            2   3         6\nThe general solution of the original ODE is\n                 y = yh(x) + yp(x) = C1 exp x + C2 exp(2x) + C3 exp(3x) −x −11 .\n                                                                      6\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                31 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "Lecture 8. Homework\n\nI. Which of the following pairs of functions are linearly independent? When solving the problem do not\nuse the Wronskian.\n                                     a)  1  and  x,   x ∈R.\n                                                   π                            b)   sin t   and   tan t,   t ∈ −π ,      .\n                                                       2  2\n\na) We prove that 1 and x are linearly independent on R. Indeed, suppose that\n\n                                               c1 + c2x = 0\n\nfor all x. We put x = 0. Then c1 = 0 and c2x = 0 for all x. Thus c2 = 0.\nb) We prove that sin t and tan t are linearly independent for t ∈ −π2 , π2   . Indeed, suppose that\n\n                                            sin t                    π                             c1 sin t + c2   = 0   for all   t ∈ −π ,      .\n                                      cos t                    2  2\n\nThen\n                                                      π                           c1 cos t + c2 = 0   for all   t ∈ −π , 0 ∪  0,      .\n                                                    2         2\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                32 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "Suppose that c1 ̸= 0 since otherwise c1 = c2 = 0. Then\n\n                                                     π                           cos t = −c2    for all   t ∈ −π , 0 ∪  0,\n                                        c1                 2         2\n\nand we have a contradiction.\n\nII. Check that DE\n                                    y ′′′ −2y ′′ −y ′ + 2y = 0                                 (25)\n\nhas the solutions y1(x) = exp(−x), y2(x) = exp(x) and y3(x) = exp(2x). Whether or not these\nsolutions are linearly independent on R.\nCalculating derivatives it is easy to check that y1(x) = exp(−x), y2(x) = exp(x) and y3(x) = exp(2x)\nare solutions of (25). Now we can use Theorem 2 and calculate the Wronskian\n\n                                             exp(−x)   exp(x)   exp(2x)\n              W(exp(−x), exp(x), exp(2x)) =  −exp(−x)  exp(x)  2 exp(2x)\n                                             exp(−x)   exp(x)  4 exp(2x)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                33 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "                                                   1   1  1\n                 = exp(−x) exp(x) exp(2x)  −1  1  2\n                                                   1   1  4\n\n                                   1  2     −1  2     −1  1\n               = exp(2x)      −      +\n                                   1  4       1   4       1   1\n\n            = exp(2x)[(4 −2) −(−4 −2) + (−1 −1)] = 6 exp(2x) ̸= 0.\nThus y1(x), y2(x) and y3(x) are linearly independent on R.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                34 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "III. Check that DE\n                                  y ′′′ −9y ′′ + 26y ′ −24y = 0                                (26)\n\nhas a fundamental set of solutions y1(x) = exp(2x), y2(x) = exp(3x), and y3(x) = exp(4x). Find a\ngeneral solution. Give an example of another fundamental set of solutions.\nCalculating derivatives it is easy to check that y1(x) = exp(2x), y2(x) = exp(3x) and y3(x) = exp(4x)\nare solutions of (26). Now we compute the Wronskian\n\n                                               exp(2x)    exp(3x)    exp(4x)\n              W(exp(2x), exp(3x), exp(4x)) =  2 exp(2x)  3 exp(3x)   4 exp(4x)\n                                           4 exp(2x)  9 exp(3x)  16 exp(4x)\n\n                                                   1  1   1\n                 = exp(2x) exp(3x) exp(4x)  2  3   4\n                                                   4  9  16\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                35 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "                                   3   4      2   4      2  3\n               = exp(9x)       −      +\n                                   9  16      4  16      4  9\n\n           = exp(9x)[(48 −36) −(32 −16) + (18 −12)] = 2 exp(9x) ̸= 0.\nThus exp(2x), exp(3x) and exp(4x) constitute a fundamental set of solutions of DE (26) on R. Then a\ngeneral solution of (26) on R can be expressed as a linear combination\n\n                            y = c1 exp(2x) + c2 exp(3x) + c3 exp(4x),\n\n where c1, c2, c3 are arbitrary constants. There are a lot of fundamental sets of solutions of DE (26).\nFor example, c1 exp(2x) + c2 exp(3x), exp(3x), exp(4x), where c1, c2 are arbitrary constants, c1 ̸= 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                36 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "IV. Find the general solution of DE\n                                       y ′′ + y = 2 cos x,                                     (27)\n\nif a fundamental set of solutions of corresponding to (27) linear homogeneous differential equation is\nsin x and cos x.\nWe know that corresponding to (27) linear homogeneous differential equation\n\n                                          y ′′ + y = 0                                        (28)\n\nhas the following fundamental set of solutions y1 = sin x, y2 = cos x and hence the general solution of\nDE (28) is\n                           yh(x) = c1y1(x) + c2y2(x) = c1 sin x + c2 cos x,\n\nwhere c1, c2 are arbitrary constants. We will look for a particular solution of (27) in the form\n\n                                 yp(x) = c1(x)y1(x) + c2(x)y2(x).                             (29)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                37 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "We suppose that\n                                          c′1(x)y1(x) + c′2(x)y2(x) = 0                                (30)\n\nand find the derivatives of yp :\n\n                          y p′ = c′1y1 + c1y 1′ + c′2y2 + c2y 2′ = c1y 1′ + c2y 2,′\n\n                                y p′′ = c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ .\n\nNow we substitute obtained derivatives to the left-hand side of the equation (27)\n\ny p′′ + yp = (c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ ) + (c1y1 + c2y2) = (c′1y 1′ + c′2y 2)′ + c1(y 1′′ + y1) + c2(y 2′′ + y2) =\n\n                        = c′1y 1′ + c′2y 2.′\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                38 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "Now to satisfy the equation (27) we require that\n\n                                              c′1y 1′ + c′2y 2′ = 2 cos x.\n\nSince\n                                   y 1′ = cos x,   y 2′ = −sin x,\n\nwe obtain DE\n                                          c′1 cos x −c′2 sin x = 2 cos x.\nHence, the function yp in (29) a particular solution of (27) if the functions c′1, c′2 satisfy the following\nlinear system of the equations\n\n                                        c′1 sin x + c′2 cos x = 0                                                                                              (31)\n                                        c′1 cos x −c′2 sin x = 2 cos x.\n\nWe find the determinant of the system (31)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                39 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "                                             sin x    cos x\n                 W(sin x, cos x) =          = −sin2 x −cos2 x = −1.\n                                       cos x  −sin x\n\nNow we obtain that\n\n                          0      cos x\n                        2 cos x  −sin x    −2 cos2 x\n                    c′1(x) =            =      = 2 cos2 x = cos(2x) + 1,             W (sin x, cos x)      −1\n\n                                       sin x     0\n                                 cos x  2 cos x     2 sin x cos x\n                           c′2(x) =           =       = −sin(2x).               W (sin x, cos x)      −1\n\nUsing indefinite integral, we find c1, and c2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                40 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "                             Z                  1\n                            c1(x) =   (cos(2x) + 1) dx =   sin(2x) + x,\n                                                   2\n\n                                 Z             1\n                                c2(x) = −   sin(2x) dx =   cos(2x).\n                                                   2\n\nSince we need only one particular solution we put constants of integration equal to zero. Substituting\nc1, c2 into (29), we obtain a particular solution of (27)\n\n                                           1                  1\n             yp(x) = c1(x) sin x + c2(x) cos x =     sin(2x) + x   sin x +   cos(2x) cos x.\n                                           2                  2\n\nHence DE (27) has the general solution in the form\n\n                                            1                  1\n            y = yh + yp(x) = c1 sin x + c2 cos x +    sin(2x) + x   sin x +   cos(2x) cos x,\n                                            2                  2\n\n where c1, c2 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                41 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "Homework\n\nFor reading:\n\n   PDF presentation,\n\n     S.L. Ross, pp. 125–131, 155–162.\n\n    E.A. Coddington, pp. 49–52, 71–73.\n\nProblems\n\nI. Find the general solution of the following differential equations\n\n                                      a)  y ′′ + 2y ′ −8y = 0,\n\n                                   b)  y ′′ + 10y ′ + 25y = 0,\n\n                                c)  y ′′′ + 9y ′′ + 27y ′ + 27y = 0,\n\n                          d)  y (4) −7y ′′′ + 17y ′′ −17y ′ + 6y = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                42 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "II. Solve the initial-value problems\n\n                             a)  y ′′ + y ′ −6y = 0, y(0) = 5, y ′(0) = 0;\n\n                  b)  y ′′′ + 5y ′′ + 3y ′ −9y = 0, y(0) = 0, y ′(0) = 2, y ′′(0) = 4.\n\nIII. Solve DE. A particular solution find by method of variation of parameters.\n\n                                      y ′′ −3y ′ + 2y = x.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                43 / 43",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-09-24",
+  "rule": "独立通过=无提示+未见解答+非示例学习+答对+闭卷；≥2 个不同日期=延迟通过；另含 ≥1 次未见变式通过=迁移通过。未见变式=题目在整份日志中首次被作答（任何目标）+该版本 kind 为变式类。参数来自 learning/policy.yml，为工程初值。",
+  "warnings": [
+    "line 1: task_version mismatch for ode-if-baseline-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）",
+    "line 2: task_version mismatch for ode-if-baseline-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）",
+    "line 14: task_version mismatch for ode-if-baseline-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）",
+    "line 16: 版本元数据缺失（ode-if-probe-01 v3）：不校验目标、该事件保留但不用于升级"
+  ],
+  "summary": {
+    "targets": 3,
+    "by_level": {
+      "未测": 0,
+      "需支持": 1,
+      "曾独立完成": 0,
+      "延迟通过": 1,
+      "迁移通过": 1
+    },
+    "stable_evidence": 2
+  },
+  "targets": {
+    "ode.existence-uniqueness": {
+      "level": "需支持",
+      "stable_evidence": false,
+      "attempts": 1,
+      "independent_pass_dates": [],
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h3": 1
+      },
+      "total_active_minutes": 18.0,
+      "last_attempt": "2026-10-10"
+    },
+    "ode.integrating-factor": {
+      "level": "迁移通过",
+      "stable_evidence": true,
+      "attempts": 13,
+      "independent_pass_dates": [
+        "2026-10-04",
+        "2026-10-06",
+        "2026-10-09",
+        "2026-10-11"
+      ],
+      "open_book_pass_dates": [
+        "2026-10-11"
+      ],
+      "variant_passes": 1,
+      "version_mismatch_events": 4,
+      "unknown_version_events": 1,
+      "hint_dependence": {
+        "h2": 2,
+        "h0": 9,
+        "h3": 2
+      },
+      "total_active_minutes": 219.0,
+      "last_attempt": "2026-10-12"
+    },
+    "ode.linear-systems": {
+      "level": "延迟通过",
+      "stable_evidence": true,
+      "attempts": 2,
+      "independent_pass_dates": [
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {
+        "h0": 2
+      },
+      "total_active_minutes": 30.0,
+      "last_attempt": "2026-10-09"
+    }
+  }
+}

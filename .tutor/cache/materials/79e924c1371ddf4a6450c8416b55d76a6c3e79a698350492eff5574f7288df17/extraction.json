@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/8(1).pdf",
+  "sha256": "79e924c1371ddf4a6450c8416b55d76a6c3e79a698350492eff5574f7288df17",
+  "page_count": 53,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Linear homogeneous DE of order n",
+      3
+    ],
+    [
+      1,
+      "Linear nonhomogeneous DE of order n",
+      15
+    ],
+    [
+      2,
+      " Method of variation of parameters",
+      17
+    ],
+    [
+      1,
+      "Lecture 7. Homework",
+      31
+    ],
+    [
+      1,
+      "Homework",
+      48
+    ],
+    [
+      1,
+      "Additional material",
+      50
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 8.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 15, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Linear homogeneous DE of order n\n\n\n2  Linear nonhomogeneous DE of order n\n     Method of variation of parameters\n\n\n3  Lecture 7. Homework\n\n\n4 Homework\n\n\n5  Additional material\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 2 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Linear homogeneous differential equation of order n.\n\nWe will consider linear homogeneous differential equation of order n\n\n                 a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = 0,              (1)\n\nwhere a0, a1, ..., an are continuous functions on interval I and that a0(x) ̸= 0 for any x ∈I.\nFrom Existence and uniqueness theorem it follows that there exists a unique solution of DE (1) which\nsatisfies initial conditions\n\n                           y(x0) = y0, y ′(x0) = y1, ..., y (n−1)(x0) = yn−1,                         (2)\n\nwhere y0, ..., yn−1 and x0 are given constants. A problem consisting of the DE (1) together with the\ninitial conditions (2) is called an initial-value problem or the Cauchy problem.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 3 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": "DEFINITION 1.\nIf f1, f2, ..., fm are m given functions, and c1, c2, ..., cm are m constants, then the expression\n\n                                            c1f1 + c2f2 + ... + cmfm\n\nis called a linear combination of f1, f2, ..., fm.\nEXAMPLE\nA linear combination of functions sin(x), cos(x)  is\n\n                                      c1 sin(x) + c2 cos(x), c1, c2 ∈R.\n\n THEOREM 1.  Any linear combination of solutions of the linear homogeneous differential equation (1)\nis also a solution of (1).\nProof.\nLet y1, y2, . . . , ym be solutions of (1) on the interval I. Then for each i = 1, 2, . . . , m,\n\n                a0(x)y i(n) (x) + a1(x)y i(n−1) (x) + · · · + an−1(x)y i′ (x) + an(x)yi(x) = 0\n\nfor all x ∈I.\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 4 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "Take an arbitrary linear combination:\n\n                           y(x) = c1y1(x) + c2y2(x) + · · · + cmym(x),\n\nwhere c1, c2, . . . , cm are constants.\nSince differentiation is a linear operation, for each k = 0, 1, . . . , n,\n\n                        y (k)(x) = c1y 1(k) (x) + c2y 2(k) (x) + · · · + cmy m(k) (x).\n\nSubstitute y and its derivatives into the left-hand side of (1), then interchange the order of summation\nand factor out the constants ci:\n\n      a0(x)y (n)(x) + a1(x)y (n−1)(x) + · · · + an−1(x)y ′(x) + an(x)y(x)\n           m              m                      m             m\n    = a0(x) X ciy i(n) (x) + a1(x) X ciy i(n−1) (x) + · · · + an−1(x) X ciy i′ (x) + an(x) X ciyi(x)\n                i=1                   i=1                              i=1                  i=1\n       m\n    = X ci h a0(x)y i(n) (x) + a1(x)y i(n−1) (x) + · · · + an−1(x)y i′ (x) + an(x)yi(x)i .\n          i=1\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 5 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "Since each yi is a solution of (1), the expression in square brackets is identically zero:\n\n                a0(x)y i(n) (x) + a1(x)y i(n−1) (x) + · · · + an−1(x)y i′ (x) + an(x)yi(x) = 0\n\nfor every x ∈I and for each i = 1, 2, . . . , m.\nTherefore,\n                  a0(x)y (n)(x) + a1(x)y (n−1)(x) + · · · + an−1(x)y ′(x) + an(x)y(x)\n                 m\n           = X ci · 0 = 0\n                        i=1\n\nfor all x ∈I. Theorem is proved.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 6 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "DEFINITION 2.\nThe n functions f1(x), f2(x), ..., fn(x) are called linearly dependent on I, if there exist constants\nc1, c2, ..., cn, not all zero, such that\n\n                                  c1f1(x) + c2f2(x) + ... + cnfn(x) = 0\n\nfor all x ∈I.\nEXAMPLE\nWhether or not functions x and 2x are linearly dependent on I = R?\nWe prove that x and 2x are linearly dependent on R. Indeed, there exist constants c1 and c2, not both\nzero, such that\n                                         c1x + c2(2x) = 0\nfor all x ∈R. For example, let c1 = 2 and c2 = −1.\nDEFINITION 3.\nThe n functions f1(x), f2(x), ..., fn(x) are called linearly independent on I, if they are not linearly\ndependent there. That is, the functions f1(x), f2(x), ..., fn(x) are linearly independent on I, if the relation\n\n                                  c1f1(x) + c2f2(x) + ... + cnfn(x) = 0\n\nfor all x ∈I implies that\n                                          c1 = c2 = ... = cn = 0.\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 7 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "EXAMPLE\nWhether or not functions x and x2 are linearly independent on I = R?\nWe assert that x and x2 are linearly independent on R, since\n\n                                          c1x + c2x2 = 0\n\nfor all x implies that both c1 = 0 and c2 = 0. We may verify this in the following way. We differentiate\nboth sides of c1x + c2x2 = 0 to obtain c1 + 2c2x = 0, which must also hold for all x. Then from this we\nalso have c1x + 2c2x2 = 0, for all such x. Thus we have both\n\n                        c1x + c2x2 = 0   and  c1x + 2c2x2 = 0  for all  x.                      (3)\n\nSubtracting the first from the second gives c2x2 = 0 for all x, which at once implies c2 = 0. Then from\n(3) we conclude that c1x = 0 for all x. Obviously, c1 = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 8 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "DEFINITION 4.\nThe Wronskian of the differentiable functions y1(x), y2(x), ..., yn(x) is the function\n\n                                                 y1       y2       . . .    yn\n                                            y 1′      y 2′       . . .    y n′\n                     W(y1, y2, ..., yn) =                        ...                                    ...                            ...                            ...        .\n                                           y 1(n−1)  y 2(n−1)    . . .  y n(n−1)\n\nIn order to determine whether or not some functions or solutions of linear DE (1) are linearly\nindependent we will use the following theorem.\nTHEOREM 2.\nIf f1(x), f2(x), ..., fn(x) are linearly dependent on an interval I, then W (f1, f2, ..., fn)(x) = 0 for all x ∈I.\nIf W (f1, f2, ..., fn)(x0) ̸= 0 for some x0 ∈I, then f1(x), f2(x), ..., fn(x) are linearly independent on an\ninterval I.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                 9 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "EXAMPLE\nDE\n                                       y ′′ −2y ′ + y = 0\n\nhas the solutions y1(x) = exp(x) and y2(x) = x exp(x). Whether or not these solutions are linearly\nindependent on R?\nSince both functions y1(x) and y2(x) are solutions of linear DE we can use Theorem 2 and calculate the\nWronskian\n\n                                exp(x)      x exp(x)\n        W(exp(x), x exp(x)) =                 = exp(x)(x exp(x) + exp(x))−\n                                exp(x)  x exp(x) + exp(x)\n\n                          −x exp(2x) = exp(2x) ̸= 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                10 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "Thus y1(x) and y2(x) are linearly independent on R.\nTHEOREM 3.\n\nThe n-th order linear homogeneous differential equation\n\n                 a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = 0               (4)\n\nalways possesses n solutions that are linearly independent. Further, if f1(x), f2(x), ..., fn(x) are n linearly\nindependent solutions of (4) on I, then every solution g of (4) on I can be expressed as a linear\ncombination\n                            g(x) = c1f1(x) + c2f2(x) + ... + cnfn(x)\n\nof these n linearly independent solutions by proper choice of the constants c1, c2, ..., cn. The function\ng(x) with arbitrary constants c1, c2, ..., cn is a solution of (4).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                11 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "From Theorem 3 we conclude that any set of n linearly independent solutions of n-th order linear\nhomogeneous differential equation (4) on I  is a basis for the solutions of this equation on I.\n\nDEFINITION 5.\nAny set y1, y2, ..., yn of n linearly independent solutions of the linear homogeneous n-th order differential\nequation (4) on an interval I  is said to be a fundamental set of solutions on the interval I.\nIf y1, y2, ..., yn constitute a fundamental set of solutions of the linear homogeneous n-th order differential\nequation (4) on an interval I, then the set of all solutions of (4) on I can be expressed as a linear\ncombination\n                              y = c1y1(x) + c2y2(x) + ... + cnyn(x),\n\nwhere c1, c2, ..., cn are arbitrary constants.\n\nEXAMPLE.\nShow that the functions y1 = exp t and y2 = exp(−2t) are a fundamental set of solutions to the\nequation\n                              L(y) ≡y ′′ + y ′ −2y = 0   on   R.                              (5)\n\nFind the general solution of (5).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                12 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "We first show that y1 = exp t and y2 = exp(−2t) are solutions to the equation (5):\n\n                             L(exp t) = exp t + exp t −2 exp t = 0,\n\n                    L(exp(−2t)) = 4 exp(−2t) −2 exp(−2t) −2 exp(−2t) = 0.\n\nTo prove that y1 and y2 are linearly independent we use Theorem 2 and calculate the Wronskian\n\n                             exp t    exp(−2t)\n      W(exp t, exp(−2t)) =              = −2 exp(−t) −exp(−t) = −3 exp(−t).\n                             exp t  −2 exp(−2t)\n\nSince W (exp t, exp(−2t)) ̸= 0 we conclude that y1 and y2 are a fundamental set of solutions to the DE\n(5) on R. Then the general solution of the equation on R is\n\n                                   y = c1 exp t + c2 exp(−2t),\n\n where c1, c2 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                13 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "REMARK.\nA fundamental set of solutions to the equation above is not unique. Moreover, there are infinitely many\nfundamental sets of solutions. For example, y1 = c1 exp t and y2 = c2 exp(−2t), where c1, c2 ̸= 0.\nIndeed, both functions satisfy DE (5) and\n\n                                     c1 exp t    c2 exp(−2t)\n     W(c1 exp t, c2 exp(−2t)) =                = −2c1c2 exp(−t) −c1c2 exp(−t)\n                                     c1 exp t  −2c2 exp(−2t)\n\n                      = −3c1c2 exp(−t) ̸= 0.\n\nThere are another fundamental sets of solutions.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                14 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "Linear nonhomogeneous differential equation of order n.\n\nWe will consider linear nonhomogeneous differential equation of order n\n\n               a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = f (x),             (6)\n\nwhere a0, a1, ..., an and f are continuous functions on interval I and that a0(x) ̸= 0 for any x ∈I.\n\nDEFINITION 6.\nThe linear homogeneous differential equation of order n\n\n                 a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = 0               (7)\n\nis called corresponding to linear nonhomogeneous differential equation (6).\nFrom Existence and uniqueness theorem1 it follows that there exists a unique solution of DE (6) which\nsatisfies initial conditions\n\n                           y(x0) = y0, y ′(x0) = y1, ..., y (n−1)(x0) = yn−1,                         (8)\n\nwhere y0, ..., yn−1 and x0 are given constants. A problem consisting of the DE (6) together with the\ninitial conditions (8) is called an initial-value problem or the Cauchy problem.\n   1See Lecture 1\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                15 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "THEOREM 4.\nLet yp be a particular solution of linear nonhomogeneous differential equation (6) and y1, y2, ..., yn be a\nfundamental set of solutions of linear homogeneous differential equation (7) corresponding to (6). Then\nevery solution y of the n-th order nonhomogeneous equation (6) can be expressed in the form\n\n                          y(x) = c1y1(x) + c2y2(x) + ... + cnyn(x) + yp                          (9)\n\nfor suitable choice of the constants c1, c2, ..., cn. The function y with arbitrary constants c1, c2, ..., cn is a\nsolution of (6).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                16 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "Method of variation of parameters\n\nBy Theorem 4 we could find all solutions of linear nonhomogeneous differential equation (6) if we know\na fundamental set of solutions of corresponding to (6) linear homogeneous DE (7) and a particular\nsolution of (6). To obtain a particular solution we can use the method of variation of parameters\n(Lagrange method). For the simplicity we demonstrate this method for the second order linear\nnonhomogeneous DE\n                             y ′′(x) + a1(x)y ′(x) + a2(x)y(x) = f (x),                          (10)\n\nwhere a1, a2 and f are continuous functions on interval I. Suppose we know a fundamental set of\nsolutions y1, y2 for corresponding to (10) linear homogeneous DE. Then\n\n                              y(x) = c1y1(x) + c2y2(x), c1, c2 ∈R\n\nis a general solution of this homogeneous DE on I. Such a function y can not be a solution of (10)\nunless f (x) ≡0. However, suppose we allow c1, c2 to become functions of x and then ask whether there\nis a solution of (10) on interval I of the form\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                17 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "                                 yp(x) = c1(x)y1(x) + c2(x)y2(x).                             (11)\n\nWe suppose that\n                                          c′1(x)y1(x) + c′2(x)y2(x) = 0                                (12)\n\nand find the derivatives of yp :\n\n                          y p′ = c′1y1 + c1y 1′ + c′2y2 + c2y 2′ = c1y 1′ + c2y 2,′\n\n                                y p′′ = c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ .\n\nNow we substitute obtained derivatives to the left-hand side of the equation (10)\n\n        y p′′ + a1y p′ + a2yp = (c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ ) + a1(c1y 1′ + c2y 2)′ + a2(c1y1 + c2y2) =\n\n       = c′1y 1′ + c′2y 2′ + c1(y 1′′ + a1y 1′ + a2y1) + c2(y 2′′ + a1y 2′ + a2y2) = c′1y 1′ + c′2y 2.′\n\nNow to satisfy the equation (10) we require that\n\n                                               c′1y 1′ + c′2y 2′ = f (x).\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                18 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "Hence, the function yp in (11) a particular solution of (10) if the functions c1, c2 satisfy the following\nlinear system of the equations\n\n                                      c′1(x)y1(x) + c′2(x)y2(x) = 0                                                                          ′                       ′                                          (13)                                      c′1(x)y 1(x) + c′2(x)y 2(x) = f (x).\n\nThe system (13) has two linear equations for c′1, c′2 with a determinant which is just the Wronskian\nW (y1, y2). Since we assumed y1, y2 to be linearly independent this determinant is never zero on I, and\nthere exists unique solution c′1, c′2. Using Cramer’s Rule gives the following solution\n\n                   0    y2(x)                             y1(x)   0\n                              f (x)  y 2(x)′          −y2f                y 1(x)′        f (x)          y1f\n            c′1(x) =          =                c′2(x) =          =                    y1(x)  y2(x)   W (y1, y2),             y1(x)  y2(x)   W (y1, y2).\n                   y 1(x)′     y 2(x)′                              y 1(x)′     y 2(x)′\n\nIn order to obtain c1, c2 we can integrate last equations. For example, if x0 is in I we may take for c1, c2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                19 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "                        Z x   y2(t)f (t)            Z x   y1(t)f (t)\n                    c1(x) = −                  dt,   c2(x) =                   dt.               (14)\n                                             x0 W (y1, y2)(t)                      x0 W (y1, y2)(t)\n\nSubstituting c1, c2 from (14) to (11), we obtain a particular solution of (10). To find c1, c2 we can use\nindefinite integrals also.\nWe summarize our results.\n\nTHEOREM 5.\nLet f be continuous function on an interval I. Every solution y of (10) on I can be written as\n\n                           y(x) = c1y1(x) + c2y2(x) + yp, c1, c2 ∈R                         (15)\n\nwhere yp is a particular solution of (10) and two functions y1, y2 are a fundamental set of solutions of\ncorresponding to (10) linear homogeneous differential equation. A particular solution yp is given by\n(11), (14).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                20 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "EXAMPLES.\n1. Solve DE\n                                        y ′′ + y = tan x.                                      (16)\n\nNaturally, we assume cos x ̸= 0 that is x ̸= π2 + πn, n ∈Z. First we consider corresponding to (16)\nlinear homogeneous differential equation\n                                          y ′′ + y = 0.                                       (17)\n\nTo have a fundamental set of solutions for (17) we need two linearly independent solutions. We know\nthat (sin x)′′ = −sin x and (cos x)′′ = −cos x. Hence functions sin x and cos x are solutions of (17). To\nprove that sin x and cos x are linearly independent we calculate the Wronskian\n\n                                           sin x    cos x\n               W(sin x, cos x) =          = −sin2 x −cos2 x = −1 ̸= 0.\n                                    cos x  −sin x\n\nThen the general solution of DE (17) is\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                21 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "                                   y(x) = c1 sin x + c2 cos x,\n\nwhere c1, c2 are arbitrary constants. We will look for a particular solution of (16) in the form\n\n                                 yp(x) = c1(x) sin x + c2(x) cos x.                              (18)\n\nWe suppose that\n                                          c′1(x) sin x + c′2(x) cos x = 0                                (19)\n\nand find the derivatives of yp :\n\n          y p′ = c′1(x) sin x + c1(x) cos x + c′2(x) cos x −c2(x) sin x = c1(x) cos x −c2(x) sin x,\n\n          y p′′ = (c1(x) cos x −c2(x) sin x)′ = c′1(x) cos x −c1(x) sin x −c′2 sin x −c2(x) cos x.\n\nNow we substitute obtained derivatives to the left-hand side of the equation (16)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                22 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "        y p′′ + yp = c′1(x) cos x −c1(x) sin x −c′2 sin x −c2(x) cos x + c1(x) sin x + c2(x) cos x =\n                      = c′1(x) cos x −c′2 sin x.\n\nNow to satisfy the equation (16) we require that\n\n                                        c′1(x) cos x −c′2(x) sin x = tan x.\n\nHence, the function yp in (18) a particular solution of (16) if the functions c′1, c′2 satisfy the following\nlinear system of the equations\n\n                                      c′1(x) sin x + c′2(x) cos x = 0                                                                                              (20)\n                                      c′1(x) cos x −c′2(x) sin x = tan x.\n\nThe system (20) is linear for c′1, c′2. We know the determinant of the system W (sin x, cos x) = −1. Now\nwe obtain by Cramer’s Rule that\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                23 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "                                 0     cos x\n                                  tan x  −sin x    −cos x tan x\n                             c′1(x) =           =        = sin x,                W (sin x, cos x)       −1\n\n                         sin x    0\n                     cos x  tan x       sin x tan x   −sin2 x    cos2 x −1           1\n             c′2(x) =          =      =     =      = cos x −         .         W (sin x, cos x)     −1        cos x        cos x              cos x\n\nIntegrating last equalities, we find c1 and c2\n\n                                 Z\n                                 c1(x) =    sin x dx = −cos x + c3,\n\n\n               Z           1             Z  cos x           Z   d sin x\n           c2(x) =     cos x −       dx = sin x −         dx = sin x −        =\n                               cos x                   cos2 x              1 −sin2 x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                24 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "                    = sin x −1 ln 1 + sin x + c4,\n                                        2   1 −sin x\nwhere c3, c4 are arbitrary constants. Since we need only one particular solution we put c3 = 0, c4 = 0.\nSubstituting c1(x), c2(x) into (18), we obtain a particular solution of (16)\n\n          yp(x) = c1(x) sin x + c2(x) cos x = −cos x sin x +   sin x −1 ln 1 + sin x   cos x =\n                                                           2   1 −sin x\n\n                     = −1    x) ln 1 + sin x .                                       2(cos     1 −sin x\n\nHence DE (16) has the general solution in the form\n\n                           y = c1 sin x + c2 cos x −1    x) ln 1 + sin x ,                                                 2(cos     1 −sin x\n\nwhere c1, c2 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                25 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "2. Solve DE\n                                                            ′′                     ′        4                          2xy −(x + 4)y +  1 +    y = 4x2, x ̸= 0.                       (21)\n                                                  x\n\nFirst we rewrite (21) in the following form\n\n                                            1                                                 2                              y ′′ −x + 4 y                                                                                    ′ +                              +                                                         y = 2x.                            (22)\n                                    2x        2x   x2\n\nNow we consider corresponding to (22) linear homogeneous differential equation\n\n                                             1                                                  2                               y ′′ −x + 4 y                                                                                      ′ +                              +                                                          y = 0.                            (23)\n                                    2x        2x   x2\n\nIn Additional material of this lecture we find a fundamental set of solutions\ny1(x) = x, y2(x) = x exp(x/2) and the general solution of (23)\n\n                         y(x) = c1y1(x) + c2y2(x) = c1x + c2x exp(x/2),\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                26 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "where c1, c2 are arbitrary constants. We will look for a particular solution of (22) in the form\n\n                                 yp(x) = c1(x)y1(x) + c2(x)y2(x).                             (24)\n\nWe suppose that\n                                          c′1(x)y1(x) + c′2(x)y2(x) = 0                                (25)\n\nand find the derivatives of yp :\n\n                          y p′ = c′1y1 + c1y 1′ + c′2y2 + c2y 2′ = c1y 1′ + c2y 2,′\n\n                                y p′′ = c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ .\n\nNow we substitute obtained derivatives to the left-hand side of the equation (22)\n\n                        1                             2\n                                         ′ +                 +                                                                                                                                                            ′ + c2y 2)′         y p′′ −x + 4 y p                                       yp = (c′1y 1′ + c1y 1′′ + c′2y 2′ + c2y 2′′ ) −x + 4 (c1y 1               2x        2x   x2                                    2x\n\n                 2                                                                  1                                                                       2            1\n         +                                                                                                                                     ′ +                                            +     +                                                                                          y1 +                        (c1y1 + c2y2) = (c′1y 1′ + c′2y 2)′ + c1  y 1′′ −x + 4 y 1            2x   x2                                        2x        2x   x2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                27 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "                                          1                                               2\n                                                                                ′ +                            +                                                             y2 = c′1y 1′ + c′2y 2.′                    +c2  y 2′′ −x + 4 y 2                                 2x        2x   x2\n\nNow to satisfy the equation (22) we require that\n\n                                                c′1y 1′ + c′2y 2′ = 2x.\n\nSince\n                           ′                 ′           x      ′        x    1       x          x       x\n            y 1 = 1,   y 2 =  x exp    = exp   +    exp   =  1 +    exp                                2           2    2x     2         2      2\nwe obtain DE\n                                             x       x\n                                        c′1 + c′2  1 +    exp   = 2x.\n                                          2      2\nHence, the function yp in (24) a particular solution of (22) if the functions c′1, c′2 satisfy the following\nlinear system of the equations\n\n                                       c′1x + c′2x exp  x2 = 0                                                           x         x                                        (26)\n                                       c′1 + c′2 1 + 2  exp  2 = 2x.\n\nWe find the determinant of the system\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                28 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "                       x        x     x exp  x2                x       x           x     W  x, x exp    =              x         x  = x  1 +    exp   −x exp\n                     2       1   1 + 2  exp  2            2      2          2\n                                         x2      x\n                       =   exp      ̸= 0.\n                                      2      2\nNow we obtain that\n\n                             0      x exp  x2\n                                                                                       x                                                          exp                              2x  exp  x2  1 + x2                               = −2x2                                                                                2 = −4,                          c′1(x) =                                                                               x2                                                                                      x                 W (y1, y2)                                                                        2 exp  2\n\n                                   x   0\n                                1  2x                                               2x2\n                         =                                 = 4 exp −x    .                              c′2(x) =                                                               x2                                                                       x                W (y1, y2)                                                         2 exp  2            2\nIntegrating last equalities, we find c1 and c2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                29 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "                                  Z\n                                  c1(x) =  (−4) dx = −4x + c3,\n\n                Z\n            c2(x) =                    4 exp −x  dx = −8 Z exp −x  d −x = −8 exp −x + c4,\n                            2                  2       2             2\n\nwhere c3, c4 are arbitrary constants. Since we need only one particular solution we put c3 = 0, c4 = 0.\nSubstituting c1(x), c2(x) into (24), we obtain a particular solution of (21)\n\n                                                     x\n                          yp(x) = c1(x)x + c2(x)x exp   = −4x2 −8x.\n                                                 2\n\nHence DE (21) has the general solution in the form\n\n                       x                          x                                   x\n     y = c1x + c2x exp   + yp(x) = c1x + c2x exp    −4x2 −8x = c5x −4x2 + c2x exp        ,\n                     2                        2                                 2\n\nwhere c2, c5 are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                30 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "Lecture 7. Homework\n\nI. Solve the initial value problem\n\n                         y ′′′ = cos2(2x), y(0) = 1, y ′(0) = 1, y ′′(0) = 2.\n\n\nWe have the initial value problem for third-order DE in a simplest form. We integrate DE over [0, x] to\nfind y ′′ :\n\n                    Z x            Z x 1 + cos(4x)      1 Z x\n        y ′′(x) −y ′′(0) =    cos2(2x) dx =               dx =     {1 + cos(4x)} d(4x) =\n                               0                    0      2          8  0\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                31 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "                      1                          1\n             = 8{4x + sin(4x)} =⇒y ′′(x) = 8{4x + sin(4x)} + 2.\nWe integrate last DE over [0, x] to find y ′ :\n\n                      Z x  1\n           y ′(x) −y ′(0) =                      + sin(4x)} + 2  dx =                                                          x2 −1 cos(4x) + 1 + 2x                                  0   8{4x                     4   32          32\n\n               =⇒y ′(x) =                                         x2 −1 cos(4x) + 2x + 33                                      4   32               32.\nLast integration gives us y :\n\n\n        y(x) −y(0) =                  Z x  x2 −1 cos(4x) + 2x + 33  dx = x3 −  1  sin(4x) + x2 + 33x\n                            0    4   32              32       12   128              32\n\n                                      x3    1               33x\n                 =⇒y(x) =  −     sin(4x) + x2 +   + 1.\n                                   12   128              32\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                32 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "II. Reduce the order of the following differential equations and solve obtained equation\n\n                                        a)  y ′′′ −1  ′′4 = 0.                                         3y\n\n DE is not containing the variables y, y ′. By making change of variable y ′′(x) = z(x) we have\n\n                                                  z′ −1  = 0,                                          3z4\n\nthat is, the separable DE. Then\n\n                    3dz = dx ⇒−1 = x + c1 ⇒z = −   1      , c1 ∈R                         z4           z3                    3√x + c1\n\nand\n                                               1\n                                      y ′′(x) = − 3√x + c1 .\n\nA two-fold integration then yields\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                33 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "                     Z  Z    1             Z   3\n                y(x) = −        3√x + c1 dx  dx = −    2 3p(x + c1)2 + c2  dx\n\n                              9\n                = −    3p (x + c1)5 + c2x + c3   , c2, c3 ∈R.\n                              10\n\nII. Reduce the order of the following differential equations and solve obtained equation\n\n                          b)  yy ′′ −y ′2 = y 2 ln y     if   y > 0, y ′ > 0.                       (27)\n\n DE is not containing the variable x. By the substitution p(y) = y ′(x), where p(y) is a new function,\nthe order of (27) is reduced by unity. Indeed,\n\n                                      dp   dp dy\n                                  y ′′(x) =  =    = p′p\n                                        dx   dy dx\n\nand we can rewrite (27) in the form\n                                       yp′p −p2 = y 2 ln y.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                34 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 35,
+      "printed_label": "<FEFF00330035>",
+      "text": "We multiply last DE by 2/y to obtain\n\n\n                                  2p                                   dp −2 p2 = 2y ln y\n                                     dy   y\n\nor\n                                    dp2 −2 p2 = 2y ln y.                                   (28)\n                                    dy    y\n\nObviously, (28) is linear first order DE with respect to p2. An integrating factor is\n\n                            Z 2dy\n                          exp −       dy = exp(−2 ln |y|) = y −2.\n                                      y\n\nMultiplying equation (28) through by this integrating factor, we have\n\n                     −2 dp2                y        d               y                      y     −2y −3p2 = 2ln     or      (y −2p2) = 2ln   .\n                         dy                y         dy             y\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                35 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 36,
+      "printed_label": "<FEFF00330036>",
+      "text": "We now integrate\n\n                     Z  ln y          Z\n               y −2p2 = 2       dy + c1 = 2    ln y d(ln y) + c1 = ln2 y + c1, c1 ∈R,\n                             y\n\nand obtain the general solution of (28) in the form\n\n                                      p2 = y 2[ln2 y + c1].                                    (29)\n\nSince p(y) = y ′(x) > 0 we obtain separable DE\n\n                 dy  q                dy               d ln y\n            = y   ln2 y + c1 ⇒        = dx ⇒       = dx.\n                 dx                   y p ln2 y + c1    p ln2 y + c1\n\nAfter integration we have\n\n         q                q\n            ln  ln y +   ln2 y + c1 = x + ln c, c > 0 ⇒ln y +   ln2 y + c1 = c2 exp(x), c2 ̸= 0\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                36 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 37,
+      "printed_label": "<FEFF00330037>",
+      "text": "                q\n               ⇒   ln2 y + c1 = c2 exp(x) −ln y.\n\nIf\n                                             c2 exp(x) ≥ln y                                      (30)\n\nthen\n                                                                    c22 exp(2x) −c1                 ln2 y + c1 = c22 exp(2x) −2c2 exp(x) ln y + ln2 y ⇒ln y =\n                                                                         2c2 exp(x)\nor\n                                             c22 exp(2x) −c1                                  y = exp                              .                                (31)\n                                                2c2 exp(x)\n\nWe obtained the solution (31) under the condition (30). Substituting y from (31) into (30), we have\n\n                                       2 exp(2x) −c1                     c2 exp(x) ≥c2                               ⇒2c22 exp(2x) ≥c22 exp(2x) −c1\n                                  2c2 exp(x)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                37 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 38,
+      "printed_label": "<FEFF00330038>",
+      "text": "or\n                                        c22 exp(2x) ≥−c1.                                    (32)\n\nMoreover, from DE (29) we see that\n                            ln2 y + c1 ≥0 ⇒c1 ≥0  or  c1 < 0, | ln y| ≥√−c1.\n\nSubstituting y from (31), we have\n\n                                               c22 exp(2x) −c1                            c1 ≥0  or  c1 < 0,             ≥√−c1.                      (33)\n                                                  2c2 exp(x)\n\nThus (31) is a general solution of the given DE under the conditions (32), (33).\nNote that when we divided DE by pln2 y + c1 the constant solution could be lost. Indeed, y(x) ≡1 is\na solution of DE. However, y ′(x) ≡0 and the condition y ′(x) > 0 does not hold.\n\nII. Reduce the order of the following differential equations and solve obtained equation\n\n                                 c)  9x2yy ′′ −(y −3xy ′)2 = 0.                              (34)\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                38 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 39,
+      "printed_label": "<FEFF00330039>",
+      "text": "We put F(x, y, y ′, y ′′) = 9x2yy ′′ −(y −3xy ′)2 and check that (34) is homogeneous equation of degree\n2 with respect to y, y ′, y ′′:\n\n   F(x, ky, ky ′, ky ′′) = 9x2kyky ′′ −(ky −3xky ′)2 = k2(9x2yy ′′ −(y −3xy ′)2) = k2F(x, y, y ′, y ′′).\n\nNow we introduce new unknown function z(x) = y ′(x)/y(x) (note that y ≡0 is the solution). Then\ny ′(x) = y(x)z(x) and\n\n               y ′′(x) = (y(x)z(x))′ = y ′(x)z(x) + y(x)z′(x) = y(x)z2(x) + y(x)z′(x)\n\nand\n          9x2y 2z2 + 9x2y 2z′ −(y −3xyz)2 = 0 ⇒9x2z2 + 9x2z′ −1 + 6xz −9x2z2 = 0\n\nor\n                                      dz    2      1\n                         +   z =       .                                    (35)\n                                     dx   3x     9x2\nThis is a linear differential equation of the first order with p(x) = 2/(3x). We find an integrating factor\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                39 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 40,
+      "printed_label": "<FEFF00340030>",
+      "text": "               Z               Z 2dx         2                  3√\n            exp    p(x) dx = exp      = exp     ln |x| + ln c = c  x2, c > 0.\n                                      3x          3\n                                                        3√\nMultiplying equation (35) through by integrating factor   x2, we have\n\n                                       3√  dz     2       1\n                                     x2  +     z =  3√                                     dx   33√x    9  x4\n\nor\n                                            3√         1\n                                              (  x2z)′ =  3√    .\n                                              9  x4\nWe now integrate\n                                     3√         1\n                                   x2z = −   + c1, c1 ∈R,                                        33√x\n\nand obtain the general solution of (35) in the form\n\n                                      z(x) = −1 + 3√c1  .\n                                             3x     x2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                40 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 41,
+      "printed_label": "<FEFF00340031>",
+      "text": "Since z(x) = y ′(x)/y(x), we find\n\n                y ′(x) = z(x)y(x) ⇒dy = z(x)dx ⇒ln |y| = Z z(x)dx + ln c, c > 0\n                                    y\n\n                       Z\n        ⇒y(x) = C exp                             z(x)dx    , C ̸= 0 ⇒y(x) = C exp                                                    Z  −1 + 3√c1   dx\n                                                                  3x     x2\n              = C exp −1 ln |x| + 3c1 3√x =  C  exp(3c1 3√x).\n                                3                 3p|x|\n\nSince y ≡0 is the solution we obtain the general solution of (34)\n\n                                                  c2                                    y(x) =     exp(c3 3√x),                                               3√x\n\nwhere c2 and c3 are arbitrary constants. We omitted modulus in the denominator because c2 is an\narbitrary constant.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                41 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 42,
+      "printed_label": "<FEFF00340032>",
+      "text": "III. Reduce the order of the following linear differential equation using the particular solution\nyp(x) = exp(x)/x. Solve obtained first order equation.\n\n                                      xy ′′ + 2y ′ −xy = 0.                                   (36)\n\n\nSince yp(x) = exp(x)/x is a particular solution of (36), we use substitution :\n\n                                           exp(x) Z\n                                  y(x) =          z(x) dx.                                 (37)\n                                             x\n\nThen we calculate derivatives:\n\n                                    (x −1) exp(x) Z           exp(x)\n                         y ′(x) =                 z(x) dx +        z(x),\n                                      x2                     x\n\nand\n                1\n         y ′′(x) =                    1 −2 + 2   exp(x) Z z(x) dx + 2(x −1) exp(x) z(x) + exp(x) z′(x).\n                  x      x   x2                           x2               x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                42 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 43,
+      "printed_label": "<FEFF00340033>",
+      "text": "Substituting derivatives to the left hand side of DE (36), we obtain\n\n          xy ′′ + 2y ′ −xy =  1 −2 + 2   exp(x) Z z(x) dx +  2 exp(x) −2 exp(x)  z(x)\n                                x   x2                                    x\n\n                            exp(x) −exp(x) Z          2 exp(x)           Z      + exp(x)z′(x) + 2x                  z(x) dx +        z(x) −exp(x)   z(x) dx\n                                 x2                       x\n                    = exp(x)z′(x) + 2 exp(x)z(x).\n\nHence we have DE\n\n                     exp(x)z′(x) + 2 exp(x)z(x) = 0   or   z′(x) + 2z(x) = 0.\n\nThis is separable equation. Separating variables, we find\n\n     dz\n     = −2dx ⇒ln |z| = −2x + ln c1, c1 > 0 ⇒|z| = c1 exp(−2x) ⇒z = c2 exp(−2x), c2 ̸= 0.\n      z\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                43 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 44,
+      "printed_label": "<FEFF00340034>",
+      "text": "Adding the solution z(x) ≡0 we obtain that\n\n                                      z = c3 exp(−2x), c3 ∈R.\n\nNow we substitute function z(x) into (37) and find the general solution of (36)\n\n                    exp(x) Z                 1\n             y(x) =           c3 exp(−2x) dx =   (c4 exp(−x) + c5 exp(x)) , c4, c5 ∈R.\n                       x                       x\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                44 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 45,
+      "printed_label": "<FEFF00340035>",
+      "text": "IV. Solve the equation\n                                   x4y ′′ + (xy ′ −y)3 = 0.                                  (38)\n\n Let\n                              F(x, y, y ′, y ′′) = x4y ′′ + (xy ′ −y)3.\n\nFirst we investigate whether an equation is generalized homogeneous or not:\n\n                F(kx, kαy, kα−1y ′, kα−2y ′′) = (kx)4kα−2y ′′ + (kxkα−1y ′ −kαy)3\n\n           = kα+2x4y ′′ + k3α(xy ′ −y)3 = k3F(x, y, y ′, y ′′)     if  α = 1.\n\nTo substitute x = exp(u), y = v(u) exp(u) into (38) we calculate the derivatives\n\n                       d[v(u) exp(u)] du          ′                                                           ′               y ′(x) =          = [v exp(u) + v exp(u)] exp(−u) = v + v,            (39)\n                         du      dx\n\n                                  d(v ′ + v) du           ′′                           y ′′(x) =        = (v + v ′) exp(−u).\n                                   du    dx\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                45 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 46,
+      "printed_label": "<FEFF00340036>",
+      "text": "Changing the variables, we obtain\n\n           x4y ′′ + (xy ′ −y)3 = exp(4u)(v ′′ + v ′) exp(−u) + [exp(u)(v ′ + v) −v exp(u)]3\n\n          = exp(3u)[v ′′ + v ′ + (v ′ + v −v)3] = exp(3u)[v ′′ + v ′ + v ′3] = 0\n\nor\n                                       v ′′ + v ′ + v ′3 = 0.                                    (40)\n\nDE (40) does not explicitly contain a variable u. We put v ′(u) = p(v). Then v ′′(u) = p′(v)p(v) and we\nhave\n                      dp\n                     p                + p + p3 = 0 ⇒dp = −1 −p2   or   p = 0.\n                       dv                 dv\nFrom the second DE it follows\n\n                     v ′(u) = 0 ⇒v(u) = c, c ∈R ⇒y = v(u) exp(u) = cx.\n\nFrom the first DE we obtain\n\n                 dp\n              = −dv ⇒arctan p = c1 −v, c1 ∈R ⇒p = tan(c1 −v).\n                1 + p2\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                46 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 47,
+      "printed_label": "<FEFF00340037>",
+      "text": "Hence\n\n         dv                                  Z\n        = tan(c1 −v) ⇒cot(c1 −v)dv = du ⇒    cot(c1 −v)dv = u + ln c, c > 0\n         du\n\n           ⇒ln | sin(c1 −v)| = −u −ln c ⇒| sin(c1 −v)| = exp(−u)/c\n\n            ⇒sin(v −c1) = c2 exp(−u), c2 ̸= 0 ⇒v = c1 + arcsin[c2 exp(−u)].\n\nTaking account the change of variables y = vx, exp(−u) = 1/x, we have\n\n                                                     1\n                               y = x  c1 + arcsin  c2 exp             .                            (41)\n                                                         x\n\nThe solution y = Cx, C ∈R we can add to (41) if put c2 = 0. Hence the solution of (38) is (41), where\nc1, c2 ∈R.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                47 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 48,
+      "printed_label": "<FEFF00340038>",
+      "text": "Homework\nFor reading:\n\n   PDF presentation,\n\n     S.L. Ross. PP. 102–115, 120–125, 155–162.\n\n    E.A. Coddington, pp. 66–69, 84–88.\n\nProblems\nI. Which of the following pairs of functions are linearly independent? When solving the problem do not\nuse the Wronskian.\n                                     a)  1  and  x,   x ∈R.\n                                                   π                            b)   sin t   and   tan t,   t ∈ −π ,      .\n                                                       2  2\nII. Check that DE\n                                    y ′′′ −2y ′′ −y ′ + 2y = 0\n\nhas the solutions y1(x) = exp(−x), y2(x) = exp(x) and y3(x) = exp(2x). Whether or not these\nsolutions are linearly independent on R.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                48 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 49,
+      "printed_label": "<FEFF00340039>",
+      "text": "III. Check that DE\n                                  y ′′′ −9y ′′ + 26y ′ −24y = 0\n\nhas a fundamental set of solutions y1(x) = exp(2x), y2(x) = exp(3x), and y3(x) = exp(4x). Find a\ngeneral solution. Give an example of another fundamental set of solutions.\nIV. Find the general solution of DE\n                                       y ′′ + y = 2 cos x,                                     (42)\n\nif a fundamental set of solutions of corresponding to (42) linear homogeneous differential equation is\nsin x and cos x.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                49 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 50,
+      "printed_label": "<FEFF00350030>",
+      "text": "                                          Additional material\n\nWe now show that the Wronskian of solutions of linear differential equation satisfies a some differential\nequation of first order. Moreover, we find the Wronskian. The following theorem is known as Abel’s\nTheorem.\nTHEOREM.\nLet y1, y2, ..., yn be n solutions of linear homogeneous differential equation\n\n                   y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = 0\n\non an interval I, and let x0 be any point in I. Then\n\n                                      Z x\n         W (y1, y2, ..., yn)(x) = exp −    a1(t) dt W (y1, y2, ..., yn)(x0).               (43)\n                                                                       x0\n\nIf we know a particular solution of second order linear DE then using Abel’s Theorem we can find the\ngeneral solution.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                50 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 51,
+      "printed_label": "<FEFF00350031>",
+      "text": "EXAMPLE.\nSolve DE\n                                                              ′′                     ′        4                           2xy −(x + 4)y +  1 +    y = 0, x ̸= 0.                        (44)\n                                                   x\n\nFirst we rewrite (44) in the following form\n\n                                             1                                                  2                               y ′′ −x + 4 y                                                                                      ′ +                              +                                                          y = 0.                            (45)\n                                    2x        2x   x2\n\nIt is not difficult to see that y1 = x is a solution of (45). Using Abel’s Theorem we can find second\nlinearly independent solution. We know that by the definition\n\n                                                y1   y2                ′        ′\n                          W(y1, y2) =       ′       ′  = y1y 2 −y 1y2,\n                                           y 1  y 2\n\nand by Abel’s Theorem\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                51 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 52,
+      "printed_label": "<FEFF00350032>",
+      "text": "                                  Z x               Z x t + 4\n        W (y1, y2)(x) = c1 exp −    a1(t) dt = c1 exp           dt = .\n                                                               x0                              x0   2t\n\n                           \"                    x #                                  1                           x\n               = c1 exp    2t + 2 ln |t|   = c2x2 exp  2   ,                                                                            x0\nwhere c2 ∈R, c2 ̸= 0. Hence\n                                                                            ′        ′              x                                    y1y 2 −y 1y2 = c2x2 exp\n                                                     2\nor\n                       y1y 2′ −y 1y2′      c2x2 exp  x2        y2    ′   c2x2 exp  x2\n                                  2   =        2   ⇒    =        2        .\n                          y 1            y 1           y1          y 1\nSubstituting y1 = x, we obtain\n                                           y2   ′          x\n                          = c2 exp        .\n                                       x            2\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                52 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 53,
+      "printed_label": "<FEFF00350033>",
+      "text": "After integration we have\n\n                          y2            x                        x\n                = 2c2 exp   + c3 ⇒y2 = 2c2x exp   + c3x.\n                        x           2                      2\n\nwhere c3 is an arbitrary constant. Now we can take\n\n                                                   x\n                                            y2 = x exp        .\n                                               2\n\nThus, the functions y1, y2 are a fundamental set of solutions of DE (44). Then the general solution of\nDE (44) is\n                                                      x\n                                     y = cx + Cx exp        ,\n                                                  2\n where c, C are arbitrary constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 15, 2026                53 / 53",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

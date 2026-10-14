@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "path": "subjects/03-微分方程/课件/1.pdf",
+  "sha256": "7bca4d8f18894beaa69037f438ef61e2e9b9bb5c546cfcb0a95c9463c925eeb4",
+  "page_count": 34,
+  "outline": [
+    [
+      1,
+      "Outline",
+      2
+    ],
+    [
+      1,
+      "Calculus Prerequisites ",
+      3
+    ],
+    [
+      1,
+      "Basic definitions ",
+      9
+    ],
+    [
+      1,
+      "Standard forms of DE",
+      21
+    ],
+    [
+      1,
+      "Euler method",
+      22
+    ],
+    [
+      1,
+      "Main theorem",
+      24
+    ],
+    [
+      1,
+      "Origin of DE ",
+      28
+    ],
+    [
+      1,
+      "Homework ",
+      32
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "printed_label": "<FEFF0031>",
+      "text": "DIFFERENTIAL EQUATIONS\n                  Lecture 1.\n\n\n\n         Alexander Gladkov, Professor\n\n\n                  Belarusian State University\n\n\n            September 1, 2026",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 2,
+      "printed_label": "<FEFF0032>",
+      "text": "1  Calculus Prerequisites\n\n\n2  Basic definitions\n\n\n3  Standard forms of DE\n\n\n4  Euler method\n\n\n5  Main theorem\n\n\n6  Origin of DE\n\n\n7 Homework\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 2 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 3,
+      "printed_label": "<FEFF0033>",
+      "text": "Let I be a real interval. The interval I may be the following: (α, β), [α, β), (α, β], [α, β],\n(α, ∞), [α, ∞), (−∞, β), (−∞, β], (−∞, ∞), where α, β ∈R and α < β.\nLet f be a function of a variable x, defined on an interval I. We denote by f (x) the value of f at x.\n DEFINITION 1.\nWe say that function f have a limit α at a point x0 in I  if for any ε > 0 there exists δ = δ(ε) > 0 such\nthat |f (x) −α| < ε if |x −x0| < δ, x ∈I. In this case, we write\n\n                                             lim  f (x) = α.\n                                         x→x0\n\nLeaving full mathematical rigor aside, we can say that α is a limit of f at a point x0 in I  if the values\nf (x) get arbitrarily close to α as x gets arbitrarily close to x0 from either side of x0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 3 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 4,
+      "printed_label": "<FEFF0034>",
+      "text": " DEFINITION 2.\nWe say that function f  is continuous at a point x0 if\n\n                                           lim  f (x) = f (x0).\n                                        x→x0\n\n DEFINITION 3.\nWe say that function f  is differentiable at a point x0 if\n\n                                                                        f (x) −f (x0)\n                                                     f ′(x0) = lim\n                                            x→x0    x −x0\n\nexists. The value f ′(x0) is called the derivative of f (or first order the derivative of f ) at a point x0.\nWe denote the derivatives of f by f ′, f ′′, f ′′′, f (4), f (5), and so on; alternatively, sometimes we use the\nmore formal notation for derivatives\n                                            df  d2f  d3f\n                                                                      ,        ,        , ...\n                                     dx  dx2  dx3\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 4 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 5,
+      "printed_label": "<FEFF0035>",
+      "text": "Let f be a function of two variables x and y, defined in a region Ω(called the domain of f ) in the\nCartesian (x, y) - plane. We denote the value of f at a point P(x, y) in Ωby f (x, y) or f (P).\n DEFINITION 4.\nWe say that function f have a limit α at a point P0 in its domain Ωif for any ε > 0 there exists\nδ = δ(ε) > 0 such that |f (P) −α| < ε if |P −P0| < δ, P ∈Ω. In this case, we write\n\n                                             lim  f (P) = α.\n                                    P→P0\n\n DEFINITION 5.\nWe say that function f  is continuous at a point P0 if\n\n                                           lim  f (P) = f (P0).\n                                  P→P0\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 5 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 6,
+      "printed_label": "<FEFF0036>",
+      "text": "Suppose that we fix the value of y. Then f becomes a function f1 that depends on x alone.  If f1 is\ndifferentiable, we call f1′ the partial derivative of f with respect to x and write\n\n                                                                                    ′        ∂f\n                                                              f1 = fx =      .\n                                            ∂x\n\nThe other way around, when x is fixed, f becomes a function f2 of y alone, which, if differentiable,\ndefines the partial derivative of f with respect to y, denoted by\n\n                                                                                    ′        ∂f\n                                                              f2 = fy =      .\n                                            ∂y\n\nFormally, the definitions of these first-order partial derivatives are\n\n                                         f (x + h, y) −f (x, y)                       f (x, y + h) −f (x, y)\n                fx(x, y) = lim                                 , fy(x, y) = lim                                 .\n                    h→0        h                  h→0        h\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 6 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 7,
+      "printed_label": "<FEFF0037>",
+      "text": "We can repeat the above process starting with fx and then fy, and define the second-order partial\nderivatives of f , namely\n\n                             ∂ ∂f    ∂2f             ∂ ∂f     ∂2f\n                            fxx = (fx)x =    =       , fxy = (fx)y =    =          ,\n                             ∂x ∂x   ∂x2            ∂y ∂x   ∂y∂x\n\n                              ∂ ∂f     ∂2f             ∂ ∂f    ∂2f\n                             fyx = (fy)x =    =          , fy = (fy)y =    =    2 .                             ∂x ∂y   ∂x∂y            ∂y ∂y   ∂y\n\nIf the mixed second-order derivatives fxy and fyx are continuous in a disk (that is, in a finite region\nbounded by a circle) inside the domain Ωof f , then fxy = fyx at every point in that disk.\n DEFINITION 6.\nThe differential of the function f  is\n                                            df = fxdx + fydy.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 7 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 8,
+      "printed_label": "<FEFF0038>",
+      "text": "In certain situations, it is necessary to apply a change of variables and then determine the partial\nderivatives. The chain rule of differentiation is also a logical extension of the same rule for functions of\none variable. Thus, if x = x(r, s), y = y(r, s), and f (x, y) = g(r, s), then\n\n                                       gr = fxxr + fyyr, gs = fxxs + fyys.\n\nWhen we evaluate the indefinite integral of a two-variable function f with respect to one of its variables,\nthe arbitrary constant of integration is a constant only as far as that variable is concerned, but may\ndepend on the other variable.  If, say, F is an antiderivative of f with respect to x, (that is Fx = f ) then\n\n                           Z\n                                                     f (x, y) dx = F(x, y) + C1(y),\n\n\nwhere C1(y) is an arbitrary function of y. Symmetrically, if G is an antiderivative of f with respect to y,\n(that is Gy = f ) then\n                           Z\n                                                     f (x, y) dy = G(x, y) + C2(x),\n\nwhere C2(x) is an arbitrary function of x.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 8 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 9,
+      "printed_label": "<FEFF0039>",
+      "text": "Basic notations and definitions\n DEFINITION 7.\nAn ordinary differential equation is defined by an equality of the form\n\n                               F(x, y(x), y ′(x), ..., y (n)(x)) = 0,                                (1)\n\nwhere the unknown function y also appears through its derivatives y (i), i = 1, ..., n. The variable x is\nalso called independent variable. The maximum order of differentiation of the unknown function is\ncalled the order of the differential equation.\n\nIn the equation (1) x is single independent variable. In the case of several independent variables, the\nderivatives are partial derivatives, and the equation is called a partial differential equation. We will\nconsider only ordinary differential equations, and so the word ordinary will be dropped. We will say\ndifferential equations (DE).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                 9 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 10,
+      "printed_label": "<FEFF00310030>",
+      "text": "It is considered that the variable x belongs to a real interval I, on which the function y is defined; this\nlast one is supposed of class C n(I), meaning that y is continuous on I, together with its derivatives up\nto n–th order inclusive.\nDEFINITION 8.\nA particular solution of (1) is a function of class C n(I) that satisfies (1) for any x ∈I. Every particular\nsolution y = y(x) is represented graphically by a curve in the (x, y)-plane, which is called the integral\n(or solution) curve. The general solution (or general integral) of (1) is a function\n\n                                      y = y(x, C1, ..., Cn)                                       (2)\n\nof class C n(I), depending on n arbitrary constants C1, ..., Cn, corresponding to the order of equation,\nand satisfying (1) on I, for any set of admissible constants.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                10 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 11,
+      "printed_label": "<FEFF00310031>",
+      "text": "DEFINITION 9.\nIt is said that the differential equation (1) is solved in quadratures if its general solution is expressed\nthrough one or more integrals.\nEXAMPLES. 1. Let us consider the following DE\n\n                                        xy ′ + 3y = 6x3,                                        (3)\n\nDE (3) is of first order. The function\n\n                                 y(x) = x3 + C/x3,   x ̸= 0,\n\nis the general solution of (3), where C ∈R. Indeed, we calculate\n\n         xy ′ + 3y = x(3x2 −3C/x4) + 3(x3 + C/x3) = 3x3 −3C/x3 + 3x3 + 3C/x3 = 6x3.\n\nThe function y(x) = x3 is a particular solution of the equation (3) and it can be obtained easily by\ntaking the particular value of C as 0 in the general solution.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                11 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 12,
+      "printed_label": "<FEFF00310032>",
+      "text": "2. The differential equation\n                                      2x2y ′′ −y ′2 = 0                                        (4)\n\nhas second order. The function\n\n\n                               y(x) =                                      2x −2 ln(1 +2 C1x) + C2\n                                    C1      C1\n\nis the general solution of (4), where C1, C2 ∈R, C1 ̸= 0, 1 + C1x > 0. Note that the interval I depend\non the value of C1. It is easy to find two derivatives of y(x) :\n\n                   y ′(x) =                          2 −22   C1  = 2   1 −    1   =   2x     ,\n                         C1  C1 1 + C1x   C1      1 + C1x     1 + C1x\n\n                                    2(1 + C1x) −2C1x       2                            y ′′(x) =           =\n                                         (1 + C1x)2       (1 + C1x)2\n\nand\n                                                              ′′      ′2      4x2          4x2                         2x2y −y =       −       = 0.\n                                          (1 + C1x)2   (1 + C1x)2\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                12 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 13,
+      "printed_label": "<FEFF00310033>",
+      "text": "It is interesting to note that y(x) = x2 is a solution of (4). Indeed 4x2 −4x2 = 0. However, it is not\nincluded in the general solution of (4). This ”extra” solution, which cannot be obtained by assigning\nparticular values of the constants, is called a singular solution.\n\n3. The equation\n                                       y ′(x) = exp(−x2)                                       (5)\n\nis solved in quadratures. Indeed, the general solution of (5) is the following function\n\n                                  Z x\n                                 y(x) =    exp(−t2) dt + C,\n                                                     0\n\nwhere C is an arbitrary constant.\n\n4. In the equation\n                                          ut(x, t) = uxx(x, t)                                       (6)\n\nx and t are independent variables, u is unknown function. Since ut and uxx are partial derivatives, the\nequation (6) is partial differential equation of second order. Moreover, (6) is well known heat equation.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                13 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 14,
+      "printed_label": "<FEFF00310034>",
+      "text": "A DE of the first order may be written as\n\n                                    F(x, y(x), y ′(x)) = 0.                                     (7)\n\nDEFINITION 10.\nThe function y = φ(x) is called an explicit solution of (7) on I provided\n\n                                  F(x, φ(x), φ′(x)) ≡0 in I.                                   (8)\n\nA relation of the form ψ(x, y) = 0 is said to be an implicit solution of (7) on I provided it determines\none or more functions y = φ(x) which satisfy (8).\nIt is frequently difficult, if not impossible, to solve ψ(x, y) = 0 for y. Nevertheless, we can test the\nsolution by obtaining y ′ by implicit differentiation:\n\n                            ψx + ψyy ′ = 0   or   y ′ = −ψx/ψy,\n\nand check if\n                                F(x, y(x), −ψx/ψy) ≡0 in I.\n\nBoth explicit solutions and implicit solutions will usually be called simply solutions.\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                14 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 15,
+      "printed_label": "<FEFF00310035>",
+      "text": "EXAMPLE. It is easy to check that the following DE of the first order\n\n                                           yy ′ = −x                                            (9)\n\nhas the implicit solution x2 + y 2 = C, C > 0. Indeed, differentiating last equality by x we obtain:\n\n                            2x + 2y(x)y ′(x) = 0   or   yy ′ = −x.\n\nThe pair of functions x = x(t), y = y(t) is said to be a parametric solution of\n\n                                    F(x, y(x), y ′(x)) = 0\n\nwhen\n                                              dy                             dy/dt\n                       ≡0                               =                                                   dy dx ⇒dy = dy/dt    .              F   x(t), y(t),\n                             dx/dt             dt    dx dt    dx   dx/dt\n\nEXAMPLE. Let us consider the equation (9). Then the pair of functions x = C sin t, y = C cos t,\n(C ∈R, C ̸= 0, t ̸= π/2 + πn, n ∈Z) is a parametric solution of (9). Since\n\n                          dy\n                             dt   (−C sin t)   (−sin t)                         ′         (−sin t)            y ′(x) =  =      =              , we have yy = C cos t     = −x.\n                          dx    C cos t       cos t                           cos t\n                             dt\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                15 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 16,
+      "printed_label": "<FEFF00310036>",
+      "text": "Some differential equations may be developed with respect to y (n) to give\n\n                             y (n)(x) = f (x, y(x), y ′(x), ..., y (n−1)(x)).                          (10)\n\nWe call this form normal. Most equations will be considered in normal form.\nDifferential equations are classified into two groups: linear and nonlinear. A DE is said to be linear if it\nis linear in y and all its derivatives. Thus, an n-th order linear DE has the form\n\n               a0(x)y (n)(x) + a1(x)y (n−1)(x) + ... + an−1(x)y ′(x) + an(x)y(x) = f (x).           (11)\n\nDEFINITION 11.\nIn (11) if the function f (x) ≡0, then it is called a homogeneous DE, otherwise it is said to be a\nnonhomogeneous DE. An equation that is not of the form (11) is a nonlinear DE.\nObviously, (3) is linear nonhomogeneous DE, whereas (4) is nonlinear homogeneous DE.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                16 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 17,
+      "printed_label": "<FEFF00310037>",
+      "text": "In applications we are usually interested in a solution of the DE (10) satisfying some additional\nrequirements called initial or boundary conditions.\nDEFINITION 12.\nBy initial conditions for (10) we mean n conditions of the form\n\n                           y(x0) = y0, y ′(x0) = y1, ..., y (n−1)(x0) = yn−1,                       (12)\n\nwhere y0, ..., yn−1 and x0 are given constants. A problem consisting of the DE (10) together with the\ninitial conditions (12) is called an initial value problem or the Cauchy problem.\n\nIt is common to seek a solution y(x) of the initial value problem (10), (12) in an interval I which\ncontains the point x0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                17 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 18,
+      "printed_label": "<FEFF00310038>",
+      "text": "DEFINITION 13.\nIf the conditions relate to two different x values, the problem is called a two-point boundary-value\nproblem (or simply a boundary-value problem).\n\nWe formulate two-point conditions for the n-th order DE (10):\n\n\n                          n−1\n        X h                                   αijy (j)(a) + βijy (j)(b)i = γi,     i = 0, n −1\n                              j=0\n\nwhere y (0) = y and αij, βij, γi, i, j = 0, n −1 are given constants and a, b ∈I.\nWell known boundary-value problems are Sturm–Liouville problems. Let us consider one of them:\n\n             X ′′(x) + λX(x) = 0, x ∈(a, b), λ ∈R;  X(a) = 0, X ′(b) = 0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                18 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 19,
+      "printed_label": "<FEFF00310039>",
+      "text": "EXAMPLES.\n1). Consider the problem\n                             y ′′(x) + y(x) = 0, y(1) = 2, y ′(1) = 0.\n\nBoth of initial conditions relate to one x value, namely, x = 1. Thus this is an initial-value problem. We\nwill see later that this problem has a unique solution.\n2). Consider the problem\n                            y ′′(x) + y(x) = 0, y(0) = 1, y ′(π/2) = 5.\n\nIn this problem we again seek a solution of the same differential equation, but the conditions relate to\nthe two different x values, 0 and π/2. This is a (two-point) boundary-value problem. This problem also\nhas a unique solution; but the boundary-value problem\n\n                             y ′′(x) + y(x) = 0, y(0) = 1, y ′(π) = 5.\n\nhas no solution at all! This simple fact may lead one to the correct conclusion that boundary-value\nproblems are not to be taken lightly!\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                19 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 20,
+      "printed_label": "<FEFF00320030>",
+      "text": "DEFINITION 14.\nAn equilibrium solution of differential equation is a solution whose derivative is zero everywhere.\n\nEXAMPLE.\n\nFind the equilibrium solutions of the differential equation\n                                        y ′(x) = y 2 −9.\n\nThe differential equation above can be rewritten as\n\n                                    y ′(x) = (y + 3)(y −3).\n\nTherefore y(x) ≡−3 and y(x) ≡3 are the equilibrium solutions.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                20 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 21,
+      "printed_label": "<FEFF00320031>",
+      "text": "Standard forms of first-order DE\nThe first-order differential equations to be studied may be expressed in either the normal form\n\n                                       dy\n                           = f (x, y)                                       (13)\n                                       dx\n\nor the differential form\n                             M(x, y)dx + N(x, y)dy = 0.                                (14)\n\nAn equation in one of these forms may readily be written in the other form. For example, the equation\n\n                                       dy    x2 −y 2\n                          =\n                                       dx    x2 + y 2\n\nis of the form (13). It may be written\n\n                                  (x2 + y 2)dy + (y 2 −x2)dx = 0,\n\nwhich is of the form (14).\nIn the form (13) it is clear from the notation itself that y is regarded as the dependent variable and x as\nthe independent one; but in the form (14) we may actually regard either variable as the dependent one\nand the other as the independent. However, in differential equations of the form (14) we will regard y\nas dependent and x as independent, unless the contrary is specifically stated.\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                21 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 22,
+      "printed_label": "<FEFF00320032>",
+      "text": "The Euler method\n\nAlthough it is not always possible to find an analytical solution of\n\n                                        y ′(x) = f (x, y)                                      (15)\n\nfor y = y(x), it is always possible to determine a numerical solution given an initial value y(x0) = y0,\nprovided f (x, y) is a well-behaved function. The differential equation (15) gives us the slope f (x0, y0) of\nthe tangent line to the solution curve y = y(x) at the point (x0, y0). With a small step size\n∆x = x1 −x0, the initial condition (x0, y0) can be marched forward to (x1, y1) along the tangent line\nusing Euler’s method (see Fig. 1)\n                                         y1 = y0 + ∆xf (x0, y0).\n\nNow (x1, y1) becomes the new initial condition and is marched forward to (x2, y2) along a newly\ndetermined tangent line with slope given by f (x1, y1) :\n\n                                         y2 = y1 + ∆xf (x1, y1).\n\nFor small enough ∆x, the numerical solution converges to the exact solution.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                22 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 23,
+      "printed_label": "<FEFF00320033>",
+      "text": "Alexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                23 / 34",
+      "images": 1,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 24,
+      "printed_label": "<FEFF00320034>",
+      "text": "THEOREM. (Existence and uniqueness theorem)\n\nConsider the initial value problem\n\n                             y (n)(x) = f (x, y(x), y ′(x), ..., y (n−1)(x)),                          (16)\n\n                           y(x0) = y0, y ′(x0) = y1, ..., y (n−1)(x0) = yn−1.                       (17)\nLet D be a domain in Rn+1, (x0, y0, ..., yn−1) ∈D,  f (x, y 1, y 2, ..., y n) ∈C(D) and ∂f /∂y i ∈C(D) for\ni = 1, ..., n. Then there exists a unique solution of (16, (17), defined on some interval |x −x0| < h,\nwhere h is sufficiently small.\n\nThe proof of this theorem is omitted.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                24 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 25,
+      "printed_label": "<FEFF00320035>",
+      "text": "EXAMPLE.\nConsider the initial value problem\n\n                                  y ′(x) = 3y 2/3(x), y(x0) = y0.                               (18)\n\nRight-hand side of DE in (18) f (x, y) = 3y 2/3 is continuous function in D = R2. It is easy to check that\ny = (x + C)3, C ∈R is the general solution of the equation in (18) on the interval I = R :\n\n                                 y ′(x) = 3(x + C)2 = 3y 2/3(x).\n\nMoreover, y(x) ≡0 is a singular solution of the equation in (18).\nCalculating ∂f /∂y = 2y −1/3, we obtain that ∂f /∂y is continuous function if y ̸= 0. Let y0 ̸= 0. If we\nput C = −x0 + y 01/3 then y = (x −x0 + y 01/3 )3 is the unique solution of (18) in some neighborhood of\npoint (x0, y0).\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                25 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 26,
+      "printed_label": "<FEFF00320036>",
+      "text": "On other hand, if y0 = 0 the problem (18) has the following solutions: y = (x −x0)3 and y(x) ≡0.\n  Moreover, the problem (18) has an infinite\n  number of solutions:\n\n       (x −x0)3   for   x ≤x0,\n             y(x) =  0   for   x0 < x < x,\n       (x −x)3   for   x ≥x,\n\n  where x any constant such that x > x0.\n\n   Let in (18) y(x1) = y1 (as on the picture)\n   instead of y(x0) = y0. What is a domain of the\n   uniqueness of this solution? Answer: x ≤x0.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                26 / 34",
+      "images": 1,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 27,
+      "printed_label": "<FEFF00320037>",
+      "text": "  Note that Existence and uniqueness theorem\n   states the existence of unique solution only in\n  some small interval.\n   Let us consider the following initial value\n  problem\n\n            y ′(x) = y 2(x), y(0) = 1.      (19)\n\n   All conditions of the theorem are satisfied. It\n   ia easy to check that y(x) = (1 −x)−1 is a\n   solution of (19):\n\n           y ′(x) = (1 −x)−2 = y 2(x),\n\n  and y(x) exists only for x < 1.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                27 / 34",
+      "images": 1,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 28,
+      "printed_label": "<FEFF00320038>",
+      "text": "Origin and applications of differential equations\nThe laws of the universe are written in the language of mathematics. Algebra is sufficient to solve many\nstatic problems, but the most interesting natural phenomena involve change and are described by\nequations that relate changing quantities.\nBecause the derivative dy/dt = f ′(t) of the function f  is the rate at which the quantity y = f (t) is\nchanging with respect to the independent variable t, it is natural that equations involving derivatives are\nfrequently used to describe the changing universe.\nEXAMPLES.\n1). As first example, consider a mass falling under the influence of constant gravity, such as\napproximately found on the Earth’s surface. Newton’s law, F = ma, results in the equation\n\n                               md2y = −mg,\n                                             dt2\n\nwhere y is the height of the object above the ground, m is the mass of the object, and\ng ≈9.8meter/sec2 is the constant gravitational acceleration.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                28 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 29,
+      "printed_label": "<FEFF00320039>",
+      "text": "The mass cancels from the equation, and\n                                       d2y\n                            = −g.\n                                            dt2\nHere, the right-hand-side of the DE is a constant. The first integration yields\n\n                                      dy\n                                                 (t) = A −gt,\n                                          dt\n\nwith A the first constant of integration. The second integration yields\n\n                                       y(t) = B + At −gt2\n                                                  2\n\nwith B the second constant of integration. The two constants of integration A and B can then be\ndetermined from the initial conditions.  If we know that the initial height of the mass is y0, and the\ninitial velocity is v0, then the initial conditions are\n\n                                             dy\n                                    y(0) = y0,      (0) = v0.\n                                                   dt\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                29 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 30,
+      "printed_label": "<FEFF00330030>",
+      "text": "Substitution of these initial conditions into the equations for dy/dt and y allows us to solve for A and\nB :\n                             y(t) = B + At −gt2 =⇒y(0) = B = y0,\n                                          2\n                            dy                                     (t) = A −gt =⇒dy (0) = A = v0.\n                                dt                  dt\nThe unique solution that satisfies both DE and the initial conditions is given by\n\n                                      y(t) = y0 + v0t −gt2 .                                  (20)\n                                                   2\n\nFor example, suppose we drop a ball from the top of a 50 meter building. How long will it take the ball\nto hit the ground? This question requires solution of (20) for the time T  it takes for y(T) = 0, given\ny0 = 50 meter and v0 = 0. Solving for T,\n                       y(T) = y0 + v0T −gT 2 =⇒0 = 50 −gT 2\n                                           2               2\n\n                  s                                     100 r 100\n                =⇒T =    ≈       sec ≈3.2 sec.\n                                      g        9.8\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                30 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 31,
+      "printed_label": "<FEFF00330031>",
+      "text": "2). Newton’s law of cooling may be stated in this way: The time rate of change (the rate of change\nwith respect to time t) of the temperature T(t) of a body is proportional to the difference between T\nand the temperature A of the surrounding medium. That is,\n\n                              dT\n                         = −k(T −A),\n                                         dt\n\nwhere k is a positive constant. Observe that if T > A, then dTdt < 0, so the temperature is a decreasing\nfunction of t and the body is cooling. But if T < A, then dTdt > 0, so that T  is increasing. Thus the\nphysical law is translated into a differential equation.  If we are given the values of k and A, initial\ntemperature T(0) = T0, we are able to predict the future temperature of the body by explicit formula:\n\n                              T(t) = A + (T0 −A) exp(−kt).\n\nIndeed,\n             dT\n            = −k(T0 −A) exp(−kt) = −k [A + (T0 −A) exp(−kt) −A] =\n                  dt\n             = −k(T −A).    Obviously, T(t) →A  as   t →∞.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                31 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 32,
+      "printed_label": "<FEFF00330032>",
+      "text": "We will use the following books:\n\n1. S.L. Ross, Differential equations, Wiley, 1984.\n2. C. Constanda, Differential equations, Springer, 2017.\n3. M.V. Soare, P.P. Teodorescu and I. Toma, Ordinary differential equations with applications to\nmechanics, Springer, 2007.\n4. M. V. Makarets, V. Yu. Reshetnyak, Ordinary differential equations and calculus of variations, World\nScientific Publishing, 1995.\n5. E. A. Coddington, An introduction to ordinary differential equations, Dover Publications, 1989.\n\nHomework\n\nFor reading:\n\n   PDF presentation,\n\n     S.L. Ross, pp. 1–24.\n\n    C. Constanda, pp. 1–14.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                32 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 33,
+      "printed_label": "<FEFF00330033>",
+      "text": "Solve problems\n\nI. Classify each of the following differential equations as ordinary or partial differential equations; state\nthe order of each equation; and determine whether the equation under consideration is linear or\nnonlinear:\n                                      d3y\n                                       a)    + y sin x = 0,\n                                        dx3\n\n                                             dr   4 r d2r\n                                  b)      =    + 1.\n                                          ds         ds2\n\nII. Show that 5x2y 2 −2x3y 2 = 1 is an implicit solution of the differential equation\n\n                         dy             3                          5                         x  + y = x3y    on the interval   0 < x <                         dx                                         2.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                33 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    },
+    {
+      "page": 34,
+      "printed_label": "<FEFF00330034>",
+      "text": "III. Show that every function f defined by f (x) = (x3 + c) exp(−3x), where c is an arbitrary constant, is\na solution of the differential equation\n\n                                  dy\n                       + 3y = 3x2 exp(−3x).\n                                  dx\n\nIV. For certain values of the constant m the function f defined by f (x) = exp(mx) is a solution of the\ndifferential equation\n                               d3y −2d2y −9dy + 18y = 0.\n                                dx3    dx2    dx\nDetermine all such values of m.\nV. Show that the function f defined by f (x) = 3 exp(2x) −2x exp(2x) + sin(2x) satisfies the differential\nequation\n                               d2y −4dy + 4y = −8 cos(2x).\n                                dx2    dx\nand also the conditions that f (0) = 3 and f ′(0) = 6.\n\n\n\n\n\nAlexander Gladkov, Professor  (Belarusian State University)                 DIFFERENTIAL EQUATIONS                                  September 1, 2026                34 / 34",
+      "images": 0,
+      "text_layer_sparse": false
+    }
+  ],
+  "reading_claim": "Only text extraction. Formulas, figures and scanned pages require visual inspection."
+}

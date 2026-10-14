@@ -1,0 +1,70 @@
+{
+  "project": {
+    "name": "mock-tutor",
+    "root_label": "模拟学习空间",
+    "language": "zh-CN",
+    "entry_files": ["AGENTS.md", "CLAUDE.md"]
+  },
+  "paths": {
+    "protocol": ".tutor/core/protocol.md",
+    "settings": ".tutor/core/settings.yml",
+    "scripts": ".tutor/core/scripts",
+    "skills": ".tutor/core/skills",
+    "docs": ".tutor/docs",
+    "session_close_checklist": ".tutor/docs/session-close-checklist.md",
+    "upgrade_opportunities": ".tutor/docs/upgrade-opportunities.md",
+    "subjects": "subjects",
+    "learner_profile": ".tutor/config/learner-profile.md",
+    "review_cards": ".tutor/data/review-cards.json",
+    "lints": ".tutor/config/lints.yml",
+    "external_evidence": ".tutor/config/external-evidence.md",
+    "evolution": ".tutor/evolution"
+  },
+  "status": {
+    "current_subject": "01-mock-diffeq",
+    "current_topic": "模拟状态",
+    "next": "模拟：先做到期复习再学新概念",
+    "note": "【模拟数据】本实例全部为模拟课程与模拟作业，不含任何真实学习记录"
+  },
+  "subjects": {
+    "01-mock-diffeq": {
+      "path": "subjects/01-mock-diffeq",
+      "graph_title": "模拟-微分方程 概念依赖图",
+      "topic_labels": { "01-first-order": "一阶方程" },
+      "topic_gate_suffixes": { "01-first-order": "（模拟门禁提示）" },
+      "next_gates": [
+        {
+          "title": "下一学习门禁",
+          "description": "模拟：先通过一阶方程到期复习，再学习新概念。",
+          "prerequisites": ["mock-separable"]
+        }
+      ]
+    },
+    "02-mock-optics": {
+      "path": "subjects/02-mock-optics",
+      "graph_title": "模拟-光学 概念依赖图",
+      "topic_labels": { "01-geometrical": "几何光学" },
+      "topic_gate_suffixes": { "01-geometrical": "（模拟门禁提示）" }
+    }
+  },
+  "review": {
+    "empty_due_next": "模拟：无到期复习时可直接进入新概念学习。",
+    "due_summary_next": "模拟：先做到期复习再学新内容。",
+    "priority_signal_label": "逾期天数、上次 q、弱项次数、★ 核验点",
+    "groups": [
+      {
+        "name": "模拟-微分方程",
+        "concept_ids": ["mock-separable", "mock-linear-ode"],
+        "status_label": "微方",
+        "fallback_due": "2026-10-01"
+      },
+      {
+        "name": "模拟-光学",
+        "concept_ids": ["mock-snell", "mock-thin-lens"],
+        "status_label": "光学",
+        "fallback_due": "2026-10-01"
+      }
+    ],
+    "footer_notes": ["【模拟数据】以上概念与任务全部为模拟，仅用于验证 tutor 模板流程。"]
+  }
+}

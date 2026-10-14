@@ -1,0 +1,75 @@
+# 排期输入（模拟）—— 仅用于验证排期脚本，勿与真实学习数据混用
+# 说明：mock/ 实例内的全部内容都是【模拟数据】；本文件与真实 plan/inputs.yml 无关。
+
+today: 2026-10-01
+days: 7
+slack: 0.7
+
+windows:
+  - id: daytime-tablet
+    device: tablet
+    days: [1, 2, 3, 4, 5]
+    start: "09:00"
+    end: "18:00"
+    max_minutes: 120
+  - id: evening-pc
+    device: pc
+    days: [1, 2, 3, 4, 5, 6, 7]
+    start: "20:00"
+    end: "23:00"
+    max_minutes: 180
+
+courses:
+  - id: 01-mock-diffeq
+    name: 模拟-微分方程
+  - id: 02-mock-optics
+    name: 模拟-光学
+
+assignments:
+  - id: hw-mock-1
+    course: 01-mock-diffeq
+    title: 一阶方程习题（模拟）
+    due: 2026-10-03
+    est_minutes: 90
+    device: any
+    status: 未开始
+  - id: hw-mock-2
+    course: 02-mock-optics
+    title: 折射定律作图题（模拟，需电脑查资料）
+    due: 2026-10-05
+    est_minutes: 60
+    device: pc
+    status: 未开始
+  - id: hw-mock-3
+    course: 01-mock-diffeq
+    title: 压轴大题（模拟，时间太紧的告警用例）
+    due: 2026-10-01
+    est_minutes: 200
+    device: pc
+    status: 未开始
+
+reviews:
+  enabled: true      # 把 tutor 到期概念复习自动并入周计划
+  minutes_per_concept: 15
+
+capacity:
+  weekly_minutes: 300     # 模拟：周专注预算 300 分钟（扣除休息）
+  buffer_ratio: 0.3       # 缓冲 30% → 周承诺上限 210 分钟
+  phase: 常规巩固期
+
+ratios:
+  新主题建立期:
+    concept: 0.30
+    independent: 0.40
+    recall: 0.20
+    planning: 0.10
+  常规巩固期:
+    concept: 0.20
+    independent: 0.50
+    recall: 0.20
+    planning: 0.10
+  临考整合期:
+    concept: 0.10
+    independent: 0.55
+    recall: 0.25
+    planning: 0.10
