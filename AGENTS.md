@@ -42,6 +42,12 @@
 | /evolve | evolve，先提出候选 |
 | /maintain | maintain，维护系统 |
 
+## 跨设备同步（GitHub）
+开工前用 `python -B tools/git-sync.py --status` 看本地是否落后远端，落后就 `git pull --rebase`。
+收尾时、且 `session-close.py` 全部通过之后，才运行 `python -B tools/git-sync.py`。
+该脚本**独立于收尾流水线**，不属于 `session-close.py` 的十步。
+冲突时**禁止手工合并派生文件**——重新运行 `session-close.py` 让它整体重算，避免出现「计数一套、事实源另一套」。分层、凭据与冲突处置见 `.tutor/docs/同步到GitHub.md`。
+
 ## 导航
 课程范围：`learning/curriculum.json`；资料读取事实：`learning/materials.json`；课程对账：`learning/curriculum-coverage.md`。
 能力：`state/current.md`、`learning/coverage.md`；排期：`plan/schedule.md`、当天清单；待处理反馈：`learning/observations.jsonl`。
