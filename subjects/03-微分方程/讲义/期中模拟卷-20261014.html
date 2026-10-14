@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>微分方程 · 期中全真模拟卷与详解评分标准 (2026-10-14)</title>
+<style>
+@page { size: A4; margin: 12mm 11mm 14mm 11mm; }
+body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; font-size: 10.5pt; line-height: 1.55; color: #111; max-width: 900px; margin: 20px auto; padding: 0 16px; }
+h1 { font-size: 16.5pt; margin: 12px 0 8px 0; border-bottom: 2px solid #222; padding-bottom: 4px; }
+h2 { font-size: 13pt; margin: 18px 0 8px 0; padding: 4px 8px; background: #eceff3; border-left: 5px solid #333; }
+h3 { font-size: 11.5pt; margin: 14px 0 6px 0; color: #123; }
+h4 { font-size: 10.5pt; margin: 10px 0 4px 0; background: #f4f8fd; padding: 3px 6px; border-left: 3px solid #357; }
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 8px 0 14px 0; }
+th, td { border: 1px solid #777; padding: 5px 7px; vertical-align: top; text-align: left; }
+th { background: #eee; font-weight: bold; }
+blockquote { border-left: 4px solid #357; background: #f4f8fd; padding: 6px 10px; margin: 8px 0; font-size: 9.8pt; }
+code { font-family: Consolas, "Microsoft YaHei", monospace; background: #f0f0f0; padding: 1px 4px; border-radius: 3px; }
+.seal-box { margin: 28px 0; padding: 14px; border: 2px dashed #c00; background: #fff5f5; text-align: center; border-radius: 6px; }
+.btn { display: inline-block; padding: 8px 16px; font-size: 10.5pt; font-weight: bold; color: #fff; background: #b00; border: none; border-radius: 4px; cursor: pointer; margin: 4px; }
+.btn-copy { background: #265; }
+</style>
+</head>
+<body>
+<h1>《微分方程》2026 秋季学期 · 期中全真模拟卷（考生用卷）</h1>
+<p><strong>课程范围</strong>：Lecture 1–12（方程组之前，基于 Alexander Gladkov 教授课件大纲；附加题含 W. Y. 老师 Lecture 14–17）<br />
+<strong>考试形式</strong>：闭卷、独立作答（禁止查阅讲义、课件或使用计算器；仅带笔与空白草稿纸）<br />
+<strong>考试时长</strong>：100 分钟（对齐正式考试窗口：2026-10-22 周四 18:30–20:10，中国时间 UTC+8）<br />
+<strong>卷面满分</strong>：主卷 100 分 ＋ 附加选做部分 20 分<br />
+<strong>状态入账保护说明</strong>：本文件上半部分是<strong>考生用卷（不含题目解法与答案）</strong>，答案藏在卷末「密封保护线」以下的折叠区里。请先在闭卷、无提示（H0）条件下独立完成本卷，交卷后再点开折叠区查阅《参考答案、详解、评分标准与缺口对照》，确保本次作答在学习系统中记为 <code>solution_exposure = none</code>（具备升入「曾独立完成 / 延迟通过」的完整证据效力）。<br />
+<strong>⚠ 纯 H0 用法</strong>：下方「考场时间分配与做题顺序建议」表与两处「作答要求」含<strong>通用考场策略与收尾提醒</strong>。若想把本卷当作<strong>完全无提示的独立盲测</strong>（最干净的证据），作答前请先跳过这三个区块，做完再回看。</p>
+<h2>考场时间分配与做题顺序建议</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">阶段</th>
+<th style="text-align: left;">时间窗口（100 min）</th>
+<th style="text-align: left;">建议处理题号</th>
+<th style="text-align: left;">策略要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>第一阶段：热身与速判</strong></td>
+<td style="text-align: left;">第 0–10 分钟（10 min）</td>
+<td style="text-align: left;">第一部分 I-1 ～ I-4</td>
+<td style="text-align: left;">只写方程类型与第一步换元/积分因子表达式，不展开后续积分，快速进入状态</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第二阶段：高分稳拿区</strong></td>
+<td style="text-align: left;">第 10–40 分钟（30 min）</td>
+<td style="text-align: left;">第 1、4、8、10 题</td>
+<td style="text-align: left;">优先拿下计算链路最直接的 4 道主干题（合计 33 分），每题写完立刻扫一眼积分常数与定义域</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第三阶段：核心攻坚区</strong></td>
+<td style="text-align: left;">第 40–93 分钟（53 min）</td>
+<td style="text-align: left;">第 2、3、5、6、7、9 题</td>
+<td style="text-align: left;">重点处理需要识别换元、找特解、讨论奇解与代初值的 6 道题（合计 55 分）；单题卡壳超 4 分钟先跳过</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第四阶段：收尾自检</strong>（附加题另计）</td>
+<td style="text-align: left;">第 93–100 分钟（7 min）</td>
+<td style="text-align: left;">全卷代回验算</td>
+<td style="text-align: left;">把自己算出的解代回原方程与初值条件，确认左右恒等再停笔；附加题 B1/B2 属选做、不计入 100 分钟，交卷后有余力再做</td>
+</tr>
+</tbody>
+</table>
+<h2>九大知识块分值分布总表（对应 Lecture 1–12）</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">知识块编号与名称</th>
+<th style="text-align: left;">对应讲次</th>
+<th style="text-align: left;">对应题号</th>
+<th style="text-align: left;">分值</th>
+<th style="text-align: left;">占主卷比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>① 可分离变量、齐次、可化为齐次与准齐次方程</strong></td>
+<td style="text-align: left;">L1–L3</td>
+<td style="text-align: left;">I-1, I-2, 第 1 题, 第 3 题</td>
+<td style="text-align: left;">24 分</td>
+<td style="text-align: left;">24%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>② 恰当微分方程与积分因子法</strong></td>
+<td style="text-align: left;">L3–L4</td>
+<td style="text-align: left;">第 4 题</td>
+<td style="text-align: left;">9 分</td>
+<td style="text-align: left;">9%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>③ 一阶线性微分方程</strong></td>
+<td style="text-align: left;">L4</td>
+<td style="text-align: left;">第 2 题（融合考查）</td>
+<td style="text-align: left;">5 分</td>
+<td style="text-align: left;">5%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>④ Bernoulli 方程</strong></td>
+<td style="text-align: left;">L5</td>
+<td style="text-align: left;">第 2 题（融合考查）</td>
+<td style="text-align: left;">5 分</td>
+<td style="text-align: left;">5%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>⑤ Riccati 方程</strong></td>
+<td style="text-align: left;">L5</td>
+<td style="text-align: left;">第 5 题</td>
+<td style="text-align: left;">9 分</td>
+<td style="text-align: left;">9%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>⑥ Clairaut 方程、Lagrange 方程与关于 x/y 可解方程</strong></td>
+<td style="text-align: left;">L5–L6</td>
+<td style="text-align: left;">I-3, 第 6 题</td>
+<td style="text-align: left;">10 分</td>
+<td style="text-align: left;">10%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>⑦ 高阶微分方程降阶法</strong></td>
+<td style="text-align: left;">L7</td>
+<td style="text-align: left;">第 7 题</td>
+<td style="text-align: left;">9 分</td>
+<td style="text-align: left;">9%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>⑧ 高阶线性齐次方程（常系数重根/复根、Cauchy–Euler）</strong></td>
+<td style="text-align: left;">L8–L10</td>
+<td style="text-align: left;">I-4, 第 8 题, 第 10 题（齐次部分）</td>
+<td style="text-align: left;">15 分</td>
+<td style="text-align: left;">15%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>⑨ 常系数线性非齐次方程（待定系数法与共振、IVP）</strong></td>
+<td style="text-align: left;">L11–L12</td>
+<td style="text-align: left;">第 9 题, 第 10 题（非齐次部分）</td>
+<td style="text-align: left;">14 分</td>
+<td style="text-align: left;">14%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>合计（主卷）</strong></td>
+<td style="text-align: left;"><strong>L1–L12</strong></td>
+<td style="text-align: left;"><strong>共 14 题（I-1～I-4 ＋ 第 1～10 题）</strong></td>
+<td style="text-align: left;"><strong>100 分</strong></td>
+<td style="text-align: left;"><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>第一部分：快速识别与判别题（共 4 小题，每题 3 分，满分 12 分；建议用时 10 分钟）</h2>
+<blockquote>
+<p><strong>作答要求</strong>：下列各题<strong>无需解出最终通解</strong>。请仅写出：(a) 该微分方程的<strong>具体类型名称</strong>（中文或英文均可）；(b) 求解该方程的<strong>第一步关键换元关系式</strong>（或化为线性/常系数后的标准形式）。</p>
+</blockquote>
+<p><strong>I-1（3 分）</strong><br />
+x y′ = y + √(x² + y²)　　(x &gt; 0)<br />
+<em>(Identify the type of the differential equation and state the first substitution.)</em></p>
+<p><strong>I-2（3 分）</strong><br />
+(2x − 4y + 6) dx + (x + y − 3) dy = 0<br />
+<em>(Identify the type of the differential equation and state the coordinate translation that reduces it.)</em></p>
+<p><strong>I-3（3 分）</strong><br />
+x = y y′ + (y′)²<br />
+<em>(Identify the type of the differential equation and write the first-order equation obtained after introducing the parameter p = y′.)</em></p>
+<p><strong>I-4（3 分）</strong><br />
+x³ y‴ − 3x² y″ + 6x y′ − 6y = 0　　(x &gt; 0)<br />
+<em>(Identify the type of the differential equation and write its substitution or indicial/characteristic equation.)</em></p>
+<h2>第二部分：一阶微分方程求解（共 6 题，满分 53 分；建议用时 48 分钟）</h2>
+<blockquote>
+<p><strong>作答要求</strong>：写出完整的推导步骤、换元过程与积分步骤。最终结果请给出最简显式解或隐式解，并<strong>主动检查是否有在除法或换元中遗漏的常数解/奇解</strong>。注：本部分各题未按讲次顺序排列，请先根据方程结构自行判断解法路径。</p>
+</blockquote>
+<p><strong>第 1 题（8 分｜建议用时 7 分钟）</strong><br />
+求微分方程的全部解（含可能存在的常数解）：<br />
+<em>Find all solutions of the differential equation:</em><br />
+(y² − 4) cos x dx + 2y sin x dy = 0</p>
+<p><strong>第 2 题（10 分｜建议用时 9 分钟）</strong><br />
+求解初值问题（Initial Value Problem）：<br />
+<em>Solve the initial value problem:</em><br />
+y′ + (tan x) y = −y² cos²x,　　y(0) = 1　　(−π/2 &lt; x &lt; π/2)</p>
+<p><strong>第 3 题（10 分｜建议用时 9 分钟）</strong><br />
+求微分方程的通解（并讨论是否有特殊解被遗漏）：<br />
+<em>Find the general solution of the differential equation:</em><br />
+x³ y′ = 2x² y + y² − x⁴　　(x &gt; 0)</p>
+<p><strong>第 4 题（9 分｜建议用时 8 分钟）</strong><br />
+求微分方程的通解：<br />
+<em>Find the general solution of the differential equation:</em><br />
+(2x y³ + y) dx + (x² y² − x) dy = 0　　(y ≠ 0)</p>
+<p><strong>第 5 题（9 分｜建议用时 9 分钟）</strong><br />
+求微分方程的通解：<br />
+<em>Find the general solution of the differential equation:</em><br />
+x² y′ + x y + x² y² = 4　　(x &gt; 0)</p>
+<p><strong>第 6 题（7 分｜建议用时 6 分钟）</strong><br />
+求下列微分方程的<strong>通解</strong>（general solution）与<strong>奇解</strong>（singular solution）：<br />
+<em>Find both the general solution and the singular solution of the differential equation:</em><br />
+y = x y′ − (y′)³ / 3　　(x ≥ 0)</p>
+<h2>第三部分：高阶与线性微分方程求解（共 4 题，满分 35 分；建议用时 35 分钟）</h2>
+<blockquote>
+<p><strong>作答要求</strong>：写出完整的降阶或特征方程求解过程；非齐次方程需写明特解的设定形式与待定系数求解过程；初值问题须代入初值求出确定特解。</p>
+</blockquote>
+<p><strong>第 7 题（9 分｜建议用时 9 分钟）</strong><br />
+求解二阶非线性微分方程的初值问题：<br />
+<em>Solve the initial value problem:</em><br />
+y y″ − 2(y′)² = 0,　　y(0) = 1,　y′(0) = 1　　(y &gt; 0)</p>
+<p><strong>第 8 题（8 分｜建议用时 6 分钟）</strong><br />
+求四阶常系数齐次线性微分方程的通解：<br />
+<em>Find the general solution of the homogeneous linear differential equation:</em><br />
+y⁽⁴⁾ − 6y‴ + 12y″ − 8y′ = 0</p>
+<p><strong>第 9 题（10 分｜建议用时 11 分钟）</strong><br />
+求解二阶常系数非齐次线性微分方程的初值问题：<br />
+<em>Solve the initial value problem:</em><br />
+y″ − 2y′ + y = 2 + 6 e^x,　　y(0) = 1,　y′(0) = 0</p>
+<p><strong>第 10 题（8 分｜建议用时 9 分钟）</strong><br />
+求二阶常系数非齐次线性微分方程的通解：<br />
+<em>Find the general solution of the nonhomogeneous linear differential equation:</em><br />
+y″ + 2y′ + 5y = 10 cos x</p>
+<h2>附加部分：常系数线性微分方程组与矩阵指数（选做，共 2 题，满分 20 分）</h2>
+<blockquote>
+<p><strong>范围说明</strong>：本部分对应 W. Y. 老师 Lecture 14–17（常系数齐次线性方程组与矩阵指数 <code>e^(Ax)</code>），是否纳入 2026-10-22 期中考试范围<strong>待核实</strong>。建议在完成主卷并自查完毕后选做。</p>
+</blockquote>
+<p><strong>附加题 B1（10 分｜Lecture 14–15 常系数齐次线性系统初值问题）</strong><br />
+求解常系数线性微分方程组的初值问题 <code>Y′ = A Y</code>：<br />
+y₁′ = y₁ + 2y₂,<br />
+y₂′ = 2y₁ + y₂,<br />
+满足初值条件 <code>y₁(0) = 3, y₂(0) = −1</code>。</p>
+<p><strong>附加题 B2（10 分｜Lecture 16–17 矩阵指数 Cayley–Hamilton 法）</strong><br />
+设矩阵 <code>A = [[0, 1], [−1, 2]]</code>。<br />
+(1) 利用 Cayley–Hamilton 定理求矩阵指数 <code>e^(Ax)</code>；<br />
+(2) 由此写出方程组 <code>Y′ = A Y</code> 的通解。</p>
+<h2>卷末：需你本人与任课老师/助教确认的 3 个问题（待核实）</h2>
+<ol>
+<li><strong>期中考试最终截止讲次（L12 还是含 L13–L17）</strong>：<code>课件/INDEX.md</code> 中 L12 为 Gladkov 教授的一阶与高阶方程总复习讲，但 W. Y. 老师在 10 月已讲授 L13–L17（方程组与矩阵指数）。请向老师或助教确认 10 月 22 日晚的期中卷是否仅考到 L12。</li>
+<li><strong>L1 解的存在唯一性定理（Picard–Lindelöf 定理）与 Euler 数值法是否考笔算/叙述题</strong>：L1 目录含 Euler 方法与主要定理，但 L12 复习讲目录聚焦于 9 类求解法。请确认考卷是否包含纯定理条件叙述题或 1～2 步 Euler 折线手算题。</li>
+<li><strong>L8 变系数高阶线性方程的参数变易法（Variation of Parameters）权重</strong>：L11 主打待定系数法，若考参数变易法（如右端为 <code>sec x</code> 或 <code>e^x / x</code>），通常计算量较大，请确认老师课堂上是否将其列为期中必考题型。</li>
+</ol>
+<div class="seal-box">
+  <p><b>🔒 密封保护线（保护 <code>solution_exposure = none</code> 独立作答证据）</b><br>请先闭卷限时 100 分钟完成上方《考生用卷》，交卷后再点击下方按钮展开《参考答案、详解、评分标准与缺口对照》。</p>
+  <button class="btn" onclick="var el=document.getElementById('sol-sec'); el.style.display=(el.style.display==='none'?'block':'none');">点击展开 / 隐藏：完整答案详解与评分标准</button>
+</div>
+<div id="sol-sec" style="display:none;">
+<h1>《微分方程》2026 秋季学期 · 期中全真模拟卷（参考答案、详解、评分标准与缺口对照）</h1>
+<blockquote>
+<p><strong>使用说明</strong>：请务必在<strong>独立完成《考生用卷》并交卷后</strong>再查阅本文件！这样在你的学习系统中，本次模拟考的曝光时机记为 <code>after_attempt</code>，不会污染你此前独立作答的有效证据。<br />
+<strong>验算声明</strong>：本卷全部 14 道主卷题与 2 道附加题的通解/特解，均已通过代回原方程及初值条件逐一符号验算（残差恒为 0）。<br />
+<strong>审校声明</strong>：该验算覆盖各题的<strong>解式与初值</strong>；分值表、阶段时间盒与"消参后的等价隐式写法"等非解式内容已由学习助手于 2026-10-14 另行人工复核并修订（详见文末修订说明）。<br />
+<strong>独立复核</strong>：学习助手另用 sympy 对全部 16 题（主卷 14 ＋ 附加 2）的解式与初值做了 <strong>39 项独立复核，全部残差为 0</strong>（脚本 <code>_scratch/ode-mock-answer-verify.py</code>，报告 <code>_scratch/verify-report.txt</code>）。</p>
+</blockquote>
+<h2>一、 考点对照表（题号 → 讲次 → 知识点 → 难度 → 对应薄弱缺口）</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">题号</th>
+<th style="text-align: left;">讲次来源（基于课件索引）</th>
+<th style="text-align: left;">考查知识点</th>
+<th style="text-align: left;">难度</th>
+<th style="text-align: left;">针对你的历史缺口与设计意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>I-1</strong></td>
+<td style="text-align: left;">L2（齐次方程）</td>
+<td style="text-align: left;">普通齐次方程识别 <code>y′ = g(y/x)</code></td>
+<td style="text-align: left;">基础</td>
+<td style="text-align: left;">区分「普通齐次 <code>u = y/x</code>」与「准齐次 <code>u = y/x^λ</code>」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I-2</strong></td>
+<td style="text-align: left;">L2–L3（可化为齐次）</td>
+<td style="text-align: left;">线性分式方程平移消常数项</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;">检验复习骨架中「平移原点到两直线交点」的标准动作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I-3</strong></td>
+<td style="text-align: left;">L6（关于 x 可解 / Lagrange）</td>
+<td style="text-align: left;">引入参数 <code>p = y′</code> 对 <code>y</code> 求导</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;">补齐 L6 除 Clairaut 外的另一分支（用 <code>dx = dy/p</code>）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I-4</strong></td>
+<td style="text-align: left;">L10（Cauchy–Euler）</td>
+<td style="text-align: left;">三阶 Euler 方程换元 <code>x = e^t</code></td>
+<td style="text-align: left;">基础</td>
+<td style="text-align: left;">对应双语指南第三部分「序号 9：Cauchy–Euler 待复核」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 1 题</strong></td>
+<td style="text-align: left;">L2（可分离变量）</td>
+<td style="text-align: left;">分离变量、对数去绝对值、常数解检查</td>
+<td style="text-align: left;">基础</td>
+<td style="text-align: left;"><strong>缺口 2</strong>（＋与缺口 6 同款的「去绝对值繁琐、丢解检查」收尾毛病）：专治「漏积分常数、漏除式 = 0 的常数解、嫌去绝对值繁琐而中断」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 2 题</strong></td>
+<td style="text-align: left;">L4–L5（线性 + Bernoulli）</td>
+<td style="text-align: left;">Bernoulli 换元 <code>v = 1/y</code> ＋ <code>∫cos³x dx</code> ＋ IVP</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;"><strong>缺口 3 &amp; 缺口 5</strong>：把 <code>∫cos³x dx</code> 凑微分技巧与一阶非线性换元、初值收尾结合</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 3 题</strong></td>
+<td style="text-align: left;">L3（准齐次方程）</td>
+<td style="text-align: left;">非 Bernoulli 型纯准齐次方程权重计算与换元</td>
+<td style="text-align: left;">综合</td>
+<td style="text-align: left;"><strong>缺口 6</strong>：构造含 <code>y, y², x⁴</code> 三项的纯准齐次方程，无法投机用 Bernoulli，必须算准 <code>λ = β/α = 2</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 4 题</strong></td>
+<td style="text-align: left;">L3–L4（恰当与积分因子）</td>
+<td style="text-align: left;">交叉偏导检验 ＋ 单变量积分因子 <code>μ(y)</code></td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;">检验 <code>(∂N/∂x − ∂M/∂y)/M</code> 仅依赖 <code>y</code> 时的符号与全微分恢复</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 5 题</strong></td>
+<td style="text-align: left;">L5（Riccati 方程）</td>
+<td style="text-align: left;">观察法幂函数试特解 <code>y₁ = c/x</code> ＋ <code>y = y₁ + 1/v</code></td>
+<td style="text-align: left;">综合</td>
+<td style="text-align: left;"><strong>缺口 4</strong>：全新系数变式，检验不看提示能否独立试出 <code>y₁ = 2/x</code> 并化线性解到底</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 6 题</strong></td>
+<td style="text-align: left;">L6（Clairaut 方程）</td>
+<td style="text-align: left;">令 <code>p = y′</code> 求导分流：通解直线族 ＋ 奇解包络线</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;"><strong>缺口 8</strong>：<code>de-gap-attack-01</code> 明确指出你「尚未独立动笔做过一道全新的 Clairaut 题」，本题专供盲测</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 7 题</strong></td>
+<td style="text-align: left;">L7（高阶降阶法）</td>
+<td style="text-align: left;">不显含 <code>x</code> 的二阶方程 <code>y″ = p dp/dy</code> 或凑商导数</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;"><strong>缺口 7 &amp; 缺口 5</strong>：既可用标准 <code>p dp/dy</code> 走通，又可除以 <code>y³</code> 凑 <code>(y′/y²)′ = 0</code> 秒杀，配双初值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 8 题</strong></td>
+<td style="text-align: left;">L9–L10（常系数齐次）</td>
+<td style="text-align: left;">四阶特征方程因式分解：<code>λ = 0</code> 单根 ＋ <code>λ = 2</code> 三重根</td>
+<td style="text-align: left;">基础</td>
+<td style="text-align: left;"><strong>缺口 1</strong>：直接检验三重根是否写全 <code>e^(2x), x e^(2x), x² e^(2x)</code> 及「数解的个数 = 4」自检动作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 9 题</strong></td>
+<td style="text-align: left;">L11（常系数非齐次）</td>
+<td style="text-align: left;">待定系数法：<strong>二重特征根共振（<code>s = 2</code>）</strong> ＋ IVP</td>
+<td style="text-align: left;">中档</td>
+<td style="text-align: left;"><strong>缺口 5</strong>：升级检验「特征根为二重根 <code>λ = 1</code> 时，右端 <code>e^x</code> 必须乘 <code>x²</code>（而非 <code>x</code>）」，并代初值收尾</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>第 10 题</strong></td>
+<td style="text-align: left;">L10–L11（复根与待定系数）</td>
+<td style="text-align: left;">共轭复根 <code>−1 ± 2i</code> 齐次解 ＋ 三角非齐次特解</td>
+<td style="text-align: left;">基础</td>
+<td style="text-align: left;">巩固 A6/A7 优势块，检查复根 <code>e^(−x)</code> 因子与正余弦成对设法</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>B1 / B2</strong></td>
+<td style="text-align: left;">L14–L17（方程组与矩阵指数）</td>
+<td style="text-align: left;">特征值特征向量法解 IVP ＋ Cayley–Hamilton 求 <code>e^(Ax)</code></td>
+<td style="text-align: left;">选做</td>
+<td style="text-align: left;">覆盖 10-13 新发课件 <code>16_17_matrix_exponential.pdf</code> 核心套路</td>
+</tr>
+</tbody>
+</table>
+<h2>二、 逐题完整详解、评分标准与易错提醒</h2>
+<h3>第一部分：快速识别与判别题（共 12 分）</h3>
+<h4>I-1（3 分）</h4>
+<ul>
+<li><strong>题目</strong>：x y′ = y + √(x² + y²)　(x &gt; 0)</li>
+<li><strong>参考答案</strong>：</li>
+<li><strong>(a) 方程类型</strong>：一阶齐次微分方程（Homogeneous first-order DE）。因为当 x &gt; 0 时，两边同除以 x 可化为 y′ = y/x + √(1 + (y/x)²)。</li>
+<li><strong>(b) 第一步关键换元</strong>：令 u = y/x（即 y = u x），求导代换 y′ = u + x u′（化为可分离变量方程 x u′ = √(1 + u²)）。</li>
+<li><strong>评分标准</strong>：写对「齐次方程」得 1.5 分；写对换元 u = y/x 及 y′ = u + x u′ 得 1.5 分。</li>
+<li><strong>易错提醒</strong>：别把 √(x² + y²) 误判为准齐次而去设不等权重的 α ≠ β；x² 与 y² 同在根号下相加，本身就锁死了权重比 β/α = 1。</li>
+</ul>
+<h4>I-2（3 分）</h4>
+<ul>
+<li><strong>题目</strong>：(2x − 4y + 6) dx + (x + y − 3) dy = 0</li>
+<li><strong>参考答案</strong>：</li>
+<li><strong>(a) 方程类型</strong>：可化为齐次的一阶微分方程（Equation reducible to homogeneous form）。</li>
+<li><strong>(b) 第一步关键换元</strong>：联立线性方程组 2h − 4k + 6 = 0 与 h + k − 3 = 0，解得交点 (h, k) = (1, 2)。令平移变换 x = X + 1, y = Y + 2（则 dx = dX, dy = dY），原方程化为齐次方程 (2X − 4Y) dX + (X + Y) dY = 0。</li>
+<li><strong>评分标准</strong>：写对「可化为齐次方程」得 1 分；列出交点方程组并解出 (1, 2) 得 1 分；写出平移变换 x = X + 1, y = Y + 2 得 1 分。</li>
+<li><strong>易错提醒</strong>：先看两直线系数行列式 Δ = 2×1 − (−4)×1 = 6 ≠ 0，交点唯一存在，可以平移。若行列式为 0（两行系数成比例，两直线平行、无交点），则<strong>不能平移</strong>，此时改用整体换元 <code>z = a₂x + b₂y</code>（取其中一行的线性式，例如 <code>z = x − 2y</code> 这种），方程即化为可分离变量方程——注意不是笼统地令 <code>z = x + y</code>。</li>
+</ul>
+<h4>I-3（3 分）</h4>
+<ul>
+<li><strong>题目</strong>：x = y y′ + (y′)²</li>
+<li><strong>参考答案</strong>：</li>
+<li><strong>(a) 方程类型</strong>：关于 x 可解的一阶隐式微分方程（Solvable for x），同时也是关于 x(y) 的 Lagrange 型方程。</li>
+<li><strong>(b) 第一步关键换元</strong>：令 p = y′ = dy/dx（p ≠ 0），则原方程为 x = y p + p²。两边对 y 求导（利用 dx/dy = 1/p），得：
+    1/p = p + (y + 2p)(dp/dy)，即 dy/dp + [p / (p² − 1)] y = −2p² / (p² − 1)（关于 y(p) 的一阶线性微分方程）。</li>
+<li><strong>评分标准</strong>：写对「关于 x 可解（或 Lagrange 型）」得 1.5 分；写出令 p = y′ 并利用 dx/dy = 1/p 对 y 求导的关系式得 1.5 分。</li>
+<li><strong>易错提醒</strong>：方程左边是 x 而不是 y，千万别当成 Clairaut 方程对 x 求导！左边是 x 时，标准动作是<strong>对 y 求导</strong>并用 dx/dy = 1/p。</li>
+</ul>
+<h4>I-4（3 分）</h4>
+<ul>
+<li><strong>题目</strong>：x³ y‴ − 3x² y″ + 6x y′ − 6y = 0　(x &gt; 0)</li>
+<li><strong>参考答案</strong>：</li>
+<li><strong>(a) 方程类型</strong>：三阶 Cauchy–Euler 方程（欧拉方程 / 等维线性方程）。</li>
+<li><strong>(b) 第一步关键换元</strong>：令 x = e^t（即 t = ln x），或直接试幂函数解 y = x^r，代入得指标方程（特征方程）：
+    r(r − 1)(r − 2) − 3r(r − 1) + 6r − 6 = 0 ⟹ (r − 1)(r − 2)(r − 3) = 0。</li>
+<li><strong>评分标准</strong>：写对「Cauchy–Euler 方程」得 1.5 分；写出换元 x = e^t 或试解 y = x^r 及其指标方程得 1.5 分。</li>
+<li><strong>易错提醒</strong>：试 y = x^r 时，三阶导数带来的是 r(r − 1)(r − 2)，不是 r³！</li>
+</ul>
+<h3>第二部分：一阶微分方程求解（共 53 分）</h3>
+<h4>第 1 题（8 分｜可分离变量 ＋ 常数解检查 ＋ 对数去绝对值收尾）</h4>
+<ul>
+<li><strong>题目</strong>：(y² − 4) cos x dx + 2y sin x dy = 0</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>分离变量前先查除数为零的常数解</strong>：<br />
+     要将方程两边同除以 <code>(y² − 4) sin x</code>，需先令 <code>(y² − 4) sin x = 0</code>：  <ul>
+<li>若 <code>y² − 4 = 0 ⟹ y = 2</code> 或 <code>y = −2</code>，此时 <code>dy = 0</code>，代入原方程得 <code>0 + 0 = 0</code> 恒成立，故 <strong><code>y = 2</code> 与 <code>y = −2</code> 是常数解</strong>；  </li>
+<li>若 <code>sin x = 0 ⟹ x = kπ (k ∈ ℤ)</code>，此时 <code>dx = 0</code>，代入原方程得 <code>0 + 0 = 0</code> 恒成立，故 <strong><code>x = kπ (k ∈ ℤ)</code> 也是常数解</strong>。</li>
+</ul>
+</li>
+<li><strong>分离变量与积分</strong>（当 <code>y ≠ ±2</code> 且 <code>sin x ≠ 0</code> 时）：<br />
+<code>(cos x / sin x) dx + [2y / (y² − 4)] dy = 0</code><br />
+     两边积分：<br />
+<code>∫ (1 / sin x) d(sin x) + ∫ [1 / (y² − 4)] d(y² − 4) = C₁</code><br />
+<code>ln|sin x| + ln|y² − 4| = C₁</code></li>
+<li><strong>合并对数并吸收正负号</strong>：<br />
+<code>ln|(y² − 4) sin x| = C₁ ⟹ |(y² − 4) sin x| = e^(C₁) ⟹ (y² − 4) sin x = ±e^(C₁)</code>。</li>
+<li><strong>统一收尾</strong>：<br />
+     令任意实常数 <code>C ∈ ℝ</code>（允许 <code>C = 0</code>）：当 <code>C = 0</code> 时，<code>(y² − 4) sin x = 0</code> 恰好完整包含了 <code>y = ±2</code> 与 <code>x = kπ</code> 全部常数解。<br />
+<strong>最终隐式通解</strong>：<code>(y² − 4) sin x = C</code>（其中 <code>C</code> 为任意实常数）。</li>
+<li><strong>评分标准</strong>：</li>
+<li>分离变量前（或收尾时）明确检验 <code>y = ±2</code> 与 <code>x = kπ</code> 常数解（2 分）；</li>
+<li>正确分离变量并完成两边对数积分（3 分）；</li>
+<li>正确保留积分常数并化简出隐式解 <code>(y² − 4) sin x = C</code>（3 分）。</li>
+<li><strong>易错提醒（针对你的历史记录）</strong>：</li>
+<li>你在定位卷 A1 曾漏写积分常数 C、漏检除式为零的常数解；在攻关卷第 2 题曾因嫌去绝对值麻烦而停笔。记住：<strong>两边都是 <code>ln|⋯|</code> 时，先合并成一个 <code>ln|A·B| = C₁</code>，再直接写成 <code>A·B = C</code>（用 <code>C = 0</code> 顺手收编常数解）是最干净的一步到位写法！</strong></li>
+</ul>
+<h4>第 2 题（10 分｜Bernoulli 方程 ＋ 奇次三角积分 <code>∫cos³x dx</code> ＋ 初值收尾）</h4>
+<ul>
+<li><strong>题目</strong>：y′ + (tan x) y = −y² cos²x,　y(0) = 1　(−π/2 &lt; x &lt; π/2)</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>识别类型与换元</strong>：<br />
+     右端含 <code>y²</code>（<code>n = 2</code>），属于 <strong>Bernoulli 方程</strong>。因初值 <code>y(0) = 1 ≠ 0</code>，在解的邻域内 <code>y ≠ 0</code>。<br />
+     两边同除以 <code>y²</code>：<code>y^(−2) y′ + (tan x) y^(−1) = −cos²x</code>。<br />
+     令 <code>v = y^(1−2) = y^(−1) = 1/y</code>，则 <code>v′ = −y^(−2) y′</code>。代入得关于 <code>v(x)</code> 的一阶线性微分方程：<br />
+<code>−v′ + (tan x) v = −cos²x ⟹ v′ − (tan x) v = cos²x</code>。</li>
+<li><strong>求积分因子</strong>：<br />
+<code>p(x) = −tan x</code>，积分因子为：<br />
+<code>μ(x) = exp(∫ −tan x dx) = exp(ln cos x) = cos x</code>（因 <code>−π/2 &lt; x &lt; π/2</code>，<code>cos x &gt; 0</code>）。</li>
+<li><strong>化为全导数并计算 <code>∫cos³x dx</code></strong>：<br />
+     方程两边同乘 <code>cos x</code>：<br />
+<code>cos x · v′ − (sin x) v = cos³x ⟹ d/dx (v cos x) = cos³x</code>。<br />
+     两边对 <code>x</code> 积分（拆奇次幂 <code>cos³x dx = (1 − sin²x) d(sin x)</code>）：<br />
+<code>v cos x = ∫ cos³x dx = ∫ (1 − sin²x) d(sin x) = sin x − (sin³x)/3 + C</code>。</li>
+<li><strong>代入初值条件 <code>y(0) = 1</code></strong>：<br />
+     由 <code>y(0) = 1</code> 得 <code>v(0) = 1 / y(0) = 1</code>。代入 <code>x = 0</code>：<br />
+<code>1 · cos 0 = sin 0 − 0 + C ⟹ C = 1</code>。<br />
+     故 <code>v cos x = 1 + sin x − (sin³x)/3 ⟹ v = [3 + 3 sin x − sin³x] / (3 cos x)</code>。</li>
+<li><strong>回代 <code>y = 1/v</code></strong>：<br />
+<strong>最终特解</strong>：<code>y(x) = cos x / [1 + sin x − (sin³x)/3]</code>（或写作 <code>y(x) = 3 cos x / (3 + 3 sin x − sin³x)</code>，定义域 <code>−π/2 &lt; x &lt; π/2</code>）。</li>
+<li><strong>评分标准</strong>：</li>
+<li>识别出 Bernoulli 方程并正确设 <code>v = 1/y</code> 化为线性方程 <code>v′ − (tan x)v = cos²x</code>（3 分）；</li>
+<li>求出积分因子 <code>μ(x) = cos x</code>（2 分）；</li>
+<li>正确拆项算出 <code>∫cos³x dx = sin x − (sin³x)/3 + C</code>（3 分）；</li>
+<li>代入初值算出 <code>C = 1</code> 并回代出 <code>y(x)</code>（2 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li><code>v = 1/y</code> 求导有负号 <code>v′ = −y′/y²</code>，代回时别漏变号（如果写成 <code>v′ + (tan x)v</code>，积分因子就会变成 <code>sec x</code>，右边变成 <code>cos x</code> 而算错）；</li>
+<li>积完 <code>v</code> 之后<strong>必须既代初值又倒数回代 <code>y = 1/v</code></strong>，千万别把 <code>v(x)</code> 当作最终答案交卷！</li>
+</ul>
+<h4>第 3 题（10 分｜纯准齐次方程：加权次数求尺度 ＋ 换元分离 ＋ 特殊解检验）</h4>
+<ul>
+<li><strong>题目</strong>：x³ y′ = 2x² y + y² − x⁴　(x &gt; 0)</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>识别类型与求权重比 <code>λ = β/α</code></strong>：<br />
+     方程同时含 <code>y¹</code>、<code>y²</code> 与不含 <code>y</code> 的 <code>−x⁴</code>，既不是可分离变量、也不是线性或 Bernoulli 方程。检验<strong>准齐次（Quasi-Homogeneous）</strong>权重：<br />
+     设 <code>x</code> 的权重为 <code>α</code>，<code>y</code> 的权重为 <code>β</code>，则导数 <code>y′ = dy/dx</code> 的权重为 <code>β − α</code>。<br />
+     逐项写出方程各项的权重：  <ul>
+<li>左端 <code>x³ y′</code>：权重为 <code>3α + (β − α) = 2α + β</code>；  </li>
+<li>右端第一项 <code>2x² y</code>：权重为 <code>2α + β</code>；  </li>
+<li>右端第二项 <code>y²</code>：权重为 <code>2β</code>；  </li>
+<li>右端第三项 <code>−x⁴</code>：权重为 <code>4α</code>。<br />
+ 令各项权重相等：<code>2α + β = 2β = 4α ⟹ β = 2α ⟹ λ = β/α = 2</code>。</li>
+</ul>
+</li>
+<li><strong>做准齐次标准换元 <code>y = x² u</code></strong>：<br />
+     令 <code>y = x² u</code>（即 <code>u = y / x²</code>），对 <code>x</code> 求导得 <code>y′ = 2x u + x² u′</code>。<br />
+     代入原方程：<br />
+<code>x³ (2x u + x² u′) = 2x² (x² u) + (x² u)² − x⁴</code><br />
+<code>2x⁴ u + x⁵ u′ = 2x⁴ u + x⁴ u² − x⁴</code><br />
+     两边消去 <code>2x⁴ u</code>，再同除以 <code>x⁴</code>（因 <code>x &gt; 0</code>），<code>x</code> 的幂次整行约去，化为可分离变量方程：<br />
+<code>x u′ = u² − 1</code>。</li>
+<li><strong>检查常数解并分离变量积分</strong>：  <ul>
+<li>先看 <code>u² − 1 = 0 ⟹ u = 1</code> 或 <code>u = −1</code>，对应原方程的两个特解 <strong><code>y = x²</code></strong> 与 <strong><code>y = −x²</code></strong>。  </li>
+<li>当 <code>u ≠ ±1</code> 时，分离变量：<br />
+<code>[1 / (u² − 1)] du = (1/x) dx ⟹ ½ ∫ [1/(u − 1) − 1/(u + 1)] du = ∫ (1/x) dx</code><br />
+<code>½ ln|(u − 1)/(u + 1)| = ln x + C₁</code></li>
+</ul>
+</li>
+<li><strong>消去分数系数并回代 <code>u = y/x²</code></strong>：<br />
+     两边同乘 2：<code>ln|(u − 1)/(u + 1)| = 2 ln x + 2C₁ = ln(x²) + C₂</code><br />
+     去对数并用任意常数 <code>C ∈ ℝ</code> 吸收正负号：<br />
+<code>(u − 1)/(u + 1) = C x²</code><br />
+     将 <code>u = y/x²</code> 代回，分子分母同乘 <code>x²</code>：<br />
+<code>(y − x²) / (y + x²) = C x²</code>（或显式解出 <code>y = x² (1 + C x²) / (1 − C x²)</code>）。  <ul>
+<li>检查特殊解：当 <code>C = 0</code> 时得 <code>y = x²</code>（已包含）；而 <strong><code>y = −x²</code></strong>（对应 <code>u = −1</code>，使分母 <code>y + x² = 0</code>）需单独补列（或把任意常数放到分子分母写作 <code>y − x² = C x² (y + x²)</code> 并补 <code>y = −x²</code>）。</li>
+</ul>
+</li>
+<li><strong>评分标准</strong>：</li>
+<li>正确列出各项权重并算出 <code>λ = β/α = 2</code>（3 分）；</li>
+<li>正确写出换元 <code>y = x² u</code> 与 <code>y′ = 2xu + x² u′</code> 并化简至 <code>x u′ = u² − 1</code>（3 分）；</li>
+<li>正确完成部分分式积分、消掉 <code>½</code> 并回代 <code>u = y/x²</code>（3 分）；</li>
+<li>讨论 <code>u = ±1</code>（指出特解 <code>y = ±x²</code>）（1 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li>你在今晚攻关卷第 1 题曾把准齐次代换误写反；永远记住：<strong>既然 <code>y</code> 的权重是 <code>x</code> 的 <code>λ</code> 倍，那么 <code>y</code> 就与 <code>x^λ</code> 同量纲，所以必然是 <code>y = x^λ u</code>（验算标准：代进去后 <code>x</code> 必须能整行约光，若约不光立刻回头查 <code>λ</code>）！</strong></li>
+</ul>
+<h4>第 4 题（9 分｜非恰当方程 ＋ 单变量积分因子 <code>μ(y)</code> ＋ 恰当方程求解）</h4>
+<ul>
+<li><strong>题目</strong>：(2x y³ + y) dx + (x² y² − x) dy = 0　(y ≠ 0)</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>检验是否恰当</strong>：<br />
+     记 <code>M(x, y) = 2x y³ + y</code>，<code>N(x, y) = x² y² − x</code>。<br />
+     计算交叉偏导数：<br />
+<code>∂M/∂y = 6x y² + 1</code>，<code>∂N/∂x = 2x y² − 1</code>。<br />
+     因 <code>∂M/∂y ≠ ∂N/∂x</code>，原方程不是恰当微分方程。</li>
+<li><strong>寻找单变量积分因子</strong>：<br />
+     计算差商：<br />
+<code>(∂N/∂x − ∂M/∂y) / M = (2x y² − 1 − 6x y² − 1) / (2x y³ + y) = −2(2x y² + 1) / [y(2x y² + 1)] = −2 / y</code>。<br />
+     该商<strong>仅依赖于 <code>y</code></strong>！故存在关于 <code>y</code> 的积分因子：<br />
+<code>μ(y) = exp(∫ (−2/y) dy) = exp(−2 ln|y|) = 1 / y²</code>。</li>
+<li><strong>同乘积分因子并求势函数（原函数）</strong>：<br />
+     原方程两边同乘 <code>1/y²</code>（<code>y ≠ 0</code>），化为恰当方程：<br />
+<code>(2x y + 1/y) dx + (x² − x/y²) dy = 0</code>。<br />
+     求势函数 <code>F(x, y)</code>：<br />
+<code>F(x, y) = ∫ (2x y + 1/y) dx + φ(y) = x² y + x/y + φ(y)</code>。<br />
+     对 <code>y</code> 求偏导并与新 <code>N</code> 比较：<br />
+<code>∂F/∂y = x² − x/y² + φ′(y) = x² − x/y² ⟹ φ′(y) = 0 ⟹ φ(y) = 0</code>。</li>
+<li><strong>写出通解</strong>：<br />
+<strong>隐式通解</strong>：<code>x² y + x/y = C</code>（或同乘 <code>y</code> 写作 <code>x² y² + x = C y, y ≠ 0</code>）。</li>
+<li><strong>评分标准</strong>：</li>
+<li>算出 <code>∂M/∂y</code> 与 <code>∂N/∂x</code> 并判别非恰当（2 分）；</li>
+<li>算出 <code>(∂N/∂x − ∂M/∂y)/M = −2/y</code> 并求出积分因子 <code>μ(y) = 1/y²</code>（4 分）；</li>
+<li>求出势函数并写出隐式通解 <code>x² y + x/y = C</code>（3 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li>找 <code>μ(y)</code> 时，公式分子符号是 <code>(∂N/∂x − ∂M/∂y) / M</code>（或者记：乘上 <code>μ(y)</code> 后要求 <code>∂(μM)/∂y = ∂(μN)/∂x ⟹ M μ′ + μ M_y = μ N_x ⟹ μ′/μ = (N_x − M_y)/M</code>，花 5 秒现推绝不会背反符号！）。</li>
+</ul>
+<h4>第 5 题（9 分｜Riccati 方程：观察法找幂函数特解 ＋ 化一阶线性求解）</h4>
+<ul>
+<li><strong>题目</strong>：x² y′ + x y + x² y² = 4　(x &gt; 0)</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>化为标准形式并识别类型</strong>：<br />
+     两边同除以 <code>x²</code>（<code>x &gt; 0</code>）：<br />
+<code>y′ + (1/x) y + y² = 4 / x²</code>。<br />
+     这是 <strong>Riccati 方程</strong>，需先用观察法找出一个特解 <code>y₁(x)</code>。</li>
+<li><strong>观察法试幂函数特解 <code>y₁ = c x^n</code></strong>：<br />
+     观察各项幂次：当 <code>n = −1</code>（即 <code>y₁ = c / x</code>）时，<code>y₁′ = −c / x²</code>，<code>(1/x)y₁ = c / x²</code>，<code>y₁² = c² / x²</code>，全部与右端 <code>4 / x²</code> 同为 <code>x^(−2)</code> 次！<br />
+     将 <code>y₁ = c / x</code> 代入方程：<br />
+<code>−c/x² + c/x² + c²/x² = 4/x² ⟹ c² = 4 ⟹ c = ±2</code>。<br />
+     取特解 <strong><code>y₁ = 2 / x</code></strong>。</li>
+<li><strong>做 Riccati 标准换元 <code>y = 2/x + 1/v</code></strong>：<br />
+     令 <code>y = 2/x + 1/v</code>，则 <code>y′ = −2/x² − v′/v²</code>。代入标准形式：<br />
+<code>(−2/x² − v′/v²) + (1/x)(2/x + 1/v) + (4/x² + 4/(xv) + 1/v²) = 4/x²</code><br />
+     整理消去 <code>4/x²</code> 与 <code>±2/x²</code>：<br />
+<code>−v′/v² + 5/(x v) + 1/v² = 0</code><br />
+     两边同乘 <code>−v²</code>，得到关于 <code>v(x)</code> 的一阶线性微分方程：<br />
+<code>v′ − (5/x) v = 1</code>。</li>
+<li><strong>求解一阶线性方程并回代</strong>：<br />
+     积分因子 <code>μ(x) = exp(∫ (−5/x) dx) = x^(−5)</code>。<br />
+     两边同乘 <code>x^(−5)</code>：<br />
+<code>d/dx (x^(−5) v) = x^(−5) ⟹ x^(−5) v = −1/(4x⁴) + C ⟹ v = C x⁵ − x/4</code>。<br />
+     代回 <code>y = 2/x + 1/v</code>：<br />
+<strong>通解</strong>：<code>y(x) = 2/x + 1 / (C x⁵ − x/4)</code>（其中 <code>C</code> 为任意常数；当 <code>C = 0</code> 时即得另一特解 <code>y = −2/x</code>）。<br />
+<strong>丢解检查（必补一句）</strong>：换元 <code>y = y₁ + 1/v</code> 把<strong>基准特解本身</strong>排除在外（它对应 <code>v → ∞</code>，任何有限常数 <code>C</code> 都取不到）。因此完整解集 ＝ 上式含 <code>C</code> 的一族 <strong>＋ 特解 <code>y = 2/x</code></strong>（<code>y = −2/x</code> 已含在 <code>C = 0</code> 里）。</li>
+<li><strong>评分标准</strong>：</li>
+<li>化标准形并通过幂次平衡试出特解 <code>y₁ = 2/x</code>（或 <code>−2/x</code>）（3 分）；</li>
+<li>设 <code>y = y₁ + 1/v</code> 正确化简出一阶线性方程 <code>v′ − (5/x)v = 1</code>（3 分）；</li>
+<li>解出 <code>v</code> 并代回写出最终通解（3 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li>展开 <code>(2/x + 1/v)²</code> 时，交叉项是 <code>2 · (2/x) · (1/v) = 4/(xv)</code>，再加上一次项 <code>(1/x)y</code> 贡献的 <code>1/(xv)</code>，合起来是 <strong><code>5/(xv)</code></strong>，千万别漏加一次项里的 <code>1/(xv)</code>！（刚才程序符号验算专门校验了这一步。）</li>
+</ul>
+<h4>第 6 题（7 分｜Clairaut 方程：通解直线族 ＋ 奇解包络线）</h4>
+<ul>
+<li><strong>题目</strong>：y = x y′ − (y′)³ / 3　(x ≥ 0)</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>识别类型并引入参数 <code>p = y′</code></strong>：<br />
+     方程形如 <code>y = x y′ + φ(y′)</code>，其中 <code>φ(p) = −p³/3</code>，属于 <strong>Clairaut 方程</strong>。<br />
+     令 <code>p = y′ = dy/dx</code>，原方程写为：<br />
+<code>y = x p − p³ / 3</code>。</li>
+<li><strong>两边对 <code>x</code> 求导并因式分解</strong>：<br />
+     对 <code>x</code> 求导（注意左边 <code>dy/dx = p</code>，右边对 <code>x p</code> 用乘积法则）：<br />
+<code>p = p + x p′ − p² p′</code><br />
+     两边消去 <code>p</code> 并提取 <code>p′</code>：<br />
+<code>p′ (x − p²) = 0</code>。</li>
+<li><strong>分两支求解</strong>：  <ul>
+<li><strong>第一支（通解直线族）</strong>：令 <code>p′ = 0 ⟹ p = C</code>（<code>C</code> 为任意常数）。<br />
+   将 <code>p = C</code> <strong>直接代回原方程</strong>，得<strong>通解</strong>：<br />
+<code>y = C x − C³ / 3</code>（<code>C ∈ ℝ</code>）。  </li>
+<li><strong>第二支（奇解包络线）</strong>：令 <code>x − p² = 0 ⟹ x = p²</code>。<br />
+   将 <code>x = p²</code> 代入 <code>y = x p − p³/3</code>，得奇解的参数形式：<br />
+<code>x = p², y = p³ − p³/3 = (2/3) p³</code>。<br />
+   消去参数 <code>p</code>（由 <code>p = ±√x, x ≥ 0</code>）：<br />
+<strong>奇解</strong>：<code>y = ±(2/3) x^(3/2)</code>（或写作等价的隐式平方形式 <code>9 y² = 4 x³，x ≥ 0</code>）。</li>
+</ul>
+</li>
+<li><strong>评分标准</strong>：</li>
+<li>令 <code>p = y′</code> 并对 <code>x</code> 求导得出 <code>p′(x − p²) = 0</code>（2 分）；</li>
+<li>由 <code>p = C</code> 写出通解 <code>y = Cx − C³/3</code>（2 分）；</li>
+<li>由 <code>x = p²</code> 消去参数 <code>p</code> 求出奇解 <code>y = ±(2/3) x^(3/2)</code> 或 <code>9y² = 4x³</code>（3 分）。</li>
+<li><strong>易错提醒（对应今晚攻关卷第 4 题）</strong>：</li>
+<li>通解千万别写成 <code>y = C₁ x + C₂</code>！一阶微分方程的通解只能有 <strong>1 个</strong>独立任意常数 <code>C</code>，因为 <code>p = C</code> 是直接代回原方程 <code>y = xp − p³/3</code>，截距必须锁死为 <code>−C³/3</code>。</li>
+</ul>
+<h3>第三部分：高阶与线性微分方程求解（共 35 分）</h3>
+<h4>第 7 题（9 分｜高阶降阶法：不显含 <code>x</code> 的二阶方程 ＋ 初值问题）</h4>
+<ul>
+<li><strong>题目</strong>：y y″ − 2(y′)² = 0,　y(0) = 1,　y′(0) = 1　(y &gt; 0)</li>
+<li><strong>完整详解（提供两种等价解法，考场任选一种即可满分）</strong>：</li>
+<li><strong>方法一（标准降阶法：令 <code>p = y′, y″ = p dp/dy</code>）</strong>：  <ol>
+<li>因方程不显含自变量 <code>x</code>，令 <code>y′ = p(y)</code>，则 <code>y″ = (dp/dy)(dy/dx) = p (dp/dy)</code>。  </li>
+<li>代入原方程：<code>y p (dp/dy) − 2p² = 0</code>。  </li>
+<li>因 <code>p(0) = y′(0) = 1 ≠ 0</code>，在初值邻域内 <code>p ≠ 0</code>，同除以 <code>y p</code> 并分离变量：<br />
+<code>(1/p) dp = (2/y) dy ⟹ ln|p| = 2 ln y + C₁ ⟹ p = C₁ y²</code>。  </li>
+<li>先代入初值 <code>x = 0</code> 时 <code>y(0) = 1, p(0) = y′(0) = 1</code>：<br />
+<code>1 = C₁ · 1² ⟹ C₁ = 1</code>。<br />
+   故一阶方程为 <code>y′ = dy/dx = y²</code>。  </li>
+<li>再次分离变量积分：<br />
+<code>y^(−2) dy = dx ⟹ −1/y = x + C₂</code>。<br />
+   代入 <code>y(0) = 1</code> 得 <code>−1 = 0 + C₂ ⟹ C₂ = −1</code>。<br />
+   解得 <code>−1/y = x − 1 ⟹</code> <strong>最终特解：<code>y(x) = 1 / (1 − x)</code></strong>（定义域 <code>x &lt; 1</code>）。</li>
+</ol>
+</li>
+<li><strong>方法二（凑商导数秒杀法）</strong>：  <ol>
+<li>原方程两边同除以 <code>y³</code>（<code>y &gt; 0</code>）：<br />
+<code>[y y″ − 2(y′)²] / y³ = 0 ⟹ d/dx (y′ / y²) = 0</code>（或写成 <code>(1/y)″ = 0</code>！因为 <code>(1/y)′ = −y′/y²</code>，<code>(1/y)″ = −(y″ y² − 2y(y′)²)/y⁴ = 0</code>）。  </li>
+<li>直接积分：<code>y′ / y² = C₁</code>，以下同方法一第 4、5 步，立得 <strong><code>y(x) = 1 / (1 − x)</code></strong>。</li>
+</ol>
+</li>
+<li><strong>评分标准</strong>：</li>
+<li>正确写出 <code>y″ = p dp/dy</code> 换元（或除以 <code>y³</code> 凑出 <code>(y′/y²)′ = 0</code>）（3 分）；</li>
+<li>第一次积分并结合初值求出 <code>y′ = y²</code>（3 分）；</li>
+<li>第二次积分并求出特解 <code>y(x) = 1/(1 − x)</code>（3 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li>如果用方法一，千万别把 <code>y″</code> 写成 <code>dp/dx</code>（那样又回到含 <code>x</code> 和 <code>y</code> 三个变量的僵局），必须是 <strong><code>y″ = p · dp/dy</code></strong>！而且第一次积完 <code>p = C₁ y²</code> 后<strong>立刻代初值算 <code>C₁</code></strong>，能省掉带着字母常数做第二次积分的麻烦。</li>
+</ul>
+<h4>第 8 题（8 分｜四阶常系数齐次：零根 ＋ 三重实根解组完整性）</h4>
+<ul>
+<li><strong>题目</strong>：y⁽⁴⁾ − 6y‴ + 12y″ − 8y′ = 0</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>写出特征方程</strong>：<br />
+<code>p(λ) = λ⁴ − 6λ³ + 12λ² − 8λ = 0</code>。</li>
+<li><strong>因式分解求全部特征根与重数</strong>：<br />
+     提取公因式 <code>λ</code>，括号内恰好是 <code>(λ − 2)³</code> 的完全立方展开：<br />
+<code>λ (λ³ − 6λ² + 12λ − 8) = λ (λ − 2)³ = 0</code>。<br />
+     故特征根为：  <ul>
+<li><code>λ₁ = 0</code>（<strong>单实根</strong>，<code>m₁ = 1</code>），贡献 1 个解：<code>e^(0x) = 1</code>；  </li>
+<li><code>λ₂ = λ₃ = λ₄ = 2</code>（<strong>三重实根</strong>，<code>m₂ = 3</code>），贡献 3 个线性无关解：<code>e^(2x), x e^(2x), x² e^(2x)</code>。</li>
+</ul>
+</li>
+<li><strong>个数自检与写出通解</strong>：<br />
+     基本解组共 <code>1 + 3 = 4</code> 个线性无关解，等于方程阶数 <code>n = 4</code> ✓。<br />
+<strong>通解</strong>：<code>y(x) = C₁ + (C₂ + C₃ x + C₄ x²) e^(2x)</code>（其中 <code>C₁, C₂, C₃, C₄</code> 为任意常数）。</li>
+<li><strong>评分标准</strong>：</li>
+<li>写出特征方程并正确分解为 <code>λ(λ − 2)³ = 0</code>（3 分）；</li>
+<li>写出 <code>λ = 0</code> 对应的常数项 <code>C₁</code>（1 分）；</li>
+<li>完整写出三重根 <code>λ = 2</code> 的三项 <code>(C₂ + C₃ x + C₄ x²) e^(2x)</code>（4 分；若漏掉 <code>x² e^(2x)</code> 扣 3 分）。</li>
+<li><strong>易错提醒（对应你的缺口 1）</strong>：</li>
+<li>看到三重根 <code>m = 3</code>，幂次 <code>x^j</code> 从 <code>j = 0</code> 到 <code>m − 1 = 2</code>，必须一路写到 <strong><code>x² e^(2x)</code></strong>！写完通解后务必手指点一下 <code>C₁, C₂, C₃, C₄</code> 四个独立项是不是真的两两线性无关。</li>
+</ul>
+<h4>第 9 题（10 分｜常系数非齐次：二重特征根共振 <code>s = 2</code> ＋ 初值收尾）</h4>
+<ul>
+<li><strong>题目</strong>：y″ − 2y′ + y = 2 + 6 e^x,　y(0) = 1,　y′(0) = 0</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>求对应齐次方程的通解</strong>：<br />
+     特征方程：<code>λ² − 2λ + 1 = (λ − 1)² = 0 ⟹ λ = 1</code> 为<strong>二重特征根（重数 <code>m = 2</code>）</strong>。<br />
+     齐次通解：<code>y_h(x) = (C₁ + C₂ x) e^x</code>。</li>
+<li><strong>按叠加原理分拆右端并设定特解形式（关键：判断共振重数 <code>s</code>）</strong>：<br />
+     右端 <code>f(x) = f₁(x) + f₂(x)</code>，其中：  <ul>
+<li>第一部分 <code>f₁(x) = 2 = 2 e^(0x)</code>：指数 <code>α₁ = 0</code> <strong>不是</strong>特征根（<code>s₁ = 0</code>），设 <code>y_{p1} = A</code>。代入 <code>y″ − 2y′ + y = 2</code> 立得 <code>A = 2</code>。  </li>
+<li>第二部分 <code>f₂(x) = 6 e^x</code>：指数 <code>α₂ = 1</code> <strong>恰好是特征方程的二重根（<code>s₂ = 2</code>）</strong>！<br />
+<strong>为什么必须乘 <code>x²</code>？</strong> 因为 <code>e^x</code> 和 <code>x e^x</code> 都已经是齐次解（代入左边都会变成 0），所以特解必须乘 <code>x²</code>，设为：<br />
+<code>y_{p2} = B x² e^x</code>。</li>
+</ul>
+</li>
+<li><strong>代入求待定系数 <code>B</code></strong>：<br />
+     对 <code>y_{p2} = B x² e^x</code> 求导：<br />
+<code>y_{p2}′ = B (x² + 2x) e^x</code>，<br />
+<code>y_{p2}″ = B (x² + 4x + 2) e^x</code>。<br />
+     代入 <code>y″ − 2y′ + y = 6 e^x</code>：<br />
+<code>B [(x² + 4x + 2) − 2(x² + 2x) + x²] e^x = 2B e^x = 6 e^x ⟹ B = 3</code>。<br />
+     故 <code>y_{p2} = 3 x² e^x</code>，非齐次方程通解为：<br />
+<code>y(x) = 2 + (C₁ + C₂ x + 3x²) e^x</code>。</li>
+<li><strong>代入初值条件 <code>y(0) = 1, y′(0) = 0</code></strong>：  <ul>
+<li>代入 <code>y(0) = 1</code>：<code>2 + C₁ · 1 = 1 ⟹ C₁ = −1</code>。  </li>
+<li>求导 <code>y′(x) = (C₂ + 6x) e^x + (C₁ + C₂ x + 3x²) e^x</code>。<br />
+   代入 <code>x = 0, C₁ = −1, y′(0) = 0</code>：<br />
+<code>C₂ + C₁ = 0 ⟹ C₂ = −C₁ = 1</code>。<br />
+<strong>最终初值问题特解</strong>：<code>y(x) = 2 + (3x² + x − 1) e^x</code>。</li>
+</ul>
+</li>
+<li><strong>评分标准</strong>：</li>
+<li>求对齐次通解 <code>y_h = (C₁ + C₂ x) e^x</code>（2 分）；</li>
+<li>求出 <code>y_{p1} = 2</code>（1 分）；</li>
+<li>准确判断二重共振 <code>s = 2</code>、设出 <code>y_{p2} = B x² e^x</code> 并解出 <code>B = 3</code>（4 分）；</li>
+<li>在合并后的完整通解上代入两个初值解出 <code>C₁ = −1, C₂ = 1</code>（3 分）。</li>
+<li><strong>易错提醒（对应你的缺口 5）</strong>：</li>
+<li>千万别一看到共振就条件反射只乘一个 <code>x</code>！乘 <code>x^s</code> 的幂次 <code>s</code> 等于 <code>α</code> 在特征方程里的<strong>重数</strong>：单根重合乘 <code>x</code>，<strong>二重根重合必须乘 <code>x²</code></strong>！</li>
+<li>初值条件 <code>y(0)=1, y′(0)=0</code> 必须在<strong>加上特解 <code>y_p</code> 之后的完整通解</strong>上代入，绝不能只代进齐次解 <code>y_h</code> 里算 <code>C₁, C₂</code>！</li>
+</ul>
+<h4>第 10 题（8 分｜常系数非齐次：共轭复根 ＋ 三角函数待定系数法）</h4>
+<ul>
+<li><strong>题目</strong>：y″ + 2y′ + 5y = 10 cos x</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>求齐次通解</strong>：<br />
+     特征方程：<code>λ² + 2λ + 5 = (λ + 1)² + 4 = 0 ⟹ λ = −1 ± 2i</code>（共轭复根 <code>α = −1, β = 2</code>）。<br />
+     齐次通解：<code>y_h(x) = e^(−x) (C₁ cos 2x + C₂ sin 2x)</code>。</li>
+<li><strong>设定非齐次特解 <code>y_p</code></strong>：<br />
+     右端 <code>f(x) = 10 cos x</code> 对应特征数 <code>±i</code>，不是特征方程的根（<code>s = 0</code>）。<br />
+     设特解为正余弦完整组合：<br />
+<code>y_p(x) = A cos x + B sin x</code>。</li>
+<li><strong>求导代入求 <code>A, B</code></strong>：<br />
+<code>y_p′ = −A sin x + B cos x</code>，<code>y_p″ = −A cos x − B sin x</code>。<br />
+     代入原方程：<br />
+<code>(−A cos x − B sin x) + 2(−A sin x + B cos x) + 5(A cos x + B sin x) = 10 cos x</code><br />
+     合并同类项：<br />
+<code>(4A + 2B) cos x + (−2A + 4B) sin x = 10 cos x</code>。<br />
+     比较系数得线性方程组：<br />
+<code>4A + 2B = 10</code> 且 <code>−2A + 4B = 0 ⟹ A = 2B ⟹ 10B = 10 ⟹ B = 1, A = 2</code>。<br />
+     故 <code>y_p(x) = 2 cos x + sin x</code>。</li>
+<li><strong>写出通解</strong>：<br />
+<strong>通解</strong>：<code>y(x) = e^(−x) (C₁ cos 2x + C₂ sin 2x) + 2 cos x + sin x</code>。</li>
+<li><strong>评分标准</strong>：</li>
+<li>解出特征根 <code>−1 ± 2i</code> 并写出齐次通解 <code>e^(−x)(C₁ cos 2x + C₂ sin 2x)</code>（3 分）；</li>
+<li>设出 <code>y_p = A cos x + B sin x</code>（2 分）；</li>
+<li>正确解出 <code>A = 2, B = 1</code> 并写出完整通解（3 分）。</li>
+<li><strong>易错提醒</strong>：</li>
+<li>右端哪怕只有 <code>cos x</code> 没有 <code>sin x</code>，因为方程里有一阶导数 <code>2y′</code>，求导后会产生 <code>sin x</code>，所以设 <code>y_p</code> 时<strong>必须把 <code>A cos x + B sin x</code> 成对写全</strong>，绝不能只设 <code>A cos x</code>！</li>
+</ul>
+<h3>附加部分：常系数线性方程组与矩阵指数（选做，共 20 分）</h3>
+<h4>附加题 B1（10 分｜Lecture 14–15 常系数齐次线性系统初值问题）</h4>
+<ul>
+<li><strong>题目</strong>：<code>Y′ = [[1, 2], [2, 1]] Y</code>，<code>Y(0) = [3, −1]^T</code></li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>求特征值</strong>：<code>det(A − λI) = (1 − λ)² − 4 = λ² − 2λ − 3 = (λ − 3)(λ + 1) = 0 ⟹ λ₁ = 3, λ₂ = −1</code>。</li>
+<li><strong>求特征向量</strong>：  <ul>
+<li>对 <code>λ₁ = 3</code>：<code>[[-2, 2], [2, -2]] v₁ = 0 ⟹ v₁ = [1, 1]^T</code>；  </li>
+<li>对 <code>λ₂ = −1</code>：<code>[[2, 2], [2, 2]] v₂ = 0 ⟹ v₂ = [1, −1]^T</code>。</li>
+</ul>
+</li>
+<li><strong>写出通解并代初值</strong>：<br />
+<code>Y(x) = C₁ e^(3x) [1, 1]^T + C₂ e^(−x) [1, −1]^T</code>。<br />
+     代入 <code>x = 0</code>：<code>C₁ + C₂ = 3, C₁ − C₂ = −1 ⟹ C₁ = 1, C₂ = 2</code>。<br />
+<strong>最终特解</strong>：<code>y₁(x) = e^(3x) + 2e^(−x)</code>，<code>y₂(x) = e^(3x) − 2e^(−x)</code>。</li>
+</ul>
+<h4>附加题 B2（10 分｜Lecture 16–17 矩阵指数 Cayley–Hamilton 法）</h4>
+<ul>
+<li><strong>题目</strong>：求 <code>A = [[0, 1], [−1, 2]]</code> 的矩阵指数 <code>e^(Ax)</code> 及 <code>Y′ = A Y</code> 的通解。</li>
+<li><strong>完整详解</strong>：</li>
+<li><strong>特征多项式</strong>：<code>p(λ) = det(A − λI) = λ(λ − 2) + 1 = (λ − 1)² = 0 ⟹ λ = 1</code>（二重特征根）。</li>
+<li><strong>用 Cayley–Hamilton 定理展开 <code>e^(Ax)</code></strong>：<br />
+     对 2 阶矩阵，余式为 1 次多项式：<code>e^(λx) = q(λ)(λ − 1)² + α₀(x) + α₁(x)(λ − 1)</code>（或设为 <code>β₀(x) + β₁(x)λ</code>）。<br />
+     将二重根 <code>λ = 1</code> 代入原式及对 <code>λ</code> 的一阶导数式：  <ul>
+<li>代入 <code>λ = 1</code>：<code>e^x = α₀(x)</code>；  </li>
+<li>对 <code>λ</code> 求导后代入 <code>λ = 1</code>：<code>x e^x = α₁(x)</code>。<br />
+ 故由 Cayley–Hamilton 定理：<br />
+<code>e^(Ax) = e^x I + x e^x (A − I) = e^x ([[1, 0], [0, 1]] + x [[-1, 1], [-1, 1]]) = e^x [[1 − x, x], [−x, 1 + x]]</code>。</li>
+</ul>
+</li>
+<li><strong>写出方程组通解</strong>：<br />
+<code>Y(x) = e^(Ax) C = e^x [C₁(1 − x) + C₂ x, −C₁ x + C₂(1 + x)]^T</code>。</li>
+</ul>
+<h2>三、 交卷前 10 分钟强制自查清单（5 步可执行动作）</h2>
+<ol>
+<li><strong>查除式丢解（第 1、3、7 题）</strong>：凡是把某个含 <code>y</code> 或 <code>u</code> 的因式除到分母上的步骤，回头看一眼令那个因式 <code>= 0</code> 是否给出常数解/特解，通解里的 <code>C</code> 能不能覆盖它？不能覆盖就单独补一行。</li>
+<li><strong>查换元是否代回原变量（第 2、3、5 题）</strong>：最后一行等式里的未知函数是不是题目原来的 <code>y(x)</code>？如果还留着中间变量 <code>u</code> 或 <code>v</code>，立刻代回！</li>
+<li><strong>查重根项数与复根指数因子（第 8、9、10 题）</strong>：n 阶常系数齐次解数够 n 个独立项了吗？m 重根写到 <code>x^(m−1)</code> 了吗？复根 <code>α ± iβ</code> 外面的 <code>e^(αx)</code> 写了没有？</li>
+<li><strong>查非齐次共振重数与初值代入时机（第 9 题）</strong>：右端 <code>e^(αx)</code> 若与特征根重合，特征根是几重就乘 <code>x</code> 的几次方；初值条件是不是代在 <code>y_h + y_p</code> 合体之后的总通解上？</li>
+<li><strong>抽查代回验算（全体题目）</strong>：挑分值最高的 3 道题，把算出来的 <code>y</code> 求导代回原方程左边（或代入 <code>x = 0</code> 核对初值 <code>y(0), y′(0)</code>），确认左右恒等再停笔。</li>
+</ol>
+<h2>四、 审校修订说明（2026-10-14，学习助手）</h2>
+<p>本卷由网页版出卷助手生成，审校时修订以下<strong>非解法性</strong>条目；<strong>题目文本、考点设计、评分点与各题答案的解式均未改动</strong>。</p>
+<ol>
+<li><strong>卷首说明</strong>：原文称本卷「不含任何方法暗示」并让人交卷后「打开配套的《答案详解与评分标准》」——实际答案就在本文件折叠区内，并没有另一份配套文件；已改为如实说明，并标注三处含通用考场策略的区块（时间分配表、两处作答要求），供做纯 H0 盲测时先跳过。</li>
+<li><strong>时间分配表</strong>：第二阶段合计 37 → <strong>33 分</strong>；第三阶段合计 51 → <strong>55 分</strong>（与各题分值之和一致）。第三阶段时间盒 45 → <strong>53 min</strong>、第四阶段 15 → <strong>7 min</strong>（10＋30＋53＋7＝100 min）；附加题明确标注不计入 100 min。</li>
+<li><strong>九大知识块分值表</strong>：⑥ 11 → <strong>10 分</strong>、⑦ 10 → <strong>9 分</strong>、⑧ 17 → <strong>15 分</strong>、⑨ 10 → <strong>14 分</strong>（这四块合计 48 分不变，全表总额仍为 100 分）。</li>
+<li><strong>答案区内容</strong>：修正第 6 题奇解消参后的等价隐式方程（正确的是 <code>9y² = 4x³</code>，原写 <code>27y² = 4x³</code>，出现两处）；补写第 5 题 Riccati 换元丢失的基准特解说明；第 1 题的缺口标签由「缺口 2 &amp; 缺口 6」改为「缺口 2（＋缺口 6 同款收尾毛病）」；I-2 的易错提醒把「两行成比例时令 <code>z = x + y</code>」改为一般写法 <code>z = a₂x + b₂y</code>。</li>
+<li><strong>待补（未改动题目）</strong>：知识块 ⑥ 名为「Clairaut / Lagrange / 关于 x、y 可解」，但卷面上只有 Clairaut（第 6 题）与「关于 x 可解」（I-3）；标准 Lagrange 型 <code>y = x f(p) + g(p)</code>（f(p) ≠ p）与一般「关于 y 可解」<code>y = f(x, p)</code> 未有独立题。若要严格覆盖 L5–L6，可另出一小问。</li>
+</ol>
+</div>
+<p style="font-size: 9.5pt; color: #555; border-top: 1px solid #bbb; padding-top: 6px;">本卷由网页版出卷助手于 2026-10-14 生成；同日由学习助手审校修订（修订明细在卷末折叠区「四、审校修订说明」内，需点开密封区才可见）。归档来源文件名：<code>de-midterm-mock-20261014.html</code>。</p>
+</body>
+</html>
