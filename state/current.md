@@ -4,7 +4,7 @@
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
 > 生成于 **2026-10-14**（中国时间；系统英国日期 2026-10-14）。
-> 事实源指纹：`attempts.jsonl` 49 条（sha256 `a588116da077…`）＋ `corrections.jsonl` 55 条。
+> 事实源指纹：`attempts.jsonl` 50 条（sha256 `29a537c99ab6…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
 ## ① 现在到哪了（按课程，全部由程序重算）
@@ -106,10 +106,10 @@
 
 | 事件 | 日期 | 题目 | 模式 | 提示 | 结果 | 曝光 | 目标 |
 |---|---|---|---|---|---|---|---|
+| `attempt-51` | 2026-10-14 | `de-gap-attack-01` | practice | H3 | partial | partial@before_attempt | `ode.homogeneous` |
 | `attempt-49` | 2026-10-13 | `ode-l15-hw-01` | practice | H3 | correct | partial@before_attempt | `ode.sys.eigen-basic` |
 | `attempt-48` | 2026-10-12 | `ode-l15-hw-01` | practice | H3 | correct | partial@before_attempt | `ode.sys.eigen-basic` |
 | `attempt-47` | 2026-10-12 | `tm-h5-01` | practice | H3 | correct | partial@before_attempt | `tm.t5.potential-analysis` |
-| `attempt-46` | 2026-10-09 | `mp1-ch4-hw-01` | practice | H2 | partial | partial@before_attempt | `mp.residue-definition` |
 
 > 「有效证据」= 能支持或推翻「独立掌握」的作答；
 > **受助/曝光的作答也算证据**——它证明的是「当时需要帮助」，不是「已经会了」。
@@ -126,10 +126,11 @@
 
 ## ③ 帮助史与曝光史（跨窗口保留，不因换窗口丢失）
 
-共 **49** 条作答事件；其中 **33** 条记录了提示或答案曝光。
+共 **50** 条作答事件；其中 **34** 条记录了提示或答案曝光。
 
 | 事件 | 提示 | 曝光 | 时机 | 说明（为何不计独立通过） |
 |---|---|---|---|---|
+| `attempt-51` | H3 | partial | before_attempt | 待核验 |
 | `attempt-49` | H3 | partial | before_attempt | 提示>0 |
 | `attempt-47` | H3 | partial | before_attempt | 待核验 |
 | `attempt-48` | H3 | partial | before_attempt | 提示>0 |
@@ -228,10 +229,10 @@
 | 覆盖分布 | {"已独立通过·待延迟复测": 11, "已作答·需补练": 30, "未安排（无题目）": 8, "已安排·未作答": 18, "已作答·开卷/受助通过": 1} |
 | 稳定证据（=迁移通过） | 0 |
 | 未解决困难 | 2 |
-| 作答事件 | 49 条 |
+| 作答事件 | 50 条 |
 | 订正 | 55 条 |
-| 题目 | 48 道 |
-| 实测时长 / 估计时长 | 7.0 min / 1163.0 min（**单列，不混算**） |
+| 题目 | 49 道 |
+| 实测时长 / 估计时长 | 7.0 min / 1253.0 min（**单列，不混算**） |
 
 > 本表是 STATUS 块里 `mastered` / `open_hurdles` / `attempts` 等字段的来源；
 > **不允许**在其它文件再手写一份计数（避免「两处各写一份、对不上」）。

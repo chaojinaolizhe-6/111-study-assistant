@@ -2,7 +2,7 @@
 
 > **本文件由 `python -B tools/coverage.py` 生成，勿手工编辑**（派生视图）。
 > 事实源：`learning/attempts.jsonl`（不改不删）+ `learning/corrections.jsonl`（订正）+ `learning/goals.yaml`（目标）+ 题目 frontmatter。
-> 生成日期：2026-10-14 ｜ 事件 49 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `a588116da077cc60…`
+> 生成日期：2026-10-14 ｜ 事件 50 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `29a537c99ab69a81…`
 > 手写意图（今天做什么、为什么暂缓）不在这里：见 `plan/today-<日期>.md`、`plan/gaps.md`、`.tutor/config/status-narrative.yml`。
 
 ## ① 能力目标覆盖（含**尚未出题**的考点）
@@ -112,12 +112,12 @@
 | `mp.residue-computation` | 已独立通过·待延迟复测 | 曾独立完成 | 3 |
 | `mp.residue-definition` | 已作答·需补练 | 需支持 | 3 |
 | `mp.taylor-expansion` | 已独立通过·待延迟复测 | 曾独立完成 | 3 |
-| `ode.clairaut` | 已作答·需补练 | 需支持 | 1 |
+| `ode.clairaut` | 已作答·需补练 | 需支持 | 2 |
 | `ode.const-coeff-homogeneous` | 已作答·需补练 | 需支持 | 1 |
 | `ode.exact-integ factor` | 已作答·开卷/受助通过 | 需支持 | 1 |
 | `ode.first-order-linear` | 已作答·需补练 | 需支持 | 1 |
-| `ode.homogeneous` | 已作答·需补练 | 需支持 | 1 |
-| `ode.order-reduction` | 已作答·需补练 | 需支持 | 1 |
+| `ode.homogeneous` | 已作答·需补练 | 需支持 | 2 |
+| `ode.order-reduction` | 已作答·需补练 | 需支持 | 2 |
 | `ode.riccati` | 已作答·需补练 | 需支持 | 1 |
 | `ode.separable` | 已作答·需补练 | 需支持 | 1 |
 | `ode.sys.cayley-hamilton` | 已安排·未作答 | 未测 | 1 |
@@ -196,13 +196,13 @@
 | `mp.residue-computation` | 进行中 | 无困难记录 | 独立通过 1 次（2026-10-01） | ❌ |
 | `mp.residue-definition` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `mp.taylor-expansion` | 进行中 | ❌ 未解决 hurdle-2 | 独立通过 1 次（2026-10-03） | ❌ |
-| `ode.clairaut` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `ode.clairaut` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.const-coeff-homogeneous` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.exact-integ factor` | 进行中 | 无困难记录 | 仅开卷/受助通过（1 次） | ❌ |
 | `ode.first-order-linear` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
-| `ode.homogeneous` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `ode.homogeneous` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.integrating-factor` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `ode.order-reduction` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `ode.order-reduction` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.riccati` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.separable` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.sys.case-complex` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
@@ -301,10 +301,13 @@
 | `mp.taylor-expansion` | `attempt-10` | 2026-09-28 | 示例学习；非闭卷；提示H4；待核验；曝光=full@before_attempt |
 | `mp.taylor-expansion` | `attempt-15` | 2026-09-28 | 待核验；曝光=full@before_attempt |
 | `ode.clairaut` | `attempt-50` | 2026-10-08 | 非闭卷；结果=incorrect；待核验 |
+| `ode.clairaut` | `attempt-51` | 2026-10-14 | 非闭卷；结果=partial；提示H4；待核验；曝光=full@before_attempt |
 | `ode.const-coeff-homogeneous` | `attempt-50` | 2026-10-08 | 非闭卷；结果=partial；待核验 |
 | `ode.first-order-linear` | `attempt-50` | 2026-10-08 | 非闭卷；结果=partial；待核验 |
 | `ode.homogeneous` | `attempt-50` | 2026-10-08 | 非闭卷；结果=incorrect；待核验 |
+| `ode.homogeneous` | `attempt-51` | 2026-10-14 | 非闭卷；结果=partial；提示H3；待核验；曝光=partial@before_attempt |
 | `ode.order-reduction` | `attempt-50` | 2026-10-08 | 非闭卷；结果=partial；待核验 |
+| `ode.order-reduction` | `attempt-51` | 2026-10-14 | 非闭卷；结果=partial；提示H3；待核验；曝光=partial@before_attempt |
 | `ode.riccati` | `attempt-50` | 2026-10-08 | 非闭卷；结果=partial；待核验 |
 | `ode.separable` | `attempt-50` | 2026-10-08 | 非闭卷；结果=partial；待核验 |
 | `ode.sys.case-complex` | `attempt-48` | 2026-10-12 | 提示H3；曝光=partial@before_attempt |
@@ -416,6 +419,7 @@
 
 | 题目 | 课程 | 类别 | 状态 | 目标 | 截止 |
 |---|---|---|---|---|---|
+| `de-gap-attack-01` | — | practice | done | ode.homogeneous, ode.order-reduction, ode.clairaut | 2026-10-15 |
 | `de-midterm-diag-01` | — | mixed | open | ode.separable, ode.homogeneous, ode.exact-integ factor, ode.first-order-linear, ode.riccati, ode.clairaut, ode.order-reduction, ode.const-coeff-homogeneous, ode.undetermined-coefficients | 2026-10-15 |
 | `ee-c2-diag-01` | — | baseline | done | ee.ac.reactance, ee.ac.phasor-impedance, ee.ac.series-rlc, ee.ac.resonance | 2026-09-28 |
 | `ee-c2h1-01` | — | practice | done | ee.ac.reactance, ee.ac.phasor-impedance, ee.ac.series-rlc | 2026-09-28 |
@@ -465,4 +469,4 @@
 | `tm-t4-similarity-01` | — | mixed | open | tm.t4.mechanical-similarity | 2026-09-30 |
 | `xz-2026f-course-selection` | — | practice | done | — | 2026-10-10 17:00 |
 
-（题目 48 道；作答事件 49 条；以上均由脚本重算，不含手写内容。）
+（题目 49 道；作答事件 50 条；以上均由脚本重算，不含手写内容。）

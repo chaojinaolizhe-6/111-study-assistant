@@ -1,37 +1,49 @@
 {
-  "event_id": "attempt-26",
-  "task_id": "ru-adj-qword-01",
+  "task_id": "de-gap-attack-01",
   "task_version": "1",
-  "target_ids": ["ru.noun-gender", "ru.qword-agreement"],
-  "mode": "quiz",
-  "closed_book": true,
+  "target_ids": ["ode.homogeneous", "ode.order-reduction", "ode.clairaut"],
+  "mode": "practice",
+  "closed_book": false,
   "initial_result": "partial",
-  "max_hint_level": 0,
+  "max_hint_level": 4,
   "final_result": "partial",
   "predicted_confidence": null,
-  "active_minutes": 7,
-  "time_source": "self_reported",
-  "solution_exposure": "none",
-  "exposure_timing": "after_attempt",
-  "solution_seen": false,
+  "active_minutes": 90,
+  "time_source": "estimated",
+  "solution_exposure": "full",
+  "exposure_timing": "before_attempt",
+  "solution_seen": true,
   "target_results": {
-    "ru.noun-gender": {
+    "ode.homogeneous": {
       "initial": "partial",
-      "hint_level": 0,
+      "hint_level": 3,
       "final": "partial",
-      "needs_verify": false,
-      "note": "9 词判性 6 对 2 错 1 未答：对＝яблоко(ср) / гостиница(ж) / билет(м) / студентки(мн) / словари(мн) / училище(ср)；错＝тетрадь 判成阳性（应为阴性，写成 он какой）、такси 判成复数（应为中性不变格，写成 они какие）；портфель 留空并写「不会」（应为阳性）。错因集中在 -ь 结尾词的性与不变格外来词，与学习者自述「卡在 -ь 上」一致。"
+      "needs_verify": true,
+      "exposure": "partial",
+      "exposure_timing": "before_attempt",
+      "note": "准齐次两题（y′ = y/x + x/y²、y′ = y/x + x³/y）在参考《期中复习-缺口攻关双语指南-20261014》与《准齐次方程-精讲-20261014》的情况下完成。题 2 的权重方程 b − 1 = 3 − b ⟹ b = 2、代换 y = x²u、分离变量、积分与 u ≠ ±1 的奇解讨论均为学习者自己完成；题 1 自己算出 b = 2/3 并用 y = zx 积到最后一步。依赖提示处：①代换公式最初记混（草稿误写 u = y^β/x^(α−β)，代成 y = x^(1/3)u 卡住），经「无量纲化／尺度不变量」提示才弄清标准代换 y = x^b·u 的来源；②经提示才明白题 1 能用 y = zx 是因为 y′ − y/x 凑成单项式（本质 Bernoulli），不是所有准齐次都可这样做；③题 1 收尾漏写积分常数 C；④题 2 卡在去绝对值与回代，经提示掌握「同乘 −2 消分数系数 + 任意常数吸收正负号」的化简技巧与 Bernoulli 秒杀法。均为方法级提示（H3）＋讲义套路，非独立完成。"
     },
-    "ru.qword-agreement": {
-      "initial": "correct",
-      "hint_level": 0,
-      "final": "correct",
-      "needs_verify": false,
-      "note": "8 个作答项的疑问词与学习者自己判定的性/数**全部一致**：复数→какие（студентки, словари）、-а→какая（гостиница）、-о/-е→какое（яблоко, училище）、辅音→какой（билет）。两处错误都由判性错误引起，未见独立的「一致」错误 → 本目标判独立通过（闭卷、无提示、本题答案未曝光）。"
+    "ode.order-reduction": {
+      "initial": "partial",
+      "hint_level": 3,
+      "final": "partial",
+      "needs_verify": true,
+      "exposure": "partial",
+      "exposure_timing": "before_attempt",
+      "note": "y y″ − (y′)² = y² ln y：先按定位卷旧路设 w = y′、y″ = w·dw/dy 后再卡住；参考讲义「除以 y² 凑 (y′/y)′」的套路提示后，自行写出完整链条 (y′/y)′ = ln y ⟹ (ln y)″ = ln y ⟹ p = ln y、p″ = p ⟹ y = exp(C₁e^x + C₂e^(−x))，推导与计算无错。关键一步「除以 y²」的灵感来自讲义，属方法级提示（H3）＋套路曝光 → 不计独立；「无提示下能否一眼识别」留待变式检验。"
+    },
+    "ode.clairaut": {
+      "initial": "not_attempted",
+      "hint_level": 4,
+      "final": "partial",
+      "needs_verify": true,
+      "exposure": "full",
+      "exposure_timing": "before_attempt",
+      "note": "y = xy′ − (y′)²：此前完全不会（定位卷 B2 写「不会」），本轮由导师完整讲解才弄清——方程特征识别 y = xy′ + φ(y′)；令 p = y′ 后两边对 x 求导消去 p、因式分解 (x + φ′(p))p′ = 0 分成「通解直线族 + 奇解包络线」两支；以及通解为何写成 φ(C) 而非独立常数 C₂（一阶方程只有 1 个自由度，p = C 是直接代入原方程，不是二次积分）。自述概念与两支求法已理解，但**尚未独立做过任何一道新的 Clairaut 题**（初始结果记 not_attempted）→ 属示例/讲解级帮助（H4、full 曝光），必须换题盲测后才谈掌握。"
     }
   },
-  "error_hypothesis": "假设（待探测）：-ь 结尾名词的性只能靠词表（课件 УРОК 4 已用 ❗ 标出并给了 «Запомните!» 词表，学习者尚未掌握）；另缺「不变格外来词→中性」这条规则（кафе/метро 同类，такси 未迁移）。「性→疑问词」的映射本身没有问题。",
+  "error_hypothesis": "换元识别的薄弱点不在「算」，而在「认出该换什么」：①代换形式靠记忆而非靠尺度/无量纲化原理推导，所以公式一变形就记混（题 1 的 u = y^β/x^(α−β) 误写）；②「凑导数」这类技巧依赖讲义总结过的固定套路，换函数后能否自发识别未知（缺口 7 的除以 y²）；③Clairaut 的「消去 p 后必然分两支、奇解必须单独求」属于结构型知识，讲过后能复述，但没有独立执行过一次。另有收尾规范问题（漏积分常数 C）与「嫌繁琐就中断」的执行习惯。验证动作：三类题型各一道换函数变式，闭卷 H0，看是否仍需提示才能起步。",
   "diagnosis_status": "pending_probe",
-  "artifact_ref": "subjects/07-俄语/作业/2026-09-30-独立检验1-作答照片.jpg",
-  "ts": "2026-09-30"
+  "artifact_ref": "subjects/03-微分方程/讲义/期中复习-缺口攻关双语指南-20261014.html",
+  "ts": "2026-10-14"
 }
