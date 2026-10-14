@@ -1,6 +1,19 @@
 # 同步到 GitHub
 
-> 建立：2026-10-14。仓库：`https://github.com/chaojinaolizhe-6/111学习助手`（**私有**）。
+> 建立 2026-10-14 ／ 同日转为**公开库**。
+> 仓库：`https://github.com/chaojinaolizhe-6/111-study-assistant`（**Public**）
+> 云端 AI 秒读入口：`https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md`
+> 旧库 `chaojinaolizhe-6/111-` 保留为**私有**归档快照，不再更新。
+
+## ⚠ 公开库的三条硬规则
+
+1. **`eval/` 与 `obsidian/教材库/` 已在全部历史中清除**，且加入 `.gitignore`。
+   前者是会话原文（隐私），后者是 36 个第三方版权教材 PDF（586 MB，含 Z-Library 来源，DMCA 风险）。
+   **不要再把这两类内容加回版本控制**——即使删除文件，旧 commit 仍会泄露。
+2. 公开库中**保留**的第三方内容（用户 2026-10-14 已知悉并同意）：
+   `subjects/*/课件/` 教师课件 PDF（约 197 MB）、作业与手写照片（约 63 MB）。
+   如需进一步收紧，取消 `.gitignore` 中 `/subjects/` 的注释并重跑历史清除。
+3. 历史一旦公开即**不可收回**（会被索引、克隆、缓存）。任何敏感内容必须在推送**之前**清除。
 
 目标：让本工作区成为**可移植的 AI 工作环境**——任何一台机器、任何一个 AI 客户端
 （Claude Code 认 `CLAUDE.md`，Codex / Cursor 等认 `AGENTS.md`）拉下仓库就能按同一套规则干活。
