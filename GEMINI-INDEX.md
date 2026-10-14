@@ -1,8 +1,9 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-14 2026-10-14 15:09（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-14 2026-10-14 15:10（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
-> 仓库：`chaojinaolizhe-6`　分支：`main`
+> 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
+> 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
 
 ## 给云端 AI 的读取指引
 

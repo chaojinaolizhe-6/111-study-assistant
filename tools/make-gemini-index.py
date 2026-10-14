@@ -110,8 +110,12 @@ def build(root: Path, base_url: str, include_lfs: bool) -> str:
     lines.append(f"> 自动生成于 {today} {now}（中国时间）。**请勿手工编辑**——"
                  f"每次同步前由 `tools/make-gemini-index.py` 重新生成。")
     lines.append(">")
-    lines.append(f"> 仓库：`{base_url.rstrip('/').rsplit('/', 2)[0].replace('https://raw.githubusercontent.com/', '')}`"
-                 f"　分支：`{base_url.rstrip('/').rsplit('/', 1)[-1]}`")
+    # base 形如 https://raw.githubusercontent.com/<owner>/<repo>/<branch>/
+    _parts = base_url.rstrip("/").split("/")
+    _slug = "/".join(_parts[3:5]) if len(_parts) >= 6 else base_url
+    _branch = _parts[5] if len(_parts) >= 6 else "main"
+    lines.append(f"> 仓库：`{_slug}`　分支：`{_branch}`")
+    lines.append(f"> 本文件直达：{base_url}{OUT_NAME}")
     lines.append("")
     lines.append("## 给云端 AI 的读取指引")
     lines.append("")

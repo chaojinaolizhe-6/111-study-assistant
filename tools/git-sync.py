@@ -150,6 +150,23 @@ def is_repo(root: Path) -> bool:
     return rc == 0 and out.strip() == "true"
 
 
+def lfs_stats(root: Path) -> tuple[int, float]:
+    """返回 (LFS 跟踪文件数, 工作区合计 MB)。用于给出真实的流量提示。"""
+    rc, out, _ = run_git(["lfs", "ls-files"], root, check=False)
+    if rc != 0 or not out:
+        return 0, 0.0
+    count, total = 0, 0
+    for line in out.splitlines():
+        parts = line.split(maxsplit=2)
+        if len(parts) < 3:
+            continue
+        count += 1
+        p = root / parts[2].strip()
+        if p.is_file():
+            total += p.stat().st_size
+    return count, total / (1024 * 1024)
+
+
 def current_branch(root: Path) -> str:
     rc, out, _ = run_git(["branch", "--show-current"], root, check=False)
     return out.strip() if rc == 0 and out.strip() else "main"
@@ -502,10 +519,10 @@ def do_sync(root: Path, message: str | None, push: bool, check_only: bool) -> in
             return 1
         print("[OK  ] 已推送到 GitHub")
 
-        rc, lfs_out, _ = run_git(["lfs", "ls-files"], root, check=False)
-        if rc == 0 and lfs_out:
-            print(f"[INFO] LFS 跟踪 {len(lfs_out.splitlines())} 个文件；"
-                  f"完整克隆约消耗 1.28 GB 月流量（免费额度 10 GB）")
+        count, mb = lfs_stats(root)
+        if count:
+            print(f"[INFO] LFS 跟踪 {count} 个文件（{mb:.0f} MB）；"
+                  f"免费额度 10 GB/月，完整克隆约消耗 {mb/1024:.2f} GB 流量")
         return 0
 
 
