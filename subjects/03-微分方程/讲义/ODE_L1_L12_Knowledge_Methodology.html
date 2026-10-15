@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常微分方程 (ODE) L1–L12 全景知识体系与解题方法论 | 111-study-assistant</title>
+    <!-- MathJax for crisp LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-code: #0b1120;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-indigo: #818cf8;
+            --accent-emerald: #34d399;
+            --accent-amber: #fbbf24;
+            --accent-rose: #fb7185;
+            --border-color: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-code: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+            --accent-indigo: #4f46e5;
+            --accent-emerald: #059669;
+            --accent-amber: #d97706;
+            --accent-rose: #e11d48;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.6rem 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-group-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin: 1rem 0 0.4rem 0.5rem;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+
+        .nav-item a:hover {
+            background-color: rgba(56, 189, 248, 0.12);
+            color: var(--accent-blue);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 2.5rem 3.5rem;
+            max-width: 1200px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-toggle {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(129, 140, 248, 0.12));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: 1.9rem;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-indigo));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--accent-blue);
+        }
+
+        /* Section Styling */
+        .section-header {
+            margin: 3rem 0 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.45rem;
+            color: var(--text-primary);
+        }
+
+        .lecture-tag {
+            background-color: var(--accent-indigo);
+            color: #fff;
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.6rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            font-size: 1.18rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .method-box {
+            background-color: var(--bg-code);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.1rem 1.3rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .method-title {
+            font-weight: 700;
+            color: var(--accent-emerald);
+            font-size: 0.92rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pitfall-box {
+            background-color: rgba(251, 113, 133, 0.08);
+            border-left: 4px solid var(--accent-rose);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .pitfall-title {
+            font-weight: 700;
+            color: var(--accent-rose);
+            font-size: 0.92rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .tip-box {
+            background-color: rgba(251, 191, 36, 0.08);
+            border-left: 4px solid var(--accent-amber);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-amber);
+            font-size: 0.92rem;
+            margin-bottom: 0.4rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-code);
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        ul, ol {
+            padding-left: 1.4rem;
+            margin: 0.6rem 0;
+        }
+
+        li {
+            margin-bottom: 0.45rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        .step-num {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+        }
+
+        /* Responsive Mobile Support */
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        @media (max-width: 960px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem 1.2rem;
+            }
+            .mobile-menu-btn {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">📐 ODE L1–L12 方法论全书</div>
+        <div class="brand-sub">Sync: chaojinaolizhe-6/111-study-assistant</div>
+        <input type="text" class="search-box" id="searchInput" placeholder="搜索方程类型 / 定理 / 换元..." onkeyup="filterCards()">
+
+        <div class="nav-group-title">核心战术导航</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#overview">🗺️ L1–L12 课程地图与判别决策树</a></li>
+            <li class="nav-item"><a href="#gaps">🎯 你的 8 大高频易错缺口复盘</a></li>
+        </ul>
+
+        <div class="nav-group-title">第一部分：一阶微分方程 (L1–L7)</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#l1">L1: 基本概念、方向场与可分离变量</a></li>
+            <li class="nav-item"><a href="#l2">L2: 一阶线性方程与常数变易法</a></li>
+            <li class="nav-item"><a href="#l3">L3: 齐次、可化为齐次与准齐次方程</a></li>
+            <li class="nav-item"><a href="#l4">L4: Bernoulli 方程与 Riccati 方程</a></li>
+            <li class="nav-item"><a href="#l5">L5: 恰当方程与积分因子 (Integrating Factor)</a></li>
+            <li class="nav-item"><a href="#l6">L6: 隐式方程、Lagrange 与 Clairaut 方程</a></li>
+            <li class="nav-item"><a href="#l7">L7: 解的存在唯一性定理 (Picard) 与奇解</a></li>
+        </ul>
+
+        <div class="nav-group-title">第二部分：高阶线性微分方程 (L8–L12)</div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#l8">L8: 高阶可降阶方程 & 线性方程通解结构</a></li>
+            <li class="nav-item"><a href="#l9">L9: 线性无关、Wronskian 行列式与 Liouville 公式</a></li>
+            <li class="nav-item"><a href="#l10">L10: 已知一解降阶法 & 常系数齐次特征根法</a></li>
+            <li class="nav-item"><a href="#l11">L11: 待定系数法 (共振重数) 与算子解法</a></li>
+            <li class="nav-item"><a href="#l12">L12: 高阶常数变易法与 Euler-Cauchy 方程</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-bar">
+            <button class="btn-toggle mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ 目录导航</button>
+            <div>
+                <button class="btn-toggle" onclick="toggleTheme()">🌓 切换深色 / 浅色模式</button>
+                <button class="btn-toggle" onclick="window.print()">🖨️ 打印 / 导出 PDF</button>
+            </div>
+        </div>
+
+        <section class="hero">
+            <h1>《常微分方程》Lecture 1–12 全景知识点与解题方法论</h1>
+            <p>基于 <code>chaojinaolizhe-6/111-study-assistant</code> 知识库、九大核心知识板块与近期错题诊断（准齐次 vs Riccati、非恰当积分因子、线性分式平移、Clairaut 因式分解奇解、待定系数共振重数）深度定制。</p>
+            <div class="badge-row">
+                <span class="badge">📚 覆盖范围：Lecture 1 – Lecture 12</span>
+                <span class="badge">🧭 九大题型 SOP 决策树</span>
+                <span class="badge">⚠️ 8 大历史易错缺口精准防坑</span>
+                <span class="badge">📱 移动端 & 桌面端自适应排版</span>
+            </div>
+        </section>
+
+        <!-- Decision Tree Overview -->
+        <div class="section-header" id="overview">
+            <span class="lecture-tag">全局统领</span>
+            <h2>🗺️ L1–L12 考场拿到一道 ODE 的「五步判别决策树」</h2>
+        </div>
+
+        <div class="card">
+            <h3>考场 15 秒快速识别法（防止选错方向死算）</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>优先级</th>
+                        <th>观察特征（Pattern）</th>
+                        <th>判定类型</th>
+                        <th>核心破局动作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Step 1</strong></td>
+                        <td>仅含一阶导 $y'$，且能写成 $g(y)dy = f(x)dx$</td>
+                        <td><strong>可分离变量方程 (L1)</strong></td>
+                        <td>分离积分 + <strong>优先检查分母为 0 的常数奇解/平衡解</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 2</strong></td>
+                        <td>关于 $y$ 和 $y'$ 是一次的：$y' + P(x)y = Q(x)$（或对 $x, x'$ 是一次）</td>
+                        <td><strong>一阶线性方程 (L2)</strong></td>
+                        <td>积分因子 $\mu(x) = e^{\int P(x)dx}$，若对 $y$ 非线性立刻调换角色看 $x'(y)$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 3</strong></td>
+                        <td>写成 $M(x,y)dx + N(x,y)dy = 0$，检验 $\frac{\partial M}{\partial y}$ 与 $\frac{\partial N}{\partial x}$</td>
+                        <td><strong>恰当方程 / 积分因子 (L5)</strong></td>
+                        <td>相等直接凑全微分 $d\Phi=0$；不等看 $\frac{M_y - N_x}{N}$ 或 $\frac{N_x - M_y}{M}$ 或分组凑微分</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 4</strong></td>
+                        <td>含 $y^n$、$\frac{y}{x}$、$\frac{a_1x+b_1y+c_1}{a_2x+b_2y+c_2}$ 或 $x^\alpha y^\beta$ 尺度对称</td>
+                        <td><strong>齐次 / 线性分式 / 准齐次 / Bernoulli / Riccati (L3–L4)</strong></td>
+                        <td>齐次令 $y=ux$；交点平移令 $x=X+h, y=Y+k$；准齐次令 $y=z^\alpha$；Bernoulli 令 $z=y^{1-n}$；Riccati 找特解或试探 $u=xy$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 5</strong></td>
+                        <td>含 $(y')^2$ 等高次幂，或为 $y = xy' + \psi(y')$</td>
+                        <td><strong>Clairaut / Lagrange / 可解出 $y$ 或 $x$ (L6)</strong></td>
+                        <td>令 $p = y'$，对 $x$ 求导用 $dy = p\,dx$，<strong>绝不随便约去因子</strong>，分别得通解与奇解</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 6</strong></td>
+                        <td>二阶及更高阶 $y'' + p(x)y' + q(x)y = f(x)$</td>
+                        <td><strong>高阶线性 / Euler / 降阶法 (L8–L12)</strong></td>
+                        <td>常系数看特征方程 + 待定系数/算子法；变系数用已知一解 Liouville/Abel 降阶或常数变易法；$x^k y^{(k)}$ 令 $x=e^t$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 8 Key Gaps -->
+        <div class="section-header" id="gaps">
+            <span class="lecture-tag">重点复盘</span>
+            <h2>🎯 你的 8 大核心易错缺口与针对性修正清单</h2>
+        </div>
+
+        <div class="card">
+            <h3>结合近期练习（含 I-2、Riccati/准齐次、Clairaut 等）的错因锚定</h3>
+            <ol>
+                <li><strong>缺口 1【线性分式方程平移 vs 平行】：</strong>形如 $(2x-4y+6)dx + (x+y-3)dy = 0$，必须先算行列式 $\Delta = a_1 b_2 - a_2 b_1$。若 $\Delta \neq 0$，解交点 $(h,k)$ 平移消常数；若 $\Delta = 0$，直接整体换元 $z = a_1 x + b_1 y$，切忌硬解交点。</li>
+                <li><strong>缺口 2【准齐次方程 vs Riccati 方程识别与变形】：</strong>如 $x^2 y' + xy + x^2 y^2 = 4$，两边除以 $x^2$ 是标准 Riccati 方程；同时赋值 $\deg(x)=1, \deg(y)=-1$ 时各项幂次相等（均为 $0$），故也是<strong>准齐次方程</strong>！令 $u = xy$（即 $y = u/x$），注意导数代换 $y' = \frac{x u' - u}{x^2}$，代入即化为可分离变量方程 $x u' + u^2 = 4$。</li>
+                <li><strong>缺口 3【非恰当方程积分因子符号与分母】：</strong>求单变量积分因子时，务必分清：对 $x$ 仅依赖看 $\frac{M_y - N_x}{N} = \varphi(x)$（分母是 $N$！）；对 $y$ 仅依赖看 $\frac{N_x - M_y}{M} = \psi(y)$（分母是 $M$ 且分子反号！）。</li>
+                <li><strong>缺口 4【Clairaut / Lagrange 求导后因式分解漏解】：</strong>如对 $y = xy' + \dots$ 求导化简出 $p'(x - p^2) = 0$ 时，<strong>严禁直接约去 $p'$ 或提公因式出错</strong>！必须分两支：① $p' = 0 \Rightarrow p = C$ 代回原方程得通解族；② $x - p^2 = 0$ 消去 $p$ 得包络奇解（Singular Solution）。</li>
+                <li><strong>缺口 5【分离变量与同除丢奇解】：</strong>在分离变量除掉 $g(y)$ 或 Bernoulli 同除 $y^n$ 时，未单独检验 $g(y_0)=0$ 是否为常数解/奇解。</li>
+                <li><strong>缺口 6【待定系数法共振重数 $k$ 漏判】：</strong>当非齐次项为 $e^{\lambda x}[P_m(x)\cos\omega x + Q_n(x)\sin\omega x]$ 时，要看 $\alpha = \lambda + i\omega$ 作为特征根的重数 $k$（而非实部 $\lambda$ 单独的重数），特解必须乘 $x^k$，且阶数取 $N = \max(m, n)$。</li>
+                <li><strong>缺口 7【Euler 方程令 $x = e^t$ 后的二阶导替换错误】：</strong>记住算子公式 $x^2 y'' = D(D-1)y = \frac{d^2y}{dt^2} - \frac{dy}{dt}$，千万不要把 $x^2 y''$ 直接当成 $\frac{d^2y}{dt^2}$！</li>
+                <li><strong>缺口 8【IVP 初值问题收尾时机】：</strong>必须在<strong>总通解 $y = y_h + y_p$ 全部拼装完毕后</strong>再代入初值 $y(x_0), y'(x_0)$ 定 $C_1, C_2$，绝对不能在只求出齐次解 $y_h$ 时就代初值！</li>
+            </ol>
+        </div>
+
+        <!-- ==================== PART 1: L1 - L7 ==================== -->
+        <div class="section-header" id="l1">
+            <span class="lecture-tag">Lecture 1</span>
+            <h2>基本概念、几何意义（方向场）与可分离变量方程</h2>
+        </div>
+
+        <div class="card">
+            <h3>1.1 基本概念与等倾线 (Isoclines)</h3>
+            <ul>
+                <li><strong>阶数 (Order)：</strong>方程中出现的未知函数最高阶导数的阶数。</li>
+                <li><strong>通解 vs 特解 vs 奇解：</strong>含 $n$ 个独立任意常数 $C_1,\dots,C_n$ 的解为通解；固定常数后的解为特解；<strong>不包含在通解中（无论常数取何值或极限都得不到）、且每一点都与通解族某曲线相切的解称为奇解（包络线）</strong>。</li>
+                <li><strong>方向场与等倾线：</strong>对于 $y' = f(x,y)$，令 $f(x,y) = k$（常数）得到的曲线族称为<strong>等倾线</strong>，积分曲线在穿过等倾线时切线斜率均为 $k$。平衡点（驻点）满足 $f(x,y)=0$。</li>
+            </ul>
+
+            <h3>1.2 可分离变量方程 (Separable Equations)</h3>
+            <p><strong>标准形式：</strong> $\frac{dy}{dx} = f(x)g(y)$ 或 $M_1(x)N_1(y)dx + M_2(x)N_2(y)dy = 0$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li><span class="step-num">Step 1</span><strong>先找常数零点解：</strong>令分母即将除过去的因式 $g(y) = 0$，解出根 $y = y_0$。直接检验 $y \equiv y_0$ 是否满足原方程。</li>
+                    <li><span class="step-num">Step 2</span><strong>分离变量并积分：</strong>假设 $g(y) \neq 0$，写成 $\int \frac{1}{g(y)}dy = \int f(x)dx + C$。</li>
+                    <li><span class="step-num">Step 3</span><strong>合并与吸收常数：</strong>若出现 $\ln|y| = H(x) + C$，化为 $y = \pm e^C e^{H(x)} = \tilde{C} e^{H(x)}$。检查当 $\tilde{C}=0$ 时是否能找回 Step 1 的常数解 $y=0$；若找不回，必须在最终答案旁<strong>显式并上 $y = y_0$</strong>。</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Lecture 2 -->
+        <div class="section-header" id="l2">
+            <span class="lecture-tag">Lecture 2</span>
+            <h2>一阶线性微分方程与常数变易法</h2>
+        </div>
+
+        <div class="card">
+            <h3>2.1 一阶线性方程标准形式与积分因子</h3>
+            <p><strong>标准形式：</strong> $$\frac{dy}{dx} + P(x)y = Q(x)$$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li><span class="step-num">Step 1</span><strong>化一：</strong>把 $y'$ 前面的系数除到右边和 $P(x)$ 上（注意讨论除数是否为 0 的点）。</li>
+                    <li><span class="step-num">Step 2</span><strong>求积分因子：</strong>计算 $\mu(x) = \exp\left(\int P(x)dx\right)$（此处不定积分不加常数 $C$，且通常省去绝对值）。</li>
+                    <li><span class="step-num">Step 3</span><strong>左端缩并全导数：</strong>两边同乘 $\mu(x)$，左端必精确缩并为 $\frac{d}{dx}\big[\mu(x)y\big] = \mu(x)Q(x)$。</li>
+                    <li><span class="step-num">Step 4</span><strong>积分得通解：</strong>$$y(x) = \frac{1}{\mu(x)} \left( \int \mu(x)Q(x)dx + C \right)$$</li>
+                </ol>
+            </div>
+            <div class="tip-box">
+                <div class="tip-title">💡 破局技巧：x 与 y 角色互换法</div>
+                当方程对 $y$ 极其非线性（例如含 $e^y, \sin y, y^3$），但观察发现 $x$ 只出现了一次幂时，立刻把方程改写为关于 $x(y)$ 的一阶线性方程：
+                $$\frac{dx}{dy} + P(y)x = Q(y)$$
+                用完全相同的公式对 $y$ 求积分因子 $\mu(y) = e^{\int P(y)dy}$，秒杀原题！
+            </div>
+        </div>
+
+        <!-- Lecture 3 -->
+        <div class="section-header" id="l3">
+            <span class="lecture-tag">Lecture 3</span>
+            <h2>齐次方程、可化为齐次（线性分式）与准齐次方程</h2>
+        </div>
+
+        <div class="card">
+            <h3>3.1 标准齐次方程 (Homogeneous ODE)</h3>
+            <p><strong>判别特征：</strong> $M(x,y)dx + N(x,y)dy = 0$ 中 $M, N$ 是同次齐次函数（即 $M(tx,ty) = t^k M(x,y)$），或者能改写为 $y' = \varphi\left(\frac{y}{x}\right)$。</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li>令 $u = \frac{y}{x}$，即 $y = ux$。</li>
+                    <li><strong>核心导数代换：</strong> $\frac{dy}{dx} = u + x\frac{du}{dx}$（微分形式：$dy = u\,dx + x\,du$）。</li>
+                    <li>代入原方程化为可分离变量方程：$x\frac{du}{dx} = \varphi(u) - u \implies \int \frac{du}{\varphi(u)-u} = \int \frac{dx}{x} = \ln|x| + C$。</li>
+                    <li><strong>防漏解检查：</strong>若存在常数 $u_0$ 使 $\varphi(u_0) - u_0 = 0$，则直线 $y = u_0 x$ 是需要单独检验的解！回代 $u = y/x$ 完成求解。</li>
+                </ol>
+            </div>
+
+            <h3>3.2 可化为齐次的方程（线性分式方程 —— 你的练习 I-2 题型）</h3>
+            <p><strong>标准形式：</strong> $$\frac{dy}{dx} = f\left(\frac{a_1 x + b_1 y + c_1}{a_2 x + b_2 y + c_2}\right) \quad \text{或} \quad (a_1 x + b_1 y + c_1)dx + (a_2 x + b_2 y + c_2)dy = 0$$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 双分支解题方法论 (SOP)</div>
+                <p>先计算系数行列式 $\Delta = \begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} = a_1 b_2 - a_2 b_1$：</p>
+                <ul>
+                    <li><strong>情形 A：$\Delta \neq 0$（两直线相交，如 $(2x-4y+6)dx + (x+y-3)dy = 0$）</strong>
+                        <ol>
+                            <li>联立线性方程组 $\begin{cases} a_1 h + b_1 k + c_1 = 0 \\ a_2 h + b_2 k + c_2 = 0 \end{cases}$ 解出交点 $(h, k)$（上例中 $(h,k)=(1,2)$）。</li>
+                            <li>作平移变换 $\begin{cases} x = X + h \\ y = Y + k \end{cases}$，此时 $dx = dX, dy = dY$，常数项自动清零！</li>
+                            <li>方程化为关于 $(X,Y)$ 的标准齐次方程 $(a_1 X + b_1 Y)dX + (a_2 X + b_2 Y)dY = 0$，再令 $Y = uX$ 求解，最后将 $X = x-h, Y = y-k$ 代回。</li>
+                        </ol>
+                    </li>
+                    <li><strong>情形 B：$\Delta = 0$（两直线平行，成比例 $\frac{a_1}{a_2} = \frac{b_1}{b_2}$）</strong>
+                        <ol>
+                            <li>无需平移（也无交点），直接令公共线性组合 $z = a_1 x + b_1 y$。</li>
+                            <li>求导得 $\frac{dz}{dx} = a_1 + b_1 \frac{dy}{dx}$，代入原方程直接变成关于 $(x, z)$ 的<strong>可分离变量方程</strong>！</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>3.3 准齐次方程 (Quasi-Homogeneous / Isobaric Equations)</h3>
+            <p><strong>判别特征（物理量纲/标度不变性法）：</strong>赋权 $\deg(x) = 1, \deg(y) = \alpha$，则微分权数满足 $\deg(dx) = 1, \deg(dy) = \alpha, \deg(y') = \alpha - 1$。如果存在实数 $\alpha$ 使得方程中每一项的总权数完全相等，则为准齐次方程。</p>
+            <div class="method-box">
+                <div class="method-title">🔧 经典实例复盘：$x^2 y' + xy + x^2 y^2 = 4$</div>
+                <ul>
+                    <li><strong>权数检验：</strong>令 $\deg(x)=1, \deg(y)=\alpha$。四项的权数分别为：
+                        $$\deg(x^2 y') = 2 + (\alpha - 1) = \alpha + 1, \quad \deg(xy) = 1 + \alpha, \quad \deg(x^2 y^2) = 2 + 2\alpha, \quad \deg(4) = 0$$
+                        令 $\alpha + 1 = 2 + 2\alpha = 0 \implies \alpha = -1$！各项权数全为 $0$，完美匹配准齐次！</li>
+                    <li><strong>标准换元：</strong>因为 $\deg(y) = -1$，说明 $x^1 y^1$ 是无量纲不变量（权数为 $1 + (-1) = 0$）。故直接令：
+                        $$u = xy \implies y = \frac{u}{x}, \quad y' = \frac{x u' - u}{x^2}$$</li>
+                    <li><strong>化简求解：</strong>代入原方程：
+                        $$x^2 \left(\frac{x u' - u}{x^2}\right) + u + u^2 = 4 \implies x u' - u + u + u^2 = 4 \implies x \frac{du}{dx} = 4 - u^2$$
+                        瞬间退化为可分离变量方程！部分分式积分得 $\frac{1}{4}\ln\left|\frac{2+u}{2-u}\right| = \ln|x| + C$（并检查 $u = \pm 2 \Rightarrow y = \pm \frac{2}{x}$）。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Lecture 4 -->
+        <div class="section-header" id="l4">
+            <span class="lecture-tag">Lecture 4</span>
+            <h2>Bernoulli 方程与 Riccati 方程</h2>
+        </div>
+
+        <div class="card">
+            <h3>4.1 Bernoulli 方程</h3>
+            <p><strong>标准形式：</strong> $$\frac{dy}{dx} + P(x)y = Q(x)y^n \quad (n \neq 0, 1)$$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li><span class="step-num">Step 1</span>若 $n > 0$，先写下显然解 $y \equiv 0$。</li>
+                    <li><span class="step-num">Step 2</span>两边同除以 $y^n$：$$y^{-n}\frac{dy}{dx} + P(x)y^{1-n} = Q(x)$$</li>
+                    <li><span class="step-num">Step 3</span>令新变量 $z = y^{1-n}$，求导得 $\frac{dz}{dx} = (1-n)y^{-n}\frac{dy}{dx}$。</li>
+                    <li><span class="step-num">Step 4</span>代入化为关于 $z$ 的一阶线性方程：
+                        $$\frac{dz}{dx} + (1-n)P(x)z = (1-n)Q(x)$$
+                        用一阶线性公式解出 $z(x)$，再回代 $y^{1-n} = z(x)$。</li>
+                </ol>
+            </div>
+
+            <h3>4.2 Riccati 方程 (黎卡提方程)</h3>
+            <p><strong>标准形式：</strong> $$\frac{dy}{dx} = P(x)y^2 + Q(x)y + R(x) \quad (P(x) \not\equiv 0)$$</p>
+            <p><strong>与准齐次的区别：</strong>Riccati 方程要求关于未知函数 $y$ 是严格的<strong>二次多项式</strong>（含 $y^2, y^1, y^0$），对 $x$ 的系数形式不限；而准齐次方程要求对 $(x, y)$ 满足幂次标度对称。有些方程（如 $y' = -\frac{1}{x}y - y^2 + \frac{4}{x^2}$）<strong>既是 Riccati 方程，又是准齐次方程</strong>！</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li><span class="step-num">Step 1</span><strong>寻找一个特解 $y_1(x)$：</strong>题目通常会直接给出，或通过观察系数之和（如 $P+Q+R=0 \Rightarrow y_1=1$）、幂函数试探 $y_1 = c x^m$ 找到一个特解（例如 $x^2y'+xy+x^2y^2=4$ 可试出 $y_1 = \frac{2}{x}$）。</li>
+                    <li><span class="step-num">Step 2</span><strong>平移换元（推荐直接化线性）：</strong>令
+                        $$y(x) = y_1(x) + \frac{1}{z(x)} \implies y' = y_1' - \frac{z'}{z^2}$$
+                        （或者先令 $y = y_1 + u$ 化为 Bernoulli 方程 $u' - (2P y_1 + Q)u = P u^2$，再令 $z = u^{-1}$）。</li>
+                    <li><span class="step-num">Step 3</span><strong>求解关于 $z(x)$ 的一阶线性方程：</strong>
+                        $$z' + \big[2P(x)y_1(x) + Q(x)\big]z = -P(x)$$
+                        解出 $z(x)$ 后代回 $y = y_1 + \frac{1}{z}$。</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Lecture 5 -->
+        <div class="section-header" id="l5">
+            <span class="lecture-tag">Lecture 5</span>
+            <h2>恰当方程与非恰当方程的积分因子 (Integrating Factors)</h2>
+        </div>
+
+        <div class="card">
+            <h3>5.1 恰当微分方程 (Exact Equations)</h3>
+            <p><strong>判别充要条件：</strong>在单连通区域上，$M(x,y)dx + N(x,y)dy = 0$ 是恰当方程 $\iff$
+            $$\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 势函数 $\Phi(x,y) = C$ 求解三法</div>
+                <ul>
+                    <li><strong>方法 1（偏积分 + 对 y 求导待定法 —— 最稳健）：</strong>
+                        $$\Phi(x,y) = \int M(x,y)dx + \varphi(y)$$
+                        然后对 $y$ 求偏导令 $\frac{\partial \Phi}{\partial y} = N(x,y)$，求出 $\varphi'(y)$（此时所有含 $x$ 的项必完全抵消，若没抵消说明前面算错！），积分得 $\varphi(y)$，通解为 $\Phi(x,y) = C$。</li>
+                    <li><strong>方法 2（分组凑全微分法 —— 最快）：</strong>熟记五大黄金微分组合：
+                        $$\begin{aligned}
+                        x\,dy + y\,dx &= d(xy), & \frac{x\,dy - y\,dx}{x^2} &= d\left(\frac{y}{x}\right), & \frac{y\,dx - x\,dy}{y^2} &= d\left(\frac{x}{y}\right) \\
+                        \frac{x\,dx + y\,dy}{x^2+y^2} &= \frac{1}{2}d\ln(x^2+y^2), & \frac{x\,dy - y\,dx}{x^2+y^2} &= d\left(\arctan\frac{y}{x}\right)
+                        \end{aligned}$$</li>
+                    <li><strong>方法 3（折线积分公式）：</strong> $\Phi(x,y) = \int_{x_0}^x M(t, y)dt + \int_{y_0}^y N(x_0, s)ds = C$。</li>
+                </ul>
+            </div>
+
+            <h3>5.2 非恰当方程：如何系统寻找积分因子 $\mu(x,y)$？</h3>
+            <p>当 $\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial x}$ 时，先算差值 $\Delta = \frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}$：</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>试探方向</th>
+                        <th>判别准则（看比值是否消去另一变量）</th>
+                        <th>积分因子公式 $\mu$</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>仅依赖 $x$：$\mu = \mu(x)$</strong></td>
+                        <td>$\frac{1}{N}\left(\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}\right) = \varphi(x)$（仅含 $x$）</td>
+                        <td>$\mu(x) = \exp\left(\int \varphi(x)dx\right)$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>仅依赖 $y$：$\mu = \mu(y)$</strong></td>
+                        <td>$\frac{1}{M}\left(\frac{\partial N}{\partial x} - \frac{\partial M}{\partial y}\right) = \psi(y)$（仅含 $y$，注意分子反号或加负号）</td>
+                        <td>$\mu(y) = \exp\left(\int \psi(y)dy\right)$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>齐次方程型</strong></td>
+                        <td>$M, N$ 同次齐次，且 $xM + yN \neq 0$</td>
+                        <td>$\mu(x,y) = \frac{1}{xM(x,y) + yN(x,y)}$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>形如 $yf(xy)dx + xg(xy)dy = 0$</strong></td>
+                        <td>系数括号内仅含乘积 $xy$，且 $f(xy) \neq g(xy)$</td>
+                        <td>$\mu(x,y) = \frac{1}{xM - yN} = \frac{1}{xy[f(xy) - g(xy)]}$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>幂乘积试探 $\mu = x^\alpha y^\beta$</strong></td>
+                        <td>多项式型 $M, N$，前几种均失效时</td>
+                        <td>乘上 $x^\alpha y^\beta$ 后令 $\frac{\partial(\mu M)}{\partial y} \equiv \frac{\partial(\mu N)}{\partial x}$ 比较系数解出 $\alpha, \beta$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Lecture 6 -->
+        <div class="section-header" id="l6">
+            <span class="lecture-tag">Lecture 6</span>
+            <h2>一阶隐式方程：可解出 $y/x$、Lagrange 与 Clairaut 方程</h2>
+        </div>
+
+        <div class="card">
+            <h3>6.1 统一引入参数 $p = \frac{dy}{dx}$ 的微分关系</h3>
+            <p>在一阶隐式方程 $F(x, y, y') = 0$ 中，永远令 $p = y'$，并利用基本全微分恒等式：
+            $$dy = p\,dx$$</p>
+            <ul>
+                <li><strong>可解出 $y$ 型 $y = f(x, p)$：</strong>两边对 $x$ 求导得 $p = \frac{\partial f}{\partial x} + \frac{\partial f}{\partial p}\frac{dp}{dx}$，化为关于 $(x, p)$ 的一阶方程。</li>
+                <li><strong>可解出 $x$ 型 $x = f(y, p)$：</strong>两边对 $y$ 求导得 $\frac{1}{p} = \frac{\partial f}{\partial y} + \frac{\partial f}{\partial p}\frac{dp}{dy}$，化为关于 $(y, p)$ 的一阶方程。</li>
+            </ul>
+
+            <h3>6.2 Clairaut 方程 (克莱罗方程) —— 必考通解与包络奇解</h3>
+            <p><strong>标准形式：</strong> $$y = x y' + \psi(y') \quad \text{即} \quad y = xp + \psi(p)$$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li><span class="step-num">Step 1</span>两边对 $x$ 求导：
+                        $$p = p + x p' + \psi'(p)p' \implies p'\big[x + \psi'(p)\big] = 0$$</li>
+                    <li><span class="step-num">Step 2</span><strong>分支一（通解族 —— 直线族）：</strong>令 $p' = 0 \implies p = C$，直接把 $y' = C$ 代回原方程（无需任何积分！）得通解：
+                        $$y = Cx + \psi(C)$$</li>
+                    <li><span class="step-num">Step 3</span><strong>分支二（奇解 —— 包络线）：</strong>令 $x + \psi'(p) = 0$，得到参数形式奇解：
+                        $$\begin{cases} x = -\psi'(p) \\ y = -p\psi'(p) + \psi(p) \end{cases}$$
+                        若能从中消去参数 $p$，即得显式奇解（如在 $p'(x - p^2) = 0$ 中，由 $x = p^2$ 消去 $p$）。</li>
+                </ol>
+            </div>
+            <div class="pitfall-box">
+                <div class="pitfall-title">🚨 你的历史错题警示：提公因式切勿漏项或错配！</div>
+                当你在对隐式方程求导整理出 $x p' - p^2 p' = 0$ 时，提取公因式 $p'$ 得到的是 $p'(x - p^2) = 0$，务必逐项核对，绝对不能直接把 $p'$ 约掉，否则会直接丢掉通解或丢掉奇解！
+            </div>
+
+            <h3>6.3 Lagrange 方程 (拉格朗日方程)</h3>
+            <p><strong>标准形式：</strong> $y = x\varphi(p) + \psi(p)$ （当 $\varphi(p) \equiv p$ 时即退化为 Clairaut 方程）。</p>
+            <p><strong>解法：</strong>对 $x$ 求导得 $p = \varphi(p) + [x\varphi'(p) + \psi'(p)]\frac{dp}{dx}$。先讨论满足 $\varphi(p_0) = p_0$ 的常数根（给出直线解 $y = x\varphi(p_0) + \psi(p_0)$）；再当 $\varphi(p) \neq p$ 时，颠倒变量视为 $x$ 关于 $p$ 的<strong>一阶线性微分方程</strong>：
+            $$\frac{dx}{dp} - \frac{\varphi'(p)}{p - \varphi(p)}x = \frac{\psi'(p)}{p - \varphi(p)}$$</p>
+        </div>
+
+        <!-- Lecture 7 -->
+        <div class="section-header" id="l7">
+            <span class="lecture-tag">Lecture 7</span>
+            <h2>初值问题解的存在唯一性定理 (Picard) 与奇解判别</h2>
+        </div>
+
+        <div class="card">
+            <h3>7.1 Peano 存在定理与 Picard-Lindelöf 存在唯一性定理</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>定理名称</th>
+                        <th>条件要求（矩形邻域 $R: |x-x_0|\le a, |y-y_0|\le b$）</th>
+                        <th>结论</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Peano 存在定理</strong></td>
+                        <td>$f(x,y)$ 在 $R$ 上<strong>连续</strong></td>
+                        <td>初值问题 $y'=f(x,y), y(x_0)=y_0$ 在 $|x-x_0|\le h$ 上<strong>至少存在一个解</strong>（不一定唯一）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Picard 存在唯一性定理</strong></td>
+                        <td>$f(x,y)$ 在 $R$ 上<strong>连续</strong>，且对 $y$ 满足 <strong>Lipschitz 条件</strong>（在考题中通常检验偏导数 $\frac{\partial f}{\partial y}$ 连续有界）</td>
+                        <td>在局部区间 $|x-x_0|\le h$ 上存在<strong>唯一解</strong>，其中 $h = \min\left(a, \frac{b}{M}\right), M = \max_R |f(x,y)|$</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>7.2 奇解的两种求法：$p$-判别法 vs $c$-判别法</h3>
+            <ul>
+                <li><strong>从微分方程直接找（$p$-判别曲线）：</strong>联立 $\begin{cases} F(x, y, p) = 0 \\ \frac{\partial F}{\partial p}(x, y, p) = 0 \end{cases}$ 消去 $p$ 得到 $p$-判别曲线，再代回原方程验证它是否真的是解（因为 $p$-判别曲线还可能包含尖点轨迹或重点轨迹）。</li>
+                <li><strong>从通解族找包络（$c$-判别曲线）：</strong>联立 $\begin{cases} \Phi(x, y, C) = 0 \\ \frac{\partial \Phi}{\partial C}(x, y, C) = 0 \end{cases}$ 消去参数 $C$。</li>
+            </ul>
+        </div>
+
+        <!-- ==================== PART 2: L8 - L12 ==================== -->
+        <div class="section-header" id="l8">
+            <span class="lecture-tag">Lecture 8</span>
+            <h2>高阶可降阶方程 & 高阶线性微分方程通解结构</h2>
+        </div>
+
+        <div class="card">
+            <h3>8.1 三类可降阶的高阶非线性方程</h3>
+            <div class="method-box">
+                <div class="method-title">🔧 三大降阶模板（必背代换）</div>
+                <ol>
+                    <li><strong>直接积分型 $y^{(n)} = f(x)$：</strong>连续对 $x$ 积分 $n$ 次，每积分一次加一个常数。</li>
+                    <li><strong>不显含未知函数 $y$ 型 $F(x, y', y'') = 0$：</strong>
+                        $$令 \ p = y' \implies y'' = \frac{dp}{dx} = p'$$
+                        化为关于 $(x, p)$ 的一阶方程。</li>
+                    <li><strong>不显含自变量 $x$ 型（自治方程）$F(y, y', y'') = 0$：</strong>
+                        $$令 \ p = y' \implies y'' = \frac{dp}{dx} = \frac{dp}{dy}\frac{dy}{dx} = p\frac{dp}{dy}$$
+                        化为关于 $(y, p)$ 的一阶方程！<strong>【易错警报】</strong>千万不能写成 $y'' = \frac{dp}{dy}$，且若两边消去因子 $p$，务必检验 $p=0 \Rightarrow y \equiv C$ 是否为解！</li>
+                </ol>
+            </div>
+
+            <h3>8.2 高阶线性方程的叠加原理与解空间结构</h3>
+            <ul>
+                <li><strong>齐次线性方程 $L[y] = y^{(n)} + a_1(x)y^{(n-1)} + \dots + a_n(x)y = 0$：</strong>所有解构成一个 $n$ 维线性空间，若 $y_1, \dots, y_n$ 线性无关（基本解组），则通解为 $y_h = C_1 y_1 + \dots + C_n y_n$。</li>
+                <li><strong>非齐次线性方程 $L[y] = f(x)$：</strong>通解 = 对应齐次通解 + 非齐次一个特解，即 $y = y_h + y_p$。</li>
+                <li><strong>解的差性质（考题常考）：</strong>若 $Y_1, Y_2$ 是非齐次方程 $L[y]=f(x)$ 的两个解，则 $Y_1 - Y_2$ 必是对应<strong>齐次方程 $L[y]=0$</strong> 的解！</li>
+            </ul>
+        </div>
+
+        <!-- Lecture 9 -->
+        <div class="section-header" id="l9">
+            <span class="lecture-tag">Lecture 9</span>
+            <h2>函数组线性无关、Wronskian 行列式与 Liouville 公式</h2>
+        </div>
+
+        <div class="card">
+            <h3>9.1 Wronskian 行列式 (朗斯基行列式)</h3>
+            <p>对于 $n$ 个函数 $y_1(x), \dots, y_n(x)$，定义：
+            $$W(x) = W[y_1, \dots, y_n](x) = \begin{vmatrix} y_1 & y_2 & \cdots & y_n \\ y_1' & y_2' & \cdots & y_n' \\ \vdots & \vdots & \ddots & \vdots \\ y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)} \end{vmatrix}$$</p>
+            <ul>
+                <li><strong>重要定理：</strong>若 $y_1, \dots, y_n$ 是齐次线性方程 $L[y]=0$（系数连续）在区间 $I$ 上的解，则 $W(x)$ 在 $I$ 上<strong>要么处处不为零（此时线性无关），要么恒等于零（此时线性相关）</strong>，绝无可能只在某些点为零而在另一些点不为零！</li>
+            </ul>
+
+            <h3>9.2 Abel-Liouville 公式 (刘维尔公式)</h3>
+            <p>对于标准形式（最高阶导数系数化为 1）的 $n$ 阶齐次线性方程 $y^{(n)} + a_1(x)y^{(n-1)} + \dots + a_n(x)y = 0$，其任意 $n$ 个解的 Wronskian 行列式满足：
+            $$W(x) = W(x_0) \exp\left( -\int_{x_0}^x a_1(t)\,dt \right)$$
+            对于二阶方程 $y'' + P(x)y' + Q(x)y = 0$，即：
+            $$W(x) = y_1 y_2' - y_1' y_2 = C \cdot e^{-\int P(x)dx}$$</p>
+        </div>
+
+        <!-- Lecture 10 -->
+        <div class="section-header" id="l10">
+            <span class="lecture-tag">Lecture 10</span>
+            <h2>已知一解降阶法 (Reduction of Order) & 常系数齐次特征根法</h2>
+        </div>
+
+        <div class="card">
+            <h3>10.1 二阶变系数方程已知一个非零齐次解 $y_1(x)$ 求第二线性无关解 $y_2(x)$</h3>
+            <p><strong>方程：</strong> $y'' + P(x)y' + Q(x)y = 0$（注意：<strong>必须先把 $y''$ 系数化为 1</strong>！）</p>
+            <div class="method-box">
+                <div class="method-title">🔧 两种等价秒杀法</div>
+                <ul>
+                    <li><strong>方法 A（Liouville 公式直接代公式 —— 最快）：</strong>
+                        $$y_2(x) = y_1(x) \int \frac{e^{-\int P(x)dx}}{y_1^2(x)}\,dx$$</li>
+                    <li><strong>方法 B（代换法 $y = y_1(x) u(x)$ —— 最通用，也适用于非齐次方程）：</strong>
+                        将 $y = y_1 u$ 代入原方程，所有不含 $u'$ 的项必自动抵消为 0，化为关于 $v = u'$ 的一阶线性方程：
+                        $$y_1 u'' + (2y_1' + P y_1)u' = 0$$</li>
+                </ul>
+            </div>
+
+            <h3>10.2 常系数齐次线性方程：特征根分类全表</h3>
+            <p>对 $y^{(n)} + a_1 y^{(n-1)} + \dots + a_n y = 0$，写特征多项式 $P(\lambda) = \lambda^n + a_1 \lambda^{n-1} + \dots + a_n = 0$：</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>特征根 $\lambda$ 的类型</th>
+                        <th>重数</th>
+                        <th>对应的实值线性无关基本解</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>单实根 $\lambda = r$</td>
+                        <td>$1$</td>
+                        <td>$e^{rx}$</td>
+                    </tr>
+                    <tr>
+                        <td>$k$ 重实根 $\lambda = r$</td>
+                        <td>$k$</td>
+                        <td>$e^{rx}, \; x e^{rx}, \; x^2 e^{rx}, \; \dots, \; x^{k-1}e^{rx}$</td>
+                    </tr>
+                    <tr>
+                        <td>一对单共轭复根 $\lambda = \alpha \pm i\beta$</td>
+                        <td>$1$</td>
+                        <td>$e^{\alpha x}\cos(\beta x), \; e^{\alpha x}\sin(\beta x)$</td>
+                    </tr>
+                    <tr>
+                        <td>$k$ 重共轭复根 $\lambda = \alpha \pm i\beta$</td>
+                        <td>$k$</td>
+                        <td>$x^j e^{\alpha x}\cos(\beta x), \; x^j e^{\alpha x}\sin(\beta x) \quad (j = 0, 1, \dots, k-1)$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Lecture 11 -->
+        <div class="section-header" id="l11">
+            <span class="lecture-tag">Lecture 11</span>
+            <h2>常系数非齐次线性方程：待定系数法（共振重数）与微分算子法</h2>
+        </div>
+
+        <div class="card">
+            <h3>11.1 待定系数法 (Method of Undetermined Coefficients)</h3>
+            <p>针对非齐次项 $f(x)$ 的两种标准结构，先提取特征参数，对比特征多项式 $P(\lambda) = 0$ 的根：</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>非齐次项 $f(x)$ 的形式</th>
+                        <th>判别复数 $\gamma$</th>
+                        <th>特解 $y_p(x)$ 的标准设法（其中 $k$ 为 $\gamma$ 作为特征根的重数，不是根则 $k=0$）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>I 型：</strong> $e^{\lambda x} P_m(x)$</td>
+                        <td>$\gamma = \lambda$</td>
+                        <td>$$y_p(x) = x^k Q_m(x) e^{\lambda x}$$（$Q_m$ 为含全部 0 到 $m$ 次项的完整待定多项式）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>II 型：</strong> $e^{\lambda x}\big[P_m(x)\cos\omega x + R_n(x)\sin\omega x\big]$</td>
+                        <td>$\gamma = \lambda + i\omega$</td>
+                        <td>$$y_p(x) = x^k e^{\lambda x}\big[A_N(x)\cos\omega x + B_N(x)\sin\omega x\big]$$其中 $N = \max(m, n)$，<strong>即便原题只含 $\cos$ 或只含 $\sin$，$y_p$ 也必须同时设出 $\cos$ 和 $\sin$ 两项！</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <div class="tip-title">⚡ 微分算子逆算子秒杀法（避免解大型线性方程组）</div>
+                记 $D = \frac{d}{dx}$，方程写为 $P(D)y = f(x)$，特解 $y_p = \frac{1}{P(D)}f(x)$：
+                <ul>
+                    <li><strong>移位定理（最核心）：</strong> $\frac{1}{P(D)}\big[e^{\lambda x} V(x)\big] = e^{\lambda x} \frac{1}{P(D + \lambda)} V(x)$。</li>
+                    <li><strong>指数输入 ($P(\lambda)\neq 0$)：</strong> $\frac{1}{P(D)} e^{\lambda x} = \frac{1}{P(\lambda)} e^{\lambda x}$；若 $P(D) = (D-\lambda)^k Q(D)$ 且 $Q(\lambda)\neq 0$，则 $\frac{1}{P(D)}e^{\lambda x} = \frac{x^k}{k! Q(\lambda)} e^{\lambda x}$！</li>
+                    <li><strong>正余弦输入：</strong>把 $D^2$ 替换为 $-\omega^2$，即 $\frac{1}{\Phi(D^2)}\cos(\omega x) = \frac{1}{\Phi(-\omega^2)}\cos(\omega x)$（分母不为 0 时）。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Lecture 12 -->
+        <div class="section-header" id="l12">
+            <span class="lecture-tag">Lecture 12</span>
+            <h2>高阶常数变易法 (Variation of Parameters) 与 Euler-Cauchy 方程</h2>
+        </div>
+
+        <div class="card">
+            <h3>12.1 二阶常数变易法（适用于含 $\sec x, \tan x, \ln x, e^x/x$ 等非待定系数题型）</h3>
+            <p>对于<strong>已将最高阶系数化为 1</strong> 的方程 $y'' + P(x)y' + Q(x)y = f(x)$，设齐次基本解组为 $y_1(x), y_2(x)$：</p>
+            <div class="method-box">
+                <div class="method-title">🔧 标准解题方法论 (SOP)</div>
+                <ol>
+                    <li>设特解为 $y_p(x) = C_1(x)y_1(x) + C_2(x)y_2(x)$。</li>
+                    <li>列线性方程组：
+                        $$\begin{cases} C_1'(x)y_1(x) + C_2'(x)y_2(x) = 0 \\ C_1'(x)y_1'(x) + C_2'(x)y_2'(x) = f(x) \end{cases}$$</li>
+                    <li>由 Cramer 法则直接写出公式（其中 $W(x) = y_1 y_2' - y_1' y_2$）：
+                        $$C_1'(x) = -\frac{y_2(x)f(x)}{W(x)}, \qquad C_2'(x) = \frac{y_1(x)f(x)}{W(x)}$$</li>
+                    <li>积分得特解：
+                        $$y_p(x) = -y_1(x)\int \frac{y_2(x)f(x)}{W(x)}dx + y_2(x)\int \frac{y_1(x)f(x)}{W(x)}dx$$</li>
+                </ol>
+            </div>
+
+            <h3>12.2 Euler-Cauchy 方程 (欧拉方程)</h3>
+            <p><strong>标准形式：</strong> $x^n y^{(n)} + a_1 x^{n-1} y^{(n-1)} + \dots + a_{n-1} x y' + a_n y = f(x) \quad (x > 0)$</p>
+            <div class="method-box">
+                <div class="method-title">🔧 两种标准解法</div>
+                <ul>
+                    <li><strong>方法 1：指数换元法（推荐非齐次 Euler 方程）</strong>
+                        令 $x = e^t$（即 $t = \ln x$，若 $x<0$ 则令 $x = -e^t$），记微分算子 $\vartheta = \frac{d}{dt} = x\frac{d}{dx}$，则：
+                        $$\begin{aligned}
+                        x y' &= \vartheta y = \frac{dy}{dt} \\
+                        x^2 y'' &= \vartheta(\vartheta - 1)y = \frac{d^2y}{dt^2} - \frac{dy}{dt} \\
+                        x^3 y''' &= \vartheta(\vartheta - 1)(\vartheta - 2)y = \frac{d^3y}{dt^3} - 3\frac{d^2y}{dt^2} + 2\frac{dy}{dt}
+                        \end{aligned}$$
+                        代入后原方程直接变成关于 $t$ 的<strong>常系数线性微分方程</strong>！解出 $y(t)$ 后将 $t = \ln|x|$ 代回。</li>
+                    <li><strong>方法 2：幂函数试探法（推荐齐次 Euler 方程）</strong>
+                        令 $y = x^r$，代入齐次欧拉方程得指标方程（特征方程）：
+                        $$r(r-1)\cdots(r-n+1) + a_1 r(r-1)\cdots(r-n+2) + \dots + a_n = 0$$
+                        <ul>
+                            <li>单实根 $r$：对应解 $x^r$</li>
+                            <li>$k$ 重实根 $r$：对应解 $x^r, \; x^r \ln|x|, \; x^r (\ln|x|)^2, \dots, x^r (\ln|x|)^{k-1}$</li>
+                            <li>共轭复根 $r = \alpha \pm i\beta$：对应解 $x^\alpha \cos(\beta \ln|x|), \; x^\alpha \sin(\beta \ln|x|)$</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'light');
+            }
+        }
+
+        function filterCards() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(q) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
