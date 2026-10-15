@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-15 2026-10-15 22:56（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-15 2026-10-15 22:57（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -366,7 +366,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（2564 个文件）
+## 3. 文件直达 URL 索引（2568 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -518,7 +518,7 @@
 - `plan/week-plan.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/week-plan.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（495 个）
+### subjects（499 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -603,6 +603,8 @@
 - `subjects/03-微分方程/作业/c514c5ceaa591ffb89833d1b89043e77.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/c514c5ceaa591ffb89833d1b89043e77.png
 - `subjects/03-微分方程/期中模拟卷-Gemini出卷提示词-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E6%9C%9F%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%8D%B7-Gemini%E5%87%BA%E5%8D%B7%E6%8F%90%E7%A4%BA%E8%AF%8D-20261014.md
 - `subjects/03-微分方程/讲义/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/INDEX.md
+- `subjects/03-微分方程/讲义/ODE_L1_L12_Knowledge_Methodology.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/ODE_L1_L12_Knowledge_Methodology.html
+- `subjects/03-微分方程/讲义/T05-完整精讲-一维保守运动到有心力-20261015.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/T05-%E5%AE%8C%E6%95%B4%E7%B2%BE%E8%AE%B2-%E4%B8%80%E7%BB%B4%E4%BF%9D%E5%AE%88%E8%BF%90%E5%8A%A8%E5%88%B0%E6%9C%89%E5%BF%83%E5%8A%9B-20261015.pdf
 - `subjects/03-微分方程/讲义/准齐次方程-精讲-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%87%86%E9%BD%90%E6%AC%A1%E6%96%B9%E7%A8%8B-%E7%B2%BE%E8%AE%B2-20261014.md
 - `subjects/03-微分方程/讲义/方程组章-精讲-20261008.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%96%B9%E7%A8%8B%E7%BB%84%E7%AB%A0-%E7%B2%BE%E8%AE%B2-20261008.md
 - `subjects/03-微分方程/讲义/方程组章-跟课导读-20261008.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%96%B9%E7%A8%8B%E7%BB%84%E7%AB%A0-%E8%B7%9F%E8%AF%BE%E5%AF%BC%E8%AF%BB-20261008.md
@@ -616,6 +618,8 @@
 - `subjects/03-微分方程/讲义/期中模拟卷-20261014.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%8D%B7-20261014.pdf
 - `subjects/03-微分方程/讲义/期中模拟卷-详解与评分标准-20261014.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%8D%B7-%E8%AF%A6%E8%A7%A3%E4%B8%8E%E8%AF%84%E5%88%86%E6%A0%87%E5%87%86-20261014.pdf
 - `subjects/03-微分方程/讲义/模拟卷-与课件例题重合度核查-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%A8%A1%E6%8B%9F%E5%8D%B7-%E4%B8%8E%E8%AF%BE%E4%BB%B6%E4%BE%8B%E9%A2%98%E9%87%8D%E5%90%88%E5%BA%A6%E6%A0%B8%E6%9F%A5-20261014.md
+- `subjects/03-微分方程/讲义/考点自查清单-L1-L12-20261015.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E8%80%83%E7%82%B9%E8%87%AA%E6%9F%A5%E6%B8%85%E5%8D%95-L1-L12-20261015.html
+- `subjects/03-微分方程/讲义/考点自查清单-L1-L12-20261015.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E8%80%83%E7%82%B9%E8%87%AA%E6%9F%A5%E6%B8%85%E5%8D%95-L1-L12-20261015.pdf
 - `subjects/03-微分方程/课件/1.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf
 - `subjects/03-微分方程/课件/10(1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf
 - `subjects/03-微分方程/课件/11(1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf
