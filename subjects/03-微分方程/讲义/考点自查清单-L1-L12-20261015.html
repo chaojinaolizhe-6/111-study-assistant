@@ -55,7 +55,7 @@ code { font-family: Consolas, monospace; background: #f2f2f2; padding: 0 2px;
 </div>
 <h2>一、这次核对是怎么做的（可信度说明）</h2>
 <ul>
-<li><b>从课件原文件开始</b>：把 <code>subjects/03-微分方程/课件/</code> 下的 <code>1.pdf</code>…<code>12(1).pdf</code> 共 <b>536 页</b>用 PyMuPDF 逐页抽取文字层（<b>12 份全部有文字层，无空白页</b>；抽取结果 <code>_scratch/ode-l1-12-fulltext.txt</code>，约 33 万字符）。</li>
+<li><b>从课件原文件开始</b>：把 <code>subjects/03-微分方程/课件/</code> 下的 <code>1.pdf</code>…<code>12(1).pdf</code> 共 <b>579 页</b>用 PyMuPDF 逐页抽取文字层（<b>12 份全部有文字层，无空白页</b>；抽取结果 <code>_scratch/ode-l1-12-fulltext.txt</code>，约 33 万字符）。</li>
 <li><b>逐页对照</b>：分成 L1–3 / L4–6 / L7–9 / L10–12 四组独立通读，把每页的定义、定理、方法、特例、退化情形、例题类型、作业题型逐条列出，再判断讲义里有没有。</li>
 <li><b>独立复核</b>：对所有「讲义没有」的判定做关键词反查——把 HTML 去掉标签后再抹掉 LaTeX 噪声（<code>\ $ { } _</code> 与空白），这样 <code>$y \equiv 0$</code> 与「y ≡ 0」都能命中，<b>避免把「公式没被转成纯文本」误判成「讲义缺失」</b>。脚本：<code>_scratch/ode-l12-verify-gaps.py</code>（含 6 条对照项验证匹配器本身）。</li>
 <li><b>已修正的假警报</b>（这两条讲义其实有，不要误补）：Cauchy–Euler 的 x &lt; 0 情形（讲义原文「若 $x&lt;0$ 则令 $x = -e^t$」）、通解含 n 个独立任意常数。另有 1 条「Bernoulli 同除 yⁿ 要查丢解」讲义用缺口 5 覆盖了规则、只是没有例题，本清单记为「讲义不全」而非「没有」。</li>
@@ -157,5 +157,5 @@ code { font-family: Consolas, monospace; background: #f2f2f2; padding: 0 2px;
 <li><b>做一套闭卷限时卷</b>：<code>期中模拟卷-20261014.pdf</code>（考生用卷 4 页，详解另册 16 页）——<b>详解册交卷后再看</b>。</li>
 </ol></div>
 <div class="warn"><p><b>最后一句实话</b>：这份清单是「课件有的 vs 讲义有的」的差集，<b>不是「你会的 vs 你要会的」的差集</b>。讲义覆盖得不错的地方（例如共振重数、IVP 收尾时机、Clairaut 因式分解）不等于你已经会了——那些要看第二节的定位卷状态和上面自查表里你自己打的勾。两边合起来才是「我还有什么没学」。</p></div>
-<p class="small" style="margin-top:10px">生成方式：<code>python -B _scratch/ode-l12-coverage-audit-build-20261015.py</code> 生成本 HTML → Chrome 无头 <code>--print-to-pdf</code> 转同名 PDF。<br>核对依据：课件原文件 12 份（536 页）逐页文字抽取 ＋ 四组独立逐讲审计 ＋ 关键词去噪复核（<code>_scratch/ode-l12-verify-gaps.py</code>）；前置台账 <code>期中复习-缺口攻关双语指南-20261014</code>、<code>期中复习骨架-20261003</code>、<code>课件/INDEX.md</code>。<br>被核对文件：<code>讲义/ODE_L1_L12_Knowledge_Methodology.html</code>（2026-10-15 收到的版本）。本清单未修改该文件。</p>
+<p class="small" style="margin-top:10px">生成方式：<code>python -B _scratch/ode-l12-coverage-audit-build-20261015.py</code> 生成本 HTML → Chrome 无头 <code>--print-to-pdf</code> 转同名 PDF。<br>核对依据：课件原文件 12 份（579 页）逐页文字抽取 ＋ 四组独立逐讲审计 ＋ 关键词去噪复核（<code>_scratch/ode-l12-verify-gaps.py</code>）；前置台账 <code>期中复习-缺口攻关双语指南-20261014</code>、<code>期中复习骨架-20261003</code>、<code>课件/INDEX.md</code>。<br>被核对文件：<code>讲义/ODE_L1_L12_Knowledge_Methodology.html</code>（2026-10-15 收到的版本）。本清单未修改该文件。</p>
 </body></html>

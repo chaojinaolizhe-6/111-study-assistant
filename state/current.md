@@ -3,7 +3,7 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-10-15**（中国时间；系统英国日期 2026-10-15）。
+> 生成于 **2026-10-16**（中国时间；系统英国日期 2026-10-16）。
 > 事实源指纹：`attempts.jsonl` 50 条（sha256 `29a537c99ab6…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 

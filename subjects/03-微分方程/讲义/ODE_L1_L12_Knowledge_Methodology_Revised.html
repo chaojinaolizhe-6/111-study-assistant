@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="依据原微分方程第1至12讲课件修订的知识点与详细方法论，保留第十二讲九项复习清单，附页码与订正。"><title>微分方程 · 第1–12讲知识与方法｜课件对照修订版</title><style>
+:root{--paper:#f6f4ee;--card:#fffefa;--ink:#202f33;--muted:#5d7175;--line:#dce3de;--accent:#086b62;--soft:#edf5f0;--gold:#a26918;--side:290px;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.9 "Segoe UI","Microsoft YaHei","PingFang SC",sans-serif}a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible,.table-wrap:focus-visible{outline:3px solid #c78a33;outline-offset:3px}button{border:1px solid var(--line);border-radius:8px;padding:5px 12px;background:var(--card);color:var(--ink)}button:hover{background:var(--soft)}.skip{position:fixed;left:12px;top:-70px;z-index:10;background:var(--card);padding:12px}.skip:focus{top:8px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--side);padding:28px 20px 30px 24px;background:var(--card);border-right:1px solid var(--line);overflow:auto;z-index:3}.brand{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700}.side-title{font-size:21px;font-weight:700;margin:2px 0 20px}.nav-top{display:flex;gap:14px;font-size:13px;margin-bottom:18px}.sidebar details{border-top:1px solid var(--line);padding:9px 0}.sidebar summary{cursor:pointer;font-size:13px;font-weight:600;line-height:1.6}.sidebar summary a{text-decoration:none;color:var(--ink)}.sidebar details ul{list-style:none;padding:5px 0 0 15px;margin:0}.sidebar li{line-height:1.6;margin:8px 0}.sidebar li a{font-size:12px;color:var(--muted);text-decoration:none}.sidebar li a:hover{color:var(--accent)}.sidebar .note{font-size:11px;color:var(--muted);margin-top:20px}
+.topbar{position:sticky;top:0;margin-left:var(--side);padding:11px 36px;display:flex;gap:12px;align-items:center;background:var(--paper);border-bottom:1px solid var(--line);z-index:2}.search{position:relative;flex:1;max-width:580px}.search input{width:100%;padding:7px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:14px}.toolbar-actions{display:flex;gap:8px;margin-left:auto}.menu-button{display:none}.status{font-size:12px;color:var(--muted);min-width:84px}.progress{position:fixed;top:0;left:var(--side);height:3px;z-index:5;background:var(--accent);width:0}
+main{margin-left:var(--side);max-width:calc(1120px + var(--side));padding:48px 58px 90px}.hero{padding:8px 0 35px;border-bottom:2px solid var(--accent)}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.15em;color:var(--accent)}h1{font-size:42px;line-height:1.35;letter-spacing:-.04em;margin:12px 0 14px}.subtitle{font-size:18px;color:var(--muted);margin:0}.meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.meta span{font-size:12px;background:var(--soft);border:1px solid var(--line);padding:3px 10px;border-radius:100px}.intro{margin:28px 0;font-size:15px}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 32px}.quick a{display:block;text-decoration:none;background:var(--card);padding:17px 19px;border:1px solid var(--line);border-radius:10px;font-weight:600;font-size:14px}.quick small{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:3px}
+.chapter{margin:48px 0}.chapter-head{margin:0 0 22px;display:flex;gap:18px;align-items:flex-start}.chapter-num{color:var(--accent);font-size:37px;line-height:1.2;font-family:Georgia,serif;min-width:49px}.chapter-head h2{font-size:25px;line-height:1.45;margin:0 0 4px}.chapter-head p{font-size:14px;color:var(--muted);margin:0}.unit{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 20px;padding:27px 30px;scroll-margin-top:88px}.unit h3{font-size:20px;line-height:1.5;margin:0 0 10px;font-weight:700}.unit h4{font-size:16px;margin:0 0 8px}.sources{display:flex;flex-wrap:wrap;gap:5px 12px;margin:0 0 18px;line-height:1.6}.source{font-size:11px;font-weight:500;color:var(--muted);text-decoration:none}.source:hover{text-decoration:underline;color:var(--accent)}.unit p{margin:13px 0}.unit strong{font-weight:650;color:var(--ink)}.unit li{margin:7px 0}.unit ol,.unit ul{padding-left:26px}.eq{font-family:"Cambria Math","Cambria","Microsoft YaHei",serif;font-size:18px;line-height:2;padding:17px 21px;border-left:3px solid var(--accent);background:var(--soft);border-radius:0 8px 8px 0;margin:20px 0;overflow-wrap:anywhere}.example{padding:19px 22px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;margin:21px 0;background:color-mix(in srgb,var(--card) 93%,#e8d6b0)}.table-wrap{width:100%;overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.8;min-width:480px}th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:var(--soft);font-weight:650}tr:last-child td{border-bottom:0}td:first-child{font-weight:500}.empty{padding:38px;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}[hidden]{display:none!important}.footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:12px;color:var(--muted)}.backtop{position:fixed;bottom:20px;right:20px;background:var(--card);padding:6px 13px;border:1px solid var(--line);border-radius:8px;font-size:12px;text-decoration:none;z-index:1}
+body.dark{--paper:#142226;--card:#1b2d31;--ink:#e4ece7;--muted:#a9bbb7;--line:#355052;--accent:#8dd6c2;--soft:#233d3b;--gold:#caa465;color-scheme:dark}
+@media(min-width:1600px){main{margin-right:auto;margin-left:var(--side);padding-left:80px;padding-right:80px}}
+@media(max-width:1100px){:root{--side:245px}.sidebar{padding:22px 16px}main{padding:35px 28px 70px}.topbar{padding:10px 28px}h1{font-size:34px}.unit{padding:24px}}
+@media(max-width:800px){:root{--side:0px}.sidebar{width:285px;transform:translateX(-100%);box-shadow:5px 0 25px #0002}.sidebar.open{transform:translateX(0)}.topbar{padding:9px 14px;gap:8px}.menu-button{display:block}.status{display:none}.toolbar-actions{gap:6px}.topbar button{font-size:12px;padding:5px 9px}main{padding:28px 17px 65px}.hero{padding-top:4px}h1{font-size:30px}.subtitle{font-size:16px}.unit{padding:20px 18px;border-radius:9px;font-size:15px}.unit h3{font-size:18px}.chapter-head h2{font-size:22px}.chapter-num{font-size:30px;min-width:36px}.eq{font-size:16px;padding:12px 14px}.quick{grid-template-columns:1fr;gap:8px}.quick a{padding:12px 16px}.chapter{margin-top:36px}.example{padding:15px}.backtop{right:12px;bottom:12px}}
+@media print{html{scroll-behavior:auto}body,body.dark{--paper:white;--card:white;--ink:#111;--muted:#444;--line:#ccc;--accent:#125c52;--soft:#f4f7f4;color-scheme:light;font-size:10.5pt;line-height:1.6}.sidebar,.topbar,.progress,.quick,.backtop,.empty{display:none!important}main{margin:0;padding:0;max-width:none}.hero{padding:0 0 12pt}h1{font-size:26pt}.subtitle{font-size:13pt}.chapter{margin:23pt 0}.chapter-head{break-after:avoid}.chapter-head h2{font-size:18pt}.unit{border:0;border-top:1px solid #bbb;border-radius:0;padding:15pt 0;margin:0}.unit h3{font-size:14pt;break-after:avoid}.unit p{orphans:3;widows:3}.eq{font-size:12pt;line-height:1.8;break-inside:avoid;padding:9pt 12pt}.sources{margin-bottom:9pt}.source{font-size:8pt}table{min-width:0;font-size:9pt}.table-wrap{overflow:visible;break-inside:auto}tr{break-inside:avoid}th,td{padding:7pt}thead{display:table-header-group}.example{break-inside:auto}.intro{font-size:10.5pt}.footer{font-size:9pt}a{color:inherit;text-decoration:none}@page{size:A4;margin:16mm 15mm}}
+
+.unit{scroll-margin-top:0}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head>
+<body><a class="skip" href="#main">跳转到正文</a><div class="progress" aria-hidden="true"></div><aside class="sidebar" id="sidebar" aria-label="课程目录"><div class="brand">DIFFERENTIAL EQUATIONS</div><div class="side-title">微分方程学习讲义</div><nav><div class="nav-top"><a href="#top">首页</a><a href="#l12-checklist">第12讲清单</a></div><details><summary><a href="#lecture-1">01 · 基础概念、解与初值问题</a></summary><ul><li><a href="#calculus">1.1 微积分预备：以后每次换元都用得到</a></li><li><a href="#definitions">1.2 ODE 的分类、解的形式与验证</a></li><li><a href="#ivp-bvp">1.3 初值问题、边值问题与完整收尾</a></li><li><a href="#equilibrium-singular">1.4 平衡解、奇解、方向场</a></li><li><a href="#existence">1.5 局部存在唯一性与失效边界</a></li><li><a href="#euler-numerical">1.6 数值 Euler 方法：用切线逐步前进</a></li><li><a href="#models">1.7 从物理描述建立方程：自由落体与冷却</a></li></ul></details><details><summary><a href="#lecture-2">02 · 分离变量与一阶齐次</a></summary><ul><li><a href="#separable">2.1 可分离变量：积分之外还要检查解集</a></li><li><a href="#linear-combination">2.2 可化为分离变量：公共线性组合</a></li><li><a href="#domain-ivp">2.3 初值选支、最大区间与有限位置发散</a></li><li><a href="#population">2.4 人口模型：从单位个体增长率到总量</a></li><li><a href="#homogeneous-first">2.5 一阶齐次方程：y/x 为什么是自然变量</a></li><li><a href="#affine-ratio">2.6 线性分式：交点平移与平行退化</a></li></ul></details><details><summary><a href="#lecture-3">03 · 拟齐次、建模与恰当方程</a></summary><ul><li><a href="#flight">3.1 飞行轨迹模型：先分解速度，再消去时间</a></li><li><a href="#quasi-homogeneous">3.2 拟齐次方程：用权重找换元</a></li><li><a href="#exact">3.3 恰当方程：恢复势函数的三种办法</a></li><li><a href="#integration-toolbox">3.4 积分工具：课件反复使用的基本操作</a></li></ul></details><details><summary><a href="#lecture-4">04 · 积分因子与一阶线性</a></summary><ul><li><a href="#integrating-factor">4.1 积分因子：从恰当条件推导，而非猜符号</a></li><li><a href="#structural-factors">4.2 常用结构积分因子与凑微分</a></li><li><a href="#linear-first">4.3 一阶线性方程：两种推导、一个完整流程</a></li><li><a href="#swap-variables">4.4 互换 x、y：把非线性外观变成线性</a></li></ul></details><details><summary><a href="#lecture-5">05 · Bernoulli、Riccati 与隐式方程</a></summary><ul><li><a href="#bernoulli">5.1 Bernoulli 方程：先保留零解，再线性化</a></li><li><a href="#general-linearization">5.2 一般函数换元：识别 g′(y)y′</a></li><li><a href="#riccati">5.3 Riccati 方程：已知特解才能直接降阶</a></li><li><a href="#resolved-y">5.4 已解出 y 的隐式一阶方程：把 p=y′ 当参数</a></li></ul></details><details><summary><a href="#lecture-6">06 · Clairaut、Lagrange 与参数法</a></summary><ul><li><a href="#clairaut">6.1 Clairaut 方程：直线族与包络分支</a></li><li><a href="#lagrange">6.2 Lagrange 方程：转成关于 x(p) 的线性方程</a></li><li><a href="#resolved-x">6.3 已解出 x：改用 y 或 p 作自变量</a></li><li><a href="#piecewise">6.4 课后题中的组合技巧与分段条件</a></li></ul></details><details><summary><a href="#lecture-7">07 · 高阶方程的六类降阶</a></summary><ul><li><a href="#reduction-map">7.1 高阶降阶的总地图与直接积分</a></li><li><a href="#missing-x">7.2 不显含 x：p 必须看成 y 的函数</a></li><li><a href="#missing-low">7.3 缺少低阶导数：一次降低 k 阶</a></li><li><a href="#homogeneous-derivatives">7.4 关于 y 及导数同次齐次：对数导数降阶</a></li><li><a href="#generalized-scaling">7.5 广义齐次高阶方程：指数换元后再降阶</a></li><li><a href="#known-solution-reduction">7.6 已知一个线性解：消去 u 项来降阶</a></li></ul></details><details><summary><a href="#lecture-8">08 · 线性结构、Wronskian 与常数变易</a></summary><ul><li><a href="#linear-structure">8.1 线性方程的结构：叠加、基解组、非齐次通解</a></li><li><a href="#independence">8.2 线性无关与 Wronskian：区分一般函数和同一方程的解</a></li><li><a href="#variation-second">8.3 二阶常数变易法：从辅助条件推到积分</a></li></ul></details><details><summary><a href="#lecture-9">09 · 实特征根与 n 阶常数变易</a></summary><ul><li><a href="#constant-real">9.1 常系数齐次方程：特征多项式与实重根</a></li><li><a href="#variation-n">9.2 n 阶常数变易：不能只背二阶公式</a></li></ul></details><details><summary><a href="#lecture-10">10 · 复特征根与 Cauchy–Euler</a></summary><ul><li><a href="#complex-roots">10.1 复根、重复共轭根与实通解</a></li><li><a href="#complex-power">10.2 复数代数预备：极形式与 n 次方根</a></li><li><a href="#euler-equation">10.3 Cauchy–Euler 方程：对数自变量与指标方程</a></li></ul></details><details><summary><a href="#lecture-11">11 · 非齐次方程的待定系数法</a></summary><ul><li><a href="#undetermined">11.1 待定系数法：先检查右端是否属于封闭函数族</a></li><li><a href="#shift-operator">11.2 指数移位与共振：让计算更短</a></li><li><a href="#trig-forcing">11.3 三角强迫与混合强迫：分组、配对、处理初值</a></li><li><a href="#solution-writing">11.4 从识别到交卷：一套可核验的六步流程</a></li></ul></details><details><summary><a href="#lecture-12">12 · 总复习：原清单与全部示例</a></summary><ul><li><a href="#l12-checklist">12.0 原课件的九项知识点清单：完整保留并确认</a></li><li><a href="#l12-homogeneous">12.1 齐次与拟齐次：两个原题逐步核对</a></li><li><a href="#l12-if-bernoulli">12.2 积分因子与 Bernoulli：公式标签、零解和正负支</a></li><li><a href="#l12-riccati">12.3 Riccati 初值例：完整解族和指定初值</a></li><li><a href="#l12-implicit">12.4 已解出 y、x 的参数题：主值分支和奇解</a></li><li><a href="#l12-reduction">12.5 降阶四项：原清单子项与四道例题</a></li><li><a href="#l12-linear-homogeneous">12.6 常系数齐次与 Euler：五个例题全部核对</a></li><li><a href="#l12-linear-nonhomogeneous">12.7 非齐次：常数变易与待定系数两道原题</a></li></ul></details><details><summary><a href="#lecture-13">附 · 方法选择、补充与订正记录</a></summary><ul><li><a href="#choose-method">附录 A｜遇到一道方程，按什么顺序选方法</a></li><li><a href="#operator-supplement">附录 B｜保留的补充技巧：逆算子记号与一题多法</a></li><li><a href="#errata">附录 C｜本次确认的订正与条件补全</a></li></ul></details></nav><p class="note">按原课件讲次编排<br>页码均为 PDF 物理页码<br>公式离线可读 · 支持全文打印</p></aside>
+<header class="topbar"><button id="menu" class="menu-button" aria-controls="sidebar" aria-expanded="false">目录</button><div class="search"><label class="skip" for="search">搜索知识点或方法</label><input id="search" type="search" placeholder="搜索知识点、方法或公式…" autocomplete="off"></div><span class="status" id="status" role="status" aria-live="polite"></span><div class="toolbar-actions"><button id="clear" title="清空搜索">清空</button><button id="theme">深色</button><button id="print">打印全文</button></div></header>
+<main id="main"><section class="hero" id="top"><div class="eyebrow">LECTURES 01—12 / 课件对照修订版</div><h1>微分方程<br>知识点与详细方法论</h1><p class="subtitle">从识别结构，到推导、求解、补分支与回验。</p><div class="meta"><span>12 讲 · 579 页原课件</span><span>第12讲九项清单完整保留</span><span>修订日期 2026-10-16</span><span>107 项新增数学核验通过</span></div></section>
+<div class="intro"><p>这份修订稿按老师原课件的第1至12讲组织。每个知识单元都提供对应页码，重点解释“何时用、为什么这样换元、怎样算、哪些解不能漏”。第十二讲另保留原复习清单，并核对所有实际复习例题。</p><p>首次学习可按讲次阅读；做题时先查选法表；复习时从第十二讲清单回到详细方法。标注“补充”的内容用于解释条件或保留原稿技巧。原课件中确认的笔误在相应例题旁订正，并在附录集中列出。</p></div>
+<div class="quick"><a href="#choose-method">从一道题开始<small>按结构选择方法</small></a><a href="#l12-checklist">第十二讲原清单<small>九项与四个降阶子项</small></a><a href="#errata">查看订正与来源<small>公式、分支与适用条件</small></a></div><div class="empty" id="empty" hidden>没有找到匹配内容。可尝试“降阶”“Riccati”“初值”或更短的关键词。</div>
+<section class="chapter" id="lecture-1"><header class="chapter-head"><div class="chapter-num">01</div><div><h2>基础概念、解与初值问题</h2><p>先认识解的含义，再检查问题的条件。</p></div></header><article class="unit" id="calculus"><h3>1.1 微积分预备：以后每次换元都用得到</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=3" target="_blank" rel="noopener">L1 · PDF p3–8 ↗</a></div><p><strong>区间与定义域。</strong> 解是一段区间 I 上的函数，不只是一个代数表达式。开区间、闭区间、半开区间和无界区间都要看端点是否属于定义域；除以 x、取 ln y、开平方之前，先记录 x≠0、y&gt;0、被开方量≥0 等条件。</p>
+<p><strong>极限、连续与可微。</strong> limₓ→ₓ₀ f(x)=A 的含义是：对任意 ε&gt;0，存在 δ&gt;0，使 0&lt;|x−x₀|&lt;δ 时 |f(x)−A|&lt;ε。连续要求该极限等于 f(x₀)。导数是差商极限 f′(x₀)=limₕ→₀[f(x₀+h)−f(x₀)]/h；高阶导数继续求导。二元极限要沿定义域内所有趋近路径得到同一极限，仅检查两条直线不够。</p>
+<p><strong>偏导、全微分与链式法则。</strong> 求 fₓ 时把 y 当常数；求 fᵧ 时把 x 当常数。连续的混合二阶偏导满足 fₓᵧ=fᵧₓ，这是恰当方程判据的基础。</p>
+<div class="eq">df = fₓ dx + fᵧ dy<br>沿 y=y(x)：d[f(x,y(x))]/dx = fₓ + fᵧy′<br>x=x(r,s), y=y(r,s)：gᵣ=fₓxᵣ+fᵧyᵣ，gₛ=fₓxₛ+fᵧyₛ</div>
+
+<p><strong>偏积分中的“常数”是函数。</strong> ∫M(x,y)dx=H(x,y)+φ(y)，因为对 x 求导看不见任何只依赖 y 的项。同理，对 y 积分需加 ψ(x)。例如 ∫(2xy+1)dx=x²y+x+φ(y)，不能只加一个数 C；之后用另一偏导条件确定 φ。</p>
+<p><strong>操作习惯：</strong>每次换元先写新变量依赖谁，再写完整链式法则。p=p(x) 时 y″=p′(x)；p=p(y) 时 y″=p(dp/dy)，两者不能混用。</p></article><article class="unit" id="definitions"><h3>1.2 ODE 的分类、解的形式与验证</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=9" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=9" target="_blank" rel="noopener">L1 · PDF p9–16 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=21" target="_blank" rel="noopener">L1 · PDF p21 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=33" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=33" target="_blank" rel="noopener">L1 · PDF p33–34 ↗</a></div><p><strong>常微分与偏微分。</strong> ODE 只有一个独立变量；PDE 涉及多个独立变量和偏导数。方程的阶数是出现的最高阶导数的阶数，不是它的幂次。例如 (y″)³+y′=0 是二阶方程。</p>
+<p><strong>一般形式与标准化。</strong> n 阶 ODE 写成 F(x,y,y′,…,y⁽ⁿ⁾)=0。若能解出最高阶导数，则为正规形 y⁽ⁿ⁾=f(x,y,…,y⁽ⁿ⁻¹⁾)。一阶还常写成 y′=f(x,y) 或 M dx+N dy=0；由微分形式除以 N 得 y′=−M/N，须先检查 N=0 的情形。</p>
+<p><strong>线性判别。</strong> a₀(x)y⁽ⁿ⁾+a₁(x)y⁽ⁿ⁻¹⁾+⋯+aₙ(x)y=f(x) 才是线性方程：y 及其导数只一次出现、不相乘，系数只能依赖 x。f≡0 称线性齐次，否则称线性非齐次。yy′、(y′)²、sin y 都会破坏线性。这里的“齐次”与第 2 讲的 y/x 型齐次、第 7 讲的缩放齐次含义不同。</p>
+<p><strong>解要满足的要求。</strong> y∈Cⁿ(I)，且代入原方程后在 I 上恒成立。通解通常含 n 个独立任意常数；选定允许常数给出特解。不能只靠“数到 n 个 C”判断解是否正确，还要代回、检查常数是否独立及定义域。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>解的形式</th>
+<th>怎样核验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>显式 y=φ(x)</td>
+<td>求到最高阶导数，再代原式</td>
+</tr>
+<tr>
+<td>隐式 Φ(x,y)=0</td>
+<td>当 Φᵧ≠0 时用 y′=−Φₓ/Φᵧ；结合原约束化简残差，不能把 x、y 当完全独立</td>
+</tr>
+<tr>
+<td>参数 x=x(t), y=y(t)</td>
+<td>在 ẋ≠0 的分支用 y′=ẏ/ẋ；二阶为 (1/ẋ)d(y′)/dt</td>
+</tr>
+<tr>
+<td>求积形式</td>
+<td>允许保留定积分或不定积分；“不能写成初等函数”不等于没有解</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>课件示例。</strong> yy′=−x 的隐式解是 x²+y²=C。对它求导得到 2x+2yy′=0。作为 y(x)，上下半圆需分支，且 y=0 的端点不能直接使用 y′=−x/y。参数式 x=a sin t、y=a cos t 也只在 dx/dt≠0 的局部分支直接表示 y(x)。</p></article><article class="unit" id="ivp-bvp"><h3>1.3 初值问题、边值问题与完整收尾</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=17" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=17" target="_blank" rel="noopener">L1 · PDF p17–19 ↗</a></div><p><strong>初值问题 IVP / Cauchy problem：</strong>在同一个 x₀ 给定 y(x₀)、y′(x₀)、…、y⁽ⁿ⁻¹⁾(x₀)。<strong>两点边值问题 BVP：</strong>条件分布在 a、b 两端，例如 Σⱼ[αᵢⱼy⁽ʲ⁾(a)+βᵢⱼy⁽ʲ⁾(b)]=γᵢ。课件还给出 Sturm–Liouville 型例子 X″+λX=0，X(a)=0、X′(b)=0；这里只辨认问题类型。</p>
+<p><strong>通用步骤。</strong> ①求满足原方程的解族；②计算所需导数；③逐条代入条件求常数；④检验代回方程及全部条件；⑤给出包含初始点的有效区间。反解平方、开方时，用初值选分支，而不是同时保留互相矛盾的正负支。</p>
+<p><strong>非齐次初值的原则。</strong> y=yₕ+yₚ 时，yₕ⁽ʲ⁾(x₀)=给定初值−yₚ⁽ʲ⁾(x₀)。通常先拼成总解再定常数最稳妥；若特选 yₚ 的全部相应初值为零，也可以提前定 yₕ 的常数。</p>
+<div class="example"><h4>原课件 p19 的结论订正</h4>
+对 y″+y=0，有 y=A cos x+B sin x。由 y(0)=1 得 A=1。
+<ul><li>若 y′(π/2)=5，则左端恒为 −A=−1，与 5 矛盾，所以无解。</li><li>若 y′(π)=5，则 −B=5，故唯一解 y=cos x−5sin x。</li><li>若改为 y′(π/2)=−1，则 B 任意，存在无穷多个解。</li></ul>
+课件前两种情形的“唯一解／无解”结论写反了。本页按直接代入的结果订正。边值问题没有与常规初值问题完全相同的唯一性保证。
+</div></article><article class="unit" id="equilibrium-singular"><h3>1.4 平衡解、奇解、方向场</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=12" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=12" target="_blank" rel="noopener">L1 · PDF p12–13 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=20" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=20" target="_blank" rel="noopener">L1 · PDF p20 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=25" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=25" target="_blank" rel="noopener">L1 · PDF p25–26 ↗</a></div><p><strong>平衡解必须是整条常数解。</strong> 对 y′=f(x,y)，y≡y₀ 是平衡解当且仅当 f(x,y₀)≡0；对自治方程 y′=g(y)，直接解 g(y₀)=0。例如 y′=y²−9 的平衡解为 y≡±3。</p>
+<p><strong>零斜率不等于平衡。</strong> 方向场在 (x,y) 的斜率是 f(x,y)。等倾线 f(x,y)=k 上的方向斜率都为 k；f=0 只是零斜率轨迹。例如 y′=x 在 x=0 处斜率为零，但所有解 y=x²/2+C 都不是常数解。方向场、等倾线是帮助理解的几何补充。</p>
+<p><strong>奇解的本课程用法。</strong> 给定通解族中，不能通过取允许的常数得到的额外解，课件称为奇解。它不应被定义成“取任何极限也不能得到”；“包络线”是 Clairaut 等方程中的重要情形，不是所有高阶方程的统一定义。常数解也未必是奇解：y′=y 的零解已包含在 Ceˣ 的 C=0 中。</p>
+<p>课件 2x²y″−(y′)²=0 的解族含 2x/C₁−2ln(1+C₁x)/C₁²+C₂（C₁≠0），并把 y=x² 列作额外解。事实上 C₁→0 时上述表达式趋于 x²+C₂，说明不能加入“极限也得不到”的限制。实际解题的首要任务是保留所有满足原方程的分支，再说明它们与所写解族的关系。</p></article><article class="unit" id="existence"><h3>1.5 局部存在唯一性与失效边界</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=24" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=24" target="_blank" rel="noopener">L1 · PDF p24–27 ↗</a></div><p><strong>课件定理。</strong> 对正规形 y⁽ⁿ⁾=f(x,y,…,y⁽ⁿ⁻¹⁾)，若 f 以及它对各个函数变量的偏导在初始点的邻域连续，则所给 n 个初值在某个足够小的区间内确定唯一解。n=1 时就是检查 f 与 fᵧ。这个条件是充分条件，不是必要条件。</p>
+<p><strong>判题步骤。</strong> ①化为正规形并标出被除的最高阶系数；②圈出 f 或相关偏导不连续、未定义的集合；③看初始点是否在一个满足假设的邻域中；④只能在该邻域使用定理；⑤解出后仍检查是否在有限位置发散。</p>
+<p><strong>反例一：定理不适用不等于无解。</strong> y′=3y²ᐟ³ 在 y=0 处 fᵧ=2y⁻¹ᐟ³ 不连续。初值 y(x₀)=0 既允许 y≡0，也允许 y=(x−x₀)³，还允许在零解上停留一段后接上立方曲线。可直接检验拼接点处一阶导数连续。初值 y₀≠0 则局部唯一。</p>
+<p><strong>反例二：局部唯一不保证全实轴有解。</strong> y′=y²、y(0)=1 的唯一解为 y=1/(1−x)，包含 0 的最大解区间为 (−∞,1)，在 x=1 发散。</p>
+<p><strong>补充：Peano 与 Picard–Lindelöf。</strong> 在矩形 |x−x₀|≤a、|y−y₀|≤b 内，f 连续保证局部至少一解；再对 y 一致满足 Lipschitz 条件 |f(x,y₁)−f(x,y₂)|≤L|y₁−y₂|，则局部唯一。fᵧ 连续有界是常用的充分检查法。若 M=max|f|&gt;0，可取 h=min(a,b/M)；M=0 时取 h=a。这是对课件定理的补充解释。</p></article><article class="unit" id="euler-numerical"><h3>1.6 数值 Euler 方法：用切线逐步前进</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=22" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=22" target="_blank" rel="noopener">L1 · PDF p22–23 ↗</a></div><p><strong>识别。</strong> 已知 y′=f(x,y)、y(x₀)=y₀，要求近似数值或无法显式积分时，可使用 Euler 方法。它与第 10 讲的 Euler–Cauchy 方程是不同概念。</p>
+<p><strong>依据。</strong> 小步长 h 内用一阶近似 y(x+h)≈y(x)+h y′(x)。因此：</p>
+<div class="eq">xⱼ₊₁=xⱼ+h， yⱼ₊₁=yⱼ+h f(xⱼ,yⱼ)。</div>
+
+<p><strong>步骤。</strong> ①选步长和终点；②在当前点算斜率；③用同一个当前点更新 y；④更新 x；⑤重复。不要先把 x 换成下一点再代斜率，那就不是这里的显式 Euler 方法。</p>
+<p><strong>示例。</strong> y′=y、y(0)=1，h=0.1：y₁=1+0.1×1=1.1；y₂=1.1+0.1×1.1=1.21。精确值 e⁰·²≈1.2214，可见近似误差。光滑性、稳定性和步长都会影响结果；把 h 减半并比较结果是基本检查，但数值接近不是存在唯一性证明。</p></article><article class="unit" id="models"><h3>1.7 从物理描述建立方程：自由落体与冷却</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=28" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=28" target="_blank" rel="noopener">L1 · PDF p28–31 ↗</a></div><p><strong>建模的共同顺序。</strong> 定义变量及正方向→把“变化率”写成导数→写物理定律→代入假设→配初始条件→解方程→检查符号、单位和模型的有效范围。</p>
+<p><strong>自由落体。</strong> 向上为正、重力加速度大小 g&gt;0，忽略阻力，则 my″=−mg，约去质量得 y″=−g。两次积分：y′=v₀−gt，y=y₀+v₀t−gt²/2。落地时间由 y(T)=0 求正根；若静止释放，T=√(2y₀/g)。原课件 y₀=50 m、g≈9.8 m/s²，T≈3.2 s。公式在落地前的自由运动阶段使用。</p>
+<p><strong>Newton 冷却定律。</strong> 环境温度 A 不变，交换系数 k&gt;0，dT/dt=−k(T−A)。令 u=T−A 后 u′=−ku，故 T=A+(T₀−A)e⁻ᵏᵗ。T&gt;A 时降温，T&lt;A 时升温，T=A 时保持平衡；t→∞ 时趋于 A。若 A 随时间改变，要把它看成一阶线性非齐次方程，不能直接套常 A 的结果。</p></article></section><section class="chapter" id="lecture-2"><header class="chapter-head"><div class="chapter-num">02</div><div><h2>分离变量与一阶齐次</h2><p>从可以分开的变量，走向可以换元分开的结构。</p></div></header><article class="unit" id="separable"><h3>2.1 可分离变量：积分之外还要检查解集</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=3" target="_blank" rel="noopener">L2 · PDF p3–12 ↗</a></div><p><strong>识别。</strong> y′=f(x)g(y)，或 X₁(x)Y₁(y)dx+X₂(x)Y₂(y)dy=0。后一形式在 X₂Y₁≠0 处可分成 [X₁/X₂]dx+[Y₂/Y₁]dy=0。</p>
+<p><strong>步骤。</strong></p>
+<ol>
+<li>列出马上要除掉的因子，并把其零点代回原方程。对 y′=f(x)g(y)，先检 g(y₀)=0 是否产生 y≡y₀。</li>
+<li>在 g(y)≠0 的分支积分：∫dy/g(y)=∫f(x)dx+C。可用从初值出发的定积分，减少常数整理。</li>
+<li>保持隐式答案也可以；若反解，检查平方、开方、指数化引入的符号和定义域。</li>
+<li>合并常数族与额外解；代回原方程、初值；写出有效区间。</li>
+</ol>
+<p><strong>完整示例。</strong> y′=xy，y(0)=2。先检查 y≡0；非零支有 dy/y=x dx，所以 ln|y|=x²/2+C，y=Ce^(x²/2)。允许 C=0 后已包含零解。初值给 C=2，故 y=2e^(x²/2)，在 ℝ 上有效。</p>
+<p><strong>原课件例型。</strong> y′cos y=x sin²y，分离时除 sin²y，故必须补检 y≡kπ。非零支积分 −cot y=x²/2+C。不要把 cos y=0 处的原隐式方程未经检查就除过去；在那里能否作为 y(x) 解继续，要看原式。</p>
+<p><strong>常数吸收。</strong> eᶜ&gt;0，先写 ±eᶜ 再合并为非零任意常数；能否补 C=0 由原方程决定。把常数改名不能自动填补所有被除掉的解。</p></article><article class="unit" id="linear-combination"><h3>2.2 可化为分离变量：公共线性组合</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=13" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=13" target="_blank" rel="noopener">L2 · PDF p13–15 ↗</a></div><p><strong>识别。</strong> y′=F(ax+by+c)。右端反复出现同一组合，就令 z=ax+by+c。</p>
+<p><strong>为什么有效。</strong> z′=a+by′=a+bF(z)，右端只依赖 z，因此是自治的可分离方程。</p>
+<p><strong>步骤。</strong> b≠0 时，积分 ∫dz/[a+bF(z)]=x+C；检查 a+bF(z₀)=0 对应的直线 y=(z₀−ax−c)/b；解出后代回 z。若 b=0，原式只依赖 x，直接积分 y′=F(ax+c)，不要使用除以 b 的回代公式。</p>
+<p><strong>示例。</strong> y′=x+y，令 z=x+y，则 z′=1+z。解得 z=Ceˣ−1，回代 y=Ceˣ−x−1。分离时排除的 z=−1 已由 C=0 包含，对应直线 y=−x−1。</p></article><article class="unit" id="domain-ivp"><h3>2.3 初值选支、最大区间与有限位置发散</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=11" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=11" target="_blank" rel="noopener">L2 · PDF p11–12 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=16" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=16" target="_blank" rel="noopener">L2 · PDF p16–21 ↗</a></div><p>原课件用 y′=2y/x+x²e^(y/x²)，y(1)=a，展示换元后的定义域检查。这也是准齐次思想的一个预告。</p>
+<p>令 u=y/x²，y′=2xu+x²u′。代入后 2xu 抵消，得到 u′=eᵘ。分离：e⁻ᵘdu=dx，积分 −e⁻ᵘ=x+C，因此 u=−ln(B−x)。初值给 B=1+e⁻ᵃ。</p>
+<div class="eq">y(x)=−x² ln(1+e⁻ᵃ−x)， 0&lt;x&lt;1+e⁻ᵃ。</div>
+
+<p><strong>区间为何这样取？</strong> 原方程含 1/x，不能穿过 x=0；对数要求 x&lt;1+e⁻ᵃ；包含初始点 1 的连通区间因此是上式。x→0⁺ 时 y→0，但原方程在 0 未定义，不能仅凭函数极限存在就声称已经把原初值问题延拓过去。x→(1+e⁻ᵃ)⁻ 时 y→+∞，表现为有限位置发散。</p>
+<p><strong>通用结论。</strong> 显式式子“能算”的范围、满足原方程的范围、包含初值的最大连通区间，必须分别核对。反解产生多个支时，用初值及导数连续性选择。</p></article><article class="unit" id="population"><h3>2.4 人口模型：从单位个体增长率到总量</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=22" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=22" target="_blank" rel="noopener">L2 · PDF p22–23 ↗</a></div><p>设 P(t) 为人口总量，β(t)、δ(t) 为单位人口单位时间的出生率、死亡率。短时间内 ΔP≈[β(t)−δ(t)]P(t)Δt，取极限得 P′=[β−δ]P。</p>
+<p>若 P₀&gt;0，分离并用初值 P(0)=P₀：</p>
+<div class="eq">ln[P(t)/P₀]=∫₀ᵗ[β(τ)−δ(τ)]dτ<br>P(t)=P₀ exp{∫₀ᵗ[β(τ)−δ(τ)]dτ}。</div>
+
+<p>常净增长率 r 给 P=P₀eʳᵗ；r&gt;0 增长，r&lt;0 衰减，r=0 恒定。P₀=0 对应零解，不能在除以 P 时丢掉。关键是 β、δ 是“每个体”的比例率，故方程右端还要乘 P；若给的是每天固定净增加人数，则是另一种方程。</p></article><article class="unit" id="homogeneous-first"><h3>2.5 一阶齐次方程：y/x 为什么是自然变量</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=24" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=24" target="_blank" rel="noopener">L2 · PDF p24–35 ↗</a></div><p><strong>识别。</strong> M(kx,ky)=kᵐM(x,y)、N(kx,ky)=kᵐN(x,y)，即 M、N 同次齐次；在 N≠0、x≠0 的分支可写成 y′=F(y/x)。齐次函数的缩放定义通常取 k&gt;0，避免非整数幂的实数分支问题。</p>
+<p><strong>依据。</strong> 同比例放大 x、y 后，右端斜率不变，唯一有用的比值就是 u=y/x。由 y=xu 得 y′=u+xu′。</p>
+<div class="eq">xu′=F(u)−u， ∫du/[F(u)−u]=ln|x|+C。</div>
+
+<p><strong>完整步骤。</strong> 检查 x=0、N=0 及定义域→令 y=xu→写完整导数→先检 F(u₀)=u₀ 的直线解→分离积分→恢复 u=y/x→回代原式及初值。若原问题允许把 x 看成 y 的函数，也可用 x=vy；垂直直线不能自动当作 y(x) 解。</p>
+<p><strong>示例。</strong> y′=y/x+1，x≠0。令 y=xu，得到 xu′=1，因此 u=ln|x|+C，y=x[ln|x|+C]。这里 F(u)−u=1，没有额外常比值解。</p>
+<p><strong>防混淆。</strong> y′+P(x)y=0 的“线性齐次”不一定是 y/x 型；这两种识别法应分别检查，能同时成立时选较短路线。</p></article><article class="unit" id="affine-ratio"><h3>2.6 线性分式：交点平移与平行退化</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=36" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=36" target="_blank" rel="noopener">L2 · PDF p36–41 ↗</a></div><p><strong>形式。</strong> y′=F((a₁x+b₁y+c₁)/(a₂x+b₂y+c₂))，以及线性系数的一阶微分形式。先看常数项是否已为零，再算 Δ=a₁b₂−a₂b₁。</p>
+<p><strong>Δ≠0：交点平移。</strong> 解 a₁h+b₁k+c₁=0、a₂h+b₂k+c₂=0；令 x=X+h、y=Y+k，导数 dy/dx=dY/dX。常数项消失后是齐次方程，再令 Y=uX。最后必须把 X=x−h、Y=y−k 还原。</p>
+<p><strong>Δ=0：公共组合。</strong> 两行一次系数成比例，可能平行、重合或退化；选择非零公共组合 z=ax+by。右端变成 G(z)，于是 z′=a+bG(z)。b≠0 才能从 z 恢复 y；b=0 时直接对原来的 y′=G(ax) 积分。不要用 a₁/a₂=b₁/b₂ 代替行列式判断，以免系数为零时除零。</p>
+<p><strong>原课件例型。</strong> (x+y+1)+(2x+2y+1)y′=0。令 z=x+y，得到 (2z+1)z′=z；z≠0 时 (2+1/z)dz=dx，因此 2z+ln|z|=x+C，回代 x+2y+ln|x+y|=C。还须保留 z=0，即 y=−x；而 2z+1=0 代回原式不成立，不能作为解补入。</p>
+<p><strong>平移示例检查。</strong> (2x−4y+6)dx+(x+y−3)dy=0 的交点为 (1,2)，因此用 X=x−1、Y=y−2。解交点只是在换坐标，不是已经解出了微分方程。</p></article></section><section class="chapter" id="lecture-3"><header class="chapter-head"><div class="chapter-num">03</div><div><h2>拟齐次、建模与恰当方程</h2><p>利用缩放规律与全微分，找到合适的新变量。</p></div></header><article class="unit" id="flight"><h3>3.1 飞行轨迹模型：先分解速度，再消去时间</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=3" target="_blank" rel="noopener">L3 · PDF p3–7 ↗</a></div><p>飞机从 (a,0) 出发，a&gt;0，机头始终朝向原点；相对空气的速度为 v₀，向北风速为 w，设 k=w/v₀≥0。地面速度等于飞机速度与风速的向量和。</p>
+<div class="eq">dx/dt=−v₀x/√(x²+y²)，dy/dt=−v₀y/√(x²+y²)+w<br>dy/dx=y/x−k√(1+(y/x)²)　（x>0）</div>
+
+<p><strong>求解步骤。</strong> ①速度向量朝向原点，必须除以距离 √(x²+y²) 进行归一化；②用 (dy/dt)/(dx/dt) 消去时间；③设 u=y/x，得到 x u′=−k√(1+u²)；④积分 asinh u=−k ln(x/a)，初始点给出 u(a)=0；⑤用 sinh 的指数表达式还原：</p>
+<div class="eq">y=(a/2)[(x/a)¹⁻ᵏ−(x/a)¹⁺ᵏ]，0&lt;x≤a。</div>
+
+<p><strong>解释结果。</strong> k&lt;1 时轨迹趋向原点；k=1 时 y=(a/2)(1−x²/a²)，趋向 (0,a/2)，不能到达原点；k&gt;1 时 x→0⁺ 导致 y→+∞。轨迹的端点极限与到达所需时间是不同问题；以上分类首先描述几何轨迹。课件 p7 的临界情形也应与这个公式相符。</p></article><article class="unit" id="quasi-homogeneous"><h3>3.2 拟齐次方程：用权重找换元</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=8" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=8" target="_blank" rel="noopener">L3 · PDF p8–17 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=36" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=36" target="_blank" rel="noopener">L4 · PDF p36–47 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=5" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=5" target="_blank" rel="noopener">L12 · PDF p5–9 ↗</a></div><p><strong>识别。</strong> 普通齐次把 x、y 同比例放大；拟齐次允许不同权重。若 y′=f(x,y) 满足 f(kᵃx,kᵇy)=kᵇ⁻ᵃ f(x,y)，则 x 的权重为 a，y 的权重为 b。a≠0 时记 α=b/a；归一化后 f(kx,kᵅy)=kᵅ⁻¹ f(x,y)。通常取 k&gt;0，分别在 x&gt;0、x&lt;0 区间处理。</p>
+<p><strong>详细方法。</strong></p>
+<ol>
+<li>给 x 赋权 1，y 赋权 α，y′ 的权重就是 α−1。把每一单项式的权重列出并令它们一致，解 α。</li>
+<li>在 x&gt;0 设 u=y/xᵅ，即 y=xᵅu；写 y′=xᵅ⁻¹(αu+xu′)。代回后得到 x u′=F(u)−αu。</li>
+<li>先解 F(u)−αu=0 得到被分离除掉的幂函数解 y=u₀xᵅ，再对其余分支分离变量。</li>
+<li>积分后还原 y，检查根号、分母、实幂定义域，代回原式。x&lt;0 可用 |x|ᵅ 换元，但应重新代入确认符号，不能机械照搬正半轴的 F。</li>
+</ol>
+<div class="example"><h4>例：y′=y/x+x/y²</h4>
+权重条件 1−2α=α−1，得 α=2/3。令 y=x²ᐟ³u（先取 x>0），得到 x u′=u/3+1/u²。非平衡分支积分：3u²du/(u³+3)=dx/x，所以 ln|u³+3|=ln x+C，最终 y³=Cx³−3x²。分离时排除的 u³=−3 已由最终 C=0 包含；原式仍要求 x≠0、y≠0。负半轴可直接检验隐式结果，并在其有效分支使用。</div>
+
+<p>另一个练习 y′=y/x+x³/y 取 α=2，可得 y²=x⁴+Cx²；显式表达须取正负支且 y≠0。α=0 时直接设 u=y 仍有效，不能强行使用需要非零指数的 y=zᵝ 换元。更一般的权重 a=0 情况可尝试互换自变量与因变量，再做同样分析。</p></article><article class="unit" id="exact"><h3>3.3 恰当方程：恢复势函数的三种办法</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=18" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=18" target="_blank" rel="noopener">L3 · PDF p18–28 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" target="_blank" rel="noopener">L12 · PDF p10–13 ↗</a></div><p><strong>识别与条件。</strong> M(x,y)dx+N(x,y)dy=0 若能写成 dΦ=0，则称恰当方程，解为 Φ(x,y)=C。M、N 具有连续一阶偏导时，恰当必有 Mᵧ=Nₓ；在课件采用的开矩形内该条件也充分。推广到单连通开区域仍充分；有孔洞的区域要另查全局单值性，不能只看偏导相等。</p>
+<p><strong>方法 A：先对 x 积分。</strong> ①计算 Mᵧ、Nₓ；②写 Φ=∫M dx+g(y)；③求 Φᵧ 并令其等于 N；④解出 g′ 并积分；⑤写 Φ=C；⑥求两个偏导回验。如果算出的 g′ 还依赖 x，通常是判据或积分出错。</p>
+<p><strong>方法 B：先对 y 积分。</strong> 写 Φ=∫N dy+h(x)，再用 Φₓ=M 求 h。选择积分更容易的一边，步骤完全对称。</p>
+<p><strong>方法 C：路径积分或凑全微分。</strong> 在合法矩形内，固定 (x₀,y₀)：</p>
+<div class="eq">Φ(x,y)=∫ₓ₀ˣ M(s,y₀)ds + ∫ᵧ₀ʸ N(x,t)dt。</div>
+
+<p>折线路径必须留在定义域内。常用全微分：d(xy)=y dx+x dy，d(x/y)=dx/y−x dy/y²，d(y/x)=dy/x−y dx/x²，d(x²+y²)=2x dx+2y dy，d arctan(y/x)=(x dy−y dx)/(x²+y²)（局部选角度分支）。</p>
+<div class="example"><h4>例：(2xy+1)dx+(x²+2y)dy=0</h4>
+Mᵧ=2x=Nₓ。先积分 Φ=x²y+x+g(y)，由 Φᵧ=x²+g′(y)=x²+2y 得 g=y²，故 x²y+x+y²=C。再求 Φₓ、Φᵧ，逐项与原 M、N 对照即可。</div>
+
+<p><strong>隐式曲线不一定处处是 y(x)。</strong> 当 Φᵧ=N≠0 时可以局部写成 y(x)。N=0 的点仍可属于曲线，但要单独分析切线或奇点；微分形式中的竖直曲线不应直接当成常微分方程的函数解。</p></article><article class="unit" id="integration-toolbox"><h3>3.4 积分工具：课件反复使用的基本操作</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=31" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=31" target="_blank" rel="noopener">L3 · PDF p31–33 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=42" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=42" target="_blank" rel="noopener">L3 · PDF p42 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=43" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=43" target="_blank" rel="noopener">L5 · PDF p43–49 ↗</a></div><p>课件第3讲 p42 特别要求掌握积分方法与标准积分表。下面把本课程常用工具补成可操作清单，供分离变量、积分因子和常数变易调用。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>被积形式</th>
+<th>一个原函数（另加 C）</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xᵃ，a≠−1</td>
+<td>xᵃ⁺¹/(a+1)</td>
+<td>在所选实幂分支内</td>
+</tr>
+<tr>
+<td>1/x</td>
+<td>ln|x|</td>
+<td>x≠0</td>
+</tr>
+<tr>
+<td>exp(ax)，a≠0</td>
+<td>exp(ax)/a</td>
+<td>实轴</td>
+</tr>
+<tr>
+<td>sin ax／cos ax，a≠0</td>
+<td>−cos(ax)/a／sin(ax)/a</td>
+<td>实轴</td>
+</tr>
+<tr>
+<td>1/(1+x²)</td>
+<td>arctan x</td>
+<td>实轴</td>
+</tr>
+<tr>
+<td>1/√(1−x²)</td>
+<td>arcsin x</td>
+<td>−1&lt;x&lt;1</td>
+</tr>
+<tr>
+<td>tan x</td>
+<td>−ln|cos x|</td>
+<td>cos x≠0</td>
+</tr>
+<tr>
+<td>sec x</td>
+<td>ln|sec x+tan x|</td>
+<td>cos x≠0</td>
+</tr>
+<tr>
+<td>1/√(1+x²)</td>
+<td>ln(x+√(1+x²))=asinh x</td>
+<td>实轴</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>换元积分。</strong> 找到反复出现的组合 u=g(x)，核对 du=g′(x)dx 是否在被积式中；积分后恢复 x。定积分要么同步换上下限，要么先求原函数再恢复变量，不混用两套端点。例 ∫2x/(1+x²)dx=ln(1+x²)+C。</p>
+<p><strong>分部积分。</strong> ∫u dv=uv−∫v du。多项式乘指数或三角函数时，常令多项式作 u，每次求导降一次幂。例如 ∫x sin2x dx=−(x/2)cos2x+(1/4)sin2x+C。exp(ax)sin bx 或 cos bx 可分部两次，再把原积分移项求解。</p>
+<p><strong>有理函数与部分分式。</strong> 先用多项式除法使分子次数小于分母；因式分解分母；每个重线性因子 (x−a)ᵐ 要写 A₁/(x−a)+⋯+Aₘ/(x−a)ᵐ；每个不可约二次因子配一次分子；通分比较系数后逐项积分。例 1/(4−u²)=(1/4)[1/(2+u)+1/(2−u)]，积分为 (1/4)ln|(2+u)/(2−u)|+C。</p>
+<p><strong>收尾。</strong> 对积分结果求导是最直接的检查；不定积分的 C 可重命名，符号和绝对值仍受定义域约束。求不出初等原函数时保留定积分或求积式，仍是有效答案。</p></article></section><section class="chapter" id="lecture-4"><header class="chapter-head"><div class="chapter-num">04</div><div><h2>积分因子与一阶线性</h2><p>把不恰当变为恰当，把线性左端变为乘积导数。</p></div></header><article class="unit" id="integrating-factor"><h3>4.1 积分因子：从恰当条件推导，而非猜符号</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=3" target="_blank" rel="noopener">L4 · PDF p3–15 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" target="_blank" rel="noopener">L12 · PDF p10–13 ↗</a></div><p><strong>目标。</strong> 找局部非零、可微的 μ，使 μM dx+μN dy 恰当。展开 (μM)ᵧ=(μN)ₓ 得：</p>
+<div class="eq">Nμₓ−Mμᵧ=μ(Mᵧ−Nₓ)。</div>
+
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>假设</th>
+<th>可直接使用的判据</th>
+<th>积分因子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>μ=μ(x)</td>
+<td>(Mᵧ−Nₓ)/N 仅依赖 x</td>
+<td>μ=exp{∫[(Mᵧ−Nₓ)/N]dx}</td>
+</tr>
+<tr>
+<td>μ=μ(y)</td>
+<td>(Nₓ−Mᵧ)/M 仅依赖 y</td>
+<td>μ=exp{∫[(Nₓ−Mᵧ)/M]dy}</td>
+</tr>
+<tr>
+<td>μ=μ(ω(x,y))</td>
+<td>E=(Mᵧ−Nₓ)/(Nωₓ−Mωᵧ) 仅依赖 ω</td>
+<td>μ=exp[∫E(ω)dω]</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>推导第三行。</strong> μₓ=μ′(ω)ωₓ、μᵧ=μ′(ω)ωᵧ，故 (μ′/μ)(Nωₓ−Mωᵧ)=Mᵧ−Nₓ。先选结构明显的 ω，如 xy、x²+y²，再检查商是否真是 ω 的单变量函数；若商仍含独立的 x、y，就不能据此积分。</p>
+<p><strong>步骤。</strong> ①先查恰当，恰当就无需找因子；②依次尝试 μ(x)、μ(y)，再考虑结构性 ω；③求 μ，列出使用中所有非零条件；④将 μ 同时乘 M、N；⑤重新检查恰当；⑥求势函数；⑦回原式检查被排除的直线、零解等。</p>
+<div class="example"><h4>课件例：y dx−(x+x²+y²)dy=0</h4>
+Mᵧ−Nₓ=2+2x，取 ω=x²+y²，有 Nωₓ−Mωᵧ=−2(x+1)ω，约去公共因子后 E=−1/ω。于是 μ=1/(x²+y²)，在原点以外直接验证它成立。乘后方程为 −d arctan(y/x)−dy=0，局部势函数可取 arctan(y/x)+y=C；跨越角度分支时不能把单一 arctan 公式当作全局表达。</div>
+
+<p><strong>乘因子不自动保证全域等价。</strong> μ=0、μ 无穷或不存在的位置必须回原方程；“乘出一个更简单的方程”可能在那里增解或丢解。exp(∫…) 在正常区间非零，但化简成 x、y 等形式后更要注明区间。exp(ln|x|)=|x|；在某个半轴可用相差非零常数的 x 代替，不能无条件删去绝对值。</p></article><article class="unit" id="structural-factors"><h3>4.2 常用结构积分因子与凑微分</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=9" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=9" target="_blank" rel="noopener">L4 · PDF p9–15 ↗</a></div><p>除了单变量判据，还可利用方程的同类结构。下面两条保留自原 HTML，作为由恰当条件推出的<strong>补充快捷公式</strong>；不把它们标作本页课件逐字原文。使用前仍需核验。</p>
+<p><strong>同次齐次 M、N。</strong> 若 M、N 关于 x、y 同次齐次，且 xM+yN≠0，则 μ=1/(xM+yN) 是积分因子。其证明用 Euler 齐次函数恒等式 xMₓ+yMᵧ=mM 和 xNₓ+yNᵧ=mN；代入恰当判据即可消去。若分母恒为零，这一公式失效，可回到 y=xu 方法。</p>
+<p><strong>乘积型。</strong> 若 M=y f(xy)、N=x g(xy)，则在 xy[f(xy)−g(xy)]≠0 的区域可取：</p>
+<div class="eq">μ=1/(xM−yN)=1/{xy[f(xy)−g(xy)]}。</div>
+
+<p>令 t=xy、h=f−g，则 μM=f(t)/(xh(t))、μN=g(t)/(yh(t))；它们相应的偏导分别为 (f/h)′、(g/h)′，两者之差是 (h/h)′=0，故恰当。这里的负号不能照抄成齐次情形的加号。被除掉的 x=0、y=0 或 f=g 的轨迹回原式检查。</p>
+<p><strong>凑微分的实际办法。</strong> 将式子分组，观察是否有 y dx+x dy、x dy−y dx、2x dx+2y dy 等组合。必要时先除以 x²、y²、x²+y²，再识别 d(y/x)、d(x/y)、角度微分。凑出后也要对最终 Φ 求偏导验证，不能只凭外观。</p>
+<p><strong>课件的丢解与增解对照。</strong> y(1−y)dx+xdy=0 乘 μ=(1−y)⁻² 后得 xy/(1−y)=C，故 y=C/(x+C)，但必须补 y≡1。另一方面，y dx+(2x+1/y)dy=0 的原定义域要求 y≠0；乘 μ=y 后得 xy²+y=C，C=0 时有 y=0 或 y=−1/x，其中 y=0 是增出的伪解，只有 y=−1/x 可以保留。两个例子分别说明：被除掉的候选要补检，代数式新增的分支也要筛掉。</p></article><article class="unit" id="linear-first"><h3>4.3 一阶线性方程：两种推导、一个完整流程</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=16" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=16" target="_blank" rel="noopener">L4 · PDF p16–31 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" target="_blank" rel="noopener">L12 · PDF p14 ↗</a></div><p><strong>标准式。</strong> y′+p(x)y=q(x)。若原式 a(x)y′+b(x)y=c(x)，先在 a≠0 的区间除以 a，得到 p=b/a、q=c/a。</p>
+<p><strong>积分因子法。</strong> 设 μ=exp(∫p dx)，使 μ′=pμ。乘后左边 μy′+μ′y=(μy)′，所以：</p>
+<div class="eq">y=exp(−∫p dx) [C+∫exp(∫p dx) q(x)dx]。</div>
+
+<p><strong>常数变易法。</strong> 先解齐次 yₕ=Cexp(−∫p dx)，再设 y=C(x)exp(−∫p dx)；代入后含 C 的项抵消，得到 C′=q exp(∫p dx)。只需对 C′ 积分，与积分因子法完全等价。</p>
+<p><strong>初值问题最稳的定积分式。</strong> 令 P(x)=∫ₓ₀ˣp(s)ds，则：</p>
+<div class="eq">y(x)=e⁻ᴾ⁽ˣ⁾[y₀+∫ₓ₀ˣ eᴾ⁽ᵗ⁾q(t)dt]。</div>
+
+<p>这样在 x=x₀ 时自动满足 y=y₀，没有重复的积分常数。只要 p、q 在整个开区间 I 上连续，初值点 x₀∈I，就在整个 I 上有唯一解；这是线性方程比一般非线性局部定理更强的性质。</p>
+<p><strong>例：y′+2y=eˣ。</strong> μ=e²ˣ，所以 (e²ˣy)′=e³ˣ，得到 y=eˣ/3+Ce⁻²ˣ。检查时求 y′，直接算 y′+2y=eˣ。</p>
+<p><strong>常见错误。</strong> 积分因子只乘了一部分；把 q 也放入指数；漏乘外面的 exp(−∫p dx)；把 ∫p 的常数和最终 C 重复当独立参数。习惯上 ∫p 选一个原函数即可。</p></article><article class="unit" id="swap-variables"><h3>4.4 互换 x、y：把非线性外观变成线性</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=32" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=32" target="_blank" rel="noopener">L4 · PDF p32–35 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=3" target="_blank" rel="noopener">L5 · PDF p3–16 ↗</a></div><p><strong>识别。</strong> 若 y′ 的表达式对 y 看起来很复杂，但倒过来可写成 dx/dy+P(y)x=Q(y)，就把 x 看成 y 的函数求解。互换只在 y′≠0、局部可逆的分支直接有效。</p>
+<p><strong>方法。</strong> ①设 x=x(y)，写 dx/dy=1/y′；②化成关于 x(y) 的一阶线性式，绝不能把 dx/dy 仍当 y′；③用 μ(y)=exp[∫P(y)dy]；④求出 x(y) 或隐式关系；⑤检查倒数过程中排除的 y′=0，即常数 y 候选；⑥如需要 y(x)，在可逆区间反解并确定分支。</p>
+<p><strong>示例。</strong> y′=1/(x+y) 在 x+y≠0 处等价于 dx/dy−x=y。积分因子 e⁻ʸ，得 x=Ceʸ−y−1。隐式求导为 1=(Ceʸ−1)y′，而 Ceʸ−1=x+y，所以确实回到原式。x+y=0 的点不能作为原方程的普通解点。</p></article></section><section class="chapter" id="lecture-5"><header class="chapter-head"><div class="chapter-num">05</div><div><h2>Bernoulli、Riccati 与隐式方程</h2><p>选一个函数换元，或把导数变成参数。</p></div></header><article class="unit" id="bernoulli"><h3>5.1 Bernoulli 方程：先保留零解，再线性化</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=3" target="_blank" rel="noopener">L5 · PDF p3–16 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" target="_blank" rel="noopener">L12 · PDF p14–16 ↗</a></div><p><strong>识别。</strong> y′+p(x)y=q(x)yⁿ。n=0 是非齐次线性，n=1 合并成齐次线性；n≠0,1 才需要 Bernoulli 换元。分数幂、负幂须按实数定义域处理。</p>
+<p><strong>推导与步骤。</strong> ①先代 y≡0 看原式是否有定义且成立；②对 y≠0 的分支乘 y⁻ⁿ；③设 z=y¹⁻ⁿ，z′=(1−n)y⁻ⁿy′；④得到线性方程；⑤按一阶线性法求 z；⑥由幂关系恢复所有允许实分支；⑦用初值选支并写区间。</p>
+<div class="eq">z′+(1−n)p(x)z=(1−n)q(x)。</div>
+
+<p><strong>例：y′+y=y²。</strong> y=0 是解。其余设 z=1/y，则 z′−z=−1，得 z=1+Ceˣ，因此 y=1/(1+Ceˣ)，分母非零；C=0 已含 y=1。最终须另列 y=0。n=3 时 z=y⁻²&gt;0，恢复是 y=±1/√z，不可只写正根。</p>
+<p>若交换角色后才出现 dx/dy+P(y)x=Q(y)xⁿ，方法仍适用，但新未知量是 x，新自变量是 y。换元公式中的导数应跟着变，不能直接混用。</p>
+<p><strong>原课件的互换变量例。</strong> y′=y/(2x+x²y⁴)，x≠0 且分母非零。对 y≠0 的支取倒数：dx/dy−2x/y=y³x²；设 z=1/x，则 dz/dy+2z/y=−y³。乘 y² 后 (y²z)′=−y⁵，积分得1/x=C/y²−y⁴/6。恢复成隐式式 xy⁶+6y²=6Cx。必须回查 y=0，它确是原式的解，并已包含在最终 C=0 的隐式关系中；同一 C=0 还含 xy⁴+6=0 的非零分支。保留隐式式时仍要筛掉原分母为0的点。</p></article><article class="unit" id="general-linearization"><h3>5.2 一般函数换元：识别 g′(y)y′</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=17" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=17" target="_blank" rel="noopener">L5 · PDF p17–21 ↗</a></div><p>Bernoulli 是函数换元的一种特例。若原式可整理为：</p>
+<div class="eq">g′(y)y′+p(x)g(y)=q(x)，令 v=g(y)，则 v′+p(x)v=q(x)。</div>
+
+<p><strong>如何识别。</strong> 先找重复出现的 y 的组合，再看 y′ 的系数是否正好是它对 y 的导数。例如 eʸy′ 对应 v=eʸ，cos y·y′ 对应 v=sin y，y y′ 对应 v=y²/2。若差一个非零常数可整体调整；若差一个含 x、y 的因子，须验证整理是否等价。</p>
+<p><strong>操作。</strong> 写出 g 和 g′→完成线性求解→检查 v 是否处于 g 的值域→按需要选 g 的反函数分支→代回。g′=0 的位置可能不满足局部可逆条件，需单独看原式；求出了 v 并不代表任意 v 都对应实数 y。</p>
+<p><strong>课件例。</strong> y′+4=eˣ⁻ʸ，y(0)=0。乘 eʸ，设 v=eʸ&gt;0，则 v′+4v=eˣ，v(0)=1。解得 v=(eˣ+4e⁻⁴ˣ)/5，故 y=ln[(eˣ+4e⁻⁴ˣ)/5]。括号始终正，解在整个实轴有意义。</p></article><article class="unit" id="riccati"><h3>5.3 Riccati 方程：已知特解才能直接降阶</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=22" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=22" target="_blank" rel="noopener">L5 · PDF p22–27 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=17" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=17" target="_blank" rel="noopener">L12 · PDF p17–20 ↗</a></div><p><strong>识别。</strong> y′=P(x)y²+Q(x)y+R(x)。已知一个特解 y₁ 时，非该特解的分支可以线性化。没有已知特解时，这一方法不自动给出通用求积公式；可按右端结构试常数、一次式、简单幂函数，并直接代入确认。</p>
+<p><strong>第一步：平移。</strong> 令 u=y−y₁，利用 y₁ 自身满足原式，得到 u′=(2Py₁+Q)u+Pu²。u=0 即 y=y₁，先保留。</p>
+<p><strong>第二步：取倒数。</strong> 对 u≠0 令 z=1/u，即 y=y₁+1/z，得到：</p>
+<div class="eq">z′+(2P y₁+Q)z=−P。</div>
+
+<p><strong>第三步：一阶线性求 z，再恢复。</strong> z=0 处恢复 y 失效，所给解须限制在 z≠0 的区间。完整答案为这一解族加原先已知特解 y₁；若 y₁ 恰能由某个有限允许常数取得，才可说明已包含，而不能直接省略。</p>
+<p><strong>课件型例。</strong> y′=1+x²−2xy+y²，试 y₁=x，左端1，右端1，成立。P=1、Q=−2x，所以 z′=−1，z=C−x。得到 y=x+1/(C−x)，x≠C，并另有 y=x。原来的 y=x 不能通过取有限 C 从该分式解族中得到。</p></article><article class="unit" id="resolved-y"><h3>5.4 已解出 y 的隐式一阶方程：把 p=y′ 当参数</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=28" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=28" target="_blank" rel="noopener">L5 · PDF p28–36 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=3" target="_blank" rel="noopener">L6 · PDF p3–23 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" target="_blank" rel="noopener">L12 · PDF p21–24 ↗</a></div><p><strong>基本形式。</strong> y=f(x,p)，p=y′。沿解曲线对 x 求导：</p>
+<div class="eq">p=fₓ+fₚ(dp/dx)。</div>
+
+<p>若容易解出 p(x)，就直接解；若得到关于 x(p) 的较简单方程，就令 dp/dx=1/(dx/dp)。求出 x(p) 后，<strong>必须由原来的 y=f(x,p) 恢复 y</strong>，以免另积分 y′=p 时多加无关常数。凡除以 fₚ、p 或某个因子，都先记录其零分支并回代。</p>
+<p><strong>特殊形式 y=φ(p)。</strong> 求导 p=φ′(p)p′。对 p≠0，dx/dp=φ′(p)/p，因此：</p>
+<div class="eq">x=∫[φ′(p)/p]dp+C，y=φ(p)。</div>
+
+<p>p=0 的常数候选为 y≡φ(0)，只要原式有定义。其他恒定 p=c 要同时满足 y=φ(c) 恒定与 y′=c，因此在这个特殊形式中只有 c=0 可成为常数参数分支。一般 y=f(x,p) 则可能有其他直线分支。</p>
+<p><strong>例：y=p²。</strong> 对 p≠0 得 dx/dp=2，所以 x=2p+C，y=p²，即 y=(x−C)²/4。另有 y≡0。参数 p=0 的单个点可以出现在抛物线解中；整条零解则需要单独保留。若要讨论所有跨零点拼接的 C¹ 解，还须检查原方程的非唯一性，不把一族光滑曲线自动等同于全部可拼接解。</p></article></section><section class="chapter" id="lecture-6"><header class="chapter-head"><div class="chapter-num">06</div><div><h2>Clairaut、Lagrange 与参数法</h2><p>把隐式关系转成参数曲线，同时保留特殊分支。</p></div></header><article class="unit" id="clairaut"><h3>6.1 Clairaut 方程：直线族与包络分支</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=3" target="_blank" rel="noopener">L6 · PDF p3–10 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" target="_blank" rel="noopener">L12 · PDF p21 ↗</a></div><p><strong>识别。</strong> y=xp+ψ(p)，p=y′，关键是 xp 的系数正好为1。对 x 求导并消去左右的 p：</p>
+<div class="eq">[x+ψ′(p)]p′=0。</div>
+
+<p><strong>分支一 p′=0。</strong> p=C，代回原式得直线族 y=Cx+ψ(C)，不另加一个独立截距。</p>
+<p><strong>分支二 x+ψ′(p)=0。</strong> 得参数曲线 x=−ψ′(p)，y=ψ(p)−pψ′(p)。在 dx/dp=−ψ″(p)≠0 处，它满足 dy/dx=p，是直线族包络，通常形成额外奇解。消去 p 后仍要代回检验。</p>
+<p><strong>例：y=xp+p²。</strong> 通解 y=Cx+C²；包络 x=−2p、y=−p²，即 y=−x²/4。代入 y′=−x/2 可直接确认。</p>
+<p><strong>初值与退化。</strong> 给 (x₀,y₀)，先解 y₀=Cx₀+ψ(C)，可能有零个、一个或多个实根，不能先假设唯一。若 ψ(p)=ap+b，包络条件只给出点 (−a,b)，并非一条 y(x) 曲线；此时不要把一个点称为奇解。包络与直线在切点可产生 C¹ 拼接解，是否纳入须按题目解的区间与正则性检查。</p></article><article class="unit" id="lagrange"><h3>6.2 Lagrange 方程：转成关于 x(p) 的线性方程</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=11" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=11" target="_blank" rel="noopener">L6 · PDF p11–23 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=37" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=37" target="_blank" rel="noopener">L7 · PDF p37–45 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" target="_blank" rel="noopener">L12 · PDF p21 ↗</a></div><p><strong>识别。</strong> y=xφ(p)+ψ(p)，p=y′。更一般写成 A(p)y+B(p)x+C(p)=0；若要除以 A(p) 先检查 A=0 时是否另有直线解或不可能条件。</p>
+<p>求导得 p=φ(p)+[xφ′(p)+ψ′(p)]p′。对 p−φ(p)≠0 的变动参数分支：</p>
+<div class="eq">dx/dp − [φ′(p)/(p−φ(p))]x = ψ′(p)/(p−φ(p))。</div>
+
+<p><strong>详细步骤。</strong> ①列出 φ、ψ、φ′、ψ′；②求 p=φ(p) 的根 c，逐一得到 y=cx+ψ(c)；③其余分支按上式用一阶线性法求 x(p)；④从原式恢复 y(p)；⑤检查 dx/dp≠0 的局部分支及原来的分母；⑥必要时消参。若 φ(p)≡p，退化为 Clairaut，不能使用分母 p−φ。</p>
+<p><strong>课件例。</strong> y=xp²−2p³。平衡参数 p=p² 给 p=0,1，对应 y=0、y=x−2。变动分支化为 dx/dp−2x/(1−p)=−6p/(1−p)，积分因子 (1−p)²，可得：</p>
+<div class="eq">x=C/(1−p)²+2p+1，y=Cp²/(1−p)²+p²，p≠1。</div>
+
+<p>对参数解，dy/dp=p·dx/dp 是一个很便捷的验证。p=0 是否已由某条参数曲线经过，与 y≡0 这整条直线是否被覆盖是两件事。</p></article><article class="unit" id="resolved-x"><h3>6.3 已解出 x：改用 y 或 p 作自变量</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=24" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=24" target="_blank" rel="noopener">L6 · PDF p24–33 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=25" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=25" target="_blank" rel="noopener">L12 · PDF p25–27 ↗</a></div><p><strong>一般形式。</strong> x=f(y,p)，p=dy/dx。沿 x 求导：1=fᵧp+fₚ(dp/dx)。在可用 y 作自变量的分支，dp/dx=p(dp/dy)，从而：</p>
+<div class="eq">1=p fᵧ+p fₚ(dp/dy)。</div>
+
+<p>可将它看成 p(y) 的一阶方程；或者整理成关于 y(p) 的方程。解完由原式 x=f(y,p) 恢复 x。注意 p=0 是否与原式及导数式相容，不能在乘除 p 后忽略。</p>
+<p><strong>特殊形式 x=φ(p)。</strong> 有 dx/dp=φ′(p)，而 dy/dp=pφ′(p)，所以：</p>
+<div class="eq">x=φ(p)，y=∫pφ′(p)dp+C。</div>
+
+<p>例如 x=p²：取参数 x=p²、y=(2/3)p³+C；在 p&gt;0、p&lt;0 两支分别对应 y′=±√x，通常在 x&gt;0 使用。不能把 p=0 这一单个参数值当成覆盖区间的解。</p>
+<p><strong>奇解候选的两种来源。</strong> 对隐式方程 F(x,y,p)=0，联立 F=0、Fₚ=0 可筛出 p 判别候选；对已求解族 Φ(x,y,C)=0，联立 Φ=0、Φ꜀=0 可找包络候选。两者都只产生候选集合，必须检验可表示函数、可微以及代回原 ODE；消元结果也可能是假分支、孤立点或退化集合。</p></article><article class="unit" id="piecewise"><h3>6.4 课后题中的组合技巧与分段条件</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=37" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=37" target="_blank" rel="noopener">L5 · PDF p37–53 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=34" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=34" target="_blank" rel="noopener">L6 · PDF p34–49 ↗</a></div><p><strong>先处理结构，再套方法。</strong> 练习会把齐次、Bernoulli、Riccati、互换变量、参数法混合。例如 x³y′+2x²y+2x⁴y²=18（x≠0），可先试 y=a/x²，得到 2a²=18，即 a=±3，进而使用 Riccati 已知特解法。检查候选比凭外形认定某个公式更可靠。</p>
+<p><strong>分段右端或跨越特殊点。</strong> ①在各个系数连续的开区间分别求解；②按题目要求连接函数值；③如果声称是经典 C¹ 解，再检查一阶导数在连接点存在并满足原式；④若右端在连接点跳跃，分段解可能只有连续性，不能自动称为处处满足原式的经典解；⑤若最高阶系数在连接点为0，原方程需要单独代入，标准化后获得的唯一性结论不能跨过去使用。</p>
+<p><strong>复习时应能做的核验。</strong> 显式求导、隐式求导、参数求导三种都要熟练；计算域中的 x=0、y=0、被除因子为0、开方符号和参数端点，是每道题最后的固定检查。题目的“求解”与“求经过某初始点的最大区间”是不同层次，后者必须进一步确定相邻奇点和发散点。</p></article></section><section class="chapter" id="lecture-7"><header class="chapter-head"><div class="chapter-num">07</div><div><h2>高阶方程的六类降阶</h2><p>检查缺项和不变性，每次换元都有明确的降阶理由。</p></div></header><article class="unit" id="reduction-map"><h3>7.1 高阶降阶的总地图与直接积分</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=3" target="_blank" rel="noopener">L7 · PDF p3–7 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" target="_blank" rel="noopener">L12 · PDF p28–30 ↗</a></div><p>第七讲包含六种主要结构。先判断方程缺少什么、具有什么不变性，再选新变量；“二阶就令 p=y′”并不保证能降低实际求解难度。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>结构</th>
+<th>新变量</th>
+<th>变成什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>y⁽ⁿ⁾=f(x)</td>
+<td>不必换元</td>
+<td>连续积分 n 次</td>
+</tr>
+<tr>
+<td>不显含 x，尤其 F(y,y′,y″)=0</td>
+<td>p=p(y)=y′</td>
+<td>y″=p pᵧ，少一阶</td>
+</tr>
+<tr>
+<td>缺 y,y′,…,y⁽ᵏ⁻¹⁾</td>
+<td>z=y⁽ᵏ⁾</td>
+<td>关于 z 的 n−k 阶方程</td>
+</tr>
+<tr>
+<td>关于 y 及其导数同次齐次</td>
+<td>z=y′/y</td>
+<td>除以 y 的同次幂后少一阶</td>
+</tr>
+<tr>
+<td>对 x,y 及导数按权重缩放齐次</td>
+<td>x=eᵗ，y=eᵅᵗv</td>
+<td>消去显式 t 后再次降阶</td>
+</tr>
+<tr>
+<td>线性齐次且已知非零局部解 y₁</td>
+<td>y=y₁u，再令 z=u′</td>
+<td>少一阶的线性方程</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>直接积分的详细方法。</strong> y⁽ⁿ⁾=f(x) 先积分成 y⁽ⁿ⁻¹⁾=∫f+C₁，继续到 y。每积分一次增加一个独立常数，共 n 个。若给定 x₀ 处全部初值，可以直接用：</p>
+<div class="eq">y(x)=Σⱼ₌₀ⁿ⁻¹ [y⁽ʲ⁾(x₀)/j!](x−x₀)ʲ<br>　　　+1/(n−1)! ∫ₓ₀ˣ (x−t)ⁿ⁻¹ f(t)dt。</div>
+
+<p><strong>验证。</strong> 对结果求 n 阶导数应等于 f，逐一代入初值。若 f 含 x sin ax 之类，先分部积分，再逐次积回；不要在每一层机械沿用同一个 C。第十二讲给出带三个初值的完整实例。</p></article><article class="unit" id="missing-x"><h3>7.2 不显含 x：p 必须看成 y 的函数</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=8" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=8" target="_blank" rel="noopener">L7 · PDF p8–12 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=31" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=31" target="_blank" rel="noopener">L12 · PDF p31–32 ↗</a></div><p><strong>识别。</strong> F(y,y′,y″)=0，没有独立的 x。对局部单调、y′≠0 的分支，可令 p(y)=y′。</p>
+<div class="eq">y″=p(dp/dy)，<br>y‴=p[(dp/dy)²+p(d²p/dy²)]。</div>
+
+<p><strong>步骤。</strong> ①检查 y=c 的常数候选；②写 p=p(y)，利用 d/dx=p d/dy 降阶；③解关于 p、y 的一阶方程；④恢复 dy/dx=p(y)，再分离 dx=dy/p(y)；⑤补回除 p 丢掉的分支，检查转折点能否拼接；⑥代初值时 y′(x₀)=p(y₀)，它常用于先确定降阶方程的常数。</p>
+<p><strong>能量型。</strong> 若 y″=g(y)，则 p dp/dy=g(y)，积分 p²=2∫g(y)dy+C。恢复时 p=±√(…)；符号由初始导数和所在单调段确定。根为0的转折点可连接两支，但连接后必须满足原来的二阶方程。</p>
+<p><strong>更一般的平方换元。</strong> 若降阶后出现 p pᵧ、p²，继续令 q=p²，利用 qᵧ=2p pᵧ，往往得到一阶线性式。原课件 8y″−eʸ−(y′)²=0 变为 qᵧ−q/4=eʸ/4，积分因子 exp(−y/4)，所以 q=eʸ/3+C exp(y/4)。再由 y′=±√q 分离，得到 x+C₂=±∫dy/√[eʸ/3+C exp(y/4)]，在 q&gt;0 的单调段使用。q=0 的转折点须回原二阶式检查；这里没有常数解，因为 eʸ 永远不为0。</p>
+<p><strong>例：yy″+2(y′)²=0。</strong> 变成 y p pᵧ+2p²=0。p=0 给任意常数解；其余 y dp/p=−2dy，得 p=K/y²，再积分 y³=3Kx+C。可写 y³=Ax+B。A≠0 时要避开 Ax+B=0，因为导数在那里发散；A=0 包含全部常数，包括零解。</p></article><article class="unit" id="missing-low"><h3>7.3 缺少低阶导数：一次降低 k 阶</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=13" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=13" target="_blank" rel="noopener">L7 · PDF p13–17 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=33" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=33" target="_blank" rel="noopener">L12 · PDF p33–34 ↗</a></div><p>若 F(x,y⁽ᵏ⁾,y⁽ᵏ⁺¹⁾,…,y⁽ⁿ⁾)=0 不含 y,…,y⁽ᵏ⁻¹⁾，令 z=y⁽ᵏ⁾，得到 n−k 阶方程 F(x,z,z′,…,z⁽ⁿ⁻ᵏ⁾)=0。这比只令 z=y′ 更有效。</p>
+<p><strong>步骤。</strong> ①找最低出现的导数阶数 k；②把 y⁽ᵏ⁺ʲ⁾ 全部换成 z⁽ʲ⁾；③用合适方法求 z；④对 z 连续积分 k 次恢复 y；⑤新添 k 个常数，并与原 z 中的 n−k 个参数一起核对总数；⑥先使用与 z 有关的高阶初值，再使用低阶初值。</p>
+<p><strong>例：y‴+y″=x+1。</strong> 最低导数是二阶，令 z=y″，得到 z′+z=x+1。线性方程的解为 z=x+C₁e⁻ˣ，积分两次得：</p>
+<div class="eq">y=x³/6+C₁e⁻ˣ+C₂x+C₃。</div>
+
+<p>“降阶后仍不显含 x”之类的结构可以继续利用，所以多种降阶法能够串联。恢复时不能遗漏来自积分的低次多项式 C₂x+C₃。</p></article><article class="unit" id="homogeneous-derivatives"><h3>7.4 关于 y 及导数同次齐次：对数导数降阶</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=18" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=18" target="_blank" rel="noopener">L7 · PDF p18–24 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=35" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=35" target="_blank" rel="noopener">L12 · PDF p35–36 ↗</a></div><p><strong>识别。</strong> 将 y,y′,… 同乘 λ，方程所有项同乘同次幂；例如 yy″、(y′)²、yy′ 都是二次项。这里允许系数依赖 x。先在 y≠0 的区间令 z=y′/y，即 z=(ln|y|)′。</p>
+<div class="eq">y′=yz，y″=y(z′+z²)，<br>y‴=y(z″+3zz′+z³)。</div>
+
+<p>更高阶用递推 R₀=1、Rⱼ₊₁=Rⱼ′+zRⱼ，即 y⁽ʲ⁾/y=Rⱼ。代回并除去公共的 y 幂后，最高只出现 z⁽ⁿ⁻¹⁾，所以降一阶。</p>
+<p><strong>步骤。</strong> ①检验缩放同次性；②单独查 y=0；③用上式代换、约去 y 幂；④求 z；⑤由 y′=zy 恢复 y=C exp(∫z dx)；⑥给初值时先算 z(x₀)=y′(x₀)/y(x₀)；⑦检查原式的其他奇点和可能跨零的解。</p>
+<p><strong>课件例。</strong> xyy″−x(y′)²=yy′，除 y² 得 xz′=z。x≠0 上 z=Kx，所以 y=A exp(Bx²)。A=0 给原方程零解，但不能由“在 y≠0 中推导”直接宣称已经证明了所有跨零情形。</p>
+<p><strong>组合练习。</strong> yy″−(y′)²=y²ln y，要求 y&gt;0。令 u=ln y，则 u″=u，故 y=exp(Aeˣ+Be⁻ˣ)。若题目还要求 y′&gt;0，须加 Aeˣ−Be⁻ˣ&gt;0 的区间条件；不能把题目条件在换元后遗忘。</p></article><article class="unit" id="generalized-scaling"><h3>7.5 广义齐次高阶方程：指数换元后再降阶</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=25" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=25" target="_blank" rel="noopener">L7 · PDF p25–30 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=31" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=31" target="_blank" rel="noopener">L8 · PDF p31–47 ↗</a></div><p><strong>识别。</strong> 在缩放 x→kx、y→kᵅy 下，y⁽ʲ⁾ 的权重是 α−j。如果各项权重一致，可用这种缩放对称性消去新的独立变量。</p>
+<p><strong>步骤与导数。</strong> 先在 x&gt;0 取 x=eᵗ、y=eᵅᵗv(t)，于是 t=ln x：</p>
+<div class="eq">y′=e⁽ᵅ⁻¹⁾ᵗ(v̇+αv)<br>y″=e⁽ᵅ⁻²⁾ᵗ[v̈+(2α−1)v̇+α(α−1)v]。</div>
+
+<p>代回后约去公共指数因子。若剩余方程不显含 t，设 q(v)=dv/dt，用 v̈=q dq/dv 再降阶；若只含 v 的导数，则直接令 q=v̇。最后恢复 t=ln x、y=xᵅv，并检查除掉的 q、v 等分支。x&lt;0 可令 x=−eᵗ，再从 d/dx=(1/x)d/dt 重新计算。</p>
+<div class="example"><h4>课件例：4x²y³y″=−y⁴−x²，y(1)=1，y′(1)=1</h4>
+权重给 4α=2，所以 α=1/2。设 y=√x·v，得到 4v³v̈=−1。令 q=v̇，则 4v³q dq/dv=−1，积分 4q²=v⁻²+C。x=1 对应 t=0，v(0)=1；y′(1)=v̇(0)+v(0)/2，故 q(0)=1/2，于是 C=0。取满足初值的正支 v̇=1/(2v)，得到 v²=t+1，最终 y=√[x(ln x+1)]，有效区间 x>e⁻¹。</div>
+
+<p><strong>另一种串联。</strong> x⁴y″+(xy′−y)³=0 取 α=1，x=eᵗ、y=eᵗv，化为 v̈+v̇+(v̇)³=0。再设 q=v̇，解 q̇=−q(1+q²)，并补 q=0 对应的 y=Cx。这体现“缩放→缺 v→一阶可分离”的连续识别。</p></article><article class="unit" id="known-solution-reduction"><h3>7.6 已知一个线性解：消去 u 项来降阶</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=30" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=30" target="_blank" rel="noopener">L7 · PDF p30–36 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=50" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=50" target="_blank" rel="noopener">L8 · PDF p50–53 ↗</a></div><p>对正规形 y″+P(x)y′+Q(x)y=f(x)，已知对应齐次方程的解 y₁，选 y₁≠0 的区间，令 y=y₁u。展开后 u 项因 y₁ 满足齐次方程而抵消：</p>
+<div class="eq">y₁u″+(2y₁′+P y₁)u′=f(x)。</div>
+
+<p>令 z=u′，便得到一阶线性方程。<strong>非齐次右端 f 必须保留</strong>；只有原题 f=0 才能写为0。先求 z，积分得 u，最后乘回 y₁。</p>
+<p><strong>齐次时的第二个解。</strong> z=C exp(−∫P dx)/y₁²，所以可取：</p>
+<div class="eq">y₂=y₁∫ [exp(−∫P dx)/y₁²]dx。</div>
+
+<p>此时 W(y₁,y₂)=exp(−∫P dx)≠0（相应规范化下），故二者线性无关。积分产生的 y₁ 倍数可以吸收到通解的第一个常数中。非平凡解 y₁ 仍可能有零点，公式只能先在不穿过其零点的区间使用。</p>
+<p><strong>例。</strong> y″+xy′−(x+1)y=0，已知 y₁=eˣ。令 y=eˣu 得 u″+(x+2)u′=0，故 y=eˣ[C₁+C₂∫exp(−x²/2−2x)dx]。这个求积式已经是合法通解，不需要强求初等积分。</p>
+<p>对 n 阶线性齐次方程同样可令 y=y₁u：u 的零阶项消失，继而设 z=u′，降低一阶。课件附页例 2xy″−(x+4)y′+(1+4/x)y=0，x≠0，已知 y₁=x；另一解可取 y₂=xeˣᐟ²。</p></article></section><section class="chapter" id="lecture-8"><header class="chapter-head"><div class="chapter-num">08</div><div><h2>线性结构、Wronskian 与常数变易</h2><p>先建立齐次解空间，再构造非齐次特解。</p></div></header><article class="unit" id="linear-structure"><h3>8.1 线性方程的结构：叠加、基解组、非齐次通解</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=3" target="_blank" rel="noopener">L8 · PDF p3–6 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=10" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=10" target="_blank" rel="noopener">L8 · PDF p10–16 ↗</a></div><p>先把 a₀(x)y⁽ⁿ⁾+⋯+aₙ(x)y=f(x) 在 a₀≠0 的区间化为正规形。以下维数、唯一性及 Wronskian 定理均在同一个区间、正规形系数连续的条件下使用。</p>
+<p><strong>齐次叠加。</strong> 若 L[yᵢ]=0，则任意常系数线性组合 ΣCᵢyᵢ 仍是解；系数随 x 变化时通常不成立。齐次解空间维数为 n，n 个线性无关的解构成基解组（fundamental system），通解为 ΣCᵢyᵢ。</p>
+<p><strong>非齐次结构。</strong> 若 L[yₚ]=f，所有解为 y=yₕ+yₚ。证明：任意两个非齐次解之差满足 L[y−yₚ]=0。非齐次解集一般不是向量空间；把两个同一非齐次方程的解直接相加，右端会变成 2f。</p>
+<p><strong>不同强迫项的叠加。</strong> 若 f=f₁+⋯+fₖ，分别找 L[yₚⱼ]=fⱼ，则 yₚ=Σyₚⱼ。常数系数待定系数法正是反复用这条原则。</p>
+<p><strong>题目要求“证明是通解”时。</strong> 逐个代入检验→证明 n 个解线性无关→依据 n 维结构定理→写出通解；仅证明“每个都是解”不足以证明它们张成全部解。</p>
+<p><strong>基解组不唯一。</strong> 对一组基解作可逆的常系数线性组合，会得到另一组基解；例如把其中某一解乘非零常数，或把两个基解相加替换其中一个，均不改变张成的空间。比较两个通解时应比较解空间，而不是要求所写基函数逐项相同。</p></article><article class="unit" id="independence"><h3>8.2 线性无关与 Wronskian：区分一般函数和同一方程的解</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=7" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=7" target="_blank" rel="noopener">L8 · PDF p7–14 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=48" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=48" target="_blank" rel="noopener">L8 · PDF p48–50 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=32" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=32" target="_blank" rel="noopener">L9 · PDF p32–41 ↗</a></div><p><strong>定义。</strong> 在区间 I 上，若 ΣCᵢfᵢ(x)≡0 只允许所有常数 Cᵢ=0，就称线性无关；存在非全零的常数使其恒为0则相关。必须是区间上的恒等式，单个 x 点的数值关系不能代替定义。</p>
+<p><strong>不用行列式的证明。</strong> 从 C₁f₁+⋯+Cₙfₙ≡0 出发，代入便利点、求导、比较多项式系数或指数增长阶，最终逼出所有 Cᵢ=0。例如 A+Bcos x+Csin x≡0，可求导两次并与原式相减得 A=0，再在0处代入函数及导数得 B=C=0。</p>
+<div class="eq">W(f₁,…,fₙ)=det [fⱼ⁽ⁱ⁻¹⁾]ᵢ,ⱼ₌₁ⁿ。</div>
+
+<p><strong>一般可微函数。</strong> 线性相关必有 W≡0；只要有某点 W≠0 就线性无关。但 W≡0 对任意函数并不保证线性相关。教学补充反例：x² 与 x|x| 在 (−1,1) 上是 C¹、W≡0，却线性无关。</p>
+<p><strong>同一个正规线性齐次方程的 n 个解。</strong> 在连续系数区间内，W 在一个点非零⇔处处非零⇔这组解是基解组；若 W 在一个点为0，则处处为0且相关。这是利用 ODE 唯一性得到的更强结论。</p>
+<p><strong>Abel–Liouville 公式。</strong> 对 y⁽ⁿ⁾+a₁(x)y⁽ⁿ⁻¹⁾+⋯+aₙ(x)y=0：</p>
+<div class="eq">W(x)=W(x₀) exp[−∫ₓ₀ˣa₁(t)dt]。</div>
+
+<p>注意只用正规形中次高阶导数的系数 a₁。未除最高阶系数之前，不能直接把原系数代入该公式。</p></article><article class="unit" id="variation-second"><h3>8.3 二阶常数变易法：从辅助条件推到积分</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=17" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=17" target="_blank" rel="noopener">L8 · PDF p17–30 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" target="_blank" rel="noopener">L12 · PDF p47–50 ↗</a></div><p>对 y″+P y′+Qy=f，先找基解组 y₁,y₂，设 yₚ=u₁y₁+u₂y₂。为避免二阶未知 u″，施加辅助条件 u₁′y₁+u₂′y₂=0；再求导并代原式，得到：</p>
+<div class="eq">u₁′y₁+u₂′y₂=0，<br>u₁′y₁′+u₂′y₂′=f。</div>
+
+<p>W=y₁y₂′−y₁′y₂≠0，由二元线性系统解得 u₁′=−y₂f/W、u₂′=y₁f/W，因此：</p>
+<div class="eq">yₚ=−y₁∫(y₂f/W)dx+y₂∫(y₁f/W)dx。</div>
+
+<p><strong>步骤。</strong> 正规化→求齐次基解组→计算 W→列系统再解 uᵢ′→选任意方便原函数→组合 yₚ→写 y=yₕ+yₚ→处理初值与区间。找一个特解时积分常数可取0，因为额外项都会落回 yₕ。</p>
+<p><strong>例：y″+y=tan x。</strong> 取 y₁=cos x、y₂=sin x，W=1。u₁′=−sin²x/cos x=cos x−sec x，u₂′=sin x，故可取 u₁=sin x−ln|sec x+tan x|、u₂=−cos x。交叉项抵消，yₚ=−cos x·ln|sec x+tan x|。区间不能穿过 cos x=0。</p>
+<p><strong>方法选择。</strong> 常数变易允许较一般的连续 f；出现 tan、sec、ln 或1/x 时，通常比强套待定系数稳妥。若原题 a(x)y″+⋯=g(x)，这里 f=g/a，不能忘记正规化。</p></article></section><section class="chapter" id="lecture-9"><header class="chapter-head"><div class="chapter-num">09</div><div><h2>实特征根与 n 阶常数变易</h2><p>重数决定基解的形式，线性系统决定变动系数。</p></div></header><article class="unit" id="constant-real"><h3>9.1 常系数齐次方程：特征多项式与实重根</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=3" target="_blank" rel="noopener">L9 · PDF p3–19 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" target="_blank" rel="noopener">L12 · PDF p37–44 ↗</a></div><p><strong>识别。</strong> a₀y⁽ⁿ⁾+a₁y⁽ⁿ⁻¹⁾+⋯+aₙy=0，各 aᵢ 是常数且 a₀≠0。试 y=eʳˣ，得到特征多项式 P(r)=a₀rⁿ+a₁rⁿ⁻¹+⋯+aₙ。</p>
+<p><strong>根与解。</strong> 单实根 r 给出 eʳˣ；m 重实根 r 给出 eʳˣ、xeʳˣ、…、xᵐ⁻¹eʳˣ。重根不能重复写同一个 eʳˣ 当作不同解。零根 m 重对应1,x,…,xᵐ⁻¹。</p>
+<p><strong>重数判别。</strong> P(r)=P′(r)=⋯=P⁽ᵐ⁻¹⁾(r)=0 而 P⁽ᵐ⁾(r)≠0，表示 r 恰为 m 重。也可直接因式分解，反复除以 (λ−r) 直到不能整除。</p>
+<p><strong>求根流程。</strong> 先提取公因子与识别平方、立方等结构→尝试有理根→综合除法降次→求剩余二次或低阶因子→列重数表→按根数写 n 个独立解。</p>
+<p><strong>有理根定理。</strong> 整系数多项式的既约有理根 p/q 必满足 p 整除常数项、q 整除首项系数；首项系数为1时只需试常数项的整数因子。常数项为0先提 λ，再对剩余多项式使用定理。枚举候选只是筛选办法，不保证根都是有理数。</p>
+<p><strong>例。</strong> P(λ)=(λ−1)²(λ+2)，通解为 (C₁+C₂x)eˣ+C₃e⁻²ˣ。三个独立参数对应三阶。第十二讲的六阶例 P=(λ²−1)³ 则有 ±1 各三重，共六个基解。</p></article><article class="unit" id="variation-n"><h3>9.2 n 阶常数变易：不能只背二阶公式</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=20" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=20" target="_blank" rel="noopener">L9 · PDF p20–31 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=9" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=9" target="_blank" rel="noopener">L11 · PDF p9–15 ↗</a></div><p>对正规形 y⁽ⁿ⁾+a₁y⁽ⁿ⁻¹⁾+⋯+aₙy=f，设齐次基解组为 y₁,…,yₙ，令 yₚ=Σuᵢ(x)yᵢ(x)。施加 n−1 个辅助条件，最终得到 n 元线性系统：</p>
+<div class="eq">Σuᵢ′yᵢ=0<br>Σuᵢ′yᵢ′=0<br>⋮<br>Σuᵢ′yᵢ⁽ⁿ⁻²⁾=0<br>Σuᵢ′yᵢ⁽ⁿ⁻¹⁾=f。</div>
+
+<p>系数矩阵就是 Wronskian 矩阵，行列式非零时可用消元法或 Cramer 法则求每个 uᵢ′。对 n=1，系统只剩 u₁′y₁=f，也适用。</p>
+<p><strong>为什么这样设置。</strong> 先使 yₚ′=Σuᵢyᵢ′，再逐次消去更高导数中的 uᵢ′ 项，直到第 n 阶只留下 Σuᵢ′yᵢ⁽ⁿ⁻¹⁾。代入 ODE 后所有含 uᵢ 的项由齐次方程抵消，留下最后一行。</p>
+<div class="example"><h4>课件三阶例与行列式订正</h4>
+y‴−6y″+11y′−6y=6x，基解为 eˣ,e²ˣ,e³ˣ。W=e⁶ˣ·det[[1,1,1],[1,2,3],[1,4,9]]=2e⁶ˣ。第9讲 p29 写成14e⁶ˣ，是数值计算笔误。<br>
+设 U=u₁′eˣ、V=u₂′e²ˣ、Z=u₃′e³ˣ，则 U+V+Z=0、U+2V+3Z=0、U+4V+9Z=6x，解得 U=3x、V=−6x、Z=3x。积分可选 u₁=−3(x+1)e⁻ˣ、u₂=(3x+3/2)e⁻²ˣ、u₃=−(x+1/3)e⁻³ˣ，所以 yₚ=−x−11/6。直接代入可得6x。</div>
+
+<p><strong>本讲二阶例。</strong> y″−2y′+y=eˣ/x，x≠0，齐次为 (C₁+C₂x)eˣ。设 y=eˣv 后 v″=1/x，可取 v=xln|x|，因为线性项可吸收到齐次解；得到 yₚ=xeˣln|x|。这也是“常数变易”与“已知齐次解降阶”在同一题中的联系。</p></article></section><section class="chapter" id="lecture-10"><header class="chapter-head"><div class="chapter-num">10</div><div><h2>复特征根与 Cauchy–Euler</h2><p>将复数根转成实基解，将幂系数转成常系数。</p></div></header><article class="unit" id="complex-roots"><h3>10.1 复根、重复共轭根与实通解</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=3" target="_blank" rel="noopener">L10 · PDF p3–12 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=42" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=42" target="_blank" rel="noopener">L12 · PDF p42–44 ↗</a></div><p>实系数特征多项式的非实根成共轭对 α±iβ（β&gt;0）。由 Euler 公式 eⁱᶿ=cosθ+i sinθ，e⁽ᵅ⁺ⁱᵝ⁾ˣ 的实部与虚部分别给出 eᵅˣcosβx 和 eᵅˣsinβx。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>根</th>
+<th>对应的实基解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实根 r，m 重</td>
+<td>xʲeʳˣ，j=0,…,m−1</td>
+</tr>
+<tr>
+<td>共轭根 α±iβ，各 m 重</td>
+<td>xʲeᵅˣcosβx、xʲeᵅˣsinβx，j=0,…,m−1</td>
+</tr>
+<tr>
+<td>零根，m 重</td>
+<td>1,x,…,xᵐ⁻¹</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>计数。</strong> 一对各 m 重的共轭根贡献 2m 个实解，不能只算 m 个。把所有重数相加必须等于方程阶数 n；少一项通常就是漏掉重复根的 x 幂，或漏掉 sin/cos 中的一项。</p>
+<p><strong>例：y″+2y′+5y=0。</strong> 根 −1±2i，通解 y=e⁻ˣ(C₁cos2x+C₂sin2x)。若 P(λ)=(λ²+2λ+5)²，则通解扩展为 e⁻ˣ[(C₁+C₂x)cos2x+(C₃+C₄x)sin2x]。</p>
+<p><strong>为什么实部、虚部可用。</strong> 实系数线性算子作用于 u+iv 得 L[u]+iL[v]；若为0，则实部与虚部各为0。这个结论不能不加说明地套到非线性方程。</p></article><article class="unit" id="complex-power"><h3>10.2 复数代数预备：极形式与 n 次方根</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=13" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=13" target="_blank" rel="noopener">L10 · PDF p13–19 ↗</a></div><p><strong>直角形式到极形式。</strong> z=a+ib=r(cosθ+i sinθ)，r=√(a²+b²)，θ 必须按象限选取，不能只写 arctan(b/a) 而忽略象限。非零复数的辐角相差 2πk；乘法模相乘、辐角相加，除法模相除、辐角相减。</p>
+<p><strong>De Moivre 公式。</strong> [r(cosθ+i sinθ)]ⁿ=rⁿ(cos nθ+i sin nθ)。求 zⁿ=ρ(cosθ+i sinθ)，ρ&gt;0：</p>
+<div class="eq">zₖ=ρ¹ᐟⁿ[cos((θ+2πk)/n)+i sin((θ+2πk)/n)]，k=0,…,n−1。</div>
+
+<p><strong>求根步骤。</strong> ①把右端写成正确极形式；②模取正 n 次根；③辐角加 2πk 后整体除 n；④只列 k=0 至 n−1；⑤把共轭根配对，转成 ODE 的实基解。右端为0时只有根0，按多项式记录重数。</p>
+<p><strong>课件例：λ⁴+1=0。</strong> −1 的辐角取 π，故四根角度为 π/4、3π/4、5π/4、7π/4，即 ±1/√2±i/√2。对应四个实基解为 exp(x/√2)cos(x/√2)、exp(x/√2)sin(x/√2)、exp(−x/√2)cos(x/√2)、exp(−x/√2)sin(x/√2)，通解是它们的常系数线性组合。</p></article><article class="unit" id="euler-equation"><h3>10.3 Cauchy–Euler 方程：对数自变量与指标方程</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=20" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=20" target="_blank" rel="noopener">L10 · PDF p20–31 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=45" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=45" target="_blank" rel="noopener">L12 · PDF p45–46 ↗</a></div><p><strong>识别。</strong> a₀xⁿy⁽ⁿ⁾+a₁xⁿ⁻¹y⁽ⁿ⁻¹⁾+⋯+aₙy=f(x)，各 aᵢ 为常数。导数降一阶，前面的 x 幂也降一阶。它是变系数方程，不能直接用常系数特征多项式。</p>
+<p><strong>方法 A：t=ln|x|。</strong> 在每个半轴分别设 x=σeᵗ（σ=±1）、y(x)=Y(t)。由于 d/dx=(1/x)d/dt：</p>
+<div class="eq">xy′=Ẏ，x²y″=Ÿ−Ẏ，<br>x³y‴=Y⃛−3Ÿ+2Ẏ，<br>xʲy⁽ʲ⁾=D(D−1)⋯(D−j+1)Y，D=d/dt。</div>
+
+<p>代入后变成常系数方程，右端也必须替换成 f(σeᵗ)。解出 Y 再用 t=ln|x| 还原。x=0 是最高阶系数退化点，不能自动把半轴上的结论延伸到0。</p>
+<p><strong>方法 B：齐次时试幂函数。</strong> 在正半轴试 y=xʳ，得到指标多项式：</p>
+<div class="eq">a₀r(r−1)⋯(r−n+1)+a₁r(r−1)⋯(r−n+2)+⋯+aₙ=0。</div>
+
+<p>一般半轴统一用 |x|ʳ。实根 r，m 重，给出 |x|ʳ(ln|x|)ʲ，j=0,…,m−1；共轭根 α±iβ，各 m 重，给出 |x|ᵅ(ln|x|)ʲcos(βln|x|) 与相应 sin 项。两半轴常数可以各自独立。</p>
+<p><strong>例：x²y″+xy′−y=2x。</strong> 换元后 Ÿ−Y=2σeᵗ。齐次为 C₁eᵗ+C₂e⁻ᵗ；指数1与特征根共振，取特解 σteᵗ。回到 x 得 y=C₁x+C₂/x+xln|x|，x≠0。可直接代回确认正负半轴都成立。</p></article></section><section class="chapter" id="lecture-11"><header class="chapter-head"><div class="chapter-num">11</div><div><h2>非齐次方程的待定系数法</h2><p>右端决定试探形式，共振决定额外的 x 幂。</p></div></header><article class="unit" id="undetermined"><h3>11.1 待定系数法：先检查右端是否属于封闭函数族</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=3" target="_blank" rel="noopener">L11 · PDF p3–21 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=51" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=51" target="_blank" rel="noopener">L12 · PDF p51–55 ↗</a></div><p><strong>适用范围。</strong> 常系数线性方程 P(D)y=f(x)，且 f 是多项式、指数、多项式乘指数、正弦余弦及其有限和或乘积所形成的拟多项式。此类函数求导后仍落在有限维同类函数空间，才适合设有限个待定系数。任意变系数或 ln x、tan x、1/x 右端一般不能照套。</p>
+<p><strong>总公式。</strong> 若 f=eᵅˣPₘ(x)，设 γ=α；若 f=eᵅˣ[Pₘ(x)cosβx+Qₙ(x)sinβx]，设 γ=α+iβ、s=max(m,n)。令 k 为 γ 作为特征根的重数（不是根则 k=0）：</p>
+<div class="eq">指数多项式：yₚ=xᵏeᵅˣRₘ(x)<br>指数三角多项式：yₚ=xᵏeᵅˣ[Aₛ(x)cosβx+Bₛ(x)sinβx]。</div>
+
+<p>R、A、B 都必须先写完整的一般多项式，低次系数即使最后为0也不能预先遗漏。三角型一般把 cos 与 sin 两边都写上，因为求导会相互混合。</p>
+<p><strong>详细流程。</strong> ①写 P(λ)，求齐次通解；②把右端按指数与频率分组；③确定每组次数和 γ；④求根重数 k；⑤写完整试探式并整体乘 xᵏ；⑥求导代入，按 x 的幂次与三角项比较系数；⑦解线性代数方程求系数；⑧相加各特解，最后处理初值。</p>
+<p><strong>多项式是 α=0 的情形。</strong> 若0不是根，右端 m 次多项式就试 m 次；若0是 k 重根，先试 xᵏRₘ(x)。例如 y″−y=x²+1，试 Ax²+Bx+C，得到 A=−1、B=0、C=−3，所以 yₚ=−x²−3。</p>
+<p><strong>课件的零根共振例。</strong> y‴−y″=2x，P(λ)=λ²(λ−1)，0为二重根，试 yₚ=x²(Ax+B)。代入为 −6Ax+(6A−2B)=2x，故 A=−1/3、B=−1；总解 y=C₁+C₂x+C₃eˣ−x³/3−x²。第11讲 p9–15 同时用三阶常数变易和待定系数计算，二者的特解至多相差齐次解，最终结果一致。</p>
+<p><strong>为什么乘 xᵏ。</strong> 原试探函数与齐次解重合时，代入会被 P(D) 消掉，无法产生右端。需要提高到刚好脱离齐次核的最低幂 xᵏ；“看见重合就乘一次 x”只适用于单重根。</p></article><article class="unit" id="shift-operator"><h3>11.2 指数移位与共振：让计算更短</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=16" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=16" target="_blank" rel="noopener">L11 · PDF p16–25 ↗</a></div><p>设 y=eᵅˣv，利用 D(eᵅˣv)=eᵅˣ(D+α)v，有：</p>
+<div class="eq">P(D)[eᵅˣv]=eᵅˣP(D+α)v。</div>
+
+<p>这解释了为何要检查 α 或 α+iβ 是否是特征根，也能减少繁琐求导。若 P(λ) 在 λ=α 有 k 重根，则 P(D+α) 含 Dᵏ，产生相应的 xᵏ 因子。</p>
+<p><strong>基本共振例。</strong> y″−2y′+y=eˣ。因 P(λ)=(λ−1)²，α=1 是二重根，试 yₚ=Ax²eˣ。令 y=eˣv 后 v″=1，故 A=1/2。试 Aeˣ 或 Axeˣ 都会被齐次算子消掉。</p>
+<p><strong>课件混合例。</strong> y″+3y′−4y=e⁻⁴ˣ+xe⁻ˣ。特征根1、−4；第一项共振一次，第二项不共振。试 yₚ=Ax e⁻⁴ˣ+(Bx+C)e⁻ˣ，代入得：</p>
+<div class="eq">yₚ=−(x/5)e⁻⁴ˣ−(x/6+1/36)e⁻ˣ，<br>y=C₁eˣ+C₂e⁻⁴ˣ+yₚ。</div>
+
+<p>先按不同指数分组比较系数，每组只处理自身的多项式，能避免把无关项混在一起解一个过大的系统。</p></article><article class="unit" id="trig-forcing"><h3>11.3 三角强迫与混合强迫：分组、配对、处理初值</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=26" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=26" target="_blank" rel="noopener">L11 · PDF p26–35 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=51" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=51" target="_blank" rel="noopener">L12 · PDF p51–55 ↗</a></div><p><strong>识别频率。</strong> cosβx、sinβx 对应复指数 ±iβ，eᵅˣcosβx 对应 α±iβ。用 γ=α+iβ 在特征多项式中检查重数，而不是把 β 当成实根。</p>
+<p><strong>例一：y″+4y=8cos2x。</strong> γ=2i 是单根，故试 x(Acos2x+Bsin2x)。代入得到 A=0、B=2，yₚ=2xsin2x。若省去 x，整个试探式都是齐次解，无法得到右端。</p>
+<p><strong>例二：y″+4y=12x+8cos2x，y(0)=0、y′(0)=5。</strong> 多项式部分试 Ax+B，得到3x；三角部分如上。总解 y=C₁cos2x+C₂sin2x+3x+2xsin2x。代 y(0)=0 得 C₁=0；求导后在0处为 2C₂+3=5，得到 C₂=1。</p>
+<div class="eq">y=sin2x+3x+2xsin2x。</div>
+
+<p><strong>检查。</strong> 不要只将初值代入齐次部分；这里特解导数在0处等于3，若忽略它就会把 C₂ 错算成5/2。若右端同时含多个频率，分别设试探式、分别检验共振，再把特解相加。</p></article><article class="unit" id="solution-writing"><h3>11.4 从识别到交卷：一套可核验的六步流程</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=36" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=36" target="_blank" rel="noopener">L11 · PDF p36–54 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=1" target="_blank" rel="noopener">L12 · PDF p1–56 ↗</a></div><ol>
+<li><strong>辨认结构。</strong> 阶数、线性与否、显式或隐式、缺项、齐次或缩放结构；把原方程的定义域写在旁边。</li>
+<li><strong>选择方法并说明原因。</strong> 如“关于 y,y′,y″ 同次，令 z=y′/y”，不只写一个无来由的换元。</li>
+<li><strong>推导变换后的方程。</strong> 写出链式法则，记录每个被除因子；一次只推进一个等价变形。</li>
+<li><strong>求解并恢复变量。</strong> 新变量的积分常数要计数，代回原来的 x、y；参数形式若已清楚，不必勉强消参。</li>
+<li><strong>补分支、定常数、定区间。</strong> 零解、平衡解、已知 Riccati 特解、正负根、包络及初值逐项处理。</li>
+<li><strong>回原方程核验。</strong> 至少检查一遍关键导数、残差与初值；答案写在显眼处，保留必要计算过程。</li>
+</ol>
+<p>这是学习与书写建议。课件提出书写清楚、给出必要计算和答案，并没有提供每一类“必考”的保证；本稿不据此推断考试范围或个人掌握程度。</p></article></section><section class="chapter" id="lecture-12"><header class="chapter-head"><div class="chapter-num">12</div><div><h2>总复习：原清单与全部示例</h2><p>九项清单按原顺序保留；关键步骤、结果和条件逐题确认。</p></div></header><article class="unit" id="l12-checklist"><h3>12.0 原课件的九项知识点清单：完整保留并确认</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=2" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=2" target="_blank" rel="noopener">L12 · PDF p2–3 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" target="_blank" rel="noopener">L12 · PDF p10 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=14" target="_blank" rel="noopener">L12 · PDF p14 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" target="_blank" rel="noopener">L12 · PDF p21 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" target="_blank" rel="noopener">L12 · PDF p28 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" target="_blank" rel="noopener">L12 · PDF p37 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" target="_blank" rel="noopener">L12 · PDF p47 ↗</a></div><p>下面按第十二讲 p2 的原顺序保留九项，附中文含义、复习页与本文对应讲解。原目录中的 “Ricatti” 为课件拼写，正文采用通常拼写 Riccati。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>原课件清单（保留原文）</th>
+<th>内容确认与第十二讲页码</th>
+<th>前文详细方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Homogeneous DE. Quasi-Homogeneous DE</td>
+<td>齐次、可平移为齐次、拟齐次；p3–9</td>
+<td><a href="#homogeneous-first">2.5</a>、<a href="#affine-ratio">2.6</a>、<a href="#quasi-homogeneous">3.2</a></td>
+</tr>
+<tr>
+<td>2. Integrating factor</td>
+<td>积分因子与恰当方程；p10–13</td>
+<td><a href="#exact">3.3</a>、<a href="#integrating-factor">4.1</a>、<a href="#structural-factors">4.2</a></td>
+</tr>
+<tr>
+<td>3. Bernoulli DE</td>
+<td>Bernoulli 线性化及一阶线性基础；p14–16</td>
+<td><a href="#linear-first">4.3</a>、<a href="#bernoulli">5.1</a></td>
+</tr>
+<tr>
+<td>4. Ricatti’s DE</td>
+<td>已知特解换元；p17–20</td>
+<td><a href="#riccati">5.3</a></td>
+</tr>
+<tr>
+<td>5. DE resolved for y</td>
+<td>已解出 y 的隐式方程；并回顾 Clairaut、Lagrange；p21–24</td>
+<td><a href="#resolved-y">5.4</a>、<a href="#clairaut">6.1</a>、<a href="#lagrange">6.2</a></td>
+</tr>
+<tr>
+<td>6. DE is resolved by x</td>
+<td>已解出 x，参数法与奇解；p25–27</td>
+<td><a href="#resolved-x">6.3</a></td>
+</tr>
+<tr>
+<td>7. Reduction of order</td>
+<td>最简单型；不显含 x；缺少低阶 y 及导数；关于 y 及导数齐次；p28–36</td>
+<td><a href="#reduction-map">7.1</a>至<a href="#homogeneous-derivatives">7.4</a></td>
+</tr>
+<tr>
+<td>8. Linear homogeneous DE of order n with constant coefficients. The Cauchy-Euler DE</td>
+<td>常系数齐次实根、复根、重根及 Euler；p37–46</td>
+<td><a href="#constant-real">9.1</a>、<a href="#complex-roots">10.1</a>、<a href="#euler-equation">10.3</a></td>
+</tr>
+<tr>
+<td>9. Linear nonhomogeneous DE of order n with constant coefficients</td>
+<td>常数变易与待定系数；p47–55</td>
+<td><a href="#variation-second">8.3</a>、<a href="#variation-n">9.2</a>、<a href="#undetermined">11.1</a>至<a href="#trig-forcing">11.3</a></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>第7项的四个子项也按原文保留：</strong> Higher-order DE in a simplest form；DE not containing the variable x；DE not containing the variables y, y′, …, y⁽ᵏ⁻¹⁾；Homogeneous DE。这里最后一项指高阶方程对 y 及其导数的同次齐次性，与清单第1项的一阶 y/x 型不同。</p>
+<p><strong>确认结果。</strong> 九类都确实在第十二讲展开。分离变量不是被删除：p3 说明它贯穿各方法，故未单列；恰当方程在 p10 并入积分因子；一阶线性在 p14 并入 Bernoulli。第七讲的广义齐次降阶与已知解降阶虽然没有在这张九项表单列，仍属于前十二讲所授内容，已在<a href="#generalized-scaling">7.5</a>、<a href="#known-solution-reduction">7.6</a>保留。</p>
+<p>下面逐组核对第十二讲的实际例题，给出关键步骤、结果和适用条件。页码全部采用 PDF 文件的物理页码。</p></article><article class="unit" id="l12-homogeneous"><h3>12.1 齐次与拟齐次：两个原题逐步核对</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=3" target="_blank" rel="noopener">L12 · PDF p3–9 ↗</a></div><p><strong>例1：y′=(2x−y−2)/[4(x−4)]，x≠4。</strong> 令 u=x−4、v=y−6，原式变成 dv/du=(2u−v)/(4u)。再令 v=uz：z+uz′=(2−z)/4，于是 uz′=(2−5z)/4。</p>
+<p>先保留 z=2/5，再分离其余分支：dz/(2−5z)=du/(4u)，得到 z=2/5+C|u|⁻⁵ᐟ⁴。z=2/5 已被 C=0 包含，因此：</p>
+<div class="eq">y=6+(x−4)[2/5+C|x−4|⁻⁵ᐟ⁴]，在 x&lt;4 或 x&gt;4 的区间分别使用。</div>
+
+<p><strong>订正 p4。</strong> 课件定义 v=y−6，却在末尾回代写成 +3；正确应为 +6。检查 C=0 时 y=2x/5+22/5，代回两侧都为2/5，即可发现这一笔误。</p>
+<p><strong>例2：2xy′+(x²y⁴+1)y=0。</strong> 权重条件给 y 对 x 的权重 −1/2。对任意半轴设 u=y√|x|，代入得到 2xu′+u⁵=0。u=0 给 y=0；对 u≠0，du/u⁵=−dx/(2x)，积分 u⁻⁴=2ln|x|+C。</p>
+<div class="eq">y=0，或 y=±{x²[2ln|x|+C]}⁻¹ᐟ⁴；<br>x≠0，2ln|x|+C&gt;0。</div>
+
+<p>课件 p9 的隐式式 y⁴=1/{x²[2ln|x|+C]} 本身含正负两支；本稿把它们显式展开，并补列被除去的零解与实数定义域。对某个已选常数，区间不能跨越括号为0的点；原方程在 x=0 退化，需单独讨论，不能由本换元跨过。</p></article><article class="unit" id="l12-if-bernoulli"><h3>12.2 积分因子与 Bernoulli：公式标签、零解和正负支</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=10" target="_blank" rel="noopener">L12 · PDF p10–16 ↗</a></div><p><strong>积分因子例：(3xy+y²)dx+(x²+xy)dy=0。</strong> Mᵧ=3x+2y，Nₓ=2x+y，所以 (Mᵧ−Nₓ)/N=(x+y)/[x(x+y)]=1/x（先在约分合法处推导）。因此可取 μ=x，在 x≠0 的区域重新检验：</p>
+<div class="eq">(3x²y+xy²)dx+(x³+x²y)dy=0，<br>Φ=x³y+x²y²/2=C。</div>
+
+<p>直接算 Φₓ=xM、Φᵧ=xN，表明这个因子在 x≠0 时包括 x+y=0 的点也有效，不应机械把推导中临时约掉的 x+y=0 全部排除。势函数的两个偏导都正确。原式在 x=0 的退化情形仍须回原式检查。</p>
+<p><strong>订正 p12。</strong> 正在推导的是只依赖 x 的因子，应写 μ(x)=exp{∫[(Mᵧ−Nₓ)/N]dx}。原页把标签／公式写成 y 型，但随后算出 x 因子与最终势函数的思路是正确的。用 |x| 也可，选定半轴后与 x 只差非零常数。</p>
+<p><strong>Bernoulli 例：x²y′+2xy−y³=0。</strong> 在 x≠0 处标准化为 y′+(2/x)y=(1/x²)y³。先保留 y=0；其余设 z=y⁻²，得 z′−(4/x)z=−2/x²。μ=x⁻⁴，所以 (x⁻⁴z)′=−2x⁻⁶，积分得到：</p>
+<div class="eq">z=Cx⁴+2/(5x)，<br>y=0，或 y=±[Cx⁴+2/(5x)]⁻¹ᐟ²。</div>
+
+<p>非零实解要求 x≠0 且方括号&gt;0。p16 只展示了正平方根；完整的一般实解应补上负支和零解。若题目另有正初值，则选正支是合理的，但本例没有这样的限制。</p></article><article class="unit" id="l12-riccati"><h3>12.3 Riccati 初值例：完整解族和指定初值</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=17" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=17" target="_blank" rel="noopener">L12 · PDF p17–20 ↗</a></div><p>原题 y′=−1−x²+2(x+1/x)y−y²，y(1)=10/7。定义域先记 x≠0。试 y₁=x，右端化成1，与 y₁′=1 一致。</p>
+<p>令 y=x+1/z，P=−1、Q=2(x+1/x)，所以 2Py₁+Q=2/x，变为 z′+2z/x=1。乘积分因子 x²： (x²z)′=x²，得到 z=x/3+C/x²。</p>
+<div class="eq">一般非特解分支：y=x+3x²/(x³+K)，x≠0、x³+K≠0；<br>另有已知特解 y=x。</div>
+
+<p>代 x=1、y=10/7，有 1+3/(1+K)=10/7，得 K=6。初值所选解为 y=x+3x²/(x³+6)，包含 x=1 的最大正常区间是 (0,+∞)。负实极点 −∛6 位于另一个半轴，不妨碍这一初值区间；x=0 处即便表达式有极限，原 ODE 仍含1/x，不能据此延拓为该方程的解。</p></article><article class="unit" id="l12-implicit"><h3>12.4 已解出 y、x 的参数题：主值分支和奇解</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=21" target="_blank" rel="noopener">L12 · PDF p21–27 ↗</a></div><p><strong>例1：y=p sin p+cos p，p=y′。</strong> 求导得 p=p cos p·p′，即 p(1−cos p·p′)=0。</p>
+<p>分支 p=0 给 y≡1。变动参数支有 dx/dp=cos p，从而：</p>
+<div class="eq">x=sin p+C，y=p sin p+cos p。</div>
+
+<p>在 cos p≠0 的局部分支，dy/dp=p cos p，因此 dy/dx=p，代回无误。p23 的反正弦写法适用于所选主值分支；要完整表达其他反正弦分支，保留以上参数式最清楚。若显式写法需要，可在局部取 p=nπ+(−1)ⁿarcsin(x−C)，再代回 y；各分支要求 |x−C|&lt;1。cos p=0 的参数端点需另查能否作为函数解的端点，不能越过折返点仍当单值 y(x)。</p>
+<p><strong>例2：xp³−yp²−1=0。</strong> 原式立即要求 p≠0。解出 x=y/p+1/p³，在 p=p(y) 的可逆分支求导并化简得：</p>
+<div class="eq">(y/p+3/p³)(dp/dy)=0。</div>
+
+<p>第一支 dp/dy=0，p=C≠0，代回得 y=Cx−1/C²。第二支 y=−3/p²，代回得到 x=−2/p³，所以奇解参数式及消参结果为：</p>
+<div class="eq">x=−2/p³，y=−3/p²，p≠0；<br>y=−3(|x|/2)²ᐟ³，x≠0。</div>
+
+<p>可用 dy/dx=p 验证参数曲线；也可对直线族求 C 包络得到同一候选，然后回代。原课件“C 任意”须加 C≠0；消参式在 x=0 不可微，不能把0包含进经典解的区间。奇解的每个正常半轴分支都满足原式。</p>
+<p><strong>Clairaut、Lagrange 仍需会。</strong> 第十二讲 p21 明确回顾其形式，即使后面只详算一般 y=φ(p) 例题，也不能从清单中删去<a href="#clairaut">6.1</a>、<a href="#lagrange">6.2</a>。</p></article><article class="unit" id="l12-reduction"><h3>12.5 降阶四项：原清单子项与四道例题</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=28" target="_blank" rel="noopener">L12 · PDF p28–36 ↗</a></div><p><strong>① 最简单型：y‴=xsin2x，y(0)=0，y′(0)=0，y″(0)=1。</strong> 分部积分并逐层使用初值：</p>
+<div class="eq">y″=1−(x/2)cos2x+(1/4)sin2x<br>y′=x−(x/4)sin2x−(1/4)cos2x+1/4<br>y=x²/2+x/4+(x/8)cos2x−(3/16)sin2x。</div>
+
+<p>三阶导数应恢复 xsin2x，三个初值也分别满足。使用定积分能自动避免遗漏常数。</p>
+<p><strong>② 不显含 x：yy″+2(y′)²=0。</strong> p=p(y) 后 y p pᵧ+2p²=0；先保留 p=0，再对其余分支得 p=K/y²，最后 y³=Ax+B。A=0 给所有常数解，A≠0 在 Ax+B≠0 的区间取实立方根；过零点的立方根斜率发散，不是该区间上的 C² 解。</p>
+<p><strong>③ 缺少低阶 y 及导数：y‴+y″=x+1。</strong> 令 z=y″，解 z′+z=x+1，得 z=x+C₁e⁻ˣ，再积分两次：y=x³/6+C₁e⁻ˣ+C₂x+C₃。三个独立常数与三阶相符。</p>
+<p><strong>④ 关于 y 及导数齐次：x²yy″−x²(y′)²=2xyy′。</strong> 先补 y=0；在 x≠0、y≠0 设 z=y′/y，得到 xz′=2z，故 z=Kx²；积分 y′/y=Kx² 得：</p>
+<div class="eq">y=A exp(Bx³)。</div>
+
+<p>A=0 可代表零解；以上通解描述正常半轴上的解族。x=0 是方程退化点，若讨论跨0的 C² 解，需要单独检查拼接，不能仅由标准化后的唯一性结论断言两侧 B 必相同。前文另外保留了本清单未单列的广义齐次与已知线性解降阶。</p></article><article class="unit" id="l12-linear-homogeneous"><h3>12.6 常系数齐次与 Euler：五个例题全部核对</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=37" target="_blank" rel="noopener">L12 · PDF p37–46 ↗</a></div><p><strong>例1：y″+4y′−5y=0。</strong> P(λ)=(λ−1)(λ+5)，两个单实根给 y=C₁eˣ+C₂e⁻⁵ˣ。</p>
+<p><strong>例2：y‴−7y″+14y′−8y=0，y(0)=1，y′(0)=0，y″(0)=0。</strong> 分解 P=(λ−1)(λ−2)(λ−4)，通解 C₁eˣ+C₂e²ˣ+C₃e⁴ˣ。初值方程组：C₁+C₂+C₃=1，C₁+2C₂+4C₃=0，C₁+4C₂+16C₃=0，解得：</p>
+<div class="eq">y=(8/3)eˣ−2e²ˣ+(1/3)e⁴ˣ。</div>
+
+<p><strong>例3：y″+2y′+5y=0。</strong> 根 −1±2i，y=e⁻ˣ(C₁cos2x+C₂sin2x)。指数实部与振荡频率各来自根的不同部分，不能交换。</p>
+<p><strong>例4：y⁽⁶⁾−3y⁽⁴⁾+3y″−y=0。</strong> P=(λ²−1)³=(λ−1)³(λ+1)³，±1 各三重。因此：</p>
+<div class="eq">y=(C₁+C₂x+C₃x²)eˣ+(C₄+C₅x+C₆x²)e⁻ˣ。</div>
+
+<p>六个基解、六个常数，不能漏掉两个 x² 因子。</p>
+<p><strong>例5：x²y″+5xy′+4y=0。</strong> 指标式 r(r−1)+5r+4=(r+2)²，r=−2 二重；或 t=ln|x| 后 Ÿ+4Ẏ+4Y=0。结果：</p>
+<div class="eq">y=(C₁+C₂ln|x|)/x²，x≠0。</div>
+
+<p>正负半轴分别使用自己的常数。第十二讲只展示 x&gt;0 的对数换元，本稿保留该推导并补充负半轴的标准写法；x=0 不包含在该正规化区间。</p></article><article class="unit" id="l12-linear-nonhomogeneous"><h3>12.7 非齐次：常数变易与待定系数两道原题</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=47" target="_blank" rel="noopener">L12 · PDF p47–55 ↗</a></div><p><strong>例1：y″+y=2sec x。</strong> 在 cos x≠0 的区间，取 y₁=sin x、y₂=cos x，W=−1。系统给 u₁′=2、u₂′=−2tan x，所以可选 u₁=2x、u₂=2ln|cos x|：</p>
+<div class="eq">y=C₁sin x+C₂cos x+2xsin x+2cos x·ln|cos x|。</div>
+
+<p>检查 W 的符号要与基解排列一致。若交换 y₁、y₂，W 和两个系数公式也会随之变化，但最终特解等价。不能跨过 cos x=0；该处原右端无定义。</p>
+<p><strong>例2：y⁽⁴⁾−y″=12x+4e⁻ˣ+2sin x。</strong> 特征多项式 P(λ)=λ²(λ−1)(λ+1)，齐次通解 yₕ=C₁+C₂x+C₃eˣ+C₄e⁻ˣ。</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>右端</th>
+<th>根与共振</th>
+<th>完整试探式</th>
+<th>解出的特解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12x</td>
+<td>γ=0，二重</td>
+<td>x²(Ax+B)</td>
+<td>−2x³</td>
+</tr>
+<tr>
+<td>4e⁻ˣ</td>
+<td>γ=−1，单重</td>
+<td>Cxe⁻ˣ</td>
+<td>−2xe⁻ˣ</td>
+</tr>
+<tr>
+<td>2sin x</td>
+<td>γ=i，不是根</td>
+<td>Dsin x+Ecos x</td>
+<td>sin x</td>
+</tr>
+</tbody>
+</table></div>
+<p>分别比较系数得 A=−2、B=0、C=−2、D=1、E=0，因此：</p>
+<div class="eq">y=C₁+C₂x+C₃eˣ+C₄e⁻ˣ−2x³−2xe⁻ˣ+sin x。</div>
+
+<p>回验可分开算：L[−2x³]=12x，L[−2xe⁻ˣ]=4e⁻ˣ，L[sin x]=2sin x，再利用线性叠加。不需要将整个长表达式一次性展开。</p></article></section><section class="chapter" id="lecture-13"><header class="chapter-head"><div class="chapter-num">附</div><div><h2>方法选择、补充与订正记录</h2><p>用一张选法表串起课程，并集中记录来源与订正。</p></div></header><article class="unit" id="choose-method"><h3>附录 A｜遇到一道方程，按什么顺序选方法</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=21" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=21" target="_blank" rel="noopener">L1 · PDF p21 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=3" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=3" target="_blank" rel="noopener">L2 · PDF p3 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=2" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=2" target="_blank" rel="noopener">L7 · PDF p2 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=2" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=2" target="_blank" rel="noopener">L12 · PDF p2 ↗</a></div><div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>先看什么</th>
+<th>识别到的结构</th>
+<th>首选动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一阶，已经解出 y′</td>
+<td>f(x)g(y)</td>
+<td><a href="#separable">分离变量</a>，先查 g=0</td>
+</tr>
+<tr>
+<td>一阶，y 与 y′ 一次出现</td>
+<td>y′+py=q</td>
+<td><a href="#linear-first">一阶线性</a>，积分因子 exp(∫p dx)</td>
+</tr>
+<tr>
+<td>同一线性组合反复出现</td>
+<td>y′=F(ax+by+c)</td>
+<td><a href="#linear-combination">令 z=ax+by+c</a></td>
+</tr>
+<tr>
+<td>只依赖 y/x，或 M,N 同次</td>
+<td>一阶齐次</td>
+<td><a href="#homogeneous-first">y=xu</a></td>
+</tr>
+<tr>
+<td>两个仿射线性式的比值</td>
+<td>可平移齐次或公共组合</td>
+<td><a href="#affine-ratio">先算 Δ</a></td>
+</tr>
+<tr>
+<td>各单项式可配不同权重</td>
+<td>一阶拟齐次</td>
+<td><a href="#quasi-homogeneous">先求 α，再令 y=xᵅu</a></td>
+</tr>
+<tr>
+<td>微分形式 M dx+N dy=0</td>
+<td>Mᵧ=Nₓ</td>
+<td><a href="#exact">势函数 Φ=C</a></td>
+</tr>
+<tr>
+<td>不恰当，但偏导差之比简洁</td>
+<td>μ(x)、μ(y)、μ(ω)</td>
+<td><a href="#integrating-factor">积分因子</a>，再求势函数</td>
+</tr>
+<tr>
+<td>线性项加 yⁿ</td>
+<td>Bernoulli</td>
+<td><a href="#bernoulli">z=y¹⁻ⁿ</a>，先查 y=0</td>
+</tr>
+<tr>
+<td>y 的二次式并已知一个特解</td>
+<td>Riccati</td>
+<td><a href="#riccati">y=y₁+1/z</a>，另保留 y₁</td>
+</tr>
+<tr>
+<td>含 g′(y)y′ 与 g(y)</td>
+<td>函数换元线性化</td>
+<td><a href="#general-linearization">v=g(y)</a></td>
+</tr>
+<tr>
+<td>y′ 隐含，能解出 y 或 x</td>
+<td>y=f(x,p) 或 x=f(y,p)</td>
+<td><a href="#resolved-y">p=y′ 参数法</a>，分支先保留</td>
+</tr>
+<tr>
+<td>高阶，缺变量或具有缩放结构</td>
+<td>六种降阶模板</td>
+<td><a href="#reduction-map">查第七讲总表</a></td>
+</tr>
+<tr>
+<td>高阶线性、常系数</td>
+<td>齐次</td>
+<td><a href="#constant-real">特征多项式</a>，数根的重数</td>
+</tr>
+<tr>
+<td>线性，系数按 x 的幂配阶</td>
+<td>Cauchy–Euler</td>
+<td><a href="#euler-equation">t=ln|x|</a></td>
+</tr>
+<tr>
+<td>常系数非齐次，右端拟多项式</td>
+<td>多项式、指数、sin/cos</td>
+<td><a href="#undetermined">待定系数</a>，按根重数乘 xᵏ</td>
+</tr>
+<tr>
+<td>一般线性非齐次，基解组已知</td>
+<td>右端不限于拟多项式</td>
+<td><a href="#variation-n">n 阶常数变易</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>这些识别可以重叠，不是互相排斥的分类。选路时比较实际运算长度。例如 Bernoulli 可看作一般函数换元，Riccati 的特殊题也可能恰好是拟齐次，Euler 又可以看成缩放降阶的一类。</p>
+<p><strong>统一符号。</strong> 本稿 p 在线性式 y′+p(x)y=q 中表示系数函数，在隐式一阶与降阶章节中表示导数 y′；每节重新定义。C、Cᵢ 表示任意实常数，可重新命名但不能随 x 变化；uᵢ(x) 在常数变易法中则是待求函数。exp(A)=eᴬ；ln|x| 的导数在 x≠0 时为1/x。</p></article><article class="unit" id="operator-supplement"><h3>附录 B｜保留的补充技巧：逆算子记号与一题多法</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=16" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=16" target="_blank" rel="noopener">L11 · PDF p16–35 ↗</a></div><p>本节保留原 HTML 中有用的延伸内容。它们服务于课件方法，<strong>不作为课件另有一讲“逆算子理论”的证据</strong>。</p>
+<p><strong>逆算子只是一种求特解的记号。</strong> 写 yₚ=[1/P(D)]f 表示选择一个满足 P(D)yₚ=f 的特解；线性算子有齐次核，因而这个“逆”并非唯一。任意两种选择的差可以是齐次解。完整通解仍需加 yₕ。</p>
+<p>若 P(a)≠0，P(D)eᵃˣ=P(a)eᵃˣ，因此对 f=Aeᵃˣ 可取 yₚ=Aeᵃˣ/P(a)。若 P(a)=0，直接相除无意义，必须按重数处理共振。移位公式 P(D)(eᵃˣv)=eᵃˣP(D+a)v 始终是更可靠的推导起点。</p>
+<p><strong>多项式上的有限展开。</strong> P(0)≠0 时，把1/P(z)在 z=0 处作幂级数，并以 D 代 z 作用在 m 次多项式 f 上，只保留 D⁰,…,Dᵐ；更高阶导数为0。例如 (D²−1)⁻¹=−(1+D²+D⁴+⋯)，作用于 x²+1 得 yₚ=−x²−3。若 P(0)=0，先提取 Dᵏ，对应积分或共振；不能照搬这个以非零常数项为前提的展开。</p>
+<p><strong>原 HTML 的一题多法例：x²y′+xy+x²y²=4，x≠0。</strong> 赋权 α=−1，令 u=xy，得到 xu′=4−u²。先保留 u=±2，即 y=±2/x；其余积分：</p>
+<div class="eq">(1/4)ln|(2+u)/(2−u)|=ln|x|+C。</div>
+
+<p>也可把它写成 Riccati，y′=−y²−y/x+4/x²，已知 y₁=2/x，令 y=2/x+1/z，得到 z′−5z/x=1。其解为 z=−x/4+Cx⁵，所以 y=2/x+1/(−x/4+Cx⁵)，另保留 y=2/x；C=0 已包含 y=−2/x。两条路线互相核验，恢复时都要求分母非零。</p></article><article class="unit" id="errata"><h3>附录 C｜本次确认的订正与条件补全</h3><div class="sources" aria-label="原课件页码"><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=19" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=19" target="_blank" rel="noopener">L1 · PDF p19 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=29" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=29" target="_blank" rel="noopener">L9 · PDF p29 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=4" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=4" target="_blank" rel="noopener">L12 · PDF p4 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=12" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=12" target="_blank" rel="noopener">L12 · PDF p12 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=16" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=16" target="_blank" rel="noopener">L12 · PDF p16 ↗</a> <a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=23" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=23" target="_blank" rel="noopener">L12 · PDF p23–27 ↗</a></div><div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>原表述或不完整之处</th>
+<th>本稿采用的结果</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1 p19</td>
+<td>两个边值问题的唯一解／无解结论颠倒</td>
+<td>y(0)=1、y′(π/2)=5 无解；y′(π)=5 唯一</td>
+<td>原课件错误，已求解回验</td>
+</tr>
+<tr>
+<td>L9 p29</td>
+<td>W(eˣ,e²ˣ,e³ˣ)=14e⁶ˣ</td>
+<td>W=2e⁶ˣ</td>
+<td>原课件算术笔误，不改变无关性</td>
+</tr>
+<tr>
+<td>L12 p4</td>
+<td>v=y−6 后回代加3</td>
+<td>回代应加6</td>
+<td>原课件回代笔误</td>
+</tr>
+<tr>
+<td>L12 p12</td>
+<td>x 型积分因子写作 y 型标签／公式</td>
+<td>μ(x)=exp{∫[(Mᵧ−Nₓ)/N]dx}，可取 x</td>
+<td>原课件标签／公式笔误，最终势函数正确</td>
+</tr>
+<tr>
+<td>L12 p16</td>
+<td>Bernoulli 只展示正平方根</td>
+<td>补 y=0、负根与实数定义域</td>
+<td>解的分支不完整</td>
+</tr>
+<tr>
+<td>L12 p9</td>
+<td>拟齐次结果采用 y⁴ 隐式式</td>
+<td>保留其正负含义，另补零解及域</td>
+<td>条件补全，不把隐式式误判为只含正根</td>
+</tr>
+<tr>
+<td>L12 p23–24</td>
+<td>用主值 arcsin 消参</td>
+<td>保留参数式，说明各局部分支</td>
+<td>表达范围补全</td>
+</tr>
+<tr>
+<td>L12 p26–27</td>
+<td>参数常数未明确排除0</td>
+<td>直线族 C≠0，奇解 x≠0</td>
+<td>非零条件与正则性补全</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>原 HTML 本身的主要修订。</strong> 按原讲次重新组织；修正奇解与平衡解的定义；Riccati 补已知特解；补齐六类高阶降阶、μ(ω)、隐式参数模板、n 阶常数变易、数值 Euler、建模与代数工具；收紧恰当性、Wronskian、绝对值、Euler 半轴、初值、包络与退化情形的条件。原有正确主干与有用补充保留并重写。</p>
+<p><strong>页码与范围。</strong> 所有“p”均指 PDF 从1开始的物理页码，避免课件页脚旧总页数造成错位。本稿核对各讲知识主题、关键定义与方法，并对本稿展开的例题和争议公式验算；不把文本提取等同于逐页图像精读，也不声称已经重做原课件的每一道作业题。作业及重复例题中涉及的新方法已归入相应知识单元，原题仍通过页码链接回查。</p></article></section><article class="unit" id="coverage"><h3>附录 D｜逐讲知识覆盖索引与原文件</h3><p>十二份原课件共579页。下表按原讲次列出对应知识单元；重复讲评、作业与附加材料所用方法归入同一单元，便于回查。</p><div class="table-wrap" tabindex="0"><table><thead><tr><th>原讲次／文件</th><th>页数</th><th>对应知识单元</th></tr></thead><tbody><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/1.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf#page=1" target="_blank" rel="noopener">L1 · PDF p1 ↗</a><br>1.pdf</td><td>34</td><td><a href="#calculus">微积分预备：以后每次换元都用得到</a>；<a href="#definitions">ODE 的分类、解的形式与验证</a>；<a href="#ivp-bvp">初值问题、边值问题与完整收尾</a>；<a href="#equilibrium-singular">平衡解、奇解、方向场</a>；<a href="#existence">局部存在唯一性与失效边界</a>；<a href="#euler-numerical">数值 Euler 方法：用切线逐步前进</a>；<a href="#models">从物理描述建立方程：自由落体与冷却</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf#page=1" target="_blank" rel="noopener">L2 · PDF p1 ↗</a><br>2(2).pdf</td><td>48</td><td><a href="#separable">可分离变量：积分之外还要检查解集</a>；<a href="#linear-combination">可化为分离变量：公共线性组合</a>；<a href="#domain-ivp">初值选支、最大区间与有限位置发散</a>；<a href="#population">人口模型：从单位个体增长率到总量</a>；<a href="#homogeneous-first">一阶齐次方程：y/x 为什么是自然变量</a>；<a href="#affine-ratio">线性分式：交点平移与平行退化</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf#page=1" target="_blank" rel="noopener">L3 · PDF p1 ↗</a><br>3(2).pdf</td><td>43</td><td><a href="#flight">飞行轨迹模型：先分解速度，再消去时间</a>；<a href="#quasi-homogeneous">拟齐次方程：用权重找换元</a>；<a href="#exact">恰当方程：恢复势函数的三种办法</a>；<a href="#integration-toolbox">积分工具：课件反复使用的基本操作</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%283%29.pdf#page=1" target="_blank" rel="noopener">L4 · PDF p1 ↗</a><br>4(3).pdf</td><td>49</td><td><a href="#integrating-factor">积分因子：从恰当条件推导，而非猜符号</a>；<a href="#structural-factors">常用结构积分因子与凑微分</a>；<a href="#linear-first">一阶线性方程：两种推导、一个完整流程</a>；<a href="#swap-variables">互换 x、y：把非线性外观变成线性</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/5%281%29.pdf#page=1" target="_blank" rel="noopener">L5 · PDF p1 ↗</a><br>5(1).pdf</td><td>55</td><td><a href="#bernoulli">Bernoulli 方程：先保留零解，再线性化</a>；<a href="#general-linearization">一般函数换元：识别 g′(y)y′</a>；<a href="#riccati">Riccati 方程：已知特解才能直接降阶</a>；<a href="#resolved-y">已解出 y 的隐式一阶方程：把 p=y′ 当参数</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/6%281%29.pdf#page=1" target="_blank" rel="noopener">L6 · PDF p1 ↗</a><br>6(1).pdf</td><td>49</td><td><a href="#clairaut">Clairaut 方程：直线族与包络分支</a>；<a href="#lagrange">Lagrange 方程：转成关于 x(p) 的线性方程</a>；<a href="#resolved-x">已解出 x：改用 y 或 p 作自变量</a>；<a href="#piecewise">课后题中的组合技巧与分段条件</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/7%281%29.pdf#page=1" target="_blank" rel="noopener">L7 · PDF p1 ↗</a><br>7(1).pdf</td><td>47</td><td><a href="#reduction-map">高阶降阶的总地图与直接积分</a>；<a href="#missing-x">不显含 x：p 必须看成 y 的函数</a>；<a href="#missing-low">缺少低阶导数：一次降低 k 阶</a>；<a href="#homogeneous-derivatives">关于 y 及导数同次齐次：对数导数降阶</a>；<a href="#generalized-scaling">广义齐次高阶方程：指数换元后再降阶</a>；<a href="#known-solution-reduction">已知一个线性解：消去 u 项来降阶</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/8%281%29.pdf#page=1" target="_blank" rel="noopener">L8 · PDF p1 ↗</a><br>8(1).pdf</td><td>53</td><td><a href="#linear-structure">线性方程的结构：叠加、基解组、非齐次通解</a>；<a href="#independence">线性无关与 Wronskian：区分一般函数和同一方程的解</a>；<a href="#variation-second">二阶常数变易法：从辅助条件推到积分</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/9%281%29.pdf#page=1" target="_blank" rel="noopener">L9 · PDF p1 ↗</a><br>9(1).pdf</td><td>43</td><td><a href="#constant-real">常系数齐次方程：特征多项式与实重根</a>；<a href="#variation-n">n 阶常数变易：不能只背二阶公式</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf#page=1" target="_blank" rel="noopener">L10 · PDF p1 ↗</a><br>10(1).pdf</td><td>48</td><td><a href="#complex-roots">复根、重复共轭根与实通解</a>；<a href="#complex-power">复数代数预备：极形式与 n 次方根</a>；<a href="#euler-equation">Cauchy–Euler 方程：对数自变量与指标方程</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf#page=1" target="_blank" rel="noopener">L11 · PDF p1 ↗</a><br>11(1).pdf</td><td>54</td><td><a href="#undetermined">待定系数法：先检查右端是否属于封闭函数族</a>；<a href="#shift-operator">指数移位与共振：让计算更短</a>；<a href="#trig-forcing">三角强迫与混合强迫：分组、配对、处理初值</a>；<a href="#solution-writing">从识别到交卷：一套可核验的六步流程</a></td></tr><tr><td><a class="source" href="../%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=1" data-local="file:///D:/aaa_D_usual/DSH/111%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/12%281%29.pdf#page=1" target="_blank" rel="noopener">L12 · PDF p1 ↗</a><br>12(1).pdf</td><td>56</td><td><a href="#l12-checklist">原课件的九项知识点清单：完整保留并确认</a>；<a href="#l12-homogeneous">齐次与拟齐次：两个原题逐步核对</a>；<a href="#l12-if-bernoulli">积分因子与 Bernoulli：公式标签、零解和正负支</a>；<a href="#l12-riccati">Riccati 初值例：完整解族和指定初值</a>；<a href="#l12-implicit">已解出 y、x 的参数题：主值分支和奇解</a>；<a href="#l12-reduction">降阶四项：原清单子项与四道例题</a>；<a href="#l12-linear-homogeneous">常系数齐次与 Euler：五个例题全部核对</a>；<a href="#l12-linear-nonhomogeneous">非齐次：常数变易与待定系数两道原题</a></td></tr></tbody></table></div><p>源文件版本以本次核对时的本地原文件为准；未改写原 PDF。内容以原课程为主，补充内容均在相应段落标明。详细数学验算及源文件校验记录与修订稿一并留存。</p></article><footer class="footer"><p>原课件：Alexander Gladkov · Belarusian State University。此文件为面向学习的中文重述与方法整理，不能替代课程原件中的全部题目及课堂说明。原 HTML 与原 PDF 保留。</p><p>数学公式采用 Unicode 与本机字体，无需联网加载公式库。PDF 链接指向相邻“课件”目录；保留目录结构即可回查。</p></footer></main><a class="backtop" href="#top">↑ 回到顶部</a><script>
+const units=[...document.querySelectorAll('.unit')], chapters=[...document.querySelectorAll('.chapter')], search=document.querySelector('#search'), status=document.querySelector('#status'), empty=document.querySelector('#empty');
+const indexed=units.map(e=>({e,text:e.innerText.toLocaleLowerCase()}));
+function filter(){const q=search.value.trim().toLocaleLowerCase(),terms=q.split(/\s+/).filter(Boolean);let count=0;indexed.forEach(({e,text})=>{const show=terms.every(t=>text.includes(t));e.hidden=!show;if(show)count++;});chapters.forEach(e=>{e.hidden=![...e.querySelectorAll('.unit')].some(c=>!c.hidden);});status.textContent=q?count+' 个匹配单元':'全文 '+units.length+' 节';empty.hidden=count>0;document.querySelector('.intro').hidden=!!q;document.querySelector('.quick').hidden=!!q;}
+search.addEventListener('input',filter);filter();
+document.querySelector('#clear').onclick=()=>{search.value='';filter();search.focus();};
+document.querySelector('#theme').onclick=()=>{document.body.classList.toggle('dark');const dark=document.body.classList.contains('dark');document.querySelector('#theme').textContent=dark?'浅色':'深色';try{localStorage.setItem('ode-theme',dark?'dark':'light');}catch{}};
+try{if(localStorage.getItem('ode-theme')==='dark'){document.body.classList.add('dark');document.querySelector('#theme').textContent='浅色';}}catch{}
+document.querySelector('#print').onclick=()=>{search.value='';filter();window.print();};
+const sidebar=document.querySelector('.sidebar'),menu=document.querySelector('#menu');menu.onclick=()=>{const open=sidebar.classList.toggle('open');menu.setAttribute('aria-expanded',open);};
+document.addEventListener('click',e=>{const link=e.target.closest('a[href^="#"]');if(link){if(search.value){search.value='';filter();}sidebar.classList.remove('open');menu.setAttribute('aria-expanded','false');}else if(!sidebar.contains(e.target)&&!menu.contains(e.target)){sidebar.classList.remove('open');menu.setAttribute('aria-expanded','false');}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){sidebar.classList.remove('open');menu.setAttribute('aria-expanded','false');}});
+// The delivered file uses relative sibling PDF links; the workspace review copy uses the known source paths.
+if(decodeURI(location.pathname).includes('/CODEX/'))document.querySelectorAll('a[data-local]').forEach(a=>a.href=a.dataset.local);
+function progress(){const den=document.documentElement.scrollHeight-innerHeight;document.querySelector('.progress').style.width=(den>0?scrollY/den:0)*(innerWidth-parseInt(getComputedStyle(document.documentElement).getPropertyValue('--side')))+'px';}
+addEventListener('scroll',progress,{passive:true});addEventListener('resize',progress);progress();
+</script></body></html>

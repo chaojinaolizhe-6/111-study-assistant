@@ -1,0 +1,176 @@
+pageType: content
+background: {type: solid, color: "#F7F4EB"}
+notes: "Euler 方法与建模。"
+elements:
+  - elementId: brand
+    elementType: text
+    bounds: [48, 27, 665, 20]
+    content:
+      text: "微分方程 · 第1–12讲串讲"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 10
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: section-label
+    elementType: text
+    bounds: [700, 46, 212, 13]
+    content:
+      text: "01 基础概念"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 9
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: title
+    elementType: text
+    bounds: [48, 76, 864, 64]
+    content:
+      text: "数值 Euler 方法与两个建模例"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 32
+      bold: true
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: rule-top
+    elementType: shape
+    bounds: [48, 148, 864, 1]
+    shapeName: rect
+    fill: {type: solid, color: "#B9C4B4"}
+    border: {width: 0, color: "#B9C4B4"}
+  - elementId: readout
+    elementType: text
+    bounds: [48, 475, 864, 25]
+    content:
+      text: "建模固定顺序：定义变量与正方向 → 写变化率 → 写定律 → 配初值 → 解 → 查符号、单位、有效范围。"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 13
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: footer
+    elementType: text
+    bounds: [48, 507, 783, 16]
+    content:
+      text: "课件 L1–L12（共 579 页）逐页核对 · 修订版讲义 2026-10-16"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 9
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: page-no
+    elementType: text
+    bounds: [871, 504, 41, 22]
+    content:
+      text: "09"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 11
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: num0
+    elementType: text
+    bounds: [48, 172, 44, 34]
+    content:
+      text: "01"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 24
+      color: "#6E7F72"
+      lineHeight: 1.2
+      align: left
+  - elementId: h0
+    elementType: text
+    bounds: [104, 170, 800, 44]
+    content:
+      text: "Euler 方法：用切线一步步走"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 22
+      bold: true
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: b0
+    elementType: text
+    bounds: [104, 216, 808, 38]
+    content:
+      text: "xⱼ₊₁=xⱼ+h，yⱼ₊₁=yⱼ+h·f(xⱼ,yⱼ)。斜率必须用当前点算，不能先把 x 换成下一点。例 y′=y, y(0)=1, h=0.1 ⟹ 1.1, 1.21（真值 1.2214）。"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 13
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: sep0
+    elementType: shape
+    bounds: [104, 258, 808, 1]
+    shapeName: rect
+    fill: {type: solid, color: "#B9C4B4"}
+    border: {width: 0, color: "#B9C4B4"}
+  - elementId: num1
+    elementType: text
+    bounds: [48, 268, 44, 34]
+    content:
+      text: "02"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 24
+      color: "#6E7F72"
+      lineHeight: 1.2
+      align: left
+  - elementId: h1
+    elementType: text
+    bounds: [104, 266, 800, 44]
+    content:
+      text: "自由落体：先定义正方向，再写方程"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 22
+      bold: true
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: b1
+    elementType: text
+    bounds: [104, 312, 808, 38]
+    content:
+      text: "向上为正、忽略阻力：my″=−mg ⟹ y=y₀+v₀t−gt²/2。静止释放时 T=√(2y₀/g)；y₀=50 m、g≈9.8 m/s² 得 T≈3.2 s。"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 13
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: sep1
+    elementType: shape
+    bounds: [104, 354, 808, 1]
+    shapeName: rect
+    fill: {type: solid, color: "#B9C4B4"}
+    border: {width: 0, color: "#B9C4B4"}
+  - elementId: num2
+    elementType: text
+    bounds: [48, 364, 44, 34]
+    content:
+      text: "03"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 24
+      color: "#6E7F72"
+      lineHeight: 1.2
+      align: left
+  - elementId: h2
+    elementType: text
+    bounds: [104, 362, 800, 44]
+    content:
+      text: "Newton 冷却：换元的样板"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 22
+      bold: true
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
+  - elementId: b2
+    elementType: text
+    bounds: [104, 408, 808, 38]
+    content:
+      text: "dT/dt=−k(T−A)，令 u=T−A 得 u′=−ku，故 T=A+(T₀−A)e^(−kt)。A 随时间变时，它是线性非齐次，不能直接套常 A 的结果。"
+      fontFamily: {latin: Arial, ea: Microsoft YaHei, mac: PingFang SC, win: Microsoft YaHei}
+      fontSize: 13
+      color: "#243F35"
+      lineHeight: 1.2
+      align: left
