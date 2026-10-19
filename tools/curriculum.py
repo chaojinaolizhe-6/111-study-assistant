@@ -43,13 +43,30 @@ def validate(root: Path, catalog: dict, materials: dict) -> None:
         # A replaced source cannot keep its old "read/verified" flags.
         if hashlib.sha256(local.read_bytes()).hexdigest() != material['sha256']:
             raise ValueError(f'Material changed; re-register reading evidence: {path}')
-        page_count = material.get('page_count')
-        for key in ('text_extracted_pages', 'rendered_pages', 'visually_read_pages', 'formula_verified_pages'):
-            pages = material.get(key, [])
-            if not isinstance(pages, list) or any(type(n) is not int or n < 1 or not isinstance(page_count, int) or n > page_count for n in pages):
-                raise ValueError(f'Invalid {key}: {path}')
-        if not set(material.get('formula_verified_pages', [])) <= set(material.get('visually_read_pages', [])):
-            raise ValueError(f'Formula verification requires actual reading: {path}')
+        kind = material.get('kind', 'paged')
+        if kind == 'document':
+            # 文本型课程设计（Markdown/纯文本）没有页码：用「已核小节标题」代替页范围，
+            # 且不允许再声明页数或页码证据，避免把设计稿伪装成已核读的页码资料。
+            sections = material.get('sections')
+            if (not isinstance(sections, list) or not sections
+                    or any(not isinstance(s, str) or not s.strip() for s in sections)
+                    or len(set(sections)) != len(sections)):
+                raise ValueError(f'Document material needs nonempty, unique sections: {path}')
+            if material.get('page_count') is not None:
+                raise ValueError(f'Document material must not claim a page count: {path}')
+            for key in ('text_extracted_pages', 'rendered_pages', 'visually_read_pages', 'formula_verified_pages'):
+                if material.get(key):
+                    raise ValueError(f'Document material cannot list page evidence ({key}): {path}')
+        elif kind == 'paged':
+            page_count = material.get('page_count')
+            for key in ('text_extracted_pages', 'rendered_pages', 'visually_read_pages', 'formula_verified_pages'):
+                pages = material.get(key, [])
+                if not isinstance(pages, list) or any(type(n) is not int or n < 1 or not isinstance(page_count, int) or n > page_count for n in pages):
+                    raise ValueError(f'Invalid {key}: {path}')
+            if not set(material.get('formula_verified_pages', [])) <= set(material.get('visually_read_pages', [])):
+                raise ValueError(f'Formula verification requires actual reading: {path}')
+        else:
+            raise ValueError(f'Unknown material kind: {path}')
         material_index[path] = material
     subjects = {p.name for p in (root / 'subjects').iterdir() if p.is_dir()}
     for course in catalog['courses']:
@@ -77,9 +94,16 @@ def validate(root: Path, catalog: dict, materials: dict) -> None:
                 targets = unit.get('target_ids')
                 if not isinstance(targets, list) or any(not isinstance(t, str) or not t for t in targets) or len(set(targets)) != len(targets):
                     raise ValueError(f'Invalid target mapping: {cid}')
-                pages = unit.get('source_pages', [])
-                if not pages or any(type(n) is not int or n < 1 or n > material_index[source]['page_count'] for n in pages):
-                    raise ValueError(f'Missing/invalid unit source pages: {cid}')
+                source_material = material_index[source]
+                if source_material.get('kind', 'paged') == 'document':
+                    sections = unit.get('source_sections')
+                    if (not isinstance(sections, list) or not sections
+                            or any(not isinstance(s, str) or s not in source_material['sections'] for s in sections)):
+                        raise ValueError(f'Missing/invalid unit source sections: {cid}')
+                else:
+                    pages = unit.get('source_pages', [])
+                    if not pages or any(type(n) is not int or n < 1 or n > source_material['page_count'] for n in pages):
+                        raise ValueError(f'Missing/invalid unit source pages: {cid}')
 
 
 def reconcile(root: Path, chapter_id: str | None = None, subject: str | None = None) -> dict:
@@ -128,6 +152,13 @@ def reconcile(root: Path, chapter_id: str | None = None, subject: str | None = N
                        for p in ('learning/curriculum.json', 'learning/materials.json', 'learning/learner-state.json')}}
 
 
+def unit_locator(unit: dict) -> str:
+    """单元在来源中的位置：PDF 用页码，文本型设计稿用小节标题。"""
+    if unit.get('source_sections'):
+        return '§ ' + '、'.join(unit['source_sections'])
+    return ','.join(map(str, unit.get('source_pages', [])))
+
+
 def render(report: dict, today: str) -> str:
     lines = ['# 课程范围与证据对账', '', f'> 生成日期：{today}（中国时间）。由 curriculum.py 生成，勿手工改。',
              '> 无独立证据 ≠ 没学会；目录未核全时全章覆盖率未知。这里的百分比只指已声明范围的稳定证据覆盖。', '']
@@ -138,10 +169,10 @@ def render(report: dict, today: str) -> str:
         if not chapter['units']:
             lines += ['尚未核读结构页、未建立范围基线，下一步：读目录/小节标题并登记。', '']
             continue
-        lines += ['| 范围单元 | 页码 | 状态 | 无题/未登记目标 | 尚无独立证据 |', '|---|---|---|---|---|']
+        lines += ['| 范围单元 | 位置 | 状态 | 无题/未登记目标 | 尚无独立证据 |', '|---|---|---|---|---|']
         for unit in chapter['units']:
             absent = list(dict.fromkeys(unit['missing_targets'] + unit['no_tasks']))
-            lines.append(f'| {unit["title"]} | {",".join(map(str,unit["source_pages"]))} | {unit["status"]} | {", ".join(absent) or ("尚未映射" if not unit["target_ids"] else "—")} | {", ".join(unit["no_independent"]) or ("未知" if not unit["target_ids"] else "—")} |')
+            lines.append(f'| {unit["title"]} | {unit_locator(unit)} | {unit["status"]} | {", ".join(absent) or ("尚未映射" if not unit["target_ids"] else "—")} | {", ".join(unit["no_independent"]) or ("未知" if not unit["target_ids"] else "—")} |')
         lines.append('')
     return '\n'.join(lines) + '\n'
 
