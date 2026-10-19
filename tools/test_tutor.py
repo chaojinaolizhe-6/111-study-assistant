@@ -57,10 +57,10 @@ class TutorTests(unittest.TestCase):
                     dest.write_text('Synthetic placeholder; tests never inspect student image content',encoding='utf-8')
         course = '01-理论力学'
         note = self.root/'subjects'/course/'topics/test-concept.md'
-        note.parent.mkdir(parents=True)
+        note.parent.mkdir(parents=True,exist_ok=True)
         note.write_text('---\nid: test-memory\nef: 2.5\ninterval: 0\nreps: 0\nlast_review: null\ndue: null\n---\nSynthetic concept\n',encoding='utf-8')
         source = self.root/f'subjects/{course}/课件/TM_Topic_04_2026_student.pdf'
-        source.parent.mkdir(parents=True)
+        source.parent.mkdir(parents=True,exist_ok=True)
         source.write_bytes(b'synthetic-source-not-a-student-pdf')
         catalog = load_json(ROOT/'learning/curriculum.json')
         chapter = next(c for course in catalog['courses'] for c in course['chapters'] if c['id']=='tm-topic-04')
@@ -499,6 +499,17 @@ class TutorTests(unittest.TestCase):
         self.assertNotEqual(result.returncode,0)
         self.assertIn('反馈队列校验失败',result.stdout)
         self.assertEqual(target.read_bytes(),before)
+
+    def test_untaught_gate_and_zero_attempt_coverage(self):
+        import coverage
+        prog=self.root/'subjects/01-理论力学/progress.md'
+        prog.write_text('### §1.6 薄透镜\n| 内容 | 老师已讲 | 我已看过 | 能独立完成 |\n|---|---|---|---|\n| 磨镜者公式 | 待核实 | ❌ 未讲 | — |\n',encoding='utf-8')
+        data=build(self.root,'2026-10-02')
+        self.assertIn('tm.t4.mechanical-similarity',data['untaught_targets']['scheduled_zero_attempts'])
+        self.assertTrue(any(g['item']=='磨镜者公式' for g in data['progress_three_state_gaps']))
+        cov_md=coverage.build(self.root,'2026-10-02')
+        line=next(l for l in cov_md.splitlines() if l.startswith('| `tm.t4.mechanical-similarity` |') and '未开始（0次作答）' in l)
+        self.assertIn('未开始（0次作答）',line)
 
 
 if __name__=='__main__':

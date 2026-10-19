@@ -2,7 +2,7 @@
 
 > **本文件由 `python -B tools/coverage.py` 生成，勿手工编辑**（派生视图）。
 > 事实源：`learning/attempts.jsonl`（不改不删）+ `learning/corrections.jsonl`（订正）+ `learning/goals.yaml`（目标）+ 题目 frontmatter。
-> 生成日期：2026-10-16 ｜ 事件 50 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `29a537c99ab69a81…`
+> 生成日期：2026-10-19 ｜ 事件 51 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `a3917aebfa0ccee5…`
 > 手写意图（今天做什么、为什么暂缓）不在这里：见 `plan/today-<日期>.md`、`plan/gaps.md`、`.tutor/config/status-narrative.yml`。
 
 ## ① 能力目标覆盖（含**尚未出题**的考点）
@@ -49,11 +49,11 @@
 
 | 目标 | 覆盖状态 | 等级 | 题数 | 独立通过日期 | 未解决困难 | 延迟检验 |
 |---|---|---|---|---|---|---|
-| `tm.t5.central-motion-types` | 已安排·未作答 | 未测 | 1 | — | — | 未满足（跨度 0d < 2d） |
-| `tm.t5.effective-potential` | 已安排·未作答 | 未测 | 1 | — | — | 未满足（跨度 0d < 2d） |
+| `tm.t5.central-motion-types` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
+| `tm.t5.effective-potential` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
 | `tm.t5.law-of-motion` | 已作答·需补练 | 需支持 | 1 | — | — | 未满足（跨度 0d < 2d） |
 | `tm.t5.potential-analysis` | 已作答·需补练 | 需支持 | 1 | — | — | 未满足（跨度 0d < 2d） |
-| `tm.t5.turning-points` | 已作答·需补练 | 需支持 | 1 | — | — | 未满足（跨度 0d < 2d） |
+| `tm.t5.turning-points` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
 
 ### ode-systems-const-coeff — 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章）
 
@@ -91,6 +91,21 @@
 | `en.write.gra` | 已作答·需补练 | 需支持 | 3 | — | — | 未满足（跨度 0d < 2d） |
 | `en.write.lr` | 已作答·需补练 | 需支持 | 3 | — | — | 未满足（跨度 0d < 2d） |
 | `en.write.tr` | 已作答·需补练 | 需支持 | 3 | — | — | 未满足（跨度 0d < 2d） |
+
+### ai-tech-c00 — 独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）
+
+课程 `13-AI技术学习`　状态 `active`
+
+| 目标 | 覆盖状态 | 等级 | 题数 | 独立通过日期 | 未解决困难 | 延迟检验 |
+|---|---|---|---|---|---|---|
+| `ai-tech.c00-01` | 已安排·未作答 | 未测 | 1 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-02` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-03` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-04` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-05` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-06` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-07` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
+| `ai-tech.c00-08` | 未安排（无题目） | 未测 | 0 | — | — | 未满足（跨度 0d < 2d） |
 
 ### 未归入任何能力目标的目标（`goals.yaml` 缺声明）
 
@@ -137,6 +152,13 @@
 
 | 目标 | 所属能力目标 | 等级 | 说明 |
 |---|---|---|---|
+| `ai-tech.c00-02` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-03` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-04` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-05` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-06` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-07` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
+| `ai-tech.c00-08` | ai-tech-c00 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
 | `en.listen.decoding` | ielts-english-75 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
 | `en.listen.structure` | ielts-english-75 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
 | `en.read.timed` | ielts-english-75 | 未测 | 目标已声明、从未出题 → 目前没有任何能力证据 |
@@ -153,18 +175,26 @@
 
 | 覆盖状态 | 目标数 |
 |---|---|
-| 未安排（无题目） | 8 |
-| 已安排·未作答 | 18 |
-| 已作答·需补练 | 30 |
+| 未安排（无题目） | 15 |
+| 已安排·未作答 | 17 |
+| 已作答·需补练 | 32 |
 | 已作答·开卷/受助通过 | 1 |
 | 已独立通过·待延迟复测 | 11 |
 | 独立通过 | 0 |
-| **合计** | **68** |
+| **合计** | **76** |
 
 ## ④ 四个维度分开看（**不要挤成一个「等级」**）
 
 | 目标 | ① 作业完成 | ② 概念困难已解决 | ③ 独立作答表现 | ④ 延迟检验 |
 |---|---|---|---|---|
+| `ai-tech.c00-01` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-02` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-03` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-04` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-05` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-06` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-07` | —（无题目） | 无困难记录 | 无作答 | ❌ |
+| `ai-tech.c00-08` | —（无题目） | 无困难记录 | 无作答 | ❌ |
 | `ee.ac.phasor-impedance` | 进行中 | 无困难记录 | 独立通过 1 次（2026-09-28） | ❌ |
 | `ee.ac.reactance` | 进行中 | 无困难记录 | 独立通过 2 次（2026-09-28、2026-09-30） | ✅ |
 | `ee.ac.resonance` | 进行中 | 无困难记录 | 独立通过 1 次（2026-09-28） | ❌ |
@@ -183,13 +213,13 @@
 | `en.write.gra` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `en.write.lr` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `en.write.tr` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
-| `mp.delta-function` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `mp.fourier-series` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `mp.fourier-transform` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `mp.delta-function` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `mp.fourier-series` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `mp.fourier-transform` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `mp.isolated-singularity` | 进行中 | 无困难记录 | 0 次独立通过（8 次作答，其中 8 次受助/曝光） | ❌ |
-| `mp.laplace-inverse` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `mp.laplace-ode` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `mp.laplace-transform` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `mp.laplace-inverse` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `mp.laplace-ode` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `mp.laplace-transform` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `mp.laurent-expansion` | 进行中 | ❌ 未解决 hurdle-2 | 0 次独立通过（5 次作答，其中 5 次受助/曝光） | ❌ |
 | `mp.power-series-radius` | 进行中 | 无困难记录 | 独立通过 1 次（2026-10-03） | ❌ |
 | `mp.residue-applications` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
@@ -201,38 +231,38 @@
 | `ode.exact-integ factor` | 进行中 | 无困难记录 | 仅开卷/受助通过（1 次） | ❌ |
 | `ode.first-order-linear` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.homogeneous` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
-| `ode.integrating-factor` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `ode.integrating-factor` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `ode.order-reduction` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.riccati` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.separable` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.sys.case-complex` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.sys.case-repeated` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
-| `ode.sys.cayley-hamilton` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `ode.sys.cayley-hamilton` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `ode.sys.eigen-basic` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ode.sys.ivp` | —（无题目） | 无困难记录 | 无作答 | ❌ |
-| `ode.sys.matrix-exp` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `ode.sys.matrix-exp` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `ode.system-reduction` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `ode.undetermined-coefficients` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
-| `ru.adj-agreement` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `ru.adj-agreement` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `ru.noun-forms` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ru.noun-gender` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `ru.qword-agreement` | 进行中 | ❌ 未解决 hurdle-3 | 独立通过 1 次（2026-09-30） | ❌ |
-| `ru.qword.kakoy-agreement` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `ru.syntax.chto-clause` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `ru.syntax.potomy-chto` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `ru.verb.znat-dumat` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `tm.t3.lagrangian-construction` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `ru.qword.kakoy-agreement` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `ru.syntax.chto-clause` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `ru.syntax.potomy-chto` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `ru.verb.znat-dumat` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `tm.t3.lagrangian-construction` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
 | `tm.t4.angular-momentum-integral` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `tm.t4.cyclic-momentum` | 进行中 | 无困难记录 | 0 次独立通过（4 次作答，其中 4 次受助/曝光） | ❌ |
 | `tm.t4.direct-check` | 进行中 | 无困难记录 | 独立通过 1 次（2026-09-28） | ❌ |
 | `tm.t4.energy-criteria` | 进行中 | ✅ 已结案 hurdle-1 | 0 次独立通过（6 次作答，其中 6 次受助/曝光） | ❌ |
 | `tm.t4.energy-integral` | 进行中 | 无困难记录 | 独立通过 1 次（2026-09-28） | ❌ |
-| `tm.t4.mechanical-similarity` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `tm.t5.central-motion-types` | 进行中 | 无困难记录 | 无作答 | ❌ |
-| `tm.t5.effective-potential` | 进行中 | 无困难记录 | 无作答 | ❌ |
+| `tm.t4.mechanical-similarity` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
+| `tm.t5.central-motion-types` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `tm.t5.effective-potential` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `tm.t5.law-of-motion` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `tm.t5.potential-analysis` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
-| `tm.t5.turning-points` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `tm.t5.turning-points` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 
 > **困难结案 ≠ 目标升级**：`hurdle` 结案只说明「那个卡点讲通了」，
 > 目标等级只看「有没有在无提示、闭卷、未见变式的条件下独立答对」。
@@ -341,9 +371,12 @@
 | `tm.t4.energy-integral` | `attempt-4` | 2026-09-28 | 曝光=full@before_attempt |
 | `tm.t4.energy-integral` | `attempt-6` | 2026-09-28 | 曝光=partial@before_attempt |
 | `tm.t4.energy-integral` | `attempt-7` | 2026-09-28 | 曝光=full@before_attempt |
+| `tm.t5.central-motion-types` | `attempt-52` | 2026-10-19 | 结果=partial；提示H1；待核验；曝光=partial@before_attempt |
+| `tm.t5.effective-potential` | `attempt-52` | 2026-10-19 | 结果=partial；提示H1；待核验；曝光=partial@before_attempt |
 | `tm.t5.law-of-motion` | `attempt-47` | 2026-10-12 | 结果=partial；提示H3；待核验；曝光=partial@before_attempt |
 | `tm.t5.potential-analysis` | `attempt-47` | 2026-10-12 | 提示H3；待核验；曝光=partial@before_attempt |
 | `tm.t5.turning-points` | `attempt-47` | 2026-10-12 | 提示H3；曝光=partial@before_attempt |
+| `tm.t5.turning-points` | `attempt-52` | 2026-10-19 | 提示H1；曝光=partial@before_attempt |
 
 ## ⑥ 订正台账（原始事件不改不删，订正单独成条）
 
@@ -419,6 +452,7 @@
 
 | 题目 | 课程 | 类别 | 状态 | 目标 | 截止 |
 |---|---|---|---|---|---|
+| `ai-tech-c00-01-env-check` | — | baseline | open | ai-tech.c00-01 | — |
 | `de-gap-attack-01` | — | practice | done | ode.homogeneous, ode.order-reduction, ode.clairaut | 2026-10-15 |
 | `de-midterm-diag-01` | — | mixed | open | ode.separable, ode.homogeneous, ode.exact-integ factor, ode.first-order-linear, ode.riccati, ode.clairaut, ode.order-reduction, ode.const-coeff-homogeneous, ode.undetermined-coefficients | 2026-10-15 |
 | `ee-c2-diag-01` | — | baseline | done | ee.ac.reactance, ee.ac.phasor-impedance, ee.ac.series-rlc, ee.ac.resonance | 2026-09-28 |
@@ -467,6 +501,7 @@
 | `tm-t4-diag-01` | — | baseline | open | tm.t3.lagrangian-construction, tm.t4.cyclic-momentum | — |
 | `tm-t4-momentum-01` | — | mixed | open | tm.t4.cyclic-momentum | 2026-09-30 |
 | `tm-t4-similarity-01` | — | mixed | open | tm.t4.mechanical-similarity | 2026-09-30 |
+| `tm-t5-ueff-variant-01` | — | practice | open | tm.t5.effective-potential, tm.t5.central-motion-types, tm.t5.turning-points | — |
 | `xz-2026f-course-selection` | — | practice | done | — | 2026-10-10 17:00 |
 
-（题目 49 道；作答事件 50 条；以上均由脚本重算，不含手写内容。）
+（题目 51 道；作答事件 51 条；以上均由脚本重算，不含手写内容。）

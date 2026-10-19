@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-10-16",
+  "generated_at": "2026-10-19",
   "rule": "独立通过按**目标**判定：该目标结果正确+**明确无提示**+`needs_verify` 不为真+未见解答+非示例学习+闭卷；目标级字段（target_results[tid]）优先，缺失回退事件级；提示级别未知（null）不计独立通过；needs_verify=true 的目标**不得升级**；exposure_timing=after_attempt 的曝光不阻断。≥2 个不同日期且日期跨度 ≥2 天=延迟通过；另含 ≥1 次未见变式通过=迁移通过（**仅迁移通过计为稳定证据**）。未见变式=题目在整份日志中首次被作答（任何目标）+该版本 kind 为变式类。参数来自 learning/policy.yml，为工程初值。",
   "warnings": [
     "line 41: task_version mismatch for en-write-t2-fix-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）"
   ],
   "source": {
-    "attempts_sha256": "29a537c99ab69a811823b54a9b1fb830cec825edc97addb0217aa67f232ee551",
-    "attempts_events": 50,
+    "attempts_sha256": "a3917aebfa0ccee536718234018de4be54f205bd66443606e46adf40eb8f62d8",
+    "attempts_events": 51,
     "corrections_events": 55,
-    "decision_inputs_sha256": "aadbae8a604ba9352691977339d55e225fcee727f1ed8cd211fb6f8f07cbe3f0"
+    "decision_inputs_sha256": "878870704e24dcf4f1bd0de4a11b967d095734ac30c9e4362abf7219ba7bb2d6"
   },
   "summary": {
-    "targets": 68,
+    "targets": 76,
     "by_level": {
-      "未测": 26,
-      "需支持": 31,
+      "未测": 32,
+      "需支持": 33,
       "曾独立完成": 10,
       "延迟通过": 1,
       "迁移通过": 0
@@ -23,13 +23,20 @@
     "open_hurdles": 2,
     "hurdle_bad_lines": [],
     "coverage": {
+      "已安排·未作答": 17,
+      "未安排（无题目）": 15,
       "已独立通过·待延迟复测": 11,
-      "已作答·需补练": 30,
-      "未安排（无题目）": 8,
-      "已安排·未作答": 18,
+      "已作答·需补练": 32,
       "已作答·开卷/受助通过": 1
     },
     "targets_without_tasks": [
+      "ai-tech.c00-02",
+      "ai-tech.c00-03",
+      "ai-tech.c00-04",
+      "ai-tech.c00-05",
+      "ai-tech.c00-06",
+      "ai-tech.c00-07",
+      "ai-tech.c00-08",
       "en.listen.decoding",
       "en.listen.structure",
       "en.read.timed",
@@ -40,10 +47,385 @@
       "ode.sys.ivp"
     ],
     "measured_minutes_global": 7.0,
-    "estimated_minutes_global": 1253.0,
+    "estimated_minutes_global": 1268.0,
     "time_note": "measured=actual/self_reported；estimated 单独统计；未知不给值"
   },
   "targets": {
+    "ai-tech.c00-01": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [
+        {
+          "id": "ai-tech-c00-01-env-check",
+          "kind": "baseline",
+          "status": "open",
+          "due": ""
+        }
+      ],
+      "task_count": 1,
+      "coverage": "已安排·未作答",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-02": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-03": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-04": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-05": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-06": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-07": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
+    "ai-tech.c00-08": {
+      "level": "未测",
+      "stable_evidence": false,
+      "attempts": 0,
+      "independent_pass_dates": [],
+      "delay_days": 0,
+      "delay_requirement_days": 2,
+      "open_book_pass_dates": [],
+      "variant_passes": 0,
+      "version_mismatch_events": 0,
+      "unknown_version_events": 0,
+      "hint_dependence": {},
+      "measured_minutes": 0.0,
+      "estimated_minutes": 0.0,
+      "needs_verify_events": 0,
+      "upgrade_blocked": [],
+      "open_hurdles": [],
+      "last_attempt": null,
+      "goal": {
+        "id": "ai-tech-c00",
+        "title": "独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）",
+        "subject": "13-AI技术学习",
+        "status": "active"
+      },
+      "tasks": [],
+      "task_count": 0,
+      "coverage": "未安排（无题目）",
+      "status_dimensions": {
+        "assignment_done": false,
+        "concept_hurdle_resolved": true,
+        "concept_hurdles": {
+          "open": [],
+          "resolved": []
+        },
+        "independent_performance": {
+          "pass_dates": [],
+          "open_book_only": [],
+          "helped_or_exposed_events": 0
+        },
+        "delayed_retest": {
+          "required_delay_days": 2,
+          "achieved_delay_days": 0,
+          "satisfied": false
+        }
+      }
+    },
     "ee.ac.phasor-impedance": {
       "level": "曾独立完成",
       "stable_evidence": false,
@@ -4843,9 +5225,9 @@
       }
     },
     "tm.t5.central-motion-types": {
-      "level": "未测",
+      "level": "需支持",
       "stable_evidence": false,
-      "attempts": 0,
+      "attempts": 1,
       "independent_pass_dates": [],
       "delay_days": 0,
       "delay_requirement_days": 2,
@@ -4853,13 +5235,26 @@
       "variant_passes": 0,
       "version_mismatch_events": 0,
       "unknown_version_events": 0,
-      "hint_dependence": {},
+      "hint_dependence": {
+        "h1": 1
+      },
       "measured_minutes": 0.0,
-      "estimated_minutes": 0.0,
-      "needs_verify_events": 0,
-      "upgrade_blocked": [],
+      "estimated_minutes": 15.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-52",
+          "ts": "2026-10-19",
+          "why": [
+            "结果=partial",
+            "提示H1",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
       "open_hurdles": [],
-      "last_attempt": null,
+      "last_attempt": "2026-10-19",
       "goal": {
         "id": "tm-t5-1d-motion",
         "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
@@ -4872,10 +5267,16 @@
           "kind": "practice",
           "status": "open",
           "due": ""
+        },
+        {
+          "id": "tm-t5-ueff-variant-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
         }
       ],
-      "task_count": 1,
-      "coverage": "已安排·未作答",
+      "task_count": 2,
+      "coverage": "已作答·需补练",
       "status_dimensions": {
         "assignment_done": false,
         "concept_hurdle_resolved": true,
@@ -4886,7 +5287,7 @@
         "independent_performance": {
           "pass_dates": [],
           "open_book_only": [],
-          "helped_or_exposed_events": 0
+          "helped_or_exposed_events": 1
         },
         "delayed_retest": {
           "required_delay_days": 2,
@@ -4896,9 +5297,9 @@
       }
     },
     "tm.t5.effective-potential": {
-      "level": "未测",
+      "level": "需支持",
       "stable_evidence": false,
-      "attempts": 0,
+      "attempts": 1,
       "independent_pass_dates": [],
       "delay_days": 0,
       "delay_requirement_days": 2,
@@ -4906,13 +5307,26 @@
       "variant_passes": 0,
       "version_mismatch_events": 0,
       "unknown_version_events": 0,
-      "hint_dependence": {},
+      "hint_dependence": {
+        "h1": 1
+      },
       "measured_minutes": 0.0,
-      "estimated_minutes": 0.0,
-      "needs_verify_events": 0,
-      "upgrade_blocked": [],
+      "estimated_minutes": 15.0,
+      "needs_verify_events": 1,
+      "upgrade_blocked": [
+        {
+          "event_id": "attempt-52",
+          "ts": "2026-10-19",
+          "why": [
+            "结果=partial",
+            "提示H1",
+            "待核验",
+            "曝光=partial@before_attempt"
+          ]
+        }
+      ],
       "open_hurdles": [],
-      "last_attempt": null,
+      "last_attempt": "2026-10-19",
       "goal": {
         "id": "tm-t5-1d-motion",
         "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
@@ -4925,10 +5339,16 @@
           "kind": "practice",
           "status": "open",
           "due": ""
+        },
+        {
+          "id": "tm-t5-ueff-variant-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
         }
       ],
-      "task_count": 1,
-      "coverage": "已安排·未作答",
+      "task_count": 2,
+      "coverage": "已作答·需补练",
       "status_dimensions": {
         "assignment_done": false,
         "concept_hurdle_resolved": true,
@@ -4939,7 +5359,7 @@
         "independent_performance": {
           "pass_dates": [],
           "open_book_only": [],
-          "helped_or_exposed_events": 0
+          "helped_or_exposed_events": 1
         },
         "delayed_retest": {
           "required_delay_days": 2,
@@ -5082,7 +5502,7 @@
     "tm.t5.turning-points": {
       "level": "需支持",
       "stable_evidence": false,
-      "attempts": 1,
+      "attempts": 2,
       "independent_pass_dates": [],
       "delay_days": 0,
       "delay_requirement_days": 2,
@@ -5091,10 +5511,11 @@
       "version_mismatch_events": 0,
       "unknown_version_events": 0,
       "hint_dependence": {
-        "h3": 1
+        "h3": 1,
+        "h1": 1
       },
       "measured_minutes": 0.0,
-      "estimated_minutes": 60.0,
+      "estimated_minutes": 75.0,
       "needs_verify_events": 0,
       "upgrade_blocked": [
         {
@@ -5104,10 +5525,18 @@
             "提示H3",
             "曝光=partial@before_attempt"
           ]
+        },
+        {
+          "event_id": "attempt-52",
+          "ts": "2026-10-19",
+          "why": [
+            "提示H1",
+            "曝光=partial@before_attempt"
+          ]
         }
       ],
       "open_hurdles": [],
-      "last_attempt": "2026-10-12",
+      "last_attempt": "2026-10-19",
       "goal": {
         "id": "tm-t5-1d-motion",
         "title": "独立求解理论力学 Topic 5 一维势场中的运动（能量积分）",
@@ -5120,9 +5549,15 @@
           "kind": "practice",
           "status": "open",
           "due": "2026-10-15"
+        },
+        {
+          "id": "tm-t5-ueff-variant-01",
+          "kind": "practice",
+          "status": "open",
+          "due": ""
         }
       ],
-      "task_count": 1,
+      "task_count": 2,
       "coverage": "已作答·需补练",
       "status_dimensions": {
         "assignment_done": false,
@@ -5134,7 +5569,7 @@
         "independent_performance": {
           "pass_dates": [],
           "open_book_only": [],
-          "helped_or_exposed_events": 1
+          "helped_or_exposed_events": 2
         },
         "delayed_retest": {
           "required_delay_days": 2,

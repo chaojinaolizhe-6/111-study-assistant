@@ -167,7 +167,7 @@ def build(root: Path, today: str) -> str:
     lines.append("|---|---|---|---|---|")
     for tid, tgt in sorted(targets.items()):
         d = tgt["status_dimensions"]
-        hw = "✅" if d["assignment_done"] else ("—（无题目）" if not tgt["tasks"] else "进行中")
+        hw = "✅" if d["assignment_done"] else ("—（无题目）" if not tgt["tasks"] else ("未开始（0次作答）" if not tgt["attempts"] else "进行中"))
         ch = d["concept_hurdles"]
         if not ch["open"] and not ch["resolved"]:
             concept = "无困难记录"

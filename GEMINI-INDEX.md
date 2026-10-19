@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-16 2026-10-16 10:33（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-19 2026-10-19 18:52（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -23,8 +23,8 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-10-16**（中国时间；系统英国日期 2026-10-16）。
-> 事实源指纹：`attempts.jsonl` 50 条（sha256 `29a537c99ab6…`）＋ `corrections.jsonl` 55 条。
+> 生成于 **2026-10-19**（中国时间；系统英国日期 2026-10-19）。
+> 事实源指纹：`attempts.jsonl` 51 条（sha256 `a3917aebfa0c…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
 ## ① 现在到哪了（按课程，全部由程序重算）
@@ -49,8 +49,8 @@
 | `tm.t4.energy-criteria` | 已作答·需补练 | 需支持 | — | hurdle-1 |
 | `tm.t4.energy-integral` | 已独立通过·待延迟复测 | 曾独立完成 | 2026-09-28 | — |
 | `tm.t4.mechanical-similarity` | 已安排·未作答 | 未测 | — | — |
-| `tm.t5.central-motion-types` | 已安排·未作答 | 未测 | — | — |
-| `tm.t5.effective-potential` | 已安排·未作答 | 未测 | — | — |
+| `tm.t5.central-motion-types` | 已作答·需补练 | 需支持 | — | — |
+| `tm.t5.effective-potential` | 已作答·需补练 | 需支持 | — | — |
 | `tm.t5.law-of-motion` | 已作答·需补练 | 需支持 | — | — |
 | `tm.t5.potential-analysis` | 已作答·需补练 | 需支持 | — | — |
 | `tm.t5.turning-points` | 已作答·需补练 | 需支持 | — | — |
@@ -80,6 +80,19 @@
 | `en.write.gra` | 已作答·需补练 | 需支持 | — | — |
 | `en.write.lr` | 已作答·需补练 | 需支持 | — | — |
 | `en.write.tr` | 已作答·需补练 | 需支持 | — | — |
+
+**13-AI技术学习** — 独立完成 C00 编程与开发衔接（解释器/环境/容器/函数/文件/调试/Git/Notebook）（`ai-tech-c00`，状态 active）
+
+| 目标 | 覆盖 | 等级 | 独立通过 | 未解决困难 |
+|---|---|---|---|---|
+| `ai-tech.c00-01` | 已安排·未作答 | 未测 | — | — |
+| `ai-tech.c00-02` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-03` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-04` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-05` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-06` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-07` | 未安排（无题目） | 未测 | — | — |
+| `ai-tech.c00-08` | 未安排（无题目） | 未测 | — | — |
 
 **（未归入能力目标）**（未在 goals.yaml 归入能力目标）
 
@@ -126,10 +139,10 @@
 
 | 事件 | 日期 | 题目 | 模式 | 提示 | 结果 | 曝光 | 目标 |
 |---|---|---|---|---|---|---|---|
+| `attempt-52` | 2026-10-19 | `tm-t5-ueff-variant-01` | practice | H1 | partial | partial@before_attempt | `tm.t5.effective-potential` |
 | `attempt-51` | 2026-10-14 | `de-gap-attack-01` | practice | H3 | partial | partial@before_attempt | `ode.homogeneous` |
 | `attempt-49` | 2026-10-13 | `ode-l15-hw-01` | practice | H3 | correct | partial@before_attempt | `ode.sys.eigen-basic` |
 | `attempt-48` | 2026-10-12 | `ode-l15-hw-01` | practice | H3 | correct | partial@before_attempt | `ode.sys.eigen-basic` |
-| `attempt-47` | 2026-10-12 | `tm-h5-01` | practice | H3 | correct | partial@before_attempt | `tm.t5.potential-analysis` |
 
 > 「有效证据」= 能支持或推翻「独立掌握」的作答；
 > **受助/曝光的作答也算证据**——它证明的是「当时需要帮助」，不是「已经会了」。
@@ -137,19 +150,20 @@
 ## 暂停与未完成题续学点
 
 - `obs-4`（02-光学；来源 本会话 2026-10-08 学习者原话「我大概看懂了，但是现在精力有些不足，我晚上推导完给你」）：【暂停·2026-10-08 上午】学习者自述「大概看懂了，但现在精力有些不足，我晚上推导完给你」→ 会话暂停，晚上续。四要素：①【有效步骤】微分方程定位卷 A/B（11 题，题源＝老师课件 L1–11 的 Homework 页）**已做完**，照片待交（学习者在部分题下写了问题与当前理解）；光学第一课已讲完：为什么必须傍轴（严格关系式右边「−4r sin²(φ/2)[…]」就是非傍轴量）、傍轴条件两种写法、近轴物像公式「n/s + n′/s′ = (n′−n)/r」、焦点焦距「f′ = n′r/(n′−n)」、放大率「V = −s′n/(sn′)」，并示范 s=30 → s′=90、V=−2。②【卡点/障碍】精力不足（自述）；光学零基础起步；刚讲清「傍轴＝前提／物像公式＝结论」的区别（由学习者提问引发，补充见讲义 §5.1）。③【失败尝试】无（尚未作答，无错误可写）。④【下次首个动作】按序：(a) 交微分方程定位卷照片（含题下手写问题；读不准的只圈局部确认）；(b) 光学 (a) n=1、n′=1.5、r=10cm、s=60cm 求 s′、虚实、V；(c) 光学 (b) 傍轴判断三问（h=3cm：h/r、sin φ≈φ 的误差、是否还算傍轴）；(d) 今日 12:30 后形势与政策选课（窗口开，10-10 17:00 截止）。另有俄语线（先回补 УРОК 1–6 遗忘点再学 УРОК 7，10-13 前）与理论力学 H5.1（10-12 交），已排入 plan/today-2026-10-08.md。
+- `tm-t5-ueff-variant-01` / `attempt-52`：尚未完成；U_eff = ½kr² + L²/(2mr²) 写对；导数 kr − (L²/m)r⁻³ 与因式分解 r⁻³(kr⁴ − L²/m) 完全正确；两端极限与草图（单一口袋、两端 +∞）正确；「不用按参数分类」的结论正确但理由只写了半句。错误：驻点写成 r₀ = L/∜(mk)［分母 √[4]{mk} 已放大重读，分子是否为 √L 存疑，标「待确认」不据此改判］，按自己上一行的 kr⁴ = L²/m 应为 (L²/(mk))^(1/4)；最小能量写成 ½L²/m + ½k，量纲已不成立（k 为 N/m，非能量），正确为 L√(k/m) = k r₀²。；E ≥ U_min 的判据方向正确；E > U_min 判为 oscillation（环内有限运动）、并明确写「不会落向中心、不会无界运动，因为有限」——三处运动类型判断全对。缺口在临界点：纸上「E = E_min 静止」［手写放大后读作「静止」，若实为「圆轨道」则不成立，标「待确认」］；E = E_min 时应为半径 r₀ 的圆轨道（径向动能 0、φ̇ = L/(mr²) ≠ 0），即课件 p11『转向点不是停住点』。；E = U_eff 得 km r⁴ − 2mE r² + L² = 0，解出 r² = [E ± √(E² − kL²/m)]/k，再开平方得两个转向点——与标准答案一致；外侧多余的 ± 只是写法冗余（半径取正），不影响结论。这是全卷最好的一步。
 - `tm-h5-01` / `attempt-47`：尚未完成；【H5.1 草稿·子任务 1】因式分解正确：U′ = −2Aα e^(−αx)(e^(−αx) − 1) ⟹ 唯一驻点 x = 0；U(0) = −A 为极小 ✓；已画草图（左端 → +∞、右端趋 0⁻、穿零在 −ln2/α）✓；并写出 E ≥ U_min = −A ✓。帮助史：导师当日先讲模块 A（能量积分/允许区/转向点）与「从表达式到草图的五步法」（示范用 U = x⁴/4 − x²/2），并在学习者自述会做后**确认了「驻点 x = 0、U_min = −A」这一行** ⟹ 本目标答案已部分曝光（before_attempt），不计独立。草图细节（右端是否贴 0⁻ 渐近）照片不易判定，故标待核验。；【子任务 2–3】令 u = e^(−αx) ⟹ A(u² − 2u) = E ⟹ u = 1 ± √(1 + E/A)（草稿写作 (A ± √(A² + AE))/A，等价）✓；x = −(1/α)·ln u ✓ **完全正确**。缺一句严谨性：**E > 0 时 u₋ < 0 无效**（只剩一个转向点）、**E = 0 时 u₋ = 0 对应 x → +∞**（不是有限转向点）——这两句正是「E ≥ 0 无限运动」的理由，应交作业时补上。帮助史：导师给过「令 u = e^(−αx) 会变成二次方程」这一关键替换提示（H2–H3）⟹ 不计独立。；【子任务 4｜**未完成**】草稿由 ẋ₀ > 0 取 + 支（ẋ = √(2(E−U)/m)），写出 **t = ±√(m/2)·∫(x₀ → x) dx/√(E−U)** —— **变上限积分的形式正确**（这是本目标的关键结构）；但**没有把积分做出来**，因此尚未得到 x(t)。运动类型分类正确：E = −A 静止（motionless）✓、−A < E < 0 有限振荡（finite motion, oscillation）✓、E ≥ 0 无限（infinite motion）✓（E = 0 的临界性未单独说明）。下一步（导师给到 H3）：配方 E − U = (E + A) − A(e^(−αx) − 1)²，换元 y = e^(−αx) − 1（dx = −dy/(α(y+1))），化为标准型 ∫dy/((y+1)√(a² − y²))，a² = 1 + E/A，积出后反解 y(t) → x(t)，并按 E 区间分段/延拓。
 - `mp1-ch4-hw-01` / `attempt-46`：尚未完成；【§4.1／§4.2 复习】学习者自述「只学到留数定理，而且忘了」。复习从「a₋₁ 为什么特别」开始：她答『这一项的积分是多值的，不能用柯西积分定理直接化成零，自然就保留下来了』——**机制正确**（这正是 2026-10-01 `mp1-ch4-quiz-01` 留下的唯一缺口）。导师随后给出参数化推导 ∮(z−z₀)ⁿdz：n=−1 时 = 2πi（与 r 无关）、n≠−1 时 = 0。三条规则的适用条件讲清后，她能自行判出「cos z/z³ 不能用规则 II（分子非多项式）→ 改用洛朗展开」，并在下一轮主动说出「奇点在 0，阶数是 3，洛朗展开做」——三处全对。留数定理的公式、围道条件、求和范围 2026-10-01 已对，本次无新错。；【第 1 组 4 题】Q2（cos z/z³）：**独立**——自己判出三阶极点、自己用洛朗展开取 a₋₁ = −1/2；唯一错在誊写漏乘 2πi（导师指出后改 −πi）。Q3（1/(z sin z)）：**独立**——判二阶极点、用规则 III 得 Res=0、∮=0 ✓。Q4（e^(2z)/(z²+1)）：**独立**——规则 II 两次都用对（e^(2i)/(2i) 与 e^(−2i)/(−2i)）；缺口是**最后没收成实数形式**，导师展开复数指数后得 2πi sin 2。Q1（1/((z²+1)²(z−1))）：导师当模板逐步讲，学习者算出 Res(i) 时中途卡住，**最终未独立完成**（Σ Res 应为 0，她一度得 1/2）。⚠ 导师在本题上前后手算错误、判读矛盾多次，学习者的错误定位因此不可靠。；【§4.3 三类实积分，第 2／3／4 组】此前**完全未学**，本次从零建立。【类型 1 有理三角】三条换元式给出后，学习者**独立**做对 3 题：∫₀^{2π}dθ/(2+cos θ)=2√3π/3 ✓、∫₀^{2π}dθ/(1+sin²θ)=√2π ✓、∫₀^{2π}dθ/(1+cos²θ)=√2π ✓；第 2 题（1+εcos θ)² 在**通分处挂错 ε 的位置**（写成 ε 在分子），导师指出后当天补做正确，得 2π/(1−ε²)^(3/2)。【类型 2 有理函数无穷积分】模板给出后独立做对：π/3 ✓、√2π/(4a) ✓、π/(2a) ✓（中间在 z⁴+a⁴ 的根上**自加了一个不存在的「a>1/a<1」条件**把自己堵死；另在「−i³ = +i」处符号翻掉，导致 −π/(2a)）。【类型 3 约当引理】4(1) 独立得 π(2e^(−m)−e^(−2m))/6（含 z=2i 处漏写负号笔误）✓；4(2) 独立得 π/e ✓（错在把 e^(imz₀) 代成 e^(2imz₀)，改正后对）；4(3) **未完成**——求导式本身正确（含 im z² 项），但代 z₀=ai 化简时丢了 i、分母出 a³，得 m e^(−am)/(8a³)（应为 m e^(−am)/(4a)）。【共同卡点】复数代数的符号与 i 的幂：−i³、i³、(2ai)²、(2ai)³ 这几处反复出错；**数值代入自检（a=1、m=1）一次都没用过**。
 - `de-midterm-diag-01` / `attempt-50`：尚未完成；A1 (e^v+1)cos u du + e^v(sin u+1)dv = 0：**分离变量与两边积分全对**（ln(sin u+1) = −ln(e^v+1)）；缺口＝①漏积分常数 C（自己写「不知要化成怎样」即卡在此）；②未写隐式解 (sin u+1)(e^v+1)=C；③未补除以 (sin u+1) 时丢掉的常数解 sin u = −1（u = −π/2 + 2kπ）。属收尾规范类缺口，不是方法不会。；A2 y′ = y/x + x³/y：**写「不会」**。识别失败：它不是普通齐次（y/x 与 x³/y 在 x→kx,y→ky 下缩放不同次），而是**准齐次**（x→kx、y→k²y 时两项同次）→ 令 u = y/x² 可分离；或看成 **Bernoulli**（y′ − y/x = x³y^{−1}，n=−1）令 v=y²。答案 y² = x⁴ + Cx²（未作答）。；A3 (Ax³y+y³)dx+(x⁴+3xy²)dy=0：**全对**——∂P/∂y = Ax³+3y²、∂Q/∂x = 4x³+3y² ⟹ **A=4**；再积分得 W = x⁴y + xy³ = C ✓。本块无缺口。；B1 cosθ dr + (r sinθ − cos⁴θ)dθ = 0：**化标准形、积分因子公式、r = (1/cosθ)(∫cos³θ dθ + C) 全对**；唯一卡点＝**不会积 ∫cos³θ dθ**（拆 cos³ = cosθ(1−sin²θ) → sinθ − sin³θ/3）。属积分技巧类缺口。；A4 x³y′ + 2x²y + 2x⁴y² = 18：化成 y′ + (2/x)y + 2xy² = 18/x³ 的方向对，但**找不到特解**（自述「找不到特解，也用不上洛卡蒂」）。缺口＝**观察法找特解**：试 y = c x^n（此处 y = c/x² 代入得 2c² = 18 ⟹ y₁ = ±3/x²，取 y₁ = 3/x²），再令 y = y₁ + 1/v 化线性。；B2 y = xy′ − y′²：先设 w = y′ = dy/dx 后**卡住**，自述「不会，这个课件里讲了吗？我可能还不会其它类似这样的更多知识点」。缺口＝Clairaut 标准动作：令 p = y′、对 x 求导 ⟹ (x − 2p)p′ = 0 ⟹ 通解 y = Cx − C² 与**奇解 y = x²/4**（奇解最常被漏）。；B3 y y″ − y′² = y² ln y（y>0, y′>0）：**设 w = y′、y″ = w·dw/dy 正确**，随后**卡住**（自述「不会了」）。缺口＝识别 y y″ − y′²)/y² = (y′/y)′，令 z = ln y ⟹ z″ = z ⟹ z = C₁e^x + C₂e^{−x} ⟹ y = exp(C₁e^x + C₂e^{−x})。；A6 y″ − 6y′ + 10y = 0：**全对**（γ = 3 ± i ⟹ y = e^{3x}(C₁cos x + C₂sin x)）。A5 y‴ + 9y″ + 27y′ + 27y = 0：特征方程与 (γ+3)³ = 0 正确，但解的第三项**疑似写成 x e^{−3x}**（三重根应为 C₁e^{−3x} + C₂x e^{−3x} + **C₃x²e^{−3x}**）→ **`[待确认]`（手写放大后仍只见 x，未见 x²；下一轮当面核）**。属「m 重根要给全 x^j, j=0…m−1」那一格。；A7 y″ − 2y′ − 3y = 3x³ − 2x：**全对**（λ = 3, −1；y_p = −x³ + 2x² − 4x + 4，经复核正确）。B4 y″ + 4y = 12x + 8cos2x：会拆成 y₁（→3x ✓）与 y₂，但**自述「我大致会解，但是为什么这样设没弄清楚」**（共振为何乘 x）；系数疑似写成 A = −2（正确为 **+2** ⟹ y₂ = 2x sin 2x）→ `[待确认]`；**初值 y(0)=0、y′(0)=5 未代入**。缺口＝共振的设法定理（x^s）+ IVP 收尾。
 - `ru-level-check-01` / `attempt-43`：尚未完成；**俄语定位诊断·第一块「名词的性」（8 题）**：**对 3/8**。✅ `такси` 答「中」✓（上次当成复数的那个，**已修**）；`дедушка` 答「阳」✓（`-а` 结尾的例外**记住了**）；`окно́` 答「中」✓。❌ `тетра́дь` 答「阳」（应**阴**，与上次同一个错）；`ночь` 答「阳」（应**阴**：ж/ш/ч/щ 后带 ь）。❓ `слова́рь`（应阳）、`портфе́ль`（应阳）、`пло́щадь`（应阴）**均答「不知道」**——不是答错，而是没存储。【结论】`-ь` 词的性**几乎整块丢失**（3 个不知道 + 2 个错）；非 `-ь` 的规则（-а／-о 等）与 `такси` 类外来词**保持良好**。【后续】用她自己的卡 `topics/topic-01-名词的性和-ь结尾词.md` 的「可用的 5 条规律 ＋ 38 词成对记忆表」回补。；**俄语定位诊断·第四块「какой 与名词一致」（5 题）**：**对 4/5**。✅ 学习者按选项编号作答 1/2/3/4 ＝ `како́й`（阳）／`кака́я`（阴）／`како́е`（中）／`каки́е`（复）**四题全对**——**性数一致的机制完整保留**（与 2026-09-30 的结论一致：她的「性 → 疑问词」映射是通的）。❌ 第 5 题「这是新书」应填**形容词** `но́вая`，她仍填疑问词 `кака́я`（选项 2）→ **形容词词尾（УРОК 7 新内容）尚未上手**，只是把「阴性 → 第 2 个形式」的槽位套了过来。⚠ 本诊断是**定位基线**（`needs_verify=true`）→ **不计独立通过**。
 - `en-write-t2-fix-01` / `attempt-42`：尚未完成；2026-10-04审查订正：83词受助局部重写。新增能源效率开头与建议结尾，但开头意思不清，新增句不自动证明T/L已做好。中间已有相关堵车观察，不能因缺地名/人物判零例证；撤回旧三件套与必须70–90词TEEL的判定依据。当前可观察缺口是未清楚连接少开车与减少无效耗油，不足以确诊不会举例。保留partial、H2、本题partial曝光与needs_verify；当前不是新题独立证据，不追加成绩。；2026-10-04审查订正：新增开头和收尾，段内联系仍需说明；同段的逗号粘连留存。句首And出现一次本身不能作为扣分或不连贯依据。不对83词单段硬套完整作文四项分数。；2026-10-04审查订正：take more bus and bicycle不自然，可说use public transport more and cycle；less people在此用fewer people。energy utilization efficiency是否适合取决于实际表达，不强制使用讲义搭配；未用指定词块不是LR不通过理由。of no meaning and significance语义笼统。；2026-10-04审查订正：pollution come out、every big cities、逗号粘连仍需修正，这是文本中的语言事实。新增句没有明显结构错误不等于意思清楚；旧记录不能从这次未改语言确诊态度/认知问题，也不默认多项语法都是同一轮重写交付。
-- `en-write-t2-baseline-01` / `attempt-41`：尚未完成；2026-10-04审查订正：224词<250事实保留；I strongly agree已说明同意程度，无反方段不自动构成缺答。原堵车段有相关观察，不能称evidence完全为零；需补的是观察与限制汽车/替代交通的因果联系，并解释对international laws的立场。旧TR5.5由错误规则支撑，撤回作比较/提分依据，当前TR待重新校准。四段、TEEL和每段一个具体案例非官方规则。正式用时未知；默认闭卷约定继续沿用，不把未报查词自动记未知曝光。needs_verify=true保留，非正式成绩或独立通过。；2026-10-04审查订正：全文五段，有环境、拥堵和对策的总体顺序；内容有重复、衔接与论证关系需要说明。句首And/So本身不是错误，也不按次数扣分。Reasons are written below冗余，但不能仅由该句定档；逗号粘连是实际标点问题。旧CC6.0仅保留为历史机评参考，未校准，不据此宣称正式水平。；2026-10-04审查订正：build legislation system等搭配不自然，as more as possible、bycicles、persist on improving、the situation we confront with需要修正；这里less people通常用fewer people。不要把green travelling说成绝对不能用，需看语域/自然度；take action适合这里，但actions在英语其他语境可以成立。未经重新计数的词频数字不沿用。旧LR5.5仅历史参考待校准，非正式分数。；2026-10-04审查订正：pollution come out/the government persist存在主谓一致问题；in every big cities涉及every后单数，traffic jam在此泛指通常需复数；逗号连接两个独立句与Because从属片段是实际句法问题。less people是数量词选择，不是主谓一致；无关自我介绍是任务/语域问题，不充作语法错误。错误不因一次讲解就已修。旧GRA5.0仅历史参考待校准，当前仍需核验。
 
 ## ③ 帮助史与曝光史（跨窗口保留，不因换窗口丢失）
 
-共 **50** 条作答事件；其中 **34** 条记录了提示或答案曝光。
+共 **51** 条作答事件；其中 **35** 条记录了提示或答案曝光。
 
 | 事件 | 提示 | 曝光 | 时机 | 说明（为何不计独立通过） |
 |---|---|---|---|---|
+| `attempt-52` | H1 | partial | before_attempt | 待核验 |
 | `attempt-51` | H3 | partial | before_attempt | 待核验 |
 | `attempt-49` | H3 | partial | before_attempt | 提示>0 |
 | `attempt-47` | H3 | partial | before_attempt | 待核验 |
@@ -197,7 +211,7 @@
 
 **已有独立通过、但延迟检验未满足**（下一步应做换题延迟复测）：`ee.ac.phasor-impedance`、`ee.ac.resonance`、`ee.ac.series-rlc`、`ee.dc.kcl`、`mp.power-series-radius`、`mp.residue-computation`、`mp.taylor-expansion`、`ru.qword-agreement`、`tm.t4.direct-check`、`tm.t4.energy-integral`
 
-**已声明但一道题都没有（纸面目标）**：`en.listen.decoding`、`en.listen.structure`、`en.read.timed`、`en.speak.fc`、`en.speak.gra`、`en.speak.lr`、`en.speak.pr`、`ode.sys.ivp`
+**已声明但一道题都没有（纸面目标）**：`ai-tech.c00-02`、`ai-tech.c00-03`、`ai-tech.c00-04`、`ai-tech.c00-05`、`ai-tech.c00-06`、`ai-tech.c00-07`、`ai-tech.c00-08`、`en.listen.decoding`、`en.listen.structure`、`en.read.timed`、`en.speak.fc`、`en.speak.gra`、`en.speak.lr`、`en.speak.pr`、`ode.sys.ivp`
 
 > 没有题目**不等于**已掌握，也**不等于**没学过——它表示系统里没有任何证据。
 
@@ -240,19 +254,19 @@
 
 | 项 | 值 |
 |---|---|
-| 目标总数 | 68 |
+| 目标总数 | 76 |
 | 　等级「迁移通过」 | 0 |
 | 　等级「延迟通过」 | 1 |
 | 　等级「曾独立完成」 | 10 |
-| 　等级「需支持」 | 31 |
-| 　等级「未测」 | 26 |
-| 覆盖分布 | {"已独立通过·待延迟复测": 11, "已作答·需补练": 30, "未安排（无题目）": 8, "已安排·未作答": 18, "已作答·开卷/受助通过": 1} |
+| 　等级「需支持」 | 33 |
+| 　等级「未测」 | 32 |
+| 覆盖分布 | {"已安排·未作答": 17, "未安排（无题目）": 15, "已独立通过·待延迟复测": 11, "已作答·需补练": 32, "已作答·开卷/受助通过": 1} |
 | 稳定证据（=迁移通过） | 0 |
 | 未解决困难 | 2 |
-| 作答事件 | 50 条 |
+| 作答事件 | 51 条 |
 | 订正 | 55 条 |
-| 题目 | 49 道 |
-| 实测时长 / 估计时长 | 7.0 min / 1253.0 min（**单列，不混算**） |
+| 题目 | 51 道 |
+| 实测时长 / 估计时长 | 7.0 min / 1268.0 min（**单列，不混算**） |
 
 > 本表是 STATUS 块里 `mastered` / `open_hurdles` / `attempts` 等字段的来源；
 > **不允许**在其它文件再手写一份计数（避免「两处各写一份、对不上」）。
@@ -269,7 +283,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-10-16**（中国时间；系统英国日期 2026-10-16）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-10-19**（中国时间；系统英国日期 2026-10-19）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -277,11 +291,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-10-16（周五）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-10-19（周一）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-10-16.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-10-19.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -296,7 +310,7 @@
 **必须遵守的提醒**：⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-10-16.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-10-19.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -345,7 +359,7 @@
 ## 仍需学习者确认的
 
 - 叙述行 `note` 里标了 `[待确认]` 的事项（见 AGENTS.md 的 STATUS，逐条列出）。
-- **已声明但没有任何题目的考点**：`en.listen.decoding`、`en.listen.structure`、`en.read.timed`、`en.speak.fc`、`en.speak.gra`、`en.speak.lr`、`en.speak.pr`、`ode.sys.ivp` —— 要不要出题、什么时候出，需要你指定（系统不自动建题）。
+- **已声明但没有任何题目的考点**：`ai-tech.c00-02`、`ai-tech.c00-03`、`ai-tech.c00-04`、`ai-tech.c00-05`、`ai-tech.c00-06`、`ai-tech.c00-07`、`ai-tech.c00-08`、`en.listen.decoding`、`en.listen.structure`、`en.read.timed`、`en.speak.fc`、`en.speak.gra`、`en.speak.lr`、`en.speak.pr`、`ode.sys.ivp` —— 要不要出题、什么时候出，需要你指定（系统不自动建题）。
 - **未解决困难**：`hurdle-2`（awaiting_retest）、`hurdle-3`（teaching） —— 处置方式（补讲/补练/再测）需要你确认。
 - **并发写约定**（ISSUES D4 已由本轮实现落地：锁 + 机器取号 + 原子写；若你另有偏好请说明）。
 
@@ -356,7 +370,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-10-16.md` |
+| 当天清单（人工权威） | `plan/today-2026-10-19.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |
@@ -366,7 +380,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（3861 个文件）
+## 3. 文件直达 URL 索引（3947 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -393,7 +407,7 @@
 - `学习进度.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6.txt
 - `数学动机地图-解薛定谔方程需要什么数学.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E6%95%B0%E5%AD%A6%E5%8A%A8%E6%9C%BA%E5%9C%B0%E5%9B%BE-%E8%A7%A3%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%95%B0%E5%AD%A6.md
 
-### learning（85 个）
+### learning（87 个）
 
 - `learning/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/README.md
 - `learning/attempts.jsonl` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/attempts.jsonl
@@ -425,6 +439,7 @@
 - `learning/repair-queue.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/repair-queue.json
 - `learning/task-windows.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/task-windows.json
 - `learning/tasks/_template.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/_template.md
+- `learning/tasks/ai-tech-c00-01-env-check.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/ai-tech-c00-01-env-check.md
 - `learning/tasks/de-gap-attack-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/de-gap-attack-01.md
 - `learning/tasks/de-midterm-diag-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/de-midterm-diag-01.md
 - `learning/tasks/ee-c2-diag-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/ee-c2-diag-01.md
@@ -478,6 +493,7 @@
 - `learning/tasks/tm-t4-diag-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/tm-t4-diag-01.md
 - `learning/tasks/tm-t4-momentum-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/tm-t4-momentum-01.md
 - `learning/tasks/tm-t4-similarity-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/tm-t4-similarity-01.md
+- `learning/tasks/tm-t5-ueff-variant-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/tm-t5-ueff-variant-01.md
 - `learning/tasks/xz-2026f-course-selection.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/tasks/xz-2026f-course-selection.md
 - `learning/weekly-review.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/learning/weekly-review.md
 
@@ -518,7 +534,7 @@
 - `plan/week-plan.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/week-plan.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（1743 个）
+### subjects（1798 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -536,6 +552,7 @@
 - `subjects/01-理论力学/作业/20261013-TM-H5.1-answer.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261013-TM-H5.1-answer.jpg
 - `subjects/01-理论力学/作业/20261013-TM-H5.1-解答-改正版.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261013-TM-H5.1-%E8%A7%A3%E7%AD%94-%E6%94%B9%E6%AD%A3%E7%89%88.jpg
 - `subjects/01-理论力学/作业/20261013-TM-H5.1-解答.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261013-TM-H5.1-%E8%A7%A3%E7%AD%94.jpg
+- `subjects/01-理论力学/作业/H5.2-有效势与能量线-20261019.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E4%BD%9C%E4%B8%9A/H5.2-%E6%9C%89%E6%95%88%E5%8A%BF%E4%B8%8E%E8%83%BD%E9%87%8F%E7%BA%BF-20261019.png
 - `subjects/01-理论力学/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/01-理论力学/讲义/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/INDEX.md
 - `subjects/01-理论力学/讲义/T04-判据二讲解-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T04-%E5%88%A4%E6%8D%AE%E4%BA%8C%E8%AE%B2%E8%A7%A3-1.png
@@ -2058,6 +2075,7 @@
 - `subjects/07-俄语/讲义/УРОК8-全讲双语教程-20261014.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AE%B2%E4%B9%89/%D0%A3%D0%A0%D0%9E%D0%9A8-%E5%85%A8%E8%AE%B2%E5%8F%8C%E8%AF%AD%E6%95%99%E7%A8%8B-20261014.html
 - `subjects/07-俄语/讲义/УРОК8-全讲双语教程-20261014.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AE%B2%E4%B9%89/%D0%A3%D0%A0%D0%9E%D0%9A8-%E5%85%A8%E8%AE%B2%E5%8F%8C%E8%AF%AD%E6%95%99%E7%A8%8B-20261014.pdf
 - `subjects/07-俄语/课件/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AF%BE%E4%BB%B6/INDEX.md
+- `subjects/07-俄语/课件/ГЛАГОЛ. НАСТОЯЩЕЕ ВРЕМЯ.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AF%BE%E4%BB%B6/%D0%93%D0%9B%D0%90%D0%93%D0%9E%D0%9B.%20%D0%9D%D0%90%D0%A1%D0%A2%D0%9E%D0%AF%D0%A9%D0%95%D0%95%20%D0%92%D0%A0%D0%95%D0%9C%D0%AF.pdf
 - `subjects/07-俄语/课件/УРОК 1. Алфавит(3).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AF%BE%E4%BB%B6/%D0%A3%D0%A0%D0%9E%D0%9A%201.%20%D0%90%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%283%29.pdf
 - `subjects/07-俄语/课件/УРОК 2. Твердые и мягкие согласные звуки. Оглушение. Озвончение. Диалоги.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AF%BE%E4%BB%B6/%D0%A3%D0%A0%D0%9E%D0%9A%202.%20%D0%A2%D0%B2%D0%B5%D1%80%D0%B4%D1%8B%D0%B5%20%D0%B8%20%D0%BC%D1%8F%D0%B3%D0%BA%D0%B8%D0%B5%20%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BD%D1%8B%D0%B5%20%D0%B7%D0%B2%D1%83%D0%BA%D0%B8.%20%D0%9E%D0%B3%D0%BB%D1%83%D1%88%D0%B5%D0%BD%D0%B8%D0%B5.%20%D0%9E%D0%B7%D0%B2%D0%BE%D0%BD%D1%87%D0%B5%D0%BD%D0%B8%D0%B5.%20%D0%94%D0%B8%D0%B0%D0%BB%D0%BE%D0%B3%D0%B8.pdf
 - `subjects/07-俄语/课件/УРОК 3. Глухие и звонкие согласные звуки. Ритмика. ИК-3.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/07-%E4%BF%84%E8%AF%AD/%E8%AF%BE%E4%BB%B6/%D0%A3%D0%A0%D0%9E%D0%9A%203.%20%D0%93%D0%BB%D1%83%D1%85%D0%B8%D0%B5%20%D0%B8%20%D0%B7%D0%B2%D0%BE%D0%BD%D0%BA%D0%B8%D0%B5%20%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BD%D1%8B%D0%B5%20%D0%B7%D0%B2%D1%83%D0%BA%D0%B8.%20%D0%A0%D0%B8%D1%82%D0%BC%D0%B8%D0%BA%D0%B0.%20%D0%98%D0%9A-3.pdf
@@ -2261,6 +2279,59 @@
 - `subjects/11-英语-雅思/资料/评分标准-官方-写作-band-descriptors.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/11-%E8%8B%B1%E8%AF%AD-%E9%9B%85%E6%80%9D/%E8%B5%84%E6%96%99/%E8%AF%84%E5%88%86%E6%A0%87%E5%87%86-%E5%AE%98%E6%96%B9-%E5%86%99%E4%BD%9C-band-descriptors.pdf
 - `subjects/11-英语-雅思/资料/评分标准-官方-口语-band-descriptors.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/11-%E8%8B%B1%E8%AF%AD-%E9%9B%85%E6%80%9D/%E8%B5%84%E6%96%99/%E8%AF%84%E5%88%86%E6%A0%87%E5%87%86-%E5%AE%98%E6%96%B9-%E5%8F%A3%E8%AF%AD-band-descriptors.pdf
 - `subjects/11-英语-雅思/资源清单-20261003.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/11-%E8%8B%B1%E8%AF%AD-%E9%9B%85%E6%80%9D/%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95-20261003.md
+- `subjects/12-AI学习/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/INDEX.md
+- `subjects/12-AI学习/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/progress.md
+- `subjects/12-AI学习/topics/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/topics/INDEX.md
+- `subjects/12-AI学习/资料/AI时代的认知、学习与价值重构-20261016.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/%E8%B5%84%E6%96%99/AI%E6%97%B6%E4%BB%A3%E7%9A%84%E8%AE%A4%E7%9F%A5%E3%80%81%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BB%B7%E5%80%BC%E9%87%8D%E6%9E%84-20261016.html
+- `subjects/12-AI学习/资料/AI时代的认知、学习与价值重构-20261016.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/%E8%B5%84%E6%96%99/AI%E6%97%B6%E4%BB%A3%E7%9A%84%E8%AE%A4%E7%9F%A5%E3%80%81%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BB%B7%E5%80%BC%E9%87%8D%E6%9E%84-20261016.md
+- `subjects/12-AI学习/资料/AI时代的认知、学习与价值重构-20261016.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/%E8%B5%84%E6%96%99/AI%E6%97%B6%E4%BB%A3%E7%9A%84%E8%AE%A4%E7%9F%A5%E3%80%81%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BB%B7%E5%80%BC%E9%87%8D%E6%9E%84-20261016.pdf
+- `subjects/12-AI学习/资料/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/12-AI%E5%AD%A6%E4%B9%A0/%E8%B5%84%E6%96%99/INDEX.md
+- `subjects/13-AI技术学习/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/INDEX.md
+- `subjects/13-AI技术学习/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/progress.md
+- `subjects/13-AI技术学习/topics/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/topics/INDEX.md
+- `subjects/13-AI技术学习/练习/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E7%BB%83%E4%B9%A0/README.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/00_总课程表.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/00_%E6%80%BB%E8%AF%BE%E7%A8%8B%E8%A1%A8.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/01_学习者自评原记录.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/01_%E5%AD%A6%E4%B9%A0%E8%80%85%E8%87%AA%E8%AF%84%E5%8E%9F%E8%AE%B0%E5%BD%95.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/01_学习者起点与调整原则.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/01_%E5%AD%A6%E4%B9%A0%E8%80%85%E8%B5%B7%E7%82%B9%E4%B8%8E%E8%B0%83%E6%95%B4%E5%8E%9F%E5%88%99.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/02_教材与课程来源.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/02_%E6%95%99%E6%9D%90%E4%B8%8E%E8%AF%BE%E7%A8%8B%E6%9D%A5%E6%BA%90.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/03_DeepSeek交接说明.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/03_DeepSeek%E4%BA%A4%E6%8E%A5%E8%AF%B4%E6%98%8E.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/04_日常教学与验收规则.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/04_%E6%97%A5%E5%B8%B8%E6%95%99%E5%AD%A6%E4%B8%8E%E9%AA%8C%E6%94%B6%E8%A7%84%E5%88%99.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/05_阶段项目与验收.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/05_%E9%98%B6%E6%AE%B5%E9%A1%B9%E7%9B%AE%E4%B8%8E%E9%AA%8C%E6%94%B6.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/06_首次开课.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/06_%E9%A6%96%E6%AC%A1%E5%BC%80%E8%AF%BE.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/07_能力覆盖映射.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/07_%E8%83%BD%E5%8A%9B%E8%A6%86%E7%9B%96%E6%98%A0%E5%B0%84.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/08_交付核验说明.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/08_%E4%BA%A4%E4%BB%98%E6%A0%B8%E9%AA%8C%E8%AF%B4%E6%98%8E.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/README.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/A01_AI应用开发支线.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/A01_AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%94%AF%E7%BA%BF.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C00_编程与开发衔接.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C00_%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A1%94%E6%8E%A5.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C01_数据处理与可视化.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C01_%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C02_机器学习实验入门.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C02_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E9%AA%8C%E5%85%A5%E9%97%A8.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C03_机器学习原理与实验改进.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C03_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E9%AA%8C%E6%94%B9%E8%BF%9B.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C04_深度学习基础.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C04_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/C05_大模型原理与实验.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/C05_%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E9%AA%8C.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/M_数学与统计按需支持.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/M_%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BB%9F%E8%AE%A1%E6%8C%89%E9%9C%80%E6%94%AF%E6%8C%81.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/courses/Q01_量化基础与时间序列支线.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/courses/Q01_%E9%87%8F%E5%8C%96%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%94%AF%E7%BA%BF.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/README.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/classification.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/classification.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/mock_response.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/mock_response.json
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/prices_synthetic.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/prices_synthetic.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D01_预约规则.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D01_%E9%A2%84%E7%BA%A6%E8%A7%84%E5%88%99.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D02_设备说明.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D02_%E8%AE%BE%E5%A4%87%E8%AF%B4%E6%98%8E.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D03_数据保存.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D03_%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D04_旧预约规则.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D04_%E6%97%A7%E9%A2%84%E7%BA%A6%E8%A7%84%E5%88%99.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D05_材料与指令.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D05_%E6%9D%90%E6%96%99%E4%B8%8E%E6%8C%87%E4%BB%A4.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_docs/D06_报告模板.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_docs/D06_%E6%8A%A5%E5%91%8A%E6%A8%A1%E6%9D%BF.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/rag_questions.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/rag_questions.json
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/regression.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/regression.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/study_sessions_clean.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/study_sessions_clean.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/study_sessions_dirty.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/study_sessions_dirty.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/subject_lookup.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/subject_lookup.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/data/subject_lookup_duplicate.csv` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/data/subject_lookup_duplicate.csv
+- `subjects/13-AI技术学习/课程包_AI-TECH/teacher/首项目核对值.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/teacher/%E9%A6%96%E9%A1%B9%E7%9B%AE%E6%A0%B8%E5%AF%B9%E5%80%BC.json
+- `subjects/13-AI技术学习/课程包_AI-TECH/交接给DeepSeek.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/%E4%BA%A4%E6%8E%A5%E7%BB%99DeepSeek.txt
+- `subjects/13-AI技术学习/课程包_AI-TECH/教材来源.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/%E6%95%99%E6%9D%90%E6%9D%A5%E6%BA%90.json
+- `subjects/13-AI技术学习/课程包_AI-TECH/记录模板/会话记录.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/%E8%AE%B0%E5%BD%95%E6%A8%A1%E6%9D%BF/%E4%BC%9A%E8%AF%9D%E8%AE%B0%E5%BD%95.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/记录模板/续学点.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/%E8%AE%B0%E5%BD%95%E6%A8%A1%E6%9D%BF/%E7%BB%AD%E5%AD%A6%E7%82%B9.md
+- `subjects/13-AI技术学习/课程包_AI-TECH/课程目录.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/13-AI%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AF%BE%E7%A8%8B%E5%8C%85_AI-TECH/%E8%AF%BE%E7%A8%8B%E7%9B%AE%E5%BD%95.json
 - `subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/INDEX.md
 - `subjects/学习进度-自述-2026-09-26.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6-%E8%87%AA%E8%BF%B0-2026-09-26.md
 
@@ -4021,7 +4092,7 @@
 - `.dsh/skills/ielts-session/references/rubrics.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/ielts-session/references/rubrics.md
 - `.dsh/skills/tutor-assistant/SKILL.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/tutor-assistant/SKILL.md
 
-### tools（42 个）
+### tools（45 个）
 
 - `tools/append_attempt.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/append_attempt.py
 - `tools/chapter_guide.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/chapter_guide.py
@@ -4032,6 +4103,7 @@
 - `tools/derive_state.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/derive_state.py
 - `tools/ee-materials-register.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-materials-register.py
 - `tools/ee-slides-build.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-slides-build.py
+- `tools/ee-slides-make-paste.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-slides-make-paste.py
 - `tools/ee-slides-merge-descriptions.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-slides-merge-descriptions.py
 - `tools/ee-slides-run-mineru.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-slides-run-mineru.py
 - `tools/ee-slides-task-chunk.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/ee-slides-task-chunk.py
@@ -4045,11 +4117,13 @@
 - `tools/make-gemini-index.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/make-gemini-index.py
 - `tools/make_handout.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/make_handout.py
 - `tools/material_reader.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/material_reader.py
+- `tools/md-to-pdf.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/md-to-pdf.py
 - `tools/observations.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/observations.py
 - `tools/plan-week.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/plan-week.py
 - `tools/record_attempts_today.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/record_attempts_today.py
 - `tools/record_correction.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/record_correction.py
 - `tools/record_review.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/record_review.py
+- `tools/register-doc-material.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/register-doc-material.py
 - `tools/render_corrections.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/render_corrections.py
 - `tools/reviews.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/reviews.py
 - `tools/schedule_reviews.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tools/schedule_reviews.py
@@ -4225,6 +4299,35 @@
 - `upstream/tutor/examples/subjects/language.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/language.yml
 - `upstream/tutor/examples/subjects/math.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/math.yml
 - `upstream/tutor/subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/subjects/INDEX.md
+
+### paste（26 个）
+
+- `paste/00-目录.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/00-%E7%9B%AE%E5%BD%95.md
+- `paste/C1-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C1-1.md
+- `paste/C1-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C1-2.md
+- `paste/C1-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C1-3.md
+- `paste/C1-4.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C1-4.md
+- `paste/C2-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C2-1.md
+- `paste/C2-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C2-2.md
+- `paste/C3-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C3-1.md
+- `paste/C3-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C3-2.md
+- `paste/C3-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C3-3.md
+- `paste/C4-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C4-1.md
+- `paste/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C4-2.md
+- `paste/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/C4-3.md
+- `paste/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/README.md
+- `paste/compact/C1-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C1-1.md
+- `paste/compact/C1-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C1-2.md
+- `paste/compact/C1-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C1-3.md
+- `paste/compact/C1-4.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C1-4.md
+- `paste/compact/C2-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C2-1.md
+- `paste/compact/C2-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C2-2.md
+- `paste/compact/C3-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C3-1.md
+- `paste/compact/C3-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C3-2.md
+- `paste/compact/C3-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C3-3.md
+- `paste/compact/C4-1.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-1.md
+- `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
+- `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
 ### 常微分方程-L1-L12-方法论串讲-2（42 个）
 
