@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-10-20 2026-10-20 22:03（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-10-20 2026-10-20 22:43（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -382,7 +382,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（4045 个文件）
+## 3. 文件直达 URL 索引（4048 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -538,7 +538,7 @@
 - `plan/week-plan.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/week-plan.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（1830 个）
+### subjects（1833 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -701,6 +701,9 @@
 - `subjects/03-微分方程/讲义/考点自查清单-L1-L12-20261015.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E8%80%83%E7%82%B9%E8%87%AA%E6%9F%A5%E6%B8%85%E5%8D%95-L1-L12-20261015.pdf
 - `subjects/03-微分方程/讲义/讲义-L16-L18-矩阵指数与非齐次系统-20261019.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E8%AE%B2%E4%B9%89-L16-L18-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0%E4%B8%8E%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%B3%BB%E7%BB%9F-20261019.pdf
 - `subjects/03-微分方程/讲义/讲义-L16-L18-矩阵指数与非齐次系统-20261019.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E8%AE%B2%E4%B9%89-L16-L18-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0%E4%B8%8E%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%B3%BB%E7%BB%9F-20261019.tex
+- `subjects/03-微分方程/讲义/降阶与Abel公式-精讲-20261020.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E9%99%8D%E9%98%B6%E4%B8%8EAbel%E5%85%AC%E5%BC%8F-%E7%B2%BE%E8%AE%B2-20261020.html
+- `subjects/03-微分方程/讲义/降阶与Abel公式-精讲-20261020.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E9%99%8D%E9%98%B6%E4%B8%8EAbel%E5%85%AC%E5%BC%8F-%E7%B2%BE%E8%AE%B2-20261020.md
+- `subjects/03-微分方程/讲义/降阶与Abel公式-精讲-20261020.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E9%99%8D%E9%98%B6%E4%B8%8EAbel%E5%85%AC%E5%BC%8F-%E7%B2%BE%E8%AE%B2-20261020.pdf
 - `subjects/03-微分方程/课件/1.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/1.pdf
 - `subjects/03-微分方程/课件/10(1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/10%281%29.pdf
 - `subjects/03-微分方程/课件/11(1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/11%281%29.pdf
