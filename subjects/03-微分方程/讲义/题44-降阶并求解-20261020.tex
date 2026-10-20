@@ -1,0 +1,115 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{xcolor}
+\definecolor{mainblue}{RGB}{12,82,160}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\pagestyle{empty}
+\newcommand{\dd}{\mathrm{d}}
+
+\begin{document}
+
+{\color{mainblue}\Large\bfseries 题 44\quad $yy''-y'^{\,2}=y^{2}\ln y$,\quad $y>0,\ y'>0$}\\[1pt]
+{\color{mainblue}\small 二阶非线性方程 \quad$\cdot$\quad 不显含 $x$ \quad$\cdot$\quad 标准降阶（也可一步化成线性）}
+
+\vspace{0.2em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{0.\ 先看一眼结构}
+
+左边 $yy''-y'^{\,2}$ 和 $y^{2}$ 放在一起很眼熟，因为
+\[
+\left(\frac{y'}{y}\right)'=\frac{yy''-y'^{\,2}}{y^{2}} .
+\]
+题干的左端除以 $y^{2}$ 正好就是这个商函数的导数。这一条有两个用处：解法二可以一步把方程化成线性；解法一的降阶路线最后也会汇到同一族解。
+
+\textbf{1.\ 标准降阶（题面「降阶并求解」要求的走法）}
+
+方程不显含 $x$，令 $p=y'>0$，并把 $p$ 看成 $y$ 的函数，则
+\[
+y''=\frac{\dd p}{\dd x}=\frac{\dd p}{\dd y}\cdot\frac{\dd y}{\dd x}=p\frac{\dd p}{\dd y},
+\]
+代入原方程：
+\[
+y\,p\frac{\dd p}{\dd y}-p^{2}=y^{2}\ln y .
+\]
+这是关于 $p^{2}$ 的一阶方程。令 $u=p^{2}$，则 $\dfrac{\dd u}{\dd y}=2p\dfrac{\dd p}{\dd y}$，上式两边乘以 $2$：
+\[
+y\frac{\dd u}{\dd y}-2u=2y^{2}\ln y
+\quad\Longrightarrow\quad
+\frac{\dd u}{\dd y}-\frac{2}{y}u=2y\ln y .
+\]
+一阶线性，积分因子 $\mu=\exp\!\left(\int-\frac{2}{y}\,\dd y\right)=\dfrac{1}{y^{2}}$：
+\[
+\left(\frac{u}{y^{2}}\right)'=2\,\frac{\ln y}{y}
+\quad\Longrightarrow\quad
+\frac{u}{y^{2}}=(\ln y)^{2}+C_1,
+\]
+即
+\[
+p^{2}=y^{2}\bigl[(\ln y)^{2}+C_1\bigr].
+\]
+由 $p=y'>0$ 取正根：
+\[
+\frac{\dd y}{\dd x}=y\sqrt{(\ln y)^{2}+C_1}
+\quad\Longrightarrow\quad
+\dd x=\frac{\dd y}{y\sqrt{(\ln y)^{2}+C_1}} .
+\]
+令 $t=\ln y$，则 $\dfrac{\dd y}{y}=\dd t$，于是
+\[
+x-C_2=\int\frac{\dd t}{\sqrt{t^{2}+C_1}}=\ln\left|t+\sqrt{t^{2}+C_1}\right| .
+\]
+反解出 $t$：由 $t+\sqrt{t^{2}+C_1}=e^{x-C_2}$ 两边平方得
+\[
+t=\frac{1}{2}\left(e^{x-C_2}-C_1e^{-(x-C_2)}\right),
+\]
+即
+\[
+\boxed{\;y=\exp\left[\frac{1}{2}\left(e^{x-C_2}-C_1e^{-(x-C_2)}\right)\right]\;}
+\]
+
+\textbf{2.\ 巧法（看清结构后，三行就完）}
+
+两边除以 $y^{2}$（$y>0$），并用 $\left(\frac{y'}{y}\right)'=\ln y$。令 $z=\ln y$，则
+\[
+z''=\left(\frac{y'}{y}\right)'=\ln y=z
+\quad\Longrightarrow\quad
+z=C_1e^{x}+C_2e^{-x},
+\]
+\[
+\boxed{\;y=\exp\left(C_1e^{x}+C_2e^{-x}\right)\;}
+\]
+两种写法是同一族解，只是常数的叫法不同：$\dfrac{1}{2}e^{-C_2}$ 与 $-\dfrac{1}{2}C_1e^{C_2}$ 对过去就是解法二里的两个常数。
+
+\textbf{3.\ 验算（两行）}
+
+设 $z=\ln y$，则 $y=e^{z}$、$y'=yz'$、$y''=y\bigl[(z')^{2}+z''\bigr]$，于是
+\[
+yy''-y'^{\,2}=y^{2}\bigl[(z')^{2}+z''\bigr]-y^{2}(z')^{2}=y^{2}z'' .
+\]
+原方程要求 $yy''-y'^{\,2}=y^{2}\ln y$，即要求 $z''=z$ —— 这正是解法二解出的方程。
+
+\textbf{4.\ 关于 $y'>0$}
+
+$y'=y\,z'=y\left(C_1e^{x}-C_2e^{-x}\right)$，所以要使 $y'>0$ 恒成立，需 $C_1e^{x}-C_2e^{-x}>0$（例如 $C_1>0$、$C_2\le 0$）。题面给 $y>0,\ y'>0$，正是为了保证 $\ln y$ 有意义、并且能取正根 $p=y'$。
+
+
+\textbf{5.\ 怎么想到的（可迁移的经验）}
+
+\begin{enumerate}
+\item 看到 $yy''-y'^{\,2}$ 先除以 $y^{2}$：$yy''-y'^{\,2}$ 是 $\left(\frac{y'}{y}\right)'$ 的分子，除以 $y^{2}$ 就凑成了商的导数。
+\item 右边出现 $\ln y$，提示换元 $z=\ln y$：因为 $z'=\frac{y'}{y}$，换元后 $z$ 的方程变成常系数线性 $z''=z$。
+\item 一般套路：不显含 $x$ 的方程令 $p=y'$ 降阶是标准动作；但如果左边整体已经是某个函数的导数（全微分），先「除一除、换一换」往往比硬降阶快得多。
+\end{enumerate}
+
+\vspace{0.2em}
+\noindent\rule{\linewidth}{0.6pt}
+
+{\small
+\textbf{答题栏}\quad
+类型：二阶非线性方程，不显含 $x$\\
+解法：降阶 —— 令 $p=y'$ 视为 $y$ 的函数，化出关于 $p^{2}$ 的一阶线性方程；或除以 $y^{2}$ 后令 $z=\ln y$ 直接化成 $z''=z$\\
+结果：$y=\exp\left(C_1e^{x}+C_2e^{-x}\right)$}
+
+\end{document}
