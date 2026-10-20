@@ -1,0 +1,216 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\definecolor{mainblue}{RGB}{12,82,160}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+
+\newcommand{\dd}{\mathrm{d}}
+
+\begin{document}
+
+{\color{mainblue}\Large\bfseries 积分因子通用公式（$\mu(\omega)$ 理论）· 精讲}\\[3pt]
+{\color{mainblue}\small 不恰当的 $M\,\dd x+N\,\dd y=0$ 怎么救：一条公式覆盖 $x,\ y,\ x\pm y,\ xy,\ y/x,\ x^{2}+y^{2}$ 全部常见型}
+
+\vspace{0.3em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{0.\ 一句话定位}
+
+方程 $M\,\dd x+N\,\dd y=0$ 恰当，意思是存在 $F(x,y)$ 使 $\dd F=M\,\dd x+N\,\dd y$，判据是
+\[
+M_y=N_x .
+\]
+不满足时，就乘一个非零函数 $\mu(x,y)$，把方程改造成
+\[
+\underbrace{\mu M}_{\tilde M}\,\dd x+\underbrace{\mu N}_{\tilde N}\,\dd y=0,
+\]
+使 $\tilde M_y=\tilde N_x$ 成立。本讲给出 $\mu$ 的通用公式，并用它解
+\[
+(x+y+1)+(2x+2y+1)y'=0 .
+\]
+
+\textbf{1.\ 定义与基本方程（课件 L4 p3，式 (1)--(4)）}
+
+\textbf{定义}：非零函数 $\mu(x,y)$ 叫方程 (1) 的\emph{积分因子}，如果 $\mu M\,\dd x+\mu N\,\dd y=0$ 恰当，即
+\[
+(\mu M)_y=(\mu N)_x .
+\]
+展开并用乘积法则：
+\[
+\mu M_y+M\mu_y=\mu N_x+N\mu_x
+\quad\Longrightarrow\quad
+N\mu_x-M\mu_y=\mu\,(M_y-N_x).
+\]
+这是一个关于 $\mu$ 的一阶线性\emph{偏}微分方程，一般并不比原方程好解。所以真正有用的做法是：\textbf{限定 $\mu$ 的形状}。
+
+\textbf{2.\ 设 $\mu=\mu(\omega)$，公式怎么来（课件 L4 p4--p5）}
+
+设 $\omega=\omega(x,y)$ 是选定的组合，取 $\mu=\mu(\omega)$。由链式法则
+\[
+\mu_x=\frac{\dd\mu}{\dd\omega}\,\omega_x,\qquad
+\mu_y=\frac{\dd\mu}{\dd\omega}\,\omega_y .
+\]
+代入 $N\mu_x-M\mu_y=\mu(M_y-N_x)$，得
+\[
+\bigl(N\omega_x-M\omega_y\bigr)\frac{\dd\mu}{\dd\omega}=\mu\,(M_y-N_x),
+\]
+即
+\[
+\frac{1}{\mu}\frac{\dd\mu}{\dd\omega}
+=\frac{M_y-N_x}{N\omega_x-M\omega_y}
+\equiv E(x,y).
+\]
+\textbf{关键一步}：如果这个 $E$ 恰好只通过 $\omega$ 依赖于 $x,y$（记 $E=\psi(\omega)$），那么上式就是可分离方程
+\[
+\frac{\dd\mu}{\dd\omega}=\psi(\omega)\,\mu
+\quad\Longrightarrow\quad
+\boxed{\;\mu(\omega)=\exp\!\left(\int\psi(\omega)\,\dd\omega\right)\;}
+\]
+这就是\textbf{积分因子通用公式}。若 $E$ 里还残留 $x,y$，说明这个 $\omega$ 选得不对，换一个再试。
+
+\textbf{3.\ 考场上就写三步}
+
+\begin{enumerate}
+\item 算 $S:=M_y-N_x$。$S\equiv 0$ 就是恰当方程，直接求 $F$，结束。
+\item 按结构选 $\omega$（见 §4 表），算 $D:=N\omega_x-M\omega_y$。
+\item 若 $S/D$ 只含 $\omega$，则 $\mu=\exp\!\bigl(\int \frac{S}{D}\,\dd\omega\bigr)$；否则换 $\omega$。
+\end{enumerate}
+
+\textbf{符号提醒}：$D=N\omega_x-M\omega_y$，不是 $M\omega_y-N\omega_x$。写反会让整个 $\mu$ 变成倒数，最后 $F$ 求不出来。
+
+\textbf{4.\ 常用 $\omega$ 对照表（不要背，用 $E=S/D$ 现算）}
+
+{\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+$\omega$ & $\omega_x$ & $\omega_y$ & $D=N\omega_x-M\omega_y$ & $E=S/D$ \\
+\midrule
+$x$ & $1$ & $0$ & $N$ & $(M_y-N_x)/N$ \\
+$y$ & $0$ & $1$ & $-M$ & $(N_x-M_y)/M$ \\
+$x+y$ & $1$ & $1$ & $N-M$ & $(M_y-N_x)/(N-M)$ \\
+$x-y$ & $1$ & $-1$ & $N+M$ & $(M_y-N_x)/(N+M)$ \\
+$xy$ & $y$ & $x$ & $yN-xM$ & $(M_y-N_x)/(yN-xM)$ \\
+$y/x$ & $-y/x^{2}$ & $1/x$ & $-(yN+xM)/x^{2}$ & $x^{2}(N_x-M_y)/(yN+xM)$ \\
+$x^{2}+y^{2}$ & $2x$ & $2y$ & $2(xN-yM)$ & $(M_y-N_x)/[2(xN-yM)]$ \\
+\bottomrule
+\end{tabular}}
+
+表中 $x$ 行与课件 p6 的 Theorem 一致（$\psi(x)=(M_y-N_x)/N$）；$y$ 行课件写成 $(N_x-M_y)/M$，与 $(M_y-N_x)/(-M)$ 是同一个式子。
+
+\textbf{5.\ 例题（本题）：$(x+y+1)\,\dd x+(2x+2y+1)\,\dd y=0$}
+
+先算
+\[
+M=x+y+1,\quad N=2x+2y+1,\qquad S=M_y-N_x=1-2=-1\neq 0,
+\]
+所以不恰当。观察：$M,N$ 都只通过 $x+y$ 依赖变量，于是试 $\omega=x+y$。此时 $\omega_x=\omega_y=1$，
+\[
+D=N-M=(2x+2y+1)-(x+y+1)=x+y=\omega,
+\]
+\[
+E=\frac{S}{D}=-\frac{1}{\omega}
+\quad\Longrightarrow\quad
+\mu=\exp\!\left(\int-\frac{\dd\omega}{\omega}\right)=\frac{1}{\omega}=\frac{1}{x+y}.
+\]
+
+乘上 $\mu$，方程变成恰当方程：
+\[
+\left(1+\frac{1}{x+y}\right)\dd x+\left(2+\frac{1}{x+y}\right)\dd y=0 .
+\]
+求 $F$：由 $F_x=1+\dfrac{1}{x+y}$ 得
+\[
+F=x+\ln|x+y|+\varphi(y),
+\]
+再由 $F_y=\dfrac{1}{x+y}+\varphi'(y)=2+\dfrac{1}{x+y}$ 得 $\varphi'(y)=2$，即 $\varphi=2y$。于是
+\[
+\boxed{\;x+2y+\ln|x+y|=C\;}
+\]
+\textbf{别忘了特解}：乘 $\mu$ 时假设了 $x+y\neq 0$；而 $y=-x$ 直接代入原方程也成立（$1+1\cdot(-1)=0$），所以 $x+y=0$ 是一条单独的解。
+
+\textbf{另一条路（换元，更快但要看出结构）}：令 $u=x+y$，则 $\dd u=\dd x+\dd y$，原方程化为
+\[
+(u+1)\,\dd u+u\,\dd y=0
+\quad\Longrightarrow\quad
+\dd y=-\left(1+\frac{1}{u}\right)\dd u
+\quad\Longrightarrow\quad
+y=-u-\ln|u|+C,
+\]
+回代 $u=x+y$ 即 $x+2y+\ln|x+y|=C$，与上面一致。这条路本质上是把「$\omega=x+y$」提前用掉了。
+
+\textbf{6.\ 课件例（L4 p7）：$y\,\dd x-(x+x^{2}+y^{2})\,\dd y=0$}
+
+$M=y$、$N=-(x+x^{2}+y^{2})$，$S=1-(-1-2x)=2+2x$。取 $\omega=x^{2}+y^{2}$：
+\[
+D=N\omega_x-M\omega_y=-2(1+x)(x^{2}+y^{2}),\qquad
+E=\frac{S}{D}=-\frac{1}{x^{2}+y^{2}}=-\frac{1}{\omega},
+\]
+\[
+\mu=\exp\!\left(-\int\frac{\dd\omega}{\omega}\right)=\frac{1}{x^{2}+y^{2}} .
+\]
+乘上 $\mu$ 后求 $F$，得
+\[
+\arctan\frac{x}{y}-y=C .
+\]
+
+\textbf{7.\ 与一阶线性公式的关系}
+
+把 $y'+p(x)y=q(x)$ 写成 $(py-q)\,\dd x+\dd y=0$，取 $\omega=x$：
+\[
+S=M_y-N_x=p-0=p,\qquad D=N=1,
+\quad\Longrightarrow\quad
+\mu=\exp\!\left(\int p\,\dd x\right),
+\]
+正是熟悉的一阶线性积分因子。也就是说，课本里那条公式只是本讲通用公式在 $\omega=x$ 时的特例。
+
+\textbf{8.\ 四个坑}
+
+\begin{enumerate}
+\item \textbf{乘 $\mu$ 可能丢解}（课件 L4 p14）：$\mu$ 的分母为零的地方，原方程可能仍有解，却没被通解包含，必须单独检查。本题的 $x+y=0$ 就是被丢掉的那条。
+\item \textbf{$E$ 不是只含 $\omega$ 就不能用}：这时 $\psi$ 不存在，换 $\omega$，不要硬算。
+\item \textbf{$\omega$ 靠结构选}：系数只含 $x+y$ 试 $x+y$；只含 $xy$ 试 $xy$；出现 $y/x$ 试 $y/x$；只含 $x$（或 $y$）试 $\omega=x$（或 $y$）。
+\item \textbf{符号}：$D=N\omega_x-M\omega_y$。写反则 $\mu$ 取倒数，$S/D$ 也随之变号。
+\end{enumerate}
+
+\textbf{9.\ 自检（先做，答案在后）}
+
+\begin{enumerate}
+\item $(x+y^{2})\,\dd x-2xy\,\dd y=0$：判断恰当性，选 $\omega$，求 $\mu$ 与通解。
+\item $(y+x^{2}y)\,\dd x+(x-xy^{2})\,\dd y=0$：同上。
+\item 概念：若 $S/D$ 里还剩下 $x$，说明什么？下一步该做什么？
+\end{enumerate}
+
+\vspace{0.3em}
+\noindent\rule{\linewidth}{0.6pt}
+{\small
+\textbf{自检答案}
+
+\textbf{1.} $S=M_y-N_x=2y-(-2y)=4y$；$D=N=-2xy$（取 $\omega=x$），$E=4y/(-2xy)=-2/x$ 只含 $x$，故
+\[
+\mu=\exp\!\left(\int-\frac{2}{x}\,\dd x\right)=\frac{1}{x^{2}},
+\qquad
+F=\ln|x|-\frac{y^{2}}{x}=C .
+\]
+
+\textbf{2.} $S=1+x^{2}-(1-y^{2})=x^{2}+y^{2}$；取 $\omega=xy$，$D=yN-xM=-xy(x^{2}+y^{2})$，
+\[
+E=\frac{S}{D}=-\frac{1}{xy}=-\frac{1}{\omega},
+\qquad
+\mu=\frac{1}{xy},
+\]
+乘上后方程变成可分离的 $(1/x+x)\,\dd x+(1/y-y)\,\dd y=0$，故
+\[
+\ln|x|+\frac{x^{2}}{2}+\ln|y|-\frac{y^{2}}{2}=C .
+\]
+
+\textbf{3.} 说明选错了 $\omega$（这个组合不能把 $E$ 化成 $\psi(\omega)$）。下一步：换一个结构上更像的 $\omega$ 重算 $D$ 与 $E$，或改用换元法。
+
+}
+\vspace{0.2em}
+\vspace{0.4em}
+{\footnotesize 依据：课件 \texttt{4(3).pdf}（Lecture 4，Gladkov）p3--p7（定义、式 (1)--(8)、Theorem、例 1）、p14（乘 $\mu$ 丢解的提醒）、p24--p27（一阶线性积分因子＝$\omega=x$ 特例）。全文公式已用 sympy 代回核验。}
+
+\end{document}
