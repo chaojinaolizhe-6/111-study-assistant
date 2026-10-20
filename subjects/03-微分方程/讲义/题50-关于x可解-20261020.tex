@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.7cm]{geometry}
+\usepackage{xcolor}
+\definecolor{mainblue}{RGB}{12,82,160}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\pagestyle{empty}
+\newcommand{\dd}{\mathrm{d}}
+
+\begin{document}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+
+{\color{mainblue}\Large\bfseries 题 50\quad $\ln y'+\sin y'-x=0$}\\[1pt]
+{\color{mainblue}\small 关于 $x$ 可解的方程 \quad$\cdot$\quad $y'$ 解不出来，答案只能是参数形式}
+
+\vspace{0.2em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{0.\ 一眼定型}
+
+$y'$ 被关在 $\ln$ 与 $\sin$ 里，想先解出 $y'$ 就要解超越方程 $\ln p+\sin p=x$，没有初等反解；但可以把 $x$ 单独解出来：
+\[
+x=\ln y'+\sin y' .
+\]
+这就是课件里的「关于 $x$ 可解的方程」（resolved with respect to $x$）。标准做法：令 $p=y'$ 当参数，把 $x=f(p)$ 两边对 $x$ 求导，化为可分离方程。
+
+\textbf{1.\ 令 $p=y'>0$（$\ln p$ 要求 $p>0$）}，方程改写为
+\[
+x=\ln p+\sin p .
+\tag{$\ast$}
+\]
+
+\textbf{2--3.\ 两边对 $x$ 求导，再把 $\dd p/\dd x$ 换成对 $y$ 的导数}
+
+注意 $p$ 是 $x$ 的函数：
+\[
+1=\left(\frac{1}{p}+\cos p\right)\frac{\dd p}{\dd x}.
+\]
+取 $p=p(y)$，由链式法则 $\dfrac{\dd p}{\dd x}=\dfrac{\dd p}{\dd y}\cdot\dfrac{\dd y}{\dd x}=p\dfrac{\dd p}{\dd y}$，代回：
+\[
+1=\left(\frac{1}{p}+\cos p\right)p\,\frac{\dd p}{\dd y}
+=\bigl(1+p\cos p\bigr)\frac{\dd p}{\dd y}
+\quad\Longrightarrow\quad
+\dd y=\bigl(1+p\cos p\bigr)\dd p .
+\]
+
+\textbf{4.\ 积分}
+
+\[
+y=\int(1+p\cos p)\,\dd p=p+\cos p+p\sin p+C,
+\]
+其中 $\int p\cos p\,\dd p=p\sin p+\cos p$（分部积分）。
+
+\textbf{5.\ 通解（参数形式）}
+
+\[
+\boxed{\;x=\ln p+\sin p,\qquad y=p+\cos p+p\sin p+C,\qquad p>0\;}
+\]
+$p$ 是参数，$C$ 是任意常数。\textbf{这就是完整答案}：曲线由参数 $p$ 给出，不必（也做不到）写成 $y=y(x)$ 的初等显式。
+
+\textbf{6.\ 验算}
+
+\[
+\frac{\dd y}{\dd x}=\frac{\dd y/\dd p}{\dd x/\dd p}
+=\frac{1+p\cos p}{1/p+\cos p}
+=\frac{p\,(1+p\cos p)}{1+p\cos p}=p,
+\]
+所以 $y'=p$，而 $x=\ln p+\sin p=\ln y'+\sin y'$，原方程成立。\hfill$\checkmark$
+
+\textbf{7.\ 为什么答案停在参数形式}
+
+$x=\ln p+\sin p$ 的反函数 $p=p(x)$ 没有初等表达式（$x(p)$ 也不是全局单调的：$\dd x/\dd p=1/p+\cos p$ 在 $p=\pi$ 附近变号）。凡是「$x$ 可解、$y'$ 不可解」的题，答案都停在参数形式 —— 课件里这道题、以及同类的 $y'^2-e^{y'}+x=0$，都是这么写的。
+
+\vspace{0.1em}
+\noindent\rule{\linewidth}{0.6pt}
+
+{\small
+\textbf{答题栏}\quad
+类型：关于 $x$ 可解的方程（$x=f(y')$）\\
+解法：令 $p=y'$，对 $x=\ln p+\sin p$ 两边关于 $x$ 求导，用 $\dd p/\dd x=p\,\dd p/\dd y$ 化为可分离方程，积分得参数解\\
+结果：$x=\ln p+\sin p$，$y=p+\cos p+p\sin p+C$（$p>0$，参数形式）}
+
+\end{document}
