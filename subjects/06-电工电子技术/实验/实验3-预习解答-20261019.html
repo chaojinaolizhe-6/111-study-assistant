@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>电工学实验A1-实验3-交流电路实验-预习解答</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "Source Han Sans SC",
+               "PingFang SC", "Segoe UI", sans-serif;
+  font-size: 10.8pt; line-height: 1.75; color: #1c1e24; margin: 0;
+}
+h1 { font-size: 19pt; line-height: 1.4; color: #0c52a0; margin: 0 0 10px 0;
+     padding-bottom: 8px; border-bottom: 3px solid #0c52a0; }
+h2 { font-size: 14.5pt; color: #0c52a0; margin: 22px 0 8px 0; padding-left: 9px;
+     border-left: 5px solid #0c52a0; page-break-after: avoid; }
+h3 { font-size: 12.4pt; color: #123c68; margin: 16px 0 6px 0; page-break-after: avoid; }
+h4 { font-size: 11.2pt; color: #123c68; margin: 13px 0 5px 0; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul, ol { margin: 7px 0 7px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+li > ul, li > ol { margin: 4px 0; }
+strong { color: #101418; }
+em { color: #2a2f38; }
+code {
+  font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+  font-size: 0.92em; background: #f2f5f9; border: 1px solid #e2e8f0;
+  border-radius: 3px; padding: 0 3px; color: #123c68;
+}
+pre { background: #f6f8fb; border: 1px solid #dde4ee; border-radius: 6px;
+      padding: 9px 11px; overflow-wrap: break-word; white-space: pre-wrap;
+      page-break-inside: avoid; }
+pre code { background: none; border: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.8pt;
+        page-break-inside: avoid; }
+th, td { border: 1px solid #cfd8e3; padding: 5px 8px; text-align: left;
+         vertical-align: top; }
+th { background: #eaf1fa; color: #0c52a0; }
+blockquote { margin: 10px 0; padding: 8px 13px; background: #f4f8fd;
+             border-left: 4px solid #7ba7d4; color: #333a45; }
+blockquote p { margin: 4px 0; }
+hr { border: none; border-top: 1px solid #d8dee7; margin: 16px 0; }
+a { color: #0c52a0; text-decoration: none; }
+img { max-width: 100%; }
+.toc { background: #f7fafd; border: 1px solid #dde4ee; border-radius: 6px;
+       padding: 8px 16px 10px 16px; margin: 14px 0 18px 0; font-size: 10pt;
+       page-break-inside: avoid; }
+.toc-title { font-weight: 700; color: #0c52a0; margin: 6px 0 2px 0; }
+.toc ul { list-style: none; padding-left: 14px; margin: 2px 0; }
+.toc > ul { padding-left: 0; }
+.toc li { margin: 2px 0; }
+
+</style></head>
+<body>
+<h1 id="a1-3">电工学实验 A1 · 实验3「交流电路实验」预习解答</h1>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>时间地点</strong></td>
+<td>2026-10-20（周二）15:30–17:45，综合一号教学楼 <strong>117</strong>，2502 班全体</td>
+</tr>
+<tr>
+<td><strong>实验内容</strong></td>
+<td>AC Circuit Experiment（纸质册 p01 清单第 3 项），<code>Operation Full Marks</code> = <strong>5 分</strong></td>
+</tr>
+<tr>
+<td><strong>教材依据</strong></td>
+<td>刘凤春、王林主编《电工学实验教程》第 2 版，<strong>§2.3 交流电路实验，书 p.34–39</strong>（书页 = PDF 页 − 13，即 <strong>PDF p.47–52</strong>）；仪器用法另见 <strong>§8.4 功率表</strong>，书 p.309–310 = PDF p.322–323</td>
+</tr>
+<tr>
+<td><strong>本文用途</strong></td>
+<td>预习报告底稿 + 现场记录与计算手册。凡要写进英文报告的内容，均给出中英双语</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_1">一、明天到底做什么</h2>
+<p>本次实验是<strong>交流电路入门实验</strong>（教材原话），它把直流实验里"电压电流都是实数、可以直接加减"的习惯彻底反转过来。三块内容：</p>
+<table>
+<thead>
+<tr>
+<th>序</th>
+<th>内容</th>
+<th>教材位置</th>
+<th>你要交的东西</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td><strong>三表法测元件等效参数</strong>：分别测白炽灯 R、电感线圈 L、电容器 C，以及 L 与 C 串联，各测 U、I、P，再算 |Z|、cos φ、L、C</td>
+<td>§2.3.4，p.37</td>
+<td><strong>表 2.3.3</strong></td>
+</tr>
+<tr>
+<td>②</td>
+<td><strong>荧光灯电路</strong>：接线点亮荧光灯，测 U、U_R、U_L、I、P，测启辉值，做启辉器作用实验</td>
+<td>§2.3.5，p.38–39</td>
+<td><strong>表 2.3.4</strong> + 启辉值</td>
+</tr>
+<tr>
+<td>③</td>
+<td><strong>并联电容提高功率因数</strong>：从 1.0 μF 到 5.7 μF 逐档加电容，观察总电流先减后增</td>
+<td>§2.3.5 第 4 条，p.39</td>
+<td><strong>表 2.3.5</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话主线</strong>：先用三表法把 R、L、C 的"身份"量出来，再把它们装成一台真实的荧光灯，最后给这盏灯并联电容，亲手看见"总电流先变小、再变大"这件事。</p>
+<h3 id="11-231">1.1 仪器清单（表 2.3.1 双语）</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>型号或规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电源控制屏 Power control panel</td>
+<td>0~380 V，可调交流电压输出，带过流保护、短路保护</td>
+</tr>
+<tr>
+<td>交流电压表 AC voltmeter</td>
+<td>0~450 V</td>
+</tr>
+<tr>
+<td>交流电流表 AC ammeter</td>
+<td>0~5 A</td>
+</tr>
+<tr>
+<td>功率 / 功率因数表 Wattmeter / power-factor meter</td>
+<td>0~450 V、0~5 A</td>
+</tr>
+<tr>
+<td>电容器 Capacitor</td>
+<td>1 μF/450 V、2.2 μF/450 V、4.7 μF/450 V 等</td>
+</tr>
+<tr>
+<td>荧光灯管 Fluorescent tube</td>
+<td>40 W</td>
+</tr>
+<tr>
+<td>镇流器、启辉器 Ballast, starter</td>
+<td>与 40 W 荧光灯配合使用</td>
+</tr>
+<tr>
+<td>白炽灯 Incandescent lamp</td>
+<td>220 V、15 W，若干</td>
+</tr>
+<tr>
+<td>实验电箱 Experiment box</td>
+<td>提供电流插孔、开关等元件</td>
+</tr>
+<tr>
+<td>连接电路用导线 Leads</td>
+<td>若干</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意：本次是<strong>强电</strong>实验，电源是 <strong>220 V 交流</strong>。安全规则里 50 V 以上即属危险电压，本实验全程在危险电压下操作。</p>
+</blockquote>
+<hr />
+<h2 id="_2">二、动手前先补三个要点（新知识，先讲透再用）</h2>
+<h3 id="21">2.1 有效值不能代数相加：要按相量相加</h3>
+<p>仪表读出来的 U 和 I 都是<strong>有效值</strong>，而交流电路里各电压、电流的相位不同，所以教材明确写：这些值<strong>不能进行简单的代数和</strong>。</p>
+<p>正确写法是相量形式的基本定律：</p>
+<p>Σ U̇ = 0</p>
+<p>Σ İ = 0</p>
+<p>一个最直观的检验：荧光灯电路中灯管电压 U_R 约 100 V、镇流器电压 U_L 约 190 V，两者之和接近 290 V，可电源只有 220 V。这不是测量错了，而是两个电压相位差接近 90°，只能按直角三角形合成：</p>
+<p>U² = U_R² + U_L²</p>
+<p>代入 220 V 与 103 V 验算，可得 U_L ≈ 194 V，而算术和 103 + 194 = 297 V 远大于 220 V。<strong>"和大于总"就是相位不同的证据</strong>，这也正是后面讨论与第 6 题要用的材料。</p>
+<h3 id="22">2.2 三表法：一块表变出四个量</h3>
+<p>在正弦交流电路中，只要用<strong>交流电压表、交流电流表、功率表</strong>分别测出负载两端的 U、流过负载的 I 和有功功率 P，就能把整个负载模型算出来。这就是教材 §2.3.3 第 2 条的"三表法"。</p>
+<p>|Z| = U / I</p>
+<p>cos φ = P / (U I)</p>
+<p>Z = R + jX = |Z| cos φ + j |Z| sin φ</p>
+<p>R = P / I² = |Z| cos φ</p>
+<p>φ &gt; 0（感性）时  L = |Z| sin φ / ω</p>
+<p>φ &lt; 0（容性）时  C = 1 / (ω |Z| sin φ)</p>
+<p>其中 ω = 2πf，我国工频 f = 50 Hz，所以</p>
+<p>ω = 2π × 50 ≈ 314.16 rad/s</p>
+<p>四条使用说明，每一条都会在明天真的用上：</p>
+<ol>
+<li>
+<p><strong>cos φ 的符号靠 P 的正负和负载性质判断</strong>。功率表读数 P 为正、且电流滞后电压，就是感性；纯电容的 P ≈ 0。</p>
+</li>
+<li>
+<p><strong>R = P/I² 与 R = |Z|cos φ 是同一个式子的两种算法</strong>，现场算完互相校验一遍，能立刻发现抄错数。</p>
+</li>
+<li>
+<p><strong>电感线圈不是纯电感</strong>。40 W 荧光灯镇流器是有铁心的线圈，本身带电阻，所以它的 |Z| 里既有 ωL 也有 R；这就是表 2.3.3 里"电感线圈 L"那一行同时要算 R 与 L 的原因。</p>
+</li>
+<li>
+<p><strong>理想电容不消耗有功</strong>，所以电容器那一行 P 应该接近 0，cos φ 接近 0。如果 P 明显不为 0，先怀疑仪表量程或接线，而不是怀疑电容。</p>
+</li>
+</ol>
+<h3 id="23">2.3 并联电容提高功率因数：为什么有效，为什么不是越大越好</h3>
+<p>这是本次实验最有"工程味"的一块，也是预习问题里最容易被问倒的地方。</p>
+<p><strong>为什么需要提高功率因数。</strong> 负载消耗的有功 P 是一定要送的，但电源和线路要按视在功率 S 供电：</p>
+<p>S = P / cos φ</p>
+<p>cos φ 越小，同样的 P 就要更大的 S，也就意味着更大的线路电流：</p>
+<p>I = S / U = P / (U cos φ)</p>
+<p>线路和变压器上的损耗按 I²R 走，所以 cos φ 低会直接烧在电费与设备容量上。荧光灯这类感性负载的 cos φ 通常只有 0.4~0.5，是最典型的补偿对象。</p>
+<p><strong>为什么并联电容有效。</strong> 电感性负载的电流滞后电压一个 φ 角；电容电流超前电压 90°。两者并联后，电容提供的<strong>超前无功</strong>正好抵消掉负载需要的<strong>滞后无功</strong>，电源只需再补剩下的部分：</p>
+<p>Q_net = Q_L − Q_C，其中 Q_C = U² / X_C = ω C U²</p>
+<p>无功互补之后，有功 P 一点没变，视在功率 S 变小，总电流自然变小。</p>
+<p><strong>为什么不用串联电容。</strong> 串联电容会改变负载两端电压：感性负载的感抗被容抗抵消后总阻抗下降，负载电压升高，荧光灯这类负载不能正常工作；若接近谐振还会出现过电压。并联电容则完全不改变负载自身的工作电压，负载仍旧接在 220 V 上。</p>
+<p><strong>补偿电容要多少。</strong> 把 cos φ 从 φ₁ 提到 φ₂，需要的电容为：</p>
+<p>C = P (tan φ₁ − tan φ₂) / (ω U²)</p>
+<p>要注意这个式子里的 P 是<strong>负载实际消耗的有功功率</strong>（含镇流器损耗），不是灯管的标称 40 W。</p>
+<p><strong>为什么不是越大越好。</strong> 当 Q_C 追平 Q_L 时：</p>
+<p>cos φ = 1，I_min = P / U</p>
+<p>此时总电流最小。再继续加电容就进入<strong>过补偿</strong>，Q_net 变负，电路整体呈容性，总电流反而回升，电容电流本身和线路损耗都在增加，还可能引发谐振过电压。工程上一般只补到 0.9~0.95。</p>
+<hr />
+<h2 id="232">三、教材 §2.3.2「预习要求」逐题解答</h2>
+<p>教材的预习要求分两块：<strong>1. 复习理论知识</strong>（3 问）与 <strong>2. 预习实验内容</strong>（5 问）。以下逐题给出可直接写进预习报告的中英双语答案。</p>
+<h3 id="31-3">3.1 理论知识 3 问</h3>
+<h4 id="1">问 1　在并联交流电路中，支路电流如果大于总电流，是否正确？为什么？</h4>
+<p><strong>答：正确。</strong></p>
+<p>交流并联电路里各支路电流是相量，相位互不相同，总电流等于各支路电流的<strong>相量和</strong>，不是算术和。相量相加服从三角形法则，合成相量的模完全可能小于其中某一条支路的模。</p>
+<p>最典型的情形就是电感性支路与电容器并联：电容电流超前电压 90°，感性支路电流滞后电压 φ，两者相互抵消一部分无功分量，所以<strong>总电流反而小于电感性支路的电流</strong>。这正是荧光灯电路并联补偿电容后总电流下降的原因。</p>
+<blockquote>
+<p><em>Correct.</em> In an AC parallel circuit the branch currents are phasors with different phase angles; the total current is their phasor sum, not their algebraic sum. A phasor sum can be smaller than one of its components. When an inductive branch is paralleled by a capacitor, the leading capacitive current cancels part of the lagging reactive component, so the supply current becomes smaller than the current of the inductive branch itself.</p>
+</blockquote>
+<h4 id="2">问 2　电感性负载并联电阻能否提高功率因数？这种方法是否适用？为什么？</h4>
+<p><strong>答：能把 cos φ 的数值做大，但没有真正提高功率因数，因此不适用。</strong></p>
+<p>设负载有功为 P、无功为 Q。并联电阻 R 之后，无功 Q 一点也没减少，只是多了一条消耗有功的支路：</p>
+<p>cos φ′ = (P + P_R) / √((P + P_R)² + Q²)</p>
+<p>P_R 越大，cos φ′ 越接近 1。但电源要输出的电流</p>
+<p>I′ = √((P + P_R)² + Q²) / U</p>
+<p><strong>反而变大</strong>，线路损耗随之增加，还要多消耗有功功率。</p>
+<p>提高功率因数的目的是"用更小的电流传输同样的有功功率"。并联电阻把电流做大了，方向正好相反，所以工程上不采用，只用并联电容（或同步补偿机）来补无功。</p>
+<blockquote>
+<p>It does increase the numerical value of cos φ, but not by the intended mechanism. The reactive power Q is unchanged; the parallel resistor only adds real power, so cos φ′ approaches 1 while the supply current I′ actually increases. Since power-factor correction aims at reducing the current for the same real power, this method is not used.</p>
+</blockquote>
+<h4 id="3">问 3　提高电感性负载功率因数为什么采用并联电容的方法，而不采用串联电容的方法？是否并联的电容越大越好？为什么？</h4>
+<p><strong>答：分三点。</strong></p>
+<p><strong>（1）并联不干扰负载。</strong> 并联后负载仍直接接在 220 V 电源上，端电压、电流、功率都不变，荧光灯照常工作。电容只是额外向电源提供超前无功，与负载的滞后无功相互抵消，使电源输出的总电流减小。</p>
+<p><strong>（2）串联会改变负载电压。</strong> 串联电容后总阻抗变化，负载端电压被升高或降低，负载不能正常工作；若串联容抗接近抵消感抗，还会出现谐振过电压，对设备和人身都危险。</p>
+<p><strong>（3）不是越大越好。</strong> 当 Q_C = Q_L 时 cos φ = 1、总电流最小；继续增大电容即<strong>过补偿</strong>，电路转为容性，无功方向反转，总电流重新上升，电容电流增大、线路损耗增加，严重时引发谐振过电压。工程习惯补到 0.9~0.95 就停。</p>
+<blockquote>
+<p>(1) A parallel capacitor leaves the load untouched: the load still runs at the supply voltage with unchanged current and power, and the capacitor only supplies leading reactive current that cancels part of the load's lagging reactive current. (2) A series capacitor changes the voltage across the load and may cause resonance overvoltage. (3) Bigger is not better: at Q_C = Q_L, cos φ = 1 and the current is minimum; beyond that the circuit becomes capacitive, the current rises again, and overcompensation with possible resonance overvoltage does harm.</p>
+</blockquote>
+<h3 id="32-5">3.2 实验内容 5 问</h3>
+<h4 id="4">问 4　简述实验中用功率表测量有功功率时减小测量误差的方法。</h4>
+<p><strong>答：五条。</strong></p>
+<p><strong>① 按被测电流、被测电压选量程，不要按功率大小选。</strong> 教材 §8.4.2 明确：电流量程要略大于被测电流，电压量程要略高于被测电压。同时要让指针尽量落在满量程的 1/2 以上，读数才准。</p>
+<p><strong>② 遵守"发电机端"规则。</strong> 电流线圈和电压线圈的 <code>*</code>（或 <code>+</code>）端必须连到同一极性上（都接电源侧），否则转矩反向，指针反偏甚至被打弯。教材 §8.4.2 与图 8.4.3 给出标准接法。</p>
+<p><strong>③ 接法上选"电压线圈外接法"（教材 §2.3.5 的规定）。</strong> 功率表自身有两种损耗：电流线圈的 I²R_W 与电压线圈的 U²/R_V。本节 U = 220 V 很大、I ≈ 0.4 A 较小，<strong>电压线圈损耗占绝对主导</strong>，所以把电压线圈按图 8.4.3 外接到"电流线圈 + 负载"的外端，让电压线圈的损耗不进入读数，误差最小。</p>
+<p><strong>④ 读数按量程换算。</strong> 功率表通常有两个电流量程、两个以上电压量程，实际功率 = 分格数 × 每格瓦数；换了量程，每格瓦数也要跟着换。教材 §8.4.2 要求注意"量程和实际读数的换算关系"。</p>
+<p><strong>⑤ 三块表分别接入电路测量。</strong> 教材 §2.3.4 注意事项第 3 条：交流电压表、交流电流表和功率表应分别接入电路中，以减小测量误差——同时串在一起会让表内损耗互相叠加。</p>
+<blockquote>
+<p>补充：功率表本身消耗功率较大，这是教材点明的固有误差来源。若接线正确而指针反偏，说明负载端实际上在向外输出功率，应换接电流线圈的接头使指针正转。</p>
+</blockquote>
+<h4 id="5">问 5　了解荧光灯的工作原理，说明镇流器和启辉器的作用。</h4>
+<p><strong>答：按教材 §2.3.3 第 4 条的过程复述。</strong></p>
+<p>荧光灯由<strong>灯管、镇流器、启辉器</strong>三部分组成。灯管是内壁涂荧光物质的细长玻璃管，两端有灯丝电极，管内充稀薄的惰性气体与水银蒸气，灯丝上涂有受热易发射电子的氧化物。镇流器是带铁心的电感线圈。启辉器由一个小辉光管和一个小容量电容组成，装在一只圆柱形玻璃外壳内。</p>
+<p><strong>启辉过程</strong>（图 2.3.1）：</p>
+<ol>
+<li>
+<p>接通电源时灯管未点亮，电源电压全部加在启辉器的辉光管两个电极之间，辉光管产生辉光放电；</p>
+</li>
+<li>
+<p>放电产生的热量使 U 形双金属电极受热趋于伸直，两电极（动触片与静触片）接触；</p>
+</li>
+<li>
+<p>触片接触后，灯丝经此电极与镇流器、电源构成回路，灯丝通过<strong>启动电流（预热电流）</strong>而发热，氧化物发射电子；同时辉光管两极间电压为零，辉光放电停止；</p>
+</li>
+<li>
+<p>双金属片温度下降而复原，两电极<strong>突然断开</strong>，回路电流被切断，于是<strong>镇流器两端产生一个比电源电压高得多的感应电压</strong>；</p>
+</li>
+<li>
+<p>这个感应电压连同电源电压一起加在灯管两端，管内惰性气体电离产生弧光放电，管温升高后水银蒸气游离并猛烈碰撞惰性气体分子而放电，辐射出不可见的紫外线，紫外线激发灯管内壁荧光粉发出可见光——<strong>荧光灯被点亮</strong>。</p>
+</li>
+</ol>
+<p><strong>点亮之后</strong>：灯管两端电压较低，启辉器两端电压不足以再辉光放电，启辉器不再起作用；此时<strong>镇流器起到降低荧光灯管端电压、限制其电流的作用</strong>，成为灯管的限流元件。</p>
+<p><strong>两个元件的作用，一句话概括：</strong></p>
+<table>
+<thead>
+<tr>
+<th>元件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>启辉器 Starter</strong></td>
+<td>自动"接通—断开"：先让灯丝预热，再突然断开以让镇流器产生高压脉冲点燃灯管；点亮后自动退出工作</td>
+</tr>
+<tr>
+<td><strong>镇流器 Ballast</strong></td>
+<td>断开瞬间产生高压脉冲帮助起辉；点亮后作为串联电感限流、降压，使灯管工作在额定电流附近</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The starter makes and breaks the preheat circuit: it preheats the electrodes and then opens abruptly so the ballast can generate a high-voltage pulse that strikes the arc. The ballast (an iron-core inductor) produces that pulse at the moment of opening and, once the lamp is lit, limits and drops the lamp current and voltage.</p>
+</blockquote>
+<h4 id="6">问 6　日常生活中的照明线路的开关应如何连接？为什么？试画图说明。</h4>
+<p><strong>答：开关必须串接在相线（火线）上，绝不能接在零线（中性线）上。</strong></p>
+<p><strong>原因</strong>：开关接在相线上，断开后灯具与相线脱离，灯具对地不带电，换灯泡、检修时人碰到也没事。若开关接在零线上，断开后灯具仍然与相线连通，只是回路在零线处断开；人一碰灯具就通过人体接地形成通路，实际等于<strong>没有断电</strong>，这是很典型的触电事故原因。</p>
+<p><strong>画图（用铅笔、直尺，标注 L / N / S / 灯）：</strong></p>
+<pre><code>正确接法                             错误接法
+L ──[ S ]──( 灯 )── N              L ──( 灯 )──[ S ]── N
+相线上先断，灯不带电                  开关在零线，断开后灯仍带电
+</code></pre>
+<p>英文报告写法：</p>
+<blockquote>
+<p><em>The switch must be connected in series with the live (phase) conductor, never in the neutral conductor. With the switch in the live line, opening it isolates the luminaire from the live side, so the luminaire is dead and safe to touch. If the switch were placed in the neutral line, the luminaire would remain connected to the live conductor after switching off, and touching it would complete a path to earth through the body — a classic electric-shock hazard.</em></p>
+</blockquote>
+<h4 id="7-__-_-___">问 7　选择题：在荧光灯电路中并联电容之后，随着电容的增加，电路的总电流逐渐减小到最小值，此时电路处于 <strong><em>_</em>_ 性负载电路；当电容超过一定值之后，电路的总电流 </strong><strong><em>_，这时电路变成 </em></strong>___ 性负载电路。</h4>
+<p><strong>答：电阻；上升；电容。</strong></p>
+<p>即选 <strong>(a. 电阻)</strong>、<strong>(a. 上升)</strong>、<strong>(c. 电容)</strong>。</p>
+<p><strong>理由</strong>：并联电容的过程就是逐步抵消负载滞后无功的过程。当 Q_C = Q_L 时无功全部补偿掉，电路只剩有功，呈<strong>电阻性</strong>，总电流降到最小 I_min = P/U。电容继续增大则 Q_C &gt; Q_L，无功反向多出来，电路整体变<strong>容性</strong>，总电流重新上升。</p>
+<blockquote>
+<p>When the parallel capacitance is increased, the total current decreases to a minimum where the reactive power is fully compensated; the circuit then behaves as a <strong>resistive</strong> load. Beyond that point the circuit becomes <strong>capacitive</strong> and the total current <strong>rises</strong> again.</p>
+</blockquote>
+<h4 id="8">问 8　用相量图说明为什么在负载两端并联小电容可以判别负载的性质。</h4>
+<p><strong>答：以电压 U̇ 为参考相量。</strong></p>
+<p>负载电流 İ_L 与电压的夹角是 ±φ；电容电流 İ_C 严格超前 U̇ 90°，模长 I_C = ωCU。并联后总电流</p>
+<p>İ = İ_L + İ_C</p>
+<p>关键在于 <strong>İ_C 与 U̇ 垂直</strong>，所以它对合成相量模长的影响方向取决于 İ_L 落在 U̇ 的哪一侧：</p>
+<ul>
+<li>
+<p>若负载是<strong>感性</strong>的，İ_L 落在 U̇ 的右下方（滞后）。加上一个指向"更逆时针"的 İ_C 后，合成相量被拉向 U̇ 方向，<strong>模变小 → 总电流减小</strong>。</p>
+</li>
+<li>
+<p>若负载是<strong>容性</strong>的，İ_L 已经落在 U̇ 的右上方（超前）。İ_C 与它同侧，合成相量被推得更远，<strong>模变大 → 总电流增加</strong>。</p>
+</li>
+</ul>
+<p>于是判据成立：<strong>并小电容后电流减小 → 感性；电流增加 → 容性。</strong></p>
+<p><strong>串联电容的对应判据</strong>（教材 §2.3.3 第 3 条）：串入适当电容后，感性负载的感抗被容抗抵消，总阻抗变小、电流变大，负载端电压<strong>上升</strong>；容性负载则容抗叠加、总阻抗变大，负载端电压<strong>下降</strong>。所以</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>现象</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>并联小电容</td>
+<td>总电流减小</td>
+<td>感性负载</td>
+</tr>
+<tr>
+<td>并联小电容</td>
+<td>总电流增加</td>
+<td>容性负载</td>
+</tr>
+<tr>
+<td>串联小电容</td>
+<td>负载端电压下降</td>
+<td>容性负载</td>
+</tr>
+<tr>
+<td>串联小电容</td>
+<td>负载端电压上升</td>
+<td>感性负载</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>With the voltage taken as the reference phasor, the capacitive current İ_C leads U̇ by exactly 90°. Adding it to İ_L brings the resultant closer to U̇ when the load is inductive (the current drops) and pushes it further away when the load is capacitive (the current rises). Hence the sign of the current change identifies the nature of the load.</p>
+</blockquote>
+<hr />
+<h2 id="_3">四、电路图与记录表（现场照抄）</h2>
+<h3 id="41-232">4.1 图 2.3.2 测量元件等效参数电路</h3>
+<p>接线顺序（单相自耦调压器输出 → 被测元件 Z_L）：</p>
+<ol>
+<li>
+<p>调压器输出端接功率表电流线圈的 <code>*</code> 端，电流线圈另一端接被测元件一端；</p>
+</li>
+<li>
+<p>电压表并联在被测元件两端；</p>
+</li>
+<li>
+<p>电流表串在被测支路中；</p>
+</li>
+<li>
+<p>功率表电压线圈按 <code>*</code> 端规则外接（P 测量待外接法）；</p>
+</li>
+<li>
+<p>被测元件另一端回到调压器另一端。</p>
+</li>
+</ol>
+<p>三个要点：</p>
+<ul>
+<li>
+<p>调压器输出 0~250 V 连续可调，<strong>实验前必须先把调压器调到 0 V 再接通电源</strong>；实验完毕也必须先调回 0 V 位置。</p>
+</li>
+<li>
+<p>教材规定实验条件：<strong>R 与 C 两端电压取 200 V；L 中电流小于 0.4 A</strong>。L 的电流上限是保护镇流器（40 W 灯管额定工作电流就在 0.4 A 量级），不要为了凑数字往上加。</p>
+</li>
+<li>
+<p>操作原则：<strong>先接线，后通电；先断电，后拆线。</strong> 每次改接线路前必须先断开电源。</p>
+</li>
+</ul>
+<h3 id="42-233">4.2 图 2.3.3 荧光灯实验电路</h3>
+<p>元件对应关系：<strong>R = 荧光灯管，L = 镇流器，S = 启辉器，C = 无功补偿电容器，S₁ = 主开关，S₂/S₃/S₄ = 各档电容投切开关</strong>。</p>
+<p>要点：</p>
+<ul>
+<li>
+<p>三相调压器经"过流保护"模块引出 U、V、W、N，荧光灯电路跨接在 U 与 N 之间取 220 V；</p>
+</li>
+<li>
+<p>总电流 I 的测量点在 L 之前，电容电流 i_C 在电容支路里，灯管支路电流 i_L 从 L 流出；</p>
+</li>
+<li>
+<p><strong>荧光灯起辉之前，切勿把仪表接入电路</strong>，以免起辉瞬间电压冲击损坏仪表（教材注意 1）；</p>
+</li>
+<li>
+<p>点不亮时先旋转/检查启辉器及其接触是否良好（教材注意 3）。</p>
+</li>
+</ul>
+<h3 id="43-233">4.3 表 2.3.3 交流参数测定数据表</h3>
+<table>
+<thead>
+<tr>
+<th>被测元件</th>
+<th>测量值 U/V</th>
+<th>测量值 I/A</th>
+<th>测量值 P/W</th>
+<th>计算值 |Z|/Ω</th>
+<th>计算值 cos φ</th>
+<th>计算值 L/mH</th>
+<th>计算值 C/μF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白炽灯 R</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>电感线圈 L</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>电容器 C</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>L 和 C 串联</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>英文表头：<em>Measured: U/V, I/A, P/W; Calculated: |Z|/Ω, cos φ, L/mH, C/μF</em></p>
+<h3 id="44-234">4.4 表 2.3.4 荧光灯电路实验数据记录表</h3>
+<table>
+<thead>
+<tr>
+<th>电源电压</th>
+<th>U/V</th>
+<th>U_R/V</th>
+<th>U_L/V</th>
+<th>I/A</th>
+<th>P_LR/W</th>
+<th>P_L/W</th>
+<th>P_R/W</th>
+<th>cos φ 测量值</th>
+<th>cos φ 计算值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>220 V</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>cos φ <strong>测量值</strong> = 功率因数表直接读数；cos φ <strong>计算值</strong> = P_LR /(U·I)。</p>
+</li>
+<li>
+<p>P_LR 是灯管与镇流器的总有功；P_L、P_R 分别是镇流器与灯管的有功（若表只能测总功率，按实际能测的填，并在讨论里说明）。</p>
+</li>
+</ul>
+<h3 id="45-235">4.5 表 2.3.5 荧光灯电路功率因数改善数据记录表</h3>
+<table>
+<thead>
+<tr>
+<th>电源电压</th>
+<th>C/μF</th>
+<th>U/V</th>
+<th>U_R/V</th>
+<th>I/A</th>
+<th>I_C/A</th>
+<th>I_L/A</th>
+<th>P/W</th>
+<th>P_LR/W</th>
+<th>P_C/W</th>
+<th>cos φ 测量值</th>
+<th>cos φ 计算值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>220 V</td>
+<td>1.0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>220 V</td>
+<td>2.2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>220 V</td>
+<td>3.2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>220 V</td>
+<td>4.7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>220 V</td>
+<td>5.7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>五档正是 1.0、2.2、3.2、4.7、5.7 μF——这组数字会在下面的预演里把 cos φ = 0.9 与最小电流两个位置<strong>都夹住</strong>，所以每一档都要认真读。</p>
+</blockquote>
+<hr />
+<h2 id="_4">五、理论预演：用一组好算的数字把整套计算走一遍</h2>
+<p>下面的示例数字是为了<strong>算式好算</strong>而设计的（学习者偏好），现场测到的数会不一样，但公式与步骤完全一致。<strong>报告里必须用你实测的数重算一遍，不能抄这里的数。</strong></p>
+<h3 id="51-r-r-200-v">5.1 白炽灯 R（教材要求 R 两端取 200 V）</h3>
+<p>15 W / 220 V 白炽灯的额定电阻</p>
+<p>R ≈ U_额² / P_额 = 220² / 15 ≈ 3.23 kΩ</p>
+<p>接到 200 V 上：</p>
+<p>I = U / R = 200 / 3226.7 ≈ 62 mA</p>
+<p>P = U I ≈ 200 × 0.062 ≈ 12.4 W</p>
+<p>于是 |Z| ≈ 3.23 kΩ，cos φ ≈ 1.0，白炽灯是<strong>纯电阻性负载</strong>。</p>
+<blockquote>
+<p>提醒：钨丝电阻随温度升高而增大，所以<strong>冷态用万用表量出的电阻会明显小于工作时的等效电阻</strong>，这不是测错。报告里两个数都写清楚，正好是一个很好的讨论点。</p>
+</blockquote>
+<h3 id="52-l-u-2000-vi-0400-ap-480-w">5.2 电感线圈 L（假设测到 U = 200.0 V、I = 0.400 A、P = 48.0 W）</h3>
+<p>|Z| = U / I = 200.0 / 0.400 = 500.0 Ω</p>
+<p>cos φ = P / (U I) = 48.0 / (200.0 × 0.400) = 0.600</p>
+<p>R = P / I² = 48.0 / 0.160 = 300.0 Ω，校验 |Z|cos φ = 500.0 × 0.600 = 300.0 Ω ✓</p>
+<p>sin φ = √(1 − 0.600²) = 0.800</p>
+<p>ωL = |Z| sin φ = 500.0 × 0.800 = 400.0 Ω</p>
+<p>L = 400.0 / 314.16 ≈ 1.273 H ≈ <strong>1273 mH</strong></p>
+<h3 id="53-c-47-f-200-v50-hz">5.3 电容器 C（取 4.7 μF，在 200 V、50 Hz 下）</h3>
+<p>X_C = 1 / (ω C) = 1 / (314.16 × 4.7×10⁻⁶) ≈ 677.3 Ω</p>
+<p>I = U / X_C = 200 / 677.3 ≈ 0.295 A ≈ 295 mA</p>
+<p>P ≈ 0（理想电容不消耗有功），cos φ ≈ 0</p>
+<p>反算校验：</p>
+<p>C = 1 / (ω |Z| sin φ) = 1 / (314.16 × 677.3) ≈ 4.70 μF ✓</p>
+<h3 id="54-l-c-52-53">5.4 L 与 C 串联（把 5.2 与 5.3 的元件串起来）</h3>
+<p>Z = R + j(ωL − 1/(ωC)) = 300.0 + j(400.0 − 677.3) = 300.0 − j277.3 Ω</p>
+<p>|Z| = √(300.0² + 277.3²) ≈ 408.5 Ω</p>
+<p>φ = arctan(−277.3 / 300.0) ≈ −42.7°，即<strong>容性</strong></p>
+<p>在 200 V 下：</p>
+<p>I = 200 / 408.5 ≈ 0.490 A</p>
+<p>cos φ = 300.0 / 408.5 ≈ 0.734</p>
+<blockquote>
+<p>这一步是表 2.3.3 最后一行存在的意义：单看 L 或 C 都是"感性/容性"，串起来之后<strong>谁的抗大谁说话</strong>，结果由 ωL 与 1/(ωC) 的大小关系决定，不由元件名字决定。</p>
+</blockquote>
+<h3 id="55-u-220-vi-0409-ap-45-w">5.5 荧光灯功率因数补偿（假设测到 U = 220 V、I = 0.409 A、P = 45 W）</h3>
+<p>补偿前：</p>
+<p>cos φ₁ = P / (U I) = 45 / (220 × 0.409) ≈ 0.50</p>
+<p>要把 cos φ 提到 0.90。查得 tan φ₁ = tan 60° ≈ 1.732，tan φ₂ = tan 25.84° ≈ 0.484，于是所需电容</p>
+<p>C = P (tan φ₁ − tan φ₂) / (ω U²)</p>
+<p>C ≈ 45 × (1.732 − 0.484) / (314.16 × 220²) ≈ 3.69×10⁻⁶ F ≈ <strong>3.7 μF</strong></p>
+<p>手边档位只有 1.0、2.2、3.2、4.7、5.7 μF，所以 <strong>3.2 与 4.7 分别在 0.9 的两侧</strong>，两档都要认真测，报告里说明哪一档更接近 0.9、差多少。</p>
+<p>全补偿点（Q_C = Q_L）对应的电容：</p>
+<p>Q_L = P tan φ₁ = 45 × 1.732 ≈ 77.9 var</p>
+<p>C_全补偿 = Q_L / (ω U²) = 77.9 / (314.16 × 220²) ≈ 5.13 μF</p>
+<p>也就是说 <strong>5.7 μF 那一档已经越过全补偿点进入过补偿</strong>，总电流会比 4.7 μF 那档略大、cos φ 略低。</p>
+<p><strong>按这组假设值算出的五档对照表</strong>（现场用来对照趋势，真实数字以你测到的 P 与 cos φ₁ 重算）：</p>
+<table>
+<thead>
+<tr>
+<th>C/μF</th>
+<th>I_C/A</th>
+<th>I/A</th>
+<th>cos φ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>0.069</td>
+<td>0.351</td>
+<td>0.58</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>0.152</td>
+<td>0.288</td>
+<td>0.71</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>0.221</td>
+<td>0.244</td>
+<td>0.84</td>
+</tr>
+<tr>
+<td>4.7</td>
+<td>0.325</td>
+<td>0.207</td>
+<td>0.99</td>
+</tr>
+<tr>
+<td>5.7</td>
+<td>0.394</td>
+<td>0.208</td>
+<td>0.98</td>
+</tr>
+</tbody>
+</table>
+<p>这张表读出来的三件事，正是表 2.3.5 要你总结的结论：</p>
+<ol>
+<li>
+<p><strong>I_C 随 C 单调增大</strong>，且 I_C = ωCU 是可直接算出来的；</p>
+</li>
+<li>
+<p><strong>总电流 I 先减后增</strong>，最小值落在 4.7 μF 附近（理论全补偿点 5.13 μF）；</p>
+</li>
+<li>
+<p><strong>cos φ 先升后降</strong>，4.7 μF 处达到 0.99，5.7 μF 处已回落。</p>
+</li>
+</ol>
+<h3 id="56">5.6 误差判断的常识线（现场用）</h3>
+<table>
+<thead>
+<tr>
+<th>物理量</th>
+<th>现场大致范围</th>
+<th>出现这些数就要先查接线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白炽灯 U、电容量 U</td>
+<td>教材规定取 200 V</td>
+<td>调压器没升到位 / 电压表并在电流线圈外侧</td>
+</tr>
+<tr>
+<td>白炽灯 I</td>
+<td>约 60 mA 量级</td>
+<td>读成几百 mA → 量程选错或并联了别的支路</td>
+</tr>
+<tr>
+<td>电感线圈 I</td>
+<td>教材规定 &lt; 0.4 A</td>
+<td>超过 0.4 A 立即降压，镇流器会过热</td>
+</tr>
+<tr>
+<td>电容器 P</td>
+<td>接近 0</td>
+<td>明显几十瓦 → 功率表电压线圈接错或读错量程</td>
+</tr>
+<tr>
+<td>荧光灯 cos φ</td>
+<td>未补偿时约 0.4~0.5</td>
+<td>读到 0.9 以上 → 电容开关没断开</td>
+</tr>
+<tr>
+<td>灯管与镇流器电压</td>
+<td>U_R + U_L 明显大于 220 V</td>
+<td>两者加起来正好 220 V → 有一路根本没接进电路</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="236">六、报告 §2.3.6 六问（题目双语 + 答题要点）</h2>
+<p>教材原话：<strong>凡计算题都要写出公式并代入数值。</strong></p>
+<p><strong>1) 根据 §2.3.4 的实验数据，计算电路的等效参数，计算结果填入表 2.3.3。</strong>
+→ 用第二章 2.2 节的四组公式，逐行算 |Z|、cos φ、R，再按 φ 符号决定算 L 还是 C。每组算完用 R = P/I² 与 R = |Z|cos φ 互校。</p>
+<p><em>Calculate the equivalent parameters from the data of §2.3.4 and fill them into Table 2.3.3.</em></p>
+<p><strong>2) 根据表 2.3.4 的实验数据，计算荧光灯的功率因数。</strong>
+→ cos φ = P_LR /(U·I)。算完与功率表的直接读数对比，差值就是两台表引入的误差。</p>
+<p><em>Calculate the power factor of the fluorescent lamp circuit from Table 2.3.4.</em></p>
+<p><strong>3) 完成表 2.3.5 中功率因数的计算，并根据表 2.3.5 的实验数据，总结在荧光灯电路中，随着电容值的改变，哪些物理量应随之改变？如何变化？哪些物理量应不变？</strong></p>
+<p>→ <strong>应变的</strong>：I_C（随 C 线性增大）、I（先减后增）、cos φ（先升后降）、Q（先减小、过补偿后变负）。</p>
+<p>→ <strong>应不变的</strong>：U（电源仍 220 V）、P / P_LR（有功由负载本身决定，电容不消耗有功）、P_C ≈ 0、I_L（灯管—镇流器支路电流，由负载阻抗与端电压决定，不受并联电容影响）、U_R（灯管端电压）。</p>
+<p>这张"变 / 不变"表是本题的得分点：它把"并联电容只改变无功分配、不改变负载工作状态"这句话变成了证据。</p>
+<p><strong>4) 用实验数据举例说明改善功率因数的意义，说明补偿电容的容值与电路等效功率因数的关系。</strong></p>
+<p>→ 意义：P 不变时 cos φ 越大，S = P/cos φ 越小，I = P/(U cos φ) 越小，线路与变压器损耗 I²R 下降，设备容量利用率提高。用补偿前后实测的 I 之差直接算一次"电流减少了百分之多少"，最有说服力。</p>
+<p>→ 关系：cos φ 随 C 单调上升至 1（全补偿点 C = Q_L/(ωU²)），随后转为下降；所以存在一个<strong>最优电容值</strong>，不是越大越好。</p>
+<p><strong>5) 在日常生活中，如果缺少启辉器，在确保安全的前提下，通常采用什么办法将荧光灯点亮？</strong></p>
+<p>→ 用一段<strong>绝缘导线</strong>瞬间短接启辉器座的两个接线柱，随即迅速移开（或用绝缘柄螺丝刀的金属杆碰一下再离开）。这等于人工完成启辉器"先接通、再突然断开"的动作，镇流器在断电瞬间产生高压脉冲把灯管点亮。</p>
+<p>⚠ 这一步是<strong>带电操作</strong>，必须在确保安全的前提下进行；实验中由老师演示，不要自己上手模仿。</p>
+<p><strong>6) 用实验数据验证电压、电流的相量关系。</strong></p>
+<p>→ 取表 2.3.4 的 U、U_R、U_L：若把灯管近似视为纯电阻、镇流器近似视为纯电感，三者应满足</p>
+<p>U² ≈ U_R² + U_L²</p>
+<p>算完比较一下 U 与 U_R + U_L 的差距，并把 |U − √(U_R² + U_L²)| 作为合成误差列出来。差距越大越说明"有效值不能代数相加"。</p>
+<p>→ 电流侧同理：I ≠ I_L + I_C，而应满足</p>
+<p>I² ≈ (I_L cos φ_L)² + (I_L sin φ_L − I_C)²</p>
+<p>这一条正好把表 2.3.5 的 I、I_L、I_C 三列用起来。</p>
+<hr />
+<h2 id="_5">七、现场操作与安全速查</h2>
+<h3 id="71-p01p02">7.1 进门资格（硬规则，来自纸质册 p01–p02）</h3>
+<ul>
+<li>
+<p><strong>没有预习报告或预习报告不合格者不允许做实验。</strong></p>
+</li>
+<li>
+<p><strong>必须携带教材</strong>《电工学实验教程》第 2 版；<strong>不带教材不允许进实验室</strong>（强电实验的规范要求）。</p>
+</li>
+<li>
+<p>报告<strong>双面打印</strong>、统一提交；抄袭数据或编造数据记 <strong>0 分</strong>。</p>
+</li>
+<li>
+<p><strong>所有实验记录均需指导教师确认批改，否则无效</strong> —— 数据记完立刻找老师签字，别等下课。</p>
+</li>
+</ul>
+<h3 id="72">7.2 通电与断电的铁律</h3>
+<ol>
+<li>
+<p>接线前：调压器调到 <strong>0 V</strong>，所有电源开关断开。</p>
+</li>
+<li>
+<p>接线后：先自查（电压表并联、电流表串联、功率表 <code>*</code> 端同侧），再请同组同学复核。</p>
+</li>
+<li>
+<p>通电：先合电源，<strong>缓慢升压</strong>到设定值。</p>
+</li>
+<li>
+<p>测量：读数稳定后记录，<strong>标明单位</strong>。</p>
+</li>
+<li>
+<p>结束：<strong>先降压到 0 V，再断电源</strong>，最后拆线。</p>
+</li>
+<li>
+<p>改接任何线路之前：<strong>必须断电</strong>。</p>
+</li>
+</ol>
+<h3 id="73">7.3 本次实验的五个易错点</h3>
+<table>
+<thead>
+<tr>
+<th>易错点</th>
+<th>后果</th>
+<th>正确做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>荧光灯起辉前就把仪表接进电路</td>
+<td>起辉脉冲打坏仪表</td>
+<td>先点亮，再接表（教材注意 1）</td>
+</tr>
+<tr>
+<td>功率表 <code>*</code> 端没接同侧</td>
+<td>指针反偏、打弯</td>
+<td>电流、电压线圈的 <code>*</code> 都接电源侧</td>
+</tr>
+<tr>
+<td>把三块表串成一路同时测</td>
+<td>表内损耗叠加，误差变大</td>
+<td>三表分别接入（教材 §2.3.4 注意 3）</td>
+</tr>
+<tr>
+<td>调压器没归零就合闸</td>
+<td>送电瞬间冲击</td>
+<td>每次上电前确认 0 V</td>
+</tr>
+<tr>
+<td>用万用表冷态电阻代替工作电阻</td>
+<td>白炽灯参数对不上</td>
+<td>两个数分别记录并说明原因</td>
+</tr>
+</tbody>
+</table>
+<h3 id="74-234">7.4 启辉值测定（表 2.3.4 之外的单独要求）</h3>
+<p>闭合 S₁，灯点亮后<strong>缓慢降压</strong>直到灯熄灭，再<strong>缓慢升压</strong>直到灯刚刚重新点亮，此时电压值就是<strong>启辉值</strong>，记录下来。</p>
+<h3 id="75">7.5 启辉器作用实验（三段）</h3>
+<ol>
+<li>
+<p>灯点亮后，<strong>取下启辉器</strong>，观察灯是否仍正常工作（应能继续亮）。</p>
+</li>
+<li>
+<p>断开 S₁ 使灯熄灭，<strong>取下启辉器</strong>，重新接通电源，观察灯能否点亮（应不能）。</p>
+</li>
+<li>
+<p>用一节<strong>绝缘导线</strong>接触启辉器座的两个接线柱，接触片刻取下导线，观察灯是否再次点亮。</p>
+</li>
+</ol>
+<hr />
+<h2 id="_6">八、出门清单</h2>
+<p>☐ 教材《电工学实验教程》第 2 版（刘凤春主编）—— <strong>不带不允许进实验室</strong>
+☐ 打印好的预习报告（本文件的打印件即可）
+☐ 纸质实验册（记原始数据用）
+☐ 铅笔 + 直尺（画电路图要求铅笔直尺，不能用圆珠笔随手画）
+☐ 橡皮、签字笔
+☐ 计算器（三表法要现场算 |Z|、cos φ、L、C）
+☐ 包脚鞋（安全规则明文要求）
+☐ 15:30 前到 <strong>综合一号教学楼 117</strong>，提前 10 分钟到，留出接线时间</p>
+<hr />
+<h2 id="_7">九、待确认（不猜，等你或老师给）</h2>
+<ol>
+<li>
+<p><strong>纸质实验册"3. AC Circuit Experiment"的页面还没收到。</strong> 现有 8 张照片只到实验2（DC Circuit）的第 5 页。如果册子里另有 Preliminary Work 题目、不同的表号或额外的记录栏，请拍给我，我按册子改这份文件。</p>
+</li>
+<li>
+<p><strong>智慧树平台实验3 的中文预习题是否已发布、有无截止时间</strong> —— 需要你登录查看（实验2 时平台的作用已确认，本次未知）。</p>
+</li>
+<li>
+<p><strong>实验3 的分值构成</strong>：<code>Operation Full Marks</code> = 5 分，但 <code>Preparation</code> 单列的 5 分是否也计在本次，未确认。</p>
+</li>
+<li>
+<p><strong>报告语言</strong>：实验2 的册页是英文，实验3 大概率相同，但本次册页未见到，暂按英文准备（本文件已给双语）。</p>
+</li>
+</ol>
+<hr />
+<blockquote>
+<p>状态记录：内容依据 = 教材《电工学实验教程》第 2 版 §2.3（书 p.34–39，PDF p.47–52 逐页读图）+ §8.4.2（书 p.310，PDF p.323）；数值均已用 Python 独立计算复核。本文件属<strong>导师给出的示例解答</strong>（solution_seen），<strong>不作为学习者的独立掌握证据</strong>；功率因数补偿、荧光灯电路、三表法三者对本人属【未学】内容，明天现场实测后需另做无提示复测。</p>
+</blockquote>
+</body></html>

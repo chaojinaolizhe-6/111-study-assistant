@@ -102,6 +102,51 @@
 
 ---
 
+## 实验3（AC Circuit）—— 2026-10-20 学习者补拍 3 张
+
+> 来源：学习者 2026-10-20 补拍（此前工作区**只有** p01–p08，全是实验2 的 DC Circuit；实验3 页面确实缺失，上一版报告路线图因缺页而按实验2 骨架误推，已作废）。
+> 三张已入库，**页码未统一编号**（页脚只见一个 "9"），故按内容命名：
+> `册-实验3-01-接线与图2.3.3-表234-235.jpg`｜`册-实验3-02-启辉值与电压三角形.jpg`｜`册-实验3-03-Discussion-5问-页9.jpg`
+> 读取状态：①已登记 ✅ ②无需渲染 ✅ ③内容已阅读 3/3 ✅ ④关键句已逐条转录 ✅（直读原图 + 旋转裁切局部复核）
+
+### 实验3-01｜II. Experimental Procedure 起页 + 图 2.3.3
+
+- `II. Experimental Procedure` → `1. Wiring and Measurement of a Fluorescent-lamp Circuit`
+- `Read Section 2.3.5 of the textbook and complete the following experiment.`
+- `Draw the experimental schematic diagram.`（**学习者已手绘**：调压器 L1/L2/L3/N → 过流保护 → S₁ → 镇流器 → 灯管＋启辉器 S；电容支路带多个投切开关）
+- `Figure 2.3.3 Schematic Diagram of Fluorescent Lamp Circuit`
+- `(1) Wire the fluorescent-lamp circuit according to the schematic. **Do not turn on the power yourself!!** Check the circuit yourself first, then ask the teacher to turn on the power. Measure and record data into Table 2.3.4 and Table 2.3.5.`
+
+> ⚠ 本页两条硬规则：**①不许自己合闸，须自查后请老师合闸；②数据填表 2.3.4 与表 2.3.5**。本页**没有**表 2.3.3，也没有三表法内容。
+
+### 实验3-02｜启辉电压 + 电压三角形
+
+- `(2) Determination of the ignition voltage in fluorescent lamp circuit.`
+- `Operate as described on Page 36 of the textbook. Record the ignition voltage: ______ V.`
+- `2. Experimental Verification of Voltage-triangle Relationships`
+- `Draw your designed circuit diagram and data-recording table, and record experimental data.`
+
+> ⚠ 册上写 `Page 36`，但教材第 2 版 **p.36 是 §2.3.3 原理页**，启辉值测定步骤在 **§2.3.5 第 3 条，书 p.39 = PDF p.52** —— 页码不一致。
+> ⚠ II-2 是**设计要求**：电路图 + 数据记录表都要自己设计，不是抄教材表。
+
+### 实验3-03｜Discussion of Results（页脚标 **9**，共 **5 问**）
+
+1. `Calculate the power factor of the fluorescent lamp circuit using data from Table 2.3.4. Show your calculation process.`
+2. `Complete power-factor calculations for Table 2.3.5.`
+3. `According to data in Table 2.3.5: which physical quantities change as capacitance varies, and how do they change? Which quantities remain constant?`
+4. `…total circuit current decreases until it reaches its minimum value. At this point the circuit is ______ (resistive / inductive / capacitive). When capacitance exceeds a certain value, the total circuit current ______ (rises / falls / remains unchanged), and the circuit becomes ______ (resistive / inductive / capacitive). According to Table 2.3.5, the power factor reaches its maximum value when the compensation capacitance is ______.`
+5. `An old fluorescent-lamp circuit equipped with an inductive ballast(镇流器) and glow-starter(启辉器) is to be retrofitted into an LED lighting circuit. Answer the following questions:`
+   `(1) Does an LED lighting circuit require a ballast or a glow-starter?`
+   `(2) How should the original ballast and glow-starter be handled during retrofitting? What extra component is required?`
+
+> ⚠ **册上只有 5 问，与教材 §2.3.6 的 6 问不同**：没有"用数据验证相量关系"那一问（它变成 II-2 的独立设计实验）；第 5 问 **LED 改造教材完全没有**，只能自己作答。
+
+### 仍缺的页
+
+- **`I. Preliminary Work`（实验3 预习页）未拍到。** 实验2 的对应页是 p04（读 Section 2.1 + 画图 + 准备表格 + 答 4 问）；实验3 应有一页同构内容，直接决定预习分与"无预习报告不得做实验"的门槛。
+
+---
+
 ## 与今天（实验1）的关系
 
 - **p04–p08 属于"2. DC Circuit Experiment"＝实验2（2026-10-13，15:30–17:45，117）**，**不是今天的内容**。

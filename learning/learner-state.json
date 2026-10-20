@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-19",
+  "generated_at": "2026-10-20",
   "rule": "独立通过按**目标**判定：该目标结果正确+**明确无提示**+`needs_verify` 不为真+未见解答+非示例学习+闭卷；目标级字段（target_results[tid]）优先，缺失回退事件级；提示级别未知（null）不计独立通过；needs_verify=true 的目标**不得升级**；exposure_timing=after_attempt 的曝光不阻断。≥2 个不同日期且日期跨度 ≥2 天=延迟通过；另含 ≥1 次未见变式通过=迁移通过（**仅迁移通过计为稳定证据**）。未见变式=题目在整份日志中首次被作答（任何目标）+该版本 kind 为变式类。参数来自 learning/policy.yml，为工程初值。",
   "warnings": [
     "line 41: task_version mismatch for en-write-t2-fix-01: 1 != 2 （按 v1 历史元数据解释，成绩不与当前版本直接比较）"
   ],
   "source": {
-    "attempts_sha256": "a3917aebfa0ccee536718234018de4be54f205bd66443606e46adf40eb8f62d8",
-    "attempts_events": 51,
+    "attempts_sha256": "1388bfe3d536e51efe0e4610a05407484ae332a6e09e8822337cb5e306925463",
+    "attempts_events": 52,
     "corrections_events": 55,
-    "decision_inputs_sha256": "878870704e24dcf4f1bd0de4a11b967d095734ac30c9e4362abf7219ba7bb2d6"
+    "decision_inputs_sha256": "3469dcd063174dbf85de4d13e8980ee45b0cd2cfff88ddf51e22012178eabc61"
   },
   "summary": {
     "targets": 76,
@@ -20,7 +20,7 @@
       "迁移通过": 0
     },
     "stable_evidence": 0,
-    "open_hurdles": 2,
+    "open_hurdles": 3,
     "hurdle_bad_lines": [],
     "coverage": {
       "已安排·未作答": 17,
@@ -47,7 +47,7 @@
       "ode.sys.ivp"
     ],
     "measured_minutes_global": 7.0,
-    "estimated_minutes_global": 1268.0,
+    "estimated_minutes_global": 1308.0,
     "time_note": "measured=actual/self_reported；estimated 单独统计；未知不给值"
   },
   "targets": {
@@ -5227,7 +5227,7 @@
     "tm.t5.central-motion-types": {
       "level": "需支持",
       "stable_evidence": false,
-      "attempts": 1,
+      "attempts": 2,
       "independent_pass_dates": [],
       "delay_days": 0,
       "delay_requirement_days": 2,
@@ -5236,10 +5236,11 @@
       "version_mismatch_events": 0,
       "unknown_version_events": 0,
       "hint_dependence": {
-        "h1": 1
+        "h1": 1,
+        "h4": 1
       },
       "measured_minutes": 0.0,
-      "estimated_minutes": 15.0,
+      "estimated_minutes": 55.0,
       "needs_verify_events": 1,
       "upgrade_blocked": [
         {
@@ -5251,9 +5252,26 @@
             "待核验",
             "曝光=partial@before_attempt"
           ]
+        },
+        {
+          "event_id": "attempt-53",
+          "ts": "2026-10-19",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "提示H4",
+            "曝光=full@before_attempt"
+          ]
         }
       ],
-      "open_hurdles": [],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-4",
+          "status": "teaching",
+          "observed_at": "2026-10-19",
+          "evidence_ref": "attempt-52（tm-t5-ueff-variant-01，partial）＋ 2026-10-19 会话内口头自述"
+        }
+      ],
       "last_attempt": "2026-10-19",
       "goal": {
         "id": "tm-t5-1d-motion",
@@ -5279,15 +5297,17 @@
       "coverage": "已作答·需补练",
       "status_dimensions": {
         "assignment_done": false,
-        "concept_hurdle_resolved": true,
+        "concept_hurdle_resolved": false,
         "concept_hurdles": {
-          "open": [],
+          "open": [
+            "hurdle-4"
+          ],
           "resolved": []
         },
         "independent_performance": {
           "pass_dates": [],
           "open_book_only": [],
-          "helped_or_exposed_events": 1
+          "helped_or_exposed_events": 2
         },
         "delayed_retest": {
           "required_delay_days": 2,
@@ -5299,7 +5319,7 @@
     "tm.t5.effective-potential": {
       "level": "需支持",
       "stable_evidence": false,
-      "attempts": 1,
+      "attempts": 2,
       "independent_pass_dates": [],
       "delay_days": 0,
       "delay_requirement_days": 2,
@@ -5308,10 +5328,11 @@
       "version_mismatch_events": 0,
       "unknown_version_events": 0,
       "hint_dependence": {
-        "h1": 1
+        "h1": 1,
+        "h4": 1
       },
       "measured_minutes": 0.0,
-      "estimated_minutes": 15.0,
+      "estimated_minutes": 55.0,
       "needs_verify_events": 1,
       "upgrade_blocked": [
         {
@@ -5323,9 +5344,26 @@
             "待核验",
             "曝光=partial@before_attempt"
           ]
+        },
+        {
+          "event_id": "attempt-53",
+          "ts": "2026-10-19",
+          "why": [
+            "非闭卷",
+            "结果=partial",
+            "提示H4",
+            "曝光=full@before_attempt"
+          ]
         }
       ],
-      "open_hurdles": [],
+      "open_hurdles": [
+        {
+          "hurdle_id": "hurdle-4",
+          "status": "teaching",
+          "observed_at": "2026-10-19",
+          "evidence_ref": "attempt-52（tm-t5-ueff-variant-01，partial）＋ 2026-10-19 会话内口头自述"
+        }
+      ],
       "last_attempt": "2026-10-19",
       "goal": {
         "id": "tm-t5-1d-motion",
@@ -5351,15 +5389,17 @@
       "coverage": "已作答·需补练",
       "status_dimensions": {
         "assignment_done": false,
-        "concept_hurdle_resolved": true,
+        "concept_hurdle_resolved": false,
         "concept_hurdles": {
-          "open": [],
+          "open": [
+            "hurdle-4"
+          ],
           "resolved": []
         },
         "independent_performance": {
           "pass_dates": [],
           "open_book_only": [],
-          "helped_or_exposed_events": 1
+          "helped_or_exposed_events": 2
         },
         "delayed_retest": {
           "required_delay_days": 2,

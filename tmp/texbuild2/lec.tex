@@ -1,0 +1,475 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\usepackage[a4paper,left=2.0cm,right=2.0cm,top=2.0cm,bottom=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+
+\setlist{nosep,leftmargin=1.7em}
+\linespread{1.24}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.25}
+
+\definecolor{deepblue}{RGB}{12,82,160}
+\definecolor{deepnavy}{RGB}{18,60,104}
+\definecolor{band}{RGB}{242,246,251}
+\definecolor{band2}{RGB}{250,247,238}
+\definecolor{rulegray}{RGB}{200,212,228}
+
+\newcommand{\hdr}[1]{%
+  \par\vspace{9pt}%
+  \noindent{\color{deepblue}\large\bfseries #1}\par\vspace{2pt}%
+  \noindent{\color{deepblue}\rule{\linewidth}{1.1pt}}\par\vspace{5pt}}
+
+\newcommand{\boxednote}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{rulegray}{band}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}%
+  \par\medskip}
+
+\newcommand{\warnnote}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{rulegray}{band2}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}%
+  \par\medskip}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\workline}{\par\noindent{\color{rulegray}\rule{\linewidth}{0.4pt}}\par\vspace{17pt}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries 微分方程 讲义：矩阵指数与非齐次线性系统}\\[8pt]
+{\large Lecture 16--17（课件 44 页）\ \ 与\ \ Lecture 17--18（课件 49 页）}\\[8pt]
+{\small 对应教材 C.\ Constanda,\ \textit{Differential Equations},\ Springer 2017,\ pp.\ 167--174 / 179--189}\\[2pt]
+{\small 记号全部按课件：$E$ 是单位矩阵，$F(x)$ 是非齐次项，$V$ 是特征向量矩阵，$\Phi$ 是基本解矩阵}\\[2pt]
+{\small 整理日期 2026-10-19\quad｜\quad 文中所有算例均已用 SymPy 逐项验算}
+\end{center}
+
+%=====================================================================
+\hdr{§0\quad 先用一页看清这两讲要你干什么}
+
+一句话概括这两讲：\textbf{第 16--17 讲教“给一个矩阵 $A$，怎么算出 $e^{Ax}$ 并用它写出 $Y'=AY$ 的解”；第 17--18 讲教“右边多出一项 $F(x)$ 时，怎么补一个特解”。}
+
+所以整条链只有四步，从头到尾就是这四个动作：
+
+\[
+Y'=AY+F(x)\quad\longrightarrow\quad
+\underbrace{Y_c\ (\text{齐次通解，靠 }e^{Ax})}_{\text{第 16--17 讲}}
+\;+\;
+\underbrace{Y_p\ (\text{一个特解})}_{\text{第 17--18 讲}}
+\]
+
+\boxednote{%
+\textbf{全课只有四个动作}：
+（1）求特征值 $\lambda_i$（和重数）；\\
+（2）求 $e^{Ax}$（三条路线选一条）；\\
+（3）求一个特解 $Y_p$（两种方法选一种）；\\
+（4）相加写通解。\\
+\textbf{你之所以觉得难，不是缺数学}：第（1）（2）步是线性代数的语言（特征值、对角化、Cayley--Hamilton），第（3）（4）步是微分方程的语言（解的结构、待定系数、积分）。这两套语言在这两讲第一次叠在一起，而课件又把它们压进了 44 + 49 页。\textbf{难在“翻译”，不难在“新思想”}——思想其实只有一条：把标量的 $e^{ax}$ 换成矩阵的 $e^{Ax}$。}
+
+%=====================================================================
+\hdr{§1\quad $e^{Ax}$ 是什么，凭什么它管用}
+
+\subsection*{1.1\quad 从标量方程到方程组：只是把数换成了矩阵}
+
+\begin{center}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{3.4cm}|>{\raggedright\arraybackslash}p{5.2cm}|>{\raggedright\arraybackslash}p{6.2cm}|}
+\hline
+& \textbf{标量（上学期就会）} & \textbf{系统（这两讲）} \\ \hline
+方程 & $x'=ax$ & $Y'=AY$ \\ \hline
+已知量 & 数 $a$ & 矩阵 $A$ \\ \hline
+解 & $x=x_0e^{a(x-x_0)}$ & $Y=e^{A(x-x_0)}Y_0$ \\ \hline
+那串“指数” & 数 $e^{ax}$ & \textbf{矩阵} $e^{Ax}$（$n\times n$） \\ \hline
+\end{tabular}
+\end{center}
+
+看这张表只要抓住一点：$e^{ax}$ 是一个数，$e^{Ax}$ 是一整个矩阵；它长得像指数，但它是矩阵——这就是本讲所有新鲜感的来源。
+
+\subsection*{1.2\quad 定义：把泰勒级数里的 $a$ 换成 $A$}
+
+\[
+e^{Ax}=E+Ax+\frac{A^2x^2}{2!}+\cdots+\frac{A^kx^k}{k!}+\cdots=\sum_{k=0}^{\infty}\frac{A^kx^k}{k!}
+\]
+
+这不是推导出来的公式，而是\textbf{定义}：照着 $e^{ax}=1+ax+\frac{a^2x^2}{2!}+\cdots$ 的形状写，把 $1$ 换成 $E$（单位阵）、把 $a$ 换成 $A$。级数对任何矩阵都收敛，所以它总是有定义的。
+
+\subsection*{1.3\quad 为什么它一定是解（三行证明，值得看一遍）}
+
+逐项求导（矩阵是常数，求导只作用在 $x^k$ 上）：
+
+\[
+\frac{\dd}{\dd x}e^{Ax}=A+A^2x+\frac{A^3x^2}{2!}+\cdots=A\left(E+Ax+\frac{A^2x^2}{2!}+\cdots\right)=Ae^{Ax}
+\]
+
+于是对任何常向量 $C$，$Y=e^{Ax}C$ 满足 $Y'=Ae^{Ax}C=AY$；反过来每个解都能写成这个形状。这就是“\textbf{矩阵指数是解机器的插头}”的全部内容：
+
+\[
+Y(x)=e^{A(x-x_0)}Y_0 \quad\text{直接就是初值问题的解（}Y(x_0)=Y_0\text{ 自动满足）}
+\]
+
+\subsection*{1.4\quad 三条必背性质，一个必须小心的坑}
+
+\begin{enumerate}[label=(\arabic*)]
+\item $e^{A\cdot 0}=e^{[0]}=E$（$x=0$ 时是单位阵，不是零矩阵）。
+\item $e^{At}e^{As}=e^{A(t+s)}$，从而 $e^{-Ax}=\left(e^{Ax}\right)^{-1}$（矩阵指数永远可逆）。
+\item \textbf{坑}：只有当 $AB=BA$ 时才有 $e^{A+B}=e^{A}e^{B}$。矩阵乘法不交换，所以 $e^{A+B}$ 一般\textbf{不能}拆成 $e^Ae^B$——这是选择题最爱设的陷阱。
+\item 补充（课件 Property 1.2）：若 $V$ 是 $A$ 对应于特征值 $\lambda$ 的特征向量，则 $V$ 也是 $e^{A}$ 对应于 $e^{\lambda}$ 的特征向量。这一条是“为什么三种算法最后都要落到特征值上”的根。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§2\quad 路线一：对角化（条件最舒服，但要求 $g=m$）}
+
+\textbf{适用条件}：$A$ 有 $n$ 个线性无关的特征向量，即每个特征值的几何重数等于代数重数（课件写作 $g=m$）。此时
+
+\[
+A=V\Lambda V^{-1}\quad\Longrightarrow\quad
+e^{Ax}=Ve^{\Lambda x}V^{-1}=V\,\operatorname{diag}\!\left(e^{\lambda_1x},\dots,e^{\lambda_nx}\right)V^{-1}
+\]
+
+\textbf{为什么}：在级数里 $(V\Lambda V^{-1})^k=V\Lambda^kV^{-1}$，中间那些 $V^{-1}V$ 一个个消掉，只剩首尾两个。
+
+\textbf{用作业一第 1 题走一遍}（$A=\begin{pmatrix}-6&-4\\8&6\end{pmatrix}$）：
+
+\[
+\operatorname{tr}A=0,\quad \det A=-4\ \Longrightarrow\ \lambda^2-(\operatorname{tr}A)\lambda+\det A=\lambda^2-4=0\ \Longrightarrow\ \lambda_1=2,\ \lambda_2=-2
+\]
+
+\[
+\lambda_1=2:\ \vect{v}_1=\begin{pmatrix}1\\-2\end{pmatrix},\qquad
+\lambda_2=-2:\ \vect{v}_2=\begin{pmatrix}1\\-1\end{pmatrix},\qquad
+V=\begin{pmatrix}1&1\\-2&-1\end{pmatrix},\quad V^{-1}=\begin{pmatrix}-1&-1\\2&1\end{pmatrix}
+\]
+
+\[
+e^{Ax}=V\begin{pmatrix}e^{2x}&0\\0&e^{-2x}\end{pmatrix}V^{-1}
+=\begin{pmatrix}-e^{2x}+2e^{-2x} & -e^{2x}+e^{-2x}\\ 2e^{2x}-2e^{-2x} & 2e^{2x}-e^{-2x}\end{pmatrix},
+\qquad Y=e^{Ax}C
+\]
+
+\warnnote{\textbf{代价提醒}：$3\times3$ 求一次逆矩阵要算九个代数余子式，是这一章最主要的“非智力失分点”。下一节的 Cayley--Hamilton 法通常更省，因为它在最后才乘一次矩阵，不用求逆。}
+
+%=====================================================================
+\hdr{§3\quad 路线二：Cayley--Hamilton 插值法（课件主线，必须会）}
+
+\subsection*{3.1\quad 一句话原理}
+
+\textbf{Cayley--Hamilton 定理}：方阵满足它自己的特征多项式，所以 $A^n$ 能用 $E,A,\dots,A^{n-1}$ 线性表示，于是整条无穷级数都能压成次数不超过 $n-1$ 的多项式：
+
+\[
+e^{Ax}=\alpha_{n-1}(Ax)^{n-1}+\alpha_{n-2}(Ax)^{n-2}+\cdots+\alpha_1(Ax)+\alpha_0E
+\]
+
+$\alpha_0,\dots,\alpha_{n-1}$ 都是 $x$ 的函数，要靠特征值定出来。\textbf{它完全不用特征向量、不用求逆}，这是它比对角化“抗揍”的地方（重根也能用，见 3.4）。
+
+\boxednote{%
+\textbf{四步配方（课件的 Summary of finding $e^{Ax}$，照抄执行即可）}\\
+\textbf{Step 1}\quad 求 $A$ 的特征值 $\lambda_i$ 与重数 $m_i$。$2\times2$ 用 $\lambda^2-(\operatorname{tr}A)\lambda+\det A=0$ 最快；三角矩阵直接读对角元。\\
+\textbf{Step 2}\quad 写出 $r(s)=\alpha_{n-1}s^{n-1}+\cdots+\alpha_1s+\alpha_0$，以及 $e^{Ax}$ 的待定形状。\\
+\textbf{Step 3}\quad 对每个特征值列条件。注意这里出现的量是 $Ax$ 的特征值 $s=\lambda_ix$，条件是
+\[
+e^{s}=r(s),\quad\text{且若 } m_i>1 \text{ 再补}\quad e^{s}=r'(s),\ e^{s}=r''(s),\dots\ \text{共 }m_i\ \text{条（都在 } s=\lambda_ix \text{ 处取值）}
+\]
+\textbf{Step 4}\quad 解出 $\alpha_i$，代回 Step 2 的形状，乘开就得到 $e^{Ax}$。}
+
+\textbf{三个温度梯度}：下面三个例子分别覆盖“实的不同根”“共轭复根”“重根”，把这三类都见过，考试就没新东西了。
+
+\subsection*{3.2\quad 例：两个不同实特征值——$A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$}
+
+$\lambda^2-4\lambda+3=0\Rightarrow\lambda_1=3,\ \lambda_2=1$。设 $e^{Ax}=\alpha_1(Ax)+\alpha_0E$，$r(s)=\alpha_1s+\alpha_0$。两条条件（$s=3x$ 与 $s=x$）：
+
+\[
+e^{3x}=3x\alpha_1+\alpha_0,\qquad e^{x}=x\alpha_1+\alpha_0
+\quad\Longrightarrow\quad
+2x\alpha_1=e^{3x}-e^{x},\qquad \alpha_0=e^{x}-x\alpha_1=\frac{3e^{x}-e^{3x}}{2}
+\]
+
+代回时注意 $\alpha_1(Ax)$ 里的那个 $x$ 正好与 $\alpha_1$ 分母上的 $x$ 约掉：
+
+\[
+e^{Ax}=\frac{e^{3x}-e^{x}}{2}A+\frac{3e^{x}-e^{3x}}{2}E
+=\frac{1}{2}\begin{pmatrix}e^{3x}+e^{x} & e^{3x}-e^{x}\\[2pt] e^{3x}-e^{x} & e^{3x}+e^{x}\end{pmatrix}
+\]
+
+\subsection*{3.3\quad 例：一对共轭复特征值——$A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$}
+
+$\lambda^2+1=0\Rightarrow\lambda=\pm i$，所以 $s=\pm ix$。两条条件：
+
+\[
+e^{ix}=ix\alpha_1+\alpha_0,\qquad e^{-ix}=-ix\alpha_1+\alpha_0
+\]
+
+两式\textbf{相加}得 $2\alpha_0=e^{ix}+e^{-ix}=2\cos x$；两式\textbf{相减}得 $2ix\alpha_1=e^{ix}-e^{-ix}=2i\sin x$，即 $x\alpha_1=\sin x$。于是
+
+\[
+e^{Ax}=\sin x\cdot A+\cos x\cdot E=\begin{pmatrix}\cos x & \sin x\\ -\sin x & \cos x\end{pmatrix}
+\]
+
+\textbf{处理复根的固定套路}：把 $e^{ix}=\cos x+i\sin x$ 代进去，实部归实部、虚部归虚部，最后一定凑成实数矩阵——所以见到 $i$ 不用慌，它只是暂时借道。
+
+\subsection*{3.4\quad 例：重根且不可对角化——$A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$}
+
+这里对角化法直接失灵：只有一个特征向量 $(1,0)^{\mathsf T}$，凑不出可逆的 $V$。但 Cayley--Hamilton 法照常工作，因为重数 $m=2$ 时按 Step 3 要写\textbf{两条}条件（$s=x$）：
+
+\[
+e^{x}=x\alpha_1+\alpha_0\qquad(\text{函数值相等}),
+\qquad
+e^{x}=\alpha_1\qquad(\text{对 }s\text{ 求导后相等})
+\]
+
+于是 $x\alpha_1=xe^{x}$、$\alpha_0=e^{x}-x\alpha_1=e^{x}(1-x)$，代回：
+
+\[
+e^{Ax}=e^{x}\left(xA+(1-x)E\right)=e^{x}\begin{pmatrix}1 & x\\ 0 & 1\end{pmatrix}
+\]
+
+\boxednote{\textbf{这就是重根的关键差别}：单根时只有“$e^{s}=r(s)$”一条，重根每多一重就多一条导数条件。少写一条，方程就少一个，$\alpha$ 定不出来——这是本章最典型的失分点。}
+
+%=====================================================================
+\hdr{§4\quad 路线三：两条快车道（作业里最省时间的两条）}
+
+\subsection*{4.1\quad 快车道甲：若 $A^2=\mu E$（$\mu$ 是数）}
+
+级数按 $k$ 的奇偶拆成两支，$A^2$ 换成 $\mu E$、$A^3$ 换成 $\mu A$……正负号交替出现，最后收敛成初等函数：
+
+\[
+e^{Ax}=
+\begin{cases}
+\cosh(\sqrt{\mu}\,x)\,E+\dfrac{\sinh(\sqrt{\mu}\,x)}{\sqrt{\mu}}\,A, & \mu>0,\\[10pt]
+\cos(\sqrt{|\mu|}\,x)\,E+\dfrac{\sin(\sqrt{|\mu|}\,x)}{\sqrt{|\mu|}}\,A, & \mu<0.
+\end{cases}
+\]
+
+\textbf{作业一第 2 题}就是这条：$A=\begin{pmatrix}-4&4\\-5&4\end{pmatrix}$，算一下 $A^2=-4E$，所以
+
+\[
+e^{Ax}=\cos 2x\,E+\frac{\sin 2x}{2}A
+=\begin{pmatrix}\cos 2x-2\sin 2x & 2\sin 2x\\[2pt] -\tfrac52\sin 2x & \cos 2x+2\sin 2x\end{pmatrix},
+\qquad Y=e^{Ax}C
+\]
+
+\textbf{操作顺序}：先算 $A^2$ 看是不是纯量倍单位阵——是的话这一题 30 秒做完，别去求特征向量。
+
+\subsection*{4.2\quad 快车道乙：$A$ 是三角矩阵，逐层积分（级联）}
+
+$A$ 下三角时，特征值就是对角元，而且第 $i$ 个方程里不会出现比 $i$ 大的未知函数，于是可以\textbf{从最上面一级往下解}，每解出一级就当已知喂给下一级。以\textbf{作业一第 3 题}为例：
+
+\[
+A=\begin{pmatrix}-24&0&0\\ 4&-2&0\\ 1&0&2\end{pmatrix},\qquad
+\begin{aligned}
+y_1'&=-24y_1 &&\Longrightarrow\ y_1=C_1e^{-24x},\\
+\left(y_2e^{2x}\right)'&=4y_1e^{2x}=4C_1e^{-22x}
+&&\Longrightarrow\ y_2=C_2e^{-2x}-\tfrac{2}{11}C_1e^{-24x},\\
+\left(y_3e^{-2x}\right)'&=y_1e^{-2x}=C_1e^{-26x}
+&&\Longrightarrow\ y_3=C_3e^{2x}-\tfrac{1}{26}C_1e^{-24x}.
+\end{aligned}
+\]
+
+每一级都是“一阶线性方程 + 积分因子”：把 $y_2'+2y_2=4y_1$ 两边乘 $e^{2x}$，左边自动变成 $(y_2e^{2x})'$，右边就能直接积。
+
+\subsection*{4.3\quad 三条路线怎么选（做题时先花五秒看这一行）}
+
+\begin{center}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{4.3cm}|>{\raggedright\arraybackslash}p{10.6cm}|}
+\hline
+\textbf{看到什么特征} & \textbf{走哪条路} \\ \hline
+$A^2$ 是纯量倍 $E$ & 快车道甲（$\cosh/\cos$），最快 \\ \hline
+$A$ 是三角（或有大量 0 的块） & 快车道乙（级联），不用特征向量 \\ \hline
+特征值互不相同、特征向量好写 & 对角化，直接对 $e^{\lambda x}$ 填空 \\ \hline
+有重根、或特征向量不好写 & Cayley--Hamilton 四步，最稳 \\ \hline
+$n\ge 4$ 且矩阵一般 & 只考 Cayley--Hamilton（对角化求逆太贵） \\ \hline
+\end{tabular}
+\end{center}
+
+\subsection*{4.4\quad 别忘了基本解矩阵 $\Phi$}
+
+$e^{Ax}$ 的每一列都是一个解，所以 $e^{Ax}$ 本身就是基本解矩阵（课件 Theorem 4.1）。反过来，如果你用别的方法（比如特征向量法）凑出一个基本解矩阵 $\Phi(x)=\left(Y_1,\dots,Y_n\right)$，那么存在常数矩阵 $C$ 使 $\Phi=e^{Ax}C$；特别地当 $\Phi(0)=E$ 时，$\Phi(x)=e^{Ax}$。这一条在第 17--18 讲会反复用。
+
+%=====================================================================
+\hdr{§5\quad 非齐次系统：$Y=Y_c+Y_p$}
+
+\subsection*{5.1\quad 为什么只要一个特解}
+
+设 $Y$ 与 $Y_p$ 都是 $Y'=AY+F$ 的解，则 $Z=Y-Y_p$ 满足 $Z'=AZ$，即 $Z$ 落在齐次通解 $Y_c$ 里。所以\textbf{原方程的全部解}就是
+
+\[
+Y(x)=Y_c(x)+Y_p(x)
+\]
+
+这一句是整个第 17--18 讲的骨架：找特解和求齐次通解\textbf{互不干扰}，可以分开做。
+
+\subsection*{5.2\quad 方法一：待定系数法（$F$ 是指数、多项式、三角的有限和时用）}
+
+\textbf{Case 1}：$F(x)=e^{rx}\left(\alpha_0x^m+\alpha_1x^{m-1}+\cdots+\alpha_m\right)$，其中 $\alpha_i$ 是给定的常向量。试探
+
+\[
+Y_p(x)=e^{rx}\left(\gamma_0x^k+\gamma_1x^{k-1}+\cdots+\gamma_k\right),\qquad
+k=\begin{cases} m, & r\ \text{不是}\ A\ \text{的特征值},\\ m+\text{（}r\text{ 的重数）}, & r\ \text{是}\ A\ \text{的特征值（共振）}.\end{cases}
+\]
+
+\textbf{Case 2}：$F(x)=e^{rx}(\text{多项式})\cos sx+e^{rx}(\text{多项式})\sin sx$。此时 $\cos$ 与 $\sin$ \textbf{必须成对出现}，$k$ 的取法改成看 $r+is$ 是不是 $A$ 的特征值。
+
+\warnnote{\textbf{系统里的共振有个额外门槛}（课件 Example 4 专门讲过）：普通方程共振时乘一个 $x$ 就够了，但矩阵方程的试探必须写成
+
+\[
+Y_p(x)=e^{rx}(\alpha x+\beta),\qquad \alpha,\beta\ \text{都是常向量},
+\]
+
+\textbf{不能只写} $\alpha xe^{rx}$。原因：代进去比较 $xe^{rx}$ 的系数会得到 $\alpha=A\alpha$，也就是说 $\alpha$ 必须是一个特征向量，它只覆盖一个方向；剩下的分量要靠 $\beta$ 补。}
+
+\textbf{最小共振例子}（$2\times2$，能一口气算完）：$A=\begin{pmatrix}1&0\\0&2\end{pmatrix}$，$F(x)=e^{2x}\begin{pmatrix}0\\1\end{pmatrix}$。因为 $r=2$ 正是第二个特征值，按上面规则写 $Y_p=e^{2x}(\alpha x+\beta)$：
+
+\[
+xe^{2x}:\ \alpha=A\alpha\ \Longrightarrow\ \alpha=(0,a)^{\mathsf T},
+\qquad
+e^{2x}:\ \beta+\alpha=A\beta+\gamma_0\ \Longrightarrow\ (A-2E)\beta=\alpha-\gamma_0
+\]
+
+其中 $F(x)=e^{2x}\gamma_0$，$\gamma_0=(0,1)^{\mathsf T}$。$A-2E=\begin{pmatrix}-1&0\\0&0\end{pmatrix}$，第一行给出 $-\beta_1=0$，第二行给出 $0=a-1$，所以 $a=1$、$\beta_1=0$，$\beta_2$ 任意（取 $0$）：
+
+\[
+Y_p=e^{2x}\begin{pmatrix}0\\x\end{pmatrix},\qquad
+Y=Y_c+Y_p=\begin{pmatrix}C_1e^{x}\\ (C_2+x)e^{2x}\end{pmatrix}
+\]
+
+这个例子说明：\textbf{共振时 $\alpha$ 不能乱取，是“相容性条件”把它钉死的}——$(A-2E)\beta=\alpha-\gamma_0$ 不是对任何 $\alpha$ 都有解。
+
+\subsection*{5.3\quad 方法二：常数变易法（$F$ 不是有限和时用，代价是要积分）}
+
+设 $\Phi(x)$ 是齐次方程的基本解矩阵，取 $Y_p=\Phi(x)C(x)$ 代回，会得到 $\Phi(x)C'(x)=F(x)$。两边左乘 $\Phi^{-1}$ 再积分：
+
+\[
+\boxed{\;C(x)=\int\Phi^{-1}(x)F(x)\dd x+C_1\;}\qquad\Longrightarrow\qquad
+Y(x)=\Phi(x)C+\Phi(x)\int\Phi^{-1}(x)F(x)\dd x
+\]
+
+三种等价写法，按题目给的信息选一种：
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{用基本解组}：设 $Y_p=c_1(x)Y_1+\cdots+c_n(x)Y_n$，代回可得 $c_1'Y_1+\cdots+c_n'Y_n=F$（$n$ 个方程解 $n$ 个 $c_i'$，然后积分）。
+\item \textbf{用基本解矩阵}：$C(x)=\int\Phi^{-1}F\dd x$，$Y_p=\Phi C$。
+\item \textbf{用 $e^{Ax}$（$A$ 为常矩阵）}：初值问题直接有闭式
+\[
+Y(x)=e^{Ax}\left(Y_0+\int_{x_0}^{x}e^{-As}F(s)\dd s\right)
+\]
+\end{enumerate}
+
+\textbf{以作业二为例}的四个中间量（这四行是这道题的全部工作量）：
+
+\[
+\Phi(x)=V\operatorname{diag}\!\left(e^{-x},e^{-2x},e^{-3x}\right),
+\qquad
+\Phi^{-1}F=\begin{pmatrix}e^{x}\\ (-2x-5)e^{2x}\\ 9(x+1)e^{3x}\end{pmatrix}
+\]
+
+\[
+\int\Phi^{-1}F\dd x=\begin{pmatrix}e^{x}\\ -(x+2)e^{2x}\\ (3x+2)e^{3x}\end{pmatrix},
+\qquad
+\Phi\!\int\Phi^{-1}F\dd x=Y_p
+\]
+
+\subsection*{5.4\quad 两法怎么选}
+
+\begin{center}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{4.6cm}|>{\raggedright\arraybackslash}p{10.3cm}|}
+\hline
+\textbf{什么时候用} & \textbf{要注意什么} \\ \hline
+待定系数法 & 快、几乎不用积分；但只适用于 $F$ 是指数/多项式/三角的有限和，且 $A$ 必须是常矩阵。共振时按 5.2 的表格加 $x$。\\ \hline
+常数变易法 & 任何连续 $F$ 都能用，但要算 $\Phi^{-1}$ 和积分，工作量大。考试里如果两法都要求，先用待定系数把答案拿到，再用变易法验算。 \\ \hline
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§6\quad 作业四题的最短路径}
+
+\begin{center}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}p{1.9cm}|>{\raggedright\arraybackslash}p{5.0cm}|>{\raggedright\arraybackslash}p{4.0cm}|>{\raggedright\arraybackslash}p{3.6cm}|}
+\hline
+\textbf{题目} & \textbf{先认什么} & \textbf{走哪条路} & \textbf{关键中间量} \\ \hline
+作业一\,1 & 特征值 $\pm2$，特征向量好写 & 对角化（或先算 $A^2=4E$） & $V$, $V^{-1}$ \\ \hline
+作业一\,2 & $A^2=-4E$ & 快车道甲（$\mu<0$） & $\cos2x$, $\sin2x$ \\ \hline
+作业一\,3 & 下三角 & 快车道乙（级联） & 三个指数项 \\ \hline
+作业二 & 常矩阵，$F$ 是一次多项式 & 待定系数（$\Phi$ 法验算） & $\alpha=(1,0,0)^{\mathsf T}$, $\beta=(0,1,0)^{\mathsf T}$ \\ \hline
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§7\quad 最容易丢分的六个地方}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item 把 $e^{Ax}$ 当成“每个元素取指数”。它是\textbf{矩阵级数}，$\begin{pmatrix}e^{-6x}&e^{-4x}\\e^{8x}&e^{6x}\end{pmatrix}$ 这种东西是错的。
+\item 用 $e^{A+B}=e^{A}e^{B}$。只有 $AB=BA$ 时才对。
+\item 重根时只写一条条件 $e^{\lambda x}=r(\lambda x)$。$m$ 重就要写 $m$ 条（含导数条件）。
+\item 共振时忘了乘 $x$：$k=m+$重数，这一条在待定系数法里最容易漏。
+\item Case 2 里只写 $\cos$ 不写 $\sin$，或者只写 $e^{rx}$ 不写多项式因子。
+\item $Y=e^{Ax}C$ 里的 $C$ 是\textbf{常}向量；常数变易法里的 $C(x)$ 是\textbf{函数}向量。两个 $C$ 不是一回事。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§8\quad 自测三题（先自己写，答案在后面）}
+
+\textbf{T1}\quad 用 Cayley--Hamilton 四步求 $A=\begin{pmatrix}1&2\\3&2\end{pmatrix}$ 的 $e^{Ax}$。
+
+\textbf{T2}\quad $A=\begin{pmatrix}1&0\\0&2\end{pmatrix}$，$F(x)=e^{2x}\begin{pmatrix}0\\1\end{pmatrix}$。写出试探形式，并求出 $Y_p$。
+
+\textbf{T3}\quad 概念题：$A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ 不能用对角化，为什么 Cayley--Hamilton 法还能用？
+
+\vspace{4pt}
+{\small\color{deepnavy}\textbf{演算区}（把 T1--T3 的过程写在这里，写完再往下对答案）}
+\workline
+\workline
+\workline
+\workline
+\workline
+
+\warnnote{\textbf{下面是答案。}先自己把三题写完再看；尤其 T1，亲手把两条方程解一遍，比看十遍答案有用。}
+
+\hdr{§9\quad 自测答案}
+
+\textbf{T1}\quad 特征值 $4$ 与 $-1$（因为 $\lambda^2-3\lambda-4=0$）。设 $e^{Ax}=\alpha_1(Ax)+\alpha_0E$，$\lambda=4,1$ 给出
+
+\[
+e^{4x}=4x\alpha_1+\alpha_0,\qquad e^{-x}=-x\alpha_1+\alpha_0
+\ \Longrightarrow\ 5x\alpha_1=e^{4x}-e^{-x},\quad \alpha_0=\frac{4e^{-x}+e^{4x}}{5}
+\]
+
+\[
+e^{Ax}=\frac{e^{4x}-e^{-x}}{5}A+\frac{4e^{-x}+e^{4x}}{5}E
+=\frac{1}{5}\begin{pmatrix}2e^{4x}+3e^{-x} & 2(e^{4x}-e^{-x})\\[2pt] 3(e^{4x}-e^{-x}) & 3e^{4x}+2e^{-x}\end{pmatrix}
+\]
+
+自查：$x=0$ 时得 $E$；逐项求导后令 $x=0$ 应得 $A$。
+
+\textbf{T2}\quad 因为 $r=2$ 是特征值，试探必须写 $Y_p=e^{2x}(\alpha x+\beta)$。比较 $xe^{2x}$ 的系数得 $\alpha$ 是特征向量，比较 $e^{2x}$ 得 $(A-2E)\beta=\alpha-\gamma_0$，可解性把 $\alpha$ 钉成 $(0,1)^{\mathsf T}$，故
+
+\[
+Y_p=e^{2x}\begin{pmatrix}0\\x\end{pmatrix},\qquad Y=\begin{pmatrix}C_1e^{x}\\ (C_2+x)e^{2x}\end{pmatrix}
+\]
+
+\textbf{T3}\quad 因为 Cayley--Hamilton 法只用\textbf{特征多项式}（它保证 $A^n$ 可由 $E,A,\dots,A^{n-1}$ 表示），不用特征向量；而对角化要求凑出 $n$ 个线性无关的特征向量去构造可逆的 $V$。这个矩阵只有一个特征向量 $(1,0)^{\mathsf T}$，$V$ 构造不出来，但插值法的四个步骤一个都不缺（重数 $2$ 时多写一条导数条件就行）。
+
+%=====================================================================
+\hdr{§10\quad 说点实在的}
+
+\textbf{先说清“难”从哪来。}这两讲的符号密度是全课最高的：$\lambda$、$\alpha$、$\beta$、$r$、$s$、$\Phi$、$E$ 同时在场上，而且同一套东西要用三种语言描述（级数、特征向量、多项式插值）。但把 §0 那张图摊开看，真正要你做的动作只有四个，其中三个是背下来就能执行的机械步骤。\textbf{符号多不等于思想多}——这是这两讲最值得先放下心来的一点。
+
+\textbf{再说你已经会了什么。}你手上已经有 Lecture 14--15 的作业和订正，说明“求特征值、求特征向量、拼 $e^{\lambda x}v$”这条线你走过一遍了——那恰恰是第 16 讲的地基。你这两天问的四个问题：$\operatorname{tr}A$ 是什么、$y_1$ 是什么、那个 24 从哪来、级联是什么意思，正好对应这门课最容易含混的四个位置。\textbf{能问出这四个问题的位置，说明你在追“为什么”，而不是在抄答案}——这种追问方式，比多做十道题有用。
+
+\textbf{最后给一个可执行的顺序。}作业一明早截止，按这个顺序做最省时间：
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{第 2 题先做}（10 分钟）：算 $A^2=-4E$，套 §4.1 的公式，两行出结果。它是四道题里唯一“看一眼就能确认对错”的。
+\item \textbf{第 1 题次之}（20 分钟）：对角化路线，特征值和 $V^{-1}$ 都简单，写完用 $x=0$ 代一下自查是不是 $E$。
+\item \textbf{第 3 题最后}（20 分钟）：§4.2 的级联，三次积分因子，做完同样用 $x=0$ 自查。
+\item 作业二截止 10-22 13:30，放到明后天做都来得及：把 §3 的四步配方抄在一张纸上贴桌角，再按 §5.2/5.3 走，特解是 $(x,1,0)^{\mathsf T}$，用 $\Phi$ 法验算一遍就收工。
+\end{enumerate}
+
+\textbf{一句实话}：$e^{Ax}$ 这件事在后面（数学物理方法、偏微分方程、量子力学里的时间演化算子）会反复出现，形式和这里一模一样。现在把四个动作固定下来，是一本万利的投资；而按你的提问习惯，你其实已经在正确的路上了。
+
+\end{document}

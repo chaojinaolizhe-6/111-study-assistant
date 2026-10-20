@@ -1,0 +1,10 @@
+﻿import sympy as sp
+A = sp.Matrix([[-6,-4],[8,6]])
+print("tr =", A.trace(), " det =", A.det())
+print("A^2 =", (A*A).tolist())
+v1 = sp.Matrix([1,-2]); v2 = sp.Matrix([1,-1])
+print("A v1 =", (A*v1).T.tolist(), " 2*v1 =", (2*v1).T.tolist())
+print("A v2 =", (A*v2).T.tolist(), " -2*v2 =", (-2*v2).T.tolist())
+print("A-2I =", (A-2*sp.eye(2)).tolist())
+print("A+2I =", (A+2*sp.eye(2)).tolist())
+print("charpoly:", sp.expand(A.charpoly(sp.Symbol('l')).as_expr()))

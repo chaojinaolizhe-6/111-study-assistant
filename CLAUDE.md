@@ -69,9 +69,9 @@ current_subject: 见 state/current.md 按项目的有效证据；课程顺序见
 current_topic: 维护刷新不代表新学习；具体续学点见 state/current.md
 next: 见 plan/schedule.md、当天清单与原 status-narrative.yml；先尊重学习者当次选择
 note: 默认闭卷；Unicode 公式；中国日期；保留当前项目协议和个人偏好
-last_session: 2026-10-19（作答 51 条；未解决困难 2 条）
-due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-19）
-mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-19）
-open_hurdles: hurdle-2(awaiting_retest)→mp.taylor-expansion,mp.laurent-expansion；hurdle-3(teaching)→ru.qword-agreement
-attempts: 51 条（实测时长 7.0 分钟；估计 1268.0 分钟单列）
+last_session: 2026-10-19（作答 52 条；未解决困难 3 条）
+due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-20）
+mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-20）
+open_hurdles: hurdle-2(awaiting_retest)→mp.taylor-expansion,mp.laurent-expansion；hurdle-3(teaching)→ru.qword-agreement；hurdle-4(teaching)→tm.t5.effective-potential,tm.t5.central-motion-types
+attempts: 52 条（实测时长 7.0 分钟；估计 1308.0 分钟单列）
 <!-- TUTOR-STATUS:END -->

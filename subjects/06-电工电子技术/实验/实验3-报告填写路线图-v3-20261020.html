@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>实验3 报告逐栏填写指南 v3（据册页重做）</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "Source Han Sans SC",
+               "PingFang SC", "Segoe UI", sans-serif;
+  font-size: 10.8pt; line-height: 1.75; color: #1c1e24; margin: 0;
+}
+h1 { font-size: 19pt; line-height: 1.4; color: #0c52a0; margin: 0 0 10px 0;
+     padding-bottom: 8px; border-bottom: 3px solid #0c52a0; }
+h2 { font-size: 14.5pt; color: #0c52a0; margin: 22px 0 8px 0; padding-left: 9px;
+     border-left: 5px solid #0c52a0; page-break-after: avoid; }
+h3 { font-size: 12.4pt; color: #123c68; margin: 16px 0 6px 0; page-break-after: avoid; }
+h4 { font-size: 11.2pt; color: #123c68; margin: 13px 0 5px 0; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul, ol { margin: 7px 0 7px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+li > ul, li > ol { margin: 4px 0; }
+strong { color: #101418; }
+em { color: #2a2f38; }
+code {
+  font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+  font-size: 0.92em; background: #f2f5f9; border: 1px solid #e2e8f0;
+  border-radius: 3px; padding: 0 3px; color: #123c68;
+}
+pre { background: #f6f8fb; border: 1px solid #dde4ee; border-radius: 6px;
+      padding: 9px 11px; overflow-wrap: break-word; white-space: pre-wrap;
+      page-break-inside: avoid; }
+pre code { background: none; border: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.8pt;
+        page-break-inside: avoid; }
+th, td { border: 1px solid #cfd8e3; padding: 5px 8px; text-align: left;
+         vertical-align: top; }
+th { background: #eaf1fa; color: #0c52a0; }
+blockquote { margin: 10px 0; padding: 8px 13px; background: #f4f8fd;
+             border-left: 4px solid #7ba7d4; color: #333a45; }
+blockquote p { margin: 4px 0; }
+hr { border: none; border-top: 1px solid #d8dee7; margin: 16px 0; }
+a { color: #0c52a0; text-decoration: none; }
+img { max-width: 100%; }
+.toc { background: #f7fafd; border: 1px solid #dde4ee; border-radius: 6px;
+       padding: 8px 16px 10px 16px; margin: 14px 0 18px 0; font-size: 10pt;
+       page-break-inside: avoid; }
+.toc-title { font-weight: 700; color: #0c52a0; margin: 6px 0 2px 0; }
+.toc ul { list-style: none; padding-left: 14px; margin: 2px 0; }
+.toc > ul { padding-left: 0; }
+.toc li { margin: 2px 0; }
+
+table { page-break-inside: auto !important; break-inside: auto !important; }
+thead { display: table-header-group; }
+tr { page-break-inside: avoid !important; break-inside: avoid !important; }</style></head>
+<body>
+<h1 id="3-v3">实验3 报告逐栏填写指南（v3 · 据册页原文重做）</h1>
+<blockquote>
+<p>实验：AC Circuit Experiment｜<strong>2026-10-20（周二）15:30–17:45｜综合一号教学楼 117</strong><br />
+依据：<strong>你刚拍的册页 3 张</strong>（已存入 <code>实验册-照片/册-实验3-01/02/03</code>）+ 教材 §2.3（书 p.34–39 = PDF p.47–52）<br />
+本文件取代 <code>实验3-报告填写路线图-20261020.pdf</code>（v2 的结构是照实验2 的骨架推的，<strong>推错了</strong>）。</p>
+</blockquote>
+<hr />
+<h2 id="v2-v2">〇、先更正 v2：册页与 v2 的四处不一致</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>v2 说的（错）</th>
+<th>册页实际（对）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discussion 题数</td>
+<td>教材 §2.3.6 的 <strong>6 问</strong></td>
+<td>册上只有 <strong>5 问</strong>，而且第 5 问是 <strong>LED 改造</strong>，教材里没有</td>
+</tr>
+<tr>
+<td>数据表</td>
+<td>表 2.3.3 + 2.3.4 + 2.3.5 三张</td>
+<td>这三页只出现 <strong>表 2.3.4、表 2.3.5</strong>；<strong>没有表 2.3.3</strong>（三表法不在册页里）</td>
+</tr>
+<tr>
+<td>第二块实验</td>
+<td>无</td>
+<td>有 <strong>2. Experimental Verification of Voltage-triangle Relationships</strong>，要求<strong>自己设计</strong>电路图和数据表</td>
+</tr>
+<tr>
+<td>通电规则</td>
+<td>没写</td>
+<td>册上明文：<strong>Do not turn on the power yourself!!</strong> 自查后<strong>请老师合闸</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>唯一的免责说明：这三页之前确实不在工作区（<code>实验册-照片/</code> 只有 p01–p08，全是实验2 的 DC Circuit），所以 v2 是照实验2 的骨架推的。现在按真页改。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一、报告结构（册页实际要求 → 你做什么 → 教材哪页）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>报告栏（册上原文）</th>
+<th>你具体做什么</th>
+<th>教材页（书 / PDF）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>II. Experimental Procedure</code> / <code>1. Wiring and Measurement of a Fluorescent-lamp Circuit</code> — <em>Read Section 2.3.5</em></td>
+<td>读 §2.3.5，<strong>在册上画图 2.3.3</strong>（你已手绘，见第五节核对）</td>
+<td><strong>p.38 / 51</strong>（图 2.3.3）、<strong>p.38–39 / 51–52</strong>（步骤）</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>(1)</code> <em>Wire…Do not turn on the power yourself!! Check the circuit yourself first, then ask the teacher to turn on the power. Measure and record data into Table 2.3.4 and Table 2.3.5.</em></td>
+<td>接线 → 自查 → <strong>叫老师合闸</strong> → 测数据 → 填<strong>表 2.3.4</strong>（无补偿）与<strong>表 2.3.5</strong>（五档电容）</td>
+<td>表 2.3.4、表 2.3.5 都在 <strong>p.39 / 52</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>(2) Determination of the ignition voltage</code> — <em>Operate as described on Page 36 of the textbook. Record the ignition voltage: ___ V.</em></td>
+<td>测启辉电压，填一个数</td>
+<td>步骤在 <strong>p.39 / 52</strong>（§2.3.5 第 3 条）；原理在 <strong>p.36–37 / 49–50</strong>。⚠ 册上写 "Page 36" 与步骤实际所在 p.39 不符，见第六节</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>2. Experimental Verification of Voltage-triangle Relationships</code> — <em>Draw your designed circuit diagram and data-recording table, and record experimental data.</em></td>
+<td><strong>自己设计</strong>电路图 + 数据表 + 记数据（唯一要"设计"的一栏）</td>
+<td>电压三角形依据在 <strong>p.39 / 52</strong>（§2.3.6 第 6 条）；表 2.3.4 的 U、U_R、U_L 三列就是素材</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>Discussion of Results</code> 1–5</td>
+<td>五问，见第四节</td>
+<td>题目在册页；算据在 <strong>p.36 / 49</strong>（表 2.3.2）与 <strong>p.39 / 52</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：这一页没有 <code>I. Preliminary Work</code>（预习页）——那一页还没拍给我，见第七节。</p>
+<hr />
+<h2 id="ii-11-234-235">二、II-1(1) 荧光灯接线与测量（表 2.3.4 → 表 2.3.5）</h2>
+<p>按顺序做，<strong>每一步之前先断电改线</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th>动作</th>
+<th>设定值 / 读数</th>
+<th>填到</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>断电状态下按图 2.3.3 接主电路：调压器 U–N 出 → 过流保护 → S₁ → 镇流器 L → 灯管 R；启辉器 S 并在灯管两端；电容 S₂/S₃/S₄ 并在 L+R 外侧</td>
+<td>调压器归零</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>自查接线，然后叫老师合闸</strong>（册上明文不许自己合闸）</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>3</td>
+<td>升压到 <strong>220 V</strong>，闭合 S₁ 点亮灯管</td>
+<td>不亮就转动/检查启辉器</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>灯亮之后</strong>才接仪表；<strong>S₂、S₃、S₄ 全部断开</strong>（不投电容）</td>
+<td>测 U、U_R、U_L、I、P_LR、P_L、P_R</td>
+<td><strong>表 2.3.4</strong> 那一行</td>
+</tr>
+<tr>
+<td>5</td>
+<td>依次投电容凑出 <strong>1.0 / 2.2 / 3.2 / 4.7 / 5.7 μF</strong> 五档</td>
+<td>每档测 U、U_R、I、I_C、I_L、P、P_LR、P_C、cos φ</td>
+<td><strong>表 2.3.5</strong> 五行</td>
+</tr>
+<tr>
+<td>6</td>
+<td>记录：哪一档 I 最小、哪一档 cos φ 最大</td>
+<td>第 3、4 问要用</td>
+<td>记在页边</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>起辉之前不接仪表</strong>（教材注意 1，<strong>p.38 / 51</strong>）——起辉脉冲会打坏表。</p>
+</li>
+<li>
+<p>三块表<strong>分别接入</strong>测（教材 §2.3.4 注意 3，<strong>p.37 / 50</strong>）。</p>
+</li>
+<li>
+<p>功率表守<strong>发电机端</strong>规则 + <strong>电压线圈外接法</strong>（<strong>p.38 / 51</strong>；原理 <strong>p.310 / 323</strong>）。</p>
+</li>
+</ul>
+<hr />
+<h2 id="ii-12">三、II-1(2) 启辉电压</h2>
+<p>做法（教材 §2.3.5 第 3 条，<strong>书 p.39 / PDF p.52</strong>）：灯点亮后<strong>缓慢降压</strong>直到灯熄灭，再<strong>缓慢升压</strong>直到灯刚刚重新点亮，<strong>此刻的电压</strong>就是启辉电压，填进册上那个空。</p>
+<blockquote>
+<p>册上写 "Page 36 of the textbook"，但教材 p.36 是 §2.3.3 原理页，<strong>操作步骤在 p.39</strong>。按 p.39 做；如果老师口径不同，以老师为准。</p>
+</blockquote>
+<hr />
+<h2 id="ii-2">四、II-2 电压三角形验证（要自己设计，这是唯一能拿分的设计题）</h2>
+<h3 id="41">4.1 电路图设计</h3>
+<p>就用<strong>荧光灯主电路</strong>，但<strong>不投任何补偿电容</strong>（S₂～S₄ 全断）：R（灯管）与 L（镇流器）串联，两端接 220 V。图上标 R、L、U、U_R、U_L 四个量。</p>
+<h3 id="42">4.2 数据记录表设计（照这个列名画）</h3>
+<table>
+<thead>
+<tr>
+<th>测量</th>
+<th>测量</th>
+<th>测量</th>
+<th>计算</th>
+<th>计算</th>
+<th>计算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U / V</td>
+<td>U_R / V</td>
+<td>U_L / V</td>
+<td>U_R + U_L / V</td>
+<td>√(U_R² + U_L²) / V</td>
+<td>相对误差 / %</td>
+</tr>
+</tbody>
+</table>
+<p>相对误差的算法（这个式子必须写出来）：</p>
+<p>δ = |U − √(U_R² + U_L²)| ÷ U × 100%</p>
+<h3 id="43">4.3 结论怎么写</h3>
+<ul>
+<li>
+<p>若 <strong>U ≈ √(U_R² + U_L²)</strong> 而 <strong>U ≪ U_R + U_L</strong>，就证明了灯管电压与镇流器电压<strong>相位差接近 90°</strong>、<strong>有效值不能代数相加</strong>，只能按直角三角形合成——这就是"电压三角形"。</p>
+</li>
+<li>
+<p>举个数给你对照：U = 220 V、U_R = 103 V，则理论 U_L = √(220² − 103²) ≈ <strong>194.4 V</strong>，而算术和 103 + 194 = <strong>297 V</strong>，比电源电压大得多。你测出来的三个数应该呈现同样的关系。</p>
+</li>
+</ul>
+<blockquote>
+<p>表 2.3.4 里已经有 U、U_R、U_L 三列——<strong>可以先拿表 2.3.4 的数直接算</strong>，再补测一组独立数据更稳。</p>
+</blockquote>
+<hr />
+<h2 id="233-3">五、图 2.3.3 手绘核对（只核 3 处，读图存疑处标 [待确认]）</h2>
+<p>你册上已经画好了，按教材图 2.3.3（<strong>p.38 / 51</strong>）核这三点：</p>
+<ol>
+<li>
+<p><strong>电容支路接在哪</strong>：必须在 S₁ 之后、<strong>与"镇流器 L + 灯管 R"整体并联</strong>（教材里总电流 i 分叉成 i_C 与 i_L）。你图上电容的引出点看起来靠近电感之后 [待确认]，请确认它不是只并在灯管两端。</p>
+</li>
+<li>
+<p><strong>启辉器 S</strong>：应与<strong>灯管 R 并联</strong>（跨接灯管两端），不要串进主回路。</p>
+</li>
+<li>
+<p><strong>三个补偿开关</strong>：教材是 S₂、S₃、S₄ 三个（对应 1.0/2.2/4.7 μF 那几档），你图上要能看出三个独立投切支路；漏一个就投不出 5.7 μF 那档组合。</p>
+</li>
+</ol>
+<p>画图规范（册 p02）：<strong>铅笔 + 直尺、每个元件标参数值</strong>。</p>
+<hr />
+<h2 id="discussion-of-results">六、Discussion of Results 五问：逐题要点</h2>
+<p>题目在册页（页脚标 9）。<strong>教材那句总要求仍然要守：凡计算题都写出公式并代入数值。</strong></p>
+<h3 id="1-234">问 1　用表 2.3.4 的数据算荧光灯电路的功率因数，写出计算过程</h3>
+<p>cos φ = P_LR ÷ (U × I)</p>
+<p>P_LR 取表 2.3.4 的"灯管+镇流器总有功"，U、I 取同一行。算完与表里的"测量值"（功率因数表读数）比一下，差值写一句误差来源（两表精度、读数换算）。</p>
+<h3 id="2-235">问 2　完成表 2.3.5 的功率因数计算</h3>
+<p>逐行同一个式子：cos φ = P ÷ (U × I)。五档都算，填进"计算值"列。</p>
+<h3 id="3-235">问 3　据表 2.3.5：哪些量随电容改变、怎么变；哪些不变</h3>
+<ul>
+<li>
+<p><strong>变</strong>：I_C（随 C 近似线性增大）、I（<strong>先减后增</strong>）、cos φ（<strong>先升后降</strong>）、Q（先减，过补偿后反号）</p>
+</li>
+<li>
+<p><strong>不变</strong>：U（电源仍 220 V）、P 与 P_LR（有功由负载决定，电容不耗有功）、P_C ≈ 0、I_L（灯管—镇流器支路电流）、U_R（灯管端电压）</p>
+</li>
+</ul>
+<p>一句话结论：并联电容只重新分配<strong>无功</strong>，不改变负载自己的工作状态。</p>
+<h3 id="4">问 4　填空（四空）</h3>
+<ul>
+<li>
+<p>总电流降到最小值时，电路处于 <strong>resistive（电阻性）</strong>；</p>
+</li>
+<li>
+<p>电容再增大，总电流 <strong>rises（上升）</strong>，电路变成 <strong>capacitive（容性）</strong>；</p>
+</li>
+<li>
+<p>cos φ 达最大值时的补偿电容 = <strong>看表 2.3.5 里 cos φ 最大的那一档</strong>。</p>
+</li>
+</ul>
+<p>理论参考：全补偿点</p>
+<p>C = Q_L ÷ (ω U²)，ω = 2π × 50 ≈ 314.16 rad/s</p>
+<p>以 P ≈ 45 W、补偿前 cos φ₁ ≈ 0.50 估：Q_L ≈ 77.9 var → <strong>C ≈ 5.1 μF</strong>。五档是 1.0/2.2/3.2/4.7/5.7 μF，所以表上 cos φ 的最大值<strong>大概率落在 4.7 μF 那一档</strong>——按你实测填，别照我这个数填。</p>
+<h3 id="5-led">问 5　LED 改造（教材没有，只能自己答）</h3>
+<p><strong>(1) LED 照明电路需要镇流器或启辉器吗？</strong>
+不需要。LED 灯管靠<strong>恒流驱动电源（LED driver）</strong>工作，既不需要镇流器限流，也不需要启辉器起辉。</p>
+<p><strong>(2) 原来的镇流器和启辉器怎么处理？需要额外加什么元件？</strong></p>
+<ul>
+<li>
+<p><strong>镇流器：拆除或短接旁路（bypass）</strong>。留着它会额外降压、限流，LED 驱动拿不到足够的电压。</p>
+</li>
+<li>
+<p><strong>启辉器：取下不用</strong>（启辉器座空着或同步旁路），它那个"通—断"动作对 LED 毫无用处。</p>
+</li>
+<li>
+<p><strong>额外需要的元件：恒流驱动电源</strong>——市售的替换型 LED 灯管通常已把驱动<strong>内置</strong>在管子里，所以"额外元件"就是灯管自带的驱动；若用裸 LED 灯管，则须外配恒流源。</p>
+</li>
+<li>
+<p>另一种做法（可作补充）：若使用"兼容镇流器型"LED 灯管，可保留原镇流器，但要<strong>把启辉器换成专用的"LED 启动器"（内含保险丝的假启辉器）</strong>。两种方案<strong>选一种写清楚</strong>，不要混着写。</p>
+</li>
+</ul>
+<hr />
+<h2 id="60">七、交之前 60 秒自检</h2>
+<table>
+<thead>
+<tr>
+<th>查什么</th>
+<th>标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>合闸是不是老师做的</td>
+<td>册上明文"不要自己合闸"</td>
+</tr>
+<tr>
+<td>原始数据有没有老师签字批改</td>
+<td>册 p02：未批改的记录<strong>无效</strong></td>
+</tr>
+<tr>
+<td>表 2.3.4、2.3.5 列名齐、单位齐</td>
+<td>每个数带 V、A、W、μF；cos φ 无单位</td>
+</tr>
+<tr>
+<td>图 2.3.3 用铅笔直尺、标了参数</td>
+<td>册 p02 预习要求</td>
+</tr>
+<tr>
+<td>电压三角形的<strong>电路图 + 数据表</strong>都画了</td>
+<td>这是 II-2 明确要求"自己设计"的两样</td>
+</tr>
+<tr>
+<td>五问每题都有公式行再代数值</td>
+<td>教材 p.39 / 52 的总要求</td>
+</tr>
+<tr>
+<td>教材带没带</td>
+<td>不带不允许进实验室</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">八、还缺的一页（必须补）</h2>
+<p><strong>册子里 <code>I. Preliminary Work</code>（预习页）我还没有。</strong> 实验2 的那一页在 p04，内容是"读教材 Section 2.1 + 画图 + 准备表格 + 答 4 问"。实验3 对应的这一页应该是"读 Section 2.3 + 画图 2.3.3 + 准备表 2.3.4/2.3.5 + 答若干问"。</p>
+<ul>
+<li>
+<p>这一页直接决定<strong>预习分</strong>和"没有预习报告不允许做实验"这条门槛；</p>
+</li>
+<li>
+<p>在拿到它之前，预习问答只能按教材 §2.3.2（<strong>p.35 / 48</strong>）的 8 问准备，答案在 <code>实验3-预习解答-20261019.pdf</code> 第三节。</p>
+</li>
+</ul>
+<hr />
+<blockquote>
+<p>状态记录：本文依据＝学习者 2026-10-20 提供的册页 3 张（已入库 <code>实验册-照片/册-实验3-01/02/03</code>，逐页转录见该目录 <code>INDEX.md</code> 新增的实验3 段）+ 教材 §2.3 逐页读图。v2 的「6 问讨论 / 三表法模块 / 表 2.3.3」三处<strong>已作废</strong>。图 2.3.3 手绘核对项中"电容引出点"标 [待确认]。属导师给出的示例解答，不计为独立掌握证据。</p>
+</blockquote>
+</body></html>

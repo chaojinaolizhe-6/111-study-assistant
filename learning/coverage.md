@@ -2,7 +2,7 @@
 
 > **本文件由 `python -B tools/coverage.py` 生成，勿手工编辑**（派生视图）。
 > 事实源：`learning/attempts.jsonl`（不改不删）+ `learning/corrections.jsonl`（订正）+ `learning/goals.yaml`（目标）+ 题目 frontmatter。
-> 生成日期：2026-10-19 ｜ 事件 51 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `a3917aebfa0ccee5…`
+> 生成日期：2026-10-20 ｜ 事件 52 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `1388bfe3d536e51e…`
 > 手写意图（今天做什么、为什么暂缓）不在这里：见 `plan/today-<日期>.md`、`plan/gaps.md`、`.tutor/config/status-narrative.yml`。
 
 ## ① 能力目标覆盖（含**尚未出题**的考点）
@@ -49,8 +49,8 @@
 
 | 目标 | 覆盖状态 | 等级 | 题数 | 独立通过日期 | 未解决困难 | 延迟检验 |
 |---|---|---|---|---|---|---|
-| `tm.t5.central-motion-types` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
-| `tm.t5.effective-potential` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
+| `tm.t5.central-motion-types` | 已作答·需补练 | 需支持 | 2 | — | hurdle-4 | 未满足（跨度 0d < 2d） |
+| `tm.t5.effective-potential` | 已作答·需补练 | 需支持 | 2 | — | hurdle-4 | 未满足（跨度 0d < 2d） |
 | `tm.t5.law-of-motion` | 已作答·需补练 | 需支持 | 1 | — | — | 未满足（跨度 0d < 2d） |
 | `tm.t5.potential-analysis` | 已作答·需补练 | 需支持 | 1 | — | — | 未满足（跨度 0d < 2d） |
 | `tm.t5.turning-points` | 已作答·需补练 | 需支持 | 2 | — | — | 未满足（跨度 0d < 2d） |
@@ -258,8 +258,8 @@
 | `tm.t4.energy-criteria` | 进行中 | ✅ 已结案 hurdle-1 | 0 次独立通过（6 次作答，其中 6 次受助/曝光） | ❌ |
 | `tm.t4.energy-integral` | 进行中 | 无困难记录 | 独立通过 1 次（2026-09-28） | ❌ |
 | `tm.t4.mechanical-similarity` | 未开始（0次作答） | 无困难记录 | 无作答 | ❌ |
-| `tm.t5.central-motion-types` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
-| `tm.t5.effective-potential` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
+| `tm.t5.central-motion-types` | 进行中 | ❌ 未解决 hurdle-4 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
+| `tm.t5.effective-potential` | 进行中 | ❌ 未解决 hurdle-4 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
 | `tm.t5.law-of-motion` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `tm.t5.potential-analysis` | 进行中 | 无困难记录 | 0 次独立通过（1 次作答，其中 1 次受助/曝光） | ❌ |
 | `tm.t5.turning-points` | 进行中 | 无困难记录 | 0 次独立通过（2 次作答，其中 2 次受助/曝光） | ❌ |
@@ -372,7 +372,9 @@
 | `tm.t4.energy-integral` | `attempt-6` | 2026-09-28 | 曝光=partial@before_attempt |
 | `tm.t4.energy-integral` | `attempt-7` | 2026-09-28 | 曝光=full@before_attempt |
 | `tm.t5.central-motion-types` | `attempt-52` | 2026-10-19 | 结果=partial；提示H1；待核验；曝光=partial@before_attempt |
+| `tm.t5.central-motion-types` | `attempt-53` | 2026-10-19 | 非闭卷；结果=partial；提示H4；曝光=full@before_attempt |
 | `tm.t5.effective-potential` | `attempt-52` | 2026-10-19 | 结果=partial；提示H1；待核验；曝光=partial@before_attempt |
+| `tm.t5.effective-potential` | `attempt-53` | 2026-10-19 | 非闭卷；结果=partial；提示H4；曝光=full@before_attempt |
 | `tm.t5.law-of-motion` | `attempt-47` | 2026-10-12 | 结果=partial；提示H3；待核验；曝光=partial@before_attempt |
 | `tm.t5.potential-analysis` | `attempt-47` | 2026-10-12 | 提示H3；待核验；曝光=partial@before_attempt |
 | `tm.t5.turning-points` | `attempt-47` | 2026-10-12 | 提示H3；曝光=partial@before_attempt |
@@ -447,6 +449,7 @@
 | `hurdle-1` | verified | tm.t4.energy-criteria | 2026-09-26 | eval/会话原文-20260926.md；state/mistakes.md 同条记录；subjects/01-理论力 |
 | `hurdle-2` | awaiting_retest | mp.taylor-expansion, mp.laurent-expansion | 2026-09-28 | 会话 2026-09-28（学习者原话：『我不会😭』）；相关任务 learning/tasks/mp1-ch3-hw-0 |
 | `hurdle-3` | teaching | ru.qword-agreement | 2026-09-30 | 讲法见 subjects/07-俄语/topics/topic-02-疑问词какой在问什么.md；对照证据＝atte |
+| `hurdle-4` | teaching | tm.t5.effective-potential, tm.t5.central-motion-types | 2026-10-19 | attempt-52（tm-t5-ueff-variant-01，partial）＋ 2026-10-19 会话内口头自 |
 
 ## ⑧ 题目清单（`learning/tasks/`）
 
@@ -504,4 +507,4 @@
 | `tm-t5-ueff-variant-01` | — | practice | open | tm.t5.effective-potential, tm.t5.central-motion-types, tm.t5.turning-points | — |
 | `xz-2026f-course-selection` | — | practice | done | — | 2026-10-10 17:00 |
 
-（题目 51 道；作答事件 51 条；以上均由脚本重算，不含手写内容。）
+（题目 51 道；作答事件 52 条；以上均由脚本重算，不含手写内容。）

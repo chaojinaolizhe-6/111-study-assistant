@@ -12,6 +12,7 @@
 - 起点与调整原则：[课程包_AI-TECH/01_学习者起点与调整原则.md](课程包_AI-TECH/01_学习者起点与调整原则.md)
 - 日常教学与验收规则：[课程包_AI-TECH/04_日常教学与验收规则.md](课程包_AI-TECH/04_日常教学与验收规则.md)
 - 练习目录（实际写代码、跑程序的地方）：[练习/](练习/README.md)
+- 单元讲义（备课与讲解材料，含 PDF）：[讲义/INDEX.md](讲义/INDEX.md)
 - 主题与概念：[topics/INDEX.md](topics/INDEX.md)
 - 学习进度：[progress.md](progress.md)
 

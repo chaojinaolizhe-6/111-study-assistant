@@ -1,0 +1,2585 @@
+
+\documentclass[10.5pt]{ctexart}
+\usepackage[a4paper,left=1.7cm,right=1.7cm,top=1.9cm,bottom=1.9cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+
+\definecolor{deepblue}{RGB}{12,82,160}
+\definecolor{deepnavy}{RGB}{18,60,104}
+\definecolor{accent}{RGB}{176,58,20}
+\definecolor{band}{RGB}{242,246,251}
+\definecolor{band2}{RGB}{250,247,238}
+\definecolor{rulegray}{RGB}{198,210,226}
+\definecolor{inkgray}{RGB}{96,104,116}
+
+\linespread{1.18}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlist{nosep,leftmargin=1.6em}
+
+\pagestyle{fancy}
+\setlength{\headheight}{19pt}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{inkgray}微分方程 L1--L12\quad 题干清单 / 乱序练习单 / 答案}
+\fancyhead[R]{\footnotesize\color{inkgray}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+
+\newcommand{\hdr}[1]{%
+  \par\vspace{10pt}%
+  \needspace{3\baselineskip}%
+  \noindent{\color{deepblue}\large\bfseries #1}\par\vspace{1pt}%
+  \noindent{\color{deepblue}\rule{\linewidth}{1pt}}\par\vspace{5pt}}
+
+\newcommand{\parttitle}[2]{%
+  \par\vspace{6pt}\begin{center}
+  {\color{deepblue}\LARGE\bfseries #1}\\[3pt]
+  {\color{inkgray}\small #2}
+  \end{center}\vspace{4pt}}
+
+% 有序清单条目
+\newcommand{\itmh}[3]{%
+  \par\vspace{6pt}\needspace{6\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{5pt}{\bfseries #2}\hfill
+  {\scriptsize\color{inkgray}#3}\par\nopagebreak\vspace{-2pt}}
+
+% 乱序练习条目
+\newcommand{\drillh}[2]{%
+  \par\vspace{7pt}\needspace{7\baselineskip}%
+  \noindent{\color{accent}\bfseries #1}\hspace{5pt}{\small\color{inkgray}#2}\par\nopagebreak\vspace{-2pt}}
+
+\newcommand{\writelines}{%
+  \par\vspace{3pt}\noindent
+  {\scriptsize\color{inkgray}类型：\rule{4.9cm}{0.35pt}\quad 解法：\rule{5.4cm}{0.35pt}}\par\vspace{1pt}
+  \noindent{\scriptsize\color{inkgray}结果：\rule{13.2cm}{0.35pt}}\par\vspace{2pt}}
+
+% 答案条目
+\newcommand{\ansh}[4]{%
+  \par\vspace{7pt}\needspace{9\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{4pt}{\scriptsize\color{inkgray}(#2)}\hspace{6pt}%
+  {\small\textbf{类型}：#3}\hspace{6pt}{\small\textbf{解法}：#4}\par\nopagebreak\vspace{-3pt}}
+
+\newcommand{\ansnote}[1]{\par\vspace{-4pt}\noindent{\scriptsize\color{inkgray}注：#1}\par}
+
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{center}
+\vspace*{1.2cm}
+{\color{deepblue}\Huge\bfseries 微分方程 前 12 讲}\\[6pt]
+{\color{deepblue}\Huge\bfseries 题干清单（乱序自测版）}\\[14pt]
+{\large A.~Gladkov 课件 \textit{Differential Equations} Lecture 1--12（579 页）}\\[4pt]
+{\small 逐页识别：例题 \textbf{103} 道 ＋ 课后习题 \textbf{56} 道 ＝ \textbf{159} 道}\\[2pt]
+{\small 生成日期 2026-10-20\quad｜\quad 乱序种子 20261020（可复现）}
+\end{center}
+
+\vspace{0.6cm}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabular}{|c|>{\raggedright\arraybackslash}p{8.2cm}|c|c|}
+\hline
+\textbf{讲次} & \textbf{主题} & \textbf{例题} & \textbf{习题}\\\hline
+
+1 & 微积分预备、基本定义、标准形式、Euler 法、主要定理、DE 的来源 & 8 & 6\\\hline
+
+2 & 可分离变量方程、齐次方程、可化为齐次的方程 & 9 & 4\\\hline
+
+3 & 齐次模型、准齐次（广义齐次）方程、恰当方程 & 6 & 3\\\hline
+
+4 & 积分因子、一阶线性方程 & 7 & 5\\\hline
+
+5 & Bernoulli 方程、Riccati 方程、关于 y 可解的方程 & 7 & 5\\\hline
+
+6 & Clairaut 方程、Lagrange 方程、关于 x 可解的方程 & 6 & 4\\\hline
+
+7 & 降阶：最简形式／不含 x／不含 y／齐次／广义齐次／线性 & 12 & 6\\\hline
+
+8 & n 阶线性齐次与非齐次方程、参数变易法 & 7 & 5\\\hline
+
+9 & 常系数 n 阶线性齐次方程（特征方程） & 7 & 7\\\hline
+
+10 & 重根与复根、Cauchy–Euler 方程 & 7 & 8\\\hline
+
+11 & 常系数非齐次方程：待定系数法 & 9 & 3\\\hline
+
+12 & 总复习（九类方法串讲） & 18 & 0\\\hline
+
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{minipage}{0.88\linewidth}
+\small
+\textbf{怎么用这份册子（三步）}
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{先看第一部分}：按讲次排好的原始清单，每题只给方程与要求，用来确认「这一讲讲过的题到底长什么样」。
+  \item \textbf{再做第二部分}：同一批题打乱讲次顺序重排（编号 1--159）。每题先只做一件事——\emph{看方程写出它的形式与解法}，再动手算。写不出形式，就是该回看讲次的地方。
+  \item \textbf{最后对第三部分}：答案按乱序编号排列，每条给出「类型／解法／结果」，并标注原题号（如 L4-3）方便回课件定位。
+\end{enumerate}
+\vspace{2pt}
+\textbf{收录口径}：课件里凡提出「求解／求通解／解初值问题／判定／验证」的例题与每讲 Homework 的每个小问，逐条收录；纯定义、定理陈述、「For reading」书单、证明过程不计。同一张幻灯片的多帧动画只算一题。
+\end{minipage}
+\end{center}
+\clearpage
+
+\parttitle{第一部分\quad 题干总清单（按讲次）}{同一批题，按 L1$\to$L12 的讲课顺序排列；此处不给答案}
+\hdr{第 1 讲（L1）\quad 微积分预备、基本定义、标准形式、Euler 法、主要定理、DE 的来源}
+\itmh{L1-1}{求通解}{例题 $\cdot{} EXAMPLE 1 \cdot{} p11$}
+\[
+x\,y' + 3y = 6x^{3}
+\]
+\itmh{L1-2}{求通解}{例题 $\cdot{} EXAMPLE 2 \cdot{} p12$}
+\[
+2x^{2}y'' - y'^{\,2} = 0
+\]
+\itmh{L1-3}{求隐式通解与参数解}{例题 $\cdot{}$ 例题 $\cdot{} p15$}
+\[
+y\,y' = -x
+\]
+\itmh{L1-4}{判定问题类型并求解}{例题 $\cdot{} EXAMPLES 1) \cdot{} p19$}
+\[
+y''(x) + y(x) = 0,\quad y(1)=2,\ y'(1)=0
+\]
+\itmh{L1-5}{判定问题类型并判断解的存在性}{例题 $\cdot{} EXAMPLES 2) \cdot{} p19$}
+\[
+y''(x) + y(x) = 0,\quad y(0)=1,\ y'(\pi/2)=5
+\]
+\itmh{L1-6}{判定问题类型并求解}{例题 $\cdot{} EXAMPLES 2) \cdot{} p19$}
+\[
+y''(x) + y(x) = 0,\quad y(0)=1,\ y'(\pi)=5
+\]
+\itmh{L1-7}{求平衡解}{例题 $\cdot{}$ 例题 $\cdot{} p20$}
+\[
+y'(x) = y^{2} - 9
+\]
+\itmh{L1-8}{解初值问题并讨论唯一性}{例题 $\cdot{}$ 例题 $\cdot{} p25$}
+\[
+y'(x) = 3y^{2/3}(x),\quad y(x_{0}) = y_{0}
+\]
+\itmh{L1-9}{判定常/偏、阶数与线性性}{习题 $\cdot{}$ 习题 $I a) \cdot{} p33$}
+\[
+\frac{d^{3}y}{dx^{3}} + y\sin x = 0
+\]
+\itmh{L1-10}{判定常/偏、阶数与线性性}{习题 $\cdot{}$ 习题 $I b) \cdot{} p33$}
+\[
+\left(\frac{dr}{ds}\right)^{4} = r\,\frac{d^{2}r}{ds^{2}} + 1
+\]
+\itmh{L1-11}{验证隐式解}{习题 $\cdot{}$ 习题 $II \cdot{} p33$}
+\[
+\begin{gathered}
+5x^{2}y^{2} - 2x^{3}y^{2} = 1 \quad (0<x<5/2) \\
+x\,\frac{dy}{dx} + y = x^{3}y^{3}
+\end{gathered}
+\]
+\itmh{L1-12}{验证是解}{习题 $\cdot{}$ 习题 $III \cdot{} p34$}
+\[
+\begin{gathered}
+f(x) = (x^{3}+c)\,e^{-3x} \\
+\frac{dy}{dx} + 3y = 3x^{2}e^{-3x}
+\end{gathered}
+\]
+\itmh{L1-13}{求使 $e^{mx}$ 为解的所有 $m$}{习题 $\cdot{}$ 习题 $IV \cdot{} p34$}
+\[
+\frac{d^{3}y}{dx^{3}} - 2\frac{d^{2}y}{dx^{2}} - 9\frac{dy}{dx} + 18y = 0,\quad y=e^{mx}
+\]
+\itmh{L1-14}{验证是解并满足初值}{习题 $\cdot{}$ 习题 $V \cdot{} p34$}
+\[
+\begin{gathered}
+f(x) = 3e^{2x} - 2xe^{2x} + \sin 2x \\
+\frac{d^{2}y}{dx^{2}} - 4\frac{dy}{dx} + 4y = -8\cos 2x
+\end{gathered}
+\]
+\hdr{第 2 讲（L2）\quad 可分离变量方程、齐次方程、可化为齐次的方程}
+\itmh{L2-1}{求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p5$}
+\[
+y'\cos y = x\sin^{2}y
+\]
+\itmh{L2-2}{解 Cauchy 问题}{例题 $\cdot{} EXAMPLES 2 \cdot{} p11$}
+\[
+\frac{dy}{dx} = \frac{2\cos 2x}{3+2y},\quad y(0) = -1
+\]
+\itmh{L2-3}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p14$}
+\[
+\frac{dy}{dx} = \sqrt{4x + 2y - 1}
+\]
+\itmh{L2-4}{解带参数初值问题}{例题 $\cdot{}$ 例题 $\cdot{} p16$}
+\[
+y' = \frac{2y}{x} + x^{2}e^{y/x^{2}},\quad y(1) = a
+\]
+\itmh{L2-5}{判定齐次函数的次数}{例题 $\cdot{}$ 例题 $\cdot{} p24$}
+\[
+F(x,y) = x^{3}y - x^{2}y^{2}
+\]
+\itmh{L2-6}{解 Cauchy 问题}{例题 $\cdot{} EXAMPLES 1 \cdot{} p29$}
+\[
+\frac{dy}{dx} = \frac{x^{2}+3y^{2}}{2xy},\quad y(1)=1
+\]
+\itmh{L2-7}{解 Cauchy 问题}{例题 $\cdot{} EXAMPLES 2 \cdot{} p31$}
+\[
+(2x-5y)\,dx + (4x-y)\,dy = 0,\quad y(1)=2
+\]
+\itmh{L2-8}{求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p38$}
+\[
+\frac{dy}{dx} = \frac{1}{2}\left(\frac{x+y-1}{x+2}\right)^{2}
+\]
+\itmh{L2-9}{求通解}{例题 $\cdot{} EXAMPLES 2 \cdot{} p40$}
+\[
+(x+y+1) + (2x+2y+1)y' = 0
+\]
+\itmh{L2-10}{求通解}{习题 $\cdot{}$ 习题 $I a) \cdot{} p47$}
+\[
+(e^{v}+1)\cos u\,du + e^{v}(\sin u+1)\,dv = 0
+\]
+\itmh{L2-11}{求通解}{习题 $\cdot{}$ 习题 $I b) \cdot{} p47$}
+\[
+(x+4)(y^{2}+1)\,dx + 2y(x^{2}+3x+2)\,dy = 0
+\]
+\itmh{L2-12}{解初值问题}{习题 $\cdot{}$ 习题 $II a) \cdot{} p48$}
+\[
+(3x^{2}+9xy+5y^{2})\,dx - (6x^{2}+4xy)\,dy = 0,\quad y(2)=-6
+\]
+\itmh{L2-13}{解初值问题}{习题 $\cdot{}$ 习题 $II b) \cdot{} p48$}
+\[
+(5x+2y+1)\,dx + (2x+y+1)\,dy = 0,\quad y(0)=1
+\]
+\hdr{第 3 讲（L3）\quad 齐次模型、准齐次（广义齐次）方程、恰当方程}
+\itmh{L3-1}{判定准齐次并求解}{例题 $\cdot{} EXAMPLE \cdot{} p9$}
+\[
+y' = \frac{y}{x} + \frac{x}{y^{2}},\quad x\neq 0,\ y\neq 0
+\]
+\itmh{L3-2}{判定是否恰当}{例题 $\cdot{} EXAMPLE \cdot{} p20$}
+\[
+y^{2}\,dx + 2xy\,dy = 0
+\]
+\itmh{L3-3}{求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p22$}
+\[
+(y + 2xe^{y}) + x(1+xe^{y})y' = 0
+\]
+\itmh{L3-4}{解初值问题}{例题 $\cdot{} EXAMPLES 2 \cdot{} p24$}
+\[
+(2xy^{3}+3x^{2}y^{2}+y)\,dx + (3x^{2}y^{2}+2x^{3}y+x)\,dy = 0,\quad y(1)=-1
+\]
+\itmh{L3-5}{求通解}{例题 $\cdot{} EXAMPLES 3 \cdot{} p27$}
+\[
+(3x^{2}+4xy)\,dx + (2x^{2}+2y)\,dy = 0
+\]
+\itmh{L3-6}{求通解}{例题 $\cdot{} EXAMPLES 4 \cdot{} p28$}
+\[
+2y + xy' = 0
+\]
+\itmh{L3-7}{解初值问题（要求两种方法）}{习题 $\cdot{}$ 习题 $I \cdot{} p43$}
+\[
+(2y\sin x\cos x + y^{2}\sin x)\,dx + (\sin^{2}x - 2y\cos x)\,dy = 0,\quad y(0)=3
+\]
+\itmh{L3-8}{求 $A$ 使方程恰当并求通解}{习题 $\cdot{}$ 习题 $II \cdot{} p43$}
+\[
+(Ax^{3}y + y^{3})\,dx + (x^{4}+3xy^{2})\,dy = 0
+\]
+\itmh{L3-9}{判定准齐次并求解}{习题 $\cdot{}$ 习题 $III \cdot{} p43$}
+\[
+y' = \frac{y}{x} + \frac{x^{3}}{y},\quad x\neq 0,\ y\neq 0
+\]
+\hdr{第 4 讲（L4）\quad 积分因子、一阶线性方程}
+\itmh{L4-1}{用积分因子求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p7$}
+\[
+y\,dx - (x + x^{2} + y^{2})\,dy = 0
+\]
+\itmh{L4-2}{用积分因子求通解}{例题 $\cdot{} EXAMPLES 2 \cdot{} p9$}
+\[
+(x^{2}y + y + 1)\,dx + x(1+x^{2})\,dy = 0
+\]
+\itmh{L4-3}{求通解}{例题 $\cdot{} EXAMPLES 3 \cdot{} p10$}
+\[
+y(1-y) + xy' = 0
+\]
+\itmh{L4-4}{求通解}{例题 $\cdot{} EXAMPLES 4 \cdot{} p12$}
+\[
+y\,dx + \left(2x + \frac{1}{y}\right)dy = 0
+\]
+\itmh{L4-5}{解初值问题}{例题 $\cdot{} EXAMPLE \cdot{} p20$}
+\[
+xy' + 4y + 2x^{2} + 4 = 0,\quad x\neq 0,\ y(1)=1
+\]
+\itmh{L4-6}{解初值问题}{例题 $\cdot{} EXAMPLE \cdot{} p29$}
+\[
+(x^{2}+1)y' + 4xy = x,\quad y(2)=1
+\]
+\itmh{L4-7}{求通解}{例题 $\cdot{} EXAMPLE \cdot{} p34$}
+\[
+\frac{dy}{dx} = \frac{1}{e^{-y} - x}
+\]
+\itmh{L4-8}{证明积分因子}{习题 $\cdot{}$ 习题 $I \cdot{} p48$}
+\[
+[y + xf(x^{2}+y^{2})]\,dx + [yf(x^{2}+y^{2}) - x]\,dy = 0
+\]
+\itmh{L4-9}{用上题结果求通解}{习题 $\cdot{}$ 习题 $II \cdot{} p48$}
+\[
+[y + x(x^{2}+y^{2})^{2}]\,dx + [y(x^{2}+y^{2})^{2} - x]\,dy = 0
+\]
+\itmh{L4-10}{求通解}{习题 $\cdot{}$ 习题 $III \cdot{} p48$}
+\[
+\cos\theta\,dr + (r\sin\theta - \cos^{4}\theta)\,d\theta = 0
+\]
+\itmh{L4-11}{解初值问题}{习题 $\cdot{}$ 习题 $IV a) \cdot{} p49$}
+\[
+\frac{dx}{dt} - x = \sin 2t,\quad x(0)=1
+\]
+\itmh{L4-12}{解初值问题（右端分段）}{习题 $\cdot{}$ 习题 $IV b) \cdot{} p49$}
+\[
+\begin{gathered}
+\frac{dy}{dx} + y = f(x),\quad y(0)=1 \\
+f(x) = \begin{cases} e^{-x},  0\le x<1,\\ e^{-1},  x\ge 1. \end{cases}
+\end{gathered}
+\]
+\hdr{第 5 讲（L5）\quad Bernoulli 方程、Riccati 方程、关于 y 可解的方程}
+\itmh{L5-1}{求解微分方程}{例题 $\cdot{} EXAMPLE 1 \cdot{} p6$}
+\[
+\frac{dy}{dx} + y = x y^{3}
+\]
+\itmh{L5-2}{求解微分方程}{例题 $\cdot{} EXAMPLE 2 \cdot{} p9$}
+\[
+\frac{dy}{dx} = \frac{y}{2x + x^{2}y^{4}},\quad x\neq 0
+\]
+\itmh{L5-3}{解初值问题}{例题 $\cdot{} EXAMPLE \cdot{} p18$}
+\[
+\begin{gathered}
+\frac{dy}{dx} + 4 = \exp(x-y) \\
+y(0)=0
+\end{gathered}
+\]
+\itmh{L5-4}{求解微分方程}{例题 $\cdot{} EXAMPLE 1$（Riccati） $\cdot{} p24$}
+\[
+y' = 1 + x^{2} - 2xy + y^{2}
+\]
+\itmh{L5-5}{求解微分方程}{例题 $\cdot{} EXAMPLE 2$（Riccati） $\cdot{} p25$}
+\[
+y' = \frac{2\cos^{2}x - \sin^{2}x + y^{2}}{2\cos x}
+\]
+\itmh{L5-6}{求通解}{例题 $\cdot{} EXAMPLE 1$（关于 y 可解） $\cdot{} p31$}
+\[
+2(y')^{3} + (y')^{2} - y = 0
+\]
+\itmh{L5-7}{求通解}{例题 $\cdot{} EXAMPLE 2$（关于 y 可解） $\cdot{} p33$}
+\[
+(y')^{2} - x y' - y + \frac{x^{2}}{2} = 0
+\]
+\itmh{L5-8}{求解微分方程}{习题 $\cdot{}$ 习题 $I \cdot{} p54$}
+\[
+x^{3}y^{2}\sin y\,\frac{dy}{dx} - 2y = x\frac{dy}{dx}
+\]
+\itmh{L5-9}{先用观察法求一个特解，再求 Riccati 方程的通解}{习题 $\cdot{}$ 习题 $II \cdot{} p54$}
+\[
+x^{3}y' + 2x^{2}y + 2x^{4}y^{2} = 18,\quad x\neq 0
+\]
+\itmh{L5-10}{求解微分方程}{习题 $\cdot{}$ 习题 $III \cdot{} p54$}
+\[
+2x^{3}(y')^{2} - 2xy' - y = 0,\quad x\neq 0
+\]
+\itmh{L5-11}{求解微分方程}{习题 $\cdot{}$ 习题 $IV \cdot{} p55$}
+\[
+y = xy' + (y')^{2} - 4
+\]
+\itmh{L5-12}{求解微分方程}{习题 $\cdot{}$ 习题 $V \cdot{} p55$}
+\[
+y = 2xy' - 4(y')^{3}
+\]
+\hdr{第 6 讲（L6）\quad Clairaut 方程、Lagrange 方程、关于 x 可解的方程}
+\itmh{L6-1}{求 Clairaut 方程的通解}{例题 $\cdot{} EXAMPLE 1$（Clairaut） $\cdot{} p5$}
+\[
+y = xy' + \exp(y')
+\]
+\itmh{L6-2}{解 Cauchy 问题}{例题 $\cdot{} EXAMPLE 2$（Clairaut，Cauchy 问题） $\cdot{} p7$}
+\[
+\begin{gathered}
+y = xy' + (y')^{3} - 3y' \\
+y(0)=0
+\end{gathered}
+\]
+\itmh{L6-3}{求 Lagrange 方程的通解}{例题 $\cdot{} EXAMPLE 1$（Lagrange） $\cdot{} p14$}
+\[
+x(y')^{2} - y' - y = 0
+\]
+\itmh{L6-4}{解 Cauchy 问题}{例题 $\cdot{} EXAMPLE 2$（Lagrange，Cauchy 问题） $\cdot{} p17$}
+\[
+\begin{gathered}
+y = x(y')^{2} + y' - (y')^{3} \\
+y(0)=0
+\end{gathered}
+\]
+\itmh{L6-5}{求通解}{例题 $\cdot{} EXAMPLES 1$（关于 x 可解） $\cdot{} p27$}
+\[
+(y')^{3} - y - x = 0
+\]
+\itmh{L6-6}{求通解}{例题 $\cdot{} EXAMPLES 2$（关于 x 可解） $\cdot{} p32$}
+\[
+x(y')^{2} - 2y' - x = 0
+\]
+\itmh{L6-7}{求解微分方程}{习题 $\cdot{}$ 习题 $I \cdot{} p49$}
+\[
+y = xy' - (y')^{2}
+\]
+\itmh{L6-8}{求解微分方程}{习题 $\cdot{}$ 习题 $II \cdot{} p49$}
+\[
+y = x(y')^{2} - 2(y')^{3}
+\]
+\itmh{L6-9}{求微分方程的解}{习题 $\cdot{}$ 习题 $III a) \cdot{} p49$}
+\[
+\ln y' + \sin y' - x = 0
+\]
+\itmh{L6-10}{求微分方程的解}{习题 $\cdot{}$ 习题 $III b) \cdot{} p49$}
+\[
+(y')^{2} - \exp(y') + x = 0
+\]
+\hdr{第 7 讲（L7）\quad 降阶：最简形式／不含 x／不含 y／齐次／广义齐次／线性}
+\itmh{L7-1}{求三阶方程的通解（逐次积分三次）}{例题 $\cdot{} EXAMPLE 1 \cdot{} p5$}
+\[
+y''' = x\cos x
+\]
+\itmh{L7-2}{解初值问题（Cauchy 问题）}{例题 $\cdot{} EXAMPLE 2 \cdot{} p7$}
+\[
+y'' = \exp(5x),\quad y(0)=1,\quad y'(0)=-1
+\]
+\itmh{L7-3}{求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p9$}
+\[
+y y'' - y'^2 = 0
+\]
+\itmh{L7-4}{求通解（答案写成求积形式）}{例题 $\cdot{} EXAMPLES 2 \cdot{} p11$}
+\[
+8y'' - \exp y - y'^2 = 0
+\]
+\itmh{L7-5}{求通解（作代换 $z=y''$ 降阶）}{例题 $\cdot{} EXAMPLE 1 \cdot{} p13$}
+\[
+y''' - y'' = \exp(x)
+\]
+\itmh{L7-6}{求通解（两次降阶）}{例题 $\cdot{} EXAMPLE 2 \cdot{} p15$}
+\[
+1 + y''^2 = 2y'y''',\quad y' > 0
+\]
+\itmh{L7-7}{验证该方程关于 (y,y',y'') 是 5 次齐次（在 $\mathbb{R}^4$ 中）}{例题 $\cdot{} EXAMPLE \cdot{} p18$}
+\[
+x y y'^2 y''^2 + 2y^3 y''^2 - 5x^3 y^5 = 0
+\]
+\itmh{L7-8}{求解（先验证齐次性，再降阶）}{例题 $\cdot{} EXAMPLES 1 \cdot{} p20$}
+\[
+x y y'' - x y'^2 = y y'
+\]
+\itmh{L7-9}{求解（先验证齐次性，再降阶）}{例题 $\cdot{} EXAMPLES 2 \cdot{} p22$}
+\[
+y^2 y''' - 3y y' y'' + 2y'^3 + y^3\sin x = 0
+\]
+\itmh{L7-10}{解 Cauchy 问题（先验证广义齐次性）}{例题 $\cdot{} EXAMPLE \cdot{} p26$}
+\[
+4x^2y^3y'' = -y^4 - x^2,\quad y(1)=1,\quad y'(1)=1
+\]
+\itmh{L7-11}{用已知特解降阶，并解所得一阶方程}{例题 $\cdot{} EXAMPLE 1 \cdot{} p31$}
+\[
+\begin{gathered}
+x^3 y'' + (x-1)y' - y = 0 \\
+y_p(x) = x - 1
+\end{gathered}
+\]
+\itmh{L7-12}{用已知特解降阶，并解所得一阶方程}{例题 $\cdot{} EXAMPLE 2 \cdot{} p33$}
+\[
+\begin{gathered}
+y'' + xy' - (x+1)y = 0 \\
+y_p(x) = \exp x
+\end{gathered}
+\]
+\itmh{L7-13}{解初值问题（三阶最简形式）}{习题 $\cdot{}$ 习题 $I \cdot{} p46$}
+\[
+y''' = \cos^2(2x),\quad y(0)=1,\quad y'(0)=1,\quad y''(0)=2
+\]
+\itmh{L7-14}{降阶并求解所得方程}{习题 $\cdot{}$ 习题 $II a) \cdot{} p46$}
+\[
+y''' - \frac{1}{3}y''^4 = 0
+\]
+\itmh{L7-15}{降阶并求解所得方程}{习题 $\cdot{}$ 习题 $II b) \cdot{} p46$}
+\[
+y y'' - y'^2 = y^2\ln y,\quad y>0,\ y'>0
+\]
+\itmh{L7-16}{降阶并求解所得方程}{习题 $\cdot{}$ 习题 $II c) \cdot{} p46$}
+\[
+9x^2 y y'' - (y - 3xy')^2 = 0
+\]
+\itmh{L7-17}{用特解 $y_p=\exp(x)/x$ 降阶，并解所得一阶方程}{习题 $\cdot{}$ 习题 $III \cdot{} p46$}
+\[
+\begin{gathered}
+x y'' + 2y' - xy = 0 \\
+y_p(x) = \frac{\exp x}{x}
+\end{gathered}
+\]
+\itmh{L7-18}{求解（提示：先判定广义齐次性）}{习题 $\cdot{}$ 习题 $IV \cdot{} p47$}
+\[
+x^4 y'' + (x y' - y)^3 = 0
+\]
+\hdr{第 8 讲（L8）\quad n 阶线性齐次与非齐次方程、参数变易法}
+\itmh{L8-1}{判定两个函数在 $I=R$ 上是否线性相关}{例题 $\cdot{} EXAMPLE \cdot{} p7$}
+\[
+f_1(x) = x,\quad f_2(x) = 2x,\quad x\in\mathbb{R}
+\]
+\itmh{L8-2}{判定两个函数在 $I=R$ 上是否线性无关}{例题 $\cdot{} EXAMPLE \cdot{} p8$}
+\[
+f_1(x) = x,\quad f_2(x) = x^2,\quad x\in\mathbb{R}
+\]
+\itmh{L8-3}{判定两个解在 $I=R$ 上是否线性无关（用 Wronskian）}{例题 $\cdot{} EXAMPLE \cdot{} p10$}
+\[
+y'' - 2y' + y = 0,\quad y_1(x)=\exp x,\quad y_2(x)=x\exp x
+\]
+\itmh{L8-4}{证明两函数构成基本解组，并求通解}{例题 $\cdot{} EXAMPLE \cdot{} p12$}
+\[
+L(y)\equiv y'' + y' - 2y = 0,\quad y_1=\exp t,\quad y_2=\exp(-2t),\quad t\in\mathbb{R}
+\]
+\itmh{L8-5}{用参数变易法（Lagrange 法）求通解}{例题 $\cdot{} EXAMPLES 1 \cdot{} p21$}
+\[
+y'' + y = \tan x,\quad x\neq\frac{\pi}{2}+\pi n,\ n\in\mathbb{Z}
+\]
+\itmh{L8-6}{用参数变易法求通解}{例题 $\cdot{} EXAMPLES 2 \cdot{} p26$}
+\[
+2xy'' - (x+4)y' + \left(1+\frac{4}{x}\right)y = 4x^2,\quad x\neq 0
+\]
+\itmh{L8-7}{用 Abel 定理由已知特解求通解}{例题 $\cdot{} EXAMPLE$（附加材料：Abel 定理） $\cdot{} p51$}
+\[
+\begin{gathered}
+2xy'' - (x+4)y' + \left(1+\frac{4}{x}\right)y = 0,\quad x\neq 0 \\
+y_1(x) = x
+\end{gathered}
+\]
+\itmh{L8-8}{判定两个函数是否线性无关（不许用 Wronskian）}{习题 $\cdot{}$ 习题 $I a) \cdot{} p48$}
+\[
+f_1(x)=1,\quad f_2(x)=x,\quad x\in\mathbb{R}
+\]
+\itmh{L8-9}{判定两个函数是否线性无关（不许用 Wronskian）}{习题 $\cdot{}$ 习题 $I b) \cdot{} p48$}
+\[
+f_1(t)=\sin t,\quad f_2(t)=\tan t,\quad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right)
+\]
+\itmh{L8-10}{验证三个函数是解，并判定它们是否线性无关}{习题 $\cdot{}$ 习题 $II \cdot{} p48$}
+\[
+\begin{gathered}
+y''' - 2y'' - y' + 2y = 0 \\
+y_1(x)=\exp(-x),\quad y_2(x)=\exp x,\quad y_3(x)=\exp(2x)
+\end{gathered}
+\]
+\itmh{L8-11}{验证基本解组、求通解，并另给一组基本解组}{习题 $\cdot{}$ 习题 $III \cdot{} p49$}
+\[
+\begin{gathered}
+y''' - 9y'' + 26y' - 24y = 0 \\
+y_1=\exp(2x),\quad y_2=\exp(3x),\quad y_3=\exp(4x)
+\end{gathered}
+\]
+\itmh{L8-12}{已知齐次基本解组，用参数变易法求通解}{习题 $\cdot{}$ 习题 $IV \cdot{} p49$}
+\[
+\begin{gathered}
+y'' + y = 2\cos x \\
+y_1=\sin x,\quad y_2=\cos x
+\end{gathered}
+\]
+\hdr{第 9 讲（L9）\quad 常系数 n 阶线性齐次方程（特征方程）}
+\itmh{L9-1}{求通解}{例题 $\cdot{} EXAMPLE 1 \cdot{} p9$}
+\[
+y'' - 2y' - 15y = 0
+\]
+\itmh{L9-2}{求通解}{例题 $\cdot{} EXAMPLE 2 \cdot{} p10$}
+\[
+y''' - 4y'' + y' + 6y = 0
+\]
+\itmh{L9-3}{求通解}{例题 $\cdot{} EXAMPLE 3 \cdot{} p12$}
+\[
+y^{(4)} - 7y''' + 18y'' - 20y' + 8y = 0
+\]
+\itmh{L9-4}{求通解}{例题 $\cdot{} EXAMPLE 4 \cdot{} p16$}
+\[
+3y''' + y'' - 10y' - 8y = 0
+\]
+\itmh{L9-5}{求通解}{例题 $\cdot{} EXAMPLE 5 \cdot{} p17$}
+\[
+4y^{(4)} - 8y''' - 43y'' + 47y' - 12y = 0
+\]
+\itmh{L9-6}{求通解}{例题 $\cdot{} EXAMPLE 6 \cdot{} p20$}
+\[
+y'' - 2y' + y = \frac{\exp x}{x}
+\]
+\itmh{L9-7}{求通解}{例题 $\cdot{} EXAMPLE 7 \cdot{} p25$}
+\[
+y''' - 6y'' + 11y' - 6y = 6x
+\]
+\itmh{L9-8}{求通解}{习题 $\cdot{}$ 习题 $I a) \cdot{} p42$}
+\[
+y'' + 2y' - 8y = 0
+\]
+\itmh{L9-9}{求通解}{习题 $\cdot{}$ 习题 $I b) \cdot{} p42$}
+\[
+y'' + 10y' + 25y = 0
+\]
+\itmh{L9-10}{求通解}{习题 $\cdot{}$ 习题 $I c) \cdot{} p42$}
+\[
+y''' + 9y'' + 27y' + 27y = 0
+\]
+\itmh{L9-11}{求通解}{习题 $\cdot{}$ 习题 $I d) \cdot{} p42$}
+\[
+y^{(4)} - 7y''' + 17y'' - 17y' + 6y = 0
+\]
+\itmh{L9-12}{解初值问题}{习题 $\cdot{}$ 习题 $II a) \cdot{} p43$}
+\[
+y'' + y' - 6y = 0,\quad y(0)=5,\ y'(0)=0
+\]
+\itmh{L9-13}{解初值问题}{习题 $\cdot{}$ 习题 $II b) \cdot{} p43$}
+\[
+y''' + 5y'' + 3y' - 9y = 0,\quad y(0)=0,\ y'(0)=2,\ y''(0)=4
+\]
+\itmh{L9-14}{求通解（特解用常数变易法求）}{习题 $\cdot{}$ 习题 $III \cdot{} p43$}
+\[
+y'' - 3y' + 2y = x
+\]
+\hdr{第 10 讲（L10）\quad 重根与复根、Cauchy–Euler 方程}
+\itmh{L10-1}{求通解}{例题 $\cdot{} EXAMPLE 1 \cdot{} p8$}
+\[
+y'' + y = 0
+\]
+\itmh{L10-2}{求通解}{例题 $\cdot{} EXAMPLE 2 \cdot{} p9$}
+\[
+y'' - 6y' + 25y = 0
+\]
+\itmh{L10-3}{求通解}{例题 $\cdot{} EXAMPLE 3 \cdot{} p10$}
+\[
+y''' + 4y'' + 5y' + 6y = 0
+\]
+\itmh{L10-4}{求通解}{例题 $\cdot{} EXAMPLE 4 \cdot{} p12$}
+\[
+y^{(4)} + 8y'' + 16y = 0
+\]
+\itmh{L10-5}{求通解}{例题 $\cdot{} EXAMPLE 5 \cdot{} p16$}
+\[
+y^{(4)} + y = 0
+\]
+\itmh{L10-6}{求通解}{例题 $\cdot{} EXAMPLE 6 \cdot{} p18$}
+\[
+y^{(6)} - 2y''' + y = 0
+\]
+\itmh{L10-7}{求通解（$x>0$ 与 $x<0$ 都要讨论）}{例题 $\cdot{} EXAMPLE 7 \cdot{} p23$}
+\[
+x^2 y'' + x y' - y = 2x
+\]
+\itmh{L10-8}{求通解}{习题 $\cdot{}$ 习题 $I a) \cdot{} p47$}
+\[
+y'' + 9y = 0
+\]
+\itmh{L10-9}{求通解}{习题 $\cdot{}$ 习题 $I b) \cdot{} p47$}
+\[
+y'' - 6y' + 10y = 0
+\]
+\itmh{L10-10}{求通解}{习题 $\cdot{}$ 习题 $I c) \cdot{} p47$}
+\[
+y''' + y'' + 9y' + 9y = 0
+\]
+\itmh{L10-11}{求通解}{习题 $\cdot{}$ 习题 $I d) \cdot{} p47$}
+\[
+y^{(4)} + 256y = 0
+\]
+\itmh{L10-12}{解初值问题}{习题 $\cdot{}$ 习题 $II a) \cdot{} p48$}
+\[
+y'' - 4y' + 5y = 0,\quad y(0)=2,\ y'(0)=5
+\]
+\itmh{L10-13}{解初值问题}{习题 $\cdot{}$ 习题 $II b) \cdot{} p48$}
+\[
+y''' + 5y'' + 7y' - 13y = 0,\quad y(0)=0,\ y'(0)=10,\ y''(0)=0
+\]
+\itmh{L10-14}{求通解（已给特征多项式的分解式）}{习题 $\cdot{}$ 习题 $III \cdot{} p48$}
+\[
+\begin{gathered}
+\lambda^4 - 4\lambda^3 + 8\lambda^2 - 8\lambda + 4 = (\lambda^2 - 2\lambda + 2)^2 \\
+y^{(4)} - 4y''' + 8y'' - 8y' + 4y = 0
+\end{gathered}
+\]
+\itmh{L10-15}{求通解}{习题 $\cdot{}$ 习题 $IV \cdot{} p48$}
+\[
+x^2 y'' - 2x y' + 2y = x^2
+\]
+\hdr{第 11 讲（L11）\quad 常系数非齐次方程：待定系数法}
+\itmh{L11-1}{求通解}{例题 $\cdot{} EXAMPLE 1 \cdot{} p5$}
+\[
+y''-y=x^{2}+1
+\]
+\itmh{L11-2}{求通解}{例题 $\cdot{} EXAMPLE 2 \cdot{} p7$}
+\[
+y^{(4)}-y''=x+1
+\]
+\itmh{L11-3}{求通解（特解分别用参数变易法和待定系数法求出）}{例题 $\cdot{} EXAMPLE 3 \cdot{} p9$}
+\[
+y'''-y''=2x
+\]
+\itmh{L11-4}{求通解}{例题 $\cdot{} EXAMPLE 3 \cdot{} p17$}
+\[
+y''+y'-6y=(x+1)\exp x
+\]
+\itmh{L11-5}{求通解}{例题 $\cdot{} EXAMPLE 4 \cdot{} p19$}
+\[
+y'''-3y''+3y'-y=x^{2}\exp x
+\]
+\itmh{L11-6}{求通解}{例题 $\cdot{} EXAMPLE 5 \cdot{} p22$}
+\[
+y''+3y'-4y=\exp(-4x)+x\exp(-x)
+\]
+\itmh{L11-7}{求通解}{例题 $\cdot{} EXAMPLE 6 \cdot{} p27$}
+\[
+y''-y=\exp(2x)\sin x
+\]
+\itmh{L11-8}{只确定特解的合适形式，不求系数}{例题 $\cdot{} EXAMPLE 7 \cdot{} p29$}
+\[
+y'''-2y'+4y=(x^{2}+1)\exp x\cos x
+\]
+\itmh{L11-9}{求通解}{例题 $\cdot{} EXAMPLE 8 \cdot{} p31$}
+\[
+y^{(4)}+y''=12x+4x\exp x+2\cos x
+\]
+\itmh{L11-10}{求通解，特解用待定系数法求}{习题 $\cdot{}$ 习题 $I \cdot{} p53$}
+\[
+y''-2y'-3y=3x^{3}-2x
+\]
+\itmh{L11-11}{解初值问题，特解用待定系数法求}{习题 $\cdot{}$ 习题 $II \cdot{} p53$}
+\[
+y''+4y=12x+8\cos(2x),\quad y(0)=0,\ y'(0)=5
+\]
+\itmh{L11-12}{求通解，特解要求用参数变易法与待定系数法各求一次}{习题 $\cdot{}$ 习题 $III \cdot{} p54$}
+\[
+y''+2y'+2y=10\sin(4x)
+\]
+\hdr{第 12 讲（L12）\quad 总复习（九类方法串讲）}
+\itmh{L12-1}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p3$}
+\[
+\frac{\mathrm{d}y}{\mathrm{d}x}=\frac{1}{4}\cdot\frac{2x-y-2}{x-4},\quad x\neq 4
+\]
+\itmh{L12-2}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p6$}
+\[
+2x\,\mathrm{d}y+(x^{2}y^{4}+1)y\,\mathrm{d}x=0
+\]
+\itmh{L12-3}{判定是否恰当；不恰当时求积分因子并求通解}{例题 $\cdot{}$ 例题 $\cdot{} p11$}
+\[
+(3xy+y^{2})\,\mathrm{d}x+(x^{2}+xy)\,\mathrm{d}y=0
+\]
+\itmh{L12-4}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p14$}
+\[
+x^{2}y'+2xy-y^{3}=0
+\]
+\itmh{L12-5}{解初值（Cauchy）问题}{例题 $\cdot{} EXAMPLE \cdot{} p17$}
+\[
+y'=-1-x^{2}+2\left(x+\frac{1}{x}\right)y-y^{2},\quad y(1)=\frac{10}{7}
+\]
+\itmh{L12-6}{求通解（并说明奇解）}{例题 $\cdot{}$ 例题 $\cdot{} p22$}
+\[
+y'\sin y'+\cos y'-y=0
+\]
+\itmh{L12-7}{求通解（并说明奇解）}{例题 $\cdot{}$ 例题 $\cdot{} p25$}
+\[
+x(y')^{3}-y(y')^{2}-1=0
+\]
+\itmh{L12-8}{解初值问题（逐次积分）}{例题 $\cdot{}$ 例题 $\cdot{} p28$}
+\[
+y'''=x\sin(2x),\quad y(0)=0,\ y'(0)=0,\ y''(0)=1
+\]
+\itmh{L12-9}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p31$}
+\[
+yy''+2(y')^{2}=0
+\]
+\itmh{L12-10}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p33$}
+\[
+y'''+y''=x+1
+\]
+\itmh{L12-11}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p35$}
+\[
+x^{2}yy''-x^{2}(y')^{2}=2xyy'
+\]
+\itmh{L12-12}{求通解}{例题 $\cdot{} EXAMPLE I \cdot{} p37$}
+\[
+y''+4y'-5y=0
+\]
+\itmh{L12-13}{解初值问题}{例题 $\cdot{} EXAMPLE II \cdot{} p38$}
+\[
+y'''-7y''+14y'-8y=0,\quad y(0)=1,\ y'(0)=0,\ y''(0)=0
+\]
+\itmh{L12-14}{求通解}{例题 $\cdot{} EXAMPLE III \cdot{} p42$}
+\[
+y''+2y'+5y=0
+\]
+\itmh{L12-15}{求通解}{例题 $\cdot{} EXAMPLE IV \cdot{} p43$}
+\[
+y^{(6)}-3y^{(4)}+3y''-y=0
+\]
+\itmh{L12-16}{求通解}{例题 $\cdot{}$ 例题 $\cdot{} p45$}
+\[
+x^{2}y''+5xy'+4y=0
+\]
+\itmh{L12-17}{求通解（特解用参数变易法）}{例题 $\cdot{}$ 例题 $\cdot{} p47$}
+\[
+y''+y=2\sec x
+\]
+\itmh{L12-18}{求通解（特解用待定系数法）}{例题 $\cdot{}$ 例题 $\cdot{} p51$}
+\[
+y^{(4)}-y''=12x+4\exp(-x)+2\sin x
+\]
+\clearpage
+\parttitle{第二部分\quad 乱序练习单}{159 题全打乱，讲次顺序失效；每题只需先答「是什么形式、用什么解法」}
+{\small\color{inkgray}提示：同一方法会在不同讲次反复出现，能在乱序里认出来，才算真的会看形式。若某题卡住，先写下你判断的「一阶还是二阶、线性还是非线性、能不能分离」，再翻答案。}\par\vspace{6pt}
+\drillh{1.}{求通解}
+\[
+y^{(4)} + 256y = 0
+\]
+\writelines
+\drillh{2.}{求通解（特解用待定系数法）}
+\[
+y^{(4)}-y''=12x+4\exp(-x)+2\sin x
+\]
+\writelines
+\drillh{3.}{求通解}
+\[
+y'' + y = 0
+\]
+\writelines
+\drillh{4.}{求通解（特解用常数变易法求）}
+\[
+y'' - 3y' + 2y = x
+\]
+\writelines
+\drillh{5.}{求通解}
+\[
+y'' - 6y' + 10y = 0
+\]
+\writelines
+\drillh{6.}{用参数变易法（Lagrange 法）求通解}
+\[
+y'' + y = \tan x,\quad x\neq\frac{\pi}{2}+\pi n,\ n\in\mathbb{Z}
+\]
+\writelines
+\drillh{7.}{求通解}
+\[
+y'' + 9y = 0
+\]
+\writelines
+\drillh{8.}{解初值问题，特解用待定系数法求}
+\[
+y''+4y=12x+8\cos(2x),\quad y(0)=0,\ y'(0)=5
+\]
+\writelines
+\drillh{9.}{证明两函数构成基本解组，并求通解}
+\[
+L(y)\equiv y'' + y' - 2y = 0,\quad y_1=\exp t,\quad y_2=\exp(-2t),\quad t\in\mathbb{R}
+\]
+\writelines
+\drillh{10.}{求通解}
+\[
+y''' - 6y'' + 11y' - 6y = 6x
+\]
+\writelines
+\drillh{11.}{判定问题类型并判断解的存在性}
+\[
+y''(x) + y(x) = 0,\quad y(0)=1,\ y'(\pi/2)=5
+\]
+\writelines
+\drillh{12.}{求通解（特解分别用参数变易法和待定系数法求出）}
+\[
+y'''-y''=2x
+\]
+\writelines
+\drillh{13.}{解初值问题}
+\[
+y'' + y' - 6y = 0,\quad y(0)=5,\ y'(0)=0
+\]
+\writelines
+\drillh{14.}{求通解}
+\[
+y''-y=x^{2}+1
+\]
+\writelines
+\drillh{15.}{求使 $e^{mx}$ 为解的所有 $m$}
+\[
+\frac{d^{3}y}{dx^{3}} - 2\frac{d^{2}y}{dx^{2}} - 9\frac{dy}{dx} + 18y = 0,\quad y=e^{mx}
+\]
+\writelines
+\drillh{16.}{用已知特解降阶，并解所得一阶方程}
+\[
+\begin{gathered}
+y'' + xy' - (x+1)y = 0 \\
+y_p(x) = \exp x
+\end{gathered}
+\]
+\writelines
+\drillh{17.}{求通解}
+\[
+y''' + 9y'' + 27y' + 27y = 0
+\]
+\writelines
+\drillh{18.}{用参数变易法求通解}
+\[
+2xy'' - (x+4)y' + \left(1+\frac{4}{x}\right)y = 4x^2,\quad x\neq 0
+\]
+\writelines
+\drillh{19.}{解初值问题}
+\[
+y'' - 4y' + 5y = 0,\quad y(0)=2,\ y'(0)=5
+\]
+\writelines
+\drillh{20.}{用已知特解降阶，并解所得一阶方程}
+\[
+\begin{gathered}
+x^3 y'' + (x-1)y' - y = 0 \\
+y_p(x) = x - 1
+\end{gathered}
+\]
+\writelines
+\drillh{21.}{求通解}
+\[
+y''' + y'' + 9y' + 9y = 0
+\]
+\writelines
+\drillh{22.}{求通解，特解用待定系数法求}
+\[
+y''-2y'-3y=3x^{3}-2x
+\]
+\writelines
+\drillh{23.}{求通解}
+\[
+y''' + 4y'' + 5y' + 6y = 0
+\]
+\writelines
+\drillh{24.}{验证该方程关于 (y,y',y'') 是 5 次齐次（在 $\mathbb{R}^4$ 中）}
+\[
+x y y'^2 y''^2 + 2y^3 y''^2 - 5x^3 y^5 = 0
+\]
+\writelines
+\drillh{25.}{验证三个函数是解，并判定它们是否线性无关}
+\[
+\begin{gathered}
+y''' - 2y'' - y' + 2y = 0 \\
+y_1(x)=\exp(-x),\quad y_2(x)=\exp x,\quad y_3(x)=\exp(2x)
+\end{gathered}
+\]
+\writelines
+\drillh{26.}{求三阶方程的通解（逐次积分三次）}
+\[
+y''' = x\cos x
+\]
+\writelines
+\drillh{27.}{判定问题类型并求解}
+\[
+y''(x) + y(x) = 0,\quad y(0)=1,\ y'(\pi)=5
+\]
+\writelines
+\drillh{28.}{求通解}
+\[
+y^{(4)}-y''=x+1
+\]
+\writelines
+\drillh{29.}{验证基本解组、求通解，并另给一组基本解组}
+\[
+\begin{gathered}
+y''' - 9y'' + 26y' - 24y = 0 \\
+y_1=\exp(2x),\quad y_2=\exp(3x),\quad y_3=\exp(4x)
+\end{gathered}
+\]
+\writelines
+\drillh{30.}{降阶并求解所得方程}
+\[
+9x^2 y y'' - (y - 3xy')^2 = 0
+\]
+\writelines
+\drillh{31.}{求通解}
+\[
+y^{(4)} + y = 0
+\]
+\writelines
+\drillh{32.}{求通解}
+\[
+y'''-3y''+3y'-y=x^{2}\exp x
+\]
+\writelines
+\drillh{33.}{求通解}
+\[
+y'' + 2y' - 8y = 0
+\]
+\writelines
+\drillh{34.}{求通解（作代换 $z=y''$ 降阶）}
+\[
+y''' - y'' = \exp(x)
+\]
+\writelines
+\drillh{35.}{解初值问题}
+\[
+y''' + 5y'' + 7y' - 13y = 0,\quad y(0)=0,\ y'(0)=10,\ y''(0)=0
+\]
+\writelines
+\drillh{36.}{求通解（特解用参数变易法）}
+\[
+y''+y=2\sec x
+\]
+\writelines
+\drillh{37.}{求通解}
+\[
+y'' - 6y' + 25y = 0
+\]
+\writelines
+\drillh{38.}{求通解}
+\[
+\frac{dy}{dx} = \frac{1}{2}\left(\frac{x+y-1}{x+2}\right)^{2}
+\]
+\writelines
+\drillh{39.}{解初值问题}
+\[
+y''' + 5y'' + 3y' - 9y = 0,\quad y(0)=0,\ y'(0)=2,\ y''(0)=4
+\]
+\writelines
+\drillh{40.}{求通解（两次降阶）}
+\[
+1 + y''^2 = 2y'y''',\quad y' > 0
+\]
+\writelines
+\drillh{41.}{用 Abel 定理由已知特解求通解}
+\[
+\begin{gathered}
+2xy'' - (x+4)y' + \left(1+\frac{4}{x}\right)y = 0,\quad x\neq 0 \\
+y_1(x) = x
+\end{gathered}
+\]
+\writelines
+\drillh{42.}{求通解}
+\[
+(x+y+1) + (2x+2y+1)y' = 0
+\]
+\writelines
+\drillh{43.}{求通解}
+\[
+4y^{(4)} - 8y''' - 43y'' + 47y' - 12y = 0
+\]
+\writelines
+\drillh{44.}{降阶并求解所得方程}
+\[
+y y'' - y'^2 = y^2\ln y,\quad y>0,\ y'>0
+\]
+\writelines
+\drillh{45.}{求通解}
+\[
+y''' - 4y'' + y' + 6y = 0
+\]
+\writelines
+\drillh{46.}{求通解}
+\[
+y^{(4)}+y''=12x+4x\exp x+2\cos x
+\]
+\writelines
+\drillh{47.}{求通解}
+\[
+y'' + 10y' + 25y = 0
+\]
+\writelines
+\drillh{48.}{求 Clairaut 方程的通解}
+\[
+y = xy' + \exp(y')
+\]
+\writelines
+\drillh{49.}{求通解}
+\[
+3y''' + y'' - 10y' - 8y = 0
+\]
+\writelines
+\drillh{50.}{求微分方程的解}
+\[
+\ln y' + \sin y' - x = 0
+\]
+\writelines
+\drillh{51.}{解初值问题}
+\[
+y'''-7y''+14y'-8y=0,\quad y(0)=1,\ y'(0)=0,\ y''(0)=0
+\]
+\writelines
+\drillh{52.}{解 Cauchy 问题}
+\[
+(2x-5y)\,dx + (4x-y)\,dy = 0,\quad y(1)=2
+\]
+\writelines
+\drillh{53.}{判定两个解在 $I=R$ 上是否线性无关（用 Wronskian）}
+\[
+y'' - 2y' + y = 0,\quad y_1(x)=\exp x,\quad y_2(x)=x\exp x
+\]
+\writelines
+\drillh{54.}{判定常/偏、阶数与线性性}
+\[
+\left(\frac{dr}{ds}\right)^{4} = r\,\frac{d^{2}r}{ds^{2}} + 1
+\]
+\writelines
+\drillh{55.}{求通解（已给特征多项式的分解式）}
+\[
+\begin{gathered}
+\lambda^4 - 4\lambda^3 + 8\lambda^2 - 8\lambda + 4 = (\lambda^2 - 2\lambda + 2)^2 \\
+y^{(4)} - 4y''' + 8y'' - 8y' + 4y = 0
+\end{gathered}
+\]
+\writelines
+\drillh{56.}{求通解}
+\[
+y(1-y) + xy' = 0
+\]
+\writelines
+\drillh{57.}{求通解}
+\[
+y^{(4)} - 7y''' + 17y'' - 17y' + 6y = 0
+\]
+\writelines
+\drillh{58.}{用特解 $y_p=\exp(x)/x$ 降阶，并解所得一阶方程}
+\[
+\begin{gathered}
+x y'' + 2y' - xy = 0 \\
+y_p(x) = \frac{\exp x}{x}
+\end{gathered}
+\]
+\writelines
+\drillh{59.}{解初值问题}
+\[
+(x^{2}+1)y' + 4xy = x,\quad y(2)=1
+\]
+\writelines
+\drillh{60.}{求通解}
+\[
+y'' - 2y' + y = \frac{\exp x}{x}
+\]
+\writelines
+\drillh{61.}{求通解}
+\[
+y''+4y'-5y=0
+\]
+\writelines
+\drillh{62.}{求解微分方程}
+\[
+y = x(y')^{2} - 2(y')^{3}
+\]
+\writelines
+\drillh{63.}{用积分因子求通解}
+\[
+y\,dx - (x + x^{2} + y^{2})\,dy = 0
+\]
+\writelines
+\drillh{64.}{求通解}
+\[
+x\,y' + 3y = 6x^{3}
+\]
+\writelines
+\drillh{65.}{降阶并求解所得方程}
+\[
+y''' - \frac{1}{3}y''^4 = 0
+\]
+\writelines
+\drillh{66.}{只确定特解的合适形式，不求系数}
+\[
+y'''-2y'+4y=(x^{2}+1)\exp x\cos x
+\]
+\writelines
+\drillh{67.}{求解微分方程}
+\[
+y = 2xy' - 4(y')^{3}
+\]
+\writelines
+\drillh{68.}{求通解}
+\[
+\frac{\mathrm{d}y}{\mathrm{d}x}=\frac{1}{4}\cdot\frac{2x-y-2}{x-4},\quad x\neq 4
+\]
+\writelines
+\drillh{69.}{判定两个函数在 $I=R$ 上是否线性无关}
+\[
+f_1(x) = x,\quad f_2(x) = x^2,\quad x\in\mathbb{R}
+\]
+\writelines
+\drillh{70.}{求通解}
+\[
+x(y')^{2} - 2y' - x = 0
+\]
+\writelines
+\drillh{71.}{求通解}
+\[
+\frac{dy}{dx} = \sqrt{4x + 2y - 1}
+\]
+\writelines
+\drillh{72.}{求通解}
+\[
+y^{(4)} + 8y'' + 16y = 0
+\]
+\writelines
+\drillh{73.}{求通解}
+\[
+(y + 2xe^{y}) + x(1+xe^{y})y' = 0
+\]
+\writelines
+\drillh{74.}{求通解}
+\[
+(y')^{2} - x y' - y + \frac{x^{2}}{2} = 0
+\]
+\writelines
+\drillh{75.}{证明积分因子}
+\[
+[y + xf(x^{2}+y^{2})]\,dx + [yf(x^{2}+y^{2}) - x]\,dy = 0
+\]
+\writelines
+\drillh{76.}{解初值问题}
+\[
+(3x^{2}+9xy+5y^{2})\,dx - (6x^{2}+4xy)\,dy = 0,\quad y(2)=-6
+\]
+\writelines
+\drillh{77.}{求通解}
+\[
+y^{(6)}-3y^{(4)}+3y''-y=0
+\]
+\writelines
+\drillh{78.}{判定是否恰当}
+\[
+y^{2}\,dx + 2xy\,dy = 0
+\]
+\writelines
+\drillh{79.}{求 Lagrange 方程的通解}
+\[
+x(y')^{2} - y' - y = 0
+\]
+\writelines
+\drillh{80.}{求通解}
+\[
+y''+3y'-4y=\exp(-4x)+x\exp(-x)
+\]
+\writelines
+\drillh{81.}{解初值问题（Cauchy 问题）}
+\[
+y'' = \exp(5x),\quad y(0)=1,\quad y'(0)=-1
+\]
+\writelines
+\drillh{82.}{求通解}
+\[
+\frac{dy}{dx} = \frac{1}{e^{-y} - x}
+\]
+\writelines
+\drillh{83.}{求通解}
+\[
+(e^{v}+1)\cos u\,du + e^{v}(\sin u+1)\,dv = 0
+\]
+\writelines
+\drillh{84.}{判定两个函数是否线性无关（不许用 Wronskian）}
+\[
+f_1(x)=1,\quad f_2(x)=x,\quad x\in\mathbb{R}
+\]
+\writelines
+\drillh{85.}{解 Cauchy 问题}
+\[
+\begin{gathered}
+y = x(y')^{2} + y' - (y')^{3} \\
+y(0)=0
+\end{gathered}
+\]
+\writelines
+\drillh{86.}{求通解}
+\[
+2(y')^{3} + (y')^{2} - y = 0
+\]
+\writelines
+\drillh{87.}{求通解}
+\[
+(3x^{2}+4xy)\,dx + (2x^{2}+2y)\,dy = 0
+\]
+\writelines
+\drillh{88.}{用积分因子求通解}
+\[
+(x^{2}y + y + 1)\,dx + x(1+x^{2})\,dy = 0
+\]
+\writelines
+\drillh{89.}{判定问题类型并求解}
+\[
+y''(x) + y(x) = 0,\quad y(1)=2,\ y'(1)=0
+\]
+\writelines
+\drillh{90.}{求通解}
+\[
+yy''+2(y')^{2}=0
+\]
+\writelines
+\drillh{91.}{求隐式通解与参数解}
+\[
+y\,y' = -x
+\]
+\writelines
+\drillh{92.}{求通解}
+\[
+y''+y'-6y=(x+1)\exp x
+\]
+\writelines
+\drillh{93.}{判定准齐次并求解}
+\[
+y' = \frac{y}{x} + \frac{x}{y^{2}},\quad x\neq 0,\ y\neq 0
+\]
+\writelines
+\drillh{94.}{验证隐式解}
+\[
+\begin{gathered}
+5x^{2}y^{2} - 2x^{3}y^{2} = 1 \quad (0<x<5/2) \\
+x\,\frac{dy}{dx} + y = x^{3}y^{3}
+\end{gathered}
+\]
+\writelines
+\drillh{95.}{求通解}
+\[
+x^{2}yy''-x^{2}(y')^{2}=2xyy'
+\]
+\writelines
+\drillh{96.}{解初值问题（右端分段）}
+\[
+\begin{gathered}
+\frac{dy}{dx} + y = f(x),\quad y(0)=1 \\
+f(x) = \begin{cases} e^{-x},  0\le x<1,\\ e^{-1},  x\ge 1. \end{cases}
+\end{gathered}
+\]
+\writelines
+\drillh{97.}{解 Cauchy 问题}
+\[
+\frac{dy}{dx} = \frac{x^{2}+3y^{2}}{2xy},\quad y(1)=1
+\]
+\writelines
+\drillh{98.}{先用观察法求一个特解，再求 Riccati 方程的通解}
+\[
+x^{3}y' + 2x^{2}y + 2x^{4}y^{2} = 18,\quad x\neq 0
+\]
+\writelines
+\drillh{99.}{解初值问题}
+\[
+(2xy^{3}+3x^{2}y^{2}+y)\,dx + (3x^{2}y^{2}+2x^{3}y+x)\,dy = 0,\quad y(1)=-1
+\]
+\writelines
+\drillh{100.}{判定常/偏、阶数与线性性}
+\[
+\frac{d^{3}y}{dx^{3}} + y\sin x = 0
+\]
+\writelines
+\drillh{101.}{解初值问题}
+\[
+xy' + 4y + 2x^{2} + 4 = 0,\quad x\neq 0,\ y(1)=1
+\]
+\writelines
+\drillh{102.}{求解微分方程}
+\[
+\frac{dy}{dx} = \frac{y}{2x + x^{2}y^{4}},\quad x\neq 0
+\]
+\writelines
+\drillh{103.}{求通解（并说明奇解）}
+\[
+x(y')^{3}-y(y')^{2}-1=0
+\]
+\writelines
+\drillh{104.}{求通解（答案写成求积形式）}
+\[
+8y'' - \exp y - y'^2 = 0
+\]
+\writelines
+\drillh{105.}{解初值问题（逐次积分）}
+\[
+y'''=x\sin(2x),\quad y(0)=0,\ y'(0)=0,\ y''(0)=1
+\]
+\writelines
+\drillh{106.}{求通解}
+\[
+y'' - 2y' - 15y = 0
+\]
+\writelines
+\drillh{107.}{判定是否恰当；不恰当时求积分因子并求通解}
+\[
+(3xy+y^{2})\,\mathrm{d}x+(x^{2}+xy)\,\mathrm{d}y=0
+\]
+\writelines
+\drillh{108.}{解 Cauchy 问题}
+\[
+\frac{dy}{dx} = \frac{2\cos 2x}{3+2y},\quad y(0) = -1
+\]
+\writelines
+\drillh{109.}{求解微分方程}
+\[
+y = xy' - (y')^{2}
+\]
+\writelines
+\drillh{110.}{验证是解并满足初值}
+\[
+\begin{gathered}
+f(x) = 3e^{2x} - 2xe^{2x} + \sin 2x \\
+\frac{d^{2}y}{dx^{2}} - 4\frac{dy}{dx} + 4y = -8\cos 2x
+\end{gathered}
+\]
+\writelines
+\drillh{111.}{求解（提示：先判定广义齐次性）}
+\[
+x^4 y'' + (x y' - y)^3 = 0
+\]
+\writelines
+\drillh{112.}{解初值问题}
+\[
+\begin{gathered}
+\frac{dy}{dx} + 4 = \exp(x-y) \\
+y(0)=0
+\end{gathered}
+\]
+\writelines
+\drillh{113.}{求通解}
+\[
+(y')^{3} - y - x = 0
+\]
+\writelines
+\drillh{114.}{求通解}
+\[
+y^{(4)} - 7y''' + 18y'' - 20y' + 8y = 0
+\]
+\writelines
+\drillh{115.}{已知齐次基本解组，用参数变易法求通解}
+\[
+\begin{gathered}
+y'' + y = 2\cos x \\
+y_1=\sin x,\quad y_2=\cos x
+\end{gathered}
+\]
+\writelines
+\drillh{116.}{解初值问题}
+\[
+\frac{dx}{dt} - x = \sin 2t,\quad x(0)=1
+\]
+\writelines
+\drillh{117.}{求通解（$x>0$ 与 $x<0$ 都要讨论）}
+\[
+x^2 y'' + x y' - y = 2x
+\]
+\writelines
+\drillh{118.}{求解微分方程}
+\[
+x^{3}y^{2}\sin y\,\frac{dy}{dx} - 2y = x\frac{dy}{dx}
+\]
+\writelines
+\drillh{119.}{判定准齐次并求解}
+\[
+y' = \frac{y}{x} + \frac{x^{3}}{y},\quad x\neq 0,\ y\neq 0
+\]
+\writelines
+\drillh{120.}{解初值问题}
+\[
+(5x+2y+1)\,dx + (2x+y+1)\,dy = 0,\quad y(0)=1
+\]
+\writelines
+\drillh{121.}{解初值（Cauchy）问题}
+\[
+y'=-1-x^{2}+2\left(x+\frac{1}{x}\right)y-y^{2},\quad y(1)=\frac{10}{7}
+\]
+\writelines
+\drillh{122.}{解初值问题并讨论唯一性}
+\[
+y'(x) = 3y^{2/3}(x),\quad y(x_{0}) = y_{0}
+\]
+\writelines
+\drillh{123.}{解初值问题（要求两种方法）}
+\[
+(2y\sin x\cos x + y^{2}\sin x)\,dx + (\sin^{2}x - 2y\cos x)\,dy = 0,\quad y(0)=3
+\]
+\writelines
+\drillh{124.}{解初值问题（三阶最简形式）}
+\[
+y''' = \cos^2(2x),\quad y(0)=1,\quad y'(0)=1,\quad y''(0)=2
+\]
+\writelines
+\drillh{125.}{判定两个函数是否线性无关（不许用 Wronskian）}
+\[
+f_1(t)=\sin t,\quad f_2(t)=\tan t,\quad t\in\left(-\frac{\pi}{2},\frac{\pi}{2}\right)
+\]
+\writelines
+\drillh{126.}{求通解}
+\[
+y'\cos y = x\sin^{2}y
+\]
+\writelines
+\drillh{127.}{求通解（并说明奇解）}
+\[
+y'\sin y'+\cos y'-y=0
+\]
+\writelines
+\drillh{128.}{验证是解}
+\[
+\begin{gathered}
+f(x) = (x^{3}+c)\,e^{-3x} \\
+\frac{dy}{dx} + 3y = 3x^{2}e^{-3x}
+\end{gathered}
+\]
+\writelines
+\drillh{129.}{解 Cauchy 问题}
+\[
+\begin{gathered}
+y = xy' + (y')^{3} - 3y' \\
+y(0)=0
+\end{gathered}
+\]
+\writelines
+\drillh{130.}{判定两个函数在 $I=R$ 上是否线性相关}
+\[
+f_1(x) = x,\quad f_2(x) = 2x,\quad x\in\mathbb{R}
+\]
+\writelines
+\drillh{131.}{求通解}
+\[
+y'''+y''=x+1
+\]
+\writelines
+\drillh{132.}{求微分方程的解}
+\[
+(y')^{2} - \exp(y') + x = 0
+\]
+\writelines
+\drillh{133.}{求通解}
+\[
+2x\,\mathrm{d}y+(x^{2}y^{4}+1)y\,\mathrm{d}x=0
+\]
+\writelines
+\drillh{134.}{求解（先验证齐次性，再降阶）}
+\[
+y^2 y''' - 3y y' y'' + 2y'^3 + y^3\sin x = 0
+\]
+\writelines
+\drillh{135.}{求通解}
+\[
+2x^{2}y'' - y'^{\,2} = 0
+\]
+\writelines
+\drillh{136.}{求解微分方程}
+\[
+y' = 1 + x^{2} - 2xy + y^{2}
+\]
+\writelines
+\drillh{137.}{求通解}
+\[
+x^2 y'' - 2x y' + 2y = x^2
+\]
+\writelines
+\drillh{138.}{求通解}
+\[
+2y + xy' = 0
+\]
+\writelines
+\drillh{139.}{解带参数初值问题}
+\[
+y' = \frac{2y}{x} + x^{2}e^{y/x^{2}},\quad y(1) = a
+\]
+\writelines
+\drillh{140.}{求通解}
+\[
+x^{2}y'+2xy-y^{3}=0
+\]
+\writelines
+\drillh{141.}{求通解}
+\[
+y^{(6)} - 2y''' + y = 0
+\]
+\writelines
+\drillh{142.}{求通解，特解要求用参数变易法与待定系数法各求一次}
+\[
+y''+2y'+2y=10\sin(4x)
+\]
+\writelines
+\drillh{143.}{用上题结果求通解}
+\[
+[y + x(x^{2}+y^{2})^{2}]\,dx + [y(x^{2}+y^{2})^{2} - x]\,dy = 0
+\]
+\writelines
+\drillh{144.}{求解微分方程}
+\[
+y = xy' + (y')^{2} - 4
+\]
+\writelines
+\drillh{145.}{求平衡解}
+\[
+y'(x) = y^{2} - 9
+\]
+\writelines
+\drillh{146.}{求解微分方程}
+\[
+y' = \frac{2\cos^{2}x - \sin^{2}x + y^{2}}{2\cos x}
+\]
+\writelines
+\drillh{147.}{求通解}
+\[
+y y'' - y'^2 = 0
+\]
+\writelines
+\drillh{148.}{判定齐次函数的次数}
+\[
+F(x,y) = x^{3}y - x^{2}y^{2}
+\]
+\writelines
+\drillh{149.}{求通解}
+\[
+y''+2y'+5y=0
+\]
+\writelines
+\drillh{150.}{求解微分方程}
+\[
+\frac{dy}{dx} + y = x y^{3}
+\]
+\writelines
+\drillh{151.}{求通解}
+\[
+y''-y=\exp(2x)\sin x
+\]
+\writelines
+\drillh{152.}{求通解}
+\[
+x^{2}y''+5xy'+4y=0
+\]
+\writelines
+\drillh{153.}{解 Cauchy 问题（先验证广义齐次性）}
+\[
+4x^2y^3y'' = -y^4 - x^2,\quad y(1)=1,\quad y'(1)=1
+\]
+\writelines
+\drillh{154.}{求解微分方程}
+\[
+2x^{3}(y')^{2} - 2xy' - y = 0,\quad x\neq 0
+\]
+\writelines
+\drillh{155.}{求 $A$ 使方程恰当并求通解}
+\[
+(Ax^{3}y + y^{3})\,dx + (x^{4}+3xy^{2})\,dy = 0
+\]
+\writelines
+\drillh{156.}{求通解}
+\[
+(x+4)(y^{2}+1)\,dx + 2y(x^{2}+3x+2)\,dy = 0
+\]
+\writelines
+\drillh{157.}{求通解}
+\[
+y\,dx + \left(2x + \frac{1}{y}\right)dy = 0
+\]
+\writelines
+\drillh{158.}{求解（先验证齐次性，再降阶）}
+\[
+x y y'' - x y'^2 = y y'
+\]
+\writelines
+\drillh{159.}{求通解}
+\[
+\cos\theta\,dr + (r\sin\theta - \cos^{4}\theta)\,d\theta = 0
+\]
+\writelines
+\clearpage
+\parttitle{第三部分\quad 答案（对应乱序练习单）}{按练习单编号 1--159 排列；括号内是原题号}
+\hdr{方法速查索引（按解法归类，编号为练习单编号）}
+{\small\begin{center}\renewcommand{\arraystretch}{1.22}\begin{tabular}{|>{\raggedright\arraybackslash}p{5.4cm}|>{\raggedright\arraybackslash}p{10.6cm}|}\hline\textbf{方程形式／解法} & \textbf{练习单编号}\\\hline
+
+Cauchy–Euler 方程（3 题） & 117, 137, 152\\\hline
+
+准齐次／广义齐次（5 题） & 93, 111, 119, 133, 153\\\hline
+
+Bernoulli 方程（4 题） & 102, 118, 140, 150\\\hline
+
+Riccati 方程（4 题） & 98, 121, 136, 146\\\hline
+
+Clairaut／Lagrange（9 题） & 48, 62, 67, 79, 85, 109, 127, 129, 144\\\hline
+
+关于 y 可解／关于 x 可解（8 题） & 50, 70, 74, 86, 103, 113, 132, 154\\\hline
+
+降阶（缺 x／缺 y／最简型）（14 题） & 16, 20, 26, 34, 40, 44, 58, 65, 81, 90, 104, 124, 131, 147\\\hline
+
+可分离变量（7 题） & 71, 83, 91, 108, 126, 139, 156\\\hline
+
+积分因子（8 题） & 56, 63, 75, 88, 107, 112, 138, 157\\\hline
+
+恰当方程（7 题） & 73, 78, 87, 99, 123, 143, 155\\\hline
+
+一阶线性（8 题） & 59, 64, 82, 96, 101, 116, 128, 159\\\hline
+
+齐次方程（零次齐次）（12 题） & 24, 30, 38, 42, 52, 68, 76, 95, 97, 120, 134, 158\\\hline
+
+常系数线性非齐次（21 题） & 2, 4, 6, 8, 10, 12, 14, 18, 22, 28, 32, 36, 46, 60, 66, 80, 92, 110, 115, 142, 151\\\hline
+
+常系数线性齐次（37 题） & 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 61, 72, 77, 89, 106, 114, 141, 149\\\hline
+
+判定／验证／证明题（8 题） & 54, 69, 84, 94, 100, 125, 130, 148\\\hline
+
+其他（基本概念）（4 题） & 105, 122, 135, 145\\\hline
+
+\end{tabular}\end{center}}
+\ansh{1}{L10-11}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{4}+256=0$；$z=-256=256(cos \pi{}+i sin \pi{})$，$n=4$ 开方得 $\lambda{}=2\surd{}2\cdot{}(\pm{}1\pm{}i)$，共轭对 $\alpha{}=\pm{}2\surd{}2, \beta{}=2\surd{}2$}
+\[
+y = \exp(2\sqrt{2}x)\left[c_1\cos(2\sqrt{2}x) + c_2\sin(2\sqrt{2}x)\right] + \exp(-2\sqrt{2}x)\left[c_3\cos(2\sqrt{2}x) + c_4\sin(2\sqrt{2}x)\right]
+\]
+\ansnote{答案见第 11 讲 p41}
+\ansh{2}{L12-18}{n 阶常系数线性非齐次（$n=4$，右端为三项之和）}{特征方程 $\lambda^{4}-\lambda^{2}=\lambda^{2}(\lambda-1)(\lambda+1)=0$，0 为二重根、另有 $\pm 1$；拆成三个方程，依次试 $y_{p1}=x^{2}(Cx+D)$、$y_{p2}=Ex\exp(-x)$、$y_{p3}=H\sin x+G\cos x$}
+\[
+y=c_{1}+c_{2}x+c_{3}\exp x+c_{4}\exp(-x)-2x^{3}-2x\exp(-x)+\sin x
+\]
+\ansnote{得 $C=-2,\ D=0,\ E=-2,\ H=1,\ G=0$。}
+\ansh{3}{L10-1}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}+1=0$，共轭复根 $\lambda{}=\pm{}i$（$\alpha{}=0, \beta{}=1$）}
+\[
+y = c_1\cos x + c_2\sin x
+\]
+\ansh{4}{L9-14}{常系数线性非齐次}{齐次特征方程 $(\lambda{}-1)(\lambda{}-2)=0$，基本解组 exp x, exp(2x)；常数变易法：$c_{2}'=x\cdot{}exp(-2x), c_{1}'=-x\cdot{}exp(-x)$}
+\[
+y = c_1\exp x + c_2\exp(2x) + \frac{x}{2} + \frac{3}{4}
+\]
+\ansnote{答案见第 10 讲 p46（$yp=x/2+3/4$，与待定系数法结果一致）}
+\ansh{5}{L10-9}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}-6\lambda{}+10=0$，$\lambda{}=3\pm{}i$（$\alpha{}=3, \beta{}=1$）}
+\[
+y = \exp(3x)\left[c_1\sin x + c_2\cos x\right]
+\]
+\ansnote{答案见第 11 讲 p38}
+\ansh{6}{L8-5}{二阶线性非齐次（齐次为常系数，右端 tan x）}{齐次基本解组 $y_1=\sin x,\ y_2=\cos x,\ W=-1$；解 $c_1'\sin x+c_2'\cos x=0,\ c_1'\cos x-c_2'\sin x=\tan x$ 得 $c_1'=\sin x,\ c_2'=\cos x-\tfrac{1}{\cos x}$}
+\[
+\begin{gathered}
+c_1(x) = -\cos x + c_3,\qquad c_2(x) = \sin x - \frac{1}{2}\ln\frac{1+\sin x}{1-\sin x} + c_4 \\
+y = c_1\sin x + c_2\cos x - \frac{1}{2}\cos x\ln\frac{1+\sin x}{1-\sin x}
+\end{gathered}
+\]
+\ansnote{取 $c_3=c_4=0$ 得特解 $y_p=-\tfrac{1}{2}\cos x\ln\tfrac{1+\sin x}{1-\sin x}$}
+\ansh{7}{L10-8}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}+9=0$，$\lambda{}=\pm{}3i$（$\alpha{}=0, \beta{}=3$）}
+\[
+y = c_1\sin(3x) + c_2\cos(3x)
+\]
+\ansnote{答案见第 11 讲 p37}
+\ansh{8}{L11-11}{n 阶常系数线性非齐次（$n=2$）+ 初值条件}{拆成两项：$y_{p1}=Ax+B$ 给出 3x；2i 是特征根（单根），试 $y_{p2}=x(C\cos 2x+D\sin 2x)$ 给出 $2x\sin 2x$；再由 $y(0)=0,\ y'(0)=5$ 定常数}
+\[
+y=\sin(2x)+3x+2x\sin(2x)
+\]
+\ansnote{课件无解答页；自解得 $c1=0, c2=1$，已用 SymPy 验证方程及两个初值。}
+\ansh{9}{L8-4}{二阶常系数线性齐次}{先代入验证 $L(\exp t)=L(\exp(-2t))=0$，再算 W 证明线性无关}
+\[
+\begin{gathered}
+L(\exp t)=0,\quad L(\exp(-2t))=0,\quad W(\exp t,\exp(-2t)) = -3\exp(-t)\neq 0 \\
+y = c_1\exp t + c_2\exp(-2t)
+\end{gathered}
+\]
+\ansnote{课件另注：基本解组不唯一，例如 $c_1\exp t,\ c_2\exp(-2t)\ (c_1,c_2\neq 0)$}
+\ansh{10}{L9-7}{常系数线性非齐次}{齐次特征方程 $\lambda{}^{3}-6\lambda{}^{2}+11\lambda{}-6=(\lambda{}-1)(\lambda{}-2)(\lambda{}-3)$；三阶常数变易法，令 $u=C_{1}'exp x, v=C_{2}'exp(2x), w=C_{3}'exp(3x)$，解线性方程组得 $u=3x, v=-6x, w=3x$}
+\[
+y = C_1\exp(x) + C_2\exp(2x) + C_3\exp(3x) - x - \frac{11}{6}
+\]
+\ansnote{特解 $yp=-x-11/6$；$Wronskian W=14exp(6x)\neq{}0$}
+\ansh{11}{L1-5}{二阶线性齐次，两点边值问题}{通解 $y=\cos x+B\sin x$（由 $y(0)=1$），再看第二个条件}
+\[
+\text{无解}
+\]
+\ansnote{因 $y'=-\sin x+B\cos x$ 恒有 $y'(\pi/2)=-1\neq 5$，与 $B$ 无关。课件原文称此问题“有唯一解”，按给定条件计算应为无解。}
+\ansh{12}{L11-3}{n 阶常系数线性非齐次（$n=3$，右端多项式）}{特征方程 $\lambda^{3}-\lambda^{2}=\lambda^{2}(\lambda-1)=0$，0 为二重根；参数变易法或待定系数法，试 $y_{p}=x^{2}(Ax+B)$}
+\[
+y=c_{1}+c_{2}x+c_{3}\exp x-\frac{x^{3}}{3}-x^{2}
+\]
+\ansnote{参数变易法先得到 $-\tfrac{x^{3}}{3}-x^{2}-2x-2$，其中 -2x-2 是齐次解，可并入 $c_{1}+c_{2}x$。课件把本页与 p17 两道不同的题都编号为 EXAMPLE 3。}
+\ansh{13}{L9-12}{n 阶常系数线性齐次}{特征根 $\lambda{}_{1}=-3, \lambda{}_{2}=2$；通解 $y=c_{1}exp(-3x)+c_{2}exp(2x)$，代入初值得 $c_{1}+c_{2}=5, -3c_{1}+2c_{2}=0$}
+\[
+y = 2\exp(-3x) + 3\exp(2x)
+\]
+\ansnote{答案见第 10 讲 p39（$c_{1}=2, c_{2}=3$）}
+\ansh{14}{L11-1}{n 阶常系数线性非齐次（$n=2$，右端多项式）}{特征方程 $\lambda^{2}-1=0$，$\lambda=1,-1$；f 为二次多项式且 0 不是特征根，试 $y_{p}=Ax^{2}+Bx+C$}
+\[
+y=c_{1}\exp x+c_{2}\exp(-x)-x^{2}-3
+\]
+\ansh{15}{L1-13}{三阶常系数线性齐次（特征方程）}{代入得特征方程 $m^{3}-2m^{2}-9m+18=0$，因式分解}
+\[
+m = 2,\quad m = 3,\quad m = -3
+\]
+\ansh{16}{L7-12}{变系数线性（二阶，已知特解降阶）}{令 $y=\exp(x)v(x)$，得 $v''+(x+2)v'=0$，即 $z=v'$ 满足 $z'+(x+2)z=0$}
+\[
+\begin{gathered}
+z = C_4\exp\left(-\frac{x^2}{2} - 2x\right) \\
+y = \exp x\left[C_5 + C_4\int\exp\left(-\frac{x^2}{2}-2x\right)\mathrm{d}x\right]
+\end{gathered}
+\]
+\ansnote{积分 $\int\exp(-x^2/2-2x)\mathrm{d}x$ 非初等（与正态分布积分同型）}
+\ansh{17}{L9-10}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}+9\lambda{}^{2}+27\lambda{}+27=(\lambda{}+3)^{3}=0$，三重实根 $\lambda{}=-3$}
+\[
+y = c_1\exp(-3x) + c_2 x\exp(-3x) + c_3 x^2\exp(-3x)
+\]
+\ansnote{答案见第 10 讲 p34}
+\ansh{18}{L8-6}{二阶变系数线性非齐次}{先化为标准形 $y''-\tfrac{x+4}{2x}y'+\left(\tfrac{1}{2x}+\tfrac{2}{x^2}\right)y=2x$；齐次基本解组 $y_1=x,\ y_2=x\exp(x/2)$（见本讲附加材料），$W=\tfrac{x^2}{2}\exp(x/2)$；Cramer 法则得 $c_1'=-4,\ c_2'=4\exp(-x/2)$}
+\[
+\begin{gathered}
+c_1(x) = -4x + c_3,\qquad c_2(x) = -8\exp\left(-\frac{x}{2}\right) + c_4 \\
+y = c_5x - 4x^2 + c_2x\exp\left(\frac{x}{2}\right)
+\end{gathered}
+\]
+\ansnote{特解 $y_p=-4x^2-8x$，其中 -8x 项并入齐次项 $c_5x$}
+\ansh{19}{L10-12}{n 阶常系数线性齐次}{特征根 $\lambda{}=2\pm{}i$，通解 $y=exp(2x)[c_{1}sin x+c_{2}cos x]$；由 $y(0)=c_{2}=2$ 与 $y'(0)=2c_{2}+c_{1}=5$ 得 $c_{1}=1$}
+\[
+y = \exp(2x)\left[\sin x + 2\cos x\right]
+\]
+\ansnote{答案见第 11 讲 p43}
+\ansh{20}{L7-11}{变系数线性（二阶，已知特解降阶）}{令 $y=y_p\int z\,\mathrm{d}x$，得 $x^3(x-1)z'+\left[2x^3+(x-1)^2\right]z=0$；分离变量并作部分分式 $-\tfrac{2}{x-1}-\tfrac{x-1}{x^3}$}
+\[
+\begin{gathered}
+z = C_2\frac{1}{(x-1)^2}\exp\left(\frac{1}{x} - \frac{1}{2x^2}\right) \\
+y = C_2(x-1)\left[\int\frac{1}{(x-1)^2}\exp\left(\frac{1}{x}-\frac{1}{2x^2}\right)\mathrm{d}x + C_3\right]
+\end{gathered}
+\]
+\ansnote{最后积分非初等，通解只能写成求积式；$z\equiv 0$ 也是一阶方程的解（对应 $y=C(x-1)$ 特解）}
+\ansh{21}{L10-10}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}+\lambda{}^{2}+9\lambda{}+9=(\lambda{}+1)(\lambda{}^{2}+9)=0$，根 -1 与 $\pm{}3i$}
+\[
+y = c_1\exp(-x) + c_2\cos(3x) + c_3\sin(3x)
+\]
+\ansnote{答案见第 11 讲 p40}
+\ansh{22}{L11-10}{n 阶常系数线性非齐次（$n=2$，右端三次多项式）}{特征方程 $\lambda^{2}-2\lambda-3=0$，$\lambda=3,-1$；0 不是特征根，试 $y_{p}=Ax^{3}+Bx^{2}+Cx+D$}
+\[
+y=c_{1}\exp(3x)+c_{2}\exp(-x)-x^{3}+2x^{2}-4x+4
+\]
+\ansnote{课件只给题目、无解答页；本答案自解，已用 SymPy 代回方程验证（化简为 0）。}
+\ansh{23}{L10-3}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}+4\lambda{}^{2}+5\lambda{}+6=(\lambda{}+3)(\lambda{}^{2}+\lambda{}+2)=0$，实根 -3 与共轭复根 $-1/2\pm{}(\surd{}7/2)i$}
+\[
+y = c_1\exp(-3x) + \exp\left(-\frac{x}{2}\right)\left[c_2\cos\left(\frac{\sqrt{7}x}{2}\right) + c_3\sin\left(\frac{\sqrt{7}x}{2}\right)\right]
+\]
+\ansh{24}{L7-7}{齐次（关于 y,y',y''，次数 5）}{令 F 为该左端，验证 $F(x,ky,ky',ky'')=k^5F(x,y,y',y'')$}
+\[
+F(x,ky,ky',ky'') = k^5\left(xyy'^2y''^2 + 2y^3y''^2 - 5x^3y^5\right) = k^5F(x,y,y',y'')
+\]
+\ansnote{对 (y,y',y'') 计次数：$xyy'^2y''^2$ 为 $1+2+2=5$，$2y^3y''^2$ 为 $3+2=5$，$5x^3y^5$ 为 5，故整体 5 次齐次}
+\ansh{25}{L8-10}{三阶常系数线性齐次}{逐个求导代入验证；再用三阶 Wronskian 判据}
+\[
+\begin{gathered}
+W(\exp(-x),\exp x,\exp(2x)) = 6\exp(2x)\neq 0 \\
+\Rightarrow y_1,y_2,y_3 \text{ 在 } \mathbb{R} \text{ 上线性无关}
+\end{gathered}
+\]
+\ansnote{特征多项式 $(\lambda+1)(\lambda-1)(\lambda-2)$；答案见第 9 讲 p33–34}
+\ansh{26}{L7-1}{降阶-最简形式 $y^{(n)}=f(x)$}{连积三次，每次用一次分部积分：$\int x\cos x\,\mathrm{d}x = x\sin x+\cos x$}
+\[
+y = -x\sin x - 3\cos x + C_1x^2 + C_2x + C_3
+\]
+\ansnote{课件把 $x^2$ 的系数记作 $c_3$（等于 $c_1/2$），任意常数共 3 个}
+\ansh{27}{L1-6}{二阶线性齐次，两点边值问题}{通解 $y=\cos x+B\sin x$，$y'(\pi)=-B=5$}
+\[
+y = \cos x - 5\sin x
+\]
+\ansnote{课件原文称此问题“无解”，按给定条件计算实为唯一解。}
+\ansh{28}{L11-2}{n 阶常系数线性非齐次（$n=4$，右端多项式）}{特征方程 $\lambda^{4}-\lambda^{2}=\lambda^{2}(\lambda-1)(\lambda+1)=0$，0 为二重根，试 $y_{p}=x^{2}(Ax+B)$}
+\[
+y=c_{1}+c_{2}x+c_{3}\exp x+c_{4}\exp(-x)-\frac{x^{3}}{6}-\frac{x^{2}}{2}
+\]
+\ansh{29}{L8-11}{三阶常系数线性齐次}{逐个代入验证；三阶 Wronskian 提出公因子 $\exp(2x)\exp(3x)\exp(4x)=\exp(9x)$ 后，剩下元素为 1,2,4 / 1,3,9 / 1,4,16 的三阶常数行列式（其值为 2）}
+\[
+\begin{gathered}
+W(\exp(2x),\exp(3x),\exp(4x)) = 2\exp(9x)\neq 0 \\
+y = c_1\exp(2x) + c_2\exp(3x) + c_3\exp(4x) \\
+\left\{\exp(2x)+\exp(3x),\ \exp(3x),\ \exp(4x)\right\}\ \text{亦为基本解组}
+\end{gathered}
+\]
+\ansnote{特征多项式 $(\lambda-2)(\lambda-3)(\lambda-4)$；任何使组合矩阵非奇异的线性组合都给出新基本解组。答案见第 9 讲 p35–36}
+\ansh{30}{L7-16}{齐次（关于 y,y',y''，次数 2）}{令 $z=y'/y$，得 $z'+\tfrac{2}{3x}z=\tfrac{1}{9x^2}$，积分因子 $x^{2/3}$；再解 $y'/y=z$}
+\[
+\begin{gathered}
+z = -\frac{1}{3x} + \frac{c_1}{\sqrt[3]{x^2}} \\
+y = \frac{c_2}{\sqrt[3]{x}}\exp\left(c_3\sqrt[3]{x}\right)
+\end{gathered}
+\]
+\ansnote{$y\equiv 0$ 也是解（取 $c_2=0$）；答案见第 8 讲 p41（课件印作 $\tfrac{c_2}{\sqrt[3]{x}}\exp(c_3\sqrt[3]{x})$）}
+\ansh{31}{L10-5}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{4}+1=0$；用复数开方公式（Theorem 3）：$z=-1=1(cos \pi{}+i sin \pi{})$，$n=4$ 得 $\lambda{}=(\pm{}1\pm{}i)/\surd{}2$，共轭对 $\alpha{}=\pm{}1/\surd{}2, \beta{}=1/\surd{}2$}
+\[
+y = \exp\left(\frac{x}{\sqrt{2}}\right)\left[c_1\cos\left(\frac{x}{\sqrt{2}}\right) + c_2\sin\left(\frac{x}{\sqrt{2}}\right)\right] + \exp\left(-\frac{x}{\sqrt{2}}\right)\left[c_3\cos\left(\frac{x}{\sqrt{2}}\right) + c_4\sin\left(\frac{x}{\sqrt{2}}\right)\right]
+\]
+\ansh{32}{L11-5}{n 阶常系数线性非齐次（$n=3$，$\alpha{}=1$ 为三重特征根）}{特征方程 $(\lambda-1)^{3}=0$；$\alpha{}=1$ 是三重根，试 $y_{p}=x^{3}(Ax^{2}+Bx+C)\exp x$}
+\[
+y=c_{1}\exp x+c_{2}x\exp x+c_{3}x^{2}\exp x+\frac{x^{5}}{60}\exp x
+\]
+\ansh{33}{L9-8}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}+2\lambda{}-8=0$，实单根 $\lambda{}_{1}=2, \lambda{}_{2}=-4$}
+\[
+y = c_1\exp(2x) + c_2\exp(-4x)
+\]
+\ansnote{答案见第 10 讲 p32}
+\ansh{34}{L7-5}{降阶-不含 y,y'（关于 y'' 线性）}{令 $z=y''$，得 $z'-z=\exp x$，积分因子 $\exp(-x)$；再两次积分}
+\[
+\begin{gathered}
+y'' = (x + C_1)\exp x \\
+y = x\exp x + C_2\exp x + C_3x + C_4
+\end{gathered}
+\]
+\ansh{35}{L10-13}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}+5\lambda{}^{2}+7\lambda{}-13=(\lambda{}-1)(\lambda{}^{2}+6\lambda{}+13)=0$，根 1 与 $-3\pm{}2i$；代初值得 $c_{1}+c_{3}=0, c_{1}+2c_{2}-3c_{3}=10, c_{1}-12c_{2}+5c_{3}=0$，解出 $c_{1}=3, c_{2}=-1, c_{3}=-3$}
+\[
+y = 3\exp(x) - \exp(-3x)\left[\sin(2x) + 3\cos(2x)\right]
+\]
+\ansnote{答案见第 11 讲 p46}
+\ansh{36}{L12-17}{n 阶常系数线性非齐次（右端非准多项式，只能用参数变易法）}{齐次解 $y_{1}=\sin x,\ y_{2}=\cos x$，$W(\sin x,\cos x)=-1$；由 $c_{1}'\sin x+c_{2}'\cos x=0,\ c_{1}'\cos x-c_{2}'\sin x=2\sec x$ 得 $c_{1}'=2,\ c_{2}'=-2\tan x$}
+\[
+y=c_{1}\sin x+c_{2}\cos x+2x\sin x+2\cos x\ln|\cos x|
+\]
+\ansnote{$c_{1}(x)=2x,\ c_{2}(x)=2\ln|\cos x|$（积分常数取 0）。}
+\ansh{37}{L10-2}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}-6\lambda{}+25=0$，$\lambda{}=3\pm{}4i$（$\alpha{}=3, \beta{}=4$）}
+\[
+y = \exp(3x)\left[c_1\cos(4x) + c_2\sin(4x)\right]
+\]
+\ansh{38}{L2-8}{可化为齐次（$\Delta=0$ 型，平移）}{平移 $x=u-2,\ y=v+3$ 后令 $v=zu$，得 $\dfrac{2dz}{1+z^{2}}=\dfrac{du}{u}$}
+\[
+y = 3 + (x+2)\tan\frac{\ln|x+2|+C}{2}
+\]
+\ansh{39}{L9-13}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}+5\lambda{}^{2}+3\lambda{}-9=(\lambda{}-1)(\lambda{}+3)^{2}=0$，$\lambda{}=-3$ 为二重根；通解 $y=c_{1}exp x+(c_{2}+c_{3}x)exp(-3x)$，代初值解出 $c_{1}=1, c_{2}=-1, c_{3}=-2$}
+\[
+y = \exp(x) - \exp(-3x) - 2x\exp(-3x)
+\]
+\ansnote{答案见第 10 讲 p41}
+\ansh{40}{L7-6}{降阶-不含 y,y'（先令 $z=y'$，再对 z 令 $p(z)=z'$）}{令 $z=y'$ 得 $1+z'^2=2zz''$（不含 x）；再令 $p(z)=z'$，得 $\mathrm{d}(p^2+1)/(p^2+1)=\mathrm{d}z/z$}
+\[
+\begin{gathered}
+z = \frac{(\pm c_1x + c_2)^2}{4c_1} + \frac{1}{c_1} \\
+y = \pm\frac{(\pm c_1x + c_2)^3}{12c_1^2} + \frac{x}{c_1} + c_3
+\end{gathered}
+\]
+\ansnote{条件 $y'>0$ 即 $z>0$ 用于开方时定符号（$z=y'>0$）}
+\ansh{41}{L8-7}{二阶变系数线性齐次}{标准形中 $a_1=-\tfrac{x+4}{2x}$，Abel 定理 $W=c_1\exp\left(\int\tfrac{x+4}{2x}\mathrm{d}x\right)=c_2x^2\exp(x/2)$；再由 $\left(\tfrac{y_2}{y_1}\right)'=\tfrac{W}{y_1^2}=c_2\exp(x/2)$}
+\[
+\begin{gathered}
+W(y_1,y_2) = c_2x^2\exp\left(\frac{x}{2}\right) \\
+y_2 = 2c_2x\exp\left(\frac{x}{2}\right) + c_3x\ \Rightarrow\ y_2 = x\exp\left(\frac{x}{2}\right) \\
+y = c_1x + c_2x\exp\left(\frac{x}{2}\right)
+\end{gathered}
+\]
+\ansnote{本题在课件“Additional material”中作为 Abel 定理的示例，也是例题 2（p26）齐次基本解组的来源}
+\ansh{42}{L2-9}{可化为齐次（$\Delta=0$ 型，令 $z=x+y$）}{令 $z=x+y$，得 $(2z+1)z'=z$，即 $(2+1/z)dz=dx$}
+\[
+\begin{gathered}
+x + 2y + \ln|x+y| = C \\
+y = -x
+\end{gathered}
+\]
+\ansnote{$z=x+y=0$ 对应的一条解 $y=-x$ 需单独补上。}
+\ansh{43}{L9-5}{n 阶常系数线性齐次}{有理根检验：$\lambda{}=-3$ 后降为三次，再取 $\lambda{}=4$，余 $4\lambda{}^{2}-4\lambda{}+1=(2\lambda{}-1)^{2}$，得二重根 $\lambda{}=1/2$}
+\[
+y = c_1\exp(-3x) + c_2\exp(4x) + c_3\exp\left(\frac{x}{2}\right) + c_4 x\exp\left(\frac{x}{2}\right)
+\]
+\ansnote{$\lambda{}=1/2$ 为二重根}
+\ansh{44}{L7-15}{降阶-不含 x（对 $p^2$ 化为一阶线性）}{令 $p(y)=y'$，乘 2/y 得 $(p^2)'-\tfrac{2}{y}p^2=2y\ln y$，积分因子 $y^{-2}$；得 $p^2=y^2(\ln^2y+c_1)$，再解 $\mathrm{d}\ln y/\sqrt{\ln^2y+c_1}=\mathrm{d}x$}
+\[
+y = \exp\left(\frac{c_2^2\exp(2x) - c_1}{2c_2\exp x}\right)
+\]
+\ansnote{即 $\ln y=A\exp x+B\exp(-x)$（等价于 $(\ln y)''=\ln y$）。需附加条件 $c_2^2\exp(2x)\ge -c_1$；若 $c_1<0$ 还要求 $\left|\tfrac{c_2^2\exp(2x)-c_1}{2c_2\exp x}\right|\ge\sqrt{-c_1}$。$y\equiv 1$ 是丢掉的特解但不满足 $y'>0$。答案见第 8 讲 p36–38}
+\ansh{45}{L9-2}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{3}-4\lambda{}^{2}+\lambda{}+6=0$，试根得 $\lambda{}=-1$，除 $(\lambda{}+1)$ 得 $\lambda{}^{2}-5\lambda{}+6$，三实单根 -1, 2, 3}
+\[
+y = c_1\exp(-x) + c_2\exp(2x) + c_3\exp(3x)
+\]
+\ansh{46}{L11-9}{n 阶常系数线性非齐次（$n=4$，右端为三项之和）}{特征方程 $\lambda^{4}+\lambda^{2}=\lambda^{2}(\lambda^{2}+1)=0$，0 为二重根、另有 $\pm i$；拆成三个方程，依次试 $y_{p1}=x^{2}(Cx+D)$、$y_{p2}=(Ex+F)\exp x$、$y_{p3}=x(H\sin x+G\cos x)$}
+\[
+y=c_{1}+c_{2}x+c_{3}\sin x+c_{4}\cos x+2x^{3}+(2x-6)\exp x-x\sin x
+\]
+\ansh{47}{L9-9}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}+10\lambda{}+25=(\lambda{}+5)^{2}=0$，二重实根 $\lambda{}=-5$}
+\[
+y = c_1\exp(-5x) + c_2 x\exp(-5x)
+\]
+\ansnote{答案见第 10 讲 p33}
+\ansh{48}{L6-1}{Clairaut}{令 $y'=p$，$y=xp+\exp(p)$，对 x 求导得 $p'(x+\exp p)=0$}
+\[
+\begin{gathered}
+y = Cx + \exp(C) \\
+x = -\exp(p),\quad y = \exp(p)(1-p) \\
+y = -x\left(1 - \ln(-x)\right)
+\end{gathered}
+\]
+\ansnote{后两行为奇解（参数式与显式，$x<0$），不能由通解取某个 C 得到。}
+\ansh{49}{L9-4}{n 阶常系数线性齐次}{有理根检验（Theorem 3）：$\pm{}1, \pm{}2, \pm{}4, \pm{}8, \pm{}1/3, \pm{}2/3, \pm{}4/3, \pm{}8/3$；求得 $\lambda{}=2$，$3\lambda{}^{3}+\lambda{}^{2}-10\lambda{}-8=(\lambda{}-2)(3\lambda{}^{2}+7\lambda{}+4)$，另两根 -1, -4/3}
+\[
+y = c_1\exp(2x) + c_2\exp(-x) + c_3\exp\left(-\frac{4x}{3}\right)
+\]
+\ansnote{课件 p16 方程末项印作 +8y，但同页特征方程写作 $3\lambda{}^{3}+\lambda{}^{2}-10\lambda{}-8=0$、所给答案也对应 -8y；此处按 -8y 收录（课件笔误）}
+\ansh{50}{L6-9}{关于 x 可解（$x=\varphi(y')$）}{$x=\ln p+\sin p$，令 $p=y'$，由 $1=p'(1+p\cos p)$ 得 $dy=(1+p\cos p)\,dp$ 积分}
+\[
+\begin{gathered}
+x = \ln p + \sin p \\
+y = p + \cos p + p\sin p + C
+\end{gathered}
+\]
+\ansnote{参数 $p=y'>0$。答案出处：Lecture 7 课件 p42–p43。}
+\ansh{51}{L12-13}{n 阶常系数线性齐次（$n=3$，实单根）+ 初值条件}{特征方程 $\lambda^{3}-7\lambda^{2}+14\lambda-8=(\lambda-1)(\lambda-2)(\lambda-4)=0$；代入初值解三元一次方程组}
+\[
+y=\frac{8}{3}\exp x-2\exp(2x)+\frac{1}{3}\exp(4x)
+\]
+\ansnote{对应 $c_{1}=\tfrac{8}{3},\ c_{2}=-2,\ c_{3}=\tfrac{1}{3}$。}
+\ansh{52}{L2-7}{一阶齐次方程（$P,Q$ 同为一次齐次）}{令 $y=zx$，得 $x(4-z)z'=z^{2}+z-2$，部分分式积分}
+\[
+y = -2x + 8 - 4\sqrt{4-3x},\quad x\le 4/3
+\]
+\ansnote{解二次方程得两支，只有负号支满足 $y(1)=2$；$z=1,z=-2$ 不满足初值，未丢解。}
+\ansh{53}{L8-3}{二阶常系数线性齐次}{两函数都是解，故可用 Wronskian 判据 $W=y_1y_2'-y_1'y_2$}
+\[
+\begin{gathered}
+W(\exp x,\ x\exp x) = \exp(2x) \neq 0 \\
+\Rightarrow y_1,\ y_2 \text{ 在 } \mathbb{R} \text{ 上线性无关}
+\end{gathered}
+\]
+\ansh{54}{L1-10}{常微分方程，二阶，非线性}{$(r')^{4}$ 使一阶导数为四次，故非线性}
+\[
+\text{二阶非线性常微分方程}
+\]
+\ansh{55}{L10-14}{n 阶常系数线性齐次}{由 $\lambda{}^{2}-2\lambda{}+2=0$ 得 $\lambda{}=1\pm{}i$，两根均为二重根；基本解组 $exp x\cdot{}cos x, exp x\cdot{}sin x, x\cdot{}exp x\cdot{}cos x, x\cdot{}exp x\cdot{}sin x$}
+\[
+y = \exp(x)\left[c_1\sin x + c_2\cos x + c_3 x\sin x + c_4 x\cos x\right]
+\]
+\ansnote{答案见第 11 讲 p48}
+\ansh{56}{L4-3}{一阶非恰当，积分因子只依赖 $y$}{$\dfrac{N_{x}-M_{y}}{M}=\dfrac{2}{1-y}$，故 $\mu=(1-y)^{-2}$}
+\[
+\begin{gathered}
+y = \frac{c}{x+c} \\
+y\equiv 1\ \text{（奇解）}
+\end{gathered}
+\]
+\ansh{57}{L9-11}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{4}-7\lambda{}^{3}+17\lambda{}^{2}-17\lambda{}+6=(\lambda{}-1)^{2}(\lambda{}-2)(\lambda{}-3)=0$，$\lambda{}=1$ 为二重根}
+\[
+y = c_1\exp(x) + c_2 x\exp(x) + c_3\exp(2x) + c_4\exp(3x)
+\]
+\ansnote{答案见第 10 讲 p37}
+\ansh{58}{L7-17}{变系数线性（二阶，已知特解降阶）}{令 $y=y_p\int z\,\mathrm{d}x$，代入化简得 $\exp(x)z'+2\exp(x)z=0$，即 $z'+2z=0$}
+\[
+\begin{gathered}
+z = c_3\exp(-2x) \\
+y = \frac{1}{x}\left(c_4\exp(-x) + c_5\exp x\right)
+\end{gathered}
+\]
+\ansnote{答案见第 8 讲 p42–44}
+\ansh{59}{L4-6}{一阶线性非齐次}{先化标准形 $y'+\dfrac{4x}{x^{2}+1}y=\dfrac{x}{x^{2}+1}$，积分因子 $(x^{2}+1)^{2}$}
+\[
+y = \frac{1}{(x^{2}+1)^{2}}\left(\frac{x^{4}}{4} + \frac{x^{2}}{2} + 19\right)
+\]
+\ansh{60}{L9-6}{常系数线性非齐次}{齐次特征方程 $(\lambda{}-1)^{2}=0$，基本解组 $exp x, x\cdot{}exp x$；常数变易法设 $yp=c_{1}(x)exp x+c_{2}(x)x\cdot{}exp x$，解出 $c_{1}'=-1, c_{2}'=1/x$}
+\[
+y = c_1\exp(x) + c_2 x\exp(x) + x\ln|x|\exp(x)
+\]
+\ansnote{定义域 $x\neq{}0$；取特解 $yp=x\cdot{}ln|x|\cdot{}exp x$（积分常数置 0）}
+\ansh{61}{L12-12}{n 阶常系数线性齐次（$n=2$，实单根）}{特征方程 $\lambda^{2}+4\lambda-5=0$，$\lambda_{1,2}=\tfrac{-4\pm 6}{2}=1,\,-5$}
+\[
+y=c_{1}\exp x+c_{2}\exp(-5x)
+\]
+\ansh{62}{L6-8}{Lagrange}{$y=xp^{2}-2p^{3}$，对 x 求导得 $p(1-p)=2pp'(x-3p)$，化为 x(p) 线性方程，积分因子 $(1-p)^{2}$}
+\[
+\begin{gathered}
+x = \frac{c}{(1-p)^{2}} + 2p + 1 \\
+y = \frac{cp^{2}}{(1-p)^{2}} + p^{2}
+\end{gathered}
+\]
+\ansnote{另有奇解 $y\equiv 0$（$p=0$）与 $y=x-2$（$p=1$）。答案出处：Lecture 7 课件 p38–p41。}
+\ansh{63}{L4-1}{一阶非恰当，积分因子 $\mu=\mu(x^{2}+y^{2})$}{算得 $\dfrac{M_{y}-N_{x}}{N\omega_{x}-M\omega_{y}}=-\dfrac{1}{\omega}$，故 $\mu=\dfrac{1}{x^{2}+y^{2}}$}
+\[
+\arctan\frac{y}{x} + y = c
+\]
+\ansh{64}{L1-1}{一阶线性非齐次}{乘积分因子 $x^{2}$，左端凑成 $(x^{3}y)'$ 再积分}
+\[
+y = x^{3} + \frac{C}{x^{3}},\quad x\neq 0
+\]
+\ansh{65}{L7-14}{降阶-不含 y,y'（令 $z=y''$）}{令 $z=y''$，得 $z'=\tfrac{1}{3}z^4$（可分离）；$3\mathrm{d}z/z^4=\mathrm{d}x$}
+\[
+\begin{gathered}
+y'' = -\frac{1}{\sqrt[3]{x+c_1}} \\
+y = -\frac{9}{10}\sqrt[3]{(x+c_1)^5} + C_2x + C_3
+\end{gathered}
+\]
+\ansnote{除以 $z^4$ 丢掉 $z\equiv 0$，故还有直线解族 $y=C_1x+C_2$。答案见第 8 讲 p33–34}
+\ansh{66}{L11-8}{n 阶常系数线性非齐次（三角准多项式右端，$\alpha{}+i\beta{}=1+i$）}{特征方程 $\lambda^{3}-2\lambda+4=(\lambda+2)(\lambda^{2}-2\lambda+2)=0$，$\lambda=-2,\,1\pm i$；1+i 是单根，故需乘 x}
+\[
+y_{p}=x\exp x\left[(Ax^{2}+Bx+C)\sin x+(Dx^{2}+Ex+F)\cos x\right]
+\]
+\ansh{67}{L5-12}{Lagrange}{令 $y'=p$，$y=2xp-4p^{3}$，对 x 求导得 $dx/dp+\tfrac{2}{p}x=12p$，先解齐次 $x=cp^{-2}$ 再用常数变易}
+\[
+\begin{gathered}
+x = 3p^{2} + \frac{c}{p^{2}} \\
+y = 2p^{3} + \frac{2c}{p}
+\end{gathered}
+\]
+\ansnote{$p=0$ 给出奇解 $y\equiv 0$。答案出处：Lecture 6 课件 p45–p48。}
+\ansh{68}{L12-1}{可化为齐次（线性分式右端，作平移 $x=u+4$，$y=v+6$）}{解 $2h-k-2=0,\ h-4=0$ 得 $h=4,\ k=6$；平移后为齐次方程，再令 $v=zu$ 化为可分离方程 $u\tfrac{\mathrm{d}z}{\mathrm{d}u}=\tfrac{2-5z}{4}$}
+\[
+y=(x-4)\left(\frac{2}{5}-C|x-4|^{-5/4}\right)+6
+\]
+\ansnote{课件 p4 末行印作 $y=v+3=zu+3$ 并以 +3 收尾，与 $y=v+k=v+6$ 矛盾，属笔误：正确答案的常数项是 +6（代回方程可验证），C 为任意常数。}
+\ansh{69}{L8-2}{线性相关性判定（不用 Wronskian）}{由 $c_1x+c_2x^2\equiv 0$ 求导得 $c_1+2c_2x\equiv 0$，再乘 x 相减得 $c_2x^2\equiv 0$}
+\[
+\begin{gathered}
+c_2x^2 = 0\ \forall x \Rightarrow c_2=0,\ \text{再由 } c_1x=0 \Rightarrow c_1=0 \\
+\text{x 与 } x^2 \text{ 在 } \mathbb{R} \text{ 上线性无关}
+\end{gathered}
+\]
+\ansh{70}{L6-6}{关于 x 可解（$x=\varphi(y')$）}{$x=\tfrac{2p}{p^{2}-1}$，对 x 求导得 $\tfrac{dp}{dy}=-\tfrac{(p^{2}-1)^{2}}{2p(p^{2}+1)}$，再积分}
+\[
+\begin{gathered}
+x = \frac{2p}{p^{2}-1} \\
+y = -\ln|p^{2}-1| + \frac{2}{p^{2}-1} + C
+\end{gathered}
+\]
+\ansnote{$p^{2}\neq 1$；$p=\pm 1$ 代入原方程得矛盾（$x-2-x=0$ 或 $x+2-x=0$），故方程无对应解。}
+\ansh{71}{L2-3}{可化为可分离（根式代换）}{令 $z=4x+2y$，则 $z'=4+2\sqrt{z-1}$；再令 $u=\sqrt{z-1}$}
+\[
+\sqrt{4x+2y-1} - 2\ln\left(\sqrt{4x+2y-1}+2\right) = x + c
+\]
+\ansh{72}{L10-4}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{4}+8\lambda{}^{2}+16=(\lambda{}^{2}+4)^{2}=(\lambda{}-2i)^{2}(\lambda{}+2i)^{2}=0$，$\pm{}2i$ 均为二重根，需补 $x\cdot{}cos(2x), x\cdot{}sin(2x)$}
+\[
+y = (c_1 + c_3 x)\cos(2x) + (c_2 + c_4 x)\sin(2x)
+\]
+\ansh{73}{L3-3}{一阶恰当方程}{$M_{y}=N_{x}=1+2xe^{y}$，按 $\int N\,dy+\int M\,dx$ 求 $F$}
+\[
+xy + x^{2}e^{y} = C
+\]
+\ansh{74}{L5-7}{关于 y 可解（$y=\varphi(x,y')$）}{$y=p^{2}-xp+x^{2}/2$，对 x 求导得 $(p'-1)(2p-x)=0$}
+\[
+y = \frac{x^{2}}{2} + Cx + C^{2}
+\]
+\ansnote{奇解 $y=x^{2}/4$。直接把 $p=x+C$ 再积分成 $y'=x+C$ 会得到含两个常数的伪解，须代回原方程消去（得 $C_1=C^{2}$）。}
+\ansh{75}{L4-8}{积分因子证明题}{记 $r^{2}=x^{2}+y^{2}$，验 $M_{y}r^{2}-2yM=N_{x}r^{2}-2xN$（两边都等于 $2r^{2}-2y^{2}-2x^{2}=0$）}
+\[
+\mu = \frac{1}{x^{2}+y^{2}}\ \text{确为积分因子}
+\]
+\ansh{76}{L2-12}{一阶齐次方程}{除以 $x^{2}$ 化为 $y/x$ 的函数，令 $y=vx$，分离变量积分}
+\[
+\begin{gathered}
+2\left(y^{2}+3xy+3x^{2}\right)^{2} = 9x^{5} \\
+y = \frac{1}{2}\left[-3x-\sqrt{-3x^{2}+6\sqrt{2}\,x^{5/2}}\right]
+\end{gathered}
+\]
+\ansh{77}{L12-15}{n 阶常系数线性齐次（$n=6$，重实根）}{特征方程 $\lambda^{6}-3\lambda^{4}+3\lambda^{2}-1=(\lambda^{2}-1)^{3}=(\lambda-1)^{3}(\lambda+1)^{3}=0$，1 与 -1 各为三重根}
+\[
+y=(c_{1}+c_{2}x+c_{3}x^{2})\exp x+(c_{4}+c_{5}x+c_{6}x^{2})\exp(-x)
+\]
+\ansh{78}{L3-2}{一阶、恰当方程判定}{验证 $M_{y}=2y=N_{x}$；并注意除以 $y$ 后不再恰当}
+\[
+\text{恰当：} d(xy^{2}) = y^{2}dx + 2xy\,dy
+\]
+\ansh{79}{L6-3}{Lagrange}{$y=xp^{2}-p$，对 x 求导得 $dx/dp+\tfrac{2}{p-1}x=\tfrac{1}{p(p-1)}$，积分因子 $(p-1)^{2}$}
+\[
+\begin{gathered}
+x = \frac{p - \ln|p| + C}{(p-1)^{2}} \\
+y = xp^{2} - p
+\end{gathered}
+\]
+\ansnote{$p=0$ 给出奇解 $y\equiv 0$；$p=1$ 给出奇解 $y=x-1$。}
+\ansh{80}{L11-6}{n 阶常系数线性非齐次（右端为两个准多项式之和）}{由叠加原理拆成两个方程：对 $\exp(-4x)$，-4 是特征根（单根），试 $y_{p1}=Ax\exp(-4x)$；对 $x\exp(-x)$，-1 不是特征根，试 $y_{p2}=(Bx+C)\exp(-x)$}
+\[
+y=c_{1}\exp x+c_{2}\exp(-4x)-\frac{x}{5}\exp(-4x)-\left(\frac{x}{6}+\frac{1}{36}\right)\exp(-x)
+\]
+\ansnote{第一个方程代回后得 $-5A=1$，故 $A=-\tfrac{1}{5}$；第二个方程得 $-6B=1,\ B-6C=0$，故 $B=-\tfrac{1}{6},\ C=-\tfrac{1}{36}$。}
+\ansh{81}{L7-2}{降阶-最简形式 $y''=f(x)$}{在 [0,x] 上两次定积分，边积边用初值定常数}
+\[
+y = \frac{1}{25}\exp(5x) - \frac{6}{5}x + \frac{24}{25}
+\]
+\ansh{82}{L4-7}{把 $x$ 看成未知函数后为一阶线性}{取倒数：$\dfrac{dx}{dy}+x=e^{-y}$，积分因子 $e^{y}$，得 $(xe^{y})'=1$}
+\[
+x = e^{-y}(y + c)
+\]
+\ansh{83}{L2-10}{一阶可分离}{分离为 $\dfrac{\cos u\,du}{\sin u+1}=-\dfrac{e^{v}dv}{e^{v}+1}$，两边凑对数}
+\[
+(\sin u+1)(e^{v}+1) = C
+\]
+\ansh{84}{L8-8}{线性相关性判定（不用 Wronskian）}{设 $c_1+c_2x\equiv 0$，令 $x=0$ 得 $c_1=0$，再令 $x\ne 0$ 得 $c_2=0$}
+\[
+\begin{gathered}
+c_1+c_2x\equiv 0 \Rightarrow c_1=c_2=0 \\
+1 \text{ 与 } x \text{ 在 } \mathbb{R} \text{ 上线性无关}
+\end{gathered}
+\]
+\ansnote{课件未在本讲给解答，答案取自第 9 讲 p32 的 Lecture 8. Homework 解答页}
+\ansh{85}{L6-4}{Lagrange}{$y=xp^{2}+p-p^{3}$，对 x 求导得 $p'(2xp+1-3p^{2})=p(1-p)$，化为 x(p) 的线性方程，积分因子 $(1-p)^{2}$；再由 $y(0)=0$ 得 $p^{3}-p=0$}
+\[
+\begin{gathered}
+y\equiv 0,\qquad y = x \\
+x = \frac{\ln|p| - p - \frac{3}{2}p^{2} + p^{3} + \frac{3}{2}}{(1-p)^{2}},\quad y = xp^{2} + p - p^{3}
+\end{gathered}
+\]
+\ansnote{该 Cauchy 问题恰有三个解，斜率依次为 0、1、-1：$y\equiv 0$（$p=0$）与 $y=x$（$p=1$）是奇解，第三式是通解族中 $C=3/2$ 的成员（$p=-1$ 时 $x=0,y=0$）。}
+\ansh{86}{L5-6}{关于 y 可解（$y=\varphi(y')$）}{令 $p=y'$，$y=2p^{3}+p^{2}$，对 x 求导得 $2(3p+1)dp/dx=1$，分离变量积分}
+\[
+\begin{gathered}
+x = 3p^{2} + 2p + C \\
+y = 2p^{3} + p^{2}
+\end{gathered}
+\]
+\ansnote{解方程时除以 $p=y'$ 丢失奇解 $y\equiv 0$（即 $p=0$ 时 $y=\varphi(0)=0$）。}
+\ansh{87}{L3-5}{一阶恰当方程（分组法）}{拆成 $d(x^{3})+d(2x^{2}y)+d(y^{2})=0$}
+\[
+x^{3} + 2x^{2}y + y^{2} = C
+\]
+\ansh{88}{L4-2}{一阶非恰当，积分因子只依赖 $x$}{$\dfrac{M_{y}-N_{x}}{N}=-\dfrac{2x}{1+x^{2}}$，故 $\mu=(1+x^{2})^{-1}$}
+\[
+xy + \arctan x = C
+\]
+\ansh{89}{L1-4}{二阶线性齐次，初值问题（两个条件同属 $x=1$）}{通解 $y=A\cos x+B\sin x$，代入 $x=1$ 处的两个条件}
+\[
+y = 2\cos(x-1)
+\]
+\ansh{90}{L12-9}{降阶-不含 x（令 $p(y)=y'$）}{令 $p(y)=y'$，则 $y''=p\tfrac{\mathrm{d}p}{\mathrm{d}y}$，得 $yp\tfrac{\mathrm{d}p}{\mathrm{d}y}+2p^{2}=0\Rightarrow\tfrac{\mathrm{d}p}{p}=-\tfrac{2\,\mathrm{d}y}{y}\Rightarrow p=\tfrac{c}{y^{2}}$}
+\[
+\begin{gathered}
+y^{3}=Cx+D \\
+y=(Cx+D)^{1/3}
+\end{gathered}
+\]
+\ansnote{含解 $y\equiv 0$（$C=0,\ D=0$ 时给出）；分离变量处用到 $p\neq 0,\ y\neq 0$，需把 $p\equiv 0$ 即 $y=\mathrm{const}$ 补回，已包含在通解中。}
+\ansh{91}{L1-3}{一阶可分离（也可是恰当方程）}{分离变量 $y\,dy=-x\,dx$，或直接凑 $d(x^{2}+y^{2})=0$}
+\[
+\begin{gathered}
+x^{2} + y^{2} = C\ (C>0) \\
+x = C\sin t,\quad y = C\cos t\ (C\neq 0)
+\end{gathered}
+\]
+\ansh{92}{L11-4}{n 阶常系数线性非齐次（$n=2$，$\alpha{}=1$ 的准多项式右端）}{特征方程 $\lambda^{2}+\lambda-6=0$，$\lambda=2,-3$；$\alpha{}=1$ 不是特征根，试 $y_{p}=(Ax+B)\exp x$}
+\[
+y=c_{1}\exp(2x)+c_{2}\exp(-3x)-\left(\frac{x}{4}+\frac{7}{16}\right)\exp x
+\]
+\ansnote{课件在本页再次使用编号 EXAMPLE 3（与 p9 重号）。}
+\ansh{93}{L3-1}{准齐次（广义齐次），权重 $\alpha=3,\ \beta=2$}{先证非古典齐次，再按 $x\mapsto k^{3}x,\ y\mapsto k^{2}y$ 定权重，令 $y=x^{2/3}u$}
+\[
+\begin{gathered}
+y^{3} = 3x^{2}(Cx-1) \\
+y = -\sqrt[3]{3}\,x^{2/3}\ \text{（奇解）}
+\end{gathered}
+\]
+\ansh{94}{L1-11}{一阶、可化为线性（验证题）}{对隐式等式两边求导，解出 $y'$ 再代回方程}
+\[
+\text{成立：两边求导得 } xy'=\frac{5y-3xy}{2x-5},\ \text{代入即化为 } 5x^{2}y^{2}-2x^{3}y^{2}=1
+\]
+\ansh{95}{L12-11}{高阶齐次（关于 y,y',y'' 二次齐次）}{令 $z=\tfrac{y'}{y}$，则 $y'=yz,\ y''=y(z^{2}+z')$，代入得 $x^{2}y^{2}z'=2xy^{2}z$，即 $xz'=2z\Rightarrow z=c_{1}x^{2}$}
+\[
+y=c_{4}\exp(c_{2}x^{3})
+\]
+\ansnote{含解 $y\equiv 0$；$c_{2},c_{4}$ 为任意常数（$c_{4}=0$ 时退化为 $y\equiv 0$）。}
+\ansh{96}{L4-12}{一阶线性非齐次，分段右端}{各段用积分因子 $e^{x}$，在 $x=1$ 处用连续性定常数}
+\[
+\begin{gathered}
+0\le x<1:\quad y = (x+1)e^{-x} \\
+x\ge 1:\quad y = e^{-1} + e^{-x}
+\end{gathered}
+\]
+\ansh{97}{L2-6}{一阶齐次方程（零次齐次）}{令 $y=zx$，得 $xz'=\dfrac{1+z^{2}}{2z}$，分离变量}
+\[
+x^{2} + y^{2} = 2x^{3}
+\]
+\ansh{98}{L5-9}{Riccati}{设 $y_p=A/x^{2}$ 代入得 $2A^{2}=18$，$A=\pm 3$；取 $y_p=3/x^{2}$，令 $y=3/x^{2}+1/w$ 得 $w'-\tfrac{14}{x}w=2x$，积分因子 $x^{-14}$}
+\[
+y = \frac{3}{x^{2}} + \frac{6}{C x^{14} - x^{2}}
+\]
+\ansnote{奇解 $y=3/x^{2}$。答案出处：Lecture 6 课件 p37–p39。}
+\ansh{99}{L3-4}{一阶恰当方程}{$M_{y}=N_{x}=6xy^{2}+6x^{2}y+1$，积分 $M$ 对 $x$ 再定 $\varphi(y)$}
+\[
+x^{2}y^{3} + x^{3}y^{2} + xy = -1
+\]
+\ansh{100}{L1-9}{常微分方程，三阶，线性}{一个自变量 $x$；最高阶导数为 3；$y,y',y''',\dots$ 均一次且系数只依赖 $x$}
+\[
+\text{三阶线性常微分方程}
+\]
+\ansh{101}{L4-5}{一阶线性非齐次}{化为 $y'+\dfrac{4}{x}y=-2x-\dfrac{4}{x}$，积分因子 $x^{4}$，得 $(x^{4}y)'=-2x^{5}-4x^{3}$}
+\[
+y = \frac{7}{3x^{4}} - \frac{x^{2}}{3} - 1
+\]
+\ansh{102}{L5-2}{Bernoulli（把 x 看作 y 的函数，$n=2$）}{用 $dy/dx=1/(dx/dy)$ 取倒数得 $dx/dy-(2/y)x=y^{3}x^{2}$，令 $z=x^{1-n}=1/x$ 化为线性}
+\[
+\begin{gathered}
+x y^{6} + 6y^{2} = 6Cx \\
+x(y) = \frac{6y^{2}}{6C - y^{6}}
+\end{gathered}
+\]
+\ansnote{$y=0$ 由 $C=0$ 给出，是特解而非奇解；通解也可写成 $1/x=C/y^{2}-y^{4}/6$。}
+\ansh{103}{L12-7}{关于 x 可解}{令 $p(y)=y'$，写成 $x=\tfrac{y}{p}+\tfrac{1}{p^{3}}$（$p\neq 0$），对 x 求导得 $p'\left(\tfrac{y}{p}+\tfrac{3}{p^{3}}\right)=0$，分 $p'=0$ 与 $yp^{2}+3=0$ 两种情形}
+\[
+\begin{gathered}
+y=Cx-\frac{1}{C^{2}} \\
+y=-3\left(\frac{x}{2}\right)^{2/3}
+\end{gathered}
+\]
+\ansnote{第一式为通解（$C\neq 0$ 为任意常数），第二式为奇解（包络）；$p=0$ 不能给出解。}
+\ansh{104}{L7-4}{降阶-不含 x（化为一阶线性，对 $p^2$ 线性）}{令 $p(y)=y'$，得 $4(p^2)'-(p^2)/4=\tfrac{1}{4}\exp y$，积分因子 $\exp(-y/4)$}
+\[
+\begin{gathered}
+p^2 = \frac{1}{3}\exp y + c_1\exp\left(\frac{y}{4}\right) \\
+x = \pm\int\left[\frac{1}{3}\exp y + c_1\exp\left(\frac{y}{4}\right)\right]^{-1/2}\mathrm{d}y + c_2
+\end{gathered}
+\]
+\ansnote{最后一步积分非初等，故解只能写成求积式；$y'=\pm\sqrt{\tfrac{1}{3}\exp y+c_1\exp(y/4)}$ 两号对应两支}
+\ansh{105}{L12-8}{高阶最简单型（右端只含 x，可直接逐次积分）}{在 [0,x] 上连续积分三次，其中 $\int_{0}^{x}t\sin(2t)\,\mathrm{d}t$ 用分部积分}
+\[
+y=\frac{x^{2}}{2}+\frac{x}{4}+\frac{x}{8}\cos(2x)-\frac{3}{16}\sin(2x)
+\]
+\ansnote{中间结果：$y''=1-\tfrac{x}{2}\cos(2x)+\tfrac{1}{4}\sin(2x)$，$y'=x-\tfrac{x}{4}\sin(2x)-\tfrac{1}{4}\cos(2x)+\tfrac{1}{4}$。}
+\ansh{106}{L9-1}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{2}-2\lambda{}-15=0$，实单根 $\lambda{}_{1}=5, \lambda{}_{2}=-3$；基本解组 exp(5x), exp(-3x)}
+\[
+y = c_1\exp(5x) + c_2\exp(-3x)
+\]
+\ansh{107}{L12-3}{一阶非恰当，存在只含 x 的积分因子 $\mu{}(x)$}{$M_{y}=3x+2y,\ N_{x}=2x+y$ 不等，故非恰当；$\tfrac{M_{y}-N_{x}}{N}=\tfrac{x+y}{x^{2}+xy}=\tfrac{1}{x}$ 只含 x，取 $\mu{}(x)=\exp\int\tfrac{1}{x}\,\mathrm{d}x=x$}
+\[
+x^{3}y+\frac{x^{2}y^{2}}{2}=C
+\]
+\ansnote{乘 $\mu{}=x$ 后得恰当方程 $(3x^{2}y+xy^{2})\,\mathrm{d}x+(x^{3}+x^{2}y)\,\mathrm{d}y=0$，势函数 $F=x^{3}y+\tfrac{x^{2}y^{2}}{2}$。}
+\ansh{108}{L2-2}{一阶可分离，初值问题}{分离变量并从初值处定积分：$\int_{-1}^{y}(3+2y)dy=\int_{0}^{x}2\cos 2x\,dx$}
+\[
+y^{2} + 3y + 2 = \sin 2x\ \Rightarrow\ y = \frac{1}{2}\left[-3+\sqrt{1+4\sin 2x}\right]
+\]
+\ansnote{解二次方程得两支，只有正根满足 $y(0)=-1$。}
+\ansh{109}{L6-7}{Clairaut（$\varphi(p)=-p^{2}$）}{令 $y'=p$，$y=xp-p^{2}$，对 x 求导得 $p'(x-2p)=0$}
+\[
+y = Cx - C^{2}
+\]
+\ansnote{奇解 $y=\tfrac{x^{2}}{4}$。答案出处：Lecture 7 课件 p37–p38。}
+\ansh{110}{L1-14}{二阶常系数线性非齐次（验证题）}{求 $f',f''$ 后代回；再算 $f(0),f'(0)$}
+\[
+\text{成立：} f''-4f'+4f=-8\cos 2x,\quad f(0)=3,\quad f'(0)=6
+\]
+\ansh{111}{L7-18}{广义齐次（$\alpha{}=1$，$m=3$）}{验证 $F(kx,k^\alpha y,k^{\alpha-1}y',k^{\alpha-2}y'')=k^3F$ 需 $\alpha{}=1$；代换 $x=\exp u,\ y=v(u)\exp u$ 得 $v''+v'+v'^3=0$，再令 $p(v)=v'$}
+\[
+y = x\left(c_1 + \arcsin\frac{c_2}{x}\right)
+\]
+\ansnote{课件印作 $\arcsin\left[c_2\exp(1/x)\right]$，但按 $\exp(-u)=1/x$ 代回应为 $c_2/x$（用 SymPy 检验：$c_2/x$ 使方程成立，$c_2\exp(1/x)$ 不成立）。另 $v'\equiv 0$ 给出直线解族 $y=Cx$，相当于 $c_2=0$。答案见第 8 讲 p45–47}
+\ansh{112}{L5-3}{可化为线性（$v=\exp(y)$）}{两边乘 $\exp(y)$，令 $v=\exp(y)$ 得 $v'+4v=\exp(x)$，积分因子 $\exp(4x)$}
+\[
+y(x) = \ln\left(\frac{1}{5}\exp(x) + \frac{4}{5}\exp(-4x)\right)
+\]
+\ansh{113}{L6-5}{关于 x 可解（$x=\varphi(y,y')$）}{$x=p^{3}-y$，令 $p=y'$，对 x 求导得 $3p^{3}\tfrac{dp}{dy}=p+1$，再取 $dy/dp=\tfrac{3p^{3}}{p+1}$ 积分}
+\[
+\begin{gathered}
+x = \frac{3}{2}p^{2} - 3p + 3\ln|p+1| + C \\
+y = p^{3} - \frac{3}{2}p^{2} + 3p - 3\ln|p+1| - C
+\end{gathered}
+\]
+\ansnote{$p=-1$ 时 dx/dp 无意义，代回得奇解 $y=-x-1$。}
+\ansh{114}{L9-3}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{4}-7\lambda{}^{3}+18\lambda{}^{2}-20\lambda{}+8=(\lambda{}-1)(\lambda{}-2)^{3}$；$\lambda{}=2$ 为三重根，需补 $x\cdot{}exp(2x), x^{2}\cdot{}exp(2x)$}
+\[
+y = c_1\exp(x) + c_2\exp(2x) + c_3 x\exp(2x) + c_4 x^2\exp(2x)
+\]
+\ansnote{重根 $\lambda{}=2$（三重）}
+\ansh{115}{L8-12}{二阶常系数线性非齐次（共振：右端含齐次解 $\cos x$）}{$W(\sin x,\cos x)=-1$；解 $c_1'\sin x+c_2'\cos x=0,\ c_1'\cos x-c_2'\sin x=2\cos x$ 得 $c_1'=1+\cos 2x,\ c_2'=-\sin 2x$}
+\[
+\begin{gathered}
+c_1(x)=\frac{1}{2}\sin 2x + x,\qquad c_2(x)=\frac{1}{2}\cos 2x \\
+y = c_1\sin x + c_2\cos x + \left(\frac{1}{2}\sin 2x + x\right)\sin x + \frac{1}{2}\cos 2x\cos x \\
+y = c_1\sin x + c_2\cos x + x\sin x
+\end{gathered}
+\]
+\ansnote{第三行是化简结果：$\left(\tfrac{1}{2}\sin 2x+x\right)\sin x+\tfrac{1}{2}\cos 2x\cos x=x\sin x+\tfrac{1}{2}\cos x$，其中 $\tfrac{1}{2}\cos x$ 并入齐次项。答案见第 9 讲 p37–41}
+\ansh{116}{L4-11}{一阶线性非齐次（常系数）}{积分因子 $e^{-t}$；特解试 $A\sin 2t+B\cos 2t$}
+\[
+x(t) = \frac{7}{5}e^{t} - \frac{1}{5}\sin 2t - \frac{2}{5}\cos 2t
+\]
+\ansh{117}{L10-7}{Cauchy–Euler}{Cauchy–Euler：令 $x=exp t$（$t=ln x$），有 $x^{2}y''=y''(t)-y'(t)$、$xy'=y'(t)$，方程化为常系数 $y''(t)-y=2exp t$；齐次 $\lambda{}=\pm{}1$，常数变易法得 $c_{1}(t)=t, c_{2}(t)=-exp(2t)/2$}
+\[
+y = (\ln|x| + C_1)x + \frac{C_2}{x}
+\]
+\ansnote{先用 $x=exp t$ 讨论 $x>0$，再令 $x=-exp t$ 讨论 $x<0$，最后统一写 ln|x|；区间不含 $x=0$}
+\ansh{118}{L5-8}{Bernoulli（把 x 看作 y 的函数，$n=3$）}{用 $dy/dx=1/(dx/dy)$ 得 $dx/dy+\tfrac{1}{2y}x=\tfrac{y\sin y}{2}x^{3}$，乘 $2x^{-3}$，令 $v=x^{-2}$ 得 $v'-\tfrac{1}{y}v=-y\sin y$，积分因子 1/y}
+\[
+1 = x^{2}y\left(C + \cos y\right)
+\]
+\ansnote{$y\equiv 0$ 是奇解。答案出处：Lecture 6 课件 p34–p36。}
+\ansh{119}{L3-9}{准齐次，权重 $\alpha=1,\ \beta=2$}{令 $y=x^{2}u$，得 $\dfrac{u\,du}{1-u^{2}}=\dfrac{dx}{x}$}
+\[
+\begin{gathered}
+y^{2} = x^{4} - Cx^{2} \\
+y = \pm x^{2}\ \text{（含于 }C=0\text{）}
+\end{gathered}
+\]
+\ansh{120}{L2-13}{可化为齐次（$\Delta\neq 0$，平移 $x=u+1,\ y=v-3$）}{平移消常数项后令 $v=zu$，化为可分离}
+\[
+y^{2} + 2y + 4xy + 5x^{2} + 2x = 3\ \ (\text{隐式})
+\]
+\ansh{121}{L12-5}{Riccati}{已给特解 $y_{p}=x$，令 $y=x+\tfrac{1}{v}$，化为线性方程 $v'+\tfrac{2}{x}v=1$，积分因子 $\mu{}(x)=x^{2}$}
+\[
+y=x+\frac{3x^{2}}{x^{3}+6}
+\]
+\ansnote{通解为 $y=x+\tfrac{3x^{2}}{x^{3}+K}$，由 $y(1)=\tfrac{10}{7}$ 得 $K=6$。}
+\ansh{122}{L1-8}{一阶、右端 $f=3y^{2/3}$ 对 $y$ 不满足 Lipschitz}{分离变量得 $y=(x+C)^{3}$；再由 $f_{y}=2y^{-1/3}$ 在 $y\neq 0$ 连续判断唯一性}
+\[
+\begin{gathered}
+y_0\neq 0:\quad y = \left(x - x_{0} + y_{0}^{1/3}\right)^{3} \\
+y_0 = 0:\quad y\equiv 0\ \text{与}\ y=(x-x_{0})^{3}\ \text{都满足，解不唯一}
+\end{gathered}
+\]
+\ansnote{$y\equiv 0$ 是奇解。}
+\ansh{123}{L3-7}{一阶恰当方程}{$M_{y}=N_{x}$ 验证恰当；用线积分公式或分组凑微分}
+\[
+y^{2}\cos x - y\sin^{2}x = 9
+\]
+\ansh{124}{L7-13}{降阶-最简形式 $y'''=f(x)$}{$\cos^2(2x)=\tfrac{1+\cos 4x}{2}$，在 [0,x] 上积三次，每次用初值定常数}
+\[
+y = \frac{x^3}{12} - \frac{1}{128}\sin(4x) + x^2 + \frac{33}{32}x + 1
+\]
+\ansnote{课件未在本讲给解答，答案取自第 8 讲 p31–32 的 Lecture 7. Homework 解答页}
+\ansh{125}{L8-9}{线性相关性判定（不用 Wronskian）}{设 $c_1\sin t+c_2\tan t\equiv 0$，两边乘 $\cos t$ 得 $c_1\cos t+c_2=0$（$t\neq 0$）}
+\[
+\begin{gathered}
+\sin t\,(c_1\cos t + c_2)=0\ \Rightarrow\ c_1\cos t + c_2 = 0,\ t\neq 0 \\
+\text{若 } c_1\neq 0 \text{ 则 } \cos t \text{ 为常数，矛盾；故 } c_1=c_2=0 \\
+\sin t \text{ 与 } \tan t \text{ 在 } \left(-\frac{\pi}{2},\frac{\pi}{2}\right) \text{ 上线性无关}
+\end{gathered}
+\]
+\ansnote{答案见第 9 讲 p32–33}
+\ansh{126}{L2-1}{一阶可分离}{化为 $\dfrac{\cos y\,dy}{\sin^{2}y}=x\,dx$，注意 $\cos y\,dy=d\sin y$}
+\[
+-\frac{1}{\sin y} = \frac{x^{2}}{2} + C
+\]
+\ansnote{除以 $\sin^{2}y$ 时丢掉奇解 $y=k\pi,\ k\in\mathbb{Z}$。}
+\ansh{127}{L12-6}{关于 y 可解（Clairaut 型：$y = y'sin y' + cos y'$）}{令 $p=y'$，对 x 求导得 $p=p'(\sin p+p\cos p-\sin p)$，即 $1=p'\cos p$，分离变量 $\cos p\,\mathrm{d}p=\mathrm{d}x$ 得 $x=\sin p+C$}
+\[
+\begin{gathered}
+\begin{cases}x=\sin p+C,\\ y=p\sin p+\cos p\end{cases}
+\end{gathered}
+\]
+\ansnote{参数式通解（p 为参数）；另有奇解 $y\equiv 1$（对应 $p=0$）。消去 p 可写为 $y=\arcsin(x+C)\sin(\arcsin(x+C))+\cos(\arcsin(x+C))$，$|x+C|\leq 1$。}
+\ansh{128}{L1-12}{一阶线性非齐次（验证题）}{求出 $f'$ 后代入左端，逐项抵消}
+\[
+\text{成立：} f'+3f = 3x^{2}e^{-3x}
+\]
+\ansh{129}{L6-2}{Clairaut（$\varphi(p)=p^{3}-3p$）}{令 $y'=p$ 求导得 $p'(x+3p^{2}-3)=0$}
+\[
+y_{1}=0,\qquad y_{2}=\sqrt{3}\,x,\qquad y_{3}=-\sqrt{3}\,x
+\]
+\ansnote{奇解为 $x=3-3p^{2},\ y=-2p^{3}$，即 $y=\pm\tfrac{2}{3\sqrt{3}}(3-x)^{3/2}\ (x\leq 3)$；它在 $x=0$ 处取 $\pm 2\neq 0$，不过原点，故不给出该 Cauchy 问题的额外解。}
+\ansh{130}{L8-1}{线性相关性判定（不用 Wronskian）}{找不全为零的 $c_1,c_2$ 使 $c_1x+c_2\cdot 2x\equiv 0$}
+\[
+\begin{gathered}
+c_1x + c_2\cdot 2x \equiv 0\ \text{ 当 } c_1=2,\ c_2=-1 \\
+\text{x 与 2x 在 } \mathbb{R} \text{ 上线性相关}
+\end{gathered}
+\]
+\ansh{131}{L12-10}{降阶-不显含 y, y'（令 $z=y''$）}{令 $z=y''$，得线性方程 $z'+z=x+1$，积分因子 $\exp(x)$：$\tfrac{\mathrm{d}}{\mathrm{d}x}\left(\exp(x)z\right)=\exp(x)(x+1)\Rightarrow z=x+C_{1}\exp(-x)$}
+\[
+y=\frac{x^{3}}{6}+C_{1}\exp(-x)+C_{2}x+C_{3}
+\]
+\ansh{132}{L6-10}{关于 x 可解（$x=\varphi(y')$）}{$x=\exp p-p^{2}$，由 $p\tfrac{dp}{dy}(\exp p-2p)=1$ 得 $dy=p(\exp p-2p)\,dp$ 积分}
+\[
+\begin{gathered}
+x = \exp p - p^{2} \\
+y = (p-1)\exp p - \frac{2}{3}p^{3} + C
+\end{gathered}
+\]
+\ansnote{课件写作 $y=p\exp p-\exp p-\tfrac{2}{3}p^{3}+C$，与上式相同。答案出处：Lecture 7 课件 p44–p45。}
+\ansh{133}{L12-2}{准齐次（权 $\alpha{}=-2$，$\beta{}=1$，条件 $2\alpha{}+4\beta{}=0$）}{令 $u=y x^{1/2}$（即 $y=ux^{-1/2}$），代入得可分离方程 $2x\,\mathrm{d}u+u^{5}\,\mathrm{d}x=0$，即 $\tfrac{2\,\mathrm{d}u}{u^{5}}=-\tfrac{\mathrm{d}x}{x}$}
+\[
+\begin{gathered}
+x^{2}y^{4}=\frac{1}{2\ln|x|+C} \\
+y^{4}=\frac{1}{x^{2}(2\ln|x|+C)},\quad x\neq 0
+\end{gathered}
+\]
+\ansnote{通解以隐式给出：$u^{-4}=2\ln|x|+C$，回代 $u=y\sqrt{x}$ 即得。}
+\ansh{134}{L7-9}{齐次（关于 y,y',y'',y'''，次数 3）}{令 $z=y'/y$，方程化为 $z''=-\sin x$，积两次再解 $y'/y=z$}
+\[
+\begin{gathered}
+z = \sin x + c_1x + c_2 \\
+y = C\exp\left(-\cos x + C_3x^2 + C_2x\right)
+\end{gathered}
+\]
+\ansnote{$y\equiv 0$ 也是解；$C_3=c_1/2$，$C_2=c_2$}
+\ansh{135}{L1-2}{二阶、缺 $y$（$y''=f(x,y')$ 型）}{令 $p=y'$，得 $2x^{2}p'=p^{2}$，分离变量积分}
+\[
+y = \frac{2x}{C_{1}} - \frac{2}{C_{1}^{2}}\ln(1+C_{1}x) + C_{2}
+\]
+\ansnote{$C_{1}\neq 0,\ 1+C_{1}x>0$；另有常数解 $y\equiv C$（$C_{1}\to 0$ 的极限）。}
+\ansh{136}{L5-4}{Riccati}{观察得特解 $y_p=x$，令 $y=x+1/w$ 得 $w'=-1$，$w=C-x$}
+\[
+y = x + \frac{1}{C - x}
+\]
+\ansnote{$y=x$ 是奇解。}
+\ansh{137}{L10-15}{Cauchy–Euler}{Cauchy–Euler：令 $x=exp t$，方程化为 $y''(t)-3y'(t)+2y=exp(2t)$；齐次 $\lambda{}=1,2$，常数变易法得 $c_{1}'=-exp t, c_{2}'=1$，即 $yp=(t-1)exp(2t)$}
+\[
+y = c_1 x + c_2 x^2 + x^2\ln|x|
+\]
+\ansnote{答案见第 11 讲 p52；$x>0$ 与 $x<0$ 分别讨论后统一写 ln|x|}
+\ansh{138}{L3-6}{一阶非恰当，需积分因子}{乘 $x$ 后 $2xy\,dx+x^{2}dy=0$ 恰当}
+\[
+x^{2}y = C,\quad y = \frac{C}{x^{2}}\ (x\neq 0)
+\]
+\ansh{139}{L2-4}{一阶、用 $z=y/x^{2}$ 化为可分离}{令 $z=y/x^{2}$，$y'=z'x^{2}+2xz$，代入后 $z'=e^{z}$}
+\[
+y = -x^{2}\ln\left(1 + e^{-a} - x\right)
+\]
+\ansh{140}{L12-4}{Bernoulli（$n=3$）}{除以 $y^{3}$，令 $v=y^{-2}$，得线性方程 $-\tfrac{x^{2}}{2}v'+2xv=1$；齐次解 $v=Cx^{4}$，再用参数变易法 $v=A(x)x^{4}$ 得 $A'=-\tfrac{2}{x^{6}}$}
+\[
+y=\left(\frac{2}{5x}+C_{1}x^{4}\right)^{-1/2}
+\]
+\ansnote{除以 $y^{3}$ 时丢掉的解 $y\equiv 0$ 也是原方程的解，需补上（它不包含在通解公式中）。}
+\ansh{141}{L10-6}{n 阶常系数线性齐次}{特征方程 $\lambda{}^{6}-2\lambda{}^{3}+1=(\lambda{}^{3}-1)^{2}=(\lambda{}-1)^{2}(\lambda{}^{2}+\lambda{}+1)^{2}=0$；三根 $1, -1/2\pm{}(\surd{}3/2)i$ 全为二重根}
+\[
+y = (c_1 + c_2 x)\exp(x) + \exp\left(-\frac{x}{2}\right)\left[(c_3 + c_5 x)\cos\left(\frac{\sqrt{3}x}{2}\right) + (c_4 + c_6 x)\sin\left(\frac{\sqrt{3}x}{2}\right)\right]
+\]
+\ansh{142}{L11-12}{n 阶常系数线性非齐次（$n=2$，右端纯三角）}{特征方程 $\lambda^{2}+2\lambda+2=0$，$\lambda=-1\pm i$；4i 不是特征根，试 $y_{p}=A\cos 4x+B\sin 4x$}
+\[
+y=\exp(-x)(c_{1}\cos x+c_{2}\sin x)-\frac{4}{13}\cos(4x)-\frac{7}{13}\sin(4x)
+\]
+\ansnote{课件无解答页；待定系数法得 $-14A+8B=0$，$-8A-14B=10$，即 $A=-4/13$，$B=-7/13$；参数变易法给出同一特解，已用 SymPy 验证。}
+\ansh{143}{L4-9}{非恰当，用 $\mu=1/(x^{2}+y^{2})$ 化为恰当}{取 $f(z)=z^{2}$，乘 $\mu$ 后积分得 $F$}
+\[
+\arctan\frac{x}{y} + \frac{(x^{2}+y^{2})^{2}}{4} = C
+\]
+\ansh{144}{L5-11}{Clairaut}{令 $y'=p$，$y=xp+p^{2}-4$，对 x 求导得 $p'(x+2p)=0$}
+\[
+y = Cx + C^{2} - 4
+\]
+\ansnote{奇解 $y=-\tfrac{x^{2}}{4}-4$。答案出处：Lecture 6 课件 p43–p44。}
+\ansh{145}{L1-7}{一阶自治方程（平衡解）}{令 $y'\equiv 0$，解 $y^{2}-9=0$}
+\[
+y\equiv 3,\qquad y\equiv -3
+\]
+\ansh{146}{L5-5}{Riccati}{特解 $y_p=\sin x$，令 $y=\sin x+1/w$ 得 $w'+(\sin x/\cos x)w=-1/(2\cos x)$，积分因子 $1/\cos x$}
+\[
+y = \sin x + \frac{1}{C\cos x - \frac{1}{2}\sin x}
+\]
+\ansnote{$y=\sin x$ 是奇解。}
+\ansh{147}{L7-3}{降阶-不含 x（关于 y,y',y''）}{令 $p(y)=y'(x)$，$y''=p'p$，得 $yp'p-p^2=0$，即 $p=cy$；再解 $y'=cy$}
+\[
+y(x) = C\exp(cx)
+\]
+\ansnote{分离变量时除掉了 $p=0$、$y=0$，但 $y\equiv 0$ 已被 $C=0$ 包含，无丢解（c、C 为任意常数）}
+\ansh{148}{L2-5}{齐次函数判定}{算 $F(tx,ty)$ 与 $F(x,y)$ 的比，找 $t^{m}$}
+\[
+F(tx,ty) = t^{4}F(x,y)\ \Rightarrow\ m=4
+\]
+\ansh{149}{L12-14}{n 阶常系数线性齐次（$n=2$，共轭复根 $\alpha{}\pm{}i\beta{}$，$\alpha{}=-1$，$\beta{}=2$）}{特征方程 $\lambda^{2}+2\lambda+5=0$，$\lambda_{1,2}=-1\pm 2i$}
+\[
+y=\exp(-x)\left(c_{1}\sin(2x)+c_{2}\cos(2x)\right)
+\]
+\ansh{150}{L5-1}{$Bernoulli(n=3)$}{两边乘 $y^{-3}$，令 $v=y^{1-n}=y^{-2}$ 化为线性方程 $v'-2v=-2x$，积分因子 $\exp(-2x)$}
+\[
+\frac{1}{y^{2}} = x + \frac{1}{2} + C\exp(2x)
+\]
+\ansnote{$n=3>0$，故 $y\equiv 0$ 也是解（课件未单列）。}
+\ansh{151}{L11-7}{n 阶常系数线性非齐次（三角准多项式右端，$\alpha{}+i\beta{}=2+i$）}{特征方程 $\lambda^{2}-1=0$；2+i 不是特征根，试 $y_{p}=\exp(2x)[A\sin x+B\cos x]$}
+\[
+y=c_{1}\exp x+c_{2}\exp(-x)+\exp(2x)\left(\frac{1}{10}\sin x-\frac{1}{5}\cos x\right)
+\]
+\ansh{152}{L12-16}{Cauchy–Euler（变系数，代换 $x=e^t$）}{令 $x=\exp t$（$x>0$），化为常系数 $\tfrac{\mathrm{d}^{2}y}{\mathrm{d}t^{2}}+4\tfrac{\mathrm{d}y}{\mathrm{d}t}+4y=0$，特征方程 $(\lambda+2)^{2}=0$}
+\[
+y=\frac{c_{1}+c_{2}\ln x}{x^{2}}
+\]
+\ansnote{对 $x>0$ 成立；$x<0$ 时用 $x=-\exp t$，答案写作 $y=\tfrac{c_{1}+c_{2}\ln|x|}{x^{2}}$。}
+\ansh{153}{L7-10}{广义齐次（$\alpha{}=1/2$，$m=2$）}{验证 $F(kx,k^\alpha y,k^{\alpha-1}y',k^{\alpha-2}y'')=k^2F$ 需 $\alpha{}=1/2$；代换 $x=\exp u,\ y=v(u)\exp(u/2)$ 得 $4v^3v''=-1$，再令 $p(v)=v'$}
+\[
+y = \sqrt{x(\ln x + 1)}
+\]
+\ansnote{初值化为 $v(0)=1,\ v'(0)=1/2$，由 $4p^2=v^{-2}+C$ 得 $C=0$，再由 $v^2=u+c$ 得 $c=1$；在 (1,1) 邻域 $y>0$ 取正支}
+\ansh{154}{L5-10}{关于 y 可解（$y=\varphi(x,y')$）}{$y=2x^{3}p^{2}-2xp$，对 x 求导得 $(3p+2xp')(2x^{2}p-1)=0$}
+\[
+\begin{gathered}
+y = 2x^{3}p^{2} - 2xp,\quad p = \frac{C}{|x|^{3/2}} \\
+y = \left(2C^{2} - \frac{2C}{|x|^{1/2}}\right)\mathrm{sgn}\,x
+\end{gathered}
+\]
+\ansnote{由 $2x^{2}p-1=0$ 得奇解 $y=-\tfrac{1}{2x}$。答案出处：Lecture 6 课件 p40–p42。}
+\ansh{155}{L3-8}{含参数的恰当方程}{令 $M_{y}=3Ax^{2}y+3y^{2}$ 与 $N_{x}=4x^{3}+3y^{2}$ 恒等}
+\[
+A = 4,\qquad x^{4}y + xy^{3} = C
+\]
+\ansh{156}{L2-11}{一阶可分离}{分离后左边用部分分式：$\dfrac{x+4}{(x+1)(x+2)}=\dfrac{3}{x+1}-\dfrac{2}{x+2}$}
+\[
+\begin{gathered}
+|x+1|^{3}(y^{2}+1) = C(x+2)^{2},\quad C\ge 0 \\
+x\equiv -2\ \text{（奇解）}
+\end{gathered}
+\]
+\ansh{157}{L4-4}{一阶非恰当，积分因子只依赖 $y$}{$\dfrac{N_{x}-M_{y}}{M}=\dfrac{1}{y}$，故 $\mu=|y|$，乘后 $y^{2}dx+(2xy+1)dy=0$ 恰当}
+\[
+xy^{2} + y = C
+\]
+\ansh{158}{L7-8}{齐次（关于 y,y',y''，次数 2）}{令 $z(x)=y'/y$，代入得 $xz'=z$，即 $z=c_1x$；再解 $y'=c_1xy$}
+\[
+y = C\exp(c x^2)
+\]
+\ansnote{$y\equiv 0$ 也是解（含于 $C=0$）；验证齐次性时 $F(x,ky,ky',ky'')=k^2F$}
+\ansh{159}{L4-10}{以 $\theta$ 为自变量的一阶线性方程}{两边除 $\cos\theta$：$r' + r\tan\theta=\cos^{3}\theta$，积分因子 $\sec\theta$}
+\[
+r = \cos\theta\left(\frac{\theta}{2} + \frac{\sin 2\theta}{4}\right) + C\cos\theta
+\]
+\end{document}
