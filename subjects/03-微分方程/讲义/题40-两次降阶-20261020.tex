@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{xcolor}
+\definecolor{mainblue}{RGB}{12,82,160}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\pagestyle{empty}
+
+\begin{document}
+
+{\color{mainblue}\Large\bfseries 题 40\quad $1+y''^{\,2}=2y'y'''$,\quad $y'>0$}\\[1pt]
+{\color{mainblue}\small 三阶非线性方程 \quad$\cdot$\quad 不显含 $y$（降阶后又不显含 $x$）\quad$\cdot$\quad 两次降阶}
+
+\vspace{0.2em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{1.\ 第一次降阶（缺 $y$）：令 $p=y'>0$}
+
+方程里不出现 $y$，于是 $y''=p'$、$y'''=p''$，原方程化为二阶方程
+\[
+1+(p')^{2}=2p\,p'' .
+\]
+
+\textbf{2.\ 第二次降阶（缺 $x$）：令 $q=p'$，并把它看成 $p$ 的函数}
+
+因为新方程不显含 $x$，取 $q=p'(p)$，则
+\[
+p''=\frac{dq}{dx}=\frac{dq}{dp}\cdot\frac{dp}{dx}=q\frac{dq}{dp},
+\]
+代入得
+\[
+1+q^{2}=2p\,q\frac{dq}{dp}
+\quad\Longrightarrow\quad
+\frac{2q\,dq}{1+q^{2}}=\frac{dp}{p}
+\quad\Longrightarrow\quad
+1+q^{2}=C_1p\quad(C_1>0).
+\]
+
+\textbf{3.\ 回代求 $p(x)$}
+
+\[
+q^{2}=C_1p-1,\qquad \frac{dp}{dx}=\pm\sqrt{C_1p-1}.
+\]
+取正号（负号只改变 $x$ 的平移方向）：
+\[
+dx=\frac{dp}{\sqrt{C_1p-1}}
+\quad\Longrightarrow\quad
+x=\frac{2}{C_1}\sqrt{C_1p-1}+C_2
+\quad\Longrightarrow\quad
+p=\frac{1}{C_1}+\frac{C_1}{4}(x-C_2)^{2}.
+\]
+
+\textbf{4.\ 再积分一次，即得通解}
+
+\[
+\boxed{\;y=\int p\,dx=\frac{C_1}{12}(x-C_2)^{3}+\frac{1}{C_1}(x-C_2)+C_3\;},\qquad C_1>0 .
+\]
+
+\textbf{5.\ 验算}
+
+由通解得
+\[
+y'=\frac{1}{C_1}+\frac{C_1}{4}(x-C_2)^{2},\qquad
+y''=\frac{C_1}{2}(x-C_2),\qquad
+y'''=\frac{C_1}{2},
+\]
+于是
+\[
+1+y''^{\,2}=1+\frac{C_1^{2}}{4}(x-C_2)^{2}
+=2\left[\frac{1}{C_1}+\frac{C_1}{4}(x-C_2)^{2}\right]\cdot\frac{C_1}{2}=2y'y''',
+\]
+两边相等；又 $y'=\frac{1}{C_1}+\frac{C_1}{4}(x-C_2)^{2}\ge\frac{1}{C_1}>0$，题设 $y'>0$ 自动满足。\hfill$\checkmark$
+
+\vspace{0.2em}
+\noindent\rule{\linewidth}{0.6pt}
+
+{\small
+\textbf{答题栏}\quad
+类型：三阶非线性方程，不显含 $y$；降阶后又是不显含 $x$ 的方程\\
+解法：两次降阶 —— 先 $p=y'$（缺 $y$ 型），再 $q=p'$ 视作 $p$ 的函数（缺 $x$ 型）\\
+结果：$y=\dfrac{C_1}{12}(x-C_2)^{3}+\dfrac{1}{C_1}(x-C_2)+C_3$，$C_1>0$。}
+
+\end{document}
