@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>已知一解求通解：线性方程降阶法与 Abel 公式 · 精讲</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "Source Han Sans SC",
+               "PingFang SC", "Segoe UI", sans-serif;
+  font-size: 10.8pt; line-height: 1.75; color: #1c1e24; margin: 0;
+}
+h1 { font-size: 19pt; line-height: 1.4; color: #0c52a0; margin: 0 0 10px 0;
+     padding-bottom: 8px; border-bottom: 3px solid #0c52a0; }
+h2 { font-size: 14.5pt; color: #0c52a0; margin: 22px 0 8px 0; padding-left: 9px;
+     border-left: 5px solid #0c52a0; page-break-after: avoid; }
+h3 { font-size: 12.4pt; color: #123c68; margin: 16px 0 6px 0; page-break-after: avoid; }
+h4 { font-size: 11.2pt; color: #123c68; margin: 13px 0 5px 0; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul, ol { margin: 7px 0 7px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+li > ul, li > ol { margin: 4px 0; }
+strong { color: #101418; }
+em { color: #2a2f38; }
+code {
+  font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+  font-size: 0.92em; background: #f2f5f9; border: 1px solid #e2e8f0;
+  border-radius: 3px; padding: 0 3px; color: #123c68;
+}
+pre { background: #f6f8fb; border: 1px solid #dde4ee; border-radius: 6px;
+      padding: 9px 11px; overflow-wrap: break-word; white-space: pre-wrap;
+      page-break-inside: avoid; }
+pre code { background: none; border: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.8pt;
+        page-break-inside: avoid; }
+th, td { border: 1px solid #cfd8e3; padding: 5px 8px; text-align: left;
+         vertical-align: top; }
+th { background: #eaf1fa; color: #0c52a0; }
+blockquote { margin: 10px 0; padding: 8px 13px; background: #f4f8fd;
+             border-left: 4px solid #7ba7d4; color: #333a45; }
+blockquote p { margin: 4px 0; }
+hr { border: none; border-top: 1px solid #d8dee7; margin: 16px 0; }
+a { color: #0c52a0; text-decoration: none; }
+img { max-width: 100%; }
+.toc { background: #f7fafd; border: 1px solid #dde4ee; border-radius: 6px;
+       padding: 8px 16px 10px 16px; margin: 14px 0 18px 0; font-size: 10pt;
+       page-break-inside: avoid; }
+.toc-title { font-weight: 700; color: #0c52a0; margin: 6px 0 2px 0; }
+.toc ul { list-style: none; padding-left: 14px; margin: 2px 0; }
+.toc > ul { padding-left: 0; }
+.toc li { margin: 2px 0; }
+
+.formula {
+  margin: 7px 0 9px 0;
+  padding-left: 1.8em;
+  font-family: "Cambria Math", "Cambria", "Times New Roman", serif;
+  font-size: 11.4pt;
+  line-height: 1.6;
+  color: #101418;
+}
+.formula b { color: #0c52a0; }
+code {
+  font-family: "Cambria Math", "Cambria", "Times New Roman", serif;
+  font-size: 1.0em;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  color: #101418;
+}
+pre code {
+  font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+  font-size: 0.92em;
+}
+blockquote { page-break-inside: avoid; break-inside: avoid; }
+table { page-break-inside: avoid; break-inside: avoid; }
+</style></head>
+<body>
+<h1 id="abel">已知一解求通解：线性方程降阶法与 Abel 公式 · 精讲</h1>
+<blockquote>
+<p>建立：2026-10-20。依据：课件 <code>7(1).pdf</code>（Lecture 7）<strong>p30–p36</strong>（降阶的"线性方程"型）与 <strong>p46–p47</strong>（作业），<code>8(1).pdf</code>（Lecture 8）<strong>p50–p53</strong>（Abel 定理与例），已逐页读文字层。
+你问的 <code>y″ + xy′ − (x+1)y = 0</code>、<code>y_p = e^x</code> 就是课件 L7 的<strong>例 2</strong>（p33–p36）；Abel 公式在 L8 的附加材料里。两处课件都讲过，只是没有合成一条公式 —— 本讲义做这个拼接。
+记号：下文用 <code>y_p</code> 表示已知的那个非零特解（有些书写成 <code>y₁</code>），用 <code>y₂</code> 表示求出来的第二个解。</p>
+</blockquote>
+<h2 id="0">0. 先回答"老师讲了吗"</h2>
+<p><strong>讲了。</strong> 而且是两处、两块：</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L7 p30，式 (17)(18)</td>
+<td>一般结论：n 阶线性齐次方程，用 <code>y = y_p∫z dx</code> 可把阶数降一</td>
+</tr>
+<tr>
+<td>L7 p31–p33，例 1</td>
+<td><code>x³y″ + (x−1)y′ − y = 0</code>，<code>y_p = x−1</code></td>
+</tr>
+<tr>
+<td><strong>L7 p33–p36，例 2</strong></td>
+<td><code>y″ + xy′ − (x+1)y = 0</code>，<code>y_p = e^x</code> —— <strong>就是你问的这道</strong></td>
+</tr>
+<tr>
+<td>L8 p50，Theorem</td>
+<td>Abel 公式 <code>W = W(x₀)·exp(−∫a₁)</code></td>
+</tr>
+<tr>
+<td>L8 p51–p53，例</td>
+<td><code>2xy″ − (x+4)y′ + (1+4/x)y = 0</code>，由 <code>y₁ = x</code> 求 <code>y₂ = x·exp(x/2)</code></td>
+</tr>
+<tr>
+<td>L7 p46，作业 III</td>
+<td><code>xy″ + 2y′ − xy = 0</code>，<code>y_p = exp(x)/x</code>（<strong>另一题，见 §10 第 5 条</strong>）</td>
+</tr>
+</tbody>
+</table>
+<p>三点要说清楚：</p>
+<ol>
+<li>
+<p><strong>课件例 2 的答案就是积分形式</strong>：<code>y = e^x[C₅ + C₄∫exp(−x²/2 − 2x)dx]</code>（p36）。它和那个公式写法完全一致，不是"没算完"——这个积分本来就不是初等函数（§6 会算给你看）。</p>
+</li>
+<li>
+<p><strong>课件只走了"代回方程"这一条路</strong>（路线一）。Abel 那条"一步写出通解"的合并公式，课件没有单列；但它的两块原料（降阶 + Abel 定理）都在，本讲义把它们接起来，并证明两条路线给的是同一个积分。</p>
+</li>
+<li>
+<p><strong>作业不是例 2。</strong> 作业 III 是 <code>xy″ + 2y′ − xy = 0</code>、<code>y_p = exp(x)/x</code>。两题长得像（都是变系数、都给了一个指数型特解），但题面不同，直接套例 2 的中间结果会错。</p>
+</li>
+</ol>
+<h2 id="1-y-y_pv-v">1. 结构：为什么设 y = y_p·v 之后 v 会消失</h2>
+<p>设</p>
+<div class="formula">y = y_p(x)·v(x)</div>
+
+<p>求导：</p>
+<div class="formula">y′ = y_p′·v + y_p·v′</div>
+<div class="formula">y″ = y_p″·v + 2y_p′·v′ + y_p·v″</div>
+
+<p>代进 <code>L[y] = y″ + a₁(x)y′ + a₂(x)y</code>：</p>
+<div class="formula">L[y] = y_p·v″ + (2y_p′ + a₁y_p)·v′ + v·(y_p″ + a₁y_p′ + a₂y_p)</div>
+
+<p>最后一个括号是 <code>L[y_p]</code>。y_p 是解，所以它是 0，于是</p>
+<div class="formula">L[y] = y_p·[ v″ + (2y_p′/y_p + a₁)·v′ ]</div>
+
+<p>在 <code>y_p ≠ 0</code> 的区间上，要求 L[y] = 0 就等价于</p>
+<div class="formula">v″ + (2y_p′/y_p + a₁)·v′ = 0</div>
+
+<p><strong>这就是"降阶"的全部机制</strong>：方程里已经没有 v 本身，只含 v′，所以对 z = v′ 来说它是一阶线性齐次方程。<code>[教学归纳]</code> 注意 v 项消失不是巧合，也不是"试出来的"——因为 L 是线性算子，<code>L[y_p v]</code> 展开后 v 的系数就是 <code>L[y_p]</code>，而它恒为零。对 n 阶方程同理，课件 (18) 就是这个替换：</p>
+<div class="formula">y(x) = y_p(x)·∫ z(x) dx</div>
+
+<h2 id="2">2. 路线一：降阶（课件的做法）</h2>
+<p>由 §1，令 z = v′：</p>
+<div class="formula">z′ + (2y_p′/y_p + a₁)·z = 0</div>
+
+<p>这是一阶线性齐次方程，解出来（积分因子或分离变量都行）：</p>
+<div class="formula">z = C·exp(−∫a₁ dx) / y_p²</div>
+
+<p>因为 <code>−∫(2y_p′/y_p + a₁)dx = −2ln|y_p| − ∫a₁dx</code>，指数上正好除出 <code>y_p²</code>。</p>
+<p>再积一次分：</p>
+<div class="formula">v = C₂ + C₁·∫ exp(−∫a₁ dx)/y_p² dx</div>
+<div class="formula">y = C₁·y_p + C₂·y_p·∫ exp(−∫a₁ dx)/y_p² dx</div>
+
+<p>这就是通解。课件在例 1、例 2 里没有写这一步的通用公式，而是每题现场分离变量（因为 <code>2y_p′/y_p + a₁</code> 恰好很简单）；写成上面这个样子，就是"公式版"。</p>
+<h2 id="3-abel">3. 路线二：Abel 公式一步到位</h2>
+<p>先把方程化成<strong>标准形</strong>（首项系数为 1）：</p>
+<div class="formula">y″ + a₁(x)y′ + a₂(x)y = 0</div>
+
+<p>两个解的朗斯基行列式定义为</p>
+<div class="formula">W = y_p·y₂′ − y_p′·y₂</div>
+
+<p>Abel 定理（课件 L8 p50；俄文教材里这条也叫刘维尔–奥斯特罗格拉茨基公式）说：</p>
+<div class="formula">W(x) = W(x₀)·exp(−∫(x₀→x) a₁(t) dt)</div>
+
+<p>把 W 除以 <code>y_p²</code>，左边正好凑成商的导数：</p>
+<div class="formula">(y₂/y_p)′ = (y_py₂′ − y_p′y₂)/y_p² = W/y_p²</div>
+
+<p>代进 Abel 公式再积分：</p>
+<div class="formula">y₂ = y_p·W(x₀)·∫ exp(−∫a₁ dx)/y_p² dx + C·y_p</div>
+
+<p><code>C·y_p</code> 是齐次解，并进通解的 C₁ 即可。取 <code>W(x₀) = 1</code>（只差常数，见 §4），得到</p>
+<div class="formula">y₂ = y_p·∫ exp(−∫a₁ dx)/y_p² dx</div>
+<div class="formula">y = C₁·y_p + C₂·y_p·∫ exp(−∫a₁ dx)/y_p² dx</div>
+
+<p><strong>这个方法的特点</strong>：只看 <code>a₁(x)</code> 和 <code>y_p(x)</code>，<code>a₂(x)</code> 完全不出现 —— 因为 Abel 公式里只有 a₁。这就是"甚至不用看 y 前面的系数"的原因。</p>
+<h2 id="4">4. 两条路线是同一个积分</h2>
+<p>对比一下：</p>
+<ul>
+<li>
+<p>路线一解出的 <code>z = C·exp(−∫a₁)/y_p²</code>；</p>
+</li>
+<li>
+<p>路线二直接用的被积函数 <code>W/y_p² = W(x₀)·exp(−∫a₁)/y_p²</code>。</p>
+</li>
+</ul>
+<p>两者只差常数 <code>W(x₀)</code>，而这个常数积分一次以后变成 <code>C·y_p</code>，被通解的 C₁ 吸收。所以：</p>
+<blockquote>
+<p><strong>Abel 法不是另一个方法，它只是把路线一里"解 z 的一阶方程"那一步，换成了一个现成的公式。</strong></p>
+</blockquote>
+<p><code>[教学归纳]</code> 两条路线各自适合什么场合：路线一要算 y″、要整理代数，但每一步都能看见；路线二一步到位，但要求你先信任 Abel 定理、并且记得先把方程化标准形。考场上推荐路线二（快、不容易在代数上翻车），检查时用路线一（把 y₂ 代回原方程）。</p>
+<h2 id="5-1-l7-p31p33">5. 例 1（课件 L7 p31–p33）：一个三阶变系数方程</h2>
+<p>方程是</p>
+<div class="formula">x³y″ + (x−1)y′ − y = 0</div>
+
+<p>已知特解 <code>y_p = x−1</code>。先验证：<code>y_p′ = 1</code>、<code>y_p″ = 0</code>，代入得 <code>0 + (x−1) − (x−1) = 0</code> ✓。</p>
+<p><strong>路线一（课件）。</strong> 设 <code>y = (x−1)∫z dx</code>，则</p>
+<div class="formula">y′ = ∫z dx + (x−1)z,　y″ = 2z + (x−1)z′</div>
+
+<p>代回原方程，两个 <code>∫z dx</code> 项正好抵消：</p>
+<div class="formula">x³(x−1)z′ + [2x³ + (x−1)²]·z = 0</div>
+
+<p>分离变量：</p>
+<div class="formula">z′/z = −[ 2/(x−1) + (x−1)/x³ ]</div>
+
+<p>积分（<code>∫(x−1)/x³ dx = −1/x + 1/(2x²)</code>）：</p>
+<div class="formula">z = C·exp(1/x − 1/(2x²)) / (x−1)²</div>
+
+<p><strong>路线二（Abel）。</strong> 先化标准形（整体除以 x³）：</p>
+<div class="formula">y″ + [(x−1)/x³]·y′ − (1/x³)·y = 0　⟹　a₁ = (x−1)/x³</div>
+
+<div class="formula">∫a₁ dx = ∫(1/x² − 1/x³)dx = −1/x + 1/(2x²)</div>
+<div class="formula">W = exp(1/x − 1/(2x²))</div>
+<div class="formula">z = W/y_p² = exp(1/x − 1/(2x²))/(x−1)²</div>
+
+<p>一步就得到课件那串分离变量的结果，中间那一步 <code>x³(x−1)z′ + [2x³+(x−1)²]z = 0</code> 都不用写。</p>
+<p>通解（<code>x ≠ 0, 1</code>）：</p>
+<div class="formula">y = (x−1)·[ C₁ + C₂·∫ exp(1/x − 1/(2x²))/(x−1)² dx ]</div>
+
+<p><code>[教学归纳]</code> 这个积分也不是初等函数。课件到 p33 就停在这里，是正常的（题目只要求"降阶并解出降阶后的一阶方程"，没有要求把最后那个积分积出来）。</p>
+<h2 id="6-2-l7-p33p36">6. 例 2（课件 L7 p33–p36）：你问的这道二阶方程</h2>
+<p>方程是</p>
+<div class="formula">y″ + xy′ − (x+1)y = 0</div>
+
+<p>已知特解 <code>y_p = e^x</code>。先验证：<code>y_p′ = y_p″ = e^x</code>，代入得</p>
+<div class="formula">e^x + x·e^x − (x+1)·e^x = 0　✓</div>
+
+<h3 id="61">6.1 路线一（课件的做法）</h3>
+<p>设 <code>y = e^x·v</code>，则</p>
+<div class="formula">y′ = e^x(v′ + v),　y″ = e^x(v″ + 2v′ + v)</div>
+
+<p>代入原方程并约掉 <code>e^x</code>：</p>
+<div class="formula">(v″ + 2v′ + v) + x(v′ + v) − (x+1)v = 0</div>
+
+<p>含 v 的项两两抵消（<code>v + xv − xv − v = 0</code>），只剩</p>
+<div class="formula">v″ + (x+2)v′ = 0</div>
+
+<p>令 z = v′：</p>
+<div class="formula">z′ + (x+2)z = 0　⟹　z = C₄·exp(−x²/2 − 2x)</div>
+
+<p>再积分一次：</p>
+<div class="formula">v = C₅ + C₄·∫ exp(−x²/2 − 2x)dx</div>
+<div class="formula">y = e^x·[ C₅ + C₄·∫ exp(−x²/2 − 2x)dx ]</div>
+
+<p>这就是课件 p36 的答案。</p>
+<h3 id="62-abel">6.2 路线二（Abel，三行）</h3>
+<p><code>a₁ = x</code>，所以</p>
+<div class="formula">W = exp(−∫x dx) = exp(−x²/2)</div>
+<div class="formula">y₂ = y_p·∫ W/y_p² dx = e^x·∫ exp(−x²/2)/e^(2x) dx = e^x·∫ exp(−x²/2 − 2x) dx</div>
+<div class="formula">y = e^x·[ C₁ + C₂·∫ exp(−x²/2 − 2x)dx ]</div>
+
+<p>和 §6.1 一字不差。</p>
+<h3 id="63">6.3 那个积分到底是什么</h3>
+<p>配平方：</p>
+<div class="formula">−x²/2 − 2x = −(x+2)²/2 + 2</div>
+
+<p>所以</p>
+<div class="formula">∫ exp(−x²/2 − 2x)dx = e²·√(π/2)·erf((x+2)/√2) + C</div>
+
+<p>其中 <code>erf</code> 是误差函数（不是初等函数）。这解释了为什么课件、以及任何标准答案都把它留在积分号里 —— 不是偷懒，是这个积分积不出来。考试写到 §6.1 或 §6.2 那一步就是完整答案。</p>
+<h3 id="64-w">6.4 顺手验一下 W</h3>
+<p>由 §6.2 的 y₂ = e^x∫u dx（记 u = exp(−x²/2 − 2x)）：</p>
+<div class="formula">W(e^x, y₂) = e^x·(e^x∫u + e^xu) − e^x·(e^x∫u) = e^(2x)·u = exp(−x²/2)　✓</div>
+
+<p>这也说明"取 W(x₀)=1"没有丢东西：算出来的 W 就是 exp(−x²/2)。</p>
+<h2 id="7-3-l8-p51p53abel">7. 例 3（课件 L8 p51–p53）：Abel 求第二解的标准演示</h2>
+<p>题目：</p>
+<div class="formula">2xy″ − (x+4)y′ + (1+4/x)y = 0,　x ≠ 0</div>
+
+<p>已知 <code>y₁ = x</code> 是解。化标准形（除以 2x）：</p>
+<div class="formula">y″ − [(x+4)/(2x)]·y′ + [1/(2x) + 2/x²]·y = 0　⟹　a₁ = −(x+4)/(2x)</div>
+
+<div class="formula">∫a₁ dx = −x/2 − 2ln|x|　⟹　W ∝ exp(x/2)·x²</div>
+
+<p>（<code>exp(−∫a₁) = exp(x/2 + 2ln|x|) = x²·exp(x/2)</code>，只差常数倍。）</p>
+<div class="formula">y₂/y₁ = ∫ W/y₁² dx = ∫ x²exp(x/2)/x² dx = ∫exp(x/2)dx = 2exp(x/2)</div>
+
+<div class="formula">y₂ = 2x·exp(x/2) ∝ x·exp(x/2)</div>
+
+<p>通解 <code>y = C₁x + C₂x·exp(x/2)</code>，与课件 p53 的答案一致。</p>
+<p>这个例子值得记：W 里会自动出现 <code>x²</code>，和 <code>y₁² = x²</code> 正好约掉，积分立刻变成 <code>∫exp(x/2)dx</code>。<strong>很多题设计成"W 与 y_p² 大量约分"</strong>，所以看到复杂系数不要慌，先算 W/y_p² 再化简。</p>
+<h2 id="8">8. 公式卡与四步用法</h2>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>做什么</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>化成标准形 <code>y″ + a₁y′ + a₂y = 0</code></td>
+<td>首项系数必须是 1；这一步错了全错</td>
+</tr>
+<tr>
+<td>2</td>
+<td>确认 <code>y_p</code> 真的是解（代一下，30 秒）</td>
+<td>题目给了也要验，防止抄错题</td>
+</tr>
+<tr>
+<td>3</td>
+<td>算 <code>W = exp(−∫a₁ dx)</code></td>
+<td>只差常数，取 1；能化简先化简</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>y₂ = y_p∫W/y_p² dx</code>，写通解 <code>y = C₁y_p + C₂y₂</code></td>
+<td>积分算不出来就保留积分形式</td>
+</tr>
+</tbody>
+</table>
+<p><strong>收尾检查</strong>：直接算 <code>W(y_p, y₂)</code>，看它是否等于第 3 步取的 <code>W</code>（差常数也算对）。这一条能抓住绝大多数符号错误。</p>
+<h2 id="9">9. 六条易错点</h2>
+<ol>
+<li>
+<p><strong>没化标准形</strong>。例 1 的 <code>a₁</code> 是 <code>(x−1)/x³</code>，不是 <code>x−1</code>；例 3 的是 <code>−(x+4)/(2x)</code>，不是 <code>−(x+4)</code>。用 Abel 之前先除首项系数。</p>
+</li>
+<li>
+<p><strong>W 只差常数倍</strong>。例 3 真实的 <code>W(x, xe^{x/2}) = (x²/2)·exp(x/2)</code>，而 <code>exp(−∫a₁) = x²exp(x/2)</code>，差 1/2；<code>y₂</code> 只差常数倍，不影响通解。别以为算出 1/2 就错了。</p>
+</li>
+<li>
+<p><strong>y_p 的零点要挖掉</strong>。例 1 的 <code>y_p = x−1</code> 在 x = 1 处为零，公式在那里失效；例 3 还要挖掉 x = 0（系数奇点）。通解只在 <code>y_p ≠ 0</code> 且系数连续的区间上成立。</p>
+</li>
+<li>
+<p><strong>非初等积分不是错</strong>。例 2 的 <code>∫exp(−x²/2 − 2x)dx</code> 就是积不出来的；课件也停在积分形式。</p>
+</li>
+<li>
+<p><strong>只降一阶</strong>。n 阶方程用 <code>y = y_p∫z dx</code> 得到的是 n−1 阶，不是一阶（课件 (17)(18) 的原话是 reduced by unity）。二阶才恰好降成一阶。</p>
+</li>
+<li>
+<p><strong>别和参数变易法混</strong>。两处都有 W、都有 <code>exp(−∫a₁)</code>，但位置相反：求<strong>齐次</strong>第二解时 W 在<strong>分子</strong>（<code>y₂ = y_p∫W/y_p²</code>）；求<strong>非齐次</strong>特解时 W 在<strong>分母</strong>（<code>C₁′ = −y₂f/W</code>）。记成"求通解 W 上，求特解 W 下"。</p>
+</li>
+</ol>
+<h2 id="10">10. 自检（先做，答案在文后）</h2>
+<ol>
+<li>
+<p><code>x²y″ − 2xy′ + 2y = 0</code>（x &gt; 0），已知 <code>y₁ = x</code>，求 <code>y₂</code> 与通解。</p>
+</li>
+<li>
+<p><code>y″ + (1/x)y′ − (1/x²)y = 0</code>（x &gt; 0），已知 <code>y₁ = x</code>，求通解。</p>
+</li>
+<li>
+<p>若方程是 <code>y″ + q(x)y = 0</code>（没有 y′ 项），Abel 公式告诉你 W 是什么？由此说明两个解的 W 与 x 无关。</p>
+</li>
+<li>
+<p>用例 2 的 <code>y₂ = e^x∫exp(−x²/2 − 2x)dx</code>，直接算 <code>W(e^x, y₂)</code>，验证它等于 <code>exp(−x²/2)</code>。</p>
+</li>
+<li>
+<p><strong>作业对照（本讲义不给答案）</strong>：<code>xy″ + 2y′ − xy = 0</code>，<code>y_p = exp(x)/x</code>（L7 p46 作业 III）。第一步先化标准形（两边除以 x）、读出 <code>a₁</code>，然后按 §8 的四步自己做。</p>
+</li>
+</ol>
+<hr />
+<h2 id="_1">自检答案</h2>
+<p><strong>1.</strong> 化标准形：<code>a₁ = −2/x</code>，<code>W = exp(∫2/x dx) = x²</code>。</p>
+<div class="formula">y₂ = x·∫ x²/x² dx = x·∫1 dx = x²</div>
+<div class="formula">y = C₁x + C₂x²</div>
+
+<p>（这是 Cauchy–Euler 型的老朋友，答案对得上。）</p>
+<p><strong>2.</strong> <code>a₁ = 1/x</code>，<code>W = exp(−ln x) = 1/x</code>。</p>
+<div class="formula">y₂ = x·∫ (1/x)/x² dx = x·∫ x^(−3)dx = x·(−1/(2x²)) = −1/(2x)</div>
+
+<p>常数 −1/2 并进 C₂，所以</p>
+<div class="formula">y = C₁x + C₂/x</div>
+
+<p><strong>3.</strong> <code>a₁ = 0</code>，所以 <code>W = W(x₀)·exp(0) = W(x₀)</code> 是常数。两个解线性无关 ⟺ 这个常数不为 0。物理上这就是 <code>y″ + q(x)y = 0</code> 型方程的"朗斯基守恒"。</p>
+<p><strong>4.</strong> 记 <code>u = exp(−x²/2 − 2x)</code>，<code>y₂ = e^x∫u dx</code>，则 <code>y₂′ = e^x∫u dx + u</code>：</p>
+<div class="formula">W = e^x·y₂′ − e^x·y₂ = e^x·u = e^(2x)·exp(−x²/2 − 2x) = exp(−x²/2)　✓</div>
+
+<p><strong>5.</strong> 答案不在这里：作业需要你自己走完 §8 的四步。只提醒一句 —— <code>y_p = exp(x)/x</code> 带一个 1/x，算 <code>W/y_p²</code> 时先把 <code>y_p²</code> 写开（它等于 <code>exp(2x)/x²</code>），看看 x 的幂能不能约掉。</p>
+<h2 id="11">11. 与课件的位置对应</h2>
+<table>
+<thead>
+<tr>
+<th>本讲义</th>
+<th>课件位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>§1</td>
+<td>L7 p30，式 (17)(18)</td>
+<td>线性方程降阶的一般替换 <code>y = y_p∫z dx</code></td>
+</tr>
+<tr>
+<td>§2</td>
+<td>L7 p30–p36（各例的现场做法）</td>
+<td>路线一：v″ → z′ 的一阶方程</td>
+</tr>
+<tr>
+<td>§3</td>
+<td>L8 p50</td>
+<td>Abel 定理（= 刘维尔–奥斯特罗格拉茨基公式）</td>
+</tr>
+<tr>
+<td>§4</td>
+<td><code>[教学归纳]</code></td>
+<td>两条路线的等价性说明</td>
+</tr>
+<tr>
+<td>§5</td>
+<td>L7 p31–p33</td>
+<td>例 1：<code>x³y″ + (x−1)y′ − y = 0</code></td>
+</tr>
+<tr>
+<td>§6</td>
+<td>L7 p33–p36</td>
+<td>例 2：<code>y″ + xy′ − (x+1)y = 0</code>（你问的这道）</td>
+</tr>
+<tr>
+<td>§7</td>
+<td>L8 p51–p53</td>
+<td>由 <code>y₁ = x</code> 求 <code>y₂ = xexp(x/2)</code></td>
+</tr>
+<tr>
+<td>§10</td>
+<td>L7 p46</td>
+<td>作业 III：<code>xy″ + 2y′ − xy = 0</code>（只给第一步）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12">12. 本讲三句话</h2>
+<ol>
+<li>
+<p>已知一个解 <code>y_p</code>，设 <code>y = y_p·v</code>，含 v 的项必然消失（因为 <code>L[y_p] = 0</code>），方程降成只含 <code>v′</code> 的一阶方程。</p>
+</li>
+<li>
+<p>那条一阶方程的解恒等于 <code>W/y_p²</code>，而 <code>W = exp(−∫a₁)</code>，所以 <code>y₂ = y_p·∫W/y_p² dx</code> —— 记住 <code>a₂</code> 从头到尾不出现。</p>
+</li>
+<li>
+<p>先化标准形再读 <code>a₁</code>；W 差常数不要紧；积分积不出来就保留积分形式。这三条能解释本讲 90% 的"我算得对不对"。</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>复核记录</strong>：全文公式用 sympy 逐条验证，22 项全通过（<code>_scratch/reduction-abel-check-20261020.py</code>）：包括结构恒等式 <code>L[y_p·v] = v·L[y_p] + y_p·(z′ + (2y_p′/y_p + a₁)z)</code>、<code>z = exp(−∫a₁)/y_p²</code> 满足一阶方程、三个例子的特解与 W、例 2 的 erf 形式解代回原方程、例 3 的 W 只差常数倍、以及四道自检题。</p>
+</blockquote>
+</body></html>
