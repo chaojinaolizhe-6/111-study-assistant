@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{xcolor}
+\definecolor{mainblue}{RGB}{12,82,160}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+
+\begin{document}
+
+{\color{mainblue}\Large\bfseries 题 36\quad $y''+y=2\sec x$}\\[2pt]
+{\color{mainblue}\small 二阶常系数线性非齐次方程 \quad$\cdot$\quad 特解用参数变易法（常数变易法）}
+
+\vspace{0.5em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{1.\ 齐次方程与朗斯基行列式}
+
+齐次方程 $y''+y=0$ 的基本解组取 $y_1=\cos x,\ y_2=\sin x$，则
+\[
+W=y_1y_2'-y_1'y_2=\cos x\cos x-(-\sin x)\sin x=\cos^2x+\sin^2x=1 .
+\]
+
+\textbf{2.\ 参数变易方程组}
+
+设 $y_p=u_1(x)\cos x+u_2(x)\sin x$，其中 $f=2\sec x$，按参数变易法列出
+\[
+\begin{cases}
+u_1'\cos x+u_2'\sin x=0,\\[2pt]
+-u_1'\sin x+u_2'\cos x=2\sec x,
+\end{cases}
+\]
+即
+\[
+u_1'=-\frac{y_2 f}{W}=-2\sin x\sec x=-2\tan x,\qquad
+u_2'=\frac{y_1 f}{W}=2\cos x\sec x=2 .
+\]
+
+\textbf{3.\ 积分}
+
+\[
+u_1=\int(-2\tan x)\,dx=2\ln|\cos x|,\qquad
+u_2=\int 2\,dx=2x .
+\]
+
+\textbf{4.\ 特解与通解}
+
+\[
+y_p=u_1y_1+u_2y_2=2x\sin x+2\cos x\ln|\cos x|,
+\]
+\[
+\boxed{\;y=C_1\cos x+C_2\sin x+2x\sin x+2\cos x\ln|\cos x|\;}
+\]
+定义域：$\cos x\neq 0$，即 $x\neq\dfrac{\pi}{2}+k\pi,\ k\in\mathbb{Z}$。
+
+\textbf{5.\ 验算}
+
+\[
+\bigl(2x\sin x\bigr)''+2x\sin x=4\cos x,
+\]
+\[
+\bigl(2\cos x\ln|\cos x|\bigr)''+2\cos x\ln|\cos x|=2\sec x-4\cos x,
+\]
+两块相加恰为 $2\sec x$，故 $y_p$ 确为非齐次方程的一个特解。\hfill$\checkmark$
+
+\vspace{0.6em}
+\noindent\rule{\linewidth}{0.6pt}
+
+\textbf{答题栏}\quad
+\begin{tabular}{@{}ll@{}}
+类型：& 二阶常系数线性非齐次方程\\
+解法：& 参数变易法（先求齐次解组，W $=1$，解 $u_1'$、$u_2'$ 后积分）\\
+\end{tabular}
+
+\vspace{0.3em}
+结果：$y=C_1\cos x+C_2\sin x+2x\sin x+2\cos x\ln|\cos x|$，$x\neq \frac{\pi}{2}+k\pi$。
+
+\end{document}
