@@ -1,0 +1,1109 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第六章 拉普拉斯变换 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{第六章 · 拉普拉斯变换 · 精讲}{数学物理方法1}
+
+\begin{document}
+
+\doctitle{第六章　拉普拉斯变换}{从一条被救活的傅里叶积分，到 p 平面上的整套算法}
+{依据：\texttt{第六章+拉普拉斯变换+-+上传课件.pdf}（p1--p46，共 46 页）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{课件讲了哪四块，各在哪几页}
+
+课件把一章分成四节，四节是一条直线：\textbf{定义}（把傅里叶积分改造成只从 $0$ 积到 $\infty$ 的形式）$\to$ \textbf{性质}（八条，把微积分运算换成代数运算）$\to$ \textbf{反演}（从像函数走回原函数）$\to$ \textbf{应用}（电路、振子、微分方程组、特殊积分）。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.1cm}p{2.5cm}p{8.9cm}@{}}
+\toprule
+\thead{小节} & \thead{课件页码} & \thead{本讲义对应}
+\\
+\midrule
+§6.1 定义 & p3--p12 & §1 机制（为什么要乘 $e^{-st}$）＋ §2 六个直接计算的例子与常用表
+\\
+§6.2 性质 & p13--p24 & §3 八条性质逐条推导 ＋ §4 性质表的对偶结构
+\\
+§6.3 反演 & p26--p34 & §5 主例题全程演算 ＋ §6 二阶重极点为什么必须绕道 ＋ §7 其余七例
+\\
+§6.4 应用 & p35--p45 & §9 三个回路、一个振子、一个微分方程组、四个特殊积分
+\\
+作业 & p25、p46 & §7 末尾汇总（题面照抄）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{11.6cm}@{}}
+\toprule
+\thead{记号} & \thead{约定}
+\\
+\midrule
+$f(t)$ & \textbf{原函数}，只在 $t\ge 0$ 上有定义，$t<0$ 时取 $0$（课件 p6 的硬性要求）
+\\
+$F(p)$ & \textbf{像函数}，$p$ 为复变数，$p=s+i\omega$，$s=\operatorname{Re}p$
+\\
+$H(t)$ & 单位阶跃函数：$t\ge 0$ 时 $1$，$t<0$ 时 $0$（课件 p4）
+\\
+$f(t)\risingdotseq F(p)$ & 原函数与像函数的对应（课件用 $\Leftrightarrow$ 记，本讲义用 $\risingdotseq$ 以免与逻辑等价混淆）
+\\
+\bottomrule
+\end{tabular}
+
+\warnbox{\textbf{记号冲突（课件自身的缝）}：p5 写的是 $p=s-i\omega$，p6 写的是 $p=s+i\sigma$，两页虚部符号相反、字母也不同（$\omega$ 与 $\sigma$）。本讲义统一取
+\[ p=s+i\omega,\qquad s=\operatorname{Re}p>0 . \]
+这个取法与 p6、也与第五章的傅里叶约定一致。p5 之所以出现 $s-i\omega$，是因为它把傅里叶正变换的核写成了 $e^{+i\omega t}$（而不是 $e^{-i\omega t}$）；两种写法给出的 $F(p)$ 完全相同，差别只记在 $p$ 的虚部符号上。§1 会把这件事摆开算一遍。}
+
+\subhdr{本讲义相对课件补的三条缝}
+
+\begin{enumerate}
+
+\item \textbf{p4 与 p5 之间}：p4 说“用指数衰减函数 $e^{-st}$ 去乘 $f(t)$”、“引入单位阶跃函数 $H(t)$”，p5 一上来就写
+\[ G(\omega)=\frac{1}{2\pi}\int_{-\infty}^{\infty}g(t)e^{i\omega t}\dd t ,\]
+却把下限从 $-\infty$ 改成了 $0$。这个改动不是笔误，它用的是 p6 才给出的条件 $f(t)=0\ (t<0)$——\textbf{结论先到、理由后到}，中间这一页是拼不上的。§1 把它接上。
+
+\item \textbf{p22 的延迟定理}：课件写“为满足 $f(t-t_0)$ 有意义，要求 $t\ge t_0$”，但结论给的是 $e^{-pt_0}F(p)$。真正被变换的对象不是 $f(t-t_0)$，而是 $H(t-t_0)f(t-t_0)$——少了这个阶跃因子，$t<t_0$ 的那一段会被静默地算成 $f$ 在负宗量处的值（而 $f$ 在负半轴被规定为零）。§3 第 7 条把这一步补成显式乘法。
+
+\item \textbf{p8 与 p16 之间}：p8 的例 3 用“方法 2”算 $t^n$ 的像函数，用的是 $\dfrac{\dd}{\dd p}$ 与积分的交换；而这正是 p16 才陈述的导数定理 II。\textbf{先用后证}，跨度 8 页。§2 把这个例子改成先分部积分（方法 1），把导数定理 II 留给 §3 证完再用。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§1}{机制：傅里叶积分为什么非改不可，$e^{-st}$ 到底救活了什么}
+
+\subhdr{课件给的两条理由（p3 原文）}
+
+\begin{enumerate}
+\item 原函数 $f(x)$ 绝对可积，但许多简单的常见函数（如单位阶跃函数、正弦函数、余弦函数以及线性函数等）都不满足这个条件。
+\item 原函数 $f(x)$ 在区间 $[-\infty,\infty]$ 上分段光滑，但在物理和无线电技术等实际应用中，许多以时间 $t$ 作为自变量的函数往往在 $t<0$ 时是无意义的或是不需要考虑的。
+\end{enumerate}
+
+这两条说的是两件不同的事：第一条说的是\textbf{积分可能发散}，第二条说的是\textbf{积分区间多余}。课件在 p4 各给了一个补丁，但没说明补丁为什么对——这正是本章的起点。
+
+\subhdr{第一个补丁：乘一个指数，把“不收敛”改成“收敛”}
+
+$f(t)=1$ 时傅里叶变换失效，因为
+\[ \int_{-\infty}^{\infty}1\cdot e^{-i\omega t}\dd t \]
+在无穷远处不衰减。注意失效的原因不是“$f$ 太大”，而是“$f$ 衰减得比 $1$ 还慢”。那就人工给它一个衰减：
+\[ g(t)=f(t)e^{-st},\qquad s>0 .\]
+此时 $|g(t)|=|f(t)|e^{-st}$。如果 $f$ 的增长不超过某个指数 $|f(t)|<Me^{s_0t}$，只要取 $s>s_0$，就有
+\[ |g(t)|=|f(t)|e^{-st}<Me^{-(s-s_0)t}\xrightarrow[t\to\infty]{}0 ,\]
+而 $|g(t)|\le M$ 又保证了 $g$ 在任意有限区间上有界、可积。于是 $g$ 绝对可积，傅里叶那一套立刻可用。
+
+\aside{这一步用的是“指数增长有上界”这一条假设（课件 p6 条件 2），代入本题即 $|f(t)|<Me^{s_0t}$、$s>s_0$。没有这条假设，$s$ 取多大都可能不够——第五章的高斯型函数就不需要它，但阶跃、正弦、$t^n$ 全都需要。}
+
+\subhdr{第二个补丁：乘一个阶跃，把“双边”改成“单边”}
+
+物理上的时间没有负半轴。取
+\[
+H(t)=\begin{cases}1, & t\ge 0,\\ 0, & t<0,\end{cases}
+\]
+则 $H(t)f(t)$ 在 $t<0$ 恒为零，积分区间自然从 $(-\infty,\infty)$ 缩成 $[0,\infty)$。这一步把“函数在负半轴的取值”这个物理上不存在的量，用乘法一次性清零了。
+
+\subhdr{把两个补丁合起来：从傅里叶积分推出拉普拉斯积分（p5 的六步，逐步补全）}
+
+\textbf{第 1 步（设定）}：存在函数 $f(t)$，其中 $t\ge 0$。令
+\[ g(t)=f(t)e^{-st},\qquad s>0, \]
+且 $s$ 足够大，使得 $g(t)$ 绝对可积。
+
+\textbf{第 2 步（对 $g$ 做傅里叶正变换）}：取第五章的约定（正变换带 $1/2\pi$ 与 $e^{-i\omega t}$），
+\[ G(\omega)=\frac{1}{2\pi}\int_{-\infty}^{\infty}g(t)e^{-i\omega t}\dd t
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(t)e^{-(s+i\omega)t}\dd t .\]
+
+\textbf{第 3 步（用 $t<0$ 时为 0 把下限改成 0）}：令
+\[ p=s+i\omega ,\]
+并\textbf{利用 $f(t)=0\ (t<0)$}，则上式为
+\[ G(\omega)=\frac{1}{2\pi}\int_{0}^{\infty}f(t)e^{-pt}\dd t .\]
+
+这就是 §0 里指出的那条缝：p5 在这一步只写了“且由于 $t\ge 0$，则”，没有说 $f$ 在负半轴为零。若 $f$ 在负半轴不为零，下限绝不能改，否则算出来的不是拉普拉斯变换。
+
+\aside{课件 p5 的原文是“令 $p=s-i\omega$，且由于 $t\ge 0$，则 $G(\omega)=\dfrac{1}{2\pi}\int_0^{\infty}f(t)e^{-pt}\dd t$”。它把傅里叶正变换的核写成 $e^{+i\omega t}$，所以配平出来的 $p$ 是 $s-i\omega$；本讲义用 $e^{-i\omega t}$，配平出来是 $p=s+i\omega$。两者代入 $e^{-pt}$ 后都被还原成 $f(t)e^{-st}e^{\pm i\omega t}$，物理内容不变。}
+
+\textbf{第 4 步（命名像函数）}：令 $F(p)=2\pi G(\omega)$，则
+\[ \boxed{\,F(p)=\int_{0}^{\infty}f(t)e^{-pt}\dd t\,} \]
+这就是\textbf{拉普拉斯变换}（课件 p6 的定义式，与本式一致）。
+
+\textbf{第 5 步（逆变换）}：由傅里叶逆变换 $g(t)=\int_{-\infty}^{\infty}G(\omega)e^{i\omega t}\dd\omega$，得
+\[ f(t)e^{-st}=\int_{-\infty}^{\infty}G(\omega)e^{i\omega t}\dd\omega
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(p)e^{i\omega t}\dd\omega ,\]
+两边乘 $e^{st}$：
+\[ f(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(p)e^{(s+i\omega)t}\dd\omega
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(p)e^{pt}\dd\omega .\]
+
+\textbf{第 6 步（换积分变量）}：由 $p=s+i\omega$ 得 $\dd p=i\,\dd\omega$，即 $\dd\omega=\dfrac{\dd p}{i}$；当 $\omega$ 从 $-\infty$ 跑到 $\infty$ 时，$p$ 沿竖直线 $\operatorname{Re}p=s$ 从 $s-i\infty$ 跑到 $s+i\infty$。于是
+\[ \boxed{\,f(t)=\frac{1}{2\pi i}\int_{s-i\infty}^{s+i\infty}F(p)e^{pt}\dd p\,} \]
+这叫\textbf{黎曼—梅林反演公式}（课件 p5 末行与 p45 框内公式）。
+
+\callout{\textbf{这一节真正要记的不是两个公式，是那条缝}：拉普拉斯变换不是“另一个变换”，它是\textbf{傅里叶变换作用在 $f(t)e^{-st}$ 上，再把结果重新命名}。所以第五章关于傅里叶变换的每一条性质，只要把 $f$ 换成 $fe^{-st}$，就自动变成第六章的一条性质。§3 的八条性质，本质上都是这一句话的展开。}
+
+\subhdr{存在条件（p6 的两条），以及它和 p5 的“$s$ 足够大”是同一件事}
+
+课件 p6 给的条件是：
+
+\begin{enumerate}
+\item $f(t)$ 在区间 $0\le t<\infty$ 中分段连续，而且导数处处连续；
+\item 存在正常数 $M>0$ 及 $s_0\ge 0$，使得对于任何 $t$ 值，有 $\;|f(t)|<Me^{s_0t}$。
+\end{enumerate}
+
+课件随即画了一条箭头链：
+\[ |f(t)|<Me^{s_0t}\ \Longrightarrow\ |g(t)|=\bigl|f(t)e^{-s_0t}\bigr|<M\ \Longrightarrow\ g(t)\ \text{绝对可积} .\]
+
+这条链就是 p5 那句“$s$ 足够大”的定量版本：\textbf{“足够大”= $s>s_0$}。课件两页各说一半，没有把它们对上——补上这一句，学生才能自己判断一个函数“能不能做拉普拉斯变换、在哪个半平面能做”。
+
+\warnbox{\textbf{推论（后面每个例子都要用）}：$F(p)=\int_0^\infty f(t)e^{-pt}\dd t$ 只在半平面 $\operatorname{Re}p>s_0$ 内收敛；凡是写出 $F(p)$ 的地方，都默认 $\operatorname{Re}p>s_0$。p7 的例 1 只写结果 $1/p$ 而不写“$\operatorname{Re}p>0$”，是这个课件从头到尾的系统性省略。}
+
+%=============================================================
+\hdr{§2}{主线甲：按定义直接算——六个函数与一张表}
+
+这一节回答一个问题：\textbf{拿到一个 $f(t)$，怎么算出 $F(p)$}。课件的六个例子（p7--p11）就是这个问题的六个答案，最后汇总成 p12 的常用表。
+
+\subhdr{例 1（p7）：$f(t)=1$}
+
+\[ F(p)=\int_{0}^{\infty}1\cdot e^{-pt}\dd t=\left[-\frac{1}{p}e^{-pt}\right]_{0}^{\infty}=\frac{1}{p} .\]
+
+\aside{上限代入要得零，要求 $|e^{-pt}|=e^{-st}\to 0$，即 $s=\operatorname{Re}p>0$。课件 p7 没写这个前提；例 2 却写了 $\operatorname{Re}p>\operatorname{Re}\alpha$，说明老师知道它、只是没提到例 1。}
+
+\subhdr{例 2（p7）：$f(t)=e^{\alpha t}$}
+
+\[ F(p)=\int_{0}^{\infty}e^{\alpha t}e^{-pt}\dd t=\int_{0}^{\infty}e^{-(p-\alpha)t}\dd t=\frac{1}{p-\alpha},\qquad
+\operatorname{Re}p>\operatorname{Re}\alpha .\]
+
+收敛条件 $\operatorname{Re}(p-\alpha)>0$ 与 §1 的 $s>s_0$ 是同一句：这里 $s_0=\operatorname{Re}\alpha$。
+
+\subhdr{例 3（p8）：$f(t)=t^n$}
+
+\textbf{方法 1（分部积分，递推）}。先把
+\[ F(p)=\int_{0}^{\infty}t^n e^{-pt}\dd t \]
+里的 $e^{-pt}\dd t$ 写成 $-\dfrac{1}{p}\dd\!\left(e^{-pt}\right)$：
+\[ F(p)=-\frac{1}{p}\int_{0}^{\infty}t^n\dd\!\left(e^{-pt}\right)
+=-\frac{1}{p}\left\{\Bigl[t^ne^{-pt}\Bigr]_{0}^{\infty}-n\int_{0}^{\infty}t^{n-1}e^{-pt}\dd t\right\} .\]
+边界项在 $\operatorname{Re}p>0$ 时为零（多项式增长被指数压住，这正是 §1 条件 2 的用处），于是得到递推
+\[ I_n=\frac{n}{p}I_{n-1},\qquad I_0=\frac{1}{p} .\]
+逐次代入：
+\[ I_n=\frac{n}{p}\cdot\frac{n-1}{p}\cdots\frac{1}{p}\cdot\frac{1}{p}=\frac{n!}{p^{\,n+1}} .\]
+特别地
+\[ 1\risingdotseq\frac{1}{p},\qquad t\risingdotseq\frac{1}{p^{2}},\qquad t^{n}\risingdotseq\frac{n!}{p^{\,n+1}} .\]
+
+\textbf{方法 2（课件原写法，对 $p$ 求导）}。由
+\[ \frac{\dd}{\dd p}\frac{1}{p}=-\frac{1}{p^{2}} \]
+得
+\[ t\risingdotseq\frac{1}{p^{2}}=-\frac{\dd}{\dd p}\left(\frac{1}{p}\right),\]
+再求一次导得
+\[ t^{2}\risingdotseq\frac{2}{p^{3}}=\frac{\dd^{2}}{\dd p^{2}}\left(\frac{1}{p}\right) .\]
+这一串等式的合法性来自\textbf{导数定理 II}（$t^nf(t)\risingdotseq(-1)^n\dfrac{\dd^nF}{\dd p^n}$），而该定理课件到 p16 才证。§3 会把这条定理补证完整；在那之前，请把方法 2 当成“待验证的猜想”，方法 1 才是闭环的算法。
+
+\subhdr{例 4（p9）：$f(t)=te^{\alpha t}$}
+
+课件用的办法是“与 $t\risingdotseq\dfrac{1}{p^2}$ 对比”：
+\[ F(p)=\int_{0}^{\infty}te^{\alpha t}e^{-pt}\dd t=\int_{0}^{\infty}t\,e^{-(p-\alpha)t}\dd t .\]
+把 $t\risingdotseq\dfrac{1}{p^{2}}$ 里的 $p$ 整体换成 $p-\alpha$，得
+\[ te^{\alpha t}\risingdotseq\frac{1}{(p-\alpha)^{2}} .\]
+同样类推 $t^ne^{\alpha t}$：
+\[ t^{n}e^{\alpha t}\risingdotseq\frac{n!}{(p-\alpha)^{\,n+1}} .\]
+
+\aside{“把 $p$ 换成 $p-\alpha$”这句话的合法依据是位移定理（p21，本讲义 §3 第 6 条）：$e^{\alpha t}f(t)\risingdotseq F(p-\alpha)$。代入本例即 $f(t)=t$、$F(p)=1/p^{2}$、$\lambda=-\alpha$，故 $te^{\alpha t}\risingdotseq1/(p-\alpha)^{2}$。}
+
+\subhdr{例 5（p10）：$f(t)=\sin\omega t$ 与 $\cos\omega t$}
+
+\textbf{直接积分路线（课件 p10 的写法）}。用欧拉公式把正弦拆成两支指数：
+\[ \sin\omega t=\frac{1}{2i}\left(e^{i\omega t}-e^{-i\omega t}\right), \]
+再用例 2 的结果（两支分别取 $\alpha=i\omega$ 与 $\alpha=-i\omega$）：
+\[
+F(p)=\frac{1}{2i}\left[\frac{1}{p-i\omega}-\frac{1}{p+i\omega}\right]
+=\frac{1}{2i}\cdot\frac{(p+i\omega)-(p-i\omega)}{(p-i\omega)(p+i\omega)}
+=\frac{1}{2i}\cdot\frac{2i\omega}{p^{2}+\omega^{2}}
+=\frac{\omega}{p^{2}+\omega^{2}} .
+\]
+同法：
+\[ \cos\omega t=\frac{1}{2}\left(e^{i\omega t}+e^{-i\omega t}\right)
+\ \Longrightarrow\ 
+F(p)=\frac{1}{2}\left[\frac{1}{p-i\omega}+\frac{1}{p+i\omega}\right]
+=\frac{p}{p^{2}+\omega^{2}} .\]
+
+\aside{两支的收敛区分别是 $\operatorname{Re}p>0$ 与 $\operatorname{Re}p>0$（因为 $|\operatorname{Re}(\pm i\omega)|=0$），取交集仍是 $\operatorname{Re}p>0$；这就是“多支相加时收敛区取交”的第一次出现。}
+
+\textbf{第二条路线（p13 用线性定理再算一遍）}：把 $e^{i\omega t}\risingdotseq\dfrac{1}{p-i\omega}$ 与 $e^{-i\omega t}\risingdotseq\dfrac{1}{p+i\omega}$ 当已知，直接套线性定理
+\[ \alpha f_1(t)+\beta f_2(t)\risingdotseq\alpha F_1(p)+\beta F_2(p) ,\]
+取 $\alpha=\dfrac{1}{2i},\ \beta=-\dfrac{1}{2i}$，一行得到同一结果。课件把这两条路线分在两页，没有说它们其实是一件事——\textbf{线性定理不是新定理，它只是“积分是线性的”这一句的搬运}。
+
+\subhdr{例 6（p11）：$f(t)=\sinh\omega t$ 与 $\cosh\omega t$}
+
+由
+\[ \sinh\omega t=\frac{1}{2}\left(e^{\omega t}-e^{-\omega t}\right),\qquad
+\cosh\omega t=\frac{1}{2}\left(e^{\omega t}+e^{-\omega t}\right) \]
+与例 2：
+\[ \sinh\omega t\risingdotseq\frac{1}{2}\left[\frac{1}{p-\omega}-\frac{1}{p+\omega}\right]=\frac{\omega}{p^{2}-\omega^{2}} ,\]
+\[ \cosh\omega t\risingdotseq\frac{1}{2}\left[\frac{1}{p-\omega}+\frac{1}{p+\omega}\right]=\frac{p}{p^{2}-\omega^{2}} .\]
+注意与例 5 只差 $p^{2}+\omega^{2}$ 变成 $p^{2}-\omega^{2}$ 的一个符号：正弦/余弦来自虚指数（$i\omega$），双曲函数来自实指数（$\omega$）。收敛区也不同——这里是 $\operatorname{Re}p>|\omega|$。
+
+\subhdr{常用表（p12）与三个必须自己会解释的格子}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{3.6cm}p{3.4cm}p{2.6cm}@{}}
+\toprule
+\thead{原函数} & \thead{像函数} & \thead{收敛半平面} & \thead{来源}
+\\
+\midrule
+$1$ & $\dfrac{1}{p}$ & $\operatorname{Re}p>0$ & 例 1
+\\
+$t$ & $\dfrac{1}{p^{2}}$ & $\operatorname{Re}p>0$ & 例 3
+\\
+$t^{n}$ & $\dfrac{n!}{p^{\,n+1}}$ & $\operatorname{Re}p>0$ & 例 3
+\\
+$e^{\alpha t}$ & $\dfrac{1}{p-\alpha}$ & $\operatorname{Re}p>\operatorname{Re}\alpha$ & 例 2
+\\
+$te^{\alpha t}$ & $\dfrac{1}{(p-\alpha)^{2}}$ & $\operatorname{Re}p>\operatorname{Re}\alpha$ & 例 4
+\\
+$t^{n}e^{\alpha t}$ & $\dfrac{n!}{(p-\alpha)^{\,n+1}}$ & $\operatorname{Re}p>\operatorname{Re}\alpha$ & 例 4
+\\
+$\sin\omega t$ & $\dfrac{\omega}{p^{2}+\omega^{2}}$ & $\operatorname{Re}p>0$ & 例 5
+\\
+$\cos\omega t$ & $\dfrac{p}{p^{2}+\omega^{2}}$ & $\operatorname{Re}p>0$ & 例 5
+\\
+$\sinh\omega t$ & $\dfrac{\omega}{p^{2}-\omega^{2}}$ & $\operatorname{Re}p>|\omega|$ & 例 6
+\\
+$\cosh\omega t$ & $\dfrac{p}{p^{2}-\omega^{2}}$ & $\operatorname{Re}p>|\omega|$ & 例 6
+\\
+\bottomrule
+\end{tabular}
+
+\warnbox{\textbf{课件 p12 这张表没有一列“收敛半平面”。}这不是排版省略，它会让后面几处判断失去依据：反演时（§5）要知道结果在哪个半平面成立，用像函数积分定理时（§9）要知道能不能把 $p$ 推到 $0$。本讲义补上这一列，请把它当成表的一部分背。}
+
+%=============================================================
+\hdr{§3}{主线乙：八条性质——把微积分换成代数}
+
+§2 的六条路都是“从定义算”，慢。§6.2 的八条性质是另一条路：把 $f$ 的\textbf{微积分操作}换成 $F$ 的\textbf{代数操作}，算完再反演（§5）。这一节的每一条都配完整证明，因为作业（p25、p46）全部靠它们。
+
+\subhdr{性质 1（p13）：线性定理}
+
+若 $f_1(t)\risingdotseq F_1(p)$、$f_2(t)\risingdotseq F_2(p)$，$\alpha,\beta$ 为常数，则
+\[ \alpha f_1(t)+\beta f_2(t)\ \risingdotseq\ \alpha F_1(p)+\beta F_2(p) .\]
+证明只有一行——积分是线性的：
+\[ \int_0^\infty\!\bigl[\alpha f_1+\beta f_2\bigr]e^{-pt}\dd t
+=\alpha\!\int_0^\infty\! f_1e^{-pt}\dd t+\beta\!\int_0^\infty\! f_2e^{-pt}\dd t .\]
+收敛半平面取两者的交（见 §2 例 5 的旁注）。课件 p13 用它重算了 $\sin\omega t$，本讲义已在 §2 处理，此处不重复。
+
+\subhdr{性质 2（p14）：导数定理 I——原函数求导，像函数乘 $p$}
+
+\textbf{陈述}：设 $f$ 在 $t\ge0$ 上连续可微，且 $f,f'$ 都满足 §1 的指数增长条件，则
+\[ f'(t)\ \risingdotseq\ pF(p)-f(0) .\]
+
+\textbf{证明}。把 $f'(t)\dd t$ 读成 $\dd f$：
+\[
+\int_0^\infty\! f'(t)e^{-pt}\dd t
+=\int_0^\infty\! e^{-pt}\dd f(t)
+=\Bigl[e^{-pt}f(t)\Bigr]_{0}^{\infty}-\int_0^\infty\! f(t)\,\dd\!\left(e^{-pt}\right) .
+\]
+边界项：上限为 $0$（指数增长被 $e^{-st}$ 压住），下限为 $-f(0)$；第二项因为 $\dd(e^{-pt})=-pe^{-pt}\dd t$ 而变成 $+pF(p)$。合起来
+\[ \int_0^\infty\! f'(t)e^{-pt}\dd t=-f(0)+pF(p) .\]
+逐次使用，得高阶形式
+\[ f^{(n)}(t)\ \risingdotseq\ p^{n}F(p)-p^{\,n-1}f(0)-p^{\,n-2}f^{(1)}(0)-\cdots-f^{(n-1)}(0) .\]
+
+\aside{高阶式里每一项的 $p$ 的幂次加起来正好是 $n-1$：$p^{n-k}$ 配 $f^{(k-1)}(0)$，$k=1,\dots,n$。代入 $n=2$ 即 $f''\risingdotseq p^{2}F-pf(0)-f^{(1)}(0)$，这是 p15 例 2 与 p46 作业 3(3) 都要用的那一条。}
+
+\textbf{这条定理的分量}（课件 p14 的旁白）：它把\textbf{微分运算}换成了\textbf{乘 $p$}，并且\textbf{自动把初值 $-f(0),-f^{(1)}(0),\dots$ 带了进来}。这就是为什么拉普拉斯变换解初值问题比傅里叶变换顺手——傅里叶变换没有“初值”这个东西。
+
+\textbf{例 2（p15）：用导数定理 I 解 $f''+\omega^{2}f=0$，$f(0)=1$，$f^{(1)}(0)=0$}。
+
+两边取变换（$\omega$ 是常数，$0\risingdotseq0$）：
+\[ \left[p^{2}F(p)-pf(0)-f^{(1)}(0)\right]+\omega^{2}F(p)=0 .\]
+代入初值 $f(0)=1,\ f^{(1)}(0)=0$：
+\[ p^{2}F(p)-p+\omega^{2}F(p)=0\ \Longrightarrow\ (p^{2}+\omega^{2})F(p)=p
+\ \Longrightarrow\ F(p)=\frac{p}{p^{2}+\omega^{2}} .\]
+查 §2 的表，$\dfrac{p}{p^{2}+\omega^{2}}\risingdotseq\cos\omega t$，故
+\[ f(t)=\cos\omega t .\]
+\textbf{验算}：$\cos 0=1$ $\checkmark$，$-\omega\sin 0=0$ $\checkmark$，$f''+\omega^{2}f=-\omega^{2}\cos+\omega^{2}\cos=0$ $\checkmark$。
+
+\warnbox{课件 p15 的题面写的是“初始条件为 $f(0)=1$，$f^{(1)}(t)=0$”。第二式的自变量应为 $0$（$f^{(1)}(0)=0$），因为导数定理代入的是\textbf{初值}而不是函数。照原样抄会给后面的代入造成歧义，本讲义按 $f^{(1)}(0)=0$ 使用。}
+
+\subhdr{性质 3（p16）：导数定理 II——原函数乘 $t$，像函数求导}
+
+\textbf{陈述}：设 $f$ 满足 $|f(t)|<Me^{s_0t}$，则在 $\operatorname{Re}p>s_0$ 内 $F(p)$ 解析，且
+\[ t^{n}f(t)\ \risingdotseq\ (-1)^{n}\frac{\dd^{n}F(p)}{\dd p^{n}} .\]
+
+\textbf{证明}。对 $F(p)=\int_0^\infty f(t)e^{-pt}\dd t$ 关于 $p$ 求导，积分与求导可交换（被积函数对 $p$ 的偏导被 $t^{n}e^{-st}$ 控制，在 $s>s_0$ 上一致收敛）：
+\[
+\frac{\dd F}{\dd p}=\int_0^\infty f(t)\frac{\partial}{\partial p}e^{-pt}\dd t
+=\int_0^\infty f(t)(-t)e^{-pt}\dd t=-\,t f(t)\ \text{的像} .
+\]
+求 $n$ 次导，每次落下一个 $(-t)$：
+\[ \frac{\dd^{n}F}{\dd p^{n}}=(-1)^{n}\int_0^\infty t^{n}f(t)e^{-pt}\dd t ,\]
+移项即得结论。
+
+\textbf{这条定理是 §2 里两个“凑”法的正式依据}：例 3 的“方法 2”与例 4 的“把 $p$ 换成 $p-\alpha$”，都是它的应用。
+
+\textbf{例 3（p17）：用导数定理 II 求 $t^{n}e^{\alpha t}$}。已知 $e^{\alpha t}\risingdotseq\dfrac{1}{p-\alpha}$。
+
+$n=1$：
+\[ t\,e^{\alpha t}\risingdotseq(-1)\frac{\dd}{\dd p}\left(\frac{1}{p-\alpha}\right)=(-1)\cdot\frac{-1}{(p-\alpha)^{2}}=\frac{1}{(p-\alpha)^{2}} .\]
+$n=2$：
+\[ t^{2}e^{\alpha t}\risingdotseq(+1)\frac{\dd^{2}}{\dd p^{2}}\left(\frac{1}{p-\alpha}\right)=\frac{2}{(p-\alpha)^{3}} .\]
+类推：
+\[ t^{n}e^{\alpha t}\risingdotseq(-1)^{n}\frac{\dd^{n}}{\dd p^{n}}\left(\frac{1}{p-\alpha}\right)=\frac{n!}{(p-\alpha)^{\,n+1}} .\]
+
+\subhdr{性质 4（p18）：积分定理——原函数积分，像函数除以 $p$}
+
+\textbf{陈述}：
+\[ \int_0^{t}f(\tau)\dd\tau\ \risingdotseq\ \frac{F(p)}{p} .\]
+
+\textbf{证明}。令 $g(t)=\displaystyle\int_0^{t}f(\tau)\dd\tau$，则 $g^{(1)}(t)=f(t)$，且 $g(0)=0$。对 $g$ 用导数定理 I：
+\[ f(t)=g^{(1)}(t)\risingdotseq pG(p)-g(0)=pG(p) .\]
+于是 $G(p)=\dfrac{F(p)}{p}$。
+
+\aside{这一步能走通，全靠 $g(0)=0$ 这一条（变上限积分在下限处为零）。若积分下限不是 $0$，$g(0)\ne0$，结论会多出一项 $g(0)/p$——这正是 p36 的 LC 回路里那个 $q_0/(Cp)$ 的来源。}
+
+\subhdr{性质 5（p19）：相似性定理——时间被压缩，像函数被拉开}
+
+\textbf{陈述}：设 $a>0$，则
+\[ f(at)\ \risingdotseq\ \frac{1}{a}F\!\left(\frac{p}{a}\right) .\]
+
+\textbf{证明}。作代换 $y=at$（$a>0$ 时 $\dd y=a\,\dd t$，$t:0\to\infty$ 对应 $y:0\to\infty$）：
+\[
+\int_0^{\infty}\! f(at)e^{-pt}\dd t
+=\frac{1}{a}\int_0^{\infty}\! f(y)e^{-\frac{p}{a}y}\dd y
+=\frac{1}{a}F\!\left(\frac{p}{a}\right) .
+\]
+
+\warnbox{\textbf{为什么必须 $a>0$（课件 p19 只写了半句）}：课件在证完后补了一句“如果当 $a<0$ 时，则
+\[ \int_0^{\infty}f(at)e^{-pt}\dd t=\frac{1}{a}\int_{-\infty}^{0}f(y)e^{-\frac{p}{a}y}\dd y ,\]”
+然后就停住了。停住的这一行恰恰说明定理对 $a<0$ \textbf{不成立}：右端的积分跑到了负半轴，而拉普拉斯变换的 $f$ 在负半轴被规定为 $0$（§1），所以整个积分为零；换句话说，$a<0$ 时 $f(at)$ 对 $t>0$ 恒等于 $f(\text{负数})=0$，得到的是零函数，不是 $\frac{1}{a}F(p/a)$。\textbf{结论：相似性定理只在 $a>0$ 时可用}；若非要写 $a<0$ 的版本，须把结论写成 $\frac{1}{|a|}F(p/|a|)$ 并同时约定 $f$ 在负半轴不为零——那已经不在本章的框架里了。}
+
+\textbf{例 4（p20）：用相似性定理验证例 2}。先由定义算 $e^{-t}$：
+\[ \int_0^{\infty}e^{-t}e^{-pt}\dd t=\int_0^{\infty}e^{-(p+1)t}\dd t=\frac{1}{p+1} .\]
+即 $f(t)=e^{-t}\risingdotseq\dfrac{1}{p+1}$。取 $a>0$ 并令 $f(at)=e^{-at}$，由相似性定理
+\[ e^{-at}\ \risingdotseq\ \frac{1}{a}\cdot\frac{1}{\frac{p}{a}+1}=\frac{1}{p+a} ,\]
+与 §2 例 2 完全一致。这条例题的作用是\textbf{互验}：定义与性质必须给同一个答案，否则某处记号一定错了。
+
+\subhdr{性质 6（p21）：位移定理——乘指数，像函数平移}
+
+\textbf{陈述}：
+\[ e^{-\lambda t}f(t)\ \risingdotseq\ F(p+\lambda) \qquad(\lambda\ \text{可为复数}) .\]
+
+\textbf{证明}。定义式里把两个指数并成一个：
+\[ \int_0^{\infty}\! e^{-\lambda t}f(t)e^{-pt}\dd t=\int_0^{\infty}\! f(t)e^{-(p+\lambda)t}\dd t=F(p+\lambda) .\]
+
+课件随即给出两个现成结果（$\lambda$ 为实数时也成立，为复数时同样成立）：
+\[ e^{-\lambda t}\sin\omega t\ \risingdotseq\ \frac{\omega}{(p+\lambda)^{2}+\omega^{2}},\qquad
+e^{-\lambda t}\cos\omega t\ \risingdotseq\ \frac{p+\lambda}{(p+\lambda)^{2}+\omega^{2}} .\]
+注意方向：\textbf{原函数乘 $e^{-\lambda t}$ $\Leftrightarrow$ 像函数里 $p$ 全部换成 $p+\lambda$}。若原函数乘的是 $e^{+\lambda t}$，则换成 $p-\lambda$——§2 例 4 用的就是这一支。
+
+\subhdr{性质 7（p22）：延迟定理——时间平移，像函数乘指数}
+
+\textbf{陈述（补全形式）}：设 $t_0>0$，则
+\[ H(t-t_0)\,f(t-t_0)\ \risingdotseq\ e^{-pt_0}F(p) .\]
+
+\textbf{证明}。因为 $t<t_0$ 时阶跃因子为零，积分下限可以直接写成 $t_0$：
+\[
+\int_0^{\infty}\! H(t-t_0)f(t-t_0)e^{-pt}\dd t
+=\int_{t_0}^{\infty}\! f(t-t_0)e^{-pt}\dd t .
+\]
+令 $\tau=t-t_0$（$\tau:0\to\infty$，$\dd t=\dd\tau$，$e^{-pt}=e^{-p(\tau+t_0)}=e^{-pt_0}e^{-p\tau}$）：
+\[ =e^{-pt_0}\int_0^{\infty}\! f(\tau)e^{-p\tau}\dd\tau=e^{-pt_0}F(p) .\]
+
+\warnbox{\textbf{这是本章最容易被记错的一条}。课件 p22 的陈述是“$f(t-t_0)\risingdotseq e^{-pt_0}F(p)$”，并在证明开头写“为满足 $f(t-t_0)$ 有意义，要求 $t\ge t_0$”。这两句话合起来才完整：\textbf{被变换的对象是 $H(t-t_0)f(t-t_0)$，不是 $f(t-t_0)$}。少了阶跃因子，$f(t-t_0)$ 在 $0<t<t_0$ 上等于 $f$ 在\textbf{负宗量}处的值，而负半轴按 §1 的约定必须取零——两种读法给的函数根本不同，但像函数都写成 $e^{-pt_0}F(p)$，于是错的人查表查不出错。作业里凡遇“延迟”必先把阶跃因子写出来。}
+
+\subhdr{性质 8（p23--p24）：卷积定理——卷积变乘积}
+
+\textbf{卷积的定义}（与第五章一致）：
+\[ (f_1*f_2)(t)=\int_0^{t}f_1(t-\tau)f_2(\tau)\dd\tau .\]
+上限取 $t$ 不是人为约定：$f_1(t-\tau)$ 要求 $t-\tau\ge0$，即 $\tau\le t$；而 $f_2(\tau)$ 要求 $\tau\ge0$。两条合起来就是 $0\le\tau\le t$。
+
+\textbf{定理}：
+\[ (f_1*f_2)(t)\ \risingdotseq\ F_1(p)F_2(p) .\]
+
+\textbf{证明（课件 p23--p24 的换序，补全中间一行）}。写出二重积分
+\[
+\int_0^{\infty}\!\!\left[\int_0^{t}f_1(t-\tau)f_2(\tau)\dd\tau\right]e^{-pt}\dd t
+=\iint_{D}f_1(t-\tau)f_2(\tau)e^{-pt}\dd\tau\,\dd t ,
+\]
+积分区域 $D=\{(t,\tau):\ 0\le\tau\le t<\infty\}$。课件 p23 说“变量 $\tau$ 先从 $\tau=0$ 到 $\tau=t$，然后 $t$ 从 $0$ 到 $\infty$”；p24 说“改变积分顺序，变量 $t$ 先从 $t=\tau$ 到 $t=\infty$，然后 $\tau$ 从 $0$ 到 $\infty$”。两种说法是同一块区域 $D$ 的两种扫描方式（p24 还配了两张图），所以
+\[
+\iint_D(\cdots)=\int_0^{\infty}\! f_2(\tau)\left[\int_{\tau}^{\infty}\! f_1(t-\tau)e^{-pt}\dd t\right]\dd\tau .
+\]
+内层积分令 $u=t-\tau$（$u:0\to\infty$）：
+\[
+\int_{\tau}^{\infty}\! f_1(t-\tau)e^{-pt}\dd t
+=e^{-p\tau}\int_0^{\infty}\! f_1(u)e^{-pu}\dd u=e^{-p\tau}F_1(p) .
+\]
+代回：
+\[
+\int_0^{\infty}\! f_2(\tau)\,e^{-p\tau}F_1(p)\dd\tau
+=F_1(p)\int_0^{\infty}\! f_2(\tau)e^{-p\tau}\dd\tau=F_1(p)F_2(p) .\]
+
+\aside{换序的合法性与 §9 的像函数积分定理用的是同一条依据：绝对可积（这里 $|f_1|,|f_2|$ 指数增长、$\operatorname{Re}p$ 足够大，二重积分绝对收敛）。p24 只写了“两种方法，积分区域相同，因此积分结果也相同”，没有提绝对收敛——严格说这一步要它。}
+
+\subhdr{八条性质总表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{0.7cm}p{4.3cm}p{4.6cm}p{3.3cm}@{}}
+\toprule
+\thead{序} & \thead{原函数} & \thead{像函数} & \thead{课件页}
+\\
+\midrule
+1 & $\alpha f_1+\beta f_2$ & $\alpha F_1+\beta F_2$ & p13
+\\
+2 & $f^{(n)}(t)$ & $p^{n}F-\sum_{k=1}^{n}p^{\,n-k}f^{(k-1)}(0)$ & p14
+\\
+3 & $t^{n}f(t)$ & $(-1)^{n}\dfrac{\dd^{n}F}{\dd p^{n}}$ & p16
+\\
+4 & $\displaystyle\int_0^{t}\! f(\tau)\dd\tau$ & $\dfrac{F(p)}{p}$ & p18
+\\
+5 & $f(at),\ a>0$ & $\dfrac{1}{a}F\!\left(\dfrac{p}{a}\right)$ & p19
+\\
+6 & $e^{-\lambda t}f(t)$ & $F(p+\lambda)$ & p21
+\\
+7 & $H(t-t_0)f(t-t_0)$ & $e^{-pt_0}F(p)$ & p22
+\\
+8 & $(f_1*f_2)(t)$ & $F_1(p)F_2(p)$ & p23--p24
+\\
+\bottomrule
+\end{tabular}
+
+%=============================================================
+\hdr{§4}{两条线为什么等价：性质表其实是同一张表从两个方向读}
+
+到这里，本章有两条路：
+
+\begin{itemize}
+\item \textbf{主线甲（§2）}：从定义直接算。慢，但每一步都看得见。
+\item \textbf{主线乙（§3）}：靠性质把微积分换成代数。快，但必须知道每条性质从哪来。
+\end{itemize}
+
+课件把两条线分开讲（p7--p12 与 p13--p24），学生容易当成两套东西背。其实\textbf{它们是同一张表}：每一条性质都在说“原函数上做某个操作 $\Leftrightarrow$ 像函数上做另一个操作”，而这张表的每一行都可以掉过头来读。
+
+\subhdr{第一对对偶：导数定理 I 与导数定理 II}
+
+\begin{itemize}
+\item 定义 2：原函数\textbf{求导} $\Leftrightarrow$ 像函数\textbf{乘 $p$}（再减初值）。
+\item 定义 3：原函数\textbf{乘 $t$} $\Leftrightarrow$ 像函数\textbf{求导}（再乘 $(-1)^n$）。
+\end{itemize}
+
+把两条并排：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{4.6cm}p{2.2cm}@{}}
+\toprule
+\thead{时域（原函数）} & \thead{$p$ 域（像函数）} & \thead{页码}
+\\
+\midrule
+$\dfrac{\dd}{\dd t}$ & 乘 $p$，减初值 & p14
+\\
+乘 $t$ & $\dfrac{\dd}{\dd p}$，乘 $(-1)^n$ & p16
+\\
+\bottomrule
+\end{tabular}
+
+两者是同一个事实的两次陈述：把它们看成矩阵的两个分量——\textbf{时域的微分算子对应 $p$ 域的乘法算子，时域的乘法算子对应 $p$ 域的微分算子}。之所以能这样互换，是因为定义式里的 $e^{-pt}$ 让 $t$ 与 $p$ 处于对称位置：对 $t$ 求导会掉出 $-p$，对 $p$ 求导会掉出 $-t$。
+
+\subhdr{第二对对偶：积分定理与像函数的积分定理}
+
+\begin{itemize}
+\item 性质 4（p18）：原函数\textbf{积分} $\Leftrightarrow$ 像函数\textbf{除以 $p$}。
+\item 像函数的积分定理（p34，§9 会证）：像函数\textbf{对 $p$ 积分} $\Leftrightarrow$ 原函数\textbf{除以 $t$}。
+\end{itemize}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{4.6cm}p{2.2cm}@{}}
+\toprule
+\thead{时域（原函数）} & \thead{$p$ 域（像函数）} & \thead{页码}
+\\
+\midrule
+$\displaystyle\int_0^{t}(\cdot)\dd\tau$ & 除以 $p$ & p18
+\\
+除以 $t$ & $\displaystyle\int_{p}^{\infty}(\cdot)\dd q$ & p34
+\\
+\bottomrule
+\end{tabular}
+
+这一对偶在 §9 会救活整节“计算特殊积分的值”：$\displaystyle\int_0^{\infty}\frac{\sin t}{t}\dd t$ 这类积分的值，正是靠“原函数除以 $t$ $\Leftrightarrow$ 像函数积分”一次性算出来的。
+
+\callout{\textbf{记住这层结构，八条性质就不用背}：只需背两条定义（$F(p)=\int_0^\infty fe^{-pt}\dd t$ 与 $p$ 的两条对偶），其余六条都是把定义式里的 $t$、$p$ 做一次代换或一次求导的直接结果。§8 会把这张表压缩成“四步用法”，做题时照走即可。}
+
+%=============================================================
+\hdr{§5}{主例题全程：$F(p)=\dfrac{1}{p(p-1)^{2}}$ 的反演（p29）}
+
+这是全章第一个“两条路都能走通”的题目：方法一靠分解（性质与表的正用），方法二靠卷积（性质 8 的反用）。课件两种都给了，但两处关键代数各吞了一行。
+
+\subhdr{方法一：把像函数拆成表里的三块}
+
+\textbf{课件 p29 的“思路”原文}是两条恒等式：
+\[ \frac{1}{p}-\frac{1}{(p-1)^{2}}=\frac{p^{2}-3p+1}{p(p-1)^{2}},\qquad
+\frac{1}{p}+\frac{1}{(p-1)^{2}}=\frac{p^{2}-p+1}{p(p-1)^{2}} ,\]
+然后直接跳到
+\[ F(p)=\frac{1}{p}-\frac{1}{p-1}+\frac{1}{(p-1)^{2}} .\]
+
+\textbf{这两条恒等式到那个结果之间，缺的是一行}。补上它：把第二条恒等式的分子拆开，
+\[
+\frac{p^{2}-p+1}{p(p-1)^{2}}
+=\frac{1}{p(p-1)^{2}}+\frac{p^{2}-p}{p(p-1)^{2}}
+=F(p)+\frac{p(p-1)}{p(p-1)^{2}}
+=F(p)+\frac{1}{p-1} .
+\]
+于是
+\[ \frac{1}{p}+\frac{1}{(p-1)^{2}}=F(p)+\frac{1}{p-1}\ \Longrightarrow\ F(p)=\frac{1}{p}+\frac{1}{(p-1)^{2}}-\frac{1}{p-1} .\]
+被吞的正是 $\dfrac{p^{2}-p}{p(p-1)^{2}}=\dfrac{1}{p-1}$ 这一句。不补它，读者会以为分子 $p^{2}-p+1$ 是“凑出来的”。
+
+\aside{第一条恒等式（分子 $p^{2}-3p+1$）其实没有进入正题，它的作用是让人相信分母 $p(p-1)^{2}$ 能被 $\frac{1}{p}$ 与 $\frac{1}{(p-1)^{2}}$ 这两支“挤”出来。真正干活的是第二条。}
+
+\textbf{查表反演}。用 §2 的三格：$\dfrac{1}{p}\risingdotseq1$，$\dfrac{1}{p-1}\risingdotseq e^{t}$，$\dfrac{1}{(p-1)^{2}}\risingdotseq te^{t}$，得
+\[ f(t)=1-e^{t}+te^{t} .\]
+
+\textbf{验算（本讲义补的两条）}：
+
+\begin{enumerate}
+\item \textbf{初值}：$f(0^{+})=1-1+0=0$。像函数这边，$p\to\infty$ 时 $F(p)=\dfrac{1}{p(p-1)^{2}}\sim\dfrac{1}{p^{3}}$，故 $pF(p)\to0$，与 $f(0^{+})=0$ 一致。
+\item \textbf{末值}：$f$ 含 $e^{t}$ 与 $te^{t}$，$t\to\infty$ 时发散；像函数这边 $F(p)$ 在 $p=1$ 有二阶极点，终值定理的前提（$pF(p)$ 在 $p\to0$ 附近无极点）也不成立。两边同样地“不收敛”，一致。
+\end{enumerate}
+
+\callout{\textbf{初值定理（本讲义增补，课件没有）}：设 $f'$ 满足 §1 的增长条件，则
+\[ \lim_{p\to+\infty}pF(p)=f(0^{+}) .\]
+推导只需导数定理 I 一行：$\displaystyle\int_0^{\infty}f'(t)e^{-pt}\dd t=pF(p)-f(0)$，令 $p\to+\infty$（实数），左端积分因 $e^{-pt}$ 的压制趋于 $0$，故 $pF(p)\to f(0)$。
+\emph{用途}：反演出 $f(t)$ 之后，五秒钟就能查“常数项有没有写错”。本章 §5、§7、§9 的每个例子都会用它验一次。}
+
+\subhdr{方法二：卷积（不要分解，直接乘）}
+
+把像函数看成两块之积：
+\[ F(p)=\frac{1}{p}\cdot\frac{1}{(p-1)^{2}} .\]
+由 $\dfrac{1}{p}\risingdotseq1$、$\dfrac{1}{(p-1)^{2}}\risingdotseq te^{t}$ 与卷积定理（性质 8），
+\[ f(t)=1*te^{t}=\int_0^{t}1\cdot\tau e^{\tau}\dd\tau .\]
+把 $\tau e^{\tau}\dd\tau$ 读成 $\tau\,\dd(e^{\tau})$ 作分部积分：
+\[
+\int_0^{t}\tau e^{\tau}\dd\tau
+=\Bigl[\tau e^{\tau}\Bigr]_{0}^{t}-\int_0^{t}e^{\tau}\dd\tau
+=te^{t}-\left(e^{t}-1\right)=te^{t}-e^{t}+1 .
+\]
+与方法一完全相同。
+
+\subhdr{第三种算法（本讲义补，用来交叉验证）：待定系数}
+
+设
+\[ \frac{1}{p(p-1)^{2}}=\frac{A}{p}+\frac{B}{p-1}+\frac{C}{(p-1)^{2}} ,\]
+两边乘 $p(p-1)^{2}$：
+\[ 1=A(p-1)^{2}+Bp(p-1)+Cp .\]
+代入 $p=0$：$1=A$。代入 $p=1$：$1=C$。比较 $p^{2}$ 的系数：$0=A+B$，故 $B=-1$。于是
+\[ F(p)=\frac{1}{p}-\frac{1}{p-1}+\frac{1}{(p-1)^{2}} ,\]
+与方法一一致。\textbf{三条路给同一个答案}，说明这条像函数没有“隐藏分支”。
+
+\warnbox{\textbf{这一题最容易错的不是分解，是收敛半平面}：$F(p)$ 的奇点在 $p=0$ 与 $p=1$，收敛半平面是 $\operatorname{Re}p>1$。反演得到的 $f(t)=1-e^{t}+te^{t}$ 在 $t>0$ 成立；若有人把 $\operatorname{Re}p>0$ 当成收敛区，用像函数积分定理（§9）时就会算错。}
+
+%=============================================================
+\hdr{§6}{主例题里“算不下去”的地方：$(p^{2}+\omega^{2})^{2}$ 为什么必须绕道（p32--p33）}
+
+课件在 p32、p33 连出两个例子：
+\[ F_7(p)=\frac{p}{(p^{2}+\omega^{2})^{2}},\qquad F_8(p)=\frac{\omega}{(p^{2}+\omega^{2})^{2}} ,\]
+两个都用“求导”而不是“部分分式”解决。为什么？这一节回答这个问题。
+
+\subhdr{先看清楚：部分分式在这里为什么走不通}
+
+按 §5 的办法，有理分式该拆成部分分式。但分母 $(p^{2}+\omega^{2})^{2}$ 在\textbf{实数域上不可约}（$p^{2}+\omega^{2}=0$ 的根是 $\pm i\omega$，不是实数），能拆出来的最细形式是
+\[ \frac{Ap+B}{p^{2}+\omega^{2}}+\frac{Cp+D}{(p^{2}+\omega^{2})^{2}} .\]
+对照 $F_7$：取 $A=0,\ B=0,\ C=1,\ D=0$ 就得到 $F_7$ 本身。\textbf{也就是说，部分分式对 $F_7$ 什么都没做}——它把 $F_7$ 原样还了回来。再看 $F_8$：只能取 $C=0,\ D=\omega$，也被原样还回来。
+
+问题的症结在表：§2 的常用表里有 $\dfrac{p}{p^{2}+\omega^{2}}$ 与 $\dfrac{\omega}{p^{2}+\omega^{2}}$，却\textbf{没有}它们的平方。所以“分解成表里的项”这条路在这里断了——不是技巧不够，是表不够。
+
+\subhdr{出路一（p32 方法 2）：对 $p$ 求导——用导数定理 II}
+
+注意到平方式可以从“一次式对 $p$ 求导”得到：
+\[ \frac{\dd}{\dd p}\left(\frac{1}{p^{2}+\omega^{2}}\right)=-\frac{2p}{(p^{2}+\omega^{2})^{2}} .\]
+把它反过来用：
+\[
+\frac{p}{(p^{2}+\omega^{2})^{2}}
+=-\frac{1}{2}\cdot\frac{\dd}{\dd p}\left(\frac{1}{p^{2}+\omega^{2}}\right)
+=-\frac{1}{2\omega}\cdot\frac{\dd}{\dd p}\left(\frac{\omega}{p^{2}+\omega^{2}}\right) .
+\]
+这里硬塞一个 $\dfrac{\omega}{\omega}$ 的理由是：\textbf{表里登记的是 $\omega/(p^{2}+\omega^{2})$，不是 $1/(p^{2}+\omega^{2})$}。现在可以用导数定理 II（$tf(t)\risingdotseq-\dfrac{\dd F}{\dd p}$）：
+\[
+-\frac{1}{2\omega}\frac{\dd}{\dd p}\left(\frac{\omega}{p^{2}+\omega^{2}}\right)
+\ \risingdotseq\ -\frac{1}{2\omega}\cdot\left(-t\sin\omega t\right)
+=\frac{t\sin\omega t}{2\omega} .
+\]
+\textbf{答案}：
+\[ \frac{p}{(p^{2}+\omega^{2})^{2}}\ \risingdotseq\ \frac{t\sin\omega t}{2\omega} .\]
+
+\subhdr{出路二（p32 方法 1、p33）：对参数 $\omega$ 求导——但课件没给这条定理}
+
+课件的主打法其实是对\textbf{参数}求导：
+\[ \frac{\dd}{\dd\omega}\left(\frac{p}{p^{2}+\omega^{2}}\right)=-\frac{2\omega p}{(p^{2}+\omega^{2})^{2}}
+\ \Longrightarrow\
+\frac{p}{(p^{2}+\omega^{2})^{2}}=-\frac{1}{2\omega}\frac{\dd}{\dd\omega}\left(\frac{p}{p^{2}+\omega^{2}}\right) ,\]
+再用 $\dfrac{p}{p^{2}+\omega^{2}}\risingdotseq\cos\omega t$：
+\[ -\frac{1}{2\omega}\frac{\dd}{\dd\omega}\cos\omega t=-\frac{1}{2\omega}\left(-t\sin\omega t\right)=\frac{t\sin\omega t}{2\omega} .\]
+
+同理（p33），由 $\dfrac{\dd}{\dd\omega}\dfrac{1}{p^{2}+\omega^{2}}=-\dfrac{2\omega}{(p^{2}+\omega^{2})^{2}}$ 得
+\[
+F_8(p)=\frac{\omega}{(p^{2}+\omega^{2})^{2}}
+=-\frac{1}{2}\frac{\dd}{\dd\omega}\left(\frac{\omega}{p^{2}+\omega^{2}}\cdot\frac{1}{\omega}\right)
+=-\frac{1}{2}\frac{\dd}{\dd\omega}\left(\frac{\sin\omega t}{\omega}\right),
+\]
+求导：
+\[ \frac{\dd}{\dd\omega}\left(\frac{\sin\omega t}{\omega}\right)=\frac{\omega t\cos\omega t-\sin\omega t}{\omega^{2}} ,\]
+故
+\[ \frac{\omega}{(p^{2}+\omega^{2})^{2}}\ \risingdotseq\ \frac{\sin\omega t-\omega t\cos\omega t}{2\omega^{2}} .\]
+
+\warnbox{\textbf{这条路缺一条定理}。性质表（p13--p24）里只有“像函数对 $p$ 求导 $\Leftrightarrow$ 原函数乘 $t$”（导数定理 II），\textbf{没有}“像函数对参数 $\omega$ 求导 $\Leftrightarrow$ 原函数对参数 $\omega$ 求导”。课件 p32 方法 1 与 p33 全程都在用后者，却没写出来。补上：
+
+\textbf{参数微分定理}：设 $f(t,\omega)$ 对 $\omega$ 可偏导，且 $\partial f/\partial\omega$ 也满足 §1 的增长条件，则
+\[ \frac{\partial f(t,\omega)}{\partial\omega}\ \risingdotseq\ \frac{\partial F(p,\omega)}{\partial\omega} .\]
+\textbf{证明一行}：变换只对 $t$ 积分，$\omega$ 在积分号里是常数，把 $\frac{\partial}{\partial\omega}$ 搬到积分号外即可
+（$\frac{\partial}{\partial\omega}\int_0^\infty fe^{-pt}\dd t=\int_0^\infty\frac{\partial f}{\partial\omega}e^{-pt}\dd t$），
+交换的合法性由 $\partial f/\partial\omega$ 的一致收敛保证。}
+
+\subhdr{两个答案的验算：让 $\omega\to0$ 看形状}
+
+$F_7=\dfrac{p}{(p^{2}+\omega^{2})^{2}}$：$\omega\to0$ 时 $F_7\sim\dfrac{1}{p^{3}}\risingdotseq\dfrac{t^{2}}{2}$；而答案 $\dfrac{t\sin\omega t}{2\omega}\to\dfrac{t\cdot\omega t}{2\omega}=\dfrac{t^{2}}{2}$ $\checkmark$。
+
+$F_8=\dfrac{\omega}{(p^{2}+\omega^{2})^{2}}$：$\omega\to0$ 时 $F_8\sim\dfrac{\omega}{p^{4}}\risingdotseq\dfrac{\omega t^{3}}{6}$；答案中 $\sin\omega t-\omega t\cos\omega t\approx\dfrac{\omega^{3}t^{3}}{3}$（把 $\sin$、$\cos$ 各展到三阶即可），除以 $2\omega^{2}$ 得 $\dfrac{\omega t^{3}}{6}$ $\checkmark$。
+
+\callout{\textbf{§6 一句话}：当像函数的分母是不可约多项式的\textbf{平方}时，部分分式会“原样退回”，必须改用求导——对 $p$ 求导（导数定理 II）或对参数求导（参数微分定理）。课件两条都用了，但只证了前者的定理，后者的定理要自己补。}
+
+%=============================================================
+\hdr{§7}{其余例题：只写与主线不同的地方}
+
+\subhdr{例 1（p27）：两个不可约二次式相乘}
+
+\[ F(p)=\frac{1}{(p^{2}+a^{2})(p^{2}+b^{2})} .\]
+课件用“系数配 $b^{2}-a^{2}$”的办法拆：
+\[
+\frac{1}{p^{2}+a^{2}}-\frac{1}{p^{2}+b^{2}}
+=\frac{(p^{2}+b^{2})-(p^{2}+a^{2})}{(p^{2}+a^{2})(p^{2}+b^{2})}
+=\frac{b^{2}-a^{2}}{(p^{2}+a^{2})(p^{2}+b^{2})} .
+\]
+故
+\[ F(p)=\frac{1}{b^{2}-a^{2}}\left[\frac{1}{p^{2}+a^{2}}-\frac{1}{p^{2}+b^{2}}\right],\]
+查表 $\dfrac{1}{p^{2}+a^{2}}\risingdotseq\dfrac{\sin at}{a}$（注意分子是 $a$ 不是 $1$）：
+\[ f(t)=\frac{1}{b^{2}-a^{2}}\left[\frac{\sin at}{a}-\frac{\sin bt}{b}\right] .\]
+
+\aside{要求 $a\ne b$（否则分母为零，两个二次因子合并成的四次式落回 §6 的重根情形）；还需 $a,b\ne0$。若 $b\to a$，括号内两支相消、前因子发散，极限存在但要另算——那已经是 §6 的类型。}
+
+\subhdr{例 2、例 3（p28）：位移定理的正用}
+
+\[ F_2(p)=\frac{\omega}{(p+\lambda)^{2}+\omega^{2}}\ \risingdotseq\ e^{-\lambda t}\sin\omega t ,\]
+\[ F_3(p)=\frac{p}{(p+\lambda)^{2}+\omega^{2}}
+=\frac{p+\lambda}{(p+\lambda)^{2}+\omega^{2}}-\frac{\lambda}{\omega}\cdot\frac{\omega}{(p+\lambda)^{2}+\omega^{2}}
+\ \risingdotseq\ e^{-\lambda t}\cos\omega t-\frac{\lambda}{\omega}e^{-\lambda t}\sin\omega t .\]
+例 3 的拆法值得记：\textbf{分子的 $p$ 与分母里的 $p+\lambda$ 不匹配，先凑出 $p+\lambda$，再把多出来的 $-\lambda$ 转成正弦项}。这是“位移定理 + 线性定理”的标准配合，$\lambda$ 为复数时照样成立（p28 的题面就写着“其中 $\lambda$ 为复数”）。
+
+\subhdr{例 5（p30）：负号在前的同一套路}
+
+\[ F(p)=-\frac{1}{p^{2}(p-1)}\ \risingdotseq\ t-e^{t}+1 .\]
+课件的“思路”与 p29 完全同型：
+\[
+\frac{1}{p^{2}}-\frac{1}{p-1}=\frac{p-1-p^{2}}{p^{2}(p-1)}
+=-\frac{p^{2}-p+1}{p^{2}(p-1)}
+=-\frac{1}{p^{2}(p-1)}-\frac{p^{2}-p}{p^{2}(p-1)}
+=F(p)-\frac{1}{p} ,
+\]
+最后一步用了 $\dfrac{p^{2}-p}{p^{2}(p-1)}=\dfrac{p(p-1)}{p^{2}(p-1)}=\dfrac{1}{p}$——\textbf{又是被吞掉的那一句}（与 p29 同一处系统性问题，见 §10 第 2 条）。故
+\[ F(p)=\frac{1}{p^{2}}-\frac{1}{p-1}+\frac{1}{p}\ \Longrightarrow\ f(t)=t-e^{t}+1 .\]
+验算：$f(0^{+})=0-1+1=0$；$F(p)\sim-\dfrac{1}{p^{3}}$，$pF\sim-\dfrac{1}{p^{2}}\to0$ $\checkmark$。
+
+\subhdr{例 6（p31）：卷积，与一条更短的部分分式路}
+
+\[ F(p)=\frac{\omega}{(p+\alpha)(p^{2}+\omega^{2})} .\]
+课件用卷积：$\dfrac{1}{p+\alpha}\risingdotseq e^{-\alpha t}$，$\dfrac{\omega}{p^{2}+\omega^{2}}\risingdotseq\sin\omega t$，故
+\[ f(t)=\int_0^{t}e^{-\alpha(t-\tau)}\sin\omega\tau\dd\tau .\]
+这个积分课件算了五行，中间用 $e^{i\omega\tau}$ 拆正弦。本讲义给一条更短的路子——\textbf{先部分分式，再查表}：
+\[
+\frac{\omega}{(p+\alpha)(p^{2}+\omega^{2})}
+=\frac{A}{p+\alpha}+\frac{Bp+C}{p^{2}+\omega^{2}} ,
+\]
+比较系数得
+\[ A=\frac{\omega}{\alpha^{2}+\omega^{2}},\qquad B=-A,\qquad C=\frac{\omega\alpha}{\alpha^{2}+\omega^{2}} .\]
+于是
+\[
+f(t)=Ae^{-\alpha t}-A\cos\omega t+\frac{C}{\omega}\sin\omega t
+=\frac{1}{\alpha^{2}+\omega^{2}}\left(\omega e^{-\alpha t}-\omega\cos\omega t+\alpha\sin\omega t\right) ,
+\]
+与课件的最终答案
+\[ f(t)=\frac{1}{\omega^{2}+\alpha^{2}}\left(\alpha\sin\omega t-\omega\cos\omega t+\omega e^{-\alpha t}\right) \]
+逐项相同。\textbf{两条路（卷积 / 部分分式）在这里都能走通}，差别只在于：卷积法要会算一个带指数的三角积分，部分分式法要会解三个系数。取自己不容易错的那条。
+
+\subhdr{作业汇总（p25、p46，题面照抄）}
+
+\textbf{p25 作业 1：求下列函数的像函数}
+\[ \text{1)}\ te^{-\omega t}\qquad \text{2)}\ t\cos\omega t\qquad \text{3)}\ \frac{1-\cos\omega t}{\omega} .\]
+\textbf{p46 作业 2：求下列像函数的反演}
+\[ \text{1)}\ \frac{6}{(p+1)^{2}}\qquad \text{2)}\ \frac{3p}{p^{2}-1}\qquad \text{3)}\ \frac{p}{(p^{2}+\omega^{2})^{2}}\ (\omega>0) .\]
+\textbf{p46 作业 3：用拉普拉斯变换解下列常微分方程}
+\[
+\text{1)}\ \begin{cases}\dfrac{\dd y}{\dd t}+y=1\\[4pt] y(0)=0\end{cases}
+\qquad
+\text{2)}\ \begin{cases}\dfrac{\dd y}{\dd t}-y=-3e^{-2t}\\[4pt] y(0)=2\end{cases}
+\]
+\[
+\text{3)}\ \begin{cases}\dfrac{\dd^{2}y}{\dd t^{2}}+4\dfrac{\dd y}{\dd t}+4y=\sin\omega t\\[4pt] y(0)=y_0,\ \ y^{(1)}(0)=y_1\end{cases}
+\qquad
+\text{4)}\ \begin{cases}\dfrac{\dd^{2}T}{\dd t^{2}}+a^{2}\omega^{2}T=f(t)\\[4pt] T(0)=T^{(1)}(0)=0\end{cases}
+\]
+
+\aside{作业 2(3) 与 §6 的例 7 同型（都是 $\dfrac{p}{(p^{2}+\omega^{2})^{2}}$），做法照 §6 的两条路走即可；作业 3(4) 是“像函数乘上 $\dfrac{1}{p^{2}+a^{2}\omega^{2}}$ 再反演”的题型，与 §9 特殊积分里用到的配置相同。}
+
+%=============================================================
+\hdr{§8}{路线图：四步用法与性质选取表}
+
+前三节把工具备齐了，这一节把它们压成一张可以照着走的路。
+
+\subhdr{四步（解初值问题）}
+
+\begin{enumerate}
+\item \textbf{清理负半轴}：把物理量的定义域写成 $t\ge0$，凡出现 $t-t_0$ 一律补上 $H(t-t_0)$（性质 7 的前提）。
+\item \textbf{两边取变换}：用\textbf{导数定理 I} 把 $f^{(n)}$ 换成 $p^{n}F$ 减去初值，把常数、指数、正弦换成表中的项。这一步之后，微分方程变成\textbf{代数方程}。
+\item \textbf{解出 $F(p)$ 并拆成表里的项}：优先部分分式（§5、§7），撞上不可约平方就改用求导（§6），撞上两个函数相乘就直接用卷积（性质 8）。
+\item \textbf{逐项反演并验算}：查表反演，再用\textbf{初值定理}（§5 增补）核对 $f(0^{+})$ 与 $pF(p)$ 的极限。
+\end{enumerate}
+
+\subhdr{性质选取表：题目长什么样，就用哪条}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.4cm}p{3.2cm}p{3.4cm}@{}}
+\toprule
+\thead{题目里出现} & \thead{用哪条性质} & \thead{位置}
+\\
+\midrule
+$f^{(n)}$，带初值 & 导数定理 I & 性质 2
+\\
+$t^{n}$ 乘在原函数上 & 导数定理 II & 性质 3
+\\
+$\displaystyle\int_0^{t}f\dd\tau$ & 积分定理 & 性质 4
+\\
+时间轴被 $a$ 倍压缩 & 相似性（$a>0$） & 性质 5
+\\
+原函数乘 $e^{-\lambda t}$ & 位移定理 & 性质 6
+\\
+出现 $t-t_0$ 的平移 & 延迟定理 & 性质 7
+\\
+像函数是两个因子之积 & 卷积定理 & 性质 8
+\\
+分母是不可约式的平方 & 对 $p$（或参数）求导 & §6
+\\
+待求 $\displaystyle\int_0^{\infty}\frac{f(t)}{t}\dd t$ & 像函数的积分定理 & §9
+\\
+\bottomrule
+\end{tabular}
+
+%=============================================================
+\hdr{§9}{§6.4 应用：三个回路、一个振子、一个方程组，四个积分}
+
+课件的 §6.4（p35--p45）分两块：\textbf{用拉普拉斯变换解微分方程（组）}（p35--p40，标号“1”）与\textbf{计算特殊积分的值}（p41--p45，标号“2”）。两块其实是同一件事：先把问题变成 $p$ 域里的代数运算，再反演。
+
+\subhdr{例 1（p35）：$RL$ 回路接通直流电源}
+
+回路方程与初始条件：
+\[ L\frac{\dd i}{\dd t}+Ri=E,\qquad i(0)=0 .\]
+两边取变换（$\dfrac{\dd i}{\dd t}\risingdotseq pI(p)-i(0)=pI(p)$，$E\risingdotseq\dfrac{E}{p}$）：
+\[ LpI(p)+RI(p)=\frac{E}{p}\ \Longrightarrow\ I(p)=\frac{E}{p(Lp+R)} .\]
+分解：
+\[ I(p)=\frac{E}{R}\left[\frac{1}{p}-\frac{1}{p+R/L}\right].\]
+（验算分解：右端 $=\dfrac{E}{R}\cdot\dfrac{R/L}{p(p+R/L)}=\dfrac{E/L}{p(p+R/L)}=\dfrac{E}{p(Lp+R)}$ $\checkmark$。）
+
+反演：
+\[ i(t)=\frac{E}{R}\left(1-e^{-\frac{R}{L}t}\right),\qquad i(0^{+})=0 .\]
+\textbf{两个部分的物理名字}（课件标了）：$\dfrac{E}{R}$ 是\textbf{稳恒部分}，$-e^{-Rt/L}$ 那一支是\textbf{暂态部分}——它是齐次解的产物，物理上对应“电感阻止电流突变”。
+
+\subhdr{例 2（p36）：$LC$ 回路放电（这一题有三个隐藏前提）}
+
+电路里 $i$ 与 $q$ 的关系是 $i(t)=-\dfrac{\dd q(t)}{\dd t}$（放电时电量在减少，故带负号），于是
+\[ q(t)=-\int_0^{t}i(\tau)\dd\tau+q_0 .\]
+回路方程 $L\dfrac{\dd i}{\dd t}=\dfrac{q}{C}$ 代入 $q$ 的表达式：
+\[ L\frac{\dd i}{\dd t}+\frac{1}{C}\int_0^{t}i(\tau)\dd\tau=\frac{q_0}{C} .\]
+取变换（导数定理 + 积分定理 + $i(0)=0$）：
+\[ L\,pI(p)+\frac{1}{C}\cdot\frac{I(p)}{p}=\frac{q_0}{C}\cdot\frac{1}{p}\ \Longrightarrow\
+I(p)=\frac{q_0}{LCp^{2}+1}=\frac{q_0}{\sqrt{LC}}\cdot\frac{\sqrt{1/LC}}{p^{2}+1/(LC)} .\]
+令 $\omega_0=\dfrac{1}{\sqrt{LC}}$，则 $I(p)=q_0\omega_0\cdot\dfrac{\omega_0}{p^{2}+\omega_0^{2}}$，查表得
+\[ i(t)=\frac{q_0}{\sqrt{LC}}\sin\frac{t}{\sqrt{LC}} .\]
+
+\warnbox{\textbf{这一题被省略的三处，全在“化成标准形式”上}：(1) $\dfrac{q_0}{LCp^{2}+1}$ 要变成 $\dfrac{\omega_0}{p^{2}+\omega_0^{2}}$ 的常数倍，必须先认准 $\omega_0^{2}=\dfrac{1}{LC}$，再把分子分母同除 $LC$（课件只写了结果）；(2) 右端 $\dfrac{q_0}{C}\cdot\dfrac{1}{p}$ 里的 $1/p$ 是\textbf{积分定理造成的}（$\int_0^t i\dd\tau$ 的像函数是 $I(p)/p$），不是 $\dfrac{q_0}{C}$ 自身的像函数；(3) 初始电荷 $q_0$ 之所以出现在\textbf{方程右端}而不是当作初值项，是因为它从 $q(t)=-\int i+q_0$ 一路代了进来——若直接对 $q$ 的方程取变换，$q(0)=q_0$ 会以初值形式出现，两条路的符号约定必须一致。}
+
+\subhdr{例 3（p37）：$RL$ 回路接交流电源}
+
+\[ L\frac{\dd i}{\dd t}+Ri=E_0\sin\omega t,\qquad i(0)=0 .\]
+变换后
+\[ I(p)=\frac{E_0}{L}\cdot\frac{1}{p+R/L}\cdot\frac{\omega}{p^{2}+\omega^{2}} .\]
+这是两个已知像函数的乘积，用卷积定理：
+\[ i(t)=\frac{E_0}{L}\int_0^{t}e^{-\frac{R}{L}(t-\tau)}\sin\omega\tau\dd\tau .\]
+代入 §7 用过的那个积分（把 $\alpha$ 换成 $R/L$）：
+\[ \int_0^{t}e^{-\alpha(t-\tau)}\sin\omega\tau\dd\tau=\frac{\omega e^{-\alpha t}+\alpha\sin\omega t-\omega\cos\omega t}{\alpha^{2}+\omega^{2}} ,\]
+取 $\alpha=R/L$ 并乘 $\dfrac{E_0}{L}$：
+\[
+i(t)=\frac{E_0}{R^{2}+L^{2}\omega^{2}}\left[L\omega\,e^{-\frac{R}{L}t}+R\sin\omega t-L\omega\cos\omega t\right] .
+\]
+课件把第一项叫\textbf{暂态电流}（含 $e^{-Rt/L}$，会消失），后两项叫\textbf{强迫震荡电流}（与电源同频，持久）。验算：$i(0^{+})=\dfrac{E_0}{R^{2}+L^{2}\omega^{2}}\left[L\omega+0-L\omega\right]=0$ $\checkmark$。
+
+\subhdr{例 4（p38--p39）：受迫振动，分共振与非共振两支}
+
+运动方程与初值：
+\[ m\frac{\dd^{2}x}{\dd t^{2}}+kx=f_0\sin\omega t,\qquad x(0)=0,\ x^{(1)}(0)=0,\qquad \omega_0^{2}=\frac{k}{m} .\]
+变换：
+\[ mp^{2}X(p)+kX(p)=\frac{f_0\omega}{p^{2}+\omega^{2}}
+\ \Longrightarrow\
+X(p)=\frac{f_0}{m}\cdot\frac{\omega}{(p^{2}+\omega^{2})(p^{2}+\omega_0^{2})} .\]
+
+\textbf{非共振（$\omega\ne\omega_0$，p38）}。用“分母差”分解：
+\[
+\frac{1}{(p^{2}+\omega^{2})(p^{2}+\omega_0^{2})}
+=\frac{1}{\omega^{2}-\omega_0^{2}}\left[\frac{1}{p^{2}+\omega_0^{2}}-\frac{1}{p^{2}+\omega^{2}}\right],
+\]
+反演：
+\[
+x(t)=\frac{f_0}{m}\cdot\frac{\omega}{\omega^{2}-\omega_0^{2}}
+\left[\frac{\sin\omega_0 t}{\omega_0}-\frac{\sin\omega t}{\omega}\right] .
+\]
+
+\textbf{共振（$\omega=\omega_0$，p39）}。此时上式两式相消、前因子发散，必须回到
+\[ X(p)=\frac{f_0}{m}\cdot\frac{\omega}{(p^{2}+\omega^{2})^{2}} ,\]
+这正是 §6 的 $F_8$（$\dfrac{\omega}{(p^{2}+\omega^{2})^{2}}\risingdotseq\dfrac{\sin\omega t-\omega t\cos\omega t}{2\omega^{2}}$），故
+\[
+x(t)=\frac{f_0}{2m}\left[\frac{\sin\omega t}{\omega^{2}}-\frac{t\cos\omega t}{\omega}\right] .
+\]
+\textbf{共振的标志就在这个 $t\cos\omega t$ 上}：振幅随 $t$ 线性增长，不再有界。它是“非共振公式取极限 $\omega\to\omega_0$”的结果，不是另起一套推导。
+
+\subhdr{例 5（p40）：微分方程组（代数跳步最严重的一页）}
+
+\[
+\begin{cases}
+\dfrac{\dd y}{\dd t}+2y+2z=10e^{2t}\\[4pt]
+\dfrac{\dd z}{\dd t}+z-2y=7e^{2t}
+\end{cases}
+\qquad y(0)=1,\ z(0)=3 .
+\]
+变换（$e^{2t}\risingdotseq\dfrac{1}{p-2}$，$y\risingdotseq Y(p)$、$z\risingdotseq Z(p)$）：
+\[
+\begin{cases}
+(p+2)Y(p)+2Z(p)-1=\dfrac{10}{p-2}\\[6pt]
+(p+1)Z(p)-2Y(p)-3=\dfrac{7}{p-2}
+\end{cases}
+\]
+课件在这里直接给出 $Y=\dfrac{1}{p-2}$、$Z=\dfrac{3}{p-2}$，中间的消元过程一个字都没写。补上（用第一式解出 $Z$ 再代入第二式）：
+\[
+Z(p)=\frac{1}{2}\left[\frac{10}{p-2}+1-(p+2)Y(p)\right] .
+\]
+代入第二式并两边乘 $2$，整理成
+\[
+(p+1)\left[\frac{10}{p-2}+1\right]-6-\left[(p+1)(p+2)+4\right]Y=\frac{14}{p-2} ,
+\]
+即
+\[
+(p^{2}+3p+6)\,Y(p)=\frac{10(p+1)-14}{p-2}+(p+1)-6 .\]
+右端通分：$\dfrac{10p-4+(p-5)(p-2)}{p-2}=\dfrac{p^{2}+3p+6}{p-2}$。于是
+\[
+(p^{2}+3p+6)Y(p)=\frac{p^{2}+3p+6}{p-2}\ \Longrightarrow\ Y(p)=\frac{1}{p-2} .
+\]
+（这一步的“运气”在于两边二次因子恰好相同；若不同，就要老实用克拉默法则。）代回 $Z$：
+\[ Z(p)=\frac{1}{2}\left[\frac{10}{p-2}+1-\frac{p+2}{p-2}\right]=\frac{1}{2}\cdot\frac{10+p-2-p-2}{p-2}=\frac{3}{p-2} .\]
+反演：
+\[ y(t)=e^{2t},\qquad z(t)=3e^{2t} .\]
+\textbf{验算（直接代回原方程，比查表更可靠）}：
+\[ y'+2y+2z=2e^{2t}+2e^{2t}+6e^{2t}=10e^{2t}\ \checkmark,\qquad
+z'+z-2y=6e^{2t}+3e^{2t}-2e^{2t}=7e^{2t}\ \checkmark .\]
+初值也对：$y(0)=1$、$z(0)=3$。
+
+\subhdr{像函数的积分定理（p34）：算特殊积分的总钥匙}
+
+\textbf{陈述}：设 $f(t)/t$ 的拉普拉斯变换存在，则
+\[ \int_{p}^{\infty}F(q)\dd q\ \risingdotseq\ \frac{f(t)}{t} .\]
+
+\textbf{证明}。
+\[
+\int_{p}^{\infty}F(q)\dd q
+=\int_{p}^{\infty}\!\!\left[\int_0^{\infty}f(t)e^{-qt}\dd t\right]\dd q
+=\int_0^{\infty}\! f(t)\left[\int_{p}^{\infty}e^{-qt}\dd q\right]\dd t
+=\int_0^{\infty}\! f(t)\cdot\frac{e^{-pt}}{t}\dd t .
+\]
+最右端正是 $f(t)/t$ 的像函数。
+
+\textbf{特例 $p=0$}（课件 p34 末行）：
+\[ \int_0^{\infty}F(q)\dd q=\int_0^{\infty}\frac{f(t)}{t}\dd t .\]
+\textbf{课件给的范例}：取 $f(t)=\sin t$，$F(q)=\dfrac{1}{1+q^{2}}$，则
+\[ \int_0^{\infty}\frac{\sin t}{t}\dd t=\int_0^{\infty}\frac{\dd q}{1+q^{2}}=\arctan q\Big|_0^{\infty}=\frac{\pi}{2} .\]
+
+\warnbox{\textbf{“令 $p=0$”这一步的合法性}：$\displaystyle\int_p^\infty F(q)\dd q$ 只在 $F$ 沿正实轴可积时收敛，而 $F$ 的收敛半平面是 $\operatorname{Re}p>s_0$，$p=0$ 通常\textbf{不在}其中。合法的说法是：先对 $\operatorname{Re}p>s_0$ 证明上式，再让 $p\to0^{+}$ 取极限（用 $\int_0^\infty F(q)\dd q$ 收敛保证极限可交换）。课件 p34 直接写“特殊的，当 $p=0$ 时”，跳过了这个极限过程。}
+
+\subhdr{§6.4 第二块的四个积分}
+
+\textbf{(1) 高斯型（p41--p42），全章最重要的一条}。已知（第四章留数定理）
+\[ \int_0^{\infty}e^{-ax^{2}}\cos(bx)\dd x=\frac{1}{2}\sqrt{\frac{\pi}{a}}\,e^{-b^{2}/4a} .\]
+令 $a=t$：
+\[ \frac{2}{\pi}\int_0^{\infty}e^{-x^{2}t}\cos(bx)\dd x=\frac{1}{\sqrt{\pi t}}e^{-b^{2}/(4t)} .\]
+两边对 $t$ 取拉普拉斯变换。左端交换积分次序（$x$ 与 $t$ 独立）：
+\[
+\frac{2}{\pi}\int_0^{\infty}\cos(bx)\left[\int_0^{\infty}e^{-(x^{2}+p)t}\dd t\right]\dd x
+=\frac{2}{\pi}\int_0^{\infty}\frac{\cos(bx)}{x^{2}+p}\dd x .
+\]
+用留数算这个积分（$x^{2}+p=0$ 的根 $x=\pm i\sqrt{p}$，$b>0$ 时用上半平面 + Jordan 引理）：
+\[
+\int_0^{\infty}\frac{\cos(bx)}{x^{2}+p}\dd x
+=\frac{\pi}{2}\cdot\frac{1}{\sqrt{p}}e^{-b\sqrt{p}} ,
+\]
+代回得左端 $=\dfrac{1}{\sqrt{p}}e^{-b\sqrt{p}}$，于是
+\[ \frac{1}{\sqrt{p}}e^{-b\sqrt{p}}\ \risingdotseq\ \frac{1}{\sqrt{\pi t}}e^{-b^{2}/(4t)} .\]
+再对 $b$ 求导（\textbf{又是参数微分}，见 §6）：
+\[
+e^{-b\sqrt{p}}=-\frac{\dd}{\dd b}\left(\frac{1}{\sqrt{p}}e^{-b\sqrt{p}}\right)
+\ \risingdotseq\ -\frac{\dd}{\dd b}\left(\frac{1}{\sqrt{\pi t}}e^{-b^{2}/(4t)}\right)
+=\frac{b}{2\sqrt{\pi}\,t^{3/2}}e^{-b^{2}/(4t)} .
+\]
+
+\aside{这一步要求 $\sqrt{p}$ 取主值分支、$\operatorname{Re}\sqrt{p}>0$，才能保证 $x=i\sqrt{p}$ 落在上半平面（课件 p42 原文：“假设 $b>0$ 及 $z=i\sqrt{p}$ 位于上半平面”）。$b>0$ 是为了让 $e^{ibz}$ 在上半平面衰减，Jordan 引理才管用。}
+
+课件 p42 用红字标注这条公式“将在第十章用到”——它正是热传导方程基本解的像函数。
+
+\textbf{(2)（p43）} $I(t)=\displaystyle\int_0^{\infty}\frac{\cos(tx)}{x^{2}+a^{2}}\dd x$，$a>0$。
+
+先把 $\cos(tx)$ 看成 $t$ 的函数取变换：$\cos(tx)\risingdotseq\dfrac{p}{p^{2}+x^{2}}$，故
+\[
+I(p)=\int_0^{\infty}\frac{1}{x^{2}+a^{2}}\cdot\frac{p}{p^{2}+x^{2}}\dd x .
+\]
+部分分式后逐项用 $\displaystyle\int_0^\infty\frac{\dd x}{x^{2}+b^{2}}=\frac{\pi}{2b}$：
+\[
+I(p)=\frac{\pi}{2}\cdot\frac{1}{a(a+p)} .
+\]
+反演：
+\[ I(t)=\frac{\pi}{2a}e^{-at} .\]
+
+\textbf{(3)（p44）} $I(t)=\displaystyle\int_0^{\infty}\frac{\sin(tx)}{x}\dd x=\frac{\pi}{2}$。
+
+$\sin(tx)\risingdotseq\dfrac{x}{p^{2}+x^{2}}$，故
+\[ I(p)=\int_0^{\infty}\frac{x}{p^{2}+x^{2}}\cdot\frac{\dd x}{x}=\int_0^{\infty}\frac{\dd x}{p^{2}+x^{2}}=\frac{\pi}{2p} ,\]
+反演得 $I(t)=\dfrac{\pi}{2}$（与 $t$ 无关——这正是 $\int_0^\infty\frac{\sin u}{u}\dd u=\frac{\pi}{2}$ 的一般化）。
+
+\warnbox{\textbf{这一步有一个“看似平凡”的约分}：$\dfrac{x}{p^{2}+x^{2}}\cdot\dfrac{1}{x}$ 里 $x$ 被约掉了。若按定义展开，$\dfrac{1}{x}$ 在 $x=0$ 处发散，两个因子都不可积；能约分是因为它们\textbf{来自同一个变换}，商在 $x=0$ 处有极限。做这类题时，先合并再积分，不要先积分再合并。}
+
+\textbf{(4)（p45）} $I(t)=\displaystyle\int_0^{\infty}\frac{\sin^{2}(tx)}{x^{2}}\dd x$，$t>0$。
+
+降幂：$\sin^{2}(tx)=\dfrac{1-\cos(2tx)}{2}$，而 $\cos(2tx)\risingdotseq\dfrac{p}{p^{2}+4x^{2}}$，故
+\[
+I(p)=\frac{1}{2}\int_0^{\infty}\frac{1}{x^{2}}\left[\frac{1}{p}-\frac{p}{p^{2}+4x^{2}}\right]\dd x
+=\frac{1}{2}\int_0^{\infty}\frac{1}{x^{2}}\cdot\frac{4x^{2}}{p(p^{2}+4x^{2})}\dd x
+=\frac{2}{p}\int_0^{\infty}\frac{\dd x}{p^{2}+4x^{2}} .
+\]
+\[ \int_0^{\infty}\frac{\dd x}{p^{2}+4x^{2}}=\frac{1}{2}\int_0^{\infty}\frac{\dd u}{p^{2}+u^{2}}=\frac{\pi}{4p}\ \Longrightarrow\ I(p)=\frac{\pi}{2p^{2}} .\]
+反演：
+\[ I(t)=\frac{\pi}{2}\,t .\]
+令 $t=1$ 得经典的 $\displaystyle\int_0^{\infty}\frac{\sin^{2}x}{x^{2}}\dd x=\frac{\pi}{2}$。
+
+\warnbox{\textbf{本题的关键全在那一行通分}：$\dfrac{1}{p}-\dfrac{p}{p^{2}+4x^{2}}$ 的两项单独对 $\dfrac{1}{x^{2}}$ 都发散（$x\to0$ 时分别像 $\dfrac{1}{px^{2}}$），必须\textbf{先通分}得到 $\dfrac{4x^{2}}{p(p^{2}+4x^{2})}$，$x^{2}$ 才被约掉、积分才收敛。课件 p45 直接把两步并成一步写出 $I(p)$，读者若照抄“先分别积分”会立刻撞上发散。}
+
+%=============================================================
+\hdr{§10}{缺口清单：17 条，逐条给页码与原文短语}
+
+每条的格式固定：\textbf{类型 · 页码} $\to$ 课件原文短语 $\to$ 缺了什么 $\to$ 补在本讲义哪一节。
+
+\gapitem{机制缺口 · p4--p5}{“可以用指数衰减函数 $e^{-st}$ 去乘以函数 $f(t)$”。缺：为什么乘一个指数就把“不绝对可积”救成了“可积”，$s$ 要多大才够。补：§1 用 $|f(t)|<Me^{s_0t}$ 与 $s>s_0$ 把“足够大”量化，并指出这不是技巧、是收敛性的必要条件。}
+
+\gapitem{拼接缺口 · p5}{“且由于 $t\ge 0$，则 $G(\omega)=\frac{1}{2\pi}\int_0^{\infty}f(t)e^{-pt}\dd t$”。缺：下限凭什么从 $-\infty$ 改成 $0$——理由（$f(t)=0,\ t<0$）在 p6 才出现，此处先用后证。补：§1 第 3 步显式写出 $f$ 在负半轴为零。}
+
+\gapitem{记号冲突 · p5 与 p6}{p5：“令 $p=s-i\omega$”；p6：“$p=s+i\sigma$ 为复数”。缺：两页虚部符号相反，且 $\sigma$ 从未定义。补：§0 统一取 $p=s+i\omega$，并说明 p5 的负号来自它把傅里叶正变换核写成 $e^{+i\omega t}$。}
+
+\gapitem{适用区间 · p7}{例 1 直接写 $1\risingdotseq\frac{1}{p}$。缺：$\operatorname{Re}p>0$ 这个前提（p7 的例 2 却写了 $\operatorname{Re}p>\operatorname{Re}\alpha$，说明老师知道、只是漏在例 1）。补：§2 例 1 旁注 + §2 常用表补“收敛半平面”一列。}
+
+\gapitem{拼接缺口 · p8}{“方法 2”“当 $n=1$ 时，根据导数定理 II”。缺：导数定理 II 到 p16 才陈述与证明，例 3 先用。补：§2 把方法 1（分部积分）作为闭环算法，把方法 2 标为“待验证”，§3 再证定理。}
+
+\gapitem{代数跳步 · p29、p30}{“思路：$\frac{1}{p}-\frac{1}{(p-1)^{2}}=\frac{p^{2}-3p+1}{p(p-1)^{2}}$”。缺：从这两条恒等式到结果之间的 $\frac{p^{2}-p}{p(p-1)^{2}}=\frac{1}{p-1}$（p29）与 $\frac{p^{2}-p}{p^{2}(p-1)}=\frac{1}{p}$（p30）各被吞一次。补：§5 逐行补出，§7 例 5 再补一次。}
+
+\gapitem{适用区间 · p19}{“如果当 $a<0$ 时，则 $\int_0^{\infty}f(at)e^{-pt}\dd t=\frac{1}{a}\int_{-\infty}^{0}f(y)e^{-\frac{p}{a}y}\dd y$”。缺：写完换限就断了，没有结论——因为定理对 $a<0$ 根本不成立。补：§3 性质 5 的警告框，说明 $a<0$ 时 $f(at)$ 对 $t>0$ 恒为零。}
+
+\gapitem{拼接缺口 · p22}{“为满足 $f(t-t_0)$ 有意义，要求 $t\ge t_0$”。缺：阶跃因子 $H(t-t_0)$——被变换的对象不是 $f(t-t_0)$。补：§3 性质 7 把定理陈述改成 $H(t-t_0)f(t-t_0)\risingdotseq e^{-pt_0}F(p)$。}
+
+\gapitem{机制缺口 · p32--p33}{“根据 $\frac{p}{p^{2}+\omega^{2}}\Leftrightarrow\cos\omega t$，有”。缺：这里对\textbf{参数} $\omega$ 求导，而课件只讲过对 $p$ 求导的导数定理 II。补：§6 补“参数微分定理”并给一行证明。}
+
+\gapitem{机制缺口 · p26--p27}{“1. 一个像函数可以分解成几个简单的像函数之和”。缺：只给三条思路（拆和、拆积、其它），从不讲部分分式怎么定系数。补：§5 的待定系数法（三步：乘分母、代根、比系数）。}
+
+\gapitem{形式改写 · p34}{“特殊的，当 $p=0$ 时，有 $\int_0^{\infty}F(q)\dd q=\int_0^{\infty}\frac{f(t)}{t}\dd t$”。缺：$p=0$ 不在收敛半平面 $\operatorname{Re}p>s_0$ 内，需要 $p\to0^{+}$ 的极限过程。补：§9 的警告框。}
+
+\gapitem{适用区间 · p42}{“假设 $b>0$ 及 $z=i\sqrt{p}$ 位于上半平面”。缺：$i\sqrt{p}$ 落在上半平面要靠 $\operatorname{Re}\sqrt{p}>0$（即 $\operatorname{Re}p>0$）与主值分支；$b>0$ 是 Jordan 引理的条件。补：§9 高斯积分的旁注。}
+
+\gapitem{代数跳步 · p40}{直接给出“$Y(p)=\frac{1}{p-2}$，$Z(p)=\frac{3}{p-2}$”。缺：二元一次方程组的整段消元。补：§9 例 5 补出代入消元全过程，并用回代原方程验算。}
+
+\gapitem{代数跳步 · p45}{直接给出 $I(p)$。缺：$\frac{1}{p}-\frac{p}{p^{2}+4x^{2}}$ 两项各自对 $\frac{1}{x^{2}}$ 发散，必须先通分约掉 $x^{2}$。补：§9 第 (4) 个积分把通分那一步写全。}
+
+\gapitem{答案形态 · p12}{常用表只给原函数与像函数两列。缺：“收敛半平面”这一列——反演（§5）与像函数积分定理（§9）都要靠它判断。补：§2 的表补上第三、第四列。}
+
+\gapitem{笔误 · p15}{“初始条件为 $f(0)=1$，$f^{(1)}(t)=0$”。缺：自变量应为 $0$（$f^{(1)}(0)=0$），否则与“初值”二字冲突。补：§3 例 2 按 $f^{(1)}(0)=0$ 使用并在框内标注。}
+
+\callout{\textbf{类型分布}：机制缺口 3 条、拼接缺口 3 条、代数跳步 4 条、适用区间 3 条、记号冲突 1 条、形式改写 1 条、答案形态 1 条、笔误 1 条，共 17 条。
+
+其中\textbf{代数跳步 4 条里有 3 条是同一个毛病}：课件写“思路”时只写验算式（把两项加减回去看分子对不对），不写“分子怎么拆成两项”。p29、p30 两处都卡在 $\frac{p^{2}-p}{\cdots}$ 这一步上——这是本章的系统性问题，值得单独记一笔：\emph{看到“思路：……”后面紧跟一个结果式，就要自己去补那一行。}}
+
+\hdr{§11}{易错点：每一条都能指回某个例子的某一步}
+
+\begin{enumerate}
+\item \textbf{漏写阶跃因子}（§3 性质 7、§0 第 2 条缝）。写成 $f(t-t_0)\risingdotseq e^{-pt_0}F(p)$ 的人，在 $0<t<t_0$ 上其实把 $f$ 的值取错了。改法：先写 $H(t-t_0)f(t-t_0)$ 再查表。
+
+\item \textbf{把 $a<0$ 代进相似性定理}（§3 性质 5）。$f(at)$ 在 $a<0$ 时对 $t>0$ 恒为零，结论不成立。改法：只用 $a>0$ 的版本，遇到压缩、展宽一律化成正的尺度因子。
+
+\item \textbf{高阶导数的初值顺序}（§3 性质 2）。$f''\risingdotseq p^{2}F-pf(0)-f^{(1)}(0)$，两个初值分别乘 $p^{2-1}=p$ 与 $p^{0}=1$；写成 $pf^{(1)}(0)+f(0)$ 就会在 §9 例 4 里把答案符号弄反。
+
+\item \textbf{部分分式“原样退回”还以为是算错了}（§6）。$(p^{2}+\omega^{2})^{2}$ 的分母在实数域不可约，硬拆只会得到它自己。改法：改走求导。
+
+\item \textbf{反演后不验初值}（§5 增补的初值定理）。$f(t)=1-e^{t}+te^{t}$ 与 $f(t)=1+e^{t}-te^{t}$ 都能“看起来对”，但后者的 $f(0^{+})=2$，与 $pF(p)\to0$ 冲突，五秒钟即可排除。
+
+\item \textbf{先积分再合并}（§9 第 (4) 个积分）。$\dfrac{1}{x^{2}}\left[\dfrac{1}{p}-\dfrac{p}{p^{2}+4x^{2}}\right]$ 必须\textbf{先通分}，否则两项各自在 $x=0$ 发散；§9 第 (3) 个积分里 $\dfrac{x}{p^{2}+x^{2}}\cdot\dfrac{1}{x}$ 必须先约分。
+
+\item \textbf{收敛半平面写错}（§2 的表、§5 末的警告）。$F(p)=\dfrac{1}{p(p-1)^{2}}$ 的收敛区是 $\operatorname{Re}p>1$，不是 $\operatorname{Re}p>0$；写错会在用像函数积分定理（§9）时把 $p=0$ 当成合法取值。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{三句话总结与页码对照}
+
+\subhdr{三句话}
+
+\begin{enumerate}
+\item \textbf{拉普拉斯变换 $=$ 傅里叶变换作用在 $f(t)e^{-st}$ 上}：乘指数解决“不衰减”，乘阶跃解决“负半轴无意义”，两者一合就成了 $F(p)=\int_0^\infty f(t)e^{-pt}\dd t$（§1）。
+\item \textbf{八条性质是同一件事的八种读法}：微分 $\leftrightarrow$ 乘 $p$、乘 $t$ $\leftrightarrow$ 对 $p$ 求导、积分 $\leftrightarrow$ 除 $p$、除 $t$ $\leftrightarrow$ 对 $p$ 积分；会背两条定义就能现场推出其余六条（§3、§4）。
+\item \textbf{反演的全部技巧是“把像函数变成表里的项”}：能拆就拆（部分分式），拆不动就求导（不可约平方），是乘积就卷积；算完必须用初值定理验一次（§5--§9）。
+\end{enumerate}
+
+\subhdr{页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.3cm}p{7.4cm}p{3.0cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p1--p2 & 章标题、拉普拉斯生平 & 未收（人物介绍不影响推导）
+\\
+p3--p4 & 傅里叶变换的两条局限、两个补丁 & §1
+\\
+p5 & 由傅里叶变换推出拉普拉斯变换、黎曼—梅林公式 & §1
+\\
+p6 & 定义、存在条件 & §1
+\\
+p7--p11 & 例 1--例 6（$1$、$e^{\alpha t}$、$t^{n}$、$te^{\alpha t}$、$\sin/\cos$、$\sinh/\cosh$） & §2
+\\
+p12 & 常见函数变换表 & §2（补收敛半平面一列）
+\\
+p13--p24 & 八条性质与证明 & §3；对偶结构见 §4
+\\
+p25 & 作业 1（求像函数 3 题） & §7 末
+\\
+p26 & 反演的三条思路 & §8
+\\
+p27--p31 & 例 1--例 6（反演） & §7（例 4 见 §5，例 7、8 见 §6）
+\\
+p32--p33 & 例 7、例 8（不可约平方） & §6
+\\
+p34 & 像函数的积分定理 & §9
+\\
+p35--p39 & 四个物理例题（$RL$、$LC$、$RL$ 交流、受迫振动） & §9
+\\
+p40 & 例 5（微分方程组） & §9
+\\
+p41--p45 & 四个特殊积分（高斯、$\cos/(x^{2}+a^{2})$、$\sin x/x$、$\sin^{2}/x^{2}$） & §9
+\\
+p46 & 作业 2、作业 3 & §7 末
+\\
+\bottomrule
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据 \texttt{第六章+拉普拉斯变换+-+上传课件.pdf}（46 页，2026-10-22 读）写成。所有公式要么标注了课件页码，要么给出了完整推导；§5 的初值定理、§6 的参数微分定理、§7 例 6 的部分分式解法为本讲义增补，课件未给。记号按 §0 统一：$p=s+i\omega$，$f(t)=0\ (t<0)$。\par}
+
+\end{document}

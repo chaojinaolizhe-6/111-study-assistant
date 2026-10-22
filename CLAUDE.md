@@ -31,6 +31,7 @@
 - **计算与复杂回复硬性复核**：凡报给学习者的数值、留数、积分值、化简结果，必须先用 `python -B tools/verify_math.py` 复核；长讲义或易混提示可用 `python -B tools/cross_verify.py` 做后台双角色审校。
 - 讲解默认中文；外语练习与原文引用保留相应语言，勿插入英文内部推理旁白。
 - 雅思/英语学习加载 `.dsh/skills/ielts-session/SKILL.md`，沿用注意力预算与训练/检查区分；⚠ 该「省注意力」口径**仅限雅思/英语**，其它课程（含俄语）与规划、状态、维护仍按通用口径。
+- **讲义/精讲类任务**（把课件做成可独立阅读的讲义 PDF）加载 `.dsh/skills/lecture-deepdive/SKILL.md`：紫色花卉主题、LaTeX 原生公式、缺口逐条补齐、前提给旁注。它生成的 `.tex`/`.pdf` 是文档交付物，**不受上条「禁用 TeX 命令」约束**；但对话中对学习者的讲解仍只用纯 Unicode 公式。定理块须写原形式并标明课件给的是哪个形式。
 
 ## 命令路由
 用户将斜杠命令作为普通文本发送时，也按下表处理。技能目录在 `.tutor/core/skills/`，不按命令名猜路径。
@@ -70,8 +71,8 @@ current_topic: 维护刷新不代表新学习；具体续学点见 state/current
 next: 见 plan/schedule.md、当天清单与原 status-narrative.yml；先尊重学习者当次选择
 note: 默认闭卷；Unicode 公式；中国日期；保留当前项目协议和个人偏好
 last_session: 2026-10-19（作答 52 条；未解决困难 3 条）
-due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-20）
-mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-20）
+due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-22）
+mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-22）
 open_hurdles: hurdle-2(awaiting_retest)→mp.taylor-expansion,mp.laurent-expansion；hurdle-3(teaching)→ru.qword-agreement；hurdle-4(teaching)→tm.t5.effective-potential,tm.t5.central-motion-types
 attempts: 52 条（实测时长 7.0 分钟；估计 1308.0 分钟单列）
 <!-- TUTOR-STATUS:END -->

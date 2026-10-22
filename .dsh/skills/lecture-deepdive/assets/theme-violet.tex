@@ -1,0 +1,125 @@
+%=====================================================================
+% theme-violet.tex —— 讲义精讲 · 紫花主题
+% 用法：\documentclass[11pt]{ctexart}
+%       \input{assets/theme-violet}
+%       \begin{document} ... \end{document}
+% 只用 ctexart 自带能力 + xcolor/enumitem/fancyhdr/pifont/amsmath，
+% 不依赖 tikz/tcolorbox，保证 MiKTeX 可直接编译。
+%=====================================================================
+
+\usepackage[a4paper,left=2.0cm,right=2.0cm,top=2.1cm,bottom=2.3cm,%
+            headsep=12pt,footskip=22pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+%---------------------------------------------------------------- 配色
+\definecolor{violet}{RGB}{107,78,143}      % 主色：紫
+\definecolor{violetdeep}{RGB}{63,44,92}    % 深紫：标题/强调
+\definecolor{petal}{RGB}{183,159,208}      % 花瓣：装饰线、花饰
+\definecolor{bandviolet}{RGB}{247,243,251} % 浅紫底：档案/提示框
+\definecolor{bandcream}{RGB}{252,249,242}  % 米白底：易错/注意框
+\definecolor{rulepurple}{RGB}{217,207,230} % 分隔线
+\definecolor{inkgray}{RGB}{92,96,110}      % 次要文字
+
+%---------------------------------------------------------------- 字体
+% 有 Noto CJK 用 Noto，没有就退回 ctex 默认（Windows 下为宋体/黑体）
+\IfFontExistsTF{Noto Serif CJK SC}{\setCJKmainfont{Noto Serif CJK SC}}{}
+\IfFontExistsTF{Noto Sans CJK SC}{\setCJKsansfont{Noto Sans CJK SC}}{}
+
+%---------------------------------------------------------------- 版式
+\setlist{nosep,leftmargin=1.9em}
+\linespread{1.28}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.28}
+
+%---------------------------------------------------------------- 花饰
+% \ding{95} = 五瓣小花，\ding{96} = 星形花；都来自 pifont，必定存在
+\newcommand{\orn}{\textcolor{petal}{\ding{95}}}          % 行内小标
+\newcommand{\ornstar}{\textcolor{petal}{\ding{96}}}      % 星形花
+\newcommand{\flowerrule}{%                                % 居中花饰分隔线
+  \par\vspace{7pt}%
+  \noindent\makebox[\linewidth]{\color{petal}%
+    \rule{0.20\linewidth}{0.6pt}\hspace{8pt}{\small\ding{95}}\hspace{4pt}%
+    \raisebox{1.1pt}{\tiny\ding{95}}\hspace{4pt}{\small\ding{95}}\hspace{8pt}%
+    \rule{0.20\linewidth}{0.6pt}}%
+  \par\vspace{7pt}}
+
+%---------------------------------------------------------------- 标题与节头
+\newcommand{\doctitle}[3]{%   #1 主标题  #2 副标题  #3 元信息（可用 \\ 分行）
+  \begin{center}
+    {\color{petal}\small \orn\enspace #2\enspace \ornstar}\\[7pt]
+    {\LARGE\bfseries\color{violetdeep} #1}\\[10pt]
+    {\color{petal}\rule{0.55\linewidth}{1pt}}\\[4pt]
+    {\small\color{inkgray} #3}
+  \end{center}\vspace{2pt}}
+
+\newcommand{\hdr}[2]{%   #1 章节号（如 §0）  #2 标题
+  \par\vspace{12pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\large\bfseries #2}\par\nobreak
+  \vspace{3pt}{\color{petal}\hrule height 1.2pt}\vspace{6pt}}
+
+\newcommand{\subhdr}[1]{%
+  \par\vspace{6pt}%
+  \noindent{\color{violet}\bfseries #1}\par\vspace{1pt}}
+
+%---------------------------------------------------------------- 提示框
+\newcommand{\callout}[1]{% 浅紫底：讲义档案、读法说明
+  \par\medskip\noindent
+  \fcolorbox{rulepurple}{bandviolet}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}%
+  \par\medskip}
+
+\newcommand{\warnbox}[1]{% 米白底：易错、边界条件
+  \par\medskip\noindent
+  \fcolorbox{rulepurple}{bandcream}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}%
+  \par\medskip}
+
+\newcommand{\gapitem}[2]{% #1 缺口类型（紫） #2 内容
+  \par\vspace{2pt}\noindent
+  \hangindent=1.4em\hangafter=1
+  {\color{petal}\small\ding{96}}\enspace{\bfseries\color{violetdeep}#1}\enspace #2\par}
+
+% 前提旁注：只放在「需要理解的那一步」后面，给陈述 + 本题代入，不重证。
+\newcommand{\aside}[1]{%
+  \par\vspace{1pt}\noindent
+  \hangindent=1.6em\hangafter=1
+  {\small\color{inkgray}%
+    \hspace*{0.6em}{\color{petal}$\triangleright$}\hspace{2pt}#1}%
+  \par\vspace{2pt}}
+
+%---------------------------------------------------------------- 表格
+% 本机 MiKTeX 的 colortbl 与 array 版本不匹配（\rowcolor 会报错），
+% 故表格统一用「上粗紫线 + 表头 + 中细线」的三线式，不依赖 colortbl。
+\newcommand{\tabtop}{\par\vspace{3pt}{\color{violet}\hrule height 1.2pt}\vspace{1pt}}
+\newcommand{\tabmid}{\par\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}
+\newcommand{\tabbot}{\par\vspace{3pt}{\color{rulepurple}\hrule height 0.5pt}\vspace{8pt}}
+\newcommand{\thead}[1]{{\bfseries\color{violetdeep}#1}}
+
+%---------------------------------------------------------------- 页眉页脚
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulepurple}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{inkgray}\songti \doctag}
+\fancyhead[R]{\small\color{inkgray}\songti \coursetag}
+\fancyfoot[C]{\small\color{inkgray}\orn\enspace{\color{violet}\thepage}\enspace\orn}
+
+% 每篇讲义在导言区设这两个值
+\newcommand{\doctag}{}
+\newcommand{\coursetag}{}
+\newcommand{\settags}[2]{\renewcommand{\doctag}{#1}\renewcommand{\coursetag}{#2}}
+
+%---------------------------------------------------------------- 数学记号
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ddx}{\frac{\mathrm{d}}{\mathrm{d}x}}
+\addtolength{\jot}{2pt}
+
+

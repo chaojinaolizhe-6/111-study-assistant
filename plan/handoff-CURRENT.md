@@ -4,7 +4,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-10-20**（中国时间；系统英国日期 2026-10-20）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-10-22**（中国时间；系统英国日期 2026-10-22）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -12,11 +12,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-10-20（周二）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-10-22（周四）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-10-20.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-10-22.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -31,7 +31,7 @@
 **必须遵守的提醒**：⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-10-20.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-10-22.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -60,7 +60,7 @@
 5. `tm-t4-criteria-04`（题目截止｜mixed）— 题目截止 2026-09-29（已逾期）
 6. `ee.ac.phasor-impedance`（能力再测｜延迟检验）— 已有独立通过（2026-09-28）；已验证通过日期跨度 0d < 2d；最早 2026-09-30 可换题复测（等待本身不算通过）
 
-未来才开放（**不得提前做**）5 条，最早一条 = `pilot-ode-integrating-factor:milestone` @ 2026-10-22（独立解一阶线性 ODE（试点） 的 milestone = 2026-10-22）。
+未来才开放（**不得提前做**）4 条，最早一条 = `tm-t4-conservation-laws:milestone` @ 2026-10-23（独立求解理论力学 Topic 4 守恒定律问题 的 milestone = 2026-10-23）。
 
 【规则提醒】
 - 默认教学式：先让我短暂独立尝试 → 卡住给最小提示 → 收尾用无提示新题检查
@@ -91,7 +91,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-10-20.md` |
+| 当天清单（人工权威） | `plan/today-2026-10-22.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |

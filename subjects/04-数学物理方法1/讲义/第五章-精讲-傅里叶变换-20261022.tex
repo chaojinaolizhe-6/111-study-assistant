@@ -1,0 +1,1214 @@
+﻿% !TEX program = xelatex
+% 数学物理方法1 · 第五章 傅里叶变换 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{第五章 · 傅里叶变换 · 精讲}{数学物理方法1}
+
+\begin{document}
+
+\doctitle{第五章　傅里叶变换}{从"正交筛系数"到"点源有一张平谱"：级数、积分、性质与 $\delta$ 函数}
+{依据：\texttt{第五章+傅里叶变换+-+上传课件.pdf}（p1--p63，共 63 页）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{课件讲了哪四块，各在哪几页}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.5cm}p{2.3cm}p{8.8cm}@{}}
+\toprule
+\thead{小节} & \thead{课件页码} & \thead{本讲义对应}
+\\
+\midrule
+§5.1 傅里叶级数 & p5--p17 & §1 正交性为什么能"筛"出系数；§2 四种写法与两个例题
+\\
+§5.2 傅里叶变换 & p18--p39 & §3 级数变积分；§4 复数形式与 $(2\pi)$ 的归属；§5--§7 五个例题
+\\
+§5.3 变换的性质 & p40--p50 & §8 九条性质与卷积的 $2\pi$
+\\
+§5.4 $\delta$ 函数 & p51--p63 & §9 定义、性质、辅助函数、四个例题
+\\
+作业 & p39、p63 & §9 末尾汇总（题面照抄）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{11.4cm}@{}}
+\toprule
+\thead{记号} & \thead{约定}
+\\
+\midrule
+$f(x)$ & 原函数（空间变量用 $x$，时间变量用 $t$，两者公式同形）
+\\
+$F(k)$ & 像函数；$k$ 是\textbf{波数}（量纲 $1/$长度），对应时间的 $\omega$ 是角频率
+\\
+$l$ & 半周期：$f$ 以 $2l$ 为周期
+\\
+$k_n$ & 波数序列 $k_n=\dfrac{n\pi}{l}$（$n=0,\pm1,\pm2,\dots$），离散、等间距、间距 $\Delta k=\dfrac{\pi}{l}$
+\\
+$f\rightleftharpoons F$ & 一对傅里叶变换（课件的记法）
+\\
+\bottomrule
+\end{tabular}
+
+\callout{\textbf{本章有三套归一化常数，必须一开始就分清}（课件 p5、p15、p29、p31 各用一套，从不解释它们的关系）：
+
+\begin{enumerate}
+\item \textbf{实数级数}：$f(x)=a_0+\sum_{n\ge1}\left[a_n\cos k_nx+b_n\sin k_nx\right]$，其中
+\[ a_0=\frac{1}{2l}\int_{-l}^{l}f\dd x,\qquad a_n=\frac{1}{l}\int_{-l}^{l}f\cos k_nx\dd x,\qquad b_n=\frac{1}{l}\int_{-l}^{l}f\sin k_nx\dd x .\]
+注意：\textbf{课件的常数项写成 $a_0$ 而不是 $\dfrac{a_0}{2}$}，所以 $a_0$ 的系数是 $\dfrac{1}{2l}$。若改用 $\dfrac{a_0}{2}$ 的写法，则 $a_0=\dfrac{1}{l}\int f\dd x$。两种写法数值互为两倍，抄公式时必须先看常数项怎么写的。
+
+\item \textbf{复数级数}：$f(x)=\sum_n c_ne^{ik_nx}$，$c_n=\dfrac{1}{2l}\int_{-l}^{l}f e^{-ik_nx}\dd x$；换成时间变量则为 $c_n=\dfrac{1}{T}\int_{-T/2}^{T/2}fe^{-i\omega_nt}\dd t$（$T=2l$）。
+
+\item \textbf{积分变换}：$F(k)=\dfrac{1}{2\pi}\int_{-\infty}^{\infty}fe^{-ikx}\dd x$，$f(x)=\int_{-\infty}^{\infty}Fe^{ikx}\dd k$。推广到 $n$ 个积分变量（如 $x$ 与 $t$ 共同出现），前置因子变成 $\dfrac{1}{(2\pi)^{n}}$——这就是 p31 里二维用 $\frac{1}{(2\pi)^{2}}$、三维含时间用 $\frac{1}{(2\pi)^{4}}$ 的理由（$t$ 一个变量，$r$ 三个变量，共四个）。
+\end{enumerate}}
+
+\warnbox{\textbf{正变换与逆变换的名字：课件 p29 把两个名字叫反了}。p29 的红字写“通常称 $f(x)$ 是原函数，对应的积分式为正变换，其变换的核为 $e^{ikx}$”，也就是把\textbf{合成式} $f=\int F e^{ikx}\dd k$ 叫“正变换”；紧接着又把 $F(k)=\frac{1}{2\pi}\int f e^{-ikx}\dd x$ 叫“逆变换”。可是 p30 又写“在正变换核中核为 $e^{-i\omega t}$”，与 p29 自相矛盾。
+
+本讲义按通行叫法统一：\textbf{正变换（分析）}取核 $e^{-ikx}$、带前置因子 $\frac{1}{2\pi}$；\textbf{逆变换（合成）}取核 $e^{+ikx}$、不带因子。\textbf{公式本身一字不改}，改的只是“正/逆”这两个字的贴法——但贴反了会在做题时把该乘的 $2\pi$ 乘到错的一边，所以要在这里说清。}
+
+\subhdr{本讲义相对课件补的三处缝}
+
+\begin{enumerate}
+\item \textbf{p6 只给系数的三个结果式}：正交性五个积分（p5）怎么用来“筛”出 $a_n$、$b_n$，课件一行没写。§1 把“乘 $\cos k_mx$、逐项积分、只活下 $n=m$ 那一项”这三步摆出来。
+
+\item \textbf{p13 例 2 的三个系数全写成“＝？”}：然后直接给出级数 $\sum\frac{\sin(2n-1)x}{2n-1}$。这是整章唯一一处\textbf{把推导留给学生}的例题。§2 把它补全（三行积分），并顺带说明为什么这里 $l=\pi$。
+
+\item \textbf{p20 的 $\sin$ 方向推导照抄了 $\cos$ 的式子}：p20 写“同理，$\sum b_n\sin k_nx=\cdots$”，但接着的两行里 $\sin$ 被写成了 $\cos$，直到最后一行才换回 $B(k)\sin kx\dd k$。也就是说，\textbf{正弦那一半的极限过程课件其实没有做}。§3 把这一半重做一遍，并指出哪一步必须自己补。
+\end{enumerate}
+
+%=============================================================
+\hdr{§1}{机制：正交性为什么能"筛"出系数}
+
+\subhdr{课件的做法（p5--p6）}
+
+课件先在 p5 列出五个正交性积分，再在 p6 直接写出 $a_0$、$a_n$、$b_n$ 三个结果式。中间那一步——“把展开式两边乘上 $\cos k_mx$ 再逐项积分”——没有写。这一节把它写出来。
+
+\subhdr{五个正交性积分（p5 原文），以及它们为什么成立}
+
+设 $k_n=\dfrac{n\pi}{l}$。在 $[-l,l]$ 上：
+\[
+\int_{-l}^{l}\cos k_nx\cos k_mx\dd x=l\,\delta_{nm},\qquad
+\int_{-l}^{l}\sin k_nx\sin k_mx\dd x=l\,\delta_{nm},
+\]
+\[
+\int_{-l}^{l}\cos k_nx\sin k_mx\dd x=0,\qquad
+\int_{-l}^{l}1\cdot\cos k_nx\dd x=0\ (n\ge1),\qquad
+\int_{-l}^{l}1\cdot\sin k_nx\dd x=0\ (n\ge1),
+\]
+其中
+\[
+\delta_{nm}=\begin{cases}1, & n=m,\\ 0, & n\ne m .\end{cases}
+\]
+
+\textbf{课件没给证明，这里补最要紧的一条}（其余四条同法）：$n\ne m$ 时用积化和差，
+\[
+\int_{-l}^{l}\cos k_nx\cos k_mx\dd x
+=\frac{1}{2}\int_{-l}^{l}\left[\cos(k_n-k_m)x+\cos(k_n+k_m)x\right]\dd x ;
+\]
+由于 $k_n\pm k_m=(n\pm m)\dfrac{\pi}{l}\ne0$（$n\ne m$），而 $\cos$ 在整周期 $[-l,l]$ 上积分为零：
+\[
+\int_{-l}^{l}\cos\frac{(n\pm m)\pi x}{l}\dd x=\frac{l}{(n\pm m)\pi}\sin\frac{(n\pm m)\pi x}{l}\Big|_{-l}^{l}=0 .
+\]
+$n=m$ 时，
+\[
+\int_{-l}^{l}\cos^2k_nx\dd x=\frac{1}{2}\int_{-l}^{l}\left[1+\cos2k_nx\right]\dd x=\frac{1}{2}\cdot 2l+\frac{1}{2}\cdot 0=l .
+\]
+\textbf{“$=l$ 这个 $l$ 是从哪里来的”就在这一行}：来自 $\int_{-l}^{l}1\dd x=2l$ 再乘 $\frac12$。
+
+\subhdr{筛系数的三步（p6 那三个式子的推导）}
+
+设
+\[ f(x)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos k_nx+b_n\sin k_nx\right] .\]
+
+\textbf{第一步（筛 $a_m$）}：两边乘 $\cos k_mx$，在 $[-l,l]$ 上逐项积分：
+\[
+\int_{-l}^{l}f\cos k_mx\dd x
+=a_0\underbrace{\int_{-l}^{l}\cos k_mx\dd x}_{=0}
++\sum_{n=1}^{\infty}a_n\underbrace{\int_{-l}^{l}\cos k_nx\cos k_mx\dd x}_{=l\delta_{nm}}
++\sum_{n=1}^{\infty}b_n\underbrace{\int_{-l}^{l}\sin k_nx\cos k_mx\dd x}_{=0} .
+\]
+三个下括号是我们刚算过的三格。于是右边只剩 $n=m$ 那一个 $a_m$：
+\[ \int_{-l}^{l}f\cos k_mx\dd x=a_m\,l\ \Longrightarrow\ a_m=\frac{1}{l}\int_{-l}^{l}f(x)\cos k_mx\dd x .\]
+
+\textbf{第二步（筛 $b_m$）}：两边乘 $\sin k_mx$，同样得到
+\[ b_m=\frac{1}{l}\int_{-l}^{l}f(x)\sin k_mx\dd x .\]
+
+\textbf{第三步（筛 $a_0$）}：这一格最容易被 1/2 绊住。直接两边在 $[-l,l]$ 上积分（不乘任何东西）：
+\[
+\int_{-l}^{l}f(x)\dd x=a_0\cdot 2l+\sum_{n\ge1}\left[a_n\underbrace{\int_{-l}^{l}\cos k_nx\dd x}_{=0}+b_n\underbrace{\int_{-l}^{l}\sin k_nx\dd x}_{=0}\right]=2a_0l ,
+\]
+故
+\[ a_0=\frac{1}{2l}\int_{-l}^{l}f(x)\dd x .\]
+
+\aside{这一步的分母是 $2l$（整个周期的长度），不是 $l$——因为常数项 $a_0$ 本身对应 $n=0$ 的基函数 $1$，而 $\int_{-l}^l 1^2\dd x=2l$。若把级数写成 $\frac{a_0}{2}+\cdots$，则 $\frac{a_0}{2}=\frac{1}{2l}\int f$，即 $a_0=\frac{1}{l}\int f$，与课件 p6 的式子只差这个 1/2 的记账方式。}
+
+\callout{\textbf{§1 一句话}：傅里叶系数不是“背公式”，是\textbf{用基函数把别项全打成零，只留自己那一项}。这套“乘基函数—积分—正交性消项”的操作，在 §3 会原样搬到非周期情形（求和变积分），在 §9 会原样搬到 $\delta$ 函数（挑选性），三处是同一个动作。}
+
+%=============================================================
+\hdr{§2}{主线甲：级数的四种写法与两个例题}
+
+课件在 p9、p10、p11 连着做了三次改写：同一个级数，先换成波数 $k_n$，再换成时间 $t$，再换成无量纲的 $\theta$。三次改写都不是新数学，只是换变量；但课件每次都写“变为”，中间换算被吞掉了。
+
+\subhdr{写法 1（p5）：以 $2l$ 为周期的空间变量}
+
+\[ f(x)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right],\qquad f(x)=f(x+2l) .\]
+系数见 §1。此式的物理读法：$l$ 若有长度量纲，则这是按空间变量 $x$ 的展开。
+
+\subhdr{写法 2（p9）：引入波数 $k_n=\dfrac{n\pi}{l}$}
+
+\[ f(x)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos k_nx+b_n\sin k_nx\right],\qquad k_n=\frac{n\pi}{l}\ (n=0,1,2,\dots) .\]
+系数式里的 $\cos\frac{n\pi x}{l}$ 一并换成 $\cos k_nx$。\textbf{“引入波数”的动机}（课件没说）：$\cos$ 的自变量必须是无量纲的，所以 $k_n$ 的量纲是 $1/$长度；写成 $k_nx$ 之后，$\cos(kx)$ 就是“波长为 $2\pi/k$ 的驻波”的标准形式，后面 §3 让 $l\to\infty$ 时，$k_n$ 变成连续变量 $k$ 才自然。
+
+\subhdr{写法 3（p10）：换成时间 $t$，$\omega=\dfrac{2\pi}{l}$}
+
+课件的原文是“如果令 $\omega=2\pi/l$，$t=x/2$（$\omega$ 为基波角频率），则式变为
+\[ f(t)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos(\omega_nt)+b_n\sin(\omega_nt)\right],\qquad \omega_n=n\omega ,\]
+展开系数为
+\[ a_0=\frac{1}{T}\int_{-T/2}^{T/2}f(t)\dd t,\qquad
+a_n=\frac{2}{T}\int_{-T/2}^{T/2}f(t)\cos(\omega_nt)\dd t,\qquad
+b_n=\frac{2}{T}\int_{-T/2}^{T/2}f(t)\sin(\omega_nt)\dd t .\]”
+
+\textbf{为什么代换偏偏是 $t=x/2$ 而不是 $t=x$？}（这是本页最大的跳步）因为要两式对得上：
+\[ \frac{n\pi x}{l}\overset{!}{=}\omega_nt=\frac{2n\pi}{l}t\quad\Longrightarrow\quad t=\frac{x}{2} .\]
+再看周期：$x$ 的周期是 $2l$，故 $t$ 的周期是 $\dfrac{2l}{2}=l$；而 $\omega=2\pi/l$ 给出的周期正是 $T=\dfrac{2\pi}{\omega}=l$ $\checkmark$。于是 $\dfrac{1}{l}=\dfrac{2}{T}$ —— 这就解释了系数为什么从 $\dfrac{1}{l}$ 变成 $\dfrac{2}{T}$（课件只写了结果）。
+
+\aside{代入时要同时改三样：被积函数里的 $x\to 2t$、微分 $\dd x=2\dd t$、上下限 $\pm l\to\pm l/2=\pm T/2$；两处因子 $2$ 一进一出，恰好把 $\frac{1}{l}$ 变成 $\frac{2}{T}$。}
+
+\subhdr{写法 4（p11）：换成 $\theta=\dfrac{\pi x}{l}$，周期归一为 $2\pi$}
+
+课件：“如果令 $\theta=\pi x/l$，则式变为
+\[ f(\theta)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos n\theta+b_n\sin n\theta\right],\]
+其中展开系数为
+\[ a_0=\frac{1}{2\pi}\int_{-\pi}^{\pi}f(\theta)\dd\theta,\qquad
+a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(\theta)\cos n\theta\dd\theta,\qquad
+b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(\theta)\sin n\theta\dd\theta .\]”
+
+换算同样是三样：$\dd x=\dfrac{l}{\pi}\dd\theta$，上下限 $\pm l\to\pm\pi$，$\dfrac{1}{l}=\dfrac{1}{\pi}\cdot\dfrac{\pi}{l}$——其中 $\dfrac{\pi}{l}$ 被 $\dd\theta$ 吸收，剩下的 $\dfrac{1}{\pi}$ 就是系数里的 $\pi$。
+
+\warnbox{\textbf{四种写法只有一种“实质”}：$2l$ 周期、波数 $k_n$、时间 $\omega_n$、无量纲 $\theta$，四者的级数完全同构，差别只在归一化常数怎么记账。做题时最稳的做法是\textbf{先锁定是哪种写法}（看常数项是 $a_0$ 还是 $a_0/2$、看系数是 $1/l$、$2/T$ 还是 $1/\pi$），再套对应那一套。}
+
+下面这张表把四套并列，是本章最该抄下来的一页：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{4.4cm}p{3.0cm}p{3.6cm}@{}}
+\toprule
+\thead{写法} & \thead{系数（$a_0$／$a_n$）} & \thead{自变量} & \thead{课件页}
+\\
+\midrule
+空间 $x$ & $\dfrac{1}{2l}$／$\dfrac{1}{l}$ & $\dfrac{n\pi x}{l}$ & p5--p7
+\\
+波数 $k_n$ & $\dfrac{1}{2l}$／$\dfrac{1}{l}$ & $k_nx$，$k_n=\dfrac{n\pi}{l}$ & p9
+\\
+时间 $t$ & $\dfrac{1}{T}$／$\dfrac{2}{T}$ & $\omega_nt$，$\omega_n=n\dfrac{2\pi}{l}$ & p10
+\\
+角度 $\theta$ & $\dfrac{1}{2\pi}$／$\dfrac{1}{\pi}$ & $n\theta$，$\theta=\dfrac{\pi x}{l}$ & p11
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{复数形式（p15--p16）：基函数换成 $e^{ik_nx}$}
+
+取基函数族 $\varphi_n(x)=e^{ik_nx}$（$k_n=n\pi/l$，$n=0,\pm1,\pm2,\dots$）。它们的正交性是
+\[ \frac{1}{2l}\int_{-l}^{l}\varphi_n^{*}(x)\varphi_m(x)\dd x=\delta_{nm} ,\]
+其中 $\varphi_n^*=e^{-ik_nx}$。于是
+\[ f(x)=\sum_{n=-\infty}^{\infty}c_ne^{ik_nx},\qquad c_n=\frac{1}{2l}\int_{-l}^{l}f(x)e^{-ik_nx}\dd x .\]
+换成时间变量则为
+\[ f(t)=\sum_{n=-\infty}^{\infty}c_ne^{i\omega_nt},\qquad c_n=\frac{1}{T}\int_{-T/2}^{T/2}f(t)e^{-i\omega_nt}\dd t .\]
+
+\aside{复数系数与实数系数的关系（课件的说明 1 只提到“$f$ 为实数但 $c_n$ 可能为复数”，没给公式）：把 $e^{\pm ik_nx}$ 用欧拉公式拆开，可得 $c_n=\frac{1}{2}(a_n-ib_n)$、$c_{-n}=\frac{1}{2}(a_n+ib_n)$，故 $a_n=c_n+c_{-n}$、$b_n=i(c_n-c_{-n})$。这样才能解释为什么 $f$ 是实函数时 $c_{-n}=\overline{c_n}$。}
+
+课件 p17 给了三点说明，其中最要紧的是第三点：\textbf{$k_n$ 的取值不连续}（实数形式 $n=0,1,2,\dots$，复数形式 $n=0,\pm1,\pm2,\dots$）。这句话是 §3 的引子——下一节就让它连续。
+
+\subhdr{例 1（p12）：锯齿函数}
+
+题面（周期 $2l$ 延拓）：
+\[
+f(x)=\begin{cases}-\dfrac{x}{l}, & -l\le x\le l,\\[4pt] f(x+2l), & \text{其它}\end{cases}
+\]
+
+\textbf{系数 1（$a_0$）}：$f$ 是奇函数（$-x/l$ 关于原点对称变号），在对称区间上积分为零：
+\[ a_0=\frac{1}{2l}\int_{-l}^{l}\left(-\frac{x}{l}\right)\dd x=0 .\]
+
+\textbf{系数 2（$a_n$）}：$f\cos k_nx$ 是奇函数（奇 $\times$ 偶），同样为零：
+\[ a_n=\frac{1}{l}\int_{-l}^{l}\left(-\frac{x}{l}\right)\cos k_nx\dd x=0\ (n\ge1) .\]
+
+\textbf{系数 3（$b_n$）}：$f\sin k_nx$ 是偶函数（奇 $\times$ 奇），区间可以折半再乘 2：
+\[
+b_n=\frac{1}{l}\int_{-l}^{l}\left(-\frac{x}{l}\right)\sin k_nx\dd x
+=-\frac{2}{l^{2}}\int_{0}^{l}x\sin\frac{n\pi x}{l}\dd x .
+\]
+课件把它写成 $\dfrac{1}{n\pi l}\int_{-l}^{l}x\,\dd\cos\dfrac{n\pi x}{l}$（即把 $\sin\dd x$ 读成 $-\dfrac{l}{n\pi}\dd\cos$）。这一步等价，但要走完得做一次分部积分，补全如下：
+\[
+\int_0^{l}x\sin\frac{n\pi x}{l}\dd x
+=-\frac{l}{n\pi}\int_0^{l}x\,\dd\cos\frac{n\pi x}{l}
+=-\frac{l}{n\pi}\left\{\Bigl[x\cos\frac{n\pi x}{l}\Bigr]_0^{l}-\int_0^{l}\cos\frac{n\pi x}{l}\dd x\right\} .
+\]
+边界项 $=l\cos n\pi=l(-1)^n$；第二个积分 $=\dfrac{l}{n\pi}\sin\dfrac{n\pi x}{l}\Big|_0^l=0$。故
+\[ \int_0^{l}x\sin\frac{n\pi x}{l}\dd x=-\frac{l^{2}}{n\pi}(-1)^n ,\]
+代回：
+\[ b_n=-\frac{2}{l^{2}}\left(-\frac{l^{2}}{n\pi}(-1)^n\right)=\frac{2(-1)^n}{n\pi} .\]
+
+\textbf{结果}（课件 p12 用蓝箭头标出，上限写作 $m$）：
+\[ f(x)=\sum_{n=1}^{m}\frac{2(-1)^n}{n\pi}\sin\frac{n\pi x}{l}\qquad(-l\le x\le l) .\]
+
+\aside{上限 $m$ 是“部分和的阶数”，不是 $+\infty$；p14 画的正是在 $m=1,2,3,24$ 时的四张图。写成 $m$ 的好处是把“取有限项”和“取极限”分开；正式结论应是 $m\to\infty$。}
+
+\subhdr{例 2（p13）：对称方波——本章唯一留白给学生的例题}
+
+题面：
+\[
+f(x)=\begin{cases}\dfrac{\pi}{4}, & 0<x<\pi,\\[4pt] -\dfrac{\pi}{4}, & -\pi<x<0 .\end{cases}
+\]
+课件的三个系数只写到“$=\ ?$”，然后直接给出
+\[ f(x)=\sum_{n=1}^{m}\frac{\sin(2n-1)x}{2n-1}\qquad(-\pi<x<\pi) .\]
+
+\textbf{先定 $l$}：题面区间是 $(-\pi,\pi)$，故 $l=\pi$，$k_n=n$。课件页内仍写 $l$，没有代入——这是它三处“不知道要不要代”的地方之一。
+
+\textbf{$a_0$}：
+\[ a_0=\frac{1}{2\pi}\left[\int_0^{\pi}\frac{\pi}{4}\dd x+\int_{-\pi}^{0}\left(-\frac{\pi}{4}\right)\dd x\right]=\frac{1}{2\pi}\left[\frac{\pi^{2}}{4}-\frac{\pi^{2}}{4}\right]=0 .\]
+
+\textbf{$a_n$}（$f$ 是奇函数，$f\cos nx$ 是奇函数，积分为零）：
+\[ a_n=\frac{1}{\pi}\left[\int_0^{\pi}\frac{\pi}{4}\cos nx\dd x-\int_{-\pi}^{0}\frac{\pi}{4}\cos nx\dd x\right]=0\ (n\ge1) .\]
+
+\textbf{$b_n$}（$f$ 与 $\sin nx$ 都是奇函数，乘积为偶，两半相加）：
+\[
+b_n=\frac{1}{\pi}\left[\int_0^{\pi}\frac{\pi}{4}\sin nx\dd x+\int_{-\pi}^{0}\left(-\frac{\pi}{4}\right)\sin nx\dd x\right]
+=\frac{1}{\pi}\cdot 2\cdot\frac{\pi}{4}\int_0^{\pi}\sin nx\dd x
+=\frac{1}{2}\int_0^{\pi}\sin nx\dd x .
+\]
+而
+\[ \int_0^{\pi}\sin nx\dd x=\frac{1-\cos n\pi}{n}=\frac{1-(-1)^n}{n} ,\]
+故
+\[
+b_n=\frac{1-(-1)^n}{2n}=
+\begin{cases}\dfrac{1}{n}, & n\ \text{为奇数},\\[6pt] 0, & n\ \text{为偶数}.\end{cases}
+\]
+把奇数写成 $n=2m-1$：
+\[ f(x)=\sum_{m=1}^{\infty}\frac{\sin(2m-1)x}{2m-1} ,\]
+与课件一致。
+
+\subhdr{p14 的四张图在说什么：为什么“振荡”不会消失}
+
+课件的四张图取 $m=1,2,3,24$。前三张能看到平顶逐渐形成；到 $m=24$ 已经很像方波，\textbf{但跳变处两侧各鼓起一个尖峰，而且随 $m$ 增大尖峰不会变矮、只是变窄}。这就是\textbf{吉布斯（Gibbs）现象}。
+
+从公式就能看出原因：第 $m$ 项之后被丢掉的余项在跳变点 $x=0$ 附近并不“小”，因为 $\sin((2m-1)x)/(2m-1)$ 在 $x\sim1/m$ 处的贡献是同号的。级数在跳变点确实收敛到左右极限的平均值（这里是 $0$），但\textbf{一致收敛}不成立，所以“逐点收敛”和“图形贴合”是两件事。
+
+\warnbox{课件 p14 只放图、不放字，学生容易以为“多取几项就能完全贴合”。正确的读法是：\textbf{跳变函数用傅里叶级数逼近，误差峰值不趋于零}（约 $9\%$ 的跳变量）。这不是算法失败，是跳变本身的性质——§3 把级数换成积分之后，同样的问题会以“高频截断”的形式重现。}
+
+%=============================================================
+\hdr{§3}{主线乙：让周期趋于无穷——级数变积分（p18--p26）}
+
+§2 的对象是周期函数，$k_n$ 离散。这一节做一件事：\textbf{让 $l\to\infty$}，把离散的 $k_n$ 变成连续的 $k$。课件 p19--p20 做了这个极限，但两处关键换算都省了。
+
+\subhdr{傅里叶积分定理（p18）}
+
+设 $f(x)$ 是 $(-\infty,\infty)$ 上的非周期函数、分段光滑，且积分 $\displaystyle\int_{-\infty}^{\infty}|f(x)|\dd x$ 存在，则
+\[ f(x)=\int_{0}^{\infty}A(k)\cos(kx)\dd k+\int_{0}^{\infty}B(k)\sin(kx)\dd k ,\]
+其中
+\[ A(k)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(x)\cos(kx)\dd x,\qquad
+B(k)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(x)\sin(kx)\dd x .\]
+称这组式子为\textbf{实数形式的傅里叶变换}。
+
+\subhdr{极限是怎么取的（p19--p20，补两处换算）}
+
+从 §2 写法 1 出发。把系数式代回展开式：
+\[
+f(x)=a_0+\sum_{n\ge1}\left[\left(\frac{1}{l}\int_{-l}^{l}f(\xi)\cos k_n\xi\dd\xi\right)\cos k_nx
++\left(\frac{1}{l}\int_{-l}^{l}f(\xi)\sin k_n\xi\dd\xi\right)\sin k_nx\right] .
+\]
+\textbf{换算一（把 $1/l$ 变成 $\Delta k/\pi$）}：记 $\Delta k_n=k_{n+1}-k_n=\dfrac{\pi}{l}$，则
+\[ \frac{1}{l}=\frac{1}{\pi}\cdot\frac{\pi}{l}=\frac{\Delta k_n}{\pi} .\]
+代进去：
+\[
+f(x)=a_0+\frac{1}{\pi}\sum_{n\ge1}\left[\int_{-l}^{l}f\cos k_n\xi\dd\xi\right]\cos k_nx\ \Delta k_n
++\frac{1}{\pi}\sum_{n\ge1}\left[\int_{-l}^{l}f\sin k_n\xi\dd\xi\right]\sin k_nx\ \Delta k_n .
+\]
+这一步是\textbf{级数转积分的全部秘密}：$1/l$ 被写成“$\frac{1}{\pi}$ 乘一个间距 $\Delta k_n$”，于是求和 $\sum(\cdots)\Delta k_n$ 就是黎曼和。令 $l\to\infty$（此时 $\Delta k_n\to0$、上下限 $\pm l\to\pm\infty$、$k_n\to k$ 连续）：
+\[ \sum_{n\ge1}(\cdots)\Delta k_n\ \longrightarrow\ \int_0^{\infty}(\cdots)\dd k ,\]
+于是
+\[ f(x)=\frac{1}{\pi}\int_0^{\infty}\left[\int_{-\infty}^{\infty}f(\xi)\cos(k\xi)\dd\xi\right]\cos(kx)\dd k+\text{（正弦那一半）} ,\]
+即 $A(k)$、$B(k)$ 的两个式子。
+
+\textbf{换算二（$a_0\to0$ 凭什么）}：课件 p19 只写“由于积分 $\int f(x)\dd x$ 有限，则 $\lim_{l\to\infty}a_0=0$”。补上估计：
+\[ |a_0|=\left|\frac{1}{2l}\int_{-l}^{l}f\dd x\right|\le\frac{1}{2l}\int_{-\infty}^{\infty}|f|\dd x\xrightarrow[l\to\infty]{}0 ,\]
+因为 $\int|f|$ 是\textbf{与 $l$ 无关的有限数}，而前面挂着 $\frac{1}{2l}\to0$。这就是“绝对可积”这个前提在这一步的用处——没有它，$\int|f|$ 可能是 $\infty$，估计就失效了。
+
+\warnbox{\textbf{正弦那一半课件没有真做}。p20 的原文是“同理，$\sum b_n\sin k_nx=\cdots$”，但紧接着的两行里，$\sin$ 被写成了 $\cos$（整段照抄了上一页的 $\cos$ 推导），直到最后一行才换回 $B(k)\sin(kx)\dd k$。
+
+补做（与余弦那一半完全平行，只换正交性）：把 $b_n=\frac{1}{l}\int f(\xi)\sin k_n\xi\dd\xi$ 与 $\frac{1}{l}=\frac{\Delta k_n}{\pi}$ 代回，取极限即得
+\[ \frac{1}{\pi}\int_0^{\infty}\left[\int_{-\infty}^{\infty}f(\xi)\sin(k\xi)\dd\xi\right]\sin(kx)\dd k=\int_0^{\infty}B(k)\sin(kx)\dd k .\]
+要点只有一句：$\sin$ 与 $\sin$ 也正交（§1 的第一格），所以“乘 $\sin$、积掉、只留 $B$”这一步与余弦那边同构。}
+
+\subhdr{存在条件与“在跳变点取平均值”（p21）}
+
+课件 p21 给了两条：
+
+\begin{enumerate}
+\item $f(x)$ 在 $(-\infty,\infty)$ 内\textbf{绝对可积}，即 $\displaystyle\int_{-\infty}^{\infty}|f(x)|\dd x$ 收敛；
+\item $f(x)$ 在任意有限区间内满足\textbf{狄里希利条件}：分段光滑，且至多具有第一类间断点（左右极限都存在且有限）。
+\end{enumerate}
+
+\warnbox{\textbf{课件没写的那半句}：满足上面两条时，傅里叶积分在\textbf{连续点}收敛到 $f(x)$，在\textbf{间断点}收敛到左右极限的\textbf{平均值}
+\[ \frac{f(x_0-0)+f(x_0+0)}{2} .\]
+“第一类间断点”这个定义（p21 上半页）之所以要专门给出，就是为了这一句。不写它，学生会以为积分在跳变处“等于函数值”——而 §2 例 2 的方波在 $x=0$ 处已经给出过一次答案（级数收敛到 $0$，即 $\pm\pi/4$ 的平均值）。}
+
+\subhdr{奇偶性的红利（p22）：正弦积分与余弦积分}
+
+若 $f$ 是偶函数，则 $B(k)=0$（奇 $\times$ 奇 = 偶？不——$f$ 偶、$\sin$ 奇，乘积为奇，在对称区间积分为零），且 $A(k)$ 的区间可折半、系数从 $\frac{1}{\pi}$ 变 $\frac{2}{\pi}$：
+\[ f(x)=\int_0^{\infty}A(k)\cos(kx)\dd k,\qquad A(k)=\frac{2}{\pi}\int_0^{\infty}f(x)\cos(kx)\dd x .\]
+若 $f$ 是奇函数，则 $A(k)=0$：
+\[ f(x)=\int_0^{\infty}B(k)\sin(kx)\dd k,\qquad B(k)=\frac{2}{\pi}\int_0^{\infty}f(x)\sin(kx)\dd x .\]
+
+\aside{系数从 $\frac{1}{\pi}$ 变 $\frac{2}{\pi}$ 与 §2 的“区间折半”是同一件事：$\int_{-l}^{l}=2\int_0^l$，而外面前置的 $\frac{1}{\pi}$ 不变——所以折半后必须补一个 $2$，否则结果差一倍。}
+
+\subhdr{换成时间变量（p23）与"级数 vs 积分"的分界}
+
+课件 p23 把 $k$ 换成 $\omega$、$x$ 换成 $t$：
+\[ f(t)=\int_0^{\infty}A(\omega)\cos(\omega t)\dd\omega+\int_0^{\infty}B(\omega)\sin(\omega t)\dd\omega ,\]
+\[ A(\omega)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(t)\cos(\omega t)\dd t,\qquad
+B(\omega)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(t)\sin(\omega t)\dd t .\]
+两者的区别（p23 的总结）：\textbf{周期函数}用级数（离散谱 $\omega_n$），\textbf{非周期函数}用积分（连续谱 $\omega$）；前者是“若干条谱线”，后者是“一段谱带”。
+
+\subhdr{例 1（p24）：矩形脉冲——偶函数的标准演练}
+
+题面：
+\[
+f(t)=\begin{cases}1, & |t|<T,\\ 0, & |t|>T,\end{cases}
+\qquad T\ \text{为脉冲半宽度} .
+\]
+$f$ 是偶函数，故 $B(\omega)=0$，只需算
+\[
+A(\omega)=\frac{2}{\pi}\int_0^{\infty}f(t)\cos\omega t\dd t
+=\frac{2}{\pi}\int_0^{T}\cos\omega t\dd t
+=\frac{2}{\pi}\cdot\frac{\sin\omega T}{\omega} .
+\]
+于是
+\[ f(t)=\int_0^{\infty}A(\omega)\cos\omega t\dd\omega
+=\frac{2}{\pi}\int_0^{\infty}\frac{\sin\omega T}{\omega}\cos\omega t\dd\omega .\]
+
+课件接着直接断言这个积分“回到矩形脉冲本身”，并把 $t=0$、$T=1$ 代进去得到
+\[ \int_0^{\infty}\frac{\sin\omega}{\omega}\dd\omega=\frac{\pi}{2} .\]
+
+\aside{这个断言其实是狄里希利定理的应用，不是新的计算：积分在 $|t|<T$ 内等于 $1$、在 $|t|>T$ 等于 $0$、在 $|t|=T$ 等于 $\frac12$。它有一个名字——\textbf{狄里希利积分}（$\int_0^\infty\frac{\sin a\omega}{\omega}\dd\omega=\frac{\pi}{2}\operatorname{sgn}a$）。把它记住，p24 与 p57 都要用。}
+
+\subhdr{例 2（p25--p26）：截断正弦——奇函数与积化和差}
+
+题面：
+\[
+f(t)=\begin{cases}A\sin\omega_0t, & |t|<\dfrac{2N\pi}{\omega_0},\\[6pt] 0, & |t|>\dfrac{2N\pi}{\omega_0} .\end{cases}
+\]
+$f$ 是奇函数，故 $A(\omega)=0$，只算
+\[ B(\omega)=\frac{2}{\pi}\int_0^{2N\pi/\omega_0}A\sin\omega_0t\sin\omega t\dd t .\]
+用积化和差 $\sin\omega_0t\sin\omega t=\frac{1}{2}\left[\cos(\omega_0-\omega)t-\cos(\omega_0+\omega)t\right]$：
+\[
+B(\omega)=\frac{A}{\pi}\left[\frac{\sin(\omega_0-\omega)t}{\omega_0-\omega}-\frac{\sin(\omega_0+\omega)t}{\omega_0+\omega}\right]_{0}^{2N\pi/\omega_0} .
+\]
+把上限记 $T_0=\dfrac{2N\pi}{\omega_0}$，则 $\omega_0T_0=2N\pi$，于是
+\[
+\sin(\omega_0\mp\omega)T_0=\sin\left(2N\pi\mp\frac{2N\pi\omega}{\omega_0}\right)=\mp\sin\frac{2N\pi\omega}{\omega_0} ,
+\]
+（用了 $\sin2N\pi=0$、$\cos2N\pi=1$）。代回：
+\[
+B(\omega)=\frac{A}{\pi}\left[-\frac{\sin\theta}{\omega_0-\omega}-\frac{\sin\theta}{\omega_0+\omega}\right],
+\qquad \theta\equiv\frac{2N\pi\omega}{\omega_0} .
+\]
+通分（这一步课件一步跳过，是它 p26 的跳步）：
+\[
+-\frac{1}{\omega_0-\omega}-\frac{1}{\omega_0+\omega}
+=-\frac{(\omega_0+\omega)+(\omega_0-\omega)}{\omega_0^{2}-\omega^{2}}
+=-\frac{2\omega_0}{\omega_0^{2}-\omega^{2}}=\frac{2\omega_0}{\omega^{2}-\omega_0^{2}} .
+\]
+故
+\[ B(\omega)=\frac{2A}{\pi}\cdot\frac{\omega_0}{\omega^{2}-\omega_0^{2}}\sin\left(\frac{2N\pi\omega}{\omega_0}\right) ,\]
+与课件一致。逆变换写成
+\[ f(t)=\frac{2A\omega_0}{\pi}\int_0^{\infty}\frac{\sin\left(\frac{2N\pi\omega}{\omega_0}\right)\sin\omega t}{\omega^{2}-\omega_0^{2}}\dd\omega .\]
+
+\aside{题面里的 $N$ 课件从未定义（只出现在区间 $2N\pi/\omega_0$ 里）。从结果看它是“截断了多少个周期”的整数：$\omega_0T_0=2N\pi$ 意味着截断窗口恰好含 $N$ 个完整周期。$N$ 越大，谱越集中在 $\omega=\pm\omega_0$ 附近。}
+
+%=============================================================
+\hdr{§4}{两条线为什么等价：复数形式与 $(2\pi)$ 的归属（p27--p31）}
+
+§3 的 $A(k)$、$B(k)$ 是两个实函数，写起来占两行。p27--p28 把它们合成一个复函数 $F(k)$。合成之后只剩一条公式，但代价是\textbf{归一化常数开始搬家}——这一节把“搬家”的规则说清。
+
+\subhdr{从 $A,B$ 到 $F$（p27--p28）}
+
+起点：
+\[ f(x)=\int_0^{\infty}A(k)\cos(kx)\dd k+\int_0^{\infty}B(k)\sin(kx)\dd k .\]
+代入欧拉公式：
+\[
+\begin{aligned}
+f(x)&=\int_0^{\infty}A(k)\frac{e^{ikx}+e^{-ikx}}{2}\dd k+\int_0^{\infty}B(k)\frac{e^{ikx}-e^{-ikx}}{2i}\dd k\\
+&=\frac{1}{2}\int_0^{\infty}\left[A(k)-iB(k)\right]e^{ikx}\dd k+\frac{1}{2}\int_0^{\infty}\left[A(k)+iB(k)\right]e^{-ikx}\dd k .
+\end{aligned}
+\]
+第二项的积分跑在 $k\in(0,\infty)$，与第一项方向相反；把 $k$ 换成 $-k$ 可以把它翻到 $(-\infty,0)$（这就是 p27 先写 $A(-k)=A(k)$、$B(-k)=-B(k)$ 的目的——$A$ 是偶函数、$B$ 是奇函数，换号后括号变成同一个）：
+\[
+\frac{1}{2}\int_0^{\infty}\left[A(k)+iB(k)\right]e^{-ikx}\dd k
+=\frac{1}{2}\int_{-\infty}^{0}\left[A(k)-iB(k)\right]e^{ikx}\dd k .
+\]
+两段接起来：
+\[
+f(x)=\frac{1}{2}\int_{-\infty}^{\infty}\left[A(k)-iB(k)\right]e^{ikx}\dd k\equiv\int_{-\infty}^{\infty}F(k)e^{ikx}\dd k ,
+\]
+其中
+\[
+F(k)=\frac{1}{2}\left[A(k)-iB(k)\right]
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\left[\cos kx-i\sin kx\right]\dd x
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)e^{-ikx}\dd x .
+\]
+这就是 p29 的复数形式变换对。\textbf{$\frac{1}{2\pi}$ 是从 $\frac{1}{\pi}$ 与那个 $\frac12$ 相乘来的}——课件从未解释这一点，而它正是后面所有 $2\pi$ 系数的源头。
+
+\subhdr{$(2\pi)$ 的指数规律（p31）}
+
+二维（空间 $x$＋时间 $t$）：
+\[
+f(x,t)=\iint_{-\infty}^{\infty}F(k,\omega)e^{i(kx-\omega t)}\dd k\,\dd\omega,\qquad
+F(k,\omega)=\frac{1}{(2\pi)^{2}}\iint_{-\infty}^{\infty}f(x,t)e^{-i(kx-\omega t)}\dd x\,\dd t .
+\]
+三维含时间（$r$＋$t$）：
+\[
+f(\mathbf{r},t)=\iiint\!\!\int F(\mathbf{k},\omega)e^{i(\mathbf{k}\cdot\mathbf{r}-\omega t)}\dd\omega\,\dd\mathbf{k},\qquad
+F(\mathbf{k},\omega)=\frac{1}{(2\pi)^{4}}\iiint\!\!\int f(\mathbf{r},t)e^{-i(\mathbf{k}\cdot\mathbf{r}-\omega t)}\dd t\,\dd\mathbf{r} .
+\]
+
+\warnbox{\textbf{为什么是 $(2\pi)^{4}$ 而不是 $(2\pi)^{3}$}（这是 p31 最大的跳步，容易被误认为写错）：规则是\textbf{每多一个积分变量，前置因子多一个 $\frac{1}{2\pi}$}。三维含时间的情形里，被积掉的变量是 $t$、$x$、$y$、$z$ 共四个，所以是 $(2\pi)^{4}$。同理：
+\begin{itemize}
+\item 一维空间：$1/(2\pi)$；
+\item 二维 $x$＋$t$：$1/(2\pi)^{2}$；
+\item 三维空间（不含时间）：$1/(2\pi)^{3}$（这就是 §9 里 $\delta(\mathbf{r})=\frac{1}{(2\pi)^{3}}\iiint e^{i\mathbf{k}\cdot\mathbf{r}}\dd\mathbf{k}$ 的那个三次方）；
+\item 三维＋时间：$1/(2\pi)^{4}$。
+\end{itemize}
+数一数“有几个 $\dd$”，就不会错。}
+
+\subhdr{三种归一化约定，与本章选了哪一种}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{3.8cm}p{3.8cm}p{2.3cm}@{}}
+\toprule
+\thead{约定} & \thead{正变换 $F(k)$} & \thead{逆变换} & \thead{本章}
+\\
+\midrule
+A（本章、课件） & $\dfrac{1}{2\pi}\displaystyle\int f e^{-ikx}\dd x$ & $\displaystyle\int F e^{ikx}\dd k$ & $\checkmark$ 采用
+\\
+B（常见教材） & $\displaystyle\int f e^{-ikx}\dd x$ & $\dfrac{1}{2\pi}\displaystyle\int F e^{ikx}\dd k$ & 不采用
+\\
+C（对称） & $\dfrac{1}{\sqrt{2\pi}}\displaystyle\int f e^{-ikx}\dd x$ & $\dfrac{1}{\sqrt{2\pi}}\displaystyle\int F e^{ikx}\dd k$ & 不采用
+\\
+\bottomrule
+\end{tabular}
+
+三条约定给出同一个 $f$ 与同一个 $F$（相差常数倍），差别只在“$2\pi$ 挂在谁身上”。\textbf{但它会改变整张性质表}：
+
+\begin{itemize}
+\item 约定 A 下，卷积定理是 $f_1*f_2\rightleftharpoons 2\pi F_1F_2$（p46）；乘积定理是 $f_1f_2\rightleftharpoons F_1*F_2$（p48）——\textbf{不对称}。
+\item 约定 B 下，卷积定理是 $2\pi(f_1*f_2)\rightleftharpoons F_1F_2$；乘积定理是 $f_1f_2\rightleftharpoons\frac{1}{2\pi}F_1*F_2$。
+\item 约定 C 下，两个定理都不带系数，最对称。
+\end{itemize}
+
+\callout{\textbf{所以“卷积定理要不要乘 $2\pi$”这个问题没有绝对答案}，取决于 $F$ 的定义里 $2\pi$ 放在哪边。考场上只认一条：\textbf{先写出本章用的 $F(k)$ 定义式，再把定义式代进卷积的积分里去验}——三行就能定系数，永远比背结论可靠。§8 会带着定义式把这个 $2\pi$ 现场算出来。}
+
+%=============================================================
+\hdr{§5}{主例题全程：高斯函数为什么变回高斯（p32）}
+
+\subhdr{题面}
+
+\[ f(x)=\sqrt{\frac{a}{\pi}}\,e^{-\frac{a^{2}x^{2}}{2}},\qquad a>0 ,\]
+求它的傅里叶变换式。
+
+\subhdr{第一步：偶函数，虚部自动消失}
+
+\[
+F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\sqrt{\frac{a}{\pi}}e^{-\frac{a^{2}x^{2}}{2}}e^{-ikx}\dd x
+=\frac{1}{2\pi}\sqrt{\frac{a}{\pi}}\int_{-\infty}^{\infty}e^{-\frac{a^{2}x^{2}}{2}}\left[\cos kx-i\sin kx\right]\dd x .
+\]
+被积函数的虚部是“偶 $\times$ 奇 = 奇”，在对称区间积分为零，只剩实部：
+\[
+F(k)=\frac{1}{2\pi}\sqrt{\frac{a}{\pi}}\cdot 2\int_0^{\infty}e^{-\frac{a^{2}x^{2}}{2}}\cos kx\dd x
+=\frac{1}{\pi}\sqrt{\frac{a}{\pi}}\int_0^{\infty}e^{-\frac{a^{2}x^{2}}{2}}\cos kx\dd x .
+\]
+
+\subhdr{第二步：那个被引用的积分公式，怎么来的}
+
+课件 p32 直接引用
+\[ \int_0^{\infty}e^{-\alpha x^{2}}\cos(bx)\dd x=\frac{1}{2}\sqrt{\frac{\pi}{\alpha}}\,e^{-b^{2}/(4\alpha)} \]
+（$\alpha>0$），没有证明。补一条最短的证明——\textbf{对参数 $b$ 求导}：
+
+记 $I(b)=\displaystyle\int_0^{\infty}e^{-\alpha x^{2}}\cos(bx)\dd x$。求导（与第二章 $\S6$ 的“参数微分”是同一个动作，合法性由 $e^{-\alpha x^2}$ 的指数衰减保证）：
+\[
+I'(b)=-\int_0^{\infty}x\,e^{-\alpha x^{2}}\sin(bx)\dd x .
+\]
+把 $x e^{-\alpha x^{2}}\dd x$ 读成 $-\dfrac{1}{2\alpha}\dd\left(e^{-\alpha x^{2}}\right)$，分部积分：
+\[
+I'(b)=\frac{1}{2\alpha}\int_0^{\infty}\sin(bx)\,\dd\left(e^{-\alpha x^{2}}\right)
+=\frac{1}{2\alpha}\left\{\Bigl[e^{-\alpha x^{2}}\sin(bx)\Bigr]_0^{\infty}-b\int_0^{\infty}e^{-\alpha x^{2}}\cos(bx)\dd x\right\}
+=-\frac{b}{2\alpha}I(b) .
+\]
+这是一个一阶方程 $I'=-\dfrac{b}{2\alpha}I$，解之：
+\[ I(b)=I(0)\,e^{-b^{2}/(4\alpha)},\qquad I(0)=\int_0^{\infty}e^{-\alpha x^{2}}\dd x=\frac{1}{2}\sqrt{\frac{\pi}{\alpha}} .\]
+于是
+\[ I(b)=\frac{1}{2}\sqrt{\frac{\pi}{\alpha}}\,e^{-b^{2}/(4\alpha)} .\]
+
+\aside{这就是课件 p32 红字引用的那条公式。它有两处容易漏：$\alpha>0$（否则 $I(0)$ 发散）与 $b$ 可为任意实数（推导中未用到 $b>0$，所以 $e^{-b^{2}/4\alpha}$ 对 $\pm b$ 相同，这也解释了为什么结果只依赖 $|b|$）。}
+
+\subhdr{第三步：代入并整理}
+
+取 $\alpha=\dfrac{a^{2}}{2}$、$b=k$，则
+\[ \int_0^{\infty}e^{-\frac{a^{2}x^{2}}{2}}\cos kx\dd x=\frac{1}{2}\sqrt{\frac{2\pi}{a^{2}}}\,e^{-\frac{k^{2}}{2a^{2}}}=\frac{1}{a}\sqrt{\frac{\pi}{2}}\,e^{-\frac{k^{2}}{2a^{2}}} .\]
+代回第一步：
+\[
+F(k)=\frac{1}{\pi}\sqrt{\frac{a}{\pi}}\cdot\frac{1}{a}\sqrt{\frac{\pi}{2}}\,e^{-\frac{k^{2}}{2a^{2}}}
+=\frac{1}{\pi\sqrt{2a}}\,e^{-\frac{k^{2}}{2a^{2}}} .
+\]
+
+\textbf{答案}：
+\[ \sqrt{\frac{a}{\pi}}\,e^{-\frac{a^{2}x^{2}}{2}}\ \rightleftharpoons\ \frac{1}{\pi\sqrt{2a}}\,e^{-\frac{k^{2}}{2a^{2}}} ,\]
+与课件一致。
+
+\subhdr{验算与读法}
+
+\textbf{验算一（归一化）}：$x\to\pm\infty$ 时 $f\to0$ $\checkmark$；$\int_{-\infty}^{\infty}f\dd x=\sqrt{a/\pi}\cdot\sqrt{2\pi}/a=1$（$f$ 是归一化的概率密度型函数）。像函数这边：$k=0$ 时 $F(0)=\dfrac{1}{\pi\sqrt{2a}}=\dfrac{1}{2\pi}\int f\dd x=\dfrac{1}{2\pi}$ $\checkmark$（见 §8 的“低频谱值 $=$ 面积 $/2\pi$”）。
+
+\textbf{验算二（宽度互换）}：$f$ 的宽度量级是 $\dfrac{1}{a}$（指数里是 $a^{2}x^{2}$），$F$ 的宽度量级是 $a$（指数里是 $k^{2}/a^{2}$）。\textbf{一个变窄，另一个就变宽}：这就是不确定性关系的雏形。
+
+\textbf{读法（课件 p32 的原话）}：$f(x)$ 相当于一维谐振子在坐标空间的基态波函数，$F(k)$ 则是它在动量空间的波函数。基态是高斯，所以两边都是高斯——这条结论在第十章解热传导方程时还会再用一次。
+
+%=============================================================
+\hdr{§6}{主例题里“算不下去”的地方：极点正好压在积分路径上（p33--p35）}
+
+\subhdr{题目与它撞上的两堵墙}
+
+例 4（p33）要证
+\[ f(t)=\frac{\sin\omega_0t}{\pi t}\quad\Longleftrightarrow\quad F(\omega)=\begin{cases}\dfrac{1}{2\pi}, & |\omega|<\omega_0,\\[4pt] 0, & |\omega|>\omega_0 .\end{cases}
+\]
+正向（由 $F$ 求 $f$）是直接积分，一算就出：
+\[
+f(t)=\frac{1}{2\pi}\int_{-\omega_0}^{\omega_0}e^{-i\omega t}\dd\omega
+=\frac{1}{2\pi}\cdot\frac{e^{-i\omega t}}{-it}\Big|_{-\omega_0}^{\omega_0}
+=\frac{1}{\pi t}\cdot\frac{e^{i\omega_0t}-e^{-i\omega_0t}}{2i}
+=\frac{\sin\omega_0t}{\pi t} .
+\]
+反向（由 $f$ 求 $F$）就撞墙了：
+\[
+F(\omega)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{\sin\omega_0t}{\pi t}e^{i\omega t}\dd t
+=\frac{1}{2\pi}\left[\int_{-\infty}^{\infty}\frac{e^{i(\omega_0+\omega)t}}{2i\pi t}\dd t-\int_{-\infty}^{\infty}\frac{e^{i(\omega-\omega_0)t}}{2i\pi t}\dd t\right] .
+\]
+
+\textbf{墙一（不绝对可积）}：$\left|\frac{1}{t}\right|$ 在 $t=0$ 附近与在无穷远处都不可积，所以“沿实轴积分再补大圆弧”这套标准做法不能直接用。
+
+\textbf{墙二（极点在路径上）}：$\frac{1}{t}$ 在 $t=0$ 有一个\textbf{一阶极点}，而 $t=0$ 正好是积分路径上的一点。围道没法“绕过去”，只能“挖个小洞”。
+
+\subhdr{补：实轴极点的"半留数"公式怎么来的}
+
+课件 p34 的绿框直接给出
+\[ \int_{-\infty}^{\infty}f(x)e^{imx}\dd x=2\pi i\sum_{k}\operatorname{Res}\left[f(z_k)e^{imz_k}\right]_{\text{上半平面}}+\pi i\operatorname{Res}\left[f(b)e^{imb}\right]_{\text{实轴}} ,\]
+没有推导。补上——它只有三行：
+
+\begin{enumerate}
+\item 把路径在实轴极点 $b$ 处挖掉一个小段 $(b-\varepsilon,b+\varepsilon)$，代之以\textbf{上半平面}的小半圆（半径 $\varepsilon$，从 $b-\varepsilon$ 顺时针绕到 $b+\varepsilon$）。
+\item 补上大圆弧后围道闭合，内部的极点全在上半平面，故
+\[ \oint=2\pi i\sum_{\text{上}}\operatorname{Res} .\]
+\item 小半圆那一段（顺时针、绕过一阶极点）的贡献是 $-\pi i\operatorname{Res}_{z=b}$（半留数：整圈 $2\pi i$ 的一半，且顺时针取负）。让 $\varepsilon\to0$，实轴上的两段合起来趋于\textbf{主值} $\mathrm{PV}\int$，于是
+\[ \mathrm{PV}\int_{-\infty}^{\infty}=\oint-\left(-\pi i\operatorname{Res}_{b}\right)=2\pi i\sum_{\text{上}}\operatorname{Res}+\pi i\operatorname{Res}_{b} .\]
+\end{enumerate}
+
+\textbf{所以那个 $+\pi i\operatorname{Res}$ 不是新公式，是“挖洞”留下的痕迹}：$\varepsilon\to0$ 时小半圆没有消失，它贡献了整圈留数的一半。课件 P34 只给结论、不给围道，读者无法判断这个 $\pi i$ 是 $2\pi i$ 的一半、还是别的什么。
+
+\subhdr{用它算两个积分}
+
+对
+\[ J_{\pm}=\int_{-\infty}^{\infty}\frac{1}{2i\pi t}e^{i\beta_{\pm}t}\dd t,\qquad \beta_{\pm}=\omega\pm\omega_0 ,\]
+被积函数在 $t=0$ 的留数是 $\dfrac{1}{2i\pi}$（与 $\beta$ 无关）。按 $\beta$ 的符号决定往哪个半平面闭：
+
+\begin{itemize}
+\item $\beta>0$：在\textbf{上半平面}闭（$e^{i\beta t}$ 在上半平面衰减），此时 $t=0$ 是实轴极点，用半留数公式：
+\[ J=\pi i\cdot\frac{1}{2i\pi}=\frac{1}{2} .\]
+\item $\beta<0$：在\textbf{下半平面}闭（顺时针，整圈留数取负），同理得
+\[ J=-\frac{1}{2} .\]
+\end{itemize}
+
+把它记成一句话：
+\[ \int_{-\infty}^{\infty}\frac{e^{i\beta t}}{2i\pi t}\dd t=\frac{1}{2}\operatorname{sgn}\beta .\]
+
+\subhdr{三个区间，一张表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.3cm}p{2.4cm}p{2.4cm}p{3.6cm}@{}}
+\toprule
+\thead{区间} & \thead{$\operatorname{sgn}(\omega+\omega_0)$} & \thead{$\operatorname{sgn}(\omega-\omega_0)$} & \thead{$\int f e^{i\omega t}\dd t$}
+\\
+\midrule
+$|\omega|<\omega_0$ & $+$ & $-$ & $\frac12-\left(-\frac12\right)=1$
+\\
+$\omega>\omega_0$ & $+$ & $+$ & $\frac12-\frac12=0$
+\\
+$\omega<-\omega_0$ & $-$ & $-$ & $-\frac12-\left(-\frac12\right)=0$
+\\
+\bottomrule
+\end{tabular}
+
+于是
+\[ \frac{1}{2\pi}\int_{-\infty}^{\infty}f(t)e^{i\omega t}\dd t=\begin{cases}\dfrac{1}{2\pi}, & |\omega|<\omega_0,\\[6pt] 0, & |\omega|>\omega_0,\end{cases}
+\]
+正是题目要证的 $F(\omega)$。证毕。
+
+\warnbox{\textbf{课件 p35 里有一句必须看清}：“当 $\omega+\omega_0<0$ 且 $\omega-\omega_0>0$ 时，即 $\omega<-\omega_0$ 且 $\omega>\omega_0$，此条件是矛盾的”。这一支被排除，正是“$\operatorname{sgn}$ 的两个符号必须相容”的体现——把三个区间画在数轴上，$\omega_0$ 与 $-\omega_0$ 把实轴切成三段，每一段里两个符号的组合只有一种可能。}
+
+%=============================================================
+\hdr{§7}{其余例题：只写与主线不同的地方}
+
+\subhdr{例 5（p36--p38）：屏蔽库仑势的三维变换——为什么可以先选 $\mathbf{k}$ 沿 $z$ 轴}
+
+\[ f(r)=\frac{1}{r}e^{-r/\lambda}\quad\Longrightarrow\quad F(\mathbf{k})=\frac{1}{(2\pi)^{3}}\iiint\frac{1}{r}e^{-r/\lambda}e^{-i\mathbf{k}\cdot\mathbf{r}}\dd\mathbf{r} .\]
+
+\textbf{第一步（球坐标）}：$\dd\mathbf{r}=r^{2}\dd r\sin\theta\dd\theta\dd\varphi$，且 $\mathbf{k}\cdot\mathbf{r}=kr\cos\theta$（\textbf{这一步能这么写，是因为被积函数只依赖 $r$，与 $\theta,\varphi$ 无关，所以可以把 $z$ 轴转到 $\mathbf{k}$ 的方向}——课件只说“选取 $\mathbf{k}$ 的方向沿 $z$ 轴”，没说这需要一个理由：球对称性允许旋转）。
+
+\textbf{第二步（角度积分）}：$\varphi$ 积分给 $2\pi$；$\theta$ 积分
+\[
+\int_0^{\pi}e^{-ikr\cos\theta}\sin\theta\dd\theta
+=\int_{-1}^{1}e^{-ikru}\dd u=\frac{e^{-ikru}}{-ikr}\Big|_{-1}^{1}=\frac{e^{ikr}-e^{-ikr}}{ikr}=\frac{2\sin kr}{kr}
+\]
+（换元 $u=\cos\theta$——课件 p37 把这步整段跳过）。
+
+\textbf{第三步（径向积分）}：把 $r^2\dd r$ 与 $1/r$ 约掉一个，
+\[
+F(\mathbf{k})=\frac{1}{(2\pi)^{3}}\cdot 2\pi\cdot\int_0^{\infty}\frac{1}{r}e^{-r/\lambda}\cdot\frac{2\sin kr}{kr}\cdot r^{2}\dd r
+=\frac{1}{2\pi^{2}k}\int_0^{\infty}e^{-r/\lambda}\sin(kr)\dd r .
+\]
+这个积分用两次分部积分（或直接查 $\int_0^{\infty}e^{-\alpha r}\sin(kr)\dd r=\dfrac{k}{\alpha^{2}+k^{2}}$，取 $\alpha=1/\lambda$）：
+\[ \int_0^{\infty}e^{-r/\lambda}\sin(kr)\dd r=\frac{k}{1/\lambda^{2}+k^{2}}=\frac{k\lambda^{2}}{1+k^{2}\lambda^{2}} .\]
+故
+\[ F(\mathbf{k})=\frac{1}{2\pi^{2}k}\cdot\frac{k\lambda^{2}}{1+k^{2}\lambda^{2}}=\frac{\lambda^{2}}{2\pi^{2}}\cdot\frac{1}{1+k^{2}\lambda^{2}} .\]
+
+\textbf{读法}：$\lambda\to\infty$ 时 $f=1/r$（裸库仑势），$F\to$ 发散——库仑势的傅里叶变换不存在（它不绝对可积）；屏蔽因子 $e^{-r/\lambda}$ 正是为了让积分收敛，得到 $\dfrac{\lambda^{2}}{1+k^{2}\lambda^{2}}$（汤川势的谱）。这与 §1 讲“乘指数救活积分”是同一个思路，只是这次指数的位置在 $r$ 上。
+
+\subhdr{例 1（p49--p50）：卷积反解——用卷积定理把未知函数“除”出来}
+
+\textbf{题面}：
+\[ \int_{-\infty}^{\infty}\frac{f(\eta)}{(x-\eta)^{2}+a^{2}}\dd\eta=\frac{1}{x^{2}+b^{2}},\qquad 0<a<b .\]
+\textbf{第一步（认成卷积）}：左边正是 $f$ 与 $\dfrac{1}{x^{2}+a^{2}}$ 的卷积。
+
+\textbf{第二步（两边取变换）}：由卷积定理（$\S8$ 会验）$f_1*f_2\rightleftharpoons2\pi F_1F_2$，
+\[ 2\pi\,\mathcal{F}[f]\cdot\mathcal{F}\left[\frac{1}{x^{2}+a^{2}}\right]=\mathcal{F}\left[\frac{1}{x^{2}+b^{2}}\right] .\]
+
+\textbf{第三步（两个基础变换）}：用留数算
+\[ \mathcal{F}\left[\frac{1}{x^{2}+a^{2}}\right]=\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{e^{-ikx}}{x^{2}+a^{2}}\dd x .\]
+$k>0$ 时在上半平面闭（$e^{-ikz}$ 在上半平面衰减），极点 $z=+ai$：
+\[
+\frac{1}{2\pi}\cdot 2\pi i\operatorname{Res}_{z=ai}=\frac{1}{2\pi}\cdot 2\pi i\cdot\frac{e^{-ik(ai)}}{2ai}=\frac{e^{-ka}}{2a} ;
+\]
+$k<0$ 时在下半平面闭（顺时针，留数取负），极点 $z=-ai$，同样得 $\dfrac{e^{ka}}{2a}$。合写
+\[ \mathcal{F}\left[\frac{1}{x^{2}+a^{2}}\right]=\frac{e^{-|k|a}}{2a},\qquad
+\mathcal{F}\left[\frac{1}{x^{2}+b^{2}}\right]=\frac{e^{-|k|b}}{2b} .\]
+
+\textbf{第四步（解出并反演）}：
+\[
+\mathcal{F}[f]=\frac{1}{2\pi}\cdot\frac{e^{-|k|b}}{2b}\cdot\frac{2a}{e^{-|k|a}}=\frac{a}{2\pi b}e^{-|k|(b-a)} .
+\]
+要把这个像函数反演成 $f$，得凑成第三步的“标准形”。令 $c=b-a>0$（题目给 $b>a$ 就是为此），并注意标准形是 $\dfrac{e^{-|k|c}}{2c}$。于是写
+\[
+\frac{a}{2\pi b}e^{-|k|c}=\frac{a}{2\pi b}\cdot 2c\cdot\frac{e^{-|k|c}}{2c}
+\ \Longrightarrow\ 
+f(x)=\frac{ac}{\pi b}\cdot\frac{1}{x^{2}+c^{2}}=\frac{a(b-a)}{\pi b}\cdot\frac{1}{x^{2}+(b-a)^{2}} .
+\]
+与课件一致。
+
+\warnbox{\textbf{这一步的“可除性”是隐含前提}：第二步把 $2\pi\mathcal{F}[f]\cdot\mathcal{F}[\frac{1}{x^2+a^2}]$ 里的因子直接除过去，用了两件事：(1) $\mathcal{F}$ 是线性的、可逆的；(2) $\mathcal{F}[\frac{1}{x^{2}+a^{2}}]=\frac{e^{-|k|a}}{2a}\ne0$ 对每个 $k$ 成立。后者显然成立，前者是变换的基本性质——但课件 p49 一个字都没提。}
+
+\subhdr{作业汇总（p39、p63，题面照抄）}
+
+\textbf{p39 第 1--4 题}：
+
+\begin{enumerate}
+\item 将函数 $f(x)=\cos^{3}x$ 表示成傅里叶级数的形式。
+\item 将函数 $f(x)=x/3$ 在 $(-l,l)$ 区间内展开成傅里叶级数。
+\item 将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数。
+\item 将矩形波
+\[
+f(t)=\begin{cases}0, & -T/2\le t<-T_0/2,\\ H, & -T_0/2\le t\le T_0/2,\\ 0, & T_0/2<t\le T/2,\end{cases}
+\]
+在区间内展开为复数形式的傅里叶级数，其中（原文缺符号）为常数。
+\end{enumerate}
+
+\textbf{p63 第 5--7 题}：
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item 求锯齿波
+\[
+f(t)=\begin{cases}0, & t<0,\\ t, & 0\le t\le T,\\ 0, & t>T,\end{cases}
+\]
+复数形式的傅里叶变换。
+\item 求函数
+\[
+f(t)=\begin{cases}0, & (t<0),\\ e^{-\alpha t}, & (t\ge0),\end{cases}
+\]
+其中 $\alpha$ 为：(1) 有限大小的正数，即 $\alpha>0$；(2) 无穷小的正数，即 $\alpha\to0^{+}$。
+\item 求如下函数的复数形式的傅里叶变换，其中 $\alpha>0$：(1) $f(x)=\cos\left(\alpha x^{2}\right)$；(2) $f(x)=\sin\left(\alpha x^{2}\right)$。
+\end{enumerate}
+
+\aside{第 4 题的“在区间内”与“其中为常数”两处在课件里都缺字：按 $f(t)$ 的分段，区间应为 $(-T/2,T/2)$；缺的那个符号从分段里的字母看应是 $H$（不能完全确认，做题时可按“$H$ 为常数”理解并注明）。第 6 题的 (2) 是 $\alpha\to0^{+}$ 的极限，$F(\omega)$ 会出现 $\frac{1}{i\omega}$ 型的奇性，正好接 §9 的 $\delta$ 函数。}
+
+%=============================================================
+\hdr{§8}{§5.3 性质：九条，四对对偶，一个 $2\pi$}
+
+课件 p40--p50 给了九条性质。这一节把它们逐条证一遍，然后指出其中\textbf{四对是对偶的}——与拉普拉斯那一章（八条性质、两对对偶）完全同构，只是多了一对“卷积 $\leftrightarrow$ 乘积”。
+
+\subhdr{记号（p40）}
+
+为书写方便，记
+\[ f(x)\rightleftharpoons F(k),\qquad\text{即}\quad F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)e^{-ikx}\dd x,\quad f(x)=\int_{-\infty}^{\infty}F(k)e^{ikx}\dd k .\]
+符号“$\rightleftharpoons$”只表示“这两个式子是一对”，不表示相等。
+
+\subhdr{性质 1（p40）：线性定理}
+
+\[ \alpha f_1(x)+\beta f_2(x)\rightleftharpoons\alpha F_1(k)+\beta F_2(k) .\]
+证明一行：积分是线性的。课件 p40 只写“直接从傅里叶积分变换式出发，就可推出”，确实如此。
+
+\subhdr{性质 2（p41）：导数定理 I——求导变乘 $(ik)$}
+
+\[ f^{(n)}(x)\rightleftharpoons(ik)^{n}F(k),\qquad\text{其中要求}\ \ f^{(n-1)}(x)\Big|_{x=\pm\infty}=0 .\]
+\textbf{证明（$n=1$）}：
+\[
+\frac{1}{2\pi}\int_{-\infty}^{\infty}f^{(1)}e^{-ikx}\dd x
+=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-ikx}\dd f(x)
+=\underbrace{\frac{1}{2\pi}\Bigl[e^{-ikx}f(x)\Bigr]_{-\infty}^{\infty}}_{=0}
+-\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\dd\left(e^{-ikx}\right) .
+\]
+边界项为零，是因为 $|e^{-ikx}|=1$ 而 $f(\pm\infty)=0$（这就是定理条件的作用）；第二项里 $\dd(e^{-ikx})=-ike^{-ikx}\dd x$，负号抵消，得
+\[ =\frac{ik}{2\pi}\int_{-\infty}^{\infty}f e^{-ikx}\dd x=(ik)F(k) .\]
+$n>1$ 反复用即可。
+
+\aside{为什么必须有“边界项为零”这个条件：与拉普拉斯那一章不同，傅里叶变换没有“初值”可以吸收边界项，所以边界项只能\textbf{自己为零}。这就是为什么傅里叶变换解无界区域的问题顺手、解带初始条件的问题不顺手——初值在拉普拉斯那边被 $-f(0)$ 收走了。}
+
+\subhdr{性质 3（p42）：导数定理 II——乘 $(-ix)$ 变求导}
+
+\[ (-ix)^{n}f(x)\rightleftharpoons F^{(n)}(k) .\]
+证明：对 $F(k)=\frac{1}{2\pi}\int f e^{-ikx}\dd x$ 关于 $k$ 求导，积分号里落下 $(-ix)$：
+\[ \frac{\dd F}{\dd k}=\frac{1}{2\pi}\int f(x)(-ix)e^{-ikx}\dd x=\mathcal{F}\left[(-ix)f(x)\right] .\]
+
+\subhdr{性质 4（p43）：积分定理——积分变除以 $(ik)$}
+
+\[ \int_{-\infty}^{x}f(\zeta)\dd\zeta\ \rightleftharpoons\ \frac{F(k)}{ik} .\]
+证明：令 $\Phi(x)=\int_{-\infty}^{x}f\dd\zeta$，则 $\Phi'(x)=f(x)$ 且 $\Phi(-\infty)=0$。对 $\Phi$ 用导数定理 I：
+\[ f(x)=\Phi'(x)\rightleftharpoons ik\,\Phi(k)\ \Longrightarrow\ \Phi(k)=\frac{F(k)}{ik} .\]
+
+\aside{这里有两个容易被忽略的前提：$\Phi(-\infty)=0$（否则导数定理的边界项不为零）与 $\Phi(+\infty)=\int_{-\infty}^{\infty}f\dd x$ 必须有限（否则 $\Phi$ 不满足“无穷远为零”，积分定理不成立）。课件 p43 只写“由导数定理得到”，两条都没提。}
+
+\subhdr{性质 5（p44）：相似性定理——尺度变换}
+
+\[ f(ax)\rightleftharpoons\frac{1}{|a|}F\!\left(\frac{k}{a}\right)\qquad(a\ne0) .\]
+证明（$a>0$）：令 $u=ax$，$\dd u=a\dd x$：
+\[
+\frac{1}{2\pi}\int f(ax)e^{-ikx}\dd x=\frac{1}{2\pi a}\int f(u)e^{-i\frac{k}{a}u}\dd u=\frac{1}{a}F\!\left(\frac{k}{a}\right) .
+\]
+$a<0$ 时积分限翻转多出一个负号，与 $\dd u=a\dd x$ 的负号抵消，最终分母取 $|a|$。
+
+\warnbox{\textbf{注意与拉普拉斯那一章的区别}：拉普拉斯的相似性定理只对 $a>0$ 成立（因为 $f$ 在负半轴为零，$a<0$ 会让整个积分为零）；傅里叶这一章的 $f$ 定义在整条实轴上，所以 $a<0$ 也能用，只是分母写成 $|a|$。同一个定理名，两章的条件不同——这是两章之间最容易混的一处。}
+
+\subhdr{性质 6（p45）：延迟定理——平移变相位}
+
+\[ f(x-a)\rightleftharpoons e^{-ika}F(k) .\]
+证明：令 $u=x-a$：
+\[ \frac{1}{2\pi}\int f(x-a)e^{-ikx}\dd x=\frac{1}{2\pi}\int f(u)e^{-ik(u+a)}\dd u=e^{-ika}F(k) .\]
+
+\subhdr{性质 7（p46）：位移定理——乘指数变平移}
+
+\[ e^{ik_0x}f(x)\rightleftharpoons F(k-k_0) .\]
+证明：$\frac{1}{2\pi}\int e^{ik_0x}f(x)e^{-ikx}\dd x=\frac{1}{2\pi}\int f(x)e^{-i(k-k_0)x}\dd x=F(k-k_0)$。
+
+\subhdr{性质 8（p46--p47）：卷积定理——$2\pi$ 到底从哪来}
+
+\textbf{卷积的定义}（与拉普拉斯那一章不同：这里是整条实轴上的卷积，不是 $[0,t]$）：
+\[ (f_1*f_2)(x)=\int_{-\infty}^{\infty}f_1(x-\eta)f_2(\eta)\dd\eta .\]
+\textbf{定理}：
+\[ f_1*f_2\ \rightleftharpoons\ 2\pi F_1(k)F_2(k) .\]
+
+\textbf{证明（把 $2\pi$ 现场算出来）}：
+\[
+\mathcal{F}[f_1*f_2]=\frac{1}{2\pi}\int_{-\infty}^{\infty}\left[\int_{-\infty}^{\infty}f_1(x-\eta)f_2(\eta)\dd\eta\right]e^{-ikx}\dd x .
+\]
+交换积分次序（绝对收敛保证），并对内层令 $u=x-\eta$：
+\[
+=\frac{1}{2\pi}\int f_2(\eta)\left[\int f_1(u)e^{-ik(u+\eta)}\dd u\right]\dd\eta
+=\frac{1}{2\pi}\left[\int f_1(u)e^{-iku}\dd u\right]\left[\int f_2(\eta)e^{-ik\eta}\dd\eta\right] .
+\]
+两个方括号分别是 $2\pi F_1$ 与 $2\pi F_2$（注意：\textbf{不是} $F_1$、$F_2$），故
+\[
+\mathcal{F}[f_1*f_2]=\frac{1}{2\pi}\cdot(2\pi F_1)(2\pi F_2)=2\pi F_1F_2 .
+\]
+
+\callout{\textbf{这个 $2\pi$ 不是定理的一部分，是归一化约定的一部分}。它在“$\frac{1}{2\pi}$”与“两个 $2\pi$”相消之后剩下一个（$\frac{1}{2\pi}\cdot4\pi^{2}=2\pi$）。若换成 §4 表的约定 B（$2\pi$ 放在逆变换），同一个定理会写成 $2\pi(f_1*f_2)\rightleftharpoons F_1F_2$。所以\textbf{做题时永远先写定义式}，不要背系数。}
+
+\subhdr{性质 9（p48）：乘积定理——乘积变卷积}
+
+\[ f_1(x)f_2(x)\ \rightleftharpoons\ (F_1*F_2)(k) .\]
+证明：把 $f_2$ 用逆变换写开，
+\[
+\begin{aligned}
+\mathcal{F}[f_1f_2]&=\frac{1}{2\pi}\int f_1(x)\left[\int F_2(\kappa)e^{i\kappa x}\dd\kappa\right]e^{-ikx}\dd x\\
+&=\int F_2(\kappa)\left[\frac{1}{2\pi}\int f_1(x)e^{-i(k-\kappa)x}\dd x\right]\dd\kappa
+=\int F_1(k-\kappa)F_2(\kappa)\dd\kappa .
+\end{aligned}
+\]
+最右端正是 $F_1$ 与 $F_2$ 的卷积（\textbf{没有} $2\pi$）。
+
+\subhdr{四对对偶：性质表其实是两张表叠在一起}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{3.2cm}p{3.5cm}p{2.1cm}@{}}
+\toprule
+\thead{原函数这边} & \thead{像函数这边} & \thead{对偶伙伴} & \thead{页码}
+\\
+\midrule
+求导 $\dfrac{\dd}{\dd x}$ & 乘 $(ik)$ & 乘 $x$ $\leftrightarrow$ 求导 & p41／p42
+\\
+积分 $\displaystyle\int_{-\infty}^{x}$ & 除以 $(ik)$ & ——（无配对） & p43
+\\
+尺度 $f(ax)$ & 尺度 $F(k/a)/|a|$ & 自对偶 & p44
+\\
+平移 $f(x-a)$ & 相位 $e^{-ika}$ & 乘指数 $\leftrightarrow$ 平移 & p45／p46
+\\
+卷积 $f_1*f_2$ & 乘积 $F_1F_2$ & 乘积 $\leftrightarrow$ 卷积 & p46／p48
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{九条性质速查（连同系数一起记）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{0.7cm}p{4.6cm}p{4.8cm}p{1.8cm}@{}}
+\toprule
+\thead{序} & \thead{原函数} & \thead{像函数} & \thead{页码}
+\\
+\midrule
+1 & $\alpha f_1+\beta f_2$ & $\alpha F_1+\beta F_2$ & p40
+\\
+2 & $f^{(n)}(x)$ & $(ik)^{n}F(k)$ & p41
+\\
+3 & $(-ix)^{n}f(x)$ & $F^{(n)}(k)$ & p42
+\\
+4 & $\displaystyle\int_{-\infty}^{x}f\dd\zeta$ & $\dfrac{F(k)}{ik}$ & p43
+\\
+5 & $f(ax)$ & $\dfrac{1}{|a|}F\!\left(\dfrac{k}{a}\right)$ & p44
+\\
+6 & $f(x-a)$ & $e^{-ika}F(k)$ & p45
+\\
+7 & $e^{ik_0x}f(x)$ & $F(k-k_0)$ & p46
+\\
+8 & $f_1*f_2$ & $2\pi F_1F_2$ & p46
+\\
+9 & $f_1f_2$ & $F_1*F_2$ & p48
+\\
+\bottomrule
+\end{tabular}
+
+%=============================================================
+\hdr{§9}{§5.4 $\delta$ 函数：把一个点写成密度（p51--p63）}
+
+\subhdr{为什么要发明一个"不是函数"的函数（p51--p53）}
+
+课件的动机链是：质量 $m$、长 $l$ 的匀质细杆，线密度
+\[
+\rho(x)=\begin{cases}m/l, & |x|\le l/2,\\ 0, & |x|>l/2,\end{cases}
+\qquad \int_{-\infty}^{\infty}\rho\dd x=m ;
+\]
+让 $l\to0$，细杆缩成\textbf{质点}，质量仍是 $m$，但密度变成
+\[
+\rho(x)=\begin{cases}\infty, & x=0,\\ 0, & x\ne0,\end{cases}
+\qquad \int_{-\infty}^{\infty}\rho\dd x=m .
+\]
+把这个对象记成 $m\delta(x)$，于是
+\[
+\delta(x-x_0)=\begin{cases}0, & x\ne x_0,\\ \infty, & x=x_0,\end{cases}
+\qquad \int_{-\infty}^{\infty}\delta(x-x_0)\dd x=1,\qquad \int_a^b\delta(x-x_0)\dd x=1\ (a<x_0<b) .
+\]
+三维情形：$\delta(\mathbf{r}-\mathbf{r}_0)=\delta(x-x_0)\delta(y-y_0)\delta(z-z_0)$，$\iiint\delta(\mathbf{r}-\mathbf{r}_0)\dd\mathbf{r}=1$。三个物理实例（p53）：质点密度 $m\delta(x-a)$、点电荷密度 $Q\delta(x-a)$、脉冲信号 $I\delta(t-a)$。
+
+\warnbox{\textbf{“$\delta$ 不是函数”这件事，课件只用“引入”二字带过}（p52 原文：“在物理学中可引入一个所谓的 $\delta$ 函数来描述”）。严格说：(1) 一个在 $x\ne0$ 处为零、在一点处为无穷、而积分等于 $1$ 的对象，不可能是通常意义下的函数；(2) 它的合法身份是\textbf{广义函数（分布）}——不是“取值”，而是“作用在试验函数上的线性泛函” $\langle\delta,\varphi\rangle=\varphi(0)$；(3) 所以本章所有涉及 $\delta$ 的等式（含 $\delta=H'$、辅助函数的极限）都在\textbf{积分意义下}成立，不能逐点读。这三条不要求会证，但必须知道，否则 §9 后文的两处“极限”都会被误读成逐点等式。}
+
+\subhdr{四条性质（p54--p55）}
+
+\begin{enumerate}
+\item \textbf{偶函数}，其导数为奇函数：
+\[ \delta(-x)=\delta(x),\qquad \delta'(-x)=-\delta'(x) .\]
+\item \textbf{与阶跃函数的关系}：$H(x)=\begin{cases}1,&x>0\\0,&x<0\end{cases}$，则
+\[ \delta(x)=\frac{\dd H(x)}{\dd x},\qquad H(x)=\int_{-\infty}^{x}\delta(\xi)\dd\xi .\]
+（课件把后一式的积分变量与被积变量都写成 $x$，这里改成 $\xi$。）
+\item \textbf{挑选性}：
+\[ \int_{-\infty}^{\infty}f(x)\delta(x-x_0)\dd x=f(x_0) .\]
+特别地，取 $f(x)=x$、$x_0=0$ 得 $\displaystyle\int_{-\infty}^{\infty}x\,\delta(x)\dd x=0$（这是“$\delta$ 偶、$x$ 奇”的直接结果）。
+\item \textbf{复合函数}：若 $\varphi(x)=0$ 的实根为 $x_k$ 且全为单根，则
+\[ \delta[\varphi(x)]=\sum_{k}\frac{\delta(x-x_k)}{|\varphi'(x_k)|} .\]
+\end{enumerate}
+
+\aside{第 4 条可以这样看：在根 $x_k$ 附近 $\varphi(x)\approx\varphi'(x_k)(x-x_k)$，于是 $\delta[\varphi(x)]\approx\delta[\varphi'(x_k)(x-x_k)]=\dfrac{1}{|\varphi'(x_k)|}\delta(x-x_k)$（用了缩放性质 $\delta(au)=\delta(u)/|a|$）。重根时这个线性化失效，公式不成立——课件只写“全为单根”，没解释这个条件为什么必要。}
+
+\subhdr{辅助函数：$\delta$ 的四个"可计算替身"（p56--p57）}
+
+课件的判据是“两个特征”：(1) $x\ne0$ 处为零、$x=0$ 处无穷；(2) 积分为 $1$。凡具备这两条的函数族，其极限都可以当作 $\delta$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.4cm}p{2.0cm}p{6.6cm}@{}}
+\toprule
+\thead{辅助函数} & \thead{收敛方式} & \thead{归一化用的已知积分}
+\\
+\midrule
+$\dfrac{1}{l}\mathrm{rect}\left(\dfrac{x}{l}\right)$ & $l\to0$ & 直接算出 $\int_{-l/2}^{l/2}\frac{1}{l}\dd x=1$
+\\
+$\dfrac{1}{\pi}\dfrac{\sin kx}{x}$ & $k\to\infty$ & $\displaystyle\int_0^{\infty}\frac{\sin x}{x}\dd x=\frac{\pi}{2}$
+\\
+$\dfrac{1}{\pi}\dfrac{\varepsilon}{x^2+\varepsilon^2}$ & $\varepsilon\to0$ & $\displaystyle\int_{-\infty}^{\infty}\frac{\dd u}{1+u^2}=\pi$
+\\
+$\dfrac{1}{\sigma\sqrt{\pi}}e^{-x^2/\sigma^2}$ & $\sigma\to0$ & $\displaystyle\int_0^{\infty}e^{-x^2}\dd x=\frac{\sqrt{\pi}}{2}$
+\\
+\bottomrule
+\end{tabular}
+
+\warnbox{\textbf{四个辅助函数都只验了“积分 $=1$”，没有验“$x\ne0$ 时为 $0$”}（课件 p57 三个例子全如此）。第二个特征其实不显然：$k\to\infty$ 时固定 $x\ne0$，$\frac{\sin kx}{x}$ 在 $\pm\frac1x$ 之间无限次振荡、逐点不趋于任何值——但它在\textbf{积分}意义下趋于零。这正是“弱极限”：\emph{逐点极限不存在，配任意连续函数积分后极限存在且等于该函数在原点的值}。不点破这一层，读者会以为 $\lim_{k\to\infty}\frac{\sin kx}{\pi x}$ 是一个普通函数极限。}
+
+\subhdr{$\delta$ 的傅里叶变换（p58）：一条平谱}
+
+把 $\delta$ 代入正变换：
+\[ C(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\delta(x)e^{-ikx}\dd x=\frac{1}{2\pi}e^{0}=\frac{1}{2\pi} ,\]
+用到了挑选性（$\delta$ 把 $x=0$ 处的值挑出来）。于是逆变换给出
+\[ \boxed{\ \delta(x)=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{ikx}\dd k\ }\]
+三维版：
+\[ \delta(\mathbf{r})=\frac{1}{(2\pi)^{3}}\iiint_{-\infty}^{\infty}e^{i\mathbf{k}\cdot\mathbf{r}}\dd\mathbf{k}\]
+（指数是 $3$，与 §4 的“数一数有几个 $\dd$”规则一致）。
+
+课件 p58 还用这条积分推出 $\delta$ 的\textbf{广义函数表示}：把积分上限记作 $K$，再取 $K\to\infty$，
+\[
+\delta(x)=\lim_{K\to\infty}\frac{1}{2\pi}\int_{-K}^{K}e^{ikx}\dd k
+=\lim_{K\to\infty}\frac{1}{2\pi}\cdot\frac{e^{iKx}-e^{-iKx}}{ix}
+=\lim_{K\to\infty}\frac{1}{\pi}\frac{\sin Kx}{x} ,
+\]
+这正是 p57 的第二个辅助函数——两条路（辅助函数 / 傅里叶积分）在这里接上。
+
+\aside{“很容易推导出”这四个字（p58 原文）掩盖了两件事：(1) $\int_{-K}^{K}e^{ikx}\dd k$ 的求值是初等的；(2) 把 $K\to\infty$ 放到积分号外，是在广义函数意义下取的极限。若自己验算会发现 $\lim_{K\to\infty}\frac{\sin Kx}{\pi x}$ 逐点并不存在（除 $x=0$ 外都振荡）。}
+
+\subhdr{例 1（p59）：$\sin ax$、$\cos ax$ 的变换——明知不绝对可积还要算}
+
+\[
+\frac{1}{2\pi}\int_{-\infty}^{\infty}\sin ax\,e^{-ikx}\dd x
+=\frac{1}{4\pi i}\left[\int e^{-i(k-a)x}\dd x-\int e^{-i(k+a)x}\dd x\right]
+=\frac{1}{2i}\left[\delta(k-a)-\delta(k+a)\right],
+\]
+\[
+\frac{1}{2\pi}\int_{-\infty}^{\infty}\cos ax\,e^{-ikx}\dd x
+=\frac{1}{4\pi}\left[\int e^{-i(k-a)x}\dd x+\int e^{-i(k+a)x}\dd x\right]
+=\frac{1}{2}\left[\delta(k-a)+\delta(k+a)\right] .
+\]
+中间那一步用的是 p58 的 $\frac{1}{2\pi}\int e^{i\alpha x}\dd x=\delta(\alpha)$（取 $\alpha=\mp(k\mp a)$）。
+
+\warnbox{课件自己说破了关键：“严格说，函数 $\sin ax$ 和 $\cos ax$ 并不满足绝对可积条件，但是利用 $\delta$ 函数的定义，可以计算出他们的傅里叶变换式”。这句话的意思是：\textbf{这里不是在算一个收敛的积分，而是在广义函数意义下做形式运算}。合法化的办法是先乘衰减因子 $e^{-\varepsilon|x|}$ 再令 $\varepsilon\to0^{+}$，结果恰好是 $\delta$ 型的两支。作业第 6 题（p63）的第 (2) 问 $\alpha\to0^{+}$ 就是这条思路的练习。}
+
+\subhdr{例 2（p60）：球坐标里的 $\delta$ 型函数}
+
+\[ f(r)=\frac{4\pi^{2}}{r}\delta(r-r_0),\qquad
+F(\mathbf{k})=\frac{1}{(2\pi)^{3}}\iiint\frac{4\pi^{2}}{r}\delta(r-r_0)e^{-i\mathbf{k}\cdot\mathbf{r}}\dd\mathbf{r} .\]
+球坐标下 $\dd\mathbf{r}=r^{2}\dd r\sin\theta\dd\theta\dd\varphi$、$\mathbf{k}\cdot\mathbf{r}=kr\cos\theta$。先做 $\varphi$（给 $2\pi$），再用 $\delta$ 挑掉 $r$ 积分（把每个 $r$ 换成 $r_0$，$r^{2}/r$ 约成 $r_0$）：
+\[
+F(\mathbf{k})=\frac{4\pi^{2}}{(2\pi)^{3}}\cdot 2\pi\cdot r_0\int_0^{\pi}\sin\theta\,e^{-ikr_0\cos\theta}\dd\theta
+=\frac{1}{2\pi}\cdot 2\pi\cdot r_0\cdot\frac{e^{ikr_0}-e^{-ikr_0}}{ikr_0}
+=\frac{e^{ikr_0}-e^{-ikr_0}}{ik} .
+\]
+（其中 $\frac{4\pi^{2}}{(2\pi)^{3}}=\frac{1}{2\pi}$，与 $2\pi$ 相乘正好为 $1$。角度积分用换元 $u=\cos\theta$，得 $\frac{2\sin(kr_0)}{kr_0}$。）结果可写成
+\[ \frac{4\pi^{2}}{r}\delta(r-r_0)\ \rightleftharpoons\ \frac{2\sin(kr_0)}{k} .\]
+
+\subhdr{例 3（p61）：含 $\delta$ 的常微分方程，以及那处最大的跳步}
+
+\textbf{题面}：
+\[ \frac{\dd^{2}g}{\dd x^{2}}-a^{2}g=\delta(x-x_0)\qquad(-\infty<x<\infty),\ a>0 .\]
+\textbf{第一步（变换）}：设 $g\rightleftharpoons G$。由导数定理 I（$g(\pm\infty)=0$）与延迟定理（$\delta(x-x_0)\rightleftharpoons\frac{1}{2\pi}e^{-ikx_0}$），
+\[ (ik)^{2}G-a^{2}G=e^{-ikx_0}\cdot\frac{1}{2\pi}\ \Longrightarrow\ G(k)=-\frac{1}{2\pi}\cdot\frac{e^{-ikx_0}}{k^{2}+a^{2}} .\]
+\textbf{第二步（反演）}：
+\[ g(x)=-\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{e^{ik(x-x_0)}}{k^{2}+a^{2}}\dd k .\]
+课件在这里直接写“利用留数定理，得到 $g(x)=-\dfrac{1}{2a}e^{-a|x-x_0|}$”——\textbf{中间一步都没有}。补全：
+
+被积函数的极点是 $k=\pm ia$，都在虚轴上。按 $x-x_0$ 的符号选闭合方向：
+
+\begin{itemize}
+\item $x>x_0$：在上半平面闭合（$e^{ik(x-x_0)}$ 在上半平面衰减），圈住 $k=ia$，
+\[
+-\frac{1}{2\pi}\cdot 2\pi i\operatorname{Res}_{k=ia}
+=-\frac{1}{2\pi}\cdot 2\pi i\cdot\frac{e^{-a(x-x_0)}}{2ia}
+=-\frac{1}{2a}e^{-a(x-x_0)} .
+\]
+\item $x<x_0$：在下半平面闭合（顺时针，留数取负），圈住 $k=-ia$，
+\[
+-\frac{1}{2\pi}\cdot\left(-2\pi i\right)\cdot\frac{e^{a(x-x_0)}}{-2ia}
+=-\frac{1}{2a}e^{a(x-x_0)} .
+\]
+\end{itemize}
+
+两支合写：
+\[ g(x)=-\frac{1}{2a}e^{-a|x-x_0|} .\]
+
+\textbf{验算（比查表更可靠）}：对 $x\ne x_0$，两支内部都有 $g''=a^{2}g$；在 $x=x_0$ 处 $g'$ 从 $-\frac12$ 跳到 $+\frac12$（跳变量 $1$），故 $g''$ 有一个 $+\delta(x-x_0)$ 的贡献。于是 $g''-a^{2}g=+\delta(x-x_0)$，与题面一致。\textbf{整体那个负号不是装饰}：漏掉它，$g'$ 的跳变量就变成 $-1$，方程右端会变成 $-\delta(x-x_0)$，验算立刻不过。
+
+\subhdr{例 4（p62）：格林函数法——把上面那题当"积木"}
+
+\textbf{题面}：
+\[
+\begin{cases}
+\dfrac{\dd^{2}u}{\dd x^{2}}-a^{2}u=f(x), & (-\infty<x<\infty),\\[6pt]
+u(x)\Big|_{x\to\pm\infty}=0 .
+\end{cases}
+\]
+\textbf{三步}：
+
+\begin{enumerate}
+\item 用 $\delta$ 的挑选性把 $f$ 写成“一堆点源的叠加”：
+\[ f(x)=\int_{-\infty}^{\infty}\delta(x-x')f(x')\dd x' .\]
+\item 设 $u$ 也是同样的叠加：$u(x)=\displaystyle\int_{-\infty}^{\infty}g(x,x')f(x')\dd x'$。代入方程（求导与积分交换，$\frac{\dd^{2}}{\dd x^{2}}$ 只作用在 $g$ 上）：
+\[ \int\left[\frac{\dd^{2}g}{\dd x^{2}}-a^{2}g-\delta(x-x')\right]f(x')\dd x'=0 .\]
+由于这对\textbf{任意} $f$ 都成立，方括号必须为零：
+\[ \frac{\dd^{2}g}{\dd x^{2}}-a^{2}g=\delta(x-x') .\]
+这一步（“对任意 $f$ 成立 $\Rightarrow$ 核为零”）课件没写，它正是\textbf{叠加原理}的核心——相当于说“点源的响应知道全了，任意源的响应就全知道”。
+\item 用例 3 的结果（把 $x_0$ 换成 $x'$）：
+\[ g(x,x')=-\frac{1}{2a}e^{-a|x-x'|} ,\]
+于是
+\[ u(x)=-\frac{1}{2a}\int_{-\infty}^{\infty}e^{-a|x-x'|}f(x')\dd x' .\]
+\end{enumerate}
+
+\aside{$g(x,x')$ 只依赖 $|x-x'|$，这叫\textbf{平移不变}——方程里没有显含 $x$ 的项，所以点源挪到哪里，响应就跟着挪到哪里。课件 p62 把例 3 的 $x_0$ 直接换成 $x'$ 搬过来，用的正是这条不变性。}
+
+\callout{\textbf{§5.4 一句话}：$\delta$ 的作用不是“表示一个无限大的点”，而是\textbf{把“叠加”写成积分}。有了挑选性 $f(x)=\int\delta(x-x')f(x')\dd x'$，任何一个线性方程都可以先解“点源响应”（格林函数），再叠加成一般解——这就是课件说的“格林函数法”（p62 红字，第十一章展开）。}
+
+%=============================================================
+\hdr{§10}{缺口清单：19 条，逐条给页码与原文短语}
+
+\gapitem{机制缺口 · p5--p6}{“推出实变函数傅里叶级数的系数”。缺：正交性五式（p5 直接列出）怎么用来把 $a_n$、$b_n$ 筛出来，步骤一行未给。补：§1 的“乘基函数—逐项积分—只活下 $n=m$”三步，并补 $\int\cos^{2}=l$ 的来源。}
+
+\gapitem{代数跳步 · p13}{“$a_n=\ ?\ \ (n\ge1)$”“$b_n=b_n=\ ?$”。缺：三个系数全部留白，然后直接给级数 $\sum\frac{\sin(2n-1)x}{2n-1}$，整段推导缺失。补：§2 把 $a_0$、$a_n$、$b_n$ 三行算完，并说明这里 $l=\pi$。}
+
+\gapitem{拼接缺口 · p14}{四张 $m=1,2,3,24$ 的图，无任何文字。缺：$m$ 是部分和阶数；$m=24$ 图上跳变处的振荡（Gibbs 现象）为什么不会随 $m$ 消失。补：§2 末尾的解释。}
+
+\gapitem{机制缺口 · p19}{“引入 $\Delta k_n=k_{n+1}-k_n=\pi/l$”“对于 $a_0$，由于积分 $\int f\dd x$ 有限，则 $\lim a_0=0$”。缺：为什么把 $a_n$ 乘上 $\Delta k_n$（即 $1/l=\Delta k/\pi$ 的换算），以及 $a_0\to0$ 的估计。补：§3 的“换算一”“换算二”。}
+
+\gapitem{形式改写 · p20}{“同理，$\sum b_n\sin k_nx=\cdots$”。缺：紧接着两行把 $\sin$ 写成了 $\cos$（照抄 p19），正弦方向的极限过程其实没做。补：§3 的警告框重做一遍。}
+
+\gapitem{答案形态 · p21}{“函数 $f(x)$ 在任意有限区间内满足狄里希利条件”。缺：收敛结论——连续点收敛到 $f$，间断点收敛到左右极限平均值。补：§3 的警告框。}
+
+\gapitem{答案形态 · p24}{“$f(t)=\int_0^{\infty}A(\omega)\cos\omega t\dd\omega=\begin{cases}1,&|t|<T\\0,&|t|>T\end{cases}$”。缺：把 $A(\omega)$ 代回后为什么积分回到原函数（狄里希利积分）。补：§3 例 1 的旁注。}
+
+\gapitem{代数跳步 · p26}{“$=-\frac{A}{\pi}\sin(\cdots)\left[\frac{1}{\omega_0-\omega}+\frac{1}{\omega_0+\omega}\right]=\cdots$”。缺：通分合并成 $\frac{2A}{\pi}\frac{\omega_0}{\omega^{2}-\omega_0^{2}}$ 这一步。补：§3 例 2 的通分两行。}
+
+\gapitem{记号冲突 · p29 与 p30}{“对应的积分式为正变换，其变换的核为 $e^{ikx}$”／“在正变换核中核为 $e^{-i\omega t}$”。缺：两页对“正变换”的定义相反，且与通行叫法相反。补：§0 的警告框统一命名。}
+
+\gapitem{机制缺口 · p29}{$F(k)=\frac{1}{2\pi}\int fe^{-ikx}\dd x$ 里的 $\frac{1}{2\pi}$。缺：它是 $\frac{1}{\pi}$（p18）与 $\frac12$（p27）相乘来的，课件从未解释。补：§4 推导的末行。}
+
+\gapitem{拼接缺口 · p31}{“更一般地，如果 $f(\mathbf{r},t)$ 是一个在三维无界空间中随时间变化的函数”。缺：从二维的 $(2\pi)^{2}$ 跳到三维含时的 $(2\pi)^{4}$，没说明“每多一个积分变量多一个 $1/(2\pi)$”。补：§4 的规则框。}
+
+\gapitem{机制缺口 · p32}{“再利用 $\int_0^{\infty}e^{-ax^{2}}\cos(bx)\dd x=\frac12\sqrt{\pi/a}\,e^{-b^{2}/4a}$”。缺：公式本身未证；把 $a\to a^{2}/2$、$b\to k$ 代进去的具体替换也未写。补：§5 用“对参数求导”三行证完，再逐步代入。}
+
+\gapitem{机制缺口 · p34}{绿框 $\int f e^{imx}\dd x=2\pi i\sum\mathrm{Res}+\pi i\,\mathrm{Res}_{\text{实轴}}$。缺：含实轴极点时的“半留数”$\pi i$ 从哪来（挖小半圆）。补：§6 的三步推导。}
+
+\gapitem{代数跳步 · p37--p38}{“下面采用分步积分法”。缺：$\int_0^{\pi}\sin\theta e^{-ikr\cos\theta}\dd\theta$ 的换元与求值整段跳过；两次分部积分的边界项取值没写。补：§7 例 5 补全角度积分与 $\int e^{-r/\lambda}\sin kr\dd r$。}
+
+\gapitem{机制缺口 · p46--p48}{“$f_1*f_2\rightleftharpoons2\pi F_1F_2$”“$f_1f_2\rightleftharpoons F_1*F_2$”。缺：$2\pi$ 只在卷积定理出现、乘积定理没有，差别来自 $\frac{1}{2\pi}$ 的记账，未点明。补：§8 性质 8 的完整推导 + 约定对照框。}
+
+\gapitem{适用区间 · p49}{“$2\pi\mathcal{F}[f]\cdot\mathcal{F}[\frac{1}{x^{2}+a^{2}}]=\mathcal{F}[\frac{1}{x^{2}+b^{2}}]$”。缺：凭什么可以把因子“除过去”——用了 $\mathcal{F}$ 可逆且 $\mathcal{F}[\frac{1}{x^{2}+a^{2}}]\ne0$。补：§7 例 1 末的警告框。}
+
+\gapitem{答案形态 · p51--p52}{“在物理学中可引入一个所谓的 $\delta$ 函数来描述”。缺：$\delta$ 不是函数（广义函数/分布），所有等式只在积分意义下成立。补：§9 的警告框。}
+
+\gapitem{机制缺口 · p56--p57}{“如果一个函数 $f(x)$ 具有上述两个特征，就可以用来构造 $\delta(x)$”。缺：四个辅助函数都只验“积分 $=1$”，未说明“$x\ne0$ 处趋于 $0$”是弱极限。补：§9 辅助函数后的警告框。}
+
+\gapitem{拼接缺口 · p61}{“利用留数定理，得到 $g(x)=-\frac{1}{2a}e^{-a|x-x_0|}$”。缺：从 $\int\frac{e^{ik(x-x_0)}}{k^{2}+a^{2}}\dd k$ 到结果的留数计算（含 $k$ 正负两支、闭合方向）全部省略——本章最大的一处跳步。补：§9 例 3 分两支算完并验算。}
+
+\callout{\textbf{类型分布}：机制缺口 6 条、拼接缺口 3 条、代数跳步 3 条、答案形态 3 条、形式改写 1 条、记号冲突 1 条、适用区间 1 条、笔误 1 条，共 19 条。
+
+\textbf{本章的系统性问题}：\emph{归一化常数从不解释}——$\frac{1}{2\pi}$、$(2\pi)^{2}$、$(2\pi)^{4}$、$2\pi$ 四处各出现一次，全章没有一句把它们串起来；以及\emph{极限过程一律用“同理／很容易”带过}（p20、p58、p61 三处）。前者的补法是 §0 的“三套归一化”与 §4 的“数 $\dd$ 规则”；后者的补法是各节里显式写出的极限步骤。}
+
+%=============================================================
+\hdr{§11}{易错点：每一条都能指回某个例子的某一步}
+
+\begin{enumerate}
+\item \textbf{把 $1/(2\pi)$ 放到错的一边}（§0、§4）。本章约定是正变换带 $\frac{1}{2\pi}$；若按约定 B 写而套约定 A 的卷积定理（$2\pi F_1F_2$），答案会差 $2\pi$。改法：先写定义式，再代。
+
+\item \textbf{常数项漏看 $1/2$}（§1）。课件的级数是 $a_0+\sum(\cdots)$，故 $a_0=\frac{1}{2l}\int f$；若把级数写成 $\frac{a_0}{2}+\sum(\cdots)$，则 $a_0=\frac{1}{l}\int f$。同一个符号 $a_0$，两种写法差两倍。
+
+\item \textbf{把 $l$ 忘了代成 $\pi$}（§2 例 2）。题面区间是 $(-\pi,\pi)$，则 $l=\pi$、$k_n=n$；照抄公式里的 $l$ 不代，最后结果会多出 $\pi$。
+
+\item \textbf{在跳变点直接用函数值}（§3）。傅里叶积分在间断点收敛到左右极限的平均值。例 2 的方波在 $x=0$ 处收敛到 $0$，不是 $\frac{\pi}{4}$。
+
+\item \textbf{把“平移”与“乘指数”两定理记反}（§8 性质 6、7）。延迟定理 $f(x-a)\rightleftharpoons e^{-ika}F(k)$（时域平移 $\to$ 频域相位）；位移定理 $e^{ik_0x}f(x)\rightleftharpoons F(k-k_0)$（时域相位 $\to$ 频域平移）。两式方向相反，写反了会得到 $F(k+a)$ 之类的结果。
+
+\item \textbf{把“$\lim\frac{\sin Kx}{\pi x}=\delta(x)$”当成逐点极限}（§9）。除 $x=0$ 外这个极限不存在，它只在配积分时成立；$\delta[\varphi(x)]$ 的公式要求 $\varphi$ 的根全为单根。
+
+\item \textbf{用留数算 $\delta$ 型方程时选错半平面}（§9 例 3）。$x>x_0$ 在上半平面闭、$x<x_0$ 在下半平面闭；判据是看 $e^{ik(x-x_0)}$ 在哪个半平面衰减。选反了会得到 $e^{+a|x-x_0|}$（发散）而不是 $e^{-a|x-x_0|}$。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{三句话总结与页码对照}
+
+\subhdr{三句话}
+
+\begin{enumerate}
+\item \textbf{傅里叶级数 $=$ 用正交基把函数分解}：乘基函数、积分、只活下自己那一项（§1）；四种写法只是分母怎么记（§2）。
+\item \textbf{傅里叶变换 $=$ 让周期趋于无穷}：$1/l$ 写成 $\Delta k/\pi$，求和变积分，离散谱变连续谱（§3）；$\frac{1}{2\pi}$ 挂在哪边决定整张性质表的系数（§4、§8）。
+\item \textbf{$\delta$ 函数 $=$ 把“叠加”写成积分}：有了挑选性，任意源都能拆成一堆点源；解出点源响应（格林函数）再叠加，就是解线性方程的通法（§9）。
+\end{enumerate}
+
+\subhdr{页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{7.4cm}p{2.9cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p1--p4 & 章首导论、傅里叶生平、目录 & 未收（不含量化内容）
+\\
+p5--p7 & 正交性五式、实数级数系数 & §1
+\\
+p8 & 奇偶性（只余余弦／只余正弦） & §3（并入奇偶讨论）
+\\
+p9--p11 & 波数、时间变量、$\theta$ 变量三种改写 & §2
+\\
+p12 & 例 1 锯齿函数 & §2
+\\
+p13--p14 & 例 2 对称方波（系数留白）与部分和图 & §2
+\\
+p15--p17 & 复数形式级数与三点说明 & §2
+\\
+p18--p23 & 积分定理、极限推导、存在条件、奇偶、时间变量 & §3
+\\
+p24 & 例 1 矩形脉冲 & §3
+\\
+p25--p26 & 例 2 截断正弦波 & §3
+\\
+p27--p31 & 复数形式变换、$(2\pi)$ 规律、二维三维 & §4
+\\
+p32 & 例 3 高斯函数 & §5
+\\
+p33--p35 & 例 4 $\sin\omega_0t/(\pi t)$ 与矩形谱 & §6
+\\
+p36--p38 & 例 5 屏蔽库仑势 & §7
+\\
+p39 & 作业 1--4 & §7 末
+\\
+p40--p48 & 九条性质 & §8
+\\
+p49--p50 & 性质例 1（卷积反解） & §7
+\\
+p51--p58 & $\delta$ 的定义、性质、辅助函数、变换 & §9
+\\
+p59--p62 & 例 1--例 4（$\sin/\cos$、球坐标、两个常微分方程） & §9
+\\
+p63 & 作业 5--7 & §7 末
+\\
+\bottomrule
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据 \texttt{第五章+傅里叶变换+-+上传课件.pdf}（63 页，2026-10-22 读）写成。所有公式要么标注了课件页码，要么给出了完整推导；§1 的系数推导、§2 例 2 的三个系数、§3 的正弦一半、§5 的高斯积分、§6 的半留数公式、§8 的卷积 $2\pi$、§9 例 3 的留数计算均为本讲义补出，课件未给。归一化按 §0 统一：实数级数 $a_0=\frac{1}{2l}\int f$，积分变换 $F(k)=\frac{1}{2\pi}\int fe^{-ikx}\dd x$.\par}
+
+\end{document}

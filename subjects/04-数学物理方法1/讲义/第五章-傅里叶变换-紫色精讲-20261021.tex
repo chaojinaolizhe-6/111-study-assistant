@@ -1,0 +1,836 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第五章 傅里叶变换 · 紫色主题精讲课件（含完整推导）
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{colortbl}
+
+\usetikzlibrary{calc}
+
+% ---------------------------------------------------------------- fonts
+\setCJKmainfont{Microsoft YaHei}[AutoFakeBold=2.0]
+\setCJKsansfont{Microsoft YaHei}[AutoFakeBold=2.0]
+\setCJKmonofont{Microsoft YaHei}
+
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+\xeCJKDeclareCharClass{CJK}{"25A0 -> "25FF}
+
+% ---------------------------------------------------------------- palette
+\definecolor{deep}{HTML}{4B2168}
+\definecolor{mid}{HTML}{6B3E99}
+\definecolor{light}{HTML}{9A73C4}
+\definecolor{pale}{HTML}{D9C7EC}
+\definecolor{wash}{HTML}{F7F2FC}
+\definecolor{wash2}{HTML}{EFE6FA}
+\definecolor{ink}{HTML}{2B1B3A}
+\definecolor{grey}{HTML}{6E627D}
+\definecolor{petalA}{HTML}{E9C6E6}
+\definecolor{petalB}{HTML}{CFA9E6}
+\definecolor{gold}{HTML}{F2C96B}
+\definecolor{leaf}{HTML}{A9C6B4}
+
+% ---------------------------------------------------------------- beamer look
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{normal text}{fg=ink}
+\setbeamercolor{structure}{fg=mid}
+\setbeamercolor{frametitle}{fg=deep}
+\setbeamercolor{itemize item}{fg=mid}
+\setbeamercolor{itemize subitem}{fg=light}
+\setbeamercolor{block title}{bg=wash2, fg=deep}
+\setbeamercolor{block body}{bg=wash, fg=ink}
+\setbeamerfont{block title}{size=\small, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamersize{text margin left=0.85cm, text margin right=0.85cm}
+\setbeamertemplate{itemize item}{\raisebox{0.12ex}{\color{mid}\scriptsize$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.12ex}{\color{light}\scriptsize$\bullet$}}
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% a small flower drawn with tikz
+\newcommand{\bloom}[5]{%
+  \begin{scope}[shift={(#1,#2)},scale=#3]
+    \foreach \a in {0,72,...,288}{%
+      \fill[#4,rotate=\a] (0,0.21) ellipse (0.105 and 0.185);
+      \draw[white,line width=0.5pt,rotate=\a] (0,0.21) ellipse (0.105 and 0.185);
+    }
+    \fill[#5] (0,0) circle (0.078);
+    \draw[white,line width=0.5pt] (0,0) circle (0.078);
+  \end{scope}}
+
+\newcommand{\bud}[3]{\fill[#3] (#1,#2) circle (0.045);}
+\newcommand{\sprig}[3]{%
+  \begin{scope}[shift={(#1,#2)},scale=#3]
+    \draw[pale,line width=3pt,line cap=round] (0,0) .. controls (0.14,0.58) and (-0.02,1.02) .. (0.26,1.52);
+    \begin{scope}[shift={(0.23,0.52)},rotate=34]\fill[leaf] (0,0) ellipse (0.20 and 0.082);\end{scope}
+    \begin{scope}[shift={(0.08,0.88)},rotate=-28]\fill[leaf!80!white] (0,0) ellipse (0.19 and 0.078);\end{scope}
+    \begin{scope}[shift={(0.27,1.22)},rotate=40]\fill[leaf] (0,0) ellipse (0.18 and 0.074);\end{scope}
+    \fill[petalB] (0.01,0.02) circle (0.058);
+    \fill[gold] (0.27,1.57) circle (0.052);
+  \end{scope}}
+
+% ---------------------------------------------------------------- background
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[white] (current page.south west) rectangle (current page.north east);
+    \begin{scope}[opacity=0.42,shift={(current page.south west)}]
+      \bloom{15.15}{0.95}{0.40}{pale}{petalB!70!white}
+      \bloom{14.55}{0.50}{0.24}{petalA}{gold!60!white}
+      \bloom{15.72}{1.55}{0.17}{petalB}{gold!60!white}
+    \end{scope}
+  \end{tikzpicture}}
+
+\setbeamertemplate{background}{\usebeamertemplate{background canvas}}
+
+% ---------------------------------------------------------------- frame title
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.20cm}%
+  \begin{minipage}{\textwidth}
+    {\color{deep}\bfseries\Large \insertframetitle}\\[1pt]
+    {\color{mid}\rule{2.1cm}{1.4pt}}\hfill{\color{light}\footnotesize\sffamily 第五章 · 傅里叶变换}
+  \end{minipage}}
+
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{\hspace{0.85cm}{\color{grey}\scriptsize 数学物理方法1\quad 第五章\quad 傅里叶变换}\hfill
+  {\color{light}\scriptsize\bfseries\insertframenumber}\hspace{0.85cm}}\vspace{0.10cm}}
+
+% ---------------------------------------------------------------- helpers
+\newcommand{\sect}[4]{%
+  \setbeamertemplate{background canvas}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[wash] (current page.south west) rectangle (current page.north east);
+      \fill[pale] (current page.north west) rectangle ([yshift=-0.16cm]current page.north east);
+      \begin{scope}[opacity=0.85,shift={(current page.south west)}]
+        \bloom{13.30}{6.15}{1.35}{petalB}{gold}
+        \bloom{14.65}{5.40}{0.86}{petalA}{gold}
+        \bloom{12.65}{4.75}{0.64}{pale}{petalB}
+        \bloom{15.15}{6.55}{0.48}{petalA}{petalB}
+        \bloom{14.05}{3.95}{0.36}{pale}{gold}
+        \sprig{14.20}{5.55}{1.05}
+      \end{scope}
+    \end{tikzpicture}}%
+  \begin{frame}[plain]
+    \vspace{0.30cm}
+    \hspace{0.02cm}{\color{pale}\fontsize{52}{52}\selectfont\bfseries #1}\\[2pt]
+    {\color{deep}\fontsize{27}{31}\selectfont\bfseries #2}\\[3pt]
+    {\color{mid}\rule{2.2cm}{1.5pt}}\\[7pt]
+    {\color{light}\small #3}\\[9pt]
+    \begin{minipage}{9.9cm}\small
+      \begin{itemize}#4\end{itemize}
+    \end{minipage}
+  \end{frame}%
+  \setbeamertemplate{background canvas}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[white] (current page.south west) rectangle (current page.north east);
+      \begin{scope}[opacity=0.42,shift={(current page.south west)}]
+        \bloom{15.15}{0.95}{0.40}{pale}{petalB!70!white}
+        \bloom{14.55}{0.50}{0.24}{petalA}{gold!60!white}
+        \bloom{15.72}{1.55}{0.17}{petalB}{gold!60!white}
+      \end{scope}
+    \end{tikzpicture}}}
+
+\newcommand{\src}[1]{{\color{light}\scriptsize\ttfamily 对应课件 #1}}
+\newcommand{\bstrong}[1]{{\color{deep}\bfseries #1}}
+\newcommand{\bhl}[1]{{\color{mid}\bfseries #1}}
+
+
+% ---- full page backgrounds (template level, so they are never clipped)
+\newcommand{\bgcontent}{%
+  \setbeamertemplate{background canvas}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[white] (current page.south west) rectangle (current page.north east);
+      \begin{scope}[opacity=0.42,shift={(current page.south west)}]
+        \bloom{15.15}{0.95}{0.40}{pale}{petalB!70!white}
+        \bloom{14.55}{0.50}{0.24}{petalA}{gold!60!white}
+        \bloom{15.72}{1.55}{0.17}{petalB}{gold!60!white}
+      \end{scope}
+    \end{tikzpicture}}}
+
+\newcommand{\bgcover}{%
+  \setbeamertemplate{background canvas}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[wash] (current page.south west) rectangle (current page.north east);
+      \fill[mid] (current page.south west) rectangle ([xshift=0.34cm]current page.north west);
+      \fill[pale] ([xshift=0.34cm]current page.south west) rectangle ([xshift=0.46cm]current page.north west);
+      \begin{scope}[opacity=0.95,shift={(current page.south west)}]
+        \bloom{12.95}{6.15}{1.80}{petalB}{gold}
+        \bloom{14.45}{5.10}{1.10}{petalA}{gold}
+        \bloom{12.35}{4.45}{0.72}{pale}{petalB}
+        \bloom{15.05}{6.55}{0.56}{petalA}{petalB}
+        \bloom{13.30}{3.95}{0.42}{pale}{gold}
+        \sprig{13.85}{5.35}{1.20}
+        \sprig{12.15}{4.95}{0.78}
+      \end{scope}
+    \end{tikzpicture}}}
+
+\newcommand{\bgclose}{%
+  \setbeamertemplate{background canvas}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[wash] (current page.south west) rectangle (current page.north east);
+      \fill[mid] (current page.south west) rectangle ([xshift=0.30cm]current page.north west);
+      \begin{scope}[opacity=0.95,shift={(current page.south west)}]
+        \bloom{12.95}{5.95}{1.45}{petalB}{gold}
+        \bloom{14.25}{5.10}{0.90}{petalA}{gold}
+        \bloom{12.35}{4.55}{0.62}{pale}{petalB}
+        \sprig{13.55}{5.70}{1.00}
+      \end{scope}
+    \end{tikzpicture}}}
+
+\bgcontent
+
+\begin{document}
+
+% ================================================================ 封面
+\bgcover
+\begin{frame}[plain]
+  \vspace{0.85cm}
+  \hspace{0.55cm}{\color{mid}\bfseries\large 数 学 物 理 方 法 1\quad·\quad 第 五 章}\\[10pt]
+  \hspace{0.55cm}{\color{deep}\fontsize{48}{54}\selectfont\bfseries 傅里叶变换}\\[4pt]
+  \hspace{0.60cm}{\color{mid}\large\bfseries 从傅里叶级数到 $\bm{\delta}$ 函数}\\[12pt]
+  \hspace{0.60cm}{\color{petalB}\rule{3.0cm}{2.4pt}}\\[14pt]
+  \hspace{0.60cm}\begin{minipage}{9.4cm}
+    \color{grey}\small
+    正交性 $\ \cdot\ $ 系数公式 $\ \cdot\ $ 周期 $\to\infty$ $\ \cdot\ $ 七条性质 $\ \cdot\ $ 点源 $\delta$\\[3pt]
+    每一节都给完整推导，并标明与老师课件的对应页码
+  \end{minipage}
+  \vfill
+  \hspace{0.60cm}{\color{light}\scriptsize 配套课件：第五章+傅里叶变换（p5--p63）\quad 整理：2026-10-21}
+\end{frame}
+\bgcontent
+
+% ================================================================ 地图
+\begin{frame}{本章地图：一条从“级数”到“点源”的路}
+  \vspace{2pt}
+  \begin{columns}[t]
+    \begin{column}{0.62\textwidth}
+      \begin{itemize}\small
+        \item \bstrong{§5.1 傅里叶级数}\quad 周期函数 $\to$ 正交性筛出系数 $\to$ 奇偶简化 $\to$ 复数形式\ \ {\color{light}(p5--17)}
+        \item \bstrong{§5.2 傅里叶变换}\quad 周期 $\to\infty$，离散 $k_n$ 变连续 $k$，求和变积分\ \ {\color{light}(p18--38)}
+        \item \bstrong{§5.3 变换的性质}\quad 线性、相似、延迟、位移、导数、积分、卷积\ \ {\color{light}(p40--50)}
+        \item \bstrong{§5.4 $\delta$ 函数}\quad 点源怎么表示，它的谱为什么是常数\ \ {\color{light}(p51--63)}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \begin{block}{一句话主线}
+        \small 把“函数”换成“频谱”，把“微分方程”换成“代数方程”。
+      \end{block}
+      \vspace{4pt}
+      \begin{block}{两个约定（先钉死）}
+        \small 本课常数项写 $a_0$，像函数 $F(k)$ 带 $\frac{1}{2\pi}$。
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ================================================================ §5.1
+\sect{§5.1}{傅里叶级数}{正交性 $\to$ 系数 $\to$ 奇偶 $\to$ 复数形式\quad{\color{light}课件 p5--p17}}{%
+  \item 三角函数为什么正交：一次积化和差就能证
+  \item 系数公式的推导，以及常数项分母为什么是 $2l$
+  \item 奇偶简化，与 $f(x)=x$ 的完整例题
+  \item 复数形式，与两套系数的换算}
+
+\begin{frame}{为什么要把周期函数拆成正弦和余弦}
+  \begin{itemize}\small
+    \item \bstrong{物理动机：}对常系数线性系统，$e^{ikx}$ 是微分算子的\bhl{特征函数}。输入是正弦，输出还是同频正弦，只差振幅与相位。
+    \item \bstrong{于是：}任意输入先拆成一堆正弦，每条各算，再叠加。这就是“叠加原理”在傅里叶分析里的具体形态。
+    \item \bstrong{数学前提：}周期函数要能被三角级数表示，须满足狄里希利条件（分段光滑、至多有限个第一类间断点）。
+    \item \bstrong{结果：}$f$ 的“频谱”——每个频率占多大份量——变成一串可计算的数 $a_n,b_n$。
+  \end{itemize}
+  \vspace{6pt}
+  \begin{block}{记住这一句}
+    \small 拆开以后，函数不再是一个整体，而是一张\bhl{频率清单}。
+  \end{block}
+\end{frame}
+
+\begin{frame}{第一步：三角函数在周期上正交}
+  设 $k_n=\dfrac{n\pi}{l}$，则
+  \[
+    \frac{1}{l}\int_{-l}^{l}\cos k_nx\,\cos k_mx\,\mathrm{d}x=\delta_{nm},\qquad
+    \frac{1}{l}\int_{-l}^{l}\sin k_nx\,\sin k_mx\,\mathrm{d}x=\delta_{nm},
+  \]
+  \[
+    \frac{1}{l}\int_{-l}^{l}\sin k_nx\,\cos k_mx\,\mathrm{d}x=0,
+    \qquad \delta_{nm}=\begin{cases}1,&n=m\\0,&n\neq m\end{cases}
+  \]
+  \vspace{2pt}
+  {\small 其中第一式的来历只用一次积化和差：}
+  \[
+    \cos A\cos B=\frac{1}{2}\big[\cos(A-B)+\cos(A+B)\big].
+  \]
+  {\small $n=m$ 时 $\cos(A-B)=1$，积分为 $2l$，除以 $l$ 归一为 1；$n\neq m$ 时两项在一个整周期上各自积分为 0。}
+\end{frame}
+
+\begin{frame}{实数形式的傅里叶级数（课件 p5--p7）}
+  {\small 设 $f(x)=f(x+2l)$，则可展开为}
+  \[
+    f(x)=a_0+\sum_{n=1}^{\infty}\left[a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right],
+  \]
+  {\small 系数由正交性给出：}
+  \[
+    a_0=\frac{1}{2l}\int_{-l}^{l}f(x)\,\mathrm{d}x,\qquad
+    a_n=\frac{1}{l}\int_{-l}^{l}f(x)\cos\frac{n\pi x}{l}\,\mathrm{d}x,\qquad
+    b_n=\frac{1}{l}\int_{-l}^{l}f(x)\sin\frac{n\pi x}{l}\,\mathrm{d}x.
+  \]
+  \begin{block}{本课件的约定（务必钉死）}
+    \small 常数项就写成 $a_0$ 本身，不是 $a_0/2$。因此 $a_0$ 恰好是 $f$ 在一个周期上的\bhl{平均值}。\\
+    若换到 $a_0/2+\sum(\cdots)$ 的书，那里的 $a_0$ 是本课 $a_0$ 的\bhl{两倍}——两套不许混用。
+  \end{block}
+\end{frame}
+
+\begin{frame}{系数公式不是背的，是“筛”出来的}
+  {\small 把级数两边乘 $\cos\frac{m\pi x}{l}$，在 $(-l,l)$ 上积分：}
+  \begin{align*}
+    \int_{-l}^{l}f(x)\cos\frac{m\pi x}{l}\,\mathrm{d}x
+    &=\int_{-l}^{l}\Big[a_0+\sum_{n\ge1}a_n\cos k_nx+\sum_{n\ge1}b_n\sin k_nx\Big]\cos k_mx\,\mathrm{d}x\\
+    &=a_0\int_{-l}^{l}\cos k_mx\,\mathrm{d}x
+      +\sum_{n\ge1}a_n\,l\,\delta_{nm}
+      +\sum_{n\ge1}b_n\cdot 0\\
+    &=a_m\,l .
+  \end{align*}
+  {\small 这里 $m\ge1$ 时 $\int_{-l}^{l}\cos k_mx\,\mathrm{d}x=0$，而正弦与余弦交叉项全为 0，只剩 $n=m$ 那一项。}
+  \[
+    \Longrightarrow\quad a_m=\frac{1}{l}\int_{-l}^{l}f(x)\cos\frac{m\pi x}{l}\,\mathrm{d}x .
+  \]
+\end{frame}
+
+\begin{frame}{常数项为什么是平均值}
+  {\small 同一个“筛”法，这次乘 $1$ 而不是乘余弦，并把 $m=0$ 单独处理：}
+  \[
+    \int_{-l}^{l}f(x)\cdot1\,\mathrm{d}x
+    =a_0\int_{-l}^{l}1\,\mathrm{d}x+\sum_{n\ge1}a_n\underbrace{\int_{-l}^{l}\cos k_nx\,\mathrm{d}x}_{=0}
+    +\sum_{n\ge1}b_n\underbrace{\int_{-l}^{l}\sin k_nx\,\mathrm{d}x}_{=0}
+    =2l\,a_0 .
+  \]
+  \[
+    \Longrightarrow\quad a_0=\frac{1}{2l}\int_{-l}^{l}f(x)\,\mathrm{d}x=\langle f\rangle .
+  \]
+  \begin{block}{要点}
+    \small 常数项的 $2l$ 来自“$1$ 的自积是 $2l$”，而不是 $l$——这就是它分母是 $2l$、其余系数分母是 $l$ 的原因。
+  \end{block}
+\end{frame}
+
+\begin{frame}{奇偶性直接砍掉一半（课件 p8）}
+  {\small 利用 $\sin$ 奇、$\cos$ 偶，$(-l,l)$ 上的对称区间积分可以折半：}
+  \[
+    f\ \text{奇函数}:\qquad a_0=0,\quad a_n=0,\quad
+    b_n=\frac{2}{l}\int_{0}^{l}f(x)\sin\frac{n\pi x}{l}\,\mathrm{d}x,
+  \]
+  \[
+    f\ \text{偶函数}:\qquad b_n=0,\quad
+    a_n=\frac{2}{l}\int_{0}^{l}f(x)\cos\frac{n\pi x}{l}\,\mathrm{d}x,\quad
+    a_0=\frac{1}{l}\int_{0}^{l}f(x)\,\mathrm{d}x .
+  \]
+  \begin{block}{最常见的丢分点}
+    \small 偶函数时 $a_0$ \bhl{不是} $0$：它是 $\frac{1}{l}\int_0^l f$，等于“半周期的平均值”。只有奇函数才有 $a_0=0$。
+  \end{block}
+\end{frame}
+
+\begin{frame}{例题：$f(x)=x$ 在 $(-\pi,\pi)$ 上展开}
+  {\small 这里 $l=\pi$。$x$ 是奇函数，所以 $a_0=a_n=0$，只需算 $b_n$：}
+  \[
+    b_n=\frac{2}{\pi}\int_{0}^{\pi}x\sin nx\,\mathrm{d}x
+    =\frac{2}{\pi}\left[-\frac{x\cos nx}{n}+\frac{\sin nx}{n^{2}}\right]_{0}^{\pi}
+    =\frac{2}{\pi}\cdot\frac{-\pi(-1)^{n}}{n}
+    =\frac{2(-1)^{n+1}}{n}.
+  \]
+  \[
+    \boxed{\;x=2\left[\sin x-\frac{\sin 2x}{2}+\frac{\sin 3x}{3}-\cdots\right],\qquad -\pi<x<\pi\;}
+  \]
+  {\small 前四项 $b_1=2,\ b_2=-1,\ b_3=\frac{2}{3},\ b_4=-\frac{1}{2}$：系数按 $\frac{1}{n}$ 慢慢衰减，因为 $x$ 做周期延拓后在 $\pm\pi$ 处\bhl{跳变}。}
+\end{frame}
+
+\begin{frame}{收敛快慢：跳变 vs 折角}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{$x$（延拓后有跳变）}
+        \small $b_n\sim\frac{2(-1)^{n+1}}{n}\sim\frac{1}{n}$\\[2pt]
+        高频收不干净，间断点附近出现吉布斯振荡。
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{$|x|$（延拓后只有折角）}
+        \small $a_0=\frac{\pi}{2}$，$a_n\sim\frac{1}{n^{2}}$（偶数项为 0）\\[2pt]
+        衰减快得多，曲线很快被逼近。
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  {\small 一般规律：$f$ 越光滑（导数阶数越高），系数衰减越快。第 $k$ 阶导数有跳变，系数大致按 $n^{-(k+1)}$ 衰减。}
+  \vspace{4pt}
+  \begin{block}{这条规律后面会反复用}
+    \small §5.2 里“频谱随 $k$ 增大而衰减”看到的正是同一件事。
+  \end{block}
+\end{frame}
+
+\begin{frame}{复数形式的傅里叶级数（课件 p15--p16）}
+  {\small 基函数换成复指数 $\varphi_n(x)=e^{ik_nx}$，$k_n=\dfrac{n\pi}{l}$：}
+  \[
+    f(x)=\sum_{n=-\infty}^{\infty}c_n\,e^{i n\pi x/l},\qquad
+    c_n=\frac{1}{2l}\int_{-l}^{l}f(x)\,e^{-i n\pi x/l}\,\mathrm{d}x .
+  \]
+  {\small 正交性写成内积形式更清楚：}
+  \[
+    \frac{1}{2l}\int_{-l}^{l}\varphi_n^{*}(x)\,\varphi_m(x)\,\mathrm{d}x=\delta_{nm},
+    \qquad \varphi_n^{*}=e^{-ik_nx}.
+  \]
+  {\small 时间域写法（$T=\frac{2\pi}{\omega}$）：}
+  \[
+    f(t)=\sum_{n=-\infty}^{\infty}c_n e^{in\omega t},\qquad
+    c_n=\frac{1}{T}\int_{-T/2}^{T/2}f(t)\,e^{-in\omega t}\,\mathrm{d}t .
+  \]
+\end{frame}
+
+\begin{frame}{两套系数怎么换：$a_n=c_n+c_{-n}$ 的推导}
+  {\small 把欧拉公式代进实数形式，按 $e^{\pm ik_nx}$ 归并同类项：}
+  \begin{align*}
+    a_n\cos k_nx+b_n\sin k_nx
+    &=a_n\cdot\frac{e^{ik_nx}+e^{-ik_nx}}{2}
+      +b_n\cdot\frac{e^{ik_nx}-e^{-ik_nx}}{2i}\\
+    &=e^{ik_nx}\cdot\frac{a_n-i b_n}{2}
+      +e^{-ik_nx}\cdot\frac{a_n+i b_n}{2}.
+  \end{align*}
+  {\small 与 $f=\sum_n c_ne^{ik_nx}$ 逐项比对，得}
+  \[
+    c_n=\frac{a_n-i b_n}{2},\qquad c_{-n}=\frac{a_n+i b_n}{2}
+    \quad\Longrightarrow\quad
+    a_n=c_n+c_{-n},\qquad b_n=i\left(c_n-c_{-n}\right),
+  \]
+  {\small 而 $n=0$ 那项只剩常数：$c_0=a_0$（这正好校验了“常数项写 $a_0$”的约定）。}
+\end{frame}
+
+\begin{frame}{三条说明，把路指向 §5.2（课件 p17）}
+  \begin{enumerate}\small
+    \item 尽管 $f(x)$ 是实函数，$c_n$ 仍可能是复数——基函数本身是复的，这不矛盾。\\[2pt]
+          对实 $f$ 还有共轭配对：$c_{-n}=c_n^{*}$。
+    \item 无论实数形式还是复数形式，都只在\bhl{有限区域}里展开（周期 $2l$）。
+    \item $k_n$（或 $\omega_n$）取\bhl{离散}值：实数形式 $n=0,1,2,\dots$，复数形式 $n=0,\pm1,\pm2,\dots$。
+  \end{enumerate}
+  \vspace{8pt}
+  \begin{block}{下一步就差一个极限}
+    \small 若把周期推到无穷（$l\to\infty$），相邻 $k_n$ 的间隔 $\Delta k=\frac{\pi}{l}\to0$：\\
+    离散的 $k_n$ 变成连续的 $k$，求和变成积分——这就是下一节的傅里叶变换。
+  \end{block}
+\end{frame}
+
+% ================================================================ §5.2
+\sect{§5.2}{傅里叶变换}{周期 $\to\infty$：离散谱变连续谱\quad{\color{light}课件 p18--p38}}{%
+  \item 把 $l\to\infty$ 的极限算出来：$\Delta k=\pi/l\to0$
+  \item 傅里叶积分定理与两个存在条件
+  \item 复指数形式，以及 $\frac{1}{2\pi}$ 放在哪一边
+  \item 两个例子：矩形脉冲与高斯脉冲}
+
+\begin{frame}{关键一步：把 $l\to\infty$ 的极限算清楚}
+  {\small 系数里已经藏着“间隔”$\Delta k_n$：}
+  \[
+    k_n=\frac{n\pi}{l},\qquad \Delta k_n=k_{n+1}-k_n=\frac{\pi}{l},
+    \qquad a_n=\frac{1}{l}\int_{-l}^{l}f(\zeta)\cos k_n\zeta\,\mathrm{d}\zeta
+    =\frac{\Delta k_n}{\pi}\int_{-l}^{l}f(\zeta)\cos k_n\zeta\,\mathrm{d}\zeta .
+  \]
+  {\small 于是级数成为黎曼和：}
+  \[
+    \sum_{n\ge1}a_n\cos k_nx
+    =\lim_{l\to\infty}\sum_{n\ge1}\left[\frac{1}{\pi}\int_{-l}^{l}f(\zeta)\cos k_n\zeta\,\mathrm{d}\zeta\right]\cos k_nx\;\Delta k_n
+  \]
+  \[
+    \longrightarrow\quad
+    \int_{0}^{\infty}\left[\frac{1}{\pi}\int_{-\infty}^{\infty}f(\zeta)\cos k\zeta\,\mathrm{d}\zeta\right]\cos kx\,\mathrm{d}k .
+  \]
+  {\small 同理正弦部分给 $B(k)$。这就是“级数变积分”的全部内容。}
+\end{frame}
+
+\begin{frame}{傅里叶积分定理与存在条件（课件 p18、p21）}
+  \begin{block}{定理}
+    \small 设 $f(x)$ 在 $(-\infty,\infty)$ 上分段光滑，且 $\int_{-\infty}^{\infty}|f(x)|\,\mathrm{d}x$ 收敛，则
+    \[
+      f(x)=\int_{0}^{\infty}A(k)\cos kx\,\mathrm{d}k+\int_{0}^{\infty}B(k)\sin kx\,\mathrm{d}k,
+    \]
+    \[
+      A(k)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(x)\cos kx\,\mathrm{d}x,\qquad
+      B(k)=\frac{1}{\pi}\int_{-\infty}^{\infty}f(x)\sin kx\,\mathrm{d}x .
+    \]
+  \end{block}
+  \vspace{2pt}
+  \begin{block}{两个条件缺一不可}
+    \small \hspace{0.02em}① \bhl{绝对可积}：$\int|f|\,\mathrm{d}x$ 收敛；② 任意有限区间内满足狄里希利条件（分段光滑、至多第一类间断点）。
+  \end{block}
+\end{frame}
+
+\begin{frame}{奇偶性：正弦积分公式与余弦积分公式（课件 p22）}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{$f$ 为奇函数}
+        \small $A(k)=0$，
+        \[ f(x)=\int_{0}^{\infty}B(k)\sin kx\,\mathrm{d}k, \]
+        \[ B(k)=\frac{2}{\pi}\int_{0}^{\infty}f(x)\sin kx\,\mathrm{d}x . \]
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{$f$ 为偶函数}
+        \small $B(k)=0$，
+        \[ f(x)=\int_{0}^{\infty}A(k)\cos kx\,\mathrm{d}k, \]
+        \[ A(k)=\frac{2}{\pi}\int_{0}^{\infty}f(x)\cos kx\,\mathrm{d}x . \]
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  {\small 推导只用“偶函数在对称区间上折半、奇函数积分为 0”，与 §5.1 p8 的奇偶简化是同一件事。}
+\end{frame}
+
+\begin{frame}{复数形式：从 $A(k),B(k)$ 到 $F(k)$（课件 p27--p29）}
+  {\small 用欧拉公式把 $\cos,\sin$ 换成指数：}
+  \[
+    A\cos kx+B\sin kx=A\cdot\frac{e^{ikx}+e^{-ikx}}{2}+B\cdot\frac{e^{ikx}-e^{-ikx}}{2i}
+    =e^{ikx}\cdot\frac{A-iB}{2}+e^{-ikx}\cdot\frac{A+iB}{2}.
+  \]
+  {\small 代回 $f=\int_0^\infty(A\cos kx+B\sin kx)\,\mathrm{d}k$，并把 $0\to\infty$ 延拓为 $-\infty\to\infty$（$A$ 偶、$B$ 奇，后半段正好重复前半段）：}
+  \[
+    f(x)=\int_{-\infty}^{\infty}F(k)\,e^{ikx}\,\mathrm{d}k,
+    \qquad F(k)=\frac{A(k)-iB(k)}{2}.
+  \]
+  {\small 再把 $A,B$ 的定义代进 $F$：}
+  \[
+    F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\left[\cos kx-i\sin kx\right]\mathrm{d}x
+    =\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\,e^{-ikx}\,\mathrm{d}x .
+  \]
+\end{frame}
+
+\begin{frame}{$\frac{1}{2\pi}$ 到底放哪边：两套约定对照}
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{@{}l l l@{}}
+    \toprule
+    & \bstrong{本课（课件 p29）} & \bstrong{另一种常见约定}\\
+    \midrule
+    像函数 & $F(k)=\dfrac{1}{2\pi}\displaystyle\int f e^{-ikx}\mathrm{d}x$ & $F(k)=\displaystyle\int f e^{-ikx}\mathrm{d}x$\\[6pt]
+    原函数 & $f(x)=\displaystyle\int F e^{ikx}\mathrm{d}k$ & $f(x)=\dfrac{1}{2\pi}\displaystyle\int F e^{ikx}\mathrm{d}k$\\[6pt]
+    卷积定理 & $f*g\ \rightleftharpoons\ 2\pi FG$ & $f*g\ \rightleftharpoons\ FG$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{2pt}
+  \begin{block}{怎么用才不出错}
+    \small 物理结论与常数放哪边无关，只差一个因子；但\bhl{同一道题里必须只用一套}。换书、查表、对答案之前，先看它把 $\frac{1}{2\pi}$ 放在哪。
+  \end{block}
+\end{frame}
+
+\begin{frame}{例 1：矩形脉冲的频谱}
+  {\small 取 $f(x)=1\ (|x|<a)$、$f(x)=0\ (|x|>a)$，代入定义：}
+  \[
+    F(k)=\frac{1}{2\pi}\int_{-a}^{a}e^{-ikx}\,\mathrm{d}x
+    =\frac{1}{2\pi}\cdot\frac{e^{-ika}-e^{ika}}{-ik}
+    =\frac{1}{2\pi}\cdot\frac{2\sin ka}{k}
+    =\frac{\sin ka}{\pi k}.
+  \]
+  \begin{itemize}\small
+    \item 零点在 $k=\dfrac{n\pi}{a}$（$n=\pm1,\pm2,\dots$），即 $\sin ka=0$ 处。
+    \item \bhl{脉宽与带宽成反比}：$a$ 越大，主瓣越窄、越高；$a\to\infty$ 时 $F(k)$ 向 $k=0$ 集中——这正是 $\delta$ 的雏形。
+    \item $F(k)$ 是实偶函数，因为 $f$ 是实偶函数（偶函数的谱是实偶的）。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{例 2：高斯脉冲变高斯}
+  {\small 取 $f(x)=e^{-x^{2}/(2\sigma^{2})}$。把指数配方：}
+  \[
+    -\frac{x^{2}}{2\sigma^{2}}-ikx
+    =-\frac{1}{2\sigma^{2}}\left(x+ik\sigma^{2}\right)^{2}-\frac{\sigma^{2}k^{2}}{2},
+  \]
+  {\small 于是}
+  \[
+    F(k)=\frac{1}{2\pi}e^{-\sigma^{2}k^{2}/2}\int_{-\infty}^{\infty}e^{-(x+ik\sigma^{2})^{2}/(2\sigma^{2})}\,\mathrm{d}x
+    =\frac{1}{2\pi}e^{-\sigma^{2}k^{2}/2}\cdot\sqrt{2\pi\sigma^{2}}
+    =\frac{\sigma}{\sqrt{2\pi}}\,e^{-\sigma^{2}k^{2}/2}.
+  \]
+  \begin{block}{为什么值得单独记}
+    \small 高斯变高斯（形状不变，只是宽度取倒数）。所以它既是“最窄的脉冲”，也是“最窄的谱”——这就是它成为最小不确定波包的原因。
+  \end{block}
+\end{frame}
+
+% ================================================================ §5.3
+\sect{§5.3}{傅里叶变换的性质}{七条性质，每条都给推导\quad{\color{light}课件 p40--p50}}{%
+  \item 线性与相似（尺度）定理
+  \item 延迟（时移）与位移（频移）定理
+  \item 导数定理与积分定理：微分变乘法
+  \item 卷积定理，以及那个 $2\pi$ 从哪来}
+
+\begin{frame}{记号与线性定理（课件 p40）}
+  {\small 本课把变换关系简记为}
+  \[
+    f(x)\ \rightleftharpoons\ F(k),
+    \qquad\text{其中}\quad
+    F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)e^{-ikx}\,\mathrm{d}x,\quad
+    f(x)=\int_{-\infty}^{\infty}F(k)e^{ikx}\,\mathrm{d}k .
+  \]
+  {\small 线性定理：设 $f_1\rightleftharpoons F_1$、$f_2\rightleftharpoons F_2$，$\alpha,\beta$ 为常数，则}
+  \[
+    \alpha f_1(x)+\beta f_2(x)\ \rightleftharpoons\ \alpha F_1(k)+\beta F_2(k).
+  \]
+  {\small 证明只需把定义式拆开：积分是线性的，$\frac{1}{2\pi}$ 是公共因子。}
+  \begin{block}{符号提醒}
+    \small “$\rightleftharpoons$” 只表示这对函数互为变换，不区分正、逆——方向由你写的是哪个公式决定。
+  \end{block}
+\end{frame}
+
+\begin{frame}{相似定理（尺度变换）}
+  {\small 设 $a\neq0$，求 $f(ax)$ 的像函数：}
+  \[
+    G(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(ax)\,e^{-ikx}\,\mathrm{d}x
+    \ \xrightarrow{\ u=ax\ }\
+    \frac{1}{2\pi}\cdot\frac{1}{|a|}\int_{-\infty}^{\infty}f(u)\,e^{-i(k/a)u}\,\mathrm{d}u
+    =\frac{1}{|a|}F\!\left(\frac{k}{a}\right).
+  \]
+  \[
+    \boxed{\;f(ax)\ \rightleftharpoons\ \frac{1}{|a|}F\!\left(\frac{k}{a}\right)\;}
+  \]
+  \begin{itemize}\small
+    \item \bhl{$\frac{1}{|a|}$ 的来源}：换元 $\mathrm{d}x=\frac{\mathrm{d}u}{a}$，$a<0$ 时上下限互换再翻回来，正好补上绝对值。
+    \item 物理含义：把脉冲压缩到 $\frac{1}{a}$ 宽，谱就展宽 $a$ 倍——又是“脉宽与带宽成反比”。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{延迟定理（时移）}
+  {\small 把 $f$ 整体右移 $x_0$：}
+  \[
+    G(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x-x_0)\,e^{-ikx}\,\mathrm{d}x
+    \ \xrightarrow{\ u=x-x_0\ }\
+    \frac{1}{2\pi}\int_{-\infty}^{\infty}f(u)\,e^{-ik(u+x_0)}\,\mathrm{d}u
+    =e^{-ikx_0}F(k).
+  \]
+  \[
+    \boxed{\;f(x-x_0)\ \rightleftharpoons\ e^{-ikx_0}F(k)\;}
+  \]
+  \begin{itemize}\small
+    \item 只改\bhl{相位}、不改振幅：$|e^{-ikx_0}F(k)|=|F(k)|$。所以平移不影响频谱的“强度分布”。
+    \item 这就是干涉、衍射里“光程差 $\Rightarrow$ 相位差”的数学版本。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{位移定理（频移）}
+  {\small 给 $f$ 乘一个 $e^{ik_0x}$：}
+  \[
+    G(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\,e^{ik_0x}\,e^{-ikx}\,\mathrm{d}x
+    =\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)\,e^{-i(k-k_0)x}\,\mathrm{d}x
+    =F(k-k_0).
+  \]
+  \[
+    \boxed{\;f(x)\,e^{ik_0x}\ \rightleftharpoons\ F(k-k_0)\;}
+  \]
+  \begin{itemize}\small
+    \item 与延迟定理互为“对偶”：时域平移 $\leftrightarrow$ 频域乘相位；时域乘相位 $\leftrightarrow$ 频域平移。
+    \item 物理：用 $e^{ik_0x}$ 去乘，就是把整个频谱搬到 $k_0$ 附近——调制（AM/载波）的数学内容。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{导数定理：微分变乘法}
+  {\small 设 $f(\pm\infty)=0$（绝对可积 + 分段光滑即可保证），分部积分：}
+  \begin{align*}
+    F\!\left[f^{\prime}\right]
+    &=\frac{1}{2\pi}\int_{-\infty}^{\infty}f^{\prime}(x)\,e^{-ikx}\,\mathrm{d}x\\
+    &=\frac{1}{2\pi}\Big[f(x)e^{-ikx}\Big]_{-\infty}^{\infty}
+      +\frac{ik}{2\pi}\int_{-\infty}^{\infty}f(x)\,e^{-ikx}\,\mathrm{d}x
+     =ik\,F(k).
+  \end{align*}
+  \[
+    \boxed{\;f^{\prime}(x)\ \rightleftharpoons\ ikF(k),\qquad f^{(n)}(x)\ \rightleftharpoons\ (ik)^{n}F(k)\;}
+  \]
+  \begin{block}{为什么这是全章最重要的一条}
+    \small 微分运算变成了乘以 $ik$：常系数线性微分方程在 $k$ 空间里退化成\bhl{代数方程}。§5.4 与第六章全靠这一步。
+  \end{block}
+\end{frame}
+
+\begin{frame}{积分定理：除以 $ik$}
+  {\small 令 $g(x)=\int_{-\infty}^{x}f(\xi)\,\mathrm{d}\xi$，则 $g^{\prime}=f$，用导数定理：}
+  \[
+    ik\,G(k)=F(k)\quad\Longrightarrow\quad
+    G(k)=\frac{F(k)}{ik}\qquad\left(F(0)=0\right).
+  \]
+  \[
+    \boxed{\;\int_{-\infty}^{x}f(\xi)\,\mathrm{d}\xi\ \rightleftharpoons\ \frac{F(k)}{ik}\;}
+  \]
+  \begin{block}{$F(0)=0$ 这个条件不能丢}
+    \small $F(0)=\frac{1}{2\pi}\int f\,\mathrm{d}x$ 是 $f$ 的“总面积”。总面积不为零时，$g$ 含一个常数漂移，
+    必须再补一项 $\pi F(0)\,\delta(k)$，否则结果少了一个 $\delta$ 型分量。
+  \end{block}
+\end{frame}
+
+\begin{frame}{卷积定理：$2\pi$ 是从哪冒出来的}
+  {\small 先定义卷积：}
+  \[
+    (f*g)(x)=\int_{-\infty}^{\infty}f(\xi)\,g(x-\xi)\,\mathrm{d}\xi .
+  \]
+  {\small 求它的像函数，先对 $x$ 积分、交换次序，再对 $u=x-\xi$ 换元：}
+  \begin{align*}
+    F\!\left[f*g\right]
+    &=\frac{1}{2\pi}\iint f(\xi)\,g(x-\xi)\,e^{-ikx}\,\mathrm{d}\xi\,\mathrm{d}x\\
+    &=\frac{1}{2\pi}\int f(\xi)\,e^{-ik\xi}\left[\int g(u)\,e^{-iku}\,\mathrm{d}u\right]\mathrm{d}\xi\\
+    &=\frac{1}{2\pi}\cdot 2\pi F(k)\cdot 2\pi G(k)=2\pi F(k)G(k).
+  \end{align*}
+  \[
+    \boxed{\;f*g\ \rightleftharpoons\ 2\pi F(k)G(k)\;}
+  \]
+\end{frame}
+
+\begin{frame}{七条性质速查}
+  \renewcommand{\arraystretch}{1.62}
+  \setlength{\tabcolsep}{12pt}
+  \begin{center}\small
+  \begin{tabular}{@{}l l l@{}}
+    \toprule
+    \rowcolor{wash2}\bstrong{性质} & \bstrong{时域 / 空域} & \bstrong{频域}\\
+    \midrule
+    线性 & $\alpha f_1(x)+\beta f_2(x)$ & $\alpha F_1(k)+\beta F_2(k)$\\
+    相似 & $f(ax)$ & $\dfrac{1}{|a|}F\!\left(\dfrac{k}{a}\right)$\\
+    延迟 & $f(x-x_0)$ & $e^{-ikx_0}F(k)$\\
+    位移 & $f(x)\,e^{ik_0x}$ & $F(k-k_0)$\\
+    导数 & $f^{(n)}(x)$ & $(ik)^{n}F(k)$\\
+    积分 & $\displaystyle\int_{-\infty}^{x}f(\xi)\,\mathrm{d}\xi$ & $\dfrac{F(k)}{ik}$\ \ ($F(0)=0$)\\
+    卷积 & $(f*g)(x)$ & $2\pi F(k)G(k)$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{2pt}
+  {\small 记法：\bhl{时域动、频域乘因子}；\bhl{时域乘因子、频域动}。两条守恒的直觉是“平移不改强度、调制搬频谱”。}
+\end{frame}
+
+% ================================================================ §5.4
+\sect{§5.4}{$\delta$ 函数}{点源怎么表示，它的谱为什么是平的\quad{\color{light}课件 p51--p63}}{%
+  \item 从细杆取极限引入 $\delta$，说明它是广义函数
+  \item 筛选性质与三条常用推论
+  \item $\delta$ 的谱是常数，以及它的积分表示
+  \item 最小例子：用 $\delta$ 解一阶方程（格林函数雏形）}
+
+\begin{frame}{$\delta$ 函数：把一个点写成密度}
+  {\small 一根长 $l$、质量 $m$ 的均匀细杆，线密度 $\rho_l=\frac{m}{l}$。让 $l\to0$ 而 $m$ 不变：}
+  \[
+    \rho(x)\to\begin{cases}0,&x\neq0\\ \infty,&x=0\end{cases},
+    \qquad\text{但}\quad \int_{-\infty}^{\infty}\rho(x)\,\mathrm{d}x=m .
+  \]
+  {\small 取 $m=1$ 就把“单位点质量”记成 $\delta$：}
+  \[
+    \delta(x)=0\ (x\neq0),\qquad \int_{-\infty}^{\infty}\delta(x)\,\mathrm{d}x=1 .
+  \]
+  \begin{itemize}\small
+    \item 它不是普通函数，而是\bhl{广义函数}：只在积分号下有意义（“测度”）。
+    \item 量纲是 $1/\text{长度}$：$\delta(x)\,\mathrm{d}x$ 才是无量纲的“份额”。
+    \item 三维点源用 $\delta(\bm{r}-\bm{r}_0)=\delta(x-x_0)\delta(y-y_0)\delta(z-z_0)$。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{筛选性质：$\delta$ 是一台“取样器”}
+  {\small 把 $f$ 在 $x_0$ 附近展开，$\delta$ 只认 $x=x_0$ 这一点：}
+  \[
+    \int_{-\infty}^{\infty}f(x)\,\delta(x-x_0)\,\mathrm{d}x
+    =\int_{x_0-\epsilon}^{x_0+\epsilon}f(x)\,\delta(x-x_0)\,\mathrm{d}x
+    =f(x_0)\int_{x_0-\epsilon}^{x_0+\epsilon}\delta(x-x_0)\,\mathrm{d}x
+    =f(x_0).
+  \]
+  \[
+    \boxed{\;\int_{-\infty}^{\infty}f(x)\,\delta(x-x_0)\,\mathrm{d}x=f(x_0)\;}
+  \]
+  {\small 三条常用推论（每条都能用换元或分部积分验证）：}
+  \[
+    \delta(-x)=\delta(x),\qquad
+    \delta(ax)=\frac{1}{|a|}\delta(x),\qquad
+    \delta(x)=\theta^{\prime}(x).
+  \]
+  {\small $\delta(ax)$ 的 $\frac{1}{|a|}$ 与相似定理同源：换元 $u=ax$ 时测度变 $\frac{\mathrm{d}u}{|a|}$。}
+\end{frame}
+
+\begin{frame}{$\delta$ 的频谱：为什么是常数}
+  {\small 直接算像函数（用筛选性质）：}
+  \[
+    \int_{-\infty}^{\infty}\delta(x-x_0)\,e^{-ikx}\,\mathrm{d}x=e^{-ikx_0}
+    \quad\Longrightarrow\quad
+    F\!\left[\delta(x-x_0)\right]=\frac{e^{-ikx_0}}{2\pi},
+    \qquad F\!\left[\delta(x)\right]=\frac{1}{2\pi}.
+  \]
+  {\small 反过来把 $F=\frac{1}{2\pi}$ 代进反演式，就得到 $\delta$ 的积分表示：}
+  \[
+    \delta(x)=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{ikx}\,\mathrm{d}k .
+  \]
+  \begin{block}{物理含义与用法}
+    \small $\delta$ 的谱是\bhl{平的}：点源在所有频率上等量发声。\\
+    所以“求系统对点源的响应”＝“求出系统的频率响应，再反演回去”——这就是格林函数法的全部逻辑（第十二章展开）。
+  \end{block}
+\end{frame}
+
+\begin{frame}{最小例子：用 $\delta$ 解一阶方程}
+  {\small 解 $u^{\prime}+au=\delta(x)$（$a>0$），并验证结果：}
+  \[
+    u(x)=e^{-ax}\,\theta(x)
+    \qquad\left(\theta(x)=\begin{cases}1,&x>0\\0,&x<0\end{cases}\right)
+  \]
+  {\small 验证：对 $x\neq0$ 求导，$u^{\prime}=-a\,e^{-ax}\theta(x)$；在 $x=0$ 处 $u$ 有单位跳变，求导多出 $\delta$：}
+  \[
+    u^{\prime}+au=e^{-ax}\big[\delta(x)-a\,\theta(x)\big]+a\,e^{-ax}\theta(x)=\delta(x).\ \checkmark
+  \]
+  \begin{itemize}\small
+    \item 结构：$x>0$ 上满足齐次方程，$x=0$ 上被 $\delta$ “踢”了一下，跳变为 1。
+    \item 这就是\bhl{格林函数}的最小例子；同一套路在第六章解初值问题时会再出现一次。
+  \end{itemize}
+\end{frame}
+
+% ================================================================ 小结
+\begin{frame}{全章小结：四步一条线}
+  \begin{enumerate}\small
+    \item \bstrong{级数}\quad 周期函数 → 正交性筛出 $a_n,b_n$ → 奇偶砍半 → 复数形式 $c_n$（$k_n$ 离散）。
+    \item \bstrong{变换}\quad $l\to\infty$，$\Delta k=\frac{\pi}{l}\to0$，求和变积分，得 $F(k)$；本课把 $\frac{1}{2\pi}$ 放在 $F$ 一侧。
+    \item \bstrong{性质}\quad 七条性质把“平移、缩放、微分、积分、卷积”都翻译成频域的乘除；其中导数定理把微分方程变代数方程。
+    \item \bstrong{点源}\quad $\delta$ 的谱是常数，于是“点源响应”＝“频率响应 + 反演”，通向格林函数与拉普拉斯变换。
+  \end{enumerate}
+  \vspace{6pt}
+  \begin{block}{自检三问}
+    \small ① 能不能不看书推出 $a_n$ 的公式？② 本课 $F(k)$ 前的 $\frac{1}{2\pi}$ 在哪一侧？③ 卷积定理为什么多一个 $2\pi$？
+  \end{block}
+\end{frame}
+
+\begin{frame}{作业清单（课件 p39 与 p63，共 7 题）}
+  \begin{columns}[t]
+    \begin{column}{0.49\textwidth}
+      \begin{block}{p39（第 1--4 题）}
+        \scriptsize
+        1. 把 $\cos^{3}x$ 展成傅里叶级数\\[2pt]
+        2. 把 $\frac{x}{3}$ 在 $(-l,l)$ 内展成傅里叶级数\\[2pt]
+        3. 把 $A|\sin\omega t|$ 在 $(0,T)$ 内展成傅里叶级数\\[2pt]
+        4. 矩形波展成\bhl{复数形式}的傅里叶级数
+      \end{block}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{block}{p63（第 5--7 题）}
+        \scriptsize
+        5. 锯齿波展成复数形式的傅里叶变换\\[2pt]
+        6. $e^{-\alpha t}\theta(t)$ 的变换：\\\quad (1) $\alpha>0$；(2) $\alpha\to0^{+}$\\[2pt]
+        7. $\cos(\alpha x^{2})$、$\sin(\alpha x^{2})$ 的复数形式变换
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  {\small 动笔前的两步：① 先判奇偶，决定用哪一套公式；② 再确认题目要的是\bhl{级数}（有限区域、离散 $k_n$）还是\bhl{变换}（无穷区间、连续 $k$）。}
+\end{frame}
+
+\bgclose
+\begin{frame}[plain]
+  \vspace{1.55cm}
+  \hspace{0.55cm}{\color{mid}\rule{2.2cm}{1.5pt}}\\[10pt]
+  \hspace{0.55cm}{\color{deep}\fontsize{30}{36}\selectfont\bfseries 本章到此为止}\\[12pt]
+  \hspace{0.55cm}\begin{minipage}{10.2cm}
+    \color{grey}\small
+    下一章：拉普拉斯变换（课件第六章 p3--p46）\\[4pt]
+    回头复习：先把 §5.3 的性质表默写到能复现，再动 p39 与 p63 的七道题。
+  \end{minipage}
+\end{frame}
+\bgcontent
+
+\end{document}
+
+
+
+
+
+
+
+
