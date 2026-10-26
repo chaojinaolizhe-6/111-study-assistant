@@ -1,0 +1,1627 @@
+% !TEX program = xelatex
+% 理论力学 · Topic 4 守恒律 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{D:/aaa_D_usual/DSH/111学习助手/.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{主题 4 · 守恒律 · 精讲}{理论力学}
+\setlength{\headheight}{22pt}
+
+\begin{document}
+
+\doctitle{主题 4　守恒律：对称性怎样变成守恒量}
+{从时间均匀性、空间均匀性、空间各向同性，到能量、动量、角动量}
+{依据：\texttt{TM\_Topic\_04\_2026\_student.pdf}（p1--p43，共 43 页）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与四条术语边界}
+
+\subhdr{六块内容与它们在本讲义里的落点}
+
+课件 p1 的标题页列了五部分，正文再从 p36 起追加一页例题、一页作业。骨架是“三条对称性 $\to$ 三条守恒律 $\to$ 两条推论（质心系、力学相似）$\to$ 六个例题 $\to$ 三道作业”：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.4cm}p{2.4cm}p{9.2cm}@{}}
+\toprule
+\thead{课件部分} & \thead{页码} & \thead{本讲义对应}
+\\
+\midrule
+1. Conservation Laws and Symmetry Principles & p1--p5 & §1（运动积分、可加性、Noether 一般形式）
+\\
+2. Homogeneity of Time $\to$ 能量 & p6--p12 & §2（判据一、判据二、广义能量、耗散）
+\\
+3. Homogeneity of Space $\to$ 动量 & p13--p19 & §3（虚平移、三条牛顿定律、循环坐标）
+\\
+4. Center of Mass & p20--p24 & §4（伽利略变换、C 系、能量分解）
+\\
+5. Isotropy of Space $\to$ 角动量 & p25--p29 & §5（虚转动、换参考点、$L_z$）
+\\
+6. Mechanical Similarity & p30--p35 & §6（齐次度、标度律、Virial）
+\\
+Solving Problems（例题） & p36--p42 & §7.1--§7.6（六题全解）
+\\
+Homework & p43 & §7.7 题面照抄 ＋ §7.8--§7.10 三题详解
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{记号：先统一，后文不回头}
+
+这份课件有三处记号会打架，必须先钉死，否则后面每一页都要猜。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{11.4cm}@{}}
+\toprule
+\thead{记号} & \thead{本讲义的约定（括号内为课件页码上的实际写法）}
+\\
+\midrule
+$\mathcal{L}$ & \textbf{拉格朗日量}。课件同一页既写花体 $\mathcal{L}$ 又写正体 $L$（p10--p12 混用），本文一律写 $\mathcal{L}$。
+\\
+$\vec L$, $L_z$ & \textbf{角动量}及其 $z$ 投影。课件 p26 起把角动量也写成 $L$，与拉格朗日量同形。本文角动量一律带箭头。
+\\
+$T$, $U$ & 动能、势能。课件 p11 的中文写“$E=T+V$”，英文与公式用 $U$；本文统一用 $U$，引用中文原句时保留 $V$。
+\\
+$T_2,T_1,T_0$ & 动能按广义速度的次数分成的三层（p10），见 §2.4。
+\\
+$h$, $H$, $E$ & 同一个表达式 $\sum_i \dot q_i\,\partial\mathcal{L}/\partial\dot q_i-\mathcal{L}$ 的三个名字：p6--p8 叫 $E$（封闭系的总能量），p9 对开放系改叫 $h$（energy function），p10--p12 叫 $H$（“H 的物理意义”）。本文默认写 $E$，只在 §2.7 讲“$h$ 与 Topic 9 的 $H$ 不是一回事”时保留两个字母。
+\\
+$\lambda$, $k$ & 齐次度。p30--p32 用 $\lambda$，p33--p34 换成 $k$。本文统一 $\lambda$，遇到 p33 的 $k$ 时注明 $k\equiv\lambda$。
+\\
+$\varkappa$ & 力学相似里的坐标标度因子。课件 p30 写作 $\alpha$，而 p32 又用 $\alpha$ 当引力常数（$U=-\alpha/r$）。为免混淆，本文标度因子记 $\varkappa$，引用 p30 原式时注明“课件写作 $\alpha$”。
+\\
+$\vec r_a,\vec v_a,\vec p_a$ & 第 $a$ 个质点的径矢、速度、动量；$m_{\rm tot}=\sum_a m_a$；$\vec P$ 为系统总动量；$\vec R_c$ 为质心位矢；$\vec V_c$ 为质心速度。
+\\
+$\delta\vec r_a,\delta\vec\phi$ & 虚位移、虚转角（p13、p25）。$t$ 在变分时固定，故 $\delta t=0$。
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{读法声明：页码等于 PDF 页，也等于幻灯片右下角编号}
+
+本讲义凡写“p$n$”，指 PDF 第 $n$ 页，与每页右下角的数字一致，二者在本课件里完全对齐。
+
+43 页里有 17 页\textbf{没有可用文字层}（p1, p2, p5, p6, p14, p15, p22, p24, p28, p31, p33, p34, p35, p39, p40, p42, p43）。本文的每一条公式都是按 130 dpi 渲染图逐页读图核对的；即使是有文字层的页，也不能直接抽文本——这份课件的数学字体没有 ToUnicode 映射，抽出来是乱序符号碎片（例如 p11 抽出来是“2 1 2 0 2 i i i i L T H q L q $\cdots$”这样的残片）。因此本文的所有公式属于“读图转录＋重排”，不是“复制粘贴”；凡笔画有歧义处都单独标注。
+
+\subhdr{四条术语边界（本文最要紧的约定，请先读这一块）}
+
+\warnbox{\textbf{边界 1：“两条判据”这个名字是教学归纳，不是课件术语。}
+对全 43 页的文字层检索 \texttt{criteria}、\texttt{criterion}、“判据”，命中数为 \textbf{0}；唯一出现 “both criteria” 的地方是 p43 作业页的\textbf{图片}（H4.1 与 H4.2 的题面里各一次）。判据的\textbf{内容}在课件里，但分散、未编号：
+\begin{itemize}
+\item 判据一（能量守恒的判据）在 \textbf{p9}：原文 “There should be no explicit time dependence in the Lagrangian!”，配 $\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$，以及左下角“显含时间的两种原因”。
+\item 判据二（$h$ 是否等于机械能 $T+U$ 的判据）在 \textbf{p8}（欧拉齐次定理 $\sum_i\dot q_i\,\partial T/\partial\dot q_i=2T$）与 \textbf{p10}（$T=T_2+T_1+T_0$）；\textbf{p11} 用中文把两条合起来说了一次；\textbf{p12} 给出失效情形。
+\end{itemize}
+本文把两条判据\textbf{分开陈述}，并在每处标明课件原句所在页。}
+
+\warnbox{\textbf{边界 2：守恒只由判据一决定。}
+“$h$ 守恒”的充要条件是 $\partial\mathcal{L}/\partial t\equiv0$（p9）。判据二\textbf{不}决定守恒，它只决定“守恒的这个量是不是机械能”：$T_1=T_0=0$ 时 $h=T+U$；否则 $h=T_2-T_0+U\ne T+U$。§2.6 与 §7.3 会用同一个反例把这件事钉死。}
+
+\warnbox{\textbf{边界 3：角动量与非封闭系。}
+非封闭系的角动量关于\textbf{任意}原点一般\textbf{不}守恒（p28 原文 “as a rule, angular momentum of such systems (in respect to an arbitrary position of axes' origin) is \textbf{not} conserved”）。但有两种情形投影仍守恒：球对称场中，过\textbf{场心}的\textbf{任意}轴；轴对称场中，沿\textbf{对称轴}的投影（原点可在轴上任意取）。这两句的准确含义与“能不能换固定参考点”是同一个问题，§5.4 专门讲透。}
+
+\warnbox{\textbf{边界 4：标的 [教材补充]。}
+课件没有、而为了讲通必须补的内容，一律标 \textbf{[教材补充]} 并给出处：Noether 定理的一般形式（Goldstein《Classical Mechanics》3rd ed.\ §2.6）、$h$ 与 Hamilton 函数 $H$ 的区别（Goldstein §2.7 与 §8.1）、三条守恒律的标准表述（Landau《Mechanics》§6 能量、§7 动量、§9 角动量）。除此之外本文不引入课件以外的结论；凡属我的整理，标 [教学归纳]。}
+
+%=============================================================
+\hdr{§1}{为什么“对称”能给出“守恒”}
+
+这一节只回答一个问题：\textbf{“系统具有某种对称性”和“某个量不随时间变”之间，凭什么能划等号}。课件 p3--p5 给的是答案的轮廓（运动积分、可加性、Noether 的画像），§1.3 补上一般形式，后面 §2、§3、§5 就是这条定理的三个特例。
+
+\subhdr{§1.1　先解决“为什么需要守恒量”（p3--p4）}
+
+课件 p3 的推理链是：$s$ 个自由度的系统给出 $s$ 个\textbf{二阶}常微分方程；每个二阶方程要积两次分，于是要引入 $2s$ 个积分常数；这些常数由初始条件 $q_i(t_0)=q_{i0}$、$\dot q_i(t_0)=\dot q_{i0}$ 定出，解写成
+\[
+q_i=q_i(t,C_1,\dots,C_{2s}),\qquad \dot q_i=\dot q_i(t,C_1,\dots,C_{2s}) \tag{7.1}
+\]
+p3 的结论句是“nevertheless, it is still possible to extract some very useful information about the properties of motion”——方程通常解不出来，但能挖出一部分信息。这一句是整章的动机。
+
+p4 把“一部分信息”定量化。对\textbf{封闭}（孤立）系统，运动方程不显含时间，于是 $t\to t+t_0$ 是解的一个对称操作：
+\[
+t\ \longrightarrow\ t+t_0,\qquad I=2s-1,
+\]
+\[
+q_i=q_i(t+t_0,C_1,\dots,C_{2s-1}),\qquad \dot q_i=\dot q_i(t+t_0,C_1,\dots,C_{2s-1}). \tag{7.2}
+\]
+把 (7.2) 反过来解出常数：
+\[
+C_k=f_k(q_i,\dot q_i,t+t_0),\qquad k=1,\dots,2s-1. \tag{7.3}
+\]
+p4 给 (7.3) 起的名字是 \textbf{integral of motion}（运动积分），并注明“mathematically, these are the 1st integrals of the equations of motion”。
+
+\aside{“运动积分”“一阶积分”“守恒量”在本课程里是同一个东西的三种叫法：$f(q,\dot q,t)$ 沿真实轨迹取常值。注意它\textbf{允许显含} $t$——例如 $x-vt$ 对自由粒子守恒；不显含 $t$ 的那种才叫“定常运动积分”。}
+
+\textbf{为什么少掉的那一个常数与时间原点有关。}最简的例子是自由粒子：$x=v_0t+x_0$，两个常数 $(x_0,v_0)$；把时间原点挪到 $t_0$，同一条轨迹写成 $x=v_0(t-t_0)+x(t_0)$，独立的仍只有 $x(t_0)$ 与 $v_0$ 两个。真正“被吃掉”的那个常数是 $t_0$ 本身——它不描述轨迹的形状，只描述你从哪一刻开始计时。对 $s$ 个自由度，被吃掉的恰好是一个（整体的时间原点只有一个），于是 $2s\to2s-1$。这条推理只在“方程不显含 $t$”时成立，这正是 §2 的判据一。
+
+\subhdr{§1.2　为什么偏偏是能量、动量、角动量这三个（p5）}
+
+p5 说得很清楚：不是所有运动积分都同等重要，最重要的是那些“constancies are connected to \textbf{fundamental symmetries of time and space}（homogeneity of time, homogeneity and isotropy of space）”的。它们还有第二个性质——\textbf{可加性}（additivity）：
+
+\begin{quote}
+“if a system consists of several subsystems with \textbf{negligible} interaction between them, then the total value of such a quantity for the whole system is just a \textbf{sum} of the constituting ones of every subsystem.”
+\end{quote}
+
+可加性为什么值钱，p5 紧接着给了理由：当相互作用只在\textbf{有限时间}内存在（bounded in time），子系统在相互作用前后都是“自由”的，于是可以拿守恒量的前后相等去换信息——两个粒子碰撞前后，总动量、总能量、总角动量的和不变，哪怕中间那段完全算不出来。
+
+\textbf{“可加”到底加了什么}（这里课件只给结论，我把判据说清）：一个守恒量可加，意思是它能把系统切成块、每块各自算一份、再相加。$E$、$\vec P$、$\vec L$ 都满足——它们是逐粒子求和：$\vec P=\sum_a\vec p_a$、$\vec L=\sum_a\vec r_a\times\vec p_a$、$E=\sum_a\frac12m_av_a^2+U$。反例：单粒子的“$x$ 方向动量”$m\dot x$ 对自由粒子守恒，但把它按子系统相加没有意义（它依赖你把哪条轴叫 $x$），所以它不可加、也因此不属于 p5 说的“最重要”那一类。
+
+\subhdr{§1.3　[教材补充] Noether 定理的一般形式}
+
+课件 p2 放了 Emmy Noether 的画像，正文却只把三条守恒律各自推了一遍（p6、p13、p25），没有写一般形式。补上它，后面三节的推导就变成同一台机器换三次输入。
+
+\callout{\textbf{定理（Noether，连续对称性 $\Rightarrow$ 守恒量）}\quad
+设 $\mathcal{L}=\mathcal{L}(q,\dot q,t)$，单参数变换
+\[
+q_i\ \longrightarrow\ q_i+\delta q_i,\qquad \delta q_i=\epsilon\,h_i(q,\dot q,t),
+\]
+若在该变换下 $\mathcal{L}$ 不变，即 $\delta\mathcal{L}=0$ 作为 $(q,\dot q,t)$ 的恒等式成立（不要求满足运动方程），则沿真实轨迹
+\[
+\sum_i p_i h_i=\text{const},\qquad p_i\equiv\frac{\partial\mathcal{L}}{\partial\dot q_i}.
+\]}
+
+\textbf{证明}（三步，只用到“$\delta\mathcal{L}=0$”与拉格朗日方程）。第一，把 $\delta\mathcal{L}$ 按 $q$ 与 $\dot q$ 展开，并注意 $\delta\dot q_i=\dfrac{d}{dt}\delta q_i$：
+\[
+\delta\mathcal{L}
+=\sum_i\Bigl(\frac{\partial\mathcal{L}}{\partial q_i}\,\delta q_i+\frac{\partial\mathcal{L}}{\partial\dot q_i}\,\delta\dot q_i\Bigr)
+=\epsilon\sum_i\Bigl(\frac{\partial\mathcal{L}}{\partial q_i}h_i+\frac{\partial\mathcal{L}}{\partial\dot q_i}\dot h_i\Bigr).
+\]
+第二，用拉格朗日方程把第一个系数换掉：$\dfrac{\partial\mathcal{L}}{\partial q_i}=\dfrac{d}{dt}\dfrac{\partial\mathcal{L}}{\partial\dot q_i}$。于是括号里的两项合成一个全导数：
+\[
+\frac{\delta\mathcal{L}}{\epsilon}
+=\sum_i\Bigl[\Bigl(\frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)h_i+\frac{\partial\mathcal{L}}{\partial\dot q_i}\dot h_i\Bigr]
+=\frac{d}{dt}\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}h_i
+=\frac{d}{dt}\sum_i p_ih_i .
+\]
+第三，$\delta\mathcal{L}=0$ 对\textbf{任意} $\epsilon$ 成立，故右边为零，$\sum_i p_ih_i$ 守恒。证毕。
+
+\aside{第二步用了运动方程，所以“对称性 $\Rightarrow$ 守恒”是\textbf{在解上}成立的关系；而“$\mathcal{L}$ 有对称性”本身是函数 $\mathcal{L}$ 的性质，与解无关。这条区别在 §2.3 会变成一句具体的话：判据一说的是 $\partial\mathcal{L}/\partial t=0$，不是“$\partial h/\partial t=0$”。}
+
+\textbf{三个特例就是课件的三节}（这是本章的总图，§2、§3、§5 只是把三行展开）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{4.6cm}p{4.8cm}p{4.3cm}@{}}
+\toprule
+\thead{对称性} & \thead{变换（$h_i$）} & \thead{守恒量} & \thead{课件推导处}
+\\
+\midrule
+时间均匀性 & $t\to t+\epsilon$（$t$ 也动，见下注） & $h=\sum_i\dot q_i\dfrac{\partial\mathcal{L}}{\partial\dot q_i}-\mathcal{L}$ & p6--p9（§2）
+\\
+空间均匀性 & $\vec r_a\to\vec r_a+\epsilon\hat n$，$h_a=\hat n$ & $\vec P\cdot\hat n=\sum_a\frac{\partial\mathcal{L}}{\partial\vec v_a}\cdot\hat n$ & p13--p16（§3）
+\\
+空间各向同性 & $\delta\vec r_a=\delta\vec\phi\times\vec r_a$，$h_a=\hat\phi\times\vec r_a$ & $\vec L\cdot\hat\phi$，$\vec L=\sum_a\vec r_a\times\vec p_a$ & p25--p26（§5）
+\\
+\bottomrule
+\end{tabular}
+
+\aside{平移与转动两行严格落在定理的形式里。时间平移不落在里面——因为它把自变量 $t$ 也动了，$\delta\mathcal{L}$ 不是零而是 $\epsilon\,d\mathcal{L}/dt$。所以守恒量多出一个 $-\mathcal{L}$ 项。§2.1 会把这一项怎么冒出来算清楚；这也是为什么 $E$ 不是“$\sum\dot q\,\partial\mathcal{L}/\partial\dot q$”而是它再减去 $\mathcal{L}$。}
+
+\callout{\textbf{到这里你应该能}：说出“$s$ 个自由度为什么是 $2s-1$ 个独立常数”的理由（时间原点被吃掉一个）；写出 Noether 定理的三步证明；并把“平移 $\to$ 动量、转动 $\to$ 角动量”各自对应到上面表里的 $h_i$ 上。}
+
+%=============================================================
+\hdr{§2}{时间均匀性 $\to$ 能量（p6--p12）}
+
+\subhdr{§2.1　判据一：$E\equiv\sum_i\dot q_i\dfrac{\partial\mathcal{L}}{\partial\dot q_i}-\mathcal{L}$ 为什么守恒（p6）}
+
+p6 的前提写得比通常细：考虑\textbf{封闭}系统、在\textbf{惯性系}里、并且“the transformation rules between the curvilinear (Cartesian) and generalized coordinates do not include time explicitly”，于是
+\[
+\mathcal{L}=\mathcal{L}(q_i,\dot q_i).
+\]
+p6 主栏把推导标成 EXERCISE，只给三步箭头；完整推导在右栏的四行里（英文、无编号）。我把这四行写成有编号的三步，并补上 p6 没写的那句“为什么能合成全导数”。
+
+\textbf{第一步：对 $\mathcal{L}$ 求全导数。}$\mathcal{L}$ 依赖 $q_i$ 与 $\dot q_i$，两者都依赖 $t$，所以
+\[
+\frac{d\mathcal{L}}{dt}=\sum_i\frac{\partial\mathcal{L}}{\partial q_i}\dot q_i+\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\ddot q_i. \tag{2.1}
+\]
+\textbf{第二步：用拉格朗日方程换掉 $\partial\mathcal{L}/\partial q_i$。}
+\[
+\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-\frac{\partial\mathcal{L}}{\partial q_i}=0
+\quad\Longrightarrow\quad
+\frac{\partial\mathcal{L}}{\partial q_i}=\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr). \tag{2.2}
+\]
+\textbf{第三步：代回，两项合成一个全导数。}
+\[
+\frac{d\mathcal{L}}{dt}
+=\sum_i\dot q_i\,\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)+\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\ddot q_i
+=\sum_i\frac{d}{dt}\Bigl(\dot q_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)
+=\frac{d}{dt}\sum_i\dot q_i\frac{\partial\mathcal{L}}{\partial\dot q_i}. \tag{2.3}
+\]
+把 (2.3) 移项，并定义 p6 方框里的量：
+\[
+\boxed{\,E\equiv\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\dot q_i-\mathcal{L}\,}
+\qquad\Longrightarrow\qquad
+\frac{dE}{dt}=0 . \tag{2.4}
+\]
+
+\aside{\textbf{p6 没写、但第三步必须靠它的一句}：$\ddot q$ 项是\textbf{成对抵消}的。$d\mathcal{L}/dt$ 里的 $\sum\partial\mathcal{L}/\partial\dot q_i\,\ddot q_i$，恰好被 $\frac{d}{dt}(\dot q_i\partial\mathcal{L}/\partial\dot q_i)$ 展开出来的同一项抵消，剩下的正是 $\sum\dot q_i\frac{d}{dt}(\partial\mathcal{L}/\partial\dot q_i)$。没有这句，“两项合成全导数”就是硬凑。}
+
+\aside{拉格朗日方程 (2.2) 是 Topic 3 的结论（p3 的 (7.1) 就是它）。此处 $q_i$ 可以是直角坐标分量，也可以是曲线坐标——两者都是广义坐标，故 (2.2) 对每个分量逐条成立。这一点在 §3 会用到：那里直接对 $\vec r_a$ 写拉格朗日方程。}
+
+\subhdr{§2.2　为什么敢叫它“总能量”（p7）}
+
+p7 用三条理由回答“Which are the reasons to call this quantity the total energy of the system?”：
+\begin{enumerate}
+\item 量纲是能量（$\dot q\,\partial\mathcal{L}/\partial\dot q$ 与 $\mathcal{L}$ 同量纲）；
+\item 对封闭系它是常数；
+\item “for the considered case it can also be written as” $E=T+U$。
+\end{enumerate}
+第三条是本节的技术核心：必须\textbf{证明} (2.4) 定义的 $E$ 等于 $T+U$。p7 给了 hint：从
+\[
+\mathcal{L}=\frac12\sum_{i,k}a_{ik}(q_l,t)\dot q_i\dot q_k-U(q_l)=T-U
+\]
+出发，用齐次函数的欧拉定理。p8 给了工具，但\textbf{欧拉定理本身没证}。补上。
+
+\callout{\textbf{定理（齐次函数的欧拉定理，p7/p8 原文）}\quad
+若 $f(\varkappa x_1,\dots,\varkappa x_n)=\varkappa^{\lambda}f(x_1,\dots,x_n)$ 对任意 $\varkappa>0$ 成立（$\lambda$ 叫齐次度；课件 p7/p8 把齐次度写成 $m$，即 $\sum_i\frac{\partial f}{\partial x_i}x_i=mf$，这个 $m$ 不是质量），则
+\[
+\sum_i\frac{\partial f}{\partial x_i}x_i=\lambda f .
+\]}
+
+\textbf{证明}（一行：对 $\varkappa$ 求导后令 $\varkappa=1$）。记 $g(\varkappa)=f(\varkappa x_1,\dots,\varkappa x_n)$。一方面 $g(\varkappa)=\varkappa^\lambda f(x)$，故 $g'(\varkappa)=\lambda\varkappa^{\lambda-1}f(x)$；另一方面按链式法则 $g'(\varkappa)=\sum_i\frac{\partial f}{\partial x_i}(\varkappa x)\,x_i$。令 $\varkappa=1$：$\sum_i\frac{\partial f}{\partial x_i}x_i=\lambda f$。证毕。
+
+p8 还给了一个可以当场验算的例子：$f(x,y)=x^2+y^2$ 是 $\lambda=2$ 的齐次函数（$f(\varkappa x,\varkappa y)=\varkappa^2(x^2+y^2)$），而
+\[
+\frac{\partial f}{\partial x}x+\frac{\partial f}{\partial y}y=2x^2+2y^2=2f ,
+\]
+两边对上。p8 另外用 $T=\frac12\sum_{i,k}a_{ik}(q_l,t)\dot q_i\dot q_k$ 验了一次：把 $\dot q\to\varkappa\dot q$ 得 $T(\varkappa\dot q)=\varkappa^2T$，故
+\[
+\sum_i\frac{\partial T}{\partial\dot q_i}\dot q_i=2T . \tag{2.5}
+\]
+
+\warnbox{\textbf{注意 (2.5) 的适用范围}：它成立的前提是 $T$ \textbf{只含广义速度的二次项}。一旦 $T$ 里还有一次项或零次项（$T=T_2+T_1+T_0$，见 §2.4），(2.5) 就变成 $\sum\dot q\,\partial T/\partial\dot q=2T_2+T_1$。p8 的 $T$ 是“$a_{ik}$ 只依赖 $q_l,t$”的特例，所以那里可以写成 $2T$；p11 才把一般情形补全。}
+
+有了 (2.5)，p7 的第三条理由就成立：
+\[
+E=\sum_i\dot q_i\frac{\partial\mathcal{L}}{\partial\dot q_i}-\mathcal{L}
+=\sum_i\dot q_i\frac{\partial T}{\partial\dot q_i}-(T-U)
+=2T-T+U=T+U . \tag{2.6}
+\]
+
+\aside{(2.6) 第一个等号到第二个等号用了“势能与广义速度无关”：$\partial\mathcal{L}/\partial\dot q_i=\partial T/\partial\dot q_i$。这一条在 p11 左侧被明确写出（“由于势能和广义速度无关”）。若势能含速度（例如电磁场里的广义势），这一步就不成立，$T+U$ 也不再是 $E$——本课件不涉及，但要知道缝在哪。}
+
+\subhdr{§2.3　判据一的一般形式：开放系的 $h$ 与 $\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$（p9）}
+
+p9 换问题：“What is in the case of an \textbf{open} mechanical system?”答法是\textbf{同一个表达式}照搬，但改名叫 energy function：
+\[
+h(q_i,\dot q_i,t)=\sum_j\frac{\partial\mathcal{L}}{\partial\dot q_j}\dot q_j-\mathcal{L}.
+\]
+然后 p9 把结论写成
+\[
+\mathcal{L}=\mathcal{L}(q_i,\dot q_i,t)\quad\Longrightarrow\quad\frac{dh}{dt}=-\frac{\partial\mathcal{L}}{\partial t},
+\]
+旁边一个红框：“\textbf{There should be no explicit time dependence in the Lagrangian!}”。这一行是判据一的\textbf{全部}内容，但 p9 只把它标成 EXERCISE，没给中间过程（右栏是含 $\partial\mathcal{L}/\partial t$ 的链式法则草稿）。补完：
+
+\[
+\frac{dh}{dt}
+=\underbrace{\sum_j\ddot q_j\frac{\partial\mathcal{L}}{\partial\dot q_j}+\sum_j\dot q_j\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_j}\Bigr)}_{\text{对 }\sum_j\dot q_j\frac{\partial\mathcal{L}}{\partial\dot q_j}\text{ 求导}}-\underbrace{\Bigl[\sum_j\frac{\partial\mathcal{L}}{\partial q_j}\dot q_j+\sum_j\frac{\partial\mathcal{L}}{\partial\dot q_j}\ddot q_j+\frac{\partial\mathcal{L}}{\partial t}\Bigr]}_{\text{对 }\mathcal{L}\text{ 求全导数，多出}\partial\mathcal{L}/\partial t}
+\]
+$\ddot q_j$ 项两两抵消，剩
+\[
+\frac{dh}{dt}=\sum_j\dot q_j\Bigl[\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_j}\Bigr)-\frac{\partial\mathcal{L}}{\partial q_j}\Bigr]-\frac{\partial\mathcal{L}}{\partial t}
+=0-\frac{\partial\mathcal{L}}{\partial t}
+=-\frac{\partial\mathcal{L}}{\partial t}. \tag{2.7}
+\]
+
+\aside{(2.7) 的方括号就是拉格朗日方程的左端，按 Topic 3 为零。这就是“判据一的作用对象是 $\mathcal{L}$、不是 $h$”的出处：方程里出现的是 $\partial\mathcal{L}/\partial t$。}
+
+于是判据一可以写成两句话：
+
+\callout{\textbf{判据一（守恒性，p9）}\quad
+$\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$。因此
+\[
+h=\text{const}\quad\Longleftrightarrow\quad\frac{\partial\mathcal{L}}{\partial t}\equiv0 .
+\]
+即：$\mathcal{L}$ 不显含时间 $\Longleftrightarrow$ 这个量守恒。p9 原文把这条写成一句命令：“There should be no explicit time dependence in the Lagrangian!”，并把满足它的系统叫 \textbf{conservative systems}。}
+
+p9 左下角还列了“显含时间的两种原因”，这两种在例子里都会撞上：
+\begin{enumerate}
+\item “the system is not closed and put in the time-varying external field”（系统不封闭、置于含时外场）——§7.2 的例题就是这样；
+\item “transformation to generalized coordinates contains time explicitly”（到广义坐标的变换显含时间）——§7.3 的旋转钢丝、H4.2 的转环就是这样。
+\end{enumerate}
+
+\subhdr{§2.4　$T=T_2+T_1+T_0$ 是怎么来的（p10）}
+
+p10 的标题是“H 的物理意义”，第一个指令是“写出用广义速度表示动能的具体形式”，然后直接给出
+\[
+T=\sum_i\frac12m_i\dot{\vec r}_i^2=\sum_i\frac12m_i\Bigl(\sum_\alpha\frac{\partial\vec r_i}{\partial q_\alpha}\dot q_\alpha+\frac{\partial\vec r_i}{\partial t}\Bigr)\cdot\Bigl(\sum_\beta\frac{\partial\vec r_i}{\partial q_\beta}\dot q_\beta+\frac{\partial\vec r_i}{\partial t}\Bigr)=T_2+T_1+T_0 .
+\]
+这一步跳得不小：从“平方”到“三层”中间有一次展开与一次重新分组。展开给三层：
+
+\textbf{（i）平方里的 $q_\alpha q_\beta$ 项}（两个求和项相乘）：
+\[
+T_2=\sum_{\alpha,\beta=1}^{s}\sum_{i=1}^{n}\frac12m_i\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial q_\beta}\dot q_\alpha\dot q_\beta
+=A_{\alpha\beta}(q,t)\dot q_\alpha\dot q_\beta ,
+\]
+其中 $A_{\alpha\beta}\equiv\sum_i\frac12m_i\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial q_\beta}$（对 $\alpha,\beta$ 对称）。$T_2$ 是 $\dot q$ 的\textbf{二次}齐次函数。
+
+\textbf{（ii）交叉项}（一个求和项乘 $\partial\vec r_i/\partial t$）。这里是全节唯一需要小心的地方：交叉项在平方展开时\textbf{出现两次}（$\alpha$ 项乘 $t$ 项、$t$ 项乘 $\alpha$ 项），所以
+\[
+T_1=\sum_{\alpha=1}^{s}\Bigl[\sum_{i=1}^{n}m_i\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial t}\Bigr]\dot q_\alpha
+=B_\alpha(q,t)\dot q_\alpha ,
+\]
+系数里\textbf{没有} $\frac12$。$T_1$ 是 $\dot q$ 的\textbf{一次}齐次函数。
+
+\warnbox{\textbf{与课件的差异（代数跳步，p10）}：p10 把 $T_1$ 写成 $\sum_\alpha\sum_i\frac12m_i\bigl(\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial t}\bigr)\dot q_\alpha$，保留了 $\frac12$。按平方展开，交叉项出现两次，系数应是 $1$ 而不是 $\frac12$。两种写法可以调和——只要把 $B_\alpha$ 定义成整个系数（把差的那个因子 $2$ 吸进 $B_\alpha$）——但\emph{不能}同时保留“系数带 $\frac12$”与“$T=T_2+T_1+T_0$”这两句。本文按标准形式（系数为 $1$）写。这个因子不影响后面的任何结论，因为后面只用 $T_1$ 的\textbf{次数}（一次齐次）与“稳定约束下 $T_1=0$”，不用它的数值。}
+
+\textbf{（iii）纯 $\partial\vec r_i/\partial t$ 项}：
+\[
+T_0=\sum_{i=1}^{n}\frac12m_i\Bigl(\frac{\partial\vec r_i}{\partial t}\Bigr)^2 ,
+\]
+与 $\dot q$ 无关（$\dot q$ 的零次齐次）。p10 对三层的注释分别是“$T_2$ 广义速度的二次齐函数”“$T_1$ 广义速度的一次齐函数”“$T_0$ 与广义速度无关”。
+
+\aside{“$\partial\vec r_i/\partial t$ 就是约束的显含时间部分”：若约束方程不含 $t$（稳定约束），则 $\vec r_i=\vec r_i(q)$，$\partial\vec r_i/\partial t=0$，于是 $T_1=T_0=0$、$T=T_2$。反过来不成立——$\partial\vec r_i/\partial t\ne0$ 时仍可能有 $T_1=0$（§7.3 的旋转钢丝就是：$\partial\vec r/\partial t$ 与 $\partial\vec r/\partial r$ 正交），这时 $T=T_2+T_0$。这条区别是 §2.6 的关键。}
+
+\subhdr{§2.5　$h=T_2-T_0+U$：雅可比积分（p11）}
+
+p11 的第一行给出目标：
+\[
+H=\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\dot q_i-\mathcal{L}
+=\sum_i\frac{\partial T}{\partial\dot q_i}\dot q_i-\mathcal{L}
+=2T_2+T_1-\mathcal{L}
+=T_2-T_0+U .
+\]
+这四步里有三处被吞掉的代数。逐一补：
+
+\textbf{第一步 $\to$ 第二步：}用“势能与广义速度无关”，$\partial\mathcal{L}/\partial\dot q_i=\partial T/\partial\dot q_i$。p11 左侧就是这一句。
+
+\textbf{第二步 $\to$ 第三步：}对三层分别用欧拉定理。$T_2$ 二次齐次 $\Rightarrow\sum\dot q\,\partial T_2/\partial\dot q=2T_2$；$T_1$ 一次齐次 $\Rightarrow\sum\dot q\,\partial T_1/\partial\dot q=T_1$；$T_0$ 零次齐次 $\Rightarrow\sum\dot q\,\partial T_0/\partial\dot q=0$。三层相加：
+\[
+\sum_i\frac{\partial T}{\partial\dot q_i}\dot q_i=2T_2+T_1 . \tag{2.8}
+\]
+
+\textbf{第三步 $\to$ 第四步：}把 $-\mathcal{L}=-(T-U)=-(T_2+T_1+T_0)+U$ 显式写出来再合并（这一步是符号最容易翻的地方，务必照这个顺序写，不要跳）：
+\[
+H=(2T_2+T_1)-(T_2+T_1+T_0)+U=T_2-T_0+U . \tag{2.9}
+\]
+$T_1$ 两项正好抵消——这就是 p39 的 Problem \#4.4 要证的 (b)“$2$nd term does not contribute to the whole expression at all”；常数项 $c$ 的情形见 §7.4。
+
+p11 把 (2.9) 括起来注了一个名字：“\textbf{雅克比积分或广义能量积分}”。注意两件事：
+
+\warnbox{\textbf{（1）(2.9) 只是 $h$ 的表达式，不是“守恒”的证明。}
+“$=const$”这个等号来自判据一（p9 的 $\partial\mathcal{L}/\partial t=0$），跟 $T_2,T_1,T_0$ 的分解无关。分解只回答“守恒的这个量长什么样”。
+\textbf{（2）$T_2-T_0+U$ 与 $T+U$ 差一个 $-2T_0$。}
+\[
+(T_2-T_0+U)-(T+U)=(T_2-T_0)-(T_2+T_0)=-2T_0 .
+\]
+所以只要 $T_0\ne0$（约束显含时间），守恒量\textbf{就}不是机械能。§7.3 与 H4.2 是这个结论的两个实例。}
+
+\subhdr{§2.6　判据二：什么时候 $h$ 才等于 $T+U$（p11 下半）}
+
+p11 下半的两句中文是本章最容易被读成一句的地方：
+
+\begin{quote}
+“当约束稳定时（约束方程不显含时间）$\dfrac{\partial\vec r}{\partial t}=0\Rightarrow T=T_2;\ T_1=T_0=0$”
+\end{quote}
+\begin{quote}
+“在 L 不显含时间，并且约束是稳定的情况下，$E=T+V$ 是体系的能量，能量守恒”
+\end{quote}
+
+第二句把两件事写成了一句，读起来像“两个条件合起来才守恒”。实际是\textbf{两个条件各管一件事}：
+
+\callout{\textbf{判据二（$h$ 是否等于机械能，p8＋p10＋p11）}\quad
+\[
+h=T_2-T_0+U .
+\]
+当且仅当 $T_1=T_0=0$（即 $T=T_2$）时 $h=T+U$。p11 给的充分条件是“约束稳定（约束方程不显含时间）$\Rightarrow\partial\vec r/\partial t=0\Rightarrow T_1=T_0=0$”。}
+
+\begin{itemize}
+\item \textbf{判据一}（p9）决定“守恒不守恒”：看 $\partial\mathcal{L}/\partial t$ 是否为零。
+\item \textbf{判据二}（p8、p10、p11）决定“守恒的这个量是不是机械能”：看 $T_1$、$T_0$ 是否为零。
+\item 二者\textbf{互不推导}：可以守恒但不是机械能（§7.3、H4.2），也可以不守恒但形式上 $h=T+U$（§7.2：那里 $T_1=T_0=0$，$h$ 就是机械能，但 $h$ 不守恒）。
+\end{itemize}
+
+\aside{“稳定约束”只是判据二的\textbf{充分}条件，不是必要条件。准确的可算条件是 $T_1=T_0=0$。§7.3 的旋转钢丝：$\vec r$ 依赖 $t$（转动是给定的，约束不稳定），但 $\partial\vec r/\partial t$ 与 $\partial\vec r/\partial r$ 正交，故 $T_1=0$ 而 $T_0\ne0$。那里 $h\ne T+U$，可是 $h$ 仍守恒。若把“稳定约束”当成判据二的必要条件，这一页就会判错。}
+
+\subhdr{§2.7　$h$ 与 Topic 9 的 $H$ 不是一回事（p9 的 note）}
+
+p9 在 $h$ 的定义下加了一条 note：
+\begin{quote}
+“it is important to distinguish this function with the Hamilton's function which will be introduced in Topic 9 (pay attention on the variables in both cases)”
+\end{quote}
+只有这一句，没有解释。补三句：
+
+\textbf{[教材补充]} $h$ 是 $(q,\dot q,t)$ 的函数；Hamilton 函数 $H$ 是 $(q,p,t)$ 的函数，由 $H(q,p,t)=\sum_i p_i\dot q_i-\mathcal{L}$ 把 $\dot q$ 用 $p=\partial\mathcal{L}/\partial\dot q$ 反解成 $\dot q=\dot q(q,p,t)$ 之后得到（这个反解能做的条件正是 p19 的 $\det[a_{ik}]\ne0$，见 §3.5）。两者沿真实轨迹\textbf{数值相同}，但“显含时间”的含义不同：$\partial h/\partial t$ 是在 $q,\dot q$ 固定下取的，$\partial H/\partial t$ 是在 $q,p$ 固定下取的，一般不相等。这就是判据一为什么写成 $\partial\mathcal{L}/\partial t$ 而不写成 $\partial h/\partial t$。（出处：Goldstein, \emph{Classical Mechanics}, 3rd ed., §2.7 “Energy Function and the Conservation of Energy” 与 §8.1 “Legendre Transformations and the Hamilton Equations of Motion”。）
+
+\subhdr{§2.8　有非保守力时：瑞利耗散函数（p12）}
+
+p12 换掉拉格朗日方程，加入“generalized non-conservative force (force having no potential)”：
+\[
+\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-\frac{\partial\mathcal{L}}{\partial q_i}=Q_i ,
+\qquad Q_i=-\frac{\partial\mathcal{F}}{\partial\dot q_i},
+\]
+其中 $\mathcal{F}$ 叫 \textbf{Rayleigh dissipation function}。p12 只对“阻力正比于速度（一次幂）”的情形给形式：
+\[
+\mathcal{F}=\frac12\sum_{a=1}^{N}\bigl(\alpha_{a,x}v_{a,x}^2+\alpha_{a,y}v_{a,y}^2+\alpha_{a,z}v_{a,z}^2\bigr),
+\qquad
+F_x=-\alpha_xv_x\ \ \text{（Stokes 律 }\vec F=-6\pi\eta a\vec v\text{）},
+\]
+若坐标变换不显含时间，则 $\mathcal{F}=\frac12\sum_{i,k}\tilde\alpha_{ik}\dot q_i\dot q_k$，于是
+\[
+\sum_{j=1}^{s}\dot q_j\frac{\partial\mathcal{F}}{\partial\dot q_j}=2\mathcal{F}. \tag{2.10}
+\]
+p12 把 $dh/dt=-\partial\mathcal{L}/\partial t-2\mathcal{F}$ 这一行标了红字“goes without proof”。补证明（与 §2.3 同一套动作，只在用方程处多出 $Q_i$）：
+\[
+\frac{dh}{dt}
+=\sum_i\dot q_i\Bigl[\underbrace{\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-\frac{\partial\mathcal{L}}{\partial q_i}}_{=\,Q_i}\Bigr]-\frac{\partial\mathcal{L}}{\partial t}
+=\sum_i\dot q_iQ_i-\frac{\partial\mathcal{L}}{\partial t}
+=-\sum_i\dot q_i\frac{\partial\mathcal{F}}{\partial\dot q_i}-\frac{\partial\mathcal{L}}{\partial t}
+=-2\mathcal{F}-\frac{\partial\mathcal{L}}{\partial t}. \tag{2.11}
+\]
+最后一步用了 (2.10)。若再假设 $\mathcal{L}$ 不显含 $t$，就得到 p12 方框里的
+\[
+\frac{dh}{dt}=-2\mathcal{F}\le0 .
+\]
+p12 对 $2\mathcal{F}$ 的注释是“rate of energy dissipation in a system”，即耗散功率。负号表示 $h$ 只能减少——这就是“耗散”二字在公式里的位置。
+
+\aside{(2.10) 是 $\mathcal{F}$ 对 $\dot q$ 二次齐次的直接结果（$\tilde\alpha_{ik}$ 对称，做法同 §2.4 的 $T_2$）。p12 右栏把它算了一遍，但把“$2\cdot\frac12\sum\tilde\alpha_{ik}\dot q_i\dot q_k=2\mathcal{F}$”这一步写成了两行草稿，读起来像另一个式子。}
+
+\callout{\textbf{到这里你应该能}：不看书重推 $\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$ 的三步；说出 $T_2,T_1,T_0$ 各是几次齐次、各从平方展开的哪一部分来；写出 $h=T_2-T_0+U$ 并解释它为什么可能不等于 $T+U$；用一句人话说清“两条判据各管什么”。}
+
+%=============================================================
+\hdr{§3}{空间均匀性 $\to$ 动量（p13--p19）}
+
+\subhdr{§3.1　虚位移与 p13 的四条操作规则}
+
+p13 把“空间均匀性”定义成：系统的性质在\textbf{整体平移}下不变（“invariant under its translations as a whole in space”，“rigid shift of the system as a whole does not change the results of a measurement”）。数学形式是
+\[
+\vec r_a\ \longrightarrow\ \vec r_a+\delta\vec r_a=\vec r_a+\vec\varepsilon .
+\]
+p13 右侧另有四条操作规则，它们不是装饰，缺一条推导就断：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{0.9cm}p{8.4cm}p{6.2cm}@{}}
+\toprule
+\thead{序号} & \thead{课件原文} & \thead{这条规则在推导里管什么}
+\\
+\midrule
+1 & “perform imaginary small shift of the system as a whole that corresponds to the infinitely small variation of its state (= variation of the Lagrangian)” & 位移是\textbf{虚}的，只用来算 $\delta\mathcal{L}$，不是真运动（p25 也有一句 “this is NOT a time-dependent motion of a system but its imaginary motion”）
+\\
+2 & “investigation should be done within the \textbf{inertial} system of coordinates” & 否则 $\mathcal{L}$ 的形式本身要改，$\delta\mathcal{L}=0$ 无从谈起
+\\
+3 & “radius-vectors and velocities are used” & 整体平移在 $\vec r_a$ 上是同一个 $\vec\varepsilon$；换成 $q_i$ 就不是同一个数了
+\\
+4 & “the time during the variation is a fixed quantity” & $\delta t=0$，于是 $\delta\vec v_a=0$——§3.2 第二行整行靠它
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{§3.2　从 $\delta\mathcal{L}=0$ 到 $\dfrac{d}{dt}\sum_a\dfrac{\partial\mathcal{L}}{\partial\vec v_a}=0$（p14）}
+
+p14 先给“一般变分式”（方框里的 “General expression for variation”）：
+\[
+\delta\mathcal{L}=\sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}\cdot\delta\vec r_a+\sum_a\frac{\partial\mathcal{L}}{\partial\vec v_a}\cdot\delta\vec v_a . \tag{3.1}
+\]
+然后把“整体平移”代进去（p14 红框：“we \textbf{shift the system in space as a whole}”）：
+\[
+\delta\vec r_a\equiv\vec\varepsilon,\qquad \delta\vec v_a=0
+\quad\Longrightarrow\quad
+\delta\mathcal{L}=\sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}\cdot\vec\varepsilon
+=\vec\varepsilon\cdot\sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}. \tag{3.2}
+\]
+对封闭系，p13/p14 的前提是“the motion of the system should not be affected by this shift”，即 $\delta\mathcal{L}=0$。p14 随后用三个箭头把结论推完：
+\[
+\delta\mathcal{L}=0\ \longrightarrow\ \sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}=0\ \longrightarrow\ \frac{d}{dt}\sum_a\frac{\partial\mathcal{L}}{\partial\vec v_a}=0 . \tag{3.3}
+\]
+
+\warnbox{\textbf{压缩缺口（p14）}：这三个箭头每一步都是独立的推理，课件一个都没写。第一条箭头靠“$\vec\varepsilon$ 任意”（三个分量独立，故三项系数分别为零）；第二条箭头靠\textbf{拉格朗日方程}（$\partial\mathcal{L}/\partial\vec r_a=\frac{d}{dt}(\partial\mathcal{L}/\partial\vec v_a)$），而拉格朗日方程在 p14 只出现在右栏最下方、与箭头不相邻；第三条箭头靠“有限个零相加仍是零，且求和与 $\frac{d}{dt}$ 可交换”。下面写全。}
+
+\textbf{第一条箭头。}设 $\vec\varepsilon=\varepsilon_x\hat x+\varepsilon_y\hat y+\varepsilon_z\hat z$。由 (3.2)，$\delta\mathcal{L}=\varepsilon_xS_x+\varepsilon_yS_y+\varepsilon_zS_z$，其中 $S_j\equiv\bigl(\sum_a\partial\mathcal{L}/\partial\vec r_a\bigr)\cdot\hat j$。$\delta\mathcal{L}=0$ 必须对\textbf{任意} $\vec\varepsilon$ 成立（规则 1：“as a whole”，方向任意），取 $\vec\varepsilon=\varepsilon_x\hat x$ 得 $\varepsilon_xS_x=0$ 对任意 $\varepsilon_x$，故 $S_x=0$；三个分量同理。这就是“$\vec\varepsilon$ 任意 $\Rightarrow$ 括号里三个分量都为零”。
+
+\textbf{第二条箭头。}直角坐标分量本身是合法的广义坐标，所以 Topic 3 的拉格朗日方程对每个分量成立：
+\[
+\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\vec v_a}\Bigr)-\frac{\partial\mathcal{L}}{\partial\vec r_a}=0
+\quad\Longrightarrow\quad
+\frac{\partial\mathcal{L}}{\partial\vec r_a}=\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\vec v_a}\Bigr). \tag{3.4}
+\]
+代入第一条箭头的结论 $\sum_a\partial\mathcal{L}/\partial\vec r_a=0$：
+\[
+0=\sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}=\frac{d}{dt}\sum_a\frac{\partial\mathcal{L}}{\partial\vec v_a}. \tag{3.5}
+\]
+（$a$ 是有限个质点，求和与求导可交换。）
+
+\aside{(3.4) 的合法性值得停一秒：$\vec r_a$ 的三个分量彼此独立、且与约束无关（约束已经用广义坐标消掉了，这里讨论的是无约束的直角坐标表述），所以它们构成一组广义坐标；Topic 3 的拉格朗日方程对任何一组广义坐标都成立。p13 规则 3 之所以说“用径矢与速度”，就是因为在这组坐标下整体平移是同一个 $\vec\varepsilon$。}
+
+\subhdr{§3.3　$P\equiv\sum_a\dfrac{\partial\mathcal{L}}{\partial\vec v_a}$ 为什么叫动量（p15）}
+
+p15 的问题句式与 p7 完全平行：“Which are the reasons to call this quantity the (linear) momentum of the system?”，答案也是三条：量纲是动量、对封闭系取常值、本情形下可写成
+\[
+\vec P=\sum_a\vec p_a . \tag{3.6}
+\]
+第三条同样要算。p15 的 hint 是
+\[
+\mathcal{L}=\sum_b\frac{m_bv_b^2}{2}-U(\vec r_b)
+\quad\Longrightarrow\quad
+\frac{\partial\mathcal{L}}{\partial\vec v_a}=m_a\vec v_a=\vec p_a , \tag{3.7}
+\]
+于是 (3.5) 变成 $\dfrac{d}{dt}\sum_a\vec p_a=0$，即 (3.6) 守恒。
+
+p15 右侧还专门说明 $\vec P$ 是\textbf{可加}的，而且\textbf{即使粒子间有相互作用也照样可加}：
+\begin{quote}
+“is additive integral of motion even in the case of interaction between particles (because its value does not depend on the fact of interaction between the particles)”
+\end{quote}
+原因就在 (3.7)：$\partial\mathcal{L}/\partial\vec v_a$ 只含第 $a$ 个粒子自己的速度。相互作用只出现在 $U$ 里，而 $U$ 与速度无关，求 $\partial/\partial\vec v_a$ 时被整块抹掉。这就是 §1.2 的“可加”在动量上的具体兑现。
+
+\subhdr{§3.4　三条牛顿定律分别是哪一步读出来的（p15--p18）}
+
+这一节是课件的一次“拼图”，也是它最容易让人误以为在讲循环论证的地方：p16 把“牛顿第一定律！”“牛顿第三定律！”两个方框贴在推导旁边，p18 又贴一个“牛顿第二定律！”，但\textbf{没有说清哪一步读出哪一条}。补一张对照（这是台账表，不承载推导）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.8cm}p{1.6cm}p{7.8cm}@{}}
+\toprule
+\thead{从拉格朗日表述读出的式子} & \thead{页} & \thead{它是什么定律}
+\\
+\midrule
+$\sum_a\dfrac{\partial\mathcal{L}}{\partial\vec r_a}=0$，而 $\dfrac{\partial\mathcal{L}}{\partial\vec r_a}=-\dfrac{\partial U}{\partial\vec r_a}\equiv\vec f_a$ & p15--p16 & 合外力为零。$\vec f_a$ 的定义就在这一步（p16 中间那个等号链）
+\\
+$\sum_a\vec f_a=0$，当 $N=2$ 时即 $\vec f_1+\vec f_2=0$ & p15--p16 & \textbf{牛顿第三定律}（p15 “action equals reaction”，p16 “remember: action equals reaction!”）
+\\
+$\dfrac{d}{dt}\sum_a\dfrac{\partial\mathcal{L}}{\partial\vec v_a}=\dfrac{d\vec P}{dt}=0$ & p14--p16 & \textbf{牛顿第一定律}：封闭系总动量恒定（p16 右上红框）
+\\
+$\dfrac{d}{dt}\Bigl(\dfrac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-\dfrac{\partial\mathcal{L}}{\partial q_i}=0$，写成 $\dot p_i=f_i$ & p18 & \textbf{牛顿第二定律}（p18 “This form is similar to Newton's equations!”）
+\\
+\bottomrule
+\end{tabular}
+
+\aside{读法：\textbf{不是}用牛顿定律去证拉格朗日方程，而是反过来——从“$\mathcal{L}$ 在整体平移下不变”这一条对称性出发，推出了合外力为零（第三定律）、总动量守恒（第一定律）、以及 $\dot p_i=f_i$ 的形式（第二定律）。p16 的两个方框是把结论“翻译”回牛顿的语言，不是推导的前提。这一点 §1.3 的 Noether 定理已经写在明面上：守恒量的存在只依赖 $\mathcal{L}$ 的对称性。}
+
+\subhdr{§3.5　广义动量的显式形式：$p_i=\sum_k a_{ik}\dot q_k+b_i$（p19）}
+
+p19 用 Topic 3 的一般 $\mathcal{L}$（“see topic 3” 是课件原话）：
+\[
+\mathcal{L}=\frac12\sum_{i,k}a_{ik}(q_l,t)\dot q_i\dot q_k+\sum_i b_i(q_l,t)\dot q_i+c(q_l,t)-U(q_l,t). \tag{3.8}
+\]
+p19 右侧把 $p_i=\partial\mathcal{L}/\partial\dot q_i$ 算完并框出结果 $p_i=\sum_k a_{ik}\dot q_k+b_i$。中间四行是本节最密的一处代数，逐步写：
+
+\textbf{第一步：先算一个基本偏导。}
+\[
+\frac{\partial}{\partial\dot q_i}\bigl(\dot q_j\dot q_k\bigr)=\delta_{ij}\dot q_k+\delta_{ik}\dot q_j . \tag{3.9}
+\]
+（$\delta_{ij}$ 是 Kronecker 符号：$i=j$ 时 $1$，否则 $0$。因为 $\dot q_j\dot q_k$ 对 $\dot q_i$ 求导时，只有“$j=i$”与“$k=i$”两条路。）
+
+\textbf{第二步：套进 (3.8) 的第一项。}
+\[
+\frac{\partial}{\partial\dot q_i}\Bigl(\frac12\sum_{j,k}a_{jk}\dot q_j\dot q_k\Bigr)
+=\frac12\sum_k a_{ik}\dot q_k+\frac12\sum_j a_{ji}\dot q_j . \tag{3.10}
+\]
+
+\textbf{第三步：用 $a$ 的对称性把两个和并成一个。}$a_{ik}=a_{ki}$ 的理由写在同一页（右栏最下）：
+\[
+a_{ik}=\frac{\partial^2\mathcal{L}}{\partial\dot q_i\partial\dot q_k}=\frac{\partial^2\mathcal{L}}{\partial\dot q_k\partial\dot q_i}=a_{ki},
+\]
+即混合偏导可交换。把 (3.10) 第二个和里的哑标 $j$ 改写成 $k$，再用对称性：
+\[
+p_i=\frac12\sum_k a_{ik}\dot q_k+\frac12\sum_k a_{ki}\dot q_k+b_i=\sum_k a_{ik}\dot q_k+b_i . \tag{3.11}
+\]
+
+\warnbox{\textbf{两处必须点名的缝（p19）}：
+（1）\textbf{顺序}：课件把“$a$ 对称”这条依据写在右栏\textbf{最下面}（“a 对称 $a_{ik}=a_{ki}$, i.e., $\partial^2L/\partial\dot q_i\partial\dot q_k=\partial^2L/\partial\dot q_k\partial\dot q_i$”），而读者按顺序读到 (3.10) 时正卡在“两个半份怎么合起来”，此时手里还没有这条依据。本文把它提前到第三步。
+（2）\textbf{下标笔误}：p19 右栏前两行写的是 $+b_j(q_l,t)$，第三行才改成 $+b_i(q_l,t)$；课件自己在那个 $b_j$ 下面画了红线，说明老师当场也点了这一处。正确的一律是 $b_i$（$\partial/\partial\dot q_i$ 只碰 $b_i\dot q_i$ 那一项）。}
+
+p19 还有一句容易被略过、但对 Topic 9 至关重要的话：“one can express the generalized momenta in terms of generalized velocities due to the \textbf{non-degeneracy} property of a Lagrangian”，条件是非退化
+\[
+\det[a_{ik}]=\left|\frac{\partial^2\mathcal{L}}{\partial\dot q_i\partial\dot q_k}\right|\ne0 ,
+\]
+p19 注明 “The latter is vital when considering the canonical equations.”。意思就是 (3.11) 可以\textbf{反解}出 $\dot q$：写成矩阵形式 $\vec p=A\dot{\vec q}+\vec b$，则 $\dot{\vec q}=A^{-1}(\vec p-\vec b)$。这正是 §2.7 里“把 $h$ 换成 $H$”所要求的那一步。
+
+\subhdr{§3.6　开放系：动量不守恒，但投影可能守恒（p17）}
+
+p17 的原文很干脆：“As a rule, momentum of such a system does \textbf{not} conserve. However, its \textbf{projection} along some direction \textbf{can} still conserve.”并给出
+\[
+\frac{dP_n}{dt}=\hat n\cdot\sum_a\vec f_a=\hat n\cdot\vec F . \tag{3.12}
+\]
+于是“沿 $\hat n$ 方向的动量守恒”有三个等价的判据（p17 的 “Possibilities” 1)--3)）：
+\begin{enumerate}
+\item 合外力在 $\hat n$ 上的投影为零：$\hat n\cdot\vec F=0$；
+\item 势能沿 $\hat n$ 方向的导数为零；
+\item 拉格朗日量沿 $\hat n$ 方向的导数为零。
+\end{enumerate}
+
+\warnbox{\textbf{机制缺口（p17）}：三条为什么等价，课件没说。在 $\mathcal{L}=T-U$ 且 $U$ 与速度无关的前提下，沿 $\hat n$ 平移 $\vec r_a\to\vec r_a+\epsilon\hat n$ 时 $\delta\mathcal{L}=\epsilon\,\hat n\cdot\sum_a\partial\mathcal{L}/\partial\vec r_a=-\epsilon\,\hat n\cdot\sum_a\partial U/\partial\vec r_a$，三处说的是同一个数，故三条判据同真同假。第 1 条是“力的语言”，第 2 条是“势能的语言”，第 3 条是“$\mathcal{L}$ 的语言”——做题时用第 2 条最快（找一个不出现的坐标），验算时用第 1 条最直观。}
+
+\textbf{一个能当场用的例子}（p17 原文）：“consider the uniform external field oriented along z-axis $\Rightarrow$ x- and y-projections of the momentum conserve”。理由：均匀场 $\vec F=F\hat z$ 只沿 $z$，故 $\hat x\cdot\vec F=\hat y\cdot\vec F=0$；等价地，$U=-Fz$ 不含 $x,y$，故 $\partial U/\partial x=\partial U/\partial y=0$；也等价地，$\mathcal{L}$ 不含 $x,y$。注意这里\textbf{总动量不守恒}（$P_z$ 在变），守恒的是两个投影。
+
+\subhdr{§3.7　循环坐标：投影守恒的“坐标版本”（p18）}
+
+p18 把上面的结论换到任意广义坐标。先定义两个量：
+\[
+p_i\equiv\frac{\partial\mathcal{L}}{\partial\dot q_i}\ \text{（generalized momenta）},\qquad
+f_i\equiv\frac{\partial\mathcal{L}}{\partial q_i}\ \text{（generalized forces）},
+\]
+于是拉格朗日方程就是
+\[
+\dot p_i=f_i , \tag{3.13}
+\]
+p18 对它的评价是 “This form is similar to Newton's equations!”。若某个坐标 $q_1$ 不出现在 $\mathcal{L}$ 里，
+\[
+\frac{\partial\mathcal{L}}{\partial q_1}=0\quad\Longrightarrow\quad\dot p_1=0\quad\Longleftrightarrow\quad q_1\ \text{是 \textbf{cyclic coordinate}（循环坐标）},
+\]
+对应的 $p_1$ 守恒。p18 最后两条 note 是：“1) the units of generalized momenta depend on the units of generalized coordinates; 2) cyclic coordinates lead directly to the integrals of motion.”
+
+\aside{“单位随坐标变”不是空话：$q=$ 长度时 $p$ 的单位是 $\mathrm{kg\cdot m/s}$；$q=$ 角度时 $p$ 的单位是 $\mathrm{kg\cdot m^2/s}$（角动量）；$q=$ 面积时 $p$ 的单位是 $\mathrm{kg/s}$。所以“$p_1$ 守恒”不等于“动量守恒”，它只保证“$p_1$ 这个量”不变。§5.5 的 $L_z=\sum_a\partial\mathcal{L}/\partial\dot\varphi_a$ 就是 $q=$ 角度的情形。}
+
+\callout{\textbf{到这里你应该能}：把“整体平移 $\Rightarrow\delta\mathcal{L}=0\Rightarrow$ 三条箭头”这条链自己走一遍，并指出第二条箭头用的是拉格朗日方程；说出三条牛顿定律各对应哪一个式子；用三种语言（力／势能／$\mathcal{L}$）判断“某方向动量守恒”；算出 (3.11) 并说清 $a$ 为什么对称、$b$ 的下标为什么必须是 $i$。}
+
+%=============================================================
+\hdr{§4}{质心系：换一个惯性系看同一个系统（p20--p24）}
+
+\subhdr{§4.1　伽利略变换与总动量的变换规则（p20）}
+
+p20 设 $K$ 是惯性系，$K'$ 是相对 $K$ 作\textbf{平动}的任意参考系（“non-IRF in general”），变换写成
+\[
+\vec r_a=\vec r_a'+\vec r_0,\qquad \vec v_a=\vec v_a'+\vec V,\qquad t=t',
+\]
+其中 $\vec V$ 是 $K'$ 相对 $K$ 的速度，$\vec r_0$ 是其原点的位矢。p20 底部注明 “Time is the same; no relativistic effect”，所以 $t=t'$ 是这条变换的第四条（也是最容易被忘的一条）。
+
+把 $\vec v_a=\vec v_a'+\vec V$ 乘 $m_a$ 再求和：
+\[
+\sum_am_a\vec v_a=\sum_am_a\vec v_a'+\vec V\sum_am_a
+\quad\Longrightarrow\quad
+\vec P=\vec P'+m_{\rm tot}\vec V,\qquad m_{\rm tot}\equiv\sum_am_a . \tag{4.1}
+\]
+p20 把 (4.1) 框起来并标 EXERCISE——它只有一行代数，但方向要想清楚：\textbf{总动量不是伽利略不变量}，换系会多出 $m_{\rm tot}\vec V$ 这一项。这一项是 §4.3 能量分解的种子。
+
+\subhdr{§4.2　C 系：总动量为零的那个惯性系（p21--p22）}
+
+p21 从 (4.1) 直接读出：“There always exists such a reference frame in which the total momentum of the mechanical system is 0”：
+\[
+\vec P'=0\quad\Longleftrightarrow\quad \vec V\equiv\vec V_c=\frac{\vec P}{m_{\rm tot}} . \tag{4.2}
+\]
+这个系叫 \textbf{C 系}（center of mass frame，质心系），$\vec V_c$ 叫质心速度。把 $\vec V_c$ 积回去就得到质心位矢
+\[
+\vec R_c\equiv\frac{\sum_am_a\vec r_a}{\sum_am_a}=\frac{\sum_am_a\vec r_a}{m_{\rm tot}} . \tag{4.3}
+\]
+
+p21 有两条 note，都很要紧：
+\begin{itemize}
+\item “C-frame undergoes only \textbf{translational} motion in respect to IRF!”——C 系不转，所以里面\textbf{没有}离心力与科里奥利力，只有平动的惯性力。§5.3 的 $\vec L=\vec L_c+[\vec R_c\times\vec P]$ 之所以能写成那么干净的形式，靠的就是“只平动”。
+\item “in cases when the total momentum of a system is NOT conserved (for example, if the system is not closed), velocity of a C-frame becomes time-dependent and C-frame is non-IRF.”——C 系是惯性系\textbf{当且仅当}总动量守恒。
+\end{itemize}
+
+p22 把这件事说成一条 \textbf{Statement}：“for a closed mechanical system the momentum is conserved if its center of inertia undergoes uniform straight-line motion.”并补一句“this is a generalization of the Newton's First law for a single free point particle”（单粒子的质心就是它自己）。p22 还给了 C 系的两个用处：封闭系里 C 系是惯性系，可以把“整体匀速直线运动”这一块从问题里删掉；开放系里 C 系虽非惯性，但仍可用来集中看“internal”运动。
+
+\subhdr{§4.3　能量的变换规则：$E=E_{\rm int}+\dfrac{m_{\rm tot}V_c^2}{2}$（p23--p24）}
+
+p23 对同一个封闭系在两个惯性系里各写一次能量：
+\[
+K:\ E=\sum_a\frac{m_av_a^2}{2}+U,\qquad
+K':\ E'=\sum_a\frac{m_av_a'^2}{2}+U ,
+\]
+其中 $U$ 取同一个值——p23 的 note 交代了理由：“we assume that potential energy of a system depends on the mutual arrangement of particles which is not affected and, generally, on time”（$U$ 只依赖相对位形，换系不变）。代 $\vec v_a=\vec v_a'+\vec v_0$ 并展开：
+\[
+E=\frac12\sum_am_av_a'^2+U+\vec v_0\cdot\sum_am_a\vec v_a'+\frac{\vec v_0^2}{2}\sum_am_a
+=E'+\vec P'\cdot\vec v_0+\frac{m_{\rm tot}v_0^2}{2}. \tag{4.4}
+\]
+p23 框出的就是这个式子。取 $K'$ 为 C 系，则 $\vec P'=0$、$\vec v_0=\vec V_c$，中间项消失：
+\[
+E=E_{\rm int}+\frac{m_{\rm tot}V_c^2}{2},\qquad E_{\rm int}\equiv E' . \tag{4.5}
+\]
+p23/p24 把它读成一句：封闭系的\textbf{总能量} $=$ 它的\textbf{内能}（在 C 系里量到的能量）$+$ 整个系统\textbf{作为整体运动的动能}。
+
+\warnbox{\textbf{记号冲突（p20 / p23 / p24）}：同一个“$K'$ 相对 $K$ 的速度”，p20 写 $\vec V$，p23 写 $\vec v_0$，p24 的手写推导又写成 $\tfrac12\mu V^2$（还用了 $\mu$ 这个字母）。本文统一：$\vec v_0$ 记 $K'$ 相对 $K$ 的速度，$\vec V_c$ 记质心速度；(4.4) 对任意 $\vec v_0$ 成立，(4.5) 只在 $\vec v_0=\vec V_c$ 时成立。两者混用会出现“多算一遍质心动能”或“少算一项交叉项”的错误。}
+
+\aside{(4.4) 里中间项 $\vec P'\cdot\vec v_0$ 的含义：它正比于 $K'$ 系里的总动量。所以在 C 系（$\vec P'=0$）里它必然为零——这不是“恰好”，而是 C 系的定义。反过来说，若在非 C 系里直接写 (4.5)，就漏掉了这一项。}
+
+\callout{\textbf{到这里你应该能}：写出 $\vec P=\vec P'+m_{\rm tot}\vec V$ 并说明它为什么不是不变量；说清 C 系成为惯性系的条件；不看书推出 $E=E'+\vec P'\cdot\vec v_0+\frac{m_{\rm tot}v_0^2}{2}$，并指出哪一项在 C 系里消失、为什么。}
+
+%=============================================================
+\hdr{§5}{空间各向同性 $\to$ 角动量（p25--p29）}
+
+\subhdr{§5.1　虚转动：$\delta\vec r_a=\delta\vec\phi\times\vec r_a$（p25）}
+
+各向同性的定义（p25）：“the properties of a system are invariant under arbitrary imaginary rotations of the system as a whole in space.”一次转动由\textbf{转轴}、\textbf{转向}、\textbf{转角}三样确定；前两样合成一个单位矢量 $\hat n$（右手定则），于是把“转角”写成矢量
+\[
+\delta\vec\phi=\hat n\,\delta\phi .
+\]
+质点 $a$ 的位移是绕轴转 $\delta\phi$ 的弧长：
+\[
+|\delta\vec r_a|=|\vec r_a|\sin\theta_a\,\delta\phi ,
+\]
+其中 $\theta_a$ 是 $\vec r_a$ 与转轴的夹角（p25 图上标的正是 $\theta_a$）。方向同时垂直于 $\hat n$ 与 $\vec r_a$，故
+\[
+\delta\vec r_a=\delta\vec\phi\times\vec r_a ,\qquad
+\delta\vec v_a=\delta\vec\phi\times\vec v_a . \tag{5.1}
+\]
+第二式与第一式同形：速度也是“从原点出发的矢量”，整体转动时同样跟着转。
+
+p25 还给了一条对\textbf{任意}矢量都成立的恒等式（原文标 “Hint: prove that for any arbitrary vector the following expression is valid”）：
+\[
+\delta\vec c_a=\delta\vec\phi\times\vec c_a ,
+\]
+并在右侧用它算了两点之差：$\vec c=\vec r_b-\vec r_a$ 时 $\delta\vec c=\delta\vec r_b-\delta\vec r_a=\delta\vec\phi\times\vec r_b-\delta\vec\phi\times\vec r_a=\delta\vec\phi\times\vec c$（叉积对第二因子线性）。
+
+\aside{$\sin\theta_a$ 而不是别的：位移是圆周上的弧（小角度下等于弦），半径是 $\vec r_a$ 到转轴的垂直距离 $|\vec r_a|\sin\theta_a$。$\theta_a$ 是 $\vec r_a$ 与\textbf{轴}的夹角。p25 图注 “origin is on the axis” 提醒原点必须取在轴上，否则 $\vec r_a$ 的起点不在轴上，$|\delta\vec r_a|$ 就不再是 $|\vec r_a|\sin\theta_a\delta\phi$。}
+
+\subhdr{§5.2　四步推出 $\vec L\equiv\sum_a\vec r_a\times\vec p_a$ 守恒（p26）}
+
+p26 用一行写出结论：
+\[
+\delta\mathcal{L}=\sum_a\Bigl(\frac{\partial\mathcal{L}}{\partial\vec r_a}\cdot\delta\vec r_a+\frac{\partial\mathcal{L}}{\partial\vec v_a}\cdot\delta\vec v_a\Bigr)
+=\delta\vec\phi\cdot\frac{d}{dt}\sum_a\bigl[\vec r_a\times\vec p_a\bigr]=0 . \tag{5.2}
+\]
+这一行压缩了四步，是本课件最密的一处（压缩缺口，p26）。逐步展开：
+
+\textbf{第一步：代入 (5.1)。}
+\[
+\delta\mathcal{L}=\sum_a\Bigl(\frac{\partial\mathcal{L}}{\partial\vec r_a}\cdot(\delta\vec\phi\times\vec r_a)+\frac{\partial\mathcal{L}}{\partial\vec v_a}\cdot(\delta\vec\phi\times\vec v_a)\Bigr).
+\]
+\textbf{第二步：用拉格朗日方程把 $\partial\mathcal{L}/\partial\vec r_a$ 换成 $\dot{\vec p}_a$，并把 $\partial\mathcal{L}/\partial\vec v_a$ 记作 $\vec p_a$。}
+\[
+\delta\mathcal{L}=\sum_a\Bigl(\dot{\vec p}_a\cdot(\delta\vec\phi\times\vec r_a)+\vec p_a\cdot(\delta\vec\phi\times\vec v_a)\Bigr).
+\]
+\textbf{第三步：用混合积轮换把 $\delta\vec\phi$ 提到求和号外。}p26 底部给的恒等式是
+\[
+\vec A\cdot(\vec B\times\vec C)=\vec B\cdot(\vec C\times\vec A)=\vec C\cdot(\vec A\times\vec B),
+\]
+于是两项分别变成 $\delta\vec\phi\cdot(\vec r_a\times\dot{\vec p}_a)$ 与 $\delta\vec\phi\cdot(\vec v_a\times\vec p_a)$：
+\[
+\delta\mathcal{L}=\delta\vec\phi\cdot\sum_a\bigl(\vec r_a\times\dot{\vec p}_a+\vec v_a\times\vec p_a\bigr)
+=\delta\vec\phi\cdot\frac{d}{dt}\sum_a\bigl(\vec r_a\times\vec p_a\bigr),
+\]
+最后一步因为 $\dfrac{d}{dt}(\vec r_a\times\vec p_a)=\vec v_a\times\vec p_a+\vec r_a\times\dot{\vec p}_a$。
+
+\textbf{第四步：删掉 $\vec v_a\times\vec p_a$，并令 $\delta\mathcal{L}=0$。}$\vec p_a$ 与 $\vec v_a$ 平行（$\vec p_a=m_a\vec v_a$，因为 $U$ 与速度无关），故 $\vec v_a\times\vec p_a=0$：
+\[
+\delta\mathcal{L}=\delta\vec\phi\cdot\frac{d}{dt}\sum_a(\vec r_a\times\vec p_a)=0
+\quad\Longrightarrow\quad
+\frac{d}{dt}\vec L=0,\qquad \vec L\equiv\sum_a\vec r_a\times\vec p_a . \tag{5.3}
+\]
+最后一步的理由与 §3.2 同构：$\delta\vec\phi$ 的转轴任意、转角任意，三个分量独立，故被点乘的那个矢量为零。
+
+\aside{第三步的那个“恰好”值得记下来：$\vec v_a\times\vec p_a$ 消失的依据是 $\vec p_a=m_a\vec v_a$。若势能含速度（广义势），$\vec p_a\ne m_a\vec v_a$，这一项就不为零，$\vec L=\sum\vec r\times\vec p$ 一般也就不守恒了。课件没有讨论这种情形，但要知道这条缝在哪。}
+
+\subhdr{§5.3　角动量与原点有关：$\vec L=\vec L'+[\vec b\times\vec P]$（p26--p27）}
+
+p26 下半把原点从 $O$ 挪到 $O'$，两者相差常矢量 $\vec b$：$\vec r_a=\vec r_a'+\vec b$。代入定义：
+\[
+\vec L=\sum_a(\vec r_a'+\vec b)\times\vec p_a=\sum_a\vec r_a'\times\vec p_a+\vec b\times\sum_a\vec p_a
+=\vec L'+[\vec b\times\vec P] . \tag{5.4}
+\]
+p26 的 note：对质心系 $\vec L=\vec L'$（因为那里 $\vec P'=0$，$[\vec b\times\vec P']=0$）。
+
+p27 再把 $O'$ 取成质心、并允许 $K'$ 相对 $K$ 有平动速度，得到角动量的\textbf{自旋＋轨道}分解：
+\[
+\vec L=\vec L_c+[\vec R_c\times\vec P],\qquad
+\vec L_c=\sum_a\vec r_a'\times\vec p_a' . \tag{5.5}
+\]
+p27 在框下标了三个词：total、spin、orbital。并注明 “this result remains valid also in the case of translational motion of $K'$ with time-dependent velocity”——(5.5) 不要求 $K'$ 是惯性系。
+
+p27 底部对封闭系取时间导数并逐项标注：
+\[
+\dot{\vec L}=\dot{\vec L}_c+[\dot{\vec R}_c\times\vec P]+[\vec R_c\times\dot{\vec P}]=0,
+\]
+其中第二项为零（$\dot{\vec R}_c=\vec V_c$ 而 $\vec P=m_{\rm tot}\vec V_c$，两者平行），第三项为零（封闭系 $\dot{\vec P}=0$），于是 $\dot{\vec L}_c=0$。p27 的结论句：“for a closed mechanical system both spin and orbital components are conserved.”
+
+\subhdr{§5.4　非封闭系：换一个固定参考点，角动量还守恒吗（p28）}
+
+这是本讲义要讲得最透的一处，因为“换参考点还守恒吗”恰好是最容易答错的地方。先把 p28 的原话摆出来：
+
+\begin{quote}
+“as a rule, angular momentum of such systems (in respect to an arbitrary position of axes' origin) is \textbf{not} conserved”\\
+“however, its \textbf{projection} is conserved along some direction which is the axis of symmetry of a given external field”\\
+Example \#1（球对称场）：“projection of the angular momentum onto an \textbf{arbitrary axis passing through the field center} (which is also the origin) is conserved”\\
+Example \#2（轴对称场，沿 $z$）：“projection of the angular momentum onto this axis is conserved (\textbf{origin is arbitrary on the axis})”
+\end{quote}
+
+要回答“换点还守不守恒”，只需要两个式子。(5.4) 给出角动量的换点规则；力矩方程由 p18 的 $\dot p_i=f_i$ 写成矢量形式 $\dot{\vec p}_a=\vec f_a$，于是 $\vec N(O)=\sum_a\vec r_a\times\vec f_a$、$\dfrac{d\vec L(O)}{dt}=\vec N(O)$。把点挪到 $O'=O+\vec a$（$\vec a$ 常向量）：
+
+\[
+\vec L(O')=\vec L(O)-[\vec a\times\vec P],\qquad
+\vec N(O')=\vec N(O)-[\vec a\times\vec F_{\rm tot}],\qquad
+\frac{d\vec L(O')}{dt}=\vec N(O') . \tag{5.6}
+\]
+（第一式就是 (5.4) 换个记号；第二式把 $\sum_a(\vec r_a-\vec a)\times\vec f_a$ 拆开即得。）
+
+现在分情形看。
+
+\textbf{情形 A：封闭系。}$\vec F_{\rm tot}=0$，故 $\vec N(O')=\vec N(O)=0$；又 $\vec P$ 是常向量，故 $[\vec a\times\vec P]$ 也是常向量。于是 $\vec L(O')$ 是两个常矢量之差，仍然是常向量——\textbf{封闭系换任何固定点都守恒}。
+
+\textbf{情形 B：非封闭系 ＋ 球对称场（绕场心守恒，绕偏心点不守恒）。}设单质点在中心力场里绕场心 $O$ 作圆周运动，半径 $R$、角速度 $\omega$、速率 $v=\omega R$，力 $\vec F=-m\omega^2\vec r$（始终指向 $O$）。绕 $O$：
+\[
+\vec L(O)=\vec r\times m\vec v=mvR\,\hat z=\text{const}\qquad(\vec r\perp\vec v,\ \text{方向恒为}\ \hat z).
+\]
+把原点挪到 $O'=O+d\hat x$（$d$ 为常数）：
+\[
+\vec L(O')=\vec L(O)-[d\hat x\times m\vec v]=mvR\,\hat z-dmv\cos\omega t\,\hat z ,
+\]
+\[
+\frac{d\vec L(O')}{dt}=+dmv\omega\sin\omega t\ \hat z=+dm\omega^2R\sin\omega t\ \hat z\ne0 .
+\]
+所以 $\vec L(O')$ \textbf{不守恒}（它绕 $mvR$ 振荡，振幅 $dmv$）。这与 (5.6) 第二式对得上：$\vec N(O')=-[\vec a\times\vec F]=d\hat x\times m\omega^2\vec r$，其 $z$ 分量正是 $dm\omega^2R\sin\omega t$。
+
+\warnbox{\textbf{这就是“球对称场里轴必须过场心”的全部理由}：$O$ 取在场心时 $\vec N(O)=0$；一旦原点离开场心，$\vec N(O')=-[\vec a\times\vec F]\ne0$，因为 $\vec a$ 与 $\vec F$ 一般不平行。换句话说，\textbf{对称性是对场心说的}，换点就把“球对称”这个前提用丢了。}
+
+\textbf{情形 C：轴对称场（原点可以在轴上随便挪）。}p28 说轴对称场里 “origin is arbitrary on the axis”。为什么可以？因为沿轴挪原点时 $\vec a\parallel\hat z$，于是
+\[
+[\vec a\times\vec P]\cdot\hat z=\hat z\cdot(\vec a\times\vec P)=\vec a\cdot(\vec P\times\hat z)=0
+\qquad(\vec a\parallel\hat z\ \Rightarrow\ \vec a\perp(\vec P\times\hat z)).
+\]
+所以\textbf{沿同一条轴的投影}与原点在轴上的位置无关：$L_z(O')=L_z(O)$。p28 这句话说的是“投影不变”，不是“矢量不变”——矢量当然会变（差一个 $[\vec a\times\vec P]$），但那个差垂直于轴，投影上看不见。
+
+\callout{\textbf{把三种情形压成一句}\quad
+（i）守恒性看 $\dfrac{d\vec L}{dt}=\vec N$，而 $\vec N$ 依赖原点；封闭系（$\vec F_{\rm tot}=0$ 且 $\vec P$ 恒定）换任何固定点都守恒。（ii）非封闭系里，球对称场只保证\textbf{过场心}的轴上的投影守恒；偏离场心的固定点一般不守恒，反例见情形 B。（iii）沿同一条轴挪原点，投影不变（$\vec a\parallel\hat z$），所以轴对称场才敢说“原点在轴上任意取”。}
+
+\subhdr{§5.5　$L_z$ 的两种算法与力矩方程（p29）}
+
+p29 给 $L_z$ 两个等价的算法。第一个用广义动量：
+\[
+L_z=\sum_a\frac{\partial\mathcal{L}}{\partial\dot\varphi_a}, \tag{5.7}
+\]
+其中 $\varphi_a$ 是柱坐标里的方位角。第二个用定义直接算：
+\[
+L_z=\sum_am_a(x_a\dot y_a-y_a\dot x_a)=\sum_am_ar_a^2\dot\varphi_a . \tag{5.8}
+\]
+两个算法为什么一致：柱坐标 $x=\rho\cos\varphi,\ y=\rho\sin\varphi,\ z=z$ 下，
+\[
+\dot x=\dot\rho\cos\varphi-\rho\dot\varphi\sin\varphi,\qquad
+\dot y=\dot\rho\sin\varphi+\rho\dot\varphi\cos\varphi ,
+\]
+代入 $x\dot y-y\dot x$：$\dot\rho$ 项相消（$\rho\cos\varphi\sin\varphi-\rho\sin\varphi\cos\varphi=0$），剩下 $\rho^2\dot\varphi(\cos^2+\sin^2)=\rho^2\dot\varphi$。而 $\mathcal{L}=\sum_a\frac{m_a}{2}(\dot r_a^2+r_a^2\dot\varphi_a^2+\dot z_a^2)-U$ 对 $\dot\varphi_a$ 求偏导正好给 $m_ar_a^2\dot\varphi_a$。(5.7) 与 (5.8) 是同一个数。
+
+p29 再把 p18 的 $\dot p_i=f_i$ 用到 $\varphi_a$ 上，得到\textbf{力矩方程}：
+\[
+\frac{dL_z}{dt}=-\sum_a\frac{\partial U}{\partial\varphi_a}=0
+\quad\Longleftrightarrow\quad
+U=U(r_a,z_a,t). \tag{5.9}
+\]
+p29 右侧的写法是 $\dfrac{d}{dt}\Bigl(\dfrac{\partial L_l}{\partial\dot q}\Bigr)-\dfrac{\partial U}{\partial q}=0$、$\dfrac{dL_z}{dt}=-\sum_\alpha\dfrac{\partial U}{\partial\varphi}$；本文按 (5.9) 排列。注意 $U$ 只依赖 $r_a,z_a$（与 $\varphi_a$ 无关）正是“轴对称”的数学翻译——这就是 §3.6 第 2 条判据（“势能沿该方向的导数为零”）的角动量版本。
+
+\callout{\textbf{到这里你应该能}：用四步推出 $\vec L$ 守恒并指出 $\vec v\times\vec p=0$ 用在哪；写出 (5.4) 与 (5.6) 并解释“封闭系换点仍守恒、非封闭系换点一般不守恒”；当场构造一个“绕场心守恒、绕偏心点不守恒”的反例；说清为什么轴对称场允许原点在轴上滑动。}
+
+%=============================================================
+\hdr{§6}{力学相似：不解方程也能比较两条轨道（p30--p35）}
+
+\subhdr{§6.1　$\varkappa$ 与 $\beta$：坐标放大与时间放大（p30）}
+
+p30 的出发点是这一句：“Multiplication of the Lagrangian by any constant clearly does not affect the equations of motion.”（“clearly” 之后没有证明，补一行）若 $\mathcal{L}\to c\mathcal{L}$（$c\ne0$ 常数），拉格朗日方程变成
+\[
+\frac{d}{dt}\Bigl(c\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-c\frac{\partial\mathcal{L}}{\partial q_i}
+=c\Bigl[\frac{d}{dt}\Bigl(\frac{\partial\mathcal{L}}{\partial\dot q_i}\Bigr)-\frac{\partial\mathcal{L}}{\partial q_i}\Bigr]=0 ,
+\]
+与原方程同解。所以 $\mathcal{L}$ 的\textbf{整体倍数}不带信息，只有“形状”带信息。这一句是整个 §6 的支点：只要能证明“标度变换后的 $\mathcal{L}'$ 是原来 $\mathcal{L}$ 的常数倍”，两条运动就几何相似。
+
+p30 设势能是坐标的齐次函数：
+\[
+U(\varkappa\vec r_a)=\varkappa^{\lambda}U(\vec r_a). \tag{6.1}
+\]
+然后做\textbf{同时}变换（坐标与时间一起改）：
+\[
+\vec r_a\ \to\ \varkappa\vec r_a,\qquad t\ \to\ \beta t
+\quad\Longrightarrow\quad
+\dot{\vec r}_a=\frac{d\vec r_a}{dt}\ \to\ \frac{\varkappa}{\beta}\dot{\vec r}_a .
+\]
+代进 $\mathcal{L}=\sum_a\frac{m_a\dot r_a^2}{2}-U$：
+\[
+\mathcal{L}'=\sum_a\frac{m_a}{2}\Bigl(\frac{\varkappa}{\beta}\Bigr)^2\dot r_a^2-\varkappa^{\lambda}U
+=\frac{\varkappa^2}{\beta^2}T-\varkappa^{\lambda}U . \tag{6.2}
+\]
+要让 $\mathcal{L}'$ 是 $\mathcal{L}$ 的常数倍，(6.2) 里两个系数必须\textbf{相等}（否则 $T$ 与 $U$ 的相对权重变了，$\mathcal{L}'$ 就不是 $c\mathcal{L}$）：
+\[
+\frac{\varkappa^2}{\beta^2}=\varkappa^{\lambda}
+\quad\Longrightarrow\quad
+\beta=\varkappa^{1-\lambda/2}. \tag{6.3}
+\]
+p30 右栏的手写推导正是这三行（课件把标度因子写成 $\alpha$：$\alpha^2/\beta^2=\alpha^{\lambda}\Rightarrow\beta=\alpha^{1-\lambda/2}$）。p30 的结论句：“the equations of motion are not affected by this transformation”。
+
+\aside{(6.2) 用到“$T$ 是 $\dot r$ 的二次齐次”，即 $T=T_2$（稳定约束）。若约束显含时间（$T$ 里还有 $T_0$），(6.2) 会多出 $\varkappa^2/\beta^2$ 倍的 $T_0$，而 $T_0$ 与 $\dot r$ 无关，无法与 $U$ 项合并，标度律 (6.3) 就不再成立。p30 全程没提这个前提，而它是这条漂亮结论的全部代价。}
+
+\subhdr{§6.2　四个比值：$t$、$v$、$E$、$L$ 各按什么幂次缩放（p31）}
+
+p31 把 (6.3) 读成四个比值，其中 $l'/l\equiv\varkappa$ 是“轨道的线度之比”：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{4.4cm}p{8.2cm}@{}}
+\toprule
+\thead{量} & \thead{比值（p31 原式）} & \thead{一行推导}
+\\
+\midrule
+时间 & $\dfrac{t'}{t}=\Bigl(\dfrac{l'}{l}\Bigr)^{1-\frac{\lambda}{2}}$ & 就是 (6.3)：$\beta=\varkappa^{1-\lambda/2}$
+\\
+速度 & $\dfrac{v'}{v}=\Bigl(\dfrac{l'}{l}\Bigr)^{\frac{\lambda}{2}}$ & $v'=\dfrac{\varkappa}{\beta}v=\varkappa^{1-(1-\lambda/2)}v=\varkappa^{\lambda/2}v$
+\\
+能量 & $\dfrac{E'}{E}=\Bigl(\dfrac{l'}{l}\Bigr)^{\lambda}$ & $E=T+U$；$T\propto v^2\propto\varkappa^{\lambda}$，$U\propto\varkappa^{\lambda}$，故 $E\propto\varkappa^{\lambda}$
+\\
+角动量 & $\dfrac{|\vec L'|}{|\vec L|}=\Bigl(\dfrac{l'}{l}\Bigr)^{1+\frac{\lambda}{2}}$ & $|\vec L|\propto r\,mv\propto\varkappa\cdot\varkappa^{\lambda/2}=\varkappa^{1+\lambda/2}$
+\\
+\bottomrule
+\end{tabular}
+
+p31 把这四条总结成一句：“moreover, \textbf{any} mechanical quantities at corresponding points are in a ratio which is a power of the linear dimensions' ratio.”所以这张表不必背，只要会两件事：先由 $U$ 读出 $\lambda$，再由 (6.3) 读出 $\beta$，剩下的按量纲拼。
+
+\subhdr{§6.3　三个例子与开普勒第三定律（p32）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.1cm}p{3.2cm}p{1.3cm}p{7.4cm}@{}}
+\toprule
+\thead{系统} & \thead{势能} & \thead{$\lambda$} & \thead{代进 (6.3) 得到什么}
+\\
+\midrule
+小振动（单摆、弹簧） & $U=\dfrac{kx^2}{2}$ & $2$ & $\beta=\varkappa^{0}=1$，即 $t'=t$：\textbf{周期与振幅无关}（p32 “period of oscillations is independent of their amplitude”）
+\\
+均匀重力场 & $U=mgz$ & $1$ & $\beta=\varkappa^{1/2}$，即 $\dfrac{t'}{t}=\sqrt{\dfrac{l'}{l}}$：\textbf{落体时间 $\propto\sqrt{\text{高度}}$}
+\\
+牛顿引力 & $U=-\dfrac{\alpha}{r}$ & $-1$ & $\beta=\varkappa^{3/2}$，两边平方即 $\Bigl(\dfrac{t'}{t}\Bigr)^2=\Bigl(\dfrac{l'}{l}\Bigr)^3$：\textbf{开普勒第三定律}
+\\
+\bottomrule
+\end{tabular}
+
+\textbf{第三行要单独说清两件事。}
+
+（1）\textbf{$\lambda=-1$ 是怎么读出来的。}$U(\varkappa\vec r)=-\dfrac{\alpha}{|\varkappa\vec r|}=\varkappa^{-1}\Bigl(-\dfrac{\alpha}{r}\Bigr)=\varkappa^{-1}U(\vec r)$，故 $\lambda=-1$。这里 $r=\sqrt{x^2+y^2+z^2}$（p32 图上标了这一行），$\alpha$ 是引力常数。
+
+（2）\textbf{开普勒第三定律的形式。}由 $\beta=\varkappa^{3/2}$ 直接得 $(t'/t)^2=(l'/l)^3$。p32 原文只写 “Kepler's 3rd law”，没写中间那一步平方；这一步不能省，因为“$3/2$ 次幂”与“平方立方关系”是同一个结论的两种写法，考场上从一处推到另一处要能立刻完成。
+
+\warnbox{\textbf{记号警告（p30 与 p32）}：p30 用 $\alpha$ 当\textbf{坐标标度因子}，p32 用 $\alpha$ 当\textbf{引力常数}（$U=-\alpha/r$）。同一个字母，两页两种含义。本文标度因子一律写 $\varkappa$。这不是笔误，是课件跨页时的记号漂移，做题时务必按上下文区分。}
+
+\aside{量纲检查（p32 的结论必须过这一关）：$t'/t$ 与 $l'/l$ 都是纯数，指数 $1-\lambda/2$ 也是纯数（$\lambda$ 是齐次度，无量纲），所以两边量纲一致，与单位制的选择无关。同理 $E'/E=\varkappa^{\lambda}$ 对任何 $\lambda$ 都合法。}
+
+\aside{开普勒第三定律与力学相似的关系：前者说的是“同一个中心天体下，不同行星的 $a^3/T^2$ 相同”；后者说的是“同一个势的两次几何相似的运动”。两句话能对上，因为把一条轨道整体放大 $\varkappa$ 倍、时间放慢 $\varkappa^{3/2}$ 倍之后，它仍然是同一势场里的一条合法轨道——(6.2) 已经证明了 $\mathcal{L}'$ 只差一个常数倍。}
+
+\subhdr{§6.4　Virial 定理：时间平均版的 “$2T=kU$”（p33--p34）}
+
+p33 的前提有两句：“If potential energy is a \textbf{homogeneous} function of the coordinates and the motion takes place in a \textbf{finite region of space} (with finite velocities)”，结论是 $T$ 与 $U$ 的\textbf{时间平均}满足一个简单关系。p33 把它标成 EXERCISE（只给两条中间式子），补完三步：
+
+\textbf{第一步：把 $2T$ 写成全导数减一项。}
+\[
+2T=\sum_am_a\vec v_a\cdot\vec v_a=\sum_a\vec p_a\cdot\vec v_a
+=\frac{d}{dt}\Bigl(\sum_a\vec p_a\cdot\vec r_a\Bigr)-\sum_a\vec r_a\cdot\dot{\vec p}_a . \tag{6.4}
+\]
+（因为 $\dfrac{d}{dt}(\vec p\cdot\vec r)=\dot{\vec p}\cdot\vec r+\vec p\cdot\vec v$，而 $\vec p\cdot\vec v=mv^2=2T$。）
+
+\textbf{第二步：有界运动使全导数的平均值趋于零。}p33 给的引理是：若 $f=\dfrac{dF}{dt}$ 且 $F$ 有界，则
+\[
+\bar f=\lim_{\tau\to\infty}\frac{1}{\tau}\int_0^{\tau}\frac{dF}{dt}\dd t=\lim_{\tau\to\infty}\frac{F(\tau)-F(0)}{\tau}=0 . \tag{6.5}
+\]
+这里 $F=\sum_a\vec p_a\cdot\vec r_a$ 有界，正是“运动在有限区域内、速度有限”这一句的用处。
+
+\textbf{第三步：用 $\dot{\vec p}_a=-\partial U/\partial\vec r_a$ 与欧拉齐次定理。}
+\[
+-\sum_a\vec r_a\cdot\dot{\vec p}_a=\sum_a\vec r_a\cdot\frac{\partial U}{\partial\vec r_a}=kU ,
+\]
+最后一步是 §2.2 的欧拉定理（$U$ 是 $k$ 次齐次）。对 (6.4) 取时间平均，(6.5) 杀掉全导数项，得到
+\[
+2\bar T=k\bar U . \tag{6.6}
+\]
+p34 再联立“平均之后 $E$ 还是那个 $E$”（$\bar T+\bar U=\bar E=E$，能量守恒时 $E$ 是常数，故 $\bar E=E$）：
+\[
+\bar U=\frac{2E}{k+2},\qquad \bar T=\frac{kE}{k+2}. \tag{6.7}
+\]
+两个能当场验的例子（p34）：$k=2$（小振动）$\Rightarrow\bar T=\bar U$；$k=-1$（牛顿引力）$\Rightarrow 2\bar T=-\bar U$，于是 $E=-\bar T$——p34 括注 “motion takes place in a finite region of space only if the total energy is negative”，正好与 $E=-\bar T<0$ 对上。
+
+\warnbox{\textbf{符号提示（p33--p34）}：这里的 $k$ 就是 §6.1--§6.3 的 $\lambda$（齐次度），p33 起换了字母。本文统一记 $\lambda$，引用 p33 的 $2\bar T=k\bar U$ 时保留 $k$。别把 $k$ 误读成弹簧劲度系数——p34 的例 1 里 $k=2$ 说的是“$U\propto x^2$ 的齐次度是 2”，与弹簧的 $k$ 无关。}
+
+\subhdr{§6.5　课件自己的总结页（p35）}
+
+p35 是 “Conclusions”，三条：
+\begin{enumerate}
+\item 封闭系的运动中，$s$ 个自由度给出 $(2s-1)$ 个独立的不变量，它们叫运动积分；
+\item 其中一些的恒定性连到时空的基本性质：时间均匀性 $\to$ 总能量；空间均匀性 $\to$ 动量；空间各向同性 $\to$ 角动量；
+\item 当势能是坐标的齐次函数时，还能得到两类有用关系：能量、动能、势能的\textbf{时间平均}之间的关系（Virial 定理）；轨道\textbf{几何性质}之间的关系（力学相似）。
+\end{enumerate}
+这三条与 §1 的总图完全一致——p35 是本章的官方收口，§11 再给三句话版本。
+
+\callout{\textbf{到这里你应该能}：由 $U$ 的齐次度读出 $\lambda$，再由 $\beta=\varkappa^{1-\lambda/2}$ 读出时间怎么缩放；用一句话解释“为什么 $\mathcal{L}$ 乘常数不影响运动方程”，并说清这条结论在 §6 里的作用；不看书推出 $2\bar T=k\bar U$，并指出“有界”这个前提用在哪一步。}
+
+%=============================================================
+\hdr{§7}{六个例题与三道作业（p36--p43）}
+
+课件从 p36 起进入 “Solving Problems”。六道例题都带完整答案（p40 是手写续页），三道作业在 p43 只有题面。本节按“例题全解、作业题面成组＋详解紧随”的次序排。
+
+\subhdr{§7.1　Problem \#4.1（p36）：自由落体，直接算 $dE/dt$}
+
+\textbf{题面（p36 原文照抄）}：“Problem \# 4.1. Consider the free-fall of the particle in a gravity force field and check by a direct calculation whether the total energy is conserved.”
+
+\textbf{考点}：判据一与判据二在这道题里\textbf{同时}成立，所以“守恒”与“等于机械能”两件事一起被验证。
+
+\textbf{关键一步}：$E$ 必须用定义 $\sum\dot q\,\partial\mathcal{L}/\partial\dot q-\mathcal{L}$ 算，不能凭“$E=T+U$”写——虽然结果一样，但写定义才能看出 $-\mathcal{L}$ 那一步的符号。
+
+\textbf{详解}。p36 给的拉格朗日量与能量：
+\[
+\mathcal{L}=\frac{m}{2}\bigl(\dot x^2+\dot y^2+\dot z^2\bigr)-mgz,\qquad
+E=\frac{m}{2}\bigl(\dot x^2+\dot y^2+\dot z^2\bigr)+mgz .
+\]
+验证 $E$：$\dot z\,\partial\mathcal{L}/\partial\dot z=m\dot z^2$，三个方向相加为 $m(\dot x^2+\dot y^2+\dot z^2)$，减去 $\mathcal{L}$：
+\[
+E=m(\dot x^2+\dot y^2+\dot z^2)-\Bigl[\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)-mgz\Bigr]=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)+mgz . \tag{7.1}
+\]
+直接计算 $dE/dt$（p36 中间那行）：
+\[
+\frac{dE}{dt}=\frac{\partial E}{\partial x}\dot x+\cdots+\frac{\partial E}{\partial\dot z}\ddot z
+=mg\dot z+m\dot x\ddot x+m\dot y\ddot y+m\dot z\ddot z . \tag{7.2}
+\]
+运动方程：$m\ddot x=0$、$m\ddot y=0$、$m\ddot z=-mg$（由 $\partial\mathcal{L}/\partial z=-mg$ 得）。代入 (7.2)：
+\[
+\frac{dE}{dt}=mg\dot z+\dot x\cdot0+\dot y\cdot0+\dot z\cdot(-mg)=0 . \tag{7.3}
+\]
+两条判据的检查：判据一，$\partial\mathcal{L}/\partial t=0$（$m,g$ 是常数，$\mathcal{L}$ 只含 $\dot x,\dot y,\dot z,z$），故 $E$ 守恒；判据二，$T=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)$ 对广义速度二次齐次（$T_1=T_0=0$），$U=mgz$ 与速度无关，故 $E=T+U$——两条判据都通过。
+
+\warnbox{\textbf{勘误（p36 右栏）}：p36 右栏把 $z$ 方向的运动方程写成 “$m\ddot z-mg=0$”，把 $dE/dt$ 的括号写成 “$\dot z(mg-m\ddot z)$”。按同一页的 $\mathcal{L}=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)-mgz$，正确的结果是
+\[
+m\ddot z+mg=0,\qquad \frac{dE}{dt}=\dot z\,(m\ddot z+mg)=0 .
+\]
+两处是同一个符号滑落（括号整体差一个负号），互相配套，所以最后那句 “$=0$” 不受影响。但\textbf{照抄} “$m\ddot z-mg=0$” 会在下一道题（重力沿斜面的分量与 $g$ 同号）立刻翻车。本文一律按 $\mathcal{L}$ 的符号写。（已用 sympy 逐项核对，见 §12 的 C16 组。）}
+
+\textbf{答案}：$E=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)+mgz$，且 $dE/dt=0$——总能量守恒，且它就等于机械能 $T+U$。
+
+\textbf{自检}：把 $z(t)=z_0+v_{z0}t-\frac12gt^2$、$\dot z=v_{z0}-gt$ 代进 $E$，应当与 $t$ 无关：$\frac12m(v_{z0}-gt)^2+mg(z_0+v_{z0}t-\frac12gt^2)=\frac12mv_{z0}^2+mgz_0$（$t$ 与 $t^2$ 项相消）。
+
+\subhdr{§7.2　Problem \#4.2（p37）：显含时间的系统，两条判据分别说什么}
+
+\textbf{题面（p37 原文照抄）}：“Problem \# 4.2. Consider the following mechanical system:
+\[
+\mathcal{L}=\frac{ml^2\dot\phi^2}{2}+mal\gamma^2\sin(\phi-\gamma t)+mgl\cos\phi .
+\]
+Obtain expression for energy. Check by both criteria and direct calculation whether the total energy is conserved.”
+
+\textbf{考点}：这是一道“判据一不通过、判据二通过”的题——它的作用就是把两件事分开：守恒性由判据一定，$E$ 是不是机械能由判据二定。
+
+\textbf{关键一步}：先看 $\mathcal{L}$ 有没有显含 $t$。$\sin(\phi-\gamma t)$ 里的 $t$ 是\textbf{显含}的，且不可能通过重定义坐标消掉（$\gamma$ 是给定常数），所以判据一立刻得出“不守恒”，根本不必算 $dE/dt$。直接计算只是用来验证这个判断。
+
+\textbf{详解}。按定义算能量：
+\[
+E=\dot\phi\frac{\partial\mathcal{L}}{\partial\dot\phi}-\mathcal{L}
+=ml^2\dot\phi^2-\Bigl[\frac{ml^2\dot\phi^2}{2}+mal\gamma^2\sin(\phi-\gamma t)+mgl\cos\phi\Bigr]
+\]
+\[
+=\frac{ml^2\dot\phi^2}{2}-mal\gamma^2\sin(\phi-\gamma t)-mgl\cos\phi . \tag{7.4}
+\]
+这与 p37 的答案一致。运动方程（p37 给出）：
+\[
+ml^2\ddot\phi-mal\gamma^2\cos(\phi-\gamma t)+mgl\sin\phi=0 . \tag{7.5}
+\]
+（$\partial\mathcal{L}/\partial\dot\phi=ml^2\dot\phi$，$\partial\mathcal{L}/\partial\phi=mal\gamma^2\cos(\phi-\gamma t)-mgl\sin\phi$，相减即得。）
+
+直接计算 $dE/dt$（p37 的三行）：
+\[
+\frac{dE}{dt}=ml^2\dot\phi\ddot\phi-mal\gamma^2\cos(\phi-\gamma t)\,(\dot\phi-\gamma)+mgl\sin\phi\,\dot\phi .
+\]
+把 (7.5) 的三项配成 $\dot\phi$ 乘 (7.5) 的左端：
+\[
+\frac{dE}{dt}=\dot\phi\underbrace{\bigl[ml^2\ddot\phi-mal\gamma^2\cos(\phi-\gamma t)+mgl\sin\phi\bigr]}_{=\,0\ \text{（即 (7.5)）}}+mal\gamma^3\cos(\phi-\gamma t)
+=mal\gamma^3\cos(\phi-\gamma t)\ne0 . \tag{7.6}
+\]
+p37 的答案正是这个式子。
+
+两条判据的检查：
+\begin{itemize}
+\item \textbf{判据一（守恒性）}：$\dfrac{\partial\mathcal{L}}{\partial t}=-mal\gamma^3\cos(\phi-\gamma t)\ne0$，故 $\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}=+mal\gamma^3\cos(\phi-\gamma t)\ne0$，\textbf{不守恒}。注意 (7.6) 与这一行\textbf{完全相同}——这就是“判据一与直接计算一致”的证明，不是两件事。
+\item \textbf{判据二（是不是机械能）}：$T=\frac{ml^2\dot\phi^2}{2}$ 二次齐次（$T_1=T_0=0$），$U=-mal\gamma^2\sin(\phi-\gamma t)-mgl\cos\phi$ 与速度无关，故 $E=T+U$——\textbf{是}机械能。
+\end{itemize}
+
+\textbf{量纲与“这个系统是什么”}。$mal\gamma^2$ 里，$[\gamma]=\mathrm{s^{-1}}$，故 $[a\gamma^2]=\mathrm{m\,s^{-2}}$（加速度），$[ma\gamma^2]=\mathrm{N}$（力），$[mal\gamma^2]=\mathrm{J}$（能量）；相应 $[mal\gamma^3]=\mathrm{J\,s^{-1}}$（功率）——这正好是 (7.6) 的量纲。所以 $a$ 只能读作\textbf{长度}（驱动振幅）、$\gamma$ 读作\textbf{角频率}。
+
+\warnbox{\textbf{关于名称}：p37 只写 “Consider the following mechanical system”，\textbf{没有}给装置图，也没有说它是摆。工作区此前把这道题叫“动支点摆”，那是按 $a$（支点振幅）与 $\gamma$（驱动频率）的量纲推出来的读法，属 [教学归纳]，不是课件原文。本文只用课件给的 $\mathcal{L}$ 说话；若老师课上确实讲过装置，以课堂为准。}
+
+\textbf{答案}：$E=\frac{ml^2\dot\phi^2}{2}-mal\gamma^2\sin(\phi-\gamma t)-mgl\cos\phi$；$E=T+U$（判据二通过）但 $\dfrac{dE}{dt}=mal\gamma^3\cos(\phi-\gamma t)\ne0$（判据一不通过），故\textbf{能量不守恒}。p37 那个 “$\ne0$” 的分量：只有当 $\cos(\phi-\gamma t)=0$ 的孤立时刻 $dE/dt$ 才瞬时为零，那不是守恒。
+
+\textbf{自检}：取 $\gamma\to0$（外场不再随时间变），(7.4) 变成 $E=\frac{ml^2\dot\phi^2}{2}-mgl\cos\phi$ 加上常数项，$\mathcal{L}$ 也不再显含 $t$，$dE/dt=0$——退化情形应当回到“普通摆能量守恒”。
+
+\subhdr{§7.3　Problem \#4.3（p38）：旋转钢丝上的珠子，守恒但不是机械能}
+
+\textbf{题面（p38 原文照抄）}：“Problem \# 4.3. A bead of mass $m$ can glide along the fixed tilted rod (the angle is $\alpha$). The whole system rotates along the vertical axis with constant angular velocity $\Omega$. Obtain expression for energy. Check by both criteria and direct calculation whether the total energy is conserved.”
+
+\textbf{考点}：本题是 §2.5 那句“$h=T_2-T_0+U\ne T+U$”的实物版本，也是“$L$ 不显含 $t$ 但约束不稳定”的标准例子。
+
+\textbf{关键一步}：珠子只有一个自由度 $r$（沿杆的位置），但杆在转，所以珠子的速度有两个分量：沿杆的 $\dot r$ 与绕轴的 $r\sin\alpha\,\Omega$（$r\sin\alpha$ 是珠子到转轴的距离，杆与竖直方向夹角为 $\alpha$）。p38 右侧的三条提示正是这个顺序：1.\ 自由度；2.\ 动能；3.\ 势能。
+
+\textbf{详解}。动能：
+\[
+T=\frac{m}{2}\Bigl(\dot r^2+r^2(\sin\alpha)^2\Omega^2\Bigr).
+\]
+势能（取杆与轴的交点为零势能面，$z=r\cos\alpha$）：$U=mgr\cos\alpha$。于是
+\[
+\mathcal{L}=\frac{m}{2}\Bigl(\dot r^2+r^2(\sin\alpha)^2\Omega^2\Bigr)-mgr\cos\alpha . \tag{7.7}
+\]
+能量按定义：
+\[
+E=\dot r\frac{\partial\mathcal{L}}{\partial\dot r}-\mathcal{L}
+=\frac{m\dot r^2}{2}-\frac{m}{2}r^2(\sin\alpha)^2\Omega^2+mgr\cos\alpha , \tag{7.8}
+\]
+与 p38 的答案一致。运动方程（p38 给出）：
+\[
+m\bigl(\ddot r-r\Omega^2\sin^2\alpha+g\cos\alpha\bigr)=0
+\quad\Longleftrightarrow\quad
+\ddot r-r\Omega^2\sin^2\alpha+g\cos\alpha=0 . \tag{7.9}
+\]
+直接计算 $dE/dt$：
+\[
+\frac{dE}{dt}=m\dot r\ddot r-mr\dot r(\sin\alpha)^2\Omega^2+mg\dot r\cos\alpha
+=m\dot r\underbrace{\bigl(\ddot r-r\Omega^2\sin^2\alpha+g\cos\alpha\bigr)}_{=\,0\ \text{（即 (7.9)）}}=0 . \tag{7.10}
+\]
+两条判据的检查——这是本题的重点：
+\begin{itemize}
+\item \textbf{判据一}：$\mathcal{L}$ \textbf{不显含} $t$（$\Omega,\alpha,m,g$ 全是常数；含时的坐标变换已经被 $r$ 这个坐标吃掉了），故 $E$ 守恒。这里的“不显含”并不显然：$r\to(x,y,z)$ 的变换里明明有 $\Omega t$，但 $\mathcal{L}$ 里的系数 $m$、$\frac{m}{2}r^2\sin^2\alpha\Omega^2$、$mgr\cos\alpha$ 都不含 $t$，所以 $\partial\mathcal{L}/\partial t=0$ 是真的。
+\item \textbf{判据二}：$T$ 里有\textbf{零次项} $T_0=\frac{m}{2}r^2\sin^2\alpha\Omega^2\ne0$（它来自 $\partial\vec r/\partial t\ne0$），而 $T_1=0$（沿杆的速度与绕轴的速度正交）。于是
+\[
+E-(T+U)=-2T_0=-mr^2\sin^2\alpha\,\Omega^2\ne0 ,
+\]
+即 $E\ne T+U$：\textbf{守恒，但不是机械能}。
+\end{itemize}
+
+\warnbox{\textbf{为什么“守恒却不是机械能”不矛盾}：杆的转动是\textbf{给定}的（不是由运动方程定出来的），所以约束力在惯性系里会做功——杆推动珠子绕轴转，输入的能量正比于 $r^2\Omega^2$ 这一项。机械能 $T+U$ 因此不守恒；守恒的是扣掉那部分“驱动能量”的 $E=T_2-T_0+U$。这也解释了为什么 $T_0\ne0$ 时 $E\ne T+U$：$T_0$ 恰好就是“约束自己带着走”的那部分动能。}
+
+\textbf{答案}：$E=\frac{m\dot r^2}{2}-\frac{m}{2}r^2\sin^2\alpha\,\Omega^2+mgr\cos\alpha$；$E$ 守恒（判据一通过），但 $E=T+U-mr^2\sin^2\alpha\Omega^2\ne T+U$（判据二不通过）。p38 上 “$\dfrac{dE}{dt}=0$” 与 “equation of motion” 之间那个箭头就是 (7.10)。
+
+\textbf{自检}：先令 $\Omega=0$（杆不转），(7.9) 退化成 $\ddot r+g\cos\alpha=0$（沿光滑斜杆自由滑下，加速度分量 $g\cos\alpha$），(7.8) 退化成 $E=\frac{m\dot r^2}{2}+mgr\cos\alpha=T+U$——此时 $T_0=0$，两条判据都通过。再把 $\Omega\ne0$ 的平衡位置与 $\Omega=0$ 比较：前者由 $\ddot r=0$ 得 $r_{\rm eq}=g\cos\alpha/(\Omega^2\sin^2\alpha)$（离心力把珠子往上推），后者只有 $r=0$。
+
+\subhdr{§7.4　Problem \#4.4（p39--p40）：一般 $\mathcal{L}$ 的三项各进能量多少}
+
+\textbf{题面（p39 原文照抄）}：“Problem \# 4.4. Based on the general expression for the Lagrange function in terms of the generalized coordinates and generalized velocities, prove that in total energy (a) the 1st term (with quadratic velocity dependence) coincides with the one of the Lagrangian, (b) 2nd term (with linear velocity dependence) does not contribute to the whole expression at all, (c) 3rd term (with no velocity dependence) changes the sign.”
+
+\textbf{考点}：把 §2.5 的 (2.8)--(2.9) 抽成一般命题；它是 H4.1 的“官方模板”。
+
+\textbf{关键一步}：不要对每一项分别求 $\dot q\,\partial/\partial\dot q$ 再相加，而是先用 §3.5 的 (3.11) 把 $p_i$ 整体算出来，再一次性写 $\sum p_i\dot q_i$。p40 的手写页走的正是这条路。
+
+\textbf{详解}。从 (3.8) 的
+\[
+\mathcal{L}=\frac12\sum_{i,k}a_{ik}\dot q_i\dot q_k+\sum_ib_i\dot q_i+c-U
+\]
+出发。由 (3.11)，$p_i=\sum_ka_{ik}\dot q_k+b_i$，于是
+\[
+\sum_ip_i\dot q_i=\sum_{i,k}a_{ik}\dot q_i\dot q_k+\sum_ib_i\dot q_i=2T_2+T_1 , \tag{7.11}
+\]
+其中 $T_2\equiv\frac12\sum_{i,k}a_{ik}\dot q_i\dot q_k$（第一项）、$T_1\equiv\sum_ib_i\dot q_i$（第二项）。（第一项为什么是 $2T_2$：$a$ 对称，双重求和把每一项数了两遍，所以 $\sum_{i,k}a_{ik}\dot q_i\dot q_k=2\cdot\frac12\sum a_{ik}\dot q_i\dot q_k$。）代进 $E=\sum p_i\dot q_i-\mathcal{L}$：
+\[
+E=(2T_2+T_1)-\Bigl(T_2+T_1+c-U\Bigr)=T_2-c+U . \tag{7.12}
+\]
+三项逐一对照：
+\begin{itemize}
+\item (a) 二次项：$\mathcal{L}$ 里是 $\frac12\sum a_{ik}\dot q_i\dot q_k$，$E$ 里是同样的和但\textbf{系数由 $\frac12$ 变成 $1$}——“coincides with the one of the Lagrangian” 指的是\textbf{同一个二次型}，不是同一个系数。
+\item (b) 一次项：$+T_1$ 与 $-T_1$ 相消，系数为零——“does not contribute at all”。
+\item (c) 零次项：$\mathcal{L}$ 里是 $+c$，$E$ 里是 $-c$——“changes the sign”。
+\end{itemize}
+
+\aside{p40 是老师的手写续页：先把 $\mathcal{L}$ 的三项分别圈出来（二次项画箭头、一次项画叉、常数项划线），再写 $E=\sum\dot q\,\partial\mathcal{L}/\partial\dot q-\mathcal{L}$，然后代入 $p_i$。手写页上有两处 “$\cdots$”，就是 (7.11) 的中间步骤。读这一页时要认的不是字，是\textbf{勾叉的含义}：叉表示该项被抵消，箭头表示该项被翻倍。}
+
+\textbf{答案}：$E=T_2-c+U$；即二次项保留（系数由 $\frac12$ 变 $1$）、一次项消失、零次项变号。
+
+\textbf{自检}：取 $b_i\equiv0$、$c\equiv0$，退回 (2.9) 的 $E=T_2+U$（稳定约束下 $T_0=0$）；取 $a_{ik}$ 为对角、$c=0$，得 $E=\sum_i\frac12a_{ii}\dot q_i^2+U=T+U$，与 §2.2 一致。
+
+\subhdr{§7.5　Problem \#4.5（p41）：循环坐标与能量}
+
+\textbf{题面（p41 原文照抄）}：“Problem \# 4.5. Lagrangian of some mechanical system is given as
+\[
+\mathcal{L}=\frac{m}{2}\bigl(\dot\xi^2+\dot y^2\bigr)+mg\xi\sin\alpha,\qquad (m,g,\alpha-\text{const})
+\]
+Write down the cyclic coordinates and calculate the corresponding conserved generalized momenta. Derive the total energy based on the solution of Problem \# 4.4.”
+
+\textbf{考点}：§3.7 的循环坐标＋§7.4 的模板。p41 右侧还给了 $U(y,\xi)=-mg\xi\sin\alpha$ 与 $\partial\mathcal{L}/\partial y=0$ 两行提示。
+
+\textbf{关键一步}：找“不出现的坐标”。$\mathcal{L}$ 里没有 $y$，所以 $y$ 是循环坐标、$p_y$ 守恒；而 $\xi$ 出现在 $+mg\xi\sin\alpha$ 里，不是循环坐标。
+
+\textbf{详解}。循环坐标与守恒量：
+\[
+\frac{\partial\mathcal{L}}{\partial y}=0\quad\Longrightarrow\quad
+p_y=\frac{\partial\mathcal{L}}{\partial\dot y}=m\dot y=\text{const} . \tag{7.13}
+\]
+能量：这里 $T_2=\frac{m}{2}(\dot\xi^2+\dot y^2)$、$T_1=0$、$T_0=0$、$c=0$、$U=-mg\xi\sin\alpha$，代 §7.4 的 $E=T_2-c+U$：
+\[
+E=\frac{m}{2}\bigl(\dot\xi^2+\dot y^2\bigr)-mg\xi\sin\alpha , \tag{7.14}
+\]
+与 p41 的答案一致。运动方程顺带核对：$m\ddot\xi=mg\sin\alpha$、$m\ddot y=0$，与 (7.13) 相容。
+
+\aside{装置读法：p41 只给 $\mathcal{L}$ 与 $U(y,\xi)=-mg\xi\sin\alpha$，\textbf{没有}装置图。“$\xi$ 沿倾角 $\alpha$ 的斜面向下、$y$ 沿斜面水平方向”是工作区按 $U$ 的形式给的读法（[教学归纳]）。若这样读，$m\ddot\xi=mg\sin\alpha$ 就是光滑斜面上的自由下滑，$p_y=m\dot y$ 就是“沿斜面水平方向没有力、该方向动量守恒”——正好是 p17 那个“沿 $z$ 的均匀场 $\Rightarrow x,y$ 投影守恒”的斜面版本。}
+
+两条判据这次也顺手过一遍：$\mathcal{L}$ 不显含 $t$，故 $E$ 守恒（判据一）；$T$ 二次齐次、$U$ 与速度无关，故 $E=T+U$（判据二）。
+
+\textbf{答案}：$y$ 是循环坐标，$p_y=m\dot y$ 守恒；$E=\frac{m}{2}(\dot\xi^2+\dot y^2)-mg\xi\sin\alpha$，且 $E=T+U$、守恒。
+
+\textbf{自检}：由 $p_y=m\dot y$ 为常数得 $\dot y\equiv v_{y0}$，代回 (7.14)：$E=\frac{m\dot\xi^2}{2}+\frac{mv_{y0}^2}{2}-mg\xi\sin\alpha$。第二项是常数，可以整体并进“能量的零点”，于是 $\xi$ 方向退化成一维：$\frac{m\dot\xi^2}{2}-mg\xi\sin\alpha=E'$。这就是循环坐标的实际用处——把一个二自由度问题砍成一维。
+
+\subhdr{§7.6　Problem \#4.6（p42）：$U=U(x)$ 的三个运动积分}
+
+\textbf{题面（p42 原文照抄）}：“Problem \# 4.6. A point particle with mass $m$ moves in a potential $U(x,y,z)=U(x)$. Which integrals of motion immediately follow from the symmetry?”
+
+\textbf{考点}：p42 是本章的综合题，把 §3（循环坐标）、§2（能量）、§5（投影）三块串起来。课件已给答案（三条），本文补推导并核对。
+
+\textbf{关键一步}：题眼是 “immediately follow from the symmetry”——不是解方程，而是数对称性。三条对称性各自对应一个守恒量。
+
+\textbf{详解}。写出 $\mathcal{L}$：
+\[
+\mathcal{L}=\frac{m}{2}\bigl(\dot x^2+\dot y^2+\dot z^2\bigr)-U(x). \tag{7.15}
+\]
+\textbf{（1）$y$、$z$ 是循环坐标。}$\partial\mathcal{L}/\partial y=\partial\mathcal{L}/\partial z=0$，故
+\[
+p_y=\frac{\partial\mathcal{L}}{\partial\dot y}=m\dot y=\text{const},\qquad
+p_z=\frac{\partial\mathcal{L}}{\partial\dot z}=m\dot z=\text{const}. \tag{7.16}
+\]
+\textbf{（2）没有显含时间，能量守恒。}$\partial\mathcal{L}/\partial t=0$，故由判据一
+\[
+E=\frac{m}{2}\bigl(\dot x^2+\dot y^2+\dot z^2\bigr)+U(x)=\text{const}. \tag{7.17}
+\]
+（$T$ 二次齐次、$U$ 与速度无关，故 $E=T+U$，判据二也通过。）
+
+\textbf{（3）势关于 $y$--$z$ 平面对称，$L_x$ 的投影守恒。}$U$ 只依赖 $x$，所以绕 $x$ 轴转任意角度 $U$ 不变——这是 p28 的 \textbf{轴对称场}，对称轴是 $x$。于是沿对称轴的角动量投影守恒：
+\[
+L_x=m(y\dot z-z\dot y)=\text{const}. \tag{7.18}
+\]
+验算：$\dfrac{dL_x}{dt}=m(\dot y\dot z+y\ddot z-\dot z\dot y-z\ddot y)=m(y\ddot z-z\ddot y)$。而运动方程给 $m\ddot y=-\partial U/\partial y=0$、$m\ddot z=-\partial U/\partial z=0$，故 $\dfrac{dL_x}{dt}=0$。
+
+\aside{p28 说轴对称场里 “origin is arbitrary on the axis”。(7.18) 里 $L_x$ 的原点取在坐标原点，它就在 $x$ 轴上；按 §5.4 情形 C，把这个原点沿 $x$ 轴挪到别处 $L_x$ 不变（$[\vec a\times\vec P]\cdot\hat x=0$，因为 $\vec a\parallel\hat x$）。这就是 p28 那句括注的含义。}
+
+\aside{这道题有一个“退化”之处值得知道（[教学归纳]）：既然 $m\ddot y=m\ddot z=0$，$y,z$ 都匀速，那么 (7.18) 的守恒其实是 (7.16) 的推论（$\dot y,\dot z$ 是常数、$y,z$ 线性增长，组合 $y\dot z-z\dot y$ 仍是常数）。但 p42 给的理由是“对称性”，那个理由对更一般的轴对称势（例如 $U=U(\sqrt{x^2+y^2},z)$）同样成立，而“$p_y,p_z$ 守恒”只在 $U$ 与 $y,z$ 都无关时才成立。所以第 (3) 条不是第 (1) 条的重复，它覆盖的对称性更多。}
+
+\textbf{答案}（与 p42 三条一一对应）：(1) $y,z$ 循环 $\Rightarrow p_y=m\dot y$、$p_z=m\dot z$ 守恒；(2) 无显含时间 $\Rightarrow$ 总能量 $E=T+U$ 守恒；(3) 势关于 $y$--$z$ 平面对称（$x$ 为对称轴）$\Rightarrow L_x$ 守恒。
+
+\textbf{自检}：取 $U(x)=\frac{kx^2}{2}$（沿 $x$ 的谐振子、$y,z$ 自由），则 $x$ 方向的振动与 $y,z$ 的匀速运动互不干扰，$p_y,p_z$ 与 $E$ 都是常数；再取 $U\equiv0$（自由粒子），$E$ 退化成纯动能，$L_x$ 退化成 $m(y\dot z-z\dot y)$，仍守恒——与“自由粒子关于任意固定点的角动量守恒”一致。
+
+\subhdr{§7.7　作业题面（p43，三道成组照抄）}
+
+下面是 p43 的全部文字，按原题号与原文照抄（公式按读图重排，题面里没有旁注）：
+
+\begin{quote}
+\textbf{HW Problem \# H4.1.} Lagrangian of some mechanical system is given as
+\[
+\mathcal{L}=\frac{m\dot x^2}{2}-\frac{k}{2}\Bigl(\sqrt{h^2+x^2}-l_0\Bigr)^2,\qquad (h,k,l_0-\text{const})
+\]
+Calculate the total energy of the system and check by both criteria and direct calculation whether it is conserved.
+
+\medskip
+\textbf{HW Problem \# H4.2.} Consider the system described in the task 3.2 of Topic 3 (slide 41). Obtain expression for energy and check by both criteria and direct calculation whether it is conserved.
+
+\medskip
+\textbf{HW Problem \# H4.3.} Two point masses $m_1$ and $m_2$ are connected via a spring (spring constant is $k$ and initial length $l$) and can glide along the straight horizontal line without friction. Obtain expressions for the two independent integrals of motion.
+\end{quote}
+
+\warnbox{\textbf{H4.2 的页码指错（p43）}：题面写 “task 3.2 of Topic 3 (\textbf{slide 41})”，但 Topic 3 的 \textbf{p41 是 Problem \#3.4}（Watt 离心调速器），\textbf{Problem \#3.2 在 Topic 3 的 p39}。判据有三条：（i）p43 题面右侧的缩略图正是 Problem \#3.2（圆环绕竖直轴转、环上珠子）；（ii）那张缩略图上的 $T,U,\mathcal{L}$ 与 Topic 3 p39 逐式一致；（iii）Topic 3 p41 的装置是调速器，与“半径 $R$ 的环”完全对不上。本文按 Topic 3 \textbf{p39} 的 L 做 H4.2。}
+
+\subhdr{§7.8　H4.1 详解：一条直线上的弹簧，但长度是 $\sqrt{h^2+x^2}$}
+
+\textbf{考点}：判据一（p9）＋判据二（p8、p10、p11）＋直接计算（p36 的模板）；三者必须给出同一个答案，这道题就是练“三条路走一遍”。
+
+\textbf{关键一步}：先认出势能。把 $\dfrac{k}{2}\bigl(\sqrt{h^2+x^2}-l_0\bigr)^2$ 记成 $U(x)$，它的括号里是“长度的差”，所以这就是一个弹性势能；求导时唯一的陷阱是 $\dfrac{d}{dx}\sqrt{h^2+x^2}=\dfrac{x}{\sqrt{h^2+x^2}}$。
+
+\textbf{详解}。记 $r(x)\equiv\sqrt{h^2+x^2}$，$U(x)=\dfrac{k}{2}\bigl(r-l_0\bigr)^2$，于是
+\[
+\mathcal{L}=\frac{m\dot x^2}{2}-U(x). \tag{H4.1-1}
+\]
+按定义算能量：
+\[
+E=\dot x\frac{\partial\mathcal{L}}{\partial\dot x}-\mathcal{L}
+=m\dot x^2-\Bigl[\frac{m\dot x^2}{2}-U(x)\Bigr]
+=\frac{m\dot x^2}{2}+U(x)
+=\frac{m\dot x^2}{2}+\frac{k}{2}\bigl(\sqrt{h^2+x^2}-l_0\bigr)^2 . \tag{H4.1-2}
+\]
+\textbf{判据一}：$m,k,h,l_0$ 都是常数，$\mathcal{L}$ 只含 $\dot x$ 与 $x$，故 $\dfrac{\partial\mathcal{L}}{\partial t}=0$，于是 $\dfrac{dh}{dt}=0$——\textbf{守恒}。
+
+\textbf{判据二}：$T=\dfrac{m\dot x^2}{2}$ 对 $\dot x$ 二次齐次（$T_2=T$，$T_1=T_0=0$），$U$ 与 $\dot x$ 无关，故 $E=T+U$——(H4.1-2) 里的 $E$ \textbf{就是}机械能。
+
+\textbf{直接计算}。运动方程由 $\dfrac{\partial\mathcal{L}}{\partial x}=-U'(x)$ 得：
+\[
+m\ddot x=-U'(x)=-k\bigl(r-l_0\bigr)\frac{x}{r},\qquad r=\sqrt{h^2+x^2}. \tag{H4.1-3}
+\]
+对 (H4.1-2) 求导并代入 $U'$：
+\[
+\frac{dE}{dt}=m\dot x\ddot x+U'(x)\dot x
+=\dot x\bigl[m\ddot x+U'(x)\bigr]
+=\dot x\bigl[m\ddot x+k(r-l_0)\tfrac{x}{r}\bigr]=0 , \tag{H4.1-4}
+\]
+最后一步是因为 (H4.1-3) 的右端正好等于括号里的第二项。三条路一致：\textbf{守恒}。
+
+\textbf{答案}：
+\[
+E=\frac{m\dot x^2}{2}+\frac{k}{2}\bigl(\sqrt{h^2+x^2}-l_0\bigr)^2=\text{const},
+\]
+且 $E=T+U$（判据二也通过）；$\dfrac{dE}{dt}=0$ 由 (H4.1-4) 给出。
+
+\textbf{自检}：（i）量纲：$[k]=\mathrm{N/m}$，$[\sqrt{h^2+x^2}-l_0]=\mathrm{m}$，故 $[k(\cdot)^2]=\mathrm{N\cdot m}=\mathrm{J}$，与 $\frac{m\dot x^2}{2}$ 同量纲。（ii）取 $h=0$：$r=|x|$，$U=\frac{k}{2}(|x|-l_0)^2$，这就是一根原长 $l_0$ 的弹簧沿 $x$ 拉直的情形，$E=\frac{m\dot x^2}{2}+\frac{k}{2}(|x|-l_0)^2$ 与弹簧振子的能量一致（只在 $x=0$ 处有一个不可导的折点）。（iii）$U$ 是 $x$ 的偶函数，故 $E$ 也关于 $x\to-x$ 对称——与题目“没有指定 $x$ 的正方向”相符。
+
+\aside{装置读法（[教学归纳]）：p43 只给 $\mathcal{L}$，没有图。若把 $U$ 读成“直线上方高 $h$ 处固定一点、原长 $l_0$、劲度 $k$ 的弹簧拉着滑块”，则 $r=\sqrt{h^2+x^2}$ 正是弹簧长度，$\frac{k}{2}(r-l_0)^2$ 正是弹性势能。这个读法与题目的三个常数 $(h,k,l_0)$ 严格对应，也是唯一能让三项都“有量纲意义”的读法。}
+
+\subhdr{§7.9　H4.2 详解：转动环上的珠子，与 §7.3 同一台机器}
+
+\textbf{考点}：判据一、判据二、直接计算三条都要过一遍；技术上与 §7.3（旋转钢丝上的珠子）同构，差别只在“沿杆”换成“沿环”。
+
+\textbf{关键一步}：先把 Topic 3 p39 的 $\mathcal{L}$ 写出来（题面只说“3.2 题的系统”，没给式子）。关键是认出\textbf{两个速度分量}：沿环的 $R\dot\theta$ 与绕竖直轴的 $R\sin\theta\,\Omega$（$\theta$ 从环的最低点量起，$R\sin\theta$ 是珠到转轴的距离），以及\textbf{势能} $U=-mgR\cos\theta$（最低点势能最低）。
+
+\textbf{详解}。Topic 3 p39 给的（三行原文）：
+\[
+T=\frac{m}{2}\Bigl(R^2\dot\theta^2+R^2(\sin\theta)^2\Omega^2\Bigr),\qquad
+U=-mgR\cos\theta,\qquad
+\mathcal{L}=\frac{m}{2}\Bigl(R^2\dot\theta^2+R^2(\sin\theta)^2\Omega^2\Bigr)+mgR\cos\theta . \tag{H4.2-1}
+\]
+按定义算能量：
+\[
+E=\dot\theta\frac{\partial\mathcal{L}}{\partial\dot\theta}-\mathcal{L}
+=mR^2\dot\theta^2-\mathcal{L}
+=\frac{mR^2\dot\theta^2}{2}-\frac{mR^2}{2}(\sin\theta)^2\Omega^2-mgR\cos\theta . \tag{H4.2-2}
+\]
+\textbf{判据一}：$\Omega$ 恒定、$m,g,R$ 常数，$\mathcal{L}$ 不显含 $t$，故 $\partial\mathcal{L}/\partial t=0$，$E$ \textbf{守恒}。
+
+\textbf{判据二}：这里 $T_2=\dfrac{mR^2\dot\theta^2}{2}$、$T_1=0$、$T_0=\dfrac{mR^2}{2}(\sin\theta)^2\Omega^2\ne0$，故
+\[
+E=T_2-T_0+U\ne T+U,\qquad E-(T+U)=-2T_0=-mR^2(\sin\theta)^2\Omega^2 .
+\]
+即 $E$ \textbf{不}等于机械能（与 §7.3 完全同型）。
+
+\textbf{直接计算}。运动方程由 $\partial\mathcal{L}/\partial\dot\theta=mR^2\dot\theta$、$\partial\mathcal{L}/\partial\theta=mR^2\Omega^2\sin\theta\cos\theta-mgR\sin\theta$ 得
+\[
+mR^2\ddot\theta-mR^2\Omega^2\sin\theta\cos\theta+mgR\sin\theta=0
+\quad\Longleftrightarrow\quad
+\ddot\theta+\Omega^2\sin\theta\Bigl(\frac{g}{\Omega^2R}-\cos\theta\Bigr)=0 , \tag{H4.2-3}
+\]
+第二式就是 Topic 3 p39 的答案形状。求导并代入 (H4.2-3)：
+\[
+\frac{dE}{dt}=mR^2\dot\theta\ddot\theta-mR^2(\sin\theta\cos\theta)\dot\theta\Omega^2+mgR\sin\theta\,\dot\theta
+=mR^2\dot\theta\underbrace{\Bigl[\ddot\theta-\Omega^2\sin\theta\cos\theta+\frac{g}{R}\sin\theta\Bigr]}_{=\,0}=0 . \tag{H4.2-4}
+\]
+三条路一致：\textbf{守恒}（但不是机械能）。
+
+\textbf{答案}：
+\[
+E=\frac{mR^2\dot\theta^2}{2}-\frac{mR^2}{2}(\sin\theta)^2\Omega^2-mgR\cos\theta=\text{const},
+\]
+而 $T+U=\dfrac{mR^2\dot\theta^2}{2}+\dfrac{mR^2}{2}(\sin\theta)^2\Omega^2-mgR\cos\theta$ 不守恒，二者差 $-mR^2(\sin\theta)^2\Omega^2$。
+
+\textbf{自检}：（i）令 $\Omega=0$，环不转，(H4.2-3) 退化成 $\ddot\theta+(g/R)\sin\theta=0$（单摆），(H4.2-2) 退化成 $E=\frac{mR^2\dot\theta^2}{2}-mgR\cos\theta=T+U$，两条判据都通过——与 §7.3 的 $\Omega=0$ 退化一致。（ii）量纲：$mR^2\dot\theta^2\sim\mathrm{kg\cdot m^2/s^2}=\mathrm{J}$，两项一致。（iii）平衡位置：由 (H4.2-3) 令 $\ddot\theta=\dot\theta=0$，得 $\sin\theta=0$（$\theta=0$ 或 $\pi$）或 $\cos\theta=g/(\Omega^2R)$（仅当 $\Omega^2R\ge g$ 时存在）——这只是对方程的一个独立检查，不涉及 Topic 5 的内容。
+
+\subhdr{§7.10　H4.3 详解：两个独立运动积分从哪来}
+
+\textbf{考点}：§3.7 的循环坐标＋§2.1 的判据一；并且要说明两个积分为什么“独立”。
+
+\textbf{关键一步}：直接用 $x_1,x_2$ 看不出循环坐标（两个都出现在 $(x_2-x_1-l)^2$ 里）。换坐标：质心坐标 $X$ 与相对坐标 $x$，$\mathcal{L}$ 里 $X$ 立刻消失，$P$ 就守恒；再补一条判据一给能量。
+
+\textbf{详解}。设两质点位置为 $x_1,x_2$（沿同一直线），弹簧原长 $l$、劲度 $k$：
+\[
+\mathcal{L}=\frac{m_1\dot x_1^2}{2}+\frac{m_2\dot x_2^2}{2}-\frac{k}{2}\bigl(x_2-x_1-l\bigr)^2 . \tag{H4.3-1}
+\]
+\textbf{换坐标。}令
+\[
+M=m_1+m_2,\qquad \mu=\frac{m_1m_2}{M},\qquad
+X=\frac{m_1x_1+m_2x_2}{M},\qquad x=x_2-x_1 ,
+\]
+则 $\dot x_1=\dot X-\dfrac{m_2}{M}\dot x$、$\dot x_2=\dot X+\dfrac{m_1}{M}\dot x$，代入动能：
+\[
+T=\frac{M\dot X^2}{2}+\frac{\mu\dot x^2}{2} \tag{H4.3-2}
+\]
+（交叉项 $\dot X\dot x$ 的系数是 $-\dfrac{m_1m_2}{M}+\dfrac{m_1m_2}{M}=0$）。于是
+\[
+\mathcal{L}=\frac{M\dot X^2}{2}+\frac{\mu\dot x^2}{2}-\frac{k}{2}\bigl(x-l\bigr)^2 . \tag{H4.3-3}
+\]
+\textbf{第一个积分：$X$ 是循环坐标。}$\partial\mathcal{L}/\partial X=0$，故
+\[
+P\equiv\frac{\partial\mathcal{L}}{\partial\dot X}=M\dot X=m_1\dot x_1+m_2\dot x_2=\text{const}. \tag{H4.3-4}
+\]
+这同时就是“质心动量守恒”，与 §3.3 的 (3.6) 是同一件事。换成原来的坐标写：
+\[
+m_1\dot x_1+m_2\dot x_2=\text{const}. \tag{H4.3-5}
+\]
+\textbf{第二个积分：$\mathcal{L}$ 不显含 $t$。}$\partial\mathcal{L}/\partial t=0$，由判据一，
+\[
+E=\frac{M\dot X^2}{2}+\frac{\mu\dot x^2}{2}+\frac{k}{2}\bigl(x-l\bigr)^2=\text{const}. \tag{H4.3-6}
+\]
+（$T$ 二次齐次、$U$ 与速度无关，故这里 $E=T+U$，判据二也通过。）用原坐标写：
+\[
+E=\frac{m_1\dot x_1^2}{2}+\frac{m_2\dot x_2^2}{2}+\frac{k}{2}\bigl(x_2-x_1-l\bigr)^2=\text{const}. \tag{H4.3-7}
+\]
+\textbf{“两个独立”在这里是什么意思}：(H4.3-5) 只含速度的一次式，定的是\textbf{质心速度}；(H4.3-7) 含速度的二次式与势能，在 (H4.3-4) 给定之后它等价于“相对运动的能量”。两者互不包含：给定 $P$ 不能推出 $E$，反之亦然。
+
+\textbf{答案}：
+\[
+\boxed{\;P=m_1\dot x_1+m_2\dot x_2=\text{const},\qquad
+E=\frac{m_1\dot x_1^2}{2}+\frac{m_2\dot x_2^2}{2}+\frac{k}{2}(x_2-x_1-l)^2=\text{const}\;}
+\]
+（等价写法：$P=M\dot X$、$E=\frac{M\dot X^2}{2}+\frac{\mu\dot x^2}{2}+\frac{k}{2}(x-l)^2$。）
+
+\textbf{自检}：把 (H4.3-4) 解出 $\dot X=P/M$ 代进 (H4.3-6)：
+\[
+E-\frac{P^2}{2M}=\frac{\mu\dot x^2}{2}+\frac{k}{2}(x-l)^2=\text{const},
+\]
+右边正是一维谐振子的能量（平衡点 $x=l$），于是相对运动是简谐振动，角频率
+\[
+\omega=\sqrt{\frac{k}{\mu}}=\sqrt{\frac{k(m_1+m_2)}{m_1m_2}} .
+\]
+这一行同时验了三件事：两个积分独立（一个定质心、一个定相对运动）、$\mu$ 是约化质量、以及“两体问题化成一维”的结论。还可以用 $m_1\to\infty$ 的极限再看一眼：$\mu\to m_2$、$\omega\to\sqrt{k/m_2}$——重物不动、轻物以 $m_2$ 振动，符合直觉。
+
+\aside{题面只要求“两个”积分，但按 p4 的计数，封闭系的 2 个自由度应当有 $2s-1=3$ 个独立运动积分。第三个是“时间原点”（或相对运动的相位），它通常不写成 $f(q,\dot q)$ 的显式形式，所以题目只问两个。这与 §1.1 的 $(2s-1)$ 是同一件事的两面。}
+
+\callout{\textbf{到这里你应该能}：独立做完 p36--p42 这六道例题（其中 §7.2 只靠 $\partial\mathcal{L}/\partial t$ 就能判“不守恒”，§7.3 只靠 $T_0\ne0$ 就能判“不是机械能”）；把 H4.1--H4.3 的三条判据各写一遍；并且能说清“为什么 §7.3 与 H4.2 守恒的能量不是机械能，而 §7.2 是机械能却不守恒”。}
+
+%=============================================================
+\hdr{§8}{公式卡：拿到一个 $\mathcal{L}$，按这六步走}
+
+\callout{\textbf{第一步：写 $\mathcal{L}$，数自由度。}\quad
+按 p38 的顺序：1.\ 自由度（几个独立坐标）；2.\ 动能（每个质点的速度写成广义速度的组合，再平方）；3.\ 势能（选零点，写出 $U$）；4.\ $\mathcal{L}=T-U$，或直接用题给的 $\mathcal{L}$。}
+
+\callout{\textbf{第二步：判据一（守恒性）。}\quad
+看 $\mathcal{L}$ 里有没有\textbf{显含}的 $t$（不是“运动有没有随时间变”，而是“$\mathcal{L}$ 的表达式里有没有 $t$”）。有 $\Rightarrow$ $h$ 不守恒，$\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$；没有 $\Rightarrow$ $h$ 守恒。（p9）}
+
+\callout{\textbf{第三步：判据二（是不是机械能）。}\quad
+看 $T$ 有没有一次项 $T_1$、零次项 $T_0$。都没有（等价于 $\partial\vec r/\partial t=0$，稳定约束是它的充分条件）$\Rightarrow h=T+U$；否则 $h=T_2-T_0+U$，与 $T+U$ 差 $-2T_0$。（p8、p10、p11）}
+
+\callout{\textbf{第四步：找循环坐标。}\quad
+哪个 $q_i$ 不出现在 $\mathcal{L}$ 里，$p_i=\partial\mathcal{L}/\partial\dot q_i$ 就守恒。注意 $p_i$ 的单位随 $q_i$ 变（p18），不要一律当“动量”。}
+
+\callout{\textbf{第五步：找整体对称性。}\quad
+整体平移不变 $\Rightarrow\vec P$ 守恒；只有某方向平移不变 $\Rightarrow$ 该方向投影守恒（三种等价说法见 §3.6）；整体转动不变 $\Rightarrow\vec L$ 守恒；只有绕某轴对称 $\Rightarrow$ 该轴投影守恒（原点可在轴上任意取，但\textbf{不能}离开轴）。（p13、p17、p25、p28）}
+
+\callout{\textbf{第六步：要量级或趋势时，用 §6。}\quad
+由 $U$ 读 $\lambda$，用 $\beta=\varkappa^{1-\lambda/2}$ 得时间标度；有界运动用 $2\bar T=k\bar U$ 得能量分配。}
+
+\warnbox{\textbf{三个“不要”}：（i）不要用判据二判断守恒——它只判断“守恒的量是不是机械能”（§7.2 与 §7.3 是一对反例）。（ii）不要把“某方向投影守恒”说成“角动量守恒”，也不要把原点随便挪到轴外（§5.4）。（iii）不要在 $\mathcal{L}$ 显含 $t$ 时写“能量守恒”，哪怕 $E$ 的表达式看起来很“像能量”（§7.2 的 $E$ 就是机械能，但它不守恒）。}
+
+%=============================================================
+\hdr{§9}{易错点：每一条都能指回某道题的某一步}
+
+\begin{enumerate}
+\item \textbf{把“约束稳定”当成守恒的条件。}p11 的中文把“$L$ 不显含时间”与“约束稳定”写在一句里，读起来像一个条件。实际是两条判据各管一件事（§2.6）。反例：§7.2 的 $E$ 是机械能（约束稳定、$T_0=0$）却不守恒。
+\item \textbf{以为 $T$ 一定等于 $T_2$。}只要坐标变换显含 $t$，就会有 $T_0$（甚至 $T_1$）。§7.3 的 $T_0=\frac{m}{2}r^2\sin^2\alpha\Omega^2$ 就是全部麻烦的来源；H4.2 的 $T_0=\frac{mR^2}{2}\sin^2\theta\,\Omega^2$ 同理。
+\item \textbf{在 $\mathcal{L}$ 显含 $t$ 时写 $E$ 守恒。}§7.2 的 $\partial\mathcal{L}/\partial t=-mal\gamma^3\cos(\phi-\gamma t)\ne0$，$dE/dt$ 等于它的相反数，恒不为零（只在孤立时刻为零）。
+\item \textbf{把 $h$ 与 Topic 9 的 $H$ 混为一谈。}p9 明确提醒 “pay attention on the variables in both cases”：$h=h(q,\dot q,t)$，$H=H(q,p,t)$（§2.7）。
+\item \textbf{算 $E$ 时漏掉 $-\mathcal{L}$ 的整体符号。}这是 2026-09-30 判据二复测的失分点。修法只有一个：把 $-\mathcal{L}$ 显式写出来再合并，照 §2.5 第三步那个顺序（先写 $-\mathcal{L}=-(T_2+T_1+T_0)+U$，再相加）。
+\item \textbf{把循环坐标的 $p_i$ 当成“动量的大小”。}$q=$ 角度时 $p$ 是角动量，$q=$ 面积时 $p$ 的单位是 $\mathrm{kg/s}$（§3.7 的 aside）。H4.3 的 $p_X$ 与 $x_1$ 方向的动量又是两回事。
+\item \textbf{以为“某方向受力为零”就是“总动量守恒”。}p17 说的是\textbf{投影}守恒，$P$ 的另外两个分量可能在变（§3.6 的均匀场例子：$P_z$ 在变）。
+\item \textbf{换参考点后仍以为角动量守恒。}§5.4 的情形 B 给了显式反例：圆轨道上 $L(O)$ 守恒，$L(O')$ 以振幅 $dmv$ 振荡。判据在 (5.6)：$\vec N(O')=-[\vec a\times\vec F]$，只有 $\vec a\parallel\vec F$ 或 $\vec F=0$ 时才为零。
+\item \textbf{以为“投影守恒”可以对任意原点。}沿同一条轴挪原点投影不变（$\vec a\parallel\hat z$），但挪到轴外就变（§5.4 情形 C）。p28 的括注 “origin is arbitrary on the axis” 只说了“在轴上”。
+\item \textbf{把 p36 右栏的 $m\ddot z-mg=0$ 当结论抄。}按同一页的 $\mathcal{L}$ 应为 $m\ddot z+mg=0$（§7.1 的勘误框）。这一处符号在 H4.1 里不出现，但在任何“斜面上滑”“竖直抛体”的题里会立刻翻车。
+\item \textbf{把“力学相似”用在“同一条轨道的两个时刻”。}$l'/l$ 是\textbf{两条几何相似轨道}的线度之比，(6.3) 说的是“把整条轨道放大 $\varkappa$ 倍、时间放慢 $\varkappa^{1-\lambda/2}$ 倍仍是一条轨道”，不是同一条轨道上两点的时间比（§6.3）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{缺口清单：18 条，逐条点名}
+
+每条格式为“类型｜页码｜课件原话｜缺了什么／本讲义补在哪”。
+
+\subhdr{机制缺口（4 条）}
+
+\gapitem{机制 · p7--p8}{“齐次函数的欧拉方程定理：$\sum_i\frac{\partial f}{\partial x_i}x_i=mf$”（这里的 $m$ 是齐次度，不是质量）只给结论。缺：为什么成立。补：§2.2 用 $g(\varkappa)=f(\varkappa x)$ 对 $\varkappa$ 求导、令 $\varkappa=1$，两行证完。}
+
+\gapitem{机制 · p9}{“There should be no explicit time dependence in the Lagrangian!”配 $\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$，全页标 EXERCISE，右栏只有含 $\partial\mathcal{L}/\partial t$ 的草稿。缺：那个 $-\partial\mathcal{L}/\partial t$ 是从哪一项掉出来的。补：§2.3 把 $dh/dt$ 展开成四个和式，指出 $\ddot q$ 项两两抵消、方括号恰是拉格朗日方程。}
+
+\gapitem{机制 · p17}{“Possibilities: 1) projection of the net force on this direction is 0; 2) derivative of the potential energy ... is 0; 3) derivative of the Lagrangian ... is 0”。缺：三条为什么是同一件事。补：§3.6 用 $\delta\mathcal{L}=-\epsilon\,\hat n\cdot\sum_a\partial U/\partial\vec r_a$ 把它们串成一个数。}
+
+\gapitem{机制 · p12}{“$\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}-2\mathcal{F}$”这一行标红字 “goes without proof”。缺：非保守力怎么进到 $dh/dt$ 里、为什么是 $2\mathcal{F}$ 而不是 $\mathcal{F}$。补：§2.8 的 (2.11)，两步：把 $\dot q_iQ_i$ 认出来，再用 $\mathcal{F}$ 的二次齐次性得 $\sum\dot q\,\partial\mathcal{F}/\partial\dot q=2\mathcal{F}$。}
+
+\subhdr{代数跳步（4 条）}
+
+\gapitem{代数 · p10}{$T_1=\sum_\alpha\sum_i\frac12m_i\bigl(\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial t}\bigr)\dot q_\alpha$。缺：平方展开时交叉项出现\textbf{两次}，系数应是 $1$ 而不是 $\frac12$。补：§2.4 把平方逐项展开，并说明这个因子不影响任何结论（后面只用 $T_1$ 的一次齐次性与“稳定约束下 $T_1=0$”）。}
+
+\gapitem{代数 · p11}{“$=2T_2+T_1-L$”直接跳到 “$=T_2-T_0+U$”。缺：$-\mathcal{L}=-(T_2+T_1+T_0)+U$ 的显式代入与 $T_1$ 的两项抵消。补：§2.5 的 (2.9) 前后各一行。}
+
+\gapitem{代数 · p30}{“$\mathcal{L}\to\alpha^\lambda\mathcal{L}$”与右栏手写的 “$\frac{\alpha^2}{\beta^2}=\alpha^\lambda\to\beta=\alpha^{1-\lambda/2}$”。缺：为什么“$\mathcal{L}$ 乘常数”就“运动方程不变”，以及为什么两个系数必须相等。补：§6.1 补一行证明 + 一句“否则 $T$ 与 $U$ 的相对权重变了，就不是同一个 $\mathcal{L}$ 的常数倍”。}
+
+\gapitem{代数 · p32}{“Kepler's 3rd law”只给名字。缺：$\lambda=-1\Rightarrow\beta=\varkappa^{3/2}$ 之后要平方才成为 $(t'/t)^2=(l'/l)^3$。补：§6.3 明确写出这一步，并说明“$3/2$ 次幂”与“平方立方”是同一结论的两种写法。}
+
+\subhdr{压缩缺口（2 条）}
+
+\gapitem{压缩 · p14}{“$\delta\mathcal{L}=0\ \to\ \sum_a\frac{\partial\mathcal{L}}{\partial\vec r_a}=0\ \to\ \frac{d}{dt}\sum_a\frac{\partial\mathcal{L}}{\partial\vec v_a}=0$”三个箭头连写。缺：每个箭头的依据（$\vec\varepsilon$ 任意、拉格朗日方程、求和与求导可换）。补：§3.2 分三小段，并指出拉格朗日方程在 p14 只出现在右栏最下方、离箭头很远。}
+
+\gapitem{压缩 · p26}{“$\delta\mathcal{L}=\sum_a\bigl(\frac{\partial\mathcal{L}}{\partial\vec r_a}\cdot\delta\vec r_a+\frac{\partial\mathcal{L}}{\partial\vec v_a}\cdot\delta\vec v_a\bigr)=\delta\vec\phi\cdot\frac{d}{dt}\sum_a[\vec r_a\times\vec p_a]=0$”一行四步。缺：代换、$\dot{\vec p}_a$ 的替换、混合积轮换、$\vec v_a\times\vec p_a=0$。补：§5.2 拆成四步，并标出哪一步用了 $\vec p_a=m_a\vec v_a$。}
+
+\subhdr{适用区间与边界（3 条）}
+
+\gapitem{适用区间 · p11}{“当约束稳定时（约束方程不显含时间）$\frac{\partial\vec r}{\partial t}=0\Rightarrow T=T_2;\ T_1=T_0=0$”。缺：这是 $T_1=T_0=0$ 的\textbf{充分}条件，不是必要条件。补：§2.6 的 aside，用 §7.3（$T_1=0$ 而 $T_0\ne0$）当反例。}
+
+\gapitem{适用区间 · p11}{“在 $L$ 不显含时间，并且约束是稳定的情况下，$E=T+V$ 是体系的能量，能量守恒”。缺：两个条件被写成一句，读起来像一个条件。补：§2.6 的判据分离框：守恒只看判据一，$h=T+U$ 只看判据二。}
+
+\gapitem{边界 · p28}{“as a rule ... is not conserved”与“origin is arbitrary on the axis”。缺：换点之后到底“哪一部分守恒、哪一部分不守恒”，以及为什么轴上可任意、轴外不行。补：§5.4 的 (5.6) 与三种情形，附圆轨道反例（$dL(O')/dt=dm\omega^2R\sin\omega t\,\hat z$）与 $\vec a\parallel\hat z$ 时投影不变的证明。}
+
+\subhdr{形式改写（1 条）}
+
+\gapitem{形式改写 · p9}{“distinguish this function with the Hamilton's function which will be introduced in Topic 9 (pay attention on the variables in both cases)”。缺：两种函数到底差在哪、为什么判据一写的是 $\partial\mathcal{L}/\partial t$ 而不是 $\partial h/\partial t$。补：§2.7，并注明 \textbf{[教材补充]} 出处 Goldstein §2.7、§8.1。}
+
+\subhdr{记号与笔误（4 条）}
+
+\gapitem{记号 · p20 / p23 / p24}{同一个“$K'$ 相对 $K$ 的速度”分别写成 $\vec V$（p20）、$\vec v_0$（p23）、$\frac12\mu V^2$（p24 手写）。缺：三者是不是同一个量、什么时候可以写成 $E_{\rm int}+\frac{m_{\rm tot}V_c^2}{2}$。补：§4.3 的记号统一与警告框。}
+
+\gapitem{记号 · p30 与 p32}{p30 用 $\alpha$ 当坐标标度因子，p32 用 $\alpha$ 当引力常数（$U=-\alpha/r$）。缺：同一个字母两种含义。补：§0 的记号表与 §6.3 的警告框（本文标度因子写 $\varkappa$）。}
+
+\gapitem{下标 · p19}{右栏前两行写 $+b_j(q_l,t)$，第三行改成 $+b_i(q_l,t)$（课件在 $b_j$ 下画了红线）。缺：正确下标是 $i$。补：§3.5 的警告框，并说明理由（$\partial/\partial\dot q_i$ 只碰 $b_i\dot q_i$）。}
+
+\gapitem{符号 · p36}{右栏写 “$m\ddot z-mg=0$”与 “$\dot z(mg-m\ddot z)$”，与同页 $\mathcal{L}=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)-mgz$ 反号。缺：正确应为 $m\ddot z+mg=0$、$\dot z(m\ddot z+mg)$。补：§7.1 的勘误框（两处配套，结论 $dE/dt=0$ 不变；已用 sympy 核对）。}
+
+%=============================================================
+\hdr{§11}{三句话}
+
+\begin{enumerate}
+\item \textbf{守恒量是 $\mathcal{L}$ 的对称性的直接产物，不是解方程解出来的。}时间均匀 $\to E$、空间均匀 $\to\vec P$、空间各向同性 $\to\vec L$；三者都可加，因此即使相互作用复杂、中间过程算不出来，前后两端的和仍然相等（p5、p6、p13、p25）。
+\item \textbf{"守恒"与"等于机械能"是两件事，各有各的判据。}$\dfrac{dh}{dt}=-\dfrac{\partial\mathcal{L}}{\partial t}$ 决定守恒（p9）；$h=T_2-T_0+U$ 是否等于 $T+U$ 决定它是不是机械能（p8、p10、p11）。§7.2 与 §7.3 是这一句话的两个反例。
+\item \textbf{当对称性只出现一部分时，守恒也只剩一部分。}某方向不受力 $\Rightarrow$ 该方向投影守恒；轴对称场 $\Rightarrow$ 沿对称轴的投影守恒，原点可在轴上任意取、但\textbf{不能}离开轴；非封闭系的角动量换到偏心的固定点后一般不再守恒（p17、p28、§5.4）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{页码对照与机器复核}
+
+\subhdr{课件页码 $\to$ 本讲义（一）：五部分正文，p1--p24}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{7.2cm}p{6.2cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容（课件标题）} & \thead{本讲义}
+\\
+\midrule
+p1 & Topic \# 4 Conservation Laws（五部分目录） & §0
+\\
+p2--p5 & Conservation Laws and Symmetry Principles & §1（含 Noether 一般形式）
+\\
+p6--p9 & Homogeneity of Time / Total Energy & §2.1--§2.3、§2.6--§2.7
+\\
+p10--p12 & H 的物理意义 / Total Energy and Dissipation & §2.4--§2.5、§2.8
+\\
+p13--p16 & Homogeneity of Space / Momentum / 三条牛顿定律 & §3.1--§3.4
+\\
+p17--p19 & Momentum（开放系、循环坐标、广义动量） & §3.5--§3.7
+\\
+p20--p24 & Center of Mass（伽利略变换、C 系、能量分解） & §4
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{课件页码 $\to$ 本讲义（二）：例题与作业，p25--p43}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{7.2cm}p{6.2cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容（课件标题）} & \thead{本讲义}
+\\
+\midrule
+p25--p29 & Isotropy of Space / Angular Momentum & §5
+\\
+p30--p35 & Mechanical Similarity / Virial Theorem / Conclusions & §6（§6.5 单独看 p35）
+\\
+p36 & Problem \#4.1（自由落体） & §7.1
+\\
+p37 & Problem \#4.2（显含时间的系统） & §7.2
+\\
+p38 & Problem \#4.3（旋转钢丝上的珠子） & §7.3
+\\
+p39--p40 & Problem \#4.4（一般 $\mathcal{L}$ 的三项） & §7.4
+\\
+p41 & Problem \#4.5（循环坐标与能量） & §7.5
+\\
+p42 & Problem \#4.6（$U=U(x)$ 的三个积分） & §7.6
+\\
+p43 & Homework H4.1 / H4.2 / H4.3 & §7.7（题面）＋§7.8--§7.10（详解）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{公式的机器复核（sympy）}
+
+本文所有关键式子都用 sympy 独立复核过，脚本在 \texttt{\_scratch\textbackslash t04-check-20261023.py}，共 17 组 55 项，全部通过（0 项失败）。分组如下：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{9.6cm}p{4.6cm}@{}}
+\toprule
+\thead{组} & \thead{复核内容} & \thead{结果}
+\\
+\midrule
+C1 & 一般 $\mathcal{L}(q,\dot q,t)$：$dh/dt=-\partial\mathcal{L}/\partial t-\dot q\cdot$（拉格朗日方程左端） & PASS
+\\
+C2 & 一般 $\mathcal{L}$：$E=T_2-c+U$（Problem \#4.4 的 (a)(b)(c)） & PASS
+\\
+C3 & $T_2(\varkappa\dot q)=\varkappa^2T_2$ 与 $\sum\dot q\,\partial T_2/\partial\dot q=2T_2$ & PASS
+\\
+C4 & H4.1：$E$ 的展开、EOM、$dE/dt$（4 项） & PASS
+\\
+C5 & H4.2：$E$、EOM、$dE/dt$、$E\ne T+U$（4 项） & PASS
+\\
+C6 & p37：$E$、EOM、$dE/dt=mal\gamma^3\cos(\phi-\gamma t)$、与 $-\partial\mathcal{L}/\partial t$ 相等（4 项） & PASS
+\\
+C7 & p38：$E$、EOM、$dE/dt=m\dot r\cdot$EOM、$E\ne T+U$（4 项） & PASS
+\\
+C8 & p41：$p_y=m\dot y$、$dp_y/dt$、$E$、EOM、$dE/dt$（5 项） & PASS
+\\
+C9 & p42：$y,z$ 循环、$dL_x/dt=0$、$E=T+U$（3 项） & PASS
+\\
+C10 & 力学相似：$U\propto r^{2},r^{1},r^{-1}$ 三例的 $\beta=\varkappa^{1-\lambda/2}$（6 项） & PASS
+\\
+C11 & 开普勒：指数 $3/2$ 与 $(t'/t)^2=(l'/l)^3$（2 项） & PASS
+\\
+C12 & Virial：$\bar U=2E/(k+2)$、$\bar T=kE/(k+2)$、$k=2$、$k=-1$（4 项） & PASS
+\\
+C13 & H4.3：$dP/dt=0$、$dE/dt=0$、动能分解、$\omega=\sqrt{k/\mu}$（4 项） & PASS
+\\
+C14 & 换点：$\vec L(O')=\vec L(O)-[\vec a\times\vec P]$ 与圆轨道反例（3 项） & PASS
+\\
+C15 & $\vec a\parallel\hat n\Rightarrow([\vec a\times\vec P])\cdot\hat n=0$（1 项） & PASS
+\\
+C16 & p36：$E=T+mgz$、$dE/dt$、EOM 符号、勘误核对（5 项） & PASS
+\\
+C17 & p12：$\sum\dot q\,\partial\mathcal{F}/\partial\dot q=2\mathcal{F}$、$\sum\dot q Q=-2\mathcal{F}$（2 项） & PASS
+\\
+\bottomrule
+\end{tabular}
+
+\aside{复核的一个副产品：C16 那组把 p36 右栏的符号问题钉死了——按 $\mathcal{L}=\frac{m}{2}(\dot x^2+\dot y^2+\dot z^2)-mgz$ 算出 $m\ddot z+mg=0$，而课件写的是 $m\ddot z-mg=0$；把正确解代进课件字面的括号 $(mg-m\ddot z)$ 得 $2mg\ne0$，把课件的解代进同一括号得 $0$。两个错配套，所以结论对、过程错。这就是 §7.1 勘误框的依据。}
+
+\flowerrule
+
+\callout{\textbf{最后一句}：这份讲义覆盖 p1--p43 全部 43 页；六道例题全解（§7.1--§7.6），三道作业题面成组照抄于 §7.7、详解紧随其后在 §7.8--§7.10；缺口 18 条见 §10，其中 4 条机制、4 条代数、2 条压缩、3 条适用区间、1 条形式改写、4 条记号与笔误。课件没有而本文补的内容全部标了 [教材补充]（Noether 一般形式、$h$ 与 $H$ 的区别）或 [教学归纳]（“两条判据”的命名、两道题缺图时的装置读法）。}
+
+\end{document}

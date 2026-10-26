@@ -1,0 +1,2082 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第三章第一讲（Chapter Three-1）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C3-1 · 半导体基础与二极管 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{半导体基础与二极管：PN 结如何变成一只单向开关}
+{从一根断键、一个势垒，到三种等效模型——3.1--3.2 全册精讲}
+{依据：《Chapter Three-1-2026 中白上传》PDF（p1--p69，共 69 页；本讲义页码一律指本册 PDF 物理页）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{课件讲了哪几块，各在哪几页}
+
+这册课件是\textbf{一条因果链}：从「一块硅里有多少能动的电荷」出发（3.1），
+把两种掺杂的硅拼在一起得到 PN 结，让结自己长出一个内建电场（3.1.4），
+再加上外电压看它导通还是截止（单向导电），最后把整块结封装成两端的器件——二极管，
+用一条伏安特性曲线和三种等效模型去用它（3.2）。
+链上每一步课件都画了图，但\textbf{每一步的「为什么」几乎都留白}：全册 69 页，公式只有零星的
+$U_D=0.7\,\mathrm{V}$、$U_F=U_B+U_D$ 几处，连二极管电流的指数式都没有写出来。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{6.9cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\tabtop
+\thead{课件页} & \thead{小节} & \thead{内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1 & 封面 & Chapter Three DC regulated power supply & §0
+\\
+p2 & 3.1.1 & 导体/半导体/绝缘体三类材料对比 & §1.1
+\\
+p3--p8 & 3.1.2 I、II & 共价键、8 电子、两种载流子、$n=p$ & §1.2、§1.3
+\\
+p9--p11 & 3.1.2 II & 载流子漂移方向、本征导电弱、掺杂出口 & §1.3、§1.4
+\\
+p12--p17 & 3.1.3 I、II & 掺杂定义、磷（+5）、多余电子、多子 & §2.1
+\\
+p18--p19 & 3.1.3 II & $n\gg p$、多数/少数载流子 & §2.1、§2.3
+\\
+p20--p24 & 3.1.3 III & 硼（+3）、空穴、多子、导电能力提高 & §2.2、§2.4
+\\
+p25--p26 & 3.1.3 IV & 两幅晶格图的判别题（只问不答） & §2.5
+\\
+p27--p32 & 3.1.4 I & 两块材料、拼合、扩散/漂移两过程 & §3.1
+\\
+p33--p36 & 3.1.4 I & 扩散、固定离子、内建电场、动态平衡 & §3.2--§3.5
+\\
+p37--p40 & 3.1.4 II & 正偏、耗尽层变薄、约 $0.7\,\mathrm{V}$ 导通 & §4.1
+\\
+p41--p43 & 3.1.4 II、III & 反偏、耗尽层变厚、ON/OFF 总结 & §4.2、§4.3
+\\
+p44--p48 & 3.2、3.2.1 I & 二极管结构、符号、封装、分类 & §5.1
+\\
+p49--p50 & 3.2.1 II-1 & 伏安特性曲线、五个定义性问句 & §5.2--§5.4
+\\
+p51--p52 & 3.2.1 II-2、3 & 理想模型、恒压降模型 & §6
+\\
+p53--p55 & 3.2.1 II & 温度两条曲线、Si/Ge 两条曲线（提问） & §7.1、§7.2
+\\
+p56 & 3.2.1 III & 四个主要参数 & §7.3
+\\
+p57--p61 & 3.2.4 Clamping & 钳位电路五个追问 & §8
+\\
+p62--p69 & 3.2.4 E1--E3 & 二极管逻辑、真值表逐页填 & §9
+\tabbot
+\end{tabular}
+
+\subhdr{本册与前后册的接口}
+
+这本 C3-1 停在「二极管 + 三种模型」，但它的标题是 「DC regulated power supply」（p1）。
+后面两册的分工是：
+（1）C3-2：把二极管接成整流电路（半波、桥式），把交流变成脉动直流；
+（2）C3-3：加滤波电容与稳压环节，把脉动直流变成稳定直流。
+所以本册的每一个结论在那里都要用一次：$0.7\,\mathrm{V}$ 决定整流管的导通角，
+$U_{BR}$ 决定选管的耐压，$I_S$ 与温度关系决定滤波后的纹波与热设计。
+读本册时把「这是后面哪一步的前提」记住，比背公式有用。
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{11.4cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$U_D$、$I_D$ & 二极管\textbf{两端}的直流电压与电流；参考方向一律取\textbf{阳极}$\to$\textbf{阴极}，即正向为 $U_D>0$、$I_D>0$
+\\
+$U_F$、$I_F$ & 正向压降、额定正向平均电流（p56 的器件参数）；$U_F$ 是「导通时管压降」的通用记号
+\\
+$U_R$、$U_{BR}$、$I_{Rm}$ & 最高反向工作电压、反向击穿电压、最大反向电流（p56）
+\\
+$U_T$ & 热电压 $U_T=kT/q$，300 K 时 $25.9\,\mathrm{mV}$（工程上取 $26\,\mathrm{mV}$）
+\\
+$n_i$ & 本征载流子浓度；$N_A$、$N_D$ 受主、施主浓度
+\\
+$E_g$ & 禁带宽度（eV）；$q$ 电子电荷量，$k$ 玻尔兹曼常数
+\\
+$r_d$ & 二极管的\textbf{动态}（微分）电阻 $\mathrm{d}U_D/\mathrm{d}I_D$
+\\
+$V_{bi}$ & 内建电势（势垒高度除以 $q$），单位 V
+\tabbot
+\end{tabular}}
+
+\aside{大写 $U,I$ 一律指直流量；本册不涉及交流小信号，出现的小写只在讨论动态电阻时使用。}
+
+\subhdr{三处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p11 用一行箭头把「Intrinsic semiconductor $\to$ Extrinsic semiconductor」带过，
+却没有回答它自己提的问题（p11 的 (9) 「How to increase the conductivity?」）。
+从「载流子少」到「掺一点杂质就够」中间缺一个\textbf{数量级}：本征 $n_i\approx1.5\times10^{10}\,\mathrm{cm^{-3}}$，
+掺杂 $10^{16}\,\mathrm{cm^{-3}}$，差六个数量级。本讲义 §2.3--§2.4 把这条缝补成算式。}
+
+\gapitem{拼接缺口}{p43 以 ON/OFF 收束「单向导电」，p49 突然出现一条平滑的伏安曲线，
+两页之间没有任何过渡。缺的是「开关」与「曲线」的桥：曲线正是把 ON/OFF 的突变
+展开成\textbf{指数过渡}的结果。§5.2 用肖克利方程把桥搭上。}
+
+\gapitem{形式改写}{p52 把硅管的导通压降写成常数 $U_D=0.7\,\mathrm{V}$，
+而 p55 的锗管曲线拐点读出来约 $0.2\,\mathrm{V}$，与 p52 写的 $0.3\,\mathrm{V}$ 对不上。
+两个数都不是错，差别在于「读图的位置」：$0.7/0.3\,\mathrm{V}$ 是\textbf{mA 级电流}下的工程约定，
+曲线拐点则是电流刚开始明显上升的位置。§6.2 统一口径，§7.2 点名这处不一致。}
+
+\subhdr{三条主线：这册只在回答三个问题}
+
+（1）\textbf{有多少能动的电荷}（3.1.1--3.1.3）：本征只有 $n_i$，掺杂把它抬到 $10^{16}$ 量级——
+这是「材料」问题，答案是一串浓度；
+（2）\textbf{两种电荷拼在一起会长出什么}（3.1.4）：扩散留下固定离子，固定离子产生内建电场，
+内建电场又拦住扩散，最后停在动态平衡——这是「机制」问题，答案是 $V_{bi}$、$W$、$E_{\max}$；
+（3）\textbf{两端看进去像什么元件}（3.2）：把整块结封装成二极管，用一条曲线、三个模型、四个参数描述——
+这是「器件」问题，答案是 $I=I_S(e^{U/(nU_T)}-1)$ 与 $0.7\,\mathrm{V}$。
+
+三个问题对应三种问法：问「N 型多子是什么」考第一层，问「为什么加 $0.7\,\mathrm{V}$ 才导通」考第二层，
+问「用理想模型还是恒压降模型算」考第三层。三层的答案不能互相代替。
+
+\callout{\textbf{本讲义怎么用}：\\
+读第一遍只看 §0 表、§6 的模型对照表、§8 的钳位四步、§9 的取最低/取最高口诀——这四处直接决定题能不能做对；\\
+读第二遍看 §3.3、§4.1、§5.2——这三处解释 $0.7\,\mathrm{V}$ 从哪来，是「换一只管子、换一个温度还能不能算对」的关键；\\
+§10 缺口清单逐条对应课件某页某句，卡住时去那里找。}
+
+%=============================================================
+\hdr{§1}{半导体为什么「半」导电：禁带、共价键与两种载流子}
+
+\subhdr{1.1 三类材料的差别只有一个来源：禁带宽度（p2）}
+
+课件 p2 用一张分类图和四行英文把三类材料并排：
+导体「Low resistance. Always conduct electric current.」；
+半导体「Conductivity in-between. Block or allow the current flow, providing total control over it.」；
+绝缘体「Very high electrical resistance. Do not allow the flow of current.」。
+它没说差别从哪来。差别只有一个来源：\textbf{价带顶与导带底之间的禁带宽度 $E_g$}。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{5.3cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\tabtop
+\thead{材料} & \thead{$E_g$（300 K）} & \thead{载流子来源} & \thead{室温电导率}
+\\
+\tabmid
+铜 Cu & $0$（价带与导带重叠） & 自由电子气，密度 $\sim10^{23}\,\mathrm{cm^{-3}}$ & $5.8\times10^{5}\,\mathrm{S/cm}$
+\\
+硅 Si & $1.12\,\mathrm{eV}$ & 热激发断键，密度 $\sim10^{10}\,\mathrm{cm^{-3}}$ & $4.4\times10^{-6}\,\mathrm{S/cm}$
+\\
+锗 Ge & $0.67\,\mathrm{eV}$ & 同上，但禁带窄、断键多 & $\sim2\times10^{-2}\,\mathrm{S/cm}$
+\\
+二氧化硅 & $\sim9\,\mathrm{eV}$ & 常温下几乎为零 & $<10^{-16}\,\mathrm{S/cm}$
+\tabbot
+\end{tabular}
+
+\textbf{为什么禁带决定一切}：电子要参与导电，必须从价带跳到导带。跳过去所需的能量是 $E_g$，
+而常温提供的热能量级只有 $kT\approx25.9\,\mathrm{meV}$。对硅，
+\[
+\frac{E_g}{2kT}=\frac{1.12}{2\times0.0259}\approx21.7,
+\qquad
+e^{-21.7}\approx3.7\times10^{-10}.
+\]
+也就是说，只有约 $10^{-10}$ 这个量级的电子能靠热激发跨过禁带。
+这个极小的因子，就是「半导体」三个字的全部含义：\textbf{能导电，但载流子少得可怜}。
+[教材补充：本小节与下一小节的能带、态密度说法不在课件里，补它是因为 p2 的四行英文需要一个定量解释。]
+
+\subhdr{1.2 本征半导体：八个电子、一根键、成对产生的载流子（p3--p8）}
+
+p3 的 (2) 问 「What are semiconductor materials?」，p3 底部答 「Silicon and germanium are the
+most widely used intrinsic semiconductors.」。p4 的 (3) 问 「Why there are eight electrons outside?」，
+答案是两句：每个硅原子最外层有 4 个价电子（「four electrons (valence electrons) in its outermost shell」），
+每个原子与四个邻居各共用一对（「Each atom shares its four valence electrons with its four neighbors」）。
+$4+4=8$，凑满最外层八电子结构（p5：「An atom is most stable when it has eight electrons in its
+outermost energy level」）。
+
+一根共价键被热激发打断时，会发生两件事，而且\textbf{必然同时发生}：
+（1）一个价电子挣脱束缚变成自由电子；（2）它原来的位置留下一个空位，即空穴。
+p7 把这两半分别命名为 「Free electron」 与 「hole」，p8 的 (6) 问两者数目是否相同，
+答 「The number of holes and free electrons in an intrinsic semiconductor are equal.」——
+\textbf{相等不是巧合，是「成对产生」的直接结果}：断一根键只产生一个电子加一个空穴，
+复合时也是一个电子填一个空穴。若记本征载流子浓度为 $n_i$，则恒有
+\[
+n=p=n_i .
+\]
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\subhdr{质量作用定律（原形式）}
+设半导体处于热平衡、非简并，导带有效态密度为 $N_C$、价带有效态密度为 $N_V$，禁带宽度 $E_g$。
+则电子浓度 $n$ 与空穴浓度 $p$ 的\textbf{乘积}只由材料与温度决定：
+\[
+np=N_C N_V\,e^{-E_g/(kT)}=n_i^2 ,
+\]
+与掺杂浓度无关。其中 $N_C,N_V\propto T^{3/2}$，故
+\[
+n_i=\sqrt{N_C N_V}\;e^{-E_g/(2kT)}\ \propto\ T^{3/2}e^{-E_g/(2kT)} .
+\]
+\aside{课件没有写出这条定律，p8 只给了本征时的特例 $n=p$。本讲义把它写成一般形式，
+因为 §2 的每一次「多子/少子」计算都要用它；$n_i$ 的数值：Si $1.5\times10^{10}\,\mathrm{cm^{-3}}$、
+Ge $2.4\times10^{13}\,\mathrm{cm^{-3}}$（300 K）。}
+\end{minipage}
+\end{center}
+
+\textbf{把数量级摆出来}：硅原子密度约 $5\times10^{22}\,\mathrm{cm^{-3}}$，本征载流子 $1.5\times10^{10}\,\mathrm{cm^{-3}}$，
+平均每
+\[
+\frac{5\times10^{22}}{1.5\times10^{10}}\approx3.3\times10^{12}
+\]
+个硅原子才有一根键断开。p10 说 「The carriers of intrinsic semiconductor are few in number.
+So the conductive ability is weak.」——「few」是 $3\times10^{12}$ 分之一，这就是不掺杂的硅几乎不导电的原因。
+
+\subhdr{1.3 两种载流子怎么动、电流往哪边流（p7--p9）}
+
+p9 的 (7) 问 「Do free electrons and holes move in the same direction when there is a potential?」，
+答句是 「When a potential difference is applied electrons move towards the higher potential and
+holes move towards the lower potential.」。这句话里藏着两个容易混的点。
+
+\textbf{第一，空穴为什么会「动」。}空穴本身不是粒子，它只是共价键上的一个缺位。
+当相邻键上的价电子跳过来填补这个缺位时，缺位就转移到了旁边——宏观上看起来像是一个带正电的
+「空穴」在朝相反方向移动。所以空穴的移动\textbf{本质上是价电子的反向接力}，
+它的电荷取 $+q$、有效质量为正，可以当成一种准粒子来算。
+
+\textbf{第二，电流方向由正电荷定义。}电子带负电，向高电位运动，等效电流方向与运动方向相反；
+空穴带正电，向低电位运动，等效电流方向与运动方向相同。两种载流子运动方向相反，
+但它们贡献的电流方向\textbf{相同}——都是从高电位流向低电位。
+
+\aside{p9 的图 2 把这件事画成两排符号：左排电子「$-$」向右移、下方电流箭头向左；
+右排空穴「$+$」向右移、下方电流箭头向右。代入本册记号：电流正方向取阳极$\to$阴极，
+与空穴运动同向、与电子运动反向。}
+
+两种载流子对电流的贡献可以直接相加：
+\[
+I=qA\left(n v_n+p v_p\right),
+\]
+其中 $v_n,v_p$ 是漂移速度。电场不太强时 $v=\mu E$，于是
+\[
+I=qA\left(n\mu_n+p\mu_p\right)E
+\quad\Longrightarrow\quad
+\sigma=\frac{I}{AE}=q\left(n\mu_n+p\mu_p\right).
+\]
+
+\subhdr{1.4 本征导电有多弱：把 $\sigma$ 算出来（p10）}
+
+取硅在 300 K 的迁移率 $\mu_n=1350\,\mathrm{cm^2/(V\cdot s)}$、$\mu_p=480\,\mathrm{cm^2/(V\cdot s)}$，
+本征时 $n=p=n_i=1.5\times10^{10}\,\mathrm{cm^{-3}}$，代入上式
+\[
+\sigma_i=q\,n_i\left(\mu_n+\mu_p\right)
+=1.6\times10^{-19}\times1.5\times10^{10}\times1830
+\approx4.4\times10^{-6}\,\mathrm{S/cm}.
+\]
+对应的电阻率 $\rho_i=1/\sigma_i\approx2.3\times10^{5}\,\Omega\cdot\mathrm{cm}$，
+比铜（$1.7\times10^{-6}\,\Omega\cdot\mathrm{cm}$）大了约 $10^{11}$ 倍。
+p10 的 「conductive ability is weak」 到这里有了数字：\textbf{弱十一个数量级}。
+
+p11 的 (9) 问 「How to increase the conductivity?」，课件只给了一个箭头：
+Intrinsic $\to$ Extrinsic。为什么不掺杂不行、掺了又能好多少，下一节算。
+
+%=============================================================
+\subhdr{1.5 本征浓度随温度跑得有多快}
+
+$n_i\propto T^{3/2}e^{-E_g/(2kT)}$ 里指数项压倒一切。把硅的数值列出来：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.8cm}@{}}
+\tabtop
+\thead{温度} & \thead{$n_i$（$\mathrm{cm^{-3}}$）} & \thead{与 300 K 之比} & \thead{含义}
+\\
+\tabmid
+250 K（$-23\,{}^\circ\mathrm{C}$） & $1.5\times10^{8}$ & $10^{-2}$ & 载流子少，杂质也未全电离
+\\
+300 K（$27\,{}^\circ\mathrm{C}$） & $1.5\times10^{10}$ & $1$ & 室温基准
+\\
+350 K（$77\,{}^\circ\mathrm{C}$） & $4.2\times10^{11}$ & $28$ & 漏电开始明显
+\\
+400 K（$127\,{}^\circ\mathrm{C}$） & $5.2\times10^{12}$ & $347$ & 硅器件的结温上限附近
+\\
+500 K（$227\,{}^\circ\mathrm{C}$） & $1.9\times10^{14}$ & $1.2\times10^{4}$ & 接近轻掺杂浓度
+\\
+600 K（$327\,{}^\circ\mathrm{C}$） & $2.1\times10^{15}$ & $1.4\times10^{5}$ & 与 $10^{15}$ 掺杂可比
+\tabbot
+\end{tabular}
+
+\textbf{两个推论}：
+（1）硅器件的结温上限（常见 $125$--$150\,{}^\circ\mathrm{C}$）\textbf{不是因为}这块硅快变成本征了
+（那要 $700\,\mathrm{K}$，§2.3），而是因为 $n_i$ 在 $150\,{}^\circ\mathrm{C}$ 已涨到 $1.4\times10^{13}$，
+反向漏电与功耗随之上升，容易热失控；
+（2）任何「$n\approx N_D$」的近似都默认 $N_D\gg n_i(T)$。温度一高，这个近似先失效，
+而不是先「烧管子」。
+
+\subhdr{1.6 为什么偏偏是硅和锗：一张材料对照表}
+
+p3 说 「Silicon and germanium are the most widely used intrinsic semiconductors.」，
+没说为什么。三种常见半导体的关键量并排：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\tabtop
+\thead{材料} & \thead{$E_g$/eV} & \thead{$\mu_n$} & \thead{$\mu_p$} & \thead{器件温度上限}
+\\
+\tabmid
+Si & $1.12$ & $1350$ & $480$ & $\sim150\,{}^\circ\mathrm{C}$
+\\
+Ge & $0.67$ & $3900$ & $1900$ & $\sim75$--$90\,{}^\circ\mathrm{C}$
+\\
+GaAs & $1.42$ & $8500$ & $400$ & $\sim200\,{}^\circ\mathrm{C}$
+\tabbot
+\end{tabular}
+（迁移率单位 $\mathrm{cm^2/(V\cdot s)}$，300 K。）
+
+读表：
+（1）\textbf{锗的迁移率高、拐点低}，所以同样电流下压降小、更适合低压；但 $E_g$ 小，
+$n_i$ 大两个数量级，反向漏电大、温度上限低——这就是锗被硅取代的原因；
+（2）\textbf{硅的 $E_g$ 居中}，$150\,{}^\circ\mathrm{C}$ 仍可用，且能长出优质 $\mathrm{SiO_2}$ 绝缘层，
+工艺成熟——三项加起来才是硅的主流地位；
+（3）\textbf{砷化镓迁移率最高}，适合高频，但 $E_g$ 大、拐点约 $1.4\,\mathrm{V}$，且成本高。
+[教材补充：材料对照与温度上限不在课件中；p45 的目录里有 Photodiode 与 LED，
+本册没有展开，它们在后续册里讲。]
+
+\hdr{§2}{杂质半导体：掺杂改的是「谁多谁少」}
+
+\subhdr{2.1 施主与 N 型：第五个价电子（p12--p19）}
+
+p12 的 (2) 给的定义是 「Doping: the process by which an impurity is added to a semiconductor」。
+p13 按杂质类型分成 N 型与 P 型。p14 的 (4) 给出 N 型的来源：
+「By adding some phosphorus(P) with a valence of +5.」——把硅晶格里的一个硅原子换成磷原子。
+
+磷有 5 个价电子，而晶格只要求它出 4 个参与共价键。第 5 个电子没有键位可占，
+只受磷原子核的库仑吸引，束缚能只有约 $45\,\mathrm{meV}$（[教材补充：硅中磷的电离能]），
+远小于 $kT=25.9\,\mathrm{meV}$ 的几倍，所以\textbf{室温下几乎全部电离}：
+\[
+\mathrm{P}\ \longrightarrow\ \mathrm{P}^{+}+e^{-}.
+\]
+电离后，磷原子变成固定在晶格上的正离子（$+q$，不能移动），多出来的电子成为自由电子。
+这就是 p16 的 「surplus electron」 与 「Can be a free electron at normal temperature」。
+
+设施主浓度 $N_D$（单位 $\mathrm{cm^{-3}}$），并假设全部电离。电中性要求
+\[
+n=N_D+p .
+\]
+在 N 型里 $N_D\gg n_i$，所以 $n\approx N_D$，而空穴靠热激发产生，由质量作用定律
+\[
+p=\frac{n_i^2}{n}\approx\frac{n_i^2}{N_D}.
+\]
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{3.6cm}@{}}
+\tabtop
+\thead{施主浓度 $N_D$} & \thead{$n\approx N_D$} & \thead{$p\approx n_i^2/N_D$} & \thead{$n/p$}
+\\
+\tabmid
+$10^{14}\,\mathrm{cm^{-3}}$ & $10^{14}$ & $2.3\times10^{6}$ & $4.4\times10^{7}$
+\\
+$10^{16}\,\mathrm{cm^{-3}}$ & $10^{16}$ & $2.3\times10^{4}$ & $4.4\times10^{11}$
+\\
+$10^{18}\,\mathrm{cm^{-3}}$ & $10^{18}$ & $2.3\times10^{2}$ & $4.4\times10^{15}$
+\tabbot
+\end{tabular}
+
+p18 的 (6) 答 「The number of free electrons >> The number of holes」，p19 的 (7) 把自由电子称为
+多数载流子（majority carriers）、空穴称为少数载流子（minority carriers）。
+「多数」与「少数」不是两个并列的名称，而是\textbf{同一句质量作用定律的两个输出}：
+一个被掺杂抬上去，另一个就被按下去，乘积恒为 $n_i^2$。
+
+\subhdr{2.2 受主与 P 型：少一个电子就多一个空穴（p20--p24）}
+
+p20 的 (8) 给出 P 型：「By adding some Boron(B) with a valence of +3.」。
+硼只有 3 个价电子，却要参与 4 条共价键，于是有一条键缺一个电子——
+这个缺位就是空穴。硼原子接受一个电子后变成固定在晶格上的负离子 $\mathrm{B}^{-}$。
+p20 图上标的就是 $\mathrm{B}^{-}$，这是一个容易看漏的细节：\textbf{掺进来的原子本身带电，
+但它不能移动}。
+
+同理，设受主浓度 $N_A$，电中性给出
+\[
+p=N_A+n,\qquad p\approx N_A,\qquad n\approx\frac{n_i^2}{N_A}.
+\]
+p23 的 (10) 答 「Holes are majority carriers. Free electrons are minority carriers.」，
+与 N 型正好互换。
+
+\subhdr{2.3 「远大于」的条件，以及它什么时候失效（p18）}
+
+p18 只写了 $n\gg p$，没有写这个「远大于」依赖什么。依赖的是
+\[
+N_D\gg n_i .
+\]
+掺杂浓度比本征浓度高几个数量级，这个不等式才成立。它两个方向都会失效：
+
+（1）\textbf{高温失效}：$n_i$ 随温度指数增长，涨到与 $N_D$ 可比时，掺杂提供的那点载流子被
+本征激发淹没，N 型「退回」本征。以 $N_D=10^{16}\,\mathrm{cm^{-3}}$ 为例，数值计算给出
+$n_i$ 在 600 K 约 $2.1\times10^{15}$、700 K 约 $1.3\times10^{16}\,\mathrm{cm^{-3}}$，
+即\textbf{约 700 K（$427\,{}^\circ\mathrm{C}$）以上}，这块硅就不再是「N 型」了。
+
+（2）\textbf{低温失效}：温度太低时施主电离能（$45\,\mathrm{meV}$）都供不起，
+杂质原子不电离，载流子反而减少，这叫冻结（freeze-out）。[教材补充：这两条边界课件未提，
+但 p18 的「$\gg$」是一个只在室温附近成立的结论，必须标出适用范围。]
+
+\subhdr{2.4 掺杂把电导率抬高了多少（p24）}
+
+p24 的 (11) 答 「Conductivity is increased.」。抬高多少？N 型中 $n\approx N_D=10^{16}\,\mathrm{cm^{-3}}$，
+空穴项可以忽略，
+\[
+\sigma_n=qN_D\mu_n=1.6\times10^{-19}\times10^{16}\times1350
+\approx2.16\,\mathrm{S/cm},
+\]
+与本征的 $4.4\times10^{-6}\,\mathrm{S/cm}$ 相比，
+\[
+\frac{\sigma_n}{\sigma_i}\approx4.9\times10^{5}.
+\]
+电阻率从 $2.3\times10^{5}\,\Omega\cdot\mathrm{cm}$ 降到 $0.46\,\Omega\cdot\mathrm{cm}$。
+\textbf{掺杂浓度提高约六个数量级，电导率也提高约六个数量级}——这就是 p11 那个箭头的真正分量。
+
+\subhdr{2.5 p25--p26 判别题的读法}
+
+p25 并排放两幅晶格图，问 「Which one is N type? Which one is P type?」，p26 才给出标注。
+判别只需看三层：
+（1）圆内符号：$+$ 是施主电离后的正离子（N 型），$-$ 是受主电离后的负离子（P 型）；
+（2）圆间小点的形状：实心点是电子，空心圈是空穴；
+（3）数量：哪种载流子多，就是哪一型。
+p26 的答案与这个顺序一致：左图圆内 $+$、实心点多 $\Rightarrow$ N 型；右图圆内 $-$、空心圈多 $\Rightarrow$ P 型。
+
+三个变式练手：
+（1）若把 p25 左图的圆内符号擦掉、只留载流子，则\textbf{实心点多}的一幅是 N 型——因为 N 型多子是电子；
+（2）若圆内符号保留、载流子形状对调（实心点变空心圈），则结论以\textbf{圆内符号}为准，
+因为固定离子由掺杂元素决定，载流子的画法可能只是排布示意；
+（3）若两幅图都不给符号，只给两种浓度，则\textbf{浓度高的那种载流子是多数载流子}，
+它所在的材料就是该型。三条都指向同一件事：\textbf{多子是谁，材料就是哪型}。
+
+\subhdr{2.6 掺杂浓度能取多大：从 $10^{14}$ 到 $10^{20}$}
+
+工艺上掺杂浓度大致在 $10^{14}$--$10^{20}\,\mathrm{cm^{-3}}$ 之间，跨六个数量级：
+\begin{itemize}
+\item $10^{14}$--$10^{15}$：轻掺杂，做高压管的漂移区或高阻衬底；
+\item $10^{16}$--$10^{17}$：常用范围，做普通二极管与三极管的基区、发射区；
+\item $10^{18}$--$10^{20}$：重掺杂，做欧姆接触，或做稳压管（要薄耗尽层，§4.5）。
+\end{itemize}
+
+掺杂浓度直接决定三件事：
+（1）多子浓度 $n\approx N_D$ 与少子浓度 $p\approx n_i^2/N_D$（§2.1）；
+（2）内建电势 $V_{bi}=U_T\ln(N_A N_D/n_i^2)$：两边都加重，$V_{bi}$ 只按对数慢慢涨；
+（3）耗尽层宽度 $W\propto1/\sqrt{N}$：掺杂越重，$W$ 越薄，击穿电压越低。
+所以「耐高压」与「低导通电阻」互相矛盾——这正是功率器件设计的核心取舍。
+[教材补充：掺杂范围与取舍不在课件中，补它是为了解释为什么 p46 的整流管与 p52 的 $0.7\,\mathrm{V}$ 都默认「中等掺杂」。]
+
+%=============================================================
+\subhdr{2.7 爱因斯坦关系：迁移率与扩散系数是同一个数}
+
+§1.3 用迁移率 $\mu$ 写漂移，§3.2 用扩散系数 $D$ 写扩散，两者看似独立，其实由同一个物理量联系。
+平衡时净电流为零，即漂移与扩散严格抵消：
+\[
+q n\mu_n E+qD_n\frac{\mathrm{d}n}{\mathrm{d}x}=0 .
+\]
+热平衡下 $n\propto e^{q\varphi/(kT)}$，故
+\[
+\frac{\mathrm{d}n}{\mathrm{d}x}=n\,\frac{q}{kT}\frac{\mathrm{d}\varphi}{\mathrm{d}x}
+=-n\,\frac{qE}{kT},
+\]
+代回即得
+\[
+D_n=\frac{kT}{q}\mu_n=\mu_nU_T,\qquad D_p=\mu_pU_T .
+\]
+这条爱因斯坦关系说明：载流子的「好动程度」只有一个参数 $\mu$，扩散与漂移是同一件事的两种看法。
+硅的数值：$D_n=1350\times0.0259\approx34.9\,\mathrm{cm^2/s}$、
+$D_p=480\times0.0259\approx12.4\,\mathrm{cm^2/s}$。
+\aside{本式在 §3.3 求 $V_{bi}$ 时直接用了一次：把 $D_n$ 换成 $\mu_nU_T$，
+才能把方程整理成 $\mathrm{d}\varphi=U_T\mathrm{d}n/n$。}
+
+\subhdr{2.8 掺杂对 $V_{bi}$ 与 $W$ 的敏感性：一个对数、一个平方根}
+
+把 $N_A=N_D=N$ 代入 §3.3 的 $V_{bi}$ 与 §3.4 的 $W$（$U=0$），逐个算出来：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
+\tabtop
+\thead{$N$（$\mathrm{cm^{-3}}$）} & \thead{$V_{bi}$} & \thead{$W$} & \thead{$W$ 相对上一行}
+\\
+\tabmid
+$10^{14}$ & $0.455\,\mathrm{V}$ & $3.43\,\mu\mathrm{m}$ & ——
+\\
+$10^{15}$ & $0.574\,\mathrm{V}$ & $1.22\,\mu\mathrm{m}$ & $0.36$
+\\
+$10^{16}$ & $0.693\,\mathrm{V}$ & $0.42\,\mu\mathrm{m}$ & $0.35$
+\\
+$10^{17}$ & $0.812\,\mathrm{V}$ & $0.145\,\mu\mathrm{m}$ & $0.34$
+\\
+$10^{18}$ & $0.932\,\mathrm{V}$ & $0.049\,\mu\mathrm{m}$ & $0.34$
+\tabbot
+\end{tabular}
+
+\textbf{读表两句话}：
+（1）掺杂每加 10 倍，$V_{bi}$ 只涨约 $0.12\,\mathrm{V}$（对数关系），所以「靠掺杂调 $0.7\,\mathrm{V}$」几乎调不动；
+（2）掺杂每加 10 倍，$W$ 缩到约三分之一（平方根关系），所以耐压与结电容对掺杂非常敏感。
+这解释了 §4.5 的选择：要击穿电压高就轻掺杂（$W$ 厚），要结电容小就重掺杂（$W$ 薄），两者不可兼得。
+
+\hdr{§3}{PN 结：扩散、漂移与动态平衡}
+
+\subhdr{3.1 从两块材料到一条界面（p27--p32）}
+
+p27--p30 反复强调 「Two separate pieces of silicon, one is N-type, the other is P-type.」，
+并用三维方块画了两块尚未接触的材料。p31 只加一句 「Now the n-type and the p-type materials
+are brought together」，p32 随即把载流子的运动方式分成两类：
+「Two basic processes for carrier transport in semiconductor: Diffusion motion and drift motion.」。
+
+p28 有一句容易被当成万能前提的话：「Ignore minority carriers」。它\textbf{只在这一步成立}：
+算结区空间电荷、算内建电场时，少子数量少到可以忽略；但 §4.2 算反向电流时，
+反向电流恰恰全部由少子漂移提供。把这句话当成「全局忽略少子」，后面就解释不了反向饱和电流。
+这是本册第一处适用范围陷阱，§10 记一条。
+
+\subhdr{3.2 扩散：浓度差把多子推过界面（p33--p34）}
+
+p33 的定义是 「Diffusion motion: The movement of the majority carriers because of the
+difference of concentration.」。N 型一侧电子浓度 $10^{16}$ 量级，P 型一侧只有 $10^{4}$ 量级，
+浓度差六个数量级以上，电子必然向 P 型一侧扩散；空穴反过来向 N 型一侧扩散。
+扩散电流与浓度梯度成正比（一维）：
+\[
+J_n=qD_n\frac{\mathrm{d}n}{\mathrm{d}x},\qquad J_p=-qD_p\frac{\mathrm{d}p}{\mathrm{d}x},
+\]
+其中扩散系数与迁移率由爱因斯坦关系联系：
+\[
+D_n=\mu_nU_T,\qquad D_p=\mu_pU_T .
+\]
+代入硅的数值，$D_n=1350\times0.0259\approx34.9\,\mathrm{cm^2/s}$。
+若界面附近 $1\,\mathrm{\mu m}$ 内浓度变化 $10^{15}\,\mathrm{cm^{-3}}$，则电子扩散电流密度
+\[
+J_n=qD_n\frac{\Delta n}{\Delta x}
+=1.6\times10^{-19}\times34.9\times\frac{10^{15}}{10^{-4}}
+\approx5.6\times10^{-2}\,\mathrm{A/cm^2}.
+\]
+这个量级说明：\textbf{只要浓度差还在，扩散就是一股很大的电流}。
+
+p34 接着说，越过界面的载流子留下了不能移动的固定离子：
+「As they cross the junction, the fixed ions they leave behind establish a 「built-in」 electric
+field at the junction.」。N 侧留下正离子、P 侧留下负离子，于是结区出现一层
+「N 侧正、P 侧负」的空间电荷，电场方向由 N 指向 P。
+
+\textbf{空间电荷的分配}：结区两侧的电荷量必须相等（电中性），即
+\[
+qN_D x_n=qN_A x_p,\qquad x_n+x_p=W .
+\]
+解出
+\[
+x_n=\frac{N_A}{N_A+N_D}W,\qquad x_p=\frac{N_D}{N_A+N_D}W .
+\]
+耗尽层\textbf{主要向轻掺杂一侧扩展}。举一个不对称的例子：$N_A=10^{17}$、$N_D=10^{15}\,\mathrm{cm^{-3}}$，
+$V_{bi}\approx0.693\,\mathrm{V}$、$W\approx0.95\,\mu\mathrm{m}$，则 $x_n\approx0.94\,\mu\mathrm{m}$、$x_p\approx0.009\,\mu\mathrm{m}$——
+99\% 的耗尽层落在轻掺杂的 N 侧。单位面积空间电荷
+\[
+Q=qN_D x_n\approx1.6\times10^{-19}\times10^{15}\times0.94\times10^{-4}
+\approx1.5\times10^{-8}\,\mathrm{C/cm^2}.
+\]
+这个 $Q$ 是后面结电容与击穿计算的出发点。
+
+\subhdr{3.3 漂移、平衡与内建电势：$0.7\,\mathrm{V}$ 的真正来源（p35--p36）}
+
+p35 的定义是 「Drift motion: the movement caused by electric field」。内建电场把电子往 N 侧推、
+把空穴往 P 侧推——\textbf{方向与扩散相反}。随着扩散进行，空间电荷越来越多、电场越来越强，
+漂移电流也越来越大，直到两者相等：
+\[
+J_n=q n\mu_n E+qD_n\frac{\mathrm{d}n}{\mathrm{d}x}=0 .
+\]
+这就是 p36 说的两种效应并存（「At the junction there are two effects occurring」）与动态平衡。
+注意「平衡」不等于「静止」：两个方向各有很大的电流，只是净电流为零。
+
+把 $E=-\mathrm{d}\varphi/\mathrm{d}x$、$D_n=\mu_nU_T$ 代入上式并整理：
+\[
+-n\frac{\mathrm{d}\varphi}{\mathrm{d}x}+U_T\frac{\mathrm{d}n}{\mathrm{d}x}=0
+\quad\Longrightarrow\quad
+\mathrm{d}\varphi=U_T\frac{\mathrm{d}n}{n}.
+\]
+从 P 区积分到 N 区，用两侧的平衡多子浓度 $n_p=n_i^2/N_A$、$n_n\approx N_D$：
+\[
+V_{bi}=\varphi_n-\varphi_p
+=U_T\ln\frac{n_n}{n_p}
+=U_T\ln\frac{N_A N_D}{n_i^2}.
+\]
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\subhdr{内建电势（原形式与数值）}
+设突变 PN 结两侧的受主、施主浓度分别为 $N_A,N_D$，温度 $T$，本征浓度 $n_i$，则平衡时的内建电势为
+\[
+V_{bi}=U_T\ln\frac{N_A N_D}{n_i^2},\qquad U_T=\frac{kT}{q}.
+\]
+取 $N_A=N_D=10^{16}\,\mathrm{cm^{-3}}$、300 K：
+\[
+V_{bi}(\mathrm{Si})=0.0259\ln\frac{10^{32}}{2.25\times10^{20}}\approx0.693\,\mathrm{V},
+\]
+\[
+V_{bi}(\mathrm{Ge})=0.0259\ln\frac{10^{32}}{5.76\times10^{26}}\approx0.312\,\mathrm{V}.
+\]
+\aside{课件 p40 的 「In silicon, this occurs at about 0.7 volts forward bias」 与 p52 的
+$U_D=0.7\,\mathrm{V}$(Si)、$0.3\,\mathrm{V}$(Ge)，数值正对应上面两个 $V_{bi}$。
+但课件从未写出这两个数的来源——本讲义这一节就是它的出处。}
+\end{minipage}
+\end{center}
+
+\textbf{换一条路再算一遍（检验）}：平衡时，同一批电子在 N 区与 P 区的概率比由玻尔兹曼因子给出，
+\[
+\frac{n_n}{n_p}=e^{qV_{bi}/(kT)}=e^{V_{bi}/U_T}
+\quad\Longrightarrow\quad
+V_{bi}=U_T\ln\frac{n_n}{n_p},
+\]
+与积分结果完全一致。两条路一条从「净电流为零」出发、一条从「统计分布」出发，
+结论相同，说明 $V_{bi}$ 是热平衡的必然，不是某个模型的假设。
+
+\textbf{这里必须停一下，纠正一个常见误解}：$0.7\,\mathrm{V}$ 不是「外加电压把势垒恰好抵消」的开关阈值，
+而是「势垒被压到接近零、多数载流子扩散电流达到 mA 量级」的一个工程约定。
+严格说电流从 $0.5\,\mathrm{V}$ 起就按指数上升（§5.2 给公式），
+$0.7\,\mathrm{V}$ 只是这条指数曲线在 mA 量级上的「代表点」。
+课件 p40 用 「about」 是准确的，把 $0.7\,\mathrm{V}$ 当普适常数就错了（§6.2 再展开）。
+
+\subhdr{3.4 耗尽层有多宽、电场有多强}
+
+平衡时空间电荷全部集中在界面两侧，形成一个几乎没有载流子的耗尽层。由泊松方程解得（突变结）
+\[
+W=\sqrt{\frac{2\varepsilon_s\left(V_{bi}-U\right)}{q}\left(\frac{1}{N_A}+\frac{1}{N_D}\right)},
+\]
+其中 $\varepsilon_s=11.7\varepsilon_0$（硅）、$U$ 是外加电压（正偏取正、反偏取负）。
+代入 $N_A=N_D=10^{16}\,\mathrm{cm^{-3}}$、$U=0$：
+\[
+W=\sqrt{\frac{2\times1.035\times10^{-12}\times0.693}{1.6\times10^{-19}}\times2\times10^{-16}}
+\approx4.2\times10^{-5}\,\mathrm{cm}=0.42\,\mu\mathrm{m}.
+\]
+最大电场在界面处，$E_{\max}=2(V_{bi}-U)/W\approx3.3\times10^{4}\,\mathrm{V/cm}$。
+结电容（势垒电容）$C_T=\varepsilon_s A/W$，随反偏电压增大而减小——这是变容二极管的原理，
+也是 §7 讲参数时「结电容」一项的来处。[教材补充：$W$、$E_{\max}$、$C_T$ 三条课件未写，
+补它是因为后面解释「正偏变薄、反偏变厚」需要宽度这个量。]
+
+\subhdr{3.5 平衡的定量图像}
+
+把三个量放在一起看：$V_{bi}\approx0.69\,\mathrm{V}$、$W\approx0.42\,\mu\mathrm{m}$、
+$E_{\max}\approx3.3\times10^{4}\,\mathrm{V/cm}$。数量级上
+$V_{bi}\approx E_{\max}W/2$ 完全自洽。这三个数在 §4 会各用一次：
+$V_{bi}$ 决定导通阈值，$W$ 决定正/反偏时「变薄还是变厚」，$E_{\max}$ 决定击穿时场强是否够高。
+
+%=============================================================
+\subhdr{3.6 把势垒画在能带上：三个名词的关系}
+
+前面用「势垒高度 $qV_{bi}$」描述平衡，用「电场」描述方向。这两个说法在能带图上是一回事：
+N 区电子多、费米能级靠近导带；P 区空穴多、费米能级靠近价带。两块接触后费米能级必须拉平，
+于是能带在结区发生弯曲，弯曲量正好是 $qV_{bi}$：
+\[
+E_{C}(p)-E_{C}(n)=qV_{bi}.
+\]
+三句话记牢：
+（1）\textbf{能带弯曲量 = 势垒高度}，数值 $0.693\,\mathrm{V}$（硅，$10^{16}$ 掺杂）；
+（2）\textbf{正偏 $U$ 使弯曲变平}，剩余势垒 $q(V_{bi}-U)$，耗尽层变薄（p40 的 「thinner」）；
+（3）\textbf{反偏使弯曲更陡}，势垒 $q(V_{bi}+|U|)$，耗尽层变厚（p42 的 「thicker」）。
+能带图的价值在于：它一眼看出「为什么正偏能导通、反偏不能」——不是载流子变多了，
+而是同一个势垒被外电压抬高或压低。
+\aside{p39 说两个场「相加」，能带图上就是两条 $E_C$ 曲线的斜率相加或相减；
+p42 的「同向」就是两段弯曲同向叠加。}
+
+\subhdr{3.7 结电容：反偏为什么能当变容管}
+
+耗尽层两侧的电荷量随电压变，所以 PN 结本身就是一个电容。由 §3.2 的电荷分配，
+单位面积电荷
+\[
+Q(U)=\sqrt{2q\varepsilon_s\left(V_{bi}-U\right)\frac{N_AN_D}{N_A+N_D}},
+\]
+对电压求导得微分电容
+\[
+C_T=\left|\frac{\mathrm{d}Q}{\mathrm{d}U}\right|=\frac{\varepsilon_s}{W},
+\]
+乘上结面积 $A$ 得 $C_T=\varepsilon_sA/W$。因为 $W\propto\sqrt{V_{bi}-U}$，所以
+$C_T\propto1/\sqrt{V_{bi}-U}$：反偏越大，$W$ 越宽，电容越小。
+以 $N_A=10^{17}$、$N_D=10^{15}\,\mathrm{cm^{-3}}$、$A=1\,\mathrm{mm^2}$ 为例：
+$U=0$ 时 $W=0.95\,\mu\mathrm{m}$、$C_T\approx109\,\mathrm{pF}$；
+$U=-5\,\mathrm{V}$ 时 $W=2.73\,\mu\mathrm{m}$、$C_T\approx38\,\mathrm{pF}$，减小到三分之一。
+这就是变容二极管调谐的原理，也是高频电路里「结电容」必须计入的原因。
+\aside{正偏时 $V_{bi}-U$ 变小，$W$ 变薄，$C_T$ 变大，但正偏同时有大量扩散电容，
+不能再用这个公式；本节只谈反偏。}
+
+\hdr{§4}{单向导电：加电压时结里发生了什么}
+
+\subhdr{4.1 正偏：外场与内场反向，势垒被压低（p37--p40）}
+
+p37 的接法是「P 侧接电源正极、N 侧接负极」（图 2：low 在 N、High 在 P），这叫正向偏置。
+p39 的原句是 「At the P-N junction, the 「built-in」 electric field and the applied electric field
+are in opposite directions. When these two fields add, the resultant field at the junction is
+smaller in magnitude than the magnitude of the original 「built-in」 electric field.」。
+
+「两个场相加」这句话需要写成算式。设外加电压为 $U$（P 侧相对 N 侧为正，$U>0$），
+外电场方向由 P 指向 N，与内建电场（N$\to$P）相反，于是净势垒高度变成
+\[
+q\left(V_{bi}-U\right).
+\]
+$U$ 越大，势垒越低，能翻过势垒的多子越多，扩散电流越大。p40 的结论是
+「This results in a thinner, less resistive depletion region. If the applied voltage is large
+enough, the depletion region's resistance becomes negligible. In silicon, this occurs at about
+0.7 volts forward bias.」。把它与 §3.4 的 $W$ 公式对照：$V_{bi}-U$ 变小，$W$ 确实变薄。
+
+\subhdr{4.2 反偏：势垒抬高，只剩少子漂移（p41--p42）}
+
+p41 的接法反过来：正电压加在 N 侧、负电压加在 P 侧（图 3：High 在 N、Low 在 P）。
+此时外电场与内建电场\textbf{同向}，p42 的原句是 「The 「built-in」 electric field and the applied
+electric field are in the same direction. When these two fields add, the resultant larger electric
+field is in the same direction as the 「built in」 electric field and this creates a thicker,
+more resistive depletion region.」。
+
+势垒变成 $q(V_{bi}+|U|)$，多子几乎翻不过去，扩散电流趋近于零；剩下的只有
+\textbf{少子}被电场拉过结的漂移电流。少子浓度由温度决定、与外加电压几乎无关，
+所以这段电流近似是一个常数——这就是 p49 标注的 「Reverse saturation current」。
+
+反偏电压再加大，结内场强升高到某个值时会发生击穿（p49 的 「Reverse breakdown」，
+横轴标 $U_{BR}$）。两种机制：
+（1）齐纳击穿：掺杂很重、耗尽层很薄，场强足以直接把价带电子隧道到导带，一般发生在 $U_{BR}<5\,\mathrm{V}$；
+（2）雪崩击穿：载流子在强场中加速，碰撞电离产生新的电子—空穴对，连锁倍增，一般发生在 $U_{BR}>7\,\mathrm{V}$。
+击穿本身不毁管子，只要外电路把电流限制住；但普通整流管不允许长期工作在击穿区。
+[教材补充：两种击穿的区分课件未写，p49 只标了 $U_{BR}$。]
+
+\subhdr{4.3 ON/OFF 的判据（p43）}
+
+p43 用两张双色方块图作总结：正偏时 N 侧 low、P 侧 High，标 \textbf{ON}；
+反偏时 N 侧 High、P 侧 Low，标 \textbf{OFF}。把它写成可执行的判据：
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\callout{\textbf{单向导电判据}\quad 记 $U_{PN}=\varphi_P-\varphi_N$。\\
+（1）$U_{PN}>U_D$（硅约 $0.7\,\mathrm{V}$）：导通，相当于开关闭合；\\
+（2）$U_{PN}<U_D$：截止，相当于开关断开；\\
+（3）反向（$U_{PN}<0$）：截止，只有 $\mu\mathrm{A}$ 级以下的反向电流；\\
+（4）反向电压达到 $U_{BR}$：击穿，普通管不允许。}
+\end{minipage}
+\end{center}
+
+这里最容易错的是把「正偏」理解成「P 侧接正极」就完了。真正的条件是
+\textbf{P 侧电位比 N 侧高出一个导通压降}。若 P 侧接正极但只高出 $0.2\,\mathrm{V}$，
+硅管仍然截止——p57 的钳位题里，D\_A 的阳极电位只有 $0.7\,\mathrm{V}$、阴极 $3\,\mathrm{V}$，
+虽然「方向没接反」，它依然截止。§8 会反复用到这一点。
+
+\subhdr{4.4 为什么反向电流几乎不随电压变}
+
+反向时能翻过结的只有少子，而少子的数量由\textbf{热激发}决定，与电压无关；
+电压只改变它们被拉过结的速度，不改变供给量。因此反向电流像是一个与电压无关的电流源 $I_S$。
+温度每升高约 $10\,{}^\circ\mathrm{C}$，$n_i^2$ 增大约 4 倍，$I_S$ 也随之增大——
+这解释了 p53--p54 那张「高温曲线反向段下沉更深」的图（§7.1 定量）。
+
+%=============================================================
+\subhdr{4.5 击穿的定量图像与稳压管}
+
+p49 只标了 $U_{BR}$，没给击穿的数学描述。工程上用一个倍增因子 $M$ 描述雪崩：
+\[
+M=\frac{1}{1-\left(U/U_{BR}\right)^{m}},
+\]
+其中 $m=3\sim6$。$U\to U_{BR}$ 时 $M\to\infty$，电流失控；所以「击穿」不是电压到此为止，
+而是\textbf{电流不再受电压控制}。只要外电路有限流电阻，管子不会坏；这就是稳压管的工作方式。
+
+\textbf{齐纳击穿与雪崩击穿的分界与温度系数}：
+（1）$U_{BR}<5\,\mathrm{V}$：耗尽层很薄，隧道效应为主（齐纳），温度升高时 $U_{BR}$ 反而下降；
+（2）$U_{BR}>7\,\mathrm{V}$：碰撞电离为主（雪崩），温度升高时 $U_{BR}$ 上升；
+（3）$5$--$7\,\mathrm{V}$：两种机制混合，温度系数接近零——所以稳压管常选 $6\,\mathrm{V}$ 左右。
+[教材补充：倍增因子与温度系数课件未写；p56 的参数表只列了 $U_{BR}$。]
+
+稳压管与普通整流管的区别只有一条：\textbf{它被设计成长期工作在击穿区}，
+所以参数里多了稳定电压 $U_Z$、动态电阻 $r_Z$、最小与最大稳定电流 $I_{Z\min},I_{Z\max}$。
+普通管一旦进入击穿区，即使电流受限，长期工作也会因结温过高而损坏。
+
+\subhdr{4.6 反向饱和电流的温度系数}
+
+§5.2 会给出 $I_S\propto n_i^2\propto T^3e^{-E_g/(kT)}$。取对数再对温度求导，
+\[
+\frac{1}{I_S}\frac{\mathrm{d}I_S}{\mathrm{d}T}
+=\frac{3}{T}+\frac{E_g}{kT^2}.
+\]
+代入硅的数值（$T=300\,\mathrm{K}$、$E_g=1.12\,\mathrm{eV}$）：
+\[
+\frac{3}{300}+\frac{1.12}{8.617\times10^{-5}\times300^2}
+\approx0.01+0.144\approx0.15\ \mathrm{K^{-1}}.
+\]
+即温度每升 $1\,{}^\circ\mathrm{C}$，理想反向电流增大约 $15\%$，每升 $10\,{}^\circ\mathrm{C}$ 约增至 4 倍；
+从 $20$ 到 $80\,{}^\circ\mathrm{C}$ 约增大 $3.3\times10^3$ 倍。
+实测值因表面漏电、复合电流等机制通常没有这么快（常见口径是每 $10\,{}^\circ\mathrm{C}$ 翻倍），
+但「指数增长」这个结论不变：\textbf{反向漏电是温度的强函数}，高温选管必须按最高结温降额。
+
+\subhdr{4.7 两种电容：结电容与扩散电容}
+
+§3.7 的 $C_T$ 是\textbf{反偏}时的主角；正偏时还有另一个更大的电容——扩散电容 $C_D$。
+它来自中性区存储的少子电荷：正偏时大量少子被注入并堆积，电压一变，堆积量跟着变，
+等效出一个电容
+\[
+C_D=\frac{\tau I_D}{nU_T},
+\]
+其中 $\tau$ 是少子寿命。取 $\tau=100\,\mathrm{ns}$、$I_D=1\,\mathrm{mA}$、$n=1.3$，
+\[
+C_D\approx\frac{10^{-7}\times10^{-3}}{1.3\times0.0259}\approx3.0\,\mathrm{nF},
+\]
+比反偏时的 $38\,\mathrm{pF}$（§3.7）大近两个数量级。
+
+\textbf{为什么重要}：二极管从正偏切到反偏时，先要把存储的电荷抽走，这段「反向恢复时间」
+限制了开关速度。p48 把开关二极管单列一类，就是为了这个指标。
+[教材补充：扩散电容与反向恢复不在课件中，补它是为了回答「正偏时结电容为什么不能用 $C_T$」。]
+
+\hdr{§5}{二极管的伏安特性：五个名词各指哪一段}
+
+\subhdr{5.1 结构、符号与封装（p44--p48）}
+
+p46 给定结构：「A single PN junction with contacts for connecting to external circuits」——
+一个 PN 结加两条引线。P 侧引出的是阳极（Anode），N 侧是阴极（Cathode）（p47）。
+电路符号是一个实心三角形加一条竖线：\textbf{三角形由阳极指向阴极}，竖线在阴极一侧。
+做题时先看三角形朝哪，正向电流就只能朝那个方向流。
+
+p46 还给了三条实用信息：塑封管的白环一端是负极、金属封装的螺栓端是负极、玻璃封管的黑环是负极。
+这三条在接实物时才用得上，考试不考，但装电路时接反会烧管子。
+
+p48 的分类是三条并列标准：（1）按结构：点接触型、面结型；（2）按材料：硅管、锗管；
+（3）按用途：整流管、开关管。这三条分别对应「结电容大小」「$0.7$ 还是 $0.3$」「能过多大电流」，
+是后面选参数的索引。
+
+\subhdr{5.2 曲线的四个区与五个名词（p49--p50）}
+
+p49 画了硅管（实线）与锗管（虚线）的伏安特性；p50 把同一条曲线配上五个问句，
+\textbf{一个答案都没给}。这五个问句就是本节要回答的全部内容：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.9cm}>{\raggedright\arraybackslash}p{8.9cm}@{}}
+\tabtop
+\thead{课件的问句（p50）} & \thead{答案}
+\\
+\tabmid
+(1) Which part is forward biased? & 第一象限 $U>0$ 的整段，从原点到曲线陡升段
+\\
+(2) Which part is reverse biased? & 第三象限 $U<0$ 的整段，曲线贴近横轴
+\\
+(3) What is Barrier potential? & 正向曲线开始明显上翘的电压，硅约 $0.5$--$0.7\,\mathrm{V}$、锗约 $0.2$--$0.3\,\mathrm{V}$
+\\
+(4) What is reverse saturation current? & 反向截止段那个几乎与电压无关的电流 $I_R$，硅 $\mathrm{nA}$ 级、锗 $\mu\mathrm{A}$ 级
+\\
+(5) What is reverse breakdown voltage? & 反向曲线向下急折处的电压 $U_{BR}$
+\tabbot
+\end{tabular}
+
+曲线为什么长这样，课件没有给方程。把 §3.3 的势垒图像写成电流—电压关系，
+就是下面这条式子（肖克利方程）：
+
+\begin{center}
+\begin{minipage}{0.96\linewidth}
+\subhdr{肖克利方程（本讲义补的推导）}
+设中性区少子满足扩散方程，边界处少子浓度由玻尔兹曼关系给出
+\[
+\frac{\mathrm{d}^2p_n}{\mathrm{d}x^2}=\frac{p_n-p_{n0}}{L_p^2},
+\qquad L_p=\sqrt{D_p\tau_p},
+\]
+\[
+p_n(x)=p_{n0}+\left[p_n(0)-p_{n0}\right]e^{-x/L_p},
+\qquad p_n(0)=p_{n0}\,e^{U/U_T}.
+\]
+在 $x=0$ 处取扩散电流，
+\[
+I_p(0)=qA D_p\left.\frac{\mathrm{d}p_n}{\mathrm{d}x}\right|_{x=0}
+=\frac{qA D_p p_{n0}}{L_p}\left(e^{U/U_T}-1\right).
+\]
+电子一侧同理，两项相加得
+\[
+I=I_S\left(e^{U/(nU_T)}-1\right),
+\qquad
+I_S=qA\left(\frac{D_p p_{n0}}{L_p}+\frac{D_n n_{p0}}{L_n}\right).
+\]
+其中 $n$ 是理想因子（硅管 $1\sim2$，本讲义取 $1.3$ 做数值例）。
+\aside{课件 p49--p50 只画曲线、不给方程，本式是 §4.1「势垒越低电流越大」的定量版；
+$p_{n0}=n_i^2/N_D$、$n_{p0}=n_i^2/N_A$，所以 $I_S$ 与 $n_i^2$ 成正比——这条关系在 §7 的温度题里要用。}
+\end{minipage}
+\end{center}
+
+由这条式子可以直接读出四个区：
+（1）$U\gg nU_T$ 时 $e^{U/(nU_T)}\gg1$，电流按指数上升——这就是「导通」；
+（2）$U$ 在 $0$ 到 $0.5\,\mathrm{V}$ 之间时指数还很小，宏观上看像「死区」；
+（3）$U<0$ 且 $|U|\gg nU_T$ 时 $e^{U/(nU_T)}\to0$，$I\to-I_S$，与电压无关——反向饱和；
+（4）$|U|$ 大到击穿时，上式失效，把四个区写成三段可算的形式。正向导通时
+\[
+I\approx I_S\,e^{U/(nU_T)}\qquad(U\gg nU_T);
+\]
+反向截止时
+\[
+I\approx-I_S\qquad(U<0,\ |U|\gg nU_T);
+\]
+死区里电流小到可以当零：
+\[
+|I|\lesssim I_S\left(e^{0.5/(nU_T)}-1\right)\qquad(0<U<0.5\,\mathrm{V}).
+\]
+以 $I_S=10^{-12}\,\mathrm{A}$、$n=1.3$ 代入，$U=0.5\,\mathrm{V}$ 时只有约 $3\,\mu\mathrm{A}$，
+比 mA 级的导通电流小三个数量级——这就是「死区」可以当零的定量依据。
+
+进入击穿机制。
+
+\subhdr{5.3 反向饱和电流从哪来、有多小}
+
+$I_S$ 的表达式里两个括号项都正比于 $n_i^2$，而 $n_i^2\propto e^{-E_g/(kT)}$。
+硅的禁带 $1.12\,\mathrm{eV}$ 比锗的 $0.67\,\mathrm{eV}$ 宽，所以同样温度下硅的 $I_S$ 比锗小几个数量级：
+硅典型 $10^{-12}$--$10^{-9}\,\mathrm{A}$，锗典型 $10^{-7}$--$10^{-6}\,\mathrm{A}$。
+这也解释了 p49 图上锗管反向段比硅管低得多的画法。
+
+\subhdr{5.4 硅管与锗管的曲线对比（p49）}
+
+p49 的两条曲线差在三处：
+（1）拐点位置：硅在 $0.5$--$0.7\,\mathrm{V}$，锗在 $0.2$--$0.3\,\mathrm{V}$（因为 $V_{bi}$ 不同，§3.3）；
+（2）反向电流量级：锗大得多（因为 $n_i$ 大得多）；
+（3）同样电流下的管压降：硅高、锗低，所以锗管功耗小但漏电大、温度稳定性差。
+这三条正是「硅管为什么成了主流」的答案。
+
+\subhdr{5.5 用 p55 的两张图反推材料}
+
+p55 给了两张量程不同的伏安曲线，问 「which one is for Si-diode and which one is for Ge-diode?」。
+判别只看拐点：拐点在 $0.6$--$0.7\,\mathrm{V}$ 附近（纵轴 $20/40/60\,\mathrm{mA}$ 那张）是硅管；
+拐点在 $0.2$--$0.3\,\mathrm{V}$ 附近（纵轴 $5/10/15\,\mathrm{mA}$ 那张）是锗管。
+[待确认：扫描页的左右排列与文字层抽取顺序相反，本讲义按「拐点电压」判别，不按左右位置记忆；
+若考试给的原图与这里相反，以拐点为准。]
+
+\textbf{这里要指出课件的一处口径不一致}：p52 写锗管 $U_D=0.3\,\mathrm{V}$，
+而 p55 的锗管曲线拐点读出来约 $0.2\,\mathrm{V}$。两者不是矛盾，而是「读图位置」不同：
+$0.3\,\mathrm{V}$ 是 mA 级电流下的工程约定值，曲线拐点是电流刚开始抬头的位置。
+本讲义统一按 $0.3\,\mathrm{V}$ 计算，读图时说明「约 $0.2$--$0.3\,\mathrm{V}$」。
+
+%=============================================================
+\subhdr{5.6 读图三练：从曲线上把三个数取下来}
+
+p50 的五个问句本质上是「在同一张图上读三个数」。读图的规矩是\textbf{先定坐标、再定区域、最后读交点}：
+（1）读死区电压：沿横轴找曲线开始离开横轴的位置。p55 两张图分别在 $0.6$--$0.7\,\mathrm{V}$ 与
+$0.2$--$0.3\,\mathrm{V}$ 一带起翘，前者约为 $0.6\,\mathrm{V}$、后者约为 $0.2\,\mathrm{V}$
+（左右顺序的说明见 §5.5）；
+（2）读反向饱和电流：沿纵轴负方向找那段水平线的纵坐标。p49 的硅管在 $\mathrm{nA}$ 级、锗管在 $\mu\mathrm{A}$ 级，
+图上的 $-0.02\,\mathrm{mA}$ 与 $-0.04\,\mathrm{mA}$ 刻度是为锗管留的；
+（3）读击穿电压：找曲线向下急折处的横坐标。p49/p55 的 $U_{BR}$ 在 $-50\,\mathrm{V}$ 附近。
+三者读错任何一个，后面选参数都会错：死区电压决定导通判断，$I_R$ 决定漏电功耗，$U_{BR}$ 决定耐压。
+
+\subhdr{5.7 一条曲线同时读出温度与材料}
+
+p53 与 p55 的两组题，本质是同一个判据的两次应用：
+（1）\textbf{同材料、比温度}：拐点更靠左、反向电流更大的是高温曲线（p54 的红色 $80\,{}^\circ\mathrm{C}$）；
+（2）\textbf{同温度、比材料}：拐点更靠左、反向电流更大的是锗管（p55）。
+两者的现象方向相同，但原因不同：温度改变的是 $n_i(T)$，材料改变的是 $E_g$。
+判据可以合成一句话：\textbf{看拐点定电压、看反向段定量级、再看题目问的是温度还是材料}。
+
+\subhdr{5.8 四个参数在曲线上的位置}
+
+p56 把 $I_F$、$U_F$、$U_R$、$I_{Rm}$ 直接标在一条曲线上，但没说明各自「量的是哪一段」。
+补一张对照：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{5.0cm}@{}}
+\tabtop
+\thead{符号} & \thead{名称} & \thead{在曲线的哪一段} & \thead{怎么读}
+\\
+\tabmid
+$I_F$ & 额定正向平均电流 & 正向导通段的工作点 & 不是曲线上一点，由结面积与散热决定
+\\
+$U_F$ & 正向压降 & 正向曲线在 $I_F$ 处的横坐标 & 同一只管子电流越大 $U_F$ 越高
+\\
+$U_R$ & 最高反向工作电压 & 反向平坦段 & 取 $U_{BR}$ 的 $1/2$--$2/3$，不是 $U_{BR}$ 本身
+\\
+$I_{Rm}$ & 最大反向电流 & 反向平坦段的纵坐标 & 室温值，高温要放大
+\\
+$U_{BR}$ & 反向击穿电压 & 反向急折点 & 只用于选耐压，不允许长期工作
+\tabbot
+\end{tabular}
+
+\textbf{读表的关键}：$I_F$ 与 $I_{Rm}$ 是\textbf{极限值}，$U_F$ 与 $U_{BR}$ 是\textbf{特性值}。
+极限值用来「校核」，特性值用来「计算」——两者混用是选型题最常见的错。
+
+\hdr{§6}{三种等效模型：什么时候可以把它当开关}
+
+课件只给了两种模型（p51 理想、p52 恒压降），而实际做题需要三种。
+第三种（折线模型）标 [教材补充]，补它的理由写在 §6.3 开头。
+
+\subhdr{6.1 理想模型（p51）}
+
+p51 的写法是：「Forward bias\quad $U_D=0$，$R_D=0$\quad short circuit」，
+「Reverse bias\quad $I_D=0$，$R_D\to\infty$\quad open circuit」。
+也就是把二极管当成一个\textbf{理想开关}：正向短路、反向开路，两端压降恒为零。
+
+它什么时候能用：电源电压远大于 $0.7\,\mathrm{V}$（比如 $12\,\mathrm{V}$ 系统里判断逻辑电平），
+或者题目只问「导通/截止」而不问具体电压。误差量级是 $0.7/U_S$：
+$U_S=12\,\mathrm{V}$ 时约 $6\%$，$U_S=1\,\mathrm{V}$ 时就到了 $70\%$，不能再用。
+
+\subhdr{6.2 恒压降模型（p52）}
+
+p52 的写法是「$U_D=0.7\,\mathrm{V}$(Si)，$U_D=0.3\,\mathrm{V}$(Ge)」，反向仍开路。
+正向时把它等效成一个恒压源 $U_D$ 串联在回路里，也就是「先扣掉 $0.7\,\mathrm{V}$，剩下的电压才加在电阻上」。
+
+\textbf{$0.7\,\mathrm{V}$ 从哪来}：§3.3 算出硅的 $V_{bi}\approx0.693\,\mathrm{V}$，
+数值上正是 $0.7\,\mathrm{V}$；锗的 $V_{bi}\approx0.312\,\mathrm{V}$，正是 $0.3\,\mathrm{V}$。
+所以「势垒电压」这个叫法不是比喻，它确实是内建电势。
+
+但\textbf{它不是一个常数}。用 §5.2 的肖克利方程（取 $I_S=10^{-12}\,\mathrm{A}$、$n=1.3$）算同样一只硅管：
+\[
+U=nU_T\ln\left(\frac{I}{I_S}+1\right),
+\]
+\[
+I=0.1\,\mathrm{mA}\Rightarrow U\approx0.619\,\mathrm{V},\quad
+I=1\,\mathrm{mA}\Rightarrow U\approx0.696\,\mathrm{V},\quad
+I=10\,\mathrm{mA}\Rightarrow U\approx0.774\,\mathrm{V}.
+\]
+电流变 100 倍，压降才变 $0.15\,\mathrm{V}$——这就是「恒压降」三个字的底气，也是它的误差边界：
+mA 级、室温下取 $0.7\,\mathrm{V}$ 误差在 $0.1\,\mathrm{V}$ 以内；电流低到 $\mu\mathrm{A}$ 级或温度变化几十度，
+就必须回到指数式（§7.1）。
+
+\subhdr{6.3 折线模型（第三种，[教材补充]）}
+
+课件没给第三种模型。补它是因为两种模型都假设「导通后压降不变」，
+而真实管子在电流大时还有一个随电流增长的\emph{体电阻}压降，在小信号分析里还要用\emph{动态电阻}。
+折线模型把正向段写成一条斜线：
+\[
+U_D=U_{th}+I_D r_d,\qquad r_d=\frac{nU_T}{I_D},
+\]
+其中 $U_{th}$ 是折线的横轴截距（硅取 $0.6$--$0.7\,\mathrm{V}$），$r_d$ 是工作点处的动态电阻。
+$r_d$ 的量级很说明问题：
+\[
+I_D=0.1\,\mathrm{mA}\Rightarrow r_d\approx336\,\Omega,\quad
+1\,\mathrm{mA}\Rightarrow33.6\,\Omega,\quad
+10\,\mathrm{mA}\Rightarrow3.4\,\Omega,\quad
+100\,\mathrm{mA}\Rightarrow0.34\,\Omega.
+\]
+电流越小，动态电阻越大——所以「小信号」分析里不能把二极管当恒压源，要当电阻。
+
+\subhdr{6.4 同一道题、三种模型：误差到底多大}
+
+取一个最简单的电路：$U_S=10\,\mathrm{V}$ 的直流源串联 $R=1\,\mathrm{k\Omega}$ 再串一只硅二极管，
+求 $I_D$ 与 $U_D$。三种模型与「精确解」（肖克利方程，$I_S=10^{-12}\,\mathrm{A}$、$n=1.3$）对比如下：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\tabtop
+\thead{模型} & \thead{方程} & \thead{$I_D$} & \thead{$U_D$} & \thead{相对误差}
+\\
+\tabmid
+精确解 & $I=I_S(e^{U/nU_T}-1)$ & $9.229\,\mathrm{mA}$ & $0.771\,\mathrm{V}$ & 基准
+\\
+理想 & $U_D=0$ & $10.00\,\mathrm{mA}$ & $0$ & $I$ 偏大 $8.4\%$
+\\
+恒压降 & $U_D=0.7\,\mathrm{V}$ & $9.300\,\mathrm{mA}$ & $0.700\,\mathrm{V}$ & $I$ 偏大 $0.8\%$、$U$ 偏小 $9.2\%$
+\\
+折线 & $U_D=0.7+3.6I_D$ & $9.267\,\mathrm{mA}$ & $0.734\,\mathrm{V}$ & $I$ 偏大 $0.4\%$、$U$ 偏小 $4.9\%$
+\tabbot
+\end{tabular}
+
+\textbf{读表三条}：
+（1）只要电源电压是几伏、电阻是千欧级，恒压降模型的电流误差不到 $1\%$——这就是它成为手算主力的原因；
+（2）理想模型的电压误差是 $100\%$（它把 $0.77\,\mathrm{V}$ 当成 $0$），只在「判断通断」时可以接受；
+（3）折线模型把电压误差从 $9.2\%$ 压到 $4.9\%$，代价是多一个参数 $r_d$。
+选哪个模型，取决于题目问的是「通断」「电流」还是「电压」。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{2.4cm}@{}}
+\tabtop
+\thead{模型} & \thead{正向等效} & \thead{反向} & \thead{适用场合} & \thead{参数个数}
+\\
+\tabmid
+理想 & 短路（$U_D=0$） & 开路 & 电源 $\gg0.7\,\mathrm{V}$、只判通断、逻辑电平 & 0
+\\
+恒压降 & $U_D$ 恒压源 & 开路 & 几伏以上整流/钳位的手算，mA 级 & 1
+\\
+折线 & $U_{th}+I r_d$ & 开路（可加漏电） & 大电流、精密计算、小信号动态电阻 & 2
+\tabbot
+\end{tabular}
+
+%=============================================================
+\textbf{再补一个反向的算例}：同一只管子反接在 $10\,\mathrm{V}$ 电源上（$U_D=-10\,\mathrm{V}$），
+串 $1\,\mathrm{k\Omega}$。用肖克利方程
+\[
+I=I_S\left(e^{-10/(nU_T)}-1\right)\approx-I_S=-10^{-12}\,\mathrm{A},
+\]
+电阻上的压降只有 $10^{-9}\,\mathrm{V}$——\textbf{反向电流几乎全部由管子自己决定，与串联电阻无关}。
+这就是「反向截止」在数值上的样子：$10\,\mathrm{V}$ 几乎全落在管子上，回路电流约 $1\,\mathrm{pA}$。
+理想模型说「开路」、恒压降模型也说「开路」，两者在这一步没有差别；差别只在正向。
+
+\subhdr{6.5 小信号：把二极管在 Q 点换成一个电阻}
+
+前四个小节处理的都是「直流大信号」。若二极管上叠加一个很小的交流信号 $\Delta u$，
+它不再是一个恒压源，而是在工作点 $Q$ 附近的一条斜线，斜率就是动态电阻：
+\[
+r_d=\left.\frac{\mathrm{d}U_D}{\mathrm{d}I_D}\right|_{Q}
+=\frac{nU_T}{I_D}.
+\]
+取 $n=1.3$、$I_D=1\,\mathrm{mA}$，$r_d\approx33.6\,\Omega$。
+若叠加 $\Delta u=1\,\mathrm{mV}$，线性化给出
+\[
+\Delta i=\frac{\Delta u}{r_d}=\frac{1\,\mathrm{mV}}{33.6\,\Omega}\approx30\,\mu\mathrm{A},
+\]
+而按指数式精确计算为 $30.2\,\mu\mathrm{A}$，误差约 $1\%$——线性化在 $\Delta u\ll nU_T$ 时成立。
+若把 $\Delta u$ 加到 $10\,\mathrm{mV}$（已与 $nU_T=33.6\,\mathrm{mV}$ 同量级），
+线性化给出 $298\,\mu\mathrm{A}$、精确值 $347\,\mu\mathrm{A}$，误差约 $14\%$——这就是「小信号」三个字的边界。
+\aside{本册只讲直流，但下一册的微变等效电路（C4-3）正是从这里开始：把 $r_d$ 当成电阻画进交流通路。
+$r_d$ 与 $I_D$ 成反比，所以换一个静态工作点，交流模型就要重算。}
+
+\subhdr{6.6 三道判断题：该用哪个模型}
+
+（1）\textbf{12 V 汽车灯泡串联二极管防反接}。电源 $12\,\mathrm{V}\gg0.7\,\mathrm{V}$，
+用恒压降：$I=(12-0.7)/R$，误差不到 $6\%$；用理想模型也可以，只要不关心灯泡略暗。
+（2）\textbf{逻辑门判断 0/1}。只看「高于阈值还是低于阈值」，用理想模型：导通即 $0\,\mathrm{V}$、
+截止即开路。此时报具体电压没有意义（§6.4 的电压误差 $100\%$）。
+（3）\textbf{精密整流或小信号放大}。信号只有几十 $\mathrm{mV}$，必须用折线模型，
+把 $r_d=nU_T/I_D$ 算进去（§6.5）；否则线性化误差会吃掉整个信号。
+三题的共同判据：\textbf{先问「题目要的是通断、电流还是电压精度」，再选模型}。
+
+\subhdr{6.7 三种模型都不够的时候}
+
+三种模型都建立在「温度不变、参数已知」的前提上。三种情形必须离开模型、回到指数式或实测：
+（1）\textbf{温度跨越大}：$-40$ 到 $+125\,{}^\circ\mathrm{C}$ 时 $U_F$ 变化可达 $0.3\,\mathrm{V}$ 以上（§7.1），
+恒压降的 $0.7\,\mathrm{V}$ 不再成立；
+（2）\textbf{电流跨数量级}：从 $\mu\mathrm{A}$ 到 A，$U_F$ 从 $0.5$ 变到 $1\,\mathrm{V}$ 以上（§6.2），
+单一常数没有意义；
+（3）\textbf{要求小信号精度}：必须用 $r_d=nU_T/I_D$（§6.5），而且 $I_D$ 要取实际工作点。
+判据一句话：\textbf{模型是「一个数代替一条曲线」，曲线跨得越远，代替得越差}。
+
+\hdr{§7}{温度与材料：用曲线反推参数（p53--p56）}
+
+\subhdr{7.1 两条温度曲线，哪条是 $80\,{}^\circ\mathrm{C}$（p53--p54）}
+
+p53 给两条曲线问 「which one stands for the characteristics of 80\,$^\circ$C and which one is for
+20\,$^\circ$C?」，p54 补上标注：红色 $80\,{}^\circ\mathrm{C}$、蓝色 $20\,{}^\circ\mathrm{C}$。
+答案是：\textbf{温度高的那条，正向拐点更靠左、反向段下沉更深}。
+
+机制两层：
+（1）正向：温度升高 $\Rightarrow n_i$ 指数增大 $\Rightarrow$ 同样电流所需的电压变小。
+用 §5.2 的指数式估算（$I_S\propto n_i^2$）：$1\,\mathrm{mA}$ 下，
+$20\,{}^\circ\mathrm{C}$ 时 $U\approx0.717\,\mathrm{V}$，$80\,{}^\circ\mathrm{C}$ 时 $U\approx0.543\,\mathrm{V}$，
+六十年温差使压降下降约 $0.17\,\mathrm{V}$，平均 $-2.9\,\mathrm{mV}/{}^\circ\mathrm{C}$，
+与教材常说的 $-2\sim-3\,\mathrm{mV}/{}^\circ\mathrm{C}$ 一致。
+（2）反向：$I_S\propto n_i^2$，$20\to80\,{}^\circ\mathrm{C}$ 使 $n_i^2$ 增大约 $3\times10^{3}$ 倍，
+反向段自然下沉得多。
+
+\aside{p18 的「$n\gg p$」与这里的温度效应是同一条链：$n_i$ 一涨，掺杂的优势就被吃掉，
+多子浓度、$V_{bi}$、$I_S$ 全都跟着变。}
+
+\subhdr{7.2 硅管还是锗管（p55）}
+
+判别方法已在 §5.5 给出：看拐点电压，不看左右位置。再补一条量级判据：
+同样温度下锗管的反向饱和电流比硅管大 $10^3$--$10^5$ 倍（因为 $E_g$ 小、$n_i$ 大）。
+所以「反向漏电明显、拐点在 $0.3\,\mathrm{V}$」两条同时成立，就是锗管。
+
+\subhdr{7.3 四个主要参数（p56）}
+
+p56 把四个参数直接标在曲线上：
+（1）$I_F$：额定正向平均电流（Rated forward average current）——管子长期允许通过的\emph{平均}电流；
+（2）$U_F$：正向压降（Forward voltage drop）——额定电流下的管压降，用来算功耗；
+（3）$U_R$：最高反向工作电压（Maximum reverse working voltage）——不是击穿电压，是允许长期承受的反压；
+（4）$I_{Rm}$：最大反向电流（Maximum reverse current）——漏电上限。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{7.1cm}@{}}
+\tabtop
+\thead{符号} & \thead{名称} & \thead{关系} & \thead{选型时怎么用}
+\\
+\tabmid
+$I_F$ & 额定正向平均电流 & 由结面积与散热决定 & 实际平均电流 $\le I_F$，通常留 $1.5$--$2$ 倍裕量
+\\
+$U_F$ & 正向压降 & $0.7\,\mathrm{V}$（Si）或 $0.3\,\mathrm{V}$（Ge） & 算功耗 $P=U_F I_F$，选散热
+\\
+$U_R$ & 最高反向工作电压 & $U_R\approx(1/2\sim2/3)U_{BR}$ & 反向峰值电压必须小于 $U_R$
+\\
+$I_{Rm}$ & 最大反向电流 & 与温度强相关 & 判断漏电与发热，高温时要降额
+\\
+$U_{BR}$ & 反向击穿电压 & 曲线急折处 & 普通管不许工作在击穿区；稳压管专门用这一段
+\tabbot
+\end{tabular}
+
+\textbf{一个选型算例}（[教材补充：课件只列参数、不给例题]）：某整流电路输出平均电流 $0.5\,\mathrm{A}$，
+二极管承受的最高反向电压 $24\,\mathrm{V}$。选 1N4001（$I_F=1\,\mathrm{A}$、$U_R=50\,\mathrm{V}$）：
+电流裕量 $1/0.5=2$ 倍，电压裕量 $50/24\approx2.1$ 倍，都合格；
+功耗 $P=U_F I_F\approx0.7\times0.5=0.35\,\mathrm{W}$，需要一小片散热。
+若换成 1N4007（$1000\,\mathrm{V}$），裕量过大、成本高，属于过设计。
+
+%=============================================================
+\textbf{稳压管的三个额外参数}（[教材补充]）：稳定电压 $U_Z$（就是击穿电压）、
+动态电阻 $r_Z=\Delta U_Z/\Delta I_Z$（越小稳压越好，几欧到几十欧）、
+稳定电流范围 $I_{Z\min}$--$I_{Z\max}$（低于 $I_{Z\min}$ 不稳压、高于 $I_{Z\max}$ 过热）。
+选稳压管时先定 $U_Z$，再按负载电流选 $I_{Z\max}$，最后用限流电阻把电流卡在范围内——
+这三步是下一册稳压电源电路的入口（本册 p1 的标题 「DC regulated power supply」 就指向那里）。
+
+\subhdr{7.4 热设计：参数表之外的那一半}
+
+选型只对参数还不够，还要算温升。二极管的正向功耗
+\[
+P=U_F I_F ,
+\]
+结温
+\[
+T_j=T_a+P\,R_{\mathrm{th}(j-a)},
+\]
+其中 $T_a$ 是环境温度、$R_{\mathrm{th}(j-a)}$ 是结到环境的热阻。
+仍用 §7.3 的算例：$P=0.35\,\mathrm{W}$、$R_{\mathrm{th}(j-a)}=50\,\mathrm{K/W}$、$T_a=25\,{}^\circ\mathrm{C}$，
+则 $T_j=25+17.5=42.5\,{}^\circ\mathrm{C}$，远低于 $125\,{}^\circ\mathrm{C}$ 上限，安全。
+若环境升到 $60\,{}^\circ\mathrm{C}$，$T_j=77.5\,{}^\circ\mathrm{C}$，仍安全；若 $P$ 增到 $2\,\mathrm{W}$，
+$T_j=125\,{}^\circ\mathrm{C}$ 顶到上限，必须加散热片——这就是「降额」的实际含义：
+\textbf{温度越高，允许的 $I_F$ 越小}。p56 的参数是在 $25\,{}^\circ\mathrm{C}$ 下给的，高温下要打折使用。
+[教材补充：热阻与降额不在课件中，补它是为了把 p56 的四个参数接到实际使用。]
+
+\subhdr{7.5 温度降额表：把热阻算成允许电流}
+
+由 §7.4 的 $T_j=T_a+U_FI_FR_{\mathrm{th}(j-a)}\le T_{j\max}$ 反解，
+\[
+I_F\le\frac{T_{j\max}-T_a}{U_F\,R_{\mathrm{th}(j-a)}}.
+\]
+取 $T_{j\max}=125\,{}^\circ\mathrm{C}$、$U_F=0.7\,\mathrm{V}$、$R_{\mathrm{th}(j-a)}=50\,\mathrm{K/W}$：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\tabtop
+\thead{环境温度 $T_a$} & \thead{热极限 $I_F$} & \thead{受额定值限制后}
+\\
+\tabmid
+$25\,{}^\circ\mathrm{C}$ & $2.86\,\mathrm{A}$ & $1.00\,\mathrm{A}$（额定）
+\\
+$50\,{}^\circ\mathrm{C}$ & $2.14\,\mathrm{A}$ & $1.00\,\mathrm{A}$
+\\
+$75\,{}^\circ\mathrm{C}$ & $1.43\,\mathrm{A}$ & $1.00\,\mathrm{A}$
+\\
+$100\,{}^\circ\mathrm{C}$ & $0.71\,\mathrm{A}$ & $0.71\,\mathrm{A}$
+\\
+$120\,{}^\circ\mathrm{C}$ & $0.14\,\mathrm{A}$ & $0.14\,\mathrm{A}$
+\tabbot
+\end{tabular}
+
+读表：$75\,{}^\circ\mathrm{C}$ 以下，热极限高于额定值，按 $1\,\mathrm{A}$ 用；$100\,{}^\circ\mathrm{C}$ 以上，
+热极限低于额定值，必须降额。这就是数据手册里那条「降额曲线」的来历。
+
+\hdr{§8}{钳位电路：先假设导通，再回头校验}
+
+\subhdr{8.1 把电路认出来（p57）}
+
+p57--p61 是同一张图，改了五个问句：
+$+6\,\mathrm{V}$ 经电阻 $R$ 接到公共节点 $U_F$；两只二极管 $D_A$、$D_B$ 的\textbf{阳极都接在
+$U_F$ 节点}、\textbf{阴极分别接输入端子 $A$、$B$}；已知 $U_D=0.7\,\mathrm{V}$、$U_A=3\,\mathrm{V}$、$U_B=0\,\mathrm{V}$。
+这个接法的意思是：谁的阴极电位低，谁就先把公共节点拉下来。p57 的 (1) 问
+「What is the meaning of $U_D$?」——$U_D$ 就是二极管正向导通时两端固定要掉的那 $0.7\,\mathrm{V}$，
+它是本题唯一需要记住的器件参数。
+
+p57 左下写 「Not ideal」，页边还写 「Idea or practical?」——后者是 「Ideal or practical?」 的笔误
+（应为「理想还是实际」）。这不是内容错误，但读图时容易误解成「想法还是实践」，记一笔。
+
+\subhdr{8.2 四步判据法（课件没给、但每题都要用）}
+
+处理多个二极管同时存在的电路，不能靠直觉，要按下面四步：
+
+\callout{\textbf{四步法}\\
+（1）\textbf{假设全截止}：先把所有二极管拿掉，只用电阻求节点电位；\\
+（2）\textbf{逐个检查}：算出每只二极管阳极与阴极的电位差 $U_{AK}$，凡 $U_{AK}>U_D$ 的，都「想导通」；\\
+（3）\textbf{取最容易的一只}：阴极电位最低的那只先导通（它的 $U_{AK}$ 最大），令它导通并重算节点；\\
+（4）\textbf{回头校验}：在导通那只定住的节点电位下，检查其余二极管是否 $U_{AK}<U_D$；\
+若仍有一只满足导通条件，改假设它，重复第（3）步。}
+
+\subhdr{8.3 五个追问逐个算（p58--p61）}
+
+\textbf{(2) Which diode will conduct first?（p58）}从 $U_F=0$ 开始往上抬：
+$D_B$ 的阴极是 $0\,\mathrm{V}$，$U_F$ 升到 $0.7\,\mathrm{V}$ 时它就满足 $U_{AK}=0.7\,\mathrm{V}$；
+$D_A$ 的阴极是 $3\,\mathrm{V}$，$U_F$ 要升到 $3.7\,\mathrm{V}$ 才够。所以 \textbf{$D_B$ 先导通}。
+
+\textbf{(3) When $D_B$ is ON, what will happen to $D_A$?（p59）}$D_B$ 一导通，就把 $U_F$ 钉在
+$0+0.7=0.7\,\mathrm{V}$。此时 $D_A$ 的 $U_{AK}=0.7-3=-2.3\,\mathrm{V}<0$，\textbf{$D_A$ 反向截止}。
+这就是「争着导通、互相钳制」：先导通的那只把节点电位拿走，另一只就失去了导通条件。
+
+\textbf{(4) How much is the output?（p60）}
+\[
+U_F=U_B+U_D=0+0.7=0.7\,\mathrm{V}.
+\]
+校验：$U_A-U_F=3-0.7=2.3\,\mathrm{V}>0$，$D_A$ 反偏 $2.3\,\mathrm{V}$，结论成立。
+此时流过 $R$ 的电流 $I_R=(6-0.7)/R$，全部经 $D_B$ 流入 $B$ 端。
+若 $R=1\,\mathrm{k\Omega}$，则 $I_R=5.3\,\mathrm{mA}$，$D_B$ 承担全部电流。
+
+\textbf{(5) How much is $U_F$ if the diode is ideal?（p61）}$U_D=0$，同一套推导给出
+$U_F=U_B+0=0\,\mathrm{V}$，校验 $U_A-U_F=3\,\mathrm{V}>0$，$D_A$ 仍截止。
+两个结果 $0.7\,\mathrm{V}$ 与 $0\,\mathrm{V}$ 的差，就是「实际模型与理想模型」的全部差别。
+
+\subhdr{8.4 为什么不会两只同时导通}
+
+若 $U_A=U_B$，两只确实可能同时导通、平分电流。但只要 $U_A\ne U_B$，假设两只都导通，
+则 $U_F$ 同时等于 $U_A+U_D$ 与 $U_B+U_D$，矛盾。物理上，差值 $3\,\mathrm{V}$ 落在指数关系上，
+电流比是
+\[
+\frac{I_A}{I_B}\sim e^{-(U_A-U_B)/(nU_T)}
+=e^{-3/0.0336}\approx1.7\times10^{-39},
+\]
+即高电位那一路的电流小到可以完全忽略——不是「近似截止」，是「数学上就是零」。
+这就是为什么判据法可以直接取「最低的那一路」，而不必解联立方程。
+
+\subhdr{8.5 三个易错点}
+
+（1）\textbf{把 $U_F$ 当成 $6\,\mathrm{V}$}：$R$ 上没有电流时才是 $6\,\mathrm{V}$；一旦导通，$U_F$ 由二极管定，不是由电源定。
+（2）\textbf{符号弄反}：$U_{AK}$ 是阳极电位减阴极电位，$D_A$ 的阴极是 $A$、不是 $U_F$。
+（3）\textbf{忘记 $R$}：$R$ 的作用是限流并把节点往上拉；没有 $R$，$U_F$ 会被电源直接钉死，题就不成立。
+
+%=============================================================
+\subhdr{8.6 镜像接法：把「取最低」翻成「取最高」}
+
+把 p57 的两只二极管\textbf{方向全部翻过来}：阳极分别接输入 $A,B$、阴极共接节点 $U_F$，
+电阻从 $U_F$ 下拉到地。这就是 p64 的 E2 结构的两输入版本。此时
+\[
+U_F=\max\left(U_A,U_B\right)-U_D .
+\]
+为什么：阴极共节点、阳极接输入，输入最高的那一路把节点顶上去；节点一旦被顶到
+$U_{\max}-U_D$，其余各路 $U_{AK}=U_i-(U_{\max}-U_D)<U_D$，全部截止。
+把它与 §8.3 并排：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\tabtop
+\thead{接法} & \thead{二极管方向} & \thead{电阻} & \thead{输出}
+\\
+\tabmid
+p57 型 & 阳极共节点、阴极接输入 & 上拉到 $+V$ & $U_{\min}+U_D$（取最低）
+\\
+p64 型 & 阴极共节点、阳极接输入 & 下拉到地 & $U_{\max}-U_D$（取最高）
+\tabbot
+\end{tabular}
+
+两种接法的共同点：\textbf{都是让「最不利」的那一路说了算}。数字电路里，
+「取最低」对应与逻辑（有一个 0 就输出 0），「取最高」对应或逻辑（有一个 1 就输出 1）。
+
+\subhdr{8.7 钳位电路的电流与功耗}
+
+p60 的结论只给了电压，没给电流。补上：$R$ 上的电流
+\[
+I_R=\frac{6-0.7}{R}.
+\]
+若 $R=1\,\mathrm{k\Omega}$：$I_R=5.3\,\mathrm{mA}$，全部流过导通的 $D_B$，
+$D_B$ 的功耗 $P_D=0.7\times5.3\,\mathrm{mA}\approx3.7\,\mathrm{mW}$，
+$R$ 的功耗 $P_R=I_R^2R\approx28\,\mathrm{mW}$，都很小。
+若把 $R$ 改成 $100\,\Omega$：$I_R=53\,\mathrm{mA}$、$P_D\approx37\,\mathrm{mW}$、$P_R\approx0.28\,\mathrm{W}$，
+$R$ 需要选 $1/2\,\mathrm{W}$ 以上。\textbf{$R$ 越小，节点被拉得越硬，但功耗越大}——
+这是钳位电路设计里唯一的取舍。
+
+\hdr{§9}{二极管逻辑：钳位电路的另一种读法（p62--p69）}
+
+\subhdr{9.1 E1：三路输入取最低（p62--p63）}
+
+p62 的已知：$U_A=0\,\mathrm{V}$、$U_B=4\,\mathrm{V}$、$U_C=6\,\mathrm{V}$，二极管理想，$+12\,\mathrm{V}$ 经 $R$ 上拉到 $U_O$，
+三只二极管的阳极共接 $U_O$、阴极分别接 $A,B,C$。按 §8 的判据，阴极电位最低的 $A$ 路先导通，
+把 $U_O$ 钉在 $0\,\mathrm{V}$（理想管）。校验另外两路：$U_B-U_O=4\,\mathrm{V}>0$、$U_C-U_O=6\,\mathrm{V}>0$，
+都反偏。所以
+\[
+U_O=\min\left(U_A,U_B,U_C\right)=0\,\mathrm{V}.
+\]
+p63 的 「(2) How much is the output?」 答案就是 $0\,\mathrm{V}$。
+
+\subhdr{9.2 E2：三路输入取最高（p64）}
+
+p64 把结构翻了过来：三只二极管的\textbf{阳极接输入}、阴极共接 $U_O$，电阻从 $U_O$ \textbf{下拉到地}。
+此时输入电位最高的那一路导通，把 $U_O$ 顶上去。已知 $U_A=12\,\mathrm{V}$、$U_B=8\,\mathrm{V}$、$U_C=6\,\mathrm{V}$，
+\[
+U_O=\max\left(U_A,U_B,U_C\right)=12\,\mathrm{V}.
+\]
+两页的对比给出一条口诀：\textbf{上拉电阻 + 阴极接输入 $\Rightarrow$ 取最低；下拉电阻 + 阳极接输入 $\Rightarrow$ 取最高}。
+前者是与逻辑（AND），后者是或逻辑（OR）。
+
+\subhdr{9.3 E3：把真值表补全（p65--p69）}
+
+p65 给电路与一张只有表头的真值表，p66--p69 每页填一行。四行的完整结果是：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{1.4cm}@{}}
+\tabtop
+\thead{$U_A$} & \thead{$U_B$} & \thead{$D_A$} & \thead{$D_B$} & \thead{$U_O$} & \thead{逻辑}
+\\
+\tabmid
+$0\,\mathrm{V}$ & $0\,\mathrm{V}$ & ON & ON & $0\,\mathrm{V}$ & 低
+\\
+$0\,\mathrm{V}$ & $5\,\mathrm{V}$ & ON & OFF & $0\,\mathrm{V}$ & 低
+\\
+$5\,\mathrm{V}$ & $0\,\mathrm{V}$ & OFF & ON & $0\,\mathrm{V}$ & 低
+\\
+$5\,\mathrm{V}$ & $5\,\mathrm{V}$ & ON & ON & $5\,\mathrm{V}$ & 高
+\tabbot
+\end{tabular}
+
+p69 补的正是第四行：两只都 ON、输出 $5\,\mathrm{V}$。四行合起来，$U_O=\min(U_A,U_B)$，
+这是一个\textbf{与门}（只有全高才高）。课件 p69 的结论句与这张表一致。
+
+\textbf{非理想时的电平偏移}：若用实际硅管（$U_D=0.7\,\mathrm{V}$），同一电路的输出变成
+$U_O=\min(U_A,U_B)+0.7\,\mathrm{V}$：输入 $5/5\,\mathrm{V}$ 时输出 $5.7\,\mathrm{V}$，
+输入 $0\,\mathrm{V}$ 时输出 $0.7\,\mathrm{V}$。低电平被抬高 $0.7\,\mathrm{V}$，
+这就是二极管逻辑的固有缺点（电平偏移、扇出小、速度慢），也是它后来被 CMOS 取代的原因。
+[教材补充：这一句不在课件里，补它是为了回答「既然能实现与门，为什么不用它」。]
+
+\subhdr{9.4 三个电路的关系图}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\tabtop
+\thead{题号} & \thead{接法} & \thead{输出} & \thead{逻辑}
+\\
+\tabmid
+E1（p62--p63） & 上拉 $+12\,\mathrm{V}$，阴极接输入 & $\min=0\,\mathrm{V}$ & 与
+\\
+E2（p64） & 下拉到地，阳极接输入 & $\max=12\,\mathrm{V}$ & 或
+\\
+E3（p65--p69） & 上拉 $+12\,\mathrm{V}$，阴极接输入 & $\min$，真值表见 §9.3 & 与
+\tabbot
+\end{tabular}
+
+%=============================================================
+\subhdr{9.5 公式卡：这一册要用到的全部式子}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{7.4cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\tabtop
+\thead{量} & \thead{式子} & \thead{条件/来源}
+\\
+\tabmid
+热电压 & $U_T=kT/q\approx26\,\mathrm{mV}$ & 300 K
+\\
+本征浓度 & $n_i=\sqrt{N_CN_V}\,e^{-E_g/(2kT)}$ & 热平衡、非简并
+\\
+质量作用 & $np=n_i^2$ & 热平衡
+\\
+电导率 & $\sigma=q(n\mu_n+p\mu_p)$ & 漂移为主
+\\
+内建电势 & $V_{bi}=U_T\ln(N_AN_D/n_i^2)$ & 突变结、全电离
+\\
+耗尽层宽 & $W=\sqrt{\frac{2\varepsilon_s(V_{bi}-U)}{q}\left(\frac1{N_A}+\frac1{N_D}\right)}$ & 突变结
+\\
+二极管方程 & $I=I_S\left(e^{U/(nU_T)}-1\right)$ & $|U|\gg nU_T$
+\\
+动态电阻 & $r_d=nU_T/I_D$ & Q 点附近小信号
+\\
+折线模型 & $U_D=U_{th}+I_D r_d$ & 正向导通
+\\
+钳位取最低 & $U_O=U_{\min}+U_D$ & 阳极共节点、上拉
+\\
+钳位取最高 & $U_O=U_{\max}-U_D$ & 阴极共节点、下拉
+\tabbot
+\end{tabular}
+
+\subhdr{9.6 易错点：每条都能指回某一页某一步}
+
+\gapitem{（1）把本征当「没有载流子」}{p10 只说 「few in number」，不是零；
+$1.5\times10^{10}\,\mathrm{cm^{-3}}$ 仍是每立方厘米一千五百亿个，只是比掺杂少六个数量级（§1.2）。}
+
+\gapitem{（2）以为 $n=p$ 对掺杂硅也成立}{p8 的 $n=p$ 只在\textbf{本征}时成立。
+掺杂后 $np=n_i^2$ 仍成立，但 $n\ne p$；p18 的 $n\gg p$ 就是这条的推论（§2.1）。}
+
+\gapitem{（3）把「多子」当成「只有」}{N 型里仍有空穴，只是少；
+p42 的反向电流正是少子贡献的，忽略少子就解释不了反向饱和（§4.2、§5.3）。}
+
+\gapitem{（4）把 $V_{bi}$ 当外加电压}{$0.693\,\mathrm{V}$ 是\textbf{内部}电势差，用电压表在两端量不到；
+能测到的是它对外加电压的响应（§3.3、§4.1）。}
+
+\gapitem{（5）认为 $0.7\,\mathrm{V}$ 是常数}{p52 写 $0.7\,\mathrm{V}$ 是 mA 级约定；
+$0.1\,\mathrm{mA}$ 时约 $0.62\,\mathrm{V}$、$10\,\mathrm{mA}$ 时约 $0.77\,\mathrm{V}$，
+温度系数约 $-2.9\,\mathrm{mV}/{}^\circ\mathrm{C}$（§6.2、§7.1）。}
+
+\gapitem{（6）用理想模型报电压}{p51 的理想模型 $U_D=0$，电压误差 $100\%$；
+它只能用来判通断，不能用来报电压值（§6.4）。}
+
+\gapitem{（7）钳位时把 $U_F$ 当电源电压}{p57 的 $R$ 上拉，只有所有二极管都截止时 $U_F$ 才等于 $6\,\mathrm{V}$；
+一旦导通，$U_F$ 由二极管定（§8.3）。}
+
+\gapitem{（8）钳位时先假设错的那只导通}{p58 要选\textbf{阴极电位最低}的那只先导通；
+若先假设 $D_A$，校验会得到 $U_F=3.7\,\mathrm{V}$，而 $D_B$ 的 $U_{AK}=3.7\,\mathrm{V}>0.7\,\mathrm{V}$，
+假设自相矛盾（§8.2）。}
+
+\gapitem{（9）逻辑门把 $U_O$ 算成 $12\,\mathrm{V}$}{E1/E3 是上拉、阴极接输入，输出取最低；
+只有 E2（下拉、阳极接输入）才取最高（§9.1--§9.3）。}
+
+\gapitem{（10）忘记非理想时的电平偏移}{实际硅管下 $U_O=\min U_i+0.7\,\mathrm{V}$，
+低电平被抬到 $0.7\,\mathrm{V}$；理想模型的 $0\,\mathrm{V}$ 只是近似（§9.3）。}
+
+\gapitem{（11）温度升高只想到「更热更导电」}{温度升高 $n_i$ 涨，正向压降\textbf{下降}、反向漏电\textbf{上升}，
+拐点左移；两件事方向相反，不能只记一半（§7.1）。}
+
+\gapitem{（12）把击穿当烧毁}{p49 的 $U_{BR}$ 处曲线急折，但只要限流，管子不坏；
+稳压管就长期工作在这里（§4.5）。}
+
+\subhdr{9.7 四步用法：拿到一只二极管先做什么}
+
+\callout{\textbf{做题四步}\\
+（1）\textbf{判方向}：三角形指向阴极，先看 $U_{PN}=\varphi_P-\varphi_N$ 是否大于 $U_D$；\\
+（2）\textbf{选模型}：问通断用理想、问电流用恒压降、问电压精度用折线（§6.4 的误差表）；\\
+（3）\textbf{写回路}：把二极管换成所选模型，列回路方程，注意 $U_D$ 的极性；\\
+（4）\textbf{回头校验}：算完检查假设——导通的 $I_D>0$、截止的 $U_{AK}<U_D$；不满足就改假设重来。}
+
+\subhdr{9.8 三种门电路的实际输出对比}
+
+把 §9.1--§9.3 的结果按「理想/实际」两栏并排，可以看出电平偏移有多具体：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{3.8cm}@{}}
+\tabtop
+\thead{题号} & \thead{结构} & \thead{理想输出} & \thead{实际输出（$U_D=0.7\,\mathrm{V}$）}
+\\
+\tabmid
+E1 & 上拉 $+12\,\mathrm{V}$、阴极接输入 & $0\,\mathrm{V}$ & $0.7\,\mathrm{V}$
+\\
+E2 & 下拉到地、阳极接输入 & $12\,\mathrm{V}$ & $11.3\,\mathrm{V}$
+\\
+E3 & 上拉 $+12\,\mathrm{V}$、阴极接输入 & $\min(U_A,U_B)$ & $\min(U_A,U_B)+0.7\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+\textbf{读表}：与门（E1、E3）的低电平被抬高，或门（E2）的高电平被压低——两者都让\textbf{逻辑摆幅}变小。
+摆幅在 $5\,\mathrm{V}$ 系统里从 $5\,\mathrm{V}$ 掉到 $4.3\,\mathrm{V}$，噪声容限随之下降。
+这就是二极管逻辑「能实现逻辑、但不适合级联」的定量理由。
+
+\subhdr{9.9 级联时电平会跑掉：为什么二极管逻辑只能做一级}
+
+§9.8 说实际输出有 $0.7\,\mathrm{V}$ 偏移。把两级与门级联，偏移会\textbf{累加}：
+第 $k$ 级的低电平是 $0.7k\,\mathrm{V}$、高电平是 $5+0.7k\,\mathrm{V}$（以 $5\,\mathrm{V}$ 输入为例）。
+（1）低电平：下一级要求输入低于 $V_{IL}\approx0.8\,\mathrm{V}$ 才算 0；
+$0.7\times1=0.7\,\mathrm{V}$ 勉强合格，$0.7\times2=1.4\,\mathrm{V}$ 就已经被当成 1——\textbf{两级就失效}；
+（2）高电平：要低于上拉电源 $12\,\mathrm{V}$ 才算 1，$5+0.7k<12$ 给出 $k<10$，
+不是限制因素。
+所以二极管逻辑的真实约束在\textbf{低电平的累加偏移}：它只能级联一级，
+这与 p62--p69 只画单级、不画级联是同一个原因。
+\aside{这不是「课件没讲」，而是「课件停在单级是合理的」：讲清偏移的累加，
+才知道为什么后来的 DTL/TTL 要在二极管后面加三极管做电平恢复。}
+
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+以下 21 条按缺口手册的七类框架记录（本册实际出现六类），每条含「类型｜页码｜课件原文短语｜缺了什么｜补法」。
+
+\gapitem{机制缺口}{p7--p8\quad 「The number of holes and free electrons in an intrinsic semiconductor
+are equal.」\quad 缺：为什么必然相等（成对产生、成对复合）\quad 补：§1.2 用「断一根键」的微观图像说明。}
+
+\gapitem{机制缺口}{p9\quad 「electrons move towards the higher potential and holes move towards the
+lower potential.」\quad 缺：空穴为什么像正电荷、电流方向为何与电子相反\quad 补：§1.3 价电子接力模型。}
+
+\gapitem{机制缺口}{p10\quad 「The carriers of intrinsic semiconductor are few in number.」\quad
+缺：「few」是多少、电导率多小\quad 补：§1.2、§1.4 给出 $3.3\times10^{12}$ 分之一与
+$\sigma_i\approx4.4\times10^{-6}\,\mathrm{S/cm}$。}
+
+\gapitem{适用区间}{p18\quad 「The number of free electrons $\gg$ The number of holes」\quad
+缺：这个不等式的成立条件与失效温度\quad 补：§2.3 给出 $N_D\gg n_i$，并算出约 700 K 失效。}
+
+\gapitem{拼接缺口}{p11\quad 「Intrinsic semiconductor $\to$ Extrinsic semiconductor」\quad
+缺：掺杂能把电导率抬高多少\quad 补：§2.4 算出约 $4.9\times10^5$ 倍。}
+
+\gapitem{适用区间}{p28\quad 「Ignore minority carriers」\quad 缺：这句话只在算结区电荷/内建场时成立；
+算反向电流时少子恰是主角\quad 补：§3.1 点名，§4.2、§5.3 用少子解释反向饱和电流。}
+
+\gapitem{机制缺口}{p34\quad 「the fixed ions they leave behind establish a 「built-in」 electric field
+at the junction」\quad 缺：场的方向、大小与 $V_{bi}$ 的算式\quad 补：§3.3 完整积分推导，
+得 $V_{bi}=U_T\ln(N_A N_D/n_i^2)$。}
+
+\gapitem{代数跳步}{p39\quad 「When these two fields add, the resultant field at the junction is smaller
+in magnitude」\quad 缺：「相加」加出多少、势垒高度怎么变\quad 补：§4.1 写成 $q(V_{bi}-U)$，
+并与 §3.4 的 $W$ 公式对上。}
+
+\gapitem{拼接缺口}{p43 $\to$ p49\quad 「Forward biased\quad ON」 之后直接出现 「Characteristic curve」\quad
+缺：从 ON/OFF 突变到平滑曲线的过渡\quad 补：§5.2 用肖克利方程把突变展成指数过渡。}
+
+\gapitem{答案形态}{p50\quad 五个问句 「(1)--(5)」 全页无答案\quad 缺：五个名词的定义与量级\quad
+补：§5.2 逐个作答并列成表。}
+
+\gapitem{形式改写}{p52\quad 「Forward bias\quad $U_D=0.7\,\mathrm{V}$(Si)」\quad 缺：$0.7$ 被当成常数，
+未说它随电流与温度变\quad 补：§6.2 用指数式给出 $0.1/1/10\,\mathrm{mA}$ 下
+$0.619/0.696/0.774\,\mathrm{V}$；§7.1 给温度系数。}
+
+\gapitem{机制缺口}{p53--p54\quad 「which one stands for the characteristics of 80\,$^\circ$C and which
+one is for 20\,$^\circ$C?」\quad 缺：温度为什么使拐点左移、反向电流增大\quad 补：§7.1 用
+$I_S\propto n_i^2$ 与 $-2.9\,\mathrm{mV}/{}^\circ\mathrm{C}$ 定量说明。}
+
+\gapitem{答案形态}{p55\quad 「which one is for Si-diode and which one is for Ge-diode?」\quad
+缺：判别方法与 p52 的 $0.3\,\mathrm{V}$、图上 $0.2\,\mathrm{V}$ 的口径\quad 补：§5.5、§7.2。}
+
+\gapitem{机制缺口}{p57--p59\quad 「Idea or practical?」 与 (1)(2)(3) 只问不答\quad
+缺：多二极管电路的判据法\quad 补：§8.2 四步法，§8.3 逐题演算，§8.4 定量说明为何只导一只。}
+
+\gapitem{答案形态}{p62--p64\quad 「Find $U_O$」 未给解\quad 缺：E1/E2 的结果与逻辑功能\quad
+补：§9.1、§9.2 给出 $0\,\mathrm{V}$ 与 $12\,\mathrm{V}$，并归纳取最低/取最高口诀。}
+
+\gapitem{拼接缺口}{p45\quad 目录列了 「Photodiode」 与 「Light-emitting diode」\quad
+缺：全册只讲普通二极管，光电二极管与 LED 没有下落\quad 补：§1.6 末尾说明它们属于后续册，
+本册不展开（不臆造内容）。}
+
+\gapitem{机制缺口}{p48\quad 「By structure: Point contact-type, Junction-type」\quad
+缺：这两种结构在结电容、允许电流上的差别\quad 补：§4.7 用结面积与 $C_T$ 的关系说明：
+点接触结面积小、电容小、电流小；面结面积大、电容大、电流大。}
+
+\gapitem{适用区间}{p56\quad 四个参数只有名称，没有测试条件\quad
+缺：这些参数在什么温度、什么电流下测得\quad 补：§7.4、§7.5 说明参数是 $25\,{}^\circ\mathrm{C}$ 下给的，
+高温要降额。}
+
+\gapitem{形式改写}{p62\quad 已知条件写 「Given all the diodes are ideal」，紧接着又问
+「(1) Are the diodes ideal or not?」\quad 缺：问句与已知自相矛盾\quad 补：§9.1 按已知条件取理想，
+把该问句理解为「请确认本题用的是理想模型」。}
+
+\gapitem{适用区间}{p49\quad 「Barrier potential」 与 「Forward characteristic」 两个标签并排\quad
+缺：拐点与导通段的分界没有定义\quad 补：§5.2 用指数式说明「拐点」只是曲率最大处，
+没有严格边界，$0.5$--$0.7\,\mathrm{V}$ 都算拐点附近。}
+
+\gapitem{适用区间}{p51\quad 「Ideal characteristic」 在 $U=0$ 处画竖直段\quad
+缺：竖直段意味着电流可任意大而压降为零，没说这个假设的适用范围\quad
+补：§6.1 说明理想模型只在「电源电压远大于 $0.7\,\mathrm{V}$、只判通断」时成立。}
+
+
+
+%=============================================================
+\subhdr{缺口类型统计}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{9.4cm}@{}}
+\tabtop
+\thead{类型} & \thead{条数} & \thead{集中页码}
+\\
+\tabmid
+机制缺口 & 7 & p7、p9、p10、p34、p48、p53、p57
+\\
+适用区间 & 5 & p18、p28、p49、p51、p56
+\\
+拼接缺口 & 3 & p11、p43$\to$p49、p45
+\\
+答案形态 & 3 & p50、p55、p62
+\\
+形式改写 & 2 & p52、p62
+\\
+代数跳步 & 1 & p39
+\tabbot
+\end{tabular}
+
+七类里出现最多的是\textbf{机制缺口}（7 条）：课件习惯「给结论、给图、给问句」，
+把中间那一步留给学生自己补。这不是课件写错了，而是它默认你会补——本册最容易卡住的
+$V_{bi}$、$0.7\,\mathrm{V}$、反向饱和电流，正好都属于这一类。
+
+\hdr{§11}{综合例题：把前面五条线各做一遍}
+
+五道题都只用到本册的内容，题干是对课件页面的改写（基于本页内容的推断，不是往年题）。
+每题给全过程，数字与 §1--§9 的复算一致。
+
+\subhdr{11.1 例一：掺杂硅的三个数（p12--p24）}
+
+\callout{\textbf{题}：一块硅在 300 K 掺入磷，$N_D=5\times10^{15}\,\mathrm{cm^{-3}}$，全部电离。
+取 $\mu_n=1350$、$\mu_p=480\,\mathrm{cm^2/(V\cdot s)}$、$n_i=1.5\times10^{10}\,\mathrm{cm^{-3}}$。
+求 $n$、$p$、$\sigma$、$\rho$，并问它还是不是 N 型。}
+
+解：N 型，多子为电子，$n\approx N_D=5\times10^{15}\,\mathrm{cm^{-3}}$。由质量作用定律
+\[
+p=\frac{n_i^2}{n}=\frac{2.25\times10^{20}}{5\times10^{15}}=4.5\times10^{4}\,\mathrm{cm^{-3}}.
+\]
+空穴项 $p\mu_p$ 比 $n\mu_n$ 小约 $10^{11}$ 倍，忽略，得
+\[
+\sigma\approx qn\mu_n=1.6\times10^{-19}\times5\times10^{15}\times1350
+\approx1.08\,\mathrm{S/cm},
+\qquad
+\rho=\frac{1}{\sigma}\approx0.93\,\Omega\cdot\mathrm{cm}.
+\]
+与本征的 $4.4\times10^{-6}\,\mathrm{S/cm}$ 相比，提高约 $2.5\times10^{5}$ 倍。
+仍是 N 型：$n/p\approx1.1\times10^{11}\gg1$。
+\aside{若温度升到 $600\,\mathrm{K}$，$n_i\approx2.1\times10^{15}$（§1.5），与 $N_D$ 只差 2.4 倍，
+$n\approx N_D$ 的近似开始失效；$700\,\mathrm{K}$ 时 $n_i\approx1.3\times10^{16}$，已超过 $N_D$，这块硅退回本征。}
+
+\subhdr{11.2 例二：结的四个参数（p27--p36）}
+
+\callout{\textbf{题}：突变 PN 结，$N_A=10^{17}$、$N_D=10^{15}\,\mathrm{cm^{-3}}$，$A=1\,\mathrm{mm^2}$，
+$\varepsilon_s=11.7\varepsilon_0$、$n_i=1.5\times10^{10}\,\mathrm{cm^{-3}}$。
+求 $V_{bi}$，以及 $U=0$ 与 $U=-5\,\mathrm{V}$ 时的 $W$、$x_n$、$x_p$ 与 $C_T$。}
+
+解：（1）$V_{bi}$：
+\[
+V_{bi}=0.0259\ln\frac{10^{17}\times10^{15}}{2.25\times10^{20}}
+=0.0259\ln\left(4.44\times10^{11}\right)\approx0.693\,\mathrm{V}.
+\]
+（2）$U=0$：
+\[
+W=\sqrt{\frac{2\times1.035\times10^{-12}\times0.693}{1.6\times10^{-19}}
+\left(10^{-17}+10^{-15}\right)}\approx0.95\,\mu\mathrm{m}.
+\]
+\[
+x_n=\frac{10^{17}}{1.01\times10^{17}}W\approx0.94\,\mu\mathrm{m},\qquad
+x_p\approx0.009\,\mu\mathrm{m}.
+\]
+（3）$U=-5\,\mathrm{V}$：$V_{bi}-U=5.693\,\mathrm{V}$ 是原来的 8.2 倍，$W\propto\sqrt{V_{bi}-U}$
+变为 $\sqrt{8.2}\approx2.86$ 倍，
+\[
+W\approx2.73\,\mu\mathrm{m},\qquad
+C_T=\frac{\varepsilon_sA}{W}=\frac{1.035\times10^{-12}\times0.01}{2.73\times10^{-4}}
+\approx38\,\mathrm{pF}.
+\]
+$U=0$ 时同法得 $C_T\approx109\,\mathrm{pF}$。
+\textbf{结论}：反偏 $5\,\mathrm{V}$ 使结电容降到三分之一——这是 §3.7 的定量版。
+\aside{注意 $x_n\gg x_p$：耗尽层几乎全在轻掺杂的 N 侧。若把 $N_A,N_D$ 对调，$x_n$ 与 $x_p$ 互换，
+但 $V_{bi}$ 与 $W$ 只由乘积 $N_AN_D$ 决定，数值不变。}
+
+\subhdr{11.3 例三：两只二极管串联，三种模型（p49--p52）}
+
+\callout{\textbf{题}：$3\,\mathrm{V}$ 直流源串 $1\,\mathrm{k\Omega}$，再串两只硅二极管（正向）。
+用理想、恒压降（每只 $0.7\,\mathrm{V}$）与精确式（$I_S=10^{-12}\,\mathrm{A}$、$n=1.3$）分别求电流。}
+
+解：（1）理想：每只 $U_D=0$，
+\[
+I=\frac{3}{1000}=3.00\,\mathrm{mA}.
+\]
+（2）恒压降：每只 $0.7\,\mathrm{V}$，共 $1.4\,\mathrm{V}$，
+\[
+I=\frac{3-1.4}{1000}=1.60\,\mathrm{mA}.
+\]
+（3）精确：设每只压降为 $U$，则 $2U=3-1000I$，代入肖克利方程数值求解，
+\[
+I=1.5765\,\mathrm{mA},\qquad U=0.7118\,\mathrm{V}.
+\]
+\textbf{三个结果排列}：$3.00>1.60>1.5765\,\mathrm{mA}$。恒压降只比精确值高 $1.5\%$，
+理想模型高 $90\%$。两只串联时误差会累加：每只 $0.7\,\mathrm{V}$ 的假设若偏 $0.05\,\mathrm{V}$，
+两只就偏 $0.1\,\mathrm{V}$，在 $3\,\mathrm{V}$ 电源里占 $3\%$；串联只数越多，恒压降越要小心。
+\aside{本题也说明「串联二极管的压降是叠加的」：$k$ 只串联约 $k\times0.7\,\mathrm{V}$（硅）。
+门电路里用二极管做电平移位，靠的就是这个叠加。}
+
+\subhdr{11.4 例四：钳位电路的变式（p57--p61）}
+
+\callout{\textbf{题}：把 p57 的已知改成 $U_A=2\,\mathrm{V}$、$U_B=5\,\mathrm{V}$、$U_D=0.7\,\mathrm{V}$、
+上拉 $+6\,\mathrm{V}$。求 $U_F$，并判断两只二极管的状态。}
+
+解：按 §8.2 四步法。
+（1）假设全截止：$U_F=6\,\mathrm{V}$（$R$ 上无电流）。
+（2）检查：$D_A$ 的 $U_{AK}=6-2=4\,\mathrm{V}>0.7\,\mathrm{V}$；$D_B$ 的 $U_{AK}=6-5=1\,\mathrm{V}>0.7\,\mathrm{V}$，
+两只都想导通。
+（3）阴极更低的 $D_A$（阴极 $2\,\mathrm{V}$）先导通，把节点钉在
+\[
+U_F=U_A+U_D=2+0.7=2.7\,\mathrm{V}.
+\]
+（4）校验 $D_B$：$U_{AK}=2.7-5=-2.3\,\mathrm{V}<0$，截止。
+\textbf{答}：$U_F=2.7\,\mathrm{V}$，$D_A$ 导通、$D_B$ 截止。
+\aside{若两只输入都改成 $1\,\mathrm{V}$，则 $U_F=1.7\,\mathrm{V}$，两只都导通、共同分担 $R$ 送来的电流；
+具体如何分配取决于两管特性差异，理想模型下不能唯一确定——这也是多只并联要均流的原因。}
+
+\subhdr{11.5 例五：温度把工作点推到哪里（p53--p54）}
+
+\callout{\textbf{题}：一只硅二极管工作在 $1\,\mathrm{mA}$，$20\,{}^\circ\mathrm{C}$ 时压降为 $0.717\,\mathrm{V}$。
+求 $80\,{}^\circ\mathrm{C}$ 时的压降，并与「$-2\,\mathrm{mV}/{}^\circ\mathrm{C}$」的经验值比较。}
+
+解：用 $I_S\propto n_i^2$ 估算。$20\to80\,{}^\circ\mathrm{C}$ 时
+\[
+\frac{n_i(353)}{n_i(293)}\approx57,\qquad
+\frac{I_S(353)}{I_S(293)}\approx3.3\times10^{3}.
+\]
+由 $U=nU_T\ln(I/I_S)$，
+\[
+U(353)=1.3\times0.0304\times\ln\frac{10^{-3}}{10^{-12}\times3.3\times10^{3}}
+\approx0.543\,\mathrm{V}.
+\]
+温度系数
+\[
+\frac{0.543-0.717}{60}\approx-2.9\,\mathrm{mV}/{}^\circ\mathrm{C},
+\]
+与常说的 $-2\sim-3\,\mathrm{mV}/{}^\circ\mathrm{C}$ 一致。\textbf{结论}：温度升高，正向压降下降；
+若电路靠 $0.7\,\mathrm{V}$ 做基准，$80\,{}^\circ\mathrm{C}$ 时会低 $0.17\,\mathrm{V}$，足以让比较器误判。
+\aside{反向方向相反：$I_S$ 涨 $3.3\times10^3$ 倍，漏电急剧增大（§4.6）。
+「正向压降变小」与「反向漏电变大」是同一件事的两面，都来自 $n_i$ 增大。}
+
+\subhdr{11.6 例六：把 E1 换成非理想（p62--p63）}
+
+\callout{\textbf{题}：p62 的 E1，已知 $U_A=0\,\mathrm{V}$、$U_B=4\,\mathrm{V}$、$U_C=6\,\mathrm{V}$，
+但二极管改为硅管 $U_D=0.7\,\mathrm{V}$，$R=1\,\mathrm{k\Omega}$。求 $U_O$ 与各管状态。}
+
+解：仍是「阴极接输入、阳极共节点」的取最低结构。最低输入 $A=0\,\mathrm{V}$，
+$D_A$ 导通后把节点钉在
+\[
+U_O=U_A+U_D=0+0.7=0.7\,\mathrm{V}.
+\]
+校验：$D_B$ 的 $U_{AK}=0.7-4=-3.3\,\mathrm{V}<0$，截止；$D_C$ 为 $-5.3\,\mathrm{V}$，截止。
+电流 $I_R=(12-0.7)/1000=11.3\,\mathrm{mA}$，全部流过 $D_A$；
+$D_A$ 功耗 $P=0.7\times11.3\,\mathrm{mA}\approx7.9\,\mathrm{mW}$，$R$ 功耗 $I_R^2R\approx0.13\,\mathrm{W}$。
+\textbf{答}：$U_O=0.7\,\mathrm{V}$，$D_A$ 导通、$D_B/D_C$ 截止；与理想的 $0\,\mathrm{V}$ 差一个 $U_D$。
+\aside{这就是 §9.8 的定量版：理想与实际的差别只在「输出被抬高一个 $U_D$」，
+通断判断完全一致。}
+
+\subhdr{11.7 例七：E2 的非理想输出（p64）}
+
+\callout{\textbf{题}：p64 的 E2，$U_A=12\,\mathrm{V}$、$U_B=8\,\mathrm{V}$、$U_C=6\,\mathrm{V}$，
+二极管为硅管 $U_D=0.7\,\mathrm{V}$，$R=1\,\mathrm{k\Omega}$，求 $U_O$ 与各管状态、电流。}
+
+解：E2 是「阳极接输入、阴极共节点、电阻下拉」的取最高结构。最高的 $A=12\,\mathrm{V}$ 经 $D_A$ 导通，
+把节点顶到
+\[
+U_O=U_A-U_D=12-0.7=11.3\,\mathrm{V}.
+\]
+校验：$D_B$ 的 $U_{AK}=8-11.3=-3.3\,\mathrm{V}<0$，截止；$D_C$ 为 $-5.3\,\mathrm{V}$，截止。
+下拉电阻上的电流 $I_R=11.3/1000=11.3\,\mathrm{mA}$，由 $A$ 端经 $D_A$ 流入地。
+$D_A$ 功耗 $0.7\times11.3\,\mathrm{mA}\approx7.9\,\mathrm{mW}$。
+\textbf{答}：$U_O=11.3\,\mathrm{V}$，$D_A$ 导通、$D_B/D_C$ 截止。
+\aside{与理想的 $12\,\mathrm{V}$ 相比，高电平被压低一个 $U_D$；这正是 §9.8 表里「或门高电平被压低」的具体数。}
+
+\subhdr{11.8 例八：反向漏电随温度涨多少（p53--p56）}
+
+\callout{\textbf{题}：某硅二极管在 $25\,{}^\circ\mathrm{C}$ 时反向漏电 $I_R=1\,\mu\mathrm{A}$，
+反向电压 $20\,\mathrm{V}$。按理想扩散电流模型估算 $80\,{}^\circ\mathrm{C}$ 的漏电与功耗。}
+
+解：由 §4.6，理想模型给出 $I_S\propto n_i^2$，$25\to80\,{}^\circ\mathrm{C}$ 约 $3.4\times10^3$ 倍：
+\[
+I_R(80\,{}^\circ\mathrm{C})\approx1\,\mu\mathrm{A}\times3.4\times10^{3}
+\approx3.4\,\mathrm{mA},
+\qquad
+P=20\,\mathrm{V}\times3.4\,\mathrm{mA}\approx68\,\mathrm{mW}.
+\]
+这个数已不能忽略（普通塑封管的热阻约 $50\,\mathrm{K/W}$，$68\,\mathrm{mW}$ 会再抬高结温 $3.4\,\mathrm{K}$）。
+\textbf{但要说明}：实测漏电通常只放大 $10$--$50$ 倍（约 $10$--$50\,\mu\mathrm{A}$），
+因为表面漏电、复合电流等机制不按 $n_i^2$ 走。两个数都指向同一结论：
+\textbf{高温下必须按实测漏电（或手册曲线）校核，不能只用室温的 $1\,\mu\mathrm{A}$。}
+\aside{这就是 §7.5 降额表存在的理由：额定参数是 $25\,{}^\circ\mathrm{C}$ 的值，
+高温下有效值由热平衡决定，而不是由手册的第一行决定。}
+
+\subhdr{11.9 自测十八问（答案在右，遮住右栏自测）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{7.6cm}>{\raggedright\arraybackslash}p{5.6cm}>{\raggedright\arraybackslash}p{2.4cm}@{}}
+\tabtop
+\thead{问题} & \thead{答案} & \thead{出处}
+\\
+\tabmid
+1. 本征半导体中电子与空穴数目关系？ & 相等，均为 $n_i$ & p8、§1.2
+\\
+2. N 型半导体的多数载流子是什么？ & 自由电子 & p19、§2.1
+\\
+3. 磷的第五个电子为什么室温下就能电离？ & 束缚能约 $45\,\mathrm{meV}\ll kT$ & §2.1
+\\
+4. 少子浓度怎么由多子算？ & $p=n_i^2/N_D$ & §2.1
+\\
+5. 耗尽层主要向哪一侧扩展？ & 轻掺杂一侧 & §3.2
+\\
+6. 内建电场方向？ & 由 N 区指向 P 区 & p34、§3.3
+\\
+7. 内建电势的公式？ & $U_T\ln(N_AN_D/n_i^2)$ & §3.3
+\\
+8. 正偏时耗尽层变厚还是变薄？ & 变薄 & p40、§4.1
+\\
+9. 反向电流为什么不随电压变？ & 少子供给由温度决定 & §4.4
+\\
+10. $0.7\,\mathrm{V}$ 是普适常数吗？ & 不是，mA 级、室温的约定 & §6.2
+\\
+11. 只有几伏电源、只要通断，用哪个模型？ & 理想模型 & §6.1
+\\
+12. 要算电流且电源几伏到几十伏，用哪个？ & 恒压降模型 & §6.2
+\\
+13. 小信号或精度要求高时用哪个？ & 折线模型（含 $r_d$） & §6.3
+\\
+14. 温度升高，正向压降怎么变？ & 下降，约 $-2\sim-3\,\mathrm{mV}/{}^\circ\mathrm{C}$ & §7.1
+\\
+15. 钳位电路哪只二极管先导通？ & 阴极电位最低的 & §8.2
+\\
+16. E1 的理想输出？ & $0\,\mathrm{V}$（取最低） & §9.1
+\\
+17. E2 的理想输出？ & $12\,\mathrm{V}$（取最高） & §9.2
+\\
+18. 反向击穿一定会烧管吗？ & 限流则不烧，稳压管就工作在此 & §4.5
+\tabbot
+\end{tabular}
+
+\hdr{§12}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{半导体的一切数值都从 $n_i$ 长出来}：本征浓度 $n_i\propto e^{-E_g/(2kT)}$，
+它决定载流子多少、决定 $V_{bi}=U_T\ln(N_A N_D/n_i^2)$，也就决定了硅 $0.7\,\mathrm{V}$、锗 $0.3\,\mathrm{V}$；
+\item \textbf{PN 结的「单向」是两个力的平衡被外电压打破}：扩散想过去、内建电场推回来，
+正偏压势垒则导通、反偏抬势垒则截止，$0.7\,\mathrm{V}$ 是势垒被压到接近零时的工程约定；
+\item \textbf{二极管在电路里有三种替身}：理想开关管通断、恒压降管电流、折线模型管精度，
+选哪一种取决于题目问什么——问通断用理想，问电流用恒压降，问电压精度用折线。
+\end{enumerate}
+
+%=============================================================
+\hdr{§13}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{6.4cm}>{\raggedright\arraybackslash}p{7.5cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1 & 章节封面 & §0
+\\
+p2 & 导体/半导体/绝缘体 & §1.1（补 $E_g$ 与电导率量级）
+\\
+p3--p5 & 本征定义、8 电子、常温稳定 & §1.2
+\\
+p6--p8 & 电子—空穴对、$n=p$ & §1.2（补质量作用定律）
+\\
+p9 & 载流子漂移方向 & §1.3
+\\
+p10--p11 & 本征导电弱、掺杂出口 & §1.4（补 $\sigma_i$ 计算）
+\\
+p12--p13 & 掺杂定义、N/P 分类 & §2.1
+\\
+p14--p19 & 磷 +5、多余电子、多子/少子 & §2.1、§2.3
+\\
+p20--p24 & 硼 +3、空穴、导电能力 & §2.2、§2.4
+\\
+p25--p26 & 晶格图判别题 & §2.5
+\\
+p27--p32 & 两块材料、拼合、扩散与漂移 & §3.1
+\\
+p33--p34 & 扩散、固定离子 & §3.2
+\\
+p35--p36 & 漂移、两种效应并存 & §3.3、§3.5
+\\
+p37--p40 & 正偏、$0.7\,\mathrm{V}$ 导通 & §4.1
+\\
+p41--p42 & 反偏、耗尽层变厚 & §4.2
+\\
+p43 & ON/OFF 总结 & §4.3
+\\
+p44--p48 & 结构、符号、封装、分类 & §5.1
+\\
+p49--p50 & 伏安曲线、五个问句 & §5.2--§5.4
+\\
+p51 & 理想模型 & §6.1
+\\
+p52 & 恒压降模型 & §6.2
+\\
+p53--p54 & 温度两条曲线 & §7.1
+\\
+p55 & Si/Ge 判别提问 & §5.5、§7.2
+\\
+p56 & 四个主要参数 & §7.3
+\\
+p57--p61 & 钳位电路五问 & §8
+\\
+p62--p64 & E1、E2 & §9.1、§9.2
+\\
+p65--p69 & E3 真值表 & §9.3
+\tabbot
+\end{tabular}
+
+\hdr{附录 A}{数量级速查}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{4.8cm}>{\raggedright\arraybackslash}p{5.2cm}@{}}
+\tabtop
+\thead{量} & \thead{数量级} & \thead{备注}
+\\
+\tabmid
+$U_T$（300 K） & $26\,\mathrm{mV}$ & $=kT/q$
+\\
+$n_i$（Si/Ge） & $10^{10}$ / $10^{13}\,\mathrm{cm^{-3}}$ & 禁带越窄越大
+\\
+掺杂 $N_D,N_A$ & $10^{14}$--$10^{20}\,\mathrm{cm^{-3}}$ & 跨六个数量级
+\\
+$V_{bi}$（Si/Ge） & $0.7$ / $0.3\,\mathrm{V}$ & 中等掺杂
+\\
+$W$（$10^{16}$ 掺杂） & $0.4\,\mu\mathrm{m}$ & 反偏 $5\,\mathrm{V}$ 时约 $1.2\,\mu\mathrm{m}$
+\\
+$C_T$（$1\,\mathrm{mm^2}$） & $10$--$10^{2}\,\mathrm{pF}$ & 随反偏减小
+\\
+$I_S$（Si/Ge） & $\mathrm{nA}$ / $\mu\mathrm{A}$ & 强温度依赖
+\\
+$r_d$（$1\,\mathrm{mA}$） & $30\,\Omega$ & $=nU_T/I_D$
+\\
+$U_F$（mA 级） & $0.7$ / $0.3\,\mathrm{V}$ & 随电流、温度变
+\tabbot
+\end{tabular}
+
+\hdr{附录 B}{单位换算与常用记号}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{6.2cm}>{\raggedright\arraybackslash}p{3.8cm}@{}}
+\tabtop
+\thead{换算} & \thead{关系} & \thead{用在哪}
+\\
+\tabmid
+长度 & $1\,\mu\mathrm{m}=10^{-4}\,\mathrm{cm}=10^{-6}\,\mathrm{m}$ & $W$、$x_n$、$x_p$
+\\
+浓度 & $1\,\mathrm{cm^{-3}}=10^{6}\,\mathrm{m^{-3}}$ & $n_i$、$N_D$、$N_A$
+\\
+迁移率 & $1\,\mathrm{cm^2/(V\cdot s)}=10^{-4}\,\mathrm{m^2/(V\cdot s)}$ & $\mu_n$、$\mu_p$
+\\
+电导率 & $1\,\mathrm{S/cm}=100\,\mathrm{S/m}$ & $\sigma$
+\\
+电阻率 & $1\,\Omega\cdot\mathrm{cm}=0.01\,\Omega\cdot\mathrm{m}$ & $\rho$
+\\
+电容 & $1\,\mathrm{pF}=10^{-12}\,\mathrm{F}$ & $C_T$、$C_D$
+\\
+热电压 & $U_T=25.9\,\mathrm{mV}$（300 K） & 全部指数式
+\\
+\tabbot
+\end{tabular}
+
+\hdr{附录 C}{常用二极管速查}
+
+以下型号只作「参数长什么样」的例子，具体数值以手册为准。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{4.8cm}@{}}
+\tabtop
+\thead{型号} & \thead{类型} & \thead{主要额定} & \thead{典型用途}
+\\
+\tabmid
+1N4001 & 整流 & $1\,\mathrm{A}$ / $50\,\mathrm{V}$ & 低频小功率整流
+\\
+1N4007 & 整流 & $1\,\mathrm{A}$ / $1000\,\mathrm{V}$ & 高压整流
+\\
+1N4148 & 开关 & 约 $100\,\mathrm{V}$ / 几百 $\mathrm{mA}$ & 小信号开关、逻辑
+\\
+1N5819 & 肖特基 & $1\,\mathrm{A}$ / $40\,\mathrm{V}$，$U_F\approx0.45\,\mathrm{V}$ & 低压大电流、开关电源
+\\
+1N5408 & 整流 & $3\,\mathrm{A}$ / $1000\,\mathrm{V}$ & 较大电流整流
+\tabbot
+\end{tabular}
+
+\textbf{读表三点}：肖特基的 $U_F$ 明显低于硅 PN 结（$0.45$ 对 $0.7\,\mathrm{V}$），
+所以低压大电流场合选它；开关管的结电容小、反向恢复快，所以逻辑电路选它；
+整流管的 $I_F$ 大但速度慢。三者的取舍正好对应 p48 的三条分类标准。
+[教材补充：具体型号与额定值不在课件中，只作量级参照。]
+
+\hdr{附录 D}{术语中英对照}
+{\small
+
+课件全英文，做题与考试常用中文，这张表用于把两边对上（按本册出现顺序）。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.8cm}>{\raggedright\arraybackslash}p{8.6cm}@{}}
+\tabtop
+\thead{英文（课件用词）} & \thead{中文（本讲义用词）}
+\\
+\tabmid
+semiconductor & 半导体
+\\
+intrinsic semiconductor & 本征半导体
+\\
+extrinsic semiconductor & 杂质半导体
+\\
+doping & 掺杂
+\\
+donor / acceptor & 施主 / 受主
+\\
+valence electron & 价电子
+\\
+covalent bond & 共价键
+\\
+free electron / hole & 自由电子 / 空穴
+\\
+charge carrier & 载流子
+\\
+majority / minority carrier & 多数 / 少数载流子
+\\
+drift motion & 漂移运动
+\\
+diffusion motion & 扩散运动
+\\
+depletion region & 耗尽层
+\\
+built-in electric field & 内建电场
+\\
+barrier potential & 势垒电压（死区电压）
+\\
+forward / reverse bias & 正向 / 反向偏置
+\\
+reverse saturation current & 反向饱和电流
+\\
+breakdown voltage & 击穿电压
+\\
+voltage-ampere characteristic & 伏安特性
+\\
+ideal diode & 理想二极管
+\\
+constant voltage drop & 恒压降（模型）
+\\
+dynamic resistance & 动态电阻
+\\
+anode / cathode & 阳极 / 阴极
+\\
+rectifier diode & 整流二极管
+\\
+switching diode & 开关二极管
+\\
+clamping & 钳位
+\\
+truth table & 真值表
+\\
+logic gate & 逻辑门
+\\
+mobility & 迁移率
+\\
+conductivity & 电导率
+\tabbot
+\end{tabular}}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算：$U_T=25.85\,\mathrm{mV}$、$n_i$ 与 $V_{bi}$（Si $0.693\,\mathrm{V}$、
+Ge $0.312\,\mathrm{V}$）、$\sigma_i=4.4\times10^{-6}\,\mathrm{S/cm}$、$\sigma_n=2.16\,\mathrm{S/cm}$、
+$W=0.42\,\mu\mathrm{m}$、$E_{\max}=3.3\times10^{4}\,\mathrm{V/cm}$、恒压降与折线模型的
+$9.300/9.267\,\mathrm{mA}$ 与精确解 $9.229\,\mathrm{mA}$、$r_d$ 的四个量级、
+钳位的 $U_F=0.7\,\mathrm{V}$ 与 $0\,\mathrm{V}$、E1/E2/E3 的 $0/12/\min$ 结果。
+标 [教材补充] 的各处（能带与材料数值、电离能与冻结、$W/E_{\max}/C_T$、击穿两机制、掺杂范围、折线模型、扩散电容、热阻与降额、器件型号、单位换算、术语对照）不是课件原文，
+只作理解与计算支撑，不作文档口径。}
+\end{document}

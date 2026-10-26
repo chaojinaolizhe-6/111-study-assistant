@@ -1,0 +1,1365 @@
+
+\documentclass[10.5pt]{ctexart}
+\usepackage[a4paper,left=1.75cm,right=1.75cm,top=2.0cm,bottom=1.9cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{deepblue}{RGB}{12,82,160}
+\definecolor{deepnavy}{RGB}{18,60,104}
+\definecolor{accent}{RGB}{176,58,20}
+\definecolor{band}{RGB}{242,246,251}
+\definecolor{rulegray}{RGB}{198,210,226}
+\definecolor{inkgray}{RGB}{96,104,116}
+\definecolor{softgreen}{RGB}{22,110,88}
+
+\linespread{1.22}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlist{nosep,leftmargin=1.6em}
+
+\pagestyle{fancy}
+\setlength{\headheight}{19pt}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{inkgray}数学物理方法\quad 课件习题册\quad 顺序 · 乱序 · 答案}
+\fancyhead[R]{\footnotesize\color{inkgray}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
+% ---- 章标题 ----
+\newcommand{\chapterhead}[4]{%
+  \par\vspace{2pt}%
+  \begin{center}
+  {\color{deepblue}\LARGE\bfseries 第#1章\quad #2}\\[4pt]
+  {\small\color{inkgray}#3}\\[2pt]
+  {\small\color{accent}#4}
+  \end{center}
+  \vspace{2pt}
+  \noindent{\color{deepblue}\rule{\linewidth}{1.1pt}}\par\vspace{6pt}}
+
+% ---- 部标题（A / B 等）----
+\newcommand{\sechead}[2]{%
+  \par\vspace{9pt}\needspace{3\baselineskip}%
+  \noindent{\color{deepblue}\large\bfseries #1\,｜\,#2}\par\vspace{1pt}%
+  \noindent{\color{deepblue}\rule{\linewidth}{0.8pt}}\par\vspace{4pt}}
+
+% ---- 小节导语 ----
+\newcommand{\grouphead}[2]{%
+  \par\vspace{7pt}\needspace{5\baselineskip}%
+  \noindent{\color{deepnavy}\bfseries #1}\par\vspace{1pt}%
+  \noindent\begin{minipage}{\linewidth}\vspace{2pt}%
+  {\small\color{inkgray}#2}\end{minipage}\par\vspace{3pt}}
+
+% ---- 本章方法地图 ----
+\newcommand{\mapbox}[1]{%
+  \par\vspace{2pt}\noindent
+  \colorbox{band}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep\relax}%
+  \vspace{2pt}{\small #1}\vspace{2pt}\end{minipage}}\par\vspace{5pt}}
+
+% ---- 顺序条目 ----
+\newcommand{\ordereditem}[4]{%
+  \par\vspace{6pt}\needspace{7\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{4pt}{\bfseries #2}\hfill
+  {\scriptsize\color{inkgray}#3}\par\nopagebreak\vspace{-2pt}%
+  \noindent{\small\color{softgreen}讲解线索：#4}\par\nopagebreak\vspace{1pt}}
+
+% ---- 乱序条目 ----
+\newcommand{\drill}[2]{%
+  \par\vspace{8pt}\needspace{8\baselineskip}%
+  \noindent{\color{accent}\bfseries #1}\hspace{5pt}{\small\color{inkgray}#2}\par\nopagebreak\vspace{-1pt}}
+
+\newcommand{\worklines}{%
+  \par\vspace{4pt}\noindent
+  {\scriptsize\color{inkgray}结果：\rule{14.6cm}{0.4pt}}\par\vspace{6pt}}
+
+% ---- 答案条目 ----
+\newcommand{\answ}[3]{%
+  \par\vspace{6pt}\needspace{6\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{4pt}{\scriptsize\color{inkgray}（原题 #2）}\par\nopagebreak\vspace{-1pt}%
+  #3\par}
+
+\newcommand{\coverrule}{\noindent{\color{rulegray}\rule{\linewidth}{0.8pt}}}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1.0cm}
+{\color{deepblue}\Huge\bfseries 数学物理方法}
+\\[4pt]
+{\color{deepblue}\Huge\bfseries 课件习题册}
+\\[10pt]
+{\large 顺序清单（留讲解线索）\quad＋\quad 乱序练习单\quad＋\quad 答案结果}
+\\[12pt]
+{\small 取材：老师上传的六章课件（共 368 页幻灯片，逐页识别）}
+\\[2pt]
+{\small 习题 110 道 ＝ 例题 86 ＋ 作业 24}
+\\[2pt]
+{\small 生成日期 2026-10-23\quad｜\quad 乱序种子 20261023（可复现）}
+\end{center}
+\vspace{0.5cm}
+\begin{center}\renewcommand{\arraystretch}{1.28}\small
+\begin{tabular}{|c|>{\raggedright\arraybackslash}p{7.6cm}|c|c|c|}\hline
+\textbf{章} & \textbf{主题} & \textbf{例题} & \textbf{作业} & \textbf{乱序编号}\\\hline
+一 & 复变函数 & 7 & 0 & 1--7\\
+\hline
+二 & 复变函数的积分 & 14 & 6 & 1--20\\
+\hline
+三 & 解析函数的幂级数展开 & 11 & 4 & 1--15\\
+\hline
+四 & 留数定理及应用 & 16 & 4 & 1--20\\
+\hline
+五 & 傅里叶变换 & 12 & 7 & 1--19\\
+\hline
+六 & 拉普拉斯变换 & 26 & 3 & 1--29\\
+\hline
+\textbf{合计} & 六章 & 86 & 24 & \\\hline
+\end{tabular}\end{center}
+
+\vspace{0.45cm}
+\begin{center}
+\begin{minipage}{0.92\linewidth}
+\small
+\textbf{怎么用这份册子}
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{先读每章的 A 部分}：题目按课件页序排好，每道题上方一行绿字写明「老师当时拿它练什么」，跟读一遍就能把本章的方法链条接回去。
+  \item \textbf{再做同章的 B 部分}：同一批题在本章内打乱重排，只剩题干。合上课件，先判断「这题该用哪条工具」，再动笔。写不出方法，就回 A 部分对应那一条。
+  \item \textbf{最后翻最后的答案}：答案按乱序编号排列，只给最终结果，用于对答案；过程要自己写。
+\end{enumerate}
+\vspace{2pt}
+\textbf{收录口径}：课件里凡以「例」编号的课堂例题、每章末「作业」页的全部小问，逐条收录；纯定义、定理陈述、九条性质的证明等不计入题目，只在 A 部分的导语里说明它们的位置。
+\\[4pt]
+\textbf{记号约定}：空间变量按课件的约定
+\[ F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)e^{-ikx}dx,\qquad f(x)=\int_{-\infty}^{\infty}F(k)e^{ikx}dk; \]
+时间变量按课件的约定
+\[ F(\omega)=\int_{-\infty}^{\infty}f(t)e^{i\omega t}dt,\qquad f(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(\omega)e^{-i\omega t}d\omega. \]
+作业题沿用其所在小节的那一套。
+\end{minipage}
+\end{center}
+\clearpage
+
+\clearpage
+\chapterhead{一}{复变函数}{§1.1 复数的概念及运算　§1.2 复变函数　§1.3 导数　§1.4 解析函数　§1.5 几种简单的解析函数　§1.6 多值函数}{本章 7 题：例题 7 · 作业 0\quad｜\quad 乱序编号 1--7}
+\mapbox{\textbf{本章方法地图}\quad 主线是「四种表示 $\to$ 运算 $\to$ 极限连续 $\to$ 导数与 C-R $\to$ 解析 $\to$ 初等函数 $\to$ 多值函数」。全章只围绕一句话展开：把「可导」升级成「解析」之后，实部与虚部必须成对满足 C-R 条件，于是解析函数被一对调和函数锁死；由此才有「已知实部反求虚部」和「多值函数怎么分支」这两件事。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§1.1 复数的概念及运算}{老师先把「代数—三角—指数—几何」四种表示打通，再用欧拉公式把乘方、开方化成幅角的加减；两道例题都是这一步的直接应用（本章课件没有单独的作业页，题目全部来自课堂例题）。}
+\ordereditem{C1-1}{例1}{p16}{把左边写成 $(e^{i\theta})^n$，指数律一步到位：$e^{in\theta}=\cos n\theta+i\sin n\theta$。}
+证明棣莫弗（de Moivre）公式
+\[ \left(\cos\theta+i\sin\theta\right)^{n}=\cos n\theta+i\sin n\theta. \]
+
+\ordereditem{C1-2}{例2}{p16}{先化指数式 $1+i=\sqrt{2}\,e^{i(\pi/4+2k\pi)}$，开方即模开方、幅角除以 2，$k=0,1$ 给出两个值。}
+计算复数 $\sqrt{1+i}$ 的值。
+
+\grouphead{§1.3 复变函数的导数与 C-R 条件}{从导数定义出发，老师导出直角坐标与极坐标两套柯西–黎曼条件，并用两道例题把「验证 C-R」在两种坐标下的写法各走一遍。}
+\ordereditem{C1-3}{例1}{p41}{先用 $\cos z=\frac12(e^{iz}+e^{-iz})$ 拆成 $u+iv$（出现 $\mathrm{ch}\,y$、$\mathrm{sh}\,y$），再逐项对 $u,v$ 求偏导核对 $u_x=v_y$、$u_y=-v_x$。}
+证明函数 $\cos z$ 的实部和虚部满足 C-R 条件。
+
+\ordereditem{C1-4}{例}{p42}{把 $1/z$ 写成 $\frac{1}{r}e^{-i\theta}$，读出 $u=\cos\theta/r$、$v=-\sin\theta/r$，再代极坐标 C-R：$u_r=\frac1r v_\theta$、$\frac1r u_\theta=-v_r$。}
+证明函数 $f(z)=\dfrac{1}{z}$ 的实部和虚部满足极坐标下的 C-R 条件。
+
+\grouphead{§1.4 解析函数与调和函数}{给出「偏导连续 ＋ C-R」这套判据之后，老师先用 $|z|^2$ 说明「可导」与「解析」不是一回事，再用两个调和函数演示「已知实部反求解析函数」的四条路：曲线积分、不定积分、直接积分、以及先求导数再积分。}
+\ordereditem{C1-5}{例}{p47}{$|z|^2=x^2+y^2$ 只有实部，$v\equiv0$；C-R 要求 $2x=0$、$2y=0$ 同时成立，因此只在原点成立。}
+讨论函数 $f(z)=|z|^{2}$ 在复平面的可导性和解析性。
+
+\ordereditem{C1-6}{例}{p57--61}{由 C-R 得 $dv=-u_y\,dx+u_x\,dy=-x\,dx+y\,dy$，四条路任选：沿折线积分、凑全微分、或用 $f'(z)=u_x+iv_x$ 直接积分。}
+已知调和函数 $u(x,y)=xy$ 是某个解析函数的实部，求该解析函数（可差一个常数）。
+
+\ordereditem{C1-7}{例2}{p62}{求「导数」不必先求 $v$：$f'(z)=u_x-i u_y=2x+2iy=2z$，一步到位。}
+已知调和函数 $u(x,y)=x^{2}-y^{2}$ 是某个解析函数的实部，求该解析函数的导数。
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 7 题打乱，只给题干}
+\drill{1.}{}
+证明函数 $f(z)=\dfrac{1}{z}$ 的实部和虚部满足极坐标下的 C-R 条件。
+\worklines
+\drill{2.}{}
+讨论函数 $f(z)=|z|^{2}$ 在复平面的可导性和解析性。
+\worklines
+\drill{3.}{}
+证明棣莫弗（de Moivre）公式
+\[ \left(\cos\theta+i\sin\theta\right)^{n}=\cos n\theta+i\sin n\theta. \]
+\worklines
+\drill{4.}{}
+已知调和函数 $u(x,y)=xy$ 是某个解析函数的实部，求该解析函数（可差一个常数）。
+\worklines
+\drill{5.}{}
+计算复数 $\sqrt{1+i}$ 的值。
+\worklines
+\drill{6.}{}
+已知调和函数 $u(x,y)=x^{2}-y^{2}$ 是某个解析函数的实部，求该解析函数的导数。
+\worklines
+\drill{7.}{}
+证明函数 $\cos z$ 的实部和虚部满足 C-R 条件。
+\worklines
+\clearpage
+\chapterhead{二}{复变函数的积分}{§2.1 复变函数的积分　§2.2 柯西定理　§2.3 柯西公式　§2.4 泊松积分公式}{本章 20 题：例题 14 · 作业 6\quad｜\quad 乱序编号 1--20}
+\mapbox{\textbf{本章方法地图}\quad 主线是「定义 $\to$ 性质 $\to$ 柯西定理（解析 $\Rightarrow$ 与路径无关）$\to$ 柯西公式（边界值定内部值）」。先用三条路径把复积分拆成实线积分、看清它一般与路径有关；柯西定理一出，单连通区域内解析函数的积分只看端点；再把奇点挖掉推广到复连通，得到 $\oint dz/(z-a)^n=2\pi i\,\delta_{n1}$ 这个「万能积分」；最后用柯西公式及其高阶导数形式，把围道积分换成「在奇点算函数值或导数」。§2.4 的泊松公式是同一套东西在圆域上的实部版本。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§2.1 复变函数的积分}{老师先用定义算三道路径积分，让大家亲眼看到「结果与路径有关」；接着用 $\oint dz/(z-a)^n$ 与 $\oint z/(z-1)dz$ 两题埋下伏笔：结果老是 $2\pi i$，原因要等柯西公式。}
+\ordereditem{C2-1}{例1}{p8--9}{$\mathrm{Im}\,z=y$，$dz=dx+i\,dy$；分段把 $y$ 代成常数或 $x$ 的函数，实部虚部分开积。}
+计算积分 $I=\displaystyle\int_c \mathrm{Im}\,z\,dz$ 的值，其中路径分别为
+\[ c_1:(0,0)\to(1,0)\to(1,1);\qquad c_2:(0,0)\to(0,1)\to(1,1);\qquad c_3:(0,0)\to(1,1)\ \text{(直线段)}. \]
+
+\ordereditem{C2-2}{例2}{p10--11}{两条路都令 $x=t$：$y=x^2$ 时 $z=t+it^2$、$dz=(1+2it)dt$；$y=x$ 时 $z=(1+i)t$。}
+计算积分 $I=\displaystyle\int_c\left(x-y+ix^{2}\right)dz$ 的值，其中
+\[ c_1:(0,0)\to(1,1),\ y=x^{2};\qquad c_2:(0,0)\to(1,1),\ y=x. \]
+
+\ordereditem{C2-3}{例3}{p13--14}{注意被积函数 $2xy-i(x^2-y^2)=-i(x^2-y^2+2ixy)=-iz^{2}$ 是解析的，所以三条路必然同值——这正是下一节柯西定理的预告。}
+计算积分 $I=\displaystyle\int_c\left[2xy-i\left(x^{2}-y^{2}\right)\right]dz$ 的值，其中
+\[ c_1:(0,0)\to(1,0)\to(1,1);\quad c_2:(0,0)\to(0,1)\to(1,1);\quad c_3:(0,0)\to(1,1). \]
+
+\ordereditem{C2-4}{例4}{p16--17}{令 $z-a=\rho e^{i\theta}$，$dz=i\rho e^{i\theta}d\theta$；$n=1$ 时被积函数变成 $i$，$n\neq1$ 时整圈积零。}
+计算积分
+\[ I=\oint_c\frac{dz}{(z-a)^{n}} \]
+的值，其中 $c$ 是以 $a$（任意复常数）为圆心、$\rho$ 为半径的圆周，$n$ 为整数。
+
+\ordereditem{C2-5}{例5}{p19}{令 $z-1=e^{i\theta}$，拆成 $\oint i\,d\theta+\oint ie^{i\theta}d\theta$；第二项整圈为零。老师随堂留的练习用 $z=2+w$ 展开即可。}
+计算 $\displaystyle\oint_{|z-1|=1}\frac{z}{z-1}\,dz$；并练习 $\displaystyle\oint_{|z-2|=1}\frac{z^{2}}{(z-2)^{3}}\,dz$。
+
+\grouphead{§2.2 柯西定理}{先证单连通区域的柯西定理（解析 $\Rightarrow$ 闭路积分为零），得到「只与端点有关」的推论；再把定理推广到复连通区域，把内部边界翻向后变成「外圈 = 内圈之和」，于是奇点可以逐个挖小圆处理。}
+\ordereditem{C2-6}{例1}{p24}{解析函数的积分只认端点，直接用原函数：$z^{3}/3$ 与 $\sin z-z\cos z$。}
+计算
+\[ \int_{-i}^{i}z^{2}dz,\qquad \int_0^{i} z\sin z\,dz. \]
+
+\ordereditem{C2-7}{例2}{p24}{被积函数解析 $\Rightarrow$ 换路径：把上半圆弧换成实轴上从 $(2,0)$ 到 $(0,0)$ 的直线段，一路都是初等积分。}
+计算
+\[ I=\int_C\left(e^{z}+\sin z+2z\right)dz, \]
+其中 $C$ 为 $(x-1)^{2}+y^{2}=1$ 的上半圆周，逆时针方向（从 $(2,0)$ 到 $(0,0)$）。
+
+\ordereditem{C2-8}{例1}{p28}{以 $a$ 为心作小圆 $c\subset c_0$（同向），$c_0$ 与 $c$ 之间构成复连通区域且被积函数解析，于是 $\oint_{c_0}=\oint_c$，再套 §2.1 例 4。}
+设 $a$ 是任意闭合围道 $c_0$ 内的一点，证明
+\[ \oint_{c_0}\frac{dz}{(z-a)^{n}}=\begin{cases}2\pi i, & n=1,\\ 0, & n\neq1.\end{cases} \]
+
+\ordereditem{C2-9}{例2}{p29}{两个奇点 $z=\pm1$ 各挖一个半径 $1/2$ 的小圆，拆成 $\frac12\left(\frac{1}{z-1}-\frac{1}{z+1}\right)$ 分别积，两半正好抵消。}
+计算积分
+\[ I=\oint_c\frac{dz}{z^{2}-1} \]
+的值，其中积分围道 $c$ 为 $|z|=2$ 的圆周。
+
+\grouphead{§2.3 柯西公式}{柯西公式 $f(a)=\frac{1}{2\pi i}\oint\frac{f(z)}{z-a}dz$ 与它的高阶导数形式，把「围道积分」变成「在奇点算函数值或导数」；老师的五个例子按被积函数的结构排列：可拆成两个一阶极点、奇点在圈外、两个奇点、二阶极点、三阶极点。}
+\ordereditem{C2-10}{例1}{p39}{先拆 $\frac{1}{z^{2}-1}=\frac12\left(\frac{1}{z-1}-\frac{1}{z+1}\right)$，两个积分都用柯西公式，$f(z)=e^{az}$。}
+利用柯西公式计算
+\[ I=\oint_{|z|=2}\frac{e^{az}dz}{z^{2}-1} \]
+的值，其中 $a$ 为任意复常数。
+
+\ordereditem{C2-11}{例2}{p40}{先看奇点 $z=-\frac{\pi}{2}i$ 在不在圈内：圈内解析就是 0；圈内就用柯西公式取 $f(-\frac{\pi}{2}i)$。}
+计算
+\[ I=\int_c\frac{e^{z}}{z+\frac{\pi}{2}i}\,dz, \]
+其中 $c$ 为：(1) $|z|=1$；(2) $|z|=2$。
+
+\ordereditem{C2-12}{例3}{p41}{两个奇点 $\pm i$ 都在圈内，各挖一个小圆分别用柯西公式，最后用 $\sin i=i\,\mathrm{sh}\,1$ 收尾。}
+计算
+\[ I=\oint_c\frac{\sin z}{z^{2}+1}\,dz, \]
+其中 $c$ 为 $|z|=r>1$。
+
+\ordereditem{C2-13}{例4}{p42}{二阶极点用高阶导数公式：$I=2\pi i\,f'(1)$，$f(z)=e^{az}$。}
+利用柯西公式的推论
+\[ f^{(n)}(z)=\frac{n!}{2\pi i}\oint_c\frac{f(\varsigma)\,d\varsigma}{(\varsigma-z)^{n+1}}, \]
+计算
+\[ I=\oint_{|z|=2}\frac{e^{az}dz}{(z-1)^{2}}, \]
+其中 $a$ 为任意复常数。
+
+\ordereditem{C2-14}{例5}{p42}{三阶极点：$I=\frac{2\pi i}{2!}f''(i)$，$f(z)=\cos z$，$f''=-\cos z$。}
+计算
+\[ I=\oint_c\frac{\cos z}{(z-i)^{3}}\,dz, \]
+其中 $c$ 为半径 2 的圆周 $|z|=2$。
+
+\grouphead{§ 第二章作业}{作业 1--2 练定义与「路径有关/无关」，3--4 练柯西公式与高阶导数公式，5--6 是用围道积分反推实积分的两道经典。}
+\ordereditem{C2-15}{作业1}{p30}{$|z|$ 不是解析函数，必须按路径硬算：直线段上 $|z|=|t|$；右半圆上 $|z|=1$。}
+计算积分 $\displaystyle\int_{-i}^{i}|z|\,dz$ 的值，其中积分路径分别为：(1) 直线段；(2) 右半单位圆。
+
+\ordereditem{C2-16}{作业2}{p30}{单位圆周上 $|z|=1$、$dz=iz\,d\theta$；第二问的被积函数其实是常数，第三问是弧长。}
+计算如下积分，其中积分路径 $c$ 为单位圆周：
+\[ 1)\ \int_c\frac{dz}{z};\qquad 2)\ \int_c\frac{dz}{|z|};\qquad 3)\ \int_c\left|\frac{dz}{z}\right|. \]
+
+\ordereditem{C2-17}{作业3}{p53}{两题都用柯西公式：1) $f(z)=2z^{2}-z+1$ 在 $z=1$ 取值；2) 拆 $z^{2}+1=(z-i)(z+i)$，两个奇点都在圈内。}
+计算如下积分，其中积分路径 $c$ 为 $|z|=2$：
+\[ 1)\ \int_c\frac{2z^{2}-z+1}{z-1}\,dz;\qquad 2)\ \int_c\frac{e^{z}}{z^{2}+1}\,dz. \]
+
+\ordereditem{C2-18}{作业4}{p53}{二阶、三阶极点用高阶导数公式：1) $2\pi i f'(1)$；2) $\frac{2\pi i}{2!}f''(1)$，$f=\cos\pi z$。}
+计算如下积分，其中积分路径 $c$ 为 $|z|=2$：
+\[ 1)\ \int_c\frac{2z^{2}-z+1}{(z-1)^{2}}\,dz;\qquad 2)\ \int_c\frac{\cos\pi z}{(z-1)^{3}}\,dz. \]
+
+\ordereditem{C2-19}{作业5}{p53}{$z=-2$ 在单位圆外，$\oint dz/(z+2)=0$；把 $ie^{i\theta}/(2+e^{i\theta})$ 上下乘共轭，实部就是待证的那个被积函数。}
+由积分 $\displaystyle\int_c\frac{dz}{z+2}$ 的值，证明
+\[ \int_0^{\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\,d\theta=0, \]
+其中积分路径 $c$ 为单位圆。
+
+\ordereditem{C2-20}{作业6}{p53}{柯西公式取 $f=e^{z}$、$a=0$ 得 $2\pi i$；再把 $z=e^{i\theta}$ 代回，取实部并用对称性折半。}
+求积分 $\displaystyle\int_c\frac{e^{z}}{z}\,dz$ 的值，其中积分路径 $c$ 为 $|z|=1$；并由此结果证明
+\[ \int_0^{\pi}e^{\cos\theta}\cos\left(\sin\theta\right)d\theta=\pi. \]
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 20 题打乱，只给题干}
+\drill{1.}{}
+计算积分 $\displaystyle\int_{-i}^{i}|z|\,dz$ 的值，其中积分路径分别为：(1) 直线段；(2) 右半单位圆。
+\worklines
+\drill{2.}{}
+计算
+\[ I=\oint_c\frac{\sin z}{z^{2}+1}\,dz, \]
+其中 $c$ 为 $|z|=r>1$。
+\worklines
+\drill{3.}{}
+计算如下积分，其中积分路径 $c$ 为 $|z|=2$：
+\[ 1)\ \int_c\frac{2z^{2}-z+1}{z-1}\,dz;\qquad 2)\ \int_c\frac{e^{z}}{z^{2}+1}\,dz. \]
+\worklines
+\drill{4.}{}
+计算如下积分，其中积分路径 $c$ 为 $|z|=2$：
+\[ 1)\ \int_c\frac{2z^{2}-z+1}{(z-1)^{2}}\,dz;\qquad 2)\ \int_c\frac{\cos\pi z}{(z-1)^{3}}\,dz. \]
+\worklines
+\drill{5.}{}
+计算
+\[ I=\int_C\left(e^{z}+\sin z+2z\right)dz, \]
+其中 $C$ 为 $(x-1)^{2}+y^{2}=1$ 的上半圆周，逆时针方向（从 $(2,0)$ 到 $(0,0)$）。
+\worklines
+\drill{6.}{}
+设 $a$ 是任意闭合围道 $c_0$ 内的一点，证明
+\[ \oint_{c_0}\frac{dz}{(z-a)^{n}}=\begin{cases}2\pi i, & n=1,\\ 0, & n\neq1.\end{cases} \]
+\worklines
+\drill{7.}{}
+计算 $\displaystyle\oint_{|z-1|=1}\frac{z}{z-1}\,dz$；并练习 $\displaystyle\oint_{|z-2|=1}\frac{z^{2}}{(z-2)^{3}}\,dz$。
+\worklines
+\drill{8.}{}
+求积分 $\displaystyle\int_c\frac{e^{z}}{z}\,dz$ 的值，其中积分路径 $c$ 为 $|z|=1$；并由此结果证明
+\[ \int_0^{\pi}e^{\cos\theta}\cos\left(\sin\theta\right)d\theta=\pi. \]
+\worklines
+\drill{9.}{}
+计算积分 $I=\displaystyle\int_c\left(x-y+ix^{2}\right)dz$ 的值，其中
+\[ c_1:(0,0)\to(1,1),\ y=x^{2};\qquad c_2:(0,0)\to(1,1),\ y=x. \]
+\worklines
+\drill{10.}{}
+计算
+\[ I=\oint_c\frac{\cos z}{(z-i)^{3}}\,dz, \]
+其中 $c$ 为半径 2 的圆周 $|z|=2$。
+\worklines
+\drill{11.}{}
+计算
+\[ I=\int_c\frac{e^{z}}{z+\frac{\pi}{2}i}\,dz, \]
+其中 $c$ 为：(1) $|z|=1$；(2) $|z|=2$。
+\worklines
+\drill{12.}{}
+计算如下积分，其中积分路径 $c$ 为单位圆周：
+\[ 1)\ \int_c\frac{dz}{z};\qquad 2)\ \int_c\frac{dz}{|z|};\qquad 3)\ \int_c\left|\frac{dz}{z}\right|. \]
+\worklines
+\drill{13.}{}
+利用柯西公式的推论
+\[ f^{(n)}(z)=\frac{n!}{2\pi i}\oint_c\frac{f(\varsigma)\,d\varsigma}{(\varsigma-z)^{n+1}}, \]
+计算
+\[ I=\oint_{|z|=2}\frac{e^{az}dz}{(z-1)^{2}}, \]
+其中 $a$ 为任意复常数。
+\worklines
+\drill{14.}{}
+计算积分
+\[ I=\oint_c\frac{dz}{z^{2}-1} \]
+的值，其中积分围道 $c$ 为 $|z|=2$ 的圆周。
+\worklines
+\drill{15.}{}
+计算积分
+\[ I=\oint_c\frac{dz}{(z-a)^{n}} \]
+的值，其中 $c$ 是以 $a$（任意复常数）为圆心、$\rho$ 为半径的圆周，$n$ 为整数。
+\worklines
+\drill{16.}{}
+计算积分 $I=\displaystyle\int_c \mathrm{Im}\,z\,dz$ 的值，其中路径分别为
+\[ c_1:(0,0)\to(1,0)\to(1,1);\qquad c_2:(0,0)\to(0,1)\to(1,1);\qquad c_3:(0,0)\to(1,1)\ \text{(直线段)}. \]
+\worklines
+\drill{17.}{}
+利用柯西公式计算
+\[ I=\oint_{|z|=2}\frac{e^{az}dz}{z^{2}-1} \]
+的值，其中 $a$ 为任意复常数。
+\worklines
+\drill{18.}{}
+计算积分 $I=\displaystyle\int_c\left[2xy-i\left(x^{2}-y^{2}\right)\right]dz$ 的值，其中
+\[ c_1:(0,0)\to(1,0)\to(1,1);\quad c_2:(0,0)\to(0,1)\to(1,1);\quad c_3:(0,0)\to(1,1). \]
+\worklines
+\drill{19.}{}
+计算
+\[ \int_{-i}^{i}z^{2}dz,\qquad \int_0^{i} z\sin z\,dz. \]
+\worklines
+\drill{20.}{}
+由积分 $\displaystyle\int_c\frac{dz}{z+2}$ 的值，证明
+\[ \int_0^{\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\,d\theta=0, \]
+其中积分路径 $c$ 为单位圆。
+\worklines
+\clearpage
+\chapterhead{三}{解析函数的幂级数展开}{§3.1 复变函数项级数　§3.2 幂级数　§3.3 泰勒级数展开　§3.4 洛朗级数展开　§3.5 孤立奇点的分类}{本章 15 题：例题 11 · 作业 4\quad｜\quad 乱序编号 1--15}
+\mapbox{\textbf{本章方法地图}\quad 主线是「级数 $\to$ 收敛半径 $\to$ 泰勒 $\to$ 洛朗 $\to$ 奇点分类」。先把实级数的收敛概念原样搬到复级数，用比值/根值判别法定出收敛圆；再把「圆内解析」翻译成「能展成幂级数」，这就是泰勒定理；把圆环挖空之后负幂项登场，得到洛朗级数；最后按负幂项的多少，把孤立奇点分成可去、极点、本性三类——第四章的留数就靠这套分类来算。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§3.2 幂级数与 §3.3 泰勒级数展开}{老师先算一个最熟悉的几何级数把「收敛半径」落到实处，再由泰勒定理给出直接展开法；后面三道例题全在练间接法：用已知展开式做代换、求导、拆项，比逐阶求导快得多。}
+\ordereditem{C3-1}{例题1}{p18}{比值判别法 $R=\lim\left|\frac{a_n}{a_{n+1}}\right|=\lim\frac11=1$；再用几何级数部分和 $\frac{1-z^{m+1}}{1-z}$ 验证收敛圆内确实收敛到 $\frac{1}{1-z}$。}
+求幂级数
+\[ \sum_{n=0}^{\infty}z^{n}=1+z+z^{2}+\cdots+z^{n}+\cdots \]
+的收敛半径，并写出收敛圆内的和函数。
+
+\ordereditem{C3-2}{例题1}{p25}{直接法：先求 $n$ 阶导数的通式，再代 $z=0$；$1/(1\pm z)$ 的 $n$ 阶导数是 $(\pm1)^n n!/(1\pm z)^{n+1}$。}
+分别将函数
+\[ f_1(z)=\frac{1}{1-z},\qquad f_2(z)=\frac{1}{1+z} \]
+在 $z=0$ 点展开成泰勒级数。
+
+\ordereditem{C3-3}{例题2}{p26}{$e^{z}$ 直接求导即得；$\cos z$、$\sin z$ 用 $\frac12(e^{iz}\pm e^{-iz})$ 展开后把奇偶项配成对。}
+分别将函数 $f(z)=e^{z}$、$\cos z$、$\sin z$ 在 $z=0$ 点展开成泰勒级数。
+
+\ordereditem{C3-4}{例题3}{p28--29}{先拆 $f=1-\frac{1}{1+z}$，再把 $\frac{1}{1+z}$ 写成 $\frac{1}{2}\cdot\frac{1}{1+\frac{z-1}{2}}$，用几何级数在 $|z-1|<2$ 内展开。}
+将函数
+\[ f(z)=\frac{z}{1+z} \]
+在 $|z-1|<2$ 的区域内展开成泰勒级数。
+
+\ordereditem{C3-5}{例题4}{p30}{$\frac{1}{(1+z)^{2}}=-\left(\frac{1}{1+z}\right)'$，把 $\frac{1}{1+z}$ 的展开式逐项求导即可（区间端点不变）。}
+将函数
+\[ f(z)=\frac{1}{(1+z)^{2}} \]
+在 $z=0$ 的区域内展开成泰勒级数。
+
+\grouphead{§3.4 洛朗级数展开}{把圆域挖成圆环之后，负幂项登场。老师的五道例题按「源」分三类：分子在环内解析（$e^{z}/z^{2}$）、分母两个奇点把平面切成三个环（最典型）、以及用代换把已知展开式搬到无穷远（$e^{1/z}$）；最后一道是贝塞尔函数生成函数，直接法、间接法各走一遍。}
+\ordereditem{C3-6}{例题1}{p39}{$e^{z}$ 在环内解析，先泰勒展开再整体除以 $z^{2}$，逐项看幂次——负幂项只到 $z^{-2}$。}
+把函数
+\[ f(z)=\frac{e^{z}}{z^{2}} \]
+在以 $z=0$ 为圆心的环形区域 $0<|z|<\infty$ 内展开成洛朗级数。
+
+\ordereditem{C3-7}{例题2}{p40--42}{先拆成 $\frac{1}{z-2}-\frac{1}{z-1}$，再按每个区域判断该用 $\frac{1}{1-z}$（$|z|<1$）还是 $\frac{1}{1-1/z}$（$|z|>1$）的形式。}
+把函数
+\[ f(z)=\frac{1}{(z-1)(z-2)} \]
+分别在下列区域内展开成洛朗级数：(1) $|z|<1$；(2) $1<|z|<2$；(3) $2<|z|<\infty$。
+
+\ordereditem{C3-8}{例题3}{p43}{$\sin z$ 在 $z=0$ 解析，先泰勒展开再除以 $z$；结果没有负幂项，说明 $z=0$ 是可去奇点。}
+把函数
+\[ f(z)=\frac{\sin z}{z} \]
+在 $z=0$ 的邻域内展开成洛朗级数。
+
+\ordereditem{C3-9}{例题4}{p44}{把 $e^{z}=\sum z^{n}/n!$ 里的 $z$ 直接换成 $1/z$，幂次变号即得负幂项。}
+把函数
+\[ f(z)=e^{1/z} \]
+在 $z=0$ 的邻域内展开成洛朗级数。
+
+\ordereditem{C3-10}{例题5}{p45--47}{直接法用 $a_n=\frac{1}{2\pi i}\oint\frac{f(\varsigma)}{\varsigma^{n+1}}d\varsigma$ 并把围道取成单位圆；间接法把 $e^{tz/2}$ 与 $e^{-t/(2z)}$ 两个泰勒级数相乘，按 $z^{n}$ 配项，两种做法给出同一组系数。}
+设 $t$ 为实参数，将函数
+\[ f(z)=e^{\frac{t}{2}\left(z-z^{-1}\right)} \]
+在 $z=0$ 的邻域内展开成洛朗级数（这道题与贝塞尔函数的生成函数有关，要求用直接法、间接法各做一遍）。
+
+\grouphead{§3.5 孤立奇点的分类}{老师给出三条判定法：看洛朗展开的负幂项个数、看极限是否有限、看 $h(z)=1/f(z)$ 在 $z_0$ 的零点阶数。例题用 $1/\sin z$ 演示最常用的一条——分母的一阶零点就是一阶极点。}
+\ordereditem{C3-11}{例题1}{p53}{$\sin z$ 的零点 $z=n\pi$ 都是单零点且 $(\sin z)'=\cos z$ 在这些点不为零，所以是 $1/\sin z$ 的一阶极点。}
+求函数
+\[ f(z)=\frac{1}{\sin z} \]
+的奇点，并判别该奇点的性质。
+
+\grouphead{§ 第三章作业}{作业 1 练收敛半径的两种判别法，2 练泰勒（间接法乘积），3 练分区域洛朗展开，4 练孤立奇点分类——正好把本章四件事各考一遍。}
+\ordereditem{C3-12}{作业1}{p31}{都用 $R=\lim\left|\frac{a_n}{a_{n+1}}\right|$；第 2 小题答案会退化成 0，说明只在 $z=0$ 收敛。}
+计算下列级数的收敛半径：
+\[ 1)\ \sum_{n=1}^{\infty}\frac{1}{n^{2}}z^{n};\qquad 2)\ \sum_{n=1}^{\infty}n^{n}z^{n};\qquad 3)\ \sum_{n=1}^{\infty}\frac{n!}{n^{n}}z^{n}. \]
+
+\ordereditem{C3-13}{作业2}{p31}{两个已知展开式相乘：$e^{z}=\sum z^{k}/k!$ 与 $\frac{1}{1-z}=\sum z^{m}$，按 $k+m=n$ 收集系数。}
+在 $|z|<1$ 的圆内，将函数
+\[ f(z)=\frac{e^{z}}{1-z} \]
+展开成泰勒级数。
+
+\ordereditem{C3-14}{作业3}{p57}{1) 先部分分式 $-\frac{2}{z}-\frac{1}{z^{2}}+\frac{2}{z-1}$，再按 $|z|<1$ 与 $|z|>1$ 选不同的几何级数；2) 把 $\frac{1}{z^{2}+1}$ 展开到 $|z|<1$ 内再乘 $e^{z}/z$。}
+将下列函数在指定的区域内展成洛朗级数：
+\[ 1)\ \frac{z+1}{z^{2}(z-1)},\quad 0<|z|<1\ \text{与}\ 1<|z|<\infty;\qquad 2)\ \frac{e^{z}}{z\left(z^{2}+1\right)},\quad 0<|z|<1. \]
+
+\ordereditem{C3-15}{作业4}{p57}{先找分母零点，再看分子是否同时为零：约掉之后剩下的最低幂次就是极点阶数；负幂项无穷多则是本性奇点。}
+确定下列函数在有界区域内的孤立奇点，并指出奇点的类型（对于极点，要指出它的阶）：
+\[ 1)\ \frac{z-1}{z\left(z^{2}+1\right)^{2}};\qquad 2)\ \frac{1-\cos z}{z^{3}};\qquad 3)\ \frac{1}{\left(z^{2}+i\right)^{2}};\qquad 4)\ \frac{e^{z}}{e^{z}-1}. \]
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 15 题打乱，只给题干}
+\drill{1.}{}
+把函数
+\[ f(z)=\frac{e^{z}}{z^{2}} \]
+在以 $z=0$ 为圆心的环形区域 $0<|z|<\infty$ 内展开成洛朗级数。
+\worklines
+\drill{2.}{}
+求幂级数
+\[ \sum_{n=0}^{\infty}z^{n}=1+z+z^{2}+\cdots+z^{n}+\cdots \]
+的收敛半径，并写出收敛圆内的和函数。
+\worklines
+\drill{3.}{}
+将函数
+\[ f(z)=\frac{1}{(1+z)^{2}} \]
+在 $z=0$ 的区域内展开成泰勒级数。
+\worklines
+\drill{4.}{}
+把函数
+\[ f(z)=e^{1/z} \]
+在 $z=0$ 的邻域内展开成洛朗级数。
+\worklines
+\drill{5.}{}
+分别将函数 $f(z)=e^{z}$、$\cos z$、$\sin z$ 在 $z=0$ 点展开成泰勒级数。
+\worklines
+\drill{6.}{}
+求函数
+\[ f(z)=\frac{1}{\sin z} \]
+的奇点，并判别该奇点的性质。
+\worklines
+\drill{7.}{}
+将下列函数在指定的区域内展成洛朗级数：
+\[ 1)\ \frac{z+1}{z^{2}(z-1)},\quad 0<|z|<1\ \text{与}\ 1<|z|<\infty;\qquad 2)\ \frac{e^{z}}{z\left(z^{2}+1\right)},\quad 0<|z|<1. \]
+\worklines
+\drill{8.}{}
+分别将函数
+\[ f_1(z)=\frac{1}{1-z},\qquad f_2(z)=\frac{1}{1+z} \]
+在 $z=0$ 点展开成泰勒级数。
+\worklines
+\drill{9.}{}
+把函数
+\[ f(z)=\frac{\sin z}{z} \]
+在 $z=0$ 的邻域内展开成洛朗级数。
+\worklines
+\drill{10.}{}
+设 $t$ 为实参数，将函数
+\[ f(z)=e^{\frac{t}{2}\left(z-z^{-1}\right)} \]
+在 $z=0$ 的邻域内展开成洛朗级数（这道题与贝塞尔函数的生成函数有关，要求用直接法、间接法各做一遍）。
+\worklines
+\drill{11.}{}
+计算下列级数的收敛半径：
+\[ 1)\ \sum_{n=1}^{\infty}\frac{1}{n^{2}}z^{n};\qquad 2)\ \sum_{n=1}^{\infty}n^{n}z^{n};\qquad 3)\ \sum_{n=1}^{\infty}\frac{n!}{n^{n}}z^{n}. \]
+\worklines
+\drill{12.}{}
+将函数
+\[ f(z)=\frac{z}{1+z} \]
+在 $|z-1|<2$ 的区域内展开成泰勒级数。
+\worklines
+\drill{13.}{}
+在 $|z|<1$ 的圆内，将函数
+\[ f(z)=\frac{e^{z}}{1-z} \]
+展开成泰勒级数。
+\worklines
+\drill{14.}{}
+确定下列函数在有界区域内的孤立奇点，并指出奇点的类型（对于极点，要指出它的阶）：
+\[ 1)\ \frac{z-1}{z\left(z^{2}+1\right)^{2}};\qquad 2)\ \frac{1-\cos z}{z^{3}};\qquad 3)\ \frac{1}{\left(z^{2}+i\right)^{2}};\qquad 4)\ \frac{e^{z}}{e^{z}-1}. \]
+\worklines
+\drill{15.}{}
+把函数
+\[ f(z)=\frac{1}{(z-1)(z-2)} \]
+分别在下列区域内展开成洛朗级数：(1) $|z|<1$；(2) $1<|z|<2$；(3) $2<|z|<\infty$。
+\worklines
+\clearpage
+\chapterhead{四}{留数定理及应用}{§4.1 留数定理　§4.2 应用留数定理计算实变函数定积分　§4.3 计算定积分的补充例题}{本章 20 题：例题 16 · 作业 4\quad｜\quad 乱序编号 1--20}
+\mapbox{\textbf{本章方法地图}\quad 主线是「留数 $\to$ 留数定理 $\to$ 三类实积分」。先在孤立奇点处定义留数（洛朗展开的 $-1$ 次幂系数），把围道积分换成「圈内留数之和乘 $2\pi i$」；再按被积函数的样子把实积分分成三类：$0$ 到 $2\pi$ 的三角函数（令 $z=e^{i\theta}$ 化到单位圆）、有理函数在全实轴的积分（补上半大圆弧）、带 $e^{imx}$ 的积分（用 Jordan 引理补围道，取虚部或实部）。§4.3 的补充例题专门处理实轴上有极点、以及需要缩成小半圆的刺形围道。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§4.1 留数定理}{老师先用同一道题把柯西公式和留数定理各算一遍（结果当然一样），让「留数 = 洛朗系数 $a_{-1}$」这件事落地；再用三道题把 $m$ 阶极点的三条计算规则（规则 I、II、III）各演示一次；最后一道用「单位圆内的极点」提前铺垫 §4.2 的三角积分。}
+\ordereditem{C4-1}{例1}{p15--17}{两种算法并排写：柯西公式路线先拆 $\frac{1}{z^{2}-b^{2}}=\frac{1}{2b}\left(\frac{1}{z-b}-\frac{1}{z+b}\right)$；留数路线用规则 I 分别取 $z=\pm b$ 的留数。}
+计算积分
+\[ \oint_{|z|=r>b}\frac{ze^{z}}{z^{2}-b^{2}}\,dz, \]
+其中 $b$ 为任意常数。要求分别用柯西公式与留数定理计算。
+
+\ordereditem{C4-2}{例2}{p18--19}{四个一阶极点 $\pm1,\pm i$ 全在 $|z|=2$ 内；留数之和恰好为零（被积函数在无穷远像 $1/z^{3}$），所以积分为零。}
+计算积分
+\[ \oint_{|z|=2}\frac{z}{z^{4}-1}\,dz, \]
+要求：1) 用柯西公式计算；2) 用留数定理计算。
+
+\ordereditem{C4-3}{例3}{p20}{$z=\pm i$ 都是二阶极点，用规则 III：$\mathrm{Res}=\lim\frac{d}{dz}\left[(z-z_0)^{2}f(z)\right]$。}
+计算函数
+\[ f(z)=\frac{1}{\left(z^{2}+1\right)^{2}} \]
+在其奇点处的留数。
+
+\ordereditem{C4-4}{例4}{p21}{$z=0$ 是三阶极点（用规则 III 求二阶导），$z=i$ 是一阶极点（用规则 I 直接取 $1/z^{3}$）。}
+计算函数
+\[ f(z)=\frac{1}{z^{3}(z-i)} \]
+在其奇点处的留数。
+
+\ordereditem{C4-5}{例5}{p22}{先解 $\varepsilon z^{2}+2z+\varepsilon=0$ 得 $z_{1,2}=-\frac{1}{\varepsilon}\pm\frac{1}{\varepsilon}\sqrt{1-\varepsilon^{2}}$，判断哪个在单位圆内（$|z_{2}|<1$），再算它的一阶留数。}
+确定函数
+\[ f(z)=\frac{1}{\varepsilon z^{2}+2z+\varepsilon} \]
+在单位圆内的极点，并计算它沿单位圆周的积分值，其中 $0<\varepsilon<1$。
+
+\ordereditem{C4-6}{例}{p25--27}{三条规则未必方便时改用留数的定义：把 $f$ 展成洛朗级数，找 $1/z$ 的系数。$z-\sin z=\frac{z^{3}}{3!}-\frac{z^{5}}{5!}+\cdots$，除以 $z^{6}$ 后 $1/z$ 的系数是 $-\frac{1}{5!}$。}
+求函数
+\[ f(z)=\frac{z-\sin z}{z^{6}} \]
+在 $z=0$ 处的留数（要求直接用留数的定义／洛朗展开计算，不要套规则 III）。
+
+\ordereditem{C4-7}{作业1}{p28}{四道都是「找圈内奇点 → 定阶数 → 套规则」；第 3 题的 $z=0$ 是二阶极点但留数为零，值得单独算一遍。}
+利用留数定理计算如下积分：
+\[ 1)\ \oint_{C}\frac{dz}{\left(z^{2}+1\right)^{2}(z-1)},\ C:|z-1|=2;\qquad 2)\ \oint_{C}\frac{\cos z}{z^{3}}\,dz,\ C:|z|=1; \]
+\[ 3)\ \oint_{C}\frac{dz}{z\sin z},\ C:|z|=1;\qquad 4)\ \oint_{C}\frac{e^{2z}}{z^{2}+1}\,dz,\ C:|z|=2. \]
+
+\grouphead{§4.2 应用留数定理计算实变函数定积分}{按被积函数分三类摆开：$0$ 到 $2\pi$ 的三角函数用 $z=e^{i\theta}$ 化到单位圆（例 1--4，其中例 4 还要会「认成 $e^{z}/z^{n+1}$ 的留数」），全实轴的有理函数补上半大圆弧（例 5--7，分母幂次至少高两次才收得住）。}
+\ordereditem{C4-8}{例1}{p35}{令 $z=e^{i\theta}$，$\cos\theta=\frac{z+z^{-1}}{2}$，$d\theta=\frac{dz}{iz}$；分母化成 $\varepsilon z^{2}+2z+\varepsilon$，只有一个根在单位圆内。}
+计算积分
+\[ I=\int_0^{2\pi}\frac{d\theta}{1+\varepsilon\cos\theta}, \]
+其中 $0<\varepsilon<1$。
+
+\ordereditem{C4-9}{例2}{p38}{同样令 $z=e^{i\theta}$，分母变成 $(z-\varepsilon)(\varepsilon z-1)$；$1/\varepsilon$ 在圆外，只算 $z=\varepsilon$ 的留数。}
+计算积分
+\[ I=\int_0^{2\pi}\frac{d\theta}{1-2\varepsilon\cos\theta+\varepsilon^{2}}, \]
+其中 $0<\varepsilon<1$。
+
+\ordereditem{C4-10}{例3}{p39}{先用 $\sin^{2}\theta=\frac{1-\cos2\theta}{2}$ 降幂，再令 $\varphi=2\theta$ 把区间变回 $0$ 到 $2\pi$，然后走单位圆那一套。}
+计算积分
+\[ I=\int_0^{\pi}\frac{a\,d\theta}{a^{2}+\sin^{2}\theta}, \]
+其中 $a>0$ 为实数。
+
+\ordereditem{C4-11}{例4}{p41}{把 $e^{\cos\theta}\cos(n\theta-\sin\theta)$ 认成 $e^{e^{i\theta}}e^{-in\theta}$ 的实部，令 $z=e^{i\theta}$ 后化为 $\oint\frac{e^{z}}{z^{n+1}}\frac{dz}{i}$，用 $n+1$ 阶极点的留数公式。}
+计算积分
+\[ I=\int_0^{2\pi}e^{\cos\theta}\cos\left(n\theta-\sin\theta\right)d\theta \]
+的值。
+
+\ordereditem{C4-12}{例5}{p49}{分母比分子高两次，补上半大圆弧；$z=i$ 是一阶极点，留数 $1/(2i)$，乘 $2\pi i$ 即得。}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{1+x^{2}}. \]
+
+\ordereditem{C4-13}{例6}{p50}{$z=i$ 变成三阶极点，用规则 III 求二阶导，得到的留数是 $3/(16i)$。}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{\left(1+x^{2}\right)^{3}}. \]
+
+\ordereditem{C4-14}{例7}{p51}{$z^{4}+a^{4}=0$ 的四个根均匀分布，上半平面只有 $ae^{i\pi/4}$、$ae^{3i\pi/4}$ 两个一阶极点，留数按 $1/(4z^{3})$ 算。}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{x^{4}+a^{4}}, \]
+其中 $a>0$。
+
+\ordereditem{C4-15}{例8}{p60}{这是类型 3（含 $\cos mx$）：补上半大圆弧，考虑 $f(z)e^{imz}$；$z=ai$ 是一阶极点，取实部。偶函数的半轴积分等于全轴的一半。}
+计算积分
+\[ I=\int_0^{\infty}\frac{\cos mx}{x^{2}+a^{2}}\,dx, \]
+其中 $m>0$、$a>0$。
+
+\ordereditem{C4-16}{例9}{p61}{与例 8 同一套路，但 $z=ai$ 是二阶极点，要用规则 III 求一阶导；被积函数是奇函数，半轴积分取虚部的一半。}
+计算积分
+\[ I=\int_0^{\infty}\frac{x\sin mx}{\left(x^{2}+a^{2}\right)^{2}}\,dx, \]
+其中 $m>0$、$a>0$。
+
+\ordereditem{C4-17}{作业2}{p62}{四道都是 $0$ 到 $2\pi$ 的三角积分，一律令 $z=e^{i\theta}$ 化单位圆；第 2 题分母是平方，要按二阶极点算留数。}
+计算如下实变函数的积分：
+\[ (1)\ \int_0^{2\pi}\frac{d\theta}{2+\cos\theta};\qquad (2)\ \int_0^{2\pi}\frac{d\theta}{\left(1+\varepsilon\cos\theta\right)^{2}}\ (0<\varepsilon<1); \]
+\[ (3)\ \int_0^{2\pi}\frac{d\theta}{1+\sin^{2}\theta};\qquad (4)\ \int_0^{2\pi}\frac{d\theta}{1+\cos^{2}\theta}. \]
+
+\ordereditem{C4-18}{作业3}{p62}{三道有理积分都补上半大圆弧；第 1 题先用部分分式 $\frac{x^{2}}{(x^{2}+1)(x^{2}+4)}=-\frac{1/3}{x^{2}+1}+\frac{4/3}{x^{2}+4}$。}
+计算如下实变函数的积分：
+\[ (1)\ \int_{-\infty}^{\infty}\frac{x^{2}dx}{\left(x^{2}+1\right)\left(x^{2}+4\right)};\qquad (2)\ \int_0^{\infty}\frac{x^{2}dx}{x^{4}+a^{4}}\ (a>0);\qquad (3)\ \int_{-\infty}^{\infty}\frac{x^{2}dx}{\left(x^{2}+a^{2}\right)^{2}}\ (a>0). \]
+
+\grouphead{§4.3 计算定积分的补充例题}{补的是「实轴上有极点」这一种刺手情形：把极点挖一个小半圆绕过去，再让半径趋于零，用「半留数」收尾——这就是 $\int_0^{\infty}\frac{\sin x}{x}dx=\frac{\pi}{2}$ 的标准做法。}
+\ordereditem{C4-19}{例1}{p70}{先把 $\sin x$ 换成 $e^{ix}$ 的虚部，实轴上的 $z=0$ 用缩成小半圆的刺形围道绕开，绕行贡献正好是 $\pi i$ 乘留数（半留数）。}
+计算积分
+\[ I=\int_0^{\infty}\frac{\sin x}{x}\,dx. \]
+
+\grouphead{§ 第四章作业（续）}{作业 4 是 §4.3 的配套练习：两道带 $e^{imx}$ 的积分（用 Jordan 引理取虚部），一道分母为平方的（二阶极点 + 取虚部）。}
+\ordereditem{C4-20}{作业4}{p78}{三题都补上半大圆弧并考虑 $e^{imz}$；第 1 题取实部，第 2、3 题取虚部，第 3 题是二阶极点。}
+计算如下实变函数的积分：
+\[ (1)\ \int_{-\infty}^{\infty}\frac{\cos mx\,dx}{\left(x^{2}+1\right)\left(x^{2}+4\right)}\ (m>0);\qquad (2)\ \int_{-\infty}^{\infty}\frac{x\sin x}{x^{2}+1}\,dx; \]
+\[ (3)\ \int_{-\infty}^{\infty}\frac{x\sin mx}{\left(x^{2}+a^{2}\right)^{2}}\,dx\quad(m>0,\ a>0). \]
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 20 题打乱，只给题干}
+\drill{1.}{}
+计算如下实变函数的积分：
+\[ (1)\ \int_0^{2\pi}\frac{d\theta}{2+\cos\theta};\qquad (2)\ \int_0^{2\pi}\frac{d\theta}{\left(1+\varepsilon\cos\theta\right)^{2}}\ (0<\varepsilon<1); \]
+\[ (3)\ \int_0^{2\pi}\frac{d\theta}{1+\sin^{2}\theta};\qquad (4)\ \int_0^{2\pi}\frac{d\theta}{1+\cos^{2}\theta}. \]
+\worklines
+\drill{2.}{}
+计算如下实变函数的积分：
+\[ (1)\ \int_{-\infty}^{\infty}\frac{\cos mx\,dx}{\left(x^{2}+1\right)\left(x^{2}+4\right)}\ (m>0);\qquad (2)\ \int_{-\infty}^{\infty}\frac{x\sin x}{x^{2}+1}\,dx; \]
+\[ (3)\ \int_{-\infty}^{\infty}\frac{x\sin mx}{\left(x^{2}+a^{2}\right)^{2}}\,dx\quad(m>0,\ a>0). \]
+\worklines
+\drill{3.}{}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{1+x^{2}}. \]
+\worklines
+\drill{4.}{}
+计算函数
+\[ f(z)=\frac{1}{\left(z^{2}+1\right)^{2}} \]
+在其奇点处的留数。
+\worklines
+\drill{5.}{}
+计算如下实变函数的积分：
+\[ (1)\ \int_{-\infty}^{\infty}\frac{x^{2}dx}{\left(x^{2}+1\right)\left(x^{2}+4\right)};\qquad (2)\ \int_0^{\infty}\frac{x^{2}dx}{x^{4}+a^{4}}\ (a>0);\qquad (3)\ \int_{-\infty}^{\infty}\frac{x^{2}dx}{\left(x^{2}+a^{2}\right)^{2}}\ (a>0). \]
+\worklines
+\drill{6.}{}
+计算积分
+\[ I=\int_0^{\infty}\frac{\sin x}{x}\,dx. \]
+\worklines
+\drill{7.}{}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{x^{4}+a^{4}}, \]
+其中 $a>0$。
+\worklines
+\drill{8.}{}
+计算积分
+\[ I=\int_0^{\infty}\frac{\cos mx}{x^{2}+a^{2}}\,dx, \]
+其中 $m>0$、$a>0$。
+\worklines
+\drill{9.}{}
+计算积分
+\[ I=\int_0^{2\pi}e^{\cos\theta}\cos\left(n\theta-\sin\theta\right)d\theta \]
+的值。
+\worklines
+\drill{10.}{}
+求函数
+\[ f(z)=\frac{z-\sin z}{z^{6}} \]
+在 $z=0$ 处的留数（要求直接用留数的定义／洛朗展开计算，不要套规则 III）。
+\worklines
+\drill{11.}{}
+计算积分
+\[ I=\int_0^{\pi}\frac{a\,d\theta}{a^{2}+\sin^{2}\theta}, \]
+其中 $a>0$ 为实数。
+\worklines
+\drill{12.}{}
+利用留数定理计算如下积分：
+\[ 1)\ \oint_{C}\frac{dz}{\left(z^{2}+1\right)^{2}(z-1)},\ C:|z-1|=2;\qquad 2)\ \oint_{C}\frac{\cos z}{z^{3}}\,dz,\ C:|z|=1; \]
+\[ 3)\ \oint_{C}\frac{dz}{z\sin z},\ C:|z|=1;\qquad 4)\ \oint_{C}\frac{e^{2z}}{z^{2}+1}\,dz,\ C:|z|=2. \]
+\worklines
+\drill{13.}{}
+计算积分
+\[ \oint_{|z|=r>b}\frac{ze^{z}}{z^{2}-b^{2}}\,dz, \]
+其中 $b$ 为任意常数。要求分别用柯西公式与留数定理计算。
+\worklines
+\drill{14.}{}
+计算积分
+\[ \oint_{|z|=2}\frac{z}{z^{4}-1}\,dz, \]
+要求：1) 用柯西公式计算；2) 用留数定理计算。
+\worklines
+\drill{15.}{}
+计算积分
+\[ I=\int_0^{2\pi}\frac{d\theta}{1-2\varepsilon\cos\theta+\varepsilon^{2}}, \]
+其中 $0<\varepsilon<1$。
+\worklines
+\drill{16.}{}
+计算积分
+\[ I=\int_{-\infty}^{\infty}\frac{dx}{\left(1+x^{2}\right)^{3}}. \]
+\worklines
+\drill{17.}{}
+计算积分
+\[ I=\int_0^{\infty}\frac{x\sin mx}{\left(x^{2}+a^{2}\right)^{2}}\,dx, \]
+其中 $m>0$、$a>0$。
+\worklines
+\drill{18.}{}
+确定函数
+\[ f(z)=\frac{1}{\varepsilon z^{2}+2z+\varepsilon} \]
+在单位圆内的极点，并计算它沿单位圆周的积分值，其中 $0<\varepsilon<1$。
+\worklines
+\drill{19.}{}
+计算积分
+\[ I=\int_0^{2\pi}\frac{d\theta}{1+\varepsilon\cos\theta}, \]
+其中 $0<\varepsilon<1$。
+\worklines
+\drill{20.}{}
+计算函数
+\[ f(z)=\frac{1}{z^{3}(z-i)} \]
+在其奇点处的留数。
+\worklines
+\clearpage
+\chapterhead{五}{傅里叶变换}{§5.1 傅里叶级数　§5.2 傅里叶变换　§5.3 傅里叶变换的性质　§5.4 $\delta$ 函数}{本章 19 题：例题 12 · 作业 7\quad｜\quad 乱序编号 1--19}
+\mapbox{\textbf{本章方法地图}\quad 主线是「级数 $\to$ 积分 $\to$ 变换 $\to$ 性质 $\to$ $\delta$」。先由正交性得到系数公式，把周期函数写成谐波叠加；令周期趋于无穷，求和变积分，得到傅里叶积分与带 $\frac{1}{2\pi}$ 归一化的变换对；再用九条性质把求导、平移、卷积搬到像函数上，把微分方程变成代数方程；最后用 $\delta$ 把「点源」纳入同一套语言——这条链子正是下一章拉普拉斯变换和后面格林函数法的起点。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§5.1 傅里叶级数}{老师先立起「正交性 $\to$ 系数公式」这套机器，再用两个典型波形把 $a_0$、$a_n$、$b_n$ 三个积分跑一遍：锯齿波只留正弦项，对称方波只剩奇次谐波。}
+\ordereditem{C5-1}{例1}{p12--13}{先看奇偶性：$f$ 是奇函数，$a_0=a_n=0$；只剩 $b_n$，分部积分 $\int_0^l x\sin\frac{n\pi x}{l}dx$ 得 $2(-1)^n/(n\pi)$。}
+将如图所示的锯齿函数（周期 $2l$）展开成傅里叶级数：
+\[ f(x)=\begin{cases} -\dfrac{x}{l}, & -l\leq x\leq l,\\[2pt] f(x+2l), & \text{其它 }x. \end{cases} \]
+
+\ordereditem{C5-2}{例2}{p13}{对称方波也是奇函数，$a_0=a_n=0$；$b_n=\frac{2}{\pi}\int_0^{\pi}\frac{\pi}{4}\sin nx\,dx=\frac{1-\cos n\pi}{n}$，偶数项自动归零。}
+将如图所示的对称方波展开成傅里叶级数：
+\[ f(x)=\begin{cases} \dfrac{\pi}{4}, & 0<x<\pi,\\[4pt] -\dfrac{\pi}{4}, & -\pi<x<0. \end{cases} \]
+
+\grouphead{§5.2 傅里叶变换}{从级数过渡到积分之后，老师用五个例子把这套工具的五种用法摆开：偶/奇函数化简（矩形脉冲、正弦脉冲串）、高斯积分、对偶关系验证、三维球坐标变换。}
+\ordereditem{C5-3}{例1}{p24}{偶函数，$B(\omega)=0$；$A(\omega)=\frac{2}{\pi}\int_0^T\cos\omega t\,dt$ 得 $\sin(\omega T)/\omega$。末尾令 $t=0$、$T=1$ 反读出 Dirichlet 积分。}
+讨论矩形脉冲函数
+\[ f(t)=\begin{cases} 1, & |t|<T,\\ 0, & |t|>T \end{cases} \]
+的傅里叶积分变换，其中 $T$ 为脉冲半宽度。
+
+\ordereditem{C5-4}{例2}{p25}{奇函数，$A(\omega)=0$；积化和差把 $\sin\omega_0t\sin\omega t$ 拆成两个余弦，上限 $2N\pi/\omega_0$ 恰好让 $2N\pi$ 项消掉。}
+讨论函数
+\[ f(t)=\begin{cases} A\sin(\omega_0 t), & |t|<\dfrac{2N\pi}{\omega_0},\\[8pt] 0, & |t|>\dfrac{2N\pi}{\omega_0} \end{cases} \]
+的傅里叶积分变换。
+
+\ordereditem{C5-5}{例3}{p32}{被积函数是高斯型，套 $\int_0^{\infty}e^{-\alpha x^2}\cos bx\,dx=\frac12\sqrt{\pi/\alpha}\,e^{-b^2/4\alpha}$，把 $\alpha=a^2/2$ 代入即可。}
+求函数
+\[ f(x)=\sqrt{\frac{a}{\pi}}\,e^{-\frac{a^2x^2}{2}} \]
+的傅里叶积分变换式，其中 $a>0$。
+
+\ordereditem{C5-6}{例4}{p33}{双向验证：正向对 $\sin\omega_0t/(\pi t)$ 积分得矩形；反向用 $\frac{1}{2\pi}\int_{-\omega_0}^{\omega_0}e^{-i\omega t}d\omega$ 回代，两次都落到 $\sin(\omega_0t)/(\pi t)$。}
+求证函数
+\[ f(t)=\frac{\sin\omega_0t}{\pi t},\qquad F(\omega)=\begin{cases}1, & |\omega|<\omega_0,\\ 0, & |\omega|>\omega_0\end{cases} \]
+是一对傅里叶变换。
+
+\ordereditem{C5-7}{例5}{p36--38}{三维球坐标、$\mathbf{k}$ 沿 $z$ 轴：$\varphi$ 积出 $2\pi$，$\theta$ 积出 $2\sin(kr)/(kr)$，剩下 $\int_0^{\infty}e^{-r/\lambda}\sin(kr)\,dr$ 分部两次。}
+在电介质（如等离子体）中，带电粒子间的相互作用势要受到屏蔽，即所谓的屏蔽库仑势
+\[ f(r)=\frac{1}{r}\,e^{-r/\lambda}, \]
+其中 $\lambda>0$ 为常数（屏蔽长度）。求 $f(r)$ 的傅里叶变换。
+
+\grouphead{§5.3 傅里叶变换的性质}{九条性质（导数、积分、相似、延迟、位移、卷积、乘积）逐条证完之后，老师用一道卷积型积分方程收尾：把方程认成卷积，两边作变换，解代数方程再逆变换。}
+\ordereditem{C5-8}{例1}{p49--50}{左边认成卷积 $f*\frac{1}{x^2+a^2}$；用卷积定理与 $\mathcal{F}\left[\frac{1}{x^2+a^2}\right]=\frac{1}{2a}e^{-a|k|}$ 解出 $\mathcal{F}[f]$，再逆变换。}
+已知积分
+\[ \int_{-\infty}^{\infty}\frac{f(\eta)\,d\eta}{(x-\eta)^2+a^2}=\frac{1}{x^2+b^2},\qquad 0<a<b, \]
+求 $f(x)$。
+
+\grouphead{§5.4 $\delta$ 函数}{从 $\delta$ 的三种辅助函数（矩形、$\sin kx/x$、Lorentz 型）出发，老师接着示范 $\delta$ 在变换里的四类用法：正弦/余弦的像、球坐标 $\delta$、含 $\delta$ 的常微分方程、由 $\delta$ 源构造格林函数。}
+\ordereditem{C5-9}{例1}{p59}{把 $\sin ax$、$\cos ax$ 写成指数差/和，再用 $\int e^{-i(k\mp a)x}dx=2\pi\delta(k\mp a)$ 收成 $\delta$ 组合。}
+求函数 $\sin ax$ 和 $\cos ax$ 的傅里叶变换，其中 $a$ 是实常数。
+
+\ordereditem{C5-10}{例2}{p60}{球坐标下 $\delta(r-r_0)$ 直接把 $r$ 积分取掉，只剩 $\int_0^{\pi}\sin\theta\,e^{-ikr_0\cos\theta}d\theta=2\sin(kr_0)/(kr_0)$。}
+在球坐标系中计算函数
+\[ f(r)=\frac{4\pi^{2}}{r}\,\delta(r-r_0) \]
+的傅里叶变换。
+
+\ordereditem{C5-11}{例3}{p61}{对 $x$ 作变换：$g''\to(ik)^2G$，$\delta(x-x_0)\to\frac{1}{2\pi}e^{-ikx_0}$；代数解出 $G$ 后逆变换，回到 $e^{-a|x-x_0|}$。}
+利用傅里叶积分变换，求解含 $\delta$ 函数的常微分方程
+\[ \frac{d^{2}g(x)}{dx^{2}}-a^{2}g(x)=\delta(x-x_0)\qquad(-\infty<x<\infty), \]
+其中 $a>0$，$x_0$ 为给定常数。
+
+\ordereditem{C5-12}{例4}{p62}{把 $f(x)$ 用 $\delta$ 展开，令 $u=\int g(x,x')f(x')dx'$，问题化为 $g$ 满足 $\delta$ 源；直接借用例 3 的结果。}
+利用 $\delta$ 函数的性质，求解常微分方程
+\[ \begin{cases} \dfrac{d^{2}u(x)}{dx^{2}}-a^{2}u(x)=f(x), & (-\infty<x<\infty),\\[8pt] u(x)\big|_{x\to\pm\infty}=0. \end{cases} \]
+
+\grouphead{§ 第五章作业}{作业 1--4 练级数（三角恒等、奇偶性、复数形式），5--7 练变换（含 $\delta$ 的极限情形与 Fresnel 型积分）。}
+\ordereditem{C5-13}{作业1}{p39}{对应级数系数公式；$\cos^3x$ 是偶函数，用三倍角公式化开最省事。}
+将函数 $f(x)=\cos^{3}x$ 表示成傅里叶级数的形式。
+
+\ordereditem{C5-14}{作业2}{p39}{奇函数，$a_0=a_n=0$；只算 $b_n$，注意区间 $(-l,l)$ 与 $f=x/3$ 带来的因子 $1/3$。}
+将函数 $f(x)=\dfrac{x}{3}$ 在 $(-l,l)$ 区间内展开成傅里叶级数。
+
+\ordereditem{C5-15}{作业3}{p39}{$|\sin\omega t|$ 的周期是 $T=\pi/\omega$；偶函数只剩余弦项，用积化和差算 $a_n$。}
+将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数（取 $T=\pi/\omega$，即 $|\sin\omega t|$ 的周期）。
+
+\ordereditem{C5-16}{作业4}{p39}{按复数形式 $c_n=\frac{1}{T}\int_{-T_0/2}^{T_0/2}He^{-in\omega_0t}dt$ 算，矩形脉冲积出 $\sin$ 包络；$n=0$ 单独算。}
+将矩形波
+\[ f(t)=\begin{cases} 0, & -T/2\leq t<-T_0/2,\\ H, & -T_0/2\leq t\leq T_0/2,\\ 0, & T_0/2<t\leq T/2 \end{cases} \]
+在 $(-T/2,T/2)$ 内展开为复数形式的傅里叶级数，其中 $H$、$T$、$T_0$ 为常数。
+
+\ordereditem{C5-17}{作业5}{p63}{0 到 $T$ 上的 $t$：$F(\omega)=\int_0^T t\,e^{i\omega t}dt$，分部积分一次即可。}
+求锯齿波
+\[ f(t)=\begin{cases} 0, & t<0,\\ t, & 0\leq t\leq T,\\ 0, & t>T \end{cases} \]
+的复数形式的傅里叶变换。
+
+\ordereditem{C5-18}{作业6}{p63}{指数衰减的像为 $1/(\alpha-i\omega)$；$\alpha\to0^{+}$ 时把 $1/\omega$ 的极点按主值加 $i\pi\delta(\omega)$ 处理。}
+求函数
+\[ f(t)=\begin{cases} 0, & (t<0),\\ e^{-\alpha t}, & (t\geq0) \end{cases} \]
+的傅里叶变换，其中 $\alpha$ 为：(1) 有限大小的正数，即 $\alpha>0$；(2) 无穷小的正数，即 $\alpha\to0^{+}$。
+
+\ordereditem{C5-19}{作业7}{p63}{Fresnel 型积分 $\int e^{\pm i\alpha x^{2}}e^{-ikx}dx=\sqrt{\pi/\alpha}\,e^{\pm i(\pi/4-k^{2}/4\alpha)}$；再取实部或虚部。}
+求如下函数的复数形式的傅里叶变换，其中 $\alpha>0$：
+\[ (1)\ f(x)=\cos(\alpha x^{2});\qquad (2)\ f(x)=\sin(\alpha x^{2}). \]
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 19 题打乱，只给题干}
+\drill{1.}{}
+讨论矩形脉冲函数
+\[ f(t)=\begin{cases} 1, & |t|<T,\\ 0, & |t|>T \end{cases} \]
+的傅里叶积分变换，其中 $T$ 为脉冲半宽度。
+\worklines
+\drill{2.}{}
+利用 $\delta$ 函数的性质，求解常微分方程
+\[ \begin{cases} \dfrac{d^{2}u(x)}{dx^{2}}-a^{2}u(x)=f(x), & (-\infty<x<\infty),\\[8pt] u(x)\big|_{x\to\pm\infty}=0. \end{cases} \]
+\worklines
+\drill{3.}{}
+求证函数
+\[ f(t)=\frac{\sin\omega_0t}{\pi t},\qquad F(\omega)=\begin{cases}1, & |\omega|<\omega_0,\\ 0, & |\omega|>\omega_0\end{cases} \]
+是一对傅里叶变换。
+\worklines
+\drill{4.}{}
+求函数 $\sin ax$ 和 $\cos ax$ 的傅里叶变换，其中 $a$ 是实常数。
+\worklines
+\drill{5.}{}
+求锯齿波
+\[ f(t)=\begin{cases} 0, & t<0,\\ t, & 0\leq t\leq T,\\ 0, & t>T \end{cases} \]
+的复数形式的傅里叶变换。
+\worklines
+\drill{6.}{}
+将函数 $f(x)=\cos^{3}x$ 表示成傅里叶级数的形式。
+\worklines
+\drill{7.}{}
+利用傅里叶积分变换，求解含 $\delta$ 函数的常微分方程
+\[ \frac{d^{2}g(x)}{dx^{2}}-a^{2}g(x)=\delta(x-x_0)\qquad(-\infty<x<\infty), \]
+其中 $a>0$，$x_0$ 为给定常数。
+\worklines
+\drill{8.}{}
+已知积分
+\[ \int_{-\infty}^{\infty}\frac{f(\eta)\,d\eta}{(x-\eta)^2+a^2}=\frac{1}{x^2+b^2},\qquad 0<a<b, \]
+求 $f(x)$。
+\worklines
+\drill{9.}{}
+将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数（取 $T=\pi/\omega$，即 $|\sin\omega t|$ 的周期）。
+\worklines
+\drill{10.}{}
+将如图所示的锯齿函数（周期 $2l$）展开成傅里叶级数：
+\[ f(x)=\begin{cases} -\dfrac{x}{l}, & -l\leq x\leq l,\\[2pt] f(x+2l), & \text{其它 }x. \end{cases} \]
+\worklines
+\drill{11.}{}
+将函数 $f(x)=\dfrac{x}{3}$ 在 $(-l,l)$ 区间内展开成傅里叶级数。
+\worklines
+\drill{12.}{}
+求函数
+\[ f(t)=\begin{cases} 0, & (t<0),\\ e^{-\alpha t}, & (t\geq0) \end{cases} \]
+的傅里叶变换，其中 $\alpha$ 为：(1) 有限大小的正数，即 $\alpha>0$；(2) 无穷小的正数，即 $\alpha\to0^{+}$。
+\worklines
+\drill{13.}{}
+将矩形波
+\[ f(t)=\begin{cases} 0, & -T/2\leq t<-T_0/2,\\ H, & -T_0/2\leq t\leq T_0/2,\\ 0, & T_0/2<t\leq T/2 \end{cases} \]
+在 $(-T/2,T/2)$ 内展开为复数形式的傅里叶级数，其中 $H$、$T$、$T_0$ 为常数。
+\worklines
+\drill{14.}{}
+讨论函数
+\[ f(t)=\begin{cases} A\sin(\omega_0 t), & |t|<\dfrac{2N\pi}{\omega_0},\\[8pt] 0, & |t|>\dfrac{2N\pi}{\omega_0} \end{cases} \]
+的傅里叶积分变换。
+\worklines
+\drill{15.}{}
+在球坐标系中计算函数
+\[ f(r)=\frac{4\pi^{2}}{r}\,\delta(r-r_0) \]
+的傅里叶变换。
+\worklines
+\drill{16.}{}
+在电介质（如等离子体）中，带电粒子间的相互作用势要受到屏蔽，即所谓的屏蔽库仑势
+\[ f(r)=\frac{1}{r}\,e^{-r/\lambda}, \]
+其中 $\lambda>0$ 为常数（屏蔽长度）。求 $f(r)$ 的傅里叶变换。
+\worklines
+\drill{17.}{}
+求如下函数的复数形式的傅里叶变换，其中 $\alpha>0$：
+\[ (1)\ f(x)=\cos(\alpha x^{2});\qquad (2)\ f(x)=\sin(\alpha x^{2}). \]
+\worklines
+\drill{18.}{}
+将如图所示的对称方波展开成傅里叶级数：
+\[ f(x)=\begin{cases} \dfrac{\pi}{4}, & 0<x<\pi,\\[4pt] -\dfrac{\pi}{4}, & -\pi<x<0. \end{cases} \]
+\worklines
+\drill{19.}{}
+求函数
+\[ f(x)=\sqrt{\frac{a}{\pi}}\,e^{-\frac{a^2x^2}{2}} \]
+的傅里叶积分变换式，其中 $a>0$。
+\worklines
+\clearpage
+\chapterhead{六}{拉普拉斯变换}{§6.1 拉普拉斯变换　§6.2 拉普拉斯变换的性质　§6.3 拉普拉斯变换的反演　§6.4 拉普拉斯变换的应用}{本章 29 题：例题 26 · 作业 3\quad｜\quad 乱序编号 1--29}
+\mapbox{\textbf{本章方法地图}\quad 主线是「定义 $\to$ 性质表 $\to$ 反演 $\to$ 解题」。先用定义把 $1$、$e^{\alpha t}$、$t^{n}$、$\sin\omega t$ 这些基本函数逐一算成 $p$ 的函数，凑出一张像函数表；再用线性、导数、积分、相似、位移、延迟、卷积七条性质，把「求导」换成「乘 $p$」；反演则反过来：查表、拆项、配平方、卷积、必要时用留数；最后 §6.4 用这套东西一次解决电路、振子、微分方程组和几类特殊积分——它的价值就在于把含初值的常微分方程直接变成代数方程。}
+\sechead{A}{顺序清单\quad 按课件讲授顺序，保留老师的讲解线索}
+\grouphead{§6.1 拉普拉斯变换（按定义算）}{老师用六道例题把基本函数的像函数逐个算出来，方法都一样：写出 $\int_0^{\infty}f(t)e^{-pt}dt$，凑成 $\int_0^{\infty}e^{-(p-\alpha)t}dt=1/(p-\alpha)$，或者用分部积分降幂。算完这六个，后面的题基本就是查表加性质。}
+\ordereditem{C6-1}{例1}{p7}{直接积 $\int_0^{\infty}e^{-pt}dt$，上限代入为零（要求 $\mathrm{Re}\,p>0$）。}
+求函数 $f(t)=1$ 的拉普拉斯变换。
+
+\ordereditem{C6-2}{例2}{p7}{合并指数：$\int_0^{\infty}e^{-(p-\alpha)t}dt$，收敛要求 $\mathrm{Re}\,p>\mathrm{Re}\,\alpha$。}
+求函数 $f(t)=e^{\alpha t}$ 的拉普拉斯变换。
+
+\ordereditem{C6-3}{例3}{p8}{$n=1$ 时分部积分一次得 $1/p^{2}$，$n=2$ 时得 $2/p^{3}$；也可用「对 $p$ 求导」的办法（方法 2）。}
+求函数 $f(t)=t^{n}$ 的拉普拉斯变换。
+
+\ordereditem{C6-4}{例4}{p9}{照例 3 的办法，把 $p$ 换成 $p-\alpha$：$\int_0^{\infty}te^{-(p-\alpha)t}dt$。}
+求函数 $f(t)=te^{\alpha t}$ 的拉普拉斯变换，并类推 $t^{n}e^{\alpha t}$ 的像函数。
+
+\ordereditem{C6-5}{例5}{p10}{把 $\sin\omega t$、$\cos\omega t$ 写成 $e^{\pm i\omega t}$ 的组合，再用 $\int_0^{\infty}e^{-(p\mp i\omega)t}dt=1/(p\mp i\omega)$。}
+求函数 $f(t)=\sin\omega t$、$\cos\omega t$ 的拉普拉斯变换。
+
+\ordereditem{C6-6}{例6}{p11}{$\sinh\omega t=\frac12(e^{\omega t}-e^{-\omega t})$、$\cosh\omega t=\frac12(e^{\omega t}+e^{-\omega t})$，化成两个指数项再积。}
+求函数 $f(t)=\mathrm{sh}\,\omega t$、$\mathrm{ch}\,\omega t$ 的拉普拉斯变换。
+
+\grouphead{§6.2 拉普拉斯变换的性质}{性质表的用法是「认结构」：能拆成线性组合就拆（例 1），含初值的二阶导就用导数定理 I（例 2），乘了 $t$ 就用导数定理 II（例 3），自变量被缩放就用相似性定理（例 4）。这四条正是后面反演与应用的全部工具。}
+\ordereditem{C6-7}{例1}{p13}{$\sin\omega t=\frac{1}{2i}e^{i\omega t}-\frac{1}{2i}e^{-i\omega t}$，用线性定理把两个指数的像函数相减。}
+用线性定理求函数 $\sin\omega t$ 的拉普拉斯变换。
+
+\ordereditem{C6-8}{例2}{p15}{对 $f''+\omega^{2}f=0$ 两边取变换，$f''\to p^{2}F-pf(0)-f'(0)$，代入 $f(0)=1$、$f'(0)=0$ 得 $F=\frac{p}{p^{2}+\omega^{2}}$。}
+已知函数 $f(t)$ 满足
+\[ \frac{d^{2}f(t)}{dt^{2}}+\omega^{2}f(t)=0, \]
+初值 $f(0)=1$、$f'(0)=0$。试用拉普拉斯变换的导数定理 I 求解该方程。
+
+\ordereditem{C6-9}{例3}{p17}{导数定理 II：$t^{n}f(t)\risingdotseq(-1)^{n}\frac{d^{n}F}{dp^{n}}$，对 $F=1/(p-\alpha)$ 连求 $n$ 阶导。}
+利用导数定理 II，求函数 $t^{n}e^{\alpha t}$ 的拉普拉斯变换。
+
+\ordereditem{C6-10}{例4}{p20}{先验证 $e^{t}\risingdotseq\frac{1}{p-1}$，再用相似性定理 $f(at)\risingdotseq\frac1aF(p/a)$，取 $a$ 即得。}
+已知 $e^{t}\risingdotseq\dfrac{1}{p-1}$，利用相似性定理求 $e^{at}$ 的拉普拉斯变换。
+
+\grouphead{§6.3 拉普拉斯变换的反演}{八道题按「像函数长什么样」排：能拆成两个已知像函数之和就拆（例 1--3），含 $1/p$ 因子的就用卷积或部分分式（例 4--6），分母是平方的就对参数求导（例 7、8）。老师对例 4、5、7 都给了两种方法，考的就是「拆项」与「定理」哪条更省事。}
+\ordereditem{C6-11}{例1}{p27}{部分分式拆成 $\frac{1}{b^{2}-a^{2}}\left(\frac{1}{p^{2}+a^{2}}-\frac{1}{p^{2}+b^{2}}\right)$，再凑成 $\frac{\omega}{p^{2}+\omega^{2}}$ 的标准形。}
+求像函数
+\[ F(p)=\frac{1}{\left(p^{2}+a^{2}\right)\left(p^{2}+b^{2}\right)} \]
+的反演。
+
+\ordereditem{C6-12}{例2}{p28}{这就是 $\frac{\omega}{p^{2}+\omega^{2}}$ 把 $p$ 换成 $p+\lambda$，直接用位移定理乘 $e^{-\lambda t}$。}
+求像函数
+\[ F(p)=\frac{\omega}{(p+\lambda)^{2}+\omega^{2}} \]
+的反演，其中 $\lambda$ 为复数。
+
+\ordereditem{C6-13}{例3}{p28}{先把分子配成 $p+\lambda$：$F=\frac{p+\lambda}{(p+\lambda)^{2}+\omega^{2}}-\frac{\lambda}{\omega}\frac{\omega}{(p+\lambda)^{2}+\omega^{2}}$，两项分别用位移定理。}
+求像函数
+\[ F(p)=\frac{p}{(p+\lambda)^{2}+\omega^{2}} \]
+的反演，其中 $\lambda$ 为复数。
+
+\ordereditem{C6-14}{例4}{p29}{两种办法：拆成 $\frac{1}{p}-\frac{1}{p-1}+\frac{1}{(p-1)^{2}}$；或写成 $\frac1p\cdot\frac{1}{(p-1)^{2}}$ 用卷积定理积一次。}
+求像函数
+\[ F(p)=\frac{1}{p(p-1)^{2}} \]
+的反演。
+
+\ordereditem{C6-15}{例5}{p30}{拆成 $\frac{1}{p^{2}}-\frac{1}{p-1}+\frac{1}{p}$；或用卷积 $-\int_0^{t}\tau e^{t-\tau}d\tau$。}
+求像函数
+\[ F(p)=-\frac{1}{p^{2}(p-1)} \]
+的反演。
+
+\ordereditem{C6-16}{例6}{p31}{拆成 $\frac{1}{p+\alpha}$ 与 $\frac{\omega}{p^{2}+\omega^{2}}$ 的卷积：$e^{-\alpha t}*\sin\omega t$，把正弦拆成指数再积。}
+求像函数
+\[ F(p)=\frac{\omega}{(p+\alpha)\left(p^{2}+\omega^{2}\right)} \]
+的反演。
+
+\ordereditem{C6-17}{例7}{p32}{对参数求导：$\frac{d}{d\omega}\frac{p}{p^{2}+\omega^{2}}=-\frac{2\omega p}{(p^{2}+\omega^{2})^{2}}$，于是 $F=-\frac{1}{2\omega}\frac{d}{d\omega}\frac{p}{p^{2}+\omega^{2}}$，对应 $-\frac{1}{2\omega}\frac{d}{d\omega}\cos\omega t$。}
+求像函数
+\[ F(p)=\frac{p}{\left(p^{2}+\omega^{2}\right)^{2}} \]
+的反演。
+
+\ordereditem{C6-18}{例8}{p33}{$\frac{d}{d\omega}\frac{1}{p^{2}+\omega^{2}}=-\frac{2\omega}{(p^{2}+\omega^{2})^{2}}$，所以 $F=-\frac12\frac{d}{d\omega}\left(\frac{1}{\omega}\cdot\frac{\omega}{p^{2}+\omega^{2}}\right)$，对 $\frac{\sin\omega t}{\omega}$ 求导。}
+求像函数
+\[ F(p)=\frac{\omega}{\left(p^{2}+\omega^{2}\right)^{2}} \]
+的反演。
+
+\grouphead{§6.4 拉普拉斯变换的应用}{五个物理模型（LR 回路、LC 放电、LR 交流、弹簧振子、微分方程组）走的是同一套路：列方程 $\to$ 取变换把初值自动装进去 $\to$ 解代数方程得 $F(p)$ $\to$ 反演。后面三道是「反过来用」：把待求积分当成某函数的像，先算变换再反演。}
+\ordereditem{C6-19}{例1}{p35}{$L\,di/dt+Ri=E$，变换后 $L[pI-i(0)]+RI=E/p$，$i(0)=0$；部分分式拆成 $1/p$ 与 $1/(p+R/L)$。}
+电感—电阻串联回路中，开关 $K$ 合上之前回路没有电流。求开关合上（接入直流电动势 $E$）之后回路中的电流 $i(t)$。
+
+\ordereditem{C6-20}{例2}{p36}{$i=-dq/dt$、$q(t)=-\int_0^ti(\tau)d\tau+q_0$，回路方程 $L\,di/dt=q/C$；变换时用积分定理得 $I(p)=\frac{q_0}{LCp^{2}+1}$。}
+电感—电容串联回路中，电容器上初始电荷为 $q_0$。当电容器放电时，回路中的电流 $i(t)$ 是多少（$i(0)=0$）？
+
+\ordereditem{C6-21}{例3}{p37}{$L\,di/dt+Ri=E_0\sin\omega t$，变换后 $I=\frac{E_0}{L}\frac{1}{p+R/L}\frac{\omega}{p^{2}+\omega^{2}}$，用卷积定理积出暂态项与强迫振荡项。}
+电感—电阻回路中，交变电源的电压为 $E(t)=E_0\sin\omega t$。开关闭合（$i(0)=0$）后，求回路中的电流 $i(t)$。
+
+\ordereditem{C6-22}{例4}{p38--39}{$m\ddot x+kx=f_0\sin\omega t$，令 $\omega_0=\sqrt{k/m}$；$X(p)=\frac{f_0\omega}{m}\frac{1}{(p^{2}+\omega_0^{2})(p^{2}+\omega^{2})}$，照 §6.3 例 1 的样子拆。$\omega=\omega_0$ 时改用 $\frac{\omega}{(p^{2}+\omega^{2})^{2}}$ 的反演。}
+质量为 $m$、弹性系数为 $k$ 的弹簧振子在外力 $f(t)=f_0\sin\omega t$ 作用下运动，方程为
+\[ m\frac{d^{2}x}{dt^{2}}+kx=f_0\sin\omega t, \]
+初始位移与速度均为零。求 $x(t)$，并讨论 $\omega=\omega_0=\sqrt{k/m}$ 的共振情形。
+
+\ordereditem{C6-23}{例5}{p40}{对方程组逐式取变换，把 $y(0)=1$、$z(0)=3$ 代进去，得到关于 $Y(p)$、$Z(p)$ 的二元一次方程组。}
+利用拉普拉斯变换求解微分方程组
+\[ \begin{cases} \dfrac{dy}{dt}+2y+2z=10e^{2t},\\[4pt] \dfrac{dz}{dt}+z-2y=7e^{2t}, \end{cases} \]
+其中初始条件为 $y(0)=1$、$z(0)=3$。
+
+\ordereditem{C6-24}{例6}{p43}{把 $I(t)=\int_0^{\infty}\frac{\cos tx}{x^{2}+a^{2}}dx$ 关于 $t$ 取变换得 $I(p)=\int_0^{\infty}\frac{p}{(x^{2}+a^{2})(p^{2}+x^{2})}dx$，再用留数算这个定积分，最后反演。}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\cos(tx)}{x^{2}+a^{2}}\,dx, \]
+其中 $a>0$。
+
+\ordereditem{C6-25}{例7}{p44}{$\sin(tx)\risingdotseq\frac{x}{p^{2}+x^{2}}$，于是 $I(p)=\int_0^{\infty}\frac{dx}{x^{2}+p^{2}}=\frac{\pi}{2p}$，再反演得常数。}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\sin(tx)}{x}\,dx, \]
+其中 $t>0$。
+
+\ordereditem{C6-26}{例8}{p44}{先降幂 $\sin^{2}tx=\frac{1-\cos 2tx}{2}$，再对 $t$ 取变换：$\frac{1}{2x^{2}}\left[\frac1p-\frac{p}{p^{2}+4x^{2}}\right]$，积出 $\frac{1}{2p}\int_0^{\infty}\frac{dx}{x^{2}+p^{2}/4}$。}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\sin^{2}(tx)}{x^{2}}\,dx, \]
+其中 $t>0$。
+
+\grouphead{§ 第六章作业}{作业 1 练「由原函数求像函数」（乘法公式、导数定理 II、线性定理各一道），作业 2 练反演（含重根与平方分母），作业 3 的四个小题把 §6.4 的四种套路各考一遍：一阶、一阶非齐次、二阶带初值、二阶带任意源。}
+\ordereditem{C6-27}{作业1}{p25}{1) 位移定理；2) 导数定理 II 作用在 $\cos\omega t$ 上；3) 线性定理拆成 $1$ 与 $\cos\omega t$。}
+求下列函数的像函数：
+\[ 1)\ te^{-\omega t};\qquad 2)\ t\cos\omega t;\qquad 3)\ \frac{1-\cos\omega t}{\omega}. \]
+
+\ordereditem{C6-28}{作业2}{p46}{1) 用 $t^{n}e^{\alpha t}$ 的表；2) 拆成 $\frac{3}{2}\left(\frac{1}{p-1}+\frac{1}{p+1}\right)$；3) 就是 §6.3 例 7。}
+求下列像函数的反演：
+\[ 1)\ \frac{6}{(p+1)^{2}};\qquad 2)\ \frac{3p}{p^{2}-1};\qquad 3)\ \frac{p}{\left(p^{2}+\omega^{2}\right)^{2}}\ (\omega>0). \]
+
+\ordereditem{C6-29}{作业3}{p46}{四小题都是「取变换 → 解出 $Y(p)$ → 反演」；第 3 小题是重根 $\Rightarrow$ $(C_1+C_2t)e^{-2t}$ 加特解；第 4 小题用卷积定理直接得格林函数形式的解。}
+利用拉普拉斯变换求解如下常微分方程：
+\[ 1)\ \begin{cases}\dfrac{dy}{dt}+y=1,\\[3pt] y(0)=0;\end{cases}\qquad
+2)\ \begin{cases}\dfrac{dy}{dt}-y=-3e^{-2t},\\[3pt] y(0)=2;\end{cases} \]
+\[ 3)\ \begin{cases}\dfrac{d^{2}y}{dt^{2}}+4\dfrac{dy}{dt}+4y=\sin\omega t,\\[6pt] y(0)=y_0,\ y'(0)=y_1;\end{cases}\qquad
+4)\ \begin{cases}\dfrac{d^{2}T}{dt^{2}}+a^{2}\omega^{2}T=f(t),\\[6pt] T(0)=T'(0)=0.\end{cases} \]
+
+\clearpage
+\sechead{B}{乱序练习单\quad 本章 29 题打乱，只给题干}
+\drill{1.}{}
+电感—电阻回路中，交变电源的电压为 $E(t)=E_0\sin\omega t$。开关闭合（$i(0)=0$）后，求回路中的电流 $i(t)$。
+\worklines
+\drill{2.}{}
+求像函数
+\[ F(p)=\frac{1}{p(p-1)^{2}} \]
+的反演。
+\worklines
+\drill{3.}{}
+求像函数
+\[ F(p)=\frac{p}{\left(p^{2}+\omega^{2}\right)^{2}} \]
+的反演。
+\worklines
+\drill{4.}{}
+求函数 $f(t)=t^{n}$ 的拉普拉斯变换。
+\worklines
+\drill{5.}{}
+求函数 $f(t)=\mathrm{sh}\,\omega t$、$\mathrm{ch}\,\omega t$ 的拉普拉斯变换。
+\worklines
+\drill{6.}{}
+求像函数
+\[ F(p)=\frac{1}{\left(p^{2}+a^{2}\right)\left(p^{2}+b^{2}\right)} \]
+的反演。
+\worklines
+\drill{7.}{}
+利用拉普拉斯变换求解如下常微分方程：
+\[ 1)\ \begin{cases}\dfrac{dy}{dt}+y=1,\\[3pt] y(0)=0;\end{cases}\qquad
+2)\ \begin{cases}\dfrac{dy}{dt}-y=-3e^{-2t},\\[3pt] y(0)=2;\end{cases} \]
+\[ 3)\ \begin{cases}\dfrac{d^{2}y}{dt^{2}}+4\dfrac{dy}{dt}+4y=\sin\omega t,\\[6pt] y(0)=y_0,\ y'(0)=y_1;\end{cases}\qquad
+4)\ \begin{cases}\dfrac{d^{2}T}{dt^{2}}+a^{2}\omega^{2}T=f(t),\\[6pt] T(0)=T'(0)=0.\end{cases} \]
+\worklines
+\drill{8.}{}
+求下列函数的像函数：
+\[ 1)\ te^{-\omega t};\qquad 2)\ t\cos\omega t;\qquad 3)\ \frac{1-\cos\omega t}{\omega}. \]
+\worklines
+\drill{9.}{}
+求像函数
+\[ F(p)=-\frac{1}{p^{2}(p-1)} \]
+的反演。
+\worklines
+\drill{10.}{}
+求像函数
+\[ F(p)=\frac{\omega}{(p+\lambda)^{2}+\omega^{2}} \]
+的反演，其中 $\lambda$ 为复数。
+\worklines
+\drill{11.}{}
+求像函数
+\[ F(p)=\frac{p}{(p+\lambda)^{2}+\omega^{2}} \]
+的反演，其中 $\lambda$ 为复数。
+\worklines
+\drill{12.}{}
+已知 $e^{t}\risingdotseq\dfrac{1}{p-1}$，利用相似性定理求 $e^{at}$ 的拉普拉斯变换。
+\worklines
+\drill{13.}{}
+求函数 $f(t)=te^{\alpha t}$ 的拉普拉斯变换，并类推 $t^{n}e^{\alpha t}$ 的像函数。
+\worklines
+\drill{14.}{}
+已知函数 $f(t)$ 满足
+\[ \frac{d^{2}f(t)}{dt^{2}}+\omega^{2}f(t)=0, \]
+初值 $f(0)=1$、$f'(0)=0$。试用拉普拉斯变换的导数定理 I 求解该方程。
+\worklines
+\drill{15.}{}
+求函数 $f(t)=1$ 的拉普拉斯变换。
+\worklines
+\drill{16.}{}
+利用导数定理 II，求函数 $t^{n}e^{\alpha t}$ 的拉普拉斯变换。
+\worklines
+\drill{17.}{}
+求函数 $f(t)=\sin\omega t$、$\cos\omega t$ 的拉普拉斯变换。
+\worklines
+\drill{18.}{}
+求下列像函数的反演：
+\[ 1)\ \frac{6}{(p+1)^{2}};\qquad 2)\ \frac{3p}{p^{2}-1};\qquad 3)\ \frac{p}{\left(p^{2}+\omega^{2}\right)^{2}}\ (\omega>0). \]
+\worklines
+\drill{19.}{}
+求像函数
+\[ F(p)=\frac{\omega}{(p+\alpha)\left(p^{2}+\omega^{2}\right)} \]
+的反演。
+\worklines
+\drill{20.}{}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\sin^{2}(tx)}{x^{2}}\,dx, \]
+其中 $t>0$。
+\worklines
+\drill{21.}{}
+用线性定理求函数 $\sin\omega t$ 的拉普拉斯变换。
+\worklines
+\drill{22.}{}
+质量为 $m$、弹性系数为 $k$ 的弹簧振子在外力 $f(t)=f_0\sin\omega t$ 作用下运动，方程为
+\[ m\frac{d^{2}x}{dt^{2}}+kx=f_0\sin\omega t, \]
+初始位移与速度均为零。求 $x(t)$，并讨论 $\omega=\omega_0=\sqrt{k/m}$ 的共振情形。
+\worklines
+\drill{23.}{}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\sin(tx)}{x}\,dx, \]
+其中 $t>0$。
+\worklines
+\drill{24.}{}
+求函数 $f(t)=e^{\alpha t}$ 的拉普拉斯变换。
+\worklines
+\drill{25.}{}
+电感—电阻串联回路中，开关 $K$ 合上之前回路没有电流。求开关合上（接入直流电动势 $E$）之后回路中的电流 $i(t)$。
+\worklines
+\drill{26.}{}
+利用拉普拉斯变换方法计算积分
+\[ I(t)=\int_0^{\infty}\frac{\cos(tx)}{x^{2}+a^{2}}\,dx, \]
+其中 $a>0$。
+\worklines
+\drill{27.}{}
+利用拉普拉斯变换求解微分方程组
+\[ \begin{cases} \dfrac{dy}{dt}+2y+2z=10e^{2t},\\[4pt] \dfrac{dz}{dt}+z-2y=7e^{2t}, \end{cases} \]
+其中初始条件为 $y(0)=1$、$z(0)=3$。
+\worklines
+\drill{28.}{}
+求像函数
+\[ F(p)=\frac{\omega}{\left(p^{2}+\omega^{2}\right)^{2}} \]
+的反演。
+\worklines
+\drill{29.}{}
+电感—电容串联回路中，电容器上初始电荷为 $q_0$。当电容器放电时，回路中的电流 $i(t)$ 是多少（$i(0)=0$）？
+\worklines
+\clearpage
+\begin{center}{\color{deepblue}\LARGE\bfseries 答案结果清单}\\[3pt]{\small\color{inkgray}只给最终结果，不给过程；编号与各章乱序练习单一致}\end{center}
+\vspace{3pt}\noindent{\color{deepblue}\rule{\linewidth}{1.1pt}}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第一章\quad 复变函数}\hfill{\scriptsize\color{inkgray}乱序编号 1--7}\par\vspace{2pt}
+\answ{1.}{C1-4}{$u=\dfrac{\cos\theta}{r}$，$v=-\dfrac{\sin\theta}{r}$，于是
+\[ u_r=-\frac{\cos\theta}{r^{2}}=\frac{1}{r}v_\theta,\qquad \frac{1}{r}u_\theta=-\frac{\sin\theta}{r^{2}}=-v_r, \]
+极坐标 C-R 条件成立。}
+\answ{2.}{C1-5}{$f(z)=x^{2}+y^{2}$，$u_x=2x$，$u_y=2y$，$v_x=v_y=0$。C-R 条件仅在 $z=0$ 成立，故
+只在 $z=0$ 可导（$f'(0)=0$），在整个复平面上处处不解析。}
+\answ{3.}{C1-1}{\[ \left(\cos\theta+i\sin\theta\right)^{n}=\left(e^{i\theta}\right)^{n}=e^{in\theta}=\cos n\theta+i\sin n\theta. \]}
+\answ{4.}{C1-6}{\[ f(z)=xy+\frac{i}{2}\left(y^{2}-x^{2}\right)+iC=-\frac{i}{2}z^{2}+C', \]
+其中 $C'$ 为复常数（实部取定后只剩虚部常数待定）。}
+\answ{5.}{C1-2}{\[ \sqrt{1+i}=2^{1/4}e^{i\left(\frac{\pi}{8}+k\pi\right)}=\pm\,2^{1/4}\left(\cos\frac{\pi}{8}+i\sin\frac{\pi}{8}\right),\quad k=0,1. \]
+数值上为 $\pm(1.0987+0.4551i)$。}
+\answ{6.}{C1-7}{\[ f'(z)=u_x-i u_y=2x+2iy=2z,\qquad\text{即 } f(z)=z^{2}+C. \]}
+\answ{7.}{C1-3}{$\cos z=\cos x\,\mathrm{ch}\,y-i\sin x\,\mathrm{sh}\,y$，即 $u=\cos x\,\mathrm{ch}\,y$，$v=-\sin x\,\mathrm{sh}\,y$；于是
+\[ u_x=-\sin x\,\mathrm{ch}\,y=v_y,\qquad u_y=\cos x\,\mathrm{sh}\,y=-v_x, \]
+C-R 条件成立。}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第二章\quad 复变函数的积分}\hfill{\scriptsize\color{inkgray}乱序编号 1--20}\par\vspace{2pt}
+\answ{1.}{C2-15}{(1) $i$；(2) $2i$。（两问结果不同：$|z|$ 不解析。）}
+\answ{2.}{C2-12}{\[ I=2\pi i\,\frac{\sin z}{z+i}\Big|_{z=i}+2\pi i\,\frac{\sin z}{z-i}\Big|_{z=-i}=2\pi\sin i=2\pi i\,\mathrm{sh}\,1. \]}
+\answ{3.}{C2-17}{1) $2\pi i\,(2-1+1)=4\pi i$；\\
+2) $2\pi i\left(\dfrac{e^{i}}{2i}+\dfrac{e^{-i}}{-2i}\right)=2\pi i\sin 1$。}
+\answ{4.}{C2-18}{1) $2\pi i\,(4z-1)\big|_{z=1}=6\pi i$；\\
+2) $\pi i\left(-\pi^{2}\cos\pi z\right)\big|_{z=1}=i\pi^{3}$。}
+\answ{5.}{C2-7}{路径无关，换成实轴直线段：
+\[ I=\int_2^0\left(e^{x}+\sin x+2x\right)dx=-e^{2}+\cos 2-4. \]}
+\answ{6.}{C2-8}{证明：以 $a$ 为心、$\rho$ 为半径作小圆 $c$（与 $c_0$ 同向且完全在 $c_0$ 内），$1/(z-a)^n$ 在 $c_0$ 与 $c$ 之间的复连通区域解析，由复连通柯西定理 $\oint_{c_0}=\oint_c$，再用 §2.1 例 4 的结论。}
+\answ{7.}{C2-5}{两题都得 $2\pi i$。（练习：令 $z=2+w$，$\dfrac{z^2}{(z-2)^3}=\dfrac{4}{w^{3}}+\dfrac{4}{w^{2}}+\dfrac{1}{w}$，只有 $1/w$ 项贡献 $2\pi i$。）}
+\answ{8.}{C2-20}{$\displaystyle\oint_{|z|=1}\frac{e^{z}}{z}dz=2\pi i$。令 $z=e^{i\theta}$ 得
+\[ \int_0^{2\pi}e^{\cos\theta}\left[\cos(\sin\theta)+i\sin(\sin\theta)\right]d\theta=2\pi, \]
+取实部并用偶函数对称性即得 $\displaystyle\int_0^{\pi}e^{\cos\theta}\cos(\sin\theta)\,d\theta=\pi$。}
+\answ{9.}{C2-2}{$c_1:\ I=-\dfrac{1}{3}+\dfrac{i}{2}$；$c_2:\ I=-\dfrac{1}{3}+\dfrac{i}{3}$。}
+\answ{10.}{C2-14}{\[ I=\frac{2\pi i}{2!}\left(-\cos i\right)=-\pi i\,\mathrm{ch}\,1. \]}
+\answ{11.}{C2-11}{(1) $z=-\frac{\pi}{2}i$ 在圆外，被积函数在圈内解析，$I=0$；
+(2) $z=-\frac{\pi}{2}i$ 在圆内，$I=2\pi i\,e^{-\frac{\pi}{2}i}=2\pi$。}
+\answ{12.}{C2-16}{1) $2\pi i$；\\
+2) $0$（被积函数为常数 1，闭路积分为零）；\\
+3) $2\pi$（即单位圆周长）。}
+\answ{13.}{C2-13}{\[ I=2\pi i\,f'(1)=2\pi i\,a\,e^{a}. \]}
+\answ{14.}{C2-9}{$I=\pi i-\pi i=0$（分别绕 $z=1$、$z=-1$ 的小圆各得 $+\pi i$ 与 $-\pi i$）。}
+\answ{15.}{C2-4}{\[ \oint_c\frac{dz}{(z-a)^{n}}=\begin{cases}2\pi i, & n=1,\\ 0, & n\neq1,\end{cases} \]
+结果与半径 $\rho$ 无关。}
+\answ{16.}{C2-1}{$c_1:\ I=\dfrac{i}{2}$；$c_2:\ I=1+\dfrac{i}{2}$；$c_3:\ I=\dfrac{1+i}{2}$。三个值互不相同，说明积分与路径有关。}
+\answ{17.}{C2-10}{\[ I=\frac{1}{2}\cdot 2\pi i\,e^{a}-\frac{1}{2}\cdot 2\pi i\,e^{-a}=\pi i\left(e^{a}-e^{-a}\right). \]}
+\answ{18.}{C2-3}{三条路径都给出 $I=\dfrac{2}{3}(1+i)$，因为 $2xy-i(x^{2}-y^{2})=-iz^{2}$ 在全平面解析，积分与路径无关。}
+\answ{19.}{C2-6}{\[ \int_{-i}^{i}z^{2}dz=\frac{z^{3}}{3}\Big|_{-i}^{i}=-\frac{2i}{3},\qquad \int_0^{i}z\sin z\,dz=\left(\sin z-z\cos z\right)\Big|_0^{i}=\sin i-i\cos i=-\frac{i}{e}. \]}
+\answ{20.}{C2-19}{$z=-2$ 在单位圆外，被积函数在 $|z|\leq1$ 解析，故 $\oint_c\frac{dz}{z+2}=0$。令 $z=e^{i\theta}$：
+\[ \frac{ie^{i\theta}}{2+e^{i\theta}}=\frac{i\left(1+2e^{i\theta}\right)}{5+4\cos\theta}, \]
+取其虚部（即实系数部分）得 $\displaystyle\int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}d\theta=0$，被积函数关于 $\theta=\pi$ 对称，故半区间积分亦为 0。}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第三章\quad 解析函数的幂级数展开}\hfill{\scriptsize\color{inkgray}乱序编号 1--15}\par\vspace{2pt}
+\answ{1.}{C3-6}{\[ \frac{e^{z}}{z^{2}}=\sum_{n=0}^{\infty}\frac{z^{n-2}}{n!}=\frac{1}{z^{2}}+\frac{1}{z}+\frac{1}{2!}+\frac{z}{3!}+\cdots\qquad(0<|z|<\infty). \]}
+\answ{2.}{C3-1}{$R=1$（收敛圆为 $|z|<1$），且
+\[ \sum_{n=0}^{\infty}z^{n}=\frac{1}{1-z}\qquad(|z|<1). \]}
+\answ{3.}{C3-5}{\[ \frac{1}{(1+z)^{2}}=\sum_{n=0}^{\infty}(-1)^{n}(n+1)z^{n}\qquad(|z|<1). \]}
+\answ{4.}{C3-9}{\[ e^{1/z}=\sum_{n=0}^{\infty}\frac{1}{n!\,z^{n}}\qquad(0<|z|<\infty), \]
+负幂项无穷多，$z=0$ 是本性奇点。}
+\answ{5.}{C3-3}{\[ e^{z}=\sum_{n=0}^{\infty}\frac{z^{n}}{n!},\qquad \cos z=\sum_{n=0}^{\infty}\frac{(-1)^{n}z^{2n}}{(2n)!},\qquad \sin z=\sum_{n=0}^{\infty}\frac{(-1)^{n}z^{2n+1}}{(2n+1)!}\qquad(|z|<\infty). \]}
+\answ{6.}{C3-11}{$z=n\pi\ (n=0,\pm1,\pm2,\cdots)$ 全是一阶极点（$\sin z$ 的一阶零点，且 $\cos n\pi\neq0$）。}
+\answ{7.}{C3-14}{1) 当 $0<|z|<1$：
+\[ f(z)=-\frac{2}{z}-\frac{1}{z^{2}}-2\sum_{k=0}^{\infty}z^{k}; \]
+当 $1<|z|<\infty$：
+\[ f(z)=\frac{1}{z^{2}}+2\sum_{k=3}^{\infty}\frac{1}{z^{k}}; \]
+2)
+\[ \frac{e^{z}}{z\left(z^{2}+1\right)}=\frac{1}{z}+\sum_{n=0}^{\infty}\left(\sum_{k=0}^{\left\lfloor (n+1)/2\right\rfloor}\frac{(-1)^{k}}{(n+1-2k)!}\right)z^{n} \]
+前几项为 $\frac{1}{z}+1-\frac{z}{2}-\frac{5z^{2}}{6}-\cdots$。}
+\answ{8.}{C3-2}{\[ \frac{1}{1-z}=\sum_{n=0}^{\infty}z^{n},\qquad \frac{1}{1+z}=\sum_{n=0}^{\infty}(-1)^{n}z^{n}\qquad(|z|<1). \]
+两者的收敛半径都是 1。}
+\answ{9.}{C3-8}{\[ \frac{\sin z}{z}=1-\frac{z^{2}}{3!}+\frac{z^{4}}{5!}-\frac{z^{6}}{7!}+\cdots\qquad(|z|<\infty), \]
+无负幂项，$z=0$ 是可去奇点（$\lim_{z\to0}\sin z/z=1$）。}
+\answ{10.}{C3-10}{\[ e^{\frac{t}{2}\left(z-z^{-1}\right)}=\sum_{n=-\infty}^{\infty}J_{n}(t)\,z^{n},\qquad J_{n}(t)=\frac{1}{2\pi}\int_0^{2\pi}e^{i\left(t\sin\theta-n\theta\right)}d\theta, \]
+其中 $J_n(t)$ 是 $n$ 阶贝塞尔函数（间接展开后比较系数即得同一结果）。}
+\answ{11.}{C3-12}{1) $R=1$；2) $R=0$（只在 $z=0$ 收敛）；3) $R=e$。}
+\answ{12.}{C3-4}{\[ f(z)=1-\sum_{n=0}^{\infty}(-1)^{n}\frac{(z-1)^{n}}{2^{n+1}}\qquad(|z-1|<2). \]}
+\answ{13.}{C3-13}{\[ f(z)=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}\frac{1}{k!}\right)z^{n}\qquad(|z|<1). \]}
+\answ{14.}{C3-15}{1) $z=0$ 是一阶极点，$z=\pm i$ 是二阶极点；\\
+2) $z=0$ 是一阶极点（$1-\cos z\sim z^{2}/2$）；\\
+3) $z=\pm e^{-i\pi/4}$ 是二阶极点；\\
+4) $z=2k\pi i\ (k\in\mathbb{Z})$ 全是一阶极点。}
+\answ{15.}{C3-7}{\[ (1)\ |z|<1:\quad f(z)=\sum_{k=0}^{\infty}\left(1-\frac{1}{2^{k+1}}\right)z^{k}; \]
+\[ (2)\ 1<|z|<2:\quad f(z)=-\sum_{k=0}^{\infty}\frac{z^{k}}{2^{k+1}}-\sum_{k=1}^{\infty}z^{-k}; \]
+\[ (3)\ 2<|z|<\infty:\quad f(z)=\sum_{k=1}^{\infty}\left(2^{k-1}-1\right)z^{-k}. \]}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第四章\quad 留数定理及应用}\hfill{\scriptsize\color{inkgray}乱序编号 1--20}\par\vspace{2pt}
+\answ{1.}{C4-17}{1) $\dfrac{2\pi}{\sqrt{3}}$；\\
+2) $\dfrac{2\pi}{\left(1-\varepsilon^{2}\right)^{3/2}}$；\\
+3) $\sqrt{2}\,\pi$；\\
+4) $\sqrt{2}\,\pi$。}
+\answ{2.}{C4-20}{1) $\dfrac{\pi}{6}\left(2e^{-m}-e^{-2m}\right)$；\\
+2) $\dfrac{\pi}{e}$；\\
+3) $\dfrac{\pi m}{2a}\,e^{-am}$。}
+\answ{3.}{C4-12}{\[ I=2\pi i\,\mathrm{Res}\,f(i)=2\pi i\cdot\frac{1}{2i}=\pi. \]}
+\answ{4.}{C4-3}{\[ \mathrm{Res}\,f(i)=-\frac{i}{4},\qquad \mathrm{Res}\,f(-i)=\frac{i}{4}. \]}
+\answ{5.}{C4-18}{1) $\dfrac{\pi}{3}$；\\
+2) $\dfrac{\pi}{2\sqrt{2}\,a}$；\\
+3) $\dfrac{\pi}{2a}$。}
+\answ{6.}{C4-19}{\[ I=\frac{\pi}{2}. \]}
+\answ{7.}{C4-14}{\[ I=2\pi i\cdot\frac{1}{4a^{3}}\left(e^{-3\pi i/4}+e^{-i\pi/4}\right)=\frac{\pi}{\sqrt{2}\,a^{3}}. \]}
+\answ{8.}{C4-15}{\[ I=\frac{\pi}{2a}\,e^{-ma}. \]}
+\answ{9.}{C4-11}{\[ I=\frac{2\pi}{n!}. \]（另一半（虚部）是奇函数的周期积分，等于 0。）}
+\answ{10.}{C4-6}{\[ f(z)=\frac{1}{z^{6}}\left(z-z+\frac{z^{3}}{3!}-\frac{z^{5}}{5!}+\cdots\right)=\frac{1}{3!\,z^{3}}-\frac{1}{5!\,z}+\cdots,\qquad \mathrm{Res}\,f(0)=-\frac{1}{5!}=-\frac{1}{120}. \]}
+\answ{11.}{C4-10}{\[ I=\frac{\pi}{\sqrt{1+a^{2}}}. \]}
+\answ{12.}{C4-7}{1) $0$（三个留数 $-\frac{i}{4}-\frac{1}{8}$、$\frac{i}{4}-\frac{1}{8}$、$\frac{1}{4}$ 相加为零）；\\
+2) $-\pi i$；\\
+3) $0$（$z=0$ 为二阶极点，留数为 0）；\\
+4) $2\pi i\sin 2$。}
+\answ{13.}{C4-1}{\[ \oint_{|z|=r>b}\frac{ze^{z}}{z^{2}-b^{2}}\,dz=2\pi i\left[\mathrm{Res}\,f(b)+\mathrm{Res}\,f(-b)\right]=\pi i\left(e^{b}+e^{-b}\right). \]}
+\answ{14.}{C4-2}{\[ \oint_{|z|=2}\frac{z}{z^{4}-1}\,dz=2\pi i\left(\frac14-\frac14+\frac{i}{4i}-\frac{i}{-4i}\right)=0. \]}
+\answ{15.}{C4-9}{\[ I=\frac{2\pi}{1-\varepsilon^{2}}. \]}
+\answ{16.}{C4-13}{\[ I=2\pi i\cdot\frac{3}{16i}=\frac{3\pi}{8}. \]}
+\answ{17.}{C4-16}{\[ I=\frac{m\pi}{4a}\,e^{-ma}. \]}
+\answ{18.}{C4-5}{$z_{2}=-\dfrac{1}{\varepsilon}+\dfrac{1}{\varepsilon}\sqrt{1-\varepsilon^{2}}$ 在单位圆内（$z_{1}$ 在圆外），故
+\[ \oint_{|z|=1}f(z)\,dz=2\pi i\,\frac{1}{\varepsilon(z_{2}-z_{1})}=\frac{\pi i}{\sqrt{1-\varepsilon^{2}}}. \]}
+\answ{19.}{C4-8}{\[ I=\frac{2\pi}{\sqrt{1-\varepsilon^{2}}}. \]}
+\answ{20.}{C4-4}{\[ \mathrm{Res}\,f(0)=\lim_{z\to0}\frac{1}{2!}\frac{d^{2}}{dz^{2}}\left[\frac{1}{z-i}\right]=-i,\qquad \mathrm{Res}\,f(i)=\lim_{z\to i}\frac{1}{z^{3}}=i. \]}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第五章\quad 傅里叶变换}\hfill{\scriptsize\color{inkgray}乱序编号 1--19}\par\vspace{2pt}
+\answ{1.}{C5-3}{$B(\omega)=0$，$\displaystyle A(\omega)=\frac{2}{\pi}\int_0^T\cos\omega t\,dt=\frac{2\sin(\omega T)}{\pi\omega}$；
+\[ f(t)=\frac{2}{\pi}\int_0^{\infty}\frac{\sin\omega T}{\omega}\cos\omega t\,d\omega. \]
+特别取 $t=0$、$T=1$ 得 $\displaystyle\int_0^{\infty}\frac{\sin\omega}{\omega}d\omega=\frac{\pi}{2}$。}
+\answ{2.}{C5-12}{格林函数 $g(x,x')=-\dfrac{1}{2a}e^{-a|x-x'|}$，故
+\[ u(x)=-\frac{1}{2a}\int_{-\infty}^{\infty}e^{-a|x-x'|}f(x')\,dx'. \]}
+\answ{3.}{C5-6}{成立。按课件约定 $f(t)=\dfrac{1}{2\pi}\displaystyle\int_{-\infty}^{\infty}F(\omega)e^{-i\omega t}d\omega$，回代得 $\dfrac{1}{2\pi}\displaystyle\int_{-\omega_0}^{\omega_0}e^{-i\omega t}d\omega=\frac{\sin\omega_0t}{\pi t}$。}
+\answ{4.}{C5-9}{\[ \mathcal{F}[\sin ax]=\frac{1}{2i}\bigl[\delta(k-a)-\delta(k+a)\bigr],\qquad \mathcal{F}[\cos ax]=\frac{1}{2}\bigl[\delta(k-a)+\delta(k+a)\bigr]. \]}
+\answ{5.}{C5-17}{\[ F(\omega)=\frac{1}{\omega^{2}}\left[\left(e^{i\omega T}-1\right)-i\omega T e^{i\omega T}\right]. \]}
+\answ{6.}{C5-13}{\[ f(x)=\frac{3}{4}\cos x+\frac{1}{4}\cos 3x, \]
+即 $a_1=\frac34$、$a_3=\frac14$，其余系数为 0。}
+\answ{7.}{C5-11}{\[ g(x)=-\frac{1}{2a}\,e^{-a|x-x_0|}. \]}
+\answ{8.}{C5-8}{\[ f(x)=\frac{a(b-a)}{\pi b}\cdot\frac{1}{x^{2}+(b-a)^{2}}. \]}
+\answ{9.}{C5-15}{\[ f(t)=\frac{2A}{\pi}-\frac{4A}{\pi}\sum_{n=1}^{\infty}\frac{\cos 2n\omega t}{4n^{2}-1}. \]}
+\answ{10.}{C5-1}{\[ f(x)=\sum_{n=1}^{\infty}\frac{2(-1)^{n}}{n\pi}\sin\frac{n\pi x}{l}\qquad(-l<x<l). \]
+其中 $a_0=0$，$a_n=0\ (n\geq1)$，$b_n=\dfrac{2(-1)^n}{n\pi}$。}
+\answ{11.}{C5-14}{\[ f(x)=\frac{2l}{3\pi}\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin\frac{n\pi x}{l}. \]}
+\answ{12.}{C5-18}{(1) $\displaystyle F(\omega)=\frac{1}{\alpha-i\omega}$；(2) $\displaystyle F(\omega)=\pi\delta(\omega)+i\,\mathrm{P}\frac{1}{\omega}$（P 表示取主值）。}
+\answ{13.}{C5-16}{\[ f(t)=\frac{HT_0}{T}+\sum_{\substack{n=-\infty\\ n\neq0}}^{\infty}\frac{H}{n\pi}\sin\frac{n\pi T_0}{T}\,e^{in\omega_0 t},\qquad \omega_0=\frac{2\pi}{T}. \]}
+\answ{14.}{C5-4}{$A(\omega)=0$，
+\[ B(\omega)=\frac{2A\omega_0}{\pi}\cdot\frac{\sin\!\left(\dfrac{2N\pi\omega}{\omega_0}\right)}{\omega^{2}-\omega_0^{2}}. \]}
+\answ{15.}{C5-10}{\[ F(\mathbf{k})=\frac{1}{ik}\left(e^{ikr_0}-e^{-ikr_0}\right)=\frac{2\sin(kr_0)}{k}. \]}
+\answ{16.}{C5-7}{\[ F(\mathbf{k})=\frac{1}{2\pi^{2}}\cdot\frac{1}{k^{2}+1/\lambda^{2}}. \]}
+\answ{17.}{C5-19}{\[ (1)\ F(k)=\frac{1}{2\sqrt{\pi\alpha}}\cos\!\left(\frac{\pi}{4}-\frac{k^{2}}{4\alpha}\right),\qquad (2)\ F(k)=\frac{1}{2\sqrt{\pi\alpha}}\sin\!\left(\frac{\pi}{4}-\frac{k^{2}}{4\alpha}\right). \]
+两问模相同、相位差 $\pi/2$，不要写成同一个式子。}
+\answ{18.}{C5-2}{\[ f(x)=\sum_{n=1}^{\infty}\frac{\sin(2n-1)x}{2n-1}\qquad(-\pi<x<\pi). \]}
+\answ{19.}{C5-5}{\[ F(k)=\frac{1}{\pi\sqrt{2a}}\,e^{-\frac{k^2}{2a^2}}. \]}
+\par\vspace{10pt}\needspace{4\baselineskip}%
+\noindent{\color{deepblue}\large\bfseries 第六章\quad 拉普拉斯变换}\hfill{\scriptsize\color{inkgray}乱序编号 1--29}\par\vspace{2pt}
+\answ{1.}{C6-21}{\[ i(t)=\frac{E_0}{R^{2}+L^{2}\omega^{2}}\left[R\sin\omega t-L\omega\cos\omega t+L\omega\,e^{-Rt/L}\right]. \]}
+\answ{2.}{C6-14}{\[ f(t)=1-e^{t}+te^{t}. \]}
+\answ{3.}{C6-17}{\[ f(t)=-\frac{1}{2\omega}\frac{d}{d\omega}\cos\omega t=\frac{t\sin\omega t}{2\omega}. \]}
+\answ{4.}{C6-3}{\[ t^{n}\risingdotseq\frac{n!}{p^{n+1}}\qquad(\mathrm{Re}\,p>0). \]
+（$n=1$ 得 $1/p^{2}$，$n=2$ 得 $2/p^{3}$，类推。）}
+\answ{5.}{C6-6}{\[ \mathrm{sh}\,\omega t\risingdotseq\frac{\omega}{p^{2}-\omega^{2}},\qquad \mathrm{ch}\,\omega t\risingdotseq\frac{p}{p^{2}-\omega^{2}}. \]}
+\answ{6.}{C6-11}{\[ f(t)=\frac{1}{b^{2}-a^{2}}\left(\frac{\sin at}{a}-\frac{\sin bt}{b}\right). \]}
+\answ{7.}{C6-29}{1) $y=1-e^{-t}$；\\
+2) $y=e^{t}+e^{-2t}$；\\
+3) $y=(C_1+C_2t)e^{-2t}+\dfrac{(4-\omega^{2})\sin\omega t-4\omega\cos\omega t}{\left(4+\omega^{2}\right)^{2}}$，\\
+其中 $C_1=y_0+\dfrac{4\omega}{(4+\omega^{2})^{2}}$，$C_2=y_1+2y_0+\dfrac{8\omega-\omega(4-\omega^{2})}{(4+\omega^{2})^{2}}$；\\
+4) $T(t)=\dfrac{1}{a\omega}\displaystyle\int_0^{t}f(\tau)\sin\left[a\omega(t-\tau)\right]d\tau$。}
+\answ{8.}{C6-27}{1) $\dfrac{1}{(p+\omega)^{2}}$；\\
+2) $\dfrac{p^{2}-\omega^{2}}{\left(p^{2}+\omega^{2}\right)^{2}}$；\\
+3) $\dfrac{\omega}{p\left(p^{2}+\omega^{2}\right)}$。}
+\answ{9.}{C6-15}{\[ f(t)=t+1-e^{t}. \]}
+\answ{10.}{C6-12}{\[ f(t)=e^{-\lambda t}\sin\omega t. \]}
+\answ{11.}{C6-13}{\[ f(t)=e^{-\lambda t}\cos\omega t-\frac{\lambda}{\omega}e^{-\lambda t}\sin\omega t. \]}
+\answ{12.}{C6-10}{\[ e^{at}\risingdotseq\frac{1}{a}\cdot\frac{1}{p/a-1}=\frac{1}{p-a}, \]
+与直接用定义算出的结果一致。}
+\answ{13.}{C6-4}{\[ te^{\alpha t}\risingdotseq\frac{1}{(p-\alpha)^{2}},\qquad t^{n}e^{\alpha t}\risingdotseq\frac{n!}{(p-\alpha)^{n+1}}. \]}
+\answ{14.}{C6-8}{\[ p^{2}F(p)-p+\omega^{2}F(p)=0\ \Longrightarrow\ F(p)=\frac{p}{p^{2}+\omega^{2}}\ \Longrightarrow\ f(t)=\cos\omega t. \]}
+\answ{15.}{C6-1}{\[ F(p)=\int_0^{\infty}e^{-pt}dt=\frac{1}{p}\qquad(\mathrm{Re}\,p>0),\qquad\text{即 } 1\risingdotseq\frac{1}{p}. \]}
+\answ{16.}{C6-9}{\[ t^{n}e^{\alpha t}\risingdotseq(-1)^{n}\frac{d^{n}}{dp^{n}}\left(\frac{1}{p-\alpha}\right)=\frac{n!}{(p-\alpha)^{n+1}}. \]}
+\answ{17.}{C6-5}{\[ \sin\omega t\risingdotseq\frac{\omega}{p^{2}+\omega^{2}},\qquad \cos\omega t\risingdotseq\frac{p}{p^{2}+\omega^{2}}. \]}
+\answ{18.}{C6-28}{1) $6te^{-t}$；\\
+2) $3\,\mathrm{ch}\,t$；\\
+3) $\dfrac{t\sin\omega t}{2\omega}$。}
+\answ{19.}{C6-16}{\[ f(t)=\frac{1}{\alpha^{2}+\omega^{2}}\left[\alpha\sin\omega t-\omega\cos\omega t+\omega e^{-\alpha t}\right]. \]}
+\answ{20.}{C6-26}{\[ I(t)=\frac{\pi t}{2}. \]}
+\answ{21.}{C6-7}{\[ F(p)=\frac{1}{2i}\cdot\frac{1}{p-i\omega}-\frac{1}{2i}\cdot\frac{1}{p+i\omega}=\frac{\omega}{p^{2}+\omega^{2}}. \]}
+\answ{22.}{C6-22}{当 $\omega\neq\omega_0$：
+\[ x(t)=\frac{f_0}{m}\cdot\frac{\omega}{\omega^{2}-\omega_0^{2}}\left[\frac{\sin\omega_0 t}{\omega_0}-\frac{\sin\omega t}{\omega}\right]; \]
+当 $\omega=\omega_0$：
+\[ x(t)=\frac{f_0}{2m}\left(\frac{\sin\omega t}{\omega^{2}}-\frac{t\cos\omega t}{\omega}\right). \]}
+\answ{23.}{C6-25}{\[ I(p)=\int_0^{\infty}\frac{dx}{x^{2}+p^{2}}=\frac{\pi}{2p}\ \Longrightarrow\ I(t)=\frac{\pi}{2}. \]}
+\answ{24.}{C6-2}{\[ F(p)=\frac{1}{p-\alpha}\qquad(\mathrm{Re}\,p>\mathrm{Re}\,\alpha),\qquad e^{\alpha t}\risingdotseq\frac{1}{p-\alpha}. \]}
+\answ{25.}{C6-19}{\[ i(t)=\frac{E}{R}\left[1-e^{-Rt/L}\right]. \]
+（前项为稳恒部分，后项为暂态部分。）}
+\answ{26.}{C6-24}{\[ I(t)=\frac{\pi}{2a}e^{-at}\qquad(t>0). \]}
+\answ{27.}{C6-23}{\[ y(t)=e^{2t},\qquad z(t)=3e^{2t}. \]}
+\answ{28.}{C6-18}{\[ f(t)=-\frac{1}{2}\left(\frac{t\cos\omega t}{\omega}-\frac{\sin\omega t}{\omega^{2}}\right)=\frac{\sin\omega t-\omega t\cos\omega t}{2\omega^{2}}. \]}
+\answ{29.}{C6-20}{\[ i(t)=\frac{q_0}{\sqrt{LC}}\sin\left(\frac{t}{\sqrt{LC}}\right). \]
+（LC 回路的振荡电流。）}
+\end{document}

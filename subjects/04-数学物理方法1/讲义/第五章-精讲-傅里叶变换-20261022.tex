@@ -1,4 +1,4 @@
-﻿% !TEX program = xelatex
+% !TEX program = xelatex
 % 数学物理方法1 · 第五章 傅里叶变换 · 精讲讲义（lecture-deepdive 规范）
 \documentclass[11pt]{ctexart}
 \input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
@@ -23,13 +23,13 @@
 \midrule
 §5.1 傅里叶级数 & p5--p17 & §1 正交性为什么能"筛"出系数；§2 四种写法与两个例题
 \\
-§5.2 傅里叶变换 & p18--p39 & §3 级数变积分；§4 复数形式与 $(2\pi)$ 的归属；§5--§7 五个例题
+§5.2 傅里叶变换 & p18--p39 & §3 级数变积分；§4 复数形式与 $(2\pi)$ 的归属；§5--§7 五个例题与末节七道作业
 \\
 §5.3 变换的性质 & p40--p50 & §8 九条性质与卷积的 $2\pi$
 \\
 §5.4 $\delta$ 函数 & p51--p63 & §9 定义、性质、辅助函数、四个例题
 \\
-作业 & p39、p63 & §9 末尾汇总（题面照抄）
+作业 & p39、p63 & §7 末：题面与完整详解
 \\
 \bottomrule
 \end{tabular}
@@ -634,32 +634,92 @@ F(\omega)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{\sin\omega_0t}{\pi t}e^{i\o
 把它记成一句话：
 \[ \int_{-\infty}^{\infty}\frac{e^{i\beta t}}{2i\pi t}\dd t=\frac{1}{2}\operatorname{sgn}\beta .\]
 
-\subhdr{三个区间，一张表}
+\subhdr{代进去：整张表其实只有一个式子}
+
+把 $\beta=\omega+\omega_0$ 与 $\beta=\omega-\omega_0$ 分别代进上面那句“记成一句话”，再回到本节开头的那个方括号：
+\[
+\int_{-\infty}^{\infty}f(t)e^{i\omega t}\dd t
+=J(\omega+\omega_0)-J(\omega-\omega_0)
+=\frac12\operatorname{sgn}(\omega+\omega_0)-\frac12\operatorname{sgn}(\omega-\omega_0) .
+\]
+\textbf{这就是下面那张表要说的全部内容}。表里没有一个字是新的：它只是把这个式子在实轴的三段上分别读了一遍。所以表不必背——会写这个式子，就能自己一格一格填出来。
+
+\subhdr{两个 $\operatorname{sgn}$ 不是两只开关，是两次比较}
+
+$\operatorname{sgn}(\omega+\omega_0)$ 只回答一个问题：$\omega+\omega_0$ 是正还是负，也就是“$\omega$ 在 $-\omega_0$ 的右边吗”；$\operatorname{sgn}(\omega-\omega_0)$ 回答“$\omega$ 在 $\omega_0$ 的右边吗”。两个问题一共四种答法，可阈值只有两个；又因本章 $\omega_0>0$，$-\omega_0<\omega_0$，实轴被这两个点切成三段，每一段只容得下一种答法：
+
+\begin{itemize}
+\item 左段 $\omega<-\omega_0$：两个括号都负，符号组合 $(-,-)$；
+\item 中段 $|\omega|<\omega_0$：前者正、后者负，$(+,-)$；
+\item 右段 $\omega>\omega_0$：两个括号都正，$(+,+)$；
+\item 剩下的 $(-,+)$ 是空集：它要求 $\omega<-\omega_0$ 且 $\omega>\omega_0$，即 $-\omega_0>\omega_0$，与 $\omega_0>0$ 矛盾。
+\end{itemize}
+
+\aside{课件 p35 的原话“当 $\omega+\omega_0<0$ 且 $\omega-\omega_0>0$ 时，即 $\omega<-\omega_0$ 且 $\omega>\omega_0$，此条件是矛盾的”，说的就是最后这一条。它不需要任何新原理：两个 $\operatorname{sgn}$ 各读各的数，本来就不会打架；这一支被排除，只因为那两个不等式无解。}
+
+\subhdr{五行表：每一格都能当场算}
 
 \par\vspace{2pt}
-\noindent\begin{tabular}{@{}p{3.3cm}p{2.4cm}p{2.4cm}p{3.6cm}@{}}
+\noindent\begin{tabular}{@{}p{2.9cm}p{2.8cm}p{2.8cm}p{6.6cm}@{}}
 \toprule
-\thead{区间} & \thead{$\operatorname{sgn}(\omega+\omega_0)$} & \thead{$\operatorname{sgn}(\omega-\omega_0)$} & \thead{$\int f e^{i\omega t}\dd t$}
+\thead{区间} & \thead{$\operatorname{sgn}(\omega+\omega_0)$} & \thead{$\operatorname{sgn}(\omega-\omega_0)$} & \thead{$\int f e^{i\omega t}\dd t=\frac12$(列 2)$-\frac12$(列 3)}
 \\
 \midrule
+$\omega<-\omega_0$ & $-$ & $-$ & $-\frac12-\left(-\frac12\right)=0$
+\\
+$\omega=-\omega_0$ & $0$ & $-$ & $0-\left(-\frac12\right)=\frac12$
+\\
 $|\omega|<\omega_0$ & $+$ & $-$ & $\frac12-\left(-\frac12\right)=1$
 \\
-$\omega>\omega_0$ & $+$ & $+$ & $\frac12-\frac12=0$
+$\omega=\omega_0$ & $+$ & $0$ & $\frac12-0=\frac12$
 \\
-$\omega<-\omega_0$ & $-$ & $-$ & $-\frac12-\left(-\frac12\right)=0$
+$\omega>\omega_0$ & $+$ & $+$ & $\frac12-\frac12=0$
 \\
 \bottomrule
 \end{tabular}
 
-于是
-\[ \frac{1}{2\pi}\int_{-\infty}^{\infty}f(t)e^{i\omega t}\dd t=\begin{cases}\dfrac{1}{2\pi}, & |\omega|<\omega_0,\\[6pt] 0, & |\omega|>\omega_0,\end{cases}
+\textbf{逐行读法}：第 2、3 列只是把 $\omega$ 与两个阈值比大小，$+$ 与 $-$ 一眼可见，没有可算的东西；第 4 列按表头那个小式子算，两个数相减，结果只可能是 $0$ 或 $1$。真正容易漏掉的是中间那两条\textbf{边界行}：$\omega$ 正好落在阈值上时有一个括号为零，而 $\operatorname{sgn}0=0$，于是第 4 列得 $\frac12$——这不是新规则，是原式子里自动长出来的。
+
+\subhdr{于是：先给闭式，再读成分段}
+
+把上表代回 $F$ 的定义，先得到\textbf{闭式}
+\[
+F(\omega)=\frac{1}{2\pi}\left[\frac12\operatorname{sgn}(\omega+\omega_0)-\frac12\operatorname{sgn}(\omega-\omega_0)\right]
+=\frac{1}{4\pi}\Big[\operatorname{sgn}(\omega+\omega_0)-\operatorname{sgn}(\omega-\omega_0)\Big],
+\]
+再把它在三段上读成题面要的形状：
+\[
+F(\omega)=\begin{cases}
+\dfrac{1}{2\pi}, & |\omega|<\omega_0,\\[4pt]
+\dfrac{1}{4\pi}, & |\omega|=\omega_0,\\[4pt]
+0, & |\omega|>\omega_0 .
+\end{cases}
 \]
 正是题目要证的 $F(\omega)$。证毕。
 
-\warnbox{\textbf{课件 p35 里有一句必须看清}：“当 $\omega+\omega_0<0$ 且 $\omega-\omega_0>0$ 时，即 $\omega<-\omega_0$ 且 $\omega>\omega_0$，此条件是矛盾的”。这一支被排除，正是“$\operatorname{sgn}$ 的两个符号必须相容”的体现——把三个区间画在数轴上，$\omega_0$ 与 $-\omega_0$ 把实轴切成三段，每一段里两个符号的组合只有一种可能。}
+闭式比分段更值得记：它一句话说清“$F$ 是两枚符号函数之差”，分段只是它在三段上的读数；题面没写的 $|\omega|=\omega_0$ 两点，也在闭式里一并解决了。
+
+\warnbox{\textbf{题面把 $|\omega|=\omega_0$ 两点留空了：不算错，但要知道为什么}。题目只写 $|\omega|<\omega_0$ 与 $|\omega|>\omega_0$，唯独不提 $|\omega|=\omega_0$。按上面的闭式（等价于约定 $\operatorname{sgn}0=0$，即积分取主值），这两点应取 $\frac{1}{4\pi}$，正好是跳变的半高，与 §3 讲过的“间断点收敛到左右平均值”是同一件事。
+
+留空不影响任何积分——逆变换、内积都只看积分，不看单点值，所以题目可以不管。但你要画图、或在某一点求值，就必须补上；补法现成：把 $\omega=\pm\omega_0$ 代进闭式即可。若换用 $\operatorname{sgn}0=1$ 之类的约定，这两点会变成 $\frac{1}{2\pi}$ 或 $0$：\textbf{点值随约定变，变换本身不变}，这也正是一对变换允许在个别点上“说不清”的原因。}
+
+\callout{\textbf{这张表还能替你核对四件事}：
+\begin{enumerate}
+\item \textbf{偶性}：$f(t)=\sin\omega_0t/(\pi t)$ 是偶函数，故 $F$ 也必须是偶函数。表里左段与右段同为 $0$、两个端点同为 $\frac12$，镜像一致；若两翼算出不同的值，符号或系数已经错了。
+
+\item \textbf{$\omega=0$ 手算核对}：用 p24 的狄里希利积分 $\int_0^{\infty}\dfrac{\sin a\omega}{\omega}\dd\omega=\dfrac{\pi}{2}\operatorname{sgn}a$，
+\[ F(0)=\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{\sin\omega_0t}{\pi t}\dd t=\frac{1}{2\pi}\cdot\frac{1}{\pi}\cdot\pi=\frac{1}{2\pi}, \]
+与表里中段一致。这一步不用留数，是独立于 §6 前半的一条检查；若对不上，说明 $J=\frac12\operatorname{sgn}\beta$ 用反了。
+
+\item \textbf{截止频率就是振荡频率}：阈值 $\pm\omega_0$ 正是 $f$ 里 $\sin$ 的频率。矩形谱的反变换是 $\sin\omega_0t/(\pi t)$——这一对就是“截止频率”这个词的出处：谱在 $\omega_0$ 处截止，而 $\omega_0$ 正是原函数自己在振的那个频率。
+
+\item \textbf{两个常数分工不同}：表里的 $\frac12$ 来自半留数（数学，§6 前半），外面的 $\frac{1}{2\pi}$ 来自本章的归一化约定（记账，§4）。两者各管各的，混着记就会在“该乘 $2\pi$ 还是除 $2\pi$”上翻车。
+\end{enumerate}}
 
 %=============================================================
-\hdr{§7}{其余例题：只写与主线不同的地方}
+\hdr{§7}{其余例题与课件作业}
+
+本节先补两个例题（例 5 与 p49 的例 1），只写与主线不同的地方；最后收课件 p39、p63 的七道作业——题面成组抄在前，详解紧随其后。
 
 \subhdr{例 5（p36--p38）：屏蔽库仑势的三维变换——为什么可以先选 $\mathbf{k}$ 沿 $z$ 轴}
 
@@ -719,39 +779,245 @@ f(x)=\frac{ac}{\pi b}\cdot\frac{1}{x^{2}+c^{2}}=\frac{a(b-a)}{\pi b}\cdot\frac{1
 
 \warnbox{\textbf{这一步的“可除性”是隐含前提}：第二步把 $2\pi\mathcal{F}[f]\cdot\mathcal{F}[\frac{1}{x^2+a^2}]$ 里的因子直接除过去，用了两件事：(1) $\mathcal{F}$ 是线性的、可逆的；(2) $\mathcal{F}[\frac{1}{x^{2}+a^{2}}]=\frac{e^{-|k|a}}{2a}\ne0$ 对每个 $k$ 成立。后者显然成立，前者是变换的基本性质——但课件 p49 一个字都没提。}
 
-\subhdr{作业汇总（p39、p63，题面照抄）}
+\flowerrule
 
-\textbf{p39 第 1--4 题}：
+\subhdr{课件作业七题（一题一块：题干 + 详解）}
 
-\begin{enumerate}
-\item 将函数 $f(x)=\cos^{3}x$ 表示成傅里叶级数的形式。
-\item 将函数 $f(x)=x/3$ 在 $(-l,l)$ 区间内展开成傅里叶级数。
-\item 将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数。
-\item 将矩形波
+课件分两批布置：\textbf{p39 四道}（第 1--4 题，全在傅里叶级数）、\textbf{p63 三道}（第 5--7 题，全在傅里叶变换）。变换的作业\textbf{不在 p39 那一页}，看到“复数形式的傅里叶变换”就是它。七道按布置顺序连排成 1--7，下文题号与课件题号一一对应，不会错位。
+
+每题一块：\textbf{题干、考点、关键一步、详解、答案、自检}。题干就印在详解上方——读完一块就是读完一题，不用翻页对题。凡常规解法会跳过的代换，这里一步不省，目的是让每一行都能自己复算。
+
+第 4 题有两处课件缺字，先交代清楚：
+\aside{第 4 题的“在区间内”与“其中为常数”两处在课件里都缺字：按 $f(t)$ 的分段，区间应为 $(-T/2,T/2)$；缺的那个符号从分段里的字母看应是 $H$（不能完全确认，做题时可按“$H$ 为常数”理解并注明）。第 6 题的 (2) 是 $\alpha\to0^{+}$ 的极限，$F(\omega)$ 会出现 $\frac{1}{i\omega}$ 型的奇性，正好接 §9 的 $\delta$ 函数。}
+
+\qbreak
+
+\subhdr{第 1 题：$f(x)=\cos^3x$ 的傅里叶级数}
+
+\qstem{（课件 p39 第 1 题）将函数 $f(x)=\cos^{3}x$ 表示成傅里叶级数的形式。}
+
+\textbf{考点}：三角恒等式降幂。$\cos^3x$ 已经能写成基函数的线性组合，属于“认出答案”，不是“积分算答案”（对照 §2 例 1、例 2）。
+
+\textbf{关键一步}：先降幂。由 $\cos3x=4\cos^3x-3\cos x$ 反解得
+\[ \cos^3x=\frac34\cos x+\frac14\cos3x .\]
+右边每一项都已经是 $\cos k_nx$ 的形状，级数到此结束。
+
+\textbf{详解}：$\cos^3x$ 以 $2\pi$ 为周期，取任一个长度 $2\pi$ 的区间结果相同，就取 $(-\pi,\pi)$，则 $l=\pi$、$k_n=n$。按 §0 的约定
+\[ f(x)=a_0+\sum_{n\ge1}\left(a_n\cos nx+b_n\sin nx\right).\]
+把降幂式与它逐项对照：右边只有 $\cos x$ 与 $\cos3x$，没有常数项、没有正弦项，于是
+\[ a_0=0,\qquad a_1=\frac34,\qquad a_3=\frac14,\qquad a_n=0\ (n\neq1,3),\qquad b_n=0\ (\text{一切 }n).\]
+若按公式验算（仍用这个降幂式，正交性 $\int_{-\pi}^{\pi}\cos^2x\dd x=\pi$）：
+\[
+a_1=\frac1\pi\int_{-\pi}^{\pi}\cos^3x\cos x\dd x=\frac1\pi\cdot\frac34\int_{-\pi}^{\pi}\cos^2x\dd x=\frac34,
+\]
+\[
+a_3=\frac1\pi\int_{-\pi}^{\pi}\cos^3x\cos3x\dd x=\frac1\pi\cdot\frac14\int_{-\pi}^{\pi}\cos^23x\dd x=\frac14,
+\]
+其余 $a_n$ 与全部 $b_n$ 由正交性为零；$a_0=\frac{1}{2\pi}\int_{-\pi}^{\pi}\cos^3x\dd x=0$（每一个 $\cos$ 在整周期上积分为零）。
+
+\textbf{答案}：
+\[ \cos^3x=\frac34\cos x+\frac14\cos3x .\]
+这就是它的傅里叶级数——只到三次谐波，更高次恒为零。
+
+\textbf{自检}：$x=0$ 两边都是 $1$；$x=\pi$ 两边都是 $-1$；$x=\pi/2$ 两边都是 $0$。
+
+\qbreak
+
+\subhdr{第 2 题：$f(x)=x/3$ 在 $(-l,l)$ 上的傅里叶级数}
+
+\qstem{（课件 p39 第 2 题）将函数 $f(x)=x/3$ 在 $(-l,l)$ 区间内展开成傅里叶级数。}
+
+\textbf{考点}：奇函数只余正弦项（§3 的奇偶性红利）；分部积分。
+
+\textbf{关键一步}：$x/3$ 是奇函数，对称区间上偶次项全部消失，只剩 $b_n$。先判奇偶，能省掉三分之二的积分。
+
+\textbf{详解}：由奇函数在对称区间上积分为零，
+\[ a_0=\frac{1}{2l}\int_{-l}^{l}\frac{x}{3}\dd x=0,\qquad a_n=\frac1l\int_{-l}^{l}\frac{x}{3}\cos\frac{n\pi x}{l}\dd x=0 .\]
+正弦项（被积函数是偶函数，故可折半）：
+\[ b_n=\frac1l\int_{-l}^{l}\frac{x}{3}\sin\frac{n\pi x}{l}\dd x=\frac{2}{3l}\int_0^{l}x\sin\frac{n\pi x}{l}\dd x .\]
+分部积分，
+\[
+\int_0^{l}x\sin\frac{n\pi x}{l}\dd x
+=\left[-\frac{lx}{n\pi}\cos\frac{n\pi x}{l}\right]_0^{l}+\frac{l}{n\pi}\int_0^{l}\cos\frac{n\pi x}{l}\dd x
+=-\frac{l^2}{n\pi}\cos n\pi+\frac{l}{n\pi}\cdot 0=\frac{l^2}{n\pi}(-1)^{n+1},
+\]
+其中第二项为零是因为 $\int_0^{l}\cos\frac{n\pi x}{l}\dd x=\frac{l}{n\pi}\sin n\pi=0$。
+
+\textbf{答案}：
+\[ \frac{x}{3}=\frac{2l}{3\pi}\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin\frac{n\pi x}{l},\qquad -l<x<l .\]
+\textbf{自检}：取 $x=l/2$，右边数值收敛到 $l/6$ $\checkmark$。再看端点 $x=\pm l$：右端按周期延拓收敛到 $0$（奇延拓在 $l$ 处左右极限为 $\pm l/3$，取平均），而 $f(l)=l/3$——这不是算错，正是 §11 第 4 条说的“跳变点取平均值”。
+
+\qbreak
+
+\subhdr{第 3 题：$f(t)=A|\sin\omega t|$ 在 $(0,T)$ 上的傅里叶级数}
+
+\qstem{（课件 p39 第 3 题）将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数。}
+
+\textbf{考点}：周期减半（$|\sin|$ 的周期是 $\pi/\omega$）；偶函数只余余弦项；积化和差。
+
+\textbf{关键一步}：先看周期。$\sin\omega t$ 的周期是 $T=2\pi/\omega$，取绝对值后周期\textbf{减半}为 $T/2$，真正的基频是 $2\omega$，级数里只剩偶数次谐波。看不出这一点，就会白算一堆本该为零的奇数项。
+
+\textbf{详解}：取 $T=2\pi/\omega$，则 $\omega_n=2\pi n/T=n\omega$，且 $\omega T=2\pi$。常数项（$|\sin u|$ 一拱的面积为 $2$）：
+\[ a_0=\frac1T\int_0^{T}A|\sin\omega t|\dd t=\frac{A}{\omega T}\int_0^{2\pi}|\sin u|\dd u=\frac{A}{2\pi}\cdot4=\frac{2A}{\pi} .\]
+余弦项（正弦项因 $f$ 是偶函数全为零）：
+\[ a_n=\frac{2}{T}\int_0^{T}A|\sin\omega t|\cos n\omega t\dd t=\frac{2A}{\omega T}\int_0^{2\pi}|\sin u|\cos nu\dd u=\frac{A}{\pi}\int_0^{2\pi}|\sin u|\cos nu\dd u .\]
+
+\textbf{奇数 $n$ 为零}：作代换 $u\to u+\pi$，$|\sin u|$ 不变、$\cos nu$ 变号（$n$ 奇数），于是 $[0,2\pi]$ 上的积分前后两半恰好抵消：
+\[ \int_0^{2\pi}|\sin u|\cos nu\dd u=\int_0^{\pi}|\sin u|\cos nu\dd u+\int_0^{\pi}|\sin u|\cos n(u+\pi)\dd u=0 .\]
+
+\textbf{偶数 $n=2m$}：此时 $\cos2m(u+\pi)=\cos2mu$，前后两半相同，且在 $[0,\pi]$ 上 $|\sin u|=\sin u$，
+\[
+\int_0^{2\pi}|\sin u|\cos2mu\dd u
+=2\int_0^{\pi}\sin u\cos2mu\dd u
+=\int_0^{\pi}\left[\sin(2m+1)u-\sin(2m-1)u\right]\dd u .
+\]
+而 $k$ 为奇数时 $\int_0^{\pi}\sin ku\dd u=\frac{1-\cos k\pi}{k}=\frac{2}{k}$，故
+\[
+\int_0^{2\pi}|\sin u|\cos2mu\dd u=\frac{2}{2m+1}-\frac{2}{2m-1}
+=\frac{2(2m-1)-2(2m+1)}{4m^2-1}=-\frac{4}{4m^2-1},
+\]
+于是 $a_{2m}=\dfrac{A}{\pi}\cdot\left(-\dfrac{4}{4m^2-1}\right)=-\dfrac{4A}{\pi}\cdot\dfrac{1}{4m^2-1}$。
+
+\textbf{答案}：
+\[ A|\sin\omega t|=\frac{2A}{\pi}-\frac{4A}{\pi}\sum_{m=1}^{\infty}\frac{\cos2m\omega t}{4m^2-1} .\]
+\textbf{自检}：取 $t=0$，右边为 $\frac{2A}{\pi}-\frac{4A}{\pi}S$，其中
+\[ S=\sum_{m\ge1}\frac{1}{4m^2-1}=\frac12\sum_{m\ge1}\left(\frac{1}{2m-1}-\frac{1}{2m+1}\right)=\frac12\left(1-\frac{1}{2M+1}\right)\xrightarrow{M\to\infty}\frac12 ,\]
+故右边 $=\frac{2A}{\pi}-\frac{2A}{\pi}=0=f(0)$ $\checkmark$。再看平均值：常数项 $\frac{2A}{\pi}$ 应等于 $A|\sin\omega t|$ 在一个周期上的平均，而 $|\sin|$ 的平均值是 $\frac{2}{\pi}$ $\checkmark$。
+
+\qbreak
+
+\subhdr{第 4 题：矩形波的复数形式傅里叶级数}
+
+\qstem{（课件 p39 第 4 题）将矩形波
 \[
 f(t)=\begin{cases}0, & -T/2\le t<-T_0/2,\\ H, & -T_0/2\le t\le T_0/2,\\ 0, & T_0/2<t\le T/2,\end{cases}
 \]
-在区间内展开为复数形式的傅里叶级数，其中（原文缺符号）为常数。
-\end{enumerate}
+在区间 $(-T/2,T/2)$ 内展开为复数形式的傅里叶级数，其中 $H$ 为常数。}
 
-\textbf{p63 第 5--7 题}：
+\textbf{考点}：复数级数 $c_n=\frac1T\int_{-T/2}^{T/2}fe^{-i\omega_nt}\dd t$（§0）；对称区间上的积分。
 
-\begin{enumerate}
-\setcounter{enumi}{4}
-\item 求锯齿波
+\textbf{关键一步}：$f$ 只在 $|t|\le T_0/2$ 上取 $H$，积分限直接缩成 $\pm T_0/2$；$n=0$ 必须单独算（分母里有 $n$）。
+
+\textbf{详解}：$n=0$ 时
+\[ c_0=\frac1T\int_{-T_0/2}^{T_0/2}H\dd t=\frac{HT_0}{T} .\]
+$n\neq0$ 时，$\omega_n=2\pi n/T$，
+\[
+\int_{-T_0/2}^{T_0/2}e^{-i\omega_nt}\dd t
+=\left[\frac{e^{-i\omega_nt}}{-i\omega_n}\right]_{-T_0/2}^{T_0/2}
+=\frac{e^{i\omega_nT_0/2}-e^{-i\omega_nT_0/2}}{i\omega_n}
+=\frac{2\sin(\omega_nT_0/2)}{\omega_n},
+\]
+所以
+\[
+c_n=\frac HT\cdot\frac{2\sin(\omega_nT_0/2)}{\omega_n}
+=\frac HT\cdot\frac{2\sin(n\pi T_0/T)}{2\pi n/T}
+=\frac HT\cdot\frac{T}{\pi n}\sin\frac{n\pi T_0}{T}
+=\frac{H}{n\pi}\sin\frac{n\pi T_0}{T},
+\]
+中间用了 $\omega_nT_0/2=n\pi T_0/T$ 与 $\omega_nT=2\pi n$。
+
+\textbf{答案}：
+\[ f(t)=\frac{HT_0}{T}+\sum_{n\neq0}\frac{H}{n\pi}\sin\frac{n\pi T_0}{T}\,e^{i2\pi nt/T} .\]
+\textbf{自检}：令 $T_0=T$（矩形退化成常数 $H$），则 $c_0=H$、$c_n=\frac{H}{n\pi}\sin n\pi=0$ $\checkmark$。又 $c_{-n}=c_n$（$f$ 偶），$+n$ 与 $-n$ 两项的虚部两两抵消，级数确实是实的。
+
+\qbreak
+
+\subhdr{第 5 题：锯齿波的复数形式傅里叶变换}
+
+\qstem{（课件 p63 第 5 题）求锯齿波
 \[
 f(t)=\begin{cases}0, & t<0,\\ t, & 0\le t\le T,\\ 0, & t>T,\end{cases}
 \]
-复数形式的傅里叶变换。
-\item 求函数
+的复数形式的傅里叶变换。}
+
+\textbf{考点}：变换定义 $F(\omega)=\frac1{2\pi}\int fe^{-i\omega t}\dd t$（§0）；$te^{-i\omega t}$ 的分部积分。
+
+\textbf{关键一步}：$f$ 只在 $0\le t\le T$ 上不为零，积分限有限，分部积分不会跑出额外的边界项；把 $t$ 当“求导对象”先降掉。
+
+\textbf{详解}：$\omega\neq0$ 时，分部积分的两项分别算：
+\[
+\left[-\frac{t}{i\omega}e^{-i\omega t}\right]_0^{T}=-\frac{T}{i\omega}e^{-i\omega T},\qquad
+\frac{1}{i\omega}\int_0^{T}e^{-i\omega t}\dd t=\frac{1}{i\omega}\cdot\frac{1-e^{-i\omega T}}{i\omega}=\frac{e^{-i\omega T}-1}{\omega^2},
+\]
+第二项用了 $(i\omega)(i\omega)=-\omega^2$。合并（$-\frac{1}{i\omega}=\frac{i}{\omega}$）：
+\[
+\int_0^{T}te^{-i\omega t}\dd t
+=-\frac{T}{i\omega}e^{-i\omega T}+\frac{e^{-i\omega T}-1}{\omega^2}
+=\frac{e^{-i\omega T}(1+i\omega T)-1}{\omega^2} .
+\]
+
+\textbf{答案}：
+\[ F(\omega)=\frac{1}{2\pi\omega^2}\Big[e^{-i\omega T}(1+i\omega T)-1\Big],\qquad \omega\neq0 .\]
+$\omega=0$ 时 $F(0)=\frac{1}{2\pi}\int_0^{T}t\dd t=\frac{T^2}{4\pi}$（也可把上式取 $\omega\to0$ 的极限得到，两者一致）。
+
+\textbf{自检}：$\omega\to0$ 的极限与 $F(0)$ 一致 $\checkmark$（低频谱值 $=$ 面积 $/2\pi$，与 §5 验算一同一条）。再看大 $\omega$：第一项给出 $F\approx\frac{iT}{2\pi\omega}e^{-i\omega T}$，只按 $1/\omega$ 衰减——因为 $f$ 在 $t=T$ 处从 $T$ 跳回 $0$，跳变的位置决定尾部（§9 讲 $\delta$ 与阶跃时反复出现的那条规律）。
+
+\qbreak
+
+\subhdr{第 6 题：$f(t)=e^{-\alpha t}$（$t\ge0$）的变换，以及 $\alpha\to0^{+}$}
+
+\qstem{（课件 p63 第 6 题）求函数
 \[
 f(t)=\begin{cases}0, & (t<0),\\ e^{-\alpha t}, & (t\ge0),\end{cases}
 \]
-其中 $\alpha$ 为：(1) 有限大小的正数，即 $\alpha>0$；(2) 无穷小的正数，即 $\alpha\to0^{+}$。
-\item 求如下函数的复数形式的傅里叶变换，其中 $\alpha>0$：(1) $f(x)=\cos\left(\alpha x^{2}\right)$；(2) $f(x)=\sin\left(\alpha x^{2}\right)$。
-\end{enumerate}
+的复数形式的傅里叶变换，其中 $\alpha$ 为：(1) 有限大小的正数，即 $\alpha>0$；(2) 无穷小的正数，即 $\alpha\to0^{+}$。}
 
-\aside{第 4 题的“在区间内”与“其中为常数”两处在课件里都缺字：按 $f(t)$ 的分段，区间应为 $(-T/2,T/2)$；缺的那个符号从分段里的字母看应是 $H$（不能完全确认，做题时可按“$H$ 为常数”理解并注明）。第 6 题的 (2) 是 $\alpha\to0^{+}$ 的极限，$F(\omega)$ 会出现 $\frac{1}{i\omega}$ 型的奇性，正好接 §9 的 $\delta$ 函数。}
+\textbf{考点}：因果函数的变换；收敛因子；极限 $\alpha\to0^{+}$ 与阶跃函数。
+
+\textbf{关键一步}：$e^{-\alpha t}e^{-i\omega t}=e^{-(\alpha+i\omega)t}$，$\alpha>0$ 保证上限收敛到 $0$——$\alpha$ 不是装饰，它是让积分收敛的那把“保险”；撤掉保险，奇点就露出来。
+
+\textbf{详解}：$\alpha>0$ 时
+\[ F(\omega)=\frac1{2\pi}\int_0^{\infty}e^{-(\alpha+i\omega)t}\dd t=\frac{1}{2\pi(\alpha+i\omega)} .\]
+(1) 到此为止。\textbf{答案}：$F(\omega)=\dfrac{1}{2\pi(\alpha+i\omega)}$。
+
+(2) 令 $\alpha\to0^{+}$。先把实部虚部分开：
+\[ \frac{1}{\alpha+i\omega}=\frac{\alpha-i\omega}{\alpha^2+\omega^2}=\frac{\alpha}{\alpha^2+\omega^2}-\frac{i\omega}{\alpha^2+\omega^2} .\]
+这里两项要分开看。第二项在 $\omega\neq0$ 处逐点趋于 $-\dfrac{i}{\omega}$，也就是 $\mathrm{PV}\dfrac{1}{i\omega}$（因为 $\dfrac{1}{i\omega}=-\dfrac{i}{\omega}$）。第一项是宽度为 $\alpha$ 的峰，换元 $\omega=\alpha\tau$：
+\[ \int_{-\infty}^{\infty}\frac{\alpha}{\alpha^2+\omega^2}\dd\omega=\int_{-\infty}^{\infty}\frac{\dd\tau}{1+\tau^2}=\pi ,\]
+且 $\alpha\to0$ 时它只在 $\omega=0$ 附近不为零，于是弱收敛到 $\pi\delta(\omega)$——$\delta$ 的正式定义与性质在 §9，这里只用它的两条定义性事实：集中在一点、总面积为 $1$。
+因此
+\[ \lim_{\alpha\to0^{+}}\frac{1}{\alpha+i\omega}=\mathrm{PV}\frac{1}{i\omega}+\pi\delta(\omega),\qquad
+F(\omega)\longrightarrow\frac{1}{2\pi i\omega}+\frac12\delta(\omega) .\]
+
+\textbf{自检}：$\omega=0$ 时 (1) 给 $F(0)=\frac{1}{2\pi\alpha}$，而 $\frac{1}{2\pi}\int_0^{\infty}e^{-\alpha t}\dd t=\frac{1}{2\pi\alpha}$ $\checkmark$（低频谱值 $=$ 面积 $/2\pi$）。再看 (2)：$\delta$ 前的系数 $\frac{\pi}{2\pi}=\frac12$，正是阶跃在跳变点取的平均值——与 §3 的狄里希利条件是同一件事。
+
+\qbreak
+
+\subhdr{第 7 题：$\cos(\alpha x^2)$、$\sin(\alpha x^2)$ 的变换}
+
+\qstem{（课件 p63 第 7 题）求如下函数的复数形式的傅里叶变换，其中 $\alpha>0$：(1) $f(x)=\cos(\alpha x^{2})$；(2) $f(x)=\sin(\alpha x^{2})$。}
+
+\textbf{考点}：高斯积分的复参数延拓（围道转 $\pi/4$）；用欧拉公式把 $\cos$、$\sin$ 拆成两支指数。
+
+\textbf{关键一步}：这两个函数不绝对可积，但 $e^{\pm i\alpha x^2-ikx}$ 可以配方成“高斯 $+$ 平移”，再把 $\int e^{-Ar^2}\dd r=\sqrt{\pi/A}$ 沿 $A\to\mp i\alpha$ 解析延拓。先把 $\cos$、$\sin$ 写成两支指数，两支一起做，只差一个共轭。
+
+\textbf{详解}：\textbf{(a) 先算指数型}。配方（平移量 $\frac{k}{2\alpha}$ 是实数，不改变全直线上的积分）：
+\[ i\alpha x^2-ikx=i\alpha\left(x-\frac{k}{2\alpha}\right)^2-\frac{ik^2}{4\alpha}, \]
+故
+\[ \int_{-\infty}^{\infty}e^{i\alpha x^2-ikx}\dd x=e^{-\frac{ik^2}{4\alpha}}\int_{-\infty}^{\infty}e^{i\alpha u^2}\dd u .\]
+
+\textbf{(b) 那个高斯}：取 $e^{i\alpha z^2}$ 沿扇区（实轴段 $[0,R]$、半径 $R$ 的圆弧、辐角 $\pi/4$ 的斜边）积分为零。弧上 $\left|e^{i\alpha z^2}\right|=e^{-\alpha R^2\sin2\theta}\to0$（$\theta$ 靠近 $0$ 的一小段用弧长控制，与 Jordan 引理同一手法）；斜边 $z=re^{i\pi/4}$ 上
+\[ i\alpha z^2=i\alpha r^2e^{i\pi/2}=-\alpha r^2,\qquad \dd z=e^{i\pi/4}\dd r ,\]
+所以
+\[ \int_0^{\infty}e^{i\alpha u^2}\dd u=e^{i\pi/4}\int_0^{\infty}e^{-\alpha r^2}\dd r=e^{i\pi/4}\cdot\frac12\sqrt{\frac{\pi}{\alpha}} ,\]
+即 $\int_{-\infty}^{\infty}e^{i\alpha u^2}\dd u=\sqrt{\dfrac{\pi}{\alpha}}\,e^{i\pi/4}$。代回 (a)：
+\[ \int_{-\infty}^{\infty}e^{i\alpha x^2-ikx}\dd x=\sqrt{\frac{\pi}{\alpha}}\,e^{i\left(\frac{\pi}{4}-\frac{k^2}{4\alpha}\right)} ,\]
+另一支取复共轭。
+
+\textbf{(c) 拆成 $\cos$ 与 $\sin$}：由 $\cos(\alpha x^2)=\frac12\left(e^{i\alpha x^2}+e^{-i\alpha x^2}\right)$、$\sin(\alpha x^2)=\frac{1}{2i}\left(e^{i\alpha x^2}-e^{-i\alpha x^2}\right)$，记 $\varphi=\frac{\pi}{4}-\frac{k^2}{4\alpha}$，
+\[
+\mathcal{F}[\cos\alpha x^2]=\frac{1}{2\pi}\cdot\frac12\cdot2\sqrt{\frac{\pi}{\alpha}}\cos\varphi=\frac{1}{2\pi}\sqrt{\frac{\pi}{\alpha}}\cos\varphi ,
+\]
+\[
+\mathcal{F}[\sin\alpha x^2]=\frac{1}{2\pi}\cdot\frac{1}{2i}\cdot2i\sqrt{\frac{\pi}{\alpha}}\sin\varphi=\frac{1}{2\pi}\sqrt{\frac{\pi}{\alpha}}\sin\varphi .
+\]
+
+\textbf{答案}：
+\[
+\mathcal{F}\left[\cos\alpha x^2\right]=\frac{1}{2\pi}\sqrt{\frac{\pi}{\alpha}}\cos\varphi,\qquad
+\mathcal{F}\left[\sin\alpha x^2\right]=\frac{1}{2\pi}\sqrt{\frac{\pi}{\alpha}}\sin\varphi,\qquad \varphi=\frac{\pi}{4}-\frac{k^2}{4\alpha} .
+\]
+\textbf{自检}：两支的模平方相加为 $\left(\frac{1}{2\pi}\right)^2\dfrac{\pi}{\alpha}=\dfrac{1}{4\pi\alpha}$，与 $k$ 无关——chirp 的两个正交分量谱密度相等，这是“相位调制不改变总能量”的最简例子。又 $\alpha\to\infty$ 时整体按 $1/\sqrt{\alpha}\to0$：振得越快，谱摊得越开。
 
 %=============================================================
 \hdr{§8}{§5.3 性质：九条，四对对偶，一个 $2\pi$}
@@ -1081,7 +1347,7 @@ u(x)\Big|_{x\to\pm\infty}=0 .
 \callout{\textbf{§5.4 一句话}：$\delta$ 的作用不是“表示一个无限大的点”，而是\textbf{把“叠加”写成积分}。有了挑选性 $f(x)=\int\delta(x-x')f(x')\dd x'$，任何一个线性方程都可以先解“点源响应”（格林函数），再叠加成一般解——这就是课件说的“格林函数法”（p62 红字，第十一章展开）。}
 
 %=============================================================
-\hdr{§10}{缺口清单：19 条，逐条给页码与原文短语}
+\hdr{§10}{缺口清单：21 条，逐条给页码与原文短语}
 
 \gapitem{机制缺口 · p5--p6}{“推出实变函数傅里叶级数的系数”。缺：正交性五式（p5 直接列出）怎么用来把 $a_n$、$b_n$ 筛出来，步骤一行未给。补：§1 的“乘基函数—逐项积分—只活下 $n=m$”三步，并补 $\int\cos^{2}=l$ 的来源。}
 
@@ -1121,9 +1387,13 @@ u(x)\Big|_{x\to\pm\infty}=0 .
 
 \gapitem{拼接缺口 · p61}{“利用留数定理，得到 $g(x)=-\frac{1}{2a}e^{-a|x-x_0|}$”。缺：从 $\int\frac{e^{ik(x-x_0)}}{k^{2}+a^{2}}\dd k$ 到结果的留数计算（含 $k$ 正负两支、闭合方向）全部省略——本章最大的一处跳步。补：§9 例 3 分两支算完并验算。}
 
-\callout{\textbf{类型分布}：机制缺口 7 条、拼接缺口 3 条、代数跳步 3 条、答案形态 3 条、形式改写 1 条、记号冲突 1 条、适用区间 1 条，共 19 条。
+\gapitem{压缩缺口 · p34--p35}{三个情形被压成一张“区间／$\operatorname{sgn}$／结果”四列表，表里直接出现 $\frac12-(-\frac12)=1$，而 $\frac12\operatorname{sgn}(\omega+\omega_0)-\frac12\operatorname{sgn}(\omega-\omega_0)$ 这个式子从头到尾没有写出来。缺：表与上一句 $\int\frac{e^{i\beta t}}{2i\pi t}\dd t=\frac12\operatorname{sgn}\beta$ 之间的代入步骤。补：§6 的“代进去”“两次比较”“五行表”三小节。}
 
-\textbf{本章的系统性问题}：\emph{归一化常数从不解释}——$\frac{1}{2\pi}$、$(2\pi)^{2}$、$(2\pi)^{4}$、$2\pi$ 四处各出现一次，全章没有一句把它们串起来；以及\emph{极限过程一律用“同理／很容易”带过}（p20、p58、p61 三处）。前者的补法是 §0 的“三套归一化”与 §4 的“数 $\dd$ 规则”；后者的补法是各节里显式写出的极限步骤。}
+\gapitem{边界缺口 · p35}{“$|\omega|<\omega_0$ 取 $\frac{1}{2\pi}$，$|\omega|>\omega_0$ 取 $0$”。缺：$\omega=\pm\omega_0$ 两点既不在 $<$ 内也不在 $>$ 内，无定义，也没说明为什么可以留空。补：§6 的闭式与警告框，端点值 $\frac{1}{4\pi}$。}
+
+\callout{\textbf{类型分布}：机制缺口 7 条、拼接缺口 3 条、代数跳步 3 条、答案形态 3 条、形式改写 1 条、记号冲突 1 条、适用区间 1 条、压缩缺口 1 条、边界缺口 1 条，共 21 条。
+
+\textbf{本章的系统性问题}：\emph{归一化常数从不解释}——$\frac{1}{2\pi}$、$(2\pi)^{2}$、$(2\pi)^{4}$、$2\pi$ 四处各出现一次，全章没有一句把它们串起来；\emph{极限过程一律用“同理／很容易”带过}（p20、p58、p61 三处）；以及\emph{把逐情形的推理压成表}（p34--p35）。前两者的补法分别是 §0 的“三套归一化”与 §4 的“数 $\dd$ 规则”、各节里显式写出的极限步骤；第三种的补法是 §6 的五行表加逐行读法——\textbf{压缩不是补缝，是把缝重新盖回去}，表格必须能逐格复算才算补。}
 
 %=============================================================
 \hdr{§11}{易错点：每一条都能指回某个例子的某一步}
@@ -1191,7 +1461,7 @@ p33--p35 & 例 4 $\sin\omega_0t/(\pi t)$ 与矩形谱 & §6
 \\
 p36--p38 & 例 5 屏蔽库仑势 & §7
 \\
-p39 & 作业 1--4 & §7 末
+p39 & 作业 1--4 & §7 末：题面与完整详解
 \\
 p40--p48 & 九条性质 & §8
 \\
@@ -1201,7 +1471,7 @@ p51--p58 & $\delta$ 的定义、性质、辅助函数、变换 & §9
 \\
 p59--p62 & 例 1--例 4（$\sin/\cos$、球坐标、两个常微分方程） & §9
 \\
-p63 & 作业 5--7 & §7 末
+p63 & 作业 5--7 & §7 末：题面与完整详解
 \\
 \bottomrule
 \end{tabular}
@@ -1209,6 +1479,6 @@ p63 & 作业 5--7 & §7 末
 \flowerrule
 
 {\small\color{inkgray}
-本讲义依据 \texttt{第五章+傅里叶变换+-+上传课件.pdf}（63 页，2026-10-22 读）写成。所有公式要么标注了课件页码，要么给出了完整推导；§1 的系数推导、§2 例 2 的三个系数、§3 的正弦一半、§5 的高斯积分、§6 的半留数公式、§8 的卷积 $2\pi$、§9 例 3 的留数计算均为本讲义补出，课件未给。归一化按 §0 统一：实数级数 $a_0=\frac{1}{2l}\int f$，积分变换 $F(k)=\frac{1}{2\pi}\int fe^{-ikx}\dd x$.\par}
+本讲义依据 \texttt{第五章+傅里叶变换+-+上传课件.pdf}（63 页，2026-10-22 读）写成。所有公式要么标注了课件页码，要么给出了完整推导；§1 的系数推导、§2 例 2 的三个系数、§3 的正弦一半、§5 的高斯积分、§6 的半留数公式、§8 的卷积 $2\pi$、§9 例 3 的留数计算均为本讲义补出，课件未给。\textbf{2026-10-23 修订}：§6 原来的“三个区间，一张表”补成“代进去—两次比较—五行表—闭式—端点”五步（原表既没写出被制表的式子，也没有端点行）；§7 末收 p39、p63 七道作业的题面与完整详解（含端点、周期减半、$\alpha\to0^{+}$ 的奇点与 Fresnel 围道四处课件没写的推导）。归一化按 §0 统一：实数级数 $a_0=\frac{1}{2l}\int f$，积分变换 $F(k)=\frac{1}{2\pi}\int fe^{-ikx}\dd x$.\par}
 
 \end{document}

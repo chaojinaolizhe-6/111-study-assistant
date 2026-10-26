@@ -2,7 +2,7 @@
 
 > **本文件由 `python -B tools/coverage.py` 生成，勿手工编辑**（派生视图）。
 > 事实源：`learning/attempts.jsonl`（不改不删）+ `learning/corrections.jsonl`（订正）+ `learning/goals.yaml`（目标）+ 题目 frontmatter。
-> 生成日期：2026-10-22 ｜ 事件 52 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `1388bfe3d536e51e…`
+> 生成日期：2026-10-26 ｜ 事件 52 条 ｜ 订正 55 条 ｜ attempts.jsonl sha256 `1388bfe3d536e51e…`
 > 手写意图（今天做什么、为什么暂缓）不在这里：见 `plan/today-<日期>.md`、`plan/gaps.md`、`.tutor/config/status-narrative.yml`。
 
 ## ① 能力目标覆盖（含**尚未出题**的考点）

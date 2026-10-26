@@ -1,0 +1,1549 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第一章第二讲（Chapter One-2）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C1-2 · 精讲}{电工电子技术}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+
+% ------- 电路图统一样式（纯 tikz，本机无 circuitikz）-------
+\definecolor{cuarrow}{RGB}{214,51,133}
+\definecolor{cuwire}{RGB}{70,70,70}
+\tikzset{
+  cwire/.style={thick,draw=cuwire},
+  cres/.style={fill=white,draw=black,thick},
+  csrc/.style={fill=white,draw=black,thick},
+  carr/.style={->,>=Stealth,thick,draw=cuarrow},
+  gnd/.style={thick,draw=cuwire}
+}
+\newcommand{\cval}[1]{{\small #1}}
+\newcommand{\cresV}[2]{\draw[cres] (#1-0.24,#2-0.55) rectangle (#1+0.24,#2+0.55);}   % 竖直电阻，中心 (#1,#2)
+\newcommand{\cresH}[2]{\draw[cres] (#1-0.55,#2-0.24) rectangle (#1+0.55,#2+0.24);}   % 水平电阻
+\newcommand{\cvsrcV}[2]{% 电压源：竖直放置的圆，+ 在上
+  \draw[csrc] (#1,#2) circle (0.32);
+  \node[font=\small] at (#1+0.52,#2+0.30) {$+$};
+  \node[font=\small] at (#1+0.52,#2-0.30) {$-$};}
+\newcommand{\cvsrcVn}[2]{% 电压源：竖直放置的圆，$-$ 在上
+  \draw[csrc] (#1,#2) circle (0.32);
+  \node[font=\small] at (#1+0.52,#2+0.30) {$-$};
+  \node[font=\small] at (#1+0.52,#2-0.30) {$+$};}
+\newcommand{\cisrcV}[2]{% 电流源：竖直放置，圆内一横
+  \draw[csrc] (#1,#2) circle (0.32);
+  \draw[thick] (#1-0.32,#2) -- (#1+0.32,#2);}
+\newcommand{\cisrcH}[2]{% 电流源：水平放置，圆内一竖
+  \draw[csrc] (#1,#2) circle (0.32);
+  \draw[thick] (#1,#2-0.32) -- (#1,#2+0.32);}
+\newcommand{\ground}[1]{% 接地符号，#1 为接地点
+  \draw[gnd] (#1) -- ++(0,-0.26);
+  \draw[gnd] ($(#1)+(-0.40,-0.26)$) -- ($(#1)+(0.40,-0.26)$);
+  \draw[gnd] ($(#1)+(-0.26,-0.38)$) -- ($(#1)+(0.26,-0.38)$);
+  \draw[gnd] ($(#1)+(-0.11,-0.50)$) -- ($(#1)+(0.11,-0.50)$);}
+
+\begin{document}
+
+\doctitle{电位、实际电源与电源变换：从「必须选一个零点」到「两个模型分不出来」}
+{C1-2 逐页精讲 · 45 页课件里的三块复习、一节新课与一节 KCL}
+{依据：Chapter One -2-2026中白上传.pdf（p1--p45，共 45 页；本讲义页码一律指该册 PDF 物理页，引用他册时写成 [C1-1 p19] 的形式）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{0.1 本册实际讲了哪几节，各占哪几页}
+
+先纠正一件事：本册 45 页\textbf{不是}一册只讲 1.6 的课件。按每一页的页眉与标题逐页核对，
+它实际是「一段复习 $+$ 两节新课」：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{3.2cm}p{4.0cm}p{6.3cm}@{}}
+\tabtop
+\thead{页码} & \thead{页眉小节} & \thead{内容} & \thead{本讲义对应}
+\\
+\tabmid
+p1--p13 & Review & 电位（p2--p5）、功率判别（p6--p13） & §1、§2
+\\
+p14--p31 & 1.6 Practical sources & 实际源（p14--p16）、电源变换（p17--p21）、例题 E1（p22--p27）、三个练习（p28--p31） & §3--§7
+\\
+p32--p45 & 1.7 Kirchhoff's Laws & 术语与计数（p34--p38）、KCL（p39--p45） & §11
+\tabbot
+\end{tabular}
+
+\textbf{第三行必须点出来}：p32 的页眉写的是「1.7 Kirchhoff's Laws」，p39 的页眉写的是
+「1.7.1 Kirchhoff's Current Law (KCL)」，p34 的标题是「Terms」，这几个字在版面上一字不差地印着。
+所以本册的后 14 页属于 1.7，不属于 1.6；任务书给的粗测地图把 p32--p45 记在 1.6 名下，与本册实际页眉不符。
+本书按页面实际内容编排。
+
+\subhdr{0.2 记号：先统一一次，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.9cm}p{12.6cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$V_A,\ V_B$ & 单下标的\textbf{电位}：某点对参考点的电压，单位 V；不选参考点就没有数值
+\\
+$U_{AB}$ & 双下标的\textbf{电压}（电位差）：$U_{AB}=V_A-V_B=-U_{BA}$，与参考点无关
+\\
+$U_S,\ I_S$ & 源的\textbf{定值}：理想电压源的端电压、理想电流源的电流
+\\
+$R_S$ & 实际源的\textbf{内阻}（internal resistance）
+\\
+$U,\ I$ & 端口电压与端口电流，都是\textbf{参考方向}；$P=UI$ 的吸收正值（§2.1）
+\\
+$R'$ & 电源变换后与源并联的电阻；课件 p17 用 $R'$ 与原来的 $R$ 区分（本书结论是 $R'=R$）
+\\
+$N,\ B,\ L,\ M$ & 节点、支路、回路、网孔数（p35--p38 的四个字母，§11.2）
+\\
+p23 & 本册 PDF 物理页 23；其他册写成 [C1-1 p19]
+\tabbot
+\end{tabular}}
+
+\subhdr{0.3 三处拼接（课件自己的缝）}
+
+\gapitem{结构拼接}{p31 的通用电路（$I_S$、$U_S$、$R_1$--$R_4$）\textbf{没有任何提问}：
+图下方没有「Find …」，页眉却仍是 1.6.4 Example。它其实是一个\textbf{四节点、六支路}的网络，
+正对下一册的 KCL 例题；本讲义 §7.4 只做「读图 $+$ 它为什么放在这里」，不硬编一个题目去算。}
+
+\gapitem{答案缺口}{p2 与 p3 是同一个电路只把开关 S 从断开改成闭合，\textbf{两页都没有答案}；
+p5、p9、p10、p30、p31 也只有图。本书把这些题的答案逐题补出（§1、§2、§7），
+并且在能平衡的地方用「发出的总功率 $=$ 吸收的总功率」自查——这一步比答案本身更能证明拓扑读对了。}
+
+\gapitem{形式缺口}{p14 的 Objective 第一条要求 Understand the external characteristics of practical
+sources，但全册\textbf{没有一页}写出外特性方程、也没有画外特性曲线。
+这是全册最实的一处缺口：没有外特性，「实际源为什么能等效互换」就无从谈起；
+本讲义 §3 补出两条外特性，§4 直接用它们证明变换定理。}
+
+\subhdr{0.4 本讲义与技能骨架的对应关系（§编号不在原位，特此声明）}
+
+\callout{\textbf{为什么改顺序}：技能给的骨架是「一章一条主线」的写法（§1 机制、§2--§3 两条主线、
+§5 主例题……）。本册不是一章，而是三块互不相干的复习加两节新课（电位／功率／实际源 $+$ 变换／KCL），
+硬套一条主线会把 KCL 挤到附录里。所以本讲义改成\textbf{一个模块一节}，但每节内部仍按
+「机制（补推导）$\to$ 例题（全过程）$\to$ 自查（功率或方程平衡）」走。\\
+\textbf{不变的三处}：§8 公式卡与四步用法、§9 易错点、§10 缺口清单、§12 页码对照表，位置与骨架一致。}
+
+\subhdr{0.5 版面事实的来源（重要）}
+
+\callout{\textbf{怎么确认的}：本册的电路图是 PowerPoint 矢量图元，我把 p2、p3、p4、p6--p31 的
+PDF 图元坐标（线段端点、圆的圆心、矩形电阻的边框）与文字框坐标逐页打印出来，再与整页扫描图、
+MinerU 文字层三方对照。凡三方一致的，本书直接写；\\
+\textbf{只有一处不一致}：p2/p3 顶部水平导线向右延伸到一段\textbf{加粗竖杠}为止，
+杠之后\textbf{没有}画出任何接到下侧母线的导线（我把该区域放大重绘过，确实没有）。
+这一处决定 p2 的一个答案，本书在 §1.2 同时给出两种读法的数值，并标 [待确认]。}
+
+%=============================================================
+\hdr{§1}{电位：为什么必须先钉住一个「海平面」（p2--p5）}
+
+\subhdr{1.1 一个定义、两条规矩}
+
+p2--p5 四页标题都叫 Potential，但四页都只有电路和图，没有一行定义。先把定义补上：
+
+\callout{\textbf{[教材补充] 定义（电位）}（为什么补：p2--p5 四页标题都写 Potential，却一页也没有给定义，
+而「电位」的每一步计算都靠这条定义）：
+在电路中任选一点 $O$ 作\textbf{参考点}（reference point），规定 $V_O=0$；则任一点 $A$ 的电位定义为
+\[ V_A = U_{AO} = \int_A^{O}\vec{E}\cdot\dd\vec{l} \]
+即把单位正电荷从 $A$ 移到 $O$ 时电场力做的功。$U_{AB}=V_A-V_B$ 就是两点电位之差。\\
+\textbf{一句话}：电位是「某点对零点的电压」，电压是「两点之间的电位之差」。}
+
+两条规矩，后面 §1.2--§1.4 每题都要用：
+
+\begin{enumerate}[label=（\arabic*）,leftmargin=2.2em]
+\item \textbf{不选参考点，电位无意义}；选了以后，$V_A$ 的数值随参考点改变。
+\item \textbf{换参考点，全部电位平移同一个常数}，而任意两点之差不变：
+\[ V_X^{(O')} = V_X^{(O)} - V_{O'}^{(O)},\qquad U_{AB}^{(O')}=U_{AB}^{(O)} . \]
+\end{enumerate}
+
+\aside{第（2）条是定理不是口号：$V_X^{(O')}=U_{XO'}=V_X^{(O)}-V_{O'}^{(O)}$，
+右端第一项含 $X$、第二项不含 $X$，故对每个 $X$ 都是「减去同一个数」。代入 §1.4 的桥式电路：
+把左端轨（原设 $0$）改设成 $-3\,\mathrm{V}$，则 $V_A=1-3=-2\,\mathrm{V}$、$V_B=3-3=0\,\mathrm{V}$，
+而 $U_{AB}=(-2)-0=-2\,\mathrm{V}$ 一字不变。}
+
+\subhdr{1.2 p2 与 p3：同一张电路，S 一开一合}
+
+两页的已知量完全相同：$I_S=2\,\mathrm{A}$、$U_S=12\,\mathrm{V}$、$R_1=R_2=4\,\Omega$、$R_3=16\,\Omega$；
+只把「when S is open」换成「when S is closed」，两页\textbf{都不给答案}。先把拓扑照图元坐标复原：
+
+\begin{center}
+\begin{tikzpicture}[scale=0.86,>=Stealth]
+  % 顶线 + 电流源
+  \draw[cwire] (0,6.6) -- (1.95,6.6);
+  \cisrcH{2.3}{6.6}
+  \draw[cwire] (2.65,6.6) -- (6.3,6.6);
+  \draw[carr] (3.05,6.15) -- (1.55,6.15);
+  \node[font=\small] at (2.3,7.15) {$I_S$};
+  % 右侧竖线（判读存疑）
+  \draw[cwire,dashed] (6.3,6.6) -- (6.3,0.9);
+  \node[font=\footnotesize] at (6.85,7.15) {（存疑，见下文）};
+  % R1 与节点 M
+  \draw[cwire] (0,6.6) -- (0,6.05);
+  \cresV{0}{5.5}
+  \draw[cwire] (0,4.95) -- (0,4.2);
+  \fill (0,4.2) circle (1.5pt);
+  \node[font=\small,left] at (-0.35,5.5) {$R_1$};
+  \node[font=\small,left] at (-0.3,4.05) {$M$};
+  \node[font=\small,left] at (-0.3,6.75) {$L$};
+  % R2 水平
+  \draw[cwire] (0,4.2) -- (0.9,4.2);
+  \cresH{1.45}{4.2}
+  \draw[cwire] (2.0,4.2) -- (3.6,4.2);
+  \node[font=\small] at (1.45,4.85) {$R_2$};
+  % A 点与 R3
+  \fill (3.6,4.2) circle (1.5pt);
+  \node[font=\small,right] at (3.85,4.35) {$A$};
+  \draw[cwire] (3.6,4.2) -- (3.6,3.65);
+  \cresV{3.6}{3.1}
+  \draw[cwire] (3.6,2.55) -- (3.6,2.1);
+  \node[font=\small,right] at (3.95,3.1) {$R_3$};
+  % U_S（$-$ 在上、$+$ 在下）
+  \draw[csrc] (3.6,1.75) circle (0.32);
+  \node[font=\small] at (4.2,2.05) {$-$};
+  \node[font=\small] at (4.2,1.45) {$+$};
+  \node[font=\small,right] at (4.05,1.75) {$U_S$};
+  \draw[cwire] (3.6,1.43) -- (3.6,0.9);
+  % 下侧母线
+  \draw[cwire] (0,0.9) -- (6.3,0.9);
+  % 开关支路与地
+  \draw[cwire] (0,4.2) -- (0,3.15);
+  \draw[thick,draw=red] (0,3.15) -- (-0.8,2.55);
+  \draw[cwire] (0,2.2) -- (0,0.9);
+  \fill (0,3.15) circle (1.2pt); \fill (0,2.2) circle (1.2pt);
+  \node[font=\small,left] at (-0.45,2.75) {S};
+  \ground{0,0.9}
+\end{tikzpicture}
+\end{center}
+
+读图要点四句：$I_S$ 的箭头指向\textbf{左}（即电流从右侧流入左上节点）；$U_S$ 的\textbf{$-$ 在上、$+$ 在下}；
+$R_1$ 与 $R_2$ 的交点记作 $M$，开关 S 就接在 $M$ 与下侧母线之间；下侧母线在左端\textbf{直接接地}，
+所以它恒为 $0\,\mathrm{V}$，与 S 的开合无关。
+
+\aside{本节的四条前提都来自「$U_S$ 的极性」这一处读图：因为 $-$ 在上，所以从母线上行穿过 $U_S$
+电位\textbf{降低} $12\,\mathrm{V}$，即 $U_S$ 上端为 $-12\,\mathrm{V}$。这一步是后面所有数字的根，
+若把极性读反（$+$ 在上），§1.2 的两个答案同时变号。}
+
+\subhdr{（1）S 断开：一条串联环，2 A 从头贯到尾}
+
+S 断开时 $M$ 与母线的连接被切断，全电路只剩一个闭合环：
+\[ I_S\ \to\ L\ \to\ R_1\ \to\ M\ \to\ R_2\ \to\ A\ \to\ R_3\ \to\ U_S\ \to\ \text{下侧母线}\ \to\ I_S . \]
+$I_S=2\,\mathrm{A}$ 是理想电流源，环里没有分支，于是\textbf{每一段的电流都是 $2\,\mathrm{A}$}，
+顺序如箭头。取母线的电位为 $0$，从 $U_S$ 往上逐段累加：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{6.6cm}@{}}
+\tabtop
+\thead{点} & \thead{怎么来的} & \thead{电位}
+\\
+\tabmid
+下侧母线 & 参考点 & $0\,\mathrm{V}$
+\\
+$U_S$ 上端 & 跨过 $U_S$ 上行，$-\to+$，升 $12\,\mathrm{V}$ & $-12\,\mathrm{V}$
+\\
+$A$ & 再顺电流方向（$A\to U_S$ 上端）过 $R_3$，电位降 $2\times16=32\,\mathrm{V}$ & $-12+32 = 20\,\mathrm{V}$
+\\
+$M$ & 逆电流方向（$A\to M$）过 $R_2$，电位升 $2\times4=8\,\mathrm{V}$ & $20+8 = 28\,\mathrm{V}$
+\\
+$L$ & 过 $R_1$ 升 $2\times4=8\,\mathrm{V}$ & $36\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+\textbf{所以 $V_A = 20\,\mathrm{V}$}（S 断开，取下侧母线为参考点）。
+
+\warnbox{\textbf{自查（功率平衡，比答案更能证明拓扑没错）}：\\
+$I_S$ 的端电压 $=V_L-0=36\,\mathrm{V}$，发出 $36\times2=72\,\mathrm{W}$；
+$U_S$ 上电流自 $-$ 端流入、$+$ 端流出（即由内部从 $-$ 推向 $+$），发出 $12\times2=24\,\mathrm{W}$；
+三个电阻吸收 $2^2\times4+2^2\times4+2^2\times16 = 16+16+64 = 96\,\mathrm{W}$；
+$72+24=96$，平衡。\textbf{若把 $U_S$ 的极性读反，这一条立刻不平}，这也是上一条旁注的验证办法。}
+
+\subhdr{（2）S 闭合：$M$ 被钉在 $0$，电路裂成两个互不打扰的环}
+
+S 闭合把 $M$ 直接接到母线，于是 $V_M=0$。这一下电路裂成两块：
+
+\textbf{左环}：$I_S$ 的电流只能从 $L$ 经 $R_1$ 到 $M$，再从 S 的导线回母线：
+$2\,\mathrm{A}$ 全走 $R_1$，故 $V_L-V_M=2\times4=8\,\mathrm{V}$，即 $V_L=8\,\mathrm{V}$；
+$I_S$ 端电压 $8\,\mathrm{V}$，发出 $16\,\mathrm{W}$，正好等于 $R_1$ 吸收的 $2^2\times4=16\,\mathrm{W}$。
+
+\textbf{右环}：$A$ 点现在是「$R_2$ 接 $M=0$」与「$R_3$ 串 $U_S$ 接母线」两条支路的交点，
+而 $U_S$ 上端为 $-12\,\mathrm{V}$。对 $A$ 写一个节点的电流方程（离开 $A$ 的各支路电流之和 $=0$）：
+\[ \frac{V_A-0}{4}+\frac{V_A-(-12)}{16}=0
+ \quad\Longrightarrow\quad 4V_A+V_A+12=0
+ \quad\Longrightarrow\quad V_A=-\frac{12}{5}=-2.4\,\mathrm{V}. \]
+
+\textbf{所以 $V_A = -2.4\,\mathrm{V}$}（S 闭合）。
+
+\aside{这一步把「$R_3$ 串 $U_S$ 接母线」整条支路当成一支：支路电流 $=(V_A-V_{\text{上端}})/R_3$，
+而 $V_{\text{上端}}=-12\,\mathrm{V}$ 已由 $U_S$ 钉死，与 $R_3$ 无关。这就是「理想电压源钉住两端电位差」
+在本步的用法——不要再去算 $U_S$ 内部怎么了。}
+
+自查：右环电流 $=\left|V_A-(-12)\right|/16 = 9.6/16 = 0.6\,\mathrm{A}$，
+$U_S$ 发出 $12\times0.6=7.2\,\mathrm{W}$，$R_3$ 吸收 $0.6^2\times16=5.76\,\mathrm{W}$，
+$R_2$ 吸收 $0.6^2\times4=1.44\,\mathrm{W}$，$5.76+1.44=7.2$，平衡。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{2.6cm}p{2.4cm}p{3.4cm}p{4.4cm}@{}}
+\tabtop
+\thead{状态} & \thead{$V_M$} & \thead{$V_A$} & \thead{主回路电流} & \thead{机制}
+\\
+\tabmid
+S 断开（p2） & $28\,\mathrm{V}$ & $20\,\mathrm{V}$ & $2\,\mathrm{A}$（单环） & $I_S$ 的 $2\,\mathrm{A}$ 贯通 $R_1,R_2,R_3$
+\\
+S 闭合（p3） & $0$ & $-2.4\,\mathrm{V}$ & 左环 $2\,\mathrm{A}$、右环 $0.6\,\mathrm{A}$ & S 把 $M$ 钉在 $0$，左右解耦
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{一处必须标 [待确认] 的读图分歧}：本册 p2/p3 的顶线右端是一段\textbf{加粗竖杠}，
+杠后\textbf{没有}画出接到下侧母线的导线（放大重绘确认）。若照「悬空」读：\\
+（1）S 断开时 $I_S$ 无通路 $\Rightarrow$ 全电路无电流 $\Rightarrow$ 各点等电位，
+$V_A=V_L=V_M=-12\,\mathrm{V}$（$U_S$ 上端），$R_1$、$R_2$、$R_3$ 上零压降；\\
+（2）S 闭合时与上文\textbf{完全相同}，仍是 $V_A=-2.4\,\mathrm{V}$（因为此时 $M=0$，
+$I_S$ 那条悬空支路仍不通，右环只剩 $R_2$、$R_3$、$U_S$）。\\
+本书正文按「接回下侧母线」读，理由有两条：（i）只有这样 $R_1=4\,\Omega$ 与 $I_S=2\,\mathrm{A}$
+才在两个问里都起作用，否则这两个元件是纯装饰；（ii）这样读出的功率平衡（$72+24=96$）是自洽的。
+若老师课上给的是 $-12\,\mathrm{V}$，请以老师为准，并把这一条当作「同一套方法、两种接线」的练习。}
+
+\subhdr{1.3 p4：三个节点、一条不能省的支路}
+
+p4 没有任何文字说明，只有电路。图元坐标给出的拓扑是：左侧一个由 $5\,\mathrm{V}$、$2\,\Omega$、
+$3\,\Omega$ 组成的回路，右侧一条 $10\,\Omega$ 把它接到「$1\,\mathrm{A}$ 源 $\parallel 4\,\Omega$」的孤立双节点上。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.86,>=Stealth]
+  % 顶线
+  \draw[cwire] (0,5.4) -- (1.0,5.4);
+  \cresH{1.55}{5.4}
+  \draw[cwire] (2.1,5.4) -- (3.7,5.4);
+  \fill (3.1,5.4) circle (1.5pt);
+  \node[font=\small] at (2.95,5.95) {$B$};
+  \cresH{4.25}{5.4}
+  \draw[cwire] (4.8,5.4) -- (7.4,5.4);
+  \fill (6.0,5.4) circle (1.5pt);
+  \node[font=\small] at (1.55,6.05) {$2\,\Omega$};
+  \node[font=\small] at (4.25,6.05) {$10\,\Omega$};
+  % 左竖线
+  \draw[cwire] (0,5.4) -- (0,0.7);
+  % 底左母线 + 3Ω
+  \draw[cwire] (0,0.7) -- (1.0,0.7);
+  \cresH{1.55}{0.7}
+  \draw[cwire] (2.1,0.7) -- (3.1,0.7);
+  \node[font=\small] at (1.55,1.25) {$3\,\Omega$};
+  \ground{0,0.7}
+  % 5V 源（竖直，+ 在上）
+  \draw[cwire] (3.1,5.4) -- (3.1,2.95);
+  \cvsrcV{3.1}{2.6}
+  \draw[cwire] (3.1,2.25) -- (3.1,0.7);
+  \node[font=\small,right] at (3.5,2.6) {$5\,\mathrm{V}$};
+  % 右：1A 源
+  \draw[cwire] (6.0,5.4) -- (6.0,3.55);
+  \cisrcV{6.0}{3.2}
+  \draw[carr] (6.0,3.9) -- (6.0,3.62);
+  \node[font=\small,left] at (5.6,3.2) {$1\,\mathrm{A}$};
+  \draw[cwire] (6.0,2.85) -- (6.0,1.5);
+  \fill (6.0,1.5) circle (1.5pt);
+  \node[font=\small,left] at (5.35,1.35) {$A$};
+  % 4Ω
+  \draw[cwire] (7.4,5.4) -- (7.4,3.75);
+  \cresV{7.4}{3.2}
+  \draw[cwire] (7.4,2.65) -- (7.4,1.5);
+  \node[font=\small,right] at (7.7,3.2) {$4\,\Omega$};
+  \draw[cwire] (6.0,1.5) -- (7.4,1.5);
+\end{tikzpicture}
+\end{center}
+
+\aside{本图有两条「孤立」关系必须先看清，否则会去列无用的方程：（i）节点 $A$ 只与右上节点（记 $X$）
+相连——一条经 $1\,\mathrm{A}$ 源、一条经 $4\,\Omega$；（ii）$B$ 与 $X$ 之间只有 $10\,\Omega$ 一条路，
+而 $X$ 没有别的出口。这两条决定了后面两步的写法。}
+
+\textbf{第一步：左环定 $B$}。左环是 $5\,\mathrm{V}$ 源、$2\,\Omega$、$3\,\Omega$ 串联，
+总电阻 $2+3=5\,\Omega$，故环电流 $5/5=1\,\mathrm{A}$；方向由 $5\,\mathrm{V}$ 的 $+$ 端（上）出发，
+经 $2\,\Omega$ 到左上角，沿左竖线向下到地，再经 $3\,\Omega$ 回到源的 $-$ 端。于是
+\[ V_B = V_G + 1\times2 = 2\,\mathrm{V},\qquad V_P = V_B-5 = -3\,\mathrm{V}, \]
+其中 $P$ 是 $3\,\Omega$ 右端的节点；$3\,\Omega$ 上的电流 $(0-(-3))/3=1\,\mathrm{A}$ 与上面一致。
+
+\textbf{第二步：$10\,\Omega$ 上没有电流}。$X$ 的唯一回路是「$1\,\mathrm{A}$ 源 $\parallel4\,\Omega$」：
+源把 $1\,\mathrm{A}$ 从 $X$ 推到 $A$，这 $1\,\mathrm{A}$ 只能经 $4\,\Omega$ 从 $A$ 回到 $X$。
+于是对 $X$ 写 KCL：流入 $10\,\Omega$ 的电流 $=$（源取走的 $1\,\mathrm{A}$）$-$（$4\,\Omega$ 送回 $1\,\mathrm{A}$）$=0$。
+$10\,\Omega$ 无电流 $\Rightarrow$ 无压降 $\Rightarrow V_X=V_B=2\,\mathrm{V}$。
+
+\textbf{第三步：$4\,\Omega$ 上的电压由 $A$ 端的孤立决定}。$1\,\mathrm{A}$ 经 $4\,\Omega$ 从 $A$ 流向 $X$，
+故 $V_A-V_X=1\times4=4\,\mathrm{V}$：
+\[ \boxed{V_A = V_X+4 = 2+4 = 6\,\mathrm{V}} \]
+（p4 的答案，以下侧母线为参考点。）
+
+\warnbox{\textbf{这题的两个坑}（都指回具体一步）：\\
+（1）\textbf{把 $10\,\Omega$ 当成「分压」的一部分}。它上面没有电流，压降为零——只有在第二步证明「$X$ 无别的出口」之后才成立，
+不能因为「串联就分压」直接算。\\
+（2）\textbf{把 $1\,\mathrm{A}$ 源与 $4\,\Omega$ 的方向搞混}。源把电流推向 $A$，因此 $4\,\Omega$ 上的电流是
+$A\to X$，$V_A$ \textbf{高于} $V_X$；若方向反了，答案变成 $V_A=-2\,\mathrm{V}$。}
+
+\subhdr{1.4 p5：桥式电路，题目问的是电位差}
+
+p5 只有一张图：上排 $10\,\Omega$ 与 $30\,\Omega$ 串联、中排 $60\,\Omega$ 与 $20\,\Omega$ 串联，
+两排的左右两端分别并在一起，底部 $4\,\mathrm{V}$ 电压源接在两条竖直导线之间（左 $-$、右 $+$），
+$A$、$B$ 分别是两排的中点，图上只画了一支从 $A$ 向下的红箭头，\textbf{没有文字、没有答案}。
+这是标准的分压题，两次分压即可：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{4.6cm}p{4.4cm}p{3.6cm}@{}}
+\tabtop
+\thead{点} & \thead{所在支路} & \thead{分压式} & \thead{数值}
+\\
+\tabmid
+左端轨 & 参考点 & $V_{\text{左}}=0$ & $0$
+\\
+右端轨 & 由 $4\,\mathrm{V}$ 源（$+$ 在右） & $V_{\text{右}}=4\,\mathrm{V}$ & $4\,\mathrm{V}$
+\\
+$A$ & $10+30=40\,\Omega$ 串联 & $V_A=4\cdot\dfrac{10}{40}$ & $1\,\mathrm{V}$
+\\
+$B$ & $60+20=80\,\Omega$ 串联 & $V_B=4\cdot\dfrac{60}{80}$ & $3\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+图上箭头由 $A$ 指向 $B$，按双下标的约定它标记的是 $U_{AB}$：
+\[ U_{AB}=V_A-V_B = 1-3 = -2\,\mathrm{V}. \]
+负号不是算错：它说明 $B$ 点比 $A$ 点\textbf{高} $2\,\mathrm{V}$，实际电位降的方向与箭头相反。
+
+\aside{这题恰好演示 §1.1 第（2）条：$A$、$B$ 都是分压点，答案 $U_{AB}$ 与参考点无关。
+若把参考点换到 $B$（$V_B=0$），则 $V_A=-2\,\mathrm{V}$、$U_{AB}$ 仍是 $-2\,\mathrm{V}$。
+所以凡是问「$U_{AB}$」的题，参考点可以随手选，选得越省事越好；问「$V_A$」的题，必须先找参考点。}
+
+%=============================================================
+\hdr{§2}{功率：同一个元件为什么既能当电源又能当负载（p6--p13）}
+
+\subhdr{2.1 p13 那张图就是全部判据，但要把它读成一句话}
+
+p13 只画了两个方块：左边淡紫、右边浅蓝，中间两条导线连通；上导线上画箭头 $I$ 指向右，
+右块端口处标 $U$（上 $+$ 下 $-$）。这页不是一道题，而是\textbf{判据的图示}。补成定理：
+
+\callout{\textbf{定理（功率符号判据）}\\
+\textbf{对象}：集总参数电路中的任一二端元件（电源、电阻都算）。\\
+\textbf{条件}：$U$ 与 $I$ 取\textbf{同一个元件}的端电压与端电流，且两者的参考方向都已标记；
+稳态下 $P$ 为常量。\\
+\textbf{结论}：把 $U$ 的参考方向定成上 $+$ 下 $-$，若电流 $I$ 从 $+$ 端\textbf{流入}（二者的参考方向相关联），
+则 $P=UI$ 就是该元件\textbf{吸收}的功率，$P>0$ 记吸收、$P<0$ 记发出；若 $I$ 从 $+$ 端\textbf{流出}（非关联），
+则 $P=UI$ 是其\textbf{发出}的功率，等价地「吸收功率 $=-UI$」。\\
+\textbf{它为什么只能这么写}：功率是「电压 $\times$ 电流」的量纲，符号却来自参考方向的约定。
+$U$ 与 $I$ 的箭头各自可以是任意的，换一个箭头就换一个符号——所以判据必须把「两个箭头的关系」写进条件里，
+这就是 p13 那句上 $+$ 下 $-$、箭头向右的全部内容。}
+
+\warnbox{\textbf{两种说法不要混}：课件（含 [C1-1 p37]）说的是 same direction / opposite direction，
+那是拿\textbf{实际方向}说话；本讲义用\textbf{参考方向}算 $P=UI$，正即吸收、负即发出。
+两者等价，但中间隔一步：若按参考方向算得 $P<0$，说明实际方向与参考方向相反，
+把箭头翻过来再看，结论与判据一致。\textbf{绝不能把负号直接塞进「same direction」里}。}
+
+\subhdr{2.2 p6--p8：同一个 $3\,\mathrm{V}$ 源，只换电阻，结论换三次}
+
+三页是同一个电路：左支路 $3\,\mathrm{A}$ 电流源（箭头向上）、中间支路一个电阻（p6 是 $1\,\Omega$、
+p7 是 $0.5\,\Omega$、p8 是 $2\,\Omega$）、右支路 $3\,\mathrm{V}$ 电压源（$+$ 在上）。三条支路并联。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9,>=Stealth]
+  \draw[cwire] (0,5.2) -- (4.8,5.2);
+  \draw[cwire] (0,0.9) -- (4.8,0.9);
+  % 电流源
+  \draw[cwire] (0,5.2) -- (0,3.37); \cisrcV{0}{3.05} \draw[cwire] (0,2.73) -- (0,0.9);
+  \draw[carr] (0,3.95) -- (0,3.45);
+  \node[font=\small,left] at (-0.35,3.05) {$3\,\mathrm{A}$};
+  % 电阻
+  \draw[cwire] (2.4,5.2) -- (2.4,3.6); \cresV{2.4}{3.05} \draw[cwire] (2.4,2.5) -- (2.4,0.9);
+  \node[font=\small,above] at (2.4,3.75) {$R$};
+  % 电压源
+  \draw[cwire] (4.8,5.2) -- (4.8,3.37); \draw[csrc] (4.8,3.05) circle (0.32); \draw[cwire] (4.8,2.73) -- (4.8,0.9);
+  \node[font=\small] at (5.15,3.35) {$+$}; \node[font=\small] at (5.15,2.75) {$-$};
+  \node[font=\small,above] at (4.8,3.75) {$3\,\mathrm{V}$};
+\end{tikzpicture}
+\end{center}
+
+\aside{并联三支路的第一步永远是「端电压相同」：$U=3\,\mathrm{V}$ 由右支路的理想电压源钉死，
+三条支路都受它约束。所以电阻上的电流只能由 $3/R$ 决定，与电流源的大小无关；
+电流源的大小只决定\textbf{电压源支路里流过多少电流}。}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{2.2cm}p{3.6cm}p{2.4cm}p{2.2cm}p{3.0cm}@{}}
+\tabtop
+\thead{页} & \thead{$R$} & \thead{电阻电流（向下）} & \thead{$3\,\mathrm{A}$ 源} & \thead{电阻吸收} & \thead{$3\,\mathrm{V}$ 源}
+\\
+\tabmid
+p6 & $1\,\Omega$ & $3/1=3\,\mathrm{A}$ & 发出 $9\,\mathrm{W}$ & $9\,\mathrm{W}$ & \textbf{电流为 $0$，$P=0$}
+\\
+p7 & $0.5\,\Omega$ & $3/0.5=6\,\mathrm{A}$ & 发出 $9\,\mathrm{W}$ & $18\,\mathrm{W}$ & \textbf{发出 $9\,\mathrm{W}$}
+\\
+p8 & $2\,\Omega$ & $3/2=1.5\,\mathrm{A}$ & 发出 $9\,\mathrm{W}$ & $4.5\,\mathrm{W}$ & \textbf{吸收 $4.5\,\mathrm{W}$}
+\tabbot
+\end{tabular}
+
+三行怎么算出来的（以 p8 为例，其余同理）：并联端电压 $3\,\mathrm{V}$，电阻电流 $3/2=1.5\,\mathrm{A}$；
+对上方节点写 KCL，$3\,\mathrm{A}$ 从电流源流入、$1.5\,\mathrm{A}$ 从电阻流出，剩下 $1.5\,\mathrm{A}$ 必从电压源支路
+\textbf{流出节点进入 $+$ 端}，即电压源\textbf{吸收} $3\times1.5=4.5\,\mathrm{W}$；
+而电阻吸收 $1.5^2\times2=4.5\,\mathrm{W}$，电流源发出 $3\times3=9\,\mathrm{W}$，$9=4.5+4.5$ 平衡。
+
+\warnbox{\textbf{p6 那一行最值钱}：$1\,\Omega$ 上的电流恰好也是 $3\,\mathrm{A}$，与电流源一样大，
+于是\textbf{电压源支路的电流为零}——它既不发功率也不吸功率。
+「电源」不必然参与能量交换，这一行就是证据。p43（[C1-1 p43]）的追问
+「Does the current source in the circuit always provide power?」也正是冲着这种行来的。}
+
+\subhdr{2.3 p9 与 p10：只把箭头翻过来，功率的正负就翻过来}
+
+两页同一电路：$5\,\mathrm{V}$ 电压源（$+$ 在上）、$1\,\mathrm{A}$ 电流源、右侧一个字母 $R$，三支并联；
+p9 的 $1\,\mathrm{A}$ 箭头\textbf{向上}，p10 的箭头\textbf{向下}。端电压恒为 $5\,\mathrm{V}$、上 $+$ 下 $-$。
+
+\begin{enumerate}[label=（\arabic*）,leftmargin=2.2em]
+\item p9：$1\,\mathrm{A}$ 从 $+$ 端\textbf{流出}（向上），故该源\textbf{发出} $5\times1=5\,\mathrm{W}$。
+\item p10：$1\,\mathrm{A}$ 从 $+$ 端\textbf{流入}（向下），故该源\textbf{吸收} $5\times1=5\,\mathrm{W}$。
+\end{enumerate}
+
+同一个元件、同一个数值，只把参考方向翻一次，$P$ 的符号就翻一次——这就是 p9/p10 成对出现的原因。
+再往下追一步（课件没写，以 p9 的箭头向上为准）：$R$ 上的电流是 $5/R$（向下），于是上节点的 KCL 给出
+\[ I_{\text{电压源支路（流入 }+\text{ 端）}} = 1-\frac{5}{R}, \qquad
+P_{5\,\mathrm{V}} = 5\left(1-\frac{5}{R}\right)\ \mathrm{W}\ (\text{正为吸收}). \]
+$R=5\,\Omega$ 时电压源功率为 $0$；$R<5\,\Omega$ 时它发出；$R>5\,\Omega$ 时它吸收。
+\textbf{同一个 $5\,\mathrm{V}$ 源，性质由外接电阻决定}，这正是 §2.2 三行的推广。
+（p10 把箭头翻向下以后，上面两式里的 $1$ 要换成 $-1$，其余不变。）
+
+\subhdr{2.4 p11 与 p12：串联时「谁定电流、谁定电压」}
+
+两页是单回路串联：左支路 $3\,\mathrm{A}$ 电流源（向上），顶部一个电阻（p11 是 $1\,\Omega$、p12 是 $2\,\Omega$），
+右支路 $3\,\mathrm{V}$ 电压源——\textbf{p11 的 $+$ 在上，p12 的 $-$ 在上}。这是本册最容易被草率处理的一对。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.88,>=Stealth]
+  % 左：p11
+  \draw[cwire] (0,3.9) -- (1.0,3.9); \cresH{1.55}{3.9} \draw[cwire] (2.1,3.9) -- (3.4,3.9);
+  \draw[cwire] (0,3.9) -- (0,2.85); \cisrcV{0}{2.5} \draw[cwire] (0,2.15) -- (0,0.6);
+  \draw[cwire] (3.4,3.9) -- (3.4,2.85); \cvsrcV{3.4}{2.5} \draw[cwire] (3.4,2.15) -- (3.4,0.6);
+  \draw[cwire] (0,0.6) -- (3.4,0.6);
+  \draw[carr] (-0.5,2.15) -- (-0.5,2.85);
+  \node[font=\small] at (0.75,2.5) {$3\,\mathrm{A}$};
+  \node[font=\small,above] at (1.55,4.1) {$1\,\Omega$};
+  \node[font=\small,right] at (3.75,2.5) {$3\,\mathrm{V}$};
+  \node[font=\small] at (1.7,0.15) {p11：$+$ 在上};
+  % 右：p12
+  \begin{scope}[xshift=6.2cm]
+  \draw[cwire] (0,3.9) -- (1.0,3.9); \cresH{1.55}{3.9} \draw[cwire] (2.1,3.9) -- (3.4,3.9);
+  \draw[cwire] (0,3.9) -- (0,2.85); \cisrcV{0}{2.5} \draw[cwire] (0,2.15) -- (0,0.6);
+  \draw[cwire] (3.4,3.9) -- (3.4,2.85); \cvsrcVn{3.4}{2.5} \draw[cwire] (3.4,2.15) -- (3.4,0.6);
+  \draw[cwire] (0,0.6) -- (3.4,0.6);
+  \draw[carr] (-0.5,2.15) -- (-0.5,2.85);
+  \node[font=\small] at (0.75,2.5) {$3\,\mathrm{A}$};
+  \node[font=\small,above] at (1.55,4.1) {$2\,\Omega$};
+  \node[font=\small,right] at (3.75,2.5) {$3\,\mathrm{V}$};
+  \node[font=\small] at (1.7,0.15) {p12：$-$ 在上};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\aside{串联回路的第一句话：\textbf{回路电流被电流源钉死为 $3\,\mathrm{A}$}，与电压源无关；
+电压源的端电压被它自己钉死为 $3\,\mathrm{V}$，与电流无关。两者都不由对方决定，
+所以「电流源的端电压」只能由 KVL 算——这是本节唯一需要的机制，课件一个字没写。}
+
+\textbf{p11}：绕行方向由电流源给出（左支路上行）。回路电流 $3\,\mathrm{A}$ 从顶部经电阻到右支路，
+再\textbf{由上往下}穿过电压源。KVL 绕一圈（从左支路的下端出发，走上行）：
+\[ V_{CS}-3\times1-3 = 0 \quad\Longrightarrow\quad V_{CS}=6\,\mathrm{V}. \]
+于是：电流源发出 $6\times3=18\,\mathrm{W}$；电阻吸收 $3^2\times1=9\,\mathrm{W}$；
+电压源上的电流由 $+$ 端流入（向下的电流进入上端 $+$），\textbf{吸收} $3\times3=9\,\mathrm{W}$；
+$18=9+9$ 平衡。
+
+\textbf{p12}：拓扑不变，只把电压源极性翻过来（$-$ 在上）。电流仍由上往下穿过它，
+现在是从 $-$ 端流入、$+$ 端流出，故电压源\textbf{发出} $9\,\mathrm{W}$。KVL 随之改变（穿源的这一项改号）：
+\[ V_{CS}-3\times2-(-3) = 0 \quad\Longrightarrow\quad V_{CS}=3\,\mathrm{V}. \]
+于是电流源发出 $3\times3=9\,\mathrm{W}$，电阻吸收 $3^2\times2=18\,\mathrm{W}$，电压源发出 $9\,\mathrm{W}$，
+$9+9=18$ 平衡。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{2.6cm}p{3.2cm}p{2.6cm}p{2.6cm}p{2.4cm}@{}}
+\tabtop
+\thead{页} & \thead{$R$} & \thead{$V_{CS}$（KVL）} & \thead{$3\,\mathrm{A}$ 源} & \thead{电阻} & \thead{$3\,\mathrm{V}$ 源}
+\\
+\tabmid
+p11 & $1\,\Omega$ & $3\times1+3=6\,\mathrm{V}$ & 发出 $18\,\mathrm{W}$ & 吸收 $9\,\mathrm{W}$ & 吸收 $9\,\mathrm{W}$
+\\
+p12 & $2\,\Omega$ & $3\times2-3=3\,\mathrm{V}$ & 发出 $9\,\mathrm{W}$ & 吸收 $18\,\mathrm{W}$ & 发出 $9\,\mathrm{W}$
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{p11 与 p12 的对照点}：同一个 $3\,\mathrm{V}$ 源，在 p11 里吸收 $9\,\mathrm{W}$、在 p12 里发出 $9\,\mathrm{W}$，
+差别只在极性；而电流源的端电压从 $6\,\mathrm{V}$ 掉到 $3\,\mathrm{V}$（因为它的电流流过不同阻值的电阻），
+发出的功率也跟着从 $18\,\mathrm{W}$ 掉到 $9\,\mathrm{W}$。\textbf{串联时，改变任何一个元件，另一个源的功率也会变}——
+这一点与 §2.2 并联的情形正相反（并联时端电压被钉死，各支路电流互不影响）。}
+
+\subhdr{2.5 三步自查（p6--p13 每题都适用）}
+
+\callout{\textbf{（1）标清同一元件的 $U$、$I$}：先确认这两个箭头属于同一个元件，且彼此的相对方向已知。\\
+\textbf{（2）算 $P$ 并解释符号}：用 $P=UI$（关联）或 $P=-UI$（非关联）算，正为吸收、负为发出；
+不要停在负号上，要说出「实际方向与参考方向相反」。\\
+\textbf{（3）全电路求平衡}：$\sum P_{\text{发出}}=\sum P_{\text{吸收}}$。不平衡就回去查拓扑，
+不要去改符号凑数。}
+
+%=============================================================
+\hdr{§3}{实际电源：内阻、外特性与两个极限（p14--p16）}
+
+\subhdr{3.1 p14 的目录与目标，p16 的两条规定}
+
+p14 列了三条：1.6.1 实际电压源、1.6.2 实际电流源、1.6.3 等效电源变换；
+Objective 三条是 Understand the external characteristics of practical sources、Grasp the source
+transformation technique、Use source transformation to find unknown quantities。
+p16 给了两条\textbf{使用限制}，原文照抄：
+
+\callout{\textbf{（1）}For practical not for ideal.——A practical voltage source can be transformed into an
+equivalent practical current source and similarly a practical current source into voltage source.\\
+\textbf{（2）}For outside not for inside. It can not only be used to calculate the parameters of the source
+itself.}
+
+这两条一条讲「什么样的源能换」（必须是实际源，不能是理想源），一条讲「换完能算什么」
+（只能算外部，不能算源内部）。两条都只有断言没有理由，§3.2--§3.4 与 §6 把理由补上。
+
+\subhdr{3.2 实际电压源的外特性（p14 要求、全册没写）}
+
+\callout{\textbf{模型（实际电压源）}：一个理想电压源 $U_S$ 与一个电阻 $R_S$ \textbf{串联}，
+两个端钮向外供电。$R_S$ 叫内阻。\\
+\textbf{推导}：设端电流 $I$ 从「$+$」端钮流出（向外供电），沿源内部从 $-$ 走到 $+$，
+在 $R_S$ 上电位降 $I R_S$，故端电压
+\[ U=U_S-I R_S . \]
+这就是\textbf{外特性}（external characteristic）：一条斜率为 $-R_S$、纵截距为 $U_S$ 的直线。\\
+\textbf{两个极限}：$I=0$（开路）时 $U=U_S$，叫开路电压；$U=0$（短路）时 $I=U_S/R_S$，叫短路电流。
+$R_S=0$ 时回到理想电压源（水平线变竖直线）。}
+
+\subhdr{3.3 实际电流源的外特性（p14 要求、全册没写）}
+
+\callout{\textbf{模型（实际电流源）}：一个理想电流源 $I_S$ 与一个电阻 $R_S$ \textbf{并联}。
+\textbf{推导}：设端电压为 $U$（上 $+$），端电流 $I$ 由 $+$ 端钮流出。对上端节点写 KCL：
+$I_S$ 注入、$I$ 流出、并联电阻分流 $U/R_S$，故
+\[ I=I_S-\frac{U}{R_S}\qquad\Longleftrightarrow\qquad U=I_S R_S-I R_S . \]
+\textbf{两个极限}：$U=0$（短路）时 $I=I_S$，叫短路电流；$I=0$（开路）时 $U=I_S R_S$，叫开路电压。
+$R_S\to\infty$（断开）时回到理想电流源（斜线变水平线）。}
+
+\subhdr{3.4 两条外特性为什么会重合：等效的全部内容}
+
+把 §3.3 的式子改写成 §3.2 的形状：
+\[ U=I_SR_S-I R_S = U_S-I R_S ,\qquad \text{只要 } U_S=I_SR_S\ \text{且两个 }R_S\text{ 相同} . \]
+于是得到一个干净的结论，它正是 §4 那个定理的前身：
+
+\callout{\textbf{命题（端口等效）}：两个二端网络对\textbf{外电路}等效，当且仅当它们的端口 $U$-$I$ 关系
+（外特性）完全相同。\\
+\textbf{推论}：实际电压源（$U_S$，$R_S$）与实际电流源（$I_S=U_S/R_S$，同一个 $R_S$）在$U$-$I$ 平面上
+是同一条直线，故对外等效；但两者的\textbf{内部}完全不同（一个串联、一个并联，内部电流也不同）。\\
+\textbf{边界}：$0<R_S<\infty$ 时这条直线既不竖直也不水平，两种模型都能表示它；
+$R_S\to0$ 或 $R_S\to\infty$ 时直线退化成竖直线或水平线，另一个模型的参数要发散——这就是 p16 第（1）条的来源。}
+
+\subhdr{3.5 p15 与 p17 的五个问题，逐条答}
+
+p15 与 p17 的左侧都有同一张问题表，课件只答了前两问，后三问（p17 的（3）（4）（5））留给图。
+五问合起来正好是电源变换的完整逻辑：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{6.2cm}p{8.6cm}@{}}
+\tabtop
+\thead{课件的问题（原文）} & \thead{答案}
+\\
+\tabmid
+（1）What is ST? & 把一种实际源换成另一种\textbf{对外等效}的实际源：电压源 $+$ 串联电阻 $\leftrightarrow$ 电流源 $+$ 并联电阻
+\\
+（2）What is the Purpose of ST? & 化简计算：把多个源与电阻的混联逐步并成单个实际源（§5 主例题就是这条流水线）
+\\
+（3）Under what conditions can ST be carried out? & 两个模型的内阻相同；源值满足 $I_S=U_S/R_S$；只对外电路等效；
+不能用于理想源（p16 第（1）条）
+\\
+（4）How to transform? & 四步：认方向 $\to$ 换位置（串变并）$\to$ 用 $I_S=U_S/R_S$ 换算源值 $\to$ 并联同值电阻
+（§4.3、§8 有可执行清单）
+\\
+（5）Why can such a transformation be made? & 因为两个模型的端口 $U$-$I$ 关系是同一条直线（§3.4 的推导），
+对外电路而言无法分辨
+\tabbot
+\end{tabular}
+
+\aside{第（3）条里的「两个模型的内阻相同」需要一句提醒：变换时\textbf{电阻的数值不变，但接法从串联变成并联}。
+p17 的两个公式框写作 $R'=R$，$R'$ 只是用来区分「变换后的那只电阻」，数值并不变——
+这一点在后面 E1（§5）里会用到两次。}
+
+%=============================================================
+\hdr{§4}{电源变换：两个模型为什么分不出来（p17--p21）}
+
+\subhdr{4.1 p17 的两只公式框，原文只有两行}
+
+p17 把两个模型左右并排，中间两个淡黄公式框，框里各两行：
+\textbf{左框} \ $R'=R$、\ $I_S=\dfrac{U_S}{R}$；\quad
+\textbf{右框} \ $R'=R$、\ $U_S=I_S R$。
+两个框之间有绿色向下箭头与紫色向上箭头，表示可双向变换。图下端口标同一个 $U$（上 $+$ 下 $-$）、
+同一个电流箭头（向右）。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.86,>=Stealth]
+  % (a) 电压源 + 串联电阻
+  \draw[cwire] (0,4.5) -- (0,3.90); \cvsrcV{0}{3.55} \draw[cwire] (0,3.20) -- (0,2.75);
+  \cresV{0}{2.2} \draw[cwire] (0,1.65) -- (0,1.0);
+  \draw[cwire] (0,4.5) -- (2.8,4.5); \draw[cwire] (0,1.0) -- (2.8,1.0);
+  \draw[cwire] (2.8,4.5) circle (0.07); \draw[cwire] (2.8,1.0) circle (0.07);
+  \draw[carr] (1.2,4.5) -- (2.1,4.5);
+  \node[font=\small] at (1.65,4.85) {$I$};
+  \node[font=\small] at (2.35,4.2) {$+$}; \node[font=\small] at (2.35,0.7) {$-$};
+  \node[font=\small,right] at (3.0,2.75) {$U$};
+  \node[font=\small,left] at (-0.4,3.55) {$U_S$};
+  \node[font=\small,left] at (-0.4,2.2) {$R$};
+  \node[font=\small] at (1.4,2.75) {（a）实际电压源};
+  % (b) 电流源 + 并联电阻
+  \begin{scope}[xshift=6.2cm]
+  \draw[cwire] (0,4.5) -- (0,3.90); \cisrcV{0}{3.55} \draw[cwire] (0,3.20) -- (0,1.0);
+  \draw[cwire] (1.6,4.5) -- (1.6,3.30); \cresV{1.6}{2.75} \draw[cwire] (1.6,2.20) -- (1.6,1.0);
+  \draw[cwire] (0,4.5) -- (2.8,4.5); \draw[cwire] (0,1.0) -- (2.8,1.0);
+  \draw[carr] (0,4.05) -- (0,3.35);
+  \draw[cwire] (2.8,4.5) circle (0.07); \draw[cwire] (2.8,1.0) circle (0.07);
+  \draw[carr] (2.1,4.5) -- (2.7,4.5);
+  \node[font=\small] at (2.4,4.9) {$I$};
+  \node[font=\small] at (2.35,4.2) {$+$}; \node[font=\small] at (2.35,0.7) {$-$};
+  \node[font=\small,right] at (3.0,2.75) {$U$};
+  \node[font=\small,left] at (-0.4,3.55) {$I_S$};
+  \node[font=\small,right] at (1.95,2.75) {$R$};
+  \node[font=\small] at (1.4,2.75) {};
+  \node[font=\small] at (1.4,0.2) {（b）实际电流源};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\subhdr{4.2 定理（实际电源的等效变换）——写成原形式}
+
+\callout{\textbf{对象}：两个二端网络。甲：理想电压源 $U_S$ 与电阻 $R_S$ \textbf{串联}；
+乙：理想电流源 $I_S$ 与同一个电阻 $R_S$ \textbf{并联}。\\
+\textbf{条件}：（i）两个 $R_S$ 的阻值相同；（ii）源的数值满足 $I_S=U_S/R_S$（等价地 $U_S=I_SR_S$）；
+（iii）$0<R_S<\infty$；（iv）只对\textbf{外电路}成立（端口以外）。\\
+\textbf{结论}：甲乙对外电路的端口特性完全相同——对任意外接电路，端口电压 $U$ 与端口电流 $I$
+都满足同一个关系 $U=U_S-R_SI$；因此在外电路中可以互相替换而不改变任何端口量。\\
+\textbf{原形式}：结论说的是「两网络的端口 $U$-$I$ 关系相同」，不是「两网络相同」。
+p17 只给了换算公式（$R'=R$、$I_S=U_S/R$），那是结论的\textbf{推论}；原形式要回到 $U$-$I$ 平面上去看。}
+
+\textbf{证明}（三步，每一步都不能省）：
+
+（1）甲的端口特性。设端口电流 $I$ 自「$+$」端钮流出（向外），沿内部从 $-$ 走向 $+$：
+$U_S$ 升 $U_S$、$R_S$ 降 $IR_S$，故 $U=U_S-IR_S$。
+
+（2）乙的端口特性。对上端节点写 KCL：$I_S$ 注入、$I$ 流出、$R_S$ 分流 $U/R_S$，
+故 $I=I_S-U/R_S$，即 $U=I_SR_S-IR_S$。
+
+（3）比较。取 $U_S=I_SR_S$，则（1）（2）右端恒等，两网络对任意外接电路给出同一组 $(U,I)$。
+$\square$
+
+因此「能不能换」的判据不是「源值像不像」，而是\textbf{端口直线重不重合}。这也解释了为什么
+$R_S$ 必须保持同一数值：直线斜率就是 $R_S$。
+
+\subhdr{4.3 方向规则：箭头指向 $U_S$ 的「$+$」端}
+
+p17 只画了公式，没有一句话说方向，而方向恰恰是同学们最常错的一步。规则可以从上面的证明直接读出来：
+
+\callout{\textbf{方向规则}：在甲中，$U_S$ 的「$+$」端钮在端口电压 $U$ 的「$+$」那一侧（上侧）。
+换成乙以后，$I_S$ 的箭头要\textbf{指向同一个「$+$」端钮}，即从下级（$-$ 侧）指向上级（$+$ 侧）。\\
+\textbf{记法}：电压源的「$+$」在哪里，电流源的箭头就\textbf{指向}哪里；串联的那只电阻变成并联的那只，
+位置从「串在源与外电路之间」变成「跨在端口两端」。}
+
+\aside{为什么必然是这一头：把甲短接（$U=0$），短路电流由源内部从「$+$」端钮向外流出，
+大小 $U_S/R_S$——这正是乙在 $U=0$ 时的电流 $I_S$ 的方向。方向若反了，短路电流的方向就反了，
+两个模型在 $U=0$ 这一点上立刻分得出来。}
+
+\subhdr{4.4 p18--p21：$10\,\mathrm{V}$ 串 $2\,\Omega$ 的数值例}
+
+p18 给出 $10\,\mathrm{V}$ 与 $2\,\Omega$ 串联，$I_S$ 与 $R$ 留空；p19 只画一个向下的大箭头（表示「下一步做变换」，
+箭头下方没有内容）；p20 给出结果 $5\,\mathrm{A}$ 并 $2\,\Omega$；p21 把一只 $3\,\Omega$ 的外接支路加进来，
+前后两栏对照。三页合起来是一个完整的示范：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{5.4cm}p{6.8cm}@{}}
+\tabtop
+\thead{页} & \thead{图画了什么} & \thead{该步的数值}
+\\
+\tabmid
+p18 & $10\,\mathrm{V}$ 串 $2\,\Omega$，右端一对空端钮，$I_S$、$R$ 待填 & 待求：$I_S=10/2=5\,\mathrm{A}$、$R'=2\,\Omega$
+\\
+p19 & 同一个电路 $+$ 一个向下的粗箭头 & 无新内容（纯过渡帧）
+\\
+p20 & 上栏 $10\,\mathrm{V}$ 串 $2\,\Omega$；下栏 $5\,\mathrm{A}$ 并 $2\,\Omega$ & $5\,\mathrm{A}$ 的箭头指向原 $10\,\mathrm{V}$ 的「$+$」端
+\\
+p21 & 两栏都加上 $3\,\Omega$ 外接支路 & 变换前后 $3\,\Omega$ 上的电流都要能算，且相等
+\tabbot
+\end{tabular}
+
+\textbf{（1）变换前后，外电路一个字都不用改。}p21 的上栏：$10\,\mathrm{V}$ 源串 $2\,\Omega$ 再串 $3\,\Omega$，
+总电阻 $5\,\Omega$，电流 $10/5=2\,\mathrm{A}$。下栏：$5\,\mathrm{A}$ 并 $2\,\Omega$ 再并 $3\,\Omega$，
+$2\,\Omega\parallel3\,\Omega=6/5\,\Omega$，端电压 $5\times6/5=6\,\mathrm{V}$，$3\,\Omega$ 上电流 $6/3=2\,\mathrm{A}$。相同。
+
+\textbf{（2）内部量全变了——这就是 p16 第（2）条的数值证据。}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{4.4cm}p{4.4cm}p{3.4cm}@{}}
+\tabtop
+\thead{问的量} & \thead{变换前（上栏）} & \thead{变换后（下栏）} & \thead{是否等效}
+\\
+\tabmid
+$3\,\Omega$ 上的电流 & $2\,\mathrm{A}$ & $2\,\mathrm{A}$ & 等效（外部量）
+\\
+端口电压 & $6\,\mathrm{V}$ & $6\,\mathrm{V}$ & 等效（外部量）
+\\
+源本身流过的电流 & $2\,\mathrm{A}$ & $5\,\mathrm{A}$（电流源支路） & \textbf{不等效}
+\\
+$2\,\Omega$ 上的电流 & $2\,\mathrm{A}$（与源串联，同一个电流） & $3\,\mathrm{A}$（$6\,\mathrm{V}/2\,\Omega$） & \textbf{不等效}
+\\
+源内部消耗 & $I^2R=2^2\times2=8\,\mathrm{W}$ & $3^2\times2=18\,\mathrm{W}$ & \textbf{不等效}
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{所以「等效」这两个字必须带定语}：\textbf{对外}等效、\textbf{对端口}等效。
+凡题目问的是端口以外的东西（外接支路的电流电压、端口功率），可以换；
+凡题目问的是源内部（内阻上的损耗、源本身发出的功率、内阻上的电流），\textbf{换完就错}。
+这就是 p16 第（2）条 For outside not for inside 的全部意思。}
+
+%=============================================================
+\hdr{§5}{主例题 E1 全程：一条流水线把五只元件并成一只（p22--p27）}
+
+\subhdr{5.1 读图：p22 的电路到底是几层}
+
+p22 是 1.6.4 的第一个例题，标号 E1，要「求 $I$」。照图元坐标复原，它是\textbf{三条竖支路挂在上、下两条横线之间}，
+横线上再串两只电阻，一共五只电阻、两个源：
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9,>=Stealth]
+  \draw[cwire] (0,5.4) -- (0.65,5.4); \cresH{1.2}{5.4} \draw[cwire] (1.75,5.4) -- (3.35,5.4);
+  \cresH{3.9}{5.4} \draw[cwire] (4.45,5.4) -- (5.4,5.4);
+  \draw[cwire] (0,1.0) -- (5.4,1.0);
+  \fill (2.55,5.4) circle (1.5pt); \node[font=\small,above] at (2.55,5.85) {$T_2$};
+  \fill (5.4,5.4) circle (1.5pt); \node[font=\small,right] at (5.6,5.55) {$T_3$};
+  \node[font=\small,left] at (-0.2,5.75) {$T_1$};
+  % 5V 源
+  \draw[cwire] (0,5.4) -- (0,3.90); \cvsrcV{0}{3.55} \draw[cwire] (0,3.20) -- (0,1.0);
+  \node[font=\small,left] at (-0.45,3.55) {$5\,\mathrm{V}$};
+  % T2 上的 1kΩ
+  \draw[cwire] (2.55,5.4) -- (2.55,3.75); \cresV{2.55}{3.2} \draw[cwire] (2.55,2.65) -- (2.55,1.0);
+  \node[font=\small,left] at (2.15,3.2) {$1\,\mathrm{k}\Omega$};
+  % 2mA 源
+  \draw[cwire] (3.1,5.4) -- (3.1,3.75); \cisrcV{3.1}{3.4} \draw[carr] (3.1,4.25) -- (3.1,3.75);
+  \draw[cwire] (3.1,3.08) -- (3.1,1.0);
+  \node[font=\small,right] at (3.45,3.4) {$2\,\mathrm{mA}$};
+  % 负载
+  \draw[cwire] (5.4,5.4) -- (5.4,3.75); \cresV{5.4}{3.2} \draw[cwire] (5.4,2.65) -- (5.4,1.0);
+  \node[font=\small,right] at (5.75,3.2) {$2\,\mathrm{k}\Omega$};
+  \draw[carr] (5.4,4.95) -- (5.4,4.35);
+  \node[font=\small,right] at (5.7,4.75) {$I$};
+  \node[font=\small] at (1.2,5.95) {$2\,\mathrm{k}\Omega$};
+  \node[font=\small] at (3.9,5.95) {$1\,\mathrm{k}\Omega$};
+\end{tikzpicture}
+\end{center}
+
+节点只有四个名字：$T_1$（左竖线上端）、$T_2$（$1\,\mathrm{k}\Omega$ 竖支路与 $2\,\mathrm{mA}$ 支路共同的上节点）、
+$T_3$（负载上端）、$B$（下侧母线）。元件位置：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{4.2cm}p{7.6cm}@{}}
+\tabtop
+\thead{元件} & \thead{接在哪两位之间} & \thead{p23 的处理}
+\\
+\tabmid
+$5\,\mathrm{V}$ 理想电压源 & $T_1$ -- $B$ & 保留
+\\
+$2\,\mathrm{k}\Omega$（竖，与 $5\,\mathrm{V}$ 源并联） & $T_1$ -- $B$ & \textbf{删去}（p23 第（1）条）
+\\
+$2\,\mathrm{k}\Omega$（横，$T_1\to T_2$） & $T_1$ -- $T_2$ & 保留（后面作为 $U_S$ 的内阻被变换）
+\\
+$1\,\mathrm{k}\Omega$（竖） & $T_2$ -- $B$ & 保留
+\\
+$2\,\mathrm{mA}$ 电流源（箭头向上） & $T_2$ -- $B$ & 保留
+\\
+$2\,\mathrm{k}\Omega$（竖，串在 $2\,\mathrm{mA}$ 下方） & $T_2$ -- $B$ & \textbf{删去}（p23 第（2）条）
+\\
+$1\,\mathrm{k}\Omega$（横，$T_2\to T_3$） & $T_2$ -- $T_3$ & 保留
+\\
+$2\,\mathrm{k}\Omega$（竖，负载） & $T_3$ -- $B$ & 保留，所求电流 $I$ 就在它上面
+\tabbot
+\end{tabular}
+
+\aside{p23 两条规则用到这里时各管一件事：竖的那只 $2\,\mathrm{k}\Omega$ 与理想电压源\textbf{并联}，
+它只改变电压源输出的电流，不改变 $T_1$--$B$ 之间的电压；串在 $2\,\mathrm{mA}$ 下方的那只 $2\,\mathrm{k}\Omega$
+与理想电流源\textbf{串联}，它只改变电流源的端电压，不改变进入 $T_2$ 的那 $2\,\mathrm{mA}$。
+两条的证明在 §6.3；这里先照用。}
+
+删完以后，电路只剩五只元件：$5\,\mathrm{V}$ 源、$2\,\mathrm{k}\Omega$（$T_1$--$T_2$）、$1\,\mathrm{k}\Omega$（$T_2$--$B$）、
+$2\,\mathrm{mA}$ 源、$1\,\mathrm{k}\Omega$（$T_2$--$T_3$）与负载 $2\,\mathrm{k}\Omega$。
+
+\subhdr{5.2 第一步（p24）：把「$5\,\mathrm{V}$ 串 $2\,\mathrm{k}\Omega$」变成一个电流源}
+
+p24 用一个青色方框把「$5\,\mathrm{V}$ 理想源 $+$ 顶部横线上的 $2\,\mathrm{k}\Omega$」框住，图下写
+Change this part to a current source。这一步就是 §4 的定理，方向按 §4.3 定：
+
+\[ I_S=\frac{U_S}{R_S}=\frac{5\,\mathrm{V}}{2\,\mathrm{k}\Omega}=2.5\,\mathrm{mA},\qquad R'=2\,\mathrm{k}\Omega . \]
+
+方向：$5\,\mathrm{V}$ 源的「$+$」在上（$T_1$ 一侧），所以 $2.5\,\mathrm{mA}$ 的箭头\textbf{指向上方、指向 $T_2$}。
+这不是可选项——方向反了，$T_2$ 的节点方程里 $2.5$ 就要写成 $-2.5$，答案立刻错。
+
+\aside{这一步能做的前提是「$5\,\mathrm{V}$ 与 $2\,\mathrm{k}\Omega$ 严格串联」：两者之间没有第三个元件接入，
+即没有别的支路从 $T_1$--$T_2$ 之间引出。p22 图里 $T_1$ 只接源、并联 $2\,\mathrm{k}\Omega$（已删）与这只 $2\,\mathrm{k}\Omega$，
+满足条件。}
+
+\subhdr{5.3 第二步（p25、p26）：把三只并联的元件搬到一起}
+
+p25 写 Move them together：变换后得到的 $2.5\,\mathrm{mA}$ 源与 $2\,\mathrm{k}\Omega$ 是并联的，可以整体挪到
+$1\,\mathrm{k}\Omega$（$T_2$--$B$）那一侧，与它、与 $2\,\mathrm{mA}$ 源共享同一对节点 $T_2$--$B$。
+p26 写 When the two current source connected in parallel，图上出现 $2.5\,\mathrm{mA}$ 与 $2\,\mathrm{mA}$ 两只源、
+$2\,\mathrm{k}\Omega$ 与 $1\,\mathrm{k}\Omega$ 两只电阻，\textbf{全部并在 $T_2$--$B$ 之间}。
+
+「搬到一起」合法的理由一句话：四个元件跨接在同一对节点上，并联元件的端电压相同，
+所以它们之间的连接线可以任意缩短，拓扑不变。
+
+\subhdr{5.4 第三步（p26 $\to$ p27）：同向并联的电流源相加，并联电阻取并联值}
+
+p27 给出 $4.5\,\mathrm{mA}$ 与 $2/3\,\mathrm{k}\Omega$，并在页面下半写了分流公式。两头都对上：
+\[ I_{\text{总}}=2.5+2=4.5\,\mathrm{mA},\qquad
+R_{\text{并}}=2\,\mathrm{k}\Omega\parallel1\,\mathrm{k}\Omega=\frac{2\times1}{2+1}\,\mathrm{k}\Omega=\frac{2}{3}\,\mathrm{k}\Omega . \]
+
+\aside{两只电流源能相加的前提是\textbf{同向}（箭头都指向 $T_2$）。若一上一下，就要写成 $2.5-2=0.5\,\mathrm{mA}$。
+课件的 p25/p26 两只箭头都朝上，所以是加。}
+
+\subhdr{5.5 第四步（p27）：分流公式给出 $I$}
+
+此时电路只剩三块：$4.5\,\mathrm{mA}$ 源、$2/3\,\mathrm{k}\Omega$、以及从 $T_2$ 经 $1\,\mathrm{k}\Omega$ 到 $T_3$ 再经负载
+$2\,\mathrm{k}\Omega$ 到 $B$ 的负荷支路。负荷支路的总电阻是 $1+2=3\,\mathrm{k}\Omega$（两只电阻\textbf{串联}在这条支路上）。
+电流在 $2/3\,\mathrm{k}\Omega$ 与 $3\,\mathrm{k}\Omega$ 之间按\textbf{电阻反比}分配（p27 的两个公式）：
+
+\[ I = I_{\text{总}}\cdot\frac{\dfrac{2}{3}}{\dfrac{2}{3}+3}
+   = 4.5\cdot\frac{2}{11}\,\mathrm{mA}
+   = \frac{9}{11}\,\mathrm{mA}\approx 0.818\,\mathrm{mA} . \]
+
+方向：$T_2$ 的电位高于 $B$，负荷支路的电流由 $T_2$ 经 $1\,\mathrm{k}\Omega$ 到 $T_3$、再经负载向下到 $B$，
+与图上 $I$ 的箭头一致，故 $I$ 为正值。
+
+\boxed{\ I=\frac{9}{11}\,\mathrm{mA}\approx 0.82\,\mathrm{mA}\ }（E1 的答案）
+
+\subhdr{5.6 复核：不化简、直接写节点方程}
+
+流水线最容易错在方向，用节点法复核一遍最省事。设 $B=0$、$V_{T_1}=5\,\mathrm{V}$（理想源钉死），
+$V_2=V_{T_2}$、$V_3=V_{T_3}$，电阻取 $\mathrm{k}\Omega$、电流取 $\mathrm{mA}$：
+
+\[ \begin{cases}
+\dfrac{V_2-5}{2}+\dfrac{V_2}{1}+\dfrac{V_2-V_3}{1}=2,\\[4pt]
+\dfrac{V_3-V_2}{1}+\dfrac{V_3}{2}=0 .
+\end{cases} \]
+
+第二式 $\Rightarrow 3V_3=2V_2$，即 $V_3=\tfrac{2}{3}V_2$；代入第一式：
+\[ \frac{V_2-5}{2}+2V_2-\frac{2}{3}V_2=2 \ \Longrightarrow\ V_2=\frac{27}{11}\,\mathrm{V},\quad
+V_3=\frac{18}{11}\,\mathrm{V},\quad I=\frac{V_3}{2}=\frac{9}{11}\,\mathrm{mA}. \]
+与流水线一致。
+
+\aside{p27 的分流公式 $I_1=\dfrac{R_2}{R_1+R_2}I$ 不是新定理：两条并联支路端电压相同，
+故 $I_1R_1=I_2R_2$，配上 $I_1+I_2=I$ 解出即可。代入本题：$R_1=\tfrac23\,\mathrm{k}\Omega$（内阻那一路）、
+$R_2=3\,\mathrm{k}\Omega$（负荷那一路），要的是负荷支路的电流，故
+$I=I_{\text{总}}\cdot R_1/(R_1+R_2)$——注意\textbf{分子放的是「另一条」支路的电阻}，
+这是分流公式最容易记反的地方。}
+
+\warnbox{\textbf{这道题的三个坑，指回具体一步}：\\
+（1）\textbf{第一步的方向}（§5.2）：$2.5\,\mathrm{mA}$ 必须指向 $T_2$；反了则 $I$ 变成另一值。\\
+（2）\textbf{负荷支路是串联的 $3\,\mathrm{k}\Omega$}（§5.5）：$1\,\mathrm{k}\Omega$ 与负载 $2\,\mathrm{k}\Omega$ 在这条支路上首尾相接，
+不是并联，不能写成 $2//3$。\\
+（3）\textbf{分流公式的分子}（§5.6 旁注）：分子是另一条支路的电阻。写成 $\dfrac{3}{2/3+3}$ 就把两路调换了。}
+
+%=============================================================
+\hdr{§6}{变换的边界：哪几种情形容不得变换（p16、p23）}
+
+\subhdr{6.1 理想源为什么不能变换：把 $R_S$ 推到两个端点}
+
+§4.2 的定理带着条件（iii）$0<R_S<\infty$。这个条件不是形式上的谨慎，它对应两件很实的事：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.6cm}p{8.4cm}@{}}
+\tabtop
+\thead{$R_S$ 的极限} & \thead{谁退化成了什么} & \thead{为什么换不过去}
+\\
+\tabmid
+$R_S\to0$ & 甲退化成理想电压源（外特性成竖直线：$U=U_S$，$I$ 任意） & 要换成的 $I_S=U_S/R_S\to\infty$，而它的并联电阻也趋于 $0$；
+$I_S$ 与 $R_S$ 同时发散，参数写不出来
+\\
+$R_S\to\infty$ & 乙退化成理想电流源（外特性成水平线） & 要换成的 $U_S=I_SR_S\to\infty$，参数同样写不出来
+\tabbot
+\end{tabular}
+
+换句话说：变换的前提是那条外特性直线\textbf{既不竖直也不水平}。理想电压源的特征是「电压钉死、电流随便」，
+理想电流源的特征是「电流钉死、电压随便」，两者是 $U$-$I$ 平面上的\textbf{坐标轴方向}，
+没有有限斜率的直线能表示它们——所以 p16 的 For practical not for ideal 是一条硬边界。
+
+\aside{由此还得到一个实用的判据：\textbf{遇到理想源时，换成另一种思路}——理想电压源用「钉住电位」
+（节点电位已知），理想电流源用「钉住支路电流」；两者都直接进 KCL/KVL，不需要变换。
+§1.3 的 $1\,\mathrm{A}$ 源与 $4\,\Omega$ 并联那一步就是这么做的，没有用变换。}
+
+\subhdr{6.2 For outside not for inside：哪些问法会踩线}
+
+§4.4 已经用 p21 的数把「内外不等效」量出来了（$3\,\Omega$ 上都是 $2\,\mathrm{A}$，
+但源内部一个是 $2\,\mathrm{A}$、一个是 $5\,\mathrm{A}$，$2\,\Omega$ 上的损耗从 $8\,\mathrm{W}$ 变到 $18\,\mathrm{W}$）。
+这里把问法列成一张表，做题时逐条比对：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{7.4cm}p{3.4cm}p{4.6cm}@{}}
+\tabtop
+\thead{题目问的} & \thead{能不能用变换} & \thead{原因}
+\\
+\tabmid
+外接支路的电流、电压 & 能 & 端口 $U$-$I$ 关系不变
+\\
+端口向右看的等效电阻、开路电压、短路电流 & 能 & 都是端口量
+\\
+「源本身发出的功率」 & \textbf{不能} & 内部的源值、内部电流都变了
+\\
+「内阻上的功率损耗」 & \textbf{不能} & $2\,\Omega$ 上从 $2\,\mathrm{A}$ 变成 $3\,\mathrm{A}$
+\\
+「电源内部某一支路的电流」 & \textbf{不能} & 拓扑从串联变并联，内部支路都对不上
+\tabbot
+\end{tabular}
+
+\subhdr{6.3 p23 的两条「无影响」规则，以及它们的证明}
+
+p23 原图把两只 $2\,\mathrm{k}\Omega$ 从图上抹掉，图下写两行加一句
+No influence on external circuits：
+
+\callout{\textbf{（1）}The part connected in parallel with the ideal voltage source.（2）The part connected in series
+with the ideal current source.——与\textbf{理想}电压源\textbf{并联}的部分、与\textbf{理想}电流源\textbf{串联}的部分，
+对外电路无影响。}
+
+\textbf{证明（1）}：设理想电压源两端为 $a$、$b$，并联一个网络 $N$。$U_{ab}=U_S$ 由源钉死，与 $N$ 无关；
+$N$ 只从源多取电流 $I_N$，而端口 $(a,b)$ 向外提供的电压仍是 $U_S$。所以对「$a$、$b$ 以外」的电路，
+$N$ 是否存在都一样。（源本身输出的电流当然变了。）
+
+\textbf{证明（2）}：设理想电流源 $I_S$ 串一个网络 $N$ 再接出去。串联支路的电流处处相同、恒为 $I_S$，
+与 $N$ 无关；$N$ 只在这条支路上多加一个压降，改变的是电流源两端的电压。
+对外电路看到的仍是「这条支路送进 $I_S$」。
+
+\warnbox{\textbf{两条规则的三个陷阱}（都指回 p23 的图）：\\
+（1）\textbf{「理想」两个字不能丢}。若是实际源（带内阻），与它并联的部分会改变端口电压，
+串联的部分会改变端口电流，都不能随便删。\\
+（2）\textbf{方向不能互换}：与理想电压源\textbf{串联}的元件\textbf{不能}删（它决定电流），
+与理想电流源\textbf{并联}的元件也\textbf{不能}删（它决定电压）。p23 的两条恰好是一对「对偶」，
+记反了就全错。\\
+（3）\textbf{删的是「元件」，不是「节点」}。$T_1$ 与 $B$ 之间删掉并联的 $2\,\mathrm{k}\Omega$ 以后，
+理想电压源仍然把 $T_1$ 钉在 $5\,\mathrm{V}$（相对 $B$）；这一点在 §5.2 的变换里马上要用。}
+
+\subhdr{6.4 还有一种情况：受控源（[教材补充]）}
+
+\callout{\textbf{[教材补充] 为什么补}：本册只有独立源，但同一门课后面（第 4 章微变等效电路）
+会出现受控源与「受控源和电阻能不能一起变换」的问题，而这里正是唯一的接口。\\
+\textbf{结论}：受控源\textbf{不能}照搬 §4.2 的公式单独变换——因为变换后接在别处的源值 $I_S$
+会随控制量改变，而原电路中被变换的那只电阻上的电流也跟着变了，控制量不再相等。
+若要变换，必须先把受控源与其控制量\textbf{一起}整理，或改用节点法直接列方程。}
+
+%=============================================================
+\hdr{§7}{其余三个练习与一张无题的图（p28--p31）}
+
+四页都是 1.6.4 Example 的延续，但只有 p28 是矢量图、有把握读全；p29、p30 是截图，p31 是通用电路。
+
+\subhdr{7.1 p28：两个实际电压源并联驱动一只负载，$I=6\,\mathrm{A}$}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{3.0cm}p{3.0cm}p{3.6cm}@{}}
+\tabtop
+\thead{支路} & \thead{元件} & \thead{极性} & \thead{备注}
+\\
+\tabmid
+左 & $40\,\mathrm{V}$ 串 $2\,\Omega$ & $+$ 在上 & 实际电压源
+\\
+中 & $20\,\mathrm{V}$ 串 $2\,\Omega$ & $+$ 在上 & 实际电压源
+\\
+右 & $4\,\Omega$ & $I$ 由下向上箭头向下 & 负载
+\tabbot
+\end{tabular}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9,>=Stealth]
+  \draw[cwire] (0,4.6) -- (5.0,4.6); \draw[cwire] (0,0.9) -- (5.0,0.9);
+  % 40V 支路
+  \draw[cwire] (0,4.6) -- (0,3.85); \cresV{0}{3.3} \draw[cwire] (0,2.75) -- (0,2.62);
+  \cvsrcV{0}{2.3} \draw[cwire] (0,1.98) -- (0,0.9);
+  \node[font=\small,left] at (-0.4,3.3) {$2\,\Omega$};
+  \node[font=\small,left] at (-0.4,2.3) {$40\,\mathrm{V}$};
+  % 20V 支路
+  \draw[cwire] (2.5,4.6) -- (2.5,3.85); \cresV{2.5}{3.3} \draw[cwire] (2.5,2.75) -- (2.5,2.62);
+  \cvsrcV{2.5}{2.3} \draw[cwire] (2.5,1.98) -- (2.5,0.9);
+  \node[font=\small,left] at (2.1,3.3) {$2\,\Omega$};
+  \node[font=\small,left] at (2.1,2.3) {$20\,\mathrm{V}$};
+  % 4Ω 负载
+  \draw[cwire] (5.0,4.6) -- (5.0,3.85); \cresV{5.0}{3.3} \draw[cwire] (5.0,2.75) -- (5.0,0.9);
+  \node[font=\small,right] at (5.35,3.3) {$4\,\Omega$};
+  \draw[carr] (5.0,4.15) -- (5.0,3.95);
+  \node[font=\small,right] at (5.3,4.05) {$I$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{走变换}：把两只实际电压源各自换成实际电流源（方向都指向上，因为两只源的「$+$」都在上）：
+\[ \frac{40}{2}=20\,\mathrm{A}\parallel2\,\Omega,\qquad \frac{20}{2}=10\,\mathrm{A}\parallel2\,\Omega . \]
+三只并联的电流源与三只并联的电阻合并：
+\[ I_{\text{并}}=20+10=30\,\mathrm{A},\qquad R_{\text{并}}=2\parallel2=\frac{2\times2}{2+2}=1\,\Omega . \]
+再把 $30\,\mathrm{A}\parallel1\,\Omega$ 换成实际电压源（这一步可选）：$U=30\times1=30\,\mathrm{V}$、$R=1\,\Omega$，
+与 $4\,\Omega$ 串联得 $I=30/5=6\,\mathrm{A}$。或直接用分流：
+\[ I=30\cdot\frac{1}{1+4}=6\,\mathrm{A}. \]
+
+\textbf{复核（节点法）}：设上母线 $V$、下母线 $0$，
+$\dfrac{V-40}{2}+\dfrac{V-20}{2}+\dfrac{V}{4}=0\Rightarrow 5V=120\Rightarrow V=24\,\mathrm{V}$，
+$I=24/4=\boxed{6\,\mathrm{A}}$，方向向下，与图一致。
+
+\subhdr{7.2 p29：混联结构，$I=1\,\mathrm{A}$}
+
+p29 是截图，照图读出的拓扑是：左侧一条竖支路（$8\,\mathrm{V}$ 源串 $2\,\Omega$，源「$+$」在上），
+它上端（记节点 $1$）并联一只 $2\,\Omega$ 竖直支路到母线，再向右串 $8\,\Omega$ 到中部节点（记节点 $2$）；
+节点 $2$ 向下接 $3\,\mathrm{A}$ 电流源（箭头向下），向右接右支路（$5\,\mathrm{V}$ 源串 $5\,\Omega$，源「$+$」在上）；
+所求 $I$ 标在节点 $1$ 与 $8\,\Omega$ 之间的横线上，箭头向右。
+
+\textbf{走变换}：$8\,\mathrm{V}$ 串 $2\,\Omega$ 换成「$4\,\mathrm{A}$ 向上并 $2\,\Omega$」，与原有那只 $2\,\Omega$ 并联得
+\[ 4\,\mathrm{A}\parallel(2\parallel2)=4\,\mathrm{A}\parallel1\,\Omega
+ \ \xrightarrow{\text{换成电压源}}\ 4\,\mathrm{V}\ \text{串}\ 1\,\Omega, \]
+再与 $8\,\Omega$ 串联得 $4\,\mathrm{V}$ 串 $9\,\Omega$。右支路 $5\,\mathrm{V}$ 串 $5\,\Omega$ 换成
+「$1\,\mathrm{A}$ 向上并 $5\,\Omega$」，而 $3\,\mathrm{A}$ 向下等价于「$-3\,\mathrm{A}$ 向上」。三者在节点 $2$ 处并联：
+\[ I_{\text{并}}=\frac{4}{9}-3+1=-\frac{14}{9}\,\mathrm{A},\qquad
+ \frac{1}{R_{\text{并}}}=\frac{1}{9}+\frac{1}{5}=\frac{14}{45}\,\mathrm{S},\qquad
+ V_2=-\frac{14}{9}\cdot\frac{45}{14}=-5\,\mathrm{V} . \]
+$I$ 是「$4\,\mathrm{V}$ 串 $9\,\Omega$ 这一支路送进节点 $2$ 的电流」（从节点 $1$ 侧流向节点 $2$）：
+\[ I=\frac{4-V_2}{9}=\frac{4-(-5)}{9}=\boxed{1\,\mathrm{A}} . \]
+
+\textbf{复核（节点法）}：设母线为 $0$、节点 $1$ 为 $V_1$、节点 $2$ 为 $V_2$，
+\[ \frac{V_1-8}{2}+\frac{V_1}{2}+\frac{V_1-V_2}{8}=0,\qquad
+ \frac{V_2-V_1}{8}+3+\frac{V_2-5}{5}=0, \]
+解得 $V_1=3\,\mathrm{V}$、$V_2=-5\,\mathrm{V}$，故 $I=(3-(-5))/8=1\,\mathrm{A}$，与变换法一致。
+
+\aside{这两条方程里的 $+3$ 是「$3\,\mathrm{A}$ 从节点 $2$ 流出」的正确写法（离开节点的电流取正）。
+若习惯写「流入取正」，这一项就要写 $-3$，两种约定不能混用——这正是 §11.3 要统一的事。}
+
+\warnbox{\textbf{[待确认]（p29）}：这一页也是截图（无文字层），上面的拓扑是按图逐支路读出来的：
+$8\,\mathrm{V}$ 源与 $2\,\Omega$ 在\textbf{同一条竖支路}上串联、$2\,\Omega$ 并联支路接在节点 $1$ 与母线之间、
+$8\,\Omega$ 横跨节点 $1$ 与节点 $2$、$3\,\mathrm{A}$ 源由节点 $2$ 向下、右支路 $5\,\mathrm{V}$ 与 $5\,\Omega$ 串联。
+四处中任何一处的接法若与老师板书不同，答案要重算（方法与上面两步完全相同）。
+本题算出的 $I=1\,\mathrm{A}$ 是整数，两种方法又互相印证，说明这个读法自洽；但仍以原件为准。}
+
+\subhdr{7.3 p30：Review 题，读图有分歧，答案随读法变}
+
+p30 是 Review，问的同样是 Find I by using source transformation。截图里能读出的元件是：
+顶线一只 $18\,\mathrm{V}$ 源（横放）、左竖线一只 $12\,\Omega$、与它并联的另一只 $12\,\Omega$（竖）、
+底线上串一只 $8\,\Omega$、一只 $2\,\mathrm{A}$ 电流源（箭头向上）、最右 $7\,\Omega$（所求电流 $I$ 向下）、
+顶线与底线上各有一个空心端钮 $a$、$b$。
+
+按「$18\,\mathrm{V}$ 串 $12\,\Omega$ 与另一只 $12\,\Omega$ 并联」读：
+\[ U_{oc}=18\cdot\frac{12}{12+12}=9\,\mathrm{V},\qquad R_{th}=12\parallel12=6\,\Omega . \]
+再串 $8\,\Omega$ 得 $9\,\mathrm{V}$ 串 $14\,\Omega$；换成电流源 $9/14\,\mathrm{A}$ 向上、并 $14\,\Omega$；
+与 $2\,\mathrm{A}$ 向上相加、与 $7\,\Omega$ 并联：
+\[ V=\left(\frac{9}{14}+2\right)\cdot\left(14\parallel7\right)=\frac{37}{14}\cdot\frac{14}{3}=\frac{37}{3}\,\mathrm{V},
+ \qquad I=\frac{V}{7}=\frac{37}{21}\approx 1.76\,\mathrm{A} . \]
+
+\warnbox{\textbf{[待确认]（p30）}：这一页是低分辨率截图，三处细节无法从像素上确认：\\
+（1）$18\,\mathrm{V}$ 源的「$+$」在哪一端（图上两处小记号近邻，读作左 $-$、右 $+$）；\\
+（2）$2\,\mathrm{A}$ 源的箭头方向（读作向上，即向节点注入）；\\
+（3）端钮 $a$、$b$ 与 $7\,\Omega$ 之间是否还有别的元件（读作没有，$7\,\Omega$ 直接跨在顶、底两线之间）。\\
+若把（1）的极性翻过来，$I=19/21\approx 0.90\,\mathrm{A}$；若把（2）的箭头翻过来，$I=-19/21\,\mathrm{A}$。
+三种情况的\textbf{方法完全相同}，只是数不同；考试时以老师给的图为准，把这三处逐项确认后再算。}
+
+\subhdr{7.4 p31：一张没有提问的通用电路，它是给下一册准备的}
+
+p31 与前面几页同属 1.6.4 Example，但\textbf{图下没有任何问题}，只有元件与符号。按图元坐标复原，
+它恰好是一个\textbf{四节点、六支路}的网络：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.6cm}p{8.4cm}@{}}
+\tabtop
+\thead{节点} & \thead{位置} & \thead{接了什么}
+\\
+\tabmid
+$P$ & 左侧竖线（把顶、中、底三条横线的左端连在一起） & $I_S$ 的左端、$R_3$ 的左端、$R_4$ 的左端
+\\
+$Q$ & 右侧竖线 & $R_1$ 的右端、$U_S$ 的右端（「$-$」侧）、$R_4$ 的右端
+\\
+$T$ & 顶线中间 & $I_S$ 的右端、$R_1$ 的左端、$R_2$ 的上端
+\\
+$M$ & 中线中间 & $R_2$ 的下端、$R_3$ 的右端、$U_S$ 的左端（「$+$」侧）
+\tabbot
+\end{tabular}
+
+六条支路：$P$--$T$（$I_S$，箭头向左，即由 $T$ 流向 $P$）、$T$--$Q$（$R_1$）、$P$--$M$（$R_3$）、
+$M$--$Q$（$U_S$，「$+$」朝 $M$）、$P$--$Q$（$R_4$，走底线）、$T$--$M$（$R_2$）。
+
+这张图的用处不在本册：它在下一册（1.7 的 KCL 例题）里会被拿去列节点方程——四个节点、六条支路，
+正好是 §11.2 那套计数法要数的对象。本讲义不替它编一个题目去算，只把拓扑与方向说清。
+
+\aside{顺带记一个数：p31 这张图的 $N=4$、$B=6$，与 p37 桥式图的四个数（$N$:$4$、$B$:$6$、$L$:$7$、$M$:$3$）
+一模一样。两张图画法不同，图论上却是同一个网络（$K_4$ 的六条边）——§11.2 会用到这一点。}
+
+%=============================================================
+\hdr{§8}{公式卡与可执行清单}
+
+\subhdr{8.1 电位题：四步（p2--p5 通用）}
+
+\callout{\textbf{第 1 步 找参考点}：图上有没有接地符号？有则接地点 $=0$；没有则自己选一个最省事的点（通常选支路的公共端）。\\
+\textbf{第 2 步 认理想源钉住了什么}：理想电压源钉住两端\textbf{电位差}，理想电流源钉住所在支路的\textbf{电流}。
+先用它们把能定死的量定死（例：p4 的 $V_B=5\,\mathrm{V}$ 相关链、p2 的 $U_S$ 上端 $=-12\,\mathrm{V}$）。\\
+\textbf{第 3 步 看有没有「零电流支路」}：某个节点若只有一个出口（或两端电位差已知而无回路），该支路电流为零，
+则它两端\textbf{等电位}（p4 的 $10\,\Omega$、p3 的 $R_1$）。\\
+\textbf{第 4 步 沿支路逐段累加}：每过一只电阻，按电流方向判断升或降 $IR$；每过一只源，按极性判断升或降 $U_S$。
+最后用「任意两点差 $=0$」或功率平衡自查。}
+
+\subhdr{8.2 功率判别：三步}
+
+\callout{\textbf{第 1 步} 对同一个元件标 $U$、$I$ 的参考方向；\quad
+\textbf{第 2 步} 判 $I$ 是进 $+$ 端（吸收，$P=UI$）还是出 $+$ 端（发出，$P=UI$ 为其发出值）；\quad
+\textbf{第 3 步} 全电路 $\sum P_{\text{发出}}=\sum P_{\text{吸收}}$ 自查。}
+
+\subhdr{8.3 电源变换：四步（p17--p27 通用）}
+
+\callout{\textbf{第 1 步 认对象}：必须是「实际源 $+$ 一只电阻」，且这只电阻与源\textbf{严格串联}（电压源）或
+\textbf{严格并联}（电流源）——中间不能挂第三条支路。\\
+\textbf{第 2 步 定方向}：电压源的「$+$」端在哪，换成电流源后箭头就\textbf{指向}那一端（§4.3）。\\
+\textbf{第 3 步 换数值}：$I_S=U_S/R_S$（或 $U_S=I_SR_S$），电阻数值不变，接法由串变并（或由并变串）。\\
+\textbf{第 4 步 合并}：同向电流源相加、并联电阻取并联值；再回到第 1 步，直到只剩一个源与一只电阻。
+\textbf{收尾}：分流（或分压）求未知量，再用节点法复核一次。}
+
+\subhdr{8.4 两个必须背准的式子}
+
+\[ \text{分流：}\ I_1=\frac{R_2}{R_1+R_2}I \qquad\qquad
+   \text{分压：}\ U_1=\frac{R_1}{R_1+R_2}U \]
+分流公式分子是「另一条支路」的电阻（因为电流往电阻小的那路走得多）；分压公式分子是「自己这一路」的电阻。
+记法：\textbf{电流认「别人」、电压认「自己」}。
+
+\subhdr{8.5 本册所有计算题的答案速查（均已用节点法或变换法双向复核）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{5.6cm}p{4.2cm}p{4.0cm}@{}}
+\tabtop
+\thead{页} & \thead{题} & \thead{答案} & \thead{复核方式}
+\\
+\tabmid
+p2 & 求 $V_A$，S 断开 & $20\,\mathrm{V}$（另一种读法 $-12\,\mathrm{V}$，见 §1.2） & 功率平衡 $72+24=96\,\mathrm{W}$
+\\
+p3 & 求 $V_A$，S 闭合 & $-2.4\,\mathrm{V}$（两种读法都同此值） & 两环各自平衡
+\\
+p4 & 求 $V_A$ & $6\,\mathrm{V}$ & 逐点回代
+\\
+p5 & 求 $U_{AB}$ & $-2\,\mathrm{V}$ & 两次分压互校
+\\
+p6 & $1\,\Omega$ 并联 & $3\,\mathrm{V}$ 源 $P=0$；$3\,\mathrm{A}$ 源发出 $9\,\mathrm{W}$ & $9=9$
+\\
+p7 & $0.5\,\Omega$ 并联 & $3\,\mathrm{V}$ 源发出 $9\,\mathrm{W}$；电阻吸收 $18\,\mathrm{W}$ & $18=18$
+\\
+p8 & $2\,\Omega$ 并联 & $3\,\mathrm{V}$ 源吸收 $4.5\,\mathrm{W}$ & $9=4.5+4.5$
+\\
+p9/p10 & $5\,\mathrm{V}$ 并 $1\,\mathrm{A}$ & 电流源发出／吸收 $5\,\mathrm{W}$ & 符号来自方向
+\\
+p11 & 串联 $1\,\Omega$ & 源发出 $18\,\mathrm{W}$，$U_S$ 吸收 $9\,\mathrm{W}$ & $18=9+9$
+\\
+p12 & 串联 $2\,\Omega$（极性反） & 两源各发出 $9\,\mathrm{W}$，电阻吸 $18\,\mathrm{W}$ & $18=18$
+\\
+p18--p21 & $10\,\mathrm{V}$ 串 $2\,\Omega$ & 等效 $5\,\mathrm{A}$ 并 $2\,\Omega$；$3\,\Omega$ 上 $2\,\mathrm{A}$ & 内外对比表
+\\
+p22--p27 & E1 求 $I$ & $9/11\,\mathrm{mA}\approx 0.818\,\mathrm{mA}$ & 节点法
+\\
+p28 & 求 $I$ & $6\,\mathrm{A}$ & 节点法
+\\
+p29 & 求 $I$ & $1\,\mathrm{A}$ & 节点法
+\\
+p30 & 求 $I$（Review） & $37/21\approx 1.76\,\mathrm{A}$ [待确认] & 节点法同值
+\tabbot
+\end{tabular}
+
+%=============================================================
+\hdr{§9}{易错点（每条都指回本册某一页的某一步）}
+
+\gapitem{（1）把 $-12\,\mathrm{V}$ 当成「接在参考点上」}{p2/p3 的 $U_S$ 上端是 $-12\,\mathrm{V}$，它离参考点（下侧母线）
+还差 $12\,\mathrm{V}$。凡是端钮旁直接写电压数值的，都是「该点对参考点的电位」，要当成一个\textbf{固定电位}用，
+不是 $0$。见 §1.2 的电位表。}
+
+\gapitem{（2）以为开关只改参考点}{p2 $\to$ p3 的 $V_A$ 从 $20\,\mathrm{V}$ 变成 $-2.4\,\mathrm{V}$，
+不是简单平移：S 一合，$M$ 被钉在 $0$，电路\textbf{裂成两个环}，拓扑变了。判断串并联永远是先看节点被钳在哪里。}
+
+\gapitem{（3）把串联分压套到「零电流支路」上}{p4 的 $10\,\Omega$ 不能按 $2:10$ 分压，因为它上面没有电流（见 §1.3 第二步）。
+先证零电流，再谈等电位。}
+
+\gapitem{（4）负功率不敢写成「发出」}{$P<0$ 时不要含糊，直接写「实际方向与参考方向相反，该元件发出 $|P|$」。
+p7 的 $3\,\mathrm{V}$ 源、p12 的 $3\,\mathrm{V}$ 源都属于这种。}
+
+\gapitem{（5）串联回路的电流源「没有电压」}{p11/p12 的电流源端电压由 KVL 定（$6\,\mathrm{V}$ / $3\,\mathrm{V}$），
+不是 $0$，也不是由它自己决定。凡是串联回路里的电流源，必须绕圈写 KVL 才拿得到它的电压。}
+
+\gapitem{（6）变换时忘了改方向}{p17 的公式框只给数值，方向要按 §4.3 自己判：$I_S$ 箭头指向 $U_S$ 的「$+$」端。
+E1 的 $2.5\,\mathrm{mA}$（§5.2）方向反了，整题就错。}
+
+\gapitem{（7）把「等效」用到源内部}{p16 第（2）条：变换后源内部电流、内阻损耗都变了（§4.4 的表）。
+题目问「电源本身发出的功率」时不能先变换。}
+
+\gapitem{（8）删元件不认源的性质}{p23 的两条只对\textbf{理想}源成立（§6.3）。
+与\textbf{实际}电压源并联的部分不能删，与\textbf{实际}电流源串联的部分也不能删。}
+
+\gapitem{（9）分流公式分子记反}{p27：分子是「另一条」支路的电阻。E1 的负荷支路是 $3\,\mathrm{k}\Omega$，
+内阻那一路是 $2/3\,\mathrm{k}\Omega$，要负荷支路的电流，分子必须是 $2/3$（§5.6 旁注）。}
+
+\gapitem{（10）把「闭合边界」当成「节点」去数}{p43--p45 的广义节点是\textbf{一个面}，不是\textbf{一个点}；
+数节点时（§11.2）$N$ 只数「三条及以上元件汇合」的点，边界本身不计数。}
+
+%=============================================================
+\hdr{§10}{缺口清单（逐条对应课件某页某句）}
+
+本节按技能要求的五个字段记录：\textbf{类型 $\mid$ 页码 $\mid$ 课件英文原文短语 $\mid$ 缺了什么 $\mid$ 补法（写到哪一节）}。
+
+\gapitem{机制缺口 $\mid$ p15、p17}{Simply means replacing one source by an equivalent source. / 两个公式框
+$R'=R$、$I_S=U_S/R$。\\ \textbf{缺}：「等效」二字的定义（端口 $U$-$I$ 关系相同），以及为什么这就够。
+\textbf{补}：§3.4 的两条外特性重合，§4.2 的定理陈述与三步证明。}
+
+\gapitem{机制缺口 $\mid$ p17}{公式框只写数值，全页无一句方向说明。\\ \textbf{缺}：$I_S$ 的箭头朝哪一端。
+\textbf{补}：§4.3 的方向规则，并用「短接时短路电流的方向」给出判据；§5.2 用 E1 演示。}
+
+\gapitem{适用区间 $\mid$ p16}{For practical not for ideal.\\ \textbf{缺}：为什么理想源不能变换（既没给理由，也没给 $R_S$ 的条件）。
+\textbf{补}：§6.1 用 $R_S\to0$、$R_S\to\infty$ 两个极限说明，并指出「外特性直线不能竖直或水平」。}
+
+\gapitem{适用区间 $\mid$ p16}{For outside not for inside. It can not only be used to calculate the parameters
+of the source itself.\\ \textbf{缺}：哪些量变、哪些量不变，一个数都没有。
+\textbf{补}：§4.4 用 p21 的 $10\,\mathrm{V}/2\,\Omega/3\,\Omega$ 列出五问对照表（外部量相同、内部量全变）。}
+
+\gapitem{拼接缺口 $\mid$ p14}{Objective 第一条：Understand the external characteristics of practical sources.\\
+\textbf{缺}：全册\textbf{没有一页}写外特性方程或画外特性曲线，而这恰是 Objective 的第一条。\\
+\textbf{补}：§3.2 的 $U=U_S-IR_S$ 与 §3.3 的 $I=I_S-U/R_S$，含开路、短路两个极限点。}
+
+\gapitem{机制缺口 $\mid$ p23}{The part connected in parallel with the ideal voltage source / The part connected in
+series with the ideal current source. No influence on external circuits.\\ \textbf{缺}：两条断言都没有证明，
+也没有提醒「内部量会变」。\textbf{补}：§6.3 的两条证明 $+$ 三个陷阱。}
+
+\gapitem{代数跳步 $\mid$ p24--p25}{Change this part to a current source / Move them together.\\
+\textbf{缺}：$2.5\,\mathrm{mA}$ 的来历（$5\,\mathrm{V}/2\,\mathrm{k}\Omega$）与「搬到一起」的合法性。
+\textbf{补}：§5.2、§5.3 逐步写出，并说明「同一对节点上的并联元件可任意靠拢」。}
+
+\gapitem{答案缺口 $\mid$ p27}{页面只给 $4.5\,\mathrm{mA}$、$2/3\,\mathrm{k}\Omega$ 与两行分流式
+$I_1=\frac{R_2}{R_1+R_2}I$、$I_2=\frac{R_1}{R_1+R_2}I$，\textbf{没有最后的 $I$}。\\
+\textbf{缺}：E1 的答案。\textbf{补}：§5.5 的 $I=9/11\,\mathrm{mA}$ 与 §5.6 的节点法复核。}
+
+\gapitem{形式改写 $\mid$ p34 vs p35--p38}{Node: Point where three or more elements meet.\\
+\textbf{缺}：这条定义与常见教材（「两条及以上支路的交点」）不同；按此定义，纯串联电路\textbf{没有节点}，
+而 p38 的 $N$:$3$ 正是用它数出来的。\textbf{补}：§11.1 说明两种定义的差别，并按课件定义把四张图数一遍。}
+
+\gapitem{拼接缺口 $\mid$ p35--p38}{四页只给答案（N/B/L/M 四行），不给算法。\\
+\textbf{缺}：$M$ 与 $B$、$N$ 的关系，以及 $L$ 与 $M$ 的区别（$L$ 数「所有闭合路径」，$M$ 只数「独立回路」）。\\
+\textbf{补}：§11.2 给 $M=B-N+1$ 的树支/连支证明，并把 $L=3,6,7,6$ 逐个枚举核对。}
+
+\gapitem{拼接缺口 $\mid$ p43--p45}{三页都只有 closed boundary 的图，没有任何方程。\\
+\textbf{缺}：广义节点形式的 KCL 方程，以及「为什么可以把一段电路圈起来当节点」。
+\textbf{补}：§11.4 补出 $I_1+I_2=I_3$ 等三式，并给出电荷守恒的说明（[教材补充]）。}
+
+\gapitem{答案缺口 $\mid$ p2、p3、p4、p5、p30}{五页都只有图与问句，没有演算。原文短语：
+Find $V_A$ when S is open / when S is closed（p2、p3）、Find I by using source transformation（p30）。\\
+\textbf{缺}：全过程与答案。\textbf{补}：§1.2--§1.4、§7.3；其中 p30 因截图分辨率不足，标 [待确认]。}
+
+%=============================================================
+\hdr{§11}{1.7 的术语与 KCL：从「怎么数」到「怎么写」（p32--p45）}
+
+\subhdr{11.1 p34 的四个定义，以及「节点」这个词的两种口径}
+
+p32--p33 是基尔霍夫与本生的生平页（光谱分析、绝对黑体、电的传播速度），
+p32 还有一句对全章的定位：Kirchhoff's laws can be used for the analysis of DC circuits, AC circuits and
+nonlinear circuits with electronic components。p34 才进入术语，四张卡片原文照抄：
+
+\callout{\textbf{Node}：Point where three or more elements meet.\\
+\textbf{Branch}：Circuit branch between two nodes.\\
+\textbf{Loop}：Any closed path in a circuit.\\
+\textbf{Mesh}：Independent loop.}
+
+\warnbox{\textbf{「节点」的两种口径，必须分清}：课件把节点定义成「\textbf{三条及以上}元件汇合处」，
+于是纯串联电路\textbf{一个节点也没有}；而多数教材把「两条支路的交点」也算节点。
+本册的答案（p35 的 $N$:$2$、p38 的 $N$:$3$）都是按\textbf{课件口径}数出来的。
+换口径会差 1--2 个，考试以课件为准，但答题时最好写清用的是哪种口径。}
+
+\subhdr{11.2 四个数的关系：$M=B-N+1$ 与「$L$ 只能枚举」}
+
+\callout{\textbf{定理（网孔数与支路数、节点数）}：对一个连通的平面电路，设节点数 $N$、支路数 $B$、
+网孔数 $M$，则
+\[ M=B-N+1 . \]
+\textbf{对象}：连通电路（孤立的部分要分开算，最后相加）。\textbf{条件}：每一条支路都被计入 $B$，
+每一个「三条及以上元件汇合处」都被计入 $N$。\\
+\textbf{证明}：取一棵连通的「树」，它恰好含 $N-1$ 条支路（树支），剩下的支路叫连支，共
+$B-(N-1)$ 条。每一条连支与树上唯一的那条路径合成一个回路，且各含一条不同的连支，故这
+$B-N+1$ 个回路\textbf{相互独立}；又任一回路都是若干这种回路的组合，故没有更多的独立回路。$\square$}
+
+\aside{这条定理只用两个数，却能一口气解释 p35--p38 的四个 $M$：$3-2+1=2$、$4-2+1=3$、$6-4+1=3$、$5-3+1=3$。
+而 $L$（所有闭合路径）\textbf{没有}这样的公式，只能按图枚举——这就是四页里 $L$ 与 $M$ 数值不同的原因。}
+
+\textbf{p35}（$5\,\mathrm{V}$ 源、$1\,\mathrm{A}$ 源、$R$ 三支并联）：节点只有上下两个汇合点，$N=2$；
+三条支路各算一条，$B=3$；$M=3-2+1=2$；闭合路径只能由任意两条支路组成，$\mathrm{C}(3,2)=3$，故 $L=3$。
+与页面答案 $N$:$2$、$B$:$3$、$L$:$3$、$M$:$2$ 完全一致。
+
+\textbf{p36}（四支并联）：$N=2$、$B=4$、$M=4-2+1=3$；闭合路径取任意两条，$\mathrm{C}(4,2)=6$，故 $L=6$。
+与页面一致。
+
+\textbf{p37}（桥式）：四个节点、六条支路，$M=6-4+1=3$。$L=7$ 的枚举：把图看成 $K_4$（四个节点两两相连），
+三角形的闭合路径有 $\mathrm{C}(4,3)=4$ 个；绕四个节点的闭合路径有 $3$ 个（每个四边形的两种绕法算一个）；
+$4+3=7$。与页面一致。
+
+\textbf{p38}（左右两只有源支路、$R_3$、$R_4$、$R_5$）：节点 $A$（左上）、$C$（右上）、$B$（下），$N=3$；
+五条支路（$A$--$B$ 两条、$B$--$C$ 两条、$A$--$C$ 一条），$B=5$；$M=5-3+1=3$。
+$L=6$ 的枚举：不含 $R_5$ 的有 $2$ 条（$A$--$B$ 那一对、$B$--$C$ 那一对）；
+含 $R_5$ 的，在 $A$--$B$ 的两种走法 $×$ $B$--$C$ 的两种走法 $=4$ 条；共 $2+4=6$。与页面一致。
+
+\warnbox{\textbf{数 $N$ 时最容易错的地方（p37）}：中间那条竖支路上有一只\textbf{理想电源}。
+若把它看成「短路」（p31 那种理想电压源），上下两个节点就会并成一个，$N$ 从 $4$ 掉到 $2$；
+但电源不是短路——它只钉住电位差，节点仍是两个不同的节点。p37 的 $N$:$4$ 就是按「电源不算导线」数的。}
+
+\subhdr{11.3 KCL：p41 的原句与 p42 的方程}
+
+p39--p41 用同一张图（$5\,\mathrm{V}$ 源支路、$1\,\mathrm{A}$ 源支路、$R$ 支路汇于一点，外加一个绕过三支路上端的椭圆）
+引出 KCL，并给出它的两种表述。p41 原文：
+
+\callout{KCL states that the algebraic sum of the current entering a node (or a closed boundary) is zero.
+\[ \sum i=0,\qquad \sum I=0 . \]}
+
+p40 与 p42 的图是一个节点 $A$ 上五条支路：$I_1$、$I_3$ 的箭头指向节点（红色，流入），
+$I_2$、$I_4$、$I_5$ 的箭头离开节点（蓝色，流出）。p42 给的两个等价写法是
+
+\[ I_1+I_3-I_2-I_4-I_5=0 \qquad\text{or}\qquad I_1+I_3=I_2+I_4+I_5 . \]
+
+两条式子说的是同一件事，但第三件更要紧的事课件没写：\textbf{符号只取决于「参考方向与约定是否一致」}。
+
+\callout{\textbf{写法约定（本讲义统一，全册通用）}：\textbf{离开节点的电流取正}，进入节点的取负，代数和为零。
+代入 p42 的图：$-I_1+I_2-I_3+I_4+I_5=0$——把整体乘 $-1$ 就是 p42 的第一式。
+\textbf{两种约定不能混用}：一旦选定「离开为正」，p29 的 $3\,\mathrm{A}$（向下的电流源，离开节点 $2$）就必须写 $+3$，
+不能写成 $-3$。}
+
+\subhdr{11.4 广义节点：p43--p45 三张图，课件没给方程}
+
+三页都只有一个面（closed boundary）与几条穿面的电流，\textbf{没有一个方程}。按图上箭头的方向补出来：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{6.4cm}p{7.0cm}@{}}
+\tabtop
+\thead{页} & \thead{电流穿面的方向（按图）} & \thead{对应的 KCL 方程}
+\\
+\tabmid
+p43 & $I_1$ 由左向右穿入、$I_2$ 由上向下穿入、$I_3$ 由面内向下穿出 & $I_1+I_2=I_3$
+\\
+p44 & 三角形边界：$I_1$、$I_2$ 流入，$I_3$ 流出 & $I_1+I_2=I_3$
+\\
+p45 & 四边形边界：$I_1$、$I_2$、$I_3$、$I_4$ 全部流出 & $I_1+I_2+I_3+I_4=0$
+\tabbot
+\end{tabular}
+
+\callout{\textbf{[教材补充] 为什么能这样圈}：若把一段电路圈起来，圈内的每个节点都满足 $\sum i=0$；
+把圈内所有节点的方程相加，\textbf{完全在圈内的那些支路会出现两次、符号相反}，互相抵消，
+只剩\textbf{穿过边界}的支路电流。所以对任意闭合曲面的电流代数和也为零。\\
+\textbf{为什么补}：p43--p45 用三页只画了这件事，却没有一个字解释它为什么成立；
+不补这一句，「广义节点」就只是一条要背的规定。}
+
+\aside{用广义节点最省事的场合：一个「电流源串电阻」的支路接到某个节点上时，若只关心这条支路送出的电流，
+可以把电流源与那只串联电阻一起圈在边界里（§6.3 第（2）条就是它的特例）。}
+
+\subhdr{11.5 本册只讲了 KCL 的一半}
+
+p32 说 Kirchhoff's laws（复数）能分析直流、交流与非线性电路，但本册 p39--p45 只展开到
+1.7.1 KCL；p45 停在「（5）Generalized node」，\textbf{没有 KVL 的任何一页}。这不是缺页：
+本册的 45 页到此结束。KVL 与用 KCL/KVL 解 p31、p35--p38 那些电路的部分，在下一册。
+本书 §11 只按页面内容写到 KCL 的广义节点为止，不越界补 KVL。
+
+%=============================================================
+\hdr{§12}{三句话总结与页码对照表}
+
+\subhdr{12.1 三句话}
+
+\callout{\textbf{第一句}：电位必须先钉住参考点；换参考点只让全部电位平移，任意两点之差不变
+（p2/p3 的 $20\,\mathrm{V}$ 与 $-2.4\,\mathrm{V}$ 差的不只是参考点，还有 S 造成的拓扑改变）。\\
+\textbf{第二句}：一个元件是「电源」还是「负载」，由它的 $U$、$I$ 实际方向决定，与元件名称无关；
+全电路「发出的总功率 $=$ 吸收的总功率」是唯一不会骗人的自查（p6--p12 六页全是这件事的六种情形）。\\
+\textbf{第三句}：电源变换换的是\textbf{对外}的端口关系，不是内部；能换的前提是两个实际模型的外特性
+是同一条直线（$0<R_S<\infty$ 且 $U_S=I_SR_S$），换成理想源就一步也走不通（p16 两句话的全部含义）。}
+
+若再补一句关于后半册：\textbf{KCL 对「节点」和「闭合边界」都成立}，因为圈内各节点的方程相加时内部支路两两抵消（§11.4）。
+
+\subhdr{12.2 页码对照表（45 页，逐页落点）}
+
+\par\vspace{2pt}{\small
+\noindent\begin{tabular}{@{}p{1.5cm}p{3.4cm}p{4.4cm}p{5.8cm}@{}}
+\tabtop
+\thead{页} & \thead{课件内容} & \thead{本讲义} & \thead{要点}
+\\
+\tabmid
+p1 & 封面 & --- & Chapter 1 DC Circuit
+\\
+p2 & 求 $V_A$（S 断开） & §1.2 & $20\,\mathrm{V}$（另一读法 $-12\,\mathrm{V}$）
+\\
+p3 & 求 $V_A$（S 闭合） & §1.2 & $-2.4\,\mathrm{V}$
+\\
+p4 & 逐点电位 & §1.3 & $V_A=6\,\mathrm{V}$，$10\,\Omega$ 零电流
+\\
+p5 & 桥式分压 & §1.4 & $U_{AB}=-2\,\mathrm{V}$
+\\
+p6--p8 & $3\,\mathrm{A}$/$3\,\mathrm{V}$/$1\,\Omega$、$0.5\,\Omega$、$2\,\Omega$ & §2.2 & $0$、发出 $9\,\mathrm{W}$、吸收 $4.5\,\mathrm{W}$
+\\
+p9--p10 & $5\,\mathrm{V}$/$1\,\mathrm{A}$/$R$ & §2.3 & 箭头一翻，符号一翻
+\\
+p11--p12 & 串联 $1\,\Omega$/$2\,\Omega$ & §2.4 & $V_{CS}=6\,\mathrm{V}$/$3\,\mathrm{V}$
+\\
+p13 & 二端网络约定 & §2.1 & 判据图示
+\\
+\tabbot
+\end{tabular}}
+
+\par\vspace{4pt}{\small
+\noindent\begin{tabular}{@{}p{1.5cm}p{3.4cm}p{4.4cm}p{5.8cm}@{}}
+\tabtop
+\thead{页} & \thead{课件内容} & \thead{本讲义} & \thead{要点}
+\\
+\tabmid
+p14 & 1.6 目录与目标 & §3.1 & external characteristics = 外特性
+\\
+p15 & 五问的前两问 & §3.5 & ST 是什么、为什么用
+\\
+p16 & 两条使用条件 & §6.1、§6.3 & 不用理想源、只对外
+\\
+p17 & 两个模型 $+$ 公式框 & §4.1--§4.3 & $R'=R$、$I_S=U_S/R$
+\\
+p18--p20 & $10\,\mathrm{V}$ 串 $2\,\Omega$ $\to$ $5\,\mathrm{A}$ 并 $2\,\Omega$ & §4.4 & 方向与数值
+\\
+p21 & 加 $3\,\Omega$ 外接支路 & §4.4 & 内外对比表
+\\
+p22 & E1 原电路 & §5.1 & 四节点、八元件
+\\
+p23 & 删两只 $2\,\mathrm{k}\Omega$ & §6.3、§5.1 & 两条无影响规则
+\\
+p24 & Change this part & §5.2 & $2.5\,\mathrm{mA}$ 向上
+\\
+p25 & Move them together & §5.3 & 并联集中
+\\
+p26 & 两电流源并联 & §5.4 & $4.5\,\mathrm{mA}$、$2/3\,\mathrm{k}\Omega$
+\\
+p27 & 分流公式与结果图 & §5.5、§8.4 & $I=9/11\,\mathrm{mA}$
+\\
+p28 & 两实际源驱动 $4\,\Omega$ & §7.1 & $6\,\mathrm{A}$
+\\
+p29 & 混联求 $I$ & §7.2 & $1\,\mathrm{A}$
+\\
+p30 & Review 求 $I$ & §7.3 & $37/21\,\mathrm{A}$ [待确认]
+\\
+p31 & 通用四节点六支路 & §7.4 & 给下一册的 KCL 用
+\\
+\tabbot
+\end{tabular}}
+
+\par\vspace{4pt}{\small
+\noindent\begin{tabular}{@{}p{1.5cm}p{3.4cm}p{4.4cm}p{5.8cm}@{}}
+\tabtop
+\thead{页} & \thead{课件内容} & \thead{本讲义} & \thead{要点}
+\\
+\tabmid
+p32 & 基尔霍夫生平 & §11.1 & laws 可用于交直流与非线性
+\\
+p33 & 本生与光谱分析 & --- & 背景页，无电路
+\\
+p34 & 四个术语 & §11.1 & Node 的定义是「三条及以上」
+\\
+p35 & 三支并联计数 & §11.2 & $2/3/3/2$
+\\
+p36 & 四支并联计数 & §11.2 & $2/4/6/3$
+\\
+p37 & 桥式计数 & §11.2 & $4/6/7/3$
+\\
+p38 & 五支路计数 & §11.2 & $3/5/6/3$
+\\
+p39 & KCL 引入（节点与闭合面） & §11.3 & 椭圆 $=$ 闭合边界
+\\
+p40 & 节点 $A$ 五支路 & §11.3 & 流入/流出着色
+\\
+p41 & KCL 表述与 $\sum i=0$ & §11.3 & 原句照抄
+\\
+p42 & $I_1+I_3=I_2+I_4+I_5$ & §11.3 & 符号约定
+\\
+p43 & 闭合边界（$I_1,I_2,I_3$） & §11.4 & $I_1+I_2=I_3$
+\\
+p44 & 三角形边界 & §11.4 & $I_1+I_2=I_3$
+\\
+p45 & 四边形边界 & §11.4 & $I_1+I_2+I_3+I_4=0$
+\tabbot
+\end{tabular}}
+
+\flowerrule
+
+\noindent\textbf{下一册衔接}：KVL 与「用 KCL/KVL 解 p31、p35--p38 那几张图」在 Chapter One-3；
+本册留下的两个口子是 p31 的四节点网络与 p30 的 Review 题。复习时先做 §8.5 的答案速查，
+再回课件重做 §1.2（两种读法都要会）与 §5（E1 全过程），这两处是本册最可能考到的机制。
+
+\end{document}

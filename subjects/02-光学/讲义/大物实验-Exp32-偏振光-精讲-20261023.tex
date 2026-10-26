@@ -1,0 +1,671 @@
+% !TEX program = xelatex
+% 大物实验 Exp.32 偏振光 · 精讲讲义（中文精讲 + 英文答案册）
+\documentclass[11pt]{ctexart}
+\input{D:/aaa_D_usual/DSH/111学习助手/.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\xeCJKDeclareCharClass{CJK}{"2460 -> "2473}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{偏振光 · 精讲}{大物实验 · Exp.32}
+
+\tikzset{
+  beam/.style={->,>=Stealth,line width=0.9pt,color=violet},
+  plate/.style={fill=bandviolet,draw=violet,line width=0.7pt},
+  box/.style={fill=bandviolet,draw=violetdeep,line width=0.8pt,rounded corners=2pt},
+  lab/.style={font=\small,color=inkgray},
+  dashline/.style={dashed,color=rulepurple,line width=0.7pt}
+}
+
+\begin{document}
+
+\doctitle{偏振光实验：从「看见偏振」到「测出布儒斯特角」}
+{Experiment 32 · The Research of Light Polarization}
+{依据：课件 8 页（2026-10-23）与预习要求单 2 页\\
+中文精讲 \textperiodcentered\ 英文答案册（附录 A--C，可直接抄入报告）\\
+修订：2026-10-24（附录答案精简版，共 14 页）}
+
+%=============================================================
+\hdr{§0}{读法、课件坐标与记号}
+
+\callout{\textbf{这份讲义怎么用。}正文（§1--§11）是中文精讲：把课件「给了结论但没给推导」的地方补起来，把五项实验内容的设计、读数和表格讲清楚。附录 A--C 是英文答案：A 是预习单上的 9 道预习题，B 是课件末尾的 3 道 Discussion，C 是预习单上的 8 道口试思考题。A、B 按「可以直接抄进报告」的密度写，C 每题只给一两句。}
+
+\callout{\textbf{报告体例（p8）。}课件要求 \emph{submit the report in the form of research papers}，所以报告不是填空题。建议按 Purpose $\to$ Theory $\to$ Apparatus $\to$ Design and Procedure $\to$ Results $\to$ Discussion $\to$ Conclusion 组织；附录 A 的九道题正好落在 Theory 与 Design 两节，附录 B 落在 Discussion。}
+
+\subhdr{课件坐标（p 1--p 8 指课件页码）}
+
+\begin{itemize}
+\item p1：1808 年 Malus 发现偏振的引言、三条实验目的、仪器清单、偏振态的分类与自然光、部分偏振光。
+\item p2：双折射（o 光、e 光、光轴）、偏振器、格兰棱镜的结构。
+\item p3：格兰棱镜的空气隙全反射、波片与相位差公式 (32-1)、全波片与半波片。
+\item p4：半波片转 $2\theta$、四分之一波片、波长条件、布儒斯特定律 (32-2)、玻璃堆、$n\approx1.5$ 的数字例子。
+\item p5：玻璃堆的透射、检偏与马吕斯定律 (32-3)、自然光的 $I_0/2$ (32-4)、偏振度 (32-5)。
+\item p6：偏振度的补注、实验提醒之「光路调节」（图 32-6、32-7）。
+\item p7：实验内容 (1) 光源检验、(2) 马吕斯定律、(3) 布儒斯特角、(4) $\lambda/4$ 的第 ① 步。
+\item p8：(4) 的第 ②③ 步、(5) $\lambda/2$ 夹角、报告要求、3 道 Discussion、参考文献。
+\end{itemize}
+
+
+\subhdr{三处要先说明的差异}
+
+\begin{enumerate}
+\item \textbf{名称。}p1 的仪器清单写 Glan-Foucault，p2 起正文按 Glan-Taylor 讲；两者都是空气隙型格兰棱镜。报告里按你台上仪器的标注写，本讲义沿用正文的 Glan-Taylor。
+\item \textbf{数值。}p4 的例子把 $n\approx1.5$ 的布儒斯特角写成 $57^\circ$；按 $\tan i_B=n$ 算是 $56.3^\circ$（约 $56^\circ$），差在取整或玻璃牌号。
+\item \textbf{记号。}p7 内容 (2) 用 $\varphi$ 表示检偏角，式 (32-3) 用 $\theta$；本讲义统一用 $\theta$，引用课件时保留原符号。
+\end{enumerate}
+
+\subhdr{记号表（全文只用这一套）}\nopagebreak[4]
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{11.7cm}>{\centering\arraybackslash}p{2.7cm}@{}}
+\thead{记号} & \thead{含义} & \thead{首次出现}\\
+\hline
+$\theta$ & 检偏器透振方向与入射线偏振方向的夹角 & 式 (32-3)，p5\\
+$\varphi$ & 课件 p7 内容 (2) 用的检偏角；本讲义统一记作 $\theta$ & p7\\
+$i$ & 入射角 & p4\\
+$i_B$ & 布儒斯特角（课件写作 $i_b$） & 式 (32-2)，p4\\
+$\delta$ & 波片引入的相位差 & 式 (32-1)，p3\\
+$d$ & 波片厚度 & p3\\
+$\lambda$ & 真空波长 & p3\\
+$n_o,\,n_e$ & o 光、e 光的折射率 & p3\\
+$n$ & 第二介质相对第一介质的折射率 & 式 (32-2)，p4\\
+$I_0$ & 入射光强度：式 (32-3) 中指线偏振，式 (32-4) 中指自然光 & p5\\
+$I_{\max}$, $I_{\min}$ & 转检偏器时透射强度的极大、极小 & p5\\
+$P$ & 偏振度，式 (32-5) & p6\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=============================================================
+\hdr{§1}{偏振态：先分清「相位差确定不确定」}
+
+p1 从 1808 年 Malus 发现偏振讲起：正是偏振现象让「光是横波」得到确认。课件随后按光矢量端点的轨迹给光分类——轨迹是直线叫线偏振（plane polarized），是椭圆（含圆）叫椭圆（圆）偏振；普通光源直接发出的是自然光；部分偏振光可看成全偏振光与自然光的混合。
+
+这几句话里真正要抓住的是「相关」与「相位差」这一层区别：
+
+\begin{itemize}
+\item \textbf{全偏振光}（线、圆、椭圆）：两正交分量的相位差 $\delta$ 是确定常数，叠加出一条确定的轨迹。
+\item \textbf{自然光}：两正交分量等强，但相位差随机；对时间平均，交叉项为零，强度直接相加。
+\item \textbf{部分偏振光}：一部分是相位差确定的偏振分量，一部分是随机的自然光分量。
+\end{itemize}
+
+\aside{p1 原文：自然光是「两束同频、正交、等强、互不相关（相位差不确定）的线偏振光」的叠加；部分偏振光是「全偏振光与自然光的混合」。本节的三类就是这两句的展开。}
+
+为什么自然光「等强」：普通光源里大量原子独立、随机地发光，在垂直于传播方向的平面内，光矢量沿各方向振动的概率相同；取任意一对正交方向分解，两个分量来自同一批随机源，统计上强度相等。为什么「不相关」：各原子发光的初相互相独立，两分量的相位差在 $0$ 到 $2\pi$ 上均匀分布，时间平均后干涉项为零。这两点合起来，才使自然光在检偏器转一圈时读数不变——§3.4 会算成 $I_0/2$。
+
+%=============================================================
+\hdr{§2}{双折射、波片与「把相位差做成厚度」}
+
+\subhdr{2.1 o 光与 e 光}
+
+p2 的描述是：光入射到某些晶体，折射光分成两束；遵守折射定律的一束叫 o 光（ordinary），速度各向同性；不遵守的一束叫 e 光（extraordinary），速度随传播方向变。沿光轴方向两者速度相同，垂直光轴方向差别最大。p2 还强调：o 光、e 光只存在于晶体内部，出射后没有 o/e 之分。
+
+补一句机制：o、e 是晶体中的两个本征偏振模，偏振方向互相垂直，在晶体内以不同的相速度传播。光一出晶体，介质变成各向同性，两个模不再有快慢之分——所以「出射后没有 o/e」说的是这套命名只对晶体内的传播有意义，不是说偏振消失了；出射的两束光偏振方向仍正交。
+
+\subhdr{2.2 波片为什么能给出确定的相位差}
+
+波片是从单轴晶体上平行于光轴切下的薄片（p3）。正入射时，光在片内沿垂直光轴的方向传播，o 光振动垂直光轴、e 光振动平行光轴，两个本征方向恰好是「光轴 / 垂直光轴」。于是任意入射线偏振光都按这两个方向分解，分别以 $n_o$、$n_e$ 传播；厚度 $d$ 走完，光程差
+
+\[ \Delta=(n_o-n_e)d, \]
+
+对应的相位差
+
+\[ \delta=\frac{2\pi}{\lambda}(n_o-n_e)d. \]
+
+\aside{$2\pi$ 的来源：一个波长 $\lambda$ 的光程差对应 $2\pi$ 的相位差，所以任意光程差 $\Delta$ 对应 $2\pi\Delta/\lambda$。这是相位的定义，不是新的物理常数。}
+
+课件 p3 直接写出 (32-1)，没有写 $\Delta=(n_o-n_e)d$ 这一步；补上它就只是一行。
+
+\subhdr{2.3 三种波片：把 $\delta$ 的取值读成偏振态}
+
+p3--p4 按 $\delta$ 分三类：
+
+\begin{itemize}
+\item $\delta=2k\pi$（全波片）：两分量同相回来，合成仍是线偏振，振动面与入射相同。
+\item $\delta=(2k+1)\pi$（半波片）：垂直光轴的分量多走半个波长，符号翻转，合成仍是线偏振，但振动面相对入射面转过 $2\theta$。
+\item $\delta=(2k+1)\pi/2$（四分之一波片）：一般得椭圆偏振；入射振动平行或垂直光轴时仍是线偏振；与光轴成 $45^\circ$ 时是圆偏振。
+\end{itemize}
+
+半波片的「转 $2\theta$」课件只给结论。把入射振动按光轴分解为 $(E\cos\theta,\,E\sin\theta)$，半波片给垂直分量加 $\pi$ 相位（等价于乘 $-1$），出射矢量变成 $(E\cos\theta,\,-E\sin\theta)$；它相对光轴的角是 $-\theta$，入射是 $+\theta$，两者夹角正是 $2\theta$。
+
+\aside{这一步只用到「加 $\pi$ 相位 = 乘 $-1$」，不需要知道 $n_o$、$n_e$ 的具体值，也不需要知道波片厚度。}
+
+四分之一波片的三种情形可以一次读出：设入射振幅 $E$，两分量 $a=E\cos\theta$、$b=E\sin\theta$，相位差 $90^\circ$ 时端点轨迹是椭圆，半轴就是 $|a|$、$|b|$；$\theta=0^\circ$ 或 $90^\circ$ 时一个分量为零，退化成直线；$\theta=45^\circ$ 时 $|a|=|b|$，退化成圆。反过来也成立：圆偏振或椭圆偏振经过 $\lambda/4$ 也能变回线偏振（p4）。
+
+p4 末尾「Whether it is a full wave plate, a half wave plate, or a quarter wave plate, it is specific for a certain wavelength」要落实：$\lambda/4$ 是对某一波长说的，换波长 $\delta$ 就变。本实验用 He--Ne 激光，波长 632.8 nm（课件只写 He--Ne laser，没写波长）。实际波片还有零级与多级之分——同样的 $\delta$ 可由不同厚度实现，多级波片的 $\delta$ 对波长和温度更敏感；报告里写「$\lambda/4$ 波片」时最好注明「对 632.8 nm」。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[dashline] (-2.7,0) -- (3.1,0) node[right,lab] {optical axis};
+  \draw[->,line width=1pt,color=violet] (0,0) -- (32:2.1) node[above right,lab] {$E_{\mathrm{in}}$};
+  \draw[->,line width=1pt,color=violetdeep] (0,0) -- (-32:2.1) node[below right,lab] {$E_{\mathrm{out}}$};
+  \draw[->,color=petal] (0.8,0) arc (0:32:0.8);
+  \node[font=\scriptsize,color=inkgray] at (0.92,0.22) {$\theta$};
+  \draw[->,color=petal] (1.85,0) arc (-32:32:1.85);
+  \node[font=\scriptsize,color=inkgray] at (1.95,0.55) {$2\theta$};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray} 图 1\quad $\lambda/2$ 波片把振动面从 $+\theta$ 转到 $-\theta$，两者夹角为 $2\theta$（§2.3 的分量变号推导）。}
+\end{center}
+
+%=============================================================
+\hdr{§3}{起偏与检偏：格兰棱镜和马吕斯定律}
+
+\subhdr{3.1 偏振器在做什么}
+
+p2：偏振器能吸收某一振动方向的光，透过的振动方向与之垂直；透过的光矢量方向叫偏振器的偏振方向。按用途分为起偏器（产生偏振光）与检偏器（检验偏振光）。
+
+\subhdr{3.2 格兰棱镜：空气隙把 o 光筛掉}
+
+p2--p3：格兰--泰勒棱镜由两块方解石直角棱镜组成，斜面间留空气隙，光轴平行于入射端面。自然光垂直光轴入射时，第一块棱镜里 o、e 同方向、不同速度；到斜面处 e 光透射（课件说方向不变，这是理想化说法），o 光全反射后从侧面被吸收，出射只剩 e 光，是线偏振。同一个棱镜既可作起偏器，也可作检偏器（p3）。
+
+补机制：为什么全反射偏偏发生在 o 光上？因为方解石 $n_o>n_e$，o 光对应的临界角 $\sin\theta_c=1/n$ 更小；斜面处的入射角取在两个临界角之间，o 光先满足全反射条件，e 光还没到。方解石 $n_o\approx1.66$、$n_e\approx1.49$，两个临界角分别约 $37^\circ$ 与 $42^\circ$，斜面的角度就落在这两个数之间。
+
+\aside{$\sin\theta_c=1/n$ 只适用于光从光密介质射向光疏介质；空气隙就是光疏侧，所以这里可以直接用。课件 p3 只写「o 光全反射」，没写临界角这一层。}
+
+\subhdr{3.3 检偏与马吕斯定律}
+
+p5：强度为 $I_0$ 的线偏振光通过检偏器，透射强度
+
+\[ I=I_0\cos^2\theta, \]
+
+$\theta$ 是线偏振方向与检偏器偏振方向的夹角，这就是马吕斯定律 (32-3)。推导一行：入射振幅 $E_0$ 分解到透振方向是 $E_0\cos\theta$，强度正比于振幅平方。
+
+定理的完整条件：入射必须是线偏振光，检偏器是理想偏振器。课件 p5 特意强调「马吕斯定律只适用于线偏振光入射」，指的就是第一条。
+
+\aside{自然光入射时不能用 (32-3)，要用 (32-4)；这是 p5 用两段分别处理的原因。}
+
+\subhdr{3.4 自然光为什么是 $I_0/2$}
+
+p5 给出 (32-4) $I=I_0/2$，没有推导。两种等价算法：
+
+\begin{itemize}
+\item \textbf{平均法}：自然光各方向振动概率相等，检偏器转一圈时 $I_0\cos^2\theta$ 对 $\theta$ 在 $0$ 到 $2\pi$ 上平均，$\langle\cos^2\theta\rangle=1/2$。
+\item \textbf{分解法}：把自然光分解成任意两个正交等强分量，各 $I_0/2$；检偏器只让其中一个通过。
+\end{itemize}
+
+两种算法给出同一个数，说明这个 $1/2$ 来自「随机取向的平均」，不是器件损耗。
+
+\subhdr{3.5 检偏曲线能读出什么}
+
+p5 的三句话可以排成一张判据：
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{2.8cm}>{\centering\arraybackslash}p{6.6cm}>{\centering\arraybackslash}p{6.9cm}@{}}
+\thead{入射光} & \thead{转检偏器时 $I(\theta)$} & \thead{有无消光}\\
+\hline
+线偏振 & 按 $\cos^2\theta$ 起伏，极小为 $0$ & 有，每 $90^\circ$ 出现一次\\
+圆偏振 & 不随角度变 & 无\\
+自然光 & 不随角度变 & 无\\
+椭圆偏振 & 有起伏，极小大于 $0$ & 无\\
+部分偏振 & 有起伏，极小大于 $0$ & 无\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表只是把 p5 的三句话按「曲线形状 + 有无消光」两列重排，不是新结论。它的用处是暴露一个缺口：圆偏振与自然光、椭圆偏振与部分偏振，在只看检偏曲线时是分不开的——§5 补这一点。
+
+\subhdr{3.6 怎样判断起偏棱镜与检偏棱镜垂直}
+
+转到消光位置即可：消光时透射方向与入射振动方向差 $90^\circ$，也就是两棱镜的偏振方向互相垂直。操作上先粗转找极小，再微调；p7 内容 (4)① 给的技巧是用软件 ESC 键中断扫描、在消光处读数。
+
+%=============================================================
+\hdr{§4}{布儒斯特定律与玻璃堆}
+
+\subhdr{4.1 定律的两种说法（课件给的是公式形式）}
+
+p4 给的是：入射角为 $i_B$ 时，反射光是线偏振，且光矢量垂直于入射面；此时
+
+\[ \tan i_B=n, \]
+
+$n$ 是第二介质相对第一介质的折射率，这叫布儒斯特定律 (32-2)。课件给的是「公式 + 结论」，作为定律的几何条件「反射线与折射线垂直」没有写。补上：$i_B$ 时反射线与折射线成 $90^\circ$，即 $i_B+r=90^\circ$；代入 Snell 定律
+
+\[ n_1\sin i_B=n_2\sin r=n_2\sin(90^\circ-i_B)=n_2\cos i_B, \]
+
+两边相除得 $\tan i_B=n_2/n_1=n$。
+
+\aside{式 (32-2) 里的 $n$ 是相对折射率；空气到玻璃时 $n_1\approx1$，$n$ 就是玻璃的折射率。课件 p4 的例子取 $n\approx1.5$。}
+
+\subhdr{4.2 为什么偏偏是 p 分量消失}
+
+界面附近的电偶极子沿折射光的电场方向振动，而偶极子不沿自己的振动轴线辐射。$i_B$ 时反射光方向与折射光方向垂直，恰好与 p 分量的振动方向平行，因此 p 分量没有反射；s 分量垂直于这根轴线，照常辐射。于是反射光只剩 s 分量，光矢量垂直入射面，是线偏振。
+
+\aside{定量上这是 Fresnel 公式里 $r_p$ 在 $i_B$ 处过零；课件 p4 只给结果，没给这层机制。}
+
+\subhdr{4.3 玻璃堆与折射率的测量}
+
+p4--p5：自然光以 $i_B$ 入射玻璃堆，多次反射后透射光近似线偏振；片数足够多时近似完全线偏振。机制：每片表面对 p 分量全透、对 s 分量部分反射，$N$ 片之后 s 被削 $N$ 次，p 基本无损。
+
+测 $n$ 的设计（p8 内容 (3) 只写「Describe the experimental operation process」，没给方法）：把玻璃堆当作反射面，入射角 $i$ 从 $40^\circ$ 到 $70^\circ$ 每 $5^\circ$ 取一点；每个角度下转检偏器 $360^\circ$，读 $I_{\max}$、$I_{\min}$，算
+
+\[ P(i)=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}. \]
+
+$i=i_B$ 时反射光纯 s，$I_{\min}\to0$，$P\to1$；所以 $P(i)$ 的极大值位置就是 $i_B$，再由 $\tan i_B=n$ 反解。另一种等价做法：把检偏器固定在只让 p 通过的方向，直接找反射强度的极小。
+
+\aside{这里用 (32-5) 算 $P$；对「纯 s 线偏振」它确实等于 $1$，所以此处没有 §5 说的那层歧义。}
+
+操作要点：入射面固定（水平），p 方向水平、s 方向竖直；样品每转 $\alpha$，反射光方向转 $2\alpha$，接收臂（检偏器 + 接收器）要跟着转到 $2\alpha$，否则测的不是同一束反射光。玻璃堆的多重反射会让 $i_B$ 处也消不干净，这正是口试第 7 题「异常消光」的来源之一；所以用 $P(i)$ 的峰值定角，比追求 $I_{\min}=0$ 稳。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[line width=1.3pt,color=violetdeep] (1.0,0) -- (8.6,0);
+  \node[lab,below] at (8.0,0) {glass stack};
+  \draw[dashline] (4,0) -- (4,2.35) node[above,lab] {normal};
+  \draw[beam] (1.51,1.68) -- (4,0);
+  \node[lab,above left] at (1.45,1.72) {laser $+$ P1};
+  \draw[beam] (4,0) -- (5.66,1.12);
+  \node[lab,above right] at (5.72,1.16) {to P2 $+$ detector};
+  \draw[beam] (4,0) -- (5.29,-1.91);
+  \node[lab,below right] at (5.35,-1.95) {refracted ray};
+  \draw[->,color=petal] (4,0.95) arc (90:146:0.95);
+  \node[font=\scriptsize,color=inkgray] at (3.42,1.08) {$i_B$};
+  \draw[->,color=petal] (4,-0.75) arc (-90:-56:0.75);
+  \node[font=\scriptsize,color=inkgray] at (4.28,-0.92) {$r$};
+  \fill[color=violet] (5.0,0.56) circle (2.2pt);
+  \node[lab,above right] at (5.05,0.62) {$s$ ($\perp$ page)};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray} 图 2\quad 布儒斯特反射：$i_B$ 时反射线与折射线垂直，反射光只剩 s 分量（垂直纸面，用圆点表示）。}
+\end{center}
+
+%=============================================================
+\hdr{§5}{偏振度：公式能说什么，不能说什么}
+
+\subhdr{5.1 定义与推导}
+
+p5--p6 给
+
+\[ P=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}. \]
+
+分母是两正交分量强度之和、即总强度；自然光 $I_{\max}=I_{\min}$ 得 $P=0$，线偏振 $I_{\min}=0$ 得 $P=1$（p6）。
+
+课件没写这个公式从哪来。把光束看成「线偏振部分 $I_p$ + 自然光部分 $I_u$」的混合，检偏器转 $\theta$ 时
+
+\[ I(\theta)=I_p\cos^2\theta+\frac{I_u}{2}, \]
+
+于是 $I_{\max}=I_p+I_u/2$、$I_{\min}=I_u/2$，代入定义得 $P=I_p/(I_p+I_u)$——「偏振部分占总强度的比例」，这才是「偏振度」三个字的准确含义。
+
+\subhdr{5.2 陷阱：纯椭圆/圆偏振的 $P$ 不是偏振度}
+
+把同一公式用在纯椭圆偏振上：$\lambda/4$ 之后入射到检偏器的是完全偏振的椭圆光，没有自然光成分，但曲线仍有 $I_{\min}>0$，算出来 $0<P<1$；圆偏振更极端，曲线平，$P=0$，和自然光一模一样。可圆偏振明明是 $100\%$ 偏振的。
+
+原因：混合模型 $I_p+I_u$ 不成立——纯椭圆光不是「偏振 + 自然光」，而是单一确定偏振态。此时 $(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ 量的是椭圆扁平程度，不是「有多少光偏振」。
+
+这正是课件讨论 3（p8）问「圆偏振与自然光怎么区分、椭圆偏振与部分偏振怎么区分」的原因：单靠转检偏器区分不了，必须再插一块 $\lambda/4$。
+
+\subhdr{5.3 判别法：插 $\lambda/4$ 再检偏}
+
+\begin{itemize}
+\item \textbf{圆偏振}：$\lambda/4$ 的轴与圆的两个等幅分量对齐时，$90^\circ$ 相位差被补掉，出射变线偏振，转检偏器出现消光。
+\item \textbf{自然光}：$\lambda/4$ 对随机相位不起作用，仍无消光。
+\item \textbf{椭圆偏振}：$\lambda/4$ 轴与椭圆主轴对齐时变线偏振，出现消光。
+\item \textbf{部分偏振}：确定相位的那部分能变线偏振，但自然光部分消不掉，仍无完全消光（$I_{\min}>0$）。
+\end{itemize}
+
+判据一句话：插 $\lambda/4$ 后能消光，对应完全偏振（圆/椭圆）；不能消光，对应自然光/部分偏振。
+
+\subhdr{5.4 六角表的数值预期}
+
+$\lambda/4$ 放在与 P1 成 $\varphi$ 角处，入射振幅 $E$，出射两分量 $E\cos\varphi$、$E\sin\varphi$，相位差 $90^\circ$；检偏器转一圈：
+
+\[ I(\theta)=I_0\left(\cos^2\varphi\cos^2\theta+\sin^2\varphi\sin^2\theta\right). \]
+
+所以 $I_{\max}=I_0\max(\cos^2\varphi,\sin^2\varphi)$、$I_{\min}=I_0\min(\cos^2\varphi,\sin^2\varphi)$，代入 (32-5)：
+
+\[ P=|\cos 2\varphi|. \]
+
+$\varphi=0^\circ,90^\circ$ 得 $P=1$（线偏振，有消光）；$45^\circ$ 得 $P=0$（圆偏振，曲线平）；$15^\circ,75^\circ$ 得 $0.87$；$30^\circ,60^\circ$ 得 $0.50$（椭圆偏振，无消光）。这张表把「转角—曲线—偏振态」一次对齐，也是报告 Q6 数据表的预期值。
+
+%=============================================================
+\hdr{§6}{五项实验内容：设计、读数、表怎么填}
+
+\subhdr{6.1 先共轴（p6）}
+
+p6 的调法是自准直（autocollimation）：先把激光对准接收器中心小孔；插入 P1、P2，升降平移让光束过元件中心；再转元件，使反射光斑回到激光出射孔——光斑与出射孔重合，说明元件表面垂直光束。逐件加入、逐件重调。
+
+为什么「光斑重合」就等于垂直：表面垂直光束时入射角为 $0$，反射光原路返回；表面偏 $\alpha$，反射光偏 $2\alpha$，光斑离开出射孔。这个指示器把角度误差放大了一倍。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[beam] (-0.2,0) -- (8.65,0);
+  \draw[box] (0,0.55) rectangle (1.6,-0.55);
+  \node[font=\small\bfseries,color=violetdeep] at (0.8,0) {He--Ne};
+  \draw[plate] (3.1,0.8) rectangle (3.35,-0.8);
+  \node[lab,above] at (3.22,0.92) {P1};
+  \draw[plate] (5.1,0.8) rectangle (5.35,-0.8);
+  \node[lab,above] at (5.22,0.92) {wave plate};
+  \draw[plate] (7.2,0.8) rectangle (7.45,-0.8);
+  \node[lab,above] at (7.32,0.92) {P2 (analyzer)};
+  \draw[box] (8.8,0.5) rectangle (9.9,-0.5);
+  \node[font=\small] at (9.35,0) {Detector};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray} 图 3\quad 透射式光路：激光 $\to$ P1 $\to$ 波片 $\to$ P2 $\to$ 探测器（波片按 §6.5 插入）。}
+\end{center}
+
+\subhdr{6.2 内容 (1)：光源检验}
+
+转 P1 一圈，记录 $I(\theta)$。判据用 §3.5 的表：不变是自然光；有消光是线偏振；变但消不光为部分偏振。He--Ne 激光常自带一点偏振，这一项不是走过场。
+
+\subhdr{6.3 内容 (2)：马吕斯定律}
+
+P1 固定，P2 从 $0^\circ$ 转到 $360^\circ$，取 10--20 组（p7）。表两列：$\theta$、$I$；拟合 $I=I_0\cos^2(\theta-\theta_0)$，看残差；消光角与 $90^\circ$ 的偏差就是 P2 的零位差。取点时在极大、极小附近加密。
+
+\subhdr{6.4 内容 (3)：布儒斯特角}
+
+按 §4.3 的设计做；表：$i$、$I_{\max}$、$I_{\min}$、$P$；$P(i)$ 极大处即 $i_B$；$n=\tan i_B$。按预习单 Q7 的要求，$40^\circ$ 到 $70^\circ$ 每 $5^\circ$ 一组。
+
+\subhdr{6.5 内容 (4)：$\lambda/4$ 产生椭圆/圆偏振并判别}
+
+p7--p8 的步骤拆成四步：
+
+\begin{enumerate}
+\item P1、P2 正交消光，记住 P2 的角度；
+\item 插入 $\lambda/4$，调至过光心、表面垂直光束；转 $\lambda/4$ 到再次消光——此时光轴平行或垂直 P1，以此为零位；
+\item 以零位为起点，依次转 $15^\circ$、$30^\circ$、$45^\circ$、$60^\circ$、$75^\circ$、$90^\circ$；
+\item 每个角度下 P2 转 $360^\circ$，记录曲线，按 §5.3、§5.4 的判据分类。
+\end{enumerate}
+
+判据：有消光为线偏振；曲线平为圆偏振；有极小但极小大于零为椭圆偏振。
+
+\subhdr{6.6 内容 (5)：测偏振方向与 $\lambda/2$ 光轴的夹角}
+
+p8 只写「Find the angle $\theta$ between the polarization direction of the polarizer and the optical axis of the $\lambda/2$ wave plate」，没给方法。用 §2.3 的 $2\theta$ 性质设计：
+
+\begin{enumerate}
+\item P1、P2 正交消光，记 P2 角 $\beta_0$；
+\item 插入 $\lambda/2$，转到任意位置，再转 P2 找新的消光，记 $\beta$；
+\item 振动面被转了 $2\theta$，所以 $2\theta=\beta-\beta_0$，$\theta=(\beta-\beta_0)/2$（模 $90^\circ$）；
+\item 再转 $\lambda/2$ 到消光（$\theta=0^\circ$ 或 $90^\circ$），记下波片架读数，就得到「光轴平行 P1」的零位。
+\end{enumerate}
+
+\aside{$\beta_0$ 是「无 $\lambda/2$ 时的消光角」，$\beta$ 是「插入 $\lambda/2$ 后的消光角」；两次消光都对应输出振动与 P2 透振方向差 $90^\circ$，所以两者之差就是 $2\theta$。}
+
+\subhdr{6.7 三张记录表}\nopagebreak[4]
+
+下面三张表是现场记录用的空白表，直接抄进报告即可。表前那句话说明它是哪条公式在每一个角度上读一遍。
+
+\textbf{(a) 马吕斯定律。}这张表把 $I=I_0\cos^2(\theta-\theta_0)$ 在每个转角上读一遍；行数扩到 10--20 组，极大、极小附近加密。
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.55cm}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.55cm}@{}}
+\thead{$\theta$ ($^\circ$)} & \thead{$I$ (a.u.)} & \thead{$\theta$ ($^\circ$)} & \thead{$I$ (a.u.)}\\
+\hline
+0 & & 180 & \\
+30 & & 210 & \\
+60 & & 240 & \\
+90 & & 270 & \\
+120 & & 300 & \\
+150 & & 330 & \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{(b) 六个转角。}这张表把 §5.4 的六条曲线各读一次；每行来自一次 P2 的 $360^\circ$ 扫描，$P$ 由 (32-5) 算出。
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{2.4cm}>{\centering\arraybackslash}p{4.1cm}>{\centering\arraybackslash}p{1.2cm}@{}}
+\thead{$\varphi$ ($^\circ$)} & \thead{$I_{\max}$} & \thead{$I_{\min}$} & \thead{消光} & \thead{曲线形状} & \thead{偏振态} & \thead{$P$}\\
+\hline
+15 & & & & & & \\
+30 & & & & & & \\
+45 & & & & & & \\
+60 & & & & & & \\
+75 & & & & & & \\
+90 & & & & & & \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{(c) 布儒斯特角。}这张表把 (32-5) 在每个入射角上读一遍；$P$ 的最大值对应 $i_B$。
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.0cm}>{\centering\arraybackslash}p{4.2cm}>{\centering\arraybackslash}p{4.3cm}@{}}
+\thead{$i$ ($^\circ$)} & \thead{$I_{\max}$} & \thead{$I_{\min}$} & \thead{$P$}\\
+\hline
+40 & & & \\
+45 & & & \\
+50 & & & \\
+55 & & & \\
+60 & & & \\
+65 & & & \\
+70 & & & \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=============================================================
+\hdr{§7}{易错点：每条都能指回某一步}
+
+\begin{enumerate}
+\item \textbf{消光不彻底。}背景光、探测器暗电流、偏振器有限消光比、样品后表面反射，都会让 $I_{\min}$ 不为零，$P$ 达不到 $1$。测 $I_{\min}$ 前先挡光读暗电流。
+\item \textbf{角度零位。}P2 刻度、波片架、样品台各有零位；$\beta_0$ 与零位不记，后面所有角度都错。
+\item \textbf{样品转 $\alpha$、反射光转 $2\alpha$。}接收臂不跟，测到的是另一束光（§4.3）。
+\item \textbf{波片不是零级。}$\delta$ 随波长、温度漂移；报告注明「对 632.8 nm」。
+\item \textbf{光束不过中心或不垂直。}转元件时光束平移，读数随位置变，曲线变形（§6.1）。
+\item \textbf{信号饱和。}极大值削顶，「平滑曲线」是假象；把增益调到极大值约满量程的 $70$--$80\%$。
+\item \textbf{激光自身带偏振。}光源检验会看到「非自然光」，报告里要说明。
+\item \textbf{反射偏振的异常消光。}多重反射、表面散射、有限消光比，都会让极小不为零（口试第 7 题）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{公式卡与操作清单}
+
+\subhdr{公式卡}
+
+\begin{itemize}
+\item 波片相位差（(32-1)，p3）：
+\[ \delta=\frac{2\pi}{\lambda}(n_o-n_e)d \]
+\item 布儒斯特定律（(32-2)，p4）：
+\[ \tan i_B=n \]
+\item 马吕斯定律（(32-3)，p5）：
+\[ I=I_0\cos^2\theta \]
+\item 自然光透过理想偏振器（(32-4)，p5）：
+\[ I=\frac{I_0}{2} \]
+\item 偏振度（(32-5)，p6）：
+\[ P=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}} \]
+\item 纯椭圆/圆偏振的检偏对比度（§5.4）：
+\[ P=|\cos 2\varphi| \]
+\end{itemize}
+
+\subhdr{操作清单（出发前过一遍）}
+
+\begin{enumerate}
+\item 共轴：激光进接收器小孔，逐件过中心，反射光斑回到出射孔。
+\item 光源检验：转 P1，判自然光 / 线偏振 / 部分偏振。
+\item 正交消光：P1、P2 消光，记 P2 零位 $\beta_0$。
+\item 马吕斯：P2 转 $360^\circ$，取 10--20 组，拟合 $\cos^2$。
+\item 布儒斯特：$40^\circ$--$70^\circ$ 每 $5^\circ$，每角转 P2 读 $I_{\max}$、$I_{\min}$，算 $P$，取峰。
+\item $\lambda/4$：插片、调垂直、转消光定零位，再转六个角，每角扫 P2。
+\item $\lambda/2$：插片、找两次消光，$\theta=(\beta-\beta_0)/2$。
+\item 暗电流：测极小前挡光读数。
+\item 记录：每个角度的零位、片号、波长一起记。
+\item 复查：$P(i)$ 峰是否落在 $40^\circ$--$70^\circ$ 内；六条曲线是否两两可分。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{三句话}
+
+\begin{enumerate}
+\item 偏振态的区别在「两正交分量的相位差确定不确定」：确定是线/圆/椭圆，随机是自然光，两者混合是部分偏振。
+\item 波片把相位差做成厚度与波长之比 $\delta=2\pi(n_o-n_e)d/\lambda$；半波片转 $2\theta$，四分之一波片在 $45^\circ$ 造圆、在 $0^\circ/90^\circ$ 留线、其余造椭圆。
+\item 检偏曲线只给出「有无消光 + 一个对比度」；要区分圆与自然、椭圆与部分，必须再插 $\lambda/4$ 把相位差补回来。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{缺口清单}
+
+每条格式为：类型、课件页码与原文短语、缺了什么、本讲义补在哪一节。
+
+\gapitem{机制}{p1「equal intensity, and uncorrelated」：自然光的两正交分量为什么等强、为什么相位差随机，课件只给结论。§1 用随机发光与相位均匀分布补。}
+
+\gapitem{机制}{p2--p3「the o-light will be totally reflected」：为什么全反射只发生在 o 光上，没给判据。§3.2 用临界角 $\sin\theta_c=1/n$ 与 $n_o>n_e$ 补。}
+
+\gapitem{代数}{p3 式 (32-1) 直接给出：光程差 $\Delta=(n_o-n_e)d$ 与 $2\pi/\lambda$ 的来源没写。§2.2 补这一步。}
+
+\gapitem{机制}{p3--p4「the vibrating surface rotates by $2\theta$」：为什么是 $2\theta$ 而不是 $\theta$。§2.3 用分量变号补。}
+
+\gapitem{适用条件}{p4「specific for a certain wavelength」：换波长会怎样、零级与多级有何差别，没展开。§2.3 末补。}
+
+\gapitem{形式}{p4 式 (32-2) 直接给出：定律的几何条件「反射线与折射线垂直」与由 Snell 定律的推导都没写。§4.1 补。}
+
+\gapitem{压缩}{p5--p6 式 (32-5) 与「$P=0$ / $P=1$」：公式的混合模型前提没写，圆偏振 $P=0$ 的歧义没提示。§5.1--5.2 补。}
+
+\gapitem{拼接}{p7--p8「rotate the $\lambda/4$ wave plate to extinction」：消光与「光轴平行或垂直 P1」之间的那一步没接。§6.5 补。}
+
+\gapitem{缺步骤}{p8「Find the angle $\theta$ between \ldots」：完全没给方法。§6.6 用 $2\theta$ 性质补出四步。}
+
+\gapitem{缺步骤}{p8「The verification of Brewster angle. Describe the experimental operation process.」：操作与定角方法都留给学生。§4.3 补。}
+
+\gapitem{边界}{p5 式 (32-4)「$I=I_0/2$」：只对理想偏振器、且只对自然光成立。§3.4 与 §7 补。}
+
+\gapitem{数值}{p4「arctan(1.5)=57°」：按 $\tan i_B=n$ 实际是 $56.3^\circ$。§0 与 §4.3 注明。}
+
+%=============================================================
+\hdr{§11}{与课件的页码对照}
+
+下表把课件的 8 页逐页对到本讲义的节号，按页查比按节查快；表后是课件 p8 列出的四条参考文献。
+
+\begin{minipage}{\linewidth}
+\footnotesize
+\renewcommand{\arraystretch}{1.0}
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.6cm}@{}}
+\thead{课件页} & \thead{对应本讲义}\\
+\hline
+p1 & §0 的目的与仪器、§1 偏振态、§3.1 偏振器\\
+p2 & §2.1 双折射、§3.2 格兰棱镜\\
+p3 & §2.2 波片公式、§2.3 全波/半波、§3.2 全反射\\
+p4 & §2.3 $\lambda/4$ 与波长条件、§4.1--4.2 布儒斯特、§4.3 玻璃堆\\
+p5 & §3.3--3.5 检偏与马吕斯、§5.1 偏振度\\
+p6 & §5.1 偏振度、§6.1 光路调节\\
+p7 & §6.2--6.5 内容 (1)--(4) 第 ① 步\\
+p8 & §6.5--6.6 内容 (4) 第 ②③ 步与 (5)、§0 报告体例、附录 B\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\flowerrule
+
+{\small\color{inkgray}
+\textbf{课件参考文献（p8）。}Sihua Lv, Jiaqi Duan. \emph{New basic physics experiment}. Beijing: Higher Education Press, 2005；Jianqun Huang, Xianfeng Hu, Zhihua Yong. \emph{University physics experiment}. Sichuan: Sichuan University Press, 2005；Weishen Zhan. \emph{Physics experiment tutorial}. Dalian: Dalian University of Technology Press, 2004；Hong Yu. \emph{University Physics} (2nd ed.). Beijing: Science Press, 2008.}
+
+%=============================================================
+\hdr{附录 A}{预习问题九题（英文，可直接抄）}
+
+{\small 答案按预习单原题作答，公式与正文记号一致；Q3 的示意图见正文图 1 与图 3，Q8 见正文图 2。}
+
+\subhdr{Q1. Types of polarized light and the polarizing principle of the Glan prism}
+
+Light is classified as natural, partially polarized, and fully polarized (linear, circular, elliptical), according to the path of the electric vector. In a Glan--Taylor prism the o-component is totally reflected at the calcite air gap and absorbed, while the e-component passes, so the emergent beam is linearly polarized.
+
+\subhdr{Q2. Principle of detecting linear polarization; how to make the two prisms perpendicular}
+
+Rotate the analyzer: linear light obeys Malus's law $I=I_0\cos^2\theta$ and is extinguished every $90^\circ$, which identifies it and locates its direction. The two prisms are perpendicular at an extinction position, where their pass directions differ by $90^\circ$; this setting is kept as the crossed reference before inserting a wave plate.
+
+\subhdr{Q3. Angle between the polarizer direction and the $\lambda/2$ axis}
+
+Cross P1 and P2 and record the extinction angle $\beta_0$. Insert the $\lambda/2$ plate and rotate P2 to the new extinction $\beta$. The plate turns the vibration by $2\theta$, so
+
+\[ \theta=\frac{\beta-\beta_0}{2}\quad(\text{mod }90^\circ). \]
+
+The light path is in Fig.~3 and the angles in Fig.~1.
+
+\subhdr{Q4. Calibration of the $\lambda/4$ optical axis}
+
+With P1 and P2 crossed, insert the $\lambda/4$ plate, centre the beam and set the plate normal to it (the reflected spot returns to the laser exit). Rotate to extinction again: the plate axis is then parallel or perpendicular to P1, which defines the mount zero. The two axes $90^\circ$ apart are the principal axes; extinction cannot tell fast from slow.
+
+\subhdr{Q5. Circular, elliptical and linear light with a $\lambda/4$ plate}
+
+At $45^\circ$ to the incident vibration the two equal components with a $90^\circ$ phase difference give circular light; at $0^\circ$ or $90^\circ$ the light stays linear; other angles give an ellipse. The process is reversible.
+
+\subhdr{Q6. Data table for the six $\lambda/4$ angles}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{2.4cm}>{\centering\arraybackslash}p{4.0cm}>{\centering\arraybackslash}p{1.2cm}@{}}
+\thead{$\varphi$ ($^\circ$)} & \thead{$I_{\max}$} & \thead{$I_{\min}$} & \thead{Extinction} & \thead{Curve} & \thead{Polarization state} & \thead{$P$}\\
+\hline
+15 & & & & & & \\
+30 & & & & & & \\
+45 & & & & & & \\
+60 & & & & & & \\
+75 & & & & & & \\
+90 & & & & & & \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+Record $I_{\max}$ and $I_{\min}$ from each $360^\circ$ scan and compute $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$. Expected: $0^\circ/90^\circ$ linear ($P=1$, extinction); $45^\circ$ circular ($P=0$, flat); $15^\circ/75^\circ$ and $30^\circ/60^\circ$ elliptical ($P=0.87$ and $0.50$).
+
+\subhdr{Q7. Brewster angle and the refractive index of the glass stack}
+
+Rotate the stack through $40^\circ$--$70^\circ$ (step $5^\circ$); at each angle scan the analyzer $360^\circ$, record $I_{\max}$ and $I_{\min}$, and compute $P$. At $i_B$ the reflected light is pure s, so $P$ is maximum; then
+
+\[ \tan i_B=n. \]
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.0cm}>{\centering\arraybackslash}p{4.2cm}>{\centering\arraybackslash}p{4.3cm}@{}}
+\thead{$i$ ($^\circ$)} & \thead{$I_{\max}$} & \thead{$I_{\min}$} & \thead{$P$}\\
+\hline
+40 & & & \\
+45 & & & \\
+50 & & & \\
+55 & & & \\
+60 & & & \\
+65 & & & \\
+70 & & & \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+For glass with $n\approx1.5$, $i_B=\arctan 1.5\approx56.3^\circ$.
+
+\subhdr{Q8. Simplified light path for reflection polarization; precautions; finding $i_B$}
+
+Light path: laser $\to$ P1 $\to$ glass stack (rotatable) $\to$ P2 $\to$ detector (Fig.~2). Keep the beam centred and every surface normal; when the stack turns by $\alpha$ the receiving arm must turn by $2\alpha$; avoid stray light and saturation. $i_B$ is where $P(i)$ is maximum, and $n=\tan i_B$.
+
+\subhdr{Q9. Coaxial adjustment and a smooth, strong detection curve}
+
+Align the laser to the receiver's centre hole, centre every element, and make each surface normal by autocollimation (the reflected spot returns to the exit). For a smooth strong curve, set the gain to about $70$--$80\%$ of full scale, average several scans, rotate slowly, and shield the detector from room light.
+
+%=============================================================
+\hdr{附录 B}{课后讨论三题（英文）}
+
+\subhdr{D1. The two control methods of the system}
+
+Two modes: automatic scanning records $I(\theta)$ over a range quickly, for surveying a whole curve; manual stepping holds a chosen angle, for extinction, angle reading and single points. Use scanning for curves, manual control for critical angles.
+
+\subhdr{D2. Characteristics of the six curves and the three polarization types}
+
+Linear: deep extinction ($I_{\min}\approx0$), two maxima per turn. Circular: nearly constant, no extinction, $I_{\max}\approx I_{\min}$. Elliptical: $0<I_{\min}<I_{\max}$, no extinction; $I_{\min}/I_{\max}$ gives the ellipticity.
+
+\subhdr{D3. Circular versus natural light; elliptical versus partially polarized light}
+
+Insert a $\lambda/4$ plate: circular light becomes linear and extinguishes, natural light never does. Likewise elliptical light extinguishes after the plate, partial light does not. Extinction means fully polarized; no extinction means natural or partial.
+
+%=============================================================
+\hdr{附录 C}{口试思考八题（英文，一两句）}
+
+\begin{enumerate}
+\item Natural, partially polarized, and fully polarized (linear, circular, elliptical), by the path of the electric vector.
+\item Inside a birefringent crystal the light splits into an ordinary ray (isotropic speed) and an extraordinary ray (direction-dependent speed), equal along the optical axis.
+\item Rotate an analyzer: the intensity follows $\cos^2\theta$ with extinction every $90^\circ$, revealing linear light and its direction.
+\item $\theta=(\beta-\beta_0)/2$, from the analyzer angles at the two extinction positions.
+\item A $\lambda/4$ plate at $45^\circ$ gives circular light: constant intensity through an analyzer, and a second $\lambda/4$ plate converts it to linear and gives extinction.
+\item A $\lambda/4$ plate at other angles gives elliptical light ($0<I_{\min}<I_{\max}$, no extinction); a further $\lambda/4$ plate converts it to linear.
+\item Residual p-component from multiple reflections, surface scattering, finite extinction ratio and beam divergence leaves $I_{\min}>0$.
+\item Keep the beam centred and surfaces normal; avoid saturation and stray light; do not touch the optics; read all angles from one zero.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,893 @@
+%=====================================================================
+% Topic 8 Part 1 · 刚体运动学 精讲讲义
+% 依据：TM2026 - Topic 8 - P1.pdf（18 页）· 2026-10-25
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\linespread{1.22}
+\renewcommand{\qbreak}{\needspace{0.60\textheight}}
+\settags{Topic 8 精讲 · 刚体运动学（一）}{Theoretical Mechanics 2026}
+
+\begin{document}
+
+\doctitle{刚体运动学：速度场、旋转算子与欧拉角}
+{Topic \#8 Motion of a Rigid Body, Part 1}
+{依据课件：\texttt{TM2026 - Topic 8 - P1.pdf}，共 18 页（p1--p18）\\ 整理日期：2026 年 10 月 25 日}
+
+%=====================================================================
+\hdr{§0}{课件坐标与记号约定}
+
+\subhdr{这份课件讲了什么}
+
+课件 18 页可分成四块，中间夹了一大块数学工具。读懂它的关键，是先看清这四块的先后关系：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}ll@{}}
+\thead{p3--p4} & 刚体模型与自由度：为什么是 6 个 \\[1pt]
+\thead{p5--p7} & 主线 A：速度场 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$、换基点、瞬时转轴 \\[1pt]
+\thead{p8--p12} & 主线 B：矢量与张量代数 $\to$ 旋转算子 $S(t)$ $\to$ 角速度与 $S$ 的关系 \\[1pt]
+\thead{p13--p15} & 欧拉角与欧拉运动学方程，末页小结 \\[1pt]
+\thead{p16--p18} & 例题 E8.01、E8.02；作业 HW8.01--HW8.03 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\warnbox{\textbf{三个系统性问题}（读完全篇你会发现它们反复出现）。
+\textbf{（一）}工具页 p8--p12 夹在中间，可 p5 一开篇就用了 $\dd\vect{\tau}=\dd\vect{\varphi}\times\vect{r}$——它的证明要到 p11 才出现。这是本讲最大的缝合缝，§1.2 与 §4 专门补。
+\textbf{（二）}符号 $\Omega$ 在 p5--p16 是\emph{矢量}，在 p17 又当\emph{标量}（进动角速度）用；同一页里的 $\omega$ 也不是角速度矢量。§7.1 统一。
+\textbf{（三）}欧拉角的适用范围 $[0,2\pi]$、$[0,\pi]$ 是闭区间，可 $\theta=0$ 与 $\theta=\pi$ 时线节 $\vect{n}_\xi$ 根本没有定义（p13 的公式分母为零）。课件全程没提。§6 讲清，并说明为什么 E8.02 的答案在 $\theta=0$ 反而仍然连续。}
+
+\needspace{9cm}
+\subhdr{记号约定（全文只用这套）}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{3.1cm}p{8.3cm}p{2.6cm}@{}}
+\thead{记号} & \thead{含义} & \thead{课件位置} \\[1pt]
+$\vect{n}_1,\vect{n}_2,\vect{n}_3$ & 固定系 $XYZ$ 的正交单位基 & p8 \\[1pt]
+$\vect{n}'_1,\vect{n}'_2,\vect{n}'_3$ & 动系 $xyz$ 的正交单位基（固连于刚体） & p8, p10 \\[1pt]
+$\vect{V}$ & 基点的平动速度（$=$ 质心速度，若原点取在质心） & p5 \\[1pt]
+$\vect{\Omega}$ & 角速度\emph{矢量}；模长记 $\Omega\equiv|\vect{\Omega}|$ & p5 \\[1pt]
+$\vect{r}$ & 从动系原点到该点的矢径 & p5 \\[1pt]
+$S(t)$ & 旋转算子 $S(t)=\sum_k \vect{n}'_k(t)\otimes\vect{n}_k$ & p10 \\[1pt]
+$\vect{a}^{\times}$ & 矢量 $\vect{a}$ 的对偶张量，$\vect{a}^{\times}\vect{b}=\vect{a}\times\vect{b}$ & p8 \\[1pt]
+$\varphi,\theta,\psi$ & 欧拉角：进动、章动、自转 & p13 \\[1pt]
+$\omega_p,\omega_s$ & 本讲义为 p17 两个角速度另起的名字（课件作 $\Omega$、$\omega$） & p17 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+最后两行是本文唯一改动课件记号的地方，理由见 §7.1：p17 一页之内 $\Omega$ 既是矢量又是标量，照抄必然算错。
+
+%=====================================================================
+\hdr{§1}{刚体：从模型到速度场}
+
+\subhdr{1.1 模型与自由度（p3--p4）}
+
+p3 的定义是：\emph{a rigid body is an idealized model of a solid object in which the distance between any two of its points remains constant over time}。同一页把离散与连续两种描述并列，并给出字典 $m_\alpha\to\rho\dd V$、$\sum_\alpha\to\int_V$。
+
+p4 直接写 6 degrees of freedom，给的理由是“3 个分量 + 3 个独立角度”：
+
+\[
+\vect{R}=\frac{\sum_\alpha \vect{R}_\alpha m_\alpha}{\sum_\alpha m_\alpha},
+\qquad
+\text{3 个分量} \ +\ \text{3 个角度}\ =\ 6 .
+\]
+
+这里补一句 p4 没说透的话：\textbf{为什么偏偏是 3 个角度}。刚体上任意两点距离不变，等价于“刚体的位形由一个旋转加一个平移完全决定”；而三维空间里保持长度与夹角的线性变换（正交矩阵）有 9 个元素、6 个约束 $S^{T}S=\hat{1}$，只剩 \textbf{3} 个独立参数。所以“3 个角度”不是数出来的，是正交条件数出来的。这也解释了为什么后面 §3 要费那么大力气讲旋转算子——6 个自由度里有一半藏在那里。
+
+\subhdr{1.2 速度场的来历：机制缺口（p5）}
+
+p5 一上来就是一串等式：
+
+\[
+\dd\vect{\tau}=\dd\vect{R}+\dd\vect{r},
+\qquad
+\dd\vect{\tau}=\dd\vect{R}+\dd\vect{\varphi}\times\vect{r},
+\qquad
+\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}.
+\]
+
+第二式是整讲的地基：\textbf{为什么微小转动的位移是 $\dd\vect{\varphi}\times\vect{r}$，而不是 $\dd\vect{\varphi}\cdot\vect{r}$ 或别的什么}？课件一行给出，没有来历。
+
+\gapitem{机制缺口}{p5 “$\dd\vect{\tau}=\dd\vect{R}+\dd\vect{\varphi}\times\vect{r}$” 一行给出，未说明微小转动为何是叉积。补法：先用 p11 的无穷小旋转算子把 $\dd\vect{\tau}-\dd\vect{R}$ 算出来，再回到几何图像。}
+
+补法只有一层，但要写全。由 p11（后文 §3.5 会推）无穷小旋转算子为
+$S(\dd\varphi;\vect{n})=\hat{1}+\vect{n}^{\times}\dd\varphi$，作用在矢径上：
+
+\[
+\vect{r}'=S(\dd\varphi;\vect{n})\,\vect{r}=\vect{r}+\dd\varphi\,(\vect{n}\times\vect{r}),
+\quad\text{即}\quad
+\dd\vect{r}=\dd\vect{\varphi}\times\vect{r},\qquad \dd\vect{\varphi}\equiv\vect{n}\,\dd\varphi .
+\]
+
+\aside{这里用的是 p11 的结论 $S(\dd\varphi;\vect{n})=\hat{1}+\vect{n}^{\times}\dd\varphi$，而 p5 在你读到它之前就先用了。这正是本讲要把 p8--p12 往前搬的原因：\textbf{式子的顺序错了，逻辑没错}。}
+
+几何上这句话很好认：$\dd\vect{\varphi}$ 沿转轴，$\vect{r}$ 从轴上一点指出，叉积给出的是一个与 $\vect{r}$ 垂直、大小为 $r\sin\alpha\,\dd\varphi$ 的位移——正是绕轴转过 $\dd\varphi$ 时端点划过的弧长。方向由右手定则给出。
+
+于是 p5 的三式连起来就是速度场：
+
+\[
+\boxed{\ \vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}\ }
+\qquad
+\vect{V}=\frac{\dd\vect{R}}{\dd t},\quad
+\vect{\Omega}=\frac{\dd\vect{\varphi}}{\dd t}=\vect{n}\frac{\dd\varphi}{\dd t}.
+\]
+
+\callout{\textbf{这个式子的读法}（p5 的原文是 the velocity of any point in a rigid body is given by the velocity of the moving reference point and the angular velocity）：它说的是“任一点的速度 $=$ 基点的速度 $+$ 绕基点转动的速度”，\textbf{而两项都依赖于基点的选取}。§1.3 马上证明：第一项会随基点变，第二项的第一个因子 $\vect{\Omega}$ 却不变——这就是为什么角速度值得单独起个名字。}
+
+\subhdr{1.3 换基点：为什么 $\vect{\Omega}'=\vect{\Omega}$（p6）}
+
+p6 的三行是：
+
+\[
+\vect{r}=\vect{r}'+\vect{a},\quad
+\vect{v}=\vect{V}+\vect{\Omega}\times(\vect{a}+\vect{r}')=(\vect{V}+\vect{\Omega}\times\vect{a})+\vect{\Omega}\times\vect{r}',
+\]
+\[
+\text{compare with}\quad \vect{v}=\vect{V}'+\vect{\Omega}'\times\vect{r}'
+\quad\Longrightarrow\quad
+\vect{V}'=\vect{V}+\vect{\Omega}\times\vect{a},\quad \vect{\Omega}'=\vect{\Omega}.
+\]
+
+“compare with”这一步是全页的跳步：两个式子凭什么逐项相等？补一句就够——
+
+\aside{因为 $\vect{r}'$ 是\textbf{任一点}的矢径，可以任取。把上式在 $\vect{r}'=\vect{0}$ 处读一次得 $\vect{V}'=\vect{V}+\vect{\Omega}\times\vect{a}$；再对 $\vect{r}'$ 求导（或直接两式相减）得 $(\vect{\Omega}'-\vect{\Omega})\times\vect{r}'=\vect{0}$ 对一切 $\vect{r}'$ 成立，故 $\vect{\Omega}'=\vect{\Omega}$。}
+
+最后一句还有个更省事的说法：\textbf{同一时刻，刚体只有一个角速度}——否则“刚体上两点距离不变”这条会被破坏。p15 的小结把它写成 the angular velocity remains unchanged。
+
+%=====================================================================
+\hdr{§2}{主线 A：瞬时转轴（p7）}
+
+\subhdr{2.1 $\vect{V}\perp\vect{\Omega}$ 的情形与 $\vect{r}_A$ 的推导}
+
+p7 先证一件小事：若 $\vect{V}\cdot\vect{\Omega}=0$，则
+$\vect{\Omega}\cdot\vect{v}=\vect{\Omega}\cdot\vect{V}+\vect{\Omega}\cdot(\vect{\Omega}\times\vect{r})=0$。
+
+\aside{$\vect{\Omega}\cdot(\vect{\Omega}\times\vect{r})=0$ 是混合积性质：三矢量共面时行列式为零，而 $\vect{\Omega}$ 与 $\vect{\Omega}\times\vect{r}$ 垂直，必然共面。这是恒等式，与 $\vect{r}$ 取什么无关。}
+
+于是所有点的速度都落在垂直于 $\vect{\Omega}$ 的平面里，p7 称之存在\textbf{瞬时转轴}（IAR），并给出找法。四行推导是：
+
+\[
+\begin{aligned}
+\vect{0}&=\vect{V}+\vect{\Omega}\times\vect{r}_A,\\
+\vect{0}&=\vect{\Omega}\times\vect{V}+\vect{\Omega}\times(\vect{\Omega}\times\vect{r}_A)\\
+&=\vect{\Omega}\times\vect{V}+\vect{\Omega}(\vect{\Omega}\cdot\vect{r}_A)-\Omega^{2}\vect{r}_A,\\
+\vect{0}&=\vect{\Omega}\times\vect{V}-\Omega^{2}\vect{r}_A
+\quad\Longrightarrow\quad
+\vect{r}_A=\frac{\vect{\Omega}\times\vect{V}}{\Omega^{2}} .
+\end{aligned}
+\]
+
+第三式到第四式之间，$\vect{\Omega}(\vect{\Omega}\cdot\vect{r}_A)$ 这一项\textbf{凭空消失了}。课件没有交代，而这一步正是全页最容易被照抄照错的地方。
+
+\gapitem{代数跳步}{p7 第 4 行 “$\vect{0}=\vect{\Omega}\times\vect{V}-\Omega^{2}\vect{r}_A$”：第三行里的 $\vect{\Omega}(\vect{\Omega}\cdot\vect{r}_A)$ 被直接删掉，未说明它为何为零。补法：写 $\vect{r}_A=\vect{r}_\perp+t\vect{\Omega}$，证明该行与 $t$ 无关，从而“删掉它”$=$ “取垂足”。}
+
+补法如下。设 $\vect{r}_A=\vect{r}_\perp+t\,\vect{\Omega}$，其中 $\vect{r}_\perp\cdot\vect{\Omega}=0$。则
+
+\[
+\vect{\Omega}\cdot\vect{r}_A=t\,\Omega^{2},
+\qquad
+\vect{\Omega}\times\vect{r}_A=\vect{\Omega}\times\vect{r}_\perp ,
+\]
+
+代回第三行：
+
+\[
+\vect{0}=\vect{\Omega}\times\vect{V}
++t\,\Omega^{2}\,\vect{\Omega}
+-\Omega^{2}\bigl(\vect{r}_\perp+t\,\vect{\Omega}\bigr)
+=\vect{\Omega}\times\vect{V}-\Omega^{2}\vect{r}_\perp .
+\]
+
+\textbf{含 $t$ 的两项恰好抵消}，所以这一行对任何 $t$ 都成立。结论有两层：
+
+\begin{itemize}
+\item $\vect{r}_\perp=\vect{\Omega}\times\vect{V}/\Omega^{2}$ 是唯一的；
+\item 满足 $\vect{v}_A=\vect{0}$ 的\emph{不是一个点}，而是整条过 $\vect{r}_\perp$、方向 $\vect{\Omega}$ 的直线——这就是 p7 说的 the IAR is the line passing through the point $A$ parallel to $\vect{\Omega}$。
+\end{itemize}
+
+课件写的 $\vect{r}_A=\vect{\Omega}\times\vect{V}/\Omega^{2}$ 是这条线到原点的\textbf{垂足}（$t=0$）。所以“删掉那一项”不是丢东西，而是\textbf{选定垂足}。看懂这一点，就不会在“为什么要 $\vect{r}_A\perp\vect{\Omega}$”上卡住。
+
+\warnbox{\textbf{边界：$\Omega=0$ 时不存在 IAR。}
+上面每一步都除了 $\Omega^{2}$。若 $\Omega=0$（瞬时平动），$\vect{V}\cdot\vect{\Omega}=0$ 自动成立，但此时没有任何点的速度为零，瞬时转轴不存在。p7 的两种情形都没覆盖它，做题目时要单独说一句。}
+
+\subhdr{2.2 $\vect{V}\parallel\vect{\Omega}$ 与一般情形：课件缺的统一式}
+
+p7 对 $\vect{V}\parallel\vect{\Omega}$ 只给了一句话：the motion consists (at the instant) of a rotation about some axis and a translation along that axis。没有公式，也没说\textbf{一般情形}（$\vect{V}$ 既不垂直也不平行）怎么办。
+
+\gapitem{拼接缺口}{p7 把情形一分为二（$\vect{V}\perp\vect{\Omega}$、$\vect{V}\parallel\vect{\Omega}$），却没有把两者合起来的一般式。补法：把 $\vect{V}$ 分解成垂直与平行两部分，说明任意时刻的运动都是“绕某轴转 $+$ 沿该轴滑”。}
+
+补法只要一行分解。令
+
+\[
+\vect{V}_\parallel=\frac{\vect{V}\cdot\vect{\Omega}}{\Omega^{2}}\,\vect{\Omega},
+\qquad \vect{V}_\perp=\vect{V}-\vect{V}_\parallel,
+\qquad \vect{r}_A=\frac{\vect{\Omega}\times\vect{V}_\perp}{\Omega^{2}} ,
+\]
+
+则对任一点
+
+\[
+\vect{v}=\underbrace{\vect{V}_\parallel}_{\text{沿轴滑动}}
++\underbrace{\vect{\Omega}\times(\vect{r}-\vect{r}_A)}_{\text{绕轴转动}} .
+\]
+
+\aside{这个恒等式就是把 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$ 里的 $\vect{V}$ 拆成两段，再用 $\vect{\Omega}\times\vect{r}_A=\vect{V}_\perp$（由 §2.1 的 $\vect{r}_A$ 定义直接得）把 $\vect{V}_\perp$ 吸收进第二项。}
+
+于是 p7 的两种情形只是这条通式的两个特例：$\vect{V}_\parallel=\vect{0}$ 得纯转动（情形一）；$\vect{V}_\perp=\vect{0}$ 得纯“转动$+$沿轴平移”（情形二，此时 $\vect{r}_A=\vect{0}$，轴过基点）。一般情形叫\textbf{瞬时螺旋}，轴仍是那条线，只是多了沿轴的滑动。
+
+\callout{\textbf{算一遍}：取 $\vect{\Omega}=2\vect{n}_3$、$\vect{V}=3\vect{n}_1$，则
+$\vect{r}_A=\dfrac{(2\vect{n}_3)\times(3\vect{n}_1)}{4}=\dfrac{6\vect{n}_2}{4}=1.5\,\vect{n}_2$。
+验算：$\vect{v}(\vect{r}_A)=3\vect{n}_1+2\vect{n}_3\times1.5\vect{n}_2=3\vect{n}_1-3\vect{n}_1=\vect{0}$。\ding{95}}
+
+%=====================================================================
+\hdr{§3}{主线 B：旋转算子与张量语言（p8--p12）}
+
+p8--p9 是工具页，p10--p12 才是正题。工具页不必逐条背，但要认清三样东西各自的作用，否则后面看不懂。
+
+\subhdr{3.1 三样工具（p8--p9）}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{3.6cm}p{5.1cm}p{6.2cm}@{}}
+\thead{工具} & \thead{式子} & \thead{它在后面干什么} \\[1pt]
+求和约定 & $a=a_k\vect{n}_k$，重复指标求和 & 把 $\sum_{k=1}^{3}$ 全藏起来，式子才看得完 \\[2pt]
+对偶张量 & $\vect{a}^{\times}_{ik}=\varepsilon_{ijk}a_j$，$\vect{a}^{\times}\vect{b}=\vect{a}\times\vect{b}$ & 把叉积写成\textbf{矩阵乘矢量}，p12 全靠它 \\[2pt]
+并矢（张量积） & $(\vect{a}\otimes\vect{b})\vect{x}=\vect{a}(\vect{b}\cdot\vect{x})$ & 把“投影再放大”写成算子，p10--p11 全靠它 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表是台账，不承载推导；但最后两行值得各补一句读法。
+
+\textbf{对偶张量}：$\vect{a}^{\times}$ 是一个 $3\times3$ 反对称矩阵，它乘任何矢量等于 $\vect{a}$ 叉乘该矢量。p8 把它写成
+
+\[
+\bigl(\vect{a}^{\times}_{ik}\bigr)=
+\begin{pmatrix}
+0 & -a_3 & a_2\\
+a_3 & 0 & -a_1\\
+-a_2 & a_1 & 0
+\end{pmatrix}.
+\]
+
+\aside{读法：第 1 行第 2 列是 $-a_3$，所以 $\vect{a}^{\times}$ 作用在 $\vect{b}$ 上，第一个分量是 $-a_3b_2+a_2b_3$，正是 $(\vect{a}\times\vect{b})_1$。换一个分量也对得上——这就是“反对称矩阵 $\leftrightarrow$ 矢量”一一对应的具体形式。}
+
+\textbf{并矢}：$(\vect{a}\otimes\vect{b})\vect{x}=\vect{a}(\vect{b}\cdot\vect{x})$ 读作“先把 $\vect{x}$ 投影到 $\vect{b}$ 上，再沿 $\vect{a}$ 方向放大”。这一句读通了，p10 的 $S=\sum_k\vect{n}'_k\otimes\vect{n}_k$ 就顺理成章：\textbf{它把“取第 $k$ 个坐标分量，然后放到 $\vect{n}'_k$ 方向上”这三件事加起来}。
+
+p9 后半页还有三个定义，后面都会用到：一般张量 $T=T_{ik}\vect{n}_i\otimes\vect{n}_k$；张量作为\textbf{线性算子} $\vect{b}=T\vect{a}$，即 $b_i=T_{ik}a_k$；以及二次型 $E=\vect{a}\cdot T\vect{a}=T_{ik}a_ia_k$。此外还有单位张量 $\hat{1}=\vect{n}_k\otimes\vect{n}_k$，满足 $\hat{1}\vect{a}=\vect{a}$。本讲只用到线性算子与单位张量两条；二次型留给 Part 2 讲转动惯量时用，这里先按下。
+
+\subhdr{3.2 旋转算子为什么长这样（p10）——机制缺口}
+
+p10 的定义是
+
+\[
+S(t)=\sum_{k=1}^{3}\vect{n}'_k(t)\otimes\vect{n}_k .
+\]
+
+然后立刻用它推 $S(t)\vect{n}_k=\vect{n}'_k(t)$。为什么这个和正好等于“把固定基搬到动基”的那个算子？
+
+\gapitem{机制缺口}{p10 “$S(t)=\sum_k \vect{n}'_k(t)\otimes\vect{n}_k$”：直接写出定义，未验证它确实把 $\vect{n}_k$ 映到 $\vect{n}'_k$、也未说明为什么和式的项数正好是 3。补法：先代 $\vect{n}_j$ 验一次，再由线性延拓。}
+
+补法三行。用 $\vect{n}_k\cdot\vect{n}_j=\delta_{kj}$：
+
+\[
+S\vect{n}_j=\sum_{k=1}^{3}\vect{n}'_k(\vect{n}_k\cdot\vect{n}_j)
+=\sum_{k=1}^{3}\vect{n}'_k\,\delta_{kj}=\vect{n}'_j .
+\]
+
+再把任一 $\vect{x}=x_j\vect{n}_j$ 展开，$S\vect{x}=x_jS\vect{n}_j=x_j\vect{n}'_j$——恰好把每个分量搬到对应的新方向上。项数为 3 是因为基有 3 个；换成 $n$ 维就是 $n$ 项。
+
+\subhdr{3.3 $S^{T}S=\hat{1}$ 的中间一步（p11）——代数跳步}
+
+p11 写 $S(t)^{T}S(t)=\sum_k \vect{n}_k\otimes\vect{n}_k=\hat{1}$，一步到位。可 $S^{T}$ 长什么样，课件没写。
+
+\gapitem{代数跳步}{p11 “$S(t)^{T}S(t)=\sum_k \vect{n}_k\otimes\vect{n}_k=\hat{1}$”：跳过了 $S^{T}$ 的表达式与逐项相乘。补法：先写 $S^{T}=\sum_k\vect{n}_k\otimes\vect{n}'_k$，再用并矢乘法，四项指标对一遍。}
+
+先写 $S^{T}$。由 $(\vect{a}\otimes\vect{b})^{T}=\vect{b}\otimes\vect{a}$（p9）：
+
+\[
+S^{T}=\sum_{k=1}^{3}\vect{n}_k\otimes\vect{n}'_k .
+\]
+
+再乘。并矢的乘法规则是 $(\vect{a}\otimes\vect{b})(\vect{c}\otimes\vect{d})=(\vect{b}\cdot\vect{c})\,\vect{a}\otimes\vect{d}$（同样出自 p9 的“action on vectors”），于是
+
+\[
+S^{T}S=\sum_{j,k}\bigl(\vect{n}_j\otimes\vect{n}'_j\bigr)
+\bigl(\vect{n}'_k\otimes\vect{n}_k\bigr)
+=\sum_{j,k}\underbrace{(\vect{n}'_j\cdot\vect{n}'_k)}_{=\delta_{jk}}\vect{n}_j\otimes\vect{n}_k
+=\sum_{k}\vect{n}_k\otimes\vect{n}_k=\hat{1}.
+\]
+
+\aside{$(\vect{n}'_j\cdot\vect{n}'_k)=\delta_{jk}$ 是因为动基也是正交单位基（p10 第一句）。这一步用了两组基各自的正交性，缺一不可。}
+
+同理 $SS^{T}=\sum_k\vect{n}'_k\otimes\vect{n}'_k=\hat{1}$。所以 $S$ 是正交算子，保点积：$(S\vect{x})\cdot(S\vect{y})=\vect{x}\cdot(S^{T}S\vect{y})=\vect{x}\cdot\vect{y}$——这就是“刚体上两点距离不变”在算子语言里的样子。
+
+\subhdr{3.4 绕定轴转 $\varphi$ 的公式（p11）——机制缺口}
+
+p11 直接给出
+
+\[
+S(\varphi;\vect{n})=\vect{n}\otimes\vect{n}
++(\hat{1}-\vect{n}\otimes\vect{n})\cos\varphi
++\vect{n}^{\times}\sin\varphi ,
+\]
+
+然后说 $S\vect{x}=\vect{x}_n\vect{n}+\vect{x}_\perp\cos\varphi+\vect{n}\times\vect{x}_\perp\sin\varphi$。中间没有推导。
+
+\gapitem{机制缺口}{p11 旋转公式 $S(\varphi;\vect{n})=\vect{n}\otimes\vect{n}+(\hat{1}-\vect{n}\otimes\vect{n})\cos\varphi+\vect{n}^{\times}\sin\varphi$：直接给出，未说明三项各自的来处。补法：把 $\vect{x}$ 拆成平行与垂直两部分，逐项验证。}
+
+拆 $\vect{x}=\vect{x}_\parallel+\vect{x}_\perp$，其中 $\vect{x}_\parallel=(\vect{x}\cdot\vect{n})\vect{n}=(\vect{n}\otimes\vect{n})\vect{x}$，$\vect{x}_\perp=\vect{x}-\vect{x}_\parallel$。三项分别作用于它：
+
+\begin{itemize}
+\item $\vect{n}\otimes\vect{n}$ 是投影到 $\vect{n}$ 上，只抓走 $\vect{x}_\parallel$；
+\item $\hat{1}-\vect{n}\otimes\vect{n}$ 是投影到垂直于 $\vect{n}$ 的平面上，只抓走 $\vect{x}_\perp$；
+\item $\vect{n}^{\times}$ 作用在 $\vect{x}_\perp$ 上得 $\vect{n}\times\vect{x}_\perp$，与 $\vect{x}_\perp$ 垂直、等长，正好是这个平面内的“转了 $90^\circ$ 的方向”。
+\end{itemize}
+
+合起来：平行分量不动，垂直分量在平面内写成 $\vect{x}_\perp\cos\varphi+(\vect{n}\times\vect{x}_\perp)\sin\varphi$——这就是平面上的二维旋转，$\cos$ 给“原方向”，$\sin$ 给“转 $90^\circ$ 后的方向”。\textbf{三项的系数不是凑的}：$\cos$ 管保向，$\sin$ 管转向，前面的投影算子管“只作用在垂直平面上”。
+
+三个自检（都能当场算）：$\varphi=0$ 得 $S=\hat{1}$；$\vect{x}\parallel\vect{n}$ 得 $S\vect{x}=\vect{x}$；$\varphi=\pi/2$ 得 $S=\vect{n}\otimes\vect{n}+\vect{n}^{\times}$。
+
+\subhdr{3.5 无穷小旋转：为什么可以交换（p11）}
+
+把 $\cos\dd\varphi\approx1$、$\sin\dd\varphi\approx\dd\varphi$ 代进 3.4 的公式：
+
+\[
+S(\dd\varphi;\vect{n})=\hat{1}+\vect{n}^{\times}\dd\varphi=\hat{1}+\dd\vect{\varphi}^{\times}.
+\]
+
+两个无穷小旋转相乘：
+
+\[
+S_1S_2=(\hat{1}+\dd\vect{\varphi}^{\times}_1)(\hat{1}+\dd\vect{\varphi}^{\times}_2)
+=\hat{1}+\dd\vect{\varphi}^{\times}_1+\dd\vect{\varphi}^{\times}_2
++\underbrace{\dd\vect{\varphi}^{\times}_1\dd\vect{\varphi}^{\times}_2}_{\text{二阶小量}} .
+\]
+
+\aside{二阶项丢掉的合法性：两个无穷小量的乘积比任一者都高一阶，在取 $\dd t\to0$ 的极限后为零。所以\textbf{一阶精度下}乘法可交换；有限角一般不可交换（$S_1S_2\ne S_2S_1$），这一点在本讲不展开。}
+
+这正是 §1.2 里 $\dd\vect{r}=\dd\vect{\varphi}\times\vect{r}$ 的来源。两处合起来看：\textbf{速度场公式不是几何直觉，是“一阶旋转算子减单位算子”}。
+
+\subhdr{3.6 角速度与 $S$ 的关系（p12）——机制缺口}
+
+p12 的推理链是：
+
+\[
+S S^{T}=\hat{1}
+\ \Longrightarrow\
+\frac{\dd S}{\dd t}S^{T}+S\frac{\dd S^{T}}{\dd t}=\vect{0}
+\ \Longrightarrow\
+\vect{A}\equiv\frac{\dd S}{\dd t}S^{T}\ \text{反对称}
+\ \Longrightarrow\
+\exists\,\vect{a}:\ \vect{a}^{\times}=\vect{A}.
+\]
+
+然后定义 $\vect{\Omega}^{\times}=\dfrac{\dd S}{\dd t}S^{T}$。三处需要补。
+
+\textbf{（一）为什么 $\vect{A}$ 反对称。} 由 $S^{T}S=\hat{1}$ 求导得 $\dot S^{T}S+S^{T}\dot S=\vect{0}$，即 $S^{T}\dot S$ 反对称；两边左乘 $S$、右乘 $S^{T}$（相似变换保反对称性）得 $\dot S S^{T}$ 也反对称。p12 用的是 $\dot S S^{T}+S\dot S^{T}=\vect{0}$ 这一支，等价。
+
+\textbf{（二）为什么反对称矩阵必有一个矢量与之对应。} 三维反对称矩阵只有 3 个独立分量（对角为零，上三角与下三角互为相反数），恰好对应一个矢量的 3 个分量；对应规则就是 p12 写的
+
+\[
+a_1=-A_{23},\qquad a_2=A_{13},\qquad a_3=-A_{12}.
+\]
+
+\aside{和 p8 的对偶张量表对照：那里 $(\vect{a}^{\times})_{23}=-a_1$，这里 $A_{23}=-a_1$，两处一致。记住“下标从小到大、取负号”即可复现。}
+
+\textbf{（三）为什么是 $\dot S S^{T}$ 而不是 $S^{T}\dot S$。} 这是全讲最值得讲清的一句，课件完全没提。
+
+\gapitem{形式改写}{p12 “$\vect{\Omega}^{\times}=\dd S/\dd t\,S^{T}$”：直接选定左乘 $\dot S$ 的形式，未说明右乘 $S^{T}\dot S$ 得到的是什么。补法：说明两者是同一角速度在固定系与动系的分量。}
+
+两个式子都是反对称的，都对应同一个角速度矢量，但\textbf{对应的分量基不同}：$\dot S S^{T}$ 给出的是 $\vect{\Omega}$ 在\emph{固定系} $\vect{n}_k$ 下的分量，$S^{T}\dot S$ 给出的是同一矢量在\emph{动系} $\vect{n}'_k$ 下的分量。记
+
+\[
+\vect{\Omega}^{\times}=\frac{\dd S}{\dd t}S^{T},
+\qquad
+\bigl(\vect{\Omega}'\bigr)^{\times}=S^{T}\frac{\dd S}{\dd t},
+\]
+
+则 $\vect{\Omega}'=S^{T}\vect{\Omega}$ 是常规的坐标变换。\textbf{这就是为什么 §7 里 p14 的欧拉运动学方程给的是 $\Omega'_1,\Omega'_2,\Omega'_3$——那是动系分量}；而 p12 给的是固定系分量。两者不冲突，是同一件事的两个视角。
+
+p12 还有一行没展开：
+
+\[
+\vect{\Omega}^{\times}
+=\Bigl(\frac{\dd\vect{n}'_k}{\dd t}\otimes\vect{n}_k\Bigr)
+\bigl(\vect{n}_j\otimes\vect{n}'_j\bigr)
+=\frac{\dd\vect{n}'_k}{\dd t}\otimes\vect{n}'_k
+\quad\Longrightarrow\quad
+\frac{\dd\vect{n}'_k}{\dd t}=\vect{\Omega}\times\vect{n}'_k .
+\]
+
+\aside{中间一步省了 $\vect{n}_k\cdot\vect{n}_j=\delta_{kj}$。最后一步是因为 $(\vect{a}\otimes\vect{b})\vect{c}=\vect{a}(\vect{b}\cdot\vect{c})$，两边作用在 $\vect{c}$ 上再比较。}
+
+这句“动基的导数等于角速度叉乘动基”是后面欧拉角求导的机械工具：\textbf{只要看见对 $\vect{n}'_k$ 求时间导数，就换成 $\vect{\Omega}\times\vect{n}'_k$}。
+
+%=====================================================================
+\hdr{§4}{两条线为什么是同一件事}
+
+到这里，p5 与 p12 各给了半张图：
+
+\begin{itemize}
+\item 主线 A（p5）：$\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$，纯几何；
+\item 主线 B（p12）：$\vect{\Omega}^{\times}=\dot S S^{T}$，纯算子。
+\end{itemize}
+
+课件两处都出现了 $\vect{\Omega}$，却从没说过\textbf{这两个 $\vect{\Omega}$ 是同一个}。这就是本讲要补的桥。
+
+\gapitem{拼接缺口}{p5 与 p12 相隔七页，各给一半：p5 用 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$，p12 给 $\vect{\Omega}^{\times}=\dot S S^{T}$，两者之间没有一句话把它们接起来。补法：由 $\vect{r}(t)=S(t)\vect{r}(0)$ 求导，直接得到 A 的公式。}
+
+把基点固定在原点（$\vect{R}=\vect{0}$）。刚体的位形由 $S(t)$ 完全决定，
+
+\[
+\vect{r}(t)=S(t)\,\vect{r}(0)
+\quad\Longrightarrow\quad
+\vect{v}=\frac{\dd\vect{r}}{\dd t}=\dot S(t)\,\vect{r}(0)
+=\underbrace{\dot S(t)S^{T}(t)}_{\vect{\Omega}^{\times}}\,\underbrace{S(t)\vect{r}(0)}_{\vect{r}}
+=\vect{\Omega}\times\vect{r}.
+\]
+
+\aside{关键是 $S^{T}S=\hat{1}$，所以 $\vect{r}(0)=S^{T}\vect{r}(t)$，可以“无代价地插一个 $S^{T}S$”。这一步是纯代数，没有任何物理假设。}
+
+若基点还有平动 $\vect{R}(t)$，则 $\vect{r}_{\text{空间}}=\vect{R}(t)+S(t)\vect{r}(0)$，求导即得 p5 的 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$。\textbf{两条线到此合一}。
+
+这还顺手解释了 p6 的结论：换基点只改 $S$ 前面的平移项，$S$ 本身不变，$\dot S S^{T}$ 自然不变，所以 $\vect{\Omega}'=\vect{\Omega}$。
+
+\callout{\textbf{一条能背的判据}：以后看到 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$，就知道 $\vect{\Omega}$ 是 $\dot S S^{T}$ 对应的那个矢量；看到 $S(t)$ 就知道它是刚体“从初始位形到当前位形”的映射。几何式与算子式是同一件事的两种写法，做题时\textbf{选哪个方便用哪个}。}
+
+%=====================================================================
+\qbreak
+\hdr{§5}{主例题 E8.01 全程演算（p16）}
+
+\qstem{（课件 p16，Exercise E8.01）两个完全相同的圆盘，半径均为 $r$，在 $A$ 点用圆柱铰链连接。盘 1 绕固定水平轴 $O$ 按 $\varphi=\varphi(t)$ 转动；盘 2 绕水平轴 $A$ 按 $\psi=\psi(t)$ 转动。轴 $O$、$A$ 均垂直于图面。角 $\varphi$、$\psi$ 自竖直方向起、沿逆时针量度。求盘 2 中心 $C$ 的速度。}
+
+\subhdr{几何先行：两个矢径是怎么写出来的}
+
+设 $\vect{n}_3$ 垂直图面向外，$\vect{n}_1$ 水平向右，$\vect{n}_2$ 竖直向上。$O$ 固定，$A$ 在盘 1 的轮缘上，所以 $|OA|=r$；$C$ 是盘 2 的中心，$A$ 在盘 2 的轮缘上，所以 $|AC|=r$。
+
+角度“自竖直方向起、逆时针量”，而竖直向下的方向是 $-\vect{n}_2$。把 $-\vect{n}_2$ 逆时针转 $\varphi$：
+
+\[
+\vect{r}_{OA}=r\sin\varphi\,\vect{n}_1-r\cos\varphi\,\vect{n}_2,
+\qquad
+\vect{r}_{AC}=r\sin\psi\,\vect{n}_1-r\cos\psi\,\vect{n}_2 .
+\]
+
+\aside{拿 $\varphi=0$ 验一下：此时 $\vect{r}_{OA}=-r\vect{n}_2$，即 $A$ 在 $O$ 的正下方，与“从竖直起量、零角对应竖直向下”相符。这条检验比记公式可靠。}
+
+\subhdr{关键一步：为什么先到 $A$ 再到 $C$}
+
+$A$ 是铰链，\textbf{同时属于两个盘}：作为盘 1 上的点，它绕 $O$ 转；作为盘 2 上的点，盘 2 绕它转。所以
+
+\[
+\vect{v}_C=\vect{v}_A+\vect{\Omega}_2\times\vect{r}_{AC},
+\qquad
+\vect{v}_A=\vect{\Omega}_1\times\vect{r}_{OA},
+\qquad
+\vect{\Omega}_1=\dot\varphi\,\vect{n}_3,\ \ \vect{\Omega}_2=\dot\psi\,\vect{n}_3 .
+\]
+
+\aside{两个盘的角速度都沿 $\vect{n}_3$ 是因为题目说轴 $O$、$A$ 都垂直于图面，而盘只在该平面内转。系数就是 $\dot\varphi$、$\dot\psi$：角度对时间求导即角速度模长（p5 的定义 $\vect{\Omega}=\vect{n}\dd\varphi/\dd t$）。}
+
+\subhdr{代数：逐项算}
+
+第 0 步，记两条右手系恒等式：
+
+\[
+\vect{n}_3\times\vect{n}_1=\vect{n}_2,\qquad \vect{n}_3\times\vect{n}_2=-\vect{n}_1 .
+\]
+
+\aside{这是 p8 的 Levi-Civita 约定 $\varepsilon_{123}=+1$ 的直接结果：右手系下“$1\to2\to3$”为正。做题时这一条要能条件反射，否则符号会全反。}
+
+第一项：
+
+\[
+\begin{aligned}
+\vect{\Omega}_1\times\vect{r}_{OA}
+&=\dot\varphi\,\vect{n}_3\times r\bigl(\sin\varphi\,\vect{n}_1-\cos\varphi\,\vect{n}_2\bigr)\\
+&=r\dot\varphi\bigl(\sin\varphi\,\vect{n}_2+\cos\varphi\,\vect{n}_1\bigr).
+\end{aligned}
+\]
+
+\aside{中间用了 $\vect{n}_3\times\vect{n}_1=\vect{n}_2$ 与 $\vect{n}_3\times\vect{n}_2=-\vect{n}_1$，负号被括号前的 $-\cos\varphi$ 吃掉，所以两项都变正。}
+
+第二项同理（注意是 $\vect{\Omega}_2$，不是 $\vect{\Omega}_1$）：
+
+\[
+\vect{\Omega}_2\times\vect{r}_{AC}=r\dot\psi\bigl(\sin\psi\,\vect{n}_2+\cos\psi\,\vect{n}_1\bigr).
+\]
+
+\warnbox{\textbf{课件笔误（p16）}：原文这一行写作 “$\vect{\Omega}_1\times\vect{r}_{AC}=r\dot\psi(\sin\psi\,\vect{n}_2+\cos\psi\,\vect{n}_1)$”——用的是 $\vect{\Omega}_1$，可右边却是 $\dot\psi$。由上一行 $\vect{\Omega}_2=\dot\psi\vect{n}_3$ 可知左端应为 $\vect{\Omega}_2$。这是笔误，不影响结论；本文按 $\vect{\Omega}_2$ 处理。}
+
+两式相加：
+
+\[
+\boxed{\
+\vect{v}_C=r\bigl(\dot\varphi\cos\varphi+\dot\psi\cos\psi\bigr)\vect{n}_1
++r\bigl(\dot\varphi\sin\varphi+\dot\psi\sin\psi\bigr)\vect{n}_2\ }
+\]
+
+\subhdr{答案形态：为什么是余弦定理}
+
+把 $\vect{v}_C$ 看成两个矢量的和：$r\dot\varphi\,\vect{e}_\varphi+r\dot\psi\,\vect{e}_\psi$，其中 $\vect{e}_\varphi=(\cos\varphi,\sin\varphi)$、$\vect{e}_\psi=(\cos\psi,\sin\psi)$ 都是单位矢量，夹角正是 $\varphi-\psi$。所以
+
+\[
+|\vect{v}_C|=r\sqrt{\dot\varphi^{2}+\dot\psi^{2}+2\dot\varphi\dot\psi\cos(\varphi-\psi)} .
+\]
+
+\callout{\textbf{系数报户口}：根号里的 $2$ 来自 $|\vect{a}+\vect{b}|^{2}=|\vect{a}|^{2}+|\vect{b}|^{2}+2\vect{a}\cdot\vect{b}$ 的交叉项，是代数恒等式，与题目无关；外面的 $r$ 是圆盘半径，两项各出一个 $r$，提公因子后成 $r^{2}$ 再开方成 $r$；$\cos(\varphi-\psi)$ 是两个单位矢量夹角 $\varphi-\psi$ 的余弦，\textbf{不是}某个约定。三个因子各有出处，没有一处是凑的。}
+
+\subhdr{自检（两条，都能当场算）}
+
+\begin{itemize}
+\item $\varphi=\psi$ 且 $\dot\varphi=\dot\psi$：$|\vect{v}_C|=r|2\dot\varphi|=2r|\dot\varphi|$——两盘同向同步，$C$ 的速度是 $A$ 的两倍（$A$ 绕 $O$、$C$ 再绕 $A$，贡献同向叠加）。
+\item $\varphi=\psi$ 且 $\dot\varphi=-\dot\psi$：$|\vect{v}_C|=0$——两盘反向同步，$C$ 瞬时静止。这一条正好是瞬时转轴存在的判据，与 §2 呼应。
+\end{itemize}
+
+%=====================================================================
+\hdr{§6}{为什么 $\theta=0$ 时这条路走不下去（p13--p14）}
+
+\subhdr{6.1 线节在 $\theta=0,\pi$ 处没有定义}
+
+p13 给出三个角与线节：
+
+\[
+\vect{n}_\xi=\frac{\vect{n}_3\times\vect{n}'_3}{|\vect{n}_3\times\vect{n}'_3|},
+\qquad
+\text{进动 }\varphi\in[0,2\pi],\quad
+\text{章动 }\theta\in[0,\pi],\quad
+\text{自转 }\psi\in[0,2\pi].
+\]
+
+注意分母 $|\vect{n}_3\times\vect{n}'_3|=\sin\theta$。$\theta=0$ 或 $\pi$ 时两个 $3$ 轴重合，叉积为零，\textbf{线节 $\vect{n}_\xi$ 无定义}，$\varphi$ 与 $\psi$ 也就无从区分。
+
+\gapitem{边界缺口}{p13 把 $\theta$ 的范围写成闭区间 $[0,\pi]$，而 $\vect{n}_\xi$ 的分母 $|\vect{n}_3\times\vect{n}'_3|=\sin\theta$ 在两端为零。课件未提奇点。补法：把 $\theta$ 的实用定义域收成 $(0,\pi)$，并说明端点处 $\varphi,\psi$ 只以和（或差）出现。}
+
+\subhdr{6.2 退化长什么样}
+
+在 $\theta=0$ 处，$\vect{n}'_1,\vect{n}'_2$ 与 $\vect{n}_3$ 共面且可任意取，p14 的方程退化为
+
+\[
+\Omega'_1=\dot\varphi\sin\psi+\dot\theta\cos\psi,\quad
+\Omega'_2=\dot\varphi\cos\psi-\dot\theta\sin\psi,\quad
+\Omega'_3=\dot\varphi+\dot\psi .
+\]
+
+$\varphi$ 与 $\psi$ 只以 $\varphi+\psi$ 的组合影响物理量——两个角退化成一个。这就是\textbf{万向节死锁}：不是数学错了，是这组参数在端点不再独立。
+
+\warnbox{\textbf{但请注意一件容易搞混的事}：$\theta=0$ 时\emph{参数化}坏了，\emph{物理}没坏。E8.02 的答案只含 $\cos\theta$，在 $\theta=0$ 处仍然连续可取（见 §7.1 的自检）。所以“推导走不下去”不等于“答案没有意义”——这正是本讲要把两者分开说的原因。}
+
+%=====================================================================
+\hdr{§7}{例题 E8.02 与作业 HW8.01--8.03}
+
+\qbreak
+\subhdr{7.1 E8.02（p17）：先把记号理清楚}
+
+\qstem{（课件 p17，Exercise E8.02）陀螺的 $z$ 轴绕竖直轴 $OZ$ 匀速进动，描出顶角为 $2\theta$ 的圆锥；进动角速度为 $\Omega$，自转角速度为常数 $\omega$。求陀螺总角速度的大小，以及它与 $OZ$ 轴的夹角。}
+
+\textbf{先说记号。} 原文一页之内：$\Omega$ 既是“进动的角速度”（标量），又在 $\vect{\Omega}=\Omega'_k\vect{n}'_k$ 里是“总角速度”（矢量）；$\omega$ 是自转率，却和 §3 的角速度同符号。照抄一定出错。本文分名：
+
+\[
+\underbrace{\omega_p}_{\text{课件 }\Omega}\ \text{进动率},
+\qquad
+\underbrace{\omega_s}_{\text{课件 }\omega}\ \text{自转率},
+\qquad
+\vect{\Omega}\ \text{总角速度}.
+\]
+
+\textbf{关键一步：用 p14 的方程，再代 $\dot\varphi=\omega_p,\ \dot\psi=\omega_s,\ \dot\theta=0$。}
+
+\aside{欧拉角的对应关系由题意定：进动是绕固定轴 $OZ=\vect{n}_3$ 的 $\varphi$，自转是绕体轴 $\vect{n}'_3$ 的 $\psi$，章动 $\theta$ 是两轴夹角——题目说圆锥顶角 $2\theta$，故 $\theta$ 恒定、$\dot\theta=0$。}
+
+代入 p14 的三式：
+
+\[
+\Omega'_1=\omega_p\sin\psi\sin\theta,\qquad
+\Omega'_2=\omega_p\cos\psi\sin\theta,\qquad
+\Omega'_3=\omega_p\cos\theta+\omega_s .
+\]
+
+\textbf{求模长。} 直接平方相加，注意 $\sin^{2}\psi+\cos^{2}\psi=1$：
+
+\[
+|\vect{\Omega}|^{2}
+=\omega_p^{2}\sin^{2}\theta\underbrace{(\sin^{2}\psi+\cos^{2}\psi)}_{=1}
++\bigl(\omega_p\cos\theta+\omega_s\bigr)^{2}
+=\omega_p^{2}+\omega_s^{2}+2\omega_p\omega_s\cos\theta .
+\]
+
+\textbf{求夹角。} 需要 $\vect{n}_3$ 在动基下的三个分量。由 p17 的
+$\vect{n}'_1\cdot\vect{n}_3=\sin\theta\sin\psi$、$\vect{n}'_2\cdot\vect{n}_3=\sin\theta\cos\psi$、$\vect{n}'_3\cdot\vect{n}_3=\cos\theta$：
+
+\[
+\vect{\Omega}\cdot\vect{n}_3
+=\omega_p\sin^{2}\theta\,(\sin^{2}\psi+\cos^{2}\psi)+\bigl(\omega_p\cos\theta+\omega_s\bigr)\cos\theta
+=\omega_p+\omega_s\cos\theta .
+\]
+
+\aside{这一步与求模长用的是同一招：先把 $\psi$ 的部分凑成 $\sin^{2}+\cos^{2}$。这也是整题的“窍”：$\psi$ 是绕 $\vect{n}_3$ 的角，绕它转一整圈不改变与 $\vect{n}_3$ 的任何内积——所以答案里不该出现 $\psi$。}
+
+\textbf{答案。} 设 $\alpha=\angle(\vect{\Omega},OZ)$，则
+
+\[
+|\vect{\Omega}|=\sqrt{\omega_p^{2}+\omega_s^{2}+2\omega_p\omega_s\cos\theta},
+\qquad
+\alpha=\arccos\frac{\omega_p+\omega_s\cos\theta}{\sqrt{\omega_p^{2}+\omega_s^{2}+2\omega_p\omega_s\cos\theta}} .
+\]
+
+\warnbox{\textbf{答案形态}：p17 只写到 $\cos(\vect{\Omega},\vect{n}_3)=\vect{\Omega}\cdot\vect{n}_3/|\vect{\Omega}|$ 就停了，没写 $\alpha$ 本身。补上 $\arccos$ 之后要交代取值范围：因 $|\vect{\Omega}|\ge|\omega_p+\omega_s\cos\theta|$，余弦绝对值不超过 1，$\alpha\in[0,\pi]$ 恒有意义，端点不空。}
+
+\needspace{6.5cm}
+\textbf{自检（四个端点情形，全部可当场算）：}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}llll@{}}
+\thead{情形} & \thead{$|\vect{\Omega}|$} & \thead{$\cos\alpha$} & \thead{读法} \\[1pt]
+$\theta=0$ & $|\omega_p+\omega_s|$ & $1$ & 两轴重合，共线相加 \\[1pt]
+$\theta=\pi/2$ & $\sqrt{\omega_p^{2}+\omega_s^{2}}$ & $\omega_p/|\vect{\Omega}|$ & 两轴垂直，勾股 \\[1pt]
+$\theta=\pi$ & $|\omega_p-\omega_s|$ & $-1$ & 反向共线，相减 \\[1pt]
+$\omega_s=0$ & $\omega_p$ & $1$ & 纯进动，$\vect{\Omega}\parallel OZ$ \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表是把 $|\vect{\Omega}|=\sqrt{\omega_p^{2}+\omega_s^{2}+2\omega_p\omega_s\cos\theta}$ 在四个 $\theta$ 值上读了一遍，每格代 $\cos\theta=1,0,-1$ 即可复算。$\theta=0$ 一行同时说明 §6 末尾那句话：参数化在 $\theta=0$ 退化，但这里的答案连续且有限。
+
+\qbreak
+\subhdr{7.2 HW8.01（p18）}
+
+\qstem{（课件 p18，Task HW8.01）沿用 E8.01 的装置，求盘 2 上点 $B$ 的速度，已知 $\angle ACB=\pi/2$。}
+
+\textbf{考点}：§5 的两级叠加 $\vect{v}=\vect{v}_C+\vect{\Omega}_2\times\vect{r}_{CB}$，以及“垂直”条件如何翻译成矢径方向。
+
+\textbf{关键一步}：$\angle ACB=\pi/2$ 只说明 $CB\perp CA$、$|CB|=r$，\textbf{没有说明 $B$ 落在哪一侧}。两个位置都满足题意，符号相反。先按图中的位置（$B$ 与 $A$ 分居 $C$ 的两侧，即从 $CA$ 顺时针转 $90^\circ$）取一支。
+
+\textbf{详解}：记 $\vect{r}_{CA}=-\vect{r}_{AC}=r(-\sin\psi\,\vect{n}_1+\cos\psi\,\vect{n}_2)$，它长 $r$。把 $\vect{r}_{CA}$ 顺时针转 $90^\circ$ 得 $B$ 的矢径：
+
+\aside{平面内顺时针转 $90^\circ$ 是 $\vect{v}\mapsto-\vect{n}_3\times\vect{v}$（逆时针是 $+\vect{n}_3\times$）。验一下：$\vect{n}_2\mapsto\vect{n}_1$，与“$n_2$ 朝上、顺时针转到朝右”一致。}
+
+\[
+\vect{r}_{CB}=r\bigl(\cos\psi\,\vect{n}_1+\sin\psi\,\vect{n}_2\bigr).
+\]
+
+于是
+
+\[
+\begin{aligned}
+\vect{\Omega}_2\times\vect{r}_{CB}
+&=\dot\psi\,\vect{n}_3\times r(\cos\psi\,\vect{n}_1+\sin\psi\,\vect{n}_2)\\
+&=r\dot\psi\bigl(\cos\psi\,\vect{n}_2-\sin\psi\,\vect{n}_1\bigr)=-\dot\psi\,\vect{r}_{AC}.
+\end{aligned}
+\]
+
+\aside{最后一步用 $\vect{r}_{AC}=r(\sin\psi\vect{n}_1-\cos\psi\vect{n}_2)$ 直接对照：右端恰好差一个负号。这个化简比硬算分量省一半。}
+
+所以
+
+\[
+\boxed{\ \vect{v}_B=\vect{v}_C-\dot\psi\,\vect{r}_{AC}\ }
+\qquad
+\vect{v}_C=r\dot\varphi\,\vect{e}_\varphi+r\dot\psi\,\vect{e}_\psi .
+\]
+
+代进分量：
+
+\[
+\vect{v}_B
+=r\dot\varphi\,\vect{e}_\varphi
++r\dot\psi\bigl(\vect{e}_\psi-\vect{e}_\perp\bigr),
+\qquad
+\vect{e}_\perp\equiv\frac{\vect{r}_{AC}}{r}.
+\]
+
+\textbf{答案}（图上这一支）：
+
+\[
+\begin{aligned}
+\vect{v}_B={}&r\bigl[\dot\varphi\cos\varphi+\dot\psi(\cos\psi-\sin\psi)\bigr]\vect{n}_1\\
+&+r\bigl[\dot\varphi\sin\varphi+\dot\psi(\sin\psi+\cos\psi)\bigr]\vect{n}_2,
+\end{aligned}
+\]
+\[
+|\vect{v}_B|=r\sqrt{\dot\varphi^{2}+2\dot\psi^{2}
++2\sqrt{2}\,\dot\varphi\dot\psi\cos\bigl(\varphi-\psi-\tfrac{\pi}{4}\bigr)} .
+\]
+
+\callout{\textbf{常数来源}：根号里的 $2\dot\psi^{2}$ 是“两个大小同为 $r\dot\psi$、互相垂直的分量”各自平方之和（因为 $|\vect{e}_\psi-\vect{e}_\perp|^{2}=2$，两条单位矢量正交）；$\sqrt{2}$ 是这个 $2$ 与交叉项的 $2$ 合并后的结果（$2\dot\varphi\dot\psi(\cos\delta+\sin\delta)=2\sqrt{2}\dot\varphi\dot\psi\cos(\delta-\pi/4)$），不是新约定。若 $B$ 取另一侧，则 $\vect{v}_B=\vect{v}_C+\dot\psi\vect{r}_{AC}$，上式 $\sqrt2\cos(\cdot)$ 里的相位改为 $+\pi/4$。}
+
+\textbf{自检}：取 $\varphi=\psi=0$、$\dot\varphi=1$、$\dot\psi=2$、$r=1$，公式给 $\vect{v}_B=(3,\,2)$；直接算 $\vect{v}_C=(3,0)$、$\vect{r}_{AC}=(0,-1)$、$-\dot\psi\vect{r}_{AC}=(0,2)$，相加得 $(3,2)$，一致。
+
+\qbreak
+\subhdr{7.3 HW8.02（p18）}
+
+\qstem{（课件 p18，Task HW8.02）平面图形在其自身平面内运动。某瞬时已知点 $B$ 的矢径 $\vect{R}_B$ 与速度 $\vect{v}_B$，以及图形的瞬时角速度 $\vect{\Omega}$。已知同一瞬时另一点 $A$ 的速度 $\vect{v}_A$，求其矢径 $\vect{R}_A$；并用所得结果确定瞬时转动中心 $P$ 的位置。}
+
+\textbf{考点}：§1.2 的速度场公式反解，以及“除以 $\Omega^{2}$”时 $\vect{\Omega}$ 的方向信息自动消失。
+
+\textbf{关键一步}：$A$、$B$ 是同刚体上两点，用 $B$ 作基点写 $A$ 的速度，未知量只有 $\vect{R}_A-\vect{R}_B$ 这一个矢量，且它垂直于 $\vect{\Omega}$（平面运动）。
+
+\textbf{详解}：由速度场公式
+
+\[
+\vect{v}_A=\vect{v}_B+\vect{\Omega}\times(\vect{R}_A-\vect{R}_B).
+\]
+
+记 $\vect{u}=\vect{v}_A-\vect{v}_B$、$\vect{d}=\vect{R}_A-\vect{R}_B$，则 $\vect{\Omega}\times\vect{d}=\vect{u}$。两边再左叉 $\vect{\Omega}$：
+
+\[
+\vect{\Omega}\times\vect{u}=\vect{\Omega}\times(\vect{\Omega}\times\vect{d})
+=\vect{\Omega}(\vect{\Omega}\cdot\vect{d})-\Omega^{2}\vect{d}=-\Omega^{2}\vect{d},
+\]
+
+\aside{第二项用了 §2.1 的同一条恒等式 $\vect{\Omega}\times(\vect{\Omega}\times\vect{d})=\vect{\Omega}(\vect{\Omega}\cdot\vect{d})-\Omega^{2}\vect{d}$；第一项为零是因为平面运动里 $\vect{d}$ 在平面内，而 $\vect{\Omega}$ 垂直于平面，故 $\vect{\Omega}\cdot\vect{d}=0$。}
+
+于是
+
+\[
+\vect{d}=-\frac{\vect{\Omega}\times\vect{u}}{\Omega^{2}}
+=\frac{\vect{u}\times\vect{\Omega}}{\Omega^{2}},
+\qquad
+\boxed{\ \vect{R}_A=\vect{R}_B+\frac{(\vect{v}_A-\vect{v}_B)\times\vect{\Omega}}{\Omega^{2}}\ }
+\]
+
+（两式相等：$-\vect{\Omega}\times\vect{u}=\vect{u}\times\vect{\Omega}$。）
+
+\textbf{瞬时转动中心}：令 $\vect{v}_P=\vect{0}$，即 $\vect{u}=-\vect{v}_B$：
+
+\[
+\boxed{\ \vect{R}_P=\vect{R}_B-\frac{\vect{v}_B\times\vect{\Omega}}{\Omega^{2}}\ }
+\]
+
+\textbf{答案}：如上两式；$\vect{\Omega}=\vect{0}$ 时无解（纯平动，无瞬心），这是唯一的例外。
+
+\textbf{自检}：取 $\vect{R}_B=\vect{0}$、$\vect{v}_B=(1,0,0)$、$\vect{\Omega}=\vect{n}_3$。公式给 $\vect{R}_P=-\bigl((1,0,0)\times(0,0,1)\bigr)=(0,1,0)$。反验：$\vect{v}_P=\vect{v}_B+\vect{\Omega}\times(\vect{R}_P-\vect{R}_B)=(1,0,0)+(0,0,1)\times(0,1,0)=(1,0,0)+(-1,0,0)=\vect{0}$。\ding{95}
+
+\qbreak
+\subhdr{7.4 HW8.03（p18）}
+
+\qstem{（课件 p18，Task HW8.03）长 $l$ 的杆 $AB$ 运动时两端始终沿两条互相垂直的直线 $Ox$、$Oy$ 滑动。求速度瞬心的坐标（以 $\varphi=\angle OAB$ 为参数），并说明瞬心的几何轨迹。}
+
+\textbf{考点}：瞬心是“两条速度垂线的交点”——把 §2 的 $\vect{v}_A=\vect{0}$ 条件换成一个作图法。
+
+\textbf{关键一步}：$A$ 只能沿 $Ox$ 滑，所以 $A$ 的速度方向沿 $x$ 轴，其垂线是过 $A$ 的竖直线；$B$ 只能沿 $Oy$ 滑，速度沿 $y$ 轴，垂线是过 $B$ 的水平线。瞬心就是这两条线的交点，\textbf{根本不用求角速度}。
+
+\textbf{详解}：直角三角形的斜边是 $AB=l$，$\angle OAB=\varphi$，故
+
+\[
+OA=l\cos\varphi,\qquad OB=l\sin\varphi,
+\]
+
+于是 $A=(l\cos\varphi,\,0)$、$B=(0,\,l\sin\varphi)$。两条垂线为 $x=l\cos\varphi$ 与 $y=l\sin\varphi$，交点
+
+\[
+\boxed{\ P=\bigl(l\cos\varphi,\ l\sin\varphi\bigr)\ }
+\]
+
+\textbf{轨迹}：$x_P^{2}+y_P^{2}=l^{2}(\cos^{2}\varphi+\sin^{2}\varphi)=l^{2}$。所以瞬心轨迹是\textbf{以 $O$ 为心、半径 $l$ 的圆}（第一象限那一段，$\varphi\in(0,\pi/2)$）。
+
+\aside{这条轨迹叫极迹（定瞬心轨迹）。物理上它说明：杆在滑动过程中，$P$ 沿这个圆走，而杆与圆的接触方式正好让两端沿两条轴滑动——这就是“椭圆规”机构把圆周运动变成直线运动的原理。}
+
+\textbf{自检}：取 $\varphi=0$，则 $A=(l,0)$、$B=(0,0)$，$P=(l,0)=A$；此时杆水平、$B$ 在原点且瞬时速度为竖直，$A$ 速度为零——瞬心正是 $A$，与 $P=A$ 一致。取 $\varphi=\pi/2$，同理 $P=B$。
+
+%=====================================================================
+\hdr{§8}{公式卡与四步用法}
+
+\subhdr{8.1 四步用法（做题按这个顺序走）}
+
+\begin{enumerate}
+\item \textbf{选基点}：挑速度已知或最简的点（固定铰、轮心、已知 $\vect{v}$ 的点）。
+\item \textbf{写速度场}：$\vect{v}_Q=\vect{v}_{\text{基点}}+\vect{\Omega}\times\vect{r}_{\text{基点}\to Q}$，把每个矢径用基矢写出来。
+\item \textbf{判 $\vect{V}\cdot\vect{\Omega}$}：为零则可找瞬时转轴（§2.1），不为零则分解成“绕轴转 $+$ 沿轴滑”（§2.2）。
+\item \textbf{要瞬心就连乘 $\vect{\Omega}\times$}：$\vect{R}_P=\vect{R}_B-\vect{v}_B\times\vect{\Omega}/\Omega^{2}$（§7.3）。
+\end{enumerate}
+
+\needspace{7cm}
+\subhdr{8.2 公式卡}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{要算什么} & \thead{用哪个式子} & \thead{出处} \\[1pt]
+任一点速度 & $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$ & p5 \\[1pt]
+换基点 & $\vect{V}'=\vect{V}+\vect{\Omega}\times\vect{a}$，$\vect{\Omega}'=\vect{\Omega}$ & p6 \\[1pt]
+瞬轴垂足 & $\vect{r}_A=\vect{\Omega}\times\vect{V}/\Omega^{2}$（需 $\vect{V}\cdot\vect{\Omega}=0$） & p7 \\[1pt]
+瞬心（平面） & $\vect{R}_P=\vect{R}_B-\vect{v}_B\times\vect{\Omega}/\Omega^{2}$ & §7.3 \\[1pt]
+绕定轴转 & $S=\vect{n}\otimes\vect{n}+(\hat{1}-\vect{n}\otimes\vect{n})\cos\varphi+\vect{n}^{\times}\sin\varphi$ & p11 \\[1pt]
+角速度算子 & $\vect{\Omega}^{\times}=\dot S S^{T}$（固定系）；$(\vect{\Omega}')^{\times}=S^{T}\dot S$（动系） & p12 + §3.6 \\[1pt]
+欧拉角 $\to$ 角速度 & $\Omega'_1=\dot\varphi\sin\psi\sin\theta+\dot\theta\cos\psi$ 等三式 & p14 \\[1pt]
+陀螺（$\dot\theta=0$） & $|\vect{\Omega}|=\sqrt{\omega_p^{2}+\omega_s^{2}+2\omega_p\omega_s\cos\theta}$ & p17 + §7.1 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+%=====================================================================
+\hdr{§9}{易错点（每条都能指回某页某一步）}
+
+\gapitem{易错 1}{p7 第 4 行：以为 $\vect{\Omega}(\vect{\Omega}\cdot\vect{r}_A)$ “本来为零”而直接划掉。真相是它与 $t\Omega^{2}\vect{\Omega}$ 相消（§2.1），等于选定垂足。}
+
+\gapitem{易错 2}{p16 倒数第三行：把 $\vect{\Omega}_2\times\vect{r}_{AC}$ 抄成 $\vect{\Omega}_1\times\vect{r}_{AC}$（课件原文即如此）。用 $\dot\psi$ 判一下就知道该是 $\vect{\Omega}_2$。}
+
+\gapitem{易错 3}{把 $\vect{V}\cdot\vect{\Omega}=0$ 当成恒成立。p7 第一句是\emph{case}，不是定理；一般情形要分解（§2.2）。}
+
+\gapitem{易错 4}{$\Omega=0$ 时还去找瞬时转轴。此时 $\vect{V}\cdot\vect{\Omega}=0$ 自动成立，但没有任何点静止（§2.1 边界）。}
+
+\gapitem{易错 5}{$\theta=0$ 或 $\pi$ 时照用 $\vect{n}_\xi$。分母 $\sin\theta=0$，线节无定义（§6）。}
+
+\gapitem{易错 6}{p17 里把 $\Omega$ 一页两用（矢量/标量）照抄。本讲义改记 $\omega_p,\omega_s$（§7.1）。}
+
+\gapitem{易错 7}{把 $\dot S S^{T}$ 与 $S^{T}\dot S$ 混用。前者给固定系分量，后者给动系分量（§3.6），换基时差一个 $S^{T}$。}
+
+\gapitem{易错 8}{$\vect{v}_C$ 的模长平方忘了交叉项 $2\dot\varphi\dot\psi\cos(\varphi-\psi)$。它是 $|\vect{a}+\vect{b}|^{2}$ 的必然产物，不是近似。}
+
+%=====================================================================
+\hdr{§10}{缺口清单}
+
+共 12 条，按课件页码排序。每条给出类型、页码、课件原文短语与本讲义的补法位置。
+
+\gapitem{机制缺口}{p5 “$\dd\vect{\tau}=\dd\vect{R}+\dd\vect{\varphi}\times\vect{r}$” —— 微小转动为何是叉积未证。补于 §1.2（用 p11 的 $S(\dd\varphi)=\hat{1}+\vect{n}^{\times}\dd\varphi$）。}
+
+\gapitem{拼接缺口}{p5 与 p11 —— 前者用 $\dd\vect{\varphi}\times\vect{r}$，后者才证它；相隔六页。补于 §1.2 旁注与 §3.5。}
+
+\gapitem{代数跳步}{p6 “compare with” —— 两式为何逐项相等。补于 §1.3 旁注（$\vect{r}'$ 任意 $\Rightarrow$ 系数匹配）。}
+
+\gapitem{代数跳步}{p7 第 4 行 —— $\vect{\Omega}(\vect{\Omega}\cdot\vect{r}_A)$ 被删。补于 §2.1（$\vect{r}_A=\vect{r}_\perp+t\vect{\Omega}$，含 $t$ 项相消）。}
+
+\gapitem{边界缺口}{p7 全页 —— 未覆盖 $\Omega=0$。补于 §2.1 警示框与 §9 易错 4。}
+
+\gapitem{拼接缺口}{p7 两种情形 —— 缺一般式（螺旋轴）。补于 §2.2（$\vect{V}=\vect{V}_\parallel+\vect{V}_\perp$ 分解）。}
+
+\gapitem{机制缺口}{p10 $S=\sum_k\vect{n}'_k\otimes\vect{n}_k$ —— 定义未验证。补于 §3.2（代 $\vect{n}_j$ 得 $\delta_{kj}$）。}
+
+\gapitem{代数跳步}{p11 “$S^{T}S=\sum_k\vect{n}_k\otimes\vect{n}_k$” —— 跳过 $S^{T}$ 表达式。补于 §3.3。}
+
+\gapitem{机制缺口}{p11 旋转公式三项 —— 未说明来处。补于 §3.4（平行/垂直分量逐项验）。}
+
+\gapitem{形式改写}{p12 “$\vect{\Omega}^{\times}=\dot S S^{T}$” —— 未说右乘 $S^{T}\dot S$ 是什么。补于 §3.6（固定系 vs 动系分量）。}
+
+\gapitem{边界缺口}{p13 “$\theta\in[0,\pi]$” —— 端点处 $\vect{n}_\xi$ 无定义。补于 §6。}
+
+\gapitem{压缩缺口}{p14 三式 —— 由 $\vect{\Omega}=\dot\varphi\vect{n}_3+\dot\theta\vect{n}_\xi+\dot\psi\vect{n}'_3$ 到 $\Omega'_{1,2,3}$ 的两大串代数被压缩成结果。补于 §7.1 的逐式代入（先写 $\vect{n}_\xi=\vect{n}'_1\cos\psi-\vect{n}'_2\sin\psi$ 与 $\vect{n}_3\cdot\vect{n}'_k$ 三条内积，再逐项读）。}
+
+%=====================================================================
+\hdr{§11}{三句话}
+
+\textbf{一}：刚体的速度场只有一条公式 $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$，其余（换基点、瞬时转轴、瞬心）都是它的特例或反解；$\vect{\Omega}$ 与基点无关，是刚体在同一时刻唯一的“转”。
+
+\textbf{二}：旋转算子 $S(t)$ 是这条公式的另一种写法——$\vect{\Omega}^{\times}=\dot S S^{T}$，几何式与算子式由 $\vect{r}(t)=S(t)\vect{r}(0)$ 一句话连起来；$\dot S S^{T}$ 给固定系分量、$S^{T}\dot S$ 给动系分量，这就是 p12 与 p14 表面不同的原因。
+
+\textbf{三}：欧拉角把 $S(t)$ 的 3 个参数换成 $(\varphi,\theta,\psi)$，代价是 $\theta=0,\pi$ 处参数化退化（线节无定义）；做题时先看答案是否只依赖 $\cos\theta$——是，则端点仍然连续；否，则必须单独讨论。
+
+%=====================================================================
+\clearpage
+\hdr{§12}{与课件的页码对照}
+
+本讲义只覆盖 \texttt{Topic 8, Part 1}（p1--p18）。E8.02 的夹角数值、有限转动不可交换这两点课件未涉及，本文不展开；文中全部公式已用数值算例复核。
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{课件页} & \thead{课件内容} & \thead{本讲义} \\[1pt]
+p3--p4 & 刚体模型、6 自由度 & §1.1 \\[1pt]
+p5 & $\vect{v}=\vect{V}+\vect{\Omega}\times\vect{r}$ & §1.2（补叉积来历） \\[1pt]
+p6 & 换基点 & §1.3 \\[1pt]
+p7 & 瞬时转轴、IAR & §2.1--§2.2（补 $\Omega=0$ 与一般式） \\[1pt]
+p8--p9 & 矢量与张量代数 & §3.1（工具速查） \\[1pt]
+p10 & 旋转算子定义 & §3.2 \\[1pt]
+p11 & 性质、旋转公式、无穷小 & §3.3--§3.5 \\[1pt]
+p12 & $\vect{\Omega}^{\times}=\dot S S^{T}$ & §3.6（补系别与反对称对应） \\[1pt]
+p13 & 欧拉角 & §6（补端点奇点） \\[1pt]
+p14 & 欧拉运动学方程 & §7.1（逐式代入） \\[1pt]
+p15 & 小结 & 散见 §2、§4 \\[1pt]
+p16 & E8.01 & §5（全解） \\[1pt]
+p17 & E8.02 & §7.1（全解，含记号清理） \\[1pt]
+p18 & HW8.01--03 & §7.2--§7.4（一题一块） \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\end{document}

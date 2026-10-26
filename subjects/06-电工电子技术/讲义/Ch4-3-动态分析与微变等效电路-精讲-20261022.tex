@@ -1,0 +1,832 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第四章第三讲（Chapter Four-3）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{Ch4-3 · 动态分析与微变等效电路 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{4.4 动态分析：从交流通路到微变等效电路}
+{三个指标问的是什么、四步法怎么走、Example 4.4.2 每个数字从哪来}
+{依据：\texttt{Chapter Four-3-2026中白上传.pdf}（p1--p30，共 30 页；本讲义页码一律指本册 PDF 物理页，引用他册时写成 [C4-1 p20] 的形式）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{课件讲了哪几块，各在哪几页}
+
+课件是一讲两段：先\textbf{把「放大能力」拆成三个可测的数}（$A_u$、$r_i$、$r_o$），
+再\textbf{造一个能算的替身}（微变等效电路），最后用替身把三个数算出来、代一个例题。
+两段之间那一步（「三极管怎么换成电阻和受控源」）是本讲的枢纽，也是课件跳步最集中的地方。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.3cm}p{2.0cm}p{7.6cm}@{}}
+\tabtop
+\thead{课件小节} & \thead{页码} & \thead{本讲义对应}
+\\
+\tabmid
+4.4 引子：静态/动态四问 & p1--p5 & §1.1（四问的答案，课件只问不答）
+\\
+4.4.1 三个指标 & p6--p9 & §1.2--§1.3（含 p8/p9 两个提问的答案）
+\\
+4.4.1 频率特性 & p10--p11 & §2（$0.707$ 与 $f_1,f_2$ 的来历）
+\\
+4.4.2 小信号模型 & p12--p18 & §3（为什么能线性化、模型为什么只有两个元件）
+\\
+4.4.2 等效电路四步 & p19--p23 & §4（四步法的机制，逐步说清）
+\\
+4.4.2 三个公式 & p24--p26 & §6（公式背后的符号与前提）
+\\
+4.4.2 结论与两个提问 & p27--p28 & §6.1、§7（Problem 1/2 的答案）
+\\
+Example 4.4.2 & p29--p30 & §5（全程演算，含单位陷阱）
+\tabbot
+\end{tabular}
+
+\subhdr{三处拼接（课件自己的缝）}
+
+\gapitem{形式改写}{p24 的公式是 $A_u=-\beta R_L'/r_{\mathrm{be}}$，\textbf{带负号}；
+而 p27 结论页写成 $A_u=\beta R_L'/r_{\mathrm{be}}$，\textbf{负号丢了}。两页指同一个量，
+符号差异来自 p27 只保留「大小」、把相位信息略去了。本讲义在 §6.1 把两种写法的适用范围分清，
+凡是谈「反相/相位」一律用 p24 的带负号版本。}
+
+\gapitem{拼接缺口}{p8、p9 各问了一次「Is it better to be bigger or smaller?」（$r_i$、$r_o$ 越大越好还是越小越好），
+\textbf{两页都没有给答案}，直到 4.5 节讲多级放大、4.6 节讲耦合才间接用到。本讲义 §1.3 先把它答掉，
+因为不答这两个问题，$r_i$、$r_o$ 就只是两个符号。}
+
+\gapitem{版面重复}{p17 与 p18 是同一张幻灯片（模型图重复），p21 与 p22 也是同一张（换模型四步图重复）；
+p15 的「特性曲线」与 p16--p18 的「（2） Input and output characteristics」内容交叠。§0 的坐标表按去重后的内容计，
+§10 记一条。}
+
+\callout{\textbf{本讲义怎么用}：\\
+读第一遍只看 §0 表、§5 例题、§8 公式卡——这三处能让你把题做对；\\
+读第二遍再看 §3、§4、§6——这三处解释「为什么四步法这么做」，是考试里换一个电路还能不能算对的关键；\\
+\textbf{§10 缺口清单}逐条对应课件某页某句，课件哪句话让你卡住，就去那里找。}
+
+%=============================================================
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.4cm}p{11.6cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$U,\ I$ & \textbf{直流量}（大写、大写下标）：$U_{\mathrm{BE}}$、$I_{\mathrm{C}}$、$U_{\mathrm{CE}}$，只在直流通路里出现
+\\
+$u,\ i$ & \textbf{总量}（小写小写或小写大写下标）：$u_{\mathrm{BE}}=U_{\mathrm{BE}}+u_{\mathrm{be}}$
+\\
+$u_{\mathrm{be}},\ i_{\mathrm{b}}$ & \textbf{交流分量}，即「增量」$\Delta u_{\mathrm{BE}}$；本讲义一律用小写下标
+\\
+$\dot{U},\ \dot{I}$ & \textbf{相量}：只对正弦稳态用，$A_u$ 的正式定义用相量比，读数用有效值
+\\
+$A_u$ & 电压放大倍数 $\dot{U}_{\mathrm{o}}/\dot{U}_{\mathrm{i}}$（p7 写作增量比 $\Delta U_{\mathrm{o}}/\Delta U_{\mathrm{i}}$，两式在正弦稳态下等价）
+\\
+$\beta$ & 器件参数：$\Delta I_{\mathrm{C}}/\Delta I_{\mathrm{B}}$，\textbf{电流}比，恒正，无量纲
+\\
+$r_{\mathrm{be}}$ & 晶体管输入端（B--E 之间）的动态电阻（p16）
+\\
+$r_i,\ r_o$ & 放大电路的\textbf{端口}输入电阻、输出电阻（p8、p9）
+\\
+$R_L'$ & 交流负载 $R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$（p24）
+\tabbot
+\end{tabular}}
+
+\hdr{§1}{动态分析在问什么：三个指标的物理含义}
+
+\subhdr{1.1 静态与动态的分工（p2 的四问）}
+
+课件 p2 一口气问了四个问题，且\textbf{全页没有答案}。这是本讲所有公式的前提，先答清楚：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.4cm}p{8.6cm}@{}}
+\tabtop
+\thead{问题} & \thead{答案}
+\\
+\tabmid
+What is static analysis? & 只算\textbf{直流}：把信号源拿掉、电容断路，求 $I_{\mathrm{B}},I_{\mathrm{C}},U_{\mathrm{CE}}$，即 Q 点
+\\
+Why do we need it? & 三极管必须偏置在放大区才有放大作用；Q 点还决定会不会失真（4.3 节）
+\\
+What is dynamic analysis? & 只算\textbf{交流}：把直流电源置零、电容短路，求 $\dot{U}_{\mathrm{o}}$ 与 $\dot{U}_{\mathrm{i}}$ 之比、端口电阻
+\\
+Why do we need it? & 放大器的用途就是「对交流信号做放大」，放大倍数、输入输出电阻都只在动态里定义
+\tabbot
+\end{tabular}
+
+两者的关系一句话：\textbf{静态定「站在哪」，动态定「动起来多大幅度」}。
+静态是直流工作点 $Q$，动态是在 $Q$ 点附近的微小摆动；因为摆幅小，非线性曲线可以当成直线，
+这正是 §3 能建模的根据。
+
+\aside{课件 p2 只写了四行问句（原文 \texttt{What is static analysis?} 等），答案在 4.3 讲过静态；
+本表把 4.3 的结论与本讲的用法接起来，不代表 p2 上写了这些字。}
+
+\subhdr{1.2 三个指标各衡量什么（p6--p9）}
+
+课件 p6 用一张三段式方框图定了格局：\textbf{信号源（$\dot{U}_{\mathrm{s}}$、$R_{\mathrm{S}}$）$\to$ 放大电路（$A_u$、$r_i$、$r_o$）$\to$ 负载 $R_{\mathrm{L}}$}。
+放大电路对外只暴露三个数，其余都是内部细节。三者的分工是：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{4.6cm}p{7.4cm}@{}}
+\tabtop
+\thead{指标} & \thead{定义（课件原式）} & \thead{它衡量什么}
+\\
+\tabmid
+$A_u$ & $A_u=\dfrac{\Delta U_{\mathrm{o}}}{\Delta U_{\mathrm{i}}}$（p7） & 放大的\textbf{倍数}：输入动 1 mV，输出动多少
+\\
+$r_i$ & $r_i=\dfrac{\dot{U}_{\mathrm{i}}}{\dot{I}_{\mathrm{i}}}$（p8 图） & 从信号源\textbf{取到}多少信号：与 $R_{\mathrm{S}}$ 分压
+\\
+$r_o$ & $r_o=\dfrac{\dot{U}_{\mathrm{OC}}}{\dot{I}_{\mathrm{SC}}}$（p26） & 向负载\textbf{送出}多少信号：与 $R_{\mathrm{L}}$ 分压
+\tabbot
+\end{tabular}
+
+课件 p7 还写了一句 \texttt{Difference: $A_u$ vs $\beta$}，这一句值得停一下：$A_u$ 与 $\beta$ 都叫「放大倍数」，
+但\textbf{量纲和符号自由度不同}——$\beta=\Delta I_{\mathrm{C}}/\Delta I_{\mathrm{B}}$ 是两个电流之比，必为正；
+$A_u=\Delta U_{\mathrm{o}}/\Delta U_{\mathrm{i}}$ 是两个端口电压之比，\textbf{可以为负}（负号就是反相）。
+把这两者混为一谈，是后面「共射电路为什么输出反了一下」讲不清的根源。
+
+\subhdr{1.3 p8、p9 的提问：$r_i$、$r_o$ 到底越大越好还是越小越好}
+
+课件 p8 问 \texttt{Is it better to be bigger or smaller?}，p9 又问一遍，两处都没有答案。答案要算一下才服人。
+
+\textbf{（1）$r_i$ 越大越好。}信号源内阻 $R_{\mathrm{S}}$ 与 $r_i$ 对 $\dot{U}_{\mathrm{s}}$ 分压，真正送到放大电路输入端的只有
+
+\[ \dot{U}_{\mathrm{i}}=\dot{U}_{\mathrm{s}}\cdot\frac{r_i}{R_{\mathrm{S}}+r_i} . \]
+
+取 $R_{\mathrm{S}}=1\,\mathrm{k\Omega}$ 代两个数：$r_i=1\,\mathrm{k\Omega}$ 时 $\dot{U}_{\mathrm{i}}=\dot{U}_{\mathrm{s}}/2$，一半信号丢在源内阻上；
+$r_i=10\,\mathrm{k\Omega}$ 时 $\dot{U}_{\mathrm{i}}=0.909\,\dot{U}_{\mathrm{s}}$。所以 $r_i$ 越大，从信号源「拿」到的电压越多。
+\aside{这一步就是 p8 那句函数说明 \texttt{the ability to get signal from the source} 的定量版本；
+课件只给文字，没给分压式。}
+
+\textbf{（2）$r_o$ 越小越好。}输出端是 $A_u\dot{U}_{\mathrm{i}}$ 这个受控源串联 $r_o$ 再带 $R_{\mathrm{L}}$，分压得
+
+\[ \dot{U}_{\mathrm{o}}=A_u\dot{U}_{\mathrm{i}}\cdot\frac{R_{\mathrm{L}}}{r_o+R_{\mathrm{L}}} . \]
+
+取 $R_{\mathrm{L}}=2\,\mathrm{k\Omega}$：$r_o=0.1\,\mathrm{k\Omega}$ 时输出保留 $95\%$，$r_o=2\,\mathrm{k\Omega}$ 时只剩 $50\%$。
+所以 $r_o$ 越小，带负载能力越强。
+\aside{p9 的 \texttt{the ability to output signals to a load} 就是这句；
+注意这里 $R_{\mathrm{L}}$ 与 $r_o$ 的地位和输入端正好相反——输入端希望「自己大」，输出端希望「自己小」。}
+
+\warnbox{\textbf{一句话记法（不要背反）}：输入端是「我要多拿」，所以 $r_i$ 大；输出端是「我要多给」，所以 $r_o$ 小。
+共射电路的 $r_i\approx r_{\mathrm{be}}$（千欧级，不够大）、$r_o=R_{\mathrm{C}}$（千欧级，不够小），
+所以单级共射既取不好信号也带不好负载——这正是后面要加共集电极（射极跟随器）做缓冲的原因（见 C4-4 §4.5.2）。}
+
+%=============================================================
+\hdr{§2}{频率特性：这些公式只在「中频段」成立}
+
+\subhdr{2.1 两张图怎么读（p10--p11）}
+
+课件 p10、p11 给的是同一组上下两图，横轴都是频率 $f$：
+
+\begin{itemize}
+\item \textbf{上面那张＝幅频特性}：纵轴 $|A_u|$。中段有一条水平虚线 $|A_m|$，下面还有一条 $0.707|A_m|$；
+曲线中间平、两头往下掉，穿过 $0.707|A_m|$ 的两个频率标成 $f_1$（左）与 $f_2$（右），两线之间标 \texttt{Passband}。
+\item \textbf{下面那张＝相频特性}：纵轴 $\varphi$，三条水平虚线 $270^\circ$、$180^\circ$、$90^\circ$；
+曲线从左到右三段平台，中间那段正好对应通带。
+\end{itemize}
+
+\subhdr{2.2 $0.707$ 是哪来的}
+
+课件只画了 $0.707|A_m|$ 这条线，没说来历。它是\textbf{半功率点}：功率正比于电压平方，
+$|A_u|$ 掉到 $0.707$ 倍意味着功率掉到一半，折算成分贝正好是 $-3\,\mathrm{dB}$
+
+\[ 20\lg 0.707\approx -3.01\,\mathrm{dB} . \]
+
+所以 $f_1,f_2$ 叫下限、上限截止频率，二者之差 $f_2-f_1$ 叫通频带。工程上「这个放大器能用到多高频率」就是看 $f_2$。
+\aside{[教材补充] 课件 p10 只给 $0.707|A_m|$ 与 $f_1,f_2$ 的图形，没有 $\mathrm{dB}$ 换算；
+半功率/$-3\,\mathrm{dB}$ 是通用约定，补在这里是为了让「为什么偏偏是 $0.707$」有个说法。}
+
+\subhdr{2.3 相频为什么是 $270^\circ\to180^\circ\to90^\circ$}
+
+中频段相位移 $180^\circ$ 是\textbf{共射电路本身}带来的（输入在基极、输出在集电极，集电极电流方向与输出电压参考方向相反，见 §6.1）。
+低频段再叠加耦合电容 $C_1,C_2$ 的 $+90^\circ$（容抗变大、信号被衰减且相位超前），
+高频段叠加晶体管结电容的 $-90^\circ$（旁路作用变强、相位滞后）。于是三段平台就是 $270^\circ$、$180^\circ$、$90^\circ$。
+\aside{[教材补充] 课件 p10 的相频曲线只画了三段平台与数值，没有解释各段由哪个电容造成；
+这里按「低频看耦合电容、高频看结电容」的常规分法补一句，用于理解，不当作计算依据。}
+
+\warnbox{\textbf{本讲所有公式的适用区间}：$A_u=-\beta R_L'/r_{\mathrm{be}}$、$r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}$、$r_o=R_{\mathrm{C}}$
+全部是\textbf{中频段}结论——它们把 $C_1,C_2$ 当短路、把结电容当开路。频率一离开 $f_1\sim f_2$，
+这三个式子就不准了，必须换成含频率的完整表达式（本讲不涉及）。}
+
+%=============================================================
+
+\subhdr{2.4 通频带的两种工程口径}
+
+$f_2-f_1$ 是最常用的定义（绝对带宽）。工程上还有两种说法，做题时看清问哪一种：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{7.4cm}p{4.4cm}@{}}
+\tabtop
+\thead{口径} & \thead{定义} & \thead{用在哪}
+\\
+\tabmid
+绝对带宽 & $BW=f_2-f_1$ & 宽频带放大器、音频
+\\
+相对带宽 & $BW/f_0$，$f_0$ 为通带中心频率 & 选频放大器、谐振回路（第 2 章用过）
+\\
+增益带宽积 & $|A_{um}|\cdot BW\approx$ 常数 & 换管子/换工作点时判断「增益上去了带宽会不会掉」
+\tabbot
+\end{tabular}
+
+最后一行与本讲直接相关：$|A_u|$ 与 $BW$ 大致成反比——把 $I_{\mathrm{C}}$ 调大（§3.5）增益上去，
+$r_{\mathrm{be}}$ 变小、输入回路时间常数变小，高频端的 $f_2$ 反而可能上移或下移，取决于具体电容。
+\textbf{不要拿「增益大」当唯一优点}，这是模电里最常见的取舍。
+
+\aside{[教材补充] 课件 p10--p11 只给 $f_1,f_2$ 与 \texttt{Passband}，未提带宽口径与增益带宽积；
+此段用于理解「为什么不能无限调大增益」，不参与本讲计算。}
+
+\hdr{§3}{为什么要建模：把三极管换成「电阻＋受控源」}
+
+\subhdr{3.1 课件 p14 的困境}
+
+\callout{p14 的原话（照录）：\\[2pt]
+\texttt{There is a transistor inside the circuit.}\\
+\texttt{I don't know how to do the calculation.}\\[3pt]
+电路里有三极管，而三极管没有 $U=IR$ 那种解析关系（它的特性是两条曲线），所以整条回路写不出方程。
+出路只有一条：\textbf{用一个「我知道怎么算」的电路去替代三极管}，这就是建模。}
+
+\subhdr{3.2 为什么非线性曲线可以当直线用（p15）}
+
+p15 并列了输入特性与输出特性，并问 \texttt{Is it linear?}\ 答案是否，但\textbf{在一小段上可以当线性}。
+理由：静态工作点 $Q$ 已经由§1.1 的静态分析固定在曲线的陡升段上（p15 图上用红色短线段标出、并标了 $I_{\mathrm{B}}=40\,\mu\mathrm{A}$、$U_{\mathrm{BE}}\approx0.7\,\mathrm{V}$），
+只要交流摆幅足够小，曲线在这一小段内就可用在 $Q$ 点的切线代替——切线是直线，于是「增量比」就是常数：
+
+\[ \Delta u_{\mathrm{BE}}=r_{\mathrm{be}}\,\Delta i_{\mathrm{B}},\qquad \Delta i_{\mathrm{C}}=\beta\,\Delta i_{\mathrm{B}} . \]
+
+这就是「微变」二字的全部含义：\textbf{不是把三极管线性化，而是把「$Q$ 点附近的一小段」线性化}。
+摆幅一大（进入截止或饱和），切线失效，模型失效，波形失真。
+
+\subhdr{3.3 输入端是电阻、输出端是受控源（p16）}
+
+p16 的 （3） Modeling process 给了两句结论，本讲义把它们翻译成「为什么」：
+
+\textbf{（1）输入端看进去是电阻 $r_{\mathrm{be}}$。}因为 $\Delta u_{\mathrm{BE}}$ 与 $\Delta i_{\mathrm{B}}$ 在 $Q$ 点附近成正比，
+比例系数就是切线斜率的倒数。课件给的经验式（原文照录，$I_{\mathrm{C}}$ 以 mA 代入、$26$ 的单位是 mV）
+
+\[ r_{\mathrm{be}}=200\,(\Omega)+\beta\,\frac{26\,(\mathrm{mV})}{I_{\mathrm{C}}\,(\mathrm{mA})} . \]
+
+\textbf{（2）输出端看进去是受控电流源 $\beta\dot{I}_{\mathrm{b}}$。}因为输出特性在放大区近似水平——$i_{\mathrm{C}}$ 几乎不随 $u_{\mathrm{CE}}$ 变，
+只随 $i_{\mathrm{B}}$ 成比例变。一个「电流不随自身端电压变化」的元件，就是理想电流源；
+而它的电流由别处的电流 $\dot{I}_{\mathrm{b}}$ 决定，所以是\textbf{受控}电流源。
+
+\aside{$r_{\mathrm{be}}$ 还有一条几何读法：它就是输入特性在 $Q$ 点切线斜率的倒数 $\left.\dfrac{\dd u_{\mathrm{BE}}}{\dd i_{\mathrm{B}}}\right|_{Q}$。
+课件 p16 只给经验式、不给几何定义；两条路给同一个量，做题用经验式，理解用切线。}
+
+\subhdr{3.4 模型的三条边界}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{11.4cm}@{}}
+\tabtop
+\thead{边界} & \thead{含义}
+\\
+\tabmid
+只对交流 & 模型里没有 $U_{\mathrm{CE}}$、没有 $I_{\mathrm{C}}$ 的直流量；直流部分在直流通路里单独算
+\\
+只对小信号 & 摆幅必须小到「曲线在这一段近似直线」；大信号要回到图解法（4.3 节）
+\\
+$r_{\mathrm{be}}$ 随 $I_{\mathrm{C}}$ 变 & 经验式里 $I_{\mathrm{C}}$ 在分母：$I_{\mathrm{C}}$ 变大 $r_{\mathrm{be}}$ 变小，$A_u$ 反而变大
+\tabbot
+\end{tabular}
+
+%=============================================================
+
+\subhdr{3.5 一个数字小例：$r_{\mathrm{be}}$ 到底有多敏感}
+
+把经验式当函数看：$I_{\mathrm{C}}$ 在分母，$r_{\mathrm{be}}$ 随 $I_{\mathrm{C}}$ 增大而\textbf{减小}。取 $\beta=50$、$R_{\mathrm{C}}=2\,\mathrm{k\Omega}$ 代三个工作点：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.8cm}p{5.0cm}p{3.4cm}p{2.6cm}@{}}
+\tabtop
+\thead{$I_{\mathrm{C}}$} & \thead{$r_{\mathrm{be}}=200+50\times26/I_{\mathrm{C}}$} & \thead{$A_u=-\beta R_{\mathrm{C}}/r_{\mathrm{be}}$} & \thead{后果}
+\\
+\tabmid
+$0.5\,\mathrm{mA}$ & $200+1300/0.5=2800\,\Omega$ & $-35.7$ & 增益低
+\\
+$1.47\,\mathrm{mA}$ & $200+884=1084\,\Omega$ & $-92.25$ & 本例工作点
+\\
+$3.0\,\mathrm{mA}$ & $200+433=633\,\Omega$ & $-158$ & 易饱和
+\tabbot
+\end{tabular}
+
+\textbf{这张表说明一件事}：$A_u$ 不是电路的固有常数，它\textbf{随 Q 点移动}。同一只三极管、同一套电阻，
+把 $I_{\mathrm{C}}$ 从 $0.5\,\mathrm{mA}$ 调到 $3\,\mathrm{mA}$，$|A_u|$ 可以差四倍多。
+这也解释了为什么必须先算静态再算动态——静态一变，动态全部作废。
+
+\warnbox{\textbf{但不能反推「$I_{\mathrm{C}}$ 越大越好」}：$I_{\mathrm{C}}$ 太大会让 Q 点靠近饱和区（$U_{\mathrm{CE}}$ 变小），
+输出摆幅一大就削顶（饱和失真，见 4.3 节）。增益与失真是一对冤家，Q 点要取在输出特性放大区的中间偏下。}
+
+\hdr{§4}{四步法：从原电路到微变等效电路（p19--p23）}
+
+课件把这一步拆成四个小标题，正好是四步。四步的动作与理由并排列在下面——\textbf{每一步都要能说出「为什么可以这么做」}，
+否则换一个电路（比如带 $R_{\mathrm{E}}$ 的分压偏置）就不知道该怎么改。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.1cm}p{3.6cm}p{4.0cm}p{5.0cm}@{}}
+\tabtop
+\thead{步} & \thead{动作（课件页码）} & \thead{怎么做} & \thead{为什么可以}
+\\
+\tabmid
+（1） & （1） AC path（p19） & 认出「要画的是交流通路」 & 动态分析只关心交流量
+\\
+（2） & （2） Redraw（p20） & 直流电源置零、电容短路 & 理想电压源内阻为零；中频段容抗可略
+\\
+（3） & （3） Replace（p21） & 三极管换成 $r_{\mathrm{be}}$＋$\beta\dot{I}_{\mathrm{b}}$ & §3 的模型
+\\
+（4） & （4） Input/output（p23） & 接上 $\dot{U}_{\mathrm{s}},R_{\mathrm{S}}$ 与 $R_{\mathrm{L}}$ & 指标要带源和负载才有意义
+\tabbot
+\end{tabular}
+
+\subhdr{4.1 为什么「直流电源置零」是短路而不是断路}
+
+这是全班最容易记反的一条。$+U_{\mathrm{CC}}$ 是一个\textbf{理想电压源}：它的端电压恒定，内阻为零。
+对交流量而言，「端电压不变」就等于「两端之间没有交流压降」，即交流电位处处相同——
+所以它在交流通路里表现为\textbf{一根导线}（短路），把 $+U_{\mathrm{CC}}$ 那根母线与地接成同一点。
+于是 $R_{\mathrm{B}}$ 的上端接到地、$R_{\mathrm{C}}$ 的上端也接到地：$R_{\mathrm{B}}$ 变成并在输入端，$R_{\mathrm{C}}$ 变成并在输出端（p20 右图）。
+\aside{对照：直流通路里电容是\textbf{开路}、信号源是\textbf{短路}；交流通路里直流电源是\textbf{短路}、电容是\textbf{短路}。
+两套规则的对象不同，别串。}
+
+\subhdr{4.2 为什么电容是短路}
+
+耦合电容 $C_1,C_2$ 的容抗 $X_C=1/(2\pi fC)$，在中频段数值远小于回路电阻，近似为零，
+所以交流信号「直通」；但直流下 $f=0$、$X_C\to\infty$，它又把直流挡住——这正是「隔直通交」。
+若电容不够大，$f_1$ 会上移，低频段放大倍数下降（这正是 §2 幅频曲线左端下弯的原因）。
+
+\subhdr{4.3 换完之后电路长什么样}
+
+p21--p23 的四幅小图其实是一句话的四个镜头：
+\textbf{原电路 $\to$ 交流通路（只剩 $R_{\mathrm{B}}$、$R_{\mathrm{C}}$ 与三极管的三个端子）$\to$ 三极管换成 $r_{\mathrm{be}}$ 与受控源 $\to$ 接上源与负载}。
+换完之后：输入端是 $R_{\mathrm{B}}\parallel r_{\mathrm{be}}$，输出端是 $R_{\mathrm{C}}$ 与受控源并联、再并上 $R_{\mathrm{L}}$。
+后面三个公式就是从这张图上量出来的。
+
+\warnbox{\textbf{顺序不能反}：必须先做静态分析拿到 $I_{\mathrm{C}}$，才能算 $r_{\mathrm{be}}$，才能算 $A_u$。
+若先算 $A_u$ 再补 Q 点，$r_{\mathrm{be}}$ 就只能猜——这是本讲作业里最常见的失分点。}
+
+%=============================================================
+
+\subhdr{4.4 元件对照表：同一条支路在三种图里叫什么}
+
+这一张表把三步的「整容」结果放在一起，做题时照着找元件：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{4.2cm}p{4.2cm}p{3.0cm}@{}}
+\tabtop
+\thead{原电路（p19）} & \thead{直流通路} & \thead{交流通路（p20）} & \thead{微变等效（p21）}
+\\
+\tabmid
+$+U_{\mathrm{CC}}$ & 保留为 $U_{\mathrm{CC}}$ & \textbf{变地（短路）} & 不出现
+\\
+$C_1,\ C_2$ & \textbf{开路} & \textbf{短路} & 不出现
+\\
+$R_{\mathrm{B}}$ & 接 $U_{\mathrm{CC}}$ 与基极之间 & 并到输入端（接 B--地） & 与 $r_{\mathrm{be}}$ 并联
+\\
+$R_{\mathrm{C}}$ & 接 $U_{\mathrm{CC}}$ 与集电极之间 & 并到输出端（接 C--地） & 与受控源、$R_{\mathrm{L}}$ 并联
+\\
+三极管 & 原符号 & 只剩 B、C、E 三个端子 & $r_{\mathrm{be}}$ ＋ $\beta\dot{I}_{\mathrm{b}}$
+\\
+$R_{\mathrm{L}}$ & 接在输出端 & 接在输出端 & 与 $R_{\mathrm{C}}$ 并联
+\tabbot
+\end{tabular}
+
+\aside{这张表是把 p19--p23 五页的内容压成一张。它也是「换一个电路还能不能做」的检查表：
+拿到新电路，先在左列找到元件，再看它在交流通路里该变成什么，就不会漏掉旁路电容或分压电阻。}
+
+
+\subhdr{4.5 三条判据：拿到任何电路，十秒内认出交流通路拓扑}
+
+\begin{enumerate}
+\item \textbf{看直流电源接在哪}：凡接到 $+U_{\mathrm{CC}}$ 的一端，在交流通路里都改接到地。
+于是 $R_{\mathrm{B}}$ 的上端落地、$R_{\mathrm{C}}$ 的上端落地——这两个电阻自动「并」到输入、输出端口上。
+\item \textbf{看旁路电容跨在谁身上}：$C_{\mathrm{E}}$ 跨在 $R_{\mathrm{E}}$ 上 $\Rightarrow$ $R_{\mathrm{E}}$ 被短路，发射极直接接地（共射）；
+若 $C_{\mathrm{E}}$ 不存在，$R_{\mathrm{E}}$ 留在发射极支路，$A_u$ 的公式要换成
+$-\beta R_L'/[r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}]$（这正是 C4-5 的 E1）。
+\item \textbf{看输入加在哪、输出取自哪}：加在基极、取自集电极 $\Rightarrow$ 共射；加在基极、取自发射极 $\Rightarrow$ 共集；加在发射极、取自集电极 $\Rightarrow$ 共基。
+\end{enumerate}
+
+这三条判据合起来，就是「组态」二字的操作定义。本讲只做共射，但判据是通用的——
+C4-4 的后半段（4.5.2 与 4.5.3）换的就是第 3 条的接法。
+
+\hdr{§5}{主例题：Example 4.4.2 全程（p29--p30）}
+
+\subhdr{5.1 题面与已知量}
+
+\callout{\textbf{[Example 4.4.2]}（p29 原文）\quad Find the no-load voltage gain, input resistance and output resistance
+for the circuit of example 4.3.1.\\[2pt]
+p29/p30 图右侧给的已知量：$\beta=50$、$R_{\mathrm{C}}=2\,\mathrm{k\Omega}$、$U_{\mathrm{CC}}=+6\,\mathrm{V}$、$R_{\mathrm{B}}=180\,\mathrm{k\Omega}$；
+p29 解里用到 $I_{\mathrm{C}}=1.47\,\mathrm{mA}$（来自 Example 4.3.1 的静态分析结果）。
+$R_{\mathrm{L}}$ 未给——因为题目问的是\textbf{无载}（$R_{\mathrm{L}}=\infty$）情形。}
+
+先用这三条已知量把 $I_{\mathrm{C}}$ 复算一遍，确认它与例题给的 $1.47\,\mathrm{mA}$ 一致（这一步课件没写，但它是后面所有数字的根）：
+
+\[ I_{\mathrm{B}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}}=\frac{6-0.7}{180\,\mathrm{k\Omega}}=29.4\,\mu\mathrm{A}, \]
+\[ I_{\mathrm{C}}=\beta I_{\mathrm{B}}=50\times29.4\,\mu\mathrm{A}=1.47\,\mathrm{mA} . \]
+
+\aside{这里取 $U_{\mathrm{BE}}=0.7\,\mathrm{V}$ 是硅管约定（与 C4-1 p20 的 E1 一致）。
+课件的解里直接把 $I_{\mathrm{C}}=1.47\,\mathrm{mA}$ 拿来用，没有回推；本讲义补这一步是为了让「1.47」有出处。}
+
+\subhdr{5.2 第一步：算 $r_{\mathrm{be}}$（p29）}
+
+\[ r_{\mathrm{be}}=200+\beta\frac{26}{I_{\mathrm{C}}}=200+50\times\frac{26}{1.47}=200+884=1084\,\Omega . \]
+
+\textbf{单位陷阱（本讲第一大坑）}：式子里 $26$ 的单位是 mV、$I_{\mathrm{C}}$ 必须用 \textbf{mA}，两者相除得 $\Omega$，不需再换算。
+若把 $I_{\mathrm{C}}$ 代成 $0.00147\,\mathrm{A}$，会算出 $200+884000$，错三个数量级。
+\aside{课件 p16 的经验式右下角小字写了 $I_{\mathrm{C}}(\mathrm{mA})$；p29 代的是 $1.47$，正好对应。}
+
+\subhdr{5.3 第二步：无载电压放大倍数（p29）}
+
+「无载」意味着 $R_{\mathrm{L}}=\infty$，所以 $R_L'=R_{\mathrm{C}}\parallel\infty=R_{\mathrm{C}}=2\,\mathrm{k\Omega}$，代公式
+
+\[ A_o=\frac{\dot{U}_{\mathrm{o}}}{\dot{U}_{\mathrm{i}}}=-\frac{\beta R_L'}{r_{\mathrm{be}}}
+=-\frac{50\times2\,\mathrm{k\Omega}}{1.084\,\mathrm{k\Omega}}=-92.25 . \]
+
+三个细节：\\
+（1）\textbf{负号不能丢}：负号表示输出与输入反相 $180^\circ$（§6.1）。\\
+（2）\textbf{两条并联别忘}：有载时 $R_L'$ 要换成 $R_{\mathrm{C}}\parallel R_{\mathrm{L}}$，$|A_u|$ 一定变小。\\
+（3）\textbf{量纲检查}：$\beta$ 无量纲，$R_L'/r_{\mathrm{be}}$ 是两个电阻之比、也无量纲，所以 $A_u$ 是纯数 92.25——量级上合理（单级共射几十到几百）。
+
+\subhdr{5.4 第三步：输入电阻（p30）}
+
+\[ r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}=\frac{180\times1.084}{180+1.084}\,\mathrm{k\Omega}=1.078\,\mathrm{k\Omega}\approx r_{\mathrm{be}} . \]
+
+为什么近似成立：$R_{\mathrm{B}}=180\,\mathrm{k\Omega}$ 比 $r_{\mathrm{be}}=1.084\,\mathrm{k\Omega}$ 大两个数量级，
+并联结果由小的那个决定（相对误差 $0.6\%$）。反过来，若偏置电阻只有几 k$\Omega$，$r_i$ 就必须老老实实按并联算。
+
+\subhdr{5.5 第四步：输出电阻（p30）}
+
+\[ r_o=R_{\mathrm{C}}=2\,\mathrm{k\Omega} . \]
+
+为什么就是 $R_{\mathrm{C}}$：从输出端往里看，受控电流源 $\beta\dot{I}_{\mathrm{b}}$ 的内阻视为无穷大（理想电流源串多大的电阻都不改变它的电流），
+再与 $R_{\mathrm{C}}$ 并联，只剩 $R_{\mathrm{C}}$。$R_{\mathrm{L}}$ 是\textbf{外接}负载，不算进 $r_o$。
+\aside{p26 的推导写成 $r_o=\dot{U}_{\mathrm{OC}}/\dot{I}_{\mathrm{SC}}=(-\dot{I}_{\mathrm{c}}R_{\mathrm{C}})/(-\dot{I}_{\mathrm{c}})=R_{\mathrm{C}}$，
+两个 $-\dot{I}_{\mathrm{c}}$ 约掉，本质上就是「恒流源内阻无穷大」这句话；§6.3 会把前提讲全。}
+
+\subhdr{5.6 三个数的量级自检（考场上一分钟就能做）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.9cm}p{2.6cm}p{3.0cm}p{6.4cm}@{}}
+\tabtop
+\thead{量} & \thead{本例结果} & \thead{典型范围} & \thead{自检话术}
+\\
+\tabmid
+$A_u$ & $-92.25$ & 几十$\sim$几百 & 若算出 $0.9$ 或 $-9000$，先查 $I_{\mathrm{C}}$ 单位与 $R_L'$
+\\
+$r_i$ & $1.078\,\mathrm{k\Omega}$ & 千欧级 & 恒在 $r_{\mathrm{be}}$ 与 $R_{\mathrm{B}}$ 之间，只可能略小于小的那个
+\\
+$r_o$ & $2\,\mathrm{k\Omega}$ & 千欧级 & 共射时恒等于 $R_{\mathrm{C}}$，与 $\beta$、$I_{\mathrm{C}}$ 无关
+\tabbot
+\end{tabular}
+
+%=============================================================
+
+\subhdr{5.7 两个变式：把例题改一个数，结论会怎么变}
+
+\textbf{变式一：接上 $R_{\mathrm{L}}=2\,\mathrm{k\Omega}$。}此时
+$R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}=2\parallel2=1\,\mathrm{k\Omega}$，
+\[ A_u=-\frac{50\times1}{1.084}=-46.1 , \]
+正好是无载值 $92.25$ 的一半。这就是 p28 提问的定量答案。
+
+\textbf{变式二：$\beta$ 换成 100，其余不变。}注意\textbf{不能只把 $\beta$ 代进 $A_u$ 的公式}——
+$\beta$ 变了，$I_{\mathrm{C}}=\beta I_{\mathrm{B}}=100\times29.4\,\mu\mathrm{A}=2.94\,\mathrm{mA}$ 也变了，
+于是 $r_{\mathrm{be}}=200+100\times26/2.94=200+884=1084\,\Omega$ 竟然\textbf{没变}（巧合，两者同比例变化），
+\[ A_u=-\frac{100\times2}{1.084}=-185 . \]
+
+\textbf{这里的教训}：$\beta$ 同时出现在公式的分子和 $r_{\mathrm{be}}$ 的分母里，所以「$\beta$ 翻倍、增益翻倍」只在
+$I_{\mathrm{C}}$ 被外部电路固定住时才成立。本例是固定偏置（$I_{\mathrm{B}}$ 由 $R_{\mathrm{B}}$ 定），
+$I_{\mathrm{C}}$ 跟着 $\beta$ 走，才出现 $r_{\mathrm{be}}$ 恰好抵消；若改用分压式偏置（C4-4 讲），$I_{\mathrm{C}}$ 基本不随 $\beta$ 变，
+$\beta$ 翻倍就真的让增益接近翻倍。\textbf{这是一个把 4.4 与 4.5 连起来的观察点。}
+
+\warnbox{\textbf{本题若出现在考卷上}：题目只给 $\beta=100$ 而不重算 Q 点，是\textbf{不完整}的；
+要么默认 Q 点不变（那就只用新的 $\beta$ 代入 $A_u$，得 $-185$ 但 $r_{\mathrm{be}}$ 仍取旧值，结果同为 $185$），
+要么明确「$\beta$ 变化引起 $I_{\mathrm{C}}$ 变化」。两种算法在本例巧合地同答案，换一个偏置方式就不同了。
+答题时把假设写出来，比算对更重要。}
+
+
+\subhdr{5.8 课件那三行解答，展开来是九行}
+
+p29--p30 的解答只写了三行（$r_{\mathrm{be}}$、$A_o$、$r_i$/$r_o$），中间被省掉的步骤列在下面。
+考试时省到哪一步算够，看分值：三步以内的小题可以只写结果，大题要写「公式 + 代入 + 结果」。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{6.2cm}p{7.6cm}@{}}
+\tabtop
+\thead{行} & \thead{课件写的} & \thead{本讲义补的中间行}
+\\
+\tabmid
+1 & （无） & $I_{\mathrm{B}}=(6-0.7)/180\,\mathrm{k\Omega}=29.4\,\mu\mathrm{A}$
+\\
+2 & （无） & $I_{\mathrm{C}}=50\times29.4\,\mu\mathrm{A}=1.47\,\mathrm{mA}$
+\\
+3 & $r_{\mathrm{be}}=200+50\times26/1.47=1084\,\Omega$ & 单位：$26$ 用 mV、$I_{\mathrm{C}}$ 用 mA
+\\
+4 & （无） & 无载 $\Rightarrow R_L'=R_{\mathrm{C}}\parallel\infty=R_{\mathrm{C}}=2\,\mathrm{k\Omega}$
+\\
+5 & $A_o=-50\times2/1.084=-92.25$ & $r_{\mathrm{be}}$ 用 $\mathrm{k\Omega}$，与 $R_L'$ 同单位
+\\
+6 & （无） & 负号 $\Rightarrow$ 反相 $180^\circ$（§6.1）
+\\
+7 & $r_i=180\times1.084/(180+1.084)=1.078\,\mathrm{k\Omega}$ & 并联公式，单位统一 k$\Omega$
+\\
+8 & （无） & $R_{\mathrm{B}}\gg r_{\mathrm{be}}$ $\Rightarrow$ 可近似 $r_i\approx r_{\mathrm{be}}$
+\\
+9 & $r_o=R_{\mathrm{C}}=2\,\mathrm{k\Omega}$ & 受控源内阻视为无穷大（§6.3）
+\tabbot
+\end{tabular}
+
+\hdr{§6}{三个公式的机制：符号、前提、耦合}
+
+\subhdr{6.1 $A_u$ 的负号是「接线」决定的，不是数学巧合}
+
+p24 的推导是
+
+\[ A_u=\frac{\dot{U}_{\mathrm{o}}}{\dot{U}_{\mathrm{i}}}
+=\frac{-\dot{I}_{\mathrm{c}}\,(R_{\mathrm{C}}\parallel R_{\mathrm{L}})}{\dot{I}_{\mathrm{b}}\,r_{\mathrm{be}}}
+=-\frac{\beta R_L'}{r_{\mathrm{be}}} , \]
+
+中间那一步（$-\dot{I}_{\mathrm{c}}$ 换成 $-\beta\dot{I}_{\mathrm{b}}$）课件只写了一句 \texttt{In order to eliminate $I_c$ and $I_B$}，
+没说 $\dot{I}_{\mathrm{c}}=\beta\dot{I}_{\mathrm{b}}$ 正是 §3.2 的第二个线性关系。补上这一步，负号就有两个来源：
+
+\begin{itemize}
+\item \textbf{来源一（电流方向）}：$\dot{I}_{\mathrm{c}}$ 的定义方向是「流入集电极」，而 $\dot{U}_{\mathrm{o}}$ 以上端为正；
+电流从 $R_{\mathrm{C}}$ 的上端流向电源（交流地），在 $R_{\mathrm{C}}$ 上产生的压降与 $\dot{U}_{\mathrm{o}}$ 参考方向相反，所以是 $-\dot{I}_{\mathrm{c}}R_L'$。
+\item \textbf{来源二（电压参考方向）}：$\dot{U}_{\mathrm{i}}$ 以基极为正，$\dot{U}_{\mathrm{be}}=\dot{U}_{\mathrm{i}}$；$\dot{I}_{\mathrm{b}}$ 增大时 $\dot{I}_{\mathrm{c}}$ 增大，
+$R_{\mathrm{C}}$ 上压降增大，集电极电位反而降低——输出与输入反向。
+\end{itemize}
+
+两个来源说的是同一件事：\textbf{共射是反相放大器}，中频相位移 $180^\circ$（§2.3）。
+p27 结论页把负号省掉，只保留了「大小」；做题时若题目问「大小」可以写 $|A_u|$，若问「相位」必须写负号。
+
+\subhdr{6.2 $r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}\approx r_{\mathrm{be}}$ 的成立条件}
+
+近似只在这个条件下成立：$R_{\mathrm{B}}\gg r_{\mathrm{be}}$。本讲电路 $R_{\mathrm{B}}=180\,\mathrm{k\Omega}\gg1.084\,\mathrm{k\Omega}$，成立。
+反例：若把偏置电阻降到 $2\,\mathrm{k\Omega}$，则 $r_i=2\parallel1.084=0.70\,\mathrm{k\Omega}$，比 $r_{\mathrm{be}}$ 还小 $35\%$，近似彻底失效。
+判定方法：算一下 $R_{\mathrm{B}}/r_{\mathrm{be}}$，大于 $20$ 就可以近似，否则按并联精确算。
+
+\subhdr{6.3 $r_o$ 为什么用「开路电压/短路电流」，以及这一步的前提}
+
+p26 的定义式 $r_o=\dot{U}_{\mathrm{OC}}/\dot{I}_{\mathrm{SC}}$ 是戴维南等效内阻的标准测法：把负载拿掉测开路电压、把输出短路测短路电流，两者相除。
+严格地说，求 $r_o$ 时\textbf{输入端的独立源要置零}（$\dot{U}_{\mathrm{s}}=0$），
+此时 $\dot{I}_{\mathrm{b}}=0$，受控源 $\beta\dot{I}_{\mathrm{b}}=0$——它变成「电流为零的理想电流源」，即\textbf{开路}，
+于是输出端只剩 $R_{\mathrm{C}}$。
+
+课件 p26 的图上还画着 $\dot{U}_{\mathrm{s}}$ 与 $R_{\mathrm{S}}$，推导却只用了输出支路，看起来「没置零也算对了」。
+原因是：受控源的控制量 $\dot{I}_{\mathrm{b}}$ 在 $\dot{U}_{\mathrm{s}}=0$ 时才为零，而课件用的 $-\dot{I}_{\mathrm{c}}$ 约分恰好等价于这一步。
+结论不错，但前提没写——这就是 §10 里那条「适用前提」缺口。
+
+\subhdr{6.4 三个指标不是三个独立的数：源电压增益}
+
+实际使用时信号源有内阻，真正关心的是「从源到输出」的增益
+
+\[ A_{us}=\frac{\dot{U}_{\mathrm{o}}}{\dot{U}_{\mathrm{s}}}=A_u\cdot\frac{r_i}{R_{\mathrm{S}}+r_i} . \]
+
+本讲例题若取 $R_{\mathrm{S}}=1\,\mathrm{k\Omega}$：$A_{us}=-92.25\times\dfrac{1.078}{1+1.078}=-47.9$，只剩一半。
+这说明 $r_i$ 不只影响「取信号」，它直接乘在总增益上——这也是 §1.3 说「$r_i$ 越大越好」的另一种说法。
+
+%=============================================================
+
+\subhdr{6.5 共射的 $r_i$ 不够大、$r_o$ 不够小，怎么办}
+
+把三个指标按 §1.3 的判据过一遍：$r_i\approx r_{\mathrm{be}}$ 只有 $1\,\mathrm{k\Omega}$ 量级
+（希望大，因为要从信号源多拿电压），$r_o=R_{\mathrm{C}}$ 有 $2\,\mathrm{k\Omega}$ 量级
+（希望小，因为要带得动负载）。\textbf{两个都不理想}——这是共射电路的固有短板，不是设计失误。
+
+补法有两条，都在后面几讲：
+
+\begin{itemize}
+\item \textbf{换组态}：共集电极（射极跟随器，C4-4 §4.5.2）$r_i$ 可被 $(1+\beta)R_L'$ 放大到几十千欧、$r_o$ 只有几十欧，
+但它 $A_u\approx1$ 不放大——所以它当\textbf{缓冲级}，不当放大级。
+\item \textbf{多级串联}：一级共射负责放大、一级共集负责带载（C4-5 §4.6 多级放大），
+$a_u$ 乘起来、$r_i$ 由第一级定、$r_o$ 由最后一级定。
+\end{itemize}
+
+\aside{这一段是把 p8/p9 的提问与后面两讲接起来。课件 p8、p9 只提问，答案分散在 C4-4、C4-5；
+此处先给出「为什么必须学后面两讲」的理由。}
+
+
+\subhdr{6.6 为什么 $r_o$ 不能「看着电路图数电阻」}
+
+初学者常想：输出端并着 $R_{\mathrm{C}}$ 和 $R_{\mathrm{L}}$，那 $r_o$ 不就是 $R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ 吗？
+不对。$r_o$ 的定义是「从输出端往里看、把负载拿掉、把源置零」之后的等效电阻，是\textbf{电路自己的属性}。
+$R_{\mathrm{L}}$ 是外面接的，不算；$\beta\dot{I}_{\mathrm{b}}$ 是受控源，源置零后控制量为零，等于开路。
+
+判据很短：\textbf{凡是「外接」的不算，凡是「受控」的按控制量为零处理}。
+按这条判据，共射的 $r_o$ 只剩 $R_{\mathrm{C}}$；共集的 $r_o$ 因为 $R_{\mathrm{E}}$ 在发射极、受控源电流全部流过它，
+会小到几十欧（C4-4 §4.5.2）；共基的 $r_o$ 又回到 $R_{\mathrm{C}}$ 量级。
+
+\hdr{§7}{课件留下来的两个提问}
+
+\subhdr{7.1 Problem 1（p27）：$A_u$ 是负的，什么意思}
+
+原文 \texttt{Au is negative. What dose it mean?}（原文拼写照录）。答案两层：
+（1）\textbf{相位}：输出与输入相差 $180^\circ$，示波器上两路波形上下颠倒；
+（2）\textbf{方向}：输入电压升高时，集电极电流增大、$R_{\mathrm{C}}$ 上压降增大，于是集电极电位下降——输出「往下走」。
+所以负号不是「放大倍数为负所以变小了」，而是「反了个方向」。绝对值才是放大的倍数。
+
+\subhdr{7.2 Problem 2（p28）：不接负载时 $A_u$ 会变大还是变小}
+
+原文 \texttt{If there is no load resistance (open circuit), will Au be bigger or smaller?} 答案：\textbf{变大}。
+因为 $R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$，开路即 $R_{\mathrm{L}}\to\infty$，$R_L'$ 取到最大值 $R_{\mathrm{C}}$，
+$|A_u|=\beta R_L'/r_{\mathrm{be}}$ 随之取到最大。
+
+代本讲例题的数验证：接 $R_{\mathrm{L}}=2\,\mathrm{k\Omega}$ 时 $R_L'=2\parallel2=1\,\mathrm{k\Omega}$，
+$|A_u|=50\times1/1.084=46.1$；开路时 $|A_u|=92.25$。\textbf{接上负载，增益正好掉一半}。
+这就是「放大器带载能力」的定量版本，也是 §1.3 说「$r_o$ 越小越好」的理由：$r_o$ 小的电路，接上负载后掉得少。
+
+\warnbox{\textbf{一个常见误判}：把「无载增益」当成「实际增益」。课件例题问的是 no-load（无载），
+所以答案 $92.25$ 是上限；实际接上负载后一定小于它。答题时先看清题目问的是哪一种。}
+
+%=============================================================
+
+\subhdr{7.3 自己出的第三个问题：把 $R_{\mathrm{B}}$ 减半会怎样}
+
+把 $R_{\mathrm{B}}$ 从 $180\,\mathrm{k\Omega}$ 改成 $90\,\mathrm{k\Omega}$，其余不动，逐项看：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{3.6cm}p{3.6cm}p{4.8cm}@{}}
+\tabtop
+\thead{量} & \thead{$R_{\mathrm{B}}=180\,\mathrm{k\Omega}$} & \thead{$R_{\mathrm{B}}=90\,\mathrm{k\Omega}$} & \thead{变化原因}
+\\
+\tabmid
+$I_{\mathrm{B}}$ & $29.4\,\mu\mathrm{A}$ & $58.9\,\mu\mathrm{A}$ & 基极电阻减半、偏流加倍
+\\
+$I_{\mathrm{C}}$ & $1.47\,\mathrm{mA}$ & $2.94\,\mathrm{mA}$ & $I_{\mathrm{C}}=\beta I_{\mathrm{B}}$
+\\
+$r_{\mathrm{be}}$ & $1084\,\Omega$ & $642\,\Omega$ & $I_{\mathrm{C}}$ 进分母
+\\
+$A_u$（无载） & $-92.25$ & $-155.8$ & $r_{\mathrm{be}}$ 变小
+\\
+$r_i$ & $1.078\,\mathrm{k\Omega}$ & $0.637\,\mathrm{k\Omega}$ & $R_{\mathrm{B}}$ 与 $r_{\mathrm{be}}$ 都变小
+\tabbot
+\end{tabular}
+
+结论有两层：（1）增益上去了，但 $r_i$ 掉下来，从信号源取到的电压反而变少（源电压增益 $A_{us}$ 可能不升反降）；
+（2）$I_{\mathrm{C}}$ 翻倍使 $U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}=6-2\times2.94=0.12\,\mathrm{V}$，
+\textbf{已经贴到饱和边上了}——静态工作点基本作废。所以固定偏置电路「调增益」极不自由，
+这也正是 C4-4 要改成分压式偏置的原因。
+
+\hdr{§8}{公式卡与四步清单}
+
+\subhdr{8.1 公式卡（按做题顺序排，不是按课件顺序）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.9cm}p{6.1cm}p{2.0cm}p{4.4cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{依据} & \thead{前提}
+\\
+\tabmid
+$I_{\mathrm{B}}$ & $(U_{\mathrm{CC}}-U_{\mathrm{BE}})/R_{\mathrm{B}}$ & C4-2 p28 & 固定偏置
+\\
+$I_{\mathrm{C}}$ & $\beta I_{\mathrm{B}}$ & p29 & 放大区
+\\
+$r_{\mathrm{be}}$ & $200+\beta\cdot26/I_{\mathrm{C}}$ & p16 & $I_{\mathrm{C}}$ 以 mA 代入
+\\
+$R_L'$ & $R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ & p24 & 有载；无载取 $R_{\mathrm{C}}$
+\\
+$A_u$ & $-\beta R_L'/r_{\mathrm{be}}$ & p24 & 中频、小信号
+\\
+$r_i$ & $R_{\mathrm{B}}\parallel r_{\mathrm{be}}\approx r_{\mathrm{be}}$ & p25 & $R_{\mathrm{B}}\gg r_{\mathrm{be}}$
+\\
+$r_o$ & $R_{\mathrm{C}}$ & p26 & 受控源内阻视为无穷大
+\\
+$A_{us}$ & $A_u r_i/(R_{\mathrm{S}}+r_i)$ & [教材补充] & 考虑源内阻时
+\tabbot
+\end{tabular}
+
+\subhdr{8.2 四步清单（拿到任何共射电路都照这个顺序）}
+
+\begin{enumerate}
+\item \textbf{静态}：直流通路（电容开路、信号源短路）$\to I_{\mathrm{B}}\to I_{\mathrm{C}}\to U_{\mathrm{CE}}$，确认在放大区；
+\item \textbf{建模}：由 $I_{\mathrm{C}}$ 算 $r_{\mathrm{be}}$（单位：mA）；
+\item \textbf{交流通路}：直流电源短路、电容短路 $\to$ 认出 $R_{\mathrm{B}}$ 并在输入、$R_{\mathrm{C}}$ 并在输出；
+\item \textbf{量指标}：$A_u$（带负号）、$r_i$（并联）、$r_o$（只看输出端电阻），最后做量级自检（§5.6）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{易错点（每条都能指回某一页某一步）}
+
+\gapitem{（1）把 $r_{\mathrm{be}}$ 与 $R_{\mathrm{B}}$ 混}{p25 的 $r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}$ 里两个电阻都要用；
+$r_{\mathrm{be}}$ 是晶体管内部的，$R_{\mathrm{B}}$ 是外接偏置的。只写 $r_i=r_{\mathrm{be}}$ 会丢掉并联，虽然本例误差小，
+但换成低阻偏置就错得离谱（§6.2 的反例）。}
+
+\gapitem{（2）算 $r_o$ 时把 $R_{\mathrm{L}}$ 算进去}{p26 的 $r_o=R_{\mathrm{C}}$ 里\textbf{没有} $R_{\mathrm{L}}$。
+$r_o$ 是「电路自己的」输出电阻，负载是外面接的；把 $R_{\mathrm{L}}$ 并进去得到的不是 $r_o$，而是「输出端总电阻」。}
+
+\gapitem{（3）$r_{\mathrm{be}}$ 算错数量级}{p29 代 $I_{\mathrm{C}}=1.47$（mA）而不是 $0.00147$（A）。
+自检：$r_{\mathrm{be}}$ 应是几百到几千欧，若算出几兆欧就是单位错了。}
+
+\gapitem{（4）丢掉负号}{p24 带负号、p27 不带。凡是问「相位」「反相」「波形关系」，必须带负号；
+问「放大倍数的大小」才可写 $|A_u|$。}
+
+\gapitem{（5）交流通路里留着 $+U_{\mathrm{CC}}$}{p20 的重画图里 $+U_{\mathrm{CC}}$ 已经消失，母线变成地。
+若保留电源，$R_{\mathrm{C}}$ 会被「接在电源与集电极之间」，等效电路画不出来。}
+
+\gapitem{（6）用直流通路算 $A_u$}{$A_u$ 是交流量之比，直流通路里没有 $\dot{U}_{\mathrm{i}}$，算不出来。
+反过来，用交流通路算 $Q$ 点也是错的（交流通路里没有 $U_{\mathrm{CC}}$）。}
+
+\gapitem{（7）以为 $r_{\mathrm{be}}$ 是常数}{p16 的经验式里 $I_{\mathrm{C}}$ 在分母：换一个 Q 点，$r_{\mathrm{be}}$ 就变，$A_u$ 也跟着变。
+同型号三极管在不同偏置下 $A_u$ 可以差一倍。}
+
+%=============================================================
+
+\gapitem{（8）把 $A_u$ 当成常数记}{本例换 $I_{\mathrm{C}}$ 时 $A_u$ 从 $-35.7$ 变到 $-158$（§3.5），
+同一套电阻差四倍。记住：$A_u$ 是「某个 Q 点下」的数，不是电路的固有属性。}
+
+\gapitem{（9）变 $\beta$ 只改公式里的一个符号}{$\beta$ 同时决定 $I_{\mathrm{C}}$ 与 $r_{\mathrm{be}}$（§5.7 变式二）。
+固定偏置下 $I_{\mathrm{C}}$ 随 $\beta$ 走，$r_{\mathrm{be}}$ 恰好抵消 $\beta$ 的作用；分压偏置下 $I_{\mathrm{C}}$ 被外部电路钉住，$\beta$ 才直接放大增益。
+两种偏置的结论不同，不能混用。}
+
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+\gapitem{机制缺口}{p2\quad \texttt{What is static analysis?} 等四问\quad 缺：四问的答案\quad 补：§1.1 四问对照表}
+
+\gapitem{机制缺口}{p8 / p9\quad \texttt{Is it better to be bigger or smaller?}\quad
+缺：两处提问都没有答案\quad 补：§1.3 用分压式定量算两种情形（$r_i$ 越大越好、$r_o$ 越小越好）}
+
+\gapitem{机制缺口}{p15\quad \texttt{Is it linear?}\ 与 \texttt{Small signal AC}\quad
+缺：为什么非线性特性可以当直线用\quad 补：§3.2 切线线性化 + 「$Q$ 点附近一小段」的边界}
+
+\gapitem{机制缺口}{p16\quad \texttt{Circuit model seen from the input is $r_{be}$}\quad
+缺：为什么输入端是电阻、输出端为什么是受控源\quad 补：§3.3 用两条特性曲线的形状解释}
+
+\gapitem{代数跳步}{p24\quad \texttt{In order to eliminate $I_c$ and $I_B$}\quad
+缺：$-\dot{I}_{\mathrm{c}}$ 换成 $-\beta\dot{I}_{\mathrm{b}}$ 这一步，以及负号的两个来源\quad 补：§6.1}
+
+\gapitem{适用前提}{p26\quad $r_o=\dot{U}_{\mathrm{OC}}/\dot{I}_{\mathrm{SC}}$\quad
+缺：求 $r_o$ 需先把独立源置零、受控源随之为零才等效为开路\quad 补：§6.3}
+
+\gapitem{适用前提}{p25\quad $r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}\approx r_{\mathrm{be}}$\quad
+缺：近似条件 $R_{\mathrm{B}}\gg r_{\mathrm{be}}$ 与失效后果\quad 补：§6.2（含 $2\,\mathrm{k\Omega}$ 反例）}
+
+\gapitem{形式改写}{p27\quad \texttt{Au = $\beta R_L'/r_{be}$}（结论页）\quad
+缺：负号，与 p24 的 $-\beta R_L'/r_{\mathrm{be}}$ 冲突\quad 补：§6.1 末尾说明「问大小可省、问相位不可省」}
+
+\gapitem{答案形态}{p10\quad $0.707|A_m|$ 与 $f_1,f_2$\quad
+缺：$0.707$ 为什么是这条线（半功率/$-3\,\mathrm{dB}$）\quad 补：§2.2（标 [教材补充]）}
+
+\gapitem{版面拼接}{p17 与 p18、p21 与 p22\quad 同一张幻灯片重复\quad
+缺：内容只应计一次\quad 补：§0 坐标表按去重计，此处备案}
+
+%=============================================================
+
+\gapitem{机制缺口}{p12--p13\quad 三步清单（建模 $\to$ 等效电路 $\to$ 量指标）只列标题\quad
+缺：为什么必须按这个顺序（先建模、再画等效、最后量指标）\quad 补：§4 四步表把「动作」与「为什么可以」并排}
+
+\gapitem{拼接缺口}{p23\quad 第四步 Input and output（把 $\dot{U}_{\mathrm{s}},R_{\mathrm{S}},R_{\mathrm{L}}$ 接进等效电路）\quad
+缺：为什么指标一定要带源与负载才有意义（不接源，$r_i$ 无从定义；不接负载，$A_u$ 与 $r_o$ 都测不出）\quad 补：§1.2、§1.3}
+
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{静态定 Q 点，动态量三个数}：$A_u$ 看放大、$r_i$ 看取信号、$r_o$ 看带负载，后两者一个要大一个小；
+\item \textbf{微变等效 = 在 Q 点取切线}：输入端切线斜率的倒数是 $r_{\mathrm{be}}$，输出端「电流不随端电压变」就是受控电流源；
+\item \textbf{三个公式都有前提}：中频、小信号、$R_{\mathrm{B}}\gg r_{\mathrm{be}}$、求 $r_o$ 时源置零——前提不对，数对也不算对。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{6.2cm}p{6.4cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1--p2 & 标题、静态/动态四问 & §0、§1.1
+\\
+p3--p5 & 放大电路方块、信号源--放大--负载链路、端口参考方向 & §1.2
+\\
+p6--p7 & $A_u$ 定义与 $A_u$ vs $\beta$ & §1.2、§6.1
+\\
+p8--p9 & $r_i$、$r_o$ 定义与两个提问 & §1.2、§1.3
+\\
+p10--p11 & 幅频/相频、通带、$f_1,f_2$ & §2
+\\
+p12--p14 & 4.4.2 三步、为何建模 & §3.1
+\\
+p15 & 输入/输出特性、\texttt{Is it linear?} & §3.2
+\\
+p16--p18 & 共射组态、$r_{\mathrm{be}}$ 经验式、模型（含重复页） & §3.3、§0
+\\
+p19--p20 & （1） 交流通路、（2） 重画（电源置零、电容短路） & §4、§4.1
+\\
+p21--p23 & （3） 换三极管、（4） 接源与负载 & §4.3
+\\
+p24 & $A_u=-\beta R_L'/r_{\mathrm{be}}$ & §6.1
+\\
+p25 & $r_i=R_{\mathrm{B}}\parallel r_{\mathrm{be}}$ & §5.4、§6.2
+\\
+p26 & $r_o=R_{\mathrm{C}}$ & §5.5、§6.3
+\\
+p27--p28 & 结论页、Problem 1/2 & §6.1、§7
+\\
+p29--p30 & Example 4.4.2 三联 & §5
+\tabbot
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算（$I_{\mathrm{B}}=29.4\,\mu\mathrm{A}$、$I_{\mathrm{C}}=1.47\,\mathrm{mA}$、
+$r_{\mathrm{be}}=1084\,\Omega$、$A_o=-92.25$、$r_i=1.078\,\mathrm{k\Omega}$、$r_o=2\,\mathrm{k\Omega}$、
+有载 $|A_u|=46.1$）。标 [教材补充] 的三处（$-3\,\mathrm{dB}$ 的来历、相频三段成因、$A_{us}$ 公式）不是课件原文，
+只作理解用，不作文档口径。}
+
+\end{document}

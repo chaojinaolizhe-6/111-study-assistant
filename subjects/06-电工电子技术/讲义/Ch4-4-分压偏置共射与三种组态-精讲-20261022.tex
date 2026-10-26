@@ -1,0 +1,1121 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第四章第四讲 · 4.5 基本放大电路（4.5.1 分压偏置共射 + 4.5.2/4.5.3/4.5.4 三种组态）
+% lecture-deepdive 规范；课件：Chapter Four-4-2026中白上传.pdf（41 页）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\newfontfamily\cyrfont{Times New Roman}% 俄文下标（p30、p37 的照片）用西里尔字体排，避免缺字
+\settags{Ch4-4 · 分压偏置共射与三种组态 · 精讲}{电工电子技术}
+
+%---------------------------------------------------------------- 记号（§0 声明，全文统一）
+\newcommand{\UCC}{U_{\mathrm{CC}}}
+\newcommand{\UBE}{U_{\mathrm{BE}}}
+\newcommand{\UCE}{U_{\mathrm{CE}}}
+\newcommand{\UB}{U_{\mathrm{B}}}
+\newcommand{\UE}{U_{\mathrm{E}}}
+\newcommand{\UC}{U_{\mathrm{C}}}
+\newcommand{\IB}{I_{\mathrm{B}}}
+\newcommand{\IC}{I_{\mathrm{C}}}
+\newcommand{\IE}{I_{\mathrm{E}}}
+\newcommand{\RB}{R_{\mathrm{B}}}
+\newcommand{\RBone}{R_{\mathrm{B1}}}
+\newcommand{\RBtwo}{R_{\mathrm{B2}}}
+\newcommand{\RC}{R_{\mathrm{C}}}
+\newcommand{\RE}{R_{\mathrm{E}}}
+\newcommand{\RL}{R_{\mathrm{L}}}
+\newcommand{\RS}{R_{\mathrm{S}}}
+\newcommand{\RLp}{R_{\mathrm{L}}'}
+\newcommand{\CEcap}{C_{\mathrm{E}}}
+\newcommand{\CBcap}{C_{\mathrm{B}}}
+\newcommand{\rbe}{r_{\mathrm{be}}}
+\newcommand{\Au}{A_{u}}
+\newcommand{\ri}{r_{\mathrm{i}}}
+\newcommand{\ro}{r_{\mathrm{o}}}
+\newcommand{\ib}{i_{\mathrm{b}}}
+\newcommand{\ic}{i_{\mathrm{c}}}
+\newcommand{\ie}{i_{\mathrm{e}}}
+\newcommand{\iin}{i_{\mathrm{i}}}
+\newcommand{\iout}{i_{\mathrm{o}}}
+\newcommand{\ICBO}{I_{\mathrm{CBO}}}
+\newcommand{\ICEO}{I_{\mathrm{CEO}}}
+\newcommand{\ISC}{I_{\mathrm{SC}}}
+
+% 局部补丁：把「不许分页拆开」的内容包起来（原稿用了未定义的 keep 环境）
+\newenvironment{keep}%
+  {\par\medskip\noindent\begin{minipage}{\linewidth}}%
+  {\end{minipage}\par\medskip}
+
+\begin{document}
+
+\doctitle{第四章第四讲　4.5 基本放大电路}{从「Q 点一定会跑」到「三个元件把它按住」，再到三种组态的分工}
+{依据：\texttt{Chapter Four-4-2026中白上传.pdf}（p1--p41，共 41 页；逐页读扫描图）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与四处缝}
+
+\subhdr{§0.1　这 41 页讲了两件事，各在哪几页}
+
+课件的前 15 页是一条直线：\textbf{先把固定偏置的毛病摆出来}（p1--p3），\textbf{再用四个新元件把它按住}（p5--p8），\textbf{然后把静态、动态两套算法在这个新电路上整套重跑一遍}（p9--p15）。p19 是一张过渡页，只写了三个词，把 4.5.1 收口、把三种组态的比较推上台。第二段（p20--p41）换了三个视角看同一个管子：共集（p21--p38）从头算到尾，共基（p39）只给了一张电路图，最后用一张定性表（p40--p41）把三种组态并排摆好，并留下一句「信号还不够大」交给下一讲。
+
+\par\vspace{2pt}
+{\renewcommand{\arraystretch}{1.12}
+\noindent\begin{tabular}{@{}p{1.85cm}p{8.6cm}p{4.2cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p1 & 固定偏置共射电路（整页只有电路，无标题、无文字） & §1.1 反面教材
+\\
+p2 & 4.3 复习：直流通路两条规则、三式、「Q-point is not stable」 & §1、§5.1
+\\
+p3 & 4.4.2 复习：$A_u$、$\ri$、$\ro$ 三式与 Good/Not good & §1.4、§6.6
+\\
+p4 & 4.5.1 分节页（只有标题） & 不另计
+\\
+p5 & 固定偏置 $\to$ 分压偏置：$\RBtwo$、$\RE$、$\CEcap$ 一齐出现 & §0 地图、§2--§4
+\\
+p6 & $\RBtwo$ 的作用、$I_2\gg \IB$、$\UB$ 的分压式 & §2
+\\
+p7 & $\RE$ 的作用、$\UB\gg \UBE$、负反馈链 & §3
+\\
+p8 & $\CEcap$ 的作用（保住 $A_u$） & §4
+\\
+p9--p10 & 静态分析：直流通路与五条式子 & §5
+\\
+p11--p12 & 交流通路、微变等效电路 & §6.1--§6.2
+\\
+p13 & $A_u=-\beta\RLp/\rbe$，$\RLp=\RC\parallel\RL$ & §6.3
+\\
+p14 & $\ri=\RBone\parallel\RBtwo\parallel\rbe\approx\rbe$ & §6.4
+\\
+p15 & $\ro=U_{\mathrm{OC}}/I_{\mathrm{SC}}=\RC$ & §6.5
+\\
+p16--p18 & \textbf{重复页}：分别是 p2、p3、p5 的同一版画面 & 不另计内容（缝一）
+\\
+p19 & 过渡页：「Question:」+「CE CC CB」+ 四个电路 & §8.1 组态识别
+\\
+\bottomrule
+\end{tabular}}
+
+\par\vspace{2pt}
+{\renewcommand{\arraystretch}{1.12}
+\noindent\begin{tabular}{@{}p{1.85cm}p{8.6cm}p{4.2cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p20 & 4.5.2 分节页（只有标题） & 不另计
+\\
+p21 & 共集简介：CC 又叫射极跟随器（EF） & §7.1
+\\
+p22--p23 & 静态：直流通路与 Q 点 & §7.2
+\\
+p24--p28 & 交流通路、重画、等效、接上 $\RS$ 与 $\RL$ & §7.3
+\\
+p29 & $A_u\approx1$（EF 的由来） & §7.4
+\\
+p30--p36 & $\ri$：p35 的两栏折算图；p32 与 p35 的式子不一致 & §7.5（缝三）
+\\
+p37 & $\ro$：结果 + 一张俄文教材照片 & §7.6（缝四）
+\\
+p38 & 小结 & §7.7
+\\
+p39 & 4.5.3 共基：\textbf{整页只有电路图，没有任何参数} & §8.1--§8.3
+\\
+p40 & 4.5.4 三种组态定性比较表 & §8.4、§9
+\\
+p41 & 同一张表 + 「Problem: signal is not big enough」 & §8.5
+\\
+\bottomrule
+\end{tabular}}
+
+\subhdr{§0.2　记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.1cm}p{11.6cm}@{}}
+\toprule
+\thead{记号} & \thead{约定}
+\\
+\midrule
+$\UCC,\UBE,\UCE$ \newline $\UB,\UE,\UC$ & 直流量用大写正体；$\UC$ 只在本讲义 §5、§7 的节点电压里用（$\UC=\UCC-\RC\IC$），课件不写 $\UC$
+\\
+$\IB,\IC,\IE,I_2,I_3$ & $I_2$ 是流过 $\RBone$ 的电流（从上到下），$I_3$ 是流过 $\RBtwo$ 的电流（从上到下）——这两个记号只出现在 p6，§2 沿用
+\\
+$\beta,\rbe$ & $\beta$ 为电流放大系数；$\rbe$ 为发射结微变电阻，课件 C4-3 p18 给的形式是 $\rbe=200\ \Omega+\beta\cdot\dfrac{26\ \mathrm{mV}}{\IC(\mathrm{mA})}$
+\\
+$u_{\mathrm{i}},u_{\mathrm{o}},\dot{U}_{\mathrm{i}},\dot{U}_{\mathrm{o}}$ & 小写为瞬时值（p1、p5、p21 的电路图标 $u_{\mathrm{i}},u_{\mathrm{o}}$），带点为大写相量（p11 之后的等效电路标 $\dot{U}_{\mathrm{i}},\dot{U}_{\mathrm{o}}$）；相位讨论时用瞬时值
+\\
+$\Au,\ri,\ro$ & 电压放大倍数、输入电阻、输出电阻；$\ro$ 一律按课件的定义 $\ro=U_{\mathrm{OC}}/I_{\mathrm{SC}}$（p15、p37）
+\\
+$\RLp$ & 交流负载，\textbf{按组态分别写清}：共射 $\RLp=\RC\parallel\RL$（p13），共集 $\RLp=\RE\parallel\RL$（p29）
+\\
+\bottomrule
+\end{tabular}
+
+\begin{keep}
+\subhdr{§0.3　术语中英对照}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.2cm}p{9.5cm}@{}}
+\toprule
+\thead{中文} & \thead{课件英文（首次出现页）}
+\\
+\midrule
+分压式偏置 & voltage divider bias（p5 图注 「Voltage divider bias amplifier circuit」）
+\\
+旁路电容 & bypass capacitor（p8；课件只写 「emitter capacitor」，未用 bypass 一词）
+\\
+静态工作点稳定 & Q-point stabilization（p5 「Keep the Q point stable」）
+\\
+负反馈 & negative feedback（课件 p7 只画箭头链，\textbf{未出现}该词）
+\\
+射极跟随器 & emitter follower（EF，p21、p29、p38）
+\\
+共集电极 / 共基极 & common-collector (CC) / common-base (CB)（p20、p39）
+\\
+\bottomrule
+\end{tabular}
+\end{keep}
+
+\subhdr{§0.4　四处缝：本讲义相对课件补的地方}
+
+\textbf{缝一（版面重复）}：p16、p17、p18 与 p2、p3、p5 是同一版画面。本讲义按「有内容页 38 页」计，重复页不另给节，只在 §1、§5.1、§2 的页码坐标里各引一次（引 p2、p3、p5 那一处）。
+
+\textbf{缝二（$4.5.2$ 与第五讲的重复）}：共集电极在这一册 p20--p38 讲了一遍；同样的内容在下一册 \texttt{Chapter Five-5}（C5-5 p1--p14）还有一份更细的版本。本讲义按本册页码照常覆盖，不删内容，只在 §7 开头留一句交叉坐标。
+
+\textbf{缝三（p32 与 p35 的式子不一致）}：p32 打出的是 $\ri=\RB\parallel[\rbe+\RLp]$，p35 与 p30、p36 都是 $\ri=\RB\parallel[\rbe+(1+\beta)\RLp]$。两式差一个 $(1+\beta)$，而 p31--p34 是动画过渡帧（逐帧加电流标注），p32 恰好落在「$\ib$ 已经标出、$(1+\beta)\ib$ 还没标出」的那一帧上。本讲义以 p35、p30、p36 的形式为准（§7.5 给了两种互相独立的推导），并把 p32 记进缺口清单。
+
+\textbf{缝四（俄文照片）}：p30 与 p37 各贴了一张教材翻拍照片，用的不是中文课本的记号而是俄文记号——发射极记作 $R_{\text{\cyrfont э}}$，基极记作 $R_{\text{\cyrfont б}}$，发射结记作 $r_{\text{\cyrfont бэ}}$，集电极记作 $R_{\text{\cyrfont к}}$。中文学习者对不上这套下标，§7.5、§7.6 给了逐项对照。课件正文（p29、p30、p36、p37 的大字公式）用的仍是中文课本记号，两套并存。
+
+\warnbox{\textbf{一句话的读法}：这一讲真正的分界线不在 p19，而在 p6。p1--p3 说的是「固定偏置的 Q 点靠不住」，p5 只是把四个元件画上去，\textbf{为什么是这四个、各自按住哪一个量，p6--p8 一句话一个元件，却都没有给出推导}。§2--§4 就是把 p6--p8 的三句话各展开成一页。}
+
+%=============================================================
+\hdr{§1}{机制：固定偏置的 Q 点为什么一定会跑}
+
+\subhdr{§1.1　固定偏置的三个式子（p1--p2）}
+
+p1 是整页的电路，没有标题，也没有一个字：$\RB$ 从 $+\UCC$ 直接落到基极，$\RC$ 从 $+\UCC$ 落到集电极，发射极接地，输入经 $C_1$、输出经 $C_2$。这就是「固定偏置共射放大电路」（p5 左图图注 「Fixed bias amplifier circuit」）。p2 把它的直流量一次算完：
+
+\begin{enumerate}
+\item 直流通路的两条规则（p2 原文）：「(1) Signal source short circuit; (2) Capacitor open circuit.」——信号源短路、电容开路。
+\item 基极回路只有 $\RB$ 一个电阻，于是
+\[ \IB\RB+\UBE=\UCC\ \Longrightarrow\ \IB=\frac{\UCC-\UBE}{\RB};\qquad \IC=\beta\IB;\qquad \UCE=\UCC-\RC\IC . \]
+\end{enumerate}
+
+\aside{这两条规则与三个式子是 4.3 的内容（第四章第二讲），坐标在 \texttt{[C4-2 p29]}（同一页原文 「1 DC path: (1) Signal source short circuit; (2) Capacitor open circuit.」）；4.3.1 的定义在 \texttt{[C4-2 p22]}。代入本题：$C_1,C_2$ 开路 $\Rightarrow$ 基极回路只剩 $\RB$，集电极回路只剩 $\RC$。}
+
+\subhdr{§1.2　两个「跑」的来源：$\beta$ 与 $\ICBO$}
+
+p2 右下角写了一条链和一句结论：
+
+\[ T\uparrow\ \to\ \ICEO\uparrow\ \to\ \IC\uparrow\qquad\text{（「Q-point is not stable.」）} \]
+
+这条链只说了一半。真实的集电极电流是
+\begin{equation}\label{eq:icbeta}
+\boxed{\ \IC=\beta\IB+(1+\beta)\ICBO\ }
+\end{equation}
+其中 $\ICBO$ 是发射极开路时集电极—基极的反向饱和电流，温度每升 $10\,^{\circ}\mathrm{C}$ 大约翻一倍。p2 的箭头链只写了第二项 $(1+\beta)\ICBO$，把第一项 $\beta\IB$ 当成了「常数」——但 $\beta$ 本身也随温度走（约 $0.5\%/^{\circ}\mathrm{C}\sim1\%/^{\circ}\mathrm{C}$），而 $\IB=(\UCC-\UBE)/\RB$ 里还藏着 $\UBE$（约 $-2\ \mathrm{mV}/^{\circ}\mathrm{C}$）。所以温度一动，两头一起动。
+
+\aside{式 \eqref{eq:icbeta} 不是课件原文，是按三极管电流分配关系写的：$\IC=\beta\IB$ 只对「忽略穿透电流」的管子成立；把 $\ICBO$ 算进去就是 $\IC=\beta\IB+(1+\beta)\ICBO$。课件 p2 的箭头链取的是第二项，本讲义把它补全，是为了让 §1.3 的数字对比有出处。}
+
+\subhdr{§1.3　定量：把 $\beta$ 从 50 换成 100，会发生什么}
+
+取 $\UCC=12\ \mathrm{V}$、$\RB=200\ \mathrm{k}\Omega$、$\RC=3\ \mathrm{k}\Omega$、$\UBE=0.7\ \mathrm{V}$，只把 $\beta$ 从 50 换成 100（相当于换一只管子，或者温度升高一大截）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.5cm}p{2.4cm}p{2.4cm}p{2.0cm}p{2.6cm}@{}}
+\toprule
+\thead{电路} & \thead{$\beta$} & \thead{$\IC$} & \thead{$\UCE$} & \thead{状态}
+\\
+\midrule
+固定偏置 & 50 & $2.825\ \mathrm{mA}$ & $3.53\ \mathrm{V}$ & 放大区
+\\
+固定偏置 & 100 & $5.650\ \mathrm{mA}$ & $-4.95\ \mathrm{V}$ & 饱和（无解）
+\\
+\midrule
+分压偏置 & 50 & $1.518\ \mathrm{mA}$ & $4.35\ \mathrm{V}$ & 放大区
+\\
+分压偏置 & 100 & $1.582\ \mathrm{mA}$ & $4.06\ \mathrm{V}$ & 放大区
+\\
+\bottomrule
+\end{tabular}
+
+\aside{表中四个数由 \texttt{\_scratch/ee-20261022/c44\_check.py} 独立算出（numpy 解节点方程，不抄公式）。固定偏置：$\IB=(12-0.7)/200\,\mathrm{k}=56.5\ \mu\mathrm{A}$，$\IC=50\times56.5\ \mu=2.825\ \mathrm{mA}$，$\UCE=12-3\times2.825=3.53\ \mathrm{V}$。分压偏置的电路与参数见 §5.3 的主例题。}
+
+这张表就是 4.5 的全部动机：\textbf{固定偏置的 $\IC$ 与 $\beta$ 成正比}（$\IC$ 从 2.825 直接翻到 5.650，$\UCE$ 甚至算出负值）；\textbf{分压偏置的 $\IC$ 几乎不理 $\beta$}（只从 1.518 挪到 1.582，$+4.2\%$）。
+
+\subhdr{§1.4　出路只有一条：让 $\IC$ 从「经过 $\beta$」改成「不经过 $\beta$」}
+
+式 \eqref{eq:icbeta} 里 $\IC$ 依赖 $\beta$，是因为 $\IB$ 由 $\UCC$ 与 $\RB$ 定死、$\IC$ 再由 $\beta$ 放大。要让 $\IC$ 不看 $\beta$，只能倒过来：\textbf{先让发射极电流由一个与 $\beta$ 无关的量定死，再让 $\IC$ 跟着 $\IE$ 走}。而 $\IE=\IC+\IB=(1+\beta)\IB$，所以
+\[ \IC=\frac{\beta}{1+\beta}\,\IE . \]
+当 $\beta\gg1$ 时 $\dfrac{\beta}{1+\beta}\to1$，即 $\IC\approx\IE$——\textbf{$\beta$ 只剩一个「约等于 1」的系数}。p7 第二行公式 $\IC=\frac{\beta}{1+\beta}\IE\approx\frac{\UB}{\RE}$ 用的就是这个机制，但课件没写「为什么 $\beta/(1+\beta)$」，§3.2 补。
+
+要把 $\IE$ 定死，就需要一个与 $\beta$ 无关的电压去「卡」它：基极电位 $\UB$ 用一个分压器定死（$\RBone$、$\RBtwo$，§2），发射极串一个电阻 $\RE$ 把这个电压换成电流（$\IE=\UE/\RE\approx\UB/\RE$，§3），而 $\RE$ 会在交流通路上白吃掉增益，所以再并一个电容 $\CEcap$ 把它短路掉（§4）。四个元件，一条因果链，正好对应 p5 右图相对 p1 的全部改动。
+
+\callout{\textbf{把 §1 记成一句话}：固定偏置把 Q 点交给 $\beta$ 管，$\beta$ 一漂 Q 点就漂；分压偏置把 Q 点交给「$\RBone$、$\RBtwo$ 的分压比」管，而这个比值只由电阻决定，与 $\beta$ 无关。四个新元件的名字不重要，\textbf{它们各自按住哪个量}才重要：$\RBtwo$ 按住 $\UB$，$\RE$ 按住 $\IE$，$\CEcap$ 按住 $A_u$，$\RBone$ 与 $\RBtwo$ 一起决定「按住 $\UB$ 的力度」。}
+
+%=============================================================
+\hdr{§2}{第一个元件 $\RBtwo$：把 $\UB$ 从「$\beta$ 决定」改成「分压比决定」（p5--p6）}
+
+\subhdr{§2.1　p5 到底改了几笔}
+
+p5 把两张图并排摆开，中间一支箭头，标题栏写 「1. Development of the circuit」，右边贴一张黄条 「Keep the Q point stable」。左图（固定偏置）到右图（分压偏置）的差别只有四处：
+
+\begin{enumerate}
+\item 基极偏置电阻 $\RB$ 被拆成上下两支：$\RBone$（接 $+\UCC$）与 $\RBtwo$（接地）；
+\item 发射极多串一支 $\RE$；
+\item $\RE$ 两端并一支电容 $\CEcap$；
+\item 输入端的 $C_1$、输出端的 $C_2$ 位置不动。
+\end{enumerate}
+
+p5 一个字的解释都没有，p6--p8 才一句一个元件。这一节先把 $\RBone$、$\RBtwo$ 讲透。
+
+\subhdr{§2.2　p6 的原文与它跳掉的那一步}
+
+p6 右侧的绿框原文是：
+
+\begin{quote}
+「$\RBtwo$: stabilize \textbf{the potential of point B} by adding a bias resistor.」\\
+「If $I_2\gg\IB$」 \quad 「$*\,I_2\approx(5\sim10)\,\IB$」 \quad 「then」\\
+「$\UB=\dfrac{\RBtwo}{\RBone+\RBtwo}\UCC$」 \quad 「It is a fixed value」
+\end{quote}
+
+从 「If $I_2\gg\IB$」 到 「then $\UB=\cdots$」 中间少了一步 KCL。补出来只要三行。设 $I_2$ 为流过 $\RBone$ 的电流（向下），$I_3$ 为流过 $\RBtwo$ 的电流（向下），在 B 点写基尔霍夫电流定律：
+
+\begin{equation}\label{eq:kclB}
+I_2=I_3+\IB .
+\end{equation}
+
+而两支电阻上的电压分别是
+\[ I_2=\frac{\UCC-\UB}{\RBone},\qquad I_3=\frac{\UB}{\RBtwo} . \]
+代进 \eqref{eq:kclB}：
+\[ \frac{\UCC-\UB}{\RBone}=\frac{\UB}{\RBtwo}+\IB . \]
+\textbf{若 $\IB$ 可以忽略}（这就是 「If $I_2\gg\IB$」 的含义），上式退化成两支电阻串联分压：
+\[ \frac{\UCC-\UB}{\RBone}=\frac{\UB}{\RBtwo}\ \Longrightarrow\ \boxed{\ \UB=\frac{\RBtwo}{\RBone+\RBtwo}\UCC\ } \]
+这就是 p6 的式子，也是 p9 静态分析的第一步。\textbf{「It is a fixed value」的真正含义是}：右端只有 $\UCC$ 与两个电阻，\textbf{没有 $\beta$、没有 $\UBE$、没有温度}。
+
+\aside{这一步用到的前提是「$\IB$ 相对 $I_2$ 可以忽略」，代入本题即 $I_2\ge(5\sim10)\IB$。§2.3 把这条前提的代价算成数字。另外，$\UB$ 与 $\beta$ 无关这一点只在「忽略 $\IB$」的近似下成立；精确解里 $\IB$ 会从 $\RBone\parallel\RBtwo$ 上分走一点电压，§5.4 给出精确解与近似解的差。}
+
+\subhdr{§2.3　为什么是「$5\sim10$ 倍」，不是 100 倍}
+
+p6 只给了 $I_2\approx(5\sim10)\IB$ 这一个数字，没给理由。理由是\textbf{两条相反的要求在打架}：
+
+\begin{enumerate}
+\item \textbf{要求 $\IB$ 越小越好}（相对 $I_2$），否则分压比失真。设 $I_2=n\IB$，把 \eqref{eq:kclB} 精确解出来，$\UB$ 相对近似值下降的相对量约为 $1/(n+1)$。$n=5$ 时约 $17\%$，$n=10$ 时约 $9\%$，$n=20$ 时约 $4.5\%$。
+\item \textbf{要求 $I_2$ 本身不能太大}，因为 $I_2$ 大就意味着 $\RBone$、$\RBtwo$ 小，而 $\ri=\RBone\parallel\RBtwo\parallel\rbe$（p14），$\RBone\parallel\RBtwo$ 一小，$\ri$ 就被拉下来。
+\end{enumerate}
+
+第 2 条是跨页的：p6 讲分压的时候，$r_{\mathrm{i}}$ 的式子 \textbf{要到 p14 才出现}，中间隔 8 页。把两页合起来看才有取舍。取 $\UCC=12\ \mathrm{V}$、$\UB\approx4\ \mathrm{V}$（即 $\RBone:\RBtwo=2:1$）、$\RE=2\ \mathrm{k}\Omega$、$\beta=50$、$\rbe\approx1.06\ \mathrm{k}\Omega$，只改电阻的大小、不改比值：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{1.6cm}p{1.7cm}p{1.7cm}p{1.7cm}p{1.5cm}p{1.7cm}@{}}
+\toprule
+\thead{$\RBtwo$} & \thead{$\RBone$} & \thead{$I_2/\IB$} & \thead{$\UB$ 实际} & \thead{$\IC$} & \thead{$\UB$ 误差} & \thead{$\ri$}
+\\
+\midrule
+$5\ \mathrm{k}$ & $10\ \mathrm{k}$ & $25.9$ & $3.896\ \mathrm{V}$ & $1.567\ \mathrm{mA}$ & $2.7\%$ & $787\ \Omega$
+\\
+$10\ \mathrm{k}$ & $20\ \mathrm{k}$ & $13.5$ & $3.798\ \mathrm{V}$ & $1.518\ \mathrm{mA}$ & $5.3\%$ & $912\ \Omega$
+\\
+$20\ \mathrm{k}$ & $40\ \mathrm{k}$ & $7.3$ & $3.619\ \mathrm{V}$ & $1.431\ \mathrm{mA}$ & $10.5\%$ & $1\,024\ \Omega$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{三行数字都由 \texttt{c44\_check.py} 精确求解（B 点戴维南等效后解 $\IB$，不套近似式）。「$\UB$ 误差」是与近似值 $4.000\ \mathrm{V}$ 相比的相对偏差；$\ri$ 用 $\RBone\parallel\RBtwo\parallel\rbe$ 算，其中 $\rbe=200+\beta\cdot26/\IC$ 按各行的 $\IC$ 分别取值。}
+
+这张表就是「$5\sim10$」的来历：$n$ 从 7.3 提到 13.5，误差从 $10.5\%$ 压到 $5.3\%$，$\ri$ 只掉 $11\%$；再往上提到 26，误差只再降 $2.6$ 个点，$\ri$ 却要再掉 $14\%$。\textbf{$5\sim10$ 是「误差」与「输入电阻」两条曲线的拐点附近的整数}，不是随便写的经验数。
+
+\warnbox{\textbf{易错}：把 $\RBtwo$ 当成「基极的下偏置电阻」就完事，会漏掉两件事。（1）$\UB$ 是\textbf{近似}固定的，$\IB$ 一大就失真，所以后文凡是遇到 $\RBone\parallel\RBtwo$ 很大（比如几百 $\mathrm{k}\Omega$）的电路，都要回头检查 $I_2/\IB$ 还够不够。（2）$\RBtwo$ 在交流通路上\textbf{依然存在}（p11 的交流通路里 $\RBone$、$\RBtwo$ 并联挂在基极与地之间），它不出现在直流式子里的那个 $\beta$，在交流式子 $\ri$ 里会再出现一次。}
+
+%=============================================================
+\hdr{§3}{第二个元件 $\RE$：一条六步的负反馈链（p7）}
+
+p7 右上是绿框 「$\RE$: Keep $\IC$ stable by adding emitter resistor.」，中间是两条并列的条件与结论：
+
+\begin{quote}
+「When $\UB\gg\UBE$」 \quad 「$\UB\approx(5\sim10)\UBE$」\\
+「Then」 \quad 「$\IE=\frac{\UE}{\RE}=\frac{\UB-\UBE}{\RE}\approx\frac{\UB}{\RE}$」 \quad 「$\IC=\frac{\beta}{1+\beta}\IE\approx\frac{\UB}{\RE}$」
+\end{quote}
+
+左下是一个米黄底方框，画的是完整的负反馈链（原文按两行排）：
+
+\[ T\uparrow\ \to\ \ICEO\uparrow\ \to\ \IC\uparrow\ \to\ \IE\uparrow\ \to\ U_{\RE}\uparrow\ \to\ \UBE\downarrow\ \to\ \IB\downarrow\ \to\ \IC\downarrow \]
+
+（课件把 $U_{\RE}$ 写成 $U_{\mathrm{RE}}$，即 $\RE$ 两端电压 $U_{\RE}=\IE\RE=\UE$。）
+
+\subhdr{§3.1　第一段：为什么要「$\UB\gg\UBE$」}
+
+$\UE=\UB-\UBE$ 是一个减法，两个数越接近，差就越不可靠：$\UBE$ 随温度以约 $-2\ \mathrm{mV}/^{\circ}\mathrm{C}$ 漂移，$\UB$ 却几乎不动，所以 $\UE$ 的\textbf{相对}漂移是
+\[ \frac{\Delta\UE}{\UE}=\frac{\Delta\UBE}{\UB-\UBE}=\frac{\Delta\UBE}{(n-1)\UBE}\quad\left(\text{取}\ \UB=n\UBE\right) . \]
+而 $\IE=\UE/\RE$，所以 $\IE$ 的相对漂移与 $\UE$ 的完全相同。取 $\UBE\approx0.7\ \mathrm{V}$、室温附近 $10\,^{\circ}\mathrm{C}$ 的漂移 $\Delta\UBE\approx-0.02\ \mathrm{V}$：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{2.4cm}p{2.6cm}p{3.4cm}p{4.1cm}@{}}
+\toprule
+\thead{$n=\UB/\UBE$} & \thead{$\UB$} & \thead{$\UE$} & \thead{$\Delta\UE/\UE$} & \thead{结论}
+\\
+\midrule
+$2$ & $1.4\ \mathrm{V}$ & $0.7\ \mathrm{V}$ & $2.9\%$ & 不行：$\UBE$ 的漂移全传到 $\IE$
+\\
+$5$ & $3.5\ \mathrm{V}$ & $2.8\ \mathrm{V}$ & $0.71\%$ & 可以：压到 $1/4$
+\\
+$10$ & $7.0\ \mathrm{V}$ & $6.3\ \mathrm{V}$ & $0.32\%$ & 更好，但 $\UB$ 太靠近 $\UCC$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{这张表是本讲义按 $\Delta\UE/\UE=\Delta\UBE/[(n-1)\UBE]$ 算的，课件 p7 只给了结论 「$\UB\approx(5\sim10)\UBE$」，没给这条不等式。取 $\Delta\UBE=-0.02\ \mathrm{V}$（约 $10\,^{\circ}\mathrm{C}$ 的变化）代入本题：$n=5$ 时 $\Delta\UE/\UE=0.02/2.8=0.71\%$。}
+
+于是 p7 的两个不等式各有分工：\textbf{$\UB\gg\UBE$ 管「精度」}（让减法不吃亏），\textbf{$\RE$ 管「把电压换成电流」}（$\IE=\UE/\RE$，只要 $\RE$ 稳定，$\IE$ 就稳定），\textbf{而 $\RE$ 的取值又要让 $\UE$ 别太接近 $\UCC$}（否则 $\UCE$ 不够，管子进饱和）。三件事同时满足，才有 $\IE\approx\UB/\RE$。
+
+\subhdr{§3.2　第二段：$\IC=\dfrac{\beta}{1+\beta}\IE$ 是从哪来的}
+
+p7 直接写出这个系数。它只有一行来历：三极管的三个电流满足
+\[ \IE=\IB+\IC,\qquad \IC=\beta\IB . \]
+把第二式里的 $\IB=\IC/\beta$ 代进第一式：
+\[ \IE=\frac{\IC}{\beta}+\IC=\IC\left(1+\frac{1}{\beta}\right)=\IC\cdot\frac{\beta+1}{\beta} , \]
+两边同除 $\dfrac{\beta+1}{\beta}$：
+\begin{equation}\label{eq:icbeta_ie}
+\boxed{\ \IC=\frac{\beta}{1+\beta}\,\IE\ }
+\end{equation}
+$\beta=50$ 时 $\dfrac{\beta}{1+\beta}=\dfrac{50}{51}=0.980$；$\beta=100$ 时是 $0.990$。\textbf{从 50 变到 100，这个系数只从 0.980 变到 0.990}——这就是 §1 里「让 $\IC$ 不经过 $\beta$」的落地方式：$\beta$ 没有消失，它被压进了一个 $\approx1$ 的系数里。
+
+\aside{式 \eqref{eq:icbeta_ie} 与 p10 的 $\IB=\dfrac{1}{1+\beta}\IE$ 是同一个式子的两种写法（互为倒数关系），课件在 p7 与 p10 各写一次、都没说它们是同一件事。代入本题（$\IE=1.549\ \mathrm{mA}$，$\beta=50$）：$\IC=1.549\times50/51=1.518\ \mathrm{mA}$，与 §5.3 的精确解一致。}
+
+\subhdr{§3.3　第三段：六步链条逐步写成式子}
+
+p7 的箭头链是这一讲最重要的一页，但它只画箭头、不写式子。逐步补出来（每一步右边给出所用的关系）：
+
+\begin{enumerate}
+\item $T\uparrow$：温度升高。
+\item $\ICEO\uparrow$：反向饱和电流随温度指数上升（约每 $10\,^{\circ}\mathrm{C}$ 翻倍）。同时 $\beta$ 也上升。
+\item $\IC\uparrow$：由 \eqref{eq:icbeta}，$\IC=\beta\IB+(1+\beta)\ICBO$，两项都随温度上升。
+\item $\IE\uparrow$：$\IE=\IC+\IB$，$\IC$ 上升带动 $\IE$ 上升（$\IB$ 此时几乎没变，因为 $\UB$ 被分压器按住）。
+\item $U_{\RE}\uparrow$：$U_{\RE}=\IE\RE$，$\RE$ 是常数，$\IE$ 上升就抬高发射极电位。\textbf{这一步是整条链的枢纽}：它把「电流变大了」翻译成「发射极电位变高了」。
+\item $\UBE\downarrow$：$\UBE=\UB-\UE$，$\UB$ 被 $\RBone$、$\RBtwo$ 按住不动，$\UE$ 上升就只能让 $\UBE$ 下降。
+\item $\IB\downarrow$：发射结的输入特性是单调上升的（C4-2 p23 的那条曲线），$\UBE$ 一小，$\IB$ 就小。
+\item $\IC\downarrow$：$\IC=\beta\IB$，$\IB$ 一小，$\IC$ 被拉回来。
+\end{enumerate}
+
+\textbf{这就是「负反馈」三个字的全部内容}：输出量（$\IC$）的变化，通过 $\RE$ 变成输入量（$\UBE$）的反向变化，从而削弱自己。课件从头到尾没有出现 「negative feedback」 这个词，但 p7 左下那个方框就是它的标准画法。
+
+\subhdr{§3.4　链条走一圈能拉回多少：反馈深度}
+
+把第 5--8 步写成增量式。设某原因使 $\IC$ 增加 $\Delta\IC$，则（$\IE\approx\IC$）
+\[ \Delta U_{\RE}\approx\RE\,\Delta\IC\ \Longrightarrow\ \Delta\UBE=-\RE\,\Delta\IC\ \Longrightarrow\ \Delta\IB=\frac{\Delta\UBE}{\rbe}=-\frac{\RE\,\Delta\IC}{\rbe} , \]
+所以
+\[ \Delta\IC\big|_{\text{被拉回}}=\beta\,\Delta\IB=-\frac{\beta\RE}{\rbe}\,\Delta\IC . \]
+负号说明「拉回」，系数 $\dfrac{\beta\RE}{\rbe}$ 就是\textbf{反馈深度}。代入主例题（$\beta=50$、$\RE=2\ \mathrm{k}\Omega$、$\rbe=1.06\ \mathrm{k}\Omega$）：
+\[ \frac{\beta\RE}{\rbe}=\frac{50\times2}{1.06}\approx94 . \]
+即闭环后 $\IC$ 的扰动被压缩到原来的约 $1/(1+94)\approx1\%$。这与 §1.3 表里「$\beta$ 翻倍、$\IC$ 只动 $4.2\%$」是同一件事的两种量法（那里扰动来源是 $\beta$ 本身，所以残余还要多算一点）。
+
+\aside{这一步用的是「$\Delta\IB=\Delta\UBE/\rbe$」，即把发射结的输入特性在 Q 点附近线性化，$\rbe$ 就是那条曲线在 Q 点的斜率的倒数（C4-3 p18：$\rbe=200+\beta\cdot26/\IC$，本题 $\IC=1.518\ \mathrm{mA}$ 时 $\rbe=1\,056\ \Omega$）。没有这个线性化，第 7 步只能定性说「$\IB$ 变小」，说不出「小多少」。}
+
+\warnbox{\textbf{易错}：把 $\RE$ 的作用说成「限制电流」。$\RE$ 不限制电流，它\textbf{采样}电流——把 $\IE$ 变成 $\UE$，再用 $\UBE=\UB-\UE$ 把这份信息送回输入端。真正的「限制」是负反馈的结果，不是电阻的本性。区分方法：如果把 $\UB$ 也取消（把 $\RBone$ 短路到 $\UCC$、$\RBtwo$ 去掉），$\RE$ 就退化成普通的串联电阻，那就真的只剩「限流」，Q 点照样不稳。}
+
+%=============================================================
+\hdr{§4}{第三个元件 $\CEcap$：把 $A_u$ 从 $-1.46$ 拉回 $-142$（p8）}
+
+\subhdr{§4.1　p8 的一句原文}
+
+\begin{quote}
+「$\CEcap$: \textbf{Maintain the voltage gain $A_u$} by adding emitter capacitor.」\\
+「If it is not used, the amplified AC signal passing through $\RE$ will cause a voltage drop across it, thus reducing the output voltage.」
+\end{quote}
+
+「reducing the output voltage」——减少多少？课件不给数。这一节把它算成一个倍数。
+
+\subhdr{§4.2　如果没有 $\CEcap$：$\RE$ 也在交流回路里}
+
+静态分析里 $\RE$ 是「稳定 $\IC$」的功臣；到了交流分析，同一个 $\RE$ 变成了负担——因为交流电流 $\ie$ 也要从它身上流过。把微变等效电路（p12 的形式）与 $\RE$ 放在一起，输入回路有两个电压降：
+
+\[ u_{\mathrm{i}}=\ib\rbe+\ie\RE=\ib\rbe+(1+\beta)\ib\RE=\ib\left[\rbe+(1+\beta)\RE\right] , \]
+输出回路还是
+\[ u_{\mathrm{o}}=-\ic\RLp=-\beta\ib\RLp . \]
+两式相除：
+\begin{equation}\label{eq:au_noCE}
+\boxed{\ \Au=\frac{u_{\mathrm{o}}}{u_{\mathrm{i}}}=-\frac{\beta\RLp}{\rbe+(1+\beta)\RE}\ }
+\end{equation}
+分母多了一项 $(1+\beta)\RE$——注意它是 $\RE$ 的 $(1+\beta)$ 倍，不是 $1$ 倍。原因很直接：流过 $\RE$ 的是发射极电流 $\ie=(1+\beta)\ib$，比基极电流大 $1+\beta$ 倍，所以从基极看进去，$\RE$ 被「放大」了 $1+\beta$ 倍。
+
+\aside{式 \eqref{eq:au_noCE} 课件没有，是从 p12 的等效电路直接写的。代入主例题（$\beta=50$、$\RE=2\ \mathrm{k}\Omega$、$\rbe=1\,056\ \Omega$、$\RC=3\ \mathrm{k}\Omega$、无载 $\RLp=\RC$）：分母 $=1056+51\times2000=103\,056\ \Omega$，$\Au=-50\times3000/103056=-1.46$。}
+
+\subhdr{§4.3　有了 $\CEcap$：$\RE$ 在交流通路上消失}
+
+$\CEcap$ 与 $\RE$ 并联。只要在工作频率上
+\[ \frac{1}{\omega\CEcap}\ll \rbe+\text{（基极回路其它电阻）} , \]
+$\CEcap$ 就近似短路，$\RE$ 两端电压被钉在零，发射极在交流意义上直接接地。此时 $u_{\mathrm{i}}=\ib\rbe$，回到 p13 的式子：
+\[ \Au=-\frac{\beta\RLp}{\rbe} . \]
+
+\subhdr{§4.4　两个式子放一起看}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{4.3cm}p{3.2cm}p{2.6cm}@{}}
+\toprule
+\thead{电路} & \thead{$A_u$ 表达式} & \thead{数值} & \thead{相对}
+\\
+\midrule
+有 $\CEcap$（p13） & $-\dfrac{\beta\RLp}{\rbe}$ & $-142.0$ & $1$
+\\
+无 $\CEcap$ & $-\dfrac{\beta\RLp}{\rbe+(1+\beta)\RE}$ & $-1.456$ & $1/97.6$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{表中数字与 §6.6 的主例题同一组参数（$\UCC=12\ \mathrm{V}$、$\RBone=20\ \mathrm{k}$、$\RBtwo=10\ \mathrm{k}$、$\RC=3\ \mathrm{k}$、$\RE=2\ \mathrm{k}$、$\beta=50$、无载）。$142.0/1.456=97.6$，接近 $1+\beta\RE/\rbe=95.7$——\textbf{减去一个 $\CEcap$，增益掉将近一百倍}。这就是 p8 那句「thus reducing the output voltage」的数量级。}
+
+\warnbox{\textbf{易错}：$\CEcap$ 不是「隔直电容」，它与 $C_1$、$C_2$ 的作用完全不同。$C_1$、$C_2$ 串在信号通路里，作用是把直流挡在电路内、只让交流过去；$\CEcap$ 并在 $\RE$ 两端，作用是\textbf{在交流通路上把 $\RE$ 短路掉}。三者的共同点只有一个：对工作频率的容抗都足够小。判断方法：看它\textbf{串}在通路里还是\textbf{并}在元件两端。}
+
+\subhdr{§4.5　$\CEcap$ 到底要多大：一个可执行的条件}
+
+$\CEcap$ 要短路掉的不是 $\RE$ 本身，而是「从发射极看出去的整个阻抗」。最保守的写法是要求它的容抗远小于发射极看到的小信号电阻 $\dfrac{\rbe+\RS\parallel\RBone\parallel\RBtwo}{1+\beta}$（这个量的来历见 §7.6，它就是共射电路的「发射极侧等效电阻」）。取主例题参数、再加 $\RS=1\ \mathrm{k}\Omega$：
+\[ \frac{\rbe+\RS}{1+\beta}=\frac{1056+1000}{51}\approx40\ \Omega . \]
+若工作频率 $f=1\ \mathrm{kHz}$、$\CEcap=47\ \mu\mathrm{F}$，则
+\[ \frac{1}{2\pi f\CEcap}=\frac{1}{2\pi\times1000\times47\times10^{-6}}\approx3.4\ \Omega\ \ll\ 40\ \Omega . \]
+满足。这条判据课件没有，标 [教材补充]。
+
+\aside{「[教材补充]」标记的含义：这条内容课件 41 页里没有出现，是按 §7.6 的 $\ro$ 推导里出现的同一个量补的。读者可以只用课件给的三条判据（$\UB\gg\UBE$、$I_2\gg\IB$、$\CEcap$ 短路 $\RE$）应付作业，但要知道 $\CEcap$ 并不是「越大越好」——它只在工作频段内有效，频率一低就退回式 \eqref{eq:au_noCE}。}
+
+%=============================================================
+\hdr{§5}{静态分析：从 $\UB$ 出发的四步（p9--p10）}
+
+\subhdr{§5.1　p9 的直流通路}
+
+p9 左边是被打叉的完整电路（$\times$ 标在 $C_1$、$C_2$、$\CEcap$ 与信号源端子上），右边是重画后的直流通路：$\RBone$、$\RBtwo$ 仍挂在基极，$\RC$ 仍在集电极，$\RE$ 仍在发射极，而 $C_1$、$C_2$、$\CEcap$ 全部断开。下方并排两个式子：
+
+\[ \UB=\frac{\RBtwo}{\RBone+\RBtwo}\UCC ,\qquad \IE=\frac{\UB-\UBE}{\RE} . \]
+
+p10 接着给：
+
+\[ \IB=\frac{1}{1+\beta}\IE,\qquad \IC=\beta\IB,\qquad \UCE=\UCC-\RC\IC-\RE\IE\approx\UCC-(\RC+\RE)\IC . \]
+
+\aside{直流通路的两条规则来自 4.3（\texttt{[C4-2 p29]}：「(1) Signal source short circuit; (2) Capacitor open circuit.」）。代入本题：$C_1$、$C_2$、$\CEcap$ 三支全部开路，$u_{\mathrm{i}}$ 端子短路——于是基极只剩 $\RBone$、$\RBtwo$ 两条直流通路，发射极只剩 $\RE$。}
+
+\subhdr{§5.2　四步的顺序：为什么必须从 $\UB$ 开始}
+
+这套式子看起来只是五条，其实有严格的先后，顺序换一步就算不下去：
+
+\begin{enumerate}
+\item \textbf{算 $\UB$}：只用 $\RBone$、$\RBtwo$、$\UCC$ 三个数，与管子无关。这一步之所以能先做，前提是 $I_2\gg\IB$（§2.3 的表给了这个前提的误差）。
+\item \textbf{算 $\IE$}：$\IE=(\UB-\UBE)/\RE$。这一步只有 $\UBE$ 一个「管子参数」，而 $\UBE$ 是已知常量（约 $0.7\ \mathrm{V}$），不需要知道 $\beta$。\textbf{这是分压偏置与固定偏置最本质的差别}：$\IE$ 在第二步就定下来了，$\beta$ 还没登场。
+\item \textbf{反推 $\IB$}：$\IB=\IE/(1+\beta)$。到了这一步 $\beta$ 才出现——而且是在\textbf{分母}上。$\beta$ 变大，$\IB$ 变小，两者相抵。
+\item \textbf{算 $\IC$}：$\IC=\beta\IB=\dfrac{\beta}{1+\beta}\IE$（式 \eqref{eq:icbeta_ie}）。把第 3 步代回去，$\beta$ 又被约掉了。
+\item \textbf{算 $\UCE$}：$\UCE=\UCC-\RC\IC-\RE\IE$。这里两个电阻上的压降都要减，\textbf{不能只减 $\RC\IC$}——固定偏置电路里发射极接地，才只有一项。
+\end{enumerate}
+
+p10 把第 5 步写成 $\UCE\approx\UCC-(\RC+\RE)\IC$，用的是 $\IE\approx\IC$（即 $\beta\gg1$）。$\beta=50$ 时 $\IE/\IC=51/50=1.02$，误差 $2\%$；$\beta=10$ 时误差 $10\%$。\textbf{这个近似在小 $\beta$ 管子上会出事}，§5.5 给判据。
+
+\subhdr{§5.3　主例题全程：一组数走完静态与动态}
+
+这一节起，全讲义用同一组参数，后面 §6、§7、§8 都回到它：
+
+\begin{quote}
+$\UCC=12\ \mathrm{V}$，$\RBone=20\ \mathrm{k}\Omega$，$\RBtwo=10\ \mathrm{k}\Omega$，$\RC=3\ \mathrm{k}\Omega$，$\RE=2\ \mathrm{k}\Omega$，$\beta=50$，$\UBE=0.7\ \mathrm{V}$，无载（$\RL=\infty$）。
+\end{quote}
+
+\textbf{第 1 步}：
+\[ \UB=\frac{\RBtwo}{\RBone+\RBtwo}\UCC=\frac{10}{20+10}\times12=4.000\ \mathrm{V} . \]
+
+\textbf{第 2 步}：
+\[ \UE=\UB-\UBE=4.000-0.7=3.300\ \mathrm{V},\qquad \IE=\frac{\UE}{\RE}=\frac{3.3}{2\times10^{3}}=1.650\ \mathrm{mA} . \]
+
+\textbf{第 3 步}：
+\[ \IB=\frac{\IE}{1+\beta}=\frac{1.650}{51}=32.35\ \mu\mathrm{A} . \]
+
+\textbf{第 4 步}：
+\[ \IC=\beta\IB=50\times32.35\ \mu\mathrm{A}=1.618\ \mathrm{mA}\quad\left(=\frac{50}{51}\times1.650\right) . \]
+
+\textbf{第 5 步}：
+\[ \UC=\UCC-\RC\IC=12-3\times1.618=7.147\ \mathrm{V},\qquad \UCE=\UC-\UE=7.147-3.300=3.847\ \mathrm{V} . \]
+
+\subhdr{§5.4　同一题的精确解：近似值偏了多少}
+
+上面第 1 步用了 $I_2\gg\IB$。不近似地解，做法是把 $\RBone$、$\RBtwo$ 对基极看成一个戴维南电源：
+
+\[ U_{\mathrm{th}}=\frac{\RBtwo}{\RBone+\RBtwo}\UCC=4.000\ \mathrm{V},\qquad R_{\mathrm{th}}=\RBone\parallel\RBtwo=\frac{20\times10}{30}=6.667\ \mathrm{k}\Omega . \]
+
+然后基极回路的方程变成 $U_{\mathrm{th}}=\IB R_{\mathrm{th}}+\UBE+\IE\RE$，代入 $\IE=(1+\beta)\IB$：
+
+\[ \IB=\frac{U_{\mathrm{th}}-\UBE}{R_{\mathrm{th}}+(1+\beta)\RE}=\frac{4.000-0.7}{6\,667+51\times2\,000}=\frac{3.300}{108\,667}=30.37\ \mu\mathrm{A} , \]
+\[ \UB=U_{\mathrm{th}}-\IB R_{\mathrm{th}}=4.000-30.37\ \mu\mathrm{A}\times6\,667\ \Omega=3.798\ \mathrm{V} , \]
+\[ \IE=(1+\beta)\IB=1.549\ \mathrm{mA},\qquad \IC=1.518\ \mathrm{mA},\qquad \UCE=4.347\ \mathrm{V} . \]
+
+\aside{这一步用的是「把分压器化成戴维南等效」这条通用手法，代入本题即 $U_{\mathrm{th}}=4.000\ \mathrm{V}$、$R_{\mathrm{th}}=6.667\ \mathrm{k}\Omega$。注意 $R_{\mathrm{th}}$ 恰好就是 §2.3 表里那个把 $\UB$ 拉下来的电阻，也恰好出现在 $\ri=\RBone\parallel\RBtwo\parallel\rbe$ 里——同一个量在三处出现。}
+
+两套结果的差：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{2.3cm}p{2.3cm}p{2.3cm}p{2.4cm}@{}}
+\toprule
+\thead{量} & \thead{近似值} & \thead{精确值} & \thead{偏差} & \thead{合用？}
+\\
+\midrule
+$\UB$ & $4.000\ \mathrm{V}$ & $3.798\ \mathrm{V}$ & $+5.3\%$ & 可用
+\\
+$\IE$ & $1.650\ \mathrm{mA}$ & $1.549\ \mathrm{mA}$ & $+6.5\%$ & 可用
+\\
+$\IC$ & $1.618\ \mathrm{mA}$ & $1.518\ \mathrm{mA}$ & $+6.5\%$ & 可用
+\\
+$\UCE$ & $3.847\ \mathrm{V}$ & $4.347\ \mathrm{V}$ & $-11.5\%$ & 偏差最大
+\\
+\bottomrule
+\end{tabular}
+
+\aside{表中数字由 \texttt{c44\_check.py} 的 \texttt{ce\_divider()} 算出（先按近似公式算，再用戴维南等效解一元一次方程）。$\UCE$ 的偏差反而最大，原因是 $\UCE$ 是两个大数（$\UCC$ 与两个压降）相减的小差。\textbf{工程上：作业按课件的近似式算，检查 Q 点是否合适时要用精确值复核。}}
+
+\subhdr{§5.5　判据：Q 点落在放大区的三个条件}
+
+把上面算出的 Q 点拿去判断，要同时检查三件事：
+
+\begin{enumerate}
+\item \textbf{发射结正偏}：$\UB>\UBE$，即 $\IE>0$。本题 $4.000>0.7$，满足。
+\item \textbf{集电结反偏}：$\UC>\UB$，即 $\UCE>\UBE$。本题 $\UCE=3.847\ \mathrm{V}>0.7\ \mathrm{V}$，满足（余量约 $3\ \mathrm{V}$）。
+\item \textbf{$\UCE$ 不要太靠近饱和压降}（$U_{\mathrm{CES}}\approx0.3\ \mathrm{V}$）。本题 $3.85\ \mathrm{V}$，余量足够。
+\end{enumerate}
+
+若第 2 条不满足，管子进饱和，$\IC$ 不再等于 $\beta\IB$，上面第 3、4 步全部作废。§1.3 表里固定偏置 $\beta=100$ 那一行算出 $\UCE=-4.95\ \mathrm{V}$，就是因为公式已经跑到放大区外面去了——\textbf{负的 $\UCE$ 不代表真有个负电压，它代表「这个解不成立，管子已饱和」}。
+
+\warnbox{\textbf{易错}：算完 $\IC$ 就直接写答案，不检查 $\UCE$。§1.3 的表已经演示过后果：固定偏置在 $\beta=100$ 时算出 $\UCE=-4.95\ \mathrm{V}$，若照抄成「Q 点在 $-4.95\ \mathrm{V}$」就是错的。正确做法是：一旦 $\UCE$ 小于 $U_{\mathrm{CES}}$（或算出负值），立刻改判「饱和」，并用 $\UCE=U_{\mathrm{CES}}$ 反算 $\IC=(\UCC-U_{\mathrm{CES}})/(\RC+\RE)$。}
+
+%=============================================================
+\hdr{§6}{动态分析：交流通路、微变等效与三个参数（p11--p15）}
+
+\subhdr{§6.1　p11 的交流通路：三条规则同时用}
+
+p11 左边是原电路，红线画出了交流电流的实际路径：$+\UCC$ 端被红线连到底部公共线（电源在交流意义上短路），$C_1$、$C_2$、$\CEcap$ 三支都画成了直通。右上是重画后的交流通路：$\RBone$ 与 $\RBtwo$ 并挂在基极与地之间，$\RC$ 在集电极与地之间，$\RE$ 不见了。右下角再把 $\RBone\parallel\RBtwo$ 合写成一支 $\RB$。
+
+三条规则合起来是（前两条是 4.4 的，第三条是 p11 新用的）：
+
+\begin{enumerate}
+\item 直流电源短路：$+\UCC$ 与地同电位。所以集电极电阻 $\RC$ 变成「接在集电极与地之间」。
+\item 耦合电容短路：$C_1$、$C_2$ 直通。
+\item 旁路电容短路：$\CEcap$ 直通 $\Rightarrow$ $\RE$ 被短路 $\Rightarrow$ 发射极在交流意义上直接接地，$\RE$ \textbf{整个从交流通路里消失}。
+\end{enumerate}
+
+\aside{前两条的坐标是 \texttt{[C4-3 p19]}（该页原句 「How to deal with the capacitors?」 与 「How to deal with the DC power supply?」），重画与替换三极管的过程在 \texttt{[C4-3 p20--p21]}。代入本题：$\RBone\parallel\RBtwo=6.667\ \mathrm{k}\Omega$ 是一支，$\rbe=1.056\ \mathrm{k}\Omega$ 是另一支，两支并联挂在 B 与地之间；集电极与地之间只有 $\RC=3\ \mathrm{k}\Omega$（外加 $\RL$）。}
+
+\subhdr{§6.2　p12 的微变等效电路}
+
+p12 右上角给出三极管的小信号模型：B--E 之间一个电阻 $\rbe$，C--E 之间一个受控电流源 $\beta\ib$（箭头由 C 指向 E）。右下角把它代进交流通路，就得到这一讲后面所有推导都用的那张图：
+
+\[
+\underbrace{\RBone\parallel\RBtwo\parallel\rbe}_{\text{输入端}}
+\quad\text{与}\quad
+\underbrace{\beta\ib\ \text{（由 C 流向 E）}}_{\text{受控源}},\qquad
+\underbrace{\RC\parallel\RL}_{\RLp}
+\]
+
+\aside{模型的两个元件与参数在 \texttt{[C4-3 p14--p18]}（该处给出 「Circuit model seen from the input is $r_{\mathrm{be}}$」 与 「Circuit model seen from the output is a Controlled current source.」，以及 $\rbe=200+\beta\cdot26/\IC$）。代入本题：$\rbe=200+50\times26/1.518=200+856=1\,056\ \Omega$——注意分母取的是\textbf{精确解}的 $\IC=1.518\ \mathrm{mA}$；若取近似解的 $1.618\ \mathrm{mA}$，$\rbe=1\,004\ \Omega$，差 $5\%$，不影响任何结论的量级。}
+
+\subhdr{§6.3　p13：$A_u=-\dfrac{\beta\RLp}{\rbe}$，负号是什么意思}
+
+p13 的三步原文就是一次完整的代换：
+\[ \Au=\frac{\dot{U}_{\mathrm{o}}}{\dot{U}_{\mathrm{i}}}=\frac{-\dot{I}_{\mathrm{c}}(\RC\parallel\RL)}{\dot{I}_{\mathrm{b}}\rbe}=-\frac{\beta\RLp}{\rbe},\qquad \RLp=\RC\parallel\RL . \]
+逐步写清：
+
+\begin{enumerate}
+\item 输出端电压：受控源电流 $\beta\ib$ 由 C 流向 E，所以它是\textbf{从 C 点抽走}电流的。这股电流只能由 $\RLp$ 支路供给，而 $\RLp$ 上端是 C、下端是地，于是 $\dot{U}_{\mathrm{o}}=-\dot{I}_{\mathrm{c}}\RLp$，其中 $\dot{I}_{\mathrm{c}}=\beta\dot{I}_{\mathrm{b}}$ 取「流入受控源」为正方向。\textbf{负号从这一步来}。
+\item 输入端电压：$\dot{U}_{\mathrm{i}}=\dot{I}_{\mathrm{b}}\rbe$（B、E 之间的电压就是 $\rbe$ 上的电压）。
+\item 相除：$\Au=\dfrac{-\beta\dot{I}_{\mathrm{b}}\RLp}{\dot{I}_{\mathrm{b}}\rbe}=-\dfrac{\beta\RLp}{\rbe}$，$\dot{I}_{\mathrm{b}}$ 约掉。
+\end{enumerate}
+
+\textbf{负号 = 反相 $180^{\circ}$}。物理上：$\ib$ 增大 $\to$ $\ic$ 增大 $\to$ $\RC$ 上压降增大 $\to$ 集电极电位下降。输入上升、输出下降，这就是反相。p13 的式子里负号已经写在前面，不要到后面再补一次。
+
+\aside{这一步用的是「受控源电流只能由 $\RC\parallel\RL$ 供给」，代入本题：$\beta\ib=50\ib$，$\RLp=\RC=3\ \mathrm{k}\Omega$（无载），所以 $|\Au|=50\times3000/1056=142.0$。若接上 $\RL=3\ \mathrm{k}\Omega$，$\RLp=1.5\ \mathrm{k}\Omega$，$|\Au|$ 掉到 $71.0$——\textbf{带载使增益减半}，这就是 4.4 那道 「If there is no load resistance, will $A_u$ be bigger or smaller?」（\texttt{[C4-3 p28]}）的答案。}
+
+\subhdr{§6.4　p14：$\ri=\RBone\parallel\RBtwo\parallel\rbe\approx\rbe$}
+
+p14 的原文式子是一步到位的：
+\[ \ri=\frac{\dot{U}_{\mathrm{i}}}{\dot{I}_{\mathrm{i}}}=\frac{\dot{I}_{\mathrm{i}}(\RBone\parallel\RBtwo\parallel\rbe)}{\dot{I}_{\mathrm{i}}}=\RBone\parallel\RBtwo\parallel\rbe\approx\rbe . \]
+为什么是三者并联：输入端接到基极，从基极往地里看，有\textbf{三条互不影响的支路}——经 $\RBone$ 到 $+\UCC$（交流即地）、经 $\RBtwo$ 到地、经 $\rbe$ 到发射极（交流即地）。三条支路两端电压都是 $\dot{U}_{\mathrm{i}}$，所以等效电阻是三者并联。
+
+近似 $\approx\rbe$ 的条件是 $\RBone\parallel\RBtwo\gg\rbe$。本题 $\RBone\parallel\RBtwo=6.667\ \mathrm{k}\Omega$、$\rbe=1.056\ \mathrm{k}\Omega$，并联值 $912\ \Omega$，与 $\rbe$ 差 $14\%$——\textbf{已经不算「远大于」了}，这正是 §2.3 表里那个取舍的后果：分压器电流取得越省（电阻越大），$\ri$ 越接近 $\rbe$；取得越费（电阻越小），$\ri$ 被拉得越低。
+
+\subhdr{§6.5　p15：$\ro=U_{\mathrm{OC}}/I_{\mathrm{SC}}=\RC$，两个负号怎么来的}
+
+p15 只写一行：
+\[ \ro=\frac{\dot{U}_{\mathrm{OC}}}{\dot{I}_{\mathrm{SC}}}=\frac{-\dot{I}_{\mathrm{c}}\RC}{-\dot{I}_{\mathrm{c}}}=\RC . \]
+这一行里藏了三件事，课件一件都没说。
+
+\textbf{第一件：为什么「开路电压比短路电流」就是输出电阻。} 任何只含线性电阻与受控源的二端网络，从输出端看进去都等效成一个电压源 $U_{\mathrm{OC}}$ 串一个电阻 $\ro$（戴维南定理）。若把输出端短路，则短路电流 $\ISC=U_{\mathrm{OC}}/\ro$，所以 $\ro=U_{\mathrm{OC}}/\ISC$。这个定义与「加测试源、量电压电流」是同一件事，只是不需要真的去接测试源。
+
+\aside{戴维南定理不在本册课件的任何一页里，它是电路分析的基本定理（第一章）。用它只需一条：网络是线性的。放大器的交流通路（微变等效电路）恰好是线性的——$\beta\ib$ 是线性受控源，$\rbe$、$\RC$ 都是线性电阻，所以可以直接用。代入本题：$\ro=\RC=3\ \mathrm{k}\Omega$，与「把 $\dot{U}_{\mathrm{s}}$ 置零后在输出端加测试电流」的结果相同。}
+
+\textbf{第二件：为什么 $\dot{U}_{\mathrm{OC}}=-\dot{I}_{\mathrm{c}}\RC$。} 输出端开路时，$\RL$ 不在，C 点与地之间只剩 $\RC$ 一条支路。受控源从 C 抽走 $\dot{I}_{\mathrm{c}}$，这股电流由 $\RC$ 从地往上供给，所以 $\RC$ 上电流由地流向 C，C 点电位比地低——取 $\dot{U}_{\mathrm{o}}$ 为上正，就得负号。
+
+\textbf{第三件：为什么 $\ISC=-\dot{I}_{\mathrm{c}}$。} 输出端短路时，$\RC$ 上下两端都是地（被短路线旁路），$\RC$ 里没有电流；受控源的全部电流 $\beta\ib$ 都必须经过短路线流回。按 $\dot{I}_{\mathrm{o}}$ 的出端方向（由 C 流出），短路线里的电流是 $-\dot{I}_{\mathrm{c}}$。
+
+两个负号相除得正，所以 $\ro=\RC>0$。\textbf{如果只记结论「$\ro=\RC$」，就永远说不清这两个负号；遇到共集电路（§7.6）时 $\ro$ 不再是 $\RC$，这套符号就全乱了。}
+
+\begin{keep}
+\subhdr{§6.6　主例题的动态参数汇总}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{6.3cm}p{2.6cm}p{2.4cm}@{}}
+\toprule
+\thead{参数} & \thead{式子（课件页）} & \thead{代入} & \thead{结果}
+\\
+\midrule
+$\rbe$ & $200+\beta\cdot\dfrac{26}{\IC(\mathrm{mA})}$（C4-3 p18） & $200+50\times\dfrac{26}{1.518}$ & $1\,056\ \Omega$
+\\
+$\Au$ & $-\dfrac{\beta\RLp}{\rbe}$（p13） & $-\beta\cdot3\,000/\rbe$ & $-142.0$
+\\
+$\ri$ & $\RBone\parallel\RBtwo\parallel\rbe$（p14） & $20\parallel10\parallel1.056$ & $912\ \Omega$
+\\
+$\ro$ & $\RC$（p15） & $\RC$ & $3\ \mathrm{k}\Omega$
+\\
+\bottomrule
+\end{tabular}
+\end{keep}
+
+\aside{四个数由 \texttt{c44\_check.py} 复算（第 A 段）。注意 $\ri=912\ \Omega$ 与 $\rbe=1\,056\ \Omega$ 的差别：把 $\ri$ 当成 $\rbe$ 会在多级级联时高估 $8\%$ 的前级负载效应——单级无所谓，级联时（§8.5）不能省。}
+
+%=============================================================
+\hdr{§7}{共集电极放大电路：射极跟随器（p20--p38）}
+
+\callout{\textbf{交叉坐标}：同样内容在下一册 \texttt{Chapter Five-5-2026中白上传.pdf}（C5-5 p1--p14）有一份更细的版本，讲法更慢、图示更多。本讲义按本册 p20--p38 的页码与顺序覆盖，不删任何一页的内容；两册的记号一致（$\RB$、$\RE$、$\RL$、$\rbe$、$\beta$），可以直接对照读。}
+
+\subhdr{§7.1　p21：为什么叫「共集电极」，为什么又叫「射极跟随器」}
+
+p21 右上橙框原文：「The common-collector (CC) amplifier is usually referred to as an emitter-follower (EF).」 电路是：$\RB$ 从 $+\UCC$ 落到基极，集电极\textbf{直接接} $+\UCC$（中间没有电阻），$\RE$ 从发射极到地，输入经 $C_1$ 进基极，输出经 $C_2$ \textbf{从发射极取出}。
+
+两个名字各说一件事：
+
+\begin{enumerate}
+\item \textbf{共集电极}：看交流通路。$+\UCC$ 在交流意义上短路到地，而集电极直接接 $+\UCC$，所以\textbf{集电极在交流通路上接地}——它是输入回路与输出回路的公共端。这就是「共」字的含义，与共射（发射极公共）、共基（基极公共）是同一套命名法。
+\item \textbf{射极跟随器}：看 $A_u$。输出从发射极取，而发射极电位跟着基极走（差一个几乎恒定的 $\UBE$），所以 $u_{\mathrm{o}}$ 紧跟 $u_{\mathrm{i}}$，$A_u\approx1$ 且同相。§7.4 把它算出来。
+\end{enumerate}
+
+\subhdr{§7.2　p22--p23：静态 Q 点，KVL 只有一圈}
+
+p22 给直流通路（$C_1$、$C_2$ 开路，$+\UCC$ 保留）：基极经 $\RB$ 到 $+\UCC$，集电极直接到 $+\UCC$，发射极经 $\RE$ 到地。
+
+p23 第一步是一个黄底式子，只写结果：
+\[ \RB\IB+\UBE+\RE(1+\beta)\IB=\UCC . \]
+它是从基极出发、绕基极—发射极—地—$+\UCC$ 一圈写基尔霍夫电压定律得到的：
+
+\[ \underbrace{\RB\IB}_{\text{基极电阻上}}+\underbrace{\UBE}_{\text{发射结}}+\underbrace{\RE\IE}_{\RE\ \text{上}}=\UCC , \]
+
+再用 $\IE=(1+\beta)\IB$ 把 $\IE$ 换成 $\IB$，就得到 p23 的黄底式。\textbf{$\RE$ 前面那个 $(1+\beta)$ 就是这么来的}：流过 $\RE$ 的不是 $\IB$，是 $\IE$，而 $\IE$ 是 $\IB$ 的 $1+\beta$ 倍。
+
+解出：
+\begin{equation}\label{eq:ccib}
+\boxed{\ \IB=\frac{\UCC-\UBE}{\RB+(1+\beta)\RE}\ }
+\end{equation}
+注意分母上 $\RE$ 也被放大了 $1+\beta$ 倍。这一条与共射的分压偏置（$\IB=\IE/(1+\beta)$）形式完全不同：共集电路的 $\IB$ 是\textbf{直接被 $\RE$ 限制}的。
+
+p23 余下两式：
+\[ \IC=\beta\IB,\qquad \UCE=\UCC-\RE\IE=\UCC-\RE(1+\beta)\IB . \]
+$\UCE$ 里只有 $\RE\IE$ 一项，因为集电极没有电阻（$\UC=\UCC$ 恒成立）。
+
+\aside{这里用的是「$\IE=(1+\beta)\IB$」这一条电流分配关系，代入本题即 $\IE=51\IB$。它与 §3.2 的式 \eqref{eq:icbeta_ie} 是同一件事的两种用法：那里由 $\IE$ 求 $\IC$，这里由 $\IB$ 求 $\IE$。}
+
+\textbf{主例题二（共集）}：$\UCC=12\ \mathrm{V}$，$\RB=200\ \mathrm{k}\Omega$，$\RE=2\ \mathrm{k}\Omega$，$\RL=2\ \mathrm{k}\Omega$，$\RS=1\ \mathrm{k}\Omega$，$\beta=50$，$\UBE=0.7\ \mathrm{V}$。
+
+\[ \IB=\frac{12-0.7}{200\times10^{3}+51\times2\times10^{3}}=\frac{11.3}{302\times10^{3}}=37.42\ \mu\mathrm{A} , \]
+\[ \IE=51\times37.42\ \mu\mathrm{A}=1.908\ \mathrm{mA},\qquad \IC=50\times37.42\ \mu\mathrm{A}=1.871\ \mathrm{mA} , \]
+\[ \UCE=12-2\times1.908=12-3.816=8.183\ \mathrm{V} ,\qquad \rbe=200+50\times\frac{26}{1.871}=894.9\ \Omega . \]
+
+\subhdr{§7.3　p24--p28：交流通路与等效电路的重排}
+
+\textbf{p24}（AC path）：红线把 $+\UCC$ 端直接连到底部公共线。这一步在共射电路里也有，但意义完全不同——共射只是让 $\RC$ 下端接地，\textbf{共集是让集电极接地}。这就是「共集」二字的出处。
+
+\textbf{p25--p26}（Redraw the circuit）：把管子横过来画，B 在左、C 在下（接地）、E 在右上，输出从 E 取。这一步只是画法调整，电路没变。\textbf{但它是后面所有式子的关键}：只有把 C 挪到公共端，才看得出 $\rbe$ 串在 B 与 E 之间、受控源接在（接地的）C 与 E 之间。
+
+\textbf{p27--p28}（Equivalent circuit）：代入 $\rbe$ 与 $\beta\ib$ 之后得到
+
+\[ \text{B 点：}\underbrace{\RB\ \text{（到地）}}_{\text{并}}, \qquad \text{B--E 之间：}\underbrace{\rbe}_{\text{串}}, \qquad \text{E 点：}\underbrace{\RE\parallel\RL=\RLp}_{\text{并}},\qquad \text{C（地）--E 之间：}\beta\ib . \]
+
+\textbf{这里发生了一次「串并联关系的翻转」}：在共射电路里，$\rbe$ 是并联在输入端的（B--地）；到了共集电路，$\rbe$ \textbf{串}在 B 与 E 之间，而 E 不再是地、是输出节点。同一支电阻，位置由组态决定，不是由电阻本身决定。
+
+\subhdr{§7.4　p29：$A_u\approx1$，为什么小于 1}
+
+p29 的式子：
+\[ \Au=\frac{\dot{U}_{\mathrm{o}}}{\dot{U}_{\mathrm{i}}}=\frac{(1+\beta)\RLp}{\rbe+(1+\beta)\RLp}\approx1,\qquad \RLp=\RE\parallel\RL . \]
+补出中间那一步。输出端（E 点）的电压：
+\[ \dot{U}_{\mathrm{o}}=\dot{I}_{\mathrm{e}}\RLp=(1+\beta)\dot{I}_{\mathrm{b}}\RLp . \]
+输入端（B 到地）的电压要走两段：$\rbe$ 上的压降，加上 E 点对地的电压（E 不是地！）：
+\[ \dot{U}_{\mathrm{i}}=\dot{I}_{\mathrm{b}}\rbe+\dot{U}_{\mathrm{o}}=\dot{I}_{\mathrm{b}}\rbe+(1+\beta)\dot{I}_{\mathrm{b}}\RLp=\dot{I}_{\mathrm{b}}\left[\rbe+(1+\beta)\RLp\right] . \]
+两式相除，$\dot{I}_{\mathrm{b}}$ 约掉：
+\begin{equation}\label{eq:ccau}
+\boxed{\ \Au=\frac{(1+\beta)\RLp}{\rbe+(1+\beta)\RLp}\ }
+\end{equation}
+
+三个性质一眼可见：
+
+\begin{enumerate}
+\item \textbf{没有负号}：$\Au>0$，输出与输入\textbf{同相}。这与共射的 $-142$ 形成对照。
+\item \textbf{一定小于 1}：分子是分母的一部分，$\Au=\dfrac{1}{1+\rbe/[(1+\beta)\RLp]}<1$。p29 写 「$\approx1$」 是近似，\textbf{严格地说是「小于 1 但很接近 1」}。
+\item \textbf{约等于 1 的条件}是 $(1+\beta)\RLp\gg\rbe$，即 $\RLp\gg\rbe/(1+\beta)\approx20\ \Omega$。本题 $(1+\beta)\RLp=51\times1\,000=51\,000\ \Omega$，$\rbe=895\ \Omega$，比值 $57$，于是 $\Au=51\,000/51\,895=0.9828$。
+\end{enumerate}
+
+\aside{式 \eqref{eq:ccau} 的三步在课件里被压成一行（p29 直接给结果），补的是「$\dot{U}_{\mathrm{i}}$ 为什么要加上 $\dot{U}_{\mathrm{o}}$」这一步。代入本题：$\dot{I}_{\mathrm{b}}=37.42\ \mu\mathrm{A}$，$\dot{U}_{\mathrm{o}}=1.908\ \mathrm{mA}\times1\ \mathrm{k}\Omega=1.908\ \mathrm{V}$，$\dot{U}_{\mathrm{i}}=37.42\ \mu\mathrm{A}\times894.9\ \Omega+1.908\ \mathrm{V}=0.0335+1.908=1.942\ \mathrm{V}$，比值 $0.9828$。}
+
+\subhdr{§7.5　p30--p36：$\ri=\RB\parallel[\rbe+(1+\beta)\RLp]$，两种推导与一处矛盾}
+
+p30、p35、p36 三页都给同一个结果：
+\begin{equation}\label{eq:ccri}
+\boxed{\ \ri=\RB\parallel\left[\rbe+(1+\beta)\RLp\right]\ }
+\end{equation}
+但推导路径有两条，课件两条都画了（一条在 p31--p35 的动画里，一条在 p30 右上角的照片里）。
+
+\textbf{路径一（p35 的两栏图）：电阻折算。} p35 把同一张等效电路画了两遍，上栏标 $(1+\beta)\dot{I}_{\mathrm{b}}\RLp$，下栏标 $\dot{I}_{\mathrm{b}}\cdot(1+\beta)\RLp$，旁边两个蓝框并排。这一步的意思是：
+
+\[ \dot{U}_{\mathrm{o}}=\underbrace{(1+\beta)\dot{I}_{\mathrm{b}}\RLp}_{\text{用发射极电流写}}=\underbrace{\dot{I}_{\mathrm{b}}\cdot\left[(1+\beta)\RLp\right]}_{\text{用基极电流写}} . \]
+同一个电压，换一个电流去写，电阻就换了面孔：\textbf{从基极看进去，发射极侧的电阻 $\RLp$ 要乘 $(1+\beta)$}。于是从 B 点看进去（不含 $\RB$）的电阻是
+\[ \ri'=\frac{\dot{U}_{\mathrm{i}}}{\dot{I}_{\mathrm{b}}}=\rbe+(1+\beta)\RLp , \]
+再与 $\RB$ 并联就得到式 \eqref{eq:ccri}。
+
+\textbf{路径二（p30 右上角照片）：电导相加。} 照片里的算式（俄文记号）用电流分流写：
+\[ \ri=\frac{\dot{U}_{\mathrm{i}}}{\dot{I}_{\mathrm{i}}}=\frac{\dot{U}_{\mathrm{i}}}{\dot{I}_{\mathrm{b}}+\dot{I}_{\mathrm{i}}\big|_{\RB}} =\frac{1}{\dfrac{1}{\rbe+(1+\beta)\RLp}+\dfrac{1}{\RB}} , \]
+即「两条支路的电导相加再取倒数」。两条路径给出同一个式子。
+
+\aside{两条路径都用到同一个前提：$\rbe$ 与 $\RLp$ 是\textbf{串联}关系（中间没有其它分支）。代入本题即 $\rbe+(1+\beta)\RLp=895+51\,000=51\,895\ \Omega$。如果 $\RE$ 上还并着别的元件（例如没有 $\CEcap$ 的共射电路），这个串联关系就不成立，必须回到节点方程。}
+
+\textbf{一处矛盾}：p32 打出的式子是 $\ri=\RB\parallel[\rbe+\RLp]$，\textbf{少了 $(1+\beta)$}。p30、p35、p36 与两张照片都是 $(1+\beta)\RLp$。按 p35 的动画顺序，p31 加电流标注、p32 给出面积式、p33 加上 $(1+\beta)\dot{I}_{\mathrm{b}}$ 的标注、p35 才给出正确结果——p32 落在「$(1+\beta)$ 还没标出来」的那一帧上。\textbf{以 p35、p30、p36 为准}，p32 记入 §10 缺口清单。
+
+\textbf{数值}：$\RB=200\ \mathrm{k}\Omega$，$\rbe+(1+\beta)\RLp=51.895\ \mathrm{k}\Omega$，
+\[ \ri=\frac{200\times51.895}{200+51.895}\ \mathrm{k}\Omega=41.20\ \mathrm{k}\Omega . \]
+与共射的 $912\ \Omega$ 相比，\textbf{大了 45 倍}。p36 那句 「For CC amplifier the input resistance is greatly increased.」 的「greatly」就是 45 倍。
+
+\subhdr{§7.6　p37：$\ro$ 很小，小到什么程度}
+
+p37 的结果：
+\begin{equation}\label{eq:ccro}
+\boxed{\ \ro=\RE\parallel\frac{(\RS\parallel\RB)+\rbe}{1+\beta}\ }
+\end{equation}
+右上角贴的照片是同一结果的俄文推导（$R_{\text{\cyrfont э}}$、$R_{\text{\cyrfont б}}$、$r_{\text{\cyrfont бэ}}$、$R_{\text{\cyrfont с}}$ 分别对应 $\RE$、$\RB$、$\rbe$、$\RS$；照片里那个与 $R_{\text{\cyrfont б}}$ 并联的电阻就是 $\RS$）。课件正文只给结果，下面给完整推导。
+
+\textbf{第 1 步（置零）}：把 $\dot{U}_{\mathrm{s}}$ 置零（短路），保留 $\RS$；把 $\RL$ 断开（$\ro$ 的定义里不含负载）。
+
+\textbf{第 2 步（加测试源）}：在输出端（E 与地之间）加测试电压 $u$，量流入 E 点的电流 $i$，则 $\ro=u/i$。
+
+\textbf{第 3 步（分流）}：$i$ 分成两股——一股经 $\RE$ 入地，一股进入管子的发射极。前者是 $u/\RE$；后者是发射极电流 $\ie$，而 $\ie=\ib+\ic=(1+\beta)\ib$。
+
+\textbf{第 4 步（求 $\ib$）}：$\ib$ 从 B 流出、经 $\rbe$ 到 E，再经 $\RS\parallel\RB$ 入地（$\RS$ 与 $\RB$ 都接在 B 与地之间，且 $\dot{U}_{\mathrm{s}}$ 已置零）。所以 B 到地的总电阻是 $\rbe+(\RS\parallel\RB)$，于是
+\[ \ib=\frac{u}{\rbe+(\RS\parallel\RB)} . \]
+
+\textbf{第 5 步（合并）}：
+\[ i=\frac{u}{\RE}+(1+\beta)\ib=\frac{u}{\RE}+\frac{(1+\beta)u}{\rbe+(\RS\parallel\RB)}=u\left[\frac{1}{\RE}+\frac{1+\beta}{\rbe+(\RS\parallel\RB)}\right] , \]
+\[ \ro=\frac{u}{i}=\frac{1}{\dfrac{1}{\RE}+\dfrac{1+\beta}{\rbe+(\RS\parallel\RB)}}=\RE\parallel\frac{\rbe+(\RS\parallel\RB)}{1+\beta} . \]
+这就是式 \eqref{eq:ccro}。\textbf{机制一句话}：从输出端看进去，基极侧那一整串电阻（$\rbe+\RS\parallel\RB$）被 $(1+\beta)$ 除了——因为流入基极的电流只有发射极电流的 $1/(1+\beta)$。这与 §7.5 的「乘 $(1+\beta)$」是同一个折算规则的两次使用，方向相反：\textbf{从基极看发射极，乘；从发射极看基极，除。}
+
+\aside{这一步用的前提是「受控源电流全部由 C（地）流向 E，且 C 已交流接地」。代入本题：$\RS\parallel\RB=1\parallel200=0.995\ \mathrm{k}\Omega$，$\rbe+(\RS\parallel\RB)=895+995=1\,890\ \Omega$，除 $51$ 得 $37.06\ \Omega$，再与 $\RE=2\ \mathrm{k}\Omega$ 并联得 $\ro=36.38\ \Omega$。}
+
+\textbf{验算}：用节点法（不套公式）在输出端加 $1\ \mathrm{A}$ 测试电流，解二元一次方程组得 $u=36.3826\ \mathrm{V}$，即 $\ro=36.38\ \Omega$，与式 \eqref{eq:ccro} 的 $36.3826\ \Omega$ 完全一致（\texttt{c44\_check.py} 的 \texttt{cc\_ro\_sim()}，与公式解在小数点后四位相同）。
+
+\textbf{近似式}：若 $\RE\gg\dfrac{\rbe+(\RS\parallel\RB)}{1+\beta}$，则 $\RE$ 的并联作用可以忽略，
+\[ \ro\approx\frac{\rbe+(\RS\parallel\RB)}{1+\beta} . \]
+本题 $2\,000\gg37$，所以 $\ro\approx37.06\ \Omega$，与精确值 $36.38\ \Omega$ 差 $1.9\%$。p37 那张照片的最后一行就是这条近似（原文 「$R_{\text{\cyrfont э}}\gg\ldots$ 时 $R_{\text{\cyrfont вых}}\approx\ldots$」）。
+
+\textbf{与共射比较}：共射 $\ro=\RC=3\ \mathrm{k}\Omega$，共集 $\ro=36.4\ \Omega$，\textbf{小了 82 倍}。p37 底部那句 「For CC amplifier output resistance is very low, making it useful for driving low-resistance loads.」 的「very low」就是 82 倍。
+
+\subhdr{§7.7　p38 小结与共集三参数汇总}
+
+p38 两张橙框的原文：CC 又叫射极跟随器；「The voltage gain of a CC amplifier is approximately 1, and its main advantages are its high input resistance and low output resistance.」
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{6.5cm}p{2.7cm}p{2.5cm}@{}}
+\toprule
+\thead{参数} & \thead{式子（课件页）} & \thead{代入} & \thead{结果}
+\\
+\midrule
+$\IB$ & $\dfrac{\UCC-\UBE}{\RB+(1+\beta)\RE}$（p23） & $\dfrac{11.3}{302\,\mathrm{k}}$ & $37.42\ \mu\mathrm{A}$
+\\
+$\IE$ & $(1+\beta)\IB$（p23） & $51\times37.42\ \mu$ & $1.908\ \mathrm{mA}$
+\\
+$\UCE$ & $\UCC-\RE\IE$（p23） & $12-3.816$ & $8.183\ \mathrm{V}$
+\\
+$\Au$ & $\dfrac{(1+\beta)\RLp}{\rbe+(1+\beta)\RLp}$（p29） & $\dfrac{51\,000}{51\,895}$ & $0.9828$
+\\
+$\ri$ & $\RB\parallel[\rbe+(1+\beta)\RLp]$（p30/p36） & $200\parallel51.895$ & $41.20\ \mathrm{k}\Omega$
+\\
+$\ro$ & $\RE\parallel\dfrac{\rbe+\RS\parallel\RB}{1+\beta}$（p37） & $2\,000\parallel37.06$ & $36.38\ \Omega$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{全部数字由 \texttt{c44\_check.py} 第 C 段复算；$\ro$ 另有节点法独立验算。$\ri$ 与 $\ro$ 一个极大、一个极小，正是 p38「high input resistance and low output resistance」的定量版本：与共射相比，$\ri$ 大 45 倍、$\ro$ 小 82 倍。}
+
+%=============================================================
+\hdr{§8}{共基极与三种组态比较（p39--p41）}
+
+\subhdr{§8.1　p39：整页只有一张电路图}
+
+p39 的页眉是 「4.5.3 Common base amplifier」，页面内容是：$\RBone$、$\RBtwo$ 分压定基极，$\RC$ 在集电极，$\RE$ 在发射极，$C_1$ 把输入信号\textbf{送进发射极}，$C_2$ 从集电极取出输出，另有一支 $\CBcap$ 把基极\textbf{交流接地}。整页没有一个字，没有任何参数。
+
+这一页要靠「读拓扑」补出三件事：
+
+\begin{enumerate}
+\item \textbf{输入在发射极、输出在集电极、基极交流接地}——所以叫「共基」。判据只看一条：\textbf{哪个极在交流通路上接地，就是「共」的那一极}。共射是发射极接地（$\CEcap$ 短路 $\RE$），共集是集电极接地（直接接 $+\UCC$），共基是基极接地（$\CBcap$）。
+\item \textbf{$\CBcap$ 不能省}。没有它，基极只经 $\RBone\parallel\RBtwo$ 接地，而 $\RBone\parallel\RBtwo$ 是 $\mathrm{k}\Omega$ 量级，基极就不是「交流地」，共基的全部结论都不成立。它的作用与共射电路里的 $\CEcap$ 是同一类：\textbf{给某一点造一个交流地}。
+\item \textbf{信号从发射极进，意味着输入电流是发射极电流}（不是基极电流）。发射极电流比基极电流大 $1+\beta$ 倍，所以从发射极看进去的电阻只有基极侧的 $1/(1+\beta)$——这就是共基 $\ri$ 极小的原因（§8.2）。
+\end{enumerate}
+
+\subhdr{§8.2　[教材补充] 共基的三个参数：课件一页未给}
+
+p39 无参数、p40 只有 「$A_u$: The same as CE」、「$\ri$: small」、「$\ro$: big」 三句形容词。下面三个式子\textbf{课件没有给}，是按 §6 的同一套模型（$\rbe$ 与 $\beta\ib$）推出来的，单独成段，并在末尾用数字验算。
+
+\textbf{设基极交流接地（$\CBcap$ 存在），输入加在发射极，输出取自集电极，记 $\RLp=\RC\parallel\RL$。}
+
+\textbf{（1）电压放大倍数。} 基极接地，$\rbe$ 上的电压就是 $u_{\mathrm{i}}$（发射极对地），所以基极电流
+\[ \ib=\frac{u_{\mathrm{B}}-u_{\mathrm{E}}}{\rbe}=\frac{0-u_{\mathrm{i}}}{\rbe}=-\frac{u_{\mathrm{i}}}{\rbe} . \]
+受控源电流 $\ic=\beta\ib=-\dfrac{\beta u_{\mathrm{i}}}{\rbe}$，方向由 C 到 E。在 C 点写 KCL：流进 $\RLp$ 的电流必须等于受控源从 C 抽走的电流的相反数，于是
+\[ u_{\mathrm{o}}=\ic\cdot\left(-\RLp\right)=\frac{\beta\RLp}{\rbe}\,u_{\mathrm{i}}\ \Longrightarrow\ \boxed{\ \Au=+\frac{\beta\RLp}{\rbe}\ } \]
+\textbf{正号}：共基是同相放大。幅度与共射完全相同（$\beta\RLp/\rbe$），差别只在符号——这正是 p40 那句 「The same as CE」 的准确含义，它说的是\textbf{幅度}。
+
+\textbf{（2）输入电阻。} 输入端（发射极）看到三条支路：$\RE$ 到地、$\rbe$ 到（接地的）基极、以及受控源注入 E 点的电流。受控源向 E 注入 $-\ic=+\beta u_{\mathrm{i}}/\rbe$（因为 $\ic$ 是负的），这一股电流\textbf{与} $\rbe$ 支路的电流同向叠加，等效为 $\rbe$ 被除以 $1+\beta$：
+\[ \ri=\frac{u_{\mathrm{i}}}{\iin}=\frac{1}{\dfrac{1}{\RE}+\dfrac{1+\beta}{\rbe}}=\boxed{\ \RE\parallel\frac{\rbe}{1+\beta}\ } \]
+\textbf{（3）输出电阻。} 在 C 端加测试电压 $u$，求流入电流。B 已交流接地、E 经 $\RE$（以及置零后的 $\RS$）接地。注意：模型里 C 与 E 之间\textbf{只有受控源，没有电阻}，所以测试电压加在 C 上不会在 E 点引起任何电位；E 点电位为零 $\Rightarrow$ $\ib=0$ $\Rightarrow$ 受控源电流为零。输出端只剩 $\RC$：
+\[ \boxed{\ \ro=\RC\ } \]
+
+\textbf{数字验算}（与 §5 主例题同一 Q 点：$\IC=1.518\ \mathrm{mA}$、$\rbe=1\,056\ \Omega$、$\RE=2\ \mathrm{k}\Omega$、$\RC=3\ \mathrm{k}\Omega$、$\beta=50$、无载）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{5.6cm}p{4.0cm}p{2.4cm}@{}}
+\toprule
+\thead{参数} & \thead{本段推出的式子} & \thead{代入} & \thead{结果}
+\\
+\midrule
+$\Au$ & $+\beta\RC/\rbe$ & $50\times3\,000/1\,056$ & $+142.0$
+\\
+$\ri$ & $\RE\parallel\rbe/(1+\beta)$ & $2\,000\parallel(1\,056/51)$ & $20.50\ \Omega$
+\\
+$\ro$ & $\RC$ & $\RC$ & $3\ \mathrm{k}\Omega$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{三个数由 \texttt{c44\_check.py} 第 D 段算出（$+142.02$、$20.50\ \Omega$、$3\,000\ \Omega$）。与共射对照：$|\Au|$ 相同（142.0）、$\ri$ 小 44 倍（$912\to20.5$）、$\ro$ 相同（$3\ \mathrm{k}$ 对 $3\ \mathrm{k}$）。与共集对照：$\ri$ 小 2000 倍。这就是 p40 表里共基「$\ri$ small」与「$\ro$ 同共射」的定量版本。
+
+\textbf{一条限制}：$\ro=\RC$ 之所以这么干净，是因为 §6.2 的模型里 C 与 E 之间只有受控源、没有集电极—发射极电阻 $r_{\mathrm{ce}}$。真实管子有 $r_{\mathrm{ce}}$，接进去以后共基的 $\ro$ 会比 $\RC$ 略大。这一点课件没有讨论，标 [待确认] 处理：本讲义只写 $\ro\approx\RC$，不给更细的式子。}
+
+\subhdr{§8.3　p40 的原表：三列形容词}
+
+p40 是 4.5.4 Summary，三列电路图 + 三个蓝框，框内是六个短语。逐字抄下来（原文小写、标点照旧）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.1cm}p{3.75cm}p{3.75cm}p{3.75cm}@{}}
+\toprule
+\thead{} & \thead{CE} & \thead{CC} & \thead{CB}
+\\
+\midrule
+$\Au$ & big, the ability to amplify is good & $\approx1$, no ability to amplify & The same as CE
+\\
+$\ri$ & small, the ability to get the signal is limited. & big, capable to get the signal. & small, the ability to get the signal is limited.
+\\
+$\ro$ & big, the ability to give the signal is limited. & small, good at sending the signal to load. & big, the ability to give the signal is limited.
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{§8.4　给 p40 补两列：相位与定量门槛}
+
+p40 的表有两个洞。\textbf{第一个洞是相位}：整张表没有一个字提相位。相位信息其实已经在前面两页给过——p13 的 $\Au=-\beta\RLp/\rbe$ 带负号（反相 $180^{\circ}$），p29 的 $\Au=\dfrac{(1+\beta)\RLp}{\rbe+(1+\beta)\RLp}$ 不带负号（同相）。共基的符号 §8.2 推得为正。\textbf{第二个洞是「big / small」没有门槛}：多小算 small？下表把三个组态放在同一组 Q 点与同一组参数下（共射/CB 用 §5 主例题，共集用 §7 主例题）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{3.2cm}p{2.3cm}p{2.5cm}p{2.5cm}p{3.0cm}@{}}
+\toprule
+\thead{} & \thead{$\Au$（含符号）} & \thead{相位} & \thead{$\ri$} & \thead{$\ro$} & \thead{用途}
+\\
+\midrule
+CE & $-142.0$ & 反相 & $912\ \Omega$ & $3\ \mathrm{k}\Omega$ & 电压放大
+\\
+CC & $+0.9828$ & 同相 & $41.2\ \mathrm{k}\Omega$ & $36.4\ \Omega$ & 缓冲、驱动
+\\
+CB & $+142.0$ & 同相$^{\dagger}$ & $20.5\ \Omega$ & $3\ \mathrm{k}\Omega$ & 低阻输入、高频
+\\
+\bottomrule
+\end{tabular}
+
+\aside{相位一列的来源：CE 由 p13 的负号，CC 由 p29 的正号，CB 由 §8.2 的推导（课件 p40 只写 「The same as CE」，未区分符号）；$^{\dagger}$ 即 [教材补充]。$\ri$、$\ro$ 三行分别来自 p14/p15、p30/p37、§8.2。\textbf{门槛可以这样记}：$\ri$ 的「大/小」以 $\rbe$（约 $1\ \mathrm{k}\Omega$）为标尺——共射约等于它，共集是它的 40 倍，共基是它的 $1/50$；$\ro$ 的「大/小」以 $\RC$（$\mathrm{k}\Omega$ 量级）为标尺——共射与共基约等于它，共集只有它的 $1/80$。}
+
+\subhdr{§8.5　p41：为什么「信号还不够大」}
+
+p41 与 p40 是同一张表，只在最上面多了一条绿框：「Problem: signal is not big enough」。这一句是全讲的出口，指向下一讲的多级放大。它至少可以指两件事，两件都成立：
+
+\textbf{（1）输入信号太小，一级放不够。} §6 的主例题单级 $|\Au|=142$。若输入 $1\ \mathrm{mV}$，输出只有 $142\ \mathrm{mV}$；要推到伏级，要么提高 $|\Au|$（受 Q 点与电源限制，见下），要么级联。
+
+\textbf{（2）输出摆幅被 Q 点卡住，增益再大也放不出更大的波。} 交流输出电压的幅度上限由 $\UCE$ 的余量决定：§5 主例题 $\UCE=3.85\ \mathrm{V}$，减去饱和压降约 $0.3\ \mathrm{V}$，最大不失真幅度约 $3.5\ \mathrm{V}$（峰值）。于是输入超过
+\[ \frac{3.5\ \mathrm{V}}{142}=24.6\ \mathrm{mV} \]
+输出就要削顶——\textbf{增益再高也没用，先撑不住的是 Q 点}。
+
+这两条合起来说明：单级放大器的「放大能力」不是一个数，而是「增益」与「摆幅」两个数，前者由 $\beta\RLp/\rbe$ 定，后者由 Q 点定。要同时变大，只能级联：前级负责增益、后级负责摆幅与驱动（这也是共集电路存在的理由——它 $A_u\approx1$，但能把 $\ro$ 从 $3\ \mathrm{k}\Omega$ 压到 $36\ \Omega$，见 §7.6）。
+
+\aside{「$3.5\ \mathrm{V}$ 峰值」是本讲义按 $\UCE-U_{\mathrm{CES}}=3.847-0.3$ 估的，课件未给摆幅公式（[教材补充]）。「$24.6\ \mathrm{mV}$」由 $3.5/142$ 得，属同一来源的推算，不是课件原文。级联的具体做法（耦合方式、各级 Q 点、总增益与带宽）是下一讲的内容，本讲义不展开。}
+
+%=============================================================
+\hdr{§9}{公式卡与四步用法}
+
+\subhdr{§9.1　四步：拿到任何一个基本放大电路都能走完}
+
+\begin{enumerate}
+\item \textbf{判组态}：看交流通路里哪一极接地。发射极接地 $\to$ CE；集电极接地（直接接 $+\UCC$）$\to$ CC；基极接地（有旁路电容）$\to$ CB。这一步决定后面所有式子的形状。
+\item \textbf{画直流通路}：电容开路、信号源短路。写出「从基极出发」的那一圈 KVL，解出 $\IB$（CC 是直接解 $\IB$；CE 分压偏置是先解 $\UB$ 再解 $\IE$）。
+\item \textbf{算 Q 点并检查}：$\IC$、$\UCE$，然后查三条：发射结正偏、集电结反偏、$\UCE$ 远离饱和压降。
+\item \textbf{画交流通路}：电源短路、耦合电容短路、旁路电容短路（被旁路的元件整个消失）。代入 $\rbe$ 与 $\beta\ib$，再按 $\Au$、$\ri$、$\ro$ 的定义逐个求。
+\end{enumerate}
+
+\subhdr{§9.2　静态公式卡}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{6.6cm}p{5.6cm}@{}}
+\toprule
+\thead{组态} & \thead{关键方程} & \thead{解}
+\\
+\midrule
+CE 固定偏置 & $\IB\RB+\UBE=\UCC$ & $\IB=\frac{\UCC-\UBE}{\RB}$
+\\
+CE 分压偏置 & $\UB=\frac{\RBtwo}{\RBone+\RBtwo}\UCC$（$I_2\gg\IB$） & $\IE=\frac{\UB-\UBE}{\RE}$，$\IB=\frac{\IE}{1+\beta}$
+\\
+CC & $\RB\IB+\UBE+\RE(1+\beta)\IB=\UCC$ & $\IB=\frac{\UCC-\UBE}{\RB+(1+\beta)\RE}$
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{§9.3　动态公式卡}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.2cm}p{4.5cm}p{4.5cm}p{2.8cm}p{2.1cm}@{}}
+\toprule
+\thead{} & \thead{$\Au$} & \thead{$\ri$} & \thead{$\ro$} & \thead{$\RLp$}
+\\
+\midrule
+CE & $-\frac{\beta\RLp}{\rbe}$ & $\RBone\parallel\RBtwo\parallel\rbe$ & $\RC$ & $\RC\parallel\RL$
+\\
+CC & $\frac{(1+\beta)\RLp}{\rbe+(1+\beta)\RLp}$ & $\RB\parallel[\rbe+(1+\beta)\RLp]$ & $\RE\parallel\frac{\rbe+\RS\parallel\RB}{1+\beta}$ & $\RE\parallel\RL$
+\\
+CB & $+\frac{\beta\RLp}{\rbe}$\ $^{\dagger}$ & $\RE\parallel\frac{\rbe}{1+\beta}$\ $^{\dagger}$ & $\RC$\ $^{\dagger}$ & $\RC\parallel\RL$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{$^{\dagger}$ 标记者为 [教材补充]（§8.2），课件 p39 未给。其余各式均在课件上：CE 的 $\Au$ 在 p13、$\ri$ 在 p14、$\ro$ 在 p15；CC 的 $\Au$ 在 p29、$\ri$ 在 p30/p35/p36、$\ro$ 在 p37；CC 静态式在 p23。\textbf{注意 $\RLp$ 一列：}CE 与 CB 是 $\RC\parallel\RL$，CC 是 $\RE\parallel\RL$——写错这一格，三个参数全错。}
+
+\subhdr{§9.4　一条折算规则，三个组态通用}
+
+这一讲所有「$(1+\beta)$ 忽然出现」的地方，都是同一条规则：
+
+\begin{quote}
+\textbf{从基极往外看，发射极侧的电阻乘 $(1+\beta)$；从发射极往外看，基极侧的电阻除 $(1+\beta)$。}
+\end{quote}
+
+\begin{enumerate}
+\item 共射没有 $\CEcap$ 时：$\rbe+(1+\beta)\RE$（从基极看 $\RE$，乘）——式 \eqref{eq:au_noCE}。
+\item 共集 $\ri$：$\rbe+(1+\beta)\RLp$（从基极看发射极负载，乘）——式 \eqref{eq:ccri}。
+\item 共集 $\ro$：$\dfrac{\rbe+\RS\parallel\RB}{1+\beta}$（从发射极看基极侧，除）——式 \eqref{eq:ccro}。
+\item 共基 $\ri$：$\dfrac{\rbe}{1+\beta}$（从发射极看基极，除）——§8.2。
+\end{enumerate}
+
+记这一条，比记四个公式省力；而且它解释了「为什么共集 $\ri$ 大、$\ro$ 小」——因为它是唯一一个「从基极进去、从发射极出来」的组态，两个方向的折算各用一次。
+
+%=============================================================
+\hdr{§10}{缺口清单：14 条，逐条给页码与原文短语}
+
+每条的格式固定：\textbf{类型 · 页码} $\to$ 课件原文短语 $\to$ 缺了什么 $\to$ 补在本讲义哪一节。
+
+\gapitem{机制缺口 · p5}{「Keep the Q point stable」 / 「Voltage divider bias amplifier circuit」。缺：$\RBone$、$\RBtwo$、$\RE$、$\CEcap$ 四个元件在同一张图上一齐出现，没有一句说明「为什么要四个、各自按住哪个量」。补：§0 末尾的一句读法与 §1.4 的因果链（$\RBtwo$ 按 $\UB$、$\RE$ 按 $\IE$、$\CEcap$ 按 $A_u$）。}
+
+\gapitem{代数跳步 · p6}{「If $I_2\gg\IB$」 … 「then」 … 「$\UB=\frac{\RBtwo}{\RBone+\RBtwo}\UCC$」。缺：从「$I_2$ 远大于 $\IB$」到分压式的 KCL 那一步（$I_2=I_3+\IB$，再令 $\IB\approx0$）。补：§2.2 三行补全。}
+
+\gapitem{适用区间 · p6 与 p14}{「$*\,I_2\approx(5\sim10)\IB$」（p6）与 「$\ri=\RBone\parallel\RBtwo\parallel\rbe\approx\rbe$」（p14）。缺：这两条是互相打架的——$I_2$ 取大则分压准、但 $\RBone\parallel\RBtwo$ 小、$\ri$ 被拉低；两页隔 8 页，没有一处把它们对上。补：§2.3 的三行数值表（$I_2/\IB$ 从 7.3 到 25.9，误差从 $10.5\%$ 到 $2.7\%$，$\ri$ 从 $1\,024$ 掉到 $787\ \Omega$）。}
+
+\gapitem{机制缺口 · p7}{「When $\UB\gg\UBE$」 / 「$\UB\approx(5\sim10)\UBE$」。缺：为什么要这个不等式——$\UBE$ 随温度漂移（约 $-2\,\mathrm{mV}/^{\circ}\mathrm{C}$），$\UB$ 不动，则 $\UE=\UB-\UBE$ 的相对漂移是 $\Delta\UBE/[(n-1)\UBE]$。补：§3.1 的 $n=2/5/10$ 对照表。}
+
+\gapitem{形式改写 · p7 与 p10}{「$\IC=\frac{\beta}{1+\beta}\IE$」（p7）与 「$\IB=\frac{1}{1+\beta}\IE$」（p10）。缺：两式是同一个电流分配关系的两种写法，互为倒数，课件各写一次、都没说是一回事。补：§3.2 由 $\IE=\IB+\IC$、$\IC=\beta\IB$ 三行推出，并注明与 p10 同源。}
+
+\gapitem{答案形态 · p8}{「…cause a voltage drop across it, thus reducing the output voltage.」。缺：「减小」多少——没有 $\CEcap$ 时的 $A_u$ 表达式课件从未给出。补：§4 推出 $\Au=-\frac{\beta\RLp}{\rbe+(1+\beta)\RE}$，并用主例题算出 $-1.456$ 与 $-142.0$ 相差 $97.6$ 倍。}
+
+\gapitem{代数跳步 · p10}{「$\UCE=\UCC-\RC\IC-\RE\IE\approx\UCC-(\RC+\RE)\IC$」。缺：近似的条件（$\IE\approx\IC$，即 $\beta\gg1$）与误差量级（$\beta=50$ 时 $2\%$，$\beta=10$ 时 $10\%$）。补：§5.2 末段。}
+
+\gapitem{机制缺口 · p15}{「$\ro=\frac{U_{\mathrm{OC}}}{I_{\mathrm{SC}}}=\frac{-\ic\RC}{-\ic}=\RC$」。缺：三件事——为什么「开路电压比短路电流」等于输出电阻（戴维南）、为什么 $\dot{U}_{\mathrm{OC}}=-\ic\RC$、为什么 $\ISC=-\ic$。补：§6.5 逐条拆开，两个负号各自交代来源。}
+
+\gapitem{版本冲突 · p32 与 p35}{p32：「$\ri=\RB\parallel[\rbe+\RLp]$」；p35：「$\ri=\RB\parallel[\rbe+(1+\beta)\RLp]$」。缺：两式差一个 $(1+\beta)$，中间四页是动画过渡帧，没有一句说明哪一版作废。补：§7.5 以 p35/p30/p36 为准（给了两条独立推导与数值 $41.20\ \mathrm{k}\Omega$），并把 p32 记为动画中间帧。}
+
+\gapitem{记号缺口 · p30、p37}{两页右上角各贴一张教材翻拍照片，下标为 $R_{\text{\cyrfont э}}$、$R_{\text{\cyrfont б}}$、$r_{\text{\cyrfont бэ}}$、$R_{\text{\cyrfont к}}$（俄文记号），课件正文用的是 $\RE$、$\RB$、$\rbe$、$\RC$。缺：两套记号的对照，中文学习者读不懂照片。补：§7.5、§7.6 给出逐项对照与两条推导的复述。}
+
+\gapitem{版面重复 · p16--p18}{三页无新内容：p16 与 p2 同版、p17 与 p3 同版、p18 与 p5 同版。缺：没有任何「重复页」提示，读者会以为 4.5.1 又讲了一遍。补：§0 缝一明确「按 38 个有内容页计」，重复页不另给节。}
+
+\gapitem{内容缺口 · p39}{整页只有电路图：「4.5.3 Common base amplifier」，无一个字的说明、无一个参数。缺：$\Au$、$\ri$、$\ro$ 全部缺失；$\CBcap$ 的作用也没写。补：§8.1 从拓扑读出组态与 $\CBcap$ 的必要性，§8.2 按同一模型推出三个参数（标 [教材补充]）并用数字验算。}
+
+\gapitem{形式改写 · p40}{CB 一栏：$\Au$ 「The same as CE」。缺：只对幅度成立——共射是同相还是反相，共基是什么符号，这句话里没有；照抄会以为共基也反相。补：§8.2 推出 $\Au=+\beta\RLp/\rbe$，§8.4 表里补一列相位（CE 反相、CB 同相）。}
+
+\gapitem{机制缺口 · p40}{三列全是形容词：「big, the ability to amplify is good」 / 「small, the ability to get the signal is limited.」 / 「$\approx1$, no ability to amplify」。缺：没有一条定量门槛，无法判断「多大算 big」。补：§8.4 在同一组 Q 点下把三种组态算成数字（$\ri$：$912\ \Omega$ / $41.2\ \mathrm{k}\Omega$ / $20.5\ \Omega$；$\ro$：$3\ \mathrm{k}$ / $36.4$ / $3\ \mathrm{k}$），并给出「以 $\rbe$、$\RC$ 为标尺」的记法。}
+
+\callout{\textbf{类型分布}：机制缺口 5 条（p5、p7、p15、p40 与 p6 的跨页取舍）、代数跳步 2 条（p6、p10）、形式改写 2 条（p7/p10、p40）、适用区间 1 条（p6 与 p14）、答案形态 1 条（p8）、版本冲突 1 条（p32 与 p35）、记号缺口 1 条（p30、p37）、版面重复 1 条（p16--p18）、内容缺口 1 条（p39），共 14 条。
+
+其中\textbf{机制缺口 5 条里有 4 条是同一个毛病}：课件习惯写「因为 A，所以 B」而省掉中间那一步（p6 省 KCL、p7 省不等式、p15 省戴维南、p40 省定量）。这是这一册的系统性问题，不是个别笔误——\textbf{读这一册的方法就是：凡是看到「then」后面直接跟公式，就自己补一行}。}
+
+%=============================================================
+\hdr{§11}{易错点：每一条都能指回某个式子的某一步}
+
+\begin{enumerate}
+\item \textbf{算完 $\IC$ 不检查 $\UCE$}（§5.5）。固定偏置 $\beta=100$ 时算出 $\UCE=-4.95\ \mathrm{V}$（§1.3 表），若照抄成「Q 点在负电压」就错了。改法：一旦 $\UCE\le U_{\mathrm{CES}}$，立刻改判饱和，并用 $\IC=(\UCC-U_{\mathrm{CES}})/(\RC+\RE)$ 反算。
+
+\item \textbf{把 $\RE$ 当「限流电阻」}（§3 末尾的警告框）。$\RE$ 的作用是\textbf{采样} $\IE$ 变成 $\UE$，再靠 $\UBE=\UB-\UE$ 送回输入端；它本身并不限制电流。判据：若 $\UB$ 也取消（$\RBtwo$ 去掉、$\RBone$ 短路），$\RE$ 就退化成普通串联电阻，Q 点照样不稳。
+
+\item \textbf{把 $\CEcap$ 当「隔直电容」}（§4 末尾）。$C_1$、$C_2$ \textbf{串}在信号通路里，挡直流；$\CEcap$ \textbf{并}在 $\RE$ 两端，短路掉 $\RE$。判据：看它串在通路里还是并在元件两端。
+
+\item \textbf{直接抄 p32 的 $\ri$ 式}（§7.5）。p32 是 $\RB\parallel[\rbe+\RLp]$，少了 $(1+\beta)$；正确形式在 p35、p30、p36。代入主例题：错式给 $200\parallel51.0=40.7\ \mathrm{k}\Omega$——\textbf{数值只差 $1\%$}（因为 $\RB$ 太大，并联起来都近似 $\RB$ 与 $[\ ]$ 里那一项中小的那个），所以这个错\textbf{在小 $\RB$ 时才会暴露}，比错式更危险。
+
+\item \textbf{把共射的并联关系照搬到共集}（§7.3）。共射里 $\rbe$ 并接在输入端；共集里 $\rbe$ \textbf{串}在 B 与 E 之间，E 是输出节点不是地。判据：先画交流通路，标出哪个节点是地，再判断串并联。
+
+\item \textbf{$\ro$ 的符号随手加负号}（§6.5、§7.6）。$\ro=U_{\mathrm{OC}}/\ISC$ 里两个量都按同一个出端方向取，两个负号相除得正。共射得到 $\RC$（正），共集得到 $36.4\ \Omega$（正）——\textbf{输出电阻永远是正的}，算出负值一定是方向取反了。
+
+\item \textbf{把共集的 $A_u$ 当成 1}（§7.4）。严格地说 $\Au=\dfrac{1}{1+\rbe/[(1+\beta)\RLp]}<1$，只是很接近 1（本题 $0.9828$）。\textbf{当 $\RLp$ 很小（重载）时它会明显小于 1}：若 $\RLp=20\ \Omega$，则 $(1+\beta)\RLp=1\,020\ \Omega\approx\rbe$，$\Au=0.53$——「射极跟随器」也会跟不上。
+
+\item \textbf{以为共基「和共射一样」连符号也一样}（§8.4）。p40 的 「The same as CE」 只说幅度；共基同相、共射反相。级联时相位叠加，这一条弄错，总相位就错。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{页码对照表与三句话总结}
+
+\subhdr{§12.1　页码对照表}
+
+\par\vspace{2pt}
+{\small\renewcommand{\arraystretch}{1.05}
+\noindent\begin{tabular}{@{}p{1.5cm}p{8.6cm}p{4.9cm}@{}}
+\toprule
+\thead{本讲义} & \thead{内容} & \thead{课件页}
+\\
+\midrule
+§0 & 坐标、记号、术语、四处缝 & p1--p41（含重复页 p16--p18）
+\\
+§1 & 固定偏置 Q 点不稳的机制与定量 & p1、p2、p3（重复 p16、p17）
+\\
+§2 & $\RBtwo$：分压定 $\UB$ 与 $5\sim10$ 倍的代价 & p5、p6（重复 p18）
+\\
+§3 & $\RE$：$\UB\gg\UBE$、$\IC=\frac{\beta}{1+\beta}\IE$、六步负反馈链 & p7
+\\
+§4 & $\CEcap$：有无旁路电容的增益对比 & p8
+\\
+§5 & 静态四步、主例题全程、精确解与判据 & p9、p10
+\\
+§6 & 交流通路、微变等效、$\Au$、$\ri$、$\ro$ & p11--p15
+\\
+§7 & 共集：静态、等效重排、$\Au$、$\ri$、$\ro$、小结 & p20--p38
+\\
+§8 & 共基（p39）+ 三种组态比较（p40、p41） & p39--p41
+\\
+§9 & 公式卡、四步用法、折算规则 & 汇总（无新页）
+\\
+§10--§11 & 缺口清单 14 条；易错点 8 条 & 逐条标注（§10 每条五字段）
+\\
+\bottomrule
+\end{tabular}}
+
+\subhdr{§12.2　三句话}
+
+\begin{enumerate}
+\item \textbf{分压偏置的四个元件各自按住一个量}：$\RBone$、$\RBtwo$ 按住 $\UB$（分压比与 $\beta$ 无关），$\RE$ 把 $\IE$ 变成 $\UE$ 再送回输入端（负反馈，反馈深度 $\beta\RE/\rbe\approx94$），$\CEcap$ 在交流通路上把 $\RE$ 短路掉（否则增益掉 $97.6$ 倍）。（§1--§4）
+\item \textbf{三种组态只差一件事：哪个极交流接地}。发射极接地 $\to$ CE（反相、$\ri\approx\rbe$、$\ro\approx\RC$）；集电极接地 $\to$ CC（同相、$\Au<1$、$\ri$ 大 45 倍、$\ro$ 小 82 倍）；基极接地 $\to$ CB（同相、$|\Au|$ 同共射、$\ri$ 极小）。（§6--§8）
+\item \textbf{一条折算规则解释所有 $(1+\beta)$}：从基极看发射极侧，乘 $(1+\beta)$；从发射极看基极侧，除 $(1+\beta)$。四个公式、一个规则。（§9）
+\end{enumerate}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据 \texttt{Chapter Four-4-2026中白上传.pdf}（41 页，其中 p16--p18 为重复页；2026-10-22 逐页读扫描图）写成。公式要么标注课件页码，要么给出完整推导；§4 引言式、§6.5 两个负号、§7.6 的 $\ro$ 推导、§8.2 共基三参数、§8.5 摆幅估算为本讲义增补，后两项按 [教材补充] 单独成段。数值由 \texttt{\_scratch/ee-20261022/c44\_check.py} 用 numpy 独立复算，不抄公式。记号按 §0 统一；$\RLp$ 按组态分写（CE/CB 为 $\RC\parallel\RL$，CC 为 $\RE\parallel\RL$）。\par}
+
+\end{document}

@@ -1,0 +1,1877 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第四章第五讲 共集电极放大电路与多级放大电路 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{Ch4-5 · 共集电极与多级放大 · 精讲}{电工电子技术}
+\setlength{\emergencystretch}{3em}
+\tracinglostchars=2
+
+\begin{document}
+
+\doctitle{第四章第五讲　共集电极与多级放大电路}
+{从一只「不放大电压」的管子，到把好几只管子接起来}
+{依据：\texttt{Chapter Five-5-2026中白上传.pdf}（文件名与章节不符，实为第 4 章；p1--p50，共 50 页）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标：文件名写的是第五章，内容是第四章}
+
+\subhdr{先说清一件事：这份课件的名字是错的}
+
+课件文件名是 \texttt{Chapter Five-5-2026中白上传.pdf}，但每一页的页眉写的是
+\textbf{4.5 Basic amplifier circuit}、\textbf{4.5.2 Common collector amplifier}、
+\textbf{4.6 Multi-stage Amplifier}。也就是说，它是\textbf{第 4 章}的第五个分册，
+不是第 5 章。这不是排版小错：如果你按「第五章」去查这本教材的目录，会找不到
+共集电极与多级放大这两节，而会在第 4 章「基本放大电路」里找到。
+
+本讲义全部坐标写成 \texttt{[C5-5 p13]} 这种形式，其中前面的 \texttt{C5-5} 指\textbf{文件名}（Chapter Five-5），
+\texttt{p} 后面的数字指\textbf{该 PDF 的物理页码}（右下角那个数字，与 PDF 阅读器的页码一致，
+因为 p1 就是封面，没有前置页）。引用第 4 章前面几讲时写成 \texttt{[C4-4 p6]}、\texttt{[C4-3 p12]} 这种形式。
+
+\subhdr{这 50 页各是什么}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.35cm}p{12.1cm}@{}}
+\toprule
+\thead{页码} & \thead{内容（本讲义的落点）}
+\\
+\midrule
+p1 & 封面：4.5 Basic amplifier circuit / 4.5.2 Common collector amplifier
+\\
+p2 & 共集电极静态分析（Q 点四式）$\to$ §1
+\\
+p3 & 动态分析（2）重画电路：交流通路，UCC 被短接到地 $\to$ §2 第 1--2 步
+\\
+p4 & 动态分析（3）等效电路（空载）$\to$ §2 第 3 步
+\\
+p5 & 动态分析（3）等效电路（带 $R_{\mathrm{S}}$、$\dot U_{\mathrm{s}}$ 与 $R_{\mathrm{L}}$）$\to$ §2 第 3 步
+\\
+p6 & 动态分析（4）主要参数：$A_u$ 与「Emitter-follower」的命名 $\to$ §2 第 4 步
+\\
+p7 & 主要参数：$r_{\mathrm{i}}$，右侧贴一张推导截图（含本电路没有的 $R_{\mathrm{C}}$）$\to$ §3
+\\
+p8 & 只有等效电路图，\textbf{正文为空}（本应给 $r_{\mathrm{o}}$ 的推导）$\to$ §3 补
+\\
+p9 & $r_{\mathrm{i}}$ 的黄色结果框：\textbf{漏了 $(1+\beta)$ 因子} $\to$ §3 纠错
+\\
+p10 & 等效图上补标了注入 $R_{\mathrm{E}}\parallel R_{\mathrm{L}}$ 的电流 $(1+\beta)\dot I_{\mathrm{b}}$ $\to$ §3
+\\
+p11 & $r_{\mathrm{i}}$ 的正确式，以及「把 $R_L'$ 折算成 $(1+\beta)R_L'$」的两张对照图 $\to$ §3
+\\
+p12 & $r_{\mathrm{i}}$ 再给一次，标 GOOD，并说「输入电阻大大提高」$\to$ §4
+\\
+p13 & $r_{\mathrm{o}}$：$r_{\mathrm{o}}=\dot U_{\mathrm{OC}}/\dot I_{\mathrm{SC}}$，标 GOOD，并说「输出电阻很低，适合带低阻负载」$\to$ §3
+\\
+p14 & Summary 两块文字：EF 的命名、$A_u\approx1$ 与高低阻优点 $\to$ §4
+\\
+p15 & 4.5.3 共基极：\textbf{整页只有一张电路图}，没有一个字 $\to$ §5
+\\
+p16 & 4.5.4 三种组态定性比较（CE / CC / CB 各一栏）$\to$ §6
+\\
+p17 & 与 p16 同一张图，加一条绿框：\texttt{Problem: signal is not big enough} $\to$ §6 末
+\\
+p18 & 封面：4.6 Multi-stage Amplifier
+\\
+p19 & 什么是多级放大、为什么要多级（两句原文）$\to$ §7
+\\
+p20 & 4.6.1 耦合方式总图：四种方式，正文只解释 RC 耦合 $\to$ §7
+\\
+p21 & 同一张总图，正文换成直接耦合的一句定义 $\to$ §7
+\\
+p22 & 同一张总图 + 两个两级电路（RC 耦合 / 直接耦合）$\to$ §7
+\\
+p23 & 4.6.2 RC 耦合两级电路，三句提问（第一级？第二级？静态怎么做？）$\to$ §8
+\\
+p24 & 静态分析：两级 Q 点独立，两套公式并排 $\to$ §8
+\\
+p25 & 动态分析：微变等效电路（含级间电流 $\dot I_o$、$\dot I_i$ 的标注）$\to$ §8
+\\
+p26 & 动态结论三行：$A_u=A_{u1}A_{u2}$（$R_{L1}=r_{\mathrm{i}2}$）、$r_{\mathrm{i}}=r_{\mathrm{i}1}$、$r_{\mathrm{o}}=r_{\mathrm{o}2}$ $\to$ §8
+\\
+\bottomrule
+\end{tabular}
+
+\par\vspace{4pt}
+\noindent\begin{tabular}{@{}p{2.35cm}p{12.1cm}@{}}
+\toprule
+\thead{页码} & \thead{内容（本讲义的落点，续）}
+\\
+\midrule
+p27--p43 & 课堂小测 16 题（p33 是唯一没有题号的插图页）$\to$ §11 逐题
+\\
+p44--p47 & 例题 E1：\textbf{4.5.1 分压偏置共射}，$R_{\mathrm{E}}$ 未旁路，静态 + 动态 $\to$ §9
+\\
+p48--p50 & 例题 E2：\textbf{4.5.1 固定偏置共射带 $R_{\mathrm{E}}$}，p48 有 $C_{\mathrm{E}}$、p49 去掉 $C_{\mathrm{E}}$、p50 只做静态 $\to$ §9
+\\
+\bottomrule
+\end{tabular}
+
+\warnbox{\textbf{一处必须点明的错位}：p44--p50 的例题页眉写的是
+\textbf{4.5.1 Common emitter amplifier}，即它们属于\textbf{共射}（上一讲的内容），
+不是本讲的 4.5.2 共集电极。课件把它们放在这里，是因为「讲完三种组态要回头看共射」。
+本讲义照课件顺序放在 §9，但每个公式都标清它属于 4.5.1 还是 4.5.2，
+免得读者把 E1 的 $-\beta R_L'/[\cdots]$ 当成共集的公式。}
+
+\subhdr{三处拼接：课件自己接不上的地方}
+
+\begin{enumerate}
+
+\item \textbf{p2 从「(2)」开始}。p2 的小标题是 \texttt{(2) Q point}，p3 是 \texttt{(2) Redraw the circuit}，
+p4 是 \texttt{(3) Equivalent circuit}，p6 是 \texttt{(4) Main parameters}——可本册里
+\textbf{没有 (1)}。那个 (1)（电路结构、直流通路怎么画）在上一册
+\texttt{Chapter Four-4} 的 p20--p38 里，那里有一段 4.5.2 的简版。
+换句话说：\textbf{本册的 p1--p14 是共集电极的重讲（更细），不是第一次讲}。
+§1 会从「画直流通路」开始把 (1) 补出来，读者不必回头翻上一册。
+
+\item \textbf{p17 到 p18 之间}。p17 的绿框只有六个词
+\texttt{Problem: signal is not big enough}，翻页就是 4.6 的封面。
+从「一级放大的信号不够大」到「所以要级联」，课件一句话都没写；而这句话正是
+4.5 与 4.6 之间唯一的逻辑桥。§7 开头补这一段。
+
+\item \textbf{p23 到 p24 之间}。p23 只给了三句提问（第一级是什么？第二级是什么？
+静态分析怎么做？），一张答案也没有。§8 逐一回答，并说明这三个问题的答案
+其实是同一件事：\textbf{耦合电容把直流断开，所以两级 Q 点可以各算各的}。
+
+\end{enumerate}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.55cm}p{11.9cm}@{}}
+\toprule
+\thead{记号} & \thead{约定（与其它四讲共用）}
+\\
+\midrule
+$U_{\mathrm{CC}}$ & 集电极直流电源电压，正的直流量；本讲全部 NPN 电路，射极接地或经 $R_{\mathrm{E}}$ 接地
+\\
+$R_{\mathrm{B}}$ & 基极偏置电阻（共集、E2 的固定偏置用）
+\\
+$R_{\mathrm{B1}},R_{\mathrm{B2}}$ & 分压偏置的上、下偏置电阻（E1、两级放大的第一级用）
+\\
+$R_{\mathrm{C}}$ & 集电极电阻（共射、共基有，\textbf{共集没有}）
+\\
+$R_{\mathrm{E}}$ & 射极电阻；两级放大里第一级记 $R_{\mathrm{E1}}$、第二级记 $R_{\mathrm{E2}}$
+\\
+$R_{\mathrm{L}}$ & 负载电阻；$R_L'=R_{\mathrm{E}}\parallel R_{\mathrm{L}}$（共集）或 $R_{\mathrm{C}}\parallel R_{\mathrm{L}}$（共射）
+\\
+$C_1,C_2$ & 输入、输出耦合电容；$C_{\mathrm{E}}$ 是射极旁路电容，$C_{\mathrm{B}}$ 是基极旁路电容
+\\
+$I_{\mathrm{B}},I_{\mathrm{C}},I_{\mathrm{E}}$ & 直流（静态）电流，大写字母大写下标
+\\
+$i_{\mathrm{b}}$ & 交流（动态）基极电流，小写字母小写下标；相量记 $\dot I_{\mathrm{b}}$
+\\
+$\beta$ & 共射电流放大系数，$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$、$I_{\mathrm{E}}=(1+\beta)I_{\mathrm{B}}$
+\\
+$r_{\mathrm{be}}$ & 晶体管输入电阻（微变等效电路里 B--E 之间的电阻）
+\\
+$A_u,r_{\mathrm{i}},r_{\mathrm{o}}$ & 电压放大倍数、输入电阻、输出电阻（课件写 $A_u$、$r_{\mathrm{i}}$、$r_{\mathrm{o}}$，有的书写作 $A_v,R_i,R_o$）
+\\
+\bottomrule
+\end{tabular}
+
+\callout{\textbf{贯穿全讲的一条规则（先记住它，后面每节都在用它）}：
+把电流从射极「搬」到基极，电流要除以 $(1+\beta)$；把电阻从射极「搬」到基极，电阻要乘 $(1+\beta)$。
+反过来，把基极回路的东西从射极看过去，电阻要除以 $(1+\beta)$。
+理由只有一个：\textbf{射极电流是基极电流的 $(1+\beta)$ 倍}。
+§1 的静态公式 $(1+\beta)R_{\mathrm{E}}$、§3 的 $r_{\mathrm{i}}$ 与 $r_{\mathrm{o}}$、§8 的第二级输入电阻，
+全是这条规则的四个不同用法。}
+
+%=============================================================
+\hdr{§1}{共集电极的静态工作点：$(1+\beta)$ 是怎么冒出来的}
+
+\subhdr{先把课件缺掉的「(1)」补上：这是什么电路}
+
+p2 的电路只有四个元件：$R_{\mathrm{B}}$、$R_{\mathrm{E}}$、$C_1$、$C_2$。
+读法是一条一条对：$R_{\mathrm{B}}$ 从基极接到 $+U_{\mathrm{CC}}$（不是接地！）；
+\textbf{集电极直接接 $+U_{\mathrm{CC}}$，中间没有 $R_{\mathrm{C}}$}；
+$R_{\mathrm{E}}$ 从射极接地；输入经 $C_1$ 加在基极，输出经 $C_2$ 从射极取出。
+
+这四句话里最关键的是第二句：\textbf{没有 $R_{\mathrm{C}}$}。共射的电压放大靠
+「$i_{\mathrm{c}}$ 在 $R_{\mathrm{C}}$ 上砸出一个电压」，共集没有 $R_{\mathrm{C}}$，
+所以它先天就\textbf{不能在集电极取电压输出}，只能从射极取。
+这一点在本节只是一个观察，到 §2 会变成「输出电阻为什么小」的根源。
+
+\subhdr{直流通路：把两个电容拿掉}
+
+静态分析的规矩（[C4-4 p9--p10] 讲过的三条）是：$C_1$、$C_2$ 对直流开路，交流信号源置零，
+只留 $U_{\mathrm{CC}}$。于是电路只剩三个元件：$R_{\mathrm{B}}$、晶体管的 B--E 结、$R_{\mathrm{E}}$，
+它们串在 $U_{\mathrm{CC}}$ 与地之间。
+
+从 $+U_{\mathrm{CC}}$ 出发，沿这条唯一的通路走一圈回到地：
+\[
+U_{\mathrm{CC}}\;\longrightarrow\;R_{\mathrm{B}}\;\longrightarrow\;\text{B--E 结}\;\longrightarrow\;R_{\mathrm{E}}\;\longrightarrow\;\text{地}.
+\]
+写出 KVL，就是 p2 那个黄框：
+\[
+R_{\mathrm{B}}I_{\mathrm{B}}+U_{\mathrm{BE}}+R_{\mathrm{E}}(1+\beta)I_{\mathrm{B}}=U_{\mathrm{CC}} .
+\]
+
+\aside{这一步用的是 p2 黄框左边那一项 $R_{\mathrm{E}}(1+\beta)I_{\mathrm{B}}$ 的来源：
+$R_{\mathrm{E}}$ 上流的是 $I_{\mathrm{E}}$，而 $I_{\mathrm{E}}=I_{\mathrm{B}}+I_{\mathrm{C}}=(1+\beta)I_{\mathrm{B}}$
+（$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$ 是 [C4-3 p16] 输出特性上那族水平线的斜率关系）。
+本题里 $R_{\mathrm{B}}=R_{\mathrm{B}}$、$R_{\mathrm{E}}=R_{\mathrm{E}}$，故 $R_{\mathrm{E}}$ 上的压降写成
+$(1+\beta)R_{\mathrm{E}}I_{\mathrm{B}}$ 而不是 $R_{\mathrm{E}}I_{\mathrm{B}}$。}
+
+\subhdr{解出 $I_{\mathrm{B}}$：一个不能再省的一步}
+
+把上式里的 $I_{\mathrm{B}}$ 提出来：
+\[
+\bigl[R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}\bigr]I_{\mathrm{B}}=U_{\mathrm{CC}}-U_{\mathrm{BE}},
+\]
+\[
+\boxed{\;I_{\mathrm{B}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}}\;}
+\]
+这就是 p2 的第二行。接着三行是纯代入：
+\[
+I_{\mathrm{C}}=\beta I_{\mathrm{B}},\qquad I_{\mathrm{E}}=(1+\beta)I_{\mathrm{B}},
+\]
+\[
+U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{E}}I_{\mathrm{E}}=U_{\mathrm{CC}}-R_{\mathrm{E}}(1+\beta)I_{\mathrm{B}} .
+\]
+
+\aside{$U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{E}}I_{\mathrm{E}}$ 只减了一项，因为集电极直接接 $U_{\mathrm{CC}}$、
+没有 $R_{\mathrm{C}}$：集电极电位就是 $U_{\mathrm{CC}}$，射极电位是 $R_{\mathrm{E}}I_{\mathrm{E}}$，
+两者之差即 $U_{\mathrm{CE}}$。对比 §9 的 E2（$U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}-R_{\mathrm{E}}I_{\mathrm{E}}$），
+差别就是这一项 $R_{\mathrm{C}}I_{\mathrm{C}}$。}
+
+\subhdr{为什么分母里是 $(1+\beta)R_{\mathrm{E}}$，而不是 $R_{\mathrm{E}}$}
+
+这是本节唯一需要「想一下」的地方，也是最容易在考试里写错的地方。
+
+站在\textbf{基极}往射极看：基极只送出 $I_{\mathrm{B}}$ 这么大的电流，可这股电流到了射极
+必须变成 $I_{\mathrm{E}}=(1+\beta)I_{\mathrm{B}}$ 才能流过 $R_{\mathrm{E}}$。也就是说，
+\textbf{同样一股 $I_{\mathrm{B}}$，在 $R_{\mathrm{E}}$ 上砸出的电压是 $R_{\mathrm{E}}\cdot(1+\beta)I_{\mathrm{B}}$}，
+相当于基极看到了一只 $(1+\beta)R_{\mathrm{E}}$ 的电阻。
+
+反过来站在\textbf{射极}往基极看：$R_{\mathrm{B}}$ 上只流 $I_{\mathrm{B}}$，而射极流出的是 $(1+\beta)I_{\mathrm{B}}$，
+所以射极看到 $R_{\mathrm{B}}$ 只有 $R_{\mathrm{B}}/(1+\beta)$ 那么大。§3 求 $r_{\mathrm{o}}$ 时用的就是这个方向。
+
+\callout{\textbf{一句话记法}：\emph{电流放大多少倍，电阻就折算多少倍，方向相反。}
+基极看射极：$\times(1+\beta)$；射极看基极：$\div(1+\beta)$。
+本讲的 $(1+\beta)R_{\mathrm{E}}$（§1）、$r_{\mathrm{be}}+(1+\beta)R_L'$（§3 的 $r_{\mathrm{i}}$）、
+$(R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}})/(1+\beta)$（§3 的 $r_{\mathrm{o}}$）
+都是这一句话的三种写法。}
+
+\subhdr{和 4.5.1 的两个偏置电路摆在一起看}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.5cm}p{5.5cm}p{6.2cm}@{}}
+\toprule
+\thead{电路} & \thead{$I_{\mathrm{B}}$ 或 $I_{\mathrm{E}}$ 的式子} & \thead{出处}
+\\
+\midrule
+固定偏置共射 & $I_{\mathrm{B}}=\dfrac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}}$ & [C4-4 p6--p10]，E2 的 $R_{\mathrm{E}}=0$ 特例
+\\
+分压偏置共射 & $U_{\mathrm{B}}=\dfrac{R_{\mathrm{B2}}}{R_{\mathrm{B1}}+R_{\mathrm{B2}}}U_{\mathrm{CC}}$，$I_{\mathrm{E}}=\dfrac{U_{\mathrm{B}}-U_{\mathrm{BE}}}{R_{\mathrm{E}}}$ & [C4-4 p6--p10]；本册 p24、p45、E1
+\\
+共集电极 & $I_{\mathrm{B}}=\dfrac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}}$ & 本册 [C5-5 p2]；E2 的 $R_{\mathrm{C}}=0$ 特例
+\\
+\bottomrule
+\end{tabular}
+
+\aside{三只式子的关系可以一句话说清：\textbf{共集的 $I_{\mathrm{B}}$ 式 = 固定偏置的 $I_{\mathrm{B}}$ 式，
+分母补上 $(1+\beta)R_{\mathrm{E}}$}；而\textbf{固定偏置的 $I_{\mathrm{B}}$ 式 = 共集式子令 $R_{\mathrm{E}}=0$}。
+因为共集与固定偏置共射的直流通路只差一支 $R_{\mathrm{E}}$（共集没有 $R_{\mathrm{C}}$，固定偏置有 $R_{\mathrm{C}}$ 但它不影响 $I_{\mathrm{B}}$ 那一圈）。
+考试里若把 $(1+\beta)R_{\mathrm{E}}$ 漏成 $R_{\mathrm{E}}$，$I_{\mathrm{B}}$ 会算大 $(1+\beta)$ 倍量级，Q 点全错。}
+
+\subhdr{自拟数值走一遍（课件未给数值，这里的数字是教学补充）}
+
+课件 p2 只有符号。为了让读者看清数量级，这里给一组\textbf{自拟}的数
+（标 [教学补充·自拟数值]，不是课件的数据）：
+$U_{\mathrm{CC}}=12\ \mathrm{V}$、$U_{\mathrm{BE}}=0.7\ \mathrm{V}$、$\beta=100$、
+$R_{\mathrm{B}}=470\ \mathrm{k}\Omega$、$R_{\mathrm{E}}=3\ \mathrm{k}\Omega$。则
+\[
+(1+\beta)R_{\mathrm{E}}=101\times3\ \mathrm{k}\Omega=303\ \mathrm{k}\Omega,
+\]
+\[
+I_{\mathrm{B}}=\frac{12-0.7}{(470+303)\ \mathrm{k}\Omega}=14.6\ \mu\mathrm{A},\quad
+I_{\mathrm{C}}=1.46\ \mathrm{mA},\quad I_{\mathrm{E}}=1.47\ \mathrm{mA},
+\]
+\[
+U_{\mathrm{CE}}=12-3\times1.47=7.6\ \mathrm{V}.
+\]
+$U_{\mathrm{CE}}=7.6\ \mathrm{V}$ 落在 $U_{\mathrm{CC}}/2$ 附近，说明这组参数把 Q 点放在放大区中部——
+共集电路要「跟随」输入，Q 点必须留足上下摆幅，这是 §4 讲缓冲级时的隐含前提。
+
+\warnbox{\textbf{这里有一个容易被忽略的约束}：$(1+\beta)R_{\mathrm{E}}$ 一旦远大于 $R_{\mathrm{B}}$，
+$I_{\mathrm{B}}$ 就几乎由 $U_{\mathrm{CC}}/(1+\beta)R_{\mathrm{E}}$ 决定，Q 点对 $\beta$ 反而敏感
+（因为分母里 $\beta$ 站在 $R_{\mathrm{E}}$ 那一项上）。这正是共集电路很少单独用作第一级的原因之一：
+它的 Q 点稳定性不如分压偏置，它的价值在\textbf{动态}（§3、§4），不在静态。}
+
+
+%=============================================================
+\hdr{§2}{共集电极的动态分析：五步走完（p3--p6）}
+
+课件把动态分析拆成四个小标题：(2) Redraw the circuit、(3) Equivalent circuit、
+(4) Main parameters，然后 (4) 又重来一遍（p6--p13 一直到 $r_{\mathrm{o}}$）。这不是四条并列的路，
+而是\textbf{一条流水线}：交流通路 $\to$ 重画 $\to$ 等效电路 $\to$ 参数。
+本讲义把它整理成五步，每一步只说一件事。
+
+\subhdr{第 1 步：画交流通路——把「不变的东西」全部消掉}
+
+动态分析的规矩（[C4-3 p19--p21] 微变等效那一讲的三条，这里照抄一遍）：
+\begin{enumerate}
+\item 耦合电容 $C_1$、$C_2$ 对交流的容抗 $1/(\omega C)$ 很小，视为\textbf{短路}；
+\item 直流电源 $U_{\mathrm{CC}}$ 内阻为零，对交流也是\textbf{短路到地}；
+\item 晶体管换成它的微变等效模型（第 3 步再做）。
+\end{enumerate}
+
+p3 左图那一圈红线画的正是第 2 条：$+U_{\mathrm{CC}}$ 那个端点被一根红线牵到下方的地线上。
+这一笔的意义比它看起来大：\textbf{集电极从此接地了}。
+
+\subhdr{第 2 步：重画（p3 右图）——为什么管子被「倒过来」画}
+
+照第 1 步做完，电路变成：$R_{\mathrm{B}}$ 一端接基极、另一端接地（因为它原本接 $U_{\mathrm{CC}}$，
+而 $U_{\mathrm{CC}}$ 现在接地）；集电极接地；$R_{\mathrm{E}}$ 从射极接地；输入加在基极与地之间，
+输出取自射极与地之间。
+
+p3 右图把晶体管画成\textbf{射极在上、集电极在下}，很多人第一次看会以为画错了。没有画错：
+绘图时习惯把「公共端」放在图形的同一条边上（这里是底边，即地线），
+既然集电极接地、射极接输出，管子就必须上下颠倒过来画，否则 $R_{\mathrm{E}}$ 和输出端会被拉到图形上方去。
+换句话说，\textbf{倒过来画是为了让「地」成为一条直线}，与电路的本质无关。
+
+\callout{\textbf{「共集电极」这个名字的来历，就在这里}：第 1 步把 $U_{\mathrm{CC}}$ 短路到地之后，
+\textbf{集电极同时属于输入回路和输出回路}（输入端是 B--C，输出端是 E--C），
+所以集电极是\textbf{公共端}，这个组态就叫共集电极（common-collector）。
+同理，共射是发射极公共，共基是基极公共。§6 会把这个判据做成一张表：
+\textbf{哪个极在交流通路里接地，就是哪种组态}。}
+
+\aside{判据的用法（第 6 题、p33 那道无题号的题都要用它）：先画交流通路（电容短路、$U_{\mathrm{CC}}$ 接地），
+再看输入加在哪两极之间、输出取自哪两极之间，两处\textbf{重合的那一极}就是公共端。
+本电路：输入 B--C、输出 E--C，重合的是 C，故为共集。}
+
+\subhdr{第 3 步：等效电路（p4、p5）——受控源的方向决定一切}
+
+晶体管在交流小信号下换成两件东西：B--E 之间一只电阻 $r_{\mathrm{be}}$，
+C--E 之间一个受控电流源 $\beta\dot I_{\mathrm{b}}$，方向\textbf{由集电极流向射极}
+（从 C 节点流入、从 E 节点流出）——这是 NPN 管 $i_{\mathrm{c}}=\beta i_{\mathrm{b}}$ 的方向，
+不能画反，画反了放大倍数会变成负的。
+
+p4 是空载版（只有 $R_{\mathrm{E}}$），p5 加上信号源内阻 $R_{\mathrm{S}}$ 与负载 $R_{\mathrm{L}}$，
+p6 起一直用 p5 这一版。本讲义也只画这一版。
+
+于是得到一个两节点（B 与 E）加一个地的电路，元件只有四个：
+$R_{\mathrm{B}}$（B 到地）、$r_{\mathrm{be}}$（B 到 E）、受控源（C 到 E，而 C 就是地）、
+$R_{\mathrm{E}}\parallel R_{\mathrm{L}}$（E 到地）。记
+\[
+R_L'=R_{\mathrm{E}}\parallel R_{\mathrm{L}}=\frac{R_{\mathrm{E}}R_{\mathrm{L}}}{R_{\mathrm{E}}+R_{\mathrm{L}}} .
+\]
+
+\aside{$R_L'$ 这个记号在 p6 底部原文就写了：\texttt{where: $R_L'=R_{\mathrm{E}}//R_{\mathrm{L}}$}。
+注意它和共射的 $R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ \textbf{不是同一只电阻}：
+共集没有 $R_{\mathrm{C}}$，负载是并在 $R_{\mathrm{E}}$ 上的。记号同名、内容不同，
+这是本讲最容易混的一处，§6 的对照表会把两种 $R_L'$ 并排列出。}
+
+\subhdr{第 4 步：在射极节点写一次 KCL，$A_u$ 就出来了}
+
+这一步课件 p6 直接给结果，中间的推导没有。补出来只有三行。
+
+射极节点的电流关系：从受控源流进 E 节点的电流是 $\beta\dot I_{\mathrm{b}}$，
+从基极经 $r_{\mathrm{be}}$ 流进 E 节点的电流是 $\dot I_{\mathrm{b}}$，
+两者合起来全部流过 $R_L'$。所以
+\[
+\dot I_{R_L'}=(1+\beta)\dot I_{\mathrm{b}} .
+\]
+这一行是全部三个参数的根，p10 那张图上标的 $(1+\beta)\dot I_{\mathrm{b}}$ 就是这个意思。
+
+输出电压就是 $R_L'$ 上的电压：
+\[
+\dot U_{\mathrm{o}}=(1+\beta)\dot I_{\mathrm{b}}R_L' .
+\]
+输入电压从基极走到射极，路上只经过 $r_{\mathrm{be}}$ 与 $R_L'$ 两段：
+\[
+\dot U_{\mathrm{i}}=\dot I_{\mathrm{b}}r_{\mathrm{be}}+\dot U_{\mathrm{o}}
+=\dot I_{\mathrm{b}}\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr] .
+\]
+两式相除：
+\[
+\boxed{\;A_u=\frac{\dot U_{\mathrm{o}}}{\dot U_{\mathrm{i}}}
+=\frac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}\;}
+\]
+这正是 p6 的主公式。把它写成另一种样子，物理意义立刻出来：
+\[
+A_u=\frac{1}{1+\dfrac{r_{\mathrm{be}}}{(1+\beta)R_L'}} .
+\]
+
+\aside{这一步用到的两条前提都在本页：$r_{\mathrm{be}}$ 上的压降是 $\dot I_{\mathrm{b}}r_{\mathrm{be}}$
+（因为流过它的就是 $\dot I_{\mathrm{b}}$），$R_L'$ 上的压降是 $(1+\beta)\dot I_{\mathrm{b}}R_L'$
+（因为流过它的是 $(1+\beta)\dot I_{\mathrm{b}}$）。若把后者误写成 $\dot I_{\mathrm{b}}R_L'$，
+分母会漏掉 $(1+\beta)$，这正是 p9 那个黄框犯的错（见 §3）。}
+
+\subhdr{第 5 步：从公式读出三件事（课件只写了第一件）}
+
+（1）\textbf{$A_u$ 恒小于 1，但很接近 1}。因为分母 $r_{\mathrm{be}}+(1+\beta)R_L'$ 比分子多一项 $r_{\mathrm{be}}>0$，
+所以严格地 $A_u<1$；只要 $(1+\beta)R_L'\gg r_{\mathrm{be}}$，就有 $A_u\approx1$。
+p6 右侧那个箭头指向 \texttt{Emitter-follower}（射极跟随器）：
+射极电压跟着基极电压走，只差一点点，这正是「跟随」二字的来源。
+
+（2）\textbf{输出与输入同相}。$A_u>0$，没有负号。共射是反相（$A_u<0$），共集是同相，
+共基也是同相（§5）——三种组态的相位关系在 §6 的表里一并给出。
+
+（3）\textbf{$A_u$ 对 $R_{\mathrm{L}}$ 不敏感}。看那个分式：$R_L'$ 只出现在分母的第二项里，
+即使 $R_{\mathrm{L}}$ 从无穷大掉到 $R_{\mathrm{E}}$（即 $R_L'$ 从 $R_{\mathrm{E}}$ 掉到 $R_{\mathrm{E}}/2$），
+$A_u$ 也只在 $(1+\beta)R_L'\gg r_{\mathrm{be}}$ 的范围内从 $0.99$ 量级变到另一个 $0.99$ 量级。
+这就是 p13 那句 \texttt{GOOD} 与 p14 那句「低输出电阻」的定量根据：§3 会把 $r_{\mathrm{o}}$ 算出来。
+
+%=============================================================
+\hdr{§3}{三个参数：$A_u$ 有了，$r_{\mathrm{i}}$ 与 $r_{\mathrm{o}}$ 要自己补}
+
+课件 p7--p13 一共七页，只干一件事：给 $r_{\mathrm{i}}$ 与 $r_{\mathrm{o}}$。可这七页里
+\textbf{有两处硬伤}（p9 的黄框漏因子、p8 是空页），还有一处\textbf{记号越界}
+（p7 的截图里出现了本电路没有的 $R_{\mathrm{C}}$）。本节把三件事一起处理。
+
+\subhdr{输入电阻 $r_{\mathrm{i}}$：从基极看进去，看到的是「被放大过的 $R_L'$」}
+
+输入电阻的定义是 $r_{\mathrm{i}}=\dot U_{\mathrm{i}}/\dot I_{\mathrm{i}}$，
+其中 $\dot I_{\mathrm{i}}$ 是从信号源流进放大器总端的电流。这个总端在 B 点，
+它分成两路：一路进 $R_{\mathrm{B}}$，一路进基极（$\dot I_{\mathrm{b}}$）。所以
+\[
+\dot I_{\mathrm{i}}=\dot I_{\mathrm{b}}+\frac{\dot U_{\mathrm{i}}}{R_{\mathrm{B}}} .
+\]
+而 §2 已经算出 $\dot U_{\mathrm{i}}=\dot I_{\mathrm{b}}\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr]$，
+于是
+\[
+r_{\mathrm{i}}=\frac{\dot U_{\mathrm{i}}}{\dot I_{\mathrm{i}}}
+=\frac{\dot U_{\mathrm{i}}}{\dot U_{\mathrm{i}}/\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr]+\dot U_{\mathrm{i}}/R_{\mathrm{B}}}
+=R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr] .
+\]
+
+\aside{这一步用的是 §1 那条折算规则的第二个用法：$R_L'$ 上流的是 $\dot I_{\mathrm{b}}$ 的 $(1+\beta)$ 倍，
+所以从基极看它「变大」了 $(1+\beta)$ 倍，与 $r_{\mathrm{be}}$ 串联后再与 $R_{\mathrm{B}}$ 并联。
+p11 上半张图（电流 $(1+\beta)\dot I_{\mathrm{b}}$ 进 $R_L'$）与下半张图（同一股 $\dot I_{\mathrm{b}}$ 流过
+$(1+\beta)R_L'$）画的正是这件事：\textbf{两图对外等效}，后者才是「从基极看」的正确画法。}
+
+\warnbox{\textbf{p9 的黄框是错的，必须点出来}：p9 用醒目的黄色结果框写
+\[
+r_{\mathrm{i}}=R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+R_L'\bigr]\qquad\text{（错）}
+\]
+漏掉了 $(1+\beta)$ 因子。它与三页前的 p7、三页后的 p11 直接矛盾
+（p7、p11 写的都是 $R_{\mathrm{B}}\parallel[r_{\mathrm{be}}+(1+\beta)R_L']$）。
+从量级上看错得更明显：取本节后面那组自拟数值，$r_{\mathrm{be}}+R_L'=2.5\ \mathrm{k}\Omega$，
+而 $r_{\mathrm{be}}+(1+\beta)R_L'=152.5\ \mathrm{k}\Omega$，差 61 倍。
+p12 紧接着说「输入电阻大大提高」，若按 p9 的式子只有 $2.5\ \mathrm{k}\Omega$ 左右，
+根本谈不上「大大提高」——\textbf{所以 p9 是笔误，p7、p11 是对的}。
+本讲义全文采用
+\[
+\boxed{\;r_{\mathrm{i}}=R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr]\;}
+\]
+（p7、p11、p12 三页一致）。}
+
+\subhdr{输出电阻 $r_{\mathrm{o}}$：p8 是空页，p13 只给结果}
+
+先说 p8：它只有一张与 p5 相同的等效电路图，右边一片空白。按位置它应该承载 $r_{\mathrm{o}}$ 的推导，
+实际什么都没有；$r_{\mathrm{o}}$ 的结果在五页之后的 p13 突然出现。这是一个真正的\textbf{缺页}，
+不是「讲得快」。本小节把推导补上。
+
+\textbf{（a）$r_{\mathrm{o}}$ 的定义}。输出电阻是\textbf{从输出端看进去}的等效电阻，
+量法固定：把独立信号源置零（$\dot U_{\mathrm{s}}$ 短路，但保留 $R_{\mathrm{S}}$），
+去掉负载 $R_{\mathrm{L}}$，在输出端加一个测试电压 $\dot U_{\mathrm{t}}$，
+量流进去的电流 $\dot I_{\mathrm{t}}$，则
+\[
+r_{\mathrm{o}}=\frac{\dot U_{\mathrm{t}}}{\dot I_{\mathrm{t}}} .
+\]
+p13 用的是另一个等价写法 $r_{\mathrm{o}}=\dot U_{\mathrm{OC}}/\dot I_{\mathrm{SC}}$
+（开路电压除以短路电流）。两者为什么相等？因为从输出端看进去，整个放大器是一个线性有源网络，
+可等效成一条戴维南支路（一个电压源串联一只电阻）；它的开路电压就是戴维南电压，
+短路电流就是戴维南电压除以戴维南电阻，\textbf{这个比值正是戴维南电阻}，也就是 $r_{\mathrm{o}}$。
+
+\aside{定义里的三步「置零、去载、加测试源」在本题的代入形式：
+$\dot U_{\mathrm{s}}\to$ 短路（$R_{\mathrm{S}}$ 留在地与基极之间）、$R_{\mathrm{L}}\to$ 断开、
+输出端（射极与地之间）加 $\dot U_{\mathrm{t}}$。此时基极不是直接接地，
+而是经 $R_{\mathrm{S}}\parallel R_{\mathrm{B}}$ 接地——这一支不能漏，漏了就会得到
+$r_{\mathrm{o}}=R_{\mathrm{E}}\parallel r_{\mathrm{be}}/(1+\beta)$，少了 $R_{\mathrm{S}}$ 的贡献。}
+
+\textbf{（b）两个节点的 KCL}。设基极电位为 $\dot U_{\mathrm{b}}$，射极电位就是 $\dot U_{\mathrm{t}}$。
+基极节点只有两条路：经 $R_{\mathrm{S}}\parallel R_{\mathrm{B}}$ 到地，经 $r_{\mathrm{be}}$ 到射极：
+\[
+\frac{\dot U_{\mathrm{b}}}{R_{\mathrm{S}}\parallel R_{\mathrm{B}}}+\frac{\dot U_{\mathrm{b}}-\dot U_{\mathrm{t}}}{r_{\mathrm{be}}}=0
+\;\Longrightarrow\;
+\dot U_{\mathrm{b}}=\frac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}}{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}\dot U_{\mathrm{t}} .
+\]
+于是基极电流（由 B 流向 E）
+\[
+\dot I_{\mathrm{b}}=\frac{\dot U_{\mathrm{b}}-\dot U_{\mathrm{t}}}{r_{\mathrm{be}}}
+=-\frac{\dot U_{\mathrm{t}}}{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}} .
+\]
+射极节点的 KCL：测试源送进来的 $\dot I_{\mathrm{t}}$，加受控源送进来的 $\beta\dot I_{\mathrm{b}}$，
+等于流过 $R_{\mathrm{E}}$ 与 $r_{\mathrm{be}}$ 的两股电流之和：
+\[
+\dot I_{\mathrm{t}}+\beta\dot I_{\mathrm{b}}
+=\frac{\dot U_{\mathrm{t}}}{R_{\mathrm{E}}}+\frac{\dot U_{\mathrm{t}}-\dot U_{\mathrm{b}}}{r_{\mathrm{be}}}
+=\frac{\dot U_{\mathrm{t}}}{R_{\mathrm{E}}}-\dot I_{\mathrm{b}} .
+\]
+把 $\dot I_{\mathrm{b}}$ 代进去：
+\[
+\dot I_{\mathrm{t}}=\frac{\dot U_{\mathrm{t}}}{R_{\mathrm{E}}}-(1+\beta)\dot I_{\mathrm{b}}
+=\frac{\dot U_{\mathrm{t}}}{R_{\mathrm{E}}}+\frac{(1+\beta)\dot U_{\mathrm{t}}}{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}} .
+\]
+所以
+\[
+\frac{1}{r_{\mathrm{o}}}=\frac{\dot I_{\mathrm{t}}}{\dot U_{\mathrm{t}}}
+=\frac{1}{R_{\mathrm{E}}}+\frac{1+\beta}{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}},
+\]
+\[
+\boxed{\;r_{\mathrm{o}}=R_{\mathrm{E}}\parallel\frac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}\;}
+\]
+这就是 p13 的主公式，一字不差。
+
+\aside{这一步用的是 §1 折算规则的第三个用法（反向）：从\textbf{射极}往基极看，
+基极回路的 $(R_{\mathrm{S}}\parallel R_{\mathrm{B}})+r_{\mathrm{be}}$ 要\textbf{除以} $(1+\beta)$。
+两次折算方向相反，正是同一条规则的两个方向：从基极看射极乘 $(1+\beta)$，从射极看基极除 $(1+\beta)$。
+p13 右侧那张截图走的也是这条路（它用 $\dot U_{\mathrm{OC}}/\dot I_{\mathrm{SC}}$ 的写法），
+但截图的上下标与本讲记号不统一，且中间省掉了上面这两行 KCL。}
+
+\textbf{（c）为什么 $r_{\mathrm{o}}$ 会「很小」}。看那个分式：分子的量级是「千欧」，
+分母是 $(1+\beta)\approx100$，所以第二项只有几十欧，再与 $R_{\mathrm{E}}$（千欧级）并联，
+结果被小的那一项「压住」：
+\[
+r_{\mathrm{o}}\approx\frac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}
+\qquad(\text{当 }R_{\mathrm{E}}\text{ 远大于该项时}) .
+\]
+这正是 p13 底部那句
+\textit{For CC amplifier output resistance is very low, making it useful for driving low-resistance loads}
+的定量根据：\textbf{输出电阻低 = 带得动低阻负载 = 输出电压不会被负载拽下去}。
+
+\subhdr{三个参数汇总（本讲义的记号）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{7.5cm}p{4.2cm}@{}}
+\toprule
+\thead{参数} & \thead{本电路的式子} & \thead{课件出处}
+\\
+\midrule
+$A_u$ & $\dfrac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}\approx1$，同相 & p6
+\\
+$r_{\mathrm{i}}$ & $R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr]$，比共射大得多 & p7、p11、p12（\textbf{p9 错}）
+\\
+$r_{\mathrm{o}}$ & $R_{\mathrm{E}}\parallel\dfrac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}$，几十欧量级 & p13（\textbf{p8 空页}）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{自拟数值算一遍（[教学补充·自拟数值]，非课件数据）}
+
+沿用 §1 那组参数，再补三个：$r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、
+$R_{\mathrm{L}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{S}}=1\ \mathrm{k}\Omega$。则
+\[
+R_L'=3\parallel3=1.5\ \mathrm{k}\Omega,\qquad (1+\beta)R_L'=101\times1.5=151.5\ \mathrm{k}\Omega,
+\]
+\[
+A_u=\frac{151.5}{1+151.5}=0.9934,\qquad
+r_{\mathrm{i}}=470\parallel(1+151.5)=115\ \mathrm{k}\Omega,
+\]
+\[
+r_{\mathrm{o}}=3\ \mathrm{k}\Omega\parallel\frac{1\parallel470+1}{101}\ \mathrm{k}\Omega
+=3\ \mathrm{k}\Omega\parallel19.8\ \Omega=19.7\ \Omega .
+\]
+三个数放在一起看，射极跟随器的「性格」就出来了：
+\textbf{电压几乎不放大（$0.993$）、输入电阻上百千欧、输出电阻只有二十欧}。
+对比同一只管子做共射（取 $R_{\mathrm{C}}=3\ \mathrm{k}\Omega$）：
+$A_u=-300$、$r_{\mathrm{i}}\approx r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、$r_{\mathrm{o}}\approx3\ \mathrm{k}\Omega$。
+共集的 $r_{\mathrm{i}}$ 是共射的 $115$ 倍，$r_{\mathrm{o}}$ 是共射的 $1/150$——这正是 §4 要用的那组对比。
+
+%=============================================================
+\hdr{§4}{射极跟随器为什么能当缓冲级（p12、p14）}
+
+\subhdr{课件 p14 的两句话}
+
+p14 是 Summary，只有两个文字框：
+\begin{enumerate}
+\item \textit{The common-collector (CC) amplifier is usually referred to as an emitter-follower (EF).}
+\item \textit{The voltage gain of a CC amplifier is approximately 1, and its main advantages are its high input resistance and low output resistance.}
+\end{enumerate}
+第一句给名字，第二句给「$A_u\approx1$ + 高输入电阻 + 低输出电阻」。
+但\textbf{为什么这三件事凑在一起就叫「适合做缓冲」}，课件没有说。本节补这一句。
+
+\subhdr{「缓冲」要解决的是什么问题}
+
+两级放大直接相连时，前级的输出端看到的是后级的输入端。若后级输入电阻小，
+前级就被「拽」住了：它本来能输出很高的电压，可一接上负载，电压大半掉在自己的输出电阻上。
+
+拿 §3 那组数算一遍最清楚。第一级是共射（$A_u=-\beta R_L'/r_{\mathrm{be}}$，$r_{\mathrm{o}}\approx R_{\mathrm{C}}=3\ \mathrm{k}\Omega$）：
+\begin{itemize}
+\item 空载（$R_{\mathrm{L}}=\infty$）：$A_{u1}=-300$；
+\item 直接带 $3\ \mathrm{k}\Omega$ 负载：$R_L'=3\parallel3=1.5\ \mathrm{k}\Omega$，$A_{u1}=-150$，\textbf{掉了一半}；
+\item 中间插一级共集（$r_{\mathrm{i}}=115\ \mathrm{k}\Omega$）：第一级看到的负载变成 $3\parallel115=2.92\ \mathrm{k}\Omega$，
+$A_{u1}=-292$，再乘缓冲级的 $A_{u2}=0.993$，总计 $-290$。
+\end{itemize}
+\textbf{插入一级电压增益只有 0.993 的电路，总增益反而从 150 回到 290}。
+这不是悖论：缓冲级用「自己不吃电流」（$r_{\mathrm{i}}$ 大）换来了「前级不被拽住」，
+再用「自己能吐电流」（$r_{\mathrm{o}}$ 小）去带动真正的负载。
+
+\aside{这一段的算式全部来自 §3 的三个参数，代入形式为
+$A_{u1}=-\beta R_L'/r_{\mathrm{be}}$（共射，[C4-4 p13] 讲过）、
+$A_{u2}=A_u$（§2 的共集式）、$R_{L1}=r_{\mathrm{i}2}$（§8 会正式讲这条「后级输入电阻就是前级负载」）。
+三个式子都是本讲义已经推过的，没有新前提。}
+
+\subhdr{什么时候该插一级射极跟随器}
+
+三条判据，都能在课件页面上找到落点：
+\begin{enumerate}
+\item \textbf{信号源内阻大}。信号源经 $R_{\mathrm{S}}$ 接到放大器，$r_{\mathrm{i}}$ 越大，
+分到放大器输入端的电压越大（分压比 $r_{\mathrm{i}}/(R_{\mathrm{S}}+r_{\mathrm{i}})$）。
+共集的 $r_{\mathrm{i}}$ 上百千欧，p12 那句 \textit{For CC amplifier the input resistance is greatly increased}
+就是这个意思。
+\item \textbf{负载电阻小}。负载 $R_{\mathrm{L}}$ 与 $r_{\mathrm{o}}$ 分压，$r_{\mathrm{o}}$ 越小，
+负载上拿到的电压越接近开路电压。共集的 $r_{\mathrm{o}}$ 只有几十欧，
+p13 那句「适合带低阻负载」就是这个意思。
+\item \textbf{需要同相}。共集不反相，接在反馈环里不会额外引入 $180^\circ$ 的相移
+（这一点课件没写，属 [教材补充] 的用法提示）。
+\end{enumerate}
+
+\warnbox{\textbf{代价也要说清（课件只讲优点）}：
+（1）$A_u$ 严格小于 1，插一级就损失百分之几的电压增益；
+（2）共集的 Q 点由 $R_{\mathrm{B}}$ 与 $(1+\beta)R_{\mathrm{E}}$ 决定（§1），
+$R_{\mathrm{E}}$ 上的直流压降会吃掉一部分输出摆幅，射极电位的直流分量使输出摆幅先天比共射小；
+（3）它的「高输入电阻」是相对的，仍受 $R_{\mathrm{B}}$ 旁路——$r_{\mathrm{i}}=R_{\mathrm{B}}\parallel[\cdots]$，
+若 $R_{\mathrm{B}}$ 取得小（为了 Q 点），$r_{\mathrm{i}}$ 就被 $R_{\mathrm{B}}$ 卡住。
+这三点课件都没提，标 [教材补充]。}
+
+
+%=============================================================
+\hdr{§5}{共基极：一张电路图撑起一节（p15）}
+
+p15 的标题是 4.5.3 Common base amplifier，整页内容只有一张电路图：
+没有文字、没有公式、没有 Q 点。这不是扫描丢了内容，是课件本身只给了图。
+本节按 4.5.2 的同样五步把它补完；凡是课件没给、由本讲义推出来的，都标 [教材补充]。
+
+\subhdr{识图：五个元件各就各位}
+
+把 p15 的图逐条读出来：
+$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$ 从 $+U_{\mathrm{CC}}$ 到地分压，中点接基极；
+$C_{\mathrm{B}}$ 从基极中点接到地（\textbf{基极旁路电容}）；
+$C_1$ 把输入 $u_{\mathrm{i}}$ 送到\textbf{射极}；$R_{\mathrm{C}}$ 在集电极，
+经 $C_2$ 取出输出 $u_{\mathrm{o}}$；$R_{\mathrm{E}}$ 从射极接地。
+
+与共射的图相比，只差两处：输入从基极挪到了射极，基极多了一只 $C_{\mathrm{B}}$ 到地。
+就这两处，把组态换了个遍。
+
+\subhdr{静态：与分压偏置共射完全一样}
+
+$C_1$、$C_2$、$C_{\mathrm{B}}$ 对直流开路，直流通路里只剩
+$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$、$R_{\mathrm{C}}$、$R_{\mathrm{E}}$ 与晶体管，
+\textbf{与 4.5.1 的分压偏置共射一模一样}。所以 Q 点公式直接照抄（[C4-4 p6--p10]）：
+\[
+U_{\mathrm{B}}=\frac{R_{\mathrm{B2}}}{R_{\mathrm{B1}}+R_{\mathrm{B2}}}U_{\mathrm{CC}},\qquad
+I_{\mathrm{E}}=\frac{U_{\mathrm{B}}-U_{\mathrm{BE}}}{R_{\mathrm{E}}},
+\]
+\[
+I_{\mathrm{B}}=\frac{I_{\mathrm{E}}}{1+\beta},\qquad I_{\mathrm{C}}=\beta I_{\mathrm{B}},\qquad
+U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}-R_{\mathrm{E}}I_{\mathrm{E}} .
+\]
+
+\aside{这一步用的是「$C_{\mathrm{B}}$ 只影响交流、不影响直流」这一条：旁路电容的直流电阻无穷大，
+所以静态时它等于不存在。反过来说，凡是标了「旁路」的电容，静态分析里一律拿掉——这条规矩
+在 §8 处理两级放大的第一级 $C_{\mathrm{E}}$ 时还要再用一次。}
+
+\subhdr{动态：基极接地，输入在射极}
+
+交流通路：$C_1$、$C_2$、$C_{\mathrm{B}}$ 全部短路，$U_{\mathrm{CC}}$ 短路到地。
+于是\textbf{基极直接接地}（$C_{\mathrm{B}}$ 把它短到地），$R_{\mathrm{B1}}\parallel R_{\mathrm{B2}}$ 被 $C_{\mathrm{B}}$ 短路掉，
+输入端落在射极、输出端落在集电极。公共端是基极，故名共基。
+
+等效电路里只有三样东西：$r_{\mathrm{be}}$（B 与 E 之间，B 已接地）、
+受控源 $\beta\dot I_{\mathrm{b}}$（C 到 E）、$R_{\mathrm{C}}\parallel R_{\mathrm{L}}$（C 到地）。
+记 $R_C'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$。
+
+\textbf{（a）电压放大倍数}。基极接地，$\dot U_{\mathrm{b}}=0$，射极电位就是 $\dot U_{\mathrm{i}}$：
+\[
+\dot I_{\mathrm{b}}=\frac{0-\dot U_{\mathrm{i}}}{r_{\mathrm{be}}}=-\frac{\dot U_{\mathrm{i}}}{r_{\mathrm{be}}} .
+\]
+集电极节点 KCL（受控源从 C 抽走 $\beta\dot I_{\mathrm{b}}$）：
+\[
+\frac{\dot U_{\mathrm{o}}}{R_C'}+\beta\dot I_{\mathrm{b}}=0
+\;\Longrightarrow\;
+\dot U_{\mathrm{o}}=-\beta\dot I_{\mathrm{b}}R_C'=\frac{\beta R_C'}{r_{\mathrm{be}}}\dot U_{\mathrm{i}} .
+\]
+\[
+\boxed{\;A_u=\frac{\dot U_{\mathrm{o}}}{\dot U_{\mathrm{i}}}=\frac{\beta R_C'}{r_{\mathrm{be}}}\;}
+\]
+\textbf{幅度与共射相同，符号为正}——这就是 p16 那句 \texttt{The same as CE} 的确切含义：
+\textbf{只对幅度成立，相位相反}。共射是 $-\beta R_L'/r_{\mathrm{be}}$（反相），共基是 $+\beta R_C'/r_{\mathrm{be}}$（同相）。
+
+\aside{这一步用的是「基极接地 $\Rightarrow\dot U_{\mathrm{b}}=0$」这个代入，以及共射讲过的
+$R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ 折算。注意共基里 $R_{\mathrm{E}}$ \textbf{不出现在} $A_u$ 的式子里：
+它并联在输入端口上，只影响 $r_{\mathrm{i}}$，不影响电压放大（因为输入电压就是射极对地电压，已被源钳住）。}
+
+\textbf{（b）输入电阻}。射极节点 KCL：输入源送进射极的 $\dot I_{\mathrm{i}}$，
+加上受控源送进射极的 $\beta\dot I_{\mathrm{b}}$，等于流过 $r_{\mathrm{be}}$ 的那一股：
+\[
+\dot I_{\mathrm{i}}+\beta\dot I_{\mathrm{b}}=\frac{\dot U_{\mathrm{i}}}{r_{\mathrm{be}}}
+\;\Longrightarrow\;
+\dot I_{\mathrm{i}}=\frac{\dot U_{\mathrm{i}}}{r_{\mathrm{be}}}-\beta\dot I_{\mathrm{b}}
+=\frac{(1+\beta)\dot U_{\mathrm{i}}}{r_{\mathrm{be}}},
+\]
+\[
+\boxed{\;r_{\mathrm{i}}=R_{\mathrm{E}}\parallel\frac{r_{\mathrm{be}}}{1+\beta}\;}
+\]
+这个电阻小到「十欧量级」（§5 末的数值算例给出 $9.9\ \Omega$），
+所以共基的输入电阻是三种组态里最小的。
+
+\textbf{（c）输出电阻}。仿 §3 的办法：$\dot U_{\mathrm{s}}$ 置零、去掉 $R_{\mathrm{L}}$、在集电极加测试源。
+此时射极经 $R_{\mathrm{E}}$ 接地、基极接地，若忽略 Early 效应（课件从头到尾没有提 $r_{\mathrm{ce}}$），
+受控源的电流只由 $\dot I_{\mathrm{b}}$ 决定，而 $\dot I_{\mathrm{b}}$ 由射极电位决定；
+测试源加在集电极上无法改变射极电位，故 $\dot I_{\mathrm{b}}=0$，受控源相当于开路：
+\[
+\boxed{\;r_{\mathrm{o}}\approx R_{\mathrm{C}}\;}
+\]
+与共射同量级（千欧），是三种组态里最大的之一。
+
+\subhdr{共基极的三个参数（小结）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{7.4cm}p{4.3cm}@{}}
+\toprule
+\thead{参数} & \thead{式子} & \thead{性质}
+\\
+\midrule
+$A_u$ & $+\dfrac{\beta R_C'}{r_{\mathrm{be}}}$，$R_C'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ & 与共射同幅度，但\textbf{同相}
+\\
+$r_{\mathrm{i}}$ & $R_{\mathrm{E}}\parallel\dfrac{r_{\mathrm{be}}}{1+\beta}$ & 十欧量级，\textbf{三种里最小}
+\\
+$r_{\mathrm{o}}$ & $\approx R_{\mathrm{C}}$ & 千欧量级，\textbf{较大}
+\\
+\bottomrule
+\end{tabular}
+
+\aside{这三个式子课件 p15 一个都没有，全部由本讲义按 §2 的五步推出，标 [教材补充]。
+唯一能从课件得到印证的是 p16 第三栏的三行形容词：$A_u$ \texttt{The same as CE}、
+$r_{\mathrm{i}}$ \texttt{small}、$r_{\mathrm{o}}$ \texttt{big}——本节的三条公式与这三句话逐条对应。}
+
+\subhdr{共基极有什么用（[教材补充]）}
+
+\begin{enumerate}
+\item \textbf{输入电阻极小}这条缺点，在\textbf{高频}场合反而变成优点：输入电阻小，密勒效应弱，
+晶体管的结电容被「短」掉得多，上限截止频率高。所以共基常出现在高频放大与宽带放大里。
+\item \textbf{电流增益约为 $\alpha=\beta/(1+\beta)<1$、电压增益大、输出电阻大}，
+它更像一个「电流跟随器」：射极输入的电流几乎原样从集电极流出。
+\item 它\textbf{不能单独做第一级}（$r_{\mathrm{i}}$ 太小，会把信号源拽死），
+通常接在共射之后做「共射—共基」级联（[教材补充]，本课件未涉及）。
+\end{enumerate}
+
+\subhdr{数值算例（[教学补充·自拟数值]，沿用 §3 的参数）}
+
+$R_{\mathrm{C}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{L}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{E}}=3\ \mathrm{k}\Omega$、
+$r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、$\beta=100$：
+\[
+R_C'=3\parallel3=1.5\ \mathrm{k}\Omega,\qquad
+A_u=+\frac{100\times1.5}{1}=+150,
+\]
+\[
+r_{\mathrm{i}}=3\ \mathrm{k}\Omega\parallel\frac{1000}{101}\ \Omega=9.9\ \Omega,\qquad
+r_{\mathrm{o}}\approx3\ \mathrm{k}\Omega .
+\]
+与 §3 的共集（$A_u=0.993$、$r_{\mathrm{i}}=115\ \mathrm{k}\Omega$、$r_{\mathrm{o}}=19.7\ \Omega$）
+和共射（$A_u=-300$、$r_{\mathrm{i}}\approx1\ \mathrm{k}\Omega$、$r_{\mathrm{o}}\approx3\ \mathrm{k}\Omega$）摆在一起，
+三种组态的性格差别一目了然。
+
+%=============================================================
+\hdr{§6}{三种组态比较：从三栏形容词到一张定量表（p16--p17）}
+
+\subhdr{课件 p16 给了什么}
+
+p16 是 4.5.4 Summary，三栏并排，每栏三行，全是形容词：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{4.6cm}p{4.0cm}@{}}
+\toprule
+\thead{CE} & \thead{CC} & \thead{CB}
+\\
+\midrule
+$A_u$: \texttt{big, the ability to amplify is good} & $A_u$: \texttt{$\approx$1, no ability to amplify} & $A_u$: \texttt{The same as CE}
+\\
+$r_{\mathrm{i}}$: \texttt{small, the ability to get the signal is limited} & $r_{\mathrm{i}}$: \texttt{big, capable to get the signal} & $r_{\mathrm{i}}$: \texttt{small, the ability to get the signal is limited}
+\\
+$r_{\mathrm{o}}$: \texttt{big, the ability to give the signal is limited} & $r_{\mathrm{o}}$: \texttt{small, good at sending the signal to load} & $r_{\mathrm{o}}$: \texttt{big, the ability to give the signal is limited}
+\\
+\bottomrule
+\end{tabular}
+
+这三栏说的是同一件事的三种权衡：\textbf{「取信号」看 $r_{\mathrm{i}}$ 大不大，「送信号」看 $r_{\mathrm{o}}$ 小不小，
+「放大」看 $A_u$ 大不大}。三种组态各占一头，没有全能选手。
+
+\subhdr{课件没给的定量表}
+
+p16 一个字公式都没有。下表的每一格都在前面各节推过，此处只是并排：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.5cm}p{4.0cm}p{4.2cm}p{3.0cm}@{}}
+\toprule
+\thead{组态} & \thead{$A_u$} & \thead{$r_{\mathrm{i}}$} & \thead{$r_{\mathrm{o}}$}
+\\
+\midrule
+共射 CE & $-\dfrac{\beta R_L'}{r_{\mathrm{be}}}$（大，反相） & $R_{\mathrm{B}}\parallel r_{\mathrm{be}}$（小，千欧） & $\approx R_{\mathrm{C}}$（大）
+\\
+共集 CC & $+\dfrac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}\approx1$（同相） & $R_{\mathrm{B}}\parallel[r_{\mathrm{be}}+(1+\beta)R_L']$（大，上百千欧） & $R_{\mathrm{E}}\parallel\dfrac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}$（小，几十欧）
+\\
+共基 CB & $+\dfrac{\beta R_C'}{r_{\mathrm{be}}}$（大，同相） & $R_{\mathrm{E}}\parallel\dfrac{r_{\mathrm{be}}}{1+\beta}$（极小，十欧） & $\approx R_{\mathrm{C}}$（大）
+\\
+\bottomrule
+\end{tabular}
+
+\aside{表里三个 $R_L'$ 不是同一只电阻，用错了公式全错：
+共射 $R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$；共集 $R_L'=R_{\mathrm{E}}\parallel R_{\mathrm{L}}$；
+共基 $R_C'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$（与共射同形，因为输出也在集电极）。
+课件只在 p6 给过共集那一个，其余两个是 [C4-4 p13] 与 §5 补的。}
+
+\subhdr{判据：三秒钟认出是哪种组态}
+
+把「哪个极在交流通路里接地」当判据，比背电路图可靠：
+\begin{enumerate}
+\item 画交流通路（$C$ 短路、$U_{\mathrm{CC}}$ 接地）；
+\item 找输入加在哪两极之间、输出取自哪两极之间；
+\item 两处重合的那一极 = 公共端 = 组态名。
+\end{enumerate}
+举三个例子全部来自课件：p3 共集（输入 B--C、输出 E--C，重合 C）；
+p15 共基（输入 E--B、输出 C--B，重合 B，因为 $C_{\mathrm{B}}$ 把基极短路到地）；
+p32 那道选择题的电路（同样是 $C_{\mathrm{B}}$ 把基极接地，答案为 common-base）。
+
+\warnbox{\textbf{一个常见的误判}：看到「有 $R_{\mathrm{E}}$」就以为不是共射。错。
+共射也可以有 $R_{\mathrm{E}}$（E1 就有，见 §9），关键是 $R_{\mathrm{E}}$ 有没有被 $C_{\mathrm{E}}$ 旁路：
+旁路了，$R_{\mathrm{E}}$ 只在直流里起作用，交流上等于射极接地，仍是共射；
+没旁路，$R_{\mathrm{E}}$ 进入交流通路，射极不再接地，但只要输入还在基极、输出还在集电极，仍然是共射
+（只是多了一条负反馈，$A_u$ 下降、$r_{\mathrm{i}}$ 上升）。判断组态看\textbf{输入输出接在哪两极}，
+不看有没有 $R_{\mathrm{E}}$。}
+
+\subhdr{p17：那一句 \texttt{Problem} 是整个 4.5 的收尾}
+
+p17 与 p16 是同一张图，只多了一条绿框：\texttt{Problem: signal is not big enough}。
+这句话承担的其实是两件事：
+\begin{enumerate}
+\item \textbf{收尾}：三种组态比完了，没有一种能同时做到「放大得多 + 取信号强 + 送信号强」。
+共射能放大但 $r_{\mathrm{i}}$ 小、$r_{\mathrm{o}}$ 大；共集两头好但不放大；共基放大但 $r_{\mathrm{i}}$ 更小。\textbf{单级到此为止}。
+\item \textbf{开局}：既然单级不够，就把几级接起来——这就是 4.6。
+\end{enumerate}
+课件在 p17 与 p18 之间没有写这句话，这是本讲最需要补的一处拼接（见 §0 第 2 条）。
+
+%=============================================================
+\hdr{§7}{多级放大与四种耦合方式（p18--p22）}
+
+\subhdr{p19 的两句原文}
+
+p19 全页只有两个问题两句话：
+\begin{enumerate}
+\item \textit{What is Multi-stage Amplifier?} ——「Two or more amplifiers can be connected in a cascaded arrangement
+with the output of one amplifier driving the input of the next. Each amplifier in a cascaded arrangement is known as a stage.」
+\item \textit{Why do we need Multi-stage Amplifier?} ——「The basic purpose of a multistage arrangement is to increase the overall voltage gain.」
+\end{enumerate}
+第二句只说了「提高总增益」。这句不完整：如果只为了增益，为什么不把 $\beta$ 做大一点、
+或者把 $R_{\mathrm{C}}$ 取大一点，非要多接几级？补三点理由（[教材补充]）：
+\begin{enumerate}
+\item \textbf{单级增益有上限}。$|A_u|=\beta R_L'/r_{\mathrm{be}}$，$R_L'$ 每加大一点，Q 点就往下走，
+很快进入饱和；$\beta$ 由工艺决定，不能任意设计。
+\item \textbf{阻抗要匹配}。信号源内阻大、负载电阻小的时候，单级无论怎么设计都取不到信号、也送不出信号
+（§4 与 §6 已经算过：直接接 $3\ \mathrm{k}\Omega$ 负载，共射增益掉一半）。
+\item \textbf{带宽与稳定性}。多级可以把「高增益」与「低输出电阻」分给不同的级去承担，
+不必在一只管子上同时要三样东西（[教材补充]，本课件未展开带宽，§8 末补一句）。
+\end{enumerate}
+
+\subhdr{p20--p22：四种耦合方式，课件只解释了一种半}
+
+p20、p21、p22 三页是同一张总图：左边一个方框 \texttt{Types of Coupling}，
+分四条支路出去——\texttt{RC coupling}、\texttt{Direct coupling}、\texttt{Transformer coupling}、
+\texttt{Impedance coupling}。三页的区别只在右边的说明文字换了：
+p20 讲 RC、p21 讲直接、p22 干脆只放两个电路图。
+
+也就是说，\textbf{四种方式里，课件给出解释的只有 RC 一种，加上直接耦合的一句定义}；
+变压器耦合与阻抗耦合\textbf{只有名字}。下表把四种补齐，凡课件没说的都标 [教材补充]。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.1cm}p{2.2cm}p{3.0cm}p{4.3cm}p{3.6cm}@{}}
+\toprule
+\thead{方式} & \thead{直流是否通过} & \thead{优点} & \thead{缺点} & \thead{适用场合}
+\\
+\midrule
+阻容耦合 RC coupling & 不通（电容隔直） & 各级 Q 点独立、体积小、便宜 & 低频与直流放大不了；集成电路里做不出大电容 & 分立元件交流放大器（本讲 p23--p26 就是）
+\\
+直接耦合 direct coupling & 通 & 能放大直流与极低频；易集成 & 各级 Q 点互相牵连；有零点漂移 & 集成电路、直流放大器、传感器前端
+\\
+变压器耦合 transformer coupling & 不通（磁耦合） & 阻抗变换方便（匝比平方）；Q 点独立 & 体积大、笨重；低频与直流差；不能集成 & 功率放大、阻抗匹配、隔离
+\\
+阻抗耦合 impedance coupling & 不通（电抗网络） & 用抽头或电抗网络做阻抗变换，损耗小 & 只能窄带工作；设计与调试麻烦 & 高频调谐放大器
+\\
+\bottomrule
+\end{tabular}
+
+\aside{四行里只有第一行有课件依据：p20 原文 \textit{RC coupling is the mostly used method of coupling, using simple
+resistor-capacitor combination. The coupling capacitor passes the AC and blocks the DC from the output of one stage to the input of its next stage.}
+第二行有 p21 的一句 \textit{Direct coupling: the previous amplifier stage is connected to the next amplifier stage directly.}
+第三、四行课件只有名字，内容为 [教材补充]。}
+
+\subhdr{p22 的两个电路：一眼看出「隔直」与「不隔直」}
+
+p22 右侧上下两个两级电路，是四种耦合方式里最常用的两种的具体形态：
+\begin{itemize}
+\item \textbf{上图（RC 耦合）}：$C_1$（输入）、$C_2$（级间）、$C_3$（输出）三只耦合电容，
+再加第一级的射极旁路 $C_{\mathrm{E}}$。级间那只 $C_2$ 就是「隔直」的执行者。
+\item \textbf{下图（直接耦合）}：一只电容都没有，第一级的集电极直接接到第二级的基极。
+代价立刻显现：第一级集电极的直流电位（约几伏）直接加到第二级基极上，
+第二级的 Q 点被第一级「绑架」；反之若第二级基极电流大，也会拽动第一级的 $I_{\mathrm{C}}$。
+\end{itemize}
+
+\warnbox{\textbf{直接耦合的两个专有问题（[教材补充]，课件未提）}：
+（1）\textbf{零点漂移}：第一级 Q 点因温度漂移 $\Delta U_{\mathrm{C1}}$，会被后级原样放大，
+在输出端表现为缓慢漂移，直流放大器的主要误差来源；
+（2）\textbf{电平移动}：第一级集电极电位高、第二级基极要求低，中间常需射极跟随器或稳压管做电平移动
+——p22 下图里第二级本身就取共集（输出从射极取），正是最常用的电平移动兼缓冲的做法。}
+
+
+%=============================================================
+\hdr{§8}{RC 耦合两级放大：静态各算各的，动态一级一级乘（p23--p26）}
+
+\subhdr{p23 的三个问题，答案说完只要三句话}
+
+p23 把电路画好，然后提了三个问题：\textit{What is the first stage?}、\textit{What is the second stage?}、
+\textit{How to do the static analysis?}。课件没有给答案，三句话就能答完：
+\begin{enumerate}
+\item \textbf{第一级是分压偏置共射}：$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$ 分压，$R_{\mathrm{C}}$ 在集电极，
+$R_{\mathrm{E1}}$ 被 $C_{\mathrm{E}}$ 旁路，输入经 $C_1$ 到基极。
+\item \textbf{第二级是共集（射极跟随器）}：$R_{\mathrm{B3}}$ 从基极接 $U_{\mathrm{CC}}$，$R_{\mathrm{E2}}$ 在射极，
+没有 $R_{\mathrm{C}}$，输出经 $C_3$ 从射极取出。判据仍是「哪个极交流接地」——
+第二级集电极直接接 $U_{\mathrm{CC}}$，交流接地，故为共集（§2 的判据）。
+\item \textbf{静态分析各级独立算}：$C_1$、$C_2$、$C_3$ 隔直，直流通路被切成互不相连的两块。
+\end{enumerate}
+
+\aside{第 3 条是整节的地基，代入本题就是：「$C_2$ 的左端是第一级集电极（直流约几伏），
+右端是第二级基极（直流由 $R_{\mathrm{B3}}$ 与 $R_{\mathrm{E2}}$ 决定）」——因为电容隔直，
+两端的直流电位\textbf{互不相干}，所以第一级算第一级的 $I_{\mathrm{C1}}$、$U_{\mathrm{CE1}}$，
+第二级算第二级的 $I_{\mathrm{C2}}$、$U_{\mathrm{CE2}}$，不会互相影响。
+若换成直接耦合（§7 的 p22 下图），这条就不成立了。}
+
+\subhdr{静态：两套公式并排（p24）}
+
+p24 左右两栏把两级的直流通路分开画，各给一套公式。
+
+\textbf{第一级（分压偏置共射，[C4-4 p6--p10] 的公式）}
+\[
+U_{\mathrm{B}}=\frac{R_{\mathrm{B2}}}{R_{\mathrm{B1}}+R_{\mathrm{B2}}}U_{\mathrm{CC}},\qquad
+I_{\mathrm{E1}}=\frac{U_{\mathrm{B}}-U_{\mathrm{BE}}}{R_{\mathrm{E1}}},
+\]
+\[
+I_{\mathrm{B1}}=\frac{I_{\mathrm{E1}}}{1+\beta},\qquad I_{\mathrm{C1}}=\beta I_{\mathrm{B1}},
+\]
+\[
+U_{\mathrm{CE1}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C1}}-R_{\mathrm{E1}}I_{\mathrm{E1}}
+\approx U_{\mathrm{CC}}-(R_{\mathrm{C}}+R_{\mathrm{E1}})I_{\mathrm{C1}} .
+\]
+
+\aside{第一式成立有一个前提，课件 p24 没有写：\textbf{分压支路的电流要远大于基极电流}，
+即 $I_1=U_{\mathrm{CC}}/(R_{\mathrm{B1}}+R_{\mathrm{B2}})\gg I_{\mathrm{B1}}$（工程上取 $5\sim10$ 倍以上）。
+本级的代入形式：$I_{\mathrm{B1}}=I_{\mathrm{E1}}/(1+\beta)$，若它与 $I_1$ 同量级，
+$U_{\mathrm{B}}$ 会被基极电流拉低，第一式必须改用戴维南等效
+$U_{\mathrm{B}}=U_{\mathrm{CC}}R_{\mathrm{B2}}/(R_{\mathrm{B1}}+R_{\mathrm{B2}})-I_{\mathrm{B1}}(R_{\mathrm{B1}}\parallel R_{\mathrm{B2}})$。}
+
+\textbf{第二级（共集，与 [C5-5 p2] 完全同构）}
+\[
+I_{\mathrm{B2}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B3}}+(1+\beta)R_{\mathrm{E2}}},\qquad
+I_{\mathrm{C2}}=\beta I_{\mathrm{B2}},
+\]
+\[
+U_{\mathrm{CE2}}=U_{\mathrm{CC}}-R_{\mathrm{E2}}I_{\mathrm{E2}}
+=U_{\mathrm{CC}}-R_{\mathrm{E2}}(1+\beta)I_{\mathrm{B2}} .
+\]
+
+\warnbox{\textbf{p24 的记号要当心}：左栏小电路的射极电阻标成 $R_{\mathrm{E}}$，
+公式也写 $R_{\mathrm{E}}$；右栏小电路的上偏置标成 $R_{\mathrm{B}}$，公式也写 $R_{\mathrm{B}}$。
+它们其实是主图（p23）里的 $R_{\mathrm{E1}}$ 与 $R_{\mathrm{B3}}$。本讲义一律用带编号的记号，
+两级的量不会串。这也是 §0 记号表的用途所在。}
+
+\subhdr{动态：先算后级的输入电阻，再把它当作前级的负载（p25）}
+
+交流通路：$C_1$、$C_2$、$C_3$ 短路，$C_{\mathrm{E}}$ 短路，$U_{\mathrm{CC}}$ 短路到地。
+于是第一级的射极被 $C_{\mathrm{E}}$ 短路到地（\textbf{共射，$R_{\mathrm{E1}}$ 在交流上不存在}），
+集电极经 $C_2$ 直接接到第二级的基极，第二级仍是共集。
+
+关键只有一句话：\textbf{第二级的输入电阻，就是第一级的负载}。
+\[
+r_{\mathrm{i}2}=R_{\mathrm{B3}}\parallel\bigl[r_{\mathrm{be2}}+(1+\beta)R_{E2}'\bigr],
+\qquad R_{E2}'=R_{\mathrm{E2}}\parallel R_{\mathrm{L}},
+\]
+\[
+R_{L1}=R_{\mathrm{C}}\parallel r_{\mathrm{i}2} .
+\]
+这里的 $r_{\mathrm{i}2}$ 用的是 §3 的共集公式，$R_{L1}$ 用的是 [C4-4 p13] 的共射负载公式。
+
+\aside{这一步用了两次折算、一次并联：$(1+\beta)R_{E2}'$ 是 §3 的共集输入电阻（从基极看射极，乘 $1+\beta$）；
+$R_{\mathrm{C}}\parallel r_{\mathrm{i}2}$ 是「前级输出端看到的总负载」。
+代入本题的记号：$R_{\mathrm{C}}$ 是第一级的集电极电阻，$r_{\mathrm{i}2}$ 是第二级的输入电阻，
+两者并联之后才是第一级真正「扛」的负载。}
+
+于是两级的增益分别是
+\[
+A_{u1}=-\frac{\beta R_{L1}}{r_{\mathrm{be1}}},\qquad
+A_{u2}=\frac{(1+\beta)R_{E2}'}{r_{\mathrm{be2}}+(1+\beta)R_{E2}'}\approx1,
+\]
+\[
+\boxed{\;A_u=A_{u1}A_{u2}\;}
+\]
+这正是 p26 的第一行。p26 还把它写成 $A_u=A_{u1}\times A_{u2}$，
+并在下面补了一句 \textit{where: $R_{L1}=r_{\mathrm{i}2}$}——这一句是全页最要紧的，
+因为\textbf{只有把 $R_{L1}$ 取成 $r_{\mathrm{i}2}$，两个增益才能直接相乘}。
+
+\warnbox{\textbf{最容易错的一步：用空载 $A_{u1}$ 去乘}。若第一级的增益按空载算（$R_{L1}=R_{\mathrm{C}}$），
+得到的是 $-\beta R_{\mathrm{C}}/r_{\mathrm{be1}}$，它比真实值大，大多少有个干净的因子：
+\[
+\frac{A_{u1}\big|_{\text{带载}}}{A_{u1}\big|_{\text{空载}}}
+=\frac{R_{\mathrm{C}}\parallel r_{\mathrm{i}2}}{R_{\mathrm{C}}}=\frac{r_{\mathrm{i}2}}{R_{\mathrm{C}}+r_{\mathrm{i}2}} .
+\]
+本节末的数值例里这个因子是 $0.9665$——看着只有 3\%，可如果第二级是共射而不是共集
+（$r_{\mathrm{i}2}$ 只有 $1\ \mathrm{k}\Omega$ 量级），这个因子会掉到 $0.25$，误差就是 4 倍。
+\textbf{所以「$r_{\mathrm{i}2}$ 大不大」决定了能不能安全地乘。}}
+
+\subhdr{输入电阻与输出电阻：只看头尾两级（p26）}
+
+\[
+r_{\mathrm{i}}=r_{\mathrm{i}1}=R_{\mathrm{B1}}\parallel R_{\mathrm{B2}}\parallel r_{\mathrm{be1}},
+\qquad
+r_{\mathrm{o}}=r_{\mathrm{o}2}=R_{\mathrm{E2}}\parallel\frac{R_{\mathrm{C}}+r_{\mathrm{be2}}}{1+\beta} .
+\]
+这就是 p26 的第二、三行。为什么只看头尾？
+\begin{itemize}
+\item 输入电阻是\textbf{从整个放大器的输入端看进去}的电阻，输入端只接第一级，所以 $r_{\mathrm{i}}=r_{\mathrm{i}1}$；
+\item 输出电阻是\textbf{从整个放大器的输出端看进去}的电阻，输出端只接第二级，所以 $r_{\mathrm{o}}=r_{\mathrm{o}2}$。
+\item 中间各级的输入、输出电阻已被「折算」进相邻级的负载里，不再单独出现在 $r_{\mathrm{i}}$、$r_{\mathrm{o}}$ 中。
+\end{itemize}
+
+\aside{$r_{\mathrm{o}2}$ 用的是 §3 的共集输出电阻公式，代入形式为
+$r_{\mathrm{o}2}=R_{\mathrm{E2}}\parallel\bigl[(R_{\mathrm{S2}}+r_{\mathrm{be2}})/(1+\beta)\bigr]$，
+其中 $R_{\mathrm{S2}}$ 是第二级看到的信号源内阻，即第一级的输出电阻
+$R_{\mathrm{S2}}\approx R_{\mathrm{C}}\parallel r_{\mathrm{o}1}\approx R_{\mathrm{C}}$（第一级共射的 $r_{\mathrm{o}1}\approx R_{\mathrm{C}}$，[C4-4 p14]）。
+课件 p26 只写 $r_{\mathrm{o}}=r_{\mathrm{o}2}$，没有把这个代入写出来。}
+
+\subhdr{数值走一遍（[教学补充·自拟数值]，非课件数据）}
+
+取 $U_{\mathrm{CC}}=12\ \mathrm{V}$、$\beta=100$、$R_{\mathrm{B1}}=100\ \mathrm{k}\Omega$、$R_{\mathrm{B2}}=33\ \mathrm{k}\Omega$、
+$R_{\mathrm{C}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{E1}}=1\ \mathrm{k}\Omega$、$R_{\mathrm{B3}}=200\ \mathrm{k}\Omega$、
+$R_{\mathrm{E2}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{L}}=3\ \mathrm{k}\Omega$、$r_{\mathrm{be1}}=r_{\mathrm{be2}}=1\ \mathrm{k}\Omega$。
+
+\textbf{静态}：
+\[
+U_{\mathrm{B}}=\frac{33}{133}\times12=2.98\ \mathrm{V},\qquad
+I_{\mathrm{E1}}=\frac{2.98-0.7}{1}=2.28\ \mathrm{mA},
+\]
+\[
+I_{\mathrm{B1}}=22.6\ \mu\mathrm{A},\quad I_{\mathrm{C1}}=2.26\ \mathrm{mA},\quad
+U_{\mathrm{CE1}}=12-(3+1)\times2.28=2.89\ \mathrm{V},
+\]
+\[
+I_{\mathrm{B2}}=\frac{12-0.7}{200+101\times3}=22.5\ \mu\mathrm{A},\quad
+I_{\mathrm{C2}}=2.25\ \mathrm{mA},\quad U_{\mathrm{CE2}}=12-3\times2.27=5.19\ \mathrm{V}.
+\]
+两级都落在放大区（$U_{\mathrm{CE}}>1\ \mathrm{V}$），且\textbf{互不影响}——把 $R_{\mathrm{B3}}$ 从 $200\ \mathrm{k}\Omega$ 改成 $100\ \mathrm{k}\Omega$，
+第二级的 $I_{\mathrm{B2}}$ 会变，第一级的 Q 点一点不动。这就是 RC 耦合的「独立性」。
+
+\textbf{动态}：
+\[
+R_{E2}'=3\parallel3=1.5\ \mathrm{k}\Omega,\qquad
+r_{\mathrm{i}2}=200\parallel\bigl[1+101\times1.5\bigr]=86.5\ \mathrm{k}\Omega,
+\]
+\[
+R_{L1}=3\parallel86.5=2.90\ \mathrm{k}\Omega,\qquad
+A_{u1}=-\frac{100\times2.90}{1}=-290,\qquad
+A_{u2}=\frac{151.5}{1+151.5}=0.9934,
+\]
+\[
+A_u=-290\times0.9934=-288,\qquad
+r_{\mathrm{i}}=100\parallel33\parallel1=0.96\ \mathrm{k}\Omega,\qquad
+r_{\mathrm{o}}=3\ \mathrm{k}\Omega\parallel\frac{3+1}{101}\ \mathrm{k}\Omega=39\ \Omega .
+\]
+三级观察：其一，总增益基本等于第一级的增益（第二级约等于 1，这正是把共集放在末级的理由——它负责把
+$39\ \Omega$ 的低输出电阻送给负载，不负责放大）；其二，$r_{\mathrm{i}}$ 被 $R_{\mathrm{B1}}\parallel R_{\mathrm{B2}}\parallel r_{\mathrm{be1}}$
+卡在 $1\ \mathrm{k}\Omega$ 以下，若要提高，就得在第一级前面再加一级共集；其三，$r_{\mathrm{o}}=39\ \Omega$
+意味着接上 $3\ \mathrm{k}\Omega$ 负载后输出几乎不掉，这就是 §4 讲的「带得动负载」。
+
+\subhdr{多级的通频带（[教材补充]，课件全章未提）}
+
+术语表里有一条 \textbf{通频带（bandwidth）}，本讲的课件从 p19 到 p26 一次都没提。
+补一句结论：$n$ 级\emph{完全相同}的放大器级联，电压增益变成单级的 $n$ 次方，
+但上、下截止频率各向外挤不动，结果是总通频带变窄：
+\[
+BW_n=BW_1\sqrt{2^{1/n}-1}\quad(n\ \text{级相同})\ ;\qquad
+n=2:\;BW_2=0.643\,BW_1,\quad n=3:\;BW_3=0.510\,BW_1 .
+\]
+所以「多级提高增益」不是白拿的：\textbf{增益乘几倍，带宽就往回收一截}。
+这条是 [教材补充]，本课件未涉及，考试若考到属于「放大器频率响应」那一部分，不在本讲范围。
+
+
+%=============================================================
+\hdr{§9}{两道例题：E1（p44--p47）与 E2（p48--p50）}
+
+两页页眉写的都是 4.5.1 Common emitter amplifier，也就是\textbf{共射}（上一讲的内容），
+不是本讲的共集。课件把它们放在 4.5.2 之后，是当「回头看共射」用的。
+本讲义照课件顺序放在这里，但每个式子都标清它属于哪一节。
+
+\subhdr{E1（p44--p47）：分压偏置共射，$R_{\mathrm{E}}$ 未旁路}
+
+\textbf{题干（p44）}：只有一张电路图——$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$ 分压，
+$R_{\mathrm{C}}$ 在集电极，$R_{\mathrm{E}}$ 在射极，$C_1$、$C_2$ 耦合，\textbf{没有 $C_{\mathrm{E}}$}。
+\textbf{课件没有给任何数值}：没有 $U_{\mathrm{CC}}$、没有电阻值、没有 $\beta$。
+所以 E1 只能做符号解；本节的数值只出现在最后一小节，且明确标为自拟。
+
+\subhdr{E1 静态（p45）：五步，与分压偏置共射完全一样}
+
+p45 右栏从上到下五式，中间无一处解释，这里逐步补：
+\[
+U_{\mathrm{B}}=\frac{R_{\mathrm{B2}}}{R_{\mathrm{B1}}+R_{\mathrm{B2}}}U_{\mathrm{CC}}
+\quad(\text{分压，前提 }I_1\gg I_{\mathrm{B}}),
+\]
+\[
+I_{\mathrm{E}}=\frac{U_{\mathrm{B}}-U_{\mathrm{BE}}}{R_{\mathrm{E}}}
+\quad(\text{射极回路 KVL：}U_{\mathrm{B}}=U_{\mathrm{BE}}+R_{\mathrm{E}}I_{\mathrm{E}}),
+\]
+\[
+I_{\mathrm{B}}=\frac{1}{1+\beta}I_{\mathrm{E}},\qquad I_{\mathrm{C}}=\beta I_{\mathrm{B}},
+\]
+\[
+U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}-R_{\mathrm{E}}I_{\mathrm{E}}
+\approx U_{\mathrm{CC}}-(R_{\mathrm{C}}+R_{\mathrm{E}})I_{\mathrm{C}} .
+\]
+最后那个约等号用的是 $I_{\mathrm{E}}\approx I_{\mathrm{C}}$（差一个 $I_{\mathrm{B}}$，即差 $1/(1+\beta)$）。
+
+\aside{第 2 式的分母为什么只有 $R_{\mathrm{E}}$、第 5 式为什么要减两项，代入形式说明：
+集电极经 $R_{\mathrm{C}}$ 接 $U_{\mathrm{CC}}$、射极经 $R_{\mathrm{E}}$ 接地，
+所以 $U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}-R_{\mathrm{E}}I_{\mathrm{E}}$；
+而在\textbf{求 $I_{\mathrm{E}}$ 的那个回路}（基极分压点 $\to$ B--E $\to$ $R_{\mathrm{E}}$ $\to$ 地）里没有 $R_{\mathrm{C}}$，
+$R_{\mathrm{C}}$ 不参与这一圈的 KVL。两处用到的回路不同，不是矛盾。}
+
+\subhdr{E1 动态（p46--p47）：$R_{\mathrm{E}}$ 没有旁路，射极不接地}
+
+p46 依次画了交流通路、重画后的电路与等效电路；p47 给出结果。与 §2 的共集相比，
+\textbf{唯一但要命的差别}是：这里没有 $C_{\mathrm{E}}$，所以交流通路上 $R_{\mathrm{E}}$ 仍然在射极与地之间。
+射极因此\textbf{不是交流地}，输入电压要跨过 $r_{\mathrm{be}}$ 与 $R_{\mathrm{E}}$ 两段。
+
+\textbf{推导（三行）}：
+\[
+\dot U_{\mathrm{i}}=\dot I_{\mathrm{b}}r_{\mathrm{be}}+(1+\beta)\dot I_{\mathrm{b}}R_{\mathrm{E}},
+\qquad
+\dot U_{\mathrm{o}}=-\dot I_{\mathrm{c}}R_L'=-\beta\dot I_{\mathrm{b}}R_L',
+\]
+\[
+\boxed{\;A_u=\frac{\dot U_{\mathrm{o}}}{\dot U_{\mathrm{i}}}
+=-\frac{\beta R_L'}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}}\;}
+\]
+注意负号：共射反相。分母里多出的 $(1+\beta)R_{\mathrm{E}}$ 就是「射极电阻被折算到基极回路」的结果
+（§1 那条规则的第四个用法）。
+
+\warnbox{\textbf{p47 一页两个答案，且互相矛盾}：p47 右下方的黄框写
+\[
+A_u=\frac{\dot U_{\mathrm{o}}}{\dot U_{\mathrm{i}}}
+=\frac{-\dot I_{\mathrm{c}}(R_{\mathrm{C}}\parallel R_{\mathrm{L}})}{\dot I_{\mathrm{b}}r_{\mathrm{be}}}
+=-\frac{\beta R_L'}{r_{\mathrm{be}}}\qquad\text{（漏了 }R_{\mathrm{E}}\text{）}
+\]
+而同一页下方的通栏公式写的是
+\[
+A_u=\frac{-\beta\dot I_{\mathrm{b}}R_L'}{\dot I_{\mathrm{b}}r_{\mathrm{be}}+(1+\beta)\dot I_{\mathrm{b}}R_{\mathrm{E}}}
+=-\frac{\beta R_L'}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}}\qquad\text{（正确）}
+\]
+本电路的 $R_{\mathrm{E}}$ \textbf{没有旁路}，所以\textbf{黄框那条只在 $C_{\mathrm{E}}$ 存在时才成立}
+（那时 $R_{\mathrm{E}}$ 被交流短路，分母只剩 $r_{\mathrm{be}}$）。
+量级差多少？取下面那组自拟数值：带 $R_{\mathrm{E}}$ 时 $A_u=-1.47$，若误用黄框则得 $-150$，\textbf{差 102 倍}。
+这正是 4.5.1 与 4.5.2 最容易混的一处：\textbf{看射极有没有旁路电容，决定分母里有没有 $(1+\beta)R_{\mathrm{E}}$}。}
+
+\textbf{输入电阻与输出电阻}（p47 没给，按 [C4-4 p14--p15] 的同法补）：
+\[
+r_{\mathrm{i}}=R_{\mathrm{B1}}\parallel R_{\mathrm{B2}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}\bigr],
+\qquad r_{\mathrm{o}}\approx R_{\mathrm{C}} .
+\]
+$r_{\mathrm{i}}$ 里同样出现 $(1+\beta)R_{\mathrm{E}}$——这与 p9 那个错误黄框形成鲜明对照：
+那里的 $R_L'$ 在射极、要乘 $(1+\beta)$；这里的 $R_{\mathrm{E}}$ 也在射极，同样要乘 $(1+\beta)$。
+\textbf{凡是从基极看射极回路的电阻，一律乘 $(1+\beta)$}，这条规则在两处都成立。
+
+\subhdr{E1 数值（[教学补充·自拟数值]，课件未给数据）}
+
+取 $U_{\mathrm{CC}}=12\ \mathrm{V}$、$\beta=100$、$r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、
+$R_{\mathrm{B1}}=100\ \mathrm{k}\Omega$、$R_{\mathrm{B2}}=33\ \mathrm{k}\Omega$、
+$R_{\mathrm{C}}=3\ \mathrm{k}\Omega$、$R_{\mathrm{E}}=1\ \mathrm{k}\Omega$、$R_{\mathrm{L}}=3\ \mathrm{k}\Omega$：
+\[
+U_{\mathrm{B}}=2.98\ \mathrm{V},\ I_{\mathrm{E}}=2.28\ \mathrm{mA},\ I_{\mathrm{B}}=22.6\ \mu\mathrm{A},\
+I_{\mathrm{C}}=2.26\ \mathrm{mA},\ U_{\mathrm{CE}}=2.89\ \mathrm{V},
+\]
+\[
+R_L'=1.5\ \mathrm{k}\Omega,\quad
+A_u=-\frac{100\times1.5}{1+101\times1}=-1.47,\quad
+r_{\mathrm{i}}=100\parallel33\parallel102=20\ \mathrm{k}\Omega,\quad
+r_{\mathrm{o}}\approx3\ \mathrm{k}\Omega .
+\]
+把 $C_{\mathrm{E}}$ 接上（课件 p49 的 E2 就是这样），同样参数下 $A_u=-150$、$r_{\mathrm{i}}=0.96\ \mathrm{k}\Omega$。
+\textbf{一只旁路电容，把增益换了 100 倍、输入电阻换了 20 倍}——这就是第 16 题要回答的问题（§11）。
+
+%=============================================================
+\hdr{§9（续）}{E2（p48--p50）：固定偏置带 $R_{\mathrm{E}}$，只做了静态}
+
+\subhdr{题干：两页同一道题的两个状态}
+
+p48 与 p49 是同一个电路：$R_{\mathrm{B}}$ 从基极接 $U_{\mathrm{CC}}$（固定偏置），$R_{\mathrm{C}}$ 在集电极，
+$R_{\mathrm{E}}$ 在射极。两页的差别只有一处：\textbf{p48 有 $C_{\mathrm{E}}$（红色标出），p49 把 $C_{\mathrm{E}}$ 去掉了}。
+这两页正好对应第 16 题问的「把电容断开，增益怎么变」。同样没有数值。
+
+\subhdr{E2 静态（p50）：三式，与共集 p2 是同一个 KVL}
+
+p50 给的 KVL 是
+\[
+R_{\mathrm{B}}I_{\mathrm{B}}+U_{\mathrm{BE}}+R_{\mathrm{E}}(1+\beta)I_{\mathrm{B}}=U_{\mathrm{CC}},
+\]
+\[
+I_{\mathrm{B}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}},\qquad
+I_{\mathrm{C}}=\beta I_{\mathrm{B}},
+\]
+\[
+U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}-R_{\mathrm{E}}I_{\mathrm{E}}
+=U_{\mathrm{CC}}-R_{\mathrm{C}}\beta I_{\mathrm{B}}-R_{\mathrm{E}}(1+\beta)I_{\mathrm{B}} .
+\]
+
+\callout{\textbf{三只式子其实是一只}：把 E2 的 $I_{\mathrm{B}}$ 式与 §1 共集的 $I_{\mathrm{B}}$ 式摆在一起看，
+\[
+\text{共集：}I_{\mathrm{B}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}},
+\qquad
+\text{E2：}I_{\mathrm{B}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}}
+\]
+\textbf{一模一样}。原因很简单：$R_{\mathrm{C}}$ 不在「基极—射极」那一圈 KVL 里，
+所以有没有 $R_{\mathrm{C}}$ 都不影响 $I_{\mathrm{B}}$，只影响 $U_{\mathrm{CE}}$（多减一项 $R_{\mathrm{C}}I_{\mathrm{C}}$）。
+再看固定偏置的式子 $I_{\mathrm{B}}=(U_{\mathrm{CC}}-U_{\mathrm{BE}})/R_{\mathrm{B}}$——那是 $R_{\mathrm{E}}=0$ 的特例。
+\textbf{一条式子三个特例}，这就是 §1 那张对照表的意思。}
+
+\subhdr{E2 动态：课件没做，正好是第 16 题}
+
+p50 只到静态为止。动态分两种情形，公式都在前面出现过：
+\begin{itemize}
+\item \textbf{p48（有 $C_{\mathrm{E}}$）}：$R_{\mathrm{E}}$ 被交流旁路，射极交流接地，是标准共射：
+\[
+A_u=-\frac{\beta R_L'}{r_{\mathrm{be}}},\qquad
+r_{\mathrm{i}}=R_{\mathrm{B}}\parallel r_{\mathrm{be}},\qquad r_{\mathrm{o}}\approx R_{\mathrm{C}} .
+\]
+\item \textbf{p49（无 $C_{\mathrm{E}}$）}：$R_{\mathrm{E}}$ 在交流通路上，射极不接地，与 E1 同形：
+\[
+A_u=-\frac{\beta R_L'}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}},\qquad
+r_{\mathrm{i}}=R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}\bigr],\qquad r_{\mathrm{o}}\approx R_{\mathrm{C}} .
+\]
+\end{itemize}
+两者之比
+\[
+\frac{A_u\big|_{\text{无 }C_{\mathrm{E}}}}{A_u\big|_{\text{有 }C_{\mathrm{E}}}}
+=\frac{r_{\mathrm{be}}}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}}
+\]
+总是小于 1，典型情形（$r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、$R_{\mathrm{E}}=1\ \mathrm{k}\Omega$、$\beta=100$）为 $1/102$。
+
+\warnbox{\textbf{为什么加了 $R_{\mathrm{E}}$ 反而「好」？}——这是 E1、E2 与第 16 题共同的疑问。
+$R_{\mathrm{E}}$ 未被旁路时，它把输出电压「采样」回来影响输入（$U_{\mathrm{BE}}=U_{\mathrm{B}}-R_{\mathrm{E}}I_{\mathrm{E}}$），
+构成\textbf{电流串联负反馈}（[教材补充] 的分类）：\textbf{增益降到 $1/102$，换来的是}
+（1）增益稳定性大幅提高（$A_u$ 几乎只由 $R_{\mathrm{E}}$ 与 $R_{\mathrm{C}}$ 的比值决定，与 $\beta$、$r_{\mathrm{be}}$ 关系变弱）；
+（2）输入电阻升高 20 倍；
+（3）非线性失真与温漂被压下去。
+\textbf{放大倍数不是越高越好}——这是 E1 与 E2 放在 4.5 收尾处的用意。}
+
+\subhdr{两道例题各自的「缺」}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{4.3cm}p{7.6cm}@{}}
+\toprule
+\thead{例题} & \thead{课件给了什么} & \thead{缺什么（本讲义怎么补）}
+\\
+\midrule
+E1（p44--p47） & 静态五式、动态两条 $A_u$（其中黄框一条是错的）、等效电路 & 无任何数值（\S 末自拟一组）；$r_{\mathrm{i}}$、$r_{\mathrm{o}}$ 没给（按 [C4-4] 补）；黄框与通栏公式矛盾（取通栏）
+\\
+E2（p48--p50） & 静态三式 & 动态完全没做（分有/无 $C_{\mathrm{E}}$ 两种补齐，即第 16 题的答案）；无任何数值
+\\
+\bottomrule
+\end{tabular}
+
+\warnbox{\textbf{[待确认]}：两题的题干都没有数值，本讲义无法给出「课件的数值答案」。
+若考试按这份课件出题，题面必须另附 $U_{\mathrm{CC}}$、$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$、$R_{\mathrm{C}}$、$R_{\mathrm{E}}$、$R_{\mathrm{L}}$、$\beta$、$r_{\mathrm{be}}$；
+本讲义 §9 出现的所有数字都是 [教学补充·自拟数值]，不能当成课件数据引用。}
+
+
+%=============================================================
+\hdr{§10}{缺口清单：17 条，逐条点名}
+
+本讲共记 17 条缺口。按七类分布：\textbf{机制缺口 5 条}、\textbf{拼接缺口 4 条}、
+\textbf{代数跳步 2 条}、\textbf{结论自相矛盾 2 条}、\textbf{适用区间 2 条}、
+\textbf{答案形态 2 条}、\textbf{形式改写 2 条}（其中一条同时算「形式改写」与「答案形态」，按主类归入前者）。
+\textbf{机制缺口在一讲里出现 5 次，是本课件的系统性问题}：它习惯把「成品公式」直接贴在屏幕上，
+中间那两三行推导默认学生自己补。读者若只背公式，遇到 p9、p47 这种自相矛盾处就无从判断谁对。
+
+每条按五字段记录：\textbf{类型 | 页码 | 课件英文原文短语 | 缺了什么 | 补法（写到哪一节）}。
+原文短语一律照抄课件（页面上原样大小写），以便回查。
+
+\par\vspace{2pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.55cm}p{3.7cm}p{4.4cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+拼接缺口 & p1--p2 & \texttt{(2) Q point:}（无 (1)） & 本册缺 (1)：电路怎么读、直流通路怎么画 & §1 从直流通路重画补出 (1)，并说明 (1) 在 C4-4 p20--p38 的简版里
+\\
+机制缺口 & p2 & \texttt{RE(1+$\beta$)IB} & 为什么 $R_{\mathrm{E}}$ 上乘 $(1+\beta)$，即 $I_{\mathrm{E}}=(1+\beta)I_{\mathrm{B}}$ 从哪来 & §1 先写 $I_{\mathrm{E}}=I_{\mathrm{B}}+I_{\mathrm{C}}$、$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$ 再代入
+\\
+机制缺口 & p3--p4 & \texttt{Redraw the circuit}、\texttt{Equivalent circuit} & 管子为何上下颠倒、受控源方向为何朝下、为何叫「共集」 & §2 第 2、3 步：$U_{\mathrm{CC}}$ 短地 $\Rightarrow$ C 成为公共端
+\\
+代数跳步 & p6 & \texttt{$A_u=\cdots\approx1$} & 射极节点 KCL 与输入回路的那个「$\dot I_{\mathrm{b}}[r_{\mathrm{be}}+(1+\beta)R_L']$」全省 & §2 第 4 步三行推导，并补 $A_u<1$、同相两条结论
+\\
+结论自相矛盾 & p9 & 黄框 \texttt{$r_{\mathrm{i}}=R_{\mathrm{B}}//[r_{\mathrm{be}}+R_L']$} & 漏 $(1+\beta)$ 因子，与 p7、p11、p12 直接冲突 & §3 指出 p9 是笔误，用 p11 的折算图给正确式
+\\
+答案形态 & p8 & （无正文） & 只有一张等效图，$r_{\mathrm{o}}$ 的推导整页缺失 & §3 补测试源法的两节点 KCL，导出 p13 的式子
+\\
+\bottomrule
+\end{tabular}}
+
+\par\vspace{4pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.55cm}p{3.7cm}p{4.4cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+形式改写 & p13 & \texttt{$r_{\mathrm{o}}=\dot U_{\mathrm{OC}}/\dot I_{\mathrm{SC}}$} & 为什么这个比值就是输出电阻（戴维南）没证；右侧截图记号与正文不统一 & §3（a）给戴维南论证，并用测试源法互证
+\\
+形式改写 & p7 & 右侧插入的公式截图 & 截图里出现本电路没有的 $R_{\mathrm{C}}$，上下标与正文两套 & §3 按本讲记号重排，并注明截图不可照抄
+\\
+机制缺口 & p15 & （整页只有电路图） & 共基极的静态、动态、三个参数一个都没有 & §5 从识图起补全（[教材补充]）
+\\
+适用区间 & p16 & \texttt{The same as CE} & 只对\textbf{幅度}成立，相位相反；三栏只有形容词、无一条公式 & §5 给 $A_u=+\beta R_C'/r_{\mathrm{be}}$；§6 给定量表
+\\
+拼接缺口 & p17--p18 & \texttt{Problem: signal is not big enough} & 为什么单级不够、为什么必须级联，一句没写 & §6 末与 §7 开头补三点理由
+\\
+机制缺口 & p20--p21 & \texttt{RC coupling is the mostly used method} & 四种耦合方式只解释一种半；变压器耦合、阻抗耦合只有名字 & §7 用表补齐四种的定义、优缺点、适用场合
+\\
+\bottomrule
+\end{tabular}}
+
+\par\vspace{4pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.55cm}p{3.7cm}p{4.4cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+代数跳步 & p23--p24 & \texttt{Two DC operating points are independent} & 为什么独立（电容隔直）、$U_{\mathrm{B}}$ 公式的前提 $I_1\gg I_{\mathrm{B}}$ 都没写 & §8 用直流通路说明独立性，并给分压近似的旁注
+\\
+适用区间 & p26 & \texttt{$A_u=A_{u1}\times A_{u2}$, where $R_{L1}=r_{\mathrm{i}2}$} & 没说明 $A_{u1}$ 必须\textbf{带载}；用空载 $A_{u1}$ 会高估 & §8 给修正因子 $r_{\mathrm{i}2}/(R_{\mathrm{C}}+r_{\mathrm{i}2})$ 与数值
+\\
+结论自相矛盾 & p47 & 黄框 \texttt{$-\beta R_L'/r_{\mathrm{be}}$} 与通栏 \texttt{$-\beta R_L'/(r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}})$} & 同一页两个答案；黄框漏 $(1+\beta)R_{\mathrm{E}}$ & §9 取通栏式，说明黄框只在有 $C_{\mathrm{E}}$ 时成立，并给差距 102 倍
+\\
+拼接缺口 & p33 & \texttt{Question:}（无题干） & 只有四张图与 CE / CC / CB 列标题，没有问什么 & §11 第 6$'$ 题自拟题干并给出识别结果
+\\
+答案形态 & p44--p50 & \texttt{E1.}、\texttt{E2.} & 两道例题全无数值：无 $U_{\mathrm{CC}}$、无电阻、无 $\beta$；E2 连动态都没做 & §9 做符号全解，数值一律标 [教学补充·自拟数值]
+\\
+\bottomrule
+\end{tabular}}
+
+\warnbox{\textbf{三条「课件自己打架」的地方，读的时候要有防备}：
+（1）p9 的黄框与 p7/p11 冲突（$r_{\mathrm{i}}$ 漏 $(1+\beta)$）；
+（2）p47 的黄框与同页通栏公式冲突（$A_u$ 漏 $(1+\beta)R_{\mathrm{E}}$）；
+（3）p7、p13 右侧的推导截图与正文记号不统一（截图出自另一套教材的扫描，含本电路没有的 $R_{\mathrm{C}}$）。
+这三处的共同点是：\textbf{成品框/截图与正文推导不同步}。判断谁对的唯一办法是\textbf{回到等效电路自己写一次 KCL}，
+本讲义 §2、§3、§9 做的就是这件事。}
+
+
+%=============================================================
+\hdr{§11}{课堂小测 16 题：逐题答案与依据}
+
+课件 p27--p43 是 Classroom Quiz，共 16 道编号题（p33 是一张没有题号的插图页，另算）。
+每题给\textbf{答案}与\textbf{一句依据}。依据写清是课件哪一页，或本讲义哪一节；
+凡课件没有的内容，标注 [教材补充]；凡题面数据不足的，标 [待确认] 并写清缺什么。
+本节\textbf{不给旁注}——题面是检验回忆的地方。
+
+\subhdr{第 1 题（p27）}
+
+\textit{What is the meaning of static? What is the meaning of dynamic?}
+
+\textbf{答}：\textbf{静态}指 $u_{\mathrm{i}}=0$、只有 $U_{\mathrm{CC}}$ 作用时电路的工作状态，
+关心的量是 Q 点（$I_{\mathrm{B}}$、$I_{\mathrm{C}}$、$U_{\mathrm{CE}}$）；
+\textbf{动态}指在 Q 点之上再叠加交流小信号时的工作状态，关心的量是 $A_u$、$r_{\mathrm{i}}$、$r_{\mathrm{o}}$ 以及波形是否失真。
+
+\textbf{依据}：p2 的标题 \texttt{1. Static analysis} 下面直接就是 \texttt{(2) Q point}；
+p3 的 \texttt{2. Dynamic analysis} 下面接着是交流通路与等效电路。
+
+\subhdr{第 2 题（p28）}
+
+\textit{What is static analysis? What is dynamic analysis?}
+
+\textbf{答}：\textbf{静态分析}＝把 $C_1$、$C_2$、$C_{\mathrm{E}}$ 当\textbf{开路}、交流源置零，
+画直流通路，解 Q 点；\textbf{动态分析}＝把耦合与旁路电容当\textbf{短路}、$U_{\mathrm{CC}}$ 当短路到地，
+画交流通路 $\to$ 微变等效电路 $\to$ 求 $A_u$、$r_{\mathrm{i}}$、$r_{\mathrm{o}}$。
+
+\textbf{依据}：p2（静态）、p3--p5（动态三步）；两级电路的同一套做法见 p24、p25。
+
+\subhdr{第 3 题（p29）}
+
+\textit{If we want to draw the AC path, how to deal with the capacitor? How to deal with the DC power supply?}
+
+\textbf{答}：电容\textbf{短路}（容抗 $1/(\omega C)$ 在中等频率下小到可忽略）；
+直流电源 $U_{\mathrm{CC}}$ \textbf{短路到地}（内阻视为零，两端交流电位相同）。
+
+\textbf{依据}：p3 左图那一圈红线——从 $+U_{\mathrm{CC}}$ 端点一路画到下方地线，就是「$U_{\mathrm{CC}}$ 短路」这个动作。
+
+\subhdr{第 4 题（p30）}
+
+\textit{In switching applications, the transistor is either in \underline{\hspace{1.6cm}} or in \underline{\hspace{1.6cm}} mode.}
+
+\textbf{答}：\textbf{饱和（saturation）}或\textbf{截止（cut-off）}。开关应用要的是「通」与「断」两个极端状态，
+所以管子只在饱和区与截止区之间切换，不在放大区停留。
+
+\textbf{依据}：本讲课件（p1--p50）没有开关应用的内容，属 4.3 的 [教材补充]；
+本册 p34、p35、p42 三题正是在练「判工作模式」，可与本题互证（判据：$U_{\mathrm{BE}}<0.5\ \mathrm{V}$ 截止、
+$U_{\mathrm{CE}}\approx0.3\ \mathrm{V}$ 饱和）。
+
+\subhdr{第 5 题（p31）}
+
+\textit{Why do we use the circuit on the right to replace the circuit on the left?}
+
+\textbf{答}：左边是\textbf{固定偏置}，右边是\textbf{分压偏置}。固定偏置的
+$I_{\mathrm{B}}=(U_{\mathrm{CC}}-U_{\mathrm{BE}})/R_{\mathrm{B}}$ 与 $\beta$ 无关，但
+$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$ \textbf{正比于 $\beta$}——同型号管子的 $\beta$ 分散性很大（几十到几百），
+温度升高 $\beta$ 还会变大，Q 点直接漂移甚至进饱和。分压偏置把 $U_{\mathrm{B}}$ 用
+$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$ 钉住，$I_{\mathrm{E}}=(U_{\mathrm{B}}-U_{\mathrm{BE}})/R_{\mathrm{E}}$
+几乎与 $\beta$ 无关，而且自带一条负反馈链：
+温度 $\uparrow\Rightarrow I_{\mathrm{C}}\uparrow\Rightarrow U_{\mathrm{E}}\uparrow\Rightarrow U_{\mathrm{BE}}\downarrow\Rightarrow I_{\mathrm{B}}\downarrow\Rightarrow I_{\mathrm{C}}\downarrow$。
+
+\textbf{依据}：p31 的两个图注（\texttt{Fixed bias amplifier circuit} / \texttt{Voltage divider bias amplifier circuit}）
+＋ [C4-4 p6--p10] 的分压偏置推导；本讲义 §1 的对照表。
+
+\subhdr{第 6 题（p32）}
+
+\textit{The type of amplifier shown is a ( ).} 　a. common-collector　b. common-emitter　c. common-base　d. none of the above
+
+\textbf{答}：\textbf{c. common-base（共基极）}。
+判据：$C_{\mathrm{B}}$ 把基极交流接地，输入经 $C_1$ 落在射极，输出经 $C_2$ 取自集电极——
+输入端口是 E--B、输出端口是 C--B，公共端是 B。
+
+\textbf{依据}：p15 的 4.5.3 电路与本图完全同构；p16 第三栏 CB。
+
+\subhdr{第 6$'$ 题（p33，课件无题号）}
+
+p33 只有 \texttt{Question:} 三个字、四张电路图与两列标题（CE / CC / CB），\textbf{没有题干}。
+合理的题干是「指出下列四个电路各属哪种组态」，答案如下：
+
+\textbf{答}：左上＝\textbf{固定偏置共射（CE）}（$R_{\mathrm{B}}$ 从基极接 $U_{\mathrm{CC}}$，$R_{\mathrm{C}}$ 在集电极）；
+左下＝\textbf{共集（CC，射极跟随器）}（集电极直接接 $U_{\mathrm{CC}}$、无 $R_{\mathrm{C}}$，输出取自射极）；
+右上＝\textbf{分压偏置共射（CE）}（$R_{\mathrm{B1}}$、$R_{\mathrm{B2}}$ 分压，$R_{\mathrm{E}}$ 被 $C_{\mathrm{E}}$ 旁路）；
+右下＝\textbf{共基（CB）}（$C_{\mathrm{B}}$ 把基极交流接地，输入在射极）。
+
+\textbf{依据}：p3（共集）、p15（共基）、p31（两种共射）；判据见本讲义 §6。
+
+\textbf{[待确认]}：课件此页无题干，上述题干由本讲义自拟，用于覆盖该页内容；考试若照此页出题，题面须另行给出。
+
+\subhdr{第 7 题（p34）}
+
+\textit{Given that $\beta=30$, find the Operation mode of the transistor.}
+（图：NPN，射极接地，$R_{\mathrm{C}}=3\ \mathrm{k}\Omega$ 接 $+12\ \mathrm{V}$，$R_{\mathrm{B}}=30\ \mathrm{k}\Omega$ 接 $-3\ \mathrm{V}$。）
+
+\textbf{答}：\textbf{截止（cut-off）}。
+基极电源是 $-3\ \mathrm{V}$、射极接地，故 $U_{\mathrm{BE}}=-3\ \mathrm{V}<0$，发射结反偏，$I_{\mathrm{B}}=0$；
+于是 $I_{\mathrm{C}}=0$，$U_{\mathrm{CE}}=U_{\mathrm{CC}}=12\ \mathrm{V}$。$\beta$ 与 $R_{\mathrm{C}}$ 都是干扰项——
+截止时它们不参与计算。
+
+\textbf{数值复核}（python）：若强行按正向偏置套公式，
+$I_{\mathrm{B}}=(-3-0.7)/30\ \mathrm{k}\Omega=-1.23\times10^{-4}\ \mathrm{A}<0$，
+负值本身就说明「没有正向基极电流」，与截止的结论一致。
+
+\textbf{依据}：判据 $U_{\mathrm{BE}}<0\Rightarrow$ 截止属 [教材补充]（本讲课件未给判据，只在 p16 用过「$A_u$ 与组态」的说法）。
+
+\subhdr{第 8 题（p35）}
+
+\textit{Given that $U_{\mathrm{BE}}=0.7$, $U_{\mathrm{CE}}=0.3$. Find the Operation mode of the transistor.}
+（图：NPN，$R_{\mathrm{B}}=200\ \mathrm{k}\Omega$ 接 $+U_{\mathrm{CC}}$，$R_{\mathrm{C}}=4\ \mathrm{k}\Omega$，$U_{\mathrm{CC}}=+12\ \mathrm{V}$。）
+
+\textbf{答}：\textbf{饱和（saturation）}。
+$a$ 判据：$U_{\mathrm{CE}}=0.3\ \mathrm{V}<U_{\mathrm{BE}}=0.7\ \mathrm{V}$，集电结已正偏，管子不可能工作在放大区；
+$U_{\mathrm{CE}}=0.3\ \mathrm{V}$ 又正是饱和压降的典型值。
+
+\textbf{数值复核}（python）：$I_{\mathrm{B}}=(12-0.7)/200\ \mathrm{k}\Omega=56.5\ \mu\mathrm{A}$，
+$I_{\mathrm{C(sat)}}=12/4\ \mathrm{k}\Omega=3\ \mathrm{mA}$，
+要真正饱和需 $\beta\ge I_{\mathrm{C(sat)}}/I_{\mathrm{B}}=53.1$。
+
+\textbf{[待确认]}：本题没给 $\beta$。若 $\beta=30$（如第 7 题的值），则 $I_{\mathrm{C}}=1.7\ \mathrm{mA}<3\ \mathrm{mA}$、
+$U_{\mathrm{CE}}=12-1.7\times4=5.2\ \mathrm{V}$，反而在放大区——\textbf{与题给的 $U_{\mathrm{CE}}=0.3\ \mathrm{V}$ 矛盾}。
+所以本题只能用「$U_{\mathrm{CE}}<U_{\mathrm{BE}}$」这条给定判据作答；缺的数据是 $\beta$（需 $\beta\ge53$）。
+
+\subhdr{第 9 题（p36）}
+
+\textit{Do you think this circuit can amplify the signal? Why?}
+
+\textbf{答}：\textbf{不能}。该电路把基极用一根导线直接接到 $+U_{\mathrm{CC}}$，造成两处致命问题：
+（1）\textbf{直流上}，B--E 结没有限流电阻，$I_{\mathrm{B}}$ 只受结压降限制，管子瞬间进入深饱和（甚至烧毁）；
+（2）\textbf{交流上}，$U_{\mathrm{CC}}$ 对地短路，于是基极在交流上直接被短路到地，
+输入信号 $u_{\mathrm{i}}$ 加不到 B--E 之间（$u_{\mathrm{be}}\equiv0$），自然没有放大。
+
+\textbf{依据}：p3 那条「$U_{\mathrm{CC}}$ 对交流短路」的规则；本讲义 §2 第 2 步。
+
+\subhdr{第 10 题（p37）}
+
+\textit{If the output signal is distorted, how to adjust it?}
+（图：固定偏置共射，$R_{\mathrm{B}}$ 串一只可变电阻 $R_{\mathrm{P}}$；右侧波形是正弦波，\textbf{底部被削平}。）
+
+\textbf{答}：底部被削平是\textbf{饱和失真}。共射输出电压 $u_{\mathrm{o}}$ 反相，
+$u_{\mathrm{o}}$ 的最低点对应 $u_{\mathrm{CE}}$ 的最低点，也就是管子最靠近饱和的时刻；
+底部削平说明 Q 点\textbf{偏高}（$I_{\mathrm{C}}$ 太大）。调整办法：\textbf{增大 $R_{\mathrm{P}}$}，
+即增大基极回路的电阻，使 $I_{\mathrm{B}}$ 减小、$I_{\mathrm{C}}$ 减小、Q 点下移，退出饱和。
+
+\textbf{依据}：本讲课件没有这一题的答案页；判据（削底对应饱和、削顶对应截止）属 [教材补充]。
+Q 点随 $R_{\mathrm{B}}$ 变化的关系见本讲义 §1 的 $I_{\mathrm{B}}=(U_{\mathrm{CC}}-U_{\mathrm{BE}})/R_{\mathrm{B}}$。
+
+\subhdr{第 11 题（p38）}
+
+\textit{For the Common-Collector circuit (Emitter follower), which of the following statements is incorrect.}
+A. the voltage gain is greater than 1　B. the loading capacity is good.
+C. the input and output signals are in phase.　D. the output resistance is high.
+
+\textbf{答}：\textbf{A 与 D 都不正确}（题干写的是单数 \textit{incorrect}，但实际有两个错项）。
+$A_u$ 严格小于 1（分母比分子多一项 $r_{\mathrm{be}}$），所以 A 错；
+$r_{\mathrm{o}}$ 只有几十欧，是三种组态里最小的，所以 D 也错。
+B 正确（$r_{\mathrm{o}}$ 小即带载能力强），C 正确（$A_u>0$，同相）。
+
+\textbf{依据}：p6（$A_u\approx1$ 的公式与 \texttt{Emitter-follower} 命名）、p13（$r_{\mathrm{o}}$ 式子与
+\textit{very low} 的结论）、p14（$A_u\approx1$ + 高输入电阻 + 低输出电阻）。
+
+\subhdr{第 12 题（p39）}
+
+\textit{Given that $U_{\mathrm{CC}}=12\ \mathrm{V}$, $\beta=100$, $R_{\mathrm{B}}=100\ \mathrm{k}\Omega$. When $U_{\mathrm{i}}=0$,
+$U_{\mathrm{BE}}=0.6\ \mathrm{V}$, $I_{\mathrm{B}}=20\ \mu\mathrm{A}$. When the effective value of the input $U_{\mathrm{i}}=5\ \mathrm{mV}$,
+the effective value of the output $U_{\mathrm{o}}=0.6\ \mathrm{V}$. Find the voltage gain $A_{\mathrm{o}}$.}
+
+\textbf{答}：$A_{\mathrm{o}}=-\dfrac{0.6\ \mathrm{V}}{5\ \mathrm{mV}}=\mathbf{-120}$（幅值 120，相位相反）。
+题给的是有效值，有效值之比只给幅值；符号由共射的反相决定，必须补负号。
+
+\textbf{数值复核}（python）：$0.6/0.005=120.0$；顺带可校 $I_{\mathrm{C}}=\beta I_{\mathrm{B}}=2\ \mathrm{mA}$，
+与 $I_{\mathrm{B}}=20\ \mu\mathrm{A}$ 自洽（$R_{\mathrm{B}}=100\ \mathrm{k}\Omega$ 时 $I_{\mathrm{B}}$ 本应为
+$(12-0.6)/100=114\ \mu\mathrm{A}$，题给 $20\ \mu\mathrm{A}$ 说明 $R_{\mathrm{B}}$ 之外还串了偏置调节电阻，
+这与 p37 图上那只 $R_{\mathrm{P}}$ 一致，不影响增益计算）。
+
+\textbf{依据}：p39 的电路是共射（[C4-4 p13] 讲过 $A_u=-\beta R_L'/r_{\mathrm{be}}$，反相）；
+本题直接用定义 $A_{\mathrm{o}}=U_{\mathrm{o}}/U_{\mathrm{i}}$。
+
+\textbf{[待确认]}：题面把输出写成 $U_{\mathrm{OC}}$。按上下文（\textit{the effective value of the output}）
+应读作输出电压有效值 $U_{\mathrm{o}}$；即使读作「开路电压」，由于负载接在输出端，
+$A_{\mathrm{o}}$ 的数值不变（$-120$）。
+
+\subhdr{第 13 题（p40）}
+
+\textit{Given that $U_{\mathrm{CC}}=12\ \mathrm{V}$, $\beta=100$, $I_{\mathrm{B}}=20\ \mu\mathrm{A}$, $U_{\mathrm{CE}}=6\ \mathrm{V}$. Find $R_{\mathrm{C}}=$ ?}
+
+\textbf{答}：$R_{\mathrm{C}}=3\ \mathrm{k}\Omega=3000\ \Omega$。
+\[
+I_{\mathrm{C}}=\beta I_{\mathrm{B}}=100\times20\ \mu\mathrm{A}=2\ \mathrm{mA},\qquad
+R_{\mathrm{C}}=\frac{U_{\mathrm{CC}}-U_{\mathrm{CE}}}{I_{\mathrm{C}}}=\frac{12-6}{2\ \mathrm{mA}}=3\ \mathrm{k}\Omega .
+\]
+
+\textbf{数值复核}（python）：$2\ \mathrm{mA}\times3\ \mathrm{k}\Omega=6\ \mathrm{V}$，与 $U_{\mathrm{CE}}=6\ \mathrm{V}$
+相加正好 $12\ \mathrm{V}$，自洽。
+
+\textbf{依据}：p40 的电路是固定偏置共射（射极接地、无 $R_{\mathrm{E}}$），故
+$U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{C}}I_{\mathrm{C}}$；[C4-4 p9--p10] 的静态分析。
+
+\subhdr{第 14 题（p41）}
+
+\textit{In the common-emitter amplifier circuit. Given that the effective value of input voltage $U_{\mathrm{i}}=5\ \mathrm{mV}$.
+When there is no load, the effective value of output voltage $U_{\mathrm{oc}}=0.6\ \mathrm{V}$.
+If a load ($R_{\mathrm{L}}=R_{\mathrm{C}}$) is connected, then the effective value of output voltage with load $U_{\mathrm{o}}=$ ?}
+
+\textbf{答}：$\mathbf{U_{\mathrm{o}}=0.3\ \mathrm{V}}$。
+空载时 $|A_u|=\beta R_{\mathrm{C}}/r_{\mathrm{be}}=0.6/0.005=120$；
+接上 $R_{\mathrm{L}}=R_{\mathrm{C}}$ 后，集电极的等效负载变成
+$R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}=R_{\mathrm{C}}/2$，增益随之减半：
+\[
+|A_u|'=\frac{\beta (R_{\mathrm{C}}/2)}{r_{\mathrm{be}}}=60,\qquad
+U_{\mathrm{o}}=60\times5\ \mathrm{mV}=0.3\ \mathrm{V}.
+\]
+
+\textbf{数值复核}（python）：$0.5\times0.6=0.3$；比值 $R_L'/R_{\mathrm{C}}=1/2$，与增益减半一致。
+
+\textbf{依据}：p41 的电路是共射；$R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ 与 $A_u=-\beta R_L'/r_{\mathrm{be}}$
+见 [C4-4 p13]；本讲义 §8 讲的「后级输入电阻就是前级负载」是同一件事的另一面。
+
+\subhdr{第 15 题（p42）}
+
+\textit{As shown in the Fig. $U_{\mathrm{BE}}$ is approximately $0.7\ \mathrm{V}$ for a silicon transistor. $\beta=50$.
+It can be estimated that the circuit works in ( ).}
+A. active region　B. saturation region　C. cut-off region　D. none of the above
+（图：$R_{\mathrm{B}}=100\ \mathrm{k}\Omega$ 接 $+12\ \mathrm{V}$，$R_{\mathrm{C}}=1\ \mathrm{k}\Omega$，射极接地。）
+
+\textbf{答}：\textbf{A. active region（放大区）}。
+\[
+I_{\mathrm{B}}=\frac{12-0.7}{100\ \mathrm{k}\Omega}=113\ \mu\mathrm{A},\qquad
+I_{\mathrm{C}}=50\times113\ \mu\mathrm{A}=5.65\ \mathrm{mA},
+\]
+\[
+U_{\mathrm{CE}}=12-5.65\ \mathrm{mA}\times1\ \mathrm{k}\Omega=6.35\ \mathrm{V}>U_{\mathrm{BE}},
+\]
+且 $I_{\mathrm{C}}=5.65\ \mathrm{mA}<I_{\mathrm{C(sat)}}=U_{\mathrm{CC}}/R_{\mathrm{C}}=12\ \mathrm{mA}$，故在放大区。
+
+\textbf{数值复核}（python）：$I_{\mathrm{B}}=113.00\ \mu\mathrm{A}$、$I_{\mathrm{C}}=5.650\ \mathrm{mA}$、
+$U_{\mathrm{CE}}=6.35\ \mathrm{V}$、$I_{\mathrm{C(sat)}}=12\ \mathrm{mA}$，四项互相自洽。
+
+\textbf{依据}：判据属 [教材补充]（放大区：$U_{\mathrm{BE}}\approx0.7$ 且 $U_{\mathrm{CE}}>U_{\mathrm{BE}}$）；
+本题电路是固定偏置，静态公式见 [C4-4 p6--p10]。
+
+\subhdr{第 16 题（p43）}
+
+\textit{How will the output voltage gain change when the capacitor is disconnected?}
+（图：分压偏置共射，红色标出射极旁路电容 $C_{\mathrm{E}}$；右图把 $C_{\mathrm{E}}$ 去掉。）
+
+\textbf{答}：增益\textbf{急剧下降}（幅值下降，符号仍为负）。
+有 $C_{\mathrm{E}}$ 时射极交流接地，$A_u=-\beta R_L'/r_{\mathrm{be}}$；
+去掉 $C_{\mathrm{E}}$ 后 $R_{\mathrm{E}}$ 进入交流通路，射极不再接地：
+\[
+A_u=-\frac{\beta R_L'}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}},\qquad
+\frac{A_u\big|_{\text{断开后}}}{A_u\big|_{\text{断开前}}}
+=\frac{r_{\mathrm{be}}}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}} .
+\]
+取 $r_{\mathrm{be}}=1\ \mathrm{k}\Omega$、$R_{\mathrm{E}}=1\ \mathrm{k}\Omega$、$\beta=100$，比值 $=1/102$，
+即幅值掉到原来的 $1\%$ 左右。同时输入电阻升高约 20 倍、非线性失真减小（负反馈的代价与收益）。
+
+\textbf{数值复核}（python）：$1/(1+101)=0.0098$；同一组参数下 $A_u$ 从 $-150$ 变为 $-1.47$。
+
+\textbf{依据}：p47 的通栏公式（含 $(1+\beta)R_{\mathrm{E}}$ 那一版）；p48、p49 正是这道题的两个状态图。
+判据「旁路电容只影响交流」见本讲义 §5 的旁注。
+
+\subhdr{答案速查表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{0.9cm}p{1.2cm}p{5.3cm}p{0.9cm}p{1.2cm}p{5.3cm}@{}}
+\toprule
+\thead{题} & \thead{页} & \thead{答案} & \thead{题} & \thead{页} & \thead{答案}
+\\
+\midrule
+1 & p27 & 静态＝Q 点；动态＝小信号参数 & 9 & p36 & 不能，基极被短接到地
+\\
+2 & p28 & 静态画直流通路，动态画交流通路 & 10 & p37 & 饱和失真，增大 $R_{\mathrm{P}}$
+\\
+3 & p29 & 电容短路；$U_{\mathrm{CC}}$ 短地 & 11 & p38 & A、D 都错
+\\
+4 & p30 & 饱和 / 截止 & 12 & p39 & $A_{\mathrm{o}}=-120$
+\\
+5 & p31 & 分压偏置稳定 Q 点 & 13 & p40 & $R_{\mathrm{C}}=3\ \mathrm{k}\Omega$
+\\
+6 & p32 & c. common-base & 14 & p41 & $U_{\mathrm{o}}=0.3\ \mathrm{V}$
+\\
+6$'$ & p33 & CE / CC / CE / CB & 15 & p42 & A. 放大区
+\\
+7 & p34 & 截止 & 16 & p43 & 增益掉到约 $1/102$
+\\
+8 & p35 & 饱和（$\beta\ge53$）[待确认] & & & 
+\\
+\bottomrule
+\end{tabular}
+
+
+%=============================================================
+\hdr{§12}{公式卡与四步用法}
+
+\subhdr{卡一：共集电极（射极跟随器）的三个参数}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{8.6cm}p{4.6cm}@{}}
+\toprule
+\thead{量} & \thead{公式} & \thead{条件 / 备注}
+\\
+\midrule
+静态 & $I_{\mathrm{B}}=\dfrac{U_{\mathrm{CC}}-U_{\mathrm{BE}}}{R_{\mathrm{B}}+(1+\beta)R_{\mathrm{E}}}$，$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$，$U_{\mathrm{CE}}=U_{\mathrm{CC}}-R_{\mathrm{E}}I_{\mathrm{E}}$ & 无 $R_{\mathrm{C}}$；$I_{\mathrm{E}}=(1+\beta)I_{\mathrm{B}}$
+\\
+$A_u$ & $\dfrac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}$，$R_L'=R_{\mathrm{E}}\parallel R_{\mathrm{L}}$ & $<1$，同相，$\approx1$
+\\
+$r_{\mathrm{i}}$ & $R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr]$ & 大（上百千欧）
+\\
+$r_{\mathrm{o}}$ & $R_{\mathrm{E}}\parallel\dfrac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}$ & 小（几十欧）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{卡二：三种组态一页对照（$R_L'$ 各不相同，别混）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.3cm}p{3.8cm}p{4.4cm}p{3.3cm}@{}}
+\toprule
+\thead{组态} & \thead{$A_u$} & \thead{$r_{\mathrm{i}}$} & \thead{$r_{\mathrm{o}}$}
+\\
+\midrule
+CE & $-\dfrac{\beta R_L'}{r_{\mathrm{be}}}$，$R_L'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ & $R_{\mathrm{B}}\parallel r_{\mathrm{be}}$ & $\approx R_{\mathrm{C}}$
+\\
+CC & $+\dfrac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}$，$R_L'=R_{\mathrm{E}}\parallel R_{\mathrm{L}}$ & $R_{\mathrm{B}}\parallel[r_{\mathrm{be}}+(1+\beta)R_L']$ & $R_{\mathrm{E}}\parallel\dfrac{R_{\mathrm{S}}\parallel R_{\mathrm{B}}+r_{\mathrm{be}}}{1+\beta}$
+\\
+CB & $+\dfrac{\beta R_C'}{r_{\mathrm{be}}}$，$R_C'=R_{\mathrm{C}}\parallel R_{\mathrm{L}}$ & $R_{\mathrm{E}}\parallel\dfrac{r_{\mathrm{be}}}{1+\beta}$ & $\approx R_{\mathrm{C}}$
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{卡三：一条折算规则，三个方向}
+
+\[
+\boxed{\;\text{从基极看射极：}\times(1+\beta)\qquad
+\text{从射极看基极：}\div(1+\beta)\qquad
+\text{从基极看负载 }R_L'\text{：}\times(1+\beta)\;}
+\]
+三个例子都在本讲义里出现过：$I_{\mathrm{B}}$ 式的分母 $(1+\beta)R_{\mathrm{E}}$（§1）、
+$r_{\mathrm{i}}$ 里的 $(1+\beta)R_L'$（§3）、$r_{\mathrm{o}}$ 里的 $\div(1+\beta)$（§3）、
+E1 的 $(1+\beta)R_{\mathrm{E}}$（§9）。
+
+\subhdr{四步用法：拿到一个新电路，按这个顺序做}
+
+\begin{enumerate}
+\item \textbf{静态}：三个电容开路、交流源置零，画直流通路，解 Q 点。
+若电路有多级且用 RC 耦合，\textbf{各级分开算}（§8）。
+\item \textbf{交流通路}：三个电容短路、$U_{\mathrm{CC}}$ 短路到地，找出\textbf{哪个极接地}，
+据此判断组态（CE / CC / CB），并据此确定 $R_L'$ 该用哪一只电阻。
+\item \textbf{微变等效}：晶体管换成「$r_{\mathrm{be}}$ + 受控源 $\beta\dot I_{\mathrm{b}}$（C 到 E）」，
+在关键节点各写一次 KCL（共集写射极、共射写集电极、共基写射极与集电极）。
+\item \textbf{三个参数}：$A_u$ 由「输出/输入」两式相除；$r_{\mathrm{i}}$ 用定义 $\dot U_{\mathrm{i}}/\dot I_{\mathrm{i}}$；
+$r_{\mathrm{o}}$ 用「置零、去载、加测试源」。多级时先算后级 $r_{\mathrm{i}}$，再把前级 $r_{\mathrm{i}}$、$r_{\mathrm{o}}$ 收在头尾。
+\end{enumerate}
+
+\warnbox{\textbf{第 4 步最容易漏的一件小事}：$r_{\mathrm{o}}$ 的测试源法要\textbf{保留 $R_{\mathrm{S}}$}。
+若把信号源整条支路都去掉，基极就变成「什么都不接」，会算出 $r_{\mathrm{o}}=R_{\mathrm{E}}$，
+与 p13 的式子差一个 $1/(1+\beta)$ 量级的项。§3 的旁注专门点了这一条。}
+
+%=============================================================
+\hdr{§13}{易错点：每条都能指回某一步}
+
+\begin{enumerate}
+
+\item \textbf{把 $(1+\beta)R_{\mathrm{E}}$ 写成 $R_{\mathrm{E}}$}（§1，p2）。
+后果：$I_{\mathrm{B}}$ 算大 $(1+\beta)$ 倍量级。检验办法：算完代回 KVL，
+看 $R_{\mathrm{B}}I_{\mathrm{B}}+U_{\mathrm{BE}}+R_{\mathrm{E}}I_{\mathrm{E}}$ 是否等于 $U_{\mathrm{CC}}$。
+
+\item \textbf{把 $r_{\mathrm{i}}$ 里的 $(1+\beta)$ 漏掉}（§3，p9 的黄框就是这样错的）。
+后果：$r_{\mathrm{i}}$ 从上百千欧掉到千欧级，与 p12「输入电阻大大提高」直接冲突。
+检验办法：用 p12 那句结论反推——若算出来的 $r_{\mathrm{i}}$ 与共射同量级，一定漏了 $(1+\beta)$。
+
+\item \textbf{符号写错}：共射反相（$A_u<0$）、共集同相（$A_u>0$）、共基同相（$A_u>0$）。
+第 16 题之后的复习里若把 CC 的 $A_u$ 写成负的，p14 的「跟随」二字就白写了。
+
+\item \textbf{$R_L'$ 张冠李戴}：共集用 $R_{\mathrm{E}}\parallel R_{\mathrm{L}}$，共射与共基用 $R_{\mathrm{C}}\parallel R_{\mathrm{L}}$。
+第 14 题（$R_{\mathrm{L}}=R_{\mathrm{C}}$，增益减半）用的是共射那一只，别套共集的。
+
+\item \textbf{把 p3 那张「管子上下颠倒」的图当成画错}（§2）。
+它不是错图：交流通路里集电极接地，为了让地线成一条直线才把管子翻过来。
+
+\item \textbf{$r_{\mathrm{o}}$ 的定义漏掉 $R_{\mathrm{S}}$}（§3）。
+测试源法里有三步：置零、去载、加测试源。「置零」是 $\dot U_{\mathrm{s}}$ 短路而\textbf{保留} $R_{\mathrm{S}}$，
+不是把整条源支路拆掉。
+
+\item \textbf{多级相乘时用了空载 $A_{u1}$}（§8，p26）。
+必须取 $R_{L1}=r_{\mathrm{i}2}$；否则高估，修正因子是 $r_{\mathrm{i}2}/(R_{\mathrm{C}}+r_{\mathrm{i}2})$。
+
+\item \textbf{两级都用同一套 Q 点公式}（§8，p24）。
+第一级是分压偏置、第二级是共集接法，公式不同；而且第二级的上偏置叫 $R_{\mathrm{B3}}$，
+不是 $R_{\mathrm{B}}$（课件 p24 的小图把它简写成 $R_{\mathrm{B}}$，容易串）。
+
+\item \textbf{静态分析里把旁路电容算进去}（§5、§9）。
+$C_{\mathrm{E}}$、$C_{\mathrm{B}}$ 对直流开路，静态时它们等于不存在。
+E1 与 E2 的 Q 点相同、动态不同（一个有 $R_{\mathrm{E}}$ 反馈、一个没有），差别全在电容上。
+
+\item \textbf{把共基当作能单独用的第一级}（§5）。
+$r_{\mathrm{i}}$ 只有十欧量级，接上任何有内阻的信号源，信号都会掉在 $R_{\mathrm{S}}$ 上。
+
+\item \textbf{把直接耦合的 Q 点当独立}（§7）。
+RC 耦合才有「各级独立」，直接耦合的各级 Q 点互相牵连，必须联立解。
+
+\item \textbf{照抄 p9、p47 的结果框}（§3、§9）。
+这两处与课件正文冲突，后面 §10 已逐条点名；考试若照抄，$r_{\mathrm{i}}$ 与 $A_u$ 都会错一到两个数量级。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§14}{三句话总结}
+
+\begin{enumerate}
+
+\item \textbf{共集电极就是射极跟随器}：$A_u=\dfrac{(1+\beta)R_L'}{r_{\mathrm{be}}+(1+\beta)R_L'}$ 恒小于 1 且同相，
+$r_{\mathrm{i}}$ 被放大约 $(1+\beta)$ 倍、$r_{\mathrm{o}}$ 被缩小约 $(1+\beta)$ 倍——
+\textbf{它不放大电压，它做阻抗变换}，所以放在两级之间当缓冲：前级不被拽住，负载被带得动（§4）。
+
+\item \textbf{三种组态的区别只有一条}：交流通路里\textbf{哪个极接地}。
+接地的极不同，$R_L'$ 不同、输入输出端口不同，于是 $A_u$ 的符号、$r_{\mathrm{i}}$、$r_{\mathrm{o}}$ 全变；
+但所有式子都是同一条折算规则（基极看射极乘 $1+\beta$、射极看基极除 $1+\beta$）的不同写法（§2、§5、§12）。
+
+\item \textbf{多级放大的三条结论}：阻容耦合把直流断开，所以\textbf{各级 Q 点独立算}；
+动态上 \textbf{$A_u=A_{u1}A_{u2}$}，其中的 $A_{u1}$ 必须\textbf{用后级的输入电阻作负载}
+（$R_{L1}=r_{\mathrm{i}2}$）；整体的 $r_{\mathrm{i}}$ 只看第一级、$r_{\mathrm{o}}$ 只看末级。
+代价是通频带随级数变窄（§8）。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§15}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{9.4cm}p{3.4cm}@{}}
+\toprule
+\thead{课件页} & \thead{课件内容（原文关键词）} & \thead{本讲义落点}
+\\
+\midrule
+p1 & 封面：4.5.2 Common collector amplifier & §0
+\\
+p2 & \texttt{1. Static analysis}、\texttt{(2) Q point} & §1
+\\
+p3 & \texttt{2. Dynamic analysis}、\texttt{(2) Redraw the circuit} & §2 第 1--2 步
+\\
+p4 & \texttt{(3) Equivalent circuit}（空载） & §2 第 3 步
+\\
+p5 & \texttt{(3) Equivalent circuit}（带 $R_{\mathrm{S}}$、$R_{\mathrm{L}}$） & §2 第 3 步
+\\
+p6 & \texttt{(4) Main parameters}：$A_u$、\texttt{Emitter-follower} & §2 第 4--5 步
+\\
+p7 & $r_{\mathrm{i}}$ 公式 + 右侧推导截图 & §3（并指出截图里的 $R_{\mathrm{C}}$）
+\\
+p8 & 只有等效图，\textbf{正文为空} & §3 补 $r_{\mathrm{o}}$ 推导
+\\
+p9 & $r_{\mathrm{i}}$ 黄框（漏 $(1+\beta)$） & §3 纠错
+\\
+p10 & 等效图上标 $(1+\beta)\dot I_{\mathrm{b}}$ & §3 折算依据
+\\
+p11 & $r_{\mathrm{i}}$ 正确式 + 折算两图 & §3
+\\
+p12 & $r_{\mathrm{i}}$ + \texttt{GOOD} + 输入电阻大 & §3、§4
+\\
+p13 & $r_{\mathrm{o}}$ + \texttt{GOOD} + 输出电阻低 & §3、§4
+\\
+p14 & Summary 两框（EF 命名、$A_u\approx1$） & §4
+\\
+p15 & 4.5.3 共基极（\textbf{只有电路图}） & §5
+\\
+p16 & 4.5.4 三组态定性比较 & §6
+\\
+p17 & p16 + \texttt{Problem: signal is not big enough} & §6 末
+\\
+p18 & 封面：4.6 Multi-stage Amplifier & §7
+\\
+p19 & 多级的定义与目的 & §7
+\\
+p20 & 四种耦合方式总图 + RC 耦合说明 & §7
+\\
+p21 & 总图 + 直接耦合定义 & §7
+\\
+p22 & 总图 + RC / 直接耦合两个电路 & §7
+\\
+p23 & 4.6.2 RC 耦合两级电路 + 三问 & §8
+\\
+p24 & 静态：两级独立 + 两套公式 & §8
+\\
+p25 & 动态：微变等效电路 & §8
+\\
+p26 & $A_u=A_{u1}A_{u2}$（$R_{L1}=r_{\mathrm{i}2}$）、$r_{\mathrm{i}}=r_{\mathrm{i}1}$、$r_{\mathrm{o}}=r_{\mathrm{o}2}$ & §8
+\\
+p27--p43 & Classroom Quiz（16 题，p33 无题号） & §11
+\\
+p44--p47 & E1：4.5.1 分压偏置共射，$R_{\mathrm{E}}$ 未旁路 & §9
+\\
+p48--p50 & E2：4.5.1 固定偏置带 $R_{\mathrm{E}}$，静态三式 & §9
+\\
+\bottomrule
+\end{tabular}
+
+\flowerrule
+
+\callout{\textbf{读这份讲义的最后一句提醒}：本讲课件里有三处需要「自己动手重算」的地方——
+p9 的 $r_{\mathrm{i}}$、p47 的 $A_u$、p8 的空页。三处都在本讲义里补成了完整推导（§3、§9）。
+若只记结论，至少记住这两条括号：
+\[
+r_{\mathrm{i}}=R_{\mathrm{B}}\parallel\bigl[r_{\mathrm{be}}+(1+\beta)R_L'\bigr],\qquad
+A_u=-\frac{\beta R_L'}{r_{\mathrm{be}}+(1+\beta)R_{\mathrm{E}}}\ \text{（$R_{\mathrm{E}}$ 未旁路时）}.
+\]
+前一条里少一个 $(1+\beta)$，输入电阻就差两个数量级；后一条里少一项 $(1+\beta)R_{\mathrm{E}}$，
+增益就差一到两个数量级。这两处正是课件自己写错的地方，也是本讲最值得记住的两处。}
+
+\end{document}
+%@@TAIL@@
+

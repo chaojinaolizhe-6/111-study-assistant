@@ -1,0 +1,1114 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第二章第二册（Chapter Two-2）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C2-2 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{2.4--2.5 串联与并联交流电路}
+{阻抗的复数运算、相量图解法、串并联公式的对偶}
+{依据：Chapter Two-2-2026中白上传.pdf（p1--p27，共 27 页；本讲义页码一律指本册 PDF 物理页，引用他册时写成 [C2-1 p20] 的形式）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与两处拼接}
+
+\subhdr{逐页核对的结果：本册实际讲了什么、止于哪里}
+
+课件是一讲两大块：先把「阻抗」这个词拆成复数（模、幅角、直角式、极坐标式）并给它一个几何替身（阻抗三角形），
+再用同一个复数工具把 C2-1 学过的直流串并联公式整体搬到交流域，最后用九个例题把它走一遍。
+本册\textbf{不含}任何功率、谐振、导纳的内容——这一点先用页码钉住，后文才不会再去找。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{1.9cm}p{9.4cm}@{}}
+\tabtop
+\thead{课件小节} & \thead{页码} & \thead{本讲义对应}
+\\
+\tabmid
+2.4.1 三元件模型与相量式 & p1--p2 & §1.1（表里第三格的笔误在 §5.5 备案）
+\\
+2.4.1 相量式与有效值式 & p3 & §2（两种欧姆定律的分工）
+\\
+2.4.1 阻抗：直角式与极坐标式 & p4 & §1.3（模、幅角的两个式子与前提）
+\\
+2.4.1 阻抗角与三种电路 & p5 & §1.4（判据只有「$X$ 的符号」一条）
+\\
+2.4.1 阻抗三角形 & p6 & §1.5（它从电压三角形缩放而来）
+\\
+2.4 Examples E1 & p7 & §7.1（三个小题全解）
+\\
+2.4 Examples E2 & p8 & §7.2（三张接线图的意思）
+\\
+2.4.2 阻抗串联与分压 & p9--p10 & §3（复数域里公式形状不变）
+\\
+2.4.2 E3 & p11 & §3.4（全程演算）
+\\
+2.5.1 并联 RLC 与 KCL & p12--p13 & §4.1（相量形式的 KCL 与前提）
+\\
+2.5.1 Example（$5\,\mathrm{A}$ 三问） & p14 & §4.2（$5\,\mathrm{A}$ / $0\,\mathrm{A}$ / $5\sqrt2\,\mathrm{A}$ 怎么来）
+\\
+2.5.2 并联阻抗与分流 & p15--p16 & §4.3（分流为什么取对侧）
+\\
+2.5.2 E1 & p17 & §4.4（全程演算）
+\\
+2.5.2 E2 表读数随 $f$ & p18 & §4.5（定性判据）
+\\
+2.5.2 E3 灯亮度随 $f$ & p19 & §4.6（与 E2 的差别）
+\\
+E4 题面与两种解法 & p20--p22 & §5（主例题，两法互校）
+\\
+Review R1 & p23 & §7.3
+\\
+Review R2 & p24--p25 & §7.4
+\\
+Assignments & p26、p27 & §7.5、§7.6
+\tabbot
+\end{tabular}
+
+\callout{\textbf{三处与「粗测地图」不同，按版面改过来}：\\
+（1）\textbf{2.5 从 p12 起，不是 p13。}判据是页眉：p11 页眉仍是「2.4 Series AC circuits / 2.4.2 Series impedance circuit」，
+p12 页眉已换成「2.5 Parallel AC circuits / 2.5.1 Parallel RLC Circuit」。所以 2.4 占 p1--p11（11 页），2.5 占 p12--p27（16 页）。\\
+（2）\textbf{p1 与 p2 是同一页动画的两帧。}p2 把「阻抗相量式」那三格的公式清空了，其余版面一字不差；
+版面内容只能计一页。p24 与 p25 同理（p25 比 p24 多画了一支电流相量）。\\
+（3）\textbf{本册没有功率、没有谐振、没有导纳。}对 27 页文字层逐页检索 power / resonance / admittance / 功率因数，
+零命中；唯一命中的是 p6 的 impedance triangle。所以「有功、无功、视在功率三者的关系」在这册里没有落点，
+本讲义按教材把它补成一小节 §5.6，并明确标 [教材补充]、说明只用本册已有的数。}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.7cm}p{13.0cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$u,\ i$ & 瞬时值（小写）
+\\
+$U,\ I$ & \textbf{有效值}（大写、无点）。凡写 $U=220\,\mathrm{V}$ 都指有效值，不指幅值
+\\
+$\dot U,\ \dot I$ & \textbf{相量}（大写、加点）：只对正弦稳态用，含模与初相两个信息
+\\
+$Z$ & 复阻抗 $Z=R+jX$，单位 $\Omega$；它\textbf{不是}相量（不代表正弦量），所以不加点
+\\
+$R,\ X$ & 阻抗的实部（电阻）、虚部（电抗）；$X=X_L-X_C$，可正可负
+\\
+$X_L,\ X_C$ & 感抗 $X_L=\omega L$、容抗 $X_C=1/(\omega C)$；\textbf{两个都是非负数}
+\\
+$|Z|,\ \varphi$ & 阻抗模与阻抗角，$Z=|Z|\angle\varphi$；$\varphi=\psi_u-\psi_i$
+\\
+$j$ & 虚数单位。本课程用 $j$ 不用 $i$，避免与电流 $i$ 混
+\\
+$\omega,\ f$ & 角频率与频率，$\omega=2\pi f$；本册 p27 给的是 $\omega=314$，对应 $f\approx50\,\mathrm{Hz}$
+\tabbot
+\end{tabular}}
+
+\subhdr{两处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p12 的「Question ... find the total current」与 p14 的「Example」是\textbf{同一道题}，
+中间隔着 p13 的 KCL 那一页。p12 只出题不给答；p14 直接印出三个答案 $5\,\mathrm{A}$、$0\,\mathrm{A}$、$5\sqrt2\,\mathrm{A}$，
+\textbf{三个数怎么合成出来的过程，任何一页都没有}。本讲义 §4.2 把三条支路的相量逐项摆出来再相加。}
+
+\gapitem{拼接缺口}{p9 的黄底句「With phasor algebra, all the relationships for resistance networks
+also apply to impedance networks.」是全册的枢纽——后面 p10、p16 的所有公式都靠它授权。
+但它成立的\textbf{前提}（同频率正弦稳态、线性、无独立源）在 2.2 讲过、本册不再提，
+所以这句话在 p9 上只是一句口号。本讲义 §3.1 把前提与理由补齐。}
+
+\callout{\textbf{本讲义怎么用}：\\
+第一遍只看 §0 的表、§5 主例题、§8 公式卡——这三处能让你把题做对；\\
+第二遍再看 §1、§3、§4——这三处解释「为什么复数的运算法则能直接搬过来」，是换一个新电路还能不能算对的关键；\\
+§10 缺口清单逐条对应课件某页某句，课件哪句话让你卡住，就去那里找。}
+
+%=============================================================
+\hdr{§1}{阻抗：三个元件、一次相加、两次改写}
+
+\subhdr{1.1 三个元件的相量欧姆定律（p1）}
+
+p1 的版面上有一张三行三列的小表，第一行是三个电路符号（$R$、$L$、$C$），第三行是它们的相量关系。
+把时域关系一并列出来，这张表才读得懂：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.5cm}p{4.5cm}p{4.9cm}p{4.4cm}@{}}
+\tabtop
+\thead{元件} & \thead{时域关系} & \thead{相量关系（$p1$ 表格）} & \thead{复阻抗}
+\\
+\tabmid
+$R$ & $u_R=R\,i$ & $\dot U_R=R\dot I$ & $Z_R=R$
+\\
+$L$ & $u_L=L\dfrac{\mathrm{d}i}{\mathrm{d}t}$ & $\dot U_L=jX_L\dot I$ & $Z_L=jX_L$
+\\
+$C$ & $u_C=\dfrac{1}{C}\displaystyle\int i\,\mathrm{d}t$ & $\dot U_C=-jX_C\dot I$ & $Z_C=-jX_C$
+\tabbot
+\end{tabular}
+
+读法只有一句：\textbf{把「求导」换成「乘 $j\omega$」、把「积分」换成「除以 $j\omega$」，三个元件就都变成了
+「电压 = 阻抗 $\times$ 电流」}。电感求导后多出 $j\omega L$，所以是 $jX_L$；
+电容积分后多出 $1/(j\omega C)=-j/(\omega C)$，所以是 $-jX_C$。那个负号不是人为规定的，
+是 $1/j=-j$ 算出来的。
+
+\warnbox{\textbf{一处刊印笔误，先钉住}：p1 表格第三格印的是 $\dot U=-jX_L\dot I$，
+按 C2-1 的元件伏安关系与 p4 自己写的 $Z=R+j(X_L-X_C)$，这里\textbf{必须是} $\dot U_C=-jX_C\dot I$——
+电容的容抗叫 $X_C$，叫 $X_L$ 就把电感的名字贴到电容身上了。p3、p4 往后课件一律用 $X_C$，可证 p1 是笔误。
+本文全篇按 $-jX_C$ 走。此处所依据的是文字层与视觉转写两路读法（都读作 $X_L$），故同时标 [待确认]。}
+
+\subhdr{1.2 p1 那个提问的答案：为什么是「相加」而不是「相加绝对值」}
+
+p1 右上角问了一句「Can you relate the expression with the circuit on the right?」，
+整页没有回答。这正是本册第一个、也是最关键的一个机制缺口。答案是三步 KVL：
+
+三个元件串联，\textbf{共用同一个电流} $\dot I$，所以可以先各自写电压、再相加。设端电压为 $u$，KVL 给
+
+\[ u=u_R+u_L+u_C . \]
+
+转成相量（三项同频率，才允许加在同一张相量图上）：
+
+\[ \dot U=\dot U_R+\dot U_L+\dot U_C
+   =R\dot I+jX_L\dot I-jX_C\dot I
+   =\bigl[R+j(X_L-X_C)\bigr]\dot I . \]
+
+把方括号记成 $Z$，就是 p1 印的那个式子：
+
+\[ \dot U=\bigl\{R+j(X_L-X_C)\bigr\}\dot I=Z\dot I . \]
+
+\textbf{机制一句话}：\textbf{串联时三个元件的电压相量首尾相接，复数相加就是把「实部进实部、虚部进虚部」——
+实部只来自电阻，虚部只来自两个电抗。}$X_L$ 与 $X_C$ 之所以带正负号，是因为电感电压超前电流 $90^\circ$、
+电容电压滞后电流 $90^\circ$，两者在虚轴上方向相反，所以是减不是加。
+
+\aside{这一页的前提是两个「同」：\textbf{同频率}（否则三个相量转的角速度不同，不能画在同一张图上相加）
+与\textbf{同一个 $\dot I$}（串联才有）。前者在 [C2-1 p24] 讲过，本页不再提；后者是「串联」二字的全部含义。}
+
+\subhdr{1.3 直角式与极坐标式：模与幅角（p4）}
+
+p4 从 $Z=R+jX$ 一步跳到两个结论，中间那一步被吞了。补出来是复数的标准改写：
+复平面上横轴取实部、纵轴取虚部，$Z$ 就是一个点 $(R,X)$，它的极坐标是「到原点的距离」与「与横轴的夹角」。
+
+\[ |Z|=\sqrt{R^{2}+X^{2}} ,\qquad \varphi=\arctan\frac{X}{R} ,\qquad Z=R+jX=|Z|\angle\varphi . \]
+
+两条读法必须分清：
+
+\begin{itemize}
+\item $|Z|$ \textbf{永远是非负数}。负号只能藏在 $\varphi$ 里，绝不能写成 $|Z|=-5\,\Omega$。
+\item $\varphi$ 的符号就是 $X$ 的符号。$X>0$（$X_L>X_C$）时 $\varphi>0$；$X<0$ 时 $\varphi<0$。
+\end{itemize}
+
+\aside{$\varphi=\arctan(X/R)$ 只用一个单值反正切就够了，前提是 \textbf{$R>0$}：因为电阻不为负，
+$R>0$ 保证 $Z$ 落在右半平面，$\varphi$ 必在 $(-90^\circ,90^\circ)$ 内，不需要 atan2 那种四象限判别。
+若 $R=0$（纯电抗），$X/R$ 无意义，必须单独写 $\varphi=+90^\circ$（纯电感）或 $-90^\circ$（纯电容）。
+课件 p4 直接给 $\arctan(X/R)$，没写这个前提——这就是 §10 里那条「适用区间」缺口。}
+
+\subhdr{1.4 阻抗角判三种电路：判据只有一条（p5）}
+
+p5 并列了三张相量图与三个结论行，但把判据藏在了图里。判据其实只有一句：\textbf{看 $X$ 的符号。}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{6.4cm}p{5.9cm}@{}}
+\tabtop
+\thead{判据} & \thead{相量关系} & \thead{电路性质}
+\\
+\tabmid
+$X=0$ & $\dot U$ 与 $\dot I$ 同相，$\varphi=0^\circ$ & 电阻性
+\\
+$X>0$ & $\dot U$ 超前 $\dot I$，$0<\varphi<90^\circ$ & 电感性
+\\
+$X<0$ & $\dot U$ 滞后 $\dot I$，$-90^\circ<\varphi<0^\circ$ & 电容性
+\tabbot
+\end{tabular}
+
+$X=X_L-X_C$，所以「感性还是容性」这个问题的答案，与 $R$ 完全无关，只看两个电抗谁大。
+数值小例：$R=3\,\Omega$、$X_L=8\,\Omega$、$X_C=4\,\Omega$，则 $X=4\,\Omega$，
+$|Z|=\sqrt{9+16}=5\,\Omega$，$\varphi=\arctan(4/3)=53.13^\circ$，感性。
+把 $X_C$ 改成 $8\,\Omega$，$X=0$，$|Z|=3\,\Omega$，$\varphi=0^\circ$，电阻性——阻抗模反而变小了。
+\aside{这三行与 p5 的三张相量图一一对应：图上竖直线段是 $\dot U_X=\dot U_L+\dot U_C$，
+它的方向（朝上还是朝下）就是 $\varphi$ 的符号。课件 p5 只给图和三个式子，没把「看 $X$ 的符号」写成一句话。}
+
+\subhdr{1.5 阻抗三角形从哪来（p6）}
+
+p6 说「The total impedance of an RLC series circuit can be found using impedance triangle」，
+然后画了一个直角三角形：底边 $R$、竖直边 $X$、斜边 $|Z|$、夹角 $\varphi$。课件没说这个三角形从哪来。
+
+它来自\textbf{电压三角形按 $1/I$ 缩放}。把 1.2 的相量关系两边同除以 $I$（取模），三个电压就都变成阻抗：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{4.4cm}p{6.4cm}@{}}
+\tabtop
+\thead{电压三角形（相量图）} & \thead{同除以 $I$ 后} & \thead{几何含义}
+\\
+\tabmid
+水平边 $\dot U_R$，长 $U_R=RI$ & 水平边 $R$ & 实轴方向
+\\
+竖直边 $\dot U_X$，长 $U_X=XI$ & 竖直边 $X$ & 虚轴方向
+\\
+斜边 $\dot U$，长 $U=|Z|I$ & 斜边 $|Z|$ & 模
+\\
+夹角 $\varphi$ & 夹角 $\varphi$ & 不变
+\tabbot
+\end{tabular}
+
+所以阻抗三角形与相量图\textbf{形状完全相同、只差比例尺}。用处也就很明确：
+遇到「已知 $|Z|$ 与一个边、求另一个边」的题，直接勾股；遇到「已知 $R$ 与 $X$、求 $\varphi$」，直接反正切。
+\textbf{它不能替你判相位}——三角形只画了长短，$\varphi$ 的正负还得回到 $X$ 的符号（§1.4）。
+
+%=============================================================
+\hdr{§2}{两种欧姆定律：相量式与有效值式}
+
+\subhdr{2.1 p3 并排放了两个式子，为什么两个都对}
+
+p3 上半写 $\dot U=Z\dot I$，旁注「Ohms law in phasor form」；下半写 $U=|Z|I$，旁注「Effective expression」。
+两侧的说明文字分别是「Two kinds of information, including magnitude and phase」与
+「Only the information of magnitude. It is used when we only need to calculate the magnitude」。
+
+两个式子并不矛盾，因为第二个是第一个\textbf{取模}的结果。若 $\dot U=|Z|\angle\varphi\cdot\dot I$，两边取模得
+
+\[ U=|Z|\,I . \]
+
+反过来说，$U=|Z|I$ \textbf{丢掉了 $\varphi$}。丢掉的东西有三个用途，正好对应三种题目：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.2cm}p{5.4cm}p{5.2cm}@{}}
+\tabtop
+\thead{要做什么} & \thead{能不能用 $U=|Z|I$} & \thead{为什么}
+\\
+\tabmid
+求一条支路的电流大小 & 能 & 只问模，模的式子够用
+\\
+两条支路电流相加 & \textbf{不能} & 相加是相量相加，要用 $\dot I_1+\dot I_2$
+\\
+判断超前还是滞后 & \textbf{不能} & $\varphi$ 已被取模消掉
+\\
+画相量图 & \textbf{不能} & 图上要有方向，模没有方向
+\tabbot
+\end{tabular}
+
+数值小例：$R=3\,\Omega$、$X_L=4\,\Omega$ 串联，端电压有效值 $10\,\mathrm{V}$。$|Z|=5\,\Omega$，于是 $I=2\,\mathrm{A}$——
+这一半用有效值式最好。但若再问「$u$ 与 $i$ 差多少度」，$2\,\mathrm{A}$ 帮不上忙，必须写
+$\varphi=\arctan(4/3)=53.13^\circ$，即 $u$ 超前 $i$。\textbf{同一道题，两半各用各的式子。}
+\aside{有效值式对幅值同样成立（$U_m=|Z|I_m$），因为两边同乘 $\sqrt2$ 约掉；但不能一边用有效值、一边用幅值，
+那样会差 $\sqrt2$ 倍。课件 p3 没写这一条口径。}
+
+\subhdr{2.2 一个必须养成的习惯：先声明口径}
+
+本册后面所有例题的 $U$（如 p20 的 $220\,\mathrm{V}$、p24 的 $10\,\mathrm{V}$）都是\textbf{有效值}。
+写答案时若写 $\dot U=220\angle0^\circ\,\mathrm{V}$，它的模也是有效值，不许再乘 $\sqrt2$。
+这条口径一旦混，后面所有电流都会差 $\sqrt2$ 倍，而答案看上去「只差一点点」，很难查出来。
+
+%=============================================================
+\hdr{§3}{串联阻抗：复数域里公式形状不变}
+
+\subhdr{3.1 p9 那句黄底话的前提}
+
+p9 的结论句被标成了黄底：「With phasor algebra, all the relationships for resistance networks
+also apply to impedance networks.」这句话的力量在于：\textbf{你不必重新背一套交流电路公式，
+把直流公式里的 $R$ 换成 $Z$、$U$ 换成 $\dot U$、$I$ 换成 $\dot I$ 就行}。但它有前提。
+
+\warnbox{\textbf{这条「照搬」成立需要三条前提}：\\
+（1）\textbf{同频率正弦稳态}——所有电压电流是同一个 $\omega$ 的正弦量，否则相量之间没有固定的相位差，
+不能代数相加；\\
+（2）\textbf{线性}——KVL、KCL 是线性方程，换成复数后代数结构不变；\\
+（3）\textbf{不含独立源}（或已把独立源单独处理）——否则「阻抗」这个量本身没有定义。
+课件的全部电路都满足这三条，所以可以照搬；换一个含受控源或含不同频率的电路，就不一定了。}
+
+证明只需一行：KVL 在时域是「各电压之和为零」，在相量域仍是「各电压相量之和为零」——
+同一个线性关系，只是把 $\mathrm{d}/\mathrm{d}t$ 换成了 $j\omega$。既然方程的形状没变，
+由方程解出来的串并联公式自然也没变。
+
+\subhdr{3.2 串联分压：分母是总阻抗、分子是本段阻抗（p10）}
+
+p10 上下两栏并列了电阻串联与阻抗串联。下面是交流栏：
+
+\[ Z=Z_1+Z_2 ,\qquad
+   \dot I=\frac{\dot U}{Z_1+Z_2} ,\qquad
+   \dot U_{Z_1}=\frac{Z_1}{Z_1+Z_2}\,\dot U ,\qquad
+   \dot U_{Z_2}=\frac{Z_2}{Z_1+Z_2}\,\dot U . \]
+
+形式与电阻分压一模一样——这正是 3.1 那句话。但有一个必须自己看出来的差别：
+\textbf{分子上的 $Z_1$ 是复数，所以分到的电压相量转角也变了}。数值小例最能说明问题：
+取 $\dot U=100\angle0^\circ\,\mathrm{V}$、$Z_1=j50\,\Omega$、$Z_2=50\,\Omega$，则 $Z_1+Z_2=50+j50=70.71\angle45^\circ\,\Omega$，
+
+\[ \dot U_{Z_1}=\frac{j50}{70.71\angle45^\circ}\cdot100
+   =\frac{50\angle90^\circ}{70.71\angle45^\circ}\cdot100
+   =70.71\angle45^\circ\,\mathrm{V} , \]
+
+同理 $\dot U_{Z_2}=70.71\angle-45^\circ\,\mathrm{V}$。
+两个分电压的\textbf{有效值都是 $70.71\,\mathrm{V}$}，加起来 $141.4\,\mathrm{V}$，而总电压只有 $100\,\mathrm{V}$——
+因为相加的是相量不是数。这就是 §2 表格第二行说「两条支路不能算术相加」的直接后果。
+\aside{用有效值式会立刻算错：$U_{Z_1}=|Z_1|U/(|Z_1|+|Z_2|)=50\times100/100=50\,\mathrm{V}$，
+比正确的 $70.71\,\mathrm{V}$ 小得多。错在没有把相位带进分压比。}
+
+\subhdr{3.3 阻抗相加不是模相加}
+
+这是本册最容易在一句话上翻车的地方，单独说清楚：
+
+\[ |Z_1+Z_2|\neq|Z_1|+|Z_2| . \]
+
+反例：$Z_1=3+j4$（$|Z_1|=5$）、$Z_2=3-j4$（$|Z_2|=5$）。两者相加 $Z=6$，$|Z|=6$，不是 $10$。
+原因：两个阻抗的虚部反向，把彼此的虚部抵消掉了。一般的界是三角不等式
+$|Z_1+Z_2|\le|Z_1|+|Z_2|$，等号只在两者同相时成立。
+
+这个错误的另一个化身在并联侧：$Z_1\parallel Z_2$ 不能写成 $|Z_1||Z_2|/(|Z_1|+|Z_2|)$。
+§5 主例题里会看到，这么算得到 $67.5\,\Omega$，而正确答案是 $254\,\Omega$，前者只有后者的约四分之一。
+
+\subhdr{3.4 例 E3 全程（p11）}
+
+p11 只给了题面与一句「Find $\dot I$」，\textbf{没有解答}。补全：
+
+\callout{\textbf{[E3]} 已知 $\dot U_s=10\angle0^\circ\,\mathrm{V}$，$Z_1=3+j2\,\Omega$，$Z_2=2+j3\,\Omega$，求 $\dot I$。}
+
+\textbf{第一步：串联相加。}
+
+\[ Z=Z_1+Z_2=(3+2)+j(2+3)=5+j5=7.071\angle45^\circ\,\Omega . \]
+
+\textbf{第二步：相量除法。}相量除法是「模相除、角相减」：
+
+\[ \dot I=\frac{\dot U_s}{Z}=\frac{10\angle0^\circ}{7.071\angle45^\circ}
+   =1.414\angle-45^\circ\,\mathrm{A} . \]
+
+\textbf{第三步：校核。}$|\dot I|\cdot|Z|=1.414\times7.071=10.00\,\mathrm{V}$，与 $|\dot U_s|$ 相符。
+再用直角坐标反查：$1.414\angle-45^\circ=1-\mathrm{j}1$，而 $10\angle0^\circ/(5+j5)=10(5-j5)/50=1-j1$，一致。
+
+\textbf{第四步：把结论翻译成话说。}$\dot I$ 滞后 $\dot U_s$  $45^\circ$，因为 $Z$ 的幅角是正 $45^\circ$
+（$X=5>0$，感性）。\textbf{感性电路的电流滞后电压}——这一句是 §1.4 那三行判据的直接应用。
+\aside{$Z=5+j5$ 的模为什么是 $7.071$：$\sqrt{25+25}=\sqrt{50}=7.0711$。别把它当成 $10$——
+这正是 3.3 那条「不能模相加」。}
+
+%=============================================================
+\hdr{§4}{并联电路：KCL 是相量相加}
+
+\subhdr{4.1 p13 的 KCL 与它的前提}
+
+p13 把三个元件并到同一对节点上，写
+
+\[ \dot I=\dot I_R+\dot I_L+\dot I_C . \]
+
+三条支路\textbf{共用同一个电压} $\dot U$，于是每条支路的电流由各自的阻抗决定：
+
+\[ \dot I_R=\frac{\dot U}{R} ,\qquad
+   \dot I_L=\frac{\dot U}{jX_L}=-j\frac{U}{X_L} ,\qquad
+   \dot I_C=\frac{\dot U}{-jX_C}=+j\frac{U}{X_C} . \]
+
+注意后两式的符号：除以 $j$ 等于乘 $-j$，所以电感电流滞后 $90^\circ$；除以 $-j$ 等于乘 $+j$，
+所以电容电流超前 $90^\circ$。这两个符号是并联部分全部结论的来源。
+\aside{相量形式的 KCL 只在\textbf{同频率}下成立：KCL 在时域是「流入 = 流出」的瞬时关系，
+转成相量后，不同频率的两项无法合并成一个正弦量。本册所有电路都是单一频率，所以可以直接加。}
+
+\subhdr{4.2 p12 / p14 那道题：$5\,\mathrm{A}$、$0\,\mathrm{A}$、$5\sqrt2\,\mathrm{A}$ 怎么来}
+
+题面（p12 与 p14 相同）：三条并联支路，每支路电流都是 $5\,\mathrm{A}$，求总电流。
+p14 印了三个答案，但没有一行过程。以 $\dot U$ 为参考方向（$\psi_u=0$）逐项写出来：
+
+\textbf{（1）$R$、$L$、$C$ 三条全并。}三条支路电流分别是
+
+\[ \dot I_R=5\angle0^\circ ,\qquad \dot I_L=5\angle-90^\circ=-j5 ,\qquad \dot I_C=5\angle90^\circ=+j5 . \]
+
+$\dot I_L$ 与 $\dot I_C$ 等大反向，虚部互相抵消，只剩 $\dot I=\dot I_R=5\angle0^\circ\,\mathrm{A}$。
+\textbf{总电流等于电阻支路的电流，只有 $5\,\mathrm{A}$，而不是 $15\,\mathrm{A}$。}
+
+\textbf{（2）$L$ 与 $C$ 两条并。}$\dot I=\dot I_L+\dot I_C=-j5+j5=0$。两支路电流大小相同、方向相反，
+合成电流为零——这就是并联电感电容能在某一频率上「抵消」的雏形（本册不讲谐振，但现象在此）。
+
+\textbf{（3）$R$ 与 $C$ 两条并。}$\dot I=\dot I_R+\dot I_C=5+j5=5\sqrt2\angle45^\circ$，
+模为 $5\sqrt2=7.07\,\mathrm{A}$。两个互相垂直的相量，合成用勾股。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{8.2cm}p{3.6cm}@{}}
+\tabtop
+\thead{接线} & \thead{相量合成} & \thead{总电流读数}
+\\
+\tabmid
+$R$、$L$、$C$ 全并 & $5+j0-j5+j5=5+j0$ & $5\,\mathrm{A}$
+\\
+$L$ 与 $C$ 并 & $-j5+j5=0$ & $0\,\mathrm{A}$
+\\
+$R$ 与 $C$ 并 & $5+j5=5\sqrt2\angle45^\circ$ & $5\sqrt2\approx7.07\,\mathrm{A}$
+\tabbot
+\end{tabular}
+
+\aside{p14 底部三组相量图的转写里，第（1）组的箭头方向与「总电流 $5\,\mathrm{A}$」对不上
+（若按图示两支相量叠加，模会是 $5\sqrt2$）。本讲义按课件印出的答案与 KCL 的代数结果报 $5\,\mathrm{A}$，
+图面这一处标 [待确认]。}
+
+\warnbox{\textbf{这一页的全部意义}：三条支路的电流\textbf{相位不同}，所以不能相加大小。
+电阻支路的电流与 $\dot U$ 同相，电感支路滞后 $90^\circ$，电容支路超前 $90^\circ$。
+「$5+5+5=15$」这个错误之所以诱人，是因为三者的大小恰好都一样——差别只在角度上。}
+
+\subhdr{4.3 并联阻抗与分流：分子为什么取对侧（p15--p16）}
+
+p16 下栏给的是
+
+\[ Z=\frac{Z_1Z_2}{Z_1+Z_2} ,\qquad
+   \dot I_1=\frac{Z_2}{Z_1+Z_2}\,\dot I ,\qquad
+   \dot I_2=\frac{Z_1}{Z_1+Z_2}\,\dot I . \]
+
+分流与分压有一处\textbf{必须对照记}的差别：分压公式的分子取\textbf{本段}阻抗（$\dot U_{Z_1}$ 的分子是 $Z_1$），
+分流公式的分子取\textbf{对侧}阻抗（$\dot I_1$ 的分子是 $Z_2$）。
+记反了不会报错，只会把两个支路电流互换了。
+
+为什么会反过来？因为并联时两条支路电压相同，电流与阻抗成\textbf{反比}：
+阻抗大的那条分到的电流小，所以 $\dot I_1$ 与 $Z_2$ 成正比。一句话：
+\textbf{分压是「谁大谁多」，分流是「谁大谁少」。}
+\aside{这个式子还可以读成「$\dot I_1/\dot I=Z_2/(Z_1+Z_2)$」，即 $\dot I_1 Z_1=\dot I_2 Z_2=\dot U$，
+正是并联电压相同这一条。课件 p16 只给公式，没给这个等价形式。}
+
+\subhdr{4.4 例 E1 全程（p17）}
+
+p17 只给三个已知量与电路图，\textbf{不给答案}。补全：
+
+\callout{\textbf{[E1]} 电流源 $\dot I_s=5\angle0^\circ\,\mathrm{A}$，两条并联阻抗 $Z_1=2+j2\,\Omega$、$Z_2=3+j3\,\Omega$，
+求两条支路的电流 $\dot I_1$、$\dot I_2$。}
+
+\textbf{第一步：把两个阻抗写成极坐标。}（课件只给直角式，这一步要自己补）
+
+\[ Z_1=\sqrt{4+4}\angle45^\circ=2.828\angle45^\circ\,\Omega ,\qquad
+   Z_2=\sqrt{9+9}\angle45^\circ=4.243\angle45^\circ\,\Omega . \]
+
+\textbf{第二步：并联求总阻抗。}两式幅角相同，可以「模按并联算、角不变」：
+
+\[ Z=\frac{Z_1Z_2}{Z_1+Z_2}
+   =\frac{2.828\times4.243\angle90^\circ}{5+j5}
+   =\frac{12\angle90^\circ}{7.071\angle45^\circ}
+   =1.697\angle45^\circ\,\Omega . \]
+
+\textbf{第三步：求端电压。}电流源提供的总电流全部流过这对节点：
+
+\[ \dot U=\dot I_s\,Z=5\angle0^\circ\times1.697\angle45^\circ=8.485\angle45^\circ\,\mathrm{V} . \]
+
+\textbf{第四步：各支路电流。}
+
+\[ \dot I_1=\frac{\dot U}{Z_1}=\frac{8.485\angle45^\circ}{2.828\angle45^\circ}=3\angle0^\circ\,\mathrm{A} ,\qquad
+   \dot I_2=\frac{\dot U}{Z_2}=\frac{8.485\angle45^\circ}{4.243\angle45^\circ}=2\angle0^\circ\,\mathrm{A} . \]
+
+\textbf{第五步：校核。}$\dot I_1+\dot I_2=3+2=5=\dot I_s$，KCL 成立。
+
+\textbf{第六步：说清楚这题的巧合。}两个电流都是 $3\angle0^\circ$ 与 $2\angle0^\circ$，
+与 $\dot I_s$ 同相——\textbf{这是 $Z_1$ 与 $Z_2$ 幅角相同（都 $45^\circ$）造成的巧合}，
+所以两个电流可以按阻抗模的反比分：$3:2=4.243:2.828$。
+若两个阻抗幅角不同（如 §5 的 E4），分流后两支路电流就\textbf{会有相位差}，绝不能按反比分。
+\aside{用分流公式核对：$\dot I_1=Z_2\dot I_s/(Z_1+Z_2)=4.243/7.071\times5=3.000\,\mathrm{A}$，
+$\dot I_2=Z_1\dot I_s/(Z_1+Z_2)=2.828/7.071\times5=2.000\,\mathrm{A}$。与第四步一致。}
+
+\subhdr{4.5 例 E2：三只表的读数随频率怎么变（p18）}
+
+题面：「Judge how the voltmeter reading should change if $f_{\mathrm{new}}=2f$」。
+三条并联支路各串一只表（A1、A2、A3），支路元件依次是电阻、电感、电容。
+三支路接在同一电压下，所以能用「$I=U/|Z|$」逐条判断，关键在于各元件的阻抗怎么随 $f$ 变：
+
+\[ X_L=\omega L=2\pi fL\ \text{（随 $f$ 增大）} ,\qquad
+   X_C=\frac{1}{\omega C}=\frac{1}{2\pi fC}\ \text{（随 $f$ 减小）} . \]
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{4.0cm}p{4.6cm}p{3.4cm}@{}}
+\tabtop
+\thead{支路元件} & \thead{支路电流} & \thead{$f$ 加倍后的走向} & \thead{表读数}
+\\
+\tabmid
+电阻 $R$ & $I_R=U/R$，与 $f$ 无关 & 不变 & 不变
+\\
+电感 $L$ & $I_L=U/(2\pi fL)\propto1/f$ & 分母加倍 & 减半
+\\
+电容 $C$ & $I_C=2\pi fCU\propto f$ & 分子加倍 & 加倍
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{题面与图有一处不符，按图走}：题面写的是 voltmeter（电压表），
+而图上三个表圈里标的是 A1、A2、A3（电流表）。按图，测的是\textbf{支路电流}；
+若真按电压表读，三只表接在同一对节点上，读数\textbf{全都是同一个值、谁都不变}，题目就没有内容了。
+本讲义按电流表处理，并把这个不一致记进 §10。}
+
+\aside{表上的编号在两页之间并不一致：p14 的读图把 A1 记在电感支路、A3 记在电阻支路，
+p18 的读图把 A1 记在电阻支路、A3 记在电容支路。故本讲义一律按\textbf{元件}报结论（电阻支路不变、电感支路减半、
+电容支路加倍），不按表号报，避免记错。这一处标 [待确认]。}
+
+\subhdr{4.6 例 E3：三盏灯的亮度随 $f$ 升高怎么变（p19）}
+
+题面只有一句「Judge how the brightness of the lamp changes if $f\uparrow$」。
+三条并联支路各是「一盏灯串一个元件」（灯串电阻、灯串电感、灯串电容）。
+
+与 4.5 的差别是\textbf{不能再用纯元件的电流公式}：灯本身是电阻 $R_{\mathrm{l}}$，与元件串联后
+支路阻抗是 $R_{\mathrm{l}}+$ 元件阻抗，电流按模算：
+
+\[ I=\frac{U}{\sqrt{R_{\mathrm{l}}^{2}+X^{2}}} . \]
+
+灯的亮度由\textbf{它自己耗的功率} $P_{\mathrm{l}}=I^{2}R_{\mathrm{l}}$ 决定，而 $R_{\mathrm{l}}$ 不变，
+所以亮度与 $I$ 同向变化。逐条判：
+
+\begin{itemize}
+\item \textbf{灯串电阻}：支路是 $R_{\mathrm{l}}+R$，与 $f$ 无关，$I$ 不变，\textbf{亮度不变}。
+\item \textbf{灯串电感}：$X_L=2\pi fL$ 随 $f$ 增大，分母变大，$I$ 变小，\textbf{灯变暗}。
+\item \textbf{灯串电容}：$X_C=1/(2\pi fC)$ 随 $f$ 增大而变小，分母变小，$I$ 变大，\textbf{灯变亮}。
+\end{itemize}
+
+\textbf{方向与 4.5 完全一致，理由却不同}：4.5 里电流就是元件电流，直接看 $1/|Z|$；
+这里电流是「灯与元件串联后的电流」，看的是 $\sqrt{R_{\mathrm{l}}^2+X^2}$。
+若灯串电感的支路里电阻占了主导（$R_{\mathrm{l}}\gg X_L$），$I$ 的变化会很小，灯几乎看不出变暗——
+这也是为什么定性题只能答「变暗」，不能答「暗多少」。
+\aside{p18、p19 两页\textbf{一个元件数值都没给}，所以只能答方向、不能答数。这就是 §6 要展开的那件事。}
+
+%=============================================================
+\hdr{§5}{主例题 E4 全程：两种解法、三个校核}
+
+\subhdr{5.1 题面与电路（p20）}
+
+\callout{\textbf{[E4]}（p20 原文）Given that $U=220\,\mathrm{V}$, $R_1=20\,\Omega$, $R_2=40\,\Omega$,
+$X_C=114\,\Omega$, $X_L=157\,\Omega$, Find overall $I$.\\[2pt]
+两法：\textbf{（1）} Branch current $\to$ Total current；\textbf{（2）} Total impedance $\to$ Total current。\\
+电路（p20 右图）：支路 1 是 $R_1$ 串电容，标 $-jX_C$；支路 2 是 $R_2$ 串电感。两支路并联接在 $220\,\mathrm{V}$ 上。}
+
+先把两条支路的复阻抗写出来。注意串的是\textbf{电容}（$R_1$ 那条），所以虚部是负的：
+
+\[ Z_1=R_1-jX_C=20-j114\,\Omega ,\qquad
+   Z_2=R_2+jX_L=40+j157\,\Omega . \]
+
+\subhdr{5.2 解法一：先求支路电流，再相量相加（p21）}
+
+\textbf{第一步：两个阻抗转极坐标。}（课件直接写出 $116\angle-80^\circ$ 与 $162\angle75.7^\circ$，中间两步被省）
+
+\[ |Z_1|=\sqrt{20^{2}+114^{2}}=\sqrt{13396}=115.74\,\Omega ,\qquad
+   \varphi_1=\arctan\frac{-114}{20}=-80.05^\circ , \]
+
+\[ |Z_2|=\sqrt{40^{2}+157^{2}}=\sqrt{26249}=162.02\,\Omega ,\qquad
+   \varphi_2=\arctan\frac{157}{40}=75.71^\circ . \]
+
+\textbf{第二步：两条支路电流。}相量除法：模相除、角相减。
+
+\[ \dot I_1=\frac{220\angle0^\circ}{115.74\angle-80.05^\circ}=1.901\angle80.05^\circ\,\mathrm{A} ,\qquad
+   \dot I_2=\frac{220\angle0^\circ}{162.02\angle75.71^\circ}=1.358\angle-75.71^\circ\,\mathrm{A} . \]
+
+\textbf{第三步：换成直角坐标再相加。}这是整题的枢纽，课件把这一步压成一行 $=0.862\angle39.6^\circ$：
+
+\[ \dot I_1=1.901\cos80.05^\circ+j1.901\sin80.05^\circ=0.3285+j1.8722 , \]
+
+\[ \dot I_2=1.358\cos(-75.71^\circ)+j1.358\sin(-75.71^\circ)=0.3353-j1.3159 , \]
+
+\[ \dot I=\dot I_1+\dot I_2=(0.3285+0.3353)+j(1.8722-1.3159)=0.6638+j0.5563\,\mathrm{A} . \]
+
+\textbf{第四步：还原成极坐标。}
+
+\[ |\dot I|=\sqrt{0.6638^{2}+0.5563^{2}}=\sqrt{0.4406+0.3095}=\sqrt{0.7501}=0.8661\,\mathrm{A} , \]
+
+\[ \psi_i=\arctan\frac{0.5563}{0.6638}=\arctan0.8380=39.97^\circ . \]
+
+所以
+
+\[ \dot I=0.866\angle40.0^\circ\,\mathrm{A} . \]
+
+\subhdr{5.3 解法二：先求总阻抗，再除（p22）}
+
+\[ Z=\frac{Z_1Z_2}{Z_1+Z_2} . \]
+
+分子分母分别算。分子：$(20-j114)(40+j157)$，实部 $20\times40+114\times157=800+17898=18698$，
+虚部 $20\times157-114\times40=3140-4560=-1420$，即 $18698-j1420$。
+分母：$Z_1+Z_2=60+j43$，$|60+j43|^2=3600+1849=5449$。
+
+\[ Z=\frac{(18698-j1420)(60-j43)}{5449}
+   =\frac{1060820-j889214}{5449}
+   =194.68-j163.19\,\Omega . \]
+
+转极坐标：
+
+\[ |Z|=\sqrt{194.68^{2}+163.19^{2}}=\sqrt{37900+26631}=\sqrt{64531}=254.03\,\Omega , \]
+\[ \varphi=\arctan\frac{-163.19}{194.68}=-39.97^\circ . \]
+
+于是
+
+\[ \dot I=\frac{\dot U}{Z}=\frac{220\angle0^\circ}{254.03\angle-39.97^\circ}
+   =0.866\angle+39.97^\circ\,\mathrm{A} . \]
+
+与解法一\textbf{逐位相同}。两法互相印证这一点，本身就是最好的检查。
+
+\subhdr{5.4 三个校核：以后任何一道并联题都能照做}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{5.4cm}p{7.0cm}@{}}
+\tabtop
+\thead{校核项} & \thead{等式} & \thead{本例数值}
+\\
+\tabmid
+模校核 & $|Z|\cdot|\dot I|=|\dot U|$ & $254.03\times0.8660=220.0\,\mathrm{V}$
+\\
+两法互校 & 支路电流法 $=$ 总阻抗法 & 都是 $0.866\angle40.0^\circ\,\mathrm{A}$
+\\
+功率校核 & $UI\cos\varphi=\sum I_k^{2}R_k$ & 见 §5.6，两边都是 $146.0\,\mathrm{W}$
+\tabbot
+\end{tabular}
+
+第三条值得单说：\textbf{功率校核是这三个里最难被巧合满足的}，因为它同时约束了总电流的模与幅角。
+模对了角不对，功率就对不上。所以考试时若只剩十秒，做这一条。
+
+\subhdr{5.5 课件数字的三处偏差（点名，并按精确值走）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{3.9cm}p{3.9cm}p{4.6cm}@{}}
+\tabtop
+\thead{位置} & \thead{课件刊印} & \thead{精确值} & \thead{成因}
+\\
+\tabmid
+p21 的 $\dot I_2$ 除式 & $220/(162\angle-75.7^\circ)$ & $220/(162\angle+75.7^\circ)$ & 分母角度符号反了：$Z_2$ 的虚部是 $+157$，角必为正
+\\
+p21、p22 的总电流 & $0.862\angle39.6^\circ$ & $0.866\angle40.0^\circ$ & 中间把 $115.74$、$162.02$ 取整成 $116$、$162$
+\\
+p22 的总阻抗 & $255\angle-39.6^\circ$ & $254.03\angle-40.0^\circ$ & 同上
+\tabbot
+\end{tabular}
+
+第一条是\textbf{真笔误}：$162\angle-75.7^\circ$ 与它自己上一行写的 $Z_2=162\angle75.7^\circ$ 直接矛盾，
+而算出的结果 $1.36\angle-75.7^\circ$ 只有用 $+75.7^\circ$ 才对。第二、三条是\textbf{取整精度}问题，
+偏差 $0.5\%$ 以内，不影响判性质；但若考试要求保留三位有效数字，$0.862$ 与 $0.866$ 是两个答案，按精确值报 $0.866$。
+\aside{若强行用 $116$ 与 $162$ 一路算到底：$\dot I=0.864\angle39.7^\circ\,\mathrm{A}$，
+仍与课件的 $0.862\angle39.6^\circ$ 有末位差——说明课件还额外做了别的舍入。以 $0.866\angle40.0^\circ$ 为准。}
+
+\subhdr{5.6 三个功率：$P$、$Q$、$S$}
+
+\callout{\textbf{[教材补充] 为什么补这一节}：本册任务要求讲透「有功、无功、视在功率三者的关系」，
+但对 C2-2 全部 27 页逐页检索 power / reactive / apparent / 功率因数，\textbf{零命中}——
+课件在算完 $\dot I$ 就结束了。为不让「算完电流不知道拿来干什么」，此处按教材补一小节，
+且\textbf{只用本册 E4 已经算出的数}，不引入任何新题、新电路。}
+
+三个量的定义（$\varphi$ 一律指 $\psi_u-\psi_i$，即 §1.4 那个阻抗角）：
+
+\[ P=UI\cos\varphi\ \ (\mathrm{W}) ,\qquad
+   Q=UI\sin\varphi\ \ (\mathrm{var}) ,\qquad
+   S=UI\ \ (\mathrm{VA}) ,\qquad
+   S=\sqrt{P^{2}+Q^{2}} . \]
+
+物理含义一句话：$P$ 是\textbf{真正被电阻烧掉}的功率；$Q$ 是电感电容与电源之间\textbf{来回倒腾、净消耗为零}的功率；
+$S$ 是电源「看上去要供」的功率，等于 $P$ 与 $Q$ 的相量和。
+
+代入 E4 的数：$U=220\,\mathrm{V}$，$I=0.866\,\mathrm{A}$，$\varphi=\psi_u-\psi_i=0^\circ-39.97^\circ=-39.97^\circ$。
+
+\[ S=220\times0.866=190.5\,\mathrm{VA} ,\qquad
+   P=190.5\times\cos(-39.97^\circ)=146.0\,\mathrm{W} , \]
+\[ Q=190.5\times\sin(-39.97^\circ)=-122.4\,\mathrm{var} . \]
+
+\textbf{校核（这就是 §5.4 第三条）}：两支路各自的有功相加
+
+\[ \sum I_k^{2}R_k=I_1^{2}R_1+I_2^{2}R_2=1.901^{2}\times20+1.358^{2}\times40=72.3+73.8=146.1\,\mathrm{W} , \]
+
+与 $UI\cos\varphi$ 的 $146.0\,\mathrm{W}$ 相符。同理 $Q$ 按支路算：
+$I_2^2X_L-I_1^2X_C=1.358^2\times157-1.901^2\times114=289.5-412.0=-122.5\,\mathrm{var}$，也与 $-122.4$ 相符。
+\textbf{注意符号}：$Q<0$ 说明整个电路呈\textbf{容性}。
+
+\warnbox{\textbf{这里有一个反直觉、也正是本册最该记住的一点}：$X_L=157\,\Omega$ 明明\textbf{大于} $X_C=114\,\Omega$，
+整体却呈容性。原因是并联时支路电流由 $1/|Z|$ 决定：$|Z_1|=115.74\,\Omega$ 比 $|Z_2|=162.02\,\Omega$ 小，
+所以电容支路的电流（$1.901\,\mathrm{A}$）比电感支路的（$1.358\,\mathrm{A}$）大，占据主导。
+\textbf{串联看电抗谁大，并联看支路电流谁大}——两句话不能混用。}
+
+%=============================================================
+\hdr{§6}{算不下去的地方：为什么「$15\,\mathrm{A}$」这条路走不通}
+
+\subhdr{6.1 两条路都「算得下去」，只有一条算得对}
+
+p12/p14 那道题，学生最常见的走法是算术相加 $5+5+5=15\,\mathrm{A}$。这条路每一步都有结果，
+\textbf{它不是「算不下去」，而是「算得下去但算错了」}——这比算不下去更危险，因为它不报错。
+错在哪一步？错在\textbf{把三个不同方向的量当成同一方向的量相加}。
+
+\subhdr{6.2 缺的是什么：把「方向」也当成一个坐标}
+
+相量有两个坐标，不是一个。三条支路电流写全了是
+
+\[ \dot I_R=5+j0 ,\qquad \dot I_L=0-j5 ,\qquad \dot I_C=0+j5 . \]
+
+算术相加只用了第一个坐标（模），丢掉了第二个坐标（相位）。补上第二个坐标之后，
+这条路立刻就能走通，而且结果与 p14 印的答案分毫不差。
+
+\textbf{判据}：只要题目里出现「求总电流」「求总电压」「求和」这类字眼，并且各分量来自\textbf{不同性质}
+的元件（$R$、$L$、$C$），就必须先换成直角坐标，加完再换回极坐标。三步：\textbf{换直角 $\to$ 相加 $\to$ 换回极坐标}。
+
+\subhdr{6.3 同一个错误在 E4 里的化身}
+
+E4 的并联阻抗，若照「模按并联算」写
+
+\[ Z_{\text{错}}=\frac{|Z_1||Z_2|}{|Z_1|+|Z_2|}=\frac{115.74\times162.02}{115.74+162.02}=67.5\,\Omega , \]
+
+则 $\dot I=220/67.5=3.26\,\mathrm{A}$——\textbf{是正确答案 $0.866\,\mathrm{A}$ 的将近四倍}，而且这个数看上去也很「正常」，
+量级上并不荒谬，所以不会引起怀疑。对的算法必须走复数域（§5.3），得到 $254.03\,\Omega$。
+
+两条结果差这么远，原因是一条几何事实：两个阻抗的幅角分别是 $-80.05^\circ$ 与 $+75.71^\circ$，
+差 $155.76^\circ$，几乎反相。\textbf{反相的两个量并联，阻抗不是「介于两者之间」，而是比两个都大}——
+$254\,\Omega$ 比 $115.74$ 与 $162.02$ 都大。这正是不许用模算的原因。
+\aside{判据一句话：并联公式 $Z=Z_1Z_2/(Z_1+Z_2)$ 里的加法是\textbf{复数加法}，
+相角差接近 $180^\circ$ 时分母会变得很小，于是 $Z$ 被「顶」得很大。本例分母 $|Z_1+Z_2|=|60+j43|=73.8\,\Omega$，
+远小于 $115.74+162.02=277.76\,\Omega$。}
+
+\subhdr{6.4 为什么 p18、p19 连数都给不出}
+
+p18 的「表读数怎么变」与 p19 的「灯亮度怎么变」，课件\textbf{一个元件数值都没给}。
+这不是偷懒，而是这两题的答案\textbf{在原理上只能是方向、不能是数值}：
+题目问的是「$f$ 变时朝哪边变」，只要知道 $X_L\propto f$、$X_C\propto1/f$ 就能答；
+具体变多少则取决于 $L$、$C$、$R$ 的实际值，而它们是自由的。
+所以这两题的答案形态是\textbf{定性}——答「减半」「加倍」是恰好因为 $f$ 加倍时 $X_L$ 加倍、$X_C$ 减半，
+这是 $f$ 的幂次决定的，不需要 $L$、$C$ 的具体数。
+
+%=============================================================
+\hdr{§7}{其余例题：一例一处关键}
+
+\subhdr{7.1 E1：三个小题，三种给法（p7）}
+
+题面「E1 Series AC circuit, try to find $R$ and $X$ in the following cases」，\textbf{不给答案}。补全：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{4.5cm}p{5.0cm}p{5.4cm}@{}}
+\tabtop
+\thead{小题} & \thead{已知} & \thead{求法} & \thead{答案}
+\\
+\tabmid
+（1） & $Z_1=300+j500\,\Omega$ & 直接读实部与虚部 & $R=300\,\Omega$，$X=500\,\Omega$，感性
+\\
+（2） & $\dot U=50\angle30^\circ\,\mathrm{V}$，$\dot I=2\angle30^\circ\,\mathrm{A}$ & $Z=\dot U/\dot I$，模相除、角相减 & $Z=25\angle0^\circ\,\Omega$，$R=25\,\Omega$，$X=0$
+\\
+（3） & $\dot U=100\angle-30^\circ\,\mathrm{V}$，$\dot I=4\angle40^\circ\,\mathrm{A}$ & 同上，注意角是\textbf{相减} & $Z=25\angle-70^\circ\,\Omega$，$R=8.55\,\Omega$，$X=-23.49\,\Omega$
+\tabbot
+\end{tabular}
+
+\textbf{（1）}最直接：直角式已经给好了，实部就是 $R$、虚部就是 $X$。
+\textbf{（2）}两个相量幅角相同，所以 $Z$ 的幅角是 $30^\circ-30^\circ=0^\circ$，纯电阻。
+\textbf{（3）}是本页唯一的坑：$\varphi=\psi_u-\psi_i=-30^\circ-40^\circ=-70^\circ$，
+\textbf{不是}相减反了、也不是相加。于是 $Z=25\angle-70^\circ$，$R=25\cos70^\circ=8.55\,\Omega$、
+$X=25\sin(-70^\circ)=-23.49\,\Omega$，容性。
+\aside{（3）若误算成 $40^\circ-(-30^\circ)=70^\circ$，得到 $X=+23.49\,\Omega$、感性——性质正好反了。
+$\varphi=\psi_u-\psi_i$ 这个减序在 p5 已经声明，别临场改。}
+
+\subhdr{7.2 E2：三张接线图在问什么（p8）}
+
+题面只有「E2 Find the total voltage」，配三张接线图：\\
+（1）$R$、$L$、$C$ 串联，三只电压表 V1、V2、V3 分别跨三个元件，总表 V 跨整条支路；\\
+（2）$L$、$C$ 串联，V1、V2 跨两元件；\\
+（3）$R$、$L$ 串联，V1、V2 跨两元件。
+
+\textbf{三张图都没有给任何数值，也没有给答案。}这一页要传达的只有一句：
+\textbf{总电压表 V 的读数不是 V1、V2、V3 的读数之和}。理由同 §4.2 与 §3.2：
+
+\[ \dot U=\dot U_R+\dot U_L+\dot U_C ,\qquad
+   U=\sqrt{U_R^{2}+(U_L-U_C)^{2}} , \]
+
+而不是 $U_R+U_L+U_C$。图（2）最能说明问题：$L$ 与 $C$ 串联时 $\dot U_L$ 与 $\dot U_C$ 反向，
+总电压是\textbf{两者之差}，若 $U_L=U_C$ 则总电压为零（V 表读零），而 V1、V2 各自读数并不为零。
+
+\subhdr{7.3 R1：用阻抗三角形反解（p23）}
+
+题面「Given that, $X_L=16\,\Omega$, $|Z|=20\,\Omega$, Find $R$」，不给答案。
+这是 §1.5 阻抗三角形的直接用法——已知斜边与竖直边，求底边：
+
+\[ R=\sqrt{|Z|^{2}-X_L^{2}}=\sqrt{400-256}=\sqrt{144}=12\,\Omega . \]
+
+\textbf{陷阱}：若照「$|Z|=R+X_L$」写成 $R=20-16=4\,\Omega$，就落进 §3.3 那个错误里了。
+阻抗三角形的三边是\textbf{勾股}关系，不是相加关系。
+
+\subhdr{7.4 R2：已知 $X_C$ 求 $\dot I$（p24--p25）}
+
+题面「R2 已知 $X_C=5\,\Omega$，求 $\dot I$」，并给出 （1） Phasor diagram、（2） Phasor expression 两条路。
+p24 的相量图只画了 $\dot U$（$10\,\mathrm{V}$、与横轴 $30^\circ$），p25 补画了电流相量，但\textbf{两页都没给数值答案}。
+
+\textbf{（2） 相量表达式这条路}：这是纯电容支路，阻抗 $Z=-jX_C=5\angle-90^\circ\,\Omega$。
+
+\[ \dot I=\frac{\dot U}{Z}=\frac{10\angle30^\circ}{5\angle-90^\circ}=2\angle120^\circ\,\mathrm{A} . \]
+
+\textbf{（1） 相量图这条路}：$|\dot I|=U/X_C=10/5=2\,\mathrm{A}$，
+角度 = 电压角 \textbf{加} $90^\circ$（电容电流超前电压），$\psi_i=30^\circ+90^\circ=120^\circ$。
+两条路给出同一个答案。
+\aside{除以 $-j$ 等于加 $90^\circ$；除以 $+j$ 等于减 $90^\circ$。这两个方向必须记死，
+它们是从 §4.1 那三个式子来的。p25 的图里电流相量方向约 $120^\circ$，与此一致。}
+
+\subhdr{7.5 Assignment 一：同相条件怎么用（p26）}
+
+题面：「Series RLC circuit, Give that: $U_{RL}=50\,\mathrm{V}$, $U_C=30\,\mathrm{V}$,
+The total voltage and the total current is in phase. Try to find the total voltage.」不给答案。
+
+\textbf{「总电压与总电流同相」这句话是整个题的门}——它的代数含义是 $\varphi=0$，
+等价于 $X_L=X_C$，等价于 $U_L=U_C$。于是 $U_L=U_C=30\,\mathrm{V}$。
+
+再看 $U_{RL}=50\,\mathrm{V}$ 是什么：$R$ 与 $L$ 串联那一段的电压，是 $\dot U_R$ 与 $\dot U_L$ 的相量和，
+两者垂直：
+
+\[ U_{RL}=\sqrt{U_R^{2}+U_L^{2}}\ \Longrightarrow\
+   U_R=\sqrt{50^{2}-30^{2}}=\sqrt{1600}=40\,\mathrm{V} . \]
+
+总电压则是全支路三段的相量和，由于 $U_L$ 与 $U_C$ 抵消：
+
+\[ U=\sqrt{U_R^{2}+(U_L-U_C)^{2}}=\sqrt{40^{2}+0}=40\,\mathrm{V} . \]
+
+\textbf{答案 $40\,\mathrm{V}$。}注意它不是 $U_{RL}+U_C=80\,\mathrm{V}$，也不是 $U_{RL}-U_C=20\,\mathrm{V}$——
+两个错答案都在「用算术和/差处理本应相量相加的量」上栽了同一个跟头。
+
+\subhdr{7.6 Assignment 二：从 $u$ 的表达式读出四个数（p27）}
+
+题面：「Given that $u=100\sqrt2\sin314t\,\mathrm{V}$. The current $i$ and the total $u$ is in phase.
+$U_C=180\,\mathrm{V}$, $I=1\,\mathrm{A}$. Find:（1）$R$, $X_L$, $X_C$；（2）If we increase the frequency
+to $f=100\,\mathrm{Hz}$, determine whether the circuit is resistive, inductive or capacitive.」不给答案。
+
+\textbf{先从那行 $u$ 里读出两个数}：幅值 $100\sqrt2\,\mathrm{V}$ $\Longrightarrow$ 有效值 $U=100\,\mathrm{V}$；
+$\omega=314\,\mathrm{rad/s}$ $\Longrightarrow$ $f=\omega/(2\pi)=49.97\approx50\,\mathrm{Hz}$。
+
+\textbf{（1）求三个元件参数。}「$i$ 与 $u$ 同相」仍给 $\varphi=0$，即 $X_L=X_C$。
+
+\[ X_C=\frac{U_C}{I}=\frac{180}{1}=180\,\Omega ,\qquad X_L=X_C=180\,\Omega . \]
+
+$X_L=X_C$ 时整条支路的电抗为零，端电压全落在电阻上，所以 $U_R=U=100\,\mathrm{V}$，于是
+
+\[ R=\frac{U_R}{I}=\frac{100}{1}=100\,\Omega . \]
+
+（附带的两个器件值，题目没问，备查：$L=X_L/\omega=180/314=0.573\,\mathrm{H}$，
+$C=1/(\omega X_C)=1/(314\times180)=17.69\,\mu\mathrm{F}$。）
+
+\textbf{（2）升到 $f=100\,\mathrm{Hz}$ 后的性质。}频率加倍，$\omega$ 也加倍（$628.3\,\mathrm{rad/s}$）。
+$X_L=\omega L$ 与 $\omega$ 成正比，加倍成 $360.2\,\Omega$；$X_C=1/(\omega C)$ 与 $\omega$ 成反比，
+减半成 $90.0\,\Omega$。于是 $X=X_L-X_C=360.2-90.0=270.2\,\Omega>0$，
+\textbf{电路变为感性}。
+\aside{最容易错在第一步：把 $\omega=314$ 直接当成 $f=314\,\mathrm{Hz}$。$314$ 是角频率，
+$f=314/6.283=50\,\mathrm{Hz}$。这一步错，第（2）问的频率翻倍就整个不对。}
+
+%=============================================================
+\hdr{§8}{公式卡与四步用法}
+
+\subhdr{8.1 公式卡（按做题顺序排，不按课件顺序）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{7.0cm}p{5.2cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{前提 / 出处}
+\\
+\tabmid
+元件阻抗 & $Z_R=R$，$Z_L=jX_L$，$Z_C=-jX_C$ & p1（第三格笔误见 §5.5）
+\\
+串联 & $Z=Z_1+Z_2+\cdots$ & p10，复数相加
+\\
+并联 & $Z=Z_1Z_2/(Z_1+Z_2)$ & p16，复数运算
+\\
+分压 & $\dot U_{Z_1}=Z_1\dot U/(Z_1+Z_2)$ & p10，分子取本侧
+\\
+分流 & $\dot I_1=Z_2\dot I/(Z_1+Z_2)$ & p16，分子取对侧
+\\
+极坐标 & $|Z|=\sqrt{R^{2}+X^{2}}$，$\varphi=\arctan(X/R)$ & p4，需 $R>0$
+\\
+相量式 & $\dot U=Z\dot I$ & p3，含相位
+\\
+有效值式 & $U=|Z|I$ & p3，只用于求模
+\\
+性质判据 & $X>0$ 感性，$X<0$ 容性，$X=0$ 电阻性 & p5
+\\
+功率 & $P=UI\cos\varphi$，$Q=UI\sin\varphi$，$S=UI$ & [教材补充] §5.6
+\tabbot
+\end{tabular}
+
+\subhdr{8.2 四步法（拿到任何一道交流串并联题都照这个顺序）}
+
+\begin{enumerate}
+\item \textbf{画相量参考}：选一个量作参考（通常取 $\dot U$ 或 $\dot I$，$\psi=0$），其余量的角度都相对它写。
+\item \textbf{逐段写复阻抗}：串容写 $-jX_C$、串感写 $+jX_L$，先把直角式写全。
+\item \textbf{合成}：串联复数相加、并联用 $Z_1Z_2/(Z_1+Z_2)$，\textbf{全程不许取模中间结果}。
+\item \textbf{求解并校核}：除完换成极坐标报答案，然后做 §5.4 的三条校核（模、两法、功率）。
+\end{enumerate}
+
+第 3 步是唯一的硬约束：\textbf{中间过程一律保留复数}。本册所有错解的共同点，
+都是在中间某一步把复数换成了模。
+
+%=============================================================
+\hdr{§9}{易错点（每条都能指回某页某步）}
+
+\gapitem{（1）把 $|Z_1+Z_2|$ 写成 $|Z_1|+|Z_2|$}{p10 的串联公式是复数相加。
+反例见 §3.3（$3+j4$ 与 $3-j4$ 相加，模是 $6$ 不是 $10$）。并联时这个错误更隐蔽：§6.3 里错成 $67.5\,\Omega$，
+正确答案 $254\,\Omega$。}
+
+\gapitem{（2）$\varphi$ 的减序反了}{p5 声明 $\varphi=\psi_u-\psi_i$，是「电压减电流」。
+p7 的第（3）小题 $\psi_u=-30^\circ$、$\psi_i=40^\circ$，所以 $\varphi=-70^\circ$（容性）；
+写成 $+70^\circ$ 就变感性了。}
+
+\gapitem{（3）把 $\omega$ 当 $f$}{p27 给 $u=100\sqrt2\sin314t$，$314$ 是角频率，$f=50\,\mathrm{Hz}$。
+直接当 $314\,\mathrm{Hz}$ 用，第（2）问的频率翻倍就整个跑偏。}
+
+\gapitem{（4）$X_L$ 与 $X_C$ 名字混用}{p1 表格第三格就把它写错成 $-jX_L$。
+做题时记：\textbf{电感带 $L$ 带正号、电容带 $C$ 带负号}，符号与字母一一绑定。}
+
+\gapitem{（5）并联用「$X_L$ 谁大」判性质}{见 §5.6 末尾：E4 的 $X_L=157>X_C=114$，
+整体却是容性，因为电容支路的电流更大。\textbf{串联看电抗，并联看支路电流。}}
+
+\gapitem{（6）分压与分流的分子记反}{§4.3：分压取本侧（$\dot U_{Z_1}$ 配 $Z_1$），
+分流取对侧（$\dot I_1$ 配 $Z_2$）。记反了答案只是两条支路互换，不会报错。}
+
+\gapitem{（7）把总电压当算术和}{§7.2：$RLC$ 串联时 $U=\sqrt{U_R^2+(U_L-U_C)^2}$。
+p26 那题若写 $50+30=80\,\mathrm{V}$ 或 $50-30=20\,\mathrm{V}$ 都错，正解是 $40\,\mathrm{V}$。}
+
+\gapitem{（8）并联阻抗用模算}{§6.3。判据：只要两个阻抗的相角差接近 $180^\circ$，
+并联结果会比两者都大——这与「并联总小于任一分量」的直觉相反，看见反直觉就该停下来查复数。}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+\gapitem{机制缺口}{p1\quad 「Can you relate the expression with the circuit on the right?」\quad
+缺：这个提问的答案，即 KVL 相量相加这一步\quad 补：§1.2 逐项写 $\dot U_R+\dot U_L+\dot U_C$}
+
+\gapitem{课件笔误}{p1\quad 「$\dot U=-jX_L\dot I$」（表格第三格）\quad
+缺：应为 $-jX_C\dot I$，电容的容抗是 $X_C$\quad 补：§1.1 指出并按 $-jX_C$ 走（§5.5 备案）}
+
+\gapitem{代数跳步}{p4\quad 「$=\sqrt{R^2+X^2}\ \arctan(X/R)$」\quad
+缺：直角式到极坐标的两步改写，以及 $\arctan(X/R)$ 需 $R>0$ 的前提\quad 补：§1.3}
+
+\gapitem{机制缺口}{p5\quad 「Impedance angle → Resistive, capacitive or inductive circuit」\quad
+缺：判据只有「看 $X$ 的符号」这一条，与 $R$ 无关\quad 补：§1.4 用三行表与数值小例说明}
+
+\gapitem{形式改写}{p6\quad 「The total impedance ... can be found using impedance triangle」\quad
+缺：这个三角形是电压三角形按 $1/I$ 缩放得到的，形状相同只差比例尺\quad 补：§1.5 对照表}
+
+\gapitem{答案形态}{p3\quad 「Phasor expression」与「Effective expression」并列\quad
+缺：什么时候只能用相量式、什么时候模的式子就够\quad 补：§2 的四行判据表}
+
+\gapitem{答案缺失}{p7\quad 「E1 Series AC circuit , try to find R and X in the following cases.」\quad
+缺：三个小题的答案\quad 补：§7.1 全解（含第（3）小题的减序陷阱）}
+
+\gapitem{答案缺失}{p8\quad 「E2 Find the total voltage」\quad
+缺：三张接线图的答案，以及「总电压不等于各元件电压之和」这条要点\quad 补：§7.2}
+
+\gapitem{拼接缺口}{p9\quad 「With phasor algebra, all the relationships for resistance networks
+also apply to impedance networks.」\quad 缺：成立的三条前提（同频率、线性、无独立源）与理由\quad 补：§3.1}
+
+\gapitem{机制缺口}{p10\quad 「Resistors connected in series」与「Impedances connected in series」并列\quad
+缺：分压公式为什么形式相同、分子为什么取本侧\quad 补：§3.2 用 $j50$ 与 $50$ 分压的数值例}
+
+\gapitem{代数跳步}{p10\quad 「$\dot U=Z_1/(Z_1+Z_2)\,\dot U$」\quad
+缺：$|Z_1+Z_2|\neq|Z_1|+|Z_2|$\quad 补：§3.3 的反例与并联侧的同源错误}
+
+\gapitem{答案缺失}{p11\quad 「Find $\dot I$」\quad
+缺：E3 的解答\quad 补：§3.4 四步全程（$1.414\angle-45^\circ\,\mathrm{A}$）}
+
+\gapitem{拼接缺口}{p12 与 p14\quad 「If the current in each branch is 5A, find the total current.」
+与「$5\,\mathrm{A}$／$0\,\mathrm{A}$／$5\sqrt2\,\mathrm{A}$」\quad
+缺：两页之间隔着 p13 的 KCL，相量合成的过程一页都没有\quad 补：§4.2 三条支路逐项相加}
+
+\gapitem{适用前提}{p13\quad KCL「$\dot I=\dot I_R+\dot I_L+\dot I_C$」\quad
+缺：相量相加要求各量同频率\quad 补：§4.1 的旁注}
+
+\gapitem{机制缺口}{p16\quad 「$\dot I_1=Z_2/(Z_1+Z_2)\,\dot I$」\quad
+缺：分流分子为什么取对侧（与分压相反）\quad 补：§4.3 用 $\dot I_1Z_1=\dot I_2Z_2=\dot U$ 说明}
+
+\gapitem{答案缺失}{p17\quad 「E1」只给 $\dot I_s=5\angle0^\circ$、$Z_1=2+j2$、$Z_2=3+j3$\quad
+缺：$\dot I_1$、$\dot I_2$\quad 补：§4.4 六步全程（$3\,\mathrm{A}$ 与 $2\,\mathrm{A}$）}
+
+\gapitem{题图不符 + 答案缺失}{p18\quad 「Judge how the voltmeter reading should change if $f_{\mathrm{new}}=2f$」\quad
+缺：答案；且题面说电压表、图上标的是 A1／A2／A3 电流表\quad 补：§4.5 按图处理并逐支路给结论}
+
+\gapitem{答案缺失}{p19\quad 「E3 Judge how the brightness of the lamp changes if $f\uparrow$.」\quad
+缺：答案\quad 补：§4.6（不变／变暗／变亮）}
+
+\gapitem{代数跳步}{p21\quad 「$=116\angle-80^\circ\Omega$」「$=162\angle75.7^\circ\Omega$」\quad
+缺：直角式到极坐标的两步\quad 补：§5.2 列出 $\sqrt{13396}$、$\sqrt{26249}$ 与两个反正切}
+
+\gapitem{课件笔误}{p21\quad 「$\dot I_2=\dot U/Z_2=220/(162\angle-75.7^\circ)=1.36\angle-75.7^\circ$」\quad
+缺：分母角度符号反了，$Z_2$ 是 $+75.7^\circ$\quad 补：§5.5 点名列三处偏差并按精确值走}
+
+\gapitem{精度（答案形态）}{p21--p22\quad 「$\dot I=0.862\angle39.6^\circ\mathrm{A}$」与「$Z=255\angle-39.6^\circ\Omega$」\quad
+缺：中间把 $115.74$、$162.02$ 取整成 $116$、$162$ 造成的偏差\quad 补：§5.5 按 $0.866\angle40.0^\circ$ 与 $254.03\angle-40.0^\circ$}
+
+\gapitem{机制缺口}{p20--p22\quad 全例题算完 $\dot I$ 即止，27 页无一处功率\quad
+缺：有功、无功、视在功率三者关系与功率因数\quad 补：§5.6 [教材补充]，只用 E4 已算出的数}
+
+\gapitem{答案缺失}{p23\quad 「R1 Given that, $X_L=16\Omega$, $|Z|=20\Omega$, Find $R$」\quad
+缺：答案\quad 补：§7.3（$12\,\Omega$，并指出 $20-16=4$ 的错法）}
+
+\gapitem{答案缺失}{p24--p25\quad 「R2 已知 $X_C=5\Omega$，求 $\dot I$」\quad
+缺：（1） 相量图与 （2） 相量表达式两条路都没做完\quad 补：§7.4（$2\angle120^\circ\,\mathrm{A}$，两路对照）}
+
+\gapitem{机制缺口}{p26\quad 「The total voltage and the total current is in phase」\quad
+缺：这个条件的代数含义 $\varphi=0\Rightarrow X_L=X_C\Rightarrow U_L=U_C$\quad 补：§7.5}
+
+\gapitem{答案缺失}{p27\quad 「Find:（1）$R$, $X_L$, $X_C$；（2）... $f=100\,\mathrm{Hz}$ ...」\quad
+缺：两问的答案\quad 补：§7.6（$100\,\Omega$／$180\,\Omega$／$180\,\Omega$；升频后感性）}
+
+\gapitem{版面重复}{p1--p2、p24--p25\quad 同一页动画的两帧\quad
+缺：内容只应计一次\quad 补：§0 坐标表按去重计，此处备案}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{阻抗是复数，不是「电阻加一点」}：$Z=R+jX$，$X=X_L-X_C$，实部只来自电阻、虚部只来自两个电抗；
+模与幅角由 $|Z|=\sqrt{R^2+X^2}$、$\varphi=\arctan(X/R)$ 给，判性质只看 $X$ 的符号。
+\item \textbf{复数域里串并联公式形状不变，但中间一步都不许取模}：分压取本侧、分流取对侧；
+$|Z_1+Z_2|\neq|Z_1|+|Z_2|$，这是本册全部错解的共同出处。
+\item \textbf{求和一律先换直角坐标}：$15\,\mathrm{A}$、$80\,\mathrm{V}$、$67.5\,\Omega$ 这三个错答案，
+都是把「有方向的量」当成「一个数」处理的结果；换直角 $\to$ 相加 $\to$ 换回极坐标，三步走完就不会错。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\subhdr{12.1 2.4 串联段（p1--p11，共 11 页）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{6.2cm}p{7.8cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1--p2 & 三个元件的相量式表、$Z$ 的表达式、一个提问（两页为动画帧） & §1.1、§1.2
+\\
+p3 & 相量式与有效值式并列 & §2
+\\
+p4 & 阻抗的直角式与极坐标式、模与幅角 & §1.3
+\\
+p5 & 阻抗角的含义、三种电路性质 & §1.4
+\\
+p6 & 阻抗三角形 & §1.5
+\\
+p7 & E1（三小题） & §7.1
+\\
+p8 & E2（三张接线图） & §7.2
+\\
+p9 & 2.4.2 引入、阻抗归并、黄底结论句 & §0、§3.1
+\\
+p10 & 电阻串联与阻抗串联并列（分压） & §3.2、§3.3
+\\
+p11 & E3 & §3.4
+\tabbot
+\end{tabular}
+
+\newpage
+\subhdr{12.2 2.5 并联段（p12--p27，共 16 页）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{6.2cm}p{7.8cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p12 & 2.5.1 Question（各支路 $5\,\mathrm{A}$） & §4.2
+\\
+p13 & 三元件并联、KCL & §4.1
+\\
+p14 & Example（$5\,\mathrm{A}$／$0\,\mathrm{A}$／$5\sqrt2\,\mathrm{A}$） & §4.2
+\\
+p15 & 并联阻抗的三联等效图 & §4.3
+\\
+p16 & 电阻并联与阻抗并联并列（分流） & §4.3
+\\
+p17 & E1（$Z_1$、$Z_2$ 并联） & §4.4
+\\
+p18 & E2（表读数随 $f$） & §4.5
+\\
+p19 & E3（灯亮度随 $f$） & §4.6
+\\
+p20 & E4 题面、两种解法标题 & §5.1
+\\
+p21 & E4 解法一（支路电流） & §5.2、§5.5
+\\
+p22 & E4 解法二（总阻抗） & §5.3、§5.5
+\\
+p23 & Review R1 & §7.3
+\\
+p24--p25 & Review R2（两页为动画帧） & §7.4
+\\
+p26 & Assignment（同相、$U_{RL}$、$U_C$） & §7.5
+\\
+p27 & Assignment（$u$ 的表达式、升频判性质） & §7.6
+\tabbot
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算：E3 的 $1.414\angle-45^\circ\,\mathrm{A}$；
+E4 的 $Z_1=115.74\angle-80.05^\circ$、$Z_2=162.02\angle75.71^\circ$、$\dot I=0.866\angle40.0^\circ\,\mathrm{A}$、
+$Z=254.03\angle-40.0^\circ\,\Omega$；$S=190.5\,\mathrm{VA}$、$P=146.0\,\mathrm{W}$、$Q=-122.4\,\mathrm{var}$
+（并与 $\sum I^2R=146.0\,\mathrm{W}$、$I_2^2X_L-I_1^2X_C=-122.5\,\mathrm{var}$ 互校）；
+p17 的 $\dot I_1=3\,\mathrm{A}$、$\dot I_2=2\,\mathrm{A}$；p26 的 $U=40\,\mathrm{V}$；
+p27 的 $R=100\,\Omega$、$X_L=X_C=180\,\Omega$、升频后 $X_L'=360.2\,\Omega>X_C'=90.0\,\Omega$。
+标 [教材补充] 的只有 §5.6（三个功率），因为 C2-2 全部 27 页没有任何功率内容；
+其余标注 [待确认] 的三处（p1 第三格的字母、p18 的三只表编号、p14 相量图的箭头）见 §4.5 的旁注与 §10。}
+
+\end{document}

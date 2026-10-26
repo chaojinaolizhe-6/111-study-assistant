@@ -1,0 +1,326 @@
+﻿% !TEX program = xelatex
+% 数学物理方法1 · 第五·六章 通关包（知识点 × 题目 × 两天执行表）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\usepackage{longtable}
+\settags{第五·六章 · 通关包}{数学物理方法1}
+
+\begin{document}
+
+\doctitle{第五·六章 通关包：傅里叶变换 $\to$ 拉普拉斯变换}
+{24 张知识卡、24 道题、两天执行表}
+{依据：本目录《第五章-精讲-傅里叶变换-20261022.pdf》34 页、《第六章-精讲-拉普拉斯变换-20261022.pdf》27 页；
+课件《第五章+傅里叶变换》《第六章+拉普拉斯变换》；整理 2026-10-23。\textbf{全部答案已用 mpmath 数值复核（0 条失败）}}
+
+%=============================================================
+\hdr{§0}{怎么用这份东西}
+
+\begin{enumerate}
+\item \textbf{一条原则：读一张卡，做一道题，做完再看答案。}卡号 $K_n$ 与题号 $n$ 一一对应——$K5$ 对应 A 组第 5 题、$K17$ 对应 B 组第 5 题（编号见每张卡右上角的「题」栏）。先看答案再做题，等于把这份包用成了小说。
+\item \textbf{两天，四段。}Day 1 上午：§1 骨架 ＋ $K1$–$K6$ ＋ A1–A6；Day 1 晚上：$K7$–$K12$ ＋ A7–A12。Day 2 上午：$K13$–$K18$ ＋ B1–B6；Day 2 晚上：$K19$–$K24$ ＋ B7–B12 ＋ §7 的复查表。
+\item \textbf{限时。}A 组每题 5–8 分钟，B 组每题 4–6 分钟。超时就停，标记「未过关」，不许「再想五分钟」——考试不给这五分钟。
+\item \textbf{过关标准不是「看懂了」，是「合上讲义能重算一遍」。}每张卡后面的「一句话自检」就是这个标准的最低版本。
+\end{enumerate}
+
+\callout{\textbf{本包与两份精讲讲义的分工}：精讲讲义负责「为什么」（推导、缺口、易错），本包负责「会不会」（知识与题的对照、限时自测、进度表）。遇到卡壳，用卡片上的「讲义 §x」回查，不要在包内找推导——包内只给结论与关键一步。}
+
+%=============================================================
+\hdr{§1}{两章其实是一条线}
+
+\subhdr{从级数到变换：三次「放手」}
+
+\begin{center}
+\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{7.6cm}@{}}
+\toprule
+\thead{阶段} & \thead{对象} & \thead{放掉了什么} \\
+\midrule
+傅里叶级数 & 周期函数，$f(x)=\sum c_ne^{ik_nx}$ & 要求 $f$ 有周期 \\
+傅里叶积分 & 非周期函数，$f(x)=\frac{1}{2\pi}\int F(\omega)e^{i\omega x}\dd\omega$ & 要求 $\int|f|<\infty$（绝对可积） \\
+拉普拉斯变换 & 只从 $0$ 积起的单边版本 & 丢掉 $t<0$ 的信息，换一个衰减因子 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{那座桥：拉普拉斯 $=$ 先乘衰减、再做傅里叶}
+
+把 $f(t)$ 在 $t<0$ 处截成 $0$（记 $f(t)H(t)$），再乘一个指数衰减因子 $e^{-\sigma t}$。只要 $\sigma$ 取得够大，乘积就绝对可积，傅里叶变换存在：
+\[
+F(\sigma+i\omega)=\int_{-\infty}^{\infty}f(t)H(t)e^{-\sigma t}e^{-i\omega t}\dd t
+=\int_0^{\infty}f(t)e^{-(\sigma+i\omega)t}\dd t .
+\]
+把括号里的东西记成 $p=\sigma+i\omega$，右边就正是课件里的拉普拉斯变换：
+\[
+\boxed{\;F(p)=\mathcal L[f](p)=\int_0^{\infty}f(t)e^{-pt}\dd t\;},\qquad \operatorname{Re}p>\sigma_c .
+\]
+$\sigma_c$ 叫\textbf{收敛横标}：$\operatorname{Re}p>\sigma_c$ 时积分收敛，$\operatorname{Re}p<\sigma_c$ 时发散。这就是为什么每个拉普拉斯变换后面都要跟一句「$\operatorname{Re}p>0$」或「$\operatorname{Re}p>a$」——它不是装饰，是定义域。
+
+\warnbox{\textbf{两章的记号不要混}：第五章的变换核是 $e^{-i\omega t}$、变量是实的 $\omega$；第六章的核是 $e^{-pt}$、变量是复的 $p$。同一个函数在 $\sigma=0$ 处（即 $p=i\omega$）两者一致——但只在 $\sigma_c<0$ 时才允许取 $\sigma=0$。这就是「$f(t)=e^{t}$ 有拉氏变换、没有傅氏变换」的全部原因。}
+
+%=============================================================
+\hdr{§2}{第五章 12 张卡：傅里叶}
+
+\noindent\begin{longtable}{@{}p{2.9cm}p{6.9cm}p{6.5cm}@{}}
+\toprule
+\thead{知识点（题）} & \thead{核心式} & \thead{条件 / 讲义位置} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{知识点（题）} & \thead{核心式} & \thead{条件 / 讲义位置} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$K1$ 正交性筛系数（A1） & $\int_{-\pi}^{\pi}\cos nx\cos mx\,\dd x=\pi\delta_{mn}$；乘上基函数再积分，别的项全归零 & 区间必须是一个整周期；§1 \\
+$K2$ 三角级数系数（A1、A2、A3） & $a_n=\frac{1}{l}\int_{-l}^{l}f\cos\frac{n\pi x}{l}\dd x$，$b_n$ 同理；$a_0=\frac{1}{l}\int f$ & 周期 $2l$；$a_0$ 那一项在级数里写 $\frac{a_0}{2}$；§2 \\
+$K3$ 奇偶与半幅展开（A3、A5） & 偶函数 $b_n=0$；奇函数 $a_n=0$；只给 $(0,l)$ 时可延拓成正弦或余弦级数 & 延拓方式决定用哪一套系数；§2 \\
+$K4$ 级数 $\to$ 积分（A5） & $k_n=\frac{n\pi}{l}$，$\Delta k=\frac{\pi}{l}$，故 $\frac{1}{l}=\frac{\Delta k}{\pi}$；$l\to\infty$ 时求和变积分 & 这一步正是 $1/\pi$ 与 $\frac{1}{2\pi}$ 的来源；§3 \\
+$K5$ 傅里叶变换与归一化（A6、A7） & $F(\omega)=\frac{1}{\sqrt{2\pi}}\int f e^{-i\omega x}\dd x$；逆变换同系数 & 三套归一化（$1$、$\frac{1}{2\pi}$、$\frac{1}{\sqrt{2\pi}}$）不可混用，用哪套看系数怎么配；§4 \\
+$K6$ 复数形式（A4） & $c_n=\frac{1}{2l}\int_{-l}^{l}f e^{-ik_nx}\dd x$，$f=\sum c_ne^{ik_nx}$ & $(2\pi)^n$ 规则：每多一次正变换多一个 $1/\sqrt{2\pi}$；§4 \\
+$K7$ 高斯型主例（A8） & $\int e^{-x^2/2}e^{-ikx}\dd x=\sqrt{2\pi}e^{-k^2/2}$，即高斯在傅氏变换下自对偶 & 配方 $x^2/2+ikx=\frac{(x+ik)^2}{2}+\frac{k^2}{2}$；§5 \\
+$K8$ 实轴极点与半留数（A12） & $\int_0^{\infty}\frac{\cos bx}{x^2+a^2}\dd x=\frac{\pi}{2a}e^{-ab}$ & 上半平面留数取一半；极点在实轴上时取半值（主值）；§6 \\
+$K9$ 卷积定理（A10） & $\mathcal F[f*g]=\sqrt{2\pi}\,F\cdot G$；$\mathcal F^{-1}[F\cdot G]=\frac{1}{\sqrt{2\pi}}f*g$ & 系数跟着归一化走；§7 \\
+$K10$ 九条性质（A9） & 线性、相似 $f(ax)\to\frac{1}{|a|}F(\frac{\omega}{a})$、平移、调制、求导 $f'\to i\omega F$、积分、乘 $x$、卷积 & 求导性质要求 $f(\pm\infty)=0$；§8 \\
+$K11$ $\delta$ 函数（A11） & $\int f(x)\delta(x-a)\dd x=f(a)$；$\delta(ax)=\frac{1}{|a|}\delta(x)$；$\mathcal F[\delta(x-a)]=\frac{1}{\sqrt{2\pi}}e^{-ia\omega}$ & $\delta$ 是密度不是函数值；§9 \\
+$K12$ 能量与收敛（A4） & $\sum|c_n|^2=\frac{1}{2l}\int|f|^2$（Parseval）；间断点处级数收敛到左右极限的平均值 & Gibbs 现象不随项数消失；§2、§9 \\
+\end{longtable}
+
+%=============================================================
+\hdr{§3}{第六章 12 张卡：拉普拉斯}
+
+\noindent\begin{longtable}{@{}p{2.9cm}p{6.9cm}p{6.5cm}@{}}
+\toprule
+\thead{知识点（题）} & \thead{核心式} & \thead{条件 / 讲义位置} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{知识点（题）} & \thead{核心式} & \thead{条件 / 讲义位置} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$K13$ 定义与收敛域（B1） & $F(p)=\int_0^{\infty}f(t)e^{-pt}\dd t$ & 必须写 $\operatorname{Re}p>\sigma_c$；$f$ 在 $t<0$ 处按 $0$ 处理；§1、§2 \\
+$K14$ 六个基本对（B1） & $1\risingdotseq\frac1p$，$t\risingdotseq\frac1{p^2}$，$t^n\risingdotseq\frac{n!}{p^{n+1}}$，$e^{at}\risingdotseq\frac1{p-a}$，$\sin\omega t\risingdotseq\frac{\omega}{p^2+\omega^2}$，$\cos\omega t\risingdotseq\frac{p}{p^2+\omega^2}$ & 收敛域分别是 $\operatorname{Re}p>0$ 与 $>a$；§2 \\
+$K15$ 八条性质（B2、B3） & 相似、位移 $e^{at}f\risingdotseq F(p-a)$、延迟 $H(t-t_0)f(t-t_0)\risingdotseq e^{-pt_0}F(p)$、求导、积分、乘 $t$：$tf\risingdotseq-F'(p)$ & 延迟定理必须带 $H(t-t_0)$，否则 $t<t_0$ 那一段被静默算错；§3、§4 \\
+$K16$ 性质表的对偶（B2） & $(-1)^n\frac{\dd^n}{\dd p^n}F(p)=\mathcal L[t^nf]$；$\frac{F(p)}{p}=\mathcal L[\int_0^tf]$ & 一边是乘 $t$，一边是除以 $p$，互为对偶；§4 \\
+$K17$ 反演：部分分式（B5、B7） & 真分式拆成 $\frac{A}{p-p_k}$ 与 $\frac{Bp+C}{p^2+\alpha p+\beta}$ 两类，逐项查表 & 分母次数必须已低于分子；§5 \\
+$K18$ 反演：重极点（B8） & 分母含 $(p-p_0)^2$ 时，部分分式会「原样退回」，要用 $\frac{1}{(p-p_0)^2}\risingdotseq te^{p_0t}$ 或参数微分 & 这就是「$(p^2+\omega^2)^2$ 必须绕道」的根源；§6 \\
+$K19$ 解 ODE 四步（B10、B11） & 变换 $\to$ 代数方程解出 $Y(p)$ $\to$ 反演 $\to$ 验初值 & 初值 $y(0),y'(0)$ 自动进入 $Y(p)$，不用另设积分常数；§8 \\
+$K20$ 解微分方程组（B9） & 每个方程变换，得线性代数方程组，解出各 $Y_i(p)$ 再反演 & 系数矩阵的行列式就是特征多项式；§9 \\
+$K21$ 初值与终值（B11） & $f(0^+)=\lim_{p\to\infty}pF(p)$；$f(\infty)=\lim_{p\to0}pF(p)$ & 终值定理要求 $pF(p)$ 的极点全在左半平面；§5 \\
+$K22$ 回路与振子（B10） & RLC 串联：$Lq''+Rq'+\frac{1}{C}q=E(t)$，与振子同形 & 三种阻尼对应三类极点：实、重、共轭；§9 \\
+$K23$ 卷积与积分（B9） & $\mathcal L[f*g]=F\cdot G$；$\int_0^{\infty}f(t)\dd t=F(0)$（当极限存在） & 卷积定理在拉氏里没有 $\sqrt{2\pi}$，这是与傅氏最大的差别；§9 \\
+$K24$ 四个特殊积分（B12） & $\int_0^{\infty}e^{-st}\sin\omega t\dd t=\frac{\omega}{s^2+\omega^2}$（$s>0$） & 直接取 $p=s$ 实值即可，不必反演；§9 \\
+\end{longtable}
+
+\flowerrule
+
+%=============================================================
+\hdr{§4}{A 组：傅里叶 12 题（限时 5–8 分钟/题）}
+
+\subhdr{A1（$K1$、$K2$）}
+$f(x)=|x|$，$x\in(-\pi,\pi)$，以 $2\pi$ 为周期。求 $a_0$、$a_n$、$b_n$，写出级数；再用 $x=0$ 求 $\sum_{n\ \text{奇}}\frac{1}{n^2}$。
+
+\subhdr{A2（$K2$）}
+方波：$f(x)=1\ (0<x<\pi)$，$f(x)=-1\ (-\pi<x<0)$。求 $b_n$ 并写出级数。它在 $x=0$ 收敛到多少？
+
+\subhdr{A3（$K2$、$K3$）}
+$f(x)=x$，$x\in(-\pi,\pi)$。先判断 $a_n$ 是不是全为 $0$（说明理由），再求 $b_n$。
+
+\subhdr{A4（$K6$、$K12$）}
+$f(x)=e^{x}$，$x\in(-\pi,\pi)$。求复数形式系数 $c_n$；用 Parseval 等式写出 $\sum|c_n|^2$ 的闭式。
+
+\subhdr{A5（$K3$、$K4$）}
+只给 $f(x)=1$，$x\in(0,\pi)$。把它展开成\textbf{正弦}级数，写出 $b_n$；并说明为什么在 $x=\frac{\pi}{2}$ 处级数和为 $1$。
+
+\subhdr{A6（$K5$）}
+求 $f(x)=e^{-a|x|}$（$a>0$）的傅里叶变换（用 $\frac{1}{\sqrt{2\pi}}$ 约定）；令 $a\to0^{+}$，说明极限给出 $\sqrt{2\pi}\,\delta(\omega)$。
+
+\subhdr{A7（$K5$）}
+矩形脉冲 $\mathrm{rect}(x)=1\ (|x|<1)$，其余为 $0$。求它的傅里叶变换，并写出 $\omega=0$ 处的值。
+
+\subhdr{A8（$K7$）}
+求 $f(x)=e^{-x^2/2}$ 的傅里叶变换（$\frac{1}{\sqrt{2\pi}}$ 约定）。
+
+\subhdr{A9（$K10$）}
+设 $\mathcal F[f]=F(\omega)$。写出 $\mathcal F[f(2x)]$、$\mathcal F[f(x-3)]$、$\mathcal F[f'(x)]$ 各等于什么，并各注明一个成立条件。
+
+\subhdr{A10（$K9$）}
+$\mathrm{rect}$ 与自身卷积：求 $(\mathrm{rect}*\mathrm{rect})(x)$ 的分段表达式，并说明它的傅里叶变换。
+
+\subhdr{A11（$K11$）}
+计算：(1) $\int_{-\infty}^{\infty}(x^2+1)\delta(x-2)\dd x$；(2) 把 $\delta(2x-3)$ 写成 $\delta(x-a)$ 的形式；(3) 求 $\mathcal F[\delta(x-a)]$。
+
+\subhdr{A12（$K8$）}
+用留数计算 $\int_{0}^{\infty}\frac{\cos bx}{x^2+a^2}\dd x$（$a>0$，$b>0$）。
+
+%=============================================================
+\hdr{§5}{B 组：拉普拉斯 12 题（限时 4–6 分钟/题）}
+
+\subhdr{B1（$K13$、$K14$）}
+直接由定义求 $\mathcal L[1]$、$\mathcal L[t]$、$\mathcal L[t^2]$、$\mathcal L[e^{2t}]$、$\mathcal L[\sin 3t]$、$\mathcal L[\cos 3t]$，并各写出收敛域。
+
+\subhdr{B2（$K15$、$K16$）}
+用「乘 $t$」的性质求 $\mathcal L[te^{2t}]$ 与 $\mathcal L[t\sin 3t]$。
+
+\subhdr{B3（$K15$）}
+(1) 用位移定理求 $\mathcal L[e^{2t}t^2]$；(2) 用延迟定理求 $\mathcal L[H(t-2)(t-2)^2]$。
+
+\subhdr{B4（$K15$）}
+写出 $\mathcal L[f'(t)]$ 与 $\mathcal L[f''(t)]$ 的公式，并说明初值 $f(0),f'(0)$ 为什么会出现在像函数里。
+
+\subhdr{B5（$K17$）}
+反演 $F(p)=\dfrac{1}{p(p+1)}$。
+
+\subhdr{B6（$K17$）}
+反演 $F(p)=\dfrac{1}{p^2+4p+13}$。
+
+\subhdr{B7（$K17$）}
+反演 $F(p)=\dfrac{1}{p(p^2+1)}$。
+
+\subhdr{B8（$K18$）}
+反演 $F(p)=\dfrac{1}{p(p-1)^2}$，并指出「只拆成 $\frac{A}{p}+\frac{B}{p-1}$」为什么会失败。
+
+\subhdr{B9（$K19$、$K23$）}
+用卷积定理反演 $F(p)=\dfrac{1}{p(p^2+9)}$。
+
+\subhdr{B10（$K19$、$K22$）}
+解初值问题 $y''+y=0$，$y(0)=1$，$y'(0)=0$（要求走拉氏变换，不许直接猜）。
+
+\subhdr{B11（$K19$、$K21$）}
+解初值问题 $y''+3y'+2y=1$，$y(0)=0$，$y'(0)=0$；并用初值定理核对 $y(0)$。
+
+\subhdr{B12（$K24$）}
+计算：(1) $\int_0^{\infty}e^{-3t}\sin 2t\,\dd t$；(2) $\int_0^{\infty}te^{-t}\sin t\,\dd t$（提示：用 $\mathcal L[t\sin t]$ 在 $p=1$ 的值）。
+
+\newpage
+
+%=============================================================
+\hdr{§6}{答案与关键一步}
+
+\subhdr{A 组}
+\textbf{A1}\quad $a_0=\pi$，$b_n=0$，$a_n=\frac{2\left((-1)^n-1\right)}{\pi n^2}$（即 $n$ 奇时 $-\frac{4}{\pi n^2}$，$n$ 偶时 $0$）。
+\[ f(x)\sim\frac{\pi}{2}-\frac{4}{\pi}\sum_{n\ \text{奇}}\frac{\cos nx}{n^2}. \]
+关键一步：$|x|$ 是偶函数 $\Rightarrow b_n=0$；分部积分两次，$\left[x\sin nx\right]_0^\pi=0$ 是那个消失的边界项。代 $x=0$ 得 $0=\frac{\pi}{2}-\frac{4}{\pi}\sum_{\text{奇}}\frac{1}{n^2}$，即 $\sum_{\text{奇}}\frac{1}{n^2}=\frac{\pi^2}{8}$。
+
+\textbf{A2}\quad $b_n=\frac{2\left(1-(-1)^n\right)}{n\pi}$（$n$ 奇时 $\frac{4}{n\pi}$，$n$ 偶时 $0$），$a_n=0$。
+\[ f(x)\sim\frac{4}{\pi}\sum_{n\ \text{奇}}\frac{\sin nx}{n}. \]
+$x=0$ 是跳跃点，级数收敛到左右极限的平均值：$\frac{1+(-1)}{2}=0$——\textbf{不是} $1$，也不是 $-1$。
+
+\textbf{A3}\quad $a_n=0$（$x$ 是奇函数，与 $\cos nx$ 的乘积是奇函数，整周期积分为 $0$）；$b_n=\frac{2(-1)^{n+1}}{n}$。
+\[ f(x)\sim 2\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin nx. \]
+关键一步：$\int_0^{\pi}x\sin nx\,\dd x=\frac{\pi(-1)^{n+1}}{n}$。
+
+\textbf{A4}\quad $c_n=\dfrac{(-1)^n\sinh\pi}{\pi(1-in)}$（验证：$c_0=\frac{\sinh\pi}{\pi}$）。
+Parseval：$\displaystyle\sum_{n=-\infty}^{\infty}|c_n|^2=\frac{1}{2\pi}\int_{-\pi}^{\pi}e^{2x}\dd x=\frac{\sinh 2\pi}{2\pi}$。
+关键一步：$|1-in|^2=1+n^2$，故 $|c_n|^2=\frac{\sinh^2\pi}{\pi^2(1+n^2)}$。
+
+\textbf{A5}\quad 奇延拓后 $b_n=\frac{2(1-(-1)^n)}{n\pi}$（$n$ 奇时 $\frac{4}{n\pi}$），
+\[ 1\sim\frac{4}{\pi}\sum_{n\ \text{奇}}\frac{\sin nx}{n},\qquad 0<x<\pi . \]
+$x=\frac{\pi}{2}$ 在 $(0,\pi)$ 内部、且 $f$ 在此连续 $\Rightarrow$ 级数收敛到 $f\left(\frac{\pi}{2}\right)=1$（这正是 $\sum_{\text{奇}}\frac{\sin(n\pi/2)}{n}=\frac{\pi}{4}$）。
+
+\textbf{A6}\quad $\displaystyle\int_{-\infty}^{\infty}e^{-a|x|}e^{-i\omega x}\dd x=\frac{2a}{a^2+\omega^2}$，故 $F(\omega)=\sqrt{\frac{2}{\pi}}\frac{a}{a^2+\omega^2}$。
+$a\to0^{+}$ 时 $\frac{2a}{a^2+\omega^2}\to2\pi\delta(\omega)$（洛伦兹线的窄极限），故 $F\to\sqrt{2\pi}\,\delta(\omega)$。
+
+\textbf{A7}\quad $F(\omega)=\frac{1}{\sqrt{2\pi}}\cdot\frac{2\sin\omega}{\omega}=\sqrt{\frac{2}{\pi}}\frac{\sin\omega}{\omega}$；$F(0)=\sqrt{\frac{2}{\pi}}$（用 $\frac{\sin\omega}{\omega}\to1$）。
+
+\textbf{A8}\quad $\mathcal F[e^{-x^2/2}]=e^{-\omega^2/2}$。关键一步：配方
+\[ \frac{x^2}{2}+i\omega x=\frac{(x+i\omega)^2}{2}+\frac{\omega^2}{2}, \]
+再用高斯积分 $\int e^{-u^2/2}\dd u=\sqrt{2\pi}$。结论：高斯是傅氏变换的不动点（在 $\frac{1}{\sqrt{2\pi}}$ 约定下）。
+
+\textbf{A9}\quad
+$\mathcal F[f(2x)]=\frac12F\!\left(\frac{\omega}{2}\right)$；
+$\mathcal F[f(x-3)]=e^{-3i\omega}F(\omega)$；
+$\mathcal F[f'(x)]=i\omega F(\omega)$。
+条件：第一个要求 $f(2x)$ 可积；第二个要求 $f$ 可积；第三个要求 $f(\pm\infty)=0$（分部积分时边界项消失）。
+
+\textbf{A10}\quad $(\mathrm{rect}*\mathrm{rect})(x)=\begin{cases}2-|x|, & |x|\le 2\\ 0, & |x|>2\end{cases}$
+其傅里叶变换 $=\sqrt{2\pi}\left(\sqrt{\frac{2}{\pi}}\frac{\sin\omega}{\omega}\right)^2=\frac{4\sin^2\omega}{\sqrt{2\pi}\,\omega^2}$。
+关键一步：两段重合长度随 $|x|$ 线性减少，这就是三角形。
+
+\textbf{A11}\quad (1) $5$（$2^2+1$，挑选性）；(2) $\delta(2x-3)=\frac12\delta\left(x-\frac32\right)$（缩放公式，$a=2$）；(3) $\mathcal F[\delta(x-a)]=\frac{1}{\sqrt{2\pi}}e^{-ia\omega}$。
+
+\textbf{A12}\quad $\displaystyle\int_0^{\infty}\frac{\cos bx}{x^2+a^2}\dd x=\frac{\pi}{2a}e^{-ab}$。
+关键一步：$\cos bx$ 取 $\operatorname{Re}e^{ibx}$，在上半平面围道；$x=ia$ 处留数 $\frac{e^{-ab}}{2ai}$，乘 $2\pi i$ 再取一半（只因积分只从 $0$ 到 $\infty$）。
+
+\subhdr{B 组}
+\textbf{B1}\quad $\frac1p\,(\operatorname{Re}p>0)$；$\frac1{p^2}$；$\frac2{p^3}$；$\frac{1}{p-2}\,(\operatorname{Re}p>2)$；$\frac{3}{p^2+9}$；$\frac{p}{p^2+9}$（后两个 $\operatorname{Re}p>0$）。
+
+\textbf{B2}\quad $\mathcal L[te^{2t}]=\frac{1}{(p-2)^2}$；$\mathcal L[t\sin 3t]=\frac{6p}{(p^2+9)^2}$。
+关键一步：$tf(t)\risingdotseq-F'(p)$，对 $\frac{1}{p-2}$ 求导再取负；对 $\frac{3}{p^2+9}$ 求导得 $-\frac{6p}{(p^2+9)^2}$。
+
+\textbf{B3}\quad (1) $\frac{2}{(p-2)^3}$；(2) $\frac{2e^{-2p}}{p^3}$。
+关键一步：(2) 里被变换的是 $H(t-2)(t-2)^2$，平移量与函数宗量的平移量必须一致，否则不能直接用延迟定理。
+
+\textbf{B4}\quad $\mathcal L[f']=pF(p)-f(0)$；$\mathcal L[f'']=p^2F(p)-pf(0)-f'(0)$。
+初值出现的原因是分部积分：$\int_0^{\infty}f'e^{-pt}\dd t=\left[fe^{-pt}\right]_0^{\infty}+p\int_0^{\infty}fe^{-pt}\dd t$，边界项给出 $-f(0)$。
+
+\textbf{B5}\quad $\frac{1}{p(p+1)}=\frac1p-\frac{1}{p+1}\ \Rightarrow\ 1-e^{-t}$。
+
+\textbf{B6}\quad $p^2+4p+13=(p+2)^2+9$，故 $F=\frac13\cdot\frac{3}{(p+2)^2+3^2}\ \Rightarrow\ \frac13e^{-2t}\sin 3t$。
+
+\textbf{B7}\quad $\frac{1}{p(p^2+1)}=\frac1p-\frac{p}{p^2+1}\ \Rightarrow\ 1-\cos t$。
+
+\textbf{B8}\quad $\frac{1}{p(p-1)^2}=\frac1p-\frac{1}{p-1}+\frac{1}{(p-1)^2}\ \Rightarrow\ 1+(t-1)e^{t}$。
+只设 $\frac Ap+\frac{B}{p-1}$ 会失败：通分后分子是 $A(p-1)+Bp$，只有 2 个待定常数，而要匹配 $1$（3 个系数里只有两个独立），方程矛盾——分母有重根时，部分分式必须给重根配上 $\frac{C}{(p-1)^2}$。
+
+\textbf{B9}\quad $F=\frac{1}{p}\cdot\frac{1}{p^2+9}$。由卷积定理
+\[ \mathcal L^{-1}\left[\frac{1}{p}\cdot\frac{1}{p^2+9}\right]=\int_0^{t}1\cdot\frac{\sin 3\tau}{3}\,\dd\tau=\frac{1-\cos 3t}{9}. \]
+关键一步：$\frac{1}{p^2+9}$ 的原函数是 $\frac{\sin 3t}{3}$（不是 $\sin 3t$）；卷积上限就是 $t$，这是拉氏卷积与傅氏卷积的第二处差别（没有 $\sqrt{2\pi}$，且积分只在 $[0,t]$ 上）。
+
+\textbf{B10}\quad 设 $\mathcal L[y]=Y$，方程变为 $p^2Y-p\cdot1-0+Y=0$，即 $Y=\frac{p}{p^2+1}$，反演得 $y=\cos t$。
+
+\textbf{B11}\quad $(p^2+3p+2)Y=\frac1p$，故
+\[ Y=\frac{1}{p(p+1)(p+2)}=\frac{1}{2p}-\frac{1}{p+1}+\frac{1}{2(p+2)}\ \Rightarrow\ y=\frac12-e^{-t}+\frac12e^{-2t}. \]
+初值核对：$\lim_{p\to\infty}pY(p)=\lim\frac{1}{(p+1)(p+2)}=0=y(0)$，$\checkmark$。
+
+\textbf{B12}\quad (1) $\frac{2}{13}$（取 $\mathcal L[\sin 2t]$ 在 $p=3$ 的值 $\frac{2}{9+4}$）；(2) $\frac12$（$\mathcal L[t\sin t]=\frac{2p}{(p^2+1)^2}$，在 $p=1$ 得 $\frac{2}{4}=\frac12$）。
+
+%=============================================================
+\newpage
+\hdr{§7}{两天执行表与过关判定}
+
+\begin{center}
+\begin{tabular}{@{}p{2.0cm}p{4.8cm}p{4.0cm}p{5.1cm}@{}}
+\toprule
+\thead{时段} & \thead{读什么} & \thead{做什么} & \thead{过关标志} \\
+\midrule
+Day 1 上午 & §1 骨架；$K1$–$K6$；讲义五章 §1–§4 & A1–A6 & 6 题里 $\ge4$ 题独立算对，且 A1、A3 的系数不带符号错 \\
+Day 1 晚上 & $K7$–$K12$；讲义五章 §5–§9 & A7–A12 & $\ge4$ 题独立算对；A9 三个性质的系数全对 \\
+Day 2 上午 & $K13$–$K18$；讲义六章 §1–§6 & B1–B6 & $\ge4$ 题独立算对；B5–B7 的三条部分分式不重不漏 \\
+Day 2 晚上 & $K19$–$K24$；讲义六章 §7–§9 & B7–B12 & $\ge4$ 题独立算对；B11 的初值核对能自己写出来 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{没过的题怎么办（按这个顺序，别跳步）}
+\begin{enumerate}
+\item 回到对应卡片，把「核心式」抄一遍——只抄式子，不抄文字；
+\item 打开讲义对应 §，只看那一步的推导，看完立刻合上；
+\item 换一个数字重做同类题（如 A1 换 $f(x)=x^2$ 在 $(0,\pi)$ 上展开），做对才算过；
+\item 若第二次仍错，在卡片上画一个「$\times$」，Day 3 早读只读带 $\times$ 的卡。
+\end{enumerate}
+
+\warnbox{\textbf{两天里最容易骗自己的三件事}：(1) 把「看懂了推导」当成「能独立算」——判据只有一条：合上讲义，白纸重算；(2) 用归一化不同的公式互相对答案（$\frac{1}{\sqrt{2\pi}}$ 与 $\frac{1}{2\pi}$ 混用），差一个 $\sqrt{2\pi}$ 却以为算错；(3) 拉普拉斯题只写反演结果、不写收敛域，考场上扣分且自己也分不清唯一性。}
+
+%=============================================================
+\hdr{§8}{十条高频扣分点（每条都能指回某道题）}
+
+\begin{enumerate}
+\item \textbf{$a_0$ 写成 $a_0$ 而不是 $\frac{a_0}{2}$}（A1）。级数首项是 $\frac{a_0}{2}$。
+\item \textbf{区间不是整周期就去积}（A2）。正交性只在整周期上成立。
+\item \textbf{跳跃点直接代函数值}（A2 在 $x=0$）。间断点取左右极限平均。
+\item \textbf{奇偶性判断反了}（A3）。$x\cos nx$ 是奇函数、$x\sin nx$ 是偶函数——先看乘积的奇偶。
+\item \textbf{归一化混用}（A6–A8）。正逆变换的系数必须配对；$\frac{1}{\sqrt{2\pi}}$ 那套里正逆都是它。
+\item \textbf{求导性质忘了边界项}（A9）。$f(\pm\infty)\ne0$ 时 $\mathcal F[f']=i\omega F$ 不成立。
+\item \textbf{卷积少一个系数}（A10）。傅氏卷积带 $\sqrt{2\pi}$，拉氏卷积不带。
+\item \textbf{$\delta$ 缩放写成 $\delta(ax)=\delta(x)$}（A11）。少 $\frac{1}{|a|}$。
+\item \textbf{部分分式漏重根项}（B8）。分母有 $(p-p_0)^2$ 就要有 $\frac{C}{(p-p_0)^2}$。
+\item \textbf{不写收敛域、初值不核对}（B1、B11）。收敛域决定唯一性；初值定理是 30 秒自检。
+\end{enumerate}
+
+\flowerrule
+
+\noindent{\small\color{inkgray}复核记录：本包全部数值与恒等式由 \texttt{\_scratch/prep-20261023/mp-verify3-20261023.py}（mpmath，25 位有效数字）逐条核对，含 12 道傅氏题、12 道拉氏题、2 个初值问题与 4 个特殊积分，失败 0 条；A12 另用 \texttt{scipy.integrate.quad(weight='cos')} 独立复核。}
+
+\end{document}

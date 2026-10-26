@@ -1,0 +1,1311 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第三章第二册（Chapter Three-2）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C3-2 · 整流与滤波 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{3.3--3.5\quad 直流稳压电源：整流与滤波}
+{$0.45U_2$ 与 $0.9U_2$ 的来历 · 二极管反向电压 · 电容取值与纹波}
+{依据：\texttt{Chapter Three-2-2026中白上传.pdf}（p1--p49，共 49 页；本讲义页码一律指本册 PDF 物理页）\ $\cdot$\ 2026-10-23}
+
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{0.1 课件讲了哪几块，各在哪几页}
+
+本册把「直流稳压电源」从整机结构一路讲到具体计算：先用框图把电源拆成\textbf{变压--整流--滤波--稳压}四段（p1--p12），再逐段讲机理，其中\textbf{整流}（p13--p24）与\textbf{滤波}（p25--p34）占了大半，最后用两道例题（p35--p42）与一道设计题（p44--p47）把公式变成计算。整册的重心不在「有哪些电路」，而在\textbf{每种电路对应哪一组数}。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{2.0cm}p{11.6cm}@{}}
+\tabtop
+\thead{课件页} & \thead{小节} & \thead{内容}
+\\
+\tabmid
+p1--p12 & 3.3 & 直流稳压电源的组成；框图与实物照片；四个环节的功能与波形
+\\
+p13 & 3.4.1 & 整流电路分类：半波、全波（中心抽头式、桥式）
+\\
+p14--p16 & 3.4.2 & 半波整流的正/负半周与输出波形
+\\
+p17--p21 & 3.4.3 & 中心抽头式与桥式全波整流；桥式两条导通路径；输出波形
+\\
+p22 & 3.4.3 & 桥式整流的计算：$U_{\mathrm{O}}$、$I_{\mathrm{O}}$、$I_{\mathrm{D}}$、$U_{\mathrm{Rm}}$ 与选管条件
+\\
+p23 & 3.4.3 & 整流桥器件：四端封装与「$\sim$、$+$、$-$」引脚
+\\
+p24 & 3.4.4 & 半波/全波总表（无电容）
+\\
+p25--p26 & 3.5.1 & 滤波器分类（电容、电感、复式）与电容滤波的适用场合
+\\
+p27--p32 & 3.5.2 & 电容滤波原理：充放电、时间常数 $\tau=R_{\mathrm{L}}C$、结论
+\\
+p33 & 3.5.2 & 滤波电路设计公式：$U_{\mathrm{O}}$、$C$、$U_{\mathrm{CN}}$、二极管
+\\
+p34 & 3.5.2 & 四列总表：半波/全波 $\times$ 有/无电容
+\\
+p35--p36 & 例 & 桥式 $+$ 电容，$U_2=20\,\mathrm{V}$，问输出
+\\
+p37--p41 & Review & 总表回顾；四种电路的 $U_{\mathrm{Rm}}$
+\\
+p42 & 故障题 & E2：接万用表的故障排查
+\\
+p43 & 引子 & 电源适配器实物（设计题开场）
+\\
+p44--p47 & E1 & 桥式 $+$ 电容设计题：选二极管、选电容、开路与断容两问
+\\
+p48 & 3.5.3 & 电感滤波
+\\
+p49 & 3.5.4 & 复式滤波：$\pi$ 型 LC 与 $\pi$ 型 RC
+\tabbot
+\end{tabular}
+
+\subhdr{0.2 记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.6cm}p{13.2cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$u_2$ & 变压器二次电压的\textbf{瞬时值}（p14 波形纵轴）
+\\
+$U_2$ & 二次电压的\textbf{有效值}。题里说「$U_2=20\,\mathrm{V}$」（p35、p42）指的都是有效值，不是峰值
+\\
+$U_{\mathrm{m}}$ & 峰值 $U_{\mathrm{m}}=\sqrt{2}U_2$；课件在公式里直接写 $\sqrt{2}U_2$，两种写法同义
+\\
+$\theta,\ \omega$ & 电角度 $\theta=\omega t$；$\omega=2\pi f$。工频 $f=50\,\mathrm{Hz}$ 时 $T=20\,\mathrm{ms}$
+\\
+$u_{\mathrm{O}},\ U_{\mathrm{O}}$ & 负载电压的瞬时值与\textbf{平均值}（直流分量）。课件的表用大写 $U_{\mathrm{O}}$，波形图用小写 $u_{\mathrm{O}}$
+\\
+$I_{\mathrm{O}},\ I_{\mathrm{D}}$ & 负载平均电流、\textbf{每只}二极管的平均电流
+\\
+$I_{\mathrm{F}},\ U_{\mathrm{R}}$ & 二极管的\textbf{额定}正向电流、额定反向电压（器件能力，查手册）
+\\
+$U_{\mathrm{Rm}}$ & 电路实际加到二极管上的\textbf{最高反向电压}（选管依据）
+\\
+$R_{\mathrm{L}},\ C,\ \tau$ & 负载电阻、滤波电容、放电时间常数 $\tau=R_{\mathrm{L}}C$（p30）
+\\
+$D$ & 二极管的导通占空比（一个周期里导通时间所占比例），本讲义 §6.3 才用
+\tabbot
+\end{tabular}}
+
+\aside{最容易混的是 $U_2$ 与 $U_{\mathrm{m}}$：$U_2$ 是有效值（电压表读数），峰值要乘 $\sqrt{2}$。
+p31 写「$u_{\mathrm{L}}=u_{\mathrm{C}}=\sqrt{2}u_2$」时用的是峰值；p33 写「$U_{\mathrm{CN}}\ge\sqrt{2}U_2$」时用的是有效值乘 $\sqrt{2}$。两处都不是把 $U_2$ 直接当峰值。}
+
+\subhdr{0.3 三处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p24 的「3.4.4 Summary」之后，p25 的页眉直接变成「3.5 Filter Circuit / 3.5.1 Types of filter」，可本册封面与标题仍是「Chapter Three-2」。
+也就是说，整流（3.4）与滤波（3.5）在这本课件里是两节硬接在一起的，中间没有过渡页。
+本讲义按页眉的节号把 p25 之后称为 3.5 节，但页码仍用本册物理页。}
+
+\gapitem{拼接缺口}{p17 把「Center-tapped Full wave rectifier」与「Bridge full wave rectifier」并排一次，此后 p18--p24 只分析桥式；
+p24 总表把两者合称「Full wave rectifier」并给 $U_{\mathrm{Rm}}=\sqrt{2}U_2$。
+这个值只对桥式成立——中心抽头式每只二极管要扛 $2\sqrt{2}U_2$（§4.2 补）。
+照表做中心抽头的题，会把耐压选小一半。}
+
+\gapitem{适用前提}{p34 的表把「有电容」一列的四个数（$U_{\mathrm{O}}=U_2$、$1.2U_2$；$U_{\mathrm{Rm}}=2\sqrt{2}U_2$、$\sqrt{2}U_2$）直接列出，
+p33 又写「Because the current is pulsating, the current takes twice the value.」，三处都没有推导。
+§6 把这三件事的来历一次补齐：$2\sqrt{2}U_2$ 是电容钳位、$1.2U_2$ 是时间常数、两倍电流是占空比。}
+
+\callout{\textbf{本讲义怎么用}：\\
+读第一遍只看 §0 表、§5 设计题、§8 公式卡——这三处能让你把题做对；\\
+读第二遍再看 §2、§3、§6——这三处解释「公式为什么长这样」，是换一种电路还能不能算对的关键；\\
+\textbf{§10 缺口清单}逐条对应课件某页某句，课件哪句话让你卡住，就去那里找。}
+
+\subhdr{0.4 三张关键图怎么读（不去翻课件也能对上号）}
+
+本册有三张图是全册的「地图」，读法各不相同：
+
+\textbf{（1）p12 的波形链。}一行五个方框，每个方框后面跟着一段波形：
+正弦 $\to$ 幅值变小的正弦 $\to$ 两个正半波 $\to$ 带小起伏的直流 $\to$ 平直直流。
+读它只要盯住\textbf{每段波形的「平均高度」与「起伏大小」}：整流让平均高度从零变成正，滤波让起伏变小，稳压让高度不再随负载变。
+
+\textbf{（2）p21 的「波形 $+$ 方框」双联图。}左边上下两套坐标轴（上 $u_2$、下 $u_{\mathrm{O}}$ 与 $i_{\mathrm{O}}$），
+右边把菱形桥重画成两条竖臂的方框。读它要先把左右对上：\textbf{方框的上母线就是共阴极 $P$，下母线就是共阳极 $M$，
+$u_2$ 接两条竖臂的中点}。对上这三对节点，p21 之后所有「方框画法」的图（p27--p49）就都能读了。
+
+\textbf{（3）p28--p30 的充放电图。}同一张 $u_{\mathrm{O}}$–$\omega t$ 图上叠了三条线：
+蓝色实线是电容充电段（沿整流波形上升）、红色实线是放电段（近似指数下降）、灰色虚线是「如果没有电容、整流波形本来会走到的位置」。
+读它只要看\textbf{蓝色与灰色之间张开的那块面积}：那块面积就是电容替负载「垫」出来的电压，$\tau=R_{\mathrm{L}}C$ 越大，张开的面积越大、输出越平（§6.2）。
+
+%=============================================================
+\hdr{§1}{整流与滤波各在变什么：一句话机制}
+
+\subhdr{1.1 四段链条：每一段只改一个属性}
+
+课件 p3--p12 用同一张方框图反复讲一件事：
+\[ \text{交流电源}\ \longrightarrow\ \text{变压器}\ \longrightarrow\ \text{整流器}\ \longrightarrow\ \text{滤波器}\ \longrightarrow\ \text{稳压器}\ \longrightarrow\ \text{负载} . \]
+p9、p10、p11、p12 这四页各自把其中一个方框涂黄，并给出一句英文结论；把四句话并排放，就能看出每一段只改一个属性：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{7.4cm}p{2.4cm}p{4.0cm}@{}}
+\tabtop
+\thead{环节} & \thead{课件原句（页码）} & \thead{改变的量} & \thead{不改变的量}
+\\
+\tabmid
+变压器 & 「Transformer: Change the magnitude of the voltage to the required level.」（p9） & 幅值 & 频率、正弦形状
+\\
+整流器 & 「Rectifier: Convert AC into pulsating DC.」（p10） & 电流方向（单向化） & 峰值量级（仍是 $\sqrt{2}U_2$ 量级）
+\\
+滤波器 & 「Filter: Convert pulsating DC into smooth DC.」（p11） & 起伏（纹波） & 平均值量级（只会略抬高）
+\\
+稳压器 & 「Voltage regulator : Convert unstable DC to a stable DC」（p12） & 对电网与负载变化的稳定性 & 前三级已定的电压量级
+\tabbot
+\end{tabular}
+
+这句话是本册的纲：\textbf{整流管「方向」，滤波管「起伏」，两者都不改变「量级」}。
+所以计算题永远只问三个数：输出的\textbf{平均值} $U_{\mathrm{O}}$、二极管要扛的\textbf{最高反向电压} $U_{\mathrm{Rm}}$、二极管的\textbf{平均电流} $I_{\mathrm{D}}$。
+本册后面所有公式，都是这三个数在不同电路下的取值。
+
+\aside{p10 的「pulsating DC」与 p11 的「smooth DC」是两个不同的词：前者是「方向不变、大小仍在脉动」，
+后者是「脉动被削小」。两者都不是「恒定直流」——要恒定，还得靠 p12 的稳压器。}
+
+\subhdr{1.2 波形链：四个标签就是四道题的已知条件}
+
+p9--p12 的箭头旁边依次标着四个词，它们其实是同一条波形被处理四次后的名字：
+
+\begin{enumerate}
+\item \textbf{AC input}（p9）：变压器输入，正弦，幅值大；
+\item \textbf{AC with proper magnitude}（p9）：变压器输出，还是正弦，幅值小了；
+\item \textbf{Pulsating current}（p10）：整流输出，负半周被翻正，有起伏；
+\item \textbf{Unstable voltage}（p11）：滤波输出，起伏被削小，但仍随负载变；
+\item \textbf{Stable voltage}（p12）：稳压输出，基本不随电网与负载变。
+\end{enumerate}
+
+p12 那张把五段波形画在同一行的图，是本册最值得记住的一页：
+\textbf{正弦 → 幅值合适的正弦 → 双半波脉动 → 带小起伏的直流 → 平稳直流}。
+后面的所有公式，都只是在给第二、三、四个波形算「平均值」和「峰值」。
+
+\subhdr{1.3 本册只讲两条主线，交叉出四种电路}
+
+整流只讲两种：\textbf{半波}（一只二极管）与\textbf{全波}（中心抽头两只、桥式四只）；
+滤波只讲一种：\textbf{电容滤波}（p48 电感、p49 复式只作了解）。两条主线一交叉，就是四种要会算的电路：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{5.6cm}p{5.6cm}@{}}
+\tabtop
+\thead{电路} & \thead{无电容} & \thead{有电容}
+\\
+\tabmid
+半波 & $U_{\mathrm{O}}=0.45U_2$（p24） & $U_{\mathrm{O}}=U_2$（p34）
+\\
+全波（桥式） & $U_{\mathrm{O}}=0.9U_2$（p22） & $U_{\mathrm{O}}=1.2U_2$（p33、p34）
+\tabbot
+\end{tabular}
+
+这张 2$\times$2 表就是本册的骨架：横着看是「加不加电容」，竖着看是「用不用负半周」。
+四个系数的来历分在 §2（0.45）、§3（0.9）、§6（1.0 与 1.2）三处讲。
+
+\subhdr{1.4 实物对照：p2 那张板子上每个器件都在链条里有位置}
+
+p2 的两张实物照片不是装饰：板上那只方形金属罩是\textbf{变压器}，四只并排的二极管是\textbf{整流桥}，
+最大的电解电容是\textbf{滤波电容}，带散热片的三端器件（丝印「78系列」）是\textbf{稳压器}。
+照片里电容外壳印着「$470\,\mu\mathrm{F}$」「$50\,\mathrm{V}$」——这两个数正好落在 §5 设计题算出的
+「$300\sim500\,\mu\mathrm{F}$、耐压 $50\,\mathrm{V}$」窗口里（§5.8 会回来对一次）。
+这就是本册的讲法：先认链条，再认器件，最后算数值。
+
+\subhdr{1.5 把波形链写成一张数学表}
+
+把 §1.2 的五个标签换成式子，就得到本册的「总索引表」。后面每讲一个电路，就是往表里填一行：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{4.6cm}p{2.2cm}p{2.2cm}p{2.6cm}@{}}
+\tabtop
+\thead{位置} & \thead{瞬时值} & \thead{平均值} & \thead{峰值} & \thead{脉动频率}
+\\
+\tabmid
+变压器前（p9） & $\sqrt2U_2\sin\theta$ & $0$ & $\sqrt2U_2$ & $50\,\mathrm{Hz}$
+\\
+变压器后（p9） & $\sqrt2U_2\sin\theta$（$U_2$ 变小） & $0$ & $\sqrt2U_2$ & $50\,\mathrm{Hz}$
+\\
+半波整流后（p15） & 正半周 $\sqrt2U_2\sin\theta$，负半周 $0$ & $0.45U_2$ & $\sqrt2U_2$ & $50\,\mathrm{Hz}$
+\\
+全波整流后（p21） & $\sqrt2U_2|\sin\theta|$ & $0.9U_2$ & $\sqrt2U_2$ & $100\,\mathrm{Hz}$
+\\
+电容滤波后（p29） & 峰值起、指数放电 & $\approx1.2U_2$ & $\sqrt2U_2$ & $100\,\mathrm{Hz}$
+\\
+稳压后（p12） & 常数 & $U_{\mathrm{O}}$ & $U_{\mathrm{O}}$ & $0$
+\tabbot
+\end{tabular}
+
+读表抓三件事：
+（1）\textbf{平均值}从 $0$ 变成 $0.45/0.9U_2$ 再抬到 $1.2U_2$——「整流」与「滤波」各自负责一段；
+（2）\textbf{峰值}从头到尾都是 $\sqrt2U_2$——所以二极管的耐压、电容的耐压都按这个数算；
+（3）\textbf{脉动频率}只在全波那一步翻倍（$50\to100\,\mathrm{Hz}$）——这是 §6.2 里全波纹波比半波小一半的根本原因。
+把这三件事记住，§2--§6 的公式就不用孤零零地背。
+
+%=============================================================
+\hdr{§2}{半波整流：$0.45U_2$ 从哪来}
+
+\subhdr{2.1 电路与两个半周（p14--p16）}
+
+p14 的电路只有三个元件：变压器 $\mathrm{Tr}$、一只二极管 $D$、负载 $R_{\mathrm{L}}$。
+二次电压 $u_2$ 的正方向标成 a 端为正、b 端为负；二极管阳极接 a、阴极朝负载。
+课件的讲法是把一个周期切成两段：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{3.0cm}p{9.6cm}@{}}
+\tabtop
+\thead{区间} & \thead{$u_2$ 的极性} & \thead{电路状态与输出}
+\\
+\tabmid
+$0\sim\pi$（正半周，p15） & a 正、b 负 & $D$ 正向导通，电流沿 a$\to D\to R_{\mathrm{L}}\to$b；$u_{\mathrm{O}}=u_2$
+\\
+$\pi\sim2\pi$（负半周，p16） & a 负、b 正 & $D$ 反向截止，回路断开；$u_{\mathrm{O}}=0$
+\tabbot
+\end{tabular}
+
+p15 与 p16 各给出一行式子，就是上表最后两列：
+\[ \text{While }\omega t=0\sim\pi,\ u_2>0,\ u_{\mathrm{O}}=u_2 ;\qquad
+\text{While }\omega t=\pi\sim2\pi,\ u_2<0,\ u_{\mathrm{O}}=0 . \]
+
+\subhdr{2.2 机制：二极管是一只单向阀}
+
+为什么负半周输出是零？因为二极管只让电流从阳极流向阴极：正半周 a 端电位高于 b 端，阳极电位高于阴极，管子导通；
+负半周 a 端电位低于 b 端，阳极电位低于阴极，管子截止。
+\textbf{负载上永远只有「正」的那半个正弦}，这就是 p10 说的「pulsating DC」。
+
+\aside{这里默认二极管是理想的（导通压降为零、截止电阻无穷大）。
+若计实际压降，正半周是 $u_{\mathrm{O}}=u_2-u_{\mathrm{D}}$，平均值略小于 $0.45U_2$；
+课件的全部公式都用理想模型，本讲义也只在 §6 讨论误差时才提这一层。}
+
+\subhdr{2.3 平均值：$0.45U_2$ 的完整推导（课件缺这一步）}
+
+p24 的总表直接写「$U_{\mathrm{O}}=0.45U_2$」，但全册没有一页推过它——p22 只推了桥式的 $0.9U_2$。
+这一步必须补，否则学生只记得两个数，换一道「半波加电感」的题就不会算。
+
+平均值的定义是\textbf{在一个完整周期上取平均}。半波整流的输出周期仍是 $2\pi$，但其中只有 $0\sim\pi$ 这半个周期不为零，所以
+\[
+U_{\mathrm{O}}=\frac{1}{2\pi}\int_{0}^{2\pi}u_{\mathrm{O}}(\theta)\dd\theta
+=\frac{1}{2\pi}\int_{0}^{\pi}\sqrt{2}U_2\sin\theta\dd\theta .
+\]
+把积分算出来（$\int_0^\pi\sin\theta\dd\theta=2$）：
+\[
+U_{\mathrm{O}}=\frac{\sqrt{2}U_2}{2\pi}\cdot 2
+=\frac{\sqrt{2}}{\pi}U_2\approx0.4502\,U_2\approx0.45\,U_2 .
+\]
+
+两个容易错的地方，正好在这一步：
+（1）\textbf{分母是 $2\pi$ 不是 $\pi$}。负半周输出为零，若把分母写成 $\pi$，等于把「零的那一半」从平均里删掉，结果会翻倍成 $0.9U_2$——那正是桥式的数；
+（2）\textbf{分子里的 $U_2$ 要乘 $\sqrt{2}$}。积分对象是瞬时值 $\sqrt2U_2\sin\theta$，$U_2$ 是有效值，不是峰值。
+
+\aside{p22 给桥式用的积分是 $\frac{1}{\pi}\int_0^\pi\sqrt2U_2\sin\theta\dd\theta$，分母是 $\pi$；
+那是因为桥式输出的周期是 $\pi$（§3.4）。两处分母不同，原因不是「半波全波」，而是\textbf{输出周期不同}。}
+
+\subhdr{2.4 回答 p16 的提问：为什么叫「半波」}
+
+p16 右下角有一句没有答案的问句：「why it is called half wave？」答案是三句话：
+\begin{enumerate}
+\item 一个电源周期 $2\pi$ 里，二极管只在 $0\sim\pi$ 这\textbf{一半}时间导通，导通角为 $\pi$；
+\item 负载每周期只得到一个「鼓包」，能量的另一半被丢掉；
+\item 输出脉动的频率与电源相同（$50\,\mathrm{Hz}$），不像全波那样翻倍（§3.4）。
+\end{enumerate}
+「半」说的是\textbf{导通时间占一半}，不是说「电压减半」——电压减半是结果（平均值从 $0.9U_2$ 掉到 $0.45U_2$），不是命名的理由。
+
+\subhdr{2.5 二极管要扛多大反向电压（无电容，$U_{\mathrm{Rm}}=\sqrt2U_2$）}
+
+p38 的黄色结论框只写「$U_{\mathrm{Rm}}=\sqrt2U_2$」，没有解释。推法如下：
+负半周管子截止，负载电流为零，所以 $R_{\mathrm{L}}$ 上没有压降，阴极电位就等于 b 端电位；
+阳极接 a 端，于是二极管两端电压
+\[ u_{\mathrm{D}}=u_{\mathrm{a}}-u_{\mathrm{b}}=u_2 . \]
+它最负的时候是 $u_2$ 的负峰值 $-\sqrt2U_2$，所以反向电压的最大值
+\[ U_{\mathrm{Rm}}=\sqrt2U_2 . \]
+这句话的物理意思是：\textbf{关断的二极管要独自顶住整个二次电压的峰值}。
+选管时额定反向电压 $U_{\mathrm{R}}$ 必须不小于它（p22 的 $U_{\mathrm{R}}\ge U_{\mathrm{Rm}}$）。
+
+\subhdr{2.6 半波为什么不够用（引出全波的三条理由）}
+
+\begin{enumerate}
+\item \textbf{平均值低}：只有 $0.45U_2$，是桥式的一半；
+\item \textbf{脉动频率低}：$50\,\mathrm{Hz}$，同样的电容滤不干净（§6.2 会给出定量对比）；
+\item \textbf{变压器二次有直流分量}：电流只朝一个方向流，铁心容易饱和、利用率低。
+\end{enumerate}
+前两条课件用「全波」来解决，第三条是工程上选桥式的实际理由。
+第（3）条课件没有明说，标 [教材补充]（补的原因：解释工程上为什么最终选桥式，而不只是「平均值高」）。
+
+%=============================================================
+\hdr{§3}{全波整流：桥式 $0.9U_2$ 的来历}
+
+\subhdr{3.1 两种全波电路（p17）}
+
+p17 一页并排给了两张图：
+\begin{itemize}
+\item \textbf{中心抽头式}（Center-tapped Full wave rectifier）：二次绕组带中心抽头，把副边分成上下两个半绕组，用两只二极管 $D_1$、$D_2$ 各管半个周期；
+\item \textbf{桥式}（Bridge full wave rectifier）：二次绕组不带抽头，用四只二极管 $D_1\sim D_4$ 接成电桥。
+\end{itemize}
+两种都叫「全波」，因为\textbf{正负两个半周都有电流流过负载}。p18--p24 只分析桥式，中心抽头式留到 §4 补。
+
+\subhdr{3.2 桥式电路怎么接（p18）}
+
+p18 的图把四只管子画成菱形：上顶点 a、下顶点 b 接二次绕组，是\textbf{交流端}；
+左顶点 $M$、右顶点 $P$ 接负载，是\textbf{直流端}。四只管的接法是
+\begin{itemize}
+\item $D_1$：a$\to P$（阳极在 a，阴极在 P）；
+\item $D_2$：b$\to P$（阳极在 b，阴极在 P）；
+\item $D_3$：$M\to$b（阳极在 M，阴极在 b）；
+\item $D_4$：$M\to$a（阳极在 M，阴极在 a）。
+\end{itemize}
+于是 $D_1$、$D_2$ 的阴极聚在 $P$（共阴极，直流正端），$D_3$、$D_4$ 的阳极聚在 $M$（共阳极，直流负端）。
+记法：\textbf{共阴极为正、共阳极为负}；两只「朝 P」的管子管正半周，两只「朝 a/b」的管子管负半周。
+
+\aside{p18 底部原句「Four diodes are used to construct a bridge type network」只说了「四只管子搭成桥」，没说哪两只先导通。
+记住「共阴极为正」这一条，正负半周各导通哪一对就不用背。}
+
+\subhdr{3.3 正半周与负半周：换的是管子，不换的是负载电流方向（p19、p20）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{3.6cm}p{9.4cm}@{}}
+\tabtop
+\thead{区间} & \thead{导通/截止} & \thead{电流路径与输出极性}
+\\
+\tabmid
+正半周（p19） & $D_1$、$D_3$ 通；$D_2$、$D_4$ 断 & a$\to D_1\to R_{\mathrm{L}}\to D_3\to$b；负载上端为正
+\\
+负半周（p20） & $D_2$、$D_4$ 通；$D_1$、$D_3$ 断 & b$\to D_2\to R_{\mathrm{L}}\to D_4\to$a；负载上端仍为正
+\tabbot
+\end{tabular}
+
+两页的英文原句分别是「Current path : a$\to$D1$\to$RL$\to$D3$\to$b」「D1 and D3 on. D2 and D4 are “OFF”.」（p19）
+与「Current path: b$\to$D2$\to$RL$\to$D4$\to$a」「D2 and D4 ON. D1 and D3 OFF」（p20）。
+关键在于第二列的最后一句：\textbf{负半周电流从 b 进、从 a 出，但流过负载的方向还是从上到下}。
+这就是「全波」二字的全部内容——\textbf{电源换了方向，负载不换方向}。
+
+\subhdr{3.4 输出波形与「周期减半」（p21）}
+
+p21 把 $u_2$ 与 $u_{\mathrm{O}}$、$i_{\mathrm{O}}$ 画在一起：上面是完整的正弦（有正有负），
+下面两条曲线\textbf{全部在横轴上方}，每个正弦半周对应一个鼓包。由此得到两个结论：
+\begin{enumerate}
+\item $u_{\mathrm{O}}=|u_2|$：负半周被「翻正」，形状是正弦的绝对值；
+\item $u_{\mathrm{O}}$ 的周期是 $\pi$，不是 $2\pi$——\textbf{脉动频率是电源的两倍}，$50\,\mathrm{Hz}$ 输入得到 $100\,\mathrm{Hz}$ 的脉动。
+\end{enumerate}
+
+p21 右边还把菱形桥重画成「方框形」：两条竖臂，左臂上 $D_1$ 下 $D_4$，右臂上 $D_2$ 下 $D_3$，
+$u_2$ 接两条竖臂的中点，$R_{\mathrm{L}}$ 接在上下两条母线之间。
+这不是另一个电路，而是同一个桥旋转 $45^\circ$ 后的画法——后面 p27 加滤波电容时用的就是这种画法。
+\aside{看方框图时的对应关系：上母线 $=$ 共阴极 $P$，下母线 $=$ 共阳极 $M$，
+$u_2$ 的两个端点接两条竖臂的中点（原来菱形的 a、b 顶点）。认出这三对节点，两种画法就是同一张图。}
+
+\subhdr{3.5 平均值：$0.9U_2$ 的完整推导（p22 的积分补全）}
+
+p22 给了式子但没有解释「为什么分母是 $\pi$」。因为 $u_{\mathrm{O}}$ 的周期是 $\pi$，取一个周期 $0\sim\pi$ 平均即可：
+\[
+U_{\mathrm{O}}=\frac{1}{\pi}\int_{0}^{\pi}\sqrt{2}U_2\sin\theta\dd\theta
+=\frac{\sqrt{2}U_2}{\pi}\Bigl[-\cos\theta\Bigr]_{0}^{\pi}
+=\frac{2\sqrt{2}}{\pi}U_2\approx0.9003\,U_2\approx0.9\,U_2 .
+\]
+若坚持在 $2\pi$ 上取平均也得到同一个数，只是要把负半周取绝对值：
+\[
+U_{\mathrm{O}}=\frac{1}{2\pi}\int_{0}^{2\pi}\sqrt{2}U_2\,|\sin\theta|\dd\theta
+=\frac{\sqrt{2}U_2}{2\pi}\cdot 4=\frac{2\sqrt{2}}{\pi}U_2 .
+\]
+两条路殊途同归，因为这正是「周期减半」的数学表现：$|\sin|$ 在 $0\sim2\pi$ 上有四个「半波面积」，$4=2\times2$。
+
+\subhdr{3.6 与半波的关系：$0.9=2\times0.45$}
+
+把两个结果并排：
+\[
+U_{\mathrm{O}}^{\text{半波}}=\frac{\sqrt2}{\pi}U_2=0.45U_2,\qquad
+U_{\mathrm{O}}^{\text{全波}}=\frac{2\sqrt2}{\pi}U_2=0.9U_2 .
+\]
+相差的正好是那个「被丢掉的一半」：半波只用了正半周，全波把负半周翻过来也用上，平均值自然翻倍。
+\textbf{峰值没有变}（都受 $\sqrt2U_2$ 限制），变的只是「有效面积占多少比例」。
+
+\subhdr{3.7 回答 p13 的提问：哪一个才是全波整流？}
+
+p13 页左下角有一句「Which one is full wave rectifier？」，四张图并排，没有答案。判据只有一条：
+\textbf{一个电源周期里，负载是否两个半周都得到能量}。按这条判据：
+\begin{itemize}
+\item 左上（一只二极管）是半波，负半周不导通；
+\item 左下（中心抽头、两只二极管）是\textbf{全波}——两个半绕组轮流供电；
+\item 右上（菱形桥）与右下（双桥臂）都是\textbf{全波}，只是同一桥式的两种画法。
+\end{itemize}
+所以四张图里有三张是全波。\textbf{「全波」与「几只二极管」无关}：两只可以是全波（中心抽头），四只也可以是全波（桥式），
+而一只一定是半波。p13 把中心抽头图和桥式图并排，正是要说明这一点。
+
+\subhdr{3.8 工程形态：整流桥器件（p23）}
+
+p23 把四只二极管封装成一只四端器件：两个「$\sim$」脚接交流，一个「$+$」脚、一个「$-$」脚出直流。
+器件丝印上的「$\sim$、$+$、$-$」就是原理图里那几个节点的名字，接反了会短路。
+p2 的实物板上用的是四只分立二极管，p23 是集成桥堆——两者电气上等价。
+
+\subhdr{3.9 节点电位检查法：一张表同时看懂「方向不变」与「反压不大」}
+
+把交流源的中点取为零电位，两端就是 $\pm U_{\mathrm{m}}/2$（$U_{\mathrm{m}}=\sqrt2U_2$）。
+按 p18--p20 的接法，把每个节点在两个半周里的电位列出来：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.6cm}p{4.6cm}p{4.6cm}@{}}
+\tabtop
+\thead{节点 / 器件} & \thead{正半周（a 正、b 负）} & \thead{负半周（a 负、b 正）}
+\\
+\tabmid
+交流端 a & $+U_{\mathrm{m}}/2$ & $-U_{\mathrm{m}}/2$
+\\
+交流端 b & $-U_{\mathrm{m}}/2$ & $+U_{\mathrm{m}}/2$
+\\
+直流正端 $P$（$D_1$、$D_2$ 共阴） & $+U_{\mathrm{m}}/2$ & $+U_{\mathrm{m}}/2$
+\\
+直流负端 $M$（$D_3$、$D_4$ 共阳） & $-U_{\mathrm{m}}/2$ & $-U_{\mathrm{m}}/2$
+\\
+$u_{\mathrm{O}}=P-M$ & $+U_{\mathrm{m}}$ & $+U_{\mathrm{m}}$
+\\
+$D_1$ & 导通 & 截止，反压 $U_{\mathrm{m}}$
+\\
+$D_2$ & 截止，反压 $U_{\mathrm{m}}$ & 导通
+\\
+$D_3$ & 导通 & 截止，反压 $U_{\mathrm{m}}$
+\\
+$D_4$ & 截止，反压 $U_{\mathrm{m}}$ & 导通
+\tabbot
+\end{tabular}
+
+这张表把两件事一次说清：
+（1）$P$ 永远在 $+U_{\mathrm{m}}/2$、$M$ 永远在 $-U_{\mathrm{m}}/2$，所以 $u_{\mathrm{O}}=P-M$ 永远为正——
+这就是 p20「换二极管、不换负载电流方向」的定量版；
+（2）四只关断管的反压全是 $U_{\mathrm{m}}$，没有一只看到 $2U_{\mathrm{m}}$——桥式的每管 $U_{\mathrm{Rm}}=\sqrt2U_2$ 由此而来。
+加电容后 $P$、$M$ 在两次导通之间被电容钳住，表里两列不变，所以桥式加不加电容都是 $\sqrt2U_2$。
+
+\aside{这张表也能用来快速检查「桥画对没有」：把 a、b 设成 $\pm U_{\mathrm{m}}/2$，看 $P$ 是否恒正、$M$ 是否恒负。
+若某一列 $P$ 变负，说明某只二极管的朝向画反了。}
+
+%=============================================================
+\hdr{§4}{两条全波路线：同一个 $0.9U_2$，不同的二极管应力}
+
+\subhdr{4.1 中心抽头式：两只管子怎么覆盖两个半周（p17 补分析）}
+
+中心抽头式的副边被抽头分成上下两个半绕组，每个半绕组的峰值都是 $\sqrt2U_2$（对抽头而言）。
+设上端为 a、抽头为 0、下端为 b，则 $u_{\mathrm{a0}}=-u_{\mathrm{b0}}$。
+\begin{itemize}
+\item 正半周：a 为正，$D_1$ 导通，电流 a$\to D_1\to R_{\mathrm{L}}\to$抽头；
+\item 负半周：b 为正，$D_2$ 导通，电流 b$\to D_2\to R_{\mathrm{L}}\to$抽头。
+\end{itemize}
+两半周流过负载的方向相同，输出仍是 $|u_2|$，周期 $\pi$，所以
+\[ U_{\mathrm{O}}=\frac{2\sqrt2}{\pi}U_2=0.9U_2 , \]
+与桥式完全相同；每只管子仍只导通半个周期，$I_{\mathrm{D}}=\tfrac12I_{\mathrm{O}}$。
+
+\subhdr{4.2 中心抽头的代价：每只管子扛 $2\sqrt2U_2$（课件没有的结论）}
+
+这是本册最容易被总表误导的一处（课件没有给这条结论，标 [教材补充]）。设 $D_1$ 导通，抽头为参考零电位，则
+\[ u_{\mathrm{P}}=+\sqrt2U_2\quad(\text{上端峰值}),\qquad
+u_{\mathrm{b}}=-\sqrt2U_2\quad(\text{下端负峰}) . \]
+$D_2$ 的阳极接 b、阴极接 $P$，于是
+\[ U_{\mathrm{Rm}}=u_{\mathrm{P}}-u_{\mathrm{b}}=\sqrt2U_2-(-\sqrt2U_2)=2\sqrt2U_2 . \]
+物理图像：\textbf{导通的那只把阴极顶到正峰，另一只的阳极同时被副边压到负峰，两只管子之间隔着整个副边}。
+桥式没有这个代价（§4.3），因为它的两只导通管把「正峰」和「负峰」同时引到负载两端，关断管两端只差一个副边电压。
+
+\subhdr{4.3 桥式：每只管子只扛 $\sqrt2U_2$（无电容）}
+
+正半周 $D_1$、$D_3$ 导通时，取 b 端为零电位，则 a 端为 $+\sqrt2U_2$，$P\approx$ a、$M\approx$ b。
+关断的 $D_4$（阳极 M、阴极 a）两端电压
+\[ U_{\mathrm{Rm}}=u_{\mathrm{a}}-u_{\mathrm{M}}\approx\sqrt2U_2-0=\sqrt2U_2 , \]
+$D_2$（阳极 b、阴极 P）同理也是 $\sqrt2U_2$。
+所以桥式每只管子只承受\textbf{一个}副边峰值，是中心抽头的一半。
+
+\subhdr{4.4 四行对照：把「同一个 $0.9U_2$」拆开看}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{4.8cm}p{4.8cm}@{}}
+\tabtop
+\thead{项目} & \thead{中心抽头式（p17）} & \thead{桥式（p18）}
+\\
+\tabmid
+二极管数 & 2 只 & 4 只
+\\
+副边要求 & 双绕组带中心抽头 & 单绕组，无抽头
+\\
+$U_{\mathrm{O}}$（无电容） & $0.9U_2$ & $0.9U_2$
+\\
+每管 $I_{\mathrm{D}}$ & $\tfrac12I_{\mathrm{O}}$ & $\tfrac12I_{\mathrm{O}}$
+\\
+每管 $U_{\mathrm{Rm}}$（无电容） & $2\sqrt2U_2$ & $\sqrt2U_2$
+\\
+每管 $U_{\mathrm{Rm}}$（有电容） & $2\sqrt2U_2$ & $\sqrt2U_2$（§6.1）
+\\
+常见器件 & 两只分立二极管 & 一只整流桥堆
+\tabbot
+\end{tabular}
+
+\subhdr{4.5 为什么两条路线给出同一个 $U_{\mathrm{O}}$，却给出不同的 $U_{\mathrm{Rm}}$}
+
+$U_{\mathrm{O}}$ 只看\textbf{负载上的波形}：两种电路给出的都是 $|u_2|$，周期 $\pi$，面积相同，所以平均值相同。
+$U_{\mathrm{Rm}}$ 只看\textbf{关断管两端接在哪两个节点之间}：桥式的关断管一端接交流端、另一端接直流端，
+两者只差一个副边电压；中心抽头的关断管一端接直流正端（被导通管顶到正峰）、另一端接副边另一端（负峰），
+两者差的是整个副边。\textbf{波形相同，不代表器件应力相同}——这是本册最值得带走的一句话。
+
+\warnbox{\textbf{p24 总表的边界}：p24 与 p34 的表把「全波」写成 $U_{\mathrm{Rm}}=\sqrt2U_2$，
+这只适用于桥式。若题目给的是「center-tapped」「中心抽头」「双半波」，
+每管 $U_{\mathrm{Rm}}$ 必须换成 $2\sqrt2U_2$，否则耐压会选小一半。}
+
+\subhdr{4.6 数值对照：$U_2=20\,\mathrm{V}$ 时两种全波的实际账}
+
+把两种全波在 $U_2=20\,\mathrm{V}$（中心抽头按每个半绕组计）下的四个数并排，选型就一目了然：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.8cm}p{3.4cm}p{3.4cm}p{3.4cm}@{}}
+\tabtop
+\thead{项目} & \thead{中心抽头·无 C} & \thead{桥式·无 C} & \thead{桥式·有 C}
+\\
+\tabmid
+$U_{\mathrm{O}}$ & $18\,\mathrm{V}$ & $18\,\mathrm{V}$ & $24\,\mathrm{V}$
+\\
+$I_{\mathrm{D}}$（设 $I_{\mathrm{O}}=0.3\,\mathrm{A}$） & $0.15\,\mathrm{A}$ & $0.15\,\mathrm{A}$ & $0.15\,\mathrm{A}$
+\\
+每管 $U_{\mathrm{Rm}}$ & $56.6\,\mathrm{V}$ & $28.3\,\mathrm{V}$ & $28.3\,\mathrm{V}$
+\\
+建议耐压档 & $100\,\mathrm{V}$ & $50\,\mathrm{V}$ & $50\,\mathrm{V}$
+\\
+二极管只数 & 2 & 4 & 4
+\tabbot
+\end{tabular}
+
+同样输出 $18\,\mathrm{V}$，中心抽头对每只管子的耐压要求是桥式的两倍；
+桥式虽然多用两只管子，但每只只要扛一半电压，而且一只桥堆（p23）就把四只封装在一起。
+\textbf{所以现代电源几乎都用桥堆}——这也解释了为什么 p24 的总表只写桥式的 $U_{\mathrm{Rm}}$：
+它是「默认方案」，中心抽头是「需要专门变压器的少数派」。
+
+\aside{若题目给的是「中心抽头，$U_2=20\,\mathrm{V}$」，先问一句「$20\,\mathrm{V}$ 是每个半绕组还是整个副边」。
+本册按「每个半绕组」处理；若给的是整个副边，每个半绕组只有 $10\,\mathrm{V}$，所有数再折半。
+题目没写清时标 [待确认]，不要默认。}
+
+%=============================================================
+\hdr{§5}{主例题：E1 设计题全程（p44--p47）}
+
+\subhdr{5.1 题面（p44 原文）}
+
+\callout{\textbf{[E1]}（p44 原文）\quad Bridge rectifier, C filter circuit with a line frequency of 50 Hz,
+$R_{\mathrm{L}}=100\,\Omega$, output DC $U_{\mathrm{O}}=30\,\mathrm{V}$. Try to：\\
+（1）Select the diodes；（2）Select the capacitor；\\
+（3）Find the output voltage when the load is open circuit；\\
+（4）Find the output voltage when the capacitor branch is open.}
+
+p44 的右下方还配着 p34 那张四列总表，p45--p47 逐问给解。本讲义把四问从头到尾算一遍，
+每个数字都重新复算（复算结果见 §5.7 的自检表）。
+
+\subhdr{5.2 第 0 步：把题面翻译成「查哪一行」}
+
+题面给出的三件事决定了查表位置：
+\begin{itemize}
+\item 「Bridge rectifier」$\Rightarrow$ 全波、桥式，每管 $U_{\mathrm{Rm}}=\sqrt2U_2$（§4.3）；
+\item 「C filter circuit」$\Rightarrow$ 有电容，$U_{\mathrm{O}}$ 用「有电容」那一列；
+\item 「$U_{\mathrm{O}}=30\,\mathrm{V}$」$\Rightarrow$ 这是\textbf{平均值}，不是峰值，也不是 $U_2$。
+\end{itemize}
+于是查 p34 的表：全波 $+$ 有电容一列给
+\[ U_{\mathrm{O}}=1.2U_2 ,\qquad I_{\mathrm{O}}=\frac{U_{\mathrm{O}}}{R_{\mathrm{L}}},\qquad
+I_{\mathrm{D}}=\frac12I_{\mathrm{O}},\qquad U_{\mathrm{Rm}}=\sqrt2U_2 . \]
+未知量只有 $U_2$，从第一式反解即可。\textbf{这一步的方法比算术重要}：题给的是「输出」，要先用系数反求「输入」，
+再顺着算电流与应力。
+
+\subhdr{5.3 （1）选二极管：四步}
+
+\textbf{第一步，反求二次电压。}
+\[ U_2=\frac{U_{\mathrm{O}}}{1.2}=\frac{30}{1.2}\,\mathrm{V}=25\,\mathrm{V}\quad(\text{有效值}) . \]
+于是峰值 $U_{\mathrm{m}}=\sqrt2\times25=35.4\,\mathrm{V}$。
+
+\aside{p45 的原式就是「$U_2=U_{\mathrm{O}}/1.2=30/1.2\,\mathrm{V}=25\,\mathrm{V}$」，
+它默认了「桥式 $+$ 电容」这一行；若把 1.2 误记成 0.9，$U_2$ 会算成 $33.3\,\mathrm{V}$，后面全错。}
+
+\textbf{第二步，负载平均电流。}
+\[ I_{\mathrm{O}}=\frac{U_{\mathrm{O}}}{R_{\mathrm{L}}}=\frac{30}{100}\,\mathrm{A}=0.3\,\mathrm{A} . \]
+
+\textbf{第三步，每管平均电流。}全波整流两只管子轮流导通，每只只承担一半：
+\[ I_{\mathrm{D}}=\frac12I_{\mathrm{O}}=\frac12\times0.3\,\mathrm{A}=0.15\,\mathrm{A} . \]
+
+\textbf{第四步，两个选管条件。}
+\[ I_{\mathrm{F}}\ge 2I_{\mathrm{D}}=2\times0.15\,\mathrm{A}=0.3\,\mathrm{A},\qquad
+U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=\sqrt2U_2=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V} . \]
+课件 p45 在这里写成「$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=34.5\,\mathrm{V}$」——\textbf{34.5 是 35.4 的笔误}。
+同一页上一行刚算出「$U_{\mathrm{Rm}}=\sqrt2U_2=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V}$」，
+两个数自相矛盾；按复算，正确值是 $35.4\,\mathrm{V}$，本讲义一律按 35.4 走。
+
+\warnbox{\textbf{为什么 $I_{\mathrm{F}}$ 要乘 2，而 $U_{\mathrm{R}}$ 不乘}：
+$I_{\mathrm{F}}$ 是管子的\textbf{发热}定额，看的是电流有效值；电容滤波下电流是窄脉冲，有效值约为平均值的 2 倍（§6.3）。
+$U_{\mathrm{R}}$ 是\textbf{耐压}定额，看的是峰值，峰值已经由 $\sqrt2U_2$ 算进去了，不再乘 2。
+把这两个「2」混用，是本题最常见的错法。}
+
+课件结论：「See Appendix, Select four diodes of 2CZ53B.」「查附录，选用 2CZ53B 4 个」。
+本册没有附附录，2CZ53B 的具体额定值无法在本册核对，标 [待确认]；
+可核对的是它必须同时满足 $I_{\mathrm{F}}\ge0.3\,\mathrm{A}$ 与 $U_{\mathrm{R}}\ge35.4\,\mathrm{V}$ 这两条。
+
+\subhdr{5.4 （2）选电容：容量与耐压}
+
+p33 给的容量经验式与 p46 的代入：
+\[ C\ge(3\sim5)\frac{T}{2R_{\mathrm{L}}}=\frac{1.5\sim2.5}{R_{\mathrm{L}}f} . \]
+代入 $R_{\mathrm{L}}=100\,\Omega$、$f=50\,\mathrm{Hz}$：
+\[ C\ge\frac{1.5\sim2.5}{100\times50}\,\mathrm{F}
+=(3\sim5)\times10^{-4}\,\mathrm{F}=(300\sim500)\,\mu\mathrm{F} . \]
+耐压按 p33 的 $U_{\mathrm{CN}}\ge\sqrt2U_2$：
+\[ U_{\mathrm{CN}}\ge\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V} . \]
+所以取\textbf{标称 $50\,\mathrm{V}$} 的电解电容（$35.4\,\mathrm{V}$ 是下限，没有裕量，不能选 $35\,\mathrm{V}$ 档）。
+再在 $300\sim500\,\mu\mathrm{F}$ 里选标称值，最接近的是 $470\,\mu\mathrm{F}$——正是 p2 实物板上那只电容的印字。
+
+\aside{式中的 $T/(2R_{\mathrm{L}})$ 是「全波整流在半个周期里靠电容供电」的时间常数写法；
+$T=1/f$ 代进去就是 $(3\sim5)/(2R_{\mathrm{L}}f)=(1.5\sim2.5)/(R_{\mathrm{L}}f)$。
+若电路是半波，放电时间是一个整周期 $T$，同样的电容纹波会大一倍（§6.2）。}
+
+\textbf{一个必须说清的工程事实}（[教材补充]，补的原因：防止把 $1.2U_2$ 当成精确设计值）：$U_{\mathrm{O}}=1.2U_2$ 是「按推荐电容取下限」时的估计值。
+本例若真装 $470\,\mu\mathrm{F}$，$\tau=R_{\mathrm{L}}C=100\times470\,\mu\mathrm{F}=47\,\mathrm{ms}$，
+比 $1.5/(R_{\mathrm{L}}f)$ 对应的 $30\,\mathrm{ms}$ 更大，输出会爬到约 $31\sim32\,\mathrm{V}$，而不是恰好 $30\,\mathrm{V}$（§6.2 的数值表）。
+所以「算出来 $30\,\mathrm{V}$」与「装上后量到 $32\,\mathrm{V}$」不矛盾；要对准 $30\,\mathrm{V}$，后面还得有稳压器（p12 那一级）。
+
+\subhdr{5.5 （3）负载开路：输出升到 $\sqrt2U_2$}
+
+$R_{\mathrm{L}}\to\infty$ 时电容没有放电回路，充电到峰值后一直保持，于是
+\[ U_{\mathrm{O}}=U_{\mathrm{C}}=\sqrt2U_2=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V} . \]
+p47 的解答正是这一行，p31 的黄色框「$(R_{\mathrm{L}}=\infty)$：$u_{\mathrm{L}}=u_{\mathrm{C}}=\sqrt2u_2$」也是它。
+从 $30\,\mathrm{V}$ 升到 $35.4\,\mathrm{V}$，涨了 $18\%$——这就是为什么电源不能没有稳压级：
+负载一轻，输出电压就往上跑。
+
+\subhdr{5.6 （4）电容支路断开：退回无电容的 $0.9U_2$}
+
+电容断开后就是纯桥式整流，查「全波 $+$ 无电容」那一行：
+\[ U_{\mathrm{O}}=0.9U_2=0.9\times25\,\mathrm{V}=22.5\,\mathrm{V} . \]
+从 $30\,\mathrm{V}$ 掉到 $22.5\,\mathrm{V}$，掉了 $25\%$。这一问与第（3）问合起来说明：
+\textbf{电容把输出电压抬高了约 $\tfrac13$，也把「负载变化引起输出变化」这条路打开了}。
+
+\subhdr{5.7 全部数字的自检表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{6.4cm}p{3.4cm}p{3.4cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{本题值} & \thead{依据}
+\\
+\tabmid
+$U_2$ & $U_{\mathrm{O}}/1.2$ & $25\,\mathrm{V}$ & p34 表
+\\
+$U_{\mathrm{m}}$ & $\sqrt2U_2$ & $35.4\,\mathrm{V}$ & p33
+\\
+$I_{\mathrm{O}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$ & $0.3\,\mathrm{A}$ & p22
+\\
+$I_{\mathrm{D}}$ & $I_{\mathrm{O}}/2$ & $0.15\,\mathrm{A}$ & p22
+\\
+$I_{\mathrm{F}}$ & $\ge2I_{\mathrm{D}}$ & $\ge0.3\,\mathrm{A}$ & p33
+\\
+$U_{\mathrm{Rm}}$ & $\sqrt2U_2$ & $35.4\,\mathrm{V}$ & p22、p40
+\\
+$U_{\mathrm{R}}$ & $\ge U_{\mathrm{Rm}}$ & $\ge35.4\,\mathrm{V}$（课件误写 34.5） & p45
+\\
+$C$ & $(1.5\sim2.5)/(R_{\mathrm{L}}f)$ & $300\sim500\,\mu\mathrm{F}$ & p33、p46
+\\
+$U_{\mathrm{CN}}$ & $\ge\sqrt2U_2$ & $\ge35.4\,\mathrm{V}$（取 50 V） & p33、p46
+\\
+（3）开路 & $\sqrt2U_2$ & $35.4\,\mathrm{V}$ & p31、p47
+\\
+（4）断容 & $0.9U_2$ & $22.5\,\mathrm{V}$ & p24、p47
+\tabbot
+\end{tabular}
+
+\subhdr{5.8 回到 p2 的实物板：答案就印在器件上}
+
+把本例的四个数与 p2 照片对照：电容 $470\,\mu\mathrm{F}/50\,\mathrm{V}$ 落在 $300\sim500\,\mu\mathrm{F}$、$\ge35.4\,\mathrm{V}$ 的窗口内；
+四只二极管对应桥式；「78系列」三端稳压器接在滤波之后，负责把 $31\sim32\,\mathrm{V}$ 稳到 $5\,\mathrm{V}$ 之类的固定值。
+\aside{p2 照片里另一只电容印着 $220\,\mu\mathrm{F}$，也是同一量级；板上丝印的 $220\mathrm{V}\,50\mathrm{Hz}$ 是变压器一次侧，
+不是 $U_2$。别把一次电压当二次电压代进公式。}
+
+\subhdr{5.9 错解诊断：四种典型错法各会得到什么数}
+
+考试里本题的错，多半不是算术错，而是「查错行」。把四种常见错法列出来，对照正确值：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.0cm}p{3.8cm}p{3.0cm}p{3.6cm}@{}}
+\tabtop
+\thead{错法} & \thead{会算出的数} & \thead{正确值} & \thead{后果}
+\\
+\tabmid
+把 $U_{\mathrm{O}}=30\,\mathrm{V}$ 当成 $U_2$ & $U_2=30\,\mathrm{V}$，$U_{\mathrm{Rm}}=42.4\,\mathrm{V}$ & $25\,\mathrm{V}$；$35.4\,\mathrm{V}$ & 耐压多选一档，浪费
+\\
+用无电容的 $0.9$ 反求 $U_2$ & $U_2=33.3\,\mathrm{V}$，$U_{\mathrm{Rm}}=47.1\,\mathrm{V}$ & $25\,\mathrm{V}$；$35.4\,\mathrm{V}$ & 同上，且 $C$ 不受影响
+\\
+忘了 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$ 的 2 & $I_{\mathrm{F}}\ge0.15\,\mathrm{A}$ & $\ge0.3\,\mathrm{A}$ & 管子窄脉冲发热超额
+\\
+电容耐压用 $U_2=25\,\mathrm{V}$ & $U_{\mathrm{CN}}\ge25\,\mathrm{V}$，选 25 V 档 & $\ge35.4\,\mathrm{V}$，选 50 V 档 & 峰值时击穿
+\tabbot
+\end{tabular}
+
+这张表也说明一个规律：\textbf{$U_2$ 一错，$U_{\mathrm{Rm}}$ 与 $U_{\mathrm{CN}}$ 跟着错；$I_{\mathrm{O}}$ 与 $I_{\mathrm{D}}$ 不受影响}。
+所以做题时先检查 $U_2$ 的来路（查的是哪一行），再检查电流（$I_{\mathrm{O}}$ 与 $I_{\mathrm{D}}$ 的 2 倍关系）。
+
+\subhdr{5.10 电容取大一点会怎样：$C$ 与输出、纹波的定量账}
+
+设计题只要求 $C\ge300\sim500\,\mu\mathrm{F}$，没有说取哪一个。取不同值时，
+用 §6.2 的放电模型（$U_2=25\,\mathrm{V}$、$R_{\mathrm{L}}=100\,\Omega$、全波）算出来是：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{2.4cm}p{2.6cm}p{2.6cm}p{2.8cm}@{}}
+\tabtop
+\thead{$C$} & \thead{$\tau=R_{\mathrm{L}}C$} & \thead{$U_{\mathrm{O}}$} & \thead{纹波 $\Delta U$} & \thead{相对纹波}
+\\
+\tabmid
+$300\,\mu\mathrm{F}$ & $30\,\mathrm{ms}$ & $30.1\,\mathrm{V}$ & $10.0\,\mathrm{V}$ & $33\%$
+\\
+$470\,\mu\mathrm{F}$ & $47\,\mathrm{ms}$ & $31.8\,\mathrm{V}$ & $6.8\,\mathrm{V}$ & $21\%$
+\\
+$500\,\mu\mathrm{F}$ & $50\,\mathrm{ms}$ & $32.0\,\mathrm{V}$ & $6.4\,\mathrm{V}$ & $20\%$
+\\
+$1000\,\mu\mathrm{F}$ & $100\,\mathrm{ms}$ & $33.6\,\mathrm{V}$ & $3.4\,\mathrm{V}$ & $10\%$
+\tabbot
+\end{tabular}
+
+三句话：
+（1）推荐式保证的是\textbf{纹波}不超过 $33\%$（取 300）到 $20\%$（取 500），不是保证输出恰好 $30\,\mathrm{V}$；
+（2）$C$ 越大，输出越高（从 $30.1$ 升到 $33.6\,\mathrm{V}$），因为电容把峰值保持得更久；
+（3）若必须精确 $30\,\mathrm{V}$，要么取下限 $300\,\mu\mathrm{F}$、要么后面加稳压器（p12）。
+\textbf{「$U_{\mathrm{O}}=1.2U_2$」是一个与 $C$ 绑定的估计，不是电路常数}——§6.2 已从另一侧说明过这一点。
+（本表按 $u_{\mathrm{O}}=U_{\mathrm{m}}e^{-t/\tau}$ 复算，标 [教材补充]，用于回答「电容到底该取多大」。）
+
+%=============================================================
+\hdr{§6}{例题里三处「套不进去」的地方}
+
+本节回答三个「课件给了数、没给来历」的问题：$2\sqrt2U_2$ 从哪来、$1.2U_2$ 从哪来、$I_{\mathrm{F}}\ge2I_{\mathrm{D}}$ 的 2 从哪来。
+三处都不是背下来的，都能从 §1 的「波形链」推出来。
+
+\subhdr{6.1 为什么半波加电容是 $2\sqrt2U_2$，桥式加电容还是 $\sqrt2U_2$}
+
+p34 表里「半波 $+$ 电容」一列写 $U_{\mathrm{Rm}}=2\sqrt2U_2$，p39 的黄色框也写这个数，但都没有推。
+推法要盯住\textbf{关断瞬间电容把阴极顶在哪}。
+
+\textbf{半波 $+$ 电容。}正半周电容充到峰值，之后阴极被电容\textbf{钳在} $+\sqrt2U_2$（以 b 为参考，按峰值时刻计、忽略放电下降）。
+到负半周，阳极被副边拉到 $-\sqrt2U_2$，于是二极管两端
+\[ u_{\mathrm{D}}=u_{\mathrm{a}}-u_{\mathrm{K}}=(-\sqrt2U_2)-(+\sqrt2U_2)=-2\sqrt2U_2 , \]
+即 $U_{\mathrm{Rm}}=2\sqrt2U_2$。物理图像：\textbf{一端被电容顶在正峰，另一端被副边拉到负峰，两个峰叠加}。
+
+\textbf{桥式 $+$ 电容。}正半周 $D_1$、$D_3$ 导通，直流正端 $P$ 接到 a、负端 $M$ 接到 b；
+负半周 $D_2$、$D_4$ 导通，$P$ 改接 b、$M$ 改接 a。也就是说，\textbf{直流正端每个半周期改接到「当时为正」的那个交流端}：
+正半周 $P=a$、$M=b$；负半周 $P=b$、$M=a$。电容电压始终是 $P-M=\sqrt2U_2$。
+这时看关断的 $D_1$（阳极 a、阴极 P）：负半周 a 为负峰、P 跟着 b 为正峰，两者相差的正是\textbf{一个}副边电压
+$u_{\mathrm{a}}-u_{\mathrm{b}}=\sqrt2U_2$，不是两个峰之和。所以桥式无论加不加电容，每管都只有 $\sqrt2U_2$（p40、p41 的黄色框）。
+
+\textbf{中心抽头 $+$ 电容。}抽头是固定参考，电容只能把阴极顶到 $+\sqrt2U_2$，另一半绕组仍能摆到 $-\sqrt2U_2$，
+所以仍是 $2\sqrt2U_2$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.4cm}p{4.2cm}p{4.2cm}@{}}
+\tabtop
+\thead{电路} & \thead{无电容 $U_{\mathrm{Rm}}$} & \thead{有电容 $U_{\mathrm{Rm}}$}
+\\
+\tabmid
+半波（p38、p39） & $\sqrt2U_2$ & $2\sqrt2U_2$
+\\
+中心抽头全波（p17） & $2\sqrt2U_2$ & $2\sqrt2U_2$
+\\
+桥式全波（p40、p41） & $\sqrt2U_2$ & $\sqrt2U_2$
+\tabbot
+\end{tabular}
+
+\aside{判断口诀：\textbf{关断管的两个端子，一个接交流端、一个接直流端，就看 $\sqrt2U_2$；
+两端都接在交流侧、中间隔着整个副边，就看 $2\sqrt2U_2$。}
+半波加电容之所以翻倍，是因为它的「直流端」被电容钳住、不再跟着副边走。}
+
+\subhdr{6.2 为什么 $1.2U_2$ 不是一条定律：时间常数决定一切}
+
+p33 写「$U_{\mathrm{O}}=U_2$（half-wave 半波）」「$U_{\mathrm{O}}=1.2U_2$（full-wave 全波）」，p30 又给出 $\tau=R_{\mathrm{L}}C$，
+两处之间没有连线。本小节把连线补上（标 [教材补充]：课件只给结论，不做数值模型）：\textbf{这两个系数是「推荐电容取下限」时的数值，不是常数}。
+
+\textbf{放电方程。}二极管只在 $u_2$ 的峰值附近短暂导通，其余时间电容通过 $R_{\mathrm{L}}$ 放电：
+\[ u_{\mathrm{O}}(t)=U_{\mathrm{m}}\,e^{-t/\tau},\qquad U_{\mathrm{m}}=\sqrt2U_2,\quad \tau=R_{\mathrm{L}}C . \]
+全波整流的放电时间约 $T/2$，半波约 $T$（$T=1/f=20\,\mathrm{ms}$）。一个放电区间内的平均值为
+\[ U_{\mathrm{O}}\approx\frac{U_{\mathrm{m}}-U_{\min}}{\ln\!\bigl(U_{\mathrm{m}}/U_{\min}\bigr)},
+\qquad U_{\min}=U_{\mathrm{m}}e^{-\Delta t/\tau} . \]
+（这是指数段的对数平均；纹波很小时退化为 $(U_{\mathrm{m}}+U_{\min})/2$。）
+
+\textbf{纹波。}峰谷差
+\[ \Delta U=U_{\mathrm{m}}-U_{\min}\approx U_{\mathrm{O}}\frac{\Delta t}{\tau} . \]
+纹波相对值 $\Delta U/U_{\mathrm{O}}\approx \Delta t/(R_{\mathrm{L}}C)$，全波时 $\Delta t=T/2$，于是
+\[ \frac{\Delta U}{U_{\mathrm{O}}}\approx\frac{1}{2fR_{\mathrm{L}}C} . \]
+把推荐式 $C=(1.5\sim2.5)/(R_{\mathrm{L}}f)$ 代进去，纹波正好落在 $33\%\sim20\%$——这就是「$3\sim5$ 倍」的来源：
+\textbf{取下限（3 倍）纹波约三分之一，取上限（5 倍）纹波约五分之一}。
+
+\textbf{数值表。}取 $U_2=1$（单位化为 $U_2$）、$R_{\mathrm{L}}=100\,\Omega$、$f=50\,\mathrm{Hz}$，按上式复算（Python 结果）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{2.6cm}p{3.2cm}p{3.2cm}p{3.0cm}@{}}
+\tabtop
+\thead{$\tau=R_{\mathrm{L}}C$} & \thead{对应 $C$（$\mu\mathrm{F}$）} & \thead{全波 $U_{\mathrm{O}}/U_2$} & \thead{半波 $U_{\mathrm{O}}/U_2$} & \thead{全波纹波}
+\\
+\tabmid
+$20\,\mathrm{ms}$ & $200\,\mu\mathrm{F}$ & $1.11$ & $0.89$ & $50\%$
+\\
+$30\,\mathrm{ms}$ & $300\,\mu\mathrm{F}$ & $1.20$ & $1.03$ & $33\%$
+\\
+$40\,\mathrm{ms}$ & $400\,\mu\mathrm{F}$ & $1.25$ & $1.11$ & $25\%$
+\\
+$50\,\mathrm{ms}$ & $500\,\mu\mathrm{F}$ & $1.28$ & $1.17$ & $20\%$
+\\
+$100\,\mathrm{ms}$ & $1000\,\mu\mathrm{F}$ & $1.35$ & $1.28$ & $10\%$
+\\
+$\to\infty$ & 理想电容 & $\sqrt2=1.414$ & $1.414$ & $0$
+\tabbot
+\end{tabular}
+
+\textbf{读表三句话}：
+（1）全波在 $\tau=30\,\mathrm{ms}$ 时给出 $1.20U_2$，半波在同一 $\tau$ 下给出 $1.03U_2$——
+这就是 p33 的「$1.2$」与「$1.0$」；
+（2）$\tau$ 越大，两个值都往 $\sqrt2U_2=1.414U_2$ 靠，\textbf{所以 $1.2U_2$ 不是「全波整流的性质」，而是「推荐电容下的工程估计」}；
+（3）同一只电容，半波的纹波永远比全波大一倍（放电时间从 $T/2$ 变成 $T$），这是 §2.6 说半波不够用的定量理由。
+
+\aside{p30 的三句气泡「How much is the output voltage when we use a capacitor?」「The output voltage will be higher.」「Is it still 0.9 U2?」
+到这里全部有答案：会更高；不再是 $0.9U_2$，而是约 $1.2U_2$（全波）或 $1.0U_2$（半波），并随 $\tau$ 增大趋近 $\sqrt2U_2$。}
+
+\subhdr{6.3 为什么选管要 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$：窄脉冲的波形因数}
+
+p33 的原句是「Because the current is pulsating, the current takes twice the value.」——只说了结论。
+下面是 [教材补充] 的推导（补的原因：给出「2」的定量来历）。原因是加电容后二极管的\textbf{导通角变窄}：电容电压接近峰值时二极管才导通，电流是一串又高又窄的脉冲。
+设导通占空比为 $D$、脉冲峰值为 $I_{\mathrm{pk}}$，则
+\[ I_{D,\mathrm{avg}}=D\,I_{\mathrm{pk}},\qquad I_{D,\mathrm{rms}}=\sqrt{D}\,I_{\mathrm{pk}}, \]
+两者之比（波形因数）
+\[ \frac{I_{D,\mathrm{rms}}}{I_{D,\mathrm{avg}}}=\frac{1}{\sqrt{D}} . \]
+电容滤波电路的 $D$ 约为 $0.25$（四分之一周期），于是 $1/\sqrt{0.25}=2$。
+管子的发热由有效值决定，所以额定电流要按\textbf{平均值的 2 倍}选：
+\[ I_{\mathrm{F}}\ge2I_{\mathrm{D}} . \]
+本例 $I_{\mathrm{D}}=0.15\,\mathrm{A}$，故 $I_{\mathrm{F}}\ge0.3\,\mathrm{A}$，与 p45 的「$2\times0.15=0.3\,\mathrm{A}$」一致。
+
+\aside{还有一个课件没提的冲击：开机瞬间电容是空的，充电电流可能远大于稳态值。
+工程上选管还要留「浪涌电流」裕量；本册只按平均值乘 2，是教学简化，不覆盖开机瞬间。}
+
+\subhdr{6.4 同一只电容，半波与全波的纹波差多少}
+
+§6.2 的纹波式 $\Delta U/U_{\mathrm{O}}\approx\Delta t/(R_{\mathrm{L}}C)$ 里，$\Delta t$ 是放电时间：
+全波是 $T/2$，半波是 $T$。所以\textbf{同一只电容、同一负载，半波的纹波正好是全波的两倍}。
+取 $U_2=20\,\mathrm{V}$、$R_{\mathrm{L}}=100\,\Omega$、$C=470\,\mu\mathrm{F}$（$\tau=47\,\mathrm{ms}$）复算：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.2cm}p{3.6cm}p{3.6cm}p{3.6cm}@{}}
+\tabtop
+\thead{电路} & \thead{$U_{\mathrm{O}}$} & \thead{纹波 $\Delta U$} & \thead{相对纹波}
+\\
+\tabmid
+全波 $+$ 电容 & $25.5\,\mathrm{V}$ & $5.4\,\mathrm{V}$ & $21\%$
+\\
+半波 $+$ 电容 & $23.0\,\mathrm{V}$ & $9.8\,\mathrm{V}$ & $43\%$
+\tabbot
+\end{tabular}
+
+两件事同时发生：半波的平均值更低（$23.0$ 对 $25.5\,\mathrm{V}$），纹波却更大（$43\%$ 对 $21\%$）。
+这就是 §2.6 说「半波不够用」的定量证据，也解释了 p33 的推荐式为什么写 $T/(2R_{\mathrm{L}})$——
+它按全波的半个周期设计；若照搬到半波，纹波会翻倍。
+（数值按 $u_{\mathrm{O}}=U_{\mathrm{m}}e^{-t/\tau}$ 逐点求解，标 [教材补充]，用于说明「为什么工程上几乎不用半波 $+$ 电容」。）
+
+%=============================================================
+\hdr{§7}{其余例题与两块补充电路}
+
+\subhdr{7.1 p35--p36 例题：$U_2=20\,\mathrm{V}$ 时输出多少}
+
+p35 的题面是「If U2 is 20V, how much is the output voltage？」，电路是桥式 $+$ 电容；
+p36 只是把「$U_2=20\,\mathrm{V}$」重写一遍，\textbf{两页都没有印出答案}。答案用 §5 的同一行：
+\[ U_{\mathrm{O}}=1.2U_2=1.2\times20\,\mathrm{V}=24\,\mathrm{V} . \]
+若要把这道题变成一组练习，只要把「半波/全波」与「有/无电容」交叉，就得到四个数：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{5.6cm}p{5.6cm}@{}}
+\tabtop
+\thead{电路} & \thead{无电容} & \thead{有电容}
+\\
+\tabmid
+半波 & $0.45\times20=9\,\mathrm{V}$ & $1.0\times20=20\,\mathrm{V}$
+\\
+全波（桥式） & $0.9\times20=18\,\mathrm{V}$ & $1.2\times20=24\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+这四个数最好一起记：\textbf{9、18、20、24}。考试里只要电路认对，就是四选一。
+
+\subhdr{7.2 回答 p22 的三问：DC、$U_2$、$I_{\mathrm{F}}$ 与 $I_{\mathrm{D}}$}
+
+p22 右侧有三个绿色气泡，都没有答案：
+
+\textbf{（1）「Is the output voltage DC？」}——平均值不为零、方向不变，所以叫「脉动直流」；
+但瞬时值仍在 $0\sim\sqrt2U_2$ 之间起伏，\textbf{不是恒定值}。本册所有 $U_{\mathrm{O}}$ 都指平均值，不指瞬时值。
+
+\textbf{（2）「Is U2 DC？」}——不是。$u_2$ 是正弦，一个周期内平均为零；$U_2$ 是它的\textbf{有效值}（电压表读数）。
+若 $U_2$ 真是直流，桥式整流的 $0.9U_2$ 就没有意义了。
+
+\textbf{（3）「What is the difference between $I_{\mathrm{F}}$ and $I_{\mathrm{D}}$？」}——
+$I_{\mathrm{D}}$ 是\textbf{电路里实际流过}二极管的平均电流（算出来的）；$I_{\mathrm{F}}$ 是\textbf{器件允许}的额定正向电流（查手册的）。
+前者是「要求」，后者是「能力」；选管就是让能力不小于要求，且因脉动要乘 2（§6.3）。
+
+\subhdr{7.3 p42 故障题 E2：表读 000 说明什么}
+
+p42 的题面是「Troubleshooting - DC regulated power supply / E2 If U2 is 20V, how much is the output voltage？」，
+图上并接一只数字万用表，读数「000」。按 §7.1，\textbf{正常值应是 $24\,\mathrm{V}$}；表读 0.00，说明电路有断点或短路。
+
+单点故障下的预期读数可以列成一张排查表（[教材补充]：本讲义按 §2--§6 的公式推的，课件没有给答案）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{6.4cm}p{4.4cm}p{4.0cm}@{}}
+\tabtop
+\thead{故障} & \thead{预期 $U_{\mathrm{O}}$} & \thead{依据}
+\\
+\tabmid
+正常（桥式 $+$ 电容） & $24\,\mathrm{V}$ & §7.1
+\\
+滤波电容断开 & $18\,\mathrm{V}$（$0.9U_2$） & p24
+\\
+任一桥臂断开 & 约 $9\,\mathrm{V}$（退化为半波） & §2.3
+\\
+负载支路断开 & 表并在母线两端仍读到电容电压（约 $24\,\mathrm{V}$）；串在断口里才读 0 & — 
+\\
+输出短路 & $0\,\mathrm{V}$ & — 
+\tabbot
+\end{tabular}
+
+课件图上在三处画了彩色短划（$D_2$ 下引线、$C$ 上引线、$R_{\mathrm{L}}$ 上引线），
+但究竟是「断线标记」还是「测试夹位置」，在页面图上看不确切，标 [待确认]。
+可确定的是：\textbf{只要读数为 0.00，就不会是「仅电容断开」或「仅一只桥臂断开」}——那两种情形分别应读到 18 V 与 9 V。
+
+\subhdr{7.4 p38--p41 Review：四种电路的 $U_{\mathrm{Rm}}$ 一次看清}
+
+p38--p41 四页各给一个黄色结论框，正好覆盖 §6.1 表里的四种情形。取 $U_2=20\,\mathrm{V}$（$\sqrt2U_2=28.3\,\mathrm{V}$）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.4cm}p{4.4cm}p{4.0cm}@{}}
+\tabtop
+\thead{课件页} & \thead{电路} & \thead{结论} & \thead{代入 $20\,\mathrm{V}$}
+\\
+\tabmid
+p38 & 半波，无电容 & $U_{\mathrm{Rm}}=\sqrt2U_2$ & $28.3\,\mathrm{V}$
+\\
+p39 & 半波，有电容 & $U_{\mathrm{Rm}}=2\sqrt2U_2$ & $56.6\,\mathrm{V}$
+\\
+p40 & 桥式，无电容 & $U_{\mathrm{Rm}}=\sqrt2U_2$ & $28.3\,\mathrm{V}$
+\\
+p41 & 桥式，有电容 & $U_{\mathrm{Rm}}=\sqrt2U_2$ & $28.3\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+这张表是 §6.1 的「官方版」：四页的四个数可以互相印证，但课件没有解释为什么 p39 是别的两倍——那正是 §6.1 补的。
+
+\subhdr{7.5 p48 电感滤波：与电容滤波对偶}
+
+p48 的原句是「Normally used in the situation when the output voltage is relatively lower while the current through the load is relatively larger.」
+电路与电容滤波正好对偶：\textbf{电感串在输出回路上}（而不是并联在负载两端）。
+机理也对称：p27 说「电容两端电压不能突变」，p48 的对应说法是「电感中的电流不能突变」——
+电感把电流的脉动「拉平」，负载电流因此平稳；电容把电压的脉动「削平」，负载电压因此平稳。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{3.6cm}p{4.0cm}p{4.4cm}@{}}
+\tabtop
+\thead{项目} & \thead{电容滤波（p27）} & \thead{电感滤波（p48）} & \thead{后果}
+\\
+\tabmid
+连接 & 与负载并联 & 与负载串联 & 一个分流、一个分压
+\\
+平滑对象 & 电压 & 电流 & 对偶
+\\
+适用 & 输出电压较高、电流较小且变化小（p26） & 输出电压较低、电流较大（p48） & 应用题先看这句判断
+\tabbot
+\end{tabular}
+
+\subhdr{7.6 p49 复式滤波：$\pi$ 型 LC 与 $\pi$ 型 RC（只作了解）}
+
+p49 给两张图：$\pi$ 型 LC（$C_1$—$L$—$C_2$）与 $\pi$ 型 RC（$C_1$—$R$—$C_2$）。
+两只电容并联在输入、输出两端，中间串一只 $L$ 或 $R$，画出来像希腊字母 $\pi$，故得名。
+课上只要求认出拓扑与 $I_{\mathrm{O}}$、$u_{\mathrm{O}}$ 的参考方向，不给公式。
+一句对比：$LC$ 不额外消耗直流压降，适合大电流；$RC$ 便宜但有直流压降与功耗，只适合小电流。
+这两张图是本册的「收尾」，考试若出现，通常只问「哪个元件串联、哪个并联」。
+
+\subhdr{7.7 综合演练三题（按本册公式自编，非往年题）}
+
+下面三题用 §8 的四步清单各走一遍，用来检查「认电路—定系数—算三数—选器件」是否顺手。
+三题都不是往年题，只覆盖本册 p13--p47 出现过的公式。
+
+\callout{\textbf{[练 A]} 半波整流 $+$ 电容滤波，$U_2=20\,\mathrm{V}$，$R_{\mathrm{L}}=50\,\Omega$，$f=50\,\mathrm{Hz}$。
+求 $U_{\mathrm{O}}$、$I_{\mathrm{O}}$、$I_{\mathrm{D}}$、$U_{\mathrm{Rm}}$、$C$、$U_{\mathrm{CN}}$ 与 $I_{\mathrm{F}}$ 下限。}
+
+\textbf{解}：认电路——一只二极管 $+$ 并联电容，查「半波 $+$ 有电容」一行。
+\[ U_{\mathrm{O}}\approx1.0U_2=20\,\mathrm{V},\qquad I_{\mathrm{O}}=\frac{20}{50}=0.4\,\mathrm{A},\qquad I_{\mathrm{D}}=I_{\mathrm{O}}=0.4\,\mathrm{A} . \]
+半波加电容的反压按 §6.1 是 $2\sqrt2U_2$：
+\[ U_{\mathrm{Rm}}=2\sqrt2\times20=56.6\,\mathrm{V} . \]
+选管 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}=0.8\,\mathrm{A}$、$U_{\mathrm{R}}\ge56.6\,\mathrm{V}$（取 $100\,\mathrm{V}$ 档）。
+电容：
+\[ C\ge\frac{1.5\sim2.5}{50\times50}\,\mathrm{F}=(600\sim1000)\,\mu\mathrm{F},\qquad
+U_{\mathrm{CN}}\ge\sqrt2\times20=28.3\,\mathrm{V}\ (\text{取 }50\,\mathrm{V}) . \]
+
+\callout{\textbf{[练 B]} 中心抽头全波整流，每个半绕组 $U_2=20\,\mathrm{V}$，$R_{\mathrm{L}}=100\,\Omega$，无电容。
+求 $U_{\mathrm{O}}$、$I_{\mathrm{O}}$、$I_{\mathrm{D}}$、$U_{\mathrm{Rm}}$，并说明选管耐压。}
+
+\textbf{解}：无电容的全波，$U_{\mathrm{O}}=0.9U_2$；但反压要按中心抽头的 $2\sqrt2U_2$，不能套桥式的 $\sqrt2U_2$：
+\[ U_{\mathrm{O}}=0.9\times20=18\,\mathrm{V},\qquad I_{\mathrm{O}}=\frac{18}{100}=0.18\,\mathrm{A},\qquad I_{\mathrm{D}}=\frac{0.18}{2}=0.09\,\mathrm{A}, \]
+\[ U_{\mathrm{Rm}}=2\sqrt2\times20=56.6\,\mathrm{V}\ \Rightarrow\ \text{选 }100\,\mathrm{V}\text{ 档} . \]
+若误按桥式取 $\sqrt2U_2=28.3\,\mathrm{V}$ 选 $50\,\mathrm{V}$ 档，峰值时会击穿——这正是 §4.2 要防的错。
+
+\callout{\textbf{[练 C]} 桥式 $+$ 电容，要求 $U_{\mathrm{O}}=12\,\mathrm{V}$，$R_{\mathrm{L}}=200\,\Omega$，$f=50\,\mathrm{Hz}$。
+求 $U_2$、$I_{\mathrm{O}}$、$I_{\mathrm{D}}$、$U_{\mathrm{Rm}}$、$C$、$U_{\mathrm{CN}}$，以及负载开路与电容断开时的输出。}
+
+\textbf{解}：桥式 $+$ 电容，$U_{\mathrm{O}}=1.2U_2$，反解
+\[ U_2=\frac{12}{1.2}=10\,\mathrm{V},\qquad I_{\mathrm{O}}=\frac{12}{200}=0.06\,\mathrm{A},\qquad I_{\mathrm{D}}=\frac{0.06}{2}=0.03\,\mathrm{A}, \]
+\[ U_{\mathrm{Rm}}=\sqrt2\times10=14.1\,\mathrm{V},\qquad I_{\mathrm{F}}\ge2\times0.03=0.06\,\mathrm{A} . \]
+电容：
+\[ C\ge\frac{1.5\sim2.5}{200\times50}\,\mathrm{F}=(150\sim250)\,\mu\mathrm{F},\qquad
+U_{\mathrm{CN}}\ge14.1\,\mathrm{V}\ (\text{取 }25\,\mathrm{V}) . \]
+两问：负载开路 $U_{\mathrm{O}}=\sqrt2U_2=14.1\,\mathrm{V}$；电容断开 $U_{\mathrm{O}}=0.9U_2=9.0\,\mathrm{V}$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{1.8cm}p{1.9cm}p{1.9cm}p{3.6cm}p{3.6cm}@{}}
+\tabtop
+\thead{题} & \thead{$U_{\mathrm{O}}$} & \thead{$I_{\mathrm{D}}$} & \thead{$U_{\mathrm{Rm}}$} & \thead{$C$} & \thead{选管}
+\\
+\tabmid
+A & $20\,\mathrm{V}$ & $0.4\,\mathrm{A}$ & $56.6\,\mathrm{V}$ & $600\sim1000\,\mu\mathrm{F}$ & $I_{\mathrm{F}}\ge0.8\,\mathrm{A}$，$100\,\mathrm{V}$
+\\
+B & $18\,\mathrm{V}$ & $0.09\,\mathrm{A}$ & $56.6\,\mathrm{V}$ & 无 & $100\,\mathrm{V}$
+\\
+C & $12\,\mathrm{V}$ & $0.03\,\mathrm{A}$ & $14.1\,\mathrm{V}$ & $150\sim250\,\mu\mathrm{F}$ & $I_{\mathrm{F}}\ge0.06\,\mathrm{A}$，$25\,\mathrm{V}$
+\tabbot
+\end{tabular}
+
+三题的共同点：\textbf{先认电路再查系数}。A 题若漏了「半波」而按 $0.9U_2$ 算，$U_{\mathrm{O}}$ 会算成 $18\,\mathrm{V}$；
+B 题若漏了「中心抽头」而按桥式算，耐压会选小一半。这两处正是 §9 易错点的第（3）与第（5）条。
+
+%=============================================================
+\hdr{§8}{公式卡与四步清单}
+
+\subhdr{8.1 公式卡（按做题顺序排，不按课件顺序）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{4.8cm}p{2.0cm}p{5.2cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{依据} & \thead{前提}
+\\
+\tabmid
+$U_{\mathrm{O}}$（半波，无 C） & $0.45U_2$ & p24 & 理想二极管
+\\
+$U_{\mathrm{O}}$（全波，无 C） & $0.9U_2$ & p22 & 理想二极管
+\\
+$U_{\mathrm{O}}$（半波，有 C） & $\approx U_2$ & p34 & C 在推荐范围
+\\
+$U_{\mathrm{O}}$（全波，有 C） & $\approx 1.2U_2$ & p33、p34 & C 在推荐范围
+\\
+$U_{\mathrm{O}}$（负载开路） & $\sqrt2U_2$ & p31、p47 & 无放电回路
+\\
+$I_{\mathrm{O}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$ & p22 & 任意
+\\
+$I_{\mathrm{D}}$（半波） & $I_{\mathrm{O}}$ & p24 & 一只管子承担全部
+\\
+$I_{\mathrm{D}}$（全波） & $I_{\mathrm{O}}/2$ & p22 & 两只轮流
+\\
+$U_{\mathrm{Rm}}$（半波，无 C） & $\sqrt2U_2$ & p38 & — 
+\\
+$U_{\mathrm{Rm}}$（半波，有 C） & $2\sqrt2U_2$ & p39 & 电容钳位
+\\
+$U_{\mathrm{Rm}}$（中心抽头） & $2\sqrt2U_2$ & §4.2 & 整个副边
+\\
+$U_{\mathrm{Rm}}$（桥式） & $\sqrt2U_2$ & p40、p41 & 有无 C 都一样
+\\
+$I_{\mathrm{F}}$ & $\ge2I_{\mathrm{D}}$ & p33 & 有 C、脉动
+\\
+$U_{\mathrm{R}}$ & $\ge U_{\mathrm{Rm}}$ & p22 & — 
+\\
+$C$ & $\ge(1.5\sim2.5)/(R_{\mathrm{L}}f)$ & p33 & 全波放电 $T/2$
+\\
+$U_{\mathrm{CN}}$ & $\ge\sqrt2U_2$ & p33 & 耐压
+\\
+$\tau,\ \Delta U/U_{\mathrm{O}}$ & $R_{\mathrm{L}}C$；$\approx 1/(2fR_{\mathrm{L}}C)$ & p30；§6.2 & 小纹波
+\tabbot
+\end{tabular}
+
+\subhdr{8.2 四步清单（拿到任何整流滤波题都照这个顺序）}
+
+\begin{enumerate}
+\item \textbf{认电路}：半波 / 中心抽头 / 桥式？有无滤波电容？
+（判据：二极管只数、副边有无抽头、电容是否与负载并联。）
+\item \textbf{定系数}：按「半波/全波 $\times$ 有/无电容」查 §1.3 的 2$\times$2 表，得 $U_{\mathrm{O}}$ 对 $U_2$ 的系数。
+\item \textbf{算三数}：$U_{\mathrm{O}}$、$I_{\mathrm{D}}$、$U_{\mathrm{Rm}}$——后两个是选管依据，不能只算 $U_{\mathrm{O}}$。
+\item \textbf{选器件}：$I_{\mathrm{F}}\ge2I_{\mathrm{D}}$、$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}$、$C\ge(1.5\sim2.5)/(R_{\mathrm{L}}f)$、$U_{\mathrm{CN}}\ge\sqrt2U_2$，最后做 §8.3 的量级自检。
+\end{enumerate}
+
+\subhdr{8.3 量级自检：一秒钟判断算没算错}
+
+\begin{itemize}
+\item $U_{\mathrm{O}}/U_2$ 只可能在 $0.45\sim1.414$ 之间：小于 $0.45$ 或大于 $1.414$ 一定错；
+\item $U_{\mathrm{Rm}}/U_2$ 只可能是 $1.414$ 或 $2.828$（别的数说明把一个峰和两个峰混了）；
+\item $I_{\mathrm{D}}/I_{\mathrm{O}}$ 只可能是 $1$（半波）或 $0.5$（全波），不可能是别的；
+\item 电容凡几百 $\mu\mathrm{F}$ 量级、耐压凡 $50\,\mathrm{V}$ 量级，若算出法拉级或几伏，先查 $f$ 与 $R_{\mathrm{L}}$ 的单位。
+\end{itemize}
+
+%=============================================================
+\hdr{§9}{易错点（每条都能指回某页某步）}
+
+\gapitem{（1）把 $U_2$ 当峰值}{题给「$U_2=20\,\mathrm{V}$」（p35、p42）是\textbf{有效值}，峰值要乘 $\sqrt2$。
+若直接拿 20 V 当峰值，$\sqrt2U_2$ 一栏会小 $41\%$，$U_{\mathrm{O}}=24\,\mathrm{V}$ 也会算成 $17\,\mathrm{V}$。}
+
+\gapitem{（2）半波平均值分母写成 $\pi$}{p24 给 $0.45U_2$，推导在 §2.3：分母必须是 $2\pi$。
+写成 $\pi$ 就得到 $0.9U_2$，把半波当成了全波。}
+
+\gapitem{（3）全波积分在 $2\pi$ 上却忘取绝对值}{$u_{\mathrm{O}}$ 的负半周已经被翻正，不是原来的负正弦。
+§3.5 的两种写法（$\tfrac1\pi\int_0^\pi$ 或 $\tfrac1{2\pi}\int_0^{2\pi}|\sin|$）都可以，但不能写成 $\tfrac1{2\pi}\int_0^{2\pi}\sin$——那是零。}
+
+\gapitem{（4）半波加电容仍写 $U_{\mathrm{Rm}}=\sqrt2U_2$}{p39 明确给 $2\sqrt2U_2$（§6.1）。
+漏掉电容的钳位作用，耐压会选小一半。}
+
+\gapitem{（5）中心抽头套用桥式的 $\sqrt2U_2$}{p24 的总表把两种全波合在一起，只给桥式的值。
+中心抽头每管要扛 $2\sqrt2U_2$（§4.2）。题目若写「center-tapped」，这一栏必须换。}
+
+\gapitem{（6）桥式加电容误算成 $2\sqrt2U_2$}{p41 的黄色框是 $\sqrt2U_2$（§6.1）。
+桥式的两块电容极板每个半周期换一次参考点，关断管只差一个副边电压。}
+
+\gapitem{（7）把 $I_{\mathrm{D}}$ 当 $I_{\mathrm{F}}$}{$I_{\mathrm{D}}$ 是电路算出来的平均电流，$I_{\mathrm{F}}$ 是器件额定值（p22 的提问，答案在 §7.2）。
+选管要留 2 倍（§6.3），不是照抄 $I_{\mathrm{D}}$。}
+
+\gapitem{（8）忘了 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$ 的 2}{p33 的原句只给结论。
+不加这个 2，管子会因窄脉冲发热而超额（§6.3）。反过来，$U_{\mathrm{R}}$ 不加 2。}
+
+\gapitem{（9）电容耐压只按 $U_2$ 或按 $35.4\,\mathrm{V}$ 卡死}{耐压要 $\ge\sqrt2U_2$（p33），且要留裕量。
+本例 $\sqrt2U_2=35.4\,\mathrm{V}$，若选 $35\,\mathrm{V}$ 档就长期贴着极限；正确做法是选 $50\,\mathrm{V}$ 档（§5.4）。}
+
+\gapitem{（10）以为滤波后输出是「精确的 $1.2U_2$」}{$1.2$ 是推荐电容下的估计（§6.2 的数值表）。
+同一电路换一只 $C$，输出可以从 $1.11U_2$ 变到 $1.35U_2$；要精确，必须加稳压。}
+
+\gapitem{（11）把 p45 的 34.5 抄进答案}{p45 同一页先算出 35.4 V，后一行写 34.5 V，是笔误（§5.3）。
+按 $\sqrt2\times25=35.355$ 复算，正确值 35.4 V。}
+
+\gapitem{（12）把「全波」等同于「四只二极管」}{p13 的判据是两个半周都供电（§3.7）。
+中心抽头只用两只也可以是全波；桥式四只当然是全波。}
+
+\gapitem{（13）把一次电压 $220\,\mathrm{V}$ 当 $U_2$}{p2 板上丝印的 $220\mathrm{V}\,50\mathrm{Hz}$ 是变压器一次侧；
+$U_2$ 是二次侧有效值，由变压比决定，与 220 V 无关（§5.8）。}
+
+\gapitem{（14）把全波的 $I_{\mathrm{D}}=\tfrac12I_{\mathrm{O}}$ 套到半波}{半波只有一只管子承担全部电流，
+所以 $I_{\mathrm{D}}=I_{\mathrm{O}}$（p24 的两列都写 $I_{\mathrm{D}}=I_{\mathrm{O}}$）。
+套成一半，选管电流会小一半，管子会烧。}
+
+\gapitem{（15）用 $U_{\mathrm{O}}$ 去核对耐压}{$U_{\mathrm{O}}$ 是\textbf{平均值}，耐压看的是\textbf{峰值} $\sqrt2U_2$。
+本例 $U_{\mathrm{O}}=30\,\mathrm{V}$，但 $U_{\mathrm{Rm}}=35.4\,\mathrm{V}$——用 30 V 选管会差 $18\%$。}
+
+\gapitem{（16）把全波与半波的放电时间混用}{推荐式 $C\ge(1.5\sim2.5)/(R_{\mathrm{L}}f)$ 里的 $T/2$ 是\textbf{全波}的放电时间；
+半波放电一个整周期 $T$，同一只电容纹波大一倍（§6.4）。半波题要另算，不要直接套。}
+
+\gapitem{（17）把 $C$ 的单位 F 与 $\mu\mathrm{F}$ 混}{$300\,\mu\mathrm{F}=3\times10^{-4}\,\mathrm{F}$。
+若把 $3\times10^{-4}$ 当成 $\mu\mathrm{F}$，会选成 $0.3\,\mu\mathrm{F}$，滤波等于没接。}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+\gapitem{机制缺口}{p24\quad 表格「Half wave rectifier / $U_{\mathrm{O}}=0.45U_2$」\quad
+缺：$0.45U_2$ 全册没有推导（p22 只推了桥式的 $0.9U_2$）\quad 补：§2.3 用 $\frac{1}{2\pi}\int_0^\pi$ 补全}
+
+\gapitem{机制缺口}{p16\quad 「why it is called half wave？」\quad
+缺：提问没有答案\quad 补：§2.4 用导通角 $\pi$ 与「每周期一个鼓包」回答}
+
+\gapitem{机制缺口}{p13\quad 「Which one is full wave rectifier？」\quad
+缺：四张电路图并列，没有说明哪几张是全波\quad 补：§3.7 用「两个半周都供电」一条判据回答}
+
+\gapitem{机制缺口}{p22\quad 「Is the output voltage DC? / Is U2 DC? / What is the difference between $I_{\mathrm{F}}$ and $I_{\mathrm{D}}$?」\quad
+缺：三问都没有答案\quad 补：§7.2 逐问回答（平均值、有效值、额定与实际的差别）}
+
+\gapitem{答案形态}{p30\quad 「Is it still 0.9 U2？」\quad
+缺：没有回答加电容后系数变成多少\quad 补：§6.2 给出「不是 0.9，而是约 1.2（全波）/ 1.0（半波），并随 $\tau$ 趋近 $\sqrt2U_2$」}
+
+\gapitem{机制缺口}{p34\quad 「$U_{\mathrm{Rm}}=2\sqrt2U_2$」（Half wave rectifier、With capacitor 一列）\quad
+缺：为什么是两倍，没有推导；p39 的黄色框也只给结论\quad 补：§6.1 用「电容把阴极钳在正峰、副边把阳极压到负峰」补}
+
+\gapitem{拼接缺口}{p17\quad 「Center-tapped Full wave rectifier」与「Bridge full wave rectifier」并列\quad
+缺：中心抽头此后不再分析，p24 总表把两者合称「Full wave rectifier」并统一给 $U_{\mathrm{Rm}}=\sqrt2U_2$\quad
+补：§4.2 补中心抽头的 $2\sqrt2U_2$，§4.5 点名总表的适用边界}
+
+\gapitem{适用前提}{p33\quad 「$U_{\mathrm{O}}=U_2$（half-wave 半波）」「$U_{\mathrm{O}}=1.2U_2$（full-wave 全波）」\quad
+缺：没写这两个系数只在「有电容」时成立，也没给推导\quad 补：§6.2 的数值模型（推荐电容取下限时正是 1.03 与 1.20）}
+
+\gapitem{机制缺口}{p33\quad 「$C\ge(3\sim5)\dfrac{T}{2R_{\mathrm{L}}}$」\quad
+缺：$3\sim5$ 与 $T/2$ 的来历（为什么是全波的半个周期）\quad 补：§6.2 用 $\tau$ 与纹波目标 $20\%\sim33\%$ 解释}
+
+\gapitem{机制缺口}{p33\quad 「Because the current is pulsating, the current takes twice the value.」\quad
+缺：为什么「两倍」\quad 补：§6.3 用导通占空比 $D\approx0.25$ 与波形因数 $1/\sqrt D$ 补}
+
+\gapitem{算术笔误}{p45\quad 「$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=34.5\,\mathrm{V}$」（同页先算出「$U_{\mathrm{Rm}}=\sqrt2U_2=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V}$」）\quad
+缺：34.5 与 35.4 自相矛盾\quad 补：§5.3 点名笔误，按复算值 35.4 V 走}
+
+\gapitem{机制缺口}{p31\quad 「$(R_{\mathrm{L}}=\infty)$：$u_{\mathrm{L}}=u_{\mathrm{C}}=\sqrt2u_2$」\quad
+缺：为什么负载开路时输出就是峰值\quad 补：§5.5 用「无放电回路」补}
+
+\gapitem{未答例题}{p35、p42\quad 「If U2 is 20V, how much is the output voltage？」\quad
+缺：两页都没有给答案\quad 补：§7.1 给 24 V（桥式 $+$ 电容），§7.3 给故障下的读数表}
+
+\gapitem{版面重复}{p37--p41\quad 与 p22、p24、p34 的表和公式交叠（Review 页）\quad
+缺：同一内容在册内出现两到三次\quad 补：§0.1 的坐标表按去重后的内容计，§7.4 只取四页各自的 $U_{\mathrm{Rm}}$}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{整流管方向，滤波管起伏，稳压管稳定}：$0.45U_2$（半波）与 $0.9U_2$（全波）只差「有没有用上负半周」；
+加电容后系数抬到 $1.0U_2$ 与 $1.2U_2$，峰值始终是 $\sqrt2U_2$。
+\item \textbf{二极管应力看「关断管两端接在哪」}：一端交流、一端直流 $=$ $\sqrt2U_2$（桥式，有无电容都一样）；
+两端都隔着整个副边 $=$ $2\sqrt2U_2$（半波加电容、中心抽头）。
+\item \textbf{电容与纹波都由 $\tau=R_{\mathrm{L}}C$ 决定}：$C\ge(1.5\sim2.5)/(R_{\mathrm{L}}f)$、$U_{\mathrm{CN}}\ge\sqrt2U_2$；
+选管 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$、$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}$；$1.2U_2$ 是估计值，不是定律。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{7.4cm}p{5.8cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1--p2 & 封面、目录、实物板（$470\,\mu\mathrm{F}/50\,\mathrm{V}$、78 系列） & §0.1、§1.4、§5.8
+\\
+p3--p5 & 整机框图、变压器高亮、实物对应 & §1.1、§1.2
+\\
+p6--p8 & 整流/滤波/稳压高亮、三端稳压器照片 & §1.1、§5.8
+\\
+p9--p12 & 四环节功能句与波形链 & §1.1、§1.2
+\\
+p13 & 整流分类与「Which one is full wave」 & §3.7
+\\
+p14--p16 & 半波原理、正负半周、「why half wave」 & §2.1--§2.4
+\\
+p17 & 中心抽头式与桥式并列 & §3.1、§4.1
+\\
+p18 & 桥式主电路与接法 & §3.2
+\\
+p19--p20 & 正/负半周导通路径 & §3.3
+\\
+p21 & 输出波形与方框画法（等效重画） & §3.4
+\\
+p22 & 桥式计算、四条件、三个提问 & §3.5、§6.3、§7.2
+\\
+p23 & 整流桥器件与引脚 & §3.8
+\\
+p24 & 半波/全波总表（无电容） & §0.3、§4.5、§5
+\\
+p25--p26 & 滤波器分类、电容滤波适用场合 & §7.5、§7.6
+\\
+p27--p29 & 电容滤波原理：并联、充电、放电 & §6.2
+\\
+p30--p32 & 时间常数、$R_{\mathrm{L}}\to\infty$、结论 & §6.2、§5.5
+\\
+p33 & 设计公式（$U_{\mathrm{O}}$、$C$、$U_{\mathrm{CN}}$、二极管） & §5.4、§6.2、§6.3
+\\
+p34 & 四列总表（有/无电容） & §6.1、§6.2
+\\
+p35--p36 & 例题：$U_2=20\,\mathrm{V}$ 求输出 & §7.1
+\\
+p37--p41 & Review 总表与四种电路的 $U_{\mathrm{Rm}}$ & §7.4
+\\
+p42 & E2 故障排查（表读 000） & §7.3
+\\
+p43 & 电源适配器实物（设计题引子） & §0.1
+\\
+p44--p47 & E1 设计题全程 & §5
+\\
+p48 & 电感滤波 & §7.5
+\\
+p49 & 复式滤波（$\pi$ 型 LC / RC） & §7.6
+\tabbot
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算：$\sqrt2/\pi=0.4502$、$2\sqrt2/\pi=0.9003$、
+$\sqrt2\times25=35.355$（取 $35.4$）、$30/1.2=25$、$30/100=0.3$、$0.5\times0.3=0.15$、
+$2\times0.15=0.3$、$(1.5\sim2.5)/(100\times50)=(300\sim500)\,\mu\mathrm{F}$、$0.9\times25=22.5$、$1.2\times20=24$；
+电容滤波的数值表按 $u_{\mathrm{O}}=U_{\mathrm{m}}e^{-t/\tau}$ 逐点求解。
+标 [教材补充] 的几处（半波变压器的直流分量、中心抽头 $2\sqrt2U_2$ 的独立推导、$1.2U_2$ 的时间常数模型与纹波式、
+$I_{\mathrm{F}}\ge2I_{\mathrm{D}}$ 的占空比解释、p42 排查表、实物电容下的实际输出）不是课件原文，
+只作理解与工程判断用，不作文档口径。
+课件 p45 的「34.5 V」是笔误，本讲义按 $\sqrt2\times25=35.4\,\mathrm{V}$ 走。}
+
+\end{document}

@@ -1,0 +1,1193 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第一章第四讲（Chapter One-4）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C1-4 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{1.9 叠加定理与 1.10 等效电源定理}
+{独立源为什么要分开算、二端网络凭什么只剩两个数、E1 与戴维南主例的每个数字从哪来}
+{依据：课件「Chapter One -4-2026中白上传.pdf」（p1--p45，共 45 页；本讲义页码一律指本册 PDF 物理页，引用他册写成 [C4-3 p12] 的形式）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与四处拼接}
+
+\subhdr{0.1 这一册其实是两讲：一块讲「怎么算」，一块讲「能不能只留两个数」}
+
+本册前一半（p1--p21）是 1.9 叠加定理：多个独立源同时作用时，把解拆成「每个源单独作用」的分量之和。
+后一半（p22--p45）是 1.10 等效电源定理：一个含源线性二端网络对外看，能不能用一个电压源串一只电阻（戴维南）
+或一个电流源并一只电阻（诺顿）顶替。
+两半不是并列关系：\textbf{戴维南定理就是叠加定理的一次应用}（§4.1 证明）。课件把两讲排在一起却
+一句连接都没有，所以本讲义的骨架是「叠加 $\to$ 置零 $\to$ 边界 $\to$ 等效」（§1--§4），
+然后两侧各一个主例题（§5），最后才是其余例子与公式卡。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.1cm}p{3.0cm}p{6.9cm}p{2.4cm}@{}}
+\tabtop
+\thead{课件页} & \thead{小节} & \thead{页面内容} & \thead{本讲义}
+\\
+\tabmid
+p1 & 1.9 封面 & 标题页，无正文 & §0
+\\
+p2 & 1.9.1 定义与用途 & 定义句 + 「Purpose: Simplify the calculation」 + 两幅多电源图 & §1.1
+\\
+p3 & 1.9.2 Content & 正式表述 + 通用网络图 + 叠加式 & §1.1、§1.4
+\\
+p4 & 1.9.2 Content & 同一页 + 提问「replaced by their internal resistances」 & §2.1
+\\
+p5 & 1.9.2 Content & 置零规则：电压源短路、电流源开路 & §2.1
+\\
+p6--p9 & 1.9.2 Content & 同一张图的置零动画（四帧，无新文字） & §2.2
+\\
+p10 & 1.9.3 Steps & 三步法（三条英文条目） & §2.3
+\\
+p11 & 1.9.4 Notice & 四条 Notice（第 (3) 条正文重复第 (2) 条） & §3
+\\
+p12--p15 & 1.9.5 Example E1 & 三支路：$I'=2\,\mathrm{A}$、$I''=-1\,\mathrm{A}$、$I=1\,\mathrm{A}$ & §5.1--§5.4
+\\
+p16--p18 & 1.9.5 Example E2 & $I'=3\,\mathrm{A}$、$I''=5\,\mathrm{A}$、$I=8\,\mathrm{A}$ & §7.1
+\\
+p19--p21 & 1.9.5 Example E3--E5 & 只给电路，\textbf{全册没有答案} & §7.2、§7.3、§7.6
+\\
+p22 & 1.10.1 Basic idea & 二端网络术语、两种分类、两幅等效图 & §4.0
+\\
+p23 & 1.10.2 定理陈述 & 戴维南定理一句话表述 + 对照图 & §4.1
+\\
+p24--p25 & 1.10.2 Terminal & 主例原电路；划掉 $8\,\Omega$、留出端口 a、b & §5.5
+\\
+p26 & 1.10.2 Key & $U_{eS}=U_{OC}$ & §4.2
+\\
+p27 & 1.10.2 Key & $R_0=U_{eS}/I_{SC}=U_{OC}/I_{SC}$ + 置零求等效电阻 & §4.2、§4.4
+\\
+p28 & 1.10.2 Key & 「How to deduce this conclusion?」用本网络算了一遍 & §6
+\\
+p29--p32 & 1.10.2 Steps & Terminal $\to$ Equivalent resistance $\to$ $R_0=6\,\Omega$ & §5.6
+\\
+p33--p38 & 1.10.2 Steps & Open-circuit voltage $\to U_{ab}=14\,\mathrm{V}$ $\to$ 等效电路 $\to I=1\,\mathrm{A}$ & §5.7、§5.8
+\\
+p39--p41 & 1.10.2 习题 E1--E3 & p39 与 p16 同电路；p40 与 p20 同电路；p41 换 12 V/6 $\Omega$ & §7.4、§7.3、§7.7
+\\
+p42--p45 & 1.10.2 习题 E4 & 同一电路贴四个方法名，四页无一个数 & §7.5
+\tabbot
+\end{tabular}
+
+\subhdr{0.2 四处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p3 说其他源「replaced by their internal resistances」，p5 却说
+「For ideal voltage source, it is like a short circuit」与「For ideal current source, it is like a open circuit」。
+两种说法之间缺一句桥：置零置的是\textbf{源值}，内阻留在电路里；理想电压源内阻为 $0$ 所以退化成短路，
+理想电流源内阻为 $\infty$ 所以退化成开路。§2.1 把这条桥补上。}
+
+\gapitem{拼接缺口}{p21 讲完叠加、p22 直接跳到等效电源，中间没有一句话说明两者的关系。
+其实戴维南等效的两条参数（$U_{OC}$ 与 $R_0$）正是叠加定理在「端口」这一个元件上的应用结果：§4.1 给出证明。
+不接这一步，两个定理就只能各自背公式。}
+
+\gapitem{形式改写}{p2 的 \texttt{Definition} 与 p3 的 \texttt{Content} 是同一句话的两次换写
+（前者按元件说，后者按支路说），真正的机制——为什么「分别作用再相加」等于「一起作用」——两页都没有。
+§1.2 用节点方程两行证完。}
+
+\gapitem{版面}{p5--p9 五页是同一张图的连续动画（只演示置零，无新文字）；p29--p38 是同一电路的十帧连续步骤；
+p42--p45 是同一电路只换方法名。§0 的坐标表按去重后的内容计，§10 另备案，不重复计缺口。}
+
+\callout{\textbf{本讲义怎么用}：\\
+读第一遍只看 §0 表、§5 两个主例题、§8 公式卡——这三处能让你把题做对；\\
+读第二遍再看 §1、§2、§4、§6——这四处解释「为什么可以拆、为什么只剩两个数」，是换一个电路还能不能算对的关键；\\
+\textbf{§10 缺口清单}逐条对应课件某页某句，课件哪句话让你卡住，就去那里找。}
+
+%=============================================================
+\subhdr{0.3 记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.9cm}p{11.6cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$U_S,\ I_S$ & 独立电压源、独立电流源的\textbf{源值}（课件写 $U_{S1},U_{S2},U_{S3},I_S$）；置零就是令它们为 $0$
+\\
+$I',\ I''$ & 各独立源单独作用时\textbf{同一条支路}电流的分量，\textbf{与总电流取同一参考方向}
+\\
+$U_{OC}$ & 端口\textbf{开路电压}（课件写 UOC）；开路即端口电流为零时的端电压
+\\
+$I_{SC}$ & 端口\textbf{短路电流}（课件写 ISC）；短路即端电压为零时从 $+$ 端流出的电流
+\\
+$R_0$ & 戴维南（也叫端口）\textbf{等效电阻}（课件写 R0）：内部独立源全部置零、受控源保留后，从端口看进去的电阻
+\\
+$U_{eS}$ & 等效电压源的\textbf{源值}（课件写 UeS）；它与 $U_{OC}$ 数值相等，但一个是「元件参数」、一个是「测量结果」
+\\
+$R_L$ & 外接负载电阻（p24 的那只 $8\,\Omega$ 就是 $R_L$）
+\\
+$i_L$ & 从 $+$ 端\textbf{流出}网络、送进负载的电流；戴维南端口方程按这个方向写
+\\
+$v,\ i$ & 端口电压与\textbf{流入}网络的端口电流（只出现在 §4.1 的定理陈述里）
+\tabbot
+\end{tabular}}
+
+\warnbox{\textbf{一个记号陷阱}：$U_{eS}$ 与 $U_{OC}$ 数值相等，但 $U_{OC}$ 是「把负载拿掉、量出来的电压」，
+$U_{eS}$ 是「画在等效电路里的电源值」。做题时先说清你要的是哪一个，再代数；
+求 $R_0$ 时若把负载 $R_L$ 也算进去，$R_0$ 就变成了「端口总电阻」，与定理里的 $R_0$ 不是一回事（§9 第 (4) 条）。}
+
+\subhdr{0.4 本讲义反复用的一个工具：节点法一行模板}
+
+全册的计算都落在同一句话上：把「节点电压」当未知量，对每个节点写「流出该节点的电流之和为零」。
+模板是
+\[ \sum_{\text{电阻支路}}\frac{V_{\text{本}}-V_{\text{邻}}}{R}
+   +\sum(\text{离开本节点的源电流})=0 . \]
+三条纪律：先取一个节点为 $0\,\mathrm{V}$（通常取公共底线）；理想电流源直接把常数项写进「离开/进入」；
+理想电压源把两个节点钉成一个条件（差值已知），此时对该两支路围成的「超节点」写一次 KCL。
+
+\aside{本讲义有四节要用它，写法完全相同、只是「邻节点」不同：
+§5.4 写一次（E1 上端）、§5.7 写两次（主例左右两块）、§7.2 写三次（E3 的 T、M、L）、§7.6 写四次（E5 四个节点）。
+把这张模板抄在草稿纸角上，比记四个公式省事。}
+
+%=============================================================
+\hdr{§1}{叠加定理为什么成立：线性性的两行证明}
+
+\subhdr{1.1 课件给了什么（p2、p3、p10）}
+
+课件 p2 的定义是（原文）：
+\callout{The voltage across (or current through) an element in a linear electric circuit is the
+algebraic sum of the voltages across (or currents through) that element due to each independent
+source acting alone.}
+
+p3 又换了一种说法，把「元件」改成「支路」，并写成一条叠加式 $I=I'+I''+I'''+I''''$；
+p10 给出三步：逐个源单独作用、重复、代数相加。三页合起来是\textbf{结论 + 步骤}，
+缺的正是中间那一步——为什么可以分别算再相加。
+
+\subhdr{1.2 机制：节点方程对源值是线性的}
+
+设网络只含线性电阻（电导 $G_k$）、线性受控源与独立源。对每个节点写 KCL，得到
+
+\[ \mathbf{G}\,\mathbf{v}=\mathbf{J} \]
+
+其中 $\mathbf{G}$ 只由各电导和受控源的控制系数决定，\textbf{与源值无关}；$\mathbf{J}$ 则是各独立源源值的线性组合。
+把源值分成「第 $k$ 个源单独作用」的若干组，则
+
+\[ \mathbf{J}=\sum_k \mathbf{J}_k ,\qquad
+   \mathbf{v}=\mathbf{G}^{-1}\mathbf{J}=\sum_k \mathbf{G}^{-1}\mathbf{J}_k=\sum_k \mathbf{v}_k . \]
+
+支路电压、支路电流都是节点电压的线性组合，所以它们同样满足「分量相加」。
+
+\begin{itemize}
+\item 这里唯一被用到的事实是：\textbf{$\mathbf{G}$ 不随源值变}。这正是「元件线性」的含义——电阻的阻值不随电压电流变；
+\item 一旦某个元件非线性（二极管、稳压管、白炽灯丝），它的等效电导成了未知量的函数，$\mathbf{G}=\mathbf{G}(\mathbf{v})$，
+      $\mathbf{v}=\mathbf{G}(\mathbf{v})^{-1}\mathbf{J}$ 就不再对 $\mathbf{J}$ 线性，叠加立刻失效。
+\end{itemize}
+
+\aside{课件 p2 的 「in a linear electric circuit」 与 p11 的 「all of the components must be linear」
+说的就是「$\mathbf{G}$ 与源值无关」这一条；本讲义的推导把它写成了可检验的形式：
+凡是元件参数会随工作点变的，都不能用叠加。}
+
+\subhdr{1.3 定理陈述（完整形式）}
+
+\callout{\textbf{叠加定理}。\ 设网络 $N$ 由线性元件（含线性受控源）与独立源组成，共有 $n$ 个独立源。
+记 $u^{(k)}$ 为「只保留第 $k$ 个独立源、其余独立源源值置零」时某条支路的电压或电流。
+则所有独立源同时作用时，该支路的电压或电流为
+\[ u=\sum_{k=1}^{n}u^{(k)} . \]
+条件有三条：（1）所有元件线性；（2）受控源属于「线性元件」，不能被置零，必须留在每个分电路里；
+（3）各分量必须取\textbf{同一个参考方向}，相加是\textbf{代数}相加（带符号）。}
+
+\subhdr{1.4 最小的数字例子：为什么「线性」这么关键}
+
+一只 $1\,\mathrm{k\Omega}$ 电阻接两个同向电流源，$2\,\mathrm{mA}$ 与 $3\,\mathrm{mA}$。
+单独作用时端电压分别是 $2\,\mathrm{V}$ 与 $3\,\mathrm{V}$，同时作用是 $5\,\mathrm{V}=2+3$——这就是线性。
+换成一只二极管，$2\,\mathrm{mA}$ 时压降约 $0.70\,\mathrm{V}$、$3\,\mathrm{mA}$ 时约 $0.71\,\mathrm{V}$（对数关系，涨得极慢），
+两者相加应是 $1.41\,\mathrm{V}$，而同时作用实测只有 $0.71\,\mathrm{V}$ 左右：因为二极管的「电阻」随电流变，
+$\mathbf{G}$ 不再是常数。
+
+这个例子说明：叠加不是「把电源一个个关掉再测」的实验操作，而是\textbf{解的结构}。
+分电路里的元件值与原电路不同（源被置零了），但拓扑、参考方向、线性元件都必须一一对应。
+
+\subhdr{1.5 「线性」的两个方向：齐次与可加，用 E1 的数验一次}
+
+「线性」包含两条性质，课件只用了其中一条。齐次性：源值同时乘 $\lambda$，所有响应也乘 $\lambda$。
+可加性：两个源各自单独作用的结果相加，等于它们同时作用的结果——这就是叠加定理。
+合起来才叫线性；只有可加、没有齐次的说法是不成立的（两者其实是同一个线性映射的两面）。
+
+用 E1 验一次。$4\,\mathrm{A}$ 与 $20\,\mathrm{V}$ 时 $I=1\,\mathrm{A}$（§5.4）。把两个源值同时翻倍
+（$8\,\mathrm{A}$、$40\,\mathrm{V}$），按齐次性应有 $I=2\,\mathrm{A}$。直接解：上端 KCL 为
+$8=\frac{V_T}{10}+\frac{V_T+40}{10}$，得 $V_T=20\,\mathrm{V}$，故 $I=20/10=2\,\mathrm{A}$，与齐次性预期一致。
+源值减半（$2\,\mathrm{A}$、$10\,\mathrm{V}$）则给 $I=0.5\,\mathrm{A}$。
+
+这三个数连起来看比单个结果更能说明「线性」是什么意思：\textbf{比例关系对电压、电流成立，对功率不成立}
+（功率按平方走，见 §3.3）。做题时用齐次性验量级，比重新解一遍快。
+
+%=============================================================
+\hdr{§2}{「置零」到底置掉了什么：规则与三条边界}
+
+\subhdr{2.1 从「内阻」到「短路/开路」：p3 与 p5 怎么对上}
+
+课件 p4 的提问是（原文）：
+\callout{What do you mean by saying all the other independent sources are replaced by their
+internal resistances? How to deal with the other sources when they are not working?}
+
+p5 给出的答案是两条规则，但没有说明它与 p3 的「internal resistances」是什么关系。桥在这里：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.2cm}p{7.6cm}@{}}
+\tabtop
+\thead{源} & \thead{真实模型} & \thead{令源值为零之后}
+\\
+\tabmid
+电压源 & 理想源 $U_S$ 串内阻 $R_S$ & 只剩 $R_S$。理想电压源 $R_S=0$，两端被短接 $\Rightarrow$ \textbf{短路}
+\\
+电流源 & 理想源 $I_S$ 并内阻 $R_S$ & 只剩 $R_S$。理想电流源 $R_S=\infty$，支路断开 $\Rightarrow$ \textbf{开路}
+\tabbot
+\end{tabular}
+
+所以 p3 的「replaced by their internal resistances」是\textbf{真实源}的说法，p5 的「short / open」是
+\textbf{理想源}的说法，两者是同一件事在两个模型下的样子。本册题目里的源一律按理想源处理：
+置零 $=$ 电压源短路、电流源开路。
+
+\aside{代入本册的题：E1（p12）只有「$4\,\mathrm{A}$ 理想电流源」与「$20\,\mathrm{V}$ 理想电压源」两个源。
+只留 $20\,\mathrm{V}$ 时，$4\,\mathrm{A}$ 那条支路整条断开（不是接 $0\,\mathrm{A}$ 而是开路），
+左支路的 $10\,\Omega$ 随之退出电路——所以分电路里那只 $10\,\Omega$ 不起作用。}
+
+\subhdr{2.2 分电路不是「关电源再测」}
+
+p5--p9 用五页动画演示「只让一个源工作」，容易读成「先把别的源关掉，量一下，再换一个」。
+准确的说法是：\textbf{把同一个解写成两个子问题的和}。两个子电路是数学上的辅助电路，
+它们的源值不同，但节点编号、元件位置、参考方向必须与原电路一一对应，否则分量加不回去。
+
+\warnbox{\textbf{一个常被忽略的边界}：受控源（如三极管的 $\beta i_b$、运放的 $A u_d$）是\textbf{因变量}，
+不是独立源。它们\textbf{不能置零}，而且每个分电路里都要保留——因为控制量在每个分电路里都不同。
+课件 Notice 第 (1) 条只说了「元件必须线性」，没有点明这一条，而它是叠加法在电子电路里最容易出错的地方。}
+
+\subhdr{2.3 三步法的执行细节（p10）}
+
+p10 的三条（原文）是：
+\callout{(1) Turn off all the other independent sources except the one in operation. Find the outputs
+(voltage or current) due to that active source.\\
+(2) Repeat step (1) for each of the other independent source.\\
+(3) Find the total contribution by adding algebraically all the contributions due to the independent sources.}
+
+执行时补三个细节，课件没写但每题都要用：
+
+\begin{enumerate}
+\item \textbf{先定参考方向，再拆}。全部分量沿用原电路待求量的箭头方向；分量算出负数就带负号加，
+      不要临时改箭头（§3.2 用 E1 的 $I''=-1\,\mathrm{A}$ 演示）。
+\item \textbf{一次只留一个源，不等于一次只能留一个}。p11 第 (4) 条 「Each group can have more than one sources」
+      允许把若干源合成一组处理（比如两个同向电流源先并联），只要分组不重不漏。
+\item \textbf{每一步都要能回到原电路自检}。最省事的自检是把总结果代回原电路直接解一遍（§5.4、§5.8 都这么做了）。
+\end{enumerate}
+
+分组的一个小例子：两只 $2\,\mathrm{A}$ 与 $3\,\mathrm{A}$ 的电流源并接在同一对节点上、共同向 $1\,\Omega$ 供电。
+分开算得 $2\,\mathrm{V}+3\,\mathrm{V}=5\,\mathrm{V}$；先把两只源合并成 $5\,\mathrm{A}$ 再算，得 $5\,\mathrm{V}$——
+同一个数，但少了一个分电路。分组只对\textbf{同类、同向}的源方便，方向不一致时必须带符号合并。
+
+%=============================================================
+\subhdr{2.4 受控源不能置零：一个 $6\,\mathrm{V}$ 变 $3\,\mathrm{V}$ 的反例}
+
+上面第 (2) 条边界值得单独算一遍。取一个只有三条支路的电路：节点 A 经 $1\,\Omega$ 接地；
+一只 $2\,\mathrm{A}$ 独立电流源、一只 $1\,\mathrm{A}$ 独立电流源、一只压控电流源（$g_m=0.5\,\mathrm{S}$，
+控制量取 $v_A$ 本身），三支都由地注入 A。节点法一行：
+
+\[ \frac{v_A}{1}=2+1+0.5\,v_A\ \Longrightarrow\ v_A=6\,\mathrm{V} . \]
+
+正确的叠加：只留 $2\,\mathrm{A}$ 时由 $\frac{v_A}{1}=2+0.5v_A$ 得 $v_A=4\,\mathrm{V}$；
+只留 $1\,\mathrm{A}$ 时同法得 $v_A=2\,\mathrm{V}$；相加 $4+2=6\,\mathrm{V}$，与上面一致。
+注意每个分电路里那条受控源都在，而且它贡献的量在每个分电路里不同
+（$v_A=4\,\mathrm{V}$ 时是 $2\,\mathrm{A}$，$v_A=2\,\mathrm{V}$ 时是 $1\,\mathrm{A}$）。
+
+错误做法：把受控源也当独立源置零，就只剩 $\frac{v_A}{1}=2+1$，$v_A=3\,\mathrm{V}$——正好少一半。
+这个 $2$ 倍的来历就是 $\frac{1}{1-0.5}=2$：受控源把结果放大了 $2$ 倍，删掉它就等于把放大能力删掉。
+
+\aside{本册的两个主例（E1 与戴维南主例）都不含受控源，所以这条边界在课件里看不出来；
+但本课程第四章的微变等效电路（[C4-3 p12--p18]）里三极管就是受控源，那里一旦置零受控源，
+$A_u$ 这种量会整个消失。}
+
+%=============================================================
+\hdr{§3}{p11 的四条 Notice：两条能用、一条是空的、一条要补}
+
+\subhdr{3.1 四条的对照}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.1cm}p{5.2cm}p{8.2cm}@{}}
+\tabtop
+\thead{条目} & \thead{原文要点} & \thead{本讲义的处理}
+\\
+\tabmid
+(1) & 「all of the components must be linear」 & 见 §1.2；非线性元件（二极管）上不能用叠加
+\\
+(2) & 「It is not applicable to power」 & 结论对，但课件没给证据；§3.3 补出交叉项与数字
+\\
+(3) & 标题 「Pay attention to the direction」，正文却整段重复第 (2) 条 & \textbf{这一条是空的}；§3.2 补出方向规则
+\\
+(4) & 「Each group can have more than one sources」 & 允许分组，见 §2.3 第 (2) 点
+\tabbot
+\end{tabular}
+
+第 (3) 条值得单独说一句：它的标题承诺讲「方向」，正文却把第 (2) 条关于功率的话一字不差重复了一遍
+（p11 上确实如此），所以「注意方向」到底注意什么，课件全程没有答案。下面补上。
+
+\subhdr{3.2 方向规则：分量带符号}
+
+\callout{\textbf{方向规则}。所有分量都在\textbf{原电路的参考方向}下计算；
+若某个分量算出来是负数，说明该源单独作用时实际电流方向与参考方向相反，相加时\textbf{保留负号}。
+不要因为「看起来是反的」就提前把箭头翻过来——翻箭头等于把符号藏进图里，最后一定错。}
+
+用 E1（p14--p15）的数字看：$I'=2\,\mathrm{A}$、$I''=-1\,\mathrm{A}$，所以 $I=2+(-1)=1\,\mathrm{A}$。
+若把 $I''$ 的箭头提前翻成「$1\,\mathrm{A}$ 且方向相反」，再加就变成 $2+1=3\,\mathrm{A}$，错。
+反号的来源在 §5.3 讲清楚：$20\,\mathrm{V}$ 源的 $+$ 端在下，它把电流\textbf{顶}回上母线，与 $I$ 的参考方向相反。
+
+\subhdr{3.3 功率为什么不能叠加：交叉项}
+
+p11 第 (2) 条说功率不能用叠加，理由是「power is not a linear quantity」。这句是对的，但读者往往
+「知道不对、不知道差多少」。把 $I=I'+I''$ 代进 $P=I^2R$：
+
+\[ P=(I'+I'')^2R=\underbrace{I'^2R}_{P'}+\underbrace{I''^2R}_{P''}+\,2I'I''R . \]
+
+最后那一项就是交叉项，也是「不能叠加」的全部差额。用 E1 的中间支路（$R=10\,\Omega$）算一遍：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{3.2cm}p{7.0cm}@{}}
+\tabtop
+\thead{量} & \thead{数值} & \thead{说明}
+\\
+\tabmid
+真值 $P=I^2R$ & $(1\,\mathrm{A})^2\times10\,\Omega=10\,\mathrm{W}$ & 两源同时作用
+\\
+分量 $P'=I'^2R$ & $(2\,\mathrm{A})^2\times10\,\Omega=40\,\mathrm{W}$ & 只留 $4\,\mathrm{A}$ 源
+\\
+分量 $P''=I''^2R$ & $(1\,\mathrm{A})^2\times10\,\Omega=10\,\mathrm{W}$ & 只留 $20\,\mathrm{V}$ 源
+\\
+交叉项 $2I'I''R$ & $2\times2\times(-1)\times10=-40\,\mathrm{W}$ & 负号，因为两分量方向相反
+\\
+$P'+P''$ & $50\,\mathrm{W}$ & 与真值 $10\,\mathrm{W}$ 差 $40\,\mathrm{W}$，差额正是交叉项
+\tabbot
+\end{tabular}
+
+所以「功率不能叠加」不是玄学：$40+10-40=10$，交叉项必须补上，而交叉项里有两个源的乘积，
+不是任何单个源的贡献。题目若问功率，先求总电流或总电压，再平方——这是唯一不会错的路线。
+
+%=============================================================
+\hdr{§4}{两讲其实是同一件事：戴维南定理是叠加定理的一次应用}
+
+\subhdr{4.0 课件 p22 想要什么}
+
+p22 的版面把三件事一次摆出来：术语（「Two terminal network」与有源、无源二端网络）、
+分类（「Thévenin's Theorem」「Norton's Theorem」）、用途
+（「Simplify an active linear two-terminal network」）。它承诺「把一个有源线性二端网络化简」，
+但没有说清「凭什么能化简成两个元件」。p23 直接给出定理陈述：
+
+\callout{Thévenin's theorem states that a linear two-terminal network can be replaced by an
+equivalent circuit consisting of a voltage source $U_{OC}$ in series with a resistor $R_0$.}
+
+这句话只说「可以」，没说「为什么可以」。下面把它还原成原形式并证明。
+
+\subhdr{4.1 定理（原形式）与证明}
+
+\callout{\textbf{戴维南定理（原形式）}。\ 设 $N$ 是由线性电阻、线性受控源与独立源组成的二端网络，
+端口电压 $v$ 与端口电流 $i$ 取关联参考方向（$i$ 自 $+$ 端\textbf{流入}网络）。则存在两个常数
+$U_{OC}$ 与 $R_0$，使对任意 $i$ 都有
+\[ v=U_{OC}+R_0\,i . \]
+其中 $U_{OC}$ 是端口开路（$i=0$）时的端电压，$R_0$ 是内部独立源全部置零、受控源保留后从端口看进去的等效电阻。\\
+若记作「送进负载的电流」$i_L=-i$，则常用形式为
+\[ v=U_{OC}-R_0\,i_L . \]
+}
+
+证明部分是本讲义补的 [教材补充]：课件 p23 只给陈述，p26--p28 只给两个公式，全册没有一处证明。
+补它的理由很实在——不证，「为什么只要两个数」就只能靠背；证明了，这句话就是 §1.2 的直接推论。
+
+\textbf{证明（用叠加定理）}。把端口电流 $i$ 看成「外接一个电流源」的作用。
+由 §1.2，端口电压对「内部独立源」与「外接电流源」是线性的，故可拆成两项：
+$v=v_{\mathrm{in}}+v_{\mathrm{ex}}$，其中 $v_{\mathrm{in}}$ 是只留内部源时的端口电压，
+$v_{\mathrm{ex}}$ 是只留外接源时的端口电压。
+
+第一项里 $i=0$（外接源被置零 $=$ 开路），正是端口开路电压 $U_{OC}$。
+第二项里内部独立源全部置零，网络退化成纯电阻网络，$R_0$ 就是它从端口看进去的等效电阻；
+此时电流 $i$ 自 $+$ 端流入、从 $-$ 端流出，端电压就是 $v=R_0\,i$。
+两项相加即得 $v=U_{OC}+R_0\,i$。
+
+\aside{这一步的旁注只有一句：\textbf{「线性 $\Rightarrow$ 端电压是端口电流的一次函数 $\Rightarrow$ 两个数就够了」}。
+对本题的代入选法：主例（p24）里 $U_{OC}=14\,\mathrm{V}$、$R_0=6\,\Omega$，
+接 $8\,\Omega$ 负载时 $i_L=1\,\mathrm{A}$，于是 $v=14-6\times1=8\,\mathrm{V}$——与直接量 $8\,\Omega$ 上的电压一致（§5.8 自检）。}
+
+\subhdr{4.2 课件的两个公式是推论，不是定理}
+
+p26 写 「$U_{eS}=U_{OC}$」，p27 写 $R_0=U_{eS}/I_{SC}=U_{OC}/I_{SC}$，并配一句
+「Shut down all the sources inside and calculate the equivalent resistance」。
+这两条都能从 §4.1 的直线直接读出：
+
+\begin{itemize}
+\item 令 $i_L=0$（端口开路）：$v=U_{OC}$。这就把「等效电源的源值」钉死为开路电压（p26）；
+\item 令 $v=0$（端口短路）：$i_L=U_{OC}/R_0$。这就是短路电流 $I_{SC}$，反解得 $R_0=U_{OC}/I_{SC}$（p27）；
+\item p27 那句「置零内部源、算等效电阻」是同一件事的第二种求法：$R_0$ 本来就是直线斜率，斜率与源值无关，
+      所以可以先把源置零再量电阻。
+\end{itemize}
+
+顺带说清 $U_{eS}$ 与 $U_{OC}$ 的关系：数值相等，含义不同（§0.3 的记号陷阱）。
+
+\subhdr{4.3 诺顿：同一条直线的另一种写法}
+
+把 $v=U_{OC}-R_0i_L$ 两边除以 $R_0$ 并移项：
+
+\[ i_L=\frac{U_{OC}}{R_0}-\frac{v}{R_0}=I_{SC}-\frac{v}{R_0} . \]
+
+这就是「一个电流源 $I_{SC}$ 并一只 $R_0$」的端口方程（p22 右下图）。
+所以戴维南与诺顿不是两个定理，而是\textbf{同一条直线的两种参数化}：一个用截距（$U_{OC}$）与斜率（$-R_0$），
+一个用纵截距（$I_{SC}$）与斜率（$-1/R_0$）。做题时任选一种，只要求出的两个数对得上：
+
+\[ U_{OC}=I_{SC}\,R_0 . \]
+
+\subhdr{4.4 $R_0$ 的两种求法与等价条件}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{5.6cm}p{5.6cm}@{}}
+\tabtop
+\thead{求法} & \thead{做法} & \thead{什么时候用}
+\\
+\tabmid
+置零求电阻 & 内部独立源置零（电压源短路、电流源开路），受控源保留，从端口看进去算等效电阻 & 网络里电阻都能串并联时最快；含受控源时用它
+\\
+比例求电阻 & 先求 $U_{OC}$，再求 $I_{SC}$，$R_0=U_{OC}/I_{SC}$ & 网络里有电桥、不好串并联时；但 $R_0=0$ 或 $R_0=\infty$ 时失效（§6.3）
+\tabbot
+\end{tabular}
+
+两种方法必须给出同一个 $R_0$，这本身就是一道最省时间的自检题。用主例（p24）把两条路并排走一遍：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{5.4cm}p{5.4cm}@{}}
+\tabtop
+\thead{步骤} & \thead{置零法（§5.6）} & \thead{比例法（§6.5）}
+\\
+\tabmid
+先求什么 & 不求电压电流，直接把源置零 & 先求 $U_{OC}=14\,\mathrm{V}$（p36）
+\\
+再求什么 & 从 a、b 看进去算串并联 & 再求 $I_{SC}=7/3\,\mathrm{A}$（短路端口）
+\\
+$R_0$ & $(2\parallel2)+5=6\,\Omega$ & $14/(7/3)=6\,\Omega$
+\\
+适用 & 电阻能串并联时最快 & 有电桥、不好串并联时；$R_0=0$ 或 $\infty$ 时失效（§6.3）
+\tabbot
+\end{tabular}
+
+两条路的中间量完全不同、终点必须相同。这就是「$R_0$ 是端口属性，与你怎么算无关」的实证。
+
+%=============================================================
+\subhdr{4.5 边界：非线性网络为什么不能只用两个数}
+
+p23 的前提是「a linear two-terminal network」。换成非线性元件，这条前提就断了，而且这不是抽象的担心：
+把端口上的负载电阻换成一个二极管再串一只电阻，端口特性就是一条折线（正向导通段很陡、反向截止段很平），
+不是直线。此时用任意两点连一条线去「等效」，第三点必然对不上：
+例如用「开路点」与「短路点」定出 $U_{OC}$ 与 $I_{SC}$，代回一个中间工作点，算出来的电压与实测差得很远。
+所以「两个数」的办法不是近似技巧，而是线性这一前提的直接推论；前提不在，结论就不在。
+
+同理，若网络里某只电阻的阻值随温度或电压变（白炽灯丝、热敏电阻），端口特性也会弯，
+叠加与戴维南会同时失效——它们其实依赖的是同一个条件（§1.2 的 $\mathbf{G}$ 与源值无关）。
+
+%=============================================================
+\hdr{§5}{两个主例题全程：E1（p12--p15）与戴维南主例（p24--p38）}
+
+\subhdr{5.1 E1 的电路与分电路（p12--p13）}
+
+p12 的电路是三支路并联在上下两条母线之间，课件只给了数值与箭头，没有给支路清单。
+按页把这些元件列成表，后面每个数都从这张表出：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{8.4cm}p{2.4cm}p{2.4cm}@{}}
+\tabtop
+\thead{支路} & \thead{自上而下的元件} & \thead{上端} & \thead{下端}
+\\
+\tabmid
+左 & $10\,\Omega$ 串 $4\,\mathrm{A}$ 电流源（源在下，箭头朝上） & T & B
+\\
+中 & $10\,\Omega$；$I$ 的参考方向取 T$\to$B & T & B
+\\
+右 & $10\,\Omega$ 串 $20\,\mathrm{V}$ 电压源（源在下，$-$ 在上、$+$ 在下） & T & B
+\tabbot
+\end{tabular}
+
+把下端 B 取作 $0\,\mathrm{V}$，上端记 T。p13 把原电路拆成两个分电路：右上角只留 $4\,\mathrm{A}$（$20\,\mathrm{V}$ 短路），
+右下角只留 $20\,\mathrm{V}$（$4\,\mathrm{A}$ 开路）。
+
+\aside{这里藏着一个读图自检：p12 文字层一共标了\textbf{三只} $10\,\Omega$（每支路一只）。
+若把中间支路误读成两只 $10\,\Omega$ 串联，分电路会算出 $4/3\,\mathrm{A}$ 与 $-2/3\,\mathrm{A}$，
+与课件给的 $2\,\mathrm{A}$、$-1\,\mathrm{A}$ 都对不上。只有「三只 $10\,\Omega$」这一读法能同时复现课件的两个分量与总数，
+可以用它反过来核对电路图。}
+
+\subhdr{5.2 只留 $4\,\mathrm{A}$：$I'=2\,\mathrm{A}$}
+
+$20\,\mathrm{V}$ 源置零即短路，于是右支路只剩 $10\,\Omega$。上端 T 的 KCL 只有两条路可走（中支路与右支路），
+二者都是 $10\,\Omega$，所以 $4\,\mathrm{A}$ 平分：
+
+\[ I'=4\times\frac{10}{10+10}=2\,\mathrm{A} , \]
+
+方向由 T 到 B，与参考方向相同。顺带得此时 $V_T=2\,\mathrm{A}\times10\,\Omega=20\,\mathrm{V}$
+（与 §5.4 的直接解一致，可作自检）。
+
+\subhdr{5.3 只留 $20\,\mathrm{V}$：$I''=-1\,\mathrm{A}$ 与负号的来历}
+
+$4\,\mathrm{A}$ 源置零即开路，左支路整条断开（那只 $10\,\Omega$ 退出电路）。剩下的是一个单回路：
+中支路 $10\,\Omega$ 与右支路（$10\,\Omega$ 串 $20\,\mathrm{V}$）。回路总电阻 $20\,\Omega$、电动势 $20\,\mathrm{V}$，
+所以回路上电流大小是 $1\,\mathrm{A}$。方向是关键：右支路电源的 $+$ 端\textbf{在下}，
+源内部电流由 $-$ 流向 $+$，即它把电流\textbf{顶向}底母线，再从中支路\textbf{由下往上}回到上母线。
+
+所以中支路的实际电流是从 B 流向 T，与参考方向 T$\to$B 相反：
+
+\[ I''=-\frac{20}{10+10}=-1\,\mathrm{A} . \]
+
+\aside{负号不是算错：它记录的是「该源单独作用时电流方向与参考方向相反」。
+若把 $I''$ 的箭头提前翻过来写成 $+1\,\mathrm{A}$，加的时候就会变成 $3\,\mathrm{A}$（§3.2 的反例）。}
+
+\subhdr{5.4 相加与自检：$I=1\,\mathrm{A}$}
+
+\[ I=I'+I''=2+(-1)=1\,\mathrm{A} . \]
+
+p15 的黄色高亮块给的正是这个数。自检用原电路直接解：上端 T 的 KCL（$4\,\mathrm{A}$ 流入 T）为
+
+\[ 4=\frac{V_T}{10}+\frac{V_T+20}{10}\ \Longrightarrow\ V_T=10\,\mathrm{V},\qquad
+   I=\frac{V_T}{10}=1\,\mathrm{A} . \]
+
+两边一致，说明「三只 $10\,\Omega$」的读法与课件的三个数全部对得上。
+
+\subhdr{5.5 戴维南主例：端口怎么划（p24--p25、p30）}
+
+p24 的电路有五条支路，$8\,\Omega$ 上标着待求电流 $I$。先把元件列清（B 为底部公共线）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.5cm}p{7.2cm}p{2.6cm}p{2.6cm}@{}}
+\tabtop
+\thead{支路} & \thead{元件} & \thead{上端} & \thead{下端}
+\\
+\tabmid
+左（$8\,\mathrm{V}$） & $8\,\mathrm{V}$ 电压源（$+$ 在上）串 $2\,\Omega$ & L & B
+\\
+左（竖 $2\,\Omega$） & $2\,\Omega$ & L & B
+\\
+待求支路 & $8\,\Omega$；$I$ 的参考方向取 a$\to$b & L（$=$a） & R（$=$b）
+\\
+右（$3\,\mathrm{A}$） & $3\,\mathrm{A}$ 电流源（箭头向下，电流 b$\to$B） & R（$=$b） & B
+\\
+右（$5\,\mathrm{V}$） & $5\,\mathrm{V}$ 电压源（$+$ 在上）串 $5\,\Omega$ & R（$=$b） & B
+\tabbot
+\end{tabular}
+
+p25/p30 做的事只有一件：把 $8\,\Omega$ 拿掉，在断口两端标 a、b。这样做合法的理由（p34 的浅蓝方框指的就是它）：
+$8\,\Omega$ 是 L 与 R 之间（除公共底线以外）\textbf{唯一}的连接元件，拿掉之后网络分成左右两块，
+\textbf{两块只经底部公共线相通}。公共线是参考节点，所以空载时两块之间没有电流交换，
+各自可以当「单节点电路」单独解——这是后面所有计算的支点。
+
+\subhdr{5.6 $R_0=6\,\Omega$（p31--p32）}
+
+置零内部源：$8\,\mathrm{V}$ 短路、$5\,\mathrm{V}$ 短路、$3\,\mathrm{A}$ 开路。从 a、b 看进去：
+
+\begin{itemize}
+\item 左块：$8\,\mathrm{V}$ 支路的 $2\,\Omega$ 与并联的 $2\,\Omega$ 变成 $2\parallel2=1\,\Omega$（a 到公共线）；
+\item 右块：$5\,\mathrm{V}$ 短路后只剩 $5\,\Omega$（公共线到 b）；
+\item 两者\textbf{串联}：从 a 到 b 的唯一通路是 a $\to$ 左块 $\to$ 底部公共线 $\to$ $5\,\Omega$ $\to$ b。
+\end{itemize}
+
+\[ R_0=(2\parallel2)+5=1+5=6\,\Omega , \]
+
+与 p32 的 $R_0=6\,\Omega$ 一致。
+
+\aside{代入本题：这里最容易错成 $(2\parallel2)\parallel5=0.83\,\Omega$。
+判据是「换个端口还能不能走通」——a、b 分别在左块与右块的上端，要从 a 到 b 必须串穿两块，
+所以是串联。串联的依据是路径，不是画法。}
+
+\subhdr{5.7 $U_{OC}=14\,\mathrm{V}$（p33--p36），以及 p36 里 5、15、4 三个数}
+
+空载时两块解耦（§5.5），各自一次 KCL。
+
+\textbf{（1）左块：}a 端只有两条路（$8\,\mathrm{V}$ 串 $2\,\Omega$、另一只 $2\,\Omega$），电流之和为零：
+
+\[ \frac{V_a-8}{2}+\frac{V_a}{2}=0\ \Longrightarrow\ V_a=4\,\mathrm{V} . \]
+
+等价地看成一次分压：$8\,\mathrm{V}$ 落在 $2\,\Omega$ 与（$2\,\Omega$）之间，$V_a=8\times2/(2+2)=4\,\mathrm{V}$。
+
+\textbf{（2）右块：}$3\,\mathrm{A}$ 由 b 灌入电流源、向下流到底部；b 只剩另一条路（$5\,\mathrm{V}$ 串 $5\,\Omega$），
+所以 $5\,\Omega$ 里也是 $3\,\mathrm{A}$，但方向\textbf{向上}（b 处进去的电流只能从这条支路补）。
+沿「从底母线 $0\,\mathrm{V}$ 往上」走：电流向上，与行进方向相同，经过 $5\,\Omega$ 电位\textbf{降} $3\times5=15\,\mathrm{V}$，
+于是 $5\,\Omega$ 上端为 $-15\,\mathrm{V}$；再经过 $5\,\mathrm{V}$ 源（由 $-$ 到 $+$）电位\textbf{升} $5\,\mathrm{V}$，故
+
+\[ V_b=0-15+5=-10\,\mathrm{V} . \]
+
+（用方程验证同一件事：设 $5\,\Omega$ 上端为 $x$，向上电流 $3\,\mathrm{A}$ 意味着 $x-0=-3\times5=-15\,\mathrm{V}$，
+再由 $x$ 过源升 $5\,\mathrm{V}$ 得 $V_b=-10\,\mathrm{V}$。两条路一致。）
+
+\textbf{（3）开路电压：}
+
+\[ U_{ab}=V_a-V_b=4-(-10)=14\,\mathrm{V} , \]
+
+与 p36 的 $U_{ab}=14\,\mathrm{V}$ 一致。
+
+\textbf{（4）p36 那个式子怎么读。}课件写的是 $U_{ab}+5-15-4=0$，即 $U_{ab}=4+15-5$。
+三个数各有出处，课件一个都没标：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{3.4cm}p{8.6cm}@{}}
+\tabtop
+\thead{p36 中的数} & \thead{来源} & \thead{说明}
+\\
+\tabmid
+$4$ & $V_a$ & $8\,\mathrm{V}$ 在 $2\,\Omega\parallel2\,\Omega$ 上的分压，即左块的单节点解
+\\
+$15$ & $3\,\mathrm{A}\times5\,\Omega$ & $3\,\mathrm{A}$ 全部流过 $5\,\Omega$ 产生的压降
+\\
+$5$ & $5\,\mathrm{V}$ 源 & 源的源值，方向决定它是加号还是减号
+\tabbot
+\end{tabular}
+
+\subhdr{5.8 $I=1\,\mathrm{A}$（p37--p38）与功率自检}
+
+把 $8\,\Omega$ 接回端口，戴维南等效给出
+
+\[ I=\frac{U_{OC}}{R_0+R_L}=\frac{14}{6+8}=1\,\mathrm{A} , \]
+
+与 p38 的 $I=1\,\mathrm{A}$ 一致。注意这个式子在课件里\textbf{从未写出}：p32 给了 $R_0$、p36 给了 $U_{OC}$，
+p38 直接跳到 $I=1\,\mathrm{A}$（§10 记一条拼接缺口）。
+
+\aside{代入本题的两个自检：（1）端口电压 $v=14-6\times1=8\,\mathrm{V}$，正好等于 $8\,\Omega\times1\,\mathrm{A}$；
+（2）功率平衡：等效电源送出 $14\,\mathrm{V}\times1\,\mathrm{A}=14\,\mathrm{W}$，其中 $R_0$ 上耗 $1^2\times6=6\,\mathrm{W}$、
+负载耗 $1^2\times8=8\,\mathrm{W}$，$6+8=14$ 对得上。}
+
+再用原电路直接解一遍做交叉验证（把 $8\,\Omega$ 接上，两块仍只经公共线相连，各自的 KCL 多了一项负载电流）：
+
+\[ V_a:\ \frac{V_a-8}{2}+\frac{V_a}{2}+1=0\Rightarrow V_a=3\,\mathrm{V};\qquad
+   V_b:\ \frac{V_b-5}{5}+3-1=0\Rightarrow V_b=-5\,\mathrm{V} . \]
+
+$V_a-V_b=8\,\mathrm{V}$，$I=8/8=1\,\mathrm{A}$，与等效法一致。表里对比空载与有载：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{3.4cm}p{3.4cm}p{4.2cm}@{}}
+\tabtop
+\thead{状态} & \thead{$V_a$} & \thead{$V_b$} & \thead{端口电压 $V_a-V_b$}
+\\
+\tabmid
+空载（p36） & $4\,\mathrm{V}$ & $-10\,\mathrm{V}$ & $14\,\mathrm{V}=U_{OC}$
+\\
+有载 $8\,\Omega$（p38） & $3\,\mathrm{V}$ & $-5\,\mathrm{V}$ & $8\,\mathrm{V}=8\,\Omega\times1\,\mathrm{A}$
+\tabbot
+\end{tabular}
+
+%=============================================================
+\subhdr{5.9 主例的两个变式问法（同一套等效参数，换着问）}
+
+等效电路一旦求出，整族问题都能一行答完；反过来，凡是等效电路答不出的，必须回原电路。
+
+\textbf{变式一：换负载。}$I=U_{OC}/(R_0+R_L)=14/(6+R_L)$。$R_L=6\,\Omega$ 时 $I=1.167\,\mathrm{A}$；
+$R_L\to\infty$（开路）时 $v=U_{OC}=14\,\mathrm{V}$；$R_L=0$（短路）时 $I=2.33\,\mathrm{A}$（§6.5 直接验）。
+
+\textbf{变式二：问内部量。}「$8\,\Omega$ 接上时 $3\,\mathrm{A}$ 电流源两端的电压是多少？」
+等效电路里已经没有 $3\,\mathrm{A}$ 源，答不出；必须回原电路：有载时 $V_b=-5\,\mathrm{V}$（§5.8），
+底母线为 $0\,\mathrm{V}$，故源端电压是 $-5\,\mathrm{V}$（上端低、下端高）。
+
+判据很短：\textbf{问端口上的事，用等效电路；问内部的事，回原电路}。
+混淆这两类问题，是「等效」这个词最常被误用之处。
+
+%=============================================================
+\hdr{§6}{p28 的「How to deduce this conclusion?」为什么推不出来}
+
+\subhdr{6.1 课件做的只是「算了一次」}
+
+p28 的版面是：左边写 $U_{OC}=U_S+R_1I_S$、$I_{SC}=U_S/R_1+I_S$，右边写
+$R_0=U_{OC}/I_{SC}=(U_S+R_1I_S)/(U_S/R_1+I_S)=R_1$。这三步对\textbf{这一个}网络是对的，
+但它不是证明，原因是最后一步「约掉」能成功纯属凑巧：
+
+\[ U_S+R_1I_S=R_1\left(\frac{U_S}{R_1}+I_S\right), \]
+
+分子恰好是分母的 $R_1$ 倍，所以比值必然等于 $R_1$。换句话说，p28 验证的是
+「分子恰好是分母的常数倍」，而不是「$R_0=U_{OC}/I_{SC}$ 对任何线性二端网络都成立」。
+换个网络（比如主例 p24 那个五支路网络），分子分母就没有这种倍数关系了，但等式照样成立——
+这时候靠的是 §4.1 的直线，不是代数运气。
+
+代入一组数看得更清楚：取 $U_S=12\,\mathrm{V}$、$R_1=4\,\Omega$、$I_S=3\,\mathrm{A}$，
+则 $U_{OC}=12+12=24\,\mathrm{V}$、$I_{SC}=3+3=6\,\mathrm{A}$、$R_0=24/6=4\,\Omega=R_1$。
+把 $I_S$ 改成 $1\,\mathrm{A}$：$U_{OC}=16\,\mathrm{V}$、$I_{SC}=4\,\mathrm{A}$，比值仍是 $4\,\Omega$。
+无论怎么改，比值恒等于 $R_1$——因为分子本来就是分母的 $R_1$ 倍。所以 p28 验的是一个恒等式，不是一条定理。
+真正的考验在主例上：那里 $U_{OC}=14\,\mathrm{V}$、$I_{SC}=7/3\,\mathrm{A}$，比值是 $6\,\Omega$，
+而分母里并没有一个现成的「$6$」（§6.5）——这时只能靠 §4.1 的直线。
+
+\subhdr{6.2 一般证明只有一步}
+
+由 §4.1，端口方程是 $v=U_{OC}-R_0i_L$。短路就是令 $v=0$，此时
+
+\[ i_L=\frac{U_{OC}}{R_0}\equiv I_{SC}\ \Longrightarrow\ R_0=\frac{U_{OC}}{I_{SC}} . \]
+
+所以 $R_0=U_{OC}/I_{SC}$ 不是「又一条要背的公式」，而是直线方程的截距与斜率之比。
+凡是「先分别求两个量、再相除」的题，背后都是这条直线；凡是直线不成立的地方，这个比值就没有意义（下一小节）。
+
+\subhdr{6.3 什么时候 $U_{OC}/I_{SC}$ 失效}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.0cm}p{4.4cm}p{5.6cm}@{}}
+\tabtop
+\thead{情形} & \thead{现象} & \thead{怎么办}
+\\
+\tabmid
+$R_0=0$（端口等同理想电压源） & 短路电流趋于无穷，$U_{OC}/I_{SC}$ 变成「有限 $/\infty$」 & 直接说 $R_0=0$，等效电路就是一个电压源
+\\
+$R_0=\infty$（端口等同理想电流源） & 短路电流为 $0$，式子变成 $U_{OC}/0$ & 直接说 $R_0=\infty$，等效电路就是一个电流源
+\\
+$U_{OC}=0$ 且 $I_{SC}=0$ & 变成 $0/0$，无定义 & 端口是纯电阻（无源网络），$R_0$ 用置零法求
+\\
+网络含非线性元件 & 端口特性不是直线，两个数不足 & 叠加、戴维南同时失效，只能逐点求解
+\tabbot
+\end{tabular}
+
+\subhdr{6.4 为什么能把网络切成两半（p34 的蓝框）}
+
+p34 用浅蓝方框圈出「a、b 之间只经底部导线相通」。这句话是整道主例的合法性所在：
+端口空载时，左块与右块唯一可能的电流通道被断开了（$8\,\Omega$ 已被拿掉），
+公共线又是参考节点，所以\textbf{没有电流在左右两块之间流动}，两块各自满足「节点电流之和为零」，
+可以各写一个 KCL。若两块之间还连着别的电阻或源，这个切法就不成立，
+只能把整个网络当一个多节点问题解——这是「切两半」这一步的边界，课件没有点明。
+
+%=============================================================
+\subhdr{6.5 用主例直接验一次 $I_{SC}=U_{OC}/R_0$}
+
+光有公式不算懂，用手算一次最短：把主例的 $8\,\Omega$ 换成一根导线（端口短路），此时
+$V_a=V_b=V$（同一个节点）。左块的 KCL 多了一项短路电流 $I_{SC}$（从 a 端流出网络）：
+
+\[ \frac{V-8}{2}+\frac{V}{2}+I_{SC}=0\ \Longrightarrow\ I_{SC}=4-V ; \]
+
+右块的 KCL 里，短路电流从 b 端流入网络：
+
+\[ \frac{V-5}{5}+3-I_{SC}=0 . \]
+
+把 $I_{SC}=4-V$ 代进去：$\frac{V-5}{5}+3-4+V=0$，两边乘 $5$ 得 $V-5+5V-5=0$，
+故 $V=\frac{5}{3}\,\mathrm{V}$、$I_{SC}=4-\frac{5}{3}=\frac{7}{3}\approx2.333\,\mathrm{A}$。
+而 $\frac{U_{OC}}{R_0}=\frac{14}{6}=2.333\,\mathrm{A}$，两者一致——这条等式不是巧合，是 §4.1 那条直线在 $v=0$ 处的读数。
+
+%=============================================================
+\hdr{§7}{其余例题：一例半页，只写与主线不同的地方}
+
+\subhdr{7.0 先选方法：四种题型对应四条路}
+
+本册的两套工具（叠加、等效）加上第一章前面的节点法与支路电流法，一共四条路。做题时先认题型再动笔，
+比「哪个公式熟用哪个」省时间。判据是从本册的例题里归纳出来的思路，不是新增考点：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.4cm}p{3.6cm}p{5.4cm}@{}}
+\tabtop
+\thead{题目长什么样} & \thead{首选} & \thead{理由（本册出处）}
+\\
+\tabmid
+只要一条支路的电流电压，其余部分源很多 & 戴维南，接回负载 & 一次端口等效，之后换负载都是一行（§5.9）
+\\
+所有支路的电流都要 & 节点法或支路电流法 & 叠加要解 $n$ 次，等效只顶替一条支路
+\\
+网络里带受控源 & 节点法；求 $R_0$ 可用置零法 & 受控源不能置零，但置零独立源后求 $R_0$ 仍成立（§2.4）
+\\
+电桥、桥式结构，串并联化不开 & 戴维南 + 比例法求 $R_0$ & 桥臂划出去就成串并联，短路电流最好算（§6.2）
+\\
+问功率 & 先求总电流，再平方 & 功率不是线性量，不能叠加（§3.3）
+\tabbot
+\end{tabular}
+
+下面六个例子按这个判据各走一条路，答案与来路都写全，可以当自测。
+
+\subhdr{7.1 E2（p16--p18）：$3\,\mathrm{A}$ 与 $5\,\mathrm{A}$ 为什么都取正}
+
+p16 的电路是一个「田」字形网络。把元件写清：上支路 $7\,\mathrm{A}$ 电流源（箭头朝左，电流 T$\to$L）、
+右上 $1\,\Omega$（T--R）、中 $2\,\Omega$（T--M）、中左 $3\,\Omega$（M--L）、中右 $35\,\mathrm{V}$ 源（$+$ 在 M 侧，M--R）、
+下 $4\,\Omega$（L--R，$I$ 的参考方向 L$\to$R）。
+
+\textbf{（1）只留 $7\,\mathrm{A}$（$35\,\mathrm{V}$ 短路）。}M 与 R 合并成一点，于是 $1\,\Omega\parallel2\,\Omega=2/3\,\Omega$（T 到 M/R），
+$3\,\Omega\parallel4\,\Omega=12/7\,\Omega$（L 到 M/R）。$7\,\mathrm{A}$ 由 T 经源流到 L，再经 $12/7\,\Omega$ 回到 M/R，
+经 $2/3\,\Omega$ 回到 T。L--R 这对节点上的电压是 $7\times12/7=12\,\mathrm{V}$，故
+
+\[ I'=\frac{12\,\mathrm{V}}{4\,\Omega}=3\,\mathrm{A} , \]
+
+方向由 L 到 R（也可直接用分流比：$7\times3/(3+4)=3\,\mathrm{A}$）。
+
+\textbf{（2）只留 $35\,\mathrm{V}$（$7\,\mathrm{A}$ 开路）。}上支路在源处断开，T 只连着 $2\,\Omega$ 与 $1\,\Omega$，
+二者串成 $3\,\Omega$ 并在 M--R 之间；另一条 M--L--R 是 $3+4=7\,\Omega$。两条都并在 $35\,\mathrm{V}$ 源两端，互不影响：
+
+\[ I''=\frac{35\,\mathrm{V}}{7\,\Omega}=5\,\mathrm{A} , \]
+
+路径是 M$\to$L$\to$R，与参考方向（L$\to$R）相同。
+
+\textbf{（3）相加。}两个分量方向相同，都取正：$I=3+5=8\,\mathrm{A}$，与 p18 一致。
+自检：有载时 $V_L-V_R=8\,\mathrm{A}\times4\,\Omega=32\,\mathrm{V}$。
+
+顺便解释一件容易吓人的事：$35\,\mathrm{V}$ 源单独作用时，$2\,\Omega+1\,\Omega=3\,\Omega$ 那条路要吃
+$35/3\approx11.7\,\mathrm{A}$，加上 $3\,\Omega+4\,\Omega=7\,\Omega$ 那条路的 $5\,\mathrm{A}$，
+流过源的支路电流是 $16.7\,\mathrm{A}$（§7.4 的节点解给出同一个数）——远大于 $I''=5\,\mathrm{A}$。
+这不是算错，是「源同时给两条并联路供电」。
+
+\subhdr{7.2 E3（p19）：两个理想电流源都在时，节点方程只剩一条路}
+
+课件这一页只给电路、不给答案。这里按文字层转录的拓扑解一遍，并把结论标 [待确认]（图面未获图像复核）。
+节点取 L（左）、T（上）、M（中）、R（右）；取 $V_R=0$，底部 $10\,\mathrm{V}$ 源的 $+$ 在 L 侧，故 $V_L=10\,\mathrm{V}$。
+
+T 上接着 $3\,\mathrm{A}$ 源（向 T）、$5\,\mathrm{A}$ 源（离 T）与 $4\,\Omega$ 一条路，所以 T 的 KCL 只经 $4\,\Omega$：
+
+\[ \frac{V_T-V_M}{4}+5-3=0\ \Longrightarrow\ V_T-V_M=-8\,\mathrm{V} . \]
+
+M 的 KCL（$2\,\Omega$ 到 L、$3\,\Omega$ 到 R、$4\,\Omega$ 到 T）：
+
+\[ \frac{V_M-V_T}{4}+\frac{V_M-10}{2}+\frac{V_M}{3}=0\ \Longrightarrow\ V_M=3.6\,\mathrm{V},\quad V_T=-4.4\,\mathrm{V} . \]
+
+再把 L 的 KCL 列出来：$3\,\mathrm{A}$ 经电流源离开 L，$(10-3.6)/2=3.2\,\mathrm{A}$ 经 $2\,\Omega$ 离开 L，
+所以底部支路必须向 L 送入 $3+3.2=6.2\,\mathrm{A}$，即 $I=6.2\,\mathrm{A}$（参考方向自 R 向 L）。
+这个例子要学的不是这个数，而是那句「T 的 KCL 只经 $4\,\Omega$」——两个理想电流源把 T 夹住了。
+
+\subhdr{7.3 E4（p20）与 p40：两种算法给出同一个 $3\,\mathrm{A}$}
+
+p20 与 p40 是同一个电路：$18\,\mathrm{V}$ 串 $1\,\Omega$、$9\,\mathrm{V}$ 串 $1\,\Omega$ 两条支路并接，向 $4\,\Omega$ 供电，
+$I$ 的参考方向向下。
+
+\textbf{（1）叠加。}$18\,\mathrm{V}$ 单独作用（$9\,\mathrm{V}$ 短路）：两只 $1\,\Omega$ 并联后与 $4\,\Omega$ 分压，
+源电流 $18/(1+0.8)=10\,\mathrm{A}$，$4\,\Omega$ 分到 $10\times1/(1+4)=2\,\mathrm{A}$。
+$9\,\mathrm{V}$ 单独作用同理得 $5\,\mathrm{A}$ 源电流、$4\,\Omega$ 分到 $1\,\mathrm{A}$。所以 $I=2+1=3\,\mathrm{A}$。
+
+\textbf{（2）戴维南。}$U_{OC}=(18+9)/2=13.5\,\mathrm{V}$（两个 $1\,\Omega$ 把两个源平均分压），
+$R_0=1\parallel1=0.5\,\Omega$，故 $I=13.5/(0.5+4)=3\,\mathrm{A}$。两条路一致。
+
+\subhdr{7.4 用戴维南重做 E2（p39）：$R_0=3\,\Omega$、$U_{OC}=56\,\mathrm{V}$、$I=8\,\mathrm{A}$}
+
+p39 的电路与 §7.1 的 E2 完全相同，只是要求改用戴维南。把 $4\,\Omega$ 划出去，端口取 a$=$L、b$=$R。
+
+\textbf{（1）$R_0$：}$7\,\mathrm{A}$ 开路（上支路在源处断开）、$35\,\mathrm{V}$ 短路（M 与 R 合并）。
+从 L 到 R 只剩 $3\,\Omega$；$2\,\Omega$ 串 $1\,\Omega$ 那一路两端都落在 R 上（M$\equiv$R、经 T 又回 R），
+无源、无电流，不影响 $R_0$：
+
+\[ R_0=3\,\Omega . \]
+
+\aside{代入本题的判据：置零后 M 与 R 是同一个节点，$2\,\Omega+1\,\Omega$ 接成「从 R 出发又回到 R」的回路，
+没有源就没有电流，对端口电阻没有贡献。这一步最容易被误算成 $3\parallel3=1.5\,\Omega$。}
+
+\textbf{（2）$U_{OC}$：}取 $V_R=0$，则 $35\,\mathrm{V}$ 源把 $V_M$ 钉在 $35\,\mathrm{V}$。
+T 的 KCL（$7\,\mathrm{A}$ 由 T 流向 L，故从 T 流出）：
+
+\[ \frac{V_T-35}{2}+\frac{V_T-0}{1}+7=0\ \Longrightarrow\ V_T=7\,\mathrm{V} . \]
+
+L 的 KCL（$7\,\mathrm{A}$ 流入 L，只从 $3\,\Omega$ 流出）：
+
+\[ \frac{V_L-35}{3}=7\ \Longrightarrow\ V_L=56\,\mathrm{V},\qquad U_{OC}=56\,\mathrm{V} . \]
+
+\textbf{（3）接回负载：}
+
+\[ I=\frac{56}{3+4}=8\,\mathrm{A} , \]
+
+与 §7.1 的叠加结果、与 p18 页的 $I=8\,\mathrm{A}$ 三者一致。这就是「$R_0$ 两种求法必须对得上」的实例。
+
+\subhdr{7.5 一题四法（p42--p45）：四个答案必须一致}
+
+p42--p45 是同一个电路贴四个方法名（「Source transformation」「Branch current analysis」
+「Superposition theorem」「Thévenin's theorem」），\textbf{四页一个数都没有}。
+电路：节点 A（上）、B（下）；左支路 $5\,\mathrm{A}$ 电流源（向上，注入 A）；中支路 $10\,\mathrm{V}$ 源（$+$ 在上）串 $2\,\Omega$；
+右支路 $3\,\Omega$；$I_1$ 参考方向向上（中支路），$I_2$ 参考方向向下（$3\,\Omega$）。
+
+\textbf{（1）电源变换。}$10\,\mathrm{V}$ 串 $2\,\Omega$ 变换成 $5\,\mathrm{A}\parallel2\,\Omega$（电流向上，与 $5\,\mathrm{A}$ 源同向），
+两者合并成 $10\,\mathrm{A}$ 注入 A，并联电阻 $2\parallel3=1.2\,\Omega$：
+
+\[ V_A=10\times1.2=12\,\mathrm{V},\qquad I_2=\frac{12}{3}=4\,\mathrm{A},\qquad
+   I_1=\frac{10-12}{2}=-1\,\mathrm{A} . \]
+
+\textbf{（2）支路电流法。}KCL：$5+I_1=I_2$；中支路 KVL：$V_A=10-2I_1$；右支路：$V_A=3I_2$。
+三式联立得 $I_1=-1\,\mathrm{A}$、$I_2=4\,\mathrm{A}$、$V_A=12\,\mathrm{V}$。
+
+\textbf{（3）叠加。}$5\,\mathrm{A}$ 单独作用（$10\,\mathrm{V}$ 短路）：$2\parallel3=1.2\,\Omega$，$V_A=6\,\mathrm{V}$，
+$I_1'=-3\,\mathrm{A}$（中支路电流向下 $3\,\mathrm{A}$）、$I_2'=2\,\mathrm{A}$。
+$10\,\mathrm{V}$ 单独作用（$5\,\mathrm{A}$ 开路）：回路 $2+3=5\,\Omega$、电流 $2\,\mathrm{A}$，源把电流顶进 A 再经 $3\,\Omega$ 下地，
+$I_1''=+2\,\mathrm{A}$、$I_2''=+2\,\mathrm{A}$。相加：$I_1=-1\,\mathrm{A}$、$I_2=4\,\mathrm{A}$。
+
+\textbf{（4）戴维南。}把 $3\,\Omega$ 划出去：$U_{OC}=10+5\times2=20\,\mathrm{V}$（$5\,\mathrm{A}$ 全部流过 $2\,\Omega$），
+$R_0=2\,\Omega$（$5\,\mathrm{A}$ 开路、$10\,\mathrm{V}$ 短路）。接回：$V_A=20\times3/(2+3)=12\,\mathrm{V}$、$I_2=4\,\mathrm{A}$，
+再由中支路 $I_1=(10-12)/2=-1\,\mathrm{A}$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{2.6cm}p{2.6cm}p{3.6cm}@{}}
+\tabtop
+\thead{方法} & \thead{$I_1$} & \thead{$I_2$} & \thead{中间量}
+\\
+\tabmid
+电源变换 & $-1\,\mathrm{A}$ & $4\,\mathrm{A}$ & $V_A=12\,\mathrm{V}$
+\\
+支路电流法 & $-1\,\mathrm{A}$ & $4\,\mathrm{A}$ & $V_A=12\,\mathrm{V}$
+\\
+叠加定理 & $-1\,\mathrm{A}$ & $4\,\mathrm{A}$ & $V_A=6+6=12\,\mathrm{V}$
+\\
+戴维南定理 & $-1\,\mathrm{A}$ & $4\,\mathrm{A}$ & $U_{OC}=20\,\mathrm{V}$、$R_0=2\,\Omega$
+\tabbot
+\end{tabular}
+
+四法结果相同。课件把这四页放在一起，本意大概就是「同一道题、四种工具、答案只有一个」；
+可惜一页数字都没写，这一步的示范作用没发挥出来（§10 记一条）。
+
+\subhdr{7.6 E5（p21）：一个「$3\,\Omega$ 上没有电流」的巧合}
+
+同样只有电路、没有答案，拓扑按文字层转录复原并标 [待确认]。取左竖线为参考（$V_L=0$），
+节点为 T、TR、M、BR；$3\,\mathrm{V}$ 源把 TR 与 BR 拉开 $3\,\mathrm{V}$。
+
+T 的 KCL：$V_T/2+(V_T-V_{TR})/6-1=0$（$1\,\mathrm{A}$ 由 M 流向 T）；
+M 的 KCL：$(V_M-V_{BR})/3+V_M/1+1=0$；TR 与 BR 的 KCL 相加消去 $3\,\mathrm{V}$ 源电流：
+$(V_{TR}-V_T)/6+(V_{BR}-V_M)/3=0$；再加 $3\,\mathrm{V}$ 源的条件 $V_{TR}-V_{BR}=3$。
+
+解得 $V_{BR}=-1\,\mathrm{V}$、$V_{TR}=2\,\mathrm{V}$、$V_T=2\,\mathrm{V}$、$V_M=-1\,\mathrm{V}$。
+于是 $I$（参考方向 M$\to$L）为
+
+\[ I=\frac{V_M-V_L}{1}=-1\,\mathrm{A} , \]
+
+即实际有 $1\,\mathrm{A}$ 由 L 经 $1\,\Omega$ 流向 M。顺带一个巧合：$V_M=V_{BR}$ 使 $3\,\Omega$ 上电流为零，
+$3\,\mathrm{V}$ 源支路也不出力——这类「某只电阻上恰好没电流」的结果是拓扑决定的，不是算错，
+可以拿它当自检：把 $V_M$ 与 $V_{BR}$ 代回去，KCL 必须同时成立。
+
+%=============================================================
+\subhdr{7.7 p41 的习题 E3：为什么这一题留成练习}
+
+p41 给的是 $12\,\mathrm{V}$ 串 $6\,\Omega$、一只并联 $6\,\Omega$、$1\,\Omega$ 与 $3\,\mathrm{A}$、以及待求支路 $5\,\Omega$（含 $I$）。
+这一页的图在文字层里只剩元件名与相对位置，$1\,\Omega$ 与 $3\,\mathrm{A}$ 到底是「同一支路串联」还是「两路并接」，
+两种读法给出的方程不同，而课件没有给答案可供反查（不像 E1、E2 那样有现成分量可以对拍）。
+按本讲义的规矩，这种拓扑不确定的题标 [待确认]，不作为算例，只把方法固定下来：
+把 $5\,\Omega$ 划出去当负载，求端口的 $U_{OC}$ 与 $R_0$，再接回 $\frac{U_{OC}}{R_0+5}$。
+等你手上有清晰的图，按 §8.2 的四步走一遍即可；四步里没有一步依赖「图长什么样」之外的假设。
+
+%=============================================================
+\hdr{§8}{公式卡、四步清单与三处自检}
+
+\subhdr{8.1 叠加：四步（按做题顺序）}
+
+\begin{enumerate}
+\item \textbf{定参考方向}：给待求量画箭头，全部分量沿用这个箭头（§3.2）；
+\item \textbf{逐个置零}：只留一个独立源，其余电压源短路、电流源开路，受控源保留（§2.1、§2.2）；
+\item \textbf{各算一次}：每个分电路用最省事的方法（分流、分压、单节点 KCL）求该分量，带符号记下；
+\item \textbf{代数相加 + 自检}：$I=\sum I^{(k)}$；最后把结果代回原电路直接解一遍（§5.4）。
+\end{enumerate}
+
+\subhdr{8.2 戴维南/诺顿：四步}
+
+\begin{enumerate}
+\item \textbf{定端口}：把待求支路划出去，标 a、b；确认它是两块之间唯一的连接（§5.5）；
+\item \textbf{求 $U_{OC}$}：端口空载，按拓扑解出 $V_a-V_b$（§5.7）；
+\item \textbf{求 $R_0$}：内部独立源置零、受控源保留，从端口看进去算等效电阻；或用 $U_{OC}/I_{SC}$ 复核（§5.6、§6.2）；
+\item \textbf{接回负载}：$I=U_{OC}/(R_0+R_L)$，端口电压 $v=U_{OC}-R_0I$；功率用总电流平方算（§3.3）。
+\end{enumerate}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{5.6cm}p{1.9cm}p{4.5cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{依据} & \thead{前提}
+\\
+\tabmid
+$u^{(k)}$ & 只留第 $k$ 个源时的响应 & p2、p3 & 元件线性、受控源保留
+\\
+$u$ & $\sum_k u^{(k)}$ & p10 & 同一参考方向、代数相加
+\\
+$R_0$ & $U_{OC}/I_{SC}$ & p27 & 端口特性是直线；$R_0$ 有限且非零
+\\
+$I$ & $U_{OC}/(R_0+R_L)$ & §4.1 & 负载是纯电阻
+\\
+$v$ & $U_{OC}-R_0I$ & §4.1 & 同上
+\\
+$I_{SC}$ & $U_{OC}/R_0$ & p27 & 同上
+\tabbot
+\end{tabular}
+
+\subhdr{8.3 最大功率传输 [教材补充]}
+
+课件全册没有讲最大功率传输，但戴维南等效一出来，它就是一行求导：负载取多少时功率最大？
+本讲义的依据是 §4.1 的等效电路，不是课件原文，故标 [教材补充]——补它的理由是：
+「把网络化简成两个数」如果不落到「这两个数能回答什么问题」，学完就只剩背公式。
+
+负载功率 $P=I^2R_L=\dfrac{U_{OC}^2R_L}{(R_0+R_L)^2}$。对 $R_L$ 求导并令其为零：
+
+\[ \frac{\dd P}{\dd R_L}=U_{OC}^2\,\frac{R_0-R_L}{(R_0+R_L)^3}=0
+   \ \Longrightarrow\ R_L=R_0,\qquad P_{\max}=\frac{U_{OC}^2}{4R_0} . \]
+
+代主例的数：$U_{OC}=14\,\mathrm{V}$、$R_0=6\,\Omega$，故 $R_L=6\,\Omega$ 时
+$P_{\max}=196/24=8.17\,\mathrm{W}$；课件 p38 取的 $8\,\Omega$ 负载给出 $1^2\times8=8.00\,\mathrm{W}$，
+只差 $2\%$——p38 那个负载其实是「接近最优」的取值。
+
+\aside{代入本题的核对：$R_L=6\,\Omega$ 时 $I=14/12=1.167\,\mathrm{A}$，$P=1.167^2\times6=8.17\,\mathrm{W}$；
+$R_L=8\,\Omega$ 时 $I=1\,\mathrm{A}$，$P=8\,\mathrm{W}$；$R_L=4\,\Omega$ 时 $I=1.4\,\mathrm{A}$，$P=7.84\,\mathrm{W}$。
+三个数说明功率对 $R_L$ 在 $R_0$ 附近很平缓，这正是「匹配」在实际中不苛求精确的原因。}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{2.6cm}p{2.6cm}p{2.6cm}p{3.6cm}@{}}
+\tabtop
+\thead{$R_L$} & \thead{$I$} & \thead{$v=U_{OC}-R_0I$} & \thead{$P=I^2R_L$} & \thead{备注}
+\\
+\tabmid
+$0$（短路） & $2.33\,\mathrm{A}$ & $0$ & $0$ & $I=I_{SC}$，功率全落在 $R_0$ 上
+\\
+$3\,\Omega$ & $1.56\,\mathrm{A}$ & $4.67\,\mathrm{V}$ & $7.26\,\mathrm{W}$ & 偏离匹配点
+\\
+$6\,\Omega$ & $1.17\,\mathrm{A}$ & $7.00\,\mathrm{V}$ & $8.17\,\mathrm{W}$ & 匹配，$P$ 最大
+\\
+$8\,\Omega$ & $1.00\,\mathrm{A}$ & $8.00\,\mathrm{V}$ & $8.00\,\mathrm{W}$ & 课件 p38 的取值
+\\
+$12\,\Omega$ & $0.78\,\mathrm{A}$ & $9.33\,\mathrm{V}$ & $7.26\,\mathrm{W}$ & 与 $3\,\Omega$ 对称
+\\
+$\infty$（开路） & $0$ & $14\,\mathrm{V}$ & $0$ & $v=U_{OC}$
+\tabbot
+\end{tabular}
+
+这张表就是「两个数能回答哪些问题」的清单：给定 $R_L$，$I$、$v$、$P$ 全部一行算出。
+
+\subhdr{8.4 三处自检（每题都该做）}
+
+\begin{enumerate}
+\item \textbf{分量回代}：把结果代回原电路直接解一遍，与叠加/等效的结果比（§5.4、§5.8）；
+\item \textbf{两个 $R_0$ 对拍}：置零法与 $U_{OC}/I_{SC}$ 必须相等（§7.4）；
+\item \textbf{功率平衡}：等效电源送出的功率 $=$ 内阻损耗 $+$ 负载功率（§5.8：$14=6+8$）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{易错点（每条都能指回某页某一步）}
+
+\gapitem{（1）把功率当线性量}{p11 第 (2) 条只给结论。E1 的 $10\,\Omega$ 上：$P'+P''=40+10=50\,\mathrm{W}$，
+真值只有 $10\,\mathrm{W}$，差的是交叉项 $-40\,\mathrm{W}$（§3.3）。凡问功率，先求总电流。}
+
+\gapitem{（2）分量不带符号}{E1 的 $I''=-1\,\mathrm{A}$（§5.3）。若提前把箭头翻过来，会得 $3\,\mathrm{A}$；
+分量算出负数时必须保留负号，负号说明实际方向与参考方向相反。}
+
+\gapitem{（3）把受控源也置零}{受控源是线性元件的一部分，置零它等于把放大能力删掉（§2.2）。
+课件 Notice 第 (1) 条只提「元件线性」，没提这一条，但电子电路里一旦置零受控源，结果必错。}
+
+\gapitem{（4）求 $R_0$ 时把负载算进去}{p31 的 $R_0$ 是「$8\,\Omega$ 已划出去之后」的端口电阻；
+若把 $8\,\Omega$ 并进去，得到的是「端口总电阻」而不是定理里的 $R_0$（§5.6、§0.3）。}
+
+\gapitem{（5）求 $U_{OC}$ 时端口没断开}{$U_{OC}$ 的定义是端口开路（$I=0$）。带着负载量到的电压是 $8\,\mathrm{V}$（§5.8 表），
+不是 $14\,\mathrm{V}$；两者差 $6\,\Omega\times1\,\mathrm{A}$。}
+
+\gapitem{（6）$R_0$ 的串并联搞反}{主例里 $R_0=(2\parallel2)+5=6\,\Omega$，不是 $(2\parallel2)\parallel5$。
+判据是「a 到 b 的通路必须串穿两块」（§5.6）。}
+
+\gapitem{（7）以为「等效」是整体替换}{等效只对\textbf{端口外}成立：换掉的那部分网络内部各元件的电流电压全都变了
+（p38 的等效电路里已经没有 $8\,\mathrm{V}$、$3\,\mathrm{A}$、$5\,\mathrm{V}$ 这些源）。题目若还问内部量，不能先等效再回头算。}
+
+\gapitem{（8）$U_{OC}/I_{SC}$ 用在 $R_0=0$ 或 $R_0=\infty$ 上}{此时比值无意义（§6.3）。
+先判断端口是「理想电压源型」还是「理想电流源型」，再决定用哪种求法。}
+
+\gapitem{（9）在非线性元件上用叠加}{二极管、稳压管、白炽灯丝都不满足「电导与源值无关」（§1.2）。
+课件 p2 的 「linear electric circuit」 是使用前提，不是修饰语。}
+
+\gapitem{（10）把齐次性当万能结论}{「源值翻倍、响应翻倍」只对线性量成立（§1.5）。
+功率、二极管的电流、三极管的 $\beta$ 都不是这样；翻倍之前先问一句「这个量对源值是一次函数吗」。}
+
+\gapitem{（11）照抄 p11 第 (3) 条}{第 (3) 条标题说方向、正文讲功率（§3.1）。照抄下来，笔记里就整块缺掉「方向」，
+而它恰恰是 E1 里 $I''=-1\,\mathrm{A}$ 那一步的全部理由。抄笔记时按标题补正文，不按正文抄标题。}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+\gapitem{机制缺口}{p2、p3\quad 「the algebraic sum of the currents … when each source acts alone」\quad
+缺：为什么「分别作用再相加」等于「一起作用」（线性性）\quad 补：§1.2 用 $\mathbf{G}\mathbf{v}=\mathbf{J}$ 两行证明}
+
+\gapitem{拼接缺口}{p3 与 p5\quad 「replaced by their internal resistances」对「short circuit」/「open circuit」\quad
+缺：两种说法之间的桥（置零置的是源值，内阻留下）\quad 补：§2.1 对照表}
+
+\gapitem{机制缺口}{p5--p9\quad 「Assume only this one is working」\quad
+缺：为什么可以「只让一个源工作」（合法性来自线性，不是电路操作）\quad 补：§2.2}
+
+\gapitem{适用前提}{p5--p9、p11\quad 全册未提受控源\quad
+缺：受控源不能置零、必须留在每个分电路里\quad 补：§2.2 的 warnbox、§9 第 (3) 条}
+
+\gapitem{形式改写}{p11 第 (3) 条\quad 「Pay attention to the direction」 的正文整段重复第 (2) 条\quad
+缺：方向规则本身（分量带符号、不翻箭头）\quad 补：§3.2}
+
+\gapitem{代数跳步}{p11 第 (2) 条\quad 「cannot be determined by a simple sum of the powers」\quad
+缺：差多少、差在哪（交叉项 $2I'I''R$）\quad 补：§3.3 用 E1 的数字算 $40+10-40=10$}
+
+\gapitem{代数跳步}{p14--p15\quad 「$I'=2\,\mathrm{A}$」「$I''=-1\,\mathrm{A}$」\quad
+缺：两个分量怎么算、$-1$ 的负号从哪来\quad 补：§5.2 分流比、§5.3 方向分析}
+
+\gapitem{代数跳步}{p18\quad 「$I'=3\,\mathrm{A}$」「$I''=5\,\mathrm{A}$」\quad
+缺：$3\,\mathrm{A}$ 与 $5\,\mathrm{A}$ 的算法，以及为什么两个都取正\quad 补：§7.1}
+
+\gapitem{机制缺口}{p22--p23\quad 「can be replaced by an equivalent circuit」\quad
+缺：为什么外部行为只要两个数（端口特性是直线），以及定理的证明\quad 补：§4.1（用叠加证明，标 [教材补充]）}
+
+\gapitem{形式改写}{p26、p27\quad 「$U_{eS}=U_{OC}$」、$R_0=U_{eS}/I_{SC}$\quad
+缺：两条都是原定理的推论，而不是定理本身\quad 补：§4.2 由 $v=U_{OC}-R_0i_L$ 推出}
+
+\gapitem{代数跳步}{p28\quad 「How to deduce this conclusion?」\quad
+缺：课件只对本网络算了一次（分子恰是分母的 $R_1$ 倍），没有一般证明\quad 补：§6.1、§6.2}
+
+\gapitem{代数跳步}{p36\quad 「$U_{ab}+5-15-4=0$」\quad
+缺：$4$、$15$、$5$ 三个数各自从哪来\quad 补：§5.7 第 (4) 点的来源表}
+
+\gapitem{拼接缺口}{p32、p36 与 p38\quad $R_0=6\,\Omega$、$U_{ab}=14\,\mathrm{V}$ 之后直接 「$I=1\,\mathrm{A}$」\quad
+缺：中间那一步 $I=U_{OC}/(R_0+R_L)$ 从未写出\quad 补：§5.8}
+
+\gapitem{答案形态}{p19、p21、p39--p45\quad 页面上只有「E3」「E5」「Method 1-4」这几个标签，没有任何结果\quad
+缺：E3、E5 与四法四页全无结果\quad 补：§7.2、§7.6、§7.5（E3、E5 的拓扑标 [待确认]）}
+
+\gapitem{机制缺口}{p1--p21\quad 每页页眉都是「Superposition theorem」，正文从不提「齐次」\quad
+缺：线性 $=$ 齐次 $+$ 可加，齐次性是验算响应的捷径\quad 补：§1.5 用 E1 的 $1\,\mathrm{A}\to2\,\mathrm{A}$ 验一次}
+
+\gapitem{适用区间}{p22\quad 「active linear two-terminal network」\quad
+缺：非线性网络为什么不能只用两个数（折线不是直线）\quad 补：§4.5}
+
+\gapitem{版面}{p5--p9 每页都重复同一行「Content:」与同一张图（五帧）、p29--p38 同一电路十帧、p42--p45 同一电路四页\quad
+缺：内容只应计一次\quad 补：§0 坐标表按去重计，此处备案}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{叠加是解的结构，不是操作}：线性元件让 $\mathbf{G}$ 与源值无关，于是 $\mathbf{v}=\sum_k\mathbf{v}_k$；
+      分量必须带符号，功率必须用总电流重算。
+\item \textbf{戴维南是叠加的一次应用}：端口特性是直线 $v=U_{OC}-R_0i_L$，两个数就够；
+      $R_0=U_{OC}/I_{SC}$ 是这条直线的截距比，不是新公式。
+\item \textbf{两个主例题各给一条纪律}：E1 教「分量算完必须带符号相加」，
+      主例教「先划端口、再置零求 $R_0$、最后接回负载」，每一步都能用原电路直接解来对拍。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.7cm}p{6.6cm}p{6.4cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1--p2 & 1.9 封面、定义与用途 & §1.1
+\\
+p3--p4 & 正式表述、通用网络图、两处提问 & §1.1、§2.1
+\\
+p5--p9 & 置零规则与五帧动画 & §2.1、§2.2
+\\
+p10 & 三步法 & §2.3、§8.1
+\\
+p11 & Notice 四条（第 (3) 条为空） & §3
+\\
+p12--p15 & E1：$2\,\mathrm{A}$、$-1\,\mathrm{A}$、$1\,\mathrm{A}$ & §5.1--§5.4
+\\
+p16--p18 & E2：$3\,\mathrm{A}$、$5\,\mathrm{A}$、$8\,\mathrm{A}$ & §7.1、§7.4
+\\
+p19 & E3（无答案） & §7.2
+\\
+p20 & E4（无答案） & §7.3
+\\
+p21 & E5（无答案） & §7.6
+\\
+p22 & 1.10.1 术语、分类、两幅等效图 & §4.0、§4.3
+\\
+p23 & 戴维南定理陈述 & §4.1
+\\
+p24--p25 & 主例原电路、划端口 & §5.5
+\\
+p26--p27 & $U_{eS}=U_{OC}$、$R_0=U_{eS}/I_{SC}$ & §4.2、§4.4
+\\
+p28 & 「How to deduce this conclusion?」 & §6.1、§6.2
+\\
+p29--p32 & Terminal $\to$ Equivalent resistance $\to 6\,\Omega$ & §5.6
+\\
+p33--p36 & Open-circuit voltage $\to 14\,\mathrm{V}$ & §5.7
+\\
+p37--p38 & 等效电路 $\to 1\,\mathrm{A}$ & §5.8、§8.3
+\\
+p39--p41 & 习题 E1--E3 & §7.4、§7.3、§10
+\\
+p42--p45 & E4 与四法标签 & §7.5
+\tabbot
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算（E1：$I'=2\,\mathrm{A}$、$I''=-1\,\mathrm{A}$、$I=1\,\mathrm{A}$；
+E2：$3\,\mathrm{A}$、$5\,\mathrm{A}$、$8\,\mathrm{A}$；主例：$R_0=6\,\Omega$、$U_{OC}=14\,\mathrm{V}$、$I=1\,\mathrm{A}$，有载 $V_a=3\,\mathrm{V}$、$V_b=-5\,\mathrm{V}$；
+E4：$3\,\mathrm{A}$；p39：$R_0=3\,\Omega$、$U_{OC}=56\,\mathrm{V}$、$I=8\,\mathrm{A}$；
+四法：$I_1=-1\,\mathrm{A}$、$I_2=4\,\mathrm{A}$、$V_A=12\,\mathrm{V}$；最大功率：$8.17\,\mathrm{W}$）。
+标 [教材补充] 的两处（戴维南定理的叠加证明、最大功率传输）不是课件原文，只作理解用，不作文档口径。
+E3（§7.2）与 E5（§7.6）的电路拓扑按文字层转录复原，图面未获图像复核，结论标 [待确认]。}
+
+\end{document}

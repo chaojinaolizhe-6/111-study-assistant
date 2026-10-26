@@ -1,0 +1,1385 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C3-3 · 精讲}{电工电子技术}
+% —— 本节只在本文件内改写两个节头宏，使标题不与正文分家（不修改主题文件）——
+\renewcommand{\hdr}[2]{%
+  \par\vspace{12pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\large\bfseries #2}\par\nobreak
+  \vspace{3pt}{\color{petal}\hrule height 1.2pt}\nopagebreak[4]\vspace{6pt}}
+\renewcommand{\subhdr}[1]{%
+  \par\vspace{6pt}%
+  \noindent{\color{violet}\bfseries #1}\par\nopagebreak[4]\vspace{1pt}}
+
+
+\begin{document}
+
+\doctitle{3.5--3.6\quad 滤波与稳压：从纹波到稳压值}
+{稳压管工作点怎么判、限流电阻怎么取、三端稳压器怎么认管脚}
+{依据：课件 Chapter Three-3（p1--p38，共 38 页；本讲义页码一律指本册 PDF 物理页，引用他册时写成 [C3-2 p44] 的形式）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{0.1 这 38 页讲了哪几块，各在哪几页}
+
+课件不是一条直线，而是「复习两块、正文三块」：开头七页把上一册的整流结论与两道选择题重放一遍，
+p8 起进入 3.5 滤波，p15 起进入 3.6 稳压，最后两页才讲集成稳压器。中间 p28--p36 是同一个例题
+（Example 2）的九帧连续画面，内容几乎不增，只多出老师的手写笔画——读的时候当成一页即可。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.0cm}p{2.0cm}p{10.0cm}@{}}
+\tabtop
+\thead{课件小节} & \thead{页码} & \thead{本讲义对应（补了什么）}
+\\
+\tabmid
+Review 与两道选择题 & p1--p5 & §1.3（答案与理由，课件只有题没有解）
+\\
+Design / 灯珠实物 & p6--p7 & §1.4（把整条链算一遍，含 $16.8\,\mathrm{V}$ 的核算）
+\\
+3.5.2 电容滤波 E1 & p8--p11 & §2.1--§2.4（四问全程，并点出 p9 的 $34.5$ 笔误）
+\\
+3.5.3 电感滤波 & p12 & §2.5（为什么「低压大电流」用它，纹波分压的定量表）
+\\
+3.5.4 复式滤波 & p13 & §2.6（$\pi$ 型的命名、RC 版的代价与画图不一致）
+\\
+3.6 路标（实物） & p14 & §2.7（两件实物各对应后文哪一节）
+\\
+3.6.1 稳压管器件 & p15--p18 & §3（击穿为什么不等于损坏、四个参数怎么用）
+\\
+3.6.1 稳压电路与过程 & p19--p20 & §4（把箭头链补成三个方程与两条定量式）
+\\
+Example 1 (a)--(g) & p21--p27 & §6（七问全程）；判据与限流电阻取法在 §5
+\\
+Example 2（九帧） & p28--p36 & §8.1--§8.3（读数 $000$ 的分支诊断，课件没给答案）
+\\
+3.6.2 集成稳压器 & p37--p38 & §8.4--§8.6（管脚、XX 的含义、压差「[教材补充]」）
+\tabbot
+\end{tabular}
+
+\aside{与技能默认骨架（§2--§3 两条主线、§4 讲等价）不同，本讲义按\textbf{课件自己的链}排：
+滤波在 §2、稳压在 §3--§6，因为这份课件的顺序就是「先把脉动削平、再把数值钉住」，
+把稳压提到前面反而要先解释一堆「$\sqrt2U_2$ 是哪来的」。§0--§12 的编号与技能一致，只是节内内容按链重排。}
+
+\subhdr{0.2 记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{2.5cm}p{11.3cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定（本册一律按此，不与他册混）}
+\\
+\tabmid
+$U_2$ & 变压器\textbf{二次电压有效值}（交流量；峰值写 $U_{\mathrm{m}}=\sqrt2U_2$）
+\\
+$U_{\mathrm{I}}$ & 稳压环节的\textbf{输入}电压平均值，也就是滤波电容两端那个「还没稳」的直流（p19 写作 $U_{\mathrm{I}}$）
+\\
+$U_{\mathrm{O}},\ I_{\mathrm{O}}$ & 负载上的\textbf{输出}电压、电流平均值（p9 写作 $U_{\mathrm{O}}$、$I_{\mathrm{O}}$）
+\\
+$U_{\mathrm{Z}}$ & 稳压管的\textbf{稳压值}，取正值（反向击穿电压的绝对值，p18）
+\\
+$I_{\mathrm{Z}}$ & 流过稳压管的\textbf{反向}电流，取正值（p20 图中的 $I_{\mathrm{Z}}$ 箭头）
+\\
+$I_{\mathrm{Zmin}},\ I_{\mathrm{Zmax}}$ & 稳压管的\textbf{最小}、\textbf{最大}工作电流（p18 用两段文字定性给出）
+\\
+$r_{\mathrm{Z}}$ & 稳压管击穿段的\textbf{动态电阻} $r_{\mathrm{Z}}=\Delta U/\Delta I$（p18）
+\\
+$R,\ R_{\mathrm{L}}$ & 限流（串联）电阻、负载电阻；本册的 $R$ 一律指稳压管前面那只限流电阻
+\\
+$U_{\mathrm{F}}$ & 二极管\textbf{正向压降}，Example 1 取 $0.5\,\mathrm{V}$（p21）
+\tabbot
+\end{tabular}}
+
+\warnbox{\textbf{最容易混的两个 $U$}：$U_2$ 是\textbf{交流有效值}，$U_{\mathrm{O}}$、$U_{\mathrm{I}}$ 是\textbf{直流平均值}。
+$U_{\mathrm{O}}=1.2U_2$ 这条式子的左右两边量纲相同但物理意义不同，
+所以要写「$U_2=U_{\mathrm{O}}/1.2$ 反求」时，必须清楚自己是在用一条\textbf{经验系数}换算，不是在同一本账上加减。}
+
+\subhdr{0.3 三处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p11 的两个极限（负载开路 $35.4\,\mathrm{V}$、电容支路断开 $22.5\,\mathrm{V}$）
+已经把「滤波不能稳」说透了，但课件\textbf{没有一句话}把这件事接到 p12 之后的 3.6 上。
+中间缺的那句是：滤波决定了 $U_{\mathrm{I}}$ 的\textbf{大小和纹波}，但 $U_{\mathrm{I}}$ 仍随电网与负载漂；
+稳压级要做的不是「再削一次纹波」，而是\textbf{把 $U_{\mathrm{O}}$ 钉在一个与 $U_{\mathrm{I}}$ 无关的数上}。
+本讲义 §1.1 补这句，§2.4 与 §4 各再落一次。}
+
+\gapitem{拼接缺口}{p15--p18 讲器件的四个参数，p19 突然给整机电路，p21 直接进例题。
+「参数怎么变成判据」这一步（$I_{\mathrm{Z}}$ 必须落在 $I_{\mathrm{Zmin}}$ 与 $I_{\mathrm{Zmax}}$ 之间如何\textbf{验算}）
+课件从未写成可执行的步骤。本讲义 §5 给出三步法，§7.2 用 Example 1(g) 演示它翻车的现场。}
+
+\gapitem{版面重复}{p28--p36 是 Example 2 的九帧，同一张底图只换手写笔画；p23 与 p24 两个子图
+(c)、(d) 的端子极性标注在位图上完全一致（输入上「$-$」下「$+$」、输出上「$+$」下「$-$」），
+两者差异在扫描图与文字层里都读不出来。§0 的坐标表按去重后的内容计，§10 记两条，涉及 (c)(d) 处标 [待确认]。}
+
+\callout{\textbf{本讲义怎么用}：\\
+第一遍只看 §1.1 的链条、§5 的三步法、§6 的答案表、§9 的公式卡——这四处直接决定题做不做得对；\\
+第二遍看 §3、§4、§7——这三处解释「为什么必须这么判」，是换一个电路还能不能算对的关键；\\
+\textbf{§10 缺口清单}逐条对应课件某页某句：课件哪句话让你卡住，就去那里找补在哪。}
+
+%=============================================================
+\hdr{§1}{两条链：本册到底在解决什么}
+
+\subhdr{1.1 整流--滤波--稳压：每一段只解决一件事}
+
+直流稳压电源是四段串联，每一段只改一个属性，记住这一句就不会把公式用串：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.3cm}p{8.9cm}@{}}
+\tabtop
+\thead{环节} & \thead{改的是} & \thead{留下什么问题}
+\\
+\tabmid
+变压器 & 把 $220\,\mathrm{V}$ 降到 $U_2$（$\sim$ 号那两圈） & 还是交流，仍有负半周
+\\
+整流 & \textbf{方向}：把交流变成单向脉动 & 方向对了，但数值在 $0$ 与 $\sqrt2U_2$ 之间大幅波动
+\\
+滤波 & \textbf{脉动}：用电容或电感把波动削平 & 平均值抬高了，但\textbf{抬到多少取决于负载}（p11）
+\\
+稳压 & \textbf{数值}：把 $U_{\mathrm{O}}$ 钉在一个固定值上 & 稳压管要吃掉多余电压，于是有了电流限额问题
+\tabbot
+\end{tabular}
+
+一句话：\textbf{整流管方向、滤波管纹波、稳压管数值}。三件事互不替代，
+因此 p11 的 $35.4\,\mathrm{V}$／$22.5\,\mathrm{V}$ 与 p19 的稳压级不是重复劳动，而是两笔不同的账。
+
+\subhdr{1.2 p11 的两个极限就是「为什么还需要稳压」的证据}
+
+p11 在同一个电路上问了两件事（第（3）问负载开路、第（4）问电容支路断开），数值分别是
+\[
+U_{\mathrm{O}}\big|_{\text{开路}}=\sqrt2U_2=35.4\,\mathrm{V},
+\qquad
+U_{\mathrm{O}}\big|_{\text{断容}}=0.9U_2=22.5\,\mathrm{V}.
+\]
+同一个电源，负载一轻电压就往上跑到 $35.4\,\mathrm{V}$，电容一坏就掉到 $22.5\,\mathrm{V}$——
+\textbf{变化幅度 $57\%$}。这就是 3.6 存在的理由：只靠滤波，$U_{\mathrm{O}}$ 从来不是一个「数」，
+而是一个随负载与元件状态漂的区间。稳压级要把这个区间压成一点。
+
+\aside{课件 p11 只给两行答案，没有比较这两行；本讲义的 $57\%$ 由 $(35.4-22.5)/22.5$ 算出。
+注意这两个数\textbf{不是同一工况}（一个是负载开路、一个是电容断开），
+所以 $57\%$ 只用来提示「变化之大」，不能当作指标写进设计计算。}
+
+\subhdr{1.3 p1 的两道选择题：答案与理由}
+
+课件 p1 只有题干与选项，没有答案。两题的图都在 p1 上半页，答案取决于「查总表哪一列」。
+
+\textbf{第 1 题}：\emph{Find the maximum reverse voltage of the Diode}（选项 $0$、$U_2$、$\sqrt2U_2$、$2\sqrt2U_2$）。
+图是\textbf{半波整流 + 电容}（次级经一只二极管接 $R$，$R$ 两端并了电容 $C$）。查 p1 右下角那张总表
+「半波 / 有电容」一列：$U_{\mathrm{Rm}}=2\sqrt2U_2$，所以选 \textbf{d}。
+
+为什么有电容会翻倍：正半周电容被充到 $+\sqrt2U_2$，之后阴极被电容钳在这个正峰上；
+到负半周，阳极被次级拉到 $-\sqrt2U_2$，管子两端电压是两端峰值之差
+\[
+u_{\mathrm{D}}=u_{\mathrm{a}}-u_{\mathrm{K}}=(-\sqrt2U_2)-(+\sqrt2U_2)=-2\sqrt2U_2 .
+\]
+\textbf{一端被电容顶在正峰、另一端被次级拉到负峰，两个峰叠加}——这就是那个额外的 $2$。
+
+\textbf{第 2 题}：\emph{Given that $I_{\mathrm{O}}=50\,\mathrm{mA}$, find $I_{\mathrm{D}}$}（选项 $50$、$25$、$12.5$、$60\,\mathrm{mA}$）。
+图是\textbf{桥式}全波。查总表「全波 / 无电容」或「全波 / 有电容」两列：$I_{\mathrm{D}}=\tfrac12I_{\mathrm{O}}$，
+所以 $I_{\mathrm{D}}=25\,\mathrm{mA}$，选 \textbf{b}。机制是两只管子分管两个半周，负载电流被分成两半。
+
+两题合起来给了第三个数：p1 下半个题干写 \emph{Given that $U_2=100\,\mathrm{V}$, find the maximum reverse voltage}，
+对桥式电路是 $U_{\mathrm{Rm}}=\sqrt2\times100\,\mathrm{V}=141.4\,\mathrm{V}$。
+\textbf{同一个 $U_2=100\,\mathrm{V}$，半波带电容要 $282.8\,\mathrm{V}$、桥式只要 $141.4\,\mathrm{V}$}——
+这也是桥式被普遍采用的原因之一。
+
+\subhdr{1.4 p7 的两串灯珠：把整条链算一遍}
+
+p7 用两样实物把设计任务落地：上面一套是 $220\,\mathrm{V}$ 交流经变压器降到 $14\,\mathrm{V}$、
+桥式整流、$1000\,\mu\mathrm{F}$ 电容滤波，再经 $R_1=20\,\Omega/3\,\mathrm{W}$ 限流点亮三只串联 LED（$350\,\mathrm{mA}$ 标称）；
+下面一套是交流经 $R_1\parallel C_1$、桥式整流、$C_2/C_3$ 与 $RV$ 之后驱动一整串 LED。
+两套都在说明同一件事：\textbf{限流元件串在电源与灯串之间}，它的阻值决定电流。
+
+把上面那套的数算一遍。滤波后的直流按图上标注的 \emph{$V_{\mathrm{DC}}=1.2V_{\mathrm{in}}$}：
+\[
+V_{\mathrm{DC}}=1.2\times14\,\mathrm{V}=16.8\,\mathrm{V}.
+\]
+若三只 LED 每只压降 $3.5\,\mathrm{V}$，灯串共 $10.5\,\mathrm{V}$，落在 $R_1$ 上的电压是
+\[
+U_{R1}=16.8-10.5=6.3\,\mathrm{V},
+\qquad
+I=\frac{6.3}{20}=0.315\,\mathrm{A}=315\,\mathrm{mA},
+\qquad
+P_{R1}=\frac{6.3^2}{20}=1.98\,\mathrm{W}.
+\]
+$315\,\mathrm{mA}$ 与标称 $350\,\mathrm{mA}$ 相差 $10\%$，$1.98\,\mathrm{W}$ 落在 $3\,\mathrm{W}$ 定额之内——
+\textbf{这两个吻合反过来证明：图上的 $3.5\,\mathrm{V}$ 是「一只 LED」的压降，不是整串的}。
+
+\aside{图上只画了一个 $3.5\,\mathrm{V}$ 的竖向箭头，无法从图中判定它跨的是一只还是三只。
+本讲义的判定依据是 $R_1$ 的功率定额：若按整串 $3.5\,\mathrm{V}$ 算，$I=(16.8-3.5)/20=665\,\mathrm{mA}$，
+$P_{R1}=8.84\,\mathrm{W}$，与印着的「$3\,\mathrm{W}$」差三倍，物理上不成立。这一步是\textbf{核算}，不是课件原文。}
+
+这三行值得单独记，因为它把一个常被忽略的问题摆出来了：\textbf{限流电阻的阻值不是一个设计自由度，
+而是被「电源电压 $-$ 负载压降」与「所需电流」两者夹住的}。§5 讲稳压管的限流电阻时，用的是同一种夹法。
+
+%=============================================================
+\hdr{§2}{滤波电路（3.5，p8--p14）}
+
+\subhdr{2.1 E1 四问：题面与答案总表}
+
+\callout{\textbf{[E1]}（p8 原文）\quad Bridge rectifier, C filter circuit with a line frequency of 50 Hz,
+$R_{\mathrm{L}}=100\,\Omega$, output DC $U_{\mathrm{O}}=30\,\mathrm{V}$. Try to：\\
+（1）Select the diodes；（2）Select the capacitor；\\
+（3）Find the output voltage when the load is open circuit；\\
+（4）Find the output voltage when the capacitor branch is open.}
+
+p8 的右下方配着那张四列总表（同一张表在 p1、p28--p36 各出现一次），它是全册的「查表依据」，
+所以先把表抄正一次，后文一律引用它：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{2.9cm}p{2.9cm}p{2.9cm}p{2.9cm}@{}}
+\tabtop
+\thead{（3）Summary} & \thead{半波\newline 无电容} & \thead{半波\newline 有电容} & \thead{全波\newline 无电容} & \thead{全波\newline 有电容}
+\\
+\tabmid
+$U_{\mathrm{O}}$ & $0.45U_2$ & $U_2$ & $0.9U_2$ & $1.2U_2$
+\\
+$I_{\mathrm{O}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}$
+\\
+$I_{\mathrm{D}}$ & $I_{\mathrm{O}}$ & $I_{\mathrm{O}}$ & $\tfrac12I_{\mathrm{O}}$ & $\tfrac12I_{\mathrm{O}}$
+\\
+$U_{\mathrm{Rm}}$ & $\sqrt2U_2$ & $2\sqrt2U_2$ & $\sqrt2U_2$ & $\sqrt2U_2$
+\tabbot
+\end{tabular}
+
+\aside{「全波 $+$ 有电容」一列的 $U_{\mathrm{Rm}}$ 仍写 $\sqrt2U_2$，与「全波无电容」相同；
+半波那一列却从 $\sqrt2U_2$ 翻到 $2\sqrt2U_2$。差别在于\textbf{二次侧有没有一条直流通路}：
+半波时负载把二次侧的一端直接钉在负母线上，另一端就被变压器按到 $-\sqrt2U_2$，
+而阴极又被电容钳在 $+\sqrt2U_2$，两端相加得 $2\sqrt2U_2$；
+桥式的二次侧两端都只经二极管接母线、没有直流通路，两端电位不会各自跑到 $\pm\sqrt2U_2$ 的两个极端，
+任一只关断的管子两端最多只差一个 $\sqrt2U_2$。课件只给表值，这段机制是本讲义补的（[教材补充]）。}
+
+解题的第一步不是算，是\textbf{定位}：题面三件事分别锁定一列、一条电流关系、一个反解方向。
+「Bridge rectifier」锁定「全波」两列；「C filter」锁定「有电容」那一列；
+「$U_{\mathrm{O}}=30\,\mathrm{V}$」是\textbf{平均值}，所以从 $U_{\mathrm{O}}=1.2U_2$ 反求 $U_2$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{5.5cm}p{3.3cm}p{3.6cm}@{}}
+\tabtop
+\thead{量} & \thead{算式} & \thead{本题值} & \thead{出处}
+\\
+\tabmid
+$U_2$ & $U_{\mathrm{O}}/1.2=30/1.2$ & $25\,\mathrm{V}$ & p9
+\\
+$I_{\mathrm{O}}$ & $U_{\mathrm{O}}/R_{\mathrm{L}}=30/100$ & $0.3\,\mathrm{A}$ & p9
+\\
+$I_{\mathrm{D}}$ & $I_{\mathrm{O}}/2$ & $0.15\,\mathrm{A}$ & p9
+\\
+$U_{\mathrm{Rm}}$ & $\sqrt2U_2=\sqrt2\times25$ & $35.4\,\mathrm{V}$ & p9
+\\
+$I_{\mathrm{F}}$ & $\ge2I_{\mathrm{D}}$ & $\ge0.3\,\mathrm{A}$ & p9
+\\
+$U_{\mathrm{R}}$ & $\ge U_{\mathrm{Rm}}$ & $\ge35.4\,\mathrm{V}$ & p9（课件误写 $34.5$）
+\\
+$C$ & $\ge(1.5\sim2.5)/(R_{\mathrm{L}}f)$ & $300\sim500\,\mu\mathrm{F}$ & p10
+\\
+$U_{\mathrm{CN}}$ & $\ge\sqrt2U_2$ & $\ge35.4\,\mathrm{V}$ & p10
+\\
+（3）开路 & $\sqrt2U_2$ & $35.4\,\mathrm{V}$ & p11
+\\
+（4）断容 & $0.9U_2$ & $22.5\,\mathrm{V}$ & p11
+\tabbot
+\end{tabular}
+
+\subhdr{2.2 （1）选二极管（p9）：四个数，一个笔误}
+
+p9 把四步压缩成四行式子，顺序是 U2、IO、ID、URm、IF、UR：
+
+\begin{enumerate}
+\item 反求二次电压 $U_2=U_{\mathrm{O}}/1.2=25\,\mathrm{V}$（这一步决定后面全部数字，见 §2.1 的定位）；
+\item 负载电流 $I_{\mathrm{O}}=U_{\mathrm{O}}/R_{\mathrm{L}}=0.3\,\mathrm{A}$；
+\item 每管电流 $I_{\mathrm{D}}=\tfrac12I_{\mathrm{O}}=0.15\,\mathrm{A}$（桥式两只管子分管两个半周）；
+\item 两个选管条件 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}=0.3\,\mathrm{A}$、$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=35.4\,\mathrm{V}$。
+\end{enumerate}
+
+\warnbox{\textbf{课件笔误（必须点名）}：p9 倒数第二行写 \emph{``$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=34.5\,\mathrm{V}$''}，
+而同一页上一行刚算出 $U_{\mathrm{Rm}}=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V}$。
+\textbf{$34.5$ 是 $35.4$ 的数字转置}，两个数在同一页自相矛盾。本讲义一律按 $35.4\,\mathrm{V}$ 走：
+$\sqrt2\times25=35.355\ldots\approx35.4$，复算见 §12 的核对说明。
+后果不轻——耐压取 $34.5\,\mathrm{V}$ 会把阈值定低，选到 $35\,\mathrm{V}$ 档的管子正好卡在边缘。}
+
+\textbf{为什么 $I_{\mathrm{F}}$ 要乘 $2$，而 $U_{\mathrm{R}}$ 不乘}：$I_{\mathrm{F}}$ 是\textbf{发热}定额，
+看的是电流的\textbf{有效值}；电容滤波下二极管只在电容电压低于 $\sqrt2U_2$ 的短促尖峰里导通，
+电流是窄脉冲，其有效值约为平均值的 $2$ 倍。$U_{\mathrm{R}}$ 是\textbf{耐压}定额，看的是\textbf{峰值}，
+峰值已经由 $\sqrt2U_2$ 算进去了，不再乘。
+\aside{课件的 $\sqrt2U_2$ 与 $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$ 都是从别处（p1 的总表、上一册 §6.3）搬来的结论，
+p9 本身没有解释这两个「$2$」为什么一个有一个没有。本段的波形因数是补的，属于 [教材补充]。}
+
+课件结论是「See Appendix, Select four diodes of 2CZ53B」／「查附录，选用 2CZ53B 4 个」。
+本册没有附录，2CZ53B 的具体额定值无法在本册核对，标 [待确认]；
+可核对的是它必须同时满足 $I_{\mathrm{F}}\ge0.3\,\mathrm{A}$ 与 $U_{\mathrm{R}}\ge35.4\,\mathrm{V}$。
+
+\subhdr{2.3 （2）选电容（p10）：经验式的等价写法}
+
+p10 只给了一行式子，来历没有交代：
+\[
+C\ge\frac{1.5\sim2.5}{R_{\mathrm{L}}f}
+=\frac{1.5\sim2.5}{100\times50}\,\mathrm{F}
+=(300\sim500)\,\mu\mathrm{F}.
+\]
+把它换一种写法，物理意义就出来了。令 $T=1/f=20\,\mathrm{ms}$ 为周期，则
+\[
+C\ge\frac{1.5\sim2.5}{R_{\mathrm{L}}f}
+\iff
+\tau=R_{\mathrm{L}}C\ge(1.5\sim2.5)T=(30\sim50)\,\mathrm{ms}.
+\]
+即\textbf{电容的放电时间常数要不小于 $1.5\sim2.5$ 个周期}：电容在每个峰值充一次电，
+然后靠这一个 $\tau$ 撑到下一个峰值，撑得越久，掉得越少、纹波越小。
+这也是「电容越大越接近峰值」的定量版本——与 §1.2 的 $35.4\,\mathrm{V}$ 是同一个机制的两个方向。
+
+\aside{同一页还给了耐压条件 $U_{\mathrm{CN}}\ge\sqrt2U_2=35.4\,\mathrm{V}$，
+所以标称必须取 $50\,\mathrm{V}$ 档而不是 $35\,\mathrm{V}$ 档——$35.4\,\mathrm{V}$ 是\textbf{下限}，没有裕量。}
+
+\subhdr{2.4 （3）（4）两个极限（p11）：同一只电容的两个极端}
+
+\textbf{（3）负载开路}：$R_{\mathrm{L}}\to\infty$，电容没有放电回路，充到峰值就一直保持，
+\[
+U_{\mathrm{O}}=U_{\mathrm{C}}=\sqrt2U_2=35.4\,\mathrm{V}.
+\]
+\textbf{（4）电容支路断开}：回到纯桥式整流，查「全波无电容」一列，
+\[
+U_{\mathrm{O}}=0.9U_2=0.9\times25\,\mathrm{V}=22.5\,\mathrm{V}.
+\]
+两问合起来说明一件事：\textbf{滤波电容既是「抬高器」也是「不稳定源」}。
+它把 $0.9U_2=22.5\,\mathrm{V}$ 抬到 $1.2U_2=30\,\mathrm{V}$（抬高 $33\%$），
+同时把「输出随负载变化」这条路打开了（$30\to35.4\,\mathrm{V}$）。
+真正的稳压要靠下一级，这正是 p19 之后的内容。
+
+\subhdr{2.5 电感滤波（3.5.3，p12）：为什么「低压大电流」用它}
+
+p12 的电路是桥式整流后在正母线上\textbf{串联}一只电感 $L$（扼流圈），再接负载。
+课件只有一句英文结论：\emph{Normally used in the situation when the output voltage is relatively lower
+while the current through the load is relatively larger.} 这句话背后的机制是：
+
+电感对直流是短路、对交流是高阻抗，所以它\textbf{不抬高}直流平均值（全波约 $U_{\mathrm{O}}\approx0.9U_2$），
+只把交流纹波按分压比压下去。设全波纹波的主频为 $2f=100\,\mathrm{Hz}$，则负载上的纹波是
+\[
+\frac{\Delta U_{\mathrm{O}}}{\Delta U_{\mathrm{in}}}
+=\frac{R_{\mathrm{L}}}{\sqrt{R_{\mathrm{L}}^2+(2\omega L)^2}},
+\qquad \omega=2\pi f .
+\]
+代入 $R_{\mathrm{L}}=100\,\Omega$、$f=50\,\mathrm{Hz}$ 算一张小表：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{3.2cm}p{3.6cm}p{5.1cm}@{}}
+\tabtop
+\thead{$L$} & \thead{$2\omega L$} & \thead{纹波传到负载的比例} & \thead{结论}
+\\
+\tabmid
+$0.05\,\mathrm{H}$ & $63\,\Omega$ & $0.954$ & 几乎没滤（$L$ 太小）
+\\
+$0.1\,\mathrm{H}$ & $126\,\Omega$ & $0.847$ & 只压掉一成半
+\\
+$0.5\,\mathrm{H}$ & $628\,\Omega$ & $0.303$ & 压到三成
+\\
+$1\,\mathrm{H}$ & $1257\,\Omega$ & $0.157$ & 压到一成半
+\tabbot
+\end{tabular}
+
+这张表说明两点：（1）电感滤波要\textbf{有效}，必须 $2\omega L\gg R_{\mathrm{L}}$，
+所以它天生适合\textbf{负载电阻小}（即电流大）的场合——$R_{\mathrm{L}}$ 越小，分压比越好看；
+（2）它\textbf{不抬高}输出电压，所以适合「$U_2$ 本来就不高、又要大电流」的场合。
+这两条合起来正是 p12 那句英文的意思。反过来，小电流场合用电感既贵又没效果，那里用 $\pi$ 型 RC 更划算（§2.6）。
+
+\subhdr{2.6 复式滤波（3.5.4，p13）：$\pi$ 型的命名与 RC 版的代价}
+
+p13 并排给了两种复式滤波：（1）$\pi$ 型 LC、（2）$\pi$ 型 RC。名字来自形状：
+\textbf{并联电容 $C_1$ — 串联元件 — 并联电容 $C_2$}，三段画在一起像一个希腊字母 $\pi$。
+两种的区别只在中间那只串联元件是 $L$ 还是 $R$。
+
+\textbf{（1）$\pi$ 型 LC}：$C_1$ 先把脉动削一遍，$L$ 再把剩下的交流压住，$C_2$ 再守一道。
+串联的电感\textbf{不消耗直流功率}，所以适合电流较大的场合；代价是体积、重量与成本。
+
+\textbf{（2）$\pi$ 型 RC}：把 $L$ 换成 $R$ 便宜得多，但 $R$ 上\textbf{有直流压降}：
+全波整流时
+\[
+U_{\mathrm{O}}\approx0.9U_2-I_{\mathrm{O}}R .
+\]
+例如 $U_2=20\,\mathrm{V}$、$R=50\,\Omega$、$I_{\mathrm{O}}=20\,\mathrm{mA}$，压降是 $1\,\mathrm{V}$，
+输出约 $17\,\mathrm{V}$（无电容时 $18\,\mathrm{V}$），还可以接受；
+但若 $I_{\mathrm{O}}=200\,\mathrm{mA}$，同样的 $R$ 会吃掉 $10\,\mathrm{V}$ 并使 $R$ 发热 $2\,\mathrm{W}$——
+所以 \textbf{RC 版只适合小电流}，这正是它与 LC 版的分工。
+
+\warnbox{\textbf{课件 p13 的版面不一致（点名）}：(2) 的标题写 \emph{$\pi$-type RC Filter}，
+但图里的串联元件仍画成\textbf{线圈符号}并标着 $L$，只在正上方多了一个红字 $R$。
+按标题与电路理论，串联元件应是\textbf{电阻 $R$}；本讲义一律按「$R$」讲，
+课件该图按 $R$ 理解，画线圈处视为版面残留，标 [待确认]。}
+
+\subhdr{2.7 p14：3.6 的路标}
+
+p14 是一页过渡：左边一张成品电源板实物，右边并列两件器件——
+一只玻璃封装的\textbf{稳压二极管}、一只 TO-220 封装的\textbf{三端稳压器}。
+课件的正文只有两行 \emph{Content: （1）Zener voltage regulator ／（2）3-terminal voltage regulator}。
+这两件器件正好对应后文的两节：稳压管走 §3--§7，三端稳压器走 §8.4--§8.6。
+两者是「同一件事的两种实现」——都是用一只器件把多余的电压吃掉，区别是稳压管\\并联分流、三端稳压器串联降压。
+
+%=============================================================
+\hdr{§3}{稳压管：从器件到判据（3.6.1，p15--p18）}
+
+\subhdr{3.1 击穿为什么不等于损坏（p15、p16、p17）}
+
+p15 把两条伏安特性并排：左图是稳压管，第三象限在 $U_{\mathrm{Z}}$ 处\textbf{陡直}下折，
+两条水平虚线夹出 $I_{\mathrm{Zmin}}$ 与 $I_{\mathrm{Zmax}}$；右图是普通二极管，
+第三象限只有很小的漏电流 $I_{\mathrm{R}}$，一直要到 $U_{\mathrm{BR}}$ 才击穿。
+p16 的三段英文说明它的身份：
+
+\callout{\emph{A zener diode is a p-n junction semiconductor device designed to operate in the
+reverse breakdown region.}\\
+\emph{Zener diode allows electric current in forward direction like a normal diode but also allows
+electric current in the reverse direction if the applied reverse voltage is greater than the zener voltage.
+Zener diode is always connected in reverse direction because it is specifically designed to work in reverse direction.}}
+
+「\emph{designed to operate}」这四个字是全部关键：\textbf{击穿本身是电学现象，是否损坏是热学问题}。
+普通二极管的击穿电流不受控制，结区瞬间耗散功率过大，晶格被烧毁，于是不可逆；
+稳压管把击穿电压做得很低、掺杂很重、结面积做得足够大，只要\textbf{限制住电流}（不超过 $I_{\mathrm{Zmax}}$），
+击穿就是\textbf{可逆}的——电压撤掉，管子恢复原样。所以「反接」不是接错了，是它的正常工位（p21 的 Notice （1））。
+
+\aside{p17 还给了两条特征 \emph{Reverse breakdown voltage is small}、\emph{Reverse breakdown characteristic is steep}
+与五条应用（基准、稳压／分流、开关、削波箝位、保护）。这两条特征不是形容词，各自对应一个可用的量：
+「小」对应 $U_{\mathrm{Z}}$ 可以做得很低（几伏），「陡」对应 $r_{\mathrm{Z}}$ 很小（§3.3）。}
+
+\subhdr{3.2 四个参数（p18）：$U_{\mathrm{Z}}$ 是一个范围，不是常数}
+
+p18 用四段文字定义了四个量，本讲义把它们与「怎么用」排在一起：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.8cm}p{6.4cm}p{7.6cm}@{}}
+\tabtop
+\thead{参数} & \thead{课件原话（p18）} & \thead{怎么用}
+\\
+\tabmid
+$U_{\mathrm{Z}}$ & \emph{The voltage across the zener diode when it is working}\newline
+\emph{It is not a fix value. It's a range.} & 标称值，实际在 $U_{\mathrm{Z}}$ 附近随电流略变；\textbf{不能当成精确常数}
+\\
+$I_{\mathrm{Zmin}}$ & \emph{If the reverse current is less than this value. There is no regulating effect.}\newline
+\emph{Because the reverse voltage is not big enough to force it breakdown.} & \textbf{下限}：电流小于它就没进击穿区，稳压失效
+\\
+$I_{\mathrm{Zmax}}$ & \emph{If the reverse current is greater than this value. It will be damaged forever.}\newline
+\emph{Because the voltage is too big.} & \textbf{上限}：超过它结区过热，永久损坏
+\\
+$r_{\mathrm{Z}}$ & \emph{Dynamic resistance. The smaller the better.}\newline
+$r_{\mathrm{Z}}=\Delta U/\Delta I$ & \textbf{陡度}：越小，同样的电流变化引起的电压变化越小（§3.3）
+\tabbot
+\end{tabular}
+
+这四段话本身没有错，但\textbf{合起来还缺一个可执行的判据}：给定 $U_{\mathrm{I}}$、$R$、$R_{\mathrm{L}}$，
+怎么知道 $I_{\mathrm{Z}}$ 到底落在不在 $I_{\mathrm{Zmin}}$ 与 $I_{\mathrm{Zmax}}$ 之间？
+课件没有写这一步，本讲义 §5 补成三步法，§7.2 用它来判 Example 1(g)。
+
+\subhdr{3.3 $r_{\mathrm{Z}}$ 的两条用法：把「陡」变成一个数}
+
+课件只给了定义式与一句「越小越好」，没有说它\textbf{好在哪里}。这里把它用两次，
+两次都只用到「在击穿点附近，曲线可线性化」这一条前提。
+
+\textbf{用法一：输入电压变化有多少漏到输出。}在击穿段上把曲线当成切线：
+\[
+\Delta U_{\mathrm{O}}=r_{\mathrm{Z}}\,\Delta I_{\mathrm{Z}} .
+\]
+设负载电流不变（$\Delta I_{\mathrm{O}}=0$），由基尔霍夫电流定律 $\Delta I=\Delta I_{\mathrm{Z}}$，
+再由回路方程 $\Delta U_{\mathrm{I}}=\Delta I\cdot R+\Delta U_{\mathrm{O}}$，得到
+\[
+\Delta I_{\mathrm{Z}}=\frac{\Delta U_{\mathrm{I}}}{R+r_{\mathrm{Z}}},
+\qquad
+\frac{\Delta U_{\mathrm{O}}}{\Delta U_{\mathrm{I}}}=\frac{r_{\mathrm{Z}}}{R+r_{\mathrm{Z}}} .
+\]
+\textbf{这就是「越小越好」的定量版本}：$r_{\mathrm{Z}}\ll R$ 时，输入怎么波动，输出只按 $r_{\mathrm{Z}}/R$ 的比例跟着动。
+代组数：$R=300\,\Omega$、$r_{\mathrm{Z}}=10\,\Omega$ 时比值是 $10/310=3.2\%$；
+把 $r_{\mathrm{Z}}$ 换成 $5\,\Omega$，比值降到 $1.6\%$。
+
+\textbf{用法二：负载变化有多少漏到输出。}输入不变（$\Delta U_{\mathrm{I}}=0$），
+由 $\Delta I=\Delta I_{\mathrm{Z}}+\Delta I_{\mathrm{O}}$ 与 $\Delta I=-\Delta U_{\mathrm{O}}/R$ 联立，得
+\[
+\Delta U_{\mathrm{O}}=-(R\parallel r_{\mathrm{Z}})\,\Delta I_{\mathrm{O}} .
+\]
+即从负载侧看进去，稳压电源的输出电阻是 $R\parallel r_{\mathrm{Z}}$（$R=300\,\Omega$、$r_{\mathrm{Z}}=10\,\Omega$ 时约 $9.7\,\Omega$）。
+$r_{\mathrm{Z}}\to0$ 时输出电阻趋于 $0$、$U_{\mathrm{O}}$ 与负载无关——
+\textbf{理想稳压管就是把 $r_{\mathrm{Z}}$ 取成零的那只管子}，这也是 §7.3 讲「(f) 用两管相减为什么不算稳压」的伏笔。
+
+\aside{以上两式由 $r_{\mathrm{Z}}=\Delta U/\Delta I$ 与两个基尔霍夫方程推出，$\Delta$ 一律指「相对某个工作点的小变化」。
+课件 p18 只写了 $\Delta I=\Delta U/r_{\mathrm{Z}}$ 这一行，且未说明它是\textbf{击穿区切线}的斜率——
+按定义它只在击穿段有意义，正向区不能套这个数。
+本段与 §4 的两个比值属于本讲义补的推导（[教材补充]），原因：没有它们，
+$r_{\mathrm{Z}}$ 只是一个背下来的参数，判不了「这个电源稳不稳」。}
+
+%=============================================================
+\hdr{§4}{稳压管稳压电路与稳压过程（p19--p20）}
+
+\subhdr{4.1 电路与三个方程（原形式）}
+
+p19 的电路是本册的骨架：变压器降压、桥式整流、电容 $C$ 滤波，得到 $U_{\mathrm{I}}$；
+然后在正母线上串一只限流电阻 $R$，其右侧节点向下接\textbf{反接}的稳压管 $D_{\mathrm{Z}}$，
+同一节点向右接负载 $R_{\mathrm{L}}$，$D_{\mathrm{Z}}$ 与 $R_{\mathrm{L}}$ 的下端都回到负母线。
+三者的关系是：$C$、$D_{\mathrm{Z}}$、$R_{\mathrm{L}}$ 三者\textbf{并联}在同一对输出端点，$R$ 串在整流器与它们之间。
+
+把它写成本讲义后文一律使用的三个方程：
+\[
+U_{\mathrm{O}}=U_{\mathrm{I}}-IR\quad(\text{回路电压}),
+\qquad
+I=I_{\mathrm{Z}}+I_{\mathrm{O}}\quad(\text{节点电流}),
+\qquad
+U_{\mathrm{O}}=U_{\mathrm{Z}}+r_{\mathrm{Z}}I_{\mathrm{Z}}\quad(\text{击穿段切线}).
+\]
+第三个方程在 $r_{\mathrm{Z}}\to0$ 时退化为 $U_{\mathrm{O}}=U_{\mathrm{Z}}$，这就是「稳压」二字的全部内容：
+\textbf{输出电压等于稳压管的击穿电压，与输入、与负载都无关}。
+前两个方程负责回答「那只管子能不能撑住这个工位」。
+
+\aside{课件的 p19、p20 只有图与标注（$U_{\mathrm{I}}$、$U_{\mathrm{O}}$、$I$、$I_{\mathrm{Z}}$、$I_{\mathrm{O}}$），
+\textbf{三个方程一条都没有写}。它们是电路的基尔霍夫方程与 p18 的参数定义，本讲义显式写出来，
+因为后面所有判断（§5 判据、§6 七个例题、§7 的失败分析）都要直接调用它们。}
+
+\subhdr{4.2 把 p20 的箭头链补成不等式链}
+
+p20 给的是一串箭头（原式照抄，\\ 号表示折行）：
+
+\callout{\emph{Process of voltage regulating：}\\
+$U_{\mathrm{O}}\uparrow\ \rightarrow\ I_{\mathrm{Z}}\uparrow\uparrow\ \rightarrow\ I\uparrow\ \rightarrow\ IR\uparrow$
+\quad 然后折返回 \quad $U_{\mathrm{O}}\downarrow$}
+
+这五步每一跳都要有出处，否则它只是一句口号。逐跳对上 §4.1 的方程：
+
+\begin{enumerate}
+\item $U_{\mathrm{O}}\uparrow\Rightarrow I_{\mathrm{Z}}\uparrow\uparrow$：由 $U_{\mathrm{O}}=U_{\mathrm{Z}}+r_{\mathrm{Z}}I_{\mathrm{Z}}$
+得 $\Delta I_{\mathrm{Z}}=\Delta U_{\mathrm{O}}/r_{\mathrm{Z}}$。因为 $r_{\mathrm{Z}}$ 很小，
+\textbf{电压的一个小增量引起电流的一个大增量}——p20 用两个箭头「$\uparrow\uparrow$」标的就是这件事，
+p18 那句 \emph{A small change of voltage will cause a great change of the current} 是同一句话。
+\item $I_{\mathrm{Z}}\uparrow\Rightarrow I\uparrow$：由 $I=I_{\mathrm{Z}}+I_{\mathrm{O}}$，负载电流不变时 $I$ 随 $I_{\mathrm{Z}}$ 同步增。
+\item $I\uparrow\Rightarrow IR\uparrow$：$R$ 是常数，直接乘。
+\item $IR\uparrow\Rightarrow U_{\mathrm{O}}\downarrow$：由 $U_{\mathrm{O}}=U_{\mathrm{I}}-IR$，$U_{\mathrm{I}}$ 由前级决定、短期不变，
+于是 $IR$ 增大多少，$U_{\mathrm{O}}$ 就被压低多少。
+\end{enumerate}
+
+四步走完是一个\textbf{负反馈}：输出往上跑一点点，管子立刻多分流一大截，把限流电阻上的压降顶上去，
+再把输出压回来。\textbf{稳压管不是「产生」一个电压，而是「吃掉」多余的电压}——
+这个说法要在脑子里换过来，否则 (g) 那样的题会算成「管子输出 $10\,\mathrm{V}$，所以不消耗功率」。
+
+\warnbox{\textbf{这条链只说明方向，不说明幅度。}箭头能告诉你「输入升，输出升得少」，
+但「少多少」必须用 §3.3 的比值：$\Delta U_{\mathrm{O}}/\Delta U_{\mathrm{I}}=r_{\mathrm{Z}}/(R+r_{\mathrm{Z}})$。
+$R=300\,\Omega$、$r_{\mathrm{Z}}=10\,\Omega$ 时这个比值是 $3.2\%$，
+即输入涨 $1\,\mathrm{V}$、输出只涨 $32\,\mathrm{mV}$。\textbf{没有这个数，链子只是定性的}。}
+
+\subhdr{4.3 两种扰动，一条链能同时管住}
+
+同一条负反馈链要应付两种完全不同的扰动，这是它值得单独讲的原因：
+
+\textbf{（1）电网电压波动}（$U_{\mathrm{I}}$ 变，$R_{\mathrm{L}}$ 不变）：$U_{\mathrm{I}}\uparrow$ 会让 $I$ 变大，
+$I_{\mathrm{Z}}$ 随之增加，多出来的电压被 $R$ 吃掉；输出只按 $r_{\mathrm{Z}}/(R+r_{\mathrm{Z}})$ 的比例跟着动。
+
+\textbf{（2）负载变化}（$U_{\mathrm{I}}$ 不变，$R_{\mathrm{L}}$ 变）：负载变轻（$R_{\mathrm{L}}\uparrow$）时 $I_{\mathrm{O}}$ 减小，
+总电流 $I$ 想减小；但稳压管在击穿区「守」着 $U_{\mathrm{O}}$，只要电流还在 $I_{\mathrm{Zmin}}$ 以上，
+它就\textbf{把减小的那部分主动接管过来}（$I_{\mathrm{Z}}$ 增大），于是 $I$ 几乎不变、$IR$ 几乎不变、$U_{\mathrm{O}}$ 几乎不变。
+
+第（2）种情况有一个必须记住的极限：$I_{\mathrm{Z}}$ 不能无限增大。
+负载轻到端子上没有电流时，全部 $I$ 都从稳压管走，此时
+\[
+I_{\mathrm{Z,max}}\big|_{\text{空载}}=\frac{U_{\mathrm{I}}-U_{\mathrm{Z}}}{R}.
+\]
+若这个数超过管子的 $I_{\mathrm{Zmax}}$，\textbf{空载时管子会被烧}（而不是像 §1.2 的电容那样只是电压上升）。
+所以「限流电阻 $R$ 该取多大」这个问题，答案由\textbf{两个最坏工况}夹出来，这就是 §5.2。
+
+%=============================================================
+\hdr{§5}{工作点判据与限流电阻的取法}
+
+\subhdr{5.1 三步法：拿到任何稳压管电路都这么判}
+
+§3.2 的四个参数、§4.1 的三个方程，合起来给出一个三步判据。
+它的思路是\textbf{先假设稳压成立，再验算这个假设能不能站住}：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.1cm}p{14.6cm}@{}}
+\tabtop
+\thead{步} & \thead{动作}
+\\
+\tabmid
+1 & \textbf{假定稳压成立}：$U_{\mathrm{O}}=U_{\mathrm{Z}}$。算出总电流 $I=(U_{\mathrm{I}}-U_{\mathrm{Z}})/R$
+与负载电流 $I_{\mathrm{O}}=U_{\mathrm{Z}}/R_{\mathrm{L}}$。
+\\
+2 & \textbf{求稳压管电流}：$I_{\mathrm{Z}}=I-I_{\mathrm{O}}$。
+\\
+3 & \textbf{验算三选一}：
+$I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}$ 则假定成立，$U_{\mathrm{O}}=U_{\mathrm{Z}}$；
+$I_{\mathrm{Z}}>I_{\mathrm{Zmax}}$ 则管子过热损坏（$U_{\mathrm{O}}$ 塌）；
+$I_{\mathrm{Z}}<I_{\mathrm{Zmin}}$（含 $I_{\mathrm{Z}}\le0$）则根本没进击穿区，管子相当于断开，$U_{\mathrm{O}}\approx U_{\mathrm{I}}$。
+\tabbot
+\end{tabular}
+
+第 3 步的第三种情形值得单独说：\textbf{一旦退出击穿，$R$ 上几乎没有电流流过，也就几乎没有压降}，
+所以输出不是「比 $U_{\mathrm{Z}}$ 小一点」，而是「几乎等于 $U_{\mathrm{I}}$」——
+这是本题组最常见的错解来源（§6.9 与 §7.1 都回到这一点）。
+
+\aside{三步法的第 1 步与第 3 步的顺序不能颠倒：代入 $U_{\mathrm{O}}=U_{\mathrm{Z}}$ 之前，
+电路里 $I_{\mathrm{Z}}$ 是未知量，无法「先算 $I_{\mathrm{Z}}$ 再算 $U_{\mathrm{O}}$」。
+课件 p18 把 $I_{\mathrm{Zmin}}$、$I_{\mathrm{Zmax}}$ 写成两句条件，没有给这个「假设--验算」的结构。}
+
+\subhdr{5.2 限流电阻 $R$ 的窗口：两条最坏工况}
+
+设计问题通常是这样问的：输入在 $U_{\mathrm{Imin}}\sim U_{\mathrm{Imax}}$ 之间波动，负载电流在
+$0\sim I_{\mathrm{Omax}}$ 之间变化，要求稳压管始终工作在 $I_{\mathrm{Zmin}}\sim I_{\mathrm{Zmax}}$ 内，
+求 $R$ 的取值范围。
+
+\textbf{上界（最轻载 + 最低输入）}：此时 $I_{\mathrm{Z}}$ 最小，要保证它不低于下限
+\[
+\frac{U_{\mathrm{Imin}}-U_{\mathrm{Z}}}{R}\ge I_{\mathrm{Zmin}}+I_{\mathrm{Omax}}
+\ \Longrightarrow\
+R\le\frac{U_{\mathrm{Imin}}-U_{\mathrm{Z}}}{I_{\mathrm{Zmin}}+I_{\mathrm{Omax}}} .
+\]
+
+\textbf{下界（空载 + 最高输入）}：此时 $I_{\mathrm{Z}}$ 最大，要保证它不超过上限
+\[
+\frac{U_{\mathrm{Imax}}-U_{\mathrm{Z}}}{R}\le I_{\mathrm{Zmax}}+I_{\mathrm{Omin}}
+\ \Longrightarrow\
+R\ge\frac{U_{\mathrm{Imax}}-U_{\mathrm{Z}}}{I_{\mathrm{Zmax}}+I_{\mathrm{Omin}}} .
+\]
+
+两条一夹，$R$ 只能落在一个\textbf{区间}里。区间为空，说明这只稳压管配这个输入范围根本做不出来，
+要么换管、要么改输入——这是设计题真正的答案形态，不是「一个数」。
+
+\subhdr{5.3 一个完整算例（自编，非往年题）}
+
+设 $U_{\mathrm{Z}}=10\,\mathrm{V}$、$I_{\mathrm{Zmin}}=5\,\mathrm{mA}$、$I_{\mathrm{Zmax}}=23\,\mathrm{mA}$，
+输入在 $18\sim22\,\mathrm{V}$ 之间波动（电网 $\pm10\%$ 的常见量级），负载电流在 $0\sim6.67\,\mathrm{mA}$ 之间变化
+（对应 $R_{\mathrm{L}}\ge1.5\,\mathrm{k\Omega}$）。求 $R$。
+
+代上面两条：
+\[
+R\ge\frac{22-10}{0.023+0}=521.7\,\Omega,
+\qquad
+R\le\frac{18-10}{0.005+0.00667}=685.7\,\Omega .
+\]
+所以 $R\in[522,\,686]\,\Omega$，取标称 $620\,\Omega$。验算两端：
+
+\begin{itemize}
+\item 最高输入、空载：$I_{\mathrm{Z}}=(22-10)/620=19.4\,\mathrm{mA}\le23\,\mathrm{mA}$，合格；
+\item 最低输入、满载：$I_{\mathrm{Z}}=(18-10)/620-6.67=6.24\,\mathrm{mA}\ge5\,\mathrm{mA}$，合格。
+\end{itemize}
+
+再补一步\textbf{功率校验}（很多题会漏）：$P_{R}=(22-10)^2/620=0.23\,\mathrm{W}$，取 $1/2\,\mathrm{W}$ 电阻；
+$P_{Z}=U_{\mathrm{Z}}I_{\mathrm{Zmax}}=10\times0.023=0.23\,\mathrm{W}$，所选管子的额定功耗必须大于它。
+\aside{本例的四个输入（$U_{\mathrm{Z}}$、$I_{\mathrm{Zmin}}$、$I_{\mathrm{Zmax}}$、输入范围）取自 p18 的参数含义与 p27 的题面量级，
+$18\sim22\,\mathrm{V}$ 的波动范围是本讲义设定的。此例用于演示 §5.2 的窗口怎么用，不是课件例题。}
+
+\subhdr{5.4 三个常见错法}
+
+\begin{enumerate}
+\item \textbf{把 $R$ 当自由度随便取。} $R$ 小了烧管（空载时 $I_{\mathrm{Z}}$ 超限），$R$ 大了失稳
+（满载时 $I_{\mathrm{Z}}$ 掉到 $I_{\mathrm{Zmin}}$ 以下）。它是被夹出来的，不是选的。
+\item \textbf{只算一种工况。} 只按额定输入算 $R$，电网一波动就出窗口——必须用\textbf{两个最坏值}各算一次。
+\item \textbf{忘了功率。} $R$ 与稳压管都要按最坏工况算耗散，否则电路「算对了」但元件「受不了」。
+\end{enumerate}
+
+%=============================================================
+\hdr{§6}{主例题 Example 1 全程（p21--p27）}
+
+\subhdr{6.1 题面结构：七个小问在回答 p21 的两个 Notice}
+
+七个电路的公共结构是：输入 $U_{\mathrm{I}}$ 经 $R$ 接到节点，节点向下串两只稳压管 $D_{\mathrm{Z1}}$、$D_{\mathrm{Z2}}$
+（\textbf{都反接}，即阴极朝正母线），输出 $U_{\mathrm{O}}$ 取自这一串的两端。已知量全组相同：
+\[
+U_{\mathrm{Z1}}=4.5\,\mathrm{V},\qquad U_{\mathrm{Z2}}=9.5\,\mathrm{V},\qquad
+U_{\mathrm{F}}=0.5\,\mathrm{V}\ (\text{正向压降}).
+\]
+所以两只管子\textbf{反接串联}时稳压值是 $4.5+9.5=14\,\mathrm{V}$，\textbf{正接串联}时压降是 $0.5+0.5=1\,\mathrm{V}$。
+
+p21 页脚提出了两个 Notice：\emph{（1）In order to stabilize the voltage, the zener diode need to be connected in reverse.}
+与 \emph{（2）When will it fail to stabilize the voltage?} 七个小问就是这两个提问的五种答案：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{2.2cm}p{4.5cm}p{7.3cm}@{}}
+\tabtop
+\thead{问} & \thead{页码} & \thead{已知} & \thead{它在演哪一种情形}
+\\
+\tabmid
+(a) & p21 & $U_{\mathrm{I}}=18\,\mathrm{V}$，正接 & 正常稳压：$18>14$，两管都在击穿区
+\\
+(b) & p22 & $U_{\mathrm{I}}=10\,\mathrm{V}$，正接 & \textbf{输入不足}：$10<14$，进不了击穿区
+\\
+(c) & p23 & $U_{\mathrm{I}}=4\,\mathrm{V}$，输入反接 & 反接 = 正向导通，两只各掉 $0.5\,\mathrm{V}$
+\\
+(d) & p24 & $U_{\mathrm{I}}=4\,\mathrm{V}$，输入反接 & 同 (c)（两页位图标注相同，差异标 [待确认]）
+\\
+(e) & p25 & $U_{\mathrm{I}}=8\,\mathrm{V}$，正接 & 又一种输入不足：$8<14$
+\\
+(f) & p26 & $U_{\mathrm{I}}=13\,\mathrm{V}$，两支路 & 两节点相减：$4.5$ 与 $9.5$ 之差
+\\
+(g) & p27 & $U_{\mathrm{I}}=20\,\mathrm{V}$，$R=300\,\Omega$ & \textbf{带载}：判 $I_{\mathrm{Z}}$ 是否超限
+\tabbot
+\end{tabular}
+
+\subhdr{6.2 （a）$U_{\mathrm{I}}=18\,\mathrm{V}$：正常稳压，输出 $14\,\mathrm{V}$}
+
+反接串联的两只管子要同时击穿，需要 $\ge U_{\mathrm{Z1}}+U_{\mathrm{Z2}}=14\,\mathrm{V}$。
+现在 $U_{\mathrm{I}}=18\,\mathrm{V}>14\,\mathrm{V}$，两管都进击穿区，输出被钳在
+\[
+U_{\mathrm{O}}=U_{\mathrm{Z1}}+U_{\mathrm{Z2}}=4.5+9.5=14\,\mathrm{V}.
+\]
+分压怎么分？每一只都在自己的击穿点上，所以 $D_{\mathrm{Z1}}$ 上 $4.5\,\mathrm{V}$、$D_{\mathrm{Z2}}$ 上 $9.5\,\mathrm{V}$，
+\textbf{不是按电阻比分的}——这是「串联稳压值相加」的物理含义：击穿电压由器件决定，不由外电路决定。
+
+剩下 $18-14=4\,\mathrm{V}$ 落在 $R$ 上，故 $I=(18-14)/R$。这个电流全部流过稳压管（本页没有接负载），
+所以是否安全取决于 $R$：课件未给 $R$ 与 $I_{\mathrm{Zmax}}$，无法验算，标 [待确认]。
+\aside{若取 $R=100\,\Omega$，则 $I_{\mathrm{Z}}=40\,\mathrm{mA}$。对照 p27 给出的量级（$I_{\mathrm{Zmax}}=23\,\mathrm{mA}$），
+这个 $R$ 偏小——可见 (a) 只问「输出是多少」，没打算让你验算电流。本注是补充核算，不是例题要求。}
+
+\subhdr{6.3 （b）$U_{\mathrm{I}}=10\,\mathrm{V}$：进不了击穿区，输出等于输入}
+
+$10\,\mathrm{V}<14\,\mathrm{V}$，两只管子都停在击穿之前，只有极小的反向漏电流。
+漏电流在 $R$ 上的压降可以忽略，于是
+\[
+U_{\mathrm{O}}\approx U_{\mathrm{I}}=10\,\mathrm{V}.
+\]
+\textbf{注意这里不是「$14\,\mathrm{V}$ 减去什么」}，而是整个支路相当于断开，输入原样出现在输出端。
+这就是 Notice（2）的第一个答案：\textbf{输入电压不够高时，稳压失效，但输出不会消失，而是跟着输入跑。}
+
+\aside{严格的写法是 $U_{\mathrm{O}}=U_{\mathrm{I}}-IR$，而 $I=I_{\mathrm{Z}}+I_{\mathrm{O}}$ 中的 $I_{\mathrm{Z}}$ 只有漏电流（$\mu\mathrm{A}$ 量级），
+$I_{\mathrm{O}}=0$（本页无负载），所以 $IR\approx0$，$U_{\mathrm{O}}\approx U_{\mathrm{I}}$。
+课件没有写这一步，只给了电路；把它补出来，「为什么是 $10\,\mathrm{V}$ 而不是别的数」才说得通。}
+
+\subhdr{6.4 （c）（d）$U_{\mathrm{I}}=4\,\mathrm{V}$，输入反接：两只管子正向导通}
+
+p23 与 p24 的端子标注与前两页相反：\textbf{输入端上「$-$」下「$+$」}（输出端仍标上「$+$」下「$-$」）。
+这一反接改变了整条支路的工作方式：电流从底端（$+$）出发，经 $D_{\mathrm{Z2}}$、$D_{\mathrm{Z1}}$ 的\textbf{正向}
+流向顶端，两只管子都变成普通正向导通的二极管。
+
+正向导通后每只压降 $0.5\,\mathrm{V}$，串联共 $1\,\mathrm{V}$，于是底端比顶端高 $1\,\mathrm{V}$；
+按图上标注的参考极性（顶端为 $+$、底端为 $-$），
+\[
+U_{\mathrm{O}}=-(U_{\mathrm{F1}}+U_{\mathrm{F2}})=-1\,\mathrm{V},
+\qquad |U_{\mathrm{O}}|=1\,\mathrm{V}.
+\]
+这是 Notice（2）的第二个答案：\textbf{接反了就不稳压}——不但不稳压，输出电压还会反号、只剩 $1\,\mathrm{V}$。
+
+\warnbox{\textbf{$4\,\mathrm{V}$ 在这里几乎不起作用。}只要 $U_{\mathrm{I}}>1\,\mathrm{V}$，两只正向导通的管子就把压降钉在 $1\,\mathrm{V}$，
+多余的部分全落在 $R$ 上，即 $U_{R}=4-1=3\,\mathrm{V}$。
+换句话说：(c)(d) 的输出\textbf{与 $U_{\mathrm{I}}$ 无关}，这是「正向钳位」与「反向稳压」两种机制都有的性质，
+但钳位值是 $1\,\mathrm{V}$ 而不是 $14\,\mathrm{V}$。}
+
+\aside{p23 与 p24 两页的位图标注（输入上「$-$」下「$+$」、输出上「$+$」下「$-$」）逐字相同，
+扫描描述也只差一处：p24 把「$+$」标在 $R$ 之后、稳压管顶端那个节点上。
+两者差异在本册的文字层与扫描图里都无法确定，标 [待确认]：本讲义按「两页都是输入反接」处理，
+答案同为 $|U_{\mathrm{O}}|=1\,\mathrm{V}$。若考试遇到，先看\textbf{输入端}的极性标记，那是唯一决定正/反向的量。}
+
+\subhdr{6.5 （e）$U_{\mathrm{I}}=8\,\mathrm{V}$：又一种输入不足}
+
+正接（输入端上「$+$」下「$-$」），$8\,\mathrm{V}<14\,\mathrm{V}$，情形与 (b) 完全相同：
+\[
+U_{\mathrm{O}}\approx U_{\mathrm{I}}=8\,\mathrm{V}.
+\]
+(b) 与 (e) 摆在一起说明一件事：\textbf{「不稳压」不是一个开关，而是一段区间}——
+正接时只要 $0<U_{\mathrm{I}}<14\,\mathrm{V}$，输出就从 $U_{\mathrm{I}}$ 一路跟着输入爬，
+直到 $U_{\mathrm{I}}\ge14\,\mathrm{V}$ 且 $I_{\mathrm{Z}}$ 不超限，才真正被钉在 $14\,\mathrm{V}$ 上。
+§6.4 那种反接是另一回事：它把输出钉在 $-1\,\mathrm{V}$，与 $U_{\mathrm{I}}$ 的大小无关。
+
+\subhdr{6.6 （f）$U_{\mathrm{I}}=13\,\mathrm{V}$，两支路：输出取两节点之差，$5\,\mathrm{V}$}
+
+p26 把两只管子拆成\textbf{两条并列支路}：左支路 $R+D_{\mathrm{Z1}}$、右支路 $R+D_{\mathrm{Z2}}$，
+输出 $U_{\mathrm{O}}$ 取两条支路\textbf{中间两个节点}之间的电压（左节点标 $+$、右节点标 $-$）。
+两条支路各自与 §4 的电路完全同构，各按自己的稳压值工作：
+
+\begin{itemize}
+\item 左支路：$13>4.5$，$D_{\mathrm{Z1}}$ 击穿，左节点电位 $U_{\mathrm{L}}=4.5\,\mathrm{V}$；
+\item 右支路：$13>9.5$，$D_{\mathrm{Z2}}$ 击穿，右节点电位 $U_{\mathrm{R}}=9.5\,\mathrm{V}$。
+\end{itemize}
+
+按标注的参考极性，
+\[
+U_{\mathrm{O}}=U_{\mathrm{L}}-U_{\mathrm{R}}=4.5-9.5=-5\,\mathrm{V},
+\qquad |U_{\mathrm{O}}|=5\,\mathrm{V}.
+\]
+机制是\textbf{两个稳压值相减}：$9.5-4.5=5$。它说明稳压值可以「凑」（用一只高价管减一只低价管），
+代价是\textbf{两个节点的绝对精度都会带进差值}——这也是 §7.3 要展开的。
+
+\aside{两支路各要满足 $I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}$，判据同 §5.1。
+课件未给 $R$、$I_{\mathrm{Zmin}}$、$I_{\mathrm{Zmax}}$，所以「两条支路都真的稳压」这一步无法验算，标 [待确认]。
+若某支路电流不够，该节点电位就不再是 $U_{\mathrm{Z}}$ 而是 $U_{\mathrm{I}}$，差值立刻变成另一个数——
+这正是 (f) 这类电路在实际中不受欢迎的原因。}
+
+\subhdr{6.7 （g）$U_{\mathrm{I}}=20\,\mathrm{V}$，$R=300\,\Omega$，$R_{\mathrm{L}}=1.5\,\mathrm{k\Omega}$：判 $I_{\mathrm{Z}}$}
+
+p27 的题面是 \emph{$U_{\mathrm{Z}}=10\,\mathrm{V}$,\ $I_{\mathrm{Zmax}}=23\,\mathrm{mA}$. Find $I_{\mathrm{Z}}$}，
+电路是 $R=300\,\Omega$ 串在输入、$D_{\mathrm{Z}}$ 与 $R_{\mathrm{L}}=1.5\,\mathrm{k\Omega}$ 并联。按 §5.1 三步法：
+
+\textbf{第 1 步}，假定稳压成立，$U_{\mathrm{O}}=U_{\mathrm{Z}}=10\,\mathrm{V}$：
+\[
+I=\frac{U_{\mathrm{I}}-U_{\mathrm{Z}}}{R}=\frac{20-10}{300}=33.3\,\mathrm{mA},
+\qquad
+I_{\mathrm{O}}=\frac{U_{\mathrm{Z}}}{R_{\mathrm{L}}}=\frac{10}{1500}=6.67\,\mathrm{mA}.
+\]
+\textbf{第 2 步}，节点电流：
+\[
+I_{\mathrm{Z}}=I-I_{\mathrm{O}}=33.3-6.67=26.7\,\mathrm{mA}.
+\]
+\textbf{第 3 步}，验算：$I_{\mathrm{Z}}=26.7\,\mathrm{mA}>I_{\mathrm{Zmax}}=23\,\mathrm{mA}$。
+\textbf{假定不成立}——管子超过最大工作电流，会过热损坏。
+
+所以本题的正确答案不是一个电流值，而是两句：（1）若强行稳压，管子要过 $26.7\,\mathrm{mA}$，超标；
+（2）管子一旦烧毁，通常\textbf{短路}，于是 $U_{\mathrm{O}}=0$，$R$ 上单独承受全部 $20\,\mathrm{V}$、
+耗散 $20^2/300=1.33\,\mathrm{W}$，很快也会跟着出问题。
+
+要让它正常工作，必须加大 $R$。按最坏工况反解（负载始终保持 $6.67\,\mathrm{mA}$）：
+\[
+R\ge\frac{20-10}{0.023+0.00667}=337\,\Omega .
+\]
+取标称 $390\,\Omega$ 验算：$I=(20-10)/390=25.6\,\mathrm{mA}$，$I_{\mathrm{Z}}=25.6-6.67=19.0\,\mathrm{mA}<23\,\mathrm{mA}$，合格；
+此时 $P_{R}=10^2/390=0.26\,\mathrm{W}$、$P_{Z}=10\times0.019=0.19\,\mathrm{W}$，都留有余量。
+
+\aside{「管子烧毁后通常短路」不是定理，而是这类器件的常见失效模式（结区熔融形成低阻通路）。
+本讲义的 $1.33\,\mathrm{W}$ 与 $390\,\Omega$ 的改法都是补充核算，课件 p27 只问了 $I_{\mathrm{Z}}$ 一个量。}
+
+\subhdr{6.8 七问答案表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.2cm}p{3.3cm}p{2.1cm}p{2.9cm}p{5.8cm}@{}}
+\tabtop
+\thead{问} & \thead{输入（极性）} & \thead{状态} & \thead{$U_{\mathrm{O}}$} & \thead{依据}
+\\
+\tabmid
+(a) & $18\,\mathrm{V}$（正接） & 两管击穿 & $14\,\mathrm{V}$ & $U_{\mathrm{Z1}}+U_{\mathrm{Z2}}$（p21）
+\\
+(b) & $10\,\mathrm{V}$（正接） & 未击穿 & $10\,\mathrm{V}$ & $U_{\mathrm{O}}\approx U_{\mathrm{I}}$（p22）
+\\
+(c) & $4\,\mathrm{V}$（反接） & 两管正向 & $-1\,\mathrm{V}$ & $-(U_{\mathrm{F1}}+U_{\mathrm{F2}})$（p23）
+\\
+(d) & $4\,\mathrm{V}$（反接） & 两管正向 & $-1\,\mathrm{V}$ & 同 (c)，[待确认]（p24）
+\\
+(e) & $8\,\mathrm{V}$（正接） & 未击穿 & $8\,\mathrm{V}$ & $U_{\mathrm{O}}\approx U_{\mathrm{I}}$（p25）
+\\
+(f) & $13\,\mathrm{V}$（两支路） & 各自击穿 & $-5\,\mathrm{V}$ & $4.5-9.5$（p26）
+\\
+(g) & $20\,\mathrm{V}$（带载） & $I_{\mathrm{Z}}$ 超限 & 不能稳压 & $26.7\,\mathrm{mA}>23\,\mathrm{mA}$（p27）
+\tabbot
+\end{tabular}
+
+\subhdr{6.9 错解诊断：每个错法会得到什么数}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.3cm}p{3.1cm}p{2.7cm}p{4.3cm}@{}}
+\tabtop
+\thead{错法} & \thead{会算出} & \thead{正确} & \thead{错在哪一步}
+\\
+\tabmid
+(b) 用「$14-U_{\mathrm{I}}$」或「$U_{\mathrm{I}}/14$」 & $4\,\mathrm{V}$ 之类 & $10\,\mathrm{V}$ & 把支路当成仍在击穿区
+\\
+(c)(d) 认为反接也能稳压 & $14\,\mathrm{V}$ & $-1\,\mathrm{V}$ & 忘了反接意味着正向导通
+\\
+(e) 认为「不足就输出 $0$」 & $0\,\mathrm{V}$ & $8\,\mathrm{V}$ & 把「失效」当成「断路」
+\\
+(f) 用 $4.5+9.5$ & $14\,\mathrm{V}$ & $-5\,\mathrm{V}$ & 没有看输出取的是\textbf{两节点之差}
+\\
+(g) 直接写 $I_{\mathrm{Z}}=26.7\,\mathrm{mA}$ 就交卷 & $26.7\,\mathrm{mA}$ & 判超限 & 漏了第 3 步验算
+\tabbot
+\end{tabular}
+
+五个错里有三个同一个病根：\textbf{把「稳压管支路」当成一个固定电压源}。
+它只在击穿区里是电压源，出了击穿区要么是断开的（(b)(e)）、要么是 $1\,\mathrm{V}$ 的正向压降（(c)(d)）。
+§7 把这三处的「算不下去」讲透。
+
+%=============================================================
+\hdr{§7}{三处「算不下去」的地方}
+
+本节回答三个「课件给了图、没给为什么」的问题：(b)(e) 为什么只能给约等号、(g) 为什么答案不是电流、
+(f) 为什么得到的 $5\,\mathrm{V}$ 不能当稳压电源用。
+
+\subhdr{7.1 (b)(e)：方程在这一区无解，只能给不等式}
+
+在 (b) 里，如果仍按 §4.1 的第三个方程 $U_{\mathrm{O}}=U_{\mathrm{Z}}$ 算，会立刻矛盾：
+$U_{\mathrm{O}}=14\,\mathrm{V}$ 而 $U_{\mathrm{I}}=10\,\mathrm{V}$，串联支路上「输入小于输出」，电流只能为负。
+这说明\textbf{假设本身出错了}，而不是算术出错。
+
+真实情况是：两只管子都在击穿之前，伏安特性是一条几乎水平的线，等效成一只\textbf{阻值极大}的电阻。
+此时电路是两个大阻值电阻（$R$ 与管子）串联分压，$R$ 上的压降是 $\mu\mathrm{A}$ 量级的漏电流乘 $R$，可以忽略，
+于是 $U_{\mathrm{O}}\approx U_{\mathrm{I}}$。
+
+\textbf{为什么只能在约等号上停下}：要算出精确值，需要管子在击穿前的\textbf{漏电阻}（或反向饱和电流），
+这不是稳压管的标称参数，课件的四个参数里也没有它。因此这道题的\textbf{答案形态}就是
+「$U_{\mathrm{O}}\approx U_{\mathrm{I}}$，稳压失效」，再往下算只是在编数据。
+这就是缺口清单第六类（答案形态）的现场：\textbf{停在这里不是偷懒，是数据不够}。
+
+\subhdr{7.2 (g)：题目问的是电流，正确答案是「会坏」}
+
+p27 的题干是 \emph{Find $I_{\mathrm{Z}}$}，字面上只求一个数。但三步法走完会发现
+$I_{\mathrm{Z}}=26.7\,\mathrm{mA}$ 与 $I_{\mathrm{Zmax}}=23\,\mathrm{mA}$ 的大小关系才是本题的落点。
+\textbf{题目给 $I_{\mathrm{Zmax}}$ 这个条件是本题唯一的「考点提示」}：
+凡是题面同时给出 $U_{\mathrm{Z}}$、$I_{\mathrm{Zmax}}$、$R$、$R_{\mathrm{L}}$ 与 $U_{\mathrm{I}}$，问「求 $I_{\mathrm{Z}}$」，
+十有八九是要你判超限（或判不足），而不是要你报一个电流值。
+
+这与 §5.1 第 3 步的三种情形一一对应：
+\[
+I_{\mathrm{Z}}>I_{\mathrm{Zmax}}\Rightarrow\text{损坏};\qquad
+I_{\mathrm{Z}}<I_{\mathrm{Zmin}}\Rightarrow\text{失稳};\qquad
+I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}\Rightarrow\text{稳压成立}.
+\]
+本题落在第一档，所以答题必须写「不稳压，管子过流」，再补一句「需增大 $R$ 至 $\ge337\,\Omega$」才算完整——
+\textbf{只写 $26.7\,\mathrm{mA}$ 是把一道判断题做成了计算题}。
+
+\subhdr{7.3 (f)：$5\,\mathrm{V}$ 为什么不能当稳压电源用}
+
+(f) 用两只管子相减凑出 $5\,\mathrm{V}$，算术上成立，工程上有三处硬伤：
+
+\textbf{（1）误差相加，不是相减。} $U_{\mathrm{Z}}$ 本身是一个范围（p18 原话 \emph{It is not a fix value.
+It's a range.}）。若两只管子的偏差各为 $\pm5\%$，
+\[
+4.5\pm0.225\,\mathrm{V},\qquad 9.5\pm0.475\,\mathrm{V},
+\]
+最坏情况下差值是 $5\pm0.7\,\mathrm{V}$，\textbf{相对误差 $\pm14\%$}。
+差值把两处误差\textbf{叠加}了，比单用一只 $5\,\mathrm{V}$ 的管子差得多（后者只有 $\pm5\%$）。
+
+\textbf{（2）两条支路各自都要满足电流条件。} $U_{\mathrm{I}}=13\,\mathrm{V}$ 对 $9.5\,\mathrm{V}$ 那条支路只剩 $3.5\,\mathrm{V}$ 落在 $R$ 上，
+对 $4.5\,\mathrm{V}$ 那条剩 $8.5\,\mathrm{V}$。同一个 $R$ 下两条支路的电流差近三倍，
+很可能一条超 $I_{\mathrm{Zmax}}$、另一条低于 $I_{\mathrm{Zmin}}$——此时两个节点电位都不再等于 $U_{\mathrm{Z}}$，差值立刻失效。
+课件未给 $R$，无法验算，标 [待确认]。
+
+\textbf{（3）输出「浮」在两个非地节点之间。} $U_{\mathrm{O}}$ 既不接正母线也不接地，
+后级电路若要共地就得另做处理——这是实际电路里最不受欢迎的一种输出方式。
+
+三处合起来给出一个可迁移的判断：\textbf{稳压值可以相减，但代价是精度与电流预算两项都要重新算}。
+与其相减，不如直接选一只 $5\,\mathrm{V}$ 的稳压管。
+
+%=============================================================
+\hdr{§8}{Example 2 与三端集成稳压器（p28--p38）}
+
+\subhdr{8.1 p28--p36：同一个例题的九帧}
+
+p28 起小标题写的是 \emph{4. Example 2}，电路与前面完全不同：\textbf{变压器 + 桥式整流 + 电容滤波 + 限流电阻 $R$ +
+稳压管 + 负载 $R_{\mathrm{L}}$} 的整机图，右侧一只数字万用表，红表笔接输出正端、黑表笔接负端，\textbf{读数 $000$}。
+p29--p36 是同一张底图的连续帧，只有三点变化：
+
+\begin{enumerate}
+\item 手写笔画的颜色与位置（桥臂上一道洋红、电容支路一道红、稳压管支路一道红、负载支路一道浅蓝）——
+说明老师在讲台上逐段指过这条链；
+\item 页眉的章节号：p28 写 \emph{3.6}，p29 写 \emph{8.6.1}，p30--p36 写 \emph{8.6 Voltage regulating circuit}；
+\item p28 还并列着那张四列总表（同 §2.1）。
+\end{enumerate}
+
+\warnbox{\textbf{章节号在册内跳了}：同一节内容，p28 记作 3.6，p29 起改记 8.6。这是课件的编号笔误，
+按内容应统一为 3.6（与 p15--p27 一致）。本讲义引用时一律写成 3.6，
+涉及该处只标页码，不沿用 8.6 的编号。}
+
+九帧里\textbf{没有给任何数}（$U_2$、$U_{\mathrm{Z}}$、$R$、$R_{\mathrm{L}}$ 全无标注），也没有解题过程。
+所以本节做两件课件没做的事：把这条整机链的关系写成一套可代入的式子（§8.2），
+再解释「读数 $000$」在什么情况下才是真实故障（§8.3）。
+
+\subhdr{8.2 整机链的设计关系：从 $U_2$ 一路算到 $I_{\mathrm{Z}}$}
+
+p28 的电路可以按「两级」写成一条链，前一级用 §2 的表，后一级用 §5 的判据：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{3.6cm}p{11.1cm}@{}}
+\tabtop
+\thead{级} & \thead{式子} & \thead{说明}
+\\
+\tabmid
+（1） & $U_{\mathrm{I}}=1.2U_2$ & 桥式 + 电容滤波（§2.1 表，全波有电容一列）
+\\
+（2） & $U_{\mathrm{O}}=U_{\mathrm{Z}}$ & 稳压管在击穿区工作（§5.1 第 1 步，须事后验算）
+\\
+（3） & $I=(U_{\mathrm{I}}-U_{\mathrm{Z}})/R$ & 限流电阻上的电流
+\\
+（4） & $I_{\mathrm{O}}=U_{\mathrm{Z}}/R_{\mathrm{L}}$ & 负载电流
+\\
+（5） & $I_{\mathrm{Z}}=I-I_{\mathrm{O}}$ & 负反馈链（§4.2）的落点，须满足 $I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}$
+\tabbot
+\end{tabular}
+
+这五步是全册的「自检链」：任何一道整机题，只要顺着走一遍，就能同时得到输出电压与元件应力。
+反方向也成立——若题给 $U_{\mathrm{O}}$、$I_{\mathrm{O}}$ 与输入范围，就是 §5.2 的 $R$ 窗口问题。
+
+\subhdr{8.3 读数 $000$：什么时候是真故障}
+
+万用表读 $000$ 有两种完全不同的含义，必须先分清，否则会误判：
+\textbf{（甲）表没工作}（挡位错、表笔没接触、电池没电）——此时 $000$ 不含任何电路信息；
+\textbf{（乙）输出确实为零}——真故障。判断方法：先量 $U_{\mathrm{I}}$（电容两端），再量 $U_{\mathrm{O}}$，两步就分开了。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{3.4cm}p{7.7cm}@{}}
+\tabtop
+\thead{测得} & \thead{判断} & \thead{可能原因}
+\\
+\tabmid
+$U_{\mathrm{I}}=0$ & 前级全无电 & 变压器一次侧断电、保险丝断、整流桥两臂同时开路
+\\
+$U_{\mathrm{I}}\approx0.9U_2$ 且纹波大 & 滤波失效 & 电容开路（对应 §2.4 第（4）问：跌到 $22.5\,\mathrm{V}$ 那种情形）
+\\
+$U_{\mathrm{I}}$ 正常、$U_{\mathrm{O}}=0$ & 后级短路或断路 & \textbf{稳压管击穿短路}（最常见，见 §6.7）、限流电阻 $R$ 开路、负载短路
+\\
+$U_{\mathrm{I}}$ 正常、$U_{\mathrm{O}}\approx U_{\mathrm{I}}$ & 稳压失效 & 输入低于 $U_{\mathrm{Z}}$（§6.3 那种情形）、稳压管开路
+\tabbot
+\end{tabular}
+
+最后一行值得记：\textbf{「输出等于输入」是稳压失效的典型指纹}，
+它的成因不是「管子坏了」而是「管子没进击穿区」——这与「输出为零」是两件完全不同的事故。
+
+\aside{课件 p28--p36 只给电路与读数，没有故障分析与判断表。本节的关系链与诊断表是本讲义补的
+（[教材补充]），补的原因：一张带万用表读数的图，若不给「怎么读这个数」，它就只是一张装饰画。
+表中「$U_{\mathrm{I}}\approx0.9U_2$」一行的数值依据是 §2.1 的表（全波无电容）。}
+
+\subhdr{8.4 集成稳压器的分类（p37）}
+
+p37 是一张树状分类图，标题 \emph{（1）Introduction}\ /\ \emph{Classification}：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.6cm}p{5.4cm}p{4.7cm}@{}}
+\tabtop
+\thead{大类} & \thead{子类} & \thead{典型器件}
+\\
+\tabmid
+三端\textbf{固定}稳压器 & 正输出 78XX & 7805、7812、7815
+\\
+（output 不可调） & 负输出 79XX & 7905、7912、7915
+\\
+三端\textbf{可调}稳压器 & 正输出 & LM317
+\\
+（output 可调） & 负输出 & LM337
+\tabbot
+\end{tabular}
+
+分类的两个维度是「输出可不可调」与「输出正还是负」。课件只画了框图，
+器件型号一列是本讲义补的（[教材补充]），补的原因：p38 的实物照片上就印着 7805、7905，
+不给型号这一列，分类图与照片对不上号。
+
+\subhdr{8.5 三端稳压器的管脚（p38）：78 与 79 顺序不同}
+
+p38 的标题是 \emph{（2）Three-terminal voltage regulator}\ /\ \emph{（1）Shape and pins}，
+左右并列两组：外形图（三根引脚标 $1$、$2$、$3$）加实物照片（7805 与 7905），
+两组下方的管脚定义是\textbf{不一样}的：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{2.7cm}p{2.7cm}p{2.3cm}p{4.9cm}@{}}
+\tabtop
+\thead{系列} & \thead{1 脚} & \thead{2 脚} & \thead{3 脚} & \thead{输出极性}
+\\
+\tabmid
+78XX & IN & GND & OUT & 正（如 7805 为 $+5\,\mathrm{V}$）
+\\
+79XX & GND & OUT & IN & 负（如 7905 为 $-5\,\mathrm{V}$）
+\tabbot
+\end{tabular}
+
+\textbf{这是本册最容易出事的一张表}：78 与 79 的外形、封装、引脚数完全相同，
+但 $1$ 号脚一个是 IN、一个是 GND。照 78 的接法去接 79，等于把电源与地反接，
+上电瞬间就会烧。p38 的三个粉色提问框（\emph{What's the difference between 78 and 79?}、
+\emph{What is inside the chip?}、\emph{What is the meaning of ××?}）正好对应三个知识点：
+
+\begin{enumerate}
+\item \textbf{78 与 79 的区别}：输出极性不同（正／负），因此管脚顺序不同（上表）。
+\item \textbf{芯片里面是什么}：[教材补充] 基准电压源 + 取样分压 + 误差放大器 + 串联调整管 + 过流／过热保护。
+从外部看，它就是一只「会自己调阻值的可变电阻」，串在输入与输出之间——这与稳压管的并联分流不同。
+\item \textbf{×× 是什么意思}：额定输出电压的代号，$05\to5\,\mathrm{V}$、$12\to12\,\mathrm{V}$、$15\to15\,\mathrm{V}$、$24\to24\,\mathrm{V}$；
+79XX 同规则但为负。
+\end{enumerate}
+
+\subhdr{8.6 压差与输入窗口（[教材补充]）}
+
+p38 只讲了管脚，没有讲\textbf{这只器件需要什么输入}。而这一点是它能不能工作的前提，
+也是它与稳压管电路最本质的差别：
+
+\textbf{（1）输入必须比输出高出一个「压差」。} 三端稳压器内部是\textbf{串联}调整管，
+它只能「降压」不能「升压」。内部调整管本身也要占去 $2\sim3\,\mathrm{V}$（称为压差，dropout），
+所以输入有一个\textbf{下限}：
+\[
+U_{\mathrm{I,min}}\ge U_{\mathrm{O}}+U_{\mathrm{dropout}}+U_{\text{纹波}}/2
+\quad\approx U_{\mathrm{O}}+(2\sim3)\,\mathrm{V}+\tfrac12\Delta U .
+\]
+对 7805，若滤波后纹波峰谷差 $3\,\mathrm{V}$，则输入至少要 $5+2+1.5=8.5\,\mathrm{V}$。
+低于这个值，器件退出稳压，输出变成 $U_{\mathrm{O}}\approx U_{\mathrm{I}}-U_{\mathrm{dropout}}$，
+\textbf{跟着输入一起往下掉}——这与 §6.3 的 (b)(e)、§8.3 的「输出等于输入」是同一种失效。
+
+\textbf{（2）输入也不能太高，否则器件过热。} 输出电流全部穿过调整管，其耗散是
+\[
+P\approx(U_{\mathrm{I}}-U_{\mathrm{O}})\,I_{\mathrm{O}} .
+\]
+例如 7805 带 $0.5\,\mathrm{A}$ 负载，输入 $12\,\mathrm{V}$：$P=(12-5)\times0.5=3.5\,\mathrm{W}$，
+必须加散热片；若输入取 $20\,\mathrm{V}$，同样负载下 $P=7.5\,\mathrm{W}$，多数塑封器件扛不住。
+所以输入窗口是\textbf{两头都有限制}的：
+\[
+U_{\mathrm{O}}+U_{\mathrm{dropout}}\le U_{\mathrm{I}}\le U_{\mathrm{O}}+\frac{P_{\max}}{I_{\mathrm{O}}} .
+\]
+\textbf{（3）为什么工程上偏爱它。} 相比 §5 的稳压管电路，它的输出电流大得多（可达 $1\,\mathrm{A}$ 以上）、
+不需要自己算限流电阻、内部还有过流与过热保护。代价是必须留压差、必须散热。
+
+\aside{课件 p37--p38 只有分类图与管脚表，\textbf{没有提到压差、没有提功耗、没有提输入范围}。
+本小节的式子与 $3.5\,\mathrm{W}$、$7.5\,\mathrm{W}$ 两个数都是本讲义补的（[教材补充]）。
+补的理由：任务要求「三端稳压器的引脚与压差」，而压差是选型与故障判断的必要条件——
+缺少它，学生只能背管脚，一旦电路不上电就无从下手。}
+
+\subhdr{8.7 两条路线怎么分工：稳压管电路 vs 三端稳压器}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{5.6cm}p{6.7cm}@{}}
+\tabtop
+\thead{比较项} & \thead{稳压管电路（3.6.1）} & \thead{三端稳压器（3.6.2）}
+\\
+\tabmid
+连接方式 & 稳压管\textbf{并联}在负载两端，$R$ 串联分流 & 器件\textbf{串联}在输入与输出之间
+\\
+输出电流 & 小（多余电流都被稳压管吃掉） & 大（可达 $1\,\mathrm{A}$ 以上）
+\\
+效率 & 低（空载时电流全走稳压管） & 较高（但压差越大越热）
+\\
+外围元件 & 需要自己算 $R$（§5.2 的窗口） & 基本不用算，接三根线 + 输入输出电容
+\\
+失效方式 & 过流烧管、电流不足失稳 & 输入不足失稳、过热保护／烧毁
+\\
+\tabbot
+\end{tabular}
+
+一句话分工：\textbf{小电流、要便宜、当基准用稳压管；大电流、要省事、当电源用三端稳压器}。
+两者在整机里是串联的——p14 那张成品板就是「整流滤波 → 三端稳压器」，而稳压管通常只出现在基准或保护支路里。
+
+%=============================================================
+\hdr{§9}{公式卡、四步清单与易错点}
+
+\subhdr{9.1 公式卡（按做题顺序排，不按课件顺序）}
+
+\par\vspace{2pt}{\small
+\noindent\begin{tabular}{@{}p{4.3cm}p{6.3cm}p{4.9cm}@{}}
+\tabtop
+\thead{场合} & \thead{公式} & \thead{出处}
+\\
+\tabmid
+桥式 + 电容的输出 & $U_{\mathrm{O}}=1.2U_2$,\quad $U_2=U_{\mathrm{O}}/1.2$ & p9、§2.1
+\\
+桥式 + 电容的耐压 & $U_{\mathrm{Rm}}=\sqrt2U_2$ & p9
+\\
+每管电流 & $I_{\mathrm{D}}=\tfrac12I_{\mathrm{O}}$（全波） & p9
+\\
+选管条件 & $I_{\mathrm{F}}\ge2I_{\mathrm{D}}$,\quad $U_{\mathrm{R}}\ge U_{\mathrm{Rm}}$ & p9
+\\
+选电容容量 & $C\ge\dfrac{1.5\sim2.5}{R_{\mathrm{L}}f}$，即 $R_{\mathrm{L}}C\ge(1.5\sim2.5)T$ & p10
+\\
+选电容耐压 & $U_{\mathrm{CN}}\ge\sqrt2U_2$ & p10
+\\
+两个极限 & 开路 $\sqrt2U_2$；断容 $0.9U_2$ & p11
+\\
+电感滤波纹波 & $\Delta U_{\mathrm{O}}/\Delta U_{\mathrm{in}}=R_{\mathrm{L}}/\sqrt{R_{\mathrm{L}}^2+(2\omega L)^2}$ & §2.5（补）
+\\
+$\pi$ 型 RC 的输出 & $U_{\mathrm{O}}\approx0.9U_2-I_{\mathrm{O}}R$ & §2.6（补）
+\\
+稳压管工作点 & $U_{\mathrm{O}}=U_{\mathrm{Z}}$,\ $I=(U_{\mathrm{I}}-U_{\mathrm{Z}})/R$,\ $I_{\mathrm{Z}}=I-U_{\mathrm{O}}/R_{\mathrm{L}}$ & p18、§5.1
+\\
+稳压判据 & $I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}$ & p18
+\\
+调节率 & $\Delta U_{\mathrm{O}}/\Delta U_{\mathrm{I}}=r_{\mathrm{Z}}/(R+r_{\mathrm{Z}})$ & §3.3（补）
+\\
+输出电阻 & $\Delta U_{\mathrm{O}}/\Delta I_{\mathrm{O}}=-(R\parallel r_{\mathrm{Z}})$ & §3.3（补）
+\\
+$R$ 的窗口 & $\dfrac{U_{\mathrm{Imax}}-U_{\mathrm{Z}}}{I_{\mathrm{Zmax}}+I_{\mathrm{Omin}}}\le R\le\dfrac{U_{\mathrm{Imin}}-U_{\mathrm{Z}}}{I_{\mathrm{Zmin}}+I_{\mathrm{Omax}}}$ & §5.2（补）
+\\
+三端稳压器 & $U_{\mathrm{I}}\ge U_{\mathrm{O}}+(2\sim3)\,\mathrm{V}$,\quad $P\approx(U_{\mathrm{I}}-U_{\mathrm{O}})I_{\mathrm{O}}$ & §8.6（补）
+\tabbot
+\end{tabular}}
+
+\subhdr{9.2 四步清单（拿到任何稳压题都照这个顺序）}
+
+\begin{enumerate}
+\item \textbf{定结构}：输入极性正还是反？管子是串联还是并联？输出取在哪两点之间？（§6.1 的表）
+\item \textbf{判区}：反接且两管反向时，先比 $U_{\mathrm{I}}$ 与 $U_{\mathrm{Z1}}+U_{\mathrm{Z2}}$；
+反接且管子正向时，压降直接取 $2U_{\mathrm{F}}$；输入反号时，别忘了 $U_{\mathrm{O}}$ 也跟着反号。
+\item \textbf{代公式}：只在\textbf{击穿区成立}时才用 $U_{\mathrm{O}}=U_{\mathrm{Z}}$，其余情况一律走 $U_{\mathrm{O}}\approx U_{\mathrm{I}}$ 或正向压降。
+\item \textbf{验算}：$I_{\mathrm{Z}}$ 是否在 $I_{\mathrm{Zmin}}\sim I_{\mathrm{Zmax}}$ 之间、$R$ 与管子的功率够不够。
+\end{enumerate}
+
+\subhdr{9.3 易错点（每条都能指回某页某步）}
+
+\begin{enumerate}
+\item \textbf{$34.5$ 与 $35.4$}（p9）：同一页两个数自相矛盾，正确的是 $35.4\,\mathrm{V}$。
+\item \textbf{$I_{\mathrm{F}}$ 乘 $2$、$U_{\mathrm{R}}$ 不乘}（p9）：一个看有效值、一个看峰值。
+\item \textbf{半波带电容的 $2\sqrt2U_2$}（p1）：只对半波成立，桥式带电容仍是 $\sqrt2U_2$。
+\item \textbf{「$U_{\mathrm{O}}=1.2U_2$」不是常数}（p10、§2.4）：它随 $C$ 与 $R_{\mathrm{L}}$ 变，负载开路时到 $\sqrt2U_2$。
+\item \textbf{把 $\pi$ 型 RC 的串联元件当电感}（p13）：图里画的是线圈，按标题应为 $R$。
+\item \textbf{反接就以为能稳压}（p23、p24）：反接 = 正向导通 = 只有 $1\,\mathrm{V}$ 压降。
+\item \textbf{输入不足却仍写 $U_{\mathrm{O}}=U_{\mathrm{Z}}$}（p22、p25）：此时 $U_{\mathrm{O}}\approx U_{\mathrm{I}}$，方程无解（§7.1）。
+\item \textbf{只算 $I_{\mathrm{Z}}$ 不判限}（p27）：本题答案落在「超限」这一档（§7.2）。
+\item \textbf{两条支路相减当稳压电源}（p26）：误差相加（$\pm14\%$）、电流各自受限（§7.3）。
+\item \textbf{78 与 79 照抄接法}（p38）：$1$ 脚一个是 IN、一个是 GND，接反即烧（§8.5）。
+\item \textbf{忘了压差}（p38）：三端稳压器只能降压，输入低于 $U_{\mathrm{O}}+2\,\mathrm{V}$ 就失稳（§8.6）。
+\end{enumerate}
+
+\subhdr{9.4 量级自检：一秒钟判断算没算错}
+
+\begin{itemize}
+\item 变压器二次电压 $U_2$ 通常是几伏到几十伏；桥式带电容的 $U_{\mathrm{O}}$ 只能是 $1.2U_2$ 左右，
+\textbf{不可能超过 $\sqrt2U_2$}（那是负载开路的上限）。
+\item 稳压管的 $I_{\mathrm{Z}}$ 通常是几毫安到几十毫安；若算出几百毫安，一定是 $R$ 取小了或单位错了。
+\item 限流电阻 $R$ 通常是几十到几百欧；若算出几欧或几十千欧，回去检查 $I_{\mathrm{Zmax}}$ 与 $R_{\mathrm{L}}$。
+\item 三端稳压器的压差是 $2\sim3\,\mathrm{V}$ 量级；若设计的输入只比输出高 $0.5\,\mathrm{V}$，方案不成立。
+\end{itemize}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+共 14 条，按课件页码排序。每条五个字段：类型｜页码｜课件原文短语｜缺了什么｜补法（写到哪一节）。
+
+\gapitem{机制缺口}{p20\quad\emph{``$U_{\mathrm{O}}\uparrow\rightarrow I_{\mathrm{Z}}\uparrow\uparrow\rightarrow I\uparrow
+\rightarrow IR\uparrow\cdots U_{\mathrm{O}}\downarrow$''}\newline
+缺：五步里每一跳的出处（全页无一个基尔霍夫方程），以及「$\uparrow\uparrow$」那两个箭头到底多快。
+\newline 补：§4.2 把五跳分别对上 $U_{\mathrm{O}}=U_{\mathrm{Z}}+r_{\mathrm{Z}}I_{\mathrm{Z}}$、
+$I=I_{\mathrm{Z}}+I_{\mathrm{O}}$、$U_{\mathrm{O}}=U_{\mathrm{I}}-IR$；§3.3 给出倍数 $r_{\mathrm{Z}}/(R+r_{\mathrm{Z}})$。}
+
+\gapitem{适用区间}{p18\quad\emph{``$I_{\mathrm{Zmin}}$ \ldots There is no regulating effect''}／
+\emph{``$I_{\mathrm{Zmax}}$ \ldots It will be damaged forever''}\newline
+缺：两句只定义了边界，没给「给定 $U_{\mathrm{I}}$、$R$、$R_{\mathrm{L}}$，怎么验算 $I_{\mathrm{Z}}$ 落不落在里面」。
+\newline 补：§5.1 三步法（先假定 $U_{\mathrm{O}}=U_{\mathrm{Z}}$，再算 $I_{\mathrm{Z}}$，再分三档判定）。}
+
+\gapitem{适用区间}{p18\quad\emph{``$r_{\mathrm{Z}}=\Delta U/\Delta I$ \ldots The smaller the better''}\newline
+缺：只给定义与一句形容词，没给「好在哪里」的定量结果，也没说明该式只在击穿段成立。
+\newline 补：§3.3 两条用法——输入扰动的调节率 $r_{\mathrm{Z}}/(R+r_{\mathrm{Z}})$、输出电阻 $-(R\parallel r_{\mathrm{Z}})$。}
+
+\gapitem{代数跳步}{p9\quad\emph{``$U_{\mathrm{R}}\ge U_{\mathrm{Rm}}=34.5\,\mathrm{V}$''}\newline
+缺：同一页上一行刚给 $U_{\mathrm{Rm}}=\sqrt2\times25\,\mathrm{V}=35.4\,\mathrm{V}$，两数自相矛盾。
+\newline 补：§2.2 点名这是数字转置，全文按 $35.4\,\mathrm{V}$ 走。}
+
+\gapitem{机制缺口}{p9\quad\emph{``$I_{\mathrm{F}}\ge2I_{\mathrm{D}}=2\times0.15\,\mathrm{A}$''}\newline
+缺：为什么乘 $2$、而 $U_{\mathrm{R}}\ge U_{\mathrm{Rm}}$ 不乘，课件不解释。
+\newline 补：§2.2 指出一个是有效值（窄脉冲波形因数）、一个是峰值。}
+
+\gapitem{机制缺口}{p10\quad\emph{``$C\ge\dfrac{1.5\sim2.5}{R_{\mathrm{L}}f}$''}\newline
+缺：经验式的来历；为什么是 $1.5\sim2.5$、为什么除以 $f$。
+\newline 补：§2.3 改写为等价形式 $R_{\mathrm{L}}C\ge(1.5\sim2.5)T$，并给出「撑到下一个峰值」的物理含义。}
+
+\gapitem{拼接缺口}{p11\quad\emph{``when the load is open circuit''}／\emph{``when the capacitor branch is open''}\newline
+缺：两个极限算完就停，没有一句话把它们接到 3.6 的稳压级上（$35.4$ 与 $22.5\,\mathrm{V}$ 差 $57\%$ 这个事实未被利用）。
+\newline 补：§1.2 与 §2.4 两次落这个缝；§1.1 给出四段链条的分工。}
+
+\gapitem{机制缺口}{p12\quad\emph{``Normally used in the situation when the output voltage is relatively lower
+while the current through the load is relatively larger.''}\newline
+缺：为什么「低压大电流」场合该用电感，课件只有结论。
+\newline 补：§2.5 说明电感不抬高直流（$U_{\mathrm{O}}\approx0.9U_2$）只衰减纹波，并给出 $R_{\mathrm{L}}/\sqrt{R_{\mathrm{L}}^2+(2\omega L)^2}$ 的数值表。}
+
+\gapitem{形式改写}{p13\quad\emph{``（2）$\pi$-type RC Filter''}，而图内串联元件画成线圈并标 \emph{L}，上方另有红字 \emph{R}\newline
+缺：标题说 RC，器件画成 L，两者矛盾，未说明以哪个为准。
+\newline 补：§2.6 按标题取 $R$，并给出 RC 版的代价 $U_{\mathrm{O}}\approx0.9U_2-I_{\mathrm{O}}R$ 与适用电流。}
+
+\gapitem{拼接缺口}{p16、p21\quad\emph{``designed to operate in the reverse breakdown region''}／
+\emph{``the zener diode need to be connected in reverse''}\newline
+缺：「击穿为什么可逆、为什么不损坏」只有断言；从「器件参数」到「电路判据」之间也没有桥。
+\newline 补：§3.1 把击穿的可逆性落到「限流」这一个条件上；§5 补参数到判据的三步法。}
+
+\gapitem{答案形态}{p22、p25\quad（无原文，只有电路与 $U_{\mathrm{I}}=10\,\mathrm{V}$／$8\,\mathrm{V}$）\newline
+缺：输出为什么只能写约等号、为什么算不出精确值，课件不交代。
+\newline 补：§7.1 说明此时伏安特性在击穿前近似开路，精确值需要漏电阻而该参数课件没给，故答案停在 $U_{\mathrm{O}}\approx U_{\mathrm{I}}$。}
+
+\gapitem{机制缺口}{p27\quad\emph{``（g）$U_{\mathrm{Z}}=10\,\mathrm{V}$\ $I_{\mathrm{Zmax}}=23\,\mathrm{mA}$. Find $I_{\mathrm{Z}}$''}\newline
+缺：只问电流，没给「先假定再验算」的流程，也没说超限后该怎么办。
+\newline 补：§6.7 全程三步法，$I_{\mathrm{Z}}=26.7\,\mathrm{mA}$ 判超限，并反解出 $R\ge337\,\Omega$ 的改法；§7.2 说明这类题的答案形态。}
+
+\gapitem{拼接缺口}{p28--p36\quad\emph{``4. Example 2''}，万用表读数 \emph{000}\newline
+缺：九帧同一张图，无数据、无解题过程、无故障分析；页眉章节号在 3.6 与 8.6 之间跳动。
+\newline 补：§8.1 去重说明并点名编号笔误；§8.2 给出整机五步关系链；§8.3 给出读数 $000$ 的四行诊断表。}
+
+\gapitem{机制缺口}{p37--p38\quad\emph{``Classification''}、\emph{``Shape and pins''}、
+\emph{``What's the difference between 78 and 79?''}、\emph{``What is the meaning of ××?''}\newline
+缺：三个提问都没有答案；管脚之外没有压差、没有输入范围、没有功耗，于是「照管脚接上却不上电」时无从判断。
+\newline 补：§8.5 逐条答三问（含 $XX$ 的含义）；§8.6 补压差与输入窗口 $U_{\mathrm{I}}\ge U_{\mathrm{O}}+(2\sim3)\,\mathrm{V}$ 与 $P\approx(U_{\mathrm{I}}-U_{\mathrm{O}})I_{\mathrm{O}}$。}
+
+\subhdr{10.4 本册补的四处（课件完全没有的内容）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{1.7cm}p{11.0cm}@{}}
+\tabtop
+\thead{补的内容} & \thead{对应页} & \thead{为什么必须补}
+\\
+\tabmid
+$r_{\mathrm{Z}}$ 的两个定量用法 & p18 & 课件只说「越小越好」；不给比值，就无法回答「这个电源稳不稳」、也算不了 (f) 的精度
+\\
+$R$ 的取值窗口 & p18、p27 & 课件只给判据不给设计式；而考试与工程问的都是「$R$ 取多少」
+\\
+三端稳压器的压差与功耗 & p38 & 只背管脚接不出能工作的电路；压差决定最低输入，功耗决定散热
+\\
+Example 2 的故障诊断表 & p28--p36 & 一张只有读数的图，不教怎么读那个数，就没有信息量
+\tabbot
+\end{tabular}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\textbf{第一句}：滤波与稳压解决的是两件事——滤波把脉动削平但留下了「随负载漂的输出」（$30\to35.4\to22.5\,\mathrm{V}$），
+稳压把输出钉在 $U_{\mathrm{Z}}$ 上，但代价是\textbf{必须让稳压管吃掉多余的电压}。
+
+\textbf{第二句}：稳压管电路的一切判断只用三个方程加一条不等式——
+$U_{\mathrm{O}}=U_{\mathrm{Z}}+r_{\mathrm{Z}}I_{\mathrm{Z}}$、$I=I_{\mathrm{Z}}+I_{\mathrm{O}}$、$U_{\mathrm{O}}=U_{\mathrm{I}}-IR$，
+以及 $I_{\mathrm{Zmin}}\le I_{\mathrm{Z}}\le I_{\mathrm{Zmax}}$；Example 1 的七个小问，全是在这条不等式两侧取边界。
+
+\textbf{第三句}：三端稳压器把「并联分流」换成了「串联降压」，于是不再需要自己算限流电阻，
+代价是多出一条\textbf{压差}约束（$U_{\mathrm{I}}\ge U_{\mathrm{O}}+2\sim3\,\mathrm{V}$）与一个散热问题——
+管脚（78：IN--GND--OUT；79：GND--OUT--IN）接错或输入不够，是这一节最常见的两种故障。
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}{\footnotesize
+\noindent\begin{tabular}{@{}p{1.7cm}p{8.6cm}p{5.6cm}@{}}
+\tabtop
+\thead{课件页} & \thead{内容（本册的事实来源）} & \thead{本讲义}
+\\
+\tabmid
+p1 & 两道选择题 + 四列参数总表 & §1.3、§2.1
+\\
+p2、p3 & Review：半波 $U_{\mathrm{Rm}}=\sqrt2U_2$、中心抽头 $2\sqrt2U_2$ & §1.3
+\\
+p4、p5 & Review：桥式 $U_{\mathrm{Rm}}=\sqrt2U_2$（含导通路径） & §1.3、§1.2
+\\
+p6 & 直流稳压电源实物（适配器） & §0.1
+\\
+p7 & 两套 LED 灯串电路 + 实物照片 & §1.4
+\\
+p8 & 3.5.2 电容滤波：E1 题面 + 总表 & §2.1
+\\
+p9 & E1（1）选二极管（含 $34.5$ 笔误） & §2.2
+\\
+p10 & E1（2）选电容（容量与耐压） & §2.3
+\\
+p11 & E1（3）（4）负载开路／电容支路断开 & §2.4、§1.2
+\\
+p12 & 3.5.3 电感滤波 & §2.5
+\\
+p13 & 3.5.4 复式滤波（$\pi$ 型 LC／RC） & §2.6
+\\
+p14 & 3.6 路标：稳压管、三端稳压器实物 & §2.7
+\\
+p15 & 稳压管与普通二极管的伏安特性对比 & §3.1
+\\
+p16 & 稳压管定义（反接、击穿区工作） & §3.1
+\\
+p17 & 特性两条 + 五类应用 & §3.1
+\\
+p18 & 2. Parameters：$U_{\mathrm{Z}}$、$I_{\mathrm{Zmin}}$、$I_{\mathrm{Zmax}}$、$r_{\mathrm{Z}}$ & §3.2、§3.3
+\\
+p19 & 3. 稳压管稳压电路（整机图） & §4.1
+\tabbot
+\end{tabular}}
+
+\par\vspace{2pt}{\footnotesize
+\noindent\begin{tabular}{@{}p{1.7cm}p{8.6cm}p{5.6cm}@{}}
+\tabtop
+\thead{课件页（续）} & \thead{内容（本册的事实来源）} & \thead{本讲义}
+\\
+\tabmid
+p20 & 稳压过程箭头链（$I$、$I_{\mathrm{Z}}$、$I_{\mathrm{O}}$ 方向） & §4.2、§4.3
+\\
+p21 & Example 1 (a)：$U_{\mathrm{I}}=18\,\mathrm{V}$ + 两个 Notice & §6.1、§6.2
+\\
+p22 & (b)：$U_{\mathrm{I}}=10\,\mathrm{V}$ & §6.3、§7.1
+\\
+p23 & (c)：$U_{\mathrm{I}}=4\,\mathrm{V}$，输入反接 & §6.4
+\\
+p24 & (d)：$U_{\mathrm{I}}=4\,\mathrm{V}$，输入反接（与 (c) 标注相同，[待确认]） & §6.4
+\\
+p25 & (e)：$U_{\mathrm{I}}=8\,\mathrm{V}$ & §6.5
+\\
+p26 & (f)：$U_{\mathrm{I}}=13\,\mathrm{V}$，两支路相减 & §6.6、§7.3
+\\
+p27 & (g)：$U_{\mathrm{I}}=20\,\mathrm{V}$、$R=300\,\Omega$、$R_{\mathrm{L}}=1.5\,\mathrm{k\Omega}$ & §6.7、§7.2
+\\
+p28--p36 & Example 2：整机电路 + 万用表读数 $000$（九帧） & §8.1--§8.3
+\\
+p37 & 3.6.2 集成稳压器分类图 & §8.4
+\\
+p38 & 三端稳压器外形与管脚（7805／7905）+ 三个提问 & §8.5、§8.6
+\tabbot
+\end{tabular}}
+
+\flowerrule
+
+{\small\color{inkgray}
+算术用 Python 复算：$U_2=25\,\mathrm{V}$、$U_{\mathrm{Rm}}=35.4\,\mathrm{V}$、$14=4.5+9.5$、
+$I_{\mathrm{Z}}=26.67\,\mathrm{mA}$、$R\ge337\,\Omega$、$P=3.5\,\mathrm{W}$；
+课件算错的 $34.5\,\mathrm{V}$ 已在 §2.2 点名并按 $35.4\,\mathrm{V}$ 走。}
+
+\end{document}

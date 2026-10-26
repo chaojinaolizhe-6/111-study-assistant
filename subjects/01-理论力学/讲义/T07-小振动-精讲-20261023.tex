@@ -1,0 +1,1168 @@
+% !TEX program = xelatex
+% 理论力学 · Topic 7 小振动 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\usepackage{longtable}
+\setlength{\parskip}{1.4pt}% 本文公式密、段落多，段间比主题默认略紧，以免页数超出 25 页上限
+% 行间公式较多，收紧公式上下的空白（主题默认 10pt，此处 5pt），避免页底大片留白
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 2pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 2pt}
+\setlength{\abovedisplayshortskip}{2pt plus 1pt}
+\setlength{\belowdisplayshortskip}{3pt plus 1pt minus 1pt}
+\settags{主题 7 · 小振动 · 精讲}{理论力学}
+\setlength{\headheight}{22pt}
+
+\begin{document}
+
+\doctitle{主题 7　小振动：从一次泰勒展开到 $s$ 个独立振子}
+{平衡位置、二次型、本征方程、简正坐标，四个台阶一级不缺}
+{依据：\texttt{TM\_Topic\_07\_2026\_student.pdf}（p1--p25，共 25 页）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与四条术语边界}
+
+\subhdr{25 页分成四块，但页序被打乱过}
+
+课件标题页（p1）列了两节目录：\textbf{1. Free Linear 1-D Oscillations}、\textbf{2. Oscillations in Systems with $s>1$}。但\textbf{页序不是线性的}：p7 是第二节课的开场页，却夹在第一节课中间；p8、p9 是 p4、p5 的\textbf{复制页}；p18 先给双摆的答案，p11 与 p19--p21 才给演算。先把地图钉死：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.9cm}p{11.9cm}@{}}
+\toprule
+\thead{块} & \thead{页码与内容}\\
+\midrule
+A. 一维主线 & p1 标题页 \textperiodcentered\ p2 Introduction \textperiodcentered\ p3 $s=1$ 的 $\mathcal{L}$ 与稳定平衡 \textperiodcentered\ p4 $U$ 的展开、三种极值点、$a(q)\approx a(q_0)$ \textperiodcentered\ p5 运动方程、解、能量、振幅 \textperiodcentered\ p6 Task \#1\\
+B. $s>1$ 理论 & p7 第二节开场 \textperiodcentered\ p10 二次型与 $M_{ij},K_{ij}$、正定 \textperiodcentered\ p12 求导链与 $\det$ 方程 \textperiodcentered\ p13 本征方程、归一化、通解 \textperiodcentered\ p14 简正坐标 \textperiodcentered\ p15 Conclusions \textperiodcentered\ p22 Landau 记号重述\\
+C. 三道例题 & p16 莫尔斯势 \textperiodcentered\ p17 转动圆环上的珠子 \textperiodcentered\ p18 等长等质量双摆（题面 $+$ 答案）\textperiodcentered\ p11 与 p19--p21 是双摆的演算\\
+D. 作业 & p23 题面（H7.1 图 (a)(b)、H7.2 线性三原子分子）\textperiodcentered\ p24 H7.1 手写解答 \textperiodcentered\ p25 H7.2 手写解答与质心条件\\
+\bottomrule
+\end{tabular}
+
+\textbf{三处错位必须知道}，否则会以为漏了页：p8 $\equiv$ p4、p9 $\equiv$ p5（逐字重复，本文只在 p4/p5 处引用一次）；p7 虽是第二节的开场页，位置却在第一节的 $s=1$ 推导之前（本文归入 §2，因为它的三个中文步骤“写出拉格朗日量／求平衡位置／在平衡点展开”是 $s>1$ 的提纲）；p22 与 p12--p13 讲同一件事，只是把 $M_{ij},K_{ij}$ 换成 Landau 的小写 $m_{ik},k_{ik}$。
+
+\textbf{哪几页是纯图、哪几页有中文批注}：\textbf{5 页无文字层}——p14（简正坐标与 $\mathcal{L}$ 的标准形）、p15（Conclusions）、p18（双摆题面）、p23（Homework 题面）、p24（H7.1 手写解答），它们的“文字”全在图里（p24、p25 的手写解答只能按图转录）。\textbf{带中文批注的页共 11 页}：p1“在平衡稳定周围反复周期的运动”；p2“平衡位置附近小幅度振动，广泛存在现实的生活中。”“我们用一般的拉格朗日力学理论来描述这类问题”；p3 四问“孤立力学体系如何描述？／当我们的广义坐标又是正交的／自由的线性1维运动？／有什么特点？／如何描述？”；p4（$=$p8）“在某点，展开U”“极值点：”“（1）稳定（2）亚稳定（3）不稳定”；p5（$=$p9）“系数a 如何计算？”；p7“1、写出拉格朗日量，势能表达式 2、根据势能，求出平衡位置 3、在平衡点展开”；p12“代入 Lagrange's Equation”“显然是个波，设波的形式，并代入上面的方程”“（对称：$M_{ij}=M_{ji}$）”“要想有解，必须有”；p13“X$_j$ 多少个根？”；p14“简单周期振动 $\Theta_1,\Theta_2,\cdots,\Theta_s$ 的叠加／振幅和相位都是任意的，但频率完全确定”“$x_1,x_2,\cdots,x_s$ 表示 $\Theta_1,\cdots,\Theta_s$；$\Theta_1,\cdots,\Theta_s$ 看作新广义坐标”；p19“物理要求，矩阵K正定，$K_{11}>0$; $K_{22}>o$”；p20“下面求 $a_{ij}$”。
+
+\textbf{文字层状况}：25 页里有 \textbf{5 页完全没有文字层}（p14、p15、p18、p23、p24），其余页的文字层也不可用——数学字体没有 ToUnicode 映射，抽出来是\textbf{乱序符号碎片}（例如 p5 抽出来是 “E=T+U=1/2 K0a2 / 系数a 如何计算？ / lg / L / L / d / dt / x / x”，页面上那些式子一个也没抽到）。所以本文\textbf{每一条公式都是按 130 dpi 渲染图逐页读图转录并重排}的，不是复制粘贴；带歧义处单独标注。渲染图在 \texttt{\_scratch\textbackslash t07-pages\textbackslash}。
+
+\subhdr{记号：先统一，后文不回头}
+
+这份课件有六处记号会打架，钉死之后后面不再解释。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{10.8cm}@{}}
+\toprule
+\thead{记号} & \thead{本讲义的约定（括号内是课件页码上的实际写法）}\\
+\midrule
+$\mathcal{L}$ & 拉格朗日量。p10 起也写 $L_{\rm lg}$，p11 混写 $\mathcal{L}$；本文一律 $\mathcal{L}$。\\
+$x$ & 一维时是\textbf{位移} $x=q-q_0$（p4）；多维时是\textbf{位移分量} $x_i=q_i-q_{i0}$（p10）。课件的 $q$、$q_i$ 一律是坐标，不是位移。\\
+$M_0,K_0$ & 一维的\textbf{等效质量}与\textbf{等效刚度}：$M_0\equiv a(q_0)$、$K_0\equiv U''(q_0)$（p4）。\\
+$M_{ij},K_{ij}$ & 多维的\textbf{质量矩阵}与\textbf{刚度矩阵}：$M_{ij}\equiv a_{ij}(q_{l0})$（p10 第二框）、$K_{ij}\equiv\partial^2U/\partial q_i\partial q_j|_{\rm eq}$（p10 第一框）。p10 又把这同一个 $M_{ij}$ 写成 $a_{ij}$ 与 $a_{IJ}$（同页三种写法），本文只用 $M_{ij}$。\\
+$m_{ik},k_{ik}$ & p22 的写法，即本文的 $M_{ij},K_{ij}$（$m\leftrightarrow M$、$k\leftrightarrow K$）。本文保留 $M,K$，引用 p22 原式时注明。\\
+$M$（单独一个字母） & 只在作业 H7.2 里出现，是\textbf{氧原子的质量}（$M,m,M$ 三体），与矩阵 $M_{ij}$ 无关。双摆里的质量叫 $m$。\\
+$\omega_0$ & 三个不同用法，逐处注明：p5 是\textbf{一维频率} $\sqrt{K_0/M_0}$；p21 是双摆的\textbf{基准频率} $\sqrt{g/l}$；p16、p17 是\textbf{答案频率}。\\
+\bottomrule
+\end{tabular}
+
+\subhdr{四条术语边界}
+
+\warnbox{\textbf{边界 1：小振动是近似，不是精确模型。}
+整套理论只有一条假设：$|x|$ 足够小，小到 $U$ 的三次以上项可以忽略、$a(q)$ 可以取常值。“频率与振幅无关”（p15 结论 3 原文 “does \textbf{NOT} depend on the initial conditions”）\textbf{只在这条假设内成立}。§1.2 给定量判据，§4.1 用课件自己的莫尔斯势给数字。}
+
+\warnbox{\textbf{边界 2：“$K$ 正定”是四道不等号，不是两道。}
+p19 底部的中文写“物理要求，矩阵K正定，$K_{11}>0$; $K_{22}>0$”——这两条只是\textbf{必要}条件。$2\times2$ 正定的充要条件是 $K_{11}>0$ 且 $K_{11}K_{22}-K_{12}^2>0$（即两个顺序主子式都为正）。p10 那张“$\det\begin{pmatrix}b_{11}\end{pmatrix}$、$\det\begin{pmatrix}b_{11}&b_{12}\\b_{21}&b_{22}\end{pmatrix}$、$\cdots$ is positive”的图说的正是这件事，只是没写成句子（§2.1 补）。}
+
+\warnbox{\textbf{边界 3：简正坐标没有直观意义。}
+p14 底部的 note 原文：“as a rule, the normal coordinates are just convenient auxiliary quantities for making calculations and do not have simple visual interpretation.”所以本文只保证简正坐标是\textbf{可算的线性组合}，不承诺它对应“哪个摆怎样动”——个别情形有直观图像是运气，不是规律。}
+
+\warnbox{\textbf{边界 4：标 [教材补充] 的地方。}
+课件没有、而讲通必须补的内容一律标 \textbf{[教材补充]} 并给出处。本讲义的骨架对应 Landau \& Lifshitz《力学》（高等教育出版社，第 5 版）的 \textbf{§21 一维自由振动}（一维展开、$\omega=\sqrt{k/m}$、$E=\frac12ka^2$）、\textbf{§23 多自由度系统振动}（$\det|k_{ik}-\omega^2m_{ik}|=0$、简正坐标、$\mathcal{L}=\frac12\sum(\dot\Theta_\alpha^2-\omega_\alpha^2\Theta_\alpha^2)$）、\textbf{§24 分子振动}（线性三原子分子，即作业 H7.2）。p22 的 $m_{ik},k_{ik}$ 就是 §23 的记号；注意 §22 是\textbf{强迫振动}、与本节无关，不要按“§21--§23 连着读”去翻书。除此之外不引入课件以外的物理结论；属我的整理标 [教学归纳]。}
+
+%=============================================================
+\hdr{§1}{一维小振动：从“平衡”到 $x=a\cos(\omega_0t+\beta)$}
+
+这一节把 p3--p6 五个台阶逐个补实：平衡位置怎么定 $\to$ 为什么只留二次项 $\to$ 运动方程怎么来 $\to$ 解里的两个常数怎么定 $\to$ 能量为什么等于 $\frac12K_0a^2$、这个 $a$ 又被什么限制住。
+
+\subhdr{§1.1　三种平衡位置与“复原力”（p3--p4）}
+
+p3 给的定义只有一句：稳定平衡是\textbf{势能取极小}的位置（“stable equilibrium corresponds to such a position of the system in which its potential energy $U(q)$ has \textbf{minimum}”），并且配了 $F=-\dfrac{dU}{dq}$，说明偏离平衡后出现\textbf{把系统拉回来}的力（“tends to \textbf{return} the system to equilibrium”）。p4 右上角把这句话拆成三条判据：
+
+\[
+\left.\frac{dU}{dq}\right|_{q=q_0}=0\quad(\text{极值/平衡}),\qquad
+u''\equiv\left.\frac{d^2U}{dq^2}\right|_{q=q_0}
+\]
+\[
+\text{(1) 稳定：}u''>0,\qquad
+\text{(2) 亚稳定：}u''=0,\qquad
+\text{(3) 不稳定：}u''<0 .
+\tag{1.1}
+\]
+
+三条判据共用\textbf{同一个前提}：$q_0$ 是极值点，即一阶导数为零。没有这个前提，(1)(2)(3) 三条全都不成立（在斜面上，$U''>0$ 也可能是单调上升的）。p4 把 $q_0$ 写在“极值点：$dU/dq|_{q=q_0}=0$”这一行的右边，就是这个意思。
+
+\aside{这里用的是 Taylor 定理的\textbf{一维}形式（陈述 + 代入本文记号）：设 $U$ 在 $q_0$ 的某邻域内 $n+1$ 阶可导，则
+\[
+U(q)=U(q_0)+U'(q_0)(q-q_0)+\tfrac12U''(q_0)(q-q_0)^2+\tfrac16U'''(q_0)(q-q_0)^3+\cdots+\tfrac1{n!}U^{(n)}(q_0)(q-q_0)^n+R_n ,
+\]
+其中余项 $R_n=\dfrac{U^{(n+1)}(\xi)}{(n+1)!}(q-q_0)^{n+1}$，$\xi$ 在 $q_0$ 与 $q$ 之间。代入本题：$q-q_0=x$、$U'(q_0)=0$（$q_0$ 是极值）、$U''(q_0)=K_0>0$（稳定）。}
+
+\textbf{“亚稳定”要单独说一句}：$U''(q_0)=0$ 时展开退化到三次项，$U\approx\frac16U'''x^3$ 在 $x$ 变号时变号，\textbf{两侧的力一个拉回、一个推开}，不构成振动。所以这一格必须往高阶走、单独处理，不属于“线性小振动”（p4 中间那张标了 Stable / Unstable / $d^2U/dq^2=0$ 的曲线图说的就是这件事）。
+
+\subhdr{§1.2　被红叉划掉的两项，理由完全不同}
+
+p4 的主式是一个带两个红叉的展开（下面把两项显式标出，右侧注明“叉掉”的理由）：
+\[
+U(q)\approx
+\underbrace{U(q_0)}_{\text{常数，丢}}
++\underbrace{\left.\frac{dU}{dq}\right|_{q=q_0}(q-q_0)}_{\text{严格为零，丢}}
++\frac12\left.\frac{d^2U}{dq^2}\right|_{q=q_0}(q-q_0)^2 ,
+\tag{1.2}
+\]
+紧接着给出 $U(q)\approx\frac12K_0(q-q_0)^2$ 与 $K_0\equiv\left.\dfrac{d^2U}{dq^2}\right|_{q=q_0}>0$。两个叉子看起来一样，理由却一点都不一样——这是本页最容易读错的地方。
+
+\textbf{第一个叉（$U(q_0)$）：它是常数，加不加不影响运动方程。}拉格朗日量里加常数，$\partial\mathcal{L}/\partial q$ 不变，方程不变；所以可以丢，但\textbf{它没有消失}——能量里还留着它（§1.5）。
+
+\textbf{第二个叉（一阶项）：它的系数\textbf{严格}等于零，不是“小”。}$q_0$ 是平衡位置的定义就是 $U'(q_0)=0$（(1.1) 的第一条）。所以这一项不是“小到可以忽略”，而是\textbf{恰好为零}。这一点必须说清，否则读者会以为“$x$ 小所以一次项也可以丢”——那是错的，$x$ 小的时候一次项比二次项大。
+
+\textbf{第三个问题：三次以上项凭什么丢？}靠比较，不靠“小”这个字。把 $U$ 展开到三次：
+\[
+U(q)=U(q_0)+\frac12K_0x^2+\frac16U'''(q_0)x^3+O(x^4),
+\]
+保留项与丢弃项的比值是
+\[
+\frac{\tfrac16|U'''|\,x^3}{\tfrac12K_0x^2}=\frac{|U'''|}{3K_0}\,|x| .
+\]
+于是“小振动”的\textbf{定量}含义是
+\[
+|x|\ll\ell\equiv\frac{K_0}{|U'''|}\qquad(\text{若 }U'''=0\text{，用下一阶非零导数除以 }K_0).
+\tag{1.3}
+\]
+$\ell$ 是一个\textbf{长度}（$K_0$ 量纲为能量/长度$^2$，$U'''$ 为能量/长度$^3$），由势能曲线在 $q_0$ 附近的形状定，与振幅无关；$a\ll\ell$ 时二次近似才谈得上“准确”。
+
+\textbf{$a(q)$ 那一项：理由和 $U$ 完全不同。}p4 底部写 “For $a(q)$ it is sufficient to take: $a(q)\approx a(q_0)\equiv M_0$”。注意 $a'(q_0)$ \textbf{一般不等于零}——没有“$a$ 在 $q_0$ 取极值”这种条件。它能被丢掉的真实理由是\textbf{它乘的是 $\dot x^2$，而 $\dot x^2$ 本身就是二阶小量}：
+
+\[
+\tfrac12a(q)\dot x^2=\tfrac12\bigl[a_0+a_1x+\cdots\bigr]\dot x^2
+=\tfrac12a_0\dot x^2+\tfrac12a_1x\dot x^2+\cdots,
+\]
+其中 $a_1=a'(q_0)$。若 $x\sim a$、$\dot x\sim\omega_0 a$，则第二项与第一项之比为
+\[
+\frac{a_1x\dot x^2}{a_0\dot x^2}=\frac{a_1}{a_0}x=O\!\left(\frac{a}{a_0/|a_1|}\right).
+\]
+所以对 $a(q)$ 的“小”判据是 $a\ll a_0/|a_1|$——同样是“相对于某个由系统本身决定的长度要小”，但那个长度是 $a_0/|a_1|$，不是 $K_0/|U'''|$。两处都要求 $a$ 小，机制却是两套：$U$ 靠“一阶导为零”，$a(q)$ 靠“$\dot x^2$ 已是二阶”。
+
+\subhdr{§1.3　$\mathcal{L}$ 与运动方程：$\omega_0=\sqrt{K_0/M_0}$ 的分子分母各是什么}
+
+丢掉上面的项，拉格朗日量（p4 蓝框）就是
+\[
+\mathcal{L}=\frac{M_0\dot x^2}{2}-\frac{K_0x^2}{2},
+\tag{1.4}
+\]
+运动方程由拉格朗日方程给出（p5 右上角原式 $\dfrac{d}{dt}\left(\dfrac{\partial\mathcal{L}_{\rm lg}}{\partial\dot x}\right)-\dfrac{\partial\mathcal{L}_{\rm lg}}{\partial x}=0$）。逐项算：
+
+\[
+\frac{\partial\mathcal{L}}{\partial\dot x}=M_0\dot x,\qquad
+\frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot x}=M_0\ddot x,\qquad
+\frac{\partial\mathcal{L}}{\partial x}=-K_0x .
+\]
+\[
+\Longrightarrow\quad M_0\ddot x+K_0x=0
+\quad\Longrightarrow\quad \ddot x+\omega_0^2x=0,\qquad
+\omega_0\equiv\sqrt{\frac{K_0}{M_0}} .
+\tag{1.5}
+\]
+
+\textbf{$K_0$ 在分子}（回复力越硬跑得越快）、\textbf{$M_0$ 在分母}（惯量越大小加速度越小）；量纲自检：$[K_0/M_0]=\dfrac{\text{J/m}^2}{\text{kg}}=\text{s}^{-2}$，开根得 $\text{s}^{-1}$ \checkmark。
+
+p5 的 Note 说这句话的大意值得抄下来：“the angular frequency of a harmonic oscillator is entirely determined by the \textbf{curvature} of the potential curve at $q_0$ and other internal properties (like mass, length, etc.)”——频率只由 $K_0$（曲率）与 $M_0$（惯性）决定，与振幅、初相位无关。这就是 p15 结论 3 的出处。
+
+\subhdr{§1.4　两个积分常数怎么定：Task \#1（p6）}
+
+p6 的 Task \#1 是\textbf{课上例题}（带 EXERCISE 标签），本讲义全解。
+
+\textbf{题面}（p6 原文照抄，无旁注）：Derive the expressions for the amplitude and initial phase of a harmonic oscillator in terms of the initial position ($x_0$) and initial velocity ($v_0$).
+
+\textbf{考点}：$\ddot x+\omega_0^2x=0$ 是二阶方程，通解必须带两个任意常数；(1.6) 把物理初值翻译成这两个常数。
+
+\textbf{关键一步}：把 $t=0$ 代进 $x$ 与 $\dot x$，得到关于 $(a\cos\beta,a\sin\beta)$ 的\textbf{代数}方程组，然后“平方相加”消 $\beta$、“相除”消 $a$。
+
+\textbf{详解}：由 $x=a\cos(\omega_0t+\beta)$ 得 $\dot x=-a\omega_0\sin(\omega_0t+\beta)$，在 $t=0$：
+\[
+x_0=a\cos\beta,\qquad v_0=-a\omega_0\sin\beta .
+\tag{1.6}
+\]
+\textbf{（i）求 $a$}：把两式各自平方后相加，用 $\cos^2\beta+\sin^2\beta=1$：
+\[
+x_0^2+\frac{v_0^2}{\omega_0^2}=a^2(\cos^2\beta+\sin^2\beta)=a^2
+\quad\Longrightarrow\quad
+a=\sqrt{x_0^2+\frac{v_0^2}{\omega_0^2}} .
+\tag{1.7}
+\]
+\textbf{（ii）求 $\beta$}：两式相除，
+\[
+\frac{v_0}{x_0}=\frac{-a\omega_0\sin\beta}{a\cos\beta}=-\omega_0\tan\beta
+\quad\Longrightarrow\quad \tan\beta=-\frac{v_0}{\omega_0x_0} .
+\tag{1.8}
+\]
+p6 给的就是 (1.7) 与 (1.8)。但 (1.8) \textbf{只把 $\beta$ 定到相差 $\pi$}（因为 $\tan$ 的周期是 $\pi$）：$\beta$ 与 $\beta+\pi$ 给出同一个 $\tan$，却让 $x_0$ 与 $v_0$ \textbf{同时变号}。要唯一确定 $\beta$，得回到 (1.6) 看两个三角函数各自的符号：
+\[
+\cos\beta=\frac{x_0}{a}\ \Rightarrow\ \operatorname{sgn}(\cos\beta)=\operatorname{sgn}(x_0),\qquad
+\sin\beta=-\frac{v_0}{a\omega_0}\ \Rightarrow\ \operatorname{sgn}(\sin\beta)=-\operatorname{sgn}(v_0).
+\]
+写成一句话就是
+\[
+\boxed{\ \beta=\operatorname{atan2}\!\left(-\frac{v_0}{\omega_0},\ x_0\right)\ }
+\tag{1.9}
+\]
+（$\operatorname{atan2}(y,x)$ 是按 $(\cos\beta,\sin\beta)\propto(x,y)$ 取象限的反正切。）
+
+\textbf{答案}：
+\[
+a=\sqrt{x_0^2+\frac{v_0^2}{\omega_0^2}},\qquad \beta=\operatorname{atan2}\!\left(-\frac{v_0}{\omega_0},x_0\right),\qquad
+x(t)=a\cos(\omega_0t+\beta).
+\tag{1.10}
+\]
+
+\textbf{自检}（四个端点情形，代回 (1.6) 一眼可验）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.3cm}p{2.4cm}p{2.6cm}p{5.0cm}@{}}
+\toprule
+\thead{初值} & \thead{$a$} & \thead{$\beta$} & \thead{解}\\
+\midrule
+$x_0>0,\ v_0=0$ & $x_0$ & $0$ & $x=x_0\cos\omega_0t$（从最高点放手）\\
+$x_0=0,\ v_0>0$ & $v_0/\omega_0$ & $-\pi/2$ & $x=\frac{v_0}{\omega_0}\sin\omega_0t$（在原点向右踢）\\
+$x_0<0,\ v_0=0$ & $|x_0|$ & $\pi$ & $x=-|x_0|\cos\omega_0t$（从另一侧放手）\\
+$x_0=0,\ v_0<0$ & $|v_0|/\omega_0$ & $+\pi/2$ & $x=-\frac{|v_0|}{\omega_0}\sin\omega_0t$（在原点向左踢）\\
+\bottomrule
+\end{tabular}
+
+这张表只是把 (1.10) 在四个初值上读了一遍。逐行读法：第 2 行 $x_0=0$ 故 $\cos\beta=0$，$\beta=\pm\pi/2$，再由 $\sin\beta<0$（$v_0>0$）选 $-\pi/2$，得 $x=a\sin\omega_0t>0$，与“向右踢”一致。边界行是第 3 行：$x_0<0$ 时 $\cos\beta<0$，$\beta$ 落在 $\pi$ 附近而非 $0$——若照 (1.8) 取 $\arctan0=0$，就会写出 $x=|x_0|\cos\omega_0t$，与初值反号，这是丢掉象限的典型后果。
+
+\subhdr{§1.5　$E=T+U=\frac12K_0a^2$：那个 $\frac12$ 有两个来头}
+
+p5 右侧先把能量\textbf{定义}成（蓝框原式）
+\[
+E\equiv\sum_i\frac{\partial\mathcal{L}}{\partial\dot q_i}\dot q_i-\mathcal{L},
+\tag{1.11}
+\]
+这句“定义”在 $s=1$ 时算出来就是
+\[
+E=M_0\dot x^2-\left(\frac{M_0\dot x^2}{2}-\frac{K_0x^2}{2}\right)=\frac{M_0\dot x^2}{2}+\frac{K_0x^2}{2}=T+U .
+\]
+（这一步用到了 $\mathcal{L}=T-U$ 且 $T$ 是 $\dot x$ 的齐二次式；一般情形下 (1.11) 只保证 $E=$ 守恒量，等于 $T+U$ 还要 $T$ 是齐二次、$U$ 不含 $\dot x$——本题两条都满足。）
+
+把解 $x=a\cos(\omega_0t+\beta)$ 代进去：
+\[
+T=\frac{M_0}{2}a^2\omega_0^2\sin^2(\omega_0t+\beta)=\frac{K_0a^2}{2}\sin^2(\omega_0t+\beta),\qquad
+U=\frac{K_0a^2}{2}\cos^2(\omega_0t+\beta),
+\]
+\[
+E=T+U=\frac{K_0a^2}{2}\left[\sin^2(\omega_0t+\beta)+\cos^2(\omega_0t+\beta)\right]=\frac{K_0a^2}{2}=\frac12M_0\omega_0^2a^2 ,
+\tag{1.12}
+\]
+这就是 p5/p9 的红字 \textbf{E=T+U=1/2 K0a2}。两个 $\frac12$ 分工不同，必须分开报户口：
+
+\begin{itemize}
+\item 第一个 $\frac12$ 来自\textbf{动能定义} $T=\frac12M_0\dot x^2$（约定来源：$T=\frac12mv^2$ 的写法）。
+\item 第二个 $\frac12$ 来自\textbf{恒等式} $\sin^2+\cos^2=1$（数学来源：$\sin^2$ 与 $\cos^2$ 都均分这一份能量）。严格说 $T$ 与 $U$ 的峰值各是 $K_0a^2$，而 $E$ 恒为两者之和，等于峰值的一半。
+\item 系数 $\omega_0^2$ 的那一步来自\textbf{运动方程}（$K_0=M_0\omega_0^2$），所以 $\frac12K_0a^2$、$\frac12M_0\omega_0^2a^2$、$\frac12M_0\dot x_{\max}^2$ 是同一个数的三种写法。
+\end{itemize}
+
+\textbf{守恒性的一行证明}：沿真实轨道
+\[
+\frac{dE}{dt}=M_0\dot x\ddot x+K_0x\dot x=\dot x\bigl(\underbrace{M_0\ddot x+K_0x}_{=\,0\ \text{由 (1.5)}}\bigr)=0 .
+\tag{1.13}
+\]
+（这一步的“机制”是：$E$ 里 $x$ 与 $\dot x$ 的出现方式恰好让 $dE/dt$ 正比于运动方程本身，所以方程一成立、能量就守恒。这不是巧合，是 (1.11) 那个定义的必然推论。）
+
+\textbf{E 的零点在哪里——本页最容易丢的一句。}红字 \textbf{E=T+U=1/2 K0a2} 里\textbf{不含 $U(q_0)$}，严格写法是
+\[
+E_{\text{总}}=\underbrace{U(q_0)}_{\text{常数}}+\frac{K_0a^2}{2},
+\tag{1.14}
+\]
+因为 (1.2) 的第一个叉只是把常数从 $\mathcal{L}$ 里丢掉，它并没有从物理里消失。$U(q_0)$ 只贡献一个与时间无关的平移，\textbf{对运动方程没有任何影响}，所以取不取它都行；但一旦要报“能量是多少焦耳”，就得说清零点在哪儿。p16 的莫尔斯势正好踩在这条线上（$U(0)=-A$），§4.1 会把它算成具体的数。
+
+\subhdr{§1.6　振幅被什么限制住}
+
+p5 与 p6 给了振幅的两种算法：由初值 $a=\sqrt{x_0^2+v_0^2/\omega_0^2}$（式 (1.7)），或由能量
+\[
+a=\sqrt{\frac{2E}{K_0}}=\sqrt{\frac{2E}{\omega_0^2M_0}} .
+\tag{1.15}
+\]
+两个式子\textbf{必须一致}，这不是巧合：把 $E=\frac12K_0(x_0^2+v_0^2/\omega_0^2)$（由 (1.12) 与 (1.7) 合起来）代进 (1.15) 就退回 (1.7)。所以 p5 那句“系数 $a$ 如何计算？”实际上有两个答案，取决于你手上拿的是初值还是能量；两个都要会。
+
+那么 $a$ 能有多大？限制来自两头，都不是数学技巧，而是物理：
+
+\begin{enumerate}
+\item \textbf{内侧限制（近似失效）}：$a\ll\ell$（式 (1.3)）与 $a\ll a_0/|a_1|$。超出之后，$U$ 的三次项开始说话，振动不再是简谐的（周期随振幅漂移）。
+\item \textbf{外侧限制（运动本身不存在）}：$U$ 在远处可能不再上升。若势能在某处封顶、或趋于一个有限值（离解），那么能量够高的粒子就\textbf{跑掉}，不再回来振动——这时“频率”这个词失去意义，与近似好坏无关。
+\end{enumerate}
+
+课件的莫尔斯势（p16）把这两条限制同时演了一遍：$a<\frac{1}{\alpha}$ 是\textbf{外侧限制}（等价于 $E<A$，超过就离解），$\alpha a\ll1$ 是\textbf{内侧限制}（等价于三次项可丢）。§4.1 给数字。
+
+\flowerrule
+
+%=============================================================
+\hdr{§2}{$s>1$：二次型、本征方程、简正坐标}
+
+这一节的目标只有一个：把 p7、p10、p12--p15、p22 这六页拼成一条不断裂的链——
+\[
+\begin{aligned}
+&\mathcal{L}=\tfrac12\sum M_{ij}\dot x_i\dot x_j-\tfrac12\sum K_{ij}x_ix_j
+\ \longrightarrow\ \sum_j\bigl(M_{lj}\ddot x_j+K_{lj}x_j\bigr)=0\\[2pt]
+&\ \longrightarrow\ \det[K-\omega^2M]=0
+\ \longrightarrow\ \Theta_\alpha
+\ \longrightarrow\ \mathcal{L}=\sum_\alpha\bigl(\tfrac12\dot\Theta_\alpha^2-\tfrac12\omega_\alpha^2\Theta_\alpha^2\bigr).
+\end{aligned}
+\]
+
+\subhdr{§2.1　$\mathcal{L}$ 为什么一定是二次型（p7、p10）}
+
+p7 的第一步是把条件收紧，原文两句值得逐字读：“we will consider only \textbf{time-independent} conservative potentials and ‘good’ transformation rules between the Cartesian and generalized coordinates which exclude \textbf{explicit time-dependence}”；于是
+\[
+\mathcal{L}=\frac12\sum_{i,k}a_{ik}(q_l)\dot q_i\dot q_k-U(q_l).
+\tag{2.1}
+\]
+“变换规则不显含时间”是全部内容的来源（本文用 $q$ 表坐标、$x$ 表位移；p7 的原式写在 $q_l$ 上，p10 换到 $x_i=q_i-q_{i0}$ 上），它保证了：
+\[
+\vec r_a=\vec r_a(q_1,\dots,q_s)\ \Longrightarrow\ \vec v_a=\sum_i\frac{\partial\vec r_a}{\partial q_i}\dot q_i
+\ \Longrightarrow\ T=\frac12\sum_am_a\vec v_a^{\,2}=\frac12\sum_{i,k}a_{ik}(q)\dot q_i\dot q_k ,
+\]
+即 $T$ 是 $\dot q$ 的\textbf{齐二次型}，系数只依赖坐标。若变换显含时间（例如约束在动），$v_a$ 里会多出一项不含 $\dot q_i$ 的偏导项，$T$ 就会出现线性项与常数项（Topic 4 的 $T_2+T_1+T_0$），“小振动”的整套结论都要改写。
+
+接着做与 §1.2 完全一样的两步展开，只是把标量换成矩阵（p10）：
+\[
+x_i\equiv q_i-q_{i0},\qquad
+U\approx\frac12\sum_{i,j}K_{ij}x_ix_j,\quad K_{ij}\equiv\left.\frac{\partial^2U}{\partial q_i\partial q_j}\right|_{\rm eq};\qquad
+a_{ij}(q)\approx a_{ij}(q_{l0})\equiv M_{ij},
+\tag{2.2}
+\]
+\[
+\boxed{\ \mathcal{L}=\frac12\sum_{i,j}M_{ij}\dot x_i\dot x_j-\frac12\sum_{i,j}K_{ij}x_ix_j\ }
+\tag{2.3}
+\]
+三个性质必须点名，后面每一步都要用：
+
+\begin{enumerate}
+\item \textbf{对称}：$M_{ij}=M_{ji}$、$K_{ij}=K_{ji}$。前者的理由是 $M_{ij}=\partial^2T/\partial\dot q_i\partial\dot q_j$ 是混合偏导（p12 原文就写“（对称：$M_{ij}=M_{ji}$）”）；后者同理，$K_{ij}$ 是 $U$ 的混合偏导。注意 p10 把同一个 $M$ 写成 $a_{ij}$、$a_{IJ}$ 三种样子，指的都是 (2.2) 的第二个式子。
+\item \textbf{$M$ 正定}：$T=\frac12\sum M_{ij}\dot x_i\dot x_j>0$ 对任何 $\dot x\ne0$ 成立（动能不可能为零或负）。
+\item \textbf{$K$ 正定}：这正是“$q_0$ 是 $U$ 的极小”在多维的说法。p10 用一串行列式图表达（“Determinant of $(b_{11})$、$\begin{pmatrix}b_{11}&b_{12}\\b_{21}&b_{22}\end{pmatrix}$、$\cdots$ is positive”），它的意思是\textbf{所有顺序主子式为正}：
+\[
+K_{11}>0,\qquad K_{11}K_{22}-K_{12}^2>0,\qquad\det K>0,\ \dots
+\tag{2.4}
+\]
+p19 底部的中文只写了前两条中的 $K_{11}>0$、$K_{22}>0$——那\textbf{不够}（$2\times2$ 反例：$K_{11}=K_{22}=1$、$K_{12}=2$，两条都 $>0$，但 $K$ 不正定）。用 (2.4) 的第二条才能判定。
+\end{enumerate}
+
+\aside{“正定”在本步指什么（陈述 + 代入记号）：实对称矩阵 $K$ 正定 $:\iff$ 对一切非零实向量 $v$ 有 $v^{\!\top}Kv>0$ $:\iff$ 全部顺序主子式为正 $:\iff$ 全部特征值为正。代入本题：$K_{ij}=\partial^2U/\partial q_i\partial q_j|_{\rm eq}$，所以“$K$ 正定”$=$“$q_{i0}$ 是 $U$ 的严格极小”，与一维的 $K_0>0$ 是同一句话。这条性质后面有两个用处：保证 $\det$ 方程的根 $\omega_\alpha^2$ 全为正（§2.3）、保证 $K^{-1}$ 存在（§5.4 要用）。}
+
+\subhdr{§2.2　从 $\mathcal{L}$ 到运动方程：p10 只给结论，p12 才给过程}
+
+p10 左下的结论是
+\[
+\sum_{j=1}^{s}\bigl(M_{lj}\ddot x_j+K_{lj}x_j\bigr)=0,\qquad l=\overline{1,s},
+\tag{2.5}
+\]
+但\textbf{怎么来的写在 p12 右栏}，而且 p12 的排版是从上往下倒着读的。这里按逻辑顺序重排一遍，四步。
+
+\textbf{第一步 + 第二步：对 $\dot x_l$ 求偏导（乘积法则），再用 $\partial\dot x_i/\partial\dot x_l=\delta_{il}$。}
+\[
+\frac{\partial\mathcal{L}}{\partial\dot x_l}
+=\frac12\sum_{i,j}M_{ij}\frac{\partial(\dot x_i\dot x_j)}{\partial\dot x_l}
+=\frac12\sum_{i,j}M_{ij}\Bigl(\frac{\partial\dot x_i}{\partial\dot x_l}\dot x_j+\dot x_i\frac{\partial\dot x_j}{\partial\dot x_l}\Bigr)
+=\frac12\sum_{i,j}M_{ij}\bigl(\delta_{il}\dot x_j+\dot x_i\delta_{jl}\bigr).
+\tag{2.6}
+\]
+（$\dot x_1,\dots,\dot x_s$ 相互独立，对其中一个求导只挑出下标相同的项，这就是 $\delta_{il}$ 的来处；p12 右栏把这两步分成两行写。）
+\textbf{第三步：用 $\delta$ 把双重求和砍成单重（这一步是 p12 里唯一被省略的中间行）。}
+\[
+\frac12\sum_{i,j}M_{ij}\delta_{il}\dot x_j=\frac12\sum_jM_{lj}\dot x_j,\qquad
+\frac12\sum_{i,j}M_{ij}\dot x_i\delta_{jl}=\frac12\sum_iM_{il}\dot x_i .
+\tag{2.8}
+\]
+道理：$\delta_{il}$ 只在 $i=l$ 时为 $1$，故对 $i$ 的求和只剩 $i=l$ 那一项；第二项同理只剩 $j=l$。这正是 p12 第三、四行之间被吞掉的那一行。
+
+\textbf{第四步：用对称性把两个和合并。}第二个和里把哑标 $i$ 换成 $j$：
+\[
+\frac12\sum_iM_{il}\dot x_i=\frac12\sum_jM_{jl}\dot x_j
+\overset{M_{jl}=M_{lj}}{=}\frac12\sum_jM_{lj}\dot x_j ,
+\qquad
+\Longrightarrow\quad
+\frac{\partial\mathcal{L}}{\partial\dot x_l}=\sum_jM_{lj}\dot x_j .
+\tag{2.9}
+\]
+（若 $M$ 不对称，这里会剩 $\frac12\sum_j(M_{lj}+M_{jl})\dot x_j$，整理不成 (2.5)。这是“对称”在本题的\textbf{唯一}用途。）
+
+\textbf{第五步：时间导数与对 $x_l$ 的偏导。}$M_{lj}$ 是常数（已在平衡点 $q_{l0}$ 上取过值，见 (2.2)），所以 $\frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot x_l}=\sum_jM_{lj}\ddot x_j$；另一项与 (2.6)--(2.9) 同构：
+\[
+\frac{\partial\mathcal{L}}{\partial x_l}=-\frac12\sum_{i,j}K_{ij}\bigl(\delta_{il}x_j+x_i\delta_{jl}\bigr)=-\sum_jK_{lj}x_j .
+\tag{2.10}
+\]
+代进 $\frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot x_l}-\frac{\partial\mathcal{L}}{\partial x_l}=0$ 即得 (2.5)。
+
+\aside{拉格朗日方程的原形式（陈述 + 代入记号）：对 $\mathcal{L}(q,\dot q,t)$，若 $q_l$ 是广义坐标，则真实运动满足 $\dfrac{d}{dt}\dfrac{\partial\mathcal{L}}{\partial\dot q_l}-\dfrac{\partial\mathcal{L}}{\partial q_l}=0$，$l=1,\dots,s$。代入本题：$q_l\to x_l$（位移），$\mathcal{L}$ 取 (2.3)，不显含 $t$，所以偏导里没有 $\partial\mathcal{L}/\partial t$ 项。}
+
+\subhdr{§2.3　本征方程：为什么是“行列式等于零”，以及“多少个根”}
+
+设
+\[
+x_j(t)=A_je^{i\omega t}
+\tag{2.11}
+\]
+（p12/p13 的试解；可以猜它的理由是 (2.5) 是\textbf{线性常系数}方程，指数函数求导只乘常数 $\omega$，试解能把微分方程变成代数方程）。代入 (2.5)，每个 $x_j$ 都带同一个因子 $e^{i\omega t}$，约掉：
+\[
+\sum_j\bigl(-\omega^2M_{lj}+K_{lj}\bigr)A_j=0,\qquad l=1,\dots,s .
+\tag{2.12}
+\]
+这是关于 $A_1,\dots,A_s$ 的\textbf{齐次线性}方程组。接下来这一步是整份课件里最容易被读反的一句，p13 右栏原文是：“If vector is not trivial, the determinant must be \textbf{Non-zero}”。\textbf{这句说反了}：齐次方程组有\textbf{非零}解，恰恰要求系数行列式\textbf{等于零}（否则系数矩阵可逆，两边左乘逆矩阵即得 $A=0$）。p13 左栏自己写的框是
+\[
+\det\bigl[-\omega^2M_{lj}+K_{lj}\bigr]=0
+\tag{2.13}
+\]
+——这才对。补一句“平凡解”的物理：$A_j\equiv0$ 表示系统\textbf{静静停在平衡点}，它是 (2.5) 的解，但显然不是“振动”，所以必须排除；排除它的办法就是要求行列式为零。
+
+\textbf{“$X_j$ 多少个根？”}——p13 底部这句中文提问课件没有回答，答案分三层：
+
+\begin{enumerate}
+\item $\det[K-\omega^2M]$ 是 $\omega^2$ 的\textbf{几次}多项式？因为 $M$ 可逆（正定），可写成
+\[
+\det[K-\omega^2M]=\det M\cdot\det\bigl[M^{-1}K-\omega^2 I\bigr],
+\tag{2.14}
+\]
+括号里是一个 $s\times s$ 矩阵的特征多项式，故\textbf{恰为 $\omega^2$ 的 $s$ 次多项式}，首项系数 $(-1)^s\det M\ne0$。
+\item 所以\textbf{按重数算恰好 $s$ 个根} $\omega_\alpha^2$（$\alpha=1,\dots,s$）。这就是为什么 (2.11) 里写的 $\alpha$ 从 $1$ 跑到 $s$（p13 “Solution yields $\omega_\alpha$, $\alpha=\overline{1,s}$”）。
+\item 这些根都是\textbf{实数}，而且（$K$ 正定时）都\textbf{为正}。
+
+\aside{$M^{-1}K$ 的特征值为什么全是实数（陈述 + 代入记号）：若 $M$、$K$ 实对称且 $M$ 正定，则存在实矩阵 $A$ 使 $A^{\!\top}MA=I$、$A^{\!\top}KA=\operatorname{diag}(\omega_\alpha^2)$，其中 $\omega_\alpha^2\in\mathbb R$；若 $K$ 还正定，则全部 $\omega_\alpha^2>0$。代入本题：$M_{ij},K_{ij}$ 就是 (2.2) 两个矩阵，$s$ 是自由度数。这条定理的证明思路见 §2.4，此处只借它的结论。}
+\end{enumerate}
+
+\warnbox{\textbf{一个必须现在就说的例外：零根。}
+若 $K$ \textbf{不}正定而只是半正定（典型例子：系统整体可以平移，$U$ 对这个平移毫无感觉），那么 $\det K=0$，$\omega=0$ 就是一个根。零频\textbf{不是}“无限慢的振动”，而是\textbf{根本不振动}：$\omega=0$ 代进 (2.11) 得 $x_j=A_j$ 常数，代进 (2.5) 得 $K A=0$，即 $A$ 落在 $K$ 的零空间里——整体平移（或整体转动）。作业 H7.2 的 $\omega^2=0$ 根就是这一种（§5.4 详算）。}
+
+\subhdr{§2.4　归一化与简正坐标：p13 与 p14 之间那个缺口}
+
+p13 给了一个条件，p14 给了一个结论，但\textbf{两页之间没有一句话把它们连起来}。这是本讲义要补的最重的一处。先把两句话摆出来：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{10.8cm}@{}}
+\toprule
+\thead{页码} & \thead{原文}\\
+\midrule
+p13 & “We can also impose the condition: $\sum_{i=1}^{s}\sum_{j=1}^{s}\mu_{ij}A_{i\alpha}A_{j\beta}=\delta_{\alpha\beta}$”，标题是 \textbf{Normalization}。\\
+p14 & “In terms of normal coordinates: $\mathcal{L}=\frac12\sum_{\alpha=1}^{s}\dot\Theta_\alpha^2-\frac12\sum_{\alpha=1}^{s}\omega_\alpha^2\Theta_\alpha^2\ \Rightarrow\ \ddot\Theta_\alpha+\omega_\alpha^2\Theta_\alpha=0$”。\\
+\bottomrule
+\end{tabular}
+
+\textbf{p13 里的 $\mu_{ij}$ 是谁？}课件没写。答案是 $\mu_{ij}=M_{ij}$（(2.2) 的质量矩阵）。判据很硬：把 $x_i=\sum_\alpha A_{i\alpha}\Theta_\alpha$ 代进 (2.3) 的动能项，
+\[
+T=\frac12\sum_{i,j}M_{ij}\dot x_i\dot x_j
+=\frac12\sum_{\alpha,\beta}\Bigl(\underbrace{\sum_{i,j}M_{ij}A_{i\alpha}A_{j\beta}}_{=\,\mu_{ij}\text{ 取 }M_{ij}\text{ 时的 }\delta_{\alpha\beta}}\Bigr)\dot\Theta_\alpha\dot\Theta_\beta ,
+\]
+只有 $\mu=M$ 时这个括号才等于 $\delta_{\alpha\beta}$，$T$ 才变成 $\frac12\sum_\alpha\dot\Theta_\alpha^2$。取欧氏的 $\mu=\delta$（即把特征向量按长度归一）也能让矩阵对角化，但 $T$ 的系数不是 $1$——这是两份讲义里都容易踩的坑，§2.4 末尾给具体数字。
+
+\textbf{把这一步写成定理}（硬性约束 8：原形式在前，常用形式由它推出，并标课件给的是哪一个）。
+
+\subhdr{定理（实对称矩阵的谱分解，原形式）}
+设 $B$ 是 $s\times s$ 实对称矩阵。则存在\textbf{正交}矩阵 $Q$（$Q^{\!\top}Q=I$）使
+\[
+Q^{\!\top}BQ=\operatorname{diag}(\lambda_1,\dots,\lambda_s),\qquad \lambda_\alpha\in\mathbb R ,
+\]
+且 $Q$ 的列是 $B$ 的一组标准正交特征向量：$Bq_\alpha=\lambda_\alpha q_\alpha$、$q_\alpha^{\!\top}q_\beta=\delta_{\alpha\beta}$。
+
+\subhdr{把它搬到“广义”问题（常用形式，本讲义要用的）}
+设 $M,K$ 实对称、$M$ 正定。则存在实矩阵 $A$ 使
+\[
+A^{\!\top}MA=I,\qquad A^{\!\top}KA=\operatorname{diag}(\omega_1^2,\dots,\omega_s^2).
+\tag{2.15}
+\]
+\textbf{由原形式推出（三步，不跳）}：
+\begin{enumerate}
+\item $M$ 正定 $\Rightarrow$ 存在实可逆 $L$ 使 $M=LL^{\!\top}$（Cholesky 分解）。
+\item 令 $B\equiv L^{-1}K\,L^{-\!\top}$，则 $B^{\!\top}=L^{-1}K^{\!\top}L^{-\!\top}=B$，即 $B$ 实对称；由定理，有正交 $Q$ 使 $Q^{\!\top}BQ=\operatorname{diag}(\omega_\alpha^2)$。
+\item 取 $A\equiv L^{-\!\top}Q$，则 $A^{\!\top}MA=Q^{\!\top}L^{-1}(LL^{\!\top})L^{-\!\top}Q=Q^{\!\top}Q=I$，且 $A^{\!\top}KA=Q^{\!\top}(L^{-1}KL^{-\!\top})Q=\operatorname{diag}(\omega_\alpha^2)$。
+\end{enumerate}
+$\omega_\alpha^2$ 正是 (2.13) 的根：由 (2.15) 得 $\det[K-\omega^2M]=\det(LL^{\!\top})\det[B-\omega^2I]$，而后者正是 $B$ 的特征多项式。
+
+\aside{课件给的是哪一个：p13 只给了\textbf{归一化条件} $\mu_{ij}A_{i\alpha}A_{j\beta}=\delta_{\alpha\beta}$（不是定理、也没说是对 $M$ 归一），p14 只给了\textbf{结论}。上文的定理与三步证明属于 [教材补充]，出处是线性代数的谱定理（正定二次型一节）；Landau《力学》§23 用的是同一件事的物理语言（“$\Theta$ 的选择使 $T$ 与 $U$ 同时化为平方和”）。}
+
+\textbf{现在做代换，把 $\mathcal{L}$ 拆成 $s$ 个独立振子。}定义\textbf{简正坐标}
+\[
+x_i=\sum_{\alpha=1}^{s}A_{i\alpha}\Theta_\alpha\qquad(\text{即 } x=A\Theta),
+\tag{2.16}
+\]
+这就是 p14 的 $x_i=\sum_\alpha A_{i\alpha}\Theta_\alpha$（p14 的中文注：“$x_1,x_2,\cdots,x_s$ 表示 $\Theta_1,\Theta_2,\cdots,\Theta_s$；$\Theta_1,\Theta_2,\cdots,\Theta_s$ 看作新广义坐标”）。代入 (2.3)：
+
+\[
+T=\frac12\dot x^{\!\top}M\dot x=\frac12\dot\Theta^{\!\top}\bigl(A^{\!\top}MA\bigr)\dot\Theta=\frac12\dot\Theta^{\!\top}\dot\Theta=\frac12\sum_\alpha\dot\Theta_\alpha^2 ,
+\]
+\[
+U=\frac12x^{\!\top}Kx=\frac12\Theta^{\!\top}\bigl(A^{\!\top}KA\bigr)\Theta=\frac12\Theta^{\!\top}\operatorname{diag}(\omega_\alpha^2)\Theta=\frac12\sum_\alpha\omega_\alpha^2\Theta_\alpha^2 ,
+\]
+\[
+\boxed{\ \mathcal{L}=\sum_{\alpha=1}^{s}\Bigl(\frac12\dot\Theta_\alpha^2-\frac12\omega_\alpha^2\Theta_\alpha^2\Bigr)\ }
+\qquad\Longrightarrow\qquad
+\ddot\Theta_\alpha+\omega_\alpha^2\Theta_\alpha=0
+\tag{2.17}
+\]
+（$\alpha=1,\dots,s$；每个 $\alpha$ 一个独立方程。）
+这正是 p14 的框，也正该是 p22 标题（“Normal coordinates, generalized coordinates and Lagrangian”）下面该有的内容——而 p22 只重抄了一遍 (2.12) 与 (2.13)。
+
+\textbf{“交叉项消失”具体是哪两个系数等于零}（这一段必须能逐格复算，否则等于没补）：
+
+\begin{itemize}
+\item 动能里的交叉项系数（$\alpha\ne\beta$）是 $\bigl(A^{\!\top}MA\bigr)_{\alpha\beta}=\sum_{i,j}M_{ij}A_{i\alpha}A_{j\beta}$。由 p13 的归一化（$\mu=M$），它 $=\delta_{\alpha\beta}$，$\alpha\ne\beta$ 时为 \textbf{0}。
+\item 势能里的交叉项系数（$\alpha\ne\beta$）是 $\bigl(A^{\!\top}KA\bigr)_{\alpha\beta}=\sum_{i,j}K_{ij}A_{i\alpha}A_{j\beta}$。把 (2.12) 写成 $KA_\alpha=\omega_\alpha^2MA_\alpha$（$A_\alpha$ 是 $A$ 的第 $\alpha$ 列），左乘 $A_\beta^{\!\top}$：
+\[
+A_\beta^{\!\top}KA_\alpha=\omega_\alpha^2\underbrace{A_\beta^{\!\top}MA_\alpha}_{=\,\delta_{\alpha\beta}} .
+\]
+$\alpha\ne\beta$ 时右边为 \textbf{0}；$\alpha=\beta$ 时为 $\omega_\alpha^2$，这就是对角线上那个数。
+\end{itemize}
+一句话：\textbf{两个 $\delta$ 合起来才叫“交叉项消失”}；缺了 p13 的归一化，第二个等号就写不出来。
+
+\textbf{具体数字核对一（两个滑块，$M=I$ 的退化情形，§2 的两自由度标准例）}：两滑块各质量 $1$，中间与两侧各一根刚度 $1$ 的弹簧（墙—$k$—$m_1$—$k$—$m_2$—$k$—墙），则
+\[
+M=\begin{pmatrix}1&0\\0&1\end{pmatrix},\qquad
+K=\begin{pmatrix}2&-1\\-1&2\end{pmatrix}
+\quad\Longrightarrow\quad
+\det[K-\omega^2M]=\lambda^2-4\lambda+3=(\lambda-1)(\lambda-3),\ \lambda=\omega^2,
+\]
+\[
+\omega_1=1,\quad\omega_2=\sqrt3\approx1.7321,\qquad
+A=\frac{1}{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix}.
+\]
+代入 (2.16) 把 $\mathcal{L}$ 重写一遍（sympy 精确算，不是抄）：
+\[
+\mathcal{L}=\frac12\dot x_1^2+\frac12\dot x_2^2-x_1^2+x_1x_2-x_2^2
+\ \xrightarrow{\ x_1=\frac{\Theta_1-\Theta_2}{\sqrt2},\ x_2=\frac{\Theta_1+\Theta_2}{\sqrt2}\ }\
+\mathcal{L}=\frac12\dot\Theta_1^2+\frac12\dot\Theta_2^2-\frac12\Theta_1^2-\frac32\Theta_2^2 .
+\]
+交叉项系数：$\Theta_1\Theta_2$ 与 $\dot\Theta_1\dot\Theta_2$ 的系数都 $=0$（精确零，不是数值零）。两个 $(1,\pm1)$ 型向量就是两个简正模：$\Theta_1$ 同相（两滑块一起走），$\Theta_2$ 反相（对着撞，频率最高 $\sqrt3$）。注意 $\Theta_1$ 的形状像整体平移，但墙把系统固定住了，平移不自由，故 $\omega_1=1\ne0$。
+
+\textbf{具体数字核对二（双摆，$M\ne I$，这一条才真正考验归一化）}：§3 会算出 $M=ml^2\begin{pmatrix}2&1\\1&1\end{pmatrix}$、$K=mgl\begin{pmatrix}2&0\\0&1\end{pmatrix}$。取 $ml^2=mgl=1$：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.7cm}p{3.4cm}p{6.3cm}@{}}
+\toprule
+\thead{归一化方式} & \thead{$A^{\!\top}MA$} & \thead{结果}\\
+\midrule
+对 $M$ 归一（p13 的 $\mu=M$） & $\operatorname{diag}(1,1)$ & $A^{\!\top}KA=\operatorname{diag}(2+\sqrt2,\,2-\sqrt2)$；$\mathcal{L}=\frac12\dot\Theta_1^2+\frac12\dot\Theta_2^2-\frac{2+\sqrt2}{2}\Theta_1^2-\frac{2-\sqrt2}{2}\Theta_2^2$；两个交叉项系数精确为 $0$\\
+按长度归一（欧氏） & $\operatorname{diag}(0.3905,\ 2.2761)$ & 仍无交叉项，但动能系数不是 $1$：$\mathcal{L}=\frac{0.39052}{2}\dot\Theta_1^2+\frac{2.27614}{2}\dot\Theta_2^2-\frac23\Theta_1^2-\frac23\Theta_2^2$，不满足 (2.17)\\
+\bottomrule
+\end{tabular}
+
+这张表是把 (2.15) 在两种归一化上各读了一遍：两行都由 $A^{\!\top}MA$ 与 $A^{\!\top}KA$ 直接算出。逐行读法：第一行的 $2+\sqrt2$、$2-\sqrt2$ 就是 §3 的两个 $\omega_\alpha^2$ 原值（$M$-归一不改变 $\omega^2$，只改变列的长度）；第二行把每列除以它自己的长度，于是 $A^{\!\top}KA$ 里的 $\omega^2$ 被“摊”掉了——两个对角元都变成 $4/3$，这说明\textbf{欧氏归一化保不住 $\omega_\alpha^2$}，频率得从 $A^{\!\top}KA$ 与 $A^{\!\top}MA$ 的比值重读。边界：$M=I$ 时两种归一化重合（核对一的情形），所以“$M=I$ 的系统看不出差别”——这正是最容易把归一化讲漏的地方。
+
+\subhdr{§2.5　通解、能量，以及“$x_i$ 为什么不再简谐”}
+
+每个 $\Theta_\alpha$ 满足一个独立的一维振子方程，按 §1 的 (1.10) 解：
+\[
+\Theta_\alpha=a_\alpha\cos(\omega_\alpha t+\phi_\alpha),
+\tag{2.18}
+\]
+代回 (2.16) 得 p13/p14 的通解
+\[
+x_i(t)=\sum_{\alpha=1}^{s}A_{i\alpha}a_\alpha\cos(\omega_\alpha t+\phi_\alpha).
+\tag{2.19}
+\]
+\textbf{数一数常数}：$s$ 个振幅 $a_\alpha$ 加 $s$ 个相位 $\phi_\alpha$，共 $2s$ 个——正好等于 $2s$ 个初始条件（$s$ 个 $x_i(0)$ 加 $s$ 个 $\dot x_i(0)$）。这个数目必须对上，否则通解就不是通解。p14 右侧的中文把这件事说成：“简单周期振动 $\Theta_1,\Theta_2,\cdots,\Theta_s$ 的叠加；振幅和相位都是任意的，但频率完全确定。”
+
+\textbf{能量}：把 (2.17) 逐项套 (1.12)，每个简正模自成一个振子，
+\[
+E=\sum_{\alpha=1}^{s}\left(\frac12\dot\Theta_\alpha^2+\frac12\omega_\alpha^2\Theta_\alpha^2\right)=\sum_{\alpha=1}^{s}\frac12\omega_\alpha^2a_\alpha^2 .
+\tag{2.20}
+\]
+（第二个等号把 (2.18) 代进去，逐项用 (1.12)。）这说明\textbf{在线性近似内，各简正模之间不交换能量}：$\Theta_1$ 的能量恒为 $\frac12\omega_1^2a_1^2$，$\Theta_2$ 的恒为 $\frac12\omega_2^2a_2^2$。真实系统里模间是耦合的（那个耦合就是被丢掉的三次项），所以“拍”才最终会消失。
+
+\textbf{“$x_i$ 不再简谐”——p15 结论 4 原文}：“the generalized coordinates (displacements) are \textbf{no longer} governed by a harmonic law”。理由在 (2.19) 一眼可见：$x_1$ 是两个不同频率余弦之和，只有单一模被激发时才简谐。两频率接近时和式变成“快振动乘慢包络”，包络周期 $2\pi/|\omega_1-\omega_2|$——不是新物理，只是余弦和。
+最后一句对应 p2 的 “oscillatory motion is \textbf{finite}”：$|x_i(t)|\le\sum_\alpha|A_{i\alpha}||a_\alpha|$，(2.19) 中每个余弦都有界，故运动有界——这正是小振动与“跑掉”的分界。
+
+%=============================================================
+\hdr{§3}{主例题：等长等质量双摆（p18 题面 $+$ p11、p19--p21 演算）}
+
+\subhdr{§3.1　题面（p18 原文照抄）}
+
+\begin{quote}
+\small
+\textbf{Problem \# 7.3.} Obtain the eigenfrequencies for a planar double pendulum in case of equal masses and equal lengths.
+
+\textbf{Answer:}\quad $\mathcal{L}=\frac12ml^2\bigl(2\dot\phi_1^2+\dot\phi_2^2+2\dot\phi_1\dot\phi_2\cos(\phi_1-\phi_2)\bigr)+mgl(2\cos\phi_1+\cos\phi_2)$;\quad
+Stable equilibrium: $\phi_{10}=0$, $\phi_{20}=0$;\quad
+$M_{ij}\to ml^2\begin{pmatrix}2&1\\1&1\end{pmatrix}$,\ $K_{ij}\to mgl\begin{pmatrix}2&0\\0&1\end{pmatrix}$;\quad
+Eigenfrequencies: $\omega_\pm=\sqrt{\frac{g}{l}\bigl(2\pm\sqrt2\bigr)}$.
+\end{quote}
+
+\textbf{这道题的演算在 p11 与 p19--p21}，比题面（p18）晚出现；本文按“$\mathcal{L}\to U$ 的平衡点 $\to K_{ij}\to a_{ij}\to\det\to$ 根”重排，每步标页码。图上 $\phi_1,\phi_2$ 都从\textbf{向下竖直}量起，两段摆长都是 $l$，两个质量都是 $m$。
+
+\subhdr{§3.2　$\mathcal{L}$ 的来历（p11、p18）}
+
+p18 直接给 $\mathcal{L}$，中间的 $T$ 不写。补上（这是本题唯一需要“动能”的地方）：设上球坐标 $(x_1,y_1)=l(\sin\phi_1,-\cos\phi_1)$、下球相对上球的偏移 $l(\sin\phi_2,-\cos\phi_2)$，则
+\[
+\vec v_1=l\dot\phi_1(\cos\phi_1,\sin\phi_1),\quad
+\vec v_2=l\dot\phi_1(\cos\phi_1,\sin\phi_1)+l\dot\phi_2(\cos\phi_2,\sin\phi_2),
+\]
+\[
+T=\frac m2\bigl(\vec v_1^2+\vec v_2^2\bigr)=\frac12ml^2\Bigl[2\dot\phi_1^2+\dot\phi_2^2+2\dot\phi_1\dot\phi_2\cos(\phi_1-\phi_2)\Bigr].
+\]
+（$\vec v_1\cdot\vec v_2$ 那一项展开后正是 $\cos\phi_1\cos\phi_2+\sin\phi_1\sin\phi_2=\cos(\phi_1-\phi_2)$，p11 右上的手写批注也把这一项圈了出来，标为 $\frac12\sum a_{ik}\dot q_i\dot q_k$。）势能 $U=-mgl(2\cos\phi_1+\cos\phi_2)$，于是 $\mathcal{L}=T-U$ 与 p18 一致。
+
+\subhdr{§3.3　平衡点与 $K_{ij}$（p19）}
+
+p19 把 $U$ 的驻点全列了出来：
+\[
+\frac{\partial U}{\partial\phi_1}=2mgl\sin\phi_1=0\Rightarrow\phi_{10}=0\ \text{或}\ \pi;\qquad
+\frac{\partial U}{\partial\phi_2}=mgl\sin\phi_2=0\Rightarrow\phi_{20}=0\ \text{或}\ \pi .
+\]
+四个组合里课件只用 $(0,0)$，没说另外三个为什么不用。理由是式 (1.1) 的第二条：把二阶导算出来，$\cos\phi=1$ 给正、$\cos\phi=-1$ 给负：
+\[
+K_{11}=\left.\frac{\partial^2U}{\partial\phi_1^2}\right|_{\rm eq}=2mgl\cos\phi_1=\begin{cases}2mgl,&\phi_1=0\\-2mgl,&\phi_1=\pi\end{cases}
+\qquad
+K_{22}=mgl\cos\phi_2=\begin{cases}mgl,&\phi_2=0\\-mgl,&\phi_2=\pi\end{cases}
+\]
+\[
+K_{12}=K_{21}=\frac{\partial^2U}{\partial\phi_1\partial\phi_2}=0\qquad(\text{$U$ 的两项分别只含 }\phi_1\text{ 或 }\phi_2).
+\]
+（p19 把这一行的偏导印成 $\partial^2U/\partial\phi_2\partial\phi_2$，是同一处的手误，不影响 $K_{12}=0$。）
+所以只有 $\phi_1=\phi_2=0$ 满足 $K_{11}>0,K_{22}>0$（另三个组合至少一个对角元为负，是倒立/半倒立的不稳定平衡，$\omega^2$ 会出负值）。p19 底部的中文“物理要求，矩阵K正定，$K_{11}>0$; $K_{22}>0$”说的正是这个筛选；按 §2.1 的边界 2，这两条只是必要条件，但本题 $K_{12}=0$，所以恰好也够。于是
+\[
+K_{ij}=mgl\begin{pmatrix}2&0\\0&1\end{pmatrix}.
+\tag{3.1}
+\]
+（p19 把那两个 $\det$ 框写成 $\begin{vmatrix}2mgl&0\\0&mgl\end{vmatrix}=K_{ij}$，就是 (3.1)。）
+
+\subhdr{§3.4　$a_{ij}=M_{ij}$（p11、p20），以及 p11/p20 上那个笔误}
+
+按 (2.2)，$M_{ij}=\partial^2T/\partial\dot\phi_i\partial\dot\phi_j|_{\rm eq}$。p20 的标题就是中文“下面求 $a_{ij}$”，逐项：
+\[
+a_{11}=\frac{\partial^2\mathcal{L}}{\partial\dot\phi_1\partial\dot\phi_1}=\frac12ml^2\times4=2ml^2,\qquad
+a_{22}=\frac{\partial^2\mathcal{L}}{\partial\dot\phi_2\partial\dot\phi_2}=\frac12ml^2\times2=ml^2,
+\]
+\[
+a_{12}=a_{21}=\frac{\partial^2\mathcal{L}}{\partial\dot\phi_1\partial\dot\phi_2}
+=\frac12ml^2\times2\cos(\phi_1-\phi_2)\Big|_{\rm eq}=ml^2\cos0=ml^2 .
+\tag{3.2}
+\]
+（那个“$4$”与“$2$”来自 $T$ 里 $\dot\phi_1^2$ 的系数 $2$ 与 $\dot\phi_2^2$ 的系数 $1$，各被 $\frac12ml^2$ 乘、再被二阶导乘 $2$：$2\times2=4$、$1\times2=2$。）
+
+\warnbox{\textbf{p11 与 p20 同一处笔误}：两页都把它写成 “$a_{1,2}=a_{2,1}=2\cos(\phi_1-\phi_2)\big|_{\rm eq}=mgl^2$”，错了两处——(i) 丢了 $\frac12ml^2$ 因子（正确中间式 $ml^2\cos(\phi_1-\phi_2)$）；(ii) 量纲应是 $ml^2$ 而不是 $mgl^2$。取 $\phi_1=\phi_2=0$ 得 $a_{12}=ml^2$，与同页 $M_{ij}=\begin{pmatrix}2ml^2&ml^2\\ml^2&ml^2\end{pmatrix}$ 的非对角元一致：\textbf{同一页的矩阵是对的，那一行字是错的}。按错行做题，$M$ 变成 $\begin{pmatrix}2ml^2&mgl^2\\mgl^2&ml^2\end{pmatrix}$，频率全错。}
+
+于是
+\[
+M_{ij}=ml^2\begin{pmatrix}2&1\\1&1\end{pmatrix}.
+\tag{3.3}
+\]
+
+\subhdr{§3.5　$\det$ 方程与两个根（p21）——逐行复算，并指出两处印错}
+
+p21 的左上先重申 (2.12)，然后写行列式。p21 上\textbf{有两处印错}，但最后的根是对的；把正确的行摆出来，读者才能自己复算。
+
+\textbf{（i）右上角的 $K$ 矩阵印反了。}p21 右上写
+$\begin{vmatrix}mgl&0\\0&2mgl\end{vmatrix}=K_{ij}$，而 p19、p20 都是 $\operatorname{diag}(2mgl,mgl)$（(3.1)）。正确的一对是 (3.1) 与 (3.3)。
+
+\textbf{（ii）行列式展开的第一因子印错。}p21 写
+\[
+(-\omega^2 2ml^2+mgl)(-\omega^2ml^2+mgl)-(\omega^2ml^2)^2=0 ,
+\]
+第一因子里的 $mgl$ 应为 $2mgl$（它来自 $K_{11}=2mgl$）。正确的行列式是
+\[
+\det[K-\omega^2M]=
+\begin{vmatrix}
+-2\omega^2ml^2+2mgl & -\omega^2ml^2\\[2pt]
+-\omega^2ml^2 & -\omega^2ml^2+mgl
+\end{vmatrix}=0 .
+\tag{3.4}
+\]
+\textbf{（iii）把它算完。}记 $\omega_0^2\equiv g/l$（p21 左下的定义），并把整式除以 $(ml^2)^2$：
+\[
+\det=\bigl(-2\omega^2+2\omega_0^2\bigr)\bigl(-\omega^2+\omega_0^2\bigr)-\omega^4=0 .
+\]
+引入无量纲 $u\equiv\omega^2/\omega_0^2=\omega^2l/g$（这是本题最省事的换元，p21 用的是另一种写法，绕了一圈）：
+\[
+\bigl(-2u+2\bigr)\bigl(-u+1\bigr)-u^2=0
+\ \Longrightarrow\ 2(1-u)^2-u^2=0
+\ \Longrightarrow\ u^2-4u+2=0
+\ \Longrightarrow\ u=2\pm\sqrt2 .
+\tag{3.5}
+\]
+\textbf{（iv）p21 的那两行 $\sqrt2$ 是怎么来的}（这一行课件没给中间步）：把 $2(1-u)^2-u^2=0$ 左边配方，
+\[
+2(1-u)^2-u^2=\bigl(\sqrt2(1-u)\bigr)^2-u^2
+=\Bigl[\sqrt2(1-u)-u\Bigr]\Bigl[\sqrt2(1-u)+u\Bigr],
+\]
+换成 $\omega$ 就是 p21 右栏的 $(-\sqrt2\omega^2+\sqrt2\omega_0^2+\omega^2)$ 与 $(-\sqrt2\omega^2+\sqrt2\omega_0^2-\omega^2)$。令第一个因子为零：
+\[
+\sqrt2\omega_0^2-\bigl(\sqrt2-1\bigr)\omega^2=0\ \Longrightarrow\ \omega^2=\frac{\sqrt2}{\sqrt2-1}\omega_0^2=\sqrt2(\sqrt2+1)\omega_0^2=(2+\sqrt2)\omega_0^2 ,
+\]
+（用了 $\frac{1}{\sqrt2-1}=\sqrt2+1$）；第二个因子为零给出 $(2-\sqrt2)\omega_0^2$。这就是 p21 的
+\[
+\omega_1=\omega_0\sqrt{2+\sqrt2},\qquad \omega_2=\omega_0\sqrt{2-\sqrt2},
+\]
+与 p18 的答案 $\omega_\pm=\sqrt{\frac gl(2\pm\sqrt2)}$ 一致。
+
+\textbf{答案}：
+\[
+\omega_\pm=\sqrt{\frac{g}{l}\bigl(2\pm\sqrt2\bigr)},\qquad
+\frac{\omega_-}{\sqrt{g/l}}=\sqrt{2-\sqrt2}\approx0.7654,\quad
+\frac{\omega_+}{\sqrt{g/l}}=\sqrt{2+\sqrt2}\approx1.8478 .
+\tag{3.6}
+\]
+
+\textbf{数值例子}（$g=9.81\ \text{m/s}^2$、$l=1\ \text{m}$，$\omega_0=\sqrt{9.81}=3.1321\ \text{rad/s}$）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{2.6cm}p{2.6cm}p{3.4cm}p{3.0cm}@{}}
+\toprule
+\thead{模} & \thead{$\omega^2/\omega_0^2$} & \thead{$\omega$ (rad/s)} & \thead{周期 $2\pi/\omega$ (s)} & \thead{形状 $(A_1,A_2)$}\\
+\midrule
+$\omega_-$（低频） & $0.58579$ & $2.3972$ & $2.6211$ & $(1,+\sqrt2)$，两摆同相\\
+$\omega_+$（高频） & $3.41421$ & $5.7874$ & $1.0857$ & $(1,-\sqrt2)$，两摆反相\\
+\bottomrule
+\end{tabular}
+
+这张表是把 (3.6) 在两个根上各读了一遍：第一行 $\omega_-^2/\omega_0^2=2-\sqrt2=0.58579$，开根 $\times3.1321$ 得 $2.3972$；第二行 $2+\sqrt2=3.41421$，得 $5.7874$。逐行读法：形状那一列来自 $(K-\omega^2M)A=0$ 的第二行，$A_2/A_1=(K_{11}-\omega^2M_{11})/(\omega^2M_{12})=2(1-u)/u$，$u=2-\sqrt2$ 时等于 $+\sqrt2$，$u=2+\sqrt2$ 时等于 $-\sqrt2$；同相/反相由符号直接读出。边界行：$\omega_-$ 恰好大于零（$2-\sqrt2>0$），所以两个模都是真振动，没有零模——因为双摆的悬挂点固定，$K$ 正定。
+
+\textbf{自检（两条，都能当场算）}：
+\begin{enumerate}
+\item \textbf{量级}：$\omega_0=\sqrt{g/l}$ 是单摆频率，耦合使频率分裂到它两侧，$\omega_-<\omega_0<\omega_+$（$0.7654<1<1.8478$）——这条能挡住大部分算术错误。
+\item \textbf{迹与行列式}：$u_1+u_2=4$、$u_1u_2=2$，与 (3.5) 的 $u^2-4u+2=0$ 系数对上。（误用 p21 那行错版会得 $u^2-3u+1=0$，即 $u=(3\pm\sqrt5)/2\approx2.618,\,0.382$，与答案差得很远——这是“一行印错、答案全变”的实证。）
+\end{enumerate}
+
+%=============================================================
+\hdr{§4}{另两道例题（p16、p17）}
+
+\subhdr{§4.1　Problem \#7.1（p16）：莫尔斯势——振幅上限从哪里来}
+
+\textbf{题面}（p16 原文照抄）：
+\begin{quote}
+\small
+\textbf{Problem \# 7.1.} Obtain the angular frequency of the small oscillations in the field $U(x)=A\bigl(e^{-2\alpha x}-2e^{-\alpha x}\bigr)$. Write the law of motion if the total energy is $E$.
+\end{quote}
+
+\textbf{考点}：§1 的一维五步全用一遍；额外考一件事——\textbf{能量的零点}与\textbf{振幅的物理上限}。
+
+\textbf{关键一步}：这个势在 $x\to+\infty$ 趋于 $0$、在 $x=0$ 取极小 $-A$。所以“$E$”必须说清是\textbf{相对极小}的能量；下面的推导会自己把这个零点逼出来。
+
+\textbf{详解}：
+\[
+U'(x)=A\bigl(-2\alpha e^{-2\alpha x}+2\alpha e^{-\alpha x}\bigr)=2A\alpha e^{-2\alpha x}\bigl(e^{\alpha x}-1\bigr),
+\]
+令其为零得 $x_0=0$（唯一驻点）。二阶导
+\[
+U''(x)=A\bigl(4\alpha^2e^{-2\alpha x}-2\alpha^2e^{-\alpha x}\bigr)
+\ \Longrightarrow\
+K_0=U''(0)=A(4\alpha^2-2\alpha^2)=2A\alpha^2>0 ,
+\]
+故 $x_0=0$ 是稳定平衡点（p16 的 $\frac{dU}{dx}=0\Rightarrow x_0=0$、$K=\left.\frac{d^2U}{dx^2}\right|_{x=x_0}=2\alpha^2A$ 就是这两行）。质量 $M_0=m$（p16 左上被划掉处的手写批注 “Of body m”），于是
+\[
+\omega_0=\sqrt{\frac{K_0}{M_0}}=\sqrt{\frac{2A\alpha^2}{m}}=\alpha\sqrt{\frac{2A}{m}} ,
+\tag{4.1}
+\]
+与 p16 的 $\omega_0=\alpha\sqrt{2A/m}$ 一致。能量按 (1.14)：
+\[
+E_{\text{总}}=\underbrace{U(0)}_{=-A}+\frac{K_0a^2}{2}\quad\Longrightarrow\quad E\equiv E_{\text{总}}-U(0)=\frac{K_0a^2}{2}=\alpha^2Aa^2 ,
+\]
+\[
+\Longrightarrow\quad a=\sqrt{\frac{2E}{K_0}}=\sqrt{\frac{2E}{2A\alpha^2}}=\frac{1}{\alpha}\sqrt{\frac{E}{A}} ,
+\tag{4.2}
+\]
+与 p16 的 $a=\frac{1}{\alpha}\sqrt{\frac EA}$ 一致。运动方程即
+\[
+x(t)=\frac{1}{\alpha}\sqrt{\frac{E}{A}}\,\cos\!\left(\alpha\sqrt{\frac{2A}{m}}\,t+\beta\right).
+\tag{4.3}
+\]
+
+\textbf{答案}（p16 的“Answer”栏）：$x_0=0$，$K_0=2A\alpha^2$，$M_0=m$，$\omega_0=\alpha\sqrt{2A/m}$，$a=\frac1\alpha\sqrt{E/A}$，$x(t)=\frac1\alpha\sqrt{E/A}\cos(\omega_0t+\beta)$。\textbf{$E$ 是相对 $U(0)=-A$ 的能量}；若用绝对能量 $E_{\rm abs}$，则 $a=\frac1\alpha\sqrt{(E_{\rm abs}+A)/A}$。
+
+\textbf{自检 / 适用区间}：这个势有一个“天然的振幅尺”——$1/\alpha$。理由：令 $y=e^{-\alpha x}$ 则 $U-A=-A(y-1)^2$，故 $U$ 从极小值上升 $\frac{A}{2}$ 发生在 $|\alpha x|$ 不小时；而展开到三次的项是
+\[
+\tfrac16U'''(0)x^3=\tfrac16\bigl(-6A\alpha^3\bigr)x^3=-A\alpha^3x^3,\quad
+\text{与}\ \tfrac12K_0x^2=A\alpha^2x^2\ \text{之比}=\alpha x .
+\]
+所以展开参数就是 $\alpha a$：\textbf{$\alpha a\ll 1$ 才是“小振动”}。另一方面束缚运动要求 $E<A$，即 $a<1/\alpha$——那是\textbf{运动存在}的条件，比 $\alpha a\ll1$ 弱。用课件自带的例子 $A=\alpha=1$、$m=1$（故 $\omega_0=\sqrt2\approx1.4142$）数字化：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.5cm}p{2.3cm}p{2.6cm}p{2.6cm}p{2.7cm}@{}}
+\toprule
+\thead{$E/A$} & \thead{简谐振幅 $a$} & \thead{精确左转向点} & \thead{精确右转向点} & \thead{精确半宽 $/\,a$}\\
+\midrule
+$0.05$ & $0.22361$ & $-0.20180$ & $+0.25310$ & $1.0172$\\
+$0.50$ & $0.70711$ & $-0.53480$ & $+1.22795$ & $1.2464$\\
+$0.99$ & $0.99499$ & $-0.69064$ & $+5.29581$ & $3.0083$\\
+\midrule
+$E\to A^-$ & $a\to1$ & $\to-0.6931\ (=\ln\tfrac12)$ & $\to+\infty$ & $\to\infty$\\
+\bottomrule
+\end{tabular}
+
+表前一句：这张表把 (4.2) 的简谐振幅 $a$ 与精确转向点（解 $A(y-1)^2=E$，$y=e^{-\alpha x}=1\pm\sqrt{E/A}$，$x=-\frac1\alpha\ln y$）在 $A=\alpha=1$ 上并排读出来；“精确半宽$\,/\,a$”$=\dfrac{x_+-x_-}{2a}$ 是“简谐近似准不准”的度量。逐行读法：$E/A=0.05$ 时 $y=1\pm0.2236$，$x=-0.2018$ 与 $+0.2531$，半宽 $0.2274$，除以 $a=0.2236$ 得 $1.017$（差 $1.7\%$）；$E/A=0.99$ 时下支 $y=0.00501$，$-\ln0.00501=5.2958$，振幅被势的“平坦尾巴”拉走，半宽是简谐值的 $3$ 倍。边界行 $E=A$：$y=0$ 对应 $x=+\infty$，粒子跑到无穷远——\textbf{不是近似好坏的问题，是运动不存在了}。所以 $\alpha a\ll1$ 管“准不准”，$E<A$ 管“有没有”。
+
+\subhdr{§4.2　Problem \#7.2（p17）：转动圆环上的珠子}
+
+\textbf{题面}（p17 原文照抄）：
+\begin{quote}
+\small
+\textbf{Problem \# 7.2.} Obtain the angular frequency of small oscillations of the following mechanical system: \emph{[图：半径 $R$ 的圆环绕竖直直径以角速度 $\Omega$ 转动；珠子的位置用从最低点量起的角 $\theta$ 表示]}
+\end{quote}
+
+\textbf{考点}：$\mathcal{L}$ 里出现“由约束带进来的速度”时，$T$ 的二次型系数 $M_0$ 与\emph{等效}势 $U_{\rm eff}$ 怎么分工；以及\textbf{分岔}：平衡点本身依赖参数。
+
+\textbf{关键一步}：把珠子的速度拆成两个互相垂直的分量——沿环的 $R\dot\theta$，以及随环转动带出的方位角方向 $R\sin\theta\cdot\Omega$。两者正交，所以平方和直接相加：
+\[
+T=\frac m2\Bigl[(R\dot\theta)^2+(R\sin\theta\,\Omega)^2\Bigr]=\frac12mR^2\dot\theta^2+\frac12mR^2\Omega^2\sin^2\theta .
+\]
+（这一步是 p17 左边那个 $\mathcal{L}$ 的第一项，课件略去了分解；$\theta$ 从最低点量起时，高度是 $-R\cos\theta$，故 $U=-mgR\cos\theta$。）
+
+\textbf{详解}：
+\[
+\mathcal{L}=\frac12mR^2\dot\theta^2+\frac12mR^2\Omega^2\sin^2\theta+mgR\cos\theta ,
+\tag{4.4}
+\]
+把它整理成“$\frac12M_0\dot\theta^2-U_{\rm eff}$”的样子（p17 右栏第一式）：
+\[
+M_0=mR^2,\qquad U_{\rm eff}(\theta)=-\frac12mR^2\Omega^2\sin^2\theta-mgR\cos\theta .
+\tag{4.5}
+\]
+平衡条件 $U_{\rm eff}'=0$：
+\[
+U_{\rm eff}'=mR\sin\theta\bigl(g-R\Omega^2\cos\theta\bigr)=0
+\ \Longrightarrow\ \sin\theta=0\ \text{或}\ \cos\theta_0=\frac{g}{R\Omega^2},
+\tag{4.6}
+\]
+即 p17 的 $\cos\theta_0=\dfrac{g}{\Omega^2R}$（同一个式子）。二阶导：
+\[
+U_{\rm eff}''=mR\Bigl(g\cos\theta-2R\Omega^2\cos^2\theta+R\Omega^2\Bigr),
+\]
+在 $\theta_0$ 处用 $g=R\Omega^2\cos\theta_0$ 消去 $g$：
+\[
+K_0=U_{\rm eff}''(\theta_0)=mR^2\Omega^2\bigl(1-\cos^2\theta_0\bigr)=mR^2\Omega^2\sin^2\theta_0 .
+\]
+（p17 右栏把它写成 $mR^2\Omega^2\bigl(1-2\cos^2\theta_0\bigr)+mgR\cos\theta_0$，再代 $g=R\Omega^2\cos\theta_0$ 得 $mR^2\Omega^2\big(1-(\frac{g}{R\Omega^2})^2\big)$，两式相等：$1-\cos^2\theta_0=1-\bigl(\frac{g}{R\Omega^2}\bigr)^2$。）于是
+\[
+\omega_0=\sqrt{\frac{K_0}{M_0}}=\sqrt{\Omega^2\bigl(1-\cos^2\theta_0\bigr)}=\Omega\sqrt{1-\Bigl(\frac{g}{\Omega^2R}\Bigr)^2}=\Omega\sin\theta_0 ,
+\tag{4.7}
+\]
+与 p17 的答案一致。
+
+\textbf{答案}：$\cos\theta_0=\dfrac{g}{\Omega^2R}$、$M_0=mR^2$、$K_0=m\Omega^2R^2\Bigl[1-\Bigl(\frac{g}{\Omega^2R}\Bigr)^2\Bigr]$、$\omega_0=\Omega\sqrt{1-\Bigl(\frac{g}{\Omega^2R}\Bigr)^2}$（p17 全部四项）。
+
+\textbf{自检 / 适用区间（课件缺这两句）}：
+\begin{enumerate}
+\item \textbf{这个平衡点只在 $\Omega^2>g/R$ 时存在}。$\Omega^2<g/R$ 时 $\cos\theta_0>1$，无解，(4.6) 只剩 $\theta=0$；此时 $\theta=0$ 是\emph{稳定}的，频率为 $\omega=\sqrt{g/R-\Omega^2}$（把 $\theta=0$ 代进 $U_{\rm eff}''/M_0$ 即得）。$\Omega^2=g/R$ 是分岔点：$\theta_0\to0$、$\omega_0\to0$（“软模”），两侧的稳定平衡点从 $\theta=0$ 连续地分出来。
+\item \textbf{两个极限}：$\Omega^2\to(g/R)^+$ 时 $\omega_0\to0$；$\Omega^2\to\infty$ 时 $\cos\theta_0\to0$、$\omega_0\to\Omega$（珠子被甩到赤道，绕竖直轴的转动成了主频）。
+\item \textbf{量纲}：$\bigl(\frac{g}{\Omega^2R}\bigr)^2$ 里必须分母上有 $R$，否则量纲不成立——量纲一查就能挡住把 $R$ 写进分子的手误。
+\end{enumerate}
+
+\textbf{数值}（$R=1$ m、$\Omega=4$ rad/s、$g=9.81$ m/s$^2$；分岔阈值 $\Omega_c=\sqrt{g/R}=3.1321$ rad/s）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{2.6cm}p{2.6cm}p{3.2cm}p{2.8cm}@{}}
+\toprule
+\thead{$\Omega$ (rad/s)} & \thead{$\cos\theta_0$} & \thead{$\theta_0$ (deg)} & \thead{$\omega_0$ (rad/s)} & \thead{说明}\\
+\midrule
+$2.0$ & — & — & $2.4104$ & $\Omega^2<g/R$，只有 $\theta=0$，$\omega=\sqrt{g/R-\Omega^2}$\\
+$3.2$ & $0.95801$ & $16.66$ & $0.91758$ & 刚过分岔点，$\omega_0$ 很小\\
+$4.0$ & $0.61313$ & $52.18$ & $3.15994$ & 本题主例\\
+$10.0$ & $0.09810$ & $84.37$ & $9.95177$ & $\omega_0\to\Omega$\\
+\bottomrule
+\end{tabular}
+
+这张表是把 (4.7) 在四个 $\Omega$ 上各读一遍：$\cos\theta_0=g/(\Omega^2R)$，开反余弦得 $\theta_0$，再乘 $\sin\theta_0$ 得 $\omega_0/\Omega$。逐行读法：第 3 行 $\Omega=4$ 时 $\cos\theta_0=9.81/16=0.61313$、$\theta_0=52.18^\circ$、$\omega_0=4\times\sin52.18^\circ=3.15994$；第 4 行 $\Omega=10$ 时 $\cos\theta_0=0.0981$、$\omega_0=10\times0.99518=9.95177$（已贴着 $\Omega$）。边界行是第 1 行：$\Omega^2=4<g/R=9.81$，非平凡平衡点不存在，只能用 $\theta=0$ 的公式得 $\sqrt{9.81-4}=2.4104$。第 2 行说明 $\omega_0$ 在分岔点附近可任意小——这叫“软模”。
+
+%=============================================================
+\hdr{§5}{作业：H7.1 与 H7.2}
+
+\subhdr{§5.1　题面（p23 原文照抄；本节没有旁注）}
+
+\begin{quote}
+\small
+\textbf{HW Problem \# H7.1.} Obtain the angular frequency of small oscillations for the mechanical systems shown in (a), (b).
+
+\emph{[(a) 上端固定、摆长 $l$ 处有质量 $m$，$O$ 下方 $a$ 处一根刚度 $\kappa$ 的水平弹簧连到左墙。(b) 下端固定、上端有质量 $m$ 的倒立摆长 $l$，固定点上方 $a$ 处同样的水平弹簧。]}
+
+\textbf{HW Problem \# H7.2.} Obtain the eigenfrequencies for a linear triatomic molecule:
+
+\emph{[图：$M\!-\!k\!-\!m\!-\!k\!-\!M$ 三质点一线，平衡时间距都是 $b$，坐标 $\bar x_1,\bar x_2,\bar x_3$；标注 O、C、O]}
+
+Note: one of the coordinates at equilibrium can be chosen arbitrarily (say, $\bar x_{20}=0$).
+
+Note: the spring is relaxed in all the shown situations.
+\end{quote}
+
+p23 的英文题面与 p24、p25 的手写解答是配套的（p24 解 H7.1、p25 解 H7.2）。两题详解如下，题面与详解同节相邻。
+
+\subhdr{§5.2　H7.1 (a) 详解：弹簧与重力都“帮忙”}
+
+\textbf{考点}：$U$ 里两项的符号与二次项的系数；$K_0$ 是两个来源\textbf{相加}。
+
+\textbf{关键一步}：弹簧的伸长量不是 $a\theta$ 而是 $a\sin\theta$（弹簧是水平的，而连接点走的是圆弧）。小角下 $\sin\theta\approx\theta$，于是弹簧势能 $\frac12\kappa a^2\theta^2$。
+
+\textbf{详解}：取 $\theta$ 为杆与竖直方向的夹角（1 个自由度）。球在摆长 $l$ 处、速度 $l\dot\theta$，故 $T=\frac12ml^2\dot\theta^2$，即 $M_0=ml^2$。势能两项——重力（球下降 $l(1-\cos\theta)$）与弹簧（连接点水平移 $a\sin\theta$）：
+\[
+U=mgl(1-\cos\theta)+\frac12\kappa(a\sin\theta)^2
+\ \xrightarrow{\ \theta\ll1\ }\
+\frac12\bigl(mgl+\kappa a^2\bigr)\theta^2+\cdots
+\]
+（用了 $1-\cos\theta\approx\frac{\theta^2}{2}$、$\sin\theta\approx\theta$；常数项 $-mgl$ 已按 (1.14) 丢掉。）于是
+\[
+K_0=\left.\frac{d^2U}{d\theta^2}\right|_{\theta=0}=mgl+\kappa a^2,\qquad
+\omega=\sqrt{\frac{mgl+\kappa a^2}{ml^2}} .
+\]
+
+\textbf{答案}：$\omega_{(a)}=\sqrt{\dfrac{mgl+\kappa a^2}{ml^2}}$（p24 的 $\omega=\sqrt{\frac{K_0}{M_0}}=\sqrt{\frac{mgl+ka^2}{ml^2}}$，与之一致，课件把 $\kappa$ 写成 $k$）。
+
+\textbf{自检}：$\kappa\to0$ 时退回单摆 $\omega=\sqrt{g/l}$ \checkmark；$a\to0$ 时弹簧不再起作用 \checkmark；两个贡献都进 $K_0$ 而都\emph{不}进 $M_0$——因为弹簧与重力都是“力”，惯量只有球。数值（$m=1$ kg、$l=1$ m、$\kappa=100$ N/m、$a=0.5$ m、$g=9.81$）：$K_0=9.81+25=34.81$、$M_0=1$，$\omega=5.9000$ rad/s。
+
+\subhdr{§5.3　H7.1 (b) 详解：倒立摆，重力的符号反了}
+
+\textbf{考点}：同一个 $K_0$，两项\textbf{相减}；稳定性出现阈值。
+
+\textbf{关键一步}：质量在支点\emph{上方}，高度是 $+l\cos\theta$，$\cos\theta\approx1-\frac{\theta^2}{2}$ 使重力势能\emph{下降}——所以重力的贡献是\emph{负}刚度。
+
+\textbf{详解}：$T$ 与 (a) 相同，仍得 $M_0=ml^2$。势能：球在支点上方 $l\cos\theta$ 处，弹簧伸长 $a\sin\theta$，
+\[
+U=mgl\cos\theta+\frac12\kappa(a\sin\theta)^2
+\ \xrightarrow{\ \theta\ll1\ }\
+\text{const}-\frac12\bigl(mgl-\kappa a^2\bigr)\theta^2 ,
+\]
+按 $\frac12K_0\theta^2$ 的系数读，
+\[
+K_0=\left.\frac{d^2U}{d\theta^2}\right|_{\theta=0}=\kappa a^2-mgl ,
+\qquad
+\omega=\sqrt{\frac{\kappa a^2-mgl}{ml^2}} .
+\]
+
+\textbf{答案}：$\omega_{(b)}=\sqrt{\dfrac{\kappa a^2-mgl}{ml^2}}$，\textbf{仅当 $\kappa a^2>mgl$ 时成立}（否则 $K_0<0$，倒立摆直接倒下，没有振动）。p24 的 $\omega=\sqrt{\frac{ka^2-mgl}{ml^2}}$ 与之一致。
+
+\textbf{自检}：临界刚度 $\kappa_c=mgl/a^2$；数值（同上参数）$\kappa_c=39.24$ N/m，题给的 $\kappa=100$ 给出 $K_0=25-9.81=15.19$、$\omega=3.8974$ rad/s。若把 $\kappa$ 降到 $30$（$<39.24$），根号内为负——这不是算错，是\textbf{题目无解}（系统不稳定）。这一条正是 p24 手写稿最后一行没写、但必须补的边界条件。
+
+\subhdr{§5.4　H7.2 详解：线性三原子分子（CO$_2$ 型）}
+
+\textbf{考点}：$3\times3$ 的 $\det$ 方程；零频模的含义；质心条件（p25 右栏）与水笔解答的关系。
+
+\textbf{关键一步}：三个坐标里有一个是\emph{整体平移}，它不改变任何弹簧长度，所以必然是零频模——先认出它，$3\times3$ 的行列式就知道一定会掉出一个 $\omega^2=0$ 的因子，剩下的二次因子可以直接因式分解，不必硬套三次求根公式。
+
+\textbf{详解}：p23 的 Note 允许取 $\bar x_{20}=0$，于是平衡位置 $\bar x_{10}=-b$、$\bar x_{20}=0$、$\bar x_{30}=+b$（间距都是 $b$）。取位移 $x_i=\bar x_i-\bar x_{i0}$，按 p25 左侧手写稿：
+\[
+T=\frac12\Bigl(M\dot x_1^2+m\dot x_2^2+M\dot x_3^2\Bigr),\qquad
+U=\frac12k\Bigl[(x_2-x_1)^2+(x_3-x_2)^2\Bigr]
+\tag{5.1}
+\]
+（第二式来自“弹簧在平衡时是松弛的”，所以伸长量就是位移差。）于是
+\[
+M_{ij}=\frac{\partial^2T}{\partial\dot x_i\partial\dot x_j}=\begin{pmatrix}M&0&0\\0&m&0\\0&0&M\end{pmatrix},\qquad
+K_{ij}=\frac{\partial^2U}{\partial x_i\partial x_j}=k\begin{pmatrix}1&-1&0\\-1&2&-1\\0&-1&1\end{pmatrix}.
+\tag{5.2}
+\]
+
+\aside{p25 的手写稿把这两式都多写了一个 $\frac12$：$K_{ij}=\frac12k\begin{pmatrix}1&-1&0\\-1&2&-1\\0&-1&1\end{pmatrix}$、$M_{ij}=\frac12\begin{pmatrix}M&0&0\\0&m&0\\0&0&M\end{pmatrix}$。按 (2.2) 的定义不该有 $\frac12$；但两式同乘 $\frac12$ 后 $\det[K-\omega^2M]$ 只多一个非零常数因子 $\frac18$，\textbf{根不变}，所以对答案无影响。抄写时若只抄一个 $\frac12$，频率就会错 $\sqrt2$ 倍。}
+
+记 $A\equiv k-\omega^2M$、$B\equiv2k-\omega^2m$，按第一行展开：
+\[
+\det[K-\omega^2M]=A(BA-k^2)-(-k)\bigl[(-k)A-0\bigr]
+=A(BA-k^2)-k^2A=A\bigl(BA-2k^2\bigr).
+\tag{5.3}
+\]
+（第二步的 $-(-k)[(-k)A]$ 来自 $(1,3)$ 元素为 $0$，展开时只剩两项；第三步把 $-k^2A$ 与前面的 $-k^2A$ 合并。）再把 $A,B$ 的定义代进 $BA-2k^2$：
+\[
+\begin{aligned}
+BA-2k^2&=(2k-\omega^2m)(k-\omega^2M)-2k^2\\
+&=2k^2-2k\omega^2M-\omega^2mk+\omega^4mM-2k^2
+=\omega^2\bigl[\omega^2mM-k(2M+m)\bigr].
+\end{aligned}
+\]
+所以
+\[
+\det[K-\omega^2M]=(k-\omega^2M)\cdot\omega^2\bigl[\omega^2mM-k(2M+m)\bigr]=0
+\tag{5.4}
+\]
+三个因子依次给
+\[
+\omega_0^2=0,\qquad \omega_1^2=\omega_2^2=\frac{k}{M},\qquad \omega_3^2=\frac{k(2M+m)}{mM}=\frac{k}{M}\Bigl(2+\frac Mm\Bigr).
+\tag{5.5}
+\]
+
+\textbf{三个模读一遍}（把 $\omega^2$ 代回 $(K-\omega^2M)A=0$ 解零空间，$M=1,m=2,k=1$ 的数值情形）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.8cm}p{2.9cm}p{3.2cm}p{4.6cm}@{}}
+\toprule
+\thead{$\omega^2$} & \thead{形状 $(A_1,A_2,A_3)$} & \thead{$\sum_a m_aA_a$} & \thead{读法}\\
+\midrule
+$0$ & $(1,1,1)$ & $M+m+M\ne0$ & 整体平移：弹簧长度不变，无回复力，不振动\\
+$k/M$（二重） & $(-1,0,1)$ & $0$ & 反相伸缩：中间的 C 不动，两个 O 对向而动\\
+$k(2M+m)/(mM)$ & $(1,-2M/m,1)$ & $0$ & 同相伸缩：两个 O 同向、C 反向（质心不动）\\
+\bottomrule
+\end{tabular}
+
+表前一句：这张表把 (5.5) 的三个根逐个代回 $(K-\omega^2M)A=0$ 求零空间，再算一次 $\sum_am_aA_a$（p25 右栏的条件 $\sum m_a\vec r_a=\text{const}$ 的线性化版本）。逐行读法：第 2 行代 $\omega^2=k/M$ 后第一式为 $-kA_2=0$，故 $A_2=0$，第二式给 $A_3=-A_1$；第 3 行代 $\omega^2=k(2M+m)/(mM)$，第一式给 $A_2=A_1(1-\omega^2M/k)=-\frac{2M}{m}A_1$。边界行是第 1 行：$\sum m_aA_a\ne0$，违反 p25 的质心条件，故\textbf{不属于振动谱}——这正是 “one of the coordinates at equilibrium can be chosen arbitrarily” 的作用：把零模挪出去，剩下 $2$ 个振动模满足 $\sum m_ax_a=0$，与 $s-1=2$ 对应。
+
+\textbf{答案}：
+\[
+\omega=0\ (\text{整体平移}),\qquad \omega=\sqrt{\frac{k}{M}}\ (\text{二重}),\qquad \omega=\sqrt{\frac{k(2M+m)}{mM}}\ (\text{同相伸缩}).
+\tag{5.6}
+\]
+
+\textbf{数值例子}（取 $M=1$、$m=2$、$k=1$，都是好算的数）：$\omega=0$、$1$、$\sqrt2\approx1.41421$（rad/s）。两个振动频率之比 $\dfrac{\omega_3}{\omega_1}=\sqrt{\dfrac{2M+m}{m}}=\sqrt2$。
+
+\warnbox{\textbf{p25 手写稿的多项式有一处错。}稿上写 “$-\omega^6mM^2+2\omega^4Mk(m+M)-\omega^2k^2(m+M)$”，正确结果（由 (5.3)--(5.4) 展开）是
+\[
+-\omega^6mM^2+2\omega^4Mk(m+M)-\omega^2k^2(2M+m),
+\]
+即\textbf{末项括号应为 $(2M+m)$}。错版后果：代 $M=1,m=2$ 会得 $\omega^2=1,\ 3/2$，而不是 $1,\ 2$。稿子后面那串 $\omega$ 的二次求根公式，是把 $\omega^2$ 的二次式当 $\omega$ 的二次式硬套出来的\textbf{弯路}——正确做法就是 (5.3)--(5.4) 的因式分解。}
+
+\textbf{自检}：（1） 量纲：$\sqrt{k/M}$ 与 $\sqrt{k/m}$ 都是 s$^{-1}$ \checkmark；（2） 极端：$m\to\infty$（中间原子不动）时 $\omega_3^2\to k/M$，与二重根合并，谱退化为“两个独立的 O 振子” \checkmark；（3） 迹核对：$\operatorname{tr}(M^{-1}K)=\frac{k}{M}+\frac{2k}{m}+\frac{k}{M}=2\frac kM+\frac{2k}{m}$，而 $\omega_0^2+\omega_1^2+\omega_2^2+\omega_3^2=0+\frac kM+\frac kM+\frac{k(2M+m)}{mM}=\frac{2k}{M}+\frac{2k}{m}$ \checkmark（这里 $\omega_1^2$ 按重数算两次）。
+
+\flowerrule
+
+%=============================================================
+\hdr{§6}{公式卡：拿到一道小振动题的四个动作}
+
+这一卡只列动作；公式全部在前面推过（(1.5)、(1.10)、(2.3)、(2.13)、(2.17)、(2.19)），不重复抄。
+
+\subhdr{四步（顺序不要换）}
+\begin{enumerate}
+\item \textbf{选坐标、写 $T$ 与 $U$}。$T$ 必须是 $\dot q$ 的齐二次型；$T$ 里有线性项或常数项说明约束显含时间，本套不适用（p7 的前提）。
+\item \textbf{解 $\partial U/\partial q_i=0$ 找平衡}，并\textbf{验证 $K$ 正定}（顺序主子式全正，不只对角元）。这一步失败就别往下算：得到的是负的 $\omega^2$，不是“另一种振动”。
+\item \textbf{算两个矩阵}：$M_{ij}=\partial^2T/\partial\dot q_i\partial\dot q_j|_{\rm eq}$、$K_{ij}=\partial^2U/\partial q_i\partial q_j|_{\rm eq}$。注意取\textbf{平衡点}的值，$M$ 里不能留坐标。
+\item \textbf{解 $\det[K-\omega^2M]=0$}。$s$ 个根按重数计；有零根就单独解释成平移/转动。需要简正坐标时再对 $M$ 正交归一化（§2.4 的 (2.15)），并用迹 $(=\sum\omega_\alpha^2)$ 与行列式 $(=\prod\omega_\alpha^2)$ 自检。
+\end{enumerate}
+
+\subhdr{算完之后的三条检查（对答案，不对题面）}
+\begin{enumerate}
+\item $E=\frac12K_0a^2$ 里的 $E$ 是\textbf{相对 $U(q_0)$} 的（(1.14)）；$a$ 有两个上限：内侧 $\alpha a\ll1$、外侧 $E<E_{\rm esc}$，两者都来自势能曲线而不是数学。
+\item 频率与振幅无关只在二次近似内成立（§4.1 的表：$E/A=0.5$ 时半宽已差 $25\%$）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§7}{易错点：每一条都能指回某页某步}
+
+{\small
+\begin{enumerate}
+\item \textbf{把 $U(q_0)$ 与一阶项“一起因为小丢掉”。}一阶项是\textbf{严格零}（$q_0$ 是极值），$U(q_0)$ 是\textbf{常数}且还留在能量里——把 $\frac12K_0a^2$ 当总能量就是漏了它（莫尔斯势里它是 $-A$）（§1.2、§1.5，指 p4 的两个红叉与 p16）。
+\item \textbf{用 $\tan\beta=-v_0/(\omega_0x_0)$ 直接取 $\arctan$。}$\tan$ 的周期是 $\pi$，会漏解（§1.4 表第 3 行，指 p6）。
+\item \textbf{把一维的 $K_0>0$ 直接搬成多维的“$K_{11}>0,K_{22}>0$”。}那只是必要条件；要顺序主子式全正（§2.1，指 p10 的行列式图与 p19 的中文）。
+\item \textbf{把 $\det$ 方程记成“行列式非零”。}p13 右栏原文就说反了（“the determinant must be \textbf{Non-zero}”），左栏的框才是对的：等于零（§2.3）。
+\item \textbf{以为 $x_i$ 还是简谐的。}它是若干个不同频率余弦的叠加；只有单一模被激发时才简谐（§2.5，指 p14 中文批注与 p15 结论 4）。
+\item \textbf{归一化用欧氏长度。}必须用 $\mu=M$（即 $A^{\!\top}MA=I$），否则 $T$ 的系数不是 $1$，写不出 (2.17)（§2.4 第二张表，指 p13 的 Normalization 与 p14 的结论）。
+\item \textbf{照抄双摆的两处印错。}p21 右上与行列式首因子把 $K_{11}$ 印成 $mgl$（用错版得 $u=(3\pm\sqrt5)/2$），p11 与 p20 把 $a_{12}$ 印成 $mgl^2$（正确 $ml^2$）——两处都会让答案全错（§3.4、§3.5）。
+\item \textbf{圆环题漏条件或写错量纲。}该平衡点只在 $\Omega^2>g/R$ 时存在，否则要回到 $\theta=0$ 用另一式；$\bigl(\frac{g}{\Omega^2R}\bigr)^2$ 里 $R$ 必须在分母（§4.2，指 p17）。
+\item \textbf{H7.2 里被 p25 手写稿的 $\frac12$ 与 $(m+M)$ 带偏，或把 $\omega=0$ 当成“无限慢的振动”。}两个 $\frac12$ 同时出现才无害，多项式末项应是 $(2M+m)$；零根是平移/转动，$A$ 落在 $K$ 的零空间（§5.4，指 p25）。
+\end{enumerate}
+}
+
+%=============================================================
+\hdr{§8}{缺口清单：25 条，逐条点名}
+
+{\small
+每条格式固定：\textbf{类型 · 页码} $\to$ 课件原短语 $\to$ 本讲义补了什么、补在哪一节。页码指 PDF 页。
+
+\subhdr{机制缺口（7 条）：结论直接给出，前一页没有铺垫}
+\gapitem{机制 · p4（$=$p8）}{“it is sufficient to retain only the first non-vanishing (and non-constant) term” $\to$ 一阶项为何\emph{严格零}、$U(q_0)$ 为何是\emph{常数}、三次以上按什么判据丢。补在 §1.2 的 (1.3)。}
+\gapitem{机制 · p4}{“For $a(q)$ it is sufficient to take: $a(q)\approx a(q_0)\equiv M_0$” $\to$ 对 $a(q)$ 没有“一阶导为零”可用，理由是 $a'(q_0)x\dot x^2$ 为三阶小量。补在 §1.2 末。}
+\gapitem{机制 · p5（$=$p9）}{“The following equation of motion can be obtained” $\to$ $\partial\mathcal{L}/\partial\dot x$ 与 $\partial\mathcal{L}/\partial x$ 两步被省掉。补在 §1.3。}
+\gapitem{机制 · p5}{红字 “E=T+U=1/2 K0a2” 与 “系数a 如何计算？” $\to$ $\frac12K_0a^2$ 的来历、能量零点在 $U(q_0)$、两个 $a$ 公式为何一致。补在 §1.5 的 (1.12)--(1.15)。}
+\gapitem{机制 · p10}{“The following equations of motion can be obtained: $\sum(M_{lj}\ddot x_j+K_{lj}x_j)=0$” $\to$ 求导链在 p12 右栏、顺序还是倒的。补在 §2.2 的 (2.6)--(2.10)。}
+\gapitem{机制 · p14}{“In terms of normal coordinates: $\mathcal{L}=\frac12\sum\dot\Theta^2-\frac12\sum\omega^2\Theta^2$” $\to$ 这一步靠 p13 的归一化，两页之间没有一句相连。补在 §2.4 的 (2.15)--(2.17)。}
+\gapitem{机制 · p16、p17}{“Answer: $x_0=0$, $K_0=2A\alpha^2$, $\omega_0=\alpha\sqrt{2A/m}$” 与 “$K_0=mR^2\Omega^2[1-(\frac{g}{\Omega^2R})^2]$” $\to$ 只给答案：$U''$ 的求导、在 $\theta_0$ 处用 $g=R\Omega^2\cos\theta_0$ 化简、$E$ 的零点全没写。补在 §4.1、§4.2。}
+
+\subhdr{代数跳步（5 条）：两步之间被吞掉一行}
+\gapitem{代数 · p10 $\to$ p12}{“$=\frac12\sum(M_{lj}\dot x_j+M_{il}\dot x_i)$” $\to$ $\delta$ 如何把双重求和砍成单重、哑标怎么换、哪一步用了对称性。补在 §2.2 的 (2.8)--(2.9)。}
+\gapitem{代数 · p11、p20}{“$a_{1,2}=a_{2,1}=\cdots=2\cos(\phi_1-\phi_2)|_{\rm eq}=mgl^2$” $\to$ 丢了 $\frac12ml^2$ 因子、量纲也错；正确值 $ml^2$（与同页 $M$ 矩阵一致）。补在 §3.4 的 warnbox。}
+\gapitem{代数 · p21}{“$(-\omega^2 2ml^2+mgl)(-\omega^2ml^2+mgl)-(\omega^2ml^2)^2=0$” $\to$ 首因子应为 $2mgl$；用错版得 $u=(3\pm\sqrt5)/2$。补在 §3.5 的 (3.4)。}
+\gapitem{代数 · p21}{“$(-\sqrt2\omega^2+\sqrt2\omega_0^2)^2-\omega^4=0$” $\to$ 那个 $\sqrt2$ 从 $2(1-u)^2-u^2=(\sqrt2(1-u))^2-u^2$ 的配方来，课件没写这一步。补在 §3.5 (iv)。}
+\gapitem{代数 · p25}{“$-\omega^6mM^2+2\omega^4Mk(m+M)-\omega^2k^2(m+M)$” $\to$ 末项括号应为 $(2M+m)$；且后面用三次求根公式属多走弯路，正确路线是 (5.3)--(5.4) 的因式分解。补在 §5.4 的 warnbox。}
+
+\subhdr{平凡解与计数（3 条）}
+\gapitem{平凡解 · p13}{“If vector is not trivial, the determinant must be \textbf{Non-zero}” $\to$ 说反了：非平凡解要求行列式\emph{等于零}；$A=0$ 是“静静停在平衡点”，必须排除。补在 §2.3。}
+\gapitem{平凡解 · p13}{“X$_j$ 多少个根？” $\to$ 课件提问无人回答：$\det[K-\omega^2M]$ 是 $\omega^2$ 的 $s$ 次多项式，故按重数恰 $s$ 个根，且全为实、正定 $K$ 时全为正。补在 §2.3 的三层答案。}
+\gapitem{平凡解 · p25}{“$\omega\ne0$”（手写稿把零根直接除掉）与 “condition $\sum m_a\vec r_a=\text{constant}$” $\to$ 零频模是整体平移，$A$ 落在 $K$ 的零空间，违反质心条件故不属于振动谱。补在 §5.4 的表。}
+
+\subhdr{拼接缺口（3 条）：两条结论分属两页，中间没人接}
+\gapitem{拼接 · p13 $\leftrightarrow$ p14}{“Normalization” $\leftrightarrow$ “In terms of normal coordinates” $\to$ p13 的 $\mu_{ij}$ 就是 $M_{ij}$，两页各说一半。补在 §2.4（含两组数字核对）。}
+\gapitem{拼接 · p18 $\leftrightarrow$ p11、p19--p21}{p18 直接给 $\omega_\pm$，演算却排在它之后、分成四页 $\to$ 按“$\mathcal{L}\to$ 平衡 $\to K_{ij}\to a_{ij}\to\det\to$ 根”重排并逐步标页。见 §3。}
+\gapitem{拼接 · p22 $\leftrightarrow$ p12、p13}{“Normal coordinates, generalized coordinates and Lagrangian” $\to$ 标题许了三件事，正文只重抄 $\det$ 方程，并把 $M,K$ 换成 Landau 的 $m_{ik},k_{ik}$。补在 §2.4 末与 §0 记号表。}
+
+\subhdr{适用区间与边界（5 条）：条件没写在结论旁边}
+\gapitem{适用区间 · p4}{“For small deviations from the equilibrium” $\to$ “小”的定量含义：$a\ll K_0/|U'''|$（对 $U$）与 $a\ll a_0/|a_1|$（对 $a(q)$）。补在 §1.2。}
+\gapitem{适用区间 · p16}{“Write the law of motion if the total energy is $E$” $\to$ $E$ 的零点在 $U(0)=-A$；振幅上限 $a<1/\alpha$ 等价于束缚条件 $E<A$；展开参数是 $\alpha a$。补在 §4.1 的数字化表格。}
+\gapitem{适用区间 · p17}{“$\cos\theta_0=g/(\Omega^2R)$” $\to$ 只在 $\Omega^2>g/R$ 存在；分岔点 $\omega_0\to0$（软模）；另一侧用 $\omega=\sqrt{g/R-\Omega^2}$。补在 §4.2 的自检 1。}
+\gapitem{边界 · p19}{“物理要求，矩阵K正定，$K_{11}>0$; $K_{22}>0$” $\to$ 这两条只是必要条件，正定要顺序主子式全正。补在 §2.1 的 (2.4) 与边界 2。}
+\gapitem{答案形态 · p6}{“$\tan\beta=-v_0/(\omega_0x_0)$” $\to$ $\tan$ 只定到 $\pi$，须由 $\cos\beta,\sin\beta$ 的符号定象限。补在 §1.4 的 (1.9)。}
+
+\subhdr{形式改写与压缩（2 条）}
+\gapitem{形式改写 · p22}{“Lagrange's equations are therefore $\sum_km_{ik}\ddot x_k+\sum_kk_{ik}x_k=0$ … $|k_{ik}-\omega^2m_{ik}|=0$” $\to$ 与 p12--p13 的 $M_{ij},K_{ij}$ 是同一件事的 Landau 记号；竖线是行列式符号不是绝对值。补在 §0 记号表与 §2.3。}
+\gapitem{压缩 · p10}{“Determinant of $(b_{11})$、$\begin{pmatrix}b_{11}&b_{12}\\b_{21}&b_{22}\end{pmatrix}$、$\cdots$ is positive” $\to$ 用一串矩阵代替“正定”的定义与判据（顺序主子式），读者无法复算。补在 §2.1 (2.4)。}
+
+\subhdr{小结}
+七类共 25 条（机制 7、代数 5、平凡解 3、拼接 3、适用区间/边界 5、形式改写 1、压缩 1）。\textbf{机制}与\textbf{代数}占近一半，说明系统性特征是“结论给全、过程留给学生”；\textbf{适用区间}全漏在答案旁边是第二特征——凡带参数（$E$、$\Omega$、$M/m$）的题，答案成立的条件都没写。
+}
+
+%=============================================================
+\hdr{§9}{三句话}
+
+\begin{enumerate}
+\item \textbf{小振动的全部内容是一次泰勒展开的后果}：$U'(q_0)=0$ 让一阶项消失、$U''(q_0)>0$ 让二次项为正，于是任何系统的局部运动都变成一个振子；近似的好坏由 $a\ll K_0/|U'''|$ 控制，运动的存亡由势能远处是否封顶控制。
+\item \textbf{$s>1$ 时唯一的新东西是“同时对角化”}：$M$ 与 $K$ 用同一个矩阵 $A$（对 $M$ 正交归一）化成 $I$ 与 $\operatorname{diag}(\omega_\alpha^2)$，$\mathcal{L}$ 就成了 $s$ 个互不相干的振子——这就是简正坐标，别在它身上找直观图像。
+\item \textbf{所有答案都能用三条便宜的检查兜住}：量纲（$\sqrt{K/M}$ 是 s$^{-1}$）、迹与行列式（$\sum\omega_\alpha^2=\operatorname{tr}M^{-1}K$，$\prod=\det K/\det M$）、“零根必是平移/转动”。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{页码对照与机器复核}
+
+\subhdr{本讲义各节 $\leftarrow$ 课件页（台账级对照）}
+
+\par\vspace{2pt}
+\noindent{\footnotesize
+\begin{longtable}{@{}p{2.4cm}p{4.2cm}p{8.0cm}@{}}
+\toprule
+\thead{本讲义} & \thead{课件页} & \thead{该页给的东西（批注与无文字层页已标注）}\\
+\midrule
+\endfirsthead
+\toprule
+\thead{本讲义} & \thead{课件页} & \thead{该页给的东西}\\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+§0 & p1、p2 & Contents 两项；振动普遍性的引言；批注“在平衡稳定周围反复周期的运动”“平衡位置附近小幅度振动…”“我们用一般的拉格朗日力学理论来描述这类问题”\\
+§1.1 & p3、p4 & 稳定平衡 $=U$ 极小、$F=-dU/dq$；三种极值点判据；批注“在某点，展开U”“（1）稳定（2）亚稳定（3）不稳定”\\
+§1.2 & p4、p7 & 两个红叉；$a(q)\approx a(q_0)$；批注“For $a(q)$ it is sufficient to take…”\\
+§1.3--§1.6 & p5、p6 & 运动方程、$x=a\cos(\omega_0t+\beta)$、$\tau=2\pi/\omega_0$、红字 \textbf{E=T+U=1/2 K0a2}、批注“系数a 如何计算？”；Task \#1\\
+§2.1 & p7、p10 & 第二节开场（$\mathcal{L}$、平衡条件、在平衡点展开，批注三条中文步骤）；$M_{ij},K_{ij}$、正定、$a_{ij}$ 的三种写法\\
+§2.2 & p10、p12 & 运动方程 (2.5)；$\partial\mathcal{L}/\partial\dot x_l$ 求导链；批注“显然是个波，设波的形式，并代入上面的方程”“（对称：$M_{ij}=M_{ji}$）”\\
+§2.3 & p12、p13、p22 & $x_j=A_je^{i\omega t}$、$\det$ 方程；批注“要想有解，必须有”“X$_j$ 多少个根？”；p22 的 $m_{ik},k_{ik}$ 版重述\\
+§2.4--§2.5 & p13、\textbf{p14}、p15 & Normalization、通解；简正坐标与 $\mathcal{L}$ 的标准形（批注四句）；Conclusions 五条\\
+§3.1--§3.5 & \textbf{p18}、p11、p19--p21 & 题面与答案；$\mathcal{L}$、$K_{ij}$、$a_{ij}$（批注“下面求 $a_{ij}$”）、$\det$ 与两个根；批注“物理要求，矩阵K正定，$K_{11}>0$; $K_{22}>o$”\\
+§4.1 & p16 & Problem \#7.1 莫尔斯势（答案与图；“Of body m”被划掉）\\
+§4.2 & p17 & Problem \#7.2 转动圆环；$M_0,K_0,\omega_0$ 与 $U_{\rm eff}$ 两式\\
+§5 & \textbf{p23}、\textbf{p24}、\textbf{p25} & Homework H7.1 (a)(b)、H7.2 与两条 Note；H7.1、H7.2 手写解答；质心条件 $\sum m_a\vec r_a=$ const\\
+\end{longtable}}
+
+（\textbf{p8 $\equiv$ p4}、\textbf{p9 $\equiv$ p5} 逐字重复，不另列；\textbf{加粗页码}是 5 页无文字层中的对应页。）
+
+\subhdr{公式的机器复核（\texttt{\_scratch\textbackslash t07-check-20261023.py}）}
+
+本文所有关键式子都用 sympy/numpy 独立复核过，脚本与渲染图在 \texttt{\_scratch\textbackslash t07-*}。逐项结果：
+
+\par\vspace{2pt}
+\noindent{\footnotesize
+\begin{longtable}{@{}p{0.9cm}p{6.1cm}p{7.4cm}@{}}
+\toprule
+\thead{\#} & \thead{复核项} & \thead{结果}\\
+\midrule
+\endfirsthead
+\toprule
+\thead{\#} & \thead{复核项} & \thead{结果}\\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A & 一维：$\mathcal{L}\to$ EOM；解代回；$E$；$dE/dt$；RK4 数值 & $m\ddot x+kx=0$；代回为 $0$；$E-\frac12ka^2=0$ 精确；$dE/dt=\dot x(m\ddot x+kx)$；能量最大漂移 $1.2\times10^{-16}$\\
+B & 二自由度 $\det$ 方程 与 \texttt{numpy.linalg.eig} 对账 & sympy $\lambda=1,3$；numpy $[1,3]$，误差 $0$\\
+C & 简正坐标：$A^{\!\top}MA$、$A^{\!\top}KA$、交叉项 & $A^{\!\top}MA=I$、$A^{\!\top}KA=\operatorname{diag}(2+\sqrt2,2-\sqrt2)$，$\Theta_1\Theta_2$ 与 $\dot\Theta_1\dot\Theta_2$ 系数\emph{精确为 $0$}；欧氏归一化 $A^{\!\top}MA=\operatorname{diag}(0.391,2.276)\ne I$\\
+D & 双摆频率 & $\omega^2=(g/l)(2\pm\sqrt2)$；$g=9.81,l=1$：$5.7874$、$2.3972$ rad/s\\
+E/F & 莫尔斯势（p16）；圆环（p17） & $K_0=2A\alpha^2$、$\omega_0=\alpha\sqrt{2A/m}$、$a=\frac1\alpha\sqrt{E/A}$；$\cos\theta_0=g/(\Omega^2R)$、$\omega_0=\Omega\sqrt{1-\cos^2\theta_0}$（两式之差 $0$，$\Omega=4$ 时 $3.1599$ rad/s）\\
+G/H & H7.1 (a)(b)；H7.2 & $5.9000$、$3.8974$ rad/s、阈值 $\kappa_c=39.24$ N/m；根 $0,\ k/M,\ k(2M+m)/(mM)$，$M=1,m=2,k=1$ 时 numpy $[0,1,2]$ 与公式一致\\
+\end{longtable}}
+
+\textbf{结论}：$E=\frac12ka^2$ 精确守恒；$\det$ 方程的解与数值特征值逐一相符；\textbf{$M$-正交归一化后交叉项精确为零}。
+
+\end{document}

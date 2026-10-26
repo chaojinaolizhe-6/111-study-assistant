@@ -1,0 +1,1092 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第四章第一讲 4.1 双极型晶体管 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{Ch4-1 · 双极型晶体管 · 精讲}{电工电子技术}
+\usepackage{booktabs}
+\setlength{\headheight}{15pt}
+
+%------------------------------------------------------ 用法提醒
+% theme 的 \callout / \warnbox 是「带一个参数的宏」，必须写成 \warnbox{...}，
+% 不能写成 \begin{warnbox}...\end{warnbox}（LaTeX 会把后面第一个花括号组当作参数吞掉，
+% 报 Missing number / Illegal unit of measure）。本文件全部用宏形式。
+%
+% 节标题不与后文分页：标题落在页底、正文翻页的「孤行标题」，24 页里出现过 6 处。
+% 防治办法照 LaTeX 的 \@xsect：\nobreak 必须写在标题后那段 \vspace 的**前面**
+% （TeX 只在「胶前有 penalty」时把该 penalty 记到胶的断点上；写在胶后面无效，实测）。
+% 下面两个宏是 theme 原文的逐字副本，只在末尾各插一个 \nobreak；theme 文件未改。
+\renewcommand{\hdr}[2]{%
+  \par\vspace{12pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\large\bfseries #2}\par\nobreak
+  \vspace{3pt}{\color{petal}\hrule height 1.2pt}\nobreak\vspace{6pt}}
+\renewcommand{\subhdr}[1]{%
+  \par\vspace{6pt}%
+  \noindent{\color{violet}\bfseries #1}\par\nobreak\vspace{1pt}}
+
+%------------------------------------------------------ 本讲义记号宏
+% theme 只提供 \dd \ddx \vect；下面这些是本讲专用，不改 theme。
+\newcommand{\IB}{I_{\mathrm{B}}}
+\newcommand{\IC}{I_{\mathrm{C}}}
+\newcommand{\IE}{I_{\mathrm{E}}}
+\newcommand{\UBE}{U_{\mathrm{BE}}}
+\newcommand{\UCE}{U_{\mathrm{CE}}}
+\newcommand{\UCC}{U_{\mathrm{CC}}}
+\newcommand{\UBB}{U_{\mathrm{BB}}}
+\newcommand{\UCES}{U_{\mathrm{CES}}}
+\newcommand{\ICM}{I_{\mathrm{CM}}}
+\newcommand{\ICS}{I_{\mathrm{CS}}}
+\newcommand{\ICEO}{I_{\mathrm{CEO}}}
+\newcommand{\ICBO}{I_{\mathrm{CBO}}}
+\newcommand{\PCM}{P_{\mathrm{CM}}}
+\newcommand{\BRCEO}{U_{(\mathrm{BR})\mathrm{CEO}}}
+\newcommand{\RB}{R_{\mathrm{B}}}
+\newcommand{\RC}{R_{\mathrm{C}}}
+\newcommand{\RE}{R_{\mathrm{E}}}
+\newcommand{\iB}{i_{\mathrm{B}}}
+\newcommand{\iC}{i_{\mathrm{C}}}
+\newcommand{\iE}{i_{\mathrm{E}}}
+\newcommand{\uBE}{u_{\mathrm{BE}}}
+\newcommand{\uCE}{u_{\mathrm{CE}}}
+\newcommand{\Wb}{W_{\mathrm{B}}}
+\newcommand{\NE}{N_{\mathrm{E}}}
+\newcommand{\RL}{R_{\mathrm{L}}}
+\newcommand{\ib}{i_{\mathrm{b}}}
+\newcommand{\tagx}[1]{\textbf{[#1]}}
+
+\begin{document}
+
+\doctitle{4.1　双极型晶体管}{从两个共基区的 PN 结，到三种工作模式的一张判据表}
+{依据：课件 Chapter Four-1-2026中白上传.pdf（p1--p39，共 39 页）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与四道缝}
+
+\subhdr{这一讲在课件里的位置}
+
+课件 39 页只讲 4.1 一节，分四段：\textbf{4.1.1 基本概念}（p1--p8，认器件）、\textbf{4.1.2 工作模式}（p9--p27，三模式与五个例题）、\textbf{4.1.3 特性曲线}（p28--p33，把三模式画在同一张图上）、\textbf{4.1.4 主要参数}（p34--p39，五个不能越过的数）。这条线本身是清楚的：\emph{先认器件，再定状态，再画成图，最后给出极限}。
+
+本讲义按这条线走，只做一处改动：把课件压在一页里的一句话（p5 的三区掺杂与尺寸）拆成独立两节（§1 讲器件结构、§2 讲基区为什么必须薄而淡）。理由是后面每个公式都要用到这块基区——p12 的 $\IE=\IB+\IC$、p14 的 $\IC=\beta\IB$、p17 的饱和、p30 的输入特性像二极管，全靠它。不拆开讲，第 12 页以后就只能背。
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.7cm}p{9.6cm}p{4.5cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p1--p8 & 4.1.1：六个问题（p2）、为什么叫双极（p3）、NPN/PNP 两种排布（p4）、三区掺杂与尺寸（p5）、两个 PN 结（p6）、三个电极（p7）、符号（p8） & §1、§2
+\\
+p9--p10 & 4.1.2 开篇：三模式由外加直流电压的极性决定 & §3.1
+\\
+p11--p14 & 共射接法下的放大模式：偏置条件（p12）、水力学类比（p13）、四条特性与 $\IC=\beta\IB$（p14） & §3.2--§3.5
+\\
+p15--p19 & 饱和模式（p15--p17）、截止模式（p18--p19），各含偏置条件与特性 & §3.6--§3.7
+\\
+p20--p22 & 例 E1：同一电路三档开关 a/b/c & §5（主例题，全程）
+\\
+p23--p25 & 例 E2（各区尺寸）、E3（由 $\IB,\IC,\beta$ 判模式）、E4（由 $\IC,\IE$ 求 $\beta$） & §6.1--§6.3
+\\
+p26--p27 & 例 E5（数字电路里的开关）、E6（两符号判模式）与三行判据表 & §3.8、§6.4
+\\
+p28--p33 & 4.1.3：测试电路（p29）、输入特性（p30）、温度（p31）、输出特性（p32）、三区（p33） & §7
+\\
+p34--p38 & 4.1.4：$\beta$（p34）、$\ICEO$（p35）、$\ICM$（p36）、$\PCM$ 与 SOA（p37）、$\BRCEO$（p38） & §9
+\\
+p39 & 五参数汇总表（中英对照） & §9.7
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\subhdr{记号：本讲与后四讲共用，先声明后不回头}
+
+电流、电压的字母大小写不是排版习惯，是物理含义：\textbf{大写=直流（静态）值}，\textbf{小写+小写下标=交流分量}，\textbf{小写+大写下标=总量}。课件在 p30、p32 的端口图上写的是 $\iB$、$\uBE$（总量），在坐标轴与公式里写的是 $\IB$、$\UBE$（静态值）——本讲义按「公式里取静态值」读，涉及变化量时明写 $\Delta$。
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.5cm}p{7.2cm}p{6.1cm}@{}}
+\toprule
+\thead{记号} & \thead{含义} & \thead{说明}
+\\
+\midrule
+$\UCC,\ \UBB$ & 集电极、基极回路的直流电源 & 课件 p12 起的共射电路中固定用这两个符号
+\\
+$\RB,\ \RC$ & 基极、集电极回路的电阻 & p20 的 $\RB$ 是三档（$500\,\mathrm{k}$、$50\,\mathrm{k}$、$0$）
+\\
+$\RE,\ \RL$ & 发射极电阻、负载电阻 & \textbf{本讲不出现}，4.2 讲共射放大器才用；为五份讲义统一先声明
+\\
+$C_1,\ C_2$ & 耦合电容 & \textbf{本讲不出现}，4.2 讲起用
+\\
+$\IB,\IC,\IE$ & 三个电极的直流电流 & 参考方向：$\IB,\IC$ 流入器件，$\IE$ 流出器件（p12）
+\\
+$\iB,\ \ib$ & 基极电流的总量 / 交流分量 & $\iB=\IB+\ib$；本讲只在 §7.1 提到总量
+\\
+$\UBE,\UCE$ & 发射结、集电极—发射极的直流电压 & 参考极性：$\UBE$ 基极为正，$\UCE$ 集电极为正（p30）
+\\
+$\beta,\ \alpha$ & 共射、共基电流放大系数 & $\beta$ 见 p34；\textbf{$\alpha$ 课件全册未出现}，本讲义 §2.3 补，理由见该节
+\\
+$\ICEO$ & 穿透电流（基极开路） & p35
+\\
+$\ICM$ & 集电极最大允许电流 & p36
+\\
+$\PCM$ & 集电极最大耗散功率 & p37
+\\
+$\BRCEO$ & 反向击穿电压（基极开路） & p38
+\\
+$r_{\mathrm{be}}$ & 发射结动态电阻 & \textbf{本讲不出现}，4.3 讲微变等效电路才用
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\subhdr{中英术语：第一次出现给对照}
+
+双极型晶体管 (Bipolar Junction Transistor, BJT)、载流子 (carrier)、发射区/基区/集电区 (emitter/base/collector region)、发射极/基极/集电极 (emitter/base/collector electrode)、发射结/集电结 (emitter-base junction / collector-base junction)、正偏/反偏 (forward/reverse biased)、放大 (active)、饱和 (saturation)、截止 (cut-off)、穿透电流 (penetration current)、静态工作点 (quiescent point, Q point)。
+
+\aside{Q 点在课件 4.1 里只以坐标的形式出现：输入回路上是 $(\IB,\UBE)$，输出曲线族上是 $(\IC,\UCE)$。p32 的六条曲线就是六个不同的 $\IB$，所以「一个 Q 点」在本讲等于「三个数 $\IB,\IC,\UCE$」；它的正式定义与图解法在 4.2 讲。}
+
+\subhdr{四道缝：课件哪里是断的}
+
+\begin{enumerate}
+\item \textbf{p2 提了六个问题，p3--p8 只回答了三个。}问题 5「Are the two terminals interchangeable?」与问题 6「Can we put two diodes together to get a transistor?」在 p5 只以一句「We have two Ns」带过，整册没有正面回答。而这两问恰恰是「基区为什么必须薄而淡」的另一面：答不出来，§2 的两个公式就只能背。§2.4 回答。
+
+\item \textbf{p3 说「两种载流子都重要」，p5 说「基区轻掺杂、很薄」，p12 直接给 $\IE=\IB+\IC$。}中间没有一页讲载流子从哪里出发、在哪里损失、在哪里被收走。§2 用「复合—渡越」账本把这三页接起来。
+
+\item \textbf{p14 把四条式子并列成「Characteristics」。}$\IC=\beta\IB$ 是器件方程，$\UCE=\UCC-\RC\IC$ 是回路方程（KVL），$0<\UCE<\UCC$ 是前两者的推论。三条式子性质不同，放在一起编号会让人以为它们同级。§3.4 按性质重排。
+
+\item \textbf{p19 写截止时 $\IC=\mathbf{0}$，p32 又写「$\IB=0\ \ \IC=\ICEO$」。}两页的「零」不是同一个零：p19 是理想化，p32 是实测。§4.5 说明，并在 §9.2 给出 $\ICEO$ 的量级。
+\end{enumerate}
+
+\callout{\textbf{读法}：本讲义每一节都先给课件页码坐标，再补它没说的话。凡是标了 \tagx{教材补充} 的段落，是课件里没有、但不补就跟后面接不上的背景（每处都写明了为什么要补）；凡是标了 \tagx{待确认} 的，是页面图分辨率不足或算术对不上、我不能替课件下结论的地方。}
+
+%=============================================================
+\hdr{§1}{器件：为什么叫双极、两个结怎么摆、三区三极}
+
+\subhdr{1.1　「双极」指两种载流子，不是两个电极}
+
+课件 p3 的原文是：
+
+\begin{quote}
+\emph{「The term bipolar came from the fact that both types of carriers, i.e., electron and hole play important roles in operation. Field Effect Transistor (FET) is unipolar, in which only one type of carrier is important.」} [C4-1 p3]
+\end{quote}
+
+这句话要落地，得说清两种载流子\textbf{各干什么}。以 NPN 为例（p11 的剖面图）：
+
+\begin{itemize}
+\item \textbf{电子}：从发射区（N）出发，穿过基区（P），被集电区（N）收走。这条主干承担 $\IC$，是「大电流」。
+\item \textbf{空穴}：留在基区，与路过的电子复合。复合掉多少电子，就要从基极补进多少空穴，这就是 $\IB$，是「小电流」。
+\end{itemize}
+
+所以「双极」不是修辞：少了电子，没有 $\IC$；少了空穴，没有复合，也就没有 $\IB$，而 $\beta=\IC/\IB$ 的分母为零。两种载流子一个负责「运货」、一个负责「记账」，缺一个这个器件就不成立。
+
+\aside{对照第 3 章的二极管：二极管正偏时也是电子、空穴双向注入，但两个电极一个在 P 一个在 N，两种载流子各走各的、互不控制，所以只有「导电/不导电」两态。BJT 多出来的那一块薄基区，让电子「路过」而不「被收走」，于是同一次注入可以被第三个电极（基极）用很小的代价记账——这才有放大。第 3 章 PN 结的注入与复合机制此处直接引用，不重讲。}
+
+场效应管 (FET) 是单极 (unipolar)：沟道里只有一种载流子，栅极靠电场控制，不靠复合。这就是 p3 拿来做对照的那半页。
+
+\subhdr{1.2　两种排布：NPN 与 PNP}
+
+p4 的两根分层柱给出两种排列：N-P-N 与 P-N-P。三层中间的那条窄带就是 PN 结界面，一根柱里有两个界面，所以\textbf{一个管子有两个 PN 结}——这是 p2 第 3 问的答案。
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.2cm}p{4.8cm}p{4.3cm}p{4.2cm}@{}}
+\toprule
+\thead{类型} & \thead{自上而下三层} & \thead{符号上的发射极箭头} & \thead{正常放大时的偏置}
+\\
+\midrule
+NPN & N（集电区）/P（基区）/N（发射区） & 朝外（背离基极） & $U_{\mathrm{C}}>U_{\mathrm{B}}>U_{\mathrm{E}}$
+\\
+PNP & P（集电区）/N（基区）/P（发射区） & 朝内（指向基极） & $U_{\mathrm{E}}>U_{\mathrm{B}}>U_{\mathrm{C}}$
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\subhdr{1.3　符号上的箭头只有一个规则：从 P 指向 N}
+
+p8 把结构块和电路符号并排放：NPN 的箭头朝外、PNP 的箭头朝内，其余部分（B 在左、C 在上、E 在下）完全一样。看似要背两个口诀，其实是同一个规则：
+
+\callout{\textbf{规则}：发射极箭头画在发射极上，方向 $\equiv$ 发射极电流的正方向 $\equiv$ 该 PN 结正向电流的方向，即\textbf{从 P 区指向 N 区}。
+NPN 的基区是 P、发射区是 N，所以箭头由基极指向发射极=朝外；PNP 的发射区是 P、基区是 N，箭头由发射极指向基极=朝内。\tagx{教材补充}——课件 p8 只画了两种箭头，没给这条统一规则，但十道题里有八道要先认箭头，值得补这一句。}
+
+推论的用法：看到一个符号，先看箭头朝哪，就知道\textbf{发射区是 P 还是 N}，也就知道该给发射结加什么极性的电压才能正偏。这一步在 §3 判模式时每道题都要用。
+
+\subhdr{1.4　三区：掺杂浓度与尺寸为什么这样配}
+
+p5 是全讲信息密度最高的一页，三句话：
+
+\begin{quote}
+\emph{「Collector section: light or moderately doped, large space.」}\quad
+\emph{「Base section: light doped, limited space.」}\quad
+\emph{「Emitting section, heavily doped, small space」} [C4-1 p5]
+\end{quote}
+
+把这三句话按「它在电路里干什么」重排，就是下面这张表。第四列是本讲义补的因果链（课件只给结论，不给理由）。
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.5cm}p{2.6cm}p{2.4cm}p{9.0cm}@{}}
+\toprule
+\thead{区} & \thead{掺杂} & \thead{尺寸} & \thead{为什么这样配}
+\\
+\midrule
+发射区 & 重掺杂 $\NE$ 很高 & 面积小 & 任务是「发射」：高掺杂才能把大量电子压进基区，压过基区向它的空穴注入（注入效率，§2.3）
+\\
+基区 & 轻掺杂 $N_A$ 低 & \textbf{极薄} & 薄：电子穿过它时间短、来不及复合，$\beta$ 才大（§2.2）；轻：(1)$N_A\ll\NE$ 保证注入比 (2)复合中心少；代价是基区电阻大
+\\
+集电区 & 轻或中等掺杂 & 面积大 & 面积大：接住从基区扩散来的电子、并散热（$\PCM$，p37）；轻掺杂：反偏时耗尽区主要落在它这一侧，所以耐压高（$\BRCEO$，p38）、结电容小
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\aside{第 3 章的 PN 结结论：反偏时耗尽区宽度 $W\propto\sqrt{2\varepsilon_{\mathrm{s}}(U_{\mathrm{bi}}+U_{\mathrm{R}})/(qN)}$，\textbf{轻掺杂一侧承担大部分电压}。代入本题：集电区 $N$ 比基区 $N_A$ 还低，所以集电结反偏时几乎整个耗尽区都长在集电区里——这正是 p5「large space」的用处，也是 p38 击穿电压能做得高的原因。}
+
+\warnbox{\textbf{注意 p5 的图上画的与文字不冲突，但容易看反}：p5 那根柱是 NPN，\textbf{上面}那块绿色 N 是集电区（面积大、红点稀），\textbf{下面}那块橙色 N 才是发射区（面积小、红点最密）。认错上下，后面的偏置方向全会反。判别口诀：\emph{红点最密的那一段是发射区}。}
+
+\subhdr{1.5　两个 PN 结不是两个二极管：它们共用一块基区}
+
+p6 在同一个柱上画出两条棕褐色带：上面是集电结 (collector-base junction)，下面是发射结 (emitter-base junction)。p7 再标出三条引线 C、B、E。把两页叠起来看，本讲最关键的一句话是：
+
+\callout{\textbf{两个结共用同一块基区。}所以它们不是串联的两个器件，而是「一块薄硅片上的两个背靠背的结，再加一根引线接到中间」。串起来的两只二极管中间是导线，载流子\textbf{到点即被收集}；BJT 的中间是硅，载流子\textbf{靠扩散穿过去}。这半句话解释了这个器件的一切，包括它为什么不能拆成两个二极管（§2.4）。}
+
+%=============================================================
+\hdr{§2}{基区为什么必须薄而淡：本讲的核心机制}
+
+课件 p5 只写了「light doped, limited space」，p14 直接给 $\IC=\beta\IB$。这一节把中间那一步补上：\textbf{把「薄」和「淡」各自翻译成一个公式，并说明它们分别控制 $\beta$ 的哪一个因子}。本节不引入课件的器件模型之外的方程，两把「尺子」都是电荷守恒。
+
+\subhdr{2.1　电荷账本：三个量，两条守恒}
+
+设在放大区工作，$\IC$ 恒定。基区里同时发生两件事：电子\textbf{穿过}（渡越）和电子\textbf{消失}（复合）。于是有三笔账：
+
+\begin{itemize}
+\item 基区里存着多少电子（少子电荷）$Q_B$；
+\item 这些电子以多快的速度被集电极拉走——渡越时间 $\tau_t$，于是 $Q_B=\IC\,\tau_t$；
+\item 这些电子以多快的速度被复合掉——少子寿命 $\tau_n$，于是复合电流 $\IB=Q_B/\tau_n$。
+\end{itemize}
+
+两式相除，$Q_B$ 被消掉：
+
+\[ \beta=\frac{\IC}{\IB}=\frac{Q_B/\tau_t}{Q_B/\tau_n}=\frac{\tau_n}{\tau_t}. \]
+
+这就是「$\beta$ 从哪来」的答案：\textbf{$\beta$ 是「能活多久」与「要跑多久」之比}。它不是制造出来的常数，而是两个时间尺度的比值。
+
+\aside{这里用的两条前提都在第 3 章：(1)少子在其寿命内按 $e^{-t/\tau_n}$ 衰减，故复合速率 $=$ 存量$/\tau_n$；(2)基区电子分布近似线性（发射结处浓度高、集电结处近似为零），故渡越时间 $\tau_t\approx \Wb^{2}/(2D_n)$，$D_n$ 是基区电子扩散系数。代入本题：$\Wb$ 是 p5 的「limited space」，$D_n$ 由材料定，$\tau_n$ 由工艺定。}
+
+\subhdr{2.2　「薄」的作用：$\beta$ 与基区宽度的平方成反比}
+
+把 $\tau_t\approx \Wb^{2}/(2D_n)$ 代进上一式，并用少子扩散长度 $L_n=\sqrt{D_n\tau_n}$：
+
+\[
+\beta=\frac{\tau_n}{\Wb^{2}/(2D_n)}=\frac{2D_n\tau_n}{\Wb^{2}}
+=2\left(\frac{L_n}{\Wb}\right)^{2}.
+\]
+
+这个式子只说一件事：\textbf{$\beta$ 只取决于「基区宽度是扩散长度的几分之一」}，与其他参数无关。于是有两个立刻能用的推论：
+
+\begin{enumerate}
+\item \textbf{要 $\beta=100$，需要 $\Wb\approx L_n/7$}（因 $2(L_n/\Wb)^2=100\Rightarrow L_n/\Wb=7.07$）。硅中 $L_n$ 约几十微米，所以基区必须做到微米量级——这就是 p5「limited space」的定量含义。
+\item \textbf{$\Wb$ 减半，$\beta$ 变四倍}。反过来，工艺上把基区做厚一倍（例如为降基区电阻），$\beta$ 就掉到四分之一。
+\end{enumerate}
+
+\warnbox{\textbf{这就是「两只二极管拼不出晶体管」的第一层理由}（p2 第 6 问）。分立二极管的 P 区是衬底，厚度在 $0.1$--$1\,\mathrm{mm}$ 量级，比 $L_n$ 大一到两个数量级：代入上式，$L_n/\Wb\sim10^{-2}$，$\beta\sim2\times10^{-4}$——放大倍数为零。电子还没走到第二个结，就在基区里复合光了。}
+
+\subhdr{2.3　「淡」的作用：注入效率与 $\alpha$}
+
+「薄」解决的是电子\textbf{能不能活着到}集电区；「淡」解决的是\textbf{出发时是不是电子占多数}。发射结正偏时，两个方向同时注入：电子由发射区注入基区（有用的那一路），空穴由基区注入发射区（白费的那一路）。两路电流之比，用第 3 章短基区/短发射区的梯度近似：
+
+\[
+\frac{I_{Ep}}{I_{En}}\approx\frac{D_p}{D_n}\cdot\frac{N_A}{\NE}\cdot\frac{\Wb}{W_E},
+\]
+
+其中 $N_A$ 是基区掺杂、$\NE$ 是发射区掺杂、$\Wb/W_E$ 是两个区的宽度比。定义\textbf{注入效率}
+
+\[
+\gamma=\frac{I_{En}}{I_{En}+I_{Ep}}=\frac{1}{1+I_{Ep}/I_{En}} .
+\]
+
+代入一组典型数（$N_A=10^{16}\,\mathrm{cm^{-3}}$、$\NE=10^{19}\,\mathrm{cm^{-3}}$、$\Wb=W_E=1\,\mu\mathrm{m}$、$D_p/D_n\approx0.4$）：$I_{Ep}/I_{En}\approx4\times10^{-4}$，$\gamma\approx0.9996$。
+
+\aside{\tagx{教材补充} 这组数是量级示意，课件没有给任何掺杂数值（p5 只有 heavy/light 两个词）。补它的理由：不给数，$\gamma$ 就只是一个符号，读者看不出「重掺杂要多重」。重要的是比值 $N_A/\NE\sim10^{-3}$，不是具体数字。}
+
+\subhdr{2.4　把两个因子合成 $\beta$：$\alpha$ 是它们的中介}
+
+定义\textbf{共基电流放大系数} $\alpha=\IC/\IE$。它把两件事乘在一起：注入的电子里有多少活着到集电区（基区输运系数 $\alpha_T\approx1-\Wb^2/(2L_n^2)$），以及注入的电流里有多少是电子（$\gamma$）：
+
+\[ \alpha=\gamma\,\alpha_T . \]
+
+再由 $\IE=\IB+\IC$ 两边同除 $\IC$ 得 $1/\alpha=1/\beta+1$，即
+
+\[ \boxed{\ \beta=\frac{\alpha}{1-\alpha},\qquad \alpha=\frac{\beta}{1+\beta}\ } \]
+
+\textbf{算一遍}：$\gamma=0.9996$、$\alpha_T=0.99$ $\Rightarrow$ $\alpha=0.98960$ $\Rightarrow$ $\beta=0.98960/0.01040=95.2$。这个数落在 p34 给的 $\beta=20\sim150$ 中间，说明上面这一串推导没有跑偏。
+
+\aside{$\alpha$ 在课件全册没有出现，但必须在 §0 的记号表里占一格、在这一节里给出定义：(1) $\alpha$ 是「共基」接法的电流增益，4.3 讲共基电路时直接用它；(2) 判模式时它是 $\beta$ 与 $\IE$ 之间的换算器（E4 的 $\IE=100.2\,\mathrm{mA}$ 就是靠 $\IE=\IC+\IB$ 反推 $\beta$）。\tagx{教材补充}，理由：五份讲义共用一套记号。}
+
+\subhdr{2.5　回答 p2 剩下的两问}
+
+\textbf{问题 5：两个 N 端（C 与 E）能互换吗？} 不能。由 §1.4 的表：发射区重掺杂、面积小，集电区轻掺杂、面积大。把两者对调，注入效率从 $\gamma\approx0.9996$ 掉到 $\gamma\approx10^{-3}$（分子分母互换），$\alpha<1$，$\beta<1$——没有放大能力。器件会「反向」工作，性能极差。p5 左上角那句「We have two Ns, Are the two terminals interchangeable?」问的就是这件事，答案是：\textbf{同为 N 型，但掺杂与尺寸不对称，所以不对称}。
+
+\textbf{问题 6：两只二极管能拼出晶体管吗？} 不能，三条理由，一条比一条根本：
+
+\begin{enumerate}
+\item \textbf{基区太厚}：见 §2.2 的框，$\beta\sim0$。
+\item \textbf{基区太重掺杂}：分立二极管为了做欧姆接触，P 区都是重掺杂，$N_A/\NE$ 不是 $10^{-3}$ 而是接近 $1$，$\gamma$ 掉下来。
+\item \textbf{中间是导线，不是硅}：这是最根本的一条。两只二极管串起来，中点是焊点，电流到了就被「收走」，不会「穿过去」。BJT 的基极电流是\emph{复合}电流，不是\emph{导通}电流；没有一块薄到能让载流子穿行、又能用复合记账的硅，$\IB$ 与 $\IC$ 之间就不会有那个固定的比例。
+\end{enumerate}
+
+%=============================================================
+\hdr{§3}{三种模式：偏置条件、四条特性、一张判据表}
+
+\subhdr{3.1　模式由外加直流电压的极性决定}
+
+p10 的原文：
+
+\begin{quote}
+\emph{「The transistor can be operated in three modes: (1) Active mode (region) (2) Cut-off mode (region) (3) Saturation mode (region). In order to operate transistor in one of these regions, we have to supply DC voltage to the NPN or PNP transistor. Based on the polarity of the applied DC voltage, the transistor operates in any one of these regions.」} [C4-1 p10]
+\end{quote}
+
+这句话里的关键词是\textbf{极性}：不是电压大小，是两个结各自正偏还是反偏。两个结各两种可能，共四种组合，其中三种有专门名字（第四种——发射结反偏、集电结正偏——叫「倒置」或反向放大区，本讲不讨论，课件也没给）。
+
+p11 定下讨论范围：\emph{「Now take NPN transistor and common emitter connection as an example」} [C4-1 p11]。所谓\textbf{共射}，就是发射极是输入回路与输出回路的公共端（p12 的图上 E 接地、B 是输入、C 是输出）。本讲义此后凡不声明，均指 NPN、共射。
+
+\subhdr{3.2　放大模式的偏置条件}
+
+p12 给的条件是两句话：\emph{「Emitter junction — Forward biased / Collector junction — Reverse biased」} [C4-1 p12]。落到电路上，p12 的接法是：
+
+\begin{itemize}
+\item 基极回路：$\UBB$ 经 $\RB$ 接 B，$\UBB$ 的正端朝上，故 $\UBE>0$——发射结正偏；
+\item 集电极回路：$\UCC$ 经 $\RC$ 接 C，且 $\UCC>\UBB$，故 $U_{\mathrm{CB}}=\UCE-\UBE>0$——集电结反偏。
+\end{itemize}
+
+\textbf{两句话的等价电路判据}：$\UBE>0$ 且 $\UCE>\UBE$。第二条容易被忽略：只说「$\UCC$ 接在集电极上」不够，还要 $\RC$ 上的压降没有把 $U_{\mathrm{C}}$ 拉到 $\UBE$ 以下。这一点正是 §4.4 判据流程的第三步。
+
+\subhdr{3.3　$\IE=\IB+\IC$ 是 KCL，不是器件特性}
+
+p12 在「working process?」下面直接给出 $\IE=\IB+\IC$。这个式子与管子好坏、材料、$\beta$ 全都无关，它只是\textbf{基尔霍夫电流定律}用在三个电极上：
+
+\[ \underbrace{\IB+\IC}_{\text{流入}}=\underbrace{\IE}_{\text{流出}} . \]
+
+\aside{方向约定按 p12 图的箭头：$\IB$、$\IC$ 由外电路流入器件，$\IE$ 流出器件。若把某个箭头反过来（例如 PNP 的 $\IE$ 流入），式子要跟着变号，否则会算出负电流。本讲义只在 NPN、共射的固定约定下使用 $\IE=\IB+\IC$。}
+
+\textbf{真正描述器件的是 $\IC=\beta\IB$}（p14 第 (2) 条）。它说的是：集电极电流不是自由的，它被基极电流「钳」住，比例系数就是 §2 推出来的 $\beta$。两式的区别，是后文所有判据的根：
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{3.5cm}p{5.8cm}p{6.5cm}@{}}
+\toprule
+\thead{式子} & \thead{性质} & \thead{什么时候不成立}
+\\
+\midrule
+$\IE=\IB+\IC$ & 节点方程（KCL），永远成立 & \textbf{不失效}（只随参考方向变号）
+\\
+$\IC=\beta\IB$ & 器件方程，只在放大区成立 & 饱和区（p16 明写 $\IC\neq\beta\IB$）、截止区（两边都是 $0$）
+\\
+$\UCE=\UCC-\RC\IC$ & 回路方程（KVL），永远成立 & \textbf{不失效}（只要拓扑不变）
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\subhdr{3.4　放大模式的四条「特性」，按性质重排}
+
+p14 把四条并列编号 [C4-1 p14]：
+
+\begin{enumerate}
+\item $\IB\uparrow\rightarrow\IC\uparrow\uparrow$（基极电流增一点，集电极电流增很多）
+\item $\IC=\beta\,\IB$
+\item $\UCE=\UCC-\RC\IC$，并高亮 $0<\UCE<\UCC$
+\item 「Active means amplification」
+\end{enumerate}
+
+它们不是同级命题。正确的关系是：(2)是器件方程，(3)是回路方程，把(2)代进(3)就得到
+
+\[ \UCE=\UCC-\RC\,\beta\IB , \]
+
+于是 (1) 是这条式子的微分（$\Delta\IC=\beta\Delta\IB$），(4) 是它的结论。而 $0<\UCE<\UCC$ 是两条不等式：
+
+\begin{itemize}
+\item $\UCE<\UCC$：因为 $\IC>0$，$\RC\IC>0$；
+\item $\UCE>0$：因为放大区要求集电结反偏 $U_{\mathrm{CB}}>0$，而 $U_{\mathrm{CB}}=\UCE-\UBE$、$\UBE\approx0.7>0$，所以 $\UCE>\UBE>0$。
+\end{itemize}
+
+\aside{第二条的推导只用了 $U_{\mathrm{CB}}=\UCE-\UBE$（即 $\UCE=U_{\mathrm{CB}}+\UBE$，沿 C—B—E 相加）与 $\UBE>0$。它是 §8 推饱和压降的同一把尺子，只是方向相反：放大区 $U_{\mathrm{CB}}>0$，饱和区 $U_{\mathrm{CB}}<0$。}
+
+\warnbox{\textbf{「放大」放大的不是功率的来源。} 输出功率 $\UCE\IC$ 由 $\UCC$ 供给，$\beta$ 只是说「用一份基极电流可以调出 $\beta$ 份集电极电流」。数量级感受一下（用 §5 的 E1 数据）：输入侧 $\UBE\IB=0.7\times8.6\,\mu\mathrm{A}\approx6\,\mu\mathrm{W}$，输出侧 $\UCE\IC=10.7\times0.86\,\mathrm{mA}\approx9.2\,\mathrm{mW}$，多出来的能量全部来自 $\UCC$。\tagx{教材补充}：课件 p14 只写「Active means amplification」，没有区分「电流放大」与「功率放大」，而这是后面 4.2 讲电压放大倍数时的起点。}
+
+\subhdr{3.5　水力学类比：它能说明什么、不能说明什么}
+
+p13 用一张图做类比：左下角一小股水 $\IB$ 经杠杆去开主管道的大阀门，于是自上而下的大水流 $\IC$ 被控制；这股小水最后也汇进主管道，所以 $\IE=\IB+\IC$。
+
+这个类比有三处对得上：小控大（杠杆）、比例可调（阀门口径）、三路汇合（$\IE$）。也有两处对不上，必须知道：
+
+\begin{itemize}
+\item 它说不清\textbf{为什么比例是常数}。真实机制是 §2 的「渡越/寿命」之比，杠杆的力臂比会随开度变，$\beta$ 却不随 $\IB$ 变（在放大区）。
+\item 它没有\textbf{阀门开到头}的状态。开到最大，再推杠杆也没有用——这正是饱和区（§3.6）：$\IB$ 再大，$\IC$ 也不再增加。
+\end{itemize}
+
+\subhdr{3.6　饱和模式：两个结都正偏}
+
+p15 给条件 [C4-1 p15]：\emph{「Emitter junction — Forward biased / Collector junction — Forward biased」}。p16、p17 给四条特性 [C4-1 p16, p17]：
+
+\begin{enumerate}
+\item $\IB\uparrow\rightarrow\IC$ remain unchanged（基极电流增大，集电极电流不变）
+\item $\IC\neq\beta\IB$
+\item $\UCE=\mathbf{0}$，$\ICM=\UCC/\RC$
+\item 「Saturation means short circuit」
+\end{enumerate}
+
+第 (3) 条要拆成两半看：$\ICM=\UCC/\RC$ 是\textbf{外电路}决定的（C—E 短路时回路里只剩 $\UCC$ 与 $\RC$ 串联，p17 的等效图就是这张），$\UCE=0$ 是它的\textbf{理想化}结论。真实管子在饱和时 $\UCE$ 有一个很小的正值（§8 推它，典型 $0.1$--$0.3\,\mathrm{V}$），所以 p17 的「$\UCE=0$」应读作「$\UCE$ 小到可以按短路算」，而不是数学上的零。
+
+\subhdr{3.7　截止模式：两个结都反偏}
+
+p18 给条件 [C4-1 p18]：\emph{「Emitter junction — Reverse biased / Collector junction — Reverse biased」}。p19 给四条 [C4-1 p19]：$\IB=\mathbf{0}$、$\IC=\mathbf{0}$、$\UCE=\UCC$、Open circuit（p19 的图上 C—E 画成断开的刀闸）。
+
+第 (3) 条同样来自回路方程：$\IC=0$ 时 $\RC$ 上没有压降，于是 $\UCE=\UCC$。这条与饱和的第 (3) 条正好是两个极端：\textbf{饱和时 $\UCE\to0$，截止时 $\UCE\to\UCC$}。数字电路里把它们当开关的「通/断」两态，就是靠这两个极端（§3.8）。
+
+\subhdr{3.8　数字电路里当开关用（E5）}
+
+p26 的 E5 是这么说的 [C4-1 p26]：
+
+\begin{quote}
+\emph{「E5 The Operation Mode of Transistor in Digital Circuit. The transistor works as an ON/OFF switch in saturation and cutoff modes」}
+\end{quote}
+
+两张等效图并排：左边饱和——C—E 之间一把\emph{合上}的刀闸，电流标 $\mathrm{I_{CS}}$；右边截止——C—E 之间一把\emph{断开}的刀闸，电流标 $\mathrm{I_{CEO}}$。两图的基极引线都悬空（管壳里基极不外接时就叫「基极开路」，这正是 $\ICEO$ 的定义条件，p35）。
+
+要注意两图的电流标号不是随便写的：
+
+\begin{itemize}
+\item 饱和时 C—E 通，电流由外电路定，记作 $\mathrm{I_{CS}}$（S = saturation）——它就是 §3.6 的 $\ICM=\UCC/\RC$；
+\item 截止时 C—E 断，理论上电流为零，实际有一个漏电流 $\ICEO$。p26 特意把漏电流写出来，是为了说明「断开不等于零」，这一笔在 p19 与 p32 之间埋了一处矛盾（§4.5）。
+\end{itemize}
+
+\subhdr{3.9　三种模式的判据表（p27 原文）}
+
+p27 的三行表是本讲最该背下来的一页 [C4-1 p27]：
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.8cm}p{6.5cm}p{6.5cm}@{}}
+\toprule
+\thead{模式} & \thead{发射结} & \thead{集电结}
+\\
+\midrule
+放大 Active mode & Forward biased（正偏） & Reverse biased（反偏）
+\\
+饱和 Saturation mode & Forward biased（正偏） & Forward biased（正偏）
+\\
+截止 Cut-off mode & Reverse biased（反偏） & Reverse biased（反偏）
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+这张表是「结的偏置」层面的判据。但考试给的往往是\textbf{电路与数值}（如 p20 的三档开关、p24 的三个电流），不是两个结的电压。中间那一步——从电路算出两个结的偏置——课件从来没写成可执行步骤。§4 补这条流程。
+
+%=============================================================
+\hdr{§4}{判据流程：从电路的三五个数，走到「哪个模式」}
+
+\subhdr{4.1　为什么需要一条流程}
+
+p27 的表说的是「结的偏置」，而题目给的是「电阻、电源、$\beta$」。课件四道题（E1、E3、E4、E6）其实用的是同一条路，但它从来没有写出来，只在每道题里换一个入口：E1 从 $\UCE$ 的符号进、E3 从 $\IC$ 与 $\beta\IB$ 的大小进。把入口统一，就是下面五步。
+
+\subhdr{4.2　五步流程（本讲义归纳，每步都能回指一道课件的题）}
+
+\begin{enumerate}
+\item \textbf{认管子、标方向。}先看发射极箭头（§1.3）确定 NPN 还是 PNP，再按 p12 的约定标出 $\IB,\IC$ 流入、$\IE$ 流出。方向标错，后面所有符号全反。
+\item \textbf{算 $\UBE$。}基极回路里只有 $\UBB$、$\RB$ 与发射结，所以 $\UBE=\UBB-\IB\RB$（发射极接地时）。若这个值算出来 $<0.5\,\mathrm{V}$（硅管），发射结没有导通，直接判\textbf{截止}。
+\item \textbf{假设放大。}取 $\UBE=0.7\,\mathrm{V}$（硅管正向导通压降），由基极回路解出 $\IB=(\UBB-\UBE)/\RB$。这一步是 p20 的第二个式子。
+\item \textbf{用器件方程算出 $\IC$ 与 $\UCE$。}$\IC=\beta\IB$，$\UCE=\UCC-\RC\IC$。这一步是 p20 的第三、第五个式子。
+\item \textbf{校验自洽。}若 $0<\UCE<\UCC$ 且 $\IC<\UCC/\RC$，假设成立，就是\textbf{放大}；若 $\UCE\le0$ 或 $\IC\ge\UCC/\RC$，假设不成立，改判\textbf{饱和}，此时 $\IC$ 由外电路定成 $\UCC/\RC$、$\UCE$ 落回 $\UCES\approx0$。
+\end{enumerate}
+
+\aside{第 3 步里 $\UBE=0.7\,\mathrm{V}$ 是「先假设导通」：如果代回去发现 $\IB<0$（$\UBB$ 比 $0.7\,\mathrm{V}$ 还低），说明这个假设本身错了，应回到第 2 步判截止。这与第 5 步「$\UCE<0$ 说明放大假设错了」是同一类自洽性检查——\textbf{假设 $\rightarrow$ 算 $\rightarrow$ 看符号}。课件 p20 直接写 $5-0.7$，没有说这个 $0.7$ 是假设值。}
+
+\subhdr{4.3　第 5 步的两个判据是同一件事}
+
+课件分开写了两处：p17 写 $\ICM=\UCC/\RC$，p14 写 $0<\UCE<\UCC$。它们其实是同一个边界，因为
+
+\[ \UCE=\UCC-\RC\IC\quad\Longleftrightarrow\quad \IC=\frac{\UCC-\UCE}{\RC}, \]
+
+所以 $\UCE=0$ 与 $\IC=\UCC/\RC$ 是同一条直线的两种读法：\textbf{前者读电压，后者读电流}。E1 的 $b$ 档就是读电压读出来的（算出 $-28\,\mathrm{V}$），E3 则是读电流读出来的（$2\,\mathrm{mA}<3\,\mathrm{mA}$）。
+
+\subhdr{4.4　合成判据表：三张表的对应}
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.5cm}p{3.4cm}p{5.9cm}p{4.6cm}@{}}
+\toprule
+\thead{模式} & \thead{结的偏置（p27）} & \thead{电路判据（NPN 共射）} & \thead{数值判据}
+\\
+\midrule
+放大 & 发射结正、集电结反 & $\UBE>0.5\,\mathrm{V}$ 且 $0<\UCE<\UCC$ & $\IC=\beta\IB<\UCC/\RC$
+\\
+饱和 & 两结都正偏 & $\UBE>0.5\,\mathrm{V}$ 且 $\UCE\to0$ & $\beta\IB>\UCC/\RC$，此时 $\IC=\UCC/\RC$
+\\
+截止 & 两结都反偏 & $\UBE<0.5\,\mathrm{V}$（或 $\le0$） & $\IB=\IC=0$，$\UCE=\UCC$
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\subhdr{4.5　两处「零」不是同一个零（p19 与 p32 的出入）}
+
+p19 的截止特性第 (2) 条写的是 $\IC=\mathbf{0}$ [C4-1 p19]；p32 的第 (2) 条却写 $\IB=0$ 时 $\IC=\ICEO$ [C4-1 p32]。同一个状态，一处说零、一处说非零。差别在于\textbf{理想化程度}：
+
+\begin{itemize}
+\item p19 的 $0$ 是\textbf{理想模型}：把漏电当零，于是 $\RC$ 上无压降、$\UCE=\UCC$ 是精确的。做题用这个。
+\item p32 的 $\ICEO$ 是\textbf{实测}：基极开路时集电结仍有反向漏电，量级在纳安到微安（§9.2）。判「是否真的截止」、算高温下的误动作，要用这个。
+\end{itemize}
+
+两者的关系是：p19 的式子 $\UCE=\UCC$ 在 $\IB=0$ 时严格说应为 $\UCE=\UCC-\RC\ICEO$，因为 $\ICEO$ 极小，工程上忽略。\textbf{做题取 $0$，判漏电取 $\ICEO$}——这就是 p26 为什么要在「断开」的等效图上特意标出 $\mathrm{I_{CEO}}$：它提醒你「断」不等于「零」。
+
+%=============================================================
+\hdr{§5}{主例题 E1：同一只管子、同一组电源，三档开关三种模式}
+
+\subhdr{5.1　题面与电路（p20--p22 三页共用一张图）}
+
+题面照抄 [C4-1 p20]：
+
+\begin{quote}
+\emph{「E1 Given $\beta=100$, $\RC=5\,\mathrm{k}\Omega$, $\UCC=15\,\mathrm{V}$, $\UBB=5\,\mathrm{V}$」}
+\end{quote}
+
+电路是共射接法（p12 的拓扑）：基极经开关 $\mathrm{S}$ 接三档 $a/b/c$，集电极经 $\RC$ 接 $\UCC$，发射极接地。三档的差别只在基极支路：
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.1cm}p{1.9cm}p{5.0cm}p{3.4cm}p{3.7cm}@{}}
+\toprule
+\thead{档} & \thead{$\RB$} & \thead{基极支路接法} & \thead{$\UBE$} & \thead{课件结论}
+\\
+\midrule
+$a$ & $500\,\mathrm{k}\Omega$ & 经 $\RB$ 接 $\UBB$ 正端 & $+5\,\mathrm{V}$ 经 $500\,\mathrm{k}$ & 放大（p20）
+\\
+$b$ & $50\,\mathrm{k}\Omega$ & 经 $\RB$ 接 $\UBB$ 正端 & $+5\,\mathrm{V}$ 经 $50\,\mathrm{k}$ & 饱和（p21）
+\\
+$c$ & $0$ & 直接接 $\UBB$，\textbf{且该电池反接} & $-5\,\mathrm{V}$ 直连 & 截止（p22）
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\warnbox{\textbf{关于第 $c$ 档的极性}：p20--p22 三页的电路图里，$a$、$b$ 两档的 $\UBB$ 都画成「上长下短」（上正下负），而 $c$ 档那只电池画成\textbf{上短下长}（上负下正）。这一步在页面上只有几个像素的差别，却是 $c$ 档能判成截止的全部理由。课件 p22 只写结论「Both emitter junction and collector junction are reverse biased」，没有说这只电池是反的——§5.4 把这一步补出来。}
+
+\subhdr{5.2　开关在 $a$：放大（p20 全程，四行补全）}
+
+\textbf{第 1 步（取 $\UBE$）}：假设发射结导通，硅管取 $\UBE=0.7\,\mathrm{V}$。
+
+\textbf{第 2 步（基极回路求 $\IB$）}：回路方程是 $\UBB=\IB\RB+\UBE$，解出
+
+\[ \IB=\frac{\UBB-\UBE}{\RB}=\frac{5-0.7}{500\,\mathrm{k}}=\frac{4.3}{500\,\mathrm{k}}=8.6\,\mu\mathrm{A}. \]
+
+\textbf{第 3 步（器件方程求 $\IC$）}：
+
+\[ \IC=\beta\IB=100\times8.6\,\mu\mathrm{A}=860\,\mu\mathrm{A}=0.86\,\mathrm{mA}. \]
+
+\textbf{第 4 步（KCL 求 $\IE$）}：
+
+\[ \IE=\IB+\IC=8.6\,\mu\mathrm{A}+0.86\,\mathrm{mA}=0.0086+0.86=0.8686\,\mathrm{mA}. \]
+
+\textbf{第 5 步（回路方程求 $\UCE$）}：先算 $\RC$ 上的压降，再减。
+
+\[ \IC\RC=0.86\,\mathrm{mA}\times5\,\mathrm{k}\Omega=4.3\,\mathrm{V},\qquad
+   \UCE=\UCC-\IC\RC=15-4.3=10.7\,\mathrm{V}. \]
+
+\aside{量纲：$\mathrm{k}\Omega\times\mathrm{mA}=\mathrm{V}$，可以直接乘，不必化成 $\Omega$ 与 $\mathrm{A}$。代入本题即 $5\times0.86=4.3$，单位是伏。这一步课件写成 $15-0.86\times5$，是对的；错在下一步的算术（见下）。}
+
+\textbf{第 6 步（校验）}：$\UCC/\RC=15/5=3\,\mathrm{mA}>0.86\,\mathrm{mA}$，且 $0<10.7<15$，两个条件都满足，放大假设成立。再用 §3.2 的第二条判据复核一次集电结是否真的反偏：$U_{\mathrm{CB}}=\UCE-\UBE=10.7-0.7=10.0\,\mathrm{V}>0$，确实反偏。\textbf{三种写法（$\IC<\UCC/\RC$、$0<\UCE<\UCC$、$U_{\mathrm{CB}}>0$）在这一档上全部通过}，这是判据自洽的检验。
+
+\warnbox{\tagx{待确认} \textbf{课件 p20 的这一行算术对不上}：原文写
+\[ \UCE=\UCC-\IC\RC=15-0.86\times5=\mathbf{11.7}\,\mathrm{V}, \]
+但 $0.86\times5=4.3$，$15-4.3=10.7$。同页其余四个数（$8.6\,\mu\mathrm{A}$、$0.86\,\mathrm{mA}$、$0.8686\,\mathrm{mA}$、$3\,\mathrm{mA}$）都验算无误，只有这一处差 $1\,\mathrm{V}$，判断为笔误（疑为把 $4.3$ 写成 $3.3$）。\textbf{本讲义按算术取 $10.7\,\mathrm{V}$}；若老师课上按 $11.7\,\mathrm{V}$ 讲，以老师为准，但要知道差在何处。}
+
+\subhdr{5.3　开关在 $b$：先算出负电压，再改判饱和（p21 的空白）}
+
+前三步与 $a$ 档完全一样，只换 $\RB$：
+
+\[ \IB=\frac{5-0.7}{50\,\mathrm{k}}=\frac{4.3}{50\,\mathrm{k}}=86\,\mu\mathrm{A},\qquad
+   \IC=100\times86\,\mu\mathrm{A}=8600\,\mu\mathrm{A}=8.6\,\mathrm{mA}. \]
+
+\textbf{到这里都还通顺——问题出在第 5 步}：
+
+\[ \UCE=\UCC-\IC\RC=15-8.6\times5=15-43=-28\,\mathrm{V}. \]
+
+课件 p21 在右下角把这一行写成
+
+\begin{quote}
+\emph{「$\UCE=\UCC-\IC\RC=\qquad=-\ \mathrm{V}$」} [C4-1 p21]
+\end{quote}
+
+即算式留空、结果只写了一个负号和一个单位。这个空白正是全题的关键，本讲义补全为 $-28\,\mathrm{V}$ 并解释它意味着什么。
+
+\textbf{负号的含义是「假设不成立」，不是一个电压}。因为 $\IC\ge0$ 且 $\RC>0$，由 $\UCE=\UCC-\RC\IC$ 必有 $\UCE\le\UCC$；要让 $\UCE$ 变成负数，只有一种可能：晶体管不可能供给 $8.6\,\mathrm{mA}$ 的集电极电流。实际的外电路上限是
+
+\[ \ICS=\frac{\UCC}{\RC}=\frac{15}{5\,\mathrm{k}}=3\,\mathrm{mA}, \]
+
+所以真正的集电极电流是 $3\,\mathrm{mA}$，不是 $8.6\,\mathrm{mA}$。此时晶体管进入\textbf{饱和}：
+
+\[ \IC=\ICS=3\,\mathrm{mA},\qquad \UCE=\UCES\approx0\quad\text{（p21 左侧写 $\UCE=0\,\mathrm{V}$，p17 的短路等效）}. \]
+
+\aside{这一步用的是「$\IC$ 不能为负」与「$\UCE=\UCC-\RC\IC$」两件事。代入本题：$8.6\,\mathrm{mA}$ 对应的 $43\,\mathrm{V}$ 压降比电源 $15\,\mathrm{V}$ 还大，物理上供不出来，所以 $8.6\,\mathrm{mA}$ 这个数只能作废，改由外电路定成 $3\,\mathrm{mA}$。同理，饱和时多出来的基极电流不是消失了，而是从集电结流走：饱和所需的基极电流只有 $\ICS/\beta=3/100=30\,\mu\mathrm{A}$，实际给了 $86\,\mu\mathrm{A}$，多的 $56\,\mu\mathrm{A}$ 走集电结。}
+
+\subhdr{5.4　开关在 $c$：先把极性读出来，再判截止（p22 的隐含前提）}
+
+课件 p22 只给两行结论 [C4-1 p22]：\emph{「Both emitter junction and collector junction are reverse biased.」} 与 $\IB=\IC=\IE=0$、$\UCE=\UCC=15\,\mathrm{V}$。为什么两结都反偏？必须回到电路图去读那只电池：
+
+\textbf{第 1 步（读 $\UBE$）}：$c$ 档的 $\UBB$ 符号是「上短下长」，即上端为负、下端（接公共线的一端）为正。基极经开关直接接到这只电池的上端，而发射极接公共线，于是
+
+\[ \UBE=-5\,\mathrm{V}. \]
+
+\textbf{第 2 步（发射结）}：$\UBE<0$，发射结反偏，没有注入，$\IB=0$。
+
+\textbf{第 3 步（集电结）}：$\IB=0$ 时若 $\IC=0$，则 $\RC$ 上无压降，$U_{\mathrm{C}}=\UCC=15\,\mathrm{V}$；而 $U_{\mathrm{B}}=-5\,\mathrm{V}$，于是
+
+\[ U_{\mathrm{CB}}=U_{\mathrm{C}}-U_{\mathrm{B}}=15-(-5)=20\,\mathrm{V}>0, \]
+
+集电结反偏。两结都反偏，\textbf{截止}。
+
+\textbf{第 4 步（结果）}：$\IB=\IC=\IE=0$，$\UCE=\UCC=15\,\mathrm{V}$（与 p22 完全一致）。
+
+\aside{这里假定了 $\IB=0$ 时 $\IC$ 也为零，严格说 $\IC=-\ICBO$（反向漏电，纳安级），见 §4.5。若把漏电算进去，$\UCE=15\,\mathrm{V}-\RC\ICBO$，与 $15\,\mathrm{V}$ 的差别在微伏量级。}
+
+\subhdr{5.5　三档并排：E1 到底在考什么}
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{0.8cm}p{1.7cm}p{1.7cm}p{1.7cm}p{2.3cm}p{2.1cm}p{1.4cm}@{}}
+\toprule
+\thead{档} & \thead{$\RB$} & \thead{$\UBE$} & \thead{$\IB$} & \thead{若放大，$\IC=\beta\IB$} & \thead{若放大，$\UCE$} & \thead{判定}
+\\
+\midrule
+$a$ & $500\,\mathrm{k}$ & $+0.7\,\mathrm{V}$ & $8.6\,\mu\mathrm{A}$ & $0.86\,\mathrm{mA}$ & $10.7\,\mathrm{V}$ & 放大
+\\
+$b$ & $50\,\mathrm{k}$ & $+0.7\,\mathrm{V}$ & $86\,\mu\mathrm{A}$ & $8.6\,\mathrm{mA}$ & $-28\,\mathrm{V}$ & 饱和
+\\
+$c$ & $0$ & $-5\,\mathrm{V}$ & $0$ & $0$ & $15\,\mathrm{V}$ & 截止
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+三档的判定不是三种方法，而是同一条流程走了三遍；三档的答案也不是三组数，而是三个区间：$\UCE$ 落在 $(0,\UCC)$ 里是放大，落在 $0$ 附近是饱和，等于 $\UCC$ 是截止。\textbf{同一只管子、同一个 $\UCC$、同一个 $\RC$，只改基极电阻与它的电源极性，三种模式全部出现}——这就是 p10 那句「Based on the polarity of the applied DC voltage」的具体含义，也是 E1 放在例题第一题的原因。
+
+%=============================================================
+\hdr{§6}{其余四例：一例半页，只写与主线不同的地方}
+
+\subhdr{6.1　E2（p23）：哪一区面积最大}
+
+题面 [C4-1 p23]：\emph{「E2 The region that has the biggest size in a transistor is ( ). (1) collector (2) base (3) collect-base junction (4) emitter」}
+
+\textbf{答：(1) collector（集电区）。}依据是 p5 的三句原文（§1.4 的表）：集电区「light or moderately doped, \textbf{large space}」；基区「\textbf{limited space}」；发射区「\textbf{small space}」；结是两个区之间的界面，本身不占体积。四个选项里只有集电区带 large 一词。
+
+为什么偏偏要它最大——三件事都要面积或体积：接住从基区扩散过来的电子（收集效率）、把 $P_C=\IC\UCE$ 的热散出去（p37 的 $\PCM$）、承受反偏高压（p38 的 $\BRCEO$，耗尽区主要长在它里面）。所以 E2 表面考「记不记得」，实际考的是 §1.4 那条因果链。
+
+\subhdr{6.2　E3（p24）：$\IC$ 比 $\beta\IB$ 小，为什么是饱和}
+
+题面 [C4-1 p24]：\emph{「E3 Given that in a transistor circuit, $\IB=60\,\mu\mathrm{A}$, $\IC=2\,\mathrm{mA}$, $\beta=50$. Try to find the operating mode of the Transistor.」} 选项（1）Active（2）Saturation（3）Cut off。
+
+\textbf{解}：若在放大区，$\IC$ 必须等于
+
+\[ \beta\IB=50\times60\,\mu\mathrm{A}=3000\,\mu\mathrm{A}=3\,\mathrm{mA}. \]
+
+实测 $\IC=2\,\mathrm{mA}<3\,\mathrm{mA}$，少了 $1\,\mathrm{mA}$。放大区要求\textbf{精确相等}，所以假设不成立；又 $\IB=60\,\mu\mathrm{A}\ne0$，不是截止；只能是\textbf{饱和}，答（2）。
+
+\aside{为什么「少了」才可能是饱和、而「多了」不可能：放大区里 $\IC$ 由 $\IB$ 决定，外电路只要供得起就一定是 $\beta\IB$；一旦外电路供不起（$\UCC/\RC$ 不够大），$\IC$ 被压到外电路上限，就出现 $\IC<\beta\IB$。反过来 $\IC>\beta\IB$ 在这个电路里不会出现。这条比较在 §4.3 里与 $\UCE<0$ 等价。}
+
+\textbf{与 E1 的关系}：E1 的 $b$ 档是「先算 $\IC$、再发现 $\UCE$ 为负」；E3 是「直接比 $\IC$ 与 $\beta\IB$」。同一条判据的两个入口（§4.3）。
+
+\subhdr{6.3　E4（p25）：由两个电流反求 $\beta$}
+
+题面 [C4-1 p25]：\emph{「E4 $\IC=100\,\mathrm{mA}$, $\IE=100.2\,\mathrm{mA}$. Find $\beta$?」}
+
+\textbf{解}：先用 KCL 求 $\IB$，再用器件方程求 $\beta$：
+
+\[ \IB=\IE-\IC=100.2-100=0.2\,\mathrm{mA},\qquad
+   \beta=\frac{\IC}{\IB}=\frac{100}{0.2}=500. \]
+
+\textbf{一句提醒}：$500$ 远超 p34 给的 $\beta=20\sim150$。这组数是练习 $\IE=\IB+\IC$ 用的，不要据此认为实际器件有这么大 $\beta$——若真按 $500$ 设计偏置，实际器件的分散性会让工作点完全跑掉（§9.1）。
+
+\subhdr{6.4　E6（p27）：只给两个符号，条件不够}
+
+题面 [C4-1 p27]：\emph{「E6 Find the operation mode of the transistor.」} 图上只有两个符号：左边基极引线带一个空心圆圈、发射极箭头朝内（PNP）；右边基极没有圆圈、箭头朝外（NPN）。下面配三行判据表。
+
+\textbf{能确定的两件事}：
+（1）认符号——左 PNP、右 NPN（§1.3 的箭头规则：从 P 指 N）；
+（2）空心圆圈在 p26 的含义是「基极悬空/开路」（p26 的两张等效图上，基极引线端点都画成空心圆）。
+
+\textbf{不能确定的事}：判模式要看两个结的偏置，而图上\textbf{没有任何电压、电源或外电路}。同一个 NPN，基极开路时：若 $U_{\mathrm{C}}>U_{\mathrm{E}}$，则集电结反偏、发射结零偏，管子截止；若 $U_{\mathrm{E}}>U_{\mathrm{C}}$，则是反向工作。两者都可能，取决于图外的电压。
+
+\warnbox{\tagx{待确认} \textbf{E6 的条件不全，本讲义不给出唯一答案}。若按「基极开路、$U_{\mathrm{C}}>U_{\mathrm{E}}$」这一最自然的读法，两管都应判\textbf{截止}（没有基极驱动，只有漏电 $\ICEO$，与 p26 右侧的等效图一致）。真正的判据表在 p27 下半页，那里说的是「结的偏置 $\rightarrow$ 模式」，不是「符号 $\rightarrow$ 模式」。做题时若题目只给符号，应当回答：\emph{信息不足；需补两结偏置才能判定}。}
+
+%=============================================================
+\hdr{§7}{特性曲线：把三种模式画在同一张图上}
+
+\subhdr{7.1　两个定义式与一套测量电路（p29）}
+
+p29 给出两个函数 [C4-1 p29]：
+
+\[ \text{输入特性：}\ \IB=f(\UBE)\big|_{\UCE=\text{const}},\qquad
+   \text{输出特性：}\ \IC=f(\UCE)\big|_{\IB=\text{const}}. \]
+
+\textbf{为什么要「固定另一个」}：晶体管是两个端口，任一电流都同时依赖两个电压，一共四维。要把四维压成一张二维曲线，必须钉住一个坐标。钉 $\UCE$（取大于 $1\,\mathrm{V}$ 的某个值）得输入特性；钉 $\IB$（取 $0,20,\dots,100\,\mu\mathrm{A}$ 六条）得输出特性。
+
+测量电路（p29 的图）：$\UBB$—$\RB$—微安表—B 是输入回路，$\UCC$—$\RC$—毫安表—C 是输出回路，两只电压表分别并接在 B—E 与 C—E 上。\textbf{调 $\RB$ 改 $\IB$、调 $\RC$ 改 $\UCE$}——这就是「两个电位器各管一个自变量」。
+
+\aside{这与微积分里的偏导数是同一件事：输入特性曲线是固定 $\UCE$ 时对 $\UBE$ 的截面，它的斜率倒数就是 4.3 讲的 $r_{\mathrm{be}}$；输出特性曲线是固定 $\IB$ 时对 $\UCE$ 的截面，它的斜率倒数与 4.4 讲的 $r_{\mathrm{ce}}$ 有关。本讲只用到曲线的形状与高度，不用斜率。}
+
+\subhdr{7.2　输入特性：为什么「像一只二极管」（p30）}
+
+p30 的三条结论 [C4-1 p30]：（1）Effect of the output on the input when $\UCE>1$；（2）Similar to a diode；（3）Temperature characteristics。曲线形状：$\UBE$ 从 $0$ 加到约 $0.5\,\mathrm{V}$，$\IB$ 几乎为零；过 $0.5$--$0.6\,\mathrm{V}$ 后陡升，近似指数。
+
+\textbf{为什么像二极管}：因为测的就是发射结这只二极管。输入回路里唯一的 PN 结是发射结，$\IB$ 的主要成分就是穿过它的电流，所以
+
+\[ \IB\approx I_S\left(e^{\UBE/U_T}-1\right),\qquad U_T=\frac{kT}{q}\approx26\,\mathrm{mV}\ (300\,\mathrm{K}), \]
+
+与第 3 章的二极管方程是同一个式子。由此得到一个常用的数字：
+
+\[ \UBE \text{ 每增加 } U_T\ln10=26\times2.303\approx60\,\mathrm{mV},\quad \IB \text{ 增大十倍}. \]
+
+\aside{这个「每十倍 $60\,\mathrm{mV}$」是从 $I\propto e^{U/U_T}$ 直接取对数来的：$\ln(I_2/I_1)=\Delta U/U_T$，令 $I_2/I_1=10$ 得 $\Delta U=U_T\ln10$。代入本题的 $U_T=26\,\mathrm{mV}$ 即 $59.9\,\mathrm{mV}$。看图时它很有用：p32 上两条相邻曲线的高度比若接近 $2$，对应的 $\UBE$ 差就约 $18\,\mathrm{mV}$。}
+
+\textbf{为什么 $\UCE>1\,\mathrm{V}$ 之后曲线才不动}：$\UCE$ 很小时集电结也接近正偏，集电区向基区注入载流子、改变基区的复合，使同一 $\UBE$ 下 $\IB$ 变大——这就是「输出影响输入」。$\UCE$ 超过约 $1\,\mathrm{V}$ 后集电结充分反偏，耗尽区宽度变化很小，基区几乎不受影响，输入端才与输出端「解耦」。p30 曲线框左上角那个「$\UCE>1$」就是这个条件，不是装饰。
+
+\subhdr{7.3　温度特性：曲线整体左移（p31）}
+
+p31 在同一张图上叠了两条曲线：$25\,^\circ\mathrm{C}$（蓝，右）与 $85\,^\circ\mathrm{C}$（紫，左）[C4-1 p31]。读法：\textbf{同一 $\IB$ 下，温度高的那条对应的 $\UBE$ 更小}，即曲线左移。
+
+量级：$\UBE$ 的温度系数约 $-2\,\mathrm{mV}/{}^\circ\mathrm{C}$，从 $25$ 到 $85\,^\circ\mathrm{C}$ 共 $60\,^\circ\mathrm{C}$，左移约
+
+\[ \Delta\UBE\approx-2\,\mathrm{mV}/{}^\circ\mathrm{C}\times60\,^\circ\mathrm{C}=-120\,\mathrm{mV}. \]
+
+\warnbox{\tagx{待确认} \textbf{图上不能直接量出这个数}。p31 的横轴只标了 $0.4$ 与 $0.8$ 两个刻度，两条曲线的间距只能目测（误差约 $\pm20\,\mathrm{mV}$），$85^\circ$ 与 $25^\circ$ 的读数差与 $-120\,\mathrm{mV}$ 同一量级但不精确。$\pm2\,\mathrm{mV}/{}^\circ\mathrm{C}$ 这个系数来自器件物理与手册，\textbf{\tagx{教材补充}}，补它的理由：p31 只画了两条线、标题写「Temperature characteristics」，既没有数也没有后果，读者无法判断「左移」有多严重。后果是：$\UBE$ 变小 $\rightarrow$ 同一 $\RB$ 下 $\IB$ 变大 $\rightarrow$ $\IC$ 变大（$\beta$ 也随温度升），工作点向饱和方向漂。}
+
+\subhdr{7.4　输出特性：一族间距近似相等的水平线（p32）}
+
+p32 的曲线族 [C4-1 p32]：六条，右端标 $\IB=0,20,40,60,80,100\,\mu\mathrm{A}$；纵轴 $\IC/\mathrm{mA}$（刻度 $1,2,3,4$），横轴 $\UCE/\mathrm{V}$（刻度 $3,6,9$）。图内写 $\IC=\beta\IB$。
+
+\textbf{三条读法}：
+
+\begin{enumerate}
+\item \textbf{平坦段的高度}就是 $\beta\IB$。从图上读：$\IB=100\,\mu\mathrm{A}$ 对应约 $4.8\,\mathrm{mA}$，$60\,\mu\mathrm{A}$ 约 $3.1\,\mathrm{mA}$，$40\,\mu\mathrm{A}$ 约 $2.1\,\mathrm{mA}$，比值都约 $50$——即这只「画出来的管子」$\beta\approx50$。\tagx{待确认}：读图误差约 $\pm5$。
+\item \textbf{间距近似相等}说明 $\beta$ 在放大区近似是常数，这是 $\IC=\beta\IB$ 能当线性方程用的实验依据。
+\item \textbf{$\IB=0$ 那条不是零}，它贴着横轴，高度是 $\ICEO$（p32 第 (2) 条）。这条线就是 §4.5 说的「两处零」的实测版本。
+\end{enumerate}
+
+\aside{平坦段其实略微上翘：$\UCE$ 增大 $\rightarrow$ 集电结耗尽区变宽 $\rightarrow$ 中性基区变窄 $\rightarrow$ $\beta$ 略增。这叫基区宽度调制（Early 效应），\textbf{\tagx{教材补充}}——课件把曲线画成严格水平，p32 的图上却能看出轻微倾斜；补它是因为 4.2 讲输出电阻 $r_{\mathrm{ce}}$ 时要用这个斜率。本讲的判模式用不到它。}
+
+\textbf{为什么平坦}：放大区里决定 $\IC$ 的是「有多少电子从发射区注进基区、又有多少活着到集电区」，这两件事由 $\UBE$（即 $\IB$）决定；$\UCE$ 只改变集电结的反偏程度，不改这两个数。所以 $\IC$ 对 $\UCE$ 不敏感——这就是「恒流源」特性的来源。
+
+\subhdr{7.5　三个工作区（p33）}
+
+p33 在曲线族上用三个气泡框划出三区 [C4-1 p33]：靠近纵轴的陡升段涂红斜线，标「Saturation region」；中间平坦段标「Active region」；贴横轴的 $\IB=0$ 一带涂红斜线，标「Cut-off region」。
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.5cm}p{4.9cm}p{4.5cm}p{4.6cm}@{}}
+\toprule
+\thead{区} & \thead{在图上的位置} & \thead{对应的偏置} & \thead{$\UCE$ 的范围}
+\\
+\midrule
+饱和 & 陡升段（$\UCE$ 很小） & 两结正偏 & $\to\UCES$（$0.1$--$0.3\,\mathrm{V}$）
+\\
+放大 & 平坦段（$\UCE$ 较大） & 发射结正、集电结反 & $\UCES<\UCE<\UCC$
+\\
+截止 & $\IB=0$ 及其下方 & 两结反偏 & $\approx\UCC$
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+饱和区为什么是「一整段陡升」而不是「$\UCE=0$ 那一个点」：因为 $\UCE$ 从 $0$ 增到约 $0.3\,\mathrm{V}$ 的过程中，集电结从正偏转成反偏，集电区向基区的注入逐渐消失，$\IC$ 迅速上升；过了这个拐点才进平坦段。$\UCE$ 的那一小段正值，就是 §8 要推的饱和压降。
+
+%=============================================================
+\hdr{§8}{饱和压降：p17 写 $\UCE=0$，真实值为什么不是零}
+
+\subhdr{8.1　课件给的是理想化}
+
+p17 的饱和特性第 (3)(4) 条是 $\UCE=\mathbf{0}$ 与「Saturation means short circuit」[C4-1 p17]，p26 的等效图把它画成一把合上的刀闸。这两个说法都是\textbf{理想化}：真实的饱和管在 C—E 之间还留着零点几伏。本节推出它的表达式，并说明为什么「零」只能当近似。
+
+\subhdr{8.2　一把尺子：$\UCE=U_{\mathrm{CB}}+\UBE$}
+
+三个电极的电位满足 $V_{\mathrm{C}}-V_{\mathrm{E}}=(V_{\mathrm{C}}-V_{\mathrm{B}})+(V_{\mathrm{B}}-V_{\mathrm{E}})$，即
+
+\[ \UCE=U_{\mathrm{CB}}+\UBE . \]
+
+这个式子对任何模式都成立（它只是电位的加法），所以它是判断「$\UCE$ 能有多小」的尺子。
+
+\subhdr{8.3　推出饱和压降 $\UCES$}
+
+饱和的定义是\textbf{集电结也正偏}（p15），即 $U_{\mathrm{BC}}>0$，也就是 $U_{\mathrm{CB}}=-U_{\mathrm{BC}}<0$。代入 8.2 的尺子：
+
+\[ \UCE=\UBE+U_{\mathrm{CB}}=\UBE-U_{\mathrm{BC}}<\UBE . \]
+
+取导通时的 $\UBE\approx0.7\,\mathrm{V}$、饱和时集电结的正偏量 $U_{\mathrm{BC}}\approx0.4$--$0.6\,\mathrm{V}$，得
+
+\[ \boxed{\ \UCES=\UBE-U_{\mathrm{BC}}\approx0.7-(0.4\sim0.6)=0.1\sim0.3\,\mathrm{V}\ } \]
+
+这就是常见的「饱和压降 $0.1$--$0.3\,\mathrm{V}$」的来历。它与 $0$ 的差别不大，但方向明确：\textbf{饱和压降一定小于 $\UBE$，且为正}。
+
+\aside{这一步只用了两件事：（1）电位加法 $\UCE=\UBE+U_{\mathrm{CB}}$；（2）饱和时集电结正偏 $U_{\mathrm{BC}}>0$。代入本题：$\UBE=0.7\,\mathrm{V}$ 是发射结正偏压降（§5.2 已取），$U_{\mathrm{BC}}=0.4$--$0.6\,\mathrm{V}$ 是集电结「轻度正偏」的量级（它不像发射结那样被大电流推高）。两个数一减就得到 $0.1$--$0.3\,\mathrm{V}$。}
+
+\subhdr{8.4　为什么它不能真的等于零}
+
+要让 $\UCE=0$，必须 $U_{\mathrm{BC}}=\UBE$：两个结的正偏程度完全相同。这只有在两只结完全对称时才可能——而 §1.4 已经说明它们\textbf{不对称}（发射区重掺杂、面积小，集电区轻掺杂、面积大）。对称性的破坏使 $U_{\mathrm{BC}}$ 永远小于 $\UBE$，于是 $\UCES>0$ 恒成立。
+
+\subhdr{8.5　从外电路看：饱和是「供不出更多电流」}
+
+另一个角度更贴近做题：外电路给 $\IC$ 设了一个上限
+
+\[ \IC\le\frac{\UCC-\UCE}{\RC}\le\frac{\UCC}{\RC}=\ICS \]
+
+（第一个不等号来自 $\UCE\ge0$）。当 $\beta\IB>\ICS$ 时，管子\textbf{想}给的电流超过外电路\textbf{能}给的，多余的基极电流只能从集电结走（§5.3 的旁注），于是集电结被正偏、$\UCE$ 掉到 $\UCES$。所以饱和的本质不是「管子坏了」，而是「外电路限流 $+$ 基极过驱动」。
+
+\subhdr{8.6　理想化到什么程度可以用}
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{3.8cm}p{6.0cm}p{6.0cm}@{}}
+\toprule
+\thead{场合} & \thead{取 $\UCE=0$} & \thead{取 $\UCES=0.1$--$0.3\,\mathrm{V}$}
+\\
+\midrule
+判模式、估算 $\IC$ & 可以（误差 $\le2\%$） & 更准
+\\
+算 $\IC$ 的精确值 & 可以 & $\IC=(\UCC-\UCES)/\RC$
+\\
+算功耗、算输出摆幅下限 & 不行（会低估饱和损耗） & 必须
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+%=============================================================
+\hdr{§9}{$\beta$ 与五个极限参数：它们各自防的是什么}
+
+\subhdr{9.1　$\beta$ 的两个定义与一条直线方程（p34）}
+
+p34 把 $\beta$ 分成两种 [C4-1 p34]：
+
+\[
+\text{直流（静态）}\ \bar\beta=\frac{\IC-\ICEO}{\IB}\approx\frac{\IC}{\IB}\ \ (h_{FE}),
+\qquad
+\text{交流（动态）}\ \beta=\frac{\partial\IC}{\partial\IB}\Big|_{\UCE=\mathrm{con}}\approx\frac{\Delta\IC}{\Delta\IB}\ \ (h_{fe}).
+\]
+
+\textbf{把直流定义反解，得到一条直线}：
+
+\[ \IC=\bar\beta\,\IB+\ICEO . \]
+
+这条式子正好解释 p32 的曲线族：横轴取 $\IB$、纵轴取 $\IC$，斜率是 $\bar\beta$，截距是 $\ICEO$（$\IB=0$ 时 $\IC=\ICEO$，不是零）。所以「六条曲线的高度差近似相等」与「最低那条也不为零」是同一件事的两面。
+
+\textbf{两个定义为什么不一样}：$\bar\beta$ 算的是「总账」（一个工作点上的比值），$\beta$ 算的是「增量」（在工作点附近挪一小步的比值）。在平坦段两者接近；在曲线弯曲处（饱和区边缘、大电流区）差别明显。p34 的曲线族上，$\beta$ 是\textbf{两条相邻曲线的高度差除以 $\IB$ 的差}，$\bar\beta$ 是\textbf{一条曲线的高度除以它的 $\IB$}。
+
+\aside{定义里为什么要减 $\ICEO$：因为 $\IB=0$ 时 $\IC$ 不为零（漏电）。不减的话，小电流下的 $\bar\beta$ 会被漏电抬高。代入 $100\,\mu\mathrm{A}$ 那条曲线：$\IC\approx4.8\,\mathrm{mA}$，若 $\ICEO\approx1\,\mu\mathrm{A}$，减与不减只差 $0.02\%$；但在 $\IB=1\,\mu\mathrm{A}$ 的小电流下，$\ICEO$ 与 $\bar\beta\IB$ 同量级，不减就完全错了。}
+
+\textbf{$\beta=20\sim150$}（p34 末行）。这个范围是同一型号不同个体的分散度，不是误差：设计偏置时必须按\textbf{最坏情况}取值——算 $\IC$ 最大值用 $\beta_{\max}$，算 $\IB$ 最大值用 $\beta_{\min}$，否则换个管子工作点就跑了。
+
+\subhdr{9.2　$\ICEO$：基极开路时的穿透电流（p35）}
+
+p35 的定义 [C4-1 p35]：
+
+\begin{quote}
+\emph{「$\ICEO$ is the reverse leakage current between the collector and emitter when the base of the transistor is open.」}
+\end{quote}
+
+\textbf{它比集电结本身的漏电大 $\beta+1$ 倍}。理由是一条电流链：基极开路时 $\IB=0$，集电结反偏的漏电 $\ICBO$ 从集电极流入基区，无处可去，只能经发射结流出；这份电流对发射结来说\textbf{等效于一份基极电流}，于是被放大：
+
+\[ \ICEO=\ICBO+\beta\ICBO=(1+\beta)\ICBO . \]
+
+\aside{\tagx{教材补充} \textbf{为什么补这条关系}：p35 只给定义，不给 $\ICEO$ 与 $\ICBO$ 的关系，而工程上判断「漏电能不能忽略」、解释「为什么截止时仍可能有电流」都要靠它。$100$ 倍的放大意味着：$\ICBO=1\,\mu\mathrm{A}$ 的管子，基极开路时漏电就是 $0.1\,\mathrm{mA}$——足以让一个「应该截止」的开关导通。$\ICBO$ 随温度每升 $10\,^\circ\mathrm{C}$ 约翻一倍，所以 $\ICEO$ 对温度极敏感，这也是硅管比锗管好用的原因之一。}
+
+\subhdr{9.3　$\ICM$：一个被课件用重了的符号（p36 与 p17/p20/p21）}
+
+p36 的定义 [C4-1 p36]：
+
+\begin{quote}
+\emph{「When the collector current exceeds a certain value, the parameters of the transistor begin to change, especially the current gain will decrease. When current gain beta drops to two-thirds of its normal value, the corresponding collector current is called collector maximum allowable current.」}
+\end{quote}
+
+两条要说清的：
+
+\begin{enumerate}
+\item \textbf{「降到 $2/3$」是厂家约定的测量判据，不是物理定律。}为什么是 $2/3$ 而不是 $1/2$ 或 $0.9$，课件没有说，也\textbf{没有物理原因}——它只是一个统一口径，好让不同厂家给出可比的数（\tagx{教材补充}：补的是「为什么是 $2/3$」这个问题本身没有物理答案）。$\beta$ 在大电流下确实会掉，原因是基区大注入使基区电导率上升（基区电导调制）与发射极电流集边效应，两个效应都让 $\beta$ 随 $\IC$ 增大而下降。
+\item \textbf{同一册课件里 $\ICM$ 有两个意思。}p17 写「$\UCE=0$，$\ICM=\UCC/\RC$」，p20/p21 写「$\mathrm{I_{Cm}}=\UCC/\RC=3\,\mathrm{mA}$」，这里的 $\ICM$ 是\textbf{这个电路}能给的最大集电极电流；p36 的 $\ICM$ 是\textbf{这只管子}允许的最大集电极电流。前者由外电路定，后者由器件定，两者毫无关系。
+\end{enumerate}
+
+\textbf{本讲义的记号约定}：电路上限一律写 $\ICS=\UCC/\RC$（借 p26 已有的 $\mathrm{I_{CS}}$ 记号），器件参数一律写 $\ICM$。使用时是两条独立的不等式：$\IC\le\ICS$（否则饱和）与 $\IC\le\ICM$（否则超限）。E1 的 $a$ 档两条都满足：$0.86\,\mathrm{mA}\le3\,\mathrm{mA}$，且 $0.86\,\mathrm{mA}$ 远小于任何实际管子的 $\ICM$。
+
+\subhdr{9.4　$\PCM$：一条双曲线（p37）}
+
+p37 的原文与图 [C4-1 p37]：\emph{「Maximum collector power dissipation $\PCM$, $P_C=\IC\UCE$」}，图上一条红色双曲线标 $\PCM$，曲线右下方写 SOA，图下标题 \emph{「Safe operating area (SOA) graph」}。
+
+\begin{itemize}
+\item 管子的发热全部来自集电结上的功耗 $P_C=\IC\UCE$，所以允许值是\textbf{一条乘积为常数的曲线}：
+\[ \IC\UCE=\PCM\quad\Longrightarrow\quad \IC=\frac{\PCM}{\UCE}, \]
+这是一条双曲线（不是直线）：在 $\UCE$ 小的地方允许大电流，在 $\UCE$ 大的地方只允许小电流。
+\item 工作点必须落在这条曲线的\textbf{左下方}（$\IC\UCE<\PCM$）。
+\end{itemize}
+
+\subhdr{9.5　$\BRCEO$：为什么下标里要写一个 O（p38）}
+
+p38 的定义 [C4-1 p38]：
+
+\begin{quote}
+\emph{「When the base is open, the maximum allowable voltage between collector and emitter is called reverse breakdown voltage. If the actual value exceeds this value, the transistor will break down and be damaged.」}
+\end{quote}
+
+下标里的 $\mathrm{O}$ 就是 open（基极开路）。为什么要强调这一点：基极开路时漏电被放大 $\beta+1$ 倍（§9.2），所以 C—E 间的击穿电压是\textbf{最低}的一种；基极接电阻（$\mathrm{R}$）、基极短路（$\mathrm{S}$）时耐压都更高。\tagx{教材补充}：补这一句是为了让读者知道——手册上量到的 $\BRCEO$ 是\textbf{最不利}的那个数，按它设计是安全的。
+
+\subhdr{9.6　五个参数怎么一起用：一个工作点，三条不等式}
+
+五个参数不是五个孤立的名词，它们围出的是\textbf{同一个区域}。工作点 $(\UCE,\IC)$ 要同时满足
+
+\[ \IC\le\ICM,\qquad \UCE\le\BRCEO,\qquad \IC\UCE\le\PCM, \]
+
+再加上放大区自己的 $0<\UCE<\UCC$。这四条画在输出特性平面上就是 SOA：上边界是 $\IC=\ICM$（水平线）、右边界是 $\UCE=\BRCEO$（竖直线）、斜边界是双曲线 $\IC=\PCM/\UCE$、左边界是饱和线 $\UCE\approx\UCES$。\textbf{课件 p36、p37、p38 各画了一条边界，从来没有画在同一张图上}（§10 缺口清单第 10 条）。
+
+\aside{用 E1 的 $a$ 档工作点验一遍：$\IC=0.86\,\mathrm{mA}$、$\UCE=10.7\,\mathrm{V}$，于是 $P_C=0.86\times10.7\approx9.2\,\mathrm{mW}$。三条不等式里前两条缺数据（$\ICM$、$\BRCEO$ 的具体值课件没给，要查手册），能算的只有功耗：$9.2\,\mathrm{mW}$ 远小于小功率管的常见 $\PCM$（几十到几百毫瓦）。这就是「设计时先算功耗、再查手册核对另外两条」的实际顺序。}
+
+\subhdr{9.7　p39 的汇总（照课件抄一遍）}
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{0.8cm}p{7.6cm}p{7.4cm}@{}}
+\toprule
+\thead{序} & \thead{课件英文} & \thead{中文与记号}
+\\
+\midrule
+(1) & Current amplification coefficient, current gain $\beta=20\sim150$ & 电流放大倍数 $\beta$
+\\
+(2) & Penetration current & 穿透电流 $\ICEO$
+\\
+(3) & Maximum value of collector current & 集电极最大允许电流 $\ICM$
+\\
+(4) & Maximum collector power dissipation, $P_C=\IC\UCE$ & 集电极最大耗散功率 $\PCM$
+\\
+(5) & Reverse breakdown voltage & 反向击穿电压 $\BRCEO$
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+%=============================================================
+\hdr{§10}{缺口清单：14 条，每条给页码、原文短语与补法}
+
+每条的格式固定：\textbf{类型 | 页码 | 课件英文原文短语 | 缺了什么 | 补在本讲义哪一节}。
+
+\gapitem{机制缺口 | p3、p5}{「both types of carriers, i.e., electron and hole play important roles」／「Base section: light doped, limited space」 | 两种载流子各在哪个区、各承担哪个电流；「薄」与「淡」各自造成什么后果——全册没有一句 | §2：用复合—渡越账本推出 $\beta=2(L_n/\Wb)^2$，用注入比推出 $\gamma$，再合成 $\alpha$ 与 $\beta$}
+
+\gapitem{拼接缺口 | p2 与 p5--p8}{「Are the two terminals interchangeable?」／「Can we put two diodes together to get a transistor?」 | 两问在 p2 提出，全册没有回答 | §2.5：用掺杂与尺寸的不对称答第一问，用「基区太厚、太重、中间是导线不是硅」三条答第二问}
+
+\gapitem{机制缺口 | p12--p14}{$\IE=\IB+\IC$ 与 $\IC=\beta\IB$ 并列出现 | 前式是 KCL（恒真）、后式是器件方程（只在放大区成立），课件把两者同级陈列 | §3.3：三行对照表（KCL／器件方程／KVL）＋各自失效场合}
+
+\gapitem{代数跳步 | p20}{「$\UCE=\UCC-\IC\RC=15-0.86\times5=11.7\,\mathrm{V}$」 | $0.86\times5=4.3$ 这一步被吞，且结果应为 $10.7\,\mathrm{V}$，差 $1\,\mathrm{V}$ 判为笔误 | §5.2 第 5 步：显式写出 $4.3\,\mathrm{V}$ 与 $10.7\,\mathrm{V}$，并标 \tagx{待确认}}
+
+\gapitem{代数跳步 | p21}{「$\UCE=\UCC-\IC\RC=\qquad=-\ \mathrm{V}$」 | 等号右边整段留空：没算 $15-43=-28\,\mathrm{V}$，也没说负值意味着什么 | §5.3：补出 $-28\,\mathrm{V}$，说明负号即「放大假设不成立」，改判饱和、$\IC=\ICS=3\,\mathrm{mA}$}
+
+\gapitem{机制缺口 | p22}{「Both emitter junction and collector junction are reverse biased.」 | $c$ 档那只 $\UBB$ 是反接的（图上「上短下长」），课件从不说，读者无法自己得出两结反偏 | §5.4：从电池符号读出 $\UBE=-5\,\mathrm{V}$，再由 $U_{\mathrm{C}}=15\,\mathrm{V}$ 得 $U_{\mathrm{CB}}=20\,\mathrm{V}$}
+
+\gapitem{适用区间 | p14}{「$0<\UCE<\UCC$」 | 只写结论，没说是放大区的成立条件，也没给越界后的判据 | §3.4：分别推出两条不等式；§4.3：证明 $\UCE=0$ 与 $\IC=\UCC/\RC$ 是同一条边界}
+
+\gapitem{机制缺口 | p16--p17}{「$\IB$ 增大 $\rightarrow$ $\IC$ remain unchanged」／「Saturation means short circuit」 | $\IC$ 为什么会「顶住」、为什么可以当短路，机制缺失；$\UCE=0$ 是理想化也没说 | §8：从 $\UCE=\UBE-U_{\mathrm{BC}}$ 推出 $\UCES=0.1$--$0.3\,\mathrm{V}$，并给「外电路限流」的解释}
+
+\gapitem{记号冲突 | p17、p20、p21 与 p36}{p17「$\ICM=\UCC/\RC$」／p20「$\mathrm{I_{Cm}}=\UCC/\RC$」／p36「Maximum collector current $\ICM$」 | 同一个符号 $\ICM$ 表示两个完全不同的量：电路上限与器件极限 | §9.3：约定电路上限写 $\ICS=\UCC/\RC$（借 p26 的记号），$\ICM$ 只留给 p36 的器件参数}
+
+\gapitem{拼接缺口 | p36、p37、p38}{「Safe operating area (SOA) graph」 | $\ICM$、$\PCM$、$\BRCEO$ 三条边界分在三页，从未画进同一张图，SOA 的「围」没有出现 | §9.6：把三条不等式与四条边界合成 SOA，并用 E1 的工作点验算}
+
+\gapitem{形式改写 | p34}{「$\bar\beta=(\IC-\ICEO)/\IB\approx\IC/\IB$」 | 直流 $\beta$ 被写成「近似式」，读者不知道减掉的 $\ICEO$ 什么时候不能忽略；也没给出反解式 | §9.1：反解成 $\IC=\bar\beta\IB+\ICEO$，说明它正是 p32 曲线族的直线方程}
+
+\gapitem{答案形态 | p36}{「When current gain beta drops to two-thirds of its normal value」 | $2/3$ 这个判据从哪来、为什么不是别的数，没有说 | §9.3：说明它是厂家约定的测量口径、没有物理原因，并补 $\beta$ 随 $\IC$ 下降的两个物理机制}
+
+\gapitem{机制缺口 | p30}{「Similar to a diode.」 | 为什么像二极管（因为只看发射结）、为什么 $\UCE>1$ 之后输出才不影响输入，都没解释 | §7.2：用集电结近正偏向基区注入解释，并给「$60\,\mathrm{mV}$ 十倍」的定量}
+
+\gapitem{拼接缺口 | p19 与 p32}{p19「$\IC=\mathbf{0}$」与 p32「$\IB=0\ \ \IC=\ICEO$」 | 两页对「截止时的集电极电流」给出互相矛盾的答案，没说哪个是理想化 | §4.5：区分理想模型（做题取 $0$）与实测（判漏电取 $\ICEO$）；§9.2：$\ICEO=(1+\beta)\ICBO$ 的量级}
+
+\callout{\textbf{类型分布}：机制缺口 5 条、拼接缺口 3 条、代数跳步 2 条、适用区间 1 条、记号冲突 1 条、形式改写 1 条、答案形态 1 条，共 14 条。
+
+其中\textbf{代数跳步 2 条都在 E1 的同一条式子上}（p20 的 $15-0.86\times5$、p21 的 $=-$ 留空）：课件写例题时有一个固定习惯——\emph{只写最后一行结果，中间的量纲换算与减法不写}。这个习惯在 $a$ 档掩盖了一个 $1\,\mathrm{V}$ 的算术错，在 $b$ 档掩盖了「负电压意味着假设失效」这个关键判断。看到「$=\qquad$」这种空白，就要警惕那里是全题的转折点。}
+
+%=============================================================
+\hdr{§11}{易错点：每一条都能指回某个例子的某一步}
+
+\begin{enumerate}
+\item \textbf{把 $\IC=\beta\IB$ 当 KCL 用}（§3.3、§5.2 第 3 步）。它只在放大区成立；饱和区 p16 明写 $\IC\ne\beta\IB$，截止区两边都是零。改法：先判模式，再用器件方程。
+
+\item \textbf{算出 $\UCE<0$ 还照样报负值}（§5.3、E1 的 $b$ 档）。$-28\,\mathrm{V}$ 不是电压，是「放大假设不成立」的信号，正确做法是改判饱和、把 $\IC$ 换成 $\ICS$、把 $\UCE$ 换成 $\UCES$。
+
+\item \textbf{$15-0.86\times5$ 抄成 $11.7$}（§5.2 第 5 步）。先算 $\IC\RC=4.3\,\mathrm{V}$，再减。这条错误在课件 p20 上就有，照抄会跟着错。
+
+\item \textbf{把 p19 的 $\IC=0$ 当精确值}（§4.5）。基极开路时仍有 $\ICEO=(1+\beta)\ICBO$，高温下可达 $0.1\,\mathrm{mA}$ 量级，「应该截止」的开关可能因此误导通。
+
+\item \textbf{$\mu\mathrm{A}$ 与 $\mathrm{mA}$ 混乘}（§5.2 第 3 步、§6.3）。$100\times8.6$ 得到的是 $\mu\mathrm{A}$（$860\,\mu\mathrm{A}$），要再换成 $0.86\,\mathrm{mA}$；E4 里 $100.2-100=0.2$ 的单位是 $\mathrm{mA}$，不是 $\mathrm{A}$。
+
+\item \textbf{判模式只看 $\IC$ 与 $\ICS$ 的大小}（§4.2 第 2 步）。还要看 $\UBE$ 的极性：$c$ 档的 $\IC=0$ 不是「$\IC<\ICS$ 所以放大」，而是基极被反偏。三个量（$\UBE$、$\IC$、$\UCE$）要一起看。
+
+\item \textbf{把 $\beta$ 当定值设计偏置}（§9.1）。p34 给的是 $20\sim150$ 的\textbf{范围}，同一型号不同个体差 5 倍以上；温度每升 $1\,^\circ\mathrm{C}$，$\UBE$ 降约 $2\,\mathrm{mV}$，$\IC$ 随之上升。设计要按最坏值，或加负反馈（4.3 讲）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{三句话总结与页码对照}
+
+\subhdr{三句话}
+
+\begin{enumerate}
+\item \textbf{BJT 是「两个共基区的 PN 结 $+$ 一块薄而淡的基区」}：双极指电子与空穴都参与，电子负责运货（$\IC$）、空穴负责记账（$\IB$）；$\beta=2(L_n/\Wb)^2$ 说明「薄」是放大能力的唯一来源（§1--§2）。
+\item \textbf{放大区的一切只建立在三条式子上}：KCL（$\IE=\IB+\IC$）、器件方程（$\IC=\beta\IB$）、回路方程（$\UCE=\UCC-\RC\IC$）。后两条一冲突（算出 $\UCE<0$ 或 $\IC>\ICS$），管子就已经不在放大区了（§3--§5）。
+\item \textbf{判模式先假设放大、再验证自洽}；饱和是外电路限流（$\UCE\to\UCES=0.1$--$0.3\,\mathrm{V}$）、截止是基极被反偏（$\IB\to0$），两者的边界由 $\ICM$、$\PCM$、$\BRCEO$ 三条线围成 SOA（§4、§8、§9）。
+\end{enumerate}
+
+\subhdr{页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.9cm}p{9.5cm}p{4.4cm}@{}}
+\toprule
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\midrule
+p1 & 章标题 & 未收
+\\
+p2 & 六个问题、玻璃管结构图、术语表 & §0（术语）、§2.5（问题 5、6）
+\\
+p3 & 为什么叫双极、FET 单极 & §1.1
+\\
+p4--p5 & 两种排布、三区掺杂与尺寸 & §1.2、§1.4
+\\
+p6--p8 & 两个 PN 结、三个电极、符号与箭头 & §1.3、§1.5
+\\
+p9--p11 & 三模式开篇、共射接法 & §3.1
+\\
+p12--p14 & 放大模式：条件、类比、四条特性 & §3.2--§3.5，$\beta$ 的来历见 §2
+\\
+p15--p19 & 饱和、截止：条件与特性 & §3.6、§3.7；两处「零」见 §4.5
+\\
+p20--p22 & E1 三档开关 & §5
+\\
+p23--p25 & E2、E3、E4 & §6.1--§6.3
+\\
+p26--p27 & E5 开关、E6 判模式、三行判据表 & §3.8、§3.9、§6.4；流程见 §4
+\\
+p28--p33 & 测试电路、输入特性、温度、输出特性、三区 & §7
+\\
+p34 & $\beta$ 的两个定义、$20\sim150$ & §9.1
+\\
+p35--p36 & $\ICEO$、$\ICM$ & §9.2、§9.3
+\\
+p37--p38 & $\PCM$ 与 SOA、$\BRCEO$ & §9.4--§9.6
+\\
+p39 & 五参数汇总 & §9.7
+\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据 Chapter Four-1-2026中白上传.pdf（39 页，2026-10-22 读）写成。所有公式要么标注了 [C4-1 pXX] 坐标，要么给出了完整推导；§2 的复合—渡越推导、§5.4 的 $\UBE=-5\,\mathrm{V}$、§8.3 的 $\UCES\approx0.1$--$0.3\,\mathrm{V}$、§9.2 的 $\ICEO=(1+\beta)\ICBO$、§9.6 的 SOA 合成、$\alpha$ 的定义，都是课件没有而本讲义补的。记号按 §0 统一：大写为直流、小写为交流分量，$\ICS=\UCC/\RC$ 与 $\ICM$（p36 的器件参数）分开。\par}
+
+\end{document}

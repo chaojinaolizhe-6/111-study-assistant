@@ -1,0 +1,1039 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{Ch4-2 · 放大电路原理与静态分析 · 精讲}{电工电子技术}
+
+%=============================================================
+% 本讲统一记号（与《电工电子技术》其余四份讲义共用，全文不再改写法）
+%=============================================================
+\newcommand{\UCC}{U_{\mathrm{CC}}}
+\newcommand{\UBE}{U_{\mathrm{BE}}}
+\newcommand{\UCE}{U_{\mathrm{CE}}}
+\newcommand{\UCES}{U_{\mathrm{CES}}}
+\newcommand{\RB}{R_{\mathrm{B}}}
+\newcommand{\RC}{R_{\mathrm{C}}}
+\newcommand{\RE}{R_{\mathrm{E}}}
+\newcommand{\RL}{R_{\mathrm{L}}}
+\newcommand{\IB}{I_{\mathrm{B}}}
+\newcommand{\IC}{I_{\mathrm{C}}}
+\newcommand{\IE}{I_{\mathrm{E}}}
+\newcommand{\ICEO}{I_{\mathrm{CEO}}}
+\newcommand{\ICM}{I_{\mathrm{CM}}}
+\newcommand{\PCM}{P_{\mathrm{CM}}}
+
+%---------------------------------------------------------------- 三线表横线
+% theme 的 \rtop/\rmid/\rbot 内部是 \par+\hrule：放进 p 列的三线表里时，
+% 横线只画在第一列宽度内、并把该列文字整体下推一行。这里改用 \noalign 版，
+% 保持同样的紫/粉配色与线宽（不改 theme 文件），横线才贯穿整表、各列顶部对齐。
+\newcommand{\rtop}{\noalign{\vspace{4pt}{\color{violet}\hrule height 1.2pt}\vspace{2pt}}}
+\newcommand{\rmid}{\noalign{\vspace{2pt}{\color{petal}\hrule height 0.5pt}\vspace{2pt}}}
+\newcommand{\rbot}{\noalign{\vspace{2pt}{\color{rulepurple}\hrule height 0.5pt}\vspace{6pt}}}
+
+%---------------------------------------------------------------- 孤行控制
+% 节标题/小节标题落在页底、正文全在下一页时很难看；在标题后加一条禁止分页的惩罚。
+\let\dsHdrOrig\hdr
+\renewcommand{\hdr}[2]{\dsHdrOrig{#1}{#2}\nopagebreak[4]}
+\let\dsSubhdrOrig\subhdr
+\renewcommand{\subhdr}[1]{\dsSubhdrOrig{#1}\nopagebreak[4]}
+
+\setlength{\emergencystretch}{2em}
+
+\setlength{\emergencystretch}{2em}
+
+\begin{document}
+
+\doctitle{第四章　基本放大电路（二）\ 放大电路原理与静态分析}
+{一个三极管、两个电容、三个方程：从「符号怎么念」到「Q 点怎么算」}
+{依据：\texttt{Chapter Four-2-2026中白上传.pdf}（p1--p35，共 35 页）\ \textperiodcentered\ 前置 \texttt{Chapter Four-1}（C4-1 p5--p7、p14--p17、p30--p34）\ \textperiodcentered\ 2026-10-22}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{课件讲了哪七块，各在哪几页}
+
+Chapter Four-2 是「基本放大电路」的第二册。它前半段（p1--p10）把 4.1.3--4.1.4 讲完，后半段（p11--p35）把 4.2、4.3 讲完。整册是一条直线：\textbf{特性曲线与参数}（复习，为算 Q 点准备）$\to$ \textbf{电路怎么长出来的}（单电源 + 耦合电容）$\to$ \textbf{这些字母怎么念}（$u_{\mathrm{BE}}/U_{\mathrm{BE}}/u_{\mathrm{be}}$ 三层）$\to$ \textbf{静态是什么、动态是什么、为什么反相}$\to$ \textbf{Q 点是什么、设偏了会怎样}$\to$ \textbf{怎么把 Q 点算出来}。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{2.5cm}p{8.6cm}@{}}
+\rtop
+\thead{小节} & \thead{课件页码} & \thead{本讲义落点}
+\\
+\rmid
+4.1.3 特性曲线（复习） & p1--p6 & §1.1--§1.2（与 C4-1 p30--p33 重叠，只补接缝）
+\\
+4.1.4 主要参数（复习） & p7--p10 & §1.3（补一个代数反解，§5 要用）
+\\
+4.2.1 电路的发展 & p11--p13 & §2（补 $R_{\mathrm{B}}$ 为什么必须远大于 $R_{\mathrm{C}}$）
+\\
+4.2.2 字母符号 & p14 & §3（单独做三层对照表）
+\\
+4.2.3 信号的放大过程 & p15--p20 & §4（补「隔直通交」与「反相」两处机制）
+\\
+4.3.1 静态分析的定义、Q 点 & p21--p23 & §5（补「为什么必须先设 Q 点」「Q 点为什么会漂」）
+\\
+4.3.2 静态分析的重要性 & p24--p27 & §6（补两种失真的判据与对应关系）
+\\
+4.3.3 计算法 & p28--p35 & §7（直流通路怎么画、E1、三道模式题、示波器实测）
+\\
+\rbot
+\end{tabular}
+
+\subhdr{页码核对：三件要知道的版面事实}
+
+\begin{enumerate}
+
+\item \textbf{p20 的 E1 与 p30 的 E1 不是同一道题}。p20 是一个单选题（「The phase difference between the input and output voltages in a common emitter arrangement is ( )?」，选项 $180^{\circ}/90^{\circ}/270^{\circ}/0^{\circ}$）；p30 是一道静态计算例题（给 $\beta$、$\RC$、$\UCC$、$\RB$ 求三个直流量）。同一个编号被两页复用，抄笔记时要写成 E1(p20) 与 E1(p30)。
+
+\item \textbf{p31 的工作模式题是三道，不是两道}。任务粗测地图写的是「两道」，但整页扫描图 \texttt{p031.jpg}（放大三倍逐字核对过）明确给了三个小题：
+（1）$\RB=500\,\mathrm{k}\Omega$、（2）$\RB=200\,\mathrm{k}\Omega$、（3）$\RB=1000\,\mathrm{k}\Omega$，同用 $\beta=100$、$\RC=2\,\mathrm{k}\Omega$、$\UCC=+5$ V。本讲义按页面办三道。\textbf{以页面图为准。}
+
+\item \textbf{p28 是小节扉页，p26 与 p27 的截图是同一组波形的两种偏置}。p26 是「I\_B 偏大」的那一列（$i_{\mathrm{C}}$ 削顶、$u_{\mathrm{CE}}$ 与 $u_{\mathrm{O}}$ 削底），p27 把两列并排并给出文字结论。不要把 p25、p26 当成「同一张图重复放」。
+
+\end{enumerate}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.6cm}p{8.0cm}p{4.2cm}@{}}
+\rtop
+\thead{记号} & \thead{含义} & \thead{首次出现}
+\\
+\rmid
+$\UCC$ & 集电极直流电源，本讲只标电位与极性（p13） & [C4-2 p13]
+\\
+$\RB$ & 基极偏置电阻，一端接 $+\UCC$、一端接基极 & [C4-2 p13]
+\\
+$\RC$ & 集电极负载电阻，一端接 $+\UCC$、一端接集电极 & [C4-2 p13]
+\\
+$C_1$、$C_2$ & 输入、输出耦合电容（极性电解电容） & [C4-2 p13]
+\\
+$\RE$、$\RL$ & 发射极电阻、负载电阻：\textbf{本讲未出现}，后续课用；此处只登记，避免与后续讲义冲突 & ---
+\\
+$\UBE$、$\IB$、$\IC$、$\UCE$ & 静态（直流）四件套，是 4.3.1 要求的东西 & [C4-2 p22]
+\\
+$u_{\mathrm{BE}}$、$i_{\mathrm{B}}$、$i_{\mathrm{C}}$、$u_{\mathrm{CE}}$ & \textbf{总量}（复合量）= 直流 + 交流 & [C4-2 p14]
+\\
+$u_{\mathrm{be}}$、$i_{\mathrm{b}}$、$i_{\mathrm{c}}$、$u_{\mathrm{ce}}$ & \textbf{交流分量}（增量） & [C4-2 p14]
+\\
+$\beta$ & 电流放大系数，$\beta=20\sim150$ & [C4-2 p7]
+\\
+$r_{\mathrm{be}}$ & 发射结微变电阻：\textbf{本讲未出现}，下一讲 4.4 才给；本讲只在 §4 末尾用它写一下电压放大倍数的符号 & [C4-1 无]
+\\
+\rbot
+\end{tabular}
+
+\subhdr{术语中英对照（本讲实际出现的写法）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.3cm}p{4.5cm}p{6.6cm}@{}}
+\rtop
+\thead{中文} & \thead{课件英文} & \thead{出现处 / 备注}
+\\
+\rmid
+静态工作点 & Q point & [C4-2 p23]
+\\
+直流通路 & 1 DC path & [C4-2 p29]；课件只写了 DC path
+\\
+交流通路 & （本讲未出现） & 与直流通路对称，下一讲用 [待确认]
+\\
+耦合电容 & polar electrolytic capacitors & [C4-2 p13]；课件用「极性电解电容」这个说法，没有出现 coupling capacitor 一词
+\\
+截止失真 & cut-off distortion & [C4-2 p27]
+\\
+饱和失真 & saturation distortion & [C4-2 p27]
+\\
+共射放大电路 & a common emitter arrangement & [C4-2 p20]；「common-emitter amplifier」这个完整说法课件没写
+\\
+\rbot
+\end{tabular}
+
+\subhdr{本讲义相对课件补的三处缝}
+
+\begin{enumerate}
+
+\item \textbf{p19 问而不答}。p19 在电路与波形旁边写了一句 「Why is the signal reversed?」，然后就翻页去出 E1 了——反相的原因课件从头到尾没有给出。§4 用 p17 自己给出的 $\UCE=\UCC-i_{\mathrm{C}}\RC$ 一行推出 $u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$，符号只翻这一次。
+
+\item \textbf{p13 只说「大于」，不说「大多少」}。p13 的黄框写 「$\RB$ is greater than $\RC$」，字面上像「大一点就行」。§2 把它推成一个定量条件 $\RB/\RC>\beta(\UCC-\UBE)/(\UCC-\UCES)$，代入 E1 的数字是 $90>46.5$——差一个 $\beta$ 的量级，不是差一点。
+
+\item \textbf{p29 只说「这样做」，不说「为什么能这样做」}。p29 直接列 「1 DC path: (1) Signal source short circuit; (2) Capacitor open circuit.」。§7 补两条规则的依据（直流电源单独作用时交流源置零；直流稳态下电容电流为零、故视为开路），并补上被吞掉的单位换算（V 除以 $\mathrm{k}\Omega$ 得 mA）。
+
+\end{enumerate}
+
+\callout{\textbf{这一讲的读法}：p1--p10 是「复习 + 备料」，读它不是为了背曲线，而是为了知道 \textbf{Q 点被三条边界夹着}：上边 $I_{\mathrm{C}}<\ICM$（p9）、右边 $P_{\mathrm{C}}=I_{\mathrm{C}}\UCE<\PCM$（p10）、下边不能让 $u_{\mathrm{CE}}$ 掉到饱和、也不能让 $i_{\mathrm{B}}$ 掉到零（p27）。p11--p35 是「造机器 + 定工作点」，主角只有一个式子：
+\[ \UCE=\UCC-\RC\IC . \]
+静态时它是直流负载线（p23），动态时它是反相的原因（p17），失真时它是被削平的那条线（p25--p27）。}
+
+%=============================================================
+\hdr{§1}{复习段：4.1.3--4.1.4（p1--p10），只补接缝}
+
+这一节覆盖的 p1--p10 十页内容，在 Chapter Four-1 的 p30--p34 已经讲过（特征曲线的测法、输入特性的三条结论、输出特性的五个结论、三个工作区、$\beta$ 的两种定义）。所以这里\textbf{不重讲}，只做三件事：把曲线读法压成一张可查的表、把 p7 的 $\bar\beta$ 反解成后面要用的形式、把四个参数登记成 4.3 的约束条件。
+
+\subhdr{1.1　输入特性（p2--p4）：$I_{\mathrm{B}}=f(\UBE)\mid_{\UCE=\text{const}}$}
+
+p2 先给测法：基极支路串微安表（$\mu$A）、集电极支路串毫安表（mA）、两只电压表分别并接读 $\UBE$ 与 $\UCE$，$\RB$ 调 $I_{\mathrm{B}}$、$\RC$ 调 $\UCE$，发射极是输入输出两个回路的公共端。然后一页一条定义：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{6.6cm}p{6.6cm}@{}}
+\rtop
+\thead{曲线} & \thead{课件定义式} & \thead{谁固定、谁在变}
+\\
+\rmid
+输入特性 & $I_{\mathrm{B}}=f(\UBE)\mid \UCE=\text{constant}$ & 固定 $\UCE$，改 $\RB$ 让 $\UBE$ 变，读 $I_{\mathrm{B}}$
+\\
+输出特性 & $I_{\mathrm{C}}=f(\UCE)\mid I_{\mathrm{B}}=\text{constant}$ & 固定 $I_{\mathrm{B}}$，改 $\RC$ 让 $\UCE$ 变，读 $I_{\mathrm{C}}$
+\\
+\rbot
+\end{tabular}
+
+p3 给三条结论，p4 把第三条（温度）单独放大一遍：
+
+\begin{enumerate}
+\item \textbf{输出对输入的影响只在 $\UCE>1$ V 之后消失}（原文 「Effect of the output on the input when $\UCE>1$」）。图上每条曲线旁都标着 $\UCE>1$ 这个成立条件。
+\item \textbf{形状像二极管}（原文 「Similar to a diode.」）：$\UBE$ 小于某一值（硅管约 $0.5$ V，课件图上曲线在 $0.4\sim0.5$ V 处才起翘）时 $I_{\mathrm{B}}\approx0$；过了这一点 $I_{\mathrm{B}}$ 随 $\UBE$ 指数式猛升。
+\item \textbf{温度升高，整条曲线左移}（p4，两条曲线标 $25^{\circ}$ 与 $85^{\circ}$）：同样 $I_{\mathrm{B}}=60\ \mu$A，$85^{\circ}$ 那条对应的 $\UBE$ 更小。
+\end{enumerate}
+
+\aside{这三条在 4.3 里各用一次：第 1 条是「能用 $I_{\mathrm{B}}$ 单变量描述 Q 点」的许可证（否则 $\UCE$ 一变 $\IB$ 也跟着变，$I_{\mathrm{B}}$ 就不成其为参数）；第 2 条是「$\UBE$ 只能取 $0.6\sim0.7$ V」这个工程近似的来源，E1 直接取 $0.7$ V；第 3 条是 §5 讲「Q 点为什么会漂」的第一条腿。}
+
+\callout{\textbf{这张图唯一要背的读数}：硅管放大状态下 $\UBE\approx0.6\sim0.7$ V。E1（p30）与 p31 的三道题都默认取 $0.7$ V，课件没有写这个假设，是学生自己补的——见 §10 第 5 条缺口。}
+
+\subhdr{1.2　输出特性（p5--p6）：一族曲线 + 三个区}
+
+p5 给曲线族（$I_{\mathrm{B}}=0,20,40,60,80,100\ \mu$A 六条），p6 在同一族曲线上画出三个区的标注框：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{5.4cm}p{8.0cm}@{}}
+\rtop
+\thead{区} & \thead{判据（课件标注）} & \thead{管子此时的行为}
+\\
+\rmid
+饱和区 & $\UCE$ 很小、曲线陡升段（p6 「Saturatio nregion」） & $I_{\mathrm{C}}$ 由外电路封顶，$I_{\mathrm{C}}\neq\beta I_{\mathrm{B}}$ [C4-1 p16]
+\\
+放大区 & $\UCE$ 大于约 $1$ V 后的水平段（p6 「Active region」） & $I_{\mathrm{C}}=\beta I_{\mathrm{B}}$ 成立，且与 $\UCE$ 几乎无关
+\\
+截止区 & $I_{\mathrm{B}}=0$ 以下那条窄带（p6 「Cut-off region」） & $I_{\mathrm{C}}\approx\ICEO\approx0$，管子近似断开 [C4-1 p26]
+\\
+\rbot
+\end{tabular}
+
+p5 列了五条结论：（1）$I_{\mathrm{C}}=f(\UCE)\mid I_{\mathrm{B}}=\text{con}$；（2）$I_{\mathrm{B}}=0$ 时 $I_{\mathrm{C}}=\ICEO$；（3）$I_{\mathrm{C}}$ 与 $\UCE$ 的关系；（4）$I_{\mathrm{C}}$ 与 $I_{\mathrm{B}}$ 的关系；（5）三个区。五条里真正要带走的是第 3 条：\textbf{$\UCE>1$ V 之后 $I_{\mathrm{C}}$ 基本不随 $\UCE$ 变}——这条水平段的形状，正是 4.3 能用「一条负载线 + 一条曲线」交点定 Q 点的全部理由。
+
+\warnbox{\textbf{课件的一处版面断词错误}：p6 的饱和区标注气泡里印的是「Saturatio / nregion」——本来是「Saturation region」，气泡太窄，断行时把一个 n 掉到了第二行开头（文字层的 OCR 还多认出一个「4」来）。正确写法是「Saturation region」。读到它不要以为是另一个概念。类似的还有 p16 那句 「the is always greater than zero」，主语丢了（应该是 the composite $u_{\mathrm{BE}}$），见 §4。}
+
+\subhdr{1.3　主要参数（p7--p10）：四个上限，四条约束}
+
+\textbf{（1）电流放大系数 $\beta$（p7）}。课件给两个定义，必须分清：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.5cm}p{6.2cm}p{6.0cm}@{}}
+\rtop
+\thead{名称} & \thead{课件式子} & \thead{用途}
+\\
+\rmid
+直流（静态）增益 & $\bar\beta=\dfrac{\IC-\ICEO}{\IB}\approx\dfrac{\IC}{\IB}$，器件手册记 $h_{FE}$ & 算 Q 点用它
+\\
+交流（动态）增益 & $\beta=\left.\dfrac{\partial \IC}{\partial \IB}\right|_{\UCE=\text{con}}\approx\dfrac{\Delta\IC}{\Delta\IB}$，记 $h_{fe}$ & 算交流摆幅用它
+\\
+\rbot
+\end{tabular}
+
+课件还给了一个范围 $\beta=20\sim150$（p7 末行）。\textbf{本讲义在 §2 要用它}：$R_{\mathrm{B}}/R_{\mathrm{C}}$ 的下界随 $\beta$ 变，$\beta$ 从 20 到 150，下界跟着变 7 倍多。
+
+\textbf{（2）一个被课件省掉的代数反解}。把 $\bar\beta=(\IC-\ICEO)/\IB$ 两边乘 $\IB$：
+\[ \boxed{\ \IC=\bar\beta\,\IB+\ICEO\ } \]
+这一步没什么技术含量，但它是 §5 讲「Q 点为什么会漂」的唯一入口：\textbf{$\IC$ 由两项相加而成}——一项是受控的 $\bar\beta\IB$，一项是不受控的漏电 $\ICEO$。前者随 $\beta$ 变，后者随温度变，两样都在设计者手上之外。
+
+\textbf{（3）穿透电流 $\ICEO$（p8）}。原文：「$\ICEO$ is the reverse leakage current between the collector and emitter when the base of the transistor is open.」——基极开路时 C--E 之间的反向漏电流。它就是上面那个加法项，量级：硅管 nA 级、锗管 $\mu$A 级 [教材补充]。
+
+\textbf{（4）最大集电极电流 $\ICM$（p9）}。原文：「When current gain beta drops to two-thirds of its normal value, the corresponding collector current is called collector maximum allowable current.」——$\beta$ 掉到正常值的 $2/3$ 时对应的 $\IC$。这是一个「性能已经降级」的门槛，不是「烧毁」的门槛。
+
+\textbf{（5）最大集电极功耗 $\PCM$（p10）}。$P_{\mathrm{C}}=\IC\UCE$，在输出特性上是一条双曲线（$I_{\mathrm{C}}U_{\mathrm{CE}}=\PCM$），曲线左上侧为安全工作区 SOA（p10 图注 「Safe operating area (SOA) graph」）。
+
+\callout{\textbf{这四个参数在 4.3 里的用法}：$\ICM$ 与 $\PCM$ 是\textbf{不许越过}的边界；$\ICEO$ 与 $\beta$ 是\textbf{会自己变}的干扰项。判 Q 点是否合格，除了「在放大区」（p23），还要顺带看一眼 $\IC<\ICM$ 与 $\IC\UCE<\PCM$。而本讲的例题（p30、p31）都没有给 $\ICM$ 与 $\PCM$ 的数值，所以实际能查的只有「在放大区」这一条（外加负载线封顶 $\UCC/\RC$），这一点在 §8 的检查卡里注明。}
+
+%=============================================================
+\hdr{§2}{4.2.1 电路的发展（p11--p13）：四步长出一个放大器}
+
+\subhdr{p12 的定义：三句话，三个关键词}
+
+p12 只给定义，原文：
+
+\begin{quote}
+\itshape Amplifier circuit is a device for amplifying electrical signals, and its basic task is to amplify weak signals to required level without distortion.
+\end{quote}
+
+拆成三个关键词：\textbf{weak signals}（输入很小，所以放大器要做的不是「造能量」而是「用电源的能量复制小信号的形状」）、\textbf{required level}（输出幅度要够）、\textbf{without distortion}（形状不能变）。第三个词是整章的技术难点——§6 讲的全部失真，都是这一条被违反的样子。
+
+\aside{第三点决定了后面所有分析的分工：要让形状不变，管子必须始终待在放大区（p23 红字 「remains in the active region」）；而管子待在哪个区，由\textbf{直流}决定。于是 4.3 先算直流（静态），4.4 再算交流（动态）。这一讲的 4.3 只做前半段。}
+
+\subhdr{p13 的四步：每一步删掉了什么}
+
+p13 用四个分幅、三支浅蓝箭头画出演化，顺序是左上 $\to$ 右上 $\to$ 左下 $\to$ 右下：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{8.4cm}p{6.6cm}@{}}
+\rtop
+\thead{步} & \thead{电路上做了什么} & \thead{这一步在解决什么}
+\\
+\rmid
+1 & 双电源：$\mathrm{U}_{\mathrm{BB}}$ 供基极、$\UCC$ 供集电极，发射极接地 & 把「发射结正偏、集电结反偏」这两个条件同时满足（p13 黄框 $\mathrm{V}_{\mathrm{C}}>\mathrm{V}_{\mathrm{B}}>\mathrm{V}_{\mathrm{E}}$）
+\\
+2 & $\mathrm{U}_{\mathrm{BB}}$ 与 $\UCC$ 的负端并到同一条公共线（红色线） & 两个电源共地，才能把两路并成一路
+\\
+3 & 去掉 $\mathrm{U}_{\mathrm{BB}}$ 的电池符号，$\RB$ 直接接 $+\UCC$ & 用同一个电源经 $\RB$ 取偏置；右侧注 「Only its potential and polarity to the ground are marked」
+\\
+4 & 基极串 $C_1$、集电极串 $C_2$，得到 $u_{\mathrm{i}}$--$u_{\mathrm{o}}$ 两端 & 把直流工作点「关」在电路里，只让交流信号进出（$C_1,C_2$ 是极性电解电容）
+\\
+\rbot
+\end{tabular}
+
+第 3 步是全册最关键的一次「省略」：\textbf{$\mathrm{U}_{\mathrm{BB}}$ 消失之后，$I_{\mathrm{B}}$ 由 $\UCC$ 和 $\RB$ 共同决定}，即
+\[ \IB=\frac{\UCC-\UBE}{\RB}. \]
+这条式子看起来像「欧姆定律」，其实含一个假设：\textbf{$\UCC$ 的正端同时供 $\RB$ 与 $\RC$，但基极回路只经过 $\RB$}。基极回路的路径是 $+\UCC\to\RB\to$ 基极 $\to$ 发射结 $\to$ 发射极 $\to$ 地 $\to\UCC$ 负端，$\RC$ 根本不在这条回路上。§7 会用这句话解释「为什么 $I_{\mathrm{B}}$ 的式子里没有 $\RC$」。
+
+\subhdr{p13 的黄框 「$\RB$ is greater than $\RC$」：大多少才算大}
+
+p13 左侧黄框写了三行：\textbf{Active mode}、$\mathrm{V}_{\mathrm{C}}>\mathrm{V}_{\mathrm{B}}>\mathrm{V}_{\mathrm{E}}$、\textbf{$\RB$ is greater than $\RC$}。前两行是工作模式的条件（等价于 [C4-1 p14] 的 $0<\UCE<\UCC$），第三行是\textbf{设计}的条件，课件没有给理由。推一遍：
+
+由第 3 步的 $\IB=(\UCC-\UBE)/\RB$ 与放大区的 $\IC=\beta\IB$，
+\[ \UCE=\UCC-\RC\IC=\UCC-\RC\,\beta\,\frac{\UCC-\UBE}{\RB}. \]
+要 Q 点在放大区，必须 $\UCE>\UCES\ (\ge0)$，即
+\[ \RC\,\beta\,\frac{\UCC-\UBE}{\RB}<\UCC-\UCES
+\quad\Longrightarrow\quad
+\boxed{\ \frac{\RB}{\RC}>\beta\,\frac{\UCC-\UBE}{\UCC-\UCES}\ } \]
+取 $\UCES\approx0$、$\UBE\ll\UCC$，右边约等于 $\beta\left(1-\UBE/\UCC\right)$。用 E1 的数字（$\beta=50$、$\UCC=6$ V、$\UBE=0.7$ V、$\UCES=0.3$ V）：
+\[ \frac{\RB}{\RC}>\frac{50\times(6-0.7)}{6-0.3}=\frac{265}{5.7}=46.5 , \]
+而 E1 实际取 $\RB/\RC=180/2=90$。
+
+\aside{代入本题：$\beta=20\sim150$（[C4-2 p7]），故 $\RB/\RC$ 的下界在 $17.7\sim133$ 之间摆动；E1 的 $90$ 只对 $\beta\le90/0.883\approx102$ 成立。$\beta=150$ 的同型号管子装进同一个电路，$90$ 就不够了——这正是 §5「Q 点会漂」的定量版本。}
+
+所以那句话的准确读法是：\textbf{$\RB$ 要比 $\RC$ 大一个 $\beta$ 的量级}，不是「大一点」。这条条件解释了为什么教科书里的共射电路总是 $R_{\mathrm{B}}$ 几百 $\mathrm{k}\Omega$、$R_{\mathrm{C}}$ 几 $\mathrm{k}\Omega$（p30、p31 全是这个比例），也解释了 §4 的电压放大倍数为什么能大于 1（增益 $\approx\beta\RC/r_{\mathrm{be}}$，与 $\RB$ 无关）。
+
+\subhdr{p12--p13 留下的一句读图规则}
+
+p13 右下角注 「Only its potential and polarity to the ground are marked」：$+\UCC$ 那个端子只表示「这一点对地的电位是 $+\UCC$」，它不是一个必须画成电池的元件。所以后面所有电路图里，$\UCC$ 只出现一个端子、一条上横线，回线靠发射极接地那一条——\textbf{读图时把这条上横线当成一个「恒定电位母线」}，不要去找它的另一半。
+
+\subhdr{$C_1,C_2$ 上那两个「+」号是算出来的，不是画上去的}
+
+p13 第 4 步的图注写「Polar electrolytic capacitors」，图上 $C_1$ 的\textbf{右}极板、$C_2$ 的\textbf{左}极板各标了一个红色「+」。为什么是这两块极板？两句话就能算出来，依据是本讲 §4 会用的那条事实：\textbf{静态时电容两端有一个固定的直流电压}。
+
+\begin{itemize}
+\item $C_1$：左极板接信号源，静态电位 $0$；右极板接基极，静态电位 $\UBE\approx0.7$ V。故右板比左板高 $0.7$ V，「+」标在右板。
+\item $C_2$：左极板接集电极，静态电位 $\UCE$（E1 里是 $3.06$ V）；右极板接输出端，静态电位 $0$（$C_2$ 把直流挡在左边，输出侧没有直流）。故左板比右板高 $\UCE$，「+」标在左板。
+\end{itemize}
+
+\textbf{规则}：电解电容的「+」必须接在\textbf{直流电位高}的那一侧。电解电容的反向耐压很低，接反会漏电、发热乃至鼓包 [教材补充]。所以那两个「+」不是装饰，它给的是\textbf{装配方向}——而方向由 Q 点决定：E1 的 $\UCE=3.06$ V 让 $C_2$ 左板高出 $3.06$ V；若把 $\RB$ 调到极小、让 $\UCE$ 掉到 $0.3$ V，方向还没反，但余量只剩 $0.3$ V，这时任何大幅摆动都可能让 $C_2$ 瞬间反偏。
+
+\aside{代入 E1 的电位做一次 p13 黄框的校核：发射极接地故 $\mathrm{V}_{\mathrm{E}}=0$；基极 $\mathrm{V}_{\mathrm{B}}=\UBE=0.7$ V；集电极 $\mathrm{V}_{\mathrm{C}}=\UCE=3.06$ V。于是 $\mathrm{V}_{\mathrm{C}}>\mathrm{V}_{\mathrm{B}}>\mathrm{V}_{\mathrm{E}}$ 成立，与 p13 的「Active mode」条件一致。这条不等式是 p13 的黄框，也是 [C4-1 p14] 的 $0<\UCE<\UCC$ 的另一种写法（$\UCE=\mathrm{V}_{\mathrm{C}}-\mathrm{V}_{\mathrm{E}}$）。}
+
+%=============================================================
+\hdr{§3}{4.2.2 字母符号（p14）：三层，一张表，四个陷阱}
+
+p14 是整章最容易被跳过、又最容易在考试里翻车的一页。它只给了三行规则加一个式子，字面很短：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.2cm}p{4.2cm}p{6.4cm}@{}}
+\rtop
+\thead{课件原文} & \thead{例子} & \thead{这一行在说什么}
+\\
+\rmid
+「Both the basic letters and subscripts are capital letters」 $\Rightarrow$ \textbf{DC component} & $U_{\mathrm{BE}},\ I_{\mathrm{B}},\ I_{\mathrm{C}}$ & 基本字母大写 + 下标大写 = 纯直流
+\\
+「Both the basic letters and subscripts are lowercase letters」 $\Rightarrow$ \textbf{AC component} & $u_{\mathrm{be}},\ i_{\mathrm{b}},\ i_{\mathrm{c}}$ & 基本字母小写 + 下标小写 = 纯交流增量
+\\
+「When the basic letters are lowercase letters, the subscripts are capital letters」 $\Rightarrow$ \textbf{Composite signal} & $u_{\mathrm{BE}},\ i_{\mathrm{B}},\ i_{\mathrm{C}}$ & 基本字母小写 + 下标大写 = 直流叠交流的总量
+\\
+$i_{\mathrm{B}}=I_{\mathrm{B}}+i_{\mathrm{b}}$ & 见下 & Composite = DC + AC，即三个层次之间的代数关系
+\\
+\rbot
+\end{tabular}
+
+\subhdr{三层对照表（本讲唯一一张必须背的表）}
+
+课件 p14 只把 $i_{\mathrm{B}}=I_{\mathrm{B}}+i_{\mathrm{b}}$ 这一条列了出来，其余三个量按同一条规则生成。补全如下（表里最后一列是本讲义的读法，课件没有）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.5cm}p{2.2cm}p{2.2cm}p{2.2cm}p{1.3cm}p{4.0cm}@{}}
+\rtop
+\thead{物理量} & \thead{总量} & \thead{直流分量} & \thead{交流分量} & \thead{读法} & \thead{在哪一页出现}
+\\
+\rmid
+基极电流 & $i_{\mathrm{B}}$ & $I_{\mathrm{B}}$ & $i_{\mathrm{b}}$ & 安 & [C4-2 p14]
+\\
+集电极电流 & $i_{\mathrm{C}}$ & $I_{\mathrm{C}}$ & $i_{\mathrm{c}}$ & 安 & [C4-2 p14]
+\\
+基射电压 & $u_{\mathrm{BE}}$ & $\UBE$ & $u_{\mathrm{be}}$ & 伏 & [C4-2 p14]
+\\
+集射电压 & $u_{\mathrm{CE}}$ & $\UCE$ & $u_{\mathrm{ce}}$ & 伏 & [C4-2 p17]
+\\
+\rbot
+\end{tabular}
+
+四条关系式一起写出来（课件只给了第一条）：
+
+\begin{align*}
+i_{\mathrm{B}}&=\IB+i_{\mathrm{b}}, &
+i_{\mathrm{C}}&=\IC+i_{\mathrm{c}},\\
+u_{\mathrm{BE}}&=\UBE+u_{\mathrm{be}}, &
+u_{\mathrm{CE}}&=\UCE+u_{\mathrm{ce}} .
+\end{align*}
+
+\subhdr{为什么下标 BE、CE 永远是正体大写字母}
+
+课件那句「下标是大写字母」容易让人以为 $u_{\mathrm{be}}$ 的下标写错了。其实两套下标在表示\textbf{两个不同的东西}：
+
+\begin{itemize}
+\item \textbf{大小写}（基本字母 $u/U$、$i/I$）表示\textbf{这个量属于哪一层}：大写 = 直流，小写 = 总量或增量。
+\item \textbf{正体与大小写}（下标 $\mathrm{BE}$ / $\mathrm{be}$）表示\textbf{量在哪两个电极之间}：$\mathrm{B}$ 是基极、$\mathrm{E}$ 是发射极，$\mathrm{BE}$ 是「基极对发射极」这个\textbf{位置}。
+\end{itemize}
+
+位置是固定的，不随信号大小改变，所以下标永远只表示位置；变化的是基本字母那一层。{$u_{\mathrm{be}}$ 的正确读法是「基极—发射极之间那个\textbf{交流}电压」：基本字母小写 $\to$ 交流层，下标仍是 $\mathrm{be}$ 表示位置。}
+
+\aside{代入本题：§4 要用的 $u_{\mathrm{be}}=u_{\mathrm{i}}$（[C4-2 p16] 红框）读作「基射之间的交流电压等于输入端的交流电压」；而 $\UBE=0.7$ V 读数时是「基射之间的直流电压是 $0.7$ V」。同一对电极，两个层次，别把 $0.7$ V 代进 $u_{\mathrm{be}}$。}
+
+\subhdr{四个陷阱（每个都能在后面的算式里翻车）}
+
+\begin{enumerate}
+
+\item \textbf{把 $u_{\mathrm{BE}}$ 当成「大的那个」}。三层里 $u_{\mathrm{BE}}$ 是\textbf{总量}（$0.7\ \mathrm{V}+u_{\mathrm{be}}$），$\UBE$ 才是直流。写 KVL 用总量，写 Q 点用直流，两者混用会让式子里出现「$0.7$ V 加上一个符号」的荒唐结果。
+
+\item \textbf{把 $i_{\mathrm{b}}$ 与 $\IB$ 当成「同一个量的两种写法」}。它们是两个不同的量：$\IB$ 是静态值（$29.4\ \mu$A 这样的数），$i_{\mathrm{b}}$ 是摆动的部分（可正可负）。$i_{\mathrm{B}}=\IB+i_{\mathrm{b}}$ 才是基极电流的总量。
+
+\item \textbf{手写体把 $\mathrm{be}$ 写成 $\mathrm{BE}$}。考试里这一步写错，阅卷人无法判断你在算静态还是算动态。建议：\textbf{下标一律写正体}（$\mathrm{be}$ 与 $\mathrm{BE}$ 都是正体），靠大小写区分层次，不靠草书。
+
+\item \textbf{以为「小写 = 交流」就够了}。$i_{\mathrm{C}}$ 是\textbf{总量}、$i_{\mathrm{c}}$ 才是纯交流，两个都是小写基本字母。真正的规则是「基本字母与下标的大小写组合」，不是只看一个字母。
+\end{enumerate}
+
+\callout{\textbf{p14 的真正作用}：它给的是后面每一个式子的「语法」。$u_{\mathrm{CE}}=\UCC-i_{\mathrm{C}}\RC$ 里面，$\UCC$ 与 $\RC$ 是常数、$i_{\mathrm{C}}$ 是总量、$u_{\mathrm{CE}}$ 是总量；把 $i_{\mathrm{C}}=\IC+i_{\mathrm{c}}$ 代进去，直流部分与交流部分会自动分成两组——$u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$ 就是这么掉出来的（§4）。\textbf{不会分这三层，就看不出「哪一项被电容挡住了」。}}
+
+%=============================================================
+\hdr{§4}{4.2.3 信号的放大过程（p15--p20）：静态、动态、隔直、反相}
+
+\subhdr{p15 的静态：六个面板全是一条直线}
+
+p15 先定义「静态」（原文 「There are DC components except the input and output.」）：\textbf{除了输入与输出两端，电路里各处都是直流量}。图上排六个面板 $u_{\mathrm{i}},u_{\mathrm{BE}},i_{\mathrm{B}},i_{\mathrm{C}},u_{\mathrm{CE}},u_{\mathrm{o}}$，前五个里四条红色水平线分别落在 $\UBE,\IB,\IC,\UCE$ 的高度，$u_{\mathrm{i}}$ 与 $u_{\mathrm{o}}$ 两个面板里根本没有波形（都等于零）。同页还并列了四条等式：
+
+\[ u_{\mathrm{BE}}=\UBE,\qquad i_{\mathrm{B}}=\IB,\qquad i_{\mathrm{C}}=\IC,\qquad u_{\mathrm{CE}}=\UCE . \]
+
+\aside{这四条等式是本讲最重要的一次「记号降级」：总量在小写字母的位置上，却等于直流量。依据是 §3 的三层约定加上「没有交流输入」这个前提——$u_{\mathrm{BE}}=\UBE+u_{\mathrm{be}}$ 而 $u_{\mathrm{be}}=0$，于是 $u_{\mathrm{BE}}=\UBE$。所以 p15 那四条不是新公式，是把 §3 的加法式里交流项取零。}
+
+\subhdr{p16 的动态：$u_{\mathrm{BE}}=\UBE+u_{\mathrm{be}}$，且 $u_{\mathrm{be}}=u_{\mathrm{i}}$}
+
+p16 的红框写了两件事：$u_{\mathrm{BE}}=\UBE+u_{\mathrm{be}}$ 与 $u_{\mathrm{be}}=u_{\mathrm{i}}$。第一件是 §3 的直接回放；\textbf{第二件才是新东西}——它说「输入端的交流电压原封不动地出现在基射之间」。为什么？课件没讲。推一遍，只用一条物理事实：\textbf{电容两端电压不能突变}（在稳态下它也不再有电流，所以它就一直保持着静态时充上的那个值）。
+
+设 $C_1$ 左极板接信号源 $u_{\mathrm{i}}$、右极板接基极（电位 $u_{\mathrm{BE}}$），则
+\[ u_{C_1}=u_{\mathrm{i}}-u_{\mathrm{BE}} . \]
+静态时 $u_{\mathrm{i}}=0$、$u_{\mathrm{BE}}=\UBE$，故 $u_{C_1}=-\UBE$。动态时 $u_{C_1}$ 保持这个值不变，于是
+\[ u_{\mathrm{BE}}=u_{\mathrm{i}}-u_{C_1}=u_{\mathrm{i}}+\UBE
+\quad\Longrightarrow\quad
+u_{\mathrm{be}}\equiv u_{\mathrm{BE}}-\UBE=u_{\mathrm{i}} . \]
+这就是红框里 $u_{\mathrm{be}}=u_{\mathrm{i}}$ 的全部来历，也是「耦合电容把交流原样送进去」的准确含义：\textbf{信号源的交流电压全部落在基射结上，一点也没被电容分掉}。
+
+\aside{代入本题：上式成立的前提是 $u_{C_1}$ 真的不变，即 $C_1$ 上流过的交流电流可以忽略。工程上用容抗判据：$X_C=1/(2\pi fC)\ll R$（$R$ 是 $C_1$ 串联回路里的等效电阻，本题约 $\RB\parallel r_{\mathrm{be}}$）。取 $C_1=10\ \mu$F、$f=1$ kHz，$X_C=15.9\ \Omega$，与几十 $\mathrm{k}\Omega$ 相比确实可忽略。}
+
+\warnbox{\textbf{「隔直」与「通交」是同一件事的两面}。$u_{C_1}=-\UBE$ 这个「被存起来的直流量」就是「隔直」：信号源那一侧看不到 $\UBE$，因为 $C_1$ 把它扣在自己身上。同时 $C_1$ 对交流的阻抗趋于零，交流全部通过，这就是「通交」。所以\textbf{不是电容「选择性地只让交流过」，而是它把直流锁在自己两端的电压里、把交流的变化全部转嫁给下一级}。p17 那句 「The capacitor $C_2$ blocks the DC component.」 说的是同一件事的输出侧版本。}
+
+\subhdr{p17 的输出：$u_{\mathrm{o}}=u_{\mathrm{ce}}$，以及第一个「交直流分离」的式子}
+
+p17 给出动态时的四个复合式（与 §3 的表一致）与一条关键式子：
+\[ \UCE=\UCC-i_{\mathrm{C}}\RC . \]
+对 $C_2$ 做与 $C_1$ 完全相同的论证：$C_2$ 左极板接集电极（电位 $u_{\mathrm{CE}}$）、右极板接输出端（电位 $u_{\mathrm{o}}$），故 $u_{C_2}=u_{\mathrm{CE}}-u_{\mathrm{o}}$；静态时 $u_{\mathrm{o}}=0$、$u_{\mathrm{CE}}=\UCE$，得 $u_{C_2}=\UCE$，保持不变。于是
+\[ u_{\mathrm{o}}=u_{\mathrm{CE}}-u_{C_2}=u_{\mathrm{CE}}-\UCE=u_{\mathrm{ce}} . \]
+\textbf{结论：输出端只剩下交流量}，直流分量 $\UCE$ 被 $C_2$ 锁住了。这就解释了 p17--p19 的波形图里为什么 $u_{\mathrm{o}}$ 是以 $0$ 为轴的正弦，而 $u_{\mathrm{CE}}$ 是以 $\UCE$ 为轴的正弦。
+
+\subhdr{为什么反相 $180^{\circ}$（p19 的提问，p20 的 E1）}
+
+p19 在电路与波形旁边只写了一句 「Why is the signal reversed?」，没有给答案就翻页去出题了。答案就从 p17 自己给的那条式子来。把 $i_{\mathrm{C}}=\IC+i_{\mathrm{c}}$ 代入 $\UCE=\UCC-i_{\mathrm{C}}\RC$：
+
+\[ u_{\mathrm{CE}}=\UCC-(\IC+i_{\mathrm{c}})\RC
+=\underbrace{(\UCC-\IC\RC)}_{=\ \UCE}-\RC\,i_{\mathrm{c}} . \]
+
+左边是总量 $u_{\mathrm{CE}}=\UCE+u_{\mathrm{ce}}$，右边是 $\UCE-\RC i_{\mathrm{c}}$。两边同时减去 $\UCE$：
+
+\[ \boxed{\ u_{\mathrm{ce}}=-\RC\,i_{\mathrm{c}}\ } \]
+
+这一步只做了一件事，但它决定了一切：\textbf{$\UCE$ 与 $i_{\mathrm{C}}$ 是「减」的关系，所以交流量的符号翻了一次}。顺着链条走一遍：
+
+\[ u_{\mathrm{i}}\uparrow\ \Longrightarrow\ u_{\mathrm{be}}\uparrow\ \Longrightarrow\ i_{\mathrm{b}}\uparrow
+\ \Longrightarrow\ i_{\mathrm{c}}=\beta i_{\mathrm{b}}\uparrow
+\ \Longrightarrow\ u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}\downarrow
+\ \Longrightarrow\ u_{\mathrm{o}}=u_{\mathrm{ce}}\downarrow . \]
+
+$u_{\mathrm{i}}$ 到 $i_{\mathrm{c}}$ 一路同号（$\beta>0$，p7 的水平段上 $\beta$ 是正常数），只有最后一步 $i_{\mathrm{c}}\to u_{\mathrm{ce}}$ 反号。\textbf{一次反号 = 相位差 $180^{\circ}$}，所以 p20 的 E1 选（1）$180^{\circ}$。
+
+\aside{把这条链写成一条式子就是电压放大倍数：由 $u_{\mathrm{ce}}=-\RC\beta i_{\mathrm{b}}$ 与 $i_{\mathrm{b}}=u_{\mathrm{be}}/r_{\mathrm{be}}$ 得 $A_u=u_{\mathrm{o}}/u_{\mathrm{i}}=-\beta\RC/r_{\mathrm{be}}$。$r_{\mathrm{be}}$ 的定义与数值在下一讲 4.4 才给，本讲只用它的存在来说明「负号是 $\RC$ 带来的，不是 $\beta$ 带来的」。}
+
+\warnbox{\textbf{反相的三种错误说法}，考试里都见过：（a）「因为三极管是反相放大器」——同义反复，没说机制；（b）「因为 $i_{\mathrm{C}}$ 与 $u_{\mathrm{CE}}$ 反相」——对，但要说出为什么，就是上面那条 $\UCE=\UCC-i_{\mathrm{C}}\RC$；（c）「$u_{\mathrm{o}}$ 与 $u_{\mathrm{i}}$ 差 $90^{\circ}$」——把电容的相移（$90^{\circ}$）与 $\RC$ 上的反号（$180^{\circ}$）混了。本电路在忽略电容阻抗的频段里，相移就是 $180^{\circ}$，没有 $90^{\circ}$ 这一档。}
+
+\subhdr{p16 那句话的补全：小信号条件}
+
+p16 右侧灰框原文是：「The Composite $u_{\mathrm{BE}}$ remains positive, that is, the is always greater than zero, the emitter remains forward biased, and the transistor is always in an amplification state.」——第三个分句缺主语（应为 the composite $u_{\mathrm{BE}}$）。补全并写成可计算的判据：
+
+\[ u_{\mathrm{BE}}(t)=\UBE+u_{\mathrm{be}}(t)>0
+\quad\Longleftrightarrow\quad
+|u_{\mathrm{be}}|_{\max}<\UBE . \]
+
+这就是全部放大分析成立的\textbf{小信号条件}：交流分量的峰值必须小于直流偏置。$\UBE\approx0.7$ V 时，输入交流峰值必须小于 $0.7$ V，管子才始终正偏、才始终在放大区。§6 的两种失真，本质都是这条不等式被破坏（下侧被破坏是截止，上侧被 $\UCE$ 的余量破坏是饱和）。
+
+%=============================================================
+\hdr{§5}{4.3.1 静态分析与 Q 点（p21--p23）：为什么要设，设了为什么会漂}
+
+\subhdr{p22：静态分析要算的只有四个数}
+
+p22 一张共射电路图，右侧粉色框列了四个量：$\UBE$、$\IB$、$\IC$、$\UCE$；左下气泡写 「$\UBE$?」。所以\textbf{静态分析 = 求这四个直流量}。注意四个量里有两个是「因」（$\UBE$ 定 $\IB$）、两个是「果」（$\IB$ 定 $\IC$、$\IC$ 定 $\UCE$），这条因果链就是 §7 计算法的顺序。
+
+\subhdr{p23：Q 点在图上的两步读法}
+
+p23 把静态分析画成左右两张图，中间一个浅蓝箭头指向黄底红字 「Q point」：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.4cm}p{7.0cm}p{7.2cm}@{}}
+\rtop
+\thead{图} & \thead{画的是什么} & \thead{读出什么}
+\\
+\rmid
+左图 & 输入特性 $I_{\mathrm{B}}$--$\UBE$，取一点 $Q$，红色虚线引到两轴 & $\UBE\approx0.7$ V 处读得 $\IB\approx40\ \mu$A
+\\
+右图 & 输出特性族 + 一条斜向下的直线 & 直线与 $I_{\mathrm{B}}=40\ \mu$A 那条曲线的交点就是 $Q$，读得 $\IC\approx2$ mA、$\UCE\approx2.6$ V
+\\
+\rbot
+\end{tabular}
+
+右图那条直线就是\textbf{直流负载线}，方程就写在图的右上角红框里：$u_{\mathrm{CE}}=\UCC-i_{\mathrm{C}}\RC$（p23 原文用的是小写 $u_{\mathrm{CE}},i_{\mathrm{C}}$，因为它是「对所有可能的工作点都成立」的关系）。它有两个截距：
+
+\[ \text{纵轴截距 } i_{\mathrm{C}}=\frac{\UCC}{\RC}\ \ (u_{\mathrm{CE}}=0),
+\qquad
+\text{横轴截距 } u_{\mathrm{CE}}=\UCC\ \ (i_{\mathrm{C}}=0) . \]
+
+\aside{代入 p23 的图：纵轴截距约 $4.2$ mA、横轴截距约 $4$ V，故 $\RC\approx4/4.2\approx0.95\ \mathrm{k}\Omega$（按图读数，两位有效数字）。这个自检很有用：\textbf{负载线的两个截距必须满足 $\RC=$ 横轴截距 $/$ 纵轴截距}，考试画图时先算这两个点，直线一拉就成，不必逐点描。}
+
+\subhdr{为什么必须先设 Q 点（三条理由，缺一条都不行）}
+
+\begin{enumerate}
+
+\item \textbf{器件是单向导电的}。发射结必须正偏才有 $i_{\mathrm{B}}$（[C4-1 p30] 的输入特性像二极管：$\UBE$ 小于死区电压时 $\IB\approx0$）。所以交流信号如果直接加在基极、没有直流偏置，那它的负半周会让发射结反偏、$i_{\mathrm{B}}$ 被钳在零——\textbf{负半周根本没有被放大，只是被切掉了}。p27 的截止失真就是这个样子。
+
+\item \textbf{「放大」这个线性关系只在放大区成立}。$I_{\mathrm{C}}=\beta I_{\mathrm{B}}$ 是放大区的性质（[C4-1 p14] 的（2））；到了饱和区它变成 $I_{\mathrm{C}}\neq\beta I_{\mathrm{B}}$（[C4-1 p16]）。所以 Q 点必须先落在放大区，「放大」才有定义。
+
+\item \textbf{而且 Q 点要给摆幅留出位置}。p23 的红字原文：「the Q-point is selected in such a way that \textbf{irrespective of AC signal swing}, the transistor \textbf{remains in the active region}」。注意 「irrespective of」 是「无论……都」，即\textbf{在整个摆动范围内}都要留在放大区，不是「静态那一刻在放大区就行」。
+\end{enumerate}
+
+把第 3 条量化。设输出的交流峰值为 $U_{\mathrm{om}}$，则要求（p27 的两个边界）：
+
+\[ \text{下摆不许进饱和：}\ \UCE-U_{\mathrm{om}}>\UCES,
+\qquad
+\text{上摆不许进截止：}\ U_{\mathrm{om}}<\RC\IC . \]
+
+\aside{代入 E1（$\UCE=3.06$ V、$\RC\IC=2.94$ V、取 $\UCES=0.3$ V）：下摆允许 $3.06-0.3=2.76$ V，上摆允许 $2.94$ V，故 $U_{\mathrm{om}}<2.76$ V。这两个数不相等，说明 E1 的 Q 点\emph{并不}在负载线正中，它离饱和更近一点（§6 会看到后果）。}
+
+\subhdr{Q 点为什么会漂：三条腿 + 一条代数}
+
+固定一处偏置（$\RB$、$\RC$、$\UCC$ 都不动），Q 点照样会动，因为管子的三个参数随温度变：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{4.0cm}p{4.4cm}p{4.4cm}@{}}
+\rtop
+\thead{参数} & \thead{温度升高时} & \thead{课件依据} & \thead{对 Q 点的作用}
+\\
+\rmid
+$\UBE$ & 变小（输入特性左移） & p4 的 $85^{\circ}$ 曲线在 $25^{\circ}$ 左边 & $\IB=(\UCC-\UBE)/\RB$ 变大
+\\
+$\beta$ & 变大 & p7 给的是范围 $20\sim150$，本身就分散 & $\IC=\bar\beta\IB$ 变大
+\\
+$\ICEO$ & 变大（漏电，指数增长） & p8 的定义 & 直接加在 $\IC$ 上
+\\
+\rbot
+\end{tabular}
+
+三条腿最后都走到同一个加法式上（这个式子是 §1 由 p7 反解出来的）：
+\[ \IC=\bar\beta\,\IB+\ICEO,\qquad \IB=\frac{\UCC-\UBE}{\RB} . \]
+\textbf{$\UBE$ 减小 $\to\IB$ 增大 $\to\bar\beta\IB$ 增大；$\ICEO$ 自己也在增大}——两项同向，$\IC$ 必然增大，Q 点沿负载线向上（往饱和方向）移动。
+
+\warnbox{\textbf{定量演示（用 E1 的数字）}：$\UCC=6$ V、$\RC=2\ \mathrm{k}\Omega$、$\RB=180\ \mathrm{k}\Omega$、$\UBE=0.7$ V 都不变，只把 $\beta$ 从 $50$ 换成 $100$（同型号管子换一只，或温度升高），则
+\[ \IB=\frac{6-0.7}{180}=0.02944\ \mathrm{mA},\qquad
+\IC=100\times0.02944=2.944\ \mathrm{mA}, \]
+\[ \UCE=6-2\times2.944=0.111\ \mathrm{V}\approx0.11\ \mathrm{V} . \]
+$\UCE$ 从 $3.06$ V 掉到约 $0.11$ V，已经低于 $\UBE$（集电结正偏），\textbf{管子被推进饱和区}。同一块电路板、同一批元件，只因为 $\beta$ 翻了一倍，放大器就变成了开关。这就是「必须先算 Q 点」和「Q 点会漂」两件事合起来的全部严重性。}
+
+\aside{温度系数的量级（课件未给，属 [教材补充]）：硅管 $\UBE$ 约 $-2\sim-2.5$ mV/$^{\circ}$C，$\beta$ 约每升高 $1^{\circ}$C 增大 $0.5\%\sim1\%$，$\ICEO$ 约每升高 $10^{\circ}$C 翻一倍。三者里对硅管影响最大的是 $\beta$，对锗管最大的是 $\ICEO$。本讲义只用「同向增大」这个定性结论，不代入具体系数。}
+
+\callout{\textbf{这一节的两句话}：（1）Q 点不是「随便找个直流工作点」，而是\textbf{一条被动器件约束、一条线性关系、一条摆幅余量}三条要求同时满足的那个点；（2）这个点不能靠「算准一次」稳住——$\beta$、$\UBE$、$\ICEO$ 都在漂，所以后续课要换一种更稳的偏置方式（如分压式偏置），本讲不展开。}
+
+%=============================================================
+\hdr{§6}{4.3.2 失真的两个来源（p24--p27）：削平在哪一边，就是哪一种}
+
+\subhdr{p24：Q 点合适时，所有波形都不削平}
+
+p24 的左上角写 「If the Q-point is set properly」。六个面板全部画出波形：$u_{\mathrm{i}}$ 与 $u_{\mathrm{BE}}$、$i_{\mathrm{B}}$ 同相；$i_{\mathrm{C}}$ 与 $i_{\mathrm{B}}$ 同相；$u_{\mathrm{CE}}$ 与 $i_{\mathrm{C}}$ 反相；$u_{\mathrm{o}}$ 与 $u_{\mathrm{i}}$ 反相。\textbf{六个波形一个也没削平}——这就是「设合适」的可观测定义。
+
+\subhdr{先学会读那六个小面板（p24--p27 共用一套版面）}
+
+p24--p27 每页都是同一张电路 + 六个波形面板（$u_{\mathrm{i}}$、$u_{\mathrm{BE}}$、$i_{\mathrm{B}}$、$i_{\mathrm{C}}$、$u_{\mathrm{CE}}$、$u_{\mathrm{o}}$）。读它们只需要三件事：\textbf{基准线是哪条虚线、与 $u_{\mathrm{i}}$ 同相还是反相、削平出现在哪一侧}。压成一张表：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{2.4cm}p{2.2cm}p{4.0cm}p{3.2cm}@{}}
+\rtop
+\thead{面板} & \thead{基准线} & \thead{与 $u_{\mathrm{i}}$} & \thead{$\IB$ 太小时的削平} & \thead{$\IB$ 太大时}
+\\
+\rmid
+$u_{\mathrm{i}}$ & 横轴 $0$ & --- & 不削（信号源本身完好） & 不削
+\\
+$u_{\mathrm{BE}}$ & $\UBE$ & 同相 & 波谷被压扁（正偏不足） & 峰顶略钝
+\\
+$i_{\mathrm{B}}$ & $\IB$ & 同相 & 波谷削平（钳在 $0$） & 波峰削平
+\\
+$i_{\mathrm{C}}$ & $\IC$ & 同相 & 波谷削平（贴 $0$ 轴） & 波峰削平
+\\
+$u_{\mathrm{CE}}$ & $\UCE$ & 反相 & 波峰削平 & 波谷削平
+\\
+$u_{\mathrm{o}}$ & 横轴 $0$ & 反相 & 波峰削平 & 波谷削平
+\\
+\rbot
+\end{tabular}
+
+\aside{三条读图要点：第一，$u_{\mathrm{o}}$ 的基准线是横轴 $0$ 而不是 $\UCE$（因为 $C_2$ 隔直，§4），而 $u_{\mathrm{CE}}$ 的基准线是 $\UCE$——这一条最容易读错；第二，$i_{\mathrm{C}}$ 与 $u_{\mathrm{CE}}$ 的相位永远相反，因为 $u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$；第三，削平只出现在「输出侧」（$i_{\mathrm{C}}$、$u_{\mathrm{CE}}$、$u_{\mathrm{o}}$），$u_{\mathrm{i}}$ 永远不削。}
+
+\subhdr{p25、p26：削平出现了，但课件没说这是哪种失真}
+
+p25 与 p26 是同一张电路、同一组取样点，只改了一处偏置，两组削平方向正好相反：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.0cm}p{4.4cm}p{4.4cm}p{4.6cm}@{}}
+\rtop
+\thead{页} & \thead{$i_{\mathrm{C}}$ 削哪里} & \thead{$u_{\mathrm{CE}}$、$u_{\mathrm{o}}$ 削哪里} & \thead{对应 p27 的哪一条}
+\\
+\rmid
+p25 & 波谷（底部，贴着 $0$ 轴） & 波峰（顶部） & 第 1 条（$\IB$ 太小）
+\\
+p26 & 波峰（顶部） & 波谷（底部） & 第 2 条（$\IB$ 太大）
+\\
+\rbot
+\end{tabular}
+
+这两页的图面上\textbf{没有任何文字说明这是哪种失真}，连「截止」「饱和」两个字都没有出现；名字要到 p27 才给。
+
+\subhdr{p27 的结论与它缺的判据}
+
+p27 顶部两行红字原文：
+
+\begin{quote}
+\itshape 1. $I_B$ too small, cause the cut-off distortion.\\
+2. $I_B$ too big, cause the saturation distortion.
+\end{quote}
+
+这两句话给了名字，但\textbf{「too small」与「too big」是相对于什么，课件没有说}。补出判据。设 $i_{\mathrm{b}}$ 的峰值为 $I_{\mathrm{bm}}$、$i_{\mathrm{c}}$ 的峰值为 $I_{\mathrm{cm}}=\beta I_{\mathrm{bm}}$：
+
+\textbf{（1）截止失真}：$i_{\mathrm{B}}=\IB+i_{\mathrm{b}}$ 的波谷先碰到零。$i_{\mathrm{B}}$ 不能为负（发射结反偏时基极电流只能截止），所以
+\[ \IB-I_{\mathrm{bm}}<0\quad\Longleftrightarrow\quad \text{过 } \IB \text{ 的波谷被钳在 } 0 . \]
+$i_{\mathrm{B}}$ 被钳 $\Rightarrow i_{\mathrm{C}}$ 也被钳在 $\approx0$（跟着 $0$ 走）$\Rightarrow$ 由 $\UCE=\UCC-i_{\mathrm{C}}\RC$，$i_{\mathrm{C}}$ 该降而不能再降，$u_{\mathrm{CE}}$ 就\textbf{停在最高处}$\Rightarrow$ $u_{\mathrm{o}}$ \textbf{削顶}。
+
+\textbf{（2）饱和失真}：$i_{\mathrm{C}}$ 的波峰把 $u_{\mathrm{CE}}$ 压到饱和压降以下。由 $u_{\mathrm{CE}}=\UCE-\RC i_{\mathrm{c}}$，
+\[ \UCE-\RC I_{\mathrm{cm}}<\UCES\quad\Longleftrightarrow\quad \text{过 } u_{\mathrm{CE}} \text{ 的谷底被钳在 } \UCES . \]
+$u_{\mathrm{CE}}$ 被钳 $\Rightarrow$ $u_{\mathrm{o}}$ 也\textbf{停在最低处}$\Rightarrow$ $u_{\mathrm{o}}$ \textbf{削底}。
+
+\aside{代入本题：这两种削平在图上就是「某半个周期被切掉一块」。p27 左边一列（$\IB$ 太小）的 $u_{\mathrm{o}}$ 正半周被削平；右边一列（$\IB$ 太大）的 $u_{\mathrm{o}}$ 负半周被削平。判断口诀见下，不要在考场上现场推。}
+
+\subhdr{一张判据表（p25--p27 的全部内容压缩成四行）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{3.2cm}p{3.6cm}p{3.4cm}p{2.9cm}@{}}
+\rtop
+\thead{失真} & \thead{$i_{\mathrm{C}}$ 削在哪} & \thead{$u_{\mathrm{CE}}$、$u_{\mathrm{o}}$ 削在哪} & \thead{触发条件} & \thead{怎么修}
+\\
+\rmid
+截止失真 & 底部（贴 $0$） & 顶部（波峰） & $\IB<I_{\mathrm{bm}}$，即 Q 点太低 & 减小 $\RB$（把 $\IB$ 抬上去）
+\\
+饱和失真 & 顶部 & 底部（波谷） & $\UCE-\RC I_{\mathrm{cm}}<\UCES$，即 Q 点太高 & 增大 $\RB$（把 $\IB$ 压下去）
+\\
+\rbot
+\end{tabular}
+
+\warnbox{\textbf{为什么「输出削顶」对应截止、「削底」对应饱和}——这是最容易记反的一处。原因只有一个：$u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$（§4）。$i_{\mathrm{C}}$ 往下削（截止）时，$-\RC i_{\mathrm{c}}$ 是正的，于是 $u_{\mathrm{ce}}$ 往上顶、削顶；$i_{\mathrm{C}}$ 往上削（饱和）时，$u_{\mathrm{ce}}$ 往下掉、削底。\textbf{看不出来就往「$i_{\mathrm{C}}$ 削哪边」上想，再反一次号。}}
+
+\subhdr{用 E1 的 Q 点算一次「先撞哪一边」}
+
+E1 的 Q 点是 $\IC=1.47$ mA、$\UCE=3.06$ V、$\RC=2\ \mathrm{k}\Omega$。两个方向的余量：
+
+\begin{itemize}
+\item \textbf{往截止方向}：$i_{\mathrm{c}}$ 能往下摆到 $-1.47$ mA（再往下 $i_{\mathrm{C}}$ 就为负），对应 $u_{\mathrm{o}}$ 上摆到 $+2.94$ V。
+\item \textbf{往饱和方向}：$u_{\mathrm{ce}}$ 能往下摆到 $-(3.06-0.3)=-2.76$ V（取 $\UCES=0.3$ V），对应 $u_{\mathrm{o}}$ 下摆到 $-2.76$ V。
+\end{itemize}
+
+两个数差 $0.18$ V，\textbf{饱和方向先撞}。所以对 E1 这块电路，慢慢加大输入幅度，先出现的应该是\textbf{饱和失真（$u_{\mathrm{o}}$ 削底）}，而不是截止失真。要让它先截止，得把 Q 点往下调（增大 $\RB$）。
+
+\aside{这里的 $\UCES=0.3$ V 是课件从未给出的数（p27 只写 「saturation distortion」，不写 $\UCE$ 压到多少）。硅管工程上常取 $0.3$ V（深度饱和可到 $0.1$ V）。本题若不取 $\UCES$ 就无法比较两个余量——见 §10 第 6 条缺口与 §11 的 [待确认]。}
+
+%=============================================================
+\hdr{§7}{4.3.3 计算法（p28--p35）：直流通路怎么画、E1、三道模式题、实测}
+
+\subhdr{p29 的两条规则，以及它们为什么成立}
+
+p29 原文只有两行：
+
+\begin{quote}
+\itshape 1 DC path: (1) Signal source short circuit; (2) Capacitor open circuit.
+\end{quote}
+
+这两条是「画直流通路」的操作规则，课件没给依据。依据是同一件事的两面——\textbf{直流通路 = 只让直流电源单独作用时的电路}：
+
+\begin{itemize}
+\item \textbf{信号源短路}：求直流量时，交流源 $u_{\mathrm{i}}$ 置零。电压源置零就是把它的端电压强制为零，即\textbf{用一根导线替掉它}（不是「断开」）。所以 $C_1$ 左侧那一点直接落到地线上。
+\item \textbf{电容开路}：直流稳态下电容里没有电流（$i_C=C\,\mathrm{d}u/\mathrm{d}t=0$，电压不变），所以它所在的那条支路在直流通路里\textbf{断开}。$C_1$、$C_2$ 同时被拿掉。
+\end{itemize}
+
+两条一起用，p29 的原电路就简化成右下方那张直流通路：$+\UCC$ 经 $\RB$ 到基极，经 $\RC$ 到集电极，发射极接地，其余什么都没有。\textbf{注意 $C_1$ 被拿掉之后，基极只剩下 $\RB$ 一条路}——这一步是后面所有式子的前提。
+
+\subhdr{三个方程怎么来（以及为什么 $\RC$ 不出现在 $\IB$ 的式子里）}
+
+在直流通路上对\textbf{基极回路}列 KVL。路径是：$+\UCC\to\RB\to$ 基极 $\to$ 发射结 $\to$ 发射极（地）$\to\UCC$ 负端。
+
+\[ \IB\RB+\UBE=\UCC
+\quad\Longrightarrow\quad
+\boxed{\ \IB=\frac{\UCC-\UBE}{\RB}\ } \]
+
+\aside{代入本题：这条回路里\textbf{只有 $\RB$ 一个电阻}，所以式子里只有 $\RB$。$\RC$ 在集电极回路上（$+\UCC\to\RC\to$ 集电极 $\to$ 发射极 $\to$ 地），而集电极电流 $i_{\mathrm{C}}$ 是受 $i_{\mathrm{B}}$ 控制的，不是回路的自变量。两条回路在 $+\UCC$ 与地这两点相接，但在直流分析里各自成回路、互不干扰。}
+
+另外两个方程来自器件与外电路：
+\[ \IC=\beta\IB,\qquad \UCE=\UCC-\RC\IC . \]
+第二条同样是集电极回路的 KVL：$\RC$ 上的压降 $\RC\IC$ 从 $\UCC$ 里扣掉，剩下的就是管子两端的 $\UCE$。
+
+\subhdr{E1（p30）：三步算完，再补一步判读}
+
+题面（p30）：$\beta=50$，$\RC=2\ \mathrm{k}\Omega$，$\UCC=+6$ V，$\RB=180\ \mathrm{k}\Omega$。求静态工作点。
+
+\textbf{第 1 步，求 $\IB$。}课件写的是 $\IB=\dfrac{6-0.7}{180}\ \mathrm{mA}=0.0294\ \mathrm{mA}$。注意这里被吞掉了一件事：$6-0.7=5.3$ 的单位是 V，$180$ 的单位是 $\mathrm{k}\Omega$，而
+\[ \frac{\mathrm{V}}{\mathrm{k}\Omega}=\frac{\mathrm{V}}{10^{3}\ \Omega}=10^{-3}\ \mathrm{A}=\mathrm{mA} , \]
+所以结果直接读作 mA 是对的。\textbf{但这是「单位自动配平」，不是「无量纲」}——写解答时最好补上中间那一步 $5.3\ \mathrm{V}/180\ \mathrm{k}\Omega=0.0294\ \mathrm{mA}$。
+
+\textbf{第 2 步，求 $\IC$。}
+\[ \IC=\beta\IB=50\times0.0294\ \mathrm{mA}=1.47\ \mathrm{mA} . \]
+
+\textbf{第 3 步，求 $\UCE$。}
+\[ \UCE=\UCC-\RC\IC=6\ \mathrm{V}-2\ \mathrm{k}\Omega\times1.47\ \mathrm{mA}
+=6-2.94=3.06\ \mathrm{V} . \]
+同样注意单位：$\mathrm{k}\Omega\times\mathrm{mA}=\mathrm{V}$。
+
+\textbf{第 4 步（课件没有，但必须做），判读与校核。}
+\[ \IC\RC+\UCE=2.94+3.06=6.00\ \mathrm{V}=\UCC\ \checkmark \]
+\[ \IC=1.47\ \mathrm{mA}<\ICM'=\frac{\UCC}{\RC}=\frac{6}{2}=3\ \mathrm{mA},\qquad 0<\UCE<\UCC\ \checkmark \]
+故 Q 点在放大区，位置 $\UCE/\UCC=3.06/6=51\%$，基本居中。
+
+\aside{$\ICM'=\UCC/\RC$ 这个记号要当心：它不是 p9 的参数 $\ICM$（最大允许集电极电流），而是\textbf{这条负载线允许的最大集电极电流}（$u_{\mathrm{CE}}=0$ 时的值，[C4-1 p17] 写作 $\ICM=\UCC/\RC$）。课件在两处用了同一个字母 $\ICM$ 表示两个意思，§10 第 11 条会点名。本讲义在需要区分时把它记作 $\ICM'$。}
+
+\subhdr{p31 的三道模式题：一个式子看出全部差别}
+
+题面（p31）：$\beta=100$，$\RC=2\ \mathrm{k}\Omega$，$\UCC=+5$ V，$\RB$ 分别取 $500\ \mathrm{k}\Omega$、$200\ \mathrm{k}\Omega$、$1000\ \mathrm{k}\Omega$，求工作模式。
+
+三道题共用同一个结构。把 $\IB$ 代进 $\UCE$ 的式子并整理：
+\[ \UCE=\UCC-\RC\beta\,\frac{\UCC-\UBE}{\RB}
+=\UCC-k\,(\UCC-\UBE),\qquad k\equiv\frac{\beta\RC}{\RB} . \]
+\textbf{三道题只差一个数 $k$}：$k=0.4$、$k=1$、$k=0.2$。负载线的最大电流 $\ICM'=\UCC/\RC=2.5$ mA，饱和判据是 $\UCE\le\UCES$，折算成 $k$ 就是 $k\ge(\UCC-\UCES)/(\UCC-\UBE)\approx4.7/4.3=1.09$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{2.1cm}p{2.3cm}p{2.2cm}p{2.2cm}p{3.6cm}@{}}
+\rtop
+\thead{题} & \thead{$\RB$} & \thead{$\IB$} & \thead{$\IC$} & \thead{$\UCE$} & \thead{判读}
+\\
+\rmid
+（1） & $500\ \mathrm{k}\Omega$ & $8.6\ \mu$A & $0.86$ mA & $3.28$ V & 放大区，Q 点居中偏上
+\\
+（2） & $200\ \mathrm{k}\Omega$ & $21.5\ \mu$A & $2.15$ mA & $0.70$ V & 放大区边界：临界饱和
+\\
+（3） & $1000\ \mathrm{k}\Omega$ & $4.3\ \mu$A & $0.43$ mA & $4.14$ V & 放大区，Q 点偏高（贴近截止）
+\\
+\rbot
+\end{tabular}
+
+逐步演算（三题同一套式子，逐行代入）：
+
+\textbf{（1）$\RB=500\ \mathrm{k}\Omega$}
+\[ \IB=\frac{5-0.7}{500}=0.0086\ \mathrm{mA},\quad
+\IC=100\times0.0086=0.86\ \mathrm{mA},\quad
+\UCE=5-2\times0.86=3.28\ \mathrm{V} . \]
+校核 $\IC\RC+\UCE=1.72+3.28=5.00\ \checkmark$；$\IC=0.86<2.5$，$0<\UCE<5$，\textbf{放大区}。
+
+\textbf{（2）$\RB=200\ \mathrm{k}\Omega$}
+\[ \IB=\frac{5-0.7}{200}=0.0215\ \mathrm{mA},\quad
+\IC=100\times0.0215=2.15\ \mathrm{mA},\quad
+\UCE=5-2\times2.15=0.70\ \mathrm{V} . \]
+校核 $4.30+0.70=5.00\ \checkmark$。这里出现了一个「设计出来的巧合」：$\RB=200\ \mathrm{k}\Omega=\beta\RC$，即 $k=1$，于是
+\[ \UCE=\UCC-1\cdot(\UCC-\UBE)=\UBE=0.70\ \mathrm{V} , \]
+\textbf{与 $\UCC$ 无关}。$\UCE=\UBE$ 意味着集电结两端电压 $U_{\mathrm{CB}}=\UCE-\UBE=0$——\textbf{集电结零偏}，这就是放大区与饱和区的分界点，工程上叫\textbf{临界饱和}。
+
+\textbf{（3）$\RB=1000\ \mathrm{k}\Omega$}
+\[ \IB=\frac{5-0.7}{1000}=0.0043\ \mathrm{mA},\quad
+\IC=100\times0.0043=0.43\ \mathrm{mA},\quad
+\UCE=5-2\times0.43=4.14\ \mathrm{V} . \]
+校核 $0.86+4.14=5.00\ \checkmark$。$\UCE$ 已经离 $\UCC$ 只剩 $0.86$ V，Q 点贴着截止区边沿。
+
+\warnbox{\textbf{这三道题的正确答案不是「放大/饱和」二选一}。严格按 [C4-1 p14] 的判据（$0<\UCE<\UCC$ 且 $\IC=\beta\IB$ 成立），三题\textbf{都在放大区}。真正有区别的是\textbf{离哪条边界多近}：（2）离饱和边界只差 $0.40$ V（$\UCE-\UCES=0.70-0.30$），（3）离截止边界只差 $0.86$ V（$\UCC-\UCE$），（1）两边都有 $1.7$ V 以上。这个「余量」才是 §6 两种失真会不会出现的决定量。考试若只写「放大区」三个字，等于没答完。}
+
+\aside{判读用的 $\UCES$ 课件从未给出（p17 只说 「Saturation means short circuit」，把 $\UCE$ 直接当 $0$）。若按 $\UCES=0$ 判，（2）的 $\UCE=0.70$ V 就还在放大区内部；若按硅管的 $0.3$ V 判，（2）已经进入临界。本讲义取「零偏即临界」这个不依赖数值的说法，避免替课件定一个它没给的数。}
+
+\subhdr{p32--p35：把上面这些东西搬到示波器上}
+
+p32--p35 是同一个电路（$\beta=100$、$\RC=2\ \mathrm{k}\Omega$、$\UCC=+5$ V）接两台示波器的实测图，四页的区别只在「输入加了多少」：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.2cm}p{5.6cm}p{9.2cm}@{}}
+\rtop
+\thead{页} & \thead{两屏上看到什么} & \thead{对应本讲哪一条}
+\\
+\rmid
+p32 & 两块屏都是水平直线 & 这就是 p15 的「静态」最直观的样子：没有交流输入，$u_{\mathrm{i}}=0$、$u_{\mathrm{o}}=0$
+\\
+p33 & 左屏黄色正弦（$u_{\mathrm{i}}$）、右屏红色正弦（$u_{\mathrm{o}}$），两波形反相 & p24 的「Q 点合适」：波形完整、不削平，且与输入反相（§4）
+\\
+p34 & 右屏红线底部开始出现水平段 & 输出的负半周被压住，是 §6 表里「饱和失真」的形态
+\\
+p35 & 右屏红线底部的水平段更长更平 & 同上，幅度再加大，削得更狠
+\\
+\rbot
+\end{tabular}
+
+\aside{读数位置（p32--p35 的接线）：左机探头夹在 $C_1$ \textbf{左端}（即信号源一侧），右机探头夹在 $C_2$ \textbf{右端}（即输出一侧），两台机器的黑夹子都接同一条地母线。所以左屏量的是 $u_{\mathrm{i}}$、右屏量的是 $u_{\mathrm{o}}$，而不是 $u_{\mathrm{BE}}$ 与 $u_{\mathrm{CE}}$——这一点决定了屏上看到的是「以 $0$ 为轴」的波形（§4 的隔直结论）。}
+
+\warnbox{\textbf{p34、p35 的波形是哪种失真，课件没有文字说明。}本讲义按 §6 的判据判读：\textbf{削在底部 $\Rightarrow$ 饱和失真}（因为 $u_{\mathrm{o}}=u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$，$i_{\mathrm{C}}$ 往上撞饱和时 $u_{\mathrm{o}}$ 往下削）。这两页给的是「同一 Q 点、只加大输入幅度」的连续实验，正好演示了 §6 里「余量不够就先削」这件事。若任课教师按别的判据讲过，以课堂为准 [待确认]。}
+
+%=============================================================
+\hdr{§8}{公式卡：五步用法、三个必查、一张单位表}
+
+\subhdr{静态分析五步（第 5 步是课件没有的，但考试必扣分）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{0.9cm}p{5.2cm}p{9.8cm}@{}}
+\rtop
+\thead{步} & \thead{做什么} & \thead{写法}
+\\
+\rmid
+1 & 画直流通路 & 信号源短路（$\rightarrow$ 导线）、电容开路（$\rightarrow$ 断），只留 $\UCC,\RB,\RC$ 与管子
+\\
+2 & 求 $\IB$ & $\IB=(\UCC-\UBE)/\RB$；$\UBE$ 取 $0.6\sim0.7$ V
+\\
+3 & 求 $\IC$ & $\IC=\beta\IB$（或 $\bar\beta\IB+\ICEO$）
+\\
+4 & 求 $\UCE$ & $\UCE=\UCC-\RC\IC$
+\\
+5 & 判读 & 校核 $\IC\RC+\UCE=\UCC$；查 $0<\UCE<\UCC$、$\IC<\UCC/\RC$；算两侧余量
+\\
+\rbot
+\end{tabular}
+
+\subhdr{一题三变：把 $\RB$ 换成参数 $k$}
+
+本讲三道模式题（p31）与 E1（p30）都是同一个电路，只差 $\RB$。把 $\RB$ 消掉：
+\[ \UCE=\UCC-k\,(\UCC-\UBE),\qquad k=\frac{\beta\RC}{\RB} ,\qquad
+\IC=k\,\frac{\UCC-\UBE}{\RC} . \]
+
+这个 $k$ 有明确的物理意义：\textbf{负载线被「用掉」的比例}。$k<1$ 时 Q 点在放大区内部；$k\to1$ 时 $\UCE\to\UBE$，走到临界饱和；$k>1$ 时无解（假设的放大区方程不成立），实际进入饱和、$\IC$ 由 $\UCC/\RC$ 封顶。
+
+\aside{代入本题：E1 的 $k=50\times2/180=0.556$，故 $\UCE=6-0.556\times5.3=3.06$ V；p31 的（1）（2）（3）分别是 $k=0.4,1,0.2$。\textbf{四个例子一个式子}，这就是为什么本讲义把它做成卡片。}
+
+\subhdr{三个必查（课件给了参数却不给数，做题时要自己声明）}
+
+\begin{enumerate}
+\item $\UCES$：判饱和用。课件从未给数值（[C4-2 p17] 直接把 $\UCE$ 当 $0$）。做题时写「取 $\UCES\approx0.3$ V（硅管）」或「按理想开关 $\UCES=0$」，两种都能自洽，但要写明。
+\item $\UCC/\RC$：负载线允许的最大集电极电流（[C4-1 p17] 记作 $\ICM=\UCC/\RC$）。它和 p9 的 $\ICM$ 不是一回事，本讲义记作 $\ICM'$。
+\item $\PCM=\IC\UCE$：功耗上限（p10）。本讲例题都没给这个数，所以只能「知道要查」，不能真的查。
+\end{enumerate}
+
+\subhdr{单位表（本讲所有算式只用到这四行）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{3.4cm}p{8.6cm}@{}}
+\rtop
+\thead{运算} & \thead{单位} & \thead{用在哪儿}
+\\
+\rmid
+$\mathrm{V}/\mathrm{k}\Omega$ & mA & $\IB=(\UCC-\UBE)/\RB$（E1 的 $5.3/180$）
+\\
+$\mathrm{k}\Omega\times\mathrm{mA}$ & V & $\RC\IC$（E1 的 $2\times1.47=2.94$）
+\\
+$\mathrm{V}-\mathrm{V}$ & V & $\UCE=\UCC-\RC\IC$
+\\
+$\mathrm{V}\times\mathrm{mA}$ & mW & $P_{\mathrm{C}}=\IC\UCE$（p10）
+\\
+\rbot
+\end{tabular}
+
+%=============================================================
+\hdr{§9}{易错点：每一条都能指回某一步}
+
+\begin{enumerate}
+
+\item \textbf{把总量当直流量代进 Q 点的式子。}（§3 三层表、§7 第 2 步）$\IB=(\UCC-\UBE)/\RB$ 里的 $\UBE$ 是\textbf{直流}；若把瞬时值 $u_{\mathrm{BE}}=0.7+u_{\mathrm{be}}$ 代进去，就会算出「随信号摆动的 $\IB$」，那是动态分析的结果，不是 Q 点。
+
+\item \textbf{画直流通路时把电容「短路」而不是「开路」。}（§7 第 1 步）恰恰相反：直流下电容开路、交流下电容短路。搞反了会得出「$C_1$ 把信号源与基极短接」这种荒唐结论。
+
+\item \textbf{把 $\RC$ 写进 $\IB$ 的式子。}（§7 的 aside）基极回路上只有 $\RB$；$\RC$ 在集电极回路上。写 $\IB=(\UCC-\UBE)/(\RB+\RC)$ 是最常见的错，量纲没错但物理全错。
+
+\item \textbf{单位直接当无量纲算。}（§7 E1 第 1 步）$5.3/180$ 抄成 $0.0294$ A 就整整差了 $1000$ 倍。养成「先写单位、后写数」的习惯：$\mathrm{V}/\mathrm{k}\Omega$ 一定是 mA。
+
+\item \textbf{假设放大区算完不回头检查。}（§7 p31 第（2）（3）题）$\IC=\beta\IB$ 是\textbf{有条件的}等式，算出的 $\UCE$ 必须落在 $(\UCES,\UCC)$ 内；落在外面说明假设错了，要用 $\IC=\UCC/\RC$ 重算。第（2）题的 $\RB=\beta\RC$ 就是把这件事推到边界上的特例。
+
+\item \textbf{把「输出反相」说成 $90^{\circ}$ 或「电容移相」。}（§4、§6）相移来自 $u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$ 的负号，是 $180^{\circ}$；$C_1,C_2$ 在通带内只是耦合元件，不贡献相移。
+
+\item \textbf{把「削顶」与「削底」对错了号。}（§6 的判据表）判据只有一条：$u_{\mathrm{o}}=u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$ 反了一次号，所以\textbf{输出削顶 = 截止、削底 = 饱和}。记不住就回到 $i_{\mathrm{C}}$：$i_{\mathrm{C}}$ 削底（撞零）就是截止。
+
+\item \textbf{以为 Q 点是「输入特性与输出特性的交点」。}（§5 p23）左图的 Q 只是「由 $\UBE$ 读出 $\IB$」的一个标注点；真正的 Q 点在\textbf{右图}，是\textbf{直流负载线}与某一条 $I_{\mathrm{B}}$ 曲线的交点。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{缺口清单：12 条，逐条给页码、原文短语、缺了什么、补在哪一节}
+
+每条的格式固定：\textbf{类型 · 页码} $\to$ 课件原文短语 $\to$ 缺了什么 $\to$ 补在本讲义哪一节。
+
+\gapitem{机制缺口 · p13}{「$\RB$ is greater than $\RC$」。缺：大多少——字面像「大一点就行」，实际要求大一个 $\beta$ 的量级（$50\sim150$ 倍）。补：§2 由 $\UCE>\UCES$ 推出 $\RB/\RC>\beta(\UCC-\UBE)/(\UCC-\UCES)$，代入 E1 得 $90>46.5$。}
+
+\gapitem{机制缺口 · p19}{「Why is the signal reversed?」。缺：答案。课件问完就翻页出 E1（p20），反相的原因全册没有出现。补：§4 把 $i_{\mathrm{C}}=\IC+i_{\mathrm{c}}$ 代入 $\UCE=\UCC-i_{\mathrm{C}}\RC$，得 $u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$，指出反号只发生一次，故相位差 $180^{\circ}$。}
+
+\gapitem{机制缺口 · p17}{「The capacitor $C_2$ blocks the DC component.」。缺：电容凭什么「隔直」、又凭什么让交流「原样通过」；$u_{\mathrm{be}}=u_{\mathrm{i}}$（p16）与 $u_{\mathrm{o}}=u_{\mathrm{ce}}$ 这两个等式都没有依据。补：§4 用「电容电压不能突变」把 $u_{C_1}=-\UBE$、$u_{C_2}=\UCE$ 定住，再推两个等式；容抗判据 $X_C\ll R$ 标 [教材补充]。}
+
+\gapitem{机制缺口 · p29}{「1 DC path: (1) Signal source short circuit; (2) Capacitor open circuit.」。缺：这两条规则的依据，学生只会背不会用（尤其「信号源短路」容易被理解成「断开」）。补：§7 说明「置零 = 用导线替掉电压源」与「直流稳态 $i_C=C\,\mathrm{d}u/\mathrm{d}t=0$」。}
+
+\gapitem{适用区间 · p30、p31}{$\IB=(6-0.7)/180\ \mathrm{mA}$ 与 p31 三题全部默认 $\UBE=0.7$ V。缺：$\UBE$ 取 $0.7$ V 这个\textbf{假设}从未写出，也没说它是硅管放大状态的工程近似。补：§1 给出 $0.6\sim0.7$ V 的来源（p3 的「像二极管」），§7 在每道题里显式写「取 $\UBE=0.7$ V」。}
+
+\gapitem{适用区间 · p27}{「1. $I_B$ too small, cause the cut-off distortion.」。缺：判据——「too small/too big」 相对于什么？$\UCES$ 的数值全册未给（p17 把 $\UCE$ 直接当 $0$）。补：§6 给出 $\IB<I_{\mathrm{bm}}$ 与 $\UCE-\RC I_{\mathrm{cm}}<\UCES$ 两个判据，并给出 E1 的两侧余量 $2.94$ V / $2.76$ V。}
+
+\gapitem{答案形态 · p31}{三道「Find the operating mode」全都不给答案，也不给判据。缺：三题的答案与判断流程；而且三题严格算下来\textbf{都在放大区}，真正的差别是「离哪条边界多近」。补：§7 用 $k=\beta\RC/\RB$ 把三题参数化（$k=0.4,1,0.2$），给全解、给余量表，并说明第（2）题 $\RB=\beta\RC\Rightarrow\UCE\equiv\UBE$ 的巧合。}
+
+\gapitem{代数跳步 · p30}{「$=\dfrac{6-0.7}{180}\ \mathrm{mA}$」。缺：V 除以 $\mathrm{k}\Omega$ 得 mA 的换算被整段吞掉；同一页的 $\UCE=(\UCC-\RC\IC)$ 也省了 $\mathrm{k}\Omega\times\mathrm{mA}=\mathrm{V}$。补：§7 E1 的第 1、3 步显式写出单位链，并在 §8 给单位表。}
+
+\gapitem{拼接缺口 · p7 与 p8}{p7 给 $\bar\beta=(\IC-\ICEO)/\IB$，p8 给「$\ICEO$ is the reverse leakage current between the collector and emitter when the base of the transistor is open.」。缺：两者没有接起来——把 p7 反解成 $\IC=\bar\beta\IB+\ICEO$ 之后，p8 的 $\ICEO$ 才有落点（它是 $\IC$ 里那个\textbf{不受控的加法项}）。补：§1 补这一步代数，§5 用它解释 Q 点漂移。}
+
+\gapitem{拼接缺口 · p15--p17}{p16 给 $u_{\mathrm{be}}=u_{\mathrm{i}}$，p17 给 $\UCE=\UCC-i_{\mathrm{C}}\RC$ 与「$C_2$ blocks the DC component」，p19 问反相。缺：三页之间没有一条把它们串起来的线，读者看不出「隔直」与「反相」是同一个式子的两个后果。补：§4 按 $u_{\mathrm{be}}=u_{\mathrm{i}}\to u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}\to u_{\mathrm{o}}=u_{\mathrm{ce}}$ 一路推下来。}
+
+\gapitem{记号冲突 · p9 与 C4-1 p17}{p9 用 $\ICM$ 表示「maximum allowable collector current」（$\beta$ 掉到 $2/3$ 时对应的电流），而 [C4-1 p17] 用同一个 $\ICM$ 表示 $\UCC/\RC$（负载线封顶电流）。缺：同一个字母两个意思，且两者可以差一个数量级。补：§7 与 §8 把负载线那个记作 $\ICM'=\UCC/\RC$，并在判读时分别说明。}
+
+\gapitem{笔误 · p6、p16}{p6 的饱和区气泡印成「Saturatio / nregion」（应为 Saturation region，断词位置错，把一个 n 掉到下一行）；p16 印「the is always greater than zero」（主语丢失，应为 the composite $u_{\mathrm{BE}}$）。缺：不影响理解，但抄笔记会抄错。补：§1 与 §4 各用一处警告框点出，并补全 p16 那句的判据形式 $|u_{\mathrm{be}}|_{\max}<\UBE$。}
+
+\callout{\textbf{类型分布}：机制缺口 4 条、拼接缺口 2 条、适用区间 2 条、答案形态 1 条、代数跳步 1 条、记号冲突 1 条、笔误 1 条，共 12 条（其中 p13、p19、p17、p29 四条是最影响做题的，都在 §2 与 §4 补完）。
+
+\textbf{这一章的系统性毛病只有一条}：\emph{课件给「结果」和「操作步骤」，不给「判据」与「依据」}。p19 提问不给答案、p27 给名字不给判据、p29 给步骤不给理由、p31 给题不给答案——四处一个毛病。所以本讲义每一处都补成「可执行的判据」，而不是「再多讲一遍结论」。}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+
+\item \textbf{放大 = 用直流的偏置去复制交流的形状}，所以每个元件都有两份工作：$\RB$ 定 $\IB$（静态），$C_1,C_2$ 隔直流、通交流（动态），$\RC$ 把电流的变化翻译成电压的变化——而翻译时带了一个负号（$u_{\mathrm{ce}}=-\RC i_{\mathrm{c}}$），这就是共射反相 $180^{\circ}$ 的全部原因（§4）。
+
+\item \textbf{Q 点是三条约束的交点}：器件必须正偏（$u_{\mathrm{BE}}>0$）、关系必须线性（在放大区）、摆幅必须有地方去（$\IB>I_{\mathrm{bm}}$ 且 $\UCE-\RC I_{\mathrm{cm}}>\UCES$）。它算起来只有三个式子 $\IB=(\UCC-\UBE)/\RB$、$\IC=\beta\IB$、$\UCE=\UCC-\RC\IC$，但要靠第 4 步「判读」才算完成（§5、§7、§8）。
+
+\item \textbf{两种失真是同一个 Q 点的两侧余量}：下侧余量（$\IB$、把 Q 点往下推）先耗尽就是截止失真，输出削顶；上侧余量（$\UCE-\UCES$、Q 点往上推）先耗尽就是饱和失真，输出削底。判据一句话：\textbf{看 $u_{\mathrm{o}}$ 削在哪一边}（§6）。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.1cm}p{8.5cm}p{4.9cm}@{}}
+\rtop
+\thead{课件页} & \thead{内容} & \thead{本讲义}
+\\
+\rmid
+p1、p11、p21、p28 & 四张小节扉页（图上只有标题与学校标识） & 未收（无内容）
+\\
+p2 & 输入/输出特性的测法与定义式 & §1.1
+\\
+p3、p4 & 输入特性三条结论；温度左移（$25^{\circ}$/$85^{\circ}$） & §1.1、§5 的漂移三条腿
+\\
+p5、p6 & 输出特性族；三个工作区 & §1.2
+\\
+p7 & $\beta$ 的直流/交流两种定义，$\beta=20\sim150$ & §1.3、§2 的 $\RB/\RC$ 下界
+\\
+p8 & $\ICEO$ 的定义 & §1.3（并反解成加法项）
+\\
+p9 & $\ICM$ 的定义 & §1.3、§7（与 $\ICM'$ 区分）
+\\
+p10 & $P_{\mathrm{C}}=\IC\UCE$、SOA 图 & §1.3
+\\
+p12 & 放大电路的定义（三个关键词） & §2
+\\
+p13 & 电路发展四步；$\RB$ 大于 $\RC$；极性电解电容 & §2（补 $\RB/\RC$ 的定量条件）
+\\
+p14 & 字母符号三层约定 & §3（三层对照表）
+\\
+p15 & 静态：四个量都是直流 & §4
+\\
+p16 & 动态：$u_{\mathrm{BE}}=\UBE+u_{\mathrm{be}}$、$u_{\mathrm{be}}=u_{\mathrm{i}}$；小信号条件 & §4
+\\
+p17 & 四个复合式；$C_2$ 隔直 & §4
+\\
+p18 & 同一组式的重复页（无新文字） & 并入 §4
+\\
+p19 & 「Why is the signal reversed?」 & §4（补答案）
+\\
+p20 & E1：共射输入输出的相位差（单选） & §4（答 $180^{\circ}$）
+\\
+p22 & 静态分析要算的四个量 & §5
+\\
+p23 & Q 点、直流负载线、$\UCE=\UCC-i_{\mathrm{C}}\RC$ & §5
+\\
+p24 & Q 点合适时七个波形都不削平 & §6
+\\
+p25、p26 & 两种削平方向（无文字标注） & §6
+\\
+p27 & 两种失真的名字与结论 & §6（补判据与判据表）
+\\
+p29 & 直流通路两条规则 + 三个方程 & §7
+\\
+p30 & E1：静态计算全过程 & §7（补单位链与第 4 步判读）
+\\
+p31 & 三道工作模式题（$\RB=500/200/1000\ \mathrm{k}\Omega$） & §7（三题全解 + $k$ 参数化）
+\\
+p32 & 静态实测：两屏都是直线 & §7
+\\
+p33 & 加入交流：两屏正弦、反相 & §7
+\\
+p34、p35 & 加大幅度：输出底部出现平段 & §7（判为饱和失真形态）
+\\
+\rbot
+\end{tabular}
+
+\subhdr{附录 A：全部数字的复核记录}
+
+本讲的每一个数值都用 Python 3.12 独立算过一遍，再与课件 p30 的印刷值对照。下表是复核记录的摘要（「计算结果」列保留到可以有意义的最多位）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{5.0cm}p{3.4cm}p{3.0cm}@{}}
+\rtop
+\thead{量} & \thead{式子} & \thead{计算结果} & \thead{讲义采用}
+\\
+\rmid
+E1 的 $\IB$ & $5.3/180$ & $0.029444\ \mathrm{mA}$ & $0.0294\ \mathrm{mA}$
+\\
+E1 的 $\IC$ & $50\times0.0294$ & $1.4722\ \mathrm{mA}$ & $1.47\ \mathrm{mA}$
+\\
+E1 的 $\UCE$ & $6-2\times1.47$ & $3.0556\ \mathrm{V}$ & $3.06\ \mathrm{V}$
+\\
+E1 的校核 & $2.94+3.06$ & $6.00\ \mathrm{V}$ & $=\UCC$ \checkmark
+\\
+p31（1）的 $\UCE$ & $5-0.4\times4.3$ & $3.28\ \mathrm{V}$ & $3.28\ \mathrm{V}$
+\\
+p31（2）的 $\UCE$ & $5-1.0\times4.3$ & $0.70\ \mathrm{V}$ & $0.70\ \mathrm{V}$
+\\
+p31（3）的 $\UCE$ & $5-0.2\times4.3$ & $4.14\ \mathrm{V}$ & $4.14\ \mathrm{V}$
+\\
+漂移演示（$\beta$ 翻倍） & $6-2\times2.944$ & $0.1111\ \mathrm{V}$ & $0.11\ \mathrm{V}$
+\\
+E1 的 $u_{\mathrm{o}}$ 上摆余量 & $2\times1.47$ & $2.94\ \mathrm{V}$ & $2.94\ \mathrm{V}$
+\\
+E1 的 $u_{\mathrm{o}}$ 下摆余量 & $3.06-0.30$ & $2.76\ \mathrm{V}$ & $2.76\ \mathrm{V}$
+\\
+负载线截距（p23 读图） & $4/4.2$ & $0.952\ \mathrm{k}\Omega$ & $\approx0.95\ \mathrm{k}\Omega$
+\\
+$\RB/\RC$ 判据（E1） & $50\times5.3/5.7$ & $46.49$ & $46.5$（实际 $90$）
+\\
+\rbot
+\end{tabular}
+
+课件 p30 印出的是 $0.0294\ \mathrm{mA}$、$1.47\ \mathrm{mA}$、$3.06\ \mathrm{V}$ 三个值，与上表逐位一致（课件用的是三位有效数字的四舍五入）。p31 的三道题课件没有给答案，上表的 $3.28/0.70/4.14$ 是本讲义按同一套式子算出来的。
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据「Chapter Four-2-2026中白上传.pdf」（35 页，2026-10-22 逐页读，版面事实以 \texttt{assets/C4-2/} 下的整页扫描图为据）写成，前置内容引「Chapter Four-1」（C4-1 p5--p7、p14--p17、p26--p34）。所有公式要么标注了课件页码坐标（如 [C4-2 p23]），要么给出了完整推导；§2 的 $\RB/\RC$ 判据、§4 的隔直与反相推导、§5 的漂移演示、§7 的 $k$ 参数化为本讲义增补，课件未给。记号按 §0 统一；标 [教材补充] 处为课件未写而教材通行的背景，标 [待确认] 处为需要与课堂对齐的取值。例题数字均已用 Python 独立复核。\par}
+
+\end{document}

@@ -1,0 +1,1533 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第二章第一册（Chapter Two-1）· 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{C2-1 · 精讲}{电工电子技术}
+
+\begin{document}
+
+\doctitle{2.1--2.4 正弦交流电路的基本概念与相量法}
+{有效值为什么除以 $\sqrt{2}$、相量凭什么代替正弦量、相量加减与瞬时值加减差在哪}
+{依据：\texttt{Chapter Two-1-2026中白上传.pdf}（p1--p43，共 43 页；本讲义页码一律指本册 PDF 物理页，引用他册时写成 [C2-2 p3] 的形式）\ \textperiodcentered\ 2026-10-23}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与三处拼接}
+
+\subhdr{逐页核对的结果：本册实际讲了四段，不是两段}
+
+我按页眉逐页核过 43 页：粗测地图说「p13--p43 全是 2.2」，这个说法不对。
+\textbf{2.2.2 在 p27 就结束了}，p28 的页眉已经换成「2.3 Single parameter AC circuit」，
+p34 又换成「2.4 Series AC circuits」。所以本册是四段：基本概念、相量表示法、单元件伏安关系、串联 RLC 与阻抗。
+四段共用同一套记号与同一个工具（复数），因此这一册可以一次讲完。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{5.5cm}p{1.9cm}p{8.1cm}@{}}
+\tabtop
+\thead{课件小节（页眉原文）} & \thead{页码} & \thead{本讲义对应}
+\\
+\tabmid
+2.1.1 Introduction to AC circuit & p2--p5 & §1.0（「哪一个不是交流」+ 发电机模型）
+\\
+2.1.2 Expression of AC & p6 & §2.1（三要素）
+\\
+2.1.3（1）Rate of change & p7--p8 & §2.2（$T$、$f$、$\omega$ 与 314 的来历）
+\\
+2.1.3（2）Magnitude & p9 & §1（有效值与最大值的关系）
+\\
+2.1.3（3）Phase and initial phase & p10--p12 & §2.3（E1/E2/E3 三题全解）
+\\
+2.2.1 Sine wave 与旋转矢量、相量 & p13--p19 & §3（相量为什么能代替正弦量）
+\\
+2.2.1 复数四形式与四则运算 & p20--p23 & §4（E1/E2/E3 三题全解）
+\\
+2.2.2 Phasor representation of sine AC & p24--p27 & §5（Example3 全程，主例题）
+\\
+2.3 Single parameter AC circuit & p28--p33 & §6（R、L、C 三条伏安关系的推导）
+\\
+2.4.1 Series RLC circuits & p34--p43 & §7（相量 KVL、阻抗、阻抗三角形）
+\tabbot
+\end{tabular}
+
+\callout{\textbf{三处与粗测地图不同，按版面改过来}：\\
+（1）\textbf{2.3 从 p28 起、2.4 从 p34 起}，不是「p13--p43 全是 2.2」。判据是页眉：p27 页眉仍是
+「2.2.2 Phasor representation of sinusoidal AC」，p28 页眉已换成「2.3 Single parameter AC circuit」，
+p34 换成「2.4 Series AC circuits / 2.4.1 Series RLC circuits」。\\
+（2）\textbf{p1、p13、p24、p28、p34 是五张封面页}，只有标题、校徽与
+「Electrical Technology DALIAN UNIVERSITY OF TECHNOLOGY」，不承载任何内容；
+全册实际承载内容的只有 38 页。\\
+（3）\textbf{p24--p43 的 2.3、2.4 在 C2-2 里会以更完整的形式重讲}（C2-2 的 p1--p6 就是 2.4.1 的重复），
+本讲义只讲到「用本册的话能自洽」为止：够你读懂 p30--p43 每一条式子怎么来，不替 C2-2 讲串并联与功率。
+另：C2-2 §1.1 把「同频率」这条前提引作 [C2-1 p24]，核对后 p24 是 2.2.2 的封面页，
+该前提实在本册 \textbf{p14}（§3.3），元件伏安关系实在 \textbf{p29--p33}；本讲义页码一律以页眉为准。}
+
+\callout{\textbf{骨架为什么不照技能模板的「方法 A / 方法 B」排}：课件本身是
+「概念（p2--p12）→ 工具（相量 p13--p27、复数 p20--p23）→ 元件（p28--p33）→ 电路（p34--p43）」的四级递进。
+相量法与复数法不是并列的两条主线，而是同一条链上的两环（相量是复数，复数是工具），
+所以 §3 讲「相量凭什么成立」、§4 讲「复数怎么算」，§5 才把两环扣在一起做主例题。
+把主例题放在工具之后，就是这条链的位置；换任何别的排法都会出现「用了还没讲的工具」。}
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{1pt}{\small
+\noindent\begin{tabular}{@{}p{3.0cm}p{12.6cm}@{}}
+\tabtop
+\thead{记号} & \thead{约定}
+\\
+\tabmid
+$i,\ u,\ e$ & \textbf{瞬时值}（小写）：随 $t$ 变的那个量，如 $i=12.7\sqrt2\sin(314t+30^\circ)\,\mathrm{A}$
+\\
+$I_m,\ U_m,\ E_m$ & \textbf{幅值}（最大值、峰值）：$\sin$ 前面那个正系数，恒为正
+\\
+$I,\ U,\ E$ & \textbf{有效值}（大写、不带下标 $m$）：凡写 $U=220\,\mathrm{V}$ 都是有效值，不指幅值
+\\
+$\dot I,\ \dot U$ & \textbf{相量}：大写加点，含「模 + 初相」两个信息；本讲义一律用有效值相量，$\dot I=I\angle\psi_i$
+\\
+$\psi_i,\ \psi_u$ & \textbf{初相}：$t=0$ 时的相位，单位度；$(\omega t+\psi)$ 整体叫\textbf{相位}
+\\
+$\varphi$ & \textbf{相位差} $\varphi=\psi_u-\psi_i$，同时就是\textbf{阻抗角}（p12 与 p41--p43 是同一个量）
+\\
+$\omega,\ f,\ T$ & 角频率、频率、周期，$\omega=2\pi f=2\pi/T$
+\\
+$X_L,\ X_C,\ X$ & 感抗 $X_L=\omega L$、容抗 $X_C=1/(\omega C)$；电抗 $X=X_L-X_C$，\textbf{可正可负}
+\\
+$Z,\ |Z|$ & 复阻抗 $Z=R+jX$（\textbf{不加点}，它不代表正弦量）；阻抗模 $|Z|=\sqrt{R^2+X^2}$
+\\
+$j$ & 虚数单位。本课程用 $j$ 不用 $i$，因为 $i$ 已经给了电流
+\tabbot
+\end{tabular}}
+
+\subhdr{三处拼接（课件自己的缝）}
+
+\gapitem{拼接缺口}{p9 只写「$I=I_m/\sqrt2$」，p25 只写「$\dot I=\sqrt2\angle45^\circ$」，
+两页都不写「相量里装的到底是有效值还是幅值」。约定不声明，$\sqrt2$ 就会在每一步漏乘或多乘。
+本讲义 §3.5 把它钉成一条：$\dot I=I\angle\psi_i\iff i=\sqrt2I\sin(\omega t+\psi_i)$，再用 p26 的 Example3 反验。}
+
+\gapitem{拼接缺口}{p27 讲「旋转因子」$e^{j90^\circ}=j$，p31 给「$\dot U=jX_L\dot I$」，p32 给「$\dot U=-jX_C\dot I$」。
+三页用的是\textbf{同一个} $j$——乘 $j$ 就是逆时针转 $90^\circ$，也就是电压超前电流 $90^\circ$。
+课件没有任何一页把这条缝缝上，初学者只会看到 $j$ 莫名其妙地出现在电感的式子里。
+本讲义 §6.3、§6.4 在推导末尾把它指出来。}
+
+\gapitem{拼接缺口}{p35 出一题并给了一个被打红叉的错误答案 $U=U_R+U_L+U_C=3\,\mathrm{V}$，
+p37 用相量图给出正确答案，p42、p43 才讲 $\varphi$ 与阻抗三角形。三段各说一半：
+「为什么不能代数相加」在 p35 没答，「答案为什么是 $1\,\mathrm{V}$」在 p37 只靠图没写式，
+「$\varphi$ 是什么」到 p42 才出现。本讲义 §5、§7.2、§7.6 把三段接成一条线。}
+
+\callout{\textbf{本讲义怎么用}：\\
+第一遍只看 §0 的表、§5 主例题、§8 公式卡——这三处能让你把题做对；\\
+第二遍再看 §1、§3、§6——这三处解释「$\sqrt2$ 从哪来」「相量凭什么能代替正弦量」「电感的 $90^\circ$ 从哪来」，
+它们决定你换一个电路还能不能算对；\\
+§10 缺口清单逐条对应课件某页某句，课件哪句话让你卡住，就去那里找。}
+
+%=============================================================
+\hdr{§1}{有效值：为什么是幅值除以 $\sqrt2$}
+
+\subhdr{1.0 先答 p2 的提问：哪一个不是交流}
+
+课件 p2 给了五个并列波形并问「Which one is not AC?」，页面上只在图组下方写了「pulsing DC」，
+\textbf{没有指出是哪一幅、也没有给判据}。判据其实只有一条，就藏在 p2 自己的定义句里：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.0cm}p{6.4cm}p{7.9cm}@{}}
+\tabtop
+\thead{图} & \thead{波形（读图记录）} & \thead{是不是交流}
+\\
+\tabmid
+1 & 三角波，正峰、负谷都出现 & 是（跨横轴改变极性）
+\\
+2 & 单向矩形脉冲串，只在横轴上方，脉冲间回到零 & \textbf{不是}：极性从不改变，是脉动直流
+\\
+3 & 矩形方波，正负交替 & 是（跨横轴）
+\\
+4 & 正弦波，正负对称 & 是（本册的主角）
+\\
+5 & 单向半波脉动，只有一串拱形、无负值 & \textbf{不是}：脉动直流
+\tabbot
+\end{tabular}
+
+按 p2 的定义句「voltage or current that changes polarity or direction, respectively, over time」，
+判据就是\textbf{波形有没有跨过横轴}。2 与 5 都没有跨过，故都不是交流。
+\aside{[待确认] p2 图组下方只写了一个「pulsing DC」标签，而 2 与 5 两幅都满足这个描述；
+标签究竟指哪一幅、课上是否只认一幅，文字层与读图记录都不能判定。本讲义按判据给出两幅，不作单选。}
+另需注意定义句里那个「respectively」：\textbf{电压改的是极性（polarity），电流改的是方向（direction）}，
+这是两个说法，不是一回事——译成中文时经常丢掉这层对应。
+
+\subhdr{1.0 后半：p3--p5 的发电机模型，线圈转一圈为什么出来正弦}
+
+p3 的图上标了六个术语（magnet / rotating winding / cut magnetic lines / EMF / brush and ring /
+dynamic contact），p4 是同一模型的放大图（去掉全部文字），p5 在同一个模型上补了外电路的电流方向。
+三页连起来是一条完整链条，逐项对上：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.6cm}p{11.0cm}@{}}
+\tabtop
+\thead{课件术语} & \thead{它在链条里干的事}
+\\
+\tabmid
+magnet（磁铁） & 提供恒定磁场，极间由 N 指向 S
+\\
+rotating winding（绕组/线圈） & 在磁场中匀速旋转，是「动」的那一方
+\\
+cut magnetic lines（切割磁力线） & 线圈边与磁力线的夹角随时间变，所以切割速率也随时间变
+\\
+EMF（电动势） & 切割速率决定感应电动势的大小，方向由右手定则定
+\\
+brush and ring（碳刷滑环） & 动态接触：把\textbf{旋转}的线圈两端接到\textbf{静止}的外电路
+\\
+外电路 & 电流经碳刷流出、经仪表（负载）再流回，构成闭合回路
+\tabbot
+\end{tabular}
+
+\textbf{为什么出来的正好是正弦}（p3--p5 只说「大小与方向一直在变」，没给这一步）：
+设线圈平面与磁场的夹角为 $\theta=\omega t$，则穿过线圈的磁通
+
+\[ \Phi=\Phi_m\cos\omega t ,\qquad
+   e=-\frac{\dd\Phi}{\dd t}=\omega\Phi_m\sin\omega t . \]
+
+求导一次，$\cos$ 变 $\sin$，并且\textbf{多出一个 $\omega$}。所以「大小与方向一直在变」不是形容，
+而是「匀速旋转 + 余弦磁通」的必然结果。这也正是 p6 那条 $i=I_m\sin(\omega t+\psi)$ 的物理出生地，
+以及 §3.4 那条 $\dd/\dd t\leftrightarrow j\omega$ 的物理含义：求导会多出一个 $\omega$、并把相位推 $90^\circ$。
+
+线圈每转半圈，切割方向反一次，电动势的符号就反一次——这就是交流。
+p3 右下角「switching polarity 改变极性 / switching direction 改变方向」说的正是这两件事；
+p5 的对比句「The current only flows in one direction in DC circuit. But in AC the current changes
+direction periodically」则是把它与直流分开。
+
+\aside{真实发电机的电角频率等于极对数乘机械角速度；本册只讨论电角频率 $\omega$，
+不再区分极对数——凡出现 $\omega$ 一律按电角频率读。}
+
+\subhdr{1.1 三个「大小」的分工（p9 那张表）}
+
+p9 左边列了三行符号，右边各贴一个名字。三者的区别不在符号长短，而在「什么时候用」：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.4cm}p{3.6cm}p{9.6cm}@{}}
+\tabtop
+\thead{记号} & \thead{名字} & \thead{什么时候用}
+\\
+\tabmid
+$e,\ i,\ u$ & 瞬时值 & 写波形、代入某个具体时刻、做瞬时值相加（§5.4）
+\\
+$E_m,\ I_m,\ U_m$ & 幅值（最大值、峰值） & 只出现在 $\sin$ 前面；示波器看峰值得用它
+\\
+$E,\ I,\ U$ & 有效值 & \textbf{一切仪表读数、铭牌数据、相量的模}；$220\,\mathrm{V}$ 指的就是它
+\tabbot
+\end{tabular}
+
+一句话记住：\textbf{有效值是「能用直流表量出来的那个数」，幅值是「波形顶到多高」}。
+两者差一个 $\sqrt2$，而这个 $\sqrt2$ 不是规定，是算出来的。
+
+\subhdr{1.2 有效值的定义：热等效，以及那一步积分}
+
+p9 的蓝框标题是「Relationship between effective value and amplitude」，框里直接写
+$I=I_m/\sqrt2$、$U=U_m/\sqrt2$、$E=E_m/\sqrt2$，\textbf{三个结果一个推导都没有}。
+这正是本册第一个必须讲透的机制。补出来只用两步。
+
+\textbf{第一步：定义。}有效值的定义不是「平均」，而是\textbf{热等效}：让直流 $I$ 与交流 $i$
+分别通过同一个电阻 $R$，在一个周期 $T$ 内产生的热量相等，就称这个直流值 $I$ 为该交流的有效值。
+
+\[ I^2RT=\int_0^T i^2R\dd t
+   \quad\Longrightarrow\quad
+   I=\sqrt{\frac{1}{T}\int_0^T i^2\dd t} . \]
+
+所以有效值的学名叫\textbf{均方根值}（root mean square）：先平方、再取一个周期的平均、最后开方。
+
+\textbf{第二步：算。}取 $i=I_m\sin\omega t$（先令 $\psi=0$，初相不影响这一定义的取值）：
+
+\[ i^2=I_m^2\sin^2\omega t=\frac{I_m^2}{2}\left(1-\cos2\omega t\right) . \]
+
+一个周期内 $\cos2\omega t$ 的平均值为零（因为 $\omega T=2\pi$，正好走完两个整周期）：
+
+\[ \frac{1}{T}\int_0^T\cos2\omega t\dd t=0 ,\qquad
+   \frac{1}{T}\int_0^T i^2\dd t=\frac{I_m^2}{2} , \]
+
+于是
+
+\[ I=\sqrt{\frac{I_m^2}{2}}=\frac{I_m}{\sqrt2}\approx0.707\,I_m . \]
+
+反过来就是 p9 那三行的用法：
+
+\[ I_m=\sqrt2\,I\approx1.414\,I . \]
+
+\aside{p9 只印结果、不印这一步，这就是 §10 清单的第一条（机制缺口）。
+「$0.707$」这个系数只对正弦波成立；方波、三角波的有效值系数不同，本册不做，遇到要另算。}
+
+\warnbox{\textbf{为什么不能取平均值}：正弦量在一个整周期上的平均值为零，
+\[ \frac{1}{T}\int_0^T I_m\sin\omega t\dd t=0 , \]
+它连「大小」都不反映。所以不能拿平均值当有效值——这就是「必须先平方」的全部理由。}
+
+\subhdr{1.3 220 V 与 311 V 是同一个电压}
+
+p9 右下角那张照片里，万用表插在插座上，读数 220；照片上方问了两句：
+「1. 220V？Effective or amplitude (peak value)?」与
+「2. Is the reading of the meters amplitude or effective value?」
+\textbf{两问都没有答案}（第二问在 p30 又问了一次）。答案是：
+
+\begin{itemize}
+\item 市电 $220\,\mathrm{V}$ 是\textbf{有效值}；它的幅值是
+\[ U_m=\sqrt2\times220\approx311\,\mathrm{V} , \]
+这正是 p11 的 E2 里那个 $311$ 的出处：$u=311\sin(314t-60^\circ)\,\mathrm{V}$。
+所以「220 V」与「311 V」是同一个电压的两种说法，不是两个电压。
+\item 万用表（交流电压挡）读的是\textbf{有效值}。它的表头按正弦有效值刻度，
+所以拿它去量方波或可控硅调光后的波形会读错——那些波形的有效值系数不是 $\sqrt2$。
+\item 有效值不做特殊说明时恒指正弦量。p26 的 Example3 全部用有效值写相量，
+p9 那条 $I=I_m/\sqrt2$ 就是它每一次转换的依据。
+\end{itemize}
+
+\aside{后文凡写 $U$、$I$（不带下标 $m$）一律是有效值；$\dot U$、$\dot I$ 的模也是有效值。
+代入本题的形式：$u=311\sin(314t-60^\circ)\,\mathrm{V}$ 的相量是 $\dot U=220\angle-60^\circ\,\mathrm{V}$，
+不是 $311\angle-60^\circ$。}
+
+\subhdr{1.4 有效值不能直接相加（这一条预告 §5）}
+
+p35 的提问是「$U_R=1\,\mathrm{V}$、$U_L=1\,\mathrm{V}$、$U_C=1\,\mathrm{V}$，求总电压」，
+课件给出的 $U=1+1+1=3\,\mathrm{V}$ 被画了一个红叉。红叉打对了，
+但\textbf{为什么错、正确的数是多少，p35 一页没说}。正确的值是 $1\,\mathrm{V}$，理由在 §7.2。
+
+先在这里立一条判据：\textbf{有效值相加只在「同相位」时才等于代数相加}。
+p26 的 Example3 有两个同频电流，有效值 $12.7\,\mathrm{A}$ 与 $11\,\mathrm{A}$，
+但结果是 $16.8\,\mathrm{A}$ 而不是 $12.7+11=23.7\,\mathrm{A}$——因为两者相位差恰好 $90^\circ$。
+这是本册第二个必须讲透的机制，§5 全程演算。
+
+\aside{同一个陷阱的两个面孔：$12.7+11=23.7$（p26 的电流）与 $1+1+1=3$（p35 的电压）。
+凡看见「有效值相加」，先问一句「它们同相吗」。}
+
+%=============================================================
+\hdr{§2}{三要素与相位差}
+
+\subhdr{2.1 表达式：$i=I_m\sin(\omega t+\psi)$ 里的三个数（p6）}
+
+p6 把正弦量的写法拆成四格：表达式、波形、含义、三要素，最后归纳成
+\textbf{幅值、角频率、相位}三要素。逐项对上：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.8cm}p{2.6cm}p{10.3cm}@{}}
+\tabtop
+\thead{参数} & \thead{名字} & \thead{含义与其在式中的位置}
+\\
+\tabmid
+$I_m$ & 幅值 & $\sin$ 的系数，恒正；波形顶到多高
+\\
+$\omega$ & 角频率 & $t$ 的系数，单位 $\mathrm{rad/s}$；波形走多快
+\\
+$\psi$ & 初相 & 常数项，单位度；$t=0$ 时刻走到哪了
+\\
+$\omega t+\psi$ & 相位 & 整个括号叫相位，随 $t$ 匀速增长
+\tabbot
+\end{tabular}
+
+\textbf{一处表述要说清}：p6 把三要素写成「Amplitude / Angular frequency / Phase」，
+但右侧含义栏里又写「$\psi$: Initial Phase」。严格说：
+\textbf{相位是 $\omega t+\psi$（随时间变），初相是 $\psi$（定值）}。
+三要素里第三要素准确的名字是\textbf{初相}。本讲义后文一律用「初相 $\psi$」，不再混称。
+
+\warnbox{\textbf{全册以 $\sin$ 为基准}。p6 到 p43 每一条式子都是 $\sin$，没有一处改用 $\cos$。
+如果你从别的书搬来 $\cos$ 形式的公式，必须先把相位换算 $90^\circ$ 再用，否则处处差 $90^\circ$。
+本讲义不混用 $\cos$。}
+
+\subhdr{2.2 周期、频率、角频率：p7 那张图要自己验一遍（p7--p8）}
+
+p7 给的是同一个东西的三个说法：
+
+\[ \omega=2\pi f=\frac{2\pi}{T}\ (\mathrm{rad/s}) ,\qquad f=\frac{1}{T} . \]
+
+图上的数是：$T=0.5\,\mathrm{s}$、$f=2\,\mathrm{Hz}$、$\omega=4\pi\,\mathrm{rad/s}$，
+横轴上 $1\,\mathrm{s}$ 的跨度里正好两个周期。三个数自洽（自己验）：
+$f=1/T=1/0.5=2\,\mathrm{Hz}$；$\omega=2\pi f=4\pi\approx12.57\,\mathrm{rad/s}$。三个数都对。
+
+\textbf{本册最常用的一个换算}：中国电网 $f=50\,\mathrm{Hz}$，则
+
+\[ \omega=2\pi\times50\approx314.16\approx314\,\mathrm{rad/s} . \]
+
+p26 的 Example3 里，两个电流的相位都是 $314t$，
+这个 $314$ 就是 $50\,\mathrm{Hz}$ 换成角频率的结果，不是某个元件的参数。
+若电网是 $60\,\mathrm{Hz}$（如美国），则 $\omega\approx377\,\mathrm{rad/s}$。
+
+\aside{代入本题的形式：Example3 的 $i_1=12.7\sqrt2\sin(314t+30^\circ)$ 中 $\omega=314\,\mathrm{rad/s}$，
+所以 $f=314/(2\pi)\approx50\,\mathrm{Hz}$、$T=1/f\approx0.02\,\mathrm{s}$。
+两个电流的 $\omega$ 相同，这是它们能画在同一张相量图上的\textbf{唯一}理由（§3.3）。}
+
+\textbf{p8 的提问「Why 50Hz/60Hz?」没有答案}。下面这段是背景，不属于课件原文：
+频率是工程折中的产物。频率高，变压器与电机可以做得小、同样的铁芯能传更多功率，
+但铁损、集肤效应与线路感抗压降都随频率上升；频率低，变压器体积大、白炽灯闪烁明显。
+19 世纪末两套工业体系分别定了标准：欧洲（西门子、AEG 一侧）取 $50\,\mathrm{Hz}$，
+美国（西屋、特斯拉一侧）取 $60\,\mathrm{Hz}$；中国电网沿用 $50\,\mathrm{Hz}$。
+这也解释了为什么本册例题里 $\omega$ 都是 $314$ 而不是 $377$。
+\textbf{[教材补充]}之所以补这一段：p8 只提问不给答案，而「为什么是 50 Hz」直接决定了所有例题里的 314，
+不补的话 314 就成了一个背下来的常数。
+
+\subhdr{2.3 相位、初相与相位差：p10--p12 三题全解}
+
+p10 的定义句是「Phase: the divisional part of a cycle through which the quantity moves forward
+from a selected origin」，译过来就是「从选定起点算起，这个量已经走过的、以周期为单位的份额」。
+p10--p12 各给一题：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.1cm}p{5.2cm}p{4.0cm}p{5.4cm}@{}}
+\tabtop
+\thead{页} & \thead{题} & \thead{相位} & \thead{初相}
+\\
+\tabmid
+p10 & E1：$i=10\sin(1000t+30^\circ)\,\mathrm{A}$ & $1000t+30^\circ$ & $\psi_i=30^\circ$
+\\
+p11 & E2：$u=311\sin(314t-60^\circ)\,\mathrm{V}$ & $314t-60^\circ$ & $\psi_u=-60^\circ$
+\\
+p12 & E3：上两式放在一起，求相位差 & —— & $\varphi=\psi_u-\psi_i$
+\tabbot
+\end{tabular}
+
+p12 的完整演算：
+
+\[ \varphi=\psi_u-\psi_i=-60^\circ-30^\circ=-90^\circ . \]
+
+\textbf{$\varphi<0$ 的含义是「$u$ 滞后 $i$ $90^\circ$」}，等价的说法是「$i$ 超前 $u$ $90^\circ$」。
+判读只有一张小表，背下来比记文字快：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{5.4cm}p{6.9cm}@{}}
+\tabtop
+\thead{$\varphi=\psi_u-\psi_i$} & \thead{说法} & \thead{波形上的样子}
+\\
+\tabmid
+$\varphi>0$ & $u$ 超前 $i$（$i$ 滞后 $u$） & $u$ 的过零点、峰值都出现在 $i$ 之前
+\\
+$\varphi<0$ & $u$ 滞后 $i$（$i$ 超前 $u$） & $u$ 的一切都比 $i$ 晚到
+\\
+$\varphi=0$ & 同相 & 两条曲线同时过零、同时到峰（p30 的电阻）
+\\
+$|\varphi|=180^\circ$ & 反相 & 一条到正峰时另一条正在负峰
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{三条限制，课件没有明说}：
+（1）相位差\textbf{只对同频率的两个量有定义}——频率不同，「差」随时间变，没有定值；
+（2）初相一般取 $|\psi|\le180^\circ$，超出的部分折回来（如 $\psi=270^\circ$ 写作 $\psi=-90^\circ$）；
+（3）$\varphi$ 的正负取决于你把谁减谁，p12 用的是 $\psi_u-\psi_i$，全册不再改，中途也不要换顺序。}
+
+\subhdr{2.4 相位差与阻抗角是同一个量}
+
+p41--p43 上写的是 $\varphi=\psi_u-\psi_i$，与 p12 的相位差完全一样。
+这不是巧合：\textbf{「电压比电流超前多少」这件事，在元件层面叫相位差，在整条电路层面就叫阻抗角}。
+p31 说「电感上电压超前电流 $90^\circ$」，p42 说「感性电路 $0<\varphi<90^\circ$」，
+说的正是同一件事的两个尺度：前者是单个元件（$90^\circ$ 整），后者是 RLC 串起来的整体（$90^\circ$ 以内）。
+§7.6 会把这条对应关系写成表。
+
+\aside{记号提醒：课件 p12 的相位差印成 $\phi$，p41--p43 的阻抗角印成 $\varphi$，
+文字层里两者转写成同一个字符。本讲义统一写 $\varphi$，不再区分——因为它们是同一个量。}
+
+%=============================================================
+\hdr{§3}{相量：一个复数凭什么能代替一条正弦曲线}
+
+\subhdr{3.1 p15 那句话在说什么：旋转矢量的纵轴投影}
+
+p15 的原句是「The vector rotates in an anticlockwise direction if we take the projection of this
+vector in Y-axis then we get the instantaneous value of this sinusoidal signal」。
+把它写成式子就三件事：长度取幅值、起始角取初相、角速度取 $\omega$。
+
+\begin{itemize}
+\item 矢量长度 $=U_m$（幅值）；
+\item $t=0$ 时它与横轴夹角 $=\psi$（初相）；
+\item 以角速度 $\omega$ 逆时针匀速旋转，故 $t$ 时刻夹角 $=\omega t+\psi$；
+\item 取它在\textbf{纵轴}上的投影，就是瞬时值 $u(t)=U_m\sin(\omega t+\psi)$。
+\end{itemize}
+
+用复数写，这一整段就是一句：先转成复数、取虚部，
+
+\[ u(t)=\operatorname{Im}\left[U_m e^{j(\omega t+\psi)}\right]=U_m\sin(\omega t+\psi) . \]
+
+\aside{为什么全册都用 $\sin$ 而不用 $\cos$：p15 明确说取\textbf{纵轴}投影。
+取纵轴得到 $\sin$，取横轴就得到 $\cos$。p6 到 p43 一律 $\sin$，与这里取的轴一致。
+这条看似琐碎，但它决定了 §6 里「电感电压超前 $90^\circ$」还是「滞后 $90^\circ$」——基准轴一换，正负全反。}
+
+\subhdr{3.2 冻结在 $t=0$：从旋转矢量到相量（p17--p19）}
+
+p17 的副标题是「Sine wave $\leftrightarrow$ Rotating vector $\leftrightarrow$ stationary vector」，
+p18 又加了一个「phasor」，p19 再加「Complex number」。四步在讲同一件事，只是把时间因子一层层剥掉。
+
+关键一步是把上面那个指数拆开：
+
+\[ U_m e^{j(\omega t+\psi)}=\underbrace{\left(U_m e^{j\psi}\right)}_{\text{不含 }t}\cdot e^{j\omega t} . \]
+
+括号里的复数\textbf{不随时间变}——它就是「冻结在 $t=0$ 的矢量」，也就是 p17 说的 stationary vector。
+把这个数除以 $\sqrt2$ 换成有效值、并命名为相量：
+
+\[ \dot U=U e^{j\psi}=U\angle\psi . \]
+
+所以相量是\textbf{一个复数}，不是矢量、不是函数。p18 给的定义句说得很克制：
+「A phasor is a mathematical quantity created in electronics to explain AC behavior」——
+它是人为了方便解释交流行为而造出来的数学量。
+
+\textbf{被剥掉的是什么？}是 $e^{j\omega t}$，也就是\textbf{频率信息}。
+这条很重要：\textbf{相量里查不到频率}。所以
+（1）两个相量能不能相加，只能由你在心里记住的 $\omega$ 判断（§3.3）；
+（2）由相量还原瞬时值时，必须把 $\omega$ 补回去（§5.2 第 7 步）；
+（3）同一张相量图上不允许出现两种频率。
+
+\subhdr{3.3 同频是相量法的门票（p14 的「same frequency」）}
+
+p14 的提问句是「When we have two sinusoidal AC current with the \textbf{same frequency}, different
+phase and different amplitude, how to find the total current?」。
+那句话里藏着前提，却没说为什么必须有这个前提。证明只有三行：
+
+设 $i_1=\sqrt2I_1\sin(\omega t+\psi_1)$、$i_2=\sqrt2I_2\sin(\omega t+\psi_2)$，相量记为
+$\dot I_1=I_1\angle\psi_1$、$\dot I_2=I_2\angle\psi_2$。按 §3.1 的写法，
+
+\[ i_1=\operatorname{Im}\left[\sqrt2\dot I_1e^{j\omega t}\right],\qquad
+   i_2=\operatorname{Im}\left[\sqrt2\dot I_2e^{j\omega t}\right] . \]
+
+$\operatorname{Im}$ 是线性运算（取虚部可以逐项进行、可以与常数交换），于是
+
+\[ i_1+i_2=\operatorname{Im}\left[\sqrt2\left(\dot I_1+\dot I_2\right)e^{j\omega t}\right] . \]
+
+右边的相量部分是 $\dot I_1+\dot I_2$，角频率仍是同一个 $\omega$。
+\textbf{这一步的唯一支点是「两个 $e^{j\omega t}$ 是同一个东西，才能提出公因子」。}
+
+\textbf{频率不同会怎样}：取 $i_1=\sqrt2\sin314t$、$i_2=\sqrt2\sin1000t$，则
+$i_1+i_2=2\sin657t\cos343t$——包络 $2\cos343t$ 随时间慢慢起伏，
+整体\textbf{不再是正弦}，没有单一幅值与初相，因此\textbf{没有相量}。
+这就是 p26 例题里两个 $314t$ 为什么必须写成一样的理由。
+
+\aside{这张门票的三种失效情形，考试里都出现过：
+（1）两个电源频率不同——相量不能相加，只能回时域；
+（2）一个直流分量叠在交流上——直流量不属于相量域，要分成两个问题算；
+（3）频率随时间变（调频、变频器）——相量法整体失效，要回到瞬时式。}
+
+\subhdr{3.4 微分与积分：全册没写，却是 §6 的唯一工具}
+
+六个元件里有两个的伏安关系是微分形式（$u_L=L\dfrac{\dd i}{\dd t}$、$i_C=C\dfrac{\dd u}{\dd t}$）。
+要把它们变成代数式，必须先把「求导」翻译成相量域里的乘法。这一步全册 43 页没有一处写出来，
+但 p31、p32 的两条相量式全靠它。规则来自对 $e^{j\omega t}$ 求导：
+
+\[ \frac{\dd}{\dd t}e^{j\omega t}=j\omega\,e^{j\omega t}
+   \quad\Longrightarrow\quad
+   \frac{\dd}{\dd t}\ \longleftrightarrow\ j\omega ,\qquad
+   \int\dd t\ \longleftrightarrow\ \frac{1}{j\omega} . \]
+
+一句话记住：\textbf{相量法的全部力量，来自「微分变成乘一个数」}。
+微分方程之所以能变成代数方程，就是因为这条替换。
+
+\aside{代入本题的形式：$u_L=L\dfrac{\dd i}{\dd t}$ 中 $i=\sqrt2I\sin\omega t$，
+求导后多出一个 $\omega$、相位多出 $90^\circ$（即乘 $j$），于是 $\dot U_L=j\omega L\dot I$。
+$j\omega L$ 就是 $jX_L$——§6.3 会把这步走完。}
+
+\subhdr{3.5 相量里装有效值还是幅值：本册的约定}
+
+这一条不声明，后面每个数都会差 $\sqrt2$。本册的约定（由 p26 反推得出）是\textbf{有效值相量}：
+
+\[ \boxed{\ \dot I=I\angle\psi_i\iff i=\sqrt2I\sin(\omega t+\psi_i)\ } \]
+
+验算一遍就看出为什么：把 $i=\sqrt2I\sin(\omega t+\psi_i)$ 写成取虚部的形式，
+
+\[ i=\sqrt2\operatorname{Im}\left[Ie^{j(\omega t+\psi_i)}\right]
+   =\operatorname{Im}\left[\sqrt2\dot I e^{j\omega t}\right] , \]
+
+与 §3.3 的写法完全一致。所以\textbf{相量的模是有效值，还原瞬时值时要在前面补一个 $\sqrt2$}。
+
+p25 的例子正好把这个坑露出来：它写 $\dot I=1+j=\sqrt2\angle45^\circ$，
+但没有说对应哪个瞬时式。按本册约定，它对应
+
+\[ i=\sqrt2\times\sqrt2\sin(\omega t+45^\circ)=2\sin(\omega t+45^\circ)\ \mathrm{A} . \]
+
+\textbf{p26 的 Example3 把这个约定钉死了}：题目给 $i_1=12.7\sqrt2\sin(314t+30^\circ)\,\mathrm{A}$，
+下一步就写 $\dot I_1=12.7\angle30^\circ\,\mathrm{A}$——$12.7$ 是有效值，$\sqrt2$ 被丢掉了。
+如果相量的模取幅值，那就该写 $12.7\sqrt2=17.96\angle30^\circ$，与课件不符。
+
+\warnbox{\textbf{两套标定差 $\sqrt2$ 倍，不能混用}。判据只有一条：
+\textbf{看 $\sin$ 前面有没有 $\sqrt2$}。有 $\sqrt2$，相量的模取 $I$；没有 $\sqrt2$（纯幅值写法），
+相量的模取 $I_m$。做题时先标一句「本解用有效值相量」，再往下写，能避掉一大半的错。}
+
+%=============================================================
+\hdr{§4}{复数工具：四种形式、四则运算、三个例题}
+
+\subhdr{4.1 四种形式与两次改写（p20）}
+
+p20 在一支复平面矢量的旁边竖着写了四个等式，这就是复数的四种形式：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.1cm}p{5.5cm}p{7.0cm}@{}}
+\tabtop
+\thead{形式（p20 原名）} & \thead{写法} & \thead{什么时候用它最省事}
+\\
+\tabmid
+直角形式（Rectangular） & $A=a+jb$ & 加减、看实部虚部、代进 $Z=R+jX$
+\\
+三角形式（Triangular） & $A=c(\cos\psi+j\sin\psi)$ & 从模与角展开成实部虚部
+\\
+指数形式（Exponential） & $A=c\,e^{j\psi}$ & 乘除、求导、写旋转因子
+\\
+极坐标形式（Polar） & $A=c\angle\psi$ & 相量图、读相位、写最终答案
+\tabbot
+\end{tabular}
+
+\textbf{p20 只印结论、没印两次改写。}补出来是两对式子。从直角到极坐标：
+
+\[ c=\sqrt{a^2+b^2} ,\qquad \psi=\arctan\frac{b}{a} ; \]
+
+从极坐标回到直角（三角形式展开即可）：
+
+\[ a=c\cos\psi ,\qquad b=c\sin\psi . \]
+
+\aside{p20 图下的三个注记 real part / imaginary part / modulus 分别对应 $a$、$b$、$c$，
+但\textbf{没有一个式子说出 $c$ 与 $a,b$ 的关系}，也没说 $\psi$ 怎么由 $a,b$ 算。
+这两对式子就是 §10 清单里的「代数跳步」那条，p21 的 $1+j\leftrightarrow\sqrt2\angle45^\circ$ 全靠它们。}
+
+\warnbox{\textbf{$\arctan$ 只给 $(-90^\circ,90^\circ)$，这个坑必须单独记}。
+$a>0$ 时 $\psi=\arctan(b/a)$ 直接可用；$a<0$ 时（点在左半平面）必须加 $180^\circ$。
+例：$-1+j$，$\arctan(1/-1)=-45^\circ$ 是错的，正确值是 $-45^\circ+180^\circ=135^\circ$，
+即 $-1+j=\sqrt2\angle135^\circ$。验算：$\sqrt2\cos135^\circ=-1$、$\sqrt2\sin135^\circ=+1$，对。}
+
+\subhdr{4.2 p21 的提问：为什么需要这么多种形式}
+
+p21 列了一张对照表（$1+j\leftrightarrow\sqrt2\angle45^\circ$、$j\leftrightarrow1\angle90^\circ$），
+底下问「Why do we need so many forms?」，\textbf{没有答案}。答案是一张分工表：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{4.2cm}p{4.2cm}p{7.4cm}@{}}
+\tabtop
+\thead{要干的事} & \thead{用哪种形式} & \thead{理由}
+\\
+\tabmid
+加、减 & 直角形式 & 实部加实部、虚部加虚部，没有别的路
+\\
+乘、除 & 极坐标（或指数） & 模相乘除、角相加减，一步到位
+\\
+求相位差、画相量图 & 极坐标 & 相位就是角，直接读
+\\
+代进 $Z=R+jX$、求实部虚部 & 直角形式 & $R$、$X$ 天然是实部、虚部
+\tabbot
+\end{tabular}
+
+口诀八个字：\textbf{加减用直角，乘除用极坐标}。§4.3 的四条公式就是这句话的展开。
+
+\subhdr{4.3 四则运算：p22 那四条式子，以及一处括号}
+
+p22 给了四条。前两条没问题，后两条\textbf{课件印的角没有括号}，按字面读会读成别的意思：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{8.0cm}p{5.2cm}@{}}
+\tabtop
+\thead{运算} & \thead{正确写法} & \thead{课件 p22 的印法}
+\\
+\tabmid
+加减 & $A_1\pm A_2=(a_1\pm a_2)+j(b_1\pm b_2)$ & 同（无问题）
+\\
+乘法 & $A_1A_2=c_1c_2\angle(\psi_1+\psi_2)$ & $A_1A_2=c_1c_2\angle\psi_1+\psi_2$
+\\
+除法 & $\dfrac{A_1}{A_2}=\dfrac{c_1}{c_2}\angle(\psi_1-\psi_2)$ & $\dfrac{A_1}{A_2}=\dfrac{c_1}{c_2}\angle\psi_1-\psi_2$
+\tabbot
+\end{tabular}
+
+\aside{[待确认] 上表第四行的「课件印法」由\textbf{两路独立读法}得出：文字层抽出的式子与逐页读图记录
+都读作 $\angle\psi_1+\psi_2$、角上没有括号。若原页其实有括号而两路都漏读，
+则本条退化为「写法提示」，但不影响后面推出的法则本身——法则本身另有推导。}
+
+\textbf{为什么必须加括号}：$\angle$ 的后面是一个角，$\angle(\psi_1+\psi_2)$ 才是「转 $\psi_1+\psi_2$」；
+按课件的印法，字面读作「$\angle\psi_1$ 这个复数，再加上一个数 $\psi_2$」，
+后者是个无量纲的角，与复数相加根本不合量纲。
+
+\textbf{两条法则的来历}（p22 直接给结果，不推导）：用指数形式相乘，
+
+\[ A_1A_2=\left(c_1e^{j\psi_1}\right)\left(c_2e^{j\psi_2}\right)
+   =c_1c_2\,e^{j(\psi_1+\psi_2)} , \]
+
+指数相加就是角相加，模相乘——这就是乘法法则。除法同理（指数相减），
+并且要求 $A_2\ne0$，这正是 p22 在 $A_2$ 后面写「$\ne0$」的原因。
+
+\subhdr{4.4 旋转因子：$e^{j90^\circ}=j$ 是什么意思（p27）}
+
+p27 的标题是「rotating factor」，图上把同一个相量 $\dot I$ 转了两个方向：
+
+\[ e^{j90^\circ}=j ,\qquad e^{-j90^\circ}=-j ,\qquad
+   \dot I\cdot j=\dot I\,e^{j90^\circ} . \]
+
+按 §4.3 的乘法法则，乘 $j$ 就是「模不变、角加 $90^\circ$」，
+所以在复平面上一支相量\textbf{乘 $j$ 就是逆时针转 $90^\circ$，乘 $-j$ 就是顺时针转 $90^\circ$}。
+这条为什么重要：§6.3、§6.4 里电感电压写 $\dot U=jX_L\dot I$、电容电压写 $\dot U=-jX_C\dot I$，
+那个 $j$ 与 $-j$ 一个不多、一个不少，正好就是「超前 $90^\circ$」与「滞后 $90^\circ$」。
+\textbf{同一个符号，在 p27 叫旋转因子，在 p31 叫感抗的一部分}——这就是 §0 列的第二处拼接。
+
+\aside{[待确认] p27 版面上「Question:」后面是空的，第二行右侧那一格只画了坐标轴与虚线、
+没有画出 $\dot I\cdot(-j)$ 的箭头。文字层与读图记录都读到空框，故判定为「题目缺失」而非「内容看不清」。
+若要补，最自然的填空是：把 $\dot I$ 顺时针转 $90^\circ$，画出指向右下的箭头，标 $\dot I\cdot(-j)=-j\dot I$。}
+
+\subhdr{4.5 p23 三个例题全程（课件只出题、不给答案）}
+
+p23 只有三行题面，\textbf{一个答案都没有}。三题各走两遍（极坐标法与直角法互校），
+下面的数已用 Python 复算。
+
+\textbf{E1：$(1+j)+(5+j6)$}。纯加减，用直角形式，实部加实部、虚部加虚部：
+
+\[ (1+j)+(5+j6)=(1+5)+j(1+6)=6+j7 . \]
+
+换成极坐标：$|A|=\sqrt{6^2+7^2}=\sqrt{85}\approx9.22$，$\psi=\arctan(7/6)\approx49.4^\circ$，
+即 $6+j7\approx9.22\angle49.4^\circ$。
+
+\textbf{E2：$\dfrac{1+j}{\dfrac{\sqrt3}{2}+j\dfrac12}$}。一眼看不出，先看分母：
+$\dfrac{\sqrt3}{2}+j\dfrac12=1\angle30^\circ$（模为 $1$，因为 $\left(\frac{\sqrt3}{2}\right)^2+\left(\frac12\right)^2=1$）。
+分子 $1+j=\sqrt2\angle45^\circ$。极坐标法一步到位：
+
+\[ \frac{\sqrt2\angle45^\circ}{1\angle30^\circ}=\sqrt2\angle(45^\circ-30^\circ)=\sqrt2\angle15^\circ . \]
+
+直角法互校（分母乘以共轭，分母模为 $1$，约分最省事）：
+
+\[ \frac{1+j}{\frac{\sqrt3}{2}+j\frac12}
+   =\left(1+j\right)\left(\frac{\sqrt3}{2}-j\frac12\right)
+   =\left(\frac{\sqrt3}{2}+\frac12\right)+j\left(\frac{\sqrt3}{2}-\frac12\right)
+   \approx1.366+j0.366 . \]
+
+两法一致：$\sqrt2\cos15^\circ=1.366$、$\sqrt2\sin15^\circ=0.366$。
+
+\textbf{E3：$\dfrac{(1+j)\left(\dfrac12+j\dfrac{\sqrt3}{2}\right)}{\dfrac{\sqrt3}{2}+j\dfrac12}$}。
+分子第二个因子是 $1\angle60^\circ$，分母仍是 $1\angle30^\circ$，分子第一个因子 $\sqrt2\angle45^\circ$。极坐标法：
+
+\[ \frac{\sqrt2\angle45^\circ\times1\angle60^\circ}{1\angle30^\circ}
+   =\sqrt2\angle(45^\circ+60^\circ-30^\circ)=\sqrt2\angle75^\circ . \]
+
+直角法互校：
+
+\[ (1+j)\left(\frac12+j\frac{\sqrt3}{2}\right)
+   =\left(\frac12-\frac{\sqrt3}{2}\right)+j\left(\frac12+\frac{\sqrt3}{2}\right)
+   \approx-0.366+j1.366 , \]
+
+这个中间结果与 $\sqrt2\angle105^\circ$ 相符（$45^\circ+60^\circ=105^\circ$），
+再除以 $1\angle30^\circ$ 得 $\sqrt2\angle75^\circ\approx0.366+j1.366$。两法一致。
+
+\warnbox{\textbf{三题的共同教益}：E1 只能直角，E2、E3 极坐标快十倍。
+但\textbf{极坐标法只在乘除时成立}——把 E1 拿去做「$9.22\angle49.4^\circ$ 加什么」是算不出来的，
+必须退回直角形式。判据就是 §4.2 那张表。}
+
+%=============================================================
+\hdr{§5}{主例题：相量加减与瞬时值加减差在哪（p26 Example3）}
+
+\subhdr{5.1 题面与要交出的三个数}
+
+p26 的题面（原文照录）：
+
+\callout{Given that $i_1=12.7\sqrt2\sin(314t+30^\circ)\,\mathrm{A}$，$i_2=11\sqrt2\sin(314t-60^\circ)\,\mathrm{A}$，
+Find $i=i_1+i_2$。\\
+要交出的三个数是：合成电流的\textbf{有效值} $I$、它的\textbf{初相} $\psi_i$、以及写回\textbf{瞬时式}的结果。}
+
+这三个数分别对应相量的模、角、以及还原后的式子。p26 一路写下去，中间跳了三步：
+（1）为什么能把 $12.7\sqrt2$ 直接写成 $12.7$；（2）为什么 $12.7\angle30^\circ$ 与 $11\angle-60^\circ$ 能这样相加；
+（3）$16.8\angle-10.9^\circ$ 怎么又变回 $16.8\sqrt2\sin(\cdots)$。下面逐步补齐。
+
+\subhdr{5.2 七步演算，每一步说清依据}
+
+\textbf{第 1 步（换标定）}：把幅值换成有效值。由 §1.2 的 $I=I_m/\sqrt2$，
+
+\[ I_1=\frac{12.7\sqrt2}{\sqrt2}=12.7\,\mathrm{A} ,\qquad
+   I_2=\frac{11\sqrt2}{\sqrt2}=11\,\mathrm{A} . \]
+
+\textbf{第 2 步（写相量）}：由 §3.5 的约定 $\dot I=I\angle\psi_i$，
+
+\[ \dot I_1=12.7\angle30^\circ\,\mathrm{A} ,\qquad \dot I_2=11\angle-60^\circ\,\mathrm{A} . \]
+
+\textbf{第 3 步（判定可加）}：两者的 $\omega$ 都是 $314\,\mathrm{rad/s}$，
+满足 §3.3 的同频前提，故 $\dot I=\dot I_1+\dot I_2$ 合法。
+
+\textbf{第 4 步（换成直角）}：加法只能用直角形式（§4.2）。逐个展开：
+
+\[ \dot I_1=12.7\cos30^\circ+j\,12.7\sin30^\circ=11.0+j6.35 , \]
+\[ \dot I_2=11\cos(-60^\circ)+j\,11\sin(-60^\circ)=5.5-j9.53 . \]
+
+这里 p26 写的是「$11(\cos60^\circ-j\sin60^\circ)$」，用的是偶奇性
+$\cos(-60^\circ)=\cos60^\circ$、$\sin(-60^\circ)=-\sin60^\circ$，数值一样。
+
+\textbf{第 5 步（实部虚部分别相加）}：
+
+\[ \dot I=(11.0+5.5)+j(6.35-9.53)=16.5-j3.18\,\mathrm{A} . \]
+
+\textbf{第 6 步（换回极坐标）}：由 §4.1 的两条改写式，
+
+\[ I=\sqrt{16.5^2+3.18^2}\approx16.8\,\mathrm{A} ,\qquad
+   \psi_i=\arctan\frac{-3.18}{16.5}\approx-10.9^\circ , \]
+
+即 $\dot I\approx16.8\angle-10.9^\circ\,\mathrm{A}$。注意实部为正，$\arctan$ 直接可用（§4.1 的警告在此处不触发）。
+
+\textbf{第 7 步（还原瞬时式）}：由 §3.5，把 $\sqrt2$ 与 $\omega t$ 补回去：
+
+\[ i=16.8\sqrt2\sin(314t-10.9^\circ)\,\mathrm{A} . \]
+
+有效值 $I=16.8\,\mathrm{A}$——这正是 p26 右下角红框里那个数。
+
+\aside{第 1 步用的是 §1.2 的 $I=I_m/\sqrt2$（跨小节：那在 p9，本例在 p26）；
+第 4、6 步用的是 §4.1 的两条改写式（p20--p21）；
+第 7 步用的是 §3.5 的还原约定（p25）。三处前提都不在本页，故在此一并点出。
+代入本题：$12.7\sqrt2/\sqrt2=12.7$；$16.5-j3.18$ 的模是 $16.8$、角是 $-10.9^\circ$；
+$16.8$ 是该乘 $\sqrt2$ 才成为幅值的有效值。}
+
+\subhdr{5.3 独立校验：两相量恰差 $90^\circ$，构成直角三角形}
+
+课件的 $16.8$ 与 $-10.9^\circ$ 不是我算出来就算完，最好有一条\textbf{不依赖课件中间数}的旁证。
+看两个初相：$30^\circ-(-60^\circ)=90^\circ$。\textbf{两个相量恰好垂直}，于是合成量就是直角三角形的斜边：
+
+\[ |\dot I|=\sqrt{12.7^2+11^2}=\sqrt{161.29+121}=\sqrt{282.29}\approx16.80\,\mathrm{A} . \]
+
+角度也能独立算：以 $\dot I_2$ 的 $-60^\circ$ 为基准，$\dot I_1$ 在它前面 $90^\circ$，故
+
+\[ \psi_i=-60^\circ+\arctan\frac{12.7}{11}=-60^\circ+49.10^\circ=-10.90^\circ . \]
+
+两条都落在课件的 $16.8$ 与 $-10.9^\circ$ 上。\textbf{这条捷径只在相位差为 $90^\circ$ 时可用}，
+但它给出的旁证与课件的直角坐标加法完全独立，是可靠的第二意见。
+
+\subhdr{5.4 瞬时值层面的验证：相量相加 $\equiv$ 逐时刻相加}
+
+§3.3 已经证明「同频时相量相加等价于瞬时值相加」。等价不是口头承诺，可以直接代两个时刻验：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.9cm}p{3.0cm}p{3.0cm}p{3.4cm}p{3.7cm}@{}}
+\tabtop
+\thead{$t$} & \thead{$i_1$ / A} & \thead{$i_2$ / A} & \thead{$i_1+i_2$ / A} & \thead{由 $16.8\sqrt2\sin$ 算 / A}
+\\
+\tabmid
+$0$ & $8.98$ & $-13.47$ & $-4.49$ & $-4.49$
+\\
+$0.005\,\mathrm{s}$ & $15.56$ & $7.77$ & $23.33$ & $23.32$
+\tabbot
+\end{tabular}
+
+两列在三位有效数字内一致；第二位小数的差别来自 $16.8$ 与 $-10.9^\circ$ 的四舍五入。
+
+\subhdr{5.5 为什么 $23.7$ 是错的：三层解释}
+
+把两个有效值直接相加得 $12.7+11=23.7\,\mathrm{A}$，比真值 $16.8\,\mathrm{A}$ 大了四成。
+必须说清它错在哪一层，否则下次还会犯。
+
+\begin{itemize}
+\item \textbf{几何层}：$12.7$ 与 $11$ 是两支\textbf{不同方向}的箭头的长度。长度相加只在两箭头同向时等于合成长度；
+本例夹角 $90^\circ$，合成长度必然小于长度之和（三角形两边之和大于第三边）。
+\item \textbf{代数层}：$|\dot I_1+\dot I_2|=|16.5-j3.18|=16.8$，而 $|\dot I_1|+|\dot I_2|=12.7+11=23.7$。
+不等式 $|\dot I_1+\dot I_2|\le|\dot I_1|+|\dot I_2|$ 就是三角不等式，
+它取等号的条件是两相量同向，即 $\varphi=0$。
+\item \textbf{数值层}：若真按 $23.7$ 写瞬时式，初相就没有着落了——
+$23.7\sqrt2\sin(314t+?)$ 里的问号填什么都不对，因为 $23.7$ 根本没有对应的相量。
+\end{itemize}
+
+\warnbox{\textbf{一句话判据}：\textbf{同相才能代数相加}。p30 的电阻上 $u$ 与 $i$ 同相，
+所以 $U=RI$ 里 $U$ 与 $I$ 是「同向」的，才能直接乘一个 $R$；
+p35 的电感与电容电压与总电压不同相，所以 $U\ne U_R+U_L+U_C$（§7.2 给正确式）。}
+
+\subhdr{5.6 用相量图画一遍（p26 没有画，这里补）}
+
+相量相加有两种作图法，结果相同：
+
+\begin{itemize}
+\item \textbf{平行四边形法}：两支相量共起点，作平行四边形，对角线即合成量。
+\item \textbf{三角形法}：把 $\dot I_2$ 的起点平移到 $\dot I_1$ 的箭头端，从原点连到 $\dot I_2$ 的箭头端即合成量。
+\end{itemize}
+
+本例用三角形法最好看：$\dot I_1$ 从原点指向 $30^\circ$ 方向、长 $12.7$；
+从它末端再画 $\dot I_2$，方向 $-60^\circ$、长 $11$。两段夹角 $90^\circ$，
+所以合成量就是直角三角形的斜边 $16.8$，方向由「$-60^\circ$ 加 $49.1^\circ$」定出，落在 $-10.9^\circ$。
+§5.3 的校验与这张图是同一件事的两种说法。
+
+\aside{考场上的用法：先把两个相量按比例画出来，看合成量落在哪两个分量的方向之间。
+本例 $-10.9^\circ$ 落在 $-60^\circ$ 与 $30^\circ$ 之间，这是必然的（分量的凸组合）——
+一旦你算出的角不在这两个角之间，立刻回查第 4、5 步的符号。}
+
+%=============================================================
+%=============================================================
+\hdr{§6}{单元件伏安关系：R、L、C 的相量式是怎么来的}
+
+\subhdr{6.1 统一套路：三步，三个元件各走一遍}
+
+p29 的提问是「If AC voltage is applied across a resistor, an inductor or a capacitor, what is the
+relationship between the voltage and the current?」，Objectives 里补了一句
+「especially the phase shift between the voltage and the current」。
+p30--p32 三页各给一张波形图、一张相量图、两条式子，\textbf{但三页都没有推导}。
+三个元件可以用完全相同的三步走完：
+
+\begin{enumerate}
+\item \textbf{设一个参考电流}：取 $i=\sqrt2I\sin\omega t$（即令 $\psi_i=0$）。
+元件伏安关系是「绝对」的，与初相无关，所以把参考相取成 $\psi_i=0$ 不失一般性；
+求出来的 $\varphi$ 就是该元件固有的相位差。
+\item \textbf{用时域关系求 $u(t)$}：$R$ 用 $u=Ri$，$L$ 用 $u=L\dd i/\dd t$，$C$ 用 $i=C\dd u/\dd t$（电容先反解 $u$）。
+\item \textbf{读两个数}：把 $u(t)$ 化成 $\sqrt2U\sin(\omega t+\varphi)$ 的标准形，
+前面那个系数除以 $\sqrt2$ 就是 $U$，多出来的角就是 $\varphi$，相量即 $\dot U=U\angle\varphi$。
+\end{enumerate}
+
+\textbf{参考方向先定住}：p29--p32 三页画的是同一套约定——\textbf{电压 $u$ 上正下负，电流 $i$ 从正端流入}
+（即 $u$ 与 $i$ 取关联参考方向）。下面所有 $+90^\circ$、$-90^\circ$ 的符号都以这套约定为准；
+若某题把 $i$ 的箭头画反了，所有的相位差都要各加 $180^\circ$（超前与滞后互换）。
+这不是细节，而是本题符号的唯一来源。
+
+\subhdr{6.2 电阻：同相，$\dot U=R\dot I$（p30）}
+
+第 1 步取 $i=\sqrt2I\sin\omega t$；第 2 步直接代入 $u=Ri$：
+
+\[ u=\sqrt2\,(RI)\sin\omega t . \]
+
+已经标准形，第 3 步读出 $U=RI$、$\varphi=0$——\textbf{电压与电流同相}。
+相量写成
+
+\[ \dot U=R\dot I ,\qquad U=RI . \]
+
+\textbf{为什么同相}：电阻的关系 $u=Ri$ 是代数关系，不含时间导数，
+电流取什么值，电压\textbf{同一瞬间}就是它的 $R$ 倍，所以两条曲线同时过零、同时到峰。
+p30 右边那条绿 $u$ 与褐 $i$ 完全重合的波形图就是这个意思。
+
+\warnbox{\textbf{p30 的提问没有答案}：「Is the reading of the Multimeter peak value or effective
+value?」答案是\textbf{有效值}，理由见 §1.3。这条与 p9 的第二问是同一个问题，出现了两次，
+说明它是老师反复想让人记住的点。}
+
+\subhdr{6.3 电感：电压超前 $90^\circ$，$\dot U=jX_L\dot I$（p31）}
+
+p31 全页\textbf{找不到} $u=L\dfrac{\dd i}{\dd t}$——它直接给了 $\dot U=jX_L\dot I$ 与
+$X_L=\omega L=2\pi fL$，然后在右侧问了一句「Why voltage leads current by ninety degree?」，
+\textbf{没有答案}。这一问一答要把整条链补齐。
+
+第 2 步代入 $u=L\dfrac{\dd i}{\dd t}$，其中 $\dfrac{\dd i}{\dd t}=\sqrt2I\omega\cos\omega t$：
+
+\[ u=L\cdot\sqrt2I\omega\cos\omega t=\sqrt2\,(\omega LI)\cos\omega t . \]
+
+第 3 步把 $\cos$ 化成正弦（因为本册以 $\sin$ 为基准，见 §2.1 与 §3.1）：
+
+\[ \cos\omega t=\sin\left(\omega t+90^\circ\right)
+   \quad\Longrightarrow\quad
+   u=\sqrt2\,(\omega LI)\sin\left(\omega t+90^\circ\right) . \]
+
+读出两个数：
+
+\[ U=\omega LI=X_LI ,\qquad \varphi=+90^\circ ,\qquad X_L=\omega L=2\pi fL . \]
+
+$\varphi=+90^\circ$ 就是「\textbf{电压超前电流 $90^\circ$}」。写成相量：$\dot U=jX_L\dot I$——
+那个 $j$ 正是 §4.4 的旋转因子，乘 $j$ 就是超前 $90^\circ$。
+
+\aside{跨三页的一条链：p31 的 $\dot U=jX_L\dot I$ 里的 $j$，就是 p27 的 $e^{j90^\circ}=j$；
+而 $90^\circ$ 这个数来自上式 $\cos\omega t=\sin(\omega t+90^\circ)$。
+代入本题：$X_L=\omega L$，所以 $\dot U_L=j\omega L\dot I$，模 $U_L=\omega LI$，角 $\psi_u=\psi_i+90^\circ$。}
+
+\textbf{回答 p31 那个提问（物理解释）}：电感电压正比于\textbf{电流的变化率}。
+电流过零的那一刻变化最快，所以电压此刻最大；电流到峰值的那一刻变化率为零，所以电压此刻为零。
+因此\textbf{电压的峰比电流的峰早四分之一周期出现}——早四分之一周期，就是超前 $90^\circ$。
+不是「电感故意让电压早到」，而是「电压盯着变化率、变化率比电流本身早四分之一周期」。
+
+\textbf{数值例}：$L=0.1\,\mathrm{H}$、$f=50\,\mathrm{Hz}$，则
+$X_L=2\pi\times50\times0.1\approx31.4\,\Omega$；若 $I=2\,\mathrm{A}$，则
+$U_L=X_LI\approx62.8\,\mathrm{V}$，且 $\psi_u=\psi_i+90^\circ$。
+
+\subhdr{6.4 电容：电流超前 $90^\circ$，$\dot U=-jX_C\dot I$（p32）}
+
+电容与电感互为镜像，但 p32 有两处硬错，必须先钉住再讲。
+
+\textbf{第一处：问题抄错了。}p32 右上的提问仍是「Why voltage leads current by ninety degree?」，
+这句话是 p31 电感页的。\textbf{电容上恰恰相反：电流超前电压 $90^\circ$}，
+也就是电压\textbf{滞后}电流 $90^\circ$。同一页的波形图（红线 $i$ 的峰在左、绿线 $u$ 的峰在右）
+与相量图（$\dot I$ 竖直向上、$\dot U$ 水平向右，$\dot I$ 比 $\dot U$ 靠前 $90^\circ$）都画对了，
+只有这句问句是错的——它是从上一页直接复制过来的。
+
+\textbf{第二处：相量式的下标印错了。}p32 印的是 $\dot U=-jX_L\dot I$，
+而容抗记作 $X_C$、同页正文写的就是 $X_C=1/(\omega C)$。正确的式子只能是
+
+\[ \dot U=-jX_C\dot I ,\qquad X_C=\frac{1}{\omega C}=\frac{1}{2\pi fC} . \]
+
+这个笔误不是孤例：p33 的汇总表、p38 与 p39 的表格里电容那一格同样印成 $-jX_L\dot I$。
+\textbf{四处同错，说明是模板复制造成的系统性笔误}，不是排版掉落。
+本讲义全篇按 $-jX_C$ 走。
+
+\textbf{推导。}取 $u=\sqrt2U\sin\omega t$（以电压为参考更方便，因为电容给的是 $i=C\dd u/\dd t$）：
+
+\[ i=C\frac{\dd u}{\dd t}=C\cdot\sqrt2U\omega\cos\omega t
+   =\sqrt2\,(\omega CU)\cos\omega t=\sqrt2\,(\omega CU)\sin\left(\omega t+90^\circ\right) . \]
+
+读出两个数：
+
+\[ I=\omega CU\ \Longrightarrow\ U=\frac{I}{\omega C}=X_CI ,\qquad
+   \psi_i=\psi_u+90^\circ . \]
+
+$\psi_i=\psi_u+90^\circ$ 即「\textbf{电流超前电压 $90^\circ$}」，等价于「电压滞后电流 $90^\circ$」。
+相量形式：$\dot U=\dfrac{\dot I}{j\omega C}=-j\dfrac{\dot I}{\omega C}=-jX_C\dot I$。
+乘 $-j$ 是顺时针转 $90^\circ$（§4.4），恰好对上「电压滞后」。
+
+\aside{这里用了一次 $1/j=-j$：$\dfrac{1}{j\omega C}=\dfrac{1}{j}\cdot\dfrac{1}{\omega C}
+=-jX_C$。验算：$j\cdot(-j)=1$，故 $-j=1/j$。这个负号不是规定出来的，
+是 $1/j$ 算出来的——这也是 §4.4「乘 $-j$ 转 $-90^\circ$」与 §6.3「乘 $j$ 转 $+90^\circ$」的差别所在。}
+
+\textbf{回答那个（被抄错的）提问的正确版本——「为什么电容上电流超前电压 $90^\circ$」}：
+电容电流正比于\textbf{电压的变化率}。电压过零那一刻变化最快，所以电流此刻最大；
+电压到峰值那一刻变化率为零，所以电流此刻为零。于是\textbf{电流的峰比电压的峰早四分之一周期}。
+与电感完全对称：电感是「电压盯变化率」，电容是「电流盯变化率」。
+
+\textbf{数值例}：$C=31.8\,\mu\mathrm{F}$、$f=50\,\mathrm{Hz}$，则
+$X_C=1/(2\pi\times50\times31.8\times10^{-6})\approx100\,\Omega$；若 $U=220\,\mathrm{V}$，
+则 $I=220/100=2.2\,\mathrm{A}$，且 $\psi_i=\psi_u+90^\circ$。
+
+\subhdr{6.5 感抗与容抗的频率特性：一张表看两头}
+
+把 §6.2--§6.4 的三条写成阻抗，顺便看 $\omega\to0$ 与 $\omega\to\infty$ 两个极限：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.2cm}p{4.0cm}p{4.7cm}p{4.7cm}@{}}
+\tabtop
+\thead{元件} & \thead{相量式} & \thead{直流（$f\to0$）} & \thead{高频（$f\to\infty$）}
+\\
+\tabmid
+$R$ & $\dot U=R\dot I$ & $U=RI$，不变 & 不变
+\\
+$L$ & $\dot U=j\omega L\dot I$ & $X_L\to0$：相当于\textbf{短路} & $X_L\to\infty$：相当于\textbf{开路}
+\\
+$C$ & $\dot U=-\dfrac{j}{\omega C}\dot I$ & $X_C\to\infty$：相当于\textbf{开路} & $X_C\to0$：相当于\textbf{短路}
+\tabbot
+\end{tabular}
+
+这张表是后面几章（滤波、耦合电容、旁路电容、变压器）的伏笔，本册只立在这里不展开。
+一个直观记法：\textbf{电感「通直流、阻交流」，电容「通交流、阻直流」}。
+
+\subhdr{6.6 p33 那张汇总表：补上时域关系一列，并订正下标}
+
+p33 用四行三列把三个元件并排。它的四行是 Waveform、Phasor diagram、Effective expression、Phasor
+expression；\textbf{缺了最该有的一行：时域关系}。补上之后，整张表才回答得了「式子从哪来」：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.3cm}p{5.3cm}p{3.4cm}p{2.6cm}@{}}
+\tabtop
+\thead{项目} & \thead{电阻 $R$} & \thead{电感 $L$} & \thead{电容 $C$}
+\\
+\tabmid
+时域关系 & $u=Ri$ & $u=L\dfrac{\dd i}{\dd t}$ & $i=C\dfrac{\dd u}{\dd t}$
+\\
+$u$ 与 $i$ 的相位 & 同相（$\varphi=0$） & $u$ 超前 $i$ $90^\circ$ & $u$ 滞后 $i$ $90^\circ$
+\\
+有效值式 & $U=RI$ & $U=X_LI$ & $U=X_CI$
+\\
+$X$ 的表达式 & —— & $X_L=\omega L=2\pi fL$ & $X_C=\dfrac{1}{\omega C}=\dfrac{1}{2\pi fC}$
+\\
+相量式 & $\dot U=R\dot I$ & $\dot U=jX_L\dot I$ & $\dot U=-jX_C\dot I$
+\tabbot
+\end{tabular}
+
+\aside{第三行第三列（p33 的电容相量式）原印 $--jX_L\dot I$，本表按 $X_C$ 订正，
+理由见 §6.4。第三行第二列的「$u$ 滞后 $i$」与 p32 的问句冲突时，以波形图与相量图为准——
+那两张图两路读法（文字层、读图记录）一致，而问句只有一处。}
+
+%=============================================================
+\hdr{§7}{相量形式的 KVL 与串联 RLC：$Z$ 是怎么长出来的}
+
+\subhdr{7.1 相量 KVL 凭什么成立（p36 的第一行）}
+
+p36 第一行写「KVL in phasor form：$\dot U=\dot U_R+\dot U_L+\dot U_C$」，\textbf{这一步没有解释}。
+它成立靠三件事：瞬时 KVL 本来就成立、三项同频、以及 $\operatorname{Im}$ 的线性性。
+
+时域里，串联电路共用同一个电流 $i$，KVL 对\textbf{每一个时刻}都成立：
+
+\[ u(t)=u_R(t)+u_L(t)+u_C(t) . \]
+
+三项都是与 $i$ 同频（$\omega$）的正弦量，可以按 §3.3 那套写法写成取虚部。
+每一项各有一个相量，于是
+
+\[ u(t)=\operatorname{Im}\left[\sqrt2\left(\dot U_R+\dot U_L+\dot U_C\right)e^{j\omega t}\right]
+      =\operatorname{Im}\left[\sqrt2\,\dot U\,e^{j\omega t}\right] , \]
+
+比较两边的相量部分即得 $\dot U=\dot U_R+\dot U_L+\dot U_C$。
+\textbf{前提是两个}：三项同频（否则提不出公因子，§3.3）、电路是线性集中参数的
+（否则 $u_R$ 等不再是同频正弦）。这两条全册默认成立，从未写出来——§10 记一条。
+
+\subhdr{7.2 p35 那道题：$3\,\mathrm{V}$ 错在哪，正确答案是 $1\,\mathrm{V}$}
+
+p35 的题面是「If $U_R=1\,\mathrm{V}$, $U_L=1\,\mathrm{V}$, $U_C=1\,\mathrm{V}$, then find the total
+voltage」，旁边给出 $U=U_R+U_L+U_C=3\,\mathrm{V}$ 并打了一个红叉。\textbf{红叉后没有正确答案}，
+答案要等到 p37 的相量图。把 p37 的图翻译成式子：
+
+三个电压相量是 $\dot U_R=R\dot I$（与 $\dot I$ 同向）、$\dot U_L=jX_L\dot I$（超前 $90^\circ$）、
+$\dot U_C=-jX_C\dot I$（滞后 $90^\circ$）。\textbf{$\dot U_L$ 与 $\dot U_C$ 方向正相反}，
+当 $U_L=U_C=1\,\mathrm{V}$ 时两者等长反向，相加为零：
+
+\[ \dot U_L+\dot U_C=jX_L\dot I-jX_C\dot I
+   =j\left(X_L-X_C\right)\dot I=j(1-1)\dot I=0 . \]
+
+于是
+
+\[ \dot U=\dot U_R+\dot U_L+\dot U_C=\dot U_R ,\qquad U=U_R=1\,\mathrm{V} . \]
+
+\textbf{正确答案是 $1\,\mathrm{V}$，不是 $3\,\mathrm{V}$。}三个有效值相等，合成却只等于其中一个——
+这看起来反直觉，但相量图上一目了然：两个竖直的箭头等长反向，互相抵消，只剩水平那一个。
+
+\warnbox{\textbf{一般式（电压三角形）}：三个电压有效值与总电压的关系是
+\[ U=\sqrt{U_R^{2}+\left(U_L-U_C\right)^{2}} , \]
+\textbf{不是} $U=U_R+U_L+U_C$。代本题：$\sqrt{1^2+(1-1)^2}=1\,\mathrm{V}$。
+代 p37 的读法：$\sqrt{1^2+0}=1\,\mathrm{V}$。这个式子 §7.5 会给出严格来历。
+\textbf{[教材补充]}：这条显式关系 p35--p37 没有印出来（p37 只有图），
+本讲义由 p36 的相量 KVL 与 p42 的相量图合成，补它是为了让「$1\,\mathrm{V}$」有一个可代入的算式。}
+
+\subhdr{7.3 从三项相加到 $Z$：p36 那三行标注在做什么}
+
+p36 把推导压成三行，右边各贴一个标签。逐行展开：
+
+\textbf{第一行（KVL in phasor form）}：$\dot U=\dot U_R+\dot U_L+\dot U_C$，§7.1 已证。
+
+\textbf{第二行（Current expression）}：把 §6 的三条元件关系代进去。串联的要点是\textbf{共用同一个 $\dot I$}：
+
+\[ \dot U=R\dot I+jX_L\dot I-jX_C\dot I . \]
+
+\textbf{第三行（U-I Relationship in phasor form）}：三项都含 $\dot I$，提出来：
+
+\[ \dot U=\left[R+j\left(X_L-X_C\right)\right]\dot I . \]
+
+方括号里那个量，p36 用大括号括起来并标上「Impedance: $Z$」。这就是阻抗的出生地：
+\textbf{它不是新定义，是从 KVL 里提出公因子提出来的}。
+
+\aside{串联才有「共用同一个 $\dot I$」这一步——这是「串联」二字的全部含义。
+并联时共用的是电压，「提出公因子」的对象要换成 $\dot U$，公式形状随之改变（C2-2 §4 讲）。
+代入本题：$R=30\,\Omega$、$X_L=80\,\Omega$、$X_C=40\,\Omega$ 时方括号 $=30+j40\,\Omega$，见 §7.7。}
+
+\subhdr{7.4 阻抗的两个写法（p41）}
+
+p41 先把 $Z$ 写成直角形式，再一步跳到极坐标。中间那条改写式就是 §4.1 的两条公式：
+
+\[ Z=R+jX=R+j\left(X_L-X_C\right) ,\qquad X=X_L-X_C . \]
+\[ |Z|=\sqrt{R^{2}+X^{2}} ,\qquad \varphi=\arctan\frac{X}{R} ,\qquad Z=|Z|\angle\varphi . \]
+
+读法三条：
+
+\begin{itemize}
+\item $|Z|$ 永远是\textbf{非负数}，单位 $\Omega$；负号只能藏在 $\varphi$ 里。
+\item $\varphi$ 的符号由 $X$ 的符号定，$X>0$ 时 $\varphi>0$，$X<0$ 时 $\varphi<0$。
+\item \textbf{$Z$ 不是相量，不加点}。相量代表一个正弦量，$Z$ 只是一个复数比（$\dot U/\dot I$），
+它本身不对应任何随时间变化的量。p41 的方框里写的是 $Z$，没有点，就是这个道理。
+\end{itemize}
+
+\subhdr{7.5 $U=|Z|I$ 是怎么来的：两边取模（p40）}
+
+p40 给出两个式子并各配一句注解：$\dot U=Z\dot I$ 是「ohm's law in phasor form」，
+含「Two kinds of information, including magnitude and phase」；
+$U=|Z|I$ 是「Effective expression」，只含「the information of magnitude」。
+\textbf{从前者到后者只做了一件事：两边取模}。
+
+\[ \dot U=Z\dot I
+   \quad\Longrightarrow\quad
+   |\dot U|=|Z|\,|\dot I|
+   \quad\Longrightarrow\quad
+   U=|Z|I . \]
+
+取模会丢掉相位（$Z$ 的角 $\varphi$ 与 $\dot I$ 的角 $\psi_i$ 都不见了），所以 $U=|Z|I$
+\textbf{只能算大小}。要相位、要画相量图、要判断超前滞后，必须回到 $\dot U=Z\dot I$。
+p40 那两句注解说的就是这件事，只是没把「取模」这个动作写出来。
+
+\subhdr{7.6 阻抗角判三种电路（p42），以及一个边角}
+
+p42 的三幅相量图给三种情形，判据只有一条：\textbf{看 $X$ 的符号}，也就是看 $\dot U_L$ 与 $\dot U_C$ 谁高。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{2.5cm}p{3.4cm}p{6.4cm}@{}}
+\tabtop
+\thead{$X$ 的符号} & \thead{$\varphi$} & \thead{电路性质} & \thead{相量图上}
+\\
+\tabmid
+$X>0$（$X_L>X_C$） & $0<\varphi<90^\circ$ & 感性（Inductive） & $U_L$ 竖直向上，比 $U_C$ 长；$\dot U$ 斜向右上
+\\
+$X<0$（$X_L<X_C$） & $-90^\circ<\varphi<0^\circ$ & 容性（Capacitive） & $U_C$ 向下，比 $U_L$ 长；$\dot U$ 斜向右下
+\\
+$X=0$（$X_L=X_C$） & $\varphi=0^\circ$ & 阻性（Resistive） & $U_L$ 与 $U_C$ 等长反向抵消；$\dot U$ 与 $\dot I$ 重合
+\tabbot
+\end{tabular}
+
+\warnbox{\textbf{边角：$R=0$ 时 $\arctan(X/R)$ 失效}。纯电感（$R=0$、$X>0$）与纯电容（$R=0$、$X<0$）
+两种情形下 $X/R$ 无定义，$\varphi$ 必须单独写 $\varphi=+90^\circ$ 或 $\varphi=-90^\circ$。
+p41、p43 都只给 $\varphi=\arctan(X/R)$，没写这个前提——§10 记一条（适用区间）。
+实际电路中 $R$ 往往很小但非零，此时 $\varphi$ 会非常接近 $\pm90^\circ$，数值上要小心精度。}
+
+\aside{[待确认] p42 三幅相量图的左右顺序：文字层抽出的顺序是「$\varphi=0^\circ$ / $-90^\circ<\varphi<0^\circ$ /
+$0<\varphi<90^\circ$」，下方性质标注抽出的顺序是「Capacitive / Resistive / Inductive」，
+两者不一致（分层文本的抽取顺序不可靠）。读图记录给的是左 Resistive、中 Inductive、右 Capacitive。
+本讲义按\textbf{判据}讲，不依赖这三幅图的左右次序；若需按图对号，请以页面图为准。}
+
+\subhdr{7.7 一个完整的数值算例（本讲义自设，$[\text{教材补充}]$）}
+
+课件到 p43 为止\textbf{没有一道完整的串联 RLC 数值例题}（p35/p37 只有 $1\,\mathrm{V}$ 的定性题）。
+为了把 §7.1--§7.6 串起来，这里自设一组数，全部用本册已有的公式。
+\textbf{[教材补充]}之所以补：不代一个数，$Z$、$\varphi$、$U=|Z|I$ 三条都还停在符号上。
+设 $R=30\,\Omega$、$X_L=80\,\Omega$、$X_C=40\,\Omega$、$U=220\,\mathrm{V}$、$f=50\,\mathrm{Hz}$。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{4.4cm}p{8.4cm}@{}}
+\tabtop
+\thead{量} & \thead{值} & \thead{依据}
+\\
+\tabmid
+$X$ & $80-40=40\,\Omega$ & $X=X_L-X_C$（p41）
+\\
+$Z$ & $30+j40\,\Omega$ & $Z=R+jX$（p36）
+\\
+$|Z|$ & $\sqrt{30^2+40^2}=50\,\Omega$ & $|Z|=\sqrt{R^2+X^2}$（p41）
+\\
+$\varphi$ & $\arctan(40/30)=53.13^\circ$ & $\varphi=\arctan(X/R)$（p41、p43）
+\\
+$I$ & $220/50=4.4\,\mathrm{A}$ & $U=|Z|I$（p40）
+\\
+$U_R$ & $30\times4.4=132\,\mathrm{V}$ & $U_R=RI$（p30）
+\\
+$U_L$ & $80\times4.4=352\,\mathrm{V}$ & $U_L=X_LI$（p31）
+\\
+$U_C$ & $40\times4.4=176\,\mathrm{V}$ & $U_C=X_CI$（p32）
+\tabbot
+\end{tabular}
+
+\textbf{两处必须自己验的地方}：
+
+（1）\textbf{三个有效值的代数和是 $132+352+176=660\,\mathrm{V}$，远大于电源 $220\,\mathrm{V}$}。
+这不是算错，而是「有效值不能代数相加」的又一次现身。按电压三角形（§7.2）：
+
+\[ U=\sqrt{U_R^{2}+\left(U_L-U_C\right)^{2}}
+   =\sqrt{132^{2}+\left(352-176\right)^{2}}
+   =\sqrt{132^{2}+176^{2}}=220\,\mathrm{V} , \]
+
+正好回到电源电压。\textbf{这一验算同时证明了两件事}：式 $\sqrt{U_R^2+(U_L-U_C)^2}$ 是对的，
+以及「代数相加」必错。
+
+（2）\textbf{$U_L=352\,\mathrm{V}$ 比电源 $220\,\mathrm{V}$ 还高}。串联谐振电路里元件电压高于电源电压，
+是正常现象（$U_L$ 与 $U_C$ 大部分互相抵消，只把差值留给电源）。这一点在做实验时会让初学者吓一跳。
+
+\textbf{电路性质}：$X=40>0$，故 $\varphi=53.13^\circ>0$，属\textbf{感性}，电压超前电流 $53.13^\circ$。
+若把电容换成 $X_C=100\,\Omega$，则 $X=-20\,\Omega$、$|Z|=\sqrt{900+400}\approx36.1\,\Omega$、
+$\varphi=\arctan(-20/30)\approx-33.7^\circ$，变成\textbf{容性}——同一个电路，只换一个电容，性质就翻了个面。
+
+\subhdr{7.8 阻抗三角形（p43）}
+
+p43 的原句是「The total impedance of an RLC series circuit can be found using impedance triangle.
+First of all, we have to consider the resistance and reactance of each component then put them into
+the impedance triangle to find the total impedance of the RLC circuit.」
+图是一个直角三角形：水平边 $R$、竖直边 $X$、斜边 $|Z|$，$\varphi$ 夹在 $R$ 与 $|Z|$ 之间。
+
+它与 §7.2 的电压三角形是\textbf{相似三角形}：把电压三角形（$U_R$、$U_X$、$U$）每边除以 $I$，
+就得到阻抗三角形（$R$、$X$、$|Z|$），角 $\varphi$ 不变。所以两个三角形的三条边成比例，
+$\sqrt{}$ 与 $\arctan$ 的式子形状也一模一样：
+
+\[ |Z|=\sqrt{R^{2}+X^{2}} ,\qquad \varphi=\arctan\frac{X}{R} ,\qquad
+   \cos\varphi=\frac{R}{|Z|} . \]
+
+\aside{最后那个 $\cos\varphi=R/|Z|$（功率因数）本册没有用到，此处只作为「三角形三条边的第三个关系」备案，
+C2-2 讲功率时会用上。代入 §7.7 的数：$\cos53.13^\circ=30/50=0.6$，与 $R/|Z|$ 一致。}
+
+\subhdr{7.9 特例建模：p38、p39 两张空表的填法}
+
+p38 问「Can you relate the expression with the circuit on the right?」，
+p39 的第二张表「Phasor expression」一行\textbf{整行空白}（读图记录确认未填）。
+两张表问的是同一件事：\textbf{把 $R$、$X_L$、$X_C$ 中的若干个置零，一般式会退化成什么}。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{4.6cm}p{6.9cm}@{}}
+\tabtop
+\thead{电路} & \thead{相量式} & \thead{从一般式怎么退化}
+\\
+\tabmid
+只 $R$（p38 第 1 格） & $\dot U=R\dot I$ & 令 $X_L=X_C=0$
+\\
+只 $L$（p38 第 2 格） & $\dot U=jX_L\dot I$ & 令 $R=0$、$X_C=0$
+\\
+只 $C$（p38 第 3 格） & $\dot U=-jX_C\dot I$ & 令 $R=0$、$X_L=0$
+\\
+$R+L$（p39 第 1 格） & $\dot U=\left(R+jX_L\right)\dot I$ & 令 $X_C=0$
+\\
+$R+C$（p39 第 2 格） & $\dot U=\left(R-jX_C\right)\dot I$ & 令 $X_L=0$
+\\
+$L+C$（p39 第 3 格） & $\dot U=j\left(X_L-X_C\right)\dot I$ & 令 $R=0$
+\tabbot
+\end{tabular}
+
+这就是 p38 那一问的答案：\textbf{不是「再记六个公式」，而是「一个公式置零六次」}。
+一般式 $\dot U=[R+j(X_L-X_C)]\dot I$ 一旦记住，六种特例都是它的退化情形。
+
+%=============================================================
+\hdr{§8}{公式卡与解题五步}
+
+\subhdr{8.1 公式卡（按做题顺序排，不按课件顺序）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.9cm}p{6.3cm}p{2.3cm}p{4.9cm}@{}}
+\tabtop
+\thead{量} & \thead{公式} & \thead{依据} & \thead{前提}
+\\
+\tabmid
+$I$ & $I=I_m/\sqrt2$ & p9 & 正弦量
+\\
+$f,\ \omega$ & $\omega=2\pi f=2\pi/T$ & p7 & ——
+\\
+$\dot I$ & $\dot I=I\angle\psi_i$ & p26 & 有效值相量
+\\
+$i(t)$ & $i=\sqrt2I\sin(\omega t+\psi_i)$ & [C2-1 p25 反推] & 与上式配对，缺一不可
+\\
+$a+jb$ & $c=\sqrt{a^2+b^2}$，$\psi=\arctan(b/a)$ & p20（补） & $a>0$；$a<0$ 时加 $180^\circ$
+\\
+$\dot U_R$ & $R\dot I$ & p30 & 同上
+\\
+$\dot U_L$ & $jX_L\dot I$，$X_L=\omega L$ & p31 & 同上
+\\
+$\dot U_C$ & $-jX_C\dot I$，$X_C=1/(\omega C)$ & p32（订正） & 同上
+\\
+$Z$ & $R+j(X_L-X_C)$ & p36 & 串联
+\\
+$|Z|,\ \varphi$ & $\sqrt{R^2+X^2}$，$\arctan(X/R)$ & p41、p43 & $R>0$
+\\
+$U$ & $|Z|I$ & p40 & 只要大小
+\\
+$U$ & $\sqrt{U_R^2+(U_L-U_C)^2}$ & p42（补） & 串联、同频
+\tabbot
+\end{tabular}
+
+\subhdr{8.2 五步流程（拿到任何一道交流题都照这个顺序）}
+
+\begin{enumerate}
+\item \textbf{读频率}：从 $314t$ 这类项里认出 $\omega$，换出 $f=314/(2\pi)\approx50\,\mathrm{Hz}$。
+若题里两个正弦量 $\omega$ 不同，\textbf{停}——相量法不适用（§3.3）。
+\item \textbf{定标定}：看 $\sin$ 前面有没有 $\sqrt2$，决定用有效值相量还是幅值相量，并在卷首写一句声明（§3.5）。
+\item \textbf{换直角}：凡要加减，一律先化成 $a+jb$（§4.2）。
+\item \textbf{用阻抗}：串联就写 $\dot U=Z\dot I$，然后视需要选极坐标（要相位）或取模（只要大小）。
+\item \textbf{还原并自检}：把结果写回 $\sqrt2I\sin(\omega t+\psi)$；再做 §8.3 的三条自检。
+\end{enumerate}
+
+\subhdr{8.3 三条自检（交卷前 30 秒做完）}
+
+\begin{itemize}
+\item \textbf{量级自检}：$|Z|\ge R$ 且 $|Z|\ge|X|$；串联时 $U\ge U_R$；
+若算出 $|Z|<R$，一定是 $X$ 的符号或平方算错了。
+\item \textbf{相位自检}：$\varphi$ 的符号要与 $X$ 的符号一致（$X>0\Rightarrow\varphi>0$）；
+合成的相量角必落在两个分量的角之间（§5.6）。
+\item \textbf{$\sqrt2$ 自检}：最终写回瞬时式时，$\sin$ 前面\textbf{必须}有 $\sqrt2$。
+若答案写成 $16.8\sin(\cdots)$，就漏了一个 $\sqrt2$（幅值应是 $16.8\sqrt2=23.76$）。
+\end{itemize}
+
+%=============================================================
+\hdr{§9}{易错点（每条都指回某页某一步）}
+
+\gapitem{（1）有效值与幅值混用}{p9 与 p25 之间隔着一条 $\sqrt2$ 却没有声明。
+判据只有一条：\textbf{看 $\sin$ 前面有没有 $\sqrt2$}。p26 写 $12.7\angle30^\circ$ 对应
+$12.7\sqrt2\sin(314t+30^\circ)$，模是有效值；若你写成 $12.7\sqrt2\angle30^\circ$，答案就差 $41\%$。}
+
+\gapitem{（2）把 314 当成某个元件的参数}{p26 题面里的 $314$ 是 $\omega=2\pi\times50$，是频率，不是电阻也不是电感。
+它出现在每个电流、每个电压的相位里，与元件无关。换成 $60\,\mathrm{Hz}$ 电网，全部换成 $377$。}
+
+\gapitem{（3）有效值直接相加}{p35 的 $3\,\mathrm{V}$ 与 p26 的 $23.7\,\mathrm{A}$ 是同一个病。
+正确做法：先换相量、再相加、最后取模。p35 的正确值是 $1\,\mathrm{V}$（§7.2）。}
+
+\gapitem{（4）乘除时漏掉角的括号}{p22 印成 $c_1c_2\angle\psi_1+\psi_2$。正确是 $c_1c_2\angle(\psi_1+\psi_2)$。
+另外除法是「角相减」且\textbf{顺序与被除数同}：$\psi_1-\psi_2$，不是 $\psi_2-\psi_1$。§4.3 有推导。}
+
+\gapitem{（5）电容相量式抄成 $-jX_L\dot I$}{p32、p33、p38、p39 四处同错。容抗是 $X_C=1/(\omega C)$，
+电感才叫 $X_L=\omega L$。看到电容的式子里出现 $X_L$，一律改 $X_C$（§6.4）。}
+
+\gapitem{（6）超前与滞后记反}{p31 电感是 $u$ 超前 $i$（$\varphi=+90^\circ$），p32 电容是 $i$ 超前 $u$（$\varphi=-90^\circ$）。
+两条互查办法：（a）波形图上\textbf{谁的峰在左边谁超前}；（b）相量图上\textbf{谁逆时针靠前谁超前}。
+p32 的问句本身写反了，不能拿它当依据。}
+
+\gapitem{（7）给 $Z$ 加点}{p36 的 $Z$ 是一个复数比，不是相量（p41 的方框里也没有点）。
+加了点在概念上等于说「$Z$ 代表一个正弦量」，而它不代表。同理 $X_L$、$X_C$、$R$ 都不加点。}
+
+\gapitem{（8）用 $\arctan(X/R)$ 不判情形}{p41、p43 只给 $\arctan(X/R)$。
+两个坑：（a）$R=0$ 时无定义，必须单独写 $\varphi=\pm90^\circ$；
+（b）若从 $a+jb$ 反求角而 $a<0$，要加 $180^\circ$（§4.1 的警告），否则会把第二象限的点算成第四象限。}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪句话跳了步，本讲义补在哪}
+
+\gapitem{机制缺口}{p9\quad 「Relationship between effective value and amplitude」，框里只有 $I=I_m/\sqrt2$。
+\quad 缺：这个 $\sqrt2$ 从哪来（一个推导都没有）\quad 补：§1.2 热等效定义 + 两个积分}
+
+\gapitem{答案形态}{p9\quad 「220V？Effective or amplitude (peak value)?」与
+「Is the reading of the meters amplitude or effective value?」\quad 缺：两问都没有答案，p30 又问一次
+\quad 补：§1.3（$220$ 与 $311$ 是同一电压；仪表读有效值）}
+
+\gapitem{机制缺口}{p8\quad 「Why 50Hz/60Hz?」\quad 缺：整页只有这一问
+\quad 补：§2.2 用工程折中与两套工业标准回答，并说明 314 的来历（标 [教材补充]）}
+
+\gapitem{答案形态}{p2\quad 「Which one is not AC?」\quad 缺：只给「pulsing DC」一个标签，不指图号、不给判据
+\quad 补：§1.0 按「是否跨横轴」逐图判定（并标 [待确认]）}
+
+\gapitem{拼接缺口}{p27 与 p31/p32\quad 「$e^{j90^\circ}=j$」与「$\dot U=jX_L\dot I$」「$\dot U=-jX_C\dot I$」
+\quad 缺：三页的 $j$ 是同一个旋转因子，没有任何一页把这条缝缝上
+\quad 补：§0 第二处拼接、§4.4、§6.3 末尾}
+
+\gapitem{适用区间}{p14\quad 「two sinusoidal AC current with the \textbf{same frequency}」
+\quad 缺：为什么必须同频、不同频会怎样\quad 补：§3.3 取虚部的三行证明 + 拍频反例}
+
+\gapitem{形式改写}{p25\quad 「Two kinds of information」（Magnitude / Phase），相量写成 $1+j=\sqrt2\angle45^\circ$
+\quad 缺：相量与瞬时值的换算 $\dot I=I\angle\psi\iff i=\sqrt2I\sin(\omega t+\psi)$ 全册未写；
+模取有效值还是幅值从未声明\quad 补：§3.5（约定 + 用 p26 反验 + $\sqrt2$ 判据）}
+
+\gapitem{代数跳步}{p20\quad 「$\overline{Op}=a+jb=c(\cos\psi+j\sin\psi)=ce^{j\psi}=c\angle\psi$」
+\quad 缺：$c=\sqrt{a^2+b^2}$ 与 $\psi=\arctan(b/a)$ 这两次改写一个都没写，
+p21 的 $1+j\leftrightarrow\sqrt2\angle45^\circ$ 直接用它们\quad 补：§4.1（含 $a<0$ 补 $180^\circ$ 的警告）}
+
+\gapitem{机制缺口}{p21\quad 「Why do we need so many forms?」\quad 缺：没有答案
+\quad 补：§4.2 分工表，落成八字口诀「加减用直角，乘除用极坐标」}
+
+\gapitem{形式改写}{p22\quad 「Multiplication: $A_1A_2=c_1c_2\angle\psi_1+\psi_2$」「Division：
+$A_1/A_2=c_1/c_2\angle\psi_1-\psi_2$」\quad 缺：角的括号掉了，按字面读量纲都不合；
+且两条法则没有推导\quad 补：§4.3（加括号 + 用指数形式相乘推出）}
+
+\gapitem{机制缺口}{p27\quad 「Example: rotating factor $e^{j90^\circ}=j$」\quad
+缺：为什么乘 $j$ 等于转 $90^\circ$；且页面上「Question:」框是空的、第二行右格没画箭头
+\quad 补：§4.4（旋转因子的乘法法则解释 + 空题的补法，[待确认]）}
+
+\gapitem{机制缺口}{p31\quad 「Why voltage leads current by ninety degree?」
+\quad 缺：这一问没有答案；更关键的是\textbf{全页没有 $u=L\dd i/\dd t$}，$\dot U=jX_L\dot I$ 凭空出现
+\quad 补：§6.3 三步推导（求导得 $\cos$、化 $\sin$、读出 $+90^\circ$）+ 物理说明}
+
+\gapitem{形式改写 / 笔误}{p32\quad 「Why voltage leads current by ninety degree?」与「$\dot U=-jX_L\dot I$」
+\quad 缺：电容是\textbf{电流}超前电压 $90^\circ$，问句从 p31 抄来写反了；相量式下标应为 $X_C$
+（p33、p38、p39 同错，四处一致）\quad 补：§6.4 点名订正并重推；§6.6 给订正版汇总表}
+
+\gapitem{适用前提}{p36\quad 「KVL in phasor form：$\dot U=\dot U_R+\dot U_L+\dot U_C$」
+\quad 缺：瞬时 KVL 凭什么能直接变相量（同频 + 线性两条前提一字未写）
+\quad 补：§7.1 用 $\operatorname{Im}$ 的线性性与「提出公因子」证明}
+
+\gapitem{答案形态}{p35\quad 「$U=U_R+U_L+U_C=3\,\mathrm{V}$」被打红叉
+\quad 缺：错了但没有正确答案，正确值 $1\,\mathrm{V}$ 只在 p37 靠图暗示
+\quad 补：§7.2 相量相加得 $\dot U=\dot U_R$，并给一般式 $U=\sqrt{U_R^2+(U_L-U_C)^2}$}
+
+\gapitem{形式改写}{p40\quad 「$U=|Z|I$ … Only the information of magnitude」
+\quad 缺：这个式子是从 $\dot U=Z\dot I$ \textbf{两边取模}来的，取模这个动作没写，
+读者会以为它是另一个独立结论\quad 补：§7.5（补出取模一行，并说明为什么丢了相位）}
+
+\gapitem{适用区间}{p41、p43\quad 「$\varphi=\arctan(X/R)$」
+\quad 缺：$R=0$（纯电感或纯电容）时无定义，必须单独写 $\pm90^\circ$；也没说象限
+\quad 补：§7.6 的边角提示、§4.1 的象限警告}
+
+\gapitem{答案形态}{p39\quad 第二张表「Phasor expression」一行整行空白
+\quad 缺：$R+L$、$R+C$、$L+C$ 三种组合的相量式没有填
+\quad 补：§7.9 给六格完整的填法（含 p38 的「一个公式置零六次」）}
+
+\aside{§10 共 18 条，类型分布：机制缺口 5 条、答案形态 4 条、形式改写 4 条、适用区间/前提 3 条、
+拼接缺口 1 条、代数跳步 1 条（其中 p32 一条兼属「形式改写」与「笔误」）。
+按 §0 的观察，\textbf{「给了结果不给来历」是本册的系统性特征}（$\sqrt2$、$Z$、$U=|Z|I$、旋转因子都这样），
+所以 §1、§6、§7 三节都按「先补推导、再回指页码」的方式写。}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{有效值是热等效算出来的均方根}，等于幅值除以 $\sqrt2$；
+\quad 一切仪表读数、铭牌、相量的模都是有效值，只有波形图顶端与 $\sin$ 前的系数才是幅值。
+\item \textbf{相量能代替正弦量，靠的是「同频」与「取虚部的线性」}：
+\quad 提出公因子 $e^{j\omega t}$ 之后只剩一个复数，它丢掉频率、留下模与初相；
+\quad 加减用直角形式，乘除用极坐标形式，同相才能代数相加。
+\item \textbf{元件伏安关系靠 $\dd/\dd t\leftrightarrow j\omega$ 变成阻抗}：
+\quad 三个元件化成 $R$、$jX_L$、$-jX_C$，串联时 KVL 提出公因子得 $Z=R+j(X_L-X_C)$；
+\quad 电压必须按相量相加，$U=\sqrt{U_R^2+(U_L-U_C)^2}$，永远不等于三个有效值之和。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{7.4cm}p{6.6cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p1 & 封面：Chapter Two AC circuits & §0（封面不计内容）
+\\
+p2 & Definition of AC、五个波形、$question$「Which one is not AC?」 & §1.0
+\\
+p3--p4 & AC generator：磁铁、绕组、切割磁力线、碳刷滑环（p4 为放大图） & §1.0（发电机链条与正弦的来历）
+\\
+p5 & 直流单向 / 交流周期性换向 & §1.0
+\\
+p6 & $i=I_m\sin(\omega t+\psi)$、三要素、波形 & §2.1
+\\
+p7 & 周期、频率、角频率；$T=0.5\,\mathrm{s}$、$f=2\,\mathrm{Hz}$、$\omega=4\pi$ & §2.2
+\\
+p8 & $question$「Why 50Hz/60Hz?」 & §2.2
+\\
+p9 & 瞬时值/幅值/有效值、$I=I_m/\sqrt2$、两问、万用表照片 & §1.1--§1.3
+\\
+p10 & 相位与初相定义、E1（$i=10\sin(1000t+30^\circ)$） & §2.3
+\\
+p11 & E2（$u=311\sin(314t-60^\circ)$） & §2.3、§1.3
+\\
+p12 & E3：相位差 $\varphi=\psi_u-\psi_i=-90^\circ$ & §2.3
+\\
+p13 & 封面：2.2 Phasor representation & §0（封面不计内容）
+\\
+p14 & 提问（两个同频电流如何相加）、四个 Objective & §3.3
+\\
+p15 & 正弦波 $\leftrightarrow$ 旋转矢量（取纵轴投影） & §3.1
+\\
+p16 & 三种初相的波形与旋转矢量对照 & §3.1
+\\
+p17 & 旋转矢量 $\leftrightarrow$ 静止矢量 & §3.2
+\\
+p18 & 静止矢量 $\leftrightarrow$ 相量（含定义句） & §3.2
+\\
+p19 & 相量 $\leftrightarrow$ 复数 & §3.2、§4
+\\
+p20 & 复数四形式（直角、三角、指数、极坐标） & §4.1
+\\
+p21 & $1+j\leftrightarrow\sqrt2\angle45^\circ$ 对照表、$question$「Why so many forms?」 & §4.2
+\\
+p22 & 复数加减乘除四条 & §4.3
+\\
+p23 & E1、E2、E3 三道复数运算题（无答案） & §4.5
+\tabbot
+\end{tabular}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{7.4cm}p{6.6cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p24 & 封面：2.2.2 Phasor representation of sinusoidal AC & §0（封面不计内容）
+\\
+p25 & $\dot I=1+j=\sqrt2\angle45^\circ$、$two kinds of information$ & §3.5
+\\
+p26 & Example3：$12.7\angle30^\circ+11\angle-60^\circ\Rightarrow16.8\angle-10.9^\circ$ & §5（主例题）
+\\
+p27 & 旋转因子 $e^{j90^\circ}=j$、$e^{-j90^\circ}=-j$、$question$（空） & §4.4
+\\
+p28 & 封面：2.3 Single parameter AC circuit & §0（封面不计内容）
+\\
+p29 & 提问（R/L/C 上电压与电流的关系）、$Objective$ & §6.1
+\\
+p30 & 纯电阻：波形同相、相量图、$U=RI$、$\dot U=R\dot I$、万用表提问 & §6.2、§1.3
+\\
+p31 & 纯电感：$u$ 超前 $90^\circ$、$X_L=\omega L$、$\dot U=jX_L\dot I$、$question$ & §6.3
+\\
+p32 & 纯电容：$i$ 超前 $90^\circ$、$X_C=1/(\omega C)$、$\dot U=-jX_L\dot I$（下标误） & §6.4（订正）
+\\
+p33 & 2.3.4 汇总表（波形、相量图、有效值式、相量式） & §6.6（补时域列）
+\tabbot
+\end{tabular}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.6cm}p{7.4cm}p{6.6cm}@{}}
+\tabtop
+\thead{课件页} & \thead{课件内容} & \thead{本讲义位置}
+\\
+\tabmid
+p34 & 封面：2.4 Series AC circuits & §0（封面不计内容）
+\\
+p35 & 提问 $U_R=U_L=U_C=1\,\mathrm{V}$、$3\,\mathrm{V}$ 打红叉 & §7.2
+\\
+p36 & 相量 KVL、$Current\ expression$、$Z$ 的出生地 & §7.1、§7.3
+\\
+p37 & 相量图作答：$U_L$ 与 $U_C$ 相消，$U=U_R$ & §7.2
+\\
+p38 & （1）特例建模、$question$「Can you relate\ldots」、三元件表 & §7.9
+\\
+p39 & （1）特例建模第二张表（$R+L$、$R+C$、$L+C$，相量式行空白） & §7.9
+\\
+p40 & （2）$\dot U=Z\dot I$ 与 $U=|Z|I$（两种信息） & §7.5
+\\
+p41 & （3）阻抗：直角式、极坐标式、$|Z|$ 与 $\varphi$ & §7.4
+\\
+p42 & （4）阻抗角：三种电路性质、$\varphi=\psi_u-\psi_i$ & §7.6（含 [待确认]）
+\\
+p43 & （5）阻抗三角形、$\varphi=\arctan(X/R)$ & §7.8
+\tabbot
+\end{tabular}
+
+\flowerrule
+
+{\small\color{inkgray}
+本讲义所有数值已用 Python 独立复算：$220\sqrt2=311.1$、$50\,\mathrm{Hz}$ 对应 $\omega=314.16$、
+$16.5-j3.18$ 的模为 $16.8015$、角为 $-10.897^\circ$、
+$12.7^2+11^2$ 的平方根为 $16.80$、$-60^\circ+\arctan(12.7/11)=-10.90^\circ$、
+E1 $=6+j7=9.22\angle49.40^\circ$、E2 $=\sqrt2\angle15^\circ=1.366+j0.366$、
+E3 $=\sqrt2\angle75^\circ=0.366+j1.366$、
+$X_L(0.1\,\mathrm{H},50\,\mathrm{Hz})=31.4\,\Omega$、$X_C(31.8\,\mu\mathrm{F},50\,\mathrm{Hz})=100.1\,\Omega$、
+$|30+j40|=50$、$\arctan(40/30)=53.13^\circ$、$\sqrt{132^2+176^2}=220$。
+标 [教材补充] 的三处（50/60 Hz 的由来、$U=\sqrt{U_R^2+(U_L-U_C)^2}$ 的一般式、§7.7 的完整算例）
+不是课件原文，只作理解用，不作文档口径。}
+
+\end{document}
+
+

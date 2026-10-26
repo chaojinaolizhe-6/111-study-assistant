@@ -10,6 +10,7 @@
 \usepackage[a4paper,left=2.0cm,right=2.0cm,top=2.1cm,bottom=2.3cm,%
             headsep=12pt,footskip=22pt]{geometry}
 \usepackage{amsmath,amssymb}
+\usepackage{needspace}
 \usepackage{xcolor}
 \usepackage{array}
 \usepackage{enumitem}
@@ -85,6 +86,24 @@
   \par\vspace{2pt}\noindent
   \hangindent=1.4em\hangafter=1
   {\color{petal}\small\ding{96}}\enspace{\bfseries\color{violetdeep}#1}\enspace #2\par}
+
+% 题干块（\qstem）：每道例题／作业的「详解」开头必须先复述题干与出处。
+% 起因：2026-10-25 第五章讲义把七道作业的题面集中放在一页、详解另起一页，
+% 读者翻到「第 4 题」时看不到条件，等于一道没有题干的题目。
+% 规则：详解块内自带题干，读者不翻页就能读懂题在问什么。
+\newcommand{\qstem}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{violet}{bandviolet}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+      \vspace{2pt}%
+      {\small\bfseries\color{violet}题干}\hspace{0.8em}#1%
+      \vspace{2pt}}}%
+  \par\medskip}
+
+% \qbreak：一题一块的起页保护。剩余空间不足 0.92 页时先换页，
+% 让「题干 + 考点 + 关键一步 + 详解 + 答案 + 自检」整块落在同一页，
+% 不让读者在下一页开头看到一句没有题号的「详解：」。
+\newcommand{\qbreak}{\needspace{0.92\textheight}}
 
 % 前提旁注：只放在「需要理解的那一步」后面，给陈述 + 本题代入，不重证。
 \newcommand{\aside}[1]{%

@@ -1,0 +1,426 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第五章 §5.1 专题补丁 · 三角函数的四条性质各自管什么
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{第五章 · 专题：三角性质分工与偶次谐波}{数学物理方法1}
+
+\begin{document}
+
+\doctitle{为什么 $|\sin\omega t|$ 只剩偶次谐波}{四条三角性质的分工：正交性筛系数、奇偶性杀正弦、半波重复杀奇数、诱导公式给符号}
+{依据：\texttt{第五章+傅里叶变换+-+上传课件.pdf} p5--p8、p10、p13，作业 p39 第 3 题\ \textperiodcentered\ 2026-10-25}
+
+%=============================================================
+\hdr{§0}{这份讲义只解决三个疑问}
+
+\callout{\textbf{本讲义要回答的三句话}（其余内容一概不写，画面只留这三条）：
+\begin{enumerate}[label=(\arabic*)]
+\item 作业 p39 第 3 题里，$n$ 为奇数和 $n$ 为偶数为什么用两套处理？这是三角函数的\textbf{什么性质}？
+\item 我记的“只有编号相同才不为零”，在傅里叶变换里明明是常识，为什么这里对偶数 $n$ 不适用？
+\item 这三件事分别叫什么名字，考试写理由时该引哪一条？
+\end{enumerate}}
+
+第五章已经有一份 27 页的完整精讲（\texttt{第五章-精讲-傅里叶变换-20261022.pdf}），其中 §7 收了这道题的完整解答。\textbf{本讲义不重讲那一章}，只补那道题里被跳过的一层机制——因为它连带出的是一个概念问题，而不是一处算错。
+
+\subhdr{记号：本篇只用这一套，后文不再改}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{13.4cm}@{}}
+\toprule
+\thead{记号} & \thead{约定（与课件 p6、p10 一致）}
+\\
+\midrule
+$T$ & 展开区间的长度；本题 $T=2\pi/\omega$，即 $\omega T=2\pi$
+\\
+$\omega$ & 基波角频率（\textbf{展开用的}那个 $\omega$，不是函数真实的基频）
+\\
+$f(t)$ & 被展开的函数；本题 $f(t)=A|\sin\omega t|$
+\\
+$a_0,\ a_n,\ b_n$ & 实数级数系数：$f=a_0+\sum_{n\ge1}\left(a_n\cos n\omega t+b_n\sin n\omega t\right)$
+\\
+归一化 & $a_0=\dfrac1T\displaystyle\int_0^{T}f\dd t$（\textbf{平均值}，不乘 2）；$a_n=\dfrac2T\displaystyle\int_0^{T}f\cos n\omega t\dd t$；$b_n$ 同理
+\\
+$u$ & 无量纲自变量：$u=\omega t$，故 $t=0\mapsto u=0$，$t=T\mapsto u=2\pi$，$\dd t=\dd u/\omega$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{归一化这两条要能说出“2 从哪来”：$a_0$ 乘的是 $1/T$，因为 $\int_0^T 1\dd t=T$；$a_n$ 乘的是 $2/T$，因为 $\int_0^T\cos^2 n\omega t\dd t=T/2$，不是 $T$。这是\textbf{系数约定}，不是某个定理的结论。}
+
+%=============================================================
+\hdr{§1}{缺口勘探：课件与题解在这里跳过了什么}
+
+把课件 p5--p13 与 p39 第 3 题的题解对着读，缺口集中在“$n$ 的奇偶”这一处。逐条点名：
+
+\gapitem{机制缺口 · p8}{课件 p8 的原文只有两句：“如果 $f(x)$ 是偶函数，则 $f(x)=a_0+\sum a_n\cos(n\pi x/l)$”“如果 $f(x)$ 是奇函数，则 $f(x)=\sum b_n\sin(n\pi x/l)$”。\textbf{缺的是：}奇偶性只判“有没有 $\sin$ 项、有没有 $\cos$ 项”，它对 $a_n$ 里 $n$ 的奇偶\textbf{一个字都没说}。把“偶函数”与“偶次谐波”混成一件事，就是这道题第一个坑。本讲义 §2 把两条拆开。}
+
+\gapitem{代数跳步 · p39 第 3 题题解}{题解原文：“作代换 $u\to u+\pi$，$|\sin u|$ 不变、$\cos nu$ 变号（$n$ 奇数）”。\textbf{缺的是：}变号这一步来自诱导公式 $\cos(nu+n\pi)=(-1)^n\cos nu$，题解没写；而且“变号”之后怎么变成“整个积分为零”，也没有过渡。本讲义 §4.5 补上因子 $(1+(-1)^n)$。}
+
+\gapitem{表述不严 · 同上}{题解原文：“于是 $[0,2\pi]$ 上的积分前后两半恰好抵消”。\textbf{缺的是：}“抵消”听起来像两半各自不为零、符号相反。真正的一步是把第二半换元折回第一半，\textbf{提出一个因子}，让因子等于零。本讲义 §4.5 按后者重写。}
+
+\gapitem{概念缺口 · 无页码}{题解从头到尾没有解释：为什么正交性没有把 $a_n$ 全部变成零。这正是读者卡住的地方。本讲义 §3 专门回答。}
+
+\gapitem{拼接缺口 · p13 与 p39 之间}{课件 p13 例 2 的对称方波只剩\textbf{奇}次谐波，作业 p39 第 3 题只剩\textbf{偶}次谐波。两题是同一条判据的正反两面，但课件把例 2 当作“奇函数只余正弦”的例子讲完就过去了，作业页也没有提示这条判据。本讲义 §6 把两题焊在一起。}
+
+%=============================================================
+\hdr{§2}{四条性质，各管一段}
+
+这三句话必须能分开说。合在一起讲，必然出现“偶函数所以偶次谐波”这种串味的说法。
+
+\subhdr{性质一｜正交性（课件 p5）：负责把系数“筛”出来}
+
+课件 p5 把这件事写成一组 $\delta_{nm}$：
+
+\begin{gather*}
+\frac1l\int_{-l}^{l}\sin\frac{n\pi x}{l}\sin\frac{m\pi x}{l}\dd x=\delta_{nm},\qquad
+\frac1l\int_{-l}^{l}\cos\frac{n\pi x}{l}\cos\frac{m\pi x}{l}\dd x=\delta_{nm},\\
+\frac1l\int_{-l}^{l}\cos\frac{n\pi x}{l}\sin\frac{m\pi x}{l}\dd x=0 .
+\end{gather*}
+
+它的用途只有一个：把展开式两边同乘某个基函数再逐项积分，除待求那一项外全部归零，于是系数被单独“筛”出来。\textbf{它是提取器，不是筛选器。}下一节专门说这句话的含义。
+
+\subhdr{性质二｜奇偶性（课件 p8）：只判“$\sin$ 项还是 $\cos$ 项”}
+
+$f$ 为偶函数时，$f\cdot\sin$ 是奇函数，对称区间积分为零，故 $b_n\equiv0$；$f$ 为奇函数时同理 $a_n\equiv0$（$a_0$ 也归零）。
+
+\textbf{边界要写清：}奇偶性只能让“整族系数”消失（全 $\sin$ 或全 $\cos$），\textbf{它不会只让其中一半的 $n$ 消失}。它管不到 $n$ 的奇偶。
+
+\subhdr{性质三｜诱导公式：唯一能产生 $(-1)^n$ 的地方}
+
+\[
+\cos\left(\alpha+n\pi\right)=(-1)^n\cos\alpha,\qquad
+\sin\left(\alpha+n\pi\right)=(-1)^n\sin\alpha .
+\]
+
+\begin{itemize}
+\item $n$ 偶：$\cos(nu+n\pi)=\cos nu$，原样不动；
+\item $n$ 奇：$\cos(nu+n\pi)=-\cos nu$，变号。
+\end{itemize}
+
+这条式子是高中的，但它在这道题里是\textbf{唯一}决定奇偶命运的东西。§4 的全部内容就是在等它出现。
+
+\subhdr{性质四｜半波重复：让“平移 $\pi$ 再折回来”这件事有意义}
+
+\[
+\left|\sin(u+\pi)\right|=\left|-\sin u\right|=\left|\sin u\right| .
+\]
+
+平移半个周期（$\pi$）后函数值原样重复，这叫\textbf{半波重复}。它是 $|\sin|$ 取绝对值之后才有的性质：$\sin$ 自己是“半波反对称”的（$\sin(u+\pi)=-\sin u$）。
+
+四条性质的分工，一张表读完：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{4.8cm}@{}}
+\toprule
+\thead{性质} & \thead{一句话内容} & \thead{它能让谁消失} & \thead{它\textbf{不能}让谁消失}
+\\
+\midrule
+正交性 & $(1/l)\int\varphi_n\varphi_m\dd x=\delta_{nm}$ & 展开式里“别的项” & 任意函数与 $\varphi_n$ 的内积
+\\
+奇偶性 & $f$ 偶 $\Rightarrow b_n\equiv0$ & 整族 $\sin$（或整族 $\cos$） & 余弦项里 $n$ 为奇数的那一半
+\\
+诱导公式 & $\cos(\alpha+n\pi)=(-1)^n\cos\alpha$ & 单独给符号，不直接消项 & ——（它只提供因子）
+\\
+半波重复 & $f(t+T/2)=f(t)$ & $n$ 为奇数的项 & $n$ 为偶数的项
+\\
+\bottomrule
+\end{tabular}
+
+\par\vspace{3pt}
+\textbf{这张表就是四条性质的速查}：每一行只回答“它管哪一类消失”。逐行读法——第三行不给零，只给 $+1$ 或 $-1$，所以它必须和第四行联手才能消项；第四行单独也不够，因为“重复”本身不产生符号，符号是第三行给的。
+
+\warnbox{
+\textbf{最容易串味的两行是第二行与第四行。}“$f$ 是偶函数”与“只剩偶次谐波”是两个独立结论：前者管\textbf{哪一个三角函数族}，后者管\textbf{族内的哪些} $n$。本题恰好两件事同时成立，所以看起来像一句话，其实各有各的理由。
+}
+
+%=============================================================
+\hdr{§3}{正交性到底说了什么、没说什么}
+
+\subhdr{它说的是内积}
+
+记内积 $\langle g,h\rangle=\int_0^{T}g(t)h(t)\dd t$。正交性的内容就是
+\[
+\langle\varphi_n,\varphi_m\rangle=0\quad(n\neq m),\qquad
+\langle\varphi_n,\varphi_n\rangle=\frac{T}{2}\quad(n\ge1),
+\]
+其中 $\varphi_n$ 遍历 $\left\{\cos n\omega t\right\}$ 与 $\left\{\sin n\omega t\right\}$ 这两族。
+
+系数公式是这句话的直接推论：
+\[
+a_n=\frac{\langle f,\varphi_n\rangle}{\langle\varphi_n,\varphi_n\rangle}=\frac{2}{T}\int_0^{T}f(t)\cos n\omega t\dd t .
+\]
+换句话说，$a_n$ 就是 $f$ 在 $\varphi_n$ 方向上的\textbf{投影长度}。
+
+\subhdr{它没说的一件事：$f$ 可以“不垂直”于任何 $\varphi_n$}
+
+$a_n=0$ 的准确含义是 $f\perp\varphi_n$（$f$ 与那个余弦没有共同成分）。正交性说的\textbf{只是}两个基函数之间垂直，$\langle\varphi_m,\varphi_n\rangle=0$。它对你手上这个\textbf{任意函数} $f$ 与 $\varphi_n$ 的内积，一个字也没有说。
+
+\textbf{反证就够了：}如果它对任意 $f$ 都等于零，那么所有信号的傅里叶系数都是零，级数退化成 $f\equiv0$——这显然不成立。所以正交性不可能承担“让 $a_n$ 为零”这个职责。
+
+\subhdr{“只有编号相同才不为零”的正确适用范围}
+
+这句话原话是
+\[
+\int_0^{T}\varphi_m(t)\varphi_n(t)\dd t=0\quad(m\neq n),
+\]
+\textbf{两个因子都必须是基函数}。作业第 3 题算的是
+\[
+\int_0^{2\pi}\left|\sin u\right|\cos nu\dd u ,
+\]
+前一个因子 $|\sin u|$ 既不是 $\cos u$、也不是 $\sin u$、也不是常数——它是\textbf{已经把无穷多项余弦装进去}的复合对象。规则对它没有预言力。
+
+把范围说成一句话：\textbf{这条规则管“两个基函数之间”，不管“任意函数与基函数之间”。}只有当 $f$ 本身是单个基函数时，两者才重合——而那正是傅里叶变换里最容易碰上、也最容易记成通例的情形。
+
+\warnbox{
+\textbf{这里不涉及任何“例外”。}作业第 3 题不是正交性的例外，§5 会看到：把 $|\sin u|$ 展开成余弦级数之后，正交性一步一步都在正常工作，只是“编号相同”里的编号是 $2k$ 而不是 $n$。
+}
+
+%=============================================================
+\hdr{§4}{主例题全程演算：$A|\sin\omega t|$ 在 $(0,T)$ 上}
+
+\qstem{（课件 p39 第 3 题）将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数。}
+
+\subhdr{4.1｜看周期：$\omega T=2\pi$，真实周期只有一半}
+
+$\sin\omega t$ 的周期是 $2\pi/\omega$，所以题目里的 $T=2\pi/\omega$，即
+\[
+\omega T=2\pi .
+\]
+取绝对值之后，每个“向下拱”被翻上来，函数\textbf{每半个周期重复一次}，所以 $f$ 自己的周期是 $T/2=\pi/\omega$。
+
+\callout{\textbf{把这件事翻译成“网格”：}展开用的是 $\left\{1,\cos n\omega t,\sin n\omega t\right\}$，相邻两格间隔 $\omega=2\pi/T$。可 $f$ 只在 $2\omega,4\omega,6\omega,\dots$ 这些\textbf{偶数格}上有内容。于是拿这把尺子去量，\textbf{一半的刻度（$n=1,3,5,\dots$）落在空处}，那里必然给零。§4.5 只是把这个“空”算出来。}
+
+\subhdr{4.2｜常数项 $a_0$}
+
+\[
+a_0=\frac1T\int_0^{T}A\left|\sin\omega t\right|\dd t
+=\frac{A}{\omega T}\int_0^{2\pi}\left|\sin u\right|\dd u
+=\frac{A}{2\pi}\cdot4=\frac{2A}{\pi}.
+\]
+中间两处：$\dd t=\dd u/\omega$ 把 $1/(\omega T)$ 带出来，再用 $\omega T=2\pi$；而
+\[
+\int_0^{2\pi}\left|\sin u\right|\dd u=2\int_0^{\pi}\sin u\dd u=2\times2=4,
+\]
+即“一拱面积 $2$，两个周期共两拱”。
+
+\subhdr{4.3｜正弦项 $b_n$：奇偶性一次杀掉一整族}
+
+$f$ 是偶函数，$f\cdot\sin n\omega t$ 是奇函数，在以 $0$ 为中心的长度 $T$ 上积分为零，故
+\[
+b_n\equiv0\quad(\text{一切 }n).
+\]
+这一步是性质二，与 $n$ 的奇偶无关。
+
+\subhdr{4.4｜余弦项：先把区间折成一半，符号才看得见}
+
+用 $\omega_n=2\pi n/T=n\omega$，
+\[
+a_n=\frac2T\int_0^{T}A\left|\sin\omega t\right|\cos n\omega t\dd t
+=\frac{2A}{\omega T}\int_0^{2\pi}\left|\sin u\right|\cos nu\dd u
+=\frac{A}{\pi}\int_0^{2\pi}\left|\sin u\right|\cos nu\dd u .
+\]
+到这里为止，$n$ 的奇偶还没有任何区别对待——所有的差别都藏在最后一个积分里。
+
+\subhdr{4.5｜关键一步：把第二半折回第一半，提出因子 $(1+(-1)^n)$}
+
+令 $u\to u+\pi$ 把 $\left[\pi,2\pi\right]$ 折回 $\left[0,\pi\right]$。被积函数里两个因子各自怎么变：
+\[
+\left|\sin(u+\pi)\right|=\left|\sin u\right|,\qquad
+\cos\left(n(u+\pi)\right)=(-1)^n\cos nu .
+\]
+前一条是半波重复（性质四），后一条是诱导公式（性质三）。于是
+\[
+\int_0^{2\pi}\left|\sin u\right|\cos nu\dd u
+=\left(1+(-1)^n\right)\int_0^{\pi}\left|\sin u\right|\cos nu\dd u .
+\]
+
+\aside{这才是“抵消”的精确写法：第二半等于第一半乘 $(-1)^n$，所以整个积分等于第一半乘 $\left(1+(-1)^n\right)$。$n$ 奇时因子为零，整个积分随之为零，与第一半是否为零无关。（对本题这个 $f$，第一半\textbf{恰好}也为零，所以写成“抵消”碰巧不算错；但换成别的半波重复函数，第一半未必为零，那时只有因子能把项杀掉。判断机制时认因子，不认“抵消”这个说法。）}
+
+\warnbox{
+\textbf{$n$ 为奇数：因子 $(1+(-1)^n)=0$，故 $a_n=0$。}这里\textbf{没有做任何积分}，也没有用到“$|\sin u|$ 长什么样”。奇数项全灭，纯粹是\textbf{半波重复 $\times$ 诱导公式}的结果。
+}
+
+\subhdr{4.6｜$n$ 为偶数 $n=2m$：这时候才真正做积分}
+
+$n$ 偶时 $\cos\left(2m(u+\pi)\right)=\cos 2mu$，两半相同，因子等于 $2$；在 $\left[0,\pi\right]$ 上 $|\sin u|=\sin u$，于是
+\[
+\int_0^{2\pi}\left|\sin u\right|\cos 2mu\dd u
+=2\int_0^{\pi}\sin u\cos 2mu\dd u .
+\]
+用积化和差 $\sin u\cos 2mu=\frac12\left[\sin(2m+1)u-\sin(2m-1)u\right]$，
+\[
+2\int_0^{\pi}\sin u\cos 2mu\dd u
+=\int_0^{\pi}\left[\sin(2m+1)u-\sin(2m-1)u\right]\dd u ,
+\]
+而 $k$ 为奇数时
+\[
+\int_0^{\pi}\sin ku\dd u=\frac{1-\cos k\pi}{k}=\frac2k ,
+\]
+所以
+\[
+\int_0^{2\pi}\left|\sin u\right|\cos 2mu\dd u
+=\frac{2}{2m+1}-\frac{2}{2m-1}
+=\frac{2(2m-1)-2(2m+1)}{4m^2-1}
+=-\frac{4}{4m^2-1},
+\]
+\[
+a_{2m}=\frac{A}{\pi}\cdot\left(-\frac{4}{4m^2-1}\right)=-\frac{4A}{\pi\left(4m^2-1\right)} .
+\]
+
+\subhdr{答案与自检}
+
+\[
+A\left|\sin\omega t\right|
+=\frac{2A}{\pi}-\frac{4A}{\pi}\sum_{m=1}^{\infty}\frac{\cos 2m\omega t}{4m^2-1} .
+\]
+
+\textbf{自检一（取 $t=0$）}：左边 $=0$，右边 $=\frac{2A}{\pi}-\frac{4A}{\pi}S$，其中
+\[
+S=\sum_{m\ge1}\frac{1}{4m^2-1}
+=\frac12\sum_{m\ge1}\left(\frac{1}{2m-1}-\frac{1}{2m+1}\right)
+=\frac12 ,
+\]
+（望远镜求和，只剩首项 $1$）故右边 $=0$ \checkmark。
+
+\textbf{自检二（平均值）}：常数项应等于 $A\left|\sin\omega t\right|$ 的周期平均，即 $\frac{2A}{\pi}$，与 §4.2 一致 \checkmark。
+
+\textbf{自检三（端点）}：题目区间是开区间 $(0,T)$，两端 $t=0,T$ 处 $f=0$，右侧级数在 $t=0$ 处也收敛到 $0$。\textbf{这道题没有跳变点，不需要取左右极限的平均值}——这一点与“方波要取平均”不同，不要照搬。
+
+\subhdr{每个常数报一次户口}
+
+\begin{itemize}
+\item $a_0$ 里的 $4$：\textbf{数学来源}，$\int_0^{2\pi}|\sin u|\dd u=4$（两拱，每拱 $2$）。
+\item $a_0$ 里的 $1/2\pi$：\textbf{约定来源}，来自 $1/T$ 与 $\omega T=2\pi$ 的合成——$a_0$ 定义为平均值，本来就不乘 $2$。
+\item $a_n$ 里的 $2/T$：\textbf{约定来源}，因为 $\int_0^T\cos^2 n\omega t\dd t=T/2$。
+\item $a_n$ 里的 $A/\pi$：\textbf{数学来源}，$\frac{2A}{\omega T}=\frac{A}{\pi}$ 由 $\omega T=2\pi$ 化出。
+\item $-\frac{4}{4m^2-1}$ 里的 $4$ 与 $1$：\textbf{数学来源}，$4=2\times2$（偶次项两半相同带来的因子 $2$，乘上 $\int_0^\pi\sin ku\dd u=2/k$ 的分子 $2$）；分母的 $1$ 来自 $(2m+1)-(2m-1)=2$ 与分子 $2$ 相消后剩下的常数项。
+\end{itemize}
+
+%=============================================================
+\hdr{§5}{两种视角怎么对上：正交性一步都没失效}
+
+把 $|\sin u|$ 本身写成余弦级数——这正是 §4 得到的结果，只是把 $-4/(4m^2-1)$ 那一列看成系数：
+\[
+\left|\sin u\right|=\frac{2}{\pi}-\frac{4}{\pi}\sum_{k=1}^{\infty}\frac{\cos 2ku}{4k^2-1} .
+\]
+现在把它\textbf{代回}那个曾经“不听话”的积分，并\textbf{逐项}用正交性：
+\[
+\int_0^{2\pi}\cos 2ku\cdot\cos nu\dd u
+=\begin{cases}0, & 2k\neq n,\\ \pi, & 2k=n .\end{cases}
+\]
+只有 $2k=n$ 那一项活下来，于是
+\[
+\int_0^{2\pi}\left|\sin u\right|\cos nu\dd u
+=-\frac{4}{\pi}\cdot\pi\cdot\frac{1}{4k^2-1}\Bigg|_{2k=n}
+=-\frac{4}{n^2-1}\quad(n\ \text{为偶数}),
+\]
+对回 $a_n=\frac{A}{\pi}\cdot\left(-\frac{4}{n^2-1}\right)$，与 §4.6 完全一致。
+
+\callout{\textbf{一句话说清这个“矛盾”：}正交性没有失效，是\textbf{编号的层级不一样}。信号那边的编号是 $2k$（它真实的频率），基那边的标签是 $n$。等式 $2k=n$ 本身就要求 $n$ 为偶数。所以“只有编号相同才不为零”被严格遵守——只不过“编号相同”指的是 $2k=n$，不是 $n=n$。}
+
+%=============================================================
+\hdr{§6}{一条通用判据，把课件 p13 与作业 p39 焊起来}
+
+\subhdr{判据（本讲义按定义现推，课件未给）}
+
+设 $f$ 以 $T$ 为周期。在 $\left[T/2,T\right]$ 上作代换 $t\to t+T/2$ 折回 $\left[0,T/2\right]$：
+\[
+\int_{T/2}^{T}f(t)\cos n\omega t\dd t
+=\int_0^{T/2}f\left(t+\tfrac{T}{2}\right)\cdot(-1)^n\cos n\omega t\dd t ,
+\]
+（用了 $n\omega T/2=n\pi$ 与诱导公式）。于是整周期积分等于
+\[
+\int_0^{T}f(t)\cos n\omega t\dd t
+=\int_0^{T/2}\left[f\left(t+\tfrac{T}{2}\right)+(-1)^n f(t)\right]\cos n\omega t\dd t .
+\]
+方括号里那条关系决定一切：
+
+\begin{itemize}
+\item 若 $f\left(t+\tfrac{T}{2}\right)=f(t)$（\textbf{半波重复}），方括号 $=\left(1+(-1)^n\right)f$，$n$ 奇时为零 $\Rightarrow$ \textbf{只剩偶次谐波}；
+\item 若 $f\left(t+\tfrac{T}{2}\right)=-f(t)$（\textbf{半波反对称}），方括号 $=\left(-1+(-1)^n\right)f$，$n$ 偶时为零 $\Rightarrow$ \textbf{只剩奇次谐波}。
+\end{itemize}
+
+$b_n$ 的推导完全同理（把 $\cos$ 换成 $\sin$），结论一样。
+
+\subhdr{三个例子，一条表读完}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{4.9cm}>{\raggedright\arraybackslash}p{6.3cm}@{}}
+\toprule
+\thead{函数} & \thead{半波关系} & \thead{留下的项}
+\\
+\midrule
+$A|\sin\omega t|$（作业 p39 第 3 题） & $f(t+T/2)=f(t)$，重复 & 只剩 $n$ 偶；$b_n\equiv0$，$a_{2m}=-\dfrac{4A}{\pi(4m^2-1)}$
+\\
+对称方波（课件 p13 例 2） & $f(t+T/2)=-f(t)$，反对称 & 只剩 $n$ 奇；$a_n\equiv0$，$b_{2m-1}=\dfrac{1}{2m-1}$（取 $f=\pm\frac{\pi}{4}$）
+\\
+锯齿波 $f(x)=x$（p39 第 2 题，同类） & 既非重复也非反对称 & 两种 $n$ 都在：$b_n=\dfrac{2(-1)^{n+1}}{n}$
+\\
+\bottomrule
+\end{tabular}
+
+\par\vspace{3pt}
+读法：第二列是“把 $f$ 平移半个周期后与自身比较”，第三列是判据的直接读数。前两行互为镜像——同一套系数公式，因为平移后的符号是 $+$ 还是 $-$，剩下的 $n$ 就换了一族。第三行是\textbf{反例}，用来确认判据的方向：锯齿波没有半波对称性，所以两种 $n$ 都留下，不能套用前两行的结论。
+
+\aside{方波的 $b_{2m-1}=1/(2m-1)$ 是由 $b_n=\frac1\pi\int_{-\pi}^{\pi}f\sin nx\dd x=\frac{2}{\pi}\cdot\frac{\pi}{4}\cdot\frac{1-\cos n\pi}{n}$ 得来（$n$ 奇时为 $1/n$，偶时为 $0$）；锯齿波的 $b_n=\frac1\pi\int_{-\pi}^{\pi}x\sin nx\dd x=\frac{2}{\pi}\cdot\frac{\pi}{n}(-1)^{n+1}$。两式都可当场复算。}
+
+%=============================================================
+\hdr{§7}{易错点（每条指回本讲义某一步）}
+
+\begin{enumerate}
+\item \textbf{把“偶函数”当成“偶次谐波”。}两者理由不同：前者砍掉整族 $\sin$（§4.3），后者砍掉一半 $n$（§4.5）。若题目只给“偶函数”而函数不是半波重复的（例如 $x^2$ 在 $(-\pi,\pi)$），两种 $n$ 都留着。
+\item \textbf{以为“抵消”是普遍机制。}真正的机制是因子 $(1+(-1)^n)$（§4.5 的旁注）。§3 已说明：这恰好是“两个因子里有一个不是基函数”的后果。
+\item \textbf{把 $1/l$ 与 $2/T$ 混用。}课件 p6 用 $2l$ 的写法，p10 用 $T$ 的写法，两套只差 $T=2l$；但 $a_0$ 与 $a_n$ 的倍数不同（$1$ 对 $2$），混用会整体差一个因子 $2$（§0 记号表）。
+\item \textbf{在“奇 $n$ 为零”之后不敢再算偶 $n$。}奇 $n$ 是靠因子消掉的，偶 $n$ 必须真做积分（§4.6）；两半必须分开处理，不能一句“抵消”带过。
+\item \textbf{把 $(0,T)$ 的端点当成跳变点。}$|\sin\omega t|$ 在 $t=0,T$ 连续且为零，不需要取平均（§4 自检三）；方波那种才是跳变点。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{缺口清单（§1 的完整版）}
+
+\gapitem{机制缺口 · p8}{“如果 $f(x)$ 是偶函数，则 $f(x)=a_0+\sum a_n\cos(n\pi x/l)$”。缺：奇偶性不判 $n$ 的奇偶。补：§2 性质二与 §4.3。}
+
+\gapitem{代数跳步 · p39 第 3 题}{“$\cos nu$ 变号（$n$ 奇数）”。缺：$\cos(n(u+\pi))=(-1)^n\cos nu$ 这条诱导公式。补：§2 性质三、§4.5。}
+
+\gapitem{表述不严 · p39 第 3 题}{“前后两半恰好抵消”。缺：抵消由因子 $(1+(-1)^n)$ 实现，不是两半各自非零。补：§4.5 与旁注。}
+
+\gapitem{概念缺口 · 无页码}{正交性为何没有让 $a_n$ 全零，全文无解释。补：§3 与 §5。}
+
+\gapitem{拼接缺口 · p13 与 p39}{例 2（奇次）与作业第 3 题（偶次）是同一条判据的两面，课件未点明。补：§6 判据表。}
+
+\gapitem{边界缺口 · p39 第 3 题}{区间写作 $(0,T)$，题解未说明端点是否需取平均。补：§4 自检三（连续、无需平均）。}
+
+%=============================================================
+\hdr{§9}{三句话总结与页码对照}
+
+\textbf{第一句}：正交性只负责“把系数筛出来”，它管的是两个\textbf{基函数}之间的事；任意函数与基函数的内积不为零，不叫失效（§3）。
+
+\textbf{第二句}：$|\sin\omega t|$ 的奇数项全灭，靠的是\textbf{半波重复}（$| \sin|$ 平移 $\pi$ 不变）配上\textbf{诱导公式}给出的 $(-1)^n$，两者合成因子 $(1+(-1)^n)$；偶数项才需要真做积分（§4、§6）。
+
+\textbf{第三句}：“偶函数”管“只余余弦”，“半波重复”管“只剩偶次”——这是两条独立性质，本题恰好同时成立，不要合成一条记（§2 表末警告框）。
+
+\par\vspace{6pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{7.4cm}@{}}
+\toprule
+\thead{本讲义} & \thead{课件坐标} & \thead{内容}
+\\
+\midrule
+§0--§1 & p5--p8、p13、p39 & 影响范围与缺口；作业第 3 题题面
+\\
+§2 & p5（正交性）、p8（奇偶性）、p13（例 2） & 四条性质的分工表
+\\
+§3 & 无（p5 只给 $\delta_{nm}$） & 正交性的适用边界，本讲义补
+\\
+§4 & p10（$T$ 的写法）、p39 第 3 题 & 全程演算；$a_0$、$b_n$、$a_{2m}$ 逐步补出
+\\
+§5 & 无 & 两种视角的对齐，本讲义补
+\\
+§6 & p13 例 2 与 p39 第 3 题 & 通用判据，本讲义补
+\\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+{\small\color{inkgray} 本讲义依据 \texttt{第五章+傅里叶变换+-+上传课件.pdf}（63 页）与 p39 第 3 题的题解写成。§3、§5、§6 的判据推导为课件未给、由本讲义补出；所有积分值与级数系数已用 \texttt{sympy} 复算（$n=1,2,3,4,6$ 与 $m=1,2,3$ 全部通过）。归一化按 §0 记号表，与课件 p6、p10 一致。}
+
+\end{document}
