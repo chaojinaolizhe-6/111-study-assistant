@@ -1,0 +1,843 @@
+% !TEX program = xelatex
+% 大物实验 · 实验 3.8 · 原理与流程精讲（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{实验 3.8 原理与流程精讲}{大物实验}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\usepackage{booktabs}
+\usepackage{float}
+
+\tikzset{
+  comp/.style={fill=white,draw=black,thick},
+  arr/.style={->,>=Stealth,thick},
+  lab/.style={font=\small},
+  dimlab/.style={font=\footnotesize\color{inkgray}}
+}
+
+\begin{document}
+
+\doctitle{铁磁材料的磁化曲线与磁滞回线}
+{实验 3.8 原理与流程精讲 $\cdot$ 从磁畴到示波器上的 B-H 回线}
+{依据：Experiment 3.8 讲义（9 页）与 Preview Requirements（3 页）$\cdot$ 2026-10-31（周六）20:00--22:00 $\cdot$ 综合楼 207 $\cdot$ 2026-10-27 整理}
+
+%=====================================================================
+\hdr{§0}{本讲坐标、记号与报告任务}
+
+本讲义把两份材料合成一条线：先讲清\textbf{铁磁性为什么不是线性的}（§1--§2），再讲\textbf{磁滞回线怎么读}（§3），然后讲\textbf{示波器为什么能把 \(B\) 和 \(H\) 画成 \(x\) 和 \(y\)}（§4），最后落到\textbf{进实验室怎么做、数据怎么算}（§5--§6）。§7 与 §8 分别是 10 道预习问题和 8 道课后思考题的简答，§9 是易错点，§10 是两份材料里没有明说、本讲义补上的缺口清单。
+
+\callout{\textbf{两份材料的页码约定}：本讲义中的「讲义 pX」指 \texttt{Experiment3.8.MagnetizationCurve\-andHysteresisLoop.pdf} 的物理页（共 9 页）；「预习 pX」指 \texttt{Experiment3.8previewquestions.pdf} 的物理页（共 3 页）。实验日期按预约截图：2026-10-31（周六）20:00--22:00，综合楼 207，任课教师王泽，3 学时。}
+
+\subhdr{§0.1 记号表（全文统一）}
+
+\begin{center}
+\begin{tabular}{@{}p{1.7cm}p{9.0cm}p{3.2cm}@{}}
+\toprule
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\midrule
+\(B\) & 磁感应强度（磁通密度） & T = Wb/m\(^2\) \\
+\(H\) & 磁场强度 & A/m \\
+\(M\) & 磁化强度 & A/m \\
+\(\mu_0\) & 真空磁导率，\(4\pi\times10^{-7}\) & T\(\cdot\)m/A = H/m \\
+\(\mu_r\) & 相对磁导率，\(\mu_r=\mu/\mu_0\) & 无量纲 \\
+\(N_1,N_2\) & 原边、副边匝数 & 匝 \\
+\(L\) & 磁路平均长度（不是样品「长度」随便取） & m \\
+\(S\) & 铁芯截面积 & m\(^2\) \\
+\(R_1,R_2\) & 原边取样电阻、副边积分电阻 & \(\Omega\) \\
+\(C\) & 积分电容 & F \\
+\(S_x,S_y\) & 示波器 CH1、CH2 的垂直灵敏度 & V/div \\
+\(x,y\) & 屏幕上相对中心的格数 & div \\
+\(B_r\) & 剩磁（residual magnetism） & T \\
+\(H_c\) & 矫顽力（coercive force） & A/m \\
+\(B_s\) & 饱和磁感应强度 & T \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+单位换算只需记一条：由 \(1\ \mathrm{F}=1\ \mathrm{A\cdot s/V}\)、\(1\ \Omega=1\ \mathrm{V/A}\)，得
+\[
+1\ \mathrm{V}\cdot\mathrm{F}\cdot\Omega/\mathrm{m^2}
+=1\ \mathrm{V\cdot s/m^2}
+=1\ \mathrm{Wb/m^2}
+=1\ \mathrm{T}.
+\]
+预习 p2 的附录写的 \(1\ \mathrm{T}=1\ \mathrm{V}\cdot\mathrm{F}\cdot\Omega/\mathrm{m^2}\) 就是这条；后面把 \(C R_2S_y y/(N_2S)\) 算成 T 时，用的也是它。
+
+\subhdr{§0.2 报告要交什么}
+
+\callout{\textbf{预习报告}：10 道预习问题（中英文答案，精简）；\textbf{实验报告}：实验目的、实验器材、课后思考题、约 50 词实验体会；\textbf{数据表}：自己打印带去，记录 \(R_1,R_2,C,S_x,S_y\)，样品 1 与样品 2 的 \(B_r,H_c\)，样品 1 的基本磁化曲线 \(x\)--\(y\)--\(y/x\) 与最大相对磁导率。}
+
+%=====================================================================
+\hdr{§1}{铁磁性从哪里来：磁畴}
+
+\subhdr{1.1 原子磁矩与磁畴}
+
+铁磁材料（铁、钴、镍及其合金）的磁性来自原子尺度的磁矩。相邻原子的磁矩在交换相互作用下倾向于平行排列，于是在小区域（约微米量级）内自发地取同一方向，这样的区域叫\textbf{磁畴}（domain）。一块未磁化的铁磁体内部有许多磁畴，相邻磁畴的磁矩方向不同，宏观上互相抵消，所以整块材料不显磁性（图 1；原讲义 Figure 3.8-1 见下方原图）。
+
+加外磁场后，磁畴的变化分三段：
+
+\begin{enumerate}
+\item \textbf{畴壁移动（可逆）}：与外场方向接近的磁畴长大，方向不利的磁畴缩小。小磁场下撤去外场，畴壁能弹回，这一段是可逆的。
+\item \textbf{畴壁移动（不可逆）}：外场继续增大，畴壁被材料中的缺陷、杂质、晶界「钉」住，只能跳跃式前进（巴克豪森跳变）。撤去外场后畴壁回不到原位置，这就是\textbf{磁滞}的微观来源，也是能量损耗的来源。
+\item \textbf{磁畴转动}：所有磁畴逐渐转到外场方向；再增大外场，磁化强度 \(M\) 趋于饱和值 \(M_s\)，磁感应强度 \(B\) 只能靠 \(\mu_0H\) 这一项继续缓慢增加。
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.78]
+% left: unmagnetized
+\draw[thick] (0,0) rectangle (4.4,4.4);
+\draw[arr] (0.7,1.0)--(1.3,0.7);
+\draw[arr] (2.6,0.8)--(2.2,1.4);
+\draw[arr] (3.4,1.1)--(3.8,1.7);
+\draw[arr] (1.0,2.4)--(0.6,3.0);
+\draw[arr] (2.2,2.6)--(2.9,2.9);
+\draw[arr] (3.6,2.5)--(3.1,3.2);
+\draw[arr] (1.4,3.6)--(2.0,3.9);
+\node[dimlab] at (2.2,-0.45) {未磁化：各畴磁矩互相抵消};
+% right: magnetized
+\begin{scope}[xshift=6.2cm]
+\draw[thick] (0,0) rectangle (4.4,4.4);
+\foreach \y in {0.7,1.5,2.3,3.1,3.9} {
+  \draw[arr] (0.5,\y)--(1.5,\y);
+  \draw[arr] (2.0,\y)--(3.0,\y);
+  \draw[arr] (3.5,\y)--(4.0,\y);
+}
+\node[dimlab] at (2.2,-0.45) {外场中：磁畴转向外场方向};
+\end{scope}
+\end{tikzpicture}
+\caption{磁畴示意（重绘，依据原讲义 p2 的文字描述；箭头只表示磁矩方向，不表示大小；原图见下）。}
+\end{figure}
+
+\begin{center}
+\includegraphics[width=0.55\linewidth]{fig-3.8-orig/fig3.8-1.png}\\[2pt]
+{\small\color{inkgray} 原讲义 Figure 3.8-1（裁剪）：左为未磁化的随机磁畴，右为磁化后磁矩取向一致。}
+\end{center}
+
+\subhdr{1.2 居里温度与软磁/硬磁}
+
+温度升高到\textbf{居里温度} \(T_C\) 以上，热运动破坏交换相互作用，磁畴瓦解，材料变成顺磁体。讲义 p1 给的例子是磁铁矿（magnetite）\(T_C=580^\circ\mathrm{C}\)；常见金属的 \(T_C\) 约为铁 \(770^\circ\mathrm{C}\)、钴 \(1115^\circ\mathrm{C}\)、镍 \(358^\circ\mathrm{C}\)（这三个数是教材常识，不是讲义原文）。
+
+按矫顽力大小，铁磁材料分两类：
+
+\begin{itemize}
+\item \textbf{软磁}（soft magnetic）：矫顽力小、磁导率高、回线窄，容易磁化也容易退磁，用于变压器、继电器、电机铁芯（硅钢、软铁）。
+\item \textbf{硬磁}（hard magnetic）：矫顽力大、剩磁高、回线宽，撤去外场后仍保留强磁性，用于永磁体（钕铁硼、钐钴、锶铁氧体）。
+\end{itemize}
+
+%=====================================================================
+\hdr{§2}{\(B\)、\(H\)、\(M\) 与磁化曲线}
+
+\subhdr{2.1 三个量的关系}
+
+磁感应强度 \(B\)、磁场强度 \(H\)、磁化强度 \(M\) 在 SI 制中满足
+\[
+B=\mu_0(H+M).
+\]
+真空中 \(M=0\)，所以 \(B=\mu_0H\)。对线性磁介质，\(M=\chi H\)，于是
+\[
+B=\mu_0(1+\chi)H=\mu_0\mu_rH,\qquad \mu_r=1+\chi.
+\]
+对铁磁材料，\(M\) 与 \(H\) 的关系不仅非线性，还与磁化历史有关；这时「磁导率」只能逐点定义：
+\[
+\mu=\frac{B}{H},\qquad \mu_r=\frac{B}{\mu_0H}.
+\]
+注意这里的 \(\mu=B/H\) 是\textbf{割线磁导率}（secant permeability），不是 \(B\)--\(H\) 曲线的切线斜率 \(\dd B/\dd H\)（微分磁导率）。讲义 p3 说「the slope of the magnetization curve at any given point gives the permeability」，这句话把两者混用了；本实验报告里按预习 p3 的公式用 \(\mu_r=B/(\mu_0H)\)，也就是割线值。详见 §10 的 G3。
+
+\subhdr{2.2 磁化曲线：从退磁态开始}
+
+把样品完全退磁（\(B=H=0\)，记作 O 点），然后\textbf{单调增大} \(H\)，测出的 \(B\)--\(H\) 曲线叫\textbf{基本磁化曲线}（magnetization curve）。它的形状分四段：
+
+\begin{enumerate}
+\item \textbf{初始段}：\(H\) 很小，畴壁可逆移动，\(B\) 增加较慢，\(\mu\) 较小；
+\item \textbf{陡峭段}：畴壁不可逆跳跃，\(B\) 增加最快，\(\mu\) 达到最大值 \(\mu_{\max}\)；
+\item \textbf{膝部}：畴壁移动接近完成，磁畴开始转动，\(B\) 的增长变慢；
+\item \textbf{饱和段}：\(M\to M_s\)，再增大 \(H\) 只有 \(\mu_0H\) 的贡献，\(B\approx\mu_0(H+M_s)\)，曲线几乎成为斜率 \(\mu_0\) 的直线，对应的 \(B_s\) 叫饱和磁感应强度。
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.49\linewidth}
+\centering
+\begin{tikzpicture}[x=0.72cm,y=0.72cm]
+\draw[->] (0,0)--(5.7,0) node[right,font=\small]{\(H\)};
+\draw[->] (0,0)--(0,4.7) node[above,font=\small]{\(B\)};
+\draw[thick,inkgray] plot[domain=0:5.3,smooth,variable=\x] (\x,{0.42*\x});
+\draw[thick,violet] plot[domain=0:5.3,smooth,variable=\x] (\x,{4*\x/(\x+0.8)});
+\draw[thick,petal] plot[domain=0:5.3,smooth,variable=\x] (\x,{3*\x/(\x+1.5)});
+\node[dimlab,right] at (4.4,1.55) {空气};
+\node[dimlab,right] at (2.55,3.75) {铁};
+\node[dimlab,right] at (4.1,2.75) {钢};
+\end{tikzpicture}
+\par\small (a) 空气、铁、钢的 \(B\)--\(H\) 曲线（示意）
+\end{minipage}\hfill
+\begin{minipage}{0.49\linewidth}
+\centering
+\begin{tikzpicture}[x=0.72cm,y=0.72cm]
+\draw[->] (0,0)--(5.7,0) node[right,font=\small]{\(H\)};
+\draw[->] (0,0)--(0,4.7) node[above,font=\small]{\(\mu_r/10^3\)};
+\draw[thick,violet] plot[domain=0.05:5.3,smooth,variable=\x] (\x,{2+4*\x/(1+\x*\x)});
+\draw[dashed,inkgray] (0.9,0)--(0.9,4.1);
+\node[dimlab,right] at (1.0,4.2) {\(\mu_{\max}\)};
+\end{tikzpicture}
+\par\small (b) 相对磁导率随 \(H\) 的变化（示意）
+\end{minipage}
+\caption{磁化曲线与磁导率曲线（重绘，依据原讲义 Figure 3.8-2、3.8-3；曲线为示意，不是实测数据；原图见下）。}
+\end{figure}
+
+\begin{center}
+\begin{minipage}{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{fig-3.8-orig/fig3.8-2.png}\\[1pt]
+{\footnotesize\color{inkgray} 原 Figure 3.8-2：空气、铁、钢的 B--H 曲线}
+\end{minipage}\hfill
+\begin{minipage}{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{fig-3.8-orig/fig3.8-3.png}\\[1pt]
+{\footnotesize\color{inkgray} 原 Figure 3.8-3：$\mu_r$ 随 $H$ 的变化}
+\end{minipage}
+\end{center}
+
+\subhdr{2.3 为什么 \(B\)--\(H\) 不是直线}
+
+把 \(B=\mu_0(H+M)\) 拆成两项看：\(\mu_0H\) 是「真空也会有的那一份」，随 \(H\) 线性增长；\(\mu_0M\) 是材料贡献的那一份，由磁畴状态决定。磁畴的畴壁移动和转动不是 \(H\) 的线性函数：小磁场时只有少数畴壁在动，\(M\) 增长慢；中等磁场时大量畴壁跳跃，\(M\) 增长快；高磁场时所有磁矩已经排齐，\(M\) 饱和到 \(M_s\)，再增大 \(H\) 只剩 \(\mu_0H\)。所以整条 \(B\)--\(H\) 曲线先缓、后陡、再平，\(\mu=B/H\) 自然不是常数。
+
+%=====================================================================
+\hdr{§3}{磁滞回线：\(B_r\)、\(H_c\) 与损耗}
+
+\subhdr{3.1 一个完整循环}
+
+从退磁态 O 出发，把激励电流（也就是 \(H\)）从 0 单调增大到正最大值，\(B\) 沿初始磁化曲线上升到 a 点（接近饱和）；然后把电流单调减到 0，\(B\) 不沿原路返回，而是降到 b 点：此时 \(H=0\)，但 \(B=B_r\neq0\)，这个 \(B_r\) 叫\textbf{剩磁}。要把它降到 0，必须反向通电到 c 点，对应的反向磁场强度大小叫\textbf{矫顽力} \(H_c\)。继续反向增大电流到 d 点（反向饱和），再减到 0 到 e 点（反向剩磁 \(-B_r\)），再正向增大到 f 点（反向矫顽力），最后回到 a 点。a--b--c--d--e--f--a 这条闭合曲线就是\textbf{磁滞回线}（图 3；原讲义 Figure 3.8-4 见下方原图）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.0cm,y=1.0cm]
+\draw[->] (-4.8,0)--(4.8,0) node[right]{\(H\)};
+\draw[->] (0,-4.8)--(0,4.8) node[above]{\(B\)};
+\draw[thick,violet,domain=-4:4,smooth,samples=120] plot (\x,{4*tanh((\x+0.8)/1.5)});
+\draw[thick,violet,domain=-4:4,smooth,samples=120] plot (\x,{4*tanh((\x-0.8)/1.5)});
+\draw[dashed,inkgray,domain=0:4,smooth] plot (\x,{4*\x/(\x+0.8)});
+\fill (4,4) circle (2.2pt) node[above right,font=\small]{\(a\)};
+\fill (0,{4*tanh(0.8/1.5)}) circle (2.2pt) node[above right,font=\small,fill=white,inner sep=1pt]{\(b\)};
+\fill (-0.8,0) circle (2.2pt) node[below,font=\small,fill=white,inner sep=1pt]{\(c\)};
+\fill (-4,-4) circle (2.2pt) node[below left,font=\small]{\(d\)};
+\fill (0,{-4*tanh(0.8/1.5)}) circle (2.2pt) node[left,font=\small,fill=white,inner sep=1pt]{\(e\)};
+\fill (0.8,0) circle (2.2pt) node[above right,font=\small,fill=white,inner sep=1pt]{\(f\)};
+\draw[->,inkgray] (0.9,1.55)--(0.10,1.92);
+\node[dimlab] at (1.22,1.42) {\(B_r\)};
+\draw[->,inkgray] (-1.65,-0.55)--(-0.86,-0.06);
+\node[dimlab] at (-2.05,-0.62) {\(H_c\)};
+\node[dimlab,right] at (2.2,4.55) {饱和};
+\draw[dashed,inkgray] (4,0)--(4,4);
+\draw[dashed,inkgray] (0,4)--(4,4);
+\node[dimlab,below right] at (0,0) {\(O\)};
+\fill (0,0) circle (1.8pt);
+\end{tikzpicture}
+\caption{磁滞回线与初始磁化曲线（重绘，依据原讲义 Figure 3.8-4；虚线为初始磁化曲线，实线为回线；模型曲线只示意形状；原图见下）。}
+\end{figure}
+
+
+
+\subhdr{3.2 回线面积就是磁滞损耗}
+
+沿回线走一圈，磁场对单位体积磁介质做的功为
+\[
+W=\oint H\dd B \qquad (\mathrm{J/m^3}).
+\]
+对闭合回线，这个积分等于回线所围的面积；面积越大，每周期单位体积损耗的能量越多。若样品体积为 \(V\)、频率为 \(f\)，则磁滞损耗功率为
+\[
+P=f\,V\,W.
+\]
+这解释了为什么变压器、电机要选软磁材料：不是它们「不会被磁化」，而是它们的回线窄、面积小，反复磁化时发热少（讲义 p6）。
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{fig-3.8-orig/fig3.8-4.png}\\[2pt]
+{\small\color{inkgray} 原讲义 Figure 3.8-4（裁剪）：磁滞回线 $a\to b\to c\to d\to e\to f\to a$，标出了 $B_s,B_r,H_c$。}
+\end{center}
+
+\subhdr{3.3 软磁与硬磁的回线}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.85cm,y=0.85cm]
+\begin{scope}
+\draw[->] (-3.6,0)--(3.6,0) node[right,font=\small]{\(H\)};
+\draw[->] (0,-3.6)--(0,3.6) node[above,font=\small]{\(B\)};
+\draw[thick,violet,domain=-3:3,smooth,samples=100] plot (\x,{3*tanh((\x+0.35)/1.2)});
+\draw[thick,violet,domain=-3:3,smooth,samples=100] plot (\x,{3*tanh((\x-0.35)/1.2)});
+\node[dimlab] at (0,-4.25) {(a) 软磁：回线窄，\(H_c\) 小};
+\end{scope}
+\begin{scope}[xshift=8.0cm]
+\draw[->] (-3.6,0)--(3.6,0) node[right,font=\small]{\(H\)};
+\draw[->] (0,-3.6)--(0,3.6) node[above,font=\small]{\(B\)};
+\draw[thick,petal,domain=-3:3,smooth,samples=100] plot (\x,{3*tanh((\x+1.8)/0.9)});
+\draw[thick,petal,domain=-3:3,smooth,samples=100] plot (\x,{3*tanh((\x-1.8)/0.9)});
+\node[dimlab] at (0,-4.25) {(b) 硬磁：回线宽，\(H_c\) 大};
+\end{scope}
+\end{tikzpicture}
+\caption{软磁与硬磁的磁滞回线（重绘，依据原讲义 Figure 3.8-5；宽度为示意；原图见下）。}
+\end{figure}
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{fig-3.8-orig/fig3.8-5.png}\\[2pt]
+{\small\color{inkgray} 原讲义 Figure 3.8-5（裁剪）：左为软磁（小矫顽力），右为硬磁（大矫顽力）。}
+\end{center}
+
+%=====================================================================
+\hdr{§4}{示波器测量原理：怎样把 \(B\) 和 \(H\) 变成屏幕上的 \(x\) 和 \(y\)}
+
+\subhdr{4.1 测量电路}
+
+样品是一个带两个绕组的铁芯：原边 \(N_1\) 串一个很小的取样电阻 \(R_1\)，副边 \(N_2\) 串 \(R_2\) 与 \(C\)。原边电流 \(i_1\) 在 \(R_1\) 上产生电压 \(U_{R_1}\)，它正比于 \(H\)；副边感应电动势 \(\varepsilon_2\) 正比于 \(\dd B/\dd t\)，经过 \(R_2\)--\(C\) 积分后，电容电压 \(U_C\) 正比于 \(B\)。示波器放在 X-Y 模式：CH1 接 \(U_{R_1}\) 作 X 轴，CH2 接 \(U_C\) 作 Y 轴，屏幕上就直接画出 \(B\)--\(H\) 回线（图 5；原讲义 Figure 3.8-6 见 §5.1 原图）。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.92cm,y=0.92cm]
+% primary loop
+\draw[thick] (0.6,2.95) -- (0.6,4.7) -- (2.2,4.7) -- (2.2,4.2);
+\draw[thick] (2.2,1.0) -- (2.2,0.5) -- (0.6,0.5) -- (0.6,2.25);
+\draw[thick] (0.6,2.6) circle (0.35);
+\node at (0.6,2.6) {$\sim$};
+\node[lab,left] at (0.18,2.6) {$u_1$};
+% R1
+\draw[comp] (1.0,0.34) rectangle (1.6,0.66);
+\node[lab] at (1.3,0.98) {$R_1$};
+% CH1
+\draw[thick] (1.0,0.34) -- (1.0,0.05);
+\draw[thick] (1.6,0.34) -- (1.6,0.05);
+\draw[thick] (1.0,0.05) circle (0.07);
+\draw[thick] (1.6,0.05) circle (0.07);
+\node[lab] at (1.3,-0.30) {CH1 ($x$)};
+% core
+\draw[thick] (2.2,0.9) -- (2.2,4.3);
+\draw[thick] (2.8,0.9) -- (2.8,4.3);
+\draw[thick] (2.2,0.9) -- (2.8,0.9);
+\draw[thick] (2.2,4.3) -- (2.8,4.3);
+% coils
+\foreach \y in {3.8,3.0,2.2,1.4} {
+  \draw[thick] (2.2,\y+0.4) arc[start angle=90,end angle=270,radius=0.4];
+  \draw[thick] (2.8,\y+0.4) arc[start angle=90,end angle=-90,radius=0.4];
+}
+\node[lab] at (1.58,2.6) {$N_1$};
+\node[lab] at (3.42,2.6) {$N_2$};
+\node[font=\footnotesize,fill=white,inner sep=1pt] at (2.5,4.45) {铁芯};
+% secondary loop
+\draw[thick] (2.8,4.2) -- (2.8,4.7) -- (3.8,4.7);
+\draw[comp] (3.8,4.54) rectangle (4.6,4.86);
+\node[lab] at (4.2,5.15) {$R_2$};
+\draw[thick] (4.6,4.7) -- (6.2,4.7) -- (6.2,4.0);
+\draw[thick] (5.9,4.0) -- (6.5,4.0);
+\draw[thick] (5.9,3.8) -- (6.5,3.8);
+\draw[thick] (6.2,3.8) -- (6.2,0.5) -- (2.8,0.5) -- (2.8,1.0);
+\node[lab] at (6.55,3.35) {$C$};
+% CH2
+\draw[thick] (6.2,4.35) -- (7.0,4.35);
+\draw[thick] (7.0,4.35) circle (0.07);
+\draw[thick] (6.2,3.45) -- (7.0,3.45);
+\draw[thick] (7.0,3.45) circle (0.07);
+\node[lab,right] at (7.10,3.9) {CH2 ($y$)};
+% current arrows
+\draw[arr] (1.0,4.7) -- (1.4,4.7);
+\node[lab] at (1.2,5.0) {$i_1$};
+\draw[arr] (3.4,4.7) -- (3.0,4.7);
+\node[lab] at (3.2,5.0) {$i_2$};
+\end{tikzpicture}
+\caption{测量电路（重绘，依据原讲义 Figure 3.8-6；原图没有标出元件符号与节点名，本图补上 \(R_1,R_2,C,N_1,N_2\) 与 CH1/CH2 的接法；原图见 §5.1）。}
+\end{figure}
+
+\subhdr{4.2 \(H\) 的测量：看原边电流}
+
+闭合铁芯中，安培环路定理给出
+\[
+H=\frac{N_1 i_1}{L},
+\]
+其中 \(L\) 是磁路平均长度（样品参数里给的 \(L=0.130\ \mathrm{m}\) 或 \(0.075\ \mathrm{m}\)），不是绕组的长度。取样电阻 \(R_1\) 上的电压是
+\[
+U_{R_1}=i_1R_1,
+\]
+所以
+\[
+H=\frac{N_1}{L}\cdot\frac{U_{R_1}}{R_1}
+=\frac{N_1U_{R_1}}{LR_1}.
+\]
+示波器 CH1 的垂直灵敏度为 \(S_x\)（V/div），屏幕上偏离中心的格数为 \(x\)，则 \(U_{R_1}=S_x x\)，于是
+\[
+H=\frac{N_1S_x}{LR_1}\,x.
+\]
+\(R_1\) 要小，是为了不让它明显改变原边电流；但它又不能为零，否则没有电压可测。
+
+\subhdr{4.3 \(B\) 的测量：副边感应 + \(R_2C\) 积分}
+
+副边绕组中的感应电动势由法拉第定律给出：
+\[
+\varepsilon_2=-N_2\frac{\dd\Phi}{\dd t}=-N_2S\frac{\dd B}{\dd t}.
+\]
+副边回路是 \(R_2\) 与 \(C\) 串联，回路电流为
+\[
+i_2=\frac{\varepsilon_2}{R_2+\dfrac{1}{\mathrm{j}\omega C}}.
+\]
+电容上的电压是
+\[
+U_C=\frac{i_2}{\mathrm{j}\omega C}
+=\frac{\varepsilon_2}{1+\mathrm{j}\omega R_2C}.
+\]
+当
+\[
+R_2\gg\frac{1}{\omega C}\quad\Longleftrightarrow\quad \omega R_2C\gg1
+\]
+时，分母中的 1 可以忽略，\(U_C\approx\varepsilon_2/(\mathrm{j}\omega R_2C)\)，把 \(\varepsilon_2=-N_2S\,\dd B/\dd t\) 代入并对时间积分，得到
+\[
+U_C\approx\frac{N_2S}{R_2C}\,B.
+\]
+用时间域的话说：\(R_2\) 很大时，副边电流几乎由 \(R_2\) 决定，\(i_2\approx\varepsilon_2/R_2\)，电容充电电流正比于 \(\varepsilon_2\)，所以
+\[
+U_C=\frac{1}{C}\int i_2\dd t
+\approx\frac{1}{R_2C}\int\varepsilon_2\dd t
+=\frac{N_2S}{R_2C}B.
+\]
+这就是「\(R_2C\) 积分器」的名字来源：它把 \(\dd B/\dd t\) 积回 \(B\)。符号是负的（积分器反相），屏幕上回线可能上下颠倒；读 \(B_r,H_c\) 的大小时取绝对值即可，必要时把 CH2 反相。
+
+\subhdr{4.4 从屏幕坐标到 \(B\)、\(H\)}
+
+CH2 的垂直灵敏度为 \(S_y\)（V/div），屏幕纵坐标格数为 \(y\)，则 \(U_C=S_y y\)。代入上式：
+\[
+B=\frac{CR_2}{N_2S}\,U_C=\frac{CR_2S_y}{N_2S}\,y.
+\]
+于是四个待测量可以写成
+\[
+B_r=\frac{CR_2S_y}{N_2S}\,y_r,\qquad
+H_c=\frac{N_1S_x}{LR_1}\,x_c,
+\]
+\[
+\mu_r=\frac{B}{\mu_0H}
+=\frac{CR_2LR_1S_y}{\mu_0N_2SN_1S_x}\cdot\frac{y}{x}.
+\]
+其中 \(y_r\) 是回线与 \(B\) 轴交点（\(x=0\)）的纵坐标，\(x_c\) 是回线与 \(H\) 轴交点（\(y=0\)）的横坐标。预习 p2--p3 的数据表就是这四个式子的排版；把 \(S_x,S_y\) 的单位从 mV/div 换成 V/div 时，别忘了 \(10^{-3}\)。
+
+\begin{center}
+\begin{tabular}{@{}p{5.4cm}p{8.8cm}@{}}
+\toprule
+\thead{量} & \thead{由屏幕读数算} \\
+\midrule
+\(H\) & \(H=\dfrac{N_1S_x}{LR_1}\,x\) \\
+\(B\) & \(B=\dfrac{CR_2S_y}{N_2S}\,y\) \\
+\(B_r\) & \(B_r=\dfrac{CR_2S_y}{N_2S}\,y_r\) \\
+\(H_c\) & \(H_c=\dfrac{N_1S_x}{LR_1}\,x_c\) \\
+\(\mu_r\) & \(\mu_r=\dfrac{CR_2LR_1S_y}{\mu_0N_2SN_1S_x}\cdot\dfrac{y}{x}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{4.5 一个数值例子（只示范代法，不是本次实测）}
+
+设某次测量取 \(R_1=5\ \Omega\)、\(R_2=50\ \mathrm{k}\Omega\)、\(C=1.0\ \mu\mathrm{F}\)、\(S_x=0.5\ \mathrm{V/div}\)、\(S_y=0.2\ \mathrm{V/div}\)，样品 1 的 \(L=0.130\ \mathrm{m}\)、\(S=1.24\times10^{-4}\ \mathrm{m^2}\)、\(N_1=N_2=150\)。读到某点 \(x=1.0\ \mathrm{div}\)、\(y=2.0\ \mathrm{div}\)，则
+\[
+H=\frac{150\times0.5}{0.130\times5}\times1.0=115.4\ \mathrm{A/m},
+\]
+\[
+B=\frac{1.0\times10^{-6}\times5.0\times10^4\times0.2}{150\times1.24\times10^{-4}}\times2.0
+=1.075\ \mathrm{T},
+\]
+\[
+\mu_r=\frac{1.075}{4\pi\times10^{-7}\times115.4}=7.4\times10^3.
+\]
+先检查积分条件：\(\omega R_2C=2\pi\times50\times5.0\times10^4\times1.0\times10^{-6}=15.7\gg1\)，相位误差约 \(\arctan(1/15.7)=3.6^\circ\)，可以接受。若把 \(C\) 换成 \(0.1\ \mu\mathrm{F}\)，\(\omega R_2C=1.57\)，相位误差约 \(32^\circ\)，回线会明显失真——这就是 §4.6 要处理的问题。
+
+\subhdr{4.6 相位失真与满屏}
+
+\textbf{（1）为什么 \(R_2\) 太小时回线会变形。} 上面的近似只在 \(\omega R_2C\gg1\) 时成立。若 \(R_2<1/(\omega C)\)，\(U_C\) 与 \(B\) 之间有明显的相位差：即使样品是线性的（没有磁滞），屏幕上也会出现一个椭圆；对铁磁样品，回线被「拧」成歪斜的形状，\(B_r\)、\(H_c\) 都读不准（见下方原图 3.8-7）。严格地说，
+\[
+\frac{U_C}{B}
+=-\frac{N_2S}{R_2C}\cdot\frac{1}{1+\dfrac{1}{\mathrm{j}\omega R_2C}},
+\]
+幅度误差因子是 \(1/\sqrt{1+1/(\omega R_2C)^2}\)，相位误差是 \(\arctan[1/(\omega R_2C)]\)。要求幅度误差小于 1\%，需要 \(\omega R_2C\gtrsim7\)；要求相位误差小于 \(1^\circ\)，需要 \(\omega R_2C\gtrsim57\)。所以「\(\gg1\)」在 50 Hz 下通常取 \(\omega R_2C\ge20\)（相位误差 \(<3^\circ\)）比较稳妥。
+
+
+
+\textbf{（2）怎么消。} 优先增大 \(R_2\) 或 \(C\)，把 \(\omega R_2C\) 抬上去；同时保证两路都用 DC 耦合、探头补偿一致（否则两通道本身的相位差也会叠进来）；再微调 \(R_2\)、\(C\)，直到回线光滑闭合、左右对称。
+
+\textbf{（3）怎么让回线占满屏幕。} 回线顶点对应 \((\pm H_{\max},\pm B_{\max})\)，屏幕上对应 \((\pm4,\pm4)\) 格时正好占满 8\(\times\)8 网格。操作顺序是：先把 \(R_2,C\) 调到积分条件满足；再增大激励电流到饱和；然后调 \(R_1\)（改变同样电流下的 \(U_{R_1}\)，即 X 幅度）和 \(R_2,C\)（改变 Y 幅度），配合示波器的 \(S_x,S_y\)，让顶点落在 \((\pm4,\pm4)\)；最后固定并记录 \(R_1,R_2,C,S_x,S_y\) 五个值。注意 \(R_1\) 也会影响原边电流，\(R_2,C\) 也会影响积分条件，所以不要指望一次调好，按「先相位、后幅度、再刻度」的顺序迭代。
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{fig-3.8-orig/fig3.8-7.png}\\[2pt]
+{\small\color{inkgray} 原讲义 Figure 3.8-7（裁剪）：$R_2<1/(\omega C)$ 时的畸变回线；横轴 $U_x$、纵轴 $U_y$。}
+\end{center}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.85cm,y=0.85cm]
+\draw[step=1,inkgray!35,very thin] (-4,-4) grid (4,4);
+\draw[->] (-4.6,0)--(4.6,0) node[right,font=\small]{$x$ (H)};
+\draw[->] (0,-4.6)--(0,4.6) node[above,font=\small]{$y$ (B)};
+\foreach \k in {-4,-3,-2,-1,1,2,3,4} {
+  \node[font=\tiny,inkgray] at (\k,-0.25) {\k};
+  \node[font=\tiny,inkgray] at (-0.25,\k) {\k};
+}
+\draw[thick,violet,domain=-4:4,smooth,samples=120] plot (\x,{4*tanh((\x+0.8)/1.5)});
+\draw[thick,violet,domain=-4:4,smooth,samples=120] plot (\x,{4*tanh((\x-0.8)/1.5)});
+\fill (4,4) circle (2pt) node[above right,font=\footnotesize]{$(4,4)$};
+\fill (-4,-4) circle (2pt) node[below left,font=\footnotesize]{$(-4,-4)$};
+\fill (0,0) circle (1.6pt);
+\end{tikzpicture}
+\caption{满屏时的示波器画面：回线顶点落在 \((\pm4,\pm4)\) 格，中心在 \((0,0)\)。实际屏幕上每一大格还可以再分小格，读数时估到 0.05 格即可。}
+\end{figure}
+
+%=====================================================================
+\hdr{§5}{进实验室：一步一步怎么做}
+
+本节步骤编号与讲义 p8--p9 的 Experimental Contents and Procedures 对应。每一步先写“做什么”，再写“为什么”，报告里讨论操作时可以直接引用。
+
+\subhdr{5.1 接线（p8 步骤 1）}
+
+按图 5（重绘，§4.1）或下方原讲义 Figure 3.8-6 接线：原边 \(N_1\) 与 \(R_1\) 串联接交流源，副边 \(N_2\) 与 \(R_2\)、\(C\) 串联；\(R_1\) 两端接示波器 CH1，\(C\) 两端接 CH2。仪器面板上用红色箭头标出了接线方向，样品通过改变接线位置来更换。
+
+\begin{center}
+\includegraphics[width=0.52\linewidth]{fig-3.8-orig/fig3.8-6.png}\\[2pt]
+{\small\color{inkgray} 原讲义 Figure 3.8-6（裁剪）：测量电路。与图 5 对照看；原图没有标元件数值，接线以仪器面板上的红色箭头为准。}
+\end{center}
+
+\warnbox{两个通道的“地”是连在一起的。接线时先确认仪器输出端与示波器探头的地在同一参考点，不要把 CH1、CH2 的地夹子随便夹在 \(R_1\) 或 \(C\) 的两端，否则可能把 \(R_1\) 或 \(C\) 短路，读到的波形看着正常、数值却是错的。接完线先请老师检查，再通电（讲义 p8 的 Note）。}
+
+\subhdr{5.2 初始状态（p8 步骤 2）}
+
+把幅度调节旋钮逆时针拧到最小，确认 \(R_1,R_2,C\) 都不是零、且满足实验要求。这样做的原因是：通电瞬间不能让样品直接进入深饱和，也不能让原边电流过大；从最小激励开始，后面才能单调地往上加。
+
+\subhdr{5.3 开机与 X-Y 模式（p8 步骤 3）}
+
+打开示波器和磁滞回线测量仪，频率调到约 50 Hz。按水平控制区的 MENU 把时基改成 X-Y 模式；按 CH1、CH2 的 POSITION 把光点调到屏幕中心，使中心点对应 \((0,0)\)；两个通道的耦合都设为 DC（在触发控制区的 MENU 里选）。
+
+\textbf{为什么用 DC 耦合}：AC 耦合相当于加了一个高通滤波器，会把低频成分滤掉，回线的形状和相位都会变；DC 耦合才能把 \(U_{R_1}\) 与 \(U_C\) 的真实波形送进 X、Y 放大器。
+
+\subhdr{5.4 调到饱和、再调到满屏（p8 步骤 4）}
+
+顺时针缓慢、\textbf{单调}增大激励电流，观察回线从一个小椭圆逐渐长成典型的饱和回线。判断饱和的标志是：继续增大电流时，回线顶点主要沿水平方向（\(H\) 方向）移动，\(B\) 几乎不再增加，顶部和底部变平、变尖。
+
+然后调 CH1、CH2 的 SCALE 旋钮（按一下可以在粗调/细调之间切换），改变 \(S_x,S_y\)，让回线的正、负顶点分别落在 \((4.00,4.00)\) 与 \((-4.00,-4.00)\) 格。讲义 p8 还给了三个“微调”手段：调 \(R_1\) 改变 \(U_x\)（X 幅度），调 \(R_2,C\) 改变 \(U_y\)（Y 幅度），调 \(S_x,S_y\) 改变刻度。若回线相位歪了，调 \(R_2,C\) 消失真。
+
+\callout{调好以后，\(R_1,R_2,C,S_x,S_y\) 五个值就\textbf{固定不动}，并记在数据表上。后面所有 \(B,H,B_r,H_c,\mu_r\) 的换算都用这五个值；中途改一个，前面读的格数就全部作废。}
+
+\subhdr{5.5 退磁（p9 步骤 5）}
+
+把激励电流\textbf{单调、缓慢}地逆时针减到零，直到屏幕上的回线缩成一个点。这个点的位置应该在 \((0,0)\) 附近；如果偏离，说明还有剩磁或示波器零点没对准，需要重新退磁或重新调零。
+
+\textbf{为什么必须先退磁}：基本磁化曲线要求从 \(B=H=0\) 的 O 点出发。如果样品带着剩磁 \(B_r\) 开始，起点就不在原点，测出来的“初始曲线”整体平移，\(\mu_{\max}\) 和饱和点都会偏。退磁的本质是让磁畴在幅度逐渐减小的交变场中反复翻转，最后停在无规则的多畴状态。
+
+\subhdr{5.6 基本磁化曲线（p9 步骤 6）}
+
+从退磁态开始，\textbf{单调增大}激励电流，使回线正顶点的横坐标依次为
+\[
+x=0.00,\ 0.40,\ 0.80,\ 1.20,\ 1.60,\ 2.00,\ 2.40,\ 3.00,\ 4.00\ \mathrm{div},
+\]
+每到一个 \(x\)，记录该顶点的纵坐标 \(y\)。这里的 \(y\) 必须取\textbf{顶点}的 \(y\)，不是回线在某个 \(x\) 处的上下两支；顶点才对应“当前 \(H\) 下已经达到的 \(B\)”。
+
+\callout{读数时估到 \(0.05\ \mathrm{div}\)。\(x=0\) 那一行是退磁点，\(y\) 应为 0；如果不是 0，先检查零点，不要直接当成数据。}
+
+\subhdr{5.7 动态磁滞回线（p9 步骤 7）}
+
+当屏幕上是典型的饱和回线、顶点在 \((\pm4,\pm4)\) 时，记录
+\[
+x=-4.00,\ -3.00,\ -2.00,\ -1.50,\ -1.00,\ -0.50,\ 0.00,\ 0.50,\ 1.00,\ 1.50,\ 2.00,\ 3.00,\ 4.00
+\]
+处的 \(y\)。讲义没有说明记哪一支；本讲义建议记\textbf{上支}（从 \(+B_s\) 下降到 \(-B_s\) 的那一支），下支用中心对称 \(B(-H)=-B(H)\) 补出来。这样 \(x=0\) 处的上支 \(y\) 就是 \(+B_r\)，\(y=0\) 处的正 \(x\) 就是 \(+H_c\)。如果报告表格给了两列，就上下支都记。
+
+\subhdr{5.8 样品 2 与比较（p9 第 2 部分）}
+
+换样品 2，重复 5.1--5.7。样品 2 的参数是 \(L=0.075\ \mathrm{m}\)、\(S=1.20\times10^{-4}\ \mathrm{m^2}\)、\(N_1=N_2=150\)，\textbf{不要}沿用样品 1 的 \(L,S\)。比较时看三件事：\(B_r\) 与 \(H_c\) 的大小、回线的宽窄、\(\mu_{\max}\) 的高低；再结合 §1.2 的软磁/硬磁讨论。
+
+\subhdr{5.9 记录清单}
+
+\begin{center}
+\begin{tabular}{@{}p{4.6cm}p{3.3cm}p{2.2cm}p{5.0cm}@{}}
+\toprule
+\thead{项目} & \thead{符号} & \thead{单位} & \thead{何时记} \\
+\midrule
+取样电阻 & \(R_1\) & \(\Omega\) & 步骤 2 检查、步骤 4 固定 \\
+积分电阻 & \(R_2\) & \(\mathrm{k}\Omega\) & 步骤 4 固定 \\
+积分电容 & \(C\) & \(\mu\mathrm{F}\) & 步骤 4 固定 \\
+垂直灵敏度 & \(S_x,S_y\) & V/div & 步骤 4 固定 \\
+频率 & \(f\) & Hz & 步骤 3 设定 \\
+基本磁化曲线 & \(x,y\) & div & 步骤 6 逐点 \\
+回线读数 & \(x,y\) & div & 步骤 7 逐点 \\
+\(B_r,H_c\) 坐标 & \(y_r,x_c\) & div & 步骤 7 读出 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{5.10 操作要点}
+
+\begin{itemize}
+\item 接线要牢，尤其是样品接线柱；接触电阻会直接叠加到 \(R_1\) 的电压上。
+\item 调饱和、退磁、测基本曲线时都要\textbf{单调}改变激励；中途来回拧会引入小回线，破坏“从 O 出发”的前提。
+\item 固定 \(R_1,R_2,C,S_x,S_y\) 后不要再碰；换量程前先把数据记完。
+\item 样品和线圈不要用手长时间捂着，温度变化会让 \(B_r,H_c\) 漂移。
+\item 发现回线左右不对称、中心漂移，先查零点与接地，再查样品是否被磁化过。
+\end{itemize}
+
+%=====================================================================
+\hdr{§6}{数据处理：从格数到 \(B\)、\(H\)、\(\mu_r\)}
+
+\subhdr{6.1 样品参数}
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\thead{参数} & \thead{样品 1} & \thead{样品 2} & \thead{单位} \\
+\midrule
+磁路平均长度 \(L\) & 0.130 & 0.075 & m \\
+截面积 \(S\) & \(1.24\times10^{-4}\) & \(1.20\times10^{-4}\) & \(\mathrm{m^2}\) \\
+原边匝数 \(N_1\) & 150 & 150 & 匝 \\
+副边匝数 \(N_2\) & 150 & 150 & 匝 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{6.2 先算 \(H\) 和 \(B\)，再算 \(B_r,H_c,\mu_r\)}
+
+把 §4.4 的公式抄成一张“代入顺序”：
+
+\begin{enumerate}
+\item 由 \(x\) 算 \(H=\dfrac{N_1S_x}{LR_1}x\)；
+\item 由 \(y\) 算 \(B=\dfrac{CR_2S_y}{N_2S}y\)；
+\item 在回线上读 \(x=0\) 处的 \(y_r\)，算 \(B_r=\dfrac{CR_2S_y}{N_2S}y_r\)；
+\item 在回线上读 \(y=0\) 处的 \(x_c\)，算 \(H_c=\dfrac{N_1S_x}{LR_1}x_c\)；
+\item 对基本磁化曲线的每一点算 \(\mu_r=\dfrac{B}{\mu_0H}\)，或者直接用
+\[
+\mu_r=\frac{CR_2LR_1S_y}{\mu_0N_2SN_1S_x}\cdot\frac{y}{x}.
+\]
+\end{enumerate}
+
+第 5 步里的系数 \(K=\dfrac{CR_2LR_1S_y}{\mu_0N_2SN_1S_x}\) 在同一组 \(R_1,R_2,C,S_x,S_y\) 下是常数，所以 \(\mu_r\propto y/x\)。预习 p3 要求画“\(\mu\sim H\) 曲线 using original data \((y/x\sim x)\)”，就是利用这个正比关系：先画 \(y/x\) 随 \(x\) 的变化，形状与 \(\mu_r\) 随 \(H\) 的变化完全一样，最后再把纵轴乘上 \(K\)。
+
+\subhdr{6.3 基本磁化曲线的表怎么填}
+
+预习 p3 的表格是 \(x/\mathrm{div}\)、\(y/\mathrm{div}\)、\(y/x\) 三行。填法：
+
+\begin{itemize}
+\item \(x=0\) 那一列是退磁点，\(y=0\)，\(y/x\) 不填（分母为零）；
+\item 其余列先填 \(y\)，再算 \(y/x\)；
+\item 用 \(H=\dfrac{N_1S_x}{LR_1}x\)、\(B=\dfrac{CR_2S_y}{N_2S}y\) 把每一列换成 \(H,B\)；
+\item 以 \(H\) 为横轴、\(B\) 为纵轴画基本磁化曲线；以 \(H\) 为横轴、\(\mu_r\) 为纵轴画 \(\mu\sim H\) 曲线；
+\item 在 \(\mu\sim H\) 曲线上找最大值，记下对应的 \(H\) 与 \(\mu_r\)，就是“最大相对磁导率的坐标与数值”。
+\end{itemize}
+
+\subhdr{6.4 磁滞回线的图怎么画}
+
+把步骤 7 的 \((x,y)\) 逐点换成 \((H,B)\)，上支用实测，下支用中心对称补；标出 \((0,B_r)\)、\((H_c,0)\)、\((-H_c,0)\)、\((0,-B_r)\)。如果要估回线面积，可在 \(B\)--\(H\) 图上数格子或梯形积分：
+\[
+W\approx\sum_i \bar H_i\,\Delta B_i,
+\]
+单位是 \(\mathrm{J/m^3}\)。本实验不要求算损耗，但报告讨论“软磁为什么回线窄”时可以用面积做定性依据。
+
+\subhdr{6.5 误差从哪里来}
+
+\begin{itemize}
+\item \textbf{格数读数}：人眼估读 \(\pm0.05\ \mathrm{div}\)，在回线陡峭处会被放大；多读几次取平均。
+\item \textbf{\(S_x,S_y\) 的校准}：示波器垂直增益有 2\%--3\% 的误差；同一通道要用同一档位。
+\item \textbf{\(R_1,R_2,C\) 的标称值}：电阻、电容有 5\%--10\% 的容差；若实验室给了实测值，优先用实测值。
+\item \textbf{积分器相位}：\(\omega R_2C\) 不够大时，\(U_C\) 与 \(B\) 有相位差，回线“变胖”；用 §4.6 的条件检查。
+\item \textbf{频率漂移}：\(\omega\) 变化会改变积分条件和涡流损耗；实验过程中频率应稳定在 50 Hz。
+\item \textbf{温度与磁历史}：样品发热、上次测量的剩磁都会让 \(B_r,H_c\) 漂移；测前退磁、测中不要长时间通大电流。
+\item \textbf{磁路不均匀}：\(H=N_1i_1/L\) 假设磁场均匀分布在平均磁路上；样品有接缝、气隙或绕组不均匀时，这个假设只是近似。
+\end{itemize}
+
+%=====================================================================
+\hdr{§7}{报告素材：目的、器材与 10 道预习问题（中英对照）}
+
+以下先给实验目的与器材，再逐题给“英文答案 + 中文对照”。英文可直接抄进报告，中文帮助理解。
+
+\subhdr{7.0 实验目的 / Experimental Objectives}
+
+\begin{enumerate}
+\item Understand the fundamental concepts of magnetization curve, hysteresis loop, permeability, coercive force, and residual magnetism.\\
+中文：理解磁化曲线、磁滞回线、磁导率、矫顽力和剩磁的基本概念。
+\item Learn how to observe the magnetization curve and hysteresis loop of a ferromagnetic material using an oscilloscope.\\
+中文：学会用示波器观察铁磁材料的磁化曲线和磁滞回线。
+\item Measure permeability, saturation flux density, coercive force, and residual magnetism.\\
+中文：测量磁导率、饱和磁感应强度、矫顽力和剩磁。
+\item Compare the hysteresis loops under different frequencies for different ferromagnetic materials.\\
+中文：比较不同频率、不同铁磁材料的磁滞回线。
+\end{enumerate}
+
+\subhdr{7.0b 实验器材 / Experimental Apparatus}
+
+\begin{enumerate}
+\item DH4516N apparatus for measuring magnetic hysteresis loops (AC excitation source, R1, R2, C, two samples).\\
+中文：DH4516N 磁滞回线测量仪（含交流激励源、R1、R2、C 与两个样品）。
+\item Digital oscilloscope with two channels and X-Y mode.\\
+中文：数字示波器（双通道，支持 X-Y 模式）。
+\item Connecting wires and the printed data table.\\
+中文：连接导线与自行打印的数据表。
+\item Sample 1: \(L=0.130\ \mathrm{m}\), \(S=1.24\times10^{-4}\ \mathrm{m^2}\), \(N_1=N_2=150\).\\
+中文：样品 1：\(L=0.130\ \mathrm{m}\)，\(S=1.24\times10^{-4}\ \mathrm{m^2}\)，\(N_1=N_2=150\)。
+\item Sample 2: \(L=0.075\ \mathrm{m}\), \(S=1.20\times10^{-4}\ \mathrm{m^2}\), \(N_1=N_2=150\).\\
+中文：样品 2：\(L=0.075\ \mathrm{m}\)，\(S=1.20\times10^{-4}\ \mathrm{m^2}\)，\(N_1=N_2=150\)。
+\end{enumerate}
+
+\subhdr{Q1. 为什么铁磁材料的 \(B\) 与 \(H\) 不是线性关系？}
+因为磁化来自磁畴：畴壁移动（先可逆、后不可逆）和畴转动对 \(H\) 的响应不是线性的，\(M\) 先快后慢并最终饱和到 \(M_s\)；\(B=\mu_0(H+M)\)，所以 \(B\)--\(H\) 先缓、后陡、再平，\(\mu=B/H\) 不是常数。
+
+\textbf{Answer (EN):} Ferromagnetism comes from magnetic domains. Domain-wall motion and domain rotation respond nonlinearly to H: M rises quickly, then slows and saturates at Ms. Since B = mu0(H + M), mu = B/H is not constant; at high H, B is about mu0(H + Ms) and the curve flattens.
+
+\subhdr{Q2. 说明磁化曲线与磁滞回线，并画图。}
+磁化曲线是从退磁态单调增大 \(H\) 得到的初始 \(B\)--\(H\) 曲线，终点是饱和 \(B_s\)。磁滞回线是循环磁化下的闭合路径 O--a--b--c--d--e--f--a：a 是正向饱和，b 是 \(H=0\) 时的剩磁 \(B_r\)，c 是 \(B=0\) 时的矫顽力 \(H_c\)，d 是反向饱和，e、f 是反向的 \(B_r\)、\(H_c\)。回线面积等于每周期单位体积的磁滞损耗。
+
+\textbf{Answer (EN):} The magnetization curve is the initial B-H curve from a demagnetized state: B rises slowly, then steeply, then bends to saturation Bs. The hysteresis loop is the closed path O-a-b-c-d-e-f-a: a is positive saturation, b is Br at H = 0, c is Hc at B = 0, d is negative saturation, e and f are the reverse Br and Hc. Its area equals the hysteresis loss per unit volume per cycle.
+
+\subhdr{Q3. 为什么要测磁化曲线和磁滞回线？}
+为了拿到 \(B_s,B_r,H_c,\mu_{\max}\) 这些特征参数：它们决定材料是软磁还是硬磁、适合作变压器铁芯还是永磁体，也用来估算磁滞损耗、检验材料批次是否合格。
+
+\textbf{Answer (EN):} The measurements give Bs, Br, Hc and mur,max. They classify soft/hard materials, help select cores for transformers, motors, relays and permanent magnets, estimate hysteresis loss, and check material quality.
+
+\subhdr{Q4. 示波器测磁滞回线的原理、电路和公式。}
+原边 \(N_1\) 的电流 \(i_1\) 在 \(R_1\) 上产生 \(U_{R_1}=i_1R_1\)，所以 \(H=N_1U_{R_1}/(LR_1)\)；副边 \(N_2\) 感应 \(\varepsilon_2=-N_2S\,\dd B/\dd t\)，经 \(R_2C\) 积分（\(\omega R_2C\gg1\)）后 \(U_C=N_2SB/(R_2C)\)。示波器 X-Y 模式：CH1 接 \(U_{R_1}\)（X，\(H\)），CH2 接 \(U_C\)（Y，\(B\)），屏上就是 \(B\)--\(H\) 回线。换算公式见 §4.4。
+
+\textbf{Answer (EN):} The primary current i1 gives UR1 = i1R1, so H = N1UR1/(L R1). The secondary emf epsilon2 = -N2S dB/dt is integrated by R2C (omega R2 C >> 1), giving UC = N2S B/(R2C). In X-Y mode CH1 (UR1) drives X (H) and CH2 (UC) drives Y (B), so the screen shows the B-H loop. With UR1 = Sx x and UC = Sy y: B = C R2 Sy y/(N2S), H = N1 Sx x/(L R1), Br = C R2 Sy yr/(N2S), Hc = N1 Sx xc/(L R1), mur = C R2 L R1 Sy/(mu0 N2 S N1 Sx) * (y/x).
+
+\subhdr{Q5. 测量前为什么要退磁？怎么退？}
+不退磁的话，样品带着剩磁 \(B_r\) 开始，基本磁化曲线的起点不在 O 点，测出的曲线整体平移。退磁方法是：在交流激励下把激励电流（幅度）缓慢、单调地减到零，回线逐渐缩小，最后缩成 \((0,0)\) 处的一个点。
+
+\textbf{Answer (EN):} Demagnetization is needed because the B-H curve depends on magnetic history; residual Br shifts the starting point away from O and biases Br, Hc and mumax. With AC excitation on, reduce the excitation current slowly and monotonically to zero until the loop collapses to a point (AC demagnetization).
+
+\subhdr{Q6. 怎样让样品达到饱和？}
+单调增大激励电流，观察回线顶点：当继续增大电流时，顶点主要沿 \(H\) 方向移动、\(B\) 几乎不再增加，回线顶部变平、变尖，就是饱和了。此时再增大电流只会让 \(H\) 更大，\(B\) 基本不变。
+
+\textbf{Answer (EN):} Increase the excitation current monotonically and watch the loop tips. Saturation is reached when further increase mainly moves the tip along H while B hardly increases; the loop top/bottom flattens and the tips become sharp. Then M goes to Ms and only mu0H still grows.
+
+\subhdr{Q7. 怎样避免相位失真？}
+保证 \(R_2\gg1/(\omega C)\)，即 \(\omega R_2C\gg1\)；否则 \(U_C\) 与 \(B\) 有相位差，回线会变成歪斜的椭圆。做法是增大 \(R_2\) 或 \(C\)，两通道都用 DC 耦合、探头补偿一致，再微调 \(R_2,C\) 直到回线光滑闭合。50 Hz 下建议 \(\omega R_2C\ge20\)。
+
+\textbf{Answer (EN):} The RC integrator needs R2 >> 1/(omega C), i.e. omega R2 C >> 1. Otherwise UC is phase-shifted relative to B and the loop is distorted (a linear core shows an ellipse). Increase R2 or C, use DC coupling on both channels with matched probes, then fine-tune R2/C until the loop is smooth and closed. At 50 Hz, omega R2 C >= 20 is safe.
+
+\subhdr{Q8. 饱和且不失真时，怎样让回线占满屏幕？}
+先把 \(R_2,C\) 调到积分条件满足、回线不失真；再增大激励到饱和；然后调 \(R_1\)（X 幅度）、\(R_2,C\)（Y 幅度）和 \(S_x,S_y\)，让回线中心在 \((0,0)\)、顶点落在 \((\pm4,\pm4)\) 格。最后固定并记录 \(R_1,R_2,C,S_x,S_y\)。
+
+\textbf{Answer (EN):} First set R2/C for good integration, then increase the excitation to saturation. Adjust R1 (X amplitude, H), R2/C (Y amplitude, B) and the vertical scales Sx, Sy so the loop is centered at (0,0) and its tips fall at (+4,+4) and (-4,-4) divisions, filling the 8x8 grid without clipping. Keep R1, R2, C, Sx, Sy fixed and record them.
+
+\subhdr{Q9. 怎样测基本磁化曲线？}
+先退磁，固定 \(S_x,S_y,R_1,R_2,C\)；单调增大激励，使回线正顶点的 \(x\) 依次为 0、0.40、0.80、1.20、1.60、2.00、2.40、3.00、4.00 格，记录每个顶点的 \(y\)；再用 \(H=N_1S_x x/(LR_1)\)、\(B=CR_2S_y y/(N_2S)\) 换算并作图。
+
+\textbf{Answer (EN):} Demagnetize first and fix Sx, Sy, R1, R2, C. Increase the excitation monotonically so the positive vertex x is 0, 0.40, 0.80, 1.20, 1.60, 2.00, 2.40, 3.00, 4.00 div; record y at each step. Convert with H = N1 Sx x/(L R1) and B = C R2 Sy y/(N2S), then plot B vs H (and y/x vs x for mur).
+
+\subhdr{Q10. 怎样得到相对磁导率？}
+逐点算 \(\mu_r=B/(\mu_0H)\)；用屏幕坐标就是 \(\mu_r=CR_2LR_1S_y/(\mu_0N_2SN_1S_x)\cdot(y/x)\)。在同一组参数下 \(\mu_r\propto y/x\)，所以画 \(y/x\) 随 \(x\) 的曲线，形状就是 \(\mu_r\)--\(H\) 曲线；曲线最大值对应 \(\mu_{\max}\)，其横坐标给出对应的 \(H\)。
+
+%=====================================================================
+
+\textbf{Answer (EN):} At each point mur = B/(mu0 H). In screen coordinates mur = C R2 L R1 Sy/(mu0 N2 S N1 Sx) * (y/x). Plot mur vs H (or y/x vs x); the maximum gives mur,max and its coordinate gives the corresponding H.
+\hdr{§8}{课后思考题（中英对照）}
+
+\subhdr{1. 为什么测量前必须退磁？}
+因为磁化曲线和回线都与磁化历史有关；不退磁，样品带着剩磁，初始点不是 O，\(B_r,H_c,\mu_{\max}\) 都会偏。
+
+\textbf{Answer (EN):} The B-H curve depends on magnetic history; residual Br shifts the start away from O and biases Br, Hc and mumax. Demagnetize by slowly and monotonically reducing the AC excitation current to zero until the loop collapses to a point.
+
+\subhdr{2. 怎样判断样品已经饱和？}
+继续增大激励时，回线顶点主要沿 \(H\) 方向移动，\(B\) 几乎不变，顶部变平、变尖；此时 \(M\to M_s\)，再增大 \(H\) 只有 \(\mu_0H\) 的贡献。
+
+\textbf{Answer (EN):} Further increase of the excitation mainly extends H while B hardly changes; the loop tips become sharp and the top/bottom flatten. This means M goes to Ms, so only mu0H still grows.
+
+\subhdr{3. 为什么要求 \(R_2\gg1/(\omega C)\)？不满足会怎样？}
+只有满足这个条件，副边电流才近似为 \(\varepsilon_2/R_2\)，电容电压才正比于 \(\int\varepsilon_2\dd t\propto B\)。不满足时 \(U_C\) 与 \(B\) 有相位差，线性样品也会显示成椭圆，铁磁样品的回线被扭曲，\(B_r,H_c\) 读不准。
+
+\textbf{Answer (EN):} This condition makes the secondary current i2 about epsilon2/R2, so UC is about integral(epsilon2 dt) proportional to B. If not met, UC is phase-shifted relative to B; even a linear core shows an ellipse and a ferromagnetic loop is distorted, so Br and Hc are misread.
+
+\subhdr{4. 为什么回线面积代表磁滞损耗？单位是什么？}
+沿回线一圈，磁场对单位体积介质做功 \(W=\oint H\dd B\)，对闭合路径等于回线面积；单位是 \(\mathrm{J/m^3}\)。乘样品体积 \(V\) 得每周期能量，再乘频率 \(f\) 得损耗功率。
+
+\textbf{Answer (EN):} Per cycle the field does work W = integral(H dB) per unit volume; for a closed loop this equals the enclosed area. The unit is J/m3; multiplying by sample volume V and frequency f gives the hysteresis power loss.
+
+\subhdr{5. 软磁与硬磁的区别和应用？}
+软磁：\(H_c\) 小、\(\mu\) 高、回线窄，易磁化易退磁，用于变压器、继电器、电机铁芯；硬磁：\(H_c\) 大、\(B_r\) 高、回线宽，用于永磁体（钕铁硼、钐钴、铁氧体）。
+
+\textbf{Answer (EN):} Soft magnets: small Hc, high mu, narrow loop, easy to magnetize/demagnetize, used for transformer cores, relays and motor cores. Hard magnets: large Hc and Br, wide loop, used for permanent magnets such as NdFeB, SmCo and ferrite.
+
+\subhdr{6. 为什么基本磁化曲线要从退磁态单调增大 \(H\) 来测？}
+这样每个点都落在同一条初始磁化曲线上；如果中途来回改变 \(H\)，会走小回线，测到的 \(B\) 不是“当前 \(H\) 对应的初始值”。
+
+\textbf{Answer (EN):} This keeps every point on the same initial magnetization curve. If H is increased and decreased repeatedly, the sample follows minor loops and the measured B is no longer the initial value for that H.
+
+\subhdr{7. 主要误差来源有哪些？}
+格数估读、\(S_x,S_y\) 校准、\(R,C\) 容差、积分器相位、频率漂移、温度与磁历史、磁路不均匀；减小办法是多次读数、用实测元件值、保证 \(\omega R_2C\gg1\)、测前退磁、保持频率稳定。
+
+\textbf{Answer (EN):} Grid reading, Sx/Sy calibration, R and C tolerances, integrator phase error, frequency drift, temperature/magnetic history and non-uniform magnetization. Reduce them by repeated readings, measured component values, omega R2 C >> 1, demagnetizing before each run, and stable frequency/connections.
+
+\subhdr{8. 为什么用 X-Y 模式而不是普通时域波形？}
+普通时域是 \(U\)--\(t\)，两个通道各画各的，不能直接给出 \(B\) 与 \(H\) 的函数关系；X-Y 模式把 \(U_{R_1}\)（\(H\)）当横轴、\(U_C\)（\(B\)）当纵轴，逐点合成，屏上直接就是 \(B\)--\(H\) 回线。
+
+\textbf{Answer (EN):} The normal time-base shows U vs t for each channel separately, so it does not directly give B as a function of H. X-Y mode plots UR1 (H) on the horizontal axis and UC (B) on the vertical axis, so the screen directly shows the B-H loop.
+
+\subhdr{8.9 实验体会 / Reflection（约 50 词）}
+
+\textbf{Option A (48 words).} This experiment made the B-H loop concrete: the oscilloscope turned abstract domains into a visible curve. I learned why demagnetization and a good RC integrator matter, and how Br, Hc and mur come from screen coordinates. Careful scaling and stable connections strongly affect the results, so patience matters.\\
+中文：这次实验让 B-H 回线变得具体：示波器把抽象的磁畴变成了一条可见的曲线。我明白了退磁和良好的 RC 积分器为什么重要，也学会了如何从屏幕坐标得到 Br、Hc 和 mur。仔细定标和稳定接线会显著影响结果，因此耐心很关键。
+
+\textbf{Option B (51 words).} Measuring the hysteresis loop taught me that a clean result depends on preparation: demagnetization, a correct RC integrator, and fixed scales. I was surprised how strongly R2 and C change the loop shape. The experiment connected domain theory, circuits and data processing, and gave me a concrete feel for magnetic materials.\\
+中文：测量磁滞回线让我认识到，干净的结果取决于准备：退磁、正确的 RC 积分器和固定的量程。R2 与 C 对回线形状的影响之大令我意外。这个实验把磁畴理论、电路和数据处理连了起来，让我对磁性材料有了具体的感受。
+
+%=====================================================================
+\hdr{§9}{易错点（每条都能指回某一步）}
+
+\begin{itemize}
+\item \textbf{不退磁就测基本曲线}：起点带 \(B_r\)，曲线平移；对应 §5.5、§5.6。
+\item \textbf{先调 \(S_x,S_y\) 再调 \(R_2,C\)}：相位一变，刚调好的满屏又歪了；顺序应是“先相位、后幅度、再刻度”（§4.6、§5.4）。
+\item \textbf{\(R_2\) 太小}：回线变成歪椭圆，\(B_r\) 偏大、\(H_c\) 偏小；对应 §4.6。
+\item \textbf{读错支}：在 \(x=0\) 处读了下支，得到 \(-B_r\)；在 \(y=0\) 处读了负 \(x\)，得到 \(-H_c\)。取大小或按上下支分别读（§5.7）。
+\item \textbf{单位没换}：\(S_x,S_y\) 给的是 mV/div，\(C\) 给的是 \(\mu\mathrm{F}\)，\(R_2\) 给的是 \(\mathrm{k}\Omega\)；代入前先换成 V/div、F、\(\Omega\)（§4.4）。
+\item \textbf{把 \(L\) 当成样品“长度”随便量}：\(L\) 是磁路平均长度，样品 1 与样品 2 不同，不能混用（§6.1）。
+\item \textbf{换样品不换参数}：样品 2 的 \(L,S\) 与样品 1 不同，公式里的 \(L,S\) 要跟着换（§5.8）。
+\item \textbf{用手捂样品/长时间通大电流}：温度升高，\(B_r,H_c\) 漂移；测完一组让样品冷一下（§6.5）。
+\item \textbf{两个通道地线夹错}：可能短路 \(R_1\) 或 \(C\)，波形看着对、数值全错（§5.1 的 warnbox）。
+\item \textbf{把 \(\mu=B/H\) 当成切线斜率}：报告用割线值；切线斜率是 \(\dd B/\dd H\)，两者不同（§2.1、G3）。
+\end{itemize}
+
+%=====================================================================
+\hdr{§10}{缺口清单：两份材料没明说、本讲义补了什么}
+
+\gapitem{推导缺口}{讲义 p7 只写了 \(i_2=\varepsilon_2/\sqrt{R_2^2+(1/\omega C)^2}\) 和 \(U_C=N_2SB/(CR_2)\)，没有写相位、没有写复阻抗推导。本讲义 §4.3 补了 \(U_C=\varepsilon_2/(1+\mathrm{j}\omega R_2C)\) 的复阻抗推导，并给出幅度误差与相位误差公式。}
+\gapitem{适用条件}{讲义 p7 说“If \(R_2\gg1/\omega C\)”，但没有给“到底多大才够”。本讲义 §4.6 给出：幅度误差 1\% 需 \(\omega R_2C\gtrsim7\)，相位误差 \(1^\circ\) 需 \(\gtrsim57\)，50 Hz 下建议 \(\ge20\)。}
+\gapitem{术语混用}{讲义 p3 说“the slope of the magnetization curve ... gives the permeability”，把割线 \(B/H\) 与切线 \(\dd B/\dd H\) 混在一起。本讲义 §2.1 明确区分，并说明报告按 \(B/(\mu_0H)\) 算。}
+\gapitem{操作顺序}{讲义 p8 步骤 4 说可以调 \(R_1\)、\(R_2,C\)、\(S_x,S_y\)，但没有说先调哪个、它们怎样互相影响。本讲义 §4.6 与 §5.4 给出“先相位、后幅度、再刻度”的迭代顺序。}
+\gapitem{机制缺口}{讲义 p2 说磁畴“互相抵消”，但没有解释磁畴为什么形成。本讲义 §1.1 用交换相互作用与静磁能的一句话补上（标为教学补充，不是讲义原文）。}
+\gapitem{公式来源}{讲义 p2--p3 直接给 \(B_r\)、\(H_c\)、\(\mu_r\) 的公式，没有从 \(U_C\)、\(U_{R_1}\) 推。本讲义 §4.2--§4.4 逐条推了。}
+\gapitem{图缺}{讲义 p7 的 Figure 3.8-6 没有标 \(R_1,R_2,C,N_1,N_2\) 与 CH1/CH2 的接法，也没有画两个通道的地。本讲义 §4.1 重绘、§5.1 附原图，补上标签与接法（图注标明“重绘”）。}
+\gapitem{读数分支}{讲义 p9 步骤 7 说“record the Y coordinates ... when X coordinates are ...”，没有说记上支还是下支。本讲义 §5.7 明确记上支、下支用中心对称补，并指出 \(B_r\)、\(H_c\) 的读法。}
+\gapitem{定标}{讲义 p8 步骤 4 要求顶点到 \((\pm4,\pm4)\)，但没有解释为什么是 4。本讲义 §4.6 说明屏幕是 8\(\times\)8 格，\(\pm4\) 就是满屏且不削顶。}
+\gapitem{单位}{讲义 p2 附录给 \(1\ \mathrm{T}=1\ \mathrm{V}\cdot\mathrm{F}\cdot\Omega/\mathrm{m^2}\)，没有推导。本讲义 §0.1 用 \(F\cdot\Omega=s\) 补了单位链。}
+
+%=====================================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item 铁磁性的非线性来自磁畴：畴壁移动（可逆/不可逆）+ 畴转动 + 饱和；所以 \(B=\mu_0(H+M)\) 里的 \(M\) 不是 \(H\) 的线性函数。
+\item 磁滞回线把 \(B_r\)、\(H_c\)、\(B_s\) 和损耗装进一条闭合曲线；回线面积 \(W=\oint H\dd B\) 就是每周期单位体积的磁滞损耗。
+\item 示波器测量的核心是两件事：\(R_1\) 把 \(i_1\) 变成正比于 \(H\) 的电压，\(R_2C\) 积分把 \(\varepsilon_2\) 变成正比于 \(B\) 的电压；只要 \(\omega R_2C\gg1\)、五个参数固定，\(B_r,H_c,\mu_r\) 都能从格数算出来。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{与两份材料的页码对照}
+
+\begin{center}
+\begin{tabular}{@{}p{2.4cm}p{10.6cm}p{3.2cm}@{}}
+\toprule
+\thead{材料页} & \thead{内容} & \thead{本讲义} \\
+\midrule
+讲义 p1 & 铁磁材料介绍、实验目的、仪器、原理开头 & §0--§1 \\
+讲义 p2 & 磁畴、磁化曲线、\(B=\mu_0\mu_rH\) & §1--§2 \\
+讲义 p3 & 空气/铁/钢的曲线、磁导率、\(\mu_r\) 曲线 & §2 \\
+讲义 p4 & 剩磁、矫顽力、软磁/硬磁 & §2--§3 \\
+讲义 p5 & 磁滞回线 O--a--b--c--d--e--f--a & §3 \\
+讲义 p6 & 回线闭合、软硬磁回线、测量原理开头 & §3--§4 \\
+讲义 p7 & 测量电路、\(H\)、\(B\)、\(R_2C\) 积分、失真 & §4 \\
+讲义 p8 & 接线、初始状态、X-Y、调饱和与满屏 & §5.1--§5.4 \\
+讲义 p9 & 退磁、基本磁化曲线、动态回线、样品 2 & §5.5--§5.8 \\
+预习 p1 & 实验目标 + 10 道预习问题 & §7 \\
+预习 p2 & 样品 2 的 \(B_r,H_c\) 数据表、附录参数 & §6 \\
+预习 p3 & 样品 1 的 \(B_r,H_c\)、基本磁化曲线、\(\mu_r\) 表 & §6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\flowerrule
+
+\noindent{\small\color{inkgray} 本讲义依据的两份 PDF 均为英文；正文中的中文解释、推导与“为什么”由本讲义补写。凡标“示意”的曲线图只表示形状，不是本次实测数据；实验后请用实测的 \(R_1,R_2,C,S_x,S_y\) 重新计算。}
+
+\end{document}

@@ -1,0 +1,1370 @@
+﻿% !TEX program = xelatex
+% 第一章 几何光学 · 第二课（§1.3 费马原理 + §1.4 成像基本概念）· 精讲讲义
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2.5em}
+\setlength{\headheight}{22pt}
+% 本讲义的题块较短（题干 + 三段详解）：0.92 页的起页保护会留整页空白，
+% 改成"题干 + 考点 + 关键一步 + 详解开头"能同页即可。
+\renewcommand{\qbreak}{\needspace{0.36\textheight}}
+\linespread{1.16}
+\setlength{\parskip}{2.2pt}
+\setlength{\abovedisplayskip}{5.5pt}
+\setlength{\belowdisplayskip}{5.5pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{3pt}
+\addtolength{\jot}{-1.5pt}
+\settags{费马原理与成像基础 · 精讲}{光学 · 第一章 第二课}
+
+\tikzset{
+  ax/.style={->,>=Stealth,line width=0.7pt,color=inkgray},
+  ray/.style={->,>=Stealth,line width=0.95pt,color=violet},
+  curve/.style={line width=0.95pt,color=violet},
+  ray2/.style={->,>=Stealth,line width=0.95pt,color={rgb,255:red,190;green,90;blue,70}},
+  virt/.style={dashed,color=inkgray,line width=0.7pt},
+  norm/.style={dashed,color=violetdeep,line width=0.8pt},
+  iface/.style={line width=1.3pt,color=violetdeep},
+  eop/.style={dashed,color=petal,line width=0.9pt},
+  lab/.style={font=\small,color=inkgray},
+  labb/.style={font=\small\bfseries,color=violetdeep}
+}
+
+\begin{document}
+
+\doctitle{费马原理与成像的基本概念}
+{第一章 几何光学 · 第二课 · 光程、$\delta L=0$ 与等光程面}
+{依据：课件《第一章 几何光学 - 第二课》PDF 共 46 页（英文 PPT 导出，文字层极薄：\\
+p1--p40 逐页 OCR，p41--p46 按 115--120 dpi 渲染读图）\\
+逐页缺口补齐 \textperiodcentered\ 四道演算例全解 \textperiodcentered\ 与下一讲（球面折射）的接口\\
+整理：2026-10-27}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与符号规则}
+
+\callout{\textbf{这一讲在讲什么。}承接第一课的"四定律 + 惠更斯原理"，本课做两件事：
+（一）给出四定律背后的那条统一原理——费马原理 $\delta\int n\,\mathrm{d}l=0$，并用它把
+直线传播、反射（$i_1=i_1'$）、折射（$n_1\sin i_1=n_2\sin i_2$）逐条重新推出来；
+（二）从"光走哪条路"转到"像在哪里"，建立物、像、虚物、虚像、共轭、理想光学系统这一套词汇，
+最后用"等光程"把费马原理和成像焊在一起：\emph{理想成像} $\Leftrightarrow$ \emph{从物点到像点的所有光线光程相等}。
+这后半段才是本课真正的收获——它解释了下一次课为什么要算球面折射，也解释了干涉那一章为什么反复算光程差。}
+
+\subhdr{0.1 课件 46 页的分段（详细页码对照见 §11）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{页} & \thead{内容} & \thead{本讲义}\\
+\hline
+p1--p3 & 引入、五个问题、上一课回顾（四定律 + 全反射 + 棱镜 + 惠更斯） & §1\\
+p4--p11 & 光程：为什么引入、三种算法、与相位/时间的换算 & §2\\
+p12--p26 & 费马原理：人物、陈述、数学形式、四种平稳、导出三定律、可逆性 & §3、§4\\
+p27--p36 & 光束、光学组、物与像、四象限、虚物、物空间/像空间、理想系统、共轭 & §5\\
+p37--p41 & 等光程、虚光程、等光程面及其应用 & §6\\
+p42--p46 & 本课小结、公式卡、下一讲预告、结束页 & §9、§0.2、§11\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{0.2 关于主题与页数的两点说明（先说清，免得读者找错东西）}
+
+\textbf{（一）本课的"球面"只出现在预告里。}任务书原先把本课预期为"球面反射/折射、傍轴近似、物像公式、
+焦距、放大率、作图法、透镜组"。逐页核对后，这六样在 \textbf{p1--p44 的正文里一条公式都没有}：
+它们集中出现在 \textbf{p45（徽章号 46）"Preview of Next Lecture: Imaging with Coaxial Spherical Surfaces"} 这一页的四个要点
+（single spherical refraction / paraxial approximation / focal length and foci / imaging formula）和一张示意图上，
+并明写"Preview the textbook §1.5"。所以本讲义按课件\textbf{真实}主线重组：
+§2 光程 $\to$ §3 费马与三定律 $\to$ §4 平稳四态 $\to$ §5 物像词汇 $\to$ §6 等光程面。
+球面折射一律不提前展开（那会把下一讲掏空，也违反"不臆造考点"）。
+
+\textbf{（二）页数按"主线合并"申报。}课件 46 页，若按 0.5 倍应是 23 页；但英文 PPT 信息密度低——
+p12 是人物页、p27 是过渡页、p42--p44 是同一张公式卡的三种排版、p46 是致谢页，
+四类共 7 页几乎不含可讲内容。本讲义把 p4--p11 合成 §2、p12--p26 合成 §3--§4、p27--p36 合成 §5、
+p37--p41 合成 §6，正文 16 页左右，落在 13--18 页的目标区间内。
+合并的是编排，不是内容：课件出现过的定义、图、结论在 §11 的对照表里逐条有落点。
+
+\subhdr{0.3 记号表（全文一套，不再另立）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{符号} & \thead{含义} & \thead{符号} & \thead{含义}\\
+\hline
+$L$ & 光程（optical path length, OPL） & $n$ & 折射率（refractive index）\\
+$l$ & 几何路程（几何长度） & $c$ & 真空光速 $c=2.998\times10^{8}\,\mathrm{m/s}$\\
+$\lambda_0$ & 真空波长 & $\lambda_n$ & 介质中波长，$\lambda_n=\lambda_0/n$\\
+$v$ & 介质中光速，$v=c/n$ & $f$ & 频率（跨界面不变）\\
+$\delta$ & 变分（对"路径"求，不是对点求） & $i_1,\,i_1'$ & 入射角、反射角（对法线）\\
+$i_2$ & 折射角 & $n_1,\,n_2$ & 入射侧、折射侧折射率\\
+$Q,\,Q'$ & 物点、像点 & $A,\,B,\,M$ & 起点、终点、界面上的入射点\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{0.4 符号规则与约定（六条，后文不再重复声明）}
+
+\begin{enumerate}[label=\textbf{R\arabic*}]
+\item \textbf{光程} $L=\int_A^B n(\mathbf{r})\,\mathrm{d}l$ 是沿\emph{路径}的积分，量纲同长度；
+等价定义是 $L=ct$（同一时间内光在真空里走的路程，见 §2.2）。
+\item \textbf{一律}用 $n=c/v$ 与 $\lambda_n=\lambda_0/n$，不用 $n=\sqrt{\varepsilon_r\mu_r}$ 那种写法（本课不涉及色散机制）。
+\item \textbf{角度}一律从法线量起，取 $0^\circ\le i\le90^\circ$。这一点是硬约束：
+本课两次推导都要用"$\sin i_1=\sin i_1'\Rightarrow i_1=i_1'$"，这一步只在 $[0^\circ,90^\circ]$ 上成立
+（$\sin$ 在该区间单调）。若允许钝角，$\sin$ 相等还有 $i_1=180^\circ-i_1'$ 一支，反射定律就不唯一了。
+\item \textbf{虚光程取负值}：$L=-nl$（p38）。凡"实际光线并不经过、只是延长线经过"的那一段，其光程记为负。
+这条规则先用后证，证明在 §6.2——它不是为了记账方便，而是为了让"减去公共段"以后剩下的式子仍是常数。
+\item \textbf{坐标}：推反射与折射时统一取界面为 $y=0$ 平面（法线即 $y$ 轴），
+入射面为 $z=0$ 平面；$A(x_1,y_1,0)$、$B(x_2,y_2,0)$、$M(x,0,z)$。这是课件 p18/p21 的取法，全文沿用。
+\item \textbf{本课不引入}球面折射的 $s,s',f$ 符号规则（那属于下一讲 §1.5，见 p45）。
+本讲义里出现的所有几何长度都是正的，$x$ 可以是负的，但 $y_1,y_2$ 取垂直距离（正值）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§1}{本课主线：五个问题，一条链}
+
+课件 p2 把全课压成五个问题，逐字对应 p4--p41：
+
+\begin{enumerate}[label={\bfseries 问题 \arabic*}]
+\item 什么是光程？为什么要引入它？（p5--p11，本讲义 §2）
+\item 费马原理如何统一三条主要定律？（p13--p26，本讲义 §3）
+\item 怎样从费马原理推出反射定律与折射定律？（p16--p21，本讲义 §3.3--§3.4）
+\item 什么是物、什么是像？（p28--p36，本讲义 §5）
+\item 实/虚物、实/虚像差在哪里？（p30--p34，本讲义 §5.2--§5.4）
+\end{enumerate}
+
+把这五问串起来就是一条链，链上每一环都只依赖前一环：
+
+\begin{center}
+\small
+\tikz[baseline=-0.6ex]{
+\node[draw=violet,fill=bandviolet,rounded corners=2pt,inner sep=3pt] (a) at (0,0) {光程 $L$};
+\node[draw=violet,fill=bandviolet,rounded corners=2pt,inner sep=3pt] (b) at (3.3,0) {$\delta L=0$};
+\node[draw=violet,fill=bandviolet,rounded corners=2pt,inner sep=3pt] (c) at (6.6,0) {三定律};
+\node[draw=violet,fill=bandviolet,rounded corners=2pt,inner sep=3pt] (d) at (10.2,0) {等光程};
+\node[draw=violet,fill=bandviolet,rounded corners=2pt,inner sep=3pt] (e) at (13.6,0) {成像};
+\draw[->,>=Stealth,color=violet] (a) -- (b);
+\draw[->,>=Stealth,color=violet] (b) -- (c);
+\draw[->,>=Stealth,color=violet] (c) -- (d);
+\draw[->,>=Stealth,color=violet] (d) -- (e);
+}
+\end{center}
+
+这条链的第三跳值得单独说一句：\emph{三定律 $\to$ 等光程} 不是"再推一条定律"，而是把
+"每条光线各自取平稳值"升级成"一整族光线取同一个值"。这一步一升，问题就从"光走哪条路"
+变成了"什么样的面能让所有光线同时到达同一点"——那正是成像。课件 p27 的过渡页只有一句
+"Fermat's principle tells us how light travels — but optics is about more than that"，
+它没有说清这句话怎么接上 p37 的等光程；§6.1 补的就是这一跳。
+
+\subhdr{1.1 先看全课最关键的一张图：$\delta L=0$ 的四种形态}
+
+p15 把"平稳"拆成四种，这张图是全课的枢纽：后面所有的"最小/最大/常数"之争都在它上面结算。
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+% (a) minimum
+\begin{scope}[xshift=0cm]
+  \draw[ax] (0,0) -- (2.0,0);
+  \draw[ax] (0,0) -- (0,1.7);
+  \draw[curve,domain=0.15:1.85,samples=60] plot (\x,{1.35*(\x-1.0)^2+0.12});
+  \fill[violetdeep] (1.0,0.12) circle (1.6pt);
+  \node[lab,below=3pt,align=center] at (1.0,-0.05) {(a) 最小\\[1pt]局部极小};
+\end{scope}
+% (b) maximum
+\begin{scope}[xshift=4.3cm]
+  \draw[ax] (0,0) -- (2.0,0);
+  \draw[ax] (0,0) -- (0,1.7);
+  \draw[curve,domain=0.15:1.85,samples=60] plot (\x,{-1.35*(\x-1.0)^2+1.55});
+  \fill[violetdeep] (1.0,1.55) circle (1.6pt);
+  \node[lab,below=3pt,align=center] at (1.0,-0.05) {(b) 最大\\[1pt]局部极大};
+\end{scope}
+% (c) inflection
+\begin{scope}[xshift=8.6cm]
+  \draw[ax] (0,0) -- (2.0,0);
+  \draw[ax] (0,0) -- (0,1.7);
+  \draw[curve,domain=0.15:1.85,samples=80] plot (\x,{0.5+1.2*(\x-1.0)-0.4*(\x-1.0)^3});
+  \fill[violetdeep] (1.0,0.5) circle (1.6pt);
+  \node[lab,below=3pt,align=center] at (1.0,-0.05) {(c) 拐点\\[1pt]$\delta^2L=0$};
+\end{scope}
+% (d) constant
+\begin{scope}[xshift=12.9cm]
+  \draw[ax] (0,0) -- (2.0,0);
+  \draw[ax] (0,0) -- (0,1.7);
+  \draw[ray] (0.15,0.85) -- (1.85,0.85);
+  \fill[violetdeep] (0.55,0.85) circle (1.6pt);
+  \fill[violetdeep] (1.00,0.85) circle (1.6pt);
+  \fill[violetdeep] (1.45,0.85) circle (1.6pt);
+  \node[lab,below=3pt,align=center] at (1.0,-0.05) {(d) 常数\\[1pt]整段取值相同};
+\end{scope}
+\end{tikzpicture}
+
+{\small\color{inkgray}图 1\quad 平稳（stationary）的四种形态，重绘自课件 p15。
+纵轴是光程 $L$，横轴是"路径族的一个参数"（例如入射点在界面上的位置 $x$）。
+四者的共同前提都是一阶变分为零；区分它们要靠二阶变分，见 §4.1。}
+\end{center}
+
+\subhdr{1.2 一句话预告结论}
+
+本课最后要能一句话说清两件事：光走哪条路——\emph{使光程一阶变分为零的那条}；
+像成在哪里——\emph{使从物点到该点的所有光程相等的那一点}。这两句话在 §6.1 会合。
+
+%=============================================================
+\hdr{§2}{光程：把"不同介质"折算成真空的同一把尺子}
+
+\subhdr{2.1 为什么非要引入它（p5）}
+
+课件用的类比是"沙地 vs 跑道"：同是 100 米，沙地上跑得慢、跑道上跑得快，
+所以不能用"跑了多少米"比成绩，得换成同一标准。光学里一模一样的困境：
+同一段 1 米的几何距离，在空气里光用 $3.3$ ns，在水里用 $4.4$ ns，在玻璃里用 $5.0$ ns。
+\textbf{几何距离不能比较"光走这段路的代价"}，于是把任何介质中的路程都折算成\emph{同一时间内光在真空中能走的距离}——
+这个折算值就是光程。注意"折算成真空"不是修辞：真空是唯一一个 $n=1$ 的公共平台。
+
+\subhdr{2.2 定义与三种算法（p6--p8、p11）}
+
+\textbf{定义（一般式，局部自足）}：光沿路径 $\Gamma$ 从 $A$ 到 $B$，折射率处处可能不同，则
+\[
+L=\int_{\Gamma} n(\mathbf{r})\,\mathrm{d}l .
+\]
+三种常见情形都是这个定义的特例，不是三个独立公式：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{介质} & \thead{算法} & \thead{为什么} & \thead{课件}\\
+\hline
+均匀（$n$ 常数） & $L=nl$ & $n$ 提出积分号 & p6\\
+分层均匀（$k$ 层） & $L=\sum_{i=1}^{k}n_il_i$ & 积分拆成 $k$ 段，每段 $n_i$ 常数 & p7\\
+连续变化（$n(\mathbf{r})$） & $L=\int_A^B n(\mathbf{r})\,\mathrm{d}l$ & 就是定义本身 & p8\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把定义 $L=\int n\,\mathrm{d}l$ 在"$n$ 是否随位置变"这一件事上读了三遍。
+\textbf{逐行读法}：第一行把常数提出积分号，得 $n\int\mathrm{d}l=nl$；
+第二行把积分区间切成 $k$ 段，第 $i$ 段上 $n=n_i$ 常数，得 $\sum n_i l_i$；
+第三行 $n$ 随位置变，提不出来，只能留在积分号里——所以它长得和定义一样。
+\textbf{边界行}：真空 $n=1$ 时 $L=l$，三种算法重合；$k=1$ 时第二行退化为第一行。
+
+\textbf{为什么 $L=ct$ 与定义等价}（这一步课件 p11 只给结论"the distance light would travel in vacuum in the same time"）：
+在介质中走 $\mathrm{d}l$ 用时 $\mathrm{d}t=\mathrm{d}l/v$；由 $n=c/v$ 得 $v=c/n$，于是
+$\mathrm{d}t=n\,\mathrm{d}l/c$，沿路径积分
+\[
+t=\int\frac{\mathrm{d}l}{v}=\frac{1}{c}\int n\,\mathrm{d}l=\frac{L}{c}
+\quad\Longrightarrow\quad L=ct .
+\]
+这解释了两件事：光程的量纲是长度，但它量的其实是\emph{时间}；光程越大，"时间代价"越大。
+\aside{代入本课：玻璃 $n=1.5$、厚 $l=1\,\mathrm{m}$，则 $L=1.5\,\mathrm{m}$——光在玻璃里走 1 m，
+与在真空里走 1.5 m 花的时间相同。这也说明为什么"光在介质里变慢"不妨碍我们继续用"路程"记账。}
+
+\subhdr{2.3 光程 $\to$ 相位差、时间差（p9--p10）的完整换算}
+
+这是全课第一个真正需要补推导的地方。课件 p9 写了两行：
+
+\begin{quote}
+\small\color{inkgray}
+"As a wave propagates from Q to P, the phase change at each point is:
+$\varphi(P)-\varphi(Q)=-\left(\frac{2\pi}{\lambda_1}l_1+\frac{2\pi}{\lambda_2}l_2+\cdots\right)$；
+Using the relation between refractive index and wavelength $n=\lambda_0/\lambda$, we obtain
+$\varphi(P)-\varphi(Q)=-\frac{2\pi}{\lambda_0}\sum n_il_i$。"
+\end{quote}
+
+这两个等号之间藏了三件事：为什么每层相位落后 $2\pi l_i/\lambda_i$、为什么 $n=\lambda_0/\lambda$、负号从哪来。逐一补：
+
+\textbf{(i) 每层落后 $2\pi l_i/\lambda_i$。}波在介质 $i$ 中的波长是 $\lambda_i$，走过 $l_i$ 相当于走过
+$l_i/\lambda_i$ 个完整周期，每个周期相位转 $2\pi$，故该层贡献的相位变化量为 $2\pi l_i/\lambda_i$。
+\textbf{(ii) 负号。}沿传播方向相位落后（若取 $e^{\mathrm{i}(kx-\omega t)}$ 约定，相位随 $x$ 增加而减小），
+所以"后点的相位减前点的相位"是负的。\aside{本讲义只在"落后"这一层意思上用负号；
+第四章菲涅耳公式里的半波损失是另一件事（那是反射时的相位跃变），两者不要混。}
+\textbf{(iii) $n=\lambda_0/\lambda$。}频率 $f$ 跨界面不变（界面两侧振动必须连续，每秒通过的波峰数不能突变），
+而 $v=\lambda f$，所以 $\lambda_n=v/f=(c/n)/f=\lambda_0/n$，即 $n=\lambda_0/\lambda_n$。
+课件 p9 把这一步写成"the relation between refractive index and wavelength"一带而过，其实是"频率不变 + $v=\lambda f$ + $n=c/v$"三件事的合成。
+
+把 (i)(ii)(iii) 合起来：
+\[
+\varphi(P)-\varphi(Q)=-2\pi\sum_i\frac{l_i}{\lambda_i}
+=-2\pi\sum_i\frac{n_il_i}{\lambda_0}
+=-\frac{2\pi}{\lambda_0}\,L(QP).
+\]
+取绝对值就是课件 p10 的公式卡：
+\[
+\boxed{\;\Delta\varphi=\frac{2\pi}{\lambda_0}L\;},\qquad\qquad
+\boxed{\;t=\frac{L}{c}\;}
+\]
+前者把光程换成相位，后者把光程换成时间。这两条是全课最值得记住的东西：
+\textbf{后面干涉、衍射里所有的"光程差 $\Delta L$"，都是靠 $\Delta\varphi=\frac{2\pi}{\lambda_0}\Delta L$ 才算成相位差的。}
+\aside{代入本课：$\lambda_0=600\,\mathrm{nm}$、里程差 $\Delta L=1\,\mu\mathrm{m}$，则
+$\Delta\varphi=2\pi\times\frac{1\,\mu\mathrm{m}}{600\,\mathrm{nm}}\approx10.5\,\mathrm{rad}$，
+约 $1.7$ 个周期——这就是为什么光程差要精确到零点几微米，干涉条纹才会移动。}
+
+\subhdr{2.4 虚光程：先给规则，后给证明（p38）}
+
+实物、实像的光线真的走过那段路，光程按 $L=+nl$ 算。但\textbf{虚物、虚像}那一段并没有光真的走，
+只是延长线"看起来"经过。p38 的做法是直接规定
+\[
+\boxed{\;L=-nl\quad(\text{虚段})\;}
+\]
+（$n$ 是该段所在介质的折射率）。这条规则当时只给了"take it as a negative value"一句，
+理由要到 p39 才出现，完整证明见 §6.2。先记住它的作用：
+\textbf{负号让"把公共段减去"这个操作在虚物情形下仍然给出同一个常数}——
+换句话说，负号不是记账习惯，是等光程关系能跨越虚物的必要条件。
+
+%=============================================================
+\hdr{§3}{费马原理：一条原理导出三条定律}
+
+\subhdr{3.1 陈述（原形式）与它的数学形式}
+
+\begin{quote}
+\textbf{费马原理（Fermat's principle）.}\quad
+光在任意介质中从 $A$ 传到 $B$，实际走的那条路径使光程取\emph{平稳值}：
+\[
+\delta L=\delta\!\int_{A}^{B}n(\mathbf{r})\,\mathrm{d}l=0 .
+\]
+\textbf{对象}：所有两端点固定于 $A,B$、且落在介质可通行区域内的路径 $\Gamma$。
+\textbf{条件}：$n(\mathbf{r})$ 给定；$\delta$ 是对\emph{路径}求变分（不是对点求导）。
+\textbf{结论}：实际路径 $\Gamma_*$ 上，任何邻近路径与它的光程之差是路径偏离量的二阶小量，
+即 $L[\Gamma]-L[\Gamma_*]=O(\varepsilon^2)$。
+\end{quote}
+
+这是完整陈述，三样俱全。课件 p14 的数学形式就是上面那个积分式，p13 的文字版是
+"the path for which the optical path length (or propagation time) is stationary"，
+p4 又用了另一个说法 "Light takes the path of extremal optical length"。
+三种说法指向同一件事，但\textbf{"平稳"这个字是必须的}：
+
+\warnbox{\textbf{"平稳"不是"最小"。}术语落地：\emph{平稳值}（stationary value，也叫驻值）指
+一阶变分为零。中文里若写成"极值"，读者容易立刻想到"最大或最小"，
+而实际上它包含四类：局部极小、局部极大、拐点（二阶变分也为零）、整段常数（图 1）。
+p15 的标题 "Four Cases of Stationarity" 讲的就是这件事。
+本讲义全文统一写"平稳"，只在特指某一类时写"极小/极大/常数"。
+\par\smallskip
+类比（p14）：一元函数在极值点 $f'(x_0)=0$；这里把"函数 $f$"换成"路径泛函 $L[\Gamma]$"，
+把"点 $x_0$"换成"整条路径 $\Gamma_*$"，导数就换成变分 $\delta$。这是\textbf{变分法}，
+不是求导技巧——它的未知量是一条曲线，不是一个数。}
+
+\subhdr{3.2 第一定律：均匀介质中的直线传播（p17）}
+
+课件 p17 把证明压成五步，每步都短，但第 (3)$\to$(4) 步的"$\Rightarrow$"需要一句旁注：
+
+\textbf{(1)} 均匀介质，$n$ 为常数。\quad
+\textbf{(2)} $L=nl$，$l$ 是路径的几何长度。\quad
+\textbf{(3)} 费马原理要求 $L$ 平稳 $\to$ 几何长度 $l$ 平稳。\quad
+\textbf{(4)} 欧氏几何公理：两点之间直线最短。\quad
+\textbf{(5)} 结论：均匀介质中光沿直线传播。$\blacksquare$
+
+\aside{(3) 的"$\to$"为什么成立：$n$ 是正的常数，所以 $L=nl$ 与 $l$ 只差一个正的倍数；
+$L[\Gamma]-L[\Gamma_*]=n\,(l[\Gamma]-l[\Gamma_*])$，故 $L$ 的一阶变分为零当且仅当 $l$ 的一阶变分为零。
+代入本题：$n$ 常数的意思是"整个空间同一个 $n$"，不是"逐点 $n$ 相同但分段不同"（那是 §2 的分层情形）。}
+
+边界：这一步给出的是\emph{最小值}而不是"平稳"的另外三类，因为两点间直线唯一且最短（欧氏公理）。
+所以"光走直线"是"平稳=最小"的一个特例，不能反过来说"平稳就是最小"（§4 有三张反例图）。
+
+\subhdr{3.3 第二定律：反射定律（p18--p20），含全部代数跳步}
+
+\textbf{建模（p18）}：光从 $A$ 出发，在界面上某点 $M$ 反射后经过 $B$，求 $M$ 的位置。
+取界面为 $y=0$ 平面，法线为 $y$ 轴；过 $A,B$ 作垂直于界面的平面，其与界面的交线取为 $x$ 轴，
+界面内垂直于纸面的方向为 $z$ 轴。于是 $A(x_1,y_1,0)$、$B(x_2,y_2,0)$、$M(x,0,z)$，
+且 $A,B$ 都在界面同侧（$y_1,y_2>0$，这是反射的前提；若在异侧就成了折射问题）。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[iface] (-1.2,0) -- (7.2,0);
+  \node[lab,below right] at (7.2,0) {界面 $y=0$};
+  \draw[virt] (0,0) -- (0,3);
+  \draw[virt] (6,0) -- (6,3);
+  \fill[violetdeep] (0,0) circle (1.2pt);
+  \fill[violetdeep] (6,0) circle (1.2pt);
+  \node[lab,below] at (0,0) {$x_1$};
+  \node[lab,below] at (6,0) {$x_2$};
+  \draw[ray] (0,3) -- (3,0);
+  \draw[ray] (3,0) -- (6,3);
+  \draw[norm] (3,-1.3) -- (3,2.4);
+  \node[lab,above] at (3,2.4) {法线};
+  \draw[violet,line width=0.6pt] (3,0) ++(90:0.85) arc (90:135:0.85);
+  \draw[violet,line width=0.6pt] (3,0) ++(90:0.85) arc (90:45:0.85);
+  \node[lab] at (2.45,1.12) {$i_1$};
+  \node[lab] at (3.55,1.12) {$i_1'$};
+  \fill[violetdeep] (0,3) circle (1.8pt);
+  \fill[violetdeep] (6,3) circle (1.8pt);
+  \fill[violetdeep] (3,0) circle (1.8pt);
+  \node[labb,above left] at (0,3) {$A(x_1,y_1,0)$};
+  \node[labb,above right] at (6,3) {$B(x_2,y_2,0)$};
+  \node[labb,below right] at (3.05,-0.05) {$M(x,0,z)$};
+\end{tikzpicture}
+
+{\small\color{inkgray}图 2\quad 反射定律的坐标模型（界面的法线就是 $y$ 轴），重绘自课件 p18。
+图上画的是 $z=0$ 的截面；$M$ 的第三个坐标 $z$ 指向纸面外，由 $\partial L/\partial z=0$ 定出为零。
+$i_1,i_1'$ 都从法线量起。}
+\end{center}
+
+\textbf{光程}（p18 原式，注意两项的折射率都是 $n_1$——反射前后在同一介质里）：
+\[
+L=n_1\sqrt{(x-x_1)^2+y_1^2+z^2}+n_1\sqrt{(x-x_2)^2+y_2^2+z^2}.
+\]
+
+\textbf{第一步：对 $z$ 求偏导，定出反射点所在的平面（p19）。}
+课件直接写出结果 $\frac{\partial L}{\partial z}=n_1z\left(\frac{1}{AM}+\frac{1}{BM}\right)=0$，
+中间的链式法则没写，这里补上。记 $AM=\sqrt{(x-x_1)^2+y_1^2+z^2}$，则
+\[
+\frac{\partial}{\partial z}\sqrt{(x-x_1)^2+y_1^2+z^2}
+=\frac{1}{2\sqrt{\cdots}}\cdot 2z=\frac{z}{AM},
+\]
+第二项同理得 $z/BM$。于是
+\[
+\frac{\partial L}{\partial z}
+=n_1\left(\frac{z}{AM}+\frac{z}{BM}\right)
+=n_1z\left(\frac{1}{AM}+\frac{1}{BM}\right)=0 .
+\]
+因为 $n_1\neq0$，$AM>0$，$BM>0$（两点不重合），括号内恒正，所以只能 $z=0$。
+\textbf{物理意义}：反射点 $M$ 落在 $A,B$ 与法线所定的那个竖直平面内。
+这个平面就是\emph{入射面}（plane of incidence），于是"入射光线、法线、反射光线共面"这件事被证明了。
+
+\textbf{第二步：对 $x$ 求偏导，得角度关系（p20）。}
+同样补出链式法则的结果：
+\[
+\frac{\partial L}{\partial x}
+=n_1\left(\frac{x-x_1}{AM}+\frac{x-x_2}{BM}\right)=0
+\quad\Longrightarrow\quad
+\frac{x-x_1}{AM}=\frac{x_2-x}{BM}.
+\]
+\textbf{第三步：把两个分式翻译成角。}由图 2，$AM$ 与法线的夹角为 $i_1$，
+它在垂直于法线的方向上的投影长是 $|x-x_1|$，斜边是 $AM$，所以
+\[
+\sin i_1=\frac{x-x_1}{AM},\qquad \sin i_1'=\frac{x_2-x}{BM}.
+\]
+\aside{代入本题：图中 $M$ 在 $x_1$ 与 $x_2$ 之间，故 $x-x_1>0$、$x_2-x>0$，绝对值可以去掉；
+若解出 $M$ 落在 $[x_1,x_2]$ 之外，两个分式同号，方程 $\frac{x-x_1}{AM}=\frac{x_2-x}{BM}$ 无解，
+所以解必在中间——这一点不需要额外假设。}
+代回第二步的等式，得 $\sin i_1=\sin i_1'$。
+
+\textbf{第四步：由正弦相等推出角相等。}因为 $0^\circ\le i_1,i_1'\le90^\circ$（符号规则 R3），
+$\sin$ 在该区间严格单调，故
+\[
+i_1=i_1' .
+\]
+这就是反射定律。$\blacksquare$
+
+\warnbox{\textbf{这一步的边界（课件 p20 只用一句 "Since both angles lie between $0^\circ$ and $90^\circ$" 带过）。}
+若不限定锐角，$\sin i_1=\sin i_1'$ 还有第二支 $i_1'=180^\circ-i_1$，
+那是"光线从法线另一侧以同样倾角射出"的伪解，与"反射光在同一侧"矛盾。
+所以 R3 不是修辞，是这一步的唯一依据。
+\par\smallskip
+另一个边界是正入射：当 $x_1=x_2$ 时 $i_1=i_1'=0$，光线沿法线原路返回，
+上面的推导照样成立（两个分式都为零），只是"入射面"不再唯一（过 $A$ 的任一竖直平面都行）。}
+
+\subhdr{3.4 第三定律：折射定律（p21），本课最大的一处代数跳步}
+
+p21 的写法是：列出 $L$、写出 $\frac{\mathrm{d}L}{\mathrm{d}x}=0$，然后一句
+\textbf{"After derivation, we obtain $n_1\sin i_1=n_2\sin i_2$"}。
+中间那个导数被整个省掉了——这正是本讲义要补的地方。
+
+\textbf{建模}：$A$ 在上方介质 $n_1$，$B$ 在下方介质 $n_2$，$M$ 在界面上。
+取界面为 $x$ 轴，法线为 $y$ 轴，$A(x_1,y_1)$、$B(x_2,-y_2)$（$y_1,y_2>0$ 是两侧的垂直距离），$M(x,0)$：
+\[
+L=n_1\sqrt{(x-x_1)^2+y_1^2}+n_2\sqrt{(x_2-x)^2+y_2^2}.
+\]
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[iface] (-1.2,0) -- (7.2,0);
+  \node[lab,above left] at (-1.2,0) {$n_1$};
+  \node[lab,below left] at (-1.2,0) {$n_2$};
+  \draw[ray] (0,3) -- (3.61,0);
+  \draw[ray] (3.61,0) -- (6,-4);
+  \draw[norm] (3.61,-1.9) -- (3.61,2.1);
+  \node[lab,above] at (3.61,2.1) {法线};
+  \draw[violet,line width=0.6pt] (3.61,0) ++(90:1.05) arc (90:140.3:1.05);
+  \draw[violet,line width=0.6pt] (3.61,0) ++(270:1.05) arc (270:300.9:1.05);
+  \node[lab] at (2.86,1.20) {$i_1$};
+  \node[lab] at (4.05,-1.02) {$i_2$};
+  \fill[violetdeep] (0,3) circle (1.8pt);
+  \fill[violetdeep] (6,-4) circle (1.8pt);
+  \fill[violetdeep] (3.61,0) circle (1.8pt);
+  \node[labb,above left] at (0,3) {$A(x_1,y_1)$};
+  \node[labb,below right] at (6,-4) {$B(x_2,-y_2)$};
+  \node[labb,below left] at (3.50,-0.42) {$M(x,0)$};
+  \draw[virt] (0,0) -- (0,3);
+  \draw[virt] (6,0) -- (6,-4);
+  \node[lab,below] at (0,0) {$x_1$};
+  \node[lab,below] at (6,0) {$x_2$};
+\end{tikzpicture}
+
+{\small\color{inkgray}图 3\quad 折射定律的坐标模型，重绘自课件 p21。
+图上用的就是 §7 例 2 的数字（$y_1=3$、$y_2=4$、$x_2=6$、$n_2/n_1=1.5$），
+解出 $x=3.61$，$i_1=50.28^\circ$，$i_2=30.85^\circ$，量角器量出来与图上一致。}
+\end{center}
+
+\textbf{求导（补齐）}：
+\[
+\frac{\mathrm{d}L}{\mathrm{d}x}
+=n_1\frac{x-x_1}{\sqrt{(x-x_1)^2+y_1^2}}
++n_2\frac{x-x_2}{\sqrt{(x_2-x)^2+y_2^2}}=0 .
+\]
+第二项因为 $(x_2-x)^2=(x-x_2)^2$，分母写法不影响；但分子要小心符号，
+把它改写成 $-\dfrac{x_2-x}{\sqrt{(x_2-x)^2+y_2^2}}$。于是
+\[
+n_1\frac{x-x_1}{AM}-n_2\frac{x_2-x}{MB}=0 .
+\]
+由几何（与 §3.3 完全同一套）：$\sin i_1=\dfrac{x-x_1}{AM}$，$\sin i_2=\dfrac{x_2-x}{MB}$，代入得
+\[
+\boxed{\;n_1\sin i_1=n_2\sin i_2\;}
+\]
+即 Snell 定律。三种等价写法（本课都用得到）：
+\[
+\frac{\sin i_1}{\sin i_2}=\frac{n_2}{n_1}=\frac{v_1}{v_2}=\frac{\lambda_1}{\lambda_2} .
+\]
+\aside{最后两个等号来自 R2：$n=c/v$ 直接给出 $n_2/n_1=v_1/v_2$；
+再由 §2.3 的 $\lambda_n=\lambda_0/n$ 得 $n_2/n_1=\lambda_1/\lambda_2$。
+这一步说明"折射的实质是波长变了、频率没变"，正是 §2.3 埋下的伏笔。}
+
+\warnbox{\textbf{一条不写在 p21 上、但同式可得的推论。}
+若 $n_1>n_2$，则 $\sin i_2=\frac{n_1}{n_2}\sin i_1$ 当 $i_1$ 增大到
+$\sin i_1>n_2/n_1$ 时右端大于 1，无实数解——这就是全反射的临界角
+$\sin i_c=n_2/n_1$。
+本讲义只把它作为"同一公式的定义域边界"提出来；全反射的完整讨论在第一课（p3 的
+"Total Internal Reflection: conditions / critical angle / fiber-optic applications"），此处不重复。}
+
+\subhdr{3.5 可逆性：费马原理为什么不区分方向（p22）}
+
+p22 的论证只有一句："Fermat's principle constrains the path of light, not its direction."
+补上必要的一句：光程 $L=\int n\,\mathrm{d}l$ 的被积函数 $n\,\mathrm{d}l$ 与走向无关
+（$\mathrm{d}l$ 是弧长元，恒为正；路径集合 $\{\Gamma\}$ 与参数化方向无关）。
+所以"$\Gamma_*$ 使 $L$ 取平稳值"这件事，对反向走的同一条路径同样成立：
+
+\begin{quote}
+\textbf{光路可逆性（principle of reversibility）.}\quad
+若光能沿路径 $\Gamma_*$ 从 $A$ 到 $B$，则光也能沿同一路径从 $B$ 到 $A$，
+且途中每个界面上的入射角、反射角、折射角关系不变。
+\end{quote}
+
+\aside{课件 p22 把 saddle（鞍点）拼成了 "sadile"，p24 把 "zero" 拼成 "sero"——
+这两处是幻灯片录入错误，不影响内容，但引用原文时应当知道原词是 saddle / zero。}
+
+这条原理在光学设计里天天用（第四章的斯托克斯倒逆关系就是它的定量版本），
+本课只需要它做一件事：§5.6 的"共轭可交换"和 §6.2 的"求虚光程"都要靠它。
+
+%=============================================================
+\hdr{§4}{平稳的四种形态：三张图，三种命运}
+
+\subhdr{4.1 分类表与判据}
+
+图 1 已经画出四种形态。它们的分工如下（这张表是\emph{台账}，不是推导）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{形态} & \thead{判据} & \thead{物理含义} & \thead{课件}\\
+\hline
+(a) 极小 & 一阶变分为零，二阶变分 $>0$ & 邻近路径光程都更大 & p15(a)、p25\\
+(b) 极大 & 一阶变分为零，二阶变分 $<0$ & 邻近路径光程都更小 & p15(b)、p24 右\\
+(c) 拐点 & 一阶、二阶变分都为零，三阶不为零 & 沿一个方向升、另一个方向降 & p15(c)、p25 末\\
+(d) 常数 & 对整族路径恒有 $\delta L=0$ & 所有路径光程相同 & p15(d)、p24 左\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这四行不是四个原理，而是同一个条件 $\delta L=0$ 在"二阶变分取什么符号"上的四种取值。
+\textbf{逐行读法}：(a)(b) 只看二阶项符号，正号说明该点是谷底、负号说明是峰顶；
+(c) 二阶项也为零，要靠三阶项决定走向，所以曲线在那里"拐"过去；
+(d) 不是"某一点取平稳值"，而是"整族路径的取值都相同"，二阶变分恒为零，所以它既不是谷也不是峰。
+\textbf{边界行}：真正的判据是二阶变分，而 p15 只给了图没有给式子；
+二阶变分怎么算，本课不展开（那属于变分法），本讲义只把"判据"与"装置"对上号——见 §4.2--§4.4。
+
+\subhdr{4.2 常数形态：椭圆镜（p24 左），以及课件没说的那一步}
+
+\textbf{装置}：$A,B$ 是椭圆的两个焦点，镜面\emph{就是}这个椭圆（绕轴旋转成椭球面）。
+从 $A$ 发出的光经椭球面反射后全部通过 $B$，且各条路径的光程相同。
+
+\textbf{课件的证明}只有一句："由椭圆定义，椭圆上任一点到两焦点的距离之和为常数（等于长轴长）"，
+即 $AC+CB=AC'+C'B=2a=\text{常数}$。这在几何上没错，但\textbf{它没有回答一个关键问题}：
+为什么"距离之和为常数"就能保证"反射定律成立"？——如果椭圆上不满足反射定律，
+光根本不会沿 $A\to C\to B$ 走，后面的话就都无从谈起。
+补上这一步（这也是图 1(d) 与图 1(a) 的分界）：
+
+\begin{quote}
+\textbf{引理.}\quad 设曲面 $S$ 上每一点到两定点 $A,B$ 的距离之和为常数：$r_A+r_B=C$。
+则 $S$ 上任一点 $P$ 处的法线平分 $AP$ 与 $BP$ 的夹角。
+\end{quote}
+
+\textbf{证明.}记 $\mathbf{u}_A=(\mathbf{P}-\mathbf{A})/|\mathbf{P}-\mathbf{A}|$、
+$\mathbf{u}_B=(\mathbf{P}-\mathbf{B})/|\mathbf{P}-\mathbf{B}|$ 为两个单位向量。
+用到两个事实：$\nabla r_A=\mathbf{u}_A$、$\nabla r_B=\mathbf{u}_B$（因为 $|\mathbf{x}|$ 的梯度是 $\mathbf{x}/|\mathbf{x}|$）。
+于是
+\[
+\nabla(r_A+r_B)=\mathbf{u}_A+\mathbf{u}_B .
+\]
+左边沿 $S$ 的等值面法线方向（等值面的梯度必垂直于该面），
+右边是两个单位向量之和，它的方向恰好是两向量夹角的角平分线方向。故法线平分 $\angle APB$。$\blacksquare$
+
+有了这条引理，椭圆镜的整条逻辑链才闭合：
+法线平分夹角 $\Rightarrow$ 入射角 = 反射角（因为入射角、反射角都从法线量起）
+$\Rightarrow$ 从 $A$ 出发的每条光线反射后都过 $B$；
+又由椭圆定义，$AC+CB=2a$ 与 $C$ 无关 $\Rightarrow$ \textbf{整族光线的光程都等于常数}。
+这正是图 1(d) 的"常数"形态，也是 §6.1 "等光程"的几何原型。
+\aside{注意与 (a)(b) 的区别：椭球镜是"约束面本身就是等光程面"，
+所以切向没有变化、法向也没有一阶变化——二阶变分恒为零。
+下一小节的平面镜则不是等光程面，只是与它相切。}
+
+\subhdr{4.3 极大形态：与椭球面内切的反射镜（p24 右）}
+
+把镜面换成另一条曲线：它在 $D$ 点与椭圆\emph{相切}，而且比椭圆更"弯"（曲率更大），
+于是除 $D$ 外整条镜面落在椭圆\emph{内部}。
+
+\begin{itemize}
+\item \textbf{切点仍然满足反射定律}：两曲线在 $D$ 点相切 $\Rightarrow$ 同一条法线 $\Rightarrow$
+从 $A$ 射到 $D$ 的光线反射后仍然过 $B$。这是"相切"唯一的作用，也是这个例子能成立的关键。
+\item \textbf{但光程变大了}：镜面上另取一点 $D'\neq D$，$D'$ 在椭圆内部；
+而椭圆内点到两焦点距离之和小于 $2a$，故 $AD'+D'B<AD+DB$。
+\item \textbf{结论}：沿镜面的所有实际路径里，$ADB$ 的光程是局部\emph{极大}。
+\end{itemize}
+
+\textbf{物理意义}：这一条推翻了一个常见误解——"光总是走最短路"。
+在本例里，约束（镜面形状）强迫光走一条局部最长的路。
+所以 p15 反复强调 "stationary is more accurate than minimum" 不是文字游戏。
+
+\subhdr{4.4 极小形态：与椭球面外切的反射镜（p25）}
+
+同一套论证反过来：镜面在 $D$ 点与椭圆相切，但比椭圆更"平"（曲率更小），
+于是除 $D$ 外整条镜面落在椭圆\emph{外部}。
+椭圆外点到两焦点距离之和大于 $2a$，故 $F_1M+MF_2>F_1D+DF_2$——
+沿镜面的实际路径 $F_1DF_2$ 是局部极小。这就是最常见的反射、折射情形（p25 称之为
+"the most common situation"）。
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+\begin{scope}
+  \draw[curve] (0,0) ellipse (2.15 and 1.42);
+  \coordinate (A) at (-1.62,0); \coordinate (B) at (1.62,0);
+  \coordinate (C) at (0,1.42);  \coordinate (Cp) at (0,-1.42);
+  \draw[ray] (A) -- (C); \draw[ray] (C) -- (B);
+  \draw[ray2] (A) -- (Cp); \draw[ray2] (Cp) -- (B);
+  \fill[violetdeep] (A) circle (1.5pt); \fill[violetdeep] (B) circle (1.5pt);
+  \node[labb,below left] at (A) {$A$}; \node[labb,below right] at (B) {$B$};
+  \node[lab,above] at (C) {$C$}; \node[lab,below] at (Cp) {$C'$};
+  \node[lab,below=30pt,align=center] at (0,-1.42) {(a) 镜面 $=$ 椭圆\\[1pt]$AC+CB=2a$（常数）};
+\end{scope}
+\begin{scope}[xshift=5.7cm]
+  \draw[eop] (0,0) ellipse (2.15 and 1.42);
+  \draw[curve,domain=-45:45,samples=60] plot ({1.05*sin(\x)},{1.42-1.05+1.05*cos(\x)});
+  \coordinate (A) at (-1.62,0); \coordinate (B) at (1.62,0);
+  \coordinate (D) at (0,1.42);
+  \coordinate (Dp) at ({1.05*sin(32)},{1.42-1.05+1.05*cos(32)});
+  \draw[ray] (A) -- (D); \draw[ray] (D) -- (B);
+  \draw[virt,->,>=Stealth] (A) -- (Dp); \draw[virt,->,>=Stealth] (Dp) -- (B);
+  \fill[violetdeep] (A) circle (1.5pt); \fill[violetdeep] (B) circle (1.5pt);
+  \fill[violetdeep] (D) circle (1.5pt); \fill[violetdeep] (Dp) circle (1.5pt);
+  \node[lab,above] at (D) {$D$}; \node[lab,right] at (Dp) {$D'$};
+  \node[labb,below left] at (A) {$A$}; \node[labb,below right] at (B) {$B$};
+  \node[lab,below=30pt,align=center] at (0,-1.42) {(b) 镜面在椭圆内\\[1pt]$AD'+D'B<AD+DB$（极大）};
+\end{scope}
+\begin{scope}[xshift=11.4cm]
+  \draw[eop] (0,0) ellipse (2.15 and 1.42);
+  \draw[curve,domain=-18:18,samples=60] plot ({5.0*sin(\x)},{1.42-5.0+5.0*cos(\x)});
+  \coordinate (A) at (-1.62,0); \coordinate (B) at (1.62,0);
+  \coordinate (D) at (0,1.42);
+  \coordinate (Dp) at ({5.0*sin(13)},{1.42-5.0+5.0*cos(13)});
+  \draw[ray] (A) -- (D); \draw[ray] (D) -- (B);
+  \draw[virt,->,>=Stealth] (A) -- (Dp); \draw[virt,->,>=Stealth] (Dp) -- (B);
+  \fill[violetdeep] (A) circle (1.5pt); \fill[violetdeep] (B) circle (1.5pt);
+  \fill[violetdeep] (D) circle (1.5pt); \fill[violetdeep] (Dp) circle (1.5pt);
+  \node[lab,above] at (D) {$D$}; \node[lab,above right] at (Dp) {$M$};
+  \node[labb,below left] at (A) {$A$}; \node[labb,below right] at (B) {$B$};
+  \node[lab,below=30pt,align=center] at (0,-1.42) {(c) 镜面在椭圆外\\[1pt]$AM+MB>AD+DB$（极小）};
+\end{scope}
+\end{tikzpicture}
+
+{\small\color{inkgray}图 4\quad 三段弧线是三种反射镜，虚线椭圆是"等光程面"（$r_A+r_B=2a$）。
+三者在 $D$ 点相切（$\Rightarrow$ 同一条法线 $\Rightarrow$ $D$ 处仍满足反射定律），
+差别只在"落在椭圆内、椭圆上、椭圆外"。紫色实线是实际光路，灰虚线是另一条镜面路径，用来比较光程。
+重绘自 p24--p25。}
+\end{center}
+
+\subhdr{4.5 三档归纳：极值还是常数，取决于镜面与等光程面的位置关系}
+
+课件把 p15 的四张图与 p24--p25 的三张装置图分开放，中间隔着 9 页；这张表是它们唯一的接口：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{镜面与等光程面} & \thead{二阶变分} & \thead{形态} & \thead{装置}\\
+\hline
+重合（镜面就是椭圆） & 恒为零 & 常数 & 椭球面镜，p24 左\\
+在椭圆内部（更弯） & $<0$ & 极大 & 内切弧面镜，p24 右\\
+在椭圆外部（更平） & $>0$ & 极小 & 外切弧面镜，p25\\
+二阶变分为零且变号 & $=0$ 后变号 & 拐点 & 无装置实例（p25 末一句）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把 $\delta L=0$ 与二阶变分的符号，在"镜面相对等光程面的三种位置"上读了一遍。
+\textbf{逐行读法}：镜面与椭圆重合 $\Rightarrow$ 光程与反射点无关 $\Rightarrow$ 二阶变分恒零（常数）；
+往里收（更弯）$\Rightarrow$ 每个非切点的光程都变小 $\Rightarrow$ 切点是峰顶（极大）；
+往外放（更平）$\Rightarrow$ 每个非切点的光程都变大 $\Rightarrow$ 切点是谷底（极小）。
+\textbf{边界行}：第四行是"二阶变分为零且改变符号"，与第三行（二阶变分恒正）不是一件事——
+课件 p25 末把它写成 "the second derivative is zero and changes sign"，这个 "and changes sign" 就是分界。
+
+\warnbox{\textbf{这一行的缺口要说清：}课件对拐点形态只给了半句判据（p15 "second variation is zero"、
+p25 "the second derivative is zero and changes sign"），\textbf{没有给任何装置实例}。
+所以本讲义只能把它作为分类列出，不能举例——照应 §8 第 (5) 条。}
+
+%=============================================================
+\hdr{§5}{成像的词汇：光束、物、像、虚物、共轭}
+
+费马原理回答"光走哪条路"，接下来要回答"像在哪里"。这两件事之间隔着六个词：
+光束、物、像、实/虚、物空间/像空间、共轭。课件的顺序正是 p28--p36 这九个词条，本讲义照排。
+
+\subhdr{5.1 光束：五种，只取决于"光线怎么排"（p28）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{名称} & \thead{定义} & \thead{对应的波}\\
+\hline
+同心光束（concentric beam） & 所有光线交于一点，或延长线交于一点 & 球面波\\
+\quad 发散光束（divergent） & 光线从中心向外散开 & 发散球面波\\
+\quad 会聚光束（convergent） & 光线向中心收拢 & 会聚球面波\\
+\quad 平行光束（parallel） & 特殊的同心光束，中心在无穷远 & 平面波\\
+像散光束（astigmatic beam） & 既不平行，也不交于一点 & 非球面波\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只按"光线是否交于一点、交在实处的还是延长线上的"这两件事分类，
+"发散/会聚/平行"三行是同心光束的三种朝向。
+\textbf{逐行读法}：同心 = 有唯一交点（中心）；中心在光源一侧、光线真的从那里散开，叫发散；
+中心在光线去处的后方、光线真的朝那里收拢，叫会聚；中心在无穷远，光线彼此平行，就是平行光束。
+\textbf{边界行}：像散光束是"以上皆非"的一类——p28 只用否定式定义
+（"rays are neither parallel nor intersect at a point"）。
+\aside{术语落地：\emph{像散}（astigmatism）在几何上的意思是"两个主截面内的光线各自会聚到不同位置"，
+于是没有唯一的焦点，而成两条互相垂直的焦线。本课只用到它的否定式定义，具体机制属像差一节，
+不在此展开——但读者至少应当知道"像散"不是一个神秘的词，它就是"没有唯一中心"。}
+
+\subhdr{5.2 物与像：只由两束光的形状决定（p30--p31）}
+
+\begin{quote}
+\textbf{定义（p30 原文的完整形式）.}\quad
+若一束以 $Q$ 为心的同心光束经过光学系统后，变成以 $Q'$ 为心的同心光束，
+则称 $Q$ 被成像于 $Q'$；$Q$ 叫物点（object point），$Q'$ 叫像点（image point）。
+\end{quote}
+
+这个定义只用"光束形状"四个字，因此实、虚只由方向决定（p31 底部的 Key rule）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{情形} & \thead{入射光} & \thead{出射光} & \thead{类型}\\
+\hline
+(a) & 发散（实物） & 会聚 & 实物成实像\\
+(b) & 发散（实物） & 发散 & 实物成虚像\\
+(c) & 会聚（虚物） & 会聚 & 虚物成实像\\
+(d) & 会聚（虚物） & 发散 & 虚物成虚像\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把"入射光会聚还是发散"与"出射光会聚还是发散"两个二值取了四种组合。
+\textbf{逐行读法}：看入射——光线朝着系统散开就是实物，朝着系统收拢（在系统之前还没聚起来）就是虚物；
+看出射——光线真的聚到一点就是实像，只能靠反向延长线聚起来就是虚像。两列各取一个，就是四行。
+\textbf{边界行}：平行入射（中心在无穷远，p28）不在这四行里，它是"入射既不会聚也不发散"的极限情形，
+此时物在无穷远；下一讲的球面折射会专门处理它（焦点就是无穷远物点对应的像点）。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.795]
+% (a) 实物 -> 实像
+\begin{scope}
+  \draw[virt] (1.7,-1.3) -- (1.7,1.3);
+  \node[lab,above] at (1.7,1.3) {\footnotesize 系统};
+  \draw[ray] (0,0) -- (1.7,0.62); \draw[ray] (0,0) -- (1.7,-0.62);
+  \draw[ray] (1.7,0.62) -- (3.4,0); \draw[ray] (1.7,-0.62) -- (3.4,0);
+  \fill[violetdeep] (0,0) circle (1.4pt); \fill[violetdeep] (3.4,0) circle (1.4pt);
+  \node[labb,left] at (0,0) {$Q$}; \node[labb,right] at (3.4,0) {$Q'$};
+  \node[lab,below=6pt,align=center] at (1.7,-1.35) {(a) 实物 $\to$ 实像};
+\end{scope}
+% (b) 实物 -> 虚像
+\begin{scope}[xshift=5.0cm]
+  \draw[virt] (1.7,-1.3) -- (1.7,1.3);
+  \draw[ray] (0,0) -- (1.7,0.62); \draw[ray] (0,0) -- (1.7,-0.62);
+  \draw[ray] (1.7,0.62) -- (3.4,1.5); \draw[ray] (1.7,-0.62) -- (3.4,-1.5);
+  \draw[virt] (1.7,0.62) -- (0.95,0); \draw[virt] (1.7,-0.62) -- (0.95,0);
+  \fill[violetdeep] (0,0) circle (1.4pt);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (0.95,0) circle (1.4pt);
+  \node[labb,left] at (0,0) {$Q$}; \node[labb,below left] at (0.95,-0.06) {$Q'$};
+  \node[lab,below=6pt,align=center] at (1.7,-1.35) {(b) 实物 $\to$ 虚像};
+\end{scope}
+% (c) 虚物 -> 实像
+\begin{scope}[xshift=10.0cm]
+  \draw[virt] (1.7,-1.3) -- (1.7,1.3);
+  \draw[ray] (0,1.3) -- (1.7,0.72); \draw[ray] (0,-1.3) -- (1.7,-0.72);
+  \draw[virt] (1.7,0.72) -- (4.1,0); \draw[virt] (1.7,-0.72) -- (4.1,0);
+  \draw[ray] (1.7,0.72) -- (3.2,0); \draw[ray] (1.7,-0.72) -- (3.2,0);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (4.1,0) circle (1.4pt);
+  \fill[violetdeep] (3.2,0) circle (1.4pt);
+  \node[labb,right] at (4.1,0) {$Q$}; \node[labb,below] at (3.2,0) {$Q'$};
+  \node[lab,below=6pt,align=center] at (1.7,-1.35) {(c) 虚物 $\to$ 实像};
+\end{scope}
+% (d) 虚物 -> 虚像
+\begin{scope}[xshift=14.9cm]
+  \draw[virt] (1.7,-1.3) -- (1.7,1.3);
+  \draw[ray] (0,1.3) -- (1.7,0.72); \draw[ray] (0,-1.3) -- (1.7,-0.72);
+  \draw[virt] (1.7,0.72) -- (4.1,0); \draw[virt] (1.7,-0.72) -- (4.1,0);
+  \draw[ray] (1.7,0.72) -- (3.4,1.55); \draw[ray] (1.7,-0.72) -- (3.4,-1.55);
+  \draw[virt] (1.7,0.72) -- (0.55,0); \draw[virt] (1.7,-0.72) -- (0.55,0);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (4.1,0) circle (1.4pt);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (0.55,0) circle (1.4pt);
+  \node[labb,right] at (4.1,0) {$Q$}; \node[labb,below left] at (0.55,-0.06) {$Q'$};
+  \node[lab,below=6pt,align=center] at (1.7,-1.35) {(d) 虚物 $\to$ 虚像};
+\end{scope}
+\end{tikzpicture}
+
+{\small\color{inkgray}图 5\quad 四象限物像关系，按 p31 的四行表重绘（原图是四组透镜光路）。
+竖虚线是"系统"，紫色实线是实际光线（带箭头），灰虚线是延长线；
+实心点是实物/实像，空心点是虚物/虚像。判据只看实线是会聚还是发散。}
+\end{center}
+
+\subhdr{5.3 平面镜：实物成虚像的标准范例（p32）}
+
+p32 的装置最简单，但它把四象限用全了：$Q$ 在镜前，发出的光\emph{发散}到镜面 $\to$ 实物；
+反射后仍然\emph{发散}（镜面不改变发散这个性质，只改方向）$\to$ 虚像；
+把反射光反向延长，交于镜后的 $Q'$，且 $Q$ 与 $Q'$ 关于镜面对称。
+这是 (b) 行的实装置。光程怎么算？见 §6.3——那里要说明"平面镜的等光程要写减号"。
+
+\subhdr{5.4 虚物：全场最难的一个概念（p33）}
+
+\textbf{为什么难}：虚物在现实中不存在，它是"前一级成像的副产品"。
+$L_1$ 把 $Q$ 成实像于 $Q_1'$，但 $L_2$ 插在 $Q_1'$ \emph{之前}——
+于是射到 $L_2$ 上的是一束\emph{会聚}光，它的延长线交于 $L_2$ 后面的 $Q_1'$。
+对 $L_2$ 而言，$Q_1'$ 是虚物。记住一句话就不会乱：\textbf{虚物的光线是会聚的}。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+% 左：双透镜虚物
+\begin{scope}
+  \draw[curve] (0,-1.25) .. controls (0.35,-0.55) .. (0,-0.10) .. controls (0.35,0.55) .. (0,1.25);
+  \draw[curve] (0.16,-1.25) .. controls (-0.19,-0.55) .. (0.16,-0.10) .. controls (-0.19,0.55) .. (0.16,1.25);
+  \draw[curve] (2.4,-1.25) .. controls (2.75,-0.55) .. (2.4,-0.10) .. controls (2.75,0.55) .. (2.4,1.25);
+  \draw[curve] (2.56,-1.25) .. controls (2.21,-0.55) .. (2.56,-0.10) .. controls (2.21,0.55) .. (2.56,1.25);
+  \node[lab,below] at (0.1,-1.28) {$L_1$}; \node[lab,below] at (2.5,-1.28) {$L_2$};
+  % 入射：Q -> L1
+  \draw[ray] (-2.4,0) -- (0.05,1.05); \draw[ray] (-2.4,0) -- (0.05,-1.05);
+  % L1 后：向 Q1' 收敛
+  \draw[ray] (0.1,1.05) -- (2.42,0.368); \draw[ray] (0.1,-1.05) -- (2.42,-0.368);
+  % L2 后：更陡地收敛到 Q2'
+  \draw[ray2] (2.5,0.368) -- (3.05,0); \draw[ray2] (2.5,-0.368) -- (3.05,0);
+  % 虚线延长到 Q1'
+  \draw[virt] (2.5,0.368) -- (3.75,0); \draw[virt] (2.5,-0.368) -- (3.75,0);
+  \fill[violetdeep] (-2.4,0) circle (1.4pt);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (3.75,0) circle (1.4pt);
+  \fill[violetdeep] (3.05,0) circle (1.4pt);
+  \node[labb,left] at (-2.4,0) {$Q$};
+  \node[labb,above right] at (3.75,0.05) {$Q_1'$};
+  \node[labb,below right] at (3.05,-0.05) {$Q_2'$};
+  \node[lab,below=26pt,align=center] at (1.2,-1.3)
+    {左：$L_1$ 的实像 $Q_1'$ 落在 $L_2$ 之后，\\[1pt]对 $L_2$ 而言是\emph{虚物}；$L_2$ 会聚，得实像 $Q_2'$};
+\end{scope}
+% 右：平面镜
+\begin{scope}[xshift=8.4cm]
+  \draw[iface] (0,-1.9) -- (0,1.9);
+  \node[labb,above] at (0,1.9) {$M$};
+  \node[labb,below] at (0,-1.9) {$M'$};
+  \coordinate (Q) at (-1.85,0.55);
+  \coordinate (Qp) at (1.85,0.55);
+  \draw[ray] (Q) -- (0,1.35); \draw[ray] (Q) -- (0,-0.35);
+  \draw[ray] (0,1.35) -- (-1.2,2.05); \draw[ray] (0,-0.35) -- (-1.2,-1.05);
+  \draw[virt] (0,1.35) -- (Qp); \draw[virt] (0,-0.35) -- (Qp);
+  \draw[virt] (Q) -- (Qp);
+  \fill[violetdeep] (Q) circle (1.4pt);
+  \draw[fill=white,draw=violetdeep,line width=0.8pt] (Qp) circle (1.4pt);
+  \node[labb,left] at (Q) {$Q$}; \node[labb,right] at (Qp) {$Q'$};
+  \node[lab,below=26pt,align=center] at (0,-1.95)
+    {右：平面镜（p32）。入射发散 $\Rightarrow$ 实物；\\[1pt]出射仍发散 $\Rightarrow$ 虚像，$Q,Q'$ 关于镜面对称};
+\end{scope}
+\end{tikzpicture}
+
+{\small\color{inkgray}图 6\quad 左：虚物（重绘，非课件原图，理由见下）；右：平面镜成像（重绘自 p32）。}
+\end{center}
+
+\warnbox{\textbf{这里必须点出课件 p33 原图的两处问题。}
+（i）图上两只灯泡都标着 $Q_1'$，而右边那只显然是 $L_2$ 的像，应为 $Q_2'$（或 $Q_1''$）。
+（ii）$L_2$ 画成双凹（发散）透镜，而 $L_2$ 后的两支实线光线是\emph{发散}的，
+可图上又把像点画在 $L_2$ 右侧虚线与实线"交会"的位置——两者不可能同时成立。
+另外 p34 的正文说 $L_2$ 成的是\emph{实像}（"both the virtual object and the real image of lens $L_2$"），
+与 p33 图的"虚像"画法也不一致。
+本讲义按 p31 表的 (c) 行重绘：$L_2$ 取会聚透镜，虚物 $\Rightarrow$ 实像 $Q_2'$ 落在 $Q_1'$ 之前。
+这样"虚物 + 会聚系统 $\Rightarrow$ 实像"的定性结论与几何一致，也不必借助任何公式（本课还没有公式）。
+照应 §8 第 (8) 条。}
+
+\subhdr{5.5 物空间与像空间：可以重叠（p34）}
+
+\begin{quote}
+\textbf{物空间}：所有物点构成的集合（含实物与虚物）。\quad
+\textbf{像空间}：所有像点构成的集合（含实像与虚像）。
+\end{quote}
+
+p34 的 Important Reminder 是：\textbf{两者可以重叠}，不能把"系统前面"叫物空间、"系统后面"叫像空间。
+理由在定义里就写着：物空间是按\emph{物}这个身份划分的，像空间是按\emph{像}这个身份划分的，
+而"虚物"和"实像"都可能落在系统后面。图 6 左，$Q_1'$（$L_2$ 的虚物）与 $Q_2'$（$L_2$ 的实像）
+都在 $L_2$ 后面——这就是重叠。
+
+\subhdr{5.6 理想光学系统与共轭（p35--p36）}
+
+\begin{quote}
+\textbf{理想光学系统（ideal optical system）.}\quad
+保持任意同心光束仍为同心光束的光学系统：
+每个物点 $Q$ 唯一对应一个像点 $Q'$，且入射的同心光束不会被打散成非同心光束。
+\end{quote}
+
+它是力学里"质点""刚体"同类的\emph{模型}（p35 明确这样类比）：真实系统都不完美，
+但我们先用这个模型算出一张"应有的像"，再去谈偏离（那才是像差）。
+由这个定义立刻得到三件事：
+\begin{itemize}
+\item \textbf{一一对应}：物空间的每个点对应像空间唯一的点，反之亦然（可逆，§3.5）。
+\item \textbf{共轭}（conjugate）：一一对应且可互换的一对点叫共轭点；
+一条线对应一条线叫共轭线，一个面对应一个面叫共轭面。
+\item \textbf{可交换}：$Q$ 成像于 $Q'$，则 $Q'$ 也成像于 $Q$（p36 用可逆性说明）。
+\end{itemize}
+一句话："理想系统 = 物空间与像空间之间的一一映射，且这个映射可逆。"
+
+%=============================================================
+\hdr{§6}{等光程：把费马原理接到成像上}
+
+\subhdr{6.1 无穷多条光线，光程必须相等（p37）——课件论证有个洞，补上}
+
+\textbf{问题的说法（p37）}：从物点 $Q$ 到像点 $Q'$ 有无穷多条实际光线；
+按费马原理，每一条都得是平稳的；既然有无穷多条，它们不可能\emph{全都}是极大、也不可能\emph{全都}是极小；
+所以只剩一种可能——\textbf{光程全部相等}。
+
+这个论证的直观是对的，但\textbf{它作为证明不成立}：极大、极小、常数都是"每条光线各自"的局部性质，
+无穷多条光线完全可以各自处在不同的局部形态里（有的在谷底、有的在峰顶），
+"因为它们有无穷多条，所以不能全是极大"这句话没有给出理由。
+真正把"各自平稳"与"彼此相等"连起来的是另一件事：\textbf{它们必须同时到达}。补法如下：
+
+\begin{quote}
+\textbf{定理（等光程原理，equivalence of optical path）.}\quad
+若光学系统把以 $Q$ 为心的同心光束变成以 $Q'$ 为心的同心光束（即 $Q$ 精确成像于 $Q'$），
+则从 $Q$ 出发的每一条光线到达 $Q'$ 的光程都相同。
+\end{quote}
+
+\textbf{证明（用波前，三行）.}
+\begin{enumerate}[label=(\roman*)]
+\item 由 §5.1，同心光束对应球面波：入射光是"以 $Q$ 为心的球面波"，出射光是"以 $Q'$ 为心的球面波"。
+\item 波前（wavefront）按定义是\emph{等相位面}：同一个出射波前上任意两点相位相同。
+\item 由 §2.3，$\Delta\varphi=\frac{2\pi}{\lambda_0}\Delta L$：两条光线若光程不同，则它们在同一个出射波前上的相位就不同，与"波前等相位"矛盾。故光程相等。$\blacksquare$
+\end{enumerate}
+
+\textbf{这个证明只用本讲义已有的两件事}：同心光束$\leftrightarrow$球面波（§5.1）与
+光程$\leftrightarrow$相位（§2.3）。它比课件 p37 的"无穷多"论证更硬，也更短。
+课件 p37 的结论本身没错，被省掉的是"为什么必须同时到达"这一句。
+
+\textbf{短语落地（p37 底部三档）}：
+\begin{itemize}
+\item 严格等光程 $\Leftrightarrow$ 严格成像（理想系统）；
+\item 近似等光程 $\Leftrightarrow$ 近似成像（真实系统，偏差以波长为尺）；
+\item 不等光程 $\Leftrightarrow$ 不成像（光线散开，得不到唯一的 $Q'$）。
+\end{itemize}
+\aside{第二档的"近似"以什么为尺度？标准答案是以波长为尺：光程偏差小于约 $\lambda/4$ 时，
+相位偏差小于 $\pi/2$，波前仍可近似看成球面——这是瑞利判据（Rayleigh criterion）的常用形式。
+这一句是\textbf{本讲义补的}，p37 只写了 "approximate equal optical path"，没给尺度。}
+
+\subhdr{6.2 虚光程为什么取负号：p39 的 (2)$-$(1) 完整代数}
+
+p38 先给了规则 $L=-nl$，p39 才给证明。证明的核心是"两条式子相减，把公共段消掉"，
+但课件把相减之后的整理全省了。补全：
+
+对第一条光线，$L_1$ 把 $Q$ 成像于 $Q_1'$，由 §6.1 其光程为常数 $c_1$：
+\begin{equation}
+L(QMQ_1')=L(QM)+n_1\overline{MQ_1'}=c_1 . \tag{1}
+\end{equation}
+对同一条光线再走 $L_2$（$L_2$ 把 $Q_1'$ 成像于 $Q_2'$），全程光程同样是常数 $c_2$：
+\begin{equation}
+L(QMQ_2')=L(QM)+n_2\overline{MQ_2'}=c_2 . \tag{2}
+\end{equation}
+\textbf{(2) $-$ (1)}，两式左边的公共段 $L(QM)$ 相消：
+\[
+n_2\overline{MQ_2'}-n_1\overline{MQ_1'}=c_2-c_1\equiv c_3 .
+\]
+现在看左边是什么。若给"虚物到实像"这一段也定义光程，按 p38 的规则，
+$Q_1'$ 是虚的，那一段取负号：
+\[
+L(Q_1'MQ_2'):=L(MQ_1')+L(MQ_2')=-n_1\overline{MQ_1'}+n_2\overline{MQ_2'}=c_3 .
+\]
+\textbf{两式完全一样}——这就是负号的用处：它让"减去公共段"之后剩下的量，
+仍然可以被解释成"虚物 $Q_1'$ 到实像 $Q_2'$ 的光程"，而且这个量仍与光线无关（$=c_3$）。
+换句话说，\textbf{不取负号，等光程关系就跨不过虚物这一关}。定量地看：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lcccccc@{}}
+\thead{光线} & \thead{$L(QM)$} & \thead{$n_1\overline{MQ_1'}$} & \thead{$c_1$} & \thead{$n_2\overline{MQ_2'}$} & \thead{$c_2$} & \thead{$c_3=c_2-c_1$}\\
+\hline
+1 & 2.00 & 3.75 & 5.75 & 3.00 & 5.00 & $-0.75$\\
+2 & 2.60 & 4.50 & 7.10 & 3.75 & 6.35 & $-0.75$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把 (1)(2) 两式在两条具体光线上各算了一遍（单位 mm），
+数据是本讲义为说明"差不变"而构造的，不是课件原数。
+\textbf{逐行读法}：第 1 行 $c_1=L(QM)+n_1\overline{MQ_1'}=2.00+3.75=5.75$，
+$c_2=2.00+3.00=5.00$，故 $c_3=5.00-5.75=-0.75$；
+第 2 行同法得 $c_1=7.10$、$c_2=6.35$、$c_3=-0.75$。
+\textbf{边界行}：两行的 $c_1$、$c_2$ 各自不同（因为 $L(QM)$ 与两段的长度都随光线变），
+但差 $c_3$ \emph{必须}相同——这正是"等光程"在虚物处仍然成立的意义。
+若把负号去掉，左边变成 $n_1\overline{MQ_1'}+n_2\overline{MQ_2'}$，
+两条光线分别得 $6.75$ 与 $8.25$，\textbf{不相等}，等光程关系当场断裂。
+
+\warnbox{\textbf{两条边界要紧。}
+（i）$c_3<0$ 完全可以：光程取负值后不再是单调量，"总光程"可以是负的。
+判据始终是"两条路径相等"，不是"越大越好"。
+（ii）虚光程的负号只加在\emph{虚段}上（没有光真的走的那一段），
+不是把整条光线的光程取负；图 6 左里只有 $MQ_1'$ 这一小段是虚的。}
+
+\subhdr{6.3 等光程面：四种面，四种"常数"（p40）}
+
+\begin{quote}
+\textbf{定义（p40）.}\quad 若一个曲面使从物点发出的每条光线经它反射或折射后到达像点的光程都相同，
+则称之为\emph{等光程面}（equal optical path surface, EOP surface）。等光程面能实现精确成像。
+\end{quote}
+
+p40 给的四例，写法需要按 §6.2 的符号规则核对一遍（这张表是本讲义核对后的版本）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{面} & \thead{共轭点} & \thead{条件} & \thead{课件写法}\\
+\hline
+平面镜 & 物点与其镜像 & $\overline{QM}-\overline{MQ'}=0$（虚段取负） & $QM+MQ'$\\
+旋转椭球面 & 两个焦点 & $\overline{QM}+\overline{MQ'}=2a$ & 同\\
+旋转抛物面 & 焦点与无穷远点 & $\overline{QM}+$（到参考面的轴向距离）$=$const & $QM=$const\\
+旋转双曲面 & 焦点与虚焦点 & $\overline{QM}-\overline{MQ'}=$const（虚侧取负） & 同\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把"等光程"这一个条件在四种曲面上各写一遍，
+写法按 §6.2 的"虚段取负"统一过。
+\textbf{逐行读法}：
+\textbf{平面镜}——镜面是 $QQ'$ 的垂直平分面，故任取镜面上一点 $M$ 都有 $\overline{QM}=\overline{MQ'}$；
+$Q'$ 在镜后，$M\to Q'$ 是虚段，取负，于是总光程 $=0$，与 $M$ 无关。
+\textbf{椭球}——椭圆（椭球）定义就是"到两焦点距离之和为常数"，即 $2a$，两侧都是实段。
+\textbf{抛物面}——由抛物线定义（到焦点距离 = 到准线距离）可推出 $\overline{FM}=x_M+p$（$p$ 为焦距，$x_M$ 为 $M$ 到顶点的轴向距离），
+随 $M$ 变化，\emph{不是}常数；要补上一段"从 $M$ 沿轴向到某个固定参考平面的距离"才得到常数。
+\textbf{双曲}——双曲线定义是"到两焦点距离之\emph{差}为常数"，反射面取靠近焦点的这一支，虚侧取负号，故写作差。
+\textbf{边界行}：抛物面的常数依赖"参考平面选在哪里"（它决定常数的具体数值，不影响"是常数"这件事）；
+平面镜的常数是 $0$，这个 $0$ 只在虚段取负的约定下成立。
+
+\warnbox{\textbf{核对结果（课件 p40 写作 $QM+MQ'=$const，与本课自己的负号约定冲突）。}
+若按加号，平面镜的光程是 $\overline{QM}+\overline{MQ'}=2\overline{QM}$（因两者相等），
+它\emph{随 $M$ 变化}（取 $M$ 离垂足越远，$\overline{QM}$ 越大），根本不是常数。
+按 p38--p39 的约定改成减号后，它恒等于 $0$，才与"等光程面"的定义相容。
+所以本讲义把平面镜一行改成 $\overline{QM}-\overline{MQ'}=0$，并在 §8 第 (7) 条记为勘误。
+同一段里抛物面一行的 "$QM=$const" 只能读作简写，严格形式见表中第三行。}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+% 1 平面镜
+\begin{scope}
+  \draw[iface] (0,-1.15) -- (0,1.15);
+  \coordinate (Q) at (-1.15,0.45); \coordinate (Qp) at (1.15,0.45);
+  \draw[ray] (Q) -- (0,0.95); \draw[virt] (0,0.95) -- (Qp);
+  \draw[virt] (Q) -- (Qp);
+  \fill[violetdeep] (Q) circle (1.3pt);
+  \draw[fill=white,draw=violetdeep,line width=0.7pt] (Qp) circle (1.3pt);
+  \node[lab,left] at (Q) {\footnotesize $Q$}; \node[lab,right] at (Qp) {\footnotesize $Q'$};
+  \node[lab,above] at (0,0.95) {\footnotesize $M$};
+  \node[lab,below=13pt,align=center] at (0,-1.15) {(1) 平面镜\\[1pt]$QM-MQ'=0$};
+\end{scope}
+% 2 椭球
+\begin{scope}[xshift=3.75cm]
+  \draw[curve] (0,0) ellipse (1.25 and 0.85);
+  \coordinate (A) at (-0.94,0); \coordinate (B) at (0.94,0); \coordinate (M) at (0,0.85);
+  \draw[ray] (A) -- (M); \draw[ray] (M) -- (B);
+  \fill[violetdeep] (A) circle (1.3pt); \fill[violetdeep] (B) circle (1.3pt);
+  \node[lab,below left] at (A) {\footnotesize $Q$}; \node[lab,below right] at (B) {\footnotesize $Q'$};
+  \node[lab,above] at (M) {\footnotesize $M$};
+  \node[lab,below=0pt,align=center] at (0,-0.95) {(2) 椭球\\[1pt]$QM+MQ'=2a$};
+\end{scope}
+% 3 抛物
+\begin{scope}[xshift=7.5cm]
+  \draw[curve,domain=-1.15:1.15,samples=50] plot ({0.42*(\x)*(\x)},{(\x)});
+  \coordinate (F) at (0.42,0); \coordinate (M) at (0.42*1.0,1.0);
+  \draw[ray] (F) -- (M); \draw[ray] (M) -- (1.6,1.0);
+  \draw[eop] (1.6,-1.15) -- (1.6,1.15);
+  \fill[violetdeep] (F) circle (1.3pt); \fill[violetdeep] (M) circle (1.3pt);
+  \node[lab,below] at (F) {\footnotesize $Q$}; \node[lab,above] at (M) {\footnotesize $M$};
+  \node[lab,above] at (1.6,1.15) {\footnotesize 参考面};
+  \node[lab,below=0pt,align=center] at (0.75,-1.2) {(3) 抛物面\\[1pt]$QM+$轴向距 $=$ const};
+\end{scope}
+% 4 双曲
+\begin{scope}[xshift=11.6cm]
+  \draw[curve,domain=-0.95:0.95,samples=50] plot ({0.72*cosh(\x)},{0.72*sinh(\x)});
+  \coordinate (F) at (1.02,0); \coordinate (Fp) at (-1.02,0); \coordinate (M) at (1.201,0.864);
+  \draw[ray] (F) -- (M);
+  \draw[virt] (Fp) -- (1.70,1.058);
+  \fill[violetdeep] (F) circle (1.3pt);
+  \draw[fill=white,draw=violetdeep,line width=0.7pt] (Fp) circle (1.3pt);
+  \fill[violetdeep] (M) circle (1.3pt);
+  \node[lab,below] at (F) {\footnotesize $Q$}; \node[lab,left] at (Fp) {\footnotesize $Q'$};
+  \node[lab,above left] at (M) {\footnotesize $M$};
+  \node[lab,below=0pt,align=center] at (0.55,-0.95) {(4) 双曲面\\[1pt]$QM-MQ'=$const};
+\end{scope}
+\end{tikzpicture}
+
+{\small\color{inkgray}图 7\quad 四种等光程面，重绘自 p40 的四个小图。
+实心点是物点，空心点是虚像点/虚焦点；红线是实际光线，灰虚线是延长线。
+(1) 的 $MQ'$ 是虚段，故表中取减号；(3) 的平行出射光要加一段到参考面的距离才构成常数。}
+\end{center}
+
+\subhdr{6.4 四种面的用处（p41）}
+
+p41 把等光程面从"理论"落到三个装置，这正好是 §6.3 那张表的应用版：
+
+\begin{itemize}
+\item \textbf{手电筒 / 车灯反光碗 = 旋转抛物面}：把光源放在\emph{焦点} $\Rightarrow$ 反射光\emph{平行}
+（把点光源变成平行光，等于把"焦点与无穷远点"这对共轭点用起来）。
+\item \textbf{卫星电视天线 = 旋转抛物面}：把平行信号（来自卫星）会聚到\emph{接收器（焦点）}——
+同一个面，光路反向（§3.5 可逆性）。
+\item \textbf{椭球反射器}：把一个焦点发出的光会聚到\emph{另一个焦点}。
+\end{itemize}
+三者的共同点：曲面形状不是装饰，它是"让所有光线的光程相等"的唯一解；
+凡是满足这个条件的面，就自动实现"点 $\to$ 点"的精确成像。
+
+%=============================================================
+\needspace{0.20\textheight}
+\hdr{§7}{演算例（本讲义补，非课件原题）}
+
+\textbf{先交代一句：本课件没有例题、也没有作业。}逐页核对的结果是：
+p1--p44 内出现 "Example" 的只有 p38 一处，而那是"虚物到透镜那段光程取负"的\emph{术语举例}，
+不含待求量；p45 是下一讲预告。所以本目录没有"课件原题"可解，也没有"作业几道"可点。
+下面两例是\textbf{由课件 p18--p21 的公式直接派生}的演算，题干后标出所依托的页码，
+作用是把 §3.3、§3.4 的推导变成可以逐格复算的数字。它们不是考点预测，也不代表课件有这类题。
+
+\qbreak
+\qstem{（依据 p18--p20 的反射模型，本讲义自拟）界面为 $y=0$（法线为 $y$ 轴），取 $n_1=1$，
+$A(0,3)$、$B(8,3)$（长度单位任意）。光从 $A$ 出发，经界面反射后过 $B$。
+求：(1) 反射点 $M$ 的 $x$ 坐标；(2) 光程 $L$；(3) 入射角与反射角。}
+
+\textbf{考点}：$\partial L/\partial x=0$ 给出 $\dfrac{x-x_1}{AM}=\dfrac{x_2-x}{BM}$，而这两个分式就是两个正弦。
+
+\textbf{关键一步}：把 $L(x)$ 写成两个根号之和，求导后令其为零；对称情形可以直接猜中点，但要验证它是最小而不是最大。
+
+\textbf{详解}：$L(x)=\sqrt{x^2+9}+\sqrt{(8-x)^2+9}$，
+\[
+\frac{\mathrm{d}L}{\mathrm{d}x}=\frac{x}{\sqrt{x^2+9}}-\frac{8-x}{\sqrt{(8-x)^2+9}}=0 .
+\]
+由 $x_1=0$、$x_2=8$ 关于中点对称，$x=4$ 是一解：代入得 $\frac{4}{5}-\frac{4}{5}=0$。
+于是 $M(4,0)$，$L=5+5=10$；入射角 $i_1=\arctan\frac{4}{3}=53.13^\circ$，反射角同值。
+
+\textbf{答案}：$x=4$，$L=10$，$i_1=i_1'=53.13^\circ$。
+
+\textbf{自检}（两条独立的路子）：
+(i) 极值性质：$L(3)=4.243+5.831=10.074>10$，$L(5)$ 同值，故 $x=4$ 是极小而非极大；
+(ii) 镜像法（p23 的 $ACB'$）：把 $B$ 关于界面镜像到 $B'(8,-3)$，则
+$A\to M\to B$ 的光程等于直线 $AB'$ 的长 $\sqrt{8^2+6^2}=10$，与上面一致。
+\aside{镜像法为什么成立：$MB=MB'$（对称），所以 $AM+MB=AM+MB'$，而后者在 $M$ 取 $AB'$ 与界面的交点时最短（两点之间直线）。
+这正好是 §3.2"直线最短"与 §3.3"反射定律"的合体，p23 用它论证"反射路径比其他路径短"。}
+
+\qbreak
+\qstem{（依据 p21 的折射模型，本讲义自拟）界面 $y=0$ 上方 $n_1=1$、下方 $n_2=1.5$；
+$A(0,3)$、$B(6,-4)$（$y_2=4$ 为 $B$ 到界面的垂直距离）。光从 $A$ 经界面折射到 $B$。
+求：(1) 折射点 $M$ 的 $x$；(2) 两角；(3) 光程，并说明它是极小。}
+
+\textbf{考点}：$n_1\sin i_1=n_2\sin i_2$ 是关于 $x$ 的方程；把正弦写成 $x/\sqrt{x^2+y^2}$ 后就只剩代数。
+
+\textbf{关键一步}：$\sin i_1=\dfrac{x}{\sqrt{x^2+9}}$，$\sin i_2=\dfrac{6-x}{\sqrt{(6-x)^2+16}}$，代入 Snell 得
+\[
+1\cdot\frac{x}{\sqrt{x^2+9}}=1.5\cdot\frac{6-x}{\sqrt{(6-x)^2+16}} .
+\]
+
+\textbf{详解}：两边平方后是 $x$ 的四次方程，直接求根不如二分：左减右在 $x=3.00$ 处为负、$x=4.00$ 处为正，
+二分得 $x=3.611$。此时
+\[
+i_1=\arcsin\frac{3.611}{\sqrt{3.611^2+9}}=50.28^\circ,\qquad
+i_2=\arcsin\frac{2.389}{\sqrt{2.389^2+16}}=30.85^\circ ,
+\]
+核对 Snell：$\sin50.28^\circ=0.7692$，$1.5\sin30.85^\circ=0.7692$，两边相等。
+光程 $L=\sqrt{3.611^2+9}+1.5\sqrt{2.389^2+16}=4.656+7.027=11.683$。
+
+\textbf{答案}：$x=3.61$，$i_1=50.3^\circ$，$i_2=30.8^\circ$，$L=11.68$。
+
+\textbf{自检}（三格复算，单位同上）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lcccc@{}}
+\thead{$x$} & 3.00 & 3.50 & 3.611 & 4.00\\
+\hline
+$L(x)$ & 11.743 & 11.685 & 11.683 & 11.708\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{表前一句}：这张表只是把 $L(x)=\sqrt{x^2+9}+1.5\sqrt{(6-x)^2+16}$ 在四个点上各算一次，
+用来确认 $x=3.611$ 落在谷底而不是坡上。
+\textbf{逐行读法}：只有一个变量 $x$，每格都是把 $x$ 代进同一个式子——例如 $x=3.00$ 时 $L=\sqrt{18}+1.5\sqrt{25}=4.243+7.500=11.743$。
+\textbf{边界行}：两端 $x=3.00$ 与 $x=4.00$ 都比 $11.683$ 大，且左右大致对称（$3.611\approx(3+4)/2$ 附近），
+故是极小。另一条独立校验：若误把"直线 $A\to B$"当光路（与界面交于 $x=2.571$），
+光程是 $3.951+1.5\times5.268=11.854>11.683$——直线在\emph{几何}上最短，
+但在\emph{光程}上反而更长，这正是 §3.4 与 §2.1 的区别所在。
+
+
+%=============================================================
+\hdr{§8}{缺口清单（逐条给页码 + 原文短语 + 补法）}
+
+下面十条是逐页扫出来的"课件没讲全"的地方。每条都点名：页码、课件原话、缺了什么、本讲义补在哪。
+
+\gapitem{代数跳步｜p21}{原文 "After derivation, we obtain $n_1\sin i_1=n_2\sin i_2$"。
+缺的是整个求导过程与第二项的符号处理。补法：§3.4 写出 $\mathrm{d}L/\mathrm{d}x$、
+说明 $(x-x_2)$ 与 $(x_2-x)$ 的符号、再把分式认成 $\sin i_1,\sin i_2$。}
+
+\gapitem{代数跳步｜p19--p20}{原文 "Take partial derivative with respect to $z$" / "Differentiate with respect to $x$"。
+两个偏导的结果（$\partial L/\partial z=n_1z(1/AM+1/BM)$、$\partial L/\partial x=n_1[(x-x_1)/AM+(x-x_2)/BM]$）
+都是直接给出的，中间的链式法则省略。补法：§3.3 补出 $z/AM$ 这一步与"括号内恒正"的论证。}
+
+\gapitem{机制缺口｜p9}{原文 "Using the relation between refractive index and wavelength: $n=\lambda_0/\lambda$"。
+这个关系为什么成立没有说。补法：§2.3 用"跨界面频率不变 $+$ $v=\lambda f$ $+$ $n=c/v$"三件事合出来，
+并指出它同时解释了"折射的实质是波长变、频率不变"。}
+
+\gapitem{机制缺口｜p37}{原文 "Since there are infinitely many rays, they cannot all correspond to a
+maximum or a minimum — the only possibility is that their optical paths are all equal."
+"无穷多"并不能推出"不能全是极大或极小"（每条光线各自可以有各自的局部形态）。
+补法：§6.1 用"出射波前是等相位面 $+$ $\Delta\varphi=(2\pi/\lambda_0)\Delta L$"给出严格证明，
+并明说课件缺的是"为什么必须同时到达"这一句。}
+
+\gapitem{边界缺口｜p20}{原文 "Since both angles lie between $0^\circ$ and $90^\circ$, it follows that…"。
+省略的是：若不限锐角，$\sin i_1=\sin i_1'$ 还有 $i_1'=180^\circ-i_1$ 一支。
+补法：§3.3 的 \texttt{warnbox} 把这条边界与"为什么反解唯一"写全，并顺带处理 $x_1=x_2$ 的正入射退化。}
+
+\gapitem{压缩缺口｜p15、p25}{原文 "Stationary point where the second variation is zero"
+与 "the second derivative is zero and changes sign"。
+两句都是判据，却没有式子、也没有装置实例，读者无法验证。补法：§4.1 把四类形态与判据列成表，
+§4.5 把"镜面相对等光程面的位置 $\to$ 二阶变分符号"对应起来，
+并明说拐点一类\textbf{课件没有给任何装置}，本讲义因此不举例。}
+
+\gapitem{形式改写（勘误）｜p40}{原文表格 "Plane Mirror … $QM+MQ'=$const"。
+按本课 p38--p39 自己的"虚光程取负"约定，平面镜应写 $\overline{QM}-\overline{MQ'}=0$；
+写成加号则 $QM+MQ'=2QM$ 随 $M$ 变，根本不是常数。
+补法：§6.3 给验算与改正式，并把同一段里抛物面 "$QM=$const" 的简写也补成严格形式。
+同页还有两处拼写：p22 "sadile"（应为 saddle）、p24 "sero"（应为 zero）。}
+
+\gapitem{图缺/图误｜p33}{图里两只灯泡都标成 $Q_1'$；$L_2$ 画成发散透镜，而 $L_2$ 后的实线光线是发散的，
+却把像点画在 $L_2$ 右侧的"交会"处；p34 正文又说 $L_2$ 成的是\emph{实像}。
+三者不能同时成立。补法：§5.4 按 p31 表的 (c) 行重绘（会聚系统、虚物成实像），
+并在 \texttt{warnbox} 里逐条列出这三处不一致。}
+
+\gapitem{拼接缺口｜p27--p28}{原文 "Fermat's principle … tells us how light travels —
+but optics is about more than that." 一句过渡之后直接进 1.4，而"等光程"要到 p37 才出现。
+两半之间缺一根线。补法：§1 的链条图标出"三定律 $\to$ 等光程 $\to$ 成像"这一跳，§6.1 补上它的内容。}
+
+\gapitem{编号缺口｜p31 以后}{PDF 第 32 页的徽章号是 33（p31 的徽章仍是 31），此后徽章 $=$ PDF 页 $+1$；
+也就是说课件里\textbf{没有第 32 张幻灯片}。本讲义引页码一律用 PDF 页序，
+§11 的对照表同时给出徽章号，避免读者按徽章去找页。}
+
+\flowerrule
+
+%=============================================================
+\hdr{§9}{公式卡与易错点}
+
+\subhdr{9.1 公式卡（十个式子，全部可回指课件页）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{名称} & \thead{式子} & \thead{出处}\\
+\hline
+光程（均匀） & $L=nl$ & p6\\
+光程（分层） & $L=\sum_i n_il_i$ & p7\\
+光程（连续） & $L=\int_A^B n(\mathbf{r})\,\mathrm{d}l$ & p8\\
+光程与时间 & $L=ct$，$t=L/c$ & p11\\
+光程与相位 & $\Delta\varphi=\dfrac{2\pi}{\lambda_0}L$ & p10\\
+费马原理 & $\delta\displaystyle\int_A^B n\,\mathrm{d}l=0$ & p14\\
+反射定律 & $i_1=i_1'$ & p20\\
+折射定律 & $n_1\sin i_1=n_2\sin i_2$ & p21\\
+虚光程 & $L=-nl$ & p38\\
+等光程 & $L(QM_1N_1Q')=L(QM_2N_2Q')=\cdots=L$ & p37\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{9.2 七个易错点（每条都能指回某一步）}
+
+\begin{enumerate}[label=\textbf{错\arabic*}]
+\item \textbf{把"平稳"当"最小"。}p13 说 "in the vast majority of cases" 取最小，
+但 p24 右栏的镜面给出局部\emph{极大}、p24 左栏给\emph{常数}。判据是 $\delta L=0$，不是"最小"。
+\item \textbf{$\sin$ 相等就直接写 $i=i'$ 而不提区间。}见 §3.3 的边界：只在 $[0^\circ,90^\circ]$ 上唯一。
+\item \textbf{反射光程的两项折射率写错。}p18 的两项都是 $n_1$（同一介质）；
+p21 的两项是 $n_1$ 与 $n_2$。写成 $n_1,n_2$ 去算反射，结果会多一个 $n$ 的因子。
+\item \textbf{虚光程把整条光线取负。}负号只加在\emph{虚段}上（图 6 左只有 $MQ_1'$ 一小段）。
+\item \textbf{平面镜的等光程写成加号。}按 p38 的约定应为 $QM-MQ'=0$，理由与验算见 §6.3。
+\item \textbf{把物空间/像空间按"系统前后"分。}p34 明确说两者可以重叠；划分依据是身份（物/像），不是位置。
+\item \textbf{把平行光束当成第六种光束。}p28 说它是"中心在无穷远的同心光束"，是特例不是并列项；
+同理，平行入射是"物在无穷远"，不占四象限中的任何一行。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{三句话总结}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{光程是把"不同介质"折成同一把尺子}：$L=\int n\,\mathrm{d}l=ct$，
+它一头连几何（$l$）、一头连介质（$n$）、一头连波（$\Delta\varphi=\frac{2\pi}{\lambda_0}L$）。
+\item \textbf{费马原理是这条尺子上的一个条件}：$\delta L=0$。它一次给出直线传播、反射、折射三条定律，
+但"平稳"包含极小、极大、常数、拐点四种形态，不能简化成"最短路"。
+\item \textbf{成像就是"让一整族光线的光程相等"}：虚段取负号后这条件对虚物也成立；
+满足它的面（平面、椭球、抛物、双曲）叫等光程面，它们把"点 $\to$ 点"的精确成像变成几何问题——
+下一讲的球面折射，就是"球面不是等光程面，所以只能近似成像"这件事的定量版本。
+\end{enumerate}
+
+%=============================================================
+\hdr{§11}{页码对照表}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{PDF 页} & \thead{徽章} & \thead{内容} & \thead{本讲义}\\
+\hline
+p1--p2 & 1--2 & 章标题、范围、五个问题 & 封面、§0、§1\\
+p3 & 3 & 上一课回顾：四定律、全反射、棱镜、惠更斯 & §3.5、§3.4\\
+p4 & 4 & 光走哪条路？费马原理的提出 & §3.1\\
+p5 & 5 & 为什么引入光程（沙地/跑道类比） & §2.1\\
+p6--p8 & 6--8 & 光程三种算法：$nl$、$\sum n_il_i$、$\int n\,\mathrm{d}l$ & §2.2\\
+p9--p10 & 9--10 & 光程差 $\to$ 相位差、时间差 & §2.3\\
+p11 & 11 & 光程 $=ct$、统一度量 & §2.2\\
+p12--p15 & 12--15 & 费马其人（1601--1665，1657 年）、原理陈述、数学形式、四种平稳形态 & §3.1、§4.1\\
+p16--p17 & 16--17 & 一条原理 $\to$ 三条定律（总览）、直线传播五步 & §3.2\\
+p18--p20 & 18--20 & 反射：建系、$\partial L/\partial z=0$、$\partial L/\partial x=0$、$i_1=i_1'$ & §3.3、图 2\\
+p21 & 21 & 折射：Snell 定律（"after derivation"） & §3.4、图 3\\
+p22--p23 & 22--23 & 光路可逆性、极值实例、镜像法 $ACB'$ & §3.5、§7 例 1\\
+p24--p25 & 24--25 & 等光程（椭圆）、极大（内切镜面）、极小（外切）、拐点一句 & §4.2--§4.5、图 4\\
+p26 & 26 & 小结表：一条原理三条定律 & §9.1\\
+p27 & 27 & 过渡：从"怎么走"到"怎么成像" & §1\\
+p28--p29 & 28--29 & 五种光束、光学组 & §5.1\\
+p30--p31 & 30--31 & 物与像的核心定义、四象限表与四组图 & §5.2、图 5\\
+p32--p33 & 33--34 & 平面镜（实物成虚像）、虚物（最难概念） & §5.3--§5.4、图 6\\
+p34--p36 & 35--37 & 物空间/像空间可重叠、理想系统、共轭 & §5.5--§5.6\\
+p37 & 38 & 等光程、三档（严格/近似/不成像） & §6.1\\
+p38--p39 & 39--40 & 虚光程 $L=-nl$、(2)$-$(1) 的证明 & §2.4、§6.2\\
+p40--p41 & 41--42 & 四种等光程面、应用（车灯/卫星锅/椭球） & §6.3--§6.4、图 7\\
+p42--p44 & 43--45 & 两次小结（费马、成像）、公式卡（六式） & §9.1、§10\\
+p45--p46 & 46----- & 下一讲预告：球面折射四条要点、结束页 & §0.2\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\callout{\textbf{读表提示。}$p32$ 起徽章号比 PDF 页序大 1（课件缺第 32 张幻灯片，见 §8 第 (10) 条），
+所以按徽章找页会差一页；本表两列都列出，任取一列都能定位。
+本课正文（p1--p44）没有球面折射公式，四象限图与等光程面是本课的两处图形核心；
+p45 的四条预告（单球面折射、傍轴近似、焦距与焦点、成像公式）是下一讲的骨架，
+本讲义只在 §0.2 标出位置，不提前展开。}
+
+\end{document}
+
+
+
+

@@ -1,0 +1,768 @@
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\settags{第一章 几何光学 · 第一课（精讲）}{光学}
+\begin{document}
+
+\doctitle{几何光学：四条定律、全反射与惠更斯原理}%
+{第一章「几何光学」第一课 · 精讲讲义}%
+{依据课件《第一章 几何光学 第一课.pdf》（39 页，英文 PPT 导出）与逐页 OCR 转写 p00001--p00039\\中国日期 2026-10-27}
+
+\callout{\textbf{先看这一条（材料状态）}：这份课件 39 页\textbf{全是图片页}——用 PyMuPDF 读文字层，每页只提取到 0--37 个字符，且内容是母版残留的样板文字，没有一句正文。因此本讲义依据的是逐页 OCR 转写（\texttt{\_scratch/ocr/geo1/pages/p00001.md} 起），并对以下 11 页调出原图逐字核对后才敢引用：p1、p3、p4、p18、p19、p21、p26、p27、p31、p33、p35。引号里的英文都是 OCR 转写：上述 11 页的与原图逐字对上，其余页的引文仍按 OCR 使用、未逐字复核；凡是本讲义自己补的内容，一律标「补充」。}
+
+\hdr{§0}{课件坐标、记号与页数说明}
+
+\subhdr{0.1 这一讲在讲什么（依据课件 p3 的知识地图）}
+课件 p3 给出的知识地图是两段：
+\begin{itemize}
+  \item \textbf{1.1 基本概念与基本定律}：光源、光线、光束 $\rightarrow$ 四条定律（直线传播、独立传播、反射、折射/Snell）$\rightarrow$ 全反射 $\rightarrow$ 折射棱镜；
+  \item \textbf{1.2 惠更斯原理}：波前与波线 $\rightarrow$ 次波与包络 $\rightarrow$ 用波解释反射和折射。
+\end{itemize}
+本讲义就按这条线走：§1--§2 对应 1.1 的前半（对象与四条定律，含 p18 例题），§3 对应全反射与光纤（含 p21、p24 两道例题），§4 对应棱镜与色散，§5 对应 1.2，§6 补上 p2 提到、但本讲正文没有展开的费马原理，§7 起是缺口清单、公式卡与页码对照。
+
+\subhdr{0.2 39 页为什么只写 18 页（页数说明）}
+按通行口径，讲义页数应落在「课件页数 $\times$ 0.5 $\sim$ 1.0」，即 19.5--39 页；这份课件达不到——39 页里真正承载信息的只有 p6--p11、p13--p14、p18--p24、p26--p28、p30--p36，其余是封面、知识地图、十层插图、「四定律回顾」与致谢。本讲义按主线合并到 \textbf{18 页}（落在 14--18 页的合并区间），合并掉的是重复而非内容：「四定律回顾」在 p17、p37、p38 出现三次，这里只在 §2.6 汇总一次；p12 的现场演示无数据无结论，只在 §2.3 留一句话；p25 的产业数据只留「99\% 走光纤」；p7、p9、p15 的三段历史并成 §1.3 一张表。定义、定理与例题一条没删：p18、p21、p24 三道例题在 §2.7、§3.3、§3.6 全部全解。
+
+\subhdr{0.3 记号表（全文统一，不再另设）}
+这张表是全文的记账页：后面每个式子里的符号都能在这里查到含义与单位；表里只给「是什么」，不给「怎么来」。
+
+\tabtop
+\begin{tabular}{@{}p{2.1cm}p{8.6cm}p{4.0cm}@{}}
+\thead{符号} & \thead{含义} & \thead{约定 / 单位}\\
+\hline
+$n$ & 折射率（refractive index），$n=c/v$ & 无量纲；$n>1$\\
+$n_{12}$ & 介质 2 相对介质 1 的折射率，$n_{12}=n_2/n_1$ & 无量纲\\
+$c$ & 真空光速 & $2.998\times10^{8}$ m/s\\
+$v$ & 介质中的光速（相速度） & m/s；课件 p14 印成 $\nu$，本讲义一律用 $v$\\
+$\lambda$ & 波长 & m；几何光学要求 $\lambda\ll$ 装置尺度 \\
+$i_1$ & 入射角 & 从\textbf{法线}量起，非从界面量起\\
+$i_1'$ & 反射角（§2）／棱镜出射角（§4） & 同一符号按节区分，§4 起即出射角\\
+$i_2$ & 折射角 & 从法线量起\\
+$i_2'$ & 棱镜第二面内的角 & 从法线量起；$i_2+i_2'=A$\\
+$i_c$（$\theta_c$） & 临界角（critical angle） & 从法线量起；只当 $n_1>n_2$ 时存在\\
+$A$ & 棱镜顶角 & 度或弧度；课件 p26 图内标成 $\alpha$\\
+$\delta$、$\delta_m$ & 偏向角、最小偏向角 & 度或弧度\\
+$\theta_1,\theta',\theta_2$ & 光纤：外部入射角、芯内与轴的夹角、芯-包层界面的入射角 & 前两个从\textbf{轴}量起（课件 p24 表下注明）\\
+NA & 数值孔径（numerical aperture） & 无量纲\\
+$t$、$d$、$L$ & 板厚、孔径、纸片直径 & mm（例题里）\\
+$\Delta x$ & 平行玻璃板的侧向位移 & 长度\\
+\end{tabular}
+\tabbot
+
+\subhdr{0.4 三条硬约定}
+（1）\textbf{角度一律从法线量起}，唯一例外是光纤的 $\theta_1$ 与 $\theta'$（从轴量起，课件 p24 明写）——两套混用是本题材最常见的错。（2）\textbf{光速记 $v$，不记 $\nu$}：课件 p14 的 $n=c/\nu$ 是 speed 的排版误用，与频率 $\nu$ 撞车。（3）\textbf{棱镜出射角记 $i_1'$}：课件 p26 的公式写 $\delta=i_1+i_2'-A$，同页的图却把出射角标成 $i_1'$、两个内部角都印成 $i_2$（§4.1 详说）。
+
+\hdr{§1}{几何光学的基本对象：光源、光线、光束}
+
+\subhdr{1.1 先把整章压成三个问题（课件 p5）}
+课件 p5 的原话是「If Light Is a Geometrical Line...」，下面三问三答：光在均匀介质里怎么走 $\rightarrow$ 直线；打到镜面上怎么走 $\rightarrow$ 反射；进入水里怎么走 $\rightarrow$ 折射。这一页是全讲的骨架：§2 逐条给出这三问的定量形式，§3--§4 是两个能算的例子，§5 回答「为什么是这样」。
+
+\subhdr{1.2 光源、光线、光束（课件 p6）}
+\textbf{光源（light source）}是发光的物体，可以看成许多点光源的集合。\textbf{光线（light ray）}是从发光点出发的几何线，有方向、携带能量；它是\textbf{理想模型}——现实中没有无限细的线，就像力学里没有真正的质点。课件 p6 的讲稿原话把它比作「the point mass in mechanics」，并说这个模型「extraordinarily useful」。\textbf{光束（light beam）}是光线的集合，分三种：平行光束（rays are mutually parallel）、发散光束（diverge from a single point）、会聚光束（converge to a single point）。点光源发出的是发散光束，它的波前是同心球面——这句话的含义要到 §5.1 给出。
+
+\aside{为什么可以把光线当几何对象：当波长 $\lambda$ 远小于装置尺度时，衍射可以忽略，光沿「射线」走。这个条件的课件原文在 p35：「Wavelength $\lambda$ is much smaller than ($<<$) the aperture size」。本页先记结论，§5.5 会用它解释为什么小孔成像的边界是直线。}
+
+\subhdr{1.3 历史线：谁先想到「光走直线」（课件 p7、p9、p15）}
+这张表的每一行都是一个人 + 一个年代 + 一句话贡献；它只做速查，不承载推导。读法是「从上到下按年代」：先有东方的墨子与西方的欧几里得，再隔两千年才有折射定律，最后是光纤。
+
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{8.4cm}@{}}
+\thead{年代} & \thead{人物} & \thead{一句话贡献}\\
+\hline
+约前 400 & 墨子（Mozi） & 《墨经》8 条几何光学，小孔成像证光走直线\\
+约前 300 & 欧几里得（Euclid） & 《光学》系统研究平面镜与球面镜反射\\
+c.\,1600 & 哈里奥特（Harriot） & 早于 Snell 得到正弦比，未发表\\
+1621 & 斯涅尔（Snell） & 实验得到折射定律，生前未发表\\
+1637 & 笛卡尔（Descartes） & 首次以正弦形式发表，故又称 Descartes 定律\\
+1666 & 牛顿（Newton） & 双棱镜：白光是混合色，棱镜不「造」色\\
+1678/1690 & 惠更斯（Huygens） & 提出次波包络原理（《光论》1690 出版）\\
+1801 & 杨（Young） & 双缝干涉，波动说复兴\\
+1815 & 菲涅耳（Fresnel） & 次波 + 相干叠加 = 惠更斯-菲涅耳\\
+1966 & 高锟（Kao） & 提出光纤通信，2009 诺贝尔物理学奖\\
+\end{tabular}
+\tabbot
+
+课件 p9 还给了两件实物：湖北秭归东门头遗址的石晷（课件称 ca.\,6000 BCE，并称「currently the oldest known sundial in the world」）与阜阳西汉汝阴侯墓的漆木圭表（165 BCE）。圭表能计时，靠的正是光的直线传播：表影的方向与长度由太阳位置唯一决定。需要说明的是「现存最早日晷」这个判断课件没有给出处，本讲义只把它当课件的叙述转引，不当作已核实的事实。
+
+\subhdr{1.4 十层理解与本讲的位置（课件 p1、p4）}
+课件 p1 右栏的十层是：光线、粒子、波、电磁波、光速不变、光子、波粒二象、光可造实物、虚粒子（QED）、规范玻色子（U(1)）。本讲只做第 1 层——把光当成几何线，其余九层属于后面各章。
+
+\warnbox{课件 p4 的阶梯图与 p1 的清单对不上：p4 第 3、4 级都印「Light is Waves」，第 5 级印成「The Spe\ldots Electromagnetic Waves」（缺字），第 8 级印成「L?ve-Particle Duality」（字母残缺）。本讲义以 p1 的清单为准，并把 p4 的这处不一致记入 §7 第 8 条——读者若照 p4 背「十层」，会在第 3、4 层卡住。}
+
+\hdr{§2}{四条基本定律与它们的适用条件}
+
+\subhdr{2.1 定律 1：均匀介质中光沿直线传播（课件 p8）}
+\textbf{陈述}：光在均匀介质中沿直线传播。\textbf{典型现象}：影子、日食、月食、小孔成像（倒立的实像）。\textbf{条件}：介质均匀，且波长远小于孔径（§5.5 给定量说明）。
+
+课件 p8 的 Notes 里有一句值得抄下来：「Mirages occur not because light violates rectilinear propagation, but because the medium is non-uniform.」——蜃景不是光不守直线传播，而是空气（热空气、海水的温跃层）折射率不均匀，光在\textbf{非均匀}介质里本来就会弯。同一条道理在 §5.4 会用惠更斯原理再解释一次，那时你会看到「弯」是次波半径不同造成的，不需要新定律。
+
+\subhdr{2.2 定律 2：光的独立传播（课件 p10）}
+\textbf{陈述}：来自不同光源的光在空间相遇时互不影响，各自沿原方向继续传播。\textbf{典型现象}：舞台上多束激光交叉而过，彼此不干扰。\textbf{失效情形}：强光、非线性介质（课件原话「This law does not hold in strong light or in nonlinear media」）。
+
+\aside{这条定律的数学内容其实是\textbf{可叠加}：两束光同时到达一点时，电场相加，但每一束仍按自己的方向、自己的相位继续走。介质「线性」时这才成立；强光下介质的响应不再与场强成正比，两束光就会互相「看见」——这正是课件说的第 8--10 层（非线性光学）。反过来说，如果光不独立传播，我们互相看一眼就会把对方的光散射掉，脸上不会有清晰的像；课件 p10 的 Tip 说的就是这个。}
+
+\subhdr{2.3 定律 3：反射定律（课件 p11）}
+\textbf{陈述}（两条，缺一不可）：反射光线在入射面内（入射光线、法线、反射光线共面）；反射角等于入射角，即
+\[
+i_1=i_1' .
+\]
+符号：$i_1$ 是入射角，$i_1'$ 是反射角，两者都从\textbf{法线}量起（图 2-1 中标在法线与光线之间）。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.73,>=Stealth,font=\small]
+  \draw[thick] (-3.2,0)--(3.2,0);
+  \draw[dashed] (0,-1.1)--(0,2.5);
+  \draw[->,thick,red!65!black] (-2.3,2.3)--(0,0);
+  \draw[->,thick,red!65!black] (0,0)--(2.3,2.3);
+  \draw[violet,thick] (0,0.95) arc (90:135:0.95);
+  \draw[violet,thick] (0,0.95) arc (90:45:0.95);
+  \node[violet] at (-0.55,1.22) {$i_1$};
+  \node[violet] at (0.55,1.22) {$i_1'$};
+  \node[above] at (0,2.5) {法线};
+  \node[below right] at (0,-0.15) {界面};
+  \node[below left] at (-2.35,2.35) {入射光线};
+  \node[below right] at (2.35,2.35) {反射光线};
+\end{tikzpicture}\\
+{\small 图 2-1\quad 反射定律的几何（重绘）：法线在入射点垂直于界面，$i_1$ 与 $i_1'$ 都是光线与法线的夹角。}
+\end{minipage}\end{center}
+
+这条定律\textbf{与介质的折射率无关}——只要界面足够光滑，无论镜面是玻璃、金属还是水面，$i_1=i_1'$ 都成立。这也是它比折射定律早两千年被发现的原因：磨光的青铜镜与平静的水面，让反射对所有人都可见（课件 p15 的历史旁白）。课件 p11 的时间线（柏拉图、欧几里得、《墨经》）已并入 §1.3 的表，此处不重复；p12 的现场演示（激光笔 + 平面镜 + 量角器）只做一件事——改变入射角，用肉眼确认 $i_1=i_1'$ 始终成立。
+
+\subhdr{2.4 定律 4：折射定律（Snell 定律，课件 p13--p14）}
+\textbf{陈述}：折射光线在入射面内；入射角与折射角的正弦之比是常数（在给定温度、压强下），即
+\[
+n_{12}=\frac{\sin i_1}{\sin i_2}=\frac{n_2}{n_1},
+\qquad
+\frac{\sin i_1}{\sin i_2}=\frac{v_1}{v_2}=\frac{n_2}{n_1}.
+\]
+符号：$i_1$ 入射角、$i_2$ 折射角（都从法线量起）；$n_1,n_2$ 是两侧介质的绝对折射率，$n_{12}$ 是介质 2 相对介质 1 的折射率；$v_1,v_2$ 是两侧的光速。绝对折射率的定义是
+\[
+n=\frac{c}{v},
+\]
+即「介质相对真空的折射率」；$c$ 是真空光速。$n$ 越大，$v$ 越小，光在那种介质里走得越慢——课件 p14 的 Tip 说的「light slows down in an optically denser medium, and the wavefront spacing becomes smaller」就是这句话的物理图像，波前「变密」是因为同一条时间内光走得短。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.73,>=Stealth,font=\small]
+  \fill[blue!7] (-3.2,-2.0) rectangle (3.2,0);
+  \draw[thick] (-3.2,0)--(3.2,0);
+  \draw[dashed] (0,-2.0)--(0,2.4);
+  \draw[->,thick,red!65!black] (-1.83,1.83)--(0,0);
+  \draw[->,thick,red!65!black] (0,0)--(0.71,-1.32);
+  % 波前：与光线垂直的短线
+  \draw[violet] (-1.42,1.06)--(-1.06,1.42);
+  \draw[violet] (-0.71,0.53)--(-0.53,0.71);
+  \draw[violet] (0.24,-0.44)--(0.44,-0.24);
+  \draw[violet] (0.47,-0.88)--(0.88,-0.47);
+  \draw[violet,thick] (0,0.9) arc (90:135:0.9);
+  \draw[violet,thick] (0,-0.95) arc (270:298:0.95);
+  \node[violet] at (-0.52,1.12) {$i_1$};
+  \node[violet] at (0.30,-1.02) {$i_2$};
+  \node[above] at (0,2.35) {法线};
+  \node[above left] at (-3.0,1.9) {$n_1$};
+  \node[below left] at (-3.0,-1.8) {$n_2>n_1$};
+\end{tikzpicture}\\
+{\small 图 2-2\quad 折射与波前（重绘）：界面下方是光密介质（$n_2>n_1$），折射光线偏向法线，同时波前间距变小。}
+\end{minipage}\end{center}
+
+\textbf{补充（课件没写、但必须写出来的形式）}：把 $n_{12}=n_2/n_1$ 交叉相乘，得到对称形式
+\[
+n_1\sin i_1=n_2\sin i_2 .
+\]
+这个形式才是「折射不变量」：它不区分谁是 1 谁是 2，光路反过来照样成立（§2.5）。课件从 p13 到 p38 一直用比值形式 $\sin i_1/\sin i_2=n_2/n_1$，读者容易忘掉「$n$ 乘在哪个角上」；写成乘积形式就不会记错。
+
+\textbf{历史（课件 p15「One Law, Three Names」）}：Harriot 约 1600 年就得到了同样的结论，没发表；Snell 1621 年由实验得到，生前也没发表；Descartes 1637 年首次以正弦形式发表。从发现到发表隔了 16 年——课件借这件事说「publication and communication are equally important」。课件还说，从反射定律（两千年前）到折射定律多花了两千年，因为折射需要透明介质、精密的角度测量，以及「光在不同介质中速度不同」这个更深的观念。
+
+\subhdr{2.5 光路可逆（补充；课件没有单列，但 p20 用它）}
+\textbf{陈述}：把一条光线的传播方向反过来，它将沿原路返回。
+
+\textbf{课件里的证据}：课件没有把可逆性列为第五条定律（p3 的知识地图、p37 的小结、p38 的公式卡里都没有它），但 p20 的讲稿在解释「空气射入水中永远不会全反射」时用的正是它：「Light entering water from air will never undergo total internal reflection---because the direction is reversed.」——把一个水 $\rightarrow$ 空气的全反射光路反过来，就成了空气 $\rightarrow$ 水，而它并不违反任何定律。
+
+\textbf{为什么成立}：把 $n_1\sin i_1=n_2\sin i_2$ 里的 $i_1,i_2$ 与 $n_1,n_2$ 同时互换，式子不变；反射的 $i_1=i_1'$ 本身对称。更彻底的说法是时间反演（麦克斯韦方程在 $t\to-t$ 下形式不变），那属于第四章之后的电磁理论。注意可逆的是\textbf{路径}而不是\textbf{强度}：两个方向的反射率并不相等，强度分配留给第四章「光波在界面的反射和折射规律」。
+
+\subhdr{2.6 四条定律的适用条件一览}
+下表的每一行都对应本节上面的一条陈述，列「失效情形」是那条陈述的反面；读法是「左边定律 $\rightarrow$ 中间条件 $\rightarrow$ 右边反例」，三列一一对齐。
+
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.6cm}p{6.1cm}@{}}
+\thead{定律} & \thead{成立条件} & \thead{失效 / 例外}\\
+\hline
+直线传播 & 介质均匀；$\lambda\ll$ 装置尺度 & 非均匀介质（热空气、海水温跃层）$\rightarrow$ 光线弯曲、蜃景\\
+独立传播 & 介质线性（场可叠加） & 强光、非线性介质 $\rightarrow$ 两束光相互影响\\
+反射 & 界面光滑（尺度 $\gg\lambda$） & 粗糙界面 $\rightarrow$ 漫反射；纳米结构 $\rightarrow$ 异常反射\\
+折射 & 两侧介质均匀、各向同性 & 各向异性晶体 $\rightarrow$ 双折射（两种折射光）\\
+\end{tabular}
+\tabbot
+逐行读法：第一行「均匀」是与位置无关，「$\lambda\ll$ 尺度」是与孔径比较；第二行「线性」指介质的极化与场强成正比（这是叠加原理的前提，见本页 §2.2 旁注）；第三、四行都是「界面/介质比波长尺度更精细」时失效。边界说明：本表不含端点情形（例如 $\lambda$ 与孔径同量级时既非纯几何光学、也非纯波动光学），那种过渡区要靠衍射理论处理（课件 p36 把它列进「Huygens 原理不能解释」的一栏）。
+
+\subhdr{2.7 例 1（课件 p18）：平行玻璃板的侧向位移}
+
+\qbreak
+\qstem{（课件 p18，Example 1）一束光斜射到厚度 $t$、折射率 $n$ 的平行玻璃板上，穿过后方向不变，只产生侧向位移。入射角很小时，侧移为 $\Delta x=\frac{n-1}{n}i_1t$。要求：导出这个公式。}
+\textbf{考点}：两次 Snell 折射 + 平行界面的几何；小角近似里「哪些项可以丢」的判断（§2.4）。
+
+\textbf{关键一步}：先证「出射光与入射光平行」——这一步不写，后面的 $i_1-i_2$ 就没有依据。平行界面两次折射，第一次 $n_0\sin i_1=n\sin i_2$，第二次 $n\sin i_2=n_0\sin i_1'$（$n_0$ 是板外介质），两式右边相同，所以 $\sin i_1'=\sin i_1$，即 $i_1'=i_1$。方向相同、位置平移，平移量就是两条平行线之间的距离。
+
+\textbf{详解}：设光线在上表面 $A$ 点入射，在板内沿 $AB$ 走到下表面 $B$，$AB=t/\cos i_2$（因为板厚是竖直方向，光线斜着穿过）。出口处光线与入射光平行，两条平行线间的距离为
+\[
+\Delta x=AB\sin(i_1-i_2)=\frac{t}{\cos i_2}\sin(i_1-i_2)
+=\frac{t(\sin i_1\cos i_2-\cos i_1\sin i_2)}{\cos i_2}
+=t\Bigl(\sin i_1-\frac{\cos i_1\sin i_1}{n\cos i_2}\Bigr),
+\]
+最后一步用了 $n\sin i_2=\sin i_1$（板外取空气 $n_0=1$）。下面做小角近似：$\sin i\approx i$，$\cos i\approx 1-\frac{i^2}{2}$。先\textbf{保留}二阶项，
+\[
+\frac{\cos i_1}{\cos i_2}\approx\frac{1-i_1^2/2}{1-i_2^2/2}\approx 1-\frac{i_1^2-i_2^2}{2},
+\]
+于是
+\[
+\Delta x\approx t i_1\Bigl[1-\frac{1}{n}\Bigl(1-\frac{i_1^2-i_2^2}{2}\Bigr)\Bigr]
+=\frac{t i_1}{n}(n-1)+\underbrace{\frac{t i_1}{2n}(i_1^2-i_2^2)}_{\text{三阶小量}} .
+\]
+因为 $i_2=i_1/n$，所以 $i_1^2-i_2^2=i_1^2(1-1/n^2)$，那个括号整体是 $i_1^3$ 量级。丢掉它，才得到一阶结果。
+
+\aside{课件 p18 的三条小角近似印成 $\sin i_1\approx i_1$、$\cos i_1\approx 1-(\frac{1}{2})^2$、$\cos i_2\approx 1-(\frac{i_2}{2})^2$——第一条对，后两条漏了 $i_1^2$、$i_2^2$，正确写法是 $1-i_1^2/2$ 与 $1-i_2^2/2$。这个笔误在页面上出现两次（中栏一次、右栏一次），说明不是 OCR 错，是原稿如此；因为整个修正项本身就是 $O(i^2)$，把它写成 $\frac{i^2}{4}$ 不影响末式的一阶结果。本讲义按正确写法重排，并在 §7 记一条。}
+
+\textbf{答案}：$\Delta x=\dfrac{n-1}{n}i_1t$，其中 $i_1$ 必须用\textbf{弧度}，$t$ 是板厚，$n$ 是板的折射率。适用条件：$i_1\ll 1$（一阶近似）。
+
+\textbf{自检}：（1）量纲：$i_1t$ 是长度，$\frac{n-1}{n}$ 无量纲，对。（2）极限：$n\to1$ 时 $\Delta x\to0$——板与外界无区别，当然不偏。（3）数值：$t=10$ mm、$n=1.5$、$i_1=10^\circ=0.1745$ rad，公式给 $0.582$ mm，严格式给 $0.589$ mm，差 $1.2\%$；换 $i_1=20^\circ$，公式给 $1.164$ mm，严格式 $1.220$ mm，差 $4.6\%$。这就是「一阶近似」的代价，也是下一节 §8 易错点里那条「小角近似别用到大角度」的来历。
+
+\hdr{§3}{全反射与光纤}
+
+\subhdr{3.1 现象：从水下看天（课件 p19）}
+课件 p19 的描述是：在水下向上看，水面上的一切被压进一个圆形「窗口」（everything above the water surface appears compressed into a circular ``window''）；窗口之外，水面像镜子一样把池底反射回来。这就是全反射（total internal reflection, TIR）最经典的现场。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.69,>=Stealth,font=\small]
+  \begin{scope}[xshift=0cm]
+    \fill[blue!8] (-1.5,-1.6) rectangle (1.5,0);
+    \draw[thick] (-1.5,0)--(1.5,0);
+    \draw[dashed] (0,-1.6)--(0,1.3);
+    \draw[->,thick,red!65!black] (-1.05,-1.05)--(0,0);
+    \draw[->,thick,red!65!black] (0,0)--(0.52,1.0);
+    \draw[->,thick,red!65!black,dashed] (0,0)--(0.62,-0.62);
+    \node[below] at (0,-1.75) {(1) $i<i_c$};
+  \end{scope}
+  \begin{scope}[xshift=4.6cm]
+    \fill[blue!8] (-1.5,-1.6) rectangle (1.5,0);
+    \draw[thick] (-1.5,0)--(1.5,0);
+    \draw[dashed] (0,-1.6)--(0,1.3);
+    \draw[->,thick,red!65!black] (-1.05,-1.05)--(0,0);
+    \draw[->,thick,red!65!black] (0,0)--(1.5,0);
+    \node[below] at (0,-1.75) {(2) $i=i_c$};
+  \end{scope}
+  \begin{scope}[xshift=9.2cm]
+    \fill[blue!8] (-1.5,-1.6) rectangle (1.5,0);
+    \draw[thick] (-1.5,0)--(1.5,0);
+    \draw[dashed] (0,-1.6)--(0,1.3);
+    \draw[->,thick,red!65!black] (-1.05,-0.6)--(0,0);
+    \draw[->,thick,red!65!black] (0,0)--(1.05,-0.6);
+    \node[below] at (0,-1.75) {(3) $i>i_c$};
+  \end{scope}
+\end{tikzpicture}\\
+{\small 图 3-1\quad 全反射的三个状态（重绘，依课件 p19 的 (1)(2)(3)）：(1) 有折射也有部分反射；(2) 折射光沿界面掠射（$i_2=90^\circ$）；(3) 只剩反射。下方是光密介质，上方是光疏介质，虚线是法线。}
+\end{minipage}\end{center}
+
+\textbf{临界角的来历}：把 Snell 定律 $n_1\sin i_1=n_2\sin i_2$ 用在「光密 $\rightarrow$ 光疏」上（$n_1>n_2$），随 $i_1$ 增大，$i_2$ 增加得更快；当 $i_2=90^\circ$ 时折射光贴着界面走，此时的入射角就是临界角：
+\[
+\sin i_c=\frac{n_2}{n_1}\qquad(n_1>n_2).
+\]
+符号：$i_c$ 临界角（课件 p19/p20 也写作 $\theta_c$），$n_1$ 光密介质（水）的折射率，$n_2$ 光疏介质（空气）的折射率。注意这个公式\textbf{只在 $n_1>n_2$ 时有解}：若 $n_1<n_2$，右边大于 1，$\arcsin$ 没有实数解——物理上就是「从光疏进光密永远碰不到临界角」，这正是空气射入水不会全反射的严格理由。
+
+\textbf{补充（课件只给图，不给数）}：把水取 $n=1.33$，$i_c=\arcsin(1/1.33)=48.75^\circ$（课件 p20 给的就是这个数）；若取更精确的 $1.333$，得 $48.6^\circ$。所以那个「圆窗」是一条全角 $2i_c\approx97.5^\circ$ 的圆锥——水面以上将近 $180^\circ$ 的天空，被压进不到 $98^\circ$ 的锥内，这就是课件说「compressed」的定量含义。窗口边缘对应 $i=i_c$，再往外全是反射，所以窗外看到的是池底而不是天空。
+
+\subhdr{3.2 两个条件与三种情形（课件 p20）}
+\textbf{条件 1}：光从光密介质射向光疏介质（$n_1>n_2$）。\textbf{条件 2}：入射角大于（课件写「大于或等于」）临界角 $i_c$。两条缺一不可——只满足条件 2 而不满足条件 1，连临界角都不存在（见上节末段）。
+
+下表是把 §3.1 的 Snell 关系在同一条界面的三段上各读一次；表中的「反射光」一行是容易漏的：反射在任何情形下都存在，全反射只是「反射之外没有折射」。
+
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{5.8cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\thead{情形} & \thead{判据} & \thead{界面上发生什么} & \thead{水下看到什么}\\
+\hline
+折射为主 & $i<i_c$ & 有折射光（偏离法线），同时有部分反射光 & 看到水面外的景物\\
+临界 & $i=i_c$ & 折射光沿界面掠射（$i_2=90^\circ$），能量趋于零但不严格为零 & 窗口边缘（最亮的一圈）\\
+全反射 & $i>i_c$ & 没有折射光，入射能量全部返回光密介质 & 窗口之外：水面变成镜子\\
+\end{tabular}
+\tabbot
+逐行读法：第一行由 $\sin i_2=\frac{n_1}{n_2}\sin i<\frac{n_1}{n_2}\sin i_c=1$ 成立，所以 $i_2$ 有解；第二行把 $i=i_c$ 代入恰好得到 $\sin i_2=1$；第三行 $\sin i_2>1$ 无解，方程只剩下反射一支。边界说明：$i=i_c$ 单独成行，它\textbf{不算}全反射（没有「全部返回」），课件 p19 的图 (2) 也把它单列为「Critical condition (Refraction Along Interface)」；因此 §3.2 开头把课件的「greater than or equal to」收紧为「大于」，端点归第二行。至于「第一行里反射占多少、折射占多少」，那是强度分配，属于第四章，本讲不涉及。
+
+\subhdr{3.3 例 2（课件 p21）：让金属膜「消失」的纸片}
+
+\qbreak
+\qstem{（课件 p21，Example 2）一块平行玻璃板厚 $t=200$ mm、折射率 $n_1=1.5$，下表面有一个直径 $d=1$ mm 的圆形空气孔，上表面用金属片盖住这个孔。问：下表面要多大的圆纸片，才能使从下方\textbf{任何方向}都看不到这块金属片？}
+\textbf{考点}：全反射的临界角 + 「逃逸窗口」的几何（§3.1--§3.2）。
+
+\textbf{关键一步}：把「看不到」翻译成「金属片发出的光出不来」。金属片在玻璃里发光（散射光），射向下表面；入射角 $i>i_c$ 的光被全反射回玻璃，永远出不来；只有 $i<i_c$ 的光能折射出去。这些「逃逸光线」在下表面落在一块圆内，纸片只要盖住这块圆，从下面任何角度看都只能看到纸。
+
+\textbf{详解}：先统一记号（课件这里的记号是乱的：题面说 $n_1=1.5$，p21 的图却把 $n_1$ 标在空气侧、把 $n_2$ 标在玻璃侧；Step 2 又写 $\sin i_2=1/n_2$）。本讲义记：玻璃 $n_g=1.5$，空气 $n_a=1$，界面处的入射角记 $i$。
+
+第一步，临界角：
+\begin{gather*}
+\sin i_c=\frac{n_a}{n_g}=\frac{1}{1.5}=0.666667,\qquad
+\cos i_c=\sqrt{1-\sin^2 i_c}=\frac{\sqrt5}{3}=0.745356,\\
+\tan i_c=\frac{2}{\sqrt5}=0.894427 .
+\end{gather*}
+
+第二步，几何：以 $i_c$ 掠出的光线，从金属片边缘（离轴 $d/2$）向下走，横向前进 $t\tan i_c$ 后落到下表面。两侧各一个，所以逃逸圆直径
+\[
+L=d+2t\tan i_c .
+\]
+第三步，代入：
+\[
+L=1+2\times200\times0.894427=1+357.77=358.77\ \text{mm}.
+\]
+
+\aside{为什么是「加 $d$」而不是「加 $2t\tan i_c$ 就算完」：上限 $i<i_c$ 对金属片\textbf{每一点}都成立，最外侧的逃逸光线从片的左右两个边缘发出，所以逃逸圆是「片宽 $d$ + 两侧各 $t\tan i_c$」。若把 $d$ 漏掉，会得到 $357.8$ mm——与答案只差 1 mm，但这 1 mm 正是题目给 $d=1$ mm 的用处。}
+
+\textbf{答案}：纸片直径至少 $358.77$ mm（工程上取 $359$ mm 或更大）。注意课件把 $L$ 叫成「Radius of the paper disk」，但同一个 $L$ 的算式与结论又写「the required diameter is 358.77 mm」——是直径，不是半径；按半径取会小一半，金属片边缘立刻露出来（见 §7 缺口 3）。
+
+\textbf{自检}：（1）$t\to0$ 时 $L\to d$：板薄到没有，纸片只要盖住孔。（2）$n_g\to\infty$ 时 $\tan i_c\to0$，也有 $L\to d$：光被「锁」在孔的正上方，怎么都出不来。（3）量纲：$t\tan i_c$ 与 $d$ 都是长度。（4）数值反代：$i_c=41.81^\circ$，$200\times0.894427=178.89$ mm，两侧共 $357.77$ mm，加 $1$ mm 得 $358.77$ mm，与上式一致。
+
+\subhdr{3.4 全反射棱镜：反射率接近 100\% 的镜子（课件 p22）}
+等腰直角棱镜（isosceles right-angle prism）让光以 $45^\circ$ 入射到斜面上。$45^\circ$ 是否大于临界角？以 $n=1.5$ 的玻璃算，$i_c=\arcsin(1/1.5)=41.81^\circ$，$45^\circ>41.81^\circ$，所以全反射成立——余量只有 $3.2^\circ$，这也是这类棱镜对角度精度要求高的原因。课件 p22 给的两种用法是：一次全反射把光偏折 $90^\circ$，两次全反射把光偏折 $180^\circ$。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.69,>=Stealth,font=\small]
+  % 90 degree
+  \begin{scope}
+    \draw[thick,fill=blue!6] (0,0)--(1.7,0)--(0,1.7)--cycle;
+    \draw[->,thick,red!65!black] (-0.85,0.85)--(0.85,0.85);
+    \draw[->,thick,red!65!black] (0.85,0.85)--(0.85,-0.85);
+    \draw[dashed] (0.85,0.3)--(1.7,1.15);
+    \node[below] at (0.85,-0.95) {(a) 偏折 $90^\circ$};
+  \end{scope}
+  % 180 degree
+  \begin{scope}[xshift=4.6cm]
+    \draw[thick,fill=blue!6] (0,0)--(1.7,0)--(0,1.7)--cycle;
+    \draw[->,thick,red!65!black] (0.85,1.15)--(0.85,0.35);
+    \draw[->,thick,red!65!black] (0.85,0.35)--(0.15,0.35);
+    \draw[->,thick,red!65!black] (0.15,0.35)--(0.15,-0.35);
+    \draw[->,thick,red!65!black] (0.15,-0.35)--(0.95,-0.35);
+    \node[below] at (0.85,-0.9) {(b) 偏折 $180^\circ$};
+  \end{scope}
+\end{tikzpicture}\\
+{\small 图 3-2\quad 全反射棱镜的两种用法（重绘，依课件 p22 文字）：直角三角形是主截面，红色是光路，虚线是斜面法线。}
+\end{minipage}\end{center}
+
+课件 p22 的对比数字值得记住：全反射棱镜的反射率 $\approx100\%$，镀银平面镜只反射约 $90\%$，所以天文望远镜、潜望镜、双筒望远镜（Porro 棱镜、屋脊棱镜）宁可用棱镜也不用镀银镜——少一次损失，像就更亮。图 3-2 里 (b) 的两次反射把光线整体平移并反向，这正是双筒望远镜把倒像转正的做法。
+
+\subhdr{3.5 光纤：把全反射变成一根线（课件 p23）}
+光纤（optical fiber）的结构是两层同心圆柱：芯（core，折射率 $n_1$）与包层（cladding，折射率 $n_2$），且 $n_1>n_2$。光在芯里前进，每次碰到芯-包层界面都是「光密 $\rightarrow$ 光疏」，只要入射角大于临界角就全反射，于是光被关在芯里一路向前——课件 p23 的原话是「Light undergoes repeated total internal reflection at the core-cladding interface」。
+
+衡量「能收进多少光」的量是\textbf{数值孔径（numerical aperture, NA）}：
+\[
+NA=n_0\sin\theta_1^{\max}=\sqrt{n_1^2-n_2^2},
+\]
+符号：$n_0$ 外部介质（通常是空气，$n_0=1$）的折射率；$\theta_1$ 是外部光线与\textbf{轴}的夹角；$\theta_1^{\max}$ 是还能被导住的最大入射角；$n_1$ 芯、$n_2$ 包层。NA 越大，能收的光锥越宽。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.71,>=Stealth,font=\small]
+  \fill[blue!12] (0,0.35) rectangle (6.2,0.9);
+  \fill[blue!12] (0,-0.9) rectangle (6.2,-0.35);
+  \draw[thick] (0,0.35)--(6.2,0.35);
+  \draw[thick] (0,-0.35)--(6.2,-0.35);
+  \draw[dash dot] (0,0)--(6.2,0);
+  \draw[dashed] (1.6,0.35)--(1.6,-0.9);
+  \draw[->,thick,red!65!black] (-0.6,1.05)--(1.6,0);
+  \draw[->,thick,red!65!black] (1.6,0)--(4.1,0.35);
+  \draw[->,thick,red!65!black] (4.1,0.35)--(6.2,-0.05);
+  \draw[violet] (0.9,0.40) arc (0:24:0.9);
+  \node[violet] at (1.15,0.62) {$\theta_1$};
+  \draw[violet] (2.25,0.05) arc (0:13:0.75);
+  \node[violet] at (2.45,0.22) {$\theta'$};
+  \draw[violet] (4.1,0.05) arc (270:290:0.35);
+  \node[violet] at (4.55,-0.16) {$\theta_2$};
+  \node[above] at (0.7,0.92) {包层 $n_2$};
+  \node[below] at (0.7,-0.92) {包层 $n_2$};
+  \node at (0.55,-0.25) {芯 $n_1$};
+  \node[below left] at (-0.6,1.05) {$n_0$};
+\end{tikzpicture}\\
+{\small 图 3-3\quad 阶跃光纤的子午光线（重绘）：$\theta_1$ 与 $\theta'$ 都对\textbf{轴}量，$\theta_2$ 对界面\textbf{法线}量。}
+\end{minipage}\end{center}
+
+\textbf{NA 的推导（本节补齐，课件 p24 只写结论）}：先看光从外部进入芯的那次折射，入射角 $\theta_1$（对轴）与折射角 $\theta'$（对轴）：
+\[
+n_0\sin\theta_1=n_1\sin\theta'.
+\]
+再看芯-包层界面：光线在芯内与轴成 $\theta'$，而界面平行于轴、法线垂直于轴，所以界面上的入射角
+\[
+\theta_2=90^\circ-\theta',
+\qquad\text{即}\qquad
+\sin\theta'=\cos\theta_2 .
+\]
+全反射条件是
+\[
+\sin\theta_2\ge\frac{n_2}{n_1}.
+\]
+把三式串起来：
+\[
+n_0\sin\theta_1=n_1\sin\theta'=n_1\cos\theta_2=n_1\sqrt{1-\sin^2\theta_2}
+\le n_1\sqrt{1-\Bigl(\frac{n_2}{n_1}\Bigr)^2}=\sqrt{n_1^2-n_2^2}.
+\]
+不等号方向是这样来的：由 $\sin\theta_2\ge n_2/n_1$ 得 $\sin^2\theta_2\ge(n_2/n_1)^2$，再取负号得 $1-\sin^2\theta_2\le1-(n_2/n_1)^2$，开方保序，所以 $\cos\theta_2$ 有\textbf{上界}；把 $\theta_1$ 取到最大，上界就成了等式，这就是 NA。
+
+课件 p24 把这一串直接写成「$n_0\sin\theta_1=n_1\sin\theta'=n_1\cos\theta_2=n_1\sqrt{1-\sin^2\theta_2}$」，「$\theta_2=90^\circ-\theta'$」与「不等号取反」两处都是跳步，本页把它们显式写出。
+
+\subhdr{3.6 例 3（课件 p24）：算一根光纤的 NA}
+
+\Needspace*{0.34\textheight}
+\qstem{（课件 p24，Example 3）阶跃型光纤：芯 $n_1=1.48$，包层 $n_2=1.46$，放在空气中（$n_0=1.00$）。求数值孔径 NA。}
+\textbf{考点}：NA 的定义与推导（§3.5）。
+
+\textbf{关键一步}：NA 的定义是 $n_0\sin\theta_1^{\max}$，而 §3.5 已经证明它等于 $\sqrt{n_1^2-n_2^2}$；所以本题不需要角度，只需代两个折射率——前提是「外部是空气、$n_0=1$」，若外部是水，$\theta_1^{\max}$ 会变小，但 NA 这个\textbf{产品参数}不变。
+
+\textbf{详解}：
+\[
+NA=\sqrt{n_1^2-n_2^2}=\sqrt{1.48^2-1.46^2}
+=\sqrt{2.1904-2.1316}=\sqrt{0.0588}=0.2425 .
+\]
+
+\textbf{答案}：$NA\approx0.242$（课件给 $0.242$，一致）。
+
+\textbf{自检}：（1）$n_1\to n_2$ 时 $NA\to0$——两层一样就没有波导，光全部漏掉，符合物理。（2）$NA<1$ 说明能收的最大半角 $<90^\circ$；反算 $\theta_1^{\max}=\arcsin(0.2425)=14.0^\circ$（本讲补充），即这根光纤只收得进一个约 $28^\circ$ 全角的锥。（3）量纲：$n$ 无量纲，$NA$ 也无量纲。
+
+\subhdr{3.7 一根光纤如何扛起整个互联网（课件 p23、p25）}
+课件 p25 的三个数字说明规模：全球互联网数据 99\% 以上走光纤；一根头发丝粗的光纤能同时传上百万路电话；光纤直径约 $125\ \mu$m，人的头发约 $70\ \mu$m。剩下的故事只有两个年代：1966 年高锟提出用光纤通信（那一年距离 Snell 1621 年发现折射定律已过 345 年），2009 年他因此获诺贝尔物理学奖。全反射这个「高中概念」，撑起了信息时代——这就是课件 p37 说的「From Principles to Technology」。
+
+\hdr{§4}{棱镜、最小偏向角与色散}
+
+\subhdr{4.1 偏向角公式的几何来源（课件 p26）}
+棱镜（prism）的主截面（principal section）是一个三角形，顶角（apex angle）$A$，两个侧面是两次折射的界面。光从第一面射入（入射角 $i_1$，折射角 $i_2$），从第二面射出（内部入射角 $i_2'$，出射角 $i_1'$）。两次折射都让光向底边偏，总的偏向角（deviation angle）$\delta$ 是两段偏折之和：
+\[
+\delta=(i_1-i_2)+(i_1'-i_2')=i_1+i_1'-A,
+\qquad\text{其中}\qquad i_2+i_2'=A .
+\]
+两个式子的来历：$i_2+i_2'=A$ 是因为两条法线分别垂直于两个侧面，它们在内侧的夹角等于 $A$，而由「法线、界面法线交点、两个折射点」组成的四边形内角和为 $360^\circ$，去掉两个直角就得 $i_2+i_2'=A$；$\delta$ 则是把每个界面的偏折 $i-i'$ 相加（每面都是「入射角减折射角」）。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.75,>=Stealth,font=\small]
+  \coordinate (A) at (0,2.5);
+  \coordinate (B) at (-1.5,-0.6);
+  \coordinate (C) at (1.5,-0.6);
+  \draw[thick,fill=blue!6] (A)--(B)--(C)--cycle;
+  \coordinate (E) at (-0.62,0.85);
+  \coordinate (F) at (0.62,0.85);
+  \draw[->,thick,red!65!black] (-2.1,1.75)--(E);
+  \draw[->,thick,red!65!black] (E)--(F);
+  \draw[->,thick,red!65!black] (F)--(2.3,0.67);
+  \draw[dashed] (-1.55,1.62)--(0.35,0.62);
+  \draw[dashed] (0.62,0.55)--(1.62,1.45);
+  \draw[gray,dotted,thick] (E)--(2.3,-0.96);
+  \draw[violet] (-0.97,1.06) arc (-31.5:-16:0.9);
+  \node[above] at (A) {$A$};
+  \node[above left] at (-2.1,1.8) {$i_1$};
+  \node[above right] at (2.28,0.72) {$i_1'$};
+  \node[right] at (-0.62,0.30) {$i_2$};
+  \node[left] at (0.62,0.30) {$i_2'$};
+  \node[violet] at (-1.35,1.05) {$\delta$};
+  \node[below] at (0,-0.65) {折射率 $n$};
+\end{tikzpicture}\\
+{\small 图 4-1\quad 棱镜主截面（重绘）：实线是光路，虚线是两条法线，点线是入射光的延长线，$\delta$ 是它与出射光的夹角。}
+\end{minipage}\end{center}
+
+\warnbox{记号提醒：课件 p26 的公式写 $\delta=i_1+i_2'-A$，可同一页的图把出射角标成 $i_1'$；而 p26 图里两个内部角\textbf{都}印成 $i_2$（没有 $i_2'$）。三处对不上，读者照哪一处都可能写错。本讲义统一为 $\delta=i_1+i_1'-A$、$A=i_2+i_2'$，并已在 §0.4 的第三条约定里声明。}
+
+\subhdr{4.2 最小偏向角：为什么是对称光路（课件 p27）}
+转动棱镜，$\delta$ 随 $i_1$ 变。课件 p27 的陈述是：「When the light ray travels parallel to the base inside the prism, the deviation angle reaches its minimum value $\delta_m$.」——当棱镜内的光线平行于底边时，偏向角最小。此时 $i_1=i_1'$、$i_2=i_2'=A/2$，代进 §4.1 的式子得
+\[
+n=\frac{\sin\frac{A+\delta_m}{2}}{\sin\frac{A}{2}} .
+\]
+符号：$A$ 顶角，$\delta_m$ 最小偏向角，$n$ 棱镜折射率。
+
+\textbf{补充（课件只给结论，不证「为什么对称」）}：把 $\delta$ 看成 $i_1$ 的函数。由第一面 $n\sin i_2=\sin i_1$、第二面 $\sin i_1'=n\sin i_2'$、以及 $i_2'=A-i_2$，有 $i_2=\arcsin(\sin i_1/n)$，$i_2'=A-i_2$，$i_1'=\arcsin(n\sin i_2')$，于是
+\[
+\delta(i_1)=i_1+i_1'(i_1)-A,
+\qquad
+\frac{\dd\delta}{\dd i_1}=1+\frac{\dd i_1'}{\dd i_1}.
+\]
+逐段求导：
+\[
+\frac{\dd i_2}{\dd i_1}=\frac{\cos i_1}{n\cos i_2},
+\qquad
+\frac{\dd i_2'}{\dd i_1}=-\frac{\dd i_2}{\dd i_1},
+\qquad
+\frac{\dd i_1'}{\dd i_2'}=\frac{n\cos i_2'}{\cos i_1'},
+\]
+相乘得
+\[
+\frac{\dd i_1'}{\dd i_1}=-\frac{\cos i_1\cos i_2'}{\cos i_1'\cos i_2}.
+\]
+令 $\dd\delta/\dd i_1=0$，即
+\[
+\cos i_1\cos i_2'=\cos i_1'\cos i_2 .
+\]
+两边平方，用 $1-\sin^2$ 换成正弦，并代入两次 Snell（$\sin i_1=n\sin i_2$、$\sin i_1'=n\sin i_2'$），记 $x=\sin^2i_2$、$y=\sin^2i_2'$：
+\[
+(1-n^2x)(1-y)=(1-n^2y)(1-x)
+\;\Longrightarrow\;
+-y-n^2x=-x-n^2y
+\;\Longrightarrow\;
+(n^2-1)(y-x)=0 .
+\]
+$n>1$，故 $x=y$，即 $i_2=i_2'$，再由两次 Snell 得 $i_1=i_1'$——极值点就是对称光路。把 $i_2=i_2'=A/2$、$i_1=i_1'=(A+\delta_m)/2$ 代回 $\delta$ 的定义，就得到上面的 $n$ 公式。
+
+\aside{唯一性：$\delta(i_1)$ 在 $i_1=i_1'$ 处取极值，而「对称」这个方程在 $i_1\in(0^\circ,90^\circ)$ 内只有一个解（$i_2$ 随 $i_1$ 严格递增，$i_2'=A-i_2$ 严格递减，两条曲线只交一次）；又 $i_1\to90^\circ$ 时偏向角变大（掠射时偏折剧增），故这个唯一驻点是\textbf{极小}。更对称的看法是光路可逆：$\delta(i_1)=\delta(i_1')$，而 $i_1\mapsto i_1'$ 是单调递减的对合，唯一可能的极值点只能是它的不动点 $i_1=i_1'$。}
+
+\textbf{补充数值自检}：$A=60^\circ$、$n=1.5$，则 $n\sin(A/2)=1.5\times0.5=0.75$，$\frac{A+\delta_m}{2}=\arcsin0.75=48.59^\circ$，$\delta_m=2\times48.59^\circ-60^\circ=37.18^\circ$。反过来，若量得 $A=60^\circ$、$\delta_m=37.2^\circ$，由公式得 $n=1.50$——这就是课件 p27 说的「实验室测折射率的经典方法」，它一直用到今天的分光计上。
+
+\subhdr{4.3 色散与彩虹（课件 p28）}
+课件 p28 的现象是：白光过棱镜后分成一条色带，\textbf{紫光偏折最大、红光偏折最小}。物理原因是折射率随波长变：$n=n(\lambda)$，短波（紫）$n$ 大，长波（红）$n$ 小，于是由 $\delta=i_1+i_1'-A$ 可知紫光偏得多——这叫色散（dispersion）。
+
+牛顿 1666 年的双棱镜实验是这页的重点：第一个棱镜把白光展开成光谱；第二个棱镜让光谱再一次通过，光谱\textbf{不能再被分开}。结论是：白光是不同颜色的混合，颜色不是棱镜「造」出来的。这个实验把「棱镜能给光上色」的旧说法推翻了，也顺带把光谱学打开了——今天从恒星化学成分到分子结构，用的都是同一条思路。
+
+\textbf{补充（p28 只有标题，没展开）}：彩虹是同一件事在天上的版本——阳光进水滴折射、背面反射、再折射，主虹出现在与太阳相反方向约 $42^\circ$ 的锥面上，次虹（霓）多一次内反射、约 $51^\circ$ 且颜色顺序相反。本讲不要求算这个角度，只需认出它是「两次折射 + 一次（或两次）反射 + 色散」。
+
+\hdr{§5}{波前、惠更斯原理与「为什么」}
+
+\subhdr{5.1 波前、波线、光线（课件 p30）}
+\textbf{波前（wavefront / wave surface）}是光扰动同时到达的空间曲面。点光源发出球面波，波前是同心球面；光源在无穷远时是平面波，波前是平行平面。\textbf{波线（wave line）}是与波前垂直、指向传播方向的线。课件 p30 有一句关键的话：「Light ray is the wave line---two names, the same thing.」——几何光学里的光线，就是波动光学里的波线，两者是同一条线的两个名字。这句话把 §1--§4 与本节接上了：前面用「光线」讲的一切，都可以翻译成「波前在传播」。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.64,>=Stealth,font=\small]
+  % 球面波
+  \begin{scope}
+    \foreach \r in {0.45,0.9,1.35,1.8}{\draw[violet] (0,0) circle (\r);}
+    \foreach \a in {0,45,90,135,180,225,270,315}{\draw[->,red!65!black] (\a:0.2)--(\a:1.95);}
+    \fill (0,0) circle (1.6pt);
+    \node[below] at (0,-2.05) {(a) 点光源：球面波前};
+  \end{scope}
+  % 平面波
+  \begin{scope}[xshift=6.2cm]
+    \foreach \x in {0.6,1.2,1.8,2.4}{\draw[violet] (\x,-1.7)--(\x,1.7);}
+    \foreach \y in {-1.4,-0.7,0,0.7,1.4}{\draw[->,red!65!black] (0.2,\y)--(2.9,\y);}
+    \node[below] at (1.5,-2.05) {(b) 无穷远光源：平面波前};
+  \end{scope}
+\end{tikzpicture}\\
+{\small 图 5-1\quad 波前（紫）与波线（红，即光线）：波线处处垂直于波前（重绘）。}
+\end{minipage}\end{center}
+
+\subhdr{5.2 惠更斯原理（课件 p31）}
+\textbf{陈述（原形式，三句）}：波前上每一点都可看作发射次波（secondary wavelet）的次波源，次波向各方向扩展；在下一时刻，所有这些次波的\textbf{包络面}（envelope）就是新的波前。
+
+这三句里，「每一点都是次波源」是假设，「包络是波前」是结论；中间没有解释「为什么只有包络方向有光」——那个问题要等菲涅耳用相干叠加回答（见 §5.6）。课件 p31 的历史是：惠更斯 1678 年提出，1690 年《光论》出版；当时牛顿的粒子说占上风（《光学》1704），惠更斯的想法被忽略了一百多年，直到 1801 年杨氏双缝、1815 年菲涅耳才把它救回来。
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=0.69,>=Stealth,font=\small]
+  \draw[violet,thick] (-1.55,1.5) .. controls (-0.9,0.2) .. (-1.55,-1.5);
+  \foreach \y in {1.1,0.4,-0.3,-1.0}{
+    \fill (-1.34,\y) circle (1.5pt);
+    \draw[gray] (-1.34,\y) circle (0.55);
+  }
+  \draw[violet,thick,dashed] (0.35,1.65) .. controls (1.0,0.3) .. (0.35,-1.65);
+  \node[violet] at (-1.95,1.35) {$S$};
+  \node[violet] at (0.95,1.55) {$S'$};
+  \node[gray,above] at (-1.34,1.65) {次波};
+  \node[below] at (-0.6,-1.95) {次波（灰圆）与包络（虚线）};
+\end{tikzpicture}\\
+{\small 图 5-2\quad 惠更斯作图（重绘）：给定波前 $S$，每点作半径相同的次波，公切面（虚线）就是新波前 $S'$。}
+\end{minipage}\end{center}
+
+\subhdr{5.3 用惠更斯作图导出反射定律与折射定律（课件 p33）}
+这一页是整讲的枢纽：四条定律里最难「讲道理」的两条（反射、折射），在这里变成同一个几何作图的两个结果。作图步骤如下（图 5-3 的字母与这里一一对应）：
+\begin{enumerate}
+  \item 入射波前 $A_1A_n$ 斜着到达界面，$A_1$ 先到，$A_n$ 后到；
+  \item $t=0$ 时 $A_1$ 到达界面并开始发次波；到 $t=t_n$ 时 $A_n$ 才到达界面上的 $B_n$，这段入射光走过 $A_nB_n=v_1t_n$（$v_1$ 是介质 1 中的光速）；
+  \item 同一段时间里，$A_1$ 发出的次波在介质 1 中已经长到半径 $A_1C_1=v_1t_n$；
+  \item 反射波前就是过 $B_n$ 且与这个次波球面相切的平面，切点记 $C_1$——所以 $A_1C_1\perp C_1B_n$。
+\end{enumerate}
+
+\begin{center}\begin{minipage}{0.97\linewidth}\centering
+\begin{tikzpicture}[scale=2.05,>=Stealth,font=\small]
+  \draw[thick] (-0.95,0)--(2.0,0);
+  \node[below left] at (-0.95,-0.03) {介质 2 ($v_2$)};
+  \node[above left] at (-0.95,0.03) {介质 1 ($v_1$)};
+  \draw[gray] (0,0) circle (0.84);
+  \draw[gray] (0,0) circle (0.56);
+  \draw[violet,thick] (0,0)--(0.766,0.643);
+  \draw[red!65!black,thick] (0.539,0.643)--(1.305,0);
+  \draw[orange,thick] (1.305,0)--(0.240,-0.506);
+  \draw[->,thick] (-0.71,0.845)--(0,0);
+  \draw[->,thick] (0.545,0.908)--(1.305,0);
+  \draw[->,thick,red!65!black] (0,0)--(0.61,0.727);
+  \draw[->,thick,red!65!black] (1.305,0)--(1.70,0.471);
+  \draw[->,thick,orange] (0,0)--(0.429,-0.903);
+  \draw[->,thick,orange] (1.305,0)--(1.56,-0.537);
+  \draw[dashed] (0,-0.7)--(0,1.0);
+  \draw[dashed] (1.305,-0.6)--(1.305,0.35);
+  \draw[violet] (0,0.55) arc (90:130:0.55);
+  \node[violet] at (-0.22,0.62) {$i_1$};
+  \draw[violet] (0,0.42) arc (270:295:0.42);
+  \node[violet] at (0.10,-0.40) {$i_2$};
+  \draw[violet] (1.305,0.42) arc (90:50:0.42);
+  \node[violet] at (1.47,0.40) {$i_1'$};
+  \fill (0,0) circle (1.4pt) node[below left] {$A_1$};
+  \fill (0.766,0.643) circle (1.4pt) node[above right] {$A_n$};
+  \fill (1.305,0) circle (1.4pt) node[below right] {$B_n$};
+  \fill (0.539,0.643) circle (1.4pt) node[above left] {$C_1$};
+  \fill (0.240,-0.506) circle (1.4pt) node[below left] {$D_1$};
+\end{tikzpicture}\\
+{\small 图 5-3\quad 惠更斯作图导出反射与折射（重绘，字母同课件 p33）：紫线是入射波前 $A_1A_n$，红线是反射波前 $C_1B_n$，橙线是折射波前 $B_nD_1$；两圆是 $A_1$ 在同一时间 $t_n$ 内发出的次波（半径 $v_1t_n$ 与 $v_2t_n$）。}
+\end{minipage}\end{center}
+
+\textbf{反射：两个三角形全等。}$\triangle A_1C_1B_n$ 与 $\triangle B_nA_nA_1$ 都是直角三角形（$A_1C_1\perp C_1B_n$；入射波前垂直于入射线，所以 $A_nA_1\perp A_nB_n$），斜边公共 $A_1B_n$，一条直角边 $A_1C_1=A_nB_n$。由「斜边 + 一直角边」（HL）全等，对应角相等：
+\[
+\angle C_1B_nA_1=\angle A_nA_1B_n
+\qquad\Longrightarrow\qquad
+i_1'=i_1 .
+\]
+这里 $i_1=\angle A_nA_1B_n$ 就是入射角：因为入射线垂直于 $A_1A_n$、界面沿 $A_1B_n$，所以入射线与界面的夹角等于 $A_1A_n$ 与 $B_nA_1$ 的夹角。
+
+\textbf{折射：不能用全等，只能用正弦比。}在介质 2 里，$A_1$ 的次波半径是 $A_1D_1=v_2t_n$（$D_1$ 是折射波前与界面的交点），它和前一步的 $A_nB_n=v_1t_n$ \textbf{不相等}——两边不同速，等长关系不存在，全等判据失效。剩下的只有两个直角三角形里的正弦：
+\[
+\sin i_1=\frac{A_nB_n}{A_1B_n},
+\qquad
+\sin i_2=\frac{A_1D_1}{A_1B_n},
+\]
+相除时 $A_1B_n$ 约掉：
+\[
+\frac{\sin i_1}{\sin i_2}=\frac{A_nB_n}{A_1D_1}=\frac{v_1t_n}{v_2t_n}=\frac{v_1}{v_2}=\frac{n_2}{n_1},
+\]
+最后一步用 $n=c/v$。这就是 Snell 定律——它不是一个需要单独假设的规则，而是「同一时间内波前推进的距离不同」的必然结果。
+
+\aside{§2.4 里那条对称形式 $n_1\sin i_1=n_2\sin i_2$，在这里终于看得出为什么「对称」：等号左边乘的是介质 1 的折射率，右边是介质 2 的；同一段几何给出 $v_1/v_2$，再乘上 $c$ 就换成 $n_2/n_1$。换句话说，正弦比的常数不是量出来的，而是两侧光速之比。}
+
+\subhdr{5.4 非均匀介质里光为什么会弯（课件 p34）}
+课件 p34 的问题：均匀介质里光走直线，可热空气、分层海水、地球大气里光线会弯，为什么？答案全在惠更斯作图里：$v=c/n$，$n$ 大的地方光慢、次波半径小；$n$ 小的地方光快、次波半径大。同一波前上各点发出的次波大小不一，包络当然不再是平面，而是一个弯曲的曲面；波线垂直于波前，于是光线跟着弯。课件 p34 把因果链写成一行：$n$ 变大 $\rightarrow$ $v=c/n$ 变小 $\rightarrow$ 次波变小 $\rightarrow$ 波前弯 $\rightarrow$ 光线弯。海面上的蜃景、日落时被压扁的太阳，都是这条链的结果。
+
+\textbf{补充}：在折射率连续变化的介质里，逐层用 Snell 定律取极限，得到一个不变量
+\[
+n(y)\sin\theta(y)=\text{常数},
+\]
+其中 $\theta$ 是光线与\textbf{该层法线}的夹角。$n$ 随高度减小（热空气在上），$\theta$ 就必须增大，光线逐渐转向水平——这就是蜃景里「水面」的来历。
+
+\subhdr{5.5 直线传播的条件（课件 p35）}
+惠更斯原理还能解释「光为什么走直线」，但要加一个条件。点光源发出球面波，被孔径截下的那一段波前上，每点都发次波；下一时刻它们的包络仍是以光源为中心的球面，所以孔径边缘的两条光线仍是直线（这就是针孔成像的边界）。包络之外为什么没有光？课件 p35 说「the rest of the wavelets cancel out due to interference」——这句其实已经越出了惠更斯原理本身（它只讲包络，不讲强度），要到菲涅耳才补上（§5.6）。
+
+\textbf{条件}（课件 p35 原文）：「Wavelength $\lambda$ is much smaller than ($<<$) the aperture size.」——波长比孔径小得多时，衍射可忽略，光才走直线。$\lambda$ 与孔径可比时，包络不再是清晰的球面，光会绕进几何阴影里，那就是衍射（第六章）。
+
+\subhdr{5.6 惠更斯原理能解释什么、不能解释什么（课件 p36）}
+这张表是课件自己的清单，只做速查；左右两栏的分界就是「方向」与「强度」的分界。
+
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{7.4cm}@{}}
+\thead{能解释} & \thead{不能解释}\\
+\hline
+光的直线传播 & 干涉现象\\
+反射定律 & 衍射现象\\
+折射定律 & 光振幅/强度的定量分布\\
+双折射（部分） & 光相位的传播细节\\
+\end{tabular}
+\tabbot
+逐行读法：左边四项都是「往哪个方向走」，包络作图能回答；右边四项都涉及「多强、相位怎么叠」，而惠更斯原理只说次波存在、不说怎么相加。课件 p36 的补法是菲涅耳：次波 + 相干叠加，对应第五章（干涉）与第六章（衍射）——这条界线就是几何光学的边界。
+
+\hdr{§6}{费马原理（补充：课件只在本章导览页点名，本讲未展开）}
+
+\subhdr{6.1 这个缺口在哪}
+课件 p2 里有一问：「How do we describe light's path mathematically? (Fermat's Principle)」——费马原理（Fermat's principle）是本章四问之一；但 p3 的知识地图、p37 的小结、p38 的公式卡都没有它，说明\textbf{本讲把费马原理留给了后面}（第二课讲成像时才正式用）。本节只做两件事：给出原形式，并证明它与 §5.3 的惠更斯结果一致。
+
+\subhdr{6.2 原形式：光程取驻值}
+定义\textbf{光程}（optical path length）为折射率沿路径的积分：
+\[
+L[A\to B]=\int_A^B n\dd s ,
+\]
+符号：$n$ 是路径上各点的折射率，$\dd s$ 是弧长元，$L$ 的单位是长度（它等于「同样时间内在真空中能走的距离」）。
+
+\textbf{费马原理}：光从 $A$ 到 $B$ 实际走的那条路径，使光程取\textbf{驻值}（一阶变分为零）：
+\[
+\delta L=\delta\int_A^B n\dd s=0 .
+\]
+「驻值」包括极小、极大与拐点；在均匀介质里它就是「直线最短」，在界面上就是下面两条定律。
+
+\subhdr{6.3 由它导出反射定律与折射定律}
+设界面是直线 $y=0$，$A=(0,h_1)$、$B=(d,h_2)$，界面上的落点 $P=(x,0)$ 可动。光程要在两段上分别乘各自的折射率：
+\[
+L(x)=n_1\sqrt{h_1^2+x^2}+n_2\sqrt{h_2^2+(d-x)^2},
+\qquad
+\frac{\dd L}{\dd x}=n_1\sin i_1-n_2\sin i_2 ,
+\]
+其中 $\sin i_1=\frac{x}{\sqrt{h_1^2+x^2}}$、$\sin i_2=\frac{d-x}{\sqrt{h_2^2+(d-x)^2}}$，两个角都从法线量起。令 $\dd L/\dd x=0$，得
+\[
+n_1\sin i_1=n_2\sin i_2 .
+\]
+取 $n_1=n_2$（同一种介质，界面是镜面）就退回 $\sin i_1=\sin i_2$，即 $i_1=i_1'$——反射定律是它在 $n_1=n_2$ 时的特例。两条定律一次导出，且与 §5.3 的惠更斯结果完全一致。
+
+\subhdr{6.4 它与后面章节的关系}
+光程还有一个用处：相位差可以写成
+\[
+\Delta\varphi=\frac{2\pi}{\lambda_0}\,\Delta L ,
+\]
+$\lambda_0$ 是真空波长。第五章干涉里所有「光程差 = $k\lambda$」的判据都从这里来。所以费马原理不是一条孤立的「最小时间原理」，它是几何光学通往波动光学的桥：本讲用惠更斯解释「为什么这样走」，下一段课程用费马把「走哪条路」变成可算的变分问题。
+
+\hdr{§7}{缺口清单（页码 + 原文短语 + 补法）}
+每条格式：类型｜页码｜课件原文短语｜缺了什么 $\rightarrow$ 补在哪一节。以下九条都是逐页对照原图记下的。
+
+\gapitem{1\;机制｜p14}{「$n=c/\nu\quad\Rightarrow\quad\frac{\sin i_1}{\sin i_2}=\frac{\nu_1}{\nu_2}=\frac{n_2}{n_1}$」。速度比为什么等于正弦比，页面上只有一句「light travels at different speeds in different media, and therefore changes direction」，没有波前论证；速度符号又印成 $\nu$，与频率撞车 $\rightarrow$ §2.4 统一记 $v$、补对称形式，论证放 §5.3。}
+
+\gapitem{2\;代数跳步｜p18}{「$\cos i_1\approx 1-(\frac{1}{2})^2$，$\cos i_2\approx 1-(\frac{i_2}{2})^2$」。两条小角近似都写错（应为 $1-i_1^2/2$、$1-i_2^2/2$），且末步从 $t(\sin i_1-\frac{\cos i_1\sin i_1}{n\cos i_2})$ 到 $\frac{ti_1}{n}(n-1)$ 吞掉了 $O(i_1^2)$ 项 $\rightarrow$ §2.7 先留二阶项，再说明为什么能丢。}
+
+\gapitem{3\;记号｜p21}{「Step 3: Radius of the paper disk；$L=d+2t\tan i_2=358.77$ mm」，结论却写「the required diameter \ldots is 358.77 mm」；图内 $n_1$ 标在空气侧、$n_2$ 标在玻璃侧，与题面「$n_1=1.5$」相反 $\rightarrow$ §3.3 统一 $n_g=1.5$、$n_a=1$，明说 $L$ 是直径。}
+
+\gapitem{4\;拼接｜p33}{「$\sin i_1=\frac{A_nB_n}{A_1B_n}$，$\sin i_2=\frac{A_1D_1}{A_1B_n}$」。两个正弦为什么成立（哪条边垂直哪条边）没写；反射能用全等、折射不能（$A_1C_1=A_nB_n$ 而 $A_1D_1\ne A_nB_n$）也只有结论 $\rightarrow$ §5.3 补直角与 HL 判据，点明等长关系为何失效。}
+
+\gapitem{5\;边界｜p19--p20}{p19 图 (2) 把 $i_1=i_c$ 单列为「Critical condition (Refraction Along Interface)」，p20 条件 2 却写「greater than or equal to the critical angle」。端点算不算全反射，两页不一致 $\rightarrow$ §3.2 明确三态，并把 $i=i_c$ 单独成行。}
+
+\gapitem{6\;机制｜p27}{「When the light ray travels parallel to the base inside the prism, the deviation angle reaches its minimum value $\delta_m$」。为什么对称光路是极小、是否唯一极小，未证 $\rightarrow$ §4.2 用 $\dd\delta/\dd i_1=0$ 走一遍，再补唯一性。}
+
+\gapitem{7\;图缺｜p22}{「Isosceles right-angle prism $\rightarrow$ deflects light by $90^\circ$ or $180^\circ$」「Reflectance $\approx$ 100\%」。只有实物照与结论，没有光路图，也没核对 $45^\circ$ 与临界角 $\rightarrow$ §3.4 重绘图 3-2，并补 $i_c=41.81^\circ<45^\circ$、余量 $3.2^\circ$。}
+
+\gapitem{8\;压缩/形式｜p1、p4}{p4 阶梯图第 3、4 级都印「Light is Waves」，第 5 级缺字，第 8 级印成「L?ve-Particle Duality」（残字），与 p1 右栏的十层清单对不上 $\rightarrow$ §1.4 以 p1 为准列出十层，并注明 p4 的三处残缺。}
+
+\gapitem{9\;拼接｜p2 vs p3、p37、p38}{p2 把「Fermat's Principle」列为本草要回答的问题之一，p3 知识地图、p37 小结、p38 公式卡却都没有它——本讲实际没讲费马原理 $\rightarrow$ §6 标「补充」，给驻值原形式并由它导出反射与折射。}
+
+\hdr{§8}{公式卡与易错点}
+
+\subhdr{8.1 公式卡（本讲全部定量结论）}
+\begin{enumerate}
+  \item 折射定律（对称形式）：$n_1\sin i_1=n_2\sin i_2$；比值形式 $\sin i_1/\sin i_2=n_2/n_1$。$i$ 从法线量起。
+  \item 折射率定义：$n=c/v$；两介质速度比 $\sin i_1/\sin i_2=v_1/v_2$。
+  \item 反射定律：$i_1=i_1'$（同一介质，与 $n$ 无关）。
+  \item 临界角：$\sin i_c=n_2/n_1$，仅当 $n_1>n_2$。
+  \item 数值孔径：$NA=\sqrt{n_1^2-n_2^2}=n_0\sin\theta_1^{\max}$（阶跃光纤、子午光线）。
+  \item 平行板侧移：$\Delta x=\frac{n-1}{n}i_1t$（$i_1\ll1$，弧度）。
+  \item 棱镜：$A=i_2+i_2'$，$\delta=i_1+i_1'-A$；最小偏向角 $\delta_m$ 时 $i_1=i_1'$、$i_2=i_2'=A/2$，且 $n=\dfrac{\sin\frac{A+\delta_m}{2}}{\sin\frac{A}{2}}$。
+  \item 惠更斯作图：$\dfrac{\sin i_1}{\sin i_2}=\dfrac{v_1}{v_2}$；费马：$\delta\!\int n\dd s=0$。
+\end{enumerate}
+
+\subhdr{8.2 易错点（每条都能指回本讲某一步）}
+\begin{enumerate}
+  \item \textbf{角度从法线量起}。全讲只有光纤的 $\theta_1,\theta'$ 从轴量起（§3.5）；把 $i$ 当成「与界面的夹角」会让所有公式反号。
+  \item \textbf{全反射要两个条件}：$n_1>n_2$ 且 $i>i_c$。只有后者，就会得出「空气射入水会全反射」这种错（\(n_1<n_2\) 时 $i_c$ 无解，§3.1）。
+  \item \textbf{$i=i_c$ 不是全反射}。临界情形折射光沿界面掠射，能量趋于零但不为零；课件 p20 的「$\ge$」与 p19 图 (2) 因此冲突（§3.2）。
+  \item \textbf{小角近似只到一阶}。$\cos i\approx1-i^2/2$，不是 $1-(i/2)^2$；把一阶公式用到 $20^\circ$，误差已 $4.6\%$（§2.7 自检）。
+  \item \textbf{平行板只侧移、不改向}。两次 Snell 给出 $i_1'=i_1$；板越厚侧移越大，一阶下与 $i_1$ 成正比（§2.7）。
+  \item \textbf{棱镜的 $\delta\ne A$}。$\delta$ 随 $i_1$ 先减后增，最小在对称光路；$A=60^\circ$、$n=1.5$ 时 $\delta_m=37.18^\circ$（§4.2）。
+  \item \textbf{NA 是光纤自己的参数}。它由 $n_1,n_2$ 定死；外部介质换成水，变的只是 $\theta_1^{\max}$，$NA$ 不变（§3.6）。
+  \item \textbf{惠更斯原理不给强度}。它只回答「往哪走」；「多亮、相位怎么叠」要等菲涅耳的相干叠加（§5.6）。
+\end{enumerate}
+
+\hdr{§9}{三句话总结}
+\begin{enumerate}
+  \item \textbf{几何光学是「描述」，惠更斯是「解释」}：四条定律（直线、独立、反射、折射）告诉你光怎么走，惠更斯作图用「同一时间内次波包络」告诉你为什么这样走——反射靠两个直角三角形全等（$A_1C_1=A_nB_n$），折射靠正弦比（$A_1D_1\ne A_nB_n$）。
+  \item \textbf{全反射与棱镜是两个能算的应用}：临界角 $\sin i_c=n_2/n_1$（水 $48.75^\circ$、玻璃 $41.81^\circ$），光纤的 NA $=\sqrt{n_1^2-n_2^2}$，棱镜的最小偏向角给出 $n=\sin\frac{A+\delta_m}{2}/\sin\frac{A}{2}$——三个公式都能当场代数字。
+  \item \textbf{所有结论都来自同一条几何约束}：同一时间、同一波前。把这条约束写成「包络」就是惠更斯，写成「光程驻值」就是费马（$n_1\sin i_1=n_2\sin i_2$ 两条路都能到），写成「$\lambda\ll$ 尺度」就是几何光学本身。
+\end{enumerate}
+
+\hdr{§10}{页码对照}
+\enlargethispage{2\baselineskip}
+{\footnotesize
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{5.7cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{5.7cm}@{}}
+\thead{课件页} & \thead{本讲义落点} & \thead{课件页} & \thead{本讲义落点}\\
+\hline
+p1--p4 & §0.1、§1.4、§6.1 & p24 & §3.6、图 3-3\\
+p5--p6 & §1.1、§1.2 & p25 & §3.7\\
+p7、9、15 & §1.3、§2.4 & p26--p27 & §4.1、§4.2、图 4-1\\
+p8、p10 & §2.1、§2.2 & p28 & §4.3\\
+p11--p12 & §2.3、图 2-1 & p29 & §5 引言\\
+p13--p14 & §2.4、图 2-2 & p30--p31 & §5.1、§5.2、图 5-1、5-2\\
+p16--p17 & §3.1 末段、§2.6 & p32 & §5.2 末段\\
+p18 & §2.7 & p33 & §5.3、图 5-3\\
+p19--p20 & §3.1、§3.2、图 3-1 & p34--p35 & §5.4、§5.5\\
+p21--p23 & §3.3--§3.5、图 3-2、3-3 & p36 & §5.6\\
+& & p37--p38 & §8.1、§9\\
+& & p39 & 致谢\\
+\end{tabular}
+\tabbot
+}
+
+\end{document}

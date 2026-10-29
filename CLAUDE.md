@@ -3,6 +3,7 @@
 帮助学习者形成可独立调用的知识与解题能力。教学、测验、课程规划与系统维护按用户当次需求选择；维护请求不启动学习访谈。
 
 ## 开始、只读边界与按需读取
+0. 每次会话先读 `.tutor/config/study-mode.yml`（当前：讲义驱动、考前集中验收）。它只补充「队列怎么排、门禁怎么读、能不能说已掌握」这三件事，不改变本文件关于证据与帮助史的边界。
 1. 先识别本次任务类型：**只读任务**（`/status`、`/evaluate`、纯概念问答且不写入学习记录/计划/系统文件）**不触发** `git-sync` 拉取、不运行收尾、不提交或推送仓库。仅当任务需要修改学习记录、计划、备课缓存或系统文件（或用户主动要求同步）时，才进入同步与收尾流程。
 2. 仅查询 `/status` 时直接运行 `python -B tools/tutor_context.py`，不用启动教学访谈。简短报告作答条数、目标数、稳定证据、未解决困难、未学门禁提醒与一个续学点，不逐项复述字段。不把“已验证通过日期跨度”说成距今天的间隔，不把已关闭困难说成仍未解决。
 3. 其余模式按顺序：
@@ -71,8 +72,8 @@ current_topic: 维护刷新不代表新学习；具体续学点见 state/current
 next: 见 plan/schedule.md、当天清单与原 status-narrative.yml；先尊重学习者当次选择
 note: 默认闭卷；Unicode 公式；中国日期；保留当前项目协议和个人偏好
 last_session: 2026-10-19（作答 52 条；未解决困难 3 条）
-due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-26）
-mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-26）
+due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-29）
+mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-29）
 open_hurdles: hurdle-2(awaiting_retest)→mp.taylor-expansion,mp.laurent-expansion；hurdle-3(teaching)→ru.qword-agreement；hurdle-4(teaching)→tm.t5.effective-potential,tm.t5.central-motion-types
 attempts: 52 条（实测时长 7.0 分钟；估计 1308.0 分钟单列）
 <!-- TUTOR-STATUS:END -->

@@ -1,0 +1,773 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\settags{ODE · 刘维尔定理}{常微分方程}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{12\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\begin{document}
+
+\doctitle{刘维尔定理：Wronskian 的一阶方程}
+{从 $n$ 阶线性方程到一阶线性系统：证明、变形与五类应用}
+{依据：课件 L8 p50--p53（Abel 定理与例）、L13 p20--p23（Wronskian 与基本解组）、L16 p39--p43（基本矩阵与 $e^{Ax}$）、L17 p6--p13（参数变易法）；补充内容均标 [补充]\ \textperiodcentered\ 2026-10-27}
+
+\callout{\textbf{先记三行，后面都是在解释它。}
+\[
+W'=-a_1(x)W,\qquad
+W'=(\tr A(x))W,\qquad
+W(x)=W(x_0)\exp\!\left(\int_{x_0}^{x}\tr A(t)\dd t\right).
+\]
+第一行是 $n$ 阶方程；第二、三行是一阶系统。它们不是三个定理，而是同一个定理的三种写法。课件 L8 p50 把它叫 \textbf{Abel 定理}；俄文教材里常叫 \textbf{刘维尔--奥斯特罗格拉茨基公式}。本讲义统一叫 \textbf{Liouville（Abel--Liouville）定理}，并在 §6.5 把它和“哈密顿相空间刘维尔定理”区分开。}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与两条路线}
+
+\subhdr{0.1 老师课件给了什么，本讲义补什么}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}p{2.2cm}p{6.4cm}p{4.6cm}@{}}
+\hline
+\thead{课件} & \thead{页} & \thead{给了什么} & \thead{本讲义} \\
+\hline
+L8 & p50 & Abel 定理（式 43），只陈述、未证明 & §2 完整证明 \\
+L8 & p51--53 & $2xy''-(x+4)y'+(1+4/x)y=0$ 的例 & §5 例 1 全解 \\
+L13 & p20--23 & Wronskian 定义、定理 2.3、例 5 & §1、§4.1、§5 例 2 \\
+L16 & p39--43 & 基本矩阵、$e^{Ax}$ 是基本矩阵 & §4.2--4.3、§5 例 3 \\
+L17 & p6--13 & 参数变易法、$\Phi C'=F$ & §6.2 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{课件 L13 p21 的定理 2.3 说“解组线性无关 $\iff$ 某点 $W(x_0)\neq0$”，但没有给 $W$ 随 $x$ 变化的公式；L8 p50 给了 $n$ 阶公式，却没有推广到系统。本讲义把这两块接起来：先证 $n$ 阶，再证系统，最后用“伴随矩阵”说明两者是同一个定理。}
+
+\subhdr{0.2 记号}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{11.6cm}@{}}
+\hline
+\thead{符号} & \thead{含义} \\
+\hline
+$W(x)$ & Wronskian：$n$ 个解（函数或向量）排成矩阵后的行列式 \\
+$\Phi(x)$ & 基本矩阵：以 $n$ 个线性无关解为列的 $n\times n$ 矩阵 \\
+$A(x)$ & 一阶线性系统的系数矩阵，元素连续 \\
+$\tr A$ & 矩阵的迹：对角元之和 \\
+$I$ & 单位矩阵；$x_0$ 是区间 $I$ 内任意一点 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{0.3 两条路线：先 $n$ 阶，再系统}
+
+老师课件的顺序是“先 $n$ 阶（L8），后系统（L13）”。本讲义沿用这个顺序，但把两边的缝补上：
+
+\begin{enumerate}
+  \item \textbf{§2} 先证 $n$ 阶方程
+  \[
+  y^{(n)}+a_1(x)y^{(n-1)}+\cdots+a_n(x)y=0
+  \]
+  的 Liouville 公式。证明只用“行列式求导 + 方程本身”，不需要矩阵逆。
+  \item \textbf{§3} 再证一阶系统 $Y'=A(x)Y$ 的公式。证明用 Jacobi 行列式求导公式；奇异情形用连续性补。
+  \item \textbf{§3.3} 把 $n$ 阶方程化成一阶系统（伴随矩阵），验证 $\tr A=-a_1$，于是 §2 是 §3 的特例；两条路线合拢。
+\end{enumerate}
+
+%=============================================================
+\hdr{§1}{为什么是 Wronskian：行列式就是“体积”}
+
+\subhdr{1.1 线性无关与 Wronskian}
+
+设 $y_1,\dots,y_n$ 在区间 $I$ 上有 $n-1$ 阶导数。把它们及其导数排成矩阵：
+\[
+W(y_1,\dots,y_n)(x)=
+\begin{vmatrix}
+y_1(x)&y_2(x)&\cdots&y_n(x)\\
+y_1'(x)&y_2'(x)&\cdots&y_n'(x)\\
+\vdots&\vdots&&\vdots\\
+y_1^{(n-1)}(x)&y_2^{(n-1)}(x)&\cdots&y_n^{(n-1)}(x)
+\end{vmatrix}.
+\]
+若存在不全为零的常数 $c_1,\dots,c_n$ 使 $c_1y_1+\cdots+c_ny_n\equiv0$，则这 $n$ 个函数线性相关；否则线性无关。Wronskian 的作用是把这个“函数层面的问题”变成一个“某点行列式是否为零”的问题。
+
+\subhdr{1.2 几何读法：$W$ 是解向量张成的面积/体积}
+
+在 $n=2$ 时，把 $(y_1,y_1')$ 和 $(y_2,y_2')$ 看成平面上的两个向量，$W$ 就是它们张成的平行四边形的有向面积；$W=0$ 等价于两向量共线，也就是两个解线性相关。$n=3$ 时是平行六面体的体积；$n$ 维时是“超体积”。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95,>=Latex]
+% (a) independent
+\begin{scope}[xshift=0cm]
+\draw[->] (-0.3,0) -- (4.2,0) node[right] {\scriptsize $y$};
+\draw[->] (0,-0.3) -- (0,3.2) node[above] {\scriptsize $y'$};
+\fill[bandviolet] (0,0) -- (2.6,0.6) -- (3.4,2.5) -- (0.8,1.9) -- cycle;
+\draw[->,thick,violet] (0,0) -- (2.6,0.6) node[below right] {\scriptsize $Y_1$};
+\draw[->,thick,petal] (0,0) -- (0.8,1.9) node[above left] {\scriptsize $Y_2$};
+\node at (1.8,-0.6) {\scriptsize (a) $W\neq0$：面积非零};
+\end{scope}
+% (b) dependent
+\begin{scope}[xshift=6.0cm]
+\draw[->] (-0.3,0) -- (4.2,0) node[right] {\scriptsize $y$};
+\draw[->] (0,-0.3) -- (0,3.2) node[above] {\scriptsize $y'$};
+\draw[->,thick,violet] (0,0) -- (2.8,1.4) node[below right] {\scriptsize $Y_1$};
+\draw[->,thick,petal] (0,0) -- (1.4,0.7) node[above left] {\scriptsize $Y_2$};
+\node at (1.8,-0.6) {\scriptsize (b) $W=0$：共线，面积为零};
+\end{scope}
+\end{tikzpicture}
+\caption{Wronskian 的几何意义：两列解向量张成的有向面积。$W=0$ 表示两列共线，解组退化；$W\neq0$ 表示它们真的“撑满”了二维空间。$n$ 维时把“面积”换成“体积”。}
+\end{figure}
+
+\subhdr{1.3 直接算 $W$ 太笨，Liouville 把它降成一阶方程}
+
+$W$ 是 $n$ 个函数的行列式，直接求导要算 $n$ 个行列式，再代回原方程，通常很繁。Liouville 定理说：对线性齐次方程/系统的 $n$ 个解，$W$ 不必这样算——它满足一个\textbf{一阶线性齐次方程}，只需要一个初始值 $W(x_0)$。
+
+这就是本讲的核心：\textbf{把 $n$ 阶行列式的问题，降成一条一阶方程}。后面所有应用，都是这条一阶方程的不同用法。
+
+%=============================================================
+\hdr{§2}{$n$ 阶方程：Abel--Liouville 公式与证明}
+
+\subhdr{2.1 定理（课件 L8 p50，式 43）}
+
+设 $y_1,\dots,y_n$ 是
+\begin{equation}\label{eq:nth}
+y^{(n)}(x)+a_1(x)y^{(n-1)}(x)+\cdots+a_{n-1}(x)y'(x)+a_n(x)y(x)=0
+\end{equation}
+在区间 $I$ 上的 $n$ 个解，$a_1,\dots,a_n$ 在 $I$ 上连续，$x_0\in I$。则
+\begin{equation}\label{eq:abeln}
+W(y_1,\dots,y_n)(x)
+=W(y_1,\dots,y_n)(x_0)\,
+\exp\!\left(-\int_{x_0}^{x}a_1(t)\dd t\right).
+\end{equation}
+特别地，$W$ 要么恒为零，要么在 $I$ 上处处不为零。
+
+\subhdr{2.2 证明第一步：行列式求导，只有最后一行留下来}
+
+记 $M(x)$ 为以 $y_j^{(i-1)}(x)$ 为第 $i$ 行、第 $j$ 列元素的矩阵，$W=\det M$。对行列式按“每一行都可能是变量”求导：
+\[
+W'=\sum_{k=1}^{n}\det M^{(k)},
+\]
+其中 $M^{(k)}$ 是把 $M$ 的第 $k$ 行换成其导数 $y_j^{(k)}$ 得到的矩阵。
+
+关键观察：当 $k<n$ 时，$M^{(k)}$ 的第 $k$ 行是 $y_j^{(k)}$，而第 $k+1$ 行本来就是 $y_j^{(k)}$；两行相同，行列式为零。因此只剩 $k=n$：
+\[
+W'=
+\begin{vmatrix}
+y_1&\cdots&y_n\\
+\vdots&&\vdots\\
+y_1^{(n-2)}&\cdots&y_n^{(n-2)}\\
+y_1^{(n)}&\cdots&y_n^{(n)}
+\end{vmatrix}.
+\]
+
+\subhdr{2.3 证明第二步：用方程把 $y^{(n)}$ 换掉，只有 $-a_1$ 项活下来}
+
+由 \eqref{eq:nth}，
+\[
+y_j^{(n)}=-a_1y_j^{(n-1)}-a_2y_j^{(n-2)}-\cdots-a_ny_j.
+\]
+把最后一行写成这 $n$ 项的线性组合。由行列式的多线性，$W'$ 变成 $n$ 个行列式之和。除了 $-a_1$ 那一项，其余各项的行列式都含有两行相同或成比例的行（最后一行分别等于前面的某一行），因此为零。唯一留下来的是
+\[
+W'=-a_1
+\begin{vmatrix}
+y_1&\cdots&y_n\\
+\vdots&&\vdots\\
+y_1^{(n-2)}&\cdots&y_n^{(n-2)}\\
+y_1^{(n-1)}&\cdots&y_n^{(n-1)}
+\end{vmatrix}
+=-a_1W.
+\]
+
+\subhdr{2.4 解一阶方程，得到公式}
+
+于是 $W$ 满足
+\[
+W'+a_1(x)W=0.
+\]
+这是一阶线性齐次方程，积分因子为 $\exp(\int a_1\dd x)$，解得
+\[
+W(x)=W(x_0)\exp\!\left(-\int_{x_0}^{x}a_1(t)\dd t\right),
+\]
+即 \eqref{eq:abeln}。证完。
+
+\aside{若 $W(x_0)=0$，公式给出 $W\equiv0$；若 $W(x_0)\neq0$，指数因子永远不为零，所以 $W$ 在 $I$ 上处处不为零。这就是“$W$ 要么恒为零、要么处处非零”的来源。}
+
+\subhdr{2.5 二阶特例：$y''+p(x)y'+q(x)y=0$}
+
+此时 $a_1=p$，所以
+\[
+W(x)=W(x_0)\exp\!\left(-\int_{x_0}^{x}p(t)\dd t\right).
+\]
+这是最常用的版本：\textbf{二阶齐次线性方程的两个解，其 Wronskian 只由 $y'$ 的系数 $p$ 决定，与 $q$ 无关}。$q$ 只影响解的形状，不影响 $W$ 的演化。
+
+\warnbox{\textbf{先化标准形。} 公式里的 $a_1$ 是首项系数为 1 时的 $y^{(n-1)}$ 系数。若方程是 $a_0(x)y^{(n)}+\cdots=0$，必须先除以 $a_0$，读出 $a_1=b_1/a_0$，不能直接拿 $b_1$ 当 $a_1$。课件 L8 p51 的例第一步就是“rewrite”，原因就在这里。}
+
+%=============================================================
+\hdr{§3}{一阶系统：Liouville 公式与 Jacobi 证明}
+
+\subhdr{3.1 定理（系统版）}
+
+设 $A(x)$ 是 $n\times n$ 矩阵，元素在区间 $I$ 上连续；$Y_1,\dots,Y_n$ 是
+\begin{equation}\label{eq:sys}
+Y'(x)=A(x)Y(x)
+\end{equation}
+的 $n$ 个解。令 $\Phi(x)=(Y_1(x),\dots,Y_n(x))$，$W(x)=\det\Phi(x)$。则
+\begin{equation}\label{eq:liouville}
+W'(x)=(\tr A(x))\,W(x),
+\qquad
+W(x)=W(x_0)\exp\!\left(\int_{x_0}^{x}\tr A(t)\dd t\right).
+\end{equation}
+特别地，若 $\tr A\equiv0$，则 $W$ 为常数。
+
+\subhdr{3.2 证明：Jacobi 行列式求导公式}
+
+先证一个引理：若 $\Phi(x)$ 是可逆的 $C^1$ 矩阵函数，则
+\[
+\frac{\dd}{\dd x}\det\Phi(x)
+=\det\Phi(x)\cdot\tr\!\left(\Phi(x)^{-1}\Phi'(x)\right).
+\]
+证明：由 $\det(I+hB)=1+h\tr B+O(h^2)$（展开时一次项只能取对角线上的 $hb_{ii}$，共 $n$ 项），
+\[
+\det(\Phi+h\Phi')
+=\det\Phi\cdot\det(I+h\Phi^{-1}\Phi')
+=\det\Phi\left(1+h\tr(\Phi^{-1}\Phi')+O(h^2)\right).
+\]
+两边减去 $\det\Phi$、除以 $h$，令 $h\to0$，即得引理。
+
+现在 $\Phi'=A\Phi$，所以
+\[
+\Phi^{-1}\Phi'=\Phi^{-1}A\Phi.
+\]
+迹在相似变换下不变：
+\[
+\tr(\Phi^{-1}A\Phi)=\tr(A).
+\]
+于是
+\[
+W'=\det\Phi\cdot\tr(A)=(\tr A)W.
+\]
+解这条一阶线性齐次方程，得 \eqref{eq:liouville}。
+
+\aside{\textbf{$W(x_0)=0$ 时怎么办？} 上面的证明用了 $\Phi^{-1}$，要求 $\Phi(x_0)$ 可逆。若 $\Phi(x_0)$ 奇异，取一列可逆矩阵 $B_k\to\Phi(x_0)$，令 $\Phi_k$ 是以 $B_k$ 为初值的解。由解对初值的连续依赖性，$\Phi_k\to\Phi$、$\det\Phi_k\to\det\Phi$；且 $W_k=\det\Phi_k$ 满足 $W_k'=(\tr A)W_k$，所以 $W_k'\to(\tr A)W$。取极限即得 $\det\Phi$ 也满足同一方程。于是公式对奇异初值同样成立。}
+
+\subhdr{3.3 两条路线合拢：伴随矩阵的迹是 $-a_1$}
+
+把 $n$ 阶方程 \eqref{eq:nth} 化成一阶系统：令 $x_1=y,x_2=y',\dots,x_n=y^{(n-1)}$，则
+\[
+\begin{pmatrix}
+x_1\\x_2\\\vdots\\x_{n-1}\\x_n
+\end{pmatrix}'
+=
+\begin{pmatrix}
+0&1&0&\cdots&0\\
+0&0&1&\cdots&0\\
+\vdots&&&\ddots&\vdots\\
+0&0&0&\cdots&1\\
+-a_n&-a_{n-1}&\cdots&-a_2&-a_1
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\x_2\\\vdots\\x_{n-1}\\x_n
+\end{pmatrix}.
+\]
+这个矩阵叫\textbf{伴随矩阵}（companion matrix）。它的迹是
+\[
+\tr A=0+\cdots+0+(-a_1)=-a_1.
+\]
+以 $n$ 个解 $y_j$ 对应的向量 $Y_j=(y_j,y_j',\dots,y_j^{(n-1)})^T$ 为列，得到的 $\Phi$ 的行列式正好是 $n$ 阶 Wronskian。于是系统公式 \eqref{eq:liouville} 变成
+\[
+W'=(-a_1)W,
+\]
+与 \eqref{eq:abeln} 完全一致。所以：\textbf{§2 是 §3 的特例；§3 是 §2 的推广。} 证明一个，另一个就自动成立。
+
+\subhdr{3.4 三个立刻可用的推论}
+
+\begin{enumerate}
+  \item \textbf{线性无关的判别}：$n$ 个解在一点 $x_0$ 的 $W(x_0)\neq0$，则它们线性无关，且 $W(x)\neq0$ 对所有 $x\in I$ 成立；反之，若 $W(x_0)=0$，则它们线性相关（因为若无关，$W$ 处处非零）。这正是课件 L13 p21 的定理 2.3。
+  \item \textbf{基本矩阵的行列式}：若 $\Phi'=A\Phi$，则
+  \[
+  \det\Phi(x)=\det\Phi(x_0)\exp\!\left(\int_{x_0}^{x}\tr A(t)\dd t\right).
+  \]
+  基本矩阵的“体积”只由迹的积分决定，与 $A$ 的非对角元无关。
+  \item \textbf{矩阵指数}：若 $A$ 是常矩阵，$\Phi(x)=e^{Ax}$，$\Phi(0)=I$，则
+  \[
+  \det e^{Ax}=\exp(x\,\tr A),\qquad \det e^{A}=e^{\tr A}.
+  \]
+  这是 §4.3 的主题。
+\end{enumerate}
+
+\warnbox{\textbf{$A(x)$ 不必是常矩阵，也不必可交换。} 公式 \eqref{eq:liouville} 对变系数、不可交换的 $A(x)$ 照样成立；证明只用了 $\tr(\Phi^{-1}A\Phi)=\tr A$，没有用“$A$ 与 $\Phi$ 可交换”或“$A$ 可对角化”。不要因为 $A(x)$ 复杂就不敢用。}
+
+%=============================================================
+\hdr{§4}{由 Liouville 直接得到的五件事}
+
+\subhdr{4.1 $W$ 要么恒为零，要么处处非零}
+
+指数因子 $e^{\int\tr A}$ 永远为正，所以 $W(x)$ 的符号/零点完全由 $W(x_0)$ 决定：
+\[
+W(x_0)=0\ \Longrightarrow\ W(x)\equiv0;\qquad
+W(x_0)\neq0\ \Longrightarrow\ W(x)\neq0\ \text{对所有 }x.
+\]
+因此“$n$ 个解是否线性无关”这件事在区间上不会变来变去：要么一直无关，要么一直相关。这是课件 L13 p21 定理 2.3 的实质。
+
+\subhdr{4.2 基本矩阵：行列式是“体积因子”}
+
+若 $\Phi'=A\Phi$，$\Phi(x_0)$ 可逆，则 $\Phi(x)$ 对所有 $x$ 可逆，且
+\[
+\Phi(x)=\Phi(x_0)\,\Psi(x),\qquad
+\det\Psi(x)=\exp\!\left(\int_{x_0}^{x}\tr A(t)\dd t\right).
+\]
+这里 $\Psi(x)=\Phi(x_0)^{-1}\Phi(x)$，$\Psi(x_0)=I$。所以线性流把 $x_0$ 处的小体积放大/缩小为原来的 $e^{\int\tr A}$ 倍；$\tr A>0$ 表示体积膨胀，$\tr A<0$ 表示体积收缩，$\tr A=0$ 表示体积不变。
+
+\subhdr{4.3 矩阵指数：不用算出 $e^{Ax}$ 也能算它的行列式}
+
+对常矩阵 $A$，$e^{Ax}$ 是 $Y'=AY$ 的基本矩阵，$e^{A\cdot0}=I$，所以
+\[
+\det e^{Ax}=\exp(x\,\tr A),\qquad \det e^{A}=e^{\tr A}.
+\]
+这个公式的好处是：\textbf{不需要求特征值、不需要对角化、不需要算 $e^{Ax}$ 的每个元素}，只要知道迹。它也是检查 $e^{Ax}$ 计算是否正确的快速工具。
+
+\subhdr{4.4 迹为零：面积/体积守恒}
+
+若 $\tr A=0$，则 $\det\Phi$ 为常数；线性流保持面积（$2\times2$）或体积（$n\times n$）。几个 $2\times2$ 例子：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.2cm}p{2.0cm}p{3.0cm}p{5.2cm}@{}}
+\hline
+\thead{$A$} & \thead{$\tr A$} & \thead{$\det e^{Ax}$} & \thead{几何} \\
+\hline
+$\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ & 0 & 1 & 旋转，圆轨道，面积不变 \\
+$\begin{pmatrix}0&1\\0&0\end{pmatrix}$ & 0 & 1 & 剪切，面积不变 \\
+$\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ & 0 & 1 & 鞍点，面积不变但轨道无界 \\
+$\begin{pmatrix}1&0\\0&2\end{pmatrix}$ & 3 & $e^{3x}$ & 面积膨胀 \\
+$\begin{pmatrix}-1&0\\0&-2\end{pmatrix}$ & $-3$ & $e^{-3x}$ & 面积收缩 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.4.1 变系数例子（补充）：$A(t)$ 不必是常矩阵}
+
+取
+\[
+A(t)=\begin{pmatrix}1&t\\0&2\end{pmatrix},\qquad \tr A=1+2=3.
+\]
+两个解为
+\[
+Y_1(t)=\begin{pmatrix}e^t\\0\end{pmatrix},\qquad
+Y_2(t)=\begin{pmatrix}(t-1)e^{2t}\\e^{2t}\end{pmatrix}.
+\]
+直接验证：$Y_1'=(e^t,0)^T=A Y_1$；$Y_2'=((2t-1)e^{2t},2e^{2t})^T=A Y_2$。于是
+\[
+W=\det(Y_1,Y_2)=e^t\cdot e^{2t}-0=e^{3t},
+\]
+与 $W=W_0e^{\int 3\dd t}$ 一致（$W_0=1$）。这个例子说明：$A(t)$ 可以是变系数，甚至不同时刻的 $A(t)$ 不可交换；Liouville 公式照样成立，因为证明只用到迹。
+
+\subhdr{4.5 任意函数的 $W=0$ 不代表相关：必须是“解”}
+
+对任意 $n$ 个函数，$W\equiv0$ 推不出线性相关。经典反例：
+\[
+f_1(x)=x^2,\qquad f_2(x)=x|x|.
+\]
+它们在 $\mathbb R$ 上线性无关（$x>0$ 与 $x<0$ 两段比较系数可得 $c_1=c_2=0$），但
+\[
+W(f_1,f_2)(x)=x^2\cdot(x|x|)'-2x\cdot x|x|=0
+\]
+对所有 $x$ 成立（$x>0$、$x<0$、$x=0$ 分别检查）。所以“$W=0\Rightarrow$ 相关”这条定理的前提是：\textbf{这 $n$ 个函数是同一个 $n$ 阶线性齐次方程的解}（或同一个 $n$ 维线性系统的解）。对任意函数，$W\neq0$ 仍能推出无关，但 $W=0$ 不能推出相关。
+
+\warnbox{这就是为什么老师课件 L13 p21 的定理 2.3 一开始就写“Solutions $Y_1,\dots,Y_n$ of $Y'=AY$”。不是所有向量函数都适用。}
+
+%=============================================================
+\hdr{§5}{老师课件里的三个例子}
+
+\needspace{12\baselineskip}
+\subhdr{5.1 例 1（L8 p51--p53）：由 $y_1=x$ 求第二解}
+
+\qstem{（课件 L8 p51--p53，例）解方程
+\[
+2xy''-(x+4)y'+\left(1+\frac4x\right)y=0,\qquad x\neq0,
+\]
+已知 $y_1=x$ 是一个解。}
+
+\textbf{第一步：化标准形。} 两边除以 $2x$：
+\[
+y''-\frac{x+4}{2x}y'+\left(\frac{1}{2x}+\frac{2}{x^2}\right)y=0,
+\]
+所以
+\[
+a_1(x)=-\frac{x+4}{2x}.
+\]
+
+\textbf{第二步：算 $W$。} 由 Liouville 公式
+\[
+W(x)=C\exp\!\left(-\int a_1(x)\dd x\right)
+=C\exp\!\left(\int\frac{x+4}{2x}\dd x\right)
+=C\exp\!\left(\frac{x}{2}+2\ln|x|\right)
+=Cx^2e^{x/2}.
+\]
+这里 $C\neq0$ 是常数。
+
+\textbf{第三步：用 $W/y_1^2$ 求 $y_2$。} 由
+\[
+\left(\frac{y_2}{y_1}\right)'=\frac{W}{y_1^2}
+=\frac{Cx^2e^{x/2}}{x^2}=Ce^{x/2},
+\]
+积分得
+\[
+\frac{y_2}{x}=2Ce^{x/2}+C_3
+\]
+所以
+\[
+y_2=2Cxe^{x/2}+C_3x.
+\]
+取 $C=1/2$、丢掉与 $y_1$ 重复的 $C_3x$，得
+\[
+y_2=xe^{x/2}.
+\]
+通解为
+\[
+y=C_1x+C_2xe^{x/2}.
+\]
+这与课件 p53 的答案一致。
+
+\subhdr{5.1.1 两个检查：直接算 $W$ 与基变换}
+
+直接算一遍 $W$，确认没有丢常数：
+\[
+W(x,xe^{x/2})
+=x\left(e^{x/2}+\frac{x}{2}e^{x/2}\right)-1\cdot xe^{x/2}
+=\frac{x^2}{2}e^{x/2}.
+\]
+第二步得到的是 $Cx^2e^{x/2}$，取 $C=1/2$ 正好一致；差一个常数不影响线性无关性，也不影响通解。
+
+另一个检查：若 $\Psi=\Phi C$ 是另一个基本矩阵（$C$ 是可逆常矩阵），则
+\[
+\det\Psi=\det\Phi\cdot\det C.
+\]
+所以 $W$ 只确定到常数倍；但“$W$ 是否为零”不变，线性无关性也不变。这就是为什么取 $W(x_0)=1$ 是安全的。
+
+\aside{课件在 p51 先写 $W=y_1y_2'-y_1'y_2$，再用 $W/y_1^2=(y_2/y_1)'$；这正是 §6.1 的一般降阶公式。}
+
+\needspace{12\baselineskip}
+\subhdr{5.2 例 2（L13 p23）：谐振子的 $W$ 为什么是 1}
+
+\qstem{（课件 L13 p23，例 5）解系统
+\[
+\frac{\dd y_1}{\dd x}=y_2,\qquad \frac{\dd y_2}{\dd x}=-y_1,
+\]
+验证 $Y_1=(\cos x,-\sin x)^T$、$Y_2=(\sin x,\cos x)^T$ 线性无关，并求通解。}
+
+写成矩阵形式：
+\[
+Y'=AY,\qquad A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+$\tr A=0$，所以 $W$ 为常数。直接算
+\[
+W=\begin{vmatrix}
+\cos x&\sin x\\
+-\sin x&\cos x
+\end{vmatrix}
+=\cos^2x+\sin^2x=1\neq0.
+\]
+因此 $Y_1,Y_2$ 线性无关，通解
+\[
+Y=C_1\begin{pmatrix}\cos x\\-\sin x\end{pmatrix}
++C_2\begin{pmatrix}\sin x\\\cos x\end{pmatrix},
+\]
+即
+\[
+y_1=C_1\cos x+C_2\sin x,\qquad
+y_2=-C_1\sin x+C_2\cos x.
+\]
+这个例子的意义：$\tr A=0$ 时 $W$ 恒定；谐振子的相平面面积守恒，轨道是圆（或椭圆），不会因为时间推移而“挤扁”。
+
+\needspace{12\baselineskip}
+\subhdr{5.3 例 3（L16 p39--p43）：不算 $e^{Ax}$，先算它的行列式}
+
+\qstem{（补充例；用课件 L16 p39--p43 的基本矩阵）设
+\[
+A=\begin{pmatrix}1&2\\3&4\end{pmatrix}.
+\]
+不求出 $e^{Ax}$ 的每个元素，求 $\det e^{Ax}$，并解释它为什么与特征值之积一致。}
+
+$\tr A=1+4=5$，所以
+\[
+\det e^{Ax}=e^{5x}.
+\]
+另一方面，$A$ 的特征值为
+\[
+\lambda_{1,2}=\frac{5\pm\sqrt{33}}{2},
+\]
+和 $\lambda_1+\lambda_2=5$，积 $\lambda_1\lambda_2=-2$。$e^{Ax}$ 的特征值是 $e^{\lambda_1x},e^{\lambda_2x}$，所以
+\[
+\det e^{Ax}=e^{\lambda_1x}e^{\lambda_2x}
+=e^{(\lambda_1+\lambda_2)x}=e^{5x}.
+\]
+两者一致。这个例子说明：\textbf{行列式只需要迹，不需要特征向量、不需要对角化}。如果 $A$ 不可对角化（重根、广义特征向量），这个公式仍然成立。
+
+%=============================================================
+\hdr{§6}{五类应用：从降阶到相空间}
+
+\subhdr{6.1 应用一：降阶——已知一解，求第二解}
+
+设
+\[
+y''+a_1(x)y'+a_2(x)y=0,
+\]
+已知一个非零解 $y_1$。令 $W=y_1y_2'-y_1'y_2$。由 Liouville，
+\[
+W(x)=W(x_0)\exp\!\left(-\int_{x_0}^{x}a_1(t)\dd t\right).
+\]
+又
+\[
+\left(\frac{y_2}{y_1}\right)'=\frac{y_1y_2'-y_1'y_2}{y_1^2}
+=\frac{W}{y_1^2},
+\]
+所以
+\[
+y_2=y_1\int\frac{W}{y_1^2}\dd x
+=y_1\int\frac{\exp(-\int a_1\dd x)}{y_1^2}\dd x
+\]
+（常数倍不影响通解）。这就是“已知一解求通解”的 Abel 公式。
+
+\needspace{14\baselineskip}
+\qstem{（课件 L7 p33--p36，例 2）解
+\[
+y''+xy'-(x+1)y=0,
+\]
+已知 $y_1=e^x$。}
+
+这里 $a_1=x$，所以
+\[
+W=W_0e^{-x^2/2}.
+\]
+取 $W_0=1$，
+\[
+y_2=e^x\int\frac{e^{-x^2/2}}{e^{2x}}\dd x
+=e^x\int e^{-x^2/2-2x}\dd x.
+\]
+通解
+\[
+y=e^x\left[C_1+C_2\int e^{-x^2/2-2x}\dd x\right].
+\]
+这个积分不是初等函数；配平方后可用误差函数表示：
+\[
+\int e^{-x^2/2-2x}\dd x
+=e^2\sqrt{\frac{\pi}{2}}\,\operatorname{erf}\!\left(\frac{x+2}{\sqrt2}\right)+C.
+\]
+所以课件把答案留在积分号里是完整的，不是“没算完”。
+
+\aside{对 $n$ 阶方程，同样的替换 $y=y_1\int z\dd x$ 可把阶数降一；重复使用可降到一阶。本讲只展开二阶，因为二阶公式最常用；$n$ 阶的具体步骤见课件 L7 p30--p36。}
+
+\subhdr{6.2 应用二：参数变易法——$W$ 为什么在分母}
+
+对非齐次系统
+\[
+Y'=A(x)Y+F(x),
+\]
+设 $\Phi$ 是齐次系统的基本矩阵。令 $Y_p=\Phi C(x)$，代入得
+\[
+\Phi C'=F\quad\Longrightarrow\quad
+C'=\Phi^{-1}F.
+\]
+所以
+\[
+Y_p=\Phi(x)\int\Phi^{-1}(s)F(s)\dd s.
+\]
+这里 $\Phi^{-1}$ 的分母就是 $\det\Phi=W$。对二阶标量方程
+\[
+y''+p(x)y'+q(x)y=f(x),
+\]
+取 $\Phi=\begin{pmatrix}y_1&y_2\\y_1'&y_2'\end{pmatrix}$，$W=y_1y_2'-y_1'y_2$，则
+\[
+\Phi^{-1}\begin{pmatrix}0\\f\end{pmatrix}
+=\frac{1}{W}\begin{pmatrix}-y_2f\\y_1f\end{pmatrix},
+\]
+于是
+\[
+y_p=-y_1\int\frac{y_2f}{W}\dd x
++y_2\int\frac{y_1f}{W}\dd x.
+\]
+这就是参数变易法公式。Liouville 定理告诉你 $W$ 怎么算（$W=W_0e^{-\int p}$），所以即使 $y_2$ 没有显式解，只要知道 $y_1$ 和 $p$，也能写出 $W$。
+
+\subhdr{6.3 应用三：Sturm 分离定理（补充）}
+
+设
+\[
+y''+q(x)y=0
+\]
+（没有 $y'$ 项），$y_1,y_2$ 是两个线性无关解。则 $W$ 为常数且不为零。若 $y_1$ 在 $a<b$ 有两个相邻零点，则 $y_2$ 在 $(a,b)$ 内至少有一个零点。
+
+证明：反设 $y_2$ 在 $(a,b)$ 内没有零点。考虑
+\[
+\left(\frac{y_1}{y_2}\right)'
+=\frac{y_1'y_2-y_1y_2'}{y_2^2}
+=-\frac{W}{y_2^2}.
+\]
+右边在 $(a,b)$ 上恒负（或恒正），所以 $y_1/y_2$ 严格单调。但 $y_1(a)=y_1(b)=0$，所以 $y_1/y_2$ 在 $a,b$ 两端都为零；严格单调函数不可能有两个不同的零点，矛盾。因此 $y_2$ 在 $(a,b)$ 内必有零点。
+
+同理可证 $y_1$ 的零点也夹在 $y_2$ 的相邻零点之间——这就是\textbf{零点交错}（Sturm separation）。这个证明只用了一条：$W$ 是常数且非零；而 $W$ 为常数正是 $a_1=0$ 时的 Liouville 公式。
+
+\subhdr{6.4 应用四：迹为零与相空间面积}
+
+对 $2\times2$ 线性系统 $Y'=AY$，$\det e^{Ax}=e^{x\tr A}$。因此：
+\begin{itemize}
+  \item $\tr A=0$：面积守恒；旋转、剪切、鞍点都保面积，但轨道形态完全不同（旋转有界、剪切线性增长、鞍点无界）。
+  \item $\tr A>0$：面积膨胀；所有轨道最终远离原点（除非在稳定流形上）。
+  \item $\tr A<0$：面积收缩；所有轨道最终趋于原点（除非在 unstable manifold 上）。
+\end{itemize}
+这就是线性流的“体积像”：$\tr A$ 是瞬时膨胀率。对非线性系统，$\tr$ 换成散度 $\nabla\cdot f$；这就是下一节的哈密顿刘维尔定理。
+
+\subhdr{6.5 应用五：哈密顿相空间刘维尔定理（同名，不同定理）}
+
+在哈密顿力学中，状态是 $(q,p)$，方程为
+\[
+\dot q=\frac{\partial H}{\partial p},\qquad
+\dot p=-\frac{\partial H}{\partial q}.
+\]
+向量场 $f=(\partial H/\partial p,-\partial H/\partial q)$ 的散度为
+\[
+\nabla\cdot f
+=\frac{\partial^2H}{\partial q\partial p}
+-\frac{\partial^2H}{\partial p\partial q}=0.
+\]
+散度为零的流保持相空间体积：
+\[
+\frac{\dd}{\dd t}\operatorname{vol}(\Omega_t)
+=\int_{\Omega_t}\nabla\cdot f\,\dd V=0.
+\]
+这就是哈密顿系统的\textbf{刘维尔定理}（相空间体积守恒）。它和本讲的 Abel--Liouville 公式不是同一个定理：前者是“非线性哈密顿流的体积守恒”，后者是“线性系统 Wronskian 的一阶方程”。两者在“$\tr A=0$ / 散度为零 $\Rightarrow$ 体积守恒”这一点上相通，但对象、证明、用途都不同。
+
+\subhdr{6.6 同名辨析：四个“刘维尔”}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.0cm}p{5.2cm}p{5.0cm}@{}}
+\hline
+\thead{名称} & \thead{对象} & \thead{结论} \\
+\hline
+Abel--Liouville（本讲） & 线性 ODE / 线性系统 & $W'=(-a_1)W$ 或 $(\tr A)W$ \\
+哈密顿 Liouville & 哈密顿系统 & 相空间体积守恒 \\
+Liouville（初等积分） & 微分代数 & 某些积分不是初等函数 \\
+Sturm--Liouville & 二阶自伴边值问题 & 特征值、振荡、分离定理 \\
+\hline
+\end{tabular}
+\end{center}
+
+考试里说“刘维尔定理”时，先看对象：如果是线性方程/系统的 Wronskian，指的是本讲的 Abel--Liouville；如果是 $q,p$ 相空间，指的是哈密顿版本。两者不要混用。
+
+%=============================================================
+\hdr{§7}{易错点：这十条能挡住大多数错误}
+
+\begin{enumerate}
+  \item \textbf{没化标准形}。$a_1$ 是首项系数为 1 时的 $y^{(n-1)}$ 系数；先除首项系数。
+  \item \textbf{把 $W$ 当成唯一确定}。$W$ 只确定到一个常数倍 $W(x_0)$；这个常数不影响线性无关性，也不影响通解（会被 $C_2$ 吸收）。
+  \item \textbf{把 $W(x_0)=0$ 当成“某点相关”}。对解来说，$W(x_0)=0$ 意味着在整个区间上相关；不是只在这一点相关。
+  \item \textbf{对任意函数用“$W=0\Rightarrow$ 相关”}。错；必须是同一个线性齐次方程/系统的解。反例见 §4.5。
+  \item \textbf{忘记挖掉 $y_1=0$ 的点}。降阶公式 $y_2=y_1\int W/y_1^2$ 在 $y_1=0$ 处失效；通解只在 $y_1\neq0$ 且系数连续的区间上成立。
+  \item \textbf{把 $A(x)$ 当常矩阵}。变系数系统没有 $e^{Ax}$，但 Liouville 公式仍然成立：$W=W_0e^{\int\tr A}$。
+  \item \textbf{以为 $A(x)$ 必须可对角化}。不需要；迹在相似变换下不变，证明只用到 $\tr(\Phi^{-1}A\Phi)=\tr A$。
+  \item \textbf{把 $e^{A+B}$ 写成 $e^A e^B$}。$e^{A+B}=e^A e^B$ 只在 $A,B$ 可交换时成立；但 $\det e^{A+B}=e^{\tr(A+B)}=e^{\tr A+\tr B}$ 总是成立。不要把矩阵等式和行列式等式混在一起。
+  \item \textbf{把哈密顿刘维尔和 Abel--Liouville 混为一谈}。对象不同；见 §6.5--6.6。
+  \item \textbf{非线性系统没有 Wronskian}。Wronskian 是线性系统的工具；非线性系统用散度/相空间体积，不是 $W$。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{公式卡与自检}
+
+\subhdr{8.1 公式卡}
+
+\[
+W(y_1,\dots,y_n)(x)=
+\det\begin{pmatrix}
+y_1&\cdots&y_n\\
+\vdots&&\vdots\\
+y_1^{(n-1)}&\cdots&y_n^{(n-1)}
+\end{pmatrix}.
+\]
+\[
+y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=0
+\quad\Longrightarrow\quad
+W(x)=W(x_0)e^{-\int_{x_0}^{x}a_1(t)\dd t}.
+\]
+\[
+Y'=A(x)Y
+\quad\Longrightarrow\quad
+W(x)=W(x_0)e^{\int_{x_0}^{x}\tr A(t)\dd t}.
+\]
+\[
+\Phi'=A\Phi
+\quad\Longrightarrow\quad
+\det\Phi(x)=\det\Phi(x_0)e^{\int_{x_0}^{x}\tr A(t)\dd t}.
+\]
+\[
+A\text{ 常矩阵}:\quad
+\det e^{Ax}=e^{x\tr A},\qquad
+\det e^{A}=e^{\tr A}.
+\]
+\[
+y_2=y_1\int\frac{W}{y_1^2}\dd x,
+\qquad
+y_p=-y_1\int\frac{y_2f}{W}\dd x
++y_2\int\frac{y_1f}{W}\dd x.
+\]
+
+\subhdr{8.2 自检三题（答案就在题后）}
+
+\qstem{（自检 1）$y''+p(x)y'+q(x)y=0$ 的两个解 $y_1,y_2$ 满足 $W(x)=W(x_0)e^{-\int p}$。若 $p(x)=2x$，$W(0)=3$，求 $W(x)$。}
+答案：$W(x)=3e^{-x^2}$。
+
+\qstem{（自检 2）$Y'=AY$，$A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$。不求 $e^{Ax}$，求 $\det e^{Ax}$。}
+答案：$\tr A=0$，所以 $\det e^{Ax}=e^0=1$。
+
+\qstem{（自检 3）$A=\begin{pmatrix}2&0\\0&3\end{pmatrix}$，求 $\det e^{A}$。}
+答案：$\tr A=5$，所以 $\det e^{A}=e^5$。也可以直接算 $e^2e^3=e^5$。
+
+%=============================================================
+\hdr{§9}{页码对照、缺口清单与三句话}
+
+\subhdr{9.1 本讲义与课件页码的对应}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{6.6cm}p{5.6cm}@{}}
+\hline
+\thead{本讲义} & \thead{内容} & \thead{课件} \\
+\hline
+§2 & $n$ 阶 Abel--Liouville 定理与证明 & L8 p50，式 (43) \\
+§3 & 系统 Liouville 公式、Jacobi 证明、伴随矩阵 & L13 p20--p23（Wronskian），L8 p50（拼接） \\
+§4.3 & $\det e^{Ax}=e^{x\tr A}$ & L16 p39--p43（基本矩阵，公式补充） \\
+§5.1 & $2xy''-(x+4)y'+(1+4/x)y=0$ & L8 p51--p53 \\
+§5.2 & 谐振子 $W=1$ & L13 p23，例 5 \\
+§5.3 & $\det e^{Ax}$ 例 & L16 p39--p43 \\
+§6.1 & 降阶求第二解 & L7 p33--p36，L8 p51--p53 \\
+§6.2 & 参数变易法 & L17 p6--p13 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{9.2 课件没有明说、本讲义补上的六处}
+
+\gapitem{定理未证}{L8 p50 只写“The following theorem is known as Abel’s Theorem”，没有证明；§2 用行列式求导补了完整证明。}
+\gapitem{系统版未单列}{L13 p21 只给“$W(x_0)\neq0\iff$ 线性无关”，没有给 $W'=(\tr A)W$；§3 把 $n$ 阶公式推广到系统，并用 Jacobi 公式证明。}
+\gapitem{伴随矩阵的迹}{L13 p25 只给“$n$ 阶方程化系统”的步骤，没有点明 $\tr A=-a_1$；§3.3 补了这一步，说明 §2 与 §3 是同一个定理。}
+\gapitem{矩阵指数行列式}{L16 p42--43 说“$\det\Phi(x)\neq0$ by Wronskian”，但没有给 $\det e^{Ax}=e^{x\tr A}$；§4.3 补了公式与例子。}
+\gapitem{参数变易法的分母}{L17 p11 只写 $\Phi C'=F$，没有解释 $\Phi^{-1}$ 的分母就是 $W$；§6.2 用 $2\times2$ 的伴随矩阵把 $W$ 显式写出来。}
+\gapitem{同名定理}{L8 叫 Abel，俄文教材叫 Liouville--Ostrogradsky；哈密顿力学里也有 Liouville 定理。§6.5--6.6 做了同名辨析，避免把两个定理混用。}
+
+\subhdr{9.3 三句话总结}
+
+\begin{enumerate}
+  \item 对 $n$ 阶线性齐次方程，$W$ 满足 $W'=-a_1W$，所以 $W=W_0e^{-\int a_1}$；对一阶线性系统，$W'=(\tr A)W$，所以 $W=W_0e^{\int\tr A}$。
+  \item 证明的关键只有两步：行列式求导后只有最后一行留下来；用方程替换 $y^{(n)}$ 后只有 $-a_1$ 项活下来。系统版用 Jacobi 公式，本质相同。
+  \item 应用的主线是“$W$ 只由迹/ $a_1$ 决定”：判线性无关、算基本矩阵行列式、算 $\det e^{Ax}$、降阶、参数变易、Sturm 分离、相空间体积；但不要把哈密顿刘维尔和 Abel--Liouville 混为一谈。
+\end{enumerate}
+
+\flowerrule
+\callout{\textbf{复核记录。} L8 p51--p53 的 $y_2=xe^{x/2}$、L7 p33--p36 的 $W=e^{-x^2/2}$ 与 $y_2$、变系数系统 $A(t)$ 的 $W=e^{3t}$、$\det e^{At}=e^{5t}$、以及 $\int e^{-x^2/2-2x}\dd x$ 的 erf 形式，均用 sympy 代回/求导核对通过；Sturm 分离与哈密顿散度证明是逻辑推导，未做数值复核。}
+
+\end{document}

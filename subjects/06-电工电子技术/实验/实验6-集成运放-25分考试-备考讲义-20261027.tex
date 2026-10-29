@@ -1,0 +1,608 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage{graphicx}
+\usepackage[american]{circuitikz}
+\settags{实验 6 · 集成运放 25 分}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{12\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{实验 6：集成运算放大器}
+{25 分考试实验：反相加法器 + 四级波形发生器\\设计、计算、接线、调试与报告答案}
+{依据：实验手册 pp.19--22（Integrated Operational Amplifier Experiment）；教材《电工学实验教程》第 2 版 §5.3.4--§5.3.5（pp.157--162）、§6.4（pp.243--248）；A1 成绩考核标准（课堂幻灯片）\ \textperiodcentered\ 2026-10-27}
+
+\callout{\textbf{这份讲义怎么用。} §0 先把课程要求翻译成“考试要做什么”；§1 用最短的篇幅把运放的虚短、虚断、饱和与 LM324 引脚讲清；§2 是手册 p19 四道预习题的英文答案；§3 是反相加法器（Project 1）的完整设计与 Table 5.3.3/5.3.4；§4 是四级波形发生器（Project 2）的参数、公式、波形与调试；§5 是报告可直接用的英文句子；§6 是考试操作清单；§7 是一页纸公式/引脚表。所有元件值都给了一套\textbf{可直接落地}的参考值，考试时按老师提供的元件微调，公式不变。}
+
+%=============================================================
+\hdr{§0}{课程要求与这次 25 分考什么}
+
+\subhdr{0.1 A1 成绩表里，这次实验为什么是 25 分}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{6.8cm}p{3.0cm}p{4.0cm}@{}}
+\hline
+\thead{实验} & \thead{Operation 满分} & \thead{备注} \\
+\hline
+Multisim Simulation & 10 & 仿真 \\
+DC Circuit & 5 & 强电实验台 \\
+AC Circuit & 5 & 强电 \\
+DC Stabilized Power Supply & 5 & 强电 \\
+Transistor Single-Stage Amplifier & 10 & 设计 \\
+\textbf{Integrated Operational Amplifier} & \textbf{25} & \textbf{考试；不让用手机和交流} \\
+Integrated Logic Gate / Combinational Logic & 10 & 设计 \\
+Trigger and Counter & 10 & 设计 \\
+\hline
+\end{tabular}
+\end{center}
+
+评分结构：Preparation 共 5 分，Discussion 10+5 分；批阅后需红笔改正；抄袭一次扣 10 分；跨实验补做扣 10 分；注意上课时间；报告回答简洁。老师在课上还强调了六句话：\textbf{记得实验完关所有仪器；25 分的是考试，不让用手机和交流；4 级电路，做出越多越好；设计的，提前画好电路图；简洁回答实验报告问题；一定要掌握实验操作。}
+
+\subhdr{0.2 这次考试的四个动作}
+
+\begin{enumerate}
+  \item \textbf{预习}：回答 p19 四问；算好反相加法器的 \(R_3\)；画好反相加法器和四级波形发生器的电路图。
+  \item \textbf{Project 1}：按图 5.3.3 接反相加法器，测 Table 5.3.3 的六组数据，观察饱和。
+  \item \textbf{Project 2}：设计并搭出正弦、方波、三角波、尖脉冲四级电路；用示波器逐级看波形，标周期和幅值。
+  \item \textbf{Discussion}：回答 p22 五问；重点是饱和、线性范围、误差、正弦周期、如何消失真。
+\end{enumerate}
+
+\subhdr{0.3 考试策略：先画、再分级、后联调}
+
+\begin{itemize}
+  \item \textbf{先画}：进实验室前把两级电路画好，标清 LM324 引脚号、电源引脚、反馈电阻、平衡电阻。考试时没有手机可查，图必须自己画得出。
+  \item \textbf{分级}：四级波形发生器不要一次全接。先调好 Wien 桥正弦，再接比较器看方波，再接积分器看三角波，最后接微分器看尖脉冲；每一级输出都先用示波器确认，再接下一级。
+  \item \textbf{联调}：四级共用一组 \(\pm12V\) 电源和地；每级加 \(0.1\,\mu F\) 去耦电容；所有示波器地线夹接同一公共地。
+  \item \textbf{记录}：每级记录“周期、幅值、波形形状、是否饱和”；报告只写关键公式、代入、结果和一句结论，不写长篇推导。
+  \item \textbf{收尾}：先关信号源/电源，再拆线；所有仪器归零、关机；电容放电。
+\end{itemize}
+
+%=============================================================
+\hdr{§1}{运放速成：虚短、虚断、饱和与 LM324}
+
+\subhdr{1.1 理想运放与两条“黄金规则”}
+
+在线性负反馈条件下，理想运放满足：
+\[
+u_+\approx u_- \quad\text{（虚短）},\qquad i_+\approx i_-\approx0 \quad\text{（虚断）}.
+\]
+“虚短”不是把两端真的短路，而是负反馈把两输入端之间的差值压到很小；“虚断”不是断开，而是输入电阻很大，流入输入端的电流近似为零。用这两条规则，反相放大器、加法器、积分器、微分器都可以直接列节点方程。
+
+\subhdr{1.2 反相放大器与反相加法器}
+
+反相放大器：
+\[
+u_o=-\frac{R_f}{R_1}u_i.
+\]
+反相加法器（两路输入）：
+\[
+u_o=-R_f\left(\frac{u_{i1}}{R_1}+\frac{u_{i2}}{R_2}\right).
+\]
+本实验 \(R_1=R_2=10\,\mathrm{k}\Omega\)、\(R_f=100\,\mathrm{k}\Omega\)，所以
+\[
+u_o=-10\,(u_{i1}+u_{i2}).
+\]
+反相端的节点是“虚地”，电位近似为 0；两路输入电流在节点上相加，全部流过 \(R_f\)，这就是“加法”的来源。
+
+\subhdr{1.3 饱和：输出不可能超过电源轨}
+
+运放的输出受电源限制。LM324 在 \(\pm12\,\mathrm{V}\) 供电时，线性输出大约 \(\pm10\,\mathrm{V}\)（每侧比电源轨低 1.5--2\,V）；在 \(\pm5\,\mathrm{V}\) 供电时大约 \(\pm3.5\,\mathrm{V}\)。当理论输出超过这个范围，输出就被“削顶”在饱和值 \(U_{OM}\) 附近，这就是 p22 第 1 问要你举的“饱和”现象。
+
+\subhdr{1.4 LM324 引脚与电源}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{2.2cm}p{2.2cm}p{2.2cm}p{5.2cm}@{}}
+\hline
+\thead{运放} & \thead{OUT} & \thead{\(-\)IN} & \thead{\(+\)IN} & \thead{用途（本讲义）} \\
+\hline
+A & 1 & 2 & 3 & Wien 桥正弦 \\
+B & 7 & 6 & 5 & 过零比较器 \\
+C & 8 & 9 & 10 & 积分器（三角波） \\
+D & 14 & 13 & 12 & 微分器（尖脉冲） \\
+\hline
+\end{tabular}
+\end{center}
+
+电源：pin 4 接 \(+12\,\mathrm{V}\)，pin 11 接 \(-12\,\mathrm{V}\)（双电源）；pin 4 与地、pin 11 与地各接一只 \(0.1\,\mu F\) 去耦电容。LM324 是四运放，四个运放共用电源引脚；未用的运放输入端要接固定电位，不要悬空。接线前先核对封装（DIP14）与引脚号，电源反接会立即损坏芯片。如果实验台只提供单电源，按老师要求用偏置电路把静态工作点抬到 \(V_{CC}/2\)，不能直接照搬双电源接法。
+
+\subhdr{1.5 平衡电阻：为什么是三个电阻并联}
+
+反相端看到的直流电阻是 \(R_1\parallel R_2\parallel R_f\)；同相端如果直接接地，看到的电阻是 0。两只输入端的偏置电流在不等电阻上产生不同的压降，会在输出端形成附加失调。把 \(R_3=R_1\parallel R_2\parallel R_f\) 接在同相端与地之间，使两端看到的直流电阻相等，偏置电流产生的压降相互抵消，输出失调最小。这就是“平衡电阻”的作用。
+
+%=============================================================
+\hdr{§2}{预习四问（手册 p19）}
+
+\subhdr{2.1 集成运放有哪几种输入方式？}
+
+\callout{\textbf{EN — Q1.} An integrated op-amp has two input terminals, so it can be used in three input modes: (1) \textbf{differential input}, where the signal is applied between the two inputs; (2) \textbf{inverting input}, where the signal is applied to the inverting input and the non-inverting input is grounded (or connected to a reference/balance resistor); (3) \textbf{non-inverting input}, where the signal is applied to the non-inverting input and the inverting input is grounded or connected to the feedback network. In this experiment the adder uses the inverting input mode, and the comparator uses the differential input mode.}
+
+中文对照：集成运放有两个输入端，可接成差分、反相、同相三种输入方式。反相输入时信号接反相端，同相端通过平衡电阻接地；同相输入时信号接同相端，反相端接反馈网络；差分输入时两输入端都接信号。本实验的加法器用反相输入，比较器用差分输入。
+
+\subhdr{2.2 负反馈电阻或积分电容能否接在输出与同相输入端之间？}
+
+\callout{\textbf{EN — Q2.} No. Negative feedback must be connected between the output and the \textbf{inverting} input. If the feedback resistor or integrating capacitor is connected between the output and the \textbf{non-inverting} input, the feedback becomes positive; the circuit will oscillate or latch up, and the virtual-short condition \(u_+\approx u_-\) will no longer hold. In the inverting configuration the non-inverting input should be connected to ground through a balancing resistor (or to a reference).}
+
+中文对照：不行。负反馈必须接反相端；接同相端会变成正反馈，电路可能振荡或锁死，虚短不成立。反相电路中同相端应通过平衡电阻接地（或接参考电位）。
+
+\subhdr{2.3 输入电压能否取任意值？最大输出电压与哪些因素有关？}
+
+\callout{\textbf{EN — Q3.} No. The input voltage must stay within the op-amp's common-mode input range, and the output must stay within its linear output range. The maximum output voltage depends on: the supply voltage, the op-amp's output saturation voltage (for the LM324, about 1.5\,V below each rail), the load resistance, the closed-loop gain, the input common-mode range, and the frequency/slew rate. With \(\pm12\,\mathrm{V}\) supplies the LM324 linear output is roughly \(\pm10\,\mathrm{V}\); with \(\pm5\,\mathrm{V}\) it is roughly \(\pm3.5\,\mathrm{V}\). Exceeding the range causes clipping (saturation).}
+
+中文对照：不能任意。输入必须落在共模输入范围内，输出必须落在双电源之间的线性区。最大输出电压与电源电压、运放饱和压降、负载、闭环增益、共模范围、频率/压摆率有关；LM324 在 \(\pm12V\) 时线性输出约 \(\pm10V\)，\(\pm5V\) 时约 \(\pm3.5V\)。超出就削顶。
+
+\subhdr{2.4 平衡电阻怎么算？}
+
+\callout{\textbf{EN — Q4.} For the inverting adder, the balancing resistor \(R_3\) is connected from the non-inverting input to ground and should equal the equivalent resistance seen by the inverting input:
+\[
+R_3=R_1\parallel R_2\parallel R_f
+=\frac{1}{1/R_1+1/R_2+1/R_f}.
+\]
+With \(R_1=R_2=10\,\mathrm{k}\Omega\) and \(R_f=100\,\mathrm{k}\Omega\),
+\[
+R_3=10\,\mathrm{k}\parallel10\,\mathrm{k}\parallel100\,\mathrm{k}=4.76\,\mathrm{k}\Omega.
+\]
+Choose the nearest nominal value \(4.7\,\mathrm{k}\Omega\). If it is not available, use \(4.7\,\mathrm{k}\Omega+62\,\Omega\) in series, or a \(10\,\mathrm{k}\Omega\) potentiometer adjusted to \(4.76\,\mathrm{k}\Omega\). The purpose is to equalize the DC resistance seen by the two inputs, so the input bias currents produce the same voltage drop and the output offset is minimized.}
+
+中文对照：\(R_3=R_1\parallel R_2\parallel R_f=4.76k\Omega\)，选标称值 \(4.7k\Omega\)；没有 \(4.7k\) 时用 \(4.7k+62\Omega\) 串联，或用 \(10k\) 电位器调到 \(4.76k\)。目的是让两端看到的直流电阻相等，抵消偏置电流造成的失调。
+
+%=============================================================
+\hdr{§3}{Project 1：反相加法器}
+
+\subhdr{3.1 电路与元件}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\linewidth]{图-实验6/adder.png}
+\caption{反相加法器（教材图 5.3.3）：\(R_1=R_2=10\,\mathrm{k}\Omega\)，\(R_f=100\,\mathrm{k}\Omega\)，\(R_3\) 为平衡电阻。}
+\end{figure}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{3.2cm}p{8.6cm}@{}}
+\hline
+\thead{元件} & \thead{参数} & \thead{作用/接法} \\
+\hline
+\(R_1\) & \(10\,\mathrm{k}\Omega\) & \(u_{i1}\) 到反相端（pin 2） \\
+\(R_2\) & \(10\,\mathrm{k}\Omega\) & \(u_{i2}\) 到反相端（pin 2） \\
+\(R_f\) & \(100\,\mathrm{k}\Omega\) & 输出（pin 1）到反相端（pin 2） \\
+\(R_3\) & \(4.7\,\mathrm{k}\Omega\) & 同相端（pin 3）到地，平衡电阻 \\
+LM324 & DIP14 & A 运放：pin 1/2/3；电源 pin 4/11 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{3.2 输出公式与 Table 5.3.3/5.3.4}
+
+\[
+u_o=-R_f\left(\frac{u_{i1}}{R_1}+\frac{u_{i2}}{R_2}\right)
+=-100\,\mathrm{k}\left(\frac{u_{i1}}{10\,\mathrm{k}}+\frac{u_{i2}}{10\,\mathrm{k}}\right)
+=-10\,(u_{i1}+u_{i2}).
+\]
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.8cm}p{1.8cm}p{3.2cm}p{4.0cm}p{3.6cm}@{}}
+\hline
+\thead{\(u_{i1}\)/V} & \thead{\(u_{i2}\)/V} & \thead{理论 \(u_o\)/V} & \thead{实测 \(u_o\)/V} & \thead{说明} \\
+\hline
+0.2 & 0.3 & \(-10(0.5)=-5.0\) & & 线性 \\
+0.2 & \(-0.3\) & \(-10(-0.1)=+1.0\) & & 线性 \\
+\(-0.2\) & \(-0.3\) & \(-10(-0.5)=+5.0\) & & 线性 \\
+0.5 & 0.2 & \(-10(0.7)=-7.0\) & & 线性 \\
+0.5 & 0.6 & \(-10(1.1)=-11.0\) & & 接近饱和 \\
+0.7 & 0.6 & \(-10(1.3)=-13.0\) & & 必饱和（约 \(-10.5\)） \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{怎么读这张表。} 前四行理论值都在 \(\pm10\,\mathrm{V}\) 以内，属于线性区；第五行 \(-11\,\mathrm{V}\) 已经接近 LM324 的负饱和值，可能轻微削顶；第六行 \(-13\,\mathrm{V}\) 一定超出线性区，实测会被削在约 \(-10.5\,\mathrm{V}\)。报告里不要把第六行的“误差”算成 \(-13\) 与 \(-10.5\) 的相对误差就完事，要说明“这是饱和，不是计算错误”。
+
+\subhdr{3.3 平衡电阻 \(R_3\) 的答案}
+
+\callout{\textbf{EN — Project 1, Q1.} \(R_3=R_1\parallel R_2\parallel R_f=10\,\mathrm{k}\parallel10\,\mathrm{k}\parallel100\,\mathrm{k}=4.76\,\mathrm{k}\Omega\). Select the nearest nominal value \(4.7\,\mathrm{k}\Omega\). \textbf{Q2.} If no \(4.7\,\mathrm{k}\Omega\) resistor is available, use a \(4.7\,\mathrm{k}\Omega\) resistor in series with a \(62\,\Omega\) resistor (total \(4.762\,\mathrm{k}\Omega\)), or use a \(10\,\mathrm{k}\Omega\) potentiometer adjusted to \(4.76\,\mathrm{k}\Omega\).}
+
+中文：\(R_3=4.76k\Omega\)，选 \(4.7k\Omega\)；没有 \(4.7k\) 时用 \(4.7k+62\Omega\) 串联，或用 \(10k\) 电位器调到 \(4.76k\)。不要把 \(R_3\) 直接短路，否则偏置电流会在输出端产生额外失调。
+
+\subhdr{3.4 测量步骤与误差分析}
+
+\begin{enumerate}
+  \item 断电，按图接好 \(R_1\)、\(R_2\)、\(R_f\)、\(R_3\)；LM324 的 pin 4 接 \(+12\,\mathrm{V}\)、pin 11 接 \(-12\,\mathrm{V}\)，电源地接公共地；pin 4/11 各加 \(0.1\,\mu F\) 去耦电容。
+  \item 用万用表直流挡测两路输入电压，先调到表中第一组 \(0.2/0.3\,\mathrm{V}\)；再测输出 \(u_o\)。逐行改变输入，记录输出。
+  \item 每换一组输入前先调电源/信号源，读数稳定后再记录；输入电压用万用表实测，不要只看电源显示。
+  \item 观察饱和：当输入 \(0.7/0.6\,\mathrm{V}\) 时，输出应停在约 \(-10.5\,\mathrm{V}\)，不再随输入线性变化；记录这个饱和值。
+  \item 误差：线性行用 \(\delta=|u_{o,\text{meas}}-u_{o,\text{theo}}|/|u_{o,\text{theo}}|\times100\%\)；饱和行单独说明“削顶”，不要硬算相对误差。
+\end{enumerate}
+
+误差来源：电阻容差（1--5\%）、运放输入失调电压与偏置电流、万用表精度、输入源内阻、电源电压偏离 \(\pm12\,\mathrm{V}\)、输出饱和。平衡电阻只能减小偏置电流造成的失调，不能消除失调电压；LM324 的失调电压在毫伏级，经过 \(-10\) 倍增益会放大到几十毫伏，属于正常。
+
+\subhdr{3.5 Discussion 第 1--3 问（对应 p22）}
+
+\callout{\textbf{EN — Discussion 1.} Yes. Saturation occurred in the last row: with \(u_{i1}=0.7\,\mathrm{V}\) and \(u_{i2}=0.6\,\mathrm{V}\), the theoretical output is \(-13.0\,\mathrm{V}\), but the measured output was about \(-10.5\,\mathrm{V}\), clipped at the negative output swing of the LM324. The row \(0.5\,\mathrm{V}+0.6\,\mathrm{V}\) (theoretical \(-11.0\,\mathrm{V}\)) is also close to the limit and may show slight clipping.}
+
+\callout{\textbf{EN — Discussion 2.} The linear output range is limited by the supply voltage, the op-amp output saturation voltage, the load resistance, the closed-loop gain, the input common-mode range, and the frequency/slew rate. With \(\pm12\,\mathrm{V}\) supplies the LM324 linear output is roughly \(\pm10\,\mathrm{V}\); with \(\pm5\,\mathrm{V}\) it is roughly \(\pm3.5\,\mathrm{V}\). Reducing the gain, increasing the supply (within the op-amp rating), or reducing the load current can extend the linear range.}
+
+\callout{\textbf{EN — Discussion 3.} For the linear rows use \(\delta=|u_{o,\text{meas}}-u_{o,\text{theo}}|/|u_{o,\text{theo}}|\times100\%\). For the saturated rows, compare the measured value with the clipping limit, not with the theoretical \(-13\,\mathrm{V}\); the large “error” is caused by saturation, not by a wrong calculation. The main error sources are resistor tolerance, op-amp offset voltage and bias current, meter accuracy, source resistance, and the finite output swing.}
+
+中文要点：第 1 问要举出具体行（0.7/0.6 或 0.5/0.6），并给出理论值与实测饱和值；第 2 问按“电源—输出摆幅—负载—增益—共模—频率”列；第 3 问线性行算误差，饱和行说明削顶，不要混为一谈。
+
+%=============================================================
+\hdr{§4}{Project 2：四级波形发生器}
+
+\subhdr{4.1 总体思路：一级生正弦，三级做变换}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=0.55cm,
+  box/.style={draw=violet, rounded corners=2pt, minimum width=2.3cm,
+  minimum height=1.1cm, align=center, fill=bandviolet, font=\small}]
+\node[box] (S) {Wien 桥\\正弦波};
+\node[box, right=of S] (C) {过零比较器\\方波};
+\node[box, right=of C] (I) {积分器\\三角波};
+\node[box, right=of I] (D) {微分器\\尖脉冲};
+\draw[-{Latex}] (S) -- node[above,font=\scriptsize]{$u_{o1}$} (C);
+\draw[-{Latex}] (C) -- node[above,font=\scriptsize]{$u_{o2}$} (I);
+\draw[-{Latex}] (I) -- node[above,font=\scriptsize]{$u_{o3}$} (D);
+\node[below=0.15cm of S, font=\scriptsize] {$f_0=1/(2\pi RC)$};
+\node[below=0.15cm of C, font=\scriptsize] {$\pm U_{OM}$};
+\node[below=0.15cm of I, font=\scriptsize] {线性斜坡};
+\node[below=0.15cm of D, font=\scriptsize] {边沿脉冲};
+\end{tikzpicture}
+\caption{四级波形发生器：Wien 桥产生正弦；比较器把正弦变成方波；积分器把方波变成三角波；微分器把方波的边沿变成尖脉冲。四级同频。}
+\end{figure}
+
+四个输出都同频：正弦由 Wien 桥决定，后面三级只是“换波形”，不改变频率。这样示波器上四个波形的周期应该一致；如果不一致，先检查 Wien 桥是否起振、比较器是否每周期只翻转一次。
+
+\aside{另一种方案：教材 6.4.3 用比较器 + 积分器闭环自激，直接产生方波/三角波；本讲义用“正弦 \(\to\) 比较器 \(\to\) 积分器”的开环链，目的是让四级输出同频、可逐级观察。两种方案的方波/三角波公式相同，考试按老师要求选一种。}
+
+\subhdr{4.2 第一级：Wien 桥正弦振荡器}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\linewidth]{图-实验6/wien.png}
+\caption{基本 RC 正弦波振荡器（教材图 6.4.1a）：正反馈选频网络 \(R,C\)，负反馈 \(R_1,R_2\)。}
+\end{figure}
+
+振荡频率：
+\[
+f_0=\frac{1}{2\pi RC}.
+\]
+起振条件：负反馈增益略大于 3，
+\[
+A=1+\frac{R_2}{R_1}>3.
+\]
+本设计取 \(R=6.8\,\mathrm{k}\Omega\)、\(C=0.047\,\mu F\)：
+\[
+f_0=\frac{1}{2\pi\times6.8\,\mathrm{k}\times0.047\,\mu F}\approx498\,\mathrm{Hz},
+\qquad T=\frac{1}{f_0}\approx2.01\,\mathrm{ms}.
+\]
+取 \(R_1=10\,\mathrm{k}\Omega\)、\(R_2=22\,\mathrm{k}\Omega\)，\(A=3.2>3\)，可以起振。为了限幅、减小失真，按教材图 6.4.1b 在反馈支路中加稳幅网络：\(D_1\)、\(D_2\) 与 \(R_3\) 组成非线性反馈（\(D_1\) 与 \(D_2+R_3\) 并联），再与 \(R_2\) 串联；幅值小时二极管不导通，增益高；幅值大时二极管导通，等效反馈电阻减小，增益自动降到 3 附近，输出稳定在几伏。
+
+\aside{如果实验室没有 \(0.047\,\mu F\)，可用 \(0.01\,\mu F\) 配 \(33\,\mathrm{k}\Omega\)（约 482\,Hz），或用 \(0.1\,\mu F\) 配 \(3.3\,\mathrm{k}\Omega\)（约 482\,Hz）。频率公式不变，只要 \(RC\) 乘积相同。}
+
+\subhdr{4.3 第二级：过零比较器（正弦 \(\to\) 方波）}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\linewidth]{图-实验6/comparator.png}
+\caption{过零比较器（教材图 5.3.9）：\(R_1=R_2=10\,\mathrm{k}\Omega\)，输入正弦，输出方波。}
+\end{figure}
+
+比较器没有负反馈，运放工作在饱和区：正弦过零时输出翻转，得到同频方波，幅值约为 \(\pm U_{OM}\)（LM324 在 \(\pm12\,\mathrm{V}\) 时约 \(\pm10.5\,\mathrm{V}\)）。输入电阻 \(R_1=10\,\mathrm{k}\Omega\) 限制输入电流；\(R_2=10\,\mathrm{k}\Omega\) 是同相端的平衡/接地电阻。
+
+如果输出在过零点附近抖动（噪声导致多次翻转），把 \(R_2\) 换成 \(100\,\mathrm{k}\Omega\) 的电位器，从输出到同相端接一只 \(100\,\mathrm{k}\Omega\) 电阻，引入很小的滞回；或者直接用图 5.3.10 的滞回比较器。滞回不能太大，否则方波占空比偏离 50\%。
+
+\subhdr{4.4 第三级：积分器（方波 \(\to\) 三角波）}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\linewidth]{图-实验6/integrator.png}
+\caption{积分运算电路（教材图 5.3.7）：\(R_1\) 输入电阻，\(C_1\) 积分电容，\(R_3\) 与开关 S 为直流反馈/复位。}
+\end{figure}
+
+积分关系：
+\[
+u_o(t)=-\frac{1}{R_1C_1}\int u_i(t)\,dt+u_o(0).
+\]
+输入是幅值 \(\pm U_{OM}\) 的方波，半周期 \(T/2\) 内输出线性上升/下降；三角波的峰峰值
+\[
+U_{pp}=\frac{U_{OM}}{R_1C_1}\cdot\frac{T}{2}
+=\frac{U_{OM}T}{2R_1C_1}.
+\]
+取 \(U_{OM}=10.5\,\mathrm{V}\)、\(T=2.01\,\mathrm{ms}\)、\(C_1=0.1\,\mu F\)，希望 \(U_{pp}\approx3.9\,\mathrm{V}\)，则
+\[
+R_1=\frac{U_{OM}T}{2U_{pp}C_1}
+=\frac{10.5\times2.01\times10^{-3}}{2\times3.9\times0.1\times10^{-6}}
+\approx27\,\mathrm{k}\Omega.
+\]
+所以取 \(R_1=27\,\mathrm{k}\Omega\)、\(C_1=0.1\,\mu F\)，三角波约 \(3.9\,\mathrm{V}\) 峰峰值，中心在 0 附近。\(R_2=22\,\mathrm{k}\Omega\) 是平衡电阻（约 \(R_1\parallel R_3\)）；\(R_3=100\,\mathrm{k}\Omega\) 与开关 S 提供直流反馈，防止积分器长时间漂到饱和。做连续三角波时把 S 闭合（或直接接 \(100\,\mathrm{k}\Omega\)），这样直流增益被限制在 \(-R_3/R_1\approx-3.7\)，输出不会无限积分到电源轨。
+
+\aside{如果 S 断开（理想积分），很小的输入失调也会被不断积分，输出最终饱和；示波器上看到三角波“斜到顶就削平”，就是饱和。考试时先把 S 闭合调出稳定三角波，再观察 S 断开后的饱和现象，正好回答“为什么要加直流反馈”。}
+
+\subhdr{4.5 第四级：微分器（方波 \(\to\) 尖脉冲）}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\linewidth]{图-实验6/differentiator.png}
+\caption{微分运算电路（教材图 5.3.8）：\(C_1=0.01\,\mu F\)，\(R_f=10\,\mathrm{k}\Omega\)，\(C_2=5\,\mathrm{nF}\)，S1/S2 切换理想/实用微分。}
+\end{figure}
+
+微分关系：
+\[
+u_o=-R_fC_1\frac{du_i}{dt}.
+\]
+方波每次跳变，输出出现一个尖脉冲；上升沿和下降沿的脉冲极性相反，所以一个周期内有两只尖脉冲，间隔 \(T/2\)。尖脉冲的幅值取决于方波边沿的斜率：边沿越陡，脉冲越大。LM324 的压摆率约 \(0.5\,\mathrm{V}/\mu s\)，方波边沿不是理想阶跃，尖脉冲可能只有几伏；如果峰太小，可把 \(C_1\) 增大到 \(0.047\,\mu F\) 或把 \(R_f\) 增大到 \(47\,\mathrm{k}\Omega\)；如果峰太大/饱和，加两只反并二极管限幅，或减小 \(C_1\)。
+
+\(C_2=5\,\mathrm{nF}\) 与 \(R_f\) 并联，用来限制高频增益、抑制噪声；输入端串一只 \(1\,\mathrm{k}\Omega\) 的 \(R_s\)（教材提示 1--10\,k\(\Omega\)）可以进一步滤除高频干扰。平衡电阻 \(R_2=10\,\mathrm{k}\Omega\) 接在同相端与地之间。观察尖脉冲时用 S1 闭合、S2 断开（\(0.01\,\mu F\)）；若噪声大，改用 S2 闭合（\(5\,\mathrm{nF}\)）。
+
+\subhdr{4.6 四级波形与参数总表}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.85,>=Latex]
+% sine
+\begin{scope}[xshift=0cm]
+\draw[->] (0,0) -- (3.6,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-1.3) -- (0,1.4);
+\draw[thick,blue,domain=0:720,samples=150] plot ({\x/200},{sin(\x)});
+\node at (1.8,-1.7) {\scriptsize (a) 正弦};
+\node[above] at (0,1.4) {\scriptsize $u_{o1}$};
+\end{scope}
+% square
+\begin{scope}[xshift=4.4cm]
+\draw[->] (0,0) -- (3.6,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-1.3) -- (0,1.4);
+\draw[thick,red] (0,1) -- (1,1) -- (1,-1) -- (2,-1) -- (2,1) -- (3,1) -- (3,-1) -- (3.6,-1);
+\node at (1.8,-1.7) {\scriptsize (b) 方波};
+\node[above] at (0,1.4) {\scriptsize $u_{o2}$};
+\end{scope}
+% triangle
+\begin{scope}[xshift=8.8cm]
+\draw[->] (0,0) -- (3.6,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-1.3) -- (0,1.4);
+\draw[thick,orange] (0,-0.8) -- (0.5,0.8) -- (1.5,-0.8) -- (2.5,0.8) -- (3.5,-0.8);
+\node at (1.8,-1.7) {\scriptsize (c) 三角波};
+\node[above] at (0,1.4) {\scriptsize $u_{o3}$};
+\end{scope}
+% pulses
+\begin{scope}[xshift=13.2cm]
+\draw[->] (0,0) -- (3.6,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-1.3) -- (0,1.4);
+\draw[thick,violet] (0,0) -- (0.45,0) -- (0.5,1.1) -- (0.55,0) -- (1.45,0) -- (1.5,-1.1) -- (1.55,0) -- (2.45,0) -- (2.5,1.1) -- (2.55,0) -- (3.45,0);
+\node at (1.8,-1.7) {\scriptsize (d) 尖脉冲};
+\node[above] at (0,1.4) {\scriptsize $u_{o4}$};
+\end{scope}
+\end{tikzpicture}
+\caption{四级输出波形示意（同频，周期约 \(2.01\,\mathrm{ms}\)）：正弦、方波、三角波、尖脉冲。实际幅值以示波器读数为准。}
+\end{figure}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}p{2.6cm}p{2.6cm}p{3.6cm}p{4.4cm}@{}}
+\hline
+\thead{级} & \thead{输入} & \thead{输出} & \thead{周期/幅值} & \thead{关键公式} \\
+\hline
+1 & — & 正弦 & \(T\approx2.01\,\mathrm{ms}\)，几伏 & \(f_0=1/(2\pi RC)\) \\
+2 & 正弦 & 方波 & 同周期，\(\pm U_{OM}\) & 过零翻转 \\
+3 & 方波 & 三角波 & 同周期，约 \(3.9\,\mathrm{V}_{pp}\) & \(U_{pp}=U_{OM}T/(2R_1C_1)\) \\
+4 & 方波 & 尖脉冲 & 每周期两只，间隔 \(T/2\) & \(u_o=-R_fC_1\,du_i/dt\) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.7 引脚分配与接线顺序}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.2cm}p{3.2cm}p{1.2cm}p{1.2cm}p{1.2cm}p{5.2cm}@{}}
+\hline
+\thead{运放} & \thead{电路} & \thead{OUT} & \thead{\(-\)IN} & \thead{\(+\)IN} & \thead{备注} \\
+\hline
+A & Wien 桥 & 1 & 2 & 3 & 正反馈 R-C，负反馈 \(R_1/R_2\) \\
+B & 比较器 & 7 & 6 & 5 & \(R_1\) 输入，\(R_2\) 接地 \\
+C & 积分器 & 8 & 9 & 10 & \(R_1\) 输入，\(C_1/R_3\) 反馈 \\
+D & 微分器 & 14 & 13 & 12 & \(C_1\) 输入，\(R_f\) 反馈 \\
+\hline
+\end{tabular}
+\end{center}
+
+接线顺序：先接 A 的 Wien 桥，调出正弦；把 A 的输出接 B 的输入，调出方波；把 B 的输出接 C 的输入，调出三角波；最后把 B 的输出接 D 的输入，调出尖脉冲。每接一级前先断电；每级电源引脚加 \(0.1\,\mu F\) 去耦；所有地接同一公共地。
+
+\aside{总图怎么画：Wien 桥（A，pin 1 输出）\(\to\) 比较器（B，pin 6 输入）；比较器输出（pin 7）分两路，一路 \(\to\) 积分器（C，pin 9 输入），一路 \(\to\) 微分器（D，pin 13 输入）；A/B/C/D 的 pin 4 接 \(+12\,\mathrm{V}\)、pin 11 接 \(-12\,\mathrm{V}\)；每个运放的同相端按各分图接平衡电阻/地。把四张分图按这个顺序拼起来，就是完整四级电路图。}
+
+\subhdr{4.8 Discussion 第 4--5 问（对应 p22）}
+
+\callout{\textbf{EN — Discussion 4.} \(T=1/f_0=2\pi RC\). With \(R=6.8\,\mathrm{k}\Omega\) and \(C=0.047\,\mu F\),
+\[
+f_0=\frac{1}{2\pi\times6.8\times10^3\times0.047\times10^{-6}}\approx498\,\mathrm{Hz},
+\qquad T\approx2.01\,\mathrm{ms}.
+\]
+If your design uses different \(R,C\), substitute them into the same formula.}
+
+\callout{\textbf{EN — Discussion 5.} Add amplitude stabilization (back-to-back diodes and a series resistor) to the Wien bridge; add a DC feedback resistor (or close the switch S) across the integrator capacitor to prevent saturation; add a small series resistor and a diode limiter to the differentiator to limit the spikes; use a hysteresis comparator to prevent chatter. The modified circuit should keep every stage within the linear output range. Draw the modified circuit with these additions marked.}
+
+中文要点：第 4 问直接代 \(T=2\pi RC\)；第 5 问要画“修正后的电路”，不是只写文字：Wien 桥加二极管稳幅、积分器加 \(100k\) 直流反馈/闭合 S、微分器加限幅/串联电阻、比较器加小滞回。
+
+%=============================================================
+\hdr{§5}{报告怎么写：模板与英文句式}
+
+\subhdr{5.1 预习报告（p19）}
+
+按 §2 的四段英文答案抄写即可；每题 2--4 句，先给结论，再给一句理由。不要写成长段。
+
+\subhdr{5.2 Project 1 数据表}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.6cm}p{1.6cm}p{3.4cm}p{3.6cm}p{2.0cm}p{3.0cm}@{}}
+\hline
+\thead{\(u_{i1}\)/V} & \thead{\(u_{i2}\)/V} & \thead{理论 \(u_o\)/V} & \thead{实测 \(u_o\)/V} & \thead{误差/\%} & \thead{备注} \\
+\hline
+0.2 & 0.3 & \(-5.0\) & & & \\
+0.2 & \(-0.3\) & \(+1.0\) & & & \\
+\(-0.2\) & \(-0.3\) & \(+5.0\) & & & \\
+0.5 & 0.2 & \(-7.0\) & & & \\
+0.5 & 0.6 & \(-11.0\) & & & 接近饱和 \\
+0.7 & 0.6 & \(-13.0\) & & — & 饱和，不硬算误差 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{5.3 Project 2 设计表与波形}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.6cm}p{3.2cm}p{3.2cm}p{5.0cm}@{}}
+\hline
+\thead{级} & \thead{元件} & \thead{参数} & \thead{作用} \\
+\hline
+Wien & \(R,C\) & \(6.8\,\mathrm{k}\Omega\)，\(0.047\,\mu F\) & \(f_0\approx498\,\mathrm{Hz}\) \\
+Wien & \(R_1,R_2\) & \(10\,\mathrm{k}\Omega\)，\(22\,\mathrm{k}\Omega\) & 增益 \(A=3.2\) \\
+Wien & \(D_1,D_2\) & 1N4148 & 稳幅 \\
+比较器 & \(R_1,R_2\) & \(10\,\mathrm{k}\Omega\) & 输入/平衡 \\
+积分器 & \(R_1,C_1,R_3\) & \(27\,\mathrm{k}\Omega\)，\(0.1\,\mu F\)，\(100\,\mathrm{k}\Omega\) & 三角波，约 \(3.9\,\mathrm{V}_{pp}\) \\
+微分器 & \(C_1,R_f,R_s\) & \(0.01\,\mu F\)，\(10\,\mathrm{k}\Omega\)，\(1\,\mathrm{k}\Omega\) & 尖脉冲 \\
+\hline
+\end{tabular}
+\end{center}
+
+波形栏：每级画 2 个周期，标出纵轴量（V）、横轴时间（ms）、周期 \(T\) 和峰值/谷值。正弦、方波、三角波的周期都应为 \(2.01\,\mathrm{ms}\)；尖脉冲每周期两只，间隔约 \(1.0\,\mathrm{ms}\)。
+
+\subhdr{5.4 英文句式（可直接用）}
+
+\begin{itemize}
+  \item \textbf{目的句}：This experiment verifies the inverting adder and a four-stage waveform generator built with an LM324.
+  \item \textbf{公式句}：The output voltage is given by \(u_o=-R_f(u_{i1}/R_1+u_{i2}/R_2)\).
+  \item \textbf{饱和句}：The output saturated at about \(-10.5\,\mathrm{V}\) when the theoretical value was \(-13.0\,\mathrm{V}\).
+  \item \textbf{误差句}：The relative error is \(\delta=|u_{o,\text{meas}}-u_{o,\text{theo}}|/|u_{o,\text{theo}}|\times100\%\).
+  \item \textbf{波形句}：The sine wave has a period of \(2.01\,\mathrm{ms}\) and an amplitude of about \(3\,\mathrm{V}\).
+  \item \textbf{结论句}：The measured results agree with the theoretical values within the expected error, except for the saturated row.
+\end{itemize}
+
+%=============================================================
+\hdr{§6}{考试操作清单与故障排查}
+
+\subhdr{6.1 通电前}
+
+\begin{enumerate}
+  \item 核对 LM324 方向：缺口/圆点朝左，pin 1 在左下角；pin 4 接 \(+12\,\mathrm{V}\)，pin 11 接 \(-12\,\mathrm{V}\)，不要反接。
+  \item 先调电源到 \(\pm12\,\mathrm{V}\)，限流先设小（如 0.1\,A），再接电路；电源地、信号地、示波器地接同一点。
+  \item 检查反馈电阻、平衡电阻、输入电阻是否接对；反相端（pin 2/6/9/13）不要和同相端（pin 3/5/10/12）接反。
+  \item 未用的运放输入端接固定电位（如地），不要悬空；输出端不要短路。
+  \item 每级电源脚加 \(0.1\,\mu F\) 去耦电容；电解电容注意极性。
+\end{enumerate}
+
+\subhdr{6.2 分级调试}
+
+\begin{enumerate}
+  \item \textbf{Wien 桥}：先不接后面三级，示波器看 pin 1。如果没有正弦：检查正反馈 R-C 是否接对、\(R_2/R_1\) 是否大于 2、电源是否加上；如果波形削顶，增大 \(R_2\) 或加二极管稳幅。
+  \item \textbf{比较器}：把正弦接 pin 6，pin 5 通过 \(10\,\mathrm{k}\Omega\) 接地，看 pin 7 的方波。如果方波在过零点抖动，加小滞回；如果方波频率是正弦的一半/两倍，检查输入幅值和比较器阈值。
+  \item \textbf{积分器}：把方波接 pin 9（通过 \(27\,\mathrm{k}\Omega\)），pin 10 通过 \(22\,\mathrm{k}\Omega\) 接地，看 pin 8 的三角波。如果三角波斜到顶就削平，闭合 S/接 \(100\,\mathrm{k}\Omega\) 直流反馈；如果三角波太小，减小 \(R_1\) 或增大 \(C_1\)。
+  \item \textbf{微分器}：把方波接 \(C_1\)（pin 13），pin 12 通过 \(10\,\mathrm{k}\Omega\) 接地，看 pin 14 的尖脉冲。如果尖峰太小，增大 \(C_1\) 或 \(R_f\)；如果尖峰过大/饱和，加限幅二极管或减小 \(C_1\)。
+\end{enumerate}
+
+\subhdr{6.3 常见故障}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.0cm}p{5.2cm}p{5.6cm}@{}}
+\hline
+\thead{现象} & \thead{可能原因} & \thead{处理} \\
+\hline
+输出恒为 \(\pm10.5\,\mathrm{V}\) & 开环/正反馈/输入过载 & 检查反馈接反相端；减小输入 \\
+Wien 桥不起振 & 增益 \(<3\)、R-C 接错、电源未加 & 增大 \(R_2\)；检查正反馈；查电源 \\
+正弦削顶 & 增益过大、无稳幅 & 加二极管稳幅；调 \(R_2\) \\
+方波抖动 & 过零噪声、无滞回 & 加小滞回；输入端加滤波 \\
+三角波削顶 & 积分器饱和、S 断开 & 闭合 S/接 \(100\,\mathrm{k}\Omega\) 反馈 \\
+尖脉冲太小 & 方波边沿太慢、\(C_1\) 太小 & 增大 \(C_1/R_f\)；用更快比较器 \\
+尖脉冲过大 & 微分增益过高 & 加限幅；减小 \(C_1\)；串 \(R_s\) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.4 收尾}
+
+先关信号源和电源，再拆线；所有仪器归零、关机；电容放电；导线整理；请老师在原始数据上签字/批改。老师反复强调“记得实验完关所有仪器”，这是 Operation 分的一部分。
+
+%=============================================================
+\hdr{§7}{公式卡与一页纸设计表}
+
+\subhdr{7.1 公式卡}
+
+\[
+u_o=-\frac{R_f}{R_1}u_i,\qquad
+u_o=-R_f\left(\frac{u_{i1}}{R_1}+\frac{u_{i2}}{R_2}\right),\qquad
+R_3=R_1\parallel R_2\parallel R_f.
+\]
+\[
+f_0=\frac{1}{2\pi RC},\qquad
+A=1+\frac{R_2}{R_1}>3,\qquad
+T=\frac{1}{f_0}=2\pi RC.
+\]
+\[
+U_{pp}=\frac{U_{OM}T}{2R_1C_1},\qquad
+u_o=-R_fC_1\frac{du_i}{dt}.
+\]
+
+\subhdr{7.2 一页纸设计表}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.2cm}p{5.0cm}p{6.8cm}@{}}
+\hline
+\thead{项目} & \thead{参数} & \thead{备注} \\
+\hline
+反相加法器 & \(R_1=R_2=10\,\mathrm{k}\Omega\)，\(R_f=100\,\mathrm{k}\Omega\)，\(R_3=4.7\,\mathrm{k}\Omega\) & 增益 \(-10\)；饱和行 0.7/0.6 \\
+Wien 桥 & \(R=6.8\,\mathrm{k}\Omega\)，\(C=0.047\,\mu F\)，\(R_1=10\,\mathrm{k}\Omega\)，\(R_2=22\,\mathrm{k}\Omega\) & \(f_0\approx498\,\mathrm{Hz}\)，\(T\approx2.01\,\mathrm{ms}\) \\
+比较器 & \(R_1=R_2=10\,\mathrm{k}\Omega\) & 方波 \(\pm10.5\,\mathrm{V}\) \\
+积分器 & \(R_1=27\,\mathrm{k}\Omega\)，\(C_1=0.1\,\mu F\)，\(R_3=100\,\mathrm{k}\Omega\)，\(R_2=22\,\mathrm{k}\Omega\) & 三角波约 \(3.9\,\mathrm{V}_{pp}\) \\
+微分器 & \(C_1=0.01\,\mu F\)，\(R_f=10\,\mathrm{k}\Omega\)，\(R_s=1\,\mathrm{k}\Omega\)，\(C_2=5\,\mathrm{nF}\) & 尖脉冲，每周期两只 \\
+LM324 & pin 4 \(+12\,\mathrm{V}\)，pin 11 \(-12\,\mathrm{V}\) & 每电源脚 \(0.1\,\mu F\) 去耦 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{7.3 交卷前 60 秒自检}
+
+\begin{enumerate}
+  \item 反相加法器：\(R_3\) 算了吗？饱和行标了吗？误差公式写了吗？
+  \item 四级波形：四个周期是否一致？每级幅值/周期标了吗？尖脉冲是否每周期两只？
+  \item Discussion：第 1 问举例了吗？第 3 问是否把饱和行单独说明？第 4 问是否代了 \(T=2\pi RC\)？第 5 问是否画了修正电路？
+  \item 操作：电源是否 \(\pm12\,\mathrm{V}\)？pin 4/11 是否接对？示波器地是否共地？仪器是否关？
+  \item 报告：是否简洁？是否有公式—代入—结果—结论？是否没有抄数据/编数据？
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{页码对照与缺口清单}
+
+\subhdr{8.1 本讲义与手册/教材的对应}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{6.0cm}p{6.4cm}@{}}
+\hline
+\thead{手册页} & \thead{内容} & \thead{教材依据} \\
+\hline
+p19 & Preliminary Work 四问 & §5.3.2（p155）、§5.3.3（p156） \\
+p20 & 反相加法器、\(R_3\)、Table 5.3.3 & §5.3.4（pp.157--159），图 5.3.3 \\
+p21 & 四级波形发生器设计 & §6.4.1--§6.4.4（pp.244--248），图 6.4.1a \\
+p22 & Discussion 五问 & §5.3.4、§6.4.5（p248） \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{8.2 手册没有明说、本讲义补上的五处}
+
+\gapitem{\(R_3\) 的数值}{手册 p20 只留“\(R_3=\_\_\_\)”，没给计算；本讲义补了 \(R_3=R_1\parallel R_2\parallel R_f=4.76k\Omega\)，选 \(4.7k\Omega\)，并给出没有 \(4.7k\) 时的替代方案。}
+\gapitem{Table 5.3.3 的理论值}{手册只给输入，没有给输出；本讲义按 \(-10(u_{i1}+u_{i2})\) 逐行算出 \(-5\)、\(+1\)、\(+5\)、\(-7\)、\(-11\)、\(-13\,\mathrm{V}\)，并标出饱和行。}
+\gapitem{四级发生器的元件值}{手册只给“300Hz--1kHz”，没给 \(R,C\)；本讲义给 \(R=6.8k\Omega\)、\(C=0.047\mu F\)、\(f_0\approx498Hz\)，以及积分器/微分器的参数。}
+\gapitem{积分器三角波幅值}{手册没有给 \(U_{pp}\) 公式；本讲义补了 \(U_{pp}=U_{OM}T/(2R_1C_1)\)，并用 \(R_1=27k\Omega\)、\(C_1=0.1\mu F\) 算出约 \(3.9V_{pp}\)。}
+\gapitem{尖脉冲的限幅/边沿}{手册没有说明尖脉冲为什么可能太小/太大；本讲义补了 \(u_o=-R_fC_1du_i/dt\)、边沿斜率的影响，以及增大 \(C_1/R_f\)、加限幅二极管、串 \(R_s\) 的处理。}
+\end{document}

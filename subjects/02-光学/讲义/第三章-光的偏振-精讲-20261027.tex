@@ -1,0 +1,678 @@
+% !TEX program = xelatex
+% 第三章 光的偏振 · 精讲讲义
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{光的偏振 · 精讲}{光学 · 第三章}
+
+\tikzset{
+  ax/.style={->,>=Stealth,line width=0.7pt,color=inkgray},
+  vec/.style={->,>=Stealth,line width=1.1pt,color=violet},
+  comp/.style={->,>=Stealth,line width=0.7pt,color=violet, dashed},
+  lab/.style={font=\small,color=inkgray}
+}
+
+\begin{document}
+
+\doctitle{光的偏振：从横波到琼斯矢量}
+{第三章 · 偏振态、马吕斯定律、偏振度与琼斯表示}
+{依据：课件《第3章光的偏振》p1--p25（2026-10-27 读取）\\
+逐页缺口补齐 \textperiodcentered\ 例 3.2、例 3.3 全解 \textperiodcentered\ 琼斯矢量速查\\
+整理：2026-10-27}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与这份讲义怎么用}
+
+\callout{\textbf{这份讲义覆盖什么。}课件 25 页，主线是「偏振态的分类 $\to$ 马吕斯定律 $\to$ 偏振度 $\to$ 圆/椭圆偏振 $\to$ 琼斯矢量 $\to$ 立体电影」。课件把定义和结论给得很全，跳步集中在三处：自然光为什么是 $I_0/2$、椭圆方程怎么从两个分量消去时间、琼斯矢量的归一化与正交怎么用。这三处下面都补了完整推导，其余按课件顺序讲。}
+
+\subhdr{课件页码对照（先看这张表，再决定读哪一节）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义位置}\\
+\hline
+p1 & 章标题 & ---\\
+p2--p3 & 纵波/横波、偏振的定义、光矢量 & §1\\
+p4 & 偏振片的作用与原理 & §3.1\\
+p5--p8 & 自然光、线偏振光、分解、$I_0/2$ & §2\\
+p9--p10 & 线偏振的分解、马吕斯定律 & §2.3、§3.2\\
+p11--p12 & 部分偏振光、偏振度 & §4\\
+p13--p16 & 圆偏振、椭圆偏振、相位差分类 & §5\\
+p17--p18 & 例 3.2（自然光 + 线偏振的混合） & §4.3\\
+p19--p23 & 琼斯矢量、归一化、正交、例 3.3 & §6\\
+p24--p25 & 立体视觉与立体电影 & §7\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{记号（全文统一）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{符号} & \thead{含义} & \thead{符号} & \thead{含义}\\
+\hline
+$E_{0x},E_{0y}$ & 两个正交分量的振幅 & $\delta_x,\delta_y$ & 两分量的相位\\
+$\varphi=\delta_y-\delta_x$ & 相位差 & $\alpha$ & 检偏器透振方向与入射振动方向的夹角\\
+$I_0$ & 入射光强 & $I_P,I_N$ & 线偏振部分、自然光部分的光强\\
+$P$ & 偏振度 & $\mathbf{E}$ & 琼斯矢量\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{符号约定：本讲义用 $e^{-i\omega t}$ 的时间因子，所以右旋写成 $[1,\,i]^{T}/\sqrt2$、左旋写成 $[1,\,-i]^{T}/\sqrt2$，与课件 p21 一致。换用 $e^{+i\omega t}$ 的教材会把 $i$ 与 $-i$ 对调；判断旋向时必须以「迎着光看还是顺着光看」为准，不能只记 $i$ 的符号。}
+
+%=============================================================
+\hdr{§1}{偏振是什么：横波才有的性质}
+
+\subhdr{1.1 纵波与横波}
+
+课件 p2 给的定义只有两行：
+
+\begin{itemize}
+\item \textbf{纵波}：振动方向与传播方向相同；
+\item \textbf{横波}：振动方向与传播方向垂直。
+\end{itemize}
+
+偏振（p3）是「波的振动方向对于传播方向的不对称性」。这句话的关键在「不对称」：纵波的振动方向只有一个（沿传播方向），绕传播轴转一圈看不出区别；横波的振动方向在垂直于传播轴的平面内，可以取不同方向，绕轴转一圈能看出区别。所以\textbf{只有横波才能偏振}，纵波（如空气中的声波）没有偏振态。
+
+\subhdr{1.2 光矢量}
+
+光是电磁波，$E\perp B\perp k$。课件 p3 明确：起感光、起电作用的是电场强度 $\mathbf{E}$，称为\textbf{光矢量}；光矢量的振动方向与传播方向垂直，这一特征就是光的偏振。此后说「振动方向」都指 $\mathbf{E}$ 的方向，不再提 $\mathbf{B}$。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[ax] (-0.3,0) -- (6.2,0) node[right,lab] {$z$（传播方向）};
+  \draw[ax] (0,-1.5) -- (0,1.5) node[above,lab] {$y$};
+  \draw[ax] (0,0) -- (2.4,0.9) node[right,lab] {$x$};
+  \draw[vec] (0,0) -- (1.55,1.05) node[above right,lab] {$\mathbf{E}$};
+  \draw[comp] (0,0) -- (1.55,0) node[below,lab] {$E_x$};
+  \draw[comp] (0,0) -- (0,1.05) node[left,lab] {$E_y$};
+  \draw[dashed,color=rulepurple] (1.55,0) -- (1.55,1.05) -- (0,1.05);
+  \node[lab] at (3.0,-1.15) {$\mathbf{E}=E_x\hat{x}+E_y\hat{y}$，且 $\mathbf{E}\perp\hat{z}$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 1\quad 光矢量在垂直于传播方向的平面内分解为两个正交分量。偏振态由 $E_x,E_y$ 的振幅比与相位差决定。}
+\end{center}
+
+\subhdr{1.3 三种偏振态的总览}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{偏振态} & \thead{特征} & \thead{课件页}\\
+\hline
+自然光（非偏振光） & 各方向振动概率相等、相位随机 & p5--p7\\
+线偏振光（全偏振光） & $\mathbf{E}$ 只沿一个固定方向 & p8--p9\\
+部分偏振光 & 某方向占优势，但仍有随机成分 & p11--p12\\
+圆偏振光 & 两分量等幅、相位差 $\pm\pi/2$ & p13--p14\\
+椭圆偏振光 & 两分量振幅、相位差都任意 & p15--p16\\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=============================================================
+\hdr{§2}{自然光与线偏振光：$I_0/2$ 是怎么来的}
+
+\subhdr{2.1 自然光的定义}
+
+课件 p5--p6：普通光源由大量独立原子发光，各原子发光的相位、振动方向随机；在垂直于传播方向的平面内，光矢量在各方向上的时间平均值相等。这样的光叫自然光，也叫非偏振光。
+
+\subhdr{2.2 分解与 $I_0/2$ 的推导}
+
+把自然光沿任意两个正交方向 $x,y$ 分解：
+
+\[
+E_x(t)=\sum_i a_{ix}\cos(\omega t+\phi_i),\qquad
+E_y(t)=\sum_i a_{iy}\cos(\omega t+\phi_i').
+\]
+
+各原子独立发光，$\phi_i$ 与 $\phi_i'$ 彼此无关，所以交叉项的时间平均为零：
+
+\[
+\langle E_xE_y\rangle=0 .
+\]
+
+于是总光强
+
+\[
+I_0=\langle E_x^2\rangle+\langle E_y^2\rangle+2\langle E_xE_y\rangle
+=\langle E_x^2\rangle+\langle E_y^2\rangle .
+\]
+
+自然光各方向等价，$\langle E_x^2\rangle=\langle E_y^2\rangle$，故
+
+\[
+I_x=I_y=\frac{I_0}{2}.
+\]
+
+这就是课件 p7 直接给出的 $I_x=I_y=I_0/2$。它的来源不是「偏振片吸收了一半」，而是\textbf{随机相位的交叉项平均为零}加上\textbf{各方向等价}。换成任何一对正交方向，结论都一样；所以自然光透过理想偏振片后，光强总是 $I_0/2$，与偏振片转到什么角度无关。
+
+\aside{如果入射是线偏振光，交叉项不为零：$I=I_0\cos^2\alpha$，随角度变。这两条要分开记——「转偏振片光强不变」是自然光的判据，「有消光」是线偏振的判据。}
+
+\subhdr{2.3 线偏振光的分解}
+
+线偏振光的光矢量只沿一个固定方向振动（p8）。沿任意两个正交方向分解（p9）：
+
+\[
+E_x=E_{0x}\cos(\omega t-kz),\qquad
+E_y=E_{0y}\cos(\omega t-kz+\varphi),
+\]
+
+且两分量的相位差恒为 $0$ 或 $\pi$（同相或反相）。反过来，两个同相或反相的正交分量合成，仍是线偏振光，振动方向由振幅比决定：
+
+\[
+\tan\theta=\frac{E_{0y}}{E_{0x}}.
+\]
+
+%=============================================================
+\hdr{§3}{偏振片与马吕斯定律}
+
+\subhdr{3.1 偏振片做什么}
+
+课件 p4：偏振片让某一方向的光矢量分量透过，把垂直方向的分量吸收（二向色性）。能透过的那条方向叫\textbf{透振方向}。把入射光变成线偏振光的器件叫\textbf{起偏器}；用来检查入射光是不是线偏振、振动方向在哪的器件叫\textbf{检偏器}——同一个偏振片，放在光源后是起偏器，放在待测光前是检偏器。
+
+\subhdr{3.2 马吕斯定律的推导}
+
+设入射线偏振光的振幅为 $E_0$，振动方向与透振方向成 $\alpha$。把 $E_0$ 沿透振方向与其垂直方向分解，只有透振方向的分量能通过：
+
+\[
+E_1=E_0\cos\alpha .
+\]
+
+光强正比于振幅平方，故
+
+\[
+I_1=I_0\cos^2\alpha .
+\]
+
+当 $\alpha=\pi/2$ 或 $3\pi/2$ 时 $I_1=0$，这就是消光。课件 p10 给的正是这两行；它没有明说的适用条件是：\textbf{入射必须是线偏振光}。若入射是自然光，透过光强恒为 $I_0/2$，不随 $\alpha$ 变；若入射是部分偏振光，则是 $\cos^2$ 曲线叠在一个常数本底上（§4）。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[ax] (-2.2,0) -- (2.2,0) node[right,lab] {透振方向};
+  \draw[ax] (0,-1.6) -- (0,1.6);
+  \draw[vec] (0,0) -- (1.55,1.05) node[above right,lab] {$E_0$};
+  \draw[comp] (0,0) -- (1.55,0) node[below,lab] {$E_0\cos\alpha$};
+  \draw[comp] (1.55,0) -- (1.55,1.05);
+  \draw[->,color=petal] (0.9,0) arc (0:34:0.9);
+  \node[lab] at (1.18,0.28) {$\alpha$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 2\quad 马吕斯定律的几何：只有沿透振方向的分量 $E_0\cos\alpha$ 透过，垂直分量被吸收。}
+\end{center}
+
+\subhdr{3.3 三个常用推论}
+
+\begin{itemize}
+\item \textbf{正交消光。}两偏振片透振方向垂直（$\alpha=90^\circ$）时透射为零；这是实验上定「正交」位置最灵敏的办法。
+\item \textbf{自然光。}转一圈光强不变，恒为 $I_0/2$。
+\item \textbf{部分偏振光。}转一圈有极大、极小，但极小不为零；极大与极小的比值给出偏振度（§4）。
+\end{itemize}
+
+\subhdr{3.4 例：三片偏振片（自然光 $\to$ P1 $\to$ P2 $\to$ P3）}
+
+\qbreak
+\qstem{（补充例题，非课件原题；用到课件 p10 马吕斯定律）自然光强 $I_0$ 依次通过三片理想偏振片：P1 透振方向竖直，P2 与 P1 成 $45^\circ$，P3 与 P1 成 $90^\circ$。求最后透射光强；若抽掉 P2，结果变成多少？}
+
+\textbf{考点}：自然光第一次过偏振片变 $I_0/2$；此后每一次都用马吕斯定律，角度是「相邻两片」的夹角。
+
+\textbf{关键一步}：P2 与 P1 差 $45^\circ$，P3 与 P2 也差 $45^\circ$（因为 P3 与 P1 差 $90^\circ$）。不要把 P3 与 P1 的 $90^\circ$ 直接代进最后一步。
+
+\textbf{详解}：
+自然光过 P1：
+
+\[
+I_1=\frac{I_0}{2},
+\]
+
+且变成沿 P1 的线偏振。过 P2：
+
+\[
+I_2=I_1\cos^2 45^\circ=\frac{I_0}{2}\cdot\frac12=\frac{I_0}{4}.
+\]
+
+过 P3：
+
+\[
+I_3=I_2\cos^2 45^\circ=\frac{I_0}{4}\cdot\frac12=\frac{I_0}{8}.
+\]
+
+若抽掉 P2，P1 与 P3 正交，$I_3=I_1\cos^2 90^\circ=0$。
+
+\textbf{答案}：三片时 $I_0/8$；抽掉中间一片时 $0$。
+
+\textbf{自检}：中间加一片「本应挡光」的偏振片，反而让光漏过去——因为 P2 把 P1 的振动分解出一部分沿 $45^\circ$，P3 又从这部分里取出沿自己的分量。每一步都乘 $\cos^2 45^\circ=1/2$，两次共 $1/4$，再乘自然光的 $1/2$，得 $1/8$。这类题的错误做法是把 $I_0/2$、$I_0/4$ 直接相加或把 $90^\circ$ 代进最后一步；记住「每次只和紧邻的前一片比角度」。
+
+%=============================================================
+\hdr{§4}{部分偏振光与偏振度}
+
+\subhdr{4.1 混合模型}
+
+部分偏振光可以看成「线偏振部分 $I_P$ + 自然光部分 $I_N$」的混合。设线偏振部分的振动方向与检偏器透振方向成 $\alpha$，则透射光强
+
+\[
+I(\alpha)=I_P\cos^2\alpha+\frac{I_N}{2}.
+\]
+
+转检偏器时，$\cos^2\alpha$ 在 $1$ 与 $0$ 之间变，所以
+
+\[
+I_{\max}=I_P+\frac{I_N}{2},\qquad I_{\min}=\frac{I_N}{2}.
+\]
+
+\subhdr{4.2 偏振度的两种写法}
+
+定义偏振度为「线偏振部分占总光强的比例」：
+
+\[
+P=\frac{I_P}{I_P+I_N}.
+\]
+
+由 $I_{\max},I_{\min}$ 反解：$I_P=I_{\max}-I_{\min}$，$I_N=2I_{\min}$，代入得
+
+\[
+P=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}.
+\]
+
+这就是课件 p12 并列的两个公式。三种极端：自然光 $P=0$；线偏振光 $P=1$；部分偏振光 $0<P<1$。
+
+\warnbox{\textbf{一个必须说清的边界。}第二个式子 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ 对「线偏振 + 自然光」的混合才是「偏振部分占比」。对纯圆偏振或纯椭圆偏振，它算出来是「检偏对比度」，不是「有多少光偏振」：纯圆偏振是完全偏振的，但 $I_{\max}=I_{\min}$，代进去得 $P=0$，与自然光不可区分。课件 p12 的定义默认可分解为「线偏振 + 自然光」，用的时候先确认对象是不是这种混合。}
+
+\subhdr{4.3 例 3.2 全解（课件 p17--p18）}
+
+\qbreak
+\qstem{（课件 p17 例 3.2）一束部分偏振光由自然光和线偏振光混合组成。通过转动的偏振片时，透射光强的最大值是最小值的 5 倍。求入射光中自然光和线偏振光各占入射光强的几分之几。}
+
+\textbf{考点}：把混合光写成 $I=I_{10}/2+I_{20}\cos^2\alpha$，再用 $I_{\max}=5I_{\min}$ 解比例。
+
+\textbf{关键一步}：自然光透过偏振片恒为 $I_{10}/2$，不随 $\alpha$ 变；只有线偏振部分随 $\cos^2\alpha$ 变。所以最大值在 $\alpha=0$，最小值在 $\alpha=\pi/2$。
+
+\textbf{详解}：设入射总光强 $I_0=I_{10}+I_{20}$。透射光强
+
+\[
+I(\alpha)=\frac{I_{10}}{2}+I_{20}\cos^2\alpha .
+\]
+
+$\alpha=0$：$I_{\max}=\frac{I_{10}}{2}+I_{20}$；$\alpha=\pi/2$：$I_{\min}=\frac{I_{10}}{2}$。由 $I_{\max}=5I_{\min}$：
+
+\[
+\frac{I_{10}}{2}+I_{20}=5\cdot\frac{I_{10}}{2}
+\;\Longrightarrow\;
+I_{20}=2I_{10}.
+\]
+
+再用 $I_0=I_{10}+I_{20}=3I_{10}$：
+
+\[
+\frac{I_{10}}{I_0}=\frac13,\qquad \frac{I_{20}}{I_0}=\frac23 .
+\]
+
+\textbf{答案}：自然光占 $1/3$，线偏振光占 $2/3$。
+
+\textbf{自检}：代回 $I_{\max}=I_{10}/2+2I_{10}=2.5I_{10}$，$I_{\min}=0.5I_{10}$，比值 $5$，与题设一致；$P=I_{20}/(I_{10}+I_{20})=2/3$，也等于 $(2.5-0.5)/(2.5+0.5)=2/3$，两条路给同一个数。
+
+%=============================================================
+\hdr{§5}{圆偏振与椭圆偏振：两个分量消去时间}
+
+\subhdr{5.1 从两个分量到椭圆方程}
+
+设光沿 $z$ 传播，两个正交分量
+
+\[
+E_x=E_{0x}\cos(\omega t-kz),\qquad
+E_y=E_{0y}\cos(\omega t-kz+\varphi).
+\]
+
+令 $\tau=\omega t-kz$，把第一式写成 $\cos\tau=E_x/E_{0x}$，第二式展开：
+
+\[
+\frac{E_y}{E_{0y}}=\cos\tau\cos\varphi-\sin\tau\sin\varphi .
+\]
+
+把 $\cos\tau=E_x/E_{0x}$、$\sin\tau=\pm\sqrt{1-(E_x/E_{0x})^2}$ 代入，平方整理，得到
+
+\[
+\left(\frac{E_x}{E_{0x}}\right)^2+\left(\frac{E_y}{E_{0y}}\right)^2
+-\frac{2E_xE_y}{E_{0x}E_{0y}}\cos\varphi=\sin^2\varphi .
+\]
+
+这是一个椭圆方程（一般还带交叉项，说明椭圆的主轴不一定沿 $x,y$）。课件 p15--p16 直接说「端点的轨迹是椭圆」，没有给这个消元过程；上式就是那一步。
+
+\subhdr{5.2 相位差决定偏振态}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{相位差 $\varphi$} & \thead{轨迹} & \thead{说明}\\
+\hline
+$k\pi$（$k=0,1,2,\dots$） & 直线 & 同相或反相，退化为线偏振\\
+$(2k+1)\pi/2$ & 正椭圆 & 主轴沿 $x,y$；$E_{0x}=E_{0y}$ 时是圆\\
+其他 & 斜椭圆 & 主轴相对 $x,y$ 转过一个角\\
+$0<\varphi<\pi$ & 右旋 & 课件约定（p16）\\
+$\pi<\varphi<2\pi$ & 左旋 & 课件约定（p16）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{「正椭圆」指长短轴分别沿 $x,y$；$\varphi=\pm\pi/2$ 时交叉项 $\cos\varphi=0$，椭圆方程退化为 $(E_x/E_{0x})^2+(E_y/E_{0y})^2=1$。若 $E_{0x}\neq E_{0y}$，它是椭圆；相等时才是圆。}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[ax] (-2.0,0) -- (2.0,0) node[right,lab] {$x$};
+  \draw[ax] (0,-1.5) -- (0,1.5) node[above,lab] {$y$};
+  \draw[rotate=30,color=violet,line width=1.0pt] (0,0) ellipse (1.55 and 0.75);
+  \draw[->,color=petal] (0,0) -- (0.95,1.05) node[above right,lab] {长轴};
+  \draw[->,color=petal] (0,0) -- (-0.62,0.36);
+  \node[lab] at (1.55,-1.15) {斜椭圆：交叉项不为零，主轴转过 $\theta$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 3\quad 一般椭圆偏振：长短轴不一定沿坐标轴；只有 $\varphi=\pm\pi/2$（且 $E_{0x}\neq E_{0y}$）时主轴才沿 $x,y$。}
+\end{center}
+
+\subhdr{5.3 圆偏振的两个特例}
+
+$E_{0x}=E_{0y}=E_0$、$\varphi=\pm\pi/2$ 时，椭圆方程变成
+
+\[
+E_x^2+E_y^2=E_0^2,
+\]
+
+即圆。按课件的 $e^{-i\omega t}$ 约定：
+
+\[
+\mathbf{E}_R=\frac{1}{\sqrt2}\begin{bmatrix}1\\ i\end{bmatrix},\qquad
+\mathbf{E}_L=\frac{1}{\sqrt2}\begin{bmatrix}1\\ -i\end{bmatrix}.
+\]
+
+右旋/左旋的物理判据：迎着光传播方向看（或顺着看，取决于约定），电矢量端点顺时针/逆时针转。做题时先确认教材约定，再把 $[1,\pm i]$ 与「顺/逆时针」对上；只记 $i$ 的符号容易在换教材时翻车。
+
+\subhdr{5.4 $\lambda/4$ 波片：圆偏振怎么产生、怎么检验}
+
+波片是单轴晶体，o 光与 e 光折射率不同，厚度 $d$ 给两分量一个相位差（课件 p3 的式 32-1）：
+
+\[
+\delta=\frac{2\pi}{\lambda}(n_o-n_e)d .
+\]
+
+$\delta=\pi/2$ 的叫 $\lambda/4$ 波片。入射线偏振光与光轴成 $\varphi$ 时，两分量振幅 $E\cos\varphi$、$E\sin\varphi$，相位差 $\pi/2$：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{$\varphi$} & \thead{出射偏振态} & \thead{检偏器转一圈}\\
+\hline
+$0^\circ$ 或 $90^\circ$ & 线偏振（沿光轴或垂直光轴） & 有消光\\
+$45^\circ$ & 圆偏振 & 光强不变，无消光\\
+其他 & 椭圆偏振 & 有极大极小，但消不光\\
+\end{tabular}
+\tabbot
+\end{center}
+
+这张表就是「用 $\lambda/4$ 区分圆偏振与自然光」的依据：自然光过 $\lambda/4$ 仍是自然光，转检偏器不变；圆偏振过 $\lambda/4$（轴与振动方向成 $45^\circ$）变成线偏振，转检偏器出现消光。实验 Exp32 的第四项内容就是这条判据的直接应用。
+
+\aside{为什么 $45^\circ$ 偏偏给圆？两个分量等幅 $E/\sqrt2$、相位差 $90^\circ$，端点轨迹是圆。若 $\varphi\neq45^\circ$，两分量不等幅，轨迹是椭圆；$\varphi=0^\circ,90^\circ$ 时只剩一个分量，仍是线偏振。}
+
+%=============================================================
+\hdr{§6}{琼斯矢量：把偏振态写成一列数}
+
+\subhdr{6.1 定义与归一化}
+
+课件 p19：任一完全偏振光用两个分量的复振幅排成一列：
+
+\[
+\mathbf{E}=\begin{bmatrix}\tilde E_x\\ \tilde E_y\end{bmatrix}
+=\begin{bmatrix}E_{0x}e^{i\delta_x}\\ E_{0y}e^{i\delta_y}\end{bmatrix},
+\]
+
+公共时间因子 $e^{-i\omega t}$ 略去不写。光强
+
+\[
+I=|\tilde E_x|^2+|\tilde E_y|^2=E_{0x}^2+E_{0y}^2 .
+\]
+
+归一化就是除以 $\sqrt{I}$：
+
+\[
+\mathbf{E}=\frac{1}{\sqrt{E_{0x}^2+E_{0y}^2}}
+\begin{bmatrix}E_{0x}e^{i\delta_x}\\ E_{0y}e^{i\delta_y}\end{bmatrix}.
+\]
+
+再提出公共相位 $e^{i\delta_x}$，只剩振幅比与相位差：
+
+\[
+\mathbf{E}=\frac{1}{\sqrt{1+r^2}}\begin{bmatrix}1\\ r e^{i\varphi}\end{bmatrix},
+\qquad r=\frac{E_{0y}}{E_{0x}},\quad \varphi=\delta_y-\delta_x .
+\]
+
+这一步是课件 p20 那串公式的真正内容：\textbf{归一化后，偏振态只由振幅比 $r$ 与相位差 $\varphi$ 两个数决定}；整体振幅和公共相位都不影响偏振态。
+
+\subhdr{6.2 常用琼斯矢量速查}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{偏振态} & \thead{琼斯矢量（转置写法）} & \thead{备注}\\
+\hline
+沿 $x$ 线偏振 & $(1,\;0)^{T}$ & 水平\\
+沿 $y$ 线偏振 & $(0,\;1)^{T}$ & 竖直\\
+与 $x$ 成 $\theta$ 线偏振 & $(\cos\theta,\;\sin\theta)^{T}$ & 归一化已含\\
+右旋圆偏振 & $\frac{1}{\sqrt2}(1,\;i)^{T}$ & 课件 p21\\
+左旋圆偏振 & $\frac{1}{\sqrt2}(1,\;-i)^{T}$ & 课件 p21\\
+长短轴 $2:1$、长轴 $y$、右旋 & $\frac{1}{\sqrt5}(1,\;2i)^{T}$ & 例 3.3\\
+长短轴 $2:1$、长轴 $y$、左旋 & $\frac{1}{\sqrt5}(1,\;-2i)^{T}$ & 例 3.3\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{表中用转置写法 $(a,b)^{T}$ 代替竖排矩阵，是为了在窄表里不折行；两者是同一个列矢量，例如 $\frac{1}{\sqrt2}(1,i)^{T}$ 就是右旋圆偏振的琼斯矢量。}
+
+\subhdr{6.3 正交偏振}
+
+两个偏振态 $\mathbf{E}_1,\mathbf{E}_2$ 正交，指
+
+\[
+\mathbf{E}_1\cdot\mathbf{E}_2^\dagger
+=A_1A_2^*+B_1B_2^*=0 .
+\]
+
+正交的两态可以张开整个二维偏振空间：任一偏振态都能写成它们的线性组合。例子：
+
+\[
+\begin{bmatrix}1\\0\end{bmatrix}\cdot\begin{bmatrix}0\\1\end{bmatrix}^\dagger=0,
+\qquad
+\frac{1}{\sqrt2}\begin{bmatrix}1\\ i\end{bmatrix}\cdot
+\frac{1}{\sqrt2}\begin{bmatrix}1\\ -i\end{bmatrix}^\dagger
+=\frac12\bigl(1+i\,(-i)^*\bigr)=\frac12(1-1)=0 .
+\]
+
+水平与竖直正交、右旋与左旋正交，都是这个判据。
+
+\subhdr{6.4 例 3.3 全解（课件 p23）}
+
+\qbreak
+\qstem{（课件 p23 例 3.3）写出长短轴之比为 $2:1$、长轴在 $y$ 轴的左旋和右旋椭圆偏振光的琼斯矢量，并计算这两个偏振光叠加后的偏振态。}
+
+\textbf{考点}：归一化；用 $e^{\pm i\pi/2}$ 表示右旋/左旋；两矢量相加后看结果。
+
+\textbf{关键一步}：设短轴 $E_{0x}=1$，则长轴 $E_{0y}=2$；长轴在 $y$，两分量相位差 $\pm\pi/2$，所以 $y$ 分量带 $\pm2i$。
+
+\textbf{详解}：归一化因子 $\sqrt{1^2+2^2}=\sqrt5$。右旋
+
+\[
+\mathbf{E}_R=\frac{1}{\sqrt5}\begin{bmatrix}1\\ 2e^{i\pi/2}\end{bmatrix}
+=\frac{1}{\sqrt5}\begin{bmatrix}1\\ 2i\end{bmatrix},
+\]
+
+左旋
+
+\[
+\mathbf{E}_L=\frac{1}{\sqrt5}\begin{bmatrix}1\\ 2e^{-i\pi/2}\end{bmatrix}
+=\frac{1}{\sqrt5}\begin{bmatrix}1\\ -2i\end{bmatrix}.
+\]
+
+两者叠加（等权）：
+
+\[
+\mathbf{E}_R+\mathbf{E}_L
+=\frac{1}{\sqrt5}\begin{bmatrix}1+1\\ 2i-2i\end{bmatrix}
+=\frac{2}{\sqrt5}\begin{bmatrix}1\\0\end{bmatrix}.
+\]
+
+结果沿 $x$ 线偏振，振幅为 $2/\sqrt5$；原每个椭圆在 $x$ 方向的振幅是 $1/\sqrt5$，叠加后正好是它的 $2$ 倍。
+
+\textbf{答案}：$\mathbf{E}_R=\frac{1}{\sqrt5}[1,\,2i]^{T}$，$\mathbf{E}_L=\frac{1}{\sqrt5}[1,\,-2i]^{T}$；叠加为沿 $x$ 的线偏振，振幅 $2/\sqrt5$。
+
+\textbf{自检}：两矢量相加时 $y$ 分量 $2i/\sqrt5+(-2i)/\sqrt5=0$ 抵消，$x$ 分量 $1/\sqrt5+1/\sqrt5=2/\sqrt5$ 相加，故结果是沿 $x$ 的线偏振。注意这两个椭圆偏振态并不正交（$\mathbf{E}_R\cdot\mathbf{E}_L^\dagger=(1-4)/5=-3/5\neq0$）；正交的是等幅的右旋/左旋圆偏振。本例靠的是 $y$ 分量直接抵消，而不是把两个态作正交分解。
+
+\warnbox{\textbf{课件 p23 的笔误。}分母写成 $\sqrt{E_{0x}^2+(2E_{0x}^2)^2}$，把「长轴 $2E_{0x}$」误写成了「$(2E_{0x}^2)$」。正确是 $\sqrt{E_{0x}^2+(2E_{0x})^2}=\sqrt5\,E_{0x}$；数值结果 $\sqrt5$ 不变，但推导中的量纲要盯住。}
+
+\subhdr{6.5 琼斯矩阵（补充，课件未展开）}
+
+琼斯矢量描述「光是什么态」，琼斯矩阵描述「器件把态变成什么」。若器件矩阵为 $J$，出射 $\mathbf{E}'=J\mathbf{E}$。三个常用矩阵：
+
+\[
+J_{\text{水平偏振片}}=\begin{bmatrix}1&0\\0&0\end{bmatrix},\qquad
+J_{\theta\text{ 偏振片}}=\begin{bmatrix}\cos^2\theta&\sin\theta\cos\theta\\
+\sin\theta\cos\theta&\sin^2\theta\end{bmatrix},
+\]
+
+\[
+J_{\lambda/4}=\begin{bmatrix}1&0\\0&i\end{bmatrix}
+\quad(\text{快轴沿 }x,\ \delta=\pi/2).
+\]
+
+例：线偏振 $\frac{1}{\sqrt2}[1,\,1]^{T}$（振动方向与 $x$ 轴成 $45^\circ$）过\textbf{快轴沿 $x$} 的 $\lambda/4$：
+
+\[
+\begin{bmatrix}1&0\\0&i\end{bmatrix}
+\frac{1}{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix}
+=\frac{1}{\sqrt2}\begin{bmatrix}1\\ i\end{bmatrix},
+\]
+
+正是右旋圆偏振。这与 §5.4 的结论一致：$45^\circ$ 入射线偏振 + $\lambda/4$ = 圆偏振。
+
+\aside{矩阵写法有约定差异：有人把 $\lambda/4$ 写成 $\mathrm{diag}(e^{i\pi/4},e^{-i\pi/4})$（对称形式），与 $\mathrm{diag}(1,i)$ 只差一个整体相位 $e^{i\pi/4}$。整体相位不改变偏振态，所以两种写法给同一个物理结果；但比较两束光的相对相位时不能混用。}
+
+\warnbox{\textbf{这部分是补充，不是课件考点。}课件 p19--p23 只讲了琼斯矢量与正交，没有讲矩阵。上面的矩阵用于快速验算（例如「偏振片 + 波片 + 偏振片」的透射光强），考试若没讲，知道 $J\mathbf{E}$ 的形式即可，不必背全部矩阵。}
+
+%=============================================================
+\hdr{§7}{立体视觉与立体电影：偏振的一个应用}
+
+p24--p25 讲双眼视差：左右眼看到同一物体的两幅略有差异的图像，大脑合成出深度。立体电影用两台摄影机模拟左右眼，放映时两幅画面分别带\textbf{相互垂直}的线偏振；观众戴的偏振眼镜左右镜片透振方向也相互垂直，于是左眼只看到左画面、右眼只看到右画面。
+
+为什么必须「相互垂直」？由马吕斯定律：若两画面的偏振方向夹角为 $\alpha$，左镜片会漏进右画面的 $I\cos^2\alpha$；$\alpha=90^\circ$ 时漏光为零（理想情况），串扰最小。实际影院用圆偏振（左旋/右旋）而不是线偏振，因为观众歪头时线偏振的消光会变差，圆偏振对头部转动不敏感。
+
+%=============================================================
+\hdr{§8}{公式卡与四步判断}
+
+\subhdr{8.1 公式卡}
+
+\begin{itemize}
+\item 自然光透偏振片：
+\[ I=\frac{I_0}{2}. \]
+\item 马吕斯定律（线偏振入射）：
+\[ I=I_0\cos^2\alpha . \]
+\item 部分偏振的混合模型：
+\[ I(\alpha)=I_P\cos^2\alpha+\frac{I_N}{2}. \]
+\item 偏振度：
+\[ P=\frac{I_P}{I_P+I_N}=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}} . \]
+\item 椭圆方程：
+\[ \left(\frac{E_x}{E_{0x}}\right)^2+\left(\frac{E_y}{E_{0y}}\right)^2
+-\frac{2E_xE_y}{E_{0x}E_{0y}}\cos\varphi=\sin^2\varphi . \]
+\item 琼斯矢量：
+\[ \mathbf{E}=\begin{bmatrix}E_{0x}e^{i\delta_x}\\ E_{0y}e^{i\delta_y}\end{bmatrix},\qquad
+I=E_{0x}^2+E_{0y}^2 . \]
+\end{itemize}
+
+\subhdr{8.2 拿到一束光，四步判断}
+
+\begin{enumerate}
+\item 转偏振片一圈：光强不变 $\to$ 自然光或圆偏振；有消光 $\to$ 线偏振；有起伏但消不光 $\to$ 部分偏振或椭圆偏振。
+\item 若「不变」，插入 $\lambda/4$：仍不变 $\to$ 自然光；出现消光 $\to$ 圆偏振。
+\item 若「有起伏但消不光」，插入 $\lambda/4$ 并把主轴对准：能消光 $\to$ 椭圆偏振；仍消不光 $\to$ 部分偏振。
+\item 定量：读 $I_{\max},I_{\min}$，算 $P$；要写偏振态，再用琼斯矢量记录振幅比与相位差。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{易错点（每条都指回课件某页）}
+
+\begin{enumerate}
+\item \textbf{把「偏振片吸收一半」当成自然光 $I_0/2$ 的原因。}真正原因是随机相位使交叉项平均为零，加上各方向等价（p7）。若入射是线偏振，透射光强随角度变，不是一半。
+\item \textbf{对圆偏振套 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ 后说「圆偏振不是偏振光」。}纯圆偏振 $P=0$ 只说明检偏对比度为零，它是完全偏振的（p12、p14）。
+\item \textbf{把 $\varphi=0$ 与 $\varphi=\pi$ 当成两种不同的线偏振。}它们只差一个整体符号，振动方向相同（p16 的「为直线」包括两者）。
+\item \textbf{把「正椭圆」当成「圆」。}$\varphi=\pm\pi/2$ 且 $E_{0x}\neq E_{0y}$ 时是正椭圆，只有 $E_{0x}=E_{0y}$ 才是圆（p16）。
+\item \textbf{琼斯矢量忘记归一化。}不归一化也能算叠加，但光强要另算；归一化后 $I=1$，比较方便（p20）。
+\item \textbf{把「正交」理解成「振动方向垂直」。}对线偏振两者一致；对圆偏振，右旋与左旋的振动方向时时垂直但整体正交，判据是 $\mathbf{E}_1\cdot\mathbf{E}_2^\dagger=0$（p22）。
+\item \textbf{旋向只记 $i$ 的符号。}换时间因子约定会反号；判据要回到「迎着光看，电矢量端点怎么转」（p14、p21）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件跳了哪几步，本讲义补了什么}
+
+\gapitem{机制缺口}{p2 只给纵波/横波的定义，没有说明「为什么只有横波能偏振」。§1.1 补：纵波绕传播轴旋转不变，横波在垂直平面内可取不同方向，所以只有横波有「振动方向的不对称性」。}
+\gapitem{代数跳步}{p7 直接给 $I_x=I_y=I_0/2$。§2.2 补：交叉项 $\langle E_xE_y\rangle=0$ 是随机相位的平均结果，$I_0=\langle E_x^2\rangle+\langle E_y^2\rangle$ 再配上各方向等价。}
+\gapitem{适用条件}{p10 给 $I_1=I_0\cos^2\alpha$ 但没写「只对线偏振入射」。§3.2 补：自然光入射时恒为 $I_0/2$；部分偏振时是 $\cos^2$ 加常数本底。}
+\gapitem{压缩缺口}{p12 并列 $P=I_P/(I_P+I_N)$ 与 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$，中间没有推导。§4.2 补：由 $I_{\max}=I_P+I_N/2$、$I_{\min}=I_N/2$ 反解。}
+\gapitem{原形缺口}{p15--p16 说「轨迹是椭圆」并列出 $\varphi$ 的几种情形，但没有椭圆方程。§5.1 补：消去 $\omega t-kz$ 得到带交叉项的椭圆方程，并说明「正椭圆」的含义。}
+\gapitem{记号缺口}{p19--p20 的归一化公式排版错位，读者看不出「提出公共相位后只剩 $r$ 与 $\varphi$」。§6.1 补：写成 $\frac{1}{\sqrt{1+r^2}}[1,\,re^{i\varphi}]^{T}$，并说明整体振幅与公共相位不影响偏振态。}
+\gapitem{笔误}{p23 例 3.3 的分母写成 $\sqrt{E_{0x}^2+(2E_{0x}^2)^2}$。§6.4 更正为 $\sqrt{E_{0x}^2+(2E_{0x})^2}=\sqrt5E_{0x}$，并说明数值结果不变。}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item 偏振是横波的性质：光矢量在垂直于传播方向的平面内取不同方向，纵波没有这个自由度。
+\item 自然光 $I_0/2$ 来自随机相位与各方向等价；线偏振走马吕斯 $I_0\cos^2\alpha$；部分偏振是两者叠加，偏振度 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$。
+\item 圆/椭圆偏振由两分量的振幅比与相位差决定；琼斯矢量把这两个数写成一列，归一化后整体振幅与公共相位都不影响偏振态。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{与课件的页码对照（复习时按这张表回查）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{本讲义} & \thead{课件页} & \thead{一句话}\\
+\hline
+§1 & p2--p3 & 横波才有偏振；光矢量是 $\mathbf{E}$\\
+§2 & p5--p9 & 自然光 $I_0/2$；线偏振的分解\\
+§3 & p4、p10 & 偏振片；马吕斯定律\\
+§4 & p11--p12、p17--p18 & 部分偏振；偏振度；例 3.2\\
+§5 & p13--p16 & 圆/椭圆；相位差分类；椭圆方程\\
+§6 & p19--p23 & 琼斯矢量；正交；例 3.3\\
+§7 & p24--p25 & 立体视觉与立体电影\\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=============================================================
+\hdr{§13}{自测三题（按本章公式可解，非往年题）}
+
+\begin{enumerate}
+\item 自然光强 $I_0$ 通过两片偏振片，第二片与第一片成 $60^\circ$。求透射光强。
+\item 某部分偏振光转检偏器时 $I_{\max}=3I_{\min}$。求偏振度 $P$；并说明这束光能否写成「自然光 + 线偏振光」。
+\item 写出右旋圆偏振与左旋圆偏振（等幅）叠加后的琼斯矢量，并判断偏振态。
+\end{enumerate}
+
+\subhdr{答案与要点}
+
+\begin{enumerate}
+\item 自然光过第一片：$I_0/2$，沿第一片振动。过第二片：$\frac{I_0}{2}\cos^2 60^\circ=\frac{I_0}{2}\cdot\frac14=\frac{I_0}{8}$。顺序不能反：先让自然光变线偏振，第二片才用马吕斯定律；不要一上来就拿 $I_0\cos^2 60^\circ$ 当答案。
+\item $P=(3-1)/(3+1)=0.5$。可以写成「线偏振 + 自然光」：$I_P=I_{\max}-I_{\min}=2I_{\min}$，$I_N=2I_{\min}$，$P=I_P/(I_P+I_N)=0.5$。注意：只有对这种混合，$P$ 才是「偏振部分占比」；纯椭圆/圆偏振不能用这句话解释（见 §4.2 的边界框）。
+\item 右旋 $\frac{1}{\sqrt2}(1,i)^{T}$，左旋 $\frac{1}{\sqrt2}(1,-i)^{T}$；相加得 $\frac{1}{\sqrt2}(2,0)^{T}=\sqrt2\,(1,0)^{T}$，即沿 $x$ 的线偏振。两圆偏振等幅、旋向相反、相位合适时合成线偏振——这是 §6.4 例 3.3 的圆偏振版本。
+\end{enumerate}
+
+\flowerrule
+
+{\small\color{inkgray} 本讲义依据课件 p1--p25 逐页读取；公式均按课件给的约定（$e^{-i\omega t}$）重排。若老师课上用了相反的旋向约定，只需把 §5.3、§6.2 中 $i$ 与 $-i$ 对调，其余不变。}
+
+\end{document}

@@ -1,0 +1,1049 @@
+﻿\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\linespread{1.11}\selectfont
+\setlength{\parskip}{2.2pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\settags{第一章 几何光学 · 第四课 精讲}{几何光学 · Lecture 4}
+\newcommand{\figcap}[1]{\begin{center}{\footnotesize\color{inkgray}#1}\end{center}}
+\newcommand{\redraw}{{\small\color{petal}［重绘］}}
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+\renewcommand{\flowerrule}{\par\vspace{2pt}\noindent\makebox[\linewidth]{\color{petal}\rule{0.22\linewidth}{0.6pt}\hspace{8pt}{\small\ding{95}}\hspace{4pt}\raisebox{1.1pt}{\tiny\ding{95}}\hspace{4pt}{\small\ding{95}}\hspace{8pt}\rule{0.22\linewidth}{0.6pt}}\par\vspace{2pt}}
+\begin{document}
+
+\doctitle{第一章 几何光学 · 第四课\\精讲讲义}
+{从一条高斯公式到六台真实仪器}
+{依据课件：《第一章 几何光学 - 第四课》全 38 页（英文，图片型）；整理日期 2026-10-27}
+
+\vspace{-4pt}
+
+%=====================================================================
+\hdr{§0}{课件坐标、路线与记号}
+
+这是几何光学的最后一讲。课件把 \textbf{§1.7 成像仪器}、\textbf{§1.8 光度学与光阑}、\textbf{§1.9 像差}
+三块压在一节课里；38 页中真正带公式或判据的只有 13 页，其余是封面、路线图、过场、总结与四张空白背景页。
+读之前先钉死坐标，否则会在三处迷路：p10 与 p11 的\textbf{页序和徽章号互换}（徽章 11 在 p10、徽章 10 在 p11），
+p30 处\textbf{徽章 28 缺号}，p34 是一张\textbf{与本课无关的插页}（“Two-Photon Imaging vs. Holography”）。
+
+\subhdr{0.1 三十八页的构成（台账表，只用来定位，不承载推导）}
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{1.7cm}p{1.15cm}p{10.9cm}@{}}
+\thead{页码} & \thead{徽章} & \thead{内容与本讲义落点}\\
+\hline
+p1--p4 & 1--4 & 封面；路线图（§1.7 六项／§1.8 五项／§1.9 七项）；上节四式（高斯、牛顿、$V$、密接组合）；本课五问 \ $\to$ §1\\
+p5--p6 & 5--6 & “一条公式 $\to$ 六台仪器”；六台仪器一句话一览（口号页） \ $\to$ §1.3\\
+p7--p9 & 7--9 & 眼球结构（角膜／晶状体 $n=1.44$／睫状体／瞳孔 2--8 mm／视网膜）；调节（$f$：17.1$\to$14.2 mm，眼轴 22.8 mm 不变）；远点近点、近视与远视 \ $\to$ §2\\
+p10 & \textbf{11} & 最小分辨角：$\omega_{\min}=\frac{5\,\mu\mathrm{m}}{22.8\,\mathrm{mm}}\times\frac{180}{3.14}=0.0128^\circ=0.768'\approx1'$ \ $\to$ §2.4\\
+p11 & \textbf{10} & 视角 $\omega$ 与明视距离 $S_0=25$ cm；$\omega_{\max}=y/S_0$ \ $\to$ §2.3\\
+p12--p13 & 12--13 & 放大镜 $M=S_0/f=25\,\mathrm{cm}/f$（$f=25$ mm $\to$ $10\times$）；目镜（Ramsden／Huygens）与“目镜不能提高分辨” \ $\to$ §3\\
+p14--p16 & 14--16 & 显微镜两段式；$M=M_oM_e=25\Delta/(f_1f_2)$；分辨本领 $d=0.61\lambda/\mathrm{NA}$ 与 $40\times(0.65)$ vs $100\times(1.30)$ \ $\to$ §4.1--4.2\\
+p17--p18 & 17--18 & 望远镜：开普勒／伽利略光路；$M=-f_o/f_e$ 与正倒判据 \ $\to$ §4.3\\
+p19--p21 & 19--21 & 照相机（镜头／光圈／快门／CCD，$s\gg f$）；投影仪（$s\approx f$）；六台仪器汇总表 \ $\to$ §5\\
+p22 & \textbf{1.8} & 光度学五量；$\Phi=K_m\!\int V\varepsilon\dd\lambda$；$I,E,L$ 三式；$\Phi=4\pi I$，$E=I\cos\alpha/R^2$ \ $\to$ §6\\
+p23--p27 & \textbf{1.9},22--25 & 像差定义与分类；球差、彗差、像散与场曲、畸变 \ $\to$ §7.1--7.4\\
+p28--p30 & 26--27,\ 29 & 轴向色差、放大率色差；像差速查表（7 行） \ $\to$ §7.5--7.6\\
+p31--p33 & 29--30 & 本课总结、下次预告（波光学）、致谢 \ $\to$ §11\\
+p34 & 4 & 插页：Two-Photon Imaging vs. Holography（与几何光学无关，不计）\\
+p35--p38 & 无 & 四张完全相同的空白背景页（不计）\\
+\end{tabular}}
+\tabbot
+
+\subhdr{0.2 为什么按“一条公式 $\to$ 五台器件 $\to$ 一套量 $\to$ 一组缺陷”重排}
+
+课件 §1.7 按器件名排序（眼睛、放大镜、目镜、显微镜、望远镜、照相机、投影仪），本讲义改按\textbf{光路结构}排：
+单段成像（眼睛、放大镜）、两段成像（显微镜、望远镜）、记录与投影（照相机、投影仪）。三条理由备查：
+(a) 英文 PPT 图多字少，逐页直译会得到一本相册，故按主题合并、只删口号页与四张空白页；(b) 学生要区分的是
+“谁是物、像成在哪、孔径在哪”，同结构仪器一起记最省力；(c) 38 页按主题合并约 0.4 倍，公式与判据一条没删，§12 逐页对账。
+
+\subhdr{0.3 记号：沿用第三课那一套，不另立一套}
+
+课件不再重复符号规则，但用的仍是第三课 p20/p22/p25/p27 的五条。本讲义照抄，全文不混用；
+凡课件与上一讲不一致处，在 §9 缺口清单点名。
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{2.0cm}p{9.0cm}p{2.6cm}@{}}
+\thead{记号} & \thead{含义与符号规则} & \thead{出处}\\
+\hline
+$s,\;s'$ & 物距／像距：自透镜主平面分别向物方、像方量；实物 $s>0$、虚物 $s<0$，实像 $s'>0$、虚像 $s'<0$ & 第三课 p22\\
+$f$ & 焦距：会聚（凸）$f>0$，发散（凹）$f<0$；薄透镜 $f'=f$ & 第三课 p25\\
+$x,\;x'$ & 焦物距／焦像距：自 $F$、$F'$ 量起；物在 $F$ 的物方（左）为 $x>0$，像在 $F'$ 的像方（右）为 $x'>0$ & 第三课 p27\\
+$V$ & 横向放大率 $V=y'/y$；$V<0$ 倒立，$|V|>1$ 放大 & 第三课 p20\\
+$M$ & \textbf{视放大率}（角放大率）$M=\omega'/\omega$，\textbf{不是} $V$；必须有眼睛参与 & p12、p14、p15\\
+$\omega,\ \omega'$ & 物／像对眼睛所张的角（视角）；$S_0=25$ cm 为明视距离（约定值） & p11\\
+$\Delta$ & 光学筒长：物镜像方焦点 $F_o'$ 到目镜物方焦点 $F_e$ 的距离 & p15\\
+$\mathrm{NA}$ & 数值孔径 $\mathrm{NA}=n\sin u$；$u$ 为边缘光线在物方的孔径角 & p16\\
+$\varepsilon,\Phi,I,E,L$ & 辐射通量、光通量、发光强度、照度、亮度；$K_m=683$ lm/W，$V(555\,\mathrm{nm})=1$ & p22\\
+\end{tabular}}
+\tabbot
+
+\callout{\textbf{$M$ 与 $V$ 的分工。} $V=y'/y$ 说“像比物大多少”，是透镜自己的性质；
+$M=\omega'/\omega$ 说“用仪器后眼睛看到的张角变大多少”，没有眼睛就没有定义。§3.1 的第一个式子就是两者的换算，
+混用会差一个 $S_0$ 因子。}
+
+%=====================================================================
+\hdr{§1}{本课主线：一条公式，六台仪器}
+
+课件 p3 用四张卡片复述上一讲，p5 把它们压成一条式子；本课所有结论都从这条式子长出来——
+\textbf{同一台公式，改一个量，就换一台仪器}。先按原形式抄下 p3 的四个式子（本节要用的全部前提），
+再补上课件跳过的两步代数。
+
+\subhdr{1.1 四个原式（p3 原形式）}
+\[
+\frac{1}{s}+\frac{1}{s'}=\frac{1}{f},
+\qquad
+xx'=ff',
+\qquad
+V=-\frac{s'}{s}=\frac{f}{x}=-\frac{x'}{f},
+\qquad
+\frac{1}{f}=\frac{1}{f_1}+\frac{1}{f_2},\quad P=P_1+P_2 .
+\]
+其中 $s,s'$ 为物距与像距，$f$ 为焦距，$x,x'$ 为自焦点量起的焦物距与焦像距，$V$ 为横向放大率，
+$P=1/f$ 为光焦度（屈光度），$f_1,f_2$ 为密接两片透镜的焦距。
+
+\aside{课件 p3 第三格印作 $V=-\frac{s'}{s}=\frac{f}{x}=-\frac{x'}{f}$。按第三课 p27 的约定（物在 $F$ 左侧 $x>0$），
+实物在焦点外时 $V<0$ 而 $x>0$，故正确形式是 $V=-f/x$；§1.2 逐式推，§9 缺口 1、§10 易错 1 各记一次。}
+
+\subhdr{1.2 补齐：高斯式 $\Rightarrow$ 牛顿式 $\Rightarrow$ 放大率三写法}
+
+高斯式两边同乘 $ss'f$：$\,s'f+sf=ss'\Rightarrow f(s+s')=ss'$。定义 $x\equiv s-f$、$x'\equiv s'-f$
+（$p3$ 只给结果，没给这两个定义），相乘即得
+\[
+xx'=(s-f)(s'-f)=ss'-f(s+s')+f^2=ss'-ss'+f^2=f^2 ,
+\]
+薄透镜 $f'=f$，故写作 $xx'=ff'$——p3 第二张卡片。再由 $s=x+f$、$x'=f^2/x$ 得
+\[
+s'=x'+f=\frac{f^2}{x}+f=\frac{f(x+f)}{x},\qquad
+\frac{s'}{s}=\frac{f(x+f)/x}{x+f}=\frac{f}{x},
+\qquad\Longrightarrow\qquad
+V=-\frac{s'}{s}=-\frac{f}{x}=-\frac{x'}{f}.
+\]
+最后一式的第二个等号用了 $x'/f=f/x$。三个等号就是 p3 第三格，只差 $f/x$ 前的负号（见上页旁注）。
+
+\subhdr{1.3 六台仪器各自“动哪个量”}
+
+有了 $1/s+1/s'=1/f$，六台仪器只是六种“已知条件”：眼睛的 $s'$ 不能动，只能改 $f$；放大镜把物放进焦点内（$s<f$）；
+显微镜多给一个可调量——筒长 $\Delta$；望远镜的物在无穷远，$s=\infty$ 使 $s'=f_o$；照相机与投影仪是同一台机器的两个极端
+（$s\gg f$ 与 $s\approx f$）。六个结论式逐一在 §2--§5 独立推出，最后在 §5.3 汇成一张表（对应课件 p21）。
+这里只记一条主线：\textbf{改 $s'$ 定眼睛，改 $f$ 定放大镜，加一段 $\Delta$ 成显微镜，令 $s=\infty$ 成望远镜，
+令 $s\to\infty$ 或 $s\to f$ 得照相机与投影仪。}
+
+\flowerrule
+
+%=====================================================================
+\hdr{§2}{眼睛：像距不变、焦距可变的一台照相机}
+
+\subhdr{2.1 结构：五个零件各管一件事（p7）}
+
+\textbf{角膜}（cornea）是最前面透明的部分，承担人眼约三分之二的折光本领；\textbf{晶状体}（crystalline lens）
+相当于一片凸透镜，平均折射率 $n=1.44$；\textbf{睫状体}（ciliary body）靠肌肉改变晶状体曲率、从而改变焦距；
+\textbf{瞳孔}（pupil）是可变光阑，强光缩到 2 mm、暗处放大到 8 mm；\textbf{视网膜}（retina）是眼球后方的感光面，
+布满视锥细胞，相当于底片。房水、玻璃体只是透明介质，巩膜、脉络膜、视神经与成像无关。
+
+\callout{记住这一句：眼睛的“镜头”能自动换焦距（晶状体），而它的“底片”永远不动（视网膜）。
+§2.2 的全部计算都从这句话出发。}
+
+\subhdr{2.2 调节：$s'$ 不变、$f$ 变（p8）}
+
+课件 p8 的数据：眼轴长度（axial length，角膜到视网膜）22.8 mm 不变；完全松弛看远物 $f=17.1$ mm，
+最大收缩看近物 $f=14.2$ mm。这里的 $f$ 是\textbf{后焦距}（主点到视网膜），与 22.8 mm 的轴向长度不是同一个量，
+§2.4 会用到这个区别。用高斯式反解物距（课件没写这一步）：
+\[
+\frac{1}{s}=\frac{1}{f}-\frac{1}{s'}:\qquad
+f=17.1\ \mathrm{mm}\Rightarrow \frac{1}{s}=0\Rightarrow s=\infty\ (\text{远点}),
+\]
+\[
+f=14.2\ \mathrm{mm}\Rightarrow \frac{1}{s}=\frac{1}{14.2}-\frac{1}{17.1}=0.01194\ \mathrm{mm^{-1}}
+\Rightarrow s=83.7\ \mathrm{mm}\approx 8.4\ \mathrm{cm}\ (\text{近点}).
+\]
+课件 p9 说“儿童近点约 7 cm”，本模型给 8.4 cm，同量级；差 1.4 cm 是因为真实眼有两片折射面（角膜 + 晶状体）、
+主平面不在晶状体中心，而这里把整只眼折成了一片薄透镜。
+
+再看调节范围。用光焦度 $P=1/f$（$f$ 以\textbf{米}为单位，单位 $\mathrm{m^{-1}}$ 即屈光度 D）：
+\[
+P_{\text{松弛}}=\frac{1}{0.0171}=58.5\ \mathrm{D},\qquad
+P_{\text{收缩}}=\frac{1}{0.0142}=70.4\ \mathrm{D},\qquad
+\Delta P\approx 11.9\ \mathrm{D}\approx 12\ \mathrm{D}.
+\]
+这 12 D 就是人老后逐年丢掉的调节力；眼镜处方的 $+2.00$ D 与它同单位、可直接相加减，§2.5 的矫正公式由此而来。
+
+\aside{屈光度 $P=1/f$，$f$ 用米：$-2.00$ D 即 $P=-2\ \mathrm{m^{-1}}$、$f=-0.5$ m（凹、发散）。D 与 $\mathrm{m^{-1}}$ 是同一个单位。}
+
+\subhdr{2.3 视角与明视距离（p11）}
+
+视网膜上的像高由视角决定：像离主点 $s'\approx17.1$ mm，故 $y'\approx s'\tan\omega\approx17.1\ \mathrm{mm}\times\omega$。
+\textbf{同一物体放远放近，视网膜上的像高随视角一起变}；反过来，两个大小不同但张角相同的物体看起来一样大。
+明视距离 $S_0=25$ cm 是\textbf{约定值}：越近视角越大，但睫状肌持续紧张、眼睛易累，25 cm 是“看得清”与“不累”的折中。
+于是直接观察能得到的最大视角为
+\[
+\omega_{\max}=\frac{y}{S_0}=\frac{y}{25\ \mathrm{cm}} .
+\]
+这就是 p11 的红框，也是\textbf{所有助视器的比较基准}：放大镜、显微镜、望远镜做的都是把 $\omega$ 变得比 $y/S_0$ 更大
+（p11 的 Tip：“All optical aids essentially increase the visual angle”）。
+
+\subhdr{2.4 最小分辨角：$0.768'$ 与 $1'$ 哪个对（p10）}
+
+判据（p10 原文）：两个物点要能分辨，它们的像必须落在\textbf{不同的视锥细胞}上，视锥细胞直径约 $5\ \mu\mathrm{m}$。
+即 $\omega_{\min}\approx d_{\text{cell}}/\text{眼内程}$。课件 p10 的计算（原文）是
+\[
+\omega_{\min}=\frac{5\ \mu\mathrm{m}}{22.8\ \mathrm{mm}}\times\frac{180}{3.14}=0.0128^\circ=0.768'\approx1'.
+\]
+逐项重算：$5\times10^{-3}/22.8=2.193\times10^{-4}$ rad $=0.01256^\circ=0.754'$（用 $\pi=3.1416$）。
+课件把 $0.01256$ 进位成 $0.0128$ 再乘 60，才得 $0.768'$；真实值是 $0.75'$，与它写的 $1'$ 已差 25\%。
+
+\textbf{问题在分母}：22.8 mm 是角膜到视网膜的\textbf{轴向长度}，而张角要以\textbf{节点}（近似取后主点）为顶点，
+眼内程是后焦距 17.1 mm。换过来：
+\[
+\omega_{\min}=\frac{5\ \mu\mathrm{m}}{17.1\ \mathrm{mm}}=2.924\times10^{-4}\ \mathrm{rad}
+=0.01675^\circ=1.005'\approx1'.
+\]
+\textbf{正好是课件要的 $1'$。}所以 p10 一页混了两个数：分母取 22.8 mm 时答案是 $0.75'$，结论 $1'$ 对应的是 17.1 mm 的力臂。
+本讲义取 $1'$（通行生理值），并在 §9 缺口 2 记这一处。常用换算：$1'=2.909\times10^{-4}$ rad，在 25 cm 处对应
+$250\times2.909\times10^{-4}=0.0727\ \mathrm{mm}\approx0.07$ mm——这就是 p10 “明视距离上能分开 0.07 mm”的来历。
+
+\aside{补充（课件未给，一句话可估）：按衍射极限，瞳孔 $D=3$ mm、$\lambda=550$ nm 时 $\omega=1.22\lambda/D=2.2\times10^{-4}$ rad
+$=0.77'$，与生理值同量级——人眼已接近衍射极限，再缩小瞳孔也不会更清楚。这是 §7 像差讨论的伏笔。}
+
+\subhdr{2.5 近视与远视：像落在视网膜前还是后（p9）}
+
+\textbf{近视}（myopia）：眼球太长或折光太强，平行光聚焦在视网膜\textbf{前}，远点 $s_f$ 变有限。矫正思路是把无穷远的物
+先被镜片“推”成落在远点的虚像：$f_c=-s_f$，处方光焦度 $P_c=-1/s_f\ (\mathrm{m^{-1}})$。例：远点 0.5 m 者
+$P_c=-2.00$ D，配凹透镜——即 p9 的“corrected with a concave (diverging) lens”。
+
+\textbf{远视}（hyperopia）：眼球太短，近物的像落在视网膜\textbf{后}，近点变远。要让近点 $s_n$ 处的物在 25 cm 看清，
+镜片须把 25 cm 处的物成像于 $s_n$：$\;1/f_c=1/0.25-1/s_n$。例：近点 0.5 m 者 $P_c=4-2=+2.00$ D，配凸透镜——
+即 p9 的“convex (converging) lens”。
+
+\aside{这两条是教材结论，课件只给定性方向（凹／凸），故标补充；推导只用 §2.2 的高斯式与“像必须落在视网膜上”，未引入新量。}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.84,font=\small]
+  \draw[thick] (4.2,0) ellipse (2.45 and 2.2);
+  \draw[thick,violet] (1.78,1.0) .. controls (1.28,0.35) and (1.28,-0.35) .. (1.78,-1.0);
+  \draw[thick,fill=blue!8] (3.0,0) ellipse (0.30 and 0.95);
+  \draw[thick,fill=red!10,opacity=0.75] (3.0,0) ellipse (0.46 and 1.06);
+  \draw[very thick,violet] (6.52,0.85) -- (6.62,0) -- (6.52,-0.85);
+  \draw[->,red,thick] (-1.4,0.55) -- (2.95,0.55);  \draw[->,red,thick] (2.95,0.55) -- (6.6,0);
+  \draw[->,red,thick] (-1.4,-0.55) -- (2.95,-0.55);\draw[->,red,thick] (2.95,-0.55) -- (6.6,0);
+  \draw[->,blue,thick] (-1.9,1.35) -- (2.95,0.62); \draw[->,blue,thick] (2.95,0.62) -- (6.6,0);
+  \draw[->,blue,thick] (-1.9,-1.35) -- (2.95,-0.62);\draw[->,blue,thick] (2.95,-0.62) -- (6.6,0);
+  \node[font=\scriptsize,above] at (0.95,1.75) {角膜};
+  \draw[thin] (1.15,1.62) -- (1.5,0.85);
+  \node[font=\scriptsize,right] at (6.62,0.95) {视网膜};
+  \node[font=\scriptsize,red,anchor=west,fill=white,inner sep=1pt] at (-1.95,2.3) {远物：平行光（松弛）};
+  \node[font=\scriptsize,blue,anchor=west,fill=white,inner sep=1pt] at (-1.95,-2.0) {近物：发散光（收缩）};
+  \node[font=\scriptsize,anchor=west] at (1.6,-2.7) {晶状体：$f$ 17.1$\to$14.2 mm};
+  \draw[<->,thin] (1.6,-3.35) -- (3.0,-3.35);
+  \node[font=\scriptsize,below=2pt] at (2.3,-3.35) {眼轴 22.8 mm};
+  \draw[<->,thin] (3.0,-3.95) -- (6.6,-3.95);
+  \node[font=\scriptsize,below=2pt] at (4.8,-3.95) {$s'=17.1$ mm（不变）};
+\end{tikzpicture}
+\figcap{图 1\ \redraw 眼球的两个调节状态：远物用 17.1 mm 的松弛焦距，近物靠睫状体把晶状体压胖、焦距缩到 14.2 mm，
+两种情形都恰好落在同一张视网膜上（数据取自课件 p8、p10）。}
+\end{center}
+
+\flowerrule
+
+%=====================================================================
+\hdr{§3}{放大镜与目镜：把视角放大}
+
+课件 p12 只给盒子式 $M=S_0/f=25\,\mathrm{cm}/f$，没说它怎么来、也没说“像在近点”与“像在无穷远”差多少。
+本节补这两步，再讲目镜为什么“只能放大、不能分辨”。
+
+\subhdr{3.1 视放大率的定义与来源}
+
+同一个物体，\textbf{用助视器看}与\textbf{直接放在明视距离看}，视网膜上像高之比等于视角之比：
+\[
+M\equiv\frac{\omega'}{\omega},\qquad \omega=\frac{y}{S_0},\qquad \omega'=\frac{y}{f},
+\qquad\Longrightarrow\qquad
+M=\frac{y/f}{y/S_0}=\frac{S_0}{f}=\frac{25\ \mathrm{cm}}{f}.
+\]
+$\omega'=y/f$ 的来历：物放在焦点上时出射光平行、像在无穷远，眼睛看到的张角由“物高对透镜中心张的角”决定，
+恰好是 $y/f$（近轴下 $\tan\omega'\approx\omega'$）。p12 的盒子式就是这一条。
+
+\subhdr{3.2 像落在近点时会多一项“$+1$”}
+
+若把物再往焦点内挪一点，让虚像落在 25 cm 近点（眼睛更省力），取 $s'=-25$ cm，由高斯式
+\[
+\frac{1}{s}-\frac{1}{25}=\frac{1}{f}\Rightarrow s=\frac{25f}{25+f},
+\qquad
+\omega'=\frac{y}{s}=\frac{y(25+f)}{25f},
+\qquad
+M=\frac{\omega'}{\omega}=\frac{25}{f}+1 .
+\]
+同一个 $f=25$ mm 的放大镜：像在无穷远 $M=10\times$，像调到近点 $M=11\times$。p12 的文字说“forms a virtual,
+upright image at the near point”，而公式 $M=S_0/f$ 对应的是\textbf{像在无穷远}（松弛）；两者差 1 项，
+$f$ 越短差得越小（见 §9 缺口 3）。
+
+\subhdr{3.3 焦距为什么不能无限短（p12 的 Tip）}
+
+$M=25/f$ 说明 $f$ 越短倍率越高，但 $f$ 一短，球面弯曲加剧、像差急剧变大（§7 伏笔），故市售放大镜只有
+$2.5\times$--$25\times$ 一档：按 $f=25/M$ 反推，对应 $f=10$ cm 到 $1$ cm；而 p12 说“常用手执放大镜
+$f\approx25$--$28$ mm”，正好落在 $9$--$10\times$ 这一段。记住这个反推：\textbf{倍率是焦距的倒数，不是独立参数}。
+
+\subhdr{3.4 目镜：一片“给像用的放大镜”（p13）}
+
+显微镜与望远镜的目镜（eyepiece）本质就是一片放大镜，但它放大的不是\textbf{物}，而是\textbf{物镜已经形成的像}。
+p13 的关键句：“The eyepiece does not magnify the object itself, but magnifies the viewing angle of the image
+formed by the objective.”——这就是把 §3.1 的定义照搬到 $y_1$ 上，于是 $M_e=25/f_2$。
+实用目镜是两片（或三片）组合：\textbf{冉斯登目镜}（Ramsden）＝场镜 + 接目镜，两片均平凸；
+\textbf{惠更斯目镜}（Huygens）＝场镜 + 接目镜 + 一片平凹负透镜。场镜（field lens）放在中间像附近，
+把主光线往轴心折，使轴外光也能进接目镜——这解释了“两片比一片视场大”，也是 §6.5 光阑概念的第一次出现。
+
+\warnbox{\textbf{目镜不能提高分辨本领}（p13 Key Takeaway，p16 再强调）：目镜只能放大物镜\textbf{已经分辨出来}的细节；
+两点被物镜糊成一团，目镜再放大也只是一团更大的糊。放大率 $\ne$ 分辨本领，定量判据是 §4.2 的 $d=0.61\lambda/\mathrm{NA}$。}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.8,font=\small]
+  \draw[->] (-1.9,0) -- (6.2,0);
+  \draw[thick,fill=blue!8] (2.4,-0.85) ellipse (0.16 and 0.85);
+  \draw[->,thick,violet] (0.55,0) -- (0.55,0.9) node[above,font=\scriptsize] {$y$};
+  \draw[->,thick,violet,dashed] (-1.2,0) -- (-1.2,1.85) node[above,font=\scriptsize] {$y'$（虚像）};
+  \draw[red,thick] (0.55,0.9) -- (2.4,0.9);  \draw[red,thick,->] (2.4,0.9) -- (5.9,0.2);
+  \draw[red,thick] (0.55,0.9) -- (2.4,0);    \draw[red,thick,->] (2.4,0) -- (5.9,0.7);
+  \draw[red,dashed] (2.4,0.9) -- (-1.2,1.85); \draw[red,dashed] (2.4,0) -- (-1.2,1.85);
+  \draw[thick] (6.15,0.42) ellipse (0.26 and 0.42);
+  \node[font=\scriptsize,below] at (6.15,-0.5) {眼};
+  \draw[thin] (4.6,0) arc (0:25:1.5); \node[font=\scriptsize,right] at (5.5,0.2) {$\omega'$};
+  \draw[thin] (2.4,0) ++(180:0.9) arc (180:205:0.9); \node[font=\scriptsize] at (1.1,0.25) {$\omega$};
+  \node[font=\scriptsize,below] at (3.35,-0.95) {放大镜 $f$};
+  \node[font=\scriptsize,above] at (1.65,2.05) {物在焦点以内};
+  \draw[<->,thin] (2.4,-1.4) -- (0.55,-1.4) node[midway,below,font=\scriptsize] {$s<f$};
+\end{tikzpicture}
+\figcap{图 2\ \redraw 放大镜光路：物在焦点以内，出射光发散，反向延长交出正立放大的虚像；可观测量是视角 $\omega'$，
+与明视距离上的 $\omega=y/S_0$ 相比即得 $M$（重绘自课件 p12）。}
+\end{center}
+
+\flowerrule
+
+%=====================================================================
+\hdr{§4}{显微镜与望远镜：两段成像}
+
+§3 的放大镜只能做到 $10\times$ 上下，因为 $f$ 再短像差就压不住。要把倍率再提高一个量级，办法是\textbf{串联两段}：
+先用短焦物镜把物放成一个大实像，再用目镜（§3.4）当放大镜去看这个实像。显微镜与望远镜都是这个结构，
+区别只在物放在哪里。
+
+\subhdr{4.1 显微镜：两段放大（p14、p15）}
+
+结构：物镜 $f_1$ 很短、贴近物体；目镜 $f_2$ 较长、贴近眼睛。工作过程四步（p14 原文）：
+物放在物镜焦点的\textbf{稍外侧}；物镜成\textbf{放大的倒立实像}；这个实像落在目镜焦点的\textbf{稍内侧}；
+目镜再把它放大成\textbf{倒立的虚像}。总视放大率是两段之积（p15）：
+\[
+M=M_o\times M_e .
+\]
+$M_e=25/f_2$ 已在 §3.1 推出；$M_o$ 是物镜的\textbf{横向}放大率，用 §1.2 的牛顿式一句就能得到：
+物镜的像成在 $F_o'$ 之外 $\Delta$ 处，即 $x'=\Delta$，故
+\[
+M_o=-\frac{x'}{f_1}=-\frac{\Delta}{f_1}.
+\]
+两式相乘（取绝对值）：
+\[
+|M|=\frac{\Delta}{f_1}\cdot\frac{25}{f_2}=\frac{25\Delta}{f_1f_2},
+\]
+这就是 p15 的盒子式。\textbf{符号}：$M_o<0$ 而 $M_e>0$，故总像倒立，$M<0$。
+
+\aside{式子里的 25 是 $S_0=25$ cm，所以 $f_1,f_2,\Delta$ 必须用 \textbf{cm}；用 mm 代进去，答案会大 10 倍。
+这就是 §10 易错 2。}
+
+\textbf{数字核对}（p15 Tip “40$\times$ objective + 20$\times$ eyepiece = 800$\times$”）：取 $f_1=0.4$ cm、
+$f_2=1.25$ cm、$\Delta=16$ cm，则 $M_o=-16/0.4=-40$、$M_e=25/1.25=20$，
+$|M|=25\times16/(0.4\times1.25)=800$，与课件一致。
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.82,font=\small]
+  \draw[->] (-1.7,0) -- (8.5,0);
+  \draw[thick,fill=blue!8] (0,-1.0) ellipse (0.14 and 1.0);
+  \draw[thick,fill=blue!8] (5.55,-0.75) ellipse (0.12 and 0.75);
+  \draw[->,thick,violet] (-0.55,0) -- (-0.55,0.55);
+  \node[font=\scriptsize,left] at (-0.6,0.6) {$y$（物）};
+  \draw[->,thick,violet] (4.05,0) -- (4.05,-1.5);
+  \node[font=\scriptsize,below] at (4.05,-1.55) {$-y_1$};
+  \fill (0.45,0) circle (1.3pt) node[above=1pt,font=\scriptsize] {$F_o'$};
+  \fill (-0.45,0) circle (1.3pt) node[below=1pt,font=\scriptsize] {$F_o$};
+  \fill (3.95,0) circle (1.3pt) node[above=1pt,font=\scriptsize] {$F_e$};
+  \fill (7.15,0) circle (1.3pt) node[above=1pt,font=\scriptsize] {$F_e'$};
+  \draw[dashed] (0.45,1.25) -- (0.45,0.15);
+  \draw[<->,thin] (0.45,1.25) -- (4.05,1.25) node[midway,above,font=\scriptsize] {$\Delta$};
+  \draw[red,thick,->] (-0.55,0.55) -- (0,0.55);
+  \draw[red,thick,->] (0,0.55) -- (4.05,-1.5);
+  \draw[red,thick,->] (-0.55,0.55) -- (0,-0.62);
+  \draw[red,thick,->] (0,-0.62) -- (4.05,-1.5);
+  \draw[red,thick,->] (4.05,-1.5) -- (5.55,-0.45);
+  \draw[red,thick,->] (5.55,-0.45) -- (8.0,0.15);
+  \draw[red,thick,->] (4.05,-1.5) -- (5.55,0.28);
+  \draw[red,thick,->] (5.55,0.28) -- (8.0,0.75);
+  \draw[red,dashed] (5.55,-0.45) -- (-0.3,-3.1);
+  \draw[red,dashed] (5.55,0.28) -- (-0.3,-3.1);
+  \node[font=\scriptsize,violet,below] at (-0.3,-3.1) {$-y_2$（虚像，示意）};
+  \draw[thin] (5.6,0) ++(0:0.55) arc (0:12:0.55);
+  \node[font=\scriptsize,right] at (6.2,0.12) {$\omega'$};
+  \draw[thin] (5.6,0) ++(180:1.1) arc (180:190:1.1);
+  \node[font=\scriptsize] at (4.45,0.25) {$\omega$};
+  \node[font=\scriptsize,below] at (0,-2.0) {物镜 $L_o$};
+  \node[font=\scriptsize,below] at (5.55,-1.15) {目镜 $L_e$};
+  \draw[thick] (8.15,0.4) ellipse (0.22 and 0.4);
+  \node[font=\scriptsize,below] at (8.15,-0.5) {眼};
+\end{tikzpicture}
+\figcap{图 3\ \redraw 显微镜的两段成像（示意，不按比例）：物镜把物 $y$ 放大成倒立的实像 $-y_1$，落在 $F_e$ 内侧；
+目镜再把它放大成远处的虚像 $-y_2$。$\Delta$ 是 $F_o'$ 到 $F_e$ 的距离（光学筒长），重绘自课件 p14、p15。}
+\end{center}
+
+\subhdr{4.2 分辨本领：$d=0.61\lambda/\mathrm{NA}$，放大率 $\ne$ 分辨本领（p16）}
+
+判据（瑞利）：物镜能分开的最小两点间距
+\[
+d=\frac{0.61\lambda}{\mathrm{NA}},\qquad \mathrm{NA}=n\sin u ,
+\]
+$\lambda$ 为波长、$n$ 为物方介质折射率、$u$ 为边缘光线在物方的孔径角。$d$ 越小，\textbf{分辨本领}
+（resolving power）越高。数字：$\lambda=550$ nm、$\mathrm{NA}=0.65$ 时 $d=0.61\times0.55/0.65=0.52\ \mu\mathrm{m}$；
+$\mathrm{NA}=1.30$ 时 $d=0.26\ \mu\mathrm{m}$——后者分辨本领恰为前者的 2 倍。
+
+p16 的例子正是这个对比：$40\times(\mathrm{NA}\,0.65)$ 配 $20\times$ 目镜，与 $100\times(\mathrm{NA}\,1.30)$ 配 $8\times$ 目镜，
+总放大率都是 $800\times$，但后者的分辨本领是前者的两倍（$0.52$ 对 $0.26\ \mu\mathrm{m}$）。
+所以 p16 的结论“\textbf{Magnification $\ne$ Resolving Power}”不是口号：分辨本领只由物镜的 NA 与 $\lambda$ 决定，
+目镜只是把物镜已经分辨出的细节放大（p16 底部原话：“the objective lens is the 'information collector';
+the eyepiece is merely the 'information amplifier'”）。
+
+\aside{补充：既然 $d$ 只由 NA 与 $\lambda$ 定，最有效的“看得更细”手段是\emph{提高 NA}（油浸、增大孔径角）或\emph{缩短波长}，
+而不是换更短的目镜。经验上限：超过 $\sim500\,\mathrm{NA}$ 至 $1000\,\mathrm{NA}$ 的总放大率后，再加倍率只放大模糊，
+这叫“空放大”。}
+
+\subhdr{4.3 望远镜：物在无穷远，$M=-f_o/f_e$（p17、p18）}
+
+望远镜的物在无穷远，物镜把平行光聚到 $F_o'$，在那里形成高度为
+\[
+y_1=-f_o\tan\omega\approx-f_o\,\omega
+\]
+的实像（$\omega$ 为物对物镜的张角，负号表示倒立）。目镜把这个 $y_1$ 再成像到无穷远，出射视角
+$\omega'\approx y_1/f_e$（按 p14 的同一写法 $\omega'=-y_1/f_2$）。于是
+\[
+M=\frac{\omega'}{\omega}=\frac{-y_1/f_e}{\omega}=\frac{f_o\,\omega/f_e}{\omega}
+=-\frac{f_o}{f_e}.
+\]
+这就是 p18 的盒子式。判据一目了然：\textbf{$f_o$ 越大、$f_e$ 越小，倍率越高}；符号决定正倒。
+
+\warnbox{\textbf{两种望远镜的符号}（p18）：开普勒（Keplerian）物镜与目镜都是正透镜，$f_e>0$，$M<0$ 得\textbf{倒立}像；
+伽利略（Galilean）目镜是负透镜，$f_e<0$，$M>0$ 得\textbf{正立}像，且镜筒更短、无中间实像。
+数字：$f_o=1000$ mm、$f_e=25$ mm 时 $M=-40$（$40\times$，倒立）；若目镜换成 $f_e=-40$ mm 的凹透镜，则 $M=+25$（正立）。}
+
+\aside{课件 p17 有一句与 p18 冲突：它写“In the Keplerian telescope, the focal length of the objective is positive,
+while that of the eyepiece is negative.”——目镜取负的是\emph{伽利略}望远镜。以 p18 的符号判据为准，§9 缺口 4 记这一处。}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.8,font=\scriptsize]
+  \begin{scope}
+    \draw[->] (-2.3,0) -- (6.6,0);
+    \draw[thick,fill=blue!8] (0,-0.85) ellipse (0.12 and 0.85);
+    \draw[thick,fill=blue!8] (3.6,-0.5) ellipse (0.1 and 0.5);
+    \fill (3.0,0) circle (1.3pt) node[above=1pt] {$F_o'=F_e$};
+    \draw[red,thick,->] (-2.1,0.55) -- (0,0.42);
+    \draw[red,thick,->] (0,0.42) -- (3.0,-0.32);
+    \draw[red,thick,->] (-2.1,-0.45) -- (0,-0.34);
+    \draw[red,thick,->] (0,-0.34) -- (3.0,-0.32);
+    \draw[red,thick,->] (3.0,-0.32) -- (3.6,-0.18);
+    \draw[red,thick,->] (3.6,-0.18) -- (6.3,-0.55);
+    \draw[red,thick,->] (3.0,-0.32) -- (3.6,-0.42);
+    \draw[red,thick,->] (3.6,-0.42) -- (6.3,0.12);
+    \node[left] at (-2.15,0.62) {$\omega$};
+    \node at (-0.7,-1.15) {$L_o$};
+    \node at (4.2,-0.95) {$L_e$};
+    \draw[thin] (6.3,0) ++(180:0.9) arc (180:196:0.9);
+    \node at (5.25,0.32) {$\omega'$};
+    \draw[<->,thin] (-0.1,-1.8) -- (3.0,-1.8) node[midway,below] {$f_o$};
+    \draw[<->,thin] (3.0,-1.8) -- (3.6,-1.8) node[midway,below] {$f_e$};
+    \node[above] at (1.2,1.25) {(a) 开普勒：实中间像在 $F_o'=F_e$，$M<0$ 倒立};
+  \end{scope}
+  \begin{scope}[yshift=-5.2cm]
+    \draw[->] (-2.3,0) -- (6.6,0);
+    \draw[thick,fill=blue!8] (0,-0.85) ellipse (0.12 and 0.85);
+    \draw[thick,fill=blue!8] (3.3,-0.45) ellipse (0.22 and 0.45);
+    \fill (3.0,0) circle (1.3pt) node[above=1pt] {$F_o'$};
+    \fill (2.55,0) circle (1.3pt) node[below=1pt] {$F_e$};
+    \draw[red,thick,->] (-2.1,0.55) -- (0,0.42);
+    \draw[red,thick,->] (0,0.42) -- (3.0,-0.1);
+    \draw[red,thick,->] (-2.1,-0.45) -- (0,-0.34);
+    \draw[red,thick,->] (0,-0.34) -- (3.0,-0.1);
+    \draw[red,thick,->] (3.0,-0.1) -- (3.3,-0.05);
+    \draw[red,thick,->] (3.3,-0.05) -- (6.3,-0.42);
+    \draw[red,thick,->] (3.0,-0.1) -- (3.3,-0.28);
+    \draw[red,thick,->] (3.3,-0.28) -- (6.3,0.25);
+    \node[left] at (-2.15,0.62) {$\omega$};
+    \node at (-0.85,-1.5) {$L_o$：$f_o>0$};
+    \node at (4.9,-1.5) {$L_e$：$f_e<0$};
+    \draw[thin] (6.3,0) ++(180:0.9) arc (180:195:0.9);
+    \node at (5.3,0.28) {$\omega'$};
+
+    \node[above] at (1.2,1.25) {(b) 伽利略：无实中间像，$M>0$ 正立};
+  \end{scope}
+\end{tikzpicture}
+\figcap{图 4\ \redraw 望远镜的两个状态（重绘自课件 p17、p18）：开普勒用两片凸透镜、两焦点重合处有实中间像；
+伽利略的目镜为凹透镜，中间像落在目镜之后、成为虚像，所以镜筒短且成正立像。}
+\end{center}
+
+\flowerrule
+
+%=====================================================================
+\hdr{§5}{照相机与投影仪：记录与投影}
+
+\subhdr{5.1 照相机：$s\gg f\Rightarrow s'\approx f$（p19）}
+
+照相机三部分（p19）：成像（镜头，多片凸凹组合、等效为一片凸透镜）、曝光（\textbf{光圈}控制进光量，
+即孔径光阑；\textbf{快门}控制曝光时间）、辅助（机身、对焦）。感光元件 CCD 放在像方焦面附近。
+物很远时 $1/s'\approx1/f$，于是
+\[
+s'=\frac{sf}{s-f}\;\xrightarrow{\,s\gg f\,}\;s',
+\qquad |V|=\frac{s'}{s}=\frac{f}{s-f}\approx\frac{f}{s}.
+\]
+数字：$f=50$ mm、$s=5$ m 时 $s'=50.5$ mm、$|V|\approx1/99$——一个 1.8 m 高的人在底片上只有 18 mm。
+\textbf{对焦就是微调 $s'$}（把镜头相对 CCD 前后移动），而不是改 $f$；这与眼睛恰好相反（§2.2）。
+
+\aside{补充：像面照度。由 §6 的 $E=\dd\Phi/\dd S$ 与 $L$ 的定义，镜头在像面张的立体角约 $\pi D^2/(4f^2)$，
+故 $E_{\text{像}}\approx\dfrac{\pi L}{4N^2}$，其中 $N=f/D$ 为 F 数。它与快门时间一起决定曝光量 $H=E_{\text{像}}t$——
+这就是“光圈每开一档（$N$ 除以 $\sqrt2$）进光量翻倍”的来历。}
+
+\subhdr{5.2 投影仪：$s\approx f\Rightarrow s'\gg s$（p20）}
+
+投影仪把幻灯片放在\textbf{靠近焦点}处（$s\approx f$），屏幕放在远处（$s'\gg s$）。由高斯式反解
+\[
+s=\frac{fs'}{s'-f},\qquad
+|V|=\frac{s'}{s}=\frac{s'-f}{f}\approx\frac{s'}{f}.
+\]
+数字：$f=50$ mm、$s'=1.5$ m 时 $s=51.7$ mm、$|V|=29$（课件写 $\approx s'/f=30$，两者差 1 项，
+正是 $s'-f$ 与 $s'$ 的区别）。因为 $V<0$，幻灯片必须\textbf{倒插}才能得到正立的画面——p21 表里
+“inverted, magnified, real image”说的就是这件事。
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.8,font=\scriptsize]
+  \begin{scope}
+    \draw[->] (-3.4,0) -- (2.6,0);
+    \draw[thick,fill=blue!8] (0,-0.6) ellipse (0.1 and 0.6);
+    \draw[thick] (1.55,-0.55) rectangle (1.72,0.55);
+    \node[right] at (1.76,0.25) {CCD};
+    \draw[->,thick,violet] (-3.2,0) -- (-3.2,0.75);
+    \node[above] at (-3.2,0.8) {物};
+    \draw[red,thick,->] (-3.2,0.75) -- (0,0.6);
+    \draw[red,thick,->] (0,0.6) -- (1.6,-0.42);
+    \draw[red,thick,->] (-3.2,0) -- (0,-0.15);
+    \draw[red,thick,->] (0,-0.15) -- (1.6,-0.42);
+    \draw[<->,thin] (-3.3,-1.15) -- (0,-1.15) node[midway,below] {$s\gg f$};
+    \draw[<->,thin] (0,-1.15) -- (1.6,-1.15) node[midway,below] {$s'\approx f$};
+    \node[above] at (-1.2,1.45) {(a) 照相机：$s\gg f$，$|V|\approx f/s$ 缩小实像};
+  \end{scope}
+  \begin{scope}[yshift=-4.4cm]
+    \draw[->] (-1.4,0) -- (5.7,0);
+    \draw[thick,fill=blue!8] (0,-0.6) ellipse (0.1 and 0.6);
+    \draw[thick] (5.3,-0.95) -- (5.3,0.95);
+    \node[right] at (5.35,1.0) {屏幕};
+    \draw[->,thick,violet] (-0.22,0) -- (-0.22,0.3);
+    \node[above] at (-0.3,0.35) {片};
+    \draw[red,thick,->] (-0.22,0.3) -- (0,0.32);
+    \draw[red,thick,->] (0,0.32) -- (5.3,-0.92);
+    \draw[red,thick,->] (-0.22,0) -- (0,-0.1);
+    \draw[red,thick,->] (0,-0.1) -- (5.3,-0.92);
+    \draw[<->,thin] (-0.3,-1.4) -- (0,-1.4) node[midway,below] {$s\approx f$};
+    \draw[<->,thin] (0,-1.4) -- (5.3,-1.4) node[midway,below] {$s'\gg s$};
+    \node[above] at (2.0,1.3) {(b) 投影仪：$s\approx f$，$|V|\approx s'/f$ 放大实像};
+  \end{scope}
+\end{tikzpicture}
+\figcap{图 5\ \redraw 同一台凸透镜的两个极端用法（重绘自课件 p19、p20）：物在远处得到缩小的实像（照相机），
+物贴近焦点得到放大的实像（投影仪）；两者的像距分别退到 $f$ 与涨到 $s'\gg f$。}
+\end{center}
+
+\needspace{0.5\textheight}
+\subhdr{5.3 六台仪器汇总（p21 重排）}
+
+\textbf{表前一句}：这张表把 §2--§5 的六次推导各读一遍，每一格都能在上面几节逐式复算；它对应课件 p21 原表，
+只把“放大率”一栏的近似条件补全。
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{1.5cm}p{3.1cm}p{4.7cm}p{3.3cm}p{2.9cm}@{}}
+\thead{仪器} & \thead{物位} & \thead{焦距与像位关系} & \thead{像的性质} & \thead{放大率}\\
+\hline
+眼睛 & 物距变 & 眼轴 22.8 mm 固定，$f$ 17.1$\to$14.2 mm & 倒立、缩小、实像（视网膜上） & 由视角定；分辨 $1'$\\
+放大镜 & $s<f$ & 虚像落在近点（25 cm） & 正立、放大、虚像 & $M=25\,\mathrm{cm}/f$\\
+显微镜 & 物在 $f_1$ 稍外 & 两段：中间实像落在 $F_e$ 内侧 & 倒立、放大、虚像 & $M=25\Delta/(f_1f_2)$\\
+望远镜 & $s=\infty$ & 物镜像焦点与目镜物方焦点重合 & 开普勒倒立／伽利略正立 & $M=-f_o/f_e$\\
+照相机 & $s\gg f$ & 像落在像方焦面附近，$s'\approx f$ & 倒立、缩小、实像 & $|V|\approx f/s$\\
+投影仪 & $s\approx f$ & $s'\gg s$，屏幕在远处 & 倒立、放大、实像 & $|V|\approx s'/f$\\
+\end{tabular}}
+\tabbot
+
+\textbf{逐行读法}：眼睛是“$s'$ 固定”的唯一例子，故放大率不能用 $V$ 表示；放大镜与显微镜的 $M$ 都含 $S_0=25$ cm，
+说明是“与明视距离比较”的角放大；望远镜不含 $S_0$，比较基准就是入射视角。照相机与投影仪的 $|V|$ 是近似式，
+精确式为 $f/(s-f)$ 与 $(s'-f)/f$。
+
+\textbf{边界行}：望远镜 $s=\infty$ 是极限（$x'\to0$，中间像恰在 $F_o'$）；投影仪 $s\to f$ 时 $s'\to\infty$，
+实际由房间给定 $s'$ 反求 $s$；照相机 $s\to\infty$ 时 $s'\to f$，对焦环的无穷远刻度即 $s'=f$。
+
+\flowerrule
+
+%=====================================================================
+\hdr{§6}{光度学：五个量、一条链}
+
+§1.7 讲的是“像在哪”，§1.8 换一套语言讲“有多亮”。课件 p22 一页把五个量、单位、核心关系全部塞进一张表，
+本节先建“一条链”，再逐量给定义式与分母，最后补上课件缺的光阑与景深。
+
+\subhdr{6.1 一条链：$\varepsilon\to\Phi\to I\to E\to L$}
+
+物理量是\textbf{辐射通量} $\varepsilon$（radiant flux，单位 W）：单位时间发出的辐射能量，与人的视觉无关。
+把 $\varepsilon$ 按人眼的敏感度加权，得到\textbf{光通量}
+\[
+\Phi=K_m\int V(\lambda)\,\varepsilon(\lambda)\dd\lambda ,
+\]
+其中 $V(\lambda)$ 为视见函数（luminous efficiency function，无量纲，$V(555\ \mathrm{nm})=1$，
+即人眼最敏感的黄绿光），$K_m=683$ lm/W 为最大光谱光视效能——这两个数都是\textbf{约定}，
+不是推导出来的。$\Phi$ 的单位是流明（lm）。
+
+后面三个量都是 $\Phi$ 的“分布”：对立体角微分得\textbf{发光强度} $I$，对面积微分得\textbf{照度} $E$，
+同时对两者（再投影）微分得\textbf{亮度} $L$：
+\[
+I=\frac{\dd\Phi}{\dd\Omega}\ (\mathrm{cd}=\mathrm{lm/sr}),\qquad
+E=\frac{\dd\Phi}{\dd S}\ (\mathrm{lx}=\mathrm{lm/m^2}),\qquad
+L=\frac{\dd\Phi}{\dd\Omega\,\dd S\cos\theta}\ (\mathrm{cd/m^2}).
+\]
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{2.2cm}p{1.1cm}p{4.3cm}p{2.6cm}p{5.2cm}@{}}
+\thead{量} & \thead{符号} & \thead{定义式} & \thead{单位} & \thead{备注}\\
+\hline
+辐射通量 & $\varepsilon$ & 单位时间辐射能量 & W & 纯物理量，与人眼无关\\
+视见函数 & $V(\lambda)$ & 产生同样视觉所需辐射通量之比的倒数 & 无量纲 & $V(555\,\mathrm{nm})=1$\\
+光通量 & $\Phi$ & $\Phi=K_m\!\int V(\lambda)\varepsilon(\lambda)\dd\lambda$ & lm & $K_m=683$ lm/W\\
+发光强度 & $I$ & $I=\dd\Phi/\dd\Omega$ & cd & $1\ \mathrm{cd}=1\ \mathrm{lm/sr}$\\
+照度 & $E$ & $E=\dd\Phi/\dd S$ & lx & $1\ \mathrm{lx}=1\ \mathrm{lm/m^2}$\\
+亮度 & $L$ & $L=\dd\Phi/(\dd\Omega\,\dd S\cos\theta)$ & $\mathrm{cd/m^2}$ & 描述发光面“多亮”\\
+\end{tabular}}
+\tabbot
+
+\textbf{逐行读法}（每个量到底在“对什么微分”）：$\varepsilon$ 不分方向也不分面积，所以只是一个总功率；
+$\Phi$ 是把 $\varepsilon$ 乘上人眼权重后积分，故它是唯一带“光”字的量，其余四个都由它派生；
+$I$ 只对方向微分，问“往某一个方向发多少”，所以光源的方向性全在 $I$ 里；
+$E$ 只对面积微分，问“落在某块面上多少”，所以离得越远越暗（$1/R^2$）；
+$L$ 同时对方向与投影面积微分，问“从某个方向看某块面有多亮”，所以它是唯一与观看方向有关的量。
+
+\textbf{边界行}：$\cos\theta$ 一项在 $\theta=90^\circ$ 时为零（掠射时投影面积为零，亮度定义失效），
+所以 $L$ 只在 $0\le\theta<90^\circ$ 上有意义；各向同性点源的 $\Phi=4\pi I$ 是 $\theta$ 全空间的积分结果，
+不是定义（见 6.2）。课件 p22 表格下方写作 $L=\alpha\Phi/(\dd\Omega\,\dd S\cos\theta)$，
+其中 $\alpha$ 是 $\dd$ 的误印，应为 $\dd\Phi$（§9 缺口 5）。
+
+\subhdr{6.2 两个常用式的推导}
+
+\textbf{各向同性点源}：$I$ 与方向无关，对整个球面积分
+\[
+\Phi=\int I\,\dd\Omega=I\cdot4\pi=4\pi I .
+\]
+\textbf{点源在面元上的照度}：面元 $\dd S$ 对源张的立体角 $\dd\Omega=\dd S\cos\alpha/R^2$（$\alpha$ 为入射光线与法线夹角，
+$R$ 为距离），代入 $E=\dd\Phi/\dd S=I\,\dd\Omega/\dd S$ 得
+\[
+E=\frac{I\cos\alpha}{R^2}.
+\]
+这两个式子就是 p22 下方的两个盒子式。
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.78,font=\small]
+  \fill (0,0) circle (2pt) node[above right,font=\scriptsize] {S（点源）};
+  \draw[thick] (4.6,-0.5) -- (7.6,0.5);
+  \fill (5.5,0.09) circle (1.4pt) node[below,font=\scriptsize] {$\dd S$};
+  \draw[->,thick] (0,0) -- (5.5,0.09) node[midway,above,font=\scriptsize] {$R$};
+  \draw[dashed] (5.5,0.09) -- (5.9,0.23);
+  \draw[dashed] (4.9,-0.6) -- (5.6,0.05);
+  \draw[->,thin] (5.35,0.42) -- (5.5,0.12) node[right,font=\scriptsize,pos=0.9] {$\vec n$};
+  \draw[thin] (5.75,0.14) arc (20:70:0.3); \node[font=\scriptsize] at (5.72,0.42) {$\theta$};
+  \draw[thin] (0.55,0) arc (0:5:0.55); \node[font=\scriptsize,right] at (0.6,0.06) {$\dd\Omega$};
+  \draw[dashed] (0,0) -- (4.6,-0.5); \draw[dashed] (0,0) -- (7.6,0.5);
+  \node[font=\scriptsize,below] at (2.2,-0.95) {发光强度 $I$（cd）};
+  \node[font=\scriptsize] at (6.75,-0.75) {照度 $E$（lx）};
+  \node[font=\scriptsize,above] at (5.2,1.15) {亮度 $L$（$\mathrm{cd/m^2}$）};
+\end{tikzpicture}
+\figcap{图 6\ \redraw 光度学五个量的几何关系（重绘自课件 p22 右图）：点源 S 向面元 $\dd S$ 张立体角 $\dd\Omega$；
+$\theta$ 是光线与面元法线 $\vec n$ 的夹角，投影面积 $\dd S\cos\theta$ 是亮度定义里那一项。}
+\end{center}
+
+\subhdr{6.3 光阑与景深（课件缺页，补充）}
+
+课件 p2 的路线图在 §1.8 下列了 “Apertures”，p4 第 3 问也问“分辨本领为何受物镜孔径限制”，
+但 38 页里\textbf{没有一页}讲光圈，故补最小够用的一段（标补充，只用前面已有的式子）：
+\textbf{孔径光阑}（aperture stop）是限制轴上光束的孔，它在物方、像方的像分别叫\textbf{入瞳}与\textbf{出瞳}；
+相对孔径 $=D/f$，其倒数 $N=f/D$ 称 \textbf{F 数}。$N$ 越小，进光量越大（$E_{\text{像}}\propto1/N^2$，§5.1 旁注）、
+分辨本领越高（NA 与 $D$ 同向），但像差越重——\textbf{这就是“收光圈能变清晰”的全部道理}。
+\textbf{视场光阑}（field stop）限制成像范围，决定视场角而不是亮度。
+
+\textbf{景深}（depth of field）：允许弥散圆 $\delta$ 给定后，像面可偏离 $\Delta s'=\delta N$，再由纵向放大率
+$\Delta s'\approx V^2\Delta s$ 换成物方
+\[
+\Delta s\approx\frac{\delta N}{|V|^2}=\frac{\delta N\,s^2}{f^2}\quad(s\gg f),
+\]
+故 \textbf{$N$ 越大（光圈越小）、$s$ 越小，景深越大}。数字：$f=50$ mm、$N=8$、$\delta=0.03$ mm、$s=3$ m 时
+单侧 $\Delta s\approx0.86$ m，总景深约 $1.7$ m（前后不对称，精确式约 $1.9$ m）。
+
+\flowerrule
+
+%=====================================================================
+\hdr{§7}{像差：五种单色 + 两种色差}
+
+\subhdr{7.0 定义与分类（p23）}
+
+\textbf{像差}（aberration）是“实际像”与“理想像”的偏差。课件 p23 只分两层：\textbf{单色像差}（monochromatic）五种——
+球差、彗差、像散、场曲、畸变；\textbf{色差}（chromatic）两种——轴向（纵向）与放大率（横向）。p23 的学习目标原话是
+“You don't need to remember any formulas. Just remember how each aberration arises and what effect it has on the image.”
+故本节按\textbf{成因 $\to$ 表现 $\to$ 轴上还是轴外 $\to$ 怎么减弱}组织，不写高阶展开。
+
+\subhdr{7.1 球差：边缘光线“跑过头”（p24）}
+
+成因：球面折射本身是非线性的（第三课傍轴近似要消掉的正是这一项）。同一轴上物点，\textbf{边缘光线}（marginal rays）
+与\textbf{近轴光线}（paraxial rays）折射后焦距不同：边缘光线聚得更近（$P''$），近轴光线聚得更远（$P'$）。
+表现：轴上物点不再成点，而是在两焦点之间形成\textbf{弥散圆}（circle of confusion），像发虚。
+判据：\textbf{轴上点也模糊，且模糊斑是圆盘}——这一条把球差与所有“只影响轴外”的像差区分开。
+减弱：缩小孔径（收光圈，§6.3）；用非球面或双胶合把两焦点拉近。
+
+\subhdr{7.2 彗差：轴外点拖出尾巴（p25）}
+
+成因：轴外物点的\textbf{宽光束}过透镜后不再对称，主光线被偏到一侧，各环带光线的会聚点依次偏移、错开成彗星状。
+表现：像成“亮头 + 拖尾”的彗星形，仍认得出是一个点；只影响\textbf{轴外}。判据：\textbf{亮头带尾}；减弱：缩小孔径最有效。
+
+\subhdr{7.3 像散与场曲：点变两条线、平面变曲面（p26）}
+
+成因（像散 astigmatism）：轴外\textbf{窄光束}在两个互相垂直的方向上焦距不同——\textbf{子午}（meridional，又称切向 tangential）方向
+与\textbf{弧矢}（sagittal）方向各有一个焦点。表现：一个物点先成一竖直短线（子午焦线）、再成一水平短线（弧矢焦线），
+两线之间是最模糊的圆。成因（场曲 field curvature）：理想像面不是平面而是曲面，平面物成像后中心与边缘不能同时清晰。
+判据：\textbf{点变两条互相垂直的短线}（像散）；\textbf{中心清楚则边缘模糊、反之亦然}（场曲）。
+
+\aside{术语必须读清：p26 写“Meridional (vertical) focus line / Sagittal (horizontal) focus line”，
+指的是\emph{焦线的朝向}，不是光线所在的平面。判据只有一句：\textbf{子午面 = 光轴与物点共同决定的那个平面}；
+对水平偏置的物点，子午光线的焦线是竖直的。记反了会把两条线对调，§9 缺口 6 记这一处。}
+
+\subhdr{7.4 畸变：形状变、清晰度不变（p27）}
+
+成因：横向放大率 $V$ 随物点离轴距离而变。表现：网格被拉弯，但每一条线仍然锐利。
+放大率随视场\textbf{增大} $\Rightarrow$ 四角外凸，\textbf{枕形}（pincushion）；随视场\textbf{减小} $\Rightarrow$ 四角内缩，
+\textbf{桶形}（barrel）。判据：\textbf{清晰但变形}——这一条把畸变与场曲分开（后者是“清晰位置变了”，
+所以边缘会糊）；两者常同时出现，靠“边缘是否清楚”区分。
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\begin{tikzpicture}[>=Stealth,scale=0.78,font=\scriptsize]
+  % (a) 球差
+  \begin{scope}
+    \draw[->] (-1.9,0) -- (3.9,0);
+    \draw[thick,fill=blue!8] (0,-1.05) ellipse (0.13 and 1.05);
+    \draw[red,thick,->] (-1.8,0.85) -- (0,0.85); \draw[red,thick,->] (0,0.85) -- (2.2,0);
+    \draw[red,thick,->] (-1.8,-0.85) -- (0,-0.85); \draw[red,thick,->] (0,-0.85) -- (2.2,0);
+    \draw[blue,thick,->] (-1.8,0.16) -- (0,0.16); \draw[blue,thick,->] (0,0.16) -- (3.4,0);
+    \draw[blue,thick,->] (-1.8,-0.16) -- (0,-0.16); \draw[blue,thick,->] (0,-0.16) -- (3.4,0);
+    \fill (2.2,0) circle (1.6pt) node[below] {$P''$};
+    \fill (3.4,0) circle (1.6pt) node[below] {$P'$};
+    \draw[<->,thin] (2.75,-0.6) -- (2.75,0.6);
+    \node[above] at (2.75,0.62) {弥散圆};
+    \node[above] at (0.9,1.25) {(a) 球差：边缘焦距短};
+  \end{scope}
+  % (b) 彗差
+  \begin{scope}[xshift=7.4cm]
+    \draw[->] (-2.0,0) -- (3.6,0);
+    \draw[thick,fill=blue!8] (0,-1.0) ellipse (0.13 and 1.0);
+    \fill (-1.85,0.95) circle (1.6pt) node[above] {Q};
+    \draw[yellow!60!black,thick,->] (-1.85,0.9) -- (0,0.55); \draw[yellow!60!black,thick,->] (0,0.55) -- (2.9,-0.42);
+    \draw[yellow!60!black,thick,->] (-1.85,0.9) -- (0,0.1);  \draw[yellow!60!black,thick,->] (0,0.1) -- (2.55,-0.18);
+    \draw[yellow!60!black,thick,->] (-1.85,0.9) -- (0,-0.5); \draw[yellow!60!black,thick,->] (0,-0.5) -- (2.3,-0.66);
+    \fill[gray!35] (2.3,-0.72) .. controls (2.75,-0.62) and (3.0,-0.30) .. (2.62,-0.05)
+                   .. controls (2.4,-0.28) and (2.32,-0.5) .. (2.3,-0.72);
+    \node[right] at (2.95,-0.62) {彗尾};
+    \draw[dashed] (2.6,-1.1) -- (2.6,0.5) node[above] {像面};
+    \node[above] at (0.7,1.25) {(b) 彗差：轴外宽光束不对称};
+  \end{scope}
+  % (c) 像散
+  \begin{scope}[yshift=-4.5cm]
+    \draw[->] (-2.0,0) -- (3.8,0);
+    \draw[thick,fill=blue!8] (0,-0.95) ellipse (0.13 and 0.95);
+    \fill (-1.85,0.9) circle (1.6pt) node[above] {Q};
+    \draw[yellow!60!black,thick,->] (-1.85,0.9) -- (0,0.3); \draw[yellow!60!black,thick,->] (0,0.3) -- (2.35,0.15);
+    \draw[yellow!60!black,thick,->] (-1.85,0.9) -- (0,-0.35); \draw[yellow!60!black,thick,->] (0,-0.35) -- (3.15,0.12);
+    \draw[very thick,violet] (2.35,0.45) -- (2.35,-0.2);
+
+    \draw[very thick,violet] (2.95,0.12) -- (3.35,0.12);
+
+    \draw[thin] (2.68,0.3) circle (0.2);
+    \node[above=1pt] at (2.68,0.52) {模糊圆};
+    \node[below] at (2.95,-0.45) {竖线＝子午焦线，横线＝弧矢焦线};
+    \node[above] at (0.6,1.25) {(c) 像散：点成两条垂直线};
+  \end{scope}
+  % (d) 畸变
+  \begin{scope}[xshift=7.4cm,yshift=-4.5cm]
+    % 枕形
+    \draw[thick] plot[smooth] coordinates {(-0.75,-0.75) (0,-0.55) (0.75,-0.75)};
+    \draw[thick] plot[smooth] coordinates {(0.75,-0.75) (0.55,0) (0.75,0.75)};
+    \draw[thick] plot[smooth] coordinates {(0.75,0.75) (0,0.55) (-0.75,0.75)};
+    \draw[thick] plot[smooth] coordinates {(-0.75,0.75) (-0.55,0) (-0.75,-0.75)};
+    \draw[thin] (-0.55,-0.75) -- (-0.55,0.75); \draw[thin] (0,-0.72) -- (0,0.72);
+    \draw[thin] (0.55,-0.75) -- (0.55,0.75);
+    \draw[thin] (-0.72,-0.3) -- (0.72,-0.3); \draw[thin] (-0.75,0) -- (0.75,0);
+    \draw[thin] (-0.72,0.3) -- (0.72,0.3);
+    \node[below] at (0,-1.0) {枕形};
+    % 桶形
+    \begin{scope}[xshift=2.9cm]
+      \draw[thick] plot[smooth] coordinates {(-0.7,-0.7) (0,-0.9) (0.7,-0.7)};
+      \draw[thick] plot[smooth] coordinates {(0.7,-0.7) (0.9,0) (0.7,0.7)};
+      \draw[thick] plot[smooth] coordinates {(0.7,0.7) (0,0.9) (-0.7,0.7)};
+      \draw[thick] plot[smooth] coordinates {(-0.7,0.7) (-0.9,0) (-0.7,-0.7)};
+      \draw[thin] (-0.78,-0.7) -- (-0.78,0.7); \draw[thin] (0,-0.88) -- (0,0.88);
+      \draw[thin] (0.78,-0.7) -- (0.78,0.7);
+      \draw[thin] (-0.7,-0.42) -- (0.7,-0.42); \draw[thin] (-0.72,0) -- (0.72,0);
+      \draw[thin] (-0.7,0.42) -- (0.7,0.42);
+      \node[below] at (0,-1.05) {桶形};
+    \end{scope}
+    \node[above] at (1.1,1.15) {(d) 畸变：$|V|$ 随视场变大$\to$枕形，变小$\to$桶形};
+  \end{scope}
+\end{tikzpicture}
+\figcap{图 7\ \redraw 四种单色像差的成因与表现（重绘自课件 p24--p27）：(a) 边缘光线与近轴光线焦点不重合；
+(b) 轴外宽光束错开成彗星；(c) 子午与弧矢方向焦距不同，一点成两条垂直线；(d) 放大率随视场变化，网格被拉成枕形或桶形。}
+\end{minipage}
+\end{center}
+
+\subhdr{7.5 色差：$n$ 随波长变（p28、p29）}
+
+成因：玻璃折射率 $n(\lambda)$ 随波长变，故同一片透镜对不同颜色的 $f$ 也不同（紫光的 $n$ 大、$f$ 短）。
+\textbf{轴向（纵向）色差}（longitudinal chromatic aberration，p28）：轴上物点，蓝光焦点近（$F_B$）、红光焦点远（$F_R$），
+像面上出现彩边；只影响\textbf{轴上}点。\textbf{放大率（横向）色差}（magnification chromatic aberration，p29）：
+轴外物点，红蓝光的像高不同（$y_R'>y_B'$），像的边缘现彩色；只影响\textbf{轴外}点。
+减弱：双胶合消色差透镜（正负两片、$n$ 与色散匹配，使两色焦点重合）——补充；或用反射系统（反射无色差）。
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=0.84,font=\scriptsize]
+  % (a) 轴向色差
+  \begin{scope}
+    \draw[->] (-2.0,0) -- (4.2,0);
+    \draw[thick,fill=blue!8] (0,-1.05) ellipse (0.13 and 1.05);
+    \draw[blue,thick,->] (-1.9,0.7) -- (0,0.7);  \draw[blue,thick,->] (0,0.7) -- (2.2,0);
+    \draw[blue,thick,->] (-1.9,-0.7) -- (0,-0.7); \draw[blue,thick,->] (0,-0.7) -- (2.2,0);
+    \draw[red,thick,->] (-1.9,0.7) -- (0,0.7);  \draw[red,thick,->] (0,0.7) -- (3.3,0);
+    \draw[red,thick,->] (-1.9,-0.7) -- (0,-0.7); \draw[red,thick,->] (0,-0.7) -- (3.3,0);
+    \fill (2.2,0) circle (1.6pt) node[below,blue] {$F_B$};
+    \fill (3.3,0) circle (1.6pt) node[below,red] {$F_R$};
+    \draw[dashed] (2.75,-1.15) -- (2.75,1.15) node[above] {像面};
+    \node[above] at (-0.55,1.75) {(a) 轴向色差：蓝近红远（轴上）};
+  \end{scope}
+  % (b) 横向色差
+  \begin{scope}[xshift=7.6cm]
+    \draw[->] (-1.6,0) -- (4.0,0);
+    \draw[thick,fill=blue!8] (1.8,-1.0) ellipse (0.13 and 1.0);
+    \draw[->,thick,violet] (-1.5,0) -- (-1.5,0.85) node[above] {P};
+    \fill (-1.5,0.85) circle (1.6pt);
+    \draw[red,thick,->] (-1.5,0.85) -- (1.8,0.55); \draw[red,thick,->] (1.8,0.55) -- (3.6,0.58);
+    \draw[blue,thick,->] (-1.5,0.85) -- (1.8,0.55); \draw[blue,thick,->] (1.8,0.55) -- (3.6,-0.02);
+    \fill[red] (3.6,0.58) circle (1.6pt) node[right] {$y_R'$};
+    \fill[blue] (3.6,-0.02) circle (1.6pt) node[right] {$y_B'$};
+    \draw[dashed] (3.6,-0.25) -- (3.6,0.85) node[above] {像面};
+    \node[above] at (0.4,1.75) {(b) 横向色差：红高蓝低（轴外）};
+  \end{scope}
+\end{tikzpicture}
+\figcap{图 8\ \redraw 两种色差（重绘自课件 p28、p29）：(a) 轴上点，蓝光焦点比红光近，像面上出现彩边；
+(b) 轴外点，红蓝像高不同，边缘现彩色。判据是“看轴上还是看轴外”。}
+\end{center}
+
+\subhdr{7.6 速查（p30 重排）}
+
+\textbf{表前一句}：这张表把 p30 的七行按“成因 → 表现 → 判据”重排，每一行都能在图 7、图 8 里找到对应的
+光路与形状；表只作索引，成因与判据在 §7.1--7.5 各有独立段落。
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{2.5cm}p{4.6cm}p{4.2cm}p{3.5cm}@{}}
+\thead{像差} & \thead{成因} & \thead{表现} & \thead{判据}\\
+\hline
+球差 & 边缘与近轴光线焦距不同 & 轴上像成模糊圆盘 & 轴上点模糊、盘状\\
+彗差 & 轴外宽光束不对称 & 像成彗星状（有尾） & 轴外、亮头带尾\\
+像散 & 子午与弧矢焦距不同 & 一点成两条垂直线 & 轴外、点成两线\\
+场曲 & 理想像面是曲面 & 中心清楚则边缘糊 & 平面物、清晰位置随视场移\\
+畸变 & $V$ 随视场变化 & 形状变形、清晰度不变 & 直线被弯、边缘仍锐\\
+轴向色差 & 各色焦距不同 & 轴上像有彩边 & 轴上、红远蓝近\\
+横向色差 & 各色放大率不同 & 轴外像有彩边 & 轴外、红高蓝低\\
+\end{tabular}}
+\tabbot
+
+\textbf{逐行读法}：前五行与波长无关（单色），分界是\textbf{孔径与视场}——球差在轴上就出现，彗差要轴外宽光束，
+像散只要轴外窄光束；场曲与畸变的分界是\textbf{清晰度}（前者改“哪里清晰”，后者只改位置）。后两行是色差，
+分界是“轴上还是轴外”。\textbf{边界行}：视场为零时彗差、像散、畸变恒为零；色差在轴上只有轴向、在轴外两者并存。
+
+\flowerrule
+
+%=====================================================================
+\hdr{§8}{例题全解}
+
+课件没有独立的“例题”页，但有四处带数字的演算（p10、p12、p15--p16），标为“Example”的两处（p16）。
+下面三题一题一块：题干随题走（带课件页码），五段（考点／关键一步／详解／答案／自检）同块同页。
+
+\qbreak
+\subhdr{例 1（课件 p12）放大镜的倍率与“近点”修正}
+\qstem{（课件 p12）放大镜焦距 $f=25$ mm。（1）求它的视放大率 $M$；（2）若把虚像调到 25 cm 的近点，$M$ 变成多少？（3）若要求 $M=25\times$，焦距应取多少？}
+\textbf{考点}：视放大率定义 $M=\omega'/\omega$ 与 $S_0=25$ cm 的使用。\quad
+\textbf{关键一步}：$M$ 是\textbf{两个视角之比}，基准视角是物放在明视距离上的 $y/S_0$，不是横向放大率 $V$。
+
+\textbf{详解}：(1) 物放在焦点上，出射光平行、像在无穷远，$\omega'=y/f$；基准 $\omega=y/S_0$。故
+\[
+M=\frac{\omega'}{\omega}=\frac{y/f}{y/S_0}=\frac{S_0}{f}=\frac{250\ \mathrm{mm}}{25\ \mathrm{mm}}=10 .
+\]
+(2) 虚像在近点时 $s'=-25$ cm，由 $1/s+1/s'=1/f$ 得 $1/s=1/2.5+1/25=0.44\ \mathrm{cm^{-1}}$，$s=2.27$ cm，
+$\omega'=y/s$，于是 $M=25/f+1=10+1=11$。(3) 由 $M=25\,\mathrm{cm}/f$ 反解：$f=25/25=1$ cm $=10$ mm。
+
+\textbf{答案}：(1) $10\times$；(2) $11\times$；(3) $f=10$ mm。\quad
+\textbf{自检}：$f=25$ mm 时 (2) 比 (1) 大 1，正是“像从无穷远挪到近点”多出的那一项；$f$ 越短这一项占比越小。
+
+\qbreak
+\subhdr{例 2（课件 p10）最小分辨角：$0.768'$ 还是 $1'$}
+\qstem{（课件 p10）视锥细胞直径约 $5\ \mu\mathrm{m}$，眼轴长度 $22.8$ mm。课件给出 $\omega_{\min}=\frac{5\,\mu\mathrm{m}}{22.8\,\mathrm{mm}}\times\frac{180}{3.14}=0.0128^\circ=0.768'\approx1'$。请（1）复算这个数；（2）判断 $1'$ 应配哪个力臂；（3）给出 25 cm 处对应的线分辨。}
+\textbf{考点}：角度换算与“力臂取哪一个长度”。\quad
+\textbf{关键一步}：张角的顶点是\textbf{节点}（近似后主点），不是角膜；力臂应取后焦距 $17.1$ mm。
+
+\textbf{详解}：(1) $\omega=5\times10^{-3}/22.8=2.193\times10^{-4}$ rad；乘 $180/\pi$ 得 $0.01256^\circ$，
+再乘 60 得 $0.754'$。课件写 $0.0128^\circ$ 是先把 $0.01256$ 进位，再乘 60 得 $0.768'$，故 $0.768'$ 本身是进位误差。
+(2) 换力臂：$5\times10^{-3}/17.1=2.924\times10^{-4}$ rad $=0.01675^\circ=1.005'$——恰为 $1'$。
+所以 $22.8$ mm 配 $0.75'$、$17.1$ mm 配 $1.0'$，课件把两个数混用了。
+(3) $1'=2.909\times10^{-4}$ rad，在 $250$ mm 处对应 $250\times2.909\times10^{-4}=0.0727$ mm $\approx0.07$ mm。
+
+\textbf{答案}：(1) $0.754'$；(2) $1'$ 对应 $17.1$ mm；(3) 约 $0.07$ mm。\quad
+\textbf{自检}：若把 $0.768'$ 当真，反推细胞直径为 $5.09\ \mu\mathrm{m}$，与给定的 $5\ \mu\mathrm{m}$ 不符，
+说明 $0.768'$ 不能与 $22.8$ mm 同时成立。
+
+\qbreak
+\subhdr{例 3（课件 p15--p16）$800\times$ 的两台显微镜，哪台更“强”}
+\qstem{（课件 p16）甲：$40\times$ 物镜（NA 0.65）配 $20\times$ 目镜；乙：$100\times$ 物镜（NA 1.30）配 $8\times$ 目镜。两者总放大率都是 $800\times$。（1）核对总放大率；（2）取 $\lambda=550$ nm 求各自可分辨的最小间距；（3）解释为什么乙更“强”；（4）若甲要配出 $f_1=4$ mm、$\Delta=160$ mm 的组合，目镜焦距应是多少？}
+\textbf{考点}：$M=M_oM_e$、$M=25\Delta/(f_1f_2)$（cm 制）与 $d=0.61\lambda/\mathrm{NA}$。
+\textbf{关键一步}：放大率是乘积、可以互相替换；分辨本领只由物镜的 NA 与 $\lambda$ 定，\textbf{不可替换}。
+
+\textbf{详解}：(1) 甲 $40\times20=800$，乙 $100\times8=800$，总放大率相同。
+(2) $d_{\text{甲}}=0.61\times0.55/0.65=0.516\ \mu\mathrm{m}$，$d_{\text{乙}}=0.61\times0.55/1.30=0.258\ \mu\mathrm{m}$，比值 2。
+(3) 分辨本领 $\propto\mathrm{NA}$，乙的 NA 是甲的两倍，故能分开的细节细一倍；甲若把目镜换成 $40\times$ 得到 $1600\times$，
+$d$ 仍是 $0.516\ \mu\mathrm{m}$——只是把同一团模糊放得更大（空放大）。
+(4) 由 $M=25\Delta/(f_1f_2)$ 解 $f_2$：$f_2=25\Delta/(Mf_1)=25\times16/(800\times0.4)=1.25$ cm $=12.5$ mm。
+
+\textbf{答案}：(1) 都是 $800\times$；(2) $0.52\ \mu\mathrm{m}$ 与 $0.26\ \mu\mathrm{m}$；(3) 乙的 NA 大、$d$ 小；
+(4) $f_2=12.5$ mm（对应 $20\times$ 目镜）。\quad
+\textbf{自检}：第 (4) 问把 cm 制记牢——误用 mm 会得 125 mm，超出任何目镜尺寸，这本身就是量纲自检的信号。
+
+\flowerrule
+
+%=====================================================================
+\hdr{§9}{缺口清单：课件跳过了什么，本讲义补在哪}
+
+每条给出\textbf{页码 + 课件原文短语 + 缺什么 + 补法}。九条里三条是数学跳步、三条是内部矛盾与印刷错误、
+三条是内容与坐标缺口。
+
+\gapitem{形式／记号缺口（p3）}{原文 “$V=-\frac{s'}{s}=\frac{f}{x}=-\frac{x'}{f}$”。按第三课 p27 的 $x>0$ 约定，
+实物在焦点外时 $V<0$ 而 $x>0$，三个等号不能同时成立，缺一个负号。补法：§1.2 逐式推出 $V=-f/x$，并在 §10 易错 1 立判据。}
+
+\gapitem{代数／拼接缺口（p10）}{原文 “$\omega_{\min}=\frac{5\mu\mathrm{m}}{22.8\mathrm{mm}}\times\frac{180}{3.14}=0.0128^\circ=0.768'\approx1'$”。
+分子分母取 22.8 mm 时答案只能是 $0.754'$（且课件的 $0.0128^\circ$ 是进位误差）；$1'$ 对应 17.1 mm 的力臂。补法：§2.4 两算并置，
+§8 例 2 给复算与反证。}
+
+\gapitem{内部矛盾（p12）}{原文 “It forms a virtual, upright image at the near point” 与同页公式 $M=S_0/f=25\,\mathrm{cm}/f$。
+后者对应“像在无穷远”，近点成像应为 $25/f+1$。补法：§3.2 两种摆法都推一遍，$f=25$ mm 时 $10\times$ 与 $11\times$。}
+
+\gapitem{内部矛盾（p17 与 p18）}{p17 原文 “In the Keplerian telescope, the focal length of the objective is positive,
+while that of the eyepiece is negative.”，与 p18 “Keplerian: $M<0$ → inverted” 及 p17 首句“both positive”冲突；
+目镜取负的是伽利略。补法：§4.3 以 p18 的符号判据为准，图 4 两状态画清。}
+
+\gapitem{印刷错误（p22）}{表格下方 “$L=\alpha\Phi/(\dd\Omega\,\dd S\cos\theta)$” 的 $\alpha$ 应为 $\dd$，
+同页上方公式栏即作 $\dd\Phi$。补法：§6.1 边界行指出。}
+
+\gapitem{术语缺口（p26）}{原文 “focal lengths differ in sagittal (vertical) and meridional (horizontal) directions”
+与图注 “Meridional (vertical) focus line / Sagittal (horizontal) focus line”，竖／横既指焦线朝向又像指光线方向，易记反。
+补法：§7.3 旁注给唯一判据——子午面 = 光轴与物点共同决定的平面。}
+
+\gapitem{内容缺／图缺（p2、p4）}{p2 路线图在 §1.8 下列了 “Apertures”，p4 第 3 问又问“分辨本领受物镜孔径限制”，
+但 38 页里没有一页讲光阑，也没有相对孔径／景深的图。补法：§6.3 补最小够用段（孔径光阑、入瞳、F 数、景深公式与一个数），
+全部标“补充”。}
+
+\gapitem{跳步（p14 $\to$ p15）}{p14 只给 $\omega'=-y_1/f_2$（并注 “positive by convention”），p15 直接给 $M=25\Delta/(f_1f_2)$；
+中间缺 $M_o=-\Delta/f_1$ 这一步，也没说 25 是 $S_0=25$ cm（cm 制常数）。补法：§4.1 补这一步与量纲说明，§10 易错 2 立判据。}
+
+\gapitem{坐标缺口（p10、p11、p30、p34）}{p10 徽章 11、p11 徽章 10（页序互换）；p30 前徽章 28 缺号；p34 是无关插页；
+p35--p38 是四张相同空白页。补法：§0.1 逐段标注，§12 对账跳过这四类页。}
+
+%=====================================================================
+\hdr{§10}{公式卡与易错点}
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{2.4cm}p{7.5cm}p{5.2cm}@{}}
+\thead{对象} & \thead{公式} & \thead{条件／单位}\\
+\hline
+高斯式 & $1/s+1/s'=1/f$ & 薄透镜、近轴；实物 $s>0$、实像 $s'>0$\\
+牛顿式 & $xx'=ff'$，$x=s-f$，$x'=s'-f$ & 自焦点量起；物在 $F$ 外 $x>0$\\
+横向放大率 & $V=y'/y=-s'/s=-f/x=-x'/f$ & $V<0$ 倒立；$|V|>1$ 放大\\
+眼睛 & $1/s=1/f-1/s'$，$s'=17.1$ mm，$f:17.1\to14.2$ mm & 近点 $\approx8.4$ cm，调节 $\approx12$ D\\
+最小分辨角 & $\omega_{\min}=d_{\text{cell}}/(\text{后焦距})$ & $5\,\mu$m/17.1 mm $=1'$；25 cm 处 $0.07$ mm\\
+放大镜 & $M=S_0/f$；像在近点 $M=S_0/f+1$ & $f$ 与 $S_0$ 同单位；$S_0=25$ cm\\
+显微镜 & $M=25\Delta/(f_1f_2)$，$M_o=-\Delta/f_1$ & 三者均用 cm；$M<0$ 倒立\\
+分辨本领 & $d=0.61\lambda/\mathrm{NA}$，$\mathrm{NA}=n\sin u$ & 只由物镜定，与目镜无关\\
+望远镜 & $M=-f_o/f_e$ & $f_e>0$ 倒立（开普勒）；$f_e<0$ 正立（伽利略）\\
+照相机／投影仪 & $|V|\approx f/s$；$|V|\approx(s'-f)/f\approx s'/f$ & 前者 $s\gg f$，后者 $s\approx f$\\
+光度学 & $\Phi=K_m\!\int V\varepsilon\dd\lambda$；$I=\dd\Phi/\dd\Omega$；$E=\dd\Phi/\dd S$；$L=\dd\Phi/(\dd\Omega\dd S\cos\theta)$ & lm, cd, lx, $\mathrm{cd/m^2}$；$K_m=683$ lm/W\\
+点源 & $\Phi=4\pi I$；$E=I\cos\alpha/R^2$ & 各向同性；$\alpha$ 为入射角\\
+\end{tabular}}
+\tabbot
+
+\subhdr{10.1 易错点（每条指回具体一节）}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.2em]
+\item \textbf{$M$ 与 $V$ 混用}：$V=y'/y$ 是透镜性质，$M=\omega'/\omega$ 必须有眼睛（§0.3、§3.1）。
+\item \textbf{25 的量纲}：$M=25\Delta/(f_1f_2)$ 的 25 是 25 cm，$f,\Delta$ 须用 cm，否则大 10 倍（§4.1、例 3）。
+\item \textbf{近点还是无穷远}：$M=S_0/f$ 对应像在无穷远，像在近点是 $S_0/f+1$（§3.2）。
+\item \textbf{分辨角的力臂}：后焦距 17.1 mm 给 $1'$，眼轴 22.8 mm 给 $0.75'$，不能混（§2.4、例 2）。
+\item \textbf{开普勒与伽利略}：前者 $f_e>0$（有实像、倒立），后者 $f_e<0$（正立）；p17 那句是错的（§4.3、缺口 4）。
+\item \textbf{亮度 $\ne$ 照度}：$E$ 对面积微分，$L$ 对立体角与投影面积微分；单位 lx 与 $\mathrm{cd/m^2}$（§6.1）。
+\item \textbf{放大率 $\ne$ 分辨本领}：目镜只放大已分辨的细节，判据是 NA（§4.2、例 3）。
+\item \textbf{像差的轴上／轴外归属}：球差与轴向色差在轴上就出现，其余必须轴外（§7.6 边界行）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.2em]
+\item \textbf{一条公式定六台仪器}：$1/s+1/s'=1/f$ 里改一个量就换一台机器——改 $s'$ 是眼睛，改 $f$ 是放大镜，
+加一段筒长 $\Delta$ 是显微镜，令 $s=\infty$ 是望远镜，令 $s\gg f$ 或 $s\approx f$ 是照相机与投影仪。
+\item \textbf{看得大不等于看得清}：$V$ 管“像多大”，$M=\omega'/\omega$ 管“视角多大”，而分辨本领只由 $d=0.61\lambda/\mathrm{NA}$
+与眼睛的 $1'$ 决定；放大率与分辨本领是两把尺子。
+\item \textbf{理想像是五条假设的交点}：近轴、单色、球面、同轴缺一条就出一类像差——球差在轴上、彗差与像散在轴外、
+畸变改形状、色差分轴向与横向，成因都在“球面 + 折射率随波长变”这两件事上。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{对本课件的反向对账}
+
+下表从讲义出发，逐节回指课件页码，用来核对“课件出现过的内容有没有落点”。
+\textbf{表前一句}：这张表是 §0.1 的反向索引，只列有公式或判据的页（p1、p5、p6、p31--p33 的口号页归入 §1 与 §11）。
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{2.1cm}p{2.6cm}p{6.4cm}p{3.6cm}@{}}
+\thead{本讲义节} & \thead{课件页} & \thead{该页给了什么} & \thead{讲义补了什么}\\
+\hline
+§1.1--1.2 & p3 & 四式（高斯、牛顿、$V$、密接） & 牛顿式的定义与推导；$V$ 三写法的推导\\
+§2.2--2.4 & p8、p10、p11 & 17.1／14.2 mm、$S_0=25$ cm、$0.768'\approx1'$ & 物距反解（8.4 cm）、12 D 调节、力臂辨析\\
+§2.5 & p9 & 近视凹、远视凸（定性） & 处方光焦度公式与两个数例（补充）\\
+§3.1--3.4 & p12、p13 & $M=S_0/f$；目镜结构与 Key Takeaway & $M$ 的推导、$S_0/f+1$、场镜作用\\
+§4.1 & p14、p15 & 两段流程、$M=M_oM_e$、$25\Delta/(f_1f_2)$ & $M_o=-\Delta/f_1$、25 的量纲、数字核对\\
+§4.2 & p16 & $d=0.61\lambda/\mathrm{NA}$、$800\times$ 对比 & $0.52/0.26\ \mu$m、空放大上限（补充）\\
+§4.3 & p17、p18 & 两光路、$M=-f_o/f_e$、正倒 & $y_1=-f_o\tan\omega$ 推导、p17 矛盾辨析\\
+§5 & p19--p21 & $s\gg f$；$s\approx f$；$|V|\approx s'/f$；六器件汇总表 & 精确式、$1/N^2$ 曝光、$29\times$ 数例、边界行\\
+§6.1--6.2 & p22 & 五量表、$\Phi=4\pi I$、$E=I\cos\alpha/R^2$ & 逐量“对什么微分”、$\alpha\to\dd$ 更正\\
+§6.3 & p2、p4 & 路线图列 Apertures、第 3 问提孔径 & 光阑／入瞳／F 数／景深（补充）\\
+§7.1--7.5 & p24--p29 & 五种单色像差与两种色差 & 四栏判据（成因／表现／轴上轴外／减弱）\\
+§7.6 & p30 & 七行速查表 & “判据”一栏与边界行\\
+\end{tabular}}
+\tabbot
+
+\textbf{逐行读法}：本表每行的“补了什么”都对应 §9 的某一条缺口，九条缺口在正文里都有落点，没有一条只写在清单里。
+\textbf{边界行}：p34 插页与 p35--p38 空白页没有落点，这是有意的——它们不属于本课内容。
+
+\vspace{2pt}
+\begin{center}
+{\footnotesize\color{inkgray}依据：课件 38 页逐页读图（PyMuPDF 120 dpi 渲染）；符号沿用第三课约定；
+标“补充”者为课件未给、但可由课件式子直接推出者。}
+\end{center}
+
+\end{document}

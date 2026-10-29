@@ -1,0 +1,1409 @@
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\setlength{\headheight}{22pt}% 主题的页眉是两行高度，默认 12pt 会让页眉压进正文
+% 主题里的 \aside 与 \gapitem 在宏体内直接设置 \hangindent，会“漏”到后面的段落，
+% 使之后每一段第二行起都被缩进。这里各套一层组，让设置在段落结束后自动还原。
+\let\dshaside\aside
+\renewcommand{\aside}[1]{{\dshaside{#1}}}
+\let\dshgapitem\gapitem
+\renewcommand{\gapitem}[2]{{\dshgapitem{#1}{#2}}}
+\settags{第五章 · 杨氏双缝（零基础扩充版）}{光学（大二）}
+
+\begin{document}
+
+\doctitle{杨氏双缝：从零看懂光程差与云母片}%
+{第五章 \S5.5--5.6 双缝干涉 · 零基础精讲讲义（扩充版）}%
+{依据：\texttt{第五章 光的干涉.pdf}（83 页扫描版，逐页读图）p13--p28 为主干；p1--p12 的铺垫与跨章前置按教材 Pedrotti 第 4、5、7、9 章补出 \textbar\ 2026-10-28}
+
+\callout{\textbf{这份讲义为你写的哪一件事。}你说“光学完全没学”，而课件从 p13 起就默认你已经会三件事：\emph{相位}、\emph{光程}、\emph{相干}。这三件事在本章之前的章节、在上一份精讲里都是“一句话带过”的。所以这一版做两件事：
+\textbf{第一}，把这三件事从“一句话”拆成能自己算的推导（\S1--\S6，共 6 节，全部标 \textbf{[补]}）；
+\textbf{第二}，主干（\S7--\S12）仍按课件 p13--p28 逐页走，例题与作业一题一块、全解、带自检。
+\textbf{读法建议}：第一遍只读 \S1、\S4、\S7、\S9（一天，约两小时），把“波长—相位—光程—光程差—明暗”这条链走通；第二遍补 \S2、\S5、\S6、\S10--\S12；第三遍做 \S16 的自检题。
+讲义里凡标 \textbf{[补]} 的，是课件没有写、由本讲义补出的推导或背景；凡标 \textbf{[课件原话]} 的，是直接引用那几页的句子。}
+
+\flowerrule
+
+\newpage
+% ================================================================ §0
+\hdr{\S0}{你的起点、路线图与记号}
+
+\subhdr{0.1 一条主线（把整章压成五步）}
+
+整章没有第二个主角，只有\textbf{光程差} $\Delta L$ 这一个量。所有装置、所有题目，都在做同一件事：把一个可测量的几何量，换算成 $\Delta L$，再看 $\Delta L$ 是波长的多少倍。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.8mm]},font=\small]
+  \node[draw=violet,rounded corners=3pt,inner sep=5pt,text width=2.55cm,align=center] (a) at (0,0) {波长 $\lambda$\\（光的空间周期）};
+  \node[draw=violet,rounded corners=3pt,inner sep=5pt,text width=2.55cm,align=center] (b) at (3.45,0) {相位差\\$\delta$（两束光的夹角）};
+  \node[draw=violet,rounded corners=3pt,inner sep=5pt,text width=2.55cm,align=center] (c) at (6.9,0) {光程差\\$\Delta L=ns_2-ns_1$};
+  \node[draw=violet,rounded corners=3pt,inner sep=5pt,text width=2.55cm,align=center] (d) at (10.35,0) {几何量\\$\Delta L\approx yd/D$};
+  \node[draw=violetdeep,thick,rounded corners=3pt,inner sep=5pt,text width=2.55cm,align=center] (e) at (13.8,0) {明暗条纹\\$\Delta y=\lambda D/d$};
+  \draw[->] (a)--(b); \draw[->] (b)--(c); \draw[->] (c)--(d); \draw[->] (d)--(e);
+  \node[below=2pt of a,text width=2.9cm,align=center,font=\scriptsize] {第 \S1 节};
+  \node[below=2pt of b,text width=2.9cm,align=center,font=\scriptsize] {第 \S2、\S4 节};
+  \node[below=2pt of c,text width=2.9cm,align=center,font=\scriptsize] {第 \S4 节};
+  \node[below=2pt of d,text width=2.9cm,align=center,font=\scriptsize] {第 \S7 节};
+  \node[below=2pt of e,text width=2.9cm,align=center,font=\scriptsize] {第 \S7--\S9 节};
+\end{tikzpicture}
+\end{center}
+
+五步里，最容易断的是第 2 步到第 3 步：从“相位差”跳到“光程差”要乘 $n$，这一步课件 p15 直接给了结果。最容易算错的是第 4 步：从 $R_1,R_2$ 到 $yd/D$ 中间藏着一个因子 2（\S7.3 会补全）。第 5 步只是代数。
+
+\subhdr{0.2 课件这 28 页分别在讲什么}
+
+前 12 页是“为什么普通光不能直接干涉”，本讲义拆成 \S1--\S6 全部补完；p13 起进入双缝主干，逐页对应如下。表里只列我逐页读图核对过的标题，p1--p5、p7、p10 是铺垫页（水波纹、波列示意、频率条件的图示），内容已并入 \S1、\S6，不单列。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.05cm}>{\raggedright\arraybackslash}m{6.35cm}>{\raggedright\arraybackslash}m{4.85cm}>{\raggedright\arraybackslash}m{3.1cm}@{}}
+\thead{课件页} & \thead{标题（原文）} & \thead{核心内容} & \thead{本讲义位置}\\
+\tabmid
+p6 & Total Intensity at Point P --- Interference Term & $I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta$，交叉项 & \S2.3\\
+p8 & Why Ordinary Light Sources Cannot Produce Interference Directly? & 波列、随机初相位、平均为零 & \S6.2\\
+p9 & One of the Coherence Conditions --- The Phase Difference Must Remain Constant & 相位差恒定 & \S6.1\\
+p11 & Coherence Condition III --- Parallel Vibrating Components & 垂直振动 $\Rightarrow I=I_1+I_2$ & \S6.1\\
+p12 & Three Conditions for Stable Interference & 三条并列、缺一不可 & \S6.1\\
+p13 & Interference of Two Ideal Point Sources & 两理想点源的场与强度 & \S2、\S7.1\\
+p14 & Intensity Distribution of Two Ideal Point Sources & 极大极小的相位判据 & \S5.1\\
+p15 & Relationship Between Phase Difference and Optical Path Difference & $\delta=\frac{2\pi}{\lambda}\Delta L$，双曲面族 & \S4、\S5.4\\
+p16 & Young's Interference --- Interference with Ordinary Light Sources & 单缝造点源、双缝切波前 & \S7.1\\
+p17 & The Phase Difference in Young's Interference & 初相位相消、$R_2^2-R_1^2=2yd$ & \S7.2--\S7.3\\
+\end{tabular}
+\tabbot}
+
+（下表接着往下数，从 p18 起。）
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.05cm}>{\raggedright\arraybackslash}m{6.35cm}>{\raggedright\arraybackslash}m{4.85cm}>{\raggedright\arraybackslash}m{3.1cm}@{}}
+\thead{课件页} & \thead{标题（原文）} & \thead{核心内容} & \thead{本讲义位置}\\
+\tabmid
+p18 & Fringe Spacing in Young's Interference & $\Delta y=\lambda D/d$ & \S7.4\\
+p19 & Example 5.1 Measuring the Wavelength of Light & 例题（有解） & \S8\\
+p20 & Ex.\,5.2 Mica Sheet Covering a Slit & \textbf{作业 HOME WORK TWO}（无解） & \S9\\
+p21 & The Physical Essence of Young's Interference & 空间周期性、装置即放大器 & \S7.5\\
+p22 & Contrast of Interference Fringes & $\gamma=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ & \S10.1\\
+p23 & Interference Intensity in Terms of Contrast & $\gamma=2A_1A_2/(A_1^2+A_2^2)$ & \S10.1\\
+p24 & Intensity Distribution Expressed by Visibility & $I=I_0(1+\gamma\cos\delta)$ & \S10.3\\
+p25 & Wavefront Division: Core Idea and Key Challenge & 波前分割的做法与“代价” & \S11\\
+p26 & Fresnel Biprism（正文实为双平面镜） & $d\approx 2\alpha B$ & \S12.2\\
+p27 & Fresnel Biprism & $d\approx 2(n-1)\alpha B$ & \S12.3\\
+p28 & Lloyd's Mirror & $\Delta x=D\lambda/(2a)$、半波损失 & \S12.4\\
+\end{tabular}
+\tabbot}
+
+逐行读法：这张表是导航用的台账，不需要复算。用法是先确定“我现在卡在哪件事上”，再按最后一列跳过去；例如卡在“为什么介质里要乘 $n$”，就去 \S4。
+
+\subhdr{0.3 记号表（全文只此一套）}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.0cm}>{\raggedright\arraybackslash}m{13.5cm}@{}}
+\thead{符号} & \thead{含义、单位与出现位置}\\
+\tabmid
+$A$ & 光振动的振幅（$E$ 的最大值）；单位与 $E$ 相同。$I\propto A^2$（\S2）\\
+$\omega,\,f,\,T$ & 角频率 $\omega=2\pi f$（rad/s）、频率 $f$（Hz）、周期 $T=1/f$（s）。三者只差 $2\pi$（\S1.2）\\
+$\lambda$ & \emph{真空}中的波长，单位 m，常用 nm；$\lambda_n=\lambda/n$ 是介质中的波长（\S3）\\
+$k$ & 波数，$k=2\pi/\lambda$，单位 $\mathrm{m^{-1}}$。\textbf{本文的 $k$ 只表示波数}（见下方警告）\\
+$\varphi$ & 相位（rad）；$\varphi_0$ 是初相位；$\delta=\varphi_2-\varphi_1$ 是相位差（\S1.3）\\
+$n$ & 折射率，无量纲；$v=c/n$（\S3）\\
+$s$ & 几何路程（尺子量出来的长度），单位 m（\S4）\\
+$L=ns$ & 光程，单位 m；$\Delta L$ 是两束光的\textbf{光程差}（\S4）\\
+$m$ & 级次，整数 $0,\pm1,\pm2,\dots$；明纹 $\Delta L=m\lambda$（\S5）\\
+$S_1,\,S_2$ & 两条缝的位置；到屏上点 $P$ 的距离记 $R_1$、$R_2$（\S7）\\
+$P(x,y)$ & 屏上的观察点，$y$ 是离轴高度（向上为正），$x$ 是屏内横向坐标（\S7.1）\\
+$d$ & \textbf{双缝间距}（p16--p18）；单位 m（\S7）\\
+$D$ & 双缝到屏的距离；单位 m（\S7）\\
+$h$ & \textbf{薄片（云母片）厚度}（p20 图上标的是 $d$，与缝距撞名；本讲义改记 $h$）（\S9）\\
+$O$ & 屏中心，即几何路程相等的那一点 \\
+$\gamma$ & 对比度（可见度），$0\le\gamma\le1$（\S10）\\
+$B,\,C$ & 双镜/双棱镜：源到镜交点的距离 $B$，交点到屏的距离 $C$（\S12）\\
+$\alpha$ & 双镜两镜面夹角 / 双棱镜顶角，rad（\S12）\\
+$a$ & 洛埃镜中源到镜面的高度（\S12.4）\\
+\end{tabular}
+\tabbot}
+
+\warnbox{\textbf{三处“同名不同物”，务必先分清。}
+
+\textcircled{1} \textbf{两个 $d$}。p16--p18 的 $d$ 是缝距，p20 图上的 $d$ 是云母片厚度。这不是小事：作业里 $\Delta L\approx yd/D$ 的 $d$ 和最后答案 $h=8\lambda/(n-1)$ 里的 $d$ 不是同一个东西，写在同一张纸上必然互相干扰。本讲义一律把片厚记作 $h$。
+
+\textcircled{2} \textbf{课件 p15 的 $r_1,r_2$}。p15 写 $\delta=\frac{2\pi}{\lambda}(r_1-r_2)$，那里的 $r_1,r_2$ 是“两缝到 $P$ 的距离”——和本讲义的 $R_1,R_2$ 是同一个东西。而 p17 的 $r_1,r_2$ 又指“单缝到两缝的距离”。同一份讲义里本讲义固定用 $R_1,R_2$ 表示缝到屏，用 $r_1,r_2$ 只表示源到缝。
+
+\textcircled{3} \textbf{$k$ 的两用}。中文教材常把级次写成“第 $k$ 级”，本文的 $k$ 只表示波数，级次一律用 $m$。考场上一张纸两个含义，是最容易翻车的一类错。}
+
+\subhdr{0.4 单位与量级速查（做题前扫一眼）}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{4.3cm}>{\raggedright\arraybackslash}m{8.0cm}@{}}
+\thead{量} & \thead{典型值} & \thead{心里要有的图像}\\
+\tabmid
+波长 $\lambda$ & $400\sim760\ \mathrm{nm}$ & 可见光范围；$550\ \mathrm{nm}$ 是最常用的“黄绿光”代表值\\
+介质中的波长 & $348\ \mathrm{nm}$ & $\lambda=550$ nm 的光进入 $n=1.58$ 的云母（\S3.3）\\
+频率 $f$ & $5\times10^{14}\ \mathrm{Hz}$ & 每秒 $5\times10^{14}$ 次振荡，人眼与底片都看不见单次振荡（\S2.1）\\
+条纹间距 $\Delta y$ & $0.5\sim3\ \mathrm{mm}$ & 双缝 $d\sim0.1\sim1$ mm、$D\sim1$ m 时的常见量级（\S7.6）\\
+片厚 $h$ & 几 $\mu\mathrm{m}$ & 云母片、薄膜的量级（\S9）\\
+镜面间距 $d_{\mathrm{eq}}$ & $\sim1\ \mathrm{mm}$ & 双镜、双棱镜造出的等效双源间距（\S12）\\
+\end{tabular}
+\tabbot}
+
+逐行读法：前两行是同一个波长在真空与介质中的两个值，比值正好是 $n$；第三行是前两行除以光速得到的频率；后三行是本题域内三种“长度”的典型量级。做题时如果算出条纹间距 $10\ \mathrm{cm}$ 或片厚 $1\ \mathrm{m}$，几乎一定是单位或公式错了。
+
+\flowerrule
+% ================================================================ §1
+\hdr{\S1}{光是什么：一个振动、两个长度、三个速度 \textbf{[补]}}
+
+\subhdr{1.1 先把图像立起来：一条“起伏的电场”}
+
+光是一种电磁波。它有两点性质和本章直接相关：
+
+\begin{itemize}
+\item \textbf{它是横波}：电场 $\vec{E}$ 与磁场 $\vec{B}$ 都垂直于传播方向，而且 $\vec{E}\perp\vec{B}$。我们只用 $\vec{E}$ 代表光，因为光与物质（底片、视网膜、CCD 里的电子）相互作用主要来自电场力。
+\item \textbf{它是一条连续起伏的波}：沿传播方向看去，电场一会儿朝上、一会儿朝下，很像一根被抖动过的绳子。在真空里它以 $c\approx3.00\times10^{8}\ \mathrm{m/s}$ 传播。
+\end{itemize}
+
+可见光的波长在 $400\sim760\ \mathrm{nm}$ 之间（$1\ \mathrm{nm}=10^{-9}\ \mathrm{m}$，大约是一根头发直径的百分之一）。换成频率：由 $c=\lambda f$ 得
+\[
+f=\frac{c}{\lambda}=\frac{3.00\times10^{8}}{550\times10^{-9}}\approx5.5\times10^{14}\ \mathrm{Hz},
+\]
+也就是说，一束黄绿光每秒振动五百多万亿次。这个数字马上要用（\S2.1 解释为什么任何探测器都只能看到“平均值”）。
+
+\subhdr{1.2 一条单色光的“身份证”：四个数}
+
+所谓\textbf{单色光}，就是只有一个频率（也只有一个波长）的光。它只需要四个数就能完全确定：
+\[
+E(z,t)=A\cos\big(\omega t-kz+\varphi_0\big).
+\]
+
+\begin{itemize}
+\item $A$：\textbf{振幅}，波峰的高度。它决定光的“亮”（严格说是强度，见 \S2）。
+\item $\omega=2\pi f$：\textbf{角频率}，每秒转过的“角度”。乘 $2\pi$ 只是因为相位用弧度计量，一圈记作 $2\pi$。
+\item $k=\dfrac{2\pi}{\lambda}$：\textbf{波数}，每走 $1\ \mathrm{m}$ 相位转过多少弧度。也可读成“单位长度里装了几个波长”再乘 $2\pi$。
+\item $\varphi_0$：\textbf{初相位}，$t=0$、$z=0$ 时那根“指针”的起始角度。它由光源决定，同一只灯的同一个原子每次发光都可能不同（\S6.3 会用到这一点）。
+\end{itemize}
+
+这四个数不是独立的：把 $\omega t-kz$ 里的 $t$ 固定、让波“跑”，或者固定相位、看波往哪跑，都能得到
+\[
+v=\frac{\omega}{k}=\frac{2\pi f}{2\pi/\lambda}=\lambda f .
+\]
+这就是“波长、频率、波速”三者关系的来源——它不是一条需要背的实验规律，而是把 $\omega$ 与 $k$ 的定义代进去的结果。
+
+\subhdr{1.3 “相位”到底在说什么（用钟表打比方）}
+
+初学者最容易卡在“相位”这个词上。它其实只有一个意思：\textbf{振动走到第几个周期了}。
+
+把光在某一固定点的振动想成一只钟的指针在匀速转圈：一圈是 $2\pi$ 弧度、对应一个周期 $T$。那么
+\begin{itemize}
+\item 走过时间 $\Delta t$，指针转过 $\omega\Delta t$ —— 这是\textbf{时间}带来的相位变化；
+\item 走过距离 $\Delta z$，指针转过 $k\Delta z$ —— 这是\textbf{空间}带来的相位变化。
+\end{itemize}
+
+两束光在一个点相遇时，我们关心的不是它们各自转到哪，而是\textbf{两只指针的夹角}：
+\[
+\delta=\varphi_2-\varphi_1 .
+\]
+夹角为 $0$（或 $2\pi$ 的整数倍）说明两束光“同步”，波峰对波峰；夹角为 $\pi$ 说明“反着来”，波峰对波谷。前者叠加变亮，后者叠加变暗——这一句话就是整章的物理内容，\S5 会把它写成判据。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.6cm}>{\raggedright\arraybackslash}m{5.4cm}>{\raggedright\arraybackslash}m{7.4cm}@{}}
+\thead{符号} & \thead{一句话读法} & \thead{在后面哪一步用到}\\
+\tabmid
+$A$ & 波峰有多高 & $I\propto A^2$、对比度 $\gamma$（\S2、\S10）\\
+$f$（或 $\omega$） & 一秒振几次 & 相干条件“频率相同”（\S6.2）\\
+$\lambda$（或 $k$） & 一个周期有多长 & 明暗判据、条纹间距（\S5、\S7）\\
+$\varphi_0$ & 出发时指针的角度 & 为什么普通光不干涉（\S6.3）\\
+$\delta$ & 两只指针的夹角 & 明暗判据（\S5）\\
+\end{tabular}
+\tabbot}
+
+逐行读法：这张表是台账，用来把符号与用途对上号。要注意第四行与第五行的区别：$\varphi_0$ 是\emph{一束}光的起点，$\delta$ 是\emph{两束}光的差。杨氏双缝的全部巧妙之处，就是让 $\varphi_0$ 在相减时消掉，只留下可算的 $\delta$（\S7.2）。
+
+\subhdr{1.4 换个介质，什么变、什么不变（引出 \S3 与 \S4）}
+
+光从空气进入玻璃、水、云母时会发生三件事，其中只有一件是“变”的核心：
+
+\begin{itemize}
+\item \textbf{频率 $f$ 不变}。理由很实在：界面处每秒到达多少个波峰，就必须每秒送走多少个波峰；波峰不能在那里堆积（\S3.2 给它一个更完整的说法）。频率由光源决定，光源“抖多快”，介质里就跟着抖多快。
+\item \textbf{速度变慢}：$v=c/n$，$n$ 是折射率。
+\item \textbf{波长变短}：由 $v=\lambda f$ 与 $f$ 不变，得 $\lambda_n=\lambda/n$。
+\end{itemize}
+
+结果是：同在介质里走 $1\ \mathrm{mm}$，攒下的相位比在真空里走 $1\ \mathrm{mm}$ 多。相位攒得多，就意味着它“抵得上”真空里更长的一段路。把这段等效的真空路程起个名字，就是\textbf{光程}（\S4）。整个第五章的换算枢纽就在这里。
+
+\flowerrule
+% ================================================================ §2
+\hdr{\S2}{光强：为什么探测器只能看到“平均值” \textbf{[补]}}
+
+\subhdr{2.1 一个必须先接受的事实：看不见单次振荡}
+
+课件 p8 有一句话很关键：\textbf{[课件原话]} “What the eye observes or a detector measures is the average light intensity over the observation time.”（眼睛或探测器测到的是观察时间内的平均光强。）
+
+为什么非平均不可？因为光振得太快了。$550\ \mathrm{nm}$ 的光每秒振 $5.5\times10^{14}$ 次，一个周期只有 $1.8\times10^{-15}\ \mathrm{s}$（飞秒量级）。而各种探测器的响应时间是：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.6cm}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{8.4cm}@{}}
+\thead{探测器} & \thead{响应时间量级} & \thead{相对于一个光周期}\\
+\tabmid
+人眼 & $0.1\ \mathrm{s}$ & 慢 $10^{14}$ 倍，约等于“永远在平均”\\
+CCD / 相机 & $10^{-3}\ \mathrm{s}$ & 慢 $10^{12}$ 倍\\
+快速光电二极管 & $10^{-9}\ \mathrm{s}$ & 慢 $10^{6}$ 倍\\
+\end{tabular}
+\tabbot}
+
+逐行读法：三行的响应时间都比 $1.8\times10^{-15}\ \mathrm{s}$ 大得多，所以探测器在“一次读数”的时间里，光已经振了成千上万次，它只能记下这些振荡的功率平均。这不是探测器的缺陷，而是我们观察光的唯一方式——所以\textbf{光强}才是可观测量，电场本身不是。
+
+\subhdr{2.2 光强的定义：$I=\langle E^2\rangle=A^2/2$}
+
+单色光的电场写成 $E=A\cos(\omega t-\varphi)$，对远大于一个周期的时间取平均，得
+\[
+I\equiv\langle E^{2}\rangle=A^{2}\big\langle\cos^{2}(\omega t-\varphi)\big\rangle=\frac{A^{2}}{2}.
+\]
+中间那步用到 $\langle\cos^2\rangle=1/2$：一个周期里 $\cos^2$ 在 $0$ 与 $1$ 之间来回，平均正好是一半。这个 $1/2$ 后面还会反复出现，届时要能指回这里。
+
+\aside{严格地说，光强还差一个常数因子（$\frac{1}{2}\varepsilon_0 c$ 之类，取决于单位制）。本讲义与课件一样，只关心\textbf{比值}与\textbf{位置}，所以把常数一并吸收进 $I$ 的定义里，写成 $I\propto A^2$ 也完全可以。这就是“约定的来源”与“数学的来源”分工：$1/2$ 是数学（时间平均），常数因子是约定（单位制），两者不要混着背。}
+
+\subhdr{2.3 两束光叠加：三项与交叉项（课件 p6 的那一步）}
+
+两束光同时到达 $P$ 点，电场先相加，再取平均：
+\[
+E=E_1+E_2\ \Longrightarrow\ E^{2}=E_1^{2}+E_2^{2}+2E_1E_2 .
+\]
+逐项取时间平均，前两项就是各自的光强，第三项是全部秘密所在。把 $E_1=A_1\cos(\omega_1t-\varphi_1)$、$E_2=A_2\cos(\omega_2t-\varphi_2)$ 代入第三项，用积化和差：
+\[
+E_1E_2=\frac{A_1A_2}{2}\Big[\cos\big((\omega_1-\omega_2)t-(\varphi_1-\varphi_2)\big)+\cos\big((\omega_1+\omega_2)t-(\varphi_1+\varphi_2)\big)\Big].
+\]
+第二项以 $2\omega$ 快振荡，平均必为零。第一项的命运分两种：
+
+\begin{itemize}
+\item 若 $\omega_1\ne\omega_2$，它也在振荡，平均为零 $\Rightarrow$ 交叉项消失，$I=I_1+I_2$（两束光“各管各的”，这叫\textbf{非相干叠加}）；
+\item 若 $\omega_1=\omega_2=\omega$，它变成与时间无关的 $\cos\delta$，其中 $\delta=\varphi_2-\varphi_1$ $\Rightarrow$ 交叉项留下：
+\end{itemize}
+\[
+I=I_1+I_2+2\sqrt{I_1I_2}\,\cos\delta .
+\]
+这就是课件 p6 方框里的式子（p6 用复振幅写成 $I=\tilde E\tilde E^*$，等价，只是把“取平均”藏进了复数乘法）。
+
+\aside{p6 的推导用的是复振幅 $\tilde E$ 与 $\tilde E^*$ 相乘，跳过了“对时间取平均”这一步。对零基础的读者，用 $\cos$ 直接算平均更透明：三项的来历一目了然，也不会误以为 $\tilde E\tilde E^*$ 是某种新的物理量。}
+
+\subhdr{2.4 一个数字例子：$0$ 到 $4I_0$}
+
+两束等强（$I_1=I_2=I_0$）时，上式变成
+\[
+I=2I_0(1+\cos\delta)=4I_0\cos^{2}\frac{\delta}{2}.
+\]
+$\delta=0,2\pi,4\pi,\dots$ 时 $I=4I_0$（最亮）；$\delta=\pi,3\pi,\dots$ 时 $I=0$（全暗）。注意 $I_0$ 是\emph{单束}光的强度，不是总强度：两束各为 $I_0$ 时，总强度在 $0$ 与 $4I_0$ 之间摆动，平均是 $2I_0$。
+
+“$\cos^2$”这个形状很要紧：它说明亮度变化是\emph{平滑}的，不是“一条亮线一条黑线”的方波。你在屏上看到的是连续的明暗过渡，极大值附近变化最慢，所以看起来“亮带”比“暗带”宽一些。
+
+\flowerrule
+% ================================================================ §3
+\hdr{\S3}{折射率：介质里的光慢下来，波长变短 \textbf{[补]}}
+
+\subhdr{3.1 $n=c/v$：一个比值，两个后果}
+
+\textbf{折射率}的定义是真空光速与介质中光速之比：
+\[
+n\equiv\frac{c}{v}\ \Longrightarrow\ v=\frac{c}{n}.
+\]
+因为介质总让光变慢，所以 $n>1$（真空 $n=1$，空气 $n\approx1.0003$ 可以当 $1$ 用）。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.6cm}>{\raggedright\arraybackslash}m{2.4cm}>{\raggedright\arraybackslash}m{9.0cm}@{}}
+\thead{介质} & \thead{$n$（约）} & \thead{用途}\\
+\tabmid
+空气 & $1.0003$ & 本章一切“空气段”按 $n=1$ 处理，误差 $0.03\%$\\
+水 & $1.33$ & 对比用；$4/3$ 是常用近似\\
+玻璃（冕牌） & $1.5$ & 双棱镜、洛埃镜的镜面基底\\
+云母 & $1.58$ & \textbf{作业 p20 用的就是这个值}（$\lambda=550$ nm）\\
+\end{tabular}
+\tabbot}
+
+逐行读法：这张表是台账，数值本身不需要复算，但要有“$1.5$ 上下”的量级感。作业里 $(n-1)=0.58$ 就是从这张表最后一行减出来的——它是整道题唯一用到的材料参数。
+
+\subhdr{3.2 为什么频率不变、波长变短}
+
+课本常说“光进入介质后频率不变、波长变短”，这句话不是规定，而是可以推的。设光从空气进入介质，界面处考虑每秒通过界面的波峰个数：
+
+\begin{itemize}
+\item 波峰不能停在界面上堆积，也不能凭空产生。所以每秒从空气侧到达界面的波峰数（$f$），必须等于每秒从界面进入介质的波峰数（也是 $f$）。
+\item 于是 $f$ 不变；而 $v$ 变小，由 $v=\lambda f$ 得 $\lambda_n=\lambda/n$ 变小。
+\end{itemize}
+
+数字例子：$\lambda=550\ \mathrm{nm}$ 的黄绿光进入 $n=1.58$ 的云母，
+\[
+\lambda_n=\frac{550}{1.58}\approx348\ \mathrm{nm}.
+\]
+波长“被压短”了约 $37\%$。波数相应变大：
+\[
+k_n=\frac{2\pi}{\lambda_n}=\frac{2\pi n}{\lambda}=nk_0 .
+\]
+也就是说：\textbf{同样的几何长度，在介质里攒下的相位是真空里的 $n$ 倍}。这句话是 \S4 的全部出发点。
+
+\subhdr{3.3 顺带说一句色散（只作为背景）\textbf{[补·拓展]}}
+
+严格说 $n$ 还随波长变：紫光 $n$ 大、红光 $n$ 小（正常色散）。这带来两个本章会遇到的后果：棱镜能把白光分开（不同色偏折不同），双缝用白光照明时各色条纹间距不同（\S7.7）。做题时除非题目给出 $n(\lambda)$，否则一律把 $n$ 当常数。
+
+\flowerrule
+% ================================================================ §4
+\hdr{\S4}{光程：全章最重要的一个词 \textbf{[补]}}
+
+\subhdr{4.1 从“攒相位”到“折算路程”：三步}
+
+我们在 \S1.3 说过：走距离 $s$，相位转过 $k s$。现在把介质的情形代进去：
+
+\textbf{第一步}，介质中走 $s$ 攒下的相位是
+\[
+\Delta\varphi=k_n s=\frac{2\pi n}{\lambda}\,s .
+\]
+\textbf{第二步}，问：在真空中要走多长的路，才能攒下同样多的相位？设这段真空路程为 $L$，则
+\[
+\frac{2\pi}{\lambda}\,L=\frac{2\pi n}{\lambda}\,s\ \Longrightarrow\ L=ns .
+\]
+\textbf{第三步}，给 $L$ 起名字：它就是\textbf{光程}（optical path）。
+\[
+\boxed{\,L\equiv ns\,}
+\]
+
+\aside{这里用的前提只有一条：$\lambda$ 一律取\emph{真空}波长（\S0.3 已约定）。若误把介质波长 $\lambda_n$ 代进 $\Delta\varphi=2\pi s/\lambda_n$，你会得到同一个 $k_n s$——所以那一步不算错。真正会错的是后面 $\delta=\frac{2\pi}{\lambda}\Delta L$ 里也代 $\lambda_n$：那等于把 $n$ 乘了两遍，答案是错的，且错得不明显。}
+
+\subhdr{4.2 怎么读这个定义}
+
+$L=ns$ 的意思是：\textbf{把“在折射率 $n$ 的介质里走了 $s$”折算成“在真空里要走 $ns$ 才攒得出同样的相位”}。
+
+$n>1$ 时 $L>s$：介质里的路“更值钱”，一米顶真空里的一米多。$n=1$ 时 $L=s$，光程退回几何路程——这是这条定义的边界情形。
+
+\subhdr{4.3 一条式子走完所有干涉题}
+
+两束光从同一个源出发，分别走 $s_1$、$s_2$ 到达 $P$ 点（中途可能穿过不同介质），则
+\[
+\Delta L=L_2-L_1,\qquad \delta=\frac{2\pi}{\lambda}\,\Delta L .
+\]
+这条式子是整章的\textbf{换算枢纽}：左边是几何（可以量），右边是相位（决定明暗）。后面所有装置，都只是在用它把几何量翻译成相位。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.8mm]},font=\small]
+  % 源
+  \fill (0,0) circle (1.4pt); \node[left=3pt] at (0,0) {$S$};
+  % 屏
+  \draw[thick,violetdeep] (9,-1.9)--(9,1.9);
+  \fill (9,1.1) circle (1.4pt); \node[right=3pt] at (9,1.1) {$P$};
+  % 上路径（经介质）
+  \draw[->,thick] (0,0)--(4.2,0.55);
+  \draw[fill=bandviolet,draw=violet] (4.2,0.18) rectangle (5.5,0.92);
+  \node[above=1pt,font=\scriptsize] at (4.85,0.95) {厚 $h$，$n$};
+  \draw[->,thick] (5.5,0.55)--(9,1.1);
+  % 下路径
+  \draw[->,thick] (0,0)--(9,-0.55);
+  % 标注
+  \node[font=\scriptsize] at (2.2,0.55) {$s_1$};
+  \node[font=\scriptsize] at (7.3,0.55) {};
+  \node[font=\scriptsize] at (6.6,-0.95) {$s_2$};
+  \node[font=\scriptsize,anchor=west] at (9.15,-1.5) {屏};
+\end{tikzpicture}
+\end{center}
+
+这张图画的就是 \S9 那道作业的骨架（只是把“两条缝”画成了“两条路径”）：上路多穿过一片厚 $h$ 的介质。上路的光程是
+\[
+L_1=(s_1-h)+nh=s_1+(n-1)h ,
+\]
+于是
+\[
+\Delta L=L_1-L_2=(s_1-s_2)+(n-1)h .
+\]
+这片介质对光程差的全部贡献，就是\emph{一个}$(n-1)h$\emph{的常数}——记住这一句，作业就完成了一半。
+
+\subhdr{4.4 数字例子：$2\ \mu\mathrm{m}$ 玻璃值多少}
+
+一片 $n=1.5$、厚 $2\ \mu\mathrm{m}$ 的玻璃，一束光垂直穿过，光程比在空气里多走
+\[
+L-L_0=ns-s=(n-1)s=0.5\times2\ \mu\mathrm{m}=1\ \mu\mathrm{m}.
+\]
+这一个 $\mu\mathrm{m}$ 意味着什么？以 $\lambda=500\ \mathrm{nm}$ 的光算，$\Delta L/\lambda=10^{-6}/5\times10^{-7}=2$，正好两个波长——条纹会整整移动两条。这就是 \S9 那道题的全部算术。
+
+\subhdr{4.5 路程与光程：一张对照表}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{4.0cm}>{\raggedright\arraybackslash}m{7.9cm}@{}}
+\thead{情形} & \thead{路程 $s$ 与光程 $L$} & \thead{这一行怎么来的}\\
+\tabmid
+真空（$n=1$） & $L=s$ & 定义 $L=ns$ 里代 $n=1$，两者相等\\
+单一介质（$n$） & $L=ns$ & 定义本身；$L>s$\\
+分两段（先真空后介质） & $L=s_1+ns_2$ & 两段各自折算后相加，$n$ 不能提到括号外\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一行是边界情形，说明“光程”是路程的推广，不是新东西；第二行是核心，$n$ 把长度“加权”；第三行是实际题目里最常见的情形——光程按段算，只在介质段乘 $n$。做题时最常犯的错是把 $n$ 乘到整条路上（于是变成 $n(s_1+s_2)$），那等于把空气段也当介质。
+
+\subhdr{4.6 三个常见误解（都能在作业里咬人）}
+
+\begin{enumerate}
+\item \textbf{“光程就是光走的路”}。不是。它是“折合成真空的等效路程”，单位是米，但含义是相位。
+\item \textbf{“$\delta=\frac{2\pi}{\lambda}\Delta L$ 里的 $\lambda$ 用介质波长”}。不行，用真空波长（\S4.1 的旁注已给理由）。
+\item \textbf{“光程差一定是正的”}。不必。$\Delta L$ 可正可负，只表示两束光谁走得多；判据里的 $m$ 取负值只是对应屏上另一侧（\S5.1）。
+\end{enumerate}
+
+\flowerrule
+% ================================================================ §5
+\hdr{\S5}{光程差决定明暗：判据、曲线与“能量去哪了”}
+
+\subhdr{5.1 两条判据，一种内容}
+
+课件 p14 用相位写极大极小，p15 用光程写，中间只差一次代入。把 $\delta=\frac{2\pi}{\lambda}\Delta L$ 代进相位判据即可：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.5cm}>{\raggedright\arraybackslash}m{4.9cm}>{\raggedright\arraybackslash}m{6.9cm}@{}}
+\thead{条纹} & \thead{相位判据（p14）} & \thead{光程判据（p15）}\\
+\tabmid
+明纹（constructive） & $\delta=2m\pi$ & $\Delta L=m\lambda$\\
+暗纹（destructive） & $\delta=(2m+1)\pi$ & $\Delta L=(2m+1)\dfrac{\lambda}{2}$\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一行把 $\delta=2m\pi$ 代进 $\delta=\frac{2\pi}{\lambda}\Delta L$，两边约掉 $2\pi/\lambda$ 就得 $\Delta L=m\lambda$；第二行同理，$(2m+1)\pi$ 除以 $2\pi/\lambda$ 得 $(2m+1)\lambda/2$。两行是同一个内容的两种单位：相位用弧度，光程用米。
+
+边界与符号：$m=0,\pm1,\pm2,\dots$。$m=0$ 的明纹在 $\Delta L=0$ 处，就是屏中心 $O$；$m$ 取负值对应屏上另一侧，不是“多出来的解”。暗纹的最小正光程差是 $\lambda/2$（$m=0$），也就是说\emph{零级永远是明纹}——这一点在 \S9 判断“新零级在哪”时是关键。
+
+\subhdr{5.2 强度随光程差怎么变（读图三件事）}
+
+把 $\delta=2\pi\Delta L/\lambda$ 代进 \S2.4 的等强结果，得
+\[
+I=2I_0\Big(1+\cos\frac{2\pi\Delta L}{\lambda}\Big)=4I_0\cos^{2}\Big(\frac{\pi\Delta L}{\lambda}\Big).
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=1.05cm,>={Stealth[length=1.6mm]},font=\small]
+  \draw[->] (-0.35,0)--(6.4,0) node[right,font=\scriptsize]{$\Delta L$};
+  \draw[->] (0,-0.12)--(0,2.25) node[above,font=\scriptsize]{$I$};
+  \foreach \k in {0,1,2,3,4,5,6} \draw (\k,0.035)--(\k,-0.035);
+  \node[below,font=\scriptsize] at (0,0) {$0$};
+  \node[below,font=\scriptsize] at (1,0) {$\lambda$};
+  \node[below,font=\scriptsize] at (2,0) {$2\lambda$};
+  \node[below,font=\scriptsize] at (3,0) {$3\lambda$};
+  \node[below,font=\scriptsize] at (4,0) {$4\lambda$};
+  \node[below,font=\scriptsize] at (5,0) {$5\lambda$};
+  \node[below,font=\scriptsize] at (6,0) {$6\lambda$};
+  \draw[densely dotted,color=inkgray] (0,2)--(6,2);
+  \draw[densely dotted,color=inkgray] (0,1)--(6,1);
+  \node[left,font=\scriptsize] at (0,2) {$4I_0$};
+  \node[left,font=\scriptsize] at (0,1) {$2I_0$};
+  \draw[very thick,violet,domain=0:6,samples=200] plot ({\x},{1+cos(360*\x)});
+  \node[font=\scriptsize,color=violet,anchor=north] at (4.5,-0.42) {$\gamma=1$：两束等强，谷降到 $0$};
+\end{tikzpicture}
+\end{center}
+
+读图三件事：
+
+\begin{enumerate}
+\item 横轴每前进一个 $\lambda$，曲线完成一个完整周期——\textbf{“光程差变一个波长，条纹挪一格”}。后面所有“移动了几条”的算法都是从这一句来的。
+\item $\Delta L=\lambda/2,\,3\lambda/2,\dots$ 处强度为零，这些位置就是暗纹。
+\item 曲线是 $\cos^2$ 的平滑形状：极大值附近“平顶”，所以亮纹看起来比暗纹宽。真实装置的亮纹还会更宽一些，因为单缝衍射会调制它（本讲不涉及，知道有这回事即可）。
+\end{enumerate}
+
+\subhdr{5.3 暗纹处“光去哪了”？（能量守恒）}
+
+初学者常见疑惑：暗处没有光，能量是不是消失了？没有。干涉只是\textbf{把能量在空间上重新分配}：暗处的能量被搬到了亮处。三条可以当场验证的理由：
+
+\begin{itemize}
+\item 总能量不变。若把屏上强度沿整个屏积分，结果恒等于 $I_1+I_2$——正好等于“两束光各照各的、不干涉”时的积分。干涉把 $2\sqrt{I_1I_2}\cos\delta$ 这一项在正负之间平均掉了。
+\item 亮处可以比“两束之和”更亮。等强时 $I_{\max}=4I_0$，正好是 $I_1+I_2=2I_0$ 的两倍。
+\item 关掉一束光，条纹立刻消失、强度回到均匀的 $I_0$。可见“暗纹”不是被挡掉，而是被另一束光“抵消”了——两束光的电场在那一点相消。
+\end{itemize}
+
+\aside{如果追问“一个光子怎么知道该走哪条缝、落在亮处还是暗处”，那是量子力学的说法：单光子在屏上的落点位置服从 $I(\Delta L)$ 给出的概率分布，条纹是大量光子累积出来的统计图样。这个图像不改变本章的任何计算，但能解释“为什么暗纹处真的一个光子也不去”。}
+
+\subhdr{5.4 三维图景：等光程差面是双曲面族（p15 那张图）}
+
+p15 的图（旋转双曲面族）说的是同一件事的几何版：\textbf{[课件原话]} “The locus of points of equal intensity in space forms a family of rotational hyperboloids with $S_1$ and $S_2$ as foci.”
+
+也就是说，在三维空间里，满足 $\Delta L=$ 常数的点集不是平面，而是一族以 $S_1$、$S_2$ 为焦点的旋转双曲面（一层套一层的“喇叭口”）。它们与屏幕的\emph{交线}才是我们看到的明暗条纹。屏幕是平面，双曲面是弯的，所以交线是一组近似平行、中间略宽、越往边缘越密的曲线。
+
+\begin{center}
+\begin{tikzpicture}[x=1.9cm,y=2.0cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % 屏
+  \draw[thick,violetdeep] (3.6,-1.05)--(3.6,1.05);
+  \node[anchor=north,font=\scriptsize] at (3.6,-1.05) {屏};
+  % 轴
+  \draw[densely dotted] (0,0)--(3.75,0);
+  % 两条缝
+  \fill[violetdeep] (0,0.25) circle (2pt) node[left=2pt] {$S_1$};
+  \fill[violetdeep] (0,-0.25) circle (2pt) node[left=2pt] {$S_2$};
+  % 等光程差双曲线族：y = a cosh t, x = b sinh t（b=0.25）
+  \foreach \a in {0.0188,0.0375,0.0563}{
+    \draw[color=petal,thick,domain=0.30:3.36,samples=90] plot ({0.25*sinh(\x)},{\a*cosh(\x)});
+    \draw[color=petal,thick,domain=0.30:3.36,samples=90] plot ({0.25*sinh(\x)},{-\a*cosh(\x)});
+  }
+  % 与屏的交点（明纹）
+  \foreach \y in {0.30,0.60,0.90}{
+    \fill[violet] (3.6,\y) circle (1.8pt);
+    \fill[violet] (3.6,-\y) circle (1.8pt);
+  }
+  \fill[violet] (3.6,0) circle (1.8pt);
+  \node[anchor=west,font=\scriptsize] at (3.72,0.90) {$m=3$};
+  \node[anchor=west,font=\scriptsize] at (3.72,0.60) {$m=2$};
+  \node[anchor=west,font=\scriptsize] at (3.72,0.30) {$m=1$};
+  \node[anchor=west,font=\scriptsize] at (3.72,0.00) {$m=0$};
+\end{tikzpicture}
+\end{center}
+
+读图说明（这张图的纵向已放大，只作示意，不能用来量角度；图上只画每支曲线的右半边，而且真实装置里 $\lambda/d\lesssim10^{-3}$，曲线在这一尺度下几乎与它的渐近线重合——所以看起来像直线，这本身就是“双缝为什么要求近轴”的一个提示）：粉色的每一支曲线代表“一个固定的光程差”，也就是“一级条纹”；曲线与屏的交点就是屏上那一条明纹。$m=0$ 对应 $\Delta L=0$，是一支退化成直线的“双曲线”，落在轴线上——这就是为什么中央永远是明纹。曲线越往外越“张开”，相邻交点就挤得越紧——这正是 \S7.8 说的“越往边缘条纹越窄”。
+
+\subhdr{5.5 换算直觉：一个波长 = 一格}
+
+\begin{center}
+{\small
+\tabtop
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.6cm}>{\raggedright\arraybackslash}m{3.0cm}>{\raggedright\arraybackslash}m{8.2cm}@{}}
+\thead{$\Delta L$} & \thead{$\delta=\frac{2\pi}{\lambda}\Delta L$} & \thead{屏上看到什么}\\
+\tabmid
+$0$ & $0$ & 最亮（$m=0$，中央明纹）\\
+$\lambda/2$ & $\pi$ & 最暗（暗纹）\\
+$\lambda$ & $2\pi$ & 又回到最亮（$m=1$，与中央同级但不同位置）\\
+$3\lambda/2$ & $3\pi$ & 又回到最暗\\
+\end{tabular}
+\tabbot}
+\end{center}
+
+逐行读法：这张表只是把 $\delta=2\pi\Delta L/\lambda$ 在四个点上读了一遍。第一行与第三行都是“最亮”，但它们的相位差差了整整 $2\pi$——在物理上完全等价，只是位置不同（$\Delta L=0$ 与 $\Delta L=\lambda$）。这就是“级次”的含义：$m$ 记录的是“差了几个整波长”。
+
+\flowerrule
+% ================================================================ §6
+\hdr{\S6}{相干：为什么两只手电筒照不出条纹 \textbf{[补]}}
+
+\subhdr{6.1 三个开关：三条件不是三条独立规则}
+
+p12 把条件列成三条\textbf{[课件原话]} “(1) Same frequency (2) Parallel vibrations (3) Constant phase difference”，并强调 “All three conditions are essential.”。
+
+从 \S2.3 的式子看，这三条恰好是交叉项 $2E_1E_2$ 的三个“归零开关”：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.1cm}>{\raggedright\arraybackslash}m{5.6cm}>{\raggedright\arraybackslash}m{7.6cm}@{}}
+\thead{条件（p12）} & \thead{不满足时哪一项归零} & \thead{来源}\\
+\tabmid
+频率相同 & $\cos\big((\omega_1-\omega_2)t-\Delta\varphi\big)$ 的时间平均为零 & \S2.3 积化和差的第一项\\
+振动方向平行 & 矢量点积 $\vec E_1\cdot\vec E_2=0$，交叉项直接没有 & p11：垂直分量互不干涉\\
+相位差恒定 & $\langle\cos\delta(t)\rangle=0$，交叉项被平均掉 & p9 的整页都在说这一条\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一行是\emph{时间}上的平均（两束光频率不同，相位差就一路漂过去，$\cos$ 正负抵消）；第二行是\emph{空间}上的点积（振动方向差 $90^\circ$ 时，$E^2=E_1^2+E_2^2$，p11 的方框写的就是这一句，不需要任何平均）；第三行是 $\delta$ 本身在随机漂，平均下来仍是零。
+
+三条对应三种不同的“归零机制”，这就是它们必须同时满足的原因——任意一条不满足，交叉项就没了，屏上只剩均匀的 $I_1+I_2$。
+
+\subhdr{6.2 为什么普通光的相位差会乱跳：波列}
+
+p8 把原因说得很清楚\textbf{[课件原话]}：“discontinuous, wave trains of unequal length, vibrations and propagation directions are random, initial phases also change randomly.”
+
+翻译成人话：普通光源（灯泡、钠灯、太阳）是靠原子自发辐射发光的。每个原子一次只发一小段波（叫\textbf{波列}，wave train），发完就“熄火”，再发时初始相位完全随机。更麻烦的是：
+
+\begin{itemize}
+\item 每次发的波列\emph{长度不等}、\emph{方向随机}、\emph{初相位随机}；
+\item 一只灯里有无量大堆原子各自发各自的，彼此之间毫无约定；
+\item 所以你取任意两束光来叠加，$\delta(t)$ 在飞秒到皮秒的时间里就随机跳变无数次。
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.4mm]},font=\scriptsize]
+  \foreach \row/\yy in {0/0, 1/-0.75, 2/-1.5}{
+    \fill[violetdeep] (-1.05,\yy) circle (2.4pt);
+    \draw[violetdeep,thick] (-1.05,\yy) circle (0.16);
+    \node[anchor=east,font=\scriptsize] at (-1.3,\yy) {原子 \row};
+    \draw[->,inkgray] (-0.72,\yy)--(-0.45,\yy);
+    % 波列：三段长度不等、相位不同的正弦
+    \draw[violet,thick,domain=0:1.5,samples=40] plot ({-0.45+\x/1.5*1.2},{\yy+0.16*sin(360*1.2*\x)});
+    \draw[violet,thick,domain=0:1.0,samples=40] plot ({0.75+\x/1.0*1.0},{\yy+0.16*sin(300*\x+70)});
+    \draw[violet,thick,domain=0:1.4,samples=40] plot ({1.75+\x/1.4*1.3},{\yy+0.16*sin(330*\x+200)});
+    \node[anchor=west] at (3.1,\yy) {$\cdots$};
+  }
+  \node[anchor=west,font=\scriptsize] at (3.5,-0.75) {长度不等、相位随机};
+\end{tikzpicture}
+\end{center}
+
+图上每一行是一个原子发出的一串波列；三段之间有空隙（发完再发），相位彼此无关。任何两只不同原子之间，都不存在“固定的相位差”。
+
+\subhdr{6.3 相干长度与相干时间：能“记住”相位多久}
+
+一段波列能维持相位不变的时间，叫\textbf{相干时间} $\tau_c$；它对应的空间长度叫\textbf{相干长度} $l_c=c\tau_c$。实用的经验公式（对谱线宽度为 $\Delta\lambda$ 的光）是
+\[
+l_c\approx\frac{\lambda^{2}}{\Delta\lambda},\qquad \tau_c=\frac{l_c}{c}.
+\]
+
+\aside{这条式子可以从 $\Delta f\,\tau_c\approx1$（傅里叶变换的时频不确定关系）与 $|\Delta\lambda|=\lambda^{2}\Delta f/c$ 联立得到：$\tau_c\approx1/\Delta f=\lambda^{2}/(c\Delta\lambda)$，再乘 $c$ 得 $l_c$。教材 Pedrotti \S9.3 “Temporal Coherence and Line Width” 给的就是这个推导。}
+
+代入 $\lambda=550\ \mathrm{nm}$，不同光源差别极大：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{2.6cm}>{\raggedright\arraybackslash}m{3.3cm}>{\raggedright\arraybackslash}m{7.0cm}@{}}
+\thead{光源} & \thead{$\Delta\lambda$} & \thead{$l_c\approx\lambda^2/\Delta\lambda$} & \thead{能看见几级条纹}\\
+\tabmid
+白光 & $\approx300\ \mathrm{nm}$ & $\approx1\ \mu\mathrm{m}$ & 约 2 级：只有中央附近几条（\S7.7）\\
+钠双线 & $0.6\ \mathrm{nm}$ & $\approx0.5\ \mathrm{mm}$ & 约 900 级\\
+LED（窄带） & $20\ \mathrm{nm}$ & $\approx15\ \mu\mathrm{m}$ & 约 27 级\\
+普通谱线灯 & $0.01\ \mathrm{nm}$ & $\approx30\ \mathrm{mm}$ & 约 $5\times10^{4}$ 级\\
+稳频激光 & $10^{-6}\ \mathrm{nm}$ & $\approx300\ \mathrm{m}$ & 实际上不受限\\
+\end{tabular}
+\tabbot}
+
+逐行读法：每一行都是把 $\lambda=550$ nm 与左列的 $\Delta\lambda$ 代进 $l_c=\lambda^{2}/\Delta\lambda$ 得到的。最后一列是 $l_c/\lambda$ 的整数部分，回答“光程差最多能差几个波长还看得出条纹”。这张表解释了一件事：\textbf{相干性是有“射程”的}——光程差一旦超过 $l_c$，两束光就不再来自同一段波列，相位差开始乱跳，条纹对比度掉下去（\S10 会给出定量）。
+
+\subhdr{6.4 杨氏的办法：把同一段波列切成两半}
+
+既然两只灯不行，那就只用\emph{一只}灯，并且让它的光\emph{自己和自己}干涉：
+
+\begin{itemize}
+\item 先用一条极窄的缝 $S$，从整只灯里“挑出”一个小到可以当点光源的区域（这一步的必要性见 \S11）；
+\item 再用两条缝 $S_1$、$S_2$ 把从 $S$ 来的\emph{同一个波前}切成两束（p16 的做法，叫\textbf{分波前}，wavefront division）；
+\item 这两束光的相位差就锁定了：它们来自同一段波列，一起吃同样的“相位抖动”，相减时抖动正好抵消。
+\end{itemize}
+
+这就是 p17 那句\textbf{[课件原话]} “It is independent of the initial phase $\varphi_0(t)$” 的物理含义。\S7.2 会给它的代数证明：$\varphi_0(t)$ 出现两次，相减就没了。
+
+\flowerrule
+% ================================================================ §7
+\hdr{\S7}{杨氏双缝：把波长的周期放大成看得见的条纹}
+
+\subhdr{7.1 装置：三个部件各管一件事}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.8mm]},font=\small]
+  % 源平面
+  \draw[thick] (0,-2.3)--(0,2.3);
+  \fill (0,0) circle (1.3pt) node[left=3pt]{$S$};
+  % 缝平面
+  \draw[thick] (6,-2.3)--(6,-0.52);
+  \draw[thick] (6,-0.28)--(6,0.28);
+  \draw[thick] (6,0.52)--(6,2.3);
+  \fill (6,0.40) circle (1.2pt);
+  \node[anchor=west] at (6.10,0.60) {\scriptsize $S_1$};
+  \fill (6,-0.40) circle (1.2pt);
+  \node[anchor=west] at (6.10,-0.60) {\scriptsize $S_2$};
+  % 光线
+  \draw[->] (0,0)--(6,0.40);
+  \draw[->] (0,0)--(6,-0.40);
+  \draw[->] (6,0.40)--(12,1.45);
+  \draw[->] (6,-0.40)--(12,1.45);
+  \node at (7.5,0.98) {\scriptsize $R_1$};
+  \node at (7.5,-0.78) {\scriptsize $R_2$};
+  % 屏
+  \draw[thick] (12,-2.3)--(12,2.3);
+  \fill (12,1.45) circle (1.3pt) node[right=3pt]{$P$};
+  \node[anchor=west] at (12.1,0) {$O$};
+  \draw[->] (12.75,-0.20)--(12.75,0.95) node[above=1pt] {\scriptsize $y$};
+  % d 标注
+  \draw[<->] (6.45,0.40)--(6.45,-0.40) node[midway,right=2pt] {\scriptsize $d$};
+  % D 标注
+  \draw[<->] (6,-1.95)--(12,-1.95) node[midway,above=1pt] {\scriptsize $D$};
+\end{tikzpicture}
+\end{center}
+
+三个部件的作用（这一步最容易被跳过）：
+
+\begin{itemize}
+\item \textbf{单缝 $S$}：把扩展光源切成“一个点”。它不提供能量，反而丢掉大部分能量——这就是“相干性的代价”（\S11）。
+\item \textbf{双缝 $S_1,S_2$}：把同一个波前切成两束，保证相位差锁定（\S6.4）。
+\item \textbf{屏}：把“相位差”翻译成“位置”，因为 $\Delta L$ 随屏上高度 $y$ 变化。
+\end{itemize}
+
+\subhdr{7.2 初相位为什么自己消掉（p17 的代数）}
+
+设单缝处的光振动初相位为 $\varphi_0(t)$（它随时间乱跳）。两束光分别走 $S\to S_1\to P$ 与 $S\to S_2\to P$，到达 $P$ 时的相位是
+\[
+\varphi_{10}=k(R_1+r_1)+\varphi_0(t),\qquad
+\varphi_{20}=k(R_2+r_2)+\varphi_0(t),
+\]
+其中 $r_1,r_2$ 是 $S$ 到两缝的距离，$R_1,R_2$ 是两缝到 $P$ 的距离（记号见 \S0.3）。相减：
+\[
+\delta=\varphi_{20}-\varphi_{10}=k\big[(R_2-R_1)+(r_2-r_1)\big].
+\]
+$\varphi_0(t)$ 出现两次，直接抵消——p17 的原话就是 “It is independent of the initial phase $\varphi_0(t)$.”
+
+若把单缝 $S$ 放在对称轴上，则 $r_1=r_2$，于是
+\[
+\delta=k(R_2-R_1)=\frac{2\pi}{\lambda}\Delta L,\qquad \Delta L\equiv R_2-R_1 .
+\]
+
+\aside{p16 的装置是“单缝 $S\to$ 双缝 $S_1,S_2\to$ 屏”。若 $S$ 不放对称轴上，$r_1-r_2\ne0$，整套条纹会整体平移——这正是 \S11 里“扩展光源把条纹抹平”的机制。所以“放对称轴上”不是图画得好看，而是让 $\Delta L$ 只依赖 $R_2-R_1$ 这个前提。}
+
+\subhdr{7.3 从 $R_2^2-R_1^2$ 到 $\Delta L\approx yd/D$（p18 跳掉的一步）\textbf{[补]}}
+
+p17 已经把关键一步写出来了（\textbf{[课件原话]} “$R_2^2-R_1^2=2yd$”），p18 却直接给出 $R_2-R_1\approx\frac{d}{D}y$。中间隔着一个容易被漏掉的因子 2，补全如下。
+
+取缝 $S_1$ 在 $(0,\,d/2,\,D)$、$S_2$ 在 $(0,\,-d/2,\,D)$，屏上点 $P(x,y,0)$（p17 右侧的坐标就是这个约定）。则
+\[
+R_1^2=x^2+\Big(y-\frac{d}{2}\Big)^2+D^2,\qquad
+R_2^2=x^2+\Big(y+\frac{d}{2}\Big)^2+D^2 .
+\]
+相减，$x^2$ 与 $D^2$ 抵消，只剩交叉项：
+\[
+R_2^2-R_1^2=2yd\ \Longrightarrow\ (R_2-R_1)(R_2+R_1)=2yd
+\ \Longrightarrow\ R_2-R_1=\frac{2yd}{R_1+R_2}.
+\]
+现在做近似。当 $y\ll D$、$d\ll D$ 时，
+\[
+R_{1,2}=D\sqrt{1+\frac{(y\mp d/2)^2}{D^2}}\approx D\Big[1+\frac{(y\mp d/2)^2}{2D^2}\Big],
+\]
+两式相加：
+\[
+R_1+R_2\approx 2D\Big[1+\frac{y^2+d^2/4}{2D^2}\Big]=2D(1+\varepsilon),\qquad
+\varepsilon=\frac{y^2+d^2/4}{2D^2}.
+\]
+代回：
+\[
+\Delta L=R_2-R_1=\frac{2yd}{2D(1+\varepsilon)}\approx\frac{yd}{D}\qquad(\varepsilon\ll1).
+\]
+
+\aside{$\varepsilon$ 就是这条近似的相对误差。量级：$D=1$ m、$y=5$ mm、$d=0.2$ mm 时 $\varepsilon\approx1.3\times10^{-5}$，完全可忽略。注意分子里的 $2yd$ \emph{不}约掉——它和分母里的 $2D$ 恰好抵消，这才留下 $yd/D$；只记住结果而没走这一步的人，常写出 $yd/(2D)$ 或 $2yd/D$，条纹间距就差一倍。}
+
+\subhdr{7.4 条纹位置与间距（p18 的方框式）}
+
+把 $\Delta L=yd/D$ 代进明纹条件 $\Delta L=m\lambda$：
+\[
+\frac{y_m d}{D}=m\lambda\ \Longrightarrow\ y_m=m\frac{\lambda D}{d}.
+\]
+相邻两条明纹（$m$ 与 $m+1$）的距离就是 p18 的方框式：
+\[
+\boxed{\ \Delta y=\frac{\lambda D}{d}\ }
+\]
+$m=0$ 给出 $y=0$，即屏中心 $O$ 是零级明纹——这一点要单独说，因为它是 \S9 里“零级搬到哪里”的出发点。
+
+\subhdr{7.5 这套公式的物理含义：一台“波长放大器”（p21）}
+
+p21 的原话\textbf{[课件原话]}：“The interference fringes are the macroscopic manifestation of the spatial periodicity of light waves.”
+
+翻译：光的空间周期是 $\lambda$（几百纳米，肉眼看不见），双缝把它放大成 $\Delta y$（几毫米，肉眼可见）。放大倍数就是 $D/d$。以 $D=1$ m、$d=0.2$ mm 为例：
+\[
+\frac{\Delta y}{\lambda}=\frac{D}{d}=\frac{1}{2\times10^{-4}}=5000 .
+\]
+也就是说，装置把 $0.55\ \mu\mathrm{m}$ 的周期放大成 $2.75$ mm，正好是人眼在 1 m 外能分辨的尺度。这就是“杨氏双缝第一次测出光波长”的原因：它把不可见的 $\lambda$ 变成可量的 $\Delta y$。
+
+\subhdr{7.6 为什么缝距得是 $0.1\sim1$ mm（量级表）}
+
+由 $\Delta y=\lambda D/d$ 可见 $d$ 越小、条纹越宽。以 $\lambda=550$ nm、$D=1$ m 算几种 $d$：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.0cm}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{8.0cm}@{}}
+\thead{缝距 $d$} & \thead{$\Delta y$} & \thead{实际后果}\\
+\tabmid
+$1\ \mathrm{cm}$ & $0.055\ \mathrm{mm}$ & 太密，肉眼与普通相机分不开\\
+$1\ \mathrm{mm}$ & $0.55\ \mathrm{mm}$ & 勉强可看，需要放大\\
+$0.2\ \mathrm{mm}$ & $2.75\ \mathrm{mm}$ & 典型实验室尺度，一眼能数清\\
+$1\ \mu\mathrm{m}$ & $550\ \mathrm{mm}$ & 条纹宽到屏上只放得下一两条；且 $d$ 已接近波长，衍射会彻底改变图样\\
+\end{tabular}
+\tabbot}
+
+逐行读法：四行都是同一个式子 $\Delta y=\lambda D/d$ 在 $D=1$ m、$\lambda=550$ nm 下的四次代入（$d$ 依次缩小 10、5、200 倍，$\Delta y$ 就相应放大 10、5、200 倍）。这张表解释了两件事：为什么实验室的缝距取 $0.1\sim1$ mm（条纹宽度落在一两毫米，正好可数）；为什么 $d$ 不能小到与 $\lambda$ 同量级（那时“两条缝”不再是两条独立的线光源，几何光学的图景失效）。
+
+\subhdr{7.7 用白光照明会怎样 \textbf{[补]}}
+
+到目前都假设单色光。若换成白光（含所有颜色），每一色各自生成一套条纹，间距 $\Delta y=\lambda D/d$ 与 $\lambda$ 成正比：
+
+\begin{itemize}
+\item 中央 $m=0$ 处所有颜色都满足 $\Delta L=0$，于是各色重叠——\textbf{中央是白色亮纹}；
+\item 往两侧走，紫光（$\lambda$ 小）条纹密、红光（$\lambda$ 大）条纹疏，同级条纹不再重合，于是中央两侧出现彩色带；
+\item 再往外，光程差超过白光的相干长度（$\approx1\ \mu\mathrm{m}$，\S6.3），条纹彻底消失，屏上变成均匀的白光。
+\end{itemize}
+
+所以白光条纹只有中间几条是清楚的，这既解释了实验现象，也反过来印证了相干长度的存在。
+
+\subhdr{7.8 适用边界（什么时候这套公式不能用）}
+
+\begin{enumerate}
+\item \textbf{近轴}：$y\ll D$、$d\ll D$。严格说条纹不是等间距的。用 $\theta$ 表示张角，精确条件是 $d\sin\theta=m\lambda$，而 $y=D\tan\theta$，于是
+\[
+\frac{\mathrm{d}y}{\mathrm{d}m}=\frac{\lambda D}{d\cos^{3}\theta},
+\]
+$\cos\theta<1$ 使条纹变密——这条式子只用于“知道边界在哪”，做题一律用 $\Delta y=\lambda D/d$。
+\item \textbf{两束等强}：否则对比度小于 1（\S10），但条纹\emph{位置}不变。
+\item \textbf{相干长度足够}：光程差必须小于 $l_c$（\S6.3），否则条纹消失。
+\item \textbf{单缝足够窄}：否则空间相干性不足（\S11）。
+\end{enumerate}
+
+\flowerrule
+% ================================================================ §8
+\qbreak
+\hdr{\S8}{例 5.1：用双缝测波长（课件 p19，全解）}
+
+\qstem{（课件 p19，Example 5.1）杨氏双缝装置中，两缝间距 $d=0.2$ mm，缝到屏的距离 $D=1$ m。若第 1 条明纹与第 4 条明纹相距 $7.5$ mm，求光的波长。}
+
+\subhdr{考点}
+$\Delta y=\lambda D/d$ 的反用：把“两条纹的距离”换成“条纹间距”时，要数的是\emph{间隔数}，不是条纹数。
+
+\subhdr{关键一步}
+第 1 条到第 4 条之间隔了 $4-1=3$ 个间距（课件 p19 的解答里写的就是 $\Delta y=7.5/(4-1)=2.5$ mm）。
+
+\subhdr{详解}
+\[
+\Delta y=\frac{7.5\ \mathrm{mm}}{4-1}=2.5\ \mathrm{mm},
+\qquad
+\lambda=\frac{d\,\Delta y}{D}=\frac{0.2\ \mathrm{mm}\times2.5\ \mathrm{mm}}{1\ \mathrm{m}} .
+\]
+统一到米：$0.2\ \mathrm{mm}=2\times10^{-4}$ m，$2.5\ \mathrm{mm}=2.5\times10^{-3}$ m，
+\[
+\lambda=\frac{2\times10^{-4}\times2.5\times10^{-3}}{1}=5.0\times10^{-7}\ \mathrm{m}=500\ \mathrm{nm}.
+\]
+
+\subhdr{答案}
+$\lambda=500$ nm（与课件 p19 方框一致）。
+
+\subhdr{自检}
+量纲 $[\mathrm{m}][\mathrm{m}]/[\mathrm{m}]=\mathrm{m}$，对；$500$ nm 落在可见光内，对；代回 $y_4-y_1=3\lambda D/d=3\times500\times10^{-9}\times1/2\times10^{-4}=7.5$ mm，与题给一致。
+
+\flowerrule
+% ================================================================ §9
+\qbreak
+\hdr{\S9}{例 5.2：云母片盖住一条缝（课件 p20，作业 HOME WORK TWO，全解）}
+
+\qstem{（课件 p20，Ex.\,5.2 / HOME WORK TWO）杨氏双缝装置中，在上缝前放一片折射率 $n=1.58$ 的云母片。中央明纹（零级）移到了原来第 8 条明纹的位置。若光波长为 $550$ nm，求云母片的厚度。}
+
+\subhdr{考点}
+“插入一块介质”$=$ 给其中一束光加上一个\emph{恒定的}光程差。整道题只有一句话值得记：
+\[
+(n-1)h\quad\text{就是那片云母片贡献的额外光程（\S4.3 已推）。}
+\]
+
+\subhdr{关键一步}
+在原来第 8 条明纹处 $P$，旧的光程差是 $8\lambda$；盖上片之后（片在上缝 $S_1$ 一侧，\S7.1 的装置图里 $S_1$ 在上），上缝那束的光程\emph{变大}，于是这一处的光程差变成
+\[
+\Delta L_P'=8\lambda-(n-1)h .
+\]
+而 $P$ 现在是\emph{新的零级}，零级的定义就是光程差为零。于是
+\[
+8\lambda-(n-1)h=0\ \Longrightarrow\ h=\frac{8\lambda}{n-1}.
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\small]
+  % 缝平面
+  \draw[thick] (0,-1.9)--(0,-0.55);
+  \draw[thick] (0,0.55)--(0,1.9);
+  \fill (0,0.40) circle (1.2pt); \node[left=3pt] at (0,0.40) {\scriptsize $S_1$};
+  \fill (0,-0.40) circle (1.2pt); \node[left=3pt] at (0,-0.40) {\scriptsize $S_2$};
+  % 云母片（盖住上缝）
+  \draw[fill=bandcream,draw=violet] (-0.18,0.02) rectangle (0.18,0.90);
+  \node[left=3pt,font=\scriptsize,align=right] at (-0.22,0.92) {厚 $h$，\\折射率 $n$};
+  % 屏
+  \draw[thick] (8,-1.9)--(8,1.9);
+  \fill (8,1.05) circle (1.3pt); \node[right=3pt] at (8,1.05) {\scriptsize $P$};
+  \node[anchor=west,font=\scriptsize] at (8.1,0) {$O$};
+  % 光线
+  \draw[->,thick] (0,0.40)--(8,1.05);
+  \draw[->,thick] (0,-0.40)--(8,1.05);
+  % 轴线
+  \draw[densely dotted] (0,0)--(8,0);
+  % 标注
+  \draw[<->] (0.55,0.40)--(0.55,-0.40) node[midway,right=1pt] {\scriptsize $d$};
+  \draw[->] (8.65,0)--(8.65,1.05) node[midway,right=1pt] {\scriptsize $y$};
+\end{tikzpicture}
+\end{center}
+
+\subhdr{详解：三条互相独立的路线}
+
+\textbf{路线 A（光程差法，最直白）}：如上式，直接解出
+\[
+h=\frac{8\lambda}{n-1}=\frac{8\times550\ \mathrm{nm}}{0.58}=7586\ \mathrm{nm}\approx7.59\ \mu\mathrm{m}.
+\]
+
+\textbf{路线 B（级次搬运法）}：整幅条纹是“平移”的，不是“变形”的。光程差整体少了 $(n-1)h$，而每少一个 $\lambda$ 级次就减 1，所以屏上任一点的级次从 $m$ 变成
+\[
+m'=m-\frac{(n-1)h}{\lambda}.
+\]
+零级现在落在旧的第 8 级处，即 $m=8$ 的点满足 $m'=0$：
+\[
+\frac{(n-1)h}{\lambda}=8\ \Longrightarrow\ h=\frac{8\lambda}{n-1}.
+\]
+
+\textbf{路线 C（相位法）}：$P$ 处原来 $\delta_P=\frac{2\pi}{\lambda}\cdot8\lambda=16\pi$；盖上片后
+\[
+\delta_P'=16\pi-\frac{2\pi}{\lambda}(n-1)h=0\ \Longrightarrow\ (n-1)h=8\lambda .
+\]
+
+三条路线用的是同一个物理事实（额外光程 $(n-1)h$），只是记账方式不同：A 记在光程差上，B 记在级次上，C 记在相位上。考场上任选一条，写清楚“零级 $\Leftrightarrow$ 光程差为零”就不会错。
+
+\subhdr{方向：条纹往哪边移？}
+
+\emph{向被盖住的那条缝一侧移动。}本题盖的是上缝 $S_1$，所以条纹整体上移。
+
+理由：盖片让上缝那束光“变慢”（光程变长），要重新凑成零级，就得让下缝那束光的几何路程补回来——观察点必须走到离上缝更近、离下缝更远的地方。用 $\Delta L=yd/D$ 写出来更干脆：新零级满足
+\[
+\frac{yd}{D}=(n-1)h>0\ \Longrightarrow\ y>0 ,
+\]
+即 $y$ 为正（上侧）。这也正好对上 p20 的图：$P$ 画在 $O$ 的上方。
+
+\subhdr{答案}
+\[
+h=\frac{8\times550\ \mathrm{nm}}{1.58-1}=7.59\times10^{-6}\ \mathrm{m}\approx7.6\ \mu\mathrm{m}.
+\]
+
+有效数字：$n=1.58$ 给到三位，$550$ nm 与“8 条”都只算两三位，答 $7.59\ \mu$m 或 $7.6\ \mu$m 都站得住；写 $7.6\ \mu$m 与“移动 8 条”这种整数级次相称。若非要一位不多地写，就写 $7.59\ \mu$m 并注明 $\lambda$ 视为三位。
+
+\subhdr{同型变式（换数，供你确认“会迁移”）}
+
+若改盖下缝、移动 5 条、$\lambda=600$ nm、$n=1.5$：$h=5\times600/0.5=6.0\ \mu$m，条纹整体下移。若反过来问“移动了几条”：条数 $=(n-1)h/\lambda$，允许非整数——非整数表示新的零级恰好落在两条明纹之间。
+
+\subhdr{自检}
+代回：$(n-1)h/\lambda=0.58\times7586\ \mathrm{nm}/550\ \mathrm{nm}=8.000$，对；量纲 $h=\lambda/(n-1)$ 是长度，对；数量级：8 个波长除以 $0.58$ 约 14 个波长，约 $7.6\ \mu$m，与“薄膜”常识相符。
+
+\subhdr{三个计数约定（写作业时先说清楚）}
+
+“移动了 8 条”里的“8”来自计数方式。若把零级称作“第 1 条”，则旧的第 8 条对应 $m=8$；若把零级称作“第 0 条”，则旧的第 8 条对应 $m=7$，答案会变成 $6.6\ \mu$m。课件 p20 的叙述（“the original 8th bright fringe”）按“零级算第 1 条”读，得到 $m=8$。\textbf{交作业时用一句话写明你的计数约定}，老师才不会判错。
+
+\flowerrule
+% ================================================================ §10
+\hdr{\S10}{对比度：为什么有时条纹“看不清”}
+
+\subhdr{10.1 定义与来源（p22）}
+
+p22 给出对比度（也叫可见度）
+\[
+\gamma=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}} .
+\]
+把 $I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta$ 的 $\cos\delta=\pm1$ 代进去：
+\[
+I_{\max}=I_1+I_2+2\sqrt{I_1I_2},\qquad I_{\min}=I_1+I_2-2\sqrt{I_1I_2}.
+\]
+于是
+\[
+\gamma=\frac{2\sqrt{I_1I_2}}{I_1+I_2}=\frac{2A_1A_2}{A_1^{2}+A_2^{2}}=\frac{2\rho}{1+\rho^{2}},\qquad
+\rho\equiv\frac{A_1}{A_2}.
+\]
+
+\aside{这里用 $I=A^{2}/2$ 把时间平均的 $1/2$ 约掉了，所以 $\gamma$ 只依赖\emph{振幅比} $\rho$，与总光强无关。这就是为什么“把灯调亮”不会改善对比度——它只让条纹整体更亮，明暗差别按同样比例一起变亮。}
+
+\subhdr{10.2 两个极限与“非相干”的数学含义}
+
+$\rho=1$（两束等强）：$\gamma=1$，$I_{\min}=0$、$I_{\max}=2I_0$，条纹从全黑到全亮；$\rho\to0$ 或 $\rho\to\infty$：$\gamma\to0$，条纹消失。
+
+p23 的原话是\textbf{[课件原话]} “When $\gamma=0$, it degenerates to the incoherent (non-interfering) sum”。数学上这就是 \S2.3 里“交叉项被平均掉”的那一档：$\gamma=0$ 时 $I=I_0=I_1+I_2$，强度在屏上是常数——不是“条纹很弱”，而是“根本没有条纹”。
+
+\subhdr{10.3 用可见度写强度（p24）}
+
+p24 把结果整理成
+\[
+I=I_0(1+\gamma\cos\delta),\qquad I_0=I_1+I_2 .
+\]
+p24 的页脚小字说明了 $I_0$ 的含义：两束光“各管各的”时的总强度（即把交叉项拿掉之后的和）。
+
+\subhdr{10.4 常数报户口（每个数从哪来）}
+
+\begin{itemize}
+\item 交叉项前的 $\boxed{2}$：来自 \S2.3 展开式里的 $2E_1E_2$，是 $(E_1+E_2)^2$ 的交叉项系数，属\emph{数学}来源。
+\item 分子 $2A_1A_2$：来自 $I_{\max}-I_{\min}=4\sqrt{I_1I_2}$ 与分母 $2(I_1+I_2)$ 相除，仍属\emph{数学}。
+\item $I=A^{2}/2$ 里的 $1/2$：时间平均，\emph{数学}来源；而“强度可以差一个常数因子”是\emph{约定}来源（\S2.2 的旁注）。
+\end{itemize}
+
+三者分工不同，不要混着背成“$\gamma$ 有个 2”。
+
+\subhdr{10.5 一分钟小例}
+若 $A_2=3A_1$，则 $\rho=1/3$，
+\[
+\gamma=\frac{2/3}{1+1/9}=0.6 .
+\]
+验算：$I_{\max}:I_{\min}=(A_1+3A_1)^{2}:(3A_1-A_1)^{2}=16:4=4:1$，故 $\gamma=(4-1)/(4+1)=0.6$，一致。
+
+\flowerrule
+% ================================================================ §11
+\hdr{\S11}{波前分割的代价：p25 那个“代价呢？？？” \textbf{[补]}}
+
+\subhdr{11.1 课件提了问，没有回答}
+
+p25 的绿框中文原话是：\textbf{“杨氏双缝干涉的独特优势就是获得两个相位稳定的子波源 $s_1$ 和 $s_2$，且无视初始相位项，代价呢？？？”}——课件在这一页提了问，下一页直接跳到双棱镜，没有回答。这一节替它回答。
+
+同页的红色警示框讲的是现象：不能用普通灯或扩展光源直接照双缝，必须用点光源或极窄的缝，否则\textbf{[课件原话]} “the fringe contrast to drop sharply and eventually wash out”。
+
+\subhdr{11.2 机制：扩展光源的每一“点”各画一套条纹}
+
+\begin{itemize}
+\item 扩展光源上不同的点，到两缝的距离差不同（多出 $\xi d/l$，$\xi$ 是源点离轴高度，$l$ 是源到缝的距离）；
+\item 每个点各自在屏上生出一套条纹，彼此\emph{错开}；
+\item 许多套错开的条纹\emph{非相干}叠加，对比度被“抹平”。
+\end{itemize}
+
+这里“非相干”是关键词：光源上不同点是各自独立发光的原子团，它们之间不满足 \S6.1 的第三条（相位差恒定），所以是强度相加而不是场相加。
+
+\subhdr{11.3 定量：平移了几条？}
+
+源点高 $\xi$ 时，多出的光程差是 $\Delta L_{\text{源}}=\xi d/l$；它让整套条纹沿屏移动。用 $\Delta L=yd/D$ 反解移动量：
+\[
+\frac{yd}{D}=\frac{\xi d}{l}\ \Longrightarrow\ y=\frac{\xi D}{l},
+\]
+换成“条纹数”：
+\[
+\frac{y}{\Delta y}=\frac{\xi D/l}{\lambda D/d}=\frac{\xi d}{\lambda l}.
+\]
+
+\subhdr{11.4 宽度 $b$ 的缝光源：对比度按 sinc 衰减}
+
+真实光源是一条宽 $b$ 的缝，沿 $\xi$ 均匀取平均（令 $u\equiv\dfrac{\pi b d}{\lambda l}$）：
+\[
+\frac1b\int_{-b/2}^{b/2}\cos\Big(\delta+\frac{2\pi\xi d}{\lambda l}\Big)\mathrm{d}\xi
+=\cos\delta\cdot\frac{\sin u}{u}.
+\]
+于是
+\[
+\gamma=\Big|\frac{\sin u}{u}\Big|,\qquad u=\frac{\pi b d}{\lambda l}.
+\]
+第一个零点在 $u=\pi$，即
+\[
+b_{c}=\frac{\lambda l}{d}.
+\]
+这个 $b_c$ 叫\textbf{相干宽度}：缝比它宽，条纹就基本看不见了。
+
+\aside{积分那一步的来历：$\cos(\alpha+\beta)=\cos\alpha\cos\beta-\sin\alpha\sin\beta$，其中 $\sin\beta$ 对 $\xi\in[-b/2,b/2]$ 是奇函数、积分为零，只剩 $\cos\alpha\cdot\langle\cos\beta\rangle$，而 $\langle\cos\beta\rangle=\sin u/u$。教材 Pedrotti \S9.6 “Spatial Coherence Width” 给的是同一个结果。}
+
+\subhdr{11.5 数字例子}
+
+$l=0.5$ m、$d=0.2$ mm、$\lambda=550$ nm，得
+\[
+b_c=\frac{550\times10^{-9}\times0.5}{2\times10^{-4}}=1.375\times10^{-3}\ \mathrm{m}\approx1.4\ \mathrm{mm}.
+\]
+也就是说：单缝宽度超过约 $1.4$ mm，条纹就基本看不见了。这解释了为什么杨氏实验里那条缝必须做得很窄——不是为了“让光更亮”，而是为了“让条纹还在”。
+
+\subhdr{11.6 这就是“代价”，以及两种相干的分工}
+
+为了“两个子波源相位稳定”，必须\emph{牺牲光通量}：把广阔的光源挡到只剩一条极窄的缝，只用两个小区域参与干涉。相干性越好，能用的光越少——这是分波前干涉（以及后来所有干涉仪）都要付的代价。
+
+“相干”其实有两条独立的门槛，本章两种都碰到了：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{4.0cm}>{\raggedright\arraybackslash}m{7.4cm}@{}}
+\thead{门槛} & \thead{判据} & \thead{不满足时}\\
+\tabmid
+时间相干（\S6.3） & 光程差 $<l_c=\lambda^{2}/\Delta\lambda$ & 屏上远处条纹消失（白光只有中央几条）\\
+空间相干（本节） & 单缝宽度 $<b_c=\lambda l/d$ & 整幅条纹一起变淡，直到全屏均匀\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一行管“同一束光在时间上能不能记住自己”，靠谱线宽度；第二行管“空间上两点能不能当成同一个源”，靠光源尺寸。两者都满足，条纹才清楚——而它们各自对应一个“代价”：谱线要窄，缝要细。
+
+\flowerrule
+% ================================================================ §12
+\hdr{\S12}{三种分波前装置：同一模板，三种“造双源”的办法}
+
+\subhdr{12.1 统一模板}
+
+p26--p28 三个装置看着不同，做法完全一样：\emph{用镜子或棱镜把同一束光“折”成两个虚像，当成一双相干点源，然后回到 \S7}。只要求出等效双源间距 $d_{\mathrm{eq}}$，条纹间距就是
+\[
+\Delta x=\frac{\lambda\,(B+C)}{d_{\mathrm{eq}}},
+\]
+其中 $B$ 是源到镜（或棱镜）交点的距离、$C$ 是交点到屏的距离；洛埃镜用 $D$（源到屏）。
+
+\subhdr{12.2 双平面镜（p26）}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.5mm]},font=\scriptsize]
+  % 两面镜（在 O 点相交，夹角 180-α）
+  \draw[thick,violetdeep] (0,0)--(4.6,0.42);
+  \draw[thick,violetdeep] (0,0)--(4.6,-0.42);
+  \node[left=2pt] at (0,0) {$O$};
+  % 源与光线
+  \fill[violetdeep] (-1.9,0) circle (1.6pt) node[left] {$S$};
+  \draw[inkgray] (-1.9,0)--(0,0);
+  % 虚像
+  \fill[violet] (-1.9,0.62) circle (1.2pt) node[above left] {$S_1$};
+  \fill[violet] (-1.9,-0.62) circle (1.2pt) node[below left] {$S_2$};
+  \draw[densely dotted] (-1.9,0)--(-1.9,0.62);
+  \draw[densely dotted] (-1.9,0)--(-1.9,-0.62);
+  % 两束反射光的重叠区（条纹只在这里出现）
+  \fill[bandviolet] (4.6,0.42)--(6.15,1.10)--(6.15,-0.80)--(4.6,-0.42)--cycle;
+  \node[anchor=west,font=\scriptsize] at (6.3,-0.62) {重叠区};
+  % B、C 标注
+  \draw[<->] (-1.9,-1.5)--(0,-1.5) node[midway,below] {$B$};
+  \draw[<->] (0,-1.5)--(6.2,-1.5) node[midway,below] {$C$};
+  % 屏
+  \draw[thick] (6.2,-1.35)--(6.2,1.5);
+  \node[anchor=south,font=\scriptsize] at (6.2,1.52) {屏};
+  % 夹角
+  \draw (1.6,0.146) arc (5.2:-5.2:1.63);
+  \node[anchor=west,font=\scriptsize] at (1.75,0) {$2\alpha$};
+\end{tikzpicture}
+\end{center}
+
+两面平面镜在 $O$ 处相交、夹角 $180^\circ-2\alpha$（图上以 $2\alpha$ 标出两镜面的张角）。源 $S$ 到 $O$ 的距离为 $B$。两镜把 $S$ 分别映成虚像 $S_1$、$S_2$，两虚像各距 $O$ 为 $B$，对 $O$ 的张角为 $2\alpha$，故
+\[
+d_{\mathrm{eq}}\approx 2B\sin\alpha\approx2\alpha B\quad(\alpha\ \text{很小}),
+\qquad
+\Delta x=\frac{(B+C)\lambda}{2\alpha B}.
+\]
+
+\subhdr{12.3 双棱镜（p27）}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.5mm]},font=\scriptsize]
+  % 双棱镜（顶角朝左的扁等腰三角形）
+  \draw[thick,violetdeep] (0,0)--(4.2,0.95)--(4.2,-0.95)--cycle;
+  \draw (1.2,0.27) arc (12.7:-12.7:1.23);
+  \node[anchor=west,font=\scriptsize] at (1.32,0) {顶角 $\alpha$};
+  % 两束光的重叠区
+  \fill[bandviolet] (4.2,0.95)--(6.15,1.20)--(6.15,-1.20)--(4.2,-0.95)--cycle;
+  \node[anchor=west,font=\scriptsize] at (6.3,-0.95) {重叠区};
+  % 源
+  \fill[violetdeep] (-1.9,0) circle (1.6pt) node[left] {$S$};
+  \draw[inkgray] (-1.9,0)--(0,0);
+  % 虚像
+  \fill[violet] (-1.9,0.75) circle (1.2pt) node[above left] {$S_1$};
+  \fill[violet] (-1.9,-0.75) circle (1.2pt) node[below left] {$S_2$};
+  \draw[densely dotted] (-1.9,0)--(-1.9,0.75);
+  \draw[densely dotted] (-1.9,0)--(-1.9,-0.75);
+  % 屏
+  \draw[thick] (6.2,-1.5)--(6.2,1.5);
+  \node[anchor=south,font=\scriptsize] at (6.2,1.58) {屏};
+  % B、C
+  \draw[<->] (-1.9,-1.95)--(0,-1.95) node[midway,below] {$B$};
+  \draw[<->] (0,-1.95)--(6.2,-1.95) node[midway,below] {$C$};
+\end{tikzpicture}
+\end{center}
+
+双棱镜的两个斜面各自像一个顶角很小的薄棱镜，把经过它的光向底面偏折 $\delta_d=(n-1)\alpha$。上、下两半各偏折一次，于是 $S$ 被“看”成两个虚像 $S_1$、$S_2$，夹角为 $2(n-1)\alpha$：
+\[
+d_{\mathrm{eq}}\approx2(n-1)\alpha B,
+\qquad
+\Delta x=\frac{(B+C)\lambda}{2(n-1)\alpha B}.
+\]
+
+\aside{薄棱镜偏向角的一行推导（本页要用，故放在这里）：小角下 $\sin\theta\approx\theta$，两次折射给 $i_1=nr_1$、$i_2=nr_2$，而棱镜内两法线夹角满足 $r_1+r_2=\alpha$，故偏向角 $\delta_d=(i_1+i_2)-\alpha=n\alpha-\alpha=(n-1)\alpha$。这里 $i$ 是入射角、$r$ 是折射角（\S0.3 之外的新记号，只在本旁注内使用）。}
+
+\subhdr{12.4 洛埃镜（p28）与半波损失}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.5mm]},font=\scriptsize]
+  % 镜面
+  \draw[very thick,violetdeep] (0,0)--(5.4,0);
+  \foreach \x in {0.15,0.45,...,5.3} \draw[inkgray] (\x,0)--(\x-0.18,-0.18);
+  \node[anchor=north,font=\scriptsize] at (3.5,-0.30) {平面镜};
+  % 源
+  \fill[violetdeep] (0,1.35) circle (1.6pt) node[above right] {$S$};
+  \node[anchor=west,font=\scriptsize] at (0.05,0.65) {$a$};
+  \draw[<->] (0,0)--(0,1.35);
+  % 虚像
+  \fill[violet] (0,-1.35) circle (1.2pt) node[below right] {$S'$};
+  % 屏
+  \draw[thick] (5.4,-1.8)--(5.4,2.1);
+  \node[anchor=south,font=\scriptsize] at (5.4,2.1) {屏};
+  % 直达光
+  \draw[->,thick] (0,1.35)--(5.4,1.55);
+  % 反射光：S -> 镜面点 -> 屏
+  \draw[->,thick] (0,1.35)--(2.7,0);
+  \draw[->,thick] (2.7,0)--(5.4,1.55);
+  % 虚像连线（说明几何）
+  \draw[densely dotted] (0,-1.35)--(2.7,0);
+\end{tikzpicture}
+\end{center}
+
+一个平面镜、一个源：源 $S$ 与它的镜像 $S'$ 关于镜面对称，间距 $d=2a$（$a$ 是源到镜面的高度）。屏到源面的距离记作 $D$，于是
+\[
+\Delta x=\frac{D\lambda}{2a}.
+\]
+
+关键在于：反射光在镜面上发生了 $\pi$ 的相位突变（\textbf{半波损失}），p28 的粉框原话是\textbf{[课件原话]} “At grazing incidence, the reflected light undergoes a phase reversal of $\pi$ (half-wave loss)”。为什么？
+
+反射发生在空气 $\to$ 玻璃的界面上（光疏 $\to$ 光密）。正入射时振幅反射系数
+\[
+r=\frac{n_1-n_2}{n_1+n_2}<0\quad(n_2>n_1),
+\]
+负号就是 $\pi$ 的相位突变。掠入射时，垂直于入射面的分量在任何角度都反相；平行分量在掠入射时也趋近反相——所以 p28 说“掠入射时”发生 $\pi$ 相移，是对的。
+
+\aside{这条 $r$ 只对正入射写成这个简单形式；斜入射要用 Fresnel 公式（教材 Pedrotti 第 23 章）。本讲义只需要“光疏到光密、反射有 $\pi$ 突变”这一条结论，以及它在掠入射时依然成立。}
+
+后果：贴着镜面那一点（几何光程差为 0）出现的是\textbf{暗纹}，而不是杨氏那样的明纹。这就是 p28 粉框里\textbf{[课件原话]} “bright and dark fringes are reversed” 的意思，也是洛埃镜被用来“验证半波损失”的原因。
+
+\subhdr{12.5 三个装置对照（先图后表）}
+
+上面三张图分别是三个装置的拓扑：源在哪、镜子或棱镜怎么摆、虚像在哪、屏在哪。下面这张表只是把三张图的几何读一遍。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.2cm}>{\raggedright\arraybackslash}m{3.0cm}>{\raggedright\arraybackslash}m{4.9cm}>{\raggedright\arraybackslash}m{4.2cm}@{}}
+\thead{装置（页）} & \thead{等效双源间距} & \thead{条纹间距} & \thead{几何来源}\\
+\tabmid
+双平面镜（p26） & $d\approx2\alpha B$ & $\Delta x=\dfrac{(B+C)\lambda}{2\alpha B}$ & 两虚像关于两镜面对称，对交点 $O$ 的张角为 $2\alpha$\\
+双棱镜（p27） & $d\approx2(n-1)\alpha B$ & $\Delta x=\dfrac{(B+C)\lambda}{2(n-1)\alpha B}$ & 上下两半各偏折 $(n-1)\alpha$\\
+洛埃镜（p28） & $d=2a$ & $\Delta x=\dfrac{D\lambda}{2a}$ & 源与其镜像关于镜面对称，相距 $2a$\\
+\end{tabular}
+\tabbot}
+
+逐行读法：
+\begin{itemize}
+\item 第一行：两虚像各距交点 $B$，夹角 $2\alpha$，故弦长 $d\approx2B\sin\alpha\approx2\alpha B$（小角）。
+\item 第二行：两虚像夹角 $2(n-1)\alpha$，其余同上，多出一个 $(n-1)$ 是折射的“功劳”。
+\item 第三行：只有一个平面镜，虚像与源关于镜面对称，间距是高度的两倍 $2a$；屏到源面的距离记作 $D$。
+\end{itemize}
+
+三行里只有洛埃镜的 $d=2a$ 是精确关系；双镜与双棱镜的 $d$ 都带小角近似（$\sin\alpha\approx\alpha$），顶角超过几度时要把 $\alpha$ 换成 $\sin\alpha$，否则条纹间距会偏小。
+
+\subhdr{12.6 课件这两页的一个错位要说明}
+
+p26 的标题写的是 “Fresnel Biprism”，但正文第一条是\textbf{[课件原话]} “Made of two plane mirrors in contact, forming a small angle $\alpha$”——图与文都是\textbf{双平面镜}；真正的\textbf{双棱镜}在 p27。两者公式只差一个 $(n-1)$，但物理装置不同（一个靠反射，一个靠折射）。看课件时别把 p26 的 $\alpha$ 当成棱镜顶角去套 p27 的式子。
+
+\subhdr{12.7 一分钟小例（双棱镜）}
+$\alpha=0.5^\circ$、$n=1.5$、$B=0.2$ m、$C=1.0$ m、$\lambda=550$ nm：
+\[
+d\approx2\times0.5\times0.008727\times0.2=1.745\ \mathrm{mm},\qquad
+\Delta x=\frac{1.2\times550\times10^{-9}}{1.745\times10^{-3}}=0.378\ \mathrm{mm}.
+\]
+
+\flowerrule
+% ================================================================ §13
+\hdr{\S13}{公式卡、四步法与量级直觉}
+
+\subhdr{13.1 公式卡（台账，做作业时对着查）}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{6.1cm}>{\raggedright\arraybackslash}m{4.6cm}>{\raggedright\arraybackslash}m{4.6cm}@{}}
+\thead{公式} & \thead{成立条件} & \thead{用在哪}\\
+\tabmid
+$I=\langle E^{2}\rangle=A^{2}/2$ & 单色、时间平均 & 强度的定义（\S2）\\
+$\delta=\dfrac{2\pi}{\lambda}\Delta L$ & 单色光；$\lambda$ 为真空波长 & 一切干涉题的换算枢纽（\S4）\\
+$\Delta L=m\lambda$；$\Delta L=(2m+1)\dfrac{\lambda}{2}$ & 两束相干光，等强与否均可 & 明纹 / 暗纹（\S5）\\
+$\Delta L\approx\dfrac{yd}{D}$ & $y\ll D$、$d\ll D$ & 双缝几何核（\S7.3）\\
+$\Delta y=\dfrac{\lambda D}{d}$ & 同上 & 条纹间距、测波长（\S7.4）\\
+$\Delta L\to\Delta L-(n-1)h$ & 薄片近垂直穿过一束光 & 插片移条纹（\S9）\\
+$\gamma=\dfrac{2A_1A_2}{A_1^{2}+A_2^{2}}$，$I=I_0(1+\gamma\cos\delta)$ & 偏振方向平行、相位差稳定 & 条纹清晰度（\S10）\\
+$l_c=\dfrac{\lambda^{2}}{\Delta\lambda}$ & 谱线宽度 $\Delta\lambda$ & 时间相干（\S6.3）\\
+$b_c=\dfrac{\lambda l}{d}$ & 缝光源宽 $b$、源距 $l$ & 空间相干（\S11）\\
+$\Delta x=\dfrac{(B+C)\lambda}{2(n-1)\alpha B}$ & 小顶角薄棱镜 & 双棱镜（\S12.3）\\
+$\Delta x=\dfrac{D\lambda}{2a}$ & 掠入射、有半波损失 & 洛埃镜（\S12.4）\\
+\end{tabular}
+\tabbot}
+
+\subhdr{13.2 四步法（做题时按顺序走）}
+
+\begin{enumerate}
+\item \textbf{画图定位}：源—缝（或镜、棱镜）—屏，标出 $d$、$D$，并标清\emph{哪一束}路过了介质、走了多厚。
+\item \textbf{写光程差}：几何段照写，介质段乘 $n$；把“插入薄片”翻译成“某束加 $(n-1)h$”。
+\item \textbf{套判据}：用 $\delta=\frac{2\pi}{\lambda}\Delta L$ 或直接明暗条件；要求零级就令 $\Delta L=0$；要求“移动几条”就数 $\Delta L$ 变了几个 $\lambda$。
+\item \textbf{代数字 + 三查}：查量纲、查数量级（条纹间距 mm 级、片厚 $\mu$m 级）、查极限（两束等强时 $\gamma$ 是否为 1；$m=0$ 时是否回到中心）。
+\end{enumerate}
+
+\subhdr{13.3 量级直觉（算完先看一眼合不合理）}
+
+\begin{itemize}
+\item 双缝条纹间距：$0.5\sim3$ mm（$d\sim0.1\sim1$ mm、$D\sim1$ m）。
+\item 云母片厚度：几 $\mu$m；$(n-1)h$ 折合十几个波长。
+\item 双棱镜等效双源间距：$0.1\sim2$ mm。
+\item 白光能看到的条纹：中央附近 1--2 级。
+\item 若算出“条纹间距 10 cm”或“片厚 1 m”，先怀疑单位，再怀疑公式。
+\end{itemize}
+
+\flowerrule
+% ================================================================ §14
+\hdr{\S14}{易错点（每条都能指回某一页的某一步）}
+
+\begin{enumerate}
+\item \textbf{两个 $d$ 混用}（p16--p18 的缝距 vs p20 的片厚）。后果：公式对、字母错，自己复查时看不懂。对策：片厚一律写 $h$。
+\item \textbf{几何近似漏因子}：由 $2yd/(R_1+R_2)$ 往 $yd/D$ 走时，分母的 $R_1+R_2\approx2D$ 与分子的 2 抵消；写成 $yd/(2D)$ 会让 $\Delta y$ 差一倍（\S7.3）。
+\item \textbf{相位差少 $2\pi$}：写成 $\delta=\Delta L/\lambda$。用 $\delta=\frac{2\pi}{\lambda}\Delta L$（\S4.3）。
+\item \textbf{移动方向反了}：向\emph{被盖住}的那条缝一侧（\S9）。
+\item \textbf{“第 8 条”数成 $m=7$}：零级是第 1 条，故“第 8 条”对应 $m=8$；按“中央算第 0 条”的计法则对应 $m=7$，答案变 $6.6\ \mu$m。交作业时写明计数约定（\S9 末）。
+\item \textbf{以为“随便两只灯也能干涉”}（p8--p9）：初相位随机，$\delta(t)$ 漂移，交叉项平均为零（\S6.2）。
+\item \textbf{用扩展光源直接照双缝}（p25）：对比度按 sinc 塌掉（\S11）。
+\item \textbf{洛埃镜忘了半波损失}（p28）：明暗整体反了，中心应是暗纹（\S12.4）。
+\item \textbf{对比度里拿强度比代振幅比}：$\gamma$ 的自变量是 $\rho=A_1/A_2$，不是 $I_1/I_2$（\S10.1）。
+\item \textbf{把 $l_c$ 忘掉}：光程差超过相干长度时，任何“条纹间距”公式都算得出数，但屏上没有条纹（\S6.3、\S7.8）。
+\end{enumerate}
+
+\flowerrule
+% ================================================================ §15
+\hdr{\S15}{缺口清单：课件这些页的跳步与补法}
+
+\gapitem{前提缺口（p13、p15）}{p13 起直接用 $k$、$\lambda$、相位差，p15 起直接用“光程”$\Delta L$，但这两样在前 12 页都没有定义。本讲义 \S1 给出 $E=A\cos(\omega t-kz+\varphi_0)$ 与 $k=2\pi/\lambda$，\S4 给出 $L=ns$ 的三步推导，并说明为什么 $\lambda$ 必须取真空波长。}
+
+\gapitem{机制缺口（p6）}{原文直接给 $I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta$（复振幅 $\tilde E\tilde E^*$ 写法），跳过“对时间取平均”。本讲义 \S2.3 补 $\langle E^2\rangle=A^2/2$ 与交叉项的积化和差展开，顺带说明频率不同时它为什么归零。}
+
+\gapitem{换算缺口（p14 与 p15）}{p14 的极大极小用相位写（$2m\pi$、$(2m+1)\pi$），p15 用光程写（$m\lambda$、$(2m+1)\lambda/2$），两页之间没有写出 $2\pi/\lambda$ 这一步换算。本讲义 \S5.1 给出对照表与逐行读法。}
+
+\gapitem{代数跳步（p18）}{原文只写 “$R_2-R_1\approx\frac{d}{D}y$”，没有交代分母为什么是 $2D$、分子为什么是 $2yd$。本讲义 \S7.3 补出 $R_2^2-R_1^2=2yd\to R_2-R_1=2yd/(R_1+R_2)\to R_1+R_2\approx2D$ 的全链，并给出相对误差 $\varepsilon=(y^2+d^2/4)/(2D^2)$。}
+
+\gapitem{答案缺口（p20）}{作业页只有题面（“The central bright fringe (zero order) shifts to the position of the original 8th bright fringe”），没有给判据，也没有说条纹往哪边移。本讲义 \S9 给三条独立路线、方向论证、有效数字讨论与计数约定。}
+
+\gapitem{提问缺口（p25）}{原文用中文提问“代价呢？？？”，下一页直接进入双棱镜，没有回答。本讲义 \S11 补空间相干性的定量结果 $\gamma=|\sin u/u|$、$u=\pi bd/(\lambda l)$，并给出相干宽度 $b_c=\lambda l/d$ 与它的量级。}
+
+\gapitem{压缩缺口（p15）}{原文关于双曲面只有一句 “forms a family of rotational hyperboloids with $S_1$ and $S_2$ as foci”，没有说它与屏的交线就是条纹、也没有说为什么 $m=0$ 是直线。本讲义 \S5.4 用图把它读了一遍，并说明“越往边缘条纹越密”的来源。}
+
+\gapitem{图文错位（p26）}{标题 “Fresnel Biprism” 与正文 “Made of two plane mirrors in contact” 不一致；图是双平面镜。本讲义 \S12.2 与 \S12.3 把双镜与双棱镜分开讲，并点明两者公式差 $(n-1)$。}
+
+\gapitem{机制缺口（p28）}{原文只说 “at grazing incidence, the reflected light undergoes a phase reversal of $\pi$ (half-wave loss)”，没有说为什么掠入射也成立。本讲义 \S12.4 补反射系数 $r=(n_1-n_2)/(n_1+n_2)<0$ 的来源，并说明掠入射时两个分量的相位行为。}
+
+\gapitem{边界缺口（p18）}{$\Delta y=\lambda D/d$ 没有写出适用条件（$y\ll D$、$d\ll D$），也没有说严格情形下条纹不等间距。本讲义 \S7.8 给出 $d\sin\theta=m\lambda$ 与 $\mathrm{d}y/\mathrm{d}m=\lambda D/(d\cos^3\theta)$，说明边缘条纹变密。}
+
+\flowerrule
+% ================================================================ §16
+\hdr{\S16}{自检六题、术语表与三句话}
+
+\subhdr{16.1 自检六题（答案紧跟其后；答案与题同页，故不算独立检验）}
+
+\textbf{1.} 双缝 $d=0.5$ mm、$D=2$ m、$\lambda=600$ nm。求条纹间距与第 3 级明纹到中心的距离。
+
+\textbf{2.} 一条缝前盖 $n=1.5$、$h=3\ \mu$m 的薄片，$\lambda=500$ nm。条纹移动几条？往哪边？
+
+\textbf{3.} 双棱镜 $\alpha=1^\circ$、$n=1.5$、$B=0.25$ m、$C=1.5$ m、$\lambda=500$ nm。求等效双源间距与条纹间距。
+
+\textbf{4.} 双缝 $d=0.1$ mm、$D=0.5$ m、$\lambda=500$ nm。写出条纹间距；若在上缝前盖 $n=1.6$、$h=5\ \mu$m 的片，零级移动几条、往哪边？
+
+\textbf{5.} 钠黄光 $\lambda=589$ nm、谱线宽度 $\Delta\lambda=0.6$ nm。求相干长度与“最多能看见几级条纹”。
+
+\textbf{6.} 洛埃镜中源到镜面高度 $a=0.2$ mm、$D=1$ m、$\lambda=600$ nm。求条纹间距；贴镜面处是明纹还是暗纹？
+
+\medskip
+\textbf{答案与要点：}
+\begin{enumerate}
+\item $\Delta y=\lambda D/d=600\times10^{-9}\times2/0.5\times10^{-3}=2.4$ mm；$y_3=3\Delta y=7.2$ mm。
+\item 条数 $=(n-1)h/\lambda=0.5\times3\ \mu\mathrm{m}/500\ \mathrm{nm}=3$；向被盖住的那条缝一侧移动，零级恰好落在旧的第 3 级处。
+\item $d\approx2(n-1)\alpha B=2\times0.5\times0.017453\times0.25=4.363$ mm；$\Delta x=(B+C)\lambda/d=1.75\times500\times10^{-9}/4.363\times10^{-3}\approx0.20$ mm。
+\item $\Delta y=500\times10^{-9}\times0.5/10^{-4}=2.5$ mm；条数 $=0.6\times5\ \mu\mathrm{m}/500\ \mathrm{nm}=6$，向被盖住的上缝一侧移动。
+\item $l_c=\lambda^{2}/\Delta\lambda=589^{2}/0.6\ \mathrm{nm}\approx0.58$ mm；级数 $l_c/\lambda\approx0.58\ \mathrm{mm}/589\ \mathrm{nm}\approx980$ 级。
+\item $\Delta x=D\lambda/(2a)=10^{-3}\times600\times10^{-9}/(4\times10^{-4})=1.5$ mm；有半波损失，贴镜面处是暗纹。
+\end{enumerate}
+
+\subhdr{16.2 英文术语对照（课件原文用词）}
+
+课件是英文的，作业也按英文出题，这里把本节出现的词与中文、与本文记号对齐。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{6.0cm}>{\raggedright\arraybackslash}m{3.4cm}>{\raggedright\arraybackslash}m{5.4cm}@{}}
+\thead{课件英文} & \thead{中文} & \thead{本文记号 / 位置}\\
+\tabmid
+interference / interference fringes & 干涉 / 干涉条纹 & ---\\
+constructive / destructive interference & 相长 / 相消干涉 & 明纹 / 暗纹（\S5.1）\\
+optical path / optical path difference & 光程 / 光程差 & $L=ns$，$\Delta L$（\S4）\\
+fringe spacing & 条纹间距 & $\Delta y$（双缝）、$\Delta x$（其他装置）\\
+contrast / visibility & 对比度 / 可见度 & $\gamma$（\S10）\\
+wavefront division & 波前分割 & \S11（与 p29 起的 split-amplitude division 相对）\\
+spatial coherence & 空间相干性 & $b_c=\lambda l/d$（\S11）\\
+temporal coherence & 时间相干性 & $l_c=\lambda^{2}/\Delta\lambda$（\S6.3）\\
+wave train & 波列 & \S6.2\\
+half-wave loss & 半波损失 & 洛埃镜（\S12.4）\\
+Fresnel biprism / double mirror & 双棱镜 / 双平面镜 & p26--p27（\S12.2--\S12.3）\\
+Lloyd's mirror & 洛埃镜 & p28（\S12.4）\\
+\end{tabular}
+\tabbot}
+
+\subhdr{16.3 三句话}
+
+\begin{enumerate}
+\item 干涉的全部内容是\emph{光程差}：$\Delta L$ 变一个 $\lambda$，条纹就挪一格；插入介质只是把某束光的 $\Delta L$ 加上 $(n-1)h$。
+\item 双缝把 $\Delta L$ 变成可测的几何量 $\Delta L\approx yd/D$，于是 $\Delta y=\lambda D/d$——装置把光的空间周期 $\lambda$ 放大 $D/d$ 倍。
+\item 能把条纹看清的前提是相位稳定与振幅相近：前者要求点光源（窄缝）与足够短的光程差（$<l_c$），后者要求两束强度可比（对比度 $\gamma$）。
+\end{enumerate}
+
+\flowerrule
+
+\callout{\textbf{交作业前的六项自检}：\textcircled{1} 图上标清被盖的 $S_1$、另一条缝 $S_2$、$P$ 与 $O$；\textcircled{2} 写出“新零级 $\Leftrightarrow$ 光程差为零”这一句；\textcircled{3} 片厚一律写 $h$，别再用 $d$；\textcircled{4} 级次取 $m=8$，并用一句话写明你的计数约定（零级算第 1 条）；\textcircled{5} 答出移动方向：向被盖住的那条缝一侧；\textcircled{6} 答案写 $h=7.6\ \mu\mathrm{m}$，并核对量纲与数量级（14 个波长上下）。}
+
+\callout{\textbf{下一步（按顺序做，不要跳）}：
+\textcircled{1} 合上讲义，用一张白纸默写 \S0.1 的五步链，每步下面写一个公式（5 分钟）；
+\textcircled{2} 做 \S16.1 的第 1、2 题，对照答案只改错处（10 分钟）；
+\textcircled{3} 闭卷把 p20 那道作业完整写一遍：画图、写 $\Delta L$、令零级为零、代数字、自检，写完拍照发我——我只核对“零级条件”和“方向”两处，其余不重复讲。}
+
+\end{document}

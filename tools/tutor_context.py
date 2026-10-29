@@ -6,7 +6,7 @@ from pathlib import Path
 from curriculum import reconcile
 from derive_state import source_fingerprint
 from observations import pending
-from reviews import all_review_items
+from reviews import all_review_items, load_study_mode
 from timebase import learning_today
 from learninglib import resumable_attempts, load_hurdles
 
@@ -58,6 +58,9 @@ def build(root: Path, today: str, subject: str | None = None) -> dict:
         context['warning'] = '派生状态过期，旧计数不能用于判断当前掌握；先刷新。'
         return context
     context['summary'] = state['summary']
+    # 2026-10-29 学习模式（讲义驱动 / 考前验收）：只影响"队列怎么显示"和"门禁怎么读"，
+    # 不改任何能力事实——账本仍是 0，就照实显示 0。
+    context['study_mode'] = load_study_mode(root)
     context['attempts_count'] = state['source']['attempts_events']
     context['open_hurdles'] = [
         {k:row['data'].get(k) for k in ('hurdle_id','target_ids','status')}
@@ -120,20 +123,44 @@ def main():
             summary = context['summary']
             print(f'真实作答 {context["attempts_count"]} 条')
             print(f'已登记能力目标 {summary["targets"]}；稳定证据 {summary["stable_evidence"]}；未解决困难 {summary["open_hurdles"]}')
+            mode = context.get('study_mode') or {}
+            handout = mode.get('mode') == 'handout-driven'
+            if handout:
+                print(
+                    f'学习模式：讲义驱动（自 {mode.get("since", "—")}）——讲授走讲义；'
+                    '能力证据只在考前闭卷验收时采集，平时不升级。'
+                )
             print('待处理学习者反馈：', len(context['pending_observations']))
-            for row in context['pending_observations'][:5]:
-                print(f'- {row["id"]}: {row["text"]}')
+            if handout:
+                print('  - 明细不在此展开（`--json` 或读 learning/observations.jsonl）；讲义模式下它们不是当日待办。')
+            else:
+                for row in context['pending_observations'][:5]:
+                    print(f'- {row["id"]}: {row["text"]}')
             print('未完成题续学点：', len(context['resume_points']))
-            for row in context['resume_points'][-6:]:
-                print(f'- {row["task_id"]}: {"；".join(row["notes"]) or "按实际草稿核对"}')
+            if handout:
+                print('  - 明细见 state/current.md 第②节；讲义模式下不逐条展开。')
+            else:
+                for row in context['resume_points'][-6:]:
+                    print(f'- {row["task_id"]}: {"；".join(row["notes"]) or "按实际草稿核对"}')
             untaught = context['untaught_targets']
-            print(f'⚠ 未学门禁（防幻觉）：{untaught["gate_rule"]}')
-            if untaught['scheduled_zero_attempts']:
-                print('  - 已建题但 0 次作答（默认未学，须先教后做）：', '、'.join(untaught['scheduled_zero_attempts']))
-            if untaught['unscheduled_no_tasks']:
-                print('  - 已声明但无题且 0 次作答（默认未学）：', '、'.join(untaught['unscheduled_no_tasks']))
+            if handout:
+                print(
+                    '未学门禁（讲义模式）：讲义已覆盖的考点按需答疑、不重复从零讲；无讲义覆盖的仍先讲后做。'
+                )
+                print(
+                    f'  - 0 次作答目标 {len(untaught["scheduled_zero_attempts"])} 个、'
+                    f'无题目标 {len(untaught["unscheduled_no_tasks"])} 个——它们是账本事实，不计入待办。'
+                )
+            else:
+                print(f'⚠ 未学门禁（防幻觉）：{untaught["gate_rule"]}')
+                if untaught['scheduled_zero_attempts']:
+                    print('  - 已建题但 0 次作答（默认未学，须先教后做）：', '、'.join(untaught['scheduled_zero_attempts']))
+                if untaught['unscheduled_no_tasks']:
+                    print('  - 已声明但无题且 0 次作答（默认未学）：', '、'.join(untaught['unscheduled_no_tasks']))
             gaps = context['progress_three_state_gaps']
-            if gaps:
+            if gaps and handout:
+                print(f'三态表未讲/未学/未测：{len(gaps)} 项（需与讲义台账对账，不据此布置先教后做）')
+            elif gaps:
                 print(f'课程 progress.md 三态表未讲/未学/未测项（共 {len(gaps)} 项，严禁当已学处理）：')
                 for g in gaps[:12]:
                     sec = f'[{g["section"]}] ' if g['section'] else ''
@@ -142,8 +169,11 @@ def main():
             if not context['scope_registered']:
                 print('本项目尚未登记课件章节范围；能力状态仍按实际账本展示，不推断全覆盖。')
             print('当前可做/到期任务：', len(context['due_items']))
-            for row in context['due_items'][:6]:
-                print(f'- {row["id"]}: {row["note"]}')
+            if handout:
+                print('（讲义模式：旧题已归档、能力再测队列仅在考前验收窗口开启，所以平时为 0 是正常的）')
+            else:
+                for row in context['due_items'][:6]:
+                    print(f'- {row["id"]}: {row["note"]}')
             print('课程范围缺口（不是成绩）：')
             for chapter in context['curriculum']:
                 if chapter['units']:

@@ -1,0 +1,87 @@
+\documentclass[11pt]{ctexart}
+\input{D:/aaa_D_usual/DSH/111学习助手/.dsh/skills/lecture-deepdive/assets/theme-violet}
+\begin{document}
+
+\doctitle{杨氏双缝：从光程差到云母片}%
+{第五章 \S5.5--5.7 \ 双缝干涉与分波前装置 · 精讲讲义}%
+{依据：\texttt{第五章 光的干涉.pdf}（83 页扫描版，逐页读图）p13--p28\ \textbar\ 2026-10-27}
+
+\callout{\textbf{这份讲义解决什么。}你手上那张手写稿（云母片盖住一条缝、算出 $7.6\,\mu\mathrm{m}$）对应的不是习题册，而是课件本身：\textbf{p20 的 Ex.\,5.2，页脚印着 HOME WORK TWO}。整份作业只有这一问。
+本讲义把 p13--p28 这 16 页串成一条能独立读的线：\S1 讲清"普通光凭什么也能干涉"；\S2 把光程与相位差接上；\S3 补完双缝的几何近似（课件在这里跳了一步，是全班最容易写错的地方）；\S4、\S5 逐题全解（\S5 就是你的作业，给了三条互相独立的路线）；\S6--\S8 讲对比度、空间相干性和三种分波前装置；\S11 把课件每一处跳步连页码带原话列出来；\S12 给三题自检。
+讲义里凡标 \textbf{[补]} 的地方，都是课件没有写、由本讲义补出的完整推导；凡标 \textbf{[课件原话]} 的地方，都是直接引用那 16 页的句子。}
+
+\flowerrule
+
+% ---------------------------------------------------------------- §0
+\hdr{\S0}{课件坐标、范围与记号}
+
+\subhdr{0.1 这 16 页分别在讲什么}
+
+本节取自 \texttt{第五章 光的干涉.pdf} p13--p28，共 16 页。p12 之前是相干条件的一般讨论，p29 起进入分振幅（薄膜）干涉，所以 p13--p28 刚好是一段自足的「分波前干涉」。
+
+\tabtop
+\noindent\begin{tabular}{@{}p{1.3cm}p{6.1cm}p{4.5cm}p{4.0cm}@{}}
+\thead{课件页} & \thead{标题（原文）} & \thead{核心内容} & \thead{本讲义位置}\\
+\tabmid
+p13 & Interference of Two Ideal Point Sources & 两理想点源的场与强度 & \S1.2\\
+p14 & Intensity Distribution of Two Ideal Point Sources & $I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta$ 的极大极小 & \S1.2、\S2\\
+p15 & Relationship Between Phase Difference and Optical Path Difference & $\delta=\frac{2\pi}{\lambda}\Delta L$，双曲线族 & \S2\\
+p16 & Young's Interference --- Interference with Ordinary Light Sources & 单缝造点源、双缝切波前 & \S1.4、\S3\\
+p17 & The Phase Difference in Young's Interference & 初相位相消、$R_2^2-R_1^2=2yd$ & \S3.1\\
+p18 & Fringe Spacing in Young's Interference & $\Delta y=\lambda D/d$ & \S3.2\\
+p19 & Example 5.1 Measuring the Wavelength of Light & 例题（有解） & \S4\\
+p20 & Ex.\,5.2 Mica Sheet Covering a Slit & \textbf{作业 HOME WORK TWO}（无解） & \S5\\
+p21 & The Physical Essence of Young's Interference & 空间周期性、把装置看成"放大器" & \S3.4\\
+p22 & Contrast of Interference Fringes & $\gamma=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ & \S6\\
+p23 & Interference Intensity in Terms of Contrast & $\gamma=\frac{2A_1A_2}{A_1^2+A_2^2}$ & \S6\\
+p24 & Intensity Distribution Expressed by Visibility & $I=I_0(1+\gamma\cos\delta)$ & \S6\\
+p25 & Wavefront Division: Core Idea and Key Challenge & 波前分割的做法与"致命问题" & \S7\\
+p26 & Fresnel Biprism（正文实为双平面镜） & $d\approx 2\alpha B$ & \S8\\
+p27 & Fresnel Biprism & $d\approx 2(n-1)\alpha B$ & \S8\\
+p28 & Lloyd's Mirror & $\Delta x=D\lambda/(2a)$、半波损失 & \S8\\
+\tabbot
+
+\subhdr{0.2 记号表（全文只此一套）}
+
+\tabtop
+\noindent\begin{tabular}{@{}p{2.2cm}p{13.0cm}@{}}
+\thead{符号} & \thead{含义与单位}\\
+\tabmid
+$S$ & 单缝（点光源）所在位置；它到两缝的距离记为 $r_1$、$r_2$\\
+$S_1,\,S_2$ & 两条缝；到屏上观察点 $P$ 的几何距离记为 $R_1$、$R_2$\\
+$P(x,y)$ & 屏上观察点，$y$ 为离轴高度（向上为正），$x$ 为屏内横向坐标\\
+$d$ & \textbf{双缝间距}（p16--p18 的用法）；单位 m\\
+$D$ & 双缝到屏的距离；单位 m\\
+$h$ & \textbf{云母片厚度}（p20 图上标的是 $d$，与缝距撞名；本讲义改记 $h$）；单位 m\\
+$n$ & 云母片或棱镜的折射率；无量纲\\
+$\lambda$ & \emph{真空}中的波长；单位 m（介质中波长见 \S2）\\
+$k$ & 波数，$k=2\pi/\lambda$（p13、p17 的用法）；单位 $\mathrm{m^{-1}}$\\
+$\delta$ & 两束光的相位差；单位 rad\\
+$\Delta L$ & 光程差（optical path difference）；单位 m\\
+$m$ & 级次，整数 $0,\pm1,\pm2,\dots$；\textbf{不是} $k$\\
+$\gamma$ & 对比度（可见度），$0\le\gamma\le1$\\
+$B,\,C$ & 双镜/双棱镜中：源到镜交点的距离 $B$，交点到屏的距离 $C$\\
+$\alpha$ & 双镜两镜面夹角 / 双棱镜顶角；单位 rad\\
+$a$ & 洛埃镜中源到镜面的高度\\
+\tabbot
+
+\warnbox{\textbf{记号撞车警告。}课件自己在两处用了同一个字母：p16--p18 的 $d$ 是\emph{缝距}，p20 图上的 $d$ 是\emph{云母片厚度}。这不是小事——你手写稿最后一行 $d=8\lambda/(n-1)$ 里的 $d$，和前面 $\Delta L\approx yd/D$ 里的 $d$ 已经不是同一个东西了。本讲义一律用 $h$ 表示片厚，就是为了让这两件事在纸上分得开。}
+
+\flowerrule
+% ---------------------------------------------------------------- §1
+\hdr{\S1}{地基：叠加、强度、相干三条件}
+
+读这一节要抓住一件事：\emph{相位差}是唯一的主角，其余全是它的配角。
+
+\subhdr{1.1 叠加原理：先把"能相加"说清楚}
+
+p3--p5 给的是场矢量相加：
+\[
+\vec{E}(P,t)=\vec{E}_1(P,t)+\vec{E}_2(P,t).
+\]
+\aside{成立条件是介质线性（p4 原话："When the principle of superposition holds in a medium, the medium is called a \textbf{linear medium}"）。强激光、非线性晶体里这条不成立，那时光会自己"干涉自己"产生新频率——本课不涉及。}
+
+\subhdr{1.2 强度是时间平均：课件 p6 跳掉的一步 \textbf{[补]}}
+
+p6 直接写出 $I(P)=I_1+I_2+2\sqrt{I_1I_2}\cos\delta(P)$。这一步不是"代入就完"，中间隔着一次时间平均，而时间平均正是"相干"与"不相干"的分水岭。完整走一遍。
+\end{document}

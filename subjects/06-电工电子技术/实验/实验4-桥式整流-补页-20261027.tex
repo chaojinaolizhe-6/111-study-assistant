@@ -1,0 +1,206 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[american]{circuitikz}
+\settags{实验 4 · 桥式整流补页}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{8\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{补页：桥式整流到底怎么走电流}
+{配合《实验 4 直流稳压电源》讲义 §2.3；先看图，再读表，最后看波形}
+{2026-10-27\ \textperiodcentered\ 建议打印后夹在讲义第 3 页前}
+
+\callout{\textbf{这一页解决什么问题。} 原讲义 §2.3 直接从“四只二极管”跳到“导通表”，中间缺了\textbf{桥的接线图}和\textbf{两条电流路径}：读者看不到 a、b 怎么接、+、− 怎么出、电流从哪只管子进、从哪只管子回，所以“负半周被翻上来”只能死记。下面按“拓扑 \(\to\) 两条路径 \(\to\) 波形”三步补上；看完这三步，再回头看原讲义的表，表就只是图的摘要。}
+
+%=============================================================
+\hdr{第一步}{先认桥：四只二极管、两个交流端、两个直流端}
+
+\begin{figure}[H]
+\centering
+\begin{circuitikz}[scale=0.95,transform shape]
+\coordinate (L) at (0,0);
+\coordinate (T) at (2.5,2.2);
+\coordinate (R) at (5,0);
+\coordinate (B) at (2.5,-2.2);
+\draw (L) to[D] (T);
+\draw (R) to[D] (T);
+\draw (B) to[D] (L);
+\draw (B) to[D] (R);
+\node[font=\small] at (0.65,1.5) {$D_1$};
+\node[font=\small] at (4.35,1.5) {$D_2$};
+\node[font=\small] at (0.65,-1.5) {$D_3$};
+\node[font=\small] at (4.35,-1.5) {$D_4$};
+\draw (T) -- (7.0,2.2) to[R, l_=$R_1$] (7.0,-2.2) -- (B);
+\draw[<->] (7.7,2.0) -- (7.7,-2.0) node[midway,right] {$U_{o1}$};
+\node[left] at (L) {a};
+\node[right] at (R) {b};
+\node[above] at (T) {+};
+\node[below] at (B) {\(-\)};
+\node[below,font=\scriptsize] at (2.5,-2.8) {桥的“下顶点”};
+\node[above,font=\scriptsize] at (2.5,2.8) {桥的“上顶点”};
+\end{circuitikz}
+\caption{桥式整流的拓扑：a、b 是交流输入端（接变压器副边），+、− 是直流输出端（接负载 \(R_1\)）。四只二极管两两成对，\(D_1\)、\(D_2\) 的阴极都朝上，\(D_3\)、\(D_4\) 的阳极都朝下。}
+\end{figure}
+
+\textbf{先记三个位置，不要急着背导通表：}
+\begin{itemize}
+  \item \textbf{a、b}：交流输入端。a 是左顶点，b 是右顶点；它们接变压器副边，电压 \(u_2\) 就加在 a、b 之间。
+  \item \textbf{+}：上顶点，直流输出的正端；\textbf{−}：下顶点，直流输出的负端。负载 \(R_1\) 接在 +、− 之间。
+  \item \textbf{四只管子}：\(D_1\) 在 a 到 + 的边上，\(D_2\) 在 b 到 + 的边上，\(D_3\) 在 − 到 a 的边上，\(D_4\) 在 − 到 b 的边上。注意方向：\(D_1\)、\(D_2\) 的箭头都指向 +；\(D_3\)、\(D_4\) 的箭头都从 − 指向 a/b。
+\end{itemize}
+
+%=============================================================
+\clearpage
+\hdr{第二步}{分两个半周看：哪两只管子导通、电流怎么走}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{circuitikz}[scale=0.70,transform shape]
+\coordinate (L) at (0,0); \coordinate (T) at (2.5,2.2);
+\coordinate (R) at (5,0); \coordinate (B) at (2.5,-2.2);
+% gray bridge
+\draw[gray] (L) to[D] (T);
+\draw[gray] (R) to[D] (T);
+\draw[gray] (B) to[D] (L);
+\draw[gray] (B) to[D] (R);
+% red path
+\draw[red,very thick] (L) to[D] (T) -- (6.6,2.2) to[R] (6.6,-2.2) -- (B) to[D] (R);
+\draw[red,very thick,->] (5.8,1.6) -- (5.8,0.4);
+\node[left,font=\small] at (L) {a\,+};
+\node[right,font=\small] at (R) {b\,\(-\)};
+\node[above,font=\small] at (T) {+};
+\node[below,font=\small] at (B) {\(-\)};
+\node[font=\scriptsize,red] at (5.8,-1.1) {$I_L$};
+\node[font=\small] at (0.65,1.5) {$D_1$};
+\node[font=\small] at (4.35,1.5) {$D_2$};
+\node[font=\small] at (0.65,-1.5) {$D_3$};
+\node[font=\small] at (4.35,-1.5) {$D_4$};
+\end{circuitikz}
+\par\small (a) \(u_2>0\)：a 正、b 负；\(D_1\)、\(D_4\) 导通（红），\(D_2\)、\(D_3\) 截止（灰）。
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{circuitikz}[scale=0.70,transform shape]
+\coordinate (L) at (0,0); \coordinate (T) at (2.5,2.2);
+\coordinate (R) at (5,0); \coordinate (B) at (2.5,-2.2);
+\draw[gray] (L) to[D] (T);
+\draw[gray] (R) to[D] (T);
+\draw[gray] (B) to[D] (L);
+\draw[gray] (B) to[D] (R);
+% blue path
+\draw[blue,very thick] (R) to[D] (T) -- (6.6,2.2) to[R] (6.6,-2.2) -- (B) to[D] (L);
+\draw[blue,very thick,->] (5.8,1.6) -- (5.8,0.4);
+\node[left,font=\small] at (L) {a\,\(-\)};
+\node[right,font=\small] at (R) {b\,+};
+\node[above,font=\small] at (T) {+};
+\node[below,font=\small] at (B) {\(-\)};
+\node[font=\scriptsize,blue] at (5.8,-1.1) {$I_L$};
+\node[font=\small] at (0.65,1.5) {$D_1$};
+\node[font=\small] at (4.35,1.5) {$D_2$};
+\node[font=\small] at (0.65,-1.5) {$D_3$};
+\node[font=\small] at (4.35,-1.5) {$D_4$};
+\end{circuitikz}
+\par\small (b) \(u_2<0\)：b 正、a 负；\(D_2\)、\(D_3\) 导通（蓝），\(D_1\)、\(D_4\) 截止（灰）。
+\end{minipage}
+\caption{两条路径：红色是正半周，蓝色是负半周。两次都从 + 流出、从 − 流回，所以 \(R_1\) 上的电流方向始终从上到下。}
+\end{figure}
+
+\textbf{怎么读这两张图（按顺序做）：}
+\begin{enumerate}
+  \item 先看 \(u_2\) 的极性：a 正还是 b 正。阳极接高电位、阴极接低电位的那只二极管才会导通；反偏的截止。
+  \item 从 a（或 b）出发，沿导通二极管走到 +，再穿过 \(R_1\) 到 −，最后沿另一只导通二极管回到 b（或 a）。
+  \item 确认 \(I_L\) 的方向：两张图里 \(I_L\) 都从上往下。方向不变，大小仍在脉动，这就是“全波脉动直流”。
+\end{enumerate}
+
+\warnbox{\textbf{一句话记住：}正半周走 \(D_1\to R_1\to D_4\)，负半周走 \(D_2\to R_1\to D_3\)。两只管子一组，轮流把 a、b 接到 +、− 上；负载始终接在 +、− 之间，所以电流不反向。}
+
+\flowerrule
+\callout{\textbf{回到原讲义。} 现在再翻到 §2.3 的导通表：它其实就是把上面两张小图压缩成了两行。看到“\(u_2>0\)：\(D_1,D_4\)”时，脑子里应该浮现红色路径；看到“\(u_2<0\)：\(D_2,D_3\)”时，应该浮现蓝色路径。如果还能浮现不出来，就自己拿一张纸，把图 1 重画一遍，再用红、蓝笔各描一次路径——这比反复读表有效。}
+
+%=============================================================
+\hdr{第三步}{再看波形：负半周被“翻”到正半周}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.9,>=Latex]
+% u2
+\begin{scope}[xshift=0cm]
+\draw[->] (0,0) -- (7.2,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-1.8) -- (0,1.9) node[above] {\scriptsize $u_2$};
+\draw[thick,blue,domain=0:720,samples=240] plot ({\x/100},{1.5*sin(\x)});
+\draw[dashed] (0,0) -- (7.2,0);
+\node[font=\scriptsize] at (1.8,1.65) {正半周};
+\node[font=\scriptsize] at (5.4,-1.65) {负半周};
+\foreach \x in {1.8,3.6,5.4} \draw (\x,0.06) -- (\x,-0.06);
+\node[below,font=\scriptsize] at (1.8,0) {$\pi$};
+\node[below,font=\scriptsize] at (3.6,0) {$2\pi$};
+\node[below,font=\scriptsize] at (5.4,0) {$3\pi$};
+\node[below,font=\scriptsize] at (0,0) {0};
+\end{scope}
+% uo1
+\begin{scope}[xshift=0cm,yshift=-4.6cm]
+\draw[->] (0,0) -- (7.2,0) node[right] {\scriptsize $t$};
+\draw[->] (0,-0.2) -- (0,1.9) node[above] {\scriptsize $u_{o1}$};
+\draw[thick,red,domain=0:720,samples=240] plot ({\x/100},{1.5*abs(sin(\x))});
+\draw[dashed] (0,0.955) -- (7.0,0.955);
+\node[font=\scriptsize] at (2.8,1.15) {$0.9U_2$};
+\foreach \x in {1.8,3.6,5.4} \draw (\x,0.06) -- (\x,-0.06);
+\node[below,font=\scriptsize] at (1.8,0) {$\pi$};
+\node[below,font=\scriptsize] at (3.6,0) {$2\pi$};
+\node[below,font=\scriptsize] at (5.4,0) {$3\pi$};
+\node[below,font=\scriptsize] at (0,0) {0};
+\node[font=\scriptsize] at (3.6,1.7) {周期变成 $T/2=10\,\mathrm{ms}$};
+\end{scope}
+% arrow between panels
+\draw[->,thick] (7.6,0.2) -- (7.6,-4.4);
+\node[font=\scriptsize,right] at (7.7,-2.1) {负半周翻上来};
+\end{tikzpicture}
+\caption{上：副边交流 \(u_2\) 有正有负；下：桥式整流后 \(u_{o1}=|u_2|\)，负半周被翻到正半周，脉动周期变成 \(T/2=10\,\mathrm{ms}\)，平均值约 \(0.9U_2\)。}
+\end{figure}
+
+\textbf{波形和路径的对应：}
+\begin{itemize}
+  \item 上图的每一个正半周，对应 (a) 的红路：\(D_1\to R_1\to D_4\)；
+  \item 上图的每一个负半周，对应 (b) 的蓝路：\(D_2\to R_1\to D_3\)；
+  \item 两条路都让 \(R_1\) 的电流从上往下，所以下图全是“正拱”，没有负半周；这就是“全波”。
+\end{itemize}
+
+%=============================================================
+\hdr{自检与常见误解}
+
+\subhdr{三个自检问题（能答出来，就真的看懂了）}
+
+\begin{enumerate}
+  \item 正半周（a 正、b 负）时，电流从 a 出发，经过哪两只二极管回到 b？——答：\(D_1\to R_1\to D_4\)。
+  \item 负半周（b 正、a 负）时，电流从 b 出发，经过哪两只二极管回到 a？——答：\(D_2\to R_1\to D_3\)。
+  \item 如果把 \(D_1\) 反接，正半周会发生什么？——答：正半周没有通路，输出缺一半，波形变成“半波”，平均值明显下降；严重时还可能短路。这个反例能帮你记住 \(D_1\) 的方向。
+\end{enumerate}
+
+\subhdr{四个常见误解}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{6.2cm}p{9.4cm}@{}}
+\hline
+\thead{误解} & \thead{纠正} \\
+\hline
+“四只二极管同时导通” & 每个半周只有两只导通；另外两只反偏截止。 \\
+“桥式整流是半波” & 桥式是全波：正、负半周都用上，脉动频率 \(100\,\mathrm{Hz}\)。 \\
+“输出已经是直流” & 输出是\textbf{脉动直流}，方向不变但大小仍在变；还要滤波。 \\
+“平均值是 \(0.45U_2\)” & \(0.45U_2\) 是半波；桥式全波是 \(0.9U_2\)。 \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}

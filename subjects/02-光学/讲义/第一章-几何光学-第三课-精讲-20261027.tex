@@ -1,0 +1,780 @@
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+% 表格中栏线：theme 的 \tabmid 在 tabular 内会把横线塞进首格，这里改成 \noalign 形式
+\renewcommand{\tabmid}{\noalign{\vskip 1pt{\color{petal}\hrule height 0.5pt}\vskip 2pt}}
+\settags{第一章 几何光学 · 第三课（精讲）}{光学}
+\begin{document}
+
+\doctitle{从球面到透镜：单球面傍轴成像与薄透镜}%
+{第一章「几何光学」第三课 · 精讲讲义}%
+{依据课件《第一章 几何光学 - 第三课.pdf》（43 页，英文，Lecture 3: From Spheres to Lenses；逐页读图核对）\\中国日期 2026-10-27}
+
+\callout{\textbf{先看这一条（全文唯一一套符号）}：本讲义取顶点 $A$（或光心 $O$）为原点、光沿 $+x$ 方向传播，所有长度都是\textbf{有向坐标}：实物在左侧就写 $s<0$，实像在右侧就写 $s'>0$。课件正文（p16、p24--p29）印的是「距离恒正」的写法，两套只差一个 $s\to -s$，同一道题算出的 $s'$、$\beta$ 数值完全相同。§0.5 给换算与两次代数字的验算；§7 缺口 1 说明课件自己的公式页（p40）为什么两套写法混在一页上。}
+
+\hdr{§0}{课件坐标、范围与记号}
+
+\subhdr{0.1 这一讲在讲什么（一句话主线）}
+
+真实球面\textbf{不能}把一束光聚成一点 $\Longrightarrow$ 把光束限制在光轴附近（\textbf{傍轴}，paraxial）$\Longrightarrow$ 严格关系式里的 $\sin^2(\varphi/2)$ 项被抹掉 $\Longrightarrow$ 得到只含 $s,s',r,n,n'$ 的\textbf{物像公式} $\Longrightarrow$ 由它推出焦距、放大率、透镜公式。课件 p14（角标 14）用英文把这条主线写成一行：
+
+\begin{center}
+\small Exact Spherical Refraction $\rightarrow$ Nonlinearity $\rightarrow$ Non-stigmatic Point Objects Fail to Form Perfect Images $\rightarrow$ Paraxial Linearization $\rightarrow$ Gaussian Optics
+\end{center}
+
+\subhdr{0.2 课件坐标：页序、角标与覆盖范围}
+
+\textbf{页码怎么数}：本讲义一律用 \textbf{PDF 页序}。课件页内红色角标从 p15 起比 PDF 页序小 1（p16 印 15、p40 印 39），而且 p14 与 p15 两页\textbf{都印 14}（重复编号）。下表两列并排给，避免对不上。
+
+\tabtop
+\begin{tabular}{@{}p{2.5cm}p{2.0cm}p{10.6cm}@{}}
+\thead{PDF 页} & \thead{页内角标} & \thead{内容（本讲义落点）}\\
+\tabmid
+p1--p4 & 1--4 & 封面、结构图（含 §1.5/§1.6 的公式预告与 $\beta=ns'/n's$）、上节回顾、本课要解决的问题（§0.1）\\
+p5--p13 & 5--13 & §1.5-1 单球面折射的\emph{精确}关系：几何关系、主关系式、严格成像条件、共轭点（§1）\\
+p14--p15 & 14、14 & 傍轴近似三栏 + 两条判据 + 取近似后得物像公式（§1.5、§2）\\
+p16--p22 & 15--21 & 物像公式、焦点焦距、反射特例、等光程、轴外点、放大率、逐次成像（§1.6、§2、§5.1）\\
+p23--p30 & 22--29 & §1.6 薄透镜：近似、方程、磨镜者、凸凹表、高斯式、牛顿式、放大率、密接（§3）\\
+p31--p33 & 30--32 & 物方/像方焦平面、副光线、共轭光线、三条特殊光线作图（§4）\\
+p34--p41 & 33--40 & 例题 1.4（六页）与两张关键公式页（§6、§8）\\
+p42--p43 & --- & 下节预告（光学仪器）与致谢（无新内容）\\
+\end{tabular}
+\tabbot
+
+\textbf{页数说明}：按「课件页数 $\times$ 0.5」应写到 21.5 页以上，本讲义实为 \textbf{18 页}（落在 14--18 的合并区间），原因是这份课件\textbf{图多字少}：43 页里真正承载信息的是 p5--p41 的图与公式，p1--p4、p31--p33 画的是同一件事，p42--p43 无内容。合并掉的是\textbf{重复}而非内容——精确式压成一条推导链（§1.2--§1.4），三栏说明压成一段（§1.5），凸/凹透镜两张 5 列表按磨镜者公式重排成一张 6 行表（§3.4），例题六页合并成一块（§6）；定义、公式、例题在 §10 逐条有落点。
+
+\subhdr{0.3 符号表（全文一致，不再另设）}
+
+这张表只回答「这个字母是什么、单位是什么、正负怎么定」，不回答「怎么来」。
+
+\tabtop
+\begin{tabular}{@{}p{2.4cm}p{7.6cm}p{5.4cm}@{}}
+\thead{符号} & \thead{含义} & \thead{正负与单位（本讲义）}\\
+\tabmid
+$n,\ n'$ & 物方、像方折射率（refractive index）& 无量纲，$n,n'>1$\\
+$r$ & 折射球面的曲率半径（radius of curvature）& 有向：曲率中心在顶点右侧为正；长度\\
+$s$ & 物距：物点到顶点 $A$ 的坐标 & 有向：实物在左 $s<0$，虚物在右 $s>0$\\
+$s'$ & 像距：像点到顶点 $A$ 的坐标 & 有向：实像在右 $s'>0$，虚像在左 $s'<0$\\
+$f,\ f'$ & 物方、像方焦距（front / rear focal length）& 有向：$f$ 是 $F$ 的坐标，$f'$ 是 $F'$ 的坐标\\
+$y,\ y'$ & 物高、像高（在共轭面内量）& 光轴上方为正\\
+$\beta$（课件写作 $V$）& 横向放大率（lateral magnification）& $\beta>0$ 正立，$\beta<0$ 倒立；$|\beta|>1$ 放大\\
+$x,\ x'$ & 牛顿式里的物距、像距（从焦点量）& 有向：$x=s-f$，$x'=s'-f'$\\
+$\varphi$；$u,\ u'$；$i,\ i'$ & 入射点对 $C$ 张的角；光线与光轴的夹角；对法线的入射角与折射角 & 弧度；傍轴时都 $\ll1$，且 $n\sin i=n'\sin i'$\\
+$h$；$p,\ p'$ & $M$ 到光轴的高度；物点到 $M$、$M$ 到像点的距离 & 长度；$h=r\sin\varphi$\\
+$d_{12}$ & 第 1、2 面（或两透镜）的间距 & 长度，$d_{12}\ge0$\\
+\end{tabular}
+\tabbot
+
+\subhdr{0.4 五条符号规则（全文只此一套）}
+
+课件 p2 的结构图在 §1.5-2 下面写了一条「Sign Conventions (Five Rules)」，但 43 页里\textbf{没有任何一页}把五条列出来：p23（角标 22）只给 2 条（$s$、$s'$），p20（角标 19）给 1 条（$y$），p28（角标 27）给 2 条（$x$、$x'$），p26 只用到了 $r$ 的符号。下面这五条是从这几页拼回来的（§7 缺口 7）：
+
+\begin{enumerate}
+  \item \textbf{光轴与原点}：光轴取作 $x$ 轴，光沿 $+x$ 传播；一切长度自顶点 $A$（薄透镜自光心 $O$）量起，与 $+x$ 同向为正。
+  \item \textbf{物距 $s$}：实物在左侧（入射侧）$s<0$；虚物在右侧 $s>0$。（课件 p23 印的是距离式「左正右负」，见 §0.5。）
+  \item \textbf{像距 $s'$}：实像在右侧（出射侧）$s'>0$；虚像在左侧 $s'<0$。（同上。）
+  \item \textbf{曲率半径 $r$}：曲率中心在顶点右侧 $r>0$，在左侧 $r<0$。
+  \item \textbf{横向高度 $y,y'$}：光轴上方为正，下方为负（课件 p20，角标 19：``If point $P$ is above the optical axis, then $y>0$''）。
+\end{enumerate}
+
+由第 2、3 条立刻得到一个\textbf{不必背的推论}：实物成实像时 $s$ 与 $s'$ 异号，故 $\beta=ns'/(n's)<0$，像必倒立；实物成虚像时 $s,s'$ 同号，像正立。这条推论在 §2.4 与 §6 都会用到，不必另记。
+
+\subhdr{0.5 课件印的式子 vs 本讲义写的式子（换算表）}
+
+课件正文用的是\textbf{距离恒正}写法：$s$、$s'$ 都填正数（实物在左填 $+$，实像在右填 $+$），公式写成 $n/s+n'/s'=(n'-n)/r$。本讲义用的是\textbf{有向坐标}：实物填负。两者\textbf{是同一条物理定律}，换算只有一句
+
+\[
+s_{\text{距离}}=-s_{\text{坐标}},\qquad r,\ s',\ y,\ f'\ \text{不变号}.
+\]
+
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{4.6cm}p{4.4cm}@{}}
+\thead{物理内容} & \thead{课件印的（距离式）} & \thead{本讲义用的（坐标式）}\\
+\tabmid
+单球面物像公式 & $n/s+n'/s'=(n'-n)/r$ \quad（p16 红框）& $n'/s'-n/s=(n'-n)/r$\\
+焦距 & $f'=n'r/(n'-n)$，$f=-nr/(n'-n)$ \quad（p2、p40）& 同左（这两条本来就是有向的）\\
+高斯式 & $f/s+f'/s'=1$ & 同左（形式不变）\\
+横向放大率 & $V=-s'n/(sn')$ \quad（p21、p40）& $\beta=ns'/(n's)$ \quad（p2 就是这一版）\\
+薄透镜高斯式 & $1/s+1/s'=1/f$ \quad（p27、p41）& $1/s'-1/s=1/f'$\\
+逐次成像转面 & $s_2=d_{12}-s_1'$ \quad（p22）& $s_2=s_1'-d_{12}$\\
+\end{tabular}
+\tabbot
+
+逐行读法：第一行两式把 $s_{\text{坐标}}=-s_{\text{距离}}$ 代进去就互换，故右列每一项都能从左列当场推出；第二、三行对 $s$ 的符号不敏感（$f,f'$ 本身就是有向量），所以两列同形——这正是课件 p40 把两种写法印在一页却不出错的原因；第四行两列\textbf{数值相同、写法差一个负号}；第五、六行只是把 $s$ 换成 $-s$ 后整理。
+
+\textbf{同一道题，两次代数字}（$n=1$、$n'=1.5$、$r=+10$ cm、物在顶点左 30 cm）：坐标式 $\frac{1.5}{s'}-\frac{1}{-30}=0.05$ 给 $1.5/s'=0.01667$、$s'=90$ cm；距离式 $\frac{1}{30}+\frac{1.5}{s'}=0.05$ 给同一个 $s'=90$ cm。放大率也同值：坐标式 $1\times90/(1.5\times(-30))=-2$，距离式 $-90\times1/(30\times1.5)=-2$。\textbf{换套记法不改答案，只改「$s$ 填不填负号」}；做题时选定一套，一道题里别换。
+
+\hdr{§1}{从精确球面折射到傍轴近似}
+
+\subhdr{1.1 球面折射比平面折射多了什么（p5、p6）}
+
+球面折射比平面折射多一个几何量——\textbf{曲率半径 $r$}：同一个物点、同一对折射率，把 $r$ 换掉，像点就换位置（p5：``depends not only on the refractive indices, but also on the curvature radius''）。课件 p6 先定义\textbf{共轴球面系统}（所有球面的曲率中心在同一直线上，这条直线叫\textbf{光轴}），再给三条性质，其中红框那条是本课的出发点：``Except for special points, the spherical surface does not form a perfect image.''——除特殊点外，球面\textbf{不成完善像}。§1.4 把「特殊点」算出来，§1.5 说明「不完善」怎样逼出傍轴近似。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55,>=Stealth,font=\scriptsize]
+  % 光轴
+  \draw[->] (-13.4,0)--(10.6,0);
+  % 球面：曲率中心 C=(3,0)、半径 3，取过顶点 A 的一段弧
+  \draw[thick,violet!70!black] (1.2,2.4) arc (126.87:203:3);
+  % 关键点
+  \fill (-12,0) circle (1.3pt) node[below left]{$Q$};
+  \fill (0,0) circle (1.1pt) node[below left]{$A$};
+  \fill (3,0) circle (1.3pt) node[below right]{$C$};
+  \fill (9.289,0) circle (1.3pt) node[below left]{$Q'$};
+  \fill (1.2,2.4) circle (1.1pt) node[above right]{$M$};
+  \fill (1.2,0) circle (0.8pt) node[below]{$H$};
+  % 光线 Q-M-Q'
+  \draw[thick,red!75!black] (-12,0)--(1.2,2.4);
+  \draw[thick,red!75!black] (1.2,2.4)--(9.289,0);
+  % 法线：过 C 与 M，并越过 M 一点
+  \draw[dashed] (3,0)--(0.24,3.68);
+  % h
+  \draw[dashed] (1.2,2.4)--(1.2,0);
+  % 角度弧
+  \draw[violet] (-10.3,0) arc (0:10.3:1.7);
+  \node[violet,below] at (-9.6,-0.10) {$u$};
+  \draw[violet] (7.755,0.455) arc (163.47:180:1.6);
+  \node[violet,below] at (8.3,-0.10) {$u'$};
+  \draw[violet] (2.22,1.04) arc (126.87:180:1.3);
+  \node[violet] at (1.58,0.64) {$\varphi$};
+  \draw[violet] (0.18,3.76) arc (126.87:190.30:1.7);
+  \node[violet] at (-0.85,3.30) {$i$};
+  \draw[violet] (2.22,1.04) arc (-53.13:-16.53:1.7);
+  \node[violet] at (3.55,1.15) {$i'$};
+  % 标注
+  \node at (-5.6,1.55) {$p$};
+  \node at (5.1,1.55) {$p'$};
+  \node at (0.92,1.35) {$h$};
+  \node at (-9.6,2.05) {$n$};
+  \node at (7.2,1.95) {$n'$};
+  \draw[<->,dashed] (-12,-0.92)--(0,-0.92) node[midway,below]{$s$};
+  \draw[<->,dashed] (0,-0.92)--(9.289,-0.92) node[midway,below]{$s'$};
+  \draw[<->,dashed] (0,-1.75)--(3,-1.75) node[midway,below]{$r$};
+\end{tikzpicture}\\
+{\small 图 1\quad 单球面折射的几何（重绘，依课件 p7 与 p16 的图）：$Q$ 物点、$Q'$ 像点、$A$ 顶点、$C$ 曲率中心、$M$ 入射点。红实线是\textbf{这一条}光线走的折线，虚线 $CM$ 是 $M$ 处的法线（必过曲率中心）。$u,u',\varphi,i,i'$ 的定义见图；本图取 $r=3$、$s=-12$、$h=2.4$、$n=1$、$n'=1.5$，图上角度按这组数实算（$i=63.43^\circ$、$i'=36.60^\circ$、$\varphi=53.13^\circ$，可复算）。孔径取得很大，是为了让角度看得见；真实成像用的孔径小得多（§1.5）。}
+\end{center}
+
+\subhdr{1.2 精确关系的两条来源：正弦定理与余弦定理（p7）}
+
+课件 p7 一口气给了四组式子。它们不是四个假设，而是「折射定律 + 三角形里的两个定理」：
+
+\textbf{（1）折射定律}（Snell's law，对 $M$ 点用）：
+\[
+n\sin i=n'\sin i' .
+\]
+
+\textbf{（2）角关系}（对两个三角形用外角定理）：
+\[
+i-u=i'+u'=\varphi .
+\]
+\aside{外角定理：三角形一个外角等于与它不相邻的两个内角之和。三角形 $QMC$：$\angle Q=u$、$\angle C=\varphi$，故 $M$ 处的外角 $=u+\varphi$，而这条外角正是 $i$，所以 $i-u=\varphi$。三角形 $Q'MC$ 同理得 $i'=u'+\varphi$，即 $i'+u'=\varphi$。}
+
+\textbf{（3）正弦定理}（sine rule，在两个三角形里各用一次）：在三角形 $QMC$ 中，边 $QM=p$ 对 $\angle C=\varphi$，边 $MC=r$ 对 $\angle Q=u$，边 $QC=s+r$ 对 $\angle M=180^\circ-i$；在三角形 $Q'MC$ 中同理，边 $Q'M=p'$ 对 $\varphi$，$MC=r$ 对 $\angle Q'=u'$，$CQ'=s'-r$ 对 $180^\circ-i'$。于是
+\[
+\frac{p}{\sin\varphi}=\frac{s+r}{\sin i}=\frac{r}{\sin u},
+\qquad
+\frac{p'}{\sin\varphi}=\frac{s'-r}{\sin i'}=\frac{r}{\sin u'} .
+\]
+\aside{正弦定理原形：在任意三角形中 $\dfrac{a}{\sin A}=\dfrac{b}{\sin B}=\dfrac{c}{\sin C}$，$A$ 是边 $a$ 所对的角。注意 $\sin(180^\circ-i)=\sin i$，这一步课件直接用了没写。还要注意 $s$、$s'$ 在这里取的是\textbf{长度}：$QC=s+r$ 是因为 $C$ 在顶点右侧、$Q$ 在左侧，两者相加；$CQ'=s'-r$ 是因为 $Q'$ 比 $C$ 更靠右，两者相减。}
+
+\textbf{（4）余弦定理}（cosine rule，同一对三角形）：
+\[
+p^2=(s+r)^2+r^2-2r(s+r)\cos\varphi ,
+\qquad
+p'^2=(s'-r)^2+r^2+2r(s'-r)\cos\varphi .
+\]
+\aside{余弦定理原形：$a^2=b^2+c^2-2bc\cos A$。三角形 $QMC$ 取 $a=p$、$b=s+r$、$c=r$、$A=\varphi$ 得第一式；三角形 $Q'MC$ 的 $A$ 仍取 $\varphi$（同一个圆心角），但 $Q'$ 与 $Q$ 分居 $C$ 两侧、夹角取补角，故第二式前面为 $+$。}
+
+\subhdr{1.3 主关系式：为什么像距会依赖张角（p8--p10）}
+
+\textbf{第一步（p8，课件写 ``Rearranging gives''，跳了两步）}：把 $\cos\varphi=1-2\sin^2(\varphi/2)$ 代进余弦定理，
+\[
+p^2=(s+r)^2+r^2-2r(s+r)+4r(s+r)\sin^2\frac{\varphi}{2}
+=s^2+4r(s+r)\sin^2\frac{\varphi}{2},
+\]
+\[
+p'^2=(s'-r)^2+r^2+2r(s'-r)-4r(s'-r)\sin^2\frac{\varphi}{2}
+=s'^2-4r(s'-r)\sin^2\frac{\varphi}{2}.
+\]
+\aside{两处「配方」用的是同一件事：$(s+r)^2-2r(s+r)+r^2=s^2$，$(s'-r)^2+2r(s'-r)+r^2=s'^2$。也就是说，\textbf{对角的那一项恰好与 $s^2$（或 $s'^2$）配成完全平方}，剩下的才是 $\sin^2(\varphi/2)$ 项——这是「$\varphi=0$ 时 $p=s$」的代数体现。}
+
+\textbf{第二步（p9）}：把 p7 的正弦定理两式相除，并用 Snell 把 $\sin i'/\sin i$ 换成 $n/n'$，
+\[
+\frac{p}{p'}=\frac{(s+r)\sin i'}{(s'-r)\sin i}=\frac{(s+r)n}{(s'-r)n'}
+\quad\Longrightarrow\quad
+\frac{p^2}{[(s+r)n]^2}=\frac{p'^2}{[(s'-r)n']^2}.
+\]
+
+\textbf{第三步（p10）}：把第一步的两个 $p^2$、$p'^2$ 代进第二步，四个 $\sin^2(\varphi/2)$ 项合并，得\textbf{主关系式}：
+\[
+\frac{s^2}{[(s+r)n]^2}-\frac{s'^2}{[(s'-r)n']^2}
+=-4r\sin^2\frac{\varphi}{2}\left[\frac{1}{(s'-r)n'^2}+\frac{1}{(s+r)n^2}\right].
+\]
+\aside{这一页的 ``Substitute and simplify'' 是代数跳步：把 $p^2$ 与 $p'^2$ 分别除到两边后，左边剩下不含 $\sin^2$ 的两项，右边是「$4r\sin^2(\varphi/2)/[(s+r)n^2]+4r\sin^2(\varphi/2)/[(s'-r)n'^2]$」移项合并，提出公因子 $4r\sin^2(\varphi/2)$ 后括号里就是两个倒数。逐项对一遍就能复算。}
+
+\textbf{逐项读法}：左边两个分式分别是「物方项」与「像方项」，都只含已知量 $s,r,n$ 和待求量 $s'$；右边括号里两项在长度取正时恒为正，前面乘着 $\sin^2(\varphi/2)$。所以 $s'$ 随 $\varphi$ 变——一个物点对应一串像点，这就是「球面不成完善像」。
+
+\begin{center}
+\fcolorbox{rulepurple}{bandcream}{\parbox{0.86\linewidth}{\centering $s'$ 是 $\varphi$ 的函数：$\varphi$ 一变，$s'$ 就变——一个物点对应一串像点，这就是「球面不成完善像」。}}
+\end{center}
+
+课件 p10 的红框写的是 ``The right-hand side contains $\sin^2(\varphi/2)$, indicating that the image distance $s'$ depends on the angle $\varphi$.''——这句话是本课全部近似的动机。
+
+\subhdr{1.4 严格成像条件与两对共轭点（p11--p13）}
+
+要让 $s'$ 与 $\varphi$ 无关，只能让主关系式的\textbf{两边同时为零}（右边是「正系数 $\times\sin^2(\varphi/2)$」，$\varphi$ 可变，只有系数为零才可能恒等）。于是要两个条件同时成立（课件 p11 的两行红框）：
+
+\[
+\frac{s^2}{[(s+r)n]^2}-\frac{s'^2}{[(s'-r)n']^2}=0,
+\qquad
+\frac{1}{(s'-r)n'^2}+\frac{1}{(s+r)n^2}=0 .
+\]
+
+第二式给出 $(s'-r)n'^2=-(s+r)n^2$；把它与第一式联立（第一式开方得 $s/((s+r)n)=\pm s'/((s'-r)n')$），课件 p11 直接写出结论
+\[
+\frac{s'}{s}=\pm\frac{n}{n'} .
+\]
+\aside{p11 的 ``From the above two equations, we obtain'' 跳了两步：(1) 第一式开方，取「实物实像相容」的一支，得 $s/((s+r)n)=s'/((s'-r)n')$；(2) 与 $(s'-r)n'^2=-(s+r)n^2$ 联立消去 $(s'-r)$，得 $s'/s=n/n'$（取「$-$」支时得 $s'/s=-n/n'$）。完整代数见下方两条解。}
+
+把 $\pm$ 分开解（p12 的两栏），并换成\hbox{从曲率中心}量的距离 $\rho=(n'/n)r$、$\rho'=(n/n')r$（p13），得到两组共轭点（conjugate points）：
+
+\tabtop
+\begin{tabular}{@{}p{2.2cm}p{4.6cm}p{6.0cm}@{}}
+\thead{组别} & \thead{与顶点、球心的位置} & \thead{它是什么}\\
+\tabmid
+「$+$」组 & $s=r-\rho$，$s'=r-\rho'$；即物点在 $C$ 左方 $\rho$ 处、像点在 $C$ 右方 $\rho'$ 处 & 顶点同侧的\textbf{近轴无像差}点（aplanatic points）：光线从这一对点之间走，球面严格成像、无球差\\
+「$-$」组 & $s=\rho+r$，$s'=\rho'+r$；两点都在 $C$ 右侧 & 另一对严格共轭点，位于球面的凸出一侧，实际很少用到\\
+\end{tabular}
+\tabbot
+
+逐行读法：第一行把 $s=r-\rho$ 代回第二式验算，$(s'-r)n'^2=(r-\rho'-r)n'^2=-\rho'n'^2=-(n/n')rn'^2=-nrn'$，而 $-(s+r)n^2=-(r-\rho+r)n^2=\rho n^2=(n'/n)rn^2=nrn'$，两边相等，条件成立；第二行同理，符号全部反号仍相等。\textbf{边界行}：$\rho$、$\rho'$ 是「从球心量的距离」，与 $s$、$s'$（从顶点量）不是同一个原点，换算关系就是上面两列的式子，别混。
+
+\textbf{数值例子}（玻璃球面：$n=1$、$n'=1.5$、$r=+10$ cm）：$\rho=15$ cm、$\rho'=6.67$ cm，于是「$+$」组的两个点是 $s=10-15=-5$ cm（顶点左 5 cm）与 $s'=10-6.67=+3.33$ cm（顶点右 3.33 cm）。把物体放在前一点，球面\textbf{严格}成像于后一点——这是球面唯一不用傍轴也能成像的位置。
+
+\warnbox{\textbf{别把这两对点当公式}：它们只对「物体恰好放在这两个位置」成立，是例外情形，不是通用成像公式。日常做题用的是 §2 的物像公式（傍轴）。课件 p13 的结论句 ``Two pairs of special conjugate points for which spherical refraction forms exact images'' 说的是同一件事。}
+
+\subhdr{1.5 为什么必须傍轴：从 $\sin^2(\varphi/2)$ 到 $\sin\theta\approx\theta$（p14、p15）}
+
+课件 p14（角标 14）用三栏讲这件事，本讲义压成三步。
+
+\textbf{第 1 步（问题）}：$n\sin i=n'\sin i'$ 里的 $\sin$ 是\textbf{非线性}的——同一物点在不同高度入射，入射角不同、折射后的交点就不同；§1.3 的主关系式已经把这个「不同」写成了 $\sin^2(\varphi/2)$ 项。于是轴上物点得不到点像（球差，spherical aberration，像是一个弥散圆），轴外还叠加彗差、像散（coma, astigmatism）。
+
+\textbf{第 2 步（桥：傍轴近似，paraxial approximation）}：把光束限制在光轴附近，同时要求
+\[
+\sin\theta\approx\theta,\qquad \cos\theta\approx1,\qquad \tan\theta\approx\theta ,
+\]
+即把非线性关系\textbf{线性化到一阶}。两个条件必须分清（p14 的第二栏）：
+
+\tabtop
+\begin{tabular}{@{}p{3.6cm}p{5.4cm}p{6.0cm}@{}}
+\thead{条件} & \thead{长度写法（p15）} & \thead{谁需要它}\\
+\tabmid
+小孔径（small aperture）& $h^2\ll s^2,\ s'^2,\ r^2$；等价于 $u^2,u'^2,\varphi^2\ll1$ & \textbf{轴上点只要这一条}：$y=0$ 时没有视场问题，只要光束细\\
+小视场（small field）& $y^2,\ y'^2\ll s^2,\ s'^2,\ r^2$（p20）& \textbf{轴外点还要加这一条}：物点离轴远，$y$ 本身就是小量\\
+\end{tabular}
+\tabbot
+
+逐行读法：每一行左边的条件都能用右边的量复述——$h=r\sin\varphi\approx r\varphi$，所以「$h^2\ll r^2$」与「$\varphi^2\ll1$」是同一句话的两种写法；轴上点 $y=0$ 时第二行自动成立，故只需第一行。\textbf{边界行}：$\varphi=0$（严格沿着光轴）时两个条件同时以等式成立，此时主关系式退化为 §1.4 的严格条件，不是「近似失效」而是「近似恰好精确」。
+
+\textbf{第 3 步（解：高斯光学）}：$\varphi\ll1$ 时 $\sin^2(\varphi/2)\approx0$，主关系式右边归零，只剩 $s^2/[(s+r)n]^2=s'^2/[(s'-r)n']^2$；开方整理（p16 的 ``taking square root and rearranging''）即得单球面傍轴物像公式
+\[
+\frac{s^2}{[(s+r)n]^2}=\frac{s'^2}{[(s'-r)n']^2}.
+\]
+开方、整理（这一步就是 p16 的 ``taking square root and rearranging''），得\textbf{单球面傍轴物像公式}
+\[
+\boxed{\ \frac{n'}{s'}-\frac{n}{s}=\frac{n'-n}{r}\ }
+\]
+\aside{取哪一支：开方给 $s/((s+r)n)=\pm s'/((s'-r)n')$。实物、实像时 $s<0<s'$，$(s+r)$ 与 $(s'-r)$ 都为正，上式两边一负一正，只能取\textbf{负}支；整理后即 $n'/s'-n/s=(n'-n)/r$。若取错支，会得到 $s'$ 与 $s$ 同号，也就是「实物成虚像」的那一支——它对应把光线反向延长，物理上仍成立，但不是本课要用的成像支。课件 p16 只写「开方并整理」，没说取支，这是 §7 缺口 4。}
+
+\textbf{这个近似值多少钱}：用 $n=1$、$n'=1.5$、$r=+10$ cm、物在顶点左 30 cm（距离式 $s=30$），把不同的 $\varphi$ 代进主关系式解出 $s'$：
+
+\tabtop
+\begin{tabular}{@{}p{3.4cm}p{4.2cm}p{7.4cm}@{}}
+\thead{张角 $\varphi$} & \thead{精确解 $s'$} & \thead{与傍轴值 90.00 cm 的差}\\
+\tabmid
+$0^\circ$（极限）& 90.00 cm & 0（傍轴式在这一点的值）\\
+$1^\circ$ & 89.94 cm & $-0.06$ cm（0.07\%）\\
+$10^\circ$ & 84.42 cm & $-5.58$ cm（6.2\%）\\
+$30^\circ$ & 56.74 cm & $-33.26$ cm（37\%）\\
+\end{tabular}
+\tabbot
+
+逐行读法：每行的 $s'$ 是把该 $\varphi$ 代进主关系式、把 $s'$ 当未知数解出来的（对 $s'$ 是二次方程，取靠近顶点的那个根）；差值一列是「精确 $-$ 傍轴」。\textbf{边界行}：$\varphi\to0$ 时 $s'\to90.00$ cm，与傍轴公式完全一致——这行不是数据，是极限，它说明「傍轴值」是精确曲线在 $\varphi=0$ 处的切线值。$\varphi$ 到 $10^\circ$ 时误差已 6\%，到 $30^\circ$ 时 37\%：这就是「为什么必须小孔径」的定量答案。
+
+\subhdr{1.6 焦点、焦距与反射特例（p17、p18）}
+
+\textbf{定义}（p17）：\textbf{像方焦点} $F'$ 是「光轴上无穷远物点」的共轭像点，\textbf{物方焦点} $F$ 是「无穷远像点」的共轭物点；$f'$、$f$ 分别是它们到顶点的有向距离。把 $s\to-\infty$ 代进物像公式得 $f'=n'r/(n'-n)$，把 $s'\to+\infty$ 代进去得 $f=-nr/(n'-n)$。于是 $f'/n'=-f/n$（p40 的用法），$f$ 与 $f'$ 异号。玻璃球面（$r=+10$、$n'=1.5$）给 $f'=+30$ cm、$f=-20$ cm：两点到顶点不等距——\textbf{单球面两侧焦距一般不相等}，这与薄透镜（两侧同介质、$f=-f'$）不同。
+
+\textbf{反射}（p18）：把折射公式里的 $n'$ 换成 $-n$，得 $1/s+1/s'=2/r$、$f=f'=r/2$。
+\aside{课件 p18 印的是 $1/s+1/s'=-2/r$、$f=f'=-r/2$：那一页的 $s'$ 取\textbf{距离}且正方向定在反射光一侧（像在顶点左侧为实像 $s'>0$），$r$ 仍按「曲率中心在右为正」取号。换算：$s'_{\text{坐标}}=-s'_{\text{距离}}$，$r$ 不变号。}
+用凹面镜验一下：半径 20 cm 的凹面镜，曲率中心在入射侧，故 $r=-20$ cm、$f=f'=-10$ cm（焦点在镜前 10 cm，会聚）；物在镜前 30 cm（$s=-30$）时 $1/s'=2/r-1/s=-0.1+0.0333$，$s'=-15$ cm，成实像于镜前 15 cm。
+
+\hdr{§2}{单球面傍轴成像（坐标制）}
+
+\subhdr{2.1 物像公式与三种检验}
+
+全文主式，出现次数最多，务必记成「像方项减物方项等于两边折射率差除以半径」：
+\begin{equation}
+\boxed{\ \frac{n'}{s'}-\frac{n}{s}=\frac{n'-n}{r}\ }\label{eq:objimg}
+\end{equation}
+符号在 §0.3 与 §0.4 定过：$s<0$ 实物、$s'>0$ 实像、曲率中心在右 $r>0$。三种检验（都用 $n=1$、$n'=1.5$、$r=+10$）：
+
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{5.4cm}p{6.8cm}@{}}
+\thead{物点位置} & \thead{代入与解} & \thead{结论}\\
+\tabmid
+$s=-30$ & $1.5/s'=0.05-0.0333=0.01667$ & $s'=+90$ cm：像在右侧 90 cm，实像\\
+$s=-20$（物方焦点）& $1.5/s'=0.05-0.05=0$ & $s'\to+\infty$：出射光平行，不成有限像\\
+$s=+30$（虚物）& $1.5/s'=0.05+0.0333=0.08333$ & $s'=+18$ cm：像仍在右侧，实像\\
+\end{tabular}
+\tabbot
+
+逐行读法：每行都把 $s$ 直接代进式 \eqref{eq:objimg} 的左式，再把 $1.5/s'$ 移到右边；第二行出现「$1.5/s'=0$」说明平行光出射，正是 $s=f$ 的定义；第三行 $s>0$ 是虚物（物点在顶点右侧）。\textbf{边界行}：$s=f=-20$ cm 是「无限远像」的边界，此时 $s'\to\infty$，不要写 $s'=0$。
+
+\subhdr{2.2 高斯式：把物像公式拆成两个焦距}
+
+把式 \eqref{eq:objimg} 两边同除 $(n'-n)/r$，得
+\[
+\frac{f'}{s'}+\frac{f}{s}=1,\qquad
+f'=\frac{n'r}{n'-n},\quad f=-\frac{nr}{n'-n},
+\]
+即\textbf{高斯式}（Gaussian form；课件 p40 第 3 条与 p23 写成 $\frac{f}{s}+\frac{f'}{s'}=1$，只是两项交换）。它的用处只有一个：\textbf{把 $n,n',r$ 打包成两个焦距}，之后讨论成像只需 $f,f'$。注意两者是\textbf{有向}的：玻璃球面 $f=-20$ cm、$f'=+30$ cm，正负号本身就是「焦点在哪一侧」。
+
+\subhdr{2.3 牛顿式：从焦点量起（本讲义补的）}
+
+课件 p40 第 3 条把这条公式标成 ``Gaussian (Newtonian) Formula''，但只给了高斯形式，没有给 $xx'$ 形式。这里补出来。取
+\[
+x=s-f,\qquad x'=s'-f'
+\]
+（$x$ 是物点相对\textbf{物方焦点} $F$ 的坐标，$x'$ 是像点相对\textbf{像方焦点} $F'$ 的坐标，都可正可负）。把 $s=x+f$、$s'=x'+f'$ 代进高斯式：
+\[
+\frac{f'}{x'+f'}+\frac{f}{x+f}=1
+\Longrightarrow f'(x+f)+f(x'+f')=(x+f)(x'+f')
+\Longrightarrow \boxed{\ xx'=ff'\ }.
+\]
+\aside{展开后左右各有 $f'x$、$fx'$、$ff'$ 三项，逐项对消，只剩 $ff'=xx'$。这一步没有任何近似，$f$、$f'$ 取任意符号都成立。}
+
+数值验算（$f=-20$、$f'=+30$，物在 $s=-30$）：$x=-30-(-20)=-10$，$s'=+90$ 给 $x'=90-30=+60$，$xx'=-600$；$ff'=(-20)(30)=-600$，两边相等。用牛顿式求 $s'$ 更快：$x'=ff'/x=(-600)/(-10)=60$，$s'=x'+f'=60+30=90$ cm，与 §2.1 一致。
+
+\subhdr{2.4 横向放大率 $\beta$（p21）}
+
+\textbf{定义}：$\beta=y'/y$（像高比物高）。$|\beta|>1$ 放大、$|\beta|<1$ 缩小；$\beta>0$ 正立、$\beta<0$ 倒立。
+
+\textbf{推导}（一条光线的斯涅尔定律，不用三角形相似）：取从物点 $P$ 射向\textbf{顶点附近}的那条光线，它在顶点处与法线（即光轴）的夹角是 $i$，折射后与光轴的夹角是 $i'$。傍轴下
+\[
+i=\frac{y}{s},\qquad i'=\frac{y'}{s'},
+\]
+（因为光线从 $(s,y)$ 走到原点，斜率就是 $y/s$；出射光线从原点走到 $(s',y')$，斜率是 $y'/s'$。）代入 $ni=n'i'$：
+\[
+n\frac{y}{s}=n'\frac{y'}{s'}\quad\Longrightarrow\quad
+\boxed{\ \beta=\frac{y'}{y}=\frac{n\,s'}{n'\,s}\ }
+\]
+课件 p21（角标 20）印的是 $V=-\dfrac{s'n}{sn'}$，与上式\textbf{数值相同}（相差的负号来自它的 $s$ 取距离正值，见 §0.5 第四行）；课件 p2 的结构图上印的正是 $\beta=\dfrac{ns'}{n's}$，与本式一致。
+
+\textbf{数值}：$n=1$、$n'=1.5$、$s=-30$、$s'=90$ 给 $\beta=90/(1.5\times(-30))=-2$：倒立、放大 2 倍。这与 §0.4 的推论一致（实物成实像，$s$ 与 $s'$ 异号，故 $\beta<0$）。
+
+\textbf{与 $y$ 无关}：上式右边不含 $y$，所以同一对共轭面内，物高放大多少倍，像高就放大多少倍——共轭面内的图形\textbf{几何相似}。课件 p21 的结论框写的就是这句：``The lateral magnification is independent of $y$ and preserves similarity of geometric figures within the conjugate planes.''
+
+\subhdr{2.5 换一条路验算：等光程原理（p19）}
+
+课件 p19（角标 18）用\textbf{等光程}再推一遍同一公式。沿光轴的光程是 $L_0=-ns+n's'$（$s<0$）；过球面上高 $h$ 的点 $M$ 的折线光程是 $L$。记 $M$ 的横坐标为 $\delta$，由 $(x-r)^2+h^2=r^2$ 展开到一阶得 $\delta\approx h^2/(2r)$，两段直线距离傍轴展开为
+\[
+\sqrt{(s-\delta)^2+h^2}\approx -s+\delta-\frac{h^2}{2s},
+\qquad
+\sqrt{(s'-\delta)^2+h^2}\approx s'-\delta+\frac{h^2}{2s'},
+\]
+于是 $L=L_0+\delta(n-n')+\dfrac{h^2}{2}\left(\dfrac{n'}{s'}-\dfrac{n}{s}\right)$。令 $L=L_0$ 并代入 $\delta=h^2/(2r)$：
+\[
+\frac{n-n'}{r}+\frac{n'}{s'}-\frac{n}{s}=0
+\quad\Longrightarrow\quad
+\frac{n'}{s'}-\frac{n}{s}=\frac{n'-n}{r},
+\]
+与式 \eqref{eq:objimg} 一致。这条路说明物像公式就是\textbf{等光程}的代数版——课件 p3 说「等光程只说明成像可能，没说明像在哪」，本节补上「像在哪」。数值核对（$s=-30$、$s'=+90$、$h=1$ cm）：$\delta=0.05$，$L=30.0666+1.5\times89.9556=164.99997$，$L_0=165$，差 $3\times10^{-5}$。
+
+\subhdr{2.6 适用区间}
+
+式 \eqref{eq:objimg} 与由它派生的 $f,f'$、$\beta$、高斯式、牛顿式，成立条件只有一条：\textbf{傍轴}——$h^2\ll s^2,s'^2,r^2$，轴外再加 $y^2\ll s^2,r^2$。越界后轴上出现球差（一个物点变成弥散斑），轴外叠加彗差与像散，这就是 §1.5 那张 $\varphi$ 表的定量含义；反射式 $1/s+1/s'=2/r$ 条件相同，只是正方向取在反射光一侧。
+
+\hdr{§3}{薄透镜与磨镜者公式}
+
+\subhdr{3.1 薄透镜近似：把两个面贴成一个面（p23）}
+
+\textbf{透镜} = 两个折射球面组成的共轴系统（课件 p23：``An optical system composed of two refracting spherical surfaces''）。\textbf{薄透镜近似}（thin lens approximation）：把厚度 $d\to0$，两个顶点 $A_1,A_2$ 与光心 $O$ 重合。此时
+
+\[
+s_2=s_1'-d_{12}\ \xrightarrow{\ d_{12}\to0\ }\ s_2=s_1',
+\qquad s=s_1,\qquad s'=s_2' .
+\]
+\aside{课件 p23 印的是 $-s_2\approx s_1'$（距离写法，虚物取负）；换成坐标制就是 $s_2=s_1'$，少了那个负号——转面这一步是坐标制最省事的地方（§5.1）。}
+
+条件不只是「薄」，还要三条：两表面都是球面（或平面）、共轴、两侧介质相同（本课都是空气）；缺一条，下面所有透镜公式都不成立。
+
+\subhdr{3.2 两式联立：薄透镜方程（p24，含一处勘误）}
+
+对第一面、第二面各写一次单球面高斯式（这里用课件 p24 的距离写法，因为它两面的焦距都按距离记）：
+\[
+\frac{f_1}{s_1}+\frac{f_1'}{s_1'}=1,\qquad
+\frac{f_2}{s_2}+\frac{f_2'}{s_2'}=1 .
+\]
+用 $s_2=-s_1'$（距离写法）、$s=s_1$、$s'=s_2'$ 消去中间量，课件只写 ``Eliminate $s_2$ \& $s_1'$''，实际是三步：
+
+\begin{enumerate}
+  \item 由第一式解出 $\dfrac{1}{s_1'}=\dfrac{1}{f_1'}\left(1-\dfrac{f_1}{s}\right)$；
+  \item 代入 $s_2=-s_1'$ 后的第二式：$-\dfrac{f_2}{f_1'}\left(1-\dfrac{f_1}{s}\right)+\dfrac{f_2'}{s'}=1$；
+  \item 两边乘 $f_1'$ 并移项：$\dfrac{f_1f_2}{s}+\dfrac{f_1'f_2'}{s'}=f_1'+f_2$。
+\end{enumerate}
+
+\warnbox{\textbf{勘误（课件 p24，角标 23）}：该页把上式的右边印成 $f_1'+f_2'$（第二项多了一个撇），于是焦距写成 $f=\dfrac{f_1f_2}{f_1'+f_2'}$。用课件自己的数验一下就露：取 $n=n'=1$、$n_L=1.5$、$r_1=+10$、$r_2=-10$，则 $f_1=20$、$f_1'=30$、$f_2=30$、$f_2'=20$；按印错的分母算 $f=\dfrac{20\times30}{30+20}=12$ cm，而同一页下面的 $f'=\dfrac{f_1'f_2'}{f_1'+f_2}=10$ cm、下一页（p25）的磨镜者公式也给 $10$ cm——同一个透镜不可能有两个焦距。\textbf{正确分母是 $f_1'+f_2$}：}
+\[
+f=\frac{f_1f_2}{f_1'+f_2},\qquad f'=\frac{f_1'f_2'}{f_1'+f_2}
+\quad\Longrightarrow\quad 10=\frac{20\times30}{30+30}=\frac{30\times20}{30+30}.
+\]
+（p25 顶上那一行印的正是 $f_1'+f_2$，没有撇；p24 的 $f'$ 那一格也没有撇，只有 $f$ 这一格多了一个。——一处印刷错误，不是两个理论。）
+
+由此还得到两个「取极限」的读法：$s'\to\infty$ 时物点在 $s=f$，$s\to\infty$ 时像点在 $s'=f'$，这正是焦距的定义；而薄透镜两侧同介质，$f=-f'$（坐标制），所以 $|f|=|f'|$，记一个 $f$ 就够。
+
+\subhdr{3.3 磨镜者公式（p25）}
+
+把单球面焦距 $f_1=\dfrac{n r_1}{n_L-n}$、$f_1'=\dfrac{n_L r_1}{n_L-n}$、$f_2=\dfrac{n_L r_2}{n'-n_L}$、$f_2'=\dfrac{n' r_2}{n'-n_L}$ 代进上一节的 $f,f'$，化简得
+\[
+f=\frac{n}{\dfrac{n_L-n}{r_1}+\dfrac{n'-n_L}{r_2}},
+\qquad
+f'=\frac{n'}{\dfrac{n_L-n}{r_1}+\dfrac{n'-n_L}{r_2}} .
+\]
+\textbf{空气中}（$n=n'\approx1$）时两式相同，这就是\textbf{磨镜者公式}（lensmaker's formula）：
+\begin{equation}
+\boxed{\ f=f'=\frac{1}{(n_L-1)\left(\dfrac{1}{r_1}-\dfrac{1}{r_2}\right)}\ }\label{eq:lensmaker}
+\end{equation}
+\aside{化简只用了「分子分母同乘 $r_1r_2$」：分母 $\dfrac{n_L-n}{r_1}+\dfrac{n'-n_L}{r_2}$ 通分后是 $\dfrac{(n_L-n)r_2+(n'-n_L)r_1}{r_1r_2}$，与分子相乘整理即得。空气中 $n=n'=1$ 时分子为 1。}
+
+\textbf{数值}：$n_L=1.5$、$r_1=+10$、$r_2=-10$ 给 $1/f'=0.5\times(0.1+0.1)=0.1$，$f'=+10$ cm（会聚）。把 $r_2$ 换成 $+10$（双凹的符号，见 §3.4），$1/f'=0.5\times(0.1-0.1)=0$，$f'\to\infty$——这就是「等厚双凹的极端」：两个面曲率相同、弯曲方向相反时互相抵消。
+
+\subhdr{3.4 凸透镜、凹透镜与半径符号（p26，表已重排）}
+
+判据只有一条，就是式 \eqref{eq:lensmaker} 右边括号的符号（$n_L>1$ 时 $n_L-1>0$）：
+\[
+\frac{1}{r_1}-\frac{1}{r_2}>0\ \Longleftrightarrow\ f'>0\ \text{会聚（凸透镜）};\qquad
+\frac{1}{r_1}-\frac{1}{r_2}<0\ \Longleftrightarrow\ f'<0\ \text{发散（凹透镜）}.
+\]
+按这条判据把课件 p26 的两张 5 列表重排成一张 6 行表（原表的问题见 §7 缺口 6）：
+
+\tabtop
+\begin{tabular}{@{}p{2.9cm}p{3.0cm}p{3.4cm}p{5.0cm}@{}}
+\thead{类型} & \thead{$r_1$} & \thead{$r_2$} & \thead{$\dfrac{1}{r_1}-\dfrac{1}{r_2}$ 的符号（括号里是示例值）}\\
+\tabmid
+双凸（biconvex）& $+$ & $-$ & $1/10+1/10=+0.2>0$，会聚\\
+平凸（plano-convex）& $+\infty$ & $-$ & $0+1/10=+0.1>0$，会聚\\
+正弯月（positive meniscus）& $+$ & $+$，且 $r_1<r_2$ & $1/10-1/20=+0.05>0$，会聚\\
+双凹（biconcave）& $-$ & $+$ & $-0.1-0.1=-0.2<0$，发散\\
+平凹（plano-concave）& $-\infty$ & $+$ & $0-0.1=-0.1<0$，发散\\
+负弯月（negative meniscus）& $-$ & $-$，且 $|r_1|<|r_2|$ & $-1/10+1/20=-0.05<0$，发散\\
+\end{tabular}
+\tabbot
+
+逐行读法：每一行都把 $r_1,r_2$ 的符号与大小代进 $\frac{1}{r_1}-\frac{1}{r_2}$，算出的符号决定会聚/发散，再由式 \eqref{eq:lensmaker} 得到 $f'$ 的符号——三列一一对应，任何一行都能当场复算。\textbf{边界行}：平凸/平凹那两行的 $1/r=\pm0$，是「半径无穷大」的极限，不是漏项；弯月那两行的条件是 $r_1$ 与 $r_2$ \textbf{同号}且大小有别，若两者相等则 $f'\to\infty$（无光焦度）。
+
+\warnbox{\textbf{课件原表怎么坏的}：p26（角标 25）的 ``(a) Convex Lenses'' 第一列 ``Biconvex'' 下面写的是 $r_1<0,\ r_2<0,\ |r_1|>|r_2|$。把这两个负半径代进式 \eqref{eq:lensmaker}，$\frac{1}{r_1}-\frac{1}{r_2}=-\frac{1}{|r_1|}+\frac{1}{|r_2|}<0$，得到 $f'<0$——发散，与表头「Convex」矛盾。实际上那一行描述的是一块\textbf{正弯月}（两半径同号、$|r_1|>|r_2|$），只是整行符号比名字错位了两列；同表第五列表头又重复写成 ``Plano-convex''。本讲义按式 \eqref{eq:lensmaker} 重排，不沿用原表。}
+
+\subhdr{3.5 薄透镜的高斯式与牛顿式（p27、p28）}
+
+把 §2 的结论整体搬到透镜上（坐标制，两侧空气 $n=n'=1$，$f=-f'$）：
+
+\textbf{高斯式}：$\dfrac{f}{s}+\dfrac{f'}{s'}=1$，代入 $f=-f'$ 即
+\begin{equation}
+\boxed{\ \frac{1}{s'}-\frac{1}{s}=\frac{1}{f'}\ }\label{eq:gauss}
+\end{equation}
+课件 p27（角标 26）印的是 $\dfrac{1}{s}+\dfrac{1}{s'}=\dfrac{1}{f}$（距离式），与式 \eqref{eq:gauss} 只差 $s$ 的符号。数值：$f'=10$、$s=-20$ 给 $1/s'=0.1-0.05=0.05$，$s'=+20$ cm，$\beta=s'/s=-1$。
+
+\textbf{牛顿式}：$x=s-f$、$x'=s'-f'$，$xx'=ff'$；透镜两侧同介质时 $f=-f'$，故
+\begin{equation}
+xx'=ff'=-f'^{\,2}<0 .\label{eq:newton}
+\end{equation}
+数值（同上）：$f=-10$、$f'=+10$、$x=-20+10=-10$、$x'=20-10=+10$，$xx'=-100$，$ff'=-100$，相等。\textbf{注意}：式 \eqref{eq:newton} 右边在坐标制下是负的，这与距离写法「$xx'=f^2$ 为正」不冲突——因为 $x$ 的定义同时变号（§6.2 会再看到这一点）。
+
+\subhdr{3.6 透镜的横向放大率与密接组合（p29、p30）}
+
+由 §2.4 的 $\beta=ns'/(n's)$，取 $n=n'=1$ 得 $\beta=s'/s$；再用高斯式与牛顿式换成四种等价写法（p29 的四个红框）：
+\[
+\beta=\frac{s'}{s}=-\frac{s'n}{sn'}=-\frac{s'f}{sf'}=-\frac{f}{x}=-\frac{x'}{f'} .
+\]
+其中 $-\dfrac{f}{x}$、$-\dfrac{x'}{f'}$ \textbf{形式在两种记法下不变}（$x$ 与 $f$ 同时变号），可直接照用；带 $sn'$ 的写法要按 §0.5 换 $s$。
+
+\textbf{密接组合}（p30）：两片薄透镜贴合（$d\to0$，$s_2=s_1'$），两式相加得
+\[
+\frac{1}{f'}=\frac{1}{f_1'}+\frac{1}{f_2'},\qquad
+P=\frac{1}{f'}=P_1+P_2 ,
+\]
+其中 $P$ 是\textbf{光焦度}（optical power），单位\textbf{屈光度}（diopter，D，$1\ \mathrm{D}=1\ \mathrm{m^{-1}}$）。数值：$f_1'=+50$ cm（$+2$ D）、$f_2'=-25$ cm（$-4$ D）贴合，$P=-2$ D，$f'=-50$ cm，整体发散。
+
+\hdr{§4}{三条特殊光线与作图法}
+
+\subhdr{4.1 焦平面与副光线（p31、p32）}
+
+\textbf{物方焦平面}是过 $F$ 且垂直于光轴的平面，\textbf{像方焦平面}是过 $F'$ 且垂直于光轴的平面。\textbf{副光线}（secondary ray）是把焦平面上的轴外点与光心 $O$ 连起来的直线。
+
+\callout{\textbf{定理（完整陈述）}：从物方焦平面上同一点发出的光线，经薄透镜后成为一束\textbf{平行光}；反过来，一束与光轴成角 $\omega$ 的平行光，经透镜后会聚到像方焦平面上一点，该点与 $O$ 的连线方向就是 $\omega$。条件：薄透镜、傍轴、两侧介质相同。\\推论（作图法的全部依据）：\textbf{物点发出的每一条光线，其共轭光线都过像点}——所以任取两条出射光线，交点就是像点（p32：``Every ray from an object point has its conjugate ray pass through the image point''）。}
+
+\subhdr{4.2 三条特殊光线（p33）}
+
+\callout{\textbf{三条特殊光线（principal rays，完整陈述）}：\\（1）过光心 $O$ 的光线，方向不变（不偏折）；\\（2）过物方焦点 $F$ 的光线，出射后平行于光轴；\\（3）平行于光轴的光线，出射后过像方焦点 $F'$。\\\textbf{条件}：薄透镜（两面在 $O$ 处可视为平行平板）、傍轴、两侧介质相同。\\\textbf{用法}：任意两条即可定像点，第三条用来校验。}
+
+下图把三条都画出来（凸、凹各一幅）。图上同时标了 $y>0$ 的方向（红箭头向上），以便与 §0.4 第 5 条对上。
+
+\begin{center}
+\begin{tikzpicture}[scale=1.06,>=Stealth,font=\scriptsize]
+  % ---------- (a) 凸透镜 ----------
+  \draw[->] (-2.5,0)--(4.4,0);
+  \draw[thick,violet,<->] (0,-1.5)--(0,1.5);
+  \node[violet,above] at (0.1,1.5) {$O$};
+  \fill (-1,0) circle (1.2pt) node[below]{$F$};
+  \fill (1,0) circle (1.2pt) node[below]{$F'$};
+  \draw[very thick,red!80!black,->] (-1.5,0)--(-1.5,0.5) node[above]{$P$};
+  \draw[thick,blue!60!black] (-1.5,0.5)--(0,0)--(3.9,-1.3);
+  \draw[thick,green!45!black] (-1.5,0.5)--(0,0.5)--(1,0)--(3.9,-1.45);
+  \draw[thick,orange!80!black] (-1.5,0.5)--(-1,0)--(0,-1)--(3.9,-1);
+  \draw[very thick,red!80!black,->] (3,0)--(3,-1);
+  \node[below right] at (3.05,-0.98) {$P'$};
+  \node[below] at (-1.5,-0.04) {$Q$};
+  \node[above] at (3,0.04) {$Q'$};
+  \node[below left] at (2.1,-1.55) {（a）凸透镜 $f'>0$};
+  % ---------- (b) 凹透镜 ----------
+  \begin{scope}[yshift=-4.6cm]
+  \draw[->] (-2.5,0)--(4.4,0);
+  \draw[thick,violet] (0.2,-1.1)--(-0.2,1.1);
+  \draw[thick,violet] (-0.2,-1.1)--(0.2,1.1);
+  \node[violet,above right] at (0.15,1.1) {$O$};
+  \fill (-1,0) circle (1.2pt) node[below left]{$F'$};
+  \fill (1,0) circle (1.2pt) node[below]{$F$};
+  \draw[very thick,red!80!black,->] (-1.5,0)--(-1.5,0.5) node[above]{$P$};
+  % 光线 1：过 O（反向延长过像点）
+  \draw[thick,blue!60!black] (-1.5,0.5)--(0,0)--(2.6,-0.87);
+  \draw[dashed,blue!60!black] (0,0)--(-0.6,0.2);
+  % 光线 2：平行光轴 -> 反向延长过 F'
+  \draw[thick,green!45!black] (-1.5,0.5)--(0,0.5)--(2.2,1.6);
+  \draw[dashed,green!45!black] (0,0.5)--(-0.6,0.2);
+  % 光线 3：指向 F -> 出射平行光轴
+  \draw[thick,orange!80!black] (-1.5,0.5)--(0,0.2)--(2.6,0.2);
+  % 像（虚，虚线箭头）
+  \draw[very thick,red!80!black,dashed,->] (-0.6,0)--(-0.6,0.2) node[left]{$P'$};
+  \node[below] at (-1.5,-0.04) {$Q$};
+  \node[below right] at (-0.52,-0.06) {$Q'$};
+  \node[below left] at (2.0,-1.15) {（b）凹透镜 $f'<0$};
+  \end{scope}
+\end{tikzpicture}\\
+{\small 图 2\quad 三条特殊光线作图（重绘，依课件 p33）：上幅凸透镜 $f'=+1$，物在 $1.5f$ 处，像在镜后 $3f$ 处、倒立放大 2 倍；下幅凹透镜 $f'=-1$，物在镜前 $1.5|f|$ 处，像在镜前 $0.6|f|$ 处、正立缩小（虚线是反向延长线，光并未真的经过那里）。两幅都标了 $O$、$F$、$F'$、$P$、$Q$、$P'$、$Q'$；红箭头是物与像的高度，方向按「上正下负」。}
+\end{center}
+
+\textbf{逐条读法}（对着图看）：光线 1（蓝）过 $O$ 不偏折，故 $P,Q,P'$ 与 $O$ 必须共线；光线 2（绿）从 $P$ 平行光轴入射，出射后必过 $F'$——凹透镜那幅里它发散，反向延长才过 $F'$（虚线）；光线 3（橙）从 $P$ 过 $F$（凹透镜那幅是「\textbf{指向}右侧的 $F$」），出射后平行光轴。凸透镜用「过 $F$」、凹透镜用「指向 $F$」，因为凹透镜的 $F$ 在出射侧——这是两幅图唯一的差别。
+
+\subhdr{4.3 作图三步法（可执行的清单）}
+
+\begin{enumerate}
+  \item \textbf{定点}：画光轴与光心 $O$，按 $f'$ 的符号标出 $F$（$x=f=-f'$）与 $F'$（$x=f'$）。
+  \item \textbf{取两条}：从物点 $P$ 取三条中的\textbf{任意两条}；习惯取「过 $O$」+「平行光轴」，因为这两条不用先判断 $F$ 在哪一侧。
+  \item \textbf{定像}：两条出射光线（或其反向延长线）的交点即 $P'$，过 $P'$ 作垂线得 $Q'$；第三条光线用来校验——三条（或其延长线）必须交于同一点，不交就是画错了。
+\end{enumerate}
+
+\textbf{什么时候用延长线}：出射光在镜后\textbf{发散}（凹透镜，或凸透镜物在焦点内）时，交点落在入射侧，像为虚像、$s'<0$；图上要画虚线，像的箭头也用虚线——虚线不是「没画完」，而是「光实际上没有从那里出来」。
+
+\hdr{§5}{逐次成像与透镜组}
+
+\subhdr{5.1 单球面逐次成像（p22）}
+
+共轴球面组可以「一面一面地套」单球面公式（p22）：对第 $k$ 面写 $\dfrac{n_k}{s_k'}-\dfrac{n_k}{s_k}=\dfrac{n_{k+1}-n_k}{r_k}$，其中 $n_k$ 是第 $k$ 面前介质。关键是\textbf{转面}：第 $k$ 面的像就是第 $k+1$ 面的物，但原点不同（分别在 $A_k$ 与 $A_{k+1}$），故
+\begin{equation}
+s_{k+1}=s_k'-d_{k,k+1}.\label{eq:transfer}
+\end{equation}
+课件 p22 印的是 $s_2=d_{12}-s_1'$（距离写法），与式 \eqref{eq:transfer} 差一个整体负号（§0.5）。
+
+\textbf{虚物判据}：按式 \eqref{eq:transfer} 算出的 $s_{k+1}>0$，说明「物点」落在该面\textbf{右侧}、入射光还没到就要会聚——这就是虚物；$s_{k+1}<0$ 是实物。
+
+\subhdr{5.2 透镜组：放大率相乘}
+
+逐片用式 \eqref{eq:gauss}，中间像的高度逐次相乘：
+\begin{equation}
+\beta=\beta_1\beta_2\cdots,\qquad \beta_k=\frac{s_k'}{s_k}.\label{eq:betaN}
+\end{equation}
+\aside{为什么相乘：第一片的像高 $y_1'=\beta_1y$ 又是第二片的物高，故 $y_2'=\beta_2y_1'=\beta_1\beta_2y$；默认两片之间无光阑改变光束宽度。}
+
+\subhdr{5.3 三个前提}
+
+逐次成像要成立，需三条：\textbf{共轴}（否则「光轴」不唯一）；\textbf{逐面傍轴}（误差累积，面数越多要求越严）；\textbf{中间像落在近轴区}（$y'$ 与 $s'$ 可比时出现彗差、像散、畸变，算出的只是高斯像的位置）。
+
+\qbreak
+\hdr{§6}{例题全解：例 1.4（课件 p34--p39）}
+
+\qstem{（课件 p34，角标 33，Example 1.4，即作业 Home Work One 原题）一块会聚透镜（converging lens，$f'=10$ cm）与一块发散透镜（diverging lens，$f'=-10$ cm）共轴放置，发散透镜在会聚透镜右侧 $5$ cm。物体 $PQ$ 垂直于光轴，位于会聚透镜左侧 $20$ cm。求：(1) 用高斯公式求最终的像的位置与横向放大率；(2) 用牛顿公式求同样的两个量；(3) 用作图法核对前两问的结果。}
+
+已知（坐标制，取 $L_1$ 光心为原点、光向右为 $+x$）：$f_1'=+10$、$f_2'=-10$、$d_{12}=5$、$s_1=-20$ cm。由 $f=-f'$ 得 $f_1=-10$、$f_2=+10$。
+
+\begin{center}
+\begin{tikzpicture}[x=0.28cm,y=0.40cm,>=Stealth,font=\scriptsize]
+  \draw[->] (-27,0)--(22.5,0);
+  % 两片透镜（薄透镜符号）
+  \draw[thick,violet] (0,-1.35)--(0,1.35);
+  \draw[thick,violet] (-0.4,-1.35)--(0.4,-1.35);
+  \draw[thick,violet] (-0.4,1.35)--(0.4,1.35);
+  \node[violet,above] at (0.1,1.45) {$L_1$};
+  \draw[thick,violet] (5,-1.1)--(4.68,0)--(5,1.1);
+  \draw[thick,violet] (5,-1.1)--(5.32,0)--(5,1.1);
+  \node[violet,above] at (5.1,1.2) {$L_2$};
+  % 焦点
+  \fill (-10,0) circle (1pt) node[below]{$F_1$};
+  \fill (10,0) circle (1pt) node[below]{$F_1'$};
+  \fill (-5,0) circle (1pt) node[above]{$F_2'$};
+  \fill (15,0) circle (1pt) node[below]{$F_2$};
+  % 物、第一次像、最终像
+  \draw[very thick,red!80!black,->] (-20,0)--(-20,1) node[above]{$P$};
+  \node[below] at (-20,-0.05) {$Q$};
+  \draw[very thick,red!80!black,->] (20,0)--(20,-1) node[below left]{$P_m$};
+  \node[above left] at (20,0.05) {$Q_m$};
+  \draw[very thick,red!80!black,dashed,->] (-25,0)--(-25,2) node[above]{$P'$};
+  \node[below] at (-25,-0.05) {$Q'$};
+  % 两条特殊光线
+  \draw[thick,blue!60!black] (-20,1)--(0,1)--(10,0)--(20,-1)--(5,0.5)--(18,-0.15);
+  \draw[thick,blue!60!black,dashed] (5,0.5)--(-25,2);
+  \draw[thick,green!45!black] (-20,1)--(-10,0)--(0,-1)--(20,-1)--(5,-1)--(18,-2.25);
+  \draw[thick,green!45!black,dashed] (5,-1)--(-25,2);
+  % 尺寸线
+  \draw[<->,dashed] (-20,-2.8)--(0,-2.8) node[midway,below]{$s_1=-20$};
+  \draw[<->,dashed] (0,-2.8)--(20,-2.8) node[midway,below]{$s_1'=+20$};
+  \draw[<->,dashed] (-25,-3.9)--(5,-3.9) node[midway,below]{$s_2'=-30$};
+  \draw[<->,dashed] (0,-1.62)--(5,-1.62) node[midway,below]{$d=5$};
+\end{tikzpicture}\\
+{\small 图 3\quad 例 1.4 的光路（重绘，依课件 p35--p39 的图；横轴压缩、纵轴放大）：蓝线是「平行光轴」那条特殊光线，绿线是「过 $F_1$」那条；两条在 $L_1$ 右侧 20 cm 处交出第一次像 $P_mQ_m$（倒立、等大），继续前进到 $L_2$ 再折射一次，反向延长（虚线）交出最终像 $P'Q'$：在 $L_2$ 左侧 30 cm、正立、放大 2 倍。}
+\end{center}
+
+\subhdr{6.1 第 (1) 问：高斯公式法}
+
+\textbf{第一次成像（对 $L_1$，课件 p36）}：$s_1=-20$、$f_1'=10$，
+\[
+\frac{1}{s_1'}=\frac{1}{f_1'}+\frac{1}{s_1}=\frac{1}{10}-\frac{1}{20}=\frac{1}{20}
+\Longrightarrow s_1'=+20\ \text{cm},\qquad
+\beta_1=\frac{s_1'}{s_1}=\frac{20}{-20}=-1 ,
+\]
+即\textbf{实像}、\textbf{倒立}、\textbf{等大}，在 $L_1$ 右侧 20 cm（与课件 p36 结论框一致）。\textbf{转面}：由式 \eqref{eq:transfer}，$s_2=s_1'-d_{12}=20-5=+15$ cm；$s_2>0$ 表示第一次像落在 $L_2$ \textbf{右侧} 15 cm，对 $L_2$ 是\textbf{虚物}（课件 p37 写 $s_2=-(20-5)=-15$ cm，同一事实、相反符号，见 §0.5）。
+
+\textbf{第二次成像（对 $L_2$，课件 p37）}：$f_2'=-10$，
+\[
+\frac{1}{s_2'}=\frac{1}{f_2'}+\frac{1}{s_2}=\frac{1}{-10}+\frac{1}{15}=-\frac{1}{30}
+\Longrightarrow s_2'=-30\ \text{cm},\qquad
+\beta_2=\frac{s_2'}{s_2}=\frac{-30}{15}=-2 .
+\]
+\textbf{答案}：最终像在 $L_2$ 左侧 30 cm（$L_1$ 左侧 25 cm），虚像、正立、物高的 2 倍（$\beta=\beta_1\beta_2=(-1)(-2)=+2$），与 p37 的 $-30$ cm、$M=2$ 一致。
+
+\subhdr{6.2 第 (2) 问：牛顿公式法}
+
+\textbf{第一次（课件 p38）}：$x_1=s_1-f_1=-20+10=-10$、$f_1f_1'=(-10)(10)=-100$，
+\[
+x_1'=\frac{f_1f_1'}{x_1}=\frac{-100}{-10}=+10,\qquad
+s_1'=x_1'+f_1'=+20\ \text{cm},\qquad
+\beta_1=-\frac{x_1'}{f_1'}=-\frac{10}{10}=-1 .
+\]
+\textbf{第二次（课件 p39）}：$s_2=+15$、$f_2=+10$、$f_2'=-10$，
+\[
+x_2=s_2-f_2=15-10=+5,\qquad
+x_2'=\frac{f_2f_2'}{x_2}=\frac{-100}{5}=-20\ \text{cm},
+\]
+\[
+s_2'=x_2'+f_2'=-30\ \text{cm},\qquad
+\beta_2=-\frac{x_2'}{f_2'}=-\frac{-20}{-10}=-2 .
+\]
+$\beta=(-1)(-2)=+2$，像在 $L_2$ 左侧 30 cm，与第 (1) 问、与 p39 的 $x_2'=-20$ cm、$M=2$ 全部对得上。课件的距离写法 $x_1=+10$、$x_2=-5$ 与这里只差「$x$ 取相反数」，而 $xx'=ff'$ 两边同时变号，故结果相同。
+
+\warnbox{\textbf{课件 p39 的结论有一处笔误}：该页写 ``The final image is located 20 cm to the left of lens $L_2$''。20 cm 是 $x_2'$（从 $F_2'$ 量起），而 $F_2'$ 本身在 $L_2$ 左侧 10 cm，故像到 $L_2$ 的距离是 $10+20=30$ cm，即 $s_2'=-30$ cm——同页的图、p37、本节两种解法都是 30 cm。换算一句话：$s'=x'+f'$。}
+
+\subhdr{6.3 第 (3) 问：作图法核对}
+
+按 §4.3 三步从 $P$ 取两条特殊光线（图 3）：(a) \textbf{平行光轴}那条（蓝）到 $L_1$ 高 $+1$，出射后过 $F_1'$，在 $x=+20$ 处降到 $-1$，正落在 $P_m$ 上；到 $L_2$ 时高 $+0.5$、斜率由 $-0.1$ 变为 $-0.05$，反向延长过 $P'$。(b) \textbf{过 $F_1$} 那条（绿）到 $L_1$ 高 $-1$，出射后平行光轴，到 $x=+20$ 仍是 $-1$，也落在 $P_m$ 上；到 $L_2$ 后斜率由 $0$ 变为 $-0.1$，反向延长同样过 $P'$。(c) 两条延长线交于 $x=-25$、$y=+2$，即 $P'$：$L_2$ 左侧 30 cm 的正立虚像，高为物的 2 倍。
+
+\textbf{自检}：第一次像为何是实的（$s_1'>0$）？第二次为何是虚物（$L_2$ 挡在会聚点之前，$s_2>0$）？两次都倒立为何最终正立（$\beta$ 相乘得 $+2$）？三条特殊光线必须交于同一点，不交说明 $F,F'$ 或 $d$ 标错。
+
+\hdr{§7}{缺口清单：课件跳步与补法}
+
+每条格式是「类型｜页码｜课件原文短语｜补在哪」。页码用 PDF 页序，括号里是页内角标。
+
+\gapitem{缺口 1｜记号冲突}{p40（角标 39）同页三条不能同时成立：第 1 条印 $n/s+n'/s'=(n'-n)/r$，第 2 条印 $f=-nr/(n'-n)$，第 3 条印 $f/s+f'/s'=1$；把第 2 条代进第 3 条得到的是 $n'/s'-n/s$。同页 $V=-s'n/(sn')$ 与 p2 的 $\beta=ns'/n's$ 也差一个符号。补法：§0.5 换算表 + 两次代数字（都得 $s'=90$ cm），说明这是「$s$ 取距离还是取坐标」，不是两套物理。}
+
+\gapitem{缺口 2｜代数跳步}{p11（角标 11）``From the above two equations, we obtain: $s'/s=\pm n/n'$''——从 $(s'-r)n'^2=-(s+r)n^2$ 到该比值缺「开方」与「联立消元」两步，也没说 $\pm$ 各对应什么位置。补法：§1.4 补出两步，并写成 $s=r-\rho$、$s'=r-\rho'$ 与 $s=\rho+r$、$s'=\rho'+r$。}
+
+\gapitem{缺口 3｜答案形态}{p12（角标 12）「$-$ case」只给 $s=-\frac{n'+n}{n}r$、$s'=\frac{n'+n}{n'}r$，没说这两个点在哪、为什么也叫共轭点。补法：§1.4 用 $\rho,\rho'$ 把位置落到「距球心多远」，并给玻璃球面的数值 $-5.0$ cm 与 $+3.33$ cm。}
+
+\gapitem{缺口 4｜机制缺口}{p16（角标 15）``taking square root and rearranging''——没说平方根取哪一支，也没说 $(s+r)$、$(s'-r)$ 的正负怎么定。补法：§2.1 旁注给出「实物实像只与负支相容」，并说明取错支的物理含义。}
+
+\gapitem{缺口 5｜勘误}{p24（角标 23）``Thin lens focal length formula: $f=f_1f_2/(f_1'+f_2')$''——分母多一个撇。用课件自己的数（$f_1=20,f_1'=30,f_2=30,f_2'=20$）代入得 $12$ cm，而同页 $f'$ 式与 p25 磨镜者公式都给 $10$ cm。补法：§3.2 补出消元三步，证明分母应为 $f_1'+f_2$。}
+
+\gapitem{缺口 6｜压缩缺口（表）}{p26（角标 25）``(a) Convex Lenses'' 表的 ``Biconvex'' 列写 $r_1<0,\ r_2<0,\ |r_1|>|r_2|$，第五列表头又重复写成 ``Plano-convex''；这两个负半径代进磨镜者公式得 $f'<0$（发散），与表头矛盾。补法：§3.4 按式 \eqref{eq:lensmaker} 重排 6 行，每行给 $\frac{1}{r_1}-\frac{1}{r_2}$ 的符号与数值。}
+
+\gapitem{缺口 7｜原形缺口（五条规则）}{p2 结构图写 ``Sign Conventions (Five Rules)''，43 页里却没有一页列出五条：p23（角标 22）只有 2 条（$s,s'$），p20（角标 19）1 条（$y$），p28（角标 27）2 条（$x,x'$），$r$ 的符号只在 p26 表里。补法：§0.4 重建五条并标出处，再推出「实物成实像必倒立」。}
+
+\gapitem{缺口 8｜图缺}{p31--p33（角标 30--32）的图没有标 $y>0$ 的方向、没有分别命名三条光线，凹透镜那幅的虚线也没说清是反向延长；p35--p39 的例题作图没有标 $s_1,s_1',d,s_2,s_2'$ 的数值。补法：§4.2 重绘两幅（标 $O,F,F',P,Q,P',Q'$ 与虚线），§6 重绘例题光路并标坐标值（图 3）。}
+
+\gapitem{缺口 9｜勘误}{p39（角标 38）结论第一条 ``The final image is located 20 cm to the left of lens $L_2$''，与同页 $x_2'=-20$ cm（从 $F_2'$ 量起，而 $F_2'$ 在 $L_2$ 左侧 10 cm）、p37 的 $s_2'=-30$ cm 都不符。补法：§6.2 警告框给出 $s'=x'+f'$ 并明确 30 cm。}
+
+\hdr{§8}{公式卡与易错点}
+
+\subhdr{8.1 单球面（坐标制）}
+
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{7.0cm}@{}}
+\thead{式子} & \thead{读法 / 出处}\\
+\tabmid
+$\dfrac{n'}{s'}-\dfrac{n}{s}=\dfrac{n'-n}{r}$ & 像方项减物方项（§2.1；课件 p16 印成距离式）\\
+$f'=\dfrac{n'r}{n'-n}$，$f=-\dfrac{nr}{n'-n}$ & 由 $s\to-\infty$ 与 $s'\to+\infty$ 得（§1.6；p40）\\
+$\dfrac{f}{s}+\dfrac{f'}{s'}=1$ & 高斯式，物像公式除以 $(n'-n)/r$（§2.2）\\
+$xx'=ff'$，$x=s-f$，$x'=s'-f'$ & 牛顿式，从焦点量起（§2.3，本讲义补）\\
+$\beta=\dfrac{ns'}{n's}$ & 横向放大率（§2.4；p2 印此式，p21 印距离式）\\
+$\dfrac{1}{s}+\dfrac{1}{s'}=\dfrac{2}{r}$，$f=f'=\dfrac{r}{2}$ & 球面反射，正方向取反射光一侧（§1.6；p18 印成 $-2/r$）\\
+\end{tabular}
+\tabbot
+
+\subhdr{8.2 薄透镜（两侧空气，坐标制）}
+
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{7.0cm}@{}}
+\thead{式子} & \thead{读法 / 出处}\\
+\tabmid
+$f'=\dfrac{1}{(n_L-1)\left(\frac{1}{r_1}-\frac{1}{r_2}\right)}$ & 磨镜者公式；$f=-f'$（§3.3；p25）\\
+$\dfrac{1}{s'}-\dfrac{1}{s}=\dfrac{1}{f'}$ & 高斯式（§3.5；p27 印成 $1/s+1/s'=1/f$）\\
+$xx'=ff'=-f'^{\,2}$ & 牛顿式（§3.5；p28、p41 印成 $xx'=ff'$）\\
+$\beta=\dfrac{s'}{s}=-\dfrac{f}{x}=-\dfrac{x'}{f'}$ & 放大率三写法（§3.6；p29、p41）\\
+$\dfrac{1}{f'}=\dfrac{1}{f_1'}+\dfrac{1}{f_2'}$，$P=P_1+P_2$ & 密接组合与光焦度（§3.6；p30、p41）\\
+\end{tabular}
+\tabbot
+
+\subhdr{8.3 四个易错点（每条都指回某一步）}
+
+\begin{enumerate}
+  \item \textbf{两套 $s$ 混着用}：式 \eqref{eq:objimg} 里填 $s=-30$，却用课件的 $V=-s'n/(sn')$ 代 $s=+30$，会得 $\beta=+2$（正立）——错在符号。核对办法：实物成实像必倒立（§0.4 推论）。
+  \item \textbf{把 $f$ 当成恒正的「焦距长度」}：单球面 $f=-20$、$f'=+30$ 一负一正；写 $f=f'$ 只在两侧同介质（薄透镜）时成立（§1.6、§3.5）。
+  \item \textbf{转面时忘掉原点换了}：$s_2=s_1'-d$，不是 $s_1'$（式 \eqref{eq:transfer}）。例 1.4 里漏掉 $-5$ 会算成 $s_2'=-20$ cm（错），正确是 $-30$ cm（§6.1）。
+  \item \textbf{作图画两条同类光线}：两条都从 $P$ 平行出射永不相交；必须一条过 $O$、一条平行光轴（或过 $F$）（§4.3）。
+\end{enumerate}
+
+\hdr{§9}{三句话总结}
+
+\textbf{一}：严格关系式里 $s'$ 被 $\sin^2(\varphi/2)$ 绑在张角上，所以\textbf{除两对共轭点外球面不成完善像}（§1.3、§1.4）——这是出发点，也是所有近似的理由。
+
+\textbf{二}：把光束限制在光轴附近，$\sin^2(\varphi/2)\to0$，就得到\textbf{一条}物像公式 $n'/s'-n/s=(n'-n)/r$，并由它推出焦距、高斯式、牛顿式与放大率 $\beta=ns'/(n's)$（§1.5、§2）——后面全部内容都是这一条的改写。
+
+\textbf{三}：薄透镜是「两个球面 $+$ 厚度为零」，把单球面公式用两次并消去中间量，得高斯式、牛顿式、磨镜者公式与密接组合；像的位置可逐次算（§5）也可用三条特殊光线作图核对（§4），两条路必须给同一答案（§6）。
+
+\hdr{§10}{页码对照表}
+
+\tabtop
+\begin{tabular}{@{}p{1.8cm}p{1.6cm}p{8.0cm}p{2.4cm}@{}}
+\thead{PDF 页} & \thead{角标} & \thead{课件内容（原文短语取关键词）} & \thead{本讲义}\\
+\tabmid
+p2 & 2 & 结构图；§1.5-2 四条公式；``Sign Conventions (Five Rules)'' & §0.4、§0.5\\
+p3--p13 & 3--13 & 费马与等光程回顾；``Find $s'$?''；球面 vs 平面；共轴三性质；Snell 与角关系；正弦/余弦定理；主关系式；严格条件；共轭点 & §0.1、§1、§2.5\\
+p14--p22 & 14--21 & 两条判据与物像公式；焦点焦距；反射；等光程；轴外点；放大率；逐次成像 & §1.5、§1.6、§2、§5.1\\
+p23--p30 & 22--29 & 薄透镜：符号约定、方程、磨镜者、凸凹表、高斯式与 $s$--$s'$ 图、牛顿式、放大率、密接 & §3\\
+p31--p41 & 30--40 & 焦平面、副光线、共轭光线、三条特殊光线；例 1.4（六页）；关键公式 (I)(II) & §4、§6、§8\\
+p42--p43 & --- & 下节预告（光学仪器，预习 §1.7）；致谢 & §0.2\\
+\end{tabular}
+\tabbot
+
+{\small 依据课件 43 页逐页读图核对；OCR 只覆盖前 10 页且识别有误，正文公式一律以渲染图为准。}
+
+\end{document}

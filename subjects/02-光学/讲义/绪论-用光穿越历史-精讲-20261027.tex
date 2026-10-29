@@ -1,0 +1,1348 @@
+% !TEX program = xelatex
+% 光学 绪论 · 用光穿越历史 · 精讲讲义
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{绪论 · 用光穿越历史}{光学 · 精讲}
+
+\newcommand{\cpage}[1]{\textsf{p#1}}
+
+\tikzset{
+  ax/.style={->,>=Stealth,line width=0.7pt,color=inkgray},
+  ray/.style={->,>=Stealth,line width=0.8pt,color=violetdeep},
+  thinray/.style={->,>=Stealth,line width=0.5pt,color=petal},
+  geo/.style={line width=0.9pt,color=inkgray},
+  ghost/.style={line width=0.5pt,color=inkgray,dashed},
+  lab/.style={font=\small,color=inkgray},
+  key/.style={font=\small\bfseries,color=violetdeep}
+}
+
+\begin{document}
+
+\doctitle{用光穿越历史：从圭表到光子}
+{光学 · 绪论 · 十层认知框架与三次物理革命}
+{依据：课件《光学 绪论 用光穿越历史 联系时空》PDF p1--p43\\
+逐页缺口补齐 \textperiodcentered\ 十层阶梯逐层讲解 \textperiodcentered\ 作业一题一块\\
+整理：2026-10-27}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与这份讲义怎么用}
+
+\callout{\textbf{这份讲义覆盖什么。}课件 43 页（页脚印到 40/40），主线是一条阶梯：影子 $\to$ 光线 $\to$ 微粒 $\to$ 波 $\to$ 电磁波 $\to$ 光速不变 $\to$ 光子 $\to$ 二象性 $\to$ 虚粒子 $\to$ 规范玻色子。课件几乎不给推导，只给「谁、哪年、一句话」，公式一律直接落在屏幕上（麦克斯韦方程组、$E=h\nu$、$K_{\max}=h\nu-\Phi$、$\lambda=h/p$）。本讲义按「上一层解释不了什么，才逼出下一层」的顺序重讲，并在 §8 逐条点名课件跳过的步子。\\[3pt]
+\textbf{页数说明（对照技能要求 0.5--1.0 倍）。}课件 43 页，下限 $43\times0.5=21.5$ 页。历史类课件单页信息密度低（大量整幅图片），若按「一页配一页」硬撑必然灌水；本讲义按主题合并，把十层压成 \S1、\S7 两节讲框架，把笔墨集中在四处真推导（§2.4 折射定律、§4.3 波动方程、§5.4 洛伦兹因子、§6.3 光电方程）上。宁可页数贴着下限，也不抄图。}
+
+\subhdr{0.1 先记一件事：页脚编号不等于 PDF 页码}
+
+课件自己的页脚是「序号/40」，但它跳过了一张无页脚的全幅图片页 \cpage{33}，因此\textbf{页脚与 PDF 页的差是分段的}，直接用页脚号去翻会错页。本讲义一律用 PDF 页 \cpage{1}--\cpage{43}。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{9.4cm}@{}}
+\thead{PDF 页} & \thead{页脚} & \thead{内容}\\
+\hline
+p1 & 无 & 封面：OPTICS / From Gnomon (gui biao) to Photon / ZHANG Yang @DUT\\
+p2--p3 & 无 & 两页无字全幅星空图（Part 引子，只有画面）\\
+p4--p10 & 03--09 & Part One：What is `light'? / 教材 / 大纲 / 评分 / 课程群\\
+p11 & 无 & Part Two 分隔页（人类认知光的 8000 年旅程）\\
+p12--p32 & 10--30 & 十层阶梯 + Layer ZERO 到 Layer SEVEN\\
+p33 & 无 & 四幅图 a--d，全页没有一个字（见 §7.2）\\
+p34--p40 & 31--37 & Layer EIGHT--TEN / OPTICS 是什么 / Part Three / Nobel 与产业 / 两种思维 / 提问页\\
+p41--p43 & 未印（应为 38--40） & Homework ONE / Q\&A / 空白尾页\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{读法：p4 页脚「03/40」，差 1；p12 页脚「10/40」、p32 页脚「30/40」，差 2；p34 页脚「31/40」、p40 页脚「37/40」，差 3。差之所以从 2 变 3，正是因为 p33 那张四联图没有页脚。全书三段的差依次是 $+1,+2,+3$，可当场验算。}
+
+\subhdr{0.2 记号（全文统一，不再逐处重复）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{5.1cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{5.1cm}@{}}
+\thead{符号} & \thead{含义} & \thead{符号} & \thead{含义}\\
+\hline
+$\mathbf{E},\mathbf{B}$ & 电场、磁场强度 & $n$ & 折射率，$n=c/v$\\
+$\mathbf{k}$ & 波矢，指向传播方向 & $\theta_i,\theta_t,\theta_r$ & 入射角、折射角、反射角（均对法线量）\\
+$c$ & 真空光速 $299\,792\,458\ \mathrm{m/s}$ & $\nu,\lambda$ & 频率、真空波长，$c=\lambda\nu$\\
+$h$ & 普朗克常数 & $\Phi$ & 逸出功（photoelectric work function）\\
+$K_{\max}$ & 光电子最大初动能 & $V_0$ & 截止电压，$eV_0=K_{\max}$\\
+$\gamma$ & 洛伦兹因子 $1/\sqrt{1-\beta^2}$ & $\beta$ & $v/c$\\
+$d$ & 双缝间距 & $L$ & 缝到屏的距离\\
+$\Delta$ & 光程差（optical path difference） & $s,h$ & 圭表影长、表高\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{0.3 常数报户口：哪个是定义、哪个是算出来的}
+
+后文出现的每个数都能指回下表的一行。\textbf{数学来源}（由别的量算出来）与\textbf{约定来源}（人定的单位）分列，不许混着用。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{5.0cm}@{}}
+\thead{常数} & \thead{取值} & \thead{来源类型} & \thead{从哪来}\\
+\hline
+$c$ & $299\,792\,458\ \mathrm{m/s}$ & 约定（定义值） & 1983 年国际计量大会用光速定义「米」，此后 $c$ 精确无误差\\
+$\mu_0$ & $4\pi\times10^{-7}\ \mathrm{H/m}$ & 约定（旧 SI） & 安培旧定义的结果，$4\pi\times10^{-7}$ 里的 $4\pi$ 来自球对称立体角\\
+$\varepsilon_0$ & $8.854\,187\,812\,8\times10^{-12}\ \mathrm{F/m}$ & 数学（由 $c,\mu_0$ 反解） & $\varepsilon_0=1/(\mu_0c^2)$，不是独立测量\\
+$h$ & $6.626\,070\,15\times10^{-34}\ \mathrm{J\,s}$ & 约定（定义值） & 2019 年 SI 修订后为定义值\\
+$e$ & $1.602\,176\,634\times10^{-19}\ \mathrm{C}$ & 约定（定义值） & 同上\\
+$hc/e$ & $1239.84\ \mathrm{eV\cdot nm}$ & 数学（三者组合） & 把波长换成光子能量的换算因子，$\approx1240$\\
+$2m_ec^2$ & $1.022\ \mathrm{MeV}$ & 数学（$m_e$ 乘 $c^2$ 再乘 2） & 因子 2 是「一正一负两个电子」的能量账，不是凑出来的\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{这张表是台账（常数—值—出处），不承载推导，所以不需要「逐行读法」。真正要记住的只有一句：$\varepsilon_0$ 是算出来的，$c$ 是定义出来的——所以 §4.4 用 $\mu_0,\varepsilon_0$ 算出 $c$ 之后，只能说「与定义值吻合」，不能说「测出了 $c$」。}
+
+\warnbox{\textbf{本讲义的两类内容必须分清。}凡标「课件 \cpage{xx}」的，是课件原话或原式；凡标「讲义补充」的，是课件没有、为了让这一步站得住而补的（费马原理、瑞利--金斯公式、全反射临界角、光钟推导、对产生的阈值与动量守恒）。\S8 把每一处补充都登记在案。\textbf{期末只考前四层}（课件 \cpage{36} 原话 "the entire body of mathematics and physics spanning the first through the fourth layers"），五层以后是视野不是考点；但十层阶梯的名称与顺序要能默画（\cpage{41} 明说 "it will definitely be covered in your final exam"）。}
+
+%=============================================================
+\hdr{§1}{为什么先讲历史：影子、圭表与十层阶梯}
+
+\subhdr{1.1 课件的第一句话就定了调子}
+
+\cpage{13} 只有一句引言，配一页水墨山峦：
+
+\begin{quote}
+``Before there was physics, there was civilization and civilization began with a shadow.''
+\end{quote}
+
+\cpage{15} 把三个词并排放着问：宇宙（The Universe）、人类（Humanity）、文明（Civilization）——"what connects the universe, humanity, and civilization?" \cpage{16} 自己回答：把三者接起来的是\textbf{光沿直线传播这个最简单的现象}，因为影子把「空间」和「时间」绑在了一起（原话 "connects space (空间) and time(时间)"）。这句话是本课程全部动机的来源：\textbf{测影就是测时间，测时间就是立法}。
+
+\cpage{17} 把这个动机推到道德层面：观天象之光影，立宇宙之道，成道德之基；古人发现回归年（solar year）精确守约，于是有「至信如时」，于是「诚信」成为德的核心。课件在此引冯时（Prof.~Feng Shi，中国社会科学院考古研究所）的一句话：
+
+\begin{quote}
+``Early astronomical observation was not just a scientific activity, but an activity that created civilization.''
+\end{quote}
+
+\subhdr{1.2 Layer ZERO：圭表怎么把影子变成时间}
+
+\cpage{14} 给出实物链：湖北秭归\textbf{东门头遗址}（The Dongmentou Site）的石碑，刻人像、刻带 23 道光芒的太阳、刻星，被称作世界上最早的圭表（gnomon，原文注「sundial pillar 碑表」）；年代原文写 "$\sim$6,000 BC (8000 years ago)"。此后是「4500 years age 玉圭表」「2000 years age 铜圭表」，用途原文两句：
+
+\begin{itemize}
+\item ``Humans first used their own shadows to tell time. Later, they replaced their bodies with a stone pillar (表) and measured the shadow on the ground (圭).''
+\item ``使用圭表可定出每天正午的时刻根据正午时度量表影的长度可以推定二十四节气''
+\end{itemize}
+
+也就是说：\textbf{表}是立起来的那根杆（量高度 $h$），\textbf{圭}是平放在地上带刻度的尺（量影长 $s$）。两者一竖一横，构成一台「把太阳高度角翻译成长度」的模拟计算机。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % 地面（圭）
+  \draw[geo] (-0.6,0) -- (6.2,0);
+  \foreach \x in {0,0.5,...,6} {\draw[color=petal,line width=0.4pt] (\x,0) -- (\x,-0.12);}
+  \node[lab,below] at (5.6,-0.15) {圭：影长 $s$};
+  % 表
+  \draw[line width=1.6pt,color=violetdeep] (1.2,0) -- (1.2,2.6);
+  \node[key,left] at (1.05,1.35) {表 $h$};
+  % 日光
+  \draw[ray] (-0.9,3.5) -- (1.2,2.6) -- (4.6,0);
+  \node[lab,above left] at (0.55,3.2) {日光};
+  % 太阳
+  \draw[fill=orange!55,draw=orange!80!black] (-1.1,3.7) circle (0.22);
+  % 影子标注
+  \draw[<->,>=Stealth,color=inkgray,line width=0.6pt] (1.2,-0.55) -- (4.6,-0.55);
+  \node[lab,below] at (2.9,-0.55) {影长 $s$};
+  \draw[ghost] (4.6,0) -- (4.6,-0.55);
+  % 高度角
+  \draw[color=inkgray,line width=0.5pt] (4.6,0) ++(180:0.9) arc (180:146:0.9);
+  \node[lab] at (3.55,0.25) {$\alpha$};
+  \node[lab,align=left] at (5.0,2.4) {$\tan\alpha=\dfrac{h}{s}$\\[2pt]$s=\dfrac{h}{\tan\alpha}$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 1\quad 圭表测影（据课件 \cpage{14} 的玉圭表/铜圭表重绘）。$\alpha$ 是正午太阳高度角，$h$ 是表高，$s$ 是影长；表越高、$\alpha$ 越大，影子越短。}
+\end{center}
+
+\aside{这张图只用了一个前提：光沿直线传播，且「表顶—影端—太阳」三点共线。课件 \cpage{16} 把这条叫 "the simplest phenomenon of the straight-line propagation of light (shadows)"，本图就是它的一次具体兑现。}
+
+\textbf{影长为什么能定节气（讲义补充）。}正午太阳高度角由观测地纬度 $\varphi$ 与太阳赤纬 $\delta$ 决定：
+\[
+\alpha=90^\circ-|\varphi-\delta|,\qquad s=\frac{h}{\tan\alpha}.
+\]
+夏至 $\delta=+23.44^\circ$（北回归线直射），$\alpha$ 最大、$s$ 最小；冬至 $\delta=-23.44^\circ$，$\alpha$ 最小、$s$ 最大。取中原纬度 $\varphi=34.5^\circ$、八尺之表 $h=8$ 尺：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lccc@{}}
+\thead{节气} & \thead{$\delta$} & \thead{$\alpha$} & \thead{影长 $s$}\\
+\hline
+夏至 & $+23.44^\circ$ & $78.94^\circ$ & $1.56$ 尺\\
+冬至 & $-23.44^\circ$ & $32.06^\circ$ & $12.77$ 尺\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{表前一句：这张表只是把 $s=h/\tan\alpha$ 在 $\delta=\pm23.44^\circ$ 两个端点上各算一次，$h=8$ 尺、$\varphi=34.5^\circ$ 不变。逐行读法：夏至 $\alpha=90^\circ-(34.5^\circ-23.44^\circ)=78.94^\circ$，$8/\tan78.94^\circ=8/4.93=1.56$；冬至 $\alpha=90^\circ-(34.5^\circ+23.44^\circ)=32.06^\circ$，$8/\tan32.06^\circ=8/0.626=12.77$。边界：两至之间影长连续变化，故「影最短的那一天」唯一，这就是夏至的定义方式。《周礼》「日至之景，尺有五寸」（八尺表、夏至 1.5 尺）与本表 1.56 尺同量级，差半寸来自纬度取整。}
+
+这个数一出来，\cpage{14} 那句「可推定二十四节气」就不再是口号：\textbf{节气 = 影长的极值点与等分点}。古代把一年分成二十四段，本质上是在给这条影长曲线做刻度。
+
+\subhdr{1.3 十层阶梯：一条「上层解释不了什么」的链条}
+
+\cpage{41} 是全课件唯一把十层写全、且文字清晰的一页（\cpage{12} 同一张图被水墨山峦压住了半边）。原文给出的阶梯从下往上：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{1.4cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{7.7cm}@{}}
+\thead{层级} & \thead{身份} & \thead{年代/人物} & \thead{课件原话（\cpage{41}）}\\
+\hline
+ONE & 光是射线 & 墨子 ca.~400 BCE & Mozi described pinhole imaging and rectilinear propagation. Euclid studied reflection; Snell \& Descartes established refraction law.\\
+TWO & 光是粒子 & 牛顿 1704 & Newton proposed the corpuscular theory and explained reflection and refraction. But why don't light particles repel each other?\\
+THREE & 光是波 & 惠更斯、杨 1801 & Huygens proposed wave theory; Young's double-slit experiment (1801) provided decisive evidence.\\
+FOUR & 光是电磁波 & 麦克斯韦 1873、赫兹 1888 & Maxwell unified electricity and magnetism and predicted light as an EM wave. Hertz verified it. Light is a transverse wave.\\
+FIVE & 光速不变 & 迈克耳孙 1887、爱因斯坦 1905 & Michelson--Morley experiment (1887). Special relativity (1905): $c$ is the ultimate speed limit of the universe.\\
+SIX & 光是光子 & 普朗克 1900、爱因斯坦 1905 & Planck quantized energy; Einstein's photon explains the photoelectric effect. Photon energy $E=h\nu$ depends on frequency.\\
+SEVEN & 波粒二象性 & 德布罗意 1920s & Light exhibits both wave and particle properties. A photon can show interference---quantum strangeness begins here.\\
+EIGHT & 光能造物质 & 爱因斯坦 & Energy and mass are equivalent. High-energy photons can create particle-antiparticle pairs.\\
+NINE & 光是虚粒子 & 费曼 1940s & In QED, photons are the messengers of electromagnetic force (Feynman diagrams).\\
+TEN & 光是规范玻色子 & 杨振宁等 & U(1) symmetry in the Standard Model. Photon as the gauge boson of electromagnetism.\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{表前一句：这张表只是把 \cpage{41} 的十级台阶从下往上读一遍，每一行的「身份」与「年代」都照抄原文，未加解释。逐行读法见 \S1.4 与 \S2--\S7，每层一节。边界：Layer ZERO（影子与文明，\cpage{13}--\cpage{17}）\textbf{不在十层之内}——十层从「光是什么」起算，ZERO 讲的是「人怎么开始用光」，属于前物理；\cpage{41} 的台阶图也确实只有十级。}
+
+\subhdr{1.4 三次物理革命：阶梯为什么长这样}
+
+把十层按「当时物理学的主战场」重新分组，就得到贯穿全课的三次革命：
+
+\begin{enumerate}
+\item \textbf{力学时代（Layer 1--3）。}光被塞进已有的力学框架：要么是运动的微粒（牛顿），要么是振动的波（惠更斯）。争论的判据是「能不能解释反射、折射、影子、干涉」。
+\item \textbf{场论时代（Layer 4--5）。}光不再是「某种粒子或某种振动」，而是\textbf{电磁场本身的传播}。这一步的代价是必须回答「波在什么介质里传」——以太；而以太测不到，于是逼出相对论。
+\item \textbf{量子时代（Layer 6--10）。}能量必须一份一份给（$E=h\nu$），于是光既是波又是粒子；再往下，光成了场的量子、相互作用的信使、对称性的代价。
+\end{enumerate}
+
+这条链的驱动力不是「新实验推翻旧理论」，而是\textbf{每一层都被上一层的漏洞逼出来}：射线光学解释不了干涉（\cpage{21} 原话 "Ray optics explains shadows and mirrors\ldots But it does not tell us what light is"）；波动说解释不了黑体谱与光电效应（\cpage{30}）；相对论解释不了「光由什么组成」（\cpage{29} 原话 "it has not yet answered what light is actually composed of"）。记住这个句式，十层就串成了一条线而不是十个名词。
+
+%=============================================================
+\hdr{§2}{Layer ONE：光是射线（墨子、欧几里得、斯涅耳）}
+
+\subhdr{2.1 这一层的全部内容就是一句话}
+
+\cpage{18} 只有一行：``Light is Rays.'' \cpage{41} 把它拆成三条：沿直线传播、反射、折射。它\textbf{不回答光是什么}，只回答光怎么走——这一点本身就是进步：一旦把光抽象成「有方向的线」，几何学就能接管光学。
+
+\subhdr{2.2 墨子的小孔成像：为什么像是倒的}
+
+\cpage{19} 原文两句：
+
+\begin{quote}
+``The 《Mo Jing》 contains the world's first recorded observations of the pinhole(lenless) camera (小孔成像), correctly explaining it with the rectilinear propagation of light.''
+``It also contains geometrical concepts akin to the Pythagorean theorem (勾股定理), linking math to light paths.''
+\end{quote}
+
+课件说「用直线传播正确解释了它」，但\textbf{没有写怎么解释}。这一步不能跳：倒像不是「孔把光挡住了」的结果，而是「光走直线、在孔心交叉」的必然。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % 暗箱
+  \draw[geo] (0,0) rectangle (5.2,3.0);
+  % 左壁（物面）留出物体
+  \draw[line width=1.4pt,color=violetdeep] (0.12,0.75) -- (0.12,2.25);
+  \node[key,left] at (-0.05,1.5) {物 $h$};
+  % 中间挡板与针孔
+  \draw[geo] (2.6,0) -- (2.6,1.35);
+  \draw[geo] (2.6,1.65) -- (2.6,3.0);
+  \fill[violetdeep] (2.6,1.5) circle (0.05);
+  \node[lab,above right] at (2.55,1.55) {孔 $O$};
+  % 屏
+  \draw[line width=1.4pt,color=violetdeep] (5.05,0.45) -- (5.05,2.55);
+  \node[key,right] at (5.15,1.5) {屏};
+  % 两条光线：物顶->像底，物底->像顶
+  \draw[ray] (0.14,2.25) -- (2.6,1.5) -- (5.02,0.75);
+  \draw[ray] (0.14,0.75) -- (2.6,1.5) -- (5.02,2.25);
+  % 尺寸标注
+  \draw[<->,>=Stealth,color=inkgray,line width=0.6pt] (0.14,2.5) -- (2.6,2.5);
+  \node[lab,above] at (1.37,2.5) {物距 $a$};
+  \draw[<->,>=Stealth,color=inkgray,line width=0.6pt] (2.6,2.5) -- (5.02,2.5);
+  \node[lab,above] at (3.8,2.5) {像距 $b$};
+  % 对称提示
+  \node[lab,below] at (3.85,0.05) {像倒立：物顶成像于屏的下端};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 2\quad 小孔成像的光路（据课件 \cpage{19} 的示意图重绘）。两条边界光线在孔心 $O$ 交叉，所以物顶的像落在屏的下端；$h$ 是物高、$h'$ 是像高。}
+\end{center}
+
+\textbf{几何（讲义补充，补 \cpage{19} 的「correctly explaining」）。}物距 $a$、像距 $b$、物高 $h$、像高 $h'$，由两个相似三角形
+\[
+\frac{h'}{h}=\frac{b}{a}\quad\Longrightarrow\quad h'=\frac{ab}{a}\cdot\frac{h}{a}=\frac{b}{a}h,\qquad \text{方向与原物相反}.
+\]
+写成有符号形式更省事：以孔心为原点、光轴为 $z$ 轴，则物点 $(y,z=-a)$ 的像在 $(y',z'=b)$，且 $y'/y=-b/a$。负号就是「倒立」，它来自光线穿过孔心时 $y$ 坐标改变符号——和透镜的横向放大率公式是同一个形状。
+
+\warnbox{\textbf{小孔必须多小（课件说的 "lenless/pinhole" 的前提）。}孔有直径 $D$ 时，一个物点会在屏上摊成直径 $D(1+b/a)$ 的模糊圆。要让像「清楚」，得让模糊圆远小于像本身的特征尺寸：
+\[
+D\left(1+\frac{b}{a}\right)\ll h'.
+\]
+把 $h'=(b/a)h$ 代进去，得到 $D\ll h\cdot\dfrac{b}{a+b}$。直观读法：\textbf{孔要比「物体在孔处的投影」还小得多}。孔再小下去又会遇到衍射（\S4 之后的内容），所以小孔成像的最佳孔径是「几何模糊 = 衍射斑」那一点——这个折中课件没讲，但它正是「为什么小孔不能无限小」。}
+
+\subhdr{2.3 欧几里得：反射定律}
+
+\cpage{20} 原文只有一行："Euclid (300 BC) Systematic study of reflection." 图上是入射与反射光线关于法线对称，两侧各标 $\theta_i$、$\theta_r$。\textbf{反射定律}（讲义补充成完整陈述）：
+
+\callout{\textbf{反射定律。}在两种介质的分界面上，反射光线、入射光线与法线三线共面，且反射光线与入射光线分居法线两侧，反射角等于入射角：$\theta_r=\theta_i$。对象是「一条光线 + 一个光滑界面」，条件是界面尺度远大于波长（否则是散射而非镜面反射）。}
+
+\subhdr{2.4 斯涅耳与笛卡儿：折射定律（课件只画图，没给公式）}
+
+\cpage{20} 第三个人物写的是 "Snell \& Descartes (17th Century) Formalization of the Law of Refraction."，图上有 $n_1$、$n_2$、$\theta_i$、$\theta_t$ 四个记号——\textbf{但整页没有出现任何公式}。这是本课件最典型的「公式缺」：读者知道有个定律，却不知道定律长什么样。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % (a) 反射
+  \begin{scope}
+    \draw[geo] (-1.6,0) -- (1.6,0);
+    \draw[ghost] (0,-1.3) -- (0,1.6);
+    \draw[ray] (-1.1,1.35) -- (0,0);
+    \draw[ray] (0,0) -- (1.1,1.35);
+    \draw[color=inkgray,line width=0.5pt] (0,0) ++(90:0.55) arc (90:129:0.55);
+    \draw[color=inkgray,line width=0.5pt] (0,0) ++(90:0.55) arc (90:51:0.55);
+    \node[lab] at (-0.28,0.72) {$\theta_i$};
+    \node[lab] at (0.28,0.72) {$\theta_r$};
+    \node[lab,below] at (0,-1.1) {(a) 反射：$\theta_r=\theta_i$};
+    \node[lab,left] at (-1.15,1.45) {入射};
+    \node[lab,right] at (1.15,1.45) {反射};
+  \end{scope}
+  % (b) 折射
+  \begin{scope}[xshift=4.6cm]
+    \draw[geo] (-1.6,0) -- (1.6,0);
+    \fill[color=bandviolet] (-1.6,-1.2) rectangle (1.6,0);
+    \draw[ghost] (0,-1.2) -- (0,1.6);
+    \draw[ray] (-1.1,1.35) -- (0,0);
+    \draw[ray] (0,0) -- (0.5,-1.2);
+    \node[lab,left] at (-0.75,0.95) {$n_1$};
+    \node[lab,left] at (-0.75,-0.7) {$n_2>n_1$};
+    \draw[color=inkgray,line width=0.5pt] (0,0) ++(90:0.6) arc (90:129:0.6);
+    \draw[color=inkgray,line width=0.5pt] (0,0) ++(-90:0.6) arc (-90:-67:0.6);
+    \node[lab] at (-0.3,0.78) {$\theta_i$};
+    \node[lab] at (0.18,-0.78) {$\theta_t$};
+    \node[lab,below] at (0,-1.6) {(b) 折射：$n_1\sin\theta_i=n_2\sin\theta_t$};
+  \end{scope}
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 3\quad 反射与折射（据课件 \cpage{20} 的两幅光路重绘）。角度一律对法线量；$n_2>n_1$ 时光线向法线偏折，即 $\theta_t<\theta_i$。}
+\end{center}
+
+\callout{\textbf{折射定律（Snell 定律，完整陈述）。}折射光线、入射光线与法线三线共面，且二者分居法线两侧，满足
+\[
+n_1\sin\theta_i=n_2\sin\theta_t .
+\]
+其中 $n_1,n_2$ 是两侧介质的折射率，$\theta_i$ 是入射角、$\theta_t$ 是折射角，都从法线量起。条件是界面光滑（尺度 $\gg\lambda$）、两侧介质各向同性。小角近似下退化为 $n_1\theta_i\approx n_2\theta_t$，这条线性形式在做近轴光学时天天用。}
+
+\aside{课件 \cpage{20} 给的是图形形式（$n_1,n_2,\theta_i,\theta_t$ 四个记号齐全，但无等式），本节补的是公式形式。两者是同一件事的两个面：图给「谁比谁陡」，式给「陡多少」。}
+
+\textbf{它从哪来（讲义补充，两条路都走一遍）。}
+
+\emph{路一：惠更斯作图（与 §3.3 的次波原理同源）。}波前在介质 1 中速度 $v_1=c/n_1$，在介质 2 中 $v_2=c/n_2$。同一段时间内，一条波前在两个介质里推进的距离分别是 $v_1t$ 与 $v_2t$；由于界面是同一个平面，两段波前必须首尾相接，于是
+\[
+\frac{\sin\theta_i}{v_1}=\frac{\sin\theta_t}{v_2}\quad\Longrightarrow\quad n_1\sin\theta_i=n_2\sin\theta_t .
+\]
+读法：$\sin\theta$ 正比于「该介质里的推进速度」，$n$ 越大速度越小，所以角度越小。
+
+\emph{路二：费马原理（Fermat's principle，最小光程）。}光走「光程取极值」的那条路，光程定义为
+\[
+\mathcal{L}=\int n\dd s .
+\]
+设界面是 $x$ 轴，$A(0,a)$ 在上方 $n_1$ 中，$B(d,-b)$ 在下方 $n_2$ 中，光线在界面上的落点为 $P(x,0)$。则
+\[
+\mathcal{L}(x)=n_1\sqrt{a^2+x^2}+n_2\sqrt{b^2+(d-x)^2}.
+\]
+求极值：
+\[
+\frac{\dd\mathcal{L}}{\dd x}
+=\frac{n_1x}{\sqrt{a^2+x^2}}-\frac{n_2(d-x)}{\sqrt{b^2+(d-x)^2}}=0 .
+\]
+注意 $\sin\theta_i=\dfrac{x}{\sqrt{a^2+x^2}}$，$\sin\theta_t=\dfrac{d-x}{\sqrt{b^2+(d-x)^2}}$（这正是图 3(b) 中两个角的定义），代回即得
+\[
+n_1\sin\theta_i=n_2\sin\theta_t .
+\]
+二阶导 $\dfrac{\dd^2\mathcal{L}}{\dd x^2}=\dfrac{n_1a^2}{(a^2+x^2)^{3/2}}+\dfrac{n_2b^2}{(b^2+(d-x)^2)^{3/2}}>0$，所以是极小而非极大。反射定律是它在 $n_1=n_2$ 时的镜像版本（把 $B$ 换成界面上方的镜像点，两点间直线最短）。
+
+\textbf{数值例（把费马原理用一次）。}空气（$n_1=1$）射向玻璃（$n_2=1.5$），入射角 $\theta_i=30^\circ$：
+\[
+\sin\theta_i=0.500\quad\Longrightarrow\quad
+\sin\theta_t=\frac{n_1}{n_2}\sin\theta_i=\frac{0.500}{1.5}=0.333\quad\Longrightarrow\quad
+\theta_t=19.5^\circ .
+\]
+光线向法线偏折 $10.5^\circ$。反射那份同样能由费马读出来：界面在同一介质中时，镜面反射的极端路径恰好使 $\theta_r=\theta_i=30^\circ$。两个角一起看，就能理解课件 \cpage{20} 为什么把反射与折射画在同一页——它们是同一个极值条件的两个解（一个在界面上方折回，一个穿到下方）。
+
+\warnbox{\textbf{边界：等式什么时候无解（讲义补充，补全反射缺口）。}$n_1\sin\theta_i=n_2\sin\theta_t$ 的左端最大只能取 $n_1$（$\sin\theta_i\le1$），所以当
+\[
+\sin\theta_i>\frac{n_2}{n_1}
+\]
+时，右端要求的 $\sin\theta_t>1$，\textbf{没有实数解}——这不是「算错了」，而是物理上折射光不存在，光全部反射回去，即全反射。临界角 $\sin\theta_c=n_2/n_1$（要求 $n_1>n_2$）。端点 $\theta_i=\theta_c$ 时 $\theta_t=90^\circ$，折射光沿界面掠出，仍算「有解」；所以严格写是 $\theta_i\ge\theta_c$ 无折射（端点为掠射极限），习惯写 $\theta_i>\theta_c$ 是因为掠射光强为零。光纤（\cpage{38} 高锟的贡献）就建立在这个不等号上。}
+
+\subhdr{2.5 这一层的天花板}
+
+\cpage{21} 一句话点了死穴：射线光学能解释影子与镜子，却回答不了「光是什么」。它甚至解释不了\textbf{两束光为什么能互相穿过}（\cpage{23} 的问题），也解释不了水面上的油膜为什么有颜色。这一层的适用条件（讲义补充）是几何光学极限
+\[
+\lambda\ll \text{（系统的特征尺度）},
+\]
+一旦孔径、缝宽、膜厚与波长同量级，直线传播的图景立刻失效——那就是 §3 的入口。
+
+%=============================================================
+\hdr{§3}{Layer TWO 与 THREE：微粒说、波动说与那场大辩论}
+
+\subhdr{3.1 牛顿的微粒说（\cpage{22}）}
+
+\cpage{22} 列了五条，条条都是原文：
+
+\begin{itemize}
+\item "Proposed the Corpuscular Theory of Light."（提出光的微粒说）
+\item "Light consists of tiny particles corpuscles."（光是极小的微粒）
+\item "Published Opticks in 1704."（1704 年出版《光学》）
+\item "Explained reflection and refraction successfully."（成功解释了反射与折射）
+\item "His authority suppressed the wave theory for nearly a century."（他的权威压制了波动说近一个世纪）
+\end{itemize}
+
+课件的语气很值得注意：它把「压制」归给\textbf{权威}而不是证据。这句评价是对的——18 世纪波动说并不缺实验，缺的是「波怎么解释影子边缘那么干净」的答案。
+
+\cpage{22} 还给了一个今天看来很奇特的补充：用万有引力解释光线偏折，
+\[
+F=G\frac{m_1m_2}{r^2},
+\]
+原文说 "Gravitational attraction causes light particles to deviate, explaining phenomena such as the bending of light by the Sun."
+
+\textbf{这里有一处必须讲清的物理（讲义补充）。}若光微粒有（等效）质量 $m$，它在太阳引力场中的加速度是
+\[
+a=\frac{F}{m}=\frac{GM_\odot}{r^2},
+\]
+\textbf{与 $m$ 无关}——这正是等效原理的雏形。所以「光被太阳压弯」这件事，牛顿图景与广义相对论都会预言，只是数值差一倍（牛顿型偏折是广义相对论的一半）。课件引 $F=Gm_1m_2/r^2$ 时把它当「解释」，但真正的判据不在「弯不弯」，而在「弯多少」。1919 年日食观测测出的是广义相对论的那个数，从此牛顿型偏折退场。注意这是\textbf{讲义补充}，课件未涉及。
+
+\subhdr{3.2 课件问了却没人回答的问题（\cpage{22}、\cpage{41}）}
+
+\cpage{41} 第二层原话的末尾是一个问号：
+
+\begin{quote}
+``But why don't light particles repel each other?''
+\end{quote}
+
+\cpage{23} 又把它换成另一句：
+
+\begin{quote}
+``If light is particles, why do two beams cross without colliding?''
+\end{quote}
+
+两处问的是同一件事，课件\textbf{全篇没有给答案}。补上（讲义补充）：因为光微粒在这个图景里不带电荷、也没有可观的碰撞截面。
+
+\begin{itemize}
+\item \textbf{不排斥。}库仑排斥要求粒子带同种电荷，力 $F=\dfrac{1}{4\pi\varepsilon_0}\dfrac{q_1q_2}{r^2}$。光子电荷为零，这个力恒为零；两个电子会排斥，两个光子不会。
+\item \textbf{不碰撞。}「碰撞」意味着有几何截面。在几何光学极限下，光子之间没有可观测的相互作用截面；两束光交叉时彼此的强度、方向都不变。真正会发生的是量子电动力学的光子--光子散射（\cpage{35} 的 Layer NINE 之后才有语言描述它），但截面极小，日常光强下观测不到。
+\end{itemize}
+
+这一条补上之后，\cpage{23} 的「两束光为什么能交叉」就不再是悖论，而是「粒子」这个词被误用的后果：牛顿的 corpuscle 不是台球，它只是一个「不弥散的、可数的能量包」。
+
+\subhdr{3.3 惠更斯的次波原理（\cpage{24}）}
+
+\cpage{24} 给的是\textbf{完整陈述}（这一段课件写得很好，照抄即可当定理用）：
+
+\begin{quote}
+``Every point on a wavefront acts as a source of secondary wavelets. The new wavefront is the envelope of these wavelets.''
+\end{quote}
+
+配图是一个平面波前上每点发出小圆，圆族的包络就是下一时刻的波前。这条原理的力量在于：它把「波怎么绕过障碍、怎么拐进阴影」变成纯几何作图。它也能解释折射（§2.4 路一），甚至能解释为什么光速在介质中变慢会让光线向法线偏折。
+
+\textbf{次波原理怎么解释衍射（讲义补充，补 \cpage{24} 只有结论的缺口）。}把一条缝看成一排连续的次波源。缝宽 $b$ 与波长 $\lambda$ 同量级时，各次波源到屏上同一点的路程差不再是零，波前被"掰弯"，光就拐进了几何阴影区——这就是衍射。判据是缝宽与波长的比值：$b\gg\lambda$ 时各次波几乎同相，波前保持平直，光线走直线（§2 的几何光学）；$b\sim\lambda$ 时弯曲明显。这正好补上 §3.5 里那条「当时的波动说解释不了影子为什么干净」——不是波动说错了，而是可见光波长（$\sim5\times10^{-7}$ m）远小于日常物体的尺度，衍射角 $\sim\lambda/b$ 小到看不见。菲涅耳 1818 年把这笔账算清，波动说才真正赢。
+
+\aside{用这条原理时只需要一个前提：波前上每点都发出球面次波，且次波的传播速度就是该介质中的波速 $v=c/n$。§2.4 的路一用的正是它；\S3.4 的双缝也能用它作图（两个缝就是两个次波源）。}
+
+\subhdr{3.4 杨氏双缝（1801）：判决性实验}
+
+\cpage{24} 把杨氏实验列为 "3. Young's Double-Slit Experiment (1801)"，配图是两条缝、弧线波前、屏上明暗条纹，结论一句 "Bright and dark fringes prove light behaves as a wave."
+
+\textbf{但课件那张图有个笔误。}放大看，\textbf{两条缝都被标成了 $S_1$}（应为 $S_1$、$S_2$）。这不是排印小事：双缝的一切推导都建立在「两个不同的源」上，标成同一个符号会让读者根本读不出「两束光从哪来」。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % 屏与缝
+  \draw[geo] (0,2.2) -- (0,0.42);
+  \draw[geo] (0,0.18) -- (0,-0.18);
+  \draw[geo] (0,-0.42) -- (0,-2.2);
+  \node[key,left] at (-0.06,0.62) {$S_1$};
+  \node[key,left] at (-0.06,-0.62) {$S_2$};
+  % 缝间距
+  \draw[<->,>=Stealth,color=inkgray,line width=0.5pt] (0.18,0.30) -- (0.18,-0.30);
+  \node[lab,right] at (0.22,0) {$d$};
+  % 入射平面波
+  \foreach \y in {-1.8,-1.2,-0.6,0,0.6,1.2,1.8} {\draw[thinray] (-1.7,\y) -- (-0.15,\y);}
+  \node[lab,above] at (-1.1,1.9) {平面波};
+  % 到 P 的两条光线
+  \draw[ray] (0,0.30) -- (5.0,1.15);
+  \draw[ray] (0,-0.30) -- (5.0,1.15);
+  % 屏
+  \draw[line width=1.2pt,color=violetdeep] (5.0,-2.2) -- (5.0,2.2);
+  \node[key,right] at (5.1,2.0) {屏};
+  \fill[violetdeep] (5.0,1.15) circle (0.06);
+  \node[lab,right] at (5.12,1.15) {$P$};
+  % 中央轴
+  \draw[ghost] (0,0) -- (5.0,0);
+  \node[lab,below] at (2.6,0) {$L$};
+  % theta
+  \draw[color=inkgray,line width=0.5pt] (0,0) ++(0:1.2) arc (0:11:1.2);
+  \node[lab] at (1.15,0.30) {$\theta$};
+  % 屏上条纹
+  \foreach \y in {-1.8,-1.2,-0.6,0,0.6,1.2,1.8} {\draw[color=violet,line width=1.6pt] (5.0,\y-0.14) -- (5.0,\y+0.14);}
+  \node[lab,align=left] at (6.4,0) {明纹：\\$d\sin\theta=m\lambda$\\[3pt]间距：\\$\Delta y=\lambda L/d$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 4\quad 杨氏双缝（据课件 \cpage{24} 重绘，并把课件标重的 $S_1/S_1$ 改正为 $S_1/S_2$）。入射平面波同时照亮两条缝，$S_1,S_2$ 成为两个相干次波源；屏上同一点 $P$ 的明暗由光程差 $\Delta$ 决定。}
+\end{center}
+
+\textbf{为什么必须用「同一个源 + 两条缝」（讲义补充，补 \cpage{24} 的机制缺口）。}两个独立光源即使频率相同，相位也随机漂移，干涉条纹会在观测时间内被平均掉。用一条平面波同时照亮两条缝，等于把同一个波前切成两份（division of wavefront），两束光的相位差被\textbf{机械地锁死}在几何程差上。这就是「相干条件」：同频率、相位差恒定、振动方向不互相垂直。课件只写 "Bright and dark fringes prove light behaves as a wave"，没写这个前提，读者会以为「随便两个灯也能干涉」。
+
+\textbf{条纹公式（把 \cpage{24} 的图读成代数）。}由图 4：
+\[
+\Delta=d\sin\theta\approx d\,\frac{y}{L}\quad(\theta\text{ 很小}),
+\]
+明纹条件 $\Delta=m\lambda$（$m=0,\pm1,\pm2,\dots$），暗纹 $\Delta=(m+\tfrac12)\lambda$。相邻明纹间距
+\[
+\Delta y=\frac{\lambda L}{d}.
+\]
+数字例：$d=0.50\ \mathrm{mm}$、$L=1.00\ \mathrm{m}$、$\lambda=633\ \mathrm{nm}$，则 $\Delta y=633\times10^{-9}\times1.00/5.0\times10^{-4}=1.27\ \mathrm{mm}$。
+
+\warnbox{\textbf{三个数的户口。}$m=0$ 是中央明纹，位置在 $y=0$（两缝中垂线上），这条\textbf{有值}，不是「端点留空」；$m$ 取遍全体整数，负号只是「另一侧」。$\Delta y$ 里的 $\lambda$ 必须用真空波长（介质中换成 $\lambda/n$，因为 $d\sin\theta$ 是几何程差，而相位差是 $2\pi n\,\Delta/\lambda_0$）。$1/2$ 出现在暗纹条件里，来自「半个波长的反相」，不是归一化常数。}
+
+\subhdr{3.5 大辩论：为什么课件说波动说「解释不好」}
+
+\cpage{24} 的第四个方框标题是 "4. The Great Debate"，四条：
+
+\begin{itemize}
+\item "Newton (particles) vs. Huygens (waves)"
+\item "Newton believed light was made of tiny particles (corpuscles)."
+\item "The wave theory couldn't explain reflection and refraction as well."
+\item "The debate lasted over a century\ldots until experiments gave the final say."
+\end{itemize}
+
+第三条今天读起来很别扭——波动说当然能解释反射与折射（§2.4 路一就是惠更斯作图）。课件这句说的是\textbf{当时的处境}，两条理由（讲义补充）：
+
+\begin{enumerate}
+\item \textbf{影子太干净。}按当时的波图景，波应该绕过障碍拐进阴影里，可日常影子边缘锐利。要解释这件事，必须等菲涅耳把「波长极短」这一层算清楚（19 世纪初），在此之前波动说确实吃亏。
+\item \textbf{偏振没法解释。}光通过某些晶体后亮度随转角变化，这个现象要求波是\textbf{横波}；而当时以太被想象成流体，只能传纵波。牛顿的微粒可以「有方向」，反而占便宜。
+\end{enumerate}
+
+所以「大辩论」真正的胜负手不是反射折射，而是\textbf{干涉}（\S3.4）与\textbf{偏振}（\cpage{38} 之后的内容）。课件把杨氏实验放在「判决性证据」的位置上，这个判断是对的。
+
+\textbf{补一句时间线（讲义补充）。}牛顿 1704 出《光学》，杨氏 1801 做双缝，中间近一百年波动说几乎停滞；而「光速在介质中变慢」这一条要等到 1850 年傅科（Foucault）测出水中光速小于空气中光速，才彻底断掉微粒说的退路（微粒说要求介质中更快，因为 $v=c/n$ 与微粒的动量解释冲突）。
+
+%=============================================================
+\hdr{§4}{Layer FOUR：光是电磁波（法拉第、麦克斯韦、赫兹）}
+
+\subhdr{4.1 三个人、三件事（\cpage{26}）}
+
+\cpage{26} 一页排三个人，各配一句原文：
+
+\begin{itemize}
+\item \textbf{法拉第（Faraday, 1791--1867）}，基础贡献：电磁感应（electromagnetic induction）。原文 "A changing magnetic field can induce an electric field."
+\item \textbf{麦克斯韦（Maxwell, 1831--1879）}，统一理论："Unified electricity and magnetism. Predicted electromagnetic waves traveling at the speed of light."
+\item \textbf{赫兹（Hertz, 1857--1894）}，实验贡献："Generated and detected electromagnetic waves. Confirmed: Light is a transverse wave."
+\end{itemize}
+
+顺序很重要：法拉第给的是\textbf{定性事实}（磁变生动电），麦克斯韦把它写成方程并\textbf{预言}了波，赫兹 1888 年把波\textbf{做出来}。\cpage{25} 的引言正是这一层的入口："Young proved it's a wave---but `what kind' of wave?"——答案是：电磁的横波。
+
+\subhdr{4.2 麦克斯韦方程组：四个式子各管什么}
+
+\cpage{26} 给的是\textbf{真空形式}（原文标注 "in vacuum"），四个方程连名字一起给出。逐条读：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llp{9.6cm}@{}}
+\thead{方程} & \thead{名字} & \thead{它在这一步管什么}\\
+\hline
+$\nabla\cdot\mathbf{E}=\dfrac{\rho}{\varepsilon_0}$ & 电的高斯定律 & 电荷是电场的源。真空中 $\rho=0$，所以 $\nabla\cdot\mathbf{E}=0$——这条马上要用\\
+$\nabla\cdot\mathbf{B}=0$ & 磁的高斯定律 & 没有磁单极，磁感线闭合\\
+$\nabla\times\mathbf{E}=-\dfrac{\partial\mathbf{B}}{\partial t}$ & 法拉第感应定律 & 变的磁场生出涡旋电场。这就是 \cpage{26} 那句法拉的数学化\\
+$\nabla\times\mathbf{B}=\mu_0\varepsilon_0\dfrac{\partial\mathbf{E}}{\partial t}$ & 安培--麦克斯韦定律 & 变的电场生出磁场。这一项（位移电流）是麦克斯韦加的，没有它就没有波\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{这张表是「方程—名字—作用」的对照，逐行的读法就是右列那句话本身；符号见 §0.2。注意第四式右边\textbf{没有} $\mu_0\mathbf{J}$ 项，因为课件明写 "in vacuum"；有电流时补上 $\mu_0\mathbf{J}$，就是完整的安培--麦克斯韦定律。}
+
+\subhdr{4.3 从四个方程到波动方程（课件跳掉的那一步）}
+
+\cpage{26} 在四个方程下面直接给出：
+
+\begin{quote}
+``Wave Equation (in vacuum): $\nabla^2\mathbf{E}=\mu_0\varepsilon_0\dfrac{\partial^2\mathbf{E}}{\partial t^2}$，$\nabla^2\mathbf{B}=\mu_0\varepsilon_0\dfrac{\partial^2\mathbf{B}}{\partial t^2}$；Wave speed: $c=1/\sqrt{\mu_0\varepsilon_0}$ = speed of light.''
+\end{quote}
+
+\textbf{中间怎么来的，一页都没有。}这就是本课件最大的一处代数跳步。补全（三步，每步只用一个方程）：
+
+\emph{第一步：对第三式取旋度。}
+\[
+\nabla\times(\nabla\times\mathbf{E})=-\frac{\partial}{\partial t}(\nabla\times\mathbf{B}).
+\]
+\emph{第二步：右端代入第四式。}
+\[
+-\frac{\partial}{\partial t}\left(\mu_0\varepsilon_0\frac{\partial\mathbf{E}}{\partial t}\right)
+=-\mu_0\varepsilon_0\frac{\partial^2\mathbf{E}}{\partial t^2}.
+\]
+\emph{第三步：左端用矢量恒等式展开。}
+\[
+\nabla\times(\nabla\times\mathbf{E})=\nabla(\nabla\cdot\mathbf{E})-\nabla^2\mathbf{E}.
+\]
+真空中 $\rho=0$，由第一式 $\nabla\cdot\mathbf{E}=0$，第一项消失。三式合并：
+\[
+\nabla^2\mathbf{E}=\mu_0\varepsilon_0\frac{\partial^2\mathbf{E}}{\partial t^2}.
+\]
+对 $\mathbf{B}$ 完全同理（对第四式取旋度，代入第三式，用第二式 $\nabla\cdot\mathbf{B}=0$）。
+
+\aside{第三步用的恒等式是 $\nabla\times(\nabla\times\mathbf{A})=\nabla(\nabla\cdot\mathbf{A})-\nabla^2\mathbf{A}$，对任意二阶可微矢量场成立，与具体物理无关。第一式提供的前提是「真空中无电荷」，即 $\rho=0$；若在介质中，$\rho\neq0$，这一项不消失，方程会多出一项 $\nabla(\rho/\varepsilon_0)$。}
+
+\textbf{与标准波动方程对照，速度就出来了。}一维波动方程的标准形状是
+\[
+\frac{\partial^2 u}{\partial x^2}=\frac{1}{v^2}\frac{\partial^2 u}{\partial t^2},
+\]
+与上式逐项对照（$\nabla^2$ 换成 $\partial^2/\partial x^2$），立刻读出
+\[
+\frac{1}{v^2}=\mu_0\varepsilon_0\quad\Longrightarrow\quad c=\frac{1}{\sqrt{\mu_0\varepsilon_0}}.
+\]
+代入 $\mu_0=4\pi\times10^{-7}$、$\varepsilon_0=8.854\,187\,812\,8\times10^{-12}$：
+\[
+\mu_0\varepsilon_0=1.112\,650\times10^{-17},\qquad
+c=\frac{1}{\sqrt{1.112\,650\times10^{-17}}}=2.997\,924\,58\times10^{8}\ \mathrm{m/s}.
+\]
+与定义值 $299\,792\,458\ \mathrm{m/s}$ 吻合到九位。
+
+\textbf{量纲核对（这一步不能省）。}有人会问：一堆电磁学常数凭什么给出速度？看量纲：
+\[
+[\mu_0]=\frac{\mathrm{N}}{\mathrm{A^2}},\qquad
+[\varepsilon_0]=\frac{\mathrm{C^2}}{\mathrm{N\cdot m^2}},
+\]
+相乘时 $\mathrm{N}$ 约掉，得 $\mathrm{C^2/(A^2m^2)}$。再用 $\mathrm{A}=\mathrm{C/s}$ 把安培换成库仑每秒，$\mathrm{C^2/A^2}=\mathrm{s^2}$，于是
+\[
+[\mu_0\varepsilon_0]=\frac{\mathrm{s^2}}{\mathrm{m^2}}
+\quad\Longrightarrow\quad
+\left[\frac{1}{\sqrt{\mu_0\varepsilon_0}}\right]=\frac{\mathrm{m}}{\mathrm{s}} .
+\]
+纯电磁的组合\textbf{必须}给出一个速度，这不是巧合而是结构的必然；麦克斯韦的贡献是算出这个速度等于光速。\textbf{这个吻合就是「光是电磁波」的全部证据}：两个纯电磁学的常数（一个来自安培的定义，一个由 $c$ 反解）算出来的速度，恰好等于光学测出来的光速。
+
+\warnbox{\textbf{别把这句话说过头。}$c$ 是 1983 年用「米」的定义固定下来的，$\varepsilon_0$ 又是由 $c$ 与 $\mu_0$ 反解出来的，所以上面这个「吻合」在今天的单位制里有一部分是\textbf{循环的}。麦克斯韦当年的证据不循环：他用的 $\mu_0,\varepsilon_0$ 来自韦伯与柯尔劳施的纯电学/磁学实验（1856），与光速测量完全独立，两者吻合到当时的误差之内——那才是真正的预言。写作业时如果被问「凭什么说光是电磁波」，答「电磁常数算出的速度等于实测光速，且 1888 年赫兹做出了同速的波」，不要答「因为 $c=1/\sqrt{\mu_0\varepsilon_0}$」。}
+
+\subhdr{4.4 横波：为什么 $E\perp B\perp k$}
+
+\cpage{26} 只给结论 "Light is a transverse wave"，理由同样没写。补（讲义补充，一行代数）：
+
+设平面波 $\mathbf{E}=\mathbf{E}_0e^{i(\mathbf{k}\cdot\mathbf{r}-\omega t)}$，则 $\nabla\cdot\mathbf{E}=i\mathbf{k}\cdot\mathbf{E}$。真空中 $\nabla\cdot\mathbf{E}=0$，故
+\[
+\mathbf{k}\cdot\mathbf{E}_0=0\quad(\mathbf{E}\perp\mathbf{k}),\qquad
+\mathbf{k}\cdot\mathbf{B}_0=0\quad(\mathbf{B}\perp\mathbf{k}).
+\]
+再由 $\nabla\times\mathbf{E}=-\partial\mathbf{B}/\partial t$ 得 $i\mathbf{k}\times\mathbf{E}_0=i\omega\mathbf{B}_0$，即
+\[
+\mathbf{B}_0=\frac{1}{\omega}\mathbf{k}\times\mathbf{E}_0\quad\Longrightarrow\quad \mathbf{B}\perp\mathbf{E},\ \ \mathbf{B}\perp\mathbf{k}.
+\]
+三句话：\textbf{E 垂直于传播方向、B 垂直于传播方向、E 垂直于 B}。这就是「横波」的完整含义，也解释了 §3.5 里「偏振需要横波」为什么在电磁理论中自动成立——偏振就是 $\mathbf{E}$ 在垂直于 $\mathbf{k}$ 的平面内取哪个方向。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[ax] (0,0) -- (7.2,0) node[right,lab] {$z$（传播方向 $\mathbf{k}$）};
+  \draw[ax] (0,-1.6) -- (0,1.6) node[above,lab] {$y$};
+  \draw[ax] (0,0) -- (0.9,-0.9) node[below right,lab] {$x$};
+  % E 沿 y
+  \draw[domain=0:6.6,smooth,variable=\x,color=violetdeep,line width=1.1pt]
+    plot ({\x},{1.15*sin(\x*100)});
+  \node[key] at (1.6,1.45) {$\mathbf{E}$};
+  % B 沿 x（x 轴在图中朝右下，故用斜投影）
+  \draw[domain=0:6.6,smooth,variable=\x,color=inkgray,line width=0.9pt]
+    plot ({\x+0.53*sin(\x*100)},{0.53*sin(\x*100)});
+  \node[lab] at (1.35,0.72) {$\mathbf{B}$};
+  \draw[<->,>=Stealth,color=petal,line width=0.7pt] (6.5,0.28) -- (6.5,1.15);
+  \node[lab,right] at (6.55,0.72) {$\lambda/2$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 5\quad 真空中的平面电磁波（重绘）。$\mathbf{E}$ 与 $\mathbf{B}$ 同相振荡、互相垂直，且都垂直于 $\mathbf{k}$；三者构成右手系。}
+\end{center}
+
+\subhdr{4.5 介质里发生了什么：$n=\sqrt{\varepsilon_r\mu_r}$}
+
+这一条课件没有，但它是 §2.4 与 §4 的接缝（讲义补充）。在介质中 $\mathbf{D}=\varepsilon\mathbf{E}$、$\mathbf{B}=\mu\mathbf{H}$，重复 §4.3 的推导得到
+\[
+v=\frac{1}{\sqrt{\varepsilon\mu}}=\frac{1}{\sqrt{\varepsilon_0\varepsilon_r\mu_0\mu_r}}
+=\frac{c}{\sqrt{\varepsilon_r\mu_r}}.
+\]
+定义折射率 $n\equiv c/v$，于是
+\[
+n=\sqrt{\varepsilon_r\mu_r}\ \approx\ \sqrt{\varepsilon_r}\quad(\text{非磁性介质，}\mu_r\approx1).
+\]
+这条式子把三件事焊在一起：几何光学的 $n$（§2.4）、电磁学的 $\varepsilon_r$（本节）、以及「光在介质中变慢」。它同时解释了 §3.5 提到的判决实验——$n>1$ 意味着 $v<c$，傅科 1850 年测到的正是这个。
+
+\subhdr{4.6 赫兹 1888 到底测到了什么（补 \cpage{26} 的一句结论）}
+
+\cpage{26} 只写 "Generated and detected electromagnetic waves. Confirmed: Light is a transverse wave."，三个动作各是什么没展开。补上（讲义补充）：
+
+\begin{itemize}
+\item \textbf{生成。}用高压火花隙（偶极天线）让电荷来回振荡，按麦克斯韦的预言，振荡的电荷应向外辐射电磁波。
+\item \textbf{检测。}用一个开口的金属环（谐振环）放在几米外，环的缺口处若跳出小火花，就说明有变化的电场推着环里的电子跑——波到了。
+\item \textbf{测速。}把波沿一面金属板反射，入射波与反射波叠加成\textbf{驻波}；量相邻波节的距离得 $\lambda$，量振荡周期得 $\nu$，相乘得 $v=\lambda\nu\approx3\times10^{8}\ \mathrm{m/s}$。这一步才是判决：不仅要「有波」，还要「波速等于光速」。
+\end{itemize}
+
+他还证明这些波能反射、能折射、能偏振，行为与光完全同类。于是 \cpage{26} 那句结论才成立：光不是「某种波」，光就是电磁波——它只是电磁波谱里很窄的一段。
+
+%=============================================================
+\hdr{§5}{Layer FIVE：光速不变与相对论}
+
+\subhdr{5.1 以太：一个被波逼出来的介质（\cpage{27}）}
+
+\cpage{27} 的引言把逻辑摆得很清楚：
+
+\begin{quote}
+``There was, however, one unsettling question: If light is a wave, it must travel through a medium---the `ether.' But what is the ether?''
+\end{quote}
+
+这是 §4 成功的代价：既然光是波，波总得在\textbf{某种东西}里振；声波在空气里，水波在水里，光在「以太」里。以太于是被要求同时具备三个互相打架的性质：极硬（横波速度 $3\times10^8$ m/s）、极轻（不拖慢行星）、完全透明（不吸收光）。这三条放在一起已经很不自然——但真正的判决要靠实验。
+
+\subhdr{5.2 迈克耳孙--莫雷实验：预期的条纹移动是多少}
+
+\cpage{28} 给了装置照片和结论，但没有给\textbf{预期值}。没有预期值，读者就无法判断「没测到」到底有多严重——这是本页最大的缺口。先把光路画出来：
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % ---------- (a) 无以太风 ----------
+  \begin{scope}
+    \draw[line width=1.2pt,color=violetdeep] (-1.0,2.0) -- (1.0,2.0);
+    \node[key,above] at (0,2.02) {$M_1$};
+    \draw[line width=1.2pt,color=violetdeep] (3.0,-0.9) -- (3.0,0.9);
+    \node[key,right] at (3.02,0) {$M_2$};
+    \draw[line width=1.6pt,color=inkgray] (0.18,-0.18) -- (-0.18,0.18);
+    \node[lab,below right] at (0.0,-0.02) {分束镜};
+    \draw[ray] (-1.6,0) -- (0,0);
+    \node[lab,left] at (-1.62,0) {$S$};
+    \draw[ray] (0,0) -- (0,1.95);
+    \draw[ray] (0,0) -- (2.92,0);
+    \draw[ray] (0,0) -- (0,-1.55);
+    \node[lab,below] at (0,-1.62) {$D$};
+    \draw[<->,>=Stealth,color=petal,line width=0.6pt] (-0.28,0) -- (-0.28,1.95);
+    \node[lab,left] at (-0.32,1.0) {$L_1$};
+    \draw[<->,>=Stealth,color=petal,line width=0.6pt] (0,-0.28) -- (2.92,-0.28);
+    \node[lab,below] at (1.5,-0.30) {$L_2$};
+    \node[lab,align=center] at (1.2,-2.3) {(a) 无以太风：两臂等价，\\往返时间相等，条纹不动};
+  \end{scope}
+  % ---------- (b) 有以太风 ----------
+  \begin{scope}[xshift=7.8cm]
+    \draw[line width=1.2pt,color=violetdeep] (-1.0,2.0) -- (1.0,2.0);
+    \node[key,above] at (0,2.02) {$M_1$};
+    \draw[line width=1.2pt,color=violetdeep] (3.0,-0.9) -- (3.0,0.9);
+    \node[key,right] at (3.02,0) {$M_2$};
+    \draw[line width=1.6pt,color=inkgray] (0.18,-0.18) -- (-0.18,0.18);
+    \draw[ray] (-1.6,0) -- (0,0);
+    \node[lab,left] at (-1.62,0) {$S$};
+    \draw[ray] (0,0) -- (0,1.95);
+    \draw[ray] (0,0) -- (2.92,0);
+    \draw[ray] (0,0) -- (0,-1.55);
+    \node[lab,below] at (0,-1.62) {$D$};
+    % 以太风
+    \draw[->,>=Stealth,line width=1.1pt,color=orange!85!black] (0.6,-1.05) -- (2.2,-1.05);
+    \node[lab,below] at (1.4,-1.08) {以太风 $v$};
+    \node[lab,above] at (2.0,0.42) {顺风 $c+v$};
+    \node[lab,below] at (2.0,-0.42) {逆风 $c-v$};
+    \node[lab,align=center] at (1.2,-2.3) {(b) 有以太风：水平臂顺风/逆风不对称，\\往返时间变长，两臂不同步};
+  \end{scope}
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 6\quad 迈克耳孙--莫雷干涉仪的两个状态（据课件 \cpage{28} 重绘）。$S$ 光源、$M_1/M_2$ 两面反射镜、$D$ 探测器；分束镜把一束光分成沿两臂往返的两束，再在 $D$ 处比较相位。(a) 以太静止时两臂完全对称；(b) 若有以太风沿 $L_2$ 方向，光在水平臂上「去时逆风、回时顺风」，两臂往返时间就不同了。}
+\end{center}
+
+\aside{这张图只用了一个前提：光在以太中的速度恒为 $c$，观测者（地球）以 $v$ 相对以太运动。所以水平臂上的光速是 $c\pm v$，垂直臂上的合速度是 $\sqrt{c^2-v^2}$（光速沿斜向，竖直分量才有效）。这正是 19 世纪「速度叠加」的标准用法——而它将要被证明是错的。}
+
+\textbf{预期条纹移动（路径一：时间差）。}设两臂等长 $L_1=L_2=L$。
+
+\emph{水平臂（顺着以太风）。}去程逆风、回程顺风：
+\[
+t_\parallel=\frac{L}{c+v}+\frac{L}{c-v}=\frac{2Lc}{c^2-v^2}=\frac{2L}{c}\cdot\frac{1}{1-\beta^2},
+\qquad \beta\equiv\frac{v}{c}.
+\]
+\emph{垂直臂。}光必须斜着走才能跟上镜子，合速度的竖直分量是 $\sqrt{c^2-v^2}=c\sqrt{1-\beta^2}$，故
+\[
+t_\perp=\frac{2L}{c\sqrt{1-\beta^2}}=\frac{2L}{c}\cdot\frac{1}{\sqrt{1-\beta^2}}.
+\]
+\emph{时间差。}对小的 $\beta$ 展开（$\beta\sim10^{-4}$，所以只留平方项足够）：
+\[
+t_\parallel\approx\frac{2L}{c}(1+\beta^2),\qquad
+t_\perp\approx\frac{2L}{c}\left(1+\frac{\beta^2}{2}\right),
+\]
+\[
+\Delta t=t_\parallel-t_\perp\approx\frac{2L}{c}\left(\beta^2-\frac{\beta^2}{2}\right)=\frac{L}{c}\beta^2 .
+\]
+对应的光程差是 $c\,\Delta t=L\beta^2$。把仪器转过 $90^\circ$，两臂互换，光程差反号，所以条纹的总移动量是
+\[
+\Delta N=\frac{2L\beta^2}{\lambda}.
+\]
+
+\textbf{代入真数。}迈克耳孙与莫雷用多次反射把有效臂长做到 $L\approx11\ \mathrm{m}$，地球公转速度 $v\approx30\ \mathrm{km/s}$，钠黄光 $\lambda=590\ \mathrm{nm}$：
+\[
+\beta=\frac{3.0\times10^{4}}{3.0\times10^{8}}=1.0\times10^{-4},\qquad
+\Delta N=\frac{2\times11\times(1.0\times10^{-4})^2}{5.9\times10^{-7}}=0.37 .
+\]
+也就是说：\textbf{仪器只要能看到 $0.37$ 条条纹的移动，就能判出以太风。}他们的仪器灵敏度优于 $0.01$ 条，足以看到这个效应的四十分之一。结果是——\textbf{一条也没有}（\cpage{28} 原话 "No shift in interference fringes when the apparatus was rotated"）。
+
+\warnbox{\textbf{这个「没测到」有多硬。}$0.37$ 不是随手写的量级，它是 $\beta^2$ 效应的\textbf{上限预测}：任何以「光速相对以太为 $c$、速度按伽利略叠加」为前提的理论都必须给出这个数。实测上限比它小 40 倍，等于把「以太风」这个前提本身判死，而不是把仪器再调好一点就能救回来的事。这里 $L$ 是有效臂长（多程反射后的总光程），$\lambda$ 必须用真空波长，$\beta^2$ 的平方不能再漏——这正是当年很多人第一次算错的地方。}
+
+\subhdr{5.3 爱因斯坦的两条假设（\cpage{28}）}
+
+\cpage{28} 的原话已经是完整陈述：
+
+\begin{quote}
+``In a vacuum, the speed of light is constant: $c=299\,792\,458\ \mathrm{m/s}$ in all inertial frames.''
+``Events that are simultaneous in one frame may not be in another.''
+\end{quote}
+
+把它写成两条（相对论的标准表述，讲义补充）：
+
+\begin{enumerate}
+\item \textbf{相对性原理}：一切惯性系中物理定律形式相同。
+\item \textbf{光速不变原理}：真空中光速在一切惯性系中都是 $c$，与光源、观测者的运动无关。
+\end{enumerate}
+
+第二条是「不讲理」的那一条：它直接否定伽利略速度叠加。别的都靠它推。迈克耳孙--莫雷的结果可以看作它的\textbf{实验依据}（而不是它的证明——实验只能否证以太，不能证明公设）。
+
+\subhdr{5.4 光钟：$\gamma$ 是怎么被逼出来的（补 \cpage{28} 的机制缺口）}
+
+\cpage{28} 只写了一句 "Space and time adjust so that the speed of light is always $c$." 和三条结论（同时性相对、长度收缩、时间膨胀），\textbf{没写怎么算}。用一个最省的装置就能算出来：两片平行镜之间来回反弹的一个光脉冲。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % ---------- (a) 静止系 ----------
+  \begin{scope}
+    \draw[line width=1.2pt,color=violetdeep] (-1.1,0) -- (1.1,0);
+    \draw[line width=1.2pt,color=violetdeep] (-1.1,2.0) -- (1.1,2.0);
+    \draw[<->,>=Stealth,color=petal,line width=0.8pt] (0,0.06) -- (0,1.94);
+    \node[lab,right] at (0.06,1.0) {$L$};
+    \draw[ghost] (-1.1,0) -- (1.1,0);
+    \node[lab,align=center] at (0,-1.0) {(a) 随钟一起运动的系：\\光走竖直往返，$\Delta t_0=2L/c$};
+    \node[lab,left] at (-1.15,2.0) {镜};
+    \node[lab,left] at (-1.15,0) {镜};
+  \end{scope}
+  % ---------- (b) 地面系 ----------
+  \begin{scope}[xshift=6.6cm]
+    % t=0 时刻的镜子
+    \draw[line width=1.2pt,color=violetdeep] (-1.1,0) -- (1.1,0);
+    \draw[line width=1.2pt,color=violetdeep] (-1.1,2.0) -- (1.1,2.0);
+    % t=dt 时刻的镜子（整体右移）
+    \draw[ghost] (-1.1+1.3,0) -- (1.1+1.3,0);
+    \draw[ghost] (-1.1+1.3,2.0) -- (1.1+1.3,2.0);
+    % 光的锯齿路径
+    \draw[ray] (0,0) -- (0.65,2.0) -- (1.3,0);
+    \draw[ghost] (0,0) -- (0,2.0);
+    \node[lab,left] at (-0.05,1.0) {$L$};
+    \draw[<->,>=Stealth,color=inkgray,line width=0.6pt] (0,-0.45) -- (0.65,-0.45);
+    \node[lab,below] at (0.32,-0.45) {$v\,\Delta t/2$};
+    \node[lab,right] at (0.95,1.05) {$c\,\Delta t/2$};
+    \node[lab,align=center] at (0.5,-1.0) {(b) 地面系：镜在动，光走斜线\\（同一束光，速度仍是 $c$）};
+  \end{scope}
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 7\quad 光钟的两个状态（重绘）。两片镜子相距 $L$；光在地面系里走的是斜线，在随钟系里走的是竖直线。两个系里光速都是 $c$，差别只能出在时间上。}
+\end{center}
+
+\aside{图 (b) 里用到的前提只有两条：光速在两个系里都是 $c$（\cpage{28} 原话 "in all inertial frames"），以及镜子在 $\Delta t$ 内移动了 $v\Delta t$。斜边就是勾股定理，不需要任何新假设。}
+
+\textbf{推导。}设地面系里光往返一次用时 $\Delta t$，单程走斜边 $c\,\Delta t/2$；水平位移是 $v\,\Delta t/2$，竖直高度是 $L$。勾股定理：
+\[
+\left(\frac{c\,\Delta t}{2}\right)^2=L^2+\left(\frac{v\,\Delta t}{2}\right)^2 .
+\]
+两边乘 4、移项：
+\[
+c^2\Delta t^2-v^2\Delta t^2=4L^2
+\quad\Longrightarrow\quad
+\Delta t^2=\frac{4L^2}{c^2-v^2}
+\quad\Longrightarrow\quad
+\Delta t=\frac{2L}{c}\cdot\frac{1}{\sqrt{1-\beta^2}} .
+\]
+而随钟系里 $\Delta t_0=2L/c$，于是
+\[
+\Delta t=\gamma\,\Delta t_0,\qquad \gamma\equiv\frac{1}{\sqrt{1-\beta^2}} .
+\]
+这就是时间膨胀：\textbf{运动钟走得慢}，慢的倍数就是 $\gamma$。长度收缩由「光速不变 + 同时性相对」同样导出：沿运动方向的长度 $L=L_0/\gamma$。
+
+\textbf{数。}$\beta=0.6$ 时 $\gamma=1/\sqrt{1-0.36}=1/0.8=1.25$：$\Delta t_0=10.0\ \mathrm{ns}$（$L=1.5\ \mathrm{m}$，$2L/c=10.0\ \mathrm{ns}$）对应 $\Delta t=12.5\ \mathrm{ns}$。$\beta=0.99$ 时 $\gamma=7.09$。
+
+\warnbox{\textbf{端点与边界。}(1) $v\to c$ 时 $\beta\to1$，$\gamma\to\infty$，时间膨胀发散——所以\textbf{有静止质量的粒子永远到不了 $c$}；$\gamma$ 在 $v=c$ 这一点没有定义，光子没有静止系，不能「坐在光子上看世界」。(2) $v\ll c$ 时 $\gamma\approx1+\beta^2/2$，回到牛顿力学；日常速度下 $\beta\sim10^{-6}$，$\gamma-1\sim10^{-12}$，测不出来。(3) 长度收缩只发生在\textbf{运动方向}上，垂直于运动方向的尺寸不变——这一条常被漏掉，它是「同时性相对」的直接后果。}
+
+\subhdr{5.5 两条公设怎么逼出洛伦兹变换（补 \cpage{28} 只给结论的缺口）}
+
+§5.4 的光钟只回答了「时间怎么变慢」——它只用到 $t$ 那一式。完整的坐标变换长什么样、为什么长这样，\cpage{28} 一个字没给。补上（讲义补充，四步，每步只用一条前提）。
+
+\textbf{第一步：变换必须是线性的。}惯性系里不受力的粒子走匀速直线；换到另一个惯性系它仍走匀速直线。把直线映成直线的坐标变换只能是线性的，于是
+\[
+x'=Ax+Bt,\qquad t'=Cx+Dt ,
+\]
+四个常数只与相对速度 $v$ 有关。
+
+\textbf{第二步：形式的对称性。}$S'$ 的原点满足 $x'=0$，它在 $S$ 系里以 $v$ 运动，即 $x=vt$。代入 $x'=Ax+Bt$ 得 $Avt+Bt=0$ 对任意 $t$ 成立，故 $B=-Av$。记 $A=\gamma$，则 $x'=\gamma(x-vt)$。
+
+\textbf{第三步：光速不变把 $t'$ 的系数定成 $v/c^2$。}取一束沿 $+x$ 的光 $x=ct$，要求它在 $S'$ 系里仍是 $x'=ct'$：
+\[
+\gamma(ct-vt)=c\,t'=\gamma t(c-v)\quad\Longrightarrow\quad t'=\gamma\left(t-\frac{vx}{c^2}\right).
+\]
+注意这一步\textbf{只定出了 $t'$ 里 $x$ 的系数}，并没有定出 $\gamma$——这是最容易被跳过去的地方。
+
+\textbf{第四步：用逆变换定 $\gamma$。}相对性原理说两系平权，逆变换只需 $v\to-v$：
+\[
+x=\gamma(x'+vt'),\qquad t=\gamma\left(t'+\frac{vx'}{c^2}\right).
+\]
+把第三式代入第一式：
+\[
+x=\gamma\left[\gamma(x-vt)+v\gamma\left(t-\frac{vx}{c^2}\right)\right]
+=\gamma^2\left(x-\frac{v^2x}{c^2}\right)=\gamma^2x(1-\beta^2).
+\]
+要对任意 $x$ 成立，只能 $\gamma^2(1-\beta^2)=1$，即
+\[
+\boxed{\ \gamma=\frac{1}{\sqrt{1-\beta^2}},\qquad
+x'=\gamma(x-vt),\quad t'=\gamma\left(t-\frac{vx}{c^2}\right),\quad y'=y,\ z'=z\ }
+\]
+这就是洛伦兹变换。三件事一次装进去：$t'$ 含 $x$ $\Rightarrow$ 同时性相对；$x'$ 里的 $\gamma$ $\Rightarrow$ 长度收缩；$t'$ 里的 $\gamma$ $\Rightarrow$ 时间膨胀。§5.4 只拿到第三件，是因为只用了光速不变；把相对性原理一起用上，才有前两件。
+
+\aside{第一、二步用的是「线性 + 原点对应 $x=vt$」，第三步用光速不变，第四步用相对性（逆变换 $v\to-v$）。四步之外没有任何额外假设——所以洛伦兹变换不是「凑出来的经验公式」，而是两条公设的唯一线性解。这也是为什么它必须带着 $v/c^2$ 这个畸形的系数：光速 $c$ 出现在时空的换算率里。}
+
+\textbf{同时性相对性的数值例。}在 $S$ 系里同时发生的两个事件（$\Delta t=0$），相距 $\Delta x=1.0\ \mathrm{km}$；$S'$ 系以 $v=0.6c$ 沿 $+x$ 方向运动。由 $t'$ 那一式：
+\[
+\Delta t'=\gamma\left(\Delta t-\frac{v\Delta x}{c^2}\right)
+=-\gamma\frac{v\Delta x}{c^2}
+=-1.25\times\frac{(1.8\times10^{8})(1.0\times10^{3})}{9.0\times10^{16}}
+=-2.5\times10^{-6}\ \mathrm{s}.
+\]
+即 $2.5\ \mu\mathrm{s}$。两事件在 $S$ 系里「同时」，在 $S'$ 系里差了 2.5 微秒；把 $\Delta x$ 取负，先后次序就反过来。「同时」不是绝对的，根源就是 $t'$ 里那个 $vx/c^2$ 项——它是 $x$ 的一次项，所以距离越大，分歧越大。
+
+\subhdr{5.6 这一层解决了什么、没解决什么（\cpage{29}）}
+
+\cpage{29} 的引言是本节的收口，也是下一层的入口：
+
+\begin{quote}
+``Relativity has transformed our understanding of space and time, but it has not yet answered what light is actually composed of.''
+\end{quote}
+
+注意这句话的分寸：相对论把「光速为什么不变」变成了公设，把空间和时间变成了可弯的量，但它对「光本身是什么」一个字没说。\cpage{28} 的最后一句 "Space and time adjust so that the speed of light is always $c$" 是描述，不是解释。真正的解释要等能量被量子化。
+
+%=============================================================
+\hdr{§6}{Layer SIX：光是光子（普朗克与爱因斯坦）}
+
+\subhdr{6.1 黑体辐射与「紫外灾难」（\cpage{30}）}
+
+\cpage{30} 给了两句关键的话：
+
+\begin{quote}
+``Classical physics predicts infinite energy as $\lambda\to0$, which contradicts experiments.''
+``By the end of the 19th century, physicists thought physics was almost complete. Then came the `ultraviolet catastrophe'.''
+\end{quote}
+
+课件没说这个「无限」是从哪个式子来的。补上（讲义补充）：19 世纪末的标准答案（瑞利--金斯）把空腔里的辐射当成一屋子驻波，每个模式按能量均分定理分到 $kT$，模式数密度正比于 $\nu^2$，于是
+\[
+\rho_{\mathrm{RJ}}(\nu,T)=\frac{8\pi\nu^2}{c^3}\,kT .
+\]
+这个式子在低频与实验吻合得很好，但把 $\nu$ 推到高频（紫外）时它按 $\nu^2$ 一路涨上去，总能量
+\[
+U=\int_0^{\infty}\rho_{\mathrm{RJ}}\dd\nu\longrightarrow\infty
+\]
+直接发散。这就是「灾难」两个字的字面意思：\textbf{不是测不到，是理论给出的答案是无穷大}。
+
+\aside{这里用到的前提只有两个：空腔内的电磁模式数密度 $\propto\nu^2$（几何事实），以及每个模式的平均能量 $=kT$（能量均分定理，经典统计的结论）。灾难的根源在第二个前提——它假定一个模式的能量可以连续取任意小值。普朗克要动的正是这一条。}
+
+普朗克 1900 年的做法是把第二个前提换掉：一个频率为 $\nu$ 的模式，能量只能取 $nh\nu$（$n=0,1,2,\dots$）。同一套驻波计数配上这个新假设，得到
+\[
+\rho_{\mathrm{P}}(\nu,T)=\frac{8\pi h\nu^3}{c^3}\cdot\frac{1}{e^{h\nu/kT}-1}.
+\]
+两处验算（这是它站得住的理由）：
+
+\begin{itemize}
+\item \textbf{低频回到经典。}$h\nu\ll kT$ 时 $e^{h\nu/kT}-1\approx h\nu/kT$，分母的 $h\nu$ 与分子的 $\nu^3$ 约掉一个，得 $\rho_\mathrm{P}\approx 8\pi\nu^2kT/c^3=\rho_{\mathrm{RJ}}$——所以它没有推翻旧理论，只是\textbf{把旧理论收成了极限情形}。
+\item \textbf{高频被指数压低。}$h\nu\gg kT$ 时 $e^{h\nu/kT}$ 增长极快，$\rho_\mathrm{P}\to0$，积分收敛，总能量有限。
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[ax] (0,0) -- (6.0,0) node[right,lab] {$\nu$（以 $kT/h$ 为单位）};
+  \draw[ax] (0,0) -- (0,2.9) node[above,lab] {$\rho(\nu)$};
+  % 瑞利-金斯：∝ν²
+  \draw[domain=0:4.1,smooth,variable=\x,color=inkgray,line width=1.0pt,dashed]
+    plot ({\x*1.3},{0.5*0.28*\x*\x});
+  \node[lab] at (4.7,2.55) {瑞利--金斯 $\propto\nu^2$};
+  % 普朗克
+  \draw[domain=0.02:4.1,smooth,samples=90,variable=\x,color=violetdeep,line width=1.3pt]
+    plot ({\x*1.3},{0.5*1.4*(\x*\x*\x)/(exp(\x)-1)});
+  \node[lab] at (2.55,1.45) {普朗克};
+  % 峰值
+  \draw[ghost] (2.82*1.3,0) -- (2.82*1.3,1.10);
+  \node[lab,below] at (2.82*1.3,-0.02) {$\nu_{\max}$};
+  \node[lab,right] at (5.15,1.0) {$\lambda\to0$ 处};
+  \draw[->,>=Stealth,color=inkgray,line width=0.5pt] (5.12,0.95) -- (4.35,0.42);
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 8\quad 同一温度下两条谱线（示意，重绘）：虚线是瑞利--金斯，按 $\nu^2$ 一路上涨、积分发散；实线是普朗克，低频与虚线重合，过了峰值被 $e^{h\nu/kT}$ 压下去。两条线在 $\nu\ll kT/h$ 处重合，这正是普朗克公式「收编」经典结果的位置。}
+\end{center}
+
+\cpage{30} 原文写 "Planck proposed that energy is emitted in discrete packets: $E=nh\nu$ $(n=1,2,3,\dots)$"——注意 $n$ 从 1 起，所以最小的一份是 $h\nu$，不是 $h\nu/2$，也不是「可以无限小」。
+
+\subhdr{6.2 爱因斯坦 1905：把「一份能量」变成「一个粒子」（\cpage{30}）}
+
+\cpage{30} 第二块：
+
+\begin{quote}
+``Explained the photoelectric effect by assuming light energy is quantized: $E=h\nu$.''
+\end{quote}
+
+普朗克只说「\textbf{交换}能量时是一份一份的」（发射与吸收），他仍然认为光在传播中是连续的波。爱因斯坦更进一步：\textbf{光本身就是一份一份的}，一份叫一个光量子（后来叫 photon，光子）。这一步的判据是光电效应的三条实验事实，它们用波动说一条也解释不了。
+
+\subhdr{6.3 光电效应：装置、方程与三个数}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  % 真空管
+  \draw[line width=0.8pt,color=inkgray,rounded corners=6pt] (0,0) rectangle (5.0,2.6);
+  % 阴极 K
+  \draw[line width=1.8pt,color=violetdeep] (1.0,0.5) -- (1.0,2.1);
+  \node[key,below] at (1.0,0.42) {$K$（阴极）};
+  % 阳极 A
+  \draw[line width=1.8pt,color=violetdeep] (3.4,0.9) -- (3.4,1.7);
+  \node[key,below] at (3.4,0.82) {$A$（阳极）};
+  % 入射光
+  \draw[->,>=Stealth,line width=1.0pt,color=orange!85!black] (-1.2,1.30) -- (0.9,1.30);
+  \draw[->,>=Stealth,line width=1.0pt,color=orange!85!black] (-1.2,1.75) -- (0.9,1.75);
+  \node[lab,left] at (-1.25,1.52) {光 $h\nu$};
+  % 光电子
+  \draw[->,>=Stealth,line width=0.7pt,color=violet] (1.08,1.9) -- (3.3,1.9);
+  \node[lab,above] at (2.2,1.9) {光电子 $K_{\max}$};
+  % 外电路：K — 电源 — 电流表 — A 串联
+  \draw[geo] (1.0,0.5) -- (1.0,-0.75) -- (1.42,-0.75);
+  \draw[geo] (1.42,-0.75) -- (1.55,-0.75);
+  \draw[line width=1.3pt,color=inkgray] (1.55,-0.98) -- (1.55,-0.52);   % 长板（正极）
+  \draw[line width=2.0pt,color=inkgray] (1.70,-0.86) -- (1.70,-0.64);   % 短板（负极）
+  \draw[geo] (1.70,-0.75) -- (2.42,-0.75);
+  \draw[fill=white,draw=inkgray,line width=0.7pt] (2.60,-0.75) circle (0.18);
+  \node[font=\tiny,color=inkgray] at (2.60,-0.75) {A};
+  \draw[geo] (2.78,-0.75) -- (3.4,-0.75) -- (3.4,0.9);
+  \node[lab,below] at (1.62,-1.02) {$U$ 可调（反向电压）};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 9\quad 光电效应实验装置（重绘）。光照射阴极 $K$，打出光电子飞向阳极 $A$；外电路加可调电压 $U$，反向电压刚好把光电流压到零时，$e|U_0|=K_{\max}$。}
+\end{center}
+
+\callout{\textbf{光电方程（完整陈述）。}频率为 $\nu$ 的单色光照到逸出功为 $\Phi$ 的金属表面，一个光子把能量全部交给一个电子；电子若要逸出，得先付 $\Phi$，剩下的最多全变成动能：
+\[
+h\nu=\Phi+K_{\max}\quad\Longrightarrow\quad K_{\max}=h\nu-\Phi .
+\]
+符号：$h=6.626\times10^{-34}\ \mathrm{J\,s}$，$\nu$ 是光频率，$\Phi$ 是逸出功（把电子从金属里拉出来所需的最小能量，单位 eV），$K_{\max}$ 是逸出电子的最大初动能。截止电压 $U_0$ 由 $e|U_0|=K_{\max}$ 定义。阈值频率与阈值波长：
+\[
+\nu_0=\frac{\Phi}{h},\qquad \lambda_0=\frac{hc}{\Phi}=\frac{1239.84\ \mathrm{eV\cdot nm}}{\Phi[\mathrm{eV}]}.
+\]
+课件 \cpage{30} 给的是 $K_{\max}=h\nu-\Phi$ 与 $\nu_0=\Phi/h$ 两式，形式与本条一致。}
+
+\aside{课时若只给 $K_{\max}=h\nu-\Phi$，容易漏掉它的前提：$K_{\max}\ge0$，所以 $h\nu\ge\Phi$ 才有光电子；且这是\textbf{单电子单光子}的能量账，不考虑晶格反冲（反冲能量 $\sim10^{-4}$ eV，远小于 $\Phi$，可略）。}
+
+\textbf{数字例（把三个数一次算完）。}取 $\Phi=2.0\ \mathrm{eV}$、入射 $\lambda=400\ \mathrm{nm}$：
+\[
+h\nu=\frac{1239.84}{400}=3.10\ \mathrm{eV},\qquad
+K_{\max}=3.10-2.0=1.10\ \mathrm{eV},\qquad
+|U_0|=\frac{K_{\max}}{e}=1.10\ \mathrm{V}.
+\]
+阈值：
+\[
+\lambda_0=\frac{1239.84}{2.0}=620\ \mathrm{nm},\qquad
+\nu_0=\frac{c}{\lambda_0}=\frac{3.0\times10^{8}}{6.2\times10^{-7}}=4.84\times10^{14}\ \mathrm{Hz}.
+\]
+读法：400 nm 的紫光能打出 1.10 eV 的电子；把波长换到 620 nm（橙红）就一个也打不出，再强的橙光也不行。
+
+\warnbox{\textbf{边界：阈值那一点到底有没有电子。}$\nu=\nu_0$ 时 $K_{\max}=0$，\textbf{端点有值}，不是「不属于任何一段」。物理上这时电子刚好能逸出、动能为零，反向电压 $U_0=0$ 即可把电流压到零。所以严格写是：$\nu\ge\nu_0$ 有光电子（$\nu=\nu_0$ 时动能为零），$\nu>\nu_0$ 才有可测的正动能；而 $\nu<\nu_0$ 无论光强多大都没有电子。习惯上写 $\nu>\nu_0$ 是因为「动能为零的电子」测不到电流，但端点值 $K_{\max}=0$ 必须交代。}
+
+\subhdr{6.4 三条实验事实，逐条对上（\cpage{30}）}
+
+\cpage{30} 右栏列了三条 "Photon Hypothesis Validated"，它们正是判据：
+
+\begin{enumerate}
+\item \textbf{"Threshold frequency exists $(\nu_0=\Phi/h)$"}（存在阈值频率）。波动说给不出阈值：波的能量可以累积，频率再低、照射再久，总能攒够 $\Phi$。光子说一句话就有阈值：单个光子能量 $h\nu$ 必须超过 $\Phi$。
+\item \textbf{"$K_{\max}$ increases linearly with $\nu$"}（最大动能随频率线性增长）。由 $K_{\max}=h\nu-\Phi$，斜率就是 $h$——这也是普朗克常数最直接的光学测量。
+\item \textbf{"No time delay, even at low intensity"}（低光强下也没有延迟）。波动说预言「弱光要等一会儿才攒够能量」，实测是「一照就有」（延迟小于 $10^{-9}$ s）。光子说：一个光子打一个电子，一对一，不需要等。
+\end{enumerate}
+
+反过来，波动说能解释而光子说必须绕一下的是\textbf{光强}：饱和光电流正比于光强，因为光强 = 单位时间的光子数；每个光子的能量不变，所以只改「打出的电子数」不改「每个电子的动能」。这句话就是 \cpage{30} 原文 "Electron kinetic energy depends on frequency $\nu$, not intensity" 的展开。
+
+\subhdr{6.5 康普顿散射：光子的动量（课件未提，但是第二道判决）}
+
+课件从光电效应（\cpage{30}）直接跳到二象性（\cpage{32}），中间漏掉了 1923 年的康普顿实验（讲义补充）。这个实验比光电效应更狠：X 射线被石墨散射后，\textbf{波长变长了}，而且变长的量只与散射角有关，
+\[
+\Delta\lambda\equiv\lambda'-\lambda=\frac{h}{m_ec}(1-\cos\theta),
+\qquad \frac{h}{m_ec}=2.426\ \mathrm{pm}.
+\]
+数值：$\theta=90^\circ$ 时 $\Delta\lambda=2.43\ \mathrm{pm}$；$\theta=180^\circ$（原路返回）时 $\Delta\lambda=4.85\ \mathrm{pm}$。
+
+\textbf{为什么这判死了波动说：}波被散射时波长不该变（散射只改方向与强度）。波长变长只能解释为「光子把一部分能量交给了电子」，也就是光子必须\textbf{带动量} $p=h\nu/c$。
+
+\textbf{推导（能量 + 动量两条守恒，四行）。}设入射光子频率 $\nu$、散射后 $\nu'$，电子静质量 $m_e$，散射角 $\theta$：
+\[
+\text{能量：}\quad h\nu+m_ec^2=h\nu'+E_e ;
+\]
+\[
+\text{动量：}\quad \mathbf{p}_e=\mathbf{p}-\mathbf{p}'
+\ \Longrightarrow\
+p_e^2=\left(\frac{h\nu}{c}\right)^2+\left(\frac{h\nu'}{c}\right)^2-2\frac{h^2\nu\nu'}{c^2}\cos\theta .
+\]
+再用相对论能量关系 $E_e^2=p_e^2c^2+m_e^2c^4$ 消去电子量。把上面两式代进去，$m_e^2c^4$ 与 $h^2\nu^2$、$h^2\nu'^2$ 都成对消掉，剩下
+\[
+m_ec^2\,h(\nu-\nu')=h^2\nu\nu'(1-\cos\theta)
+\quad\Longrightarrow\quad
+\frac{1}{\nu'}-\frac{1}{\nu}=\frac{h}{m_ec^2}(1-\cos\theta).
+\]
+两边乘 $c$，左边正是 $\lambda'-\lambda$，右边就是上面的康普顿公式。\textbf{整条推导只用了「光子能量 $h\nu$、动量 $h\nu/c$」这一条假设}——这正是「光子是粒子」的定义。
+
+%=============================================================
+\hdr{§7}{Layer SEVEN 到 TEN，以及为什么学光学}
+
+\subhdr{7.1 波粒二象：从「光」推到「万物」（\cpage{31}--\cpage{32}）}
+
+\cpage{31} 的引言是标准的困惑："So, light is both a wave and a particle? Isn't that contradictory?" \cpage{32} 给答案的方式很漂亮：不是解释矛盾，而是\textbf{把二象性推广出去}。
+
+\cpage{32} 原文 "If light (a massless particle) can behave as a wave, perhaps matter (with mass) can also behave as a wave. He proposed that particles have an associated wavelength." 配公式与符号表：
+\[
+\lambda=\frac{h}{p},
+\]
+$\lambda$ 是德布罗意波长（de Broglie wavelength），$h$ 是普朗克常数，$p$ 是粒子动量。课件把它标为 "de Broglie (1920s): Proposed matter waves."
+
+\textbf{数字例（讲义补充）。}电子经电压 $V$ 加速，动能 $eV$，动量 $p=\sqrt{2m_e eV}$，于是
+\[
+\lambda=\frac{h}{\sqrt{2m_e eV}}=\frac{1.226\ \mathrm{nm}}{\sqrt{V[\mathrm{V}]}} .
+\]
+$V=54\ \mathrm{V}$ 时 $\lambda=1.226/\sqrt{54}=0.167\ \mathrm{nm}$——正好是晶格间距的量级。\cpage{32} 说 "Electron diffraction (1927): Davisson-Germer experiment. Confirmed the wave nature of electrons."，戴维孙--革末测到的衍射角对应的波长正是这个数。
+
+\subhdr{7.2 \cpage{33}：全课件唯一「没有一个字」的一页}
+
+\cpage{33} 是四幅黑白图，标着 a、b、c、d，\textbf{全页没有标题、没有图注、没有页码}。OCR 只能读出四张图片，一个字也读不出来；这不是 OCR 失败，是这一页本来就没字。
+
+看图（本页必须看图，不能猜）：a 是稀疏的几十个亮点，位置随机；b、c 的点数明显变多，仍然看不出任何规律，像噪声；d 的右下角出现了\textbf{明暗相间的竖条纹}，点还是那些点，但它们的分布被条纹「筛」过了。
+
+\textbf{这四幅图在回答 \cpage{32} 最后那个问题}（"Can a single photon pass through two slits simultaneously?"）：同一个双缝装置，把光减弱到一次只有一个光子通过，逐次记录落点。(a) 到 (c) 是「光子太少，看不出规律」，(d) 是「累积足够多，随机落点自己排成了干涉条纹」。条纹不是某个光子的路径，而是\textbf{大量单光子事件的统计分布}。
+
+\warnbox{\textbf{怎么读这页（讲义补充，课件无图注）。}不要说「一个光子同时穿过两条缝」——那是对量子叠加的通俗化误读。准确的说法是：单光子的态在通过缝之后\textbf{同时覆盖两条路径}，落到屏上的位置按 $|\psi_1+\psi_2|^2$ 的概率分布随机出现；单次事件只有一个点，概率分布才是条纹。这也是 \cpage{34} 那句 "A single photon interfering with itself" 的正确读法：干涉的是\textbf{概率幅}，不是光子分身。}
+
+\subhdr{7.3 Layer EIGHT：光能造出物质（\cpage{35}）}
+
+\cpage{35} 原文两句："Light can create matter (Pair production: $E=mc^2$)"，"A high-energy photon can convert into an electron-positron pair in the presence of a nucleus."
+
+\textbf{$E=mc^2$ 在这里是不够的（讲义补充）。}对产生要造出\textbf{两个}粒子（一个电子、一个正电子），所以能量账是
+\[
+h\nu\ge 2m_ec^2=2\times0.511\ \mathrm{MeV}=1.022\ \mathrm{MeV},
+\]
+对应的最大波长
+\[
+\lambda\le\frac{hc}{2m_ec^2}=\frac{1239.84\ \mathrm{eV\cdot nm}}{1.022\times10^{6}\ \mathrm{eV}}=1.21\times10^{-12}\ \mathrm{m}=1.21\ \mathrm{pm}.
+\]
+也就是说，可见光（$\sim2$ eV）差着六个数量级，只有 $\gamma$ 射线才行。
+
+\textbf{为什么必须「在原子核附近」。}真空中单个光子不能对产生，因为\textbf{动量守恒}：质心系里对产生后的电子--正电子对总动量为零，而光子动量 $h\nu/c\neq0$，没有第三个物体吸收反冲动量就配不平。原子核质量大、几乎不动，正好干这件事。课件那句 "in the presence of a nucleus" 不是补充说明，是\textbf{必要条件}。
+
+\subhdr{7.4 Layer NINE 与 TEN：虚光子与规范对称（\cpage{35}）}
+
+\cpage{35} Layer 9 原文："Light as Virtual Particles (QED, Feynman diagrams). Light mediates interactions as virtual particles, appearing in quantum fluctuations." 图上是两个电子交换一个光子（$e^-\to e^-$ 中间一条波浪线标 $\gamma$ (virtual)）。
+
+读法（讲义补充）：两个电子靠近时，不是「直接推」，而是交换一个光子；这个光子是\textbf{虚}的，它不满足 $E^2=p^2c^2+m^2c^4$（叫离壳，off-shell），所以不能跑到远处被探测到，只能作为中间步骤存在。费曼图就是把「中间步骤」画成图，把振幅算成图的和。
+
+\textbf{量子场论的一句话机制（讲义补充）。}前三层问「光是粒子还是波」，量子场论换了个问法：\textbf{场才是基本的，粒子只是场的激发}。电子场、电磁场各铺满全空间；给电磁场加一份能量，就多出一个光子（$E=h\nu$ 就是这份能量的最小单位）；真空是场的基态，不是「什么都没有」，所以可以有虚粒子涨落——\cpage{35} Layer 9 说的 "appearing in quantum fluctuations" 指的就是这个。这样，\cpage{33} 的单光子干涉（场的相位）与 \cpage{35} 的虚光子交换（场的激发）用的是同一套语言，二象性不再是矛盾，而是「场」这一个对象的两副面孔。
+
+\cpage{35} Layer 10 原文两句："The photon is the gauge boson of the U(1) electromagnetic symmetry in the Standard Model."，"The electromagnetic force (photon) represents the cost paid by nature to uphold the local quantum phase symmetry."
+
+第二句是全课件最抽象的一句，值得逐词拆（讲义补充）：量子力学里波函数可以整体乘一个相位因子而不改变物理；但如果要求在\textbf{每一点}都能独立改相位（局部相位对称，local $U(1)$），方程就不再守恒了。为了让它在局部变换下仍然成立，必须引入一个补偿场——这个补偿场就是电磁势 $A_\mu$，它的量子就是光子。所以「代价」= 为了让局域相位对称成立，自然界必须付出一个光子场。
+
+\aside{课件把杨振宁（Chen Ning Yang, 1922--）排在第 10 层旁边，但没写理由（\cpage{35}）。理由（讲义补充）：把 $U(1)$ 这种交换群推广到非交换群（$SU(2)$ 等）的规范场论是杨振宁与米尔斯 1954 年的工作，弱电统一与量子色动力学都建立在它上面；他 1957 年因宇称不守恒获诺贝尔奖。这是第 10 层「规范」二字的出处，但\textbf{不是本课程考点}。}
+
+\subhdr{7.5 课程的边界：只讲前四层（\cpage{36}）}
+
+\cpage{36} 的 "What is OPTICS?" 有一段极重要的话，很多同学会漏：
+
+\begin{quote}
+``We begin with a shadow etched on a stone 8,000 years ago and journey all the way to the quantum vacuum. In this course, you will explore the entire body of mathematics and physics spanning the first through the fourth layers.''
+\end{quote}
+
+\textbf{"the first through the fourth layers"}——这门课只讲第 1 到第 4 层（射线、微粒、波、电磁波），也就是几何光学 + 波动光学 + 电磁理论。第 5 到第 10 层是\textbf{视野}，用来告诉你「你学的这部分在整座阶梯的哪一级」，不是考试范围。这句话把整份绪论的定位说清了：它不是一章知识，而是一张地图。
+
+\subhdr{7.6 为什么学：诺奖与产业（\cpage{38}）}
+
+\cpage{38} 给了两组数字和两个清单：约 40\% 的物理学诺奖与光学有关；全球光子产业约一万亿美元。诺奖表原文六行（\cpage{38}，OCR 把 2018 读成 "2018hn 2026"，按奖项史应为 2018）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.1cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{10.2cm}@{}}
+\thead{年份} & \thead{获奖者} & \thead{贡献}\\
+\hline
+1907 & 迈克耳孙 & 精密光学仪器（precision optical instruments）\\
+1964 & 汤斯、巴索夫、普罗霍罗夫 & 激光原理（laser principle）\\
+1971 & 伽博 & 全息术（holography）\\
+1997 & 朱棣文、科昂--塔努吉、菲利普斯 & 激光冷却原子（laser cooling of atoms）\\
+2009 & 高锟 & 光纤通信（fiber optic communication）\\
+2018 & 阿什金、穆鲁、斯特里克兰 & 光镊、啁啾脉冲放大（chirped pulse amplification）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{这是一张台账（年份—人—贡献），不承载推导，所以不附「逐行读法」；它的用处是查年份。要读出信息，看两端的对照：1907 年的奖给「把光学仪器做得更准」（第 1--2 层的技术），2009 与 2018 年的奖给「用光做通信与操控」（第 4 层之后的技术）——一百年间的重心从「看」移到了「用」。}
+
+课件列的产业五块（\cpage{38}）：光通信、显示（OLED/Micro-LED）、激光雷达（LiDAR）、医用光子（OCT）、半导体光子（硅光）与量子计算；研究前沿六项：量子光子学（高维量子网络）、光子计算（伊辛机）、光学神经网络、超表面与薄膜铌酸锂（TFLN）芯片、超快激光微纳加工。这些名词不需要现在懂，只要知道它们都挂在第 1--4 层的技术上。
+
+\subhdr{7.7 两种思维（\cpage{39}）}
+
+\cpage{39} 把工程师与科学家并排：
+
+\begin{itemize}
+\item 工程师问 "How can I use this?"，深耕应用，解决问题、做出产品；
+\item 科学家问 "Why is it this way?"，深耕本质，发现规律、扩展知识。
+\end{itemize}
+
+收尾那句值得抄下来："Without Maxwell's `Why,' there would be no optical fiber's `How.' Without Einstein's curiosity about the photoelectric effect, we wouldn't have the trillion-dollar laser industry."
+
+\subhdr{7.8 课件里的三道思考题：只给从哪一步想起}
+
+课件有三次「只提问、不给答案」的停顿，按技能要求只给关键一步，不给全解。
+
+\qstem{（课件 PDF \cpage{23}）``If light is particles, why do two beams cross without colliding?''}
+\textbf{关键一步：}先分清「粒子」在这里指什么。牛顿的 corpuscle 不是台球，而是「不弥散、可数的能量包」；它不带电荷（库仑排斥为零），在几何光学极限下也没有可观测的碰撞截面。所以「交叉不碰撞」不是例外，而是默认。
+
+\qstem{（课件 PDF \cpage{32}）``Can a single photon pass through two slits simultaneously?''}
+\textbf{关键一步：}把问题从「光子分成两半」改成「单光子的态同时覆盖两条路径」。判据不在单次事件（单次只有一个点），而在大量事件的统计分布——\cpage{33} 的四幅图就是这个统计的四个阶段。详见 \S7.2。
+
+\qstem{（课件 PDF \cpage{35}、\cpage{41}）``What is light in its truest nature? The ultimate question remains.''}
+\textbf{关键一步：}十层不是十次「前一层错了」，而是十次「适用范围收窄」。射线在 $\lambda\ll$ 尺度成立，粒子在低能成立，波动在光子数多时成立，量子场论在全部已知能区成立。所谓「本质」，在这份课件里等于「你现在站在第几层」。
+
+%=============================================================
+\subhdr{7.9 课件作业：一题一块}
+
+课件全篇只有一道正式作业（\cpage{41}，Homework ONE），没有任何带解答的课上例题。下面这块自成一体，题干、考点、详解、答案、自检都在同一页内。
+
+\qbreak
+\subhdr{作业 1\quad 手绘十层阶梯（\cpage{41}）}
+
+\qstem{（课件 PDF \cpage{41}，Homework ONE）``Draw this ten-layer structure by hand, and it will definitely be covered in your final exam.'' 任务：不看课件，手绘 \cpage{41} 的十级阶梯；每一级要写清四样：层级序号（LEVEL ONE--TEN）、这一层的身份（如「光是波」）、年代与代表人物、一句话证据（如「Young's double-slit experiment (1801)」）。}
+
+\textbf{考点。}不是考画图，是考「十层能不能按顺序默出来，并且每层说得出它解决了上一层的什么漏洞」。
+
+\textbf{关键一步。}别按序号硬背，按「三种身份 + 三次革命」分组记：
+
+\begin{enumerate}
+\item \textbf{力学时代（1--3）：}射线 $\to$ 粒子 $\to$ 波。判据依次是「能不能解释影子、反射、折射」（射线可以）→「能不能解释光是沿直线走的实体」（粒子可以）→「能不能解释干涉」（只有波可以）。
+\item \textbf{场论时代（4--5）：}电磁波 $\to$ 光速不变。判据是「波在什么介质里传」：以太测不到，于是光速变成公设。
+\item \textbf{量子时代（6--10）：}光子 $\to$ 二象性 $\to$ 造物质 $\to$ 虚粒子 $\to$ 规范玻色子。判据是「能量能不能连续给」：不能，必须 $h\nu$。
+\end{enumerate}
+
+\textbf{详解（怎么把十级写成一条链）。}每一级都用一个固定句式写：「上一层能解释 X，但解释不了 Y；这一层用 Z 解释了 Y」。照这个句式，十级自然连成一条线：
+
+\begin{itemize}
+\item ONE 射线：解释影子与镜面反射，解释不了干涉（\cpage{21}）。
+\item TWO 粒子：解释反射折射与光的直线行进，解释不了两束光为何互不碰撞、也解释不了干涉（\cpage{23}）。
+\item THREE 波：解释干涉与衍射（杨氏双缝 \cpage{24}），解释不了「是什么波」。
+\item FOUR 电磁波：解释光是横波、给出 $c=1/\sqrt{\mu_0\varepsilon_0}$（\cpage{26}），解释不了「波在什么里传」。
+\item FIVE 光速不变：把以太问题取消掉（\cpage{28}），解释不了光由什么组成（\cpage{29}）。
+\item SIX 光子：解释黑体谱与光电效应的三条事实（\cpage{30}），解释不了「怎么又是波」。
+\item SEVEN 二象性：接受两者并存，把问题推广到物质波（\cpage{32}）。
+\item EIGHT 造物质：$E=mc^2$ 与对产生（\cpage{35}），阈值 $2m_ec^2=1.022\ \mathrm{MeV}$（讲义补充）。
+\item NINE 虚粒子：相互作用靠交换虚光子（\cpage{35}）。
+\item TEN 规范玻色子：光子是 $U(1)$ 局域相位对称的补偿场（\cpage{35}）。
+\end{itemize}
+
+\textbf{答案。}见 \S1.3 的十层表——那张表就是本题的标准答案（层级、身份、年代人物、一句话证据四列齐备，全部照抄 \cpage{41}）。考试时画台阶方向不限，从下往上更符合 \cpage{41} 的原图。
+
+\textbf{自检。}(1) 遮住表，能否在 3 分钟内默出十个身份？(2) 随机点一层，能否说出「上一层解释不了什么」？(3) 年代能不能对上号（1801 杨氏、1873 麦克斯韦、1887 迈克耳孙--莫雷、1900 普朗克、1905 爱因斯坦、1927 戴维孙--革末）？三问全过才叫记住。
+
+\hdr{§8}{缺口清单：课件跳了哪几步，本讲义补了什么}
+
+每条格式：\textbf{类型 | 页码 | 课件原文短语 | 缺了什么 → 补在哪}。全篇共 17 条。
+
+\gapitem{笔误（年代口径）}{\cpage{11} 写 ``8000 BC DONGMENTOU GNOMON''，\cpage{14} 写 ``$\sim$6,000 BC (8000 years ago)''——同一个遗址两个年代，差一千年。取 \cpage{14}：2026 年往前 8000 年是公元前 5974 年，与「$\sim$6,000 BC」自洽；\cpage{11} 的「8000 BC」应为「6000 BC」。补在 \S1.2。}
+
+\gapitem{机制缺口}{\cpage{19} ``correctly explaining it with the rectilinear propagation of light''。只说「用直线传播解释」，没说为什么直线传播会导致倒像、孔要多小才成立。补在 \S2.2：相似三角形给出 $h'=(b/a)h$ 与 $y'/y=-b/a$，并给出孔径条件 $D\ll h\,b/(a+b)$。}
+
+\gapitem{公式缺（形式改写）}{\cpage{20} ``Formalization of the Law of Refraction''——整页只有 $n_1,n_2,\theta_i,\theta_t$ 四个记号与光路图，没有任何等式。补在 \S2.4：$n_1\sin\theta_i=n_2\sin\theta_t$，并给出惠更斯与费马两条独立推导。}
+
+\gapitem{悬置问题}{\cpage{22} 与 \cpage{41} 都问 ``But why don't light particles repel each other?''，全篇无答案；\cpage{23} 的 ``why do two beams cross without colliding'' 是同一问。补在 \S3.2：光子电荷为零故库仑力为零，几何光学极限下无碰撞截面。}
+
+\gapitem{笔误（图内标注）}{\cpage{24} ``3. Young's Double-Slit Experiment (1801)'' 的图里，两条缝\textbf{都标成了 $S_1$}（放大 300 dpi 可辨）。应为 $S_1$ 与 $S_2$。补在 \S3.4：图 4 重绘并改正，同时说明为什么「两个不同的源」是推导的前提。}
+
+\gapitem{机制缺口}{\cpage{24} ``Bright and dark fringes prove light behaves as a wave''——没说为什么必须同一个源照亮两条缝、也没给明暗判据。补在 \S3.4：相干三条件 + $\Delta=d\sin\theta=m\lambda$ + $\Delta y=\lambda L/d$。}
+
+\gapitem{代数跳步}{\cpage{26} 四个麦克斯韦方程之后直接给 ``Wave Equation (in vacuum)'' 与 ``$c=1/\sqrt{\mu_0\varepsilon_0}$''，从方程到波动方程一步没写。补在 \S4.3：取旋度 → 代入 → 矢量恒等式三步，并逐项对照标准波动方程读出速度。}
+
+\gapitem{常数循环（易错）}{\cpage{26} ``Wave speed: $c=1/\sqrt{\mu_0\varepsilon_0}$ = speed of light''——今天 $\varepsilon_0$ 由 $c$ 反解，这个「吻合」有循环成分。补在 \S4.3 的米白框：麦克斯韦当年的独立性来自韦伯--柯尔劳施的纯电磁测量，答题不能只说「因为 $c=1/\sqrt{\mu_0\varepsilon_0}$」。}
+
+\gapitem{图缺（装置光路）}{\cpage{28} 迈克耳孙--莫雷页只有仪器照片与零散的 $S/M/D$ 标注，光路不闭合，也没有以太风方向。补在 \S5.2：图 6 重绘两个状态（无风/有风），标出 $L_1,L_2$、顺风 $c+v$ 与逆风 $c-v$。}
+
+\gapitem{压缩缺口}{\cpage{28} ``Michelson and Morley set out to detect the `ether' \ldots\ Result: No ether wind was detected''——只给结论不给预期值，读者无法判断灵敏度。补在 \S5.2：$t_\parallel,t_\perp$ 与 $\Delta N=2L\beta^2/\lambda=0.37$ 条，并说明实测上限比它小 40 倍。}
+
+\gapitem{机制缺口}{\cpage{28} ``Space and time adjust so that the speed of light is always $c$''——「怎么调整、调整多少」全无。补在 \S5.4 与 \S5.5：光钟 + 勾股定理推出 $\Delta t=\gamma\Delta t_0$（$\beta=0.6\to\gamma=1.25$）；再补两条公设经「线性 + 原点 + 光速不变 + 逆变换」四步逼出洛伦兹变换，并给同时性数值例（$2.5\ \mu\mathrm{s}$）。}
+
+\gapitem{机制缺口}{\cpage{30} ``Classical physics predicts infinite energy as $\lambda\to0$''——灾难从哪个式子来没说。补在 \S6.1：瑞利--金斯 $\rho\propto\nu^2kT$ 的积分发散，以及普朗克谱在低频回到它、高频压住它的两处验算。}
+
+\gapitem{边界缺口}{\cpage{30} ``Threshold frequency exists $(\nu_0=\Phi/h)$''——端点 $\nu=\nu_0$ 的值没交代。补在 \S6.3 米白框：$K_{\max}(\nu_0)=0$、$U_0=0$，端点有值；$\nu>\nu_0$ 才是「有正动能」。}
+
+\gapitem{图缺（整页无字）}{\cpage{33} 四幅图 a--d，全页无标题、无图注、无页脚——OCR 读不出任何文字是原始状态，不是识别失败。补在 \S7.2：按图描述四阶段（稀疏点 → 噪声样 → 条纹浮现），并给出正确读法（概率幅而非光子分身）。}
+
+\gapitem{数字简化}{\cpage{35} ``Pair production: $E=mc^2$''——阈值应是 $2m_ec^2=1.022\ \mathrm{MeV}$，且必须有核参与。补在 \S7.3：阈值波长 $1.21\ \mathrm{pm}$，并用动量守恒说明「in the presence of a nucleus」是必要条件。}
+
+\gapitem{内容缺（课件未提）}{课件 \cpage{30} 的光电效应之后直接跳到 \cpage{32} 的二象性，中间没有 1923 年的康普顿散射，而后者才是「光子有动量」的判决实验。补在 \S6.5：给出 $\Delta\lambda=\frac{h}{m_ec}(1-\cos\theta)$、$2.43\ \mathrm{pm}$（$\theta=90^\circ$）以及四行完整推导（能量 + 动量 + 相对论能量关系）。}
+
+\gapitem{压缩缺口（历史变成一串名词）}{\cpage{12} 与 \cpage{41} 的十层图只有「层级 + 一句话」，没有年份轴，也没有「后来被谁超出适用范围」；读者记住的是十个标签而不是一条链。补在 \S10.1：12 行时间轴表（年代、人物、层级与一句话、被哪一层修正）。}
+
+\callout{\textbf{系统性问题（值得单独提醒）。}这份课件有 10 页的文字层几乎为空（\cpage{2}、\cpage{3}、\cpage{33}、\cpage{43} 等），另有多页是「照片 + 一句口号」。所以本讲义的缺口清单里「图缺/图替」占 2 条、「机制缺口」占 4 条，都不是偶然：\textbf{课件靠图说话，图里的信息没有转成文字}。复习时若只背文字，会漏掉一半。}
+
+%=============================================================
+\hdr{§9}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{十层阶梯是一条「漏洞链」，不是十个名词。}影子逼出射线（\cpage{13}--\cpage{20}），干涉逼出波（\cpage{24}），以太测不到逼出相对论（\cpage{28}），黑体谱与光电效应逼出光子（\cpage{30}），二象性再往后逼出量子场（\cpage{32}--\cpage{35}）。每一层都因为「上一层解释不了某个现象」才存在。
+\item \textbf{本课程只覆盖前四层。}\cpage{36} 原话 "spanning the first through the fourth layers"：射线、粒子、波、电磁波。第 5--10 层是地图不是考点，但十层阶梯本身要能默画（\cpage{41} 明说会考）。
+\item \textbf{三个必须会算的式子撑起全部定量内容。}$n_1\sin\theta_i=n_2\sin\theta_t$（几何光学）、$c=1/\sqrt{\mu_0\varepsilon_0}$（电磁波）、$K_{\max}=h\nu-\Phi$ 与 $\nu_0=\Phi/h$（光子）。其余的（$\gamma$、$\lambda=h/p$、$2m_ec^2$）都是这三条的延伸。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{时间轴与页码对照（复习时按这两张表回查）}
+
+\subhdr{10.1 十层框架时间轴：谁在什么时候、被谁修正}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{4.7cm}@{}}
+\thead{年代} & \thead{人物} & \thead{层级与一句话} & \thead{被哪一层推翻/修正}\\
+\hline
+ca.~6000 BCE & 东门头先民 & ZERO：石碑立表，以影定时（p14） & 未被推翻，圭表原理沿用至今\\
+ca.~400 BCE & 墨子 & ONE：小孔成像、直线传播（p19） & L3：干涉超出它的适用范围\\
+ca.~300 BCE & 欧几里得 & ONE：反射 $\theta_r=\theta_i$（p20） & L4：用 $\varepsilon_r,\mu_r$ 解释「为什么」\\
+1637 & 笛卡儿（斯涅耳 1621） & ONE：折射正弦律（p20 只有图） & L4：给出它的电磁学根据\\
+1690 & 惠更斯 & THREE：次波原理（p24） & 菲涅耳补上振幅与相位\\
+1704 & 牛顿 & TWO：微粒说（p22） & L3：1801 双缝；1850 光速测量\\
+1801 & 杨 & THREE：双缝干涉，判决性（p24） & L4：答不出「是什么波」\\
+1865/1873 & 麦克斯韦 & FOUR：电磁波，$c=1/\sqrt{\mu_0\varepsilon_0}$（p26） & L5：以太问题\\
+1887 & 迈克耳孙、莫雷 & FIVE：测不到以太风（p28） & L5：由相对论解释\\
+1888 & 赫兹 & FOUR：实验证实是横波（p26） & 未推翻，补上实验证据\\
+1900/1905 & 普朗克、爱因斯坦 & SIX：$E=h\nu$ 与光电效应（p30） & L7：承认它与波动说并存\\
+1923--1927 & 康普顿、德布罗意 & SEVEN：光子动量、物质波（p32） & 由量子场论（L9--L10）统一\\
+1948/1954 & 费曼、杨振宁--米尔斯 & NINE/TEN：QED、非阿贝尔规范场（p35） & 仍是前沿，未被取代\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{表前一句：这张表只是把 \S1.3 的十级台阶按年份排一遍，第四列写「它后来被谁超出适用范围」。逐行读法：每一行的「层级与一句话」照抄 \cpage{41}，括号里给课件页码；「被谁修正」不是「谁错了」，而是「哪一层的现象它解释不了」。边界：第一行 ZERO 不在十层之内（见 \S1.3 的表注），最后一行是当前前沿、没有「被取代」可言，所以留「未被取代」。康普顿一行课件没提（见 \S8 第 15 条），其余全部有页码。}
+
+\subhdr{10.2 本讲义各节与课件页的对照}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{9.5cm}@{}}
+\thead{本讲义} & \thead{PDF 页（页脚）} & \thead{一句话}\\
+\hline
+\S0 & p1--p43（03--40） & 页脚跳号：差依次 $+1,+2,+3$，引用一律用 PDF 页\\
+\S1 & p11--p17（无--15） & 影子 $\to$ 圭表 $\to$ 文明；十层阶梯（p12、p41）\\
+\S2 & p18--p21（16--19） & 光线：墨子小孔、欧几里得反射、斯涅耳折射\\
+\S3 & p21--p24（19--22） & 微粒说（牛顿）、波动说（惠更斯、杨氏双缝）、大辩论\\
+\S4 & p25--p26（23--24） & 法拉第、麦克斯韦四方程、波动方程、$c$、横波\\
+\S5 & p27--p29（25--27） & 以太、迈克耳孙--莫雷、两条公设、$\gamma$\\
+\S6 & p29--p30（27--28） & 黑体辐射、紫外灾难、普朗克、光电效应\\
+\S7 & p31--p41（29--38） & 二象性、德布罗意、对产生、QED、$U(1)$、Nobel、产业、作业\\
+\S8 & 全篇 & 17 条缺口，逐条回指页码与原文短语\\
+\S9 & 全篇 & 三句话\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{这张表是台账（讲义节—课件页—一句话），逐行核对用；它不是推导，所以不附逐行读法。注意 p12 与 p41 是同一张十层图的两次出现：p12 被水墨遮住下半部，p41 完整清晰，\textbf{引用以 p41 为准}。}
+
+\flowerrule
+
+{\small\color{inkgray} 本讲义依据课件 PDF 共 43 页逐页读取（其中 p1--p4、p11--p12、p19--p20、p24、p33、p35、p41、p43 另以 120 dpi 渲染成 PNG 后目视核对，理由见 \S0 与 \S7.2）。凡标「讲义补充」的推导与数字，均为课件未给而本讲义补齐的部分，已在 \S8 逐条登记。课件中一处年代口径冲突（p11 与 p14）、一处图内笔误（p24 两条缝同标 $S_1$）已按图核实并改正，未改动课件原件。}
+
+\end{document}
+

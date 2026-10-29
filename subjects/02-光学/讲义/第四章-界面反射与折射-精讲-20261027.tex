@@ -1,0 +1,544 @@
+% !TEX program = xelatex
+% 第四章 光波在界面的反射和折射规律 · 精讲讲义
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{界面反射与折射 · 精讲}{光学 · 第四章}
+
+\tikzset{
+  ax/.style={->,>=Stealth,line width=0.7pt,color=inkgray},
+  beam/.style={->,>=Stealth,line width=1.0pt,color=violet},
+  comp/.style={->,>=Stealth,line width=0.7pt,color=petal},
+  lab/.style={font=\small,color=inkgray},
+  iface/.style={line width=1.2pt,color=violetdeep},
+  plate/.style={fill=bandviolet,draw=violet,line width=0.6pt},
+  dashline/.style={dashed,color=rulepurple,line width=0.7pt}
+}
+
+\begin{document}
+
+\doctitle{光波在界面的反射与折射：从菲涅耳公式到布儒斯特角}
+{第四章 · s/p 分量、半波损失、全反射与能量守恒}
+{依据：课件《第4章光波在界面的反射和折射规律》p1--p18（2026-10-27 逐页读取）\\
+逐页缺口补齐 \textperiodcentered\ 例 4.1 全解 \textperiodcentered\ 与 Exp32 布儒斯特测量对接\\
+整理：2026-10-27}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与主线}
+
+\callout{\textbf{这一章在讲什么。}光从一种介质射到另一种介质，边界条件逼出两件事：反射光、折射光的振幅由菲涅耳公式决定；不同入射角下 s、p 两个分量的反射率不同，于是反射光的偏振态随角度变。$r_p=0$ 的那个角就是布儒斯特角；$r=1$ 的那个角就是全反射临界角。课件 p1--p18 按「分解 $\to$ 菲涅耳公式 $\to$ 相位 $\to$ 布儒斯特 $\to$ 全反射 $\to$ 能量 $\to$ 多层 $\to$ 斯托克斯」展开，本讲义按同一顺序补推导。}
+
+\subhdr{课件页码对照}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义}\\
+\hline
+p1 & 章标题 & ---\\
+p2 & s/p 分量的定义、右手系 $\mathbf{p}\times\mathbf{s}\to\mathbf{k}$ & §1\\
+p3--p4 & 菲涅耳振幅反射/透射公式 & §2\\
+p5--p6 & 相位跃变、半波损失、$n_1<n_2$ 与 $n_1>n_2$ 的相位图 & §3\\
+p7--p8 & 布儒斯特角、玻璃片堆、激光布儒斯特窗 & §4\\
+p9--p10 & 正入射与掠入射的相位 & §3.4\\
+p11--p12 & 全反射、临界角、全反射相位 & §5\\
+p13--p14 & 平行平板与多层介质的半波损失 & §7\\
+p15--p16 & 光强/能流反射率与透射率、曲线 & §6\\
+p17 & 例 4.1（正入射） & §2.4\\
+p18 & 斯托克斯倒逆关系 & §3.5\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{记号}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{符号} & \thead{含义} & \thead{符号} & \thead{含义}\\
+\hline
+$i_1,i_2$ & 入射角、折射角 & $n_1,n_2$ & 入射侧、折射侧折射率\\
+$E_{ip},E_{is}$ & 入射 p、s 分量振幅 & $r_p,r_s$ & 振幅反射率\\
+$t_p,t_s$ & 振幅透射率 & $R,T$ & 能流反射率、透射率\\
+$\theta_B$ & 布儒斯特角 & $\theta_c$ & 全反射临界角\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{约定：$\mathbf{k}$ 沿传播方向，$\mathbf{s}$ 垂直入射面（即垂直纸面），$\mathbf{p}$ 在入射面内且 $\mathbf{p}\times\mathbf{s}$ 指向 $\mathbf{k}$。换一套教材可能把 $\mathbf{p}$ 取反，$r_p$ 的符号会整体变号；比较数值前先确认约定。}
+
+%=============================================================
+\hdr{§1}{为什么分成 s 与 p：边界条件只认切向分量}
+
+课件 p2 把光矢量分成两个独立分量：
+
+\begin{itemize}
+\item \textbf{s 分量}：振动方向垂直于入射面（垂直纸面）；
+\item \textbf{p 分量}：振动方向平行于入射面。
+\end{itemize}
+
+并且按 $\mathbf{p}\times\mathbf{s}\to\mathbf{k}$ 构成右手系。为什么可以分开？因为界面是平面，边界条件（电场、磁场的切向分量连续）对两个偏振方向分别成立，不把它们混在一起。于是「一束任意偏振的光」可以拆成 s、p 两束分别算，最后再合成；反射光和折射光的 s、p 振幅各自与入射的 s、p 成正比。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \fill[bandviolet] (-4,-1.6) rectangle (4,0);
+  \draw[iface] (-4,0) -- (4,0);
+  \node[lab,below left] at (-3.9,-0.15) {$n_2$};
+  \node[lab,above left] at (-3.9,0.15) {$n_1$};
+  \draw[dashline,color=rulepurple] (0,-1.5) -- (0,2.0) node[above,lab] {法线};
+  \draw[beam] (-3.2,1.6) -- (0,0) node[midway,above,lab] {$\mathbf{k}_i$};
+  \draw[beam] (0,0) -- (1.9,1.25) node[right,lab] {$\mathbf{k}_r$};
+  \draw[beam] (0,0) -- (1.5,-1.15) node[right,lab] {$\mathbf{k}_t$};
+  \draw[comp] (0,0) -- (-0.55,0.72) node[left,lab] {$\mathbf{p}_i$};
+  \draw[comp] (0,0) -- (0.75,0.32) node[right,lab] {$\mathbf{p}_r$};
+  \draw[comp] (0,0) -- (0.62,-0.38) node[right,lab] {$\mathbf{p}_t$};
+  \fill[color=violet] (-1.6,0.8) circle (2pt);
+  \fill[color=violet] (0.95,0.62) circle (2pt);
+  \fill[color=violet] (0.75,-0.55) circle (2pt);
+  \node[lab] at (-1.9,0.62) {$\mathbf{s}_i$};
+  \node[lab] at (1.12,0.72) {$\mathbf{s}_r$};
+  \node[lab] at (0.92,-0.45) {$\mathbf{s}_t$};
+  \draw[->,color=petal] (0,0.8) arc (90:125:0.8);
+  \node[font=\scriptsize,color=inkgray] at (-0.32,0.95) {$i_1$};
+  \draw[->,color=petal] (0,-0.7) arc (-90:-38:0.7);
+  \node[font=\scriptsize,color=inkgray] at (0.35,-0.82) {$i_2$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 1\quad 入射、反射、折射的波矢与 s/p 方向。$\mathbf{s}$ 垂直纸面（圆点），$\mathbf{p}$ 在纸面内；三个 $\mathbf{k}$ 共面（入射面）。}
+\end{center}
+
+%=============================================================
+\hdr{§2}{菲涅耳公式：从边界条件到四个振幅比}
+
+\subhdr{2.1 边界条件给什么}
+
+在界面处，电场的切向分量连续、磁场的切向分量连续（无自由电荷、无面电流）。把入射、反射、折射三束光的 s、p 分量代入，消去磁场（用 $\mathbf{H}=\mathbf{k}\times\mathbf{E}/(\omega\mu)$），得到四个振幅比。课件 p3 直接给结果，没有给这一步；这里补出思路，具体代数不展开。
+
+\subhdr{2.2 四个公式（课件 p3--p4 原式）}
+
+\[
+\tilde r_p=\frac{\tilde E_{rp}}{\tilde E_{ip}}
+=\frac{n_2\cos i_1-n_1\cos i_2}{n_2\cos i_1+n_1\cos i_2}
+=\frac{\tan(i_1-i_2)}{\tan(i_1+i_2)},
+\]
+
+\[
+\tilde r_s=\frac{\tilde E_{rs}}{\tilde E_{is}}
+=\frac{n_1\cos i_1-n_2\cos i_2}{n_1\cos i_1+n_2\cos i_2}
+=\frac{\sin(i_2-i_1)}{\sin(i_2+i_1)},
+\]
+
+\[
+\tilde t_p=\frac{\tilde E_{tp}}{\tilde E_{ip}}
+=\frac{2n_1\cos i_1}{n_2\cos i_1+n_1\cos i_2},
+\qquad
+\tilde t_s=\frac{\tilde E_{ts}}{\tilde E_{is}}
+=\frac{2n_1\cos i_1}{n_1\cos i_1+n_2\cos i_2}
+=\frac{2\cos i_1\sin i_2}{\sin(i_2+i_1)}.
+\]
+
+四个式子都用 Snell 定律 $n_1\sin i_1=n_2\sin i_2$ 化成角度的形式。$r_p,r_s$ 可正可负（负号代表相位 $\pi$），$t_p,t_s$ 对透明介质总是正实数（折射光与入射光同相）。
+
+\subhdr{2.3 正入射的极限}
+
+$i_1=i_2=0$ 时：
+
+\[
+r_p=\frac{n_2-n_1}{n_2+n_1}=-r_s,\qquad
+t_p=t_s=\frac{2n_1}{n_2+n_1}.
+\]
+
+注意 $r_p=-r_s$：正入射时 p、s 的反射系数大小相等、符号相反。这不是说反射光有两个相反的振动方向，而是 p 的正方向在反射时按约定翻转了；物理上只有一个反射振动方向。
+
+\subhdr{2.4 例 4.1 全解（课件 p17）}
+
+\qbreak
+\qstem{（课件 p17 例 4.1）一块平板玻璃 $n_2=1.5$，忽略多次反射。分别求光从空气（$n_1=1.0$）正入射到玻璃上表面、以及从玻璃下表面射入空气时的振幅反射率、光强反射率、振幅透射率和光强透射率。}
+
+\textbf{考点}：正入射公式；振幅比与能量比的换算；$t>1$ 不违反能量守恒。
+
+\textbf{关键一步}：正入射时 $r_p=(n_2-n_1)/(n_2+n_1)$、$r_s=-r_p$、$t=2n_1/(n_2+n_1)$；光强反射率 $R=|r|^2$，光强透射率 $T=(n_2/n_1)|t|^2$。
+
+\textbf{详解}：空气 $\to$ 玻璃，$n_1=1,n_2=1.5$：
+
+\[
+r_p=\frac{0.5}{2.5}=0.20,\quad r_s=-0.20,\quad t=\frac{2}{2.5}=0.80,
+\]
+\[
+R=|r|^2=0.04=4\%,\qquad T=\frac{1.5}{1}(0.8)^2=0.96=96\%.
+\]
+
+玻璃 $\to$ 空气，$n_1=1.5,n_2=1$：
+
+\[
+r_p=\frac{-0.5}{2.5}=-0.20,\quad r_s=0.20,\quad t=\frac{3}{2.5}=1.20,
+\]
+\[
+R=4\%,\qquad T=\frac{1}{1.5}(1.2)^2=0.96=96\%.
+\]
+
+\textbf{答案}：空气 $\to$ 玻璃：$r_p=20\%$、$r_s=-20\%$、$t=80\%$，$R=4\%$、$T=96\%$；玻璃 $\to$ 空气：$r_p=-20\%$、$r_s=20\%$、$t=120\%$，$R=4\%$、$T=96\%$。
+
+\textbf{自检}：两方向的 $R$、$T$ 相同（4\%/96\%），符合能量守恒；$t=120\%$ 是振幅比，不是能量比，能量比要乘 $n_2/n_1=2/3$。若直接把 $t^2=1.44$ 当透射率，就会得出「透射能量大于入射」的荒谬结论。
+
+%=============================================================
+\hdr{§3}{相位跃变与半波损失}
+
+\subhdr{3.1 符号就是相位}
+
+反射光写成
+
+\[
+\tilde E_r=|r|\tilde E_i e^{i\delta},\qquad
+\delta=\begin{cases}0,&r>0,\\ \pi,&r<0.\end{cases}
+\]
+
+所以「$r$ 变号」等于「反射光多出 $\pi$ 的相位」，在干涉里等价于光程差多 $\lambda/2$，叫\textbf{半波损失}。课件 p5--p6 的曲线就是 $r_p,r_s$ 随 $i_1$ 变号的位置。
+
+\subhdr{3.2 $n_1<n_2$（空气 $\to$ 玻璃）}
+
+\begin{itemize}
+\item $r_s<0$ 对所有入射角成立 $\Rightarrow$ s 分量始终有 $\pi$ 跃变；
+\item $r_p>0$ 当 $i_1<\theta_B$，$r_p<0$ 当 $i_1>\theta_B$ $\Rightarrow$ p 分量在布儒斯特角处从 $0$ 跃变到 $\pi$。
+\end{itemize}
+
+p5 左图在 $56.3^\circ$ 处 $r_p$ 过零、变号，正是 $n_2=1.5$ 的布儒斯特角。
+
+\subhdr{3.3 $n_1>n_2$（玻璃 $\to$ 空气）}
+
+\begin{itemize}
+\item $r_s>0$ 当 $i_1<\theta_c$（无跃变），超过 $\theta_c$ 后进入全反射，相位连续从 $0$ 增到 $\pi$；
+\item $r_p<0$ 当 $i_1<\theta_B$（有 $\pi$ 跃变），$\theta_B<i_1<\theta_c$ 时 $r_p>0$（无跃变），超过 $\theta_c$ 后相位连续增到 $\pi$。
+\end{itemize}
+
+\subhdr{3.4 正入射与掠入射（p9--p10）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{情形} & \thead{$r_p$} & \thead{$r_s$} & \thead{反射光相对入射光}\\
+\hline
+$n_1<n_2$ 正入射 & $+$ & $-$ & p 同相，s 反相\\
+$n_1>n_2$ 正入射 & $-$ & $+$ & p 反相，s 同相\\
+$n_1<n_2$ 掠入射 & $<0$ & $<0$ & 两者都反相（$\pi$）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{p9 的表格把正入射的符号列成「$n_1<n_2$ 时 $r_p>0,r_s<0$；$n_1>n_2$ 时 $r_p<0,r_s>0$」。记忆法：p 的符号跟「从疏到密还是从密到疏」走，s 永远与 p 相反；掠入射时两者都变负。}
+
+\subhdr{3.5 斯托克斯倒逆关系（p18）}
+
+把反射、折射光按原路送回，由光路可逆与能量守恒：
+
+\[
+r+r'=0,\qquad r^2+tt'=1 .
+\]
+
+$r'$ 是反方向入射的振幅反射率，$t'$ 是反方向透射率。这两条在算多层膜、法布里--珀罗时反复用。
+
+\warnbox{\textbf{课件 p18 的一个笔误。}幻灯片写「$A^2=(Ar)^2+(At)^2\Rightarrow r^2+t^2=1$」。这对振幅不成立：能量守恒要带折射率和角度，
+\[
+r^2+\frac{n_2\cos i_2}{n_1\cos i_1}t^2=1,
+\]
+即 $R+T=1$。正入射 $n_1=1,n_2=1.5$ 时 $r=0.2,t=0.8$，$r^2+t^2=0.68\neq1$，而 $R+T=0.04+0.96=1$。考试若写 $r^2+t^2=1$ 会被扣分。}
+
+%=============================================================
+\hdr{§4}{布儒斯特角：$r_p=0$ 的那一点}
+
+\subhdr{4.1 从公式到角度}
+
+令 $r_p=0$，由
+
+\[
+r_p=\frac{\tan(i_1-i_2)}{\tan(i_1+i_2)}
+\]
+
+知分子为零（$i_1=i_2$，垂直入射）或分母趋于无穷：
+
+\[
+i_1+i_2=\frac{\pi}{2}.
+\]
+
+此时反射线与折射线垂直。代入 Snell 定律：
+
+\[
+n_1\sin i_B=n_2\sin\left(\frac{\pi}{2}-i_B\right)=n_2\cos i_B
+\;\Longrightarrow\;
+\tan i_B=\frac{n_2}{n_1}.
+\]
+
+空气 $\to$ 玻璃（$n_2=1.5$）：$i_B=\arctan 1.5=56.3^\circ$，与 p5 左图的过零点一致。
+
+\subhdr{4.2 为什么反射光是纯 s}
+
+$r_p=0$ 意味着 p 分量完全不反射；入射光里无论 p 占多少，反射光都只剩 s 分量。所以：
+
+\begin{itemize}
+\item 以布儒斯特角入射，反射光是\textbf{完全线偏振}（振动垂直入射面）；
+\item 折射光是部分偏振（p 占优，但不完全）；
+\item 布儒斯特角又叫\textbf{全偏振角}、\textbf{起偏角}。
+\end{itemize}
+
+\subhdr{4.3 三个常见数值}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{界面} & \thead{$n_2/n_1$} & \thead{$i_B$}\\
+\hline
+空气 $\to$ 玻璃（1.5） & 1.50 & $56.3^\circ$\\
+玻璃 $\to$ 空气 & 0.667 & $33.7^\circ$\\
+空气 $\to$ 水（1.33） & 1.33 & $53.1^\circ$\\
+水 $\to$ 空气 & 0.752 & $36.9^\circ$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+注意从密到疏时 $i_B<45^\circ$：玻璃 $\to$ 空气的布儒斯特角 $33.7^\circ$ 比临界角 $41.8^\circ$ 还小，所以在这个角度上仍能正常折射，只是 p 分量不反射。
+
+\subhdr{4.4 玻璃片堆与激光布儒斯特窗（p8）}
+
+单片玻璃的反射光很弱；把多片玻璃平行叠成「片堆」，让自然光以 $i_B$ 入射，每片表面反射掉一部分 s，透射光里 s 被削多次、p 基本无损，出射光就近似完全 p 偏振。这就是片堆起偏器。
+
+激光器里则反过来用：把窗片按布儒斯特角放置，p 偏振光在窗片上无反射损耗，可以在腔内多次往返；s 偏振每过一次损失一点，被压下去。于是激光输出是稳定的 p 偏振。课件 p8 的两张图就是这两个应用。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[line width=1.0pt,color=violetdeep] (0,0) -- (7,0);
+  \foreach \x in {2.2,2.9,3.6,4.3,5.0} {
+    \draw[plate,rotate around={-32:(\x,0)}] (\x-0.05,-0.9) rectangle (\x+0.05,0.9);
+  }
+  \draw[beam] (0.2,0.55) -- (2.0,0.55);
+  \node[lab,above] at (0.9,0.85) {自然光};
+  \draw[dashline,color=rulepurple] (2.0,0.55) -- (2.0,1.4);
+  \draw[->,color=petal] (2.0,1.05) arc (90:122:0.5);
+  \node[font=\scriptsize,color=inkgray] at (1.72,1.08) {$\theta_B$};
+  \draw[beam] (5.2,0.55) -- (6.6,0.55);
+  \node[lab,above] at (5.9,0.85) {p 偏振};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray} 图 2\quad 玻璃片堆起偏（示意）：自然光以布儒斯特角入射，多次反射削掉 s，透射光近似纯 p。}
+\end{center}
+
+\aside{实验 Exp32 的第三项内容就是测这个角：转样品台改变入射角，每个角度转检偏器读 $I_{\max},I_{\min}$，算 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$，$P$ 的峰位就是 $i_B$，$n=\tan i_B$。本讲义 §4.1 的公式与实验报告里的处理是同一条。}
+
+%=============================================================
+\hdr{§5}{全反射：$r=1$，但相位在变}
+
+\subhdr{5.1 临界角}
+
+光从密介质射向疏介质（$n_1>n_2$），由 Snell 定律
+
+\[
+\sin i_2=\frac{n_1}{n_2}\sin i_1 .
+\]
+
+当 $i_1$ 增大到 $\sin i_2=1$ 时，$i_2=90^\circ$，折射光沿界面走；再大，$\sin i_2>1$，没有实数折射角：
+
+\[
+i_1>\theta_c,\qquad \theta_c=\arcsin\frac{n_2}{n_1}.
+\]
+
+玻璃 $\to$ 空气：$\theta_c=\arcsin(1/1.5)=41.8^\circ$。
+
+\subhdr{5.2 复数折射角与 $|r|=1$}
+
+$i_1>\theta_c$ 时
+
+\[
+\cos i_2=i\sqrt{\left(\frac{n_1}{n_2}\sin i_1\right)^2-1}
+\]
+
+是纯虚数。代入 $r_p$：
+
+\[
+r_p=\frac{a-ib}{a+ib},\qquad
+a=n_2\cos i_1,\quad b=n_1\sqrt{\left(\frac{n_1}{n_2}\sin i_1\right)^2-1}.
+\]
+
+分子分母模相等，所以 $|r_p|=1$；同理 $|r_s|=1$。全部能量被反射，没有净能流进入第二介质。但相位不为零：
+
+\[
+\delta_p=2\arctan\frac{b}{a},\qquad
+\delta_s=2\arctan\frac{n_2\sqrt{\left(\frac{n_1}{n_2}\sin i_1\right)^2-1}}{n_1\cos i_1}.
+\]
+
+两式在 $i_1=\theta_c$ 时为 $0$，在 $i_1\to90^\circ$ 时趋于 $\pi$。这就是 p11--p12 的公式。
+
+\aside{全反射并不是「光完全不进第二介质」：第二介质里有一个随深度指数衰减的隐失波（evanescent wave），它不带走净能量，但能穿透约一个波长的深度。光纤、全反射棱镜、全反射荧光显微镜都靠它；课件没有展开，知道「有隐失波、无净能流」即可。}
+
+\subhdr{5.3 数值例：玻璃 $\to$ 空气 $45^\circ$}
+
+取 $n_1=1.5,n_2=1,i_1=45^\circ$。临界角 $\theta_c=41.8^\circ$，故已全反射。先算根号：
+
+\[
+B=\sqrt{\left(\frac{1.5}{1}\sin45^\circ\right)^2-1}
+=\sqrt{1.125-1}=0.3536 .
+\]
+
+于是
+
+\[
+a=n_2\cos i_1=0.7071,\qquad b=n_1B=0.5303,
+\]
+\[
+\delta_p=2\arctan\frac{b}{a}=2\arctan0.75=73.7^\circ,
+\]
+\[
+\delta_s=2\arctan\frac{n_2B}{n_1\cos i_1}
+=2\arctan\frac{0.3536}{1.0607}=36.9^\circ .
+\]
+
+两分量都 100\% 反射（$|r_p|=|r_s|=1$），但相位差 $\delta_p-\delta_s=36.8^\circ$。全反射因此可以当「相位延迟器」用：选合适的入射角，让每次全反射给出所需的相位差；菲涅耳棱镜（Fresnel rhomb）就是用两次全反射凑出 $90^\circ$ 的器件。课件 p11--p12 只给公式，没有给这个用法，补在这里。
+
+%=============================================================
+\hdr{§6}{能量：$R+T=1$ 怎么算}
+
+\subhdr{6.1 四个量}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{量} & \thead{定义} & \thead{与振幅比的关系}\\
+\hline
+光强反射率 & $R_I=I_r/I_i$ & $|r|^2$\\
+光强透射率 & $T_I=I_t/I_i$ & $\dfrac{n_2}{n_1}|t|^2$\\
+能流反射率 & $R=W_r/W_i$ & $R_I$（同介质，截面相同）\\
+能流透射率 & $T=W_t/W_i$ & $\dfrac{\cos i_2}{\cos i_1}T_I=\dfrac{n_2\cos i_2}{n_1\cos i_1}|t|^2$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+能量守恒：
+
+\[
+R+T=1 .
+\]
+
+正入射时 $\cos i_2/\cos i_1=1$，$T=(n_2/n_1)|t|^2$；例 4.1 的 $4\%+96\%=100\%$ 就是这一条。
+
+\subhdr{6.2 曲线（p16）}
+
+\begin{itemize}
+\item 空气 $\to$ 玻璃：$R_s$ 随 $i_1$ 单调上升，$90^\circ$ 趋于 $1$；$R_p$ 先降到 $0$（$i_B=56.3^\circ$）再上升。
+\item 玻璃 $\to$ 空气：$R_s,R_p$ 在 $\theta_c=41.8^\circ$ 之前都不大，超过 $\theta_c$ 直接跳到 $1$（全反射）。
+\end{itemize}
+
+这两张图是「为什么布儒斯特角处反射光纯 s」「为什么全反射棱镜能 100\% 反射」的直观来源。
+
+%=============================================================
+\hdr{§7}{平行平板与多层介质：半波损失到底有没有}
+
+\subhdr{7.1 一块平板（p13）}
+
+平行平板上下两个表面。反射光线 1（上表面）与 2（下表面，多走一次板内往返）之间是否有半波损失，取决于两次反射的相位跃变之和：
+
+\begin{itemize}
+\item 平板在空气中（$n_1<n_2>n_1$）：上表面从疏到密（$\pi$），下表面从密到疏（$0$），合计 $\pi$ $\Rightarrow$ 1 与 2 反相，有半波损失；
+\item 平板是低折射率（如空气膜夹在玻璃中，$n_1>n_2<n_1$）：上表面 $0$，下表面 $\pi$，合计仍 $\pi$ $\Rightarrow$ 也有半波损失。
+\end{itemize}
+
+所以课件 p13 说「只要光线 2 存在，光线 1 和 2 的振动方向总是相反的」。透射光 1$'$、2$'$ 每次透射都没有跃变，故同相。
+
+\subhdr{7.2 三层介质（p14）}
+
+两条反射光线分别来自第 1、第 2 个界面。规则只看 $n_1,n_2,n_3$ 是单调还是 $n_2$ 为极值：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{折射率排列} & \thead{两次反射的跃变} & \thead{1 与 2 之间}\\
+\hline
+$n_1<n_2<n_3$ & $\pi+\pi=2\pi$ & 无半波损失\\
+$n_1>n_2>n_3$ & $0+0=0$ & 无半波损失\\
+$n_1<n_2>n_3$ & $\pi+0=\pi$ & 有半波损失\\
+$n_1>n_2<n_3$ & $0+\pi=\pi$ & 有半波损失\\
+\end{tabular}
+\tabbot
+\end{center}
+
+一句话：\textbf{$n_2$ 夹在中间（单调）就没有净半波损失；$n_2$ 是最大或最小（像「山」或「谷」）就有。}这条规则在第五章薄膜干涉里直接决定增反/增透。
+
+%=============================================================
+\hdr{§8}{公式卡与易错点}
+
+\subhdr{8.1 公式卡}
+
+\begin{itemize}
+\item Snell：$n_1\sin i_1=n_2\sin i_2$。
+\item 菲涅耳（振幅）：
+\[
+r_p=\frac{\tan(i_1-i_2)}{\tan(i_1+i_2)},\qquad
+r_s=\frac{\sin(i_2-i_1)}{\sin(i_2+i_1)}.
+\]
+\item 布儒斯特：$\tan i_B=n_2/n_1$；$i_B$ 时 $r_p=0$，反射光纯 s。
+\item 全反射：$\sin\theta_c=n_2/n_1$；$i_1>\theta_c$ 时 $|r|=1$，相位 $\delta_p,\delta_s$ 随 $i_1$ 变。
+\item 能量：$R=|r|^2$，$T=\frac{n_2\cos i_2}{n_1\cos i_1}|t|^2$，$R+T=1$。
+\item 斯托克斯：$r+r'=0$，$r^2+tt'=1$。
+\end{itemize}
+
+\subhdr{8.2 易错点}
+
+\begin{enumerate}
+\item \textbf{把 $t>1$ 当成能量不守恒。}$t$ 是振幅比；能量比要乘 $n_2/n_1$（斜入射还要乘 $\cos i_2/\cos i_1$）。例 4.1 的 $t=120\%$ 对应 $T=96\%$。
+\item \textbf{把 $r^2+t^2=1$ 当能量守恒。}错，见 §3.5 的边界框；正确的是 $R+T=1$。
+\item \textbf{布儒斯特角公式写成 $\tan i_B=n_1/n_2$。}是 $n_2/n_1$（从 $n_1$ 射向 $n_2$）。空气 $\to$ 玻璃是 $1.5$，不是 $0.667$。
+\item \textbf{认为布儒斯特角处折射光也是完全偏振。}只有反射光纯 s；折射光仍是部分偏振，p 占优但不纯。
+\item \textbf{认为全反射「没有光进入第二介质」。}有隐失波，只是没有净能流；否则全反射棱镜的相位变化无从谈起。
+\item \textbf{半波损失只看一次反射。}两块界面要比「两次跃变之和」；单调三层无净损失，$n_2$ 为极值才有。
+\item \textbf{p 的符号约定。}不同教材对 $\mathbf{p}$ 的正方向取法不同，$r_p$ 可能整体差一个负号；比较数值前先确认约定。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{缺口清单：课件跳了哪几步，本讲义补了什么}
+
+\gapitem{推导缺口}{p3 直接给四个菲涅耳公式，没有边界条件到公式的过程。§2.1 补：电场、磁场切向连续，代入三束光的 s/p 分量，消去磁场；具体代数从略，但说明每一步在用什么条件。}
+\gapitem{机制缺口}{p5 只画 $r_p$ 在 $56.3^\circ$ 过零变号，没有说明为什么是 $i_1+i_2=90^\circ$。§4.1 补：$\tan(i_1+i_2)\to\infty$，再由 Snell 得 $\tan i_B=n_2/n_1$。}
+\gapitem{压缩缺口}{p6 用四张相位图讲 $n_1<n_2$ 与 $n_1>n_2$ 的 $\delta_p,\delta_s$，没有一张可查的表。§3.2--§3.4 补成「$n_1<n_2$ / $n_1>n_2$ × 正入射/掠入射」的符号表，并给出记忆法。}
+\gapitem{错误更正}{p18 写 $A^2=(Ar)^2+(At)^2\Rightarrow r^2+t^2=1$。这对振幅不成立；§3.5 更正为 $R+T=1$，即 $r^2+\frac{n_2\cos i_2}{n_1\cos i_1}t^2=1$，并给 $n=1.5$ 的数值反例。}
+\gapitem{适用条件}{p13--p14 说「光线 1 和 2 总是相反」「$n_1<n_2<n_3$ 无半波损失」，没有证明。§7 补：两次反射的跃变相加，单调排列为 $2\pi$ 或 $0$，$n_2$ 为极值才剩 $\pi$。}
+\gapitem{图缺}{p8 的玻璃片堆与激光布儒斯特窗只有实物示意图，没有标出 $\theta_B$ 与 p 方向。§4.4 重绘了片堆示意图，并说明「每片反射 s、透射 p」的机制。}
+\gapitem{边界缺口}{p12 给全反射相位公式，但没说明 $i_1=\theta_c$ 与 $i_1=90^\circ$ 两端取值。§5.2 补：两端分别为 $0$ 与 $\pi$，中间连续增大。}
+
+%=============================================================
+\hdr{§10}{三句话总结}
+
+\begin{enumerate}
+\item 界面把光分成独立的 s、p 两套；菲涅耳公式给出四个振幅比，符号的正负就是相位 $0$ 或 $\pi$。
+\item $r_p=0$ 的角度是布儒斯特角 $\tan i_B=n_2/n_1$，反射光纯 s；$|r|=1$ 的角度是全反射临界角 $\sin\theta_c=n_2/n_1$，相位随角度连续变。
+\item 能量守恒是 $R+T=1$，不是 $r^2+t^2=1$；振幅比与能量比之间差一个 $n_2\cos i_2/(n_1\cos i_1)$。
+\end{enumerate}
+
+%=============================================================
+\hdr{§11}{与课件的页码对照}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{本讲义} & \thead{课件页} & \thead{一句话}\\
+\hline
+§1 & p2 & s/p 分解与右手系\\
+§2 & p3--p4、p17 & 菲涅耳公式；例 4.1\\
+§3 & p5--p6、p9--p10、p18 & 相位跃变；正/掠入射；斯托克斯\\
+§4 & p7--p8 & 布儒斯特角；片堆；激光窗\\
+§5 & p11--p12 & 全反射；临界角；相位\\
+§6 & p15--p16 & 能量反射/透射率；曲线\\
+§7 & p13--p14 & 平板与多层介质的半波损失\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\flowerrule
+
+{\small\color{inkgray} 本讲义逐页读取课件 p1--p18；公式按课件的 $n_1\to n_2$、$\mathbf{p}\times\mathbf{s}\to\mathbf{k}$ 约定重排。与实验 Exp32 的接口在 §4.3 的旁注：$P(i)$ 峰位定 $i_B$，$n=\tan i_B$。}
+
+\end{document}

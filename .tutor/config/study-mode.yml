@@ -1,0 +1,45 @@
+# 学习模式（2026-10-29 学习者决定；人工维护的唯一来源）
+# 读取者：tools/reviews.py（队列裁剪）、tools/tutor_context.py（显示口径）、
+#         以及每次会话的助手（AGENTS.md「开始」一节之后应先读本文件）。
+#
+# 背景：学习者 2026-10-29 原话——「之前这个学习记录体系需要我高强度和你互动，
+# 这样耗费了太多时间，现在我完全通过讲义学习，效率更高」。
+# 事实核对：2026-10-19 ~ 10-29 生成讲义 61 份，同期作答事件 0 条。
+#
+# ⚠ 本文件刻意写成**扁平键**（极简 YAML 解析器不保证支持嵌套），值里不要出现 # 号。
+
+mode: handout-driven
+since: 2026-10-29
+decided_by: 学习者
+reason: 高强度一问一答耗时过多；讲义异步自学效率更高
+
+# ── 讲授通道 ───────────────────────────────────────────────
+teaching_channel: 讲义
+teaching_skill: .dsh/skills/lecture-deepdive/SKILL.md
+handout_answers: appendix          # 详细答案统一放讲义最后；题干处写「详解见附录第 X 页」
+handout_stem_keeps: 题干与考点     # 题干块内不出现「关键一步」「答案」，避免边做边看
+interaction_budget: 平时每周不超过 1 次提交；考前验收期不受此限
+
+# ── 证据通道（这是本模式最要紧的一节）─────────────────────
+evidence_channel: exam_only        # 唯一能把目标升到「迁移通过」的通道：考前集中闭卷验收
+during_term_evidence: none         # 平时讲义、自测、作业一律 exposure=full、hint_level>=H4，不升等级
+exam_closed_book: true
+exam_switched_item: true           # 必须换题换数字，不得复用任何已曝光题目
+exam_hint_level: H0
+exam_on_pass: 按 tools/append_attempt.py 正常入账，可升「迁移通过」
+self_check_allowed: true           # 学习者可一次性报自测对错率（一条消息）
+self_check_writes_ability: false   # 只记 observations.jsonl，不写能力分数
+
+# ── 队列 ───────────────────────────────────────────────────
+archive_before: 2026-10-29         # due 早于该日期的旧题不再进排期，保留为考前素材
+retest_queue: exam_only            # 能力再测队列平时不显示；考前验收窗口开启时临时改回 always
+milestones: keep                   # goals.yaml 的 milestone/deadline 提醒保留（真实外部节点）
+
+# ── 未学门禁的适配 ─────────────────────────────────────────
+gate_handout_covered: 按需答疑，不重复从零讲
+gate_handout_absent: 仍按未学门禁，先讲后做
+gate_note: 讲义已交付不等于已学；两者都不等于已验收。
+
+# ── 表述纪律 ───────────────────────────────────────────────
+claim_policy: evidence_only        # 平时不说「已掌握/已学会」，只能说「讲义已覆盖、未经闭卷验收」
+progress_source: subjects/*/progress.md 仍是权威三态表；讲义覆盖事实见 learning/handout-coverage.md

@@ -1,0 +1,1386 @@
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+% 主题默认 \linespread{1.28}、页边距 2.0/2.0/2.1/2.3cm；本讲义受"课件页数×0.5 上下限"
+% 约束（见 §0.2），把行距收到 1.20、页边距收到 1.8cm，以便压进 26 页以内；字号用 10pt。
+\linespread{1.20}
+\setlength{\parskip}{2.4pt}
+\addtolength{\jot}{-2pt}
+\geometry{left=1.8cm,right=1.8cm,top=1.9cm,bottom=2.1cm,headsep=10pt,footskip=20pt}
+% 主题里的 \aside 与 \gapitem 在宏体内直接设置 \hangindent，会“漏”到后面的段落。
+% 各套一层组，让设置在段落结束后自动还原（与前半讲义同一处理）。
+\let\dshaside\aside
+\renewcommand{\aside}[1]{{\dshaside{#1}}}
+\let\dshgapitem\gapitem
+\renewcommand{\gapitem}[2]{{\dshgapitem{#1}{#2}}}
+% 一题一块的起页保护：主题默认 0.92 页，本讲义 §8 的每块约 0.45 页，收到 0.50 页
+% 后两块可共页，而任一块仍不会跨页（块高 < 剩余空间才起块）。
+\renewcommand{\qbreak}{\needspace{0.50\textheight}}
+\settags{第五章 · 薄膜、牛顿环、迈克尔逊与 F--P}{光学（大二）}
+
+\begin{document}
+
+\doctitle{从薄膜到法布里--珀罗：分振幅干涉的五件套}%
+{第五章 \S5.8 分振幅干涉 \ 精讲讲义（课件 p26--p83）}%
+{依据：\texttt{第五章 光的干涉 v2.pdf}（83 页，逐页读图）p26--p83\ \textbar\ 2026-10-27}
+
+\callout{\textbf{这份讲义接在哪里。}前一份讲义（\texttt{第五章-杨氏双缝与云母片-精讲}）讲的是\textbf{分波前}：把同一波前切成两块，问"两束光从哪来"。它结尾在 p25 那句"代价呢？？？"上。这一份从 p29 起讲\textbf{分振幅}：不改光源，只让\textbf{同一束光被两个表面各分一次}，问"两束光多走了多少路"。答案只有一个式子——$2nh\cos i$（外加一个可能存在的 $\lambda/2$）。
+p26--p28 的三件装置（双平面镜、双棱镜、洛埃镜）前讲义 \S8 已讲完，本讲义只在 \S0.1 留一句接口，不重复。
+全文凡标 \textbf{[补]} 的是课件没写、本讲义补出的推导或结论；凡带页码引号的短语是课件原文（英文原句或图上的中文批注）。}
+
+\flowerrule
+
+% ================================================================ §0
+\hdr{\S0}{课件坐标、与前半讲义的衔接、记号}
+
+\subhdr{0.1 一条因果链（后半章为什么这么排）}
+
+p26--p83 看着有八个题目，其实只有一条链。抓住这条链，每一页都能归位：
+
+\begin{enumerate}
+\item \textbf{换问题}（p29）。分波前要"两个相位稳定的子波源"，得拿光阑把光挡到只剩一条缝——这是前讲义 \S7 的代价。分振幅不挡光：一束光射到薄膜上，上表面反射一束、下表面反射一束，\emph{同一个}入射波自己跟自己干涉（p29 原话 "Amplitude (split-amplitude) Interference $=$ Thin-Film Interference"）。
+\item \textbf{算光程差}（p37）。两束反射光的路程差只有一条式子：$\Delta L=2nh\cos i$，有净半波损失时再加 $\lambda/2$。
+\item \textbf{把两个自变量分别按住}，就得到此后所有装置：$h$ 处处相同、让倾角 $i$ 变 $\Rightarrow$ \textbf{等倾}圆环（\S2）；$i$ 固定（近垂直入射）、让 $h$ 随位置变 $\Rightarrow$ \textbf{等厚}条纹，即楔（\S3）与牛顿环（\S4）；把 $h$ 换成两臂差 $d$ 且 $d$ 可连续调 $\Rightarrow$ \textbf{迈克尔逊}（\S5）；把"两束"改成"无穷多束"$\Rightarrow$ \textbf{法布里--珀罗}（\S7）。
+\item \textbf{最后问一句"这个式子能撑多远"}（p56--p68）。路程差不能无限大：超过\textbf{相干长度} $L_c$ 就没有干涉。这一句正是 p55/p63 "FAR AWAY$=$NOTHING，WHY？" 的答案，也是课件把相干性插在迈克尔逊与 F--P 之间的原因。
+\end{enumerate}
+
+\aside{p26--p28 的接口：双平面镜 $d\approx2\alpha B$、双棱镜 $d\approx2(n-1)\alpha B$、洛埃镜 $d=2a$ 与 $\Delta x=\lambda D/d_{\mathrm{eq}}$ 见前讲义 \S8.2 的表；洛埃镜的半波损失见 \S8.3。本讲义 \S1.4 把"半波损失怎么判"讲成一条可查的规则，正好补上前讲义只给洛埃镜一个例子的缺口。}
+
+\subhdr{0.2 这 58 页分别在讲什么（按主题合并）}
+
+\textbf{先说页号。}课件每页左上角红圈里的数字是\textbf{幻灯片号}，不是 PDF 页号，两者不同步：p26 是第 25 张（差 1），到 p80 是第 72 张（差 8）。原因是课件里有\textbf{重复导出页}：p53 与 p52 同为第 48 张，p55 与 p54、p63 同为第 49 张，p62 与 p60 同为第 54 张，p61 是第 24 张（内容等于 p25，前讲义已讲）。下表第二列给出图上页号，\textbf{引页码一律用 PDF 页}。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.15cm}>{\raggedright\arraybackslash}m{12.6cm}@{}}
+\thead{课件页｜图上号} & \thead{内容（原文标题 / 批注）$\to$ 本讲义位置}\\
+\tabmid
+p26--p28｜25--27 & 双平面镜、双棱镜、洛埃镜 $\to$ 前讲义 \S8（不重复）\\
+p29｜28 & 5.8 Amplitude (Split-Amplitude) Interference $\to$ \S1.1\\
+p30--p31｜29 & 5.8-1 等倾：装置、焦平面、Fermat $\to$ \S2.1--\S2.2\\
+p32｜30 & 等倾的 $\Delta L=2nh\cos i$ 与明暗判据 $\to$ \S1.2--\S1.3\\
+p33｜5.8-1 & Equal-Inclination, Half-Wave Loss $\to$ \S1.4\\
+p34｜31 & 等倾四特征：半径、级次、疏密、$\lambda/2$ $\to$ \S2.3--\S2.4\\
+p35｜31 & 分振幅的优势：扩展源不移位 $\to$ \S2.5\\
+p36--p38｜32--34 & 等厚通式、$2nh\cos i$ 推导表、正入射 $2nh$ $\to$ \S1.2、\S3.1\\
+p39--p40｜35--36 & 楔形干涉与 $l=\lambda/(2n\alpha)$ $\to$ \S3.2--\S3.3\\
+p41--p42｜38、37 & Ex.\,5.4 细丝（HOME WORK）、Ex.\,5.3 玻璃楔（有解）$\to$ \S8.2、\S8.3\\
+p43｜39 & Interferometric Dilatometer $\to$ \S3.4\\
+p44--p45｜40--41 & 牛顿环装置与 $r_m=\sqrt{mR\lambda}$ $\to$ \S4.1--\S4.3\\
+p46--p47｜42--43 & Ex.\,5.6 测 $R$、检验透镜曲率 $\to$ \S8.4、\S4.4\\
+p48--p49｜44--45 & 增透/增反膜（肥皂膜着色题）$\to$ \S2.6、\S8.1\\
+p50--p51｜46--47 & 迈克尔逊装置、等厚调节 $\to$ \S5.1--\S5.3\\
+p52--p53｜48 & 等倾条纹随 $d$ 的变化、HOME WORK Q1--Q3 $\to$ \S5.2、\S8.5\\
+p54--p55、p63｜49 & 等厚条纹的变化、"FAR AWAY$=$NOTHING，WHY？" $\to$ \S5.4\\
+p56--p60｜50--54 & 空间相干性：几何、源宽、反比公式 $\to$ \S6.2\\
+p61｜24 & \emph{重复页}（内容等于 p25）$\to$ 前讲义 \S7\\
+p62｜54 & 部分相干三态表 $\to$ \S6.3\\
+p64--p67｜55--58 & 时间相干性：波列、$\tau_0\Delta\nu=1$、$L_c=\lambda^2/\Delta\lambda$ $\to$ \S6.4\\
+p68｜59 & Spatial vs.\ Temporal Coherence + 两条禁令 $\to$ \S6.6\\
+p69--p71｜60--62 & F--P 装置、多光束序列、透射强度 $\to$ \S7.1--\S7.3\\
+p72--p74｜63--65 & 反射/透射互补、不同 $R$ 的曲线、低反射极限 $\to$ \S7.4--\S7.5\\
+p75--p76｜66--67 & 半宽 $\varepsilon$、角分布 $\to$ \S7.6--\S7.7\\
+p77--p79｜68、70、71 & 频率特性与纵模、线宽 $\to$ \S7.8\\
+p80--p83｜72 & Chapter 5 Summary（七块）；致谢页；两页空白 $\to$ \S11\\
+\end{tabular}
+\tabbot}
+
+\textbf{为什么不是 29 页而是 26 页。}技能规范的页数区间是"课件页数 $\times0.5\sim1.0$"，58 页的下限是 29 页；任务要求压到 20--26 页。本讲义实排 \textbf{26 页}（10pt、行距 1.20、页边距 1.8cm），三条理由都可在课件里核实：\textcircled{1} 这 58 页里真正的\textbf{公式页}不到 20 页，其余是同一装置的实物照片、效果图与文字要点；\textcircled{2} 有 5 页是\textbf{重复导出页}（p53、p55、p61、p62、p63），p82--p83 是空白页；\textcircled{3} p26--p28 已在前讲义讲完，本讲义不重抄。省页的做法是"一页一个结论 + 一条推导"、不做图集：把 p52/p54/p62 的对照内容压成三张小表（\S4.3、\S6.3、\S6.6），把 p58 的两条结论并进 (6.4)--(6.5)，五道题按"一题一块"排成可共页的块（\S8 的起页保护阈值从 0.92 页收到 0.50 页）。
+
+\textbf{节号比任务骨架多一位，原因是"相干性"这一节。}任务给的骨架里没有单独一节相干性（原设想 p1--p25 已含）。但逐页读下来，\textbf{p56--p68 共 13 页}讲空间与时间相干性（p61 重复、p62 与 p60 同号，实占 10 页），占本段 22\%，而且是 p55 "FAR AWAY$=$NOTHING" 的答案，删不得也并不能塞进别的节。所以本讲义在 \S5 与多光束之间插入 \textbf{\S6 相干性}，其后编号顺延一位：例题全解 \S8、缺口清单 \S9、公式卡与易错点 \S10、三句话总结 \S11、页码对照 \S12（任务写作 \S7--\S11）。
+
+\needspace{0.30\textheight}
+\subhdr{0.3 记号表（全文只此一套）}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.35cm}>{\raggedright\arraybackslash}m{13.2cm}@{}}
+\thead{符号} & \thead{含义与单位}\\
+\tabmid
+$h$ & 膜（或空气层、楔、气隙）的\textbf{厚度}，单位 m；随位置变时写 $h(r)$。课件 p45 把它记作 $d_m$，本讲义一律记 $h_m$\\
+$n$ & 膜内折射率；$n_1$、$n_2$ 分别为膜\textbf{上方}、\textbf{下方}介质的折射率（与 p30、p32、p37 的标注一致）\\
+$i_1$ & \textbf{膜外}入射角（对法线量），单位 rad 或 $^\circ$\\
+$i$ & \textbf{膜内}折射角（对法线量）；$n_1\sin i_1=n\sin i$\\
+$\lambda$ & \emph{真空}中的波长；介质中波长 $\lambda_n=\lambda/n$（p40 的批注"真空波长 $\lambda$，介质波长 $\lambda_n$"就是这个意思）\\
+$L$，$\Delta L$ & 光程 $L=ns$；光程差 $\Delta L=L_2-L_1$（与前讲义同一记法）\\
+$m$ & 级次，整数；\textbf{不是}波数 $k$\\
+$f$ & 透镜焦距；等倾环半径 $r=f\tan i_1$\\
+$r$，$r_m$ & 屏上圆环半径；第 $m$ 个暗环半径 $r_m$\\
+$\alpha$ & 楔角；$l$ 为楔形条纹间距（沿表面量），$l=\lambda/(2n\alpha)$。\emph{前讲义}的其它装置间距记作 $\Delta x$，此处记 $l$，两者是同一类量\\
+$d$ & \textbf{两个反射面之间的距离}：迈克尔逊里是 $M_1$ 与 $M_2'$ 之距，F--P 里是两块板之距（同一物理量，故同一字母）。前讲义的"缝距 $d$"本讲义不再使用\\
+$L_c$，$\tau_c$ & 相干长度、相干时间；横向相干长度记 $d_{\max}$\\
+\end{tabular}
+\tabbot}
+
+\warnbox{\textbf{两个必须当场拆开的撞名。}\textcircled{1} 课件 p32 的方框写 $\Delta L=2nh\cos i=2h\sqrt{n^2-n_1^2\sin^2 i}$，p37 的表格却写 $n_1\sin i_1=n\sin i$：\emph{同一个字母 $i$，p32 的根号里指外部角、p37 的 $\cos$ 里指内部角}。本讲义一律 $i_1$ 为外、$i$ 为内，于是两种写法是
+$\Delta L=2nh\cos i=2h\sqrt{n^2-n_1^2\sin^2 i_1}$。
+\textcircled{2} 课件 p58 用 $d$ 表示缝距、$l_{\max}$ 表示源宽；p60 又用 $d$ 表示横向相干长度、$l$ 表示源宽。同一个 $d$ 在两页指完全不同的东西，照抄公式必错。本讲义：缝距用 $d$，源宽用 $l$，横向相干长度用 $d_{\max}$。}
+
+\subhdr{0.4 例题与作业勘探（一题一块，全部落在 \S8）}
+
+课件这一段只有 4 道带编号的例题 + 2 处 "HOME WORK"，\textbf{没有 Ex.\,5.5}（编号从 5.4 直接跳到 5.6）。按"题干随题走"的要求，全部放进 \S8，每题一块、块内自带题干与页码。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.5cm}>{\raggedright\arraybackslash}m{3.6cm}>{\raggedright\arraybackslash}m{3.0cm}>{\raggedright\arraybackslash}m{7.3cm}@{}}
+\thead{课件页} & \thead{题号 / 出处} & \thead{课件有解吗} & \thead{本讲义}\\
+\tabmid
+p48 & 5.8-6 肥皂膜在空气中显什么色 & 有（表 + 结论） & \S8.1 全解 + 补"为什么只有一个界面有半波损失"\\
+p41 & Example 5.4 细丝直径（HOME WORK） & \textbf{无} & \S8.2 全解（含计数约定）\\
+p42 & Example 5.3 玻璃楔测折射率 & 有（三行） & \S8.3 全解 + 补 $l=20\,\mathrm{mm}/10$ 的来历\\
+p46 & Example 5.6 测曲率半径 & 有（四步） & \S8.4 全解 + 补"为什么要用两个环相减"\\
+p53 & HOME WORK Q1--Q3（迈克尔逊三问） & \textbf{无} & \S8.5 全解（三问答在同一块里）\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一行是"薄膜显色"，属于 \S2 增透/增反那一支；第二、三行是楔形（\S3）；第四行是牛顿环（\S4）；第五行是迈克尔逊（\S5）。\textbf{为什么把题集中放在 \S8 而不是散在正文}：这五道题都要同时用到"光程差公式 + 半波损失判定 + 某个装置的几何"，散开写会让每一处都得重述另两处的前提；集中成一题一块，每块内部自足，正文各节只留公式与判据。
+
+\flowerrule
+
+% ================================================================ §1
+\hdr{\S1}{薄膜干涉：$2nh\cos i$ 与半波损失}
+
+\subhdr{1.1 分振幅：换一个问法（p29）}
+
+p29 三句话把整章的路定下来：光（振幅）被分成两份或多份时，这些部分可以重新叠加成干涉图样（"When light (amplitude) is divided into two or more parts, these parts can recombine to form an interference pattern"）；这种干涉叫 \textbf{amplitude (split-amplitude) interference}，也叫 \textbf{thin-film interference}；日常例子是油膜、肥皂泡、蝴蝶翅膀。
+
+关键差别在这里：分波前用的是\textbf{同一波前的两块}，靠光阑切；分振幅用的是\textbf{同一束光的两个反射}，靠薄膜的两个表面分。所以分振幅\emph{不损失光通量}，这是它在 \S2.5 能容忍扩展光源的根本原因。
+
+\subhdr{1.2 $2nh\cos i$ 的几何来源（p37 的推导表，重推）\textbf{[补]}}
+
+p37 用一张四行表给完了推导，但那张表有一步没写清——"From point A, draw the perpendicular $AC$ to $SP$, $SA\approx SC$" 里的 $AC$ 到底垂直于哪条线，图上与文字不一致；后面 "$\Delta L\approx L(ABP)-L(CP)=2n\frac{h}{\cos i}-n_1 AP\sin i_1$" 中出现的 $AP$ 与图中的 $AC=2h\tan i$ 也不是同一段。\textbf{结论（$2nh\cos i$）是对的，过程要重画。}下面按图 1 的标号逐段算一遍。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % 膜
+  \fill[bandviolet] (-2.4,-1.6) rectangle (4.0,0);
+  \draw[thick] (-2.4,0)--(4.0,0);
+  \draw[thick] (-2.4,-1.6)--(4.0,-1.6);
+  \node[anchor=west] at (-2.4,0.22) {$n_1$};
+  \node[anchor=west] at (-2.4,-0.85) {$n$};
+  \node[anchor=west] at (-2.4,-1.9) {$n_2$};
+  % 法线
+  \draw[dashed,gray] (0.6,1.55)--(0.6,-2.05);
+  % 入射
+  \draw[->] (-1.54,2.4)--(0.6,0);
+  \node[anchor=south west] at (-1.72,2.42) {$S$};
+  % 膜内 A->B->C
+  \draw[->] (0.6,0)--(1.52,-1.6);
+  \draw[->] (1.52,-1.6)--(2.45,0);
+  % 反射束 1
+  \draw[->] (0.6,0)--(2.56,2.2);
+  % 出射束 2
+  \draw[->] (2.45,0)--(3.51,1.2);
+  % 等相位线 CD
+  \draw[dashed] (2.45,0)--(1.42,0.92);
+  \draw[gray] (1.42,0.92)--(1.569,0.787)--(1.436,0.638);
+  % 角度弧
+  \draw (0.6,0.95) arc (90:131.7:0.95);
+  \node at (0.16,1.14) {$i_1$};
+  \draw (0.6,-0.62) arc (270:300:0.62);
+  \node at (0.86,-0.80) {$i$};
+  % 厚度
+  \draw[<->] (-1.85,0)--(-1.85,-1.6) node[midway,left]{$h$};
+  % 点标号
+  \node[anchor=south west] at (0.66,0.06) {$A$};
+  \node[anchor=north] at (1.52,-1.66) {$B$};
+  \node[anchor=south west] at (2.5,0.06) {$C$};
+  \node[anchor=south] at (1.42,1.0) {$D$};
+  \node[anchor=west] at (2.62,1.72) {光束 1};
+  \node[anchor=west] at (3.56,1.26) {光束 2};
+\end{tikzpicture}\\[2pt]
+{\small 图 1（重绘，据 p37 的 $S,A,B,C$ 标号）：薄膜双侧反射的光程差。$AC$ 沿上表面，等于 $2h\tan i$；$CD\perp$ 两束出射光，是两束光的公共等相位面。}
+\end{center}
+
+设膜厚 $h$、膜内折射率 $n$，两侧为 $n_1,n_2$；入射角 $i_1$、膜内折射角 $i$，Snell 给出
+\[
+n_1\sin i_1=n\sin i . \tag{1.1}
+\]
+上表面入射点记 $A$。光束 1 在 $A$ 直接反射；光束 2 折射入膜，经下表面 $B$ 反射、回到上表面 $C$ 出射。两束出射光平行（同 $i_1$），这是"等倾"的几何前提。
+
+\textbf{第一段：膜内斜边。}$AB$ 与 $BC$ 是同一段斜边的两次，竖直高度都是 $h$、与法线成 $i$，故
+\[
+AB=BC=\frac{h}{\cos i},\qquad n(AB+BC)=\frac{2nh}{\cos i}. \tag{1.2}
+\]
+\aside{这里出现的 $2$ 不是"两倍"，是"两段"：一次下行、一次上行。$1/\cos i$ 来自斜边与竖直高度之比——竖直分量为 $h$ 的斜线段，长度永远是 $h/\cos i$。两个因子分工不同：$2$ 数段数，$1/\cos i$ 折算斜边。}
+
+\textbf{第二段：沿表面走多远。}从 $A$ 到 $B$ 水平偏移 $h\tan i$，从 $B$ 到 $C$ 再偏一段，故
+\[
+AC=2h\tan i . \tag{1.3}
+\]
+
+\textbf{第三段：从同一个等相位面起算。}两束光必须在\emph{同一条等相位面}上"同时出发"，否则"谁多走了路"没有意义。过 $C$ 作垂直于两束出射光的直线，交光束 1 于 $D$；$CD$ 之后两束光在同一介质里平行传播，光程相同。所以光程差就是 $A$ 到这张面之间的差：
+\[
+\Delta L=n(AB+BC)-n_1\,AD . \tag{1.4}
+\]
+在直角三角形 $ACD$ 中，$AC$ 沿表面、$AD$ 沿出射光；出射光与表面夹角是 $90^\circ-i_1$，所以
+\[
+AD=AC\cos(90^\circ-i_1)=AC\sin i_1=2h\tan i\,\sin i_1 . \tag{1.5}
+\]
+\aside{这一步就是 p37 那句含糊的 "$AC\perp SP$、$SA\approx SC$" 想做的事：找一条与两束光都垂直的线。判断依据只有一条——$CD$ 必须同时垂直于两束出射光，否则 $D$ 点之后两束光的"剩余路程"不相等。}
+
+把 (1.1)、(1.2)、(1.3)、(1.5) 代入 (1.4)：
+\[
+\Delta L=\frac{2nh}{\cos i}-2h\tan i\cdot n\sin i
+=\frac{2nh}{\cos i}-\frac{2nh\sin^2 i}{\cos i}
+=\frac{2nh(1-\sin^2 i)}{\cos i},
+\]
+即
+\[
+\boxed{\ \Delta L=2nh\cos i\ } \tag{1.6}
+\]
+\aside{最后一步只用 $\cos^2 i=1-\sin^2 i$。(1.6) 里的 $\cos i$ 是\textbf{膜内}折射角的余弦，不是入射角的。这是 \S0.3 警告的第一处撞名。}
+
+\subhdr{1.3 两种等价写法与正入射（p32、p37、p38）}
+
+把 (1.1) 代进 (1.6) 的 $\cos$ 里，可以写成只含入射角的形式：
+\[
+n\cos i=\sqrt{n^2-n^2\sin^2 i}=\sqrt{n^2-n_1^2\sin^2 i_1}
+\ \Longrightarrow\
+\Delta L=2h\sqrt{n^2-n_1^2\sin^2 i_1}. \tag{1.7}
+\]
+p32 的方框给的就是 (1.6) 与 (1.7) 这两个形式（只是把 $i_1$ 写成了 $i$）。\textbf{什么时候用哪个}：式 (1.6) 算幕上环的半径（因为 $i$ 与 $i_1$ 之间差一个 $n/n_1$，而环半径直接对 $i_1$）；式 (1.7) 做数值代入（不用先算 $i$）。
+
+正入射时 $i_1=0\Rightarrow i=0\Rightarrow\cos i=1$，于是 p37 的 "Special Cases" 与 p38 的标题页给出的都是
+\[
+\Delta L=2nh\qquad(i_1=0). \tag{1.8}
+\]
+p38 的原话是 "For normal incidence ($i=0$), the path difference reduces to $2nh$, depending only on the thickness"。这一句是 \S3 楔形与 \S4 牛顿环的全部出发点：\textbf{正入射时，光程差只由厚度决定}，所以"等厚"的位置就是"等光程差"的位置。
+
+\subhdr{1.4 半波损失：一条判定规则，接第 4 章 \S7}
+
+p33 讲半波损失，句子都很短，但没有给出\textbf{判定规则}。原话三条：(1) "the presence or absence of half-wave loss must be determined according to the order of reflectance"；(2) "If the reflectance of the upper and lower surfaces is the same, half-wave loss exists. Therefore, to observe a difference in the optical path, an additional half-wavelength ($\lambda/2$) must be added"；(3) "Half-wave loss does not affect the distribution of interference fringes, it only causes a shift in the position of the dark fringes."图上批注更干脆：\emph{光疏到光密，反射，相位相反，相位 $+\pi=$ 半波损失}。
+
+判定规则本身在第 4 章 \S7 已经建成，这里直接搬过来用（\textbf{陈述 + 代入本题}，不重证）：
+
+\callout{\textbf{规则（第 4 章 \S7.2 的原表）}：两条反射光之间有没有净半波损失，只看三层折射率 $n_1,n_2,n_3$ 的排列——
+\begin{itemize}
+\item $n_1<n_2<n_3$：上表面 $\pi$、下表面 $\pi$，合计 $2\pi$ $\Rightarrow$ \textbf{无}净半波损失；
+\item $n_1>n_2>n_3$：$0+0=0$ $\Rightarrow$ \textbf{无}；
+\item $n_1<n_2>n_3$（$n_2$ 是"山"）：$\pi+0=\pi$ $\Rightarrow$ \textbf{有}；
+\item $n_1>n_2<n_3$（$n_2$ 是"谷"）：$0+\pi=\pi$ $\Rightarrow$ \textbf{有}。
+\end{itemize}
+一句话：\textbf{$n_2$ 夹在中间（单调）就没有净半波损失；$n_2$ 是最大或最小就有。}}
+
+把这把尺子量到本讲的四个场合上：
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{5.3cm}>{\raggedright\arraybackslash}m{2.5cm}>{\raggedright\arraybackslash}m{2.1cm}>{\raggedright\arraybackslash}m{5.9cm}@{}}
+\thead{场合（课件页）} & \thead{三层折射率} & \thead{净 $\lambda/2$} & \thead{后果}\\
+\tabmid
+肥皂膜在空气中（p48） & $1<1.33>1$ & 有 & 上表面反射反相；下表面同相\\
+空气楔（两块玻璃夹一层空气，p39） & $1.5>1<1.5$ & 有 & \textbf{顶点必暗}（$h=0$ 处 $\Delta L=\lambda/2$）\\
+牛顿环（玻璃透镜 + 空气隙 + 玻璃板，p44） & $1.5>1<1.5$ & 有 & \textbf{中心必暗}（p45 的"0th dark point"）\\
+增透膜 air$\to$MgF$_2\to$glass & $1<1.38<1.5$ & \textbf{无} & 与 p49 的公式不同，见 \S2.6\\
+\end{tabular}
+\tabbot}
+
+逐行读法：第一、二、三行的 $n_2$ 都是极值（山或谷），所以都有 $\pi$；第四行的 $n_2$ 夹在中间，故没有 $\pi$——这一行正是 \S2.6 要修正 p49 公式的地方。第三行与第二行是同一个物理情形（"玻璃夹空气"就是"谷"），只是装置不同，所以两者的中心都是暗的；牛顿环那一行下面还会再用一次。
+
+\aside{p33 说"只挪暗纹位置、不改条纹分布"，机制在这里：加了 $\lambda/2$ 之后，明暗判据整体错开半个级次——原来算作 $m$ 级明的位置，现在算作 $(m+1/2)$ 级暗。\emph{位置}（即 $2nh\cos i$ 的取值）一点没变，变的只是"这条线该叫明还是叫暗"。所以条纹的疏密、半径都不动，只有明暗标签互换。}
+
+\subhdr{1.5 两套判据，一张表说清}
+
+把 (1.6) 与上表的结论合起来，薄膜干涉的全部极值条件只有下面两行。设 $\Delta L_0\equiv2nh\cos i$（几何光程差）。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.1cm}>{\raggedright\arraybackslash}m{6.0cm}>{\raggedright\arraybackslash}m{6.6cm}@{}}
+\thead{条纹} & \thead{无净半波损失：$\Delta L_0=m\lambda$ 一类} & \thead{有净半波损失：$\Delta L_0+\lambda/2=m\lambda$ 一类}\\
+\tabmid
+明纹 & $\Delta L_0=m\lambda$，$m=0,1,2,\dots$ & $\Delta L_0=\left(m-\frac12\right)\lambda$，$m=1,2,3,\dots$\\
+暗纹 & $\Delta L_0=\left(m+\frac12\right)\lambda$，$m=0,1,2,\dots$ & $\Delta L_0=m\lambda$，$m=0,1,2,\dots$\\
+\end{tabular}
+\tabbot}
+
+\textbf{表前一句}：这张表只是把「$\Delta L_0$（有净半波损失时再加 $\lambda/2$）$=m\lambda$」这一条判据在两列上各读了一遍。
+
+\textbf{逐行读法}：左列（无 $\pi$）就是把 $\Delta L_0$ 直接当光程差用，明纹取 $m\lambda$，暗纹取半整数倍；右列（有 $\pi$）先把 $\lambda/2$ 挪到等式左边，于是明纹变成 $m\lambda-\lambda/2=(m-\frac12)\lambda$，暗纹变成 $m\lambda-\lambda/2+\lambda/2=m\lambda$。\textbf{两列的明暗恰好互换}——这就是上一条旁注说的"只换标签"。
+
+\textbf{边界行}：两列的 $m$ 下限不同，这个差别不是约定，是 $\pi$ 的指纹。右列明纹从 $m=1$ 起，因为 $m=0$ 给出 $\Delta L_0=-\lambda/2<0$，物理上不存在；左列明纹可以从 $m=0$ 起，对应 $\Delta L_0=0$——正入射下就是 $h=0$，即接触点。\emph{所以：接触点是明是暗，一眼就能判出有没有半波损失。}课件 p32 的明纹写 "$m=1,2,3,\dots$"、暗纹写 "$m=0,1,2,\dots$"，正是右列（有 $\pi$）的级次约定——尽管同页公式里没写 $\lambda/2$。这个不一致是本段最大的坑，\S9 第 3 条会再点一次。
+
+\flowerrule
+
+% ================================================================ §2
+\hdr{\S2}{等倾干涉与增透/增反膜}
+
+\subhdr{2.1 "等倾"三个字的意思（p30、p31）}
+
+p30 的装置是：点源 $S$ 在透镜与薄膜之间（薄膜在下、屏在上），光向下打到\textbf{厚度均匀}的膜上，上下表面各反射一束，回来经过凸透镜，会聚在屏上。p30 第一句就是全部内容："Light from a point source $S$ is incident on a thin film of uniform thickness"；第二句给出图样："All rays incident at the \textbf{same angle} $i_1$ produce reflected rays 1 and 2, whose intersection points on the screen form \textbf{a circle centered at $O$} with radius $OP$."
+
+p31 把同一个装置讲细，并给了三条要害：
+\begin{itemize}
+\item "\textbf{Key condition} of equal-inclination interference: The screen must be in the focal plane."（屏必须在焦平面）
+\item "The wavefront $CD$ satisfies \textbf{Fermat's principle} (equal optical path to $P$). The optical path difference arises within the film from paths $ABC$ and $AD$."（$CD$ 是等相位面，光程差只在膜内产生）
+\item "Rays with the same inclination angle form the same ring"——p31 右侧绿色批注问"为什么叫等倾干涉？"，答案就是这一句：\textbf{同一倾角 $\to$ 同一光程差 $\to$ 同一条环}。倾角相同是"等"的对象，厚度反而是处处相同的定量。
+\end{itemize}
+
+所以等倾干涉的两个"固定"是：$h$ 固定（膜厚均匀）、$i_1$ 定量（每一条环对应一个 $i_1$）。变的是 $i_1$，它随环半径 $r$ 单调增大。
+
+\subhdr{2.2 为什么屏必须在焦平面 \textbf{[补]}}
+
+p31 只给结论，没给理由。理由有两条，缺一不可：
+
+\textbf{(a) 只有平行光才聚焦成一点。}透镜把\emph{同一方向}的平行光会聚到焦平面上的一个点，把不同方向的光会聚到不同点。出射的两束光（来自 $A$ 与 $C$）彼此平行，方向由 $i_1$ 唯一确定，所以它们必然交于焦平面上、只由 $i_1$ 决定的那一点 $P$。若屏不在焦平面，两束光在屏上并不严格重合，交点位置还会随孔径变——条纹就糊了。
+
+\textbf{(b) Fermat 原理保证"透镜不引入额外光程差"。}$CD$ 是膜面上方的一条波前，波前上各点到 $P$ 的光程相等（这正是 Fermat 原理的表述：实际光路的光程取极值，而同一波前上的点经理想透镜到焦点光程相同）。所以两束光的光程差\emph{全部}产生在膜内，就是 (1.6) 的 $2nh\cos i$，透镜与屏的距离 $f$、屏上的位置 $r$ 都不进公式。
+
+这两条合起来给出一句可操作的话：\textbf{等倾环的半径只反映倾角，不反映厚度}。半径公式由此而来。
+
+\subhdr{2.3 半径、级次与疏密（p34 的四条特征）}
+
+p34 把等倾条纹的特征列成四条，逐条读：
+
+\textbf{(1) 半径}："Radius of the fringes: $r=f\tan i_1$"。透镜焦距 $f$，倾角 $i_1$ 的光会聚在焦平面上距中心 $f\tan i_1$ 处。
+
+\textbf{(2) 级次}："Order distribution of fringes: inner high, outer low"。由 (1.6)，$i$ 越大 $\cos i$ 越小、$\Delta L_0$ 越小，所以\textbf{中心的级次最高}，向外递减。图上批注"级次高/低，角度和光程反比"说的就是这一句：级次与光程差成正比，而光程差与角度成反比。
+
+\textbf{(3) 疏密}："Spacing of the fringes: $\Delta r\propto(i_{m+1}-i_m)=-\dfrac{\lambda}{2nh\sin i_m}$，inner sparse, outer dense"。这一步课件只给结果，推导放在 \S2.4。注意那个\emph{负号}：级次 $m$ 增大时倾角变小（往中心走），所以 $i_{m+1}-i_m<0$。负号是方向信息，不是笔误。
+
+\textbf{(4) 半波损失}："If the refractive indices of the upper and lower media are equal, a half-wavelength phase change occurs."即 $n_1=n_2$（膜夹在同种介质里，$n$ 是"山"或"谷"），按 \S1.4 的规则确实有 $\pi$。
+
+\warnbox{\textbf{"中心是亮是暗"不能一概而论。}p33 的批注写"没有半波损失，中心亮点；有半波损失，中心暗点"。这句话有前提：它假定了 $2nh$ 恰好是 $\lambda$ 的整数倍。一般情况下中心是明是暗由 $\dfrac{2nh}{\lambda}$ 的小数部分决定：有 $\pi$ 时中心明纹要求 $2nh=(m-\frac12)\lambda$，无 $\pi$ 时要求 $2nh=m\lambda$。\emph{可靠的判法是 \S1.5 的"接触点判据"：$h\to0$ 处有 $\pi$ 必暗、无 $\pi$ 必亮}；固定厚度的等倾环中心只是"级次最高点"，不保证极值。}
+
+\subhdr{2.4 环间距 $\Delta i=\lambda/(2nh\sin i)$ 的来历 \textbf{[补]}}
+
+p34 直接给 $\Delta r\propto(i_{m+1}-i_m)=-\lambda/(2nh\sin i_m)$，中间有求导与换元两步没写。补全如下（取有半波损失的一套，无 $\pi$ 时同样成立，只差半个级次）。
+
+由明纹条件 $\Delta L_0=2nh\cos i=(m-\frac12)\lambda$，两边对 $m$ 求导：
+\[
+-2nh\sin i\,\frac{\mathrm{d}i}{\mathrm{d}m}=\lambda
+\quad\Longrightarrow\quad
+\frac{\mathrm{d}i}{\mathrm{d}m}=-\frac{\lambda}{2nh\sin i},
+\qquad\text{即}\qquad
+i_{m+1}-i_m=-\frac{\lambda}{2nh\sin i_m}. \tag{2.1}
+\]
+\aside{左边求导只用到 $\frac{\mathrm{d}}{\mathrm{d}i}\cos i=-\sin i$；右边的 $\lambda$ 来自"级次加 1，光程差加一个波长"。负号的含义：$m$ 增大 $\Rightarrow$ $\cos i$ 必须增大 $\Rightarrow$ $i$ 减小，所以高级次在\emph{里面}。}
+
+要把角间距换成屏上的径向间距，还要过一道 Snell：由 $n_1\sin i_1=n\sin i$ 微分得 $n_1\cos i_1\,\mathrm{d}i_1=n\cos i\,\mathrm{d}i$，再由 $r=f\tan i_1$ 得 $\mathrm{d}r=f\sec^2i_1\,\mathrm{d}i_1$。合并：
+\[
+\mathrm{d}r=f\sec^2i_1\cdot\frac{n\cos i}{n_1\cos i_1}\,\mathrm{d}i . \tag{2.2}
+\]
+近轴（$i_1,i$ 都小，$\cos\approx1$、$\sec\approx1$）时 (2.2) 退化成 $\mathrm{d}r\approx f\dfrac{n}{n_1}\mathrm{d}i$，代 (2.1)：
+\[
+|\Delta r|\approx\frac{f\lambda}{2n_1h\sin i}
+\ \xrightarrow[\ \sin i\approx \frac{n_1r}{fn}\ ]{}\ 
+|\Delta r|\approx\frac{f^2n\lambda}{2n_1^2h\,r}. \tag{2.3}
+\]
+\aside{(2.3) 的最后一步用了几何：$r=f\tan i_1\approx f i_1$ 与 $i_1\approx(n/n_1)i$，故 $\sin i\approx i\approx n_1r/(fn)$。结论 $|\Delta r|\propto1/r$：越往外环越密。这解释了 p34 那张"order--$r$"曲线为什么在 $r$ 大的一端挤成一束。}
+
+\textbf{第一个可查的读数}：$|\Delta i|=\lambda/(2nh\sin i)$ 在中心（$i\to0$）发散——不是公式坏了，而是中心附近一个级次对应极大的角度范围，环极稀；向外 $\sin i$ 增大，环变密。这就是 p34 "inner sparse, outer dense" 的定量版本。
+
+\subhdr{2.5 用扩展光源为什么不挪条纹（p35）}
+
+p35 把分振幅与分波前正面比了一次：分振幅"allows extended light sources \textbf{without affecting or shifting the fringe positions}"；分波前"requires \textbf{point sources only}; otherwise, fringes from different points \textbf{superpose and blur}"；中间那个提问是"effect of different positions of $S$"，结论是"the fringe positions \textbf{remain unchanged}"。
+
+机制：源点移动只改变\emph{入射方向}，而 (1.6) 里没有"源在哪"这个量——光程差只依赖膜厚与倾角。源点挪一寸，环心跟着挪，但\emph{同一倾角仍是同一条纹}，所以整套环只是平移，级次结构不变。分波前做不到这一点：那里源点挪动会给两缝的光程差整体加一项（前讲义 \S7.2 的 $\xi d/l$），条纹是被\emph{抹平}而不是平移。
+
+\aside{分振幅虽容忍扩展光源，却要求膜的两个表面足够平行、足够干净：扩展源上每个点都要在膜上找到自己的一对反射点；膜一粗糙，各点的光程差就各说各话。}
+
+
+\subhdr{2.6 增透膜与增反膜（p48、p49）}
+
+p49 给的两句话是这一节的主干："If a certain wavelength of light is enhanced in the reflected light, the transmitted light of that wavelength will be weakened"；反过来也成立，这就是 \textbf{anti-reflection}（增透）与 \textbf{high-reflection}（增反）的来源。应用举了相机镜头（增透）与激光布儒斯特窗、宇航员头盔（增反）。
+
+p49 把判据写成 $2nh+\dfrac{\lambda}{2}=m\lambda$（图上把 $\lambda/2$ 涂成黄色，表示这是"额外加的那半个"）。\textbf{这个式子只对有净半波损失的膜成立}。按 \S1.4 的规则：
+
+\begin{itemize}
+\item \textbf{单层增透膜}（air$\to$MgF$_2$($n\approx1.38$)$\to$glass($1.5$)，单调增）：\emph{无}净 $\pi$。要让反射光相消（透射最强），需
+\[
+2nh=\left(m+\frac12\right)\lambda
+\quad\Longrightarrow\quad
+h=\frac{\lambda}{4n}\ (m=0). \tag{2.4}
+\]
+这叫\textbf{四分之一波片厚}（quarter-wave coating）。\textbf{[补]} 课件没有写 (2.4)，只写了带 $\lambda/2$ 的那一条；两者差一个 $\lambda/2$，原因就是"单调无 $\pi$"。
+\item \textbf{单层增反膜}：要反射最强，就取 $2nh=m\lambda$（无 $\pi$ 时），或 $2nh=(m-\frac12)\lambda$（有 $\pi$ 时）——总之与增透的判据正好错开半个波长。多层增反把高低折射率交替叠，每层都是四分之一波长，靠界面 $\pi$ 的交替累加。\textbf{[补]}
+\item \textbf{肥皂膜（p48 那道题）}：$1<1.33>1$，$n_2$ 是"山"，\emph{有} $\pi$，所以用 p49 的原式 $2nh+\lambda/2=m\lambda$。这正是 \S8.1 要解的那道题。
+\end{itemize}
+
+\textbf{为什么"反射增强"等于"透射减弱"}：无吸收时 $I_R+I_T=I_0$（这一条在 \S7.4 会用同一句话再出现一次）。所以两种膜是同一件事的两面，判据只差半个波长。
+
+\flowerrule
+
+% ================================================================ §3
+\hdr{\S3}{等厚干涉之一：楔形条纹}
+
+\subhdr{3.1 从 $2nh$ 到"同一条纹 = 同一条等厚线"（p36、p38）}
+
+p36 把等厚干涉的成立条件写成一句："Light from a point source $S$ strikes a thin film at an arbitrary angle of incidence. After reflection and refraction at the upper and lower surfaces of the film, interference can occur \textbf{in any region above the film where the beams overlap}."页底金黄框给出定义："Equal-thickness interference $=$ interference formed on the film surface when the film thickness varies."图旁的 TIP 再补一句：等厚与等倾的区别是——等倾要"同一入射角"，等厚要"同一厚度"。
+
+p38 把这个定义落实到正入射：平行光垂直照到薄膜上（$i=0$），"Optical path difference: $\Delta L(P)=2nh$"；"The optical path difference depends only on the film thickness"；"Points with the same thickness correspond to the same bright or dark fringe"。最后一句就是"\textbf{等厚}"三个字的全部内容，而 p38 的 Tip 直接点名两个例子："Wedge fringes and Newton's rings are typical examples of equal-thickness interference."
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % 光源 + 准直
+  \draw[fill=bandcream] (-6.15,1.8) rectangle (-5.75,2.2);
+  \node[anchor=north] at (-5.95,1.72) {光源 $S$};
+  \draw[fill=white] (-5.45,2.0) ellipse (0.08 and 0.5);
+  \node[anchor=north] at (-5.45,1.44) {准直透镜};
+  \draw[->] (-5.3,2.08)--(-0.28,2.08);
+  % 半反镜
+  \draw[thick] (-0.3,2.3)--(0.3,1.7);
+  \node[anchor=west] at (0.36,2.16) {半反镜 $45^\circ$};
+  % 竖直入射/反射
+  \draw[->] (-0.07,1.95)--(-0.07,-0.70);
+  \draw[->] (0.07,-0.70)--(0.07,2.30);
+  \node[anchor=west] at (0.16,0.95) {反射上行};
+  % 显微镜
+  \draw[thick] (-0.30,3.05)--(0.30,3.05)--(0.16,2.62)--(-0.16,2.62)--cycle;
+  \node[anchor=south] at (0,3.08) {显微镜};
+  % 楔
+  \fill[bandviolet] (-3.4,-1.1)--(3.4,-1.1)--(3.4,-0.5)--cycle;
+  \draw[thick] (-3.4,-1.1)--(3.4,-1.1);
+  \draw[thick] (-3.4,-1.1)--(3.4,-0.5);
+  \node[anchor=north west] at (-1.0,-1.42) {楔内为空气，$n=1$};
+  % alpha
+  \draw (-2.4,-1.1) arc (0:5:1.0);
+  \node[anchor=south west] at (-2.34,-1.06) {$\alpha$};
+  % h
+  \draw[<->] (2.6,-1.1)--(2.6,-0.588) node[midway,right]{$h$};
+  % l
+  \draw (0.4,-0.735)--(0.4,-0.60);
+  \draw (1.4,-0.646)--(1.4,-0.51);
+  \draw[<->] (0.4,-0.45)--(1.4,-0.36) node[midway,above]{$l$};
+  \node[anchor=west] at (1.55,-0.30) {相邻同色条纹};
+\end{tikzpicture}\\[2pt]
+{\small 图 2（重绘，据 p39 的装置图）：楔形干涉的光路与三个几何量。$\alpha$ 为楔角，$h$ 为该处空气层厚度，$l$ 为相邻两条同色条纹沿表面的间距。图中 $\alpha$ 放大到约 $5^\circ$，实际楔角常小于 $1'$。}
+\end{center}
+
+\subhdr{3.2 楔形的判据（p39、p40）}
+
+p39 三句话说完了装置的条件：平行光\emph{近垂直}入射；上下表面反射后"mutually parallel, equally spaced, and alternating bright and dark fringes"；"The wedge is placed in air. Since the reflected light from the lower surface undergoes a half-wave loss upon reflection, a \textbf{half-wave loss} exists between the two reflected beams."框里把理由补全：楔的材料折射率大于空气，下表面反射时相位反转 $\pi$。
+
+所以楔形用的是 \S1.5 的\textbf{右列}（有 $\pi$）。把 $i=0$ 代入 (1.8) 并加 $\lambda/2$，p40 四条公式逐条落地：
+
+\begin{enumerate}
+\item 明纹条件："Condition for bright fringes: $\Delta L(P)=2nh+\dfrac{\lambda}{2}=m\lambda$"。
+\item 第 $m$ 条明纹处的厚度："$h=\left(m-\dfrac12\right)\dfrac{\lambda}{2n}$"。由第 1 条移项即得：$2nh=(m-\frac12)\lambda$。
+\item 相邻明（或暗）纹的厚度差："$\Delta h=\dfrac{\lambda}{2n}=\dfrac{\lambda_n}{2}$"。由第 2 条取 $m+1$ 与 $m$ 相减：$2n\Delta h=\lambda$。图上批注"真空波长 $\lambda$／介质波长 $\lambda_n$"提醒的正是这一处：分子必须是真空波长，除以 $2n$ 之后剩下的 $\lambda_n/2$ 才是"膜内走半个波长"。
+\item 条纹间距：$l=\dfrac{\Delta h}{\alpha}=\dfrac{\lambda}{2n\alpha}$，反过来 $\alpha=\dfrac{\lambda}{2nl}$。推导见 \S3.3。
+\end{enumerate}
+
+\textbf{暗纹}（p40 没有单独写，但 \S8.2 那道作业要用）：$2nh+\frac{\lambda}{2}=\left(m+\frac12\right)\lambda\Rightarrow2nh=m\lambda\Rightarrow h=\dfrac{m\lambda}{2n}$，$m=0,1,2,\dots$。$m=0$ 给出 $h=0$——\textbf{楔的顶点（两块玻璃接触处）必是暗纹}。这条"顶点必暗"是 \S8.2 数条纹的出发点。
+
+\aside{为什么顶点必暗？把 $h=0$ 代进 (1.8) 得 $\Delta L_0=0$，但两束反射光之间还有下表面那次 $\pi$，总相位差是 $\pi$，即暗。反过来，如果楔内介质折射率介于两侧之间（单调），顶点就会是亮的——那时 $\pi$ 不存在，(1.8) 的 $0$ 就是明纹条件。所以\textbf{顶点是明还是暗}，一眼就能判出有没有半波损失，这与 \S1.5 的“接触点判据”是同一条。}
+
+\subhdr{3.3 $l=\lambda/(2n\alpha)$ 的三行推导 \textbf{[补]}}
+
+p40 把 $l=\Delta h/\alpha$ 当作显然，其实中间用了小角近似，而"$\Delta h$ 与 $l$ 成比例"这一步才是关键。
+
+沿楔的表面取坐标 $x$（从顶点量起），则厚度是线性的：
+\[
+h(x)=x\tan\alpha\approx x\alpha\qquad(\alpha\ll1). \tag{3.1}
+\]
+相邻两条同色条纹的厚度差由 \S3.2 第 3 条给出，是 $\Delta h=\lambda/(2n)$。把 (3.1) 用在两处：
+\[
+h(x+l)-h(x)=l\alpha=\Delta h=\frac{\lambda}{2n}
+\quad\Longrightarrow\quad
+\boxed{\ l=\frac{\lambda}{2n\alpha}\ },\qquad \alpha=\frac{\lambda}{2nl}. \tag{3.2}
+\]
+\aside{两个近似分工不同：(3.1) 是\textbf{几何}近似（$\tan\alpha\approx\alpha$，要求 $\alpha\ll1$ 弧度）；$\Delta h=\lambda/(2n)$ 是\textbf{干涉}条件（要求正入射，即 $i=0$）。前者错了条纹位置会整体偏，后者错了条纹根本不出现。$\alpha=1'=2.9\times10^{-4}$ rad 时 $\tan\alpha/\alpha-1\approx3\times10^{-8}$，可忽略。}
+
+\textbf{一分钟数字}：$n=1$（空气楔）、$\lambda=600$ nm、$\alpha=1\times10^{-4}$ rad，则
+\[
+l=\frac{600\times10^{-9}}{2\times1\times10^{-4}}=3.0\times10^{-3}\ \mathrm{m}=3.0\ \mathrm{mm}.
+\]
+反过来，若量得 $l=2$ mm、$\lambda=600$ nm，则 $\alpha=\lambda/(2nl)=1.5\times10^{-4}$ rad——这正是 \S8.3 那道题的做法。
+
+\textbf{这个式子的用处}（p40 的 Tip 原话）："The fringe spacing is directly proportional to the wavelength and inversely proportional to the wedge angle. This formula can be used to measure the diameter of thin wires, film thickness, small angles, and more."一句话：\emph{把"厚度"换成"能数出来的条纹数"}。楔角越小、条纹越疏，所以测微小厚度时要故意把楔做得很小。
+
+\subhdr{3.4 干涉膨胀仪：把 $\Delta h$ 换成"热膨胀"（p43）}
+
+p43 的装置：圆柱样品放进石英环里，样品顶面与石英盖板之间形成一个\textbf{楔形空气层}；温度升到 $T_1$ 时，"the interference fringes are observed to \textbf{shift to the right} by $m$ fringes"；线膨胀系数写成
+\[
+\frac{\Delta l}{l_0(T_1-T_0)}=\frac{m\lambda}{2l_0(T_1-T_0)} . \tag{3.3}
+\]
+右边分子 $m\lambda/2$ 就是 $\Delta l$。补出这一步 \textbf{[补]}：空气层厚度减少 $\Delta l$（样品伸长 $\Delta l$，把盖板顶起），光在空气层里往返，光程差改变 $2\Delta l$；条纹移过 $m$ 条意味着光程差改变了 $m\lambda$，故
+\[
+2\Delta l=m\lambda\quad\Longrightarrow\quad\Delta l=\frac{m\lambda}{2}. \tag{3.4}
+\]
+\aside{这里的 $2$ 与 (1.2) 的 $2$ 是同一个来源：往返两段。膨胀仪里空气层只走一次下行、一次上行，两段都要算。若误写成 $\Delta l=m\lambda$，算出的膨胀系数会大一倍——这是这类题最常见的量级错误。}
+
+石英的膨胀系数比金属小一个量级以上，所以环的长度基本不变，样品伸长多少、气隙就薄多少——这是这个装置能工作的前提。
+
+\flowerrule
+
+% ================================================================ §4
+\hdr{\S4}{等厚干涉之二：牛顿环}
+
+\subhdr{4.1 装置与"空气楔绕轴转一圈"（p44）}
+
+p44 三句话：装置由"a \textbf{plano-convex lens} with a very large focal length and a \textbf{flat glass plate}"组成；"An air film with \textbf{non-uniform thickness} is formed between the spherical surface of the lens and the flat plate"；用反射光观察时，"a series of \textbf{concentric bright and dark rings} centered at the point of contact (the lens vertex)"。图上批注两个字点破了它的身份：\textbf{等厚度}。
+
+牛顿环就是楔形干涉的旋转版：把 \S3 的直楔绕顶点转一圈，等厚线从"一组平行直线"变成"一组同心圆"。所以 \S3 的全部判据直接搬过来，只有几何（$h$ 与半径的关系）换了。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % ---- (a) 装置
+  \begin{scope}[shift={(-4.4,0)}]
+    \draw[fill=bandcream] (-1.55,1.55) rectangle (-1.05,1.95);
+    \node[anchor=north] at (-1.30,1.48) {光源};
+    \draw[->] (-1.0,1.75)--(-0.20,1.75);
+    \draw[thick] (-0.20,1.95)--(0.20,1.55);
+    \node[anchor=west] at (0.26,1.86) {半反镜};
+    \draw[->] (0.06,1.72)--(0.06,-0.02);
+    \draw[->] (-0.06,-0.02)--(-0.06,1.80);
+    \draw[thick] (-1.0,1.0)--(1.0,1.0);
+    \draw[thick] (-1.0,1.0) .. controls (-0.45,0.32) and (0.45,0.32) .. (1.0,1.0);
+    \draw[thick] (-1.5,0)--(1.5,0);
+    \draw[thick] (-1.5,-0.26)--(1.5,-0.26);
+    \node[anchor=north] at (0,-0.30) {平板玻璃};
+    \node[anchor=west] at (1.05,0.72) {平凸透镜};
+    \fill (0,0) circle (1.1pt);
+    \node[anchor=north east] at (0.02,-0.02) {$O$};
+    \draw[<->] (1.22,0)--(1.22,0.33) node[midway,right]{$h_m$};
+    \node[anchor=west] at (0.28,1.24) {反射光};
+  \end{scope}
+  % ---- (b) 气隙几何
+  \begin{scope}[shift={(2.1,0)}]
+    \begin{scope}
+      \clip (-2.0,-0.55) rectangle (2.0,1.05);
+      \fill[bandviolet] (0,3.6) circle (3.6);
+      \draw[thick] (0,3.6) circle (3.6);
+    \end{scope}
+    \draw[thick] (-2.1,0)--(2.1,0);
+    \fill (0,3.6) circle (1.1pt);
+    \node[anchor=east] at (-0.06,3.60) {曲率中心};
+    \draw[dashed] (0,3.6)--(1.3,0.2435);
+    \node at (0.92,1.62) {$R$};
+    \draw[<->] (0,-0.28)--(1.3,-0.28);
+    \node[anchor=north] at (0.65,-0.32) {$r_m$};
+    \draw[<->] (1.30,0)--(1.30,0.2435);
+    \node[anchor=south west] at (1.34,0.30) {$h_m$};
+    \fill (0,0) circle (1.1pt);
+    \node[anchor=north west] at (0.04,-0.06) {$O$};
+  \end{scope}
+\end{tikzpicture}\\[2pt]
+{\small 图 3（重绘，据 p44 的装置图与 p45 的 $r_m^2=R^2-(R-h_m)^2$ 构图）：(a) 牛顿环的观察光路——反射光经半反镜进显微镜；(b) 气隙几何——$R$ 为透镜曲率半径，$r_m$ 为第 $m$ 个环的半径，$h_m$ 为该处气隙厚度。为看清角度，$R$ 与 $r_m$ 的比例被压扁（实际 $h_m\ll r_m\ll R$）。}
+\end{center}
+
+\subhdr{4.2 半径公式：p45 跳过的两步 \textbf{[补]}}
+
+p45 的五行走廊要看清顺序：
+
+\textbf{第一行}：光程差。"$\Delta L=2d+\dfrac{\lambda}{2}$"，批注"空气层厚度"指着那个 $d$——即 $h_m$（本讲义记号），$n=1$。$\lambda/2$ 的来源与 \S3.2 完全相同：玻璃$\to$空气$\to$玻璃是一"谷"，有净 $\pi$。
+
+\textbf{第二行}：明暗判据（有 $\pi$）：
+\[
+\Delta L=\begin{cases}m\lambda, & m=1,2,3,\dots\\[3pt]
+\left(m+\dfrac12\right)\lambda, & m=0,1,2,\dots\end{cases}
+\qquad
+\begin{array}{l}\text{上：明环}\\[2pt]\text{下：暗环}\end{array}
+\]
+与 (1.5) 的右列一致。注意暗环的 $m$ 从 $0$ 起：$m=0$ 给出 $\Delta L=\lambda/2$，对应 $h_m=0$，即接触点。
+
+\textbf{第三行}：几何。$r_m^2=R^2-(R-h_m)^2=2Rh_m-h_m^2$。这一步是勾股定理：从曲率中心到环上那一点是半径 $R$，它在气隙方向上的投影是 $R-h_m$，垂直方向是 $r_m$。
+
+\textbf{第四行}：近似。"$R\gg h_m$，$h_m^2\approx0$"，于是 $r_m^2\approx2Rh_m$。
+\aside{这一步的误差可以当场算：$h_m^2/(2Rh_m)=h_m/(2R)$。取 $R=1$ m、$m=10$、$\lambda=600$ nm，则 $h_m=3\ \mu$m，比值 $1.5\times10^{-6}$，完全可忽略；只有当 $h_m$ 逼近 $R$（例如 $m\sim10^6$）时才要保留 $h_m^2$。}
+
+\textbf{第五行}：代判据。p45 写成 $r_m=\sqrt{2h_mR}=\sqrt{(\Delta L-\lambda/2)R}$，然后直接跳到方框 $r_m=\sqrt{mR\lambda}$——中间这一步就是本讲义要补的：\emph{暗环}满足 $\Delta L=(m+\frac12)\lambda$，故
+\[
+\Delta L-\frac{\lambda}{2}=m\lambda
+\ \Longrightarrow\
+2h_mR=mR\lambda
+\ \Longrightarrow\
+\boxed{\ r_m=\sqrt{mR\lambda}\ }\quad(\text{暗环}). \tag{4.1}
+\]
+\textbf{明环}的对应式课件没给 \textbf{[补]}：$\Delta L-\lambda/2=(m-\frac12)\lambda$，故
+\[
+r_m=\sqrt{\left(m-\frac12\right)R\lambda}\qquad(\text{明环},\ m=1,2,\dots). \tag{4.2}
+\]
+两式的区别只在半个波长，与 \S1.5 那张表的两列一一对应。
+
+\subhdr{4.3 中心必暗、级次内低外高（p45、p47）}
+
+p45 页脚两句是本节最该记住的判据：
+\begin{itemize}
+\item "The center of Newton's rings corresponds to the \textbf{0th dark point}"：$h=0$ 处 $\Delta L=\lambda/2$，是暗的，并且它就是"第 0 级暗"。
+\item "The interference order of Newton's rings is \textbf{'dark in the center, brighter outward'}, which is opposite to that of equal-inclination interference fringes."图右侧批注补了一句更狠的：\emph{等倾干涉中心是最高阶，牛顿环中心是 0 阶。等倾中心可能暗可能亮，牛顿环中心必然是暗。}
+\end{itemize}
+
+为什么"内低外高"？由 (4.1)，$m\propto r^2$：越往外 $r$ 越大、$m$ 越大。而等倾环（\S2.3）是 $m$ 随 $r$ 增大而减小。两条相反的单调性，来自两个不同的几何：等倾环里 $h$ 固定、$\cos i$ 随 $r$ 减小；牛顿环里 $i=0$ 固定、$h_m$ 随 $r$ 增大。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.0cm}>{\raggedright\arraybackslash}m{6.1cm}>{\raggedright\arraybackslash}m{6.0cm}@{}}
+\thead{对比项} & \thead{等倾环（p34）} & \thead{牛顿环（p45）}\\
+\tabmid
+固定什么 & $h$ 固定，$i$ 变 & $i=0$ 固定，$h$ 随位置变\\
+级次走向 & 内高外低 & 内低外高（中心 $m=0$）\\
+间距走向 & 内疏外密（\S2.4） & 外密内疏：$r_{m+1}-r_m\approx\frac{\lambda R}{2r_m}\propto\frac{1}{\sqrt m}$\\
+中心 & 可能是亮也可能是暗，看 $\frac{2nh}{\lambda}$ 的小数部分 & \textbf{必暗}（$h=0$ 处有 $\pi$）\\
+\end{tabular}}
+\tabbot
+
+\noindent 表前一句：这张表把两条公式——等倾的 $2nh\cos i$（左右同级次）与牛顿环的 $r_m=\sqrt{mR\lambda}$——在"固定哪一个自变量"这一栏上对读。逐行读法：第三行的牛顿环间距由 $r_{m+1}-r_m=\sqrt{(m+1)R\lambda}-\sqrt{mR\lambda}\approx\sqrt{R\lambda}/(2\sqrt m)$ 得到，越往外越窄；第四行见 \S2.3 的边界框。\textbf{边界行}：牛顿环的 $m=0$ 是暗环而不是"没有环"，它是中心那个暗斑（$r=0$）；等倾环没有 $r=0$ 的"0 级"问题，中心的级次由 $2nh/\lambda$ 定。
+
+\subhdr{4.4 用牛顿环检验透镜曲率（p47）}
+
+p47 把同一套公式反用成质检工具：把已知曲率的玻璃样板压在待检透镜上；若待检面与样板不合，"an air gap forms between the lens and the plate, producing Newton's rings (commonly called 'fringes')"；"The radius $r$ of the $m$-th dark ring is given by: $r_m^2=m\lambda R$"（此处 $R$ 是曲率半径）。
+
+判定规则是两条与直觉相反的话，要背下来：
+\begin{itemize}
+\item "\textbf{Small curvature} ($1/R$): rings are sparse (large $r$) $\to$ \textbf{polish center}."
+\item "\textbf{Large curvature} ($1/R$): rings are dense (small $r$) $\to$ \textbf{polish edge}."
+\end{itemize}
+读法：曲率小 $=$ 曲率半径 $R$ 大 $=$ 同一 $m$ 对应的 $r_m=\sqrt{mR\lambda}$ 大 $=$ 环疏。疏说明这一带的曲率还不够（太平），所以要磨中心把曲率加上去。\textbf{注意"曲率"与"曲率半径"是倒数关系}：说"曲率大"时 $R$ 小、环密、要磨边缘。这是这一页最容易记反的一句，\S9 会再列一次。
+
+\flowerrule
+
+% ================================================================ §5
+\hdr{\S5}{迈克尔逊干涉仪}
+
+\subhdr{5.1 光路：把薄膜"折"成两条臂（p50）}
+
+p50 给装置与四条要点：分束板把一束光分成两路，"By making $M_1$ and $M_2'$ strictly parallel, concentric circular fringes of equal thin-film thickness (\textbf{equal inclination}) are formed"；迈克尔逊因这台仪器与光速测量获 1907 年诺贝尔物理学奖。图上有三个必须能指认的对象：可移动的反射镜 $M_1$、固定的反射镜 $M_2$、以及 $M_2$ 经分束板所成的虚像 $M_2'$；$M_1$ 与 $M_2'$ 之间的距离标作 $d$。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % 光源与毛玻璃
+  \draw[fill=bandcream] (-4.35,-0.22) rectangle (-3.95,0.22);
+  \node[anchor=east] at (-4.42,0) {单色光源};
+  \draw[thick] (-3.72,-0.35)--(-3.72,0.35);
+  \node[anchor=north] at (-3.72,-0.38) {毛玻璃};
+  \draw[->] (-3.62,0)--(-0.12,0);
+  % 分束板 F
+  \draw[very thick,violet] (-0.4,0.4)--(0.4,-0.4);
+  \node[anchor=north east] at (-0.42,-0.44) {$F$ 分束板};
+  % 上臂
+  \draw[->] (0,0.05)--(0,2.35);
+  \draw[->] (0.14,2.35)--(0.14,0.10);
+  \draw[very thick] (-0.75,2.55)--(0.75,2.55);
+  \node[anchor=south] at (0,2.62) {$M_1$（可移动）};
+  \draw[dashed,thick] (-0.75,2.0)--(0.75,2.0);
+  \node[anchor=west] at (0.82,2.0) {$M_2'$};
+  \draw[<->] (0.52,2.55)--(0.52,2.0) node[midway,left]{$d$};
+  \node[anchor=west] at (0.20,1.30) {光线 1};
+  % 下（右）臂
+  \draw[->] (0.05,0)--(3.35,0);
+  \draw[->] (3.35,0.16)--(0.10,0.16);
+  \draw[very thick] (3.55,-0.75)--(3.55,0.75);
+  \node[anchor=west] at (3.62,0.30) {$M_2$（固定）};
+  \node[anchor=south] at (1.75,0.20) {光线 2};
+  % 补偿板
+  \draw[thick] (1.35,-0.32)--(1.85,0.32);
+  \node[anchor=north] at (1.60,-0.40) {$B$ 补偿板};
+  % 出射到观察者
+  \draw[->] (0,-0.08)--(0,-1.55);
+  \draw[thick] (-0.22,-1.55)--(0.22,-1.55);
+  \node[anchor=north] at (0,-1.60) {观察者 / 屏};
+\end{tikzpicture}\\[2pt]
+{\small 图 4（重绘，据 p50 的装置图）：迈克尔逊干涉仪。$F$ 把光分成两臂，$B$ 与 $F$ 同材质、同厚度、平行放置（补偿板）；$M_2'$ 是 $M_2$ 经 $F$ 所成的虚像，$M_1$ 与 $M_2'$ 之间的空气层就是"等效薄膜"，厚度 $d$。}
+\end{center}
+
+\textbf{p50 那个绿底"?":补偿板为什么必须有 \textbf{[补]}}。p50 在 $B$ 旁边画了一个问号，整页没有回答。理由只有一句：\textbf{让两束光在玻璃里走过的次数相同}。
+
+不装 $B$ 时，光线 2 要穿过 $F$ 的玻璃板\textbf{三次}（去一次、回一次、再穿一次出射），光线 1 只在最后出射时穿过\textbf{一次}。玻璃有厚度、有色散：两块玻璃引入的额外光程是 $(n_g-1)\times2t$（$t$ 为板厚），而且随波长变。对单色光这只是个常数偏移，可以把 $M_1$ 挪一点补掉；但对白光，不同波长的偏移量不同，零级条纹（白光的那条黑纹）就找不到——条纹一片彩色糊。装上与 $F$ 同材质、同厚度、平行放置的 $B$ 后，光线 2 也穿过 $B$ 三次里的同样两段，两臂的玻璃光程严格相等，只剩下空气段的差 $2d$，白光条纹才可能出现。
+
+\aside{这一步的"常数能不能补掉"值得多想一秒：单色光下，任何与 $d$ 无关的固定光程差都可以靠移动 $M_1$ 归零，所以补偿板对单色光\emph{不是必须}的；它的价值全在\emph{宽谱}（白光、多谱线）场合。课件 p50 只画了板、没画白光，所以这个问号一直悬着。}
+
+\subhdr{5.2 等倾条纹随 $d$ 的变化，与"$\lambda/2$ 换一条"（p52、p53）}
+
+把 $h\to d$、$i$ 为观察方向对 $M_1$ 法线的倾角，代入 (1.6) 就得到迈克尔逊的等倾条纹：
+\[
+\Delta L=2d\cos i . \tag{5.1}
+\]
+于是 \S2 的全部结论照搬，只是把"膜厚"换成"臂差" $d$。p52 用五幅照片把 $d$ 从大到小扫了一遍，文字部分给出五条现象：
+
+\begin{enumerate}
+\item $d$ 大时"the interference fringes are \textbf{dense} in the field of view"；
+\item $M_1$ 靠近 $M_2'$ 时"the radii of the interference rings gradually decrease, the fringes move \textbf{inward} toward the center and gradually \textbf{disappear}, the spacing between fringes increases, and the number of fringes in the field of view decreases"；
+\item 两者重合时"the fringes disappear, and the field becomes \textbf{dark}"；
+\item 变化的定量规则（绿框原话）："\textbf{for every half-wavelength moved by $M_1$, the fringes shift by one}";
+\item "By counting the number of fringe shifts, we can precisely measure the displacement of $M_1$ — this is the principle behind the use of the Michelson interferometer for precision measurements."
+\end{enumerate}
+
+第 4 条为什么是"半个波长"而不是"一个波长"？因为光在等效空气层里\textbf{往返}：$M_1$ 移动 $\Delta d$，光程差改变 $2\Delta d$。移过一条纹 $=$ 光程差变一个 $\lambda$，于是
+\[
+2\Delta d=\lambda\quad\Longrightarrow\quad \Delta d=\frac{\lambda}{2}\ \text{（一条）}
+\quad\Longrightarrow\quad
+\boxed{\ \Delta d=m\frac{\lambda}{2}\ } \tag{5.2}
+\]
+其中 $m$ 是移过的条纹数（不必是整数，也可用分数表示）。这个 $2$ 与 (1.2)、(3.4) 的 $2$ 同源，都是"往返"。
+
+\aside{反过来用：要测一个未知位移，数 $m$ 就行，$\Delta d=m\lambda/2$。$\lambda=633$ nm 时每数一条纹只对应 $0.317\ \mu$m——这就是"精密测量"四个字的量级来源。}
+
+\subhdr{5.3 把 $M_2$ 稍微倾斜：等倾变等厚（p51、p54）}
+
+p51 给出切换方法："Slightly tilt $M_2$ so that $M_1$ and $M_2'$ form a small angle."于是 $M_1$ 与 $M_2'$ 之间不再是平行空气层，而是一个\textbf{空气楔}，看到的就是等厚条纹，"the same as those in wedge interference"。p51 的 Tip 把两种情形并列：严格平行 $\Rightarrow$ \textbf{等倾}（同心圆环）；$M_2$ 微倾 $\Rightarrow$ \textbf{等厚}（平行直条纹）。调倾角就是在这两种条纹之间切换——同一台机器既是等倾干涉仪又是等厚干涉仪。
+
+p54（与 p55、p63 是同一张幻灯片的三次导出）讲等厚条纹随 $M_1$ 上下移动的三种变化：\textcircled{1} $M_1$ 离 $M_2'$ 远时，用扩展光源"the fringe \textbf{contrast is very low and almost invisible}"，靠近过程中条纹变清楚并"shift to the right... toward the direction away from the line of intersection"；\textcircled{2} 这些条纹"\textbf{not strictly equal-thickness}"，而是"curved toward the direction away from the wedge"，原因是入射光并非严格平行、离轴光线倾角更大；\textcircled{3} 两镜\textbf{相交}时"the fringes become \textbf{straight lines}"——这是两镜相交的标志，也是调零位的判据。
+
+
+\subhdr{5.4 "FAR AWAY $=$ NOTHING"：p55 的问题，答案在 p65 \textbf{[补]}}
+
+p54/p55/p63 这三页的同一个位置上贴着一张黄底大字：\textbf{"FAR AWAY$=$NOTHING，WHY？"}，箭头指向"$M_1$ 离 $M_2'$ 很远"那一端的照片——那一片是\emph{均匀的红}，没有条纹。课件把问题抛在这里，翻过去讲相干性，直到 p65 才回答。
+
+答案一句话：\textbf{等效空气层太厚，光程差超过了光源的相干长度。}$d$ 大时 $\Delta L=2d\cos i\approx2d$ 很大；一旦 $2d>L_c$，同一波列分出的两束光在屏上\emph{不再重叠}（一束已经到了，另一束的那一段波列还没到），相干项的时间平均为零，屏上只剩强度相加——均匀一片。
+
+定量（\S6.4 会推）：
+\[
+L_c=\frac{\lambda^2}{\Delta\lambda}.
+\]
+$\lambda=550$ nm、$\Delta\lambda=1$ nm 的滤光片给 $L_c\approx0.30$ m，$d$ 可以到十几厘米还看得见；白光 $\Delta\lambda\approx300$ nm 只给 $L_c\approx1\ \mu$m，$d$ 一超过几微米条纹就没了。所以"far away $=$ nothing"不是装置坏了，是\emph{光源的单色性不够}。
+
+\aside{这也解释了为什么 p54 第 1 条特别强调"if an extended light source is used"：扩展光源的谱宽通常也大，两个"不够相干"的效应叠在一起，条纹消失得更快。空间相干性管"源太宽"，时间相干性管"路差太远"，两者互不替代（p68 专门讲这一点）。}
+
+\flowerrule
+
+% ================================================================ §6
+\hdr{\S6}{相干性：从空间到时间（p56--p68）}
+
+\subhdr{6.1 一棵树，两个分支（p56）}
+
+p56 第一句就把目的说了：光源"is not an ideal point source, and has a finite emitting area, i.e., it has a \textbf{spatial extent}"；又"has a \textbf{finite spectral width} (is not monochromatic)"。两个"不理想"各生出一个限制，于是有那棵树：\textbf{Spatial coherence} 源于空间尺寸，比较的是"light \textbf{at different points in space at the same time}"，决定"whether stable interference fringes can form"；\textbf{Temporal coherence} 源于有限谱宽，比较的是"light \textbf{at the same point in space at different times}"，决定"whether interference fringes remain visible for large path differences"。底部 Remember 压成一句：\emph{空间相干决定条纹能不能形成，时间相干决定大光程差时还能不能清楚}；黄框上写着全段总纲 "Coherence $=$ Phase difference is constant."
+
+
+\subhdr{6.2 空间相干性：反比公式（p57--p60）}
+
+这一节的结论与\textbf{前讲义 \S7.3}是同一个，只是推导路线不同：前讲义从"扩展源上各点各画一套错开的条纹、按 sinc 平均"切入，这里从"零级条件"切入。两条路线都要认得，因为考试两种问法都常见。
+
+\textbf{第一步：零级条件给出 $R_1-R_2=r_2-r_1$（p57）。}源面上一点 $S''$、双缝 $S_1,S_2$、屏上 $P''$，光程差
+\[
+\Delta L(P'')=(R_1+r_1)-(R_2+r_2)=(R_1-R_2)+(r_1-r_2)=0
+\;\Longrightarrow\;
+R_1-R_2=r_2-r_1 . \tag{6.1}
+\]
+p57 的结论是"the straight line $S''P''$ approximately passes through the midpoint $O$ of the double slit"——零级那一点落在"源点、缝中点、屏点"三点共线的方向上。源点横移 $\Delta s$，这条零级线跟着摆，屏上零级就移动
+\[
+\Delta x=\frac{D}{R}\Delta s \tag{6.2}
+\]
+（$R$ 为源到缝的距离，$D$ 为缝到屏的距离）。批注"干涉位置变化大小，依然是光源尺度的放大"说的就是 (6.2)：放大倍数 $D/R$。
+
+\textbf{第二步：什么时候"糊平"（p58）。}条纹间距仍是
+\[
+\Delta X=\frac{D\lambda}{d}. \tag{6.3}
+\]
+两个相距 $\Delta s$ 的源点各画一套条纹，彼此错开 $\Delta x$。当错开量正好是半个间距时，一套的极大落在另一套的极小上，叠加后是常数——对比度归零：
+\[
+\Delta x=\frac{\Delta X}{2}
+\;\Longrightarrow\;
+\frac{D}{R}\Delta s=\frac{D\lambda}{2d}
+\;\Longrightarrow\;
+\Delta s=\frac{R\lambda}{2d}. \tag{6.4}
+\]
+\textbf{第三步：整条线光源的极限宽度。}p58 把线光源看成"两个相距 $l_{\max}$ 的点源"，而 $l_{\max}=2\Delta s$，于是
+\[
+l_{\max}=2\cdot\frac{R\lambda}{2d}=\frac{R\lambda}{d}. \tag{6.5}
+\]
+这正是 p60 的\emph{反比公式}："$d\approx\dfrac{R}{l}\lambda$"，其中 $d$ 被命名为 \textbf{transverse coherence length}（横向相干长度），$\dfrac{d}{R}=\Delta\theta_0$ 叫 \textbf{coherence aperture angle}（相干孔径角），合起来写成
+\[
+l\,\Delta\theta_0=\lambda \qquad\text{(inverse formula of spatial coherence)}. \tag{6.6}
+\]
+\aside{(6.5) 与 (6.6) 是同一句话：源宽 $l$ 与它照亮的波前上"还能相干"的最大间距 $d_{\max}$ 成反比。量级：$R=0.5$ m、$d=0.2$ mm、$\lambda=550$ nm 给 $l_{\max}=1.4$ mm——缝光源超过约 1.4 mm，条纹就基本看不见。这个数与前讲义 \S7.3 的 $b_c=\lambda l/d$ 完全一致（那里 $l$ 记的是源到缝的距离，即这里的 $R$）。}
+
+\subhdr{6.3 部分相干：三种状态一张表（p62）}
+
+p62 是全段唯一一张状态表。它把"源宽 $l$ 与 $d_{\max}$ 的相对大小"分成三档，并对每档给出相位差的行为与屏上对比度。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.3cm}>{\raggedright\arraybackslash}m{2.6cm}>{\raggedright\arraybackslash}m{5.0cm}>{\raggedright\arraybackslash}m{5.4cm}@{}}
+\thead{相干状态} & \thead{两点间距 $d$} & \thead{相位差 $\Delta\phi(t)$ 的行为} & \thead{屏上条纹对比度}\\
+\tabmid
+Fully coherent & $d\ll d_{\max}$ & 恒定（高度同步） & 最大 $\gamma=1$：清晰锐利\\
+Partially coherent & $d\approx d_{\max}$ & 在一个均值附近随机起伏 & 降低，$0<\gamma<1$：发灰、模糊\\
+Fully incoherent & $d\gg d_{\max}$ & 完全随机（时间平均为 0） & 消失，$\gamma=0$：均匀亮场\\
+\end{tabular}
+\tabbot}
+
+\textbf{表前一句}：这张表只是把 (6.6) 的 $l\Delta\theta_0=\lambda$ 在三段上读了一遍——判据是"次波源间距 $d$ 与横向相干长度 $d_{\max}$ 的比"。
+
+\textbf{逐行读法}：第一行 $d\ll d_{\max}$ 时，源上各点在 $S_1,S_2$ 处的相位差几乎相同，$\Delta\phi$ 是一个常数，$\cos\Delta\phi$ 不再被平均掉，$\gamma\to1$；第二行 $d$ 与 $d_{\max}$ 同量级时，各点的相位差分散在一个区间里，平均后剩下一个介于 $0$ 与 $1$ 之间的因子，条纹"发灰"；第三行 $d\gg d_{\max}$ 时相位差在 $0\sim2\pi$ 之间均匀铺开，$\langle\cos\Delta\phi\rangle=0$，只剩 $I_1+I_2$。
+
+\textbf{边界行}：$d=d_{\max}$ 归入第二行（$\gamma$ 恰好降到 $0$，是"部分相干"的端点而不是"完全非相干"的起点）。严格地说 $\gamma$ 在 $d_{\max}$ 处取零，所以第一、二行的分界不是 $d_{\max}$ 而是某个 $\gamma\approx1$ 的小间距——这张表给的是三档定性，不是三个精确区间。
+
+\warnbox{\textbf{p62 的 Key Pitfall，值得抄在笔记上}："Contrast reduction $\ne$ energy loss!" 部分相干让条纹变模糊，是\emph{把亮处的能量往暗处搬}：极大变暗、极小变亮，总能量守恒，对比度只是被"抹平"。所以"条纹变淡"绝不能读成"光被挡住了"或"能量丢了一部分"。}
+
+\subhdr{6.4 时间相干性：波列、谱宽与 $L_c=\lambda^2/\Delta\lambda$（p64--p67）}
+
+\textbf{机制（p64）。}p64 开头先提了一个现象："In a Michelson interferometer, even with a perfect point source, the fringes disappear as the path difference increases. Why?"答案在微观层面："Atomic emission occurs in intermittent '\textbf{wave packets}' rather than an infinitely long sinusoidal wave"；原子在激发态停留有限时间（"lifetime $\tau_c\sim10^{-8}$ s"），跃迁时放出一段有限长的波，叫 \textbf{wave train}（波列）。发射时间有限 $\Rightarrow$ 谱线不可能无限窄 $\Rightarrow$ 必有谱宽 $\Delta\nu$。
+
+\textbf{两个参数。}p64 给出：
+\[
+L_c=c\,\tau_c \qquad\text{（相干长度 $=$ 波列空间长度）}, \tag{6.7}
+\]
+\[
+\Delta\nu\approx\frac{1}{\tau_c}\quad\Longrightarrow\quad L_c\approx\frac{\lambda^2}{\Delta\lambda}. \tag{6.8}
+\]
+p64 的批注把这层意思说透："The larger the spectral width $\Delta\nu$, the shorter the wave train and the smaller the coherence length."
+
+\textbf{为什么 $\Delta\nu=1/\tau_0$（p66 的谱模型）\textbf{[补]}。}p66 把波包写成
+\[
+E(t)=E_0e^{-i\omega_0 t},\qquad -\frac{\tau_0}{2}\le t\le\frac{\tau_0}{2},
+\]
+并给出傅里叶变换与结论 "When $(\omega-\omega_0)=\dfrac{2\pi}{\tau_0}$, $g(\omega)=0$"，但没有算。补出这三行：
+\[
+g(\omega)=\frac{1}{\sqrt{2\pi}}\int_{-\tau_0/2}^{\tau_0/2}E_0e^{i(\omega-\omega_0)t}\dd t
+=\frac{E_0}{\sqrt{2\pi}}\cdot\frac{2\sin\left[(\omega-\omega_0)\tau_0/2\right]}{\omega-\omega_0}. \tag{6.9}
+\]
+零点出现在 $(\omega-\omega_0)\tau_0/2=\pi$，即 $\omega-\omega_0=2\pi/\tau_0$；把它当作谱宽（主瓣半宽的两倍），换成频率：
+\[
+\Delta\nu=\frac{\Delta\omega}{2\pi}=\frac{1}{\tau_0}. \tag{6.10}
+\]
+\aside{这里出现的 $2\pi$ 有两个来源，分工不同：一个来自 $\omega$ 与 $\nu$ 的换算 $\omega=2\pi\nu$（约定）；另一个来自 $\sin x$ 的第一个零点 $x=\pi$（数学）。写成 $\tau_0\Delta\nu=1$ 时两者恰好抵消掉一半，剩下的 $1$ 是"零点位置"这个纯数学事实。}
+
+\textbf{谱宽与波长宽度的换算（p67）\textbf{[补]}。}p67 直接写 $\Delta\nu=\dfrac{c}{\lambda_0}-\dfrac{c}{\lambda}\approx-\dfrac{\Delta\lambda}{\lambda_0^2}c$。来源是 $\nu=c/\lambda$ 求导：
+\[
+\left|\frac{\mathrm{d}\nu}{\mathrm{d}\lambda}\right|=\frac{c}{\lambda^2}
+\;\Longrightarrow\;
+|\Delta\nu|\approx\frac{c}{\lambda^2}\Delta\lambda . \tag{6.11}
+\]
+代入 (6.7) 与 (6.10)：
+\[
+L_0=\tau_0c=\frac{c}{\Delta\nu}=\frac{c}{c\,\Delta\lambda/\lambda_0^2}=\frac{\lambda_0^2}{\Delta\lambda},
+\qquad
+\Delta L_M=L_0=\frac{\lambda_0^2}{\Delta\lambda}. \tag{6.12}
+\]
+p67 的批注只有六个字，却是这一节的全部：\textbf{相干长度 $=$ 最大容许光程差}。
+
+\textbf{报户口。}$L_c=\lambda^2/\Delta\lambda$ 里没有 $2\pi$、没有 $1/2$，只有一个平方——平方来自 $\nu=c/\lambda$ 的导数。数值：$\lambda=550$ nm 时，$\Delta\lambda=1$ nm $\Rightarrow L_c\approx0.30$ m；$\Delta\lambda=0.01$ nm $\Rightarrow L_c\approx30$ m；白光 $\Delta\lambda\approx300$ nm $\Rightarrow L_c\approx1\ \mu$m。这三个数分别对应"滤光片、稳频激光、白光"三种实验条件。
+
+\subhdr{6.5 用迈克尔逊讲时间相干：三个 $\Delta L$ 区间（p65）}
+
+p65 是全段最清楚的一页：它把"相干长度"这个抽象量，落到迈克尔逊的两臂差上，分三种情形。图上三幅 (a)(b)(c) 对应两臂长度差为零、小于 $L_c$、大于 $L_c$。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.5cm}>{\raggedright\arraybackslash}m{6.2cm}>{\raggedright\arraybackslash}m{6.4cm}@{}}
+\thead{两臂光程差} & \thead{两束"克隆"在 $P$ 点的关系} & \thead{结果}\\
+\tabmid
+$\Delta L=0$ & 同一波列分出的两份 $a_1,a_2$ 同时到达、完全重合，相位差严格恒定 & 完全时间相干，对比度最大\\
+$0<\Delta L<L_c$ & $a_1,a_2$ 一前一后到达，只有\emph{一部分}重叠 & 部分相干，对比度下降\\
+$\Delta L>L_c$ & 短程的 $a_1$ 到达时，长程的 $a_2$ 还没到；$a_1$ 遇到的是\emph{另一列}波 $b_2$ & 完全非相干，条纹消失\\
+\end{tabular}
+\tabbot}
+
+\textbf{表前一句}：这张表把 (6.7) 的 $L_c=c\tau_c$ 在"两臂差"这一个量上读了三遍。
+
+\textbf{逐行读法}：第一行 $\Delta L=0$ 时两份克隆没有相对延迟，$a_1$ 与 $a_2$ 本来是同一段波，初相位本来就是同一个，所以"$\cos\delta$ 恒定"这一条天然成立；第二行延迟小于波列长度，重叠的那一段仍来自同一列波，相位关系还在，只是权重按重叠比例打折，所以对比度介于 $0$ 与 $1$ 之间；第三行延迟超过波列长度，$a_1$ 与 $a_2$ 在时间上已经错开一整个波列，$a_1$ 只能与下一列（或上一列）$b$ 相遇，而不同波列的初相位随机，$\langle\cos\delta\rangle=0$。
+
+\textbf{边界行}：$\Delta L=L_c$ 归入第二行末端（重叠比例趋于零，对比度趋于零）。严格地说"恰好等于"时对比度为零，所以真正的部分相干区是 $0<\Delta L<L_c$。
+
+p65 的批注把这一页的物理再拔高一寸，值得原样记住：$a$ 与 $b$ 是同一原子\emph{不同时刻}发出的两列波，相位随机；$a_1$ 与 $a_2$ 是\emph{同一列波自己分开}的两份，"只要相遇，永远相干，是同一个波自身分开，初始相位抵消 $=0$——光子自和自己干涉（狄拉克）"。图上那句最狠：\textbf{"在 $P$ 点的任意时刻，没有相遇，就没有干涉！！！不管你相位恒定不恒定！"}
+
+\subhdr{6.6 空间与时间：一张对照表，两条禁令（p68）}
+
+p68 把两者并排，并给了两条"Ultimate Pitfall Warning"。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.4cm}>{\raggedright\arraybackslash}m{6.4cm}>{\raggedright\arraybackslash}m{6.3cm}@{}}
+\thead{对比项} & \thead{空间相干性} & \thead{时间相干性}\\
+\tabmid
+源头 & 源的\emph{横向}几何尺寸（扩展源） & 源的\emph{纵向}谱宽（非单色）\\
+问的问题 & \emph{两个点}、\emph{同一时刻}，相位差恒定吗 & \emph{一个点}、\emph{不同时刻}，相位差恒定吗\\
+判据 & $d_{\max}=\dfrac{R\lambda}{l}$ & $L_c=c\tau_c\approx\dfrac{\lambda^2}{\Delta\lambda}$\\
+一句话 & 防"空间错位" & 防"时间没相遇"\\
+\end{tabular}
+\tabbot}
+
+\textbf{表前一句}：这张表把同一句"相干 $=$ 相位差恒定"在两组变量上分别读了一遍——组一是"位置差、时刻同"，组二是"位置同、时刻差"。
+
+\textbf{逐行读法}：第一行的"横向/纵向"是几何方向：源有多宽是横向，波列有多长是纵向。第二行最要紧：空间相干比较的是\emph{两个不同点在同一时刻}的相位，时间相干比较的是\emph{同一个点在两个时刻}的相位——所以 p68 的黄色批注写"两个点，同一时刻，相位差恒定！"与"一个点，不同时刻，相位差恒定！二者没有任何联系！"第三行两个公式一个是几何光学近似（$R\lambda/l$），一个是傅里叶对偶（$\lambda^2/\Delta\lambda$），来源完全不同。第四行是两条禁令的口语版。
+
+\textbf{边界行}：两者的极限互不包含。$l\to0$（理想点源）只让 $d_{\max}\to\infty$，不改变 $L_c$；$\Delta\lambda\to0$（理想单色）只让 $L_c\to\infty$，不改变 $d_{\max}$。要把两组条纹都看清，必须同时满足 $d<d_{\max}$ 与 $\Delta L<L_c$。
+
+\warnbox{\textbf{p68 的两条禁令（原文大意，逐条抄）}：\textcircled{1} "\textbf{Do not use the wave train length to explain spatial coherence}! Even if the wave train is infinitely long (perfectly monochromatic light), as long as the source has a finite width, spatial coherence still has a limit (pure geometric path difference causes fringe misalignment)." \textcircled{2} "\textbf{Do not use the source width to explain temporal coherence}! Even if the source is an ideal point (perfect spatial coherence), as long as the spectrum has finite width, a large path difference will still make the fringes disappear."这两句话专门打两种常见错答：拿"波列"解释源宽、拿"源宽"解释路差。}
+
+\flowerrule
+
+% ================================================================ §7
+\hdr{\S7}{多光束干涉：法布里--珀罗}
+
+\subhdr{7.1 装置：把"两束"变成"无穷多束"（p69）}
+
+p69 的四句话把装置说全：光源放在透镜 $L_1$ 的物方焦平面上，出射的是\textbf{平行光}；"The light is incident on two \textbf{parallel glass plates}, whose inner surfaces are silvered with \textbf{high reflectivity} and separated by a \textbf{distance} $d$"；光在两板之间的空气隙里"undergoes \textbf{multiple reflections} and transmissions"；"The transmitted beams from each order are focused by lens $L_2$ and form an \textbf{interference pattern} on a screen placed at its focal plane."
+
+与 \S1 的薄膜相比，唯一的改动是\textbf{反射率}：普通薄膜的 $R$ 只有百分之几，第二束之后就弱到看不见，所以只看两束；把内表面镀上高反膜使 $R\to0.9$ 以上，第三、第四、……束仍然可观，于是"两束"变成"无穷多束"。条纹位置几乎不动，\emph{形状}却完全变了——从余弦变成尖峰（\S7.5、\S7.6）。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.6mm]},font=\scriptsize]
+  % 两板
+  \fill[bandviolet] (-1.0,-1.6) rectangle (-0.55,1.6);
+  \fill[bandviolet] (0.55,-1.6) rectangle (1.0,1.6);
+  \draw[thick] (-1.0,-1.6) rectangle (-0.55,1.6);
+  \draw[thick] (0.55,-1.6) rectangle (1.0,1.6);
+  \node[anchor=south] at (-0.78,1.62) {$G_1$};
+  \node[anchor=south] at (0.78,1.62) {$G_2$};
+  \node[anchor=north] at (-0.78,-1.62) {高反膜};
+  \node[anchor=north] at (0.78,-1.62) {高反膜};
+  % 间距
+  \draw[<->] (-0.55,1.30)--(0.55,1.30) node[midway,above]{$d$};
+  % 入射
+  \draw[->] (-2.45,1.95)--(-0.56,0.89);
+  \node[anchor=south east] at (-2.45,1.97) {平行光};
+  % 腔内多次反射
+  \draw[->] (-0.55,0.80)--(0.55,0.14);
+  \draw[->] (0.55,0.14)--(-0.55,-0.52);
+  \draw[->] (-0.55,-0.52)--(0.55,-1.18);
+  % 透射束
+  \draw[->] (0.56,0.14)--(1.95,-0.69);
+  \draw[->] (0.56,-1.18)--(1.70,-1.86);
+  \node[anchor=west] at (1.72,-0.60) {$1'$};
+  \node[anchor=west] at (1.50,-1.92) {$2'$};
+  % 反射束
+  \draw[->] (-0.56,0.80)--(-1.55,0.20);
+  \node[anchor=east] at (-1.57,0.14) {$Ar$};
+  % L2 与屏
+  \draw[fill=white] (2.05,-0.95) ellipse (0.08 and 1.05);
+  \node[anchor=north] at (2.05,-2.05) {$L_2$};
+  \draw[very thick] (2.95,-1.25)--(2.95,0.20);
+  \node[anchor=north] at (2.95,-1.30) {焦平面屏};
+\end{tikzpicture}\\[2pt]
+{\small 图 5（重绘，据 p69 的装置图）：法布里--珀罗干涉仪。$G_1,G_2$ 为两块平行平板，内表面镀高反膜，间距 $d$；平行光在两内表面间多次反射，每次到达 $G_2$ 内表面就透出一束（$1',2',\dots$），相邻两束的光程差为 $2nh\cos i$。$G_1$ 外表面第一次反射的那束（$Ar$）不参与透射条纹。}
+\end{center}
+
+\subhdr{7.2 振幅序列与相位差（p70）}
+
+p70 把两串振幅并列写出来。\textbf{反射束}：
+\[
+A_1=Ar,\qquad A_2=Artt',\qquad A_3=Ar^3tt',\quad\cdots
+\]
+\textbf{透射束}：
+\[
+A_1'=Att',\qquad A_2'=Atr^2t',\qquad A_3'=Atr^4t',\quad\cdots
+\]
+图上把每一次反射、透射的系数都标了出来（$At$、$Atr^2$、$Atr^4$……），批注只有一句：\emph{$r$ 和 $t$ 分别是振幅 $A$ 的反射系数和透射系数}。
+
+\textbf{相邻两束的光程差与相位差}（p70 的两个方框）：
+\[
+\Delta L=2nh\cos i,\qquad
+\delta=\frac{2\pi}{\lambda}\Delta L=\frac{4\pi nh\cos i}{\lambda}. \tag{7.1}
+\]
+\aside{$\Delta L=2nh\cos i$ 与 (1.6) 是同一个式子：多光束里相邻两束差的正是"在膜里多走一个来回"，几何与 \S1.2 完全相同。区别只在：\S1 只留前两束，这里全部留下。}
+
+\textbf{为什么透射序列里没有半波损失、而反射序列里有？}两串振幅的指数就能读出来：透射束的系数是 $tt'$、$r^2tt'$、$r^4tt'$……只含 $r$ 的\emph{偶次}幂，偶数次反射的 $\pi$ 两两抵消，所以透射的 $\delta$ 里没有 $\lambda/2$（(7.1) 就是这样）；反射束第一束是 $Ar$（一次反射）、第二束是 $Artt'$（三次反射中的一次在\emph{内}表面），奇偶不同，于是多出一个 $\pi$——这就是 \S7.4 里"反射条纹与透射条纹互补"的根源。
+
+\subhdr{7.3 透射强度：几何级数 + 一个三角恒等式 \textbf{[补]}}
+
+p71 的四步是：总场写成级数、认出公比、求和、代 Stokes 关系。中间两级跳得最快，补全如下。
+
+\textbf{第一步：级数。}
+\[
+\tilde E_T=\sum_{j=1}^{\infty}\tilde E_j=Att'\left(1+r^2e^{i\delta}+r^4e^{i2\delta}+\cdots\right). \tag{7.2}
+\]
+公比是 $r^2e^{i\delta}$，$|r|<1$ 故收敛，和为
+\[
+\tilde E_T=\frac{Att'}{1-r^2e^{i\delta}}. \tag{7.3}
+\]
+
+\textbf{第二步：取模平方。}
+\[
+I_T=|\tilde E_T|^2=\frac{(Att')^2}{\left|1-r^2e^{i\delta}\right|^2}
+=\frac{I_0t^2t'^2}{1-2r^2\cos\delta+r^4}, \tag{7.4}
+\]
+这一步只用 $|1-z|^2=(1-r^2\cos\delta)^2+r^4\sin^2\delta=1-2r^2\cos\delta+r^4$。
+
+\textbf{第三步：Stokes 关系。}p71 写 "Stokes' relations: $r=-r'$, $r^2+tt'=1$"，两式的读法不同：
+\begin{itemize}
+\item $r=-r'$：同一点、同一偏振，从两侧看过去的振幅反射系数差一个负号。负号就是 $\pi$——两次"外反射与内反射"的相位差。图上批注"两个界面反射率一样，半波数相位差 $\pi$，负号"说的正是这一条。
+\item $r^2+tt'=1$：能量守恒（无吸收）。透射的是"进得去又出得来"的部分，反射的是"没进去"的部分，两者互补。图上批注"光强的反射率是振幅反射系数平方／能量守恒"分别指着 $R=r^2$ 与这一条。
+\end{itemize}
+由第二式，$t^2t'^2=(tt')^2=(1-r^2)^2=(1-R)^2$，代入 (7.4)：
+\[
+I_T=\frac{I_0(1-R)^2}{1-2R\cos\delta+R^2}. \tag{7.5}
+\]
+\textbf{第四步：三角恒等式。}p71 从 (7.5) 直接跳到含 $\sin^2(\delta/2)$ 的形式，跳过的是
+\[
+1-2R\cos\delta+R^2=(1-R)^2+2R(1-\cos\delta)=(1-R)^2+4R\sin^2\frac{\delta}{2}, \tag{7.6}
+\]
+（用 $1-\cos\delta=2\sin^2(\delta/2)$）。于是 p71 的最后一行：
+\[
+\boxed{\ I_T=\frac{I_0}{1+\dfrac{4R\sin^2(\delta/2)}{(1-R)^2}}\ } \tag{7.7}
+\]
+\aside{(7.7) 的三个常数各有出处：分子 $I_0$ 是入射强度；分母的 $4$ 来自 (7.6) 的 $2\times2$；$(1-R)^2$ 来自振幅守恒 $tt'=1-R$ 的平方。它们不是凑出来的。}
+
+\subhdr{7.4 互补：$I_R+I_T=I_0$（p72、p73）}
+
+p72 的第一行是能量守恒："$I_0=A^2=I_R+I_T$"，于是
+\[
+I_R=I_0-I_T=\frac{I_0}{1+\dfrac{(1-R)^2}{4R\sin^2(\delta/2)}} . \tag{7.8}
+\]
+把 (7.7) 与 (7.8) 并排看：$I_T$ 的峰值出现在 $\sin(\delta/2)=0$，即 $\delta=2m\pi$；$I_R$ 的峰值出现在 $I_T$ 最小时，即 $\delta=(2m+1)\pi$。p72 因此说反射条纹与透射条纹"are always \textbf{complementary}"——一亮一暗严格互补，这正是 \S7.2 那个 $\pi$ 的直接后果；两者之和恒为 $I_0$，所以"增反"与"增透"是同一件事的两面（\S2.6 已用过）。
+
+p73 把不同反射率下的曲线画在一起（$R=5\%,25\%,50\%,75\%,95\%$），并指出峰位"are \textbf{independent of reflectivity}, and depend only on the phase difference"。极限值可以当场算（把 $\sin^2(\delta/2)=0$ 与 $1$ 分别代入 (7.7)、(7.8)）：
+\[
+I_{T,\max}=I_0,\qquad
+I_{T,\min}=I_0\frac{(1-R)^2}{(1+R)^2},\qquad
+I_{R,\max}=I_0\frac{4R}{(1+R)^2},\qquad
+I_{R,\min}=0 . \tag{7.9}
+\]
+\aside{$R=0.95$ 时 $I_{T,\min}/I_0=(0.05/1.95)^2=6.6\times10^{-4}$——透射极小几乎全黑，所以透射条纹是"暗背景上的细亮环"；$R=0.05$ 时该比值为 $0.82$，明暗只差不到 20\%，这就是普通薄膜只能看到两束干涉的原因。}
+
+
+\subhdr{7.5 低反射极限：回到双光束（p74）}
+
+p74 把 $R\ll1$（普通玻璃与空气的界面，"$R\approx5\%\ll1$"）代进 (7.7)，做两步近似：
+\begin{itemize}
+\item $(1-R)^2\approx1$；
+\item 分母用 $\dfrac{1}{1+x}\approx1-x$（$x=\dfrac{4R\sin^2(\delta/2)}{(1-R)^2}\ll1$）：
+\end{itemize}
+\[
+I_T\approx I_0\left\{1-4R\sin^2\frac{\delta}{2}\right\}
+=I_0\left[1-2R(1-\cos\delta)\right], \tag{7.10}
+\]
+再由 (7.8)：
+\[
+I_R=I_0-I_T=2RI_0(1-\cos\delta). \tag{7.11}
+\]
+p74 的结论是 "Consistent with the intensity expressions in two-beam interference"——(7.11) 的形状就是 $I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta$ 的等强特例（$\cos\delta$ 的系数 $2RI_0$ 对应交叉项 $2\sqrt{I_1I_2}$）。
+\aside{这一步的意义是把 \S1 与 \S7 接上：低反射时多光束公式退化成两束公式，所以"薄膜干涉"与"法布里--珀罗"不是两套理论，是同一个式子在 $R$ 的两个极端。$2R$ 这个系数也顺便报个户口：$R$ 是单次反射的能量比，$2$ 是交叉项的系数（与 \S1.2 的 $2E_1E_2$ 同源）。}
+
+\subhdr{7.6 半宽：条纹有多尖（p75）}
+
+p75 定义 \textbf{half-width}（半宽，也叫半高全宽的一半）：峰在最大值一半处的那段宽度 $\varepsilon$。求法四步：
+\[
+\delta=2m\pi\pm\frac{\varepsilon}{2}\ \Longrightarrow\ I_T/I_0=\frac{1}{2}
+\ \Longrightarrow\
+\frac{4R\sin^2\left(m\pi\pm\dfrac{\varepsilon}{4}\right)}{(1-R)^2}=1 . \tag{7.12}
+\]
+第三步用 $\sin^2(m\pi\pm x)=\sin^2x$（$m$ 为整数），再用小角 $\sin x\approx x$：
+\[
+\sin^2\frac{\varepsilon}{4}\approx\left(\frac{\varepsilon}{4}\right)^2
+=\frac{(1-R)^2}{4R}
+\ \Longrightarrow\
+\boxed{\ \varepsilon=\frac{2(1-R)}{\sqrt{R}}\ } . \tag{7.13}
+\]
+\aside{(7.13) 的精确式是 $\sin(\varepsilon/4)=\dfrac{1-R}{2\sqrt R}$，小角近似就是把它线性化。误差可以当场估：$R=0.95$ 时精确解 $\varepsilon=0.10258$ rad，近似给 $0.10260$ rad，相对误差 $2\times10^{-4}$；$R=0.05$ 时精确解 $\varepsilon\approx8.47$ rad、近似给 $8.50$ rad，误差 $0.4\%$。所以 (7.13) 在整个 $0<R<1$ 上都够用。}
+
+\textbf{读法}：$R\to1$ 时 $\varepsilon\to0$，峰越尖；$R\to0$ 时 $\varepsilon\to\infty$（$\varepsilon$ 超过 $2\pi$ 就失去"半宽"的意义，退化成余弦）。p75 右侧把它写成两句："The higher the reflectance, the smaller the half-width, and the sharper the fringes"；"Half-width is a key parameter for evaluating fringe sharpness — the smaller the half-width, the finer the fringes and the higher the resolution."
+
+\subhdr{7.7 角分布与线宽（p76、p79）}
+
+\textbf{角半宽（p76）。}固定 $n,h$，$\delta=\dfrac{4\pi nh\cos i}{\lambda}$ 只随 $i$ 变。微分：
+\[
+\mathrm{d}\delta=-\frac{4\pi nh\sin i}{\lambda}\,\mathrm{d}i
+\quad\Longrightarrow\quad
+|\mathrm{d}i|=\frac{\lambda|\mathrm{d}\delta|}{4\pi nh\sin i}. \tag{7.14}
+\]
+把 $|\mathrm{d}\delta|$ 取成半宽 $\varepsilon$，就得到第 $m$ 条亮环的\textbf{角半宽}：
+\[
+\Delta i_m=\frac{\lambda\varepsilon}{4\pi nh\sin i_m}
+=\frac{\lambda}{2\pi nh\sin i_m}\cdot\frac{1-R}{\sqrt R}. \tag{7.15}
+\]
+\aside{(7.15) 里把 $\varepsilon=2(1-R)/\sqrt R$ 代进去时，分子变成 $\lambda\cdot2(1-R)/\sqrt R$，与分母的 $4\pi$ 约掉一个 $2$——所以系数从 $4\pi$ 变成 $2\pi$。这个"约掉 2"是本题最容易抄错的地方。}
+
+p76 的结论："The angular distribution of fringes determines the \textbf{resolving power} of the Fabry--Pérot interferometer. The smaller the half angular width, the sharper the fringes, and the closer the wavelengths that can be resolved."
+
+\textbf{线宽（p79）。}固定 $i$，改看波长。由 $\delta=4\pi nh\cos i/\lambda$：
+\[
+\left|\frac{\mathrm{d}\delta}{\mathrm{d}\lambda}\right|=\frac{4\pi nh\cos i}{\lambda^2}
+\ \Longrightarrow\
+\Delta\lambda_m=\frac{\lambda_m^2\varepsilon}{4\pi nh\cos i}. \tag{7.16}
+\]
+再用亮纹条件 $2nh\cos i=m\lambda_m$（把 (7.1) 的 $\delta=2m\pi$ 写开）把分母换掉：$4\pi nh\cos i=2\pi m\lambda_m$，于是
+\[
+\Delta\lambda_m=\frac{\lambda_m\varepsilon}{2\pi m}
+=\frac{\lambda_m}{\pi m}\cdot\frac{1-R}{\sqrt R}, \tag{7.17}
+\]
+\[
+\Delta\nu_m=\frac{c\,\Delta\lambda_m}{\lambda_m^2}
+=\frac{c}{2\pi nh\cos i}\cdot\frac{1-R}{\sqrt R}
+=\frac{c}{\pi m\lambda}\cdot\frac{1-R}{\sqrt R}. \tag{7.18}
+\]
+\aside{(7.17) 里的 $m$ 在分母：级次越高、线越窄。这就是"腔越长、谱线越细"的解析版本——长腔对应大 $m$。p79 底部的框只写了一句定性话："Increasing the reflectivity and enlarging the cavity length can improve the sharpness of spectral lines."}
+
+\subhdr{7.8 频率选择与纵模（p77、p78）}
+
+\textbf{透射频率是离散的（p77）。}把 $\delta$ 用频率写：$\delta=\dfrac{4\pi\nu nh\cos i}{c}$。亮纹要求 $\delta=2m\pi$，于是
+\[
+\nu_m=\frac{mc}{2nh\cos i},\qquad
+\Delta\nu=\nu_{m+1}-\nu_m=\frac{c}{2nh\cos i}\qquad(m=0,1,2,\dots), \tag{7.19}
+\]
+$m$ 就是"纵模"的序号。p77 的原话是 "only the light with frequency $\nu=\dfrac{mc}{2nh\cos i}$ can interfere constructively to form bright fringes"。
+
+\textbf{模式选择（p78）。}p78 用两幅谱图对比：入射光是\textbf{连续谱}（"continuous spectrum"），出射光变成"a series of equally spaced frequency lines"，每条叫一个 \textbf{longitudinal mode}（纵模）；F--P 腔因此有"frequency-selective property"，并"is used in lasers for mode selection"。把它与 (7.18) 并读：\textbf{模间隔由腔长定，线宽由反射率定}，两者之比就是"这台仪器能分辨多少条模"的度量。量级：$n=1$、$h=1$ cm 时 $\Delta\nu=15$ GHz；$R=0.95$、$\lambda=600$ nm、$m\approx3\times10^4$ 时线宽 $\Delta\nu_m\approx1$ MHz——差四个量级，所以腔能"挑出"很窄的模。
+
+\flowerrule
+
+
+\hdr{\S8}{例题与作业全解（一题一块）}
+
+本节收课件这一段里的全部 5 道题。顺序按正文的节走（\S2 薄膜 $\to$ \S3 楔形 $\to$ \S4 牛顿环 $\to$ \S5 迈克尔逊），不按页码，因为每道题用的判据就在它前面那一节。每块自带题干与页码，读完块内六段即可，不必回翻。
+
+\subhdr{8.1 肥皂膜为什么显绿（课件 p48，Example 5.8-6，有解）}
+
+\qbreak
+\qstem{（课件 p48，5.8-6 Anti-Reflection Coatings and High-Reflection Coatings 的 Problem）空气中的一层肥皂膜，厚度 $h=0.32\ \mu\mathrm{m}$，折射率 $n=1.33$。白光垂直入射，问这层膜看起来是什么颜色？}
+
+\textbf{考点}：薄膜显色 $=$ "哪一个波长在反射光里被相干增强"。要用 \S1.5 的右列（有净 $\pi$），并且必须\textbf{先判半波损失在哪个界面发生}。
+
+\textbf{关键一步}：$1<1.33>1$，$n_2$ 是"山"，只在上表面（空气$\to$膜，疏到密）有 $\pi$，下表面（膜$\to$空气，密到疏）没有。所以\textbf{总共一个半波损失}，不是两个。
+
+\textbf{详解}：反射光相长（最亮）的条件是
+\[
+2nh+\frac{\lambda}{2}=m\lambda\qquad(m=1,2,3,\dots)
+\quad\Longrightarrow\quad
+\lambda=\frac{2nh}{m-\frac12}. \tag{8.1}
+\]
+先算分子：$2nh=2\times1.33\times0.32\ \mu\mathrm{m}=0.8512\ \mu\mathrm{m}=851.2$ nm。逐个代：
+\[
+\begin{aligned}
+m=1:\quad&\lambda=\frac{851.2}{0.5}=1702\ \mathrm{nm} &&\text{红外，看不见}\\
+m=2:\quad&\lambda=\frac{851.2}{1.5}=567\ \mathrm{nm} &&\text{可见光，绿}\\
+m=3:\quad&\lambda=\frac{851.2}{2.5}=341\ \mathrm{nm} &&\text{紫外，看不见}
+\end{aligned}
+\]
+可见光窗口约 $400\sim760$ nm，只有 $m=2$ 落进来。
+
+\textbf{答案}：$\lambda=567$ nm 的\textbf{绿光}在反射光中被增强，所以肥皂膜呈\textbf{绿色}（与课件 p48 的结论 "The soap film appears \textbf{green}" 一致）。
+
+\textbf{自检}：$2nh/\lambda=851.2/567.5=1.500$，恰好是 $m-\frac12=1.5$，对；量纲 $2nh/\lambda$ 无量纲，对；若误按"没有半波损失"用 $2nh=m\lambda$，则 $m=1$ 得 851 nm、$m=2$ 得 426 nm（紫），结论会变成"紫"，与课件不符——这一步正好用来验算半波损失判定对不对。
+
+\subhdr{8.2 细丝直径（课件 p41，Example 5.4，HOME WORK，无解）}
+
+\qbreak
+\qstem{（课件 p41，Example 5.4 Thin Wire Diameter，页上标 \textbf{HOME WORK}）两块玻璃板夹住一根细丝，形成一个空气楔。波长 $600$ nm 的单色光垂直入射，从楔的顶点数到细丝处，一共看到 \textbf{11 条}暗纹。求细丝的直径。}
+
+\textbf{考点}：\S3.2 的两条一起用——\textbf{顶点必暗}（$h=0$ 处 $\Delta L=\lambda/2$，$m=0$），以及暗纹的厚度公式 $h=m\lambda/(2n)$。这道题考的不是公式，而是\textbf{数条纹的约定}。
+
+\textbf{关键一步}：顶点那条暗纹是 $m=0$，所以"11 条"给出的级次是 $m=11-1=10$。课件 p41 的绿色批注把这句口诀写全了：\emph{"顶点接触必有暗，总条数减去一，就是级次 $m$ 值。半个波长乘级次，细丝直径就可知。"}
+
+\textbf{详解}：空气楔 $n=1$，暗纹条件（\S3.2 末段）
+\[
+2nh+\frac{\lambda}{2}=\left(m+\frac12\right)\lambda
+\quad\Longrightarrow\quad
+2h=m\lambda
+\quad\Longrightarrow\quad
+h=\frac{m\lambda}{2}. \tag{8.2}
+\]
+细丝处的气隙厚度就等于丝径 $D=h$（丝把两块板在末端顶开多高，气隙就有多厚）。代 $m=10$、$\lambda=600$ nm：
+\[
+D=\frac{10\times600\ \mathrm{nm}}{2}=3000\ \mathrm{nm}=3.0\ \mu\mathrm{m}. \tag{8.3}
+\]
+
+\textbf{答案}：$D=3.0\ \mu\mathrm{m}$。
+
+\textbf{自检}：反算条纹数——$h$ 从 $0$ 到 $D$ 对应的级次从 $0$ 到 $2D/\lambda=2\times3.0/0.6=10$，正好 11 条暗纹（$m=0,\dots,10$），与题给一致。量级：$3\ \mu$m 比头发（约 $70\ \mu$m）细二十倍，符合"细丝"；若算出 mm 级，说明 $m$ 用错了。
+
+\warnbox{\textbf{计数约定必须写明。}若把"11 条暗纹"读成"11 个间距"（即 $m=11$），得 $D=3.3\ \mu$m，差 10\%。两种读法在中文教材里都出现过，差别只在"顶点那条算不算一条"。本题沿用课件 p41 批注的口诀（\textbf{总条数减一}）：11 条 $\to m=10$ $\to3.0\ \mu$m。答卷时写一句"顶点为 $m=0$，故第 11 条为 $m=10$"，判卷人不会再扣。}
+
+\subhdr{8.3 玻璃楔测折射率（课件 p42，Example 5.3，有解）}
+
+\qbreak
+\qstem{（课件 p42，Example 5.3: Glass Wedge）一块玻璃楔放在空气中。楔的总高度 $2\ \mu\mathrm{m}$，底面总长 $20$ mm。波长 $600$ nm 的单色光垂直入射时，在楔面上看到 \textbf{10 条}明纹。求玻璃的折射率 $n$。}
+
+\textbf{考点}：$l=\lambda/(2n\alpha)$ 的反用——已知几何（高度 $H$ 与底长 $L$ 定出 $\alpha$），量条纹间距 $l$，反解 $n$。
+
+\textbf{关键一步}：先把"总高度 / 底长"换成楔角，再把"底长 / 条纹数"换成条纹间距。两个都是纯几何，与干涉无关。
+
+\textbf{详解}：楔角
+\[
+\alpha=\frac{H}{L}=\frac{2\ \mu\mathrm{m}}{20\ \mathrm{mm}}=\frac{2\times10^{-6}}{2\times10^{-2}}=1.0\times10^{-4}\ \mathrm{rad}. \tag{8.4}
+\]
+条纹间距（课件取 10 个间距均布在 20 mm 上）
+\[
+l=\frac{L}{10}=\frac{20\ \mathrm{mm}}{10}=2.0\ \mathrm{mm}. \tag{8.5}
+\]
+代 (3.2) 的反解式：
+\[
+n=\frac{\lambda}{2l\alpha}=\frac{600\times10^{-9}}{2\times2.0\times10^{-3}\times1.0\times10^{-4}}
+=\frac{600\times10^{-9}}{4.0\times10^{-7}}=1.5 . \tag{8.6}
+\]
+
+\textbf{答案}：$n=1.5$（与课件 p42 的方框一致），是普通玻璃的合理值。
+
+\textbf{自检}：用厚度跨度反算级次跨度 $2nH/\lambda=2\times1.5\times2\ \mu\mathrm{m}/600\ \mathrm{nm}=10$，与"10 条"一致；量纲 $[\mathrm{m}]/([\mathrm{m}]\cdot[-])$ 无量纲，对。
+
+\warnbox{\textbf{同一份课件里的两种计数约定。}p42 用 $l=L/10$（10 个间距），而 p41 的批注说"总条数减一"。若按"10 条明纹只有 9 个间距"取 $l=20/9=2.22$ mm，则由 (8.6) 得 $n=1.35$——与 1.5 差 10\%。这不是算错，是约定不同。\textbf{规则}：题目给了"总高度 + 总长 + 条纹数"时，先用"厚度跨度 $\leftrightarrow$ 级次跨度"这条更硬的关系对账（本题 $2nH/\lambda=10$），对得上就说明计数约定与题目自洽，再算 $l$ 不会矛盾。}
+
+\subhdr{8.4 牛顿环测曲率半径（课件 p46，Example 5.6，有解）}
+
+\qbreak
+\qstem{（课件 p46，Example 5.6 Measuring the Radius of Curvature）用 He--Ne 激光（$\lambda=633$ nm）做牛顿环实验（反射光观察）。测得第 $m$ 个暗环半径 $r_m=5.63$ mm，第 $(m+5)$ 个暗环半径 $r_{m+5}=7.96$ mm。求平凸透镜的曲率半径 $R$。}
+
+\textbf{考点}：$r_m=\sqrt{mR\lambda}$ 的\textbf{差分用法}——不是分别代入两个环，而是相减消掉 $m$。
+
+\textbf{关键一步}：把两个环的式子相减，$m$ 与 $R\lambda$ 的关系变成
+\[
+r_{m+5}^2-r_m^2=(m+5)R\lambda-mR\lambda=5R\lambda
+\quad\Longrightarrow\quad
+R=\frac{r_{m+5}^2-r_m^2}{5\lambda}. \tag{8.7}
+\]
+\aside{为什么要相减？单环法 $R=r_m^2/(m\lambda)$ 要求 $m$ 的准确值，而 $m$ 依赖"中心暗斑是否真的 $h=0$"；实际有灰尘或压不实时 $h_0\ne0$，$r_m^2=(m+2h_0/\lambda)R\lambda$ 会多一个常数项。相减把常数项与 $m$ 的绝对编号一起消掉，这就是它比单环法精确的全部原因。}
+
+\textbf{详解}：先算两个平方（保留四位有效数字）
+\[
+r_{m+5}^2=(7.96\ \mathrm{mm})^2=63.36\ \mathrm{mm}^2,\qquad
+r_m^2=(5.63\ \mathrm{mm})^2=31.70\ \mathrm{mm}^2,
+\]
+\[
+r_{m+5}^2-r_m^2=31.66\ \mathrm{mm}^2=31.66\times10^{-6}\ \mathrm{m}^2 .
+\]
+分母 $5\lambda=5\times633\ \mathrm{nm}=3.165\times10^{-6}$ m。故
+\[
+R=\frac{31.66\times10^{-6}}{3.165\times10^{-6}}=10.0\ \mathrm{m}. \tag{8.8}
+\]
+
+\textbf{答案}：$R=10.0$ m（与课件 p46 的方框 "$R=10.0$ m" 一致）。
+
+\textbf{自检}：用 $R=10$ m、$\lambda=633$ nm 反算 $r_m^2=mR\lambda=m\times6.33\ \mathrm{mm}^2$；$r_m=5.63$ mm 给 $m=31.70/6.33=5.01\approx5$，$r_{m+5}$ 对应 $m=10$ 给 $r=\sqrt{63.3}=7.96$ mm，两个都与题给吻合。曲率半径 10 m 属于"焦距很长"的平凸透镜，正合 p44 的 "very large focal length"。
+
+\subhdr{8.5 迈克尔逊三问（课件 p53，HOME WORK，无解）}
+
+\qbreak
+\qstem{（课件 p53，第 48 张，页下标 \textbf{HOME WORK}）等倾条纹随 $M_1$ 移动而变化的三问：\textbf{Q1} 为什么 $M_1$ 靠近 $M_2'$ 时干涉环的半径 $r$ 会变小？\textbf{Q2} 为什么条纹密度变小（间距变大）？\textbf{Q3} 为什么 $M_1$ 与 $M_2'$ 重合（$d=0$）时视场全暗？}
+
+\textbf{考点}：把 \S5.2 的 (5.1) 与 \S2.4 的 (2.1) 搬到"$h\to d$、$n=1$"上；Q3 考的是那个 $\pi$。
+
+\textbf{关键一步}：三问共用一条判据——\textbf{有半波损失时}，第 $m$ 级亮环满足
+\[
+2d\cos i=\left(m-\frac12\right)\lambda \qquad(m=1,2,\dots). \tag{8.9}
+\]
+（$\pi$ 来自分束板：一束在外面反射、一束在里面反射。单色光下它可以被"移动 $M_1$"吸收，但它决定了 $d=0$ 时是暗还是亮。）
+
+\textbf{详解 Q1（半径为何变小）}：固定一条环（固定 $m$），由 (8.9)
+\[
+\cos i=\frac{(m-\frac12)\lambda}{2d} . \tag{8.10}
+\]
+$d$ 减小 $\Rightarrow$ 右边增大 $\Rightarrow\cos i$ 增大 $\Rightarrow i$ 减小。而环半径 $r=f\tan i$ 随 $i$ 单调增大，故 $r$ 变小——环向中心收缩。同时中心的最高级次 $m_{\max}\approx2d/\lambda$ 也在减小，所以环是一个一个"缩进中心然后消失"，不是整体缩小。
+
+\textbf{详解 Q2（密度为何变小）}：由 (2.1) 取 $h\to d$、$n=1$，
+\[
+\left|\frac{\mathrm{d}i}{\mathrm{d}m}\right|=\frac{\lambda}{2d\sin i}. \tag{8.11}
+\]
+$d$ 减小 $\Rightarrow$ 分母减小 $\Rightarrow$ 相邻级次的角间距变大 $\Rightarrow$ 条纹变疏（密度变小），视场里能装下的环数变少。\textbf{Q1 与 Q2 是同一个式子的两个读法}：Q1 说的是"同一级次往哪走"（$m$ 固定、看 $i$ 随 $d$ 变），Q2 说的是"相邻级次之间有多远"（$d$ 固定、看 $\Delta i$ 随 $d$ 变）。
+
+\textbf{详解 Q3（$d=0$ 为何全暗）}：$d=0$ 时 (8.9) 左边为零，对所有方向都给出 $2d\cos i=0$，几何光程差处处为零。但分束板上"一外一内"两次反射差一个 $\pi$，两束光的\emph{总}相位差是 $\pi$，所以整个视场是暗的——不是"没有条纹"，而是"零级暗纹铺满了整个视场"。这也是调仪器的实用判据：\textbf{看到全暗，就说明两臂等长}。
+
+\textbf{答案}：Q1 由 (8.10)，$d\downarrow\Rightarrow\cos i\uparrow\Rightarrow i\downarrow\Rightarrow r\downarrow$；Q2 由 (8.11)，$d\downarrow\Rightarrow|\mathrm{d}i/\mathrm{d}m|\uparrow\Rightarrow$ 条纹变疏；Q3 几何光程差为零而分束板贡献 $\pi$，故全暗。
+
+\textbf{自检}：Q3 的答案必须能解释"为什么不是全亮"。若答"$d=0$ 没有光程差所以是亮的"，就漏了 $\pi$——那是杨氏双缝的答案（无 $\pi$，中心亮），不是迈克尔逊的。\textbf{见到"中心/视场是明是暗"，第一件事就是数一数两束光各反射了几次、在什么界面上反射。}
+
+\flowerrule
+
+% ================================================================ §9
+\hdr{\S9}{缺口清单：课件这 58 页的跳步与补法}
+
+每条都给出\textbf{课件页 $+$ 原文短语}，并指明本讲义在哪一节补的。共 14 条，按"补的东西属于哪类"排列。
+
+\gapitem{机制缺口（p37）}{原文 "From point A, draw the perpendicular $AC$ to $SP$，$SA\approx SC$" 与 "$\Delta L\approx L(ABP)-L(CP)=2n\frac{h}{\cos i}-n_1 AP\sin i_1$" 有矛盾：$AC$ 到底垂直于哪条线没写清，且 $AP$ 与图上的 $AC=2h\tan i$ 不是同一段。\textbf{补}：\S1.2 按图 1 重画，逐段算出 $AB=BC=h/\cos i$、$AC=2h\tan i$、$AD=AC\sin i_1$，再用 Snell 化到 $2nh\cos i$。}
+
+\gapitem{记号缺口（p32 与 p37）}{p32 的方框写 "$2h\sqrt{n^2-n_1^2\sin^2 i}$"，p37 的表格写 "$n_1\sin i_1=n\sin i$"——\emph{同一个字母 $i$ 在两页指不同的角}（p32 的根号里是外部角、p37 的 $\cos$ 里是内部角）。学生照着代会差一个因子 $n$。\textbf{补}：\S0.3 记号表统一 $i_1$（外）、$i$（内），\S1.3 给出两种等价写法的对照。}
+
+\gapitem{拼接缺口（p32、p33、p37）}{p32 与 p37 的明暗判据都是 $\Delta L=m\lambda$ 与 $(2m+1)\lambda/2$（\emph{不带} $\lambda/2$），p33 才说 "an additional half-wavelength ($\lambda/2$) must be added"，p37 的批注又写"也要考虑 $n$ 的半波损失"。三页合起来没给出\textbf{什么时候加}。\textbf{补}：\S1.4 把第 4 章 \S7.2 的四行规则搬来并量到四个具体场合上，\S1.5 给出两套判据的对照表。}
+
+
+\gapitem{代数跳步（p34）}{原文 "$\Delta r\propto(i_{m+1}-i_m)=\dfrac{-\lambda}{2nh\sin i_m}$" 一步写出，既没有求导、也没有把 $i$ 换成屏上的 $r$。\textbf{补}：\S2.4 补 $\mathrm{d}i/\mathrm{d}m=-\lambda/(2nh\sin i)$、Snell 微分 $\mathrm{d}i_1=(n\cos i/(n_1\cos i_1))\mathrm{d}i$、$r=f\tan i_1$ 三步，并给出近轴下的 $|\Delta r|\approx f^2n\lambda/(2n_1^2hr)$。}
+
+
+\gapitem{图缺（p50、p69）}{这两页的装置图是渲染图/照片式拼贴，没有同时标出 $M_1$、$M_2$、$M_2'$、$F$、$B$ 与"多次反射的序号 $1',2',\dots$"，读者无法从图上看出"哪束走哪条路、相邻两束差一个来回"。\textbf{补}：\S5.1 重绘为图 4、\S7.1 重绘为图 5（均标"重绘"）。p30 的等倾装置图与图 1 是同一几何的两个视图，本讲义只保留图 1 并配 \S2.1 的文字，不重复绘制。}
+
+\gapitem{提问缺口（p50）}{补偿板 $B$ 旁边画了一个绿底 "\textbf{?}"，整页没有回答"为什么必须有这块板"。\textbf{补}：\S5.1 用"让两束光穿过的玻璃次数相同"回答，并说明为什么对单色光不是必须、对白光必须有。}
+
+\gapitem{提问缺口（p55、p63）}{黄底大字 "\textbf{FAR AWAY$=$NOTHING，WHY？}" 指向"$M_1$ 远离 $M_2'$"那一端的均匀红场，答案要等到 p65 才出现，中间隔了 10 页。\textbf{补}：\S5.4 用相干长度 $L_c=\lambda^2/\Delta\lambda$ 直接回答，并给出"滤光片 / 白光"两组数量。}
+
+\gapitem{答案缺口（p41）}{整页只有 "HOME WORK" 方块与题面（"11 dark fringes are observed from the wedge apex to the wire"），没有判据也没有答案。\textbf{补}：\S8.2 的六段全解，含"顶点必暗"与计数约定（11 条 $\to m=10$）。}
+
+\gapitem{答案缺口（p53）}{Q1--Q3 三问之下直接是 "HOME WORK"，没有解答。\textbf{补}：\S8.5 一块三答，Q3 特别指出"漏 $\pi$ 就会答成全亮"。}
+
+\gapitem{压缩缺口（p62）}{三行状态表（Fully / Partially / Fully incoherent）只给结论，没有给"为什么对比度会落在 $0\sim1$ 之间"，也没有说 $d_{\max}$ 从哪来。\textbf{补}：\S6.3 配三件套（表前一句、逐行读法、边界行），$d_{\max}=R\lambda/l$ 的推导放在 \S6.2 的 (6.5)。}
+
+
+\gapitem{边界缺口（p75）}{"$\varepsilon=\dfrac{2(1-R)}{\sqrt R}$" 未说明这是小角近似的产物，也没给精确式。\textbf{补}：\S7.6 旁注给出精确式 $\sin(\varepsilon/4)=(1-R)/(2\sqrt R)$ 与两端误差（$R=0.95$ 时 $2\times10^{-4}$，$R=0.05$ 时 $0.4\%$）。}
+
+\callout{\textbf{另有两条不是"跳步"、但会影响读页码的记账}（详见 \S0.2、\S0.4）：课件有 5 页是\textbf{重复导出页}（p53=p52、p55=p54、p63=p54、p62=p60、p61=p25）；例题编号跳过 Ex.\,5.5（p42 是 5.3、p41 是 5.4、p46 是 5.6）。}
+
+\flowerrule
+
+% ================================================================ §10
+\needspace{0.60\textheight}
+\hdr{\S10}{公式卡与易错点}
+
+\subhdr{10.1 公式卡（每一行的第二列就是它成立的条件）}
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{6.3cm}>{\raggedright\arraybackslash}m{4.4cm}>{\raggedright\arraybackslash}m{4.9cm}@{}}
+\thead{式子} & \thead{条件} & \thead{用在哪}\\
+\tabmid
+$\Delta L=2nh\cos i$ & 双侧反射、$i$ 为\emph{膜内}角 & 一切分振幅干涉的起点（\S1.2）\\
+$\Delta L=2h\sqrt{n^2-n_1^2\sin^2 i_1}$ & 同上，改用外部角 & 数值代入（\S1.3）\\
+$\Delta L=2nh$ & 正入射 $i=0$ & 楔、牛顿环（\S3、\S4）\\
+明暗判据（两列） & 先判有无净 $\pi$ & 见 \S1.5 的表\\
+$r=f\tan i_1$ & 屏在焦平面 & 等倾环半径（\S2.3）\\
+$h=\left(m-\frac12\right)\dfrac{\lambda}{2n}$ & 有 $\pi$ 时的第 $m$ 条明纹 & 楔（\S3.2）\\
+$l=\dfrac{\lambda}{2n\alpha}$ & 小楔角、正入射 & 测细丝/楔角（\S3.3）\\
+$r_m=\sqrt{mR\lambda}$ & 牛顿环\emph{暗}环、空气隙 & 测曲率半径（\S4.2）\\
+$d_{\max}=\dfrac{R\lambda}{l}$ & 扩展源 & 空间相干（\S6.2）\\
+$L_c=\dfrac{\lambda^2}{\Delta\lambda}$ & 谱宽 $\Delta\lambda$ & 时间相干（\S6.4）\\
+$\dfrac{I_T}{I_0}=\dfrac{1}{1+\frac{4R\sin^2(\delta/2)}{(1-R)^2}}$ & F--P，无吸收 & 透射条纹（\S7.3）\\
+$\varepsilon=\dfrac{2(1-R)}{\sqrt R}$ & F--P，小角 & 条纹锐度（\S7.6）\\
+$\Delta\nu=\dfrac{c}{2nh\cos i}$ & F--P，固定 $i$ & 纵模间隔（\S7.8）\\
+\end{tabular}
+\tabbot}
+
+表前一句：这张表只是把全文 15 个式子按"固定的自变量"排了一遍——每一行第三列写着它在哪一节被推出来。逐行读法：前四行是同一个光程差的四种写法（内部角／外部角／正入射／判据）；第五到十行是四个装置各取一个自变量；第十一、十二行是两条相干性上限；最后三行是多光束的三个定量结果。\textbf{边界行}：第一、二行在 $i=0$ 时都退化为第三行；第十三行在 $R\to0$ 时退化为 \S1.2 的双光束公式（\S7.5 已验算）。
+
+\subhdr{10.2 易错点（每条都能指回某一节的某一步）}
+
+\begin{enumerate}
+\item \textbf{把入射角代进 $\cos i$}（p32 的撞名）。$\cos i$ 里是膜内折射角，用外部角要换成 $\sqrt{n^2-n_1^2\sin^2i_1}$（\S1.3）。
+\item \textbf{$\lambda/2$ 乱加或漏加}。判定只用 \S1.4 的表：$n_2$ 单调则无、$n_2$ 是极值则有。自查手段：算"接触点/顶点"是明是暗（\S1.5 边界行）。
+\item \textbf{明纹级次从 $m=0$ 起}。有 $\pi$ 时 $2nh=(m-\frac12)\lambda$ 要求 $m\ge1$，$m=0$ 给出负厚度。课件 p32 写 "$m=1,2,3$" 就是这个原因（\S1.5）。
+\item \textbf{把楔的顶点数成明纹}。有 $\pi$ 时顶点必暗（\S3.2）；数错会让 \S8.2 的答案差一条。
+\item \textbf{"曲率大"记成"环疏"}。曲率 $=1/R$，曲率大 $\Rightarrow R$ 小 $\Rightarrow r_m=\sqrt{mR\lambda}$ 小 $\Rightarrow$ 环密 $\Rightarrow$ 磨边缘（\S4.4）。
+\item \textbf{迈克尔逊"每移一个波长移一条"}。是 $\lambda/2$：光在等效空气层里往返（\S5.2）。
+\item \textbf{把 p49 的 $2nh+\lambda/2=m\lambda$ 套到增透膜上}。单调三层没有净 $\pi$，四分之一波条件是 $2nh=(m+\frac12)\lambda$（\S2.6）。
+\item \textbf{用波列解释空间相干、用源宽解释时间相干}。p68 的两条禁令专打这两种错答（\S6.6）。
+\item \textbf{F--P 的 $R$ 与牛顿环的 $R$ 混用}。前者是反射率 $|r|^2$，后者是曲率半径。
+\item \textbf{照抄 p48 批注的相位公式}。该页绿底批注写 "$\Delta\Phi=(\lambda/2\pi)\Delta L$"，\textbf{这个写法是反的}——正确关系是 $\Delta\Phi=\dfrac{2\pi}{\lambda}\Delta L$（与前讲义 \S2.1 同一条）。用错会差 $(2\pi/\lambda)^2$ 倍。同页的 "$\Delta\Phi=2m\pi$" 是对的。
+\end{enumerate}
+
+\flowerrule
+
+% ================================================================ §11
+\hdr{\S11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{一个式子管五件装置}：分振幅干涉的全部内容是一句 $\Delta L=2nh\cos i$（外加可能的一个 $\lambda/2$）。按住 $h$、让 $i$ 变 $\to$ 等倾环；按住 $i=0$、让 $h$ 变 $\to$ 楔与牛顿环；把 $h$ 换成两臂差 $d$ $\to$ 迈克尔逊；把"两束"换成"无穷多束"$\to$ 法布里--珀罗。装置的差别只在"固定哪个自变量"。
+\item \textbf{半波损失只换标签、不换位置，但它在端点上留了指纹}：$n_2$ 单调则无、$n_2$ 为极值则有（第 4 章 \S7.2）；有 $\pi$ 时顶点/中心必暗、无 $\pi$ 时必亮。判明暗之前先数"两束光各反射几次、在什么界面反射"。
+\item \textbf{两束光"认得彼此"有两个上限}：源不能太宽（$d_{\max}=R\lambda/l$），路差不能太远（$L_c=\lambda^2/\Delta\lambda$）；超过任一条，条纹就消失——这就是迈克尔逊"FAR AWAY$=$NOTHING"的全部答案。而多光束（F--P）不挪条纹位置，只把条纹变尖：$\varepsilon=2(1-R)/\sqrt R$。
+\end{enumerate}
+
+\flowerrule
+
+% ================================================================ §12
+\hdr{\S12}{页码对照：每个结论在课件的哪一页}
+
+这张表是反向索引——按"想查哪个式子"来找页码。第二列给课件首次出现该式的那一页，第三列标出本讲义改写过的地方（字母、$\lambda/2$、近似）。
+
+\tabtop
+{\small\setlength{\tabcolsep}{3pt}%
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}m{5.6cm}>{\raggedright\arraybackslash}m{1.9cm}>{\raggedright\arraybackslash}m{8.0cm}@{}}
+\thead{结论 / 式子} & \thead{课件页} & \thead{本讲义的改写说明}\\
+\tabmid
+$\Delta L=2nh\cos i$ & p32、p37 & 统一 $i$ 为膜内角；推导在 \S1.2\\
+$2h\sqrt{n^2-n_1^2\sin^2i}$（正入射退化为 $2nh$） & p32、p38 & 根号内的 $i$ 实为 $i_1$，已改记号\\
+明暗判据（带／不带 $\lambda/2$ 两套） & p32、p33、p37、p40、p45 & 整理成 \S1.5 的两列表\\
+$r=f\tan i_1$；内高外低；内疏外密 & p34 & $\Delta r$ 的推导补在 \S2.4\\
+$\Delta l=m\lambda/2$（膨胀仪） & p43 & 因子 2 的来源补在 \S3.4\\
+$r_m^2=2Rh_m-h_m^2$、$r_m=\sqrt{mR\lambda}$ & p45、p47 & 中间一步补在 \S4.2；明环式 (4.2) 为新增\\
+$R=(r_{m+5}^2-r_m^2)/(5\lambda)$ & p46 & 全解在 \S8.4（含"为什么要相减"）\\
+$2nh+\lambda/2=m\lambda$（肥皂膜） & p48、p49 & 增透膜的四分之一波条件 (2.4) 为新增\\
+$\Delta L=2d\cos i$、每移 $\lambda/2$ 移一条 & p51、p52 & (5.2) 的推导补在 \S5.2\\
+"FAR AWAY$=$NOTHING" & p55、p63 & 答案补在 \S5.4（$L_c$）\\
+$\Delta x=(D/R)\Delta s$、$l_{\max}=R\lambda/d$、$l\Delta\theta_0=\lambda$ & p57、p58、p60 & 三步推导补在 \S6.2；与 \S7.3 的 $b_c$ 对齐\\
+$L_c=c\tau_c$、$\Delta\nu\approx1/\tau_c$、$\tau_0\Delta\nu=1$ & p64、p66 & 傅里叶积分 (6.9) 为新增\\
+$L_0=\lambda_0^2/\Delta\lambda$、三个 $\Delta L$ 区间 & p65、p67 & 谱宽换算 (6.11) 为新增\\
+$\delta=4\pi nh\cos i/\lambda$；$I_T$ 的两个形式 & p70、p71 & 级数与恒等式补在 \S7.2--\S7.3\\
+$I_R=I_0-I_T$、不同 $R$ 的曲线、低反射极限 & p72--p74 & (7.9) 的四个极限值为新增（\S7.4--\S7.5）\\
+$\varepsilon=\frac{2(1-R)}{\sqrt R}$、$\Delta i_m$、$\Delta\lambda_m$ & p75、p76、p79 & 精确式与系数换算补在 \S7.6--\S7.7\\
+$\nu_m=\frac{mc}{2nh\cos i}$、$\Delta\nu$、纵模选择 & p77、p78 & 纵模间隔（\S7.8）\\
+\end{tabular}
+\tabbot}
+
+\flowerrule
+
+\callout{\textbf{下一步（给读者的三个动作）}。\textcircled{1} 合上讲义，只用一张纸写出 $\Delta L=2nh\cos i$ 与 \S1.5 的两列判据，然后对五个装置各写一句"固定了什么、变了什么"——写不出就是 \S0.1 那条链还没通。\textcircled{2} 把 \S8.2 与 \S8.5 的"计数约定"与"$\pi$ 从哪来"各写一遍：前者决定 3.0 还是 3.3 $\mu$m，后者决定全暗还是全亮，都是考场上最容易丢分的地方。\textcircled{3} 用 \S10.1 的公式卡自查：任取一行，能说出它的条件列与推导页，才算真的记住了。}
+
+
+
+\end{document}

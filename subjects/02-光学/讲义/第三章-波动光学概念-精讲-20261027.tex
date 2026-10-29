@@ -1,0 +1,854 @@
+﻿% !TEX program = xelatex
+% 第三章 波动光学概念和描述 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{波动光学概念 · 精讲}{光学 · 第三章}
+\linespread{1.18}
+\setlength{\parskip}{2.6pt}
+
+\tikzset{
+  ax/.style={->,>=Stealth,line width=0.7pt,color=inkgray},
+  vec/.style={->,>=Stealth,line width=1.1pt,color=violet},
+  lite/.style={->,>=Stealth,line width=0.8pt,color=petal},
+  lab/.style={font=\small,color=inkgray},
+  labv/.style={font=\small\bfseries,color=violetdeep}
+}
+% 一题一块的起页保护：本题块实际高度约 0.5 页，用 0.92 页会在页尾大量留白。
+% 这里按本题块的真实高度设 0.55 页，保证「题干 + 详解」不跨页，又不浪费版面。
+\renewcommand{\qbreak}{\needspace{0.55\textheight}}
+\newcommand{\Etil}{\tilde{E}}
+\newcommand{\Ez}{\tilde{E}_0}
+
+\begin{document}
+
+\doctitle{光作为波：简谐波、复振幅与波前函数}
+{第三章 · 波动光学概念和描述 · 精讲讲义}
+{依据课件《第三章 波动光学概念和描述》（33 页，英文设计稿 + 教师手写批注，按 PDF 页序 p1--p33）\\
+逐页读图整理\quad 缺口逐条补齐\quad 课件例 2.1--2.6 全解\quad 2026-10-27}
+
+%=====================================================================
+\hdr{§0}{课件坐标、统一记号与阅读路线}
+
+\callout{\textbf{这份讲义覆盖什么。}课件 33 页，主线是四块：2.1 基本参数（p5--p10）、2.2 光速与光强（p11--p12）、2.3 波型与复振幅（p13--p23）、2.4 波前函数（p24--p28），末尾 p29--p31 是三页总结。它把"怎么用复振幅描述一束光"讲得很清楚，跳步集中在五处：波动方程只给结果不给来源（p11）、光强里的 $\frac12$ 与 $n$ 来历不明（p12）、球面波振幅为什么是 $1/r$（p21）、初相位在三个式子里被悄悄丢掉（p10、p25）、以及 p28 那个"$k_x=-2\pi f$ 又 $|k|=2\pi/\lambda$"的自相矛盾。另有五处属表述、口径与术语问题；十条都在正文对应位置补齐，§6 逐条点名。}
+
+\subhdr{读页码前必须先知道的两件事}
+
+\begin{itemize}
+\item \textbf{文字层是坏的。}PDF 里能抽出来的文字只有几行乱码（字体编码映射损坏，不是内容本身），无法解码。所以本讲义全部内容来自 130 dpi 逐页渲染后的读图，公式按图像核对，不按 OCR 猜。
+\item \textbf{红色徽章号 $\ne$ PDF 页序。}封面 p1、致谢 p32、空白 p33 没有徽章；徽章 6 出现两次（p6 光谱表、p7 横波），徽章 13 出现两次（p14 引入复数、p15 三条规则），徽章 29 整页缺失。本讲义\textbf{一律用 PDF 页序 pXX}，徽章号只在 §9 对照表里出现。
+\end{itemize}
+
+另外，p12、p14--p18、p25 上有教师手写/便签批注（例如 p12 的"为什么要做能流密度的时间平均？？？"、p17 的"选取 $O'$ 就是让 $\vect k$ 和 $\vect r_0$ 共线"）。这些批注是理解课件的关键，§1.5 与 §2.3 会逐条引用。
+
+\subhdr{一条约定管到底：实数场与复振幅}
+
+全文只用一套写法（跟着课件 p8、p14、p17 走）：
+\[
+E(\vect r,t)=E_0\cos\!\big(\omega t-\vect k\cdot\vect r-\varphi_0\big),
+\qquad
+\Etil(\vect r)=E_0\,e^{i(\varphi_0+\vect k\cdot\vect r)},
+\qquad
+E=\operatorname{Re}\big\{\Etil\,e^{-i\omega t}\big\}.
+\]
+三段的读法：$\omega t$ 是时间相位，$\vect k\cdot\vect r$ 是"走过这段路"攒下的空间相位，$\varphi_0$ 是原点初相位；时间因子固定取 $e^{-i\omega t}$（课件 p14 末行 “Choosing the negative sign uniformly”，p15 第 2 栏解释了这只是约定）。
+
+\aside{与常见教材的唯一差别是 $\varphi_0$ 的符号：教材常写 $E_0\cos(\omega t-\vect k\cdot\vect r+\varphi_0)$，那是把 $\varphi_0$ 定义成相反数。换算一行：$\varphi_0^{\text{教材}}=-\varphi_0^{\text{课件}}$。本文一律用课件的符号，后文不再提醒；做作业时先看你用的教材是哪一套，别混。}
+
+课件的两种简写都由上式而来，不要当成两个新公式：
+\begin{itemize}
+\item p10 写 $E=E_0\cos(\omega t-\varphi)$，其中 $\varphi\equiv kz$ 是"$z$ 处的相位"，即上式在一维、$\varphi_0=0$ 时的 $\Phi=\varphi_0+kz$；
+\item p25、p28 的式子都令 $\varphi_0=0$（课件没写这一步，见 §6 第 5 条）。
+\end{itemize}
+
+\needspace{15\baselineskip}
+\subhdr{记号台账（只查不推导）}
+
+这张表是全文的记号台账：左列是后面会反复出现的符号，右列指回课件哪一页定义它。读公式卡壳时先回这张表。
+
+\begin{center}\small
+\tabtop
+\begin{tabular}{@{}p{2.0cm}p{9.2cm}p{4.9cm}@{}}
+\thead{符号} & \thead{读法} & \thead{课件出处}\\
+\hline
+$E$,\ $\vect E$ & 电场强度；光学里取它作\textbf{光矢量}（optical vector） & p7、p8\\
+$E_0$ & 振幅（amplitude） & p8\\
+$\omega$ & 角频率，$\omega=2\pi/T$ & p8\\
+$T$,\ $\nu$,\ $\lambda$ & 周期、频率、波长 & p8\\
+$\vect k$,\ $k$ & 波矢（wave vector）／波数，$k=|\vect k|=2\pi/\lambda$ & p10、p17\\
+$\varphi_0$ & 初相位（initial phase） & p8\\
+$\Phi$ & 空间相位 $\Phi=\varphi_0+\vect k\cdot\vect r$（本文记号，课件写作 $\varphi(P)$） & p17\\
+$\Etil$,\ $\Ez$ & \textbf{复振幅}（complex amplitude） & p14、p17\\
+$I$ & 光强 = 时间平均能流密度 & p12\\
+$\vect S$ & 坡印廷矢量（Poynting vector） & p12\\
+$n$ & 折射率，$n=\sqrt{\varepsilon_r\mu_r}\approx\sqrt{\varepsilon_r}$ & p6、p11\\
+$k_x,k_y,k_z$ & 波矢分量，$k_x=k\cos\alpha$（$\alpha,\beta,\gamma$ 为 $\vect k$ 与三轴夹角） & p17\\
+$L$,\ $v_g$ & 光程 $L=\sum_i n_i d_i$；群速度（group velocity） & 讲义补，§3.3、§4.2\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{为什么按主题合并、而不是一页一节}
+
+课件 33 页里，p1--p4 是封面、目录、动机、历史时间线（无公式），p29--p33 是三页总结加致谢（内容与正文重复）。真正的新公式只有 p31 那七张卡。概念课信息密度低、重复率高，逐页铺开会变成把同样的意思说三遍。所以本讲义按主线合并为九节，页码对照见 §9：同一知识点在课件出现在几页的，只讲一次，其余页在对照表里标"已并入"。
+
+%=====================================================================
+\hdr{§1}{光作为波：波动方程与简谐波}
+
+\subhdr{1.1 几何光学缺的那三件事（p3）}
+
+p3 把两栏并排：左边 “Geometrical Optics Can Explain” 列反射、折射、成像；右边 “Cannot Explain” 列\textbf{干涉}（interference，括注 Young's double-slit）、\textbf{衍射}（diffraction，括注 light bending around obstacles）、\textbf{偏振}（polarization）。中间一句是这一页的论点：“Geometrical optics is an approximation of wave optics in the limit of zero wavelength.”
+
+这句话的含义要说透，否则它只是一句口号：衍射的偏折角量级是 $\theta\sim\lambda/a$（$a$ 是挡光孔或障碍物的横向尺寸）。孔径固定、波长趋零时 $\theta\to0$，光就"不再绕弯"，沿直线走——几何光学正是这个极限。
+
+\aside{$\theta\sim\lambda/a$ 里的 $a$ 是\textbf{障碍物或孔径}的横向尺寸，不是波长、不是屏距；本页只用它说明"为什么几何光学是近似"，定量公式在衍射章。另外，偏振与这个极限无关（横波性质在 $\lambda\to0$ 时依然存在），所以 p3 把它单列，§5 会回到它。}
+
+\subhdr{1.2 波动方程从哪来：p11 只给了结果}
+
+p11 直接写出介质中光速
+\[
+v=\frac{1}{\sqrt{\varepsilon_0\varepsilon_r\,\mu_0\mu_r}},
+\qquad
+c=\frac{1}{\sqrt{\varepsilon_0\mu_0}}=2.99792458\times10^{8}\ \text{m/s},
+\]
+一个字的推导都没有。补上。取无源、无自由电荷的均匀介质（$\rho=0$，$\vect J=0$），麦克斯韦方程组写成
+\[
+\nabla\cdot\vect E=0,\qquad
+\nabla\times\vect E=-\frac{\partial\vect B}{\partial t},\qquad
+\nabla\cdot\vect B=0,\qquad
+\nabla\times\vect B=\varepsilon_0\varepsilon_r\mu_0\mu_r\,\frac{\partial\vect E}{\partial t}.
+\]
+对第二式两边取旋度，左边用矢量恒等式展开：
+\[
+\nabla\times(\nabla\times\vect E)=\nabla(\nabla\cdot\vect E)-\nabla^2\vect E=-\nabla^2\vect E ,
+\]
+第一项为零是因为 $\nabla\cdot\vect E=0$。右边交换时间与空间导数，再把第四式代进去：
+\[
+\nabla\times\left(-\frac{\partial\vect B}{\partial t}\right)
+=-\frac{\partial}{\partial t}(\nabla\times\vect B)
+=-\varepsilon_0\varepsilon_r\mu_0\mu_r\frac{\partial^2\vect E}{\partial t^2}.
+\]
+两边合起来就是\textbf{波动方程}（wave equation）
+\[
+\nabla^2\vect E=\frac{1}{v^2}\frac{\partial^2\vect E}{\partial t^2},
+\qquad
+\frac{1}{v^2}=\varepsilon_0\varepsilon_r\mu_0\mu_r ,
+\]
+即 $v=1/\sqrt{\varepsilon_0\varepsilon_r\mu_0\mu_r}$，正是 p11 给的那一行。$\vect B$ 满足同一个方程（把第二、第四式互换角色即可）。
+
+\aside{这一步用到三个前提，都在本页可查：（1）$\rho=0$（无源，否则 $\nabla\cdot\vect E=\rho/\varepsilon$ 不为零，第一项去不掉）；（2）介质均匀、各向同性，$\varepsilon,\mu$ 与位置无关，才能从导数里提出来；（3）线性介质，$\vect B=\mu\vect H$ 是简单相乘。三条缺一条，本节的推导都要改写。}
+
+把一维简谐波代入检验，得到\textbf{色散关系}（dispersion relation）：
+\[
+E=E_0\cos(\omega t-kz-\varphi_0)
+\ \Longrightarrow\
+-k^2E=-\frac{\omega^2}{v^2}E
+\ \Longrightarrow\
+k=\frac{\omega}{v}=\frac{\omega n}{c},
+\]
+其中用了 $v=c/n$，即 $n=\sqrt{\varepsilon_r\mu_r}$（非磁性介质 $\mu_r\approx1$ 时 $n\approx\sqrt{\varepsilon_r}$）。
+
+\subhdr{1.3 简谐波：四种写法其实是一个}
+
+p8 给振动方程 $E=E_0\cos(\omega t-\varphi_0)$ 与 $\omega=2\pi/T=2\pi\nu=2\pi c/\lambda$；p9 把观察点挪到 $z$ 处，先算传播时间 $\tau=z/c$，再写 $E=E_0\cos[\omega(t-z/c)-\varphi_0]$；p10 换成周期、波长：
+\[
+E=E_0\cos 2\pi\!\left(\frac{t}{T}-\frac{z}{\lambda}\right)
+=E_0\cos\!\left(\omega t-\frac{2\pi}{\lambda}z\right)
+=E_0\cos(\omega t-kz).
+\]
+三行之间只用三条关系：$\frac{2\pi}{T}=\omega$、$\frac{2\pi}{\lambda}=k$、$c=\lambda\nu=\lambda/T$，于是 $\frac{\omega z}{c}=\frac{2\pi z}{T\lambda}=\frac{2\pi z}{\lambda}=kz$——这就是"把 $\omega z/c$ 换成 $kz$"的全部依据。带初相位时，p10 的完整形式是
+\[
+E=E_0\cos\!\left[2\pi\!\left(\frac{t}{T}-\frac{z}{\lambda}\right)-\varphi_0\right],
+\]
+课件省掉了 $-\varphi_0$，见 §6 第 5 条。
+
+\aside{记号提醒：p10 把 $kz$ 记成 $\varphi$（“the phase of the light wave at position $z$”），于是 $E=E_0\cos(\omega t-\varphi)$。这是本文 $\Phi=\varphi_0+kz$ 在 $\varphi_0=0$ 时的值，不是另一个量。看到别人的笔记写 $\cos(kz-\omega t)$ 也不要慌，余弦是偶函数，两者相等。}
+
+\textbf{双周期性}（p10）：同一列波，固定 $z$ 看它随时间以 $T$ 重复，固定 $t$ 看它在空间以 $\lambda$ 重复。这两件事分别对应 $\omega$ 与 $k$，是同一个 $2\pi$ 分给了两个变量。
+
+\textbf{$k$ 的两种读法}（p10 与 p19 右下角）：$k=2\pi/\lambda$ 是"每单位长度攒多少相位"；写成矢量，$\vect k$ 的方向就是波的传播方向，也就是等相位面推进的方向。后者可当场验算：一维下 $\Phi=kz$，对 $z$ 求导得 $\dd\Phi/\dd z=k$，这正是 p19 那句 “the wave vector $\vect k$ represents the spatial rate of change of phase”。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[ax] (-0.5,0) -- (7.7,0) node[lab,right] {$z$（传播方向）};
+  \draw[ax] (0,-1.8) -- (0,2.1) node[lab,above] {$x$};
+  \draw[ax] (0,0) -- (-1.05,-0.8) node[lab,below left] {$y$};
+  \draw[vec,domain=0:7.2,samples=170] plot (\x,{1.2*sin(144*\x)});
+  \draw[lite,domain=0:7.2,samples=170] plot ({\x-0.795*0.72*sin(144*\x)},{-0.606*0.72*sin(144*\x)});
+  \node[labv] at (1.62,1.62) {$E$};
+  \node[labv] at (3.55,-1.02) {$H$};
+  \node[lab] at (6.15,1.62) {$E\perp H\perp\vect k$};
+\end{tikzpicture}
+
+{\footnotesize\color{inkgray}图 1（重绘自 p7）：$E$ 沿 $x$ 振动、$H$ 沿 $y$ 振动、$\vect k$ 沿 $z$ 传播，三者两两垂直；两条曲线同相位。}
+\end{center}
+
+\subhdr{1.4 两种基本波型：球面波与平面波（p13）}
+
+p13 给三段定义与一条分解：
+\begin{itemize}
+\item \textbf{点光源}（point source）：形状与大小可忽略的理想光源，类比力学里的质点、电学里的点电荷；\textbf{扩展光源}（extended source）：大小形状不可忽略。
+\item 在各向同性均匀介质中，点光源发出的光沿各个方向传播，形成以该点为球心的\textbf{球面波}（spherical wave）。
+\item 离点光源足够远时，局部波前可以\textbf{近似}成\textbf{平面波}（plane wave）。
+\item 任意复杂光场都可以分解成平面波与球面波的叠加（superposition）。
+\end{itemize}
+
+第三条的"足够远"缺一个判据，补在这里。球面波相位是 $kr$，考察区横向尺度为 $a$、距源 $z$，把 $r=\sqrt{z^2+\rho^2}\approx z+\rho^2/(2z)$ 代入，横向边缘处的相位比轴上多出
+\[
+\Delta\Phi\simeq k\cdot\frac{a^2}{2z}=\frac{\pi a^2}{\lambda z}.
+\]
+要求这份偏差远小于一个周期（$\Delta\Phi\ll \pi$），即
+\[
+z\gg\frac{a^2}{\lambda}.
+\]
+工程上取 $z>2a^2/\lambda$ 作为远场（夫琅禾费）条件，与后续衍射章同一套判据。$z<a^2/\lambda$ 时球面弯曲不能忽略，必须用球面波写法。
+
+\aside{这里的 $a$ 是\textbf{考察区（或孔径）}的横向尺寸，$z$ 是到光源的距离，$\lambda$ 是介质中波长。判据只说"波前弯曲引起的相位误差可以忽略"，不涉及振幅是否均匀：球面波在远场振幅仍按 $1/r$ 缓变，只是局部可当常数。}
+
+\subhdr{1.5 光强：能流密度为什么要取时间平均（p12）}
+
+p12 的骨架是三行。第一行，\textbf{能流密度}（energy flux density）：单位时间穿过垂直于传播方向的单位面积的能量，由\textbf{坡印廷矢量}（Poynting vector）给出
+\[
+|\vect S|=|\vect E\times\vect H|=EH=\sqrt{\frac{\varepsilon_0\varepsilon_r}{\mu_0\mu_r}}\,E_0^2\cos^2(\omega t-\varphi).
+\]
+中间一步 $|\vect E\times\vect H|=EH$ 用到 $\vect E\perp\vect H$（p7 的横波性质），而 $H$ 与 $E$ 的比例来自平面波关系
+\[
+H=\sqrt{\frac{\varepsilon_0\varepsilon_r}{\mu_0\mu_r}}\,E ,
+\]
+它由 $\nabla\times\vect E=-\partial\vect B/\partial t$ 对平面波直接得到：$kE=\omega B$，$B=\mu H$，故 $H=kE/(\omega\mu)=E/(v\mu)=E\sqrt{\varepsilon/\mu}$。这就是 p12 那个根号的出处。
+
+第二行，\textbf{光强}（light intensity）定义为能流密度的\textbf{时间平均}：
+\[
+I=\frac{1}{T}\int_0^T|\vect S|\dd t
+=\frac{1}{2}\sqrt{\frac{\varepsilon_0\varepsilon_r}{\mu_0\mu_r}}\,E_0^2
+=\frac{1}{2}\,n\sqrt{\frac{\varepsilon_0}{\mu_0}}\,E_0^2
+\ \propto\ nE_0^2 .
+\]
+这里有三个要交代的地方：
+
+\textbf{(a) $\frac12$ 从哪来}——数学来源，不是约定。$\cos^2$ 在一个周期上的平均是 $\frac12$，与相位 $\varphi$ 无关：
+\[
+\frac{1}{T}\int_0^T\cos^2(\omega t-\varphi)\dd t=\frac12 .
+\]
+顺手可以核对 p12 批注里的两句话：$\langle E\rangle=0$（余弦一个周期积分为零），但 $\langle E^2\rangle=E_0^2/2\ne0$，所以"单独的 $E$ 或 $H$ 的平均为零、$S$ 的平均不为零"。能量确实是单向传输的，只是瞬时能流在 $\cos^2=0$ 的瞬间为零。
+
+\textbf{(b) 为什么要平均}——这是 p12 批注 “为什么要做能流密度的时间平均？？？” 的答案。光的频率约 $10^{14}$\,Hz，任何探测器（眼睛、底片、CCD）的响应时间都在 $10^{-3}$\,s 以上，远大于 $T\sim10^{-15}$\,s，测到的只能是平均值。所以"光强"在实验上就是 $\langle|\vect S|\rangle$，不是瞬时值。
+
+\textbf{(c) $\sqrt{\varepsilon_r/\mu_r}$ 怎么变成 $n$}——这一步课件没写，且\textbf{只在 $\mu_r=1$ 时成立}：
+\[
+\sqrt{\frac{\varepsilon_r}{\mu_r}}=\frac{\sqrt{\varepsilon_r\mu_r}}{\mu_r}=\frac{n}{\mu_r}
+\xrightarrow{\ \mu_r=1\ }\ n .
+\]
+所以完整的式子应是 $I=\frac12\sqrt{\varepsilon_0/\mu_0}\,(n/\mu_r)E_0^2$；课件默认了非磁性介质。这个 $1/\mu_r$ 在可见光波段对绝大多数介质确实可以丢掉（$\mu_r-1\sim10^{-5}$），但要知道它去哪了。
+
+\aside{还可以把结果改写成更眼熟的形式：由 $c=1/\sqrt{\varepsilon_0\mu_0}$ 得 $\sqrt{\varepsilon_0/\mu_0}=\varepsilon_0 c$，于是 $I=\frac12 n\varepsilon_0 cE_0^2$。这个式子在电磁学里就是"平面波的平均能流密度"，与本页的 $I$ 是同一个量。}
+
+最后一行，p12 把结论分成两句：同一介质中 $I\propto E_0^2$（$n$ 固定）；不同介质比较时 $I\propto nE_0^2$。这两句的用途不同，做干涉题时（§3）用的是前者，比较两束穿过不同介质的光时才是后者。
+
+%=====================================================================
+\hdr{§2}{复振幅与相位：把三角函数换成乘法}
+
+\subhdr{2.1 欧拉公式、丢掉 $\operatorname{Re}$、负号约定（p14--p15）}
+
+p14 的推导只有三行，但每行都在换记号，逐步展开：
+\[
+E=E_0\cos(\omega t-\Phi)
+=\operatorname{Re}\big\{E_0e^{\pm i(\omega t-\Phi)}\big\}
+=\operatorname{Re}\big\{\underbrace{E_0e^{i\Phi}}_{\Ez}\,e^{-i\omega t}\big\}.
+\]
+第二步是欧拉公式 $\cos\alpha=\operatorname{Re}\{e^{\pm i\alpha}\}$；第三步选定负号（$e^{-i\omega t}$），并把只与空间有关的部分打包成\textbf{复振幅}
+\[
+\Ez=E_0e^{i\Phi}=E_0e^{i(\varphi_0+\vect k\cdot\vect r)} .
+\]
+p14 右侧那句批注是这一页的重点：“Only a function of spatial coordinates, independent of time”。复振幅里没有 $t$——时间已经全部收进 $e^{-i\omega t}$ 这个公共因子。
+
+于是 p15 给出三条使用规则，每一条都配了理由：
+\begin{itemize}
+\item \textbf{规则一：线性运算可以省略 $\operatorname{Re}$。}光学系统基本是线性的（叠加、微分、积分），而 $\operatorname{Re}\{A\}+\operatorname{Re}\{B\}=\operatorname{Re}\{A+B\}$，所以"先取实部再算"与"先算再取实部"结果相同，干脆全程不写 $\operatorname{Re}$。
+\item \textbf{规则二：负号是约定，不是物理。}量子力学用 $e^{-iEt/\hbar}$（时间演化算符），电工学用 $e^{+j\omega t}$（把 $j$ 让给相位超前，算滞后更直观）。p15 的原话是 “There is no absolute right or wrong in the sign”，但\textbf{整门课必须只用一套}，混用是相位算错的头号原因。
+\item \textbf{规则三：非线性运算必须用共轭。}求光强是平方运算，$\operatorname{Re}$ 与平方不交换，所以
+\[
+I\propto|E|^2=E\cdot E^{*},
+\qquad\text{“Never use }E^2\text{ directly!”}
+\]
+\end{itemize}
+
+\aside{规则二的几何图像（p15 右栏）：$e^{-i\omega t}$ 在复平面上随 $t$ 增大\textbf{顺时针}转，$e^{+i\omega t}$ 逆时针。选负号只是让"相位随时间减小"，与"波向右传播时相位越来越滞后"的直觉一致。转的方向不同，但 $\cos$ 投影完全一样，所以物理结果不变。}
+
+\subhdr{2.2 复振幅到底省了什么（p16）}
+
+p16 列了四条好处，本质是同一条：把"对时间求导／积分"换成"乘以 $-i\omega$ 或除以 $-i\omega$"，微分方程就降成代数方程。四条分别是：叠加时公共因子 $e^{-i\omega t}$ 可提出来，只对 $\Ez$ 相加；复波函数满足与实波函数\textbf{同一个}波动方程，两种描述等价；复数乘除代替三角恒等式；实场随时可取回，$E=\operatorname{Re}\{\Etil e^{-i\omega t}\}$。
+p16 右上那张相量图（phasor diagram）把 $\Ez=E_0e^{i\varphi}$ 画成模为 $E_0$、辐角为 $\varphi$ 的矢量：$E_0$ 是长度，$\varphi$ 是转角。相位差就是两个相量的夹角——§3 的干涉公式正是这个图像的直接翻译。
+
+\subhdr{2.3 平面波的复振幅（p17--p18）}
+
+三维理想平面波的定义是"波前是一族互相平行的平面"。p17 的画法：$\vect k$ 指向传播方向，$\vect r_0$ 是原点到某个波前上 $O'$ 的矢量，$\vect r$ 是到同波前上 $P$ 点的矢量。p17 说"$P$ 的相位等于 $O'$ 的相位"，理由是
+\[
+\vect k\cdot(\vect r-\vect r_0)=0\quad(\text{同一波前上两点连线垂直于}\vect k),
+\]
+于是
+\[
+\varphi(P)=\vect k\cdot\vect r+\varphi_0=\vect k\cdot\vect r_0+\varphi_0=\varphi(O')=C_1 .
+\]
+p17 那行 $\varphi(P)=\varphi(O')=\vect k\cdot\vect r_0+\varphi_0=kr_0+\varphi_0=C_1$ 就是在说这件事；最后一步 $kr_0$ 成立是因为 $\vect r_0$ 与 $\vect k$ 共线（p17 绿色批注：“选取 $O'$ 就是让 $\vect k$ 和 $\vect r_0$ 共线，夹角为 0”）。
+
+分量形式与方向余弦：
+\[
+\Phi=k_xx+k_yy+k_zz+\varphi_0,
+\qquad
+k_x=k\cos\alpha,\quad k_y=k\cos\beta,\quad k_z=k\cos\gamma,
+\]
+\[
+\Ez=E_0e^{i(k_xx+k_yy+k_zz+\varphi_0)},
+\qquad
+k=\sqrt{k_x^2+k_y^2+k_z^2}=\frac{2\pi}{\lambda}.
+\]
+p18 把平面波的特征归纳成两条，并说“这两条能帮你快速认出一列波是不是平面波”：
+\begin{itemize}
+\item \textbf{振幅恒定}：场中各点光矢量振幅相同，光强与位置无关；
+\item \textbf{相位线性}：相位是坐标 $(x,y,z)$ 的线性函数。
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % 波前：垂直于 k（30 度）的三条直线，中心沿 k 方向每隔 1 cm 一条
+  \draw[petal,line width=0.8pt] (0.489,1.553) -- (1.589,-0.353);
+  \draw[petal,line width=0.8pt] (1.355,2.053) -- (2.455,0.147);
+  \draw[petal,line width=0.8pt] (2.221,2.553) -- (3.321,0.647);
+  \draw[vec] (0,0) -- (3.464,2.000) node[lab,right] {$\vect k$};
+  \draw[ax,line width=1pt] (0,0) -- (2.771,1.600);
+  \draw[ax,line width=1pt] (0,0) -- (2.371,2.293);
+  \draw[lite,dashed] (2.771,1.600) -- (2.371,2.293);
+  \fill[violetdeep] (0,0) circle (1.6pt);
+  \fill[violetdeep] (2.771,1.600) circle (1.6pt);
+  \fill[violetdeep] (2.371,2.293) circle (1.6pt);
+  \node[lab,below left] at (-0.04,-0.04) {$O$};
+  \node[lab,right] at (2.83,1.50) {$O'$};
+  \node[lab,above] at (2.27,2.40) {$P$};
+  \node[lab] at (0.78,1.63) {$\vect r$};
+  \node[lab] at (1.92,0.55) {$\vect r_0$};
+  \node[lab,below] at (1.78,-0.34) {波前};
+\end{tikzpicture}
+
+{\footnotesize\color{inkgray}图 2（重绘自 p17）：$\vect k$ 沿 30° 方向，淡紫直线是等相位面（波前），相邻两条间距为 $\lambda$；$O'$ 与 $P$ 在同一波前上，故 $\vect k\cdot\vect r=\vect k\cdot\vect r_0$，两点相位相同。图上 $\vect k$、$\vect r$ 都画在纸面内，一般情形 $\vect r$ 有三维分量，结论不变。}
+\end{center}
+
+\subhdr{2.4 球面波的复振幅：$1/r$ 从哪来（p21）}
+
+p21 的推理链断了中间一环。它写了三句：球面上相位相同（$kr+\varphi_0=C_1$）；由能量守恒，\textbf{光强}与球半径的平方成反比；所以\textbf{振幅}与球半径成反比。第三句是结论，但"光强 $\to$ 振幅"这一步没有交代。补上：
+\[
+I(r)\cdot4\pi r^2=P\ (\text{能量守恒})
+\ \Longrightarrow\
+I(r)\propto\frac{1}{r^2},
+\qquad
+I\propto E_0^2
+\ \Longrightarrow\
+|E|\propto\frac{1}{r}.
+\]
+中间那个 $4\pi$ 来自立体角：点源向各方向均匀辐射，半径 $r$ 的球面面积就是 $4\pi r^2$（数学来源：球面立体角为 $4\pi$）。于是
+\[
+E=\frac{E_0}{r}\cos(\omega t-kr-\varphi_0),
+\qquad
+\Etil(\vect r)=\frac{E_0}{r}e^{i(kr+\varphi_0)} .
+\]
+两条特征（p21 底部）：振幅按 $1/r$ 反比衰减；相位随 $r$ 线性增加。
+
+\aside{符号核验一下，这一步课件没做：$\operatorname{Re}\{(E_0/r)e^{i(kr+\varphi_0)}e^{-i\omega t}\}=(E_0/r)\cos(kr+\varphi_0-\omega t)$，而 $\cos$ 是偶函数，所以等于 $(E_0/r)\cos(\omega t-kr-\varphi_0)$，与 p21 给的实场式一致。如果复振幅误写成 $e^{-ikr}$，得到的会是会聚波（相位随 $r$ 减小），不是发散波。}
+
+p30 用一张表把平面波与球面波并排（复振幅／振幅／相位／波前四行）。这张表没有新信息，四行都能由本节与 §2.3 的两个式子当场算出：复振幅一行的差别只在指数——平面波是 $\vect k\cdot\vect r$（投影），球面波是 $kr$（半径本身）；振幅一行取模即得，球面波多一个 $1/r$，来源就是上面那步能量守恒；相位一行是同一件事的另一种说法（$kr$ 对坐标是根式，不是线性函数）；波前一行是等相位面 $\Phi=\text{const}$ 的形状（平面／同心球面）。
+
+\subhdr{2.5 共轭波与"强度用模平方"（p22--p23）}
+
+\textbf{共轭波}（conjugate wave）的定义：若一列波的复振幅是 $\Etil(\vect r)$，另一列波的复振幅是它的复共轭
+\[
+\Etil^{*}(\vect r)=E(\vect r)e^{-i\Phi},
+\]
+则后者称为前者的共轭波。两条结论（p22）：
+\begin{itemize}
+\item 平面波的共轭：沿\textbf{相反方向}传播的平面波（$\vect k\to-\vect k$）；
+\item 发散球面波的共轭：\textbf{会聚}球面波（波向球心收）。
+\end{itemize}
+p22 底部给的强度式与 p15 规则三同源：
+\[
+I(P)=|\Etil(P)|^2=\Etil(P)\times\Etil^{*}(P).
+\]
+p23 补了一句说明为什么这样写：相位因子相乘 $e^{i\Phi}e^{-i\Phi}=1$，虚部相消，剩下的正是实振幅的平方。若直接写 $E^2$，会残留 $e^{2i\Phi}$，强度就带上了相位，而强度是宏观可测量，必须是实数且与相位无关。
+
+\aside{这条规则在 §3 会立刻用到：干涉项 $2E_1E_2\cos\delta$ 就是两个复振幅相乘取共轭后剩下的实部。漏掉共轭，余弦项会变成 $\cos(\Phi_1+\Phi_2)$，随位置飞快振荡，时间平均后归零，等于把干涉算没了。}
+
+p23 下半页是全息（holography）：记录时物光与参考光在干板上干涉，把物光的复振幅（振幅与相位一起）记下；再现时用再现光照明干板，衍射产生共轭波，分别给出虚像（发散）与实像（会聚）。具体光路不重画——课件 p23 的两幅小图就是依据，且这里只是复振幅概念的应用，不属本章考点。
+
+\subhdr{2.6 波前函数：把三维问题压到一张平面上（p24）}
+
+p24 的定义有两层，容易混：
+\begin{itemize}
+\item \textbf{波前}（wavefront）：定态光场中到达某个平面的光场。历史上指"波的前沿（leading surface）"，现代波动光学里泛指"到达某平面的光场"。
+\item \textbf{波前函数}（wavefront function）：描述该平面上光场\textbf{复振幅分布}的函数，记作 $\Etil(x,y)$。
+\end{itemize}
+
+\aside{p24 的 “stationary wave field” 容易被读成"驻波"，这里指的是\textbf{单色定态场}：场随时间按 $e^{-i\omega t}$ 简谐变化，时间因子已被分离出去。证据就在同页——它把波前函数定义为"复振幅分布"，而复振幅与 $t$ 无关（p14 末行）。所以波前函数里不含时间，只含平面上的两个坐标。}
+
+p24 底部列出波前分析的四个议题，也正好是后续几章的地图：描述与识别（本讲 §2）、叠加与干涉（§3，第五章展开）、变换与分解（后续衍射章）、记录与再现（全息，p23）。
+
+\subhdr{2.7 课件例题 2.1--2.6 全解}
+
+课件给了六道例题，全部集中在"平面波／球面波的相位与波前函数"。按一题一块排，题干随题走；每块末尾的"自检"是给你合上讲义后自查用的。
+
+\qbreak
+\subhdr{例 2.1　平面波的相位分布（p19）}
+\qstem{（课件 p19，Example 2.1 Phase Distribution of a Plane Wave）平面波沿 $+x$ 方向传播，波长 $\lambda$，原点初相位 $\varphi_0$。求：(1) 沿 $+z$ 轴的相位分布；(2) 沿 $+x$ 轴；(3) 沿 $xz$ 平面内与 $z$ 轴成 $\alpha$ 角的方向 $\vect r$。}
+
+\textbf{考点}：相位是 $\Phi=\varphi_0+\vect k\cdot\vect r$，是\textbf{内积}，不是 $kr$。
+
+\textbf{关键一步}：三问只差一件事——$\vect r$ 与 $\vect k$ 的夹角。设 $\vect k=k\hat x$，$k=2\pi/\lambda$。
+
+\textbf{详解}：(1) $\vect r=z\hat z$，故 $\vect k\cdot\vect r=k_x\cdot z=0$（$\vect k$ 沿 $x$、$k_x$ 为常数，与 $\hat z$ 正交），得 $\varphi(z)=\varphi_0$，沿 $z$ 轴相位处处相同。
+(2) $\vect r=x\hat x$，$\vect k\cdot\vect r=kx$，得 $\varphi(x)=2\pi x/\lambda+\varphi_0$。
+(3) $\vect r$ 在 $xz$ 平面内、与 $z$ 轴成 $\alpha$ 角，则它与 $\hat x$（即 $\vect k$ 的方向）的夹角是 $\pi/2-\alpha$，于是
+\[
+\varphi(\vect r)=\vect k\cdot\vect r+\varphi_0
+=kr\cos\!\left(\frac{\pi}{2}-\alpha\right)+\varphi_0
+=\frac{2\pi r}{\lambda}\sin\alpha+\varphi_0 .
+\]
+
+\textbf{答案}：$\varphi(z)=\varphi_0$；$\varphi(x)=2\pi x/\lambda+\varphi_0$；$\varphi(\vect r)=2\pi r\sin\alpha/\lambda+\varphi_0$。
+
+\textbf{自检}：令 $\alpha=0$（沿 $z$）应回到 (1) —— $\sin0=0$，得 $\varphi_0$，对；令 $\alpha=\pi/2$（沿 $x$）应回到 (2) —— $\sin(\pi/2)=1$，得 $2\pi r/\lambda+\varphi_0$，对。三问能互相验，说明内积那一步没算错。
+
+\qbreak
+\subhdr{例 2.2　沿 $\vect r$ 传播的平面波复振幅（p20）}
+\qstem{（课件 p20，Example 2.2 Complex Amplitude of a Plane Wave Propagating Along $r$）若例 2.1 的平面波改为沿 $\vect r$ 方向传播，$E_0$ 为光矢量振幅，求该平面波的复振幅。}
+
+\textbf{考点}：方向余弦与分量的换算。
+
+\textbf{关键一步}：$\vect k$ 与 $\vect r$ 同向，$\vect r$ 在 $xz$ 平面内与 $z$ 轴成 $\alpha$ 角，故 $\vect k$ 的方向余弦是 $(\sin\alpha,0,\cos\alpha)$。
+
+\textbf{详解}：由 $k_x=k\cos\alpha'$、$k_z=k\cos\gamma'$，而 $\vect k$ 与 $x$ 轴夹角为 $\pi/2-\alpha$、与 $z$ 轴夹角为 $\alpha$，得
+\[
+k_x=k\sin\alpha=\frac{2\pi\sin\alpha}{\lambda},
+\qquad
+k_z=k\cos\alpha=\frac{2\pi\cos\alpha}{\lambda},
+\qquad
+k_y=0,
+\]
+代回 $\Ez=E_0e^{i(k_xx+k_yy+k_zz+\varphi_0)}$：
+\[
+\Ez=E_0\exp\!\left[i\left(\frac{2\pi x\sin\alpha}{\lambda}+\frac{2\pi z\cos\alpha}{\lambda}+\varphi_0\right)\right].
+\]
+
+\textbf{答案}：上式。与例 2.1 是同一列波换了视角——例 2.1 固定波、问沿某条线的相位；例 2.2 固定观察点、问波的复振幅。
+
+\textbf{自检}：令 $\alpha=0$，$k_x=0$、$k_z=2\pi/\lambda$，复振幅退化成 $E_0e^{i(2\pi z/\lambda+\varphi_0)}$，即沿 $z$ 传播的平面波，与 §1.3 的一维式一致。
+
+\qbreak
+\subhdr{例 2.3　$x=0$ 平面上的波前函数（p25）}
+\qstem{（课件 p25，Example 2.3 Wavefront Function on the Plane $x=0$）平面波的波矢位于 $xy$ 平面内，与 $x$ 轴成 $\theta$ 角，求它在 $x=0$ 平面上的波前函数。}
+
+\textbf{考点}：波前函数 = 把复振幅限制在某个平面上。
+
+\textbf{关键一步}：$k_z=0$，代入后在 $x=0$ 处只剩 $y$ 项。
+
+\textbf{详解}：由题意 $\vect k_1$ 在 $xy$ 平面内、与 $x$ 轴夹角 $\theta$，故
+\[
+k_{1x}=k_1\cos\theta,\qquad k_{1y}=k_1\sin\theta,\qquad k_{1z}=0,
+\]
+复振幅为
+\[
+\Ez=E_0e^{i(k_{1x}x+k_{1y}y+k_{1z}z+\varphi_0)}=E_0e^{i[k_1(x\cos\theta+y\sin\theta)+\varphi_0]} .
+\]
+在 $x=0$ 平面上，含 $x$ 的项为零：
+\[
+\Ez\big|_{x=0}=E_0e^{i(k_1y\sin\theta+\varphi_0)} .
+\]
+
+\textbf{答案}：$\Ez(y)=E_0e^{i(k_1y\sin\theta+\varphi_0)}$。课件写的是 $\varphi_0=0$ 的特例，完整形式要带上 $\varphi_0$（见 §6 第 5 条）。
+
+\textbf{自检}：波前函数只含 $y$、不含 $z$，说明这个平面上的相位沿 $z$ 不变——因为 $k_z=0$，波沿 $z$ 没有分量。这一条可以当"波前函数是否合理"的快速判据。
+
+\qbreak
+\subhdr{例 2.4　例 2.3 那列波的共轭波（p26）}
+\qstem{（课件 p26，Example 2.4 Conjugate Wave of a Plane Wave）求例 2.3 中平面波的共轭波。}
+
+\textbf{考点}：共轭 = 复振幅取共轭 = $\Phi\to-\Phi$。
+
+\textbf{关键一步}：把 $x=0$ 平面上的波前函数取共轭，看它长成什么形状。
+
+\textbf{详解}：对 $\Ez(y)=E_0e^{ik_1y\sin\theta}$ 取共轭：
+\[
+\Ez^{*}(y)=E_0e^{-ik_1y\sin\theta}=E_0e^{ik_1y\sin(-\theta)} .
+\]
+它与例 2.3 的波前函数\textbf{同形}，只是 $\theta$ 换成 $-\theta$。写成三维波矢，$k_y$ 变号而 $k_x$ 不变号的那列波是
+\[
+\vect k_1'=(k_1\cos\theta,\ -k_1\sin\theta,\ 0),
+\]
+而按 p22 对平面波共轭的定义（沿相反方向传播），应当是 $\vect k\to-\vect k$，即
+\[
+-\vect k_1=(-k_1\cos\theta,\ -k_1\sin\theta,\ 0).
+\]
+两者在 $x=0$ 平面上给出同一个波前函数，但在 $x>0$ 一侧的传播方向不同。
+
+\textbf{答案}：$\Ez^{*}(y)=E_0e^{-ik_1y\sin\theta}$，即关于 $x$ 轴（$xz$ 平面）镜像、再反向传播的那列平面波。
+
+\textbf{自检}：p26 的 Hint 说共轭波是"关于 $x=0$ 面对称"的平面波。这句话与它自己的式子对不上：式子里只有 $k_y$ 变号，而关于 $x=0$ 面（$yz$ 平面）镜像应当让 $k_x$ 变号。以 p22 的定义为准（$\vect k\to-\vect k$），这条 Hint 按"反向传播"理解才自洽。§6 第 8 条记了这个缺口。
+
+\qbreak
+\subhdr{例 2.5　点光源在 $x=0$ 平面上的波前函数（p27）}
+\qstem{（课件 p27，Example 2.5 Wavefront Function of a Spherical Wave on the Plane $x=0$）点光源在 $A(-a,0,0)$，求它在 $x=0$ 平面上的波前函数，并指出该光的共轭波。}
+
+\textbf{考点}：球面波的波前函数里，振幅和相位\textbf{都}随位置变。
+
+\textbf{关键一步}：先把 $r$ 写成坐标的函数，再令 $x=0$。
+
+\textbf{详解}：从 $A(-a,0,0)$ 到 $P(x,y,z)$ 的距离是
+\[
+r=\sqrt{(x+a)^2+y^2+z^2},
+\]
+在 $x=0$ 平面上
+\[
+r=\sqrt{a^2+y^2+z^2},
+\]
+代入球面波复振幅 $\Ez=(E_0/r)e^{i(kr+\varphi_0)}$：
+\[
+\Ez(y,z)=\frac{E_0}{\sqrt{a^2+y^2+z^2}}\exp\!\left[ik\sqrt{a^2+y^2+z^2}+i\varphi_0\right].
+\]
+共轭波：把指数变号，$r$ 不变号，得到 $\Ez^{*}=(E_0/r)e^{-i(kr+\varphi_0)}$——相位随 $r$ 减小，是\textbf{会聚}到 $A$ 的球面波。
+
+\textbf{答案}：上式；共轭波为会聚于 $A(-a,0,0)$ 的球面波。
+
+\textbf{自检}：检查两点。（1）分母 $r=\sqrt{a^2+y^2+z^2}$ 在 $y=z=0$ 处最小、等于 $a$，说明正对光源处振幅最大，合理；（2）相位对 $y$ 的二阶导在 $y=0$ 附近与 $1/a$ 同号，说明等相位面是朝 $+x$ 凹的球面，也合理。这两条都能当场算，不必信记忆。
+
+\qbreak
+\subhdr{例 2.6　认波型：从一个波前函数反推波矢（p28）}
+\qstem{（课件 p28，Example 2.6 Identifying a Wavefront Function）某波长为 $\lambda$ 的光在 $xy$ 接收平面上的波前函数为 $\Etil(x,y)=E_0e^{-i2\pi fx}$，判断它是什么类型的波、有什么特征。}
+
+\textbf{考点}：§2.3 的两条判据——振幅恒定 + 相位是坐标的线性函数。
+
+\textbf{关键一步}：$|E_0|$ 与 $x,y$ 无关（振幅恒定），相位 $-2\pi fx$ 是 $x$ 的一次函数（线性），两条都满足，所以是平面波；再把相位系数与 $k_x$ 对照。
+
+\textbf{详解}：写成标准形 $\Ez=E_0e^{i(k_xx+k_yy+k_zz)}$（此处 $\varphi_0=0$），与 $-2\pi fx$ 逐项对照：
+\[
+k_x=-2\pi f,\qquad k_y=0,\qquad k_z=0,
+\]
+而 $k_x=k\cos\alpha$，故
+\[
+\cos\alpha=\frac{k_x}{k}=\frac{-2\pi f}{2\pi/\lambda}=-\lambda f .
+\]
+$\cos\alpha<0$ 说明 $\vect k$ 与 $x$ 轴成钝角，波朝 $-x$ 方向偏着传。课件到此为止。
+
+\textbf{答案}：平面波；波矢沿 $x$ 轴反向，$\cos\alpha=-\lambda f$。
+
+\textbf{自检}：这里有一个必须自己发现的矛盾。既然 $k_y=k_z=0$，就该有 $|k_x|=k=2\pi/\lambda$，即 $|f|=1/\lambda$，代回去得 $\cos\alpha=\mp1$——波严格沿 $\pm x$ 传播，"钝角"其实是 $180^\circ$。课件同时写下 “$k_x=-2\pi f$、$k_y=k_z=0$、$k=2\pi/\lambda$”，这三条只在 $|f|=1/\lambda$ 时相容。一般情形应保留 $k_y,k_z$，让 $k_x^2+k_y^2+k_z^2=(2\pi/\lambda)^2$，此时 $|\lambda f|\le1$ 自动成立，$\cos\alpha=-\lambda f$ 才是一个真正的方向余弦。这个矛盾在 §6 第 7 条单独记。
+
+%=====================================================================
+\hdr{§3}{叠加与干涉的数学条件}
+
+\callout{\textbf{本节是讲义补写，课件没有展开。}依据只有两句：p24 把 “Superposition and Interference” 列为波前分析的第二个议题；p23 说 “Both interference and diffraction calculations are fundamentally based on the complex amplitude representation”。下面从 p22 的 $I=|\Etil|^2$ 出发，补齐相干条件与光程差这两个\textbf{数学}准备，供第五章直接用；条纹位置、可见度等实验结论留到第五章，本节不涉及。}
+
+\subhdr{3.1 两列波叠加：先把复振幅相加，再取模平方}
+
+由 §2.1 规则一，线性叠加可以直接在复振幅上做：
+\[
+\Etil=\Etil_1+\Etil_2
+=E_1e^{i\Phi_1}+E_2e^{i\Phi_2},
+\qquad
+\Phi_j=\varphi_{0j}+\vect k_j\cdot\vect r .
+\]
+光强取模平方（§2.5）：
+\[
+I=|\Etil|^2
+=(\Etil_1+\Etil_2)(\Etil_1^{*}+\Etil_2^{*})
+=E_1^2+E_2^2+2E_1E_2\cos\delta,
+\qquad
+\delta=\Phi_1-\Phi_2 .
+\]
+记 $I_1=E_1^2$、$I_2=E_2^2$（同一介质内，比例系数相同，可以约掉），这就是\textbf{双光束干涉}的基本式：
+\[
+I=I_1+I_2+2\sqrt{I_1I_2}\cos\delta .
+\]
+第三项是\textbf{干涉项}，$\delta$ 是两列波在该点的\textbf{相位差}。注意推导顺序不可颠倒：先复数相加、再取模平方；若先把两个实场相加再平方，得到的是同一个结果，但如果先把两个强度相加（$I_1+I_2$），就把干涉项丢了。
+
+\subhdr{3.2 相干条件：三件事各管一段}
+
+上式要真正随位置变化，$\delta$ 必须是"稳定且随空间变化"的量。逐条看：
+
+\textbf{(i) 频率相同。}若 $\omega_1\ne\omega_2$，则 $\delta$ 里含 $(\omega_1-\omega_2)t$，$\cos\delta$ 随时间快速振荡；探测器只测时间平均（§1.5），平均值
+\[
+\langle\cos\delta\rangle=\frac{1}{T}\int_0^T\cos\big[(\omega_1-\omega_2)t+\cdots\big]\dd t\to0
+\qquad(T\gg 2\pi/|\omega_1-\omega_2|),
+\]
+干涉项消失，只剩 $I_1+I_2$。
+
+\textbf{(ii) 相位差恒定。}两个独立光源的初相位各自随机漂移，$\varphi_{01}-\varphi_{02}$ 在探测器积分时间内扫过 $2\pi$ 的多个周期，平均同样为零。这就是为什么普通两只灯泡照在同一块屏上不发生干涉——不是"波不叠加"，而是叠加后的干涉项被平均掉了。
+
+\textbf{(iii) 偏振不严格垂直。}严格写，$|\Etil_1+\Etil_2|^2$ 里的交叉项是 $2\operatorname{Re}(\Etil_1\cdot\Etil_2^{*})$。若两束光的振动方向严格垂直，这个内积为零，干涉项为零；两者平行时取到最大值 $2E_1E_2$。一般夹角 $\beta$ 时，干涉项按 $\cos\beta$ 打折。
+
+\aside{三条条件的性质不同：(i) 与 (ii) 是\textbf{时间平均}造成的，属于"测不到"；(iii) 是\textbf{矢量内积}造成的，属于"本来就没有"。做题时判断"能否干涉"，三条要分别检查，不能只查一条就下结论。}
+
+\subhdr{3.3 光程与相位差：把 $n$ 折进长度里}
+
+设两束光从同一波面出发、分别经过折射率 $n_1,n_2$ 的介质、走过几何长度 $d_1,d_2$，在 $P$ 点相遇。相位沿路径累积（§1.3）：介质中波数 $k=nk_0=2\pi n/\lambda_0$，故走过 $d$ 攒下相位 $kd=(2\pi/\lambda_0)(nd)$。两路的相位差
+\[
+\delta=\frac{2\pi}{\lambda_0}\big(n_2d_2-n_1d_1\big)
+=\frac{2\pi}{\lambda_0}\Delta L,
+\qquad
+\Delta L\equiv\sum_i n_id_i ,
+\]
+其中 $\lambda_0$ 是真空波长，$\Delta L$ 称为\textbf{光程差}，$n_id_i$ 称为第 $i$ 段的\textbf{光程}（optical path）。
+
+\aside{把几何长度换成光程的全部理由就是 $k=nk_0$：介质里波长缩短 $n$ 倍，同样的几何长度攒下 $n$ 倍的相位。所以"光程"是"折合成真空中的长度"，不是"光的路径长度"。判断题里若把光程当几何长度，答案会差一个 $n$。}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \fill[violetdeep] (0,0) circle (2pt);
+  \node[lab,left] at (-0.12,0) {光源 $S$};
+  \fill[violetdeep] (8.6,0) circle (2pt);
+  \node[lab,right] at (8.72,0) {$P$};
+  \draw[vec] (0.15,0.06) to[out=22,in=158] (8.45,0.06);
+  \draw[lite] (0.15,-0.06) to[out=-48,in=228] (8.45,-0.06);
+  \node[lab] at (4.2,1.30) {路径 1：几何长 $d_1$，折射率 $n_1$};
+  \node[lab] at (4.2,-1.45) {路径 2：几何长 $d_2$，折射率 $n_2$};
+  \node[lab] at (4.2,-0.62) {$\Delta L=n_2d_2-n_1d_1$};
+\end{tikzpicture}
+
+{\footnotesize\color{inkgray}图 3（重绘，讲义补）：两条路径分别穿过折射率 $n_1$、$n_2$ 的介质，几何长 $d_1$、$d_2$；在 $P$ 点相遇时相位差 $\delta=(2\pi/\lambda_0)\Delta L$。}
+\end{center}
+
+\textbf{亮暗条件}：干涉项取 $+1$ 时最亮、取 $-1$ 时最暗，故
+\[
+\delta=2m\pi\ (\text{亮}),\qquad
+\delta=(2m+1)\pi\ (\text{暗}),\qquad m\in\mathbb{Z}.
+\]
+两端都带等号，$m=0$ 也算：$\delta=0$ 是零级亮纹，$\delta=\pi$ 是最靠近中心的暗纹。\textbf{半波损失}（half-wave loss）：若某一路在光密介质表面反射一次，反射波相位突变 $\pi$，等价于 $\Delta L$ 上再加 $\lambda_0/2$。这一项的来源是菲涅耳公式，第四章会算，这里只需记住"多一次光密反射，就多半个波长"。
+
+\subhdr{3.4 与课件的接口}
+
+至此"干涉"已完全落在复振幅的语言里：$\Etil=\Etil_1+\Etil_2$ 是复数加法，$I=|\Etil|^2$ 是取模平方，$\Delta L$ 是把相位差换成可测的长度差；第五章要做的，就是给具体装置算 $\Delta L$ 再套 3.3 的亮暗条件。课件把复振幅与共轭波单列一页（p22），正是为这一步备工具。
+
+%=====================================================================
+\hdr{§4}{光谱、单色性与群速度}
+
+\callout{本节前半对应课件 p5--p6（光谱与可见光波段），后半（波包、群速度、相干长度）课件没有，是为了回答一个被课件藏起来的问题：\textbf{"单色光"这个前提，代价是什么？}§3 的干涉条件要求频率严格相同、相位差严格恒定，而任何真实光源都有一定的谱宽。全章没有一处讨论谱宽，本讲义在此补最短的一段。}
+
+\subhdr{4.1 光谱坐标与两个必须记住的换算（p5--p6）}
+
+p5 的结论有三句：电磁波按波长从短到长分为 $\gamma$ 射线、X 射线、紫外、可见光、红外、微波、无线电波；可见光只占极窄一段；电磁波是横波，$\vect E$、$\vect H$ 互相垂直且都垂直于传播方向。p6 给了一张按波长排序的波段表与四条 "key concepts"。
+
+下表是 p6 那张表的摘要（台账表，只查不推导）：
+
+\begin{center}\small
+\tabtop
+\begin{tabular}{@{}p{3.1cm}p{4.0cm}p{3.4cm}p{5.2cm}@{}}
+\thead{波段} & \thead{波长} & \thead{光子能量} & \thead{典型用途}\\
+\hline
+极紫外 EUV & 10\,nm -- 100\,nm & 12.4 -- 124\,eV & 光刻\\
+近紫外 NUV & 200\,nm -- 380\,nm & 3.3 -- 6.2\,eV & 紫外光谱、荧光激发\\
+可见光 VIS & 380\,nm -- 780\,nm & 1.6 -- 3.3\,eV & 人眼可感\\
+近红外 NIR & 780\,nm -- 3\,$\mu$m & 0.4 -- 1.6\,eV & 光纤通信、LiDAR\\
+中红外 MIR & 3\,$\mu$m -- 50\,$\mu$m & 0.025 -- 0.4\,eV & 热成像\\
+\end{tabular}
+\tabbot
+\end{center}
+
+逐行读法（用表脚两条换算，每格都能复算）：由 $E(\text{eV})=1240/\lambda(\text{nm})$，$\lambda=10$\,nm 给 124\,eV、$\lambda=100$\,nm 给 12.4\,eV，与表中 12.4--124\,eV 一致（波长越大能量越小，区间要反着填）；可见光一行 $1240/380=3.26$\,eV、$1240/780=1.59$\,eV，与 1.6--3.3\,eV 吻合。
+
+\aside{$1240$ 这个数不是约定，是 $hc$ 的数值：$hc=6.626\times10^{-34}\times2.998\times10^{8}=1.986\times10^{-25}$\,J$\cdot$m，换成 eV$\cdot$nm 得 $1.986\times10^{-25}/(1.602\times10^{-19})\times10^{9}=1240$\,eV$\cdot$nm。记住它是"换算常数"，不是新物理。}
+
+p6 另外三条要留意的说法：
+\begin{itemize}
+\item \textbf{没有硬边界}：可见光、红外、紫外的分界是人为划的，电磁波本身连续变化。
+\item \textbf{"THz 空隙"}：微波（电子学）与光学（光子学）之间曾有一段产生与探测都困难的波段，现在已是交叉前沿。
+\item \textbf{介质里的波长}：频率由光源决定、在任何介质中不变；波长会变，$\lambda=\lambda_0/n$。这一条在算干涉、衍射时是致命的，见 §6 第 9 条。
+\end{itemize}
+
+\warnbox{\textbf{两张幻灯片的数不一致，要知道用哪个。}p5 说可见光 “generally defined as \textbf{400\,nm to 760\,nm}”，p6 的表写 \textbf{380\,nm -- 780\,nm}，而 p6 表里的能量区间 1.6--3.3\,eV 正是按 380--780 算的。两种都是通行口径（400--760 是老教材的粗略值，380--780 是 CIE 的取值）。课堂上按 p5 说 400--760，做题遇到给定量时以\emph{题目给的}为准，不要拿这两个数去争执。}
+
+\subhdr{4.2 单色光的代价：波包与群速度}
+
+严格单色意味着 $\Delta\nu=0$，对应的时间信号必须无限长。真实光是有限长的\textbf{波包}（wave packet）。取两个频率相近的波叠加就能看清结构：
+\[
+E=E_0\cos(\omega_1t-k_1z)+E_0\cos(\omega_2t-k_2z)
+=2E_0\cos\!\left(\frac{\Delta\omega\,t-\Delta k\,z}{2}\right)\cos(\bar\omega t-\bar k z),
+\]
+其中 $\Delta\omega=\omega_1-\omega_2$，$\Delta k=k_1-k_2$，$\bar\omega$、$\bar k$ 是两个频率的平均。第一步只是和差化积 $\cos A+\cos B=2\cos\frac{A-B}{2}\cos\frac{A+B}{2}$。
+
+第二个因子 $\cos(\bar\omega t-\bar kz)$ 是快速振荡的"载波"，第一个因子是缓慢变化的"包络"。包络的峰满足
+\[
+\frac{\Delta\omega\,t-\Delta k\,z}{2}=2m\pi\ (\text{常数}),
+\]
+对 $t$ 求导给出包络的传播速度，即\textbf{群速度}（group velocity）：
+\[
+v_g=\frac{\dd z}{\dd t}=\frac{\Delta\omega}{\Delta k}
+\xrightarrow[\ \Delta\to0\ ]{}\ \frac{\dd\omega}{\dd k}.
+\]
+载波的等相位面给出的则是\textbf{相速度}（phase velocity）$v_p=\omega/k=c/n$。两者一般不相等：
+\[
+k=\frac{\omega n(\omega)}{c}
+\ \Longrightarrow\
+\frac{\dd k}{\dd\omega}=\frac{n+\omega\,\dd n/\dd\omega}{c}
+\ \Longrightarrow\
+v_g=\frac{\dd\omega}{\dd k}=\frac{c}{\,n+\omega\,\dd n/\dd\omega\,}.
+\]
+正常色散时折射率随频率升高而增大（$\dd n/\dd\omega>0$），分母大于 $n$，故 $v_g<v_p$；无色散介质（$\dd n/\dd\omega=0$）两者相等。
+
+\aside{这里 $n=n(\omega)$ 就是色散的来源：同一介质对不同频率的光折射率不同，所以不同频率的波包跑得快慢不同。课件在 p6 只说 “wavelength changes as $\lambda=\lambda_0/n$”，没提 $n$ 依赖频率；§4.3 的相干长度正是这个依赖造成的。}
+
+\subhdr{4.3 相干长度：谱宽换来的"还能干涉多远"}
+
+波包跑出一段距离后，两个频率成分的相对相位漂移到一整个周期，干涉就"散架"了。设谱宽 $\Delta\lambda$ 对应的波数宽度 $\Delta k$，则
+\[
+|\Delta k|L_c=2\pi
+\ \Longrightarrow\
+L_c=\frac{2\pi}{|\Delta k|},
+\qquad
+|\Delta k|=\left|\frac{\dd k}{\dd\lambda}\right|\Delta\lambda=\frac{2\pi}{\lambda^2}\Delta\lambda
+\ \Longrightarrow\
+L_c=\frac{\lambda^2}{\Delta\lambda}.
+\]
+$L_c$ 叫\textbf{相干长度}（coherence length），对应的传播时间 $\tau_c=L_c/c$ 叫相干时间。用法很直接：光程差超过 $L_c$，干涉条纹就消失。三个数量级：钠灯（$\Delta\lambda\sim0.6$\,nm，$\lambda=589$\,nm）$L_c\approx5.8\times10^{5}$\,nm$\approx0.58$\,mm，只剩几十条条纹；白光（$\Delta\lambda\sim300$\,nm，$\lambda=550$\,nm）$L_c\approx1\,\mu$m，只有中央几条彩纹；单纵模激光（$\Delta\lambda\sim10^{-4}$\,nm）$L_c$ 可达米到公里量级。
+
+\aside{三个数都能当场复算：$589^2/0.6\approx5.8\times10^{5}$\,nm；$550^2/300\approx1.0\times10^{3}$\,nm$=1\,\mu$m。注意 $\lambda$ 取真空波长、$\Delta\lambda$ 取同一处的宽度，单位统一即可。}
+
+%=====================================================================
+\hdr{§5}{偏振：横波性质的第一批后果（与第三章衔接）}
+
+p7 是全章最短、也最容易被跳过的一页，却是第三章（光的偏振）的入口：电磁波是横波（$\vect E$ 与 $\vect H$ 互相垂直，且都垂直于传播方向）；光学里取 $\vect E$ 作\textbf{光矢量}，因为在光频段磁场效应可以忽略，视觉与感光效应主要由电场引起。
+p3 把偏振与干涉、衍射并列，称为几何光学无法解释的三件事；p7 底部的批注说得更直接：“The transverse nature of light is the foundation for the subsequent study of polarization.”
+
+用复振幅写，偏振就是\textbf{两个分量}的关系。取传播方向为 $z$，则
+\[
+\Etil=\Etil_x\hat x+\Etil_y\hat y,
+\qquad
+\Etil_x=E_xe^{i\varphi_x},\quad
+\Etil_y=E_ye^{i\varphi_y}.
+\]
+两分量的振幅比 $E_y/E_x$ 与相位差 $\delta=\varphi_y-\varphi_x$ 决定偏振态：
+\begin{itemize}
+\item $\delta=0$ 或 $\pi$：\textbf{线偏振}（linear polarization），合成振动是一条直线；
+\item $\delta=\pm\pi/2$ 且 $E_x=E_y$：\textbf{圆偏振}（circular polarization），端点画圆；
+\item 其余情形：\textbf{椭圆偏振}（elliptical polarization），端点画椭圆。
+\end{itemize}
+强度按 p22 的规则逐分量取模平方相加（正交分量内积为零，§3.2(iii)）：
+\[
+I=|\Etil_x|^2+|\Etil_y|^2=I_x+I_y .
+\]
+这就是"自然光过偏振片后强度减半"的数学来源：自然光两个分量强度相等、相位差随机，过片后只留一个分量。
+
+\aside{本讲义到此为止：偏振的定量处理（马吕斯定律、布儒斯特角、双折射、琼斯矢量）在课件《第3章 光的偏振》里，不在本章范围。这里要记住的只有一句：偏振是横波的直接后果，用"两个正交分量的振幅比 + 相位差"描述。第三章开头会反复用到这个描述方式。}
+
+%=====================================================================
+\hdr{§6}{缺口清单}
+
+下面每条都按"类型｜页码与原文短语｜缺什么｜本讲义补在哪"写。凡标"讲义补"的，是课件没有而本讲义独立推导的内容，不属于课件原文。
+
+\gapitem{机制缺口}{p11，原文 “$v=1/\sqrt{\varepsilon_0\varepsilon_r\mu_0\mu_r}$” 与 “$c=1/\sqrt{\varepsilon_0\mu_0}=2.99792458\times10^8$ m/s” 都只给结果。缺：从麦克斯韦方程组到波动方程的推导，以及 $n=\sqrt{\varepsilon_r\mu_r}$ 的来源。补法：§1.2 四步推导（取旋度、用 $\nabla\cdot\vect E=0$、代换、比对），并注明三个前提（无源、均匀、线性）。}
+
+\gapitem{代数跳步}{p12，原文 “$=\frac{1}{2}n\sqrt{\varepsilon_0/\mu_0}\,E_0^2$”，前一步是 $\frac12\sqrt{\varepsilon_0\varepsilon_r/\mu_0\mu_r}E_0^2$。缺：$\sqrt{\varepsilon_r/\mu_r}\to n$ 隐含 $\mu_r=1$。补法：§1.5(c) 写出 $\sqrt{\varepsilon_r/\mu_r}=n/\mu_r$，说明课件默认非磁性介质，并给 $I=\frac12n\varepsilon_0 cE_0^2$ 的等价形式。}
+
+\gapitem{常数没报户口}{p12 的 $\frac12$ 与 p6 的 $1240$ 都是"凭记忆混用"的高危项。缺：来源说明。补法：§1.5(a) 指出 $\frac12$ 来自一个周期上 $\cos^2$ 的平均（数学来源）；§4.1 指出 $1240$ 是 $hc$ 的数值（物理常数），与约定无关。}
+
+\gapitem{机制缺口}{p21，原文 “From energy conservation, the time-averaged power flow density (intensity) is inversely proportional to the square of the spherical radius” 紧接 “The amplitude of the wave is inversely proportional to the spherical radius”。缺：从 $I\propto1/r^2$ 到 $|E|\propto1/r$ 需要 $I\propto E^2$。补法：§2.4 用 $I\cdot4\pi r^2=P$ 与 $I\propto E_0^2$ 接上，并核验复振幅与实场的符号一致。}
+
+\gapitem{记号缺口（丢初相位）}{p10，原文 “and assuming an initial phase, the vibrational equation can be rewritten as $E=E_0\cos 2\pi(t/T-z/\lambda)=\cdots$”——说"设了初相位"，式子却没有 $\varphi_0$；p25、p28 同样在结果里丢掉了 $\varphi_0$。缺："取 $\varphi_0=0$"这一步。补法：§0 的约定与例 2.3 的答案给出带 $\varphi_0$ 的完整形式，并说明课件各式是 $\varphi_0=0$ 的特例。}
+
+\gapitem{适用区间缺口}{p13，原文 “As the light wave propagates far away from the point source, the local wavefront can be \emph{approximated} as a plane wave.” 缺：“far away”没有判据。补法：§1.4 由 $r\approx z+\rho^2/(2z)$ 得相位偏差 $\pi a^2/(\lambda z)$，给出 $z\gg a^2/\lambda$（工程取 $2a^2/\lambda$）。}
+
+\gapitem{适用条件矛盾}{p28，原文同时写 “$k_x=-2\pi f$”、“$k_y=0$、$k_z=0$” 与 “$k=\sqrt{k_x^2+k_y^2+k_z^2}=2\pi/\lambda$”。三条只在 $|f|=1/\lambda$ 时相容，此时 $\cos\alpha=\mp1$，而不只是"钝角"。缺：一般情形应保留 $k_y,k_z$。补法：例 2.6 的自检逐条指出，并给出正确读法（存在 $k_y,k_z$ 时 $|\lambda f|\le1$）。}
+
+\gapitem{概念表述矛盾}{p26，原文 Hint：“The conjugate wave is a plane wave whose propagation direction is symmetric to that of the original wave with respect to the $x=0$ plane.” 与 p22 的 “A plane wave propagating in the opposite direction” 冲突：按 $x=0$ 面镜像应让 $k_x$ 变号，而 p26 自己的式子只有 $k_y$ 变号（即 $\vect k\to-\vect k$ 的 $x=0$ 面上投影）。缺：以哪条为准。补法：例 2.4 的自检按 p22 取 $\vect k\to-\vect k$，并说明"镜像 + 反向"才自洽。}
+
+\gapitem{数值口径不一致}{p5 写可见光 “400 nm to 760 nm”，p6 的表写 “380 nm -- 780 nm”，且 p6 能量列 1.6--3.3 eV 是按 380--780 算的。缺：两套口径的来源与取用场合。补法：§4.1 末尾提醒框，标明 400--760 为老教材粗略值、380--780 为 CIE 值，做题以题给为准。}
+
+\gapitem{术语未落地}{p24，原文 “the optical field that arrives at a certain plane in a \emph{stationary} wave field”。缺：“stationary”在此指单色定态（时间因子已分离），不是"驻波"。补法：§2.6 旁注给判据——同页把波前函数定义为"复振幅分布"，而复振幅与 $t$ 无关。}
+
+%=====================================================================
+\hdr{§7}{公式卡与易错点}
+
+\subhdr{7.1 七张公式卡（对应 p31）}
+
+p31 用七张卡收束全章，顺序与本讲义一致。每张卡后面注明它在哪一节被推导过，方便回查。
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{振动方程}：$E=E_0\cos(\omega t-\varphi_0)$。原点处；任一点把 $\varphi_0$ 换成 $\varphi_0+kz$（§1.3）。
+\item \textbf{波矢与角频率}：$k=2\pi/\lambda$，$\omega=2\pi/T=2\pi\nu=2\pi c/\lambda$。四个量只有两个独立（§1.3）。
+\item \textbf{光速}：$c=1/\sqrt{\varepsilon_0\mu_0}$，$v=1/\sqrt{\varepsilon_0\varepsilon_r\mu_0\mu_r}=c/n$（§1.2）。
+\item \textbf{光强}：$I=\frac12 n\sqrt{\varepsilon_0/\mu_0}\,E_0^2\propto nE_0^2$；同介质中 $I\propto E_0^2$（§1.5）。
+\item \textbf{平面波复振幅}：$\Ez=E_0e^{i(\vect k\cdot\vect r+\varphi_0)}=E_0e^{i(k_xx+k_yy+k_zz+\varphi_0)}$（§2.3）。
+\item \textbf{球面波复振幅}：$\Ez=\dfrac{E_0}{r}e^{i(kr+\varphi_0)}$（§2.4）。
+\item \textbf{光强的复振幅形式}：$I=|\Etil|^2=\Etil\Etil^{*}$（§2.5）。
+\end{enumerate}
+
+\subhdr{7.2 易错点（每条指向某个具体式子）}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item \textbf{看到 $\langle E\rangle=0$ 就说"没有能量"。}p12 的批注专门纠这个：$E$ 的平均为零，但 $S\propto E^2$ 的平均为 $E_0^2/2\ne0$。查 §1.5(a)。
+\item \textbf{光强写成 $E^2$。}p15 的规则三明说 “Never use $E^2$ directly”。复数是不能直接平方的（会残留 $e^{2i\Phi}$），必须 $I=|\Etil|^2=\Etil\Etil^{*}$。查 §2.5。
+\item \textbf{混用 $e^{-i\omega t}$ 与 $e^{+i\omega t}$。}同一份推导里两套符号并存，相位差会整体差一个负号。选一套，全程不改。查 §2.1 规则二。
+\item \textbf{先取实部再叠加。}$\operatorname{Re}$ 只对线性运算可省；如果先把两个波的实部写出来再相加，容易丢掉干涉项或算错相位。查 §3.1。
+\item \textbf{球面波漏掉 $1/r$。}球面波的振幅与强度差一个平方：$I\propto1/r^2$ 而 $|E|\propto1/r$。查 §2.4。
+\item \textbf{以为波长在介质里不变。}频率由光源定、不变；波长按 $\lambda=\lambda_0/n$ 缩短。算相位差时必须用介质中波长或直接用光程。查 §4.1。
+\item \textbf{平面波相位写成 $kr$ 而不是 $\vect k\cdot\vect r$。}只有 $\vect r\parallel\vect k$ 时两者相等；一般位置差一个 $\cos$ 因子。查 §2.3 与例 2.1。
+\item \textbf{共轭符号漏写。}p26 的式子左边本该是 $\Ez^{*}$，却写成了 $\Ez$，等式自指。$\Ez$ 与 $\Ez^{*}$ 是两个不同的波（方向相反），不能当同一个。查 §2.7 例 2.4。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§8}{三句话总结}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item 光是横波，光学里取电场作光矢量；一列单色简谐波的全部信息只有两个量——振幅 $E_0$ 与空间相位 $\Phi=\varphi_0+\vect k\cdot\vect r$，其余（$\omega,T,\nu,\lambda,k$）都由它们与 $c$ 的关系定出。
+\item 把 $e^{-i\omega t}$ 提出去以后，所有运算都在复振幅上做：叠加是复数相加，强度是模平方 $|\Etil|^2=\Etil\Etil^{*}$，球面波的振幅按 $1/r$ 衰减、相位按 $kr$ 增长。
+\item 波前函数 $\Etil(x,y)$ 是"某个平面上的复振幅分布"；认一列波是不是平面波只看两件事——振幅是否恒定、相位是否是坐标的线性函数（p18 的原话）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§9}{页码对照}
+
+左列是 PDF 页序（全文引用都用它），括注红色徽章号；右列是该页内容与它的落点。"已并入"表示该页与别页重复，只在一处讲；"$\Rightarrow$"后就是本讲义的节号。
+
+\begin{center}\footnotesize\renewcommand{\arraystretch}{1.0}
+\tabtop
+\begin{tabular}{@{}p{2.35cm}p{14.2cm}@{}}
+\thead{PDF 页（徽章）} & \thead{该页内容 $\Rightarrow$ 落点}\\
+\hline
+p1 & 章封面：Wave Nature of Light；Layer 3: Light is Waves；Lecture 5 $\Rightarrow$ §0\\
+p2（2） & 目录：2.1--2.4 四块 $\Rightarrow$ §0\\
+p3（3） & 为什么需要波动光学：能解释／不能解释三现象 $\Rightarrow$ §1.1\\
+p4（4） & 波动说复辟时间线 1678--1888（Huygens$\to$Hertz）$\Rightarrow$ §1.1 背景\\
+p5（5） & 光是电磁波的一个波段；可见光 400--760 nm；横波 $\Rightarrow$ §4.1、§1.3\\
+p6（6） & 波段表、$c=\lambda\nu$、$E=1240/\lambda$、$\lambda=\lambda_0/n$ $\Rightarrow$ §4.1\\
+p7（6） & 横波与光矢量：为什么取 $\vect E$ $\Rightarrow$ §5\\
+p8（7） & 振动方程 $E=E_0\cos(\omega t-\varphi_0)$；$\omega$ 的三种写法 $\Rightarrow$ §1.3\\
+p9（8） & 任意点 $z$ 的振动；$\tau=z/c$；$p$ 落后 $O$ $\Rightarrow$ §1.3\\
+p10（9） & 换成 $T,\nu,\lambda$；$k$ 与 $\varphi=kz$ 的定义；双周期性 $\Rightarrow$ §1.3\\
+p11（10） & 光速 $v=1/\sqrt{\varepsilon_0\varepsilon_r\mu_0\mu_r}$、$c$ 的数值 $\Rightarrow$ §1.2\\
+p12（11） & 能流密度、坡印廷矢量、光强与时间平均（含三条批注）$\Rightarrow$ §1.5\\
+p13（12） & 点光源／扩展光源；球面波、平面波；任意光场分解 $\Rightarrow$ §1.4\\
+p14（13） & 欧拉公式、引入复数、复振幅 $\Ez=E_0e^{i\varphi}$ $\Rightarrow$ §2.1\\
+p15（13） & 三条规则：可省 $\operatorname{Re}$／负号是约定／须用共轭 $\Rightarrow$ §2.1\\
+p16（14） & 复振幅的意义、相量图、$E=\operatorname{Re}\{\Etil e^{-i\omega t}\}$ $\Rightarrow$ §2.2\\
+p17（15） & 平面波复振幅：$\varphi(P)=\vect k\cdot\vect r+\varphi_0$、方向余弦 $\Rightarrow$ §2.3（图 2）\\
+p18（16） & 平面波两条特征：振幅恒定、相位线性 $\Rightarrow$ §2.3\\
+p19（17） & 例 2.1 平面波的相位分布 $\Rightarrow$ §2.7\\
+p20（18） & 例 2.2 沿 $\vect r$ 传播的复振幅 $\Rightarrow$ §2.7\\
+p21（19） & 球面波复振幅、$1/r$、两条特征 $\Rightarrow$ §2.4\\
+p22（20） & 共轭波定义；平面波反向、球面波会聚；$I=|\Etil|^2$ $\Rightarrow$ §2.5\\
+p23（21） & 强度的复振幅表达、全息记录与再现 $\Rightarrow$ §2.5\\
+p24（22） & 波前与波前函数定义；四个议题 $\Rightarrow$ §2.6\\
+p25（23） & 例 2.3 $x=0$ 平面上的波前函数 $\Rightarrow$ §2.7\\
+p26（24） & 例 2.4 共轭波（Hint 与 p22 矛盾）$\Rightarrow$ §2.7、§6 第 8 条\\
+p27（25） & 例 2.5 点光源的波前函数与共轭 $\Rightarrow$ §2.7\\
+p28（26） & 例 2.6 认波型；$\cos\alpha=-\lambda f$ $\Rightarrow$ §2.7、§6 第 7 条\\
+p29（27） & Key takeaways I：参数与光强速查 $\Rightarrow$ 已并入 §7.1\\
+p30（28） & 平面波／球面波对比表 $\Rightarrow$ 已并入 §2.4 末段\\
+p31（30） & 七张公式卡（徽章 29 缺失）$\Rightarrow$ §7.1\\
+p32 & Thank you；"光的十个层级"示意 $\Rightarrow$ §8 引子\\
+p33 & 空白尾页 $\Rightarrow$ ---\\
+\end{tabular}
+\tabbot
+\end{center}
+
+{\footnotesize\color{inkgray}依据课件 33 页逐页读图整理，公式按图像核对；§1.2、§3、§4.2--4.3 三处标"讲义补"者为独立推导，课件未展开。例题 2.1--2.6 全解位置见上表最后一列。}
+
+\end{document}

@@ -33,6 +33,25 @@ def date_prefix(value) -> str | None:
     return match.group(1) if match else None
 
 
+def load_study_mode(root: Path) -> dict:
+    """读取 `.tutor/config/study-mode.yml`；文件不存在 → 空 dict（＝旧行为，全默认）。
+
+    2026-10-29 引入：学习者把学习方式改成「讲义驱动、考前集中验收」，
+    于是**排期队列的裁剪规则改为由配置决定**，而不是删改历史题目。
+    设计成"缺文件即旧行为"，是为了让这个开关可逆：删掉文件就回到原来的排期口径。
+    """
+    from learninglib import parse_yaml
+
+    path = Path(root) / ".tutor" / "config" / "study-mode.yml"
+    if not path.is_file():
+        return {}
+    try:
+        data = parse_yaml(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def load_concept_reviews(root: Path) -> list[dict]:
     """扫描概念笔记 frontmatter 的 `due` → 记忆维护队列（到期即复习）。"""
     rows: list[dict] = []
@@ -140,11 +159,22 @@ def load_task_due_dates(root: Path, today: str) -> list[dict]:
     """
     from learninglib import completed_task_ids, load_tasks
 
+    # 讲义模式：`due` 早于 `archive_before` 的旧题视为已归档（保留文件、不作待办）。
+    # 归档只影响"是否排进今天"，题目本体与作答史都不动，考前验收时仍可取用。
+    study_mode = load_study_mode(root)
+    archive = (
+        date_prefix(study_mode.get("archive_before"))
+        if study_mode.get("mode") == "handout-driven"
+        else None
+    )
+
     answered = completed_task_ids(root)
     rows = []
     for task in load_tasks(root).values():
         due = date_prefix(task.get("due"))
         if not due or task.get("status") == "done":
+            continue
+        if archive and due < archive:
             continue
         if task["id"] in answered:
             continue
@@ -239,10 +269,18 @@ def load_assignment_items(root: Path) -> list[dict]:
 
 
 def all_review_items(root: Path, today: str) -> list[dict]:
-    """各来源合并（记忆维护 / 能力再测 / 题目截止 / 外部截止 / 目标节点）。"""
+    """各来源合并（记忆维护 / 能力再测 / 题目截止 / 外部截止 / 目标节点）。
+
+    讲义模式（`study-mode.yml: mode=handout-driven`）下，**能力再测队列默认不排**：
+    平时只走讲义，能力证据只在考前集中验收时采集（`retest_queue: exam_only`）。
+    需要临时恢复时，把该键改成 `always` 即可，不用改代码。
+    """
+    study_mode = load_study_mode(root)
+    handout = study_mode.get("mode") == "handout-driven"
+    retest_off = handout and str(study_mode.get("retest_queue") or "") == "exam_only"
     items = (
         load_concept_reviews(root)
-        + load_capability_retests(root, today)
+        + ([] if retest_off else load_capability_retests(root, today))
         + load_task_due_dates(root, today)
         + load_assignment_items(root)
         + load_goals_with_deadlines(root)
@@ -260,7 +298,13 @@ def overdue_concepts(root: Path, today: str) -> list[dict]:
 
 
 def capability_due_today(root: Path, today: str) -> list[dict]:
-    """今天可以动手的能力再测/补练条目（not_before ≤ today）。"""
+    """今天可以动手的能力再测/补练条目（not_before ≤ today）。
+
+    讲义模式下返回空：该模式下平时不排能力再测（见 `all_review_items` 的说明）。
+    """
+    study_mode = load_study_mode(root)
+    if study_mode.get("mode") == "handout-driven" and str(study_mode.get("retest_queue") or "") == "exam_only":
+        return []
     return [r for r in load_capability_retests(root, today) if days_between(r["due"], today) >= 0]
 
 

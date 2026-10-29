@@ -1,0 +1,991 @@
+% !TEX program = xelatex
+% 电工电子技术 · 第五章 集成运算放大器 · 精讲讲义（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\settags{Ch5-1 · 集成运算放大器 · 精讲}{电工电子技术}
+\setlength{\emergencystretch}{3em}
+\tracinglostchars=2
+
+\begin{document}
+
+\doctitle{第五章　集成运算放大器}
+{从一只「增益无穷大的差动放大器」，到「负反馈怎么把增益变成控制力」}
+{依据：\texttt{Chapter Five-1-2026中白上传(1).pdf}（大连理工大学·中白学院，p1--p50，共 50 页）\ \textperiodcentered\ 2026-10-28}
+
+%=============================================================
+\hdr{§0}{课件坐标：50 页讲了什么，缺了哪一节}
+
+\subhdr{这份课件确实是第五章（与 Chapter Five-5 不同）}
+
+课件文件名是 \texttt{Chapter Five-1-2026中白上传.pdf}，每一页页眉写的是
+\textbf{5.1 Introduction to Integrated Op Amp}、\textbf{5.2 Voltage transfer characteristic}、
+\textbf{5.3 Comparator circuit}、\textbf{5.5 Basic concept of feedback}、
+\textbf{5.6 Important conclusion of Op-amp}。也就是说，它\textbf{确实是第 5 章}（集成运算放大器），
+与上一份 \texttt{Chapter Five-5}（文件名写第五章、内容其实是第 4 章）不是一回事。
+本讲义所有坐标写成 \texttt{[C5-1 p13]} 形式：\texttt{C5-1} 指文件名 Chapter Five-1，
+\texttt{p} 后数字指该 PDF 的物理页码（右下角数字，p1 是封面，无前置页）。
+
+\subhdr{这 50 页各是什么}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{11.2cm}@{}}
+\toprule
+\thead{页码} & \thead{内容（本讲义的落点）}
+\\
+\midrule
+p1 & 封面：5.1 Introduction to Integrated Op Amp $\to$ §1
+\\
+p2 & 什么是 IC、IC 的功能（放大/整流/振荡/计数/定时/存储）$\to$ §1
+\\
+p3--p6 & 集成规模四档：SSI / MSI / LSI / VLSI $\to$ §1
+\\
+p7--p8 & 理想放大器三条件（无穷增益、无穷输入阻抗、零输出阻抗）$\to$ §1
+\\
+p9 & 运放内部结构：输入级 / 中间级 / 输出级 $\to$ §1
+\\
+p10 & 理想 vs 实际特性参数（$r_{\mathrm{i}}$、CMRR、$r_{\mathrm{o}}$、$A_{\mathrm{o}}$）$\to$ §1
+\\
+p11 & 符号与引脚：反相端、同相端、净输入 $u_{\mathrm{D}}$ $\to$ §1
+\\
+p12 & 741 引脚配置（8 脚、双电源）$\to$ §1
+\\
+p13--p14 & 等效电路（差动放大）与一道 $u_{\mathrm{D}}{=}3\ \mathrm{mV}$ 的题 $\to$ §1、§2
+\\
+p15--p20 & 5.2 电压传输特性：线性区 / 正负饱和区 $\to$ §2
+\\
+p21--p22 & 5.3 比较器：开环运放作比较器 + 4 个例题 $\to$ §3
+\\
+p23--p26 & 5.5.1 反馈概念：定义、开/闭环、框图与三系数 $\to$ §4
+\\
+p27--p43 & 5.5.2 反馈类型：正负 / 电压电流 / 串联并联 + E1--E8 $\to$ §5
+\\
+p44--p48 & 5.5.3 负反馈的影响：增益关系、稳定性、通频带等 $\to$ §6
+\\
+p49--p50 & 5.6 重要结论：理想特性与深度负反馈两条假设 $\to$ §7
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{一处必须点明的拼接：没有 5.4}
+
+课件从 p22 的 \textbf{5.3 Comparator circuit} 直接跳到 p23 的 \textbf{5.5 Basic concept of feedback}，
+\textbf{中间没有 5.4}。这不是排版小错，而是结构缺了一节：按本课件自身的编号体系，
+5.5.1 的「反馈概念」是 5.5.2「反馈类型」与 5.5.3「负反馈影响」的前置，
+5.4 通常应承担「理想运放的电路分析方法（虚短虚断）」的引入。
+本讲义 §4 从反馈定义自足讲起（不依赖 5.4），§7 把「虚短虚断」作为深度负反馈的结论正式给出，
+两处合起来补上了 5.4 缺掉的那块。§10 会逐条记录这条缺口。
+
+\subhdr{记号：先统一，后文不再回头}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.0cm}p{10.4cm}@{}}
+\toprule
+\thead{记号} & \thead{约定（沿用课件原文的命名）}
+\\
+\midrule
+$u_+,\ u_-$ & 同相输入、反相输入的对地电压（课件写作 $u_{+}$、$u_{-}$）
+\\
+$u_{\mathrm{D}}$ & 净输入（差模输入），$u_{\mathrm{D}}=u_+-u_-$
+\\
+$u_{\mathrm{O}}$ & 输出电压（课件写作 $u_{\mathrm{O}}$，有的书写作 $u_o$）
+\\
+$A_{\mathrm{o}}$ & 开环电压增益（课件写作 $A_o$，本讲沿用 $A_{\mathrm{o}}$）
+\\
+$A_{\mathrm{F}}$ & 闭环电压增益，$A_{\mathrm{F}}=x_{\mathrm{O}}/x_{\mathrm{I}}$
+\\
+$F$ & 反馈系数，$F=x_{\mathrm{F}}/x_{\mathrm{O}}$
+\\
+$x_{\mathrm{I}},x_{\mathrm{D}},x_{\mathrm{O}},x_{\mathrm{F}}$ & 输入、净输入、输出、反馈信号（框图里的通用水量记号）
+\\
+$r_{\mathrm{i}},\ r_{\mathrm{o}}$ & 输入电阻、输出电阻
+\\
+CMRR & 共模抑制比（Common Mode Rejection Ratio）
+\\
+$+U_{\mathrm{CC}},\ -U_{\mathrm{EE}}$ & 正、负电源；$U_{\mathrm{OM}}$ 为最大输出电压（饱和值）
+\\
+\bottomrule
+\end{tabular}
+
+\callout{\textbf{贯穿全章的一条规则（先记住它，后面每节都在用它）}：
+理想运放的本质只有三个字——\textbf{差模放大}。输出只认两个输入端的\textbf{差}
+$u_{\mathrm{D}}=u_+-u_-$，把这个差放大 $A_{\mathrm{o}}$ 倍后输出：
+$u_{\mathrm{O}}=A_{\mathrm{o}}u_{\mathrm{D}}$。
+因为 $A_{\mathrm{o}}$ 极大，只要 $u_+$ 与 $u_-$ 差一点点，输出就顶到电源（饱和）；
+所以\textbf{开环}运放天然是一个比较器（§3），而要让它在「线性区」里精确工作，
+只能靠\textbf{负反馈}把两个输入端拉回相等（§4--§7）。全章五节都是这一句话的展开。}
+
+%=============================================================
+\hdr{§1}{5.1 集成运放：从一块硅片到一只符号}
+
+\subhdr{什么是 IC，它有什么功能（p2）}
+
+p2 的两句原文照抄：
+
+\begin{itemize}
+\item \textit{What is IC?} —— An integrated circuit (IC), sometimes called a chip or microchip, is a
+\textbf{semiconductor wafer} on which thousands or millions of tiny resistors, capacitors, and
+transistors are fabricated.（把成千上万只电阻、电容、晶体管做在同一片半导体晶圆上。）
+\item \textit{What is the function of IC?} —— An IC can function as an \textbf{amplifier, rectifier,
+oscillator, counter, timer and memory}.（能做放大、整流、振荡、计数、定时、存储。）
+\end{itemize}
+
+集成运算放大器（简称运放，op amp）就是其中「做放大」的那一类 IC。本讲的起点是：
+\textbf{运放是一块已经把「多级放大电路」做进芯片里的集成电路}，使用它的重点是\textbf{外部}的接法，
+而不是内部每一只管子。
+
+\subhdr{集成规模四档（p3--p6）}
+
+p3--p6 用同一张分级图、每页只换一行说明。四档按「一块芯片上元器件数量」分：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.4cm}p{4.2cm}p{5.8cm}@{}}
+\toprule
+\thead{等级} & \thead{全称} & \thead{元器件数量（课件原文）}
+\\
+\midrule
+SSI & Small-Scale Integration & no more than 100（$\le 100$）
+\\
+MSI & Medium-Scale Integration & around 100 to 1000（$10^2\sim10^3$）
+\\
+LSI & Large-Scale Integration & around 1000 to 10000（$10^3\sim10^4$）
+\\
+VLSI & Very-Large-Scale Integration & more than 10000（$>10^4$）
+\\
+\bottomrule
+\end{tabular}
+
+\aside{这张表是台账表（逐档一个数），不承载推导，故不另做「表前一句/逐行读法」。
+要记的只有一件事：\textbf{规模越大，芯片越复杂}；运放属于模拟 IC，规模通常在中、小规模这一档。}
+
+\subhdr{理想放大器的三条件（p7--p8）}
+
+p8 把「理想放大器」写成三条（原文）：
+
+\begin{enumerate}
+\item \textbf{Infinite voltage gain}（无穷电压增益）：输入一个极小的变化，就应产生极大的输出变化。
+\item \textbf{Infinite input impedance}（无穷输入阻抗）：不从信号源取任何功率。
+\item \textbf{Zero output impedance}（零输出阻抗）：即使负载电阻掉到零，输出电压也不变。
+\end{enumerate}
+
+这三条是同一个愿望的三种说法：\textbf{放大器应该「不打扰信号源、也不被负载打扰」}——
+输入端阻抗无穷大（不吃源电流），输出端阻抗为零（带得动任何负载），增益无穷大（想放大多少放大多少）。
+真实的放大器做不到，但把这三条当\textbf{理想模型}，后面 §7 的「虚短虚断」就全从它来。
+
+\subhdr{内部结构：三级（p9）}
+
+p9 原文：Integrated operational amplifier is a kind of \textbf{directly coupled multistage}
+amplifier circuit with large voltage gain. It usually consists of three stages:
+\textbf{input stage, intermediate stage and output stage}.（直接耦合的多级放大电路，三级结构。）
+
+\begin{itemize}
+\item \textbf{输入级}：差动放大电路，决定运放的输入电阻、失调与 CMRR；
+\item \textbf{中间级}：提供主要电压增益；
+\item \textbf{输出级}：功率放大，决定带负载能力（低输出电阻）。
+\end{itemize}
+
+「直接耦合」四个字值得记：级与级之间没有隔直电容，所以运放能放大\textbf{直流和极低频}信号，
+代价是各级的直流工作点互相牵连（这与第 4 章 RC 耦合「各级 Q 点独立」正好相反）。
+
+\subhdr{理想 vs 实际：四个参数的对照（p10）}
+
+p10 把运放的四个关键参数并排列出：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{5.2cm}p{5.0cm}@{}}
+\toprule
+\thead{参数} & \thead{理想运放} & \thead{实际运放（课件原文量级）}
+\\
+\midrule
+输入电阻 $r_{\mathrm{i}}$ & $\to\infty$ & $10^5\sim10^6\ \Omega$
+\\
+共模抑制比 CMRR & $\to\infty$ & very big（很大）
+\\
+输出电阻 $r_{\mathrm{o}}$ & $\to 0$ & several $\sim$ several hundred $\Omega$（几到几百欧）
+\\
+开环增益 $A_{\mathrm{o}}$ & $\to\infty$ & $10^4\sim10^7$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{CMRR（共模抑制比）第一次出现，落到本题：它衡量「运放抑制\textbf{两端相同的}信号、只放大
+\textbf{两端之差}」的能力。理想运放 $u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-)$ 只认差、完全不认共模，
+所以 CMRR$\to\infty$。实际运放共模分量会漏一点点到输出，CMRR 越大漏得越少。}
+
+\subhdr{符号与引脚（p11）}
+
+p11 给出运放符号的每一处标注，逐条对：
+
+\begin{itemize}
+\item \textbf{``$-$''}：反相输入端（inverting input terminal）；
+\item \textbf{``$+$''}：同相输入端（non-inverting input terminal）；
+\item $u_-$：从反相端送入的信号；
+\item $u_+$：从同相端送入的信号；
+\item $u_{\mathrm{D}}$：净输入（net input）；
+\item $A_{\mathrm{o}}$ 或 $\infty$：电压增益；
+\item $u_{\mathrm{O}}$：输出。
+\end{itemize}
+
+\warnbox{\textbf{「反相/同相」这个名字是相对输出说的，不是相对输入自身}：
+$u_+$ 增大（$u_-$ 不动）$\Rightarrow$ $u_{\mathrm{D}}=u_+-u_-$ 增大 $\Rightarrow$ $u_{\mathrm{O}}$ 同方向增大，故叫\textbf{同相}端；
+$u_-$ 增大 $\Rightarrow$ $u_{\mathrm{D}}$ 减小 $\Rightarrow$ $u_{\mathrm{O}}$ 反方向减小，故叫\textbf{反相}端。
+所以「同相/反相」描述的是「这一端对输出端极性」的关系，不是「这一端本身的电压」。}
+
+\subhdr{741 引脚（p12）}
+
+p12 给出经典 741 运放（8 脚 DIP）的引脚图，标注 \texttt{Two power rails: $+U_{\mathrm{CC}}$、$-U_{\mathrm{EE}}$}
+（双电源）。标准 741 引脚对位如下（p12 的图上也标出了 2、3、6、4、7、1、5、8 这些编号）：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.6cm}p{3.2cm}p{7.6cm}@{}}
+\toprule
+\thead{引脚号} & \thead{名称} & \thead{作用}
+\\
+\midrule
+1、5 & Offset null & 调零端（外接电位器调直流失调）
+\\
+2 & Inverting $(-)$ & 反相输入 $u_-$
+\\
+3 & Non-inverting $(+)$ & 同相输入 $u_+$
+\\
+4 & $-U_{\mathrm{EE}}$ & 负电源
+\\
+6 & Output & 输出 $u_{\mathrm{O}}$
+\\
+7 & $+U_{\mathrm{CC}}$ & 正电源
+\\
+8 & NC & 空脚（No Connection）
+\\
+\bottomrule
+\end{tabular}
+
+\aside{这张引脚表是台账表（引脚号$\to$功能逐一对位），本身不承载推导。要记的只有两对：
+\textbf{2 反相、3 同相}，\textbf{4 负电源、7 正电源}；1、5 是调零，8 空脚。
+引脚编号按 DIP 封装从缺口逆时针数（741 从左上缺口处 1 号起）。}
+
+\subhdr{等效电路：输出就是「差」的放大（p13）}
+
+p13 给出运放的等效电路，并配一句关键原文：\textit{The op amp is basically a \textbf{differential
+amplifier} because the output is proportional to the difference in voltage between the two inputs.}
+（运放本质是差动放大器，因为输出正比于两个输入端的电压差。）
+
+等效电路可读成三块：输入端是\textbf{输入电阻 $r_{\mathrm{i}}$}（跨在 $u_+$、$u_-$ 之间，所以理想时
+$r_{\mathrm{i}}\to\infty$ 意味着两个输入端之间\textbf{几乎不取电流}）；输出端是\textbf{一个受控电压源}
+串一只\textbf{输出电阻 $r_{\mathrm{o}}$}；受控源的电压是
+\[
+\boxed{\;u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-)=A_{\mathrm{o}}u_{\mathrm{D}}\;}
+\]
+p13 把它写成 $u_{\mathrm{O}}=-A_{\mathrm{o}}(u_--u_+)$，与上式\textbf{完全相同}——只是把
+$A_{\mathrm{o}}(u_+-u_-)$ 括号里两项对调、负号提出去而已。这个负号不是「反相」的意思，
+纯粹是写法，别被吓到。
+
+\aside{「差动放大」落到本题：受控源电压是 $A_{\mathrm{o}}$ 乘\textbf{两个输入的差} $u_+-u_-$，
+不是乘某一个输入的绝对值。所以运放对「两端都抬高 1 V」这种共模变化\textbf{不敏感}（理想时完全无反应），
+对「一端高、一端低」的差模变化极度敏感。这就是 CMRR 那一条的电路级来源。}
+
+\subhdr{p14 那道题，先按下不表}
+
+p14 问：\textit{If $u_{\mathrm{D}}=3\ \mathrm{mV}$, $A_{\mathrm{o}}=10^6$. Find the output.}
+（净输入 3 mV、增益 $10^6$，求输出。）按 $u_{\mathrm{O}}=A_{\mathrm{o}}u_{\mathrm{D}}$ 直接乘：
+\[
+u_{\mathrm{O}}=10^6\times 3\ \mathrm{mV}=3000\ \mathrm{V}.
+\]
+\textbf{3000 V 这个答案本身就有问题}——电源才 ±15 V 量级，输出怎么可能到 3000 V？这正是下一节
+（§2 电压传输特性）要回答的：\textbf{增益再大，输出也会被电源「夹住」在饱和值}。
+所以这道题的真正意图不是「算乘法」，而是\textbf{引出饱和}。§2 会把它收尾。
+
+%=============================================================
+\hdr{§2}{5.2 电压传输特性：一条被「夹」住的直线（p15--p20）}
+
+\subhdr{定义：输出是净输入的函数}
+
+p15 的定义是
+\[
+u_{\mathrm{O}}=f(u_{\mathrm{D}})=f(u_+-u_-) .
+\]
+即：以净输入 $u_{\mathrm{D}}$ 为横轴、输出 $u_{\mathrm{O}}$ 为纵轴，画一条 $u_{\mathrm{O}}$ 对
+$u_{\mathrm{D}}$ 的曲线，这条曲线就叫\textbf{电压传输特性}（voltage transfer characteristic）。
+它回答的问题是：\textbf{两个输入端差多少，输出就给多少？}
+
+\subhdr{三段曲线（p16--p19）}
+
+p16 的图是一条「斜线中间 + 上下两条水平线」的曲线，对应三个区：
+
+\begin{enumerate}
+\item \textbf{线性区（Linear zone）}：$u_{\mathrm{O}}=A_{\mathrm{o}}u_{\mathrm{D}}$，一条过原点、斜率 $A_{\mathrm{o}}$ 的直线；
+\item \textbf{正饱和区（Positive saturation zone）}：$u_{\mathrm{O}}=+U_{\mathrm{OM}}\approx +U_{\mathrm{CC}}$；
+\item \textbf{负饱和区（Negative saturation zone）}：$u_{\mathrm{O}}=-U_{\mathrm{OM}}\approx -U_{\mathrm{EE}}$。
+\end{enumerate}
+
+\aside{三个区的来源就是一句话：\textbf{输出不可能超过电源}。当 $A_{\mathrm{o}}u_{\mathrm{D}}$ 还小于
+$U_{\mathrm{OM}}$ 时，运放还在线性区；一旦 $A_{\mathrm{o}}u_{\mathrm{D}}$ 想超过 $\pm U_{\mathrm{OM}}$，
+输出就被「夹」在 $\pm U_{\mathrm{OM}}$。所以线性区只存在于 $u_{\mathrm{D}}$ 极小的一段窗口
+$|u_{\mathrm{D}}|\le U_{\mathrm{OM}}/A_{\mathrm{o}}$ 内——这是课件没有明说的边界，§10 记一条。}
+
+\subhdr{线性区窗口有多窄：把 $A_{\mathrm{o}}$ 代进去}
+
+取 $U_{\mathrm{OM}}=15\ \mathrm{V}$、$A_{\mathrm{o}}=10^6$，线性区要求
+\[
+|u_{\mathrm{D}}|\le\frac{U_{\mathrm{OM}}}{A_{\mathrm{o}}}=\frac{15\ \mathrm{V}}{10^6}=15\ \mu\mathrm{V}.
+\]
+也就是说，\textbf{两个输入端只要差超过 15 微伏，运放就饱和}。回到 §1 末尾 p14 那道题：
+$u_{\mathrm{D}}=3\ \mathrm{mV}=3000\ \mu\mathrm{V}$，早远超 $15\ \mu\mathrm{V}$，
+所以真实的输出不是 3000 V，而是\textbf{正饱和 $+U_{\mathrm{OM}}$}。这正是课件把这道题放在 5.2 之前的原因。
+
+\warnbox{\textbf{理想运放的线是「竖」的（p20）}：p20 原文 \textit{The bigger the $A_{\mathrm{o}}$, the steeper
+the straight line. For ideal Op Amp the line is vertical because $A_{\mathrm{o}}\to\infty$.}
+$A_{\mathrm{o}}$ 越大，线性区斜率越陡、窗口越窄；$A_{\mathrm{o}}\to\infty$ 时窗口缩成一点，斜线变成
+\textbf{竖直线}（正半轴 $+U_{\mathrm{OM}}$、负半轴 $-U_{\mathrm{OM}}$、原点处竖直接跳）。
+于是\textbf{理想运放开环时，输出只有两种取值：$+U_{\mathrm{OM}}$ 或 $-U_{\mathrm{OM}}$}——这就是 §3 比较器。}
+
+%=============================================================
+\hdr{§3}{5.3 比较器：开环运放的「二值」行为（p21--p22）}
+
+\subhdr{原理（p21）}
+
+p21 的两句原文：
+
+\begin{itemize}
+\item \textit{In an open-loop configuration, an ideal op amp behaves as a comparator.}
+（开环配置下，理想运放就是一个比较器。）
+\item \textit{When it is working as a comparator, there are only two outputs possible.}
+（作比较器时，输出只有两种可能。）
+\end{itemize}
+
+判据（p21 底部）：\textbf{若 $u_+>u_-$，输出为正（饱和到 $+U_{\mathrm{OM}}$）；若 $u_+<u_-$，输出为负（饱和到 $-U_{\mathrm{OM}}$）。}
+
+一句话说清机制：开环时 $u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-)$ 且 $A_{\mathrm{o}}\to\infty$，
+只要 $u_+$ 和 $u_-$ 有一点点不相等，输出就被放大到饱和。所以比较器\textbf{不输出连续电压，
+只输出「高/低」两个电平}，本质是判断「哪个输入端高」。
+
+\subhdr{p22 的四个例题，逐题全解}
+
+p22 给四个比较器电路（❶❷❸❹），每个都给两个输入电压与电源电压，问输出。判据都是同一条：
+\textbf{比较 $u_+$ 与 $u_-$，谁大输出就往谁那边的饱和电压去}。
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{1.2cm}p{3.2cm}p{2.6cm}p{2.4cm}p{3.0cm}@{}}
+\toprule
+\thead{题} & \thead{$u_+$\ vs\ $u_-$} & \thead{电源} & \thead{判据} & \thead{输出}
+\\
+\midrule
+❶ & $u_+=4\ \mathrm{V}$，$u_-=3\ \mathrm{V}$ & $\pm12\ \mathrm{V}$ & $u_+>u_-$ & $+12\ \mathrm{V}$
+\\
+❷ & $u_+=0.3\ \mathrm{V}$，$u_-=0.5\ \mathrm{V}$ & $\pm6\ \mathrm{V}$ & $u_+<u_-$ & $-6\ \mathrm{V}$
+\\
+❸ & $u_+=0.5\ \mathrm{V}$，$u_-=0.3\ \mathrm{V}$ & $\pm6\ \mathrm{V}$ & $u_+>u_-$ & $+6\ \mathrm{V}$
+\\
+❹ & $u_+=-0.5\ \mathrm{V}$，$u_-=-0.3\ \mathrm{V}$ & $\pm6\ \mathrm{V}$ & $u_+<u_-$ & $-6\ \mathrm{V}$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{这张表是把「$u_+$ 与 $u_-$ 谁大」这一个判据在四道题上读了一遍。❶❷ 的答案
+（$+12\ \mathrm{V}$、$-6\ \mathrm{V}$）课件 p22 已直接写出；❸❹ 课件没写答案，本讲义按同一条判据推出：
+❸ 中 $0.5>0.3$ 故 $+6\ \mathrm{V}$；❹ 中 $-0.5<-0.3$（注意负数的比较！）故 $-6\ \mathrm{V}$。
+❹ 是四个里最容易错的一题——\textbf{两个负数比较，绝对值大的那个更小}。}
+
+\warnbox{\textbf{比较器的输出 = 电源电压，不是增益乘输入}。不要试图算 $A_{\mathrm{o}}\times u_{\mathrm{D}}$：
+开环 $A_{\mathrm{o}}$ 无穷大，任何非零 $u_{\mathrm{D}}$ 都只会把输出推到 $\pm U_{\mathrm{OM}}$（近似 $\pm U_{\mathrm{CC}}$ 或
+$\pm U_{\mathrm{EE}}$）。比较器考的是「\textbf{谁大}」，不是「\textbf{差多少倍}」。}
+
+%=============================================================
+\hdr{§4}{5.5.1 反馈基本概念：把输出「送回去」（p23--p26）}
+
+\subhdr{定义（p23）}
+
+p23 原文：\textit{Feedback: part or all of the output of the amplification circuit is brought back
+to the input loop in a certain way to affect the input.}
+（把输出的一部分或全部，以某种方式送回输入回路去影响输入。）
+
+关键词是\textbf{「影响输入」}：反馈不是把输出「复制」一份，而是把输出\textbf{作用于}输入，
+从而改变净输入 $x_{\mathrm{D}}$。这正是「反馈」与「级联」的区别。
+
+\subhdr{开环与闭环（p24）}
+
+\begin{itemize}
+\item \textbf{Open-loop（开环）}：系统没有反馈结构，最简单、最经济；
+\item \textbf{Closed-loop（闭环）}：系统有一条或多条反馈通路。
+\end{itemize}
+
+\subhdr{框图与三个系数（p25--p26）}
+
+p25--p26 给出反馈的标准框图。框图的四个信号与两个方块是：
+
+\[
+x_{\mathrm{I}}\ \text{（输入）}\longrightarrow\boxed{\ \text{净输入}\ x_{\mathrm{D}}\ }
+\longrightarrow\boxed{\ A_{\mathrm{o}}\ }\longrightarrow x_{\mathrm{O}}\ \text{（输出）}
+\]
+
+\[
+x_{\mathrm{F}}\ \text{（反馈信号）}\longleftarrow\boxed{\ F\ }
+\longleftarrow x_{\mathrm{O}}
+\]
+
+其中 $x_{\mathrm{D}}=x_{\mathrm{I}}-x_{\mathrm{F}}$（负反馈：净输入 = 输入 − 反馈）。p26 给出三个系数：
+
+\[
+\boxed{\;A_{\mathrm{o}}=\frac{x_{\mathrm{O}}}{x_{\mathrm{D}}}\quad\text{（开环增益）}\quad
+F=\frac{x_{\mathrm{F}}}{x_{\mathrm{O}}}\quad\text{（反馈系数）}\quad
+A_{\mathrm{F}}=\frac{x_{\mathrm{O}}}{x_{\mathrm{I}}}\quad\text{（闭环增益）}\;}
+\]
+
+\aside{$F$ 的量纲会随反馈是电压还是电流而变（可能是电阻或电导），但\textbf{无量纲地记关系}时一律写成
+$F=x_{\mathrm{F}}/x_{\mathrm{O}}$，即「输出里有 $F$ 倍被送回去」。$A_{\mathrm{o}}$ 是\textbf{没有反馈}时
+放大器自身的增益，$A_{\mathrm{F}}$ 是\textbf{接入反馈后}从输入到输出的总增益——两者别混。}
+
+\subhdr{负反馈的闭环增益：一个必须补的推导（p44 先给结果，这里先讲）}
+
+p44 直接给出结论 $|A_{\mathrm{F}}|=|A_{\mathrm{o}}|/(1+|F||A_{\mathrm{o}}|)$，中间被省掉的两行补在这里。
+从框图三条关系出发：
+
+\[
+x_{\mathrm{D}}=x_{\mathrm{I}}-x_{\mathrm{F}},\qquad
+x_{\mathrm{F}}=F\,x_{\mathrm{O}},\qquad
+x_{\mathrm{O}}=A_{\mathrm{o}}x_{\mathrm{D}} .
+\]
+
+把前两式代入第三式：
+\[
+x_{\mathrm{O}}=A_{\mathrm{o}}\bigl(x_{\mathrm{I}}-F\,x_{\mathrm{O}}\bigr)
+=A_{\mathrm{o}}x_{\mathrm{I}}-A_{\mathrm{o}}F\,x_{\mathrm{O}},
+\]
+把含 $x_{\mathrm{O}}$ 的项移到左边：
+\[
+x_{\mathrm{O}}\bigl(1+A_{\mathrm{o}}F\bigr)=A_{\mathrm{o}}x_{\mathrm{I}},
+\]
+两边同除 $x_{\mathrm{I}}$ 并除以 $(1+A_{\mathrm{o}}F)$：
+\[
+\boxed{\;A_{\mathrm{F}}=\frac{x_{\mathrm{O}}}{x_{\mathrm{I}}}=\frac{A_{\mathrm{o}}}{1+A_{\mathrm{o}}F}\;}
+\]
+取绝对值就是 p44 的 $|A_{\mathrm{F}}|=\dfrac{|A_{\mathrm{o}}|}{1+|F||A_{\mathrm{o}}|}$。
+
+\aside{「分母里的 $1+A_{\mathrm{o}}F$」这一步的前提是\textbf{负反馈} $x_{\mathrm{D}}=x_{\mathrm{I}}-x_{\mathrm{F}}$
+（所以是加号）。若换成正反馈 $x_{\mathrm{D}}=x_{\mathrm{I}}+x_{\mathrm{F}}$，会得到
+$A_{\mathrm{F}}=A_{\mathrm{o}}/(1-A_{\mathrm{o}}F)$，当 $A_{\mathrm{o}}F\to1$ 时分母趋于零、增益趋于无穷——
+\textbf{这就是正反馈用来起振的根源}，也是本课件反复强调「负反馈」的原因。}
+
+%=============================================================
+\hdr{§5}{5.5.2 反馈类型：三个判断题，各配一个方法（p27--p43）}
+
+\subhdr{三个分类维度（p27）}
+
+p27 给出反馈分类的三个维度，每条都是一个「是/否」判断题：
+
+\begin{enumerate}
+\item \textbf{Positive or negative（正/负）}：反馈的效果与输入\textbf{相同}还是\textbf{相反}？
+\item \textbf{Voltage or current（电压/电流）}：反馈\textbf{取自输出电压}还是\textbf{输出电流}？
+\item \textbf{Series or parallel（串联/并联）}：反馈在输入端与输入\textbf{串联}还是\textbf{并联}？
+\end{enumerate}
+
+\subhdr{方法一：正负——瞬时极性法（p28--p30）}
+
+p28 给判据：\textbf{净输入 $x_{\mathrm{D}}$ 在 $x_{\mathrm{I}}$ 与 $x_{\mathrm{F}}$ 共同作用下是增大
+（正反馈 PF）还是减小（负反馈 NF）。}
+
+p29 给出\textbf{瞬时极性法}的完整步骤（负反馈例子的文字在 p30）：
+
+\begin{enumerate}
+\item 假设输入信号瞬时为正，在 $u_{\mathrm{I}}$ 处标「$+$」；
+\item 沿放大器一路标极性：$u_{\mathrm{I}}$ 从\textbf{同相端}进 $\Rightarrow$ 输出 $u_{\mathrm{O}}$ 也为「$+$」；
+\item 把输出反馈回输入端：若反馈回到\textbf{同相端}，$u_{\mathrm{F}}$ 与 $u_{\mathrm{I}}$ 同号，
+\textbf{净输入增大} $\Rightarrow$ \textbf{正反馈（PF）}；若反馈回到\textbf{反相端}，$u_{\mathrm{F}}$ 与
+$u_{\mathrm{I}}$ 反号，\textbf{净输入减小} $\Rightarrow$ \textbf{负反馈（NF）}。
+\end{enumerate}
+
+p30 的负反馈例子把净输入写成具体式子：$u_{\mathrm{D}}=u_{\mathrm{I}}-u_{\mathrm{F}}$，
+反馈使 $u_{\mathrm{F}}$ 升高、$u_{\mathrm{D}}$ 减小，故为 NF。
+
+\aside{瞬时极性法落到本题的两个判断式（都是 p29、p30 原文给过的）：
+PF 时 \texttt{iD = iI + iF}（净输入电流被反馈\textbf{叠加}增大）；
+NF 时 \texttt{uD = uI − uF}（净输入电压被反馈\textbf{抵消}减小）。
+记这一条就够了：\textbf{反馈使净输入变大→正反馈，使净输入变小→负反馈}。}
+
+\subhdr{方法二：电压/电流——输出短路法（p31--p32）}
+
+p31 给判据（原文，两条都写）：
+
+\begin{itemize}
+\item \textbf{令 $R_{\mathrm{L}}=0$（输出短路）}，则 $u_{\mathrm{O}}=0$。此时若反馈信号 $x_{\mathrm{F}}=0$，
+就是\textbf{电压反馈（VF）}；否则是\textbf{电流反馈（CF）}。
+\item 同理，\textbf{令 $R_{\mathrm{L}}=\infty$（输出开路）}，则 $i_{\mathrm{O}}=0$。此时若 $x_{\mathrm{F}}=0$，
+就是\textbf{电流反馈（CF）}；否则是\textbf{电压反馈（VF）}。
+\end{itemize}
+
+机制一句话：\textbf{电压反馈的取样对象是 $u_{\mathrm{O}}$}——输出短路使 $u_{\mathrm{O}}$ 归零，
+反馈随之消失；\textbf{电流反馈的取样对象是 $i_{\mathrm{O}}$}——输出短路时 $i_{\mathrm{O}}$ 还在流，
+反馈依然存在。p32 的两个例子正是这样判的：短路后 $i_{\mathrm{F}}=0$ 的是 VF，$u_{\mathrm{F}}\neq0$ 的是 CF。
+
+\subhdr{方法三：串联/并联——输入短路法（p33--p35）}
+
+p33 给定义：\textbf{串联反馈（SF）}：反馈信号 $x_{\mathrm{F}}$ 与输入\textbf{串联}；
+\textbf{并联反馈（PF）}：反馈信号 $x_{\mathrm{F}}$ 与输入\textbf{并联}。
+
+p34 给判据（原文）：\textbf{把 Q 点（反馈网络与输入的交点）短路到地。若输入信号仍能加到放大器的
+两个输入端，就是串联反馈（SF）；否则是并联反馈（PF）。}
+
+p35 的两个例子原文结论照抄：
+\begin{itemize}
+\item \textbf{Point Q is grounded, $u_{\mathrm{I}}$ can still be applied to the input terminals, it is SF.}
+（Q 点接地后输入仍能进到输入端 $\Rightarrow$ 串联。）
+\item \textbf{Point Q is grounded, $u_{\mathrm{I}}$ can not be applied to the input terminals, it is PF.}
+（Q 点接地后输入进不去 $\Rightarrow$ 并联。）
+\end{itemize}
+
+\subhdr{E1--E8：八道课上判定题（p36--p43）}
+
+p36--p43 是 E1--E8 八道例题，每道都给一张电路图、下面并列三个问题：
+\textbf{(1) Positive or negative (2) Voltage or Current (3) Series or parallel}。
+这八题的\textbf{电路连线在图形层里，文字层只有元件名与编号}（$R_{\mathrm{F}}$、$R_1$、$R_2$、
+$R_{\mathrm{L}}$、$u_{\mathrm{I}}$、$u_{\mathrm{O}}$、$A_{\mathrm{o}}$ 或 $\infty$），
+所以下面的判定必须\textbf{对着图}做，不能只背元件名。
+
+八题按「放大器符号 + 有无取样电阻」可先分成两类（可从文字层确认）：
+
+\begin{itemize}
+\item E5、E6 用\textbf{理想运放符号 $\infty$}（图上有 $R_1$、$R_2$、$R_{\mathrm{F}}$、$R_{\mathrm{L}}$）；
+\item E1--E4、E7、E8 用\textbf{通用放大器符号 $A_{\mathrm{o}}$}；其中 E3、E4、E7、E8 的图里多一只
+\textbf{独立电阻 $R$}（通常在输出回路，作电流取样用）。
+\end{itemize}
+
+\callout{\textbf{判定这八题的固定顺序（每道都走三步）}：
+① \textbf{正负}：用瞬时极性法，看 $R_{\mathrm{F}}$ 把输出送回\textbf{同相端}（正）还是\textbf{反相端}（负）；
+② \textbf{电压/电流}：用输出短路法，把 $R_{\mathrm{L}}$ 短路，看反馈是否还存在；
+③ \textbf{串联/并联}：用输入短路法，把反馈与输入的交点 Q 接地，看 $u_{\mathrm{I}}$ 还能不能进到输入端。
+三步各用一条独立判据，\textbf{互不依赖}，所以「正负」判错不影响「串并」判定。}
+
+\warnbox{\textbf{这里必须向读者说明}：本讲义把 E1--E8 的\textbf{电路图}转写成了文字与元件名，
+但\textbf{连线拓扑}（$R_{\mathrm{F}}$ 具体跨在哪两端、$R$ 串在输出还是负载上）是图形信息，
+文字层无法逐根复现。因此\textbf{八题的最终答案要对着课件原图用上面三步判读}，本讲义\textbf{不替读者
+把每题的「正负/电压电流/串并」三答案写死}——凡是没在图上看清楚的，都属待确认，不可照抄一套
+「标准答案」硬套。§10 已把这条记为「图缺/图替」缺口。}
+
+%=============================================================
+\hdr{§6}{5.5.3 负反馈的影响：增益变小，换来四样好处（p44--p48）}
+
+\subhdr{先接受一个「反直觉」的结论：负反馈让增益变小}
+
+§4 已经推出 $A_{\mathrm{F}}=\dfrac{A_{\mathrm{o}}}{1+A_{\mathrm{o}}F}$。因为分母 $1+A_{\mathrm{o}}F>1$，
+所以
+\[
+|A_{\mathrm{F}}|<|A_{\mathrm{o}}| .
+\]
+\textbf{接上负反馈，增益反而变小}。那为什么还要用负反馈？因为代价是「增益变小」，
+换来的是\textbf{增益稳定、通频带宽、失真小、阻抗可控}——下面逐条看。用「增益换控制」，正是 p49
+那句 \texttt{Trade the voltage gain for control} 的含义。
+
+\subhdr{深度负反馈：$A_{\mathrm{F}}$ 只由反馈网络决定（p45）}
+
+当 $|F||A_{\mathrm{o}}|\gg1$ 时（这叫\textbf{深度负反馈}，deep negative feedback），分母里的
+$1$ 可以忽略：
+\[
+\boxed{\;A_{\mathrm{F}}\approx\frac{1}{F}\;}
+\]
+p45 原文：\textit{When $|F||A_{\mathrm{o}}|\gg1$, $|A_{\mathrm{F}}|\approx\dfrac{1}{|F|}$.}
+
+这句话是负反馈\textbf{最值钱}的结论：\textbf{深度负反馈下，闭环增益只由反馈网络 $F$ 决定，
+与放大器自身的 $A_{\mathrm{o}}$ 几乎无关}。$A_{\mathrm{o}}$ 会随温度、工艺、负载漂移，
+但 $F$（几只精密电阻的比值）很稳定，所以 $A_{\mathrm{F}}\approx1/F$ 很稳定——这就是下一小条。
+
+\subhdr{(1) 增益稳定性提高（p46）——一个微分式，课件没推}
+
+p46 直接给出结论式，本讲义把推导补出来。对 $A_{\mathrm{F}}=A_{\mathrm{o}}/(1+A_{\mathrm{o}}F)$
+关于 $A_{\mathrm{o}}$ 求导（把 $F$ 当常数）：
+\[
+\frac{\mathrm{d}A_{\mathrm{F}}}{\mathrm{d}A_{\mathrm{o}}}
+=\frac{(1+A_{\mathrm{o}}F)\cdot 1-A_{\mathrm{o}}\cdot F}{(1+A_{\mathrm{o}}F)^2}
+=\frac{1}{(1+A_{\mathrm{o}}F)^2}.
+\]
+两边同乘 $\mathrm{d}A_{\mathrm{o}}$、再除以 $A_{\mathrm{F}}=A_{\mathrm{o}}/(1+A_{\mathrm{o}}F)$：
+\[
+\frac{\mathrm{d}A_{\mathrm{F}}}{A_{\mathrm{F}}}
+=\frac{1}{1+A_{\mathrm{o}}F}\cdot\frac{\mathrm{d}A_{\mathrm{o}}}{A_{\mathrm{o}}} .
+\]
+即
+\[
+\boxed{\;\frac{\mathrm{d}|A_{\mathrm{F}}|}{|A_{\mathrm{F}}|}
+=\frac{1}{1+|F||A_{\mathrm{o}}|}\,\frac{\mathrm{d}|A_{\mathrm{o}}|}{|A_{\mathrm{o}}|}\;}
+\]
+因为 $\dfrac{1}{1+|F||A_{\mathrm{o}}|}<1$，所以\textbf{闭环增益的相对变化，是开环增益相对变化的
+$1/(1+|F||A_{\mathrm{o}}|)$ 倍}——反馈越深，增益越稳。p46 原文：
+\textit{The relative change of closed-loop gain is less than that of open loop gain.}
+
+\aside{这一步的「把 $F$ 当常数」来自 $F$ 通常由电阻比值构成、几乎不随 $A_{\mathrm{o}}$ 漂移。
+求导用的是商的导数法则；第二步「两边同除 $A_{\mathrm{F}}$」把绝对变化换算成\textbf{相对变化}，
+才能和 p46 的 $\mathrm{d}|A_{\mathrm{F}}|/|A_{\mathrm{F}}|$ 对上号。}
+
+\subhdr{(2) 展宽通频带（p47）}
+
+p47 给两条幅频曲线：开环 $|A_{\mathrm{o}}|$ 的通频带 $B_0=f_2-f_1$ 较窄，闭环 $|A_{\mathrm{F}}|$
+的通频带 $B_{\mathrm{f}}=f_4-f_3$ 较宽（图上用 $0.707$ 倍点标出上下截止频率）。
+机制：$A_{\mathrm{F}}$ 被压低了，但「增益×带宽」大致守恒，所以\textbf{增益降多少、带宽就展宽多少}。
+这是负反馈用「牺牲增益」换来的第二样好处。
+
+\subhdr{(3) 稳定输出量（p47）}
+
+p47 原文：\textbf{VF：steady $u_{\mathrm{O}}$；CF：steady $i_{\mathrm{O}}$}。
+电压负反馈取样的是输出电压，所以它\textbf{稳定输出电压}（负载变化时 $u_{\mathrm{O}}$ 不塌）；
+电流负反馈取样的是输出电流，所以它\textbf{稳定输出电流}（$i_{\mathrm{O}}$ 不随负载漂）。
+\textbf{取样什么就稳定什么}——这是电压/电流反馈最直接的用途区分。
+
+\subhdr{(4) 非线性失真改善（p48）}
+
+p48 的图画出：无负反馈时输出波形（$i_{\mathrm{C}}$ 对 $\omega t$）明显畸变，加负反馈后接近正弦。
+机制：失真本质是「输出多了输入没有的分量」，负反馈把这个分量也\textbf{按 $F$ 送回输入、反向抵消}，
+于是输出里的杂波被压低。注意\textbf{负反馈不能消灭失真源，只能把它的影响缩小 $1+A_{\mathrm{o}}F$ 倍}。
+
+\subhdr{(5) 改变输入输出阻抗（p48）——四句话的机制}
+
+p48 原文只给四行结论，本讲义补机制：
+
+\begin{itemize}
+\item \textbf{SF（串联负反馈）：$r_{\mathrm{i}}\uparrow$}。反馈电压与输入电压\textbf{串联}、同向抵消，
+净输入电流减小，等效于输入端「难进电流」$\Rightarrow$ 输入电阻变大。
+\item \textbf{PF（并联负反馈）：$r_{\mathrm{i}}\downarrow$}。反馈支路与输入\textbf{并联}，
+输入端多一条分流支路 $\Rightarrow$ 输入电阻变小。
+\item \textbf{VF（电压负反馈）：$r_{\mathrm{o}}\downarrow$}。稳定的是输出电压 $\Rightarrow$ 输出端越像理想电压源
+（内阻越小），输出电阻变小。
+\item \textbf{CF（电流负反馈）：$r_{\mathrm{o}}\uparrow$}。稳定的是输出电流 $\Rightarrow$ 输出端越像理想电流源
+（内阻越大），输出电阻变大。
+\end{itemize}
+
+\aside{这四条的机制可以统一成一句：\textbf{反馈稳定什么量，就使那个量的「源」更理想}——
+稳定电压使输出更像电压源（$r_{\mathrm{o}}\downarrow$），稳定电流使输出更像电流源（$r_{\mathrm{o}}\uparrow$）；
+串联在输入端相当于「电压源串进来」抬高输入电阻，并联在输入端相当于「多一条支路」拉低输入电阻。}
+
+%=============================================================
+\hdr{§7}{5.6 重要结论：理想运放的「虚短」与「虚断」（p49--p50）}
+
+\subhdr{两条特性（p49）}
+
+p49 把「理想运放」与「接反馈后的实际运放」并排：
+
+\begin{itemize}
+\item 理想运放：$r_{\mathrm{i}}\to\infty$、CMRR$\to\infty$、$r_{\mathrm{o}}\to0$、$A_{\mathrm{o}}\to\infty$；
+\item 接反馈后：$r_{\mathrm{i}}\to\infty$、CMRR$\to\infty$、$r_{\mathrm{o}}\to0$，但\textbf{$A_{\mathrm{F}}$ 有限}
+（不再是无穷，而是 $A_{\mathrm{F}}\approx1/F$ 这个可控值）。
+\end{itemize}
+
+p49 那句 \texttt{Trade the voltage gain for control} 就是本讲的收尾：\textbf{用无穷大的开环增益，
+换一个可控、稳定、有限大小的闭环增益}。
+
+\subhdr{深度负反馈下的两条假设（p50）——这是全章要带走的结论}
+
+p50 给出深度负反馈（理想参数）下的三条假设，前两条是「虚短虚断」，第三条是「输出等于开路电压」：
+
+\[
+\text{\ding{172}}\ \ u_+ = u_-\qquad\qquad
+\text{\ding{173}}\ \ i_{\mathrm{D}}=0,\ i_+=i_-=0\qquad\qquad
+\text{\ding{174}}\ \ u_{\mathrm{OL}}=u_{\mathrm{OC}}
+\]
+
+前两条都能从理想参数直接推出（p50 右边那几行）：
+
+\begin{itemize}
+\item \textbf{虚短 $u_+=u_-$}：$u_{\mathrm{D}}=\dfrac{u_{\mathrm{O}}}{A_{\mathrm{o}}}$，而 $A_{\mathrm{o}}\to\infty$，
+故 $u_{\mathrm{D}}\to0$，即 $u_+=u_-$。\textbf{「虚短」不是真的短路}（两端没有真的连在一起），
+而是因为增益无穷大、净输入被压到几乎为零，两端\textbf{电位相等}。
+\item \textbf{虚断 $i_{\mathrm{D}}=0$}：$i_{\mathrm{D}}=\dfrac{u_{\mathrm{D}}}{r_{\mathrm{i}}}$，而
+$r_{\mathrm{i}}\to\infty$，故 $i_{\mathrm{D}}\to0$，即 $i_+=i_-=0$。\textbf{「虚断」不是真的断路}，
+而是输入电阻无穷大、两个输入端\textbf{几乎不取电流}。
+\end{itemize}
+
+\warnbox{\textbf{两条假设成立的前提必须写清（课件只说结论）}：虚短虚断\textbf{只在
+「深度负反馈 + 运放工作在线性区」时成立}。开环或正饱和时，$u_{\mathrm{O}}$ 被夹在 $\pm U_{\mathrm{OM}}$，
+$u_{\mathrm{D}}=u_{\mathrm{O}}/A_{\mathrm{o}}$ 不再成立，$u_+$ 与 $u_-$ 不必相等；
+而线性区又要求 $u_+\approx u_-$——\textbf{这二者互为因果}：正因为负反馈不断把 $u_-$ 拉向 $u_+$，
+运放才待得住线性区，才有虚短。§10 记这条边界。}
+
+\subhdr{这两条假设怎么用（下一讲的伏笔）}
+
+虚短（$u_+=u_-$）加虚断（$i_+=i_-=0$）是\textbf{分析任何运放线性电路的起点}：遇到同相/反相比例、
+加法、积分这些运算电路，第一步都是「利用虚短虚断，把两个输入端的电压、电流关系写出来」。
+本课件只讲到 5.6，没有展开具体运算电路（那正是缺掉的 5.4 与后续内容），但这两条假设是它们
+全部的地基。§8 用两道「代入假设」的小题先预热。
+
+%=============================================================
+\hdr{§8}{例题落点：全章题目清单与详解位置}
+
+\subhdr{本章的题目全景}
+
+课件里的题目分三类：\textbf{一道引出饱和的乘法题}（p14）、\textbf{四道比较器判读}（p22）、
+\textbf{八道反馈类型判定}（E1--E8，p36--p43）。落点如下：
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{3.2cm}p{2.0cm}p{2.8cm}p{5.4cm}@{}}
+\toprule
+\thead{题目} & \thead{页码} & \thead{课件有无答案} & \thead{本讲义落点与处理}
+\\
+\midrule
+$u_{\mathrm{D}}{=}3\ \mathrm{mV}$，$A_{\mathrm{o}}{=}10^6$ & p14 & 无（只问不答） & §2 算得 3000 V，再指出实际饱和为 $+U_{\mathrm{OM}}$
+\\
+比较器 ❶❷ & p22 & 有（$+12\ \mathrm{V}$、$-6\ \mathrm{V}$） & §3 全解
+\\
+比较器 ❸❹ & p22 & 无 & §3 按同一条判据推出 $+6\ \mathrm{V}$、$-6\ \mathrm{V}$
+\\
+E1--E8 反馈判定 & p36--p43 & 无（三问并列） & §5 给三步判定法，答案须对图判读（图缺）
+\\
+\bottomrule
+\end{tabular}
+
+\subhdr{两道「用虚短虚断」的小题（[教学补充]，课件未给，预热下一讲）}
+
+（1）\textbf{电压跟随器}。运放输出直接连到反相端（$R_{\mathrm{F}}=0$ 的特例），输入从同相端进。
+由虚短 $u_-=u_+$，而 $u_-$ 就是输出（直接连回），故
+\[
+u_{\mathrm{O}}=u_+ = u_{\mathrm{I}} .
+\]
+输出「跟着」输入走、增益为 1，故叫电压跟随器。这是第 4 章共集电极（射极跟随器）的运放版，
+用途相同：\textbf{高输入阻抗、低输出阻抗，做缓冲}。
+
+（2）\textbf{反相比例放大器}。输入经 $R_1$ 进反相端，$R_{\mathrm{F}}$ 跨在输出与反相端之间，同相端接地。
+由虚断 $i_-=0$，$R_1$ 与 $R_{\mathrm{F}}$ 上的电流相等；由虚短 $u_-=u_+=0$（同相端接地），反相端是「虚地」。
+于是
+\[
+\frac{u_{\mathrm{I}}-0}{R_1}=\frac{0-u_{\mathrm{O}}}{R_{\mathrm{F}}}
+\quad\Longrightarrow\quad
+u_{\mathrm{O}}=-\frac{R_{\mathrm{F}}}{R_1}u_{\mathrm{I}},
+\]
+增益 $A_{\mathrm{F}}=-R_{\mathrm{F}}/R_1$，负号就是「反相」二字的来源。这一式也正是 §6 深度负反馈
+$A_{\mathrm{F}}\approx1/F$ 的具体形态（此处 $F=R_1/(R_1+R_{\mathrm{F}})$ 取反后即得）。
+
+\aside{这两题是\textbf{本讲义根据虚短虚断补的}（课件只到 5.6、没给运算电路），标 [教学补充]。
+它们不是凭空加内容，而是把 §7 的两条假设\textbf{各用一次}：电压跟随器只用虚短，反相比例虚短虚断一起用。
+这正好接上课件缺掉的 5.4 与后续运算电路。}
+
+%=============================================================
+\hdr{§9}{缺口清单：9 条，逐条点名}
+
+本讲共记 9 条缺口。按六类分布：\textbf{机制缺口 3 条}、\textbf{代数跳步 2 条}、
+\textbf{拼接缺口 1 条}、\textbf{压缩缺口 1 条}、\textbf{图缺/图替 1 条}、
+\textbf{边界缺口 1 条}。每条按五字段记录：\textbf{类型 | 页码 | 课件原文短语 | 缺了什么 | 补法}。
+
+\par\vspace{2pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.6cm}p{3.6cm}p{4.2cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+拼接缺口 & p22--p23 & \texttt{5.3} 后直接 \texttt{5.5} & 没有 5.4 一节（理想运放分析方法的引入） & §4 从反馈定义自足讲起；§7 补虚短虚断；§8 补两道代入题
+\\
+机制缺口 & p13 & \texttt{$-A_o(u_--u_+)$} & 为什么是差模、负号从哪来 & §1 指出它是 $A_{\mathrm{o}}(u_+-u_-)$ 的改写，负号只是写法
+\\
+机制缺口 & p14 & \texttt{$u_D=3\,mV$, $A_o=10^6$} & 只问不答；3000 V 远超电源 & §2 先算 3000 V，再指出实际饱和于 $+U_{\mathrm{OM}}$
+\\
+\bottomrule
+\end{tabular}}
+
+\par\vspace{4pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.6cm}p{3.6cm}p{4.2cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+代数跳步 & p44 & \texttt{$|A_F|=\frac{|A_o|}{1+|F||A_o|}$} & 从 $x_{\mathrm{O}}=A_{\mathrm{o}}(x_{\mathrm{I}}-F x_{\mathrm{O}})$ 解出 $A_{\mathrm{F}}$ 的两行被省 & §4 显式移项解出，并给正反馈对比式
+\\
+代数跳步 & p46 & \texttt{$\frac{d|A_F|}{|A_F|}=\frac{1}{1+|F||A_o|}\frac{d|A_o|}{|A_o|}$} & 这个微分式怎么来的没证 & §6 用商的导数法则逐步求导
+\\
+压缩缺口 & p48 & \texttt{SF: $r_i\uparrow$, PF: $r_i\downarrow$, VF: $r_o\downarrow$, CF: $r_o\uparrow$} & 四句话压成四行，为什么各自影响阻抗没解释 & §6 逐条给机制（串/并、取样电压/电流）
+\\
+边界缺口 & p20 & \texttt{the line is vertical because $A_o\to\infty$} & 线性区窗口 $|u_{\mathrm{D}}|\le U_{\mathrm{OM}}/A_{\mathrm{o}}$ 未写，端点值未给 & §2 给出窗口宽度 15 $\mu$V 的算例
+\\
+\bottomrule
+\end{tabular}}
+
+\par\vspace{4pt}
+\noindent{\small
+\begin{tabular}{@{}p{1.45cm}p{1.6cm}p{3.6cm}p{4.2cm}p{3.9cm}@{}}
+\toprule
+\thead{类型} & \thead{页码} & \thead{原文短语} & \thead{缺了什么} & \thead{补法}
+\\
+\midrule
+机制缺口 & p50 & \texttt{$u_+=u_-$, $i_D=0$} & 两条假设是「深度负反馈+理想参数」的结论，不是无条件成立 & §7 明写前提：只在线性区 + 深度负反馈下成立
+\\
+图缺/图替 & p11--p13、p26、p36--p43 & 运放符号、741 引脚、等效电路、反馈框图、E1--E8 电路 & 器件级结论只有图形、无文字层；连线拓扑无法从文字复现 & §1/§4/§5 用文字 + 表复述拓扑，沿项目 Ch4-5 先例不用 tikz；E1--E8 答案须对图判读
+\\
+\bottomrule
+\end{tabular}}
+
+\warnbox{\textbf{两条读课件时要有的防备}：
+（1）\textbf{没有 5.4}——按 5.5.1 是 5.5.2/5.5.3 的前置推断，缺的应是「理想运放分析方法」，
+本讲义用 §4、§7、§8 补上，但\textbf{原文 5.4 具体讲了什么，本讲义不臆测}；
+（2）\textbf{E1--E8 只有图没有文字}——\textbf{任何不看图就给出的「标准答案」都不可信}，
+判定必须回到课件原图走 §5 的三步法。}
+
+%=============================================================
+\hdr{§10}{公式卡与四步用法}
+
+\subhdr{卡一：运放的核心式}
+
+\[
+\boxed{\;u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-)=A_{\mathrm{o}}u_{\mathrm{D}}\qquad\text{（线性区）}\;}
+\]
+饱和时 $u_{\mathrm{O}}=\pm U_{\mathrm{OM}}$（近似 $\pm U_{\mathrm{CC}}$ / $\pm U_{\mathrm{EE}}$）。
+比较器（开环）：$u_+>u_-\Rightarrow+U_{\mathrm{OM}}$，$u_+<u_-\Rightarrow-U_{\mathrm{OM}}$。
+
+\subhdr{卡二：负反馈闭环增益}
+
+\[
+\boxed{\;A_{\mathrm{F}}=\frac{x_{\mathrm{O}}}{x_{\mathrm{I}}}=\frac{A_{\mathrm{o}}}{1+A_{\mathrm{o}}F}\;}
+\qquad
+\boxed{\;\text{深度负反馈}\ |A_{\mathrm{o}}F|\gg1:\quad A_{\mathrm{F}}\approx\frac{1}{F}\;}
+\]
+
+\subhdr{卡三：三个分类判据}
+
+\begin{enumerate}
+\item \textbf{正/负}（瞬时极性法）：反馈使净输入\textbf{增大}为正，\textbf{减小}为负。
+\item \textbf{电压/电流}（输出短路法）：$R_{\mathrm{L}}$ 短路后反馈\textbf{消失}为电压反馈，\textbf{仍在}为电流反馈。
+\item \textbf{串联/并联}（输入短路法）：Q 点接地后输入\textbf{仍能进}为串联，\textbf{进不去}为并联。
+\end{enumerate}
+
+\subhdr{四步用法：拿到一个运放电路，按这个顺序做}
+
+\begin{enumerate}
+\item \textbf{先判断运放状态}：开环/正反馈 $\Rightarrow$ 比较器（输出只有 $\pm U_{\mathrm{OM}}$）；
+负反馈且线性区 $\Rightarrow$ 可用虚短虚断。
+\item \textbf{写出两个输入端的约束}：虚短 $u_+=u_-$、虚断 $i_+=i_-=0$。
+\item \textbf{对关键节点写 KCL}（反相端节点、输出节点），把 $u_{\mathrm{O}}$ 解出来。
+\item \textbf{回代验证}：检查是否真在线性区（$|u_{\mathrm{O}}|<U_{\mathrm{OM}}$）；若是反馈电路，
+再对 $A_{\mathrm{F}}$ 与 $1/F$ 做一致性核对。
+\end{enumerate}
+
+%=============================================================
+\hdr{§11}{易错点：每条都能指回某一步}
+
+\begin{enumerate}
+
+\item \textbf{把「同相/反相」理解成输入端的电压正负}（§1，p11）。
+它说的是\textbf{这一端对输出极性的关系}：同相端使输出同向，反相端使输出反向。
+
+\item \textbf{把 p14 的 3000 V 当最终答案}（§1 末、§2）。
+增益乘输入是线性区公式，一旦超过电源就饱和；3000 V 只是「提醒你会饱和」的题面，不是答案。
+
+\item \textbf{比较负的输入电压时比错大小}（§3，p22 ❹）。
+$-0.5\ \mathrm{V} < -0.3\ \mathrm{V}$（绝对值大的更小），所以 $u_+=-0.5$ 小于 $u_-=-0.3$，
+输出为负饱和。\textbf{负数比较看数轴位置，不看绝对值大小}。
+
+\item \textbf{把 $A_{\mathrm{F}}$ 的式子记成正反馈}（§4）。
+负反馈是 $A_{\mathrm{o}}/(1+A_{\mathrm{o}}F)$（分母加号），正反馈是 $A_{\mathrm{o}}/(1-A_{\mathrm{o}}F)$。
+正反馈在 $A_{\mathrm{o}}F\to1$ 时增益趋于无穷（起振），故课件全用负反馈。
+
+\item \textbf{深度负反馈 $A_{\mathrm{F}}\approx1/F$ 忘了前提}（§6）。
+必须 $|A_{\mathrm{o}}F|\gg1$；若反馈不深，$1$ 不能丢，要用完整式 $A_{\mathrm{o}}/(1+A_{\mathrm{o}}F)$。
+
+\item \textbf{虚短虚断当成无条件成立}（§7，p50）。
+它们只在\textbf{深度负反馈 + 线性区}下成立。开环比较器里 $u_+\neq u_-$，虚短不成立。
+
+\item \textbf{虚短误当真空短路、虚断误当真断路}（§7）。
+虚短是「电位相等但没连」，虚断是「电流为零但没断」。\textbf{都不能把两个输入端子真短路或真断开}，
+否则电路拓扑就变了。
+
+\item \textbf{电压/电流反馈判错：把「短路后反馈还在不在」记反}（§5，p31--p32）。
+短路输出后 $u_{\mathrm{O}}=0$：反馈\textbf{消失} $\Rightarrow$ 电压反馈；反馈\textbf{仍在} $\Rightarrow$ 电流反馈。
+\textbf{取样什么，短路什么就消失什么}——取样电压则短路电压消失，取样电流则短路电流仍在。
+
+\item \textbf{E1--E8 不看图硬套答案}（§5，p36--p43）。
+八题的连线在图上，必须用三步法\textbf{对着图}判，任何「背出来的标准答案」都可能张冠李戴。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{三句话总结}
+
+\begin{enumerate}
+
+\item \textbf{运放是一只「差模、增益无穷大」的放大器}：$u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-)$，
+$A_{\mathrm{o}}$、$r_{\mathrm{i}}$、CMRR 趋于无穷、$r_{\mathrm{o}}$ 趋于零。
+所以开环时它\textbf{天然是比较器}——输出只有 $\pm U_{\mathrm{OM}}$，判据就是「$u_+$ 与 $u_-$ 谁大」。
+
+\item \textbf{负反馈用「增益变小」换「增益变稳」}：$A_{\mathrm{F}}=\dfrac{A_{\mathrm{o}}}{1+A_{\mathrm{o}}F}$，
+深度负反馈下 $A_{\mathrm{F}}\approx\dfrac{1}{F}$，只由反馈网络决定；换来增益稳定、带宽展宽、
+失真减小、阻抗可控四项好处。反馈类型靠三个判据：\textbf{瞬时极性法（正负）、输出短路法（电压/电流）、
+输入短路法（串并）}。
+
+\item \textbf{分析运放线性电路的两把钥匙是「虚短虚断」}：$u_+=u_-$、$i_+=i_-=0$，
+但\textbf{只在深度负反馈 + 线性区成立}。有了这两条，反相/同相比例、跟随、加法等运算电路都能从
+「写两个输入端的电压电流关系」起步。
+
+\end{enumerate}
+
+%=============================================================
+\hdr{§13}{与课件的页码对照表}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}p{2.2cm}p{8.8cm}p{3.8cm}@{}}
+\toprule
+\thead{课件页} & \thead{课件内容（原文关键词）} & \thead{本讲义落点}
+\\
+\midrule
+p1 & 封面：5.1 Introduction to Integrated Op Amp & §0
+\\
+p2 & \texttt{What is IC / function of IC} & §1
+\\
+p3--p6 & \texttt{SSI / MSI / LSI / VLSI} & §1
+\\
+p7--p8 & \texttt{ideal amplifier} 三条件 & §1
+\\
+p9 & \texttt{Inner structure}：三级 & §1
+\\
+p10 & 理想 vs 实际参数（$r_{\mathrm{i}}$、CMRR、$r_{\mathrm{o}}$、$A_{\mathrm{o}}$） & §1
+\\
+p11 & \texttt{Symbol and pins}：$+/-$、$u_{\mathrm{D}}$ & §1
+\\
+p12 & \texttt{Pinout of IC 741} & §1
+\\
+p13 & \texttt{Equivalent circuit}：差动放大 & §1
+\\
+p14 & \texttt{$u_D=3\,mV$, $A_o=10^6$} 问输出 & §1 末、§2
+\\
+p15--p20 & 5.2 电压传输特性，三区 & §2
+\\
+p21 & 5.3 比较器原理 & §3
+\\
+p22 & 比较器四个例题 & §3
+\\
+p23--p24 & 5.5.1 反馈定义、开/闭环 & §4
+\\
+p25--p26 & 框图与 $A_{\mathrm{o}}$、$F$、$A_{\mathrm{F}}$ & §4
+\\
+p27 & 5.5.2 三个分类维度 & §5
+\\
+p28--p30 & 正/负：瞬时极性法 & §5
+\\
+p31--p32 & 电压/电流：输出短路法 & §5
+\\
+p33--p35 & 串联/并联：输入短路法 & §5
+\\
+p36--p43 & E1--E8 反馈判定 & §5
+\\
+p44--p45 & 5.5.3 $A_{\mathrm{F}}$ 与 $A_{\mathrm{o}}$ 关系、深度负反馈 & §6
+\\
+p46 & 增益稳定性（微分式） & §6
+\\
+p47 & 展宽通频带、稳定输出 & §6
+\\
+p48 & 非线性失真、输入输出阻抗 & §6
+\\
+p49 & 5.6 特性（$A_{\mathrm{F}}$ 有限） & §7
+\\
+p50 & 深度负反馈两条假设（虚短虚断） & §7
+\\
+\bottomrule
+\end{tabular}
+
+\flowerrule
+
+\callout{\textbf{读这份讲义的最后一句提醒}：全章只有一个主线——\textbf{「增益无穷大」是原因，
+「反馈」是手段，「可控、稳定、可分析」是结果}。运放开环增益大到不现实，所以只能当比较器；
+要让它在线性区精确工作，就用负反馈把它「摁」住，代价是增益变小、换来的是稳定与可控。
+带走三条式子即可：
+\[
+u_{\mathrm{O}}=A_{\mathrm{o}}(u_+-u_-),\qquad
+A_{\mathrm{F}}=\frac{A_{\mathrm{o}}}{1+A_{\mathrm{o}}F}\approx\frac{1}{F},\qquad
+u_+=u_-,\ i_+=i_-=0\ \text{（深度负反馈）}.
+\]
+第一句说运放\textbf{是什么}，第二句说负反馈\textbf{怎么算}，第三句说线性电路\textbf{怎么起步}。
+E1--E8 那八道判定题，记得回到课件原图，用 §5 的三步法一题一题判。}
+
+\end{document}

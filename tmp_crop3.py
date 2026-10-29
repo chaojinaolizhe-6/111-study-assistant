@@ -1,0 +1,11 @@
+﻿from PIL import Image
+im = Image.open(r'subjects\02-光学\偏振光-数据页2.jpg')
+print(im.size)
+c = im.crop((120, 280, 1150, 980)).resize((2060,1400), Image.LANCZOS)
+c.save(r'_scratch\data2-table.png')
+c2 = im.crop((1150, 250, 1919, 1000)).resize((1538,1500), Image.LANCZOS)
+c2.save(r'_scratch\data2-right.png')
+im1 = Image.open(r'subjects\02-光学\偏振光-数据页1.jpg')
+c3 = im1.crop((40, 850, 1080, 1250)).resize((2080,800), Image.LANCZOS)
+c3.save(r'_scratch\data1-table.png')
+print('ok')

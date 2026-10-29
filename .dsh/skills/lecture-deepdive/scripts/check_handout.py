@@ -10,7 +10,9 @@ r"""check_handout.py —— 讲义交付前的「一题一块」自动检查。
   2. 每个「例 N」块同样要有题面（例题可以不用 \qstem，但题干不能缺席）；
   3. 出现「作业汇总／题面照抄」字样而全文没有「答案／详解」→ 作业只抄了题面，没有解；
   4. 正文出现裸 ✓ ✗（lmroman 缺字，应写 $\checkmark$）；
-  5. 警告：\qstem 没写课件页码；\qstem 前没加 \qbreak（可能被跨页拆开）。
+  5. 警告：\qstem 没写课件页码；\qstem 前没加 \qbreak（可能被跨页拆开）；
+  6. 警告：器件级小节有表格但没有图（figure/circuitikz/tikzpicture/includegraphics），
+     可能用表代替了拓扑图（对应 SKILL.md 硬性约束 15）。
 
 退出码：0 全通过；1 有错误；2 只有警告。
 """
@@ -24,6 +26,9 @@ HEAD_RE = re.compile(r"^\s*\\(?:subhdr|hdr)\{(.*)\}\s*$")
 PROBLEM_RE = re.compile(r"第\s*\d+\s*题")
 EXAMPLE_RE = re.compile(r"例\s*\d+")
 STEM_MARKERS = (r"\qstem{", "题面", "题目", "已知", "求：", "求 ", "题：", "？", "?")
+FIG_RE = re.compile(r"\\begin\{(?:figure|circuitikz|tikzpicture)\}|\\includegraphics")
+ENG_TITLE_RE = re.compile(r"(电路|桥式|整流|滤波|稳压|运放|放大|光路|受力|装置|接线|波形)")
+ENG_BODY_RE = re.compile(r"(导通|截止|开关状态|电流方向|正半周|负半周)")
 LOOKAHEAD = 12  # 标题后看几行
 
 
@@ -48,15 +53,22 @@ def check_file(path: Path) -> tuple[list[str], list[str]]:
     warns: list[str] = []
 
     for title, body in split_blocks(text):
+        joined = "\n".join(body)
+
         if PROBLEM_RE.search(title) and not has_stem(body):
             errors.append(f"题块「{title}」开头看不到题干（既无 \\qstem，也无题面／题目／已知）")
 
-        if r"\qstem" in "\n".join(body):
-            if not re.search(r"\\qstem\{\s*[（(]\s*课件", "\n".join(body)):
+        if r"\qstem" in joined:
+            if not re.search(r"\\qstem\{\s*[（(]\s*课件", joined):
                 warns.append(f"题块「{title}」的题干没写课件页码（应为「（课件 pXX 第 N 题）」开头）")
-            start = text.index("\n".join(body))
+            start = text.index(joined)
             if not text[:start].rstrip().endswith(r"\qbreak"):
                 warns.append(f"题块「{title}」的 \\qstem 前没有 \\qbreak，可能被跨页拆开")
+
+        # 约束 15：器件级小节有表格、却没有拓扑图（警告，不阻断）
+        if (ENG_TITLE_RE.search(title) and ENG_BODY_RE.search(joined)
+                and "\\begin{tabular}" in joined and not FIG_RE.search(joined)):
+            warns.append(f"器件级小节「{title}」只有表、没有图；检查是否用表代替了拓扑图（约束 15）")
 
     if re.search(r"(作业汇总|题面照抄|题面成组)", text) and not re.search(r"(答案|详解)", text):
         errors.append("作业只有题面（「作业汇总／题面照抄」），全文没有答案或详解")
@@ -88,9 +100,9 @@ def main(argv: list[str]) -> int:
             continue
         print(f"[检查] {path}")
         for e in errors:
-            print(f"   ✗ {e}")
+            print(f"   [E] {e}")
         for w in warns:
-            print(f"   ! {w}")
+            print(f"   [W] {w}")
         total_err += len(errors)
         total_warn += len(warns)
 

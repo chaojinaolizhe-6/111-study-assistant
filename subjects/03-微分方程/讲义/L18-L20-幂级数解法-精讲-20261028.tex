@@ -1,0 +1,1950 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,decorations.pathreplacing}
+\settags{L18--L20 · 幂级数解法}{常微分方程}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{6\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+% 允许 callout / warnbox 的参数里出现空行（多段内容）：改成 \long
+\long\def\callout#1{\par\medskip\noindent\fcolorbox{rulepurple}{bandviolet}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}\par\medskip}
+\long\def\warnbox#1{\par\medskip\noindent\fcolorbox{rulepurple}{bandcream}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{2pt}#1\vspace{2pt}}}\par\medskip}
+
+\begin{document}
+
+\doctitle{幂级数解法：常点、正则奇点与 Frobenius 方法}
+{课件 Lecture 18--20 精讲 · 附「线性微分方程组」补齐专章}
+{依据：\texttt{18\_power-series.pdf} p3--p36、\texttt{19-20\_power-series(II).pdf} p3--p42；教材 C.~Constanda《Differential Equations》第 9 章 p228--245；作业＝教材 p242 习题 1（课件 p42 作业 1）\\ 2026-10-28 编 · 全部系数与恒等式经 SymPy 复核（两批共 41 项）}
+
+\callout{\textbf{先把这一章的骨架记成五行，后面所有内容都是在解释它们。}
+\begin{enumerate}[label=\textcircled{\small\arabic*},leftmargin=2.3em]
+  \item \textbf{常点}（$P(x_0)\neq0$）：解是普通幂级数 $y=\sum a_n(x-x_0)^n$，系数由递推逐项定。
+  \item \textbf{奇点}分两类：$(x-x_0)p$ 与 $(x-x_0)^2q$ 都在 $x_0$ 解析的叫\textbf{正则奇点}，否则叫非正则。
+  \item 正则奇点处设 $y=x^r\sum a_nx^n$，把最低次幂的系数令为零，得到\textbf{指标方程}
+        \[ r(r-1)+p_0r+q_0=0,\qquad p_0=\lim_{x\to0}xp(x),\quad q_0=\lim_{x\to0}x^2q(x). \]
+  \item 两根之差不是整数：两个解都是 Frobenius 级数；两根相等或差为正整数：第二个解可能带 $\ln x$（也可能不带，要看递推在那个整数步是否自动满足）。
+  \item 级数的收敛半径 $\rho$ 等于「展开点到最近奇点（实或复）的距离」；作业题的 $\rho=\infty$，所以级数在整个 $x>0$ 上收敛。
+\end{enumerate}}
+
+%=============================================================
+\hdr{§0}{课件坐标、记号与本章地图}
+
+\subhdr{0.1 这一章在课程里的位置}
+
+课件 Lecture 1--12 处理的是「能写成初等函数」的方程：可分离、一阶线性、恰当、降阶、常系数、Cauchy--Euler。Lecture 13--17 换成线性方程组的语言，把高阶方程统一成 $Y'=A(x)Y$。Lecture 18--20 面对的是另一类方程：\textbf{系数是函数，而且没有初等解}。
+
+最典型的是课件 p18 给出的两个方程：
+\[
+\text{Bessel 方程：}\quad x^2y''+xy'+(x^2-\nu^2)y=0,
+\qquad
+\text{Legendre 方程：}\quad (1-x^2)y''-2xy'+\alpha(\alpha+1)y=0 .
+\]
+它们的解不是 $\sin$、$\ee^x$、$x^r$ 这类初等函数，而是\textbf{幂级数}本身——Bessel 函数 $J_\nu$、Legendre 多项式 $P_n$ 就是这样定义的。所以这一章不是又学一种「积分技巧」，而是换一种「表示解」的方式：\textbf{把解写成一个收敛的幂级数，并用递推把系数一个个算出来}。
+
+这条方法链只有三步，本讲义按这三步组织：
+\begin{enumerate}
+  \item \textbf{判断展开点}：$P(x_0)\neq0$ 是常点，$P(x_0)=0$ 是奇点；奇点再分正则、非正则（§2、§3）。
+  \item \textbf{决定解的形状}：常点用 $\sum a_n(x-x_0)^n$；正则奇点用 $x^r\sum a_nx^n$，$r$ 由指标方程定（§2、§4）。
+  \item \textbf{确定收敛范围}：$\rho$ 由「到最近奇点的距离」给出（§4.6、§5.7）。
+\end{enumerate}
+
+\subhdr{0.2 课件逐页对照：哪一页讲什么，本讲义在哪里补}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.25cm}p{1.55cm}p{7.0cm}p{6.0cm}@{}}
+\hline
+\thead{课件} & \thead{页} & \thead{课件给了什么} & \thead{本讲义对应节} \\
+\hline
+L18 & p3--p16 & 幂级数定义、比值法、四则运算、逐项求导、泰勒展开、解析函数、指标平移 & §1（补：比值法的倒数写法、端点检查、为什么能逐项求导）\\
+L18 & p17--p28 & 常点/奇点定义、定理 2.1、五步法、通用递推公式 & §2.1--2.3（补：卷积推导、定理证明思路）\\
+L18 & p29--p35 & 例 5（含 $\ee^x$ 的初值问题）、例 6（$(x^2+1)y''-4xy'+6y=0$） & §2.5--2.6（补：每步代数、为什么级数截断）\\
+L18 & p36 & 作业 1：$y''+(1-x)y'+(x^2-1)y=0$ & 不在本次作业范围；方法同 §2 \\
+L19-20 & p3--p7 & 正则/非正则奇点定义、分类例 & §3.1--3.2（补：为什么乘 $(x-x_0)$ 与 $(x-x_0)^2$）\\
+L19-20 & p8--p19 & Euler 方程、三种根、$x<0$ 的处理、平移版 & §3.3--3.6（补：重根用降阶推出 $\ln x$）\\
+L19-20 & p20--p31 & Frobenius 方法、指标方程、递推、定理 1.1、三情形 & §4（补：分母结构 $(k+r-r_1)(k+r-r_2)$）\\
+L19-20 & p32--p34 & 例：$xy''+4y'-xy=0$，只算 $r=0$；$r=-3$ 留作作业 & §4.5（补：$r=-3$ 的完整第二解）\\
+L19-20 & p35--p41 & Bessel 方程、$J_\nu$、$Y_\nu$ & §7 \\
+L19-20 & p42 & \textbf{作业 1（本次题目）} & \textbf{§5 全解} \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{本讲义没有照搬「§1 机制—§2/§3 两条主线—§4 等价性」的通用骨架：本章的内容是三个并列的方法（常点、Euler、Frobenius），不是两条路线的对照，硬套骨架反而会把 §3 与 §4 的先后关系讲乱。所以改成「§1 工具 → §2 常点 → §3 奇点与 Euler → §4 Frobenius → §5 作业 → §6 方程组补齐 → §7 Bessel」的线性结构；每一节与课件页的对应关系就是上表。}
+
+\subhdr{0.3 记号}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.5cm}p{12.8cm}@{}}
+\hline
+\thead{符号} & \thead{含义} \\
+\hline
+$x$ & 自变量。教材（Constanda）用 $t$，本讲义统一用 $x$，两者只是字母不同。 \\
+$y_1,y_2$ & 方程的两个线性无关解；通解写成 $C_1y_1+C_2y_2$。 \\
+$a_n$ & Frobenius 级数 $\sum a_nx^{n+r}$ 的系数；约定 $a_0\neq0$。 \\
+$r,r_1,r_2$ & 指标根，规定 $r_1\geq r_2$（实根情形）。 \\
+$p_0,q_0$ & $p_0=\lim_{x\to0}xp(x)$，$q_0=\lim_{x\to0}x^2q(x)$，即 $xp$、$x^2q$ 展开式的常数项。 \\
+$\rho$ & 定理保证的收敛半径下界：展开点到最近奇点（实或复）的距离。 \\
+$W$ & Wronskian：$W=y_1y_2'-y_1'y_2$；系统情形是 $\det\Phi$。 \\
+$\Phi,A$ & 基本矩阵与系统矩阵，见 §6。 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{教材里 $p_0,q_0$ 的写法是 $\alpha_0,\beta_0$（9.4 节：$tQ/P=\alpha_0+\alpha_1t+\cdots$，$t^2R/P=\beta_0+\beta_1t+\cdots$）。本讲义用 $p_0,q_0$，与课件 p25 一致；对照教材时把 $\alpha_0$ 读成 $p_0$、$\beta_0$ 读成 $q_0$ 即可。}
+
+\subhdr{0.4 本章地图}
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,
+  box/.style={draw=petal,rounded corners=2pt,fill=bandviolet,inner sep=4pt,align=center},
+  dec/.style={draw=violet,rounded corners=2pt,fill=white,inner sep=3pt,align=center}]
+\node[dec] (q) at (0,0) {$P(x_0)\neq0$ ?};
+\node[box,text width=4.0cm] (ord) at (-4.6,-2.0) {常点\\[1pt]$y=\sum a_n(x-x_0)^n$\\[1pt]半径 $\geq$ 到最近奇点};
+\node[box,text width=5.6cm] (sing) at (3.4,-2.0) {奇点：再判 $(x-x_0)p$、$(x-x_0)^2q$\\[2pt]正则 $\Rightarrow$ $y=x^r\sum a_nx^n$，指标方程定 $r$\\[2pt]非正则 $\Rightarrow$ 本课不处理};
+\draw[->] (q) -- node[above left,inner sep=1pt] {是} (ord);
+\draw[->] (q) -- node[above right,inner sep=1pt] {否} (sing);
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}图 1：本章的判别路线。左边一支是 §2 的常点法，右边一支是 §3--§4 的 Frobenius 法。}
+\end{center}
+
+这张图是本讲义的全部内容压缩成一张纸。你做题时只要沿着箭头走：先看 $P(x_0)$，再看两个极限是否存在，最后按根的情形选公式。
+
+\subhdr{0.5 读完本章，你应该能回答的三个问题}
+
+\begin{enumerate}
+  \item 拿到一个变系数方程，\textbf{展开点属于哪一类}？常点、正则奇点、还是非正则奇点？判断依据是什么？
+  \item 在正则奇点处，\textbf{指数 $r$ 从哪来}？为什么 $r_1$ 一定行、$r_2$ 可能出问题？第二个解什么时候要加 $\ln x$？
+  \item 算出来的级数\textbf{能用到多远}？$\rho$ 怎么由方程本身读出来，而不是算完级数再猜？
+\end{enumerate}
+
+%=============================================================
+\hdr{§1}{幂级数工具箱}
+
+这一节对应课件 L18 p3--p16。课件把定义、定理、例子排得很密，但有几处默认你会：比值法为什么写成 $\lim|a_k|/|a_{k+1}|$、端点为什么要单独查、为什么幂级数能逐项求导。本节把这些补上，并把后面反复用到的「指标平移」练熟。
+
+\subhdr{1.1 幂级数、收敛半径与比值法}
+
+\callout{
+\textbf{定义（课件 p4--p5）。}形如
+\[
+\sum_{k=0}^{\infty}a_k(x-x_0)^k=a_0+a_1(x-x_0)+a_2(x-x_0)^2+\cdots
+\]
+的表达式叫\textbf{幂级数}，$x_0$ 叫展开点。若部分和 $S_n(x)=\sum_{k=0}^n a_k(x-x_0)^k$ 的极限存在，就说级数在 $x$ 处收敛，记其和为 $S(x)$。
+
+若 $\sum_{k=0}^\infty |a_k||x-x_0|^k$ 收敛，就说\textbf{绝对收敛}。使级数在 $|x-x_0|<r$ 内绝对收敛、在 $|x-x_0|>r$ 外发散的 $r$（$0\leq r\leq\infty$）叫\textbf{收敛半径}。
+}
+
+三条容易漏的边界事实（课件 p5 的 Remark）：
+\begin{itemize}
+  \item $r=\infty$：级数对一切实数 $x$ 收敛（例如 $\ee^x$ 的展开）；
+  \item $r=0$：级数只在 $x=x_0$ 收敛（例如 $\sum k!x^k$）；
+  \item $|x-x_0|=r$ 的两个端点：\textbf{可能收敛、可能发散，必须单独判断}。
+\end{itemize}
+
+\callout{
+\textbf{定理 1.1（比值法，课件 p6）。}若 $k$ 充分大时 $a_k\neq0$，且
+\[
+\lim_{k\to\infty}\frac{|a_k|}{|a_{k+1}|}=L,\qquad 0\leq L\leq\infty,
+\]
+则幂级数的收敛半径为 $r=L$。
+}
+
+\aside{注意这个写法是「前项除以后项」，所以 $L$ 直接就是半径，不用再取倒数。如果你习惯写 $\lim|a_{k+1}/a_k|=q$，那么半径是 $r=1/q$（$q=0$ 时 $r=\infty$）。两种写法只差一次倒数，考场上选一种，别混着用。}
+
+\subhdr{1.2 端点：为什么必须单独查}
+
+课件 p6--p7 的例子值得完整走一遍，因为它同时演示了「半径」和「区间」是两件事。
+
+\callout{
+\textbf{例 1。}求 $\displaystyle\sum_{n=1}^{\infty}\frac{(x+1)^n}{n\,2^n}$ 的收敛半径与收敛区间。
+
+\textbf{解。}这里 $a_n=\dfrac{1}{n2^n}$，于是
+\[
+\lim_{n\to\infty}\frac{|a_n|}{|a_{n+1}|}
+=\lim_{n\to\infty}\frac{(n+1)2^{n+1}}{n2^n}=2 .
+\]
+所以 $r=2$：在 $|x+1|<2$ 即 $-3<x<1$ 内绝对收敛，在 $|x+1|>2$ 外发散。端点单独看：
+\begin{itemize}
+  \item $x=1$：级数变成 $\sum 1/n$，调和级数，\textbf{发散}；
+  \item $x=-3$：级数变成 $\sum(-1)^n/n$，交错调和级数，\textbf{收敛}（条件收敛，不绝对收敛）。
+\end{itemize}
+所以收敛区间是 $[-3,1)$，收敛半径仍是 $2$。
+}
+
+\warnbox{
+\textbf{易错：}把「收敛半径 $r=2$」直接写成「收敛区间 $(-3,1)$」。半径只告诉你在端点以内绝对收敛、以外发散；端点归谁，必须代进去看。本题两个端点一个收敛一个发散，正好说明端点不能靠半径猜。
+}
+
+\subhdr{1.3 四则运算与逐项求导}
+
+课件 p8--p10 给了运算规则。把它们当成「幂级数可以像多项式一样操作」的许可证：
+
+\callout{
+\textbf{定理（逐项运算）。}设 $\sum a_k(x-x_0)^k$ 与 $\sum b_k(x-x_0)^k$ 在 $|x-x_0|<r$ 内分别收敛到 $f(x)$、$g(x)$，则在该区间内
+\begin{align*}
+f(x)\pm g(x)&=\sum_{k=0}^{\infty}(a_k\pm b_k)(x-x_0)^k,\\
+f(x)g(x)&=\sum_{n=0}^{\infty}\Bigl(\sum_{k=0}^{n}a_kb_{n-k}\Bigr)(x-x_0)^n,\\
+f'(x)&=\sum_{k=1}^{\infty}k\,a_k(x-x_0)^{k-1},\qquad
+f''(x)=\sum_{k=2}^{\infty}k(k-1)a_k(x-x_0)^{k-2}.
+\end{align*}
+若还有 $b_0=g(x_0)\neq0$，则 $f/g$ 也能展成幂级数，但收敛半径可能比 $r$ 小。
+}
+
+乘积公式里那个 $\sum_{k=0}^n a_kb_{n-k}$ 叫\textbf{卷积}（Cauchy 乘积）。§2.3 和 §4.2 里，把一个函数级数乘到 $y'$ 或 $y$ 上时，用的就是它：\textbf{两个级数相乘，同幂次的系数是所有下标之和等于该幂次的乘积之和}。
+
+\aside{为什么可以逐项求导？因为幂级数在收敛圆内闭的一致收敛（在任意 $|x-x_0|\leq r'<r$ 上一致收敛），一致收敛的级数可以逐项积分、逐项求导且半径不变。课件 p10 直接给了结论；这条理由在数学分析里证，本讲义只需知道「半径内随便求导」。}
+
+\subhdr{1.4 指标平移：两个动作}
+
+后面每个例子都要做指数平移。课件 p15--p16 的两个例子把动作拆得很清楚，这里把它总结成一句话：\textbf{先把外面的 $x$ 的幂乘进去，再整体升降指标；下限和系数下标要同时改。}
+
+\callout{
+\textbf{例 2（升指标）。}把 $\displaystyle\sum_{n=2}^{\infty}a_nx^n$ 写成从 $n=0$ 开始。令 $m=n-2$，则 $n=m+2$，$n=2$ 对应 $m=0$：
+\[
+\sum_{n=2}^{\infty}a_nx^n=\sum_{m=0}^{\infty}a_{m+2}x^{m+2}=\sum_{n=0}^{\infty}a_{n+2}x^{n+2}.
+\]
+\textbf{例 3（先乘进去，再降指标）。}把 $\displaystyle x^2\sum_{n=0}^{\infty}(r+n)a_nx^{r+n-1}$ 写成通项含 $x^{r+n}$ 的级数：
+\[
+x^2\sum_{n=0}^{\infty}(r+n)a_nx^{r+n-1}=\sum_{n=0}^{\infty}(r+n)a_nx^{r+n+1}
+=\sum_{n=1}^{\infty}(r+n-1)a_{n-1}x^{r+n}.
+\]
+}
+
+\warnbox{
+平移时最常见的两个错：（1）只改 $\sum$ 的下限，忘了改 $a$ 的下标（$a_n$ 应变成 $a_{n-1}$ 或 $a_{n+1}$）；（2）只改 $a$ 的下标，忘了把 $x$ 的指数也改过来。检查办法：\textbf{代 $n$ 等于新的下限进去，看这一项是否等于原级数的第一项}。
+}
+
+\subhdr{1.5 常用展开表}
+
+这张表是「查表用」的台账，不承载推导；每一行都能由泰勒公式在 $x_0=0$ 处算出，收敛范围由比值法得到。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.6cm}p{8.6cm}p{3.6cm}@{}}
+\hline
+\thead{函数} & \thead{麦克劳林级数} & \thead{收敛范围} \\
+\hline
+$\ee^x$ & $\displaystyle\sum_{k=0}^{\infty}\frac{x^k}{k!}$ & $|x|<\infty$ \\
+$\sin x$ & $\displaystyle\sum_{k=0}^{\infty}(-1)^k\frac{x^{2k+1}}{(2k+1)!}$ & $|x|<\infty$ \\
+$\cos x$ & $\displaystyle\sum_{k=0}^{\infty}(-1)^k\frac{x^{2k}}{(2k)!}$ & $|x|<\infty$ \\
+$\sinh x,\ \cosh x$ & $\displaystyle\sum_{k=0}^{\infty}\frac{x^{2k+1}}{(2k+1)!},\ \sum_{k=0}^{\infty}\frac{x^{2k}}{(2k)!}$ & $|x|<\infty$ \\
+$\dfrac{1}{1-x}$ & $\displaystyle\sum_{k=0}^{\infty}x^k$ & $|x|<1$ \\
+$\ln(1+x)$ & $\displaystyle\sum_{k=1}^{\infty}(-1)^{k-1}\frac{x^k}{k}$ & $|x|<1$ \\
+$(1+x)^\alpha$ & $\displaystyle\sum_{k=0}^{\infty}\frac{\alpha(\alpha-1)\cdots(\alpha-k+1)}{k!}x^k$ & $|x|<1$ \\
+$\arctan x$ & $\displaystyle\sum_{k=0}^{\infty}(-1)^k\frac{x^{2k+1}}{2k+1}$ & $|x|<1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+读法：左边一列是函数，中间一列是它在 $0$ 点的泰勒级数，右边一列是「这个等式成立的 $x$ 范围」。最后两行的端点不在表内——$\ln(1+x)$ 在 $x=1$ 收敛、$x=-1$ 发散；$\arctan x$ 在两个端点都收敛——但本章只关心开区间内的展开，端点不参与运算。
+
+\subhdr{1.6 解析函数：本章的「合格证」}
+
+\callout{
+\textbf{定义（课件 p14）。}若 $f$ 在 $|x-x_0|<r$ 内能展开成收敛的幂级数
+\[
+f(x)=\sum_{k=0}^{\infty}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k ,
+\]
+则称 $f$ 在 $x_0$ \textbf{解析}（analytic）。
+
+解析函数对加、减、乘、除（分母在 $x_0$ 不为零）封闭。$\sin x$、$\ee^x$ 处处解析；$1/x$ 除 $x=0$ 外处处解析；$\tan x$ 除 $\pi/2$ 的奇数倍外处处解析。
+}
+
+「解析」这个词在后面只干一件事：\textbf{判断 $p=Q/P$、$q=R/P$ 在展开点附近能不能展成幂级数}。能，就是常点（定理 2.1）；不能但乘上 $(x-x_0)$、$(x-x_0)^2$ 后能，就是正则奇点（§3）。
+
+\warnbox{
+课件 p18 写「where $P$, $Q$ and $R$ are analytic \textbf{equations}」，这是笔误，应为 analytic \textbf{functions}。方程没有「解析」一说，解析的是系数函数。
+}
+
+%=============================================================
+\hdr{§2}{常点邻域：把方程变成递推}
+
+这一节对应课件 L18 p17--p35。核心只有一句话：\textbf{在常点处，解也是解析的；把级数代进去，同幂次的系数令为零，就得到递推}。难的不是思想，是代数——所以本节把两个例子（例 4、例 5）的每一步都写出来。
+
+\subhdr{2.1 常点与奇点}
+
+\callout{
+\textbf{定义（课件 p19）。}对方程
+\[
+P(x)y''+Q(x)y'+R(x)y=0,
+\]
+若 $P(x_0)\neq0$，称 $x_0$ 为\textbf{常点}（ordinary point）；若 $P(x_0)=0$，称 $x_0$ 为\textbf{奇点}（singular point）。
+
+在常点处可除以 $P$，化成标准形
+\[
+y''+p(x)y'+q(x)y=0,\qquad p(x)=\frac{Q(x)}{P(x)},\quad q(x)=\frac{R(x)}{P(x)} .
+\]
+}
+
+判断常点只看 $P$，不看 $Q,R$。例如 $(x^2+1)y''-4xy'+6y=0$ 中 $P=x^2+1$，在实轴上永远不为零，所以每个实数点都是常点；但 $P$ 在 $x=\pm\ii$ 处为零，这两个\textbf{复奇点}会限制实轴上幂级数的收敛半径（§2.6）。
+
+\subhdr{2.2 定理 2.1：解为什么也是解析的}
+
+\callout{
+\textbf{定理 2.1（课件 p20）。}设
+\[
+p(x)=\sum_{n=0}^{\infty}p_n(x-x_0)^n,\qquad q(x)=\sum_{n=0}^{\infty}q_n(x-x_0)^n
+\]
+在 $|x-x_0|<r$ 内解析。则方程
+\[
+y''+p(x)y'+q(x)y=0
+\]
+的\textbf{每一个}解都在 $|x-x_0|<r$ 内解析，即
+\[
+y(x)=\sum_{k=0}^{\infty}a_k(x-x_0)^k,\qquad |x-x_0|<r .
+\]
+}
+
+课件没有给证明。这里给一个三行的思路，足够你理解「为什么敢设级数」：
+
+\aside{证明思路（补充）：把 $p,q,y$ 的级数代入，比较 $x^n$ 的系数，得到 $a_{n+2}$ 由 $a_0,\dots,a_{n+1}$ 决定的递推。由 $p,q$ 的收敛性，存在 $M,R$ 使 $|p_n|,|q_n|\leq MR^{-n}$；对递推作归纳可得 $|a_n|\leq C(R')^{-n}$（$R'<R$），于是 $\sum a_n(x-x_0)^n$ 的收敛半径至少 $R'$。令 $R'\to r$ 即得结论。细节不必背，记住「递推 + 系数有界 $\Rightarrow$ 收敛半径不小于系数的解析半径」。}
+
+定理的两个直接推论，是后面反复用的：
+\begin{itemize}
+  \item 通解有\textbf{两个}任意常数：$a_0=y(x_0)$、$a_1=y'(x_0)$ 可以任取，其余系数被递推唯一决定；
+  \item 初值问题 $y(x_0)=y_0,\ y'(x_0)=y_0'$ 在 $|x-x_0|<r$ 内有唯一解，且 $a_0=y_0,\ a_1=y_0'$。
+\end{itemize}
+
+\subhdr{2.3 五步法与通用递推公式}
+
+课件 p27--p28 把常点法拆成五步，这是考场上要照着做的流程：
+
+\callout{
+\textbf{五步法。}
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=3.4em]
+  \item 设 $y=\sum_{k=0}^{\infty}a_kx^k$（若展开点不是 $0$，把 $x$ 换成 $x-x_0$），并写出 $y'$、$y''$ 的级数。
+  \item 把 $y,y',y''$ 代回方程，把 $p,q$（或 $Q/P,R/P$）也展成幂级数，\textbf{把所有项整理成同一次幂}。
+  \item 令 $x^n$ 的系数为零；这个方程里通常含 $a_n,a_{n+1},a_{n+2}$ 中的几个，解出\textbf{下标最大}的那个，得到\textbf{递推公式}。
+  \item 用递推从 $a_0,a_1$ 依次算出 $a_2,a_3,\dots$。
+  \item 把系数代回，写出两个线性无关解与通解。
+\end{enumerate}
+}
+
+当 $p,q$ 本身就是一般幂级数时，第 2 步的「整理」可以用一个通用公式一次完成。课件 p21--p22 给了它，但跳过了卷积的推导，这里补上。
+
+设 $x_0=0$，$p(x)=\sum_{m=0}^\infty p_mx^m$，$q(x)=\sum_{m=0}^\infty q_mx^m$，$y=\sum_{k=0}^\infty a_kx^k$。则
+\[
+y'=\sum_{k=0}^{\infty}(k+1)a_{k+1}x^k,\qquad
+y''=\sum_{k=0}^{\infty}(k+2)(k+1)a_{k+2}x^k .
+\]
+把 $p$ 与 $y'$ 相乘，用卷积（§1.3）：$x^n$ 的系数是 $\sum_{k=0}^{n}p_{n-k}(k+1)a_{k+1}$。同理 $qy$ 的 $x^n$ 系数是 $\sum_{k=0}^{n}q_{n-k}a_k$。代入方程并令 $x^n$ 的系数为零：
+\[
+(n+2)(n+1)a_{n+2}+\sum_{k=0}^{n}(k+1)p_{n-k}a_{k+1}+\sum_{k=0}^{n}q_{n-k}a_k=0,
+\qquad n=0,1,2,\dots \tag{2.1}
+\]
+这就是课件 p21 的式子。前三个方程是
+\begin{align*}
+n=0:\quad & 2a_2+p_0a_1+q_0a_0=0,\\
+n=1:\quad & 6a_3+2p_0a_2+(q_0+p_1)a_1+q_1a_0=0,\\
+n=2:\quad & 12a_4+3p_0a_3+(q_0+2p_1)a_2+(q_1+p_2)a_1+q_2a_0=0 .
+\end{align*}
+每一个都解出下标最大的系数：$a_2$ 由 $a_0,a_1$ 定，$a_3$ 由 $a_0,a_1,a_2$ 定，依此类推。
+
+\aside{式 (2.1) 看起来吓人，实际做题时很少直接套：多数题目里 $p,q$ 只有少数几项非零（例如 $p=1$、$q=x$），逐项乘开比套公式快。公式的用处是\textbf{检查}——你算出的 $a_2,a_3$ 应满足 $n=0,1$ 的两个方程。}
+
+\subhdr{2.4 例 4：$y''+y=0$ 的完整演算}
+
+\callout{
+\textbf{例 4（课件 p23--p26）。}求 $y''+y=0$ 在 $x=0$ 附近的幂级数解，$-\infty<x<\infty$。
+}
+
+设 $y=\sum_{k=0}^\infty a_kx^k$，则 $y''=\sum_{k=2}^\infty k(k-1)a_kx^{k-2}$。把第二个级数的指标升 2（令 $k\to k+2$）：
+\[
+y''=\sum_{k=0}^{\infty}(k+2)(k+1)a_{k+2}x^k .
+\]
+代入 $y''+y=0$：
+\[
+\sum_{k=0}^{\infty}\bigl[(k+2)(k+1)a_{k+2}+a_k\bigr]x^k=0 .
+\]
+令每个 $x^k$ 的系数为零：
+\[
+(k+2)(k+1)a_{k+2}+a_k=0
+\quad\Longrightarrow\quad
+a_{k+2}=-\frac{a_k}{(k+2)(k+1)},\qquad k=0,1,2,\dots \tag{2.2}
+\]
+这就是递推公式。
+
+\textbf{为什么偶数和奇数解耦。}式 (2.2) 只把 $a_k$ 和 $a_{k+2}$ 连在一起，$k$ 与 $k+2$ 同奇偶，所以\textbf{偶下标只由 $a_0$ 决定，奇下标只由 $a_1$ 决定}，两条链互不相干。这不是巧合，是「方程只含 $y''$ 与 $y$、不含 $y'$」的结果：$y''$ 与 $y$ 都不改变奇偶性。
+
+偶数链：
+\[
+a_2=-\frac{a_0}{2!},\quad a_4=-\frac{a_2}{3\cdot4}=\frac{a_0}{4!},\quad
+a_6=-\frac{a_4}{5\cdot6}=-\frac{a_0}{6!},\quad\dots\quad
+a_{2k}=\frac{(-1)^k}{(2k)!}a_0 .
+\]
+奇数链：
+\[
+a_3=-\frac{a_1}{3!},\quad a_5=\frac{a_1}{5!},\quad\dots\quad
+a_{2k+1}=\frac{(-1)^k}{(2k+1)!}a_1 .
+\]
+于是
+\[
+y=a_0\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
++a_1\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}x^{2k+1}
+=a_0\cos x+a_1\sin x .
+\]
+两个级数用比值法都得到 $r=\infty$，所以对一切 $x$ 收敛。$y_1=\cos x$、$y_2=\sin x$ 的 Wronskian
+\[
+W=\cos x\cos x-(-\sin x)\sin x=1\neq0,
+\]
+确实线性无关。
+
+\warnbox{
+\textbf{注意：}这里 $a_0=y(0)$、$a_1=y'(0)$，不是「$a_0$ 一定是第一个非零项」。若初值给 $y(0)=0$，则 $a_0=0$，偶数链整条为零，解只剩 $\sin$ 一支——这是正常的，不是算错。
+}
+
+\subhdr{2.5 例 5：系数含 $\ee^x$ 的初值问题}
+
+\callout{
+\textbf{例 5（课件 p29--p32）。}求
+\[
+y''+\ee^xy'+(1+x^2)y=0,\qquad y(0)=1,\ y'(0)=0
+\]
+的幂级数解。
+}
+
+这里 $p(x)=\ee^x$、$q(x)=1+x^2$ 都在全平面解析，所以由定理 2.1，解在全平面解析，$\rho=\infty$。
+
+设 $y=\sum a_nx^n$。关键是 $\ee^xy'$ 这一项：把 $\ee^x=\sum x^m/m!$ 与 $y'=\sum(k+1)a_{k+1}x^k$ 相乘，用卷积：
+\[
+\ee^xy'=\sum_{n=0}^{\infty}\Bigl(\sum_{k=0}^{n}\frac{(k+1)a_{k+1}}{(n-k)!}\Bigr)x^n .
+\]
+另外 $x^2y=\sum_{n=2}^{\infty}a_{n-2}x^n$。把三项合起来，$x^n$ 的系数为零给出
+\[
+(n+2)(n+1)a_{n+2}+\sum_{k=0}^{n}\frac{(k+1)a_{k+1}}{(n-k)!}+a_n+a_{n-2}=0,
+\qquad n\geq0, \tag{2.3}
+\]
+其中约定 $a_{-1}=a_{-2}=0$（这样 $n=0,1$ 时最后一项自动消失）。逐项写开：
+\begin{align*}
+n=0:\quad & 2a_2+a_1+a_0=0,\\
+n=1:\quad & 6a_3+2a_2+2a_1=0,\\
+n=2:\quad & 12a_4+3a_3+3a_2+\tfrac12a_1+a_0=0,\\
+n=3:\quad & 20a_5+4a_4+4a_3+a_2+\tfrac76a_1=0,\\
+n=4:\quad & 30a_6+5a_5+5a_4+\tfrac32a_3+\tfrac43a_2+\tfrac1{24}a_1=0 .
+\end{align*}
+初值给 $a_0=1$、$a_1=0$。代入：
+\[
+a_2=-\frac12,\qquad a_3=\frac16,\qquad a_4=0,\qquad a_5=-\frac1{120},\qquad a_6=\frac{11}{720}.
+\]
+所以
+\[
+y(x)=1-\frac12x^2+\frac16x^3-\frac1{120}x^5+\frac{11}{720}x^6+\cdots
+\]
+注意 $x^4$ 项系数为零，所以写「前五项」时不能把 $x^4$ 算进去——\textbf{「非零项」三个字是有意义的}，本次作业也要求「前五个非零项」。
+
+\aside{验算办法：把上面五项代回 $y''+\ee^xy'+(1+x^2)y$，展开到 $x^3$，残差应为 $O(x^4)$。这类「代回看残差」的检查不依赖任何技巧，是本章最可靠的自检。}
+
+\subhdr{2.6 例 6：级数为什么会截断}
+
+\callout{
+\textbf{例 6（课件 p33--p35）。}求
+\[
+(x^2+1)y''-4xy'+6y=0
+\]
+在 $x=0$ 附近的级数解（前四个非零项）。
+}
+
+$P=x^2+1$，$P(0)=1\neq0$，所以 $x=0$ 是常点。$p=-4x/(x^2+1)$、$q=6/(x^2+1)$ 在 $|x|<1$ 内解析（因为 $x^2+1$ 的零点是 $\pm\ii$，到 $0$ 的距离为 $1$）。设 $y=\sum a_kx^k$，代入：
+\[
+(x^2+1)\sum_{k=2}^{\infty}k(k-1)a_kx^{k-2}
+-4x\sum_{k=1}^{\infty}ka_kx^{k-1}
++6\sum_{k=0}^{\infty}a_kx^k=0 .
+\]
+第一项拆成两半：$x^2y''$ 升到 $x^k$，$y''$ 本身就是 $x^k$。整理后 $x^k$ 的系数为
+\[
+\bigl[k(k-1)-4k+6\bigr]a_k+(k+2)(k+1)a_{k+2}=0 .
+\]
+而 $k(k-1)-4k+6=k^2-5k+6=(k-2)(k-3)$，于是
+\[
+(k-2)(k-3)a_k+(k+2)(k+1)a_{k+2}=0
+\quad\Longrightarrow\quad
+a_{k+2}=-\frac{(k-2)(k-3)}{(k+2)(k+1)}a_k . \tag{2.4}
+\]
+代入 $k=0,1,2,3$：
+\[
+a_2=-3a_0,\qquad a_3=-\frac13a_1,\qquad a_4=0,\qquad a_5=0 .
+\]
+从 $k=4$ 起，$(k-2)(k-3)\neq0$，但 $a_4=a_5=0$，递推给出后面全是零。所以级数\textbf{截断}成多项式：
+\[
+y=a_0(1-3x^2)+a_1\Bigl(x-\frac13x^3\Bigr),\qquad |x|<1 .
+\]
+直接代回可以验证它确实是解：
+\[
+y_1=1-3x^2:\quad y_1''=-6,\quad
+(x^2+1)(-6)-4x(-6x)+6(1-3x^2)=-6x^2-6+24x^2+6-18x^2=0 .
+\]
+同理可验 $y_2=x-x^3/3$。
+
+\textbf{为什么截断？}看式 (2.4) 的分子 $(k-2)(k-3)$：它在 $k=2,3$ 时为零，把「$a_4$ 由 $a_2$ 决定、$a_5$ 由 $a_3$ 决定」这两条链\textbf{同时切断}。$a_4=a_5=0$ 之后，后面的递推只能给出零。这种「分子在某个整数处为零」的结构，是幂级数解变成多项式的唯一原因。
+
+\warnbox{
+这个例子同时说明：\textbf{实轴上没有奇点，不代表收敛半径是无穷}。$P=x^2+1$ 在实轴上没有零点，但它在 $\pm\ii$ 处为零；从 $0$ 到 $\pm\ii$ 的距离是 $1$，所以级数只在 $|x|<1$ 内保证收敛。复奇点也算数——这是本章最容易忘的一条。
+}
+
+\subhdr{2.7 常点法的边界}
+
+课件 p28 最后一句是「The power series method is only applicable when $x=0$ is an ordinary point.」为什么？因为若 $P(x_0)=0$，则 $p=Q/P$、$q=R/P$ 在 $x_0$ 处不解析，代入 $y=\sum a_k(x-x_0)^k$ 后会出现负幂次项，无法与正幂次项合并，系数比较就无从谈起。
+
+但「不能直接用」不等于「没有级数解」：下一节先把奇点分类，再对「正则奇点」把解的形状从整数幂改成 $x^r$ 乘幂级数——这就是 Euler 方程与 Frobenius 方法。
+
+%=============================================================
+\hdr{§3}{正则奇点与 Euler 方程}
+
+这一节对应课件 L19--20 p3--p19。它要回答两个问题：奇点能不能「分级」，以及分级之后解长什么样。Euler 方程是分级之后最简单的样本——它的解是 $x^r$、$x^r\ln x$ 或 $x^\lambda\cos(\mu\ln x)$，正好预演了 Frobenius 方法的三种结局。
+
+\subhdr{3.1 正则奇点：奇性「不太强」的精确含义}
+
+\callout{
+\textbf{定义（课件 p4）。}对方程 $P(x)y''+Q(x)y'+R(x)y=0$，若 $P(x_0)=0$，称 $x_0$ 为\textbf{奇点}。若还有
+\[
+\lim_{x\to x_0}(x-x_0)\frac{Q(x)}{P(x)}\quad\text{与}\quad\lim_{x\to x_0}(x-x_0)^2\frac{R(x)}{P(x)}
+\]
+都有限，则称 $x_0$ 为\textbf{正则奇点}（regular singular point）；否则称为\textbf{非正则奇点}（irregular singular point）。
+}
+
+课件 p5 给了一个等价的说法：记 $p=Q/P$、$q=R/P$，则 $x_0$ 正则 $\iff$ $(x-x_0)p(x)$ 与 $(x-x_0)^2q(x)$ 都在 $x_0$ 解析。这个说法比极限好用，因为它直接告诉你「乘完之后是幂级数」。
+
+\aside{为什么偏偏乘 $(x-x_0)$ 和 $(x-x_0)^2$？把方程除以 $P$ 再乘 $(x-x_0)^2$：
+\[
+(x-x_0)^2y''+(x-x_0)\bigl[(x-x_0)p(x)\bigr]y'+\bigl[(x-x_0)^2q(x)\bigr]y=0 .
+\]
+如果两个方括号都解析，这个方程就是「Euler 型的三项 + 解析系数」。Euler 方程的解是 $x^r$，系数解析只会把这个解「微调」成 $x^r$ 乘幂级数——这就是 §4 设 $y=x^r\sum a_nx^n$ 的全部理由。乘一次不够、乘三次多余，$(x-x_0)$ 与 $(x-x_0)^2$ 正好把 $p$ 的一阶极点、$q$ 的二阶极点消掉。}
+
+\warnbox{
+\textbf{多项式系数的快速判据。}若 $P,Q,R$ 是多项式，$x_0$ 是 $P$ 的 $m$ 阶零点：当 $Q$ 在 $x_0$ 的零点阶数 $\geq m-1$、$R$ 的零点阶数 $\geq m-2$ 时，$x_0$ 是正则奇点；只要有一个不满足，就是非正则。理由：$Q/P$ 的极点阶数至多 $1$，$R/P$ 的极点阶数至多 $2$，正好被乘的因子抵消。
+}
+
+\subhdr{3.2 分类的例子（课件 p6--p7）}
+
+\callout{
+\textbf{例。}把
+\[
+(x^2-1)^2y''+(x+1)y'-y=0
+\]
+的奇点分类。
+}
+
+$P=(x^2-1)^2=(x-1)^2(x+1)^2$，奇点为 $x=\pm1$。除以 $P$：
+\[
+p(x)=\frac{x+1}{(x-1)^2(x+1)^2}=\frac{1}{(x-1)^2(x+1)},\qquad
+q(x)=\frac{-1}{(x-1)^2(x+1)^2}.
+\]
+\textbf{在 $x=1$：}
+\[
+(x-1)p(x)=\frac{1}{(x-1)(x+1)}\to\infty,
+\]
+极限不是有限数，所以 $x=1$ 是\textbf{非正则奇点}。
+
+\textbf{在 $x=-1$：}
+\[
+(x+1)p(x)=\frac{1}{(x-1)^2},\qquad
+(x+1)^2q(x)=\frac{-1}{(x-1)^2},
+\]
+两个都在 $x=-1$ 解析（分母在 $-1$ 处为 $(-2)^2=4\neq0$），所以 $x=-1$ 是\textbf{正则奇点}。
+
+同一个方程的两个奇点，一个正则一个非正则——这说明「正则」不是方程整体的性质，而是\textbf{每个奇点各自}的性质。
+
+\subhdr{3.3 为什么不能再用普通幂级数}
+
+课件 p8 之前先用一个反例说明「非解析解」确实会出现：
+\[
+x^2y''-6y=0
+\]
+是 Euler 方程，两个解是 $y_1=x^3$、$y_2=x^{-2}$。$y_2$ 在 $x=0$ 处根本没有有限值，当然不能写成 $\sum a_nx^n$。所以奇点处的解必须允许一个「非整数幂」的因子——这就是 $x^r$。
+
+\subhdr{3.4 Euler 方程：三种根，三种解}
+
+\callout{
+\textbf{Euler 方程（课件 p8）。}
+\[
+ax^2y''+bxy'+cy=0,\qquad x>0 .
+\]
+设 $y=x^r$，则 $y'=rx^{r-1}$、$y''=r(r-1)x^{r-2}$，代入得
+\[
+x^r\bigl[ar(r-1)+br+c\bigr]=0 .
+\]
+因为 $x>0$ 时 $x^r\neq0$，所以必须有
+\[
+\boxed{\,ar(r-1)+br+c=0\,}
+\]
+这个二次方程叫\textbf{指标方程}（indicial equation），它的两个根叫\textbf{指标}（exponents）。
+}
+
+三种根对应三种解，逐条推导如下。
+
+\callout{
+\textbf{情形 1：两个相异实根 $r_1\neq r_2$。}
+$y_1=x^{r_1}$、$y_2=x^{r_2}$ 都是解，且 $x^{r_1}/x^{r_2}=x^{r_1-r_2}$ 不是常数，所以线性无关：
+\[
+y=C_1x^{r_1}+C_2x^{r_2}.
+\]
+
+\textbf{情形 2：一对共轭复根 $r=\lambda\pm\ii\mu$（$\mu\neq0$）。}
+先把复解写成实函数。用 $x^r=\ee^{r\ln x}$：
+\[
+x^{\lambda+\ii\mu}=\ee^{(\lambda+\ii\mu)\ln x}
+=\ee^{\lambda\ln x}\bigl[\cos(\mu\ln x)+\ii\sin(\mu\ln x)\bigr]
+=x^{\lambda}\bigl[\cos(\mu\ln x)+\ii\sin(\mu\ln x)\bigr].
+\]
+实部与虚部分别是解（方程是实系数的），于是
+\[
+y=x^{\lambda}\bigl[C_1\cos(\mu\ln x)+C_2\sin(\mu\ln x)\bigr].
+\]
+
+\textbf{情形 3：重根 $r_1=r_2=r$。}
+只有一个解 $y_1=x^r$。第二个解用降阶（§6 会从方程组角度再推一次；这里用一阶线性方程的积分因子）：
+设 $y_2=vy_1$，代入 $y''+\dfrac{b}{ax}y'+\dfrac{c}{ax^2}y=0$，$v$ 的项会消掉，得到
+\[
+v''+\Bigl(\frac{2r}{x}+\frac{b}{ax}\Bigr)v'=0
+\quad\Longrightarrow\quad
+\frac{v''}{v'}=-\frac{2r+b/a}{x}.
+\]
+重根满足 $2r=1-b/a$，所以 $2r+b/a=1$，从而 $v''/v'=-1/x$，积分得 $v'=C/x$，$v=C\ln x$。于是
+\[
+y=x^r(C_1+C_2\ln x).
+\]
+}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.2cm}p{4.6cm}p{7.2cm}@{}}
+\hline
+\thead{指标根} & \thead{基本解} & \thead{通解} \\
+\hline
+$r_1\neq r_2$ 实 & $x^{r_1},\ x^{r_2}$ & $C_1x^{r_1}+C_2x^{r_2}$ \\
+$r=\lambda\pm\ii\mu$ & $x^\lambda\cos(\mu\ln x),\ x^\lambda\sin(\mu\ln x)$ & $x^\lambda[C_1\cos(\mu\ln x)+C_2\sin(\mu\ln x)]$ \\
+$r_1=r_2=r$ & $x^r,\ x^r\ln x$ & $x^r(C_1+C_2\ln x)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+这张表只是把上面三个推导的结论并排抄了一遍；每一行的第二列都能由第一列代回 $ax^2y''+bxy'+cy=0$ 验证。第三行最容易记错：$\ln x$ 乘的是 $x^r$，不是 $x^{r+1}$。
+
+\subhdr{3.5 三个例子}
+
+\callout{
+\textbf{例（初值问题，课件 p10--p11）。}解
+\[
+2x^2y''+3xy'-15y=0,\qquad y(1)=0,\ y'(1)=1 .
+\]
+\textbf{解。}指标方程
+\[
+2r(r-1)+3r-15=2r^2+r-15=(2r-5)(r+3)=0,
+\]
+根为 $r_1=5/2$、$r_2=-3$。通解
+\[
+y=C_1x^{5/2}+C_2x^{-3}.
+\]
+代入初值（$x=1$ 时 $x^{5/2}=x^{-3}=1$）：
+\[
+0=C_1+C_2,\qquad 1=\frac52C_1-3C_2 .
+\]
+由第一式 $C_2=-C_1$，代入第二式得 $\frac52C_1+3C_1=\frac{11}{2}C_1=1$，所以
+\[
+C_1=\frac{2}{11},\qquad C_2=-\frac{2}{11},\qquad
+y=\frac{2}{11}x^{5/2}-\frac{2}{11}x^{-3}.
+\]
+}
+
+\warnbox{
+课件 p11 把第二式写成「$1=y'(1)=\frac52c_1-3c_3$」，$c_3$ 是笔误，应为 $c_2$。另外这里 $x>0$ 是必须的：$x^{-3}$ 在 $0$ 处无定义，$x^{5/2}$ 对 $x<0$ 不是实数。
+}
+
+\callout{
+\textbf{例（复根，课件 p13）。}解 $x^2y''+3xy'+4y=0$。
+
+\textbf{解。}$r(r-1)+3r+4=r^2+2r+4=0$，根为 $r=-1\pm\ii\sqrt3$。所以
+\[
+y=x^{-1}\bigl[C_1\cos(\sqrt3\ln x)+C_2\sin(\sqrt3\ln x)\bigr].
+\]
+}
+
+\callout{
+\textbf{例（重根，课件 p15）。}解 $x^2y''-7xy'+16y=0$。
+
+\textbf{解。}$r(r-1)-7r+16=r^2-8r+16=(r-4)^2=0$，$r=4$。所以
+\[
+y=x^4(C_1+C_2\ln x).
+\]
+}
+
+\subhdr{3.6 $x<0$ 怎么办：$\lvert x\rvert$ 的来历}
+
+课件 p16--p17 的处理值得完整看懂，因为作业题只要求 $x>0$，但考试可能问「为什么」。设 $x<0$，令 $\eta=-x>0$，并定义 $u(\eta)=y(-\eta)$。由链式法则
+\[
+u'(\eta)=-y'(x),\qquad u''(\eta)=y''(x).
+\]
+代入 $ax^2y''+bxy'+cy=0$，注意 $x=-\eta$：
+\[
+a\eta^2u''+b\eta u'+cu=0 .
+\]
+这是关于 $\eta>0$ 的同型 Euler 方程，解是 $\eta^{r}$ 等。再把 $\eta=-x$ 换回来，就得到 $|x|^r$。三种情形合起来：
+\[
+y=C_1|x|^{r_1}+C_2|x|^{r_2},\qquad
+y=|x|^\lambda\bigl[C_1\cos(\mu\ln|x|)+C_2\sin(\mu\ln|x|)\bigr],\qquad
+y=|x|^r(C_1+C_2\ln|x|).
+\]
+这些解在\textbf{任何不包含 $0$ 的区间}上都成立；$x>0$ 与 $x<0$ 是两个独立的区间，解不能从一边「接」到另一边（除非 $r$ 是整数，那时 $|x|^r$ 其实是 $x^r$ 的延拓）。
+
+\subhdr{3.7 平移版 Euler 方程}
+
+若方程是
+\[
+a(x-x_0)^2y''+b(x-x_0)y'+cy=0,
+\]
+令 $t=x-x_0$ 就化回原点情形，指标方程不变，解把 $x$ 换成 $|x-x_0|$：
+\[
+y=C_1|x-x_0|^{r_1}+C_2|x-x_0|^{r_2},\quad\text{等等}.
+\]
+
+\callout{
+\textbf{例（课件 p19）。}解
+\[
+3(x+6)^2y''+25(x+6)y'-16y=0
+\]
+（在不含 $x=-6$ 的区间上）。
+
+\textbf{解。}指标方程 $3r(r-1)+25r-16=3r^2+22r-16=0$，即 $(3r-2)(r+8)=0$，根为 $r_1=2/3$、$r_2=-8$。所以
+\[
+y=C_1|x+6|^{2/3}+C_2|x+6|^{-8}.
+\]
+}
+
+%=============================================================
+\hdr{§4}{Frobenius 方法：正则奇点处的级数解}
+
+这是本章的核心，对应课件 L19--20 p20--p34。它把 §3 的「$x^r$」与 §2 的「幂级数」拼在一起：\textbf{在正则奇点处，解是 $x^r$ 乘一个幂级数}。本节把课件跳过的三处补上：指标方程怎么来、递推的分母为什么是 $(n+r-r_1)(n+r-r_2)$、以及整数差时第二个解到底长什么样。
+
+\subhdr{4.1 为什么设 $y=x^r\sum a_nx^n$}
+
+设 $x=0$ 是正则奇点。由定义，$xp(x)$ 与 $x^2q(x)$ 在 $0$ 附近解析，设
+\[
+xp(x)=\sum_{k=0}^{\infty}p_kx^k,\qquad x^2q(x)=\sum_{k=0}^{\infty}q_kx^k,\qquad |x|<\rho .
+\]
+把方程 $y''+py'+qy=0$ 乘以 $x^2$：
+\[
+x^2y''+x\bigl(xp(x)\bigr)y'+\bigl(x^2q(x)\bigr)y=0 . \tag{4.1}
+\]
+如果 $p_k=q_k=0$（$k\geq1$），(4.1) 就是 Euler 方程 $x^2y''+p_0xy'+q_0y=0$，解是 $x^r$。一般的 $p_k,q_k$ 只是给 Euler 方程加了「解析的扰动」，所以自然设想解是「Euler 的解乘一个幂级数」：
+\[
+y=x^r\sum_{n=0}^{\infty}a_nx^n=\sum_{n=0}^{\infty}a_nx^{n+r},\qquad a_0\neq0 .
+\]
+这就是 \textbf{Frobenius 级数}。注意 $r$ 不一定是整数，甚至不一定是实数——它由方程在奇点处的「首项」决定。
+
+\subhdr{4.2 代入：指标方程与递推公式}
+
+逐项求导：
+\[
+y'=\sum_{n=0}^{\infty}(n+r)a_nx^{n+r-1},\qquad
+y''=\sum_{n=0}^{\infty}(n+r)(n+r-1)a_nx^{n+r-2}.
+\]
+三项分别算：
+\begin{align*}
+x^2y''&=\sum_{n=0}^{\infty}(n+r)(n+r-1)a_nx^{n+r},\\
+x\bigl(xp\bigr)y'&=\Bigl(\sum_{k=0}^{\infty}p_kx^k\Bigr)\Bigl(\sum_{m=0}^{\infty}(m+r)a_mx^{m+r}\Bigr)
+=\sum_{n=0}^{\infty}\Bigl(\sum_{m=0}^{n}p_{n-m}(m+r)a_m\Bigr)x^{n+r},\\
+\bigl(x^2q\bigr)y&=\Bigl(\sum_{k=0}^{\infty}q_kx^k\Bigr)\Bigl(\sum_{m=0}^{\infty}a_mx^{m+r}\Bigr)
+=\sum_{n=0}^{\infty}\Bigl(\sum_{m=0}^{n}q_{n-m}a_m\Bigr)x^{n+r}.
+\end{align*}
+第二个等号用的就是卷积（§1.3）：$x^{n+r}$ 的系数是「两个级数下标相加等于 $n$」的所有乘积之和。
+
+把三式相加，令 $x^{n+r}$ 的系数为零：
+\[
+(n+r)(n+r-1)a_n+\sum_{m=0}^{n}\bigl[p_{n-m}(m+r)+q_{n-m}\bigr]a_m=0,
+\qquad n=0,1,2,\dots \tag{4.2}
+\]
+
+\callout{
+\textbf{$n=0$：指标方程。}式 (4.2) 在 $n=0$ 时只剩 $m=0$ 一项：
+\[
+\bigl[r(r-1)+p_0r+q_0\bigr]a_0=0 .
+\]
+因为 $a_0\neq0$，所以
+\[
+\boxed{\,r(r-1)+p_0r+q_0=0\,} \tag{4.3}
+\]
+这就是\textbf{指标方程}。它的两个根 $r_1,r_2$ 叫指标；规定 $r_1\geq r_2$（实根时）。
+}
+
+\callout{
+\textbf{$n\geq1$：递推公式。}把 (4.2) 中 $m=n$ 的那一项（含 $a_n$）单独拿出来：
+\[
+\bigl[(n+r)(n+r-1)+(n+r)p_0+q_0\bigr]a_n
+=-\sum_{m=0}^{n-1}\bigl[p_{n-m}(m+r)+q_{n-m}\bigr]a_m . \tag{4.4}
+\]
+只要方括号不为零，就可以解出
+\[
+a_n=-\frac{1}{(n+r)(n+r-1)+(n+r)p_0+q_0}
+\sum_{m=0}^{n-1}\bigl[p_{n-m}(m+r)+q_{n-m}\bigr]a_m .
+\]
+}
+
+\warnbox{
+课件 p24 写「Case 1. If $a_0=0$, then $a_1=a_2=\cdots=0$, resulting in the zero solution」。这句话的本意是「$a_0=0$ 得不到新的解」，但字面上不严谨：若 $a_0=0$，级数从更高的幂次开始，例如 $a_1x^{1+r}+\cdots=x^{r+1}(a_1+\cdots)$，这等价于把指数换成 $r+1$。所以正确的说法是：\textbf{取定指数 $r$ 时约定 $a_0\neq0$ 只是选取「以 $x^r$ 为最低次幂」的那一支解；$a_0=0$ 的级数不是零解，而是另一个指数的解。}做题时不必纠结，按 $a_0=1$ 算即可。
+}
+
+\subhdr{4.3 分母的秘密：$(n+r-r_1)(n+r-r_2)$}
+
+式 (4.4) 的分母看起来是个普通二次式，其实它就是指标多项式在 $n+r$ 处的值。记
+\[
+F(s)=s(s-1)+p_0s+q_0 .
+\]
+由指标方程，$F(s)=(s-r_1)(s-r_2)$。把 $s=n+r$ 代进去：
+\[
+(n+r)(n+r-1)+(n+r)p_0+q_0=F(n+r)=(n+r-r_1)(n+r-r_2). \tag{4.5}
+\]
+这个恒等式是整章的「机关」，它一次性解释了三种情形：
+
+\begin{itemize}
+  \item \textbf{取 $r=r_1$}：分母 $(n+r_1-r_1)(n+r_1-r_2)=n\,(n+r_1-r_2)$。$n\geq1$ 时 $n\neq0$；又 $r_1-r_2\geq0$，所以 $n+r_1-r_2>0$。分母永不为零，$r_1$ 这一支\textbf{总能算到底}。
+  \item \textbf{取 $r=r_2$}：分母 $(n+r_2-r_1)(n+r_2-r_2)=(n-(r_1-r_2))\,n$。当 $n=r_1-r_2$ 时（若这个差是正整数），分母为零，递推在这一步\textbf{卡住}。
+  \item \textbf{若 $r_1-r_2$ 不是整数}：两支都不会碰到零分母，所以两个 Frobenius 级数都存在。
+\end{itemize}
+
+卡住的那一步有两种结局。设 $N_0=r_1-r_2$ 是正整数，在 $n=N_0$ 处式 (4.4) 变成
+\[
+0\cdot a_{N_0}=-\sum_{m=0}^{N_0-1}\bigl[p_{N_0-m}(m+r_2)+q_{N_0-m}\bigr]a_m .
+\]
+右边若不为零，就矛盾——说明「纯 Frobenius 级数」这一形式不够用，第二个解必须带 $\ln x$；右边若恰好为零，则 $a_{N_0}$ 可以任取，第二个解仍是纯 Frobenius 级数（§4.5 的例子就是这一种）。这就是课件 p27--p28 三种情形的来源。
+
+\subhdr{4.4 Frobenius 定理与三种情形}
+
+\callout{
+\textbf{定理 1.1（Frobenius 定理，课件 p31）。}若 $x_0$ 是方程
+\[
+a_2(x)y''+a_1(x)y'+a_0(x)y=0
+\]
+的正则奇点，则至少存在一个形如
+\[
+y=(x-x_0)^r\sum_{n=0}^{\infty}a_n(x-x_0)^n,\qquad a_0\neq0
+\]
+的级数解，其中 $r=r_1$ 是指标方程的较大根。并且这个级数在
+\[
+0<x-x_0<\rho
+\]
+内收敛，$\rho$ 是 $x_0$ 到方程\textbf{最近的其他奇点（实的或复的）}的距离。
+}
+
+定理只保证「一个」解。第二个解的存在性与形式由下面三条给出（课件 p27--p28 陈述，证明略——它本质上是 §4.3 分母结构的推论）：
+
+\callout{
+\textbf{情形 A：$r_1-r_2$ 不是整数。}
+\[
+y_2=x^{r_2}\sum_{n=0}^{\infty}b_nx^n,\qquad b_0\neq0 .
+\]
+两个解都是纯 Frobenius 级数，收敛半径同样是 $\rho$。
+
+\textbf{情形 B：$r_1=r_2$。}
+\[
+y_2=y_1\ln x+x^{r_2}\sum_{n=0}^{\infty}b_nx^n .
+\]
+
+\textbf{情形 C：$r_1-r_2$ 是正整数。}
+\[
+y_2=a\,y_1\ln x+x^{r_2}\sum_{n=0}^{\infty}b_nx^n,
+\]
+其中常数 $a$ 可能为零。$a=0$ 时 $y_2$ 仍是纯 Frobenius 级数（没有 $\ln x$）；$a\neq0$ 时必须带对数项。
+}
+
+\warnbox{
+情形 C 最容易背错：不是「差为正整数就一定带 $\ln x$」，而是「\textbf{可能}带，要看递推在 $n=r_1-r_2$ 那一步是否自动满足」。教材 9.33 的 Remark 明确写了「$c$ may turn out to be zero」，§4.5 就是一个 $c=0$ 的实例。
+}
+
+\subhdr{4.5 例：$xy''+4y'-xy=0$ 的两个解}
+
+\callout{
+\textbf{例（课件 p32--p34）。}求
+\[
+xy''+4y'-xy=0,\qquad x>0
+\]
+在正则奇点 $x=0$ 处的级数解。
+}
+
+先化标准形：$y''+\dfrac4xy'-y=0$，所以 $p=4/x$、$q=-1$。于是
+\[
+xp(x)=4,\qquad x^2q(x)=-x^2,
+\]
+即 $p_0=4$、$q_0=0$，其余 $p_k=q_k=0$（$k\geq1$）。$x=0$ 是正则奇点，且 $xp$、$x^2q$ 是多项式，所以 $\rho=\infty$。
+
+指标方程：
+\[
+r(r-1)+4r=r^2+3r=r(r+3)=0\quad\Longrightarrow\quad r_1=0,\ r_2=-3 .
+\]
+
+\aside{课件 p33 把这一步写成「$r(r-1)+4r=r+3r=r(r+3)=0$」，中间的「$r+3r$」漏了平方，应为 $r^2+3r$。结论 $r(r+3)=0$ 是对的。}
+
+设 $y=\sum a_nx^{n+r}$，逐项代入：
+\begin{align*}
+xy''&=\sum_{n=0}^{\infty}(n+r)(n+r-1)a_nx^{n+r-1},\\
+4y'&=\sum_{n=0}^{\infty}4(n+r)a_nx^{n+r-1},\\
+-xy&=-\sum_{n=0}^{\infty}a_nx^{n+r+1}=-\sum_{n=2}^{\infty}a_{n-2}x^{n+r-1}.
+\end{align*}
+合并 $x^{n+r-1}$ 的系数：
+\[
+\bigl[(n+r)(n+r-1)+4(n+r)\bigr]a_n-a_{n-2}=0
+\quad\Longrightarrow\quad
+(n+r)(n+r+3)a_n=a_{n-2}, \tag{4.6}
+\]
+其中约定 $a_{-1}=a_{-2}=0$。这正是式 (4.5) 的特例：$(n+r)(n+r+3)=(n+r-r_1)(n+r-r_2)$，因为 $r_1=0,r_2=-3$。
+
+\textbf{第一支 $r=0$。}式 (4.6) 变成 $n(n+3)a_n=a_{n-2}$。$n=0$ 给 $0=0$（指标方程）；$n=1$ 给 $1\cdot4\,a_1=0$，所以 $a_1=0$。于是奇数项全为零，偶数项满足
+\[
+a_{2k}=\frac{a_{2k-2}}{2k(2k+3)}
+=\frac{a_0}{2^k\,k!\,5\cdot7\cdots(2k+3)} .
+\]
+取 $a_0=1$：
+\[
+y_1=1+\frac{x^2}{10}+\frac{x^4}{280}+\frac{x^6}{15120}+\cdots
+\]
+（$2\cdot5=10$，$2\cdot4\cdot5\cdot7=280$，$2\cdot4\cdot6\cdot5\cdot7\cdot9=15120$）。
+
+\textbf{第二支 $r=-3$。}式 (4.6) 变成 $(n-3)n\,a_n=a_{n-2}$。逐项看：
+\begin{align*}
+n=1:&\quad (-2)(1)a_1=0 \ \Longrightarrow\ a_1=0,\\
+n=2:&\quad (-1)(2)a_2=a_0 \ \Longrightarrow\ a_2=-\frac{a_0}{2},\\
+n=3:&\quad 0\cdot a_3=a_1=0 \ \Longrightarrow\ a_3\ \text{任意},\\
+n=4:&\quad (1)(4)a_4=a_2 \ \Longrightarrow\ a_4=-\frac{a_0}{8},\\
+n=5:&\quad (2)(5)a_5=a_3 \ \Longrightarrow\ a_5=\frac{a_3}{10},\\
+n=6:&\quad (3)(6)a_6=a_4 \ \Longrightarrow\ a_6=-\frac{a_0}{144}.
+\end{align*}
+取 $a_0=1$、$a_3=0$，得
+\[
+y_2=x^{-3}\Bigl(1-\frac{x^2}{2}-\frac{x^4}{8}-\frac{x^6}{144}-\cdots\Bigr).
+\]
+
+\textbf{为什么可以取 $a_3=0$，取了之后还少了什么？}若 $a_3\neq0$，那么
+\[
+x^{-3}\cdot a_3\Bigl(x^3+\frac{x^5}{10}+\cdots\Bigr)=a_3\Bigl(1+\frac{x^2}{10}+\cdots\Bigr)=a_3y_1,
+\]
+只是把 $y_1$ 混进来，不产生新解。所以「$a_3$ 任意」这一自由度不是第二个独立解，而是一个重复；取 $a_3=0$ 就得到与 $y_1$ 线性无关的那一支。
+
+\textbf{这个例子属于情形 C，但 $a=0$。}两根之差 $r_1-r_2=3$ 是正整数，按定理本应允许 $\ln x$；可是递推在 $n=3$ 那一步右边是 $a_1=0$，方程 $0\cdot a_3=0$ 自动成立，没有矛盾，所以第二个解不需要 $\ln x$。这正是教材 9.33 说的「$c$ may turn out to be zero」。
+
+\warnbox{
+\textbf{自检：}把 $y_1=1+x^2/10+x^4/280$ 代回 $xy''+4y'-xy$，展开到 $x^4$，残差应为 $O(x^6)$。这个检查只用求导和合并同类项，不依赖任何定理，建议每次算完都做一遍。
+}
+
+\subhdr{4.6 收敛半径 $\rho$：到最近奇点的距离}
+
+定理 1.1 里的 $\rho$ 不是算完级数再量的，而是\textbf{从方程本身读出来的}：它是展开点到方程最近奇点（实或复）的距离。下面三个例子把它说清楚。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{6.4cm}p{3.4cm}p{5.8cm}@{}}
+\hline
+\thead{方程} & \thead{奇点} & \thead{$\rho$（展开点 $0$）} \\
+\hline
+$xy''+4y'-xy=0$ & 只有 $x=0$ & $\infty$（无其他奇点）\\
+$(x^2+1)y''-4xy'+6y=0$ & $x=\pm\ii$ & $1$（到 $\pm\ii$ 的距离）\\
+$2x^2y''+(2x^2+x)y'+(3x-1)y=0$ & 只有 $x=0$ & $\infty$（本次作业）\\
+\hline
+\end{tabular}
+\end{center}
+
+表前一句：这张表把三个方程的奇点列出来，$\rho$ 就是「展开点到表里最近那个奇点的距离」。逐行读法：第一行只有 $0$ 一个奇点，没有「其他奇点」可量，所以 $\rho=\infty$；第二行 $P=x^2+1$ 的零点是 $\pm\ii$，$|0-\ii|=1$，所以 $\rho=1$；第三行 $P=2x^2$ 只有零点 $0$，所以 $\rho=\infty$。边界行：$\rho$ 是「至少」保证的半径，实际半径可能更大（例如系数有抵消时），但考试按定理给的下界写。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,scale=1.0]
+\draw[->] (-2.2,0) -- (2.4,0) node[right] {$\mathrm{Re}$};
+\draw[->] (0,-2.0) -- (0,2.2) node[above] {$\mathrm{Im}$};
+\draw[rulepurple,dashed] (0,0) circle (1.6);
+\fill (0,0) circle (1.6pt) node[below right] {$0$};
+\fill (0,1.6) circle (1.6pt) node[right] {$\ii$};
+\fill (0,-1.6) circle (1.6pt) node[right] {$-\ii$};
+\node at (0.95,0.95) {$\rho=1$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}图 2：$(x^2+1)y''-4xy'+6y=0$ 的复奇点 $\pm\ii$ 与收敛圆。实轴上没有奇点，但级数仍只在 $|x|<1$ 内保证收敛。}
+\end{center}
+
+\warnbox{
+「最小收敛区间」（minimal interval of convergence）这个说法，指的就是定理保证的那个区间：$0<x-x_0<\rho$。它不是「实际能收敛的最大区间」，而是「不用逐项检验就能保证的区间」。做题时先算 $\rho$，再写区间；若 $\rho=\infty$，就写「对整个 $x>x_0$ 成立」。
+}
+
+\subhdr{4.7 第二解为什么可能带 $\ln x$：用降阶公式看穿}
+
+§4.4 的三种情形是「结论」，这一节用你学过的降阶公式把它推出来，顺便解释 §4.5 里「$r=-3$ 却没有 $\ln x$」不是巧合。
+
+设 $y_1$ 是 $y''+py'+qy=0$ 的一个解，$W=y_1y_2'-y_1'y_2$。由 Abel 公式（§6.4）
+\[
+W=C\ee^{-\int p\dd x},
+\]
+而
+\[
+\Bigl(\frac{y_2}{y_1}\Bigr)'=\frac{y_1y_2'-y_1'y_2}{y_1^2}=\frac{W}{y_1^2}
+=\frac{C\ee^{-\int p}}{y_1^2}.
+\]
+所以
+\[
+y_2=y_1\int^x\frac{C\ee^{-\int p(t)\dd t}}{y_1(t)^2}\dd t . \tag{4.7}
+\]
+这就是降阶公式（L7 学过）。现在把正则奇点处的信息代进去。设
+\[
+p(x)=\frac{p_0}{x}+\text{(解析部分)},\qquad y_1=x^{r_1}\varphi(x),\quad \varphi(0)\neq0 .
+\]
+则 $\ee^{-\int p}=x^{-p_0}\psi(x)$（$\psi$ 解析、$\psi(0)\neq0$），$y_1^2=x^{2r_1}\varphi^2$。被积函数是
+\[
+\frac{C\ee^{-\int p}}{y_1^2}=C\,x^{-p_0-2r_1}\cdot\frac{\psi}{\varphi^2}.
+\]
+由指标方程 $r_1+r_2=1-p_0$，指数可以改写：
+\[
+-p_0-2r_1=r_2-r_1-1 .
+\]
+于是
+\[
+\frac{C\ee^{-\int p}}{y_1^2}=C\,x^{r_2-r_1-1}\,\Psi(x),\qquad \Psi\ \text{解析},\ \Psi(0)\neq0 . \tag{4.8}
+\]
+
+三种情形现在一目了然：
+\begin{itemize}
+  \item \textbf{$r_1-r_2\notin\Z$}：指数 $r_2-r_1-1$ 不是负整数，逐项积分得 $x^{r_2-r_1}$ 乘解析函数，再乘 $y_1=x^{r_1}\varphi$，得到 $y_2=x^{r_2}\times$（解析函数）。没有 $\ln x$。
+  \item \textbf{$r_1=r_2$}：指数是 $-1$，积分给出 $\ln x$。所以重根必带对数。
+  \item \textbf{$r_1-r_2=N\in\N$}：指数是 $-N-1$。逐项积分时，$x^{-N-1}$ 项给出 $x^{-N}$，乘 $y_1$ 后是 $x^{r_2}$，仍是纯级数；但如果 $\Psi$ 的展开里\textbf{恰有} $x^N$ 项，那么 $x^{-N-1}\cdot x^N=x^{-1}$，积分就产生 $\ln x$。所以「差为正整数」时，$\ln x$ 出不出现，取决于 $\Psi$ 的第 $N$ 个系数是否为零——这正是 §4.3 里「整数步的右边是否为零」的另一种说法。
+\end{itemize}
+
+\textbf{回到 §4.5 的例子。}$xy''+4y'-xy=0$，$r_1=0$、$r_2=-3$、$N=3$，$y_1=1+\frac{x^2}{10}+\cdots$。由 $p=4/x$ 得 $\ee^{-\int p}=x^{-4}$，于是
+\[
+\frac{\ee^{-\int p}}{y_1^2}=\frac{x^{-4}}{(1+\frac{x^2}{10}+\cdots)^2}
+=x^{-4}\Bigl(1-\frac{x^2}{5}+\cdots\Bigr)
+=x^{-4}-\frac15x^{-2}+\cdots
+\]
+只含偶次幂，没有 $x^{-1}$ 项（因为 $N=3$ 是奇数，而 $\Psi$ 只有偶次项）。所以第二个解不带 $\ln x$，与 §4.5 算出的 $y_2=x^{-3}(1-\frac{x^2}{2}-\cdots)$ 一致。
+
+\warnbox{
+\textbf{结论：}$\ln x$ 不是「整数差」的必然结果，而是被积函数 (4.8) 里 $x^{-1}$ 项的产物。重根时它必然出现；差为正整数时它可能出现也可能不出现；差非整数时它不出现。把这句话记住，比背三条公式可靠。
+}
+
+%=============================================================
+\qbreak
+\hdr{§5}{作业题全解：$2x^2y''+(2x^2+x)y'+(3x-1)y=0$}
+
+\qstem{（课件 p42 第 1 题；教材 Constanda p242 习题 1，书内页码 p234）\textbf{Construct two linearly independent solutions for $x>0$. Compute the first five nonzero terms in each of these solutions and determine the minimal interval of convergence for the power series occurring in them.}
+\[
+2x^2y''+(2x^2+x)y'+(3x-1)y=0 .
+\]}
+
+\textbf{题目要求三件事：}（1）构造两个线性无关解；（2）每个解写出前五个\textbf{非零}项；（3）确定幂级数的\textbf{最小收敛区间}。下面按「判断点 $\to$ 指标方程 $\to$ 递推 $\to$ 两个解 $\to$ 收敛区间 $\to$ 验算」的顺序走。
+
+\subhdr{5.1 第 0 步：化标准形，确认是正则奇点}
+
+方程的首项系数 $P(x)=2x^2$，它在 $x=0$ 有二阶零点，所以 $x=0$ 是奇点；$Q=2x^2+x$、$R=3x-1$ 在 $0$ 处解析。除以 $P$：
+\[
+y''+\frac{2x^2+x}{2x^2}y'+\frac{3x-1}{2x^2}y=0
+\quad\Longrightarrow\quad
+p(x)=1+\frac{1}{2x},\qquad q(x)=\frac{3}{2x}-\frac{1}{2x^2}.
+\]
+再算两个「消奇性」的量：
+\[
+xp(x)=x+\frac12,\qquad x^2q(x)=\frac{3x-1}{2}=\frac32x-\frac12 .
+\]
+两个都是多项式，在 $x=0$ 解析，所以 $x=0$ 是\textbf{正则奇点}；并且
+\[
+p_0=\lim_{x\to0}xp(x)=\frac12,\qquad q_0=\lim_{x\to0}x^2q(x)=-\frac12 .
+\]
+
+\warnbox{
+\textbf{第一个坑：}指标方程里的 $p_0,q_0$ 是 $xp$、$x^2q$ 的常数项，\textbf{不是} $Q/P$、$R/P$ 的系数。本题若直接拿 $p=1+\frac{1}{2x}$ 的「常数项」$1$ 当 $p_0$，指标方程就错了。记住顺序：先除 $P$ 得 $p,q$，再乘 $x$、$x^2$，最后取 $x\to0$。
+}
+
+\subhdr{5.2 第 1 步：指标方程与两根}
+
+把 $p_0=\frac12$、$q_0=-\frac12$ 代入指标方程：
+\[
+r(r-1)+\frac12r-\frac12=0
+\quad\Longrightarrow\quad
+2r^2-r-1=0
+\quad\Longrightarrow\quad
+(2r+1)(r-1)=0 .
+\]
+两根为
+\[
+r_1=1,\qquad r_2=-\frac12 .
+\]
+差 $r_1-r_2=\frac32$ \textbf{不是整数}，属于 §4.4 的\textbf{情形 A}：两个解都是纯 Frobenius 级数，都不需要 $\ln x$。这一点在看递推之前就能确定，是本题的「路线判断」。
+
+\aside{若两根之差是整数，就要先算 $r_1$ 那一支，再看整数步 $n=r_1-r_2$ 处递推是否自动满足（§4.3）。本题差为 $3/2$，没有这个麻烦，直接对两个根各算一支即可。}
+
+\subhdr{5.3 第 2 步：代入，得到递推}
+
+设
+\[
+y=\sum_{n=0}^{\infty}a_nx^{n+r},\qquad
+y'=\sum_{n=0}^{\infty}(n+r)a_nx^{n+r-1},\qquad
+y''=\sum_{n=0}^{\infty}(n+r)(n+r-1)a_nx^{n+r-2}.
+\]
+逐项乘进方程。注意 $2x^2y'$ 与 $3xy$ 会把幂次抬高一次，所以要单独处理：
+\begin{align*}
+2x^2y''&=\sum_{n=0}^{\infty}2(n+r)(n+r-1)a_nx^{n+r},\\
+xy'&=\sum_{n=0}^{\infty}(n+r)a_nx^{n+r},\\
+2x^2y'&=\sum_{n=0}^{\infty}2(n+r)a_nx^{n+r+1}
+=\sum_{n=1}^{\infty}2(n+r-1)a_{n-1}x^{n+r},\\
+3xy&=\sum_{n=0}^{\infty}3a_nx^{n+r+1}
+=\sum_{n=1}^{\infty}3a_{n-1}x^{n+r},\\
+-y&=-\sum_{n=0}^{\infty}a_nx^{n+r}.
+\end{align*}
+把 $x^{n+r}$ 的系数合并。$n=0$ 时只有前两项与最后一项有贡献：
+\[
+\bigl[2r(r-1)+r-1\bigr]a_0=(2r+1)(r-1)a_0=0,
+\]
+这正是指标方程（与 §5.2 一致）。$n\geq1$ 时：
+\[
+\bigl[2(n+r)(n+r-1)+(n+r)-1\bigr]a_n
++\bigl[2(n+r-1)+3\bigr]a_{n-1}=0 . \tag{5.1}
+\]
+记 $s=n+r$。第一个方括号是
+\[
+2s(s-1)+s-1=2s^2-s-1=(2s+1)(s-1),
+\]
+第二个方括号是 $2(s-1)+3=2s+1$。于是 (5.1) 变成
+\[
+(2s+1)\bigl[(s-1)a_n+a_{n-1}\bigr]=0 . \tag{5.2}
+\]
+因为本题的两个根都使 $2s+1=2(n+r)+1\neq0$（$r=1$ 时是 $2n+3$；$r=-\frac12$ 时是 $2n$），可以约掉：
+\[
+\boxed{\,a_n=-\frac{a_{n-1}}{n+r-1}\,},\qquad n=1,2,3,\dots \tag{5.3}
+\]
+
+\warnbox{
+这里的因子 $(2s+1)$ 是题目「特意设计」的：它让递推从二次式退化成一次式，两个根都能一路算到底。如果分母是 $(2s+1)(s-1)$ 而 $(2s+1)$ 在某个 $n$ 处为零，那就要另作讨论。本题不需要——约掉之前先确认它不为零，这一步不能省。
+}
+
+\subhdr{5.4 第 3 步：$r_1=1$ 的一支}
+
+把 $r=1$ 代入 (5.3)：
+\[
+a_n=-\frac{a_{n-1}}{n}.
+\]
+于是
+\[
+a_1=-\frac{a_0}{1},\quad
+a_2=-\frac{a_1}{2}=\frac{a_0}{2},\quad
+a_3=-\frac{a_2}{3}=-\frac{a_0}{6},\quad
+a_4=\frac{a_0}{24},\quad
+a_5=-\frac{a_0}{120},
+\]
+通项
+\[
+a_n=\frac{(-1)^n}{n!}a_0,\qquad n=0,1,2,\dots
+\]
+取 $a_0=1$：
+\[
+y_1=x\Bigl(1-x+\frac{x^2}{2}-\frac{x^3}{6}+\frac{x^4}{24}-\cdots\Bigr)
+=x-x^2+\frac{x^3}{2}-\frac{x^4}{6}+\frac{x^5}{24}-\cdots \tag{5.4}
+\]
+括号里正是 $\ee^{-x}$ 的麦克劳林级数，所以这一支有\textbf{闭式}
+\[
+\boxed{\,y_1=x\ee^{-x}\,}
+\]
+这不是猜的，是级数求和的结果。闭式给了一个免费的验算：把 $y=x\ee^{-x}$ 直接代回原方程，应该恒等于零。算一遍：
+\[
+y'=(1-x)\ee^{-x},\qquad y''=(x-2)\ee^{-x},
+\]
+\begin{align*}
+2x^2y''+(2x^2+x)y'+(3x-1)y
+&=\ee^{-x}\bigl[2x^2(x-2)+x(2x+1)(1-x)+x(3x-1)\bigr]\\
+&=\ee^{-x}\bigl[2x^3-4x^2+x+x^2-2x^3+3x^2-x\bigr]=0 .
+\end{align*}
+所以 $y_1=x\ee^{-x}$ 确实是解，前五个非零项就是 (5.4) 里的五项。
+
+\subhdr{5.5 第 4 步：$r_2=-\frac12$ 的一支}
+
+把 $r=-\frac12$ 代入 (5.3)：
+\[
+a_n=-\frac{a_{n-1}}{n-\frac32}=-\frac{2a_{n-1}}{2n-3}.
+\]
+逐项算（取 $a_0=1$）：
+\[
+a_1=-\frac{2}{-1}=2,\qquad
+a_2=-\frac{2\cdot2}{1}=-4,\qquad
+a_3=-\frac{2\cdot(-4)}{3}=\frac83,
+\]
+\[
+a_4=-\frac{2\cdot\frac83}{5}=-\frac{16}{15},\qquad
+a_5=-\frac{2\cdot(-\frac{16}{15})}{7}=\frac{32}{105}.
+\]
+于是
+\[
+y_2=x^{-1/2}\Bigl(1+2x-4x^2+\frac83x^3-\frac{16}{15}x^4+\frac{32}{105}x^5-\cdots\Bigr). \tag{5.5}
+\]
+括号内的前五项是
+\[
+1,\quad 2x,\quad -4x^2,\quad \frac83x^3,\quad -\frac{16}{15}x^4 ;
+\]
+若把外面的 $x^{-1/2}$ 也算作一项，则前五项是
+\[
+x^{-1/2},\quad 2x^{1/2},\quad -4x^{3/2},\quad \frac83x^{5/2},\quad -\frac{16}{15}x^{7/2}.
+\]
+两种数法在作业里都常见，写答案时把括号内、外说清楚即可。
+
+通项可以写成
+\[
+a_n=\frac{(-1)^{n+1}2^{2n-1}(n-1)!}{(2n-2)!},\qquad n\geq1,
+\]
+验算：$n=1$ 给 $\frac{1\cdot2\cdot0!}{0!}=2$；$n=2$ 给 $\frac{-8\cdot1!}{2!}=-4$；$n=3$ 给 $\frac{32\cdot2!}{4!}=\frac83$，与上面一致。
+
+\warnbox{
+\textbf{第二个坑：}$r_2=-\frac12$ 时 $n+r-1=n-\frac32$，在 $n=1$ 处是 $-\frac12$，符号为负，所以 $a_1=+2$ 而不是 $-2$。很多人在这里把 $-\frac{2}{-1}$ 写成 $-2$，后面整支符号全反。建议先把 $a_1,a_2$ 两项算出来，代回原方程看低阶项是否对得上，再往下算。
+}
+
+\subhdr{5.6 第 5 步：最小收敛区间}
+
+按 §4.6，$\rho$ 是展开点到最近奇点的距离。本题
+\[
+xp(x)=x+\frac12,\qquad x^2q(x)=\frac32x-\frac12
+\]
+都是多项式，收敛半径都是 $\infty$；方程也只有 $x=0$ 一个奇点，没有「其他奇点」可量。所以
+\[
+\rho=\infty .
+\]
+定理保证的区间是 $0<x-0<\infty$，即
+\[
+\boxed{\,0<x<\infty\,}
+\]
+在这个区间上，两个级数都收敛。
+
+还可以用比值法独立核对一遍。$y_1$ 的系数是 $1/n!$，$\lim|a_n/a_{n+1}|=\lim(n+1)=\infty$；$y_2$ 的系数满足
+\[
+\left|\frac{a_n}{a_{n-1}}\right|=\frac{2}{2n-3}\to0
+\quad\Longrightarrow\quad
+\lim\left|\frac{a_{n-1}}{a_n}\right|=\infty .
+\]
+两种算法都给出半径 $\infty$，与定理一致。
+
+\warnbox{
+\textbf{第三个坑：}「最小收敛区间」不是「收敛半径」。半径是 $\rho=\infty$，但解里有 $x^{-1/2}$，所以解只在 $x>0$ 上有实值意义；答案要写 $0<x<\infty$，不能写 $-\infty<x<\infty$。若题目问的是「幂级数部分 $\sum a_nx^n$ 的收敛区间」，那才是全体实数——把这两个对象分开说。
+}
+
+\subhdr{5.7 第 6 步：线性无关性的验算}
+
+两个解都算出来了，还要确认它们线性无关。用 Wronskian：
+\[
+W=y_1y_2'-y_1'y_2 .
+\]
+不必硬算（硬算要处理 $x^{-1/2}$ 的级数），用 §6.4 的 Abel 公式更快。对标准形 $y''+py'+qy=0$，
+\[
+W'=-pW=-\Bigl(1+\frac{1}{2x}\Bigr)W
+\quad\Longrightarrow\quad
+W=C\ee^{-x}x^{-1/2}.
+\]
+常数 $C$ 用最低阶项定：$y_1\sim x$，$y_2\sim x^{-1/2}$，于是
+\[
+W\sim x\cdot\Bigl(-\frac12\Bigr)x^{-3/2}-1\cdot x^{-1/2}
+=-\frac32x^{-1/2},
+\]
+所以 $C=-\frac32$，
+\[
+W=-\frac32\ee^{-x}x^{-1/2}\neq0\qquad(x>0).
+\]
+$W$ 在 $x>0$ 上处处不为零，两个解线性无关。
+
+\subhdr{5.8 答案与自检}
+
+\callout{
+\textbf{答案。}方程 $2x^2y''+(2x^2+x)y'+(3x-1)y=0$ 在 $x>0$ 上的两个线性无关解为
+\[
+y_1=x\ee^{-x}=x-x^2+\frac{x^3}{2}-\frac{x^4}{6}+\frac{x^5}{24}-\cdots
+\]
+\[
+y_2=x^{-1/2}\Bigl(1+2x-4x^2+\frac83x^3-\frac{16}{15}x^4+\cdots\Bigr),
+\]
+通解
+\[
+y=C_1y_1+C_2y_2,\qquad 0<x<\infty .
+\]
+最小收敛区间：$0<x<\infty$（$\rho=\infty$，因为 $xp=x+\frac12$ 与 $x^2q=\frac32x-\frac12$ 都是多项式，方程没有其他奇点）。
+}
+
+\textbf{自检三问}（答案在 §5.9 末，先自己做）：
+\begin{enumerate}
+  \item 如果把指标方程误写成 $r(r-1)+p_0r+q_0=0$ 但代入 $p_0=1$、$q_0=0$（即直接用 $Q/P$、$R/P$ 的「常数项」），会得到什么根？错在哪一步？
+  \item $y_2$ 的系数 $a_1=2$。如果算成 $a_1=-2$，递推后面会变成什么？用 $n=2$ 的方程检查哪一个对。
+  \item 为什么 $y_1=x\ee^{-x}$ 的收敛半径是 $\infty$，而 $y_2$ 的级数部分也是 $\infty$，解却只写在 $x>0$？
+\end{enumerate}
+
+\subhdr{5.9 常见错误与自检答案}
+
+\warnbox{
+\textbf{本题四个高频错误。}
+（1）\textbf{指标方程用错 $p_0,q_0$}：忘记先除 $P$，或忘记乘 $x$、$x^2$。
+（2）\textbf{$r_2$ 支的符号}：$n-\frac32$ 在 $n=1$ 为负，$a_1=+2$。
+（3）\textbf{把「前五项」数错}：$y_1$ 的 $x^4$ 项系数非零（$-\frac16$），不能跳过；$y_2$ 要把括号内、外说清楚。
+（4）\textbf{收敛区间写成 $|x|<\infty$}：$x^{-1/2}$ 只在 $x>0$ 上有实值意义。
+}
+
+\textbf{自检答案。}
+（1）若取 $p_0=1,q_0=0$，指标方程为 $r(r-1)+r=r^2=0$，得 $r=0$（重根），与正确答案 $1,-\frac12$ 完全不同；错在第一步没有把 $Q/P$、$R/P$ 乘 $x$、$x^2$ 再取极限。
+（2）若 $a_1=-2$，由 $a_2=-\frac{2a_1}{1}=4$，与正确值 $-4$ 相反；把 $y_2=x^{-1/2}(1-2x+4x^2-\cdots)$ 代回原方程，$x^{1/2}$ 的系数不为零，所以 $a_1=+2$ 才是对的。
+（3）$y_1$ 是整函数 $x\ee^{-x}$，$y_2$ 的幂级数部分也是整函数（比值法给 $\rho=\infty$）；但 $x^{-1/2}$ 在 $x<0$ 不是实数、在 $x=0$ 无定义，所以「解」的实值定义域只能是 $x>0$。收敛半径讲的是级数，定义域讲的是解，两者不是一回事。
+
+%=============================================================
+\subhdr{5.10 作业书写模板（可直接照这个顺序写）}
+
+作业要交的是「过程 + 答案」，不是只有最后一行。按下面六块写，老师能一眼看到关键步骤，你自己也不容易漏：
+
+\callout{
+\textbf{（1） 定性与标准化。}写出 $P,Q,R$，说明 $x=0$ 是奇点；写出 $p=Q/P$、$q=R/P$，再写 $xp=x+\frac12$、$x^2q=\frac32x-\frac12$，说明二者解析，所以是正则奇点；读出 $p_0=\frac12$、$q_0=-\frac12$。
+
+\textbf{（2） 指标方程。}写 $r(r-1)+\frac12r-\frac12=0$，即 $(2r+1)(r-1)=0$，得 $r_1=1$、$r_2=-\frac12$；写一句「差 $3/2$ 非整数，故两个解均为 Frobenius 级数」。
+
+\textbf{（3） 递推。}设 $y=\sum a_nx^{n+r}$，代入后写 $(2s+1)[(s-1)a_n+a_{n-1}]=0$（$s=n+r$），约去 $2s+1$，得 $a_n=-\frac{a_{n-1}}{n+r-1}$。
+
+\textbf{（4） 第一支。}$r=1$：$a_n=(-1)^n a_0/n!$，写前五项，得 $y_1=x\ee^{-x}=x-x^2+\frac{x^3}{2}-\frac{x^4}{6}+\frac{x^5}{24}-\cdots$；可加一句「代回验证为解」。
+
+\textbf{（5） 第二支。}$r=-\frac12$：$a_n=-\frac{2a_{n-1}}{2n-3}$，写 $a_1=2,a_2=-4,a_3=\frac83,a_4=-\frac{16}{15},a_5=\frac{32}{105}$，得
+\[
+y_2=x^{-1/2}\Bigl(1+2x-4x^2+\frac83x^3-\frac{16}{15}x^4+\cdots\Bigr).
+\]
+
+\textbf{（6） 收敛区间与结论。}写「$xp$、$x^2q$ 为多项式，$\rho=\infty$；又 $x^{-1/2}$ 要求 $x>0$，故最小收敛区间为 $0<x<\infty$」，最后写通解 $y=C_1y_1+C_2y_2$。
+}
+
+\warnbox{
+\textbf{交卷前 30 秒检查：}（1）指标方程是否与 $n=0$ 的系数方程一致；（2）$a_1$ 的符号；（3）「前五项」是否都是非零项；（4）区间是否写了 $x>0$；（5）有没有一句「两个解线性无关」——可以写 $W\neq0$，也可以写「$y_1/y_2$ 不是常数」。
+}
+
+\hdr{§6}{补齐专章：线性微分方程组}
+
+\callout{
+\textbf{这一节为什么在这里。}本次作业的题干要求「construct two linearly independent solutions」，答案写成「通解 $=C_1y_1+C_2y_2$」，验算用 Wronskian——这三样东西的语言全部来自方程组章（课件 L13--L17）。课件 L18--20 没有再讲一遍，默认你会。你既然说方程组还没学好，这一节就从零把用得到的部分补齐；标「\textbf{本章直接用到}」的小节必须掌握，其余是背景，读懂即可。
+}
+
+\subhdr{6.1 从二阶方程到一阶系统（本章直接用到）}
+
+设
+\[
+y''+p(x)y'+q(x)y=0 .
+\]
+令 $y_1=y$、$y_2=y'$，则
+\[
+\begin{cases}
+y_1'=y_2,\\
+y_2'=-q(x)y_1-p(x)y_2 .
+\end{cases}
+\]
+写成矩阵形式：
+\[
+\frac{\dd}{\dd x}\begin{pmatrix}y_1\\y_2\end{pmatrix}
+=\begin{pmatrix}0&1\\-q(x)&-p(x)\end{pmatrix}
+\begin{pmatrix}y_1\\y_2\end{pmatrix},
+\qquad\text{即}\quad Y'=A(x)Y . \tag{6.1}
+\]
+反过来，若一个 $2\times2$ 系统的系数矩阵第一行是 $(0,1)$，那么 $y=y_1$ 满足 $y''+py'+qy=0$：由第一式 $y_2=y_1'$，代入第二式即得。所以\textbf{二阶线性方程与「伴随形式」的一阶系统是同一件事}，只是把「一个二阶方程」换成了「两个一阶方程」。
+
+\aside{不是每个 $2\times2$ 系统都能消成一个二阶方程；能消的恰好是这种「第一行 $(0,1)$」的伴随形式（companion form）。但常系数系统总可以化到若尔当形，逐个分量求解，所以「系统」比「单个二阶方程」更一般。本讲义只需要伴随形式这一支。}
+
+对本题，$p=1+\dfrac{1}{2x}$、$q=\dfrac{3}{2x}-\dfrac{1}{2x^2}$，所以
+\[
+A(x)=\begin{pmatrix}0&1\\[2pt] \dfrac{1}{2x^2}-\dfrac{3}{2x}&-1-\dfrac{1}{2x}\end{pmatrix}.
+\]
+注意 $x\to0$ 时 $A(x)$ 的元素无界：\textbf{$x=0$ 是系统的奇点}。这件事在 §6.8 会再用一次。
+
+\subhdr{6.2 最小线性代数工具箱}
+
+这一小节只列后面用到的公式，不证明。
+
+\callout{
+\textbf{矩阵与向量。}$A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$，$Y=\begin{pmatrix}u\\v\end{pmatrix}$，
+\[
+AY=\begin{pmatrix}au+bv\\cu+dv\end{pmatrix},\qquad
+\det A=ad-bc,\qquad
+A^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}\quad(\det A\neq0).
+\]
+
+\textbf{特征值与特征向量。}若存在数 $\lambda$ 和非零向量 $v$ 使
+\[
+Av=\lambda v,
+\]
+则 $\lambda$ 叫\textbf{特征值}，$v$ 叫对应的\textbf{特征向量}。把 $Av=\lambda v$ 写成 $(A-\lambda I)v=0$：它有非零解当且仅当
+\[
+\det(A-\lambda I)=0 .
+\]
+这是 $\lambda$ 的二次方程（$2\times2$ 时），叫\textbf{特征方程}；它的两个根就是两个特征值（可能重复、可能共轭复）。
+
+\textbf{矩阵指数。}对任意方阵 $A$ 和实数 $x$，定义
+\[
+\ee^{Ax}=I+Ax+\frac{A^2x^2}{2!}+\frac{A^3x^3}{3!}+\cdots
+\]
+这个级数对每个元素都绝对收敛，所以 $\ee^{Ax}$ 总是有定义的。
+}
+
+\subhdr{6.3 一阶线性系统的基本定理}
+
+\callout{
+\textbf{定理 6.1（存在唯一性）。}设 $A(x)$ 与 $F(x)$ 在区间 $[a,b]$ 上连续。则对任意 $x_0\in[a,b]$ 和任意常向量 $Y_0$，初值问题
+\[
+Y'=A(x)Y+F(x),\qquad Y(x_0)=Y_0
+\]
+在 $[a,b]$ 上有且只有一个解。
+}
+
+这个定理是整章的「地基」：它保证了解的存在、唯一，也保证了解空间是 $n$ 维的。下面只对 $n=2$ 说，$n$ 维完全一样。
+
+\callout{
+\textbf{齐次系统的解空间是 $2$ 维的。}设 $Y'=A(x)Y$。
+\begin{enumerate}
+  \item 若 $Y_1,Y_2$ 是解，则任意线性组合 $c_1Y_1+c_2Y_2$ 也是解（齐次、线性）。
+  \item 取定 $x_0$，把每个解映到它的初值 $Y(x_0)\in\R^2$。由存在唯一性，这个映射是一一对应：不同的解给出不同的初值，每个初值也恰好来自一个解。
+\end{enumerate}
+所以齐次系统的解集与 $\R^2$ 一样是 $2$ 维的：\textbf{只要能找到两个线性无关的解，所有解就都是它们的线性组合}。
+}
+
+\callout{
+\textbf{基本矩阵。}若 $Y_1,Y_2$ 是两个线性无关的解，把它们按列排成
+\[
+\Phi(x)=\bigl(Y_1(x)\ \ Y_2(x)\bigr)=\begin{pmatrix}y_{11}&y_{12}\\y_{21}&y_{22}\end{pmatrix},
+\]
+则 $\Phi$ 叫\textbf{基本矩阵}（fundamental matrix）。它满足
+\[
+\Phi'=A\Phi,\qquad \det\Phi(x)\neq0,\qquad Y=\Phi C\ \ (C\text{ 为常向量}).
+\]
+若还要求 $\Phi(x_0)=I$，则称 $\Phi$ 在 $x_0$ \textbf{归一化}；任何基本矩阵右乘 $\Phi(x_0)^{-1}$ 就归一化了。
+}
+
+\subhdr{6.4 Wronskian 与 Abel--Liouville 公式（本章直接用到）}
+
+\callout{
+\textbf{定义。}$W(x)=\det\Phi(x)$ 叫这组解的 \textbf{Wronskian}。对两个解 $Y_1=(y_{11},y_{21})^{\mathsf T}$、$Y_2=(y_{12},y_{22})^{\mathsf T}$，
+\[
+W=\det\begin{pmatrix}y_{11}&y_{12}\\y_{21}&y_{22}\end{pmatrix}
+=y_{11}y_{22}-y_{12}y_{21}.
+\]
+}
+
+\callout{
+\textbf{定理 6.2（Abel--Liouville）。}若 $\Phi'=A\Phi$，则
+\[
+W'=(\tr A)\,W,\qquad\text{从而}\qquad
+W(x)=W(x_0)\exp\Bigl(\int_{x_0}^{x}\tr A(t)\dd t\Bigr). \tag{6.2}
+\]
+}
+
+\textbf{$2\times2$ 的直接证明。}记 $Y_1=(u,v)^{\mathsf T}$、$Y_2=(s,t)^{\mathsf T}$，$A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$，则 $W=ut-vs$。由 $Y_1'=AY_1$、$Y_2'=AY_2$：
+\[
+u'=au+bv,\quad v'=cu+dv,\quad s'=as+bt,\quad t'=cs+dt .
+\]
+于是
+\[
+W'=u't+ut'-v's-vs'=(au+bv)t+u(cs+dt)-v(as+bt)-(cu+dv)s .
+\]
+把四项展开、按 $a,b,c,d$ 归并：
+\[
+W'=a(ut-vs)+d(ut-vs)=(a+d)W=(\tr A)W .
+\]
+证毕。
+
+\warnbox{
+\textbf{三个推论，做题时天天用。}
+（1）$W$ 要么恒为零，要么在区间上处处不为零——因为 $W(x)=W(x_0)\ee^{\int\tr A}$，指数因子永远不为零。
+（2）所以判断 $n$ 个解是否线性无关，只需在\textbf{一个点}算 $W$：$W(x_0)\neq0$ 就无关，$W\equiv0$ 就相关。
+（3）不要反过来用：$W(x_0)=0$ 只说明这一点处相关，不能直接说「函数线性相关」——但对\textbf{同一条线性方程的解}，由 (6.2) 可知一点为零就处处为零，所以对解组来说这个反向也成立。
+}
+
+\textbf{与标量方程的关系（这就是 §5.7 用的公式）。}对 $y''+py'+qy=0$，伴随矩阵 $A=\begin{pmatrix}0&1\\-q&-p\end{pmatrix}$，所以
+\[
+\tr A=-p,\qquad W'=-pW,\qquad W=W_0\exp\Bigl(-\int p\dd x\Bigr). \tag{6.3}
+\]
+这正是课件 L8 的 Abel 公式（也叫 Liouville 公式）。§5.7 里直接写 $W=C\ee^{-x}x^{-1/2}$，用的就是 (6.3)，其中 $p=1+\frac{1}{2x}$，$-\int p\dd x=-x-\frac12\ln x$。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{6.6cm}p{8.4cm}@{}}
+\hline
+\thead{标量二阶方程} & \thead{一阶系统} \\
+\hline
+$y''+py'+qy=0$ & $Y'=A(x)Y$，$A=\begin{pmatrix}0&1\\-q&-p\end{pmatrix}$ \\
+两个线性无关解 $y_1,y_2$ & 基本矩阵 $\Phi=(Y_1\ Y_2)$ \\
+$W=y_1y_2'-y_1'y_2$ & $W=\det\Phi$ \\
+$W'=-pW$ & $W'=(\tr A)W$ \\
+$y=C_1y_1+C_2y_2$ & $Y=\Phi C$ \\
+\hline
+\end{tabular}
+\end{center}
+
+这张表把同一件事的两种写法并排：左边一列是你在 L7--L9 学的，右边一列是系统语言。逐行读法：第一行给出矩阵；第二行把两个解按列排；第三行是行列式；第四行把 $W$ 的变化率写成系数矩阵的迹（伴随矩阵的迹正好是 $-p$）；第五行是通解。整张表只有一句话：\textbf{标量方程的 Wronskian 就是伴随系统基本矩阵的行列式}。
+
+\subhdr{6.5 常系数齐次系统：特征值法}
+
+设 $A$ 是常矩阵，解 $Y'=AY$。仿照标量方程试 $y=\ee^{\lambda x}$，这里试
+\[
+Y=v\ee^{\lambda x}\quad(v\neq0).
+\]
+代入得 $\lambda v\ee^{\lambda x}=Av\ee^{\lambda x}$，约去 $\ee^{\lambda x}$：
+\[
+Av=\lambda v .
+\]
+所以\textbf{$Y=v\ee^{\lambda x}$ 是解 $\iff$ $\lambda$ 是 $A$ 的特征值、$v$ 是对应特征向量}。三种情形：
+
+\callout{
+\textbf{情形 1：两个相异实特征值 $\lambda_1\neq\lambda_2$。}对应特征向量 $v_1,v_2$，两个解
+\[
+Y_1=v_1\ee^{\lambda_1x},\qquad Y_2=v_2\ee^{\lambda_2x}
+\]
+线性无关，通解 $Y=C_1Y_1+C_2Y_2$。
+
+\textbf{情形 2：一对共轭复特征值 $\lambda=\alpha\pm\ii\beta$（$\beta\neq0$）。}取 $v=u+\ii w$ 对应 $\alpha+\ii\beta$，则
+\[
+Y=(u+\ii w)\ee^{(\alpha+\ii\beta)x}
+=\ee^{\alpha x}\bigl[(u\cos\beta x-w\sin\beta x)+\ii(u\sin\beta x+w\cos\beta x)\bigr].
+\]
+实部与虚部分别是实解：
+\[
+Y_1=\ee^{\alpha x}(u\cos\beta x-w\sin\beta x),\qquad
+Y_2=\ee^{\alpha x}(u\sin\beta x+w\cos\beta x).
+\]
+
+\textbf{情形 3：重特征值 $\lambda$。}若有两个线性无关的特征向量 $v_1,v_2$，照情形 1 写。若只有一个 $v$，需要\textbf{广义特征向量} $w$，满足
+\[
+(A-\lambda I)w=v,
+\]
+第二个解取 $Y_2=(vx+w)\ee^{\lambda x}$。
+}
+
+\callout{
+\textbf{最小例子（情形 3）。}$A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$，特征值 $\lambda=1$（二重），$A-I=\begin{pmatrix}0&1\\0&0\end{pmatrix}$，只有一个特征向量 $v=(1,0)^{\mathsf T}$。解 $(A-I)w=v$：
+\[
+\begin{pmatrix}0&1\\0&0\end{pmatrix}\begin{pmatrix}w_1\\w_2\end{pmatrix}=\begin{pmatrix}1\\0\end{pmatrix}
+\quad\Longrightarrow\quad w_2=1,\ w_1\ \text{任意，取}\ w=(0,1)^{\mathsf T}.
+\]
+于是
+\[
+Y=C_1\begin{pmatrix}1\\0\end{pmatrix}\ee^x+C_2\left[\begin{pmatrix}1\\0\end{pmatrix}x+\begin{pmatrix}0\\1\end{pmatrix}\right]\ee^x
+=\ee^x\begin{pmatrix}C_1+C_2x\\C_2\end{pmatrix}.
+\]
+第二分量是常数乘 $\ee^x$，第一分量是 $(C_1+C_2x)\ee^x$——这正是标量重根时的「$x\ee^{\lambda x}$」。
+}
+
+\subhdr{6.6 矩阵指数：把三种情形统一}
+
+把 (6.1) 的解写成 $\Phi(x)=\ee^{Ax}$，这不是形式记号，而是真的级数：
+\[
+\ee^{Ax}=I+Ax+\frac{A^2x^2}{2!}+\cdots
+\]
+逐项求导得 $\dfrac{\dd}{\dd x}\ee^{Ax}=A\ee^{Ax}=\ee^{Ax}A$，且 $\ee^{A\cdot0}=I$。所以 $\ee^{Ax}$ 就是归一化基本矩阵，任何解都可写成 $Y=\ee^{Ax}Y_0$。
+
+计算 $\ee^{Ax}$ 的三条路：
+\begin{enumerate}
+  \item \textbf{可对角化}：$A=P\,\mathrm{diag}(\lambda_1,\lambda_2)P^{-1}$，则
+        \[
+        \ee^{Ax}=P\,\mathrm{diag}(\ee^{\lambda_1x},\ee^{\lambda_2x})P^{-1}.
+        \]
+  \item \textbf{若尔当块}：$J=\begin{pmatrix}\lambda&1\\0&\lambda\end{pmatrix}=\lambda I+N$，$N^2=0$，所以
+        \[
+        \ee^{Jx}=\ee^{\lambda x}(I+Nx)=\ee^{\lambda x}\begin{pmatrix}1&x\\0&1\end{pmatrix}.
+        \]
+  \item \textbf{复特征值}：若 $A$ 的特征值为 $\alpha\pm\ii\beta$，则 $(A-\alpha I)^2=-\beta^2I$，于是
+        \[
+        \ee^{Ax}=\ee^{\alpha x}\left[\cos(\beta x)\,I+\frac{\sin(\beta x)}{\beta}(A-\alpha I)\right]. \tag{6.4}
+        \]
+\end{enumerate}
+
+\warnbox{
+\textbf{行列式与迹。}由 (6.2) 取 $x_0=0$、$\Phi(0)=I$，得
+\[
+\det\ee^{Ax}=\ee^{(\tr A)x}.
+\]
+这条公式有两个用处：一是快速检查 $\ee^{Ax}$ 算对没有（算完取行列式，应等于 $\ee^{(\tr A)x}$）；二是它说明 $\ee^{Ax}$ 永远可逆，所以「基本矩阵」永远不会退化。
+}
+
+\callout{
+\textbf{例（旋转）。}$A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$，特征值 $\pm\ii$（$\alpha=0,\beta=1$）。由 (6.4)：
+\[
+\ee^{Ax}=\cos x\,I+\sin x\,A
+=\begin{pmatrix}\cos x&\sin x\\-\sin x&\cos x\end{pmatrix}.
+\]
+验证：$\det=\cos^2x+\sin^2x=1=\ee^{0\cdot x}$；求导得 $\begin{pmatrix}-\sin x&\cos x\\-\cos x&-\sin x\end{pmatrix}=A\ee^{Ax}$。这个矩阵正是「把向量旋转 $-x$ 角」的矩阵。
+}
+
+\subhdr{6.7 非齐次系统：参数变易}
+
+设
+\[
+Y'=A(x)Y+F(x),
+\]
+$\Phi$ 是齐次系统 $Y'=AY$ 的基本矩阵。令 $Y=\Phi U$，代入：
+\[
+\Phi'U+\Phi U'=A\Phi U+F
+\quad\Longrightarrow\quad
+\Phi U'=F
+\quad\Longrightarrow\quad
+U'=\Phi^{-1}F .
+\]
+积分得
+\[
+Y=\Phi(x)C+\Phi(x)\int_{x_0}^{x}\Phi(t)^{-1}F(t)\dd t . \tag{6.5}
+\]
+第一项是齐次通解，第二项是一个特解。对标量二阶方程，取 $\Phi=\begin{pmatrix}y_1&y_2\\y_1'&y_2'\end{pmatrix}$，(6.5) 就化为你学过的参数变易公式（L8）：两个积分里的分母正是 $W$。
+
+\subhdr{6.8 把作业题写成系统，并核对 W（本章直接用到）}
+
+本题的 $p,q$ 已在 §6.1 给出，伴随矩阵为
+\[
+A(x)=\begin{pmatrix}0&1\\[2pt] \dfrac{1}{2x^2}-\dfrac{3}{2x}&-1-\dfrac{1}{2x}\end{pmatrix},
+\qquad \tr A=-1-\frac{1}{2x}.
+\]
+由 (6.2)：
+\[
+W=W_0\exp\Bigl(-\int\Bigl(1+\frac{1}{2x}\Bigr)\dd x\Bigr)
+=W_0\ee^{-x}x^{-1/2}.
+\]
+这与 §5.7 用 Abel 公式得到的形式一致。再用两个解的领头项定 $W_0$：$y_1\sim x$、$y_2\sim x^{-1/2}$，
+\[
+W\sim x\cdot\Bigl(-\frac12\Bigr)x^{-3/2}-1\cdot x^{-1/2}=-\frac32x^{-1/2},
+\]
+所以 $W_0=-\frac32$。$W\neq0$ 说明两个解线性无关，也说明 $\Phi(x_0)$ 可逆、初值问题对任意 $(y_0,y_0')$ 都能定出 $C_1,C_2$。
+
+\textbf{系统视角还解释了「为什么会出现 $x^{-1/2}$」。}$A(x)$ 的元素在 $x=0$ 无界，存在唯一性定理要求 $A$ 在包含 $x_0$ 的区间上连续，所以这个定理\textbf{不能}跨过 $0$ 使用。换句话说，解在 $0$ 附近本来就可能不解析——这正是 §4 要设 $y=x^r\sum a_nx^n$、允许非整数 $r$ 的原因。若 $A$ 在 $0$ 连续（常点），定理 2.1 就会保证解是普通幂级数。
+
+\subhdr{6.9 为什么「两个线性无关解」就够了（本章直接用到）}
+
+给定初值 $(y(x_0),y'(x_0))=(y_0,y_0')$，要解出 $C_1,C_2$：
+\[
+C_1Y_1(x_0)+C_2Y_2(x_0)=Y_0
+\quad\Longleftrightarrow\quad
+\Phi(x_0)\begin{pmatrix}C_1\\C_2\end{pmatrix}=Y_0 .
+\]
+因为 $\det\Phi(x_0)=W(x_0)\neq0$，矩阵 $\Phi(x_0)$ 可逆，所以
+\[
+\begin{pmatrix}C_1\\C_2\end{pmatrix}=\Phi(x_0)^{-1}Y_0
+\]
+是唯一的。这就是「通解 $=C_1y_1+C_2y_2$」的严格含义：\textbf{两个线性无关解张成整个 $2$ 维解空间，任何初值都能被它们表示，且表示唯一}。
+
+\subhdr{6.10 三个最小例子与自检}
+
+\callout{
+\textbf{例 S1。}$y''-3y'+2y=0$。伴随矩阵 $A=\begin{pmatrix}0&1\\-2&3\end{pmatrix}$，$\tr A=3$，$\det(A-\lambda I)=\lambda^2-3\lambda+2=(\lambda-1)(\lambda-2)$，特征值 $1,2$，特征向量 $(1,1)^{\mathsf T}$、$(1,2)^{\mathsf T}$。基本矩阵
+\[
+\Phi=\begin{pmatrix}\ee^x&\ee^{2x}\\\ee^x&2\ee^{2x}\end{pmatrix},\qquad
+\det\Phi=\ee^{3x}=\ee^{(\tr A)x}.
+\]
+第一行给出 $y=C_1\ee^x+C_2\ee^{2x}$，与标量解一致。
+
+\textbf{例 S2。}$y''+y=0$。$A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$，$\ee^{Ax}=\begin{pmatrix}\cos x&\sin x\\-\sin x&\cos x\end{pmatrix}$，第一行给 $y=C_1\cos x+C_2\sin x$。
+
+\textbf{例 S3。}$y''-2y'+y=0$。$A=\begin{pmatrix}0&1\\-1&2\end{pmatrix}$，$\lambda=1$（二重），$v=(1,1)^{\mathsf T}$，$w=(0,1)^{\mathsf T}$。基本矩阵
+\[
+\Phi=\ee^x\begin{pmatrix}1&x\\1&x+1\end{pmatrix},\qquad \det\Phi=\ee^{2x}.
+\]
+第一行给 $y=(C_1+C_2x)\ee^x$，正是标量重根的解。
+}
+
+\textbf{自检三问}（答案在本节末）：
+\begin{enumerate}
+  \item 对 $y''+4y=0$，写出伴随矩阵 $A$，用 (6.4) 求 $\ee^{Ax}$，并验证 $\det\ee^{Ax}=1$。
+  \item 对 $A=\begin{pmatrix}2&1\\0&2\end{pmatrix}$，求 $\ee^{Ax}$，并说明为什么解里会出现 $x\ee^{2x}$。
+  \item 用 (6.2) 验证：若 $A$ 是常矩阵且 $\tr A=0$，则任何基本矩阵的行列式都不随 $x$ 变。
+\end{enumerate}
+
+\textbf{自检答案。}
+（1）$A=\begin{pmatrix}0&1\\-4&0\end{pmatrix}$，$\lambda=\pm2\ii$，$\alpha=0,\beta=2$，由 (6.4)
+\[
+\ee^{Ax}=\cos(2x)I+\frac{\sin(2x)}{2}A
+=\begin{pmatrix}\cos2x&\frac12\sin2x\\-2\sin2x&\cos2x\end{pmatrix},
+\]
+$\det=\cos^22x+\sin^22x=1$。
+（2）$A=2I+N$，$N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$，$N^2=0$，所以 $\ee^{Ax}=\ee^{2x}(I+Nx)=\ee^{2x}\begin{pmatrix}1&x\\0&1\end{pmatrix}$；右上角的 $x$ 就是「广义特征向量」带来的 $x\ee^{2x}$。
+（3）$W'=(\tr A)W=0$，所以 $W$ 为常数；取 $x_0$ 得 $W(x)=W(x_0)$。
+
+\subhdr{6.11 两个补充例子}
+
+\textbf{例 A（相异实特征值）。}解
+\[
+Y'=\begin{pmatrix}1&1\\4&1\end{pmatrix}Y .
+\]
+特征方程：
+\[
+\det(A-\lambda I)=\begin{vmatrix}1-\lambda&1\\4&1-\lambda\end{vmatrix}
+=(1-\lambda)^2-4=\lambda^2-2\lambda-3=(\lambda-3)(\lambda+1)=0,
+\]
+所以 $\lambda_1=3$、$\lambda_2=-1$。
+
+$\lambda_1=3$：$A-3I=\begin{pmatrix}-2&1\\4&-2\end{pmatrix}$，方程 $-2v_1+v_2=0$，取 $v_1=(1,2)^{\mathsf T}$。
+
+$\lambda_2=-1$：$A+I=\begin{pmatrix}2&1\\4&2\end{pmatrix}$，方程 $2v_1+v_2=0$，取 $v_2=(1,-2)^{\mathsf T}$。
+
+于是
+\[
+Y=C_1\begin{pmatrix}1\\2\end{pmatrix}\ee^{3x}+C_2\begin{pmatrix}1\\-2\end{pmatrix}\ee^{-x},
+\]
+即 $y_1=C_1\ee^{3x}+C_2\ee^{-x}$、$y_2=2C_1\ee^{3x}-2C_2\ee^{-x}$。检验 $\tr A=2$：基本矩阵的行列式应为 $W_0\ee^{2x}$，而
+\[
+W=\begin{vmatrix}\ee^{3x}&\ee^{-x}\\2\ee^{3x}&-2\ee^{-x}\end{vmatrix}
+=-2\ee^{2x}-2\ee^{2x}=-4\ee^{2x},
+\]
+与 $\tr A=2$ 一致。
+
+\textbf{例 B（三阶方程化成 $3\times3$ 系统）。}把
+\[
+y'''-y=0
+\]
+化成系统。令 $y_1=y$、$y_2=y'$、$y_3=y''$，则
+\[
+y_1'=y_2,\qquad y_2'=y_3,\qquad y_3'=y'''=y=y_1,
+\]
+即
+\[
+Y'=\begin{pmatrix}0&1&0\\0&0&1\\1&0&0\end{pmatrix}Y .
+\]
+其特征多项式
+\[
+\det(A-\lambda I)=\begin{vmatrix}-\lambda&1&0\\0&-\lambda&1\\1&0&-\lambda\end{vmatrix}
+=-\lambda^3+1=-(\lambda^3-1),
+\]
+与标量方程的特征方程 $\lambda^3-1=0$ 完全相同（差一个负号，不影响根）。三个特征值是 $1$、$\ee^{2\pi\ii/3}$、$\ee^{-2\pi\ii/3}$，对应
+\[
+y=C_1\ee^x+\ee^{-x/2}\Bigl[C_2\cos\frac{\sqrt3x}{2}+C_3\sin\frac{\sqrt3x}{2}\Bigr].
+\]
+这个例子说明：\textbf{$n$ 阶常系数线性方程与 $n\times n$ 伴随系统有同一个特征多项式}，所以「系统章的特征值法」不是新方法，只是把高阶方程的语言换成了矩阵。
+
+\warnbox{
+\textbf{本节没讲的三块，先划清边界。}（1）$3\times3$ 以上的\textbf{广义特征向量链}：$g<m$ 时可能要算 $(A-\lambda I)^j w$ 一整条链，本节只讲了 $2\times2$ 的一步链；（2）\textbf{相图与稳定性}（平衡点、鞍点、焦点）：那是系统章后半的内容，与本章的级数解无关；（3）\textbf{用 Laplace 变换解系统}：另一条路线，本章不用。这三块若考试要考，再单独补；就「读懂本讲义 §5、§6.8 的 Wronskian 与通解」而言，上面的内容已经够用。
+}
+
+%=============================================================
+\hdr{§7}{Bessel 方程：本章方法的最后一次综合}
+
+课件 p35--p41 用 Bessel 方程收尾，不是因为它新，而是因为它把本章所有零件都用了一遍：正则奇点、指标方程、递推、整数差、$\ln x$、收敛半径。
+
+\subhdr{7.1 方程与正则性}
+
+\callout{
+\textbf{Bessel 方程（课件 p36）。}
+\[
+x^2y''+xy'+(x^2-\nu^2)y=0,\qquad \nu\geq0 .
+\]
+除以 $x^2$：
+\[
+p(x)=\frac1x,\qquad q(x)=\frac{x^2-\nu^2}{x^2},
+\]
+于是
+\[
+xp(x)=1,\qquad x^2q(x)=x^2-\nu^2,
+\]
+两者都在 $0$ 解析，所以 $x=0$ 是\textbf{正则奇点}；$p_0=1$、$q_0=-\nu^2$。方程没有其他奇点（复平面上也没有），所以 $\rho=\infty$。
+}
+
+\subhdr{7.2 指标方程、递推与 $J_\nu$}
+
+指标方程：
+\[
+r(r-1)+r-\nu^2=r^2-\nu^2=0
+\quad\Longrightarrow\quad
+r_1=\nu,\quad r_2=-\nu .
+\]
+设 $y=\sum a_nx^{n+r}$。代入时注意 $x^2y''+xy'$ 合并后是 $\sum(n+r)^2a_nx^{n+r}$，而 $(x^2-\nu^2)y$ 给出 $-\nu^2\sum a_nx^{n+r}$ 与 $\sum a_nx^{n+r+2}$：
+\[
+\sum_{n=0}^{\infty}\bigl[(n+r)^2-\nu^2\bigr]a_nx^{n+r}+\sum_{n=2}^{\infty}a_{n-2}x^{n+r}=0 .
+\]
+令 $x^{n+r}$ 的系数为零（约定 $a_{-1}=a_{-2}=0$）：
+\[
+\bigl[(n+r)^2-\nu^2\bigr]a_n+a_{n-2}=0,\qquad n=0,1,2,\dots \tag{7.1}
+\]
+$n=0$ 给指标方程；$n=1$ 给 $\bigl[(r+1)^2-\nu^2\bigr]a_1=0$。
+
+取 $r=\nu$。$n=1$ 时 $(2\nu+1)a_1=0$，只要 $\nu\neq-\frac12$ 就有 $a_1=0$；于是奇数项全为零。对偶数项，由 (7.1)：
+\[
+a_{2k}=-\frac{a_{2k-2}}{(2k+\nu)^2-\nu^2}
+=-\frac{a_{2k-2}}{4k(\nu+k)} .
+\]
+反复代入：
+\[
+a_{2k}=\frac{(-1)^ka_0}{4^k\,k!\,(\nu+1)(\nu+2)\cdots(\nu+k)}
+=\frac{(-1)^k\Gamma(\nu+1)}{4^k\,k!\,\Gamma(\nu+k+1)}a_0 .
+\]
+取 $a_0=\dfrac{1}{2^\nu\Gamma(\nu+1)}$，得到\textbf{第一类 Bessel 函数}
+\[
+\boxed{\,J_\nu(x)=\sum_{k=0}^{\infty}\frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}\Bigl(\frac{x}{2}\Bigr)^{2k+\nu}\,} \tag{7.2}
+\]
+例如 $\nu=0$ 时
+\[
+J_0(x)=1-\frac{x^2}{4}+\frac{x^4}{64}-\frac{x^6}{2304}+\cdots
+\]
+（系数由 $a_{2k}=-\dfrac{a_{2k-2}}{4k^2}$ 逐个算出）。
+
+\subhdr{7.3 收敛性与第二解}
+
+式 (7.2) 的相邻系数比：
+\[
+\left|\frac{a_{2k}}{a_{2k-2}}\right|=\frac{1}{4k(\nu+k)}\to0,
+\]
+所以级数对一切 $x$ 收敛，$\rho=\infty$。注意 $x^\nu$ 在 $\nu$ 不是整数时只对 $x>0$ 有实值意义，所以解写在 $x>0$ 上。
+
+第二解分两种情形（课件 p41）：
+\begin{itemize}
+  \item $\nu\notin\N$：$J_\nu$ 与 $J_{-\nu}$ 线性无关，基本解组 $\{J_\nu,J_{-\nu}\}$。
+  \item $\nu=n\in\N$：$J_{-n}=(-1)^nJ_n$，两者线性相关，必须另找第二解。课件给出的第二类 Bessel 函数是
+  \[
+  Y_n(x)=\lim_{\nu\to n}\frac{J_\nu(x)\cos\nu\pi-J_{-\nu}(x)}{\sin\nu\pi},
+  \]
+  它是一个含 $\ln x$ 的级数（课件 p41 给了展开式）。从本章的角度看，这正是「两根之差 $2n$ 是正整数」的情形 C：第二解带对数项。
+\end{itemize}
+
+\aside{本章不需要背 $Y_n$ 的展开式，只需知道：$\nu$ 为整数时第二解带 $\ln x$，来源是 §4.3 的整数差机制。考试若考 Bessel，通常只要求写出 $J_\nu$ 的级数与指标方程。}
+
+\subhdr{7.4 一个能求和的特例：$\nu=\frac12$}
+
+Bessel 级数一般不写成初等函数，但 $\nu=\frac12$ 是例外，它给了一个和 $y_1=x\ee^{-x}$ 同级的「免费验算」。
+
+把 $\nu=\frac12$ 代入 (7.2)。先定 $a_0$：由 $\Gamma(\frac32)=\frac{\sqrt\pi}{2}$，
+\[
+a_0=\frac{1}{2^{1/2}\Gamma(\frac32)}=\frac{1}{\sqrt2\cdot\frac{\sqrt\pi}{2}}=\sqrt{\frac{2}{\pi}} .
+\]
+再用递推 $a_{2k}=-\dfrac{a_{2k-2}}{4k(\nu+k)}$，此时 $\nu=\frac12$，$4k(\nu+k)=2k(2k+1)$，所以
+\[
+a_{2k}=-\frac{a_{2k-2}}{2k(2k+1)} .
+\]
+逐项：$a_2=-\frac{a_0}{2\cdot3}=-\frac{a_0}{3!}$，$a_4=-\frac{a_2}{4\cdot5}=\frac{a_0}{5!}$，归纳得
+\[
+a_{2k}=\frac{(-1)^k}{(2k+1)!}a_0 .
+\]
+于是
+\[
+J_{1/2}(x)=x^{1/2}\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}a_0x^{2k}
+=\sqrt{\frac{2}{\pi}}\,x^{1/2}\sum_{k=0}^{\infty}\frac{(-1)^kx^{2k}}{(2k+1)!}
+=\sqrt{\frac{2}{\pi x}}\sum_{k=0}^{\infty}\frac{(-1)^kx^{2k+1}}{(2k+1)!}
+=\sqrt{\frac{2}{\pi x}}\sin x .
+\]
+最后一步用的是 $\sin x$ 的麦克劳林级数。这个例子说明：Frobenius 级数不是「只能数值算」的东西，特殊参数下它能求和；同时也提醒你，$x^{1/2}$ 这样的非整数幂在 $x>0$ 之外没有实值意义——这与 §5.6 的讨论是同一件事。
+
+%=============================================================
+\hdr{§8}{公式卡与五步流程}
+
+\subhdr{8.1 一页公式}
+
+\callout{
+\textbf{（1）判断点。}$P(x_0)\neq0$：常点。$P(x_0)=0$：奇点；再算
+\[
+\lim_{x\to x_0}(x-x_0)\frac{Q}{P},\qquad \lim_{x\to x_0}(x-x_0)^2\frac{R}{P},
+\]
+都有限 $\Rightarrow$ 正则奇点；否则非正则。
+
+\textbf{（2）常点。}
+\[
+y=\sum_{n=0}^{\infty}a_n(x-x_0)^n,
+\]
+代入后令同幂次系数为零，解出下标最大的系数的递推。
+
+\textbf{（3）正则奇点。}
+\[
+y=x^r\sum_{n=0}^{\infty}a_nx^n,\qquad a_0\neq0,
+\]
+\[
+r(r-1)+p_0r+q_0=0,\qquad p_0=\lim_{x\to0}xp,\quad q_0=\lim_{x\to0}x^2q .
+\]
+
+\textbf{（4）递推。}
+\[
+a_n=-\frac{1}{(n+r-r_1)(n+r-r_2)}
+\sum_{m=0}^{n-1}\bigl[p_{n-m}(m+r)+q_{n-m}\bigr]a_m .
+\]
+
+\textbf{（5）第二解。}
+$r_1-r_2\notin\Z$：$y_2=x^{r_2}\sum b_nx^n$；
+$r_1=r_2$：$y_2=y_1\ln x+x^{r_2}\sum b_nx^n$；
+$r_1-r_2\in\N$：$y_2=ay_1\ln x+x^{r_2}\sum b_nx^n$（$a$ 可能为 $0$）。
+
+\textbf{（6）收敛半径。}$\rho=$ 展开点到最近奇点（实或复）的距离；等价地，$\rho=\min\{xp,\ x^2q\ \text{两个级数的收敛半径}\}$。
+}
+
+\subhdr{8.2 做题五步}
+
+\begin{enumerate}
+  \item \textbf{化标准形}：除以 $P$，读出 $p=Q/P$、$q=R/P$。
+  \item \textbf{判点}：算 $xp$、$x^2q$ 在 $x_0$ 的极限；常点走 Taylor，正则奇点走 Frobenius。
+  \item \textbf{定指数}：解指标方程，记 $r_1\geq r_2$，看差值是不是整数。
+  \item \textbf{算系数}：先算 $r_1$ 支；若差非整数，再算 $r_2$ 支；若差为整数，检查整数步是否自动满足，再决定要不要 $\ln x$。
+  \item \textbf{收尾}：写通解、写区间、用 Wronskian 或代回验算。
+\end{enumerate}
+
+\subhdr{8.3 三个检查}
+
+\begin{itemize}
+  \item \textbf{低阶检查}：把算出的前两三项代回原方程，最低次幂的系数应为零。
+  \item \textbf{指数检查}：$n=0$ 的方程必须正好是指标方程；若不等，说明前面某项乘错了。
+  \item \textbf{半径检查}：$\rho$ 应等于到最近奇点的距离；若算出的级数比值法给出更小的半径，说明系数算错了。
+\end{itemize}
+
+%=============================================================
+\hdr{§9}{易错点（每条都能指回一个具体例子）}
+
+\begin{enumerate}[leftmargin=2.2em]
+  \item \textbf{把 $Q/P$、$R/P$ 的系数直接当 $p_0,q_0$。}本题 $p=1+\frac{1}{2x}$，常数项是 $1$，但 $p_0=\lim xp=\frac12$。指回 §5.1。
+  \item \textbf{指标方程漏掉 $r(r-1)$ 里的 $-r$。}写成 $r^2+p_0r+q_0=0$ 会得到完全不同的根。指回 §4.2 与 §5.2 的对比。
+  \item \textbf{把 $a_0=0$ 当成「零解」。}正确的说法是「$a_0=0$ 等价于换一个指数」。指回 §4.2 的警告框。
+  \item \textbf{两根差为整数就直接写两个 Frobenius 级数。}要先检查整数步；本题差 $\frac32$ 不用查，但 §4.5 的 $r=-3$ 就是「整数差却没有 $\ln x$」的实例。
+  \item \textbf{收敛区间写成 $|x-x_0|<\rho$。}$x^r$ 在 $x<0$ 可能不是实数，答案要按题目要求的 $x>0$ 写。指回 §5.6。
+  \item \textbf{「前五项」把零系数算进去。}例 5 的 $a_4=0$，例 6 只有两项非零；题目说「nonzero terms」时要数非零项。指回 §2.5、§2.6。
+  \item \textbf{忘记复奇点。}$(x^2+1)y''-4xy'+6y=0$ 在实轴上没有奇点，但 $\pm\ii$ 把半径限制为 $1$。指回 §2.6 与 §4.6。
+  \item \textbf{用一点 $W=0$ 判定函数线性相关。}对解组可以（Abel 公式保证要么全零要么全不零），对一般函数不行。指回 §6.4。
+  \item \textbf{把 $\ee^{A+B}=\ee^A\ee^B$ 当恒等式。}只有 $A,B$ 可交换时才成立；矩阵指数一般不能拆。指回 §6.6。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{缺口清单：课件哪里跳了步，本讲义补了什么}
+
+\gapitem{代数跳步}{L18 p21 直接给出 $\sum[(n+2)(n+1)a_{n+2}+\sum(k+1)p_{n-k}a_{k+1}+\sum q_{n-k}a_k]x^n=0$，没有说明两个级数相乘后同幂次系数为什么是卷积。补法：§2.3 用 Cauchy 乘积逐项推出，并写出 $n=0,1,2$ 三个方程。}
+
+\gapitem{压缩缺口}{L18 p25 只写「We observe that even and odd coefficients decouple」，没有证明为什么解耦。补法：§2.4 指出递推只连 $a_k$ 与 $a_{k+2}$，二者同奇偶，所以两条链独立。}
+
+\gapitem{术语错误}{L18 p18 写「where $P$, $Q$ and $R$ are analytic \textbf{equations}」，应为 analytic \textbf{functions}。补法：§1.6 末尾订正，并说明「解析」是对系数函数说的。}
+
+\gapitem{适用边界}{L18 p28 只写「The power series method is only applicable when $x=0$ is an ordinary point」，没有解释为什么。补法：§2.7 说明奇点处 $p,q$ 不解析、代入后出现负幂次、无法合并。}
+
+\gapitem{机制缺口}{L19-20 p4--p5 给出正则奇点的极限定义，但没有说明为什么偏偏乘 $(x-x_0)$ 与 $(x-x_0)^2$。补法：§3.1 的旁注把乘完后的方程写成「Euler 型 + 解析系数」，这正是 Frobenius 的出发点。}
+
+\gapitem{平凡解表述}{L19-20 p24 写「If $a_0=0$, then $a_1=a_2=\cdots=0$, resulting in the zero solution」，字面不严谨。补法：§4.2 的警告框说明 $a_0=0$ 等价于把指数换成 $r+N$，不是零解。}
+
+\gapitem{结构缺口}{L19-20 p24 的系数公式分母是 $(k+r)(k+r-1)+(k+r)p_0+q_0$，但没有指出它等于 $(k+r-r_1)(k+r-r_2)$，于是「整数差为什么卡住」无法解释。补法：§4.3 给出恒等式 (4.5) 并用它统一解释三种情形。}
+
+\gapitem{笔误（一）}{L19-20 p33 写「$r(r-1)+4r=r+3r=r(r+3)=0$」，中间漏了平方，应为 $r^2+3r$。补法：§4.5 在推导中订正，并说明结论 $r(r+3)=0$ 仍对。}
+
+\gapitem{作业留白}{L19-20 p34 写「If $r=r_2=-3$, we would actually have obtained two linearly independent solution. (Homework)」，既没给第二解，也没解释为什么没有 $\ln x$。补法：§4.5 完整算出 $y_2=x^{-3}(1-\frac{x^2}{2}-\frac{x^4}{8}-\cdots)$，并用「$n=3$ 时 $0\cdot a_3=0$ 自动成立」解释 $a=0$。}
+
+\gapitem{笔误（二）}{L19-20 p11 的初值方程写「$1=y'(1)=\frac52c_1-3c_3$」，$c_3$ 应为 $c_2$；p15 写「$r(r-1)-7r+16-0$」，应为「$=0$」。补法：§3.5 两处均已订正。}
+
+\gapitem{收敛区间}{L19-20 p31 只写「$\rho$ is the distance from $x_0$ to the nearest other singular point (real or complex)」，没有给算法，也没说复奇点怎么算。补法：§4.6 用三个方程列表说明，并画出 $\pm\ii$ 的收敛圆（图 2）。}
+
+\gapitem{压缩缺口（二）}{L19-20 p22 从两个级数相乘直接跳到 $\sum[\cdots]x^{k+r-2}=0$，中间的下标合并省略。补法：§4.2 把 $x^2y''$、$x(xp)y'$、$(x^2q)y$ 三项分别写成同幂次，再合并。}
+
+%=============================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+  \item \textbf{先判点，再定形}：$P(x_0)\neq0$ 用普通幂级数；$P(x_0)=0$ 且 $xp$、$x^2q$ 解析，用 $x^r\sum a_nx^n$；否则本课不处理。
+  \item \textbf{指数看指标方程，第二解看差值}：$r(r-1)+p_0r+q_0=0$；两根差非整数时两支都是纯级数，相等或差正整数时第二解可能带 $\ln x$（也可能不带，看整数步是否自动满足）。
+  \item \textbf{半径看奇点}：$\rho$ 是展开点到最近奇点（含复奇点）的距离；本题 $xp=x+\frac12$、$x^2q=\frac32x-\frac12$ 都是多项式，所以 $\rho=\infty$，解在 $0<x<\infty$ 上成立。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{页码对照表}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.4cm}p{4.2cm}p{5.2cm}@{}}
+\hline
+\thead{本讲义} & \thead{课件} & \thead{教材 Constanda} \\
+\hline
+§1 幂级数工具箱 & L18 p3--p16 & 9.1--9.2（p214--228）\\
+§2 常点邻域 & L18 p17--p35 & 9.2（p220--228）\\
+§3 正则奇点与 Euler & L19-20 p3--p19 & 9.3（p228--230）、4.6 \\
+§4 Frobenius & L19-20 p20--p34 & 9.4.1--9.4.3（p231--243）\\
+§5 作业题全解 & L19-20 p42 & 9.4.1 习题 1（p234；PDF p242）\\
+§6 线性方程组 & L13--L17（本讲义补齐） & 第 7 章（线性系统）\\
+§7 Bessel & L19-20 p35--p41 & 9.4 例 9.30--9.37（p237--244）\\
+\hline
+\end{tabular}
+\end{center}
+
+表前一句：这张表把本讲义的每一节对到课件的页码与教材的小节，方便你回查原话。逐行读法：左边是本讲义的节号，中间是课件 PDF 的页码（按 PDF 页数，不是页脚编号），右边是教材的小节与书内页码（括号里是 PDF 页码，两者相差约 8 页）。边界行：教材 9.1--9.2 的页码取自目录，未逐页核对，只作检索起点。
+
+\end{document}

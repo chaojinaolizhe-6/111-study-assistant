@@ -1,0 +1,31 @@
+﻿\documentclass[11pt]{ctexart}
+\input{D:/aaa_D_usual/DSH/111学习助手/.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\settags{T}{O}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>={Stealth[length=1.8mm]},font=\small]
+  \draw[thick] (0,-2.3)--(0,2.3);
+  \fill (0,0) circle (1.3pt) node[left=3pt]{$S$};
+  \draw[thick] (6,-2.3)--(6,-0.52);
+  \draw[thick] (6,-0.28)--(6,0.28);
+  \draw[thick] (6,0.52)--(6,2.3);
+  \fill (6,0.40) circle (1.2pt) node[above left=-1pt]{$S_1$};
+  \fill (6,-0.40) circle (1.2pt) node[below left=-1pt]{$S_2$};
+  \draw[->] (0,0)--(6,0.40);
+  \draw[->] (0,0)--(6,-0.40);
+  \draw[->] (6,0.40)--(12,1.45);
+  \draw[->] (6,-0.40)--(12,1.45);
+  \node at (7.4,0.95) {\scriptsize $R_1$};
+  \node at (7.4,-0.72) {\scriptsize $R_2$};
+  \draw[thick] (12,-2.3)--(12,2.3);
+  \fill (12,1.45) circle (1.3pt) node[right=3pt]{$P$};
+  \node at (12,0) [right=3pt] {$O$};
+  \draw[->] (12.0,-0.15)--(12.0,-2.0) node[right=2pt] {\scriptsize $y$};
+  \draw[<->] (6.9,0.40)--(6.9,-0.40) node[midway,right=2pt] {\scriptsize $d$};
+  \draw[<->] (6,-1.95)--(12,-1.95) node[midway,above=1pt] {\scriptsize $D$};
+\end{tikzpicture}
+\end{center}
+\typeout{FIGW=\the\wd0}
+\end{document}

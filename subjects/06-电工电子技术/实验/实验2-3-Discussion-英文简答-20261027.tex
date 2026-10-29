@@ -1,0 +1,133 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\settags{实验 2 \& 3 · Discussion 英文简答}{电工电子技术}
+
+\begin{document}
+
+\doctitle{Discussion of Results}
+{Concise English Answers for Experiments 2 and 3}
+{依据：实验册 p.5（Experiment 2, DC Circuit）与 p.9（Experiment 3, AC Circuit）；理论口径按教材《电工学实验教程》第 2 版 §2.1、§2.3 与课程课件 C1-3、C1-4、C2-2\ \textperiodcentered\ 2026-10-27}
+
+\callout{\textbf{How to use this sheet.} The formulae and the structure of each answer are what you should reproduce in the report. The numbers in the grey examples are \emph{illustrative only}: replace them with the values you actually measured in Table 2.1.3, Table 2.1.4, Table 2.3.4 and Table 2.3.5. Always write the formula first, then substitute the numbers with units, then give the result and one sentence of conclusion. Keep three significant figures unless your instructor asks otherwise.}
+
+%=============================================================
+\hdr{§1}{Experiment 2 — DC Circuit Experiment}
+
+\subhdr{1. Relative errors from Table 2.1.3}
+Let \(X_{\mathrm{calc}}\) be the calculated value in Table 2.1.3 and \(X_{\mathrm{meas}}\) the measured value of the same quantity. The relative error is
+\[
+\delta=\frac{|X_{\mathrm{meas}}-X_{\mathrm{calc}}|}{|X_{\mathrm{calc}}|}\times 100\% .
+\]
+For example, if a branch current is calculated as \(8.0\,\mathrm{mA}\) and measured as \(8.3\,\mathrm{mA}\), then
+\[
+\delta=\frac{|8.3-8.0|}{8.0}\times 100\%=3.75\% .
+\]
+Repeat this for every row of Table 2.1.3 and enter the result in the ``relative error'' row. A small error (a few percent) is normal and comes from resistor tolerance, meter accuracy, and reading uncertainty. If your instructor wants a signed error, use \((X_{\mathrm{meas}}-X_{\mathrm{calc}})/X_{\mathrm{calc}}\times100\%\) and state the sign convention.
+
+\subhdr{2. Verification of KCL at node A}
+Choose node A of Fig.~2.1.1. With the reference directions marked in the figure, \(I_1\) enters A from the left, \(I_2\) enters A from the right through \(R_2\), and \(I_3\) leaves A downward. KCL requires
+\[
+I_1+I_2-I_3=0 .
+\]
+Using the measured values, compute the algebraic residual \(\Sigma I=I_1+I_2-I_3\). For example, with \(I_1=5.2\,\mathrm{mA}\), \(I_2=3.1\,\mathrm{mA}\) and \(I_3=8.2\,\mathrm{mA}\),
+\[
+\Sigma I=5.2+3.1-8.2=0.1\,\mathrm{mA},
+\]
+and the relative residual is
+\[
+\frac{|\Sigma I|}{|I_1|+|I_2|+|I_3|}\times100\%
+=\frac{0.1}{16.5}\times100\%\approx0.6\% .
+\]
+This is within the accuracy of the meters and the reading, so KCL is verified. If your diagram takes \(I_3\) as entering the node, reverse its sign in the equation; the rule is always ``entering positive, leaving negative''.
+
+\subhdr{3. Superposition and homogeneity from Table 2.1.4}
+Take one response, for example the current \(I_3\) through \(R_3\). Let \(I_3'\) be its value when \(U_{S1}\) acts alone, \(I_3''\) its value when \(U_{S2}\) acts alone, and \(I_3\) its value when both sources act. \textbf{Additivity} requires
+\[
+I_3 \approx I_3'+I_3'' .
+\]
+\textbf{Homogeneity} requires that, when \(U_{S2}\) is doubled,
+\[
+I_3(2U_{S2}) \approx 2I_3'' .
+\]
+For example, suppose \(I_3'=4.0\,\mathrm{mA}\), \(I_3''=2.0\,\mathrm{mA}\), \(I_3=6.1\,\mathrm{mA}\), and \(I_3(2U_{S2})=4.1\,\mathrm{mA}\). Then
+\[
+I_3'+I_3''=6.0\,\mathrm{mA},\qquad
+\frac{|6.1-6.0|}{6.0}\times100\%\approx1.7\% ,
+\]
+and
+\[
+2I_3''=4.0\,\mathrm{mA},\qquad
+\frac{|4.1-4.0|}{4.0}\times100\%\approx2.5\% .
+\]
+Both deviations are within experimental error, so the circuit satisfies superposition and homogeneity. A systematic deviation much larger than the meter accuracy would indicate a nonlinear element or a wiring error.
+
+\subhdr{4. Can resistor power be calculated by superposition?}
+No. For a resistor, \(P=I^2R\), which is a quadratic, not a linear, relation. If \(I=I'+I''\), then
+\[
+P=(I'+I'')^2R=(I')^2R+(I'')^2R+2I'I''R
+=P'+P''+2I'I''R .
+\]
+The cross term \(2I'I''R\) is missing if one simply adds the two partial powers. For example, with \(I'=4.0\,\mathrm{mA}\), \(I''=2.0\,\mathrm{mA}\) and \(R=1.0\,\mathrm{k}\Omega\):
+\[
+P'=16.0\,\mathrm{mW},\quad P''=4.0\,\mathrm{mW},\quad
+P'+P''=20.0\,\mathrm{mW},
+\]
+but the actual power at \(I=6.0\,\mathrm{mA}\) is
+\[
+P=(6.0\,\mathrm{mA})^2(1.0\,\mathrm{k}\Omega)=36.0\,\mathrm{mW}.
+\]
+The difference \(16.0\,\mathrm{mW}\) is exactly the cross term. Therefore the power of a resistor cannot be obtained by superposition; superposition applies to voltages and currents, not to powers.
+
+\subhdr{5. After replacing the resistor by a diode, does superposition still hold?}
+No. A diode is a nonlinear element: its current is not proportional to its voltage, and its \(V\)--\(I\) characteristic is not a straight line through the origin. Superposition (both additivity and homogeneity) requires a linear circuit. Once \(R_5\) (or \(R_3\) in the manual's procedure) is replaced by a diode, the circuit is nonlinear, so the response to two sources is not the sum of the responses to each source alone, and doubling a source does not double the response. The theorem fails; this is exactly why the experiment asks you to repeat the measurement with a 1N4007 diode.
+
+%=============================================================
+\needspace{6\baselineskip}
+\hdr{§2}{Experiment 3 — AC Circuit Experiment}
+
+\subhdr{1. Power factor of the fluorescent-lamp circuit from Table 2.3.4}
+For the lamp-plus-ballast branch, the power factor is
+\[
+\cos\varphi=\frac{P_{LR}}{UI},
+\]
+where \(P_{LR}\) is the total active power of the lamp and ballast, \(U\) the supply voltage, and \(I\) the total current, all taken from the same row of Table 2.3.4. For example, if \(P_{LR}=40.0\,\mathrm{W}\), \(U=220\,\mathrm{V}\) and \(I=0.41\,\mathrm{A}\), then
+\[
+\cos\varphi=\frac{40.0}{220\times0.41}=0.443 .
+\]
+Compare this calculated value with the power-factor meter reading in the same row. A difference of a few percent is normal and comes from meter accuracy, the power-meter connection, and the fact that the lamp is not a perfectly linear resistor.
+
+\subhdr{2. Power-factor calculations for Table 2.3.5}
+For each capacitance setting, use the total active power \(P\) and the total current \(I\) of that row:
+\[
+\cos\varphi=\frac{P}{UI}.
+\]
+Because the capacitor consumes almost no active power, \(P\approx P_{LR}\); if your table gives \(P_{LR}\) separately, either value may be used, but state which one you used. For example, at \(C=4.7\,\mu\mathrm{F}\), if \(U=220\,\mathrm{V}\), \(I=0.30\,\mathrm{A}\) and \(P=42.0\,\mathrm{W}\), then
+\[
+\cos\varphi=\frac{42.0}{220\times0.30}=0.636 .
+\]
+Repeat for all five rows and enter the results in the ``calculated power factor'' column.
+
+\subhdr{3. Which quantities change with capacitance, and which remain constant?}
+As the compensation capacitance increases:
+\begin{itemize}
+  \item the capacitor current \(I_C\) increases approximately in proportion to \(C\);
+  \item the total current \(I\) first decreases, reaches a minimum, and then increases again;
+  \item the total reactive power \(Q\) first decreases, becomes zero near compensation, and then becomes capacitive (negative);
+  \item the power factor \(\cos\varphi\) first rises, reaches a maximum near compensation, and then falls.
+\end{itemize}
+The following remain essentially constant because the lamp-and-ballast branch is still connected to the same supply voltage: the supply voltage \(U\), the active power \(P\) (and \(P_{LR}\)), the lamp-branch current \(I_L\), the lamp voltage \(U_R\), the ballast voltage \(U_L\), and the power factor of the lamp branch itself. In one sentence: the parallel capacitor redistributes the reactive power; it does not change the working state of the lamp.
+
+\subhdr{4. Fill in the blanks}
+At the minimum total current the circuit is \textbf{resistive} (the parallel resonance is compensated, \(\cos\varphi\approx1\)). When the capacitance exceeds the compensation value, the total current \textbf{rises} and the circuit becomes \textbf{capacitive}. The power factor reaches its maximum at the capacitance of the row where \(\cos\varphi\) is largest in Table 2.3.5; with the usual five-step set \(1.0/2.2/3.2/4.7/5.7\,\mu\mathrm{F}\), this is normally the \(4.7\,\mu\mathrm{F}\) row, but copy the value from your own table.
+
+\subhdr{5. Retrofitting an old fluorescent-lamp circuit to LED}
+(1) An LED lighting circuit does \textbf{not} require a magnetic ballast or a glow-starter. The LED tube is driven by a constant-current LED driver, which sets the current; it does not need the high-voltage ignition pulse of a fluorescent tube.
+
+(2) During retrofitting, the original ballast should be \textbf{removed or bypassed} (shorted out), and the glow-starter should be \textbf{removed} (the starter socket is left empty or replaced by a dummy starter). The extra component required is the \textbf{LED driver} (a constant-current source). In most replacement LED tubes the driver is already built into the tube, so no external driver is needed; if a bare LED tube is used, an external constant-current driver must be added. If a ``ballast-compatible'' LED tube is used instead, the ballast may be kept, but the glow-starter must be replaced by the manufacturer's dummy starter/fuse. Choose one scheme and state it clearly; do not mix the two.
+
+\flowerrule
+\callout{\textbf{Reminder.} The report is graded on the calculation process, not only on the final number: write the formula, substitute the measured values with units, give the result, and add one sentence explaining what the result means. For the KCL and superposition questions, always state the reference directions you used.}
+
+\end{document}

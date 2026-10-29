@@ -1,0 +1,595 @@
+% !TEX program = xelatex
+% Exp32 偏振光实验 · 数据处理与结果分析
+\documentclass[11pt]{ctexart}
+\input{../../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{22pt}
+\settags{偏振光 · 数据处理}{大物实验 · Exp.32}
+
+\tikzset{
+  beam/.style={->,>=Stealth,line width=0.9pt,color=violet},
+  plate/.style={fill=bandviolet,draw=violet,line width=0.7pt},
+  box/.style={fill=bandviolet,draw=violetdeep,line width=0.8pt,rounded corners=2pt},
+  lab/.style={font=\small,color=inkgray},
+  dashline/.style={dashed,color=rulepurple,line width=0.7pt}
+}
+
+\begin{document}
+
+\doctitle{偏振光实验：数据处理与结果分析（修订版）}
+{Exp.32 · Malus's Law, Brewster Angle, and Wave Plates}
+{依据：手写数据页 3 页（实验日期 2026-10-24）\\
+数据转录 \textperiodcentered\ 拟合 \textperiodcentered\ 误差分析 \textperiodcentered\ 报告可直接引用的结论\\
+整理：2026-10-28（第三版：按 2026-10-27 修订表重算，并增补 $I_0/3$ 与 $\lambda/2$ 的 P2--光轴夹角）}
+
+%=============================================================
+\hdr{§0}{数据来源、记号与阅读顺序}
+
+\callout{\textbf{这份报告回答什么。}把三页手写数据（p1：原理批注与 $\lambda/4$ 六角表；p2：布儒斯特角表；p3：检偏扫描与 $\lambda/2$ 结果）整理成可复算的数据处理：每一组数据配一条公式、一张图、一个带不确定度的结果；最后给出可直接写进实验报告的结论与误差讨论。以 2026-10-27 修订后的表格为准；旧版与修订版的差异集中在 §0.2 交代。}
+
+\subhdr{记号（全文统一）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{符号} & \thead{含义} & \thead{符号} & \thead{含义}\\
+\hline
+$\theta$ & 检偏器 P2 的转角 & $I_{\max},I_{\min}$ & 转 P2 一周得到的极大、极小光强\\
+$\theta_0$ & 拟合的零点（极大方位） & $P$ & 偏振度 $(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$\\
+$i$ & 布儒斯特测量的入射角 & $i_B$ & 布儒斯特角\\
+$n$ & 玻璃（样品）折射率 & $\varphi$ & $\lambda/4$ 光轴与 P1 的夹角\\
+$\beta_0,\beta$ & 无/有 $\lambda/2$ 时的消光角 & $\theta_{\rm h}$ & $\lambda/2$ 波片转角\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{版本说明（2026-10-27 第二版；2026-10-28 第三版增补）}
+
+\begin{enumerate}
+\item \textbf{0°--40° 重新对齐。}旧版把 0° 读成 $0.2760$，10°--40° 顺次为 $0.2534,0.1975,0.1506,0.1020$；修订后 0° 取复测 $0.3148$，10°--40° 为 $0.2786,0.2534,0.1975,0.1506$。整段曲线因此更对称（$0^\circ$ 与 $180^\circ$ 只差 $1.3\%$），§2 的拟合与零点随之改变。
+\item \textbf{50° 已补测。}$I(50^\circ)=0.1030$，原「50° 缺测」不再成立；拟合与半高交点都用这 19 个点。
+\item \textbf{45° 布儒斯特 $I_{\max}$ 修正。}由旧版反推的 $0.0148$ 改为实测 $0.0438$；$P$ 从 $0.495$ 变为 $0.795$，$P(i)$ 单调上升到 $55^\circ$ 的峰，不再有 45° 的异常凹点。
+\item \textbf{2026-10-28 增补。}(a) §2.4 增加 $I_0$、$I_0/2$、$I_0/3$ 三个水平的交点与马吕斯角对照（新增图 1b，数据文件 \texttt{fig/malus\_levels.png}）；(b) §5 增加 P2 新消光方向与光轴夹角的说明：$35^\circ$ 是光轴与 P1 的夹角，P2 与光轴的锐角是 $55^\circ$。
+\end{enumerate}
+
+\subhdr{有效数字口径}
+
+光强是探测器读数（任意单位），照录到小数点后四位；角度读到 $1^\circ$，但转盘可估读到 $0.5^\circ$。凡由两个读数相减得到的量（如 $\beta-\beta_0$），不确定度按两项合成；凡由拟合得到的量，给 $1\sigma$ 统计误差。报告中「$\pm$」后面的数一律是 $1\sigma$，不是仪器最大允差。
+
+%=============================================================
+\hdr{§1}{三组原始数据}
+
+\subhdr{1.1 检偏扫描：P1 固定，P2 从 $0^\circ$ 转到 $180^\circ$}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}cccc@{}}
+\thead{$\theta$ ($^\circ$)} & \thead{$I$ (a.u.)} & \thead{$\theta$ ($^\circ$)} & \thead{$I$ (a.u.)}\\
+\hline
+0 & 0.3148 & 90 & 0.0027\\
+10 & 0.2786 & 100 & 0.0223\\
+20 & 0.2534 & 110 & 0.0535\\
+30 & 0.1975 & 120 & 0.1012\\
+40 & 0.1506 & 130 & 0.1468\\
+50 & 0.1030 & 140 & 0.2155\\
+60 & 0.0506 & 150 & 0.2314\\
+70 & 0.0189 & 160 & 0.2626\\
+80 & 0.0016 & 170 & 0.2944\\
+ & & 180 & 0.3189\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{0° 与 180° 分别为 $0.3148$、$0.3189$，只差 $1.3\%$，说明这一轮扫描的功率漂移很小；拟合不再需要加漂移项（§2.3）。}
+
+\subhdr{1.2 布儒斯特角：每个入射角转 P2 读极大、极小}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}cccccc@{}}
+\thead{$i$ ($^\circ$)} & \thead{$I_{\max}$} & \thead{$I_{\min}$} & \thead{$P$（记录）} & \thead{$P$（复算）} & \thead{$\Delta P$}\\
+\hline
+40 & 0.0180 & 0.0048 & 0.579 & 0.579 & 0.036\\
+45 & 0.0438 & 0.0050 & 0.795 & 0.795 & 0.019\\
+50 & 0.0465 & 0.0002 & 0.991 & 0.991 & 0.021\\
+55 & 0.0501 & 0.0000 & 1.000 & 1.000 & 0.020\\
+60 & 0.0650 & 0.0013 & 0.961 & 0.961 & 0.015\\
+65 & 0.0620 & 0.0074 & 0.787 & 0.787 & 0.013\\
+70 & 0.0947 & 0.0292 & 0.529 & 0.529 & 0.006\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{$\Delta P$ 只由光强读数分辨率 $\delta I=0.0005$ 传播：
+\[
+\Delta P=\frac{2I_{\min}\,\delta I+2I_{\max}\,\delta I}{(I_{\max}+I_{\min})^2},
+\]
+没有计入角度与零点，故是下限。}
+
+\subhdr{1.3 $\lambda/4$ 六方位与 $\lambda/2$ 读数}
+
+p1 的六角表只记了定性判别（$\checkmark$/$\times$），没有记 $I_{\max}$、$I_{\min}$ 的数值；p3 的 $\lambda/2$ 只记了 $\beta_0=90^\circ$、$\beta=160^\circ$ 与 $\beta-\beta_0=70^\circ$。这两组数据的处理分别在 §4、§5 展开。
+
+%=============================================================
+\hdr{§2}{马吕斯定律：消光、偏振度与零点}
+
+\subhdr{2.1 一条公式}
+
+P1 出射的是线偏振光，振幅 $E_0$。P2 的透振方向与它成 $\theta$ 角时，透过 P2 的振幅是 $E_0\cos\theta$，光强正比于振幅平方：
+
+\[
+I(\theta)=I_0\cos^2\theta ,\qquad I_0\propto E_0^2 .
+\]
+
+这就是马吕斯定律。它的适用条件只有两条：入射是\textbf{线偏振}、P2 是\textbf{理想偏振器}；自然光入射时要把各方向平均，得到 $I_0/2$，不是本实验的情形。
+
+\subhdr{2.2 先看两个极值，不看拟合}
+
+原始数据的极大、极小直接给出三个数：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{量} & \thead{读数} & \thead{说明}\\
+\hline
+$I_{\max}$ & $0.3189$（$\theta=180^\circ$） & 0° 为 $0.3148$，两端只差 $1.3\%$\\
+$I_{\min}$ & $0.0016$（$\theta=80^\circ$） & 为峰值的 $0.50\%$，消光很干净\\
+$P$ & $0.9900$ & $(0.3189-0.0016)/(0.3189+0.0016)$\\
+消光比 & $199:1$ & $I_{\max}/I_{\min}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+$P=0.990$ 说明出射光几乎是完全线偏振的；剩下 $1.0\%$ 的「未偏振成分」主要来自暗电流、P1/P2 的有限消光比与杂散光，不是光源本身。
+
+\subhdr{2.3 全表拟合：形状对不对}
+
+把 19 个点按
+
+\[
+I(\theta)=I_0\cos^2(\theta-\theta_0)+I_{\min}
+\]
+
+做最小二乘。修订后的曲线已基本对称，不再需要漂移项；只需让 $I_{\min}\ge0$。结果：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{参数} & \thead{拟合值} & \thead{含义}\\
+\hline
+$I_0$ & $0.3023\pm0.0062$ & 拟合的振幅（峰值）\\
+$\theta_0$ & $-4.66^\circ\pm0.62^\circ$ & 拟合的极大方位（等效零点）\\
+$I_{\min}$ & $0$（边界） & 低于读数分辨率，取 0\\
+$R^2$ & $0.9934$ & 残差平方和占比\\
+RMSE & $0.0090$ & 约为峰值的 $2.8\%$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.86\linewidth]{fig/malus.png}\\[2pt]
+{\small\color{inkgray} 图 1\quad 修订后的检偏扫描与 $\cos^2$ 拟合。逐点最小在 $80^\circ$（$I_{\min}=0.0016$），拟合曲线的最低点在 $85.3^\circ$；两者差 $5^\circ$，正好半个扫描步长。}
+\end{center}
+
+$R^2=0.993$、RMSE 为峰值的 $2.8\%$，形状比旧版明显更好。拟合峰值 $I_0=0.3023$ 比实测 $0.319$ 低 $5\%$——这是左右两端仍有的一点不对称被最小二乘「摊平」的结果，不是 $I_{\max}$ 的估计；$P$ 与消光比一律用原始极值（§2.2），不用拟合参数。拟合零点 $\theta_0=-4.66^\circ$ 与逐点最小 $80^\circ$ 不重合，差 $5^\circ$，下面用半高法定位。
+
+\subhdr{2.4 三个水平：$I_0$、$I_0/2$、$I_0/3$ 的实验角与马吕斯角}
+
+手写页在曲线下方写了「回找 $I_0$、$\tfrac12 I_0$、交点」。这正是用半高宽定零点的标准做法：取 $I_0=I_{\max}=0.3189$，作水平线 $I=I_0/2=0.1595$，它与曲线的两个交点满足 $\cos^2(\theta-\theta_0)=1/2$，即 $\theta=\theta_0\pm45^\circ$。两交点的\textbf{中点}是极大方位，\textbf{间距的一半}应等于 $45^\circ$。在相邻读数之间线性插值：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{量} & \thead{数值} & \thead{理想值}\\
+\hline
+左交点（30°--40° 之间） & $38.1^\circ$ & $\theta_0-45^\circ$\\
+右交点（130°--140° 之间） & $131.8^\circ$ & $\theta_0+45^\circ$\\
+中点 & $85.0^\circ$ & $\theta_0+90^\circ$（消光方位）\\
+半间距 & $46.9^\circ$ & $45^\circ$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+中点给出消光方位 $85.0^\circ$，即 $\theta_0\approx-5.0^\circ$，与全表拟合的 $-4.66^\circ$ 几乎重合；半间距 $46.9^\circ$ 只比 $45^\circ$ 大 $4\%$，说明修订后的曲线已经非常接近理想 $\cos^2$，剩下的展宽来自有限消光比与杂散本底。
+
+上面先把 $I_0/2$ 这一条水平线落地；题目还要求 $I_0/3$。把两条水平线一起画出来，并把每个交点换算成\textbf{从极大方位量起}的角 $\varphi$。理论值由 $I/I_0=\cos^2\varphi$ 给出：
+\[
+\varphi_{1/2}=45.00^\circ,\qquad
+\varphi_{1/3}=\arccos\frac{1}{\sqrt3}=54.74^\circ .
+\]
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{1.35cm}p{3.25cm}p{4.35cm}p{2.45cm}p{2.35cm}@{}}
+\thead{水平} & \thead{交点 $\theta$（绝对角）} & \thead{$\varphi$（从 $\theta_0=-4.66^\circ$ 量起）} & \thead{马吕斯理论} & \thead{偏差}\\
+\hline
+$I_0$ & $175.3^\circ$（拟合极大；实测 $180.0^\circ$） & $0^\circ$ & $0^\circ$ & 零点 $-4.7^\circ$\\
+$I_0/2$ & $38.1^\circ,\ 131.8^\circ$ & $42.8^\circ,\ 43.5^\circ$（均值 $43.1^\circ$） & $45.00^\circ$ & $-1.9^\circ$（$-4.1\%$）\\
+$I_0/3$ & $49.3^\circ,\ 121.1^\circ$ & $54.0^\circ,\ 54.2^\circ$（均值 $54.1^\circ$） & $54.74^\circ$ & $-0.6^\circ$（$-1.2\%$）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{fig/malus_levels.png}\\[2pt]
+{\small\color{inkgray} 图 1b\quad $I_0$、$I_0/2$、$I_0/3$ 三条水平线与曲线的交点；标注的是绝对角 $\theta$。}
+\end{center}
+
+表中的 $\varphi$ 不是直接读到的绝对角，而是每个交点与拟合极大 $\theta_0=-4.66^\circ$ 的角距（取锐角）。两个交点分别落在 $0^\circ$ 与 $180^\circ$ 两个极大附近，直接比较绝对角会把 P2 的零点偏移混进来；换成从极大量起的 $\varphi$，两侧才落在同一个马吕斯角上。
+
+逐项看：
+
+\begin{itemize}
+\item $I_0$：极大本身，$\varphi=0$。实测最大在 $180.0^\circ$，拟合在 $175.3^\circ$，差 $4.7^\circ$ 就是 §2.5 的零点，不是马吕斯定律的偏差。
+\item $I_0/2$：两侧给出 $42.8^\circ$ 与 $43.5^\circ$，平均 $43.1^\circ$，比 $45.0^\circ$ 小 $1.9^\circ$（$4.1\%$）。这一项对曲线顶部最敏感：$I_0/2$ 的水平线正好穿过曲线的“肩部”，左右不对称与有限消光比都会把它拉低。
+\item $I_0/3$：两侧给出 $54.0^\circ$ 与 $54.2^\circ$，平均 $54.1^\circ$，与 $54.74^\circ$ 只差 $0.6^\circ$（$1.2\%$）。这一项在曲线较陡的部分取样，受顶部不对称影响小，所以与马吕斯定律符合得更好。
+\end{itemize}
+
+注意不要把「半间距」当成马吕斯角：两交点相距 $93.7^\circ$，半间距 $46.9^\circ$；它描述的是曲线在消光点两侧的宽度。从极大算起的角是 $90^\circ-46.9^\circ=43.1^\circ$，这才是 $I_0/2$ 对应的 $\varphi$。§2.4 开头表里的 $46.9^\circ$ 与 $45^\circ$ 的 $4\%$ 差，应这样读。
+
+若用拟合振幅 $I_0=0.3023$ 代替实测极大 $0.3189$，$I_0/2$、$I_0/3$ 的 $\varphi$ 分别约为 $44.5^\circ$、$55.1^\circ$，与理论更接近；本文按实测极大计算，是为了与 §2.2 的 $P$、消光比同源。报告里应注明所用的 $I_0$ 是哪一个。
+
+\subhdr{2.5 三个零点：修订后只剩半格的分歧}
+
+把三种定零点的方法并列：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{方法} & \thead{零点} & \thead{可靠性}\\
+\hline
+逐点最小（$80^\circ$ 处 $I=0.0016$） & $-10^\circ$ & 直接读数，受 $10^\circ$ 步长限制\\
+全表拟合 & $-4.66^\circ\pm0.62^\circ$ & 形状拟合，给出消光 $85.3^\circ$\\
+半高法 & $-5.0^\circ$ & 中点 $85.0^\circ$，受本底影响小\\
+\end{tabular}
+\tabbot
+\end{center}
+
+修订后的三法只差 $5^\circ$，正好是扫描步长的一半：极小值落在 $80^\circ$ 与 $90^\circ$ 之间，逐点读数只能取到最近的 $80^\circ$；拟合与半高法都把真正的极小定在 $85^\circ$ 附近。剩余的小偏差来自两点：
+
+\begin{enumerate}
+\item \textbf{10° 步长。}消光附近曲线很平（$I$ 从 $0.0016$ 到 $0.0027$），$5^\circ$ 的位移只改变 $0.001$，读数分辨不出更细的极小位置。
+\item \textbf{残余的左右不对称。}$0^\circ$ 与 $180^\circ$ 只差 $1.3\%$，但 $40^\circ$ 与 $140^\circ$ 仍差 $30\%$ 左右；这主要是极大方位略偏在 $175^\circ$ 而不是 $180^\circ$（拟合 $\theta_0=-4.7^\circ$），不是功率漂移。转 P2 时读数的少量光束平移也会贡献同一量级。
+\end{enumerate}
+
+\warnbox{\textbf{报告里怎么写。}写成：\emph{逐点消光在 $80^\circ$，拟合与半高法给 $85^\circ$，三法分散 $5^\circ$（半个步长）；零点取 $-5^\circ\pm5^\circ$。} 马吕斯定律的验证不受影响：$R^2=0.993$、消光比 $199:1$ 已说明 $\cos^2$ 形状成立；零点只影响「P2 刻度零点」这一项，不影响 $P$ 与消光比。}
+
+\subhdr{2.6 小结}
+
+\begin{itemize}
+\item 形状：$I\propto\cos^2\theta$ 成立，$R^2=0.993$，RMSE 为峰值的 $2.8\%$。
+\item 消光：$I_{\min}/I_{\max}=0.50\%$，消光比 $199:1$。
+\item 偏振度：$P=0.9900$（只计光强分辨率时 $\pm0.003$；计入暗电流与杂散光约 $\pm0.005$）。
+\item 零点：逐点最小 $80^\circ$；拟合 $-4.66^\circ\pm0.62^\circ$，半高法 $-5.0^\circ$；零点取 $-5^\circ\pm5^\circ$。
+\item 三个水平：$I_0/2$ 的实验角 $43.1^\circ$（理论 $45.0^\circ$），$I_0/3$ 的实验角 $54.1^\circ$（理论 $54.74^\circ$）。
+\end{itemize}
+
+%=============================================================
+\hdr{§3}{布儒斯特角：从 $P(i)$ 的峰定 $n$}
+
+\subhdr{3.1 为什么 $P$ 的峰就是 $i_B$}
+
+光从空气（$n_1=1$）射到折射率 $n$ 的介质，入射角 $i$、折射角 $r$。菲涅耳公式给出 s、p 两个分量的反射率：
+
+\[
+R_s=\left|\frac{\sin(i-r)}{\sin(i+r)}\right|^2,\qquad
+R_p=\left|\frac{\tan(i-r)}{\tan(i+r)}\right|^2 .
+\]
+
+当 $i+r=90^\circ$ 时 $\tan(i+r)\to\infty$，$R_p=0$：p 分量完全不反射，反射光只剩 s 分量，是纯线偏振。由 Snell 定律 $n=\sin i/\sin r$ 与 $r=90^\circ-i$ 得
+
+\[
+\sin r=\cos i,\qquad n=\frac{\sin i}{\cos i}=\tan i .
+\]
+
+这就是布儒斯特定律 $\tan i_B=n$。实验上转 P2 读 $I_{\max}$、$I_{\min}$，算 $P(i)$；$i=i_B$ 时 $I_{\min}\to0$、$P\to1$，所以 $P(i)$ 的峰位就是 $i_B$。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[line width=1.3pt,color=violetdeep] (1.0,0) -- (8.6,0);
+  \node[lab,below] at (8.0,0) {玻璃堆};
+  \draw[dashline] (4,0) -- (4,2.35) node[above,lab] {法线};
+  \draw[beam] (1.51,1.68) -- (4,0);
+  \node[lab,above left] at (1.45,1.72) {激光 $+$ P1};
+  \draw[beam] (4,0) -- (5.66,1.12);
+  \node[lab,above right] at (5.72,1.16) {到 P2 $+$ 探测器};
+  \draw[beam] (4,0) -- (5.29,-1.91);
+  \node[lab,below right] at (5.35,-1.95) {折射光};
+  \draw[->,color=petal] (4,0.95) arc (90:146:0.95);
+  \node[font=\scriptsize,color=inkgray] at (3.42,1.08) {$i_B$};
+  \draw[->,color=petal] (4,-0.75) arc (-90:-56:0.75);
+  \node[font=\scriptsize,color=inkgray] at (4.28,-0.92) {$r$};
+  \fill[color=violet] (5.0,0.56) circle (2.2pt);
+  \node[lab,above right] at (5.05,0.62) {$s$（垂直纸面）};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray} 图 2\quad 布儒斯特反射：$i_B$ 时反射线与折射线垂直，反射光只剩 s 分量（垂直纸面，用圆点表示）。}
+\end{center}
+
+\subhdr{3.2 数据与结果}
+
+$P(i)$ 在 $i=55^\circ$ 达到 $1.000$（$I_{\min}=0.0000$，已低于读数分辨率），$45^\circ$、$50^\circ$、$60^\circ$ 分别为 $0.795$、$0.991$、$0.961$。取峰位
+
+\[
+i_B=55^\circ\pm2^\circ,\qquad n=\tan i_B=1.43\pm0.11 .
+\]
+
+其中 $\Delta n=\sec^2 i_B\,\Delta i_B$，$\Delta i_B=\pm2^\circ$ 已含角度零点与峰位判断。作为对照：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{做法} & \thead{$i_B$} & \thead{$n$}\\
+\hline
+直接取 $P$ 峰 & $55.0^\circ$ & $1.428$\\
+三点抛物线（50/55/60） & $53.4^\circ$ & $1.346$\\
+菲涅耳公式拟合（45°--60°，不含本底） & $56.1^\circ$ & $1.489$\\
+玻璃标称 $n=1.52$ 对应 & $56.7^\circ$ & $1.520$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.86\linewidth]{fig/brewster.png}\\[2pt]
+{\small\color{inkgray} 图 3\quad $P(i)$ 与菲涅耳模型。峰在 $55^\circ$；两侧下降的速度比单界面模型更快，说明还有杂散光、样品后表面反射与多重反射。}
+\end{center}
+
+\subhdr{3.3 与标称值的关系：$1.43$ 与 $1.49$ 并不矛盾}
+
+直接取 $P$ 峰得 $n=1.43$，比玻璃的典型值 $1.52$ 低 $6\%$，对应 $i_B$ 偏小 $1.7^\circ$。若用菲涅耳公式对峰值区 $45^\circ$--$60^\circ$ 四点拟合（只让 $n$ 变，不加本底），得 $n=1.489$、$i_B=56.1^\circ$，与标称只差 $0.5^\circ$。两个数相差 $0.06$，小于 $\Delta n=0.11$，在 $1\sigma$ 内一致。
+
+把 $40^\circ$、$65^\circ$、$70^\circ$ 也纳入全表拟合，$n$ 会降到 $1.366$。这不是模型变了，而是这三个边缘点的 $P$ 被杂散光压低：$40^\circ$ 的 $P=0.579$（模型约 $0.64$）、$65^\circ$ 的 $0.787$（模型约 $0.90$）、$70^\circ$ 的 $0.529$（模型约 $0.76$）。入射角越大，反射光越弱、光斑越散，杂散本底占比越高；所以定 $n$ 应以峰值区为准，全表值只作灵敏度检查。
+
+因此正确的表述是：\emph{直接取峰给 $n=1.43\pm0.11$；峰值区菲涅耳拟合给 $n=1.49$；两者与玻璃标称 $1.52$ 在 $1\sigma$ 内相容。} 下面列的系统误差仍然重要——它们决定 $n$ 的绝对精度，但不改变「$P(i)$ 在 $55^\circ$--$56^\circ$ 达极大」这一定性结论。
+
+\begin{itemize}
+\item \textbf{角度零点。}样品台、接收臂各有零位；若入射角整体偏读 $1.5^\circ$，$n$ 就偏 $0.08$。样品表面没有严格过转轴、表面不垂直于入射面，都会贡献这个量级。
+\item \textbf{有限立体角与杂散光。}反射光束不是几何线，而是有会聚角的锥；在 $i_B$ 附近 $R_p$ 随角度的变化很陡，锥内平均使 $I_{\min}$ 不为零，$P$ 峰变宽、峰位可移动 $1^\circ$--$2^\circ$。
+\item \textbf{玻璃堆的多重反射。}后表面反射、片间多次反射会把一部分 p 分量重新混进反射光，$I_{\min}$ 抬高，$P$ 峰被压低并略向小角移动。
+\end{itemize}
+
+\warnbox{\textbf{结论的写法。}不要写「测得 $n=1.43$，与玻璃 $1.52$ 不符，实验失败」。应写：\emph{$P(i)$ 在 $55^\circ$ 达极大，$n=\tan i_B=1.43\pm0.11$；峰值区菲涅耳拟合给 $1.49$，二者与标称 $1.52$（$i_B=56.7^\circ$）在 $1\sigma$ 内相容。} 若要让 $n$ 更准，应把样品表面调到严格过转轴、用针孔限束、并在 $i_B$ 附近以 $1^\circ$ 步长加密。}
+
+%=============================================================
+\hdr{§4}{$\lambda/4$ 波片：六个方位为什么是「圆、椭圆、线」}
+
+\subhdr{4.1 波片对两个分量的作用}
+
+波片的光轴方向折射率为 $n_e$、垂直方向为 $n_o$，厚度 $d$。两分量通过后相位差
+
+\[
+\delta=\frac{2\pi}{\lambda}(n_o-n_e)d .
+\]
+
+$\lambda/4$ 波片对 632.8 nm 的光给 $\delta=90^\circ$。入射是线偏振、与光轴成 $\varphi$ 角时，两个分量
+
+\[
+E_x=E\cos\varphi,\qquad E_y=E\sin\varphi
+\]
+
+振幅不等、相位差 $90^\circ$，合成一般是椭圆；只有两种例外：$\varphi=0^\circ,90^\circ$ 时一个分量为零，出来仍是线偏振；$\varphi=45^\circ$ 时两分量等幅、相位差 $90^\circ$，合成圆偏振。
+
+\subhdr{4.2 检偏器看到的 $P$}
+
+检偏器转角 $\beta$ 时，两个正交分量在透振方向上的投影相加。相位差 $90^\circ$ 时交叉项为零，光强只剩
+
+\[
+I(\beta)=E^2\bigl(\cos^2\varphi\cos^2\beta+\sin^2\varphi\sin^2\beta\bigr).
+\]
+
+于是 $I_{\max}=E^2\max(\cos^2\varphi,\sin^2\varphi)$、$I_{\min}=E^2\min(\cos^2\varphi,\sin^2\varphi)$，代入偏振度定义
+
+\[
+P=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}
+=|\cos^2\varphi-\sin^2\varphi|=|\cos2\varphi| .
+\]
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}cccccc@{}}
+\thead{$\varphi$} & \thead{$P=|\cos2\varphi|$} & \thead{理论偏振态} & \thead{实测 $I_{\max}/I_{\min}$} & \thead{消光} & \thead{实测判别}\\
+\hline
+$15^\circ$ & 0.866 & 椭圆 & 有 & 无 & 椭圆，$0<P<1$\\
+$30^\circ$ & 0.500 & 椭圆 & 有 & 无 & 椭圆，$0<P<1$\\
+$45^\circ$ & 0 & 圆 & 相等 & 无 & 圆，$P=0$\\
+$60^\circ$ & 0.500 & 椭圆 & 有 & 无 & 椭圆，$0<P<1$\\
+$75^\circ$ & 0.866 & 椭圆 & 有 & 无 & 椭圆，$0<P<1$\\
+$90^\circ$ & 1.000 & 线 & 有 & 有 & 线，$P=1$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.80\linewidth]{fig/qwp.png}\\[2pt]
+{\small\color{inkgray} 图 4\quad 理论 $P=|\cos2\varphi|$ 与六个方位的对应。$45^\circ$ 处 $P=0$，$90^\circ$ 处 $P=1$；其余四点落在同一曲线上。}
+\end{center}
+
+\subhdr{4.3 两个容易混的点}
+
+\textbf{（1）圆偏振为什么没有消光位置？}消光要求检偏器透振方向与光的振动方向垂直。圆偏振的电场矢量端点在做圆周运动，任何时刻「振动方向」都在转，没有一个固定的垂直方向；转到任何角度，投影强度的平均值都相同，所以 $I(\beta)$ 是平的，没有极小。实测表在 $45^\circ$ 行把 $I_{\max}$、$I_{\min}$ 两栏都打了叉，正是「分不出极大极小」的意思，不是「没测」。
+
+\textbf{（2）$P=0$ 与「完全偏振」矛盾吗？}不矛盾。$P$ 的定义是「转检偏器时强度的对比度」；对纯圆偏振，对比度为零，但它是 $100\%$ 偏振的。$P$ 只在「线偏振 + 自然光」的混合模型里才等于「偏振部分占总强度的比例」。这也是课件讨论题「圆偏振与自然光怎么区分」的答案：单靠转检偏器分不开，必须插入 $\lambda/4$ 把圆偏振变成线偏振，再看有没有消光。
+
+\subhdr{4.4 实测记录怎么用}
+
+手写表只记了「有/无消光」和「椭圆/圆/线」，没有记 $I_{\max}$、$I_{\min}$ 的数值。因此本报告的处理是：\textbf{定性判别与理论逐行对照}（上表），$P$ 栏写理论值 $|\cos2\varphi|$，不把理论值冒充测量值。若要把这一项做成定量，补记每个方位的 $I_{\max}$、$I_{\min}$，按 $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ 算，再与 $|\cos2\varphi|$ 比较；$45^\circ$ 附近对角度最敏感，$\varphi=45^\circ\pm1^\circ$ 时 $P=|\cos(90^\circ\pm2^\circ)|\approx0.035$，仍在「近似圆」的范围内。
+
+%=============================================================
+\hdr{§5}{$\lambda/2$ 波片：$\theta=35^\circ$ 是怎么来的}
+
+\subhdr{5.1 「波片转 $\theta$、振动面转 $2\theta$」的推导}
+
+入射振动与光轴成 $\theta_{\rm h}$，两个分量 $E\cos\theta_{\rm h}$、$E\sin\theta_{\rm h}$。$\lambda/2$ 波片给 $\delta=180^\circ$，即一个分量反号：
+
+\[
+\begin{pmatrix}E\cos\theta_{\rm h}\\ E\sin\theta_{\rm h}\end{pmatrix}
+\;\longrightarrow\;
+\begin{pmatrix}E\cos\theta_{\rm h}\\ -E\sin\theta_{\rm h}\end{pmatrix}.
+\]
+
+出射仍是线偏振，但方向从 $+\theta_{\rm h}$ 变成了 $-\theta_{\rm h}$（关于光轴对称）。入射线偏振方向与出射线偏振方向之间的夹角是
+
+\[
+\theta_{\rm h}-(-\theta_{\rm h})=2\theta_{\rm h}.
+\]
+
+所以波片转 $\theta_{\rm h}$，振动面转 $2\theta_{\rm h}$；反过来，测到振动面转了 $\beta-\beta_0$，就有
+
+\[
+\theta_{\rm h}=\frac{\beta-\beta_0}{2}.
+\]
+
+\subhdr{5.2 代入读数}
+
+P1、P2 正交消光时记 $\beta_0=90^\circ$；插入 $\lambda/2$ 并转到某位置后，再转 P2 找到新的消光，记 $\beta=160^\circ$。于是
+
+\[
+\beta-\beta_0=70^\circ,\qquad
+\theta_{\rm h}=\frac{70^\circ}{2}=35^\circ .
+\]
+
+角度读到 $1^\circ$，两次读数合成 $\Delta(\beta-\beta_0)=\sqrt{1^2+1^2}\approx1.4^\circ$，故
+
+\[
+\theta_{\rm h}=35.0^\circ\pm0.7^\circ .
+\]
+
+这个结果直接验证了「$2\theta$」关系：波片架读数转 $35^\circ$，检偏器要转 $70^\circ$ 才重新消光。
+
+\subhdr{5.3 P2 与光轴的夹角：$35^\circ$ 还是 $55^\circ$？}
+
+上面的 $\theta_{\rm h}=35^\circ$ 是\textbf{光轴与入射偏振（P1）}的夹角。题目若问「P2 的偏振方向与光轴的夹角」，要注意 P2 在新消光位置与\textbf{出射偏振}垂直，而不是与入射偏振垂直。把四个方向画在同一张图上：
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5,>=Stealth]
+\draw[->] (0,0)--(1.15,0) node[right,lab]{P1 $0^\circ$};
+\draw[->] (0,0)--(35:1.15) node[above right,lab]{光轴 $35^\circ$};
+\draw[->] (0,0)--(70:1.15) node[above,lab]{出射 $70^\circ$};
+\draw[->] (0,0)--(-20:1.15) node[below right,lab]{P2 $160^\circ$};
+\draw (35:0.72) arc (35:-20:0.72);
+\node[lab] at (7:0.86) {$55^\circ$};
+\end{tikzpicture}
+\end{center}
+
+出射偏振在 $2\theta_{\rm h}=70^\circ$，P2 要与它垂直，所以 P2 在 $70^\circ+90^\circ=160^\circ$（等价于 $-20^\circ$）。P2 与光轴的夹角是 $160^\circ-35^\circ=125^\circ$；取锐角就是
+\[
+90^\circ-\theta_{\rm h}=90^\circ-35^\circ=55^\circ .
+\]
+所以两个空分别填：P2 转角 $70^\circ$；P2 与光轴的\textbf{锐角} $55^\circ$。若题目把「P2 的偏振方向」理解成\textbf{光的偏振方向}（即 $\theta_{\rm h}$：入射 P1 与光轴、或出射偏振与光轴，都是 $35^\circ$），那才是 $35^\circ$；报告里把两个角都写出来最稳。
+
+\subhdr{5.4 这个方法的三个边界}
+
+\begin{itemize}
+\item \textbf{只能给到模 $90^\circ$。}$\theta_{\rm h}$ 与 $\theta_{\rm h}+90^\circ$ 给出同一对主轴，消光无法区分；快轴与慢轴也区分不了（$\delta=180^\circ$ 时两者等价）。要定快慢轴，得用 $\lambda/4$ 或已知旋向的椭圆光。
+\item \textbf{$\beta_0$ 必须与 $\beta$ 用同一基准。}若中途动过 P1 或 P2 的零点，$70^\circ$ 就不是纯 $2\theta_{\rm h}$，必须重记 $\beta_0$。
+\item \textbf{波片不是理想半波片。}$\delta$ 对波长敏感，若激光不是 632.8 nm 或波片是低级片，出射会带一点椭圆，消光不完全；此时以「消光最深」的位置作 $\beta$，并在报告里注明波长。
+\end{itemize}
+
+%=============================================================
+\hdr{§6}{误差分析：每一项都要能落到一个数}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.1cm}p{2.6cm}p{6.4cm}@{}}
+\thead{来源} & \thead{量级} & \thead{对结果的影响与处理}\\
+\hline
+角度读数 & $\pm0.5^\circ$（估读） & $\beta-\beta_0$ 的 $\pm1.4^\circ$ 已合成；$i_B$ 的 $\pm2^\circ$ 使 $n$ 有 $\pm0.11$\\
+P2 零点/刻度 & $\pm5^\circ$ & 只影响「零点」这一项；$P$ 与消光比不受影响\\
+激光功率漂移 & $0^\circ$/$180^\circ$ 差 $1.3\%$ & 两端只差 $1.3\%$；不再需要漂移项；$P$ 的不确定度约 $\pm0.005$\\
+暗电流/杂散光 & $I_{\min}$ 的 $0.0016$ & 若暗电流 $0.001$，修正后 $P=0.994$；报告应注明是否扣本底\\
+偏振器消光比 & $10^{-3}$ 量级 & 限制 $I_{\min}$ 的下限，使 $P$ 达不到 $1$；$0.990$ 与此一致\\
+光束平移 & RMSE $0.009$ & 转 P2 时投到探测器上的光斑移动；表现为残余左右不对称（§2.5）\\
+样品/角度零点 & $\pm1.5^\circ$ & $i_B$ 偏小 $1.7^\circ$ 的主因；$n$ 偏 $0.08$\\
+$\lambda/4$ 相位误差 & 几度 & $45^\circ$ 处圆偏振退化为轻微椭圆；$P$ 从 $0$ 升到 $0.05$ 量级\\
+$\lambda/2$ 相位误差 & 几度 & 消光不彻底，$\beta$ 以最深位置为准；$\theta_{\rm h}$ 仍稳到 $1^\circ$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{6.1 哪些误差可以抵消}
+
+\begin{itemize}
+\item \textbf{两读数相减。}$\beta-\beta_0$ 中 P2 的公共零点抵消，所以 $\theta_{\rm h}=35^\circ$ 比单点角度可靠。
+\item \textbf{比值。}$P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ 中探测器增益、激光功率的公共因子抵消，故 $P$ 比绝对光强稳。
+\item \textbf{同一方位比较。}$\lambda/4$ 六角表是「同一装置、只转波片」，系统误差高度相关，定性判别比绝对 $P$ 可靠。
+\end{itemize}
+
+\subhdr{6.2 哪些误差不能抵消}
+
+角度零点是最大的不可抵消项：它同时进入 $i_B$、$\theta_0$ 与 $\theta_{\rm h}$ 的绝对值。报告里应把「角度零点未标定」写成一条独立的不确定度来源，而不是把它摊进随机误差。
+
+%=============================================================
+\hdr{§7}{结论（可直接抄进报告）}
+
+\begin{enumerate}
+\item \textbf{马吕斯定律成立。}$I$--$\theta$ 曲线与 $\cos^2$ 吻合，$R^2=0.993$；逐点消光在 $80^\circ$（拟合/半高法给 $85^\circ$），$I_{\min}/I_{\max}=0.50\%$，消光比 $199:1$，偏振度 $P=0.990\pm0.005$。零点取 $-5^\circ\pm5^\circ$。
+\item \textbf{布儒斯特角 $i_B=55^\circ\pm2^\circ$，$n=\tan i_B=1.43\pm0.11$。}$P(i)$ 在 $55^\circ$ 达到 $1.000$；峰值区菲涅耳拟合给 $n=1.489$（$i_B=56.1^\circ$），两者与玻璃标称 $1.52$（$i_B=56.7^\circ$）在 $1\sigma$ 内相容。
+\item \textbf{$\lambda/4$ 六方位与理论一致。}$45^\circ$ 为圆偏振（$P=0$，无消光），$90^\circ$ 为线偏振（$P=1$，有消光），$15^\circ/30^\circ/60^\circ/75^\circ$ 为椭圆（$0<P<1$，无完全消光）；理论 $P=|\cos2\varphi|$ 与判别逐行对应。
+\item \textbf{$\lambda/2$ 的 $2\theta$ 关系得到验证。}$\beta_0=90^\circ$、$\beta=160^\circ$，$\beta-\beta_0=70^\circ$，故光轴与 P1 的夹角 $\theta_{\rm h}=35.0^\circ\pm0.7^\circ$；新消光位置 P2 与光轴的锐角为 $90^\circ-\theta_{\rm h}=55^\circ$。
+\item \textbf{数据质量。}消光干净（$0.50\%$）、曲线形状好（$R^2=0.993$），但 $40^\circ$ 与 $140^\circ$ 仍差约 $30\%$，对应极大方位略偏在 $175^\circ$；改进办法是固定增益、在极大/极小附近以 $5^\circ$ 加密，并往返各扫一遍取平均。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{复算清单}
+
+按下面五步，任何一台机器都能复现本文的数：
+
+\begin{enumerate}
+\item \textbf{消光与 $P$。}取 $I_{\max}=0.3189$、$I_{\min}=0.0016$：
+\[
+P=\frac{0.3189-0.0016}{0.3189+0.0016}=0.9900,\qquad \frac{I_{\max}}{I_{\min}}=199.3 .
+\]
+\item \textbf{马吕斯拟合。}以 $I=I_0\cos^2(\theta-\theta_0)+I_{\min}$ 对 19 点做最小二乘，得 $I_0=0.3023$、$\theta_0=-4.66^\circ$、$I_{\min}=0$、$R^2=0.9934$。
+\item \textbf{半高交点。}$I_0/2=0.15945$，在 30°--40° 与 130°--140° 之间线性插值得 $38.1^\circ$、$131.8^\circ$；中点 $85.0^\circ$，半间距 $46.9^\circ$。
+\item \textbf{布儒斯特。}逐点算 $P$，峰在 $55^\circ$：
+\[
+n=\tan55^\circ=1.428,\qquad \Delta n=\sec^2 55^\circ\times\frac{2\pi}{180}=0.106 .
+\]
+\item \textbf{波片。}$\lambda/4$：$P=|\cos2\varphi|$，$\varphi=45^\circ$ 得 $0$、$90^\circ$ 得 $1$。$\lambda/2$：$\theta_{\rm h}=(\beta-\beta_0)/2=(160^\circ-90^\circ)/2=35^\circ$；P2 与光轴锐角 $=90^\circ-\theta_{\rm h}=55^\circ$。
+\end{enumerate}
+
+\hdr{§9}{结果汇总一页纸}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{3.5cm}p{5.2cm}p{3.4cm}@{}}
+\thead{量} & \thead{结果} & \thead{来源 / 公式} & \thead{备注}\\
+\hline
+$I_{\max}$ & $0.3189$ & 检偏扫描 180° 处 & 0° 为 $0.3148$\\
+$I_{\min}$ & $0.0016$ & 检偏扫描 80° 处 & 为峰值的 $0.50\%$\\
+$I_0/2$ 的实验角 & $43.1^\circ$ & 水平线 $I=I_0/2$ 与曲线交点 & 理论 $45.0^\circ$\\
+$I_0/3$ 的实验角 & $54.1^\circ$ & 水平线 $I=I_0/3$ 与曲线交点 & 理论 $54.74^\circ$\\
+$P$ & $0.990\pm0.005$ & $(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ & 消光比 $199:1$\\
+马吕斯拟合 & $R^2=0.993$ & $I=I_0\cos^2(\theta-\theta_0)+I_{\min}$ & RMSE $0.009$\\
+零点 & $-5^\circ\pm5^\circ$ & 逐点 $80^\circ$；拟合 $-4.7^\circ$；半高 $-5.0^\circ$ & 三法分散 $5^\circ$\\
+$i_B$ & $55^\circ\pm2^\circ$ & $P(i)$ 峰位 & $P(55^\circ)=1.000$\\
+$n$（直接取峰） & $1.43\pm0.11$ & $\tan i_B$ & \\
+$n$（菲涅耳拟合） & $1.49$ & 45°--60° 峰值区拟合 & 标称 $1.52$\\
+$\lambda/4$ 的 $P$ & $|\cos2\varphi|$ & 六方位判别 & $45^\circ:0$；$90^\circ:1$\\
+$\lambda/2$ 的 $\theta_{\rm h}$ & $35.0^\circ\pm0.7^\circ$ & $(\beta-\beta_0)/2$ & $\beta_0=90^\circ$，$\beta=160^\circ$；P2--光轴锐角 $55^\circ$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\flowerrule
+
+{\small\color{inkgray} 数据文件：\texttt{data.csv}（三组原始数据）、\texttt{results.json}（全部拟合参数）。}
+
+{\small\color{inkgray} 图：\texttt{fig/malus.png}、\texttt{fig/malus\_levels.png}、\texttt{fig/brewster.png}、\texttt{fig/qwp.png}。}
+
+{\small\color{inkgray} 原始手写页照片：\texttt{subjects/02-光学/偏振光-数据页1--3.jpg}。}
+
+\end{document}
