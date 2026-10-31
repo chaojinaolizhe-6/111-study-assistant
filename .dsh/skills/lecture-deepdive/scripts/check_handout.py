@@ -12,7 +12,12 @@ r"""check_handout.py —— 讲义交付前的「一题一块」自动检查。
   4. 正文出现裸 ✓ ✗（lmroman 缺字，应写 $\checkmark$）；
   5. 警告：\qstem 没写课件页码；\qstem 前没加 \qbreak（可能被跨页拆开）；
   6. 警告：器件级小节有表格但没有图（figure/circuitikz/tikzpicture/includegraphics），
-     可能用表代替了拓扑图（对应 SKILL.md 硬性约束 15）。
+     可能用表代替了拓扑图（对应 SKILL.md 硬性约束 15）；
+  7. 题块要求作图（标题或 \qstem 里有「画图／作图／sketch／draw」）却没有图：
+     读者被要求画图，答案块里却只有文字，只能去别处找图（对应「局部自足」与约束 15）。
+     2026-10-31 加：3.8 磁滞回线讲义 §7 Q2「并画图」答案块无图，就是这个漏检。
+     阻断口径只到 Q 编号题块（预习问题／课后思考题，答案要能直接抄）；
+     其余块（作业、自测、小节标题）只提示——作业可能故意不给答案图。
 
 退出码：0 全通过；1 有错误；2 只有警告。
 """
@@ -29,6 +34,8 @@ STEM_MARKERS = (r"\qstem{", "题面", "题目", "已知", "求：", "求 ", "题
 FIG_RE = re.compile(r"\\begin\{(?:figure|circuitikz|tikzpicture)\}|\\includegraphics")
 ENG_TITLE_RE = re.compile(r"(电路|桥式|整流|滤波|稳压|运放|放大|光路|受力|装置|接线|波形)")
 ENG_BODY_RE = re.compile(r"(导通|截止|开关状态|电流方向|正半周|负半周)")
+DRAW_RE = re.compile(r"(画图|作图|画出[^，。；]{0,6}(曲线|回线|图)|示意图|sketch|Sketch|with sketches|\bdraw\b|\bDraw\b)")
+QUESTION_HEAD_RE = re.compile(r"(Q\s*\d|第\s*[（(]?\d+[)）]?\s*[题问]|作业\s*\d|例\s*\d|Exercise|Problem)")
 LOOKAHEAD = 12  # 标题后看几行
 
 
@@ -45,6 +52,20 @@ def split_blocks(text: str) -> list[tuple[str, list[str]]]:
 def has_stem(lines: list[str]) -> bool:
     head = "\n".join(lines[1 : 1 + LOOKAHEAD])
     return any(m in head for m in STEM_MARKERS)
+
+
+def asks_for_drawing(title: str, body: list[str]) -> bool:
+    r"""题面本身要求作图：标题里写了「画图／作图」，或 \qstem 里要求画。"""
+    if DRAW_RE.search(title):
+        return True
+    return any("\\qstem{" in line and DRAW_RE.search(line) for line in body[1:])
+
+
+def is_question_block(title: str, body: list[str]) -> bool:
+    r"""是不是「题」块：Q1／第 3 题／作业 2／例 5，或带 \qstem 的块。"""
+    if QUESTION_HEAD_RE.search(title):
+        return True
+    return any("\\qstem{" in line for line in body[1:])
 
 
 def check_file(path: Path) -> tuple[list[str], list[str]]:
@@ -69,6 +90,15 @@ def check_file(path: Path) -> tuple[list[str], list[str]]:
         if (ENG_TITLE_RE.search(title) and ENG_BODY_RE.search(joined)
                 and "\\begin{tabular}" in joined and not FIG_RE.search(joined)):
             warns.append(f"器件级小节「{title}」只有表、没有图；检查是否用表代替了拓扑图（约束 15）")
+
+        # 题面要求作图，答案块里就必须自带图
+        if asks_for_drawing(title, body) and not FIG_RE.search(joined):
+            msg = (f"题块「{title}」要求作图，但块内没有图"
+                   "（figure/tikzpicture/includegraphics）；不能只让读者去看别处的「图 N」")
+            if is_question_block(title, body) and QUESTION_HEAD_RE.search(title) and re.match(r"\s*Q\s*\d", title):
+                errors.append(msg)
+            else:
+                warns.append(msg.replace("题块", "块") + "（非 Q 编号题块只提示，不阻断：作业／自测可能故意不给答案图）")
 
     if re.search(r"(作业汇总|题面照抄|题面成组)", text) and not re.search(r"(答案|详解)", text):
         errors.append("作业只有题面（「作业汇总／题面照抄」），全文没有答案或详解")

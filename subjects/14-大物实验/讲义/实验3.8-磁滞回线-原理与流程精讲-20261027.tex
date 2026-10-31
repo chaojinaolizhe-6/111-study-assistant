@@ -8,6 +8,7 @@
 \usetikzlibrary{arrows.meta,calc,positioning}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{needspace}
 
 \tikzset{
   comp/.style={fill=white,draw=black,thick},
@@ -677,10 +678,54 @@ W\approx\sum_i \bar H_i\,\Delta B_i,
 
 \textbf{Answer (EN):} Ferromagnetism comes from magnetic domains. Domain-wall motion and domain rotation respond nonlinearly to H: M rises quickly, then slows and saturates at Ms. Since B = mu0(H + M), mu = B/H is not constant; at high H, B is about mu0(H + Ms) and the curve flattens.
 
+\needspace{0.62\textheight}
 \subhdr{Q2. 说明磁化曲线与磁滞回线，并画图。}
 磁化曲线是从退磁态单调增大 \(H\) 得到的初始 \(B\)--\(H\) 曲线，终点是饱和 \(B_s\)。磁滞回线是循环磁化下的闭合路径 O--a--b--c--d--e--f--a：a 是正向饱和，b 是 \(H=0\) 时的剩磁 \(B_r\)，c 是 \(B=0\) 时的矫顽力 \(H_c\)，d 是反向饱和，e、f 是反向的 \(B_r\)、\(H_c\)。回线面积等于每周期单位体积的磁滞损耗。
 
-\textbf{Answer (EN):} The magnetization curve is the initial B-H curve from a demagnetized state: B rises slowly, then steeply, then bends to saturation Bs. The hysteresis loop is the closed path O-a-b-c-d-e-f-a: a is positive saturation, b is Br at H = 0, c is Hc at B = 0, d is negative saturation, e and f are the reverse Br and Hc. Its area equals the hysteresis loss per unit volume per cycle.
+\begin{figure}[H]
+\centering
+\begin{minipage}[b]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[x=0.80cm,y=0.72cm]
+  \draw[->] (-0.5,0)--(5.0,0) node[right,font=\small]{\(H\)};
+  \draw[->] (0,-0.6)--(0,4.7) node[above,font=\small]{\(B\)};
+  \draw[thick,violet,domain=0:4.3,smooth,samples=160]
+       plot (\x,{4/(1+exp(-1.5*(\x-1.8)))});
+  \draw[dashed,inkgray] (0,4)--(4.35,4);
+  \node[dimlab] at (-0.42,4) {\(B_s\)};
+  \fill (0,0) circle (1.7pt) node[below left,font=\small,fill=white,inner sep=1pt]{\(O\)};
+\end{tikzpicture}\\[1pt]
+{\footnotesize\color{inkgray}(a) 初始磁化曲线：先缓、后陡、再平}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.54\linewidth}
+\centering
+\begin{tikzpicture}[x=0.54cm,y=0.54cm]
+  \draw[->] (-4.9,0)--(4.9,0) node[right,font=\small]{\(H\)};
+  \draw[->] (0,-4.6)--(0,4.6) node[above,font=\small]{\(B\)};
+  \draw[thick,violet,domain=-4.4:4.4,smooth,samples=160]
+       plot (\x,{3.6*tanh((\x+1.6)/1.9)});
+  \draw[thick,violet,domain=-4.4:4.4,smooth,samples=160]
+       plot (\x,{3.6*tanh((\x-1.6)/1.9)});
+  \fill (4.3,3.60) circle (2pt) node[above right,font=\small]{\(a\)};
+  \fill (0,2.47) circle (2pt) node[below right,font=\small,fill=white,inner sep=1pt]{\(b\)};
+  \fill (-1.6,0) circle (2pt) node[below,font=\small,fill=white,inner sep=1pt]{\(c\)};
+  \fill (-4.3,-3.60) circle (2pt) node[below left,font=\small]{\(d\)};
+  \fill (0,-2.47) circle (2pt) node[below left,font=\small,fill=white,inner sep=1pt]{\(e\)};
+  \fill (1.6,0) circle (2pt) node[below right,font=\small,fill=white,inner sep=1pt]{\(f\)};
+  \fill (0,0) circle (1.5pt) node[above left,font=\small,fill=white,inner sep=1pt]{\(O\)};
+  \draw[dashed,inkgray] (0,2.47)--(-0.8,2.47)
+       node[left,font=\footnotesize\color{inkgray},fill=white,inner sep=1pt]{\(B_r\)};
+  \node[dimlab] at (-0.85,-0.75) {\(H_c\)};
+  \node[dimlab] at (2.85,4.05) {饱和};
+\end{tikzpicture}\\[1pt]
+{\footnotesize\color{inkgray}(b) 磁滞回线：$O\!\to\!a\!\to\!b\!\to\!c\!\to\!d\!\to\!e\!\to\!f\!\to\!a$}
+\end{minipage}
+\caption{预习 Q2 要画的图（重绘示意，只画形状、不按比例）：左 (a) 是初始磁化曲线，从退磁态 \(O\) 单调增大 \(H\)，\(B\) 先缓、后陡、再平，趋于 \(B_s\)；右 (b) 是磁滞回线 \(O\to a\to b\to c\to d\to e\to f\to a\)，\(a\)、\(d\) 为正向、反向饱和点，\(b\) 是 \(H=0\) 时的剩磁 \(B_r\)，\(c\) 是 \(B=0\) 时的矫顽力 \(H_c\)，\(e\)、\(f\) 是反向的 \(-B_r\)、\(-H_c\)。}
+\end{figure}
+
+\textbf{落笔画图（两步）}：先画 (a)——横轴 \(H\)、纵轴 \(B\)，曲线过 \(O\)，先缓、后陡，最后水平趋于 \(B_s\)；再把这条上升段接到 (b) 上，从 \(a\) 沿上支降到 \(b\)（\(H=0\) 时 \(B=B_r\)），继续降到 \(c\)（\(B=0\) 时 \(H=-H_c\)），到 \(d\) 反向饱和，再沿下支经 \(e\)、\(f\) 回到 \(a\)。回线的上下两支是两条不同的曲线，不要画成同一条线来回走。
+
+\textbf{Answer (EN):} The magnetization curve is the initial B-H curve from a demagnetized state: B rises slowly, then steeply, then bends to saturation Bs. The hysteresis loop is the closed path O-a-b-c-d-e-f-a: a is positive saturation, b is Br at H = 0, c is Hc at B = 0, d is negative saturation, e and f are the reverse Br and Hc. Its area equals the hysteresis loss per unit volume per cycle. (Sketch: figure above.)
 
 \subhdr{Q3. 为什么要测磁化曲线和磁滞回线？}
 为了拿到 \(B_s,B_r,H_c,\mu_{\max}\) 这些特征参数：它们决定材料是软磁还是硬磁、适合作变压器铁芯还是永磁体，也用来估算磁滞损耗、检验材料批次是否合格。
