@@ -1,0 +1,194 @@
+\chapter{回测：一个不会报错的谎言生成器}\label{ch:backtest}
+
+\begin{keybox}[本章要回答的问题]
+回测最容易在哪里骗你？向量化回测与事件驱动回测有什么区别？
+信号日、成交日、成交价应该怎么定？净值曲线该怎么读？
+\end{keybox}
+
+\section{回测的七个陷阱}
+
+回测最危险的地方在于：\textbf{它永远不会报错}。数据有前视偏差，它照样跑出一条漂亮的曲线；
+成本算少了，它照样给你一个夏普 2.0。下面七条，每条都能让一条"有效策略"变成幻觉。
+
+\subsection{前视偏差}
+
+\begin{itemize}
+  \item 用当日收盘价算因子，又用当日收盘价成交；
+  \item 用报告期而非公告日对齐财务数据；
+  \item 用"最新成分股"回测历史指数增强策略。
+\end{itemize}
+
+\textbf{排查}：把所有因子整体滞后一期重跑。如果 IC 大幅下降（比如从 0.06 掉到 0.01），
+说明原来的因子大量依赖当日信息。
+
+\subsection{幸存者偏差}
+
+只用今天还活着的股票。退市股、被并购股、长期停牌股被系统性排除。
+
+\textbf{排查}：统计样本期内股票数量的变化。如果回测里股票数只增不减，就是有问题。
+
+\subsection{复权错误}
+
+用不复权价算收益率，除权日会出现假暴跌。
+
+\textbf{排查}：检查单日收益率是否有超过涨跌停幅度的异常值。
+
+\subsection{不可成交}
+
+涨停买进、跌停卖出、停牌交易。
+
+\textbf{排查}：统计"信号选出但实际不可成交"的比例。反转类策略这个比例常常超过 10\%。
+
+\subsection{成本低估}
+
+只算佣金，不算印花税、滑点、冲击。
+
+\textbf{排查}：把成本参数从 10 bp 调到 40 bp，看净值曲线衰减多少。
+如果衰减后仍显著，才值得进一步研究。
+
+\subsection{参数过拟合}
+
+在同一段数据上试 200 组参数，选最好的。
+
+\textbf{排查}：第~\ref{ch:overfit} 章的 DSR 与 PBO。
+
+\subsection{多重检验}
+
+试了 50 个因子、10 个模型、5 个持有期，最后报告最好的那个组合。
+
+\textbf{排查}：记录所有尝试，用 FDR 或 DSR 校正。
+
+\section{向量化回测 vs 事件驱动回测}
+
+\subsection{向量化}
+
+把每天的收益按权重加权求和：
+
+\begin{equation}
+  r^{\text{port}}_t = \sum_i w_{i,t-1}\, r_{i,t}.
+\end{equation}
+
+\textbf{优点}：快，几行代码能跑完十年。
+\textbf{缺点}：无法处理路径依赖（涨跌停、停牌、整手、资金约束）。
+
+\subsection{事件驱动}
+
+逐个交易日模拟：先撮合、再更新持仓与现金、再计算净值。
+
+\textbf{优点}：能精确建模约束。
+\textbf{缺点}：慢，代码复杂。
+
+\begin{keybox}[本书的做法]
+\textbf{用向量化做因子研究与快速验证，用事件驱动做最终确认。}
+两者结果差异超过 20\% 时，说明约束影响很大，必须以事件驱动为准。
+\end{keybox}
+
+\section{执行假设：三个必须明确的时间点}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+名称 & 定义 & 常见错误 \\
+\midrule
+信号日 $t$ & 用 $t$ 日收盘数据算因子 & 用了 $t$ 日之后的数据 \\
+成交日 $t+1$ & 次日开盘或收盘成交 & 假设 $t$ 日收盘成交 \\
+估值日 & 每日收盘按收盘价估值 & 用成交价估值 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+本书采用：\textbf{$t$ 日收盘算信号 → $t+1$ 日开盘成交 → 持有 $h$ 日后开盘卖出}。
+这条链条上任意一环提前，都会引入前视。
+
+\begin{warnbox}[开盘成交也不完全现实]
+$t+1$ 日开盘价是集合竞价的结果，你用 $t$ 日的信息下单，
+理论上可以在集合竞价中成交。但如果你的信号依赖开盘价本身（例如跳空因子），
+就变成了"用开盘价预测开盘价"，必须改为 $t+1$ 日收盘成交。
+\end{warnbox}
+
+\section{净值曲线的正确读法}
+
+\subsection{四个必看的指标}
+
+\begin{align}
+  \text{年化收益} &= \left(\prod_t (1+r_t)\right)^{252/T} - 1, \\
+  \text{年化波动} &= \mathrm{std}(r_t)\sqrt{252}, \\
+  \text{夏普} &= \frac{\text{年化收益} - r_f}{\text{年化波动}}, \\
+  \text{最大回撤} &= \min_t\left(\frac{\text{NAV}_t}{\max_{s\le t}\text{NAV}_s} - 1\right).
+\end{align}
+
+\subsection{三个容易被忽略的指标}
+
+\begin{itemize}
+  \item \textbf{Calmar} $=$ 年化收益 $/$ 最大回撤。它比夏普更贴近"能不能拿得住"。
+  \item \textbf{换手率}。年换手 20 倍的策略与 2 倍的策略，成本结构完全不同。
+  \item \textbf{收益的时间分布}。把收益按年份拆开，看是否集中在某一年。
+        如果 80\% 的收益来自 2015 年，这个策略大概率不可复制。
+\end{itemize}
+
+\begin{warnbox}[一条净值曲线的三种读法]
+同一张图，三种人会读出三种结论：
+\begin{itemize}
+  \item 看总收益的人："十年十倍，太好了。"
+  \item 看夏普的人："夏普 1.8，不错。"
+  \item 看\textbf{分年度收益 + 换手 + 回撤修复时间}的人："2015 年贡献了 70\% 的收益，
+        2021 年之后基本走平，年换手 25 倍——这个策略已经失效了。"
+\end{itemize}
+只有第三种读法能指导决策。
+\end{warnbox}
+
+\section{基准与归因}
+
+\subsection{选对基准}
+
+\begin{itemize}
+  \item 全市场选股：用中证全指（000985）或等权全 A；
+  \item 大中盘：沪深 300；
+  \item 小盘：中证 1000 或中证 2000。
+\end{itemize}
+
+用错基准会让"beta 收益"看起来像"alpha"。
+
+\subsection{Brinson 归因}
+
+把超额收益拆成三块：
+
+\begin{equation}
+  R_p - R_b = \underbrace{\sum_k (w_{p,k} - w_{b,k})R_{b,k}}_{\text{配置效应}}
+  + \underbrace{\sum_k w_{b,k}(R_{p,k} - R_{b,k})}_{\text{选股效应}}
+  + \underbrace{\sum_k (w_{p,k}-w_{b,k})(R_{p,k}-R_{b,k})}_{\text{交互效应}}.
+\end{equation}
+
+如果配置效应占了主导，说明你的"选股能力"其实是"行业择时"。
+
+\section{一个可复现的回测清单}
+
+在相信任何回测结果之前，逐条确认：
+
+\begin{enumerate}
+  \item 因子计算只用了 $t$ 日及之前的数据（逐列检查）。
+  \item 财务数据用公告日对齐。
+  \item 股票池是时点的，包含已退市股票。
+  \item 价格是后复权。
+  \item 涨停不可买、跌停不可卖、停牌不交易。
+  \item 成本按单边 30 bp 计，并做 15--60 bp 的敏感性扫描。
+  \item 样本外是 Purged K-Fold 或 Walk-Forward。
+  \item 记录所有尝试过的配置数量。
+  \item 分年度拆解收益，检查是否集中在某一两年。
+  \item 用第二个数据源抽查 20 只股票的收盘价。
+\end{enumerate}
+
+\begin{keybox}[十条里只要有一条没做到]
+结论就应该标注"待验证"，而不是"有效"。
+本书第~\ref{ch:result} 章的报告，就是按这十条逐项标注的。
+\end{keybox}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 回测不会报错，它只会给你一条漂亮的假曲线。
+  \item 七个陷阱里，前视偏差与不可成交最难发现，也最致命。
+  \item 向量化回测做研究，事件驱动回测做确认；两者差异大时以事件驱动为准。
+  \item 信号日 / 成交日 / 估值日三个时间点必须明确且不重叠。
+  \item 净值曲线要按"分年度 + 换手 + 回撤修复"来读，而不是只看总收益。
+\end{enumerate}

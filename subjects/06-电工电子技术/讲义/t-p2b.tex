@@ -1,0 +1,94 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{circuitikz}
+\settags{Ch4 放大电路 · 五题详解 · 2026-10-31}{电工电子技术}
+
+%---------------------------------------------------------------- 记号（全文统一）
+\newcommand{\UCC}{U_{\mathrm{CC}}}
+\newcommand{\UBE}{U_{\mathrm{BE}}}
+\newcommand{\UCE}{U_{\mathrm{CE}}}
+\newcommand{\UCES}{U_{\mathrm{CES}}}
+\newcommand{\RB}{R_{\mathrm{B}}}
+\newcommand{\RC}{R_{\mathrm{C}}}
+\newcommand{\RE}{R_{\mathrm{E}}}
+\newcommand{\RL}{R_{\mathrm{L}}}
+\newcommand{\RS}{R_{\mathrm{S}}}
+\newcommand{\IB}{I_{\mathrm{B}}}
+\newcommand{\IC}{I_{\mathrm{C}}}
+\newcommand{\IE}{I_{\mathrm{E}}}
+\newcommand{\Ib}{\dot{I}_{\mathrm{b}}}
+\newcommand{\Ui}{\dot{U}_{\mathrm{i}}}
+\newcommand{\Uo}{\dot{U}_{\mathrm{o}}}
+\newcommand{\rbe}{r_{\mathrm{be}}}
+\newcommand{\RLp}{R_{\mathrm{L}}'}
+\newcommand{\lab}[1]{{\bfseries\color{violetdeep}#1}\enspace}
+
+%---------------------------------------------------------------- 三线表横线（\noalign 版，贯穿全表）
+\newcommand{\rtop}{\noalign{\vspace{4pt}{\color{violet}\hrule height 1.2pt}\vspace{2pt}}}
+\newcommand{\rmid}{\noalign{\vspace{2pt}{\color{petal}\hrule height 0.5pt}\vspace{2pt}}}
+\newcommand{\rbot}{\noalign{\vspace{2pt}{\color{rulepurple}\hrule height 0.5pt}\vspace{6pt}}}
+
+%---------------------------------------------------------------- 节标题不许落单在页底
+\let\dsHdrOrig\hdr
+\renewcommand{\hdr}[2]{\dsHdrOrig{#1}{#2}\nopagebreak[4]}
+\let\dsSubhdrOrig\subhdr
+\renewcommand{\subhdr}[1]{\dsSubhdrOrig{#1}\nopagebreak[4]}
+\setlength{\emergencystretch}{2em}
+
+\begin{document}\hdr{附录 B}{答案速查与检查清单}
+
+\subhdr{B1 五题答案一览}
+
+\begin{center}
+\begin{tabular}{@{}c l l@{}}
+\rtop
+\thead{题} & \thead{静态工作点} & \thead{动态指标} \\
+\rmid
+1 & $\IB=19\ \mu\mathrm{A}$，$\IC=0.95\ \mathrm{mA}$，$\UCE=6.3$ V & 未问 \\
+2 & $\rbe$ 已给，不必算 & $A_u\approx-115$，$r_{\mathrm i}\approx1.27$ k$\Omega$，$r_{\mathrm o}=5$ k$\Omega$ \\
+3 & $\IB=31.3\ \mu\mathrm{A}$，$\IC=1.88\ \mathrm{mA}$，$\UCE=4.46$ V & $A_u\approx-94.5$，$r_{\mathrm i}\approx0.949$ k$\Omega$，$r_{\mathrm o}=3$ k$\Omega$ \\
+4 & $\IB=41.8\ \mu\mathrm{A}$，$\IC=1.67\ \mathrm{mA}$，$\UCE=5.91$ V & $A_u=-50$，$r_{\mathrm i}\approx755\ \Omega$，$r_{\mathrm o}=2$ k$\Omega$ \\
+5 & $\IB=32.3\ \mu\mathrm{A}$，$\IC=2.58\ \mathrm{mA}$，$\UCE=7.16$ V & 只要求等效图 \\
+\rbot
+\end{tabular}
+\end{center}
+
+\subhdr{B2 四个高频错点}
+
+\warnbox{
+\textbf{(1) 把 $\RS$ 算进 $A_u$。}$A_u=\Uo/\Ui$ 不含 $\RS$；要算 $\RS$ 就用 $A_{us}=A_u\,r_{\mathrm i}/(\RS+r_{\mathrm i})$，两笔账分开记。\\[3pt]
+\textbf{(2) 分压偏置不做戴维南。}直接把 $\UCC$ 当基极电源，或拿 $\RB1$ 当 $\RB$，都会把 $\IB$ 算大。$\RB$ 一定是 $\RB1\parallel\RB2$。\\[3pt]
+\textbf{(3) 有 $C_E$ 还把 $\RE$ 留在交流回路。}这会把 $A_u$ 算小一两个数量级（题 3 的 $-94.5$ 会变成 $-1.45$）。\\[3pt]
+\textbf{(4) 共集的 $\UCE$ 抄成 $\UCC-\IC\RC$。}共集没有 $\RC$，只剩下 $\UCC-\IE\RE$。}
+
+\subhdr{B3 四步检查清单（做完一题逐条打勾）}
+\begin{enumerate}[label=\textcolor{violet}{\arabic*.}]
+  \item 电容开路画直流通路 $\to$ 解 $\IB$ $\to$ $\IC=\beta\IB$ $\to$ $\UCE$ $\to$ 判 $\UCE>\UCES$。
+  \item 电容短路、$\UCC$ 端接地 $\to$ 标出「$\RB$ 到地、$\rbe$ 到地、$\RC\parallel\RL$ 到地、$\beta\Ib$ 从 c 到 e」四样，核对 e 是不是接地。
+  \item 套三条式子，先算 $\RLp$ 再算 $A_u$；$r_{\mathrm i}$ 检查并联的是不是 $\RB$（分压偏置要并联后的 $\RB$）。
+  \item 量级检查：$|A_u|$ 几十到几百、$r_{\mathrm i}$ 千欧级、$\UCE$ 几伏、$\IC$ 毫安级。数量级不对就是某处漏了一项。
+\end{enumerate}
+
+\subhdr{B4 五题分别对应哪一讲}
+\begin{center}
+\begin{tabular}{@{}c l@{}}
+\rtop
+\thead{题} & \thead{对应讲义里的一节} \\
+\rmid
+1 & Ch4-2 固定偏置的直流通路与 Q 点 \\
+2 & Ch4-3 $A_u$、$r_{\mathrm i}$、$r_{\mathrm o}$ 的定义与负号约定 \\
+3 & Ch4-4 发射极电阻在直流/交流两种通路里的不同身份 \\
+4 & Ch4-4 分压偏置的戴维南化简 \\
+5 & Ch4-5 共集电极的直流通路与等效电路 \\
+\rbot
+\end{tabular}
+\end{center}
+
+\flowerrule
+
+{\small\color{inkgray}
+题面为学习者 2026-10-31 上传的五张照片（原题 1--5）；电路图为原题面裁剪，未改数值与标号。
+公式与判据沿用 Ch4-2 至 Ch4-5 讲义（2026-10-22）的记号，数值均经独立复算。}
+
+\end{document}

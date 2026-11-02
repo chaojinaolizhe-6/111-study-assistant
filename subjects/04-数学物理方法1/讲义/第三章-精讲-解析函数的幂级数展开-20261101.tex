@@ -1,0 +1,1076 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第三章 · 解析函数的幂级数展开：泰勒、洛朗、孤立奇点
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{第三章 §3.1--§3.5 · 解析函数的幂级数展开}{数学物理方法1}
+
+% 例题块平均不足一页：起页保护阈值从 0.92 页降到 0.45 页，
+% 既保证「题干 + 考点 + 关键一步」不被拆开，又避免每道例题都逼出一页空白。
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{4\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{9\baselineskip}\orighdr{#1}{#2}}
+
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{第三章　解析函数的幂级数展开}
+{从「收敛圆」到「洛朗环」再到「奇点分类」：泰勒定理、洛朗定理与三类奇点判据}
+{依据《第三章 解析函数的幂级数展开》上传课件（共 57 页）\quad 2026-11-01\quad 数学物理方法1}
+
+\hdr{§0}{课件坐标、记号与五处伏笔}
+
+这份讲义只做一件事：把 57 页课件里每一处“直接给出”拆成“所以然”。课件本身没有错，它是给课堂上讲的；它默认读者能自己补上五样东西——为什么复级数的收敛性能整个搬自实级数、为什么收敛域一定是个圆盘、泰勒定理的证明里那个几何级数从哪里来、洛朗展开的内圆为什么给出负幂项、三类奇点的两套判据为什么是同一件事。本讲义把这五样补在正文里，并在 §10 逐条点名页码与原文短语。
+
+\subhdr{0.1\quad 记号：全文只用这一套}
+
+\begin{itemize}
+\item $z=x+iy$：区域内的点；$\zeta=\xi+i\eta$：边界（围道）上的积分变量（课件用 $\varsigma$，本讲义统一用 $\zeta$）。
+\item $z_0$：展开中心；$a_n$：展开系数；$R$：收敛半径。
+\item $c,\ C$：围道；\textbf{正向} = 逆时针 = 沿边界走时区域在左手边。
+\item $r<R_2$ 或 $R_1<|z-z_0|<R_2$：环形区域；$\rho$：小圆半径（$\rho<R$）。
+\item $f$ 在区域内\textbf{解析} = 在区域内处处可导（第一章）。
+\item 洛朗展开中 $n\ge 0$ 的部分叫\textbf{正规部分}（解析部分），$n<0$ 的部分叫\textbf{主要部分}。
+\end{itemize}
+
+\aside{课件在同一页里混用 $c$ 与 $C$、用 $\varsigma$ 又用括号空位表示积分变量；本讲义统一为上面这一套，后文不再逐处注明。}
+
+\subhdr{0.2\quad 五处伏笔：课件埋了，但没在同一页回收}
+
+\gapitem{伏笔一 · p14--p15}{课件在 p14 画了收敛圆、写“圆外发散、圆上不确定”，p15 直接说“确定收敛半径的两种方法”。\textbf{为什么收敛域一定是圆盘}（而不是椭圆、不是月牙）这一句没有出现——答案是 Abel 定理，补在 §2.2。}
+
+\gapitem{伏笔二 · p22--p23}{泰勒定理的证明把 $\frac{1}{\zeta-z}$ 改写成一个几何级数，只写了一行。\textbf{为什么 $\left|\frac{z-z_0}{\zeta-z_0}\right|<1$ 一定能保证}、逐项积分凭什么合法，补在 §3.2。}
+
+\gapitem{伏笔三 · p24}{“$R$ 就等于从 $z_0$ 点到最近的奇点 $\alpha$ 之间的距离”只给了一个例子，没有证明。这句是本章最常用的结论，补证在 §3.3。}
+
+\gapitem{伏笔四 · p35--p38}{“洛朗定理的理解”只对比了 $a_n$ 与 $f^{(n)}(z_0)/n!$ 的区别，\textbf{内圆为什么给出负幂项}没有画出来，补在 §4.2--§4.3。}
+
+\gapitem{伏笔五 · p49--p55}{三类奇点给了两套判据（看洛朗负幂项、看极限），\textbf{两套为什么等价}没有证，补在 §5.4。}
+
+\subhdr{0.3\quad 57 页坐标表：页 $\to$ 内容}
+
+下面这张表把 57 页按“页 $\to$ 内容”读一遍。它只是坐标表，不承载推导，所以不配“逐行复算”。
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{课件页} & \thead{内容} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l p{0.75\linewidth}@{}}
+p1 & 章首页：五节目的 \\
+p2--p5 & 实级数与实函数项级数的复习（收敛、余和、一致收敛、柯西准则） \\
+p6--p9 & §3.1 复级数：实部虚部分解、柯西判据、必要条件、绝对收敛 \\
+p10--p12 & 复函数项级数：一致收敛及其三条性质（连续、逐项积分、解析且逐项求导） \\
+p13--p20 & §3.2 幂级数：收敛圆、比值/根值判别、运算性质、代换 \\
+p21--p24 & §3.3 泰勒定理：陈述、证明、唯一性、半径 = 最近奇点距离 \\
+p25--p30 & 泰勒例题：例 1（$1/(1\mp z)$）、例 2（$e^z,\cos z,\sin z$）、例 3（$z/(1+z)$）、例 4（$1/(1+z)^2$） \\
+p31 & 第三章作业（第 1、2 题） \\
+p32--p38 & §3.4 洛朗定理：环域、陈述、理解、证明、系数说明 \\
+p39--p47 & 洛朗例题：例 1（$e^z/z^2$）、例 2（$1/[(z-1)(z-2)]$）、例 3（$\sin z/z$）、例 4（$e^{1/z}$）、例 5（贝塞尔生成函数） \\
+p48--p56 & §3.5 孤立奇点分类：定义、三类、两套判据、例 1（$1/\sin z$）、小结 \\
+p57 & 第三章作业（第 3、4 题） \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\hdr{§1}{复级数：把实级数那一整套原样搬过来}
+
+\subhdr{1.1\quad 收敛的定义：一个复级数 = 两列实级数}
+
+设 $w_k=u_k+iv_k$，部分和 $S_n=\sum_{k=0}^{n}w_k$。若 $\lim_{n\to\infty}S_n=S$ 存在（有限），就说 $\sum_{k=0}^{\infty}w_k$ 收敛于 $S$。
+
+课件 p6 给出的核心分解是：
+
+\[ S_n=\sum_{k=0}^{n}u_k+i\sum_{k=0}^{n}v_k=U_n+iV_n . \]
+
+复数序列 $S_n\to S$ 的定义是 $|S_n-S|\to 0$，而
+
+\[ |S_n-S|\le|U_n-U|+|V_n-V| , \]
+
+所以 $S_n\to S$ 当且仅当 $U_n\to U$ 且 $V_n\to V$。这就是定理二（p8）：
+
+\[ \sum_{k=0}^{\infty}w_k\ \text{收敛}\iff\sum_{k=0}^{\infty}u_k\ \text{与}\ \sum_{k=0}^{\infty}v_k\ \text{都收敛},\qquad \sum w_k=\sum u_k+i\sum v_k . \]
+
+\aside{这一步是整章的“根”：后面所有判别法（柯西判据、绝对收敛、比值/根值）都是先证$|w_k|$（实数）的收敛性，再由定理二回到复数。}
+
+\subhdr{1.2\quad 柯西判据与必要条件}
+
+\textbf{柯西判据}（p7）：对任意 $\varepsilon>0$，存在 $N$，使 $n>N$ 时对一切正整数 $p$ 有
+
+\[ \left|\sum_{k=n+1}^{n+p}w_k\right|<\varepsilon . \]
+
+\textbf{必要条件}（p8）：收敛 $\Rightarrow$ $w_n\to 0$。
+
+这里有一个容易混的点，课件 p8 专门写了“注意：与实变函数余和的差别”。余和 $r_n=\sum_{k=n+1}^{\infty}w_k$ 满足 $r_n\to0$，这是收敛的\textbf{等价}条件；而 $w_n\to0$ 只是\textbf{必要}条件，不充分（调和级数）。
+
+\subhdr{1.3\quad 绝对收敛}
+
+若 $\sum_{k=0}^{\infty}|w_k|$ 收敛，称 $\sum w_k$ 绝对收敛（p9）。因为
+
+\[ |u_k|\le|w_k|,\qquad |v_k|\le|w_k| , \]
+
+由正项级数的比较判别法，$\sum|u_k|$、$\sum|v_k|$ 都收敛，再由定理二，$\sum w_k$ 收敛。所以\textbf{绝对收敛必收敛}；反之不成立（$\sum(-1)^n/n$ 收敛但不绝对收敛）。
+
+绝对收敛还有一个后面要用的性质：绝对收敛级数重排不改变和（p9 定理四）。洛朗展开的“唯一性”在本质上就靠它。
+
+\subhdr{1.4\quad 函数项级数：三条性质，第三条是关键}
+
+设 $\sum_{k=0}^{\infty}w_k(z)$ 在区域 $D$ 内一致收敛。课件 p11--p12 给了三条：
+
+\begin{enumerate}
+\item \textbf{连续}：每项连续 $\Rightarrow$ 和 $S(z)$ 连续；
+\item \textbf{逐项积分}：$c$ 为 $D$ 内分段光滑曲线，则 $\int_c S(z)\dd z=\sum_k\int_c w_k(z)\dd z$；
+\item \textbf{解析且逐项求导}：每项解析 $\Rightarrow$ $S(z)$ 解析，且 $S^{(n)}(z)=\sum_k w_k^{(n)}(z)$，求导后的级数在闭子区域内也一致收敛。
+\end{enumerate}
+
+第三条是“幂级数的和函数是解析函数”的依据，也是泰勒定理证明里“可以把积分搬进求和号”的依据。
+
+\aside{一致收敛本身只保证连续，不保证可导：$\sum \frac{\sin(n^2x)}{n^2}$ 一致收敛但可导性和逐项求导都可能失效。这里额外要求“每项解析”，正是复分析与实分析分道的地方（Weierstrass 定理）。}
+
+\hdr{§2}{幂级数：收敛域为什么一定是个圆盘}
+
+\subhdr{2.1\quad 形式与第一个例子}
+
+幂级数（p13）：
+
+\[ \sum_{n=0}^{\infty}a_n(z-z_0)^n=a_0+a_1(z-z_0)+a_2(z-z_0)^2+\cdots \]
+
+每一项都是解析函数。最简单的例子就是几何级数（p18 例 1）：
+
+\[ \sum_{n=0}^{\infty}z^n=1+z+z^2+\cdots \]
+
+它的部分和是
+
+\[ s_m=\frac{1-z^{m+1}}{1-z}\quad(z\ne1) . \]
+
+固定 $z$，$z^{m+1}\to0$ 当且仅当 $|z|<1$，于是
+
+\[ \sum_{n=0}^{\infty}z^n=\frac{1}{1-z}\qquad(|z|<1) . \]
+
+$|z|>1$ 时通项不趋于 0，发散；$|z|=1$ 时（$z\ne1$）通项模恒为 1，也发散。
+
+\subhdr{2.2\quad Abel 定理：收敛点周围一个圆盘全是绝对收敛}
+
+\textbf{定理}（pp. 14--16 的机制）：若 $\sum a_n(z_1-z_0)^n$ 在 $z_1\ne z_0$ 收敛，则对一切满足 $|z-z_0|<|z_1-z_0|$ 的 $z$，级数绝对收敛。
+
+\textbf{证明}：收敛级数的通项有界，故存在 $M$ 使
+
+\[ |a_n(z_1-z_0)^n|\le M\qquad(n=0,1,2,\dots) . \]
+
+记 $\rho=\dfrac{|z-z_0|}{|z_1-z_0|}<1$，则
+
+\[ |a_n(z-z_0)^n|=\left|a_n(z_1-z_0)^n\right|\rho^n\le M\rho^n , \]
+
+而 $\sum M\rho^n$ 是收敛的几何级数，由比较判别法，$\sum|a_n(z-z_0)^n|$ 收敛。
+
+\aside{这里只用了一个事实：收敛级数的通项有界（因为 $w_n\to0$）。不需要知道收敛到多少，这正是 Abel 定理“只借一点、还你很多”的地方。}
+
+\textbf{推论}（收敛圆，p14）：记
+
+\[ R=\sup\left\{|z-z_0|\ :\ \sum a_n(z-z_0)^n\ \text{收敛}\right\} , \]
+
+则 $|z-z_0|<R$ 内绝对收敛，$|z-z_0|>R$ 外发散（否则以该点为 $z_1$，Abel 定理会把更大的圆盘也包进来，与 $R$ 的定义矛盾），$|z-z_0|=R$ 上敛散性要单独判断。
+
+\textbf{边界上三种情况都真实存在}（课件 p14 只说“不确定”，没给例子）：
+
+\begin{itemize}
+\item $\displaystyle\sum_{n=0}^{\infty}z^n$：$R=1$，圆周上处处发散；
+\item $\displaystyle\sum_{n=1}^{\infty}\frac{z^n}{n}$：$R=1$，$z=1$ 处发散（调和级数），$z=-1$ 处收敛（交错级数）；
+\item $\displaystyle\sum_{n=1}^{\infty}\frac{z^n}{n^2}$：$R=1$，圆周上处处绝对收敛（$\sum n^{-2}=\pi^2/6$）。
+\end{itemize}
+
+\subhdr{2.3\quad 两个算 $R$ 的方法}
+
+\textbf{比值判别法}（p16）：若 $\lim\left|\dfrac{a_{n+1}}{a_n}\right|=L$ 存在（或为 $+\infty$），则
+
+\[ R=\frac{1}{L}=\lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right| . \]
+
+$L=0$ 时 $R=\infty$；$L=\infty$ 时 $R=0$。
+
+\textbf{根值判别法}（p17）：若 $\lim\sqrt[n]{|a_n|}=L$ 存在（或为 $+\infty$），则
+
+\[ R=\frac{1}{L} . \]
+
+两个方法的道理是同一个：对 $\sum|a_n|\,|z-z_0|^n$ 用正项级数的比值/根值判别，收敛条件分别是 $L|z-z_0|<1$ 与 $L|z-z_0|<1$，解出来就是 $|z-z_0|<1/L$。更一般地（缺项时极限可能不存在），把 $L$ 换成上极限：
+
+\[ R=\frac{1}{\limsup_{n\to\infty}\sqrt[n]{|a_n|}} . \]
+
+\aside{缺项级数 $\sum z^{n^2}$ 的系数是 $1,0,0,0,1,0,\dots$，比值 $\left|\frac{a_{n+1}}{a_n}\right|$ 在 $0$ 与 $\infty$ 之间乱跳，比值法失效；根值的上极限为 $1$，给出 $R=1$。}
+
+\subhdr{2.4\quad 运算性质与代换（p19--p20）}
+
+设 $f(z)=\sum a_nz^n$、$g(z)=\sum b_nz^n$ 的收敛半径分别不小于 $r_1,r_2$，则在 $|z|<\min(r_1,r_2)$ 内
+
+\[ f\pm g=\sum(a_n\pm b_n)z^n , \]
+
+\[ fg=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}a_kb_{n-k}\right)z^n . \]
+
+乘积的系数是“按 $k+(n-k)=n$ 收集”，这就是 Cauchy 乘积。收敛半径不小于 $\min(r_1,r_2)$，可能更大（例如 $f=1/(1-z)$、$g=1-z$，乘积是 1）。
+
+代换（p20）：若当 $|z|<R$ 时 $g(z)$ 解析且 $|g(z)|<R$，则
+
+\[ f\bigl(g(z)\bigr)=\sum_{n=0}^{\infty}a_n\bigl[g(z)\bigr]^n . \]
+
+这提供了“间接法”的全部合法性：把已知展开式里的 $z$ 换成一个满足条件的新变量，展开式仍然成立。
+
+\subhdr{2.5\quad 和函数是解析的，而且圆盘边界上必有奇点}
+
+在 $|z-z_0|\le\rho<R$ 内，由 $\sum|a_n|\rho^n$ 收敛及比较判别法，级数一致收敛；每项解析，由 §1.4 第三条，和函数在 $|z-z_0|<R$ 内解析，且可以逐项求导任意次。
+
+\textbf{边界上必有奇点}（这是 §3.3“半径 = 最近奇点距离”的另一半）：设 $f(z)=\sum a_n(z-z_0)^n$（$|z-z_0|<R$）。若在某个边界点 $\alpha$（$|\alpha-z_0|=R$）的邻域内 $f$ 也能解析延拓，那么以 $\alpha$ 为中心重新做泰勒展开，得到一个半径为正的圆盘；该圆盘与原来的圆盘有重叠，在两个圆盘的并集上 $f$ 解析。于是原级数可以在比 $R$ 更大的圆盘内收敛（因为幂级数在其收敛圆盘内表示一个解析函数，而这个函数能延拓到圆盘外），与 $R$ 的定义矛盾。
+
+所以：\textbf{幂级数的收敛圆周上至少有一个奇点}。这也解释了为什么“半径”总能用“找最近的奇点”来算。
+
+\hdr{§3}{泰勒定理：解析函数一定能展成幂级数}
+
+\subhdr{3.1\quad 定理陈述（p21）}
+
+\textbf{泰勒定理}：设 $f(z)$ 在圆 $|z-z_0|<R$ 内解析，则对该圆内任意一点 $z$，有
+
+\[ f(z)=\sum_{n=0}^{\infty}a_n(z-z_0)^n ,\qquad a_n=\frac{f^{(n)}(z_0)}{n!}=\frac{1}{2\pi i}\oint_c\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta , \]
+
+其中 $c$ 是圆 $|z-z_0|=\rho$（$0<\rho<R$），取正向。
+
+\textbf{条件三样}：$f$ 在圆内解析（不是只在一点）、$z$ 在同一个圆内、$c$ 取在 $z$ 的外侧。
+
+\subhdr{3.2\quad 证明：柯西公式 + 一个几何级数}
+
+由柯西积分公式（第二章 p36）
+
+\[ f(z)=\frac{1}{2\pi i}\oint_c\frac{f(\zeta)}{\zeta-z}\dd\zeta . \]
+
+关键是把 $\dfrac{1}{\zeta-z}$ 拆成“主项 $\zeta-z_0$”加“小量 $z-z_0$”：
+
+\[ \frac{1}{\zeta-z}=\frac{1}{(\zeta-z_0)-(z-z_0)}=\frac{1}{\zeta-z_0}\cdot\frac{1}{1-\dfrac{z-z_0}{\zeta-z_0}} . \]
+
+因为 $z$ 在圆内、$\zeta$ 在圆上，所以
+
+\[ \left|\frac{z-z_0}{\zeta-z_0}\right|=\frac{|z-z_0|}{\rho}<1 . \]
+
+于是可以套几何级数（§2.1）：
+
+\[ \frac{1}{1-\dfrac{z-z_0}{\zeta-z_0}}=\sum_{n=0}^{\infty}\left(\frac{z-z_0}{\zeta-z_0}\right)^n . \]
+
+代回：
+
+\[ f(z)=\frac{1}{2\pi i}\oint_c f(\zeta)\sum_{n=0}^{\infty}\frac{(z-z_0)^n}{(\zeta-z_0)^{n+1}}\dd\zeta . \]
+
+几何级数在 $c$ 上关于 $\zeta$ 一致收敛（因为 $|z-z_0|/\rho\le q<1$，可用 $q^n$ 控制），而 $f$ 在 $c$ 上有界，所以可以交换求和与积分（§1.4 第二条）：
+
+\[ f(z)=\sum_{n=0}^{\infty}(z-z_0)^n\underbrace{\frac{1}{2\pi i}\oint_c\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta}_{a_n} . \]
+
+再由高阶导数公式，括号里的积分恰好是 $\dfrac{f^{(n)}(z_0)}{n!}$。
+
+\aside{交换求和与积分这一步是整个证明的关键：$\sum\left|f(\zeta)\right|\left|\frac{z-z_0}{\zeta-z_0}\right|^{n+1}$ 被 $M q^{n+1}$ 控制（$M=\max_c|f|$），与 $\zeta$ 无关，故一致收敛。}
+
+\subhdr{3.3\quad 展开半径为什么等于“最近奇点的距离”（p24）}
+
+\textbf{定理}：设 $f$ 在 $z_0$ 解析，$\alpha$ 是离 $z_0$ 最近的奇点，则泰勒展开的收敛半径
+
+\[ R=|z_0-\alpha| . \]
+
+\textbf{上界那一半}（为什么至少这么大）：对任意 $\rho<|z_0-\alpha|$，圆 $|z-z_0|\le\rho$ 内没有奇点，$f$ 解析，3.2 的证明逐字成立，级数在 $|z-z_0|<\rho$ 内收敛。$\rho$ 任意接近 $|z_0-\alpha|$，所以 $R\ge|z_0-\alpha|$。
+
+\textbf{下界那一半}（为什么不能更大）：若 $R'>|z_0-\alpha|$ 也能展开，则级数的和函数在 $|z-z_0|<R'$ 内解析，特别在 $\alpha$ 的一个邻域内解析——这与 $\alpha$ 是奇点矛盾。
+
+\aside{“最近”要按到 $z_0$ 的欧氏距离算。比如 $f=1/[(z-1)(z-2)]$ 在 $z_0=0$ 处，最近奇点是 $z=1$（距离 1），虽然 $z=2$ 也是奇点，但更远。}
+
+两个常用推论：
+
+\begin{itemize}
+\item 若 $f$ 是整函数（全平面无奇点），则对任何 $z_0$ 都有 $R=\infty$；
+\item 若 $f$ 是有理函数，$R$ 就是 $z_0$ 到最近极点的距离。
+\end{itemize}
+
+\subhdr{3.4\quad 唯一性}
+
+若 $f(z)=\sum_{n=0}^{\infty}b_n(z-z_0)^n$ 在 $|z-z_0|<R$ 内成立，则逐项求导 $n$ 次再令 $z=z_0$，得 $f^{(n)}(z_0)=n!\,b_n$，所以 $b_n=a_n$。这就是“展开式唯一”，也是间接法的合法性来源：\textbf{不管用什么办法得到的幂级数，只要在同一个圆内收敛到 $f$，它就是泰勒展开。}
+
+\subhdr{3.5\quad 直接法与间接法（p27）}
+
+\textbf{直接法}：算 $f^{(n)}(z_0)$，代公式。适合 $e^z$、$\sin z$、$1/(1\mp z)$ 这类导数有简单通式的函数。
+
+\textbf{间接法}：利用已知展开式，通过
+
+\begin{itemize}
+\item 代换（把 $z$ 换成 $z-1$、$z/2$ 等），
+\item 逐项求导、逐项积分，
+\item 乘、除、部分分式，
+\end{itemize}
+
+拼出新函数的展开。考试与作业里绝大多数题走这条路，因为 $f^{(n)}(z_0)$ 的通式往往求不出来。
+
+\qbreak
+\qstem{（课件 p18 例 1）求幂级数 $\displaystyle\sum_{n=0}^{\infty}z^n=1+z+z^2+\cdots$ 的收敛半径，并写出收敛圆内的和函数。}
+
+\textbf{考点}：比值判别法；几何级数部分和。
+
+\textbf{关键一步}：$a_n=1$，所以 $R=\lim\left|\dfrac{a_n}{a_{n+1}}\right|=1$；和函数用部分和取极限。
+
+\textbf{解}：用比值判别法，
+
+\[ R=\lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|=\lim_{n\to\infty}\frac{1}{1}=1 . \]
+
+和函数：对 $z\ne1$，前 $m+1$ 项的和为
+
+\[ s_m=1+z+\cdots+z^m=\frac{1-z^{m+1}}{1-z} . \]
+
+当 $|z|<1$ 时 $z^{m+1}\to0$，故
+
+\[ \sum_{n=0}^{\infty}z^n=\lim_{m\to\infty}s_m=\frac{1}{1-z}\qquad(|z|<1) . \]
+
+\textbf{答案}：$R=1$；$\displaystyle\sum_{n=0}^{\infty}z^n=\frac{1}{1-z}$（$|z|<1$）。
+
+\textbf{自检}：$z=0$ 时左边 $=1$，右边 $=1$；$z=\tfrac12$ 时左边 $=2$，右边 $=1/(1-\tfrac12)=2$。
+
+\qbreak
+\qstem{（课件 p25 例 1）分别将 $f_1(z)=\dfrac{1}{1-z}$ 与 $f_2(z)=\dfrac{1}{1+z}$ 在 $z=0$ 处展开成泰勒级数。}
+
+\textbf{考点}：直接法；$n$ 阶导数通式。
+
+\textbf{关键一步}：先写出 $n$ 阶导数
+
+\[ \left(\frac{1}{1-z}\right)^{(n)}=\frac{n!}{(1-z)^{n+1}},\qquad \left(\frac{1}{1+z}\right)^{(n)}=\frac{(-1)^n n!}{(1+z)^{n+1}} , \]
+
+再令 $z=0$。
+
+\textbf{解}：对 $f_1$，
+
+\[ f_1^{(n)}(0)=n!\ \Longrightarrow\ a_n=\frac{f_1^{(n)}(0)}{n!}=1 , \]
+
+所以
+
+\[ \frac{1}{1-z}=\sum_{n=0}^{\infty}z^n\qquad(|z|<1) . \]
+
+对 $f_2$，
+
+\[ f_2^{(n)}(0)=(-1)^n n!\ \Longrightarrow\ a_n=(-1)^n , \]
+
+所以
+
+\[ \frac{1}{1+z}=\sum_{n=0}^{\infty}(-1)^n z^n\qquad(|z|<1) . \]
+
+\textbf{答案}：$\dfrac{1}{1-z}=\sum z^n$，$\dfrac{1}{1+z}=\sum(-1)^n z^n$，均在 $|z|<1$ 成立。
+
+\textbf{自检}：取 $z=-\tfrac12$。$f_2(-\tfrac12)=\dfrac{1}{1-\tfrac12}=2$；级数 $\sum(-1)^n\left(-\tfrac12\right)^n=\sum\left(\tfrac12\right)^n=2$，两边一致。这里容易把 $f_1$ 与 $f_2$ 的展开混用，检查时盯住分母里那个符号。
+
+\qbreak
+\qstem{（课件 p26 例 2）分别将 $f(z)=e^z$、$\cos z$、$\sin z$ 在 $z=0$ 处展开成泰勒级数。}
+
+\textbf{考点}：直接法；$e^{iz}$ 与 $e^{-iz}$ 配对。
+
+\textbf{关键一步}：$e^z$ 的各阶导数都是 $e^z$；$\cos z=\tfrac12(e^{iz}+e^{-iz})$，$\sin z=\tfrac1{2i}(e^{iz}-e^{-iz})$。
+
+\textbf{解}：对 $e^z$，$f^{(n)}(0)=1$，故
+
+\[ e^z=\sum_{n=0}^{\infty}\frac{z^n}{n!}\qquad(|z|<\infty) . \]
+
+对 $\cos z$，用 $e^{iz}=\sum\dfrac{(iz)^n}{n!}$、$e^{-iz}=\sum\dfrac{(-iz)^n}{n!}$，相加得
+
+\[ \cos z=\frac12\sum_{n=0}^{\infty}\frac{i^n+(-i)^n}{n!}z^n . \]
+
+$n$ 为奇数时 $i^n+(-i)^n=0$；$n=2k$ 时 $i^{2k}+(-i)^{2k}=2(-1)^k$。所以只剩偶次项：
+
+\[ \cos z=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}z^{2k}\qquad(|z|<\infty) . \]
+
+同理，相减再除以 $2i$：
+
+\[ \sin z=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}z^{2k+1}\qquad(|z|<\infty) . \]
+
+\textbf{答案}：三式如上，收敛半径都是 $\infty$。
+
+\textbf{自检}：$\cos z$ 的展开里没有奇次项，这与 $\cos$ 是偶函数一致；$\sin z$ 只含奇次项，与 $\sin$ 是奇函数一致。
+
+\qbreak
+\qstem{（课件 p28--p29 例 3）将 $f(z)=\dfrac{z}{1+z}$ 在 $|z-1|<2$ 的区域内展开成泰勒级数。}
+
+\textbf{考点}：间接法；把分母凑成 $1+\text{小量}$ 的标准形。
+
+\textbf{关键一步}：先拆成 $f=1-\dfrac{1}{1+z}$，再把 $1+z$ 写成 $2\left(1+\dfrac{z-1}{2}\right)$。
+
+\textbf{解}：先裂项，
+
+\[ \frac{z}{1+z}=1-\frac{1}{1+z} . \]
+
+把 $1+z$ 用 $z-1$ 表示：
+
+\[ 1+z=2+(z-1)=2\left(1+\frac{z-1}{2}\right) . \]
+
+于是
+
+\[ \frac{1}{1+z}=\frac12\cdot\frac{1}{1+\dfrac{z-1}{2}}=\frac12\sum_{n=0}^{\infty}(-1)^n\left(\frac{z-1}{2}\right)^n , \]
+
+这里要求 $\left|\dfrac{z-1}{2}\right|<1$，即 $|z-1|<2$，正好是题给区域。代回：
+
+\[ f(z)=1-\frac12\sum_{n=0}^{\infty}(-1)^n\frac{(z-1)^n}{2^n}=1+\sum_{n=0}^{\infty}(-1)^{n+1}\frac{(z-1)^n}{2^{n+1}} . \]
+
+\textbf{答案}：
+
+\[ \frac{z}{1+z}=1+\sum_{n=0}^{\infty}(-1)^{n+1}\frac{(z-1)^n}{2^{n+1}}\qquad(|z-1|<2) . \]
+
+\textbf{自检}：常数项 $1-\tfrac12=\tfrac12=f(1)$；一次项系数 $\tfrac14$，而 $f'(z)=\dfrac{1}{(1+z)^2}$，$f'(1)=\tfrac14$。
+
+\textbf{半径为什么是 2}：$f$ 的唯一奇点是 $z=-1$，到中心 $1$ 的距离 $|1-(-1)|=2$，所以收敛半径就是 2，题给区域恰好是这个最大圆盘。
+
+\qbreak
+\qstem{（课件 p30 例 4）将 $f(z)=\dfrac{1}{(1+z)^2}$ 在 $z=0$ 的区域内展开成泰勒级数。}
+
+\textbf{考点}：逐项求导。
+
+\textbf{关键一步}：$\dfrac{1}{(1+z)^2}=-\dfrac{\dd}{\dd z}\left(\dfrac{1}{1+z}\right)$。
+
+\textbf{解}：由例 1，
+
+\[ \frac{1}{1+z}=\sum_{n=0}^{\infty}(-1)^n z^n\qquad(|z|<1) . \]
+
+两边求导（收敛半径不变）：
+
+\[ -\frac{1}{(1+z)^2}=\sum_{n=1}^{\infty}(-1)^n n z^{n-1} . \]
+
+把右边指标平移 $m=n-1$ 并变号：
+
+\[ \frac{1}{(1+z)^2}=\sum_{m=0}^{\infty}(-1)^m(m+1)z^m\qquad(|z|<1) . \]
+
+\textbf{答案}：$\displaystyle\frac{1}{(1+z)^2}=\sum_{n=0}^{\infty}(-1)^n(n+1)z^n$，$|z|<1$。
+
+\textbf{自检}：$z=0$ 给 $1$；$z=-\tfrac12$ 时左边 $=1/(1-\tfrac12)^2=4$，右边 $=\sum(n+1)(\tfrac12)^n=4$（因为 $\sum(n+1)x^n=1/(1-x)^2$）。
+
+\hdr{§4}{洛朗定理：把圆盘挖成圆环，负幂项登场}
+
+\subhdr{4.1\quad 问题从哪里来}
+
+泰勒定理要求 $f$ 在\textbf{圆盘}内解析。若 $z_0$ 本身是奇点（例如 $f=e^z/z^2$ 在 $z_0=0$），圆盘就不存在，泰勒展开无从谈起。但 $f$ 在\textbf{挖去} $z_0$ 的环形区域内仍然是解析的：
+
+\[ 0<|z-z_0|<R\qquad\text{或更一般地}\qquad R_1<|z-z_0|<R_2 . \]
+
+在这个环域上，能不能也用一个“幂级数”表示 $f$？洛朗定理说：能，代价是允许负幂项。
+
+\subhdr{4.2\quad 定理陈述（p34）}
+
+\textbf{洛朗定理}：设 $f(z)$ 在环形区域 $R_1<|z-z_0|<R_2$ 内解析，则对该环域内任意一点 $z$，
+
+\[ f(z)=\sum_{n=-\infty}^{\infty}a_n(z-z_0)^n ,\qquad a_n=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta , \]
+
+其中 $C$ 是环域内任一绕内圆一周的闭围道，取正向（逆时针，环域在左手边）。
+
+\textbf{理解这个式子}：把 $n\ge0$ 与 $n<0$ 分开写，
+
+\[ f(z)=\underbrace{\sum_{n=0}^{\infty}a_n(z-z_0)^n}_{\text{正规部分}}+\underbrace{\sum_{n=1}^{\infty}a_{-n}(z-z_0)^{-n}}_{\text{主要部分}} . \]
+
+两部分都是幂级数：前者是普通幂级数，后者是关于 $\dfrac{1}{z-z_0}$ 的幂级数。
+
+\subhdr{4.3\quad 证明思路：两个几何级数，一个给正幂、一个给负幂}
+
+取 $\rho_1,\rho_2$ 使
+
+\[ R_1<\rho_1<|z-z_0|<\rho_2<R_2 , \]
+
+记 $C_1:|z-z_0|=\rho_1$，$C_2:|z-z_0|=\rho_2$，都取正向。由复连通区域的柯西积分公式（第二章 p36），
+
+\[ f(z)=\frac{1}{2\pi i}\oint_{C_2}\frac{f(\zeta)}{\zeta-z}\dd\zeta-\frac{1}{2\pi i}\oint_{C_1}\frac{f(\zeta)}{\zeta-z}\dd\zeta . \]
+
+\textbf{外圆 $C_2$ 上的项}：$|z-z_0|<\rho_2=|\zeta-z_0|$，按 3.2 的算法得
+
+\[ \frac{1}{\zeta-z}=\frac{1}{\zeta-z_0}\sum_{n=0}^{\infty}\left(\frac{z-z_0}{\zeta-z_0}\right)^n , \]
+
+于是外圆积分给出\textbf{正幂}部分
+
+\[ \sum_{n=0}^{\infty}(z-z_0)^n\frac{1}{2\pi i}\oint_{C_2}\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta . \]
+
+\textbf{内圆 $C_1$ 上的项}：这一项前面有负号，而且现在 $\rho_1=|\zeta-z_0|<|z-z_0|$，展开方向反过来：
+
+\[ \frac{1}{\zeta-z}=-\frac{1}{z-z_0}\cdot\frac{1}{1-\dfrac{\zeta-z_0}{z-z_0}}=-\sum_{m=0}^{\infty}\frac{(\zeta-z_0)^m}{(z-z_0)^{m+1}} . \]
+
+所以内圆那一项（带负号）变成
+
+\[ \sum_{m=0}^{\infty}\frac{1}{(z-z_0)^{m+1}}\cdot\frac{1}{2\pi i}\oint_{C_1}f(\zeta)(\zeta-z_0)^m\dd\zeta . \]
+
+令 $n=-m-1$（于是 $m=-n-1$），这一串正是 $n<0$ 的项：
+
+\[ \sum_{n=-\infty}^{-1}a_n(z-z_0)^n ,\qquad a_n=\frac{1}{2\pi i}\oint_{C_1}\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta . \]
+
+最后一步：把 $C_1$、$C_2$ 换成环内任一绕内圆的 $C$。因为被积函数 $\dfrac{f(\zeta)}{(\zeta-z_0)^{n+1}}$ 在整个环域内解析，由复连通柯西定理，沿 $C_2$、$C_1$、$C$ 的积分相等。
+
+\aside{正负幂的分工可以这样记：\textbf{离 $z$ 远的那一侧（外圆）给正幂，离 $z$ 近的那一侧（内圆）给负幂}。原因是几何级数的“小量”必须是模小于 1 的那个：外圆上 $|z-z_0|<\rho_2$，内圆上 $\rho_1<|z-z_0|$。}
+
+\subhdr{4.4\quad 系数为什么不能写成 $f^{(n)}(z_0)/n!$（p38）}
+
+表面上 $a_n=\dfrac{1}{2\pi i}\oint_C\dfrac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta$ 与泰勒系数的积分式一模一样，但\textbf{不能}写成 $f^{(n)}(z_0)/n!$：
+
+\begin{itemize}
+\item 若 $z_0$ 是奇点，$f^{(n)}(z_0)$ 根本不存在；
+\item 若 $z_0$ 不是奇点，$f^{(n)}(z_0)$ 存在，但高阶导数公式要求 $f$ 在\textbf{围道内部}解析，而这个环域的围道 $C$ 内部含有奇点，条件不满足。
+\end{itemize}
+
+所以 $a_n$ 只是一个积分值，与导数没有关系。这一点在算留数时特别要紧：$a_{-1}$ 是积分 $\dfrac{1}{2\pi i}\oint_Cf\dd\zeta$，不是某个导数值。
+
+\subhdr{4.5\quad 唯一性与“区域怎么切”}
+
+\textbf{唯一性}：若 $f(z)=\sum b_n(z-z_0)^n$ 在同一环域上成立，两边乘 $(\zeta-z_0)^{-k-1}$ 沿 $C$ 积分并逐项积分，利用
+
+\[ \oint_C(\zeta-z_0)^{n-k-1}\dd\zeta=2\pi i\,\delta_{nk} , \]
+
+得 $b_k=a_k$。
+
+\textbf{区域怎么切}：把 $f$ 的奇点按到 $z_0$ 的距离排队 $d_1<d_2<\cdots$，则相邻两个距离之间就是一个收敛环域：
+
+\[ (0,d_1),\quad(d_1,d_2),\quad(d_2,d_3),\quad\cdots \]
+
+若 $z_0$ 本身是奇点，则 $d_1=0$，第一个环域写成 $0<|z-z_0|<d_2$。同一个函数在不同环域上的展开完全不同——这不是“同一个级数的不同写法”，而是两个不同的级数。
+
+\subhdr{4.6\quad 直接法与间接法（p46--p47）}
+
+\textbf{直接法}：按定义算 $a_n=\dfrac{1}{2\pi i}\oint_C\dfrac{f(\zeta)}{(\zeta-z_0)^{n+1}}\dd\zeta$，通常取 $C$ 为单位圆并令 $\zeta=e^{i\theta}$。
+
+\textbf{间接法}：用已知展开式（几何级数、$e^z$、$\sin z$ 等）通过代换、裂项、乘法拼出来。作业和考试几乎都用间接法。
+
+\subhdr{4.7\quad 展开做完以后，用三条检查它}
+
+洛朗展开最怕的不是算错系数，而是\textbf{把三个环的答案抄串}。三条检查都在一页之内可以做完：
+
+\begin{enumerate}
+\item \textbf{数值代入}：在所给环内随便挑一个实数点（如 $z=\tfrac12$、$\tfrac32$、$5$），把级数算到三、四项，与 $f$ 的真值比较。三区各代一个点，串区立刻暴露。
+\item \textbf{系数积分}：$a_{-1}=\dfrac{1}{2\pi i}\oint_Cf\,\dd\zeta$。若环内有几个奇点被绕住，可把 $C$ 缩成几条小圆分别积再相加；结果应与展开式里的 $z^{-1}$ 系数一致。
+\item \textbf{区域反查}：级数里每个几何级数都要求某个 $|w|<1$。把答案里的 $w$ 代回去，解出的区域必须正好是题目给的那一段，不多不少。这是检查“区域写错”最快的一条。
+\end{enumerate}
+
+\qbreak
+\qstem{（课件 p39 例 1）把 $f(z)=\dfrac{e^z}{z^2}$ 在以 $z=0$ 为圆心的环形区域 $0<|z|<\infty$ 内展开成洛朗级数。}
+
+\textbf{考点}：分子在环内解析时，先泰勒展开再整体除。
+
+\textbf{关键一步}：$e^z$ 在全平面解析，直接用它关于 $z=0$ 的泰勒级数除以 $z^2$。
+
+\textbf{解}：
+
+\[ e^z=\sum_{n=0}^{\infty}\frac{z^n}{n!}=1+z+\frac{z^2}{2!}+\frac{z^3}{3!}+\cdots\qquad(|z|<\infty) , \]
+
+所以
+
+\[ \frac{e^z}{z^2}=\sum_{n=0}^{\infty}\frac{z^{n-2}}{n!}=\frac{1}{z^2}+\frac{1}{z}+\frac{1}{2!}+\frac{z}{3!}+\cdots\qquad(0<|z|<\infty) . \]
+
+\textbf{答案}：
+
+\[ \frac{e^z}{z^2}=\sum_{n=-2}^{\infty}\frac{z^n}{(n+2)!}\qquad(0<|z|<\infty) . \]
+
+\textbf{自检}：负幂项只有 $z^{-2}$ 与 $z^{-1}$ 两项，最高负幂是 $-2$，所以 $z=0$ 是二阶极点；$a_{-1}=1$，即 $\operatorname{Res}f(0)=1$。
+
+\qbreak
+\qstem{（课件 p40--p42 例 2）把 $f(z)=\dfrac{1}{(z-1)(z-2)}$ 分别在 (1) $|z|<1$；(2) $1<|z|<2$；(3) $2<|z|<\infty$ 内展开成洛朗级数。}
+
+\textbf{考点}：两个奇点把平面切成三个环；每一环里重新选“小量”。
+
+\textbf{关键一步}：先裂项 $f=\dfrac{1}{z-2}-\dfrac{1}{z-1}$，再按区域决定每个括号用 $\dfrac{1}{1-z}$ 还是 $\dfrac{1}{1-1/z}$ 的形式。
+
+\textbf{解}：裂项
+
+\[ \frac{1}{(z-1)(z-2)}=\frac{1}{z-2}-\frac{1}{z-1} . \]
+
+两个基本式（全篇通用）：
+
+\[ |z|<a:\quad\frac{1}{z-a}=-\frac1a\cdot\frac{1}{1-\dfrac za}=-\sum_{k=0}^{\infty}\frac{z^k}{a^{k+1}} , \]
+
+\[ |z|>a:\quad\frac{1}{z-a}=\frac1z\cdot\frac{1}{1-\dfrac az}=\sum_{k=0}^{\infty}\frac{a^k}{z^{k+1}} . \]
+
+\textbf{(1) $|z|<1$}：这里 $|z|<1<2$，两项都用第一式，
+
+\[ \frac{1}{z-2}=-\sum_{k=0}^{\infty}\frac{z^k}{2^{k+1}},\qquad -\frac{1}{z-1}=\frac{1}{1-z}=\sum_{k=0}^{\infty}z^k , \]
+
+\[ \Longrightarrow\quad f(z)=\sum_{k=0}^{\infty}\left(1-\frac{1}{2^{k+1}}\right)z^k\qquad(|z|<1) . \]
+
+\textbf{(2) $1<|z|<2$}：$\dfrac{1}{z-2}$ 仍用第一式（$|z|<2$）；$\dfrac{1}{z-1}$ 必须用第二式（$|z|>1$），
+
+\[ \frac{1}{z-2}=-\sum_{k=0}^{\infty}\frac{z^k}{2^{k+1}},\qquad -\frac{1}{z-1}=-\frac1z\cdot\frac{1}{1-\dfrac1z}=-\sum_{k=1}^{\infty}z^{-k} , \]
+
+\[ \Longrightarrow\quad f(z)=-\sum_{k=0}^{\infty}\frac{z^k}{2^{k+1}}-\sum_{k=1}^{\infty}z^{-k}\qquad(1<|z|<2) . \]
+
+\textbf{(3) $2<|z|<\infty$}：两项都用第二式，
+
+\[ \frac{1}{z-2}=\sum_{k=0}^{\infty}\frac{2^k}{z^{k+1}}=\sum_{k=1}^{\infty}\frac{2^{k-1}}{z^k},\qquad -\frac{1}{z-1}=-\sum_{k=1}^{\infty}z^{-k} , \]
+
+\[ \Longrightarrow\quad f(z)=\sum_{k=1}^{\infty}\left(2^{k-1}-1\right)z^{-k}\qquad(2<|z|<\infty) . \]
+
+\textbf{答案}：三式如上。
+
+\textbf{自检}：三区各代一点——$z=\tfrac12$ 时级数给 $\tfrac43=f(\tfrac12)$；$z=\tfrac32$ 时级数给 $-4=f(\tfrac32)$；$z=5$ 时级数给 $\tfrac1{12}=f(5)$。
+
+\textbf{一个容易误解的点}：(2) 里出现负幂项，\textbf{不是}因为 $0$ 是奇点（$0$ 处其实解析），而是因为这个环把 $z=1$ 圈在了里面，$\dfrac{1}{1-z}$ 的几何级数在 $|z|>1$ 上不收敛，只能改用 $1/z$ 的形式。
+
+\qbreak
+\qstem{（课件 p43 例 3）把 $f(z)=\dfrac{\sin z}{z}$ 在 $z=0$ 的邻域内展开成洛朗级数。}
+
+\textbf{考点}：可去奇点；先展开解析部分再除。
+
+\textbf{关键一步}：$\sin z$ 在 $z=0$ 解析，泰勒展开后除以 $z$。
+
+\textbf{解}：
+
+\[ \sin z=z-\frac{z^3}{3!}+\frac{z^5}{5!}-\cdots\qquad(|z|<\infty) , \]
+
+\[ \frac{\sin z}{z}=1-\frac{z^2}{3!}+\frac{z^4}{5!}-\cdots\qquad(0<|z|<\infty) . \]
+
+\textbf{答案}：$\displaystyle\frac{\sin z}{z}=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}z^{2k}$，无负幂项，$z=0$ 是可去奇点。
+
+\textbf{自检}：$\lim_{z\to0}\dfrac{\sin z}{z}=1$，与“可去”一致；补上 $f(0)=1$ 后函数在 $0$ 处解析，所以它其实有泰勒展开（就是右边那个级数）。
+
+\qbreak
+\qstem{（课件 p44 例 4）把 $f(z)=e^{1/z}$ 在 $z=0$ 的邻域内展开成洛朗级数。}
+
+\textbf{考点}：代换 $z\to1/z$。
+
+\textbf{关键一步}：把 $e^z$ 展开式里的 $z$ 直接换成 $1/z$。
+
+\textbf{解}：
+
+\[ e^z=\sum_{n=0}^{\infty}\frac{z^n}{n!}\qquad(|z|<\infty)\quad\Longrightarrow\quad e^{1/z}=\sum_{n=0}^{\infty}\frac{1}{n!\,z^n} , \]
+
+即
+
+\[ e^{1/z}=1+\frac1z+\frac{1}{2!\,z^2}+\frac{1}{3!\,z^3}+\cdots\qquad(0<|z|<\infty) . \]
+
+\textbf{答案}：如上，负幂项有无穷多个，所以 $z=0$ 是\textbf{本性奇点}。
+
+\textbf{自检}：$z$ 沿正实轴趋于 $0$ 时 $e^{1/z}\to+\infty$，沿负实轴趋于 $0$，极限不存在——正是本性奇点的特征。
+
+\qbreak
+\qstem{（课件 p45--p47 例 5）设 $t$ 为实参数，把 $f(z)=e^{\frac t2\left(z-z^{-1}\right)}$ 在 $z=0$ 的邻域内展开成洛朗级数（要求用直接法、间接法各做一遍）。}
+
+\textbf{考点}：洛朗系数的积分表示；两个泰勒级数相乘。
+
+\textbf{关键一步}：直接法把 $C$ 取成单位圆 $z=e^{i\theta}$；间接法把两个指数分别展开再按 $z^n$ 配项。
+
+\textbf{解（间接法）}：把两个因子分开，
+
+\[ e^{\frac t2 z}=\sum_{k=0}^{\infty}\frac{1}{k!}\left(\frac t2\right)^kz^k ,\qquad e^{-\frac{t}{2z}}=\sum_{m=0}^{\infty}\frac{1}{m!}\left(-\frac{t}{2}\right)^mz^{-m} . \]
+
+两个级数都在 $0<|z|<\infty$ 上绝对收敛，可以相乘。\textbf{这里不是“幂级数 $\times$ 幂级数”的标准 Cauchy 乘积}：第二个因子的指数是负的，所以配对条件不是 $k+m=n$。Cauchy 乘积的本质是\textbf{指数相加}，不是下标相加；第一项带指数 $k$，第二项带指数 $-m$，相加得 $k-m=n$，即 $m=k-n$。若把两个级数都写成双边级数（缺项系数记为 0），系数公式仍是熟悉的那一条
+
+\[ c_n=\sum_{k+m=n}a_kb_m , \]
+
+只不过此时 $b_m$ 是 $z^{-m}$ 的系数。按此配对，$z^n$（$n\ge0$）的系数来自所有 $k-m=n$ 的项，其中 $m=k-n$，$k$ 从 $n$ 取到 $\infty$：
+
+\[ a_n=\sum_{m=0}^{\infty}\frac{(-1)^m}{m!\,(m+n)!}\left(\frac t2\right)^{2m+n}\qquad(n\ge 0) . \]
+
+令 $m=k$ 就是 $n$ 阶贝塞尔函数的标准级数：
+
+\[ J_n(t)=\sum_{k=0}^{\infty}\frac{(-1)^k}{k!\,(n+k)!}\left(\frac t2\right)^{2k+n} . \]
+
+$n<0$ 的系数同理，得到 $J_n(t)$ 的同一公式（对整数 $n$，$J_{-n}=(-1)^nJ_n$），所以
+
+\[ e^{\frac t2\left(z-z^{-1}\right)}=\sum_{n=-\infty}^{\infty}J_n(t)z^n . \]
+
+\textbf{解（直接法）}：取 $C:|z|=1$，令 $z=e^{i\theta}$，$\dd z=ie^{i\theta}\dd\theta$，由洛朗系数公式
+
+\[ a_n=\frac{1}{2\pi i}\oint_C\frac{e^{\frac t2\left(z-z^{-1}\right)}}{z^{n+1}}\dd z =\frac{1}{2\pi}\int_0^{2\pi}e^{\frac t2\left(e^{i\theta}-e^{-i\theta}\right)}e^{-in\theta}\dd\theta . \]
+
+而 $\dfrac{e^{i\theta}-e^{-i\theta}}{2}=i\sin\theta$，于是
+
+\[ a_n=\frac{1}{2\pi}\int_0^{2\pi}e^{i\left(t\sin\theta-n\theta\right)}\dd\theta=J_n(t) . \]
+
+两种方法给出同一组系数，符合“唯一性”。
+
+\textbf{答案}：$\displaystyle e^{\frac t2\left(z-z^{-1}\right)}=\sum_{n=-\infty}^{\infty}J_n(t)\,z^n$，$0<|z|<\infty$。
+
+\textbf{自检}：$t=0$ 时 $f\equiv1$，右边只剩 $J_0(0)=1$ 这一项，其余 $J_n(0)=0$——与公式一致。
+
+\hdr{§5}{孤立奇点的分类：负幂项的个数决定一切}
+
+\subhdr{5.1\quad 定义}
+
+若 $f$ 在 $z_0$ 的某个去心邻域 $0<|z-z_0|<\rho$ 内解析，而在 $z_0$ 处不解析（或没定义），则称 $z_0$ 为 $f$ 的\textbf{孤立奇点}。在这个去心邻域内，$f$ 有洛朗展开（§4）：
+
+\[ f(z)=\sum_{n=-\infty}^{\infty}a_n(z-z_0)^n . \]
+
+分类只看\textbf{负幂部分}（主要部分）：
+
+\begin{itemize}
+\item \textbf{可去奇点}：没有负幂项（$a_n=0$ 对一切 $n<0$）。此时补定义 $f(z_0)=\lim_{z\to z_0}f(z)$，函数在 $z_0$ 就解析了，所以这个“奇点”是假的。
+\item \textbf{$m$ 阶极点}：只有有限个负幂项，且最高负幂是 $(z-z_0)^{-m}$（即 $a_{-m}\ne0$，$a_n=0$ 对 $n<-m$）。
+\item \textbf{本性奇点}：负幂项有无穷多个。
+\end{itemize}
+
+例：$\dfrac{\sin z}{z}$ 在 $0$ 可去；$\dfrac{e^z}{z^2}$ 在 $0$ 是二阶极点；$e^{1/z}$ 在 $0$ 是本性奇点。
+
+\subhdr{5.2\quad 第二套判据：看极限}
+
+\textbf{可去} $\iff$ $\lim_{z\to z_0}f(z)$ 存在且有限（等价地：$f$ 在去心邻域内有界）。
+
+\textbf{极点} $\iff$ $\lim_{z\to z_0}f(z)=\infty$；而且
+
+\[ \lim_{z\to z_0}(z-z_0)^m f(z)=a_{-m}\ (\text{有限非零})\iff m\ \text{阶极点} . \]
+
+\textbf{本性} $\iff$ $\lim_{z\to z_0}f(z)$ 不存在，也不为 $\infty$。
+
+\subhdr{5.3\quad 第三套判据：看零点的阶}
+
+设 $f(z)=\dfrac{g(z)}{(z-z_0)^m}$，$g$ 在 $z_0$ 解析且 $g(z_0)\ne0$，则 $z_0$ 是 $f$ 的 $m$ 阶极点。
+
+等价的说法：$z_0$ 是 $f$ 的 $m$ 阶极点 $\iff$ $z_0$ 是 $\dfrac{1}{f}$ 的 $m$ 阶零点。
+
+这条判据在作业里最常用，因为有理函数的分母零点一眼可见。注意：分母的零点阶数\textbf{不能}直接当极点的阶数——分子如果也在同一处为零，要先约掉。
+
+\subhdr{5.4\quad 三套判据为什么是同一件事（补证）}
+
+\textbf{（一）有界 $\iff$ 无负幂项。}
+若 $f$ 在 $0<|z-z_0|<\rho$ 内解析且有界 $|f|\le M$，则对 $n<0$，
+
+\[ a_n=\frac{1}{2\pi i}\oint_{|z-z_0|=\varepsilon}\frac{f(z)}{(z-z_0)^{n+1}}\dd z , \]
+
+用估值不等式（$|z-z_0|=\varepsilon$，长度 $2\pi\varepsilon$）：
+
+\[ |a_n|\le\frac{1}{2\pi}\cdot M\varepsilon^{-n-1}\cdot2\pi\varepsilon=M\varepsilon^{-n} . \]
+
+因为 $-n>0$，令 $\varepsilon\to0$ 得 $a_n=0$。所以有界就无负幂项；反过来若无负幂项，$f$ 可解析延拓到 $z_0$，连续故有界。
+
+\textbf{（二）$\lim f=\infty$ $\iff$ 极点。}
+若 $\lim_{z\to z_0}f=\infty$，则存在 $\rho$ 使 $0<|z-z_0|<\rho$ 时 $|f|>1$。令 $g=1/f$，则 $g$ 解析且 $|g|<1$ 有界，由（一）$g$ 可去，且 $g(z_0)=0$（因为 $f\to\infty$）。设 $g$ 在 $z_0$ 有 $m$ 阶零点，则 $g=(z-z_0)^m h(z)$（$h(z_0)\ne0$），于是
+
+\[ f=\frac{1}{g}=\frac{1}{(z-z_0)^m}\cdot\frac{1}{h(z)} , \]
+
+$\dfrac1h$ 在 $z_0$ 解析且非零，所以 $z_0$ 是 $m$ 阶极点。反过来，$m$ 阶极点显然使 $f\to\infty$。
+
+\textbf{（三）本性 = 排除前两类。}
+负幂项无穷多个，既不是零个（可去）也不是有限个（极点），所以极限既不存在（否则可去）也不为 $\infty$（否则极点）。
+
+\aside{（一）里让 $\varepsilon\to0$ 这一步合法，是因为 $a_n$ 与 $\varepsilon$ 无关：同一个 $a_n$ 可以用任意半径的小圆算。}
+
+\subhdr{5.5\quad 判阶的操作顺序}
+
+\begin{enumerate}
+\item 先找分母的零点（或函数无定义的点），确认它是孤立奇点；
+\item 裂项或约分，把分子在奇点处的值算出来：不为零 $\Rightarrow$ 阶数 = 分母零点的阶数；
+\item 分子也为零 $\Rightarrow$ 比较分子与分母的零点阶数，相减；差为正才是极点，差为零是可去，差为负是零点；
+\item 用极限 $\lim(z-z_0)^mf$ 验算一次。
+\end{enumerate}
+
+\subhdr{5.6\quad 三个标准例子：把三套判据在同一组函数上对一遍}
+
+\textbf{（一）可去奇点：$f(z)=\dfrac{e^z-1}{z}$，$z_0=0$。}
+
+\[ e^z-1=z+\frac{z^2}{2}+\frac{z^3}{6}+\cdots\quad\Longrightarrow\quad f(z)=1+\frac z2+\frac{z^2}{6}+\cdots \]
+
+洛朗判据：没有负幂项 $\Rightarrow$ 可去。极限判据：$\lim_{z\to0}f=1$ 有限 $\Rightarrow$ 可去。零点判据：$\dfrac1f$ 在 $0$ 处解析且不为零（阶数 0）$\Rightarrow$ 不是极点。三套一致。
+
+\textbf{（二）三阶极点：$f(z)=\dfrac{\sin z}{z^4}$，$z_0=0$。}
+
+\[ \sin z=z-\frac{z^3}{6}+\frac{z^5}{120}-\cdots\quad\Longrightarrow\quad f(z)=\frac{1}{z^3}-\frac{1}{6z}+\frac{z}{120}-\cdots \]
+
+洛朗判据：最高负幂是 $z^{-3}$ $\Rightarrow$ 三阶极点。极限判据：$f\to\infty$，且 $\lim z^3f=1\ne0$ $\Rightarrow$ 三阶。零点判据：$\dfrac1f=\dfrac{z^4}{\sin z}$ 在 $0$ 处有三阶零点 $\Rightarrow$ 三阶极点。三套一致。
+
+\textbf{（三）本性奇点：$f(z)=\sin\dfrac1z$，$z_0=0$。}
+
+令 $w=1/z$，由 $\sin w=w-\dfrac{w^3}{6}+\dfrac{w^5}{120}-\cdots$ 得
+
+\[ \sin\frac1z=\frac1z-\frac{1}{6z^3}+\frac{1}{120z^5}-\cdots\qquad(0<|z|<\infty) . \]
+
+洛朗判据：负幂项无穷多 $\Rightarrow$ 本性。极限判据：沿实轴 $z\to0$ 时 $|f|\le1$ 有界，沿虚轴 $z=iy$（$y\to0$）时 $\sin\dfrac{1}{iy}=-i\sinh\dfrac1y$ 的模趋于无穷，两个方向的极限不同，所以 $\lim$ 不存在也不为 $\infty$ $\Rightarrow$ 本性。零点判据：$\dfrac1f=\dfrac{1}{\sin(1/z)}$ 的零点以 $0$ 为聚点，不是孤立零点，所以不是极点。三套一致。
+
+\aside{第三个例子的“沿虚轴”计算用到 $\sin(iy)=i\sinh y$；不需要记 $\sinh$ 的展开，只要知道它随 $y\to0$ 而 $\to\infty$ 就够了。}
+
+\qbreak
+\qstem{（课件 p53 例 1）求函数 $f(z)=\dfrac{1}{\sin z}$ 的奇点，并判别其性质。}
+
+\textbf{考点}：分母零点与分子是否同时为零。
+
+\textbf{关键一步}：$\sin z$ 的零点都是单零点，而分子恒为 1。
+
+\textbf{解}：$\sin z=0$ 的解是 $z=n\pi$（$n\in\mathbb{Z}$）。在每个 $z=n\pi$ 处，
+
+\[ (\sin z)'=\cos z\Big|_{z=n\pi}=(-1)^n\ne0 , \]
+
+所以 $\sin z$ 在 $z=n\pi$ 是一阶零点；分子是常数 1，不为零。因此 $z=n\pi$ 全是 $f$ 的\textbf{一阶极点}，留数
+
+\[ \operatorname{Res}_{z=n\pi}\frac{1}{\sin z}=\frac{1}{\cos(n\pi)}=(-1)^n . \]
+
+\textbf{答案}：奇点 $z=n\pi$（$n\in\mathbb{Z}$），全部是一阶极点。
+
+\textbf{自检}：用极限验算 $\lim_{z\to n\pi}\dfrac{z-n\pi}{\sin z}=\dfrac{1}{\cos(n\pi)}=(-1)^n$，有限非零，说明确实是一阶。
+
+\hdr{§6}{公式卡与四步用法}
+
+\subhdr{6.1\quad 常用展开（台账表，直接查）}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{函数} & \thead{展开式} & \thead{成立区域} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}lll@{}}
+$\dfrac{1}{1-z}$ & $\displaystyle\sum_{n=0}^{\infty}z^n$ & $|z|<1$ \\
+$\dfrac{1}{1+z}$ & $\displaystyle\sum_{n=0}^{\infty}(-1)^nz^n$ & $|z|<1$ \\
+$e^z$ & $\displaystyle\sum_{n=0}^{\infty}\dfrac{z^n}{n!}$ & $|z|<\infty$ \\
+$\sin z$ & $\displaystyle\sum_{k=0}^{\infty}\dfrac{(-1)^k}{(2k+1)!}z^{2k+1}$ & $|z|<\infty$ \\
+$\cos z$ & $\displaystyle\sum_{k=0}^{\infty}\dfrac{(-1)^k}{(2k)!}z^{2k}$ & $|z|<\infty$ \\
+$\ln(1+z)$ & $\displaystyle\sum_{n=1}^{\infty}\dfrac{(-1)^{n-1}}{n}z^n$ & $|z|<1$ \\
+$\dfrac{1}{(1-z)^2}$ & $\displaystyle\sum_{n=0}^{\infty}(n+1)z^n$ & $|z|<1$ \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\subhdr{6.2\quad 洛朗展开的四步}
+
+\begin{enumerate}
+\item \textbf{定中心、定环}：把奇点按到 $z_0$ 的距离排队，写出题目要的那一段；
+\item \textbf{裂项}：部分分式，把 $f$ 拆成若干个 $\dfrac{1}{z-a}$ 之和；
+\item \textbf{逐项选形式}：对每个 $a$，若区域里 $|z|<|a|$ 用 $-\dfrac1a\sum\left(\dfrac za\right)^k$；若 $|z|>|a|$ 用 $\dfrac1z\sum\left(\dfrac az\right)^k$；
+\item \textbf{合并、写区域}：按 $z$ 的幂次整理，注明 $|w|<1$ 解出的区域。
+\end{enumerate}
+
+\subhdr{6.3\quad 三类奇点速查}
+
+\begin{itemize}
+\item 洛朗展开无负幂 $\iff$ 极限存在且有限 $\iff$ 可去；
+\item 最高负幂为 $-m$ $\iff$ $\lim(z-z_0)^mf$ 有限非零 $\iff$ $m$ 阶极点；
+\item 负幂无穷多个 $\iff$ 极限不存在且非 $\infty$ $\iff$ 本性。
+\end{itemize}
+
+\hdr{§7}{第三章作业：四道题（详解见附录 A）}
+
+课件把四道作业分两批：\textbf{p31} 两道（第 1、2 题，幂级数收敛半径与泰勒展开），\textbf{p57} 两道（第 3、4 题，洛朗展开与奇点分类）。本讲义按 1--4 连排，一次收齐；每题详解在\textbf{附录 A}，页码写在题下。建议先自己做，再翻附录。
+
+\qbreak
+\qstem{（课件 p31 第 1 题）\label{hw:1}计算下列级数的收敛半径：
+\[ 1)\ \sum_{n=1}^{\infty}\frac{1}{n^{2}}z^{n};\qquad 2)\ \sum_{n=1}^{\infty}n^{n}z^{n};\qquad 3)\ \sum_{n=1}^{\infty}\frac{n!}{n^{n}}z^{n}. \]}
+
+\textbf{考点}：比值判别法；极限 $\left(1+\tfrac1n\right)^n\to e$。
+
+\textbf{详解}：见附录 A 第 1 题（第 \pageref{app:hw1} 页）。
+
+\qbreak
+\qstem{（课件 p31 第 2 题）\label{hw:2}在 $|z|<1$ 的圆内，将函数 $f(z)=\dfrac{e^{z}}{1-z}$ 展开成泰勒级数。}
+
+\textbf{考点}：两个已知展开式相乘（Cauchy 乘积）。
+
+\textbf{详解}：见附录 A 第 2 题（第 \pageref{app:hw2} 页）。
+
+\qbreak
+\qstem{（课件 p57 第 3 题）\label{hw:3}将下列函数在指定的区域内展成洛朗级数：
+\[ 1)\ \frac{z+1}{z^{2}(z-1)},\quad 0<|z|<1\ \text{与}\ 1<|z|<\infty;\qquad 2)\ \frac{e^{z}}{z\left(z^{2}+1\right)},\quad 0<|z|<1. \]}
+
+\textbf{考点}：部分分式 + 分环选形式；已知展开式相乘。
+
+\textbf{详解}：见附录 A 第 3 题（第 \pageref{app:hw3} 页）。
+
+\qbreak
+\qstem{（课件 p57 第 4 题）\label{hw:4}确定下列函数在有界区域内的孤立奇点，并指出奇点的类型（对于极点，要指出它的阶）：
+\[ 1)\ \frac{z-1}{z\left(z^{2}+1\right)^{2}};\qquad 2)\ \frac{1-\cos z}{z^{3}};\qquad 3)\ \frac{1}{\left(z^{2}+i\right)^{2}};\qquad 4)\ \frac{e^{z}}{e^{z}-1}. \]}
+
+\textbf{考点}：三类奇点判据；分子零点与分母零点相减。
+
+\textbf{详解}：见附录 A 第 4 题（第 \pageref{app:hw4} 页）。
+
+\hdr{§8}{易错点（每条都能指回上面的某一步）}
+
+\gapitem{易错一}{把 $|z-z_0|<R$ 写成 $|z|<R$。中心不是原点时，半径永远量的是到中心 $z_0$ 的距离。例 C3-4 里 $|z-1|<2$ 不能写成 $|z|<2$（$z=2$ 满足后者却在圆外）。}
+
+\gapitem{易错二}{裂项后“提出来的因子忘了乘回去”。$\dfrac{1}{z-1}$ 在 $|z|>1$ 上要写成 $\dfrac1z\cdot\dfrac{1}{1-1/z}$，提出来的 $\dfrac1z$ 必须乘进求和号（C3-7 第 (2)(3) 问）。}
+
+\gapitem{易错三}{拿分母零点的阶数直接当极点阶数。分子如果在同一处也为零，必须先约或相减：$\dfrac{1-\cos z}{z^{3}}$ 的分母是三阶零点，但分子是二阶零点，所以是一阶极点。}
+
+\gapitem{易错四}{以为 $0<|z|<R$ 就一定出现负幂项。$\dfrac{\sin z}{z}$ 在 $0<|z|<\infty$ 上的展开没有负幂项——中心处“解析但没定义”与“奇点”是两回事。}
+
+\gapitem{易错五}{把圆周 $|z|=R$ 算进收敛域。课件 p14 明确写“不确定”，三个反例见 §2.2。}
+
+\gapitem{易错六}{把洛朗系数当导数用：$a_n\ne\dfrac{f^{(n)}(z_0)}{n!}$（p38）。算 $a_{-1}$ 时用的是积分，不是求导。}
+
+\gapitem{易错七}{同一道题有多个环时，把不同环的展开混用。C3-7 的三个答案里，同一个 $z^k$ 的系数在每个环里都不同；写下答案时必须带着环的标注。}
+
+\hdr{§9}{缺口清单：课件跳了哪几处，这份讲义补在哪}
+
+下面每条都给出\textbf{页码 + 课件原文短语 + 补法节号}。
+
+\gapitem{机制缺口 · p14--p15}{原文“确定收敛半径的两种方法”只给了两个判别法，没有解释为什么收敛域一定是以 $z_0$ 为心的圆盘。补法：§2.2 用 Abel 定理证明，并补三个边界反例。}
+
+\gapitem{代数跳步 · p22--p23}{原文“可以将 $\frac{1}{\zeta-z}$ 改写为”后直接出现几何级数，中间的“为什么模小于 1”“逐项积分凭什么合法”被压掉。补法：§3.2 逐步写出，并给出逐项积分的合法性依据。}
+
+\gapitem{未证结论 · p24}{原文“$R$ 就等于从 $z_0$ 点到 $f(z)$ 的距 $z_0$ 点最近的奇点 $\alpha$ 之间的距离”只有例子。补法：§3.3 补“上界、下界”两半证明。}
+
+\gapitem{机制缺口 · p35--p38}{原文“洛朗定理的理解”对比了 $a_n$ 与 $f^{(n)}(z_0)/n!$，但没画“内圆为什么给负幂”。补法：§4.3 分别展开外圆、内圆两个几何级数。}
+
+\gapitem{等价性缺口 · p49--p55}{三类奇点给了洛朗判据与极限判据两套，未证等价。补法：§5.4 用估值不等式和 $1/f$ 补证。}
+
+\gapitem{压缩缺口 · p31、p57}{两处作业只有题面、没有解答。补法：§7 列题干与考点，附录 A 一题一块补全解。}
+
+\gapitem{边界缺口 · p14}{原文“当 $|z|=R$ 时，其敛散性不确定”，没有给例子。补法：§2.2 给 $\sum z^n$、$\sum z^n/n$、$\sum z^n/n^2$ 三个对照。}
+
+\hdr{§10}{三句话总结}
+
+第一句：\textbf{幂级数的收敛域一定是圆盘}，半径只有三条算法——比值、根值、最近奇点距离，三者互相校验。
+
+第二句：\textbf{泰勒是洛朗的特例}。圆盘内解析就得到无负幂项的展开；把圆盘挖成圆环后，负幂项由环内的奇点产生，而不是由“区域形状”产生。
+
+第三句：\textbf{奇点的类型由负幂项的个数决定}，三套判据（洛朗、极限、零点阶数）说的是同一件事。
+
+\hdr{§11}{与课件的页码对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{课件页} & \thead{本讲义位置} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}ll@{}}
+p2--p12 & §1（复级数、函数项级数） \\
+p13--p20 & §2（幂级数、收敛半径、运算性质） \\
+p21--p24 & §3.1--§3.4（泰勒定理、唯一性、半径定理） \\
+p25--p30 & 例题 1--例题 4（$1/(1\mp z)$、$e^z/\cos/\sin$、$z/(1+z)$、$1/(1+z)^2$） \\
+p31 & §7 作业第 1、2 题；附录 A.1、A.2 \\
+p32--p38 & §4.1--§4.5（洛朗定理与证明） \\
+p39--p47 & 例题 5--例题 9（$e^z/z^2$、$1/[(z-1)(z-2)]$、$\sin z/z$、$e^{1/z}$、贝塞尔） \\
+p48--p56 & §5（孤立奇点分类）、例题 10（$1/\sin z$） \\
+p57 & §7 作业第 3、4 题；附录 A.3、A.4 \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\flowerrule
+
+\hdr{附录 A}{四道作业的详解（一题一块）}
+
+本附录每题开头先复述题干与条件摘要，再按“考点／关键一步／详解／答案／自检”展开。题干页码对应课件，正文页码对应 §7。
+
+\qbreak
+\qstem{（课件 p31 第 1 题；正文第 \pageref{hw:1} 页）\label{app:hw1}求三个幂级数的收敛半径：$1)\ \sum\dfrac{z^n}{n^2}$；$2)\ \sum n^nz^n$；$3)\ \sum\dfrac{n!}{n^n}z^n$。}
+
+\textbf{考点}：比值判别法 $R=\lim\left|\dfrac{a_n}{a_{n+1}}\right|$。
+
+\textbf{关键一步}：三个级数都直接套比值，第三个要把 $\left(1+\dfrac1n\right)^n$ 认出来。
+
+\textbf{详解}：
+
+1）$a_n=\dfrac{1}{n^2}$，
+
+\[ \left|\frac{a_n}{a_{n+1}}\right|=\frac{(n+1)^2}{n^2}\to1\ \Longrightarrow\ R=1 . \]
+
+2）$a_n=n^n$，
+
+\[ \left|\frac{a_n}{a_{n+1}}\right|=\frac{n^n}{(n+1)^{n+1}}=\frac{1}{n+1}\cdot\frac{1}{\left(1+\frac1n\right)^n}\to0\ \Longrightarrow\ R=0 . \]
+
+$R=0$ 表示级数只在 $z=0$ 收敛。
+
+3）$a_n=\dfrac{n!}{n^n}$，
+
+\[ \left|\frac{a_n}{a_{n+1}}\right|=\frac{n!}{n^n}\cdot\frac{(n+1)^{n+1}}{(n+1)!}=\frac{(n+1)^{n}}{n^{n}}=\left(1+\frac1n\right)^n\to e\ \Longrightarrow\ R=e . \]
+
+\textbf{答案}：1）$R=1$；2）$R=0$；3）$R=e$。
+
+\textbf{自检}：用根值法验第三个：$\sqrt[n]{n!/n^n}=\dfrac{(n!)^{1/n}}{n}\to\dfrac1e$（Stirling 公式），所以 $R=e$，与比值法一致。
+
+\qbreak
+\qstem{（课件 p31 第 2 题；正文第 \pageref{hw:2} 页）\label{app:hw2}在 $|z|<1$ 内把 $f(z)=\dfrac{e^z}{1-z}$ 展成泰勒级数。}
+
+\textbf{考点}：Cauchy 乘积。
+
+\textbf{关键一步}：$\dfrac{1}{1-z}=\sum_{m\ge0}z^m$（$|z|<1$），$e^z=\sum_{k\ge0}\dfrac{z^k}{k!}$（全平面），相乘按 $k+m=n$ 收集。
+
+\textbf{详解}：
+
+\[ f(z)=\left(\sum_{k=0}^{\infty}\frac{z^k}{k!}\right)\left(\sum_{m=0}^{\infty}z^m\right) . \]
+
+两个级数在 $|z|<1$ 内都绝对收敛，可以相乘。$z^n$ 的系数是所有 $k+m=n$ 的项之和：
+
+\[ a_n=\sum_{k=0}^{n}\frac{1}{k!}\cdot1=\sum_{k=0}^{n}\frac{1}{k!} . \]
+
+所以
+
+\[ \frac{e^z}{1-z}=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}\frac{1}{k!}\right)z^n\qquad(|z|<1) . \]
+
+\textbf{答案}：如上，收敛半径 $1$。
+
+\textbf{半径为什么恰好是 1}：$f$ 的唯一奇点是 $z=1$，到中心 $0$ 的距离是 $1$；虽然 $e^z$ 的展开半径是 $\infty$，乘积被 $1/(1-z)$ 的半径卡在 $1$。
+
+\textbf{自检}：$z=0$ 时级数给 $1$，$f(0)=1$；$z=\tfrac12$ 时数值上 $\sum_{n}\left(\sum_{k\le n}1/k!\right)2^{-n}\approx3.2974$，而 $e^{1/2}/(1-\tfrac12)\approx3.2974$。
+
+\qbreak
+\qstem{（课件 p57 第 3 题；正文第 \pageref{hw:3} 页）\label{app:hw3}把 $1)\ \dfrac{z+1}{z^2(z-1)}$ 在 $0<|z|<1$ 与 $1<|z|<\infty$ 上、$2)\ \dfrac{e^z}{z(z^2+1)}$ 在 $0<|z|<1$ 上展成洛朗级数。}
+
+\textbf{考点}：部分分式；分环选“小量”；已知展开式相乘。
+
+\textbf{关键一步}：1) 先裂项 $\dfrac{z+1}{z^2(z-1)}=-\dfrac2z-\dfrac1{z^2}+\dfrac{2}{z-1}$；2) 先算 $\dfrac{1}{1+z^2}$ 的展开再乘 $e^z$ 并除以 $z$。
+
+\textbf{详解}：
+
+1）裂项。设
+
+\[ \frac{z+1}{z^2(z-1)}=\frac{A}{z}+\frac{B}{z^2}+\frac{C}{z-1} , \]
+
+通分得 $z+1=Az(z-1)+B(z-1)+Cz^2$。令 $z=0$：$1=-B$，$B=-1$；令 $z=1$：$2=C$；比较 $z^2$ 系数：$0=A+C$，$A=-2$。所以
+
+\[ \frac{z+1}{z^2(z-1)}=-\frac2z-\frac1{z^2}+\frac{2}{z-1} . \]
+
+\textbf{$0<|z|<1$}：$\dfrac{2}{z-1}=-\dfrac{2}{1-z}=-2\sum_{n=0}^{\infty}z^n$，于是
+
+\[ f(z)=-\frac{1}{z^2}-\frac2z-2\sum_{n=0}^{\infty}z^n\qquad(0<|z|<1) . \]
+
+\textbf{$1<|z|<\infty$}：$\dfrac{2}{z-1}=\dfrac2z\cdot\dfrac{1}{1-1/z}=2\sum_{k=1}^{\infty}z^{-k}$，于是
+
+\[ f(z)=-\frac1{z^2}-\frac2z+2\sum_{k=1}^{\infty}z^{-k} . \]
+
+合并同类项：$z^{-1}$ 的系数是 $-2+2=0$，$z^{-2}$ 的系数是 $-1+2=1$，$k\ge3$ 时 $z^{-k}$ 的系数是 2：
+
+\[ f(z)=\frac{1}{z^2}+2\sum_{k=3}^{\infty}z^{-k}\qquad(1<|z|<\infty) . \]
+
+2）先展开 $\dfrac{1}{1+z^2}$：因为 $|z|<1$，有
+
+\[ \frac{1}{1+z^2}=\sum_{k=0}^{\infty}(-1)^kz^{2k} , \]
+
+\[ e^z=\sum_{m=0}^{\infty}\frac{z^m}{m!} . \]
+
+两者相乘再除以 $z$。$z^{n-1}$ 的系数是 $2k+m=n$ 的项之和：
+
+\[ f(z)=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{\lfloor n/2\rfloor}\frac{(-1)^k}{(n-2k)!}\right)z^{n-1}\qquad(0<|z|<1) . \]
+
+\textbf{答案}：1）$0<|z|<1$：$-\dfrac1{z^2}-\dfrac2z-2\sum_{n\ge0}z^n$；$1<|z|<\infty$：$\dfrac1{z^2}+2\sum_{k\ge3}z^{-k}$。2）如上式，最低次项是 $z^{-1}$。
+
+\textbf{自检}：1) 取 $z=3$：右边 $=\tfrac19+2\left(\tfrac1{27}+\tfrac1{81}+\cdots\right)=\tfrac19+\tfrac19=\tfrac29$，而 $f(3)=\dfrac{4}{9\cdot2}=\dfrac29$。2) 取前几项：$f=\dfrac1z+1-\dfrac z2-\dfrac{5z^2}{6}+\cdots$，与 $\dfrac{e^z}{z(1+z^2)}$ 在 $z=0$ 展开逐项一致。
+
+\qbreak
+\qstem{（课件 p57 第 4 题；正文第 \pageref{hw:4} 页）\label{app:hw4}确定下列函数在有界区域内的孤立奇点与类型（极点要说阶数）：$1)\ \dfrac{z-1}{z(z^2+1)^2}$；$2)\ \dfrac{1-\cos z}{z^3}$；$3)\ \dfrac{1}{(z^2+i)^2}$；$4)\ \dfrac{e^z}{e^z-1}$。}
+
+\textbf{考点}：分母零点阶数与分子零点阶数相减。
+
+\textbf{关键一步}：先看分母零点处分子是否为零；分子不为零，阶数就是分母的阶数。
+
+\textbf{详解}：
+
+1）分母 $z(z^2+1)^2$ 的零点：$z=0$（一阶）、$z=\pm i$（各二阶，因为 $(z^2+1)^2=((z-i)(z+i))^2$）。分子 $z-1$ 在这些点分别取 $-1$、$i-1$、$-i-1$，都不为零。所以 $z=0$ 是一阶极点，$z=\pm i$ 是二阶极点。
+
+2）$1-\cos z=\dfrac{z^2}{2}-\dfrac{z^4}{24}+\cdots$，是二阶零点；分母 $z^3$ 是三阶零点。相减：$3-2=1$，$z=0$ 是\textbf{一阶极点}。
+
+3）$z^2+i=0\iff z^2=-i\iff z=\pm e^{-i\pi/4}$。分母是平方，每个零点是二阶零点；分子是常数 1，不为零。所以 $z=\pm e^{-i\pi/4}$ 都是\textbf{二阶极点}。
+
+4）$e^z-1=0\iff z=2k\pi i$（$k\in\mathbb{Z}$）。在这些点 $(\mathrm{e}^{z}-1)'=e^z=1\ne0$，是一阶零点；分子 $e^z\ne0$。所以 $z=2k\pi i$ 全是\textbf{一阶极点}。
+
+\textbf{答案}：1）$z=0$ 一阶，$z=\pm i$ 二阶；2）$z=0$ 一阶；3）$z=\pm e^{-i\pi/4}$ 二阶；4）$z=2k\pi i$（$k\in\mathbb{Z}$）全是一阶。
+
+\textbf{自检}：用极限验 2)：$\lim_{z\to0}z\cdot\dfrac{1-\cos z}{z^3}=\lim\dfrac{1-\cos z}{z^2}=\dfrac12$，有限非零，确实一阶。用极限验 1) 的 $z=i$：$\lim_{z\to i}(z-i)^2f(z)$ 有限非零（二阶），因为分子在 $i$ 处不为零。
+
+\flowerrule
+
+\hdr{附录 B}{十个快速判断（合上讲义前最后一遍）}
+
+每题先自己判“对／错”，再看括号里的答案与一句理由。全部只用到本章的判据。
+
+\begin{enumerate}
+\item 幂级数在收敛圆周上一定发散。\hfill（\textbf{错}：$\sum z^n/n^2$ 在 $|z|=1$ 上处处绝对收敛。）
+\item 若 $f$ 在 $|z|<2$ 内解析，则它在 $z=0$ 的泰勒展开的收敛半径就是 2。\hfill（\textbf{错}：半径由最近奇点决定；$e^z$ 在 $|z|<2$ 内解析，半径却是 $\infty$。）
+\item 若 $R$ 恰是 $f$ 在 $z_0$ 的泰勒级数的收敛半径，则圆周 $|z-z_0|=R$ 上至少有一个奇点。\hfill（\textbf{对}：否则可解析延拓，圆盘能扩大，与“$R$ 已是最大”矛盾。）
+\item 洛朗系数满足 $a_n=\dfrac{f^{(n)}(z_0)}{n!}$。\hfill（\textbf{错}：$z_0$ 是奇点时导数不存在；环内有奇点时高阶导数公式也不适用。）
+\item $0<|z|<1$ 上的洛朗展开一定出现负幂项。\hfill（\textbf{错}：$\sin z/z=1-z^2/6+\cdots$，中心解析且无负幂项。）
+\item 若 $z_0$ 是 $f$ 的可去奇点，则 $f$ 在 $z_0$ 的某去心邻域内有界。\hfill（\textbf{对}：极限存在且有限，补定义后连续，故有界。）
+\item $f(z)=\dfrac{1}{z\sin z}$ 在 $z=0$ 是二阶极点。\hfill（\textbf{对}：$z\sin z\sim z^2$，分母二阶零点，分子非零。）
+\item $e^{1/z}$ 在 $z=0$ 是“无穷阶极点”。\hfill（\textbf{错}：负幂项无穷多，是本性奇点；极点只允许有限个负幂项。）
+\item 若 $f$ 在环域 $1<|z|<2$ 内解析，则它的洛朗展开在该环内收敛。\hfill（\textbf{对}：洛朗定理保证，而且收敛域至少覆盖这个环。）
+\item $f(z)=\dfrac{z-1}{z(z^2+1)^2}$ 在 $z=0$ 是一阶极点。\hfill（\textbf{对}：分母一阶零点，分子在 0 取值 $-1\ne0$。）
+\end{enumerate}
+
+\end{document}

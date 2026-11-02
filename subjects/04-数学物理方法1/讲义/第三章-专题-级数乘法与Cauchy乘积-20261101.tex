@@ -1,0 +1,340 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第三章专题 · 级数乘法与 Cauchy 乘积
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{第三章专题 · 级数乘法与 Cauchy 乘积}{数学物理方法1}
+
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{4\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{9\baselineskip}\orighdr{#1}{#2}}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+
+\begin{document}
+
+\doctitle{第三章专题　级数乘法与 Cauchy 乘积}
+{为什么是“指数相加”、什么时候才能乘、双边级数怎么配对}
+{依据课件《第三章 解析函数的幂级数展开》p19--p20、p45--p47\quad 2026-11-01\quad 数学物理方法1}
+
+\hdr{§0}{这个专题解决哪三个问题}
+
+课件 p19 写了一行“幂级数可以相乘”，p45--p47 的贝塞尔例题又要求把两个指数级数乘起来，但没有把中间那一步讲透。这份专题只回答三个问题：
+
+\begin{enumerate}
+\item 为什么两个级数相乘时，系数要按\textbf{指数相加}来配，而不是按“下标相加”？
+\item 什么时候可以放心地把两个无限和乘开、再重新分组？条件收敛行不行？
+\item 遇到洛朗级数（有负幂项）时，配对的规则要不要改？
+\end{enumerate}
+
+这三个问题分别对应 §1、§2、§3；§4 给出三条可操作的算法，§5 用五道例题把它们跑一遍，§6 列易错点，§7 留六道自检题（答案在最后）。
+
+\aside{与第三章讲义的关系：讲义 §2.4 只写了乘法公式的结论，例 9（贝塞尔）用了 $k-m=n$ 的配对。本专题把这两处的“为什么”补上，不重复讲幂级数的收敛半径。}
+
+\hdr{§1}{Cauchy 乘积：指数相加，不是下标相加}
+
+\subhdr{1.1\quad 先看两个多项式}
+
+设
+
+\[ A(z)=a_0+a_1z+a_2z^2,\qquad B(z)=b_0+b_1z+b_2z^2 . \]
+
+把它们乘开，每一项都是“从第一行取一个单项、从第二行取一个单项”：
+
+\[ A(z)B(z)=\sum_{k=0}^{2}\sum_{m=0}^{2}a_kb_mz^{k+m} . \]
+
+要收集 $z^n$ 的系数，就得挑出所有 $k+m=n$ 的项：
+
+\[ c_n=\sum_{k=0}^{n}a_kb_{n-k}\qquad(n=0,1,2,3,4) . \]
+
+注意这里 $a_k$ 的“指数”是 $k$，$b_m$ 的“指数”是 $m$，乘积的指数是 $k+m$。所以配对的依据始终是\textbf{指数相加}；“下标相加”只有在两个级数都从 $z^0$ 开始、指数恰好等于下标时才碰巧一样。
+
+\subhdr{1.2\quad 无限和的情形：定义与一个不能省的条件}
+
+对两个幂级数
+
+\[ \sum_{k=0}^{\infty}a_kz^k,\qquad \sum_{m=0}^{\infty}b_mz^m , \]
+
+定义它们的 \textbf{Cauchy 乘积}为
+
+\[ \sum_{n=0}^{\infty}c_nz^n,\qquad c_n=\sum_{k=0}^{n}a_kb_{n-k} . \]
+
+这个定义只是“把每一项都乘开、按 $z$ 的幂次归堆”，它\textbf{本身并不保证}乘积级数收敛、更不保证收敛到两个和函数的乘积。要保证这件事，需要 §2 的条件。
+
+\subhdr{1.3\quad 一个直观的检查}
+
+取两个几何级数：
+
+\[ \frac{1}{1-z}\cdot\frac{1}{1-z}=\left(\sum_{k\ge0}z^k\right)\left(\sum_{m\ge0}z^m\right) . \]
+
+$z^n$ 的系数是 $k+m=n$ 的配对个数，即 $n+1$：
+
+\[ c_n=\sum_{k=0}^{n}1\cdot1=n+1 . \]
+
+而左边 $=1/(1-z)^2$，它的展开正是 $\sum_{n\ge0}(n+1)z^n$（第三章讲义例 4）。两边一致。这个例子说明：卷积的直观就是“数有多少对配得上”。
+
+\hdr{§2}{什么时候能放心地相乘}
+
+\subhdr{2.1\quad 两条定理}
+
+\textbf{定理（绝对收敛版）}：若 $\sum|a_n|$ 与 $\sum|b_n|$ 都收敛，则 Cauchy 乘积级数 $\sum c_n$ 绝对收敛，且
+
+\[ \sum_{n=0}^{\infty}c_n=\left(\sum_{k=0}^{\infty}a_k\right)\left(\sum_{m=0}^{\infty}b_m\right) . \]
+
+\textbf{定理（Mertens，1880）}：若 $\sum a_n$ 绝对收敛、$\sum b_n$ 收敛（不必绝对），则乘积级数收敛，且和等于两个和的乘积。
+
+\aside{两个都只条件收敛时，乘积级数\textbf{可能发散}——见 2.3 的反例。所以“能乘”的判据落在绝对收敛上，这是本章所有乘法（包括洛朗级数相乘）的依据。}
+
+\subhdr{2.2\quad 为什么绝对收敛就够了（证明思路）}
+
+记部分和 $A_N=\sum_{k=0}^{N}a_k$、$B_N=\sum_{m=0}^{N}b_m$，并记 $C_N=\sum_{n=0}^{N}c_n$。直接算差的“三角形”部分：
+
+\[ A_NB_N=\sum_{k=0}^{N}\sum_{m=0}^{N}a_kb_m , \]
+
+而 $C_N$ 只收集了 $k+m\le N$ 的那些项。两者的差是一圈“边角料”：
+
+\[ A_NB_N-C_N=\sum_{\substack{k+m>N\\ k\le N,\ m\le N}}a_kb_m . \]
+
+若 $\sum|a_k|$、$\sum|b_m|$ 收敛，就来估计这些边角料。注意 $k+m>N$ 而 $k,m\le N$ 时，必有 $k>N/2$ 或 $m>N/2$（否则 $k+m\le N$）。于是
+
+\[ \left|A_NB_N-C_N\right|\le\Bigl(\sum_{k>N/2}|a_k|\Bigr)\Bigl(\sum_{m}|b_m|\Bigr)+\Bigl(\sum_{k}|a_k|\Bigr)\Bigl(\sum_{m>N/2}|b_m|\Bigr) , \]
+
+两个括号里的“尾巴”都随 $N\to\infty$ 趋于 0。所以 $A_NB_N-C_N\to0$，即 $C_N\to AB$。绝对收敛在这里的作用是：\textbf{把“边角料”压到零}。
+
+\subhdr{2.3\quad 反例：两个条件收敛的级数，乘积级数发散}
+
+取
+
+\[ a_n=b_n=\frac{(-1)^n}{\sqrt{n+1}}\qquad(n=0,1,2,\dots) . \]
+
+两个级数都收敛（交错级数，通项递减趋于 0），但不绝对收敛（$\sum1/\sqrt{n+1}$ 发散）。它们的 Cauchy 乘积系数是
+
+\[ c_n=\sum_{k=0}^{n}\frac{(-1)^k}{\sqrt{k+1}}\cdot\frac{(-1)^{n-k}}{\sqrt{n+1-k}}=(-1)^n\sum_{k=0}^{n}\frac{1}{\sqrt{(k+1)(n+1-k)}} . \]
+
+对每一项用算术—几何平均不等式 $\sqrt{xy}\le\dfrac{x+y}{2}$（$x=k+1$，$y=n+1-k$，$x+y=n+2$）：
+
+\[ \frac{1}{\sqrt{xy}}\ge\frac{2}{x+y}=\frac{2}{n+2} . \]
+
+一共 $n+1$ 项，于是
+
+\[ |c_n|\ge\frac{2(n+1)}{n+2}\ \longrightarrow\ 2\ne0 . \]
+
+通项不趋于 0，所以乘积级数发散。数值上，$n=100$ 时这个和约为 $2.85$，与下界 $1.98$ 相容。
+
+\subhdr{2.4\quad 乘积的收敛半径}
+
+若 $\sum a_nz^n$ 的收敛半径为 $R_1$、$\sum b_nz^n$ 为 $R_2$，则在 $|z|<\min(R_1,R_2)$ 内两个级数都绝对收敛，由定理，乘积级数收敛，所以它的收敛半径
+
+\[ R\ge\min(R_1,R_2) . \]
+
+可能更大：例如 $\dfrac{1}{1-z}\cdot(1-z)=1$，乘积的半径是 $\infty$。所以写答案时不要直接把 $\min$ 当成等号。
+
+\hdr{§3}{洛朗级数相乘：指数是负的}
+
+\subhdr{3.1\quad 规则不变，只是把 $m$ 换成 $-m$}
+
+设
+
+\[ f(z)=\sum_{k=-\infty}^{\infty}a_kz^k,\qquad g(z)=\sum_{m=-\infty}^{\infty}b_mz^m \]
+
+在同一个环域内绝对收敛。乘积仍是逐项乘开、按指数归堆：$a_kz^k$ 与 $b_mz^m$ 的乘积指数是 $k+m$，所以
+
+\[ f(z)g(z)=\sum_{n=-\infty}^{\infty}c_nz^n,\qquad c_n=\sum_{k=-\infty}^{\infty}a_kb_{n-k} . \]
+
+这就是双边级数的 Cauchy 乘积，形式和单边的一模一样；区别只在于 $n$ 现在可以取负值。
+
+\textbf{最常见的写法}：把一个因子写成 $z^{-m}$ 的形式，于是“第一项指数 $k$、第二项指数 $-m$”相加：
+
+\[ k+(-m)=n\quad\Longleftrightarrow\quad k-m=n . \]
+
+这正是第三章讲义例 9 里那句“$z^n$ 的系数来自 $k-m=n$ 的那些项”。
+
+\subhdr{3.2\quad 换成 $w=1/z$ 的视角（最不容易错）}
+
+把带负幂的因子看成一个新变量 $w=1/z$ 的幂级数：
+
+\[ e^{-tw/2}=\sum_{m=0}^{\infty}\frac{1}{m!}\left(-\frac t2\right)^mw^m . \]
+
+先对 $z$ 与 $w$ 两个\textbf{独立}变量做标准的 Cauchy 乘积（系数按 $k+m=n$ 配），最后再把 $w$ 换成 $1/z$。这样全程用的都是单边公式，不会把 $k-m$ 与 $k+m$ 搞混。
+
+\subhdr{3.3\quad 收敛域与合法性}
+
+两个洛朗级数在环域 $r_1<|z-z_0|<R_1$ 与 $r_2<|z-z_0|<R_2$ 内绝对收敛，则乘积在交集
+
+\[ \max(r_1,r_2)<|z-z_0|<\min(R_1,R_2) \]
+
+内绝对收敛，并且可以任意重排（绝对收敛级数的重排不变性，第三章讲义 §1.3）。如果交集是空的，就不能直接相乘，要分段处理。
+
+\aside{重排合法性是整件事的根：把 $\sum_{k}\sum_{m}$ 的二维和按 $k+m=n$ 归堆，本质是一次重排。没有绝对收敛，重排可以改变和，甚至破坏收敛（§2.3）。}
+
+\hdr{§4}{三条可操作的算法}
+
+\subhdr{4.1\quad 算法一：直接卷积（列表对角线）}
+
+把两个级数的系数各排一行，$c_n$ 就是“下标之和等于 $n$”的那条对角线上的乘积之和。手算时画一张小表最快：
+
+\begin{center}
+\begin{tabular}{c|cccc}
+ & $b_0$ & $b_1$ & $b_2$ & $\cdots$ \\ \hline
+$a_0$ & $c_0$ & $c_1$ & $c_2$ & \\
+$a_1$ & $c_1$ & $c_2$ & & \\
+$a_2$ & $c_2$ & & & \\
+$\vdots$ & & & &
+\end{tabular}
+\end{center}
+
+表格的对角线（右上—左下方向）加起来就是 $c_0,c_1,c_2,\dots$。对双边级数，行头列头换成负下标，规则不变（指数相加）。
+
+\subhdr{4.2\quad 算法二：换变量，把双边化单边}
+
+遇到 $z^{-m}$，就令 $w=1/z$，先按单边公式乘，最后把 $w$ 换回 $1/z$。遇到中心不在原点，就令 $u=z-z_0$。换变量的好处是所有配对都回到 $k+m=n$ 的标准形（§3.2）。
+
+\subhdr{4.3\quad 算法三：先化简再乘}
+
+有些乘积根本不必硬卷积：
+
+\begin{itemize}
+\item $\sin z\cos z=\tfrac12\sin 2z$（三角恒等式）；
+\item $e^{az}e^{bz}=e^{(a+b)z}$（指数律）；
+\item $\dfrac{1}{1-z}\cdot\dfrac{1}{1-2z}$ 先部分分式，再分别展开相加。
+\end{itemize}
+
+能化简就先化简，卷积只用来处理“两个函数真的不同类”的情形。
+
+\hdr{§5}{五道例题}
+
+\subhdr{例 1\quad $(\sum z^n)^2$}
+
+\[ \left(\sum_{k=0}^{\infty}z^k\right)\left(\sum_{m=0}^{\infty}z^m\right)=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}1\right)z^n=\sum_{n=0}^{\infty}(n+1)z^n\qquad(|z|<1) . \]
+
+\textbf{检验}：左边 $=\dfrac{1}{(1-z)^2}$，右边正是它的展开。这道题说明卷积的系数可以“数”出来。
+
+\subhdr{例 2\quad $\dfrac{e^z}{1-z}$（课件 p31 作业第 2 题）}
+
+\[ e^z=\sum_{k\ge0}\frac{z^k}{k!},\qquad \frac{1}{1-z}=\sum_{m\ge0}z^m , \]
+
+两项都在 $|z|<1$ 内绝对收敛。$z^n$ 的系数：
+
+\[ c_n=\sum_{k=0}^{n}\frac{1}{k!}\cdot1=\sum_{k=0}^{n}\frac{1}{k!} . \]
+
+所以
+
+\[ \frac{e^z}{1-z}=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}\frac{1}{k!}\right)z^n\qquad(|z|<1) . \]
+
+\textbf{检验}：$z=0$ 给 $1$；一次项系数 $1+1=2$，而 $\left(\dfrac{e^z}{1-z}\right)'_{z=0}=e^0\cdot1+1\cdot e^0=2$，一致。
+
+\subhdr{例 3\quad $\sin z\cos z$：卷积与恒等式对撞}
+
+硬卷积：$\sin z$ 只有奇次项、$\cos z$ 只有偶次项，乘积只含奇次项。$z^{2N+1}$ 的系数是
+
+\[ \sum_{k=0}^{N}\frac{(-1)^k}{(2k+1)!}\cdot\frac{(-1)^{N-k}}{(2N-2k)!}=\frac{(-1)^N\,2^{2N}}{(2N+1)!} . \]
+
+最后这个等式可以逐项验证：$N=1$ 时左边 $=\dfrac{1}{1!\,2!}+\dfrac{1}{3!\,0!}=\dfrac23$，右边 $=\dfrac{4}{3!}=\dfrac23$；$N=2$ 时左边 $=\dfrac{1}{24}+\dfrac{1}{12}+\dfrac{1}{120}=\dfrac{2}{15}$，右边 $=\dfrac{16}{5!}=\dfrac{2}{15}$。于是
+
+\[ \sin z\cos z=\sum_{N=0}^{\infty}\frac{(-1)^N2^{2N}}{(2N+1)!}z^{2N+1}=\frac12\sin 2z . \]
+
+\textbf{结论}：卷积能算出正确的系数，但用恒等式一步就到。两条路给出同一结果，正好互相校验。
+
+\subhdr{例 4\quad $e^{z}\,e^{-1/z}$：双边相乘}
+
+\[ e^{z}=\sum_{k\ge0}\frac{z^k}{k!},\qquad e^{-1/z}=\sum_{m\ge0}\frac{(-1)^m}{m!}z^{-m} . \]
+
+两个级数在 $0<|z|<\infty$ 上都绝对收敛。按指数相加，$z^n$ 的系数（$n$ 可以是负的）来自 $k-m=n$：
+
+\[ c_n=\sum_{m=0}^{\infty}\frac{(-1)^m}{m!\,(m+n)!}\qquad(n\ge0) . \]
+
+这正是 $J_n(2)$ 的级数（因为 $t/2=1$）：
+
+\[ J_n(2)=\sum_{k=0}^{\infty}\frac{(-1)^k}{k!\,(n+k)!} . \]
+
+\textbf{数值检验}：$n=0$ 时 $c_0=\sum_k(-1)^k/(k!)^2=0.2238908$，而 $J_0(2)=0.2238908$；$n=1$ 时 $c_1=0.5767248=J_1(2)$。
+
+\subhdr{例 5\quad 贝塞尔生成函数（课件 p45--p47 的间接法）}
+
+要展开
+
+\[ f(z)=e^{\frac t2\left(z-z^{-1}\right)} . \]
+
+把指数拆成两项，各自展开：
+
+\[ e^{\frac t2z}=\sum_{k=0}^{\infty}\frac{1}{k!}\left(\frac t2\right)^kz^k,\qquad e^{-\frac{t}{2z}}=\sum_{m=0}^{\infty}\frac{1}{m!}\left(-\frac t2\right)^mz^{-m} . \]
+
+两者在 $0<|z|<\infty$ 绝对收敛，可以相乘。按 $k+(-m)=n$ 配对，即 $m=k-n$；对 $n\ge0$，$k$ 从 $n$ 取到 $\infty$：
+
+\[ c_n=\sum_{k=n}^{\infty}\frac{1}{k!}\left(\frac t2\right)^k\cdot\frac{(-1)^{k-n}}{(k-n)!}\left(\frac t2\right)^{k-n} . \]
+
+把 $k$ 换成 $m=k-n$（$m$ 从 $0$ 到 $\infty$）：
+
+\[ c_n=\sum_{m=0}^{\infty}\frac{(-1)^m}{m!\,(m+n)!}\left(\frac t2\right)^{2m+n}=J_n(t) . \]
+
+$n<0$ 时同理得到 $J_n(t)$ 的同一公式（对整数 $n$ 有 $J_{-n}=(-1)^nJ_n$）。所以
+
+\[ e^{\frac t2\left(z-z^{-1}\right)}=\sum_{n=-\infty}^{\infty}J_n(t)\,z^n\qquad(0<|z|<\infty) . \]
+
+\textbf{直接法对照}：取 $C:|z|=1$、$z=e^{i\theta}$，由洛朗系数公式
+
+\[ a_n=\frac{1}{2\pi}\int_0^{2\pi}e^{\frac t2\left(e^{i\theta}-e^{-i\theta}\right)}e^{-in\theta}\dd\theta=\frac{1}{2\pi}\int_0^{2\pi}e^{i\left(t\sin\theta-n\theta\right)}\dd\theta , \]
+
+因为 $\dfrac{e^{i\theta}-e^{-i\theta}}{2}=i\sin\theta$。这就是 $J_n(t)$ 的积分表示，与间接法同一组系数。
+
+\textbf{复核}：$t=0$ 时 $f\equiv1$，右边只剩 $J_0(0)=1$，其余 $J_n(0)=0$。
+
+\hdr{§6}{易错点}
+
+\gapitem{一}{双边级数错用 $k+m=n$。第二项的指数是 $-m$，配对是 $k-m=n$；记不住就先换成 $w=1/z$（§3.2）。}
+
+\gapitem{二}{拿条件收敛的级数硬乘。两个条件收敛的乘积级数可能发散（§2.3），要乘先看绝对收敛，或套 Mertens 条件。}
+
+\gapitem{三}{漏掉负指数项。双边相乘时 $k$ 与 $m$ 都取遍整数，只取 $k,m\ge0$ 会漏掉一半。}
+
+\gapitem{四}{把 $R\ge\min(R_1,R_2)$ 写成等号。$1/(1-z)$ 乘 $(1-z)$ 的半径是 $\infty$，不是 $1$。}
+
+\gapitem{五}{常数项写错。$c_0=a_0b_0$ 永远对，先用它检查一遍再往下算。}
+
+\gapitem{六}{忘记符号。$e^{-t/(2z)}$ 的展开带 $(-1)^m$，漏掉它 $J_n$ 的交替符号就全错了。}
+
+\hdr{§7}{六道自检题（答案在后面）}
+
+\begin{enumerate}
+\item $\left(\sum_{k\ge0}\dfrac{z^k}{k!}\right)^2$ 的 $z^n$ 系数是多少？整个级数等于什么函数？
+\item $\dfrac{1}{(1-z)^3}$ 的展开是什么？（提示：两个几何级数相乘，或对 $1/(1-z)^2$ 求导。）
+\item $e^{z}\cdot e^{-z}$ 的卷积系数 $c_n$ 是多少（$n\ge1$）？为什么能一眼看出来？
+\item $\left(\sum_{n\ge0}z^n\right)\left(\sum_{n\ge0}(-1)^nz^n\right)$ 等于什么？卷积里发生了什么？
+\item $\dfrac{1}{(1-z)(1-2z)}$ 的展开是什么？（先部分分式，再用卷积对照。）
+\item 贝塞尔函数 $J_1(t)$ 的展开前两项是什么？
+\end{enumerate}
+
+\textbf{答案}
+
+\begin{enumerate}
+\item $c_n=\sum_{k=0}^{n}\dfrac{1}{k!(n-k)!}=\dfrac{2^n}{n!}$，整个级数 $=e^{2z}$。
+\item 由 $\sum(n+1)z^n$ 与 $\sum z^m$ 卷积：$c_n=\sum_{k=0}^{n}(k+1)=\dfrac{(n+1)(n+2)}{2}$，即 $\sum\binom{n+2}{2}z^n$。
+\item $c_n=\sum_{k=0}^{n}\dfrac{(-1)^k}{k!}\cdot\dfrac{(-1)^{n-k}}{(n-k)!}=\dfrac{(1-1)^n}{n!}=0$（$n\ge1$），$c_0=1$：乘积是常数 1。
+\item 卷积 $c_n=\sum_{k=0}^{n}(-1)^{n-k}$ 在 $n$ 偶时为 $1$、$n$ 奇时为 $0$，所以结果是 $\sum z^{2n}=\dfrac{1}{1-z^2}$，与 $1/(1-z)\cdot1/(1+z)$ 一致。
+\item 部分分式 $\dfrac{1}{(1-z)(1-2z)}=\dfrac{2}{1-2z}-\dfrac{1}{1-z}$，展开为 $\sum(2^{n+1}-1)z^n$；卷积算 $c_n=\sum_{k=0}^{n}2^k=2^{n+1}-1$，一致。
+\item $J_1(t)=\dfrac t2-\dfrac{t^3}{16}+\cdots$（由 $m=0,1$ 两项）。
+\end{enumerate}
+
+\hdr{§8}{与课件的对照和一句话总结}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{课件页} & \thead{本专题对应处} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l p{0.72\linewidth}@{}}
+p19 & 幂级数的乘法运算；本专题 §1、§2 \\
+p20 & 代换运算；本专题 §3.2、§4.2 \\
+p45--p47 & 贝塞尔生成函数（直接法、间接法）；本专题 §5 例 5 \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\flowerrule
+
+\textbf{一句话}：级数相乘就是\textbf{指数相加}——单边是 $k+m=n$，双边是 $k-m=n$；能这样做的根据是\textbf{绝对收敛}，它保证按指数归堆这一次重排不改变和。
+
+\end{document}

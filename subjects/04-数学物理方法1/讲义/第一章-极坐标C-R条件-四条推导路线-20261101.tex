@@ -1,0 +1,548 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第一章 §1.3 · 极坐标下的柯西-黎曼条件：四条推导路线
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\settags{第一章 §1.3 · 极坐标下的 C-R 条件}{数学物理方法1}
+
+% 对勾：amssymb 的 \checkmark，文本与公式里都能用
+\newcommand{\chk}{\ensuremath{\checkmark}}
+
+% 公式上下留白收紧（默认值在 A4 长行文里显得太散）
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+% 小节标题不落在页底（章标题交给自然的断页，加了反而在段中误判）
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{4\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{极坐标下的柯西–黎曼条件}
+{四条推导路线，一条判据：为什么冒出 $1/r$，负号又从哪来}
+{依据：第一章+复变函数.pdf 的 p37--p46（§1.3 复变函数的导数）\ \textperiodcentered\ 2026-11-01}
+
+%=============================================================
+\hdr{§0}{先交代三件事}
+
+\callout{\textbf{本篇只回答三个问题}，其余一概不写：
+\begin{enumerate}[label=(\arabic*)]
+\item 课件 p39 的两个差商，一个除以 $e^{i\theta}\Delta r$、另一个除以 $re^{i\theta}i\Delta\theta$。那个多出来的 $r$ 是从哪冒出来的？
+\item 极坐标 C-R 与直角坐标 C-R 是同一件事吗？如果是，为什么多一个 $1/r$、还多一处负号？
+\item 只用极坐标 C-R 能不能断定解析？在原点行不行？
+\end{enumerate}}
+
+范围是 p37--p46：p37--p38 导数定义与 C-R，p39--p40 极坐标形式，p41--p42 两道例题，p43--p44 充分性证明，p45--p46 解析函数。四条路线各答一个问题：
+
+\begin{itemize}[leftmargin=2.2em]
+\item \textbf{路线一、二}（§3--§5）＝ 课件 p39--p40 的“两条路径”。补的是被跳过的代数与几何；
+\item \textbf{路线三}（§6）＝ 链式法则。回答“为什么 $\cos\theta$、$\sin\theta$ 全部消失”，补 p40 末行那句没有下文的“差别”；
+\item \textbf{路线四}（§7）＝ Wirtinger 算子。回答“能不能一行写出来”；
+\item \textbf{§8 反向}＝ 极坐标 C-R 什么时候才够用（课件只在直角坐标证了充分性）。
+\end{itemize}
+
+\subhdr{记号：全文只用这一套}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{12.0cm}@{}}
+\toprule
+\thead{记号} & \thead{约定（与课件 p39--p40 一致）}\\
+\midrule
+$z,\ r,\ \theta$ & $z=re^{i\theta}$，$r=|z|\ge0$，$\theta$ 取定一支。本篇一律要求 $r>0$（原因见 §2.2）\\
+$f,\ u,\ v$ & $f(z)=u+iv$。$u,v$ 是\textbf{同一对}实值函数，既可读作 $u(x,y)$、也可读作 $u(r,\theta)$\\
+$u_r,\ u_\theta$ & $\partial u/\partial r$（固定 $\theta$）与 $\partial u/\partial\theta$（固定 $r$）——\textbf{不是} $u_x,u_y$\\
+$u_x,\ u_y$ & $\partial u/\partial x$、$\partial u/\partial y$\\
+$e^{i\theta},\ ie^{i\theta}$ & $z$ 处的\textbf{径向}、\textbf{角向}单位向量（§2.1 有图）\\
+$\partial_z,\ \partial_{\bar z}$ & Wirtinger 算子，§7 才用\\
+\bottomrule
+\end{tabular}
+
+\aside{第三行是全文最容易被读错的一处：$u_r$ 与 $u_x$ 是两个不同的数。最快的辨别法是拿 $u=x=r\cos\theta$ 试：$u_x=1$，而 $u_r=\cos\theta$。哪一步把两者当成同一个，后面所有 $1/r$ 都会错位。}
+
+%=============================================================
+\hdr{§1}{缺口勘探：课件在这里省掉了什么}
+
+先说清一件事：p39--p40 把两条路径的差商\textbf{写全了}，这比多数教材清楚。缺口在细节、收尾与条件上。逐条点名：
+
+\gapitem{严格性 · p39 第一行}{原文：“采用指数表达式，则 $z=re^{i\theta}$，且 $\Delta z=\Delta r e^{i\theta}+re^{i\theta}i\Delta\theta$”。这是\textbf{微分}等式；拿去当差分用，角向那一步实际写成了 $\Delta z=re^{i\theta}i\Delta\theta$，而真实的弦是 $re^{i\theta}(e^{i\Delta\theta}-1)$。两者相差 $O(\Delta\theta^2)$，一阶结论不变，但页面上没有交代这一点，读者无从判断这个“等号”能不能放心用。§2.2 把它拆成“主导项＋余项”。}
+
+\gapitem{代数跳步 · p39 第 2) 式}{原文从差商 $\dfrac{u(r,\theta+\Delta\theta)+iv(r,\theta+\Delta\theta)-u(r,\theta)-iv(r,\theta)}{re^{i\theta}i\Delta\theta}$ 直接跳到 $\dfrac{1}{re^{i\theta}}\left[\dfrac{\partial v}{\partial\theta}-i\dfrac{\partial u}{\partial\theta}\right]$。中间那一步是
+\(\dfrac{u_\theta+iv_\theta}{i}=v_\theta-iu_\theta\)，即 $1/i=-i$——\textbf{$u$、$v$ 互换与负号的唯一来源}，被省掉了。§4.2 写出这一步。}
+
+\gapitem{拼接缺口 · p40 末行}{原文蓝字（菱形项目符后）：“极坐标系下的柯西-黎曼条件推导过程与直角坐标系下的差别”。这句话挂出了一个“差别”，但 p40 到此结束，p41 直接进入例 1，\textbf{“差别”从头到尾没有出现}。§6 补上。}
+
+\gapitem{条件缺口 · p39--p44 全节}{全节没有出现 $r\neq0$ 的前提：$\theta$ 在 $z=0$ 处无定义，$1/r$ 在 $z=0$ 处发散；也没有给出极坐标下的充分性——p43--p44 的证明只对直角坐标写。§8 补。}
+
+\gapitem{表述冲突 · p43 标题 vs p38}{p38 原话“C-R 条件是复变函数可导的必要条件”；p43 标题却是“判定函数在 $z$ 点可导的充分必要条件”，而该页列出的两个条件（连续一阶偏导＋C-R）是\textbf{充分}条件，不是必要——可导并不要求偏导连续。两页对同一组条件的定位不一致。§8.1 把“必要”与“充分”拆成两条定理。}
+
+\gapitem{答案形态 · p42 例}{例把四个偏导列全、两条 C-R 验完，就停了。可 p39 已经给出 $f'(z)=e^{-i\theta}(u_r+iv_r)$——验证 C-R 只是“检查”，取到导数才是“算完”。§9.2 回代，得 $f'(z)=-1/z^2$。}
+
+%=============================================================
+\hdr{§2}{几何准备：$\dd z$ 的两个分量}
+
+\subhdr{2.1\ 微分}
+
+由 $z=re^{i\theta}$ 直接求微分（乘积法则，注意 $\dd(e^{i\theta})=ie^{i\theta}\dd\theta$）：
+\begin{equation}\label{eq:dz}
+\dd z=e^{i\theta}\dd r+i\,r\,e^{i\theta}\dd\theta .
+\end{equation}
+两项各是一个\textbf{位移}：$e^{i\theta}\dd r$ 沿径向，长度 $|\dd r|$；$i\,r\,e^{i\theta}\dd\theta$ 沿角向，长度 $r|\dd\theta|$。
+
+两个单位向量：$e^{i\theta}$ 指向 $r$ 增大的方向（沿射线向外）；$ie^{i\theta}$ 是 $e^{i\theta}$ 逆时针转 $\pi/2$，与射线垂直，指向 $\theta$ 增大的一侧。两者正交，所以
+
+\begin{equation}\label{eq:metric}
+|\dd z|^2=\dd r^2+r^2\dd\theta^2 .
+\end{equation}
+
+\par\medskip\noindent
+\begin{minipage}{\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.34,>=Stealth,line cap=round,line join=round,
+                    every node/.style={font=\small}]
+  \coordinate (O) at (0,0);
+  \coordinate (Z) at (30:2.9);
+  \coordinate (P1) at ($(Z)+(30:1.1)$);
+  \coordinate (P2) at ($(P1)+(120:0.85)$);
+  \draw[->,inkgray] (O) -- (4.2,0) node[right]{$x$};
+  \draw[->,inkgray] (O) -- (0,3.1) node[above]{$y$};
+  \draw[dashed,rulepurple] (O) -- (30:4.1);
+  \draw[->,very thick,violet] (O) -- (Z);
+  \fill[violet] (Z) circle (1.8pt);
+  \node[violet,above left] at (Z) {$z=re^{i\theta}$};
+  \node[inkgray,above left] at (30:1.5) {$r$};
+  \draw[->,petal] (0.8,0) arc (0:30:0.8);
+  \node[inkgray] at (15:1.1) {$\theta$};
+  \draw[->,thick,violet] (Z) -- (P1);
+  \node[inkgray] at (3.15,1.38) {$e^{i\theta}\dd r$};
+  \draw[->,thick,violet] (P1) -- (P2);
+  \node[inkgray,anchor=west] at (3.40,2.42) {$ie^{i\theta}\,r\dd\theta$};
+  \draw[->,very thick,violetdeep] (Z) -- (P2);
+  \node[inkgray,anchor=east] at (2.72,2.18) {$\dd z$};
+  \draw[inkgray] ($(P1)+(210:0.15)$) -- ($(P1)+(210:0.15)+(120:0.15)$) -- ($(P1)+(120:0.15)$);
+\end{tikzpicture}\par\vspace{2pt}
+{\small\color{inkgray}图 1（重绘）：$z$ 处的两个单位方向与 $\dd z$ 的分解。真实位移一段沿射线、一段沿圆弧；图中角向那一支画的是圆弧的一阶近似（切线方向），差一个 $O(\Delta\theta^2)$。}
+\end{minipage}
+\par\medskip
+
+\aside{角向那段为什么乘 $r$：$\theta$ 增加 $\dd\theta$ 时，点沿半径 $r$ 的圆走过弧长 $r\dd\theta$。这里的 $r$ 不是“变量”，是\textbf{换算率}——把角度换成长度。后文每一个 $1/r$ 都从这一处来。}
+
+\subhdr{2.2\ 有限小位移：把“等号”换成“主导项＋余项”}
+
+径向（$\Delta\theta=0$）：
+\begin{equation}\label{eq:radialstep}
+\Delta z=e^{i\theta}\Delta r \qquad(\text{精确}).
+\end{equation}
+角向（$\Delta r=0$），用 $e^{i\alpha}=1+i\alpha+O(\alpha^2)$：
+\begin{equation}\label{eq:angularstep}
+\Delta z=re^{i\theta}\bigl(e^{i\Delta\theta}-1\bigr)=ire^{i\theta}\Delta\theta+O(\Delta\theta^2).
+\end{equation}
+课件 p39 写的 $\Delta z=re^{i\theta}i\Delta\theta$ 就是 \eqref{eq:angularstep} 的主导项。两件后果：(1) 除以 $\Delta\theta$ 后主导项给出 $ire^{i\theta}$，分母里的 $r$ 是从\textbf{弦长}来的；(2) $|\Delta z|\to0$ 与 $\Delta\theta\to0$ 等价，极限确实趋于 $z$。
+
+\warnbox{$r=0$ 处这套写法全部失效：$\theta$ 没有定义，$1/r$ 发散，$ie^{i\theta}$ 也没有方向可言。本篇此后默认 $r>0$；原点的可导性只能回到定义去算（§8.3 有例子）。}
+
+%=============================================================
+\hdr{§3}{路线一：沿径向走}
+
+设 $f$ 在 $z$ 处可导。由定义
+\begin{equation}\label{eq:def}
+f'(z)=\lim_{\Delta z\to0}\frac{f(z+\Delta z)-f(z)}{\Delta z},
+\end{equation}
+并且这个极限与 $\Delta z\to0$ 的路径无关（p37 的原话：“导数存在，则与 $\Delta z$ 的路径无关”）。
+
+取径向：$\Delta\theta=0$，$z+\Delta z=(r+\Delta r)e^{i\theta}$，即 \eqref{eq:radialstep}。分子是
+\begin{align*}
+f(z+\Delta z)-f(z)&=\bigl[u(r+\Delta r,\theta)-u(r,\theta)\bigr]
++i\bigl[v(r+\Delta r,\theta)-v(r,\theta)\bigr]\\
+&=(u_r+iv_r)\Delta r+o(\Delta r).
+\end{align*}
+代进 \eqref{eq:def}，把 $\Delta r$ 约掉：
+\begin{equation}\label{eq:radial}
+f'(z)=\lim_{\Delta r\to0}\frac{(u_r+iv_r)\Delta r+o(\Delta r)}{e^{i\theta}\Delta r}
+=e^{-i\theta}\bigl(u_r+iv_r\bigr).
+\end{equation}
+这就是 p39 第 1) 式的全部内容：分母 $e^{i\theta}\Delta r$ 里的 $e^{i\theta}$ 翻到分子上变成 $e^{-i\theta}$，$\Delta r$ 约掉。
+
+\aside{这一步用到了“$u,v$ 对 $(x,y)$ 可微”。它由 $f$ 可导保证：把 $\Delta f=f'(z)\Delta z+o(|\Delta z|)$ 取实部、虚部，得 $\Delta u=\operatorname{Re}[f'(z)\Delta z]+o(|\Delta z|)$，$\Delta v$ 同理。而 $r,\theta$ 在 $r>0$ 处是 $(x,y)$ 的光滑函数，故沿射线把 $\Delta u$ 写成 $u_r\Delta r+o(\Delta r)$ 合法。}
+
+%=============================================================
+\hdr{§4}{路线二：沿角向走}
+
+\subhdr{4.1\ 差商}
+
+取角向：$\Delta r=0$，$z$ 绕 $O$ 转 $\Delta\theta$。由 \eqref{eq:angularstep}，
+\begin{equation}\label{eq:dzdtheta}
+\frac{\Delta z}{\Delta\theta}=re^{i\theta}\frac{e^{i\Delta\theta}-1}{\Delta\theta}\longrightarrow ire^{i\theta}.
+\end{equation}
+分子是 $f(z+\Delta z)-f(z)=(u_\theta+iv_\theta)\Delta\theta+o(\Delta\theta)$。两式相除、约掉 $\Delta\theta$：
+\begin{equation}\label{eq:angular}
+f'(z)=\frac{u_\theta+iv_\theta}{ire^{i\theta}} .
+\end{equation}
+分母里同时出现 $i$、$r$、$e^{i\theta}$——这就是 \eqref{eq:radial} 里没有的那个 $r$。
+
+\subhdr{4.2\ 把 $i$ 从分母里赶出去（p39 跳过的那一步）}
+
+用 $1/i=-i$：
+\begin{equation}\label{eq:divi}
+\frac{u_\theta+iv_\theta}{i}=-i\,u_\theta+v_\theta=v_\theta-iu_\theta ,
+\end{equation}
+所以
+\begin{equation}\label{eq:angular2}
+f'(z)=\frac{1}{re^{i\theta}}\bigl(v_\theta-iu_\theta\bigr)=\frac{e^{-i\theta}}{r}\bigl(v_\theta-iu_\theta\bigr).
+\end{equation}
+两个后果要看清：$u$ 与 $v$ 的位置\textbf{互换}了（分子由 $u+iv$ 变成 $v-iu$），第二项还带了负号。极坐标 C-R 的全部“反常”都出在这一步，不出在几何。
+
+\aside{为什么 $1/i=-i$：两边乘 $i$，得 $1=i\cdot(-i)=-i^2=1$。几何上，除以 $i$ 等于把复数顺时针转 $\pi/2$，$u+iv$ 的实虚部顺序正好被转成 $v-iu$。}
+
+%=============================================================
+\hdr{§5}{两条路径相等：极坐标 C-R}
+
+\subhdr{5.1\ 推导}
+
+导数与路径无关，\eqref{eq:radial} 与 \eqref{eq:angular2} 必须相等：
+\[ e^{-i\theta}\bigl(u_r+iv_r\bigr)=\frac{e^{-i\theta}}{r}\bigl(v_\theta-iu_\theta\bigr). \]
+两边乘 $e^{i\theta}$（不为零），再乘 $r$：
+\[ r u_r+i\,r v_r=v_\theta-i\,u_\theta . \]
+比较实部、虚部：
+\[ r u_r=v_\theta,\qquad r v_r=-u_\theta , \]
+即
+\begin{equation}\label{eq:polarCR}
+\boxed{\;u_r=\frac1r\,v_\theta,\qquad v_r=-\frac1r\,u_\theta\;}
+\end{equation}
+
+\callout{\textbf{定理 1（极坐标下的 C-R 条件｜必要条件）}\\
+设 $f=u+iv$ 在 $z_0=r_0e^{i\theta_0}$（$r_0>0$）的某邻域内有定义，且在 $z_0$ 处可导。若 $u,v$ 在 $z_0$ 处对 $r,\theta$ 的一阶偏导存在，则在该点 \eqref{eq:polarCR} 成立，即 $u_r=\frac1r v_\theta$、$v_r=-\frac1r u_\theta$。}
+
+\aside{课件 p40 的绿框写的是 $u_r=\frac1r v_\theta$ 与 $\frac1r u_\theta=-v_r$——与 \eqref{eq:polarCR} 逐字相同，只是第二式左右换了个位置。红字标题“极坐标系下的柯西-黎曼条件”指的就是这一对。}
+
+\subhdr{5.2\ 导数公式的三种写法}
+
+由 \eqref{eq:radial} 与 \eqref{eq:angular2}，C-R 成立时
+\begin{equation}\label{eq:fprime}
+f'(z)=e^{-i\theta}\bigl(u_r+iv_r\bigr)=\frac{r}{z}\bigl(u_r+iv_r\bigr)=\frac{1}{z}\bigl(v_\theta-iu_\theta\bigr).
+\end{equation}
+第二、三式只是代入了 $e^{-i\theta}=r/z$。它们的好处是\textbf{答案落回 $z$ 的语言}，可以直接和直角坐标的答案对表。
+
+\subhdr{5.3\ 先用 $z^2$ 自检一次（这一步不要跳）}
+
+$f=z^2=r^2e^{2i\theta}$，故 $u=r^2\cos2\theta$、$v=r^2\sin2\theta$。
+$u_r=2r\cos2\theta$，$v_\theta=2r^2\cos2\theta$，故 $u_r=v_\theta/r$ \chk；
+$v_r=2r\sin2\theta$，$u_\theta=-2r^2\sin2\theta$，故 $v_r=-u_\theta/r$ \chk。
+再代 \eqref{eq:fprime}：
+\[ f'=e^{-i\theta}\cdot2r\bigl(\cos2\theta+i\sin2\theta\bigr)=2re^{i\theta}=2z\ \chk \]
+只要这三行能独立写出来，后面所有例题都只是换函数。
+
+%=============================================================
+\hdr{§6}{路线三：链式法则（p40 那句“差别”的正解）}
+
+\subhdr{6.1\ 四个换算关系}
+
+$r=\sqrt{x^2+y^2}$，$\theta=\arctan(y/x)$，直接求偏导：
+\begin{equation}\label{eq:coordder}
+r_x=\cos\theta,\qquad r_y=\sin\theta,\qquad
+\theta_x=-\frac{\sin\theta}{r},\qquad \theta_y=\frac{\cos\theta}{r}.
+\end{equation}
+$\theta_x$ 的来历：$\theta_x=\dfrac{1}{1+(y/x)^2}\cdot\left(-\dfrac{y}{x^2}\right)=-\dfrac{y}{x^2+y^2}=-\dfrac{\sin\theta}{r}$；$\theta_y$ 同理，得 $\dfrac{x}{x^2+y^2}=\dfrac{\cos\theta}{r}$。
+
+\subhdr{6.2\ 算子表}
+
+这张表不是四条独立结论：前两行是“沿径向／角向走一步，等于在 $x,y$ 上怎么走”，后两行是把它们当方程组解回来。
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{11.4cm}@{}}
+\toprule
+\thead{沿方向的导数} & \thead{用直角坐标读（$c=\cos\theta,\ s=\sin\theta$）}\\
+\midrule
+$\partial_r$ & $c\,\partial_x+s\,\partial_y$\\
+$(1/r)\,\partial_\theta$ & $-s\,\partial_x+c\,\partial_y$\\
+$\partial_x$ & $c\,\partial_r-(s/r)\,\partial_\theta$\\
+$\partial_y$ & $s\,\partial_r+(c/r)\,\partial_\theta$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{逐行读法}（每行都能当场复算）：第一行作用在 $x$ 上，左边 $x_r=\cos\theta$、右边 $c\cdot1+s\cdot0=\cos\theta$；作用在 $y$ 上两边都得 $\sin\theta$。第二行作用在 $x$ 上，左边 $x_\theta/r=-\sin\theta$、右边 $-s\cdot1+c\cdot0=-\sin\theta$；作用在 $y$ 上两边都得 $\cos\theta$。后两行不必重验：把第一、二行当 $2\times2$ 方程组解出 $\partial_x,\partial_y$ 就是它们。\textbf{边界}：全表要求 $r>0$，因为后两行与第二行都带 $1/r$。
+
+\subhdr{6.3\ 代入直角坐标 C-R}
+
+把 $u_x=v_y$、$u_y=-v_x$ 用上表展开（$u$、$v$ 各自代入），得
+\begin{align}
+c\,u_r-\frac{s}{r}u_\theta &= s\,v_r+\frac{c}{r}v_\theta, \label{eq:sys1}\\
+s\,u_r+\frac{c}{r}u_\theta &= -c\,v_r+\frac{s}{r}v_\theta. \label{eq:sys2}
+\end{align}
+这不是两个独立方程，而是一个 $2\times2$ 方程组。用两组组合解它：
+
+$c\times$\eqref{eq:sys1}$+s\times$\eqref{eq:sys2}：左边 $c^2u_r+s^2u_r=u_r$（交叉项 $-\frac{cs}{r}u_\theta+\frac{cs}{r}u_\theta$ 抵消），右边 $\frac{c^2+s^2}{r}v_\theta=\frac{v_\theta}{r}$。得 $u_r=\dfrac{v_\theta}{r}$。
+
+$c\times$\eqref{eq:sys2}$-s\times$\eqref{eq:sys1}：左边 $\frac{c^2+s^2}{r}u_\theta=\frac{u_\theta}{r}$，右边 $-c^2v_r-s^2v_r=-v_r$。得 $v_r=-\dfrac{u_\theta}{r}$。
+
+与 §5 完全一致。\textbf{这就是 p40 蓝字承诺、却没有下文的“差别”}：两种推导给出同一对条件，差别只在路径——一条走极限（§3--§5），一条走坐标变换（本节）。前者说明条件从哪来，后者说明它只是直角坐标 C-R 换了套变量。
+
+\subhdr{6.4\ 为什么 $\cos\theta$、$\sin\theta$ 会全部消失}
+
+因为极坐标是\textbf{局部正交坐标}：$e^{i\theta}$ 与 $ie^{i\theta}$ 是一对正交单位向量。而 C-R 在\textbf{任何}一对正交单位方向 $(n,t)$ 上都写成同一形式
+\begin{equation}\label{eq:rotinv}
+D_n u=D_t v,\qquad D_t u=-D_n v ,
+\end{equation}
+其中 $D_n,D_t$ 是沿 $n,t$ 的方向导数。证明只需一行：设 $n=(\cos\alpha,\sin\alpha)$、$t=(-\sin\alpha,\cos\alpha)$，代入 $u_x=v_y$、$u_y=-v_x$，得 $D_nu=c_\alpha v_y+s_\alpha(-v_x)=D_tv$、$D_tu=-s_\alpha v_y+c_\alpha(-v_x)=-D_nv$。
+
+现在取 $n=e^{i\theta}$（沿 $r$）、$t=ie^{i\theta}$（沿 $\theta$）。这一对的坐标是 $\xi=r$、$\eta=r\theta$——注意 $\eta$ 是\textbf{弧长}，不是角度。于是
+\begin{equation}\label{eq:frame}
+D_n=\partial_r,\qquad D_t=\frac1r\partial_\theta .
+\end{equation}
+代进 \eqref{eq:rotinv} 立刻得到 \eqref{eq:polarCR}。
+
+所以两个“反常”各有出处：$1/r$ 是“把角度换成弧长”的换算率；负号来自 $t$ 是 $n$ 逆时针转 $\pi/2$——这与 §4.2 的 $1/i=-i$ 是同一件事的两种说法。
+
+%=============================================================
+\hdr{§7}{路线四：Wirtinger 一行判据}
+
+\subhdr{7.1\ 定义与判据}
+
+\begin{equation}\label{eq:wirtinger}
+\partial_z=\frac12\bigl(\partial_x-i\partial_y\bigr),\qquad
+\partial_{\bar z}=\frac12\bigl(\partial_x+i\partial_y\bigr).
+\end{equation}
+判据：在偏导连续的邻域内，$f$ 解析 $\iff$ $\partial_{\bar z}f=0$。原因一行：
+\[ \partial_{\bar z}f=\frac12\bigl[(u_x+iv_x)+i(u_y+iv_y)\bigr]=\frac12\bigl[(u_x-v_y)+i(v_x+u_y)\bigr]. \]
+实部为零 $\iff u_x=v_y$；虚部为零 $\iff v_x=-u_y$。
+
+\aside{两个 $\frac12$ 是定义带出来的约定：$\dd x=\frac12(\dd z+\dd\bar z)$、$\dd y=\frac{1}{2i}(\dd z-\dd\bar z)$，反解就得到 \eqref{eq:wirtinger}。它们不影响判据——同一个数的两种刻度而已。}
+
+\subhdr{7.2\ 极坐标下的 $\partial_{\bar z}$}
+
+由 §6.2 的表，
+\begin{equation}\label{eq:dzbar}
+\partial_{\bar z}=\frac12\bigl(\partial_x+i\partial_y\bigr)
+=\frac12\left[(c+is)\partial_r+\frac{-s+ic}{r}\partial_\theta\right]
+=\frac{e^{i\theta}}{2}\Bigl(\partial_r+\frac{i}{r}\partial_\theta\Bigr),
+\end{equation}
+最后一步用了 $-s+ic=i(c+is)$。于是
+\[ \partial_{\bar z}f=\frac{e^{i\theta}}{2}\Bigl(u_r-\frac{v_\theta}{r}\Bigr)+\frac{i\,e^{i\theta}}{2}\Bigl(v_r+\frac{u_\theta}{r}\Bigr). \]
+$\partial_{\bar z}f=0$ 等价于两个括号同时为零，即 \eqref{eq:polarCR}。一行。
+
+同理
+\begin{equation}\label{eq:dzop}
+\partial_z=\frac{e^{-i\theta}}{2}\Bigl(\partial_r-\frac{i}{r}\partial_\theta\Bigr).
+\end{equation}
+C-R 成立时 $\frac{i}{r}(u_\theta+iv_\theta)=-(u_r+iv_r)$（把 $u_\theta/r=-v_r$、$v_\theta/r=u_r$ 代进去即得），故 $\partial_zf=e^{-i\theta}(u_r+iv_r)$，与 \eqref{eq:fprime} 一致。
+
+\callout{\textbf{四条路线为什么必然同一个答案}：径向路径只用到 $\dd z$ 的径向分量 $e^{i\theta}\dd r$，而“只沿 $\dd r$ 求导”正是 $\partial_z$；$\partial_{\bar z}$ 那一半被 C-R 消掉了。换句话说，路线一算的本来就是 $\partial_z f$。}
+
+%=============================================================
+\hdr{§8}{反向：极坐标 C-R 什么时候才够用}
+
+\subhdr{8.1\ 充分条件（直角坐标原形式，p43--p44）}
+
+\callout{\textbf{定理 2（可导的充分条件）}\\
+设 $f=u+iv$ 在 $z$ 的某邻域内有定义，$u,v$ 的四个一阶偏导在该邻域内存在且在 $z$ 点连续。若在 $z$ 点 $u_x=v_y$、$u_y=-v_x$，则 $f$ 在 $z$ 点可导，且 $f'(z)=u_x+iv_x$（用 C-R 也可写成 $u_x-iu_y$）。}
+
+\textbf{证明}（p43--p44 的重排）：偏导连续 $\Rightarrow$ $u,v$ 的微分存在，
+\[ \dd u=u_x\dd x+u_y\dd y,\qquad \dd v=v_x\dd x+v_y\dd y . \]
+于是
+\[ \dd f=\dd u+i\dd v=(u_x+iv_x)\dd x+(u_y+iv_y)\dd y
+\overset{\text{C-R}}{=}(u_x+iv_x)\dd x+(u_y+iu_x)\dd y . \]
+由 $u_y=-v_x$，第二项 $=(-v_x+iu_x)\dd y=i(u_x+iv_x)\dd y$，故
+\[ \dd f=(u_x+iv_x)\bigl(\dd x+i\dd y\bigr)=(u_x+iv_x)\dd z . \]
+偏导连续保证余项是 $o(|\dd z|)$，所以 $f'(z)=u_x+iv_x$。$\square$
+
+\aside{课件 p44 把最后一步写成 $f'(z)=u_x-iu_y$（用 C-R 把 $v_x$ 换成 $-u_y$），与 $u_x+iv_x$ 是同一个数。两式都对，别以为哪里抄错了。}
+
+\warnbox{\textbf{关于“充分必要”}：p43 标题写“充分必要条件”，但那页列出的两个条件（连续偏导＋C-R）只是\textbf{充分}条件。\textbf{必要}的只有 C-R 本身——p38 的写法是对的。可导只保证偏导\textbf{存在}，不保证它们\textbf{连续}。做题时的分工：题目给了一个具体函数、问“可导吗”，用定理 2（或直接用定义）；题目已经保证光滑性、只问“满足 C-R 吗”，用 \eqref{eq:polarCR}。}
+
+\subhdr{8.2\ 极坐标版}
+
+\callout{\textbf{推论 3（极坐标 C-R 的充分性）}\\
+设 $u,v$ 在 $z_0$（$r_0>0$）的某邻域内有对 $r,\theta$ 的连续一阶偏导，且在该邻域内满足 \eqref{eq:polarCR}。则 $f$ 在 $z_0$ 处可导，并在该邻域内解析。}
+
+\textbf{证明}：由 §6.2 的表，$u_x,u_y,v_x,v_y$ 都是 $u_r,u_\theta,v_r,v_\theta$ 的连续组合（系数 $c,s,1/r$ 在 $r>0$ 处连续），故四个直角坐标偏导连续；由 §6.3 的两组组合，\eqref{eq:polarCR} 等价于 $u_x=v_y$、$u_y=-v_x$；再用定理 2。$\square$
+
+\subhdr{8.3\ $r=0$：这套工具的盲点}
+
+\warnbox{$f(z)=|z|^2=r^2$：$u=r^2$，$v=0$，故 $u_r=2r$、$v_\theta=0$、$v_r=0$、$u_\theta=0$。在 $r>0$ 处条件 $u_r=v_\theta/r$ 成为 $2r=0$，永不成立，所以 $|z|^2$ 在 $\mathbb{C}\setminus\{0\}$ 内不解析。\textbf{但它在 $z=0$ 处确实可导}：$\Delta f=|\Delta z|^2=o(|\Delta z|)$，故 $f'(0)=0$。这一点用极坐标 C-R 判\textbf{不出来}——$r=0$ 处两式都没有意义（$1/r$ 发散、$\theta$ 无定义）。原点只能回到定义。}
+
+%=============================================================
+\hdr{§9}{例题：两道课件的，加三道上文的工具才好用的}
+
+\subhdr{9.1\ 课件 p41 例 1（直角坐标，作对照）}
+
+\qstem{（课件 p41 例 1）证明 $\cos z$ 的实部与虚部满足 C-R 条件。}
+
+$u=\cos x\cosh y$，$v=-\sin x\sinh y$。
+$u_x=-\sin x\cosh y=v_y$ \chk；$u_y=\cos x\sinh y=-v_x$ \chk。
+
+这道题两行就完，极坐标用不上。放在这里只说明一件事：C-R 是逐点验算的判据，选哪套坐标取决于函数在哪套坐标里写起来更省力。
+
+\subhdr{9.2\ 课件 p42 例（极坐标，补上 p42 没做的回代）}
+
+\qstem{（课件 p42 例）证明 $f(z)=1/z$ 的实部与虚部满足极坐标 C-R 条件。}
+
+先把它写成 $(r,\theta)$ 的两部分：
+\[ f=\frac{1}{re^{i\theta}}=\frac{\cos\theta-i\sin\theta}{r}
+\quad\Longrightarrow\quad u=\frac{\cos\theta}{r},\qquad v=-\frac{\sin\theta}{r}. \]
+四个偏导：
+\[ u_r=-\frac{\cos\theta}{r^2},\qquad u_\theta=-\frac{\sin\theta}{r},\qquad
+v_r=\frac{\sin\theta}{r^2},\qquad v_\theta=-\frac{\cos\theta}{r}. \]
+两条 C-R 各验一次：
+\[ u_r=-\frac{\cos\theta}{r^2}=\frac{v_\theta}{r}\ \chk,\qquad
+v_r=\frac{\sin\theta}{r^2}=-\frac{u_\theta}{r}\ \chk . \]
+
+p42 到这里结束。补一句回代（用 \eqref{eq:fprime}）：
+\[ f'(z)=e^{-i\theta}\bigl(u_r+iv_r\bigr)=\frac{e^{-i\theta}}{r^2}\bigl(-\cos\theta+i\sin\theta\bigr)
+=-\frac{e^{-2i\theta}}{r^2}=-\frac{1}{z^2}. \]
+关键在于 $-\cos\theta+i\sin\theta=-e^{-i\theta}$ 这一步：它把“检查”变成了“算完”。
+
+\subhdr{9.3\ 极坐标真正省力的两个函数}
+
+\textbf{(a) $f(z)=\sqrt z$}（主值，$|\theta|<\pi$）：$u=\sqrt r\cos(\theta/2)$，$v=\sqrt r\sin(\theta/2)$。四个偏导：
+\[ u_r=\frac{\cos\frac\theta2}{2\sqrt r},\quad
+u_\theta=-\frac{\sqrt r}{2}\sin\frac\theta2,\quad
+v_r=\frac{\sin\frac\theta2}{2\sqrt r},\quad
+v_\theta=\frac{\sqrt r}{2}\cos\frac\theta2 . \]
+两条 C-R 各验一次：
+\[ u_r=\frac{\cos\frac\theta2}{2\sqrt r}=\frac{v_\theta}{r}\ \chk,\qquad
+v_r=\frac{\sin\frac\theta2}{2\sqrt r}=-\frac{u_\theta}{r}\ \chk . \]
+于是
+\[ f'(z)=e^{-i\theta}\cdot\frac{1}{2\sqrt r}\Bigl(\cos\frac\theta2+i\sin\frac\theta2\Bigr)
+=\frac{e^{-i\theta/2}}{2\sqrt r}=\frac{1}{2\sqrt z}. \]
+换成直角坐标，$\sqrt z=\sqrt{(r+x)/2}\pm i\sqrt{(r-x)/2}$，验 C-R 要算四个根式导数——这套工具的价值在这里。
+
+\textbf{(b) $f(z)=\ln z$}（主值）：$u=\ln r$，$v=\theta$。
+$u_r=1/r$、$u_\theta=0$、$v_r=0$、$v_\theta=1$，故 $u_r=1/r=v_\theta/r$ \chk、$v_r=0=-u_\theta/r$ \chk。
+\[ f'(z)=e^{-i\theta}\cdot\frac1r=\frac{1}{re^{i\theta}}=\frac1z\ \chk \]
+对数函数的实部虚部本来就是 $(r,\theta)$ 的自然函数，改用极坐标几乎不用计算。
+
+\subhdr{9.4\ 反例：$f(z)=\bar z$}
+
+$u=r\cos\theta$，$v=-r\sin\theta$。$u_r=\cos\theta$，而 $v_\theta/r=-\cos\theta$，两者只在 $\cos\theta=0$ 时相等；$v_r=-\sin\theta$ 与 $-u_\theta/r=\sin\theta$ 只在 $\sin\theta=0$ 时相等。两式不能同时成立，故 $\bar z$ 处处不满足极坐标 C-R。与直角坐标的结论（$u_x=1\neq v_y=-1$）一致。
+
+\subhdr{9.5\ 只满足 C-R 不等于解析：$f=x^2+iy^2$}
+
+直角坐标：$u_x=2x$、$v_y=2y$，故 $u_x=v_y\iff x=y$；而 $u_y=0=-v_x$ 恒成立。所以 C-R 只在直线 $y=x$ 上成立。
+
+极坐标：$u=r^2\cos^2\theta$、$v=r^2\sin^2\theta$，
+\[ u_r-\frac{v_\theta}{r}=2r\cos\theta\,(\cos\theta-\sin\theta),\qquad
+v_r+\frac{u_\theta}{r}=2r\sin\theta\,(\sin\theta-\cos\theta). \]
+两式同时为零 $\iff\cos\theta=\sin\theta$，即 $\theta=\pi/4$ 或 $5\pi/4$——正是直线 $y=x$。
+
+它在这条直线上可导，但在任何开集上都不解析（邻域内其余点不满足 C-R）。这就是“必要条件”四个字的含义。
+
+%=============================================================
+\hdr{§10}{副产品：模–辐角形式（流体力学里天天用）}
+
+设 $f=Re^{i\Phi}$，其中 $R=|f|>0$、$\Phi=\arg f$。把 $f$ 写成这样再代 §7 的判据：
+\begin{align*}
+0=\partial_{\bar z}f&=\frac{e^{i\theta}}{2}\Bigl(\partial_r+\frac{i}{r}\partial_\theta\Bigr)\bigl(Re^{i\Phi}\bigr)\\
+&=\frac{e^{i(\theta+\Phi)}}{2}\left[\Bigl(R_r-\frac{R\Phi_\theta}{r}\Bigr)
++i\Bigl(R\Phi_r+\frac{R_\theta}{r}\Bigr)\right].
+\end{align*}
+括号外的因子不为零，故两个括号都为零：
+\begin{equation}\label{eq:logpolar}
+R_r=\frac{R}{r}\Phi_\theta,\qquad \Phi_r=-\frac{1}{rR}R_\theta .
+\end{equation}
+
+\aside{也可以把它读成“C-R 用在 $\ln f=\ln R+i\Phi$ 上”：$f$ 解析且 $f\neq0$ 时 $\ln f$ 解析，一步得同结果。两种读法互为校验。}
+
+\textbf{用途}：$w=\varphi+i\psi$ 是平面流的复位势时，$\varphi$ 是速度势、$\psi$ 是流函数，\eqref{eq:logpolar} 就是“等势线与流线正交”的解析表达式。\textbf{边界}：$f$ 的零点处 $\Phi$ 无定义，\eqref{eq:logpolar} 失效——例如 $f=z$ 在 $z=0$。
+
+%=============================================================
+\hdr{§11}{五处最容易错的地方}
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.0em]
+\item \textbf{把 $u_r$ 当 $u_x$。}$u=x=r\cos\theta$ 时 $u_x=1$ 而 $u_r=\cos\theta$。凡把“对 $r$ 求导”当成“对 $x$ 求导”的地方，$1/r$ 一定错位（见 §0 记号表）。
+\item \textbf{漏掉 $1/r$。}检验法：代 $f=z$（$u=r\cos\theta$，$v=r\sin\theta$）。$u_r=\cos\theta$，$v_\theta=r\cos\theta$——只有写成 $u_r=v_\theta/r$ 才相等。少了 $1/r$，这个最简例子立刻不成立。
+\item \textbf{负号记反。}检验法：代 $f=\bar z$，它\textbf{必须}不满足；若你写的条件让 $\bar z$ 通过了，符号一定错（§9.4）。
+\item \textbf{在 $z=0$ 用极坐标 C-R。}$1/r$ 与 $\theta$ 在原点都没有意义（§2.2、§8.3）。$|z|^2$ 在原点可导，这条判据给不出任何结论。
+\item \textbf{把“满足 C-R”当“解析”。}$x^2+iy^2$ 只在一条直线上满足 C-R，照样不解析（§9.5）。解析要求\textbf{邻域内处处}可导。
+\end{enumerate}
+
+%=============================================================
+\hdr{§12}{三句话}
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.0em]
+\item 极坐标 C-R 就是把 C-R 写在“局部正交的两个方向”上：径向 $e^{i\theta}$ 与角向 $ie^{i\theta}$；角向的坐标是\textbf{弧长} $r\theta$ 而不是 $\theta$，所以每出现一次 $\partial_\theta$ 就配一个 $1/r$。
+\item 两条路径法给出的两个 $f'(z)$ 表达式必须相等，相等就是 C-R；$1/i=-i$ 是 $u,v$ 互换与负号的唯一来源。
+\item 它与直角坐标 C-R 是同一件事，可以互推；但极坐标 C-R 只在 $r>0$ 有意义，并且和直角坐标一样：C-R 单独只是必要条件，加上偏导连续才是充分条件。
+\end{enumerate}
+
+%=============================================================
+\hdr{§13}{与课件的页码对照}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{7.6cm}>{\raggedright\arraybackslash}p{4.8cm}@{}}
+\toprule
+\thead{课件页} & \thead{课件内容} & \thead{本讲义}\\
+\midrule
+p37 & 导数定义；极限与路径无关 & §3 的前提\\
+p38 & C-R 条件；“可导的必要条件” & §5 定理 1\\
+p39 & 极坐标 C-R：径向、角向两条路径的差商 & §3、§4（补 §2 的几何）\\
+p40 & 两式相等 $\to$ 绿框条件；蓝字“与直角坐标的差别” & §5、§6（补上那个“差别”）\\
+p41 & 例 1：$\cos z$ 验 C-R & §9.1\\
+p42 & 例：$1/z$ 验极坐标 C-R & §9.2（补回代）\\
+p43--p44 & 充分性证明（标题作“充分必要”） & §8.1（拆成必要／充分）\\
+p45--p46 & 解析函数定义、C-R 加连续偏导的用法 & §8.2 推论 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=============================================================
+\newpage
+\hdr{附录 A}{自检三题（先做后看）}
+
+\qstem{\textbf{A1.} 用极坐标 C-R 验证 $f(z)=1/z^2$ 在 $z\neq0$ 处解析，并用 \eqref{eq:fprime} 求出 $f'(z)$（答案应落回 $z$ 的语言）。}
+
+\qstem{\textbf{A2.} 求 $f(z)=r^2\sin2\theta+i\,r^2\cos2\theta$ 满足极坐标 C-R 的点集，并判断它在任何开集上是否解析。}
+
+\qstem{\textbf{A3.}（概念）为什么极坐标 C-R 里出现的是 $\partial v/\partial\theta$ 而不是 $r\,\partial v/\partial\theta$？若改用弧长坐标 $\xi=r$、$\eta=r\theta$，同一对条件写成什么形式？}
+
+\vspace{2pt}
+{\small\color{inkgray} 做法：合上讲义、不看前文，直接在下面横线上写；写不下就另纸。答案从下一页起。}
+
+\par\vspace{8pt}
+\foreach \i in {1,...,10}{\vspace{26pt}{\color{rulepurple}\hrule height 0.3pt}\par}
+
+\newpage
+
+\hdr{附录 A（续）}{三题答案}
+
+\subhdr{A1}
+
+\qstem{与上页 A1 同题：$f=1/z^2$，验极坐标 C-R 并求 $f'$。}
+
+$z^2=r^2e^{2i\theta}$，故 $f=z^{-2}=r^{-2}e^{-2i\theta}$，即
+\[ u=r^{-2}\cos2\theta,\qquad v=-r^{-2}\sin2\theta . \]
+四个偏导：
+\[ u_r=-2r^{-3}\cos2\theta,\quad u_\theta=-2r^{-2}\sin2\theta,\quad
+v_r=2r^{-3}\sin2\theta,\quad v_\theta=-2r^{-2}\cos2\theta . \]
+两条 C-R 各验一次：
+\[ u_r=-2r^{-3}\cos2\theta=\frac{v_\theta}{r}\ \chk,\qquad
+v_r=2r^{-3}\sin2\theta=-\frac{u_\theta}{r}\ \chk . \]
+故 $f$ 在 $\mathbb{C}\setminus\{0\}$ 内满足极坐标 C-R，且四个偏导在 $r>0$ 处连续，由推论 3 解析。导数：
+\[ f'=e^{-i\theta}\bigl(u_r+iv_r\bigr)=e^{-i\theta}\cdot\frac{-2}{r^{3}}\bigl(\cos2\theta-i\sin2\theta\bigr)
+=-\frac{2\,e^{-3i\theta}}{r^{3}}=-\frac{2}{z^{3}}\ \chk \]
+（$-\cos2\theta+i\sin2\theta$ 的共轭写法见 §9.2 的同类一步。）
+
+\subhdr{A2}
+
+\qstem{与上页 A2 同题：$u=r^2\sin2\theta$，$v=r^2\cos2\theta$，求 C-R 成立的点集。}
+
+\[ u_r=2r\sin2\theta,\qquad v_\theta=-2r^2\sin2\theta,\qquad
+v_r=2r\cos2\theta,\qquad u_\theta=2r^2\cos2\theta . \]
+第一条 $u_r=v_\theta/r$ 给出 $2r\sin2\theta=-2r\sin2\theta$，即 $\sin2\theta=0$；
+第二条 $v_r=-u_\theta/r$ 给出 $2r\cos2\theta=-2r\cos2\theta$，即 $\cos2\theta=0$。
+在 $r>0$ 处两者不能同时成立，故\textbf{这个函数在整个 $\mathbb{C}\setminus\{0\}$ 上处处不满足极坐标 C-R}，处处不可导，当然在任何开集上都不解析。（在 $z=0$ 处也只能用定义，结论同样是不可导。）
+
+\subhdr{A3}
+
+\qstem{与上页 A3 同题：为什么是 $\partial_\theta$ 而不是 $r\partial_\theta$？弧长坐标下条件长什么样？}
+
+因为 $\theta$ 本身不是长度。沿角向走单位长度，对应的角度变化是 $1/r$，所以角向的\textbf{单位}方向导数是 $\dfrac1r\partial_\theta$；若把 $\theta$ 直接当成“坐标长度”，这个 $1/r$ 就丢了，$\dd z$ 的模也会算错（\eqref{eq:metric}：$|\dd z|^2=\dd r^2+r^2\dd\theta^2$，第二项必须带 $r^2$）。
+
+改用弧长坐标 $\xi=r$、$\eta=r\theta$ 后，$(\xi,\eta)$ 在 $z$ 附近是一套正交的“局部直角坐标”，$\partial_\xi=\partial_r$、$\partial_\eta=\dfrac1r\partial_\theta$，C-R 恢复成最朴素的样子：
+\[ \boxed{\;u_\xi=v_\eta,\qquad u_\eta=-v_\xi\;} \]
+这正是 §6.4 的结论：极坐标 C-R 里那两个“反常”（$1/r$ 与负号），换到弧长坐标下全部消失——它们不是新条件，只是坐标没归一。
+
+\end{document}

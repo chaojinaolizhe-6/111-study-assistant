@@ -1,0 +1,123 @@
+\chapter{监控与失效判断}\label{ch:monitor}
+
+\begin{keybox}[本章要回答的问题]
+策略上线后（哪怕只是"自己跟着做"），怎么知道它正在失效？哪些指标要每天看，
+哪些每月看？什么时候应该果断停手？
+\end{keybox}
+
+\section{为什么"失效"是可观测的}
+
+一个 alpha 因子失效，通常会经历三个阶段：
+
+\begin{enumerate}
+  \item \textbf{IC 缓慢下降}。拥挤度上升，边际信息被套利掉。
+  \item \textbf{IC 波动放大}。参与者结构变化，因子的收益变得不稳定。
+  \item \textbf{IC 反向}。过度拥挤导致"抢跑—反转"，因子变成负 alpha。
+\end{enumerate}
+
+这三个阶段都是\textbf{可观测量}。问题在于，多数人只在净值回撤时才想起来检查。
+
+\section{四个层级的监控指标}
+
+\subsection{每日：信号层}
+
+\begin{itemize}
+  \item \textbf{当日 IC}（滚动 20 日均值）。与历史均值比较，跌破 2 个标准差要警惕。
+  \item \textbf{因子覆盖率}。当天有多少比例的股票有有效因子值。
+        覆盖率突然下降，通常是数据管道出了问题。
+  \item \textbf{分数分布}。均值、标准差、偏度是否稳定。分布形状突变说明市场结构变了。
+\end{itemize}
+
+\subsection{每周：组合层}
+
+\begin{itemize}
+  \item \textbf{实际换手 vs 预期换手}。实际换手远高于预期，说明信号不稳定。
+  \item \textbf{行业与市值暴露}。中性化没做好时，暴露会漂移。
+  \item \textbf{持仓集中度}。前十大权重占比是否异常上升。
+\end{itemize}
+
+\subsection{每月：绩效层}
+
+\begin{itemize}
+  \item \textbf{滚动 12 个月 ICIR}。
+  \item \textbf{滚动 12 个月夏普}，以及与历史分布的对比。
+  \item \textbf{分年度收益}，检查是否出现"某一年特别好、其余年份平庸"的形态。
+\end{itemize}
+
+\subsection{每季：结构层}
+
+\begin{itemize}
+  \item \textbf{因子相关性矩阵}是否变化（原来的正交因子变得高度相关，说明市场结构变了）。
+  \item \textbf{特征重要性}是否稳定（树模型的重要性排序大幅变化，说明模型在追逐噪声）。
+  \item \textbf{因子拥挤度}代理指标（同类型产品的规模、因子多空组合的估值差）。
+\end{itemize}
+
+\section{因子拥挤度：一个可以近似估计的指标}
+
+拥挤度没有直接数据，但有几个可用的代理：
+
+\begin{enumerate}
+  \item \textbf{因子多空组合的估值差}。例如价值因子的多空组合 PB 差距扩大到历史极值，
+        说明"便宜的被买贵了"。
+  \item \textbf{因子收益的波动率}。拥挤的因子在踩踏时波动会骤升。
+  \item \textbf{换手率的整体抬升}。全市场换手率上升往往伴随量化资金流入。
+  \item \textbf{因子 IC 的自相关}。拥挤时 IC 会变得"黏"，然后突然反转。
+\end{enumerate}
+
+\begin{warnbox}[拥挤度的悖论]
+拥挤度指标最有用的时候，恰恰是它看起来"还没到极值"的时候。
+等到所有人都确认"这个因子已经拥挤"，反转往往已经发生了一半。
+所以拥挤度更适合作为\textbf{减仓的理由}，而不是\textbf{加仓的时机}。
+\end{warnbox}
+
+\section{风格暴露与回撤归因}
+
+当策略回撤时，先分清是三种情况中的哪一种：
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类型 & 特征 & 应对 \\
+\midrule
+市场 beta & 与指数同步下跌 & 正常，不必干预 \\
+风格暴露 & 小盘/成长整体回撤 & 检查中性化是否失效 \\
+alpha 衰减 & 中性化后仍持续跑输 & 认真考虑停手 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+判断方法：把策略收益对风格因子（规模、价值、动量、波动）做回归，
+看残差（真正的 alpha）是否还在。
+
+\begin{equation}
+  r^{\text{port}}_t - r^f_t = \alpha + \sum_k \beta_k f_{k,t} + \varepsilon_t.
+\end{equation}
+
+若 $\hat\alpha$ 的滚动估计持续为负，说明 alpha 真的消失了；
+若 $\hat\alpha$ 稳定但 $\beta$ 漂移，说明只是风格暴露在起作用。
+
+\section{什么时候该停手}
+
+给三条可执行的规则：
+
+\begin{enumerate}
+  \item \textbf{滚动 12 个月 IC 的 $t$ 值跌破 1}，且持续两个季度。
+  \item \textbf{扣费后滚动 12 个月收益为负}，且回撤超过历史最大回撤的 1.5 倍。
+  \item \textbf{因子拥挤度指标进入历史前 10\% 分位}，同时 IC 开始反向。
+\end{enumerate}
+
+\begin{keybox}[最重要的一条]
+\textbf{在策略设计阶段就把"停手条件"写下来。}
+事后判断永远会被"再等等看"的心理绑架。事前写好的规则，
+是唯一能在情绪最差时保护你的东西。
+\end{keybox}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 因子失效有三个可观测阶段：IC 下降、波动放大、IC 反向。
+  \item 监控要分四层：每日信号、每周组合、每月绩效、每季结构。
+  \item 拥挤度可用估值差、波动率、换手率等代理指标近似估计。
+  \item 回撤要先分清是 beta、风格暴露还是 alpha 衰减。
+  \item 停手规则必须在策略设计阶段就写下来。
+\end{enumerate}

@@ -1,0 +1,321 @@
+\chapter{实证结果：一份完整的重复测试}\label{ch:result}
+
+\begin{keybox}[本章要回答的问题]
+把前九章的方法全部跑一遍，会得到什么？样本外 Rank IC 是多大？
+在 15 次不同切法下它稳定吗？扣除成本、扣除多重检验惩罚之后还剩什么？
+\end{keybox}
+
+本章所有数字都来自配套仓库的一键复现流程，数据区间 \textbf{2013-01-04 至 2026-10-19}，
+全 A 股日频，$h=5$ 日持有期，每 5 个交易日一个样本（避免标签重叠），
+共 \textbf{2,018,278} 个样本、\textbf{670} 个周度截面、\textbf{39} 个因子。
+
+\section{单因子：谁在真正预测收益}
+
+下表来自主库 2010--2026 的每日 IC 序列，标签为次日开盘至第六日开盘收益。
+上面的 670 个截面指模型采样，不能当作本表的样本量。
+调整后 IC 是行业与对数市值中性化后的 Rank IC，按其均值排序。
+\input{generated_factor_table}
+\input{generated_inference_note}
+
+\subsection{结论的适用范围}
+流动性、波动和量价因子在这段数据内呈现较强关联；动量的符号需按具体窗口与时期解读。
+质量与成长的旧表使用年度统计量均值，不能据此宣称“横截面没有信息”，
+也不能据此认定它们更适合时间序列筛选。补充质量因子的重算见附录~\ref{app:quality}。
+ICIR 是描述性比值；重叠收益下的年化 ICIR 不能代替均值检验。
+全部因子均经过研究者筛选与查看，单个显著 $t$ 值仍需多重检验和未见样本验证。
+
+\section{模型：等权基线 vs 线性 vs GBDT}
+
+三条基线：等权合成（用训练集 IC 符号定向）、Ridge、LightGBM。
+协议表中的 NW $t$ 是折内 $t$ 的均值，仅作描述性对照，不是合并样本显著性。
+各折模型仅用该折训练期拟合；但研究者已看过整个历史区间，因子选择和研究决策未被这些切分隔离。
+
+\subsection{三种验证协议的对比}
+
+\begin{table}[htbp]
+\centering
+\caption{三种验证协议下的样本外表现（多次切分的均值）}
+\label{tab:protocol}
+\small
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+协议 & 模型 & 折数 & IC 均值 & ICIR & NW $t$ & 扣费年化 & 夏普 \\
+\midrule
+Purged K-Fold & 等权合成 & 5 & 0.0495 & 3.57 & 5.65 & 5.1\% & 0.65 \\
+Purged K-Fold & Ridge & 5 & 0.0407 & 3.32 & 5.12 & 3.7\% & 0.56 \\
+Purged K-Fold & LightGBM & 5 & 0.0500 & 3.35 & 5.05 & 7.9\% & 0.76 \\
+\midrule
+CPCV & 等权合成 & 15 & 0.0521 & 3.15 & 5.91 & 4.7\% & 0.51 \\
+CPCV & Ridge & 15 & 0.0494 & 2.95 & 5.11 & 5.6\% & 0.52 \\
+CPCV & LightGBM & 15 & 0.0590 & 3.22 & 5.47 & 11.8\% & 0.83 \\
+\midrule
+Walk-Forward & 等权合成 & 7 & 0.0747 & 5.52 & 5.74 & 13.8\% & 1.24 \\
+Walk-Forward & Ridge & 7 & 0.0700 & 6.09 & 6.54 & 12.9\% & 1.34 \\
+Walk-Forward & LightGBM & 7 & 0.0786 & 5.76 & 6.23 & 15.5\% & 1.08 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keybox}[这张表最重要的一件事]
+\textbf{同一批因子、同一批模型，换一种切法，样本外 IC 从 0.05 变到 0.079。}
+这不是模型不稳定，而是"样本外"这个概念本身就有方差。
+报告单一数字而不报告切法，等于隐瞒了一半的信息。
+\end{keybox}
+
+Walk-Forward 的数字系统性高于 CPCV 的原因不难理解：Walk-Forward 的训练窗口是扩展的，
+后期模型见过更多历史；而 CPCV 的某些组合要求用"未来"的块去训练"过去"的块，
+对非平稳的 A 股市场更不友好。\textbf{两者都不是错的，它们回答的是不同的问题}：
+CPCV 问"这个模型在任意时间段上是否稳定"，Walk-Forward 问"如果我按时间顺序做实盘会怎样"。
+
+\subsection{全样本外表现}
+
+把 Walk-Forward 各段拼接后，各候选的有值日期数不同。收益和诊断不得把缺失预测视为现金头寸；
+诊断只使用 \AuditCommonN{} 个共同有效日期。下面各候选收益按各自有值日期计算：
+
+\begin{center}\small
+\input{generated_candidates}
+\end{center}
+
+\begin{warnbox}[怎么读这个 16.3 个百分点]
+\textbf{第一，这是多空组合}：做多前 20\%、做空后 20\%，个人投资者通常无法执行空头。
+\textbf{第二，它假设可以按次日开盘价成交}，且只在"可买"样本里建仓，
+但没有模拟资金规模、冲击成本的市场深度、以及融券成本。
+\textbf{第三，它没有做行业中性约束}，组合的行业暴露可能很大。
+
+所以这个数字应该被理解为"\textbf{在理想执行假设下，因子组合的横截面 alpha}"，
+而不是"可以拿到的收益"。
+\end{warnbox}
+
+\subsection{模型的边际贡献有多大}
+
+值得注意的一点：LightGBM 的 IC（0.0785）比等权基线（0.0653）高约 20\%，
+但它的换手也高了 40\%（37.9\% vs 27.2\%）。\textbf{扣费后的优势（1.43 vs 0.86 的夏普）
+有相当一部分来自 IC 提升，也有一部分来自它更集中地下注在有效因子上。}
+
+这与第~\ref{ch:model} 章的判断一致：模型有效，但它的作用是"更好地组合已知信息"，
+而不是"发现新信息"。用等权基线做一个 sanity check，永远值得。
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_nav.png}
+\caption{Walk-Forward 全样本外多空组合净值（扣单边 30 bp）。三条 LightGBM 曲线的差异仅来自随机种子，说明模型本身足够稳定。}
+\label{fig:nav}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{fig_cpcv.png}
+\caption{CPCV 15 次切分下的样本外 Rank IC 分布。箱线图的宽度就是"切法的不确定性"。}
+\label{fig:cpcv}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{fig_pbo.png}
+\caption{PBO 的对数几率分布。$\lambda\le 0$ 的比例即 PBO。}
+\label{fig:pbo}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{fig_cost.png}
+\caption{成本敏感性：夏普随单边成本下降，约 70 bp 处穿过零点。}
+\label{fig:cost}
+\end{minipage}
+\end{figure}
+\section{过拟合诊断}
+
+现有搜索日志不完整，不能用五个已保存候选代表全部研究自由度。
+旧版 DSR 以 $N=15$ 计算，并错误标注成“由相关矩阵估计”；这里撤回“全部通过”的判定。
+
+\begin{center}\small
+\input{generated_dsr_table}
+\end{center}
+
+第一列 DSR 使用五候选的夏普横截面标准差；第二列把该标准差至少设为
+$1/\sqrt{T-1}$，作为独立零均值收益近似的压力情景。
+$N=603=(39+8+20)\times3\times3$ 只是名义搜索范围情景，不是执行过的配置数量或独立次数估计。
+该情景 DSR 为 \AuditDSRStress{}；用五候选离散度且 $N=100$ 时为 \AuditDSRHundred{}，
+旧文“约 0.93”未由代码支持，已撤回。原始 $N=15$、补零收益下的 0.997 仅保留在修订备份中。
+
+\subsection{PBO 与区间回答的范围}
+当前 PBO 为 \AuditPBO{}，仅覆盖五候选及 \AuditCommonN{} 个共同有效日期。
+候选收益相关系数介于 \AuditCorrMin{} 与 \AuditCorrMax{}；三个 LightGBM 随机种子尤其接近。
+它不能替代完整因子筛选、参数搜索和协议选择的 PBO。相关性高并不意味着 PBO 必然按固定方向变化。
+
+分块 Bootstrap 的 95\% 夏普区间为 $[\AuditBPLower,\ \AuditBPUpper]$，
+使用 2.5\% 和 97.5\% 分位；旧版 5\% 至 95\% 实际是 90\% 区间。
+简化 RC 仅针对已保存五候选；400 次重抽样中零次超越不等于真实 $p=0$，也不足以报告 $p<0.001$。
+
+\begin{warnbox}[历史内部验证不能代替前瞻证据]
+这些诊断没有解决退市股遗漏、未知股票池筛选、收益自相关、未见样本外和执行约束。
+30\,bp 也不是按成交规模与流动性校准的成本。没有完整搜索记录时，不再作“全研究稳健通过”的判定。
+\end{warnbox}
+
+\section{成本敏感性}
+
+把单边成本从 0 扫到 80 bp，看最优候选的年化夏普如何变化：
+
+\begin{center}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+单边成本 & 0 bp & 20 bp & 30 bp & 40 bp & 50 bp & 60 bp & 80 bp \\
+\midrule
+最优候选夏普 & 2.53 & 1.80 & 1.43 & 1.07 & 0.71 & 0.34 & $-0.27$ \\
+五候选均值 & 2.19 & 1.54 & 1.22 & 0.89 & 0.57 & 0.24 & $-0.40$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{盈亏平衡点大约在 70 bp。}这意味着：
+
+\begin{itemize}
+  \item 如果实际成本能控制在 30 bp 以内（佣金万二五 + 印花税 + 适度滑点），
+        策略仍有可观空间；
+  \item 如果滑点与冲击把成本推到 60 bp 以上（小市值、高换手、资金量偏大），
+        策略基本失效。
+\end{itemize}
+
+\begin{keybox}[成本是最后一道、也是最硬的裁判]
+所有前期的努力——数据清洗、因子构造、模型调优——最终都要经过这道关卡。
+一个 IC 0.08 的策略在 80 bp 成本下归零，而一个 IC 0.05 但换手只有 5\% 的策略
+可能活得更久。\textbf{这就是为什么第~\ref{ch:eval} 章要求"先算成本再看 IC"。}
+\end{keybox}
+
+\section{指数增强：把多空 alpha 放回可执行的框架}
+
+前九节的所有收益都是\textbf{多空}的。但 A 股个股融券基本不可行
+（见第~\ref{ch:portfolio} 章），负向信号只能"低配"。
+这一节把同一批样本外预测放进指数增强框架，回答"它到底能不能用"。
+
+\subsection{构造}
+
+\begin{itemize}
+  \item \textbf{基准}：可交易全市场的流通市值加权组合（不用官方指数，
+        因为本地只有单期成分快照，用当期成分回测历史会引入成分股幸存者偏差）；
+  \item \textbf{偏离}：行业内标准化打分后按
+        $w_i = W_g \cdot \dfrac{\omega_i e^{\kappa z_i}}{\sum_{j\in g}\omega_j e^{\kappa z_j}}$
+        构造，$\omega_i$ 是行业内基准权重，$W_g$ 是行业基准权重。
+        该形式保证\textbf{行业权重与基准完全一致}、权重恒正；
+  \item \textbf{$\kappa$ 扫描}：$\kappa$ 越大偏离越激进，跟踪误差越大；
+  \item \textbf{成本}：单边 30\,bp，按实际换手扣。
+\end{itemize}
+
+样本为 2018-01 至 2025-11 的 383 个周度调仓期（受估值快照起点限制）。
+
+\subsection{结果：倾得越狠，跑得越差}
+
+\input{generated_ie}
+
+\begin{warnbox}[这张表推翻了什么]
+跟踪误差从 $0.1\%$ 升到 $4.0\%$，年化超额从 $-0.9\%$ 一路跌到 $-6.4\%$。
+\textbf{单调恶化，没有最优点。}信息比率始终在 $-1.0$ 到 $-1.6$ 之间。
+
+也就是说：把本章前面那个 IC $0.079$、夏普 $1.43$ 的信号
+按行业中性放进指数增强框架，\textbf{它不但没有超额，还系统性地输给基准}。
+\end{warnbox}
+
+\subsection{为什么会这样}
+
+多空组合赚的是\textbf{横截面价差}：做多低换手、低波、近期下跌的股票，
+做空高换手、高波、近期上涨的股票。这个价差在 A 股是真实的（IC 稳定为正）。
+
+但在指数增强里，你只能表达\textbf{多头那一端}：
+把权重从"贵、热、涨得多"的股票挪到"便宜、冷、跌得多"的股票。
+而在 2018--2025 这段样本里，被挪走的那一端（大市值成长与热门股）\textbf{涨得更多}。
+于是空头端贡献的那部分 alpha 消失了，多头端反而成了负贡献。
+
+\begin{keybox}[这是本项目最重要的一条负面结论]
+\textbf{多空口径的夏普 1.43 不可变现。}
+但不等于"因子无效"——下一节会把 alpha 拆成多头端与空头端，
+结论比"全靠空头"更微妙：\textbf{两端都有 alpha，但大市值那一段的多头端不显著}。
+
+这条结论与附录~\ref{app:strict}（规模因子只在最小 30\% 市值里有效）
+指向同一个事实：\textbf{这个市场的"可测"与"可做"之间有一道很宽的沟。}
+\end{keybox}
+
+\subsection{这一节的局限}
+
+\begin{enumerate}
+  \item 只测了一个基准（全市场市值加权）。若换成中证 1000 这类小盘基准，
+        结论可能不同——但小盘基准的容量问题更严重；
+  \item 偏离按基准权重的比例放大（$\propto w_b$），这会系统性压制中小盘的主动权重，
+        真实的指数增强会用风险模型直接优化主动权重，可能表现更好；
+  \item 未模拟整手、资金约束与涨跌停的路径依赖。
+\end{enumerate}
+
+结论应读作"\textbf{在这个构造与这个基准下，long-only 版本不可行}"，
+而不是"任何 long-only 实现都不可行"。
+
+\section{alpha 到底在哪一端：多头与空头的分解}
+
+上一节的失败可以有两种解释：（a）alpha 全在空头端；（b）alpha 在两端，
+但实现方式没抓住。这一节直接把它拆开。
+
+定义（$S_{top}$ 为打分最高 20\%，$S_{bot}$ 为最低 20\%）：
+
+\begin{equation}
+  \underbrace{\bar r_{top} - \bar r_{bot}}_{\text{价差}}
+  \;=\;
+  \underbrace{(\bar r_{top} - \bar r_{\text{基准}})}_{\text{多头端超额}}
+  \;+\;
+  \underbrace{(\bar r_{\text{基准}} - \bar r_{bot})}_{\text{空头端超额}} .
+\end{equation}
+
+\subsection{结果：两端都有 alpha}
+
+\input{generated_decomp}
+
+多头端年化 $+10.7\%$（$t=5.25$），空头端 $+18.5\%$（$t=6.75$）。
+\textbf{多头端不是"没有 alpha"，只是比空头端弱一些。}
+
+\begin{warnbox}[所以我上一节的解释只对了一半]
+上一节说"alpha 主要活在空头端"，这是不准确的。
+准确的说法要到下一张表才看得清。
+\end{warnbox}
+
+\subsection{按市值三分组：大市值的多头端不显著}
+
+\input{generated_by_size}
+
+\begin{keybox}[拼图到这里才完整]
+\begin{itemize}
+  \item \textbf{小市值组}：多头端 $+12.0\%$（$t=5.53$），组内价差 $+45.1\%$；
+  \item \textbf{中市值组}：多头端 $+10.3\%$（$t=4.81$），组内价差 $+36.6\%$；
+  \item \textbf{大市值组}：多头端 \textbf{$+3.1\%$（$t=1.27$，不显著）}，组内价差 $+11.5\%$。
+\end{itemize}
+
+指数增强的基准是\textbf{市值加权}的，权重被大市值股票主导；
+而大市值段的多头端恰好\textbf{没有统计显著的 alpha}。
+于是上一节那个"倾得越狠、跑得越差"的结果就不难理解了：
+你把权重往一个在大盘股上无效的信号方向挪，挪得越多，偏离越大，亏得越多。
+\end{keybox}
+
+\subsection{三条结论}
+
+\begin{enumerate}
+  \item \textbf{排序能力真实存在}，价差年化 $30.9\%$（$t=6.67$），两端都贡献，胜率 $64\%$。
+  \item \textbf{alpha 随市值单调衰减}：组内价差从小盘的 $45.1\%$ 掉到大盘的 $11.5\%$，
+        多头端在大盘股上直接不显著（$t=1.27$）。
+  \item \textbf{可执行性与 alpha 强度成反比}：alpha 最强的地方（微盘）
+        正是容量最小、监管最敏感、数据最难拿的地方。
+\end{enumerate}
+
+\begin{keybox}[对个人研究者的含义]
+如果你的资金只能做流动性较好的中大盘股，那么这个信号对你的价值接近于零——
+不是因为它不真实，而是因为它在你能触及的那部分市场里不存在。
+
+这条结论比"因子有效/无效"更有用，因为它直接告诉你\textbf{该不该做}，
+而不只是"能不能测出来"。
+\end{keybox}
+
+\section{本章小结}
+\begin{enumerate}
+  \item 主因子表改为从完整每日 IC 序列汇总，报告样本数、HAC $t$ 与方差等价有效样本量。
+  \item 模型的内部验证呈现正的预测关联；没有额外未见样本，不能把它直接解释为未来收益。
+  \item DSR 以试验次数与离散度敏感性呈现；PBO 仅覆盖现有五候选，完整研究筛选可靠性未知。
+  \item 多空、开盘成交、统一成本与向量化执行仍是假设；long-only 和事件驱动组合尚未完成。
+  \item 正式滚动窗口、数据覆盖和成本分层审计仍待补齐，不能把它们一律当作不影响数字的文字局限。
+\end{enumerate}

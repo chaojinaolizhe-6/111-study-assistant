@@ -1,0 +1,301 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{circuitikz}
+\settags{Ch4 放大电路 · 五题详解 · 2026-10-31}{电工电子技术}
+
+%---------------------------------------------------------------- 记号（全文统一）
+\newcommand{\UCC}{U_{\mathrm{CC}}}
+\newcommand{\UBE}{U_{\mathrm{BE}}}
+\newcommand{\UCE}{U_{\mathrm{CE}}}
+\newcommand{\UCES}{U_{\mathrm{CES}}}
+\newcommand{\RB}{R_{\mathrm{B}}}
+\newcommand{\RC}{R_{\mathrm{C}}}
+\newcommand{\RE}{R_{\mathrm{E}}}
+\newcommand{\RL}{R_{\mathrm{L}}}
+\newcommand{\RS}{R_{\mathrm{S}}}
+\newcommand{\IB}{I_{\mathrm{B}}}
+\newcommand{\IC}{I_{\mathrm{C}}}
+\newcommand{\IE}{I_{\mathrm{E}}}
+\newcommand{\Ib}{\dot{I}_{\mathrm{b}}}
+\newcommand{\Ui}{\dot{U}_{\mathrm{i}}}
+\newcommand{\Uo}{\dot{U}_{\mathrm{o}}}
+\newcommand{\rbe}{r_{\mathrm{be}}}
+\newcommand{\RLp}{R_{\mathrm{L}}'}
+\newcommand{\lab}[1]{{\bfseries\color{violetdeep}#1}\enspace}
+
+%---------------------------------------------------------------- 三线表横线（\noalign 版，贯穿全表）
+\newcommand{\rtop}{\noalign{\vspace{4pt}{\color{violet}\hrule height 1.2pt}\vspace{2pt}}}
+\newcommand{\rmid}{\noalign{\vspace{2pt}{\color{petal}\hrule height 0.5pt}\vspace{2pt}}}
+\newcommand{\rbot}{\noalign{\vspace{2pt}{\color{rulepurple}\hrule height 0.5pt}\vspace{6pt}}}
+
+%---------------------------------------------------------------- 节标题不许落单在页底
+\let\dsHdrOrig\hdr
+\renewcommand{\hdr}[2]{\dsHdrOrig{#1}{#2}\nopagebreak[4]}
+\let\dsSubhdrOrig\subhdr
+\renewcommand{\subhdr}[1]{\dsSubhdrOrig{#1}\nopagebreak[4]}
+\setlength{\emergencystretch}{2em}
+
+\begin{document}
+\hdr{附录 A}{逐题详解}
+
+\callout{每块开头都重述一遍条件，所以可以单看某一块。题干原图在 \S2；这里只给式子与判据。}
+
+%--------------------------------------------------------------------
+\qbreak
+\subhdr{A1 · 题 1（固定偏置，只算静态）}
+\label{a:1}
+\qstem{（题 1 条件）$\UCC=12$ V，$\RC=6$ k$\Omega$，$\beta=50$，$\UBE=0.6$ V，$\RB=600$ k$\Omega$；求 $\IB$、$\IC$、$\UCE$。}
+
+\lab{考点}直流通路里 $C_1$、$C_2$ 开路，基极回路上只有 $\RB$ 一只电阻。
+
+\lab{关键一步}$\RB$ 一端接 $\UCC$、一端接基极，中间没有第二条支路，所以 $\RB$ 上的电流就是 $\IB$：
+
+\[ \IB=\frac{\UCC-\UBE}{\RB}. \]
+
+\lab{详解}
+\textbf{(1) 基极电流。}分母只有 $\RB$（$\RE=0$）：
+
+\[ \IB=\frac{12-0.6}{600}\ \mathrm{mA}=0.019\ \mathrm{mA}=19\ \mu\mathrm{A}. \]
+
+\textbf{(2) 集电极电流。}
+
+\[ \IC=\beta\IB=50\times19\ \mu\mathrm{A}=0.95\ \mathrm{mA}. \]
+
+\textbf{(3) 管压降。}集电极回路只剩 $\RC$：
+
+\[ \UCE=\UCC-\IC\RC=12-0.95\times6=6.3\ \mathrm{V}. \]
+
+\callout{\textbf{答案}：$\IB=19\ \mu\mathrm{A}$，$\IC=0.95\ \mathrm{mA}$，$\UCE=6.3\ \mathrm{V}$。三个数都落在放大区的正常范围。}
+
+\aside{自检：饱和电流 $\UCC/\RC=2$ mA，$0.95$ mA 只到它的一半，所以放大区成立。反过来算一算：把 $\RB$ 换成 $300$ k$\Omega$，$\IB$ 翻倍、$\IC$ 到 $1.9$ mA，$\UCE$ 只剩 $0.6$ V，几乎贴到饱和边。固定偏置的 Q 点完全由 $\beta$ 与 $\RB$ 决定，换一只管子就会漂——这是它被分压偏置取代的原因。}
+
+%--------------------------------------------------------------------
+\qbreak
+\subhdr{A2 · 题 2（固定偏置带负载，只算动态）}
+\label{a:2}
+\qstem{（题 2 条件）$\beta=80$，$\rbe=1.3$ k$\Omega$，$\RB=56$ k$\Omega$，$\RC=5$ k$\Omega$，$\RL=3$ k$\Omega$，电源 15 V；求 $A_u$、$r_{\mathrm i}$、$r_{\mathrm o}$。}
+
+\lab{考点}带载共射的三个指标。$\rbe$ 已直接给出，不必回算 Q 点。
+
+\lab{关键一步}$\UCC$ 端在交流里接地，于是 $\RC$ 的上端与 $\RL$ 的下端是同一点，两者\textbf{并联}：
+
+\[ \RLp=\RC\parallel\RL . \]
+
+\lab{详解}
+\textbf{(1) 等效负载。}
+
+\[ \RLp=\frac{5\times3}{5+3}=1.875\ \mathrm{k}\Omega. \]
+
+\textbf{(2) 电压放大倍数。}负号来自共射的反相（集电极电流增大时集电极电压下降）：
+
+\[ A_u=-\frac{\beta\RLp}{\rbe}=-\frac{80\times1.875}{1.3}\approx-115. \]
+
+\textbf{(3) 输入电阻。}$\RB$ 与 $\rbe$ 都并在基极与地之间：
+
+\[ r_{\mathrm i}=\RB\parallel\rbe=\frac{56\times1.3}{56+1.3}\approx1.27\ \mathrm{k}\Omega. \]
+
+\textbf{(4) 输出电阻。}把信号源置零、从输出端看进去，只剩 $\RC$：
+
+\[ r_{\mathrm o}=\RC=5\ \mathrm{k}\Omega. \]
+
+\callout{\textbf{答案}：$A_u\approx-115$（反相），$r_{\mathrm i}\approx1.27$ k$\Omega$，$r_{\mathrm o}=5$ k$\Omega$。}
+
+\aside{自检：空载时 $|A_u|=\beta\RC/\rbe=80\times5/1.3\approx308$，接上 $3$ k$\Omega$ 负载后掉到 $115$，只剩三成七。原因是 $r_{\mathrm o}=5$ k$\Omega$ 与 $\RL=3$ k$\Omega$ 分压，$\RL$ 只拿到 $3/(5+3)=0.375$。所以「带载掉增益」不是公式变了，而是 $r_{\mathrm o}$ 太大。}
+
+%--------------------------------------------------------------------
+\qbreak
+\subhdr{A3 · 题 3（$\RE$ 配 $C_E$ 的共射）}
+\label{a:3}
+\qstem{（题 3 条件）$\UBE=0.7$ V，$\beta=60$，$\rbe=952\ \Omega$，$\RB=300$ k$\Omega$，$\RC=3$ k$\Omega$，$\RE=1$ k$\Omega$，$\RL=3$ k$\Omega$，$\RS=2$ k$\Omega$，$\UCC=12$ V。}
+
+\lab{考点}$\RE$ 在直流回路上（$\IE$ 流过它），但在交流回路上被 $C_E$ 短路。同一只电阻，两种通路里的身份不同。
+
+\lab{关键一步}基极回路里流的是 $\IB$，可 $\RE$ 上流的是 $\IE=(1+\beta)\IB$，所以 $\RE$ 折算到基极要放大 $(1+\beta)$ 倍：
+
+\[ \IB=\frac{\UCC-\UBE}{\RB+(1+\beta)\RE}. \]
+
+\subhdr{(1) Q 点}
+\[ \IB=\frac{12-0.7}{300+61\times1}\ \mathrm{mA}=\frac{11.3}{361}\ \mathrm{mA}\approx31.3\ \mu\mathrm{A}. \]
+
+\[ \IC=\beta\IB=60\times31.3\ \mu\mathrm{A}\approx1.88\ \mathrm{mA},\qquad
+   \IE=(1+\beta)\IB=61\times31.3\ \mu\mathrm{A}\approx1.91\ \mathrm{mA}. \]
+
+\[ \UCE=\UCC-\IC\RC-\IE\RE=12-1.88\times3-1.91\times1\approx4.46\ \mathrm{V}. \]
+
+\aside{自检（回代基极电位）：$U_{\mathrm B}=\UBE+\IE\RE=0.7+1.91=2.61$ V，再由 $\RB$ 算 $\IB=(12-2.61)/300\approx31.3\ \mu\mathrm{A}$，与上面一致。两条路算出同一个数，说明 $(1+\beta)\RE$ 那一项没写错。}
+
+\subhdr{(2) 交流等效电路}
+$C_1$、$C_2$、$C_E$ 短路，$\UCC$ 端接地：$\RB$ 变成接地的电阻，$\RE$ 被 $C_E$ 短路而消失，$\RC$ 与 $\RL$ 在集电极处并联。
+
+\begin{center}
+\begin{circuitikz}[scale=0.92, transform shape]
+  % b 母线
+  \draw (0.4,4.2) node[ocirc]{} -- (3.4,4.2);
+  \draw (1.6,4.2) node[circ]{} to[R, l=$\RB$] (1.6,0);
+  \draw (3.4,4.2) node[circ]{} to[R, l=$\rbe$] (3.4,0);
+  % c 母线
+  \draw (5.0,4.2) -- (9.8,4.2);
+  \draw (5.4,4.2) node[circ]{} to[american controlled current source, l=$\beta\Ib$] (5.4,0);
+  \draw (7.3,4.2) node[circ]{} to[R, l=$\RC$] (7.3,0);
+  \draw (9.0,4.2) node[circ]{} to[R, l=$\RL$] (9.0,0);
+  % 地母线
+  \draw (0.4,0) -- (9.8,0);
+  \draw (6.2,0) node[circ]{} -- (6.2,-0.55) node[ground]{};
+  \draw (0.4,0) node[ocirc]{};
+  \draw (9.8,4.2) node[ocirc]{};
+  \draw (9.8,0) node[ocirc]{};
+  \node[above] at (0.4,4.45) {\small $\Ui$};
+  \node[above] at (9.8,4.45) {\small $\Uo$};
+  \node[above] at (6.5,4.35) {\small c};
+  \node[above] at (2.1,4.35) {\small b};
+\end{circuitikz}
+\end{center}
+
+节点与元件的对应关系，逐条对照就能画出来：
+\begin{itemize}
+  \item \textbf{b 与地之间}：$\RB=300$ k$\Omega$ 并联 $\rbe=0.952$ k$\Omega$——这就是 $r_{\mathrm i}$。
+  \item \textbf{c 与地之间}：$\RC=3$ k$\Omega$ 并联 $\RL=3$ k$\Omega$——这就是 $\RLp$。
+  \item \textbf{c 与 e 之间}：受控电流源 $\beta\Ib$，箭头由 c 指向 e。e 已交流接地，所以图上它落在 c 与地之间。
+  \item 输入端还有 $\RS$ 与 $\dot U_{\mathrm s}$，但它们属于信号源，不算放大器等效电路的一部分。
+\end{itemize}
+
+\subhdr{(3) 三个指标}
+\[ \RLp=\RC\parallel\RL=3\parallel3=1.5\ \mathrm{k}\Omega , \]
+
+\[ A_u=-\frac{\beta\RLp}{\rbe}=-\frac{60\times1.5}{0.952}\approx-94.5 , \]
+
+\[ r_{\mathrm i}=\RB\parallel\rbe=300\parallel0.952\approx0.949\ \mathrm{k}\Omega,\qquad
+   r_{\mathrm o}=\RC=3\ \mathrm{k}\Omega . \]
+
+\callout{\textbf{答案}：(1) $\IB\approx31.3\ \mu\mathrm{A}$，$\IC\approx1.88\ \mathrm{mA}$，$\UCE\approx4.46\ \mathrm{V}$；(3) $A_u\approx-94.5$，$r_{\mathrm i}\approx0.949$ k$\Omega$，$r_{\mathrm o}=3$ k$\Omega$。}
+
+\aside{自检：把 $C_E$ 拿掉，$\RE$ 留在交流回路，分母变成 $\rbe+(1+\beta)\RE=0.952+61\approx62$ k$\Omega$，$A_u$ 掉到 $-60\times1.5/62\approx-1.45$。同一个电路、同一只管子，只差一个电容，增益差了 65 倍——这就是 $C_E$ 的全部作用。}
+
+%--------------------------------------------------------------------
+\qbreak
+\subhdr{A4 · 题 4（分压偏置）}
+\label{a:4}
+\qstem{（题 4 条件）$\beta=40$，$\rbe=0.8$ k$\Omega$，$\UBE=0.7$ V，$\UCC=12$ V，$\RB1=40$ k$\Omega$，$\RB2=20$ k$\Omega$，$\RC=2$ k$\Omega$，$\RE=1.6$ k$\Omega$，$\RL=2$ k$\Omega$。}
+
+\lab{考点}分压偏置把「$\UCC$ 经 $\RB1$、$\RB2$ 分压得到的基极电位」当作基极电源用，等价于一只电压源 $U_{\mathrm{BB}}$ 串一只电阻 $\RB$。
+
+\lab{关键一步}戴维南两步：$U_{\mathrm{BB}}$ 是 $\RB2$ 上的分压，$\RB$ 是两电阻并联。
+
+\[ U_{\mathrm{BB}}=\frac{\RB2}{\RB1+\RB2}\UCC,\qquad \RB=\RB1\parallel\RB2 . \]
+
+\subhdr{(1) Q 点}
+\[ U_{\mathrm{BB}}=\frac{20}{40+20}\times12=4\ \mathrm{V},\qquad \RB=40\parallel20=\frac{40\times20}{60}=13.3\ \mathrm{k}\Omega . \]
+
+\[ \IB=\frac{U_{\mathrm{BB}}-\UBE}{\RB+(1+\beta)\RE}=\frac{4-0.7}{13.3+41\times1.6}\ \mathrm{mA}=\frac{3.3}{78.9}\ \mathrm{mA}\approx41.8\ \mu\mathrm{A}. \]
+
+\[ \IC=40\times41.8\ \mu\mathrm{A}\approx1.67\ \mathrm{mA},\qquad
+   \IE=41\times41.8\ \mu\mathrm{A}\approx1.71\ \mathrm{mA}. \]
+
+\[ \UCE=\UCC-\IC\RC-\IE\RE=12-1.67\times2-1.71\times1.6\approx5.91\ \mathrm{V}. \]
+
+\aside{自检（基极电位回代）：$U_{\mathrm B}=U_{\mathrm{BB}}-\IB\RB=4-0.0418\times13.3=3.44$ V，$U_{\mathrm E}=\IE\RE=1.71\times1.6=2.74$ V，两者之差 $0.70$ V 正好是题给的 $\UBE$。差得远就说明 $\RB$ 或 $(1+\beta)\RE$ 有一项抄错了。}
+
+\subhdr{(2) 交流等效电路}
+与题 3 结构相同，只有一处区别：$\RB$ 换成 $\RB1\parallel\RB2$（两电阻都接地，所以并联）。$C_E$ 短路使 $\RE$ 从交流回路消失。
+
+\begin{center}
+\begin{circuitikz}[scale=0.92, transform shape]
+  \draw (0.4,4.2) node[ocirc]{} -- (3.4,4.2);
+  \draw (1.6,4.2) node[circ]{} to[R, l=$\RB1\!\parallel\!\RB2$] (1.6,0);
+  \draw (3.4,4.2) node[circ]{} to[R, l=$\rbe$] (3.4,0);
+  \draw (5.0,4.2) -- (9.8,4.2);
+  \draw (5.4,4.2) node[circ]{} to[american controlled current source, l=$\beta\Ib$] (5.4,0);
+  \draw (7.3,4.2) node[circ]{} to[R, l=$\RC$] (7.3,0);
+  \draw (9.0,4.2) node[circ]{} to[R, l=$\RL$] (9.0,0);
+  \draw (0.4,0) -- (9.8,0);
+  \draw (6.2,0) node[circ]{} -- (6.2,-0.55) node[ground]{};
+  \draw (0.4,0) node[ocirc]{};
+  \draw (9.8,4.2) node[ocirc]{};
+  \draw (9.8,0) node[ocirc]{};
+  \node[above] at (0.4,4.45) {\small $\Ui$};
+  \node[above] at (9.8,4.45) {\small $\Uo$};
+\end{circuitikz}
+\end{center}
+
+对应关系：b 与地之间是 $\RB1\parallel\RB2=13.3$ k$\Omega$ 并联 $\rbe=0.8$ k$\Omega$；c 与地之间是 $\RC\parallel\RL$；c 与 e 之间是 $\beta\Ib$，箭头指向 e（已接地）。
+
+\subhdr{(3) 三个指标}
+\[ \RLp=\RC\parallel\RL=2\parallel2=1\ \mathrm{k}\Omega , \]
+
+\[ A_u=-\frac{\beta\RLp}{\rbe}=-\frac{40\times1}{0.8}=-50 , \]
+
+\[ r_{\mathrm i}=\RB\parallel\rbe=13.3\parallel0.8\approx0.755\ \mathrm{k}\Omega,\qquad
+   r_{\mathrm o}=\RC=2\ \mathrm{k}\Omega . \]
+
+\callout{\textbf{答案}：(1) $U_{\mathrm{BB}}=4$ V，$\RB=13.3$ k$\Omega$，$\IB\approx41.8\ \mu\mathrm{A}$，$\IC\approx1.67\ \mathrm{mA}$，$\UCE\approx5.91$ V；(3) $A_u=-50$，$r_{\mathrm i}\approx755\ \Omega$，$r_{\mathrm o}=2$ k$\Omega$。}
+
+\aside{自检（为什么分压偏置更稳）：分母 $78.9$ 里，$\RB=13.3$ k$\Omega$ 只占 $17\%$，其余是 $(1+\beta)\RE=65.6$ k$\Omega$。把 $\beta$ 从 40 换到 80，$\IB$ 只从 $41.8\ \mu\mathrm{A}$ 变到 $23.1\ \mu\mathrm{A}$，$\IC$ 从 $1.67$ 到 $1.85$ mA，变了约一成；而题 1 的固定偏置里 $\IC$ 是直接正比于 $\beta$ 的，换管子就翻倍。}
+
+%--------------------------------------------------------------------
+\qbreak
+\subhdr{A5 · 题 5（共集电极 / 射极输出）}
+\label{a:5}
+\qstem{（题 5 条件）$\UBE=0.7$ V，$\beta=80$，$\rbe=1$ k$\Omega$，$\RB=200$ k$\Omega$，$\RE=3$ k$\Omega$，$\RS=2$ k$\Omega$，$\UCC=+15$ V，集电极直接接电源，无 $C_E$，负载 $\RL$ 未给阻值。}
+
+\lab{考点}共集的直流回路：没有 $\RC$，所以 $\UCE$ 的式子里只剩 $\IE\RE$ 一项。
+
+\lab{关键一步}集电极直接接 $\UCC$，直流电位就钉在 $15$ V；发射极电位由 $\IE\RE$ 决定，两者差就是 $\UCE$。
+
+\subhdr{(1) Q 点}
+\[ \IB=\frac{\UCC-\UBE}{\RB+(1+\beta)\RE}=\frac{15-0.7}{200+81\times3}\ \mathrm{mA}=\frac{14.3}{443}\ \mathrm{mA}\approx32.3\ \mu\mathrm{A}. \]
+
+\[ \IC=\beta\IB=80\times32.3\ \mu\mathrm{A}\approx2.58\ \mathrm{mA},\qquad
+   \IE=(1+\beta)\IB=81\times32.3\ \mu\mathrm{A}\approx2.61\ \mathrm{mA}. \]
+
+\[ \UCE=\UCC-\IE\RE=15-2.61\times3\approx7.16\ \mathrm{V}. \]
+
+顺带得到两个电位：$U_{\mathrm C}=15$ V，$U_{\mathrm E}=\IE\RE\approx7.84$ V。
+
+\aside{自检（基极电位回代）：$U_{\mathrm B}=U_{\mathrm E}+\UBE=7.84+0.7=8.54$ V，于是 $\IB=(15-8.54)/200\ \mathrm{k\Omega}\approx32.3\ \mu\mathrm{A}$，与上式一致。注意这里的 $\UCE$ 不能用 $\IC\RC$ 那条——本题根本没有 $\RC$。}
+
+\subhdr{(2) 交流等效电路}
+三处要点：$C_1$、$C_2$ 短路；$\UCC$ 端交流接地，于是\textbf{集电极接地}；$\RE$ 留在交流回路里（没有 $C_E$），它与 $\RL$ 在发射极处并联。
+
+\begin{center}
+\begin{circuitikz}[scale=0.92, transform shape]
+  % b 母线
+  \draw (0.4,4.2) node[ocirc]{} -- (3.2,4.2);
+  \draw (1.4,4.2) node[circ]{} to[R, l=$\RB$] (1.4,0);
+  % rbe 从 b 到 e
+  \draw (3.2,4.2) node[circ]{} to[R, l=$\rbe$] (3.2,2.2);
+  % e 母线
+  \draw (3.2,2.2) -- (8.6,2.2);
+  \draw (4.6,2.2) node[circ]{} to[R, l=$\RE$] (4.6,0);
+  \draw (6.2,2.2) node[circ]{} to[R, l=$\RL$] (6.2,0);
+  % 受控源：c（接地）到 e，箭头向上
+  \draw (7.9,0) to[american controlled current source, l=$\beta\Ib$] (7.9,2.2);
+  \draw (7.9,0) node[circ]{};
+  % 地母线
+  \draw (0.4,0) -- (8.6,0);
+  \draw (2.2,0) node[circ]{} -- (2.2,-0.55) node[ground]{};
+  \draw (0.4,0) node[ocirc]{};
+  \draw (8.6,2.2) node[ocirc]{};
+  \node[above] at (0.4,4.45) {\small $\Ui$};
+  \draw (8.6,2.2) -- (8.6,2.75) node[ocirc]{};
+  \node[right] at (8.7,2.75) {\small $\Uo$};
+  \node[above] at (2.0,4.35) {\small b};
+  \node[left] at (3.05,2.2) {\small e};
+\end{circuitikz}
+\end{center}
+
+对应关系：
+\begin{itemize}
+  \item \textbf{b 与地之间}：$\RB=200$ k$\Omega$ 并联 $\rbe=1$ k$\Omega$。
+  \item \textbf{e 与地之间}：$\RE=3$ k$\Omega$ 并联 $\RL$——本题的 $\RL$ 没有阻值，保留符号。
+  \item \textbf{c 与 e 之间}：受控源 $\beta\Ib$。集电极交流接地，所以它画在 e 与地之间，箭头由 c（地）指向 e。
+  \item 输入端：$\dot U_{\mathrm s}$ 与 $\RS=2$ k$\Omega$ 串在 b 之前，作图时接在 $\Ui$ 端口外。
+\end{itemize}
+
+\callout{\textbf{答案}：(1) $\IB\approx32.3\ \mu\mathrm{A}$，$\IC\approx2.58\ \mathrm{mA}$，$\UCE\approx7.16\ \mathrm{V}$（$U_{\mathrm E}\approx7.84$ V，$U_{\mathrm C}=15$ V）；(2) 等效电路见上图，关键是把 c 接地、把 $\RE\parallel\RL$ 留在 e 与地之间。}
+
+\aside{自检：共集为什么叫「射极输出」——输出就从 e 取。它的 $A_u$ 略小于 1（本课程下一讲会算），$r_{\mathrm o}\approx\RE\parallel\dfrac{\rbe+\RB'}{1+\beta}$，只有几十欧，所以带负载能力强；而共射的 $r_{\mathrm o}=\RC$ 是千欧级，带载就掉增益（对比题 2 的自检）。}
+
+%====================================================================
+
+\end{document}

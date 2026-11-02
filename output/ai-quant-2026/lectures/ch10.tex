@@ -1,0 +1,376 @@
+\chapter{过拟合的数学}\label{ch:overfit}
+
+\begin{keybox}[本章要回答的问题]
+为什么样本内夏普必然虚高？Purged K-Fold 到底在切什么？Deflated Sharpe Ratio
+的每一项在惩罚什么？PBO 测的是什么、又不能测什么？试了多少次之后，样本外结果就不能信了？
+\end{keybox}
+
+\section{一个必须接受的算术事实}
+
+假设你有 $N$ 个完全无效的策略（真实夏普为 0），每个策略的样本夏普服从
+标准差为 $1/\sqrt{T}$ 的分布（$T$ 为样本天数）。那么最优策略的期望夏普为
+
+\begin{equation}
+  \E\!\left[\max_{n\le N}\SR_n\right]
+  \approx \frac{1}{\sqrt{T}}\left[(1-\gamma)\Phi^{-1}\!\left(1-\frac1N\right)
+  + \gamma\,\Phi^{-1}\!\left(1-\frac{1}{Ne}\right)\right].
+  \label{eq:emax2}
+\end{equation}
+
+取 $T=1000$、$N=100$：$\Phi^{-1}(0.99)\approx 2.33$，$\Phi^{-1}(0.9963)\approx 2.68$，
+代入得 $\E[\max]\approx (0.423\times2.33 + 0.577\times2.68)/31.6 \approx 0.08$（未年化），
+年化约 $1.27$。
+
+\textbf{这意味着一百个纯噪声策略里，最好的那个年化夏普期望就有 1.27。}
+
+\begin{warnbox}[所以]
+"我这个策略夏普 1.3" 这句话，在不知道试了多少次之前，\textbf{完全没有信息量}。
+本章剩下的部分，就是把这个直觉变成一个可以计算的惩罚项。
+\end{warnbox}
+
+\section{Purged K-Fold：为什么随机切分一定错}
+
+\subsection{重叠标签导致的泄漏}
+
+设样本 $i$ 的时间戳为 $t_i$，标签覆盖 $[t_i, t_i+h]$。若测试集是 $[t_a, t_b]$，
+那么\textbf{任何} $t_i \in [t_a - h, t_b]$ 的训练样本，其标签区间都与测试集重叠。
+
+这就是 purge 的由来：训练集必须剔除 $[t_a - h,\ t_b]$ 这段。
+
+\subsection{Embargo：切断特征方向的反向泄漏}
+
+purge 解决了"标签到标签"的泄漏。但还有另一个方向：
+训练样本 $j$（$t_j > t_b$）的特征用了 $[t_j - w, t_j]$ 的历史数据，
+若 $t_j - w < t_b$，它的特征里就包含了测试期的信息。
+
+\begin{equation}
+  \text{剔除区间} = [\,t_a - h,\ \ t_b + w\,],
+  \label{eq:purge-full}
+\end{equation}
+
+其中 $h$ 是标签持有期，$w$ 是特征最长回看窗口。
+
+实践中常用的简化：$w$ 取"测试段之后一小段"（embargo），
+通常取 $h$ 或样本长度的 $1\%$--$5\%$。
+
+\begin{center}
+\begin{tabular}{@{}p{0.16\textwidth}p{0.30\textwidth}p{0.44\textwidth}@{}}
+\toprule
+\textbf{区域} & \textbf{是否剔除} & \textbf{原因} \\
+\midrule
+测试段之前 $h$ 天 & 是（purge） & 标签区间与测试段重叠 \\
+测试段本身 & -- & 就是测试集 \\
+测试段之后 $w$ 天 & 是（embargo） & 特征回看窗伸进测试期 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{pycode}[Purged K-Fold]
+def purged_kfold(n, k=5, embargo=5, horizon=5):
+    idx = np.arange(n)
+    out = []
+    for test in np.array_split(idx, k):
+        t0, t1 = test[0], test[-1]
+        drop = np.zeros(n, dtype=bool)
+        drop[max(0, t0 - horizon): t1 + 1] = True      # purge
+        drop[t1 + 1: min(n, t1 + 1 + embargo)] = True  # embargo
+        out.append((idx[~drop], test))
+    return out
+\end{pycode}
+
+\section{CPCV：评估"切法"本身的不确定性}
+
+一次 Purged K-Fold 只给你一个样本外数字。但这个数字本身有方差——
+换一种切法，结果可能差很多。CPCV（组合 purged 交叉验证）就是用来量化这个方差的。
+
+\subsection{算法}
+
+\begin{enumerate}
+  \item 把时间轴等分成 $N$ 组；
+  \item 每次取 $k$ 组作为测试集，其余经 purge 后作为训练集；
+  \item 穷举所有 $\binom{N}{k}$ 种组合；
+  \item 每个测试组会被预测多次，把它们拼起来，就得到多条完整的样本外路径。
+\end{enumerate}
+
+\begin{proposition}[路径数]
+$N$ 组、每次取 $k$ 组测试，能拼出的完整样本外路径数为
+\begin{equation}
+  \varphi(N,k) = \frac{k}{N}\binom{N}{k} = \binom{N-1}{k-1}.
+\end{equation}
+例如 $N=6,k=2$：共 $\binom{6}{2}=15$ 次切分，$\varphi=\binom{5}{1}=5$ 条完整路径。
+\end{proposition}
+
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$N$ & $k$ & 切分数 $\binom{N}{k}$ & 路径数 $\varphi$ & 训练比例 \\
+\midrule
+6 & 2 & 15 & 5 & 4/6 \\
+8 & 2 & 28 & 7 & 6/8 \\
+10 & 2 & 45 & 9 & 8/10 \\
+6 & 1 & 6 & 1 & 5/6（退化为普通 K 折）\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keybox}[CPCV 的真正价值]
+它给你的不是一个数，而是一个\textbf{分布}。
+如果你的策略在 5 条路径上的夏普分别是 $1.8, 1.6, 0.2, 1.5, 1.7$，
+那么"平均 1.36"是没有意义的——真实情况是"有四条路径不错，有一条几乎失效"。
+这种信息在单次 K 折里完全看不到。
+\end{keybox}
+
+\section{Deflated Sharpe Ratio：给夏普打折}
+
+\subsection{从 PSR 说起}
+
+Bailey 与 López de Prado 提出的概率夏普比率（PSR）回答：
+\textbf{在考虑偏度与峰度之后，真实夏普大于某个基准的概率是多少？}
+
+\begin{equation}
+  \widehat{\mathrm{PSR}}(\SR^*) = \Phi\!\left(
+  \frac{(\widehat{\SR} - \SR^*)\sqrt{T-1}}
+  {\sqrt{1 - \hat\gamma_3\widehat{\SR} + \frac{\hat\gamma_4-1}{4}\widehat{\SR}^2}}
+  \right),
+  \label{eq:psr}
+\end{equation}
+
+其中 $\widehat{\SR}$ 是\textbf{未年化}的样本夏普，$\hat\gamma_3$ 是偏度，
+$\hat\gamma_4$ 是峰度（正态为 3）。
+
+三个细节：
+
+\begin{enumerate}
+  \item \textbf{必须用未年化的 SR}。年化后再套公式，结果会完全错误。
+  \item \textbf{偏度修正}：负偏（$\gamma_3<0$）会放大分母，降低显著性——
+        因为负偏意味着"平时小赚、偶尔巨亏"，这种收益分布更可能是运气。
+  \item \textbf{峰度修正}：厚尾（$\gamma_4>3$）同样降低显著性。
+\end{enumerate}
+
+\subsection{DSR：把"试了多少次"放进去}
+
+PSR 里有一个基准 $\SR^*$。如果我们把 $\SR^*$ 设为"$N$ 次试验下，纯噪声能达到的最大夏普的期望"，
+得到的概率就是 DSR：
+
+\begin{equation}
+  \SR_0 = \sqrt{\widehat{\Var}(\SR)}\left[
+  (1-\gamma)\Phi^{-1}\!\left(1-\frac1N\right)
+  + \gamma\,\Phi^{-1}\!\left(1-\frac{1}{Ne}\right)\right],
+  \label{eq:sr0}
+\end{equation}
+
+\begin{equation}
+  \boxed{\ \mathrm{DSR} = \Phi\!\left(
+  \frac{(\widehat{\SR} - \SR_0)\sqrt{T-1}}
+  {\sqrt{1 - \hat\gamma_3\widehat{\SR} + \frac{\hat\gamma_4-1}{4}\widehat{\SR}^2}}
+  \right)\ }
+  \label{eq:dsr}
+\end{equation}
+
+通常要求 $\mathrm{DSR} > 0.95$ 才算显著。
+
+\subsection{有效试验次数怎么估}
+
+直接把"我试了 200 次"代入 $N$ 会过度惩罚，因为 200 组参数之间高度相关。
+更合理的做法是用相关矩阵的有效秩：
+
+\begin{equation}
+  N_{\text{eff}} = \frac{(\sum_i \lambda_i)^2}{\sum_i \lambda_i^2},
+  \qquad \text{或} \qquad
+  N_{\text{eff}} = 1 + (M-1)(1-\bar\rho),
+  \label{eq:neff}
+\end{equation}
+
+其中 $\lambda_i$ 是候选策略收益相关矩阵的特征值，$\bar\rho$ 是平均相关系数。
+两者取较小值（更保守）。
+
+\begin{warnbox}[当试验次数未知时]
+读别人的研报时，你通常不知道对方试了多少次。这时可以反过来问：
+\textbf{这个夏普最多能承受多少次独立试验？}
+令 $\mathrm{DSR}=0.95$ 反解 $\SR_0^*$，再用一阶近似 $\SR_0\approx\sigma\sqrt{2\ln N}$ 得
+\begin{equation}
+  N_{\max} \approx \exp\!\left[\frac12\left(\frac{\SR_0^*}{\sigma_{\SR}}\right)^2\right].
+\end{equation}
+如果这个数字小于"一个正常人会尝试的次数"，结论就该打问号。
+\end{warnbox}
+
+\subsection{一个数值例子}
+
+假设某策略：$T=1000$ 个交易日，年化夏普 $1.5$（未年化 $\widehat{\SR}=0.0945$），
+偏度 $-0.8$，峰度 $6$，试了 $N_{\text{eff}}=20$ 次。
+
+\begin{itemize}
+  \item $\sigma_{\SR} = 1/\sqrt{999} = 0.0316$；
+  \item $\SR_0 = 0.0316\times[(0.423)(2.326) + 0.577(2.75)] = 0.0316\times 2.56 = 0.0809$；
+  \item 分母 $=\sqrt{1 - (-0.8)(0.0945) + (5/4)(0.0945)^2} = \sqrt{1+0.0756+0.0112}=1.042$；
+  \item $z = (0.0945-0.0809)\times31.6/1.042 = 0.41$；
+  \item $\mathrm{DSR} = \Phi(0.41) = 0.66$。
+\end{itemize}
+
+\textbf{夏普 1.5 的策略，在试了 20 次之后，显著性是 0.66——远达不到 0.95。}
+
+这就是"打折"的含义：它不是说策略不好，而是说\textbf{现有证据不足以排除运气}。
+
+\subsection{门槛该定多高：$t>2$ 不够}
+
+Harvey, Liu \& Zhu (2016) 在考察了数百个已发表因子之后提出：
+传统的 $t>2.0$ 门槛已经不够，\textbf{新因子应要求 $t>3.0$}。
+Hou, Xue \& Zhang (2020) 对 447 个已发表异象做统一复现，
+发现 286 个（64\%）在 5\% 水平下不显著；把门槛提到 $t>3$，不显著的比例升到 85\%。
+
+本书据此在附录~\ref{app:strict} 里对全部 39 个因子重做了一次判定：
+31 个通过 $|t|>3$，4 个仅在 $t>2$ 水平上显著，4 个不显著。
+
+\begin{warnbox}[别把“通过 $t>3$”当成“独立发现”]
+$t>3$ 解决的是“单个因子是否为噪声”，不解决“这 31 个因子是不是同一个故事”。
+本书的因子高度相关（见第~\ref{ch:factor} 章的相关性讨论），
+真正独立的维度远小于 31。多重检验的惩罚要靠下面的 DSR 与 PBO，
+而不是靠把门槛调高。
+\end{warnbox}
+
+\subsection{一个可以直接查的表}
+
+把 DSR 的第一步（零假设下 $N$ 次试验最优夏普的期望）做成表，
+比记公式更实用。表~\ref{tab:sr0} 是\textbf{年化夏普}口径。
+
+\begin{table}[htbp]
+\centering
+\caption{纯噪声下 $N$ 次试验的最优夏普期望 $\SR_0$（年化）}
+\label{tab:sr0}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+试验数 $N$ & $\mathrm{SD}(\SR)=0.2$ & $0.3$ & $0.5$ \\
+\midrule
+6   & 0.26 & 0.39 & 0.65 \\
+10  & 0.32 & 0.47 & 0.79 \\
+30  & 0.41 & 0.62 & 1.04 \\
+100 & 0.51 & 0.76 & 1.27 \\
+1000& 0.65 & 0.98 & 1.63 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+读法：如果你试了 100 个变体、各变体夏普的标准差是 0.5，
+那么\textbf{纯噪声下的最优夏普期望就是 1.27}。此时你观察到一个 1.2 的夏普，
+它和运气无法区分。
+
+这张表解释了一个常见困惑：为什么很多“夏普 1.5 的完美策略”上线就亏。
+
+\section{PBO：测的是选择过程，不是策略}
+
+\subsection{CSCV 算法}
+
+\begin{enumerate}
+  \item 设 $M$ 个候选策略的收益矩阵为 $T\times M$；
+  \item 把时间轴等分成 $S$ 块（$S$ 取偶数，常用 16）；
+  \item 对每个 $\binom{S}{S/2}$ 组合：前一半块拼成"样本内"，后一半拼成"样本外"；
+  \item 在样本内挑出夏普最高的策略 $n^*$；
+  \item 看它在样本外的排名分位 $\omega = \mathrm{rank}/(M+1)$，取对数几率
+        $\lambda = \ln\frac{\omega}{1-\omega}$；
+  \item $\mathrm{PBO} = \Pr(\lambda \le 0)$。
+\end{enumerate}
+
+\begin{pycode}[PBO 的核心循环]
+for combo in combinations(range(S), S // 2):
+    IS  = concat(blocks[i] for i in combo)
+    OOS = concat(blocks[i] for i not in combo)
+    n_star = argmax(sharpe(IS))
+    omega  = rank(sharpe(OOS))[n_star] / (M + 1)
+    logits.append(log(omega / (1 - omega)))
+pbo = mean(logit <= 0 for logit in logits)
+\end{pycode}
+
+\subsection{怎么读}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+PBO & 含义 \\
+\midrule
+$\approx 0.5$ & 样本内选出的"最优"在样本外与随机无异——纯噪声拟合 \\
+$< 0.1$ & 序关系稳定，过拟合风险低 \\
+$\rightarrow 1$ & 样本内越好，样本外越差——典型的"反向过拟合" \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{PBO 不能告诉你什么}
+
+这是最容易被误用的一点。PBO 只衡量\textbf{相对序关系}，不衡量\textbf{绝对收益}。
+
+\begin{warnbox}[两个反例]
+\textbf{反例 A（高 PBO 但都赚钱）}：100 个策略的真实夏普都在 $[2.0, 2.1]$。
+由于差异极小，样本内第一名在样本外有 50\% 概率掉到后半区，PBO 约等于 $0.5$。
+但随便选哪个都赚钱。
+
+\textbf{反例 B（低 PBO 但都亏钱）}：100 个策略全是亏的，且排名极其稳定
+（亏得最少的那只永远排第一）。PBO 等于 $0$，但策略完全无效。
+
+所以 PBO 必须与\textbf{绝对收益}一起读。
+\end{warnbox}
+
+\section{White's Reality Check 与 SPA}
+
+Reality Check 回答的是另一个问题：\textbf{$M$ 个策略里最好的那个，是否显著优于基准？}
+
+零假设：所有策略的真实超额收益 $\le 0$。用对时间分块的重抽样（保留策略之间的相关性）
+构造 $\max$ 统计量的零分布：
+
+\begin{equation}
+  V = \max_{m}\ \sqrt{T}\,\bar f_m,
+  \qquad
+  p = \Pr\nolimits^{*}\!\left(V^* \ge V\right),
+\end{equation}
+
+其中 $f_m$ 是第 $m$ 个策略相对基准的收益。$p<0.05$ 才说明"最好那个"不是运气。
+
+Hansen 的 SPA 是它的改进版，剔除了"明显很差"的策略，提升了检验功效。
+
+\section{四个统计量的分工}
+
+\begin{center}
+\begin{longtable}{@{}p{0.16\textwidth}p{0.34\textwidth}p{0.38\textwidth}@{}}
+\toprule
+\textbf{统计量} & \textbf{回答的问题} & \textbf{不能回答} \\
+\midrule
+\endhead
+PSR & 这条曲线本身显著吗 & 试了多少次 \\
+DSR & 扣除多次尝试后还显著吗 & 策略之间的相对优劣 \\
+PBO & 我的"挑选过程"可靠吗 & 策略是否赚钱 \\
+Reality Check & 最好那个是否显著优于基准 & 单个策略的显著性 \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\begin{keybox}[一份诚实的研究报告应该长什么样]
+\begin{enumerate}
+  \item 我提出 $K$ 个候选假设，全部记录在案；
+  \item 用 Purged K-Fold 与 CPCV 得到样本外表现的\textbf{分布}，而不只是一个数；
+  \item 报告 DSR（含有效试验次数）、PBO、Reality Check 的 $p$ 值；
+  \item 报告扣费后、分年度的收益，并指出收益集中在哪几年；
+  \item 明确列出所有已知局限（数据缺失、成本假设、样本期）。
+\end{enumerate}
+\end{keybox}
+
+\section{研究纪律：一张可以贴在墙上的清单}
+
+\begin{enumerate}
+  \item 先写假设，再看数据。看到数据之后提出的假设，一律按"事后假设"处理。
+  \item 每试一个配置，就在日志里加一行。忘记试过什么，是过拟合的开始。
+  \item 样本外只用一次。反复用同一样本外调参，它就不再是样本外。
+  \item 任何 IC 超过 $0.15$ 的日频因子，先假设是数据泄漏，去找证据反驳自己。
+  \item 任何夏普超过 $2$ 的日频策略，先假设是成本低估或不可成交。
+  \item 结论里必须有一句"如果某某条件不成立，这个结论就失效"。
+\end{enumerate}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 纯噪声策略的样本内夏普期望随 $\sqrt{\ln N}$ 增长；不报 $N$ 的夏普没有意义。
+  \item Purge 剔除标签重叠，Embargo 切断特征反向泄漏，两者缺一不可。
+  \item CPCV 给出样本外表现的\textbf{分布}，路径数为 $\binom{N-1}{k-1}$。
+  \item DSR 用未年化夏普加偏度峰度修正加有效试验次数，给出一个概率。
+  \item PBO 测的是选择过程的可靠性，必须与绝对收益一起读。
+  \item 诚实的研究报告：全部尝试记录，加样本外分布，加四个统计量，加已知局限。
+\end{enumerate}

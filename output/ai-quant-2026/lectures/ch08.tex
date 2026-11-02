@@ -1,0 +1,250 @@
+\chapter{组合构建：从分数到持仓}\label{ch:portfolio}
+
+\begin{keybox}[本章要回答的问题]
+有了每只股票的预测分数，怎么变成持仓？分位数组合与优化器该选哪个？
+A 股的 T+1、整手、涨跌停如何进入约束？交易成本怎么估？
+\end{keybox}
+
+\section{四种从分数到权重的方法}
+
+\subsection{分位数组合}
+
+把当天可交易股票按分数排序，取最高 $q$ 分位等权做多，最低 $q$ 分位等权做空。
+
+\begin{equation}
+  w_i = \begin{cases}
+    +\dfrac{1}{|S_{\text{top}}|}, & i \in S_{\text{top}}, \\[6pt]
+    -\dfrac{1}{|S_{\text{bot}}|}, & i \in S_{\text{bot}}, \\[6pt]
+    0, & \text{否则}.
+  \end{cases}
+\end{equation}
+
+\textbf{优点}：简单、换手可控、与分层回测的逻辑一致。
+\textbf{缺点}：不考虑个股风险差异，等权意味着高波动股贡献更大的组合波动。
+
+\subsection{Top-$N$ 多头}
+
+只做多前 $N$ 只（$N$ 常取 30--100）。
+
+\textbf{优点}：贴近个人实际（多数人没有融券能力）。
+\textbf{缺点}：$N$ 越小，特异性风险越大；$N$ 越大，alpha 被稀释。
+
+\subsection{均值--方差优化}
+
+\begin{equation}
+  \max_{w}\ w^\top \mu - \frac{\lambda}{2}w^\top \Sigma w
+  \quad \text{s.t.}\quad \mathbf{1}^\top w = 1,\ \ |w_i| \le u,
+\end{equation}
+
+其中 $\mu$ 是预测收益，$\Sigma$ 是协方差矩阵。
+
+\begin{warnbox}[均值--方差在股票池上的经典失败]
+$\Sigma$ 的估计误差会被优化器放大——它会专门挑那些"样本内看起来低风险"的股票，
+而这些往往是估计噪声造成的假象。$N=3000$ 时，样本协方差矩阵几乎不可逆，
+必须做收缩（Ledoit-Wolf）或因子模型化。
+\end{warnbox}
+
+\subsection{带约束的优化（推荐）}
+
+把风险模型、行业中性、换手惩罚一起放进目标函数：
+
+\begin{equation}
+  \max_{w}\ w^\top \mu
+  - \frac{\lambda}{2}w^\top \Sigma w
+  - \kappa\,\|w - w_{\text{prev}}\|_1
+  \quad \text{s.t.}\quad
+  \begin{cases}
+    \mathbf{1}^\top w = 1, \\
+    |w_i| \le u, \\
+    |\text{行业暴露}_k| \le \delta, \\
+    w_i = 0 \ \text{若不可买}.
+  \end{cases}
+\end{equation}
+
+$\ell_1$ 换手惩罚项是关键：它直接告诉优化器"调仓有成本"，
+能显著降低换手而不牺牲太多 alpha。
+
+\section{A 股的四类硬约束}
+
+\subsection{T+1}
+
+1995 年起 A 股实行 T+1：当日买入的股票次日才能卖出。在日频调仓中，这意味着：
+\begin{itemize}
+  \item 组合的最小持有期是 1 天；
+  \item 如果策略每天调仓，实际可交易的只有昨天之前买入的部分。
+\end{itemize}
+
+工程上最简单的处理：\textbf{调仓频率不低于 1 天}，并在回测中把当日买入的份额
+标记为"不可卖"。
+
+\subsection{整手（100 股）}
+
+资金量小时，整手约束会显著偏离目标权重。例如 10 万元资金买 50 只股票，
+每只 2000 元，若某股价 150 元，一手就要 15000 元——根本买不起。
+
+\begin{warnbox}[小资金的核心矛盾]
+资金量小于 50 万时，"等权持有 50 只"在数学上就不可行。
+此时要么减少持仓数（集中度上升），要么接受权重偏离。
+\textbf{任何忽略整手约束的回测，对小资金都是不可执行的。}
+\end{warnbox}
+
+\subsection{涨跌停不可成交}
+
+第~\ref{ch:data} 章已经把 \texttt{can\_buy\_next} / \texttt{can\_sell\_next} 做成显式列。
+组合构建时必须：
+\begin{itemize}
+  \item 买入候选集 $=$ 当日可交易 $\cap$ 次日可买；
+  \item 若某只股票次日一字涨停，则本期无法建仓，权重分配给其余股票。
+\end{itemize}
+
+\subsection{停牌}
+
+停牌股票既不能买也不能卖。若持仓股停牌，其权重会被"冻结"，
+组合的实际暴露与目标暴露产生偏离。回测中必须按"最后成交价"估值，
+并在复牌后按实际价格结算。
+
+\section{做空约束：为什么 A 股的现实是“指数增强”而不是“多空对冲”}
+
+本书第~\ref{ch:result} 章的所有组合收益都是\textbf{多空}的——做多前 20\%、做空后 20\%。
+这一节说明为什么这个假设在 A 股基本不成立，以及正确的替代形态是什么。
+
+\subsection{个股融券基本不可行}
+
+\begin{itemize}
+  \item 券源少、费率高，个人投资者很难稳定借到券；
+  \item 2023--2024 年监管收紧（提高保证金比例、暂停限售股出借、暂停转融券），
+        实操上单票做空已接近不可行；
+  \item 即便借到，也面临随时被召回的风险，对冲的稳定性无法保证。
+\end{itemize}
+
+\subsection{对冲工具与基差成本}
+
+可行的对冲工具是指数期货（IF 沪深 300、IC 中证 500、IM 中证 1000）与 ETF。
+代价是\textbf{基差}：长期贴水意味着对冲成本，中性策略的实际收益要先扣掉这块。
+贴水越深，对冲越贵，中性策略的实际收益越低。
+
+\subsection{结构后果：负向信号只能“低配”}
+
+既然不能做空，负向信号唯一的作用就是\textbf{降低权重}，而不是产生负收益。
+这就把策略的形态从“多空对冲”改成了\textbf{指数增强}：
+
+\begin{itemize}
+  \item 收益 = 基准收益 + （正向超配 + 负向低配）带来的超额；
+  \item 风险 = 跟踪误差，而不是市场中性下的绝对波动；
+  \item 评价指标 = 信息比率 IR 与跟踪误差，而不是夏普。
+\end{itemize}
+
+\begin{keybox}[这对本项目意味着什么]
+第~\ref{ch:result} 章报出的“扣费年化 16.3\%、夏普 1.43”是\textbf{多空}口径。
+在指数增强形态下，同一批信号只能拿到其中的一部分——
+大致相当于“多头端超额减去基准”，而且还要再扣掉跟踪误差的约束成本。
+
+因此本书的所有收益数字都应读作\textbf{信号强度的上界}，
+而不是\textbf{可实现的策略收益}。真正的实现版本需要一个指数增强回测框架，
+本项目尚未完成（见第~\ref{ch:result} 章的局限说明）。
+\end{keybox}
+
+\subsection{程序化交易监管对执行的约束}
+
+2024 年以来，程序化交易在中国进入持牌报告与差异化监管阶段：
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+时间 & 事件 \\
+\midrule
+2024-05-11 & 证监会发布《证券市场程序化交易管理规定（试行）》 \\
+2024-10-08 & 上述规定施行 \\
+2025-04-03 & 沪深北交易所发布《程序化交易管理实施细则》 \\
+2025-07-07 & 实施细则施行 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+核心要求：\textbf{先报告、后交易}；高频交易认定标准为单个账户
+\textbf{每秒申报撤单 300 笔以上}，或\textbf{单日 20000 笔以上}；
+对高频交易实行差异化收费与从严管理。
+
+对本项目的实际影响：任何依赖高换手的策略，除了要算清成本，
+还要把\textbf{报撤单笔数预算}当作硬约束。这也是第~\ref{ch:result} 章
+强调“不要把研究建立在极高换手假设上”的制度原因。
+
+\section{交易成本模型}
+
+\subsection{显性成本}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+项目 & 费率 & 说明 \\
+\midrule
+佣金 & 0.01\%--0.03\%（双边） & 券商差异大，个人常在 0.025\% \\
+印花税 & 0.05\%（仅卖出） & 2023-08-28 起由 0.1\% 下调 \\
+过户费 & 0.001\%（双边） & 沪深两市均收 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+显性成本双边合计约 $0.08\%$--$0.11\%$。
+
+\subsection{隐性成本：滑点与冲击}
+
+这是真正吃掉 alpha 的部分。常用的平方根冲击模型：
+
+\begin{equation}
+  \text{impact} \approx k\,\sigma\sqrt{\frac{Q}{V}},
+  \label{eq:impact}
+\end{equation}
+
+其中 $Q$ 是你的委托量，$V$ 是同期市场成交量，$\sigma$ 是日波动率，
+$k$ 是经验常数（A 股约 $0.1$--$0.3$）。
+
+对个人投资者，$Q/V$ 通常很小（小于 $1\%$），冲击成本可以近似为固定滑点：
+中小盘 $10$--$20$ bp，大盘 $3$--$8$ bp。
+
+\begin{keybox}[成本参数的合理取值]
+本书采用\textbf{单边 30 bp}（含佣金、印花税、滑点、冲击），
+对应"中等换手、中等市值"的情形。做敏感性分析时会在 $15$--$60$ bp 之间扫描。
+如果你的策略在 $40$ bp 下就失效，说明它的 alpha 太薄，不值得实盘。
+\end{keybox}
+
+\section{容量分析}
+
+容量 = 在给定成本下，策略能承载的资金规模。
+
+\begin{equation}
+  \text{Capacity} \approx \frac{\alpha \cdot \mathrm{AUM}}{\text{cost}(\mathrm{AUM})}
+  \;\Rightarrow\;
+  \mathrm{AUM}^* : \ \alpha = k\sigma\sqrt{\frac{w\cdot \mathrm{AUM}}{V}}.
+\end{equation}
+
+直观判断：
+\begin{itemize}
+  \item 持仓越集中、股票市值越小、换手越高，容量越小；
+  \item 个人投资者（小于 100 万）几乎不受容量约束；
+  \item 但"小市值 + 高频"的策略，即便资金很小，也会因为流动性不足而执行困难。
+\end{itemize}
+
+\section{一个最小可用的组合流程}
+
+\begin{pycode}[从分数到持仓]
+def build_portfolio(day_df, score, top_n=50, max_weight=0.05):
+    d = day_df.assign(s=score)
+    d = d[d["can_buy_next"] & d["s"].notna()]
+    d = d.nlargest(top_n, "s")
+    w = pd.Series(1.0 / len(d), index=d["code"])
+    w = w.clip(upper=max_weight)      # 单票上限
+    return w / w.sum()                 # 归一
+\end{pycode}
+
+这段代码只有 6 行，但它包含了四个必须的约束：可买、分数有效、持仓数上限、单票上限。
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 分位数组合是最稳的起点；均值--方差优化需要收缩协方差，否则会放大估计误差。
+  \item $\ell_1$ 换手惩罚是降低成本最有效的手段。
+  \item T+1、整手、涨跌停、停牌是四类硬约束，必须显式建模。
+  \item 显性成本约 $0.1\%$，隐性成本（滑点加冲击）才是主要杀手。
+  \item 单边 30 bp 是合理的基准假设；超过 40 bp 就失效的策略不值得实盘。
+\end{enumerate}

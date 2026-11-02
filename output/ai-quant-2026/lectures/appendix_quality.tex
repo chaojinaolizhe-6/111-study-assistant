@@ -1,0 +1,68 @@
+\chapter{质量因子族：重算显著性与有效样本}\label{app:quality}
+
+\section{动机}
+
+第~\ref{ch:result} 章有一个不起眼的结论：本地的质量因子（ROE、毛利率、
+现金含量、应计）的旧年度汇总 ICIR 较低。该结果不足以判断全样本显著性。
+
+当时给出的解释是"字段太少"——本地库只有 9 个财务字段。外部快照带来 121 个指标，
+其中本地确实拿不到的有：研发费用、商誉、无形资产、有息负债、营运资本、
+费用明细、扣非利润、投资收益。
+
+于是有了这一章的实验：\textbf{补充字段是否带来增量预测关联？}
+
+\section{二十个因子}
+
+从 121 个指标里构造 20 个质量因子，统一方向为"数值越大越好"：
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+类别 & 因子 & 构造 \\
+\midrule
+盈利能力 & \texttt{q\_wroe} / \texttt{q\_roe} / \texttt{q\_roa} & 加权 ROE / ROE / ROA \\
+ & \texttt{q\_gm} / \texttt{q\_opm} & 毛利率 / 营业利润率 \\
+现金质量 & \texttt{q\_cfo\_ni} & 经营现金流 TTM / $|$归母净利 TTM$|$ \\
+ & \texttt{q\_accrual} & $-$（归母净利 $-$ 经营现金流）/ 总资产 \\
+ & \texttt{q\_cash\_rev} & 经营流入小计 / 营业总收入 \\
+研发 & \texttt{q\_rd} & 研发费用 TTM / 营业总收入 TTM \\
+商誉 & \texttt{q\_gw} & $-$商誉 / 归母权益 \\
+ & \texttt{q\_intang} & $-$（商誉 $+$ 无形）/ 总资产 \\
+杠杆 & \texttt{q\_lev} & $-$总负债 / 总资产 \\
+ & \texttt{q\_debt} & $-$（短期借款 $+$ 长期借款）/ 总资产 \\
+偿债 & \texttt{q\_current} / \texttt{q\_quick} & 流动比率 / 速动比率 \\
+营运 & \texttt{q\_wc} & （流动资产 $-$ 流动负债）/ 总资产 \\
+ & \texttt{q\_at} & 营业总收入 TTM / 总资产 \\
+费用 & \texttt{q\_exp} & $-$（管理 $+$ 销售 $+$ 财务费用）/ 营业总收入 \\
+利润含金量 & \texttt{q\_cut} & 扣非净利 / $|$归母净利$|$ \\
+ & \texttt{q\_invinc} & $-$投资收益 / $|$归母净利$|$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{重算结果}
+本节使用补充库、2020--2026 的次日开盘至第六日开盘标签。
+调整后 IC 控制对数市值、二十日换手、波动和五日反转。
+\input{generated_quality_table}
+\input{generated_inference_note}
+
+\section{撤回“有效样本仅 14 个”的推导}
+旧程序先逐年算 $t$，然后求年度 $t$ 的平均。这个平均值不是全样本的检验统计量，
+把它与全样本朴素 $t$ 代入 $n(t_{NW}/t_{naive})^2$，得不到可解释的有效样本量。
+旧版“20 个因子全部不显著”“预测能力为零”和“质量只适合硬筛选”均不再作为本实验结论。
+
+以 \texttt{q\_cfo\_ni} 为例，本次保存了 \AuditQCfoCount{} 个实际 IC 观测；
+朴素 $t=\AuditQCfoNaive$，从同一序列重算的 HAC $t=\AuditQCfoT$，
+方差等价样本量约为 \AuditQCfoN{}。这不是“独立季报数”。
+慢变因子值与每日收益的横截面相关可以每日变化，不能用财报更新次数替代 IC 相关性测量。
+主库的 size、bp、cfp 还包含随股价变动的分母，不能说“一年只变化几次”。
+
+\section{还需要什么证据}
+\begin{enumerate}
+  \item 对照 5、20、60 日 HAC 带宽及每五日采样结果，检查显著性是否依赖选择；完整结果在敏感性 CSV。
+  \item 对全部被尝试的因子和参数进行多重检验；这里的逐因子 $t$ 不是全搜索校正后的显著性。
+  \item 核实 PIT 字段、股票池缺失机制和实际收益跨度，再用新的时间段验证。
+  \item 质量筛选、长周期持有与主模型增量贡献各自需要实验；本表不证明哪一种用法一定更好。
+\end{enumerate}
+不显著不能证明无效，显著也不能证明可交易。首先保证统计量来自同一组观测，再解释经济含义。

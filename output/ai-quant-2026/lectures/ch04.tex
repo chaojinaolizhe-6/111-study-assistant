@@ -1,0 +1,342 @@
+\chapter{因子：从经济假设到可计算表达式}\label{ch:factor}
+
+\begin{keybox}[本章要回答的问题]
+什么样的因子值得算？40 个因子背后的经济逻辑分别是什么？为什么"因子越多越好"
+是错的？一个可维护的因子库应该如何组织？
+\end{keybox}
+
+\section{好因子的四个判据}
+
+在动手算之前，先用四条标准筛一遍：
+
+\begin{enumerate}
+  \item \textbf{经济逻辑}：能说清它为什么应该预测收益（第~\ref{ch:source} 章的五类来源）。
+  \item \textbf{稳健性}：换一个样本区间、换一个股票池、换一种中性化方式，方向和量级不变。
+  \item \textbf{可计算性}：只用公开可得的数据，且能严格做时点对齐。
+  \item \textbf{容量}：在可承受的换手下，扣除成本仍有剩余。
+\end{enumerate}
+
+\begin{warnbox}["因子越多越好"是最贵的错觉]
+每多一个因子，你就多了一次多重检验。挖 500 个因子、留下 20 个，
+看起来是"筛选"，实际上是在做 500 次假设检验而不做任何校正。
+第~\ref{ch:eval} 章会给出 Benjamini-Hochberg 的完整做法。
+本书的因子库只保留 40 个，每个都有明确的经济含义，这不是偷懒，是纪律。
+\end{warnbox}
+
+\section{因子库的组织方式}
+
+每个因子登记六件事，缺一不可：
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{字段} & \textbf{作用} \\
+\midrule
+\texttt{name} & 唯一名，小写下划线，例如 \texttt{rev\_5} \\
+\texttt{category} & 家族，便于做相关性聚类与暴露分析 \\
+\texttt{formula} & 人能读懂的公式，必须与代码逐项对应 \\
+\texttt{direction} & $+1$ 表示数值越大预期收益越高，$-1$ 反之 \\
+\texttt{window} & 最长回看交易日，用于构造 PIT 样本与 purge 区间 \\
+\texttt{func} & 接收宽表面板、返回同形状矩阵 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{pycode}[因子注册表机制]
+@factor("rev_5", "反转", "-(C_t / C_{t-5} - 1)", +1, 7,
+        "周度反转：A 股最强的短周期效应之一")
+def _rev_5(w: Wide):
+    c = w("adj_close")
+    return -(c / c.shift(5) - 1)
+\end{pycode}
+
+\texttt{direction} 字段看似多余，其实很关键：它把"我的预期"写进了代码。
+当你算出的 IC 与 \texttt{direction} 相反时，程序会提醒你——这可能是发现了反例，
+也可能是代码写错了。两种都值得停下来看一眼。
+
+\section{反转族}
+
+\subsection{经济逻辑}
+
+散户对短期信息过度反应，推高（或压低）价格后逐步修正。A 股散户成交占比高，
+这个效应比成熟市场更明显。
+
+\subsection{核心因子}
+
+\begin{align}
+  \text{rev\_1} &= -\left(\frac{C_t}{C_{t-1}} - 1\right), \\
+  \text{rev\_5} &= -\left(\frac{C_t}{C_{t-5}} - 1\right), \\
+  \text{rev\_10} &= -\left(\frac{C_t}{C_{t-10}} - 1\right).
+\end{align}
+
+其中 $C_t$ 为后复权收盘价。负号表示"跌得多的，预期反弹"，因此因子值越大越好。
+
+\subsection{实测与解读}
+
+本书在全 A 股日频上实测，5 日反转的 Rank IC 约为 $+0.05$，年化 ICIR 在 $3$--$7$ 之间，
+是所有因子里最稳定的一个。但它的换手极高（单边约 $35\%$／5 日），
+扣掉成本后收益会大幅缩水。
+
+\begin{warnbox}[反转因子的两个陷阱]
+\begin{enumerate}
+  \item \textbf{涨停/跌停不可成交}。反转因子选出的往往是跌幅最大的股票，
+        其中相当一部分是跌停板——你根本买不到，或者买到了也卖不掉。
+  \item \textbf{ST 与退市}。跌得最惨的股票里混着大量 ST 与准退市股。
+        不剔除它们，反转因子的收益会被显著高估。
+\end{enumerate}
+\end{warnbox}
+
+\section{动量族}
+
+\subsection{经济逻辑}
+
+信息扩散缓慢，价格对新信息反应不足，因此过去涨的继续涨。这个逻辑在美股中长期成立，
+在 A 股日频上\textbf{往往反向}——因为短期反转的强度压过了中期动量。
+
+\subsection{核心因子}
+
+\begin{align}
+  \text{mom\_20} &= \frac{C_t}{C_{t-20}} - 1, \\
+  \text{mom\_60} &= \frac{C_t}{C_{t-60}} - 1, \\
+  \text{mom\_12\_1} &= \frac{C_{t-20}}{C_{t-240}} - 1, \\
+  \text{resid\_mom\_60} &= \text{mom\_60} - \beta_{120}\cdot \text{mom}^{\text{mkt}}_{60}.
+\end{align}
+
+\texttt{mom\_12\_1} 跳过最近一个月，是为了避开短期反转的污染——这是动量研究的
+标准做法（Jegadeesh \& Titman 的 12-1 动量）。
+
+\texttt{resid\_mom\_60} 剥离市场 beta，只保留个股特质动量，比裸动量稳定。
+
+\subsection{实测：一个必须面对的结论}
+
+本书实测 20 日动量的 Rank IC 为\textbf{负}（约 $-0.05$ 到 $-0.08$）。
+也就是说，在 A 股日频上，"过去 20 天涨得多的股票"后续表现更差。
+
+这不是本书的独特发现，而是 A 股长期存在的现象。它提醒我们：
+\textbf{任何因子的方向都必须在自己的样本上重新验证}，教科书的符号不可直接照搬。
+
+\section{波动族}
+
+\subsection{经济逻辑}
+
+低波动异象有两个解释：一是杠杆约束（不能加杠杆的投资者只能通过买高波动股来追求高收益，
+推高了高波动股的估值）；二是彩票偏好（投资者愿意为"可能暴涨"付溢价）。
+
+\subsection{核心因子}
+
+\begin{align}
+  \text{vol\_20} &= -\mathrm{std}(r, 20), \\
+  \text{vol\_60} &= -\mathrm{std}(r, 60), \\
+  \text{ivol\_60} &= -\mathrm{std}(r - \beta r^{\text{mkt}}, 60), \\
+  \text{skew\_20} &= -\mathrm{skew}(r, 20), \\
+  \text{max\_ret\_20} &= -\max(r, 20), \\
+  \text{amp\_20} &= -\mathrm{mean}\!\left(\frac{H-L}{C}, 20\right), \\
+  \text{range\_60} &= -\frac{\max(H,60) - \min(L,60)}{C}.
+\end{align}
+
+\texttt{ivol\_60}（特质波动率）比总波动更干净，因为它剥离了市场 beta 的影响。
+\texttt{max\_ret\_20}（最大单日收益）是彩票偏好最直接的代理变量，实测效果常常优于
+单纯的波动率。
+
+\section{流动性族}
+
+\subsection{经济逻辑}
+
+高换手意味着高分歧、高投机、高拥挤。流动性差的股票需要更高预期收益来补偿变现成本。
+
+\subsection{核心因子}
+
+\begin{align}
+  \text{turn\_20} &= -\mathrm{mean}(\text{Turnover}, 20), \\
+  \text{turn\_std\_20} &= -\mathrm{std}(\text{Turnover}, 20), \\
+  \text{turn\_chg} &= -\left(\frac{\mathrm{mean}(\text{Turn},5)}{\mathrm{mean}(\text{Turn},60)} - 1\right), \\
+  \text{amihud\_20} &= \mathrm{mean}\!\left(\frac{|r|}{\text{Amount}}, 20\right)\times 10^8, \\
+  \text{ln\_amount\_20} &= -\ln\big(\mathrm{mean}(\text{Amount}, 20)\big).
+\end{align}
+
+其中 Amihud 非流动性指标的含义是"单位成交额引起的价格冲击"：
+数值越大，说明这只股票越难在不推动价格的情况下买卖。
+
+\begin{warnbox}[换手率的口径问题]
+换手率 $=$ 成交量 $/$ 流通股本。流通股本在送转、增发时会变，
+而免费数据源通常只给"当前股本"。用当前股本算历史换手率，
+会在送转当年产生系统性偏差。本书的做法是用\textbf{月度股本快照前向填充}，
+把误差限制在一个月内。
+\end{warnbox}
+
+\section{量价族}
+
+\begin{align}
+  \text{pv\_corr\_20} &= -\mathrm{corr}(r, \Delta V/V, 20), \\
+  \text{gap\_20} &= -\mathrm{mean}\!\left(\frac{O_t}{C_{t-1}} - 1, 20\right), \\
+  \text{hl\_20} &= -\mathrm{mean}\!\left(\frac{H}{L} - 1, 20\right).
+\end{align}
+
+\texttt{pv\_corr\_20} 衡量"量价是否同步"：放量上涨的股票持续性更差，
+因此取负号后因子值越大越好。
+
+\section{价值族}
+
+\subsection{经济逻辑}
+
+估值低的股票长期跑赢，可能因为承担了困境风险，也可能因为市场对坏消息过度反应。
+
+\subsection{核心因子}
+
+\begin{align}
+  \text{bp} &= \frac{\text{BPS}}{C}, \qquad
+  \text{ep\_ttm} = \frac{\text{EPS}_{\text{TTM}}}{C}, \\
+  \text{sp\_ttm} &= \frac{\text{Revenue}_{\text{TTM}}}{\text{MktCap}}, \qquad
+  \text{cfp} = \frac{\text{CFO\_PS}_{\text{TTM}}}{C}.
+\end{align}
+
+\subsection{TTM 的构造}
+
+财报是累计口径：一季报的净利润是 1--3 月的累计，年报是 1--12 月的累计。
+直接比较两者毫无意义。TTM（滚动十二个月）的还原方式是：
+
+\begin{equation}
+  \text{TTM}_t =
+  \begin{cases}
+    \text{累计}_t, & \text{若为年报}, \\[4pt]
+    \text{累计}_t + \text{上年年报} - \text{上年同期累计}, & \text{否则}.
+  \end{cases}
+  \label{eq:ttm}
+\end{equation}
+
+\section{质量族}
+
+\begin{align}
+  \text{roe} &= \text{加权 ROE}, \\
+  \text{gross\_margin} &= \text{销售毛利率}, \\
+  \text{ocf\_to\_eps} &= \frac{\text{CFO\_PS}_{\text{TTM}}}{|\text{EPS}_{\text{TTM}}|}, \\
+  \text{accrual} &= -\frac{\text{EPS}_{\text{TTM}} - \text{CFO\_PS}_{\text{TTM}}}{|\text{EPS}_{\text{TTM}}|}.
+\end{align}
+
+\texttt{accrual}（应计项）衡量"会计利润里有多少还没变成现金"。
+应计越高，利润质量越差，后续越容易向下修正。这是 Sloan（1996）以来
+最稳健的会计异象之一。
+
+\section{成长族}
+
+\begin{align}
+  \text{rev\_yoy} &= \text{营业总收入同比}, \\
+  \text{np\_yoy} &= \text{归母净利润同比}, \\
+  \text{rev\_accel} &= \text{rev\_yoy}_t - \text{rev\_yoy}_{t-60}.
+\end{align}
+
+\texttt{rev\_accel}（成长加速度）是一个二阶量：市场对"增速在加快"的定价
+往往比对"增速高"更敏感。
+
+\section{规模与风险}
+
+\begin{align}
+  \text{size} &= -\ln(\text{流通市值}), \\
+  \text{beta\_60} &= -\beta_{120}.
+\end{align}
+
+\begin{warnbox}[规模因子：不是衰减，是只在不可执行的区段里存在]
+小市值在 2012--2016 年是 A 股最强的因子。2017 年之后，随着监管趋严、
+壳价值消失、注册制扩容，它的效力大幅削弱，甚至在某些区间反向。
+如果你在 2015 年之前的数据上挖因子，会得到一个"小市值无敌"的结论，
+而这个结论在样本外会失效。
+\end{warnbox}
+
+\section{因子相关性：你在重复计算同一个故事}
+
+40 个因子里，真正独立的信息可能只有 8--12 个维度。检验方式有两种：
+
+\begin{enumerate}
+  \item \textbf{截面相关性}：每天算一次因子之间的 Spearman 相关，再对时间取平均。
+        相关系数 $> 0.7$ 的两个因子，基本可以视为同一个。
+  \item \textbf{IC 序列相关性}：比较两个因子的 IC 时间序列是否同步。
+        这衡量的是"它们在什么时候有效"是否一致。
+\end{enumerate}
+
+\begin{pycode}[因子相关性矩阵]
+C = factor_corr({name: factor_matrix[name] for name in names})
+# 距离 = 1 - |corr|，用层次聚类把 40 个因子压成 10 个簇
+# 每簇只保留经济含义最清晰的一个代表
+\end{pycode}
+
+\begin{keybox}[因子库的正确用法]
+不是"把 40 个因子一起喂给模型"，而是：
+先聚类 → 每簇选代表 → 用代表因子做组合 → 用簇内其他因子做稳健性检验。
+模型输入 10 个正交性较好的因子，比输入 40 个高度相关的因子更稳。
+\end{keybox}
+
+\section{本书因子库全表}
+
+\begin{center}
+\small
+\begin{longtable}{@{}p{0.14\textwidth}p{0.09\textwidth}p{0.42\textwidth}p{0.06\textwidth}p{0.08\textwidth}@{}}
+\toprule
+\textbf{因子} & \textbf{家族} & \textbf{公式} & \textbf{方向} & \textbf{回看} \\
+\midrule
+\endhead
+\multicolumn{5}{@{}l}{\textit{反转 / 动量}}\\
+\texttt{rev\_1} & 反转 & $-(C_t/C_{t-1}-1)$ & $+$ & 2 \\
+\texttt{rev\_5} & 反转 & $-(C_t/C_{t-5}-1)$ & $+$ & 7 \\
+\texttt{rev\_10} & 反转 & $-(C_t/C_{t-10}-1)$ & $+$ & 12 \\
+\texttt{mom\_20} & 动量 & $C_t/C_{t-20}-1$ & $+$ & 22 \\
+\texttt{mom\_60} & 动量 & $C_t/C_{t-60}-1$ & $+$ & 62 \\
+\texttt{mom\_120} & 动量 & $C_t/C_{t-120}-1$ & $+$ & 122 \\
+\texttt{mom\_12\_1} & 动量 & $C_{t-20}/C_{t-240}-1$ & $+$ & 242 \\
+\texttt{resid\_mom\_60} & 动量 & $\text{mom}_{60}-\beta\,\text{mom}^{\text{mkt}}_{60}$ & $+$ & 130 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{波动 / 风险}}\\
+\texttt{vol\_20} & 波动 & $-\mathrm{std}(r,20)$ & $+$ & 22 \\
+\texttt{vol\_60} & 波动 & $-\mathrm{std}(r,60)$ & $+$ & 62 \\
+\texttt{ivol\_60} & 波动 & $-\mathrm{std}(r-\beta r^{m},60)$ & $+$ & 125 \\
+\texttt{skew\_20} & 波动 & $-\mathrm{skew}(r,20)$ & $+$ & 22 \\
+\texttt{kurt\_20} & 波动 & $-\mathrm{kurt}(r,20)$ & $+$ & 22 \\
+\texttt{max\_ret\_20} & 波动 & $-\max(r,20)$ & $+$ & 22 \\
+\texttt{amp\_20} & 波动 & $-\mathrm{mean}((H-L)/C,20)$ & $+$ & 22 \\
+\texttt{range\_60} & 波动 & $-(\max H_{60}-\min L_{60})/C$ & $+$ & 62 \\
+\texttt{beta\_60} & 风险 & $-\beta_{120}$ & $+$ & 122 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{流动性}}\\
+\texttt{turn\_20} & 流动性 & $-\mathrm{mean}(\text{Turn},20)$ & $+$ & 22 \\
+\texttt{turn\_std\_20} & 流动性 & $-\mathrm{std}(\text{Turn},20)$ & $+$ & 22 \\
+\texttt{turn\_chg} & 流动性 & $-\big(\bar{T}_5/\bar{T}_{60}-1\big)$ & $+$ & 62 \\
+\texttt{amihud\_20} & 流动性 & $\mathrm{mean}(|r|/\text{Amt},20)\!\times\!10^8$ & $+$ & 22 \\
+\texttt{ln\_amount\_20} & 流动性 & $-\ln(\mathrm{mean}(\text{Amt},20))$ & $+$ & 22 \\
+\texttt{vol\_ratio} & 流动性 & $-\big(\bar{V}_5/\bar{V}_{60}-1\big)$ & $+$ & 62 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{量价}}\\
+\texttt{pv\_corr\_20} & 量价 & $-\mathrm{corr}(r,\Delta V/V,20)$ & $+$ & 22 \\
+\texttt{gap\_20} & 量价 & $-\mathrm{mean}(O_t/C_{t-1}-1,20)$ & $+$ & 22 \\
+\texttt{hl\_20} & 量价 & $-\mathrm{mean}(H/L-1,20)$ & $+$ & 22 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{价值}}\\
+\texttt{bp} & 价值 & $\text{BPS}/C$ & $+$ & 1 \\
+\texttt{ep\_ttm} & 价值 & $\text{EPS}_{\text{TTM}}/C$ & $+$ & 1 \\
+\texttt{sp\_ttm} & 价值 & $\text{Rev}_{\text{TTM}}/\text{MktCap}$ & $+$ & 1 \\
+\texttt{cfp} & 价值 & $\text{CFO\_PS}_{\text{TTM}}/C$ & $+$ & 1 \\
+\texttt{div\_yield} & 价值 & 股息率 & $+$ & 1 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{质量 / 成长}}\\
+\texttt{roe} & 质量 & 加权 ROE & $+$ & 1 \\
+\texttt{gross\_margin} & 质量 & 销售毛利率 & $+$ & 1 \\
+\texttt{ocf\_to\_eps} & 质量 & $\text{CFO\_PS}/|\text{EPS}|$ & $+$ & 1 \\
+\texttt{accrual} & 质量 & $-(\text{EPS}-\text{CFO\_PS})/|\text{EPS}|$ & $+$ & 1 \\
+\texttt{rev\_yoy} & 成长 & 营收同比 & $+$ & 1 \\
+\texttt{np\_yoy} & 成长 & 净利同比 & $+$ & 1 \\
+\texttt{rev\_accel} & 成长 & $\Delta$ 营收同比 & $+$ & 62 \\
+\midrule
+\multicolumn{5}{@{}l}{\textit{规模}}\\
+\texttt{size} & 规模 & $-\ln(\text{流通市值})$ & $+$ & 1 \\
+\multicolumn{5}{@{}l}{\quad\itshape 附录~\ref{app:strict}：剔除最小 30\% 市值后 IC 翻负，判定为不可用}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 好因子要同时满足经济逻辑、稳健性、可计算性、容量四条。
+  \item 因子库必须登记公式、方向与回看期；方向是"我的预期"，与实测不符时要停下来查。
+  \item 反转、低波、流动性是 A 股最稳的三个家族；中长期动量在 A 股日频上往往为负。
+  \item 规模因子已显著衰减，用它之前必须分区间验证。
+  \item 40 个因子的有效维度可能只有 10 个，聚类与正交化是必做功课。
+\end{enumerate}

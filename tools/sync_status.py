@@ -139,7 +139,7 @@ def main() -> int:
         'current_subject':'见 state/current.md 按项目的有效证据；课程顺序见 .tutor/config/status-narrative.yml',
         'current_topic':'维护刷新不代表新学习；具体续学点见 state/current.md',
         'next':'见 plan/schedule.md、当天清单与原 status-narrative.yml；先尊重学习者当次选择',
-        'note':'默认闭卷；Unicode 公式；中国日期；保留当前项目协议和个人偏好',
+        'note':'默认闭卷；LaTeX 公式；中国日期；保留当前项目协议和个人偏好',
     })
     fields["last_session"] = f"{last_ts}（作答 {len(attempts)} 条；未解决困难 {len(open_hurdles)} 条）"
     fields["due_today"] = due_note

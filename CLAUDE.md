@@ -27,12 +27,12 @@
   1. **定位与肯定**：一句话明确指出学习者哪一步做对了、当前卡在哪个具体对象或条件；
   2. **直觉支点与公式（防曝光且好读）**：给 H1/H2 提示时，不要为了防 `exposure=partial` 而说半截谜语；直接写出**通用定理/判据**，或用**数字最简单的同类平行小例子**把方法讲透（不代原题待算步骤）。
   3. **唯一明确的下一步动作**：每次回复末尾只留**一个**具体判断或局部式子，严禁把一题四步或连环追问包装成“一个动作”。
-- **纯 Unicode 公式独立成行**：继续使用纯 Unicode 数学符号（禁用 `$...$` 与 `\frac` 等 TeX 命令）。凡包含分式、根号、积分、求和或双层括号的公式，**必须单独成行并缩进 2 格**，配套物理量/符号说明用短列表分行写出，严禁把复杂公式塞在中文长句行内。
+- **对话公式默认 LaTeX 渲染**：DSH 客户端用 KaTeX，行内写 `$...$`、行间写 `$$...$$`（`\(...\)`、`\[...\]` 亦可）。凡包含分式、根号、积分、求和的公式，仍**单独成行**，严禁塞进中文长句。**回退**：需要转发到微信、贴进不渲染公式的环境（纯文本、无插件的 Obsidian）、或需要逐字复制的卡片时，另给一份纯 Unicode 版（多字符指数写 `exp(2x)`，禁用组合附加符号，向量用粗体或 `a`、`r`、`L`）。
 - **审计元信息隔离到底部单行**：正文中严禁夹杂 `exposure=partial`、`needs_verify`、`（[教学归纳，非课件原文]）`、`（错因假说，待验证）` 等系统记账词。如需说明来源或记账状态，统一折叠在回复最末尾单行：`> 📊 状态记录：...`。
 - **计算与复杂回复硬性复核**：凡报给学习者的数值、留数、积分值、化简结果，必须先用 `python -B tools/verify_math.py` 复核；长讲义或易混提示可用 `python -B tools/cross_verify.py` 做后台双角色审校。
 - 讲解默认中文；外语练习与原文引用保留相应语言，勿插入英文内部推理旁白。
 - 雅思/英语学习加载 `.dsh/skills/ielts-session/SKILL.md`，沿用注意力预算与训练/检查区分；⚠ 该「省注意力」口径**仅限雅思/英语**，其它课程（含俄语）与规划、状态、维护仍按通用口径。
-- **讲义/精讲类任务**（把课件做成可独立阅读的讲义 PDF）加载 `.dsh/skills/lecture-deepdive/SKILL.md`：紫色花卉主题、LaTeX 原生公式、缺口逐条补齐、前提给旁注。它生成的 `.tex`/`.pdf` 是文档交付物，**不受上条「禁用 TeX 命令」约束**；但对话中对学习者的讲解仍只用纯 Unicode 公式。定理块须写原形式并标明课件给的是哪个形式。
+- **讲义/精讲类任务**（把课件做成可独立阅读的讲义 PDF）加载 `.dsh/skills/lecture-deepdive/SKILL.md`：紫色花卉主题、LaTeX 原生公式、缺口逐条补齐、前提给旁注。它生成的 `.tex`/`.pdf` 是文档交付物；对话中对学习者的讲解默认同样用 LaTeX 渲染（回退见上条）。定理块须写原形式并标明课件给的是哪个形式。
 
 ## 命令路由
 用户将斜杠命令作为普通文本发送时，也按下表处理。技能目录在 `.tutor/core/skills/`，不按命令名猜路径。
@@ -70,10 +70,10 @@
 current_subject: 见 state/current.md 按项目的有效证据；课程顺序见 .tutor/config/status-narrative.yml
 current_topic: 维护刷新不代表新学习；具体续学点见 state/current.md
 next: 见 plan/schedule.md、当天清单与原 status-narrative.yml；先尊重学习者当次选择
-note: 默认闭卷；Unicode 公式；中国日期；保留当前项目协议和个人偏好
+note: 默认闭卷；LaTeX 公式；中国日期；保留当前项目协议和个人偏好
 last_session: 2026-10-19（作答 52 条；未解决困难 3 条）
-due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-10-31）
-mastered: 迁移通过 0/76（稳定证据 0；截至 2026-10-31）
+due_today: 0 个到期复习概念（扫 subjects/**/topics 的 frontmatter，截至 2026-11-02）
+mastered: 迁移通过 0/76（稳定证据 0；截至 2026-11-02）
 open_hurdles: hurdle-2(awaiting_retest)→mp.taylor-expansion,mp.laurent-expansion；hurdle-3(teaching)→ru.qword-agreement；hurdle-4(teaching)→tm.t5.effective-potential,tm.t5.central-motion-types
 attempts: 52 条（实测时长 7.0 分钟；估计 1308.0 分钟单列）
 <!-- TUTOR-STATUS:END -->

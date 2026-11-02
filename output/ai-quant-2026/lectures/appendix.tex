@@ -1,0 +1,137 @@
+\chapter{数据库字段字典}\label{app:db}
+
+\begin{longtable}{@{}p{0.14\textwidth}p{0.16\textwidth}p{0.62\textwidth}@{}}
+\toprule
+\textbf{字段} & \textbf{类型} & \textbf{含义与口径} \\
+\midrule
+\endhead
+\multicolumn{3}{@{}l}{\textbf{stock} —— 证券主表，主键 \texttt{code}}\\
+\texttt{code} & TEXT & 6 位代码，如 \texttt{600000} \\
+\texttt{secid} & TEXT & 行情标识，如 \texttt{1.600000} \\
+\texttt{exchange} & TEXT & \texttt{SH} / \texttt{SZ} / \texttt{BJ} \\
+\texttt{name} & TEXT & 最新证券简称 \\
+\texttt{board} & TEXT & 东财行业板块名 \\
+\texttt{list\_date} & TEXT & 上市日（由首个交易日推断） \\
+\texttt{delist\_date} & TEXT & 退市日（仍在市为 NULL） \\
+\texttt{is\_active} & INT & 最近 45 天是否有成交 \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{bar} —— 日线行情，主键 \texttt{(code, date)}}\\
+\texttt{open/high/}\newline\texttt{low/close} & REAL & \textbf{不复权}原始价（元） \\
+\texttt{pre\_close} & REAL & 前收盘（不复权） \\
+\texttt{volume} & REAL & 成交量（股） \\
+\texttt{amount} & REAL & 成交额（元）。新浪源无此字段，
+由「成交量 $\times$ 当日均价」估算，误差通常 $<2\%$ \\
+\texttt{turnover} & REAL & 基础表该字段几乎为空；研究面板按月度股本快照前向填充后计算换手率（\%） \\
+\texttt{pct\_chg} & REAL & 涨跌幅（\%） \\
+\texttt{adj\_factor} & REAL & 累计后复权因子；后复权价 $=$ 原始价 $\times$ \texttt{adj\_factor} \\
+\texttt{is\_st} & INT & 保留字段（本书在面板层由简称历史实时生成） \\
+\texttt{trade\_status} & INT & 保留字段（停牌体现为「缺行」） \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{fin} —— 财报（point-in-time），主键 \texttt{(code, report\_date)}}\\
+\texttt{notice\_date} & TEXT & \textbf{公告日}，PIT 对齐的唯一依据 \\
+\texttt{eps} & REAL & 基本每股收益（累计） \\
+\texttt{bps} & REAL & 每股净资产 \\
+\texttt{roe} & REAL & 加权平均 ROE（\%） \\
+\texttt{revenue} & REAL & 营业总收入（元，累计） \\
+\texttt{net\_profit} & REAL & 归母净利润（元，累计） \\
+\texttt{ocf\_ps} & REAL & 每股经营现金流（累计） \\
+\texttt{gross\_margin} & REAL & 销售毛利率（\%） \\
+\texttt{div\_yield} & REAL & 股息率（\%） \\
+\texttt{rev\_yoy} / \texttt{np\_yoy} & REAL & 营收 / 净利同比（\%） \\
+\texttt{name} & TEXT & 该期披露时的证券简称（还原 ST 历史） \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{valuation} —— 月度估值快照，主键 \texttt{(code, date)}}\\
+\texttt{total\_mv} & REAL & 总市值（元） \\
+\texttt{float\_mv} & REAL & 流通市值（元） \\
+\texttt{total\_shares} / \texttt{free\_shares} & REAL & 总股本 / 自由流通股本（股） \\
+\texttt{pe\_ttm} / \texttt{pb\_mrq} & REAL & 市盈率 / 市净率 \\
+\texttt{ps\_ttm} / \texttt{pcf\_ttm} & REAL & 市销率 / 市现率 \\
+\texttt{board} & TEXT & 行业板块 \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{index\_member} --- 指数成分区间，主键 \texttt{(index\_code, code, in\_date)}}\\
+\texttt{in\_date} & TEXT & 被观察到属于该指数的最早日期 \\
+\texttt{out\_date} & TEXT & 最后一次仍属于该指数的日期（仍在册为空） \\
+当日成分查询 & --- & \texttt{in\_date <= t AND (out\_date IS NULL OR out\_date > t)} \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{index\_bar} / \textbf{trade\_calendar} / \textbf{fetch\_log}}\\
+\texttt{index\_bar} & — & 指数日线，用于基准与归因 \\
+\texttt{trade\_}\newline\texttt{calendar} & — & 交易日历（由指数日期生成） \\
+\texttt{fetch\_log} & — & 断点续抓日志 \\
+\bottomrule
+\end{longtable}
+
+\chapter{代码索引}\label{app:code}
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.62\textwidth}@{}}
+\toprule
+\textbf{文件} & \textbf{职责} \\
+\midrule
+\endhead
+\texttt{aq/config.py} & 路径、时间范围、股票池口径 \\
+\texttt{aq/http.py} & 双通道 HTTP（直连 / 系统代理交替重试） \\
+\texttt{aq/sources.py} & 数据源适配（东财数据中心、行情） \\
+\texttt{aq/db.py} & SQLite 读写、迁移、批量导入 \\
+\texttt{aq/schema.sql} & 表结构定义 \\
+\texttt{aq/panel.py} & 研究面板：复权、PIT、TTM、可成交标记、标签 \\
+\texttt{aq/factors.py} & 因子库：39 个因子 + 注册表 + 宽表引擎 \\
+\texttt{aq/neutralize.py} & 去极值、标准化、行业市值中性化 \\
+\texttt{aq/metrics.py} & IC / ICIR / 分层 / 换手 / 衰减 / 因子相关性 \\
+\texttt{aq/cv.py} & Purged K-Fold、CPCV、Walk-Forward \\
+\texttt{aq/stats.py} & PSR、DSR、PBO、Reality Check、Bootstrap \\
+\midrule
+\texttt{scripts/01\_financials.py} & 抓取全部财报期（含公告日与简称历史） \\
+\texttt{scripts/02\_prices.py} & 抓取全市场日线（新浪通道，断点续抓） \\
+\texttt{scripts/03\_calendar.py} & 交易日历与指数行情 \\
+\texttt{scripts/04\_valuation.py} & 月度估值快照 \\
+\texttt{scripts/05\_finalize.py} & 上市/退市日、数据质量报告 \\
+\texttt{scripts/09\_index\_}\newline\texttt{members.py} & 指数成分区间快照（可重复运行以积累历史） \\
+\texttt{scripts/00\_update.py} & 一键增量更新（幂等、可中断） \\
+\texttt{scripts/check\_db.py} & 数据库巡检 \\
+\texttt{scripts/06\_factors.py} & 逐因子计算 + 单因子评价 + 面板落盘 \\
+\texttt{scripts/07\_model.py} & 多模型、多协议重复测试 + DSR/PBO \\
+\texttt{scripts/08\_report.py} & 生成图表与拟合精度报告 \\
+\bottomrule
+\end{longtable}
+
+\chapter{常用公式速查}\label{app:formula}
+
+\begin{align}
+  \text{后复权价} &= \text{原始价} \times f_t \\
+  \text{TTM} &= \text{累计}_t + \text{上年年报} - \text{上年同期累计} \\
+  \text{中性化} &: \ x = \alpha + \beta_{\text{ind}} + \gamma\ln(\text{MktCap}) + \varepsilon,
+  \quad \text{取 } \varepsilon \\
+  \text{Rank IC}_t &= \mathrm{corr}\big(\mathrm{rank}(f_{i,t}), \mathrm{rank}(r_{i,t+1\to t+h})\big) \\
+  \text{ICIR}_{\text{ann}} &= \frac{\overline{\IC}}{\mathrm{std}(\IC)}\sqrt{252/h} \\
+  t_{\text{NW}} &= \frac{\overline{\IC}}{\sqrt{\hat\sigma^2_{\text{NW}}/n}} \\
+  \text{Purge} &: \ [\,t_a - h,\ t_b\,] \ \text{剔除} \\
+  \text{Embargo} &: \ [\,t_b+1,\ t_b+w\,] \ \text{剔除} \\
+  \varphi(N,k) &= \binom{N-1}{k-1} \\
+  \mathrm{PSR} &= \Phi\!\left(\frac{(\widehat{\SR}-\SR^*)\sqrt{T-1}}
+  {\sqrt{1-\gamma_3\widehat{\SR}+\frac{\gamma_4-1}{4}\widehat{\SR}^2}}\right) \\
+  \SR_0 &= \sigma_{\SR}\left[(1-\gamma)\Phi^{-1}\!\left(1-\tfrac1N\right)
+  +\gamma\Phi^{-1}\!\left(1-\tfrac{1}{Ne}\right)\right] \\
+  N_{\text{eff}} &= \frac{(\sum\lambda_i)^2}{\sum\lambda_i^2} \\
+  \text{Impact} &\approx k\sigma\sqrt{Q/V}
+\end{align}
+
+\chapter{复现步骤}\label{app:reproduce}
+
+\begin{enumerate}
+  \item 安装依赖：\texttt{python -m pip install -r requirements.txt}
+  \item 初始化数据库并抓取财报：\texttt{python scripts/01\_financials.py}
+  \item 抓取全市场日线（可断点续抓）：\texttt{python scripts/02\_prices.py}
+  \item 生成交易日历与指数：\texttt{python scripts/03\_calendar.py}
+  \item 抓取估值快照：\texttt{python scripts/04\_valuation.py}
+  \item 生成数据质量报告：\texttt{python scripts/05\_finalize.py --save}
+  \item 抓取指数成分：\texttt{python scripts/09\_index\_members.py}
+  \item 计算因子与单因子评价：\texttt{python scripts/06\_factors.py}
+  \item 多协议重复测试与过拟合诊断：\texttt{python scripts/07\_model.py}
+  \item 生成图表与报告：\texttt{python scripts/08\_report.py}
+  \item 编译讲义：\texttt{xelatex main.tex}（在 \texttt{lectures/} 目录下执行两遍）
+\end{enumerate}
+
+\begin{warnbox}[关于数据源的时效性]
+第 2 章记录的数据源可用性只在 2026-10-31 当天成立。免费接口随时可能变化。
+如果某一步失败，请优先阅读 \texttt{scripts/02\_prices.py} 顶部的「数据源决策记录」，
+那里列出了当时验证过的备选通道。
+\end{warnbox}

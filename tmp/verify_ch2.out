@@ -1,0 +1,58 @@
+﻿== A homework 1: int |z| dz from -i to i ==
+straight segment  -i -> i                            (0.0 + 0.999974899896j)   expect=i
+right half unit circle                               (0.0 + 2.0j)   expect=2i
+== B homework 2 ==
+oint dz/z                                            (0.0 + 6.28318530718j)   expect=2 pi i
+oint dz/|z|                                          0.0   expect=0
+oint |dz|/|z|                                        6.28318530718   expect=2 pi
+== C/D/E/F homework 3,4 ==
+oint_{|z|=2} (2z^2-z+1)/(z-1)                        (0.0 + 12.5663706144j)   expect=4 pi i
+oint e^z/(z^2+1)                                     (0.0 + 5.28711812816j)   expect=2 pi i sin 1
+oint (2z^2-z+1)/(z-1)^2                              (0.0 + 18.8495559215j)   expect=6 pi i
+oint cos(pi z)/(z-1)^3                               (0.0 + 31.0062766803j)   expect=pi^3 i
+== G homework 5 ==
+int_0^{2pi} (1+2cos)/(5+4cos) dtheta                 0.0   expect=0
+== H homework 6 ==
+oint_{|z|=1} e^z/z dz                                (0.0 + 6.28318530718j)   expect=2 pi i
+int_0^pi e^{cos} cos(sin)                            3.14159265359   expect=pi
+== I example 1 p8: Im z dz ==
+c1 (0,0)->(1,0)->(1,1)                               (0.0 + 0.5j)   expect=i/2
+c2 (0,0)->(0,1)->(1,1)                               (1.0 + 0.5j)   expect=i/2+1
+c3 (0,0)->(1,1) diagonal                             (0.5 + 0.5j)   expect=(1+i)/2
+== J example 2 p10: (x-y+i x^2) dz ==
+c1 y=x^2                                             (-0.333333333333 + 0.5j)   expect=-1/3 + i/2
+c2 y=x                                               (-0.333333333333 + 0.333333333333j)   expect=-1/3 + i/3
+== K example 3 p13: (2xy - i(x^2-y^2)) dz ==
+c1                                                   (0.666666666667 + 0.666666666667j)   expect=2/3(1+i)
+c2                                                   (0.666666666667 + 0.666666666667j)   expect=2/3(1+i)
+c3                                                   (0.666666666667 + 0.666666666667j)   expect=2/3(1+i)
+   f3 vs -i z^2 : 0j
+== L p24 example 1 ==
+int_{-i}^{i} z^2 dz                                  (0.0 - 0.666666666667j)   expect=-2i/3
+int_0^i z sin z dz                                   (0.0 - 0.367879441171j)   expect=sin i - i cos i
+   sin i - i cos i = (0.0 - 0.367879441171j)  -i/e = (0.0 - 0.367879441171j)
+== M p24 example 2 ==
+int_2^0 (e^x+sin x+2x)dx                             -11.8052029355   expect=cos2-e^2-4
+   cos2-e^2-4 = -11.8052029355
+== N p29 ==
+oint_{|z|=2} dz/(z^2-1)                              0.0   expect=0
+== O p39 example 1 ==
+oint e^{az}/(z^2-1) |z|=2                            (3.07113196734 + 4.39007325112j)   expect=pi i (e^a - e^-a)
+   pi i (e^a - e^-a) = (3.07113196734 + 4.39007325112j)
+== P p40 example 2 ==
+oint_{|z|=2} e^z/(z+i pi/2)                          6.28318530718   expect=2 pi
+== Q p41 example 3 ==
+oint_{|z|=r>1} sin z/(z^2+1) r=3                     (0.0 + 7.38400687288j)   expect=2 pi sin i
+   2 pi sin i = (0.0 + 7.38400687288j)  2 pi i sinh 1 = (0.0 + 7.38400687288j)
+== R p42 examples 4,5 ==
+oint e^{a z}/(z-1)^2 |z|=2                           (-4.49964222599 + 4.02986327346j)   expect=2 pi i a e^a
+   2 pi i a e^a = (-4.49964222599 + 4.02986327346j)
+oint cos z/(z-i)^3 |z|=2                             (0.0 - 4.84773078623j)   expect=-pi i cos i
+   -pi i cos i = (0.0 - 4.84773078623j)
+== S p19 exercise ==
+oint_{|z-2|=1} z^2/(z-2)^3 dz                        (0.0 + 6.28318530718j)   expect=2 pi i
+oint_{|z-1|=1} z/(z-1) dz                            (0.0 + 6.28318530718j)   expect=2 pi i
+== T Poisson kernel checks ==
+(1/2pi) int K = 1                                    1.0   expect=1
+(1/2pi) int a e^{i th} K = r e^{i phi}               (0.435126977789 + 0.548328836739j)   expect=r e^{i phi} = (0.43512698 + 0.54832884j)
+   series check, first coeffs (should be 0 except m=0 ->1): ['(1.0 + 0.0j)', '(5.985e-27 + 2.63e-34j)', '(5.98e-27 + 2.982e-33j)']

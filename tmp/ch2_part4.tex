@@ -1,0 +1,353 @@
+
+\flowerrule
+
+\hdr{§6}{公式卡与四步用法}
+
+\subhdr{6.1\quad 六条公式，各管一件事}
+
+\begin{itemize}
+\item[\textbf{F1}] \textbf{参数化}：$\displaystyle\int_C f\dd z=\int_a^b f\bigl(z(t)\bigr)z'(t)\dd t$。\ 用在：被积函数不解析、围道不是圆、或题目要求“沿给定路径”。这是唯一“从定义出发”的算法。
+\item[\textbf{F2}] \textbf{基本积分}：$\displaystyle\oint_C\frac{dz}{(z-a)^{n}}=2\pi i\,(n=1)$，其余为 $0$，$C$ 绕 $a$ 一圈成正向。用在：所有含 $1/(z-a)$ 型核的题。
+\item[\textbf{F3}] \textbf{柯西定理}：解析 + 单连通 + 闭围道 $\Rightarrow\oint=0$。用在：判“这一项是不是白算”。
+\item[\textbf{F4}] \textbf{柯西公式}：$\displaystyle f(a)=\frac{1}{2\pi i}\oint_C\frac{f(z)\dd z}{z-a}$。用在：分母一次幂、点 $a$ 在圈内。
+\item[\textbf{F5}] \textbf{高阶导数}：$\displaystyle f^{(n)}(a)=\frac{n!}{2\pi i}\oint_C\frac{f(z)\dd z}{(z-a)^{n+1}}$。用在：分母 $n+1$ 次幂。
+\item[\textbf{F6}] \textbf{泊松公式}：$\displaystyle f(r,\varphi)=\frac{a^{2}-r^{2}}{2\pi}\int_0^{2\pi}\frac{f(ae^{i\theta})}{a^{2}+r^{2}-2ar\cos(\varphi-\theta)}\dd\theta$。用在：圆内解析函数由边界值反推内部。
+\end{itemize}
+
+\subhdr{6.2\quad 四步用法（做任何一道围道积分题）}
+
+\textbf{第 1 步 · 数奇点}。把分母因式分解，写出所有使分母为零的点，并注明每个点的“阶数”（一次幂、二次幂、……）。
+
+\textbf{第 2 步 · 画围道、判内外}。对每个奇点问一句“它在 $C$ 里面吗”。不在里面的，直接删掉（§3.3）；在里面的，进入第 3 步。
+
+\textbf{第 3 步 · 拆分母}。用部分分式把被积函数拆成 $\dfrac{g(z)}{(z-a_0)^{k}}$ 的和，每个奇点一项。若拆不动（分母是高次不可约），就改用“挖洞 + 小圆”逐个处理。
+
+\textbf{第 4 步 · 套 F4/F5 并检查方向}。一次幂用 F4，$k$ 次幂用 F5（此时 $n=k-1$，$f=g$）；每个圈都必须正向；最后把各项相加。
+
+\warnbox{第 4 步的三个自检（每次都要做）：① 分母幂次与 $n!$ 是否配对；② 部分分式的正负号是否带对（§3.7 例 1）；③ 小圆方向是否与外圈同向（§2.7）。这三条覆盖了本章例题里绝大多数错解。}
+
+\flowerrule
+
+\hdr{§7}{易错点：每一条都能指回某个例子的某一步}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{漏掉 $d\theta=dz/(iz)$ 带进来的 $1/z$}。把 $\cos\theta$ 换成 $z$ 时，分母那个 $z$ 会造出一个\textbf{新的极点 $z=0$}。作业第 5 题就是活的例子：只算 $z=-\tfrac12$ 会得 $-\pi$，算上 $z=0$ 才是 $0$（附录 A 第 5 题）。
+
+\item \textbf{内圈画成顺时针}。复连通定理 \eqref{eq:multi} 要求全部正向。凭“外逆内顺”的记忆做，会整体差一个负号——§2.8 例 2 若把 $c_2$ 画成顺时针，答案就变成 $2\pi i$ 而不是 $0$。
+
+\item \textbf{小圆半径越过别的奇点}。§3.7 例 3 的两个奇点相距 $2$，小圆半径必须 $<\tfrac12$ 的两倍（严格说 $\rho_1+\rho_2<2$ 且各自只含一个奇点）。取 $1$ 就会把另一个奇点包进来，$\oint_{c_1}\frac{dz}{z+i}$ 不再是 $0$。
+
+\item \textbf{柯西公式“一次只提取一个点”}。分母有两个根时必须先拆（§3.7 例 1）。直接写 $2\pi i f(1)$ 是把 $z=-1$ 那个极点当成了解析点。
+
+\item \textbf{$dz$ 只换 $z$ 不换微分}。§1.6 例 2 里 $y=x^{2}$ 要配 $dz=(1+2it)dt$；只把 $z$ 写成 $t+it^{2}$ 而留 $dz$ 不动，整道题就错在开头。
+
+\item \textbf{折线不分段}。§1.5 例 1 的 $c_1$ 是两段：水平段 $dy=0$、竖直段 $dx=0$。不分段就没法用这个条件，只能硬算。
+
+\item \textbf{换路径时改了方向}。§2.4 例 2 是 $\int_2^0$（沿实轴向左）。改成 $\int_0^2$ 会差一个负号，结果从 $\cos2-e^{2}-4$ 变成 $e^{2}-\cos2+4$。
+
+\item \textbf{把 $|dz|$ 当成 $dz$}。作业第 2 题第 3 小题是 $\oint\frac{|dz|}{|z|}$，这不是复积分而是弧长积分：$|dz|=d\theta$（单位圆），答案是 $2\pi$；而 $\oint\frac{dz}{|z|}=\oint dz=0$。两者只差一个绝对值，答案一个实一个零。
+
+\item \textbf{$n!$ 与 $n+1$ 次幂错位}。分母三次幂要配 $n=2$、$2!=2$（§3.7 例 5）。写成 $\dfrac{2\pi i}{3!}$ 就少了三倍。
+
+\item \textbf{泊松核里把 $a^{2}-r^{2}$ 写成 $a^{2}+r^{2}$}。$r=0$ 时两者都给 $1$，看不出错；取 $r=\tfrac{a}{2}$、$f\equiv1$ 代进去，只有 $a^{2}-r^{2}$ 能得到 $1$（§6 的自检）。
+\end{enumerate}
+
+\flowerrule
+
+\hdr{§8}{缺口清单：课件省掉了什么，本讲义补在哪}
+
+每条格式：\textbf{类型 · 页码} $\to$ 课件原文短语 $\to$ 补了什么（落在本讲义哪一节）。
+
+\gapitem{形式改写 · p5}{原文“如果曲线 $C$：$t\in[a,b]$，且 $f(z)=u(t)$，则 $\int_C f\dd z=\int_a^b u(t)\dd t$”。这个 $u(t)$ 其实是 $f(z(t))z'(t)$ 的缩写，课件没有点破，读者会以为复积分就是“把被积函数换成 $t$ 的函数再积”。§1.3 给出通式 \eqref{eq:param} 与三条使用纪律。}
+
+\gapitem{代数跳步 · p4}{原文“由于 $dz=dx+i\,dy$，$f(z)=u(x,y)+iv(x,y)$，则 $S=\int_C(u\,dx-v\,dy)+i\int_C(v\,dx+u\,dy)$”。乘法展开 $(u+iv)(dx+i\,dy)$ 被整段吞掉，而 §2.1 的证明全靠这两个实积分。§1.2 把它逐项写开。}
+
+\gapitem{代数跳步 · p7}{原文从“平方和”直接跳到 $\sqrt{u^{2}\Delta x^{2}+v^{2}\Delta y^{2}+v^{2}\Delta x^{2}+u^{2}\Delta y^{2}}$，交叉项 $-2uv\Delta x\Delta y$ 与 $+2uv\Delta x\Delta y$ 的相消没有出现。§1.4 标出这一步。}
+
+\gapitem{适用区间 · p16}{原文结论写“$n\ne1$ 时为 $0$”，把 $n\le0$ 与 $n\ge2$ 混在一起。前者的理由是“被积函数是多项式、柯西定理直接给零”，后者的理由是“$e^{i(1-n)\theta}$ 的整周期积分为零”——理由完全不同。§1.8 拆成两条说。}
+
+\gapitem{拼接缺口 · p14}{p14 列出四个偏导 $u_x=2y,u_y=2x,v_x=-2x,v_y=2y$ 后直接写“积分与路径无关”，但“路径无关”是 p22 的推论，此时还没讲；四个偏导只够说明 $f$ 解析。§1.7 指出这是提前使用结论，并给出更快的算法（认出 $f=-iz^{2}$）。}
+
+\gapitem{前提缺口 · p20}{原文“如果函数 $f(z)$ 在闭单连通区域 $D$ 中解析”。严格说法是“在包含 $\overline{D}$ 的开区域内解析”，因为格林公式要求闭区域上有连续偏导；只给“$D$ 内解析”不够。§2.1 的旁注补上。}
+
+\gapitem{符号缺口 · p21}{原文“上式右边两个积分分别为 0”，但没有把 $Q_x-P_y$、$u_y=-v_x$ 这两个符号摆出来。符号是本章最容易翻车的地方（格林公式是 $Q_x-P_y$，C-R 第二条带负号）。§2.1 用 $\underbrace{}$ 逐项标出。}
+
+\gapitem{前提缺口 · p26}{原文“由于 $f(z)$ 是单值解析函数，因此它沿同一割线两边缘的积分相互抵消”。为什么“单值”是关键，课件没说。§2.5 的旁注给出多值函数（$\operatorname{Log}z$）的反例：两侧差 $2\pi i$，不会相消。}
+
+\gapitem{严格性缺口 · p36}{原文用 $\Bigl|\oint\cdots\Bigr|<|\Delta z|\,M L$ 让 $\Delta z\to0$，但那个 $M$ 的定义里含 $\Delta z$，不说明它一致有界就是循环论证。§3.5 的旁注补：$|\Delta z|<d/2$ 时 $|\zeta-z-\Delta z|\ge d/2$，故 $M\le2\max|f|/d^{3}$。}
+
+\gapitem{代数跳步 · p48}{原文只有“上式与柯西公式的极坐标表达式（见上页 PPT）相减”，接着就是 $a^{2}-r^{2}$。被吞掉的是
+$a\bigl(a-re^{-i\psi}\bigr)-r\bigl(r-ae^{-i\psi}\bigr)=a^{2}-ar e^{-i\psi}-r^{2}+ar e^{-i\psi}=a^{2}-r^{2}$。§4.4 把这一行写全。}
+
+\gapitem{符号记账 · p52}{原文“两式相加”得到级数形式，但第二式 $\dfrac{r}{r-ae^{i\psi}}$ 的负号在上一页是隐含的，读者对不上。§4.6 把负号摊开，并另给一条“一行验算”（$\operatorname{Re}\frac{1+x}{1-x}$）互相印证。}
+
+\gapitem{答案形态 · p24}{两处停在半路：$\int_0^{i}z\sin z\dd z=\sin i-i\cos i$ 没有化简（其实 $=-i/e$）；例 2 停在 $I=\int_2^0(e^{x}+\sin x+2x)\dd x=?$ 没算完（其实 $=\cos2-e^{2}-4$）。§2.3、§2.4 补完。}
+
+\gapitem{常数报户口 · p50--p52}{级数形式里出现 $\dfrac{A_0}{2}$、$\dfrac{1}{\pi}$、$r^{m}$、$2$，四个数的来源都没交代。§4.6 末尾逐个报户口，并区分“数学来源”与“约定来源”。}
+
+\gapitem{压缩缺口 · p30 与 p53}{两页作业只有题面，六道题都没有解答；且 p30 的两道出现在柯西公式之前，工具还没给。§10 按题号重排、给出考点与详解页码，附录 A 一题一块补全解。}
+
+\aside{另有两条不算“缺口”、但读者会误会的写法：p19 例 5 的分母 $z-1$ 与分子 $z$ 都只有一个 $z$，容易让人以为“直接套 $\oint dz/(z-a)$ 就行”，其实要先拆分子（§1.9）；p29 例 2 说“半径为 $\tfrac12$ 的小圆”，但没说半径为什么可以随便取——理由是 $2\pi i$ 与半径无关（式 \eqref{eq:main}），§2.8 第 (1) 条已说明。}
+
+\flowerrule
+
+\hdr{§9}{三句话与页码对照}
+
+\subhdr{9.1\quad 三句话}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{闭围道积分为零 $\Leftrightarrow$ 解析（单连通）}。柯西定理把“解析”翻译成“没有环量”；它的证明只是格林公式加 C-R，但结论把微分性质（可导）与积分性质（环量为零）焊在一起了。
+\item \textbf{内部的值由边界值决定}。柯西公式给出权重 $\dfrac{1}{\zeta-z}$；对参数求导就得到高阶导数公式；把圆外的反演点减进来、把权重化成实核，就得到泊松公式。这三件事是同一条公式的三个化身。
+\item \textbf{唯一的例外只有 $1/(z-a)$}。它绕一圈留下 $2\pi i$，其它幂次都被整周期吃掉。第四章的留数定理就是把这句话推广到任意奇点：先把函数在奇点附近展开，再看 $w^{-1}$ 那一项的系数。
+\end{enumerate}
+
+\subhdr{9.2\quad 与课件的页码对照}
+
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{本讲义} & \thead{对应课件页} \\
+\tabmid
+§1.1--§1.4 & p2--p7（定义、存在条件、性质、$ML$） \\
+§1.5--§1.9 & p8--p19（例 1--例 5，含 p18 的单连通／复连通定义） \\
+§2.1--§2.2 & p20--p23（柯西定理、格林公式证明、路径无关与原函数） \\
+§2.3--§2.4 & p24（例 1、例 2） \\
+§2.5--§2.6 & p25--p27（复连通定理、割线证明、内外边界相等） \\
+§2.7--§2.8 & p28--p29（例 1、例 2） \\
+§3.1--§3.2 & p31--p33（柯西公式与证明） \\
+§3.3--§3.6 & p34--p38（两条前提、三点说明、高阶导数、两种理解） \\
+§3.7 & p39--p42（例 1--例 5） \\
+§4.1--§4.4 & p45--p48（极坐标柯西公式、反演点、相减、泊松核） \\
+§4.5--§4.7 & p49--p52（$u,v$ 版、级数版、与第八章的接口） \\
+§5.1--§5.4 & p43--p44（柯西不等式、最大模、刘维、平均值） \\
+§10 与附录 A & p30、p53（作业第 1--6 题） \\
+\tabbot
+
+\flowerrule
+
+\hdr{§10}{本章作业（六题，题面与考点）}
+
+课件把六道题分两批：\textbf{p30} 两道（第 1、2 题，$§2.1$ 之后），\textbf{p53} 四道（第 3--6 题，章末）。本讲义按题号连排 1--6，一次收齐；每题的详解在\textbf{附录 A}，页码写在题下——建议先自己做，再翻附录。
+
+\qbreak
+\subhdr{第 1 题（p30）}
+\label{hw:1}
+\qstem{（课件 p30 第 1 题）计算积分 $\displaystyle\int_{-i}^{i}|z|\dd z$ 的值，其中积分路径分别为：（1）直线段；（2）右半单位圆。}
+\textbf{考点}：定义与参数化（F1）；$|z|$ 是实值函数，但 $dz$ 是复数，两项都要算。
+\textbf{提示}：（1）沿虚轴，$z=iy$、$y:-1\to1$，注意 $|z|=|y|$ 的绝对值；（2）沿右半圆，$z=e^{i\theta}$、$\theta:-\tfrac{\pi}{2}\to\tfrac{\pi}{2}$。
+\textbf{详解}：见附录 A 第 1 题（第 \pageref{app:hw1} 页）。
+
+\qbreak
+\subhdr{第 2 题（p30）}
+\label{hw:2}
+\qstem{（课件 p30 第 2 题）计算如下积分，其中积分路径 $c$ 为单位圆周：1）$\displaystyle\oint_c\frac{dz}{z}$；\ 2）$\displaystyle\oint_c\frac{dz}{|z|}$；\ 3）$\displaystyle\oint_c\frac{|dz|}{|z|}$。}
+\textbf{考点}：三个式子只差绝对值，意义完全不同——复积分、复积分、弧长积分。
+\textbf{提示}：在单位圆上 $|z|=1$，所以第 2 式的被积函数是 $1$；第 3 式的 $|dz|$ 是弧长元，不是 $dz$。
+\textbf{详解}：见附录 A 第 2 题（第 \pageref{app:hw2} 页）。
+
+\qbreak
+\subhdr{第 3 题（p53）}
+\label{hw:3}
+\qstem{（课件 p53 第 3 题）计算如下积分，其中积分路径 $c$ 为 $|z|=2$：1）$\displaystyle\oint_c\frac{2z^{2}-z+1}{z-1}\dd z$；\ 2）$\displaystyle\oint_c\frac{e^{z}}{z^{2}+1}\dd z$。}
+\textbf{考点}：柯西公式（F4）与“分母有几个根就挖几个洞”。第 2 题的分母有两个根 $\pm i$，都在 $|z|=2$ 内。
+\textbf{提示}：第 1 题分母一次幂、只有一个根；第 2 题先拆成两个一次幂，再各用一次 F4。
+\textbf{详解}：见附录 A 第 3 题（第 \pageref{app:hw3} 页）。
+
+\qbreak
+\subhdr{第 4 题（p53）}
+\label{hw:4}
+\qstem{（课件 p53 第 4 题）计算如下积分，其中积分路径 $c$ 为 $|z|=2$：1）$\displaystyle\oint_c\frac{2z^{2}-z+1}{(z-1)^{2}}\dd z$；\ 2）$\displaystyle\oint_c\frac{\cos\pi z}{(z-1)^{3}}\dd z$。}
+\textbf{考点}：高阶导数公式（F5）——分母幂次决定 $n$，$n!$ 跟着定。
+\textbf{提示}：第 1 题分母二次幂 $\Rightarrow n=1$；第 2 题分母三次幂 $\Rightarrow n=2$，且 $f(z)=\cos\pi z$ 的二阶导数带一个 $\pi^{2}$。
+\textbf{详解}：见附录 A 第 4 题（第 \pageref{app:hw4} 页）。
+
+\qbreak
+\subhdr{第 5 题（p53）}
+\label{hw:5}
+\qstem{（课件 p53 第 5 题）由积分 $\displaystyle\oint_c\frac{dz}{z+2}$ 的值，证明 $\displaystyle\int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\dd\theta=0$，其中积分路径 $c$ 为单位圆。}
+\textbf{考点}：把实积分化成单位圆上的复积分（“$\cos\theta$ 换成 $z$”的整套手续），以及 $d\theta=\dfrac{dz}{iz}$ 带进来的新极点。
+\textbf{提示}：先算 $\oint_c\dfrac{dz}{z+2}=0$（$-2$ 在单位圆外）；再把 $z=e^{i\theta}$ 代进去，分子分母同乘 $e^{-i\theta}$ 取虚部。
+\textbf{详解}：见附录 A 第 5 题（第 \pageref{app:hw5} 页）。
+
+\qbreak
+\subhdr{第 6 题（p53）}
+\label{hw:6}
+\qstem{（课件 p53 第 6 题）求积分 $\displaystyle\oint_c\frac{e^{z}}{z}\dd z$ 的值，其中积分路径 $c$ 为 $|z|=1$，并由此积分结果证明 $\displaystyle\int_0^{\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta=\pi$。}
+\textbf{考点}：柯西公式（$f=e^{z}$、$a=0$）+ 参数化后取实部虚部 + 用对称性把 $[0,2\pi]$ 折到 $[0,\pi]$。
+\textbf{提示}：$\oint_c\frac{e^{z}}{z}\dd z=2\pi i$；参数化后得到 $i\displaystyle\int_0^{2\pi}e^{e^{i\theta}}\dd\theta$，再把 $e^{e^{i\theta}}$ 写成实部虚部。
+\textbf{详解}：见附录 A 第 6 题（第 \pageref{app:hw6} 页）。
+
+\flowerrule
+
+\hdr{附录 A}{六道作业的详解（一题一块）}
+
+每题块首复述条件摘要与正文页码，便于先做后对。所有数值结果均已用数值积分复核。
+
+\qbreak
+\subhdr{A·第 1 题}
+\qstem{（课件 p30 第 1 题；正文第 \pageref{hw:1} 页）求 $\displaystyle\int_{-i}^{i}|z|\dd z$，路径：(1) 从 $-i$ 到 $i$ 的直线段；(2) 右半单位圆（从 $-i$ 经 $1$ 到 $i$）。}
+\label{app:hw1}
+
+\textbf{考点}：F1 参数化；$|z|$ 是实值，$dz$ 是复数，必须分开处理。
+
+\textbf{关键一步}：两条路的参数化不同，(1) 沿虚轴 $z=iy$（$y$ 从 $-1$ 到 $1$），$|z|=|y|$；(2) 沿右半圆 $z=e^{i\theta}$（$\theta$ 从 $-\tfrac{\pi}{2}$ 到 $\tfrac{\pi}{2}$），$|z|=1$。
+
+\textbf{详解}：
+
+(1) 直线段。$z=iy$，$dz=i\dd y$，$|z|=|y|$，
+\[ I_1=\int_{-1}^{1}|y|\,i\dd y=i\int_{-1}^{1}|y|\dd y=i\cdot2\int_0^1 y\dd y=i . \]
+（$\int_{-1}^1|y|dy=2\int_0^1y\,dy=1$，偶函数的两倍。）
+
+(2) 右半单位圆。$z=e^{i\theta}$，$dz=ie^{i\theta}\dd\theta$，$|z|=1$，
+\[ I_2=\int_{-\pi/2}^{\pi/2}1\cdot ie^{i\theta}\dd\theta=e^{i\theta}\Big|_{-\pi/2}^{\pi/2}=e^{i\pi/2}-e^{-i\pi/2}=i-(-i)=2i . \]
+
+\textbf{答案}：(1) $i$；\ (2) $2i$。两条路给出不同的值，所以 $|z|$ 的积分与路径有关——这与 §1.5 的结论一致（$|z|$ 不是解析函数：$u=\sqrt{x^{2}+y^{2}}$、$v=0$，C-R 不成立）。
+
+\textbf{自检}：取 (3) 沿左半圆 $z=e^{i\theta}$（$\theta:\tfrac{\pi}{2}\to\tfrac{3\pi}{2}$），应得 $e^{3\pi i/2}-e^{i\pi/2}=-i-i=-2i$。左半圆与右半圆合起来是整圆，$\oint|z|dz=\oint dz=0$，而 $2i+(-2i)=0$ \ 对。
+
+\qbreak
+\subhdr{A·第 2 题}
+\qstem{（课件 p30 第 2 题；正文第 \pageref{hw:2} 页）$c$ 为单位圆周 $|z|=1$，计算 1）$\oint_c\dfrac{dz}{z}$；2）$\oint_c\dfrac{dz}{|z|}$；3）$\oint_c\dfrac{|dz|}{|z|}$。}
+\label{app:hw2}
+
+\textbf{考点}：三个式子的区别——前两个是复积分，第三个是弧长积分（$|dz|$ 不是 $dz$）。
+
+\textbf{关键一步}：在单位圆上\textbf{处处} $|z|=1$，这是第 2、3 小题的全部依据。
+
+\textbf{详解}：
+
+1）$\displaystyle\oint_c\frac{dz}{z}$：由式 \eqref{eq:main}（$a=0$，$n=1$）直接得 $2\pi i$。也可参数化：$z=e^{i\theta}$，$\dfrac{dz}{z}=\dfrac{ie^{i\theta}d\theta}{e^{i\theta}}=i\dd\theta$，积一圈得 $2\pi i$。
+
+2）$\displaystyle\oint_c\frac{dz}{|z|}$：在 $c$ 上 $|z|=1$，所以被积函数是 $\dfrac{1}{1}=1$，即 $\displaystyle\oint_c dz$。$1$ 是整函数，闭路积分为 $0$（或直接参数化：$\int_0^{2\pi}ie^{i\theta}d\theta=0$）。
+
+3）$\displaystyle\oint_c\frac{|dz|}{|z|}$：$|dz|$ 是弧长元，在单位圆上 $|dz|=|i e^{i\theta}d\theta|=d\theta$，所以
+\[ \oint_c\frac{|dz|}{|z|}=\int_0^{2\pi}\frac{d\theta}{1}=2\pi , \]
+即圆的周长。这是\textbf{实数}，不是复数。
+
+\textbf{答案}：1）$2\pi i$；\ 2）$0$；\ 3）$2\pi$。
+
+\textbf{自检}：三个答案的量纲/类型不同——第 1 个是纯虚数、第 2 个是零、第 3 个是正实数。若三个都写成 $2\pi i$，说明把 $|dz|$ 与 $dz$、$|z|$ 与 $z$ 混了（§7 第 8 条）。
+
+\qbreak
+\subhdr{A·第 3 题}
+\qstem{（课件 p53 第 3 题；正文第 \pageref{hw:3} 页）$c$ 为 $|z|=2$，计算 1）$\displaystyle\oint_c\frac{2z^{2}-z+1}{z-1}\dd z$；\ 2）$\displaystyle\oint_c\frac{e^{z}}{z^{2}+1}\dd z$。}
+\label{app:hw3}
+
+\textbf{考点}：柯西公式（F4）；分母多个根时先拆再逐项套公式。
+
+\textbf{关键一步}：
+
+1）分母一次幂、唯一奇点 $z=1$ 在圈内，$f(z)=2z^{2}-z+1$ 是多项式（解析），直接套 F4：
+\[ \oint_c\frac{2z^{2}-z+1}{z-1}\dd z=2\pi i\,f(1)=2\pi i\,(2-1+1)=4\pi i . \]
+
+2）$z^{2}+1=(z-i)(z+i)$，两个奇点 $\pm i$ 都满足 $|z|=1<2$，都在圈内。拆：
+\[ \frac{1}{z^{2}+1}=\frac{1}{(z-i)(z+i)}=\frac{1}{2i}\Bigl(\frac{1}{z-i}-\frac{1}{z+i}\Bigr) . \]
+逐项用 F4（$f=e^{z}$）：
+\[ \oint_c\frac{e^{z}}{z^{2}+1}\dd z=\frac{1}{2i}\Bigl(2\pi i\,e^{i}-2\pi i\,e^{-i}\Bigr)
+=\pi\bigl(e^{i}-e^{-i}\bigr)=2\pi i\sin1 . \]
+
+\textbf{答案}：1）$4\pi i$；\ 2）$2\pi i\sin1\approx5.287\,i$。
+
+\textbf{自检}：第 2 题的答案必须是纯虚数——因为被积函数满足 $f(-\bar z)=\overline{f(z)}$ 型的对称性，且围道关于实轴对称；$2\pi i\sin1$ 确实是纯虚数。数值：$2\pi\sin1=5.2871$，已复核。
+
+\qbreak
+\subhdr{A·第 4 题}
+\qstem{（课件 p53 第 4 题；正文第 \pageref{hw:4} 页）$c$ 为 $|z|=2$，计算 1）$\displaystyle\oint_c\frac{2z^{2}-z+1}{(z-1)^{2}}\dd z$；\ 2）$\displaystyle\oint_c\frac{\cos\pi z}{(z-1)^{3}}\dd z$。}
+\label{app:hw4}
+
+\textbf{考点}：高阶导数公式（F5）；先由分母幂次定 $n$。
+
+\textbf{关键一步}：1）分母二次幂 $\Rightarrow$ $(z-1)^{2}$ 对应 $n+1=2$，$n=1$；2）分母三次幂 $\Rightarrow$ $n=2$。
+
+\textbf{详解}：
+
+1）$f(z)=2z^{2}-z+1$，$f'(z)=4z-1$，$f'(1)=3$：
+\[ \oint_c\frac{2z^{2}-z+1}{(z-1)^{2}}\dd z=\frac{2\pi i}{1!}f'(1)=2\pi i\cdot3=6\pi i . \]
+
+2）$f(z)=\cos\pi z$。求导两次：
+\[ f'(z)=-\pi\sin\pi z,\qquad f''(z)=-\pi^{2}\cos\pi z , \]
+在 $z=1$ 处 $f''(1)=-\pi^{2}\cos\pi=\pi^{2}$。于是
+\[ \oint_c\frac{\cos\pi z}{(z-1)^{3}}\dd z=\frac{2\pi i}{2!}\,f''(1)=\pi i\cdot\pi^{2}=\pi^{3}i . \]
+
+\textbf{答案}：1）$6\pi i$；\ 2）$\pi^{3}i\approx31.006\,i$。
+
+\textbf{自检}：两题只差分母的幂次（$2$ 与 $3$），答案的倍数也从 $2\pi i\cdot3$ 变成 $\pi i\cdot\pi^{2}$。若第 2 题写成 $\dfrac{2\pi i}{3!}$，得到的是 $\dfrac{\pi^{3}}{3}i$——少三倍，正是 §7 第 9 条说的错位。数值复核：$\pi^{3}=31.0063$。
+
+\qbreak
+\subhdr{A·第 5 题}
+\qstem{（课件 p53 第 5 题；正文第 \pageref{hw:5} 页）由 $\displaystyle\oint_c\frac{dz}{z+2}$ 的值证明 $\displaystyle\int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\dd\theta=0$，其中 $c$ 是单位圆。}
+\label{app:hw5}
+
+\textbf{考点}：实积分 $\to$ 单位圆复积分（$z=e^{i\theta}$、$\cos\theta=\frac{z+z^{-1}}{2}$、$d\theta=\frac{dz}{iz}$）；$d\theta$ 带进来的 $1/z$ 会造出新极点。
+
+\textbf{关键一步}：先算出那个复积分，再做代换。在 $c$ 上 $\dfrac{1}{z+2}$ 解析（$-2$ 在圆外），所以
+\[ \oint_c\frac{dz}{z+2}=0 . \]
+
+\textbf{详解（路线一，按题设的提示走）}：参数化 $z=e^{i\theta}$，$dz=ie^{i\theta}\dd\theta$，
+\[ \oint_c\frac{dz}{z+2}=\int_0^{2\pi}\frac{ie^{i\theta}}{e^{i\theta}+2}\dd\theta=0 . \]
+分子分母同乘 $e^{-i\theta}$：
+\[ \frac{ie^{i\theta}}{e^{i\theta}+2}=\frac{i}{1+2e^{-i\theta}}
+=\frac{i\,(1+2e^{i\theta})}{|1+2e^{-i\theta}|^{2}}
+=\frac{i(1+2\cos\theta)-2\sin\theta}{5+4\cos\theta} , \]
+其中 $|1+2e^{-i\theta}|^{2}=(1+2\cos\theta)^{2}+4\sin^{2}\theta=5+4\cos\theta$。
+把实部、虚部分开：
+\[ 0=\int_0^{2\pi}\frac{-2\sin\theta}{5+4\cos\theta}\dd\theta
++i\int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\dd\theta . \]
+实部为零是显然的（$\dfrac{-2\sin\theta}{5+4\cos\theta}$ 关于 $\theta\to2\pi-\theta$ 变号，整周期积分为零）；虚部为零就是所求：
+\[ \int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\dd\theta=0 . \]
+
+\textbf{详解（路线二，留数核对，顺便演示 §7 第 1 条的坑）}：把被积函数整个换成 $z$：
+\[ 1+2\cos\theta=1+z+\frac1z=\frac{z^{2}+z+1}{z},\qquad
+5+4\cos\theta=5+2z+\frac2z=\frac{2z^{2}+5z+2}{z} , \]
+\[ d\theta=\frac{dz}{iz}\ \Longrightarrow\
+I=\oint_c\frac{z^{2}+z+1}{2z^{2}+5z+2}\cdot\frac{dz}{iz}
+=\frac{1}{i}\oint_c\frac{z^{2}+z+1}{2z\,(z+\tfrac12)(z+2)}\dd z . \]
+三个根 $z=0$、$z=-\tfrac12$、$z=-2$；在单位圆内的只有前两个（\textbf{若漏掉 $z=0$，就会得到 $-\pi$ 而不是 $0$}）。两个留数：
+\[ \operatorname{Res}_{z=0}=\frac{1}{2i(0+\tfrac12)(0+2)}=\frac{1}{2i}=-\frac{i}{2},\qquad
+\operatorname{Res}_{z=-1/2}=\frac{\tfrac14-\tfrac12+1}{2i(-\tfrac12)\bigl(-\tfrac12+2\bigr)}=\frac{3/4}{-3i/2}=\frac{i}{2} . \]
+两者之和为零，故 $I=2\pi i\cdot\dfrac{1}{i}\cdot0=0$，与路线一一致。
+
+\textbf{答案}：$\displaystyle\int_0^{2\pi}\frac{1+2\cos\theta}{5+4\cos\theta}\dd\theta=0$。
+
+\textbf{自检}：取 $\theta=\pi$，被积函数 $=\dfrac{-1}{1}=-1$（负）；$\theta=0$ 时 $=\dfrac{3}{9}=\dfrac13$（正）。正负要恰好抵消，这与“结果为零”一致，也与路线二里两个留数一正一负抵消一致。
+
+\qbreak
+\subhdr{A·第 6 题}
+\qstem{（课件 p53 第 6 题；正文第 \pageref{hw:6} 页）求 $\displaystyle\oint_{|z|=1}\frac{e^{z}}{z}\dd z$，并由此证明 $\displaystyle\int_0^{\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta=\pi$。}
+\label{app:hw6}
+
+\textbf{考点}：柯西公式 + 参数化后取实部虚部 + 对称性折半。
+
+\textbf{关键一步}：$f(z)=e^{z}$ 解析，$a=0$ 在圈内，所以
+\[ \oint_{|z|=1}\frac{e^{z}}{z}\dd z=2\pi i\,e^{0}=2\pi i . \]
+
+\textbf{详解}：参数化 $z=e^{i\theta}$，$dz=ie^{i\theta}\dd\theta$，$\dfrac{dz}{z}=i\dd\theta$：
+\[ \oint_{|z|=1}\frac{e^{z}}{z}\dd z=\int_0^{2\pi}e^{e^{i\theta}}\,i\dd\theta
+=i\int_0^{2\pi}e^{\cos\theta+i\sin\theta}\dd\theta . \]
+用 $e^{a+ib}=e^{a}(\cos b+i\sin b)$ 拆开：
+\[ e^{\cos\theta+i\sin\theta}=e^{\cos\theta}\bigl[\cos(\sin\theta)+i\sin(\sin\theta)\bigr] . \]
+代回并比较两边的实部虚部（左边 $=2\pi i$，实部为 $0$）：
+\[ i\int_0^{2\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta
+-\int_0^{2\pi}e^{\cos\theta}\sin(\sin\theta)\dd\theta=2\pi i . \]
+于是
+\begin{align}
+&\int_0^{2\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta=2\pi,\label{eq:hw6a}\\
+&\int_0^{2\pi}e^{\cos\theta}\sin(\sin\theta)\dd\theta=0 .\label{eq:hw6b}
+\end{align}
+\eqref{eq:hw6b} 靠奇偶性：令 $\theta\to2\pi-\theta$，则 $\sin(\sin\theta)\to-\sin(\sin\theta)$ 而 $e^{\cos\theta}$ 不变，故被积函数变号，整周期积分为零。
+
+最后把 \eqref{eq:hw6a} 折半：被积函数 $e^{\cos\theta}\cos(\sin\theta)$ 在 $\theta\to2\pi-\theta$ 下不变（偶），所以 $[0,2\pi]$ 上的积分是 $[0,\pi]$ 上的两倍：
+\[ \int_0^{\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta=\frac{2\pi}{2}=\pi . \]
+
+\textbf{答案}：$\displaystyle\oint_{|z|=1}\frac{e^{z}}{z}\dd z=2\pi i$；\ $\displaystyle\int_0^{\pi}e^{\cos\theta}\cos(\sin\theta)\dd\theta=\pi$。
+
+\textbf{自检}：$\theta=0$ 时被积函数 $=e\cdot1=2.718$，$\theta=\tfrac{\pi}{2}$ 时 $=1\cdot1=1$，$\theta=\pi$ 时 $=e^{-1}\cdot1=0.368$——三者都为正，平均值约在 $1$ 附近，$\pi$ 除以区间长度 $\pi$ 得平均值 $1$，量级吻合（数值复核：$3.14159$）。
+
+\vspace{6pt}
+\begin{center}
+{\color{petal}\small\ding{95}\quad\ding{96}\quad\ding{95}}
+\end{center}
+\begin{center}
+{\small\color{inkgray}本讲义依据 2026 年秋季学期上传课件写成；页码一律指该课件 PDF 的页序。\\所有积分值、留数、级数系数均已用数值积分复核（mpmath，25 位有效数字）。}
+\end{center}
+
+\end{document}

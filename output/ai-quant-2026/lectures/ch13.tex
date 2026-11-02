@@ -1,0 +1,152 @@
+\chapter{个人研究者的十二周路线图}\label{ch:roadmap}
+
+\begin{keybox}[本章要回答的问题]
+如果只有一台普通电脑、每天两小时、三个月时间，应该按什么顺序做，
+才能在每一步都拿到\textbf{可信}的结论？
+\end{keybox}
+
+\section{总原则：每一步都要有"可以继续"的判据}
+
+研究最怕的不是做不完，而是做完了却不知道结论可不可信。因此每一阶段都必须设定
+\textbf{量化判据}：达不到就不进入下一步，达到了才继续。
+
+\section{第一阶段（第 1--3 周）：数据地基}
+
+\subsection{做什么}
+
+\begin{enumerate}
+  \item 建立本地数据库（行情 + 财报 + 估值 + 日历）；
+  \item 实现复权、PIT、可交易性标记；
+  \item 写数据质量检查脚本。
+\end{enumerate}
+
+\subsection{判据}
+
+\begin{itemize}
+  \item 每个交易日的股票数量单调变化，无整段缺失；
+  \item 复权因子单调不减，除权日收益率不超涨跌停；
+  \item 所有财报的公告日晚于报告期；
+  \item 可交易股票占比在 70\%--90\%；
+  \item 随机抽 20 只股票，与第二个数据源核对收盘价，误差 $<0.1\%$。
+\end{itemize}
+
+\begin{warnbox}[最常见的失败模式]
+急着算因子，跳过数据校验。结果是：后面所有结论都建立在一堆看不见的错误上，
+而且在发现问题之前，你已经花了三周时间。
+\end{warnbox}
+
+\section{第二阶段（第 4--6 周）：因子与评价}
+
+\subsection{做什么}
+
+\begin{enumerate}
+  \item 实现 15--20 个因子（先做反转、波动、流动性三个家族）；
+  \item 实现去极值、标准化、中性化；
+  \item 实现 IC / ICIR / 分层 / 换手 / 衰减评价；
+  \item 做因子相关性聚类。
+\end{enumerate}
+
+\subsection{判据}
+
+\begin{itemize}
+  \item 至少 5 个因子的中性化后 $|{\rm IC}| > 0.02$ 且 NW $t > 2$；
+  \item 至少 3 个因子的分层单调性 $|{\rm corr}| > 0.8$；
+  \item 因子相关性矩阵中，没有超过一半的因子对相关性 $>0.7$。
+\end{itemize}
+
+\section{第三阶段（第 7--9 周）：标签、模型与验证}
+
+\subsection{做什么}
+
+\begin{enumerate}
+  \item 构造横截面排序标签；
+  \item 实现等权合成基线；
+  \item 实现 Ridge 与 LightGBM；
+  \item 实现 Purged K-Fold 与 CPCV；
+  \item 实现 DSR 与 PBO。
+\end{enumerate}
+
+\subsection{判据}
+
+\begin{itemize}
+  \item 样本外 Rank IC 在 5 折上的标准差小于均值的 50\%（结果稳定）；
+  \item CPCV 的多条路径中，至少 70\% 的夏普为正；
+  \item DSR $>0.9$；
+  \item PBO $<0.3$。
+\end{itemize}
+
+\begin{warnbox}[如果达不到]
+不要换更复杂的模型，先回头检查：
+标签对不对？有没有前视？成本算没算？股票池合不合理？
+90\% 的"模型不行"其实是"数据或标签不行"。
+\end{warnbox}
+
+\section{第四阶段（第 10--12 周）：组合与报告}
+
+\subsection{做什么}
+
+\begin{enumerate}
+  \item 实现分位数组合与带约束优化；
+  \item 实现成本模型与容量分析；
+  \item 写完整研究报告（含所有已知局限）；
+  \item 建立监控脚本。
+\end{enumerate}
+
+\subsection{判据}
+
+\begin{itemize}
+  \item 扣 30 bp 成本后仍有正的年化收益；
+  \item 分年度看，收益不集中在某一年；
+  \item 换手率与成本假设匹配（年换手 $\times$ 成本 $<$ 年化 alpha 的 50\%）；
+  \item 报告里明确写出"这个结论在什么条件下会失效"。
+\end{itemize}
+
+\section{时间分配的现实建议}
+
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+阶段 & 理想占比 & 现实占比（多数人） \\
+\midrule
+数据 & 30\% & 10\% \\
+因子 & 25\% & 15\% \\
+模型 & 15\% & 50\% \\
+验证 & 20\% & 5\% \\
+组合与报告 & 10\% & 20\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{现实与理想的差距，基本都花在了"调模型"上。}而调模型恰恰是回报最低的部分。
+
+\section{一份最小可用的文件结构}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+目录 & 内容 \\
+\midrule
+\texttt{data/quant.db} & SQLite 原始库 \\
+\texttt{data/factors/} & 按年分片的因子面板（parquet） \\
+\texttt{aq/} & 框架代码（面板、因子、评价、CV、统计） \\
+\texttt{scripts/} & 01--09 编号脚本，按顺序可一键复现 \\
+\texttt{reports/} & 因子评价表、模型测试表、诊断 JSON、图表 \\
+\texttt{lectures/} & 本讲义源码与 PDF \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keybox}[可复现的最后一道保险]
+把 \texttt{scripts/} 里的编号脚本从头到尾跑一遍，能产出与报告完全一致的数字。
+如果做不到，说明你的研究里有"手工操作"——而手工操作是复现性最大的敌人。
+\end{keybox}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 每一阶段都要有量化判据，达不到不进入下一步。
+  \item 数据阶段应该占 30\% 的时间，现实中多数人只花 10\%。
+  \item 模型阶段最容易超时，而它的边际回报最低。
+  \item 90\% 的"模型不行"其实是"数据或标签不行"。
+  \item 一键复现是研究可信度的最后一道保险。
+\end{enumerate}

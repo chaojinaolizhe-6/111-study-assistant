@@ -1,0 +1,358 @@
+
+\flowerrule
+
+\hdr{§2}{柯西定理：闭围道为什么积分为零}
+
+\subhdr{2.1\quad 单连通版本（p20）}
+
+\textbf{定理（单连通柯西定理）}：设 $f(z)$ 在闭单连通区域 $\overline{D}$ 上解析（即存在一个包含 $\overline{D}$ 的开区域，$f$ 在其内处处解析），$C$ 是 $D$ 内任一条分段光滑闭曲线，取正向（逆时针），则
+\[ \oint_C f(z)\dd z=0 . \]
+
+\aside{p20 原文写的是“如果函数 $f(z)$ 在闭单连通区域 $D$ 中解析”，口语上是指“在包含 $D$ 闭包的开区域内解析”。为什么必须“闭”上：证明要用格林公式，而格林公式要求被积函数在闭区域 $\overline{D}$ 上有连续偏导。只给“$D$ 内解析”不足以把积分变成面积分。}
+
+\textbf{证明（p21）}：由式 \eqref{eq:split}，
+\[ \oint_C f\dd z=\oint_C(u\,dx-v\,dy)+i\oint_C(v\,dx+u\,dy). \]
+对第一个实积分用格林公式，取 $P=u,\ Q=-v$：
+\[ \oint_C(u\,dx-v\,dy)=\iint_D\Bigl(\frac{\partial(-v)}{\partial x}-\frac{\partial u}{\partial y}\Bigr)\dd x\dd y
+=\iint_D\underbrace{(-v_x-u_y)}_{=\,0\ \text{（C-R）}}\dd x\dd y=0 . \]
+对第二个，取 $P=v,\ Q=u$：
+\[ \oint_C(v\,dx+u\,dy)=\iint_D\Bigl(\frac{\partial u}{\partial x}-\frac{\partial v}{\partial y}\Bigr)\dd x\dd y
+=\iint_D\underbrace{(u_x-v_y)}_{=\,0\ \text{（C-R）}}\dd x\dd y=0 . \]
+两项都为零，故 $\oint_C f\dd z=0$。
+
+\aside{格林公式的原形式：$\displaystyle\oint_C(P\,dx+Q\,dy)=\iint_D\Bigl(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Bigr)\dd x\dd y$，其中 $C$ 取正向。注意括号里是 $Q_x-P_y$，\textbf{不是} $P_x-Q_y$；两项的符号最容易在这里翻车。}
+
+\warnbox{三个符号，三处坑：格林公式里是 $Q_x-P_y$；C-R 的第二条是 $u_y=-v_x$（带负号）；正向是逆时针（区域在左手边）。任一处取反，结论都从“$0$”变成“不是 $0$”，而这种错误往往不会在结果里显形——因为你算的是另一道题。}
+
+同一个机制有三种说法，都值得各留一句：
+
+\begin{itemize}
+\item \textbf{几何说}：解析函数的实部与虚部构成一个“无旋且无散”的平面场，所以沿任何闭曲线的环量为零。p22 页末那句“如重力做功、静电势能！”就是这个意思——保守场的闭路做功为零。
+\item \textbf{分析说}：格林公式把边界积分变成面积分，C-R 又让面积分的被积函数恒为零。这是 p21 的证明。
+\item \textbf{代数说}：若用第一章的 Wirtinger 导数，解析等价于 $\partial f/\partial\bar z=0$，即 $f$ 只“依赖 $z$ 不依赖 $\bar z$”，所以 $f\dd z$ 是恰当微分。本章不用这条，但它是最省字的证明。
+\end{itemize}
+
+\subhdr{2.2\quad 三条推论：路径无关、原函数、牛顿--莱布尼茨（p22--p23）}
+
+\textbf{推论 1（路径无关）}：在单连通区域 $D$ 内解析的函数，其积分只依赖起点与终点，与路径无关。
+
+\textbf{证明}：设 $c_1,c_2$ 是 $D$ 内从 $A$ 到 $B$ 的任意两条曲线。把 $c_2$ 反向记作 $c_2^{-}$，则 $c_1+c_2^{-}$ 是一条闭曲线，由柯西定理
+\[ \oint_{c_1+c_2^{-}}f\dd z=\int_{c_1}f\dd z+\int_{c_2^{-}}f\dd z=\int_{c_1}f\dd z-\int_{c_2}f\dd z=0 , \]
+即 $\displaystyle\int_{c_1}f\dd z=\int_{c_2}f\dd z$。
+
+\textbf{推论 2（原函数存在）}：固定 $z_0\in D$，定义
+\[ F(z)=\int_{z_0}^{z}f(\zeta)\dd\zeta\quad(\text{沿 }D\text{ 内任一路径}) . \]
+由推论 1，右端与路径无关，所以 $F(z)$ 是 $D$ 内的\textbf{单值}函数。
+
+\textbf{推论 3（牛顿--莱布尼茨公式）}：$F'(z)=f(z)$，且
+\begin{equation}\label{eq:NL}
+\int_{z_0}^{z_1}f(z)\dd z=F(z_1)-F(z_0).
+\end{equation}
+
+p23 只说了 $F$ 是“变上限的单值函数”，没说它是解析的、也没说 $F'=f$。这两句补在这里：
+\[ F(z+\Delta z)-F(z)=\int_z^{z+\Delta z}f(\zeta)\dd\zeta
+=f(z)\Delta z+\int_z^{z+\Delta z}\bigl[f(\zeta)-f(z)\bigr]\dd\zeta , \]
+后一项由 $f$ 的连续性与 $ML$ 估计是 $o(\Delta z)$（上界为 $\varepsilon|\Delta z|$），所以 $F'(z)=f(z)$ 存在，且 $F$ 解析。
+
+\aside{这三条推论是第三章（幂级数展开）的地基：解析 $\Rightarrow$ 有原函数 $\Rightarrow$ 沿路径积分可以不管路径。第四章的留数定理要处理的，正是“没有原函数时怎么办”。}
+
+\subhdr{2.3\quad 例 1（p24）：用原函数直接代端点}
+
+\qbreak
+\qstem{（课件 p24 例 1）计算 $\displaystyle\int_{-i}^{i}z^{2}\dd z$ 与 $\displaystyle\int_0^{i}z\sin z\dd z$。}
+
+\textbf{第一式}：$z^{2}$ 整函数，原函数 $z^{3}/3$，
+\[ \int_{-i}^{i}z^{2}\dd z=\frac{z^{3}}{3}\Big|_{-i}^{i}
+=\frac{i^{3}-(-i)^{3}}{3}=\frac{-i-i}{3}=-\frac{2i}{3} . \]
+
+\textbf{第二式}：先找原函数。分部积分，
+\[ \int z\sin z\dd z=\sin z-z\cos z , \]
+求导验算：$\cos z-\cos z+z\sin z=z\sin z$ \ 对。于是
+\[ \int_0^{i}z\sin z\dd z=\bigl(\sin z-z\cos z\bigr)\Big|_0^{i}=\sin i-i\cos i . \]
+
+\textbf{化简}：$\sin i=i\sinh 1$，$\cos i=\cosh 1$，所以
+\[ \sin i-i\cos i=i(\sinh1-\cosh1)=i\Bigl(\frac{e-e^{-1}}{2}-\frac{e+e^{-1}}{2}\Bigr)=-\frac{i}{e} . \]
+数值约 $-0.368i$（已数值复核）。
+
+\aside{课件停在 $\sin i-i\cos i$。读者从这个式子看不出它是纯虚数、也看不出它等于 $-i/e$；而“是不是纯虚数”在核对对称性时很有用（起点与终点关于原点对称、被积函数是奇函数，结果应在虚轴上）。}
+
+\warnbox{用原函数的前提：被积函数在“包含路径的单连通区域”内解析。$z^{2}$ 与 $z\sin z$ 都是整函数，随便哪条路径都行；但若路径绕过了奇点，原函数可能多值（例如 $1/z$ 的原函数是 $\operatorname{Log}z$），那时\eqref{eq:NL} 不能直接代。}
+
+\subhdr{2.4\quad 例 2（p24）：把路径换掉}
+
+\qbreak
+\qstem{（课件 p24 例 2）计算 $I=\displaystyle\int_C\bigl(e^{z}+\sin z+2z\bigr)\dd z$，其中 $C$ 是圆 $(x-1)^{2}+y^{2}=1$ 的上半圆周，逆时针方向。}
+
+\textbf{关键一步}：被积函数是整函数（$e^{z}$、$\sin z$、$2z$ 都处处解析），所以路径无关。课件选择把路径换成实轴上的线段 $(2,0)\to(0,0)$：上半圆弧与实轴段合起来是一条闭曲线，被积函数在闭曲线内解析，故闭路积分为零，于是沿上半圆的积分等于沿实轴（反向）的积分。
+
+\[ I=\int_2^0\bigl(e^{x}+\sin x+2x\bigr)\dd x
+=\Bigl[e^{x}-\cos x+x^{2}\Bigr]_2^0 . \]
+端点值：$x=0$ 时 $1-1+0=0$；$x=2$ 时 $e^{2}-\cos2+4$。故
+\[ I=0-\bigl(e^{2}-\cos2+4\bigr)=\cos2-e^{2}-4\approx-11.805 . \]
+
+\warnbox{方向：从 $(2,0)$ 到 $(0,0)$ 是沿实轴向左，所以是 $\int_2^0$（下限 $2$、上限 $0$）。课件写的正是 $\int_2^0$，不要“顺手”改成 $\int_0^2$——那是反方向，差一个负号。}
+
+\aside{p24 原文只说“被积函数在区域内是解析函数，因此与路径无关”，没有把那条闭曲线画出来。完整的句子应当是：$\int_{\text{上半圆}}+\int_{\text{实轴}(0\to2)}=0$，所以 $\int_{\text{上半圆}}=-\int_{\text{实轴}(0\to2)}=\int_{\text{实轴}(2\to0)}$。}
+
+\subhdr{2.5\quad 复连通版本（p25--p27）}
+
+\textbf{定理（复连通柯西定理）}：设 $f(z)$ 是复连通区域 $D$ 内的单值解析函数，$D$ 的边界由外边界 $c_0$ 与内边界 $c_1,c_2,\dots,c_n$ 组成，全部取正向，则
+\begin{equation}\label{eq:multi}
+\oint_{c_0}f\dd z+\sum_{k=1}^{n}\oint_{c_k}f\dd z=0 .
+\end{equation}
+
+\textbf{证明（p26，割线法）}：作 $n$ 条割线把每条内边界与外边界连起来，沿每条割线剪开，复连通区域就变成单连通区域；沿这个大单连通区域的边界积分为零；每条割线被走了两次、方向相反，而 $f$ 单值，所以两次积分恰好相消；剩下外边界与内边界的积分之和，即 \eqref{eq:multi}。
+
+\aside{“单值”这半句的重量全在这里。若 $f$ 多值（例如沿负实轴割开的 $\operatorname{Log}z$），同一条割线两侧的函数值差 $2\pi i$，两次积分不会相消，定理就不成立。p26 原文“由于 $f(z)$ 是单值解析函数，因此它沿同一割线两边缘的积分相互抵消”正是这个意思。}
+
+\warnbox{内边界也取\textbf{正向}（逆时针）。很多人凭“外圈逆时针、内圈顺时针”的记忆做挖洞题，那样会在整体上差一个负号。唯一的判断方法：沿边界走时，区域始终在左手边。图 2 里内外圈的箭头都是逆时针。}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5,>=Stealth]
+\draw[violet,thick,midarrow=0.12] (0,0) circle (1.25);
+\fill[bandviolet] (0,0) circle (1.25);
+\draw[violetdeep,thick,midarrow=0.7] (-0.55,0.15) circle (0.30);
+\draw[violetdeep,thick,midarrow=0.7] (0.55,-0.10) circle (0.26);
+\draw[fill=white] (-0.55,0.15) circle (0.30);
+\draw[fill=white] (0.55,-0.10) circle (0.26);
+\draw[violetdeep,thick] (-0.25,-0.12)--(-0.85,-0.10);
+\draw[violetdeep,thick] (0.29,-0.05)--(0.80,-0.15);
+\node[violet] at (0.05,1.38) {\small$c_0$};
+\node[violetdeep] at (-0.55,0.55) {\small$c_1$};
+\node[violetdeep] at (0.55,-0.48) {\small$c_2$};
+\node[inkgray] at (-0.62,-0.02) {\small$b$};
+\node[inkgray] at (0.05,-0.16) {\small$a$};
+\end{tikzpicture}
+\figcap{图 2\quad 复连通区域的割线（重绘，对应 p26 的图 2-4）。浅紫是区域 $D$，两个白洞是内边界 $c_1,c_2$；两条短线段是把洞连到外边界的割线。剪开后 $D$ 变成单连通，割线两侧方向相反、积分相消。}
+\end{center}
+
+\subhdr{2.6\quad 内外边界积分相等（p27）}
+
+把 \eqref{eq:multi} 的求和项移到右边，并把内边界的方向反转，得
+\begin{equation}\label{eq:equal}
+\oint_{c_0}f\dd z=\sum_{k=1}^{n}\oint_{c_k}f\dd z\qquad(c_k\ \text{均取正向}).
+\end{equation}
+读法：\textbf{外圈绕一圈的积分，等于里面各圈积分之和，大家都是逆时针。}
+
+这一条是“挖洞法”的全部依据：把一个难算的大围道，换成一堆好算的小圆。p27 末句“这说明，函数 $f(z)$ 沿着内外边界线的积分相等，但两者都是沿着逆时针方向进行积分的”——后半句是提醒，不是废话。
+
+\subhdr{2.7\quad 例 1（p28）：把“圆”换成“任意闭曲线”}
+
+\qbreak
+\qstem{（课件 p28 例 1）设 $a$ 是任意闭合围道 $c_0$ 内的一点，证明
+$\displaystyle\oint_{c_0}\frac{dz}{(z-a)^{n}}=\begin{cases}2\pi i,&n=1,\\0,&n\ne1.\end{cases}$}
+
+\textbf{证明}：以 $a$ 为圆心作半径 $\rho$ 的圆 $c$，使 $c$ 完全落在 $c_0$ 内部，且方向与 $c_0$ 同向。外边界 $c_0$ 与内边界 $c$ 围成一个复连通区域，而 $\dfrac{1}{(z-a)^{n}}$ 在该区域内处处解析（唯一的奇点 $z=a$ 被挖掉了）。由 \eqref{eq:equal}，
+\[ \oint_{c_0}\frac{dz}{(z-a)^{n}}=\oint_{c}\frac{dz}{(z-a)^{n}} , \]
+再用 §1.8 的式 \eqref{eq:main} 即得结论。
+
+\warnbox{小圆方向必须与 $c_0$ 同向，否则 $\oint_{c_0}=-\oint_{c}$。p28 原文写了“方向与 $c$ 同向”，抄写时最容易漏，而漏掉只差一个负号，答案会“看起来也对”。}
+
+\aside{这一步的意义：§1.8 的结果只对\emph{圆}证明过，现在推广到\emph{任意闭曲线}。此后所有围道积分题，围道画成什么形状都不影响结果，只影响“哪些奇点在围道里面”。这是“路径无关”最强的形式。}
+
+\subhdr{2.8\quad 例 2（p29）：主例题全程}
+
+\qbreak
+\qstem{（课件 p29 例 2）计算 $\displaystyle I=\oint_{|z|=2}\frac{dz}{z^{2}-1}$。}
+
+\textbf{第一步 · 拆分母}：
+\[ \frac{1}{z^{2}-1}=\frac{1}{(z-1)(z+1)}=\frac12\Bigl(\frac{1}{z-1}-\frac{1}{z+1}\Bigr) . \]
+验算：$\dfrac12\cdot\dfrac{(z+1)-(z-1)}{z^{2}-1}=\dfrac12\cdot\dfrac{2}{z^{2}-1}$ \ 对。
+
+\textbf{第二步 · 数奇点、挖洞}：分母的两个根 $z=1$、$z=-1$ 都在 $|z|<2$ 内。以 $z=\pm1$ 为圆心、半径 $\tfrac12$ 作两个小圆 $c_1,c_2$，方向与 $C$ 同向（逆时针）。由 \eqref{eq:equal}，
+\[ I=\oint_C\frac{dz}{z^{2}-1}=\oint_{c_1}\frac{dz}{z^{2}-1}+\oint_{c_2}\frac{dz}{z^{2}-1} . \]
+半径取 $\tfrac12$ 的道理：要小到让 $c_1$ 只含 $z=1$、$c_2$ 只含 $z=-1$（两洞半径之和小于两奇点间距 $2$ 即可，取 $\tfrac12$ 最省事）。
+
+\textbf{第三步 · 算 $c_1$ 上的积分}：在 $c_1$ 内，$z=-1$ 在外面，$\dfrac{1}{z+1}$ 解析，故 $\displaystyle\oint_{c_1}\frac{dz}{z+1}=0$；而 $\displaystyle\oint_{c_1}\frac{dz}{z-1}=2\pi i$（式 \eqref{eq:main}，与半径无关）。于是
+\[ \oint_{c_1}\frac{dz}{z^{2}-1}=\frac12\bigl(2\pi i-0\bigr)=\pi i . \]
+
+\textbf{第四步 · 算 $c_2$ 上的积分}：在 $c_2$ 内，$z=1$ 在外面，$\dfrac{1}{z-1}$ 解析，故 $\displaystyle\oint_{c_2}\frac{dz}{z-1}=0$；而 $\displaystyle\oint_{c_2}\frac{dz}{z+1}=2\pi i$。于是
+\[ \oint_{c_2}\frac{dz}{z^{2}-1}=\frac12\bigl(0-2\pi i\bigr)=-\pi i . \]
+
+\textbf{第五步 · 相加}：
+\[ \boxed{\;I=\pi i-\pi i=0\;} \]
+
+三个“为什么”必须说清：
+
+\begin{itemize}
+\item[(1)] \textbf{为什么两个 $\oint dz/(z\mp1)$ 都等于 $2\pi i$、与半径无关}：这是式 \eqref{eq:main} 的 $n=1$ 情形。半径取 $\tfrac12$ 还是 $\tfrac13$ 都一样，只要小圆里只有那一个奇点。
+\item[(2)] \textbf{为什么结果是 $-\pi i$ 而不是 $+\pi i$}：负号来自\textbf{部分分式}里的减号，不来自方向——两个小圆都是逆时针。
+\item[(3)] \textbf{为什么总和是 $0$}：被积函数在 $|z|>2$（含无穷远点）没有奇点。第四章会证明“全平面上所有奇点的留数（含无穷远点）之和为零”，届时这个 $0$ 就是必然。
+\end{itemize}
+
+\textbf{“算不下去”的地方}。若不用定理，直接参数化 $z=2e^{i\theta}$：
+\[ I=\int_0^{2\pi}\frac{2ie^{i\theta}}{4e^{2i\theta}-1}\dd\theta . \]
+这个实积分虽有初等原函数，但要在实数域上把它积出来，得先把分母按 $\cos2\theta$、$\sin2\theta$ 拆开再配方，过程比定理长十倍，而且容易在周期性上出错。定理做的事只有一件：\textbf{把“算不出的积分”换成“数点”}。
+
+\aside{围道决定答案：把同一个被积函数放到 $|z|=\tfrac12$ 上，两个奇点都在外面，答案 $0$；放到 $|z-1|=\tfrac12$ 上，只包住 $z=1$，答案是 $\tfrac12\cdot2\pi i=\pi i$。可见“答案只由围道内包住的奇点决定”，这就是下一节柯西公式的全部内容。}
+
+\flowerrule
+
+\hdr{§3}{柯西公式：内部的值由边界决定}
+
+\subhdr{3.1\quad 陈述（p31）}
+
+\textbf{定理（柯西公式）}：设 $f(z)$ 在闭单连通区域 $\overline{D}$ 上解析，$C=\partial D$ 取正向，$a$ 是 $D$ 内任意一点，则
+\begin{equation}\label{eq:cauchy}
+\boxed{\;f(a)=\frac{1}{2\pi i}\oint_C\frac{f(z)\dd z}{z-a}\;}
+\qquad\text{等价地}\qquad
+\oint_C\frac{f(z)\dd z}{z-a}=2\pi i f(a).
+\end{equation}
+
+它说的是：一个解析函数在内部任意一点的值，完全由它在边界上的值决定。
+
+\aside{两条前提必须同时成立：$f$ 在 $C$ 内解析；$a$ 在 $C$ 内。缺第二条就是 p34 的思考题，答案是 $0$（§3.3）。}
+
+这句话在实变函数里是不可想象的：实函数的边界值完全管不住内部（两个函数在边界上都趋于零，内部可以一个恒为零、另一个很大）。柯西公式是复分析“刚性”的第一个定量版本。
+
+\subhdr{3.2\quad 证明（p32--p33）：四步}
+
+\textbf{第一步 · 挖洞}：以 $a$ 为圆心、$\rho$ 为半径作圆 $c_\rho$（正向），$\rho$ 小到 $c_\rho$ 完全含于 $D$。
+
+\textbf{第二步 · 用复连通定理}：$\dfrac{f(z)}{z-a}$ 在 $C$ 与 $c_\rho$ 之间的复连通区域内解析（唯一的麻烦点 $z=a$ 被挖掉），由 \eqref{eq:equal}，
+\[ \oint_C\frac{f(z)\dd z}{z-a}=\oint_{c_\rho}\frac{f(z)\dd z}{z-a} . \]
+
+\textbf{第三步 · 拆出常数项}：
+\[ \frac{f(z)}{z-a}=\frac{f(a)}{z-a}+\frac{f(z)-f(a)}{z-a} . \]
+第一项的积分用式 \eqref{eq:main}：$\displaystyle f(a)\oint_{c_\rho}\frac{dz}{z-a}=2\pi i\,f(a)$。
+
+\textbf{第四步 · 第二项随 $\rho\to0$ 消失}：在 $c_\rho$ 上 $|z-a|=\rho$，且 $f$ 在 $a$ 连续，故对任意 $\varepsilon>0$ 存在 $\delta>0$，当 $|z-a|<\delta$ 时 $|f(z)-f(a)|<\varepsilon$。取 $\rho<\delta$，则
+\[ \Bigl|\oint_{c_\rho}\frac{f(z)-f(a)}{z-a}\dd z\Bigr|
+\le\oint_{c_\rho}\frac{|f(z)-f(a)|}{\rho}|dz|
+\le\frac{\varepsilon}{\rho}\cdot2\pi\rho=2\pi\varepsilon . \]
+$\varepsilon$ 任意，故这一项为零。合起来：$\displaystyle\oint_C\frac{f\dd z}{z-a}=2\pi i f(a)$。
+
+\aside{逻辑顺序最容易搞反：$\varepsilon$ 是\textbf{先}给的任意小量，$\delta$ 是由“$f$ 在 $a$ 连续”得到的，$\rho$ 是\textbf{最后}由我们选的（取 $\rho<\delta$ 且 $\rho<\operatorname{dist}(a,C)$）。p33 写“取 $\rho<\delta$，则 $\le2\pi\varepsilon$”，读起来像 $\rho$ 先定；其实是“给定 $\varepsilon$，可以让左端任意小”。}
+
+\warnbox{这里用到的是 $f$ 在 $a$ 点\textbf{连续}，而连续性来自“解析 $\Rightarrow$ 连续”。若 $f$ 只在 $C$ 上连续而不解析，整个论证垮掉——所以柯西公式不是“积分平均值”的平凡推论。}
+
+\subhdr{3.3\quad 两条前提与一道思考题（p34）}
+
+p34 的思考题：当 $a$ 在 $C$ 外部时，$\dfrac{1}{2\pi i}\displaystyle\oint_C\frac{f(z)\dd z}{z-a}=?$
+
+\textbf{答案：$0$。}关键一步：$a$ 在 $C$ 外 $\Rightarrow$ $\dfrac{1}{z-a}$ 在 $C$ 内解析 $\Rightarrow$ $\dfrac{f(z)}{z-a}$ 在 $C$ 内解析 $\Rightarrow$ 由柯西定理，积分为 $0$。
+
+\aside{这个“$0$”不是废结论。§4 的泊松公式就是把它当工具：对一个圆外的点 $z_1$，$\oint_C f(\zeta)d\zeta/(\zeta-z_1)=0$；把这个 $0$ 从柯西公式里减掉，分母就从复数变实数，$a^{2}-r^{2}$ 也从这里冒出来。}
+
+\subhdr{3.4\quad 三点说明（p35）}
+
+\textbf{说明 1（哑变量）}：$a$ 是任意取的，所以可以把 $a$ 换成 $z$，把积分变量换成 $\zeta$：
+\begin{equation}\label{eq:cauchy2}
+f(z)=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{\zeta-z} .
+\end{equation}
+
+\aside{换名的唯一目的，是把“内部点”与“积分变量”分开写。写成 \eqref{eq:cauchy2} 之后，$f(z)$ 成了一个“含参数 $z$ 的积分”，才能对 $z$ 求导（§3.5）。名字写混了就会得出 $f(z)=\oint f(z)dz/(z-z)$ 这种自毁的式子——每年都有人在这里卡住。}
+
+\textbf{说明 2（有奇点时）}：若 $f$ 在区域内有奇点，挖掉奇点后的复连通区域中柯西公式仍成立，只要把 $C$ 理解成所有边界线之和，且方向均取正向：$C=c_0+c_1+\cdots+c_n$。
+
+\textbf{说明 3（高阶导数）}：若 $f$ 在闭区域 $\overline{D}$ 内解析，则 $f$ 的任意阶导数都存在，且
+\begin{equation}\label{eq:highderiv}
+f^{(n)}(z)=\frac{n!}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{(\zeta-z)^{n+1}} ,
+\end{equation}
+其中 $C$ 是 $\overline{D}$ 的边界线，$\zeta$ 是 $C$ 上的点。
+
+\subhdr{3.5\quad 高阶导数公式的证明（p36--p37）}
+
+\textbf{$n=1$ 的差商}。由 \eqref{eq:cauchy2}，
+\begin{align}
+\frac{f(z+\Delta z)-f(z)}{\Delta z}
+&=\frac{1}{\Delta z}\cdot\frac{1}{2\pi i}\oint_C f(\zeta)
+\Bigl[\frac{1}{\zeta-z-\Delta z}-\frac{1}{\zeta-z}\Bigr]\dd\zeta\notag\\
+&=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{(\zeta-z-\Delta z)(\zeta-z)} ,
+\end{align}
+中间用到 $\dfrac{1}{\zeta-z-\Delta z}-\dfrac{1}{\zeta-z}=\dfrac{\Delta z}{(\zeta-z-\Delta z)(\zeta-z)}$。这一步 p36 直接给了结果，代数被吞掉了。
+
+\textbf{与“猜想值”作差}：若 $f'(z)=\dfrac{1}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)\dd\zeta}{(\zeta-z)^{2}}$，则
+\begin{align}
+f'(z)-\frac{f(z+\Delta z)-f(z)}{\Delta z}
+&=\frac{1}{2\pi i}\oint_C f(\zeta)\Bigl[\frac{1}{(\zeta-z)^{2}}-\frac{1}{(\zeta-z-\Delta z)(\zeta-z)}\Bigr]\dd\zeta\notag\\
+&=\frac{\Delta z}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{(\zeta-z)^{2}(\zeta-z-\Delta z)} .
+\end{align}
+取模并用 $ML$ 估计：
+\[ \Bigl|f'(z)-\frac{f(z+\Delta z)-f(z)}{\Delta z}\Bigr|
+\le\frac{|\Delta z|}{2\pi}\,M L,\qquad
+M=\max_{\zeta\in C}\frac{|f(\zeta)|}{|\zeta-z|^{2}\,|\zeta-z-\Delta z|} . \]
+$\Delta z\to0$ 时右端 $\to0$，故差商的极限存在且等于 $\dfrac{1}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)\dd\zeta}{(\zeta-z)^{2}}$。
+
+\aside{严格性补充：p36 把 $M$ 写成 $\dfrac{f(\zeta)}{(\zeta-z-\Delta z)(\zeta-z)^{2}}$ 的上界，没说明它与 $\Delta z$ 无关。事实上它依赖 $\Delta z$，但当 $|\Delta z|<d/2$（$d=\operatorname{dist}(z,C)$）时 $|\zeta-z-\Delta z|\ge d/2$，于是 $M\le 2\max|f|/d^{3}$，与 $\Delta z$ 无关的一致上界存在。少了这句，“$<|\Delta z|ML\to0$”就是循环论证。}
+
+\textbf{$n\ge2$}：设 $n$ 阶公式成立，把 \eqref{eq:highderiv} 的右端再对 $z$ 取一次差商，重复完全相同的估计，即得 $n+1$ 阶公式。这就是 p37“再利用数学归纳法，得证 $n$ 阶导数公式”那半句的内容。
+
+\warnbox{公式里三个东西要配对：$n!$ 在分子，分母是 $n+1$ 次幂，围道取正向。做题时先数“分母幂次 $=n+1$”定出 $n$，$n!$ 跟着定，最后乘 $2\pi i/(2\pi i)$——顺序反了就会把 $2!$ 与 $3!$ 记混。}
+
+\subhdr{3.6\quad 为什么“一次可导 $\Rightarrow$ 无穷可导”（p37 末与 p38）}
+
+p37 的蓝框原话：“一个复变函数在一个区域内只要有一阶导数存在，则它的任意高阶导数均存在，而且都是该区域内的解析函数。”紧接着一句“在实变函数中，并非如此！”
+
+\textbf{机制（一句话）}：$f'$ 存在 $\Rightarrow$ $f$ 解析 $\Rightarrow$ 柯西公式把 $f(z)$ 写成边界上的含参积分 $\Rightarrow$ 对 $z$ 求导只作用在核 $\dfrac{1}{\zeta-z}$ 上 $\Rightarrow$ 核对 $z$ 无穷次可导 $\Rightarrow$ 高阶导数全都有。
+
+\aside{与实变的差别在“根”上：实变里可导只约束沿一条直线的差商，边界值管不住内部（例如 $f(x)=x^{2}\sin(1/x)$ 在 $0$ 处可导但导数不连续）；复变里可导要在每个方向上一致地成立，C-R 一成立，函数就被绑成一个解析式，于是边界能管内部。}
+
+\textbf{p38 的两种理解}：
+
+\begin{itemize}
+\item \textbf{理解 1（积分号下求导）}：把 $\dfrac{\dd^{n}}{\dd z^{n}}$ 直接拿到积分号里面，作用在 $\dfrac{1}{\zeta-z}$ 上，得到 $\dfrac{n!}{(\zeta-z)^{n+1}}$。
+\item \textbf{理解 2（积分号下求极限）}：先写差商，再让 $\Delta z\to0$ 与积分交换，即 §3.5 的证明。
+\end{itemize}
+
+两者是同一件事的两种叙述。能交换的理由：积分是对 $\theta$ 在有限区间上的积分，被积函数对 $(z,\theta)$ 连续，且当 $z$ 与 $C$ 有正距离 $d$ 时对 $\theta$ 一致有界。
+
+\subhdr{3.7\quad 五个例题}
+
+\qbreak
+\qstem{（课件 p39 例 1）利用柯西公式计算 $\displaystyle I=\oint_C\frac{e^{az}\dd z}{z^{2}-1}$，其中 $a$ 为任意复常数，$C$ 是半径 $2$ 的圆周 $|z|=2$。}
+
+\textbf{关键一步}：分母有两个根 $\pm1$，而柯西公式一次只“提取”一个点，所以必须先拆分母：
+\[ \frac{1}{z^{2}-1}=\frac12\Bigl(\frac{1}{z-1}-\frac{1}{z+1}\Bigr) . \]
+$f(z)=e^{az}$ 在 $|z|<2$ 内解析，$z=\pm1$ 都在圆内，两次用 \eqref{eq:cauchy}：
+\[ I=\frac12\cdot2\pi i\,e^{a}-\frac12\cdot2\pi i\,e^{-a}
+=\boxed{\;\pi i\bigl(e^{a}-e^{-a}\bigr)=2\pi i\sinh a\;} \]
+
+\aside{注意最后一步的符号：第二项前面是减号（来自部分分式），所以是 $e^{a}-e^{-a}$。若把它写成 $e^{a}+e^{-a}$，答案会变成 $2\pi i\cosh a$——形状相似，错得很隐蔽。}
+
+\qbreak
+\qstem{（课件 p40 例 2）计算 $\displaystyle I=\oint_C\frac{e^{z}\dd z}{z+\frac{\pi}{2}i}$，其中 $C$ 分别为 (1) $|z|=1$；(2) $|z|=2$。}
+
+$e^{z}$ 在全平面解析，唯一的麻烦点是 $z=-\dfrac{\pi}{2}i$（模长 $1.571$），它在单位圆外、在 $|z|=2$ 内。
+
+\textbf{(1) $|z|=1$}：$z=-\dfrac{\pi}{2}i$ 在 $C$ 外，$\dfrac{e^{z}}{z+\frac{\pi}{2}i}$ 在 $C$ 内解析，由柯西定理
+\[ I=0 . \]
+
+\textbf{(2) $|z|=2$}：$z=-\dfrac{\pi}{2}i$ 在 $C$ 内，由柯西公式
+\[ I=2\pi i\,e^{-\frac{\pi}{2}i}
+=2\pi i\Bigl[\cos\bigl(-\tfrac{\pi}{2}\bigr)+i\sin\bigl(-\tfrac{\pi}{2}\bigr)\Bigr]
+=2\pi i\,(-i)=2\pi . \]
+
+\aside{这一例是“点在圈内／圈外”的分水岭：被积函数一模一样，只换围道，答案从 $0$ 跳到 $2\pi$。判据只有一个——数一数奇点是否落在围道内部；这与 p34 的思考题是同一件事。}
+
+\qbreak
+\qstem{（课件 p41 例 3）计算 $\displaystyle I=\oint_C\frac{\sin z}{z^{2}+1}\dd z$，其中 $C$ 是 $|z|=r>1$。}
+
+\textbf{关键一步}：$z^{2}+1=(z-i)(z+i)$，两个奇点 $\pm i$ 都在圈内，所以要挖两个小圆 $c_1$（绕 $i$）、$c_2$（绕 $-i$），半径取 $\tfrac12$（小于两奇点间距的一半）。由 \eqref{eq:equal}，
+\[ I=\oint_{c_1}\frac{\sin z}{z^{2}+1}\dd z+\oint_{c_2}\frac{\sin z}{z^{2}+1}\dd z
+=\oint_{c_1}\frac{\frac{\sin z}{z+i}}{z-i}\dd z+\oint_{c_2}\frac{\frac{\sin z}{z-i}}{z+i}\dd z . \]
+这里的“装箱”是全部要点：在 $c_1$ 上把 $\dfrac{\sin z}{z+i}$ 当成柯西公式里的 $f(z)$（它在 $c_1$ 内解析），在 $c_2$ 上把 $\dfrac{\sin z}{z-i}$ 当成 $f(z)$。于是
+\[ I=2\pi i\cdot\frac{\sin z}{z+i}\Big|_{z=i}+2\pi i\cdot\frac{\sin z}{z-i}\Big|_{z=-i}
+=2\pi i\cdot\frac{\sin i}{2i}+2\pi i\cdot\frac{\sin(-i)}{-2i}
+=\pi\sin i+\pi\sin i=2\pi\sin i . \]
+用 $\sin i=i\sinh1$ 化简：
+\[ \boxed{\;I=2\pi i\sinh1\approx7.384\,i\;} \]
+结果与 $r$ 无关——只要 $r>1$，两个奇点都在里面，答案不变（与 §1.8 的“与半径无关”同源）。
+
+\qbreak
+\qstem{（课件 p42 例 4）利用高阶导数公式计算 $\displaystyle I=\oint_C\frac{e^{az}\dd z}{(z-1)^{2}}$，其中 $a$ 为任意复常数，$C$ 是 $|z|=2$。}
+
+分母幂次 $2$ $\Rightarrow$ $n+1=2$，$n=1$。取 $f(z)=e^{az}$（在 $|z|<2$ 内解析），$a_0=1$ 在圆内：
+\[ I=\frac{2\pi i}{1!}f'(1)=2\pi i\cdot a\,e^{a}=\boxed{\;2\pi i\,a\,e^{a}\;} \]
+注意 $f'(z)=ae^{az}$，求导时那个 $a$ 不能丢——它是被积函数里 $e^{az}$ 带来的，不是公式的一部分。
+
+\qbreak
+\qstem{（课件 p42 例 5）计算 $\displaystyle I=\oint_C\frac{\cos z}{(z-i)^{3}}\dd z$，其中 $C$ 是 $|z|=2$。}
+
+分母幂次 $3$ $\Rightarrow$ $n=2$。取 $f(z)=\cos z$，$a_0=i$ 在圆内：
+\[ I=\frac{2\pi i}{2!}f''(i)=\pi i\cdot\bigl(-\cos i\bigr)=\boxed{\;-\pi i\cos i=-\pi i\cosh1\;} \]
+其中 $f''(z)=-\cos z$。验算：$-\pi i\cos i\approx-4.848\,i$（已数值复核）。
+
+\warnbox{$f''(i)=-\cos i$ 的负号来自 $\cos$ 的二阶导数，不是来自公式；而 $\cos i=\cosh1$ 是实数，所以结果是纯虚数。三步都要写出来，任何一步丢掉都会得到看起来“也像”的错答案。}
+
+\aside{把 p39--p42 这五个例子串起来看，只有两句话：\textbf{分母有几个根就挖几个洞}（例 1、例 3），\textbf{分母幂次决定用几阶导数}（例 4、例 5）。剩下的全是算术。}

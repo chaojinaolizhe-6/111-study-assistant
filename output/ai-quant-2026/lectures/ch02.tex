@@ -1,0 +1,255 @@
+\chapter{数据：一切结论的地基}\label{ch:data}
+
+\begin{keybox}[本章要回答的问题]
+免费能不能拿到可用的 A 股数据？复权到底怎么算？Point-in-Time 为什么是生死线？
+一个能长期维护的本地数据库应该长什么样？
+\end{keybox}
+
+\section{一次真实的数据源排雷记录}
+
+2026 年 10 月 31 日，本项目在真实网络环境下依次尝试了五个数据源，过程值得完整记录，
+因为它比任何"数据源对比表"都更接近你将来会遇到的情况。
+
+\begin{center}
+\begin{longtable}{@{}p{0.16\textwidth}p{0.30\textwidth}p{0.42\textwidth}@{}}
+\toprule
+\textbf{源} & \textbf{实测结果} & \textbf{失败方式与教训} \\
+\midrule
+\endhead
+东方财富 \texttt{push2his} & 前 50 次请求正常，之后全部失败 & \texttt{RemoteDisconnected}。
+IP 级封锁，直连与系统代理同时失效。\textbf{教训：批量抓取必须在几分钟内完成，
+或者必须限速。} \\
+\midrule
+腾讯 \texttt{fqkline} & 前约 200 次请求正常，之后全部 501 & 返回
+\texttt{waf.tencent.com} 的挑战页。\textbf{教训：501 不一定代表"接口不存在"，
+可能是 WAF。} \\
+\midrule
+baostock & 单只 3--28 秒，并发一高即被限速 & TCP 长连接协议，字段最全
+（含 \texttt{isST}、\texttt{tradeStatus}），但不适合大批量。 \\
+\midrule
+新浪 \texttt{CN\_MarketData} & 稳定，单只 0.3--0.9 秒 & \texttt{datalen} 参数可放大到
+$10^4$，一次返回全历史；配套 \texttt{hfq.js} 给出累计后复权因子。\textbf{本项目最终选它。} \\
+\midrule
+同花顺 \texttt{v6/line} & 稳定，单只约 1 秒返回全部 6416 根 & 但数据是差分编码的私有格式，
+需要逆向解码，工程成本高，未采用。 \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\begin{warnbox}[这段经历本身就是结论]
+\textbf{没有任何单一免费数据源是可靠的。}生产级做法只有三条：
+\begin{enumerate}
+  \item 写\textbf{适配器层}，把"取数据"和"用数据"解耦，换源只改一个文件；
+  \item 写\textbf{断点续抓}，每只股票的成功与否记进日志表，失败可以单独重跑；
+  \item 写\textbf{交叉校验}，用第二个源抽查 1\% 的样本，核对收盘价与复权因子。
+\end{enumerate}
+\end{warnbox}
+
+\section{复权：三种口径与一个必须记住的结论}
+
+假设某股票在除权前收盘 10 元，实施"10 送 10"，除权后理论开盘价 5 元。
+如果不做任何处理，行情数据上会出现一根 $-50\%$ 的"暴跌"，而你的动量因子会认为
+这只股票"跌惨了，应该反弹"——完全错误。
+
+\subsection{三种复权方式}
+
+设第 $t$ 日的复权因子为 $f_t$，原始价格为 $P_t$。
+
+\begin{description}
+  \item[后复权（hfq）] $\tilde P_t = P_t \cdot f_t$，且 $f$ 单调不减，最新一日 $f$ 最大。
+        历史价格不变，新数据追加时旧值不动。
+  \item[前复权（qfq）] 以上市首日为基准，最新价等于真实价，历史价被等比缩小。
+        \textbf{每次除权，全部历史价格都会变}。
+  \item[不复权（bfq）] 就是原始价格，除权日出现跳空。
+\end{description}
+
+\subsection{为什么回测必须用后复权}
+
+\begin{enumerate}
+  \item \textbf{前复权会破坏历史}。你今天下载的前复权序列，明天公司分红后整条序列都会变。
+        如果因子值依赖历史价格，你的因子值也会变——研究结果无法复现。
+  \item \textbf{不复权会把分红送转当成暴跌}。所有基于收益率的因子（反转、动量、波动）
+        都会在除权日附近产生极端值。
+  \item \textbf{后复权是唯一"只增不改"的口径}。追加新数据不会修改旧值。
+\end{enumerate}
+
+\begin{keybox}[库表设计的对应做法]
+数据库里\textbf{同时存}不复权价格与累计复权因子 $f_t$，任何时刻都能还原
+$\tilde P_t = P_t f_t$。这样既保留了"真实成交价"（算市值、算涨跌停、算 PE 都需要它），
+又保留了"总收益序列"（算因子、算净值需要它）。
+\end{keybox}
+
+\subsection{复权因子的构造}
+
+后复权因子在每次除权除息时跳变。若某次分红为每股 $D$ 元、送转为每股 $S$ 股，
+除权前收盘 $P_{t^-}$，则
+
+\begin{equation}
+  f_{t} = f_{t^-}\cdot\frac{P_{t^-}}{P_{t^-} - D + S\cdot P_{t^-}/(1+S)}
+  \;\;\approx\;\; f_{t^-}\cdot\frac{1}{1 - \frac{D}{P_{t^-}}},
+  \label{eq:adjfactor}
+\end{equation}
+
+工程上更稳妥的做法是直接使用数据源给出的累计因子序列（新浪 \texttt{hfq.js}、
+baostock 的 \texttt{backAdjustFactor}），然后用"相邻两日总收益是否连续"来校验：
+除权日附近不应出现超过涨跌停幅度的收益率跳变。本书的校验脚本
+\texttt{scripts/check\_db.py} 会检查复权因子是否单调。
+
+\section{Point-in-Time：最隐蔽的前视偏差}
+
+假设某公司 2024 年一季报显示净利润同比增长 $300\%$，报告期是 2024-03-31，
+但公告日是 2024-04-28。
+
+错误做法：在 2024-03-31 就用这个数据算因子。
+后果：你的模型在 3 月 31 日就知道了 4 月 28 日才公开的消息，样本外表现会好得离谱，
+而这个"优势"在实盘中完全不存在。
+
+正确做法：用 \texttt{notice\_date} 做 as-of 连接，即对每个交易日 $t$，
+只能使用 $\{\text{notice\_date} \le t\}$ 的最近一期财报。
+
+\begin{pycode}[PIT as-of 连接]
+df = pd.merge_asof(
+    df.sort_values(["date", "code"]),          # 行 = 交易日
+    fin.sort_values(["notice_date", "code"]),  # 行 = 财报公告
+    left_on="date", right_on="notice_date",
+    by="code", direction="backward",           # 只往回找，绝不往前
+)
+\end{pycode}
+
+\begin{warnbox}[三个容易踩的变体]
+\begin{enumerate}
+  \item \textbf{用报告期代替公告日}——最常见的错误，导致 1--4 个月的前视。
+  \item \textbf{用"最新一期"数据回填全部历史}——把今天才知道的财报喂给 2015 年的模型。
+  \item \textbf{用修正后的财务数据}——财报会重述，正确的做法是用当时的原始值。
+        免费数据源通常只提供最新值，这是必须承认的局限。
+\end{enumerate}
+\end{warnbox}
+
+\section{幸存者偏差：只在活着的股票上做研究}
+
+如果你今天下载"全部 A 股"，你拿到的是\textbf{今天还活着}的 5600 只。
+2010 年以来退市的几百只股票不在里面。而退市的股票往往是表现最差的那些。
+
+后果：任何"买入低估值股票"的策略，回测收益会被系统性高估，
+因为你永远买不到后来退市的那批。
+
+\subsection{怎么缓解}
+
+\begin{itemize}
+  \item 尽量使用\textbf{含退市股}的数据源（baostock 覆盖较好，东财数据中心的历史财报也能还原已退市公司）；
+  \item 用\textbf{时点股票池}：每一天只用"当天真实存在且可交易"的股票，
+        而不是"今天的股票池"回测历史；
+  \item 明确记录局限：如果数据源确实缺退市股，就要在报告里写清楚，
+        并对结论打一个折扣。
+\end{itemize}
+
+本项目的数据构建方式（用历年财报期反推存续公司）天然包含已退市公司，
+但行情接口对已退市股票的覆盖并不完整，这一点在第~\ref{ch:result} 章的数据质量表中如实披露。
+
+\section{可交易性：把"买不到"变成显式变量}
+
+很多回测的隐含假设是"信号出现就能按收盘价成交"。在 A 股，这个假设在四种情况下不成立：
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{情形} & \textbf{判定方式} & \textbf{回测处理} \\
+\midrule
+停牌 & 当日无成交（K 线缺行） & 不可买、不可卖 \\
+涨停 & $\text{收盘} \ge \text{涨停价} - \epsilon$ & 当日不可买入 \\
+跌停 & $\text{收盘} \le \text{跌停价} + \epsilon$ & 当日不可卖出 \\
+一字板 & $\text{最高} = \text{最低}$ & 全天无法成交 \\
+ST & 简称含 \texttt{ST} & 剔除（或单独建模） \\
+新股 & 上市未满 $N$ 日 & 剔除 \\
+流动性不足 & 20 日均成交额 $< \theta$ & 剔除 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+涨停价的判定必须按板块区分：
+
+\begin{pycode}[涨跌停幅度]
+def limit_pct(code, is_st, date):
+    chinext = code.startswith(("300", "301"))   # 创业板
+    star    = code.startswith(("688", "689"))   # 科创板
+    bse     = code.startswith(("4", "8", "92")) # 北交所
+    pct = np.where(chinext | star, 0.20, 0.10)
+    pct = np.where(bse, 0.30, pct)
+    pct = np.where(is_st & ~(chinext | star | bse), 0.05, pct)
+    early = (date < "2020-08-24") & chinext       # 注册制改革前为 10%
+    pct = np.where(early, np.where(is_st, 0.05, 0.10), pct)
+    return pct
+\end{pycode}
+
+\begin{warnbox}[ST 状态必须用历史，不能用现在]
+用"当前简称含 ST"去筛历史，会把 2015 年正常交易、2020 年才戴帽的公司错误剔除，
+也会把早已摘帽的公司错误保留。正确做法是构造\textbf{简称时间线}：
+每期财报的披露简称 + 公告日，as-of 连接回每个交易日。
+\end{warnbox}
+
+\section{数据库设计}
+
+\subsection{表结构}
+
+\begin{center}
+\begin{longtable}{@{}p{0.18\textwidth}p{0.16\textwidth}p{0.54\textwidth}@{}}
+\toprule
+\textbf{表} & \textbf{主键} & \textbf{内容与设计意图} \\
+\midrule
+\endhead
+\texttt{stock} & code & 证券主表：交易所、行业、上市/退市日 \\
+\texttt{bar} & (code, date) & 日线：不复权 OHLC + 复权因子 + 成交量/额 + 停牌标记 \\
+\texttt{fin} & (code, report\_date) & 财报：含 \texttt{notice\_date}（PIT 关键）、简称历史 \\
+\texttt{valuation} & (code, date) & 月度股本/市值/PE/PB 快照 \\
+\texttt{index\_bar} & (code, date) & 指数行情（基准与归因） \\
+\texttt{trade\_calendar} & date & 交易日历（由指数日期生成） \\
+\texttt{fetch\_log} & (task, key) & 抓取日志，支持断点续抓 \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{一条设计纪律：派生量不进库}
+
+"ST 状态""换手率""净利润 TTM"这三列，看起来应该存在 \texttt{bar} 表里，
+但本书坚持\textbf{不在库里硬写}，而是在构建面板时实时生成。理由有三条：
+
+\begin{enumerate}
+  \item \textbf{可重算}。口径一变（比如 ST 判定规则改了），历史值能追溯重算，
+        而不是被固化在几千万行里。
+  \item \textbf{可维护}。每次更新财务/估值都要全表重算几千万行，代价太高。
+  \item \textbf{防误用}。一旦把"当前简称"写进历史行，前视偏差就有了滋生的土壤。
+\end{enumerate}
+
+\begin{keybox}[数据库的分层原则]
+\textbf{原始事实层}（行情、财报、估值）只放数据源给的东西，一行都不加工；
+\textbf{派生特征层}（面板、因子、标签）每次研究时重新计算，可以随时改口径。
+两者之间用 \texttt{date} 与 \texttt{code} 对齐，靠 as-of 连接保证时点正确。
+\end{keybox}
+
+\section{数据质量检查清单}
+
+一个负责任的研究，在跑任何因子之前，应该先回答下面这些问题：
+
+\begin{enumerate}
+  \item 每个交易日的股票数量是否合理？是否有整段缺失？
+  \item 复权因子是否单调不减？除权日附近的收益率是否超过涨跌停幅度？
+  \item 财务数据的公告日是否都晚于报告期？
+  \item 可交易股票占比是否在合理区间（一般 70\%--90\%）？
+  \item 涨跌停天数占比是否与市场常识相符（极端行情年份会显著上升）？
+  \item 换手率覆盖率是多少？缺失的股票是不是都是已退市/长期停牌？
+  \item 随机抽查 20 只股票，用第二个数据源核对收盘价与复权因子。
+\end{enumerate}
+
+对应的实现是 \texttt{scripts/check\_db.py}，它输出的表会直接放进第~\ref{ch:result}
+章的报告里。\textbf{不先看这张表就开始挖因子，等于在流沙上盖楼}。
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 免费数据源的可靠期以"分钟到小时"计，必须写适配器 + 断点续抓 + 交叉校验。
+  \item 回测只用后复权；库里同时保留不复权价与复权因子，两者各司其职。
+  \item PIT 是生死线：用公告日，不用报告期；用当时的原始值，不用修正值。
+  \item 幸存者偏差靠"时点股票池"缓解，无法完全消除时要如实披露。
+  \item 可交易性必须变成显式布尔变量，而不是隐含假设。
+  \item 原始事实与派生特征分层存储，是长期可维护的关键。
+\end{enumerate}

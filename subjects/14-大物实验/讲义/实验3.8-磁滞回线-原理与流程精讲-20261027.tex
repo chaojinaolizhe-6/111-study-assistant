@@ -10,6 +10,10 @@
 \usepackage{float}
 \usepackage{needspace}
 
+% 空表格用：\blank 给格子宽度，\rowstrut 给行高，保证空白格看得见、手写够大
+\newcommand{\blank}{\rule{1.05cm}{0pt}}
+\newcommand{\rowstrut}{\rule{0pt}{17pt}}
+
 \tikzset{
   comp/.style={fill=white,draw=black,thick},
   arr/.style={->,>=Stealth,thick},
@@ -67,7 +71,7 @@
 
 \subhdr{§0.2 报告要交什么}
 
-\callout{\textbf{预习报告}：10 道预习问题（中英文答案，精简）；\textbf{实验报告}：实验目的、实验器材、课后思考题、约 50 词实验体会；\textbf{数据表}：自己打印带去，记录 \(R_1,R_2,C,S_x,S_y\)，样品 1 与样品 2 的 \(B_r,H_c\)，样品 1 的基本磁化曲线 \(x\)--\(y\)--\(y/x\) 与最大相对磁导率。}
+\callout{\textbf{预习报告}：10 道预习问题（中英文答案，精简）；\textbf{实验报告}：实验目的、实验器材、课后思考题、约 50 词实验体会；\textbf{数据表}：自己打印带去，记录 \(R_1,R_2,C,S_x,S_y\)，样品 1 与样品 2 的 \(B_r,H_c\)，样品 1 的基本磁化曲线 \(x\)--\(y\)--\(y/x\) 与最大相对磁导率。\textbf{要画/要填的五张表}已按实验顺序排在正文里：参数表 5-4（§5.9）$\to$ 样品 2 回线表 5-3（§5.8）$\to$ 样品 1 回线表（§5.8 版式）$\to$ 基本磁化曲线表 5-1（§5.6）$\to$ 动态回线表 5-2（§5.7，老师的数据表没印，必须自己画）；三张老师原表的裁剪见 §6.3。}
 
 %=====================================================================
 \hdr{§1}{铁磁性从哪里来：磁畴}
@@ -532,19 +536,111 @@ x=0.00,\ 0.40,\ 0.80,\ 1.20,\ 1.60,\ 2.00,\ 2.40,\ 3.00,\ 4.00\ \mathrm{div},
 
 \callout{读数时估到 \(0.05\ \mathrm{div}\)。\(x=0\) 那一行是退磁点，\(y\) 应为 0；如果不是 0，先检查零点，不要直接当成数据。}
 
+\needspace{12\baselineskip}
+\textbf{表 5-1} 就是这一步要填的表（与预习 p3 的 (ii) 表同一版式：\(x\) 已印好，你只填 \(y\) 和 \(y/x\)）：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{@{}l*{9}{c}@{}}
+\toprule
+\rowstrut \thead{\(x/\mathrm{div}\)} & 0.00 & 0.40 & 0.80 & 1.20 & 1.60 & 2.00 & 2.40 & 3.00 & 4.00 \\
+\midrule
+\rowstrut \thead{\(y/\mathrm{div}\)} & \blank & \blank & \blank & \blank & \blank & \blank & \blank & \blank & \blank \\
+\rowstrut \thead{\(y/x\)} & --- & \blank & \blank & \blank & \blank & \blank & \blank & \blank & \blank \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{逐格怎么读}：第一行是屏幕上回线\textbf{正顶点}的横坐标，已经替你印好，实验时把激励电流单调调到这些刻度值；第二行填同一时刻顶点的纵坐标（\(y\) 取顶点，不取上下两支）；第三行是前两行相除，它正比于 \(\mu_r\)（§6.2），\(x=0\) 那一格分母为零，画短横不填。
+
+\textbf{边界行}：\(x=0\) 列是退磁后的起点，理论上 \(y=0\)、\(y/x\) 无定义；\(x=4.00\) 列是顶点，\(y\) 应接近 4.00 格，若明显不到 4.00，说明激励没到饱和，这一列数据要重测。
+
 \subhdr{5.7 动态磁滞回线（p9 步骤 7）}
 
 当屏幕上是典型的饱和回线、顶点在 \((\pm4,\pm4)\) 时，记录
 \[
 x=-4.00,\ -3.00,\ -2.00,\ -1.50,\ -1.00,\ -0.50,\ 0.00,\ 0.50,\ 1.00,\ 1.50,\ 2.00,\ 3.00,\ 4.00
 \]
-处的 \(y\)。讲义没有说明记哪一支；本讲义建议记\textbf{上支}（从 \(+B_s\) 下降到 \(-B_s\) 的那一支），下支用中心对称 \(B(-H)=-B(H)\) 补出来。这样 \(x=0\) 处的上支 \(y\) 就是 \(+B_r\)，\(y=0\) 处的正 \(x\) 就是 \(+H_c\)。如果报告表格给了两列，就上下支都记。
+处的 \(y\)。讲义没有说明记哪一支；本讲义建议记\textbf{上支}（从 \((-4,-4)\) 经 \((0,+B_r)\) 升到 \((4,4)\) 的那一支），下支用中心对称 \(B(-H)=-B(H)\) 补出来。这样 \(x=0\) 处的上支 \(y\) 就是 \(+B_r\)，\(y=0\) 处的正 \(x\) 就是 \(+H_c\)。如果报告表格给了两列，就上下支都记。
+
+\needspace{16\baselineskip}
+\textbf{表 5-2} 是这一组读数的记录表。注意：\textbf{预习 p2、p3 上并没有印这张表}——讲义 p9 步骤 (7) 要求你记 13 个 \(x\) 处的 \(y\)，但老师发的数据表只印了基本磁化曲线那张，所以这张表必须自己画到报告上。
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}lcc|lcc@{}}
+\toprule
+\thead{\(x/\mathrm{div}\)} & \thead{上支 \(y/\mathrm{div}\)} & \thead{下支 \(y/\mathrm{div}\)} &
+\thead{\(x/\mathrm{div}\)} & \thead{上支 \(y/\mathrm{div}\)} & \thead{下支 \(y/\mathrm{div}\)} \\
+\midrule
+\rowstrut \(-4.00\) & \textbf{\(-4.00\)} & \textbf{\(-4.00\)} & \rowstrut \(0.50\) & \blank & \blank \\
+\rowstrut \(-3.00\) & \blank & \blank & \rowstrut \(1.00\) & \blank & \blank \\
+\rowstrut \(-2.00\) & \blank & \blank & \rowstrut \(1.50\) & \blank & \blank \\
+\rowstrut \(-1.50\) & \blank & \blank & \rowstrut \(2.00\) & \blank & \blank \\
+\rowstrut \(-1.00\) & \blank & \blank & \rowstrut \(3.00\) & \blank & \blank \\
+\rowstrut \(-0.50\) & \blank & \blank & \rowstrut \(4.00\) & \textbf{\(4.00\)} & \textbf{\(4.00\)} \\
+\rowstrut \(0.00\) & \blank & \blank & \multicolumn{3}{c}{\footnotesize 左半与右半列数相同，共 13 个 \(x\)} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{表前一句}：这张表就是把「顶点固定为 \((\pm4,\pm4)\) 的饱和回线，在 13 条竖线 \(x\) 上读纵坐标」这件事逐格写下来；它和表 5-1 不是同一件事——表 5-1 读的是\textbf{顶点}（每个 \(x\) 一个点，只属于基本磁化曲线），这里读的是\textbf{同一条回线上的 13 个点}（每个 \(x\) 有两个 \(y\)）。
+
+\textbf{逐行读法}：\(x=-4.00\) 与 \(x=+4.00\) 两行是顶点，两支在那一点重合，所以上、下支填同一个数（\(-4.00\) 和 \(+4.00\)，若顶点调得不准，按实际读、并在报告里写明）；\(x=0.00\) 行的上支是 \(+B_r\) 的格数、下支是 \(-B_r\) 的格数，两者大小应当相等；中间各行只读上支，下支按中心对称 \(y_{\text{下}}(x)=-y_{\text{上}}(-x)\) 补，补完用两端顶点检查是否闭合。
+
+\textbf{边界行}：两端顶点（\(x=\pm4.00\)）是边界，两支重合；如果实验时顶点没调到 \(\pm4.00\)，整张表要按实际顶点重画，\textbf{不能}拿 \((4,4)\) 硬套。
 
 \subhdr{5.8 样品 2 与比较（p9 第 2 部分）}
 
 换样品 2，重复 5.1--5.7。样品 2 的参数是 \(L=0.075\ \mathrm{m}\)、\(S=1.20\times10^{-4}\ \mathrm{m^2}\)、\(N_1=N_2=150\)，\textbf{不要}沿用样品 1 的 \(L,S\)。比较时看三件事：\(B_r\) 与 \(H_c\) 的大小、回线的宽窄、\(\mu_{\max}\) 的高低；再结合 §1.2 的软磁/硬磁讨论。
 
+样品 2 \textbf{只测磁滞回线那一张表}（不测基本磁化曲线、不测 \(\mu\sim H\)），所以报告上给样品 2 的格子只有四行：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{@{}p{3.6cm}p{3.0cm}p{8.0cm}@{}}
+\toprule
+\thead{项目} & \thead{你填} & \thead{怎么来（用同一组 \(R_1,R_2,C,S_x,S_y\)）} \\
+\midrule
+\rowstrut 剩磁的坐标 & \blank & 回线与 \(y\) 轴正半轴的交点，读 \((0,\ y_r)\) 两格数 \\
+\rowstrut 剩磁 \(B_r\) & \blank & \(B_r=\dfrac{CR_2S_y}{N_2S}\,y_r\)，代入样品 2 的 \(S\) \\
+\rowstrut 矫顽力的坐标 & \blank & 回线与 \(x\) 轴正半轴的交点，读 \((x_c,\ 0)\) 两格数 \\
+\rowstrut 矫顽力 \(H_c\) & \blank & \(H_c=\dfrac{N_1S_x}{LR_1}\,x_c\)，\(L\) 换成 \(0.075\ \mathrm{m}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{表前一句}：这张表就是预习 p2 上「样品 2 磁滞回线」那四行，两行是\textbf{读数}（格数），两行是\textbf{计算}（物理量）；读数先行、计算后行，顺序不能反过来。
+
+\textbf{逐行读法}：第 1、3 行只写屏幕上读到的格数（例如 \(y_r=2.35\)、\(x_c=1.10\)），不写单位；第 2、4 行把格数乘上系数得到 T 和 A/m，系数里的 \(L,S\) 必须是\textbf{样品 2 的}，这是本实验最容易扣分的地方。
+
+\textbf{边界行}：交点要取\textbf{正半轴}那一个（\(y_r>0\)、\(x_c>0\)）；如果读到负值，说明取的是对称点，改符号即可，但要在报告里说明取的是哪一支。
+
 \subhdr{5.9 记录清单}
+
+预习 p2、p3 每张表的顶上都有同一行空格：\(R_1=\underline{\ \ \ }\Omega\)、\(R_2=\underline{\ \ \ }\mathrm{k}\Omega\)、\(C=\underline{\ \ \ }\mu\mathrm{F}\)、\(S_x=\underline{\ \ \ }\mathrm{mV/div}\)、\(S_y=\underline{\ \ \ }\mathrm{mV/div}\)。那是\textbf{每换一个样品都要重填一次}的参数，先把它填好再记数据：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\thead{参数} & \thead{样品 1（\(f=50\ \mathrm{Hz}\)）} & \thead{样品 2（\(f=50\ \mathrm{Hz}\)）} \\
+\midrule
+\rowstrut \(R_1\) / \(\Omega\) & \blank & \blank \\
+\rowstrut \(R_2\) / \(\mathrm{k}\Omega\) & \blank & \blank \\
+\rowstrut \(C\) / \(\mu\mathrm{F}\) & \blank & \blank \\
+\rowstrut \(S_x\) / \(\mathrm{mV\cdot div^{-1}}\) & \blank & \blank \\
+\rowstrut \(S_y\) / \(\mathrm{mV\cdot div^{-1}}\) & \blank & \blank \\
+\rowstrut \(f\) / Hz & 50 & 50 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{表前一句}：这张表是后面三张数据表的「系数表」——\(B=\Big(\dfrac{CR_2S_y}{N_2S}\Big)y\)、\(H=\Big(\dfrac{N_1S_x}{LR_1}\Big)x\) 里的括号就是它，先定下来，后面每个格子的换算才有依据。
+
+\textbf{逐行读法}：前三行照面板/表盘读数抄，注意单位已写在斜杠后（\(R_2\) 是 \(\mathrm{k}\Omega\)、\(C\) 是 \(\mu\mathrm{F}\)），抄错单位会让结果差 \(10^3\)；\(S_x,S_y\) 是示波器 CH1/CH2 的\textbf{每格电压}，调过 SCALE 就要重抄；频率固定 50 Hz，写在表里是为了防止中途被人动过而无从查证。
+
+\textbf{边界行}：交接给同组同学之前，先对着示波器把 \(S_x,S_y\) 再核一次——换量程后这两位会变，而 \(R_1,R_2,C\) 不会。
 
 \begin{center}
 \begin{tabular}{@{}p{4.6cm}p{3.3cm}p{2.2cm}p{5.0cm}@{}}
@@ -608,9 +704,52 @@ x=-4.00,\ -3.00,\ -2.00,\ -1.50,\ -1.00,\ -0.50,\ 0.00,\ 0.50,\ 1.00,\ 1.50,\ 2.
 
 第 5 步里的系数 \(K=\dfrac{CR_2LR_1S_y}{\mu_0N_2SN_1S_x}\) 在同一组 \(R_1,R_2,C,S_x,S_y\) 下是常数，所以 \(\mu_r\propto y/x\)。预习 p3 要求画“\(\mu\sim H\) 曲线 using original data \((y/x\sim x)\)”，就是利用这个正比关系：先画 \(y/x\) 随 \(x\) 的变化，形状与 \(\mu_r\) 随 \(H\) 的变化完全一样，最后再把纵轴乘上 \(K\)。
 
-\subhdr{6.3 基本磁化曲线的表怎么填}
+\subhdr{6.3 报告上那几张表长什么样（老师原表，裁剪）}
 
-预习 p3 的表格是 \(x/\mathrm{div}\)、\(y/\mathrm{div}\)、\(y/x\) 三行。填法：
+预习 PDF 的第 2、3 页就是老师要你打印带去的数据表原件。下面三张是原件的裁剪，你报告上的格子就照这个版式画——\textbf{不要}自己另起一套行列，否则老师找不到他想要的数。
+
+\needspace{26\baselineskip}
+\begin{center}
+\includegraphics[width=0.68\linewidth]{fig-3.8-tables/pq3-ii-curve.png}\\[2pt]
+{\small\color{inkgray} 图 6-1（裁剪）预习 p3 下半部：(ii) 基本磁化曲线的三行记录表（\(x\) 已印好）、画 \(\mu\sim H\) 用的坐标纸、最大磁导率的两行。}
+\end{center}
+
+图上这张表就是本讲义 \textbf{表 5-1}，坐标纸就是 §6.4 要画的那张图；两处「Coordinate of the maximum relative permeability」与「Maximum relative permeability」是同一个答案的两半：先写格数坐标 \((x,y/x)\)，再写代入后的 \(\mu_r\)。
+
+\needspace{16\baselineskip}
+\begin{center}
+\includegraphics[width=0.80\linewidth]{fig-3.8-tables/pq3-i-loop.png}\\[2pt]
+{\small\color{inkgray} 图 6-2（裁剪）预习 p3 上半部：(i) 样品 1 磁滞回线的四行，与表 5-3 同版式。}
+\end{center}
+
+这四行的顺序是「读数—计算—读数—计算」：先写剩磁点坐标 \((0,y_r)\)，再写 \(B_r\)；再写矫顽力点坐标 \((x_c,0)\)，再写 \(H_c\)。中间的两行公式已经印在表里，你只要把数代进去、等号后面写结果。
+
+\needspace{16\baselineskip}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{fig-3.8-tables/pq2-sample2-table.png}\\[2pt]
+{\small\color{inkgray} 图 6-3（裁剪）预习 p2：样品 2 的表，只有磁滞回线四行；表头上方那行 \(R_1,R_2,C,S_x,S_y\) 就填表 5-4。}
+\end{center}
+
+\callout{\textbf{一共要交的表格只有四张}：表 5-4（参数，两个样品各一份）$\to$ 表 5-3（样品 2 回线，四行）$\to$ 表 5-3 同版式的样品 1 回线（四行）$\to$ 表 5-1（样品 1 基本磁化曲线，三行）。\textbf{外加一张自己画的表 5-2}（动态回线 13 点），老师的数据表里没有印它，但讲义 p9 步骤 (7) 要求记。}
+
+\textbf{表 6-1} 用 §4.5 的系数示范一行怎么算（\(R_1=5\ \Omega\)、\(R_2=50\ \mathrm{k}\Omega\)、\(C=1.0\ \mu\mathrm{F}\)、\(S_x=0.5\ \mathrm{V/div}\)、\(S_y=0.2\ \mathrm{V/div}\)，样品 1）：
+
+\begin{center}\footnotesize
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{@{}p{3.2cm}p{4.2cm}p{4.0cm}p{1.1cm}p{2.2cm}@{}}
+\toprule
+\thead{格数} & \thead{\(H=\dfrac{N_1S_x}{LR_1}x\)} & \thead{\(B=\dfrac{CR_2S_y}{N_2S}y\)} & \thead{\(y/x\)} & \thead{\(\mu_r=\dfrac{B}{\mu_0H}\)} \\
+\midrule
+\rowstrut \(x=2.00\)，\(y=3.20\) & \(115.4\times2.00\) \(=230.8\ \mathrm{A/m}\) & \(0.5376\times3.20\) \(=1.72\ \mathrm{T}\) & \(1.60\) & \(5.93\times10^{3}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{逐格读法}：每格电压灵敏度先算成「每格多少物理量」——这里 \(x\) 每格 \(115.4\ \mathrm{A/m}\)、\(y\) 每格 \(0.5376\ \mathrm{T}\)（\(0.5376\times2=1.075\)，与 §4.5 的验算一致）；格数乘上每格量就是物理量；\(y/x\) 是两个格数直接相除，与单位无关；\(\mu_r\) 必须用换算后的 \(B,H\) 算，不能用格数算。
+
+\textbf{边界与坑}：这套系数只在 \(R_1,R_2,C,S_x,S_y\) \textbf{不变}时成立；换样品要连 \(L,S\) 一起换，换量程要重抄 \(S_x,S_y\)。四条里错一条，整列数据作废。
+
+填法（照 \textbf{表 5-1} 填）：
 
 \begin{itemize}
 \item \(x=0\) 那一列是退磁点，\(y=0\)，\(y/x\) 不填（分母为零）；
@@ -678,7 +817,7 @@ W\approx\sum_i \bar H_i\,\Delta B_i,
 
 \textbf{Answer (EN):} Ferromagnetism comes from magnetic domains. Domain-wall motion and domain rotation respond nonlinearly to H: M rises quickly, then slows and saturates at Ms. Since B = mu0(H + M), mu = B/H is not constant; at high H, B is about mu0(H + Ms) and the curve flattens.
 
-\needspace{0.62\textheight}
+% Q2 的图用 [H] 就地排；这里不要再加 \needspace，否则会多出一个几乎空白的整页（2026-10-31 修）
 \subhdr{Q2. 说明磁化曲线与磁滞回线，并画图。}
 磁化曲线是从退磁态单调增大 \(H\) 得到的初始 \(B\)--\(H\) 曲线，终点是饱和 \(B_s\)。磁滞回线是循环磁化下的闭合路径 O--a--b--c--d--e--f--a：a 是正向饱和，b 是 \(H=0\) 时的剩磁 \(B_r\)，c 是 \(B=0\) 时的矫顽力 \(H_c\)，d 是反向饱和，e、f 是反向的 \(B_r\)、\(H_c\)。回线面积等于每周期单位体积的磁滞损耗。
 
@@ -845,6 +984,8 @@ W\approx\sum_i \bar H_i\,\Delta B_i,
 \gapitem{公式来源}{讲义 p2--p3 直接给 \(B_r\)、\(H_c\)、\(\mu_r\) 的公式，没有从 \(U_C\)、\(U_{R_1}\) 推。本讲义 §4.2--§4.4 逐条推了。}
 \gapitem{图缺}{讲义 p7 的 Figure 3.8-6 没有标 \(R_1,R_2,C,N_1,N_2\) 与 CH1/CH2 的接法，也没有画两个通道的地。本讲义 §4.1 重绘、§5.1 附原图，补上标签与接法（图注标明“重绘”）。}
 \gapitem{读数分支}{讲义 p9 步骤 7 说“record the Y coordinates ... when X coordinates are ...”，没有说记上支还是下支。本讲义 §5.7 明确记上支、下支用中心对称补，并指出 \(B_r\)、\(H_c\) 的读法。}
+\gapitem{表缺（版式）}{讲义 p9 步骤 (7) 要求记 13 个 \(x\) 处的 \(y\)，但预习 p2--p3 印好的数据表只有三张（样品 2 回线四行、样品 1 回线四行、基本磁化曲线三行），\textbf{没有}这 13 点的表。本讲义 §5.7 补出表 5-2（13 行 \(\times\) 上下支），并说明两支在顶点重合、在 \(x=0\) 处给出 \(\pm B_r\)。}
+\gapitem{表缺（原件）}{报告要照老师原表版式交，但讲义正文只有文字描述，没给表的样式。本讲义 §6.3 直接裁剪预习 p2、p3 的三张原表（标“裁剪”），并在 §5.6--§5.9 重画出与之一致的填写表 5-1--5-4。}
 \gapitem{定标}{讲义 p8 步骤 4 要求顶点到 \((\pm4,\pm4)\)，但没有解释为什么是 4。本讲义 §4.6 说明屏幕是 8\(\times\)8 格，\(\pm4\) 就是满屏且不削顶。}
 \gapitem{单位}{讲义 p2 附录给 \(1\ \mathrm{T}=1\ \mathrm{V}\cdot\mathrm{F}\cdot\Omega/\mathrm{m^2}\)，没有推导。本讲义 §0.1 用 \(F\cdot\Omega=s\) 补了单位链。}
 

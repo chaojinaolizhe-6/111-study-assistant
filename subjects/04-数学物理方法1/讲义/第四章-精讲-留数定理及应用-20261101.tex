@@ -1,0 +1,686 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第四章 · 留数定理及应用（精讲讲义）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{第四章 · 留数定理及应用}{数学物理方法1}
+
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{4\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\orighdr{#1}{#2}}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+
+\begin{document}
+
+\doctitle{第四章　留数定理及应用}
+{从一个系数 $a_{-1}$ 到三类实积分：留数定理的完整链条}
+{依据《第四章 留数定理及应用》上传课件（共 78 页）\quad 2026-11-01\quad 数学物理方法1}
+
+\hdr{§0}{课件坐标、记号与六处伏笔}
+
+这一章的主线很短：留数是洛朗展开里 $-1$ 次项的系数，留数定理把围道积分换成留数之和，三类实积分再把这个工具用到具体的积分上。课件写得很快，默认读者能自己补上六样东西——挖洞证明的依据、三条规则各自什么时候用、类型二为什么要“次数差两次”、约当引理里那个不等式、以及实轴上有极点时“半留数”的来源。本讲义按这个顺序补，并在 §10 逐条点名页码与原文短语。
+
+\aside{关于篇幅：课件 78 页里有相当一部分是续页（一页只有一个标题、半个公式或一张图的碎片），实质内容约 40 页。本讲义按“可独立自学”的标准写成约 20 页，省掉的是重复页眉与逐字抄写，不是知识点——§12 的对照表逐页都能对上。}
+
+\subhdr{0.1\quad 记号}
+
+\begin{itemize}
+\item $C$：正向（逆时针）简单闭曲线；$C_R$：上半平面大圆弧；$C_\varepsilon$：绕实轴上极点的小半圆。
+\item $\operatorname{Res}f(z_0)$：$f$ 在 $z_0$ 的留数；$z_k$：围道内部的奇点。
+\item $a_{-1}$：$f$ 在 $z_0$ 的洛朗展开中 $(z-z_0)^{-1}$ 的系数。
+\item $P,V$：柯西主值（§6）。
+\end{itemize}
+
+\subhdr{0.2\quad 78 页坐标表（台账表，不承载推导）}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}lp{0.72\linewidth}@{}}
+\thead{课件页} & \thead{内容} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}lp{0.72\linewidth}@{}}
+p1 & 章首页：三节目的 \\
+p2--p5 & 留数的概念；单连通柯西定理与洛朗定理的回顾 \\
+p6--p8 & 留数定理、证明、实质 \\
+p9 & 求留数的原则：可去、本性、极点三种情形 \\
+p10 & 规则 I：一阶极点 \\
+p11--p12 & 规则 II：商式 $P/Q$ \\
+p13--p14 & 规则 III：$m$ 阶极点（$m\ge2$） \\
+p15--p27 & 例 1--例 6（柯西公式与留数并算、四个一阶极点、二阶极点、三阶极点、单位圆内极点、用定义求） \\
+p28 & 第四章作业（第 1 题，四小问） \\
+p30--p31 & §4.3 应用：用留数定理算积分的几个关键点 \\
+p32--p42 & 类型 1：有理三角函数的积分（例 1--例 4，p42 小结） \\
+p43--p52 & 类型 2：无穷积分（大圆弧引理、例 5--例 7，p52 小结） \\
+p53--p54 & 约当引理及其证明 \\
+p55--p61 & 类型 3：含三角函数的无穷积分（例 8、例 9） \\
+p62 & 第四章作业（第 2、3 题） \\
+p63--p70 & 补充例题：实轴上有极点、小半圆与半留数（例 1 在 p70） \\
+p78 & 第四章作业（第 4 题，三小问） \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\subhdr{0.3\quad 六处伏笔}
+
+\gapitem{伏笔一 · p6--p7}{定理陈述完，证明直接写“由复连通区域的柯西定理”，但没画那条割线，也没说小圆为什么可以换掉大围道。补在 §2.2。}
+
+\gapitem{伏笔二 · p9}{“求留数的原则”只列了三种情形，没有告诉你\textbf{什么时候该用哪一条规则}。补在 §3.6 的选择流程。}
+
+\gapitem{伏笔三 · p24--p25}{由“用留数定理算闭路积分”转到“有时三条规则不方便”，中间缺判断标准。补在 §3.5（定义法）。}
+
+\gapitem{伏笔四 · p31}{类型 2 的“关键几点”列了步骤，但没解释\textbf{为什么分母要比分子高两次}，也没写大圆弧上的估值。补在 §5.2。}
+
+\gapitem{伏笔五 · p53--p54}{约当引理给了陈述，证明里用到 $\sin\theta\ge 2\theta/\pi$ 这个几何不等式，课件只写“证明”两个字。补在 §5.3。}
+
+\gapitem{伏笔六 · p70}{补充例题直接用“$\pi i\cdot\operatorname{Res}$”（半留数）收尾，没说小半圆上的积分极限从哪来。补在 §6.1。}
+
+\hdr{§1}{留数：洛朗展开里那个 $-1$ 次项}
+
+\subhdr{1.1\quad 定义}
+
+设 $z_0$ 是 $f$ 的孤立奇点，在去心邻域 $0<|z-z_0|<\rho$ 内的洛朗展开为
+
+\[ f(z)=\sum_{n=-\infty}^{\infty}a_n(z-z_0)^n , \]
+
+则称 $a_{-1}$ 为 $f$ 在 $z_0$ 的\textbf{留数}，记作 $\operatorname{Res}f(z_0)$。
+
+\subhdr{1.2\quad 为什么偏偏是 $-1$ 次项}
+
+基本积分（第二章）：
+
+\[ \oint_{|z-z_0|=r}(z-z_0)^n\dd z=\begin{cases}2\pi i,& n=-1,\\ 0,& n\ne-1.\end{cases} \]
+
+把洛朗展开逐项沿小圆积分，只有 $n=-1$ 这一项活下来：
+
+\[ \operatorname{Res}f(z_0)=a_{-1}=\frac{1}{2\pi i}\oint_{|z-z_0|=\rho}f(z)\dd z\qquad(0<\rho<\text{最近的其他奇点距离}) . \]
+
+\subhdr{1.3\quad 与半径无关}
+
+把 $\rho$ 换成 $\rho'$（两者之间没有奇点），两个圆周之间的环形区域里 $f$ 解析，由复连通柯西定理，沿两个圆周的积分相等。所以留数只依赖 $f$ 在 $z_0$ 附近的局部行为，与围道大小、形状都无关。
+
+\subhdr{1.4\quad 两条立刻可用的结论}
+
+\textbf{可去奇点}：洛朗展开没有负幂项，$a_{-1}=0$，留数为零。
+
+\textbf{一阶极点}：若 $f=\dfrac{g(z)}{z-z_0}$、$g$ 在 $z_0$ 解析且 $g(z_0)\ne0$，则 $a_{-1}=g(z_0)$，即
+
+\[ \operatorname{Res}f(z_0)=\lim_{z\to z_0}(z-z_0)f(z) . \]
+
+\subhdr{1.5\quad 三个一眼看出的小例子}
+
+\textbf{可去奇点}：$f(z)=\dfrac{\sin z}{z}$ 在 $0$ 处补定义后解析，洛朗展开无负幂项，$\operatorname{Res}f(0)=0$。
+
+\textbf{本性奇点}：$f(z)=e^{1/z}$ 在 $0$ 的展开是 $1+\dfrac1z+\dfrac{1}{2!z^{2}}+\cdots$，$a_{-1}=1$，所以 $\operatorname{Res}f(0)=1$；这也是 $\oint_{|z|=1}e^{1/z}\dd z=2\pi i$ 的来历。
+
+\textbf{一阶极点}：$f(z)=\dfrac{e^{z}}{z^{2}+1}$ 在 $z=i$ 处，$\operatorname{Res}f(i)=\lim_{z\to i}(z-i)f(z)=\dfrac{e^{i}}{2i}$。
+
+这三个例子也说明了留数的“局部性”：只看奇点附近，跟函数在别处的行为无关。
+
+\hdr{§2}{留数定理}
+
+\subhdr{2.1\quad 陈述（p6）}
+
+设 $f$ 在简单闭曲线 $C$ 的内部除有限个孤立奇点 $z_1,\dots,z_n$ 外处处解析，且连续到 $C$ 上，则
+
+\[ \oint_C f(z)\dd z=2\pi i\sum_{k=1}^{n}\operatorname{Res}f(z_k) , \]
+
+其中 $C$ 取正向，求和只对\textbf{内部}的奇点。
+
+\subhdr{2.2\quad 证明：挖洞}
+
+在 $C$ 内部，给每个奇点 $z_k$ 作一个互不相交的小圆 $C_k$（半径足够小），并用割线把 $C$ 与各 $C_k$ 连成一个复连通区域。在这个区域里 $f$ 解析，由复连通区域的柯西定理：
+
+\[ \oint_C f\dd z=\sum_{k=1}^{n}\oint_{C_k}f\dd z . \]
+
+而每个小圆上的积分由 1.2 等于 $2\pi i\operatorname{Res}f(z_k)$。相加即得。
+
+\aside{割线是“来回各走一次”的辅助线：沿它走的两次方向相反、积分抵消，所以加上割线不改变任何积分值。课件 p7 只写了“由复连通区域的柯西定理”，省略的就是这一步。}
+
+\subhdr{2.3\quad 实质（p8）}
+
+把“沿一条长围道的积分”换成“若干个局部系数的代数和”。若 $C$ 内没有奇点，右边为零——这正是柯西定理。所以留数定理是柯西定理的推广：柯西定理管“解析”，留数定理管“有奇点”。
+
+\subhdr{2.4\quad 三个使用前提}
+
+奇点必须是\textbf{有限个孤立奇点}；$C$ 内不能有非孤立奇点（如支点、奇点的聚点）；奇点必须严格在内部，落在 $C$ 上的要另行处理（§6）。
+
+\subhdr{2.5\quad 多围道与复连通区域}
+
+若围道不是一条简单闭曲线，而是“外圈加几个内圈”（例如环形区域），方向约定仍然是“区域在左手边”：外圈逆时针、内圈顺时针。此时
+
+\[ \oint_{\text{外圈}}f\dd z-\sum_k\oint_{\text{内圈},k}f\dd z=2\pi i\sum_{\text{环内奇点}}\operatorname{Res}f , \]
+
+等价的说法是：把所有边界都取成“区域在左侧”的方向，则沿全部边界的积分 $=2\pi i\sum_{\text{区域内}}\operatorname{Res}$。第三章的复合闭路定理与留数定理在这里是同一件事。
+
+\hdr{§3}{留数的计算：三条规则与一个后备}
+
+\subhdr{3.1\quad 先判断类型（p9）}
+
+可去奇点 $\Rightarrow$ 留数为 0。本性奇点 $\Rightarrow$ 只能展开。极点 $\Rightarrow$ 用规则 I、II、III 之一。
+
+\subhdr{3.2\quad 规则 I：一阶极点}
+
+\[ \operatorname{Res}f(z_0)=\lim_{z\to z_0}(z-z_0)f(z) . \]
+
+推导：一阶极点的洛朗展开是 $f=\dfrac{a_{-1}}{z-z_0}+a_0+a_1(z-z_0)+\cdots$，两边乘 $(z-z_0)$ 再令 $z\to z_0$ 即得。
+
+\subhdr{3.3\quad 规则 II：商式（p11--p12）}
+
+若 $f=\dfrac{P(z)}{Q(z)}$，$P,Q$ 在 $z_0$ 解析，$P(z_0)\ne0$、$Q(z_0)=0$、$Q'(z_0)\ne0$，则 $z_0$ 是一阶极点，且
+
+\[ \operatorname{Res}f(z_0)=\frac{P(z_0)}{Q'(z_0)} . \]
+
+推导：$Q(z)=(z-z_0)\bigl[Q'(z_0)+\cdots\bigr]$，于是 $(z-z_0)f\to\dfrac{P(z_0)}{Q'(z_0)}$，再用规则 I。这条规则只是把“求极限”换成了“求一次导数在某点的值”，考试里更快。
+
+\subhdr{3.4\quad 规则 III：$m$ 阶极点（$m\ge2$，p13--p14）}
+
+\[ \operatorname{Res}f(z_0)=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{\dd^{m-1}}{\dd z^{m-1}}\Bigl[(z-z_0)^m f(z)\Bigr] . \]
+
+推导：$f=\dfrac{a_{-m}}{(z-z_0)^m}+\cdots+\dfrac{a_{-1}}{z-z_0}+a_0+\cdots$，两边乘 $(z-z_0)^m$ 得
+
+\[ (z-z_0)^m f=a_{-m}+a_{-m+1}(z-z_0)+\cdots+a_{-1}(z-z_0)^{m-1}+a_0(z-z_0)^m+\cdots \]
+
+求 $m-1$ 阶导，右边除 $a_{-1}(z-z_0)^{m-1}$ 外都带正幂；令 $z\to z_0$ 只剩 $(m-1)!\,a_{-1}$，除以 $(m-1)!$ 即得。
+
+\subhdr{3.5\quad 后备：回到定义（p25--p27）}
+
+三条规则都要先知道阶数，还要能求导。遇到下面三种情形，直接展开更快：
+
+\begin{itemize}
+\item 本性奇点（只能是展开）；
+\item 阶数高、求导麻烦（如六阶极点）；
+\item 函数结构特殊，展开两三行就够（如 $\dfrac{z-\sin z}{z^6}$）。
+\end{itemize}
+
+判断依据很简单：\textbf{能不能在三四行内把 $1/z$ 的系数看出来}。能，就用定义。
+
+\subhdr{3.6\quad 选择流程}
+
+先算分母在内圈的零点，定出每个极点的阶数；一阶用规则 I（商式结构用规则 II）；二阶及以上用规则 III；出现本性奇点或阶数很高，改展开。算完用“所有留数之和”或数值抽一个点复核。
+
+\subhdr{3.7\quad 三条快速检验}
+
+\textbf{检验一：全平面留数和为零。} 若 $f$ 在无穷远像 $z^{-2}$ 或更快（即 $\operatorname{Res}[f,\infty]=0$），所有有限留数之和必须为 0。例 2 的四个留数 $\frac14,\frac14,-\frac14,-\frac14$ 正是如此；例 4 的 $-i$ 与 $i$ 也互相抵消。
+
+\textbf{检验二：共轭对称。} 实系数函数在共轭点上的留数互为共轭：$\operatorname{Res}f(\bar z_0)=\overline{\operatorname{Res}f(z_0)}$。例 3 的 $\mp\dfrac i4$ 满足这条。
+
+\textbf{检验三：数量级。} 一阶极点的留数有限；若算出的“留数”含 $1/\varepsilon$ 或发散，说明阶数判错了。
+
+\hdr{§4}{无穷远点留数（补充，课件未展开）}
+
+把 $\infty$ 也看成复平面上的一个点，可以定义
+
+\[ \operatorname{Res}[f,\infty]=-\frac{1}{2\pi i}\oint_{|z|=R}f(z)\dd z=-a_{-1}\qquad(R\ \text{大于所有有限奇点的模}) , \]
+
+其中 $a_{-1}$ 是 $f$ 在 $|z|>R$ 上的洛朗展开中 $z^{-1}$ 的系数。负号来自“无穷远处的正向是顺时针”。
+
+由此得到\textbf{全平面留数和为零}：
+
+\[ \sum_{k}\operatorname{Res}f(z_k)+\operatorname{Res}[f,\infty]=0 . \]
+
+用处：当围道外面只剩很少几个奇点（或没有）时，大围道上的积分可以用 $-2\pi i\operatorname{Res}[f,\infty]$ 代替逐个算内部留数。例如 $\oint_{|z|=2}\dfrac{z}{z^4-1}\dd z$，四个有限留数之和为 0，直接得积分 0。
+
+\hdr{§5}{三类实积分：把实轴搬进复平面}
+
+\subhdr{5.1\quad 类型 1：$0$ 到 $2\pi$ 的有理三角积分}
+
+\[ I=\int_0^{2\pi}R(\cos\theta,\sin\theta)\dd\theta . \]
+
+令 $z=e^{i\theta}$，则
+
+\[ \dd\theta=\frac{\dd z}{iz},\qquad \cos\theta=\frac{z+z^{-1}}{2},\qquad \sin\theta=\frac{z-z^{-1}}{2i} , \]
+
+单位圆正向绕一周。于是 $I=\oint_{|z|=1}\tilde R(z)\dd z$，用留数定理算。
+
+\subhdr{5.2\quad 类型 2：全实轴上的有理函数}
+
+\[ I=\int_{-\infty}^{\infty}\frac{P(x)}{Q(x)}\dd x,\qquad \deg Q\ge\deg P+2 . \]
+
+补一条上半平面的大圆弧 $C_R$，围道 $C=[-R,R]+C_R$。$R$ 足够大时，上半平面的奇点全在内部：
+
+\[ \oint_C f\dd z=2\pi i\sum_{\text{上半平面}}\operatorname{Res}f , \]
+
+实轴上的积分加上圆弧上的积分等于右边。\textbf{为什么要求次数差两次}：在 $C_R$ 上 $|f|=O(R^{-2})$，弧长 $=\pi R$，于是
+
+\[ \Bigl|\int_{C_R}f\dd z\Bigr|\le \pi R\cdot O(R^{-2})\to0 . \]
+
+次数只差一次时，这个上界是 $O(1)$，不趋于零，圆弧项收不住。
+
+若 $f$ 是偶函数，则 $\int_0^{\infty}f=\dfrac12\int_{-\infty}^{\infty}f$。
+
+\subhdr{5.3\quad 类型 3：带 $e^{imx}$ 的积分与约当引理}
+
+\[ I=\int_{-\infty}^{\infty}g(x)e^{imx}\dd x\qquad(m>0) . \]
+
+同样补上半大圆弧，但这次不要求 $g$ 衰减得那么快，靠的是\textbf{约当引理}：
+
+\[ \lim_{R\to\infty}\int_{C_R}g(z)e^{imz}\dd z=0\qquad(\text{只要 }g\text{ 在 }C_R\text{ 上一致趋于 }0) . \]
+
+证明的关键是一个几何不等式：$0\le\theta\le\pi/2$ 时 $\sin\theta\ge\dfrac{2\theta}{\pi}$。于是
+
+\[ \Bigl|\int_{C_R}g e^{imz}\dd z\Bigr|\le \max|g|\int_0^{\pi}e^{-mR\sin\theta}R\dd\theta\le 2\max|g|\int_0^{\pi/2}e^{-2mR\theta/\pi}R\dd\theta=\frac{\pi}{m}\max|g| , \]
+
+对 $g$ 一致趋于 0 取极限即为 0。实际用法：对 $f(z)e^{imz}$ 用留数定理，取实部或虚部，即得含 $\cos mx$ 或 $\sin mx$ 的积分。
+
+\subhdr{5.4\quad 三个引理的分工}
+
+\textbf{大圆弧引理}：$|f|=O(R^{-2})$ 时，$\int_{C_R}f\to0$（类型 2 用）。\textbf{约当引理}：$|g|\to0$ 时，$\int_{C_R}ge^{imz}\to0$（类型 3 用）。\textbf{小圆弧引理}：绕一阶极点的小半圆，积分趋于 $\pm i\pi\operatorname{Res}$（§6 用）。
+
+\subhdr{5.5\quad 三个可照抄的模板}
+
+\textbf{类型 1 模板}：(1) 代 $z=e^{i\theta}$，把 $\dd\theta$ 换成 $\dd z/(iz)$；(2) 通分成一个有理函数；(3) 求单位圆内极点的留数；(4) 乘 $2\pi i$。
+
+\textbf{类型 2 模板}：(1) 验证分母次数至少比分子高 2；(2) 补上半大圆弧，说明圆弧项为 0；(3) 找上半平面极点，算留数；(4) 乘 $2\pi i$；(5) 若是偶函数、题目要半轴，结果折半。
+
+\textbf{类型 3 模板}：(1) 写 $f(z)e^{imz}$，$m>0$；(2) 补上半大圆弧，用约当引理说明圆弧项为 0；(3) 算上半平面留数，乘 $2\pi i$；(4) 取实部或虚部；(5) 半轴再折半。
+
+模板只是顺序，判据还是三件事：极点在哪、阶数几、圆弧项为什么消失。
+
+\hdr{§6}{实轴上有极点：小半圆与半留数}
+
+\subhdr{6.1\quad 小圆弧引理}
+
+设 $a$ 是实轴上的\textbf{一阶}极点，$C_\varepsilon$ 是以 $a$ 为心、半径 $\varepsilon$ 的\textbf{上半}小半圆，按\textbf{顺时针}方向从 $a-\varepsilon$ 走到 $a+\varepsilon$（从大围道上看，就是沿实轴从左往右、从极点的上方绕过去）。则
+
+\[ \lim_{\varepsilon\to0}\int_{C_\varepsilon}f(z)\dd z=-i\pi\operatorname{Res}f(a) . \]
+
+\textbf{方向规则}：同一个半圆，若改成逆时针绕，符号相反，得到 $+i\pi\operatorname{Res}f(a)$。记法是“逆时针 $+i\pi$、顺时针 $-i\pi$”。
+
+推导：在 $a$ 附近 $f=\dfrac{\operatorname{Res}f(a)}{z-a}+(\text{解析})$，第二项在小半圆上一致有界，积分为 $O(\varepsilon)$；第一项
+
+\[ \int_{C_\varepsilon}\frac{\dd z}{z-a}=\int_{\pi}^{0}\frac{i\varepsilon e^{i\theta}}{\varepsilon e^{i\theta}}\dd\theta=-i\pi . \]
+
+\subhdr{6.2\quad 主值与半留数公式}
+
+于是对实轴上有有限个一阶极点的情形，取绕开它们的主值：
+
+\[ P,V\!\int_{-\infty}^{\infty}f(x)\dd x=2\pi i\sum_{\text{上半平面}}\operatorname{Res}f+i\pi\sum_{\text{实轴}}\operatorname{Res}f . \]
+
+第二项就是“半留数”：它不是算错，而是小半圆只绕过半个留数。
+
+\aside{如果小半圆取在下半平面（从右往左绕），符号相反，为 $+i\pi\operatorname{Res}$。符号只取决于绕行方向，与极点是否在实轴上无关。}
+
+\hdr{§7}{例题}
+
+\qbreak
+\qstem{（课件 p15--p17 例 1）计算 $I=\displaystyle\oint_{|z|=r>b}\frac{ze^{z}}{z^{2}-b^{2}}\dd z$，要求分别用柯西公式与留数定理。}
+
+\textbf{极点}：$z=\pm b$，都在圆内，都是一阶。
+
+\textbf{留数路线}：$\operatorname{Res}f(b)=\dfrac{be^{b}}{2b}=\dfrac{e^{b}}{2}$，$\operatorname{Res}f(-b)=\dfrac{(-b)e^{-b}}{-2b}=\dfrac{e^{-b}}{2}$。所以
+
+\[ I=2\pi i\left(\frac{e^{b}+e^{-b}}{2}\right)=2\pi i\cosh b . \]
+
+\textbf{柯西公式路线}：先拆
+
+\[ \frac{1}{z^{2}-b^{2}}=\frac{1}{2b}\left(\frac{1}{z-b}-\frac{1}{z+b}\right) , \]
+
+于是 $I=\dfrac{1}{2b}\Bigl[\oint\dfrac{ze^{z}}{z-b}\dd z-\oint\dfrac{ze^{z}}{z+b}\dd z\Bigr]=\dfrac{1}{2b}\bigl[2\pi ibe^{b}+2\pi ibe^{-b}\bigr]$，同样得 $2\pi i\cosh b$。
+
+\qbreak
+\qstem{（课件 p18--p19 例 2）计算 $I=\displaystyle\oint_{|z|=2}\frac{z}{z^{4}-1}\dd z$，要求分别用柯西公式与留数定理。}
+
+\textbf{极点}：$z=\pm1,\ \pm i$，四个一阶极点，都在 $|z|=2$ 内。
+
+\textbf{规则 II}：$f=\dfrac{P}{Q}$，$P=z$，$Q=z^{4}-1$，$Q'=4z^{3}$，所以
+
+\[ \operatorname{Res}f(z_k)=\frac{z_k}{4z_k^{3}}=\frac{1}{4z_k^{2}} . \]
+
+四个值分别是 $\dfrac14,\dfrac14,-\dfrac14,-\dfrac14$，和为 0。于是
+
+\[ I=2\pi i\cdot0=0 . \]
+
+\textbf{柯西公式路线}：把 $z/(z^{4}-1)$ 对四个一阶因子各用一次公式，得到的同样是 $\frac14(1+1-1-1)=0$。
+
+\qbreak
+\qstem{（课件 p20 例 3）求 $f(z)=\dfrac{1}{(z^{2}+1)^{2}}$ 在其奇点处的留数。}
+
+\textbf{极点}：$z=\pm i$，都是二阶（分母是平方）。
+
+\textbf{规则 III}（$m=2$）：$\operatorname{Res}f(i)=\lim_{z\to i}\dfrac{\dd}{\dd z}\left[(z-i)^{2}f\right]=\lim\dfrac{\dd}{\dd z}\dfrac{1}{(z+i)^{2}}\Big|_{z=i}=\dfrac{-2}{(2i)^{3}}=\dfrac{-2}{-8i}=-\dfrac{i}{4}$。
+
+同理 $\operatorname{Res}f(-i)=\dfrac{i}{4}$。
+
+\qbreak
+\qstem{（课件 p21 例 4）求 $f(z)=\dfrac{1}{z^{3}(z-i)}$ 在其奇点处的留数。}
+
+\textbf{极点}：$z=0$ 是三阶，$z=i$ 是一阶。
+
+\textbf{规则 III}（$m=3$）：$\operatorname{Res}f(0)=\dfrac{1}{2!}\lim_{z\to0}\dfrac{\dd^{2}}{\dd z^{2}}\dfrac{1}{z-i}=\dfrac{1}{2}\cdot\dfrac{2}{(-i)^{3}}=-i$。
+
+\textbf{规则 I}：$\operatorname{Res}f(i)=\lim_{z\to i}\dfrac{1}{z^{3}}=\dfrac{1}{i^{3}}=i$。
+
+\textbf{复核}：$f$ 在无穷远像 $1/z^{4}$，$\operatorname{Res}[f,\infty]=0$，所以两个留数之和应为 0：$-i+i=0$，对。
+
+\qbreak
+\qstem{（课件 p22 例 5）确定 $f(z)=\dfrac{1}{\varepsilon z^{2}+2z+\varepsilon}$（$0<\varepsilon<1$）在单位圆内的极点，并求它沿单位圆周的积分。}
+
+\textbf{极点}：解 $\varepsilon z^{2}+2z+\varepsilon=0$，
+
+\[ z_{1,2}=\frac{-1\pm\sqrt{1-\varepsilon^{2}}}{\varepsilon} . \]
+
+因为 $\sqrt{1-\varepsilon^{2}}<1$，$|z_{2}|=\dfrac{1-\sqrt{1-\varepsilon^{2}}}{\varepsilon}<1$，$|z_{1}|>1$。只有 $z_2$ 在单位圆内，且是一阶极点。
+
+\textbf{留数}：$f=\dfrac{1}{\varepsilon(z-z_{1})(z-z_{2})}$，所以
+
+\[ \operatorname{Res}f(z_2)=\frac{1}{\varepsilon(z_2-z_1)}=\frac{1}{\varepsilon\cdot\dfrac{2\sqrt{1-\varepsilon^{2}}}{\varepsilon}}=\frac{1}{2\sqrt{1-\varepsilon^{2}}} . \]
+
+于是
+
+\[ \oint_{|z|=1}f\dd z=2\pi i\cdot\frac{1}{2\sqrt{1-\varepsilon^{2}}}=\frac{\pi i}{\sqrt{1-\varepsilon^{2}}} . \]
+
+\qbreak
+\qstem{（课件 p25--p27 例 6）用定义（洛朗展开）求 $f(z)=\dfrac{z-\sin z}{z^{6}}$ 在 $z=0$ 处的留数。}
+
+\textbf{展开}：
+
+\[ z-\sin z=\frac{z^{3}}{3!}-\frac{z^{5}}{5!}+\cdots=\frac{z^{3}}{6}-\frac{z^{5}}{120}+\cdots \]
+
+除以 $z^{6}$：
+
+\[ f(z)=\frac{1}{6z^{3}}-\frac{1}{120z}+\cdots \]
+
+所以
+
+\[ \operatorname{Res}f(0)=-\frac{1}{120} . \]
+
+\textbf{为什么不用规则 III}：$z=0$ 是五阶极点，用导数式要求四阶导，比展开麻烦得多。这正是“定义法”存在的理由。
+
+\hdr{§7 续}{类型 1：有理三角积分}
+
+\qbreak
+\qstem{（课件 p35 例 1）计算 $I=\displaystyle\int_0^{2\pi}\frac{\dd\theta}{1+\varepsilon\cos\theta}$（$0<\varepsilon<1$）。}
+
+令 $z=e^{i\theta}$，$\cos\theta=\dfrac{z+z^{-1}}{2}$，$\dd\theta=\dfrac{\dd z}{iz}$，则
+
+\[ I=\oint_{|z|=1}\frac{2\dd z}{i(\varepsilon z^{2}+2z+\varepsilon)} . \]
+
+括号里的二次式的根与例 5 相同，只有 $z_2$ 在圆内，留数为 $\dfrac{1}{2\sqrt{1-\varepsilon^{2}}}$。于是
+
+\[ I=2\pi i\cdot\frac{2}{i}\cdot\frac{1}{2\sqrt{1-\varepsilon^{2}}}=\frac{2\pi}{\sqrt{1-\varepsilon^{2}}} . \]
+
+\qbreak
+\qstem{（课件 p38 例 2）计算 $I=\displaystyle\int_0^{2\pi}\frac{\dd\theta}{1-2\varepsilon\cos\theta+\varepsilon^{2}}$（$0<\varepsilon<1$）。}
+
+分母乘以 $z$：
+
+\[ 1-2\varepsilon\cos\theta+\varepsilon^{2}=-\frac{\varepsilon}{z}(z-\varepsilon)\left(z-\frac1\varepsilon\right) . \]
+
+$z=\varepsilon$ 在圆内（一阶），$z=1/\varepsilon$ 在圆外。
+
+\[ I=\oint_{|z|=1}\frac{\dd z}{iz}\cdot\frac{z}{-\varepsilon(z-\varepsilon)(z-1/\varepsilon)}=\frac{2\pi i}{i}\cdot\frac{1}{-\varepsilon(\varepsilon-1/\varepsilon)}=\frac{2\pi}{1-\varepsilon^{2}} . \]
+
+\qbreak
+\qstem{（课件 p39 例 3）计算 $I=\displaystyle\int_0^{\pi}\frac{a\,\dd\theta}{a^{2}+\sin^{2}\theta}$（$a>0$）。}
+
+先降幂并用偶函数对称性：$\sin^{2}\theta=\dfrac{1-\cos2\theta}{2}$，
+
+\[ I=\frac a2\int_0^{2\pi}\frac{\dd\theta}{a^{2}+\sin^{2}\theta}=\frac a2\int_0^{2\pi}\frac{2\dd\theta}{2a^{2}+1-\cos2\theta}=a\int_0^{2\pi}\frac{\dd\varphi}{2a^{2}+1-\cos\varphi} , \]
+
+最后一步用了 $\cos 2\theta$ 的周期 $2\pi$。对 $\int_0^{2\pi}\dfrac{\dd\varphi}{A-\cos\varphi}$（$A>1$）用单位圆留数，结果为 $\dfrac{2\pi}{\sqrt{A^{2}-1}}$。取 $A=2a^{2}+1$：
+
+\[ I=a\cdot\frac{2\pi}{\sqrt{(2a^{2}+1)^{2}-1}}=\frac{a\cdot2\pi}{2a\sqrt{a^{2}+1}}=\frac{\pi}{\sqrt{a^{2}+1}} . \]
+
+\qbreak
+\qstem{（课件 p41 例 4）计算 $I=\displaystyle\int_0^{2\pi}e^{\cos\theta}\cos(n\theta-\sin\theta)\dd\theta$。}
+
+把被积函数写成复指数的实部：
+
+\[ e^{\cos\theta}\cos(n\theta-\sin\theta)=\operatorname{Re}\left[e^{\cos\theta-i\sin\theta}e^{in\theta}\right]=\operatorname{Re}\left[e^{e^{-i\theta}}e^{in\theta}\right] . \]
+
+令 $z=e^{i\theta}$，$e^{-i\theta}=1/z$，$\dd\theta=\dd z/(iz)$：
+
+\[ I=\operatorname{Re}\left[\frac1i\oint_{|z|=1}e^{1/z}z^{n-1}\dd z\right] . \]
+
+$e^{1/z}=\sum_k\dfrac{1}{k!z^{k}}$，与 $z^{n-1}$ 相乘后 $z^{-1}$ 的系数出现在 $k=n$：系数为 $\dfrac{1}{n!}$。于是
+
+\[ I=\operatorname{Re}\left[\frac1i\cdot2\pi i\cdot\frac{1}{n!}\right]=\frac{2\pi}{n!} . \]
+
+\hdr{§7 续}{类型 2：无穷积分}
+
+\qbreak
+\qstem{（课件 p49 例 5）计算 $I=\displaystyle\int_{-\infty}^{\infty}\frac{\dd x}{1+x^{2}}$。}
+
+补上半大圆弧。上半平面只有一个一阶极点 $z=i$，$\operatorname{Res}f(i)=\dfrac{1}{2i}$。圆弧项 $O(1/R)\to0$。于是
+
+\[ I=2\pi i\cdot\frac{1}{2i}=\pi . \]
+
+\qbreak
+\qstem{（课件 p50 例 6）计算 $I=\displaystyle\int_{-\infty}^{\infty}\frac{\dd x}{(1+x^{2})^{3}}$。}
+
+$z=i$ 是三阶极点（平方的三次方仍是三阶）。规则 III：
+
+\[ \operatorname{Res}f(i)=\frac{1}{2!}\lim_{z\to i}\frac{\dd^{2}}{\dd z^{2}}\frac{1}{(z+i)^{3}}=\frac{1}{2}\cdot\frac{12}{(2i)^{5}}=\frac{3}{16i} . \]
+
+\[ I=2\pi i\cdot\frac{3}{16i}=\frac{3\pi}{8} . \]
+
+\qbreak
+\qstem{（课件 p51 例 7）计算 $I=\displaystyle\int_{-\infty}^{\infty}\frac{\dd x}{x^{4}+a^{4}}$（$a>0$）。}
+
+分母的四个根是 $ae^{i\pi/4}$、$ae^{3i\pi/4}$、$ae^{5i\pi/4}$、$ae^{7i\pi/4}$，上半平面只有前两个，都是一阶。
+
+\[ \operatorname{Res}f(z_k)=\frac{1}{4z_k^{3}} , \]
+
+两个留数之和为 $\dfrac{1}{4a^{3}}\left(e^{-3i\pi/4}+e^{-i\pi/4}\right)$。乘 $2\pi i$：
+
+\[ I=\frac{2\pi i}{4a^{3}}\cdot\sqrt2\,e^{-i\pi/2}=\frac{\pi}{\sqrt2\,a^{3}} . \]
+
+\hdr{§7 续}{类型 3：含三角函数的无穷积分}
+
+\qbreak
+\qstem{（课件 p60 例 8）计算 $I=\displaystyle\int_0^{\infty}\frac{\cos mx}{x^{2}+a^{2}}\dd x$（$m>0$，$a>0$）。}
+
+考虑 $f(z)=\dfrac{e^{imz}}{z^{2}+a^{2}}$，上半平面只有一阶极点 $z=ai$：
+
+\[ \operatorname{Res}f(ai)=\frac{e^{-ma}}{2ai} . \]
+
+约当引理保证圆弧项为 0，于是
+
+\[ \int_{-\infty}^{\infty}\frac{e^{imx}}{x^{2}+a^{2}}\dd x=2\pi i\cdot\frac{e^{-ma}}{2ai}=\frac{\pi}{a}e^{-ma} . \]
+
+取实部并用偶函数对称：
+
+\[ I=\frac12\cdot\frac{\pi}{a}e^{-ma}=\frac{\pi}{2a}e^{-ma} . \]
+
+\qbreak
+\qstem{（课件 p61 例 9）计算 $I=\displaystyle\int_0^{\infty}\frac{x\sin mx}{(x^{2}+a^{2})^{2}}\dd x$（$m>0$，$a>0$）。}
+
+考虑 $f(z)=\dfrac{ze^{imz}}{(z^{2}+a^{2})^{2}}$，$z=ai$ 是二阶极点。规则 III：
+
+\[ \operatorname{Res}f(ai)=\lim_{z\to ai}\frac{\dd}{\dd z}\frac{ze^{imz}}{(z+ai)^{2}}=\frac{m\,e^{-ma}}{4a} . \]
+
+（求导后代入 $ai$：两项合并得 $\dfrac{m e^{-ma}}{4a}$。）于是
+
+\[ \int_{-\infty}^{\infty}\frac{xe^{imx}}{(x^{2}+a^{2})^{2}}\dd x=2\pi i\cdot\frac{me^{-ma}}{4a}=\frac{i\pi m e^{-ma}}{2a} . \]
+
+取虚部再取一半（被积函数是偶函数）：
+
+\[ I=\frac12\cdot\frac{\pi m}{2a}e^{-ma}=\frac{\pi m}{4a}e^{-ma} . \]
+
+\hdr{§7 续}{补充：实轴上有极点}
+
+\qbreak
+\qstem{（课件 p70 例 1）计算 $I=\displaystyle\int_0^{\infty}\frac{\sin x}{x}\dd x$。}
+
+考虑 $\dfrac{e^{iz}}{z}$，在实轴上挖去 $z=0$ 的小半圆（上半），围道由 $[-R,-\varepsilon]$、上半小半圆、$[\varepsilon,R]$、上半大圆弧组成。内部无奇点，所以整条围道积分为 0：
+
+\[ \int_{-R}^{-\varepsilon}+\int_{C_\varepsilon}+\int_{\varepsilon}^{R}+\int_{C_R}=0 . \]
+
+$R\to\infty$ 时大圆弧由约当引理趋于 0；$\varepsilon\to0$ 时小半圆趋于 $-i\pi\operatorname{Res}\dfrac{e^{iz}}{z}\Big|_{0}=-i\pi$。于是
+
+\[ P,V\!\int_{-\infty}^{\infty}\frac{e^{ix}}{x}\dd x=i\pi . \]
+
+取虚部：$P,V\!\int_{-\infty}^{\infty}\dfrac{\sin x}{x}\dd x=\pi$，被积函数是偶函数，故
+
+\[ I=\frac{\pi}{2} . \]
+
+\hdr{§8}{第四章作业：四组（详解见附录 A）}
+
+课件把作业分三处：\textbf{p28} 一题四小问（§4.2 后）、\textbf{p62} 两题七小问（§4.3 类型 1、2 后）、\textbf{p78} 一题三小问（类型 3 后）。本讲义按 1--4 组连排，详解在\textbf{附录 A}。
+
+\qbreak
+\qstem{（课件 p28 作业 1）\label{hw:1}计算：
+1) $\displaystyle\oint_{|z-1|=2}\frac{\dd z}{(z^{2}+1)^{2}(z-1)}$；\quad 2) $\displaystyle\oint_{|z|=1}\frac{\cos z}{z^{3}}\dd z$；\quad 3) $\displaystyle\oint_{|z|=1}\frac{\dd z}{z\sin z}$；\quad 4) $\displaystyle\oint_{|z|=2}\frac{e^{2z}}{z^{2}+1}\dd z$。}
+
+\textbf{考点}：找圈内奇点、定阶数、套规则。\quad \textbf{详解}：附录 A 第 1 组（第 \pageref{app:hw1} 页）。
+
+\qbreak
+\qstem{（课件 p62 作业 2）\label{hw:2}计算：
+(1) $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{2+\cos\theta}$；\quad (2) $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{(1+\varepsilon\cos\theta)^{2}}$（$0<\varepsilon<1$）；\quad (3) $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{1+\sin^{2}\theta}$；\quad (4) $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{1+\cos^{2}\theta}$。}
+
+\textbf{考点}：类型 1，令 $z=e^{i\theta}$ 化单位圆。\quad \textbf{详解}：附录 A 第 2 组（第 \pageref{app:hw2} 页）。
+
+\qbreak
+\qstem{（课件 p62 作业 3）\label{hw:3}计算：
+(1) $\displaystyle\int_{-\infty}^{\infty}\frac{x^{2}\dd x}{(x^{2}+1)(x^{2}+4)}$；\quad (2) $\displaystyle\int_0^{\infty}\frac{x^{2}\dd x}{x^{4}+a^{4}}$（$a>0$）；\quad (3) $\displaystyle\int_{-\infty}^{\infty}\frac{x^{2}\dd x}{(x^{2}+a^{2})^{2}}$（$a>0$）。}
+
+\textbf{考点}：类型 2，补上半大圆弧。\quad \textbf{详解}：附录 A 第 3 组（第 \pageref{app:hw3} 页）。
+
+\qbreak
+\qstem{（课件 p78 作业 4）\label{hw:4}计算：
+(1) $\displaystyle\int_{-\infty}^{\infty}\frac{\cos mx\,\dd x}{(x^{2}+1)(x^{2}+4)}$（$m>0$）；\quad (2) $\displaystyle\int_{-\infty}^{\infty}\frac{x\sin x}{x^{2}+1}\dd x$；\quad (3) $\displaystyle\int_{-\infty}^{\infty}\frac{x\sin mx}{(x^{2}+a^{2})^{2}}\dd x$（$m>0$，$a>0$）。}
+
+\textbf{考点}：类型 3，约当引理 + 取实部或虚部。\quad \textbf{详解}：附录 A 第 4 组（第 \pageref{app:hw4} 页）。
+
+\hdr{§9}{易错点}
+
+\gapitem{一}{奇点算错。只算\textbf{圈内}的；落在圈外的奇点一个都不算。作业 1 第 1 题的圈是 $|z-1|=2$，$z=-1$ 的距离是 $2$，恰在圈上——要单独确认它到底在不在内部。}
+
+\gapitem{二}{阶数判错。分母是平方不一定是二阶，要先约分、再看分子是否同零点（第三章 §5）。}
+
+\gapitem{三}{方向。题目若给顺时针，结果要加负号；留数定理默认正向。}
+
+\gapitem{四}{一阶公式套到 $m$ 阶极点。$\lim(z-z_0)f$ 对 $m\ge2$ 的极点发散或给错值，必须用规则 III。}
+
+\gapitem{五}{类型 2 硬用。分母只比分子高一次时圆弧项不趋于 0，积分不能用大圆弧围道（要改用别的办法，例如主值或对数围道）。}
+
+\gapitem{六}{实轴上的极点当成内部奇点。要么挖小半圆得到半留数，要么取主值；直接把 $i\pi$ 项漏掉是最常见的失分点。}
+
+\hdr{§10}{缺口清单：课件跳了哪几处，本讲义补在哪}
+
+\gapitem{机制缺口 · p6--p7}{原文“由复连通区域的柯西定理”省略了割线与小圆替换。补法：§2.2 画清挖洞逻辑并解释割线抵消。}
+
+\gapitem{选择缺口 · p9}{“求留数的原则”只列三种情形，没有选择流程。补法：§3.6 给出“一阶→规则 I/II，二阶以上→规则 III，本性或高阶→展开”的判断。}
+
+\gapitem{机制缺口 · p31}{“关键几点”没解释类型 2 为什么要求次数差两次，也没写大圆弧上的估值。补法：§5.2 用 $|f|=O(R^{-2})$ 与弧长 $\pi R$ 给出上界。}
+
+\gapitem{证明缺口 · p53--p54}{约当引理证明里用到 $\sin\theta\ge2\theta/\pi$，课件只写“证明”。补法：§5.3 写出这个不等式与积分估计。}
+
+\gapitem{机制缺口 · p70}{补充例题直接用半留数，没推小半圆极限。补法：§6.1 给出 $\int_{C_\varepsilon}\dfrac{\dd z}{z-a}=-i\pi$ 的计算。}
+
+\gapitem{压缩缺口 · p28、p62、p78}{三处作业只有题面。补法：§8 列题干与考点，附录 A 按组补答案与关键一步。}
+
+\hdr{§11}{三句话}
+
+第一句：\textbf{留数就是洛朗展开的 $a_{-1}$}，它与围道无关，只由奇点附近的局部行为决定。
+
+第二句：\textbf{留数定理把围道积分换成留数的代数和}，条件是“有限个孤立奇点、连续到边界、正向”。
+
+第三句：\textbf{三类实积分共用一套办法}：选围道、找圈内奇点、算留数、验证圆弧项消失；实轴上有极点时，用半留数。
+
+\hdr{§12}{与课件的页码对照}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}lp{0.72\linewidth}@{}}
+\thead{课件页} & \thead{本讲义位置} \\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}lp{0.72\linewidth}@{}}
+p2--p5 & §1（留数的定义与来源） \\
+p6--p8 & §2（留数定理、证明、实质） \\
+p9--p14 & §3（规则 I、II、III） \\
+p15--p27 & §7 例 1--例 6 \\
+p28 & §8 作业 1；附录 A.1 \\
+p30--p31 & §5（三类积分的总纲） \\
+p32--p42 & §5.1、§7 例 7--例 10 \\
+p43--p52 & §5.2、§7 例 11--例 13 \\
+p53--p54 & §5.3（约当引理） \\
+p55--p61 & §5.3、§7 例 14--例 15 \\
+p62 & §8 作业 2、3；附录 A.2、A.3 \\
+p63--p70 & §6、§7 例 16 \\
+p78 & §8 作业 4；附录 A.4 \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\flowerrule
+
+\hdr{附录 A}{作业详解（按组，先给关键一步再给答案）}
+
+\qbreak
+\qstem{（课件 p28 作业 1；正文第 \pageref{hw:1} 页）\label{app:hw1}四道围道积分：1) $\oint_{|z-1|=2}\dfrac{\dd z}{(z^{2}+1)^{2}(z-1)}$；2) $\oint_{|z|=1}\dfrac{\cos z}{z^{3}}\dd z$；3) $\oint_{|z|=1}\dfrac{\dd z}{z\sin z}$；4) $\oint_{|z|=2}\dfrac{e^{2z}}{z^{2}+1}\dd z$。}
+
+\textbf{关键一步}：每道先定圈内奇点与阶数，再选规则；第 2、3 题可以先展开。
+
+\textbf{详解}：1) 圈内是 $z=1$（一阶）与 $z=\pm i$（各二阶）。三个留数之和为 0（因为 $f$ 在无穷远像 $1/z^{5}$，$\operatorname{Res}[f,\infty]=0$），所以积分为 \textbf{0}。
+
+2) $\cos z=1-\dfrac{z^{2}}{2}+\cdots$，除以 $z^{3}$ 得 $a_{-1}=-\dfrac12$，所以 $\oint=-2\pi i\cdot\dfrac12=$ \textbf{$-\pi i$}。
+
+3) $z\sin z$ 在 $0$ 是二阶零点，$f$ 是二阶极点；展开 $f=\dfrac{1}{z^{2}}\left(1+\dfrac{z^{2}}{6}+\cdots\right)=\dfrac{1}{z^{2}}+\dfrac16+\cdots$，$a_{-1}=0$，积分 \textbf{0}。
+
+4) 两个一阶极点 $\pm i$，$\operatorname{Res}f(i)=\dfrac{e^{2i}}{2i}$，$\operatorname{Res}f(-i)=\dfrac{e^{-2i}}{-2i}$，和 $=\sin2$。积分 $=$ \textbf{$2\pi i\sin2$}。
+
+\qbreak
+\qstem{（课件 p62 作业 2；正文第 \pageref{hw:2} 页）\label{app:hw2}四个 $0$ 到 $2\pi$ 的三角积分。}
+
+\textbf{关键一步}：一律 $z=e^{i\theta}$，$\dd\theta=\dd z/(iz)$，$\cos\theta=(z+z^{-1})/2$，$\sin^{2}\theta=\dfrac{2-z^{2}-z^{-2}}{4}$。
+
+\textbf{答案}：(1) $\dfrac{2\pi}{\sqrt3}$；(2) $\dfrac{2\pi}{(1-\varepsilon^{2})^{3/2}}$（分母是平方，$z=\varepsilon$ 与 $z=1/\varepsilon$ 中只有一个在圆内，且是二阶极点，用规则 III）；(3) $\sqrt2\,\pi$；(4) $\sqrt2\,\pi$。
+
+\qbreak
+\qstem{（课件 p62 作业 3；正文第 \pageref{hw:3} 页）\label{app:hw3}三个有理积分。}
+
+\textbf{关键一步}：补上半大圆弧；次数差都 $\ge2$，圆弧项为 0。
+
+\textbf{答案}：(1) 先部分分式 $\dfrac{x^{2}}{(x^{2}+1)(x^{2}+4)}=-\dfrac{1/3}{x^{2}+1}+\dfrac{4/3}{x^{2}+4}$，得 $\dfrac{\pi}{3}$；(2) 上半平面两个一阶极点 $ae^{i\pi/4}$、$ae^{3i\pi/4}$，得 $\dfrac{\pi}{2\sqrt2\,a}$；(3) $z=ai$ 是二阶极点，得 $\dfrac{\pi}{2a}$。
+
+\qbreak
+\qstem{（课件 p78 作业 4；正文第 \pageref{hw:4} 页）\label{app:hw4}三个含 $e^{imx}$ 的积分。}
+
+\textbf{关键一步}：考虑 $f(z)e^{imz}$，补上半大圆弧，用约当引理；最后按被积函数的奇偶性取实部或虚部，半轴再折半。
+
+\textbf{答案}：(1) $\dfrac{\pi}{6}\left(2e^{-m}-e^{-2m}\right)$（两个一阶极点 $i$、$2i$，取实部）；(2) $\dfrac{\pi}{e}$（一阶极点 $i$，取虚部）；(3) $\dfrac{\pi m}{2a}e^{-am}$（二阶极点 $ai$，取虚部）。
+
+\textbf{自检}：第 (1) 题被积函数是偶函数，全轴积分等于 $2\times$ 半轴；第 (2) 题 $x\sin x$ 也是偶函数，同样折半；第 (3) 题同上。
+
+\flowerrule
+
+\hdr{附录 B}{十道易错变式（先做，答案在后面）}
+
+这十道都只用到本章的判据，但每一道都埋了一个常见的坑：阶数、圈内圈外、半留数、或者“看起来像 $1/6$ 其实是 0”。
+
+\begin{enumerate}
+\item $\displaystyle\oint_{|z|=1}e^{1/z}\dd z$
+\item $\displaystyle\oint_{|z|=2}\frac{\dd z}{z(z-1)}$
+\item $\operatorname{Res}_{z=0}\dfrac{1}{z^{2}\sin z}$
+\item $\operatorname{Res}_{z=1}\dfrac{z^{2}+1}{z^{3}-1}$
+\item $\displaystyle\oint_{|z|=3}\frac{e^{z}}{z^{2}+1}\dd z$
+\item $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{5+4\cos\theta}$
+\item $\displaystyle\int_{-\infty}^{\infty}\frac{\dd x}{(x^{2}+1)^{2}}$
+\item $\displaystyle\int_0^{\infty}\frac{\dd x}{x^{4}+1}$
+\item $\operatorname{Res}_{z=0}\dfrac{\sin z-z}{z^{5}}$
+\item $\displaystyle\int_{-\infty}^{\infty}\frac{\cos x}{x^{2}+1}\dd x$
+\end{enumerate}
+
+\textbf{答案与一句提示}
+
+\begin{enumerate}
+\item $2\pi i$。$e^{1/z}$ 的 $a_{-1}=1$；这是本性奇点，只能展开。
+\item $0$。两个一阶留数是 $-1$ 与 $1$；二重检查：$f$ 在无穷远像 $1/z^{2}$，留数和为 0。
+\item $\dfrac16$。$z^{2}\sin z$ 在 $0$ 是三阶零点，展开得 $f=\dfrac{1}{z^{3}}+\dfrac{1}{6z}+\cdots$。
+\item $\dfrac23$。规则 II：$\dfrac{P(1)}{Q'(1)}=\dfrac{2}{3}$。
+\item $2\pi i\sin 1$。两个一阶极点 $\pm i$，留数 $\dfrac{e^{i}}{2i}$ 与 $\dfrac{e^{-i}}{-2i}$。
+\item $\dfrac{2\pi}{3}$。类型 1，$z=e^{i\theta}$ 后分母是 $2z^{2}+5z+2$，$z=-\dfrac12$ 在圆内。
+\item $\dfrac{\pi}{2}$。$z=i$ 是二阶极点，$\operatorname{Res}f(i)=\lim_{z\to i}\dfrac{\dd}{\dd z}(z+i)^{-2}=\dfrac{1}{4i}$，乘 $2\pi i$ 得 $\dfrac{\pi}{2}$。
+\item $\dfrac{\pi}{2\sqrt2}$。上半平面两个一阶极点 $e^{i\pi/4}$、$e^{3i\pi/4}$。
+\item $0$。$\sin z-z=-\dfrac{z^{3}}{6}+\dfrac{z^{5}}{120}-\cdots$，除以 $z^{5}$ 后没有 $z^{-1}$ 项——别被 $-\dfrac16$ 骗了。
+\item $\dfrac{\pi}{e}$。$z=i$ 一阶极点，取实部；偶函数，全轴不折半。
+\end{enumerate}
+
+\end{document}

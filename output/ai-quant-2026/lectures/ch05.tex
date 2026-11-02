@@ -1,0 +1,195 @@
+\chapter{因子预处理：为什么你的"新因子"只是小盘股的换皮}\label{ch:prep}
+
+\begin{keybox}[本章要回答的问题]
+去极值该用 3$\sigma$ 还是 MAD？标准化用 z-score 还是排名？中性化到底在剥离什么？
+为什么"中性化后 IC 一定更高"是错的？
+\end{keybox}
+
+\section{为什么必须预处理}
+
+原始因子值直接使用会遇到三个问题：
+
+\begin{enumerate}
+  \item \textbf{极端值主导}。A 股有大量"净资产为负 → BP 爆炸""净利润接近零 → EP 爆炸"
+        的样本。一个 BP 等于 500 的股票会把线性回归的系数完全带偏。
+  \item \textbf{量纲不可比}。换手率是百分数（0--30），ROE 是百分数（$-$50--50），
+        市值是元（$10^8$--$10^{12}$）。不加处理无法相加。
+  \item \textbf{风格暴露}。你的"新因子"可能只是"小盘股"或"医药行业"的换皮。
+\end{enumerate}
+
+\section{去极值}
+
+\subsection{三种方法}
+
+\begin{description}
+  \item[3$\sigma$ 法] 把超过 $\mu \pm 3\sigma$ 的值截断。问题是 $\mu,\sigma$ 本身
+        被极端值污染——厚尾分布下 $\sigma$ 会被拉大，导致"该截的没截掉"。
+  \item[百分位法] 把超过 $1\%$ 与 $99\%$ 分位的值截断。简单稳健，但在样本很少时
+        分位数估计不稳。
+  \item[MAD 法] 用中位数绝对偏差：
+        \begin{equation}
+          \text{MAD} = \mathrm{median}\big(|x_i - \mathrm{median}(x)|\big), \qquad
+          \hat\sigma = 1.4826\,\text{MAD}.
+        \end{equation}
+        常数 $1.4826$ 使 $\hat\sigma$ 在正态分布下与标准差一致。
+        截断区间取 $[\mathrm{median} - n\hat\sigma,\ \mathrm{median} + n\hat\sigma]$，
+        $n$ 常取 5。
+\end{description}
+
+\begin{keybox}[本书的选择]
+截面 MAD 法，$n=5$。理由：中位数与 MAD 的崩溃点是 50\%，
+即使有 20\% 的极端样本也不影响估计；而 $3\sigma$ 法的崩溃点是 0\%。
+\end{keybox}
+
+\section{标准化}
+
+\subsection{z-score 与排名}
+
+\begin{align}
+  z_{i} &= \frac{x_i - \mathrm{mean}(x)}{\mathrm{std}(x)}, \\
+  r_{i} &= \mathrm{rank}(x_i)/N - \tfrac12 \;\in\; \left(-\tfrac12, \tfrac12\right].
+\end{align}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{z-score} & \textbf{排名} \\
+\midrule
+抗极值 & 弱（受尾部影响） & 强 \\
+保留幅度 & 是 & 否 \\
+分布形状 & 近似正态 & 均匀 \\
+适合 & 线性模型、组合权重 & 稳健评价、IC 计算 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+实践中常见的折中：\textbf{先去极值，再 z-score}。这样既保留了幅度，又不被极端值主导。
+
+\section{中性化：剥离你不想要的风险}
+
+\subsection{在剥离什么}
+
+假设你构造了一个"研发投入强度"因子，回测发现 IC 很高。但仔细一看：
+高研发投入的公司集中在创业板，而创业板在样本期内整体跑赢。
+那么你的因子赚的其实是"创业板 beta"，而不是"研发"本身。
+
+中性化就是把这个"其实不是你的"部分剥离掉。
+
+\subsection{行业中性化}
+
+最简单的做法是行业内 demean：
+
+\begin{equation}
+  \tilde x_{i} = x_i - \mathrm{mean}_{j \in \text{行业}(i)}(x_j).
+\end{equation}
+
+等价于对行业哑变量做无截距回归取残差。
+
+\subsection{行业 + 市值中性化}
+
+更完整的做法是截面回归：
+
+\begin{equation}
+  x_{i,t} = \alpha_t + \sum_{k=1}^{K-1}\beta_{k,t}\,\mathbb{1}[i\in \text{行业}_k]
+  + \gamma_t \ln(\text{MktCap}_{i,t}) + \varepsilon_{i,t},
+  \label{eq:neutral}
+\end{equation}
+
+取残差 $\varepsilon_{i,t}$ 作为中性化后的因子值。
+
+\begin{proposition}[残差的正交性]
+由最小二乘的正规方程，残差 $\hat\varepsilon$ 与设计矩阵的每一列都正交：
+\begin{equation}
+  \sum_i \hat\varepsilon_i = 0, \qquad
+  \sum_i \hat\varepsilon_i \mathbb{1}[i\in k] = 0\ \forall k, \qquad
+  \sum_i \hat\varepsilon_i \ln(\text{MktCap}_i) = 0.
+\end{equation}
+因此中性化后的因子在截面上\textbf{行业均值为零、与对数市值零相关}。
+这正是"剥离"的数学含义。
+\end{proposition}
+
+\subsection{为什么不用分组 demean}
+
+分组 demean 只能处理离散分组（行业），无法同时控制连续的市值。
+而且它无法处理"行业内市值差异"带来的残余暴露。
+回归可以一次性处理两者，且残差严格正交，是更干净的做法。
+
+\subsection{几个工程细节}
+
+\begin{enumerate}
+  \item \textbf{市值用对数}。市值分布严重右偏，取对数后接近正态；
+        直接用原始市值会让极少数巨型股主导回归。
+  \item \textbf{哑变量丢一列}。$K$ 个行业要用 $K-1$ 个哑变量加截距，
+        否则完全共线。
+  \item \textbf{截面做，不时序做}。因子有效性是横截面问题，
+        每天独立回归一次。
+  \item \textbf{样本太少时放弃}。当天有效样本 $<30$ 时，回归系数不稳，宁可不中性化。
+  \item \textbf{二次项通常不需要}。线性项已经足够，加二次项会增加自由度与过拟合风险；
+        除非你明确怀疑存在 U 形关系且样本量足够。
+\end{enumerate}
+
+\section{一个反直觉的结论：中性化不总是提升 IC}
+
+很多教程写"中性化后 IC 会提高"。这是错的。
+
+\begin{itemize}
+  \item 如果因子的信息部分来自行业轮动（例如"景气度向上行业的股票"），
+        行业中性化会把真实 alpha 一起剥掉，IC 反而下降。
+  \item 如果因子本身就是一个风格因子（例如规模因子），
+        对市值中性化等于把它归零。
+\end{itemize}
+
+\begin{warnbox}[正确的判断方式]
+中性化前后各算一遍 IC，看\textbf{降低幅度}。
+\begin{itemize}
+  \item IC 几乎不变：因子本身与行业/市值无关，中性化是"买个保险"。
+  \item IC 明显下降：因子有相当一部分收益来自风格暴露，中性化后剩下的才是真 alpha。
+  \item IC 反而上升：说明原始因子被风格噪声污染，中性化起了降噪作用。
+\end{itemize}
+三种情况都是有用信息，但只有第三种能说"中性化提升了因子"。
+\end{warnbox}
+
+\section{实现：向量化的截面回归}
+
+逐日循环回归在小样本上够用，但在 $250$ 天 $\times$ 40 个因子上会明显变慢。
+一个有效的优化是：\textbf{同一天的所有因子共用同一个设计矩阵}，
+因此对 $X$ 做一次 QR 分解，就能把整块因子矩阵投影掉。
+
+\begin{pycode}[批量残差化]
+def neutralize_block(Y, X):
+    """Y: (n, m) 因子矩阵；X: (n, k) 设计矩阵。返回残差 (n, m)。"""
+    Q, _ = np.linalg.qr(X)        # 只分解一次
+    return Y - Q @ (Q.T @ Y)      # 一次性投影掉所有因子
+\end{pycode}
+
+复杂度从 $O(m\,n k^2)$ 降到 $O(nk^2 + mnk)$，在 $m=40$、$n=4000$、$k=32$ 时
+大约快 10 倍。
+
+\section{预处理流程的完整顺序}
+
+顺序不能乱，理由如下：
+
+\begin{enumerate}
+  \item \textbf{剔除不可交易样本}：ST、停牌、新股、流动性不足。
+        先剔除，否则它们的极端值会污染去极值的统计量。
+  \item \textbf{去极值}：MAD，$n=5$。
+  \item \textbf{标准化}：截面 z-score。
+  \item \textbf{中性化}：行业 + 对数市值回归取残差。
+  \item \textbf{再次标准化}：中性化会改变量纲，需重新标准化以便加权。
+\end{enumerate}
+
+\begin{warnbox}[一个容易被忽略的顺序问题]
+如果先中性化再去极值，去极值会破坏残差的正交性——
+你截断掉的极端值，恰好可能是与市值高度相关的那些点。
+正确顺序是\textbf{先去极值、再中性化}。
+\end{warnbox}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 去极值用 MAD 而不是 $3\sigma$，因为后者自身被极端值污染。
+  \item 标准化保留幅度去 z-score，追求稳健去排名；实践中"先去极值再 z-score"最常用。
+  \item 中性化 = 截面回归取残差，残差与行业、市值严格正交。
+  \item 中性化不总提升 IC；IC 下降说明你的因子有相当部分是风格暴露。
+  \item 处理顺序：剔除不可交易 → 去极值 → 标准化 → 中性化 → 再标准化。
+\end{enumerate}

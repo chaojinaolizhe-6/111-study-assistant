@@ -1,0 +1,1116 @@
+% !TEX program = xelatex
+% 数学物理方法2 · 第七章 · 数学物理方程（精讲讲义）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing}
+\settags{第七章 · 数学物理方程}{数学物理方法2}
+
+% 单位：正文里也能直接写 \unit{N\cdot m^{-1}}，自动切进数学模式
+\newcommand{\unit}[1]{\ifmmode\mathrm{#1}\else$\mathrm{#1}$\fi}
+
+% 圈码①②③交给中文字体（默认会被塞进 Latin 字体而缺字）
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% 表头：主题的 \thead 以 {\color...} 开头，在 p{} 列里会把标题挤到第二行；
+% 前面补 \leavevmode 让它落在本行（2026-11-02 实测）
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+% 同一张表内的中隔线（\tabmid 只能放在 tabular 之外）
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.94\linewidth}\centering}{\end{minipage}\end{center}\par}
+
+% 详解块起页保护放宽到半页（附录四题都短于半页）
+\renewcommand{\qbreak}{\needspace{0.46\textheight}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% 公式上下留白收紧
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{第七章　数学物理方程}
+{从牛顿第二定律到三类方程：弦、杆、膜、电磁波的同一条推导骨架}
+{依据课件《Chapter 7 -- 20261102.pdf》16 页（2026-11-02 微信到件）\quad 2026-11-02\quad 数学物理方法2}
+
+\hdr{§0}{课件坐标、记号与三处伏笔}
+
+这一讲是《数学物理方法（II）》的第一讲，课件封面自己写着 \emph{Method of Mathematical Physics (II)}，PDF 元数据标题是「数学物理方法（II）」，作者 Yu-Ru Zhang。全文 16 页，只完整推导了一种方程——弦的横振动（p5--p8）。杆（p11--p13）与膜（p14）给了受力分析但跳掉了代数步骤，电磁波（p15）把整整一步压成「计算第一式的旋度并用第二式」一句话，热传导／扩散与泊松方程（p3）只列了结论、连推导都没有。
+
+所以这份讲义的骨架不是把 16 页重打一遍，而是把这四段推导补成同一条线：
+
+\begin{quote}
+取一个微元当质点 \ $\rightarrow$ \ 写牛顿第二定律 \ $\rightarrow$ \ 用「小量」把几何因子换成偏导数 \ $\rightarrow$ \ 除长度、取极限。
+\end{quote}
+
+这条线在四个场景里走完，得到的都是同一个二阶线性方程；差别只在「速度」这个系数由什么材料常数凑出来。
+
+\subhdr{0.1\quad 记号}
+
+\begin{itemize}
+\item $u(\mathbf r,t)$：标量场，可以理解为温度、浓度、电位或位移的某个分量；$\mathbf r=(x,y,z)$。
+\item $u(x,t)$：一维情形，本讲义里默认指弦或杆的位移。
+\item $\rho$：\textbf{三个场景里量纲不同，务必先看量纲再代数字}——弦：线密度（$\unit{kg\cdot m^{-1}}$）；
+      杆：体密度（$\unit{kg\cdot m^{-3}}$）；膜：面密度（$\unit{kg\cdot m^{-2}}$）。三处都叫 $\rho$，但不是同一个物理量。
+\item $T$：弦的张力（$\unit{N}$）；膜的单位长度张力（$\unit{N\cdot m^{-1}}$）。
+\item $S$：杆的横截面积；$E$：杨氏模量（$\unit{Pa}=\unit{N\cdot m^{-2}}$）。
+\item $P$：应力（单位面积上的内力）；$\varepsilon$：应变（相对伸长）。
+\item $\Delta s$：弦上一小段弧长；$\theta_1,\theta_2$：弦微元两端的切线倾角。
+\item $a$：波速，由材料常数凑出（弦 $\sqrt{T/\rho}$，杆 $\sqrt{E/\rho}$，膜 $\sqrt{T/\rho}$）。
+\item $c$：真空光速，$c=1/\sqrt{\varepsilon_0\mu_0}$；$\varepsilon_0,\mu_0$：真空介电常数与磁导率。
+\item $\varphi(x)$：$t=0$ 时刻弦的位移（课件 p6 用的符号）；$u(x,t)$：$t>0$ 的位移。
+\item $\nabla^2$：拉普拉斯算子；三维笛卡尔坐标下 $\nabla^2=\partial_x^2+\partial_y^2+\partial_z^2$。
+\end{itemize}
+
+\subhdr{0.2\quad 16 页坐标表（台账表，只作导航，不承载推导）}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}l p{0.74\linewidth}@{}}
+\thead{课件页} & \thead{内容} \\
+\tabmidrule
+p1 & 封面：Method of Mathematical Physics (II), Yu-Ru Zhang \\
+p2 & 引例：质点运动是常微分方程，场的宏观态是偏微分方程 \\
+p3 & 三类标准方程（波动／输运／泊松）＋拉普拉斯算子＋「Derivation of these equations???」 \\
+p4 & §7.1 波动方程：自然界的三类波 \\
+p5 & 横振动与纵振动的定义 \\
+p6 & 弦的模型设定与两张位移图（$\varphi(x)$ 与 $u(x,t)$） \\
+p7 & 弦微元受力分析与小振幅近似，得到 $\Delta x$ 形式的方程 \\
+p8 & 除 $\Delta x$ 得波动方程，$a=\sqrt{T/\rho}$；思考题「Why different strings sound differently?」 \\
+p9 & 加单位长度外力 $F(x,t)$，得非齐次方程 \\
+p10 & 例题：空气阻力 $F=-k\partial_t u$；三步总结 \\
+p11 & 杆的纵振动：示意图（P 波，质点沿传播方向） \\
+p12 & 杆的模型设定与微元图，「$F$ ?」 \\
+p13 & 胡克定律、应变，得到与弦同形的方程，$a=\sqrt{E/\rho}$；提问「With an external force?」 \\
+p14 & 膜的横振动：两面受力，得二维波动方程；二维拉普拉斯算子 \\
+p15 & 电磁波：真空麦克斯韦方程组，取旋度得 $\partial_t^2\mathbf E-c^2\nabla^2\mathbf E=0$ \\
+p16 & 附录：梯度、散度、旋度在笛卡尔坐标下的表达式 \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\subhdr{0.3\quad 三处伏笔}
+
+\callout{\textbf{伏笔一（p3）}：三类方程并列写出，但全篇只推导了波动方程。输运（热传导／扩散）与泊松方程的来历，课件没有交代——本讲义 §1.4 给出独立推导，并顺手解释一处符号约定（§1.5）。\par
+\textbf{伏笔二（p6）}：画了 $t=0$ 的 $\varphi(x)$ 与 $t>0$ 的 $u(x,t)$，却从头到尾没有写出一个定解条件。偏微分方程单独一个，解不出唯一的 $u$；这件事本讲义在 §2.7 补上，并在 §7.2 集中说明。\par
+\textbf{伏笔三（p14）}：标题写的是 ``membrane/plate''（膜／板），给出的方程却是膜方程（无弯曲刚度）。板需要四阶双调和项，见 §5.4。}
+
+\hdr{§1}{为什么宏观态是偏微分方程}
+
+\subhdr{1.1\quad 课件 p2 的对比}
+
+课件 p2 摆了两行对照，值得抄下来：
+
+\begin{itemize}
+\item 质点的运动服从牛顿第二定律 $m\dfrac{\dd^2\mathbf r}{\dd t^2}=f(\mathbf r,t)$，这是一个\textbf{常微分方程}（ODE）——未知函数 $\mathbf r$ 只依赖一个自变量 $t$。
+\item 系统的宏观态 $u(\mathbf r,t)$（温度、浓度、电磁场）同时依赖空间变量 $\mathbf r$ 与时间 $t$，所以 $u$ 的方程是\textbf{偏微分方程}（PDE）——未知函数有多个自变量。
+\end{itemize}
+
+\aside{判据只有一条：数一数未知函数的自变量个数。球在重力场里下落，位置只随 $t$ 变，是 ODE；杆里温度既随位置 $x$ 变又随时间 $t$ 变，是 PDE。}
+
+\subhdr{1.2\quad 三类标准方程（课件 p3 原样）}
+
+课件 p3 把数学物理方程归成三类，按「对时间求导的阶数」排队：
+
+\subhdr{(1) 波动方程（对时间二阶导数）}
+\[
+\frac{\partial^2 u(\mathbf r,t)}{\partial t^2}-a^2\nabla^2u(\mathbf r,t)=f(\mathbf r,t),
+\]
+对应振动与波的传播（Vibration, wave propagation）。
+
+\subhdr{(2) 输运方程（对时间一阶导数）}
+\[
+\frac{\partial u(\mathbf r,t)}{\partial t}-a^2\nabla^2u(\mathbf r,t)=f(\mathbf r,t),
+\]
+对应热传导与扩散（Thermal conduction, diffusion）。
+
+\subhdr{(3) 泊松方程（与时间无关）}
+\[
+\nabla^2u(\mathbf r)=f(\mathbf r),
+\]
+对应稳态热传导、稳态扩散、电位分布（Steady state thermal conduction, steady state diffusion, potential distribution）。
+
+\aside{课件 p3 同时给出笛卡尔坐标下的拉普拉斯算子
+$\nabla^2=\dfrac{\partial^2}{\partial x^2}+\dfrac{\partial^2}{\partial y^2}+\dfrac{\partial^2}{\partial z^2}$。
+它不是新算子，就是「对每个空间坐标各求两次偏导再相加」。}
+
+\subhdr{1.3\quad 三个方程的量纲自检：为什么系数必须写成 $a^2$}
+
+拿波动方程做量纲检查。设 $u$ 的量纲记作 $[u]$，长度 $[L]$，时间 $[T]$：
+
+\begin{itemize}
+\item $\partial_t^2u$ 的量纲是 $[u]/[T]^2$；
+\item $\nabla^2u$ 的量纲是 $[u]/[L]^2$。
+\end{itemize}
+
+两项要相加，必须 $a^2\cdot\dfrac{[u]}{[L]^2}=\dfrac{[u]}{[T]^2}$，即
+
+\[
+a^2=\frac{[L]^2}{[T]^2}\quad\Longrightarrow\quad a\ \text{的量纲是速度}.
+\]
+
+这就是系数被写成 $a^2$（而不是 $a$）的全部理由：它必须是一个速度的平方，否则方程量纲不齐。
+
+\subhdr{1.4\quad 补：热传导方程是怎么来的（课件 p3 只给结论）}
+
+取一根截面积 $S$ 的均匀细杆，取微元 $(x,x+\Delta x)$，$u(x,t)$ 是温度。三样东西要写下来。
+
+\subhdr{(a) 微元里存了多少热}
+单位体积热容记 $\rho c$（$\rho$ 体密度，$c$ 比热容），则微元的热量为 $\rho c\,u\,S\Delta x$，对时间求导：
+
+\[
+\frac{\dd Q}{\dd t}=\rho c\,S\Delta x\,\frac{\partial u}{\partial t}.
+\]
+
+\subhdr{(b) 傅里叶定律与净流入}
+热流密度（单位面积、单位时间流过的热量）与温度梯度成正比、方向相反：
+
+\[
+\mathbf q=-\kappa\nabla u ,
+\]
+其中 $\kappa$ 是热导率。一维时 $q_x=-\kappa\,\partial_x u$。从 $x$ 面流入、从 $x+\Delta x$ 面流出，净流入为
+
+\[
+S\,q_x(x)-S\,q_x(x+\Delta x)\approx -S\,\frac{\partial q_x}{\partial x}\Delta x
+=\kappa S\,\frac{\partial^2u}{\partial x^2}\Delta x .
+\]
+
+\subhdr{(c) 热源与能量守恒}
+设单位体积的生热率为 $F$，微元里的源项是 $F S\Delta x$。能量守恒（热量增加＝净流入＋源）：
+
+\[
+\rho c\,S\Delta x\,\frac{\partial u}{\partial t}
+=\kappa S\,\frac{\partial^2u}{\partial x^2}\Delta x+F S\Delta x .
+\]
+
+两边除 $\rho c S\Delta x$：
+
+\[
+\frac{\partial u}{\partial t}-\frac{\kappa}{\rho c}\frac{\partial^2u}{\partial x^2}
+=\frac{F}{\rho c}
+\quad\Longleftrightarrow\quad
+\frac{\partial u}{\partial t}-a^2\nabla^2u=f,
+\qquad a^2=\frac{\kappa}{\rho c},\ \ f=\frac{F}{\rho c}.
+\]
+
+这正是课件 p3 的第二式。两个常数各有来处：$a^2=\kappa/(\rho c)$ 是\textbf{数学来源}（把系数凑成一个平方以便写成标准形式），$f=F/(\rho c)$ 是\textbf{约定来源}（把源项除掉 $\rho c$，让左边只剩「无量纲化的」导数组）。
+
+\aside{扩散方程（浓度 $u$、扩散系数 $D$）走的是同一条路：菲克定律 $\mathbf J=-D\nabla u$ 替代傅里叶定律，$a^2=D$。所以课件把这两个过程并成「输运方程」一类。}
+
+\subhdr{1.5\quad 一处符号约定：泊松方程为什么没有负号}
+
+从输运方程看稳态：令 $\partial_t u=0$，得 $-a^2\nabla^2u=f$，即
+
+\[
+\nabla^2u=-\frac{f}{a^2}.
+\]
+
+而课件 p3 的泊松方程写的是 $\nabla^2u=f(\mathbf r)$——右边没有负号。这不是错误，而是\textbf{把符号吸收进了源项}：换一个记号 $g=-f/a^2$，方程就写成 $\nabla^2u=g$。两种写法在静电学里都常见（$\nabla^2\phi=-\rho_{\rm e}/\varepsilon_0$ 与 $\nabla^2\phi=-\rho_{\rm e}/\varepsilon_0$ 的差别只在你把 $\rho_{\rm e}$ 叫「源」还是叫「负源」）。
+
+\warnbox{代数字前先确认源项的正负约定：同一个物理问题，按 $\nabla^2u=f$ 和按 $\nabla^2u=-f/a^2$ 写出来的 $f$ 差一个负号。看到「$\nabla^2u=f$」时，先想清楚 $f$ 是「外加源」还是「与外加强度成正比的量」。}
+
+\hdr{§2}{弦的横振动：一条完整的推导}
+
+\subhdr{2.1\quad 横振动与纵振动（课件 p5）}
+
+\begin{itemize}
+\item \textbf{横振动}（transverse）：振动方向垂直于波的传播方向，例如电磁波、拨动的琴弦。
+\item \textbf{纵振动}（longitudinal）：振动方向与波的传播方向相同，例如声波。
+\end{itemize}
+
+课件 p5 用两张竖线图示意：横振动那组竖线的长度按正弦起伏（线在上下摆），纵振动那组竖线的间距一会儿密一会儿疏（质点在左右挤）。后面 §4 的杆是纵振动，§2 的弦与 §5 的膜是横振动。
+
+\subhdr{2.2\quad 模型设定（课件 p6）}
+
+课件 p6 的原话是：一根长度为 $l$、线密度为 $\rho$ 的弦，沿 $o$-$x$ 轴放置；$t=0$ 时给它一个\textbf{小扰动}（small perturbation）；在恒定张力作用下，弦离开平衡位置开始运动。两张图分别是：
+
+\begin{itemize}
+\item 左图 $t=0$：弦的形状是 $\varphi(x)$，即「$t=0$ 时刻的横向位移」；
+\item 右图 $t>0$：弦的形状是 $u(x,t)$，即「$t>0$ 的横向位移」。
+\end{itemize}
+
+要推的就是 $u(x,t)$ 满足的方程。
+
+\subhdr{2.3\quad 取微元、受力分析（课件 p7）}
+
+把弦上一小段 $(x,x+\Delta x)$ 单独拿出来，当成一个质点（这就是整条推导的第一招：\textbf{微元当质点}）。这段弦两端各受一个张力，大小分别记 $T_1,T_2$，与水平方向的夹角分别记 $\theta_1,\theta_2$。
+
+\begin{figbox}
+\begin{tikzpicture}[scale=1.0,>=Stealth,font=\small]
+  \draw[->] (-0.5,0) -- (7.8,0) node[right] {$x$};
+  \draw[->] (0,-0.6) -- (0,3.6) node[above] {$u$};
+  \coordinate (A) at (2.2,1.15);
+  \coordinate (B) at (5.2,2.35);
+  \draw[very thick,violet] (A) -- (B);
+  \draw[dashed,gray] (1.0,1.15) -- (3.5,1.15);
+  \draw[dashed,gray] (4.0,2.35) -- (6.5,2.35);
+  \draw[dotted] (2.2,0) -- (A);
+  \draw[dotted] (5.2,0) -- (B);
+  \node[below] at (2.2,-0.05) {$x$};
+  \node[below] at (5.2,-0.05) {$x+\Delta x$};
+  \node[above] at (3.85,2.28) {$\Delta s$};
+  % 张力：左端沿弦向外（左下），右端沿弦向外（右上）
+  \draw[->,thick,red!75!black] (A) -- ++(-1.05,-0.40) node[left,black] {$\mathbf T_1$};
+  \draw[->,thick,red!75!black] (B) -- ++(1.05,0.40) node[right,black] {$\mathbf T_2$};
+  % 角度：都画在切线与水平之间的楔形里，标注落在楔形下方的空白处
+  \draw[violet] ([shift=(0:0.75)]A) arc (0:21.4:0.75);
+  \node[violet] at (3.18,1.00) {$\theta_1$};
+  \draw[violet] ([shift=(0:0.75)]B) arc (0:21.4:0.75);
+  \node[violet] at (6.18,2.20) {$\theta_2$};
+  \fill (A) circle (1.6pt); \fill (B) circle (1.6pt);
+\end{tikzpicture}
+\par\smallskip
+\small 图 1\quad 弦微元 $(x,x+\Delta x)$ 的受力（重绘课件 p7 右图）：两端张力 $\mathbf T_1,\mathbf T_2$ 都沿弦的切线方向\emph{向外}拉，$\theta_1,\theta_2$ 是切线与水平方向的夹角，$\Delta s$ 是这段弧长。
+\end{figbox}
+
+把两个方向的方程分别写出来（这是第二招：\textbf{用物理定律}）：
+
+\[
+\text{水平方向：}\quad T_2\cos\theta_2-T_1\cos\theta_1=0,
+\]
+\[
+\text{垂直于弦（$u$ 方向）：}\quad T_2\sin\theta_2-T_1\sin\theta_1=(\rho\,\Delta s)\,\frac{\partial^2u}{\partial t^2}.
+\]
+
+右边是「质量 $\times$ 加速度」：微元质量是 $\rho\Delta s$，加速度是 $\partial_t^2u$（整段一起横向运动，所以用同一个加速度）。
+
+\subhdr{2.4\quad 小振幅近似：把非线性因子换成线性因子}
+
+课件 p7 写的是「Assume the motion is ``small'', then $\cos\theta_1\approx\cos\theta_2\approx1$」，然后直接跳到结果。这里补三步。
+
+\textbf{(a) 水平方向给出张力大小不变。}由 $\cos\theta_1\approx\cos\theta_2\approx1$ 得 $T_1\approx T_2$；再注意弦是「无质量」的（质量全部算在 $\rho\Delta s$ 里），沿弦方向没有质量可加速，所以张力大小沿弦不变，统一记作 $T$。
+
+\textbf{(b) 把 $\sin\theta$ 换成偏导数。}小角时 $\sin\theta\approx\tan\theta$，而 $\tan\theta$ 就是切线的斜率：
+
+\[
+\sin\theta_1\approx\tan\theta_1=\left.\frac{\partial u}{\partial x}\right|_{x},
+\qquad
+\sin\theta_2\approx\tan\theta_2=\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}.
+\]
+
+\textbf{(c) 把弧长换成 $\Delta x$。}微元的弧长是
+
+\[
+\Delta s=\sqrt{(\Delta x)^2+(\Delta y)^2}\approx\Delta x,
+\]
+
+因为小振幅意味着 $\Delta y\ll\Delta x$，开方时 $(\Delta y/\Delta x)^2$ 是二阶小量，可以丢掉。
+
+\aside{「小振幅」丢掉的到底是什么：$\cos\theta=\sqrt{1-\sin^2\theta}\approx1-\tfrac12\theta^2$，丢的是二阶项 $O(\theta^2)$；同理 $\Delta s-\Delta x=O(\theta^2)$。丢掉之后得到的方程对 $u$ 是\textbf{线性}的，这才是「线性方程」三个字的来历。大振幅时 $\sin\theta\neq\theta$，方程变成非线性，波动不再叠加。}
+
+把 (a)(b)(c) 代回垂直方向的方程：
+
+\[
+T\left(\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}
+-\left.\frac{\partial u}{\partial x}\right|_{x}\right)
+=\rho\,\Delta x\,\frac{\partial^2u}{\partial t^2}.
+\]
+
+\subhdr{2.5\quad 除 $\Delta x$、取极限：差分商变成二阶导}
+
+两边同除 $\Delta x$（$\Delta x>0$，可以除）：
+
+\[
+T\cdot\frac{\left.\dfrac{\partial u}{\partial x}\right|_{x+\Delta x}-\left.\dfrac{\partial u}{\partial x}\right|_{x}}{\Delta x}
+=\rho\,\frac{\partial^2u}{\partial t^2}.
+\]
+
+左边括号里正是函数 $\partial_x u$ 的差分商。令 $\Delta x\to0$：
+
+\[
+\frac{\left.\dfrac{\partial u}{\partial x}\right|_{x+\Delta x}-\left.\dfrac{\partial u}{\partial x}\right|_{x}}{\Delta x}
+\ \xrightarrow{\ \Delta x\to0\ }\
+\frac{\partial^2u}{\partial x^2}.
+\]
+
+\aside{用的就是导数定义：$g'(x)=\lim_{h\to0}\dfrac{g(x+h)-g(x)}{h}$，这里 $g=\partial_x u$（把一个函数对 $x$ 求导得到的仍是函数，可以再求一次导）。}
+
+于是
+
+\[
+T\,\frac{\partial^2u}{\partial x^2}=\rho\,\frac{\partial^2u}{\partial t^2},
+\qquad
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}=0,
+\qquad
+a=\sqrt{\frac{T}{\rho}} .
+\]
+
+这就是课件 p8 红框里的波动方程（其中 $a$ 由课件 p8 写作 wave velocity）。
+
+\subhdr{2.6\quad 为什么 $a$ 叫「波速」：代一个行波进去看}
+
+这一步课件没有写，但它是「$a$ 是波速」这句话的唯一依据。取一个只依赖组合 $\xi=x-at$ 的函数（$f$ 这个字母本讲义已经用来记非齐次项，这里换用 $\Phi$，免得混淆）：
+
+\[
+u(x,t)=\Phi(\xi)=\Phi(x-at).
+\]
+
+用链式法则求导（$\Phi'$ 表示对 $\xi$ 求导）：
+
+\[
+\frac{\partial u}{\partial t}=-a\,\Phi'(\xi),\qquad
+\frac{\partial^2u}{\partial t^2}=a^2\,\Phi''(\xi);
+\]
+\[
+\frac{\partial u}{\partial x}=\Phi'(\xi),\qquad
+\frac{\partial^2u}{\partial x^2}=\Phi''(\xi).
+\]
+
+代回方程：
+
+\[
+a^2\Phi''-a^2\Phi''=0\quad\checkmark
+\]
+
+恒成立。也就是说，\textbf{任何形状的波形都可以以速度 $a$ 沿着 $+x$ 方向平移着走过去}，而 $\Phi(x+at)$ 则以同样速度向 $-x$ 走。这正是「波」的意思，$a=\sqrt{T/\rho}$ 就是传播速度。
+
+\subhdr{2.7\quad 补：这方程还缺什么（课件 p6 只有图，没有条件）}
+
+波动方程是二阶的：对 $t$ 两次、对 $x$ 两次，所以\textbf{定解}需要四样东西——两个初始条件、两个边界条件。弦的例子最自然的一套是
+
+\[
+u(x,0)=\varphi(x),\qquad \frac{\partial u}{\partial t}(x,0)=\psi(x),
+\]
+\[
+u(0,t)=0,\qquad u(l,t)=0 .
+\]
+
+第一行：$t=0$ 时的形状（就是 p6 左图那条 $\varphi(x)$）与 $t=0$ 时的速度（课件没画，但没有它解不唯一）。第二行：两端固定。
+
+\warnbox{只有方程没有定解条件，得到的是「一族解」，不是「这个问题的解」。$u_1=\sin\frac{\pi x}{l}\cos\frac{\pi at}{l}$ 与 $u_2=\sin\frac{2\pi x}{l}\cos\frac{2\pi at}{l}$ 都满足 $u_{tt}-a^2u_{xx}=0$，也都在 $x=0,l$ 处为零，但形状完全不同——差别只能由初始条件决定。}
+
+\hdr{§3}{外力与非齐次方程}
+
+\subhdr{3.1\quad 加上单位长度外力（课件 p9）}
+
+若弦上还受一个「单位长度」的外力 $F(x,t)$（比如风吹、或者钉子顶），微元受的外力是 $F\Delta s\approx F\Delta x$，垂直方向方程变成
+
+\[
+T_2\sin\theta_2-T_1\sin\theta_1+F\Delta s=(\rho\Delta s)\frac{\partial^2u}{\partial t^2}.
+\]
+
+照 §2.4--§2.5 同样做一遍：
+
+\[
+T\left(\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-\left.\frac{\partial u}{\partial x}\right|_{x}\right)+F\Delta x
+=\rho\Delta x\,\frac{\partial^2u}{\partial t^2}
+\]
+
+两边除 $\rho\Delta x$、取极限：
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}
+=\frac{F(x,t)}{\rho}=f(x,t).
+\]
+
+课件 p9 把右边那个 $\dfrac{F(x,t)}{\rho}$ 用红框圈起来，标注为 inhomogeneous term（非齐次项）。
+
+\aside{「非齐次」是标准术语，指方程右边不为零。齐次方程（$f=0$）描述「自己振动」，非齐次方程描述「被外界推着振动」；两者可以叠加，这就是后文求解的出发点。}
+
+\subhdr{3.2\quad 例题（课件 p10）：把空气阻力算进去}
+
+\qbreak
+\qstem{（课件 p10，课上例题）弦在空气中振动时受空气阻力，阻力与\textbf{速度成正比}：$F(x,t)=-k\,\dfrac{\partial u}{\partial t}$（$k>0$）。求这时 $u(x,t)$ 满足的方程。}
+
+\textbf{考点}：非齐次项的下标——阻力是「单位长度上的外力」，要先进 §3.1 的 $F$，再除 $\rho$。
+
+\textbf{关键一步}：那个负号。阻力永远与运动方向相反，所以 $F=-k\,\partial_t u$，加号或减号写错，后面得到的方程就从「阻尼」变成「自激」。
+
+\textbf{详解}：把 $F=-k\partial_t u$ 代入 §3.1 的结果
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}
+=\frac{1}{\rho}\left(-k\frac{\partial u}{\partial t}\right),
+\]
+
+把时间导数项都挪到左边：
+
+\[
+\frac{\partial^2u}{\partial t^2}+\frac{k}{\rho}\frac{\partial u}{\partial t}
+-a^2\frac{\partial^2u}{\partial x^2}=0 .
+\]
+
+记 $b=k/\rho$，就是课件 p10 的结果：
+
+\[
+\frac{\partial^2u}{\partial t^2}+b\frac{\partial u}{\partial t}-a^2\frac{\partial^2u}{\partial x^2}=0,
+\qquad b=\frac{k}{\rho}.
+\]
+
+\textbf{答案}：$\partial_t^2u+b\,\partial_t u-a^2\partial_x^2u=0$，其中 $b=k/\rho$；这就是\textbf{阻尼波动方程}。
+
+\textbf{自检}：$b$ 的量纲必须是 $1/[\text{时间}]$。验一下：$k$ 的量纲是「单位长度上的力 ÷ 速度」= $\unit{N\cdot m^{-1}/(m\cdot s^{-1})}=\unit{kg\cdot s^{-1}\cdot m^{-1}}$，$\rho$ 是 $\unit{kg\cdot m^{-1}}$，相除得 $\unit{s^{-1}}$ $\checkmark$。
+
+课件紧接着写了一句「Since the friction is usually very small, it can be ignored」——这句话的意思是 $b$ 很小，$b\,\partial_t u$ 这一项与另外两项相比可以丢，方程退回 $b=0$ 的齐次形式。\textbf{不是}阻力不存在，而是它小到不影响主项。
+
+\subhdr{3.3\quad 课件 p10 的三步总结}
+
+课件 p10 底部列出了这套方法的骨架，三句话正好对应本讲义 §2 的三步：
+
+\begin{itemize}
+\item \textbf{考虑一段}（Consider a segment）→ 取微元，当成质点；
+\item \textbf{用物理定律}（Use the laws of physics）→ 牛顿第二定律 $F=ma$；
+\item \textbf{化简整理}（Simplify and rearrange）→ 小量近似、除长度、取极限，得到波动方程。
+\end{itemize}
+
+后面的杆、膜、电磁波都走这三步，只是「物理定律」那一格换成胡克定律、或麦克斯韦方程组。
+
+\hdr{§4}{杆的纵振动：同一个方程，换一个速度}
+
+\subhdr{4.1\quad 模型设定（课件 p12）}
+
+一根长度为 $l$、截面积为 $S$ 的杆，取 $o$-$x$ 轴沿杆的纵轴。取微元 $(x,x+\Delta x)$，用牛顿第二定律 $F=ma$。课件 p12 在页面上留了一个红字「$F$ ?」——要求先把 $F$ 找出来。这一步是本讲最容易出错的地方，下面分三步补齐。
+
+\begin{figbox}
+\begin{tikzpicture}[scale=1.1,>=Stealth,font=\small]
+  % 上排：未变形的杆（虚线）与切面、位移箭头
+  \draw[densely dashed,gray] (1.2,3.2) rectangle (6.6,4.0);
+  \draw[densely dashed] (2.8,3.05) -- (2.8,4.15);
+  \draw[densely dashed] (5.2,3.05) -- (5.2,4.15);
+  \node[above] at (2.8,4.15) {$x$};
+  \node[above] at (5.2,4.15) {$x+\Delta x$};
+  \draw[->,thick,red!70!black] (2.05,3.6) -- (2.72,3.6);
+  \draw[->,thick,red!70!black] (4.45,3.6) -- (5.12,3.6);
+  \node[below,font=\scriptsize] at (2.35,3.12) {$u(x,t)$};
+  \node[below,font=\scriptsize] at (4.80,3.12) {$u(x+\Delta x,t)$};
+  % 下排：变形后（微元被拉开，两侧留缝）
+  \fill[violet!12] (1.2,1.3) rectangle (2.75,2.1);
+  \fill[violet!40] (2.95,1.3) rectangle (5.05,2.1);
+  \fill[violet!12] (5.25,1.3) rectangle (6.6,2.1);
+  \draw[gray] (1.2,1.3) rectangle (2.75,2.1);
+  \draw[gray] (2.95,1.3) rectangle (5.05,2.1);
+  \draw[gray] (5.25,1.3) rectangle (6.6,2.1);
+  % 两端内力（作用在中间这段的两个端面上）
+  \draw[->,thick,violet] (2.95,1.70) -- (2.05,1.70);
+  \draw[->,thick,violet] (5.05,1.70) -- (5.95,1.70);
+  \node[below,font=\scriptsize] at (2.55,1.22) {$-P(x,t)S$};
+  \node[below,font=\scriptsize] at (5.45,1.22) {$+P(x+\Delta x,t)S$};
+  % 坐标轴
+  \draw[->] (0.8,4.60) -- (7.2,4.60) node[right] {$x$};
+\end{tikzpicture}
+\par\smallskip
+\small 图 2\quad 杆微元 $(x,x+\Delta x)$ 的纵向位移与两端内力（重绘课件 p12 图）：上排虚线是未变形的位置，红箭头是两端截面的位移参考方向（都取 $+x$）；下排是变形后的杆，中间深色块就是 $(x,x+\Delta x)$ 这一段，它两个端面上的内力分别指向外侧——左端为 $-P(x,t)S$（向左），右端为 $+P(x+\Delta x,t)S$（向右）。
+\end{figbox}
+
+\subhdr{4.2\quad 应变：位移的差商就是相对伸长（课件 p13）}
+
+微元原来长 $\Delta x$，变形后两端位移分别是 $u(x,t)$ 与 $u(x+\Delta x,t)$，所以相对伸长（应变）是
+
+\[
+\varepsilon=\frac{u(x+\Delta x,t)-u(x,t)}{\Delta x}\approx\frac{\partial u}{\partial x}\equiv u_x .
+\]
+
+这一步和 §2.4(c) 是同一招：差商在 $\Delta x\to0$ 时变成导数。
+
+\subhdr{4.3\quad 胡克定律：原形式与课件形式}
+
+\subhdr{胡克定律（原形式）}
+在弹性范围内，材料内部的应力 $\sigma$ 与应变 $\varepsilon$ 成正比，比例系数为杨氏模量 $E$：
+
+\[
+\sigma=E\,\varepsilon .
+\]
+$\sigma$ 的单位是 $\unit{Pa}$（即 $\unit{N\cdot m^{-2}}$，单位面积上的内力），$E$ 的单位也是 $\unit{Pa}$，$\varepsilon$ 无量纲。
+
+把 4.2 的应变代入：
+
+\[
+P=E\,\frac{\partial u}{\partial x},
+\]
+其中 $P$ 就是课件 p13 里的 stress（the internal force per unit area）。\textbf{课件给的是代入了应变的这一形式}；原形式 $\sigma=E\varepsilon$ 只出现在该页文字 "The stress of an elastic material is proportional to the strain" 里，没有单独编号。
+
+\subhdr{4.4\quad 两端内力与牛顿第二定律（课件 p13 跳掉的一步）}
+
+课件 p13 直接写出
+
+\[
+(\rho S\Delta x)\frac{\partial^2u}{\partial t^2}
+=ES\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-ES\left.\frac{\partial u}{\partial x}\right|_{x}
+\approx ES\,\frac{\partial^2u}{\partial x^2}\Delta x ,
+\]
+
+中间「内力为什么是右边加、左边减」没有交代。补在这里：
+
+\begin{itemize}
+\item 左端面（$x$ 处）：微元右侧的材料拉着它\emph{向左}，力的大小是 $P(x,t)S$，沿 $+x$ 方向的分量是 $-P(x,t)S$；
+\item 右端面（$x+\Delta x$ 处）：微元左侧的材料拉着它\emph{向右}，分量是 $+P(x+\Delta x,t)S$。
+\end{itemize}
+
+所以合力是 $S\left[P(x+\Delta x,t)-P(x,t)\right]$。再代 $P=Eu_x$：
+
+\[
+(\rho S\Delta x)\frac{\partial^2u}{\partial t^2}
+=S\left[P(x+\Delta x,t)-P(x,t)\right]
+=ES\left[\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-\left.\frac{\partial u}{\partial x}\right|_{x}\right].
+\]
+
+\aside{一个自检：若杆被均匀拉伸（$u_x$ 处处相同），两端应力相等，合力为零，微元不动——与「应变均匀时没有净内力」一致。若某处 $u_x$ 更大，那里的内力更大，微元就被拉着往应力大的方向加速。}
+
+\subhdr{4.5\quad 取极限得方程（课件 p13）}
+
+两边除 $S\Delta x$：$\rho\,\partial_t^2u=E\left[\cdots\right]/\Delta x$，再令 $\Delta x\to0$：
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}=0,
+\qquad a=\sqrt{\frac{E}{\rho}} .
+\]
+
+课件 p13 底部用蓝底白字强调：「The equation is in the same form as that of the transverse vibration of a string!」——形式完全一样，只是速度的来历换了：
+
+\begin{itemize}
+\item 弦：$a=\sqrt{T/\rho}$，$T$ 是张力（\unit{N}），$\rho$ 是线密度（\unit{kg\cdot m^{-1}}）；
+\item 杆：$a=\sqrt{E/\rho}$，$E$ 是杨氏模量（\unit{Pa}），$\rho$ 是体密度（\unit{kg\cdot m^{-3}}）。
+\end{itemize}
+
+算一个真实数字（钢：$E=2.0\times10^{11}\ \unit{Pa}$，$\rho=7.8\times10^{3}\ \unit{kg\cdot m^{-3}}$）：
+
+\[
+a=\sqrt{\frac{2.0\times10^{11}}{7.8\times10^{3}}}\approx5.06\times10^{3}\ \unit{m/s},
+\]
+
+即每秒五公里左右——这就是地震波里 P 波（纵波）在钢里的量级，比空气中的声速（约 $340\ \unit{m/s}$）快一个量级以上。
+
+\subhdr{4.6\quad 补：杆上的外力（课件 p13 只问未答）}
+
+课件 p13 右下角有一个粉底小框写着「With an external force?」，没有给答案。照 §3.1 的办法补：
+
+若杆上还受单位体积的外力 $f_v(x,t)$（\unit{N\cdot m^{-3}}），微元受力多一项 $f_vS\Delta x$，牛顿第二定律变成
+
+\[
+(\rho S\Delta x)\frac{\partial^2u}{\partial t^2}
+=ES\left[\cdots\right]+f_vS\Delta x
+\]
+
+除 $S\Delta x$ 取极限：
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}=\frac{f_v(x,t)}{\rho}\equiv f(x,t).
+\]
+
+若给的是单位长度力 $F(x,t)$（\unit{N\cdot m^{-1}}），则用 $F/(\rho S)$ 代替 $f_v/\rho$。两种写法的区别只是「你手里那个力是除以长度还是除以体积」。
+
+\hdr{§5}{膜的横振动：二维情形}
+
+\subhdr{5.1\quad 模型与微元（课件 p14）}
+
+一张均匀薄膜，忽略弯曲刚度，只受面内张力 $T$（单位长度上的力，\unit{N\cdot m^{-1}}）；面密度 $\rho$（\unit{kg\cdot m^{-2}}）。取微元 $\Delta x\times\Delta y$。
+
+\begin{figbox}
+\begin{tikzpicture}[scale=1.05,>=Stealth,font=\small]
+  % 平面坐标（俯视：x 向右，y 斜向上）
+  \draw[->] (0.4,0.5) -- (7.0,0.5) node[right] {$x$};
+  \draw[->] (0.4,0.5) -- (2.0,3.3) node[above] {$y$};
+  % 微元平行四边形：x 向 (2.2,0)，y 向 (1.37,1.72)
+  \coordinate (P) at (2.2,1.0);
+  \coordinate (Q) at (4.4,1.0);
+  \coordinate (R) at (5.77,2.72);
+  \coordinate (S) at (3.57,2.72);
+  \fill[violet!12] (P) -- (Q) -- (R) -- (S) -- cycle;
+  \draw[thick,violet] (P) -- (Q) -- (R) -- (S) -- cycle;
+  % 边长标注
+  \node[below,font=\scriptsize] at (3.3,0.92) {$\Delta x$};
+  \node[right,font=\scriptsize] at (5.15,1.95) {$\Delta y$};
+  % 四边张力（垂直于该边、指向微元外侧，均在膜面内）
+  \draw[->,thick,red!70!black] (3.3,1.0) -- ++(-0.52,-0.65) node[left,black] {$T$};
+  \draw[->,thick,red!70!black] (4.67,2.72) -- ++(0.52,0.65) node[right,black] {$T$};
+  \draw[->,thick,red!70!black] (2.89,1.86) -- ++(-0.85,0) node[left,black] {$T$};
+  \draw[->,thick,red!70!black] (5.09,1.86) -- ++(0.85,0) node[right,black] {$T$};
+  % 四角坐标
+  \node[below left,font=\scriptsize] at (P) {$x$};
+  \node[below right,font=\scriptsize] at (Q) {$x+\Delta x$};
+  \node[left,font=\scriptsize] at (S) {$y$};
+  \node[right,font=\scriptsize] at (R) {$y+\Delta y$};
+\end{tikzpicture}
+\par\smallskip
+\small 图 3\quad 膜微元 $\Delta x\times\Delta y$ 与四边的张力（重绘课件 p14 左图）：这是俯视图，$x$、$y$ 都在膜面内；四条边上单位长度受张力 $T$（$\unit{N\cdot m^{-1}}$），方向垂直于该边、指向膜外。$x$ 面那两条边（左右两条）的长度是 $\Delta y$，$y$ 面那两条边（上下两条）的长度是 $\Delta x$。
+\end{figbox}
+
+\subhdr{5.2\quad 两个方向的受力（课件 p14 压缩掉的一步）}
+
+课件 p14 右栏直接写
+
+\[
+\left[T\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-T\left.\frac{\partial u}{\partial x}\right|_{x}\right]\Delta y=T u_{xx}\Delta x\Delta y,
+\]
+\[
+\left[T\left.\frac{\partial u}{\partial y}\right|_{y+\Delta y}-T\left.\frac{\partial u}{\partial y}\right|_{y}\right]\Delta x=T u_{yy}\Delta x\Delta y .
+\]
+
+那个 $\Delta y$（以及第二式的 $\Delta x$）是从哪来的，页面上没有解释。补一句就够：\textbf{边上每单位长度受张力 $T$，这条边长 $\Delta y$，所以整条边上的力是 $T\Delta y$}。括号里是「两端斜率之差」，再乘边长得到合力；用差商近似导数：
+
+\[
+T\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-T\left.\frac{\partial u}{\partial x}\right|_{x}
+\approx T\,\frac{\partial^2u}{\partial x^2}\,\Delta x ,
+\]
+
+乘以边长 $\Delta y$ 就是 $Tu_{xx}\Delta x\Delta y$。
+
+两个方向相加，合力是 $T(u_{xx}+u_{yy})\Delta x\Delta y$；牛顿第二定律（质量 $=\rho\Delta x\Delta y$）：
+
+\[
+(\rho\Delta x\Delta y)\,u_{tt}=T(u_{xx}+u_{yy})\,\Delta x\Delta y .
+\]
+
+两边除 $\rho\Delta x\Delta y$：
+
+\[
+u_{tt}=\frac{T}{\rho}\,(u_{xx}+u_{yy})
+\quad\Longrightarrow\quad
+u_{tt}-a^2\nabla^2u=0,
+\qquad a=\sqrt{\frac{T}{\rho}},
+\]
+
+其中 $\nabla^2=\partial_x^2+\partial_y^2$ 是二维拉普拉斯算子（课件 p14 如此标注）。
+
+\subhdr{5.3\quad 有外力时（课件 p14 已给）}
+
+若膜上受单位面积的外力 $f(x,y,t)$，右边加一项：
+
+\[
+u_{tt}-a^2\nabla^2u=f(x,y,t).
+\]
+
+\subhdr{5.4\quad 名字对不上：膜不是板（课件 p14 标题的缺口）}
+
+课件 p14 的标题是「Transverse vibration of a membrane/plate」（膜／板），但给出的方程是\textbf{膜方程}：只有张力、没有弯曲刚度。板的方程要多一个四阶项：
+
+\[
+\rho\,u_{tt}+D\,\nabla^4u=0,
+\qquad D=\frac{E h^3}{12(1-\nu^2)},
+\]
+
+其中 $h$ 是板厚、$\nu$ 是泊松比、$D$ 是弯曲刚度。差别在于：膜的回复力来自「张力把斜边拉平」（二阶导就够）；板的回复力来自「弯曲变形」（要二阶导再求一次导，也就是四阶）。所以读这一页时，把 "plate" 当成口误处理：本节讲的与本章后面用到的都是膜方程。
+
+\subhdr{5.5\quad 三维推广（课件 p3 用的就是三维）}
+
+课件 p3 的波动方程写的是 $\nabla^2u$ 的三维形式，而 p14 只推到二维。把它们统一：三维时同一套推导（取 $\Delta x\Delta y\Delta z$ 的立方体微元，六个面各受张力）给出
+
+\[
+u_{tt}-a^2\nabla^2u=f(\mathbf r,t),
+\qquad
+\nabla^2=\partial_x^2+\partial_y^2+\partial_z^2 .
+\]
+
+二维只是把 $z$ 那一项删掉；一维（弦、杆）只留 $x$ 那一项。\textbf{三个场景共用一个算子，这就是「同一个方程」的确切含义。}
+
+\hdr{§6}{电磁波：把麦克斯韦方程组变成波动方程}
+
+\subhdr{6.1\quad 真空中的麦克斯韦方程组（课件 p15）}
+
+\[
+\nabla\times\mathbf E=-\frac{\partial\mathbf B}{\partial t},
+\qquad
+\nabla\times\mathbf B=\varepsilon_0\mu_0\frac{\partial\mathbf E}{\partial t},
+\]
+\[
+\nabla\cdot\mathbf B=0,
+\qquad
+\nabla\cdot\mathbf E=0 .
+\]
+
+课件把前两式标 curl（旋度）、后两式标 divergence（散度），并在右侧给出
+
+\[
+c=\frac{1}{\sqrt{\varepsilon_0\mu_0}}\approx3\times10^{8}\ \unit{m/s}.
+\]
+
+\subhdr{6.2\quad 「计算第一式的旋度、用第二式」到底算了什么（课件 p15 压缩掉的一步）}
+
+课件原话是 "Calculate the curl of the first equation and use the second equation, then"，然后直接给出
+
+\[
+\nabla\times(\nabla\times\mathbf E)=-\frac{\partial}{\partial t}\nabla\times\mathbf B=-\frac{1}{c^2}\frac{\partial^2\mathbf E}{\partial t^2}.
+\]
+
+补中间两步：
+
+\begin{itemize}
+\item 对第一式两边取旋度：$\nabla\times(\nabla\times\mathbf E)=-\dfrac{\partial}{\partial t}(\nabla\times\mathbf B)$
+      （旋度与 $\partial_t$ 可交换次序）。
+\item 把第二式 $\nabla\times\mathbf B=\varepsilon_0\mu_0\,\partial_t\mathbf E$ 代进右边：
+      $-\dfrac{\partial}{\partial t}\left(\varepsilon_0\mu_0\dfrac{\partial\mathbf E}{\partial t}\right)
+      =-\varepsilon_0\mu_0\dfrac{\partial^2\mathbf E}{\partial t^2}$。
+\item 最后用 $c^2=1/(\varepsilon_0\mu_0)$，即 $\varepsilon_0\mu_0=1/c^2$，得右端 $=-\dfrac{1}{c^2}\dfrac{\partial^2\mathbf E}{\partial t^2}$。
+\end{itemize}
+
+\subhdr{6.3\quad 矢量恒等式（课件 p15 的 "Since" 一段）}
+
+\subhdr{矢量恒等式（原形式）}
+对任意二阶可微的向量场 $\mathbf A(\mathbf r)$，在笛卡尔坐标下
+
+\[
+\nabla\times(\nabla\times\mathbf A)=\nabla(\nabla\cdot\mathbf A)-\nabla^2\mathbf A .
+\]
+这里 $\nabla(\nabla\cdot\mathbf A)$ 是「散度的梯度」（一个向量），$\nabla^2\mathbf A$ 是逐分量作用拉普拉斯算子。
+
+在真空中 $\nabla\cdot\mathbf E=0$，所以第一项为零：
+
+\[
+\nabla\times(\nabla\times\mathbf E)=-\nabla^2\mathbf E .
+\]
+
+把 6.2 与 6.3 的结果接起来：
+
+\[
+-\nabla^2\mathbf E=-\frac{1}{c^2}\frac{\partial^2\mathbf E}{\partial t^2}
+\quad\Longrightarrow\quad
+\frac{\partial^2\mathbf E}{\partial t^2}-c^2\nabla^2\mathbf E=0 .
+\]
+
+\subhdr{6.4\quad $\mathbf B$ 也一样（课件只写 "or"）}
+
+对第二式两边取旋度、代第一式：
+
+\[
+\nabla\times(\nabla\times\mathbf B)
+=\varepsilon_0\mu_0\frac{\partial}{\partial t}(\nabla\times\mathbf E)
+=-\varepsilon_0\mu_0\frac{\partial^2\mathbf B}{\partial t^2},
+\]
+
+再用 $\nabla\cdot\mathbf B=0$ 与恒等式，得
+
+\[
+\frac{\partial^2\mathbf B}{\partial t^2}-c^2\nabla^2\mathbf B=0 .
+\]
+
+所以电场与磁场各自满足一个标准的三维波动方程，波速都是 $c$。这就是麦克斯韦方程组预言「光就是电磁波」的那一步。
+
+\subhdr{6.5\quad 常数报户口}
+
+\begin{itemize}
+\item $c=1/\sqrt{\varepsilon_0\mu_0}$ 是\textbf{约定的组合}：$\varepsilon_0$（真空介电常数）与 $\mu_0$（真空磁导率）都是人为定义的电磁学常数，它们的组合恰有一个速度的量纲（$\unit{m/s}$），这个组合就是光速——这是实验事实，不是从方程「推」出来的。
+\item 方程左边的 $c^2$ 与右边的 $1/\sqrt{\varepsilon_0\mu_0}$ 是\emph{同一个}因子，只是写法不同；把它们当成两个数会得到差一个量级的结果。
+\end{itemize}
+
+\hdr{§7}{三个方程是同一副骨架：速查表与定解条件}
+
+\subhdr{7.1\quad 一张对照表（性质速查，不承载推导）}
+
+这张表只是把 §1.2 的三个方程按「导数阶数／关键系数／典型过程」三个角度读了一遍，没有任何新的推导。
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}l l l p{0.36\linewidth}@{}}
+\thead{方程} & \thead{时间导数} & \thead{系数} & \thead{典型过程} \\
+\tabmidrule
+波动 & 二阶 $\partial_t^2u$ & $a^2=T/\rho$ 或 $E/\rho$ & 弦、杆、膜、电磁波 \\
+输运 & 一阶 $\partial_tu$ & $a^2=\kappa/(\rho c)$ 或 $D$ & 热传导、扩散 \\
+泊松 & 无（稳态） & 吸收进源项 & 稳态热传导、静电场 \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{逐行读法}：
+
+\begin{itemize}
+\item 第一行：时间上出现两次导数，所以给定「初始形状＋初始速度」才能定解（§2.7）；系数 $a^2$ 由张力／弹性模量除密度凑出，量纲是速度平方。
+\item 第二行：时间上只出现一次导数，只需要「初始分布」一个条件；系数是热扩散率（$\kappa/(\rho c)$）或扩散系数 $D$，量纲是 $\unit{m^2/s}$——注意它不是速度的平方，因为时间导数降了一阶，量纲自然跟着降。
+\item 第三行：时间导数整个消失，方程变成椭圆型的边值问题，没有「初始」可言，只需要边界条件。
+\end{itemize}
+
+\textbf{边界情形}：第三行是第二行令 $\partial_tu=0$ 的特例，此时 $u$ 不随时间变，问题从「演化」变成「边值」；负号约定见 §1.5，不要在这一行上按字面比较正负。
+
+\subhdr{7.2\quad 定解条件：三种边界、两种初始}
+
+课程到这一讲只写了方程，没有系统讲定解条件。为了让后面能真正解题，这里先把最常用的几种列清（\textbf{基于本页内容的推断}，不是老师本讲的范围）：
+
+\begin{itemize}
+\item \textbf{初始条件}（只对含时间导数的方程）：$u(\mathbf r,0)=\varphi(\mathbf r)$；波动方程还要 $u_t(\mathbf r,0)=\psi(\mathbf r)$。
+\item \textbf{第一类边界}（固定端／给定温度）：$u|_{\partial\Omega}=g$。
+\item \textbf{第二类边界}（自由端／绝热／给定通量）：$\partial_nu|_{\partial\Omega}=g$。
+\item \textbf{第三类边界}（对流换热等）：$\partial_nu+\alpha u=g$。
+\end{itemize}
+
+\warnbox{写答案时的三个常见空白：① 波动方程只给 $u(x,0)$、忘了 $u_t(x,0)$；② 只给方程、不给边界；③ 边界写成 $u(0,t)=0$ 却在答案里用了 $u_x(0,t)=0$ 的结果。三个都属于「条件与解对不上」。}
+
+\hdr{§8}{自练与思考（题干与考点；详解见附录 A）}
+
+四道题全部来自课件自己在页面上留下的问题（p3、p8、p13、p14），只有第 4 题是我按课件 p14 的公式补的一个数字练习。按本工作区的「先做后看」约定，这里只给题干与考点，详解统一放在附录 A，做完再对。
+
+\qbreak
+\qstem{\textbf{Q1}（课件 p8 思考题）「Why different strings sound differently?」——为什么不同的弦听起来不一样？请用本讲得到的波速公式解释：同一种弦，\textbf{把弦绷紧}与\textbf{换一根更粗的弦}，音高分别怎么变？}
+
+\textbf{考点}：$a=\sqrt{T/\rho}$ 里 $T$ 与 $\rho$ 各自管什么；音高由频率决定，而频率与波速成正比（$f=a/\lambda$，波长由弦长与边界决定，本讲不展开）。详解见附录 A 第 \pageref{ans:q1} 页。
+
+\qstem{\textbf{Q2}（课件 p13 提问）杆的纵振动加上「单位长度外力」$F(x,t)$ 后，方程变成什么样？若外力是杆的自重（密度 $\rho$、重力加速度 $g$，方向沿 $-x$），方程又怎么写？}
+
+\textbf{考点}：把外力并进非齐次项时要除以「单位长度的质量」；重力是恒力，非齐次项变成常数。详解见附录 A 第 \pageref{ans:q2} 页。
+
+\qstem{\textbf{Q3}（课件 p3 提问）「Derivation of these equations???」请独立推导一维热传导方程，并说明 $a^2$ 与 $f$ 各由哪些物理量组成。}
+
+\textbf{考点}：能量守恒＋傅里叶定律；$\rho c$（单位体积热容）与 $\kappa$（热导率）的出现位置。条件：杆的截面积 $S$、体密度 $\rho$、比热容 $c$、热导率 $\kappa$、单位体积生热率 $F$，初始温度分布与两端温度已知。详解见附录 A 第 \pageref{ans:q3} 页。
+
+\qstem{\textbf{Q4}（按课件 p14 公式编排的数字练习）一张膜的面密度 $\rho=0.020\ \unit{kg\cdot m^{-2}}$，张力 $T=2.0\ \unit{N\cdot m^{-1}}$。(1) 求波速 $a$；(2) 若膜上还受均匀的单位面积外力 $f=0.50\ \unit{m\cdot s^{-2}}$，写出方程；(3) 这个 $f$ 的量纲为什么是加速度？}
+
+\textbf{考点}：$a=\sqrt{T/\rho}$ 的量纲核对；非齐次项不是力而是「加速度」（已被 $\rho$ 除过）。详解见附录 A 第 \pageref{ans:q4} 页。
+
+\hdr{§9}{公式卡与四步用法}
+
+\subhdr{9.1\quad 四个波速}
+
+\begin{itemize}
+\item 弦：$a=\sqrt{T/\rho}$，$T$ 张力（\unit{N}），$\rho$ 线密度（\unit{kg\cdot m^{-1}}）。
+\item 杆（纵波）：$a=\sqrt{E/\rho}$，$E$ 杨氏模量（\unit{Pa}），$\rho$ 体密度（\unit{kg\cdot m^{-3}}）。
+\item 膜：$a=\sqrt{T/\rho}$，$T$ 单位长度张力（\unit{N\cdot m^{-1}}），$\rho$ 面密度（\unit{kg\cdot m^{-2}}）。
+\item 真空电磁波：$c=1/\sqrt{\varepsilon_0\mu_0}\approx3\times10^{8}\ \unit{m/s}$。
+\end{itemize}
+
+\subhdr{9.2\quad 四步用法（遇到新场景照抄）}
+
+\begin{enumerate}
+\item \textbf{取微元}：选一段（一维）、一块（二维）或一个小体元（三维），写清它的长度／面积／体积与质量。
+\item \textbf{写守恒或定律}：力学用牛顿第二定律；弹性用胡克定律；电磁用麦克斯韦方程组。
+\item \textbf{小量近似}：$\cos\theta\approx1$、$\sin\theta\approx\tan\theta=\partial u/\partial x$、弧长 $\approx$ 投影长度——把所有几何因子换成偏导数。
+\item \textbf{除尺度、取极限}：除 $\Delta x$（或 $\Delta x\Delta y$），令 $\Delta\to0$，差商变二阶导，整理成 $\partial_t^2u-a^2\nabla^2u=f$。
+\end{enumerate}
+
+\hdr{§10}{易错点（每条回指本讲某一步）}
+
+\begin{itemize}
+\item \textbf{小振幅近似漏掉}：不写 $\cos\theta\approx1$ 就直接用 $T$ 代替 $T_1,T_2$，等于悄悄假设了 $T_1=T_2$（§2.4）。大振幅时这个替换不成立，方程变成非线性。
+\item \textbf{忘了 $\Delta s\approx\Delta x$}：质量写成 $\rho\Delta s$ 却用 $\Delta x$ 去除，会多出一个 $\sqrt{1+u_x^2}$（§2.4(c)）。
+\item \textbf{内力方向写反}：杆右端是 $+P(x+\Delta x)S$、左端是 $-P(x)S$；写成「两端同向」会得到零或两倍的力（§4.4）。
+\item \textbf{$\rho$ 的量纲不换}：弦用线密度、杆用体密度、膜用面密度；混用会差好几个量级（§0.1、§9.1）。
+\item \textbf{把膜方程当板方程}：p14 标题带了 plate，但方程没有四阶项；板要 $\nabla^4$（§5.4）。
+\item \textbf{电磁波漏掉 $\nabla\cdot\mathbf E=0$}：不代这一条，恒等式里的 $\nabla(\nabla\cdot\mathbf E)$ 消不掉，得不到干净的波动方程（§6.3）。
+\item \textbf{定解条件缺失}：只写方程不写初始与边界，答案不唯一（§2.7、§7.2）。
+\item \textbf{泊松方程符号}：$\nabla^2u=f$ 与 $\nabla^2u=-f/a^2$ 差一个负号，代数字前先确认约定（§1.5）。
+\end{itemize}
+
+\hdr{§11}{缺口清单（课件页码＋原文短语＋补法）}
+
+\gapitem{机制缺口}{p7「Assume the motion is ``small'', then $\cos\theta_1\approx\cos\theta_2\approx1$」。课件只说"小"，没说小在哪、丢掉了什么。补法：§2.4 写出 $\cos\theta\approx1-{\theta^2}/{2}$、$\Delta s\approx\Delta x$，并说明丢掉的是 $O(\theta^2)$，这就是"线性化"的含义。}
+
+\gapitem{代数跳步}{p7→p8「$\Delta s=\sqrt{(\Delta x)^2+(\Delta y)^2}\approx\Delta x$」以及「$T\left(\cdots\right)=\rho\Delta x\,u_{tt}$ → $\frac{T}{\rho}u_{xx}=u_{tt}$」。补法：§2.5 补差分商到二阶导的极限，并说明为什么可以除 $\Delta x$。}
+
+\gapitem{图缺／方向缺口}{p13「$(\rho S\Delta x)\frac{\partial^2u}{\partial t^2}=ES\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-ES\left.\frac{\partial u}{\partial x}\right|_{x}$」：两端内力为什么一正一负没有图也没有话。补法：图 2 标出两端面与内力方向，§4.4 用一段话讲清"左端受左拉、右端受右拉"。}
+
+\gapitem{压缩缺口}{p14「$\left[T\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-T\left.\frac{\partial u}{\partial x}\right|_{x}\right]\Delta y=Tu_{xx}\Delta x\Delta y$」：因子 $\Delta y$ 无出处。补法：§5.2 一句话"边上每单位长度受力 $T$，边长 $\Delta y$，故整边受力 $T\Delta y$"。}
+
+\gapitem{压缩缺口}{p15「Calculate the curl of the first equation and use the second equation, then」：一整个中间步骤被一句话代替。补法：§6.2 分三步写出取旋度、代第二式、用 $c^2=1/(\varepsilon_0\mu_0)$。}
+
+\gapitem{术语／形式缺口}{p14 标题「Transverse vibration of a membrane/plate」：标题说膜／板，方程只给膜。补法：§5.4 给出板方程的四阶项与弯曲刚度 $D$，说明本节讲的是膜。}
+
+\gapitem{边界／条件缺口}{p6「Derivation the equation of $u(x,t)$」：画了 $\varphi(x)$ 与 $u(x,t)$，全篇却没有一个初始条件或边界条件。补法：§2.7 写出 $u(x,0)=\varphi$、$u_t(x,0)=\psi$、$u(0,t)=u(l,t)=0$，并用两个具体解说明"缺条件则不唯一"。}
+
+\gapitem{只问未答}{p13「With an external force?」、p8「Why different strings sound differently?」：课件只抛问题。补法：前者在 §4.6 给出非齐次项 $f_v/\rho$；后者在附录 A 的 Q1 里用 $a=\sqrt{T/\rho}$ 回答。}
+
+\gapitem{常数来源}{p15「$c=\frac{1}{\sqrt{\varepsilon_0\mu_0}}\approx3\times10^{8}\ \unit{m/s}$」：没有说明这个组合为什么是速度、为什么等于光速。补法：§6.5 把它拆成"约定组合 + 实验事实"两半。}
+
+\gapitem{结论无推导}{p3「(2) Transport equation」「(3) Poisson's equation」：只列方程。补法：§1.4 给出一维热传导方程的完整推导（能量守恒＋傅里叶定律），§1.5 解释泊松方程的符号约定。}
+
+\hdr{§12}{与课件的页码对照表（台账表）}
+
+\begin{minipage}{\linewidth}
+\small
+\tabtop
+\begin{tabular}{@{}l l p{0.55\linewidth}@{}}
+\thead{本讲义} & \thead{课件页} & \thead{对应内容} \\
+\tabmidrule
+§1.1 & p2 & 质点 ODE 与场 PDE 的对照 \\
+§1.2 & p3 & 三类标准方程与拉普拉斯算子 \\
+§1.4--§1.5 & p3 & 热传导方程推导、泊松方程符号（讲义补） \\
+§2.1 & p5 & 横振动与纵振动 \\
+§2.2 & p6 & 弦的模型设定、$\varphi(x)$ 与 $u(x,t)$ \\
+§2.3--§2.5 & p7--p8 & 受力分析、小量近似、取极限得波动方程 \\
+§2.6 & p8 & $a=\sqrt{T/\rho}$ 的"波速"含义（讲义补） \\
+§2.7 & p6 & 定解条件（讲义补） \\
+§3.1 & p9 & 外加力与非齐次方程 \\
+§3.2 & p10 & 空气阻力例题 \\
+§3.3 & p10 & 三步总结 \\
+§4.1--§4.5 & p11--p13 & 杆的纵振动、胡克定律、$a=\sqrt{E/\rho}$ \\
+§4.6 & p13 & 杆加外力（讲义补，回答页面提问） \\
+§5.1--§5.3 & p14 & 膜的两面受力与二维波动方程 \\
+§5.4 & p14 & 膜与板的区别（讲义补） \\
+§6.1--§6.3 & p15 & 麦克斯韦方程组、取旋度、矢量恒等式 \\
+§6.4--§6.5 & p15 & $\mathbf B$ 的方程与 $c$ 的来源（部分讲义补） \\
+附录 A & p3、p8、p13、p14 & 四道自练题的详解 \\
+p16 附录 & p16 & 梯度、散度、旋度的表达式（课件附录，本讲义 §1.2 旁注引用） \\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\hdr{§13}{三句话总结}
+
+\begin{enumerate}
+\item 弦、杆、膜、电磁波推出来的是\textbf{同一个方程} $\partial_t^2u-a^2\nabla^2u=f$；差别只在 $a$ 由哪两个材料常数凑出来（$T/\rho$、$E/\rho$、$1/\sqrt{\varepsilon_0\mu_0}$）。
+\item 推导的骨架固定四步：\textbf{取微元当质点 → 用物理定律 → 小量近似把几何因子换成偏导数 → 除尺度取极限}；漏掉任一步，方程要么非线性，要么量纲不齐。
+\item 方程只描述"怎么演化"，\textbf{定解还要初始条件与边界条件}；课件 p6 画了 $\varphi(x)$ 却没写成条件，这是本讲最需要自己补的一处。
+\end{enumerate}
+
+\flowerrule
+
+\hdr{附录 A}{自练与思考题的详解}
+
+按「先做后看」的约定，四道题的题干在正文 §8，详解在此处逐题展开。每块开头复述条件摘要，读者不必回翻正文也能读懂。
+
+\qbreak
+\subhdr{A.1\quad Q1（课件 p8）：为什么不同的弦听起来不一样}
+\label{ans:q1}
+
+\qstem{（题干见正文 §8 第 Q1 题，课件 p8）同一种弦，把弦绷紧、换一根更粗的弦，音高分别怎么变？}
+
+\textbf{条件摘要}：弦长 $l$ 固定、两端固定；波速 $a=\sqrt{T/\rho}$；音高由振动频率决定。
+
+\textbf{考点}：$T$ 与 $\rho$ 各自的作用方向相反——一个在分子、一个在分母。
+
+\textbf{关键一步}：先把"音高"翻译成"频率"，再用 $f=a/\lambda$ 把频率与波速连起来；弦长与边界给定了 $\lambda$，所以频率只随 $a$ 变。
+
+\textbf{详解}：
+
+弦上波的频率与波速、波长满足
+
+\[
+f=\frac{a}{\lambda}.
+\]
+
+两端固定的弦，可能的波长由弦长决定（$\lambda$ 与 $l$ 成正比，比例由边界条件与模态决定，本讲不展开）。既然 $\lambda$ 只由几何决定，频率就与波速成正比：
+
+\[
+f\propto a=\sqrt{\frac{T}{\rho}}.
+\]
+
+\begin{itemize}
+\item \textbf{绷紧}（$T$ 增大，$\rho$ 不变）：$a$ 增大 → $f$ 增大 → 音调升高。这就是调音时拧紧弦的道理。
+\item \textbf{换粗弦}（$\rho$ 增大，$T$ 不变）：$a$ 减小 → $f$ 减小 → 音调降低。这就是吉他的低音弦又粗又沉的原因。
+\end{itemize}
+
+\textbf{答案}：绷紧 → 波速变大 → 音调升高；换粗弦 → 线密度变大 → 波速变小 → 音调降低。
+
+\textbf{自检}：量纲上 $a=\sqrt{T/\rho}$ 是速度 $\checkmark$；方向上"紧则高、粗则低"与日常经验一致 $\checkmark$；若两种改动同时进行（比如换弦后又重新调音），结论要以最终的 $T/\rho$ 为准。
+
+\qbreak
+\subhdr{A.2\quad Q2（课件 p13）：杆加单位长度外力}
+\label{ans:q2}
+
+\qstem{（题干见正文 §8 第 Q2 题，课件 p13 的提问）杆的纵振动加单位长度外力 $F(x,t)$ 后方程怎么写？若外力是自重（密度 $\rho$、重力加速度 $g$、沿 $-x$），又怎么写？}
+
+\textbf{条件摘要}：杆长 $l$、截面积 $S$、体密度 $\rho$、杨氏模量 $E$；$a^2=E/\rho$；外力以"单位长度"给出。
+
+\textbf{考点}：非齐次项是"单位质量的外力"，不是力本身。
+
+\textbf{关键一步}：微元 $(x,x+\Delta x)$ 受的外力是 $F\Delta x$，而质量是 $\rho S\Delta x$；牛顿第二定律右边除的是 $\rho S\Delta x$。
+
+\textbf{详解}：
+
+微元的受力多一项 $F\Delta x$，于是
+
+\[
+(\rho S\Delta x)\frac{\partial^2u}{\partial t^2}
+=ES\left[\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x}-\left.\frac{\partial u}{\partial x}\right|_{x}\right]+F\Delta x .
+\]
+
+两边除 $\rho S\Delta x$、取极限：
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}=\frac{F(x,t)}{\rho S}.
+\]
+
+若外力是自重，方向沿 $-x$，单位长度重力为 $-\rho Sg$，代入得
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\frac{\partial^2u}{\partial x^2}=-g .
+\]
+
+右边是常数，与 $x,t$ 无关。
+
+\textbf{答案}：一般情形 $u_{tt}-a^2u_{xx}=F/(\rho S)$；自重情形 $u_{tt}-a^2u_{xx}=-g$。
+
+\textbf{自检}：右边量纲是加速度（$\unit{m/s^2}$）$\checkmark$；杆自由悬挂时静止解满足 $-a^2u_{xx}=-g$，即 $u_{xx}=g/a^2=g\rho/E$，这就是自重下的均匀应变率 $\rho g/E$ $\checkmark$（与材料力学结果一致）。
+
+\qbreak
+\subhdr{A.3\quad Q3（课件 p3）：热传导方程的推导}
+\label{ans:q3}
+
+\qstem{（题干见正文 §8 第 Q3 题，课件 p3 的提问）推导一维热传导方程，并说明 $a^2$ 与 $f$ 由哪些物理量组成。}
+
+\textbf{条件摘要}：均匀细杆，截面积 $S$、体密度 $\rho$、比热容 $c$、热导率 $\kappa$、单位体积生热率 $F$；温度 $u(x,t)$。
+
+\textbf{考点}：三个守恒量各写一句——热量存量、净流入、源项。
+
+\textbf{关键一步}：净流入要写"从 $x$ 面流入减从 $x+\Delta x$ 面流出"，符号靠傅里叶定律 $\mathbf q=-\kappa\nabla u$ 里的负号保证。
+
+\textbf{详解}：
+
+\textbf{(1) 热量存量}：微元体积 $S\Delta x$，单位体积热容 $\rho c$，故热量 $Q=\rho c\,u\,S\Delta x$，
+
+\[
+\frac{\dd Q}{\dd t}=\rho c\,S\Delta x\,\frac{\partial u}{\partial t}.
+\]
+
+\textbf{(2) 净流入}：傅里叶定律一维形式 $q_x=-\kappa\,\partial_xu$。净流入
+
+\[
+S q_x(x)-S q_x(x+\Delta x)
+\approx-S\,\partial_xq_x\,\Delta x
+=\kappa S\,\partial_x^2u\,\Delta x .
+\]
+
+\textbf{(3) 源项}：$F S\Delta x$。
+
+\textbf{(4) 能量守恒}：
+
+\[
+\rho c\,S\Delta x\,u_t=\kappa S\,u_{xx}\Delta x+F S\Delta x
+\ \Longrightarrow\
+u_t-\frac{\kappa}{\rho c}u_{xx}=\frac{F}{\rho c}.
+\]
+
+\textbf{答案}：
+
+\[
+u_t-a^2u_{xx}=f,
+\qquad
+a^2=\frac{\kappa}{\rho c},\quad f=\frac{F}{\rho c}.
+\]
+
+$a^2$ 是热扩散率（\unit{m^2/s}），$f$ 是单位体积的"温度生成率"（$\unit{K/s}$）。
+
+\textbf{自检}：$a^2=\kappa/(\rho c)$ 的量纲：$\kappa$ 是 $\unit{W\cdot m^{-1}\cdot K^{-1}}$，$\rho c$ 是 $\unit{J\cdot m^{-3}\cdot K^{-1}}$，相除得 $\unit{m^2/s}$ $\checkmark$；三项都化到 $\unit{K/s}$ $\checkmark$。三维推广只需把 $u_{xx}$ 换成 $\nabla^2u$。
+
+\qbreak
+\subhdr{A.4\quad Q4（按课件 p14 编排）：膜的波速与非齐次项}
+\label{ans:q4}
+
+\qstem{（题干见正文 §8 第 Q4 题）$\rho=0.020\ \unit{kg\cdot m^{-2}}$，$T=2.0\ \unit{N\cdot m^{-1}}$。(1) 求 $a$；(2) 加均匀外力 $f=0.50\ \unit{m\cdot s^{-2}}$ 后写方程；(3) 为什么 $f$ 的量纲是加速度？}
+
+\textbf{条件摘要}：膜方程 $u_{tt}-a^2\nabla^2u=f$，$a=\sqrt{T/\rho}$，$\nabla^2=\partial_x^2+\partial_y^2$。
+
+\textbf{考点}：$T$ 与 $\rho$ 在二维下的量纲；非齐次项被 $\rho$ 除过。
+
+\textbf{关键一步}：先把 $T/\rho$ 的量纲算出来，再开方。
+
+\textbf{详解}：
+
+\textbf{(1)} 波速
+
+\[
+a=\sqrt{\frac{T}{\rho}}=\sqrt{\frac{2.0}{0.020}}=\sqrt{100}=10\ \unit{m/s}.
+\]
+
+量纲核对：$T$ 为 $\unit{N\cdot m^{-1}}=\unit{kg\cdot s^{-2}}$，$\rho$ 为 $\unit{kg\cdot m^{-2}}$，商为 $\unit{m^2\cdot s^{-2}}$，开方为 $\unit{m\cdot s^{-1}}$ $\checkmark$。
+
+\textbf{(2)} 加均匀外力后
+
+\[
+\frac{\partial^2u}{\partial t^2}-a^2\left(\frac{\partial^2u}{\partial x^2}+\frac{\partial^2u}{\partial y^2}\right)=0.50 .
+\]
+
+\textbf{(3)} 方程各项量纲必须一致：$a^2\nabla^2u$ 的量纲是「$u$ 的量纲 ÷ $\unit{s^2}$」，所以右边 $f$ 也必须是「$u$ 的量纲 ÷ $\unit{s^2}$」。若 $u$ 以米计，$f$ 的量纲就是 $\unit{m\cdot s^{-2}}$（加速度）。原因是外力本来以「单位面积力」 $\unit{N\cdot m^{-2}}$ 给出，除以面密度 $\unit{kg\cdot m^{-2}}$ 后正好变成加速度。
+
+\textbf{答案}：(1) $a=10\ \unit{m/s}$；(2) $u_{tt}-a^2\nabla^2u=0.50$；(3) $f$ 已被 $\rho$ 除过，量纲为加速度。
+
+\textbf{自检}：$10\ \unit{m/s}$ 的量级对一张膜合理（比空气中声速慢 30 倍）；$f=0.50$ 与 $a^2u_{xx}$ 同量纲，可以相加 $\checkmark$。
+
+\end{document}

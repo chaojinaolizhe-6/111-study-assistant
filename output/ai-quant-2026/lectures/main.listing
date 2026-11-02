@@ -1,0 +1,10 @@
+def limit_pct(code, is_st, date):
+    chinext = code.startswith(("300", "301"))   # 创业板
+    star    = code.startswith(("688", "689"))   # 科创板
+    bse     = code.startswith(("4", "8", "92")) # 北交所
+    pct = np.where(chinext | star, 0.20, 0.10)
+    pct = np.where(bse, 0.30, pct)
+    pct = np.where(is_st & ~(chinext | star | bse), 0.05, pct)
+    early = (date < "2020-08-24") & chinext       # 注册制改革前为 10%
+    pct = np.where(early, np.where(is_st, 0.05, 0.10), pct)
+    return pct

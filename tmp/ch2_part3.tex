@@ -1,0 +1,237 @@
+
+\flowerrule
+
+\hdr{§4}{从“边界值”到“圆内每一点”：泊松公式（p45--p52）}
+
+\subhdr{4.1\quad 出发点（p45）}
+
+柯西公式说的是：区域内的值由边界值决定。但在圆域上，这个“决定”的方式还可以写得更具体——把 $f(a)$ 写成边界值的积分时，核里含 $a$，不能直接当“权重”用。泊松公式把这件事做完：它给出一组只依赖几何、不依赖 $f$ 的权重，把圆内每一点的值写成圆周值的加权平均。
+
+p45 的原话给了动机：“在静电学中，一旦知道了电场或电势在边界上的取值，就可以把区域内任意一点的电场和电势确定下来。”这里说的正是圆域（或球域）的狄利克雷问题。
+
+\textbf{设定}：圆 $C$：$|\zeta|=a$，函数 $f(z)$ 在 $|z|\le a$ 内解析。对圆内任意一点 $z$，由柯西公式
+\[ f(z)=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{\zeta-z} . \]
+
+\subhdr{4.2\quad 第一步：极坐标下的柯西公式（p46）}
+
+令
+\[ z=re^{i\varphi}\ (r<a),\qquad \zeta=ae^{i\theta},\qquad d\zeta=iae^{i\theta}\dd\theta . \]
+代入 $\dfrac{d\zeta}{\zeta-z}$：
+\[ \frac{d\zeta}{\zeta-z}=\frac{iae^{i\theta}\dd\theta}{ae^{i\theta}-re^{i\varphi}}
+=\frac{ia\dd\theta}{a-re^{i(\varphi-\theta)}} , \]
+其中第二步是分子分母同乘 $e^{-i\theta}$。于是
+\begin{equation}\label{eq:polarcauchy}
+f(r,\varphi)=\frac{1}{2\pi i}\int_0^{2\pi}f(ae^{i\theta})\frac{ia\dd\theta}{a-re^{i(\varphi-\theta)}}
+=\frac{a}{2\pi}\int_0^{2\pi}\frac{f(ae^{i\theta})}{a-re^{i(\varphi-\theta)}}\dd\theta .
+\end{equation}
+
+\aside{这一步只是把 \eqref{eq:cauchy2} 换个坐标，没有任何近似。$i$ 与 $2\pi i$ 的 $i$ 相消、$a$ 提到前面，都要写出来：这两个因子分工不同——$2\pi i$ 是柯西公式自带的（来自 $\oint dz/(z-a)=2\pi i$），$a$ 是 $\zeta=ae^{i\theta}$ 换元带来的雅可比因子。}
+
+\textbf{把分母变成实数}。记 $\psi=\varphi-\theta$，分子分母同乘 $a-re^{-i\psi}$：
+\begin{equation}\label{eq:rationalize}
+\frac{1}{a-re^{i\psi}}=\frac{a-re^{-i\psi}}{(a-re^{i\psi})(a-re^{-i\psi})}
+=\frac{a-re^{-i\psi}}{a^{2}+r^{2}-2ar\cos\psi} .
+\end{equation}
+分母 $D\equiv a^{2}+r^{2}-2ar\cos\psi$ 现在是实正数：由余弦定理，它就是 $|\zeta-z|^{2}$。
+
+于是 \eqref{eq:polarcauchy} 变成
+\begin{equation}\label{eq:step1}
+f(r,\varphi)=\frac{a}{2\pi}\int_0^{2\pi}\frac{a-re^{-i(\varphi-\theta)}}{D}\,f(ae^{i\theta})\dd\theta .
+\end{equation}
+这个式子里含 $e^{-i(\varphi-\theta)}$，还是复数，不能直接取实部当“权重”。下一小节用一个 $0$ 把它消掉。
+
+\subhdr{4.3\quad 第二步：借一个圆外的点造出 $0$（p46 后半、p47）}
+
+取圆外的点
+\begin{equation}\label{eq:z1}
+z_1=\frac{a^{2}}{\bar z}=\frac{a^{2}}{r}e^{i\varphi},
+\qquad |z_1|=\frac{a^{2}}{r}>a .
+\end{equation}
+它是 $z$ 关于圆 $|\zeta|=a$ 的\textbf{反演点}（几何上在原点射线上、乘积 $|z|\cdot|z_1|=a^{2}$）。因为 $z_1$ 在圆外，$\dfrac{1}{\zeta-z_1}$ 对圆内（含边界）的 $\zeta$ 解析，所以由柯西定理（§3.3 那道思考题）
+\begin{equation}\label{eq:zero}
+\frac{1}{2\pi i}\oint_C\frac{f(\zeta)\dd\zeta}{\zeta-z_1}=0 .
+\end{equation}
+
+把它也写成极坐标。由 \eqref{eq:z1}，
+\[ \frac{d\zeta}{\zeta-z_1}=\frac{iae^{i\theta}\dd\theta}{ae^{i\theta}-\frac{a^{2}}{r}e^{i\varphi}}
+=\frac{i\dd\theta}{1-\frac{a}{r}e^{i(\varphi-\theta)}}=\frac{ir\dd\theta}{r-ae^{i(\varphi-\theta)}} , \]
+最后一步是分子分母同乘 $r$。再有理化：
+\[ \frac{1}{r-ae^{i\psi}}=\frac{r-ae^{-i\psi}}{r^{2}+a^{2}-2ar\cos\psi}=\frac{r-ae^{-i\psi}}{D} , \]
+分母与 \eqref{eq:rationalize} 是同一个 $D$（余弦定理，$D=|\zeta-z|^{2}$）。代入 \eqref{eq:zero}：
+\begin{equation}\label{eq:step2}
+0=\frac{r}{2\pi}\int_0^{2\pi}\frac{r-ae^{-i(\varphi-\theta)}}{D}\,f(ae^{i\theta})\dd\theta .
+\end{equation}
+
+\aside{为什么想到用 $z_1$：柯西公式的核 $\dfrac{1}{\zeta-z}$ 在圆内是“有极点”的，而 $\dfrac{1}{\zeta-z_1}$ 在圆内解析、积分为零。把一个恒为零的量减掉，被积函数不变、积分值不变，但分子里多出一个可以和第一式配平的项——这就是“造零”。反演点的作用是让两式的分母恰好相同（都是 $D$）。}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.35,>=Stealth]
+\fill[bandviolet] (0,0) circle (1.5);
+\draw[violet,thick,midarrow=0.2] (0,0) circle (1.5);
+\draw[->,inkgray] (-1.9,0)--(2.5,0) node[right]{\small$x$};
+\draw[->,inkgray] (0,-1.9)--(0,1.9) node[above]{\small$y$};
+\coordinate (Z) at (100:0.85);
+\draw[inkgray,dashed] (0,0)--(Z);
+\draw[inkgray,dashed] (Z)--(2.35,0.42);
+\fill (Z) circle (1.5pt) node[above left]{\small$z$};
+\fill (2.35,0.42) circle (1.5pt) node[right]{\small$z_1$};
+\fill (0,0) circle (1pt) node[below left]{\small$O$};
+\node[violet] at (-1.1,1.12) {\small$C:|\zeta|=a$};
+\node[inkgray] at (0.28,0.62) {\small$r$};
+\node[inkgray] at (1.55,0.62) {\small$a^{2}/r$};
+\end{tikzpicture}
+\figcap{图 3\quad 圆内点 $z$ 与它的反演点 $z_1$（重绘，对应 p47 的图）。$|z|=r<a$，$z_1$ 在原点射线的延长线上、$|z_1|=a^{2}/r>a$；两点到圆周的距离关系使两式的分母都等于 $D=|\zeta-z|^{2}$。}
+\end{center}
+
+\subhdr{4.4\quad 第三步：相减，$a^{2}-r^{2}$ 就是这么来的（p48）}
+
+\eqref{eq:step1} 与 \eqref{eq:step2} 的被积函数现在\textbf{同分母} $D$，直接相减（\eqref{eq:step2} 是 $0$，减它不改变左边）：
+\begin{align}
+f(r,\varphi)&=\frac{1}{2\pi}\int_0^{2\pi}\frac{a\bigl(a-re^{-i\psi}\bigr)-r\bigl(r-ae^{-i\psi}\bigr)}{D}\,f(ae^{i\theta})\dd\theta\notag\\
+&=\frac{1}{2\pi}\int_0^{2\pi}\frac{a^{2}-ar e^{-i\psi}-r^{2}+ar e^{-i\psi}}{D}\,f(ae^{i\theta})\dd\theta\notag\\
+&=\frac{1}{2\pi}\int_0^{2\pi}\frac{a^{2}-r^{2}}{D}\,f(ae^{i\theta})\dd\theta .
+\end{align}
+中间那一行是关键：两个 $ar e^{-i\psi}$ 一正一负恰好抵消，剩下 $a^{2}-r^{2}$。
+
+\begin{equation}\label{eq:poisson}
+\boxed{\;f(r,\varphi)=\frac{a^{2}-r^{2}}{2\pi}\int_0^{2\pi}\frac{f(ae^{i\theta})}{a^{2}+r^{2}-2ar\cos(\varphi-\theta)}\dd\theta\;}
+\end{equation}
+
+\aside{p48 原文只有一句“上式与柯西公式的极坐标表达式（见上页 PPT）相减”，紧接着就是结果。被吞掉的正是这一行分子相消——它是整段推导唯一非平凡的代数，也是学生抄错最多的地方。}
+
+\warnbox{分子是 $a^{2}-r^{2}$（差），不是 $a^{2}+r^{2}$（和）。这一点必须当场验算：取 $f\equiv1$、$r=0$，则 $f(0)=\dfrac{a^{2}}{2\pi}\displaystyle\int_0^{2\pi}\dfrac{d\theta}{a^{2}}=1$ \ 对；若写成 $a^{2}+r^{2}$，$r=0$ 时也等于 $1$，看不出错——所以要取 $r\ne0$ 验证（见 §6 的自检）。}
+
+\subhdr{4.5\quad 第四步：实部与虚部各自的泊松公式（p49）}
+
+把 $f$ 拆成实部与虚部：$f(z)=f(r,\varphi)=u(r,\varphi)+iv(r,\varphi)$。\eqref{eq:poisson} 的核是实函数，所以实部虚部各管各的：
+\begin{equation}\label{eq:poissonuv}
+u(r,\varphi)=\frac{a^{2}-r^{2}}{2\pi}\int_0^{2\pi}\frac{u(a,\theta)}{D}\dd\theta,
+\qquad
+v(r,\varphi)=\frac{a^{2}-r^{2}}{2\pi}\int_0^{2\pi}\frac{v(a,\theta)}{D}\dd\theta .
+\end{equation}
+
+p49 的原话：“圆内任一点 $(r,\varphi)$ 处的函数值 $u(r,\varphi)$ 和 $v(r,\varphi)$，均可以用圆周上 $(r=a)$ 的积分 $u(a,\theta)$ 和 $v(a,\theta)$ 来表示。上式即是 $u(r,\varphi)$ 和 $v(r,\varphi)$ 所满足的泊松积分公式。”
+
+\aside{这一页才把“泊松公式”这个名字落到 $u$、$v$ 上：解析函数 $f$ 的实部与虚部都是调和函数（$\Delta u=0$，因为 C-R 加上二阶偏导连续，见第一章）。所以 \eqref{eq:poissonuv} 就是“圆域狄利克雷问题的解的积分表示”——给定圆周上的 $u(a,\theta)$，圆内每一点的 $u$ 就唯一确定了。}
+
+\subhdr{4.6\quad 第五步：级数形式，与傅里叶系数对上（p50--p52）}
+
+\eqref{eq:poisson} 的核可以展成级数，这一步把泊松公式和傅里叶级数接起来。
+
+\textbf{做法一（一行验算）}。记 $c=r/a\in[0,1)$、$\psi=\varphi-\theta$，则
+\[ \frac{a^{2}-r^{2}}{D}=\frac{1-c^{2}}{1+c^{2}-2c\cos\psi} . \]
+令 $x=ce^{i\psi}$，注意
+\[ \frac{1+x}{1-x}=1+2\sum_{m\ge1}x^{m}\quad(|x|<1), \]
+而
+\[ \frac{1+x}{1-x}=\frac{1-c^{2}+2ic\sin\psi}{1+c^{2}-2c\cos\psi}
+\quad\Longrightarrow\quad
+\operatorname{Re}\frac{1+x}{1-x}=\frac{1-c^{2}}{1+c^{2}-2c\cos\psi} . \]
+两式对照，得
+\begin{equation}\label{eq:kernel}
+\boxed{\;\frac{a^{2}-r^{2}}{D}=1+2\sum_{m=1}^{\infty}\Bigl(\frac{r}{a}\Bigr)^{m}\cos m(\varphi-\theta)\;}
+\end{equation}
+（逐项验算：取 $\psi=0$，左边 $=\dfrac{a^{2}-r^{2}}{(a-r)^{2}}=\dfrac{a+r}{a-r}$，右边 $=1+2\sum c^{m}=\dfrac{1+c}{1-c}$，一致。）
+
+\textbf{做法二（课件 p50--p51 的路，符号要对齐）}。直接展开两个几何级数：
+\[ \frac{a}{a-re^{i\psi}}=\sum_{m\ge0}\Bigl(\frac{r}{a}\Bigr)^{m}e^{im\psi}\qquad\Bigl(\Bigl|\tfrac{r}{a}\Bigr|<1\Bigr). \]
+第二式不能直接展开——它的比值是 $\dfrac{a}{r}>1$。先乘 $e^{-i\psi}$ 再展开：
+\[ \frac{r}{r-ae^{i\psi}}=\frac{re^{-i\psi}}{re^{-i\psi}-a}
+=-\frac{re^{-i\psi}}{a-re^{-i\psi}}=-\sum_{m\ge1}\Bigl(\frac{r}{a}\Bigr)^{m}e^{-im\psi} . \]
+注意最后那个\textbf{负号}：它来自 $\dfrac{r}{r-ae^{i\psi}}$ 与 $\dfrac{a}{a-re^{-i\psi}}$ 相差一个负号。于是
+\[ f=\underbrace{\sum_{m\ge0}c^{m}e^{im\psi}}_{\text{第一式}}-\underbrace{\Bigl[-\sum_{m\ge1}c^{m}e^{-im\psi}\Bigr]}_{\text{第二式（已含负号）}}
+=1+\sum_{m\ge1}c^{m}\bigl(e^{im\psi}+e^{-im\psi}\bigr)=1+2\sum_{m\ge1}c^{m}\cos m\psi , \]
+与 \eqref{eq:kernel} 一致。p52 把这一步写成“两式相加”，是因为课件把第二式的负号已经吸收进自己的写法里；本页把符号摊开，读者可以对着一项一项核。
+
+把它代回 \eqref{eq:poisson}：
+\begin{equation}\label{eq:fourier}
+f(r,\varphi)=\frac{1}{2\pi}\int_0^{2\pi}f(ae^{i\theta})\dd\theta
++\frac{1}{\pi}\sum_{m=1}^{\infty}\Bigl(\frac{r}{a}\Bigr)^{m}\int_0^{2\pi}\cos m(\varphi-\theta)\,f(ae^{i\theta})\dd\theta .
+\end{equation}
+
+把 $\cos m(\varphi-\theta)=\cos m\varphi\cos m\theta+\sin m\varphi\sin m\theta$ 展开、按 $m$ 合并，就得到 p52 的最终形态：
+\begin{align}
+u(r,\varphi)&=\frac{A_0}{2}+\sum_{m=1}^{\infty}r^{m}\bigl(A_m\cos m\varphi+B_m\sin m\varphi\bigr),\label{eq:useries}\\
+v(r,\varphi)&=\frac{C_0}{2}+\sum_{m=1}^{\infty}r^{m}\bigl(C_m\cos m\varphi+D_m\sin m\varphi\bigr),\label{eq:vseries}
+\end{align}
+系数由圆周值读出（p52 的四个积分式）：
+\begin{equation}\label{eq:coeff}
+\begin{aligned}
+a^{m}A_m&=\frac{1}{\pi}\int_0^{2\pi}u(a,\theta)\cos m\theta\dd\theta, &
+a^{m}B_m&=\frac{1}{\pi}\int_0^{2\pi}u(a,\theta)\sin m\theta\dd\theta,\\
+a^{m}C_m&=\frac{1}{\pi}\int_0^{2\pi}v(a,\theta)\cos m\theta\dd\theta, &
+a^{m}D_m&=\frac{1}{\pi}\int_0^{2\pi}v(a,\theta)\sin m\theta\dd\theta .
+\end{aligned}
+\end{equation}
+
+\begin{warnbox}
+\noindent\textbf{每个常数报个户口}（\eqref{eq:fourier} 与 \eqref{eq:useries} 里出现的四个数）：
+
+\begin{itemize}
+\item $\dfrac{1}{2\pi}$ 与 $\dfrac{1}{\pi}$：\textbf{约定 + 数学}。$\dfrac{1}{2\pi}$ 是柯西公式里的 $\dfrac{1}{2\pi i}$ 与 $d\zeta=iae^{i\theta}d\theta$ 的 $i$、$a$ 相消后剩下的（$2\pi$ 来自整个圆周的弧长）；$\dfrac{1}{\pi}$ 是傅里叶系数约定的一半——因为 $\cos m\theta$ 在 $[0,2\pi]$ 上的平方平均是 $\dfrac12$，正交归一系数是 $\dfrac1\pi$。
+\item $\dfrac{A_0}{2}$：\textbf{约定}。常数项写成 $A_0/2$，是为了让 $A_0$ 与 $m\ge1$ 的 $A_m$ 共用同一个 $\dfrac1\pi\int(\cdot)\cos m\theta\,d\theta$ 的公式（\eqref{eq:coeff} 里 $m=0$ 那一行就是把 $\cos0=1$ 代进去）。若写成 $A_0$，公式要分叉成两条。
+\item $r^{m}$：\textbf{数学}。它来自核的展开 \eqref{eq:kernel} 里的 $(r/a)^{m}$ 与 \eqref{eq:coeff} 定义的 $A_m$ 中那个 $a^{m}$：$(r/a)^{m}\cdot a^{m}=r^{m}$，两者一配，$a$ 就消掉了。这也是 \eqref{eq:useries} 里只有 $r^{m}$ 而没有 $a$ 的原因。
+\item $2$ 在 $A_0/2$ 与 $1/\pi$ 之外还出现一次，即 $\cos m(\varphi-\theta)$ 展开后两项\emph{不}带 $2$：因为 \eqref{eq:fourier} 里已经是 $\dfrac{1}{\pi}\sum$，两项各占一半。
+\end{itemize}
+\end{warnbox}
+
+\subhdr{4.7\quad 与第八章的接口（p52 蓝字）}
+
+p52 末尾的蓝字：“在第八章中采用分离变量法和第十一章中采用格林函数法求解拉普拉斯方程在圆内的第一边值问题能够得到与本节同样形式的解。”
+
+这句话的意思可以一句话说完：\textbf{泊松公式就是圆内拉普拉斯方程第一边值问题的解}，而 \eqref{eq:useries} 就是分离变量法给出的级数解——只是这里从“柯西公式”出发得到它，第八章从“$\Delta u=0$ + 边界条件”出发得到它。两条路的系数公式 \eqref{eq:coeff} 完全一样，这不是巧合：调和函数的边值唯一决定内部（狄利克雷问题的唯一性），任何一条路只要给出解，就必然是同一条。
+
+\aside{读者可以现在就验一件事：把 \eqref{eq:useries} 逐项求 $\Delta$（极坐标下 $\Delta=\partial_{rr}+\frac1r\partial_r+\frac1{r^{2}}\partial_{\varphi\varphi}$），每一项 $r^{m}\cos m\varphi$ 都满足 $\Delta=0$。这就是“分离变量”为什么只用 $r^{m}$ 与 $r^{-m}$ 两组径向因子的原因；圆内要求有界，$r^{-m}$ 被剔掉，只剩 $r^{m}$。}
+
+\flowerrule
+
+\hdr{§5}{四条推论：不等式、最大模、刘维、平均值（p43--p44）}
+
+这四条都是柯西公式与高阶导数公式的“副产品”，但每一条都拦住一类错误，值得逐条看清它拦什么。
+
+\subhdr{5.1\quad 柯西不等式（p43）}
+
+\textbf{命题}：设 $f$ 在 $|z-a|\le R$ 内解析，$|f|\le M$，则
+\begin{equation}\label{eq:ci}
+\bigl|f^{(n)}(a)\bigr|\le\frac{n!\,M}{R^{n}}\qquad(n=0,1,2,\dots).
+\end{equation}
+
+\textbf{证明}：在 \eqref{eq:highderiv} 中取 $C$：$|\zeta-a|=R$，则 $L=2\pi R$、分母 $|\zeta-a|^{n+1}=R^{n+1}$，由 $ML$ 估计
+\[ \bigl|f^{(n)}(a)\bigr|\le\frac{n!}{2\pi}\cdot\frac{M\cdot2\pi R}{R^{n+1}}=\frac{n!\,M}{R^{n}} . \]
+
+p43 的一般形式是 $\bigl|f^{(n)}(z)\bigr|\le\dfrac{n!ML}{2\pi d^{n+1}}$（$d$ 为 $z$ 到边界的最短距离，$L$ 为边界全长）；取圆时 $L=2\pi R$、$d=R$，就回到 \eqref{eq:ci}。
+
+\aside{它拦住什么：由 \eqref{eq:ci} 可以估计泰勒系数 $|c_n|=|f^{(n)}(a)|/n!\le M/R^{n}$，从而给出收敛半径的下界（第三章）。这条不等式是“解析函数的导数不能长得太快”的定量版本。}
+
+\subhdr{5.2\quad 最大模定理（p43）}
+
+\textbf{命题}：若 $f$ 在闭区域 $\overline{D}$ 内解析且不恒为常数，则 $|f(z)|$ 的最大值只能在边界 $\partial D$ 上取到（内部取不到严格最大）。
+
+\textbf{为什么}：设 $|f|$ 在内部某点 $a$ 取到严格最大 $M$。取以 $a$ 为心、完全含于 $D$ 的小圆，由平均值定理（§5.4）
+\[ f(a)=\frac{1}{2\pi}\int_0^{2\pi}f(a+\rho e^{i\varphi})\dd\varphi . \]
+两边取模：$M=|f(a)|\le\dfrac{1}{2\pi}\int|f|\le M$。要让它成立，圆上必须处处 $|f|=M$；再对圆内每一点重复这个论证，得到 $|f|$ 在整个连通区域上恒为 $M$，再由 C-R 推出 $f$ 为常数——与“不恒为常数”矛盾。
+
+\warnbox{这条定理的正确读法是“最大模在边界上”，不是“边界值最大”。它排除的是“内部冒出一个尖峰”；物理上对应“无源的稳态场不会在内部出现极值”（调和函数的极值原理）。}
+
+\subhdr{5.3\quad 刘维定理（p44）}
+
+\textbf{命题}：若 $f$ 在全平面解析（整函数），且存在常数 $M$ 使 $|f(z)|\le M$ 对一切 $z$ 成立，则 $f$ 是常数。
+
+\textbf{证明}：对任意 $z$ 与任意 $R>|z|$，在 $|z-a|\le R$（$a$ 任意）上用 \eqref{eq:ci} 的 $n=1$ 情形：
+\[ |f'(z)|\le\frac{M}{R} . \]
+$R$ 可以任意大（整函数在整个圆内解析，$M$ 与 $R$ 无关），故 $|f'(z)|=0$，即 $f'\equiv0$，$f$ 为常数。
+
+\aside{它拦住什么：刘维定理是“有界整函数只能常数”的判决。一个常用推论是\textbf{代数学基本定理}——若多项式 $p(z)$ 没有零点，则 $1/p(z)$ 是整函数、且在 $|z|\to\infty$ 时趋于 $0$（有界），由刘维定理 $1/p$ 为常数，矛盾。所以 $n$ 次多项式必有 $n$ 个零点（计重数）。}
+
+\subhdr{5.4\quad 平均值定理（p44）}
+
+\textbf{命题}：设 $f$ 在 $|\zeta-z|\le r$ 内解析，则
+\begin{equation}\label{eq:mean}
+f(z)=\frac{1}{2\pi}\int_0^{2\pi}f(z+re^{i\varphi})\dd\varphi .
+\end{equation}
+读法：\textbf{$f$ 在圆心的值，等于它在圆周上值的算术平均}。
+
+\textbf{证明}：在 \eqref{eq:cauchy2} 中取 $C$：$|\zeta-z|=r$，令 $\zeta-z=re^{i\varphi}$，$d\zeta=ire^{i\varphi}\dd\varphi$，
+\[ f(z)=\frac{1}{2\pi i}\int_0^{2\pi}\frac{f(z+re^{i\varphi})}{re^{i\varphi}}\,ire^{i\varphi}\dd\varphi
+=\frac{1}{2\pi}\int_0^{2\pi}f(z+re^{i\varphi})\dd\varphi . \]
+
+\aside{与泊松公式的关系：\eqref{eq:mean} 是 \eqref{eq:poisson} 在 $r=0$ 的特例（此时核 $\dfrac{a^{2}}{a^{2}}=1$）。反过来，泊松公式可以看成“平均值定理对每一点、每个半径都成立”的加权版本——权重 $K$ 就是 Poisson 核，它满足 $\dfrac{1}{2\pi}\int_0^{2\pi}K\,d\theta=1$（已数值复核）。}

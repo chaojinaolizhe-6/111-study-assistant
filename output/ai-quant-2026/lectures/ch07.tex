@@ -1,0 +1,179 @@
+\chapter{从因子到预测：线性、树模型与深度学习}\label{ch:model}
+
+\begin{keybox}[本章要回答的问题]
+多因子怎么合成？为什么必须先打败等权基线？LightGBM 在横截面上应该怎么调？
+深度学习什么时候值得上？模型"学错了"怎么发现？
+\end{keybox}
+
+\section{必须打败的基线：等权合成}
+
+在引入任何模型之前，先建立一个基线：
+
+\begin{equation}
+  \text{score}_{i,t} = \sum_{k=1}^{K} s_k\, z_{k,i,t},
+  \qquad
+  s_k = \mathrm{sign}\!\left(\IC_k^{\text{train}}\right),
+\end{equation}
+
+其中 $z_k$ 是第 $k$ 个因子当日截面 z-score，$s_k$ 是训练集上该因子 IC 的符号。
+
+这个"用 IC 符号定向 + 等权相加"的方法简单到近乎粗暴，但它有两个重要性质：
+
+\begin{enumerate}
+  \item \textbf{零参数}。除了符号之外没有任何可调参数，因此几乎没有过拟合空间。
+  \item \textbf{抗噪声}。单个因子的估计误差被平均掉，不会像回归那样被共线性放大。
+\end{enumerate}
+
+\begin{warnbox}[一个残酷的经验]
+在日频 A 股上，很多"精心调参的 LightGBM"跑不赢这个基线。
+如果你的模型没有稳定跑赢它，那么模型带来的不是 alpha，而是复杂度。
+本书的每一次模型对比，都以它作为对照。
+\end{warnbox}
+
+\section{线性回归：可解释但脆弱}
+
+\begin{equation}
+  y_{i,t} = \sum_{k}\beta_k z_{k,i,t} + \varepsilon_{i,t}.
+\end{equation}
+
+\subsection{为什么必须加正则}
+
+40 个因子之间存在高度共线性（反转与换手、波动与振幅）。普通最小二乘在这种情况下
+系数会剧烈震荡，甚至符号翻转。岭回归通过惩罚系数平方和来稳定：
+
+\begin{equation}
+  \hat\beta = \arg\min_{\beta}\ \|y - Z\beta\|^2 + \alpha\|\beta\|^2
+  = (Z^\top Z + \alpha I)^{-1}Z^\top y.
+\end{equation}
+
+$\alpha$ 越大，系数越向零收缩。实践中 $\alpha$ 取 $1$--$100$（因子已标准化），
+用样本外 IC 选择，不要用样本内 $R^2$——后者永远偏好 $\alpha\to 0$。
+
+\subsection{线性模型的价值}
+
+它的价值不在于预测精度，而在于\textbf{可解释性}：
+
+\begin{itemize}
+  \item 系数符号是否符合经济逻辑？
+  \item 哪个因子贡献最大？是否与你的先验一致？
+  \item 系数在不同年份是否稳定？
+\end{itemize}
+
+这些问题，线性模型能直接回答，树模型不能。\textbf{先用线性模型把因子看清楚，
+再上树模型提升精度}，是正确的顺序。
+
+\section{GBDT：表格数据上的默认选择}
+
+梯度提升树的思路是：串行训练一堆弱学习器，每棵树拟合前面所有树的残差。
+
+\begin{equation}
+  F_m(x) = F_{m-1}(x) + \nu\, h_m(x),
+\end{equation}
+
+其中 $\nu$ 是学习率，$h_m$ 是第 $m$ 棵拟合负梯度的树。
+
+\subsection{为什么它在横截面选股上仍然最强}
+
+\begin{enumerate}
+  \item \textbf{自动处理非线性与交互}。它天然能学到"低波因子只在小市值股票里有效"。
+  \item \textbf{对量纲与单调变换不敏感}。不需要精细的特征工程。
+  \item \textbf{对缺失值鲁棒}。A 股因子缺失很常见（财务数据滞后、停牌）。
+  \item \textbf{训练快}。300 万样本 $\times$ 40 特征在普通笔记本上几分钟即可。
+\end{enumerate}
+
+\subsection{日频横截面上的正确用法}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+参数 & 推荐范围 & 理由 \\
+\midrule
+\texttt{objective} & \texttt{regression} & 回归排序标签；也可用自定义 IC 损失 \\
+\texttt{num\_leaves} & 15--63 & 太大会记住噪声 \\
+\texttt{max\_depth} & 3--6 & 与 \texttt{num\_leaves} 配合 \\
+\texttt{min\_child\_samples} & 200--500 & 横截面样本多，叶子要足够大 \\
+\texttt{learning\_rate} & 0.02--0.05 & 配合 \texttt{n\_estimators} 300--800 \\
+\texttt{feature\_fraction} & 0.7--0.9 & 抑制共线因子的相互替代 \\
+\texttt{bagging\_fraction} & 0.7--0.9 & \\
+\texttt{reg\_lambda} & 1--10 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warnbox}[早停必须用"未来"的验证集]
+LightGBM 的 \texttt{early\_stopping} 需要一个验证集。如果你随机切分，
+验证集的未来信息会漏进训练。正确做法是\textbf{按时间顺序}：
+训练到 $t-60$，验证用 $[t-60, t-30)$，测试用 $[t-30, t)$。
+更严格的做法是直接跳过早停，用固定的树数 + Purged CV 选超参。
+\end{warnbox}
+
+\subsection{特征重要性与"模型有没有学错"}
+
+三个诊断动作：
+
+\begin{enumerate}
+  \item \textbf{看重要性排序}。如果 \texttt{size} 和 \texttt{turn\_20} 占据前两位，
+        而你的因子里有 20 个"更聪明"的信号，说明模型只是在做风格暴露。
+  \item \textbf{看重要性稳定性}。在 5 个不同时间窗口上分别训练，重要性的排序
+        应该大致稳定。如果每次都不同，说明模型在拟合噪声。
+  \item \textbf{做特征置换检验}。把一个因子的值随机打乱，看 IC 下降多少。
+        下降很少的因子，模型其实没在用。
+\end{enumerate}
+
+\section{深度学习：什么时候值得}
+
+\subsection{它的真实优势}
+
+\begin{itemize}
+  \item \textbf{端到端学习表示}。可以从原始量价序列直接学到特征，省去人工构造。
+  \item \textbf{处理高维与序列}。LSTM/TCN/Transformer 能建模时序依赖。
+  \item \textbf{多任务学习}。同时预测多个持有期，共享表示。
+\end{itemize}
+
+\subsection{它的真实代价}
+
+\begin{itemize}
+  \item \textbf{数据需求大}。日频全 A 股 10 年约 1000 万个样本，对深度学习来说只是"刚够"。
+  \item \textbf{过拟合风险高}。参数量大、信噪比低，是最坏的组合。
+  \item \textbf{难以诊断}。出了问题很难定位是数据、标签还是结构。
+\end{itemize}
+
+\begin{keybox}[本书的建议]
+\textbf{先把线性模型与 GBDT 做到位，再考虑深度学习。}
+在日频 A 股上，深度模型的样本外 Rank IC 通常只比 GBDT 高 $0.005$--$0.01$，
+而调试成本高出五倍以上。除非你有明确的理由（例如做分钟频、或有多模态数据），
+否则不值得。
+\end{keybox}
+
+\section{过拟合的十个来源与排查清单}
+
+\begin{center}
+\begin{longtable}{@{}p{0.06\textwidth}p{0.34\textwidth}p{0.50\textwidth}@{}}
+\toprule
+\# & \textbf{来源} & \textbf{排查方法} \\
+\midrule
+\endhead
+1 & 特征里混入未来信息 & 逐列检查数据来源；把因子滞后一期重跑，IC 大幅下降即有问题 \\
+2 & 标签与特征时点重叠 & 确认 \texttt{signal\_date < execution\_date} \\
+3 & 财务数据用报告期 & 改用公告日 as-of 连接 \\
+4 & 幸存者偏差 & 用含退市股的池子重跑 \\
+5 & 复权错误 & 检查除权日收益率是否异常 \\
+6 & 随机切分 & 改用 Purged K-Fold \\
+7 & 用测试集调参 & 记录每次尝试，用 DSR 惩罚 \\
+8 & 样本内早停 & 早停验证集必须晚于训练集 \\
+9 & 过度精细的因子 & 因子参数在样本外不稳定 \\
+10 & 忽略交易成本 & 换手 $\times$ 成本 $>$ alpha 即无效 \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 等权合成是必须打败的基线；跑不赢它的模型只是增加了复杂度。
+  \item 线性模型的价值在可解释性，必须加正则；$\alpha$ 用样本外 IC 选。
+  \item GBDT 在表格数据上仍是默认选择，但叶子数与深度必须压小。
+  \item 早停验证集必须严格晚于训练集，否则等于随机切分。
+  \item 深度学习的边际收益在日频 A 股上有限，过拟合风险却显著更高。
+  \item 过拟合有十个常见来源，逐条排查比换模型有效得多。
+\end{enumerate}

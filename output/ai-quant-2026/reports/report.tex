@@ -1,0 +1,359 @@
+
+\documentclass[UTF8,10pt,a4paper]{ctexart}
+\usepackage[a4paper,left=2.2cm,right=2.2cm,top=2.2cm,bottom=2.0cm]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\definecolor{accent}{HTML}{2F5D8A}
+\definecolor{warm}{HTML}{B4532A}
+\definecolor{soft}{HTML}{EEF3F8}
+\titleformat{\section}{\sffamily\bfseries\large\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\bfseries\normalsize\color{black!85}}{\thesubsection}{0.5em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize\color{gray} 拟合精度报告}
+\fancyhead[R]{\sffamily\footnotesize\color{gray}A 股日频 AI 选股}
+\fancyfoot[C]{\sffamily\footnotesize\color{gray}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtcolorbox{kb}[1][]{enhanced,breakable,colback=soft,colframe=accent,
+  boxrule=0pt,leftrule=3pt,arc=2pt,left=9pt,right=9pt,top=6pt,bottom=6pt,
+  fonttitle=\sffamily\bfseries\small\color{accent},title={#1}}
+\newtcolorbox{wb}[1][]{enhanced,breakable,colback=white,colframe=warm,
+  boxrule=0.5pt,leftrule=3pt,arc=2pt,left=9pt,right=9pt,top=6pt,bottom=6pt,
+  fonttitle=\sffamily\bfseries\small\color{warm},coltitle=warm,title={#1}}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+
+\begin{document}
+\begin{center}
+{\sffamily\color{accent}\large 量化研究交付物 · 03}\\[6pt]
+{\sffamily\bfseries\LARGE 拟合精度与过拟合诊断报告}\\[6pt]
+{\small\color{gray} 沪深 A 股研究样本 \quad 数据区间 2013-01-04 至 2026-10-19 \quad 生成于 2026-11-01}
+\end{center}
+\vspace{4pt}
+
+\section{结论先行}
+
+\begin{kb}[一句话结论]
+在 2013-01-04 至 2026-10-19 的沪深 A 股研究样本上，5 个候选模型中最优者的
+内部 Walk-Forward Rank IC 为 \textbf{0.0785}，年化 ICIR 为 \textbf{5.57}；
+扣除单边 30\,bp 成本后，多空组合年化 \textbf{16.3\%}、夏普 \textbf{1.43}。
+完整研究搜索史尚未记录，不能宣称已通过全流程多重检验。
+DSR 压力情景为 \textbf{0.822}（假定 $N=603$，采用零假设离散度下限）；
+PBO 为 \textbf{0.107}，仅描述现有五个候选。
+\end{kb}
+
+\subsection{这个数字应该怎么读}
+
+\begin{itemize}
+  \item \textbf{频率分开}：模型每五个交易日采样，ICIR 按 $\sqrt{252/5}$ 年化；
+        单因子表用每日 IC，标签仍为未来五日收益，使用 HAC 修正标签重叠与序列相关。
+  \item \textbf{成本是假设}：30\,bp 是统一敏感性参数，尚未按流动性、成交规模或盘口深度校准。
+  \item \textbf{内部验证边界}：研究者已看过该历史区间；切分测试不是从未见过的前瞻样本。
+  \item \textbf{统计量有条件}：DSR 依赖搜索次数和夏普离散度假设；PBO 与简化 RC 仅覆盖保存的候选集。
+\end{itemize}
+
+\section{数据与样本}
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+项目 & 数值 \\
+\midrule
+数据库总行数（日线） & 16,749,552 \\
+证券数（有行情） & 5,222 \\
+有效交易日 & 670 \\
+研究样本行数（间隔采样后） & 2,018,278 \\
+因子数 & 39 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{已知的数据局限}
+
+\begin{wb}[三条必须披露的局限]
+\begin{enumerate}
+  \item \textbf{北交所缺失}：新浪财经无北交所接口，355 只北交所股票未纳入。
+        该板块 2021 年才成立，因此 2010--2020 年的样本不受影响，
+        同时存在退市股覆盖缺口，不能把有行情证券数等同于完整历史股票池。
+  \item \textbf{成交额为估算值}：数据源不提供逐日成交额，由「成交量 $\times$ 当日均价」
+        估算；其对流动性过滤与因子排序的影响尚未完成分层验证。
+  \item \textbf{历史股本为月度近似}：换手率用月度股本快照前向填充，
+        送转发生后的一个月内会有偏差。
+\end{enumerate}
+\end{wb}
+
+\section{单因子评价}
+
+\includegraphics[width=\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_factor_ic.png}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+因子 & 原始 IC & 调整后 IC & 原始 $t$ & 调整后 $t$ & $n$ & $n_{\rm eff}$ \\
+\midrule
+ivol\_60 & 0.0786 & 0.0729 & 12.24 & 11.38 & 2259 & 592 \\
+turn\_std\_20 & 0.0693 & 0.0695 & 9.36 & 17.83 & 2035 & 514 \\
+ln\_amount\_20 & 0.0725 & 0.0659 & 14.94 & 13.13 & 3891 & 830 \\
+hl\_20 & 0.0590 & 0.0658 & 9.50 & 12.44 & 3891 & 950 \\
+amp\_20 & 0.0581 & 0.0653 & 9.31 & 12.21 & 3891 & 949 \\
+vol\_20 & 0.0571 & 0.0652 & 9.65 & 13.41 & 3874 & 941 \\
+turn\_20 & 0.0636 & 0.0650 & 7.74 & 15.33 & 2035 & 515 \\
+vol\_60 & 0.0560 & 0.0648 & 8.51 & 11.51 & 3466 & 905 \\
+max\_ret\_20 & 0.0635 & 0.0640 & 14.46 & 18.04 & 3874 & 959 \\
+vol\_ratio & 0.0401 & 0.0391 & 11.25 & 13.97 & 3483 & 912 \\
+range\_60 & 0.0282 & 0.0386 & 4.44 & 7.37 & 3483 & 863 \\
+turn\_chg & 0.0447 & 0.0386 & 9.59 & 13.77 & 1819 & 488 \\
+pv\_corr\_20 & 0.0474 & 0.0383 & 17.71 & 16.73 & 3874 & 992 \\
+rev\_10 & 0.0430 & 0.0378 & 10.18 & 10.49 & 3908 & 1138 \\
+bp & 0.0322 & 0.0373 & 6.04 & 9.92 & 4076 & 854 \\
+amihud\_20 & 0.0492 & 0.0358 & 10.23 & 11.52 & 3874 & 840 \\
+rev\_5 & 0.0440 & 0.0314 & 11.85 & 9.89 & 3993 & 1389 \\
+skew\_20 & 0.0327 & 0.0284 & 12.18 & 14.30 & 3874 & 903 \\
+\bottomrule
+\end{tabular}
+\end{center}
+原始 IC 与调整后 IC 均由完整日频 IC 序列汇总；$h=5$ 的日频标签重叠，
+均值检验使用 Bartlett Newey--West 协方差，滞后阶数为
+$L=\max(4,\lfloor4(n/100)^{2/9}\rfloor)$。$n$ 是有值的 IC 日期数，
+$n_{\rm eff}=n\gamma_0/\widehat\Omega$ 是原始 IC 均值方差等价的样本量，
+不是独立财报次数，也不是未经假设可确定的真实样本数。
+完整表另含调整后有效样本量；不同带宽及每五日采样的敏感性见配套 CSV。
+本表不再平均各年的 $t$ 值。
+
+\begin{kb}[读表要点]
+\begin{itemize}
+  \item 先看\textbf{中性化后 IC}：如果相对原始 IC 大幅缩水，说明这个因子很大程度是
+        行业或市值暴露的换皮。
+  \item 再看 \textbf{NW $t$}：绝对值大于 2 才值得进一步讨论。
+  \item 最后看\textbf{换手}：单边换手超过 30\% 的因子，需要显著更强的 IC 才能覆盖成本。
+\end{itemize}
+\end{kb}
+
+\section{因子的时间稳定性}
+
+\includegraphics[width=\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_ic_curve.png}
+
+\includegraphics[width=0.62\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_quantile.png}
+
+\section{模型与验证协议}
+
+\subsection{三种验证协议的对比}
+
+\begin{tabular}{@{}llrrrrrrr@{}}
+\toprule
+协议 & 模型 & 折数 & IC 均值 & IC 标准差 & ICIR & NW $t$ & 年化 & 夏普 \\
+\midrule
+cpcv & composite & 15 & 0.0521 & 0.0237 & 3.14 & 5.91 & 4.7\% & 0.51 \\
+cpcv & lgbm\_s0 & 15 & 0.0590 & 0.0260 & 3.22 & 5.47 & 11.8\% & 0.83 \\
+cpcv & ridge & 15 & 0.0494 & 0.0216 & 2.95 & 5.11 & 5.6\% & 0.52 \\
+purged\_kfold & composite & 5 & 0.0495 & 0.0446 & 3.57 & 5.65 & 5.0\% & 0.65 \\
+purged\_kfold & lgbm\_s0 & 5 & 0.0500 & 0.0577 & 3.35 & 5.05 & 7.9\% & 0.76 \\
+purged\_kfold & ridge & 5 & 0.0407 & 0.0520 & 3.32 & 5.12 & 3.7\% & 0.56 \\
+walk\_forward & composite & 7 & 0.0747 & 0.0109 & 5.52 & 5.74 & 13.8\% & 1.24 \\
+walk\_forward & lgbm\_s0 & 7 & 0.0786 & 0.0320 & 5.76 & 6.23 & 15.5\% & 1.08 \\
+walk\_forward & ridge & 7 & 0.0700 & 0.0152 & 6.09 & 6.54 & 13.0\% & 1.34 \\
+\bottomrule
+\end{tabular}
+
+\begin{kb}[这张表的信息量]
+表中所有协议行均为折内指标的均值，包括 NW $t$；折均值 $t$ 只是描述性汇总，不是合并样本的显著性检验。
+同一批因子、同一批模型，在不同验证协议下的内部样本外 IC 差异，反映了切分的不确定性。
+如果 Purged K-Fold 与 Walk-Forward 的结果差距很大，说明模型对时间窗口敏感，
+不应相信任何单一数字。
+\end{kb}
+
+\subsection{CPCV 的样本外分布}
+
+\includegraphics[width=0.72\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_cpcv.png}
+
+\section{样本外净值}
+
+\includegraphics[width=\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_nav.png}
+
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+候选 & IC & ICIR & NW $t$ & 年化 & 夏普 & 最大回撤 & 换手 \\
+\midrule
+lgbm\_s0 & 0.0785 & 5.57 & 12.74 & 16.3\% & 1.43 & -18.9\% & 37.9\% \\
+lgbm\_s2 & 0.0785 & 5.53 & 12.62 & 15.6\% & 1.38 & -20.4\% & 38.1\% \\
+lgbm\_s1 & 0.0780 & 5.50 & 12.58 & 15.3\% & 1.35 & -21.1\% & 38.0\% \\
+composite & 0.0653 & 3.93 & 9.74 & 10.2\% & 0.86 & -21.5\% & 27.2\% \\
+ridge & 0.0623 & 3.96 & 8.95 & 12.0\% & 1.07 & -27.1\% & 33.0\% \\
+\bottomrule
+\end{tabular}
+
+\section{过拟合诊断}
+
+\subsection{四个统计量}
+
+\begin{center}
+\begin{tabular}{@{}lrl@{}}
+\toprule
+统计量 & 数值 & 判断标准 \\
+\midrule
+DSR 压力情景 & 0.822 & 条件值，不作全搜索通过判定 \\
+假定独立试验次数 $N$ & 603.0 & 搜索范围压力情景，非估计值 \\
+五候选 PBO & 0.107 & 不能代表所有因子筛选和调参 \\
+简化 RC 重抽样 $p$ 值 & 0.000 & 仅五候选；400 次重抽样 \\
+Bootstrap 95\% 区间 & [0.71, 2.27] & 2.5\% 与 97.5\% 分位 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{DSR 对搜索次数与离散度的敏感性}
+\begin{center}\small
+\begin{tabular}{@{}rrr@{}}
+\toprule
+假定独立试验数 $N$ & 五候选离散度 & 零假设标准差下限情景 \\
+\midrule
+15 & 0.9966 & 0.9874 \\
+50 & 0.9905 & 0.9592 \\
+100 & 0.9847 & 0.9320 \\
+200 & 0.9770 & 0.8962 \\
+500 & 0.9632 & 0.8359 \\
+603 & 0.9598 & 0.8220 \\
+1000 & 0.9499 & 0.7819 \\
+\bottomrule
+\end{tabular}
+\end{center}
+第一列结果沿用五候选夏普的横截面标准差；第二列将该标准差至少设为
+$1/\sqrt{T-1}$，只是一种独立零均值收益近似的压力情景。
+$603=(39+8+20)\times3\times3$ 是名义搜索范围情景，不是已执行配置清单，
+也不是可由五候选相关矩阵识别的真实独立次数。完整搜索史不足时不能给唯一的可靠 DSR。
+本次诊断使用 402 个共同有效日期，不把缺失收益当现金零收益；
+五候选收益相关系数范围为 0.716--0.994。
+DSR 仍沿用标准 PSR 的矩近似，没有因此解决收益自相关或反复查看历史的问题。
+简化 RC 若报告 0.000，仅表示 400 次抽样中没有超越；不能解释为真实 $p=0$ 或 $p<0.001$。
+
+\subsection{PBO 的分布}
+
+\includegraphics[width=0.62\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_pbo.png}
+
+\begin{wb}[PBO 的误读]
+PBO 只衡量"样本内最优在样本外是否仍靠前"这个\textbf{序关系}，
+它不衡量策略是否赚钱。低 PBO 也可能对应一群全都亏钱的策略。本次只有三类模型，其中三个 LightGBM 种子高度相关；
+相关性并不保证 PBO 单调降低，候选不全才是外推限制。
+\end{wb}
+
+\section{成本敏感性}
+
+\includegraphics[width=0.62\textwidth]{D:/aaa_D_usual/DSH/111学习助手/output/ai-quant-2026/reports/figures/fig_cost.png}
+
+\begin{kb}[成本是最后的裁判]
+成本曲线仅显示所选固定成本下的条件结果。30\,bp 未经实盘成交校准；
+缺少市场深度、资金规模和融券费用模型，不能据此承诺可执行收益。
+\end{kb}
+
+\clearpage
+\section{补充因子：统一开盘标签后的复核}
+资金流与质量因子来自补充库（2020--2026），与主库的股票池、流动性口径和区间不同。
+统一标签只解决目标变量的价格口径，不能把跨库 IC 当成相同条件下的优劣排名。
+两个脚本与主面板共用 $y_t=O^{adj}_{t+6}/O^{adj}_{t+1}-1$；
+现有位移按个股观测行计数，缺失交易日仍可能拉长实际持有跨度，尚需日历对齐审计。
+
+\subsection{资金流因子（八个）}
+调整后 IC 控制五日反转与二十日换手；该残差检验未加入主模型重训。
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+因子 & 原始 IC & 调整后 IC & 原始 $t$ & 调整后 $t$ & $n$ & $n_{\rm eff}$ \\
+\midrule
+mfr\_pos\_20 & -0.0151 & 0.0246 & -4.68 & 5.41 & 1598 & 386 \\
+mfr\_chg & -0.0060 & 0.0006 & -2.09 & 0.29 & 1598 & 522 \\
+sfr & -0.0061 & 0.0004 & -3.88 & 0.28 & 1609 & 1187 \\
+bfr & -0.0045 & -0.0029 & -2.40 & -1.89 & 1609 & 962 \\
+mfr\_stab\_20 & -0.0164 & -0.0053 & -4.52 & -1.66 & 1598 & 400 \\
+mfr & -0.0108 & -0.0061 & -5.26 & -3.71 & 1609 & 1097 \\
+mfr\_20 & -0.0194 & -0.0080 & -5.70 & -2.75 & 1598 & 408 \\
+lfr & -0.0117 & -0.0083 & -5.20 & -4.29 & 1609 & 973 \\
+\bottomrule
+\end{tabular}
+\end{center}
+原始 IC 与调整后 IC 均由完整日频 IC 序列汇总；$h=5$ 的日频标签重叠，
+均值检验使用 Bartlett Newey--West 协方差，滞后阶数为
+$L=\max(4,\lfloor4(n/100)^{2/9}\rfloor)$。$n$ 是有值的 IC 日期数，
+$n_{\rm eff}=n\gamma_0/\widehat\Omega$ 是原始 IC 均值方差等价的样本量，
+不是独立财报次数，也不是未经假设可确定的真实样本数。
+完整表另含调整后有效样本量；不同带宽及每五日采样的敏感性见配套 CSV。
+本表不再平均各年的 $t$ 值。
+
+\subsection{质量因子（二十个）}
+调整后 IC 控制对数市值、换手、波动和反转。以下用实际 IC 序列重算，
+撤回旧版基于年度 $t$ 均值作出的“全部不显著”及“有效样本仅 14 个”的结论。
+{\small
+\begin{longtable}{@{}lrrrrrr@{}}
+\toprule
+因子 & 原始 IC & 调整后 IC & 原始 $t$ & 调整后 $t$ & $n$ & $n_{\rm eff}$ \\
+\midrule
+\endhead
+q\_exp & 0.0085 & 0.0185 & 1.70 & 3.97 & 1609 & 410 \\
+q\_wroe & 0.0029 & 0.0100 & 0.44 & 2.16 & 1609 & 378 \\
+q\_roa & 0.0031 & 0.0083 & 0.51 & 1.68 & 1609 & 376 \\
+q\_cut & 0.0064 & 0.0079 & 1.24 & 1.84 & 1609 & 382 \\
+q\_accrual & 0.0063 & 0.0079 & 1.93 & 2.56 & 1609 & 363 \\
+q\_roe & 0.0033 & 0.0072 & 0.51 & 1.57 & 1609 & 378 \\
+q\_opm & 0.0049 & 0.0068 & 0.90 & 1.26 & 1609 & 376 \\
+q\_invinc & -0.0047 & 0.0061 & -1.60 & 1.09 & 1609 & 401 \\
+q\_intang & 0.0035 & 0.0040 & 1.15 & 1.84 & 1609 & 416 \\
+q\_at & 0.0031 & 0.0028 & 0.99 & 0.88 & 1609 & 394 \\
+q\_debt & -0.0002 & 0.0017 & -0.06 & 0.65 & 1609 & 425 \\
+q\_cfo\_ni & 0.0109 & 0.0010 & 3.27 & 0.24 & 1609 & 371 \\
+q\_quick & -0.0000 & 0.0006 & -0.01 & 0.14 & 1609 & 399 \\
+q\_rd & -0.0034 & 0.0005 & -0.37 & 0.08 & 1609 & 376 \\
+q\_current & -0.0004 & 0.0000 & -0.08 & 0.01 & 1609 & 396 \\
+q\_wc & -0.0007 & -0.0000 & -0.12 & -0.00 & 1609 & 389 \\
+q\_lev & 0.0012 & -0.0002 & 0.24 & -0.05 & 1609 & 403 \\
+q\_gw & 0.0098 & -0.0006 & 2.39 & -0.19 & 1609 & 391 \\
+q\_gm & -0.0049 & -0.0038 & -1.00 & -0.82 & 1609 & 415 \\
+q\_cash\_rev & -0.0028 & -0.0055 & -0.63 & -1.20 & 1609 & 370 \\
+\bottomrule
+\end{longtable}
+}
+慢变的因子值不等于慢变的 IC；收益每天变化，IC 序列的相关性必须实测。
+任何单因子 $|t|>2$ 也仍未校正多重筛选，不能直接认定可交易 alpha。
+
+\section{结论与后续}
+
+\subsection{可以下的结论}
+
+\begin{enumerate}
+  \item 在这段已被研究者查看的历史数据中，内部验证显示正的横截面预测关联。
+        未见样本外、数据覆盖偏差和完整搜索校正仍未解决。
+  \item 模型相对等权基线的提升有限；真正决定结果的是\textbf{因子质量与验证严格度}，
+        而不是模型复杂度。
+  \item 扣除成本后，多空组合的收益显著缩水，说明\textbf{换手控制}与\textbf{信号选择}
+        同样重要。
+\end{enumerate}
+
+\subsection{不能下的结论}
+
+\begin{itemize}
+  \item 不能推断实盘可获利：本报告未模拟冲击成本的市场深度、未考虑资金规模、
+        未考虑滑点的时变。
+  \item 尚无 long-only 或事件驱动组合，整手、资金占用及跌停无法退出的路径依赖未模拟。
+  \item 2010--2019 价格缺第二来源验证，退市股覆盖仍有缺口；补充库 2021 年缺失规则未知。
+  \item 不能外推到其他市场：所有结论仅基于 A 股日频。
+  \item 不能认为因子长期有效：第 11 章已说明，拥挤与制度变化会让因子衰减。
+\end{itemize}
+
+\subsection{建议的下一步}
+
+\begin{enumerate}
+  \item 用事件驱动回测替换向量化回测，加入整手与资金约束；
+  \item 引入换手惩罚与行业中性约束，观察扣费后夏普的变化；
+  \item 用滚动窗口重做一遍全流程，检查结论的时间稳定性；
+  \item 把因子库扩充到包括分钟频量价特征，检验边际信息。
+\end{enumerate}
+
+\paragraph{统计方法来源}
+Bailey 与 L\'opez de Prado，\href{https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf}{The Deflated Sharpe Ratio}；
+Bailey 等，\href{https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf}{The Probability of Backtest Overfitting}。
+本地实现与这些统计量的适用范围应分开审计。
+\end{document}

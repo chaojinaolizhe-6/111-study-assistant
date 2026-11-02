@@ -1,0 +1,231 @@
+\chapter{单因子评价：怎样判断一个因子不是噪声}\label{ch:eval}
+
+\begin{keybox}[本章要回答的问题]
+IC 到底在衡量什么？ICIR 的年化口径为什么会差 4 倍？Newey-West 的滞后阶数怎么选？
+分层单调性为什么比 IC 更有说服力？挖了 500 个因子之后，怎么诚实地报告结果？
+\end{keybox}
+
+\section{IC：一个被过度简化却仍然有用的指标}
+
+信息系数（Information Coefficient）的定义是：因子值与未来收益在\textbf{同一时点横截面}
+上的相关系数。
+
+\begin{equation}
+  \mathrm{IC}_t = \mathrm{corr}\big(f_{i,t},\ r_{i,t+1\rightarrow t+1+h}\big),
+  \quad i \in \text{当日可交易股票}.
+\end{equation}
+
+\subsection{两种口径}
+
+\begin{description}
+  \item[Pearson IC] 直接算线性相关。受极端值影响大：一只 BP 爆表的股票就能把 IC 拉高或拉低。
+  \item[Rank IC] 先做截面排名再算相关，等价于 Spearman 相关。抗极值，是选股因子的标准口径。
+\end{description}
+
+\begin{warnbox}[不要在同一个研究里混用两种口径]
+Pearson IC 与 Rank IC 的数值可以差一倍以上。如果你在研报里看到"IC 0.08"，
+先问清楚是哪种口径、什么持有期、什么股票池。
+本书除非特别说明，一律指 \textbf{Rank IC，$h=5$ 日持有期，全 A 股可交易池}。
+\end{warnbox}
+
+\section{ICIR 与年化口径的陷阱}
+
+\begin{equation}
+  \mathrm{ICIR} = \frac{\overline{\mathrm{IC}}}{\mathrm{std}(\mathrm{IC})},
+  \qquad
+  \mathrm{ICIR}_{\mathrm{ann}} = \mathrm{ICIR}\times\sqrt{K},
+\end{equation}
+
+其中 $K$ 是"一年里有多少个独立的预测周期"。
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+采样频率 & 每年期数 $K$ & $\sqrt{K}$ & 说明 \\
+\midrule
+日频（$h=1$） & 252 & 15.87 & 无重叠，可直接年化 \\
+日频（$h=5$） & 252/5 = 50.4 & 7.10 & \textbf{必须按有效周期折算} \\
+周频 & 52 & 7.21 & \\
+月频 & 12 & 3.46 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warnbox}[最高频的错误：日频算 IC，乘 $\sqrt{252}$]
+如果你每天算一次 IC，但预测的是未来 5 日收益，那么相邻两天的 IC 高度自相关
+（相关系数常大于 0.8）。此时乘 $\sqrt{252}$ 会把 ICIR 虚增 2 到 4 倍。
+
+正确做法二选一：
+\begin{itemize}
+  \item 把年化乘数改为 $\sqrt{252/h}$；
+  \item 保留 $\sqrt{252}$，但把分母换成 Newey-West 修正后的标准误。
+\end{itemize}
+\end{warnbox}
+
+\section{显著性：Newey-West $t$ 统计量}
+
+即便用对了年化口径，直接用 $\overline{\mathrm{IC}}/(\hat\sigma/\sqrt{n})$ 算 $t$ 值仍然错，
+因为 IC 序列存在自相关。
+
+\begin{equation}
+  \hat\sigma^2_{\mathrm{NW}} = \hat\gamma_0 + 2\sum_{l=1}^{L}\left(1 - \frac{l}{L+1}\right)\hat\gamma_l,
+  \qquad
+  \hat\gamma_l = \frac{1}{n}\sum_{t=l+1}^{n}(\mathrm{IC}_t - \overline{\mathrm{IC}})(\mathrm{IC}_{t-l} - \overline{\mathrm{IC}}),
+\end{equation}
+
+\begin{equation}
+  t_{\mathrm{NW}} = \frac{\overline{\mathrm{IC}}}{\sqrt{\hat\sigma^2_{\mathrm{NW}}/n}}.
+\end{equation}
+
+\subsection{滞后阶数怎么选}
+
+三个准则，取最大值最稳妥：
+
+\begin{enumerate}
+  \item \textbf{持有期准则}：$L \ge h - 1$。重叠标签会机械地引入 $h-1$ 阶自相关。
+  \item \textbf{经验法则}：$L = \lfloor 4(n/100)^{2/9}\rfloor$。
+        2500 个观测时 $L\approx 8$。
+  \item \textbf{数据驱动}：用 IC 序列的自相关函数衰减到 0 的阶数。
+\end{enumerate}
+
+本书的实现取 $L=\max(h-1,\ \lfloor 4(n/100)^{2/9}\rfloor)$。
+
+\section{分层回测：比 IC 更有说服力的证据}
+
+把股票按因子值分成 $Q$ 组，看每组的平均收益是否单调。
+
+\begin{center}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+ & Q1（最低） & Q2 & Q3 & Q4 & Q5（最高） \\
+\midrule
+月均收益 & $-0.4\%$ & $-0.1\%$ & $0.2\%$ & $0.5\%$ & $0.9\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keybox}[为什么单调性比 IC 重要]
+IC 是线性相关的平均值，它可以被"两端有效、中间乱序"的形态撑起来。
+而单调性要求\textbf{每一组都按顺序排列}，这种形态更难由噪声产生。
+一个 IC 只有 $0.03$ 但五组完美单调的因子，比一个 IC 有 $0.06$ 但中间三组乱序的因子更可信。
+\end{keybox}
+
+工程上把单调性量化为一件事：五组平均收益与组序号 $(1,2,3,4,5)$ 的相关系数。
+绝对值大于 $0.9$ 才算合格。
+
+\section{换手率与因子衰减}
+
+\subsection{换手率决定成本}
+
+因子的换手率定义为：相邻两期最高分位组合的成分变化比例。
+
+\begin{equation}
+  \mathrm{TO}_t = 1 - \frac{|S_t \cap S_{t-1}|}{(|S_t| + |S_{t-1}|)/2}.
+\end{equation}
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+因子 & 单边换手（5 日） & 年化双边成本（30bp 单边） & 判断 \\
+\midrule
+\texttt{rev\_5} & 约 35\% & 约 10.5\% & 高，需要强信号才划算 \\
+\texttt{mom\_20} & 约 16\% & 约 4.8\% & 中 \\
+\texttt{turn\_20} & 约 2\% & 约 0.6\% & 低，适合做底仓 \\
+\texttt{size} & 约 1.5\% & 约 0.45\% & 极低 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{衰减：这个信号多久失效}
+
+分别用 $h=1,5,10,20,60$ 算 IC，画出衰减曲线。
+
+\begin{itemize}
+  \item \textbf{快速衰减}（5 日内衰减到一半）：反转、量价。必须短持有期，成本高。
+  \item \textbf{慢速衰减}（20 日仍有 70\%）：价值、质量。可以长持有期，成本低。
+\end{itemize}
+
+\begin{warnbox}[高 IC 加高换手等于陷阱]
+一个 IC 为 $0.08$、单边换手 $50\%$ 的因子，在 $30$ bp 单边成本下，
+每 5 日成本约 $0.3\%$，年化约 $15\%$——足以吃掉全部 alpha。
+\textbf{永远先算成本，再看 IC。}
+\end{warnbox}
+
+\section{多重检验：500 个因子留下 20 个，怎么诚实报告}
+
+假设你挖了 500 个候选因子，其中 20 个的 $t$ 值大于 2（$p<0.05$）。
+这 20 个里有多少是真的？
+
+如果 500 个全部是噪声，按 $5\%$ 的显著性水平，你期望看到约 25 个"显著"。
+也就是说：\textbf{你看到的 20 个，比纯噪声下的期望还少}。
+
+\subsection{Benjamini-Hochberg（BH）流程}
+
+控制错误发现率（FDR）而不是族错误率（FWER），在因子挖掘里更实用：
+
+\begin{enumerate}
+  \item 对 500 个因子分别算 $t_{\mathrm{NW}}$，转成双侧 $p$ 值；
+  \item 把 $p$ 值升序排列：$p_{(1)} \le p_{(2)} \le \cdots \le p_{(500)}$；
+  \item 找最大的 $k^*$ 使得 $p_{(k)} \le \dfrac{k}{500}\,q$，其中 $q$ 取 $0.05$；
+  \item 保留前 $k^*$ 个因子。注意：必须\textbf{从大到小}找 $k^*$，
+        而不是从小到大遇到第一个不满足就停。
+\end{enumerate}
+
+\begin{pycode}[Benjamini-Hochberg 校正]
+def benjamini_hochberg(pvals, q=0.05):
+    p = np.asarray(pvals)
+    order = np.argsort(p)
+    m = len(p)
+    thresh = q * (np.arange(1, m + 1) / m)
+    passed = p[order] <= thresh
+    k = np.max(np.where(passed)[0]) + 1 if passed.any() else 0
+    keep = np.zeros(m, dtype=bool)
+    keep[order[:k]] = True
+    return keep
+\end{pycode}
+
+\subsection{相关性会破坏独立性假设}
+
+BH 假设检验之间独立或满足正相关（PRDS）。但因子库里 40 个因子可能有 30 个
+高度相关——一旦某个簇里的"底层噪声"偶然显著，整簇会同时越过阈值，
+造成"全有或全无"的假阳性爆发。
+
+\textbf{工程上的解法}：先聚类去冗余，再对簇代表做 BH。
+
+\begin{enumerate}
+  \item 算因子两两的截面相关矩阵；
+  \item 用距离 $d_{ij} = \sqrt{\tfrac12(1-\rho_{ij})}$ 做层次聚类；
+  \item 每簇选一个代表（经济含义最清晰、或 IC 最高）；
+  \item 只对代表因子做 BH，分母从 500 降到簇数。
+\end{enumerate}
+
+\section{一个完整的因子评价表}
+
+本书对每个因子输出下面这张表（完整版见第~\ref{ch:result} 章）：
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+因子 & IC 均值 & ICIR(年化) & NW $t$ & 分层单调性 & 单边换手 & 中性化后 IC \\
+\midrule
+（见报告） & & & & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warnbox}[读表的顺序]
+先看\textbf{中性化后 IC}，再看 \textbf{NW $t$}，最后看\textbf{换手}。
+如果中性化后 IC 掉到接近 0，说明这个因子是风格暴露的换皮，后面的数字都不必看。
+\end{warnbox}
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item Rank IC 是选股因子的标准口径，必须与持有期、股票池一起声明。
+  \item 日频 $h=5$ 的 ICIR 年化乘数是 $\sqrt{50}$ 而不是 $\sqrt{252}$。
+  \item IC 序列有自相关，$t$ 值必须用 Newey-West 修正，滞后阶数 $L\ge h-1$。
+  \item 分层单调性比 IC 均值更能说明"不是噪声"。
+  \item 先算成本再看 IC：高 IC 高换手的因子经常是负贡献。
+  \item 挖了 500 个因子，必须做 FDR 校正，并且先聚类去冗余。
+\end{enumerate}

@@ -1,0 +1,233 @@
+\chapter{标签：你预测什么，决定你能得到什么}\label{ch:label}
+
+\begin{keybox}[本章要回答的问题]
+为什么"预测明天涨跌"是一个坏问题？横截面排序、波动率归一化、三重障碍法各自
+适合什么场景？重叠标签为什么会让你的 t 值虚高？A 股的 T+1 与涨跌停如何改变标签设计？
+\end{keybox}
+
+\section{一个被低估的事实：多数模型失败在标签，而不是模型}
+
+研究新手最常见的路径是：拿到数据 $\rightarrow$ 构造几十个因子 $\rightarrow$ 上 LightGBM $\rightarrow$ 调参 $\rightarrow$
+发现样本外不灵 $\rightarrow$ 换更复杂的模型。
+
+他们很少检查一件事：\textbf{标签本身是否可预测}。
+
+日频个股收益的信噪比极低。以本书的数据为例，某只股票某日的收益，
+其横截面标准差约为 $2.5\%$；而任何模型能解释的部分，通常不到这个数字的 $5\%$。
+在这种信噪比下，标签的设计方式（预测什么、怎么归一化、如何处理重叠）
+对最终结果的影响，往往大于模型选择。
+
+\section{三种标签形态}
+
+\subsection{回归：预测未来 $h$ 日收益}
+
+\begin{equation}
+  y_{i,t} = \frac{\tilde P_{i,t+1+h}}{\tilde P_{i,t+1}} - 1
+  \label{eq:label-ret}
+\end{equation}
+
+其中 $\tilde P$ 是后复权价，$t+1$ 表示"次日开盘买入"。
+
+\textbf{优点}：保留了收益的幅度信息，与最终的组合权重直接对应。
+\textbf{缺点}：厚尾。A 股单日涨跌 $20\%$ 的样本不少，少数极端值会主导平方损失。
+
+\begin{warnbox}[一个常见错误：用收盘价构造标签]
+\texttt{fwd\_ret = close[t+h]/close[t] - 1} 隐含了"$t$ 日收盘买入"的假设。
+但你的信号是用 $t$ 日收盘数据算出来的，实际上根本来不及在 $t$ 日收盘成交。
+正确做法是 \texttt{close[t+h]/open[t+1] - 1}——\textbf{信号与成交之间必须隔一个可执行的时点}。
+\end{warnbox}
+
+\subsection{横截面排序：预测相对强弱}
+
+\begin{equation}
+  y_{i,t} = \mathrm{rank}_{i}\!\left(r_{i,t+1\rightarrow t+1+h}\right) - \tfrac12
+  \;\in\; \left(-\tfrac12,\ \tfrac12\right]
+  \label{eq:label-rank}
+\end{equation}
+
+\textbf{优点}：
+\begin{itemize}
+  \item 天然抗极值（排名不受 $+50\%$ 与 $+5\%$ 的差距影响）；
+  \item 与选股目标一致——我们只关心"买哪些"，不关心"市场整体涨多少"；
+  \item 自动剔除市场 beta，模型学到的纯粹是横截面信息。
+\end{itemize}
+
+\textbf{缺点}：丢失幅度信息，无法区分"小幅跑赢"与"大幅跑赢"。
+
+本书的主标签采用这一形式。这是业界的标准选择，原因是：日频收益的幅度部分
+几乎全是噪声，而排序部分是相对稳定的。
+
+\subsection{分类：涨 / 跌 / 前 $30\%$}
+
+把问题变成二分类或多分类。
+
+\textbf{优点}：可以直接用分类模型，输出概率有明确含义。
+\textbf{缺点}：阈值是人为的；信息损失最大；概率校准需要额外工作。
+
+除非你有明确的"只买前 $30\%$"的业务约束，否则不建议作为主标签，
+可以用来做辅助诊断（例如分析模型在极端分位上的表现）。
+
+\section{波动率归一化：让不同股票可比}
+
+同样是 $+3\%$ 的周收益，对一只年化波动 $20\%$ 的银行股是"大涨"，
+对一只年化波动 $80\%$ 的题材股是"平常"。
+
+\begin{equation}
+  y_{i,t} = \frac{r_{i,t+1\rightarrow t+1+h}}{\sigma_{i,t}\sqrt{h}},
+  \qquad \sigma_{i,t} = \mathrm{std}(r_{i,t-59\rightarrow t})
+  \label{eq:label-vol}
+\end{equation}
+
+除以 $\sigma$ 之后，标签近似服从同分布，模型的残差也更接近同方差。
+\textbf{代价}：低波动股票的权重被放大，组合会向低波倾斜；
+如果你同时用了低波因子，就会产生双重暴露。
+
+\section{三重障碍法：什么时候值得用}
+
+López de Prado 提出的三重障碍法（Triple Barrier）给每个样本定义三个出口：
+
+\begin{itemize}
+  \item 上障碍：$P_{i,t}(1 + u\sigma_i)$，止盈；
+  \item 下障碍：$P_{i,t}(1 - d\sigma_i)$，止损；
+  \item 垂直障碍：$t + h$ 个交易日，到期平仓。
+\end{itemize}
+
+标签取\textbf{先被触及的那个障碍}：上障碍 $+1$，下障碍 $-1$，到期 $0$。
+
+\subsection{它解决了什么}
+
+它把"路径依赖"纳入了标签：一个先跌 $8\%$ 再涨 $5\%$ 的样本，
+在固定持有期标签下是 $+5\%$，在三重障碍下是 $-1$（先触发止损）。
+如果你的实际交易规则带止损，三重障碍标签与真实盈亏更一致。
+
+\subsection{它的代价}
+
+\begin{enumerate}
+  \item \textbf{标签不平衡}：多数样本落在 $0$（到期平仓），分类器会退化为常数预测。
+  \item \textbf{参数敏感}：$u,d$ 的选择直接影响标签分布，而你又会用它来调模型——
+        这是双重过拟合的入口。
+  \item \textbf{重叠更严重}：路径依赖让相邻样本的标签相关性更高，有效样本数进一步下降。
+  \item \textbf{计算量大}：需要对每个样本扫描未来 $h$ 天的路径。
+\end{enumerate}
+
+\begin{keybox}[本书的判断]
+\textbf{日频选股不需要三重障碍法。}
+它的设计目标是"交易执行"层面的路径依赖，更适合高频或单标的择时。
+日频横截面选股的核心是"排序准不准"，固定持有期 + 横截面排序标签已经足够，
+而且统计性质更干净。
+\end{keybox}
+
+\section{Meta-labeling：把方向和仓位分开}
+
+Meta-labeling 的思路是两级模型：
+
+\begin{enumerate}
+  \item \textbf{主模型}决定方向（买 / 不买），可以是一条简单规则或一个粗模型；
+  \item \textbf{副模型}预测"主模型这次判断对不对"，输出一个概率 $p$；
+  \item 最终仓位 $\propto (2p - 1)$ 或只保留 $p > \theta$ 的样本。
+\end{enumerate}
+
+它的价值在于\textbf{降低假阳性}：主模型给出 100 个买入信号，副模型只保留其中 40 个
+把握较大的。这在信号本身很稀疏（比如事件驱动）时特别有效。
+
+在日频全市场选股中，因为每天都有几千个候选，"稀疏"不是问题，
+meta-labeling 的边际收益有限，反而增加了复杂度。
+
+\section{重叠标签：为什么你的 $t$ 值虚高}
+
+这是本书最重要的一节之一。
+
+假设你用 $h=5$ 的持有期标签，并且\textbf{每个交易日}都训练一个样本。那么：
+\begin{itemize}
+  \item $t$ 日的标签覆盖 $[t+1, t+6]$；
+  \item $t+1$ 日的标签覆盖 $[t+2, t+7]$；
+  \item 两者有 4 天的重叠。
+\end{itemize}
+
+后果是相邻样本高度相关。若你用普通 $t$ 检验判断 IC 是否显著，
+标准误会严重低估，$t$ 值被夸大 $2$--$4$ 倍。
+
+\begin{proposition}[有效样本数]
+若标签持有期为 $h$ 个交易日、采样间隔为 $1$ 天，则\textbf{独立}样本数约为
+观测数的 $1/h$，即
+\begin{equation}
+  n_{\text{eff}} \approx \frac{n}{h}.
+\end{equation}
+更精细的估计可以用 IC 序列的自相关来修正：
+\begin{equation}
+  n_{\text{eff}} = \frac{n}{1 + 2\sum_{k=1}^{h-1}\left(1-\frac{k}{h}\right)\rho_k},
+\end{equation}
+其中 $\rho_k$ 是 IC 序列的 $k$ 阶自相关。
+\end{proposition}
+
+工程上有两个正解：
+
+\begin{enumerate}
+  \item \textbf{间隔采样}：每 $h$ 个交易日取一个样本，让标签不重叠。
+        本书的模型训练采用这一做法（每 5 个交易日一个样本）。
+  \item \textbf{Newey-West 修正}：保留全部样本，但在算 $t$ 值时用 HAC 标准误，
+        滞后阶数取 $\ge h-1$。本书的因子评价采用这一做法。
+\end{enumerate}
+
+\section{A 股的特殊约束}
+
+\subsection{T+1}
+
+当日买入不能当日卖出，因此：
+\begin{itemize}
+  \item 最短持有期是 1 个交易日（今天买、明天卖）；
+  \item 标签的起点必须是 $t+1$（次日），不能是 $t$。
+\end{itemize}
+
+\subsection{涨跌停}
+
+如果你的标签是"次日开盘到第 $h$ 日开盘的收益"，那么：
+\begin{itemize}
+  \item 次日一字涨停买不进 $\rightarrow$ 该样本应当被标记为不可执行；
+  \item 到期日一字跌停卖不出 $\rightarrow$ 该样本的收益实际上无法实现。
+\end{itemize}
+
+这两种情况都集中在极端样本上，而极端样本恰恰是反转类因子最关注的对象。
+不处理它们，反转因子的回测收益会被显著高估。
+
+本书的处理方式：在样本层面保留，但在\textbf{组合构建}时剔除
+\texttt{can\_buy\_next = False} 的股票（见第~\ref{ch:portfolio} 章）。
+
+\section{标签与持有期的匹配}
+
+持有期 $h$ 不是一个可以随便设的参数，它由三个因素共同决定：
+
+\begin{enumerate}
+  \item \textbf{信号的衰减速度}。反转信号 5 日内衰减大半，20 日基本消失；
+        质量因子可以持有 3--6 个月。
+  \item \textbf{交易成本}。$h$ 越小，换手越高，成本吃掉的比例越大。
+        在单边 $30$ bp 的成本下，$h=1$ 的策略需要极高的 IC 才能覆盖成本。
+  \item \textbf{容量}。$h$ 越小，策略容量越小。
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+持有期 $h$ & 年换手（倍） & 单边成本要求 & 适合的信号类型 \\
+\midrule
+1 日 & 250 & 极高 & 微观结构（个人基本不可行） \\
+5 日 & 50 & 高 & 短期反转、量价 \\
+20 日 & 12 & 中 & 动量、波动、质量 \\
+60 日 & 4 & 低 & 价值、质量、成长 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+本书选择 $h=5$ 作为主标签：它在"信号强度"与"成本可承受性"之间取得平衡，
+并且能把日频数据的重叠问题控制在可管理范围内。
+
+\section{本章小结}
+
+\begin{enumerate}
+  \item 标签设计比模型选择更重要，日频收益的信噪比极低。
+  \item 横截面排序标签是选股任务的标准选择；回归标签保留幅度但受厚尾干扰。
+  \item 波动率归一化让不同股票可比，但会引入低波暴露。
+  \item 三重障碍法解决路径依赖，代价是标签不平衡与参数敏感；日频选股不必使用。
+  \item 重叠标签会让 $t$ 值虚高，必须用间隔采样或 Newey-West 修正。
+  \item A 股的 T+1 与涨跌停改变了标签的可执行性，必须在样本与组合两层处理。
+\end{enumerate}

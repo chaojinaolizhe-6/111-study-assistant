@@ -1,0 +1,214 @@
+\documentclass[UTF8,11pt,a4paper,openany,fontset=windows]{ctexbook}
+
+% ============================ 字体 ============================
+\setCJKmainfont{SimSun}[BoldFont=SimHei, ItalicFont=KaiTi, BoldItalicFont=SimHei]
+\setCJKsansfont{Microsoft YaHei}
+\setCJKmonofont{FangSong}
+\setmainfont{Palatino Linotype}
+\setsansfont{Segoe UI}
+\setmonofont{Consolas}[Scale=0.86]
+
+% ============================ 版式 ============================
+\usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable,listings}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,multirow,array,tabularx}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\graphicspath{{../reports/figures/}{./figures/}}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+\usepackage{caption}
+\xeCJKDeclareCharClass{CJK}{"2192, "2190, "00D7, "2248, "2265, "2264, "00B1, "2212}
+\captionsetup{font=small,labelfont={sf,bf},labelsep=quad}
+
+\definecolor{ink}{HTML}{1F2937}
+\definecolor{accent}{HTML}{2F5D8A}
+\definecolor{accent2}{HTML}{7A4E8C}
+\definecolor{soft}{HTML}{EEF3F8}
+\definecolor{warn}{HTML}{B4532A}
+\definecolor{good}{HTML}{2E6B4F}
+\definecolor{warms}{HTML}{FBF2EC}
+
+\titleformat{\chapter}[block]
+  {\sffamily\bfseries\raggedright\color{accent}}
+  {\fontsize{42}{42}\selectfont\thechapter\hspace{14pt}}
+  {0pt}
+  {\huge\color{ink}}
+  [\vspace{-2pt}{\color{accent}\rule{\textwidth}{1.5pt}}]
+\titlespacing*{\chapter}{0pt}{-14pt}{22pt}
+
+\titleformat{\section}{\sffamily\bfseries\large\color{accent}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\sffamily\bfseries\normalsize\color{ink}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\bfseries\small\color{ink!85}}{\thesubsubsection}{0.5em}{}
+
+\setlength{\headheight}{23pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize\color{gray!80} AI 量化炒股}
+\fancyhead[R]{\sffamily\footnotesize\color{gray!80}\nouppercase{\leftmark}}
+\fancyfoot[C]{\sffamily\footnotesize\color{gray!70}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{gray!35}\leaders\hrule height \headrulewidth\hfill}}
+
+% ============================ 盒子 ============================
+\newtcolorbox{keybox}[1][]{
+  enhanced, breakable, colback=soft, colframe=accent,
+  boxrule=0pt, leftrule=3.2pt, arc=2pt, left=10pt, right=10pt, top=7pt, bottom=7pt,
+  fonttitle=\sffamily\bfseries\small\color{accent}, coltitle=accent,
+  attach boxed title to top left={xshift=6pt,yshift=-2pt},
+  boxed title style={colback=white,colframe=white,boxrule=0pt},
+  title={#1}}
+
+\newtcolorbox{warnbox}[1][]{
+  enhanced, breakable, colback=warms, colframe=warn,
+  boxrule=0pt, leftrule=3.2pt, arc=2pt, left=10pt, right=10pt, top=7pt, bottom=7pt,
+  fonttitle=\sffamily\bfseries\small\color{warn}, coltitle=warn,
+  attach boxed title to top left={xshift=6pt,yshift=-2pt},
+  boxed title style={colback=warms,colframe=warms,boxrule=0pt},
+  title={#1}}
+
+\lstnewenvironment{pycode}[1][]{%
+  \lstset{language=Python, basicstyle=\ttfamily\scriptsize,
+    breaklines=true, columns=fullflexible, keepspaces=true,
+    frame=single, framerule=0.4pt, rulecolor=\color{gray!45},
+    backgroundcolor=\color{gray!3}, xleftmargin=4pt, xrightmargin=4pt,
+    keywordstyle=\color{accent}\bfseries, commentstyle=\color{gray!75},
+    stringstyle=\color{good}, showstringspaces=false, tabsize=2,
+    title={\sffamily\bfseries\scriptsize\color{gray!30!black} #1}}%
+}{}
+
+\newtcolorbox{plainbox}[1][]{
+  enhanced, breakable, colback=white, colframe=gray!40,
+  boxrule=0.5pt, arc=1pt, left=10pt, right=10pt, top=7pt, bottom=7pt,
+  fonttitle=\sffamily\bfseries\small\color{gray!30!black}, title={#1}}
+
+\setlength{\parskip}{0.32em}
+\renewcommand{\arraystretch}{1.2}
+\setlist{itemsep=1pt,topsep=3pt,parsep=2pt}
+
+\newtheorem{proposition}{命题}[chapter]
+\newtheorem{definition}{定义}[chapter]
+\newtheorem{example}{例}[chapter]
+
+\newcommand{\SR}{\mathrm{SR}}
+\newcommand{\IC}{\mathrm{IC}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ph}[1]{\textcolor{gray!60}{#1}}
+
+% ============================ 封面 ============================
+\input{generated_audit_values}
+\begin{document}
+\frontmatter
+\thispagestyle{empty}
+\begin{center}
+\vspace*{3.2cm}
+{\sffamily\color{accent}\fontsize{13}{16}\selectfont 量化研究工作手册 · 第 1 版}
+
+\vspace{1.4cm}
+{\sffamily\bfseries\color{ink}\fontsize{34}{42}\selectfont AI 量化炒股}
+
+\vspace{6pt}
+{\sffamily\bfseries\color{ink}\fontsize{22}{30}\selectfont 原理、实现与过拟合诊断}
+
+\vspace{1.6cm}
+{\color{accent}\rule{0.62\textwidth}{1.2pt}}
+
+\vspace{0.9cm}
+{\large\color{ink!85}
+从市场可预测性的来源，到可复现的因子库、\\[4pt]
+本地数据库与多轮重复验证的完整链路}
+
+\vfill
+{\small\color{gray}
+数据区间：2010--2026 年 · 全 A 股日频\\
+外部意见交叉核验：Grok · Gemini（2026-10-31）\\
+主要计算可用配套代码复现；未解决的审计项随报告披露}
+\vspace{2.2cm}
+\end{center}
+\clearpage
+
+% ============================ 前言 ============================
+\chapter*{写在前面：这本书想解决什么问题}
+\addcontentsline{toc}{chapter}{写在前面}
+\markboth{写在前面}{写在前面}
+
+关于"用 AI 炒股"，市面上有两类内容。一类是营销：把一条漂亮的净值曲线当作能力的证明，
+绝口不提这条曲线是从多少次尝试里挑出来的。另一类是学术：公式严谨，但默认你有
+Wind 终端和一台 64 核的服务器，落到个人电脑上寸步难行。
+
+这本书想走第三条路：\textbf{在个人电脑上，用免费数据，做一次经得起自己反复质疑的研究}。
+它有三条硬约束，贯穿全书：
+
+\begin{enumerate}
+  \item \textbf{可复现}。每一个数字都对应仓库里的一段代码，换台机器、换个时间重跑，
+        结论应当一样（或至少差异可解释）。
+  \item \textbf{可证伪}。任何"这个因子有效"的说法，都必须给出它在什么条件下会失效，
+        以及用什么统计量判断它已经失效。
+  \item \textbf{可执行}。不考虑涨跌停不可成交、不考虑 T+1、不考虑 100 股整手、
+        不考虑印花税的结论，不叫结论，叫练习。
+\end{enumerate}
+
+\section*{你会得到什么}
+
+全书共 13 章与 7 个附录。配套仓库（\texttt{output/ai-quant-2026/}）包含四件可以独立使用的东西：
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+交付物 & 位置 & 说明 \\
+\midrule
+本地数据库 & \texttt{data/quant.db} & 全 A 股日线、PIT 财报、估值快照、指数 \\
+因子库 & \texttt{aq/factors.py} & 39 个主因子，带公式、方向、回看期与注册表 \\
+研究框架 & \texttt{aq/*.py} & 面板、中性化、评价、CV、DSR/PBO、回测 \\
+拟合精度报告 & \texttt{reports/} & 多协议重复测试、过拟合诊断、代码清单 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{怎么读}
+
+如果你只有两小时：读第 1、9、10、11 章，你会知道"AI 炒股"这个词里哪部分是统计学、
+哪部分是叙事，以及一份诚实的实证报告长什么样。
+如果你要动手：按第~\ref{ch:roadmap} 章的路线图走，每完成一步都有明确的"可以继续"判据。
+如果你在读别人的研报：直接翻到第 10 章，用那里的四个统计量给对方的结论打折。
+
+\begin{keybox}[关于本书的立场]
+本书不提供任何投资建议，也不承诺任何策略能赚钱。它提供的是一套
+\textbf{判断"某个策略结论是否可信"的方法}。在这个行业里，
+会算夏普比率的人很多，会在算完之后给自己扣分的人很少。
+\end{keybox}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\mainmatter
+\input{ch01}
+\input{ch02}
+\input{ch03}
+\input{ch04}
+\input{ch05}
+\input{ch06}
+\input{ch07}
+\input{ch08}
+\input{ch09}
+\input{ch10}
+\input{ch11}
+\input{ch12}
+\input{ch13}
+\appendix
+\input{appendix}
+\input{appendix_cross}
+\input{appendix_shm}
+\input{appendix_quality}
+\input{appendix_strictness}
+
+\end{document}
