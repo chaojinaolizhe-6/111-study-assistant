@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-02 2026-11-02 22:18（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-03 2026-11-03 14:23（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -23,7 +23,7 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-11-02**（中国时间；系统英国日期 2026-11-02）。
+> 生成于 **2026-11-03**（中国时间；系统英国日期 2026-11-03）。
 > 事实源指纹：`attempts.jsonl` 52 条（sha256 `1388bfe3d536…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
@@ -225,8 +225,8 @@
 | 2026-10-22 | 目标节点 | `pilot-ode-integrating-factor:milestone` | 里程碑复核 | 独立解一阶线性 ODE（试点） 的 milestone = 2026-10-22 |
 | 2026-10-23 | 目标节点 | `tm-t4-conservation-laws:milestone` | 里程碑复核 | 独立求解理论力学 Topic 4 守恒定律问题 的 milestone = 2026-10-23 |
 | 2026-10-24 | 目标节点 | `ee-ac-circuits:milestone` | 里程碑复核 | 独立求解电工电子技术 交流电路（Chapter Two）计算题 的 milestone = 2026-10-24 |
-| 2026-11-08（+6d） | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
-| 2026-11-09（+7d） | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
+| 2026-11-08（+5d） | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
+| 2026-11-09（+6d） | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
 
 完整排期（含'未来才开放、不得提前安排'的项）见 `plan/schedule.md`（`tools/schedule_reviews.py` 生成）。
 **最终下一步以 `.tutor/config/status-narrative.yml` 的 `next` 行 + `plan/today-<日期>.md` 为准**（那是人工判断，不是机械候选）。
@@ -279,7 +279,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-11-02**（中国时间；系统英国日期 2026-11-02）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-11-03**（中国时间；系统英国日期 2026-11-03）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -287,11 +287,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-02（周一）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-03（周二）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-11-02.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-11-03.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -306,7 +306,7 @@
 **必须遵守的提醒**：⚠ **学习模式（2026-10-29 起，学习者决定）**：讲义驱动、考前集中闭卷验收（口径唯一来源＝`.tutor/config/study-mode.yml`）。讲授走讲义，答案放讲义最后；平时讲义与自测一律记讲解级帮助、不升能力等级，不得声称「已掌握」；`due` 早于 2026-10-29 的旧题已归档为考前素材，能力再测队列平时不显示。 ⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-11-02.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-11-03.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -364,7 +364,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-11-02.md` |
+| 当天清单（人工权威） | `plan/today-2026-11-03.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |
@@ -374,12 +374,12 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5092 个文件）
+## 3. 文件直达 URL 索引（5286 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
 
-### 根目录（40 个）
+### 根目录（60 个）
 
 - `.gitattributes` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.gitattributes
 - `.gitignore` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.gitignore
@@ -402,6 +402,7 @@
 - `texput.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/texput.log
 - `tmp_callout.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_callout.out
 - `tmp_callout2.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_callout2.out
+- `tmp_ch4_p58_66.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_ch4_p58_66.txt
 - `tmp_circuit.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_circuit.out
 - `tmp_crop.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_crop.py
 - `tmp_crop2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_crop2.py
@@ -409,7 +410,26 @@
 - `tmp_crop4.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_crop4.py
 - `tmp_dash.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_dash.out
 - `tmp_figs.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_figs.out
+- `tmp_p61.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_p61.png
+- `tmp_p62.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_p62.png
+- `tmp_p63.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_p63.png
 - `tmp_pdfinfo.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_pdfinfo.py
+- `tmp_q44.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q44.png
+- `tmp_q45.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q45.png
+- `tmp_q46.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q46.png
+- `tmp_q47.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q47.png
+- `tmp_q48.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q48.png
+- `tmp_q49.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q49.png
+- `tmp_q50.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q50.png
+- `tmp_q51.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q51.png
+- `tmp_q52.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_q52.png
+- `tmp_r53.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r53.png
+- `tmp_r54.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r54.png
+- `tmp_r55.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r55.png
+- `tmp_r56.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r56.png
+- `tmp_r57.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r57.png
+- `tmp_r58.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r58.png
+- `tmp_r59.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp_r59.png
 - `tmp_sample.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_sample.py
 - `tmp_section.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_section.out
 - `tmp_unit.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp_unit.out
@@ -557,7 +577,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2258 个）
+### subjects（2287 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -752,6 +772,8 @@
 - `subjects/03-微分方程/作业/20261012-ODE-Lecture14-15-题面.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261012-ODE-Lecture14-15-%E9%A2%98%E9%9D%A2.jpg
 - `subjects/03-微分方程/作业/20261013-ODE-L14-15-改正-第1题.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261013-ODE-L14-15-%E6%94%B9%E6%AD%A3-%E7%AC%AC1%E9%A2%98.jpg
 - `subjects/03-微分方程/作业/20261013-ODE-L14-15-改正-第2-3题.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261013-ODE-L14-15-%E6%94%B9%E6%AD%A3-%E7%AC%AC2-3%E9%A2%98.jpg
+- `subjects/03-微分方程/作业/20261103-ODE-Lecture22-23-作业.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261103-ODE-Lecture22-23-%E4%BD%9C%E4%B8%9A.jpg
+- `subjects/03-微分方程/作业/20261103-ODE-Lecture22-23-作业.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/20261103-ODE-Lecture22-23-%E4%BD%9C%E4%B8%9A.md
 - `subjects/03-微分方程/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/03-微分方程/作业/c514c5ceaa591ffb89833d1b89043e77.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/c514c5ceaa591ffb89833d1b89043e77.png
 - `subjects/03-微分方程/作业/作业答案-L16-L18-矩阵指数与非齐次系统-20261019.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E4%BD%9C%E4%B8%9A/%E4%BD%9C%E4%B8%9A%E7%AD%94%E6%A1%88-L16-L18-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0%E4%B8%8E%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%B3%BB%E7%BB%9F-20261019.pdf
@@ -764,6 +786,8 @@
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.out
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.pdf
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.tex
+- `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.pdf
+- `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.tex
 - `subjects/03-微分方程/讲义/Lagrange方程-课件原题与练习单-20261016.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/Lagrange%E6%96%B9%E7%A8%8B-%E8%AF%BE%E4%BB%B6%E5%8E%9F%E9%A2%98%E4%B8%8E%E7%BB%83%E4%B9%A0%E5%8D%95-20261016.md
 - `subjects/03-微分方程/讲义/ODE-L1-L12-题干清单-乱序自测版-20261020.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/ODE-L1-L12-%E9%A2%98%E5%B9%B2%E6%B8%85%E5%8D%95-%E4%B9%B1%E5%BA%8F%E8%87%AA%E6%B5%8B%E7%89%88-20261020.pdf
 - `subjects/03-微分方程/讲义/ODE-L1-L12-题干清单-乱序自测版-20261020.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/ODE-L1-L12-%E9%A2%98%E5%B9%B2%E6%B8%85%E5%8D%95-%E4%B9%B1%E5%BA%8F%E8%87%AA%E6%B5%8B%E7%89%88-20261020.tex
@@ -834,6 +858,10 @@
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed(1).jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed%281%29.jpg
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed.jpg
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed.png
+- `subjects/03-微分方程/讲义/figs-hw22/fig1-kinds.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig1-kinds.pdf
+- `subjects/03-微分方程/讲义/figs-hw22/fig2-taud.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig2-taud.pdf
+- `subjects/03-微分方程/讲义/figs-hw22/fig3-epsdelta.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig3-epsdelta.pdf
+- `subjects/03-微分方程/讲义/figs-hw22/fig4-hw2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig4-hw2.pdf
 - `subjects/03-微分方程/讲义/准齐次方程-精讲-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%87%86%E9%BD%90%E6%AC%A1%E6%96%B9%E7%A8%8B-%E7%B2%BE%E8%AE%B2-20261014.md
 - `subjects/03-微分方程/讲义/刘维尔定理-精讲-20261027.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%88%98%E7%BB%B4%E5%B0%94%E5%AE%9A%E7%90%86-%E7%B2%BE%E8%AE%B2-20261027.aux
 - `subjects/03-微分方程/讲义/刘维尔定理-精讲-20261027.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%88%98%E7%BB%B4%E5%B0%94%E5%AE%9A%E7%90%86-%E7%B2%BE%E8%AE%B2-20261027.log
@@ -939,6 +967,16 @@
 - `subjects/04-数学物理方法1/作业/20261003-第三章延迟变式-C-孤立奇点五项.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E4%BD%9C%E4%B8%9A/20261003-%E7%AC%AC%E4%B8%89%E7%AB%A0%E5%BB%B6%E8%BF%9F%E5%8F%98%E5%BC%8F-C-%E5%AD%A4%E7%AB%8B%E5%A5%87%E7%82%B9%E4%BA%94%E9%A1%B9.jpg
 - `subjects/04-数学物理方法1/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/04-数学物理方法1/讲义/_qa.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_qa.py
+- `subjects/04-数学物理方法1/讲义/_预览-arc-p01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arc-p01.png
+- `subjects/04-数学物理方法1/讲义/_预览-arc-p04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arc-p04.png
+- `subjects/04-数学物理方法1/讲义/_预览-arc-p08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arc-p08.png
+- `subjects/04-数学物理方法1/讲义/_预览-arc-p12.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arc-p12.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcB-p02.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcB-p02.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcB-p06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcB-p06.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcB-p14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcB-p14.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcC-p03.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcC-p03.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcC-p05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcC-p05.png
+- `subjects/04-数学物理方法1/讲义/_预览-arcD-p05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-arcD-p05.png
 - `subjects/04-数学物理方法1/讲义/_预览-c4-p01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-c4-p01.png
 - `subjects/04-数学物理方法1/讲义/_预览-c4-p05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-c4-p05.png
 - `subjects/04-数学物理方法1/讲义/_预览-c4-p11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-c4-p11.png
@@ -987,6 +1025,16 @@
 - `subjects/04-数学物理方法1/讲义/第五章-精讲-傅里叶变换-20261022.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%94%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-20261022.tex
 - `subjects/04-数学物理方法1/讲义/第六章-精讲-拉普拉斯变换-20261022.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%85%AD%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%8F%98%E6%8D%A2-20261022.pdf
 - `subjects/04-数学物理方法1/讲义/第六章-精讲-拉普拉斯变换-20261022.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%85%AD%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%8F%98%E6%8D%A2-20261022.tex
+- `subjects/04-数学物理方法1/讲义/第四章-专题-复方程的根与极点判定-20261102.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%8D%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A0%B9%E4%B8%8E%E6%9E%81%E7%82%B9%E5%88%A4%E5%AE%9A-20261102.aux
+- `subjects/04-数学物理方法1/讲义/第四章-专题-复方程的根与极点判定-20261102.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%8D%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A0%B9%E4%B8%8E%E6%9E%81%E7%82%B9%E5%88%A4%E5%AE%9A-20261102.log
+- `subjects/04-数学物理方法1/讲义/第四章-专题-复方程的根与极点判定-20261102.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%8D%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A0%B9%E4%B8%8E%E6%9E%81%E7%82%B9%E5%88%A4%E5%AE%9A-20261102.out
+- `subjects/04-数学物理方法1/讲义/第四章-专题-复方程的根与极点判定-20261102.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%8D%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A0%B9%E4%B8%8E%E6%9E%81%E7%82%B9%E5%88%A4%E5%AE%9A-20261102.pdf
+- `subjects/04-数学物理方法1/讲义/第四章-专题-复方程的根与极点判定-20261102.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%8D%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A0%B9%E4%B8%8E%E6%9E%81%E7%82%B9%E5%88%A4%E5%AE%9A-20261102.tex
+- `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.aux
+- `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.log
+- `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.out
+- `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.pdf
+- `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.tex
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.aux
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.log
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.out
@@ -1013,6 +1061,7 @@
 - `subjects/05-数学物理方法2/讲义/第七章-精讲-数学物理方程-20261102.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/05-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%952/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B-20261102.pdf
 - `subjects/05-数学物理方法2/讲义/第七章-精讲-数学物理方程-20261102.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/05-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%952/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B-20261102.tex
 - `subjects/05-数学物理方法2/课件/Chapter 7 - 20261102.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/05-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%952/%E8%AF%BE%E4%BB%B6/Chapter%207%20-%2020261102.pdf
+- `subjects/05-数学物理方法2/课件/Chapter 7 - 20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/05-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%952/%E8%AF%BE%E4%BB%B6/Chapter%207%20-%2020261103.pdf
 - `subjects/05-数学物理方法2/课件/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/05-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%952/%E8%AF%BE%E4%BB%B6/INDEX.md
 - `subjects/06-电工电子技术/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/INDEX.md
 - `subjects/06-电工电子技术/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/progress.md
@@ -5016,7 +5065,7 @@
 - `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
 - `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
-### tmp（391 个）
+### tmp（536 个）
 
 - `tmp/bisect/t_a.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.aux
 - `tmp/bisect/t_a.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.log
@@ -5058,6 +5107,124 @@
 - `tmp/bisect_run.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect_run.py
 - `tmp/bisect_run2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect_run2.py
 - `tmp/brace.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/brace.py
+- `tmp/build-hw22/bang-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang-1.png
+- `tmp/build-hw22/bang.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang.aux
+- `tmp/build-hw22/bang.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang.log
+- `tmp/build-hw22/bang.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang.pdf
+- `tmp/build-hw22/bang.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang.tex
+- `tmp/build-hw22/bang2-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang2-1.png
+- `tmp/build-hw22/bang3-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/bang3-1.png
+- `tmp/build-hw22/f-01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-01.png
+- `tmp/build-hw22/f-02.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-02.png
+- `tmp/build-hw22/f-03.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-03.png
+- `tmp/build-hw22/f-04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-04.png
+- `tmp/build-hw22/f-05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-05.png
+- `tmp/build-hw22/f-06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-06.png
+- `tmp/build-hw22/f-07.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-07.png
+- `tmp/build-hw22/f-08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-08.png
+- `tmp/build-hw22/f-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-09.png
+- `tmp/build-hw22/f-10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-10.png
+- `tmp/build-hw22/f-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-11.png
+- `tmp/build-hw22/f-12.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-12.png
+- `tmp/build-hw22/f-13.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-13.png
+- `tmp/build-hw22/f-14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-14.png
+- `tmp/build-hw22/f-15.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-15.png
+- `tmp/build-hw22/f-16.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-16.png
+- `tmp/build-hw22/f-17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-17.png
+- `tmp/build-hw22/f-18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-18.png
+- `tmp/build-hw22/f-19.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-19.png
+- `tmp/build-hw22/f-20.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-20.png
+- `tmp/build-hw22/f-21.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-21.png
+- `tmp/build-hw22/f-22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-22.png
+- `tmp/build-hw22/f-23.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-23.png
+- `tmp/build-hw22/f-24.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-24.png
+- `tmp/build-hw22/f-25.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-25.png
+- `tmp/build-hw22/f-26.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-26.png
+- `tmp/build-hw22/f-27.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/f-27.png
+- `tmp/build-hw22/g-04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/g-04.png
+- `tmp/build-hw22/g-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/g-11.png
+- `tmp/build-hw22/h-20.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/h-20.png
+- `tmp/build-hw22/h-21.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/h-21.png
+- `tmp/build-hw22/h-22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/h-22.png
+- `tmp/build-hw22/k-22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/k-22.png
+- `tmp/build-hw22/m-25.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/m-25.png
+- `tmp/build-hw22/p-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/p-1.png
+- `tmp/build-hw22/p-2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/p-2.png
+- `tmp/build-hw22/p-3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/p-3.png
+- `tmp/build-hw22/p-4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/p-4.png
+- `tmp/build-hw22/pg-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/pg-1.png
+- `tmp/build-hw22/q-06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/q-06.png
+- `tmp/build-hw22/q-07.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/q-07.png
+- `tmp/build-hw22/q-08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/q-08.png
+- `tmp/build-hw22/q-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/q-09.png
+- `tmp/build-hw22/t.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/t.aux
+- `tmp/build-hw22/t.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/t.log
+- `tmp/build-hw22/t.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/t.out
+- `tmp/build-hw22/t.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/t.pdf
+- `tmp/build-hw22/t.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/t.tex
+- `tmp/build-hw22/v-01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-01.png
+- `tmp/build-hw22/v-02.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-02.png
+- `tmp/build-hw22/v-03.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-03.png
+- `tmp/build-hw22/v-04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-04.png
+- `tmp/build-hw22/v-05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-05.png
+- `tmp/build-hw22/v-06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-06.png
+- `tmp/build-hw22/v-07.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-07.png
+- `tmp/build-hw22/v-08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-08.png
+- `tmp/build-hw22/v-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-09.png
+- `tmp/build-hw22/v-10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-10.png
+- `tmp/build-hw22/v-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-11.png
+- `tmp/build-hw22/v-12.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-12.png
+- `tmp/build-hw22/v-13.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-13.png
+- `tmp/build-hw22/v-14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-14.png
+- `tmp/build-hw22/v-15.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-15.png
+- `tmp/build-hw22/v-16.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-16.png
+- `tmp/build-hw22/v-17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-17.png
+- `tmp/build-hw22/v-18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-18.png
+- `tmp/build-hw22/v-19.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-19.png
+- `tmp/build-hw22/v-20.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-20.png
+- `tmp/build-hw22/v-21.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-21.png
+- `tmp/build-hw22/v-22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-22.png
+- `tmp/build-hw22/v-23.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-23.png
+- `tmp/build-hw22/v-24.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-24.png
+- `tmp/build-hw22/v-25.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-25.png
+- `tmp/build-hw22/v-26.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-26.png
+- `tmp/build-hw22/v-27.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-27.png
+- `tmp/build-hw22/v-28.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-28.png
+- `tmp/build-hw22/v-29.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-29.png
+- `tmp/build-hw22/v-30.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-30.png
+- `tmp/build-hw22/v-31.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-31.png
+- `tmp/build-hw22/v-32.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/v-32.png
+- `tmp/build-hw22/w-01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-01.png
+- `tmp/build-hw22/w-02.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-02.png
+- `tmp/build-hw22/w-03.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-03.png
+- `tmp/build-hw22/w-04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-04.png
+- `tmp/build-hw22/w-05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-05.png
+- `tmp/build-hw22/w-06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-06.png
+- `tmp/build-hw22/w-07.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-07.png
+- `tmp/build-hw22/w-08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-08.png
+- `tmp/build-hw22/w-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-09.png
+- `tmp/build-hw22/w-10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-10.png
+- `tmp/build-hw22/w-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-11.png
+- `tmp/build-hw22/w-12.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-12.png
+- `tmp/build-hw22/w-13.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-13.png
+- `tmp/build-hw22/w-14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-14.png
+- `tmp/build-hw22/w-15.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-15.png
+- `tmp/build-hw22/w-16.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-16.png
+- `tmp/build-hw22/w-17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-17.png
+- `tmp/build-hw22/w-18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-18.png
+- `tmp/build-hw22/w-19.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-19.png
+- `tmp/build-hw22/w-20.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-20.png
+- `tmp/build-hw22/w-21.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-21.png
+- `tmp/build-hw22/w-22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-22.png
+- `tmp/build-hw22/w-23.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-23.png
+- `tmp/build-hw22/w-24.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-24.png
+- `tmp/build-hw22/w-25.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-25.png
+- `tmp/build-hw22/w-26.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-26.png
+- `tmp/build-hw22/w-27.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/w-27.png
+- `tmp/build-hw22/wx-text.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/wx-text.txt
+- `tmp/build-hw22/z14-14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/z14-14.png
+- `tmp/build-hw22/zoom14.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/zoom14.png
+- `tmp/build-hw22/zoom14b.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/zoom14b.png
 - `tmp/c1.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/c1.txt
 - `tmp/c2.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/c2.txt
 - `tmp/ch2_check.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/ch2_check.txt
@@ -5134,6 +5301,7 @@
 - `tmp/dump_pages3.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/dump_pages3.py
 - `tmp/dump_slides.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/dump_slides.py
 - `tmp/dump_slides2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/dump_slides2.py
+- `tmp/figs_hw22.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/figs_hw22.py
 - `tmp/fill2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/fill2.py
 - `tmp/fill_check.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/fill_check.py
 - `tmp/find_hw_pages.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/find_hw_pages.py
@@ -5153,6 +5321,7 @@
 - `tmp/gitstatus.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/gitstatus.txt
 - `tmp/hc_check.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/hc_check.txt
 - `tmp/hc_write.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/hc_write.txt
+- `tmp/hw22-zoom.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/hw22-zoom.png
 - `tmp/hw2_p18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/hw2_p18.png
 - `tmp/hw2_p19.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/hw2_p19.png
 - `tmp/hw2_p22.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/hw2_p22.png
@@ -5311,6 +5480,9 @@
 - `tmp/render_pdf.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/render_pdf.py
 - `tmp/render_tm8.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/render_tm8.py
 - `tmp/reorder.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/reorder.py
+- `tmp/rr.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/rr.py
+- `tmp/rr2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/rr2.py
+- `tmp/rr3.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/rr3.py
 - `tmp/rs_help.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/rs_help.txt
 - `tmp/s7_end.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/s7_end.png
 - `tmp/s7_start.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/s7_start.png
@@ -5327,6 +5499,24 @@
 - `tmp/slides_49_63.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/slides_49_63.txt
 - `tmp/slides_49_63.u8.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/slides_49_63.u8.txt
 - `tmp/strip_groups.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/strip_groups.py
+- `tmp/t2.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.aux
+- `tmp/t2.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.log
+- `tmp/t2.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.out
+- `tmp/t2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.pdf
+- `tmp/t2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.png
+- `tmp/t2.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t2.tex
+- `tmp/t3.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.aux
+- `tmp/t3.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.log
+- `tmp/t3.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.out
+- `tmp/t3.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.pdf
+- `tmp/t3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.png
+- `tmp/t3.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/t3.tex
+- `tmp/test-table.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.aux
+- `tmp/test-table.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.log
+- `tmp/test-table.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.out
+- `tmp/test-table.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.pdf
+- `tmp/test-table.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.png
+- `tmp/test-table.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/test-table.tex
 - `tmp/texbuild-optics/第五章-杨氏双缝与云母片-精讲-20261027.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/texbuild-optics/%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%9D%A8%E6%B0%8F%E5%8F%8C%E7%BC%9D%E4%B8%8E%E4%BA%91%E6%AF%8D%E7%89%87-%E7%B2%BE%E8%AE%B2-20261027.aux
 - `tmp/texbuild-optics/第五章-杨氏双缝与云母片-精讲-20261027.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/texbuild-optics/%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%9D%A8%E6%B0%8F%E5%8F%8C%E7%BC%9D%E4%B8%8E%E4%BA%91%E6%AF%8D%E7%89%87-%E7%B2%BE%E8%AE%B2-20261027.log
 - `tmp/texbuild-optics/第五章-杨氏双缝与云母片-精讲-20261027.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/texbuild-optics/%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%9D%A8%E6%B0%8F%E5%8F%8C%E7%BC%9D%E4%B8%8E%E4%BA%91%E6%AF%8D%E7%89%87-%E7%B2%BE%E8%AE%B2-20261027.out
@@ -5383,10 +5573,14 @@
 - `tmp/tm8/p17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tm8/p17.png
 - `tmp/tm8/p18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tm8/p18.png
 - `tmp/topic8_text.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/topic8_text.txt
+- `tmp/v1.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/v1.py
+- `tmp/v2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/v2.py
+- `tmp/v3.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/v3.py
 - `tmp/verify_ch2.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_ch2.out
 - `tmp/verify_ch2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_ch2.py
 - `tmp/verify_ch5.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_ch5.py
 - `tmp/verify_lecture_examples.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_lecture_examples.py
+- `tmp/verify_ode22.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_ode22.py
 - `tmp/verify_ode_hw_1618.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_ode_hw_1618.py
 - `tmp/verify_paper_a.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_paper_a.py
 - `tmp/verify_paper_a2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/verify_paper_a2.py
