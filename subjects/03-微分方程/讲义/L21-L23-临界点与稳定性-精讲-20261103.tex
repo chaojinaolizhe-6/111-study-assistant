@@ -1,0 +1,1205 @@
+%=====================================================================
+%  L21-L23 临界点与稳定性 —— Lecture 22–23 作业精讲
+%  讲义：从相平面几何到线性化判据
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+
+\settags{L22--23 临界点与稳定性}{微分方程}
+
+% ---- 题块的分页保护：正文题块只求"不被拆开"，详解块求"整块一页" ----
+\renewcommand{\qbreak}{\needspace{0.26\textheight}}
+\newcommand{\qpagebreak}{\needspace{0.92\textheight}}
+
+% ---- 图块（不浮动，保证图与结论同页） ----
+\newcounter{hwfig}
+\newcommand{\figblock}[4][\relax]{%
+  \par\medskip\begin{center}%
+  \refstepcounter{hwfig}%
+  \includegraphics[width=#3\linewidth]{figs-hw22/#2}\\[3pt]
+  {\small\color{inkgray}\textbf{图\,\thehwfig}\quad#4}%
+  \ifx#1\relax\else\label{#1}\fi
+  \end{center}\par\medskip}
+
+% ---- 常用记号 ----
+\newcommand{\X}{\mathbf{X}}\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Jac}{J}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\cnum}[1]{\ding{\the\numexpr171+#1\relax}}
+
+\begin{document}
+
+\doctitle{临界点与稳定性}{微分方程组 · Lecture 22--23 作业精讲}{%
+依据：Lecture 22--23 作业（2026-11-03 上传；截止第十一周周二 13:00）\\
+理论部分为独立推导；线性系统部分与 Constanda《Differential Equations》§7.4（pp.155--174）对齐\\
+说明：本讲课件尚未入库，故全文不做课件页码引用，凡结论均给出完整推导}
+
+\callout{\textbf{先读这一段。}这份讲义是为四道作业题写的，但它不是"题解集"。它按一条线走：先把方程看成平面上的速度场（§1），再把你学过的线性系统解法读成几何图形（§2），由此得到五种临界点的名字与判据（§3）；然后把"稳定性"从一个感觉变成一个可以验证的定义（§4），得到线性系统的稳定性定理（§5）；最后处理非线性：线性化定理告诉我们什么时候可以只看特征值，什么时候不能（§6），不能的时候用什么办法（§7）。作业的题面与考点在 §8，完整详解在附录 A，另有题面歧义的处理在附录 B。}
+
+%=====================================================================
+\hdr{§0}{路线图、记号与读法}
+
+\subhdr{0.1 这批作业在问什么}
+
+本批作业只有两道大题：第 1 题给三个 $2\times2$ 线性系统，要求判断临界点的类型并研究稳定性；第 2 题给一个含二次项的非线性系统，要求研究平凡解的稳定性。四个小题用到的工具并不相同，下表先给出分布。\textbf{正文只给题面与考点，答案统一在附录 A}，你可以先独立做，再翻到对应页对答案。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{序号} & \thead{系统} & \thead{要判断的} & \thead{判据与详解位置}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l l l p{0.40\linewidth}@{}}
+1(1) & $x'=3x+2y,\ y'=x+4y$ & 类型、稳定性 & 相异实特征值：§3.2、§3.4；附录 A.1，第 \pageref{app:a1} 页\\
+1(2) & $x'=-x,\ y'=-y$ & 类型、稳定性 & 重根与几何重数：§3.5；附录 A.2，第 \pageref{app:a2} 页\\
+1(3) & $x'=-x+2y,\ y'=-2x-y$ & 类型、稳定性 & 共轭复特征值：§3.2；附录 A.3，第 \pageref{app:a3} 页\\
+2 & 二次非线性系统 & 平凡解的稳定性 & 雅可比矩阵与线性化定理：§6.4；附录 A.4，第 \pageref{app:a4} 页\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+读这张表只需要注意一件事：前三小题的答案是"矩阵的性质"，第四小题的答案是"矩阵的性质加上一条定理"。前者你已经会算（$L14$--$L18$ 讲过），后者是这一讲真正新增的东西。
+
+\subhdr{0.2 你手上已有什么，这一讲补什么}
+
+你已经学过两段内容：常系数线性系统与矩阵指数（$L13$--$L18$，含特征值三种情形与 $e^{Ax}$），以及幂级数解法（$L18$--$L20$）。本讲\textbf{不需要新的积分技巧}，需要的是三样新语言：
+
+\begin{itemize}
+\item \textbf{几何语言}：一条解曲线在平面上是什么样子，什么叫"临界点"，五种类型各自长什么样（§1--§3）。没有这套语言，"类型"三个字就是死记的名词。
+\item \textbf{分析语言}：稳定、渐近稳定、不稳定，三个词各自的严格含义（§4）。日常说"稳定"其实混着两个概念，必须拆开。
+\item \textbf{定理语言}：把非线性系统在临界点作一阶展开，用展开后的线性部分下结论——什么条件下合法、什么条件下失效（§6--§7）。
+\end{itemize}
+
+三者的顺序不能颠倒：先有图形，才谈得上"类型"；先有定义，才谈得上"判据"；先有判据，才谈得上"对非线性系统用判据"。
+
+\subhdr{0.3 记号表（全文统一，不再改动）}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{记号} & \thead{含义} & \thead{首次出现}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}lll@{}}
+$t$ & 自变量；本讲一律当作"时间"来读 & §1.1\\
+$x,\ y$（或 $x_1,\ x_2$） & 两个未知函数，也称状态分量 & §1.1\\
+$\X=(x,y)^{\mathrm T}$ & 状态向量；$^{\mathrm T}$ 表示转置 & §1.1\\
+$\X'=\F(\X)$ & 自治系统，$\F=(P,Q)^{\mathrm T}$ & §1.1\\
+$A$ & $2\times2$ 常数矩阵，线性系统的系数 & §2.1\\
+$\tau=\tr A$,\ $\Delta=\det A$ & 迹与行列式 & §2.2\\
+$D=\tau^{2}-4\Delta$ & 特征方程的判别式 & §2.2\\
+$\lambda_1,\ \lambda_2$ & 特征值（特征方程的根） & §2.2\\
+$V$ & 实特征向量；复情形记 $w=u+\mathrm{i}v$ & §2.3\\
+$\X^{*}$ & 临界点（平衡点） & §1.3\\
+轨线、相图 & 解的像集；全部轨线的集合 & §1.2\\
+平凡解 & 零解 $\X(t)\equiv\mathbf{0}$ & §4.5\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\subhdr{0.4 一条主线}
+
+整份讲义只走一条线，每一步都是一个定理，不是一条经验：
+
+\begin{enumerate}
+\item 把 $\X'=\F(\X)$ 看成平面上的速度场，$\F(\X^{*})=0$ 的点叫临界点（§1）。
+\item 在临界点把 $\F$ 作一阶泰勒展开，得到线性系统 $\Y'=A\Y$，$A$ 是雅可比矩阵（§2、§6.2）。
+\item 线性系统的解由 $A$ 的特征值完全决定，轨线形状有五种（§2、§3）。
+\item 特征值的实部决定稳定性，符号决定"进"还是"出"（§4、§5）。
+\item 若所有特征值都不在虚轴上（双曲），则非线性系统在临界点附近与线性系统\textbf{同类}，结论可以搬回去（§6.4）。
+\item 若有特征值落在虚轴上，线性化失效，必须看高阶项或另找李雅普诺夫函数（§6.6、§7）。
+\end{enumerate}
+
+第 2 题恰好落在第 5 步（特征值是 $1$ 与 $0.5$，都不在虚轴上），所以它\textbf{不需要}李雅普诺夫函数；§7 仍然写出来，是为了让你知道第 6 步长什么样，也知道自己为什么可以跳过它。
+
+%=====================================================================
+\hdr{§1}{把方程看成平面上的速度场}
+
+\subhdr{1.1 自治系统}
+
+\textbf{定义 1.1（自治系统）}\ 设 $D$ 是 $\mathbb{R}^{2}$ 中的一个区域，$\F=(P,Q)^{\mathrm T}:D\to\mathbb{R}^{2}$ 连续。称
+\[
+\X'=\F(\X),\qquad \text{即}\quad
+\begin{cases}
+x'=P(x,y),\\[2pt]
+y'=Q(x,y)
+\end{cases}
+\tag{1.1}
+\]
+为\textbf{自治系统}（autonomous system），如果右端不显含 $t$。
+
+"自治"两个字只说一件事：\textbf{速度场不随时间改变}。这带来一个关键推论：两条不同的轨线不能相交（若相交于某点，由解的唯一性，它们必是同一条轨线的时间平移）。所以相图是一张"静态地图"，上面画满了互不相交、带有方向的曲线。
+
+\aside{本讲只讨论右端充分光滑（$C^{1}$）的情形；作业里的右端都是多项式，条件自动满足。}
+
+\subhdr{1.2 轨线与相图}
+
+\textbf{定义 1.2（轨线、相图）}\ 设 $\X(t)$，$t\in I$，是 (1.1) 的一个解。集合
+\[
+\Gamma=\{\X(t):\ t\in I\}\subset\mathbb{R}^{2}
+\]
+称为该系统的一条\textbf{轨线}（trajectory，或称相轨线）；全部轨线（连同方向）的集合称为\textbf{相图}（phase portrait）。
+
+要注意"解"与"轨线"的区别：解是\textbf{带时间的曲线}，轨线是它\textbf{在平面上的像}，时间参数被抹掉了。同一条轨线可以有无数个解（取不同的 $t_0$），它们只差一个时间平移。这一点在作图时很有用：画相图不必标出"什么时候到哪"，只标方向。
+
+\subhdr{1.3 临界点}
+
+\textbf{定义 1.3（临界点）}\ 若 $\X^{*}\in D$ 使 $\F(\X^{*})=\mathbf{0}$，则称 $\X^{*}$ 为系统 (1.1) 的\textbf{临界点}（critical point），也称\textbf{平衡点}、\textbf{驻点}；有些教材叫\textbf{奇点}（singular point）。
+
+为什么这些点特殊：在 $\X^{*}$ 处速度为零，常值函数 $\X(t)\equiv \X^{*}$ 就是一个解，它的轨线退化成\textbf{一个点}。其余轨线在 $\X^{*}$ 处没有确定的切线方向（斜率 $Q/P$ 在分子分母同时为零处失效），所以它们只能"靠近"或"离开"，而不能"穿过"。
+
+\aside{中文教材多用"平衡点"或"奇点"，本课程作业用的是 critical point，三者同义。作业第 1 题写的是 critical point(s)，复数只是因为题目写法通用；当 $\Delta\neq0$ 时临界点只有一个，即原点（见 §1.4）。}
+
+\subhdr{1.4 线性系统的临界点在哪里}
+
+对线性系统 $\X'=A\X$，临界点就是齐次线性方程组 $A\X=\mathbf{0}$ 的解：
+
+\begin{itemize}
+\item 若 $\Delta=\det A\neq0$，只有零解，\textbf{临界点唯一，就是原点}；
+\item 若 $\Delta=0$，则有一整条直线上的点都是临界点，此时"类型"这个词要分开讨论，不在本讲范围。
+\end{itemize}
+
+作业第 1 题三个矩阵的行列式分别是 $10$、$1$、$5$，都不为零，所以三小题都只有一个临界点 $(0,0)$。做题时把这句写出来，是完整性的一部分。
+
+\subhdr{1.5 一个最小的例子：把 $x'=y,\ y'=-x$ 画出来}
+
+这个例子的价值在于：不写一个特征值，只用"相除"就能看到图形，从而明白"类型"这些名字是从哪里来的。把两式相除，
+\[
+\frac{\mathrm{d}y}{\mathrm{d}x}=\frac{y'}{x'}=-\frac{x}{y}
+\quad\Longrightarrow\quad
+y\,\mathrm{d}y=-x\,\mathrm{d}x
+\quad\Longrightarrow\quad
+x^{2}+y^{2}=C .
+\tag{1.2}
+\]
+所以轨线是一族以原点为心的圆（图 \ref{fig:kinds}(d)），方向由 $x'=y$ 定：在 $(1,0)$ 处 $y'=-x=-1<0$，向下走，所以是\textbf{顺时针}。原点本身是临界点，轨线绕着它转，既不进入也不离开。这种图形有一个专门的名字：\textbf{中心}。
+
+再换一个：$x'=x,\ y'=2y$。相除得 $\dfrac{\mathrm{d}y}{\mathrm{d}x}=\dfrac{2y}{x}$，分离变量得 $y=Cx^{2}$，一族抛物线，全部从原点出发（图 \ref{fig:kinds}(a) 就是这一类的样子，只是特征值换成了 $5$ 与 $2$）。这种"所有轨线都从同一点射出"的图形叫\textbf{结点}。
+
+两个例子说明：类型名字是\textbf{轨线几何}的名字，不是矩阵的名字。后面的任务就是：不解方程，直接从矩阵读出它是哪一种几何。
+
+%=====================================================================
+\hdr{§2}{线性系统：解的三种形态}
+
+\subhdr{2.1 把两个方程写成一个}
+
+把第 1 题的写法改成矩阵写法（这也是 $L14$--$L15$ 的写法）：
+\[
+\X'=A\X,\qquad
+A=\begin{pmatrix}a_{11}&a_{12}\\ a_{21}&a_{22}\end{pmatrix},\qquad
+\X=\begin{pmatrix}x\\ y\end{pmatrix}.
+\tag{2.1}
+\]
+两个写法完全等价：$x'=a_{11}x+a_{12}y$，$y'=a_{21}x+a_{22}y$。写成一个式子的好处是：下面所有结论都只依赖 $A$ 的\textbf{特征值}，与四个元素怎么排布无关。
+
+\subhdr{2.2 特征方程}
+
+设 $\X=V\mathrm{e}^{\lambda t}$，$V\neq\mathbf{0}$ 是常向量，代入 (2.1)：
+\[
+\lambda V\mathrm{e}^{\lambda t}=AV\mathrm{e}^{\lambda t}
+\quad\Longrightarrow\quad
+AV=\lambda V .
+\]
+于是 $V$ 是 $A$ 的特征向量，$\lambda$ 是特征值。要有非零解，必须
+\[
+\det(A-\lambda I)=\lambda^{2}-\tau\lambda+\Delta=0,
+\qquad
+\tau=\tr A=a_{11}+a_{22},\quad \Delta=\det A=a_{11}a_{22}-a_{12}a_{21}.
+\tag{2.2}
+\]
+两根之和为 $\tau$，之积为 $\Delta$（韦达定理），判别式记
+\[
+D=\tau^{2}-4\Delta .
+\tag{2.3}
+\]
+这三个数 $\tau,\Delta,D$ 就是第 1 题的全部计算量：算出它们，类型与稳定性就定了。
+
+\subhdr{2.3 情形一：相异实根}
+
+若 $\lambda_1\neq\lambda_2$ 为实数，对应实特征向量 $V_1,V_2$，则通解为
+\[
+\X(t)=c_1 V_1\mathrm{e}^{\lambda_1 t}+c_2 V_2\mathrm{e}^{\lambda_2 t},
+\qquad c_1,c_2\in\mathbb{R}.
+\tag{2.4}
+\]
+代入即可验证：$\X'=c_1\lambda_1V_1\mathrm{e}^{\lambda_1t}+c_2\lambda_2V_2\mathrm{e}^{\lambda_2t}=A\X$。$V_1,V_2$ 线性无关（对应不同特征值），所以 (2.4) 是通解。
+
+\subhdr{2.4 情形二：共轭复根（这一步课本常跳过）}
+
+若 $\lambda=\alpha+\mathrm{i}\beta$（$\beta\neq0$）是特征值，因 $A$ 实，$\bar\lambda=\alpha-\mathrm{i}\beta$ 也是。对应的特征向量可以取 $w=u+\mathrm{i}v$（$u,v$ 实向量）。把复解拆成实部与虚部：
+\[
+w\mathrm{e}^{\lambda t}=(u+\mathrm{i}v)\mathrm{e}^{\alpha t}(\cos\beta t+\mathrm{i}\sin\beta t)
+=\mathrm{e}^{\alpha t}\Big[\underbrace{(u\cos\beta t-v\sin\beta t)}_{\text{实部}}
++\mathrm{i}\underbrace{(u\sin\beta t+v\cos\beta t)}_{\text{虚部}}\Big].
+\]
+实部与虚部各自都是实解（因为方程是实系数的），于是通解为
+\[
+\X(t)=\mathrm{e}^{\alpha t}\Big[c_1\big(u\cos\beta t-v\sin\beta t\big)
++c_2\big(u\sin\beta t+v\cos\beta t\big)\Big].
+\tag{2.5}
+\]
+这就是"$\mathrm{e}^{\alpha t}$ 控制远近、$\beta t$ 控制旋转"的来历：它不是背下来的，是 $\mathrm{e}^{(\alpha+\mathrm{i}\beta)t}=\mathrm{e}^{\alpha t}(\cos\beta t+\mathrm{i}\sin\beta t)$ 的实部虚部。
+
+\subhdr{2.5 情形三：重根}
+
+若 $\lambda_1=\lambda_2=\lambda=\tau/2$，要分两种，区别在于\textbf{几何重数} $g$（线性无关特征向量的个数）：
+
+\begin{itemize}
+\item $g=2$：有两个线性无关的特征向量 $V_1,V_2$（等价于 $A=\lambda I$），通解
+\[
+\X=(c_1V_1+c_2V_2)\mathrm{e}^{\lambda t}.
+\tag{2.6}
+\]
+\item $g=1$：只有一个特征向量 $V$。此时第二个解要带一个 $t$：取 $W$ 满足 $(A-\lambda I)W=V$，则
+\[
+\X=\big(c_1V+c_2(tV+W)\big)\mathrm{e}^{\lambda t}.
+\tag{2.7}
+\]
+\end{itemize}
+
+(2.7) 的验证只要一行，写出来是因为很多人记不住 $W$ 的方程该配 $V$ 还是配 $0$：由 $(A-\lambda I)W=V$ 得 $AW=\lambda W+V$，于是
+\[
+\X'=\big(c_2V+\lambda(c_1V+c_2(tV+W))\big)\mathrm{e}^{\lambda t},\qquad
+A\X=\big(c_1\lambda V+c_2(t\lambda V+\lambda W+V)\big)\mathrm{e}^{\lambda t},
+\]
+两式相同。作业第 1 题 (2) 正是 $g=2$ 的情形（$A=-I$，任何非零向量都是特征向量），所以用 (2.6)，不会出现 $t$ 项。
+
+\subhdr{2.6 三种形态怎样决定轨线的形状}
+
+把 (2.4)、(2.5)、(2.6)、(2.7) 并排看，可以读出三条规则，后面所有类型名都由它们生成：
+
+\begin{enumerate}
+\item \textbf{径向}（离原点多远）由实部控制：$\abs{\mathrm{e}^{\lambda t}}=\mathrm{e}^{(\operatorname{Re}\lambda)t}$。实部为负则整体收缩到原点，为正则整体膨胀。
+\item \textbf{角向}（是否旋转）由虚部控制：只有 $\beta\neq0$ 才有 $\cos\beta t,\sin\beta t$，轨线才会绕原点转；$\beta=0$ 时轨线不转，只会"直着走"。
+\item \textbf{直线轨线}由特征向量给出：若 $\lambda$ 实、$V$ 实，则 $\X=cV\mathrm{e}^{\lambda t}$ 是一条过原点的直线，方向沿 $V$。两条这样的直线（对应 $V_1,V_2$）是相图的"骨架"，其余轨线都夹在它们之间。
+\end{enumerate}
+
+\subhdr{2.7 为什么只看特征值就够了}
+
+读者可能会问：$A$ 的四个元素千变万化，凭什么说类型只有五种？理由是\textbf{可逆线性变换保持相图结构}。
+
+设 $A=PBP^{-1}$（$P$ 可逆），令 $\X=P\Y$，则
+\[
+\X'=A\X\iff P\Y'=PBP^{-1}P\Y\iff \Y'=B\Y .
+\]
+也就是说：$A$ 的系统经一个可逆线性变换（拉伸、剪切，不折叠）后，就是 $B$ 的系统。可逆线性变换把直线映成直线、把闭曲线映成闭曲线、把"相切"映成"相切"、把"趋于原点"映成"趋于原点"。所以 $A$ 与 $B$ 的相图\textbf{拓扑上一样}，类型名当然一样。而任意矩阵都可以化到若尔当标准形，其对角元正是特征值。于是：
+\[
+\text{类型与稳定性只取决于特征值（以及重根时的几何重数）}.
+\]
+这条结论是所有"判别表"的根据；§6 的非线性定理，本质上是它的"局部版本"。
+
+%=====================================================================
+%=====================================================================
+\hdr{§3}{五种临界点：名字、判据、图形}
+
+\subhdr{3.1 判别式：把两个特征值换成三个数}
+
+由 (2.2)，特征值可以写成
+\[
+\lambda_{1,2}=\frac{\tau\pm\sqrt{D}}{2},\qquad D=\tau^{2}-4\Delta .
+\tag{3.1}
+\]
+于是判断类型不必真的解方程，只看三个数的符号：$D$ 决定"实还是复"，$\Delta=\lambda_1\lambda_2$ 决定"同号还是异号"，$\tau=\lambda_1+\lambda_2$ 决定"正还是负"。\textbf{下表只是把 (3.1) 与韦达定理读了一遍}，不承载新的推导。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{条件} & \thead{特征值} & \thead{类型} & \thead{稳定性}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.19\linewidth} p{0.20\linewidth} p{0.24\linewidth} p{0.27\linewidth}@{}}
+$\Delta<0$ & 实，异号 & 鞍点 & 恒不稳定\\[2pt]
+$\Delta>0,\ D>0$ & 实，同号且不等 & 结点 & $\tau<0$ 稳定；$\tau>0$ 不稳定\\[2pt]
+$\Delta>0,\ D=0$ & 重根 $\lambda=\tau/2$ & 临界结点（$g=2$）或退化结点（$g=1$） & $\tau<0$ 稳定；$\tau>0$ 不稳定\\[2pt]
+$\Delta>0,\ D<0$，\newline $\tau\neq0$ & 复，实部 $\tau/2\neq0$ & 焦点 & $\tau<0$ 稳定；$\tau>0$ 不稳定\\[2pt]
+$\Delta>0,\ D<0$，\newline $\tau=0$ & 纯虚 $\pm\mathrm{i}\beta$ & 中心 & 稳定，但非渐近\\[2pt]
+$\Delta=0$ & 有零根 & 退化（整条直线都是临界点） & 本题不出现\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{逐行读法}（每一行都对应 $\lambda_{1,2}=(\tau\pm\sqrt D)/2$ 的一次代入）：
+
+\begin{itemize}
+\item 第一行：$D=\tau^{2}-4\Delta>0$ 且 $\Delta<0$，故 $\sqrt{D}>\abs{\tau}$，一根为正、一根为负——这是鞍点。
+\item 第二行：$D>0$ 给实根，$\Delta>0$ 给同号，$\tau$ 的符号就是两根共同的符号。$\tau>0$ 时两根都为正（都往外跑）。
+\item 第三行：$D=0$ 时 $\sqrt{D}=0$，两根重合为 $\tau/2$；此时"结点"的具体形状还要看几何重数 $g$，见 §3.5。
+\item 第四行：$D<0$ 给复根 $\tau/2\pm\mathrm{i}\sqrt{\abs{D}}/2$，实部就是 $\tau/2$；实部非零才会既有旋转又有进出。
+\item 第五行：$\tau=0$ 使实部为零，只剩纯虚根 $\pm\mathrm{i}\sqrt{\Delta}$，轨线是闭合椭圆——中心。它是这张表里唯一"稳定但非渐近"的行。
+\item 第六行：$\Delta=0$ 表示 $A$ 奇异，$A\X=\mathbf{0}$ 有非零解，临界点不再唯一，本章的判据不适用。
+\end{itemize}
+
+\textbf{边界行（$D=0$）要单独记住}：$D=0$ 的点恰好落在图 \ref{fig:taud} 的抛物线上，那里既不是"典型的结点"也不是"焦点"，而是重根。作业第 1 题 (2) 就落在这条抛物线上（$\tau=-2$，$\Delta=1$，$D=0$），所以它必须走 §3.5 的分析，不能套"$D>0$ 为结点"那一行。
+
+\subhdr{3.2 五种类型：逐个看图形}
+
+\figblock[fig:kinds]{fig1-kinds.pdf}{0.99}{六种基本相图（本讲插图，数值积分绘制）。浅色为方向场，深色为轨线，虚线为特征方向。其中 (a)(c)(e) 正是作业第 1 题的三个系统：$A=\begin{pmatrix}3&2\\1&4\end{pmatrix}$、$A=\begin{pmatrix}-1&2\\-2&-1\end{pmatrix}$、$A=-I$；(b)(d)(f) 是对照用的标准例子。箭头的方向就是时间增加的方向。}
+
+\subhdr{（1）结点（node）}
+
+条件：$\Delta>0$，$D>0$，两根同号。稳不稳定看 $\tau$：两根都负则所有轨线都进去（稳定），都正则都出来（不稳定）。
+
+形状：两条\textbf{直线轨线}沿 $V_1,V_2$ 的方向；其余轨线是曲线，进入（或离开）原点时\textbf{与"慢方向"相切}。所谓慢方向，就是 $\abs{\lambda}$ 较小的那个特征向量方向。原因是 (2.4) 可以提公因子：
+\[
+\X=\mathrm{e}^{\lambda_2 t}\Big[c_1V_1\mathrm{e}^{(\lambda_1-\lambda_2)t}+c_2V_2\Big],
+\qquad \lambda_1<\lambda_2 .
+\]
+当 $t\to-\infty$（沿时间倒着看，轨线逼近原点），$\mathrm{e}^{(\lambda_1-\lambda_2)t}\to0$，方括号趋于 $c_2V_2$，所以切线方向就是 $V_2$——较小的特征值。$\tau>0$ 时把 $t\to+\infty$ 代入同一句话，切向仍是 $V_2$（$\lambda_2>\lambda_1$，$\mathrm{e}^{\lambda_2t}$ 长得快）。
+
+图 \ref{fig:kinds}(a) 是 $\lambda=2,5$ 的情形：两条直线轨线分别是 $(-2,1)$ 与 $(1,1)$ 方向，其余轨线离开原点时先贴着 $(-2,1)$（慢方向），走远后才被 $(1,1)$ 拉走。
+
+\subhdr{（2）鞍点（saddle）}
+
+条件：$\Delta<0$，两根异号。\textbf{恒不稳定}，不必再看 $\tau$。
+
+形状：两条直线轨线，一条进来（沿负特征值方向），一条出去（沿正特征值方向），其余轨线是双曲线型，进来一阵又转出去。图 \ref{fig:kinds}(b) 用的 $A=\operatorname{diag}(1,-1)$，两条直线就是坐标轴。
+
+鞍点在作业里不会出现（第 1 题三个矩阵的 $\Delta$ 都大于零），但它是"$\Delta<0$ 就是不稳定"这条判据的全部理由，考试里常考，值得记住图形。
+
+\subhdr{（3）焦点（focus）}
+
+条件：$\Delta>0$，$D<0$，且 $\tau\neq0$（实部不为零）。稳定性由 $\tau$ 定：$\tau<0$ 稳定，$\tau>0$ 不稳定。
+
+形状：螺旋线，绕原点转无穷多圈，同时半径按 $\mathrm{e}^{\tau t/2}$ 缩放。由 (2.5)，极坐标下半径正比于 $\mathrm{e}^{\tau t/2}$，角度是 $\beta t$ 加常数，两者合起来就是对数螺线——每转一圈，半径乘同一个因子。
+
+图 \ref{fig:kinds}(c) 是作业第 1 题 (3) 的系统：$\lambda=-1\pm2\mathrm{i}$，所以每单位时间转 $2$ 弧度、半径乘 $\mathrm{e}^{-1}$，是"顺时针向内卷"的稳定焦点。
+
+\subhdr{（4）中心（center）}
+
+条件：$\tau=0$，$\Delta>0$（于是 $D=-4\Delta<0$，纯虚根 $\pm\mathrm{i}\sqrt{\Delta}$）。
+
+形状：闭合椭圆，轨线绕原点转圈但半径不变（(2.5) 中 $\mathrm{e}^{\alpha t}=1$）。这是 §1.5 的圆族的一般情形；作一个可逆线性变换就能把圆拉成椭圆，所以一般不写"圆"而写"椭圆"。
+
+中心\textbf{稳定但不渐近稳定}：初值落在哪条椭圆上，就永远待在那条椭圆上，回不到原点。这一点是 §4 的核心例子。
+
+\subhdr{（5）退化情形：重根}
+
+条件：$D=0$，$\lambda_1=\lambda_2=\tau/2$。此时"类型"由\textbf{几何重数} $g$ 决定，两种情形在图上能一眼分辨：
+
+\begin{itemize}
+\item $g=2$（$A=\lambda I$）：每个方向都是特征方向，轨线是\textbf{过原点的直线束}，这种叫\textbf{临界结点}（也译星形结点、proper node）。(2.6) 里没有 $t$，所以 $y/x$ 是常数。
+\item $g=1$：只有一个特征方向，其余轨线都\textbf{切着这一个方向}进出，叫\textbf{退化结点}（degenerate node）。(2.7) 里有 $t$ 因子，轨线会拐弯。
+\end{itemize}
+
+作业第 1 题 (2) 是 $A=-I$，属于 $g=2$：图 \ref{fig:kinds}(e) 中所有轨线都是笔直的射线，没有一条弯。
+
+\subhdr{3.3 中英文名称对照}
+
+同一批图形在不同教材里叫法不同，做题时认准"条件"就不怕名字乱。\textbf{下表是一张台账，不承载推导}，只把名字与条件对齐。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{中文} & \thead{英文常见写法} & \thead{特征值条件} & \thead{一眼认出的特征}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l l l p{0.36\linewidth}@{}}
+结点 & node（improper node） & $\Delta>0,\ D>0$ & 两条直线轨线，其余切于慢方向\\
+鞍点 & saddle (point) & $\Delta<0$ & 一进一出两条直线，其余双曲\\
+焦点 & focus, spiral & $\Delta>0,\ D<0,\ \tau\neq0$ & 螺旋，无限多圈\\
+中心 & center & $\tau=0,\ \Delta>0$ & 闭合椭圆\\
+临界结点 & star node, proper node & $D=0,\ g=2$ & 直线束，各方向皆特征向\\
+退化结点 & degenerate node & $D=0,\ g=1$ & 只有一个特征方向\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+注意英文的 "proper node" 与 "star node" 是同一个东西（对应中文"临界结点"），而 "improper node" 对应中文普通"结点"（$\lambda_1\neq\lambda_2$）。名字不同不要紧，条件 $\Delta>0,D>0$ 与 $g$ 才是判据。
+
+\subhdr{3.4 一张图看完所有情形：$\tau$–$\Delta$ 平面}
+
+把表 3.1 的条件画在 $(\tau,\Delta)$ 平面上，就是图 \ref{fig:taud}：抛物线 $\Delta=\tau^{2}/4$（即 $D=0$）把上半平面分成"结点区"（抛物线内侧）与"焦点区"（外侧），$\Delta<0$ 的下半平面全是鞍点，纵轴 $\tau=0$ 的正半轴是中心。\textbf{图上的四个点正是这批作业的四个线性部分}，做题时可以先用眼睛定位，再用代数核实。
+
+\figblock[fig:taud]{fig2-taud.pdf}{0.86}{$\tau$–$\Delta$ 判别图（本讲绘制）。纵轴是 $\Delta=\det A$，横轴是 $\tau=\tr A$；粗曲线是 $D=\tau^2-4\Delta=0$。\cnum{1}–\cnum{4} 依次是作业第 1 题 (1)(2)(3) 与第 2 题在原点的雅可比矩阵：\cnum{1}$(7,10)$ 落结点区右上，\cnum{2}$(-2,1)$ 恰在抛物线上，\cnum{3}$(-2,5)$ 落焦点区左上，\cnum{4}$(1.5,0.5)$ 落结点区右下方。}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}lllll@{}}
+\thead{题号} & \thead{$\tau$} & \thead{$\Delta$} & \thead{$D$} & \thead{落在哪个区、是什么类型}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l l l l p{0.46\linewidth}@{}}
+1(1) & $7$ & $10$ & $9>0$ & 结点区（$\tau>0$）：不稳定结点\\
+1(2) & $-2$ & $1$ & $0$ & 抛物线上的重根：临界结点（$g=2$）\\
+1(3) & $-2$ & $5$ & $-16<0$ & 焦点区（$\tau<0$）：稳定焦点\\
+2 & $3/2$ & $1/2$ & $1/4>0$ & 结点区（$\tau>0$）：不稳定结点（线性化部分）\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是把图 \ref{fig:taud} 的四个点逐个读一遍：横坐标看左右（$\tau$ 的符号），纵坐标看上下（$\Delta$ 的符号），再与抛物线比较看内外。四行都能在图上找到对应的小圆圈，这就是"用眼睛复核代数"的意思。
+
+\subhdr{3.5 重根为什么有两种图形}
+
+§2.5 已经给出两种通解，这里只把差别说透。$g=2$ 时 (2.6) 是
+\[
+\X=(c_1V_1+c_2V_2)\mathrm{e}^{\lambda t},
+\]
+括号里是常向量，所以 $\X$ 与某个固定方向共线——所有轨线都是直线。$g=1$ 时 (2.7) 是
+\[
+\X=\big(c_1V+c_2(tV+W)\big)\mathrm{e}^{\lambda t},
+\]
+括号里随 $t$ 线性增长，方向慢慢转向 $W$，所以轨线不再是直线，而是"贴着 $V$ 方向"弯进去的曲线。
+
+判 $g$ 的办法只有一条：解 $(A-\lambda I)V=\mathbf{0}$，看有几个线性无关解。对 $2\times2$ 矩阵：
+\begin{itemize}
+\item 若 $A-\lambda I=0$（即 $A=\lambda I$），$g=2$；
+\item 否则 $g=1$，此时要按 (2.7) 求 $W$。
+\end{itemize}
+
+\subhdr{3.6 只看 $\Delta$ 会错在哪里}
+
+三个常见误判，都能用图 \ref{fig:taud} 当场驳倒：
+\begin{enumerate}
+\item \textbf{"$\Delta>0$ 就稳定"}——错。$\Delta>0$ 只说明两根同号，同为正则不稳定（\cnum{1}\cnum{4} 就是）。
+\item \textbf{"$\Delta>0$ 就是结点"}——错。要看 $D$：$D<0$ 是焦点（\cnum{3}），$\tau=0$ 是中心。
+\item \textbf{"$\tau<0$ 就稳定"}——在 $\Delta>0$ 的前提下对；但 $\Delta<0$ 时 $\tau<0$ 仍是鞍点，恒不稳定。
+\end{enumerate}
+一句话：\textbf{先看 $\Delta$ 的符号定"鞍点 / 非鞍点"，再看 $D$ 定"实 / 复"，最后看 $\tau$ 定"进 / 出"。}三步顺序不能换。
+
+%=====================================================================
+\hdr{§4}{稳定性：把感觉变成定义}
+
+\subhdr{4.1 从图上问三个问题}
+
+看任何一张相图，都可以问三个层层递进的问题：
+\begin{enumerate}
+\item 初值离临界点很近时，轨线会不会\textbf{跑远}？（跑不远 = 稳定）
+\item 不但跑不远，是不是最终\textbf{回到}临界点？（回来 = 渐近稳定）
+\item 如果无论把初值取得多近，总有一条轨线\textbf{跑出去}？（= 不稳定）
+\end{enumerate}
+注意第一个问题问的是"会不会跑远"，不是"跑到哪"。中心就是"跑不远、也不回来"的典型：初值落在半径 $r$ 的椭圆上，轨线永远在那条椭圆上转。
+
+\subhdr{4.2 三个定义}
+
+设 $\X^{*}=\mathbf{0}$ 是系统 (1.1) 的临界点（一般的 $\X^{*}$ 可平移到原点，见 §4.5），记 $\norm{\X}=\sqrt{x^{2}+y^{2}}$。
+
+\textbf{定义 4.1（稳定，Lyapunov stable）}\ 若对任意 $\eps>0$，存在 $\delta>0$，使得只要 $\norm{\X(0)}<\delta$，就有
+\[
+\norm{\X(t)}<\eps\qquad\text{对一切 }t\ge0,
+\]
+则称零解（从而临界点）\textbf{稳定}。
+
+\textbf{定义 4.2（渐近稳定）}\ 若零解稳定，且存在 $\delta_0>0$，使得只要 $\norm{\X(0)}<\delta_0$，就有
+\[
+\lim_{t\to+\infty}\X(t)=\mathbf{0},
+\]
+则称零解\textbf{渐近稳定}。
+
+\textbf{定义 4.3（不稳定）}\ 若存在 $\eps>0$，使得对任意 $\delta>0$，总存在初值 $\X(0)$ 与时刻 $t_1>0$ 满足
+\[
+\norm{\X(0)}<\delta,\qquad \norm{\X(t_1)}\ge\eps,
+\]
+则称零解\textbf{不稳定}。
+
+三个定义的读法：
+
+\begin{itemize}
+\item $\eps$ 是"允许的活动范围"，$\delta$ 是"初值能取的范围"。定义说的是：\textbf{你给多大的活动范围，我都能找到一个相应的初值范围}，使轨线不越界。
+\item $\delta$ 可以依赖 $\eps$，但\textbf{不能依赖初值}——这正是"一致"的意思。
+\item 不稳定是"稳定的否定"：只要存在一个 $\eps$，使得任何 $\delta$ 都关不住某条轨线，就叫不稳定。它不要求"所有轨线都跑到无穷"，只要求"有一条跑出去"。
+\end{itemize}
+
+\figblock[fig:epsdelta]{fig3-epsdelta.pdf}{0.93}{$\eps$–$\delta$ 两个圆（本讲绘制）。(a) 稳定且渐近：初值取在 $\delta$ 圆内（半径 $0.5$），轨线全部留在 $\eps$ 圆（半径 $1$）内，并且 $t\to\infty$ 时趋于原点。(b) 不稳定：初值取得极小（半径 $0.06$，远小于 $\delta$），仍有一条轨线越出 $\eps$ 圆——所以无论 $\delta$ 取多小都关不住。}
+
+\subhdr{4.3 三个定义的关系}
+
+\begin{itemize}
+\item 渐近稳定 $\Longrightarrow$ 稳定（定义 4.2 的第一句就是"稳定"）。
+\item 稳定 $\not\Longrightarrow$ 渐近稳定。在线性系统里（$\Delta\neq0$），唯一的反例来源是\textbf{中心}：$\tau=0$、$\Delta>0$，轨线是闭合椭圆，永远不回到原点，但也永远不跑远。
+\item 不稳定 $=$ 非稳定，它不是"渐近稳定"的反义词。逻辑关系是：渐近稳定 $\Longrightarrow$ 稳定，所以不稳定 $\Longrightarrow$ 不渐近稳定。反过来，"不渐近稳定"包含了两种情况——不稳定（如不稳定结点），和"稳定但不渐近"（如中心）。
+\end{itemize}
+
+\subhdr{4.4 一维对照：$x'=ax$}
+
+一维情形把三个概念摊得最开：
+\[
+x(t)=x_0\mathrm{e}^{at}.
+\]
+\begin{itemize}
+\item $a<0$：$x_0$ 再大也趋于 $0$，渐近稳定。
+\item $a=0$：$x(t)\equiv x_0$，轨线停在原地，稳定但不渐近。
+\item $a>0$：$x_0\neq0$ 时 $\abs{x(t)}\to\infty$，不稳定。
+\end{itemize}
+二维的判据 (5.1) 就是把这三句话搬到"实部"上：$\operatorname{Re}\lambda<0$ 相当于 $a<0$，$\operatorname{Re}\lambda=0$ 相当于 $a=0$，$\operatorname{Re}\lambda>0$ 相当于 $a>0$。
+
+\subhdr{4.5 什么叫"平凡解"，什么叫"研究临界点的稳定性"}
+
+线性齐次系统 $\X'=A\X$ 永远有零解 $\X(t)\equiv\mathbf{0}$，这个解叫\textbf{平凡解}（trivial solution）。同时，$\mathbf{0}$ 又是它的临界点（因为 $A\mathbf{0}=\mathbf{0}$）。所以对这类系统，"平凡解的稳定性"、"原点的稳定性"、"临界点的稳定性"是同一句话。作业第 2 题写的是 "the stability of the trivial solution"，指的就是 $\X=\mathbf{0}$ 这个解。
+
+对非线性系统，$\X=\mathbf{0}$ 是不是临界点要单独验证：把 $\X=\mathbf{0}$ 代入右端，看是否为零向量。第 2 题的两个右端都不含常数项，所以代入得零，原点确为临界点——这一步在详解里必须写出来，它是"平凡解"三个字的前提。
+
+\subhdr{4.6 三个容易混的说法}
+
+\begin{enumerate}
+\item \textbf{"稳定"不是"有界"}。稳定说的是"初值小则解小"，是一致性的陈述；只说"解有界"不够，因为界可能依赖初值任意地大。
+\item \textbf{"不稳定"不是"所有解都发散"}。以鞍点 $x'=x,\ y'=-y$ 为例，沿 $y$ 轴出发的解（$x\equiv0$）是趋于原点的，有界得很；但沿 $x$ 轴出发的解跑到无穷，所以整个系统不稳定。判不稳定只需\textbf{一条}反例轨线。
+\item \textbf{"渐近稳定"比"稳定"多一个"回来"}，而"回来"必须是 $t\to+\infty$ 的极限，不能是"绕了几圈看起来近了"。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§5}{线性系统的稳定性定理}
+
+\subhdr{5.1 定理（完整陈述）}
+
+\textbf{定理 5.1}\ 设 $A$ 是 $2\times2$ 实常数矩阵，考虑 $\X'=A\X$，$\lambda_1,\lambda_2$ 为其特征值。
+
+\begin{enumerate}
+\item[(i)] 若 $\operatorname{Re}\lambda_1<0$ 且 $\operatorname{Re}\lambda_2<0$，则零解\textbf{渐近稳定}（事实上是指数衰减：存在 $C,\gamma>0$ 使 $\norm{\X(t)}\le C\mathrm{e}^{-\gamma t}\norm{\X(0)}$）。
+\item[(ii)] 若 $\operatorname{Re}\lambda_1>0$ 或 $\operatorname{Re}\lambda_2>0$，则零解\textbf{不稳定}。
+\item[(iii)] 若 $\operatorname{Re}\lambda_1\le0$、$\operatorname{Re}\lambda_2\le0$，且实部为零的特征值都满足"代数重数 $=$ 几何重数"（即没有非对角的若尔当块），则零解\textbf{稳定但不渐近稳定}。
+\item[(iv)] 其余情形（存在实部为零的重特征值，且对应若尔当块非对角）则零解\textbf{不稳定}。
+\end{enumerate}
+
+\subhdr{5.2 证明}
+
+证明不需要新工具，只要把 §2 的四种通解形式逐一看"能不能被 $\eps$ 关住"。
+
+\textbf{情形 $D>0$（相异实根）}：由 (2.4)，
+\[
+\norm{\X(t)}\le\abs{c_1}\norm{V_1}\mathrm{e}^{\lambda_1t}+\abs{c_2}\norm{V_2}\mathrm{e}^{\lambda_2t}.
+\]
+若 $\lambda_1,\lambda_2<0$，取 $\gamma=-\max(\lambda_1,\lambda_2)>0$，则右端 $\le C\norm{\X(0)}\mathrm{e}^{-\gamma t}\to0$，得 (i)。若某个 $\lambda_j>0$，沿 $V_j$ 方向取初值（即 $c_j\neq0$，另一系数为零），则 $\norm{\X(t)}=\abs{c_j}\norm{V_j}\mathrm{e}^{\lambda_jt}\to\infty$，对任意 $\eps$ 终将越界，得 (ii)。
+
+\textbf{情形 $D<0$（共轭复根）}：由 (2.5)，$\norm{\X(t)}\le M\mathrm{e}^{\alpha t}\norm{\X(0)}$，$\alpha=\tau/2=\operatorname{Re}\lambda$。$\alpha<0$ 时指数衰减，得 (i)；$\alpha>0$ 时沿任意非零初值都指数增长，得 (ii)；$\alpha=0$ 时 $\norm{\X(t)}$ 只由三角函数决定，$\norm{\X(t)}\le M\norm{\X(0)}$ 且轨线闭合、不趋于零——稳定但不渐近，这正是 (iii) 中"纯虚单根"的情形。
+
+\textbf{情形 $D=0$（重根）}：
+\begin{itemize}
+\item $g=2$：由 (2.6)，$\norm{\X(t)}\le M\mathrm{e}^{\lambda t}\norm{\X(0)}$，$\lambda=\tau/2$。$\lambda<0$ 得 (i)，$\lambda>0$ 得 (ii)，$\lambda=0$ 得 (iii)（此时 $\X$ 是常向量，稳定不渐近）。
+\item $g=1$：由 (2.7)，$\norm{\X(t)}\le M(1+t)\mathrm{e}^{\lambda t}\norm{\X(0)}$。$\lambda<0$ 时 $(1+t)\mathrm{e}^{\lambda t}\to0$，仍得 (i)（只是衰减慢一点，不是指数）；$\lambda>0$ 得 (ii)；$\lambda=0$ 时 $\norm{\X(t)}$ 随 $t$ 线性增长，对任意 $\eps$ 终将越界，得 (iv)。
+\end{itemize}
+
+定理证完。注意 (i) 中的"指数衰减"对 $g=1$ 的重根不成立（有 $t$ 因子），但"渐近稳定"仍然成立——所以定理只说渐近稳定，把指数衰减放在括号里作为加强陈述。
+
+\subhdr{5.3 二维的实用判据}
+
+把定理 5.1 与表 3.1 合并，得到只涉及 $\tau,\Delta$ 的判据（二维的 Routh–Hurwitz 判据）：
+
+\textbf{推论 5.2}\ 对 $\X'=A\X$（$\Delta\neq0$）：
+\begin{itemize}
+\item $\Delta>0$ 且 $\tau<0$ $\iff$ 零解渐近稳定（两根实部都负）；
+\item $\Delta>0$ 且 $\tau=0$ $\iff$ 零解稳定但非渐近（中心）；
+\item $\Delta>0$ 且 $\tau>0$ $\Longrightarrow$ 零解不稳定；
+\item $\Delta<0$ $\Longrightarrow$ 零解不稳定（鞍点）。
+\end{itemize}
+注意第一条是"当且仅当"：在 $\Delta\neq0$ 的前提下，渐近稳定与 $\tau<0,\Delta>0$ 完全等价，不需要再算 $D$。
+
+\subhdr{5.4 两个边界例子}
+
+\begin{itemize}
+\item $A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$：$\tau=0$，$\Delta=1$，$\lambda=\pm\mathrm{i}$，中心。稳定，但 \textbf{不}渐近稳定。这说明"$\tau=0$"这一行不能并入"$\tau<0$"。
+\item $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$：$\tau=0$，$\Delta=0$，$\lambda=0$ 为二重根且 $g=1$。解为 $x=x_0+y_0t$，$y=y_0$，随 $t$ 线性增长，不稳定。这说明"$\tau=0$"也不能一概算稳定——要看有没有 $t$ 因子（即若尔当块）。
+\end{itemize}
+
+这两例合起来就是定理 5.1 第 (iii)(iv) 两条的存在理由，也是 §3.5 强调"重根要看 $g$"的原因。
+
+%=====================================================================
+\hdr{§6}{非线性系统：临界点、线性化与一条定理}
+
+\subhdr{6.1 非线性的临界点可能不止一个}
+
+对线性系统，临界点就是 $A\X=\mathbf{0}$ 的解，要么唯一（原点），要么一整条直线。对非线性系统，临界点是\textbf{非线性方程组} $\F(\X)=\mathbf{0}$ 的解，可能没有、可能一个、可能好几个。
+
+作业第 2 题的系统是
+\[
+\begin{cases}
+x_1'=x_1-x_1^{2}-x_1x_2,\\[2pt]
+x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}.
+\end{cases}
+\tag{6.1}
+\]
+把 $\X=\mathbf{0}$ 代入右端，两个式子都是 $0$，所以原点确为临界点，$\X(t)\equiv\mathbf{0}$ 确为它的平凡解——题目问的"the trivial solution"就是这个解。至于这个系统还有没有别的临界点，本题不必回答，但 §6.8 会把它算完，因为那是检验你是否真的会用线性化的最好练习。
+
+\subhdr{6.2 线性化就是一阶泰勒展开}
+
+设 $\X^{*}$ 是临界点，$\F$ 在 $\X^{*}$ 附近 $C^{1}$。把 $\F$ 在 $\X^{*}$ 处展开到一阶：
+\[
+\F(\X)=\underbrace{\F(\X^{*})}_{=\,\mathbf{0}}+\Jac(\X^{*})(\X-\X^{*})+o\big(\norm{\X-\X^{*}}\big),
+\qquad
+\Jac(\X^{*})=\begin{pmatrix}
+\dfrac{\partial P}{\partial x}&\dfrac{\partial P}{\partial y}\\[8pt]
+\dfrac{\partial Q}{\partial x}&\dfrac{\partial Q}{\partial y}
+\end{pmatrix}_{\X=\X^{*}},
+\tag{6.2}
+\]
+其中 $\Jac(\X^{*})$ 叫\textbf{雅可比矩阵}（Jacobi matrix）。令 $\U=\X-\X^{*}$（把临界点平移到原点），则
+\[
+\U'=\Jac(\X^{*})\U+o(\norm{\U}),
+\tag{6.3}
+\]
+扔掉高阶项得到的线性系统
+\[
+\U'=\Jac(\X^{*})\U
+\tag{6.4}
+\]
+称为原系统在 $\X^{*}$ 处的\textbf{线性化系统}，$\Jac(\X^{*})$ 称为\textbf{线性部分}。
+
+\callout{\textbf{与上一讲的连接。}你在 $L18$--$L20$ 学的是"把一个函数写成幂级数"：$f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^{2}+\cdots$。式 (6.2) 是同一件事的二维版本：把向量函数写成"常数项 $+$ 一次项 $+$ 二次以上"。区别只有两个：一是这里的常数项恰好为零（因为 $\X^{*}$ 是临界点），二是我们\textbf{只保留一次项}——因为在足够小的邻域里，二次以上的项比一次项小得多，而稳定性与类型只由"一次项占不占主导"决定。这件事什么时候成立，就是 §6.4 的定理要回答的。}
+
+\subhdr{6.3 双曲临界点}
+
+\textbf{定义 6.1（双曲）}\ 若 $\Jac(\X^{*})$ 的特征值全都满足 $\operatorname{Re}\lambda\neq0$，则称 $\X^{*}$ 为\textbf{双曲临界点}（hyperbolic critical point）。
+
+"双曲"这个词与双曲函数、双曲几何没有关系，它只是"特征值不落在虚轴上"的简称。它的用处是：\textbf{双曲时线性化可靠}。
+
+\subhdr{6.4 线性化定理}
+
+\textbf{定理 6.1（李雅普诺夫第一方法，稳定性部分）}\ 设 $\F\in C^{1}$，$\F(\mathbf{0})=\mathbf{0}$，$A=\Jac(\mathbf{0})$，$\lambda_1,\lambda_2$ 为 $A$ 的特征值。则
+\begin{enumerate}
+\item[(a)] 若 $\operatorname{Re}\lambda_1<0$ 且 $\operatorname{Re}\lambda_2<0$，则零解\textbf{渐近稳定}；
+\item[(b)] 若 $\operatorname{Re}\lambda_1>0$ 或 $\operatorname{Re}\lambda_2>0$，则零解\textbf{不稳定}。
+\end{enumerate}
+
+\textbf{定理 6.2（Hartman–Grobman，类型部分）}\ 若 $\mathbf{0}$ 是双曲临界点，则在 $\mathbf{0}$ 的某个邻域内，非线性系统 (6.3) 的相图与线性系统 (6.4) 的相图\textbf{拓扑等价}：存在把两者互相映过去的连续可逆变换，把轨线映成轨线、把方向映成方向。
+
+两个定理分工不同：6.1 管"稳不稳"，6.2 管"叫什么名字"。做作业时两句都要写——只写"渐近稳定"而不说"稳定焦点"，或者只说"结点"而不说"稳定"，都是半截答案。\textbf{第 2 题的答案只需要用到 6.1(b)}：线性部分有正特征值，于是不稳定；再借 6.2 补一句"邻域内呈结点型发散"。
+
+\subhdr{6.5 定理 6.1 为什么成立（证明思路）}
+
+把 (6.3) 写成
+\[
+\X'=A\X+\mathbf{R}(\X),\qquad \norm{\mathbf{R}(\X)}\le\eps\norm{\X}\ \ (\norm{\X}\le\rho),
+\tag{6.5}
+\]
+这里 $\eps$ 可以取得任意小（$\mathbf{R}$ 是 $o(\norm{\X})$ 的直接翻译）。由常数变易公式，
+\[
+\X(t)=\mathrm{e}^{At}\X(0)+\int_0^{t}\mathrm{e}^{A(t-s)}\mathbf{R}\big(\X(s)\big)\dd s .
+\tag{6.6}
+\]
+关键是一个矩阵估计：若所有特征值实部 $<0$，则存在 $K\ge1$、$\gamma>0$ 使
+\[
+\norm{\mathrm{e}^{At}}\le K\mathrm{e}^{-\gamma t}\qquad(t\ge0).
+\tag{6.7}
+\]
+（理由：把 $A$ 化到若尔当标准形，每个块 $\mathrm{e}^{\lambda t}$ 前面至多带一个 $t^{k}$ 因子，而 $t^{k}\mathrm{e}^{\lambda t}\le C\mathrm{e}^{(\operatorname{Re}\lambda+\gamma)t}$，块只有有限个，取最大值即可。）把 (6.7) 代入 (6.6)：
+\[
+\norm{\X(t)}\le K\mathrm{e}^{-\gamma t}\norm{\X(0)}+K\eps\int_0^{t}\mathrm{e}^{-\gamma(t-s)}\norm{\X(s)}\dd s .
+\]
+两边乘 $\mathrm{e}^{\gamma t}$，记 $\varphi(t)=\mathrm{e}^{\gamma t}\norm{\X(t)}$，得
+\[
+\varphi(t)\le K\norm{\X(0)}+K\eps\int_0^{t}\varphi(s)\dd s ,
+\]
+由格朗沃尔（Gronwall）不等式，$\varphi(t)\le K\norm{\X(0)}\mathrm{e}^{K\eps t}$，即
+\[
+\norm{\X(t)}\le K\norm{\X(0)}\mathrm{e}^{-({\gamma-K\eps})t}.
+\]
+取 $\eps<\gamma/K$，指数仍为负，于是 $\X(t)\to\mathbf{0}$，且衰减是指数的——(a) 得证。(b) 的证明思路类似：若某 $\operatorname{Re}\lambda>0$，沿对应的（广义）特征方向取初值，线性解已经指数增长，非线性项只贡献 $o(\norm{\X})$，不足以把它拉回来（严格的论证用"不稳定流形"或切塔耶夫方法，本讲不展开）。
+
+\subhdr{6.6 为什么必须"双曲"：三个线性部分完全相同的例子}
+
+三个系统，线性部分都是 $A=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$，即 $\lambda=\pm\mathrm{i}$、$\tau=0$、$\Delta=1$，线性化是"中心"，按定理 6.1 属于\textbf{无结论}的情形。可是它们的真实行为完全不同。取 $V=x^{2}+y^{2}=r^{2}$，沿轨线求导：
+\[
+\dot V=\frac{\dd}{\dd t}(x^{2}+y^{2})=2(xx'+yy').
+\]
+
+\textbf{(i)} $x'=-y-x(x^{2}+y^{2})$，$y'=x-y(x^{2}+y^{2})$。代入：
+\[
+\dot V=2\big[x(-y-xr^{2})+y(x-yr^{2})\big]
+=2\big[-xy-x^{2}r^{2}+xy-y^{2}r^{2}\big]=-2r^{4}<0 .
+\]
+$r>0$ 时严格为负，所以 $r$ 单调递减、趋于 $0$：\textbf{渐近稳定}，相图是向内卷的螺旋（稳定焦点）。
+
+\textbf{(ii)} $x'=-y+x(x^{2}+y^{2})$，$y'=x+y(x^{2}+y^{2})$。同样代入，两项的符号翻转：
+\[
+\dot V=2\big[-xy+x^{2}r^{2}+xy+y^{2}r^{2}\big]=+2r^{4}>0 ,
+\]
+$r$ 单调递增：\textbf{不稳定}，相图是向外张的螺旋（不稳定焦点）。
+
+\textbf{(iii)} $x'=-y$，$y'=x$。此时
+\[
+\dot V=2(-xy+yx)=0 ,
+\]
+$r$ 恒定，轨线是圆：\textbf{中心}，稳定但不渐近。
+
+三个系统的线性部分一模一样，结论却有三种。原因就写在 (6.3) 的 $o(\norm{\U})$ 里：当特征值实部为零时，一次项既不收缩也不放大，二次项的量级不再"小到可以忽略"，它\textbf{决定}了命运。这就是定理 6.1 必须要求 $\operatorname{Re}\lambda\neq0$ 的理由。
+
+\aside{注意："线性化无结论"不等于"结论与线性化相反"，也不等于"系统一定不稳定"。单摆（§6.7）在最低点附近就是"无结论但实际是中心"的例子。}
+
+\subhdr{6.7 例 1：单摆的两个临界点}
+
+\textbf{例 1}\ 无阻尼单摆（取 $g=\ell=1$）满足 $x''=-\sin x$，令 $y=x'$ 化为一阶系统
+\[
+x'=y,\qquad y'=-\sin x .
+\]
+\textbf{求临界点并判断类型。}
+
+\textbf{解}\ 临界点满足 $y=0$、$\sin x=0$，即 $(k\pi,0)$，$k\in\mathbb{Z}$。雅可比矩阵
+\[
+\Jac(x,y)=\begin{pmatrix}0&1\\-\cos x&0\end{pmatrix}
+\quad\Longrightarrow\quad
+\Jac(k\pi,0)=\begin{pmatrix}0&1\\(-1)^{k+1}&0\end{pmatrix},
+\]
+特征方程 $\lambda^{2}-(-1)^{k+1}=0$，即 $\lambda^{2}=(-1)^{k+1}$。
+
+$k$ 为奇数（如 $(\pi,0)$，摆球在最高点）：$\lambda^{2}=1$，$\lambda=\pm1$ 异号，$\Delta=-1<0$，是\textbf{鞍点}，不稳定——物理上，摆球停在最高点，任何微小扰动都会让它落下。
+
+$k$ 为偶数（如 $(0,0)$，摆球在最低点）：$\lambda=\pm\mathrm{i}$，线性化是中心，\textbf{定理 6.1 不适用}。真实行为确实是中心（因为系统有能量守恒），但要证明它需要另找守恒量 $E=\frac{1}{2}y^{2}+1-\cos x$，不能靠线性化。这个例子说明：无结论时，要么另找方法，要么承认判断不了——不能硬套。
+
+\subhdr{6.8 例 2：把这个二次系统算到底}
+
+本题只问原点，但"多临界点"是这一章最容易漏的地方，所以把同一个系统算完。由 (6.1) 令右端为零：
+\[
+x_1(1-x_1-x_2)=0,\qquad x_2(0.5-0.75x_1-0.25x_2)=0 .
+\tag{6.8}
+\]
+两个因子各取一个零，得四组解：
+\[
+(0,0),\qquad (1,0),\qquad (0,2),\qquad (0.5,\,0.5).
+\]
+（第四组来自 $1-x_1-x_2=0$ 与 $0.5-0.75x_1-0.25x_2=0$ 联立：把 $x_2=1-x_1$ 代入第二式得 $0.5-0.75x_1-0.25+0.25x_1=0$，即 $0.25=0.5x_1$，故 $x_1=0.5$，$x_2=0.5$。）
+
+一般点的雅可比矩阵由 (6.2) 逐项求偏导：
+\[
+\Jac(x_1,x_2)=
+\begin{pmatrix}
+1-2x_1-x_2 & -x_1\\[4pt]
+-0.75x_2 & 0.5-0.75x_1-0.5x_2
+\end{pmatrix}.
+\tag{6.9}
+\]
+逐点代入，得到下表。\textbf{表前一句}：这张表只是把 (6.9) 在四个点上各算一次特征值，再按表 3.1 归类。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}lllll@{}}
+\thead{临界点} & \thead{$\Jac$} & \thead{特征值} & \thead{类型} & \thead{稳定性}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l l l l l@{}}
+$(0,0)$ & $\operatorname{diag}(1,\,0.5)$ & $1,\ 0.5$ & 结点 & 不稳定\\
+$(1,0)$ & $\begin{pmatrix}-1&-1\\0&-0.25\end{pmatrix}$ & $-1,\ -0.25$ & 结点 & 渐近稳定\\
+$(0,2)$ & $\begin{pmatrix}-1&0\\-1.5&-0.5\end{pmatrix}$ & $-1,\ -0.5$ & 结点 & 渐近稳定\\
+$(0.5,0.5)$ & $\begin{pmatrix}-0.5&-0.5\\-0.375&-0.125\end{pmatrix}$ & $\approx0.159,\ \approx-0.784$ & 鞍点 & 不稳定\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{逐行读法}：第一行 $\tau=1.5>0$、$\Delta=0.5>0$、$D=0.25>0$，落在图 \ref{fig:taud} 的结点区右上方；第二、三行 $\tau<0$、$\Delta>0$、$D>0$，落在结点区左上方；第四行 $\Delta=-1/8<0$，$\tau=-5/8$，落在鞍点区（$\Delta<0$ 与 $\tau$ 的符号无关）。第四行的特征值是 $(-5\pm\sqrt{57})/16$，一正一负，正是 $\Delta<0$ 的必然结果，不必真算出来也能判鞍点。
+
+\figblock[fig:hw2]{fig4-hw2.pdf}{0.99}{第 2 题系统的相图（本讲数值绘制）。(a) 全局：四个临界点各带类型标签，$\times$ 为鞍点；鞍点的两条分界线把平面分成几个"流域"。(b) 原点放大：初值取得很小，轨线仍全部离开原点，且先沿 $x_2$ 轴（$\lambda=0.5$，增长较慢）离开，再被 $x_1$ 方向（$\lambda=1$，增长较快）拉走。}
+
+注意 (a) 与 (b) 的对照：从\textbf{局部}看，原点是"不稳定结点"；从\textbf{全局}看，从原点附近出发的轨线并不会跑到无穷，而是被另外两个稳定结点 $(1,0)$、$(0,2)$"接住"，或者绕过鞍点 $(0.5,0.5)$ 转向。这提醒一件事：\textbf{稳定性是局部性质}，定理 6.1 只说"原点附近"，不说"整个平面"。
+
+\subhdr{6.9 定理的适用边界（做题时要自觉写出来）}
+
+\begin{enumerate}
+\item \textbf{局部}：结论只对 $\X^{*}$ 的某个邻域成立。远处的行为可能完全不同（例 2 就是）。
+\item \textbf{光滑性}：要求 $\F\in C^{1}$。多项式自动满足；含 $\abs{x}$、$\sqrt{x}$ 之类的要小心。
+\item \textbf{双曲}：$\operatorname{Re}\lambda\neq0$。只要有一个特征值在虚轴上，6.1 就"不说话"（不是"说错"）。
+\item \textbf{结论的内容}：给的是"稳定性"与"类型名"，不是解的具体表达式。非线性系统一般解不出来，也不需要解出来。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§7}{线性化失效时：李雅普诺夫第二方法（选读）}
+
+\subhdr{7.1 想法}
+
+§6.6 的三个例子用的都是同一个技巧：找一个函数 $V(x,y)$，它沿轨线\textbf{单调下降}，于是轨线只能往"低处"走。这个 $V$ 像能量：真实系统的能量会耗散，所以状态只能朝能量更低的方向走。李雅普诺夫把这件事抽象成一条判据，好处是\textbf{不需要解方程}。
+
+\subhdr{7.2 定理}
+
+\textbf{定义 7.1（正定）}\ 设 $V$ 在原点附近连续可微，$V(\mathbf{0})=0$。若对 $\X\neq\mathbf{0}$ 有 $V(\X)>0$，称 $V$ \textbf{正定}；若 $V(\X)\ge0$，称\textbf{半正定}。
+
+\textbf{定理 7.1（李雅普诺夫第二方法）}\ 设 $\F\in C^{1}$，$\F(\mathbf{0})=\mathbf{0}$，$V$ 在原点某邻域 $U$ 上连续可微、正定，记
+\[
+\dot V(\X)=\nabla V(\X)\cdot\F(\X)=\frac{\partial V}{\partial x}P+\frac{\partial V}{\partial y}Q .
+\]
+\begin{enumerate}
+\item[(a)] 若 $U$ 上 $\dot V\le0$（半负定），则零解\textbf{稳定}；
+\item[(b)] 若 $U\setminus\{\mathbf{0}\}$ 上 $\dot V<0$（负定），则零解\textbf{渐近稳定}；
+\item[(c)] 若存在区域使 $V>0$ 且 $\dot V>0$（切塔耶夫条件），则零解\textbf{不稳定}。
+\end{enumerate}
+
+读法：(a) 说"V 不增，所以出不去"；(b) 说"V 严格减，只能往原点去"；(c) 是不稳定的判据，方向反过来用。
+
+\subhdr{7.3 二次型怎么取}
+
+最常用的是 $V=ax^{2}+bxy+cy^{2}$。它正定的充要条件（西尔维斯特判据）是
+\[
+a>0,\qquad 4ac-b^{2}>0 .
+\tag{7.1}
+\]
+最省事的选择是 $V=x^{2}+y^{2}=r^{2}$（即 $a=c=1,b=0$），因为
+\[
+\dot V=2(xP+yQ)
+\]
+只要算两个乘法。若 $V=r^{2}$ 算出来 $\dot V$ 不定号，再考虑带交叉项 $bxy$ 的二次型；本讲只用到 $r^{2}$。
+
+\subhdr{7.4 例：线性化完全失效的系统}
+
+\textbf{例 2}\ 判断 $x'=-x^{3}$，$y'=-y^{3}$ 的零解稳定性。
+
+\textbf{解}\ 右端在原点的一阶偏导全为零，$\Jac(\mathbf{0})=\mathbf{0}$，特征值 $\lambda_{1}=\lambda_{2}=0$，线性化给出的是"原点附近什么都不动"，完全失效。取 $V=x^{2}+y^{2}$，
+\[
+\dot V=2\big[x(-x^{3})+y(-y^{3})\big]=-2(x^{4}+y^{4})<0\qquad(\X\neq\mathbf{0}).
+\]
+由定理 7.1(b)，零解\textbf{渐近稳定}。
+
+这道题还能分离变量验算：$x'=-x^{3}$ 得 $\frac{\dd}{\dd t}\big(\frac{1}{x^{2}}\big)=2$，故 $x^{2}(t)=\dfrac{x_0^{2}}{1+2x_0^{2}t}\to0$，衰减像 $t^{-1/2}$，不是指数——与定理 5.1 里"指数衰减"的说法对照，可以看出"渐近稳定"确实比"指数稳定"弱。
+
+\subhdr{7.5 本题为什么不需要它}
+
+第 2 题的 $\Jac(\mathbf{0})=\operatorname{diag}(1,\,0.5)$，特征值 $1$ 与 $0.5$ 都不为零，是\textbf{双曲}临界点，定理 6.1(b) 直接给出"不稳定"。此时再去找李雅普诺夫函数是多余的：定理 6.1 已经给出了结论，而且比第二方法更强（第二方法要猜 $V$，猜不出来不代表稳定）。
+
+什么时候才必须用第二方法：线性化后出现 $\operatorname{Re}\lambda=0$（中心、零特征值），即 §6.6 的三种情形；或者系统不是多项式、难以线性化。这就是 §7 存在的理由。
+
+%=====================================================================
+\needspace{0.32\textheight}
+\hdr{§8}{作业题面与考点}
+
+本批作业共 \textbf{2 道大题}：第 1 题含 3 个小问（三个 $2\times2$ 线性系统），第 2 题 1 问（一个二次非线性系统）。全部对应 Lecture 22--23，截止\textbf{第十一周周二 13:00}（按第 1 讲 9 月 1 日、周一为周首推算，约为 11 月 10 日；以课程页面为准）。下面按"一题一块"给出题面与考点，\textbf{详解统一在附录 A}，题面下面标了页码。建议先把四题各写一遍再翻附录，否则你会觉得"都懂"，但手不一定写得出来。
+
+\qbreak
+\subhdr{第 1 题 1)：相异实根}
+\qstem{（课件 L22--23 作业 第 1 题 1)）\ $x'=3x+2y$，\ $y'=x+4y$。\textbf{Determine the type of the critical point and study the stability.}}
+\textbf{考点}：$\tau,\Delta,D$ 三个数的计算（§2.2）；"相异实根、同号"对应结点（§3.2）；稳定性的符号判据（§5.3）。
+\par\textbf{详解}：附录 A.1，第 \pageref{app:a1} 页。
+
+\qbreak
+\subhdr{第 1 题 2)：重根}
+\qstem{（课件 L22--23 作业 第 1 题 2)）\ $x'=-x$，\ $y'=-y$。\textbf{Determine the type of the critical point and study the stability.}}
+\textbf{考点}：重根与几何重数（§2.5、§3.5）；"临界结点"与"退化结点"的区别；$\tau<0$ 且 $g=2$ 时的稳定性。
+\par\textbf{详解}：附录 A.2，第 \pageref{app:a2} 页。
+
+\qbreak
+\subhdr{第 1 题 3)：共轭复根}
+\qstem{（课件 L22--23 作业 第 1 题 3)）\ $x'=-x+2y$，\ $y'=-2x-y$。\textbf{Determine the type of the critical point and study the stability.}}
+\textbf{考点}：共轭复特征值与实解的写法（§2.4）；$D<0$ 且 $\tau\neq0$ 对应焦点（§3.2）；"稳定焦点"与"中心"的分界（§4.3）。
+\par\textbf{详解}：附录 A.3，第 \pageref{app:a3} 页。
+
+\qbreak
+\subhdr{第 2 题：二次非线性系统}
+\qstem{（课件 L22--23 作业 第 2 题）\ $x_1'=x_1-x_1^{2}-x_1x_2$，\ $x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}$。\textbf{Investigate the stability of the trivial solution.}}
+\textbf{考点}：平凡解与临界点（§4.5）；雅可比矩阵与线性化（§6.2）；线性化定理的适用条件（双曲）与结论（§6.4）；为什么本题\textbf{不需要}李雅普诺夫函数（§7.5）。
+\par\textbf{详解}：附录 A.4，第 \pageref{app:a4} 页。
+
+\callout{\textbf{一个提醒。}第 1 题问的是"types of critical point(s) \textbf{and} the stability"，是两件事：先定类型（结点/鞍点/焦点/中心/临界结点），再定稳定性（稳定/渐近稳定/不稳定），并用一句话给出依据（哪条定理、哪个特征值）。只写"不稳定"或只写"结点"都算答了一半。}
+
+%=====================================================================
+\hdr{§9}{易错点：每条都能指回某一道题}
+
+\begin{enumerate}
+\item \textbf{只算 $\Delta$ 就下结论。}$\Delta>0$ 只排除鞍点；还要看 $D$ 定"实/复"、看 $\tau$ 定"进/出"（§3.6）。第 1 题 (1) 与 (3) 的 $\tau$ 都是负的，但一个是结点、一个是焦点，差别全在 $D$ 的符号上。
+\item \textbf{把重根一律叫"结点"。}重根要分 $g=2$（临界结点，直线束）与 $g=1$（退化结点，切着唯一方向拐弯）。第 1 题 (2) 是 $g=2$，答案该写"临界结点"（§3.5）。
+\item \textbf{把"稳定"当成"渐近稳定"。}中心是稳定的，但初值在哪条椭圆上就永远待在那条椭圆上，回不来（§4.3）。
+\item \textbf{把"不稳定"说成"趋于无穷"。}不稳定只要求\textbf{存在}一条越界轨线；第 2 题原点附近的轨线其实被别的临界点接住了，但它们确实离开了原点，故仍是不稳定（§4.6、图 \ref{fig:hw2}）。
+\item \textbf{非线性系统直接套特征值，不验证双曲。}第 2 题可以套，是因为 $1$ 与 $0.5$ 都不在虚轴上；若线性化给出 $\pm\mathrm{i}$，必须停下来说明"无结论"（§6.6）。
+\item \textbf{把 $x_1x_2$、$x_1^{2}$ 当线性项。}线性化只保留\textbf{一次}项：$x_1^{2}$ 与 $x_1x_2$ 在原点处对偏导没有贡献（$x_1=0$ 时偏导为零），所以 $\Jac(\mathbf{0})$ 是对角的（§6.2 与 A.4）。
+\item \textbf{忘记说明"唯一临界点"。}线性系统要先说 $\Delta\neq0$ 故临界点只有原点，再谈类型；否则"the critical point"这个说法没有依据（§1.4）。
+\item \textbf{复特征值只写三角函数，丢了 $\mathrm{e}^{\alpha t}$。}第 1 题 (3) 若丢掉 $\mathrm{e}^{-t}$，就会把稳定焦点误判成中心（§2.4）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§10}{本讲义补齐了哪些跳步}
+
+本讲课件尚未入库，因此这里不做"课件页码 + 原文短语"式的缺口表（没有课件就不能凭空引用页码）。下面列的是按标准教材讲法\textbf{最容易跳过}的 10 处，以及本讲义补在哪一节——每一条都对应上文的一个具体位置，可以逐条对照阅读。
+
+\gapitem{形式改写（复根通解）}{多数教材直接给出 (2.5) 式，不解释它来自 $\mathrm{e}^{(\alpha+\mathrm{i}\beta)t}$ 的实部与虚部。补在 §2.4。}
+\gapitem{代数跳步（重根的 $W$）}{教材给出 $(A-\lambda I)W=V$ 却不验算，学生常把右端写成 $0$。补在 §2.5，含一行验证。}
+\gapitem{机制缺口（类型为什么只有五种）}{教材列完表格不说明"为什么相似变换不改变类型"。补在 §2.7。}
+\gapitem{机制缺口（结点切向）}{"轨线与慢方向相切"通常只给结论。补在 §3.2，用提公因子的极限说明。}
+\gapitem{压缩缺口（判别表）}{表 3.1 常作为结论直接背。本讲义在表后逐行给出 $\lambda=(\tau\pm\sqrt D)/2$ 的代入过程（§3.1）。}
+\gapitem{定义缺口（稳定性的三个词）}{"稳定"与"渐近稳定"常被混用。补在 §4.2--§4.3，含 $\eps$–$\delta$ 定义与"中心稳定但不渐近"这个反例。}
+\gapitem{证明缺口（稳定性定理）}{定理 5.1 的 (iii)(iv) 两条几乎总被略去。补在 §5.2，并用两个 $2\times2$ 反例收尾（§5.4）。}
+\gapitem{机制缺口（线性化为什么合法）}{线性化定理常被当作"显然"。补在 §6.5，给出 (6.6)--(6.7) 的估计链与格朗沃尔不等式。}
+\gapitem{机制缺口（双曲条件不可省）}{三个"线性部分相同、结论不同"的例子补在 §6.6，每一个都算出 $\dot V$。}
+\gapitem{适用区间缺口（局部 vs 全局）}{"稳定性是局部性质"常被忽略。补在 §6.8 与 §6.9，用第 2 题系统的全局相图（图 \ref{fig:hw2}）说明。}
+
+%=====================================================================
+\hdr{§11}{三句话总结}
+
+\begin{enumerate}
+\item \textbf{类型}由线性部分 $A$（或 $\Jac(\X^{*})$）的特征值决定，读法是三步：$\Delta$ 的符号定"鞍点/非鞍点"，$D=\tau^{2}-4\Delta$ 定"实根/复根"，$\tau$ 的符号定"进/出"。
+\item \textbf{稳定性}只看实部：全部 $<0$ 渐近稳定；有一个 $>0$ 不稳定；全部 $\le0$ 且零实部无重根则稳定但不渐近（中心）。
+\item \textbf{非线性}：在双曲临界点（实部全不为零）处，线性化的结论可以原样搬回；只要有一个特征值落在虚轴上，线性化就失效，必须另找方法（守恒量、李雅普诺夫函数，或如实说明判断不了）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{四步用法与速查}
+
+\subhdr{12.1 拿到一道题的四个动作}
+
+\begin{enumerate}
+\item \textbf{找临界点}：解 $\F(\X)=\mathbf{0}$。线性系统先看 $\Delta$：$\Delta\neq0$ 则只有原点；非线性系统把解全部列出（可能不止一个，见 §6.8）。
+\item \textbf{写线性部分}：线性系统直接取 $A$；非线性系统算 $\Jac(\X^{*})$（(6.2) 或 (6.9) 的形式）。
+\item \textbf{算三个数}：$\tau=\tr A$，$\Delta=\det A$，$D=\tau^{2}-4\Delta$；再解特征值（若需要写通解）。
+\item \textbf{写结论}：类型（表 3.1）+ 稳定性（$\tau$ 的符号）+ 依据（定理号与条件，如"$\Jac$ 特征值 $1,0.5$ 双曲，由定理 6.1(b)"）。
+\end{enumerate}
+
+\subhdr{12.2 一句话模板}
+
+\begin{itemize}
+\item 线性题：\ "$\Delta=\cdots\neq0$，故唯一临界点为原点；$\tau=\cdots$，$\Delta=\cdots$，$D=\cdots$，故为\underline{\hspace{2em}}（类型）；又 $\tau\ \square\ 0$，故\underline{\hspace{2em}}（稳定性）。"
+\item 非线性题：\ "$\X=\mathbf{0}$ 是临界点（代入右端为零）；$\Jac(\mathbf{0})=\cdots$，特征值 $\cdots$，均非零（双曲）；由定理 6.1\underline{\hspace{0.6em}}，平凡解\underline{\hspace{2em}}。"
+\end{itemize}
+
+\subhdr{12.3 自检清单（交卷前逐条打勾）}
+
+\begin{itemize}
+\item 临界点是否\underline{全部}找到？是否说明了"唯一"或"共有几个"？
+\item $\tau,\Delta,D$ 是否重算过一遍？特征值是否为特征方程的根（代入验算）？
+\item 类型名与 $(\tau,\Delta,D)$ 是否对得上表 3.1？重根是否查了 $g$？
+\item 稳定性是否与类型一致（鞍点必不稳定、中心必非渐近）？
+\item 非线性题是否写了"双曲"或"特征值非零"这句前提？是否引了定理号？
+\item 答案是否同时包含"类型"与"稳定性"两项（题目问了两件事）？
+\end{itemize}
+
+\subhdr{12.4 页码与章节对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{本讲义} & \thead{内容} & \thead{对应}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l l p{0.42\linewidth}@{}}
+§1--§2 & 相平面、临界点、线性系统三种解 & 第 1 题全部；Constanda §7.3--§7.4\\
+§3 & 五种类型与判别表、$\tau$–$\Delta$ 图 & 第 1 题 (1)(2)(3)\\
+§4--§5 & 稳定性定义与线性判据 & 第 1 题全部、第 2 题的结论表述\\
+§6 & 线性化、双曲、定理 6.1/6.2 & 第 2 题\\
+§7 & 李雅普诺夫第二方法 & 第 2 题的"备用工具"（本题不用）\\
+附录 A & 四道题的完整详解 & 第 1 题 (1)(2)(3)、第 2 题\\
+附录 B & 题面歧义与替代读法 & 第 2 题\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\flowerrule
+
+%=====================================================================
+\needspace{0.30\textheight}
+\hdr{附录 A}{四道题的完整详解}
+
+每道题自成一页（块前用 \verb|\qpagebreak| 保证整块不跨页）：块首复述题干与关键条件，然后五段——考点、关键一步、详解、答案、自检。答案里的每个数都能在正文里找到出处，若找不到，说明是本附录新算的，步骤也写全了。
+
+下面这张表只是索引，\textbf{不含答案}：做完一题，翻到对应页，再核对。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{题号} & \thead{要判断什么} & \thead{回顾正文的哪一节} & \thead{页码}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}l p{0.30\linewidth} p{0.36\linewidth} l@{}}
+第 1 题 1) & 相异实根的类型与稳定性 & §2.3 通解、§3.2 结点、§5.3 判据 & 第 \pageref{app:a1} 页\\
+第 1 题 2) & 重根的类型（$g$ 的作用）与稳定性 & §2.5 重根、§3.5 两种重根 & 第 \pageref{app:a2} 页\\
+第 1 题 3) & 复根的类型与稳定性 & §2.4 实解、§3.2 焦点、§4.3 与中心的区别 & 第 \pageref{app:a3} 页\\
+第 2 题 & 非线性系统平凡解 & §6.2 雅可比、§6.4 定理 6.1 & 第 \pageref{app:a4} 页\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%---------------------------------------------------------------------
+\qpagebreak
+\qbreak
+\subhdr{A.1\quad 第 1 题 1)：不稳定结点}
+\label{app:a1}
+\qstem{（课件 L22--23 作业 第 1 题 1)；条件摘要：$x'=3x+2y$，$y'=x+4y$，系数矩阵按 $x,y$ 的顺序读出）\textbf{求临界点的类型，并研究其稳定性。}}
+
+\textbf{考点}\ 线性系统的临界点（§1.4）；$\tau,\Delta,D$ 与类型（§3.1）；结点与稳定性的符号判据（§3.2、§5.3）。
+
+\textbf{关键一步}\ 先算 $\Delta$，确认"临界点是唯一的"；再用 $\tau,\Delta,D$ 三个数代替解特征方程。这一步走通，全题就是代数。
+
+\textbf{详解}\
+第一步，找临界点。解
+\[
+3x+2y=0,\qquad x+4y=0,\qquad
+\det\begin{pmatrix}3&2\\1&4\end{pmatrix}=12-2=10\neq0,
+\]
+齐次方程组只有零解，所以\textbf{唯一}临界点是 $(0,0)$。
+
+第二步，算三个数：
+\[
+\tau=3+4=7,\qquad \Delta=3\cdot4-2\cdot1=10,\qquad D=7^{2}-4\cdot10=9>0 .
+\]
+特征方程 $\lambda^{2}-7\lambda+10=0$，即 $(\lambda-2)(\lambda-5)=0$，$\lambda_1=2$，$\lambda_2=5$。
+
+第三步，求特征向量（写通解时要用，也为作图提供"骨架"）。
+对 $\lambda=2$：$A-2I=\begin{pmatrix}1&2\\1&2\end{pmatrix}$，$x+2y=0$，取 $V_1=(-2,1)^{\mathrm T}$。
+对 $\lambda=5$：$A-5I=\begin{pmatrix}-2&2\\1&-1\end{pmatrix}$，$x=y$，取 $V_2=(1,1)^{\mathrm T}$。
+通解为
+\[
+\X=c_1\begin{pmatrix}-2\\1\end{pmatrix}\mathrm{e}^{2t}+c_2\begin{pmatrix}1\\1\end{pmatrix}\mathrm{e}^{5t}.
+\]
+
+第四步，定类型。$\Delta=10>0$、$D=9>0$、两根同号且不等，按表 3.1 是\textbf{结点}；$\tau=7>0$ 两根都为正，轨线都往外走，故是\textbf{不稳定结点}（图 \ref{fig:kinds}(a)）。
+
+第五步，定稳定性。$\lambda_2=5>0$，由定理 5.1(ii) 零解\textbf{不稳定}。也可直接指认一条越界轨线：取初值 $(1,1)$，解为 $\X=(1,1)^{\mathrm T}\mathrm{e}^{5t}$，范数 $\sqrt2\,\mathrm{e}^{5t}\to\infty$，对任意 $\eps$ 终将越界。
+
+\textbf{答案}\ 唯一临界点 $(0,0)$；类型为\textbf{不稳定结点}；零解\textbf{不稳定}。
+
+\textbf{自检}\ 把 $\X=(1,1)^{\mathrm T}\mathrm{e}^{5t}$ 代回原方程：$x'=y'=5\mathrm{e}^{5t}$；而 $3x+2y=5\mathrm{e}^{5t}$，$x+4y=5\mathrm{e}^{5t}$，两式都对。再看初值反解：$c_1(-2)+c_2=x_0$，$c_1+c_2=y_0$，系数行列式 $-3\neq0$，任意初值都可表示。
+
+%---------------------------------------------------------------------
+\qpagebreak
+\qbreak
+\subhdr{A.2\quad 第 1 题 2)：临界结点}
+\label{app:a2}
+\qstem{（课件 L22--23 作业 第 1 题 2)；条件摘要：$x'=-x$，$y'=-y$，$A=-I$，$\tau=-2$，$\Delta=1$）\textbf{求临界点的类型，并研究其稳定性。}}
+
+\textbf{考点}\ 重根、几何重数 $g$（§2.5、§3.5）；"临界结点"的判定；$\tau<0$ 且 $g=2$ 时的稳定性（定理 5.1(i)）。
+
+\textbf{关键一步}\ $D=0$ 说明是重根，此时不能止步于"结点"，必须再算 $A-\lambda I$ 的秩，看 $g$ 是 $2$ 还是 $1$——这一步决定了类型名，也决定了要不要出现 $t$ 项。
+
+\textbf{详解}\
+第一步，临界点。$A=-I$，$\Delta=\det(-I)=1\neq0$，故唯一临界点是 $(0,0)$。
+
+第二步，特征值与重数。
+\[
+\tau=-1-1=-2,\qquad \Delta=(-1)(-1)-0=1,\qquad D=4-4=0 .
+\]
+特征方程 $\lambda^{2}+2\lambda+1=(\lambda+1)^{2}=0$，故 $\lambda=-1$ 是\textbf{二重}根。
+
+第三步，几何重数。$A-\lambda I=A+I=0$（零矩阵），方程 $(A-\lambda I)V=\mathbf{0}$ 对\textbf{任意} $V$ 都成立，所以线性无关的特征向量有两个，$g=2$。这属于 §2.5 的第一种情形，通解取 (2.6)：
+\[
+x=c_1\mathrm{e}^{-t},\qquad y=c_2\mathrm{e}^{-t}
+\]
+（这里直接取 $V_1=(1,0)^{\mathrm T}$、$V_2=(0,1)^{\mathrm T}$，因为两个坐标方向都是特征方向）。
+
+第四步，看轨线。$c_1\neq0$ 时
+\[
+\frac{y(t)}{x(t)}=\frac{c_2}{c_1}=\text{常数},
+\]
+所以每条轨线都是\textbf{过原点的射线}，这正是图 \ref{fig:kinds}(e) 的"直线束"。这种图形叫\textbf{临界结点}（星形结点，proper node）。
+
+第五步，定稳定性。$\lambda=-1<0$，且 $\norm{\X(t)}=\sqrt{c_1^{2}+c_2^{2}}\,\mathrm{e}^{-t}\to0$，由定理 5.1(i) 零解\textbf{渐近稳定}（还是指数衰减）。
+
+\textbf{答案}\ 唯一临界点 $(0,0)$；类型为\textbf{临界结点}（$g=2$ 的重根）；零解\textbf{渐近稳定}。
+
+\textbf{自检}\ 取 $(x_0,y_0)=(1,2)$，则 $x=\mathrm{e}^{-t}$、$y=2\mathrm{e}^{-t}$，恒有 $y=2x$（轨线是直线 $y=2x$ 的一段），且 $t\to\infty$ 时趋于原点。再验证方程：$x'=-\mathrm{e}^{-t}=-x$，$y'=-2\mathrm{e}^{-t}=-y$，两式都对。
+
+\textbf{一个对照}\ 若本题的 $A$ 是 $\begin{pmatrix}-1&1\\0&-1\end{pmatrix}$（同样 $\lambda=-1$ 二重，但 $g=1$），通解会含 $t\mathrm{e}^{-t}$ 项，类型要写"退化结点"；稳定性仍是渐近稳定。所以"$g$"只改类型名，不改稳定性——但类型名是题目要问的，不能省。
+
+%---------------------------------------------------------------------
+\qpagebreak
+\qbreak
+\subhdr{A.3\quad 第 1 题 3)：稳定焦点}
+\label{app:a3}
+\qstem{（课件 L22--23 作业 第 1 题 3)；条件摘要：$x'=-x+2y$，$y'=-2x-y$，系数矩阵按 $x,y$ 的顺序读出）\textbf{求临界点的类型，并研究其稳定性。}}
+
+\textbf{考点}\ 共轭复根与实解 (2.5)（§2.4）；$D<0$、$\tau\neq0$ 对应焦点（§3.2）；"稳定焦点"与"中心"的分界（§4.3）。
+
+\textbf{关键一步}\ 算出 $\tau$ 与 $\Delta$ 后先看 $D$：$D<0$ 说明有旋转；再看 $\tau/2$ 的符号，它决定螺旋是向内还是向外。两句话就能定位，不必先解方程。
+
+\textbf{详解}\
+第一步，临界点。$\Delta=(-1)(-1)-2\cdot(-2)=1+4=5\neq0$，唯一临界点 $(0,0)$。
+
+第二步，三个数：
+\[
+\tau=-1-1=-2,\qquad \Delta=5,\qquad D=4-20=-16<0 .
+\]
+特征方程 $\lambda^{2}+2\lambda+5=0$，$\lambda=-1\pm2\mathrm{i}$。即 $\alpha=-1$，$\beta=2$。
+
+第三步，特征向量。对 $\lambda=-1+2\mathrm{i}$，
+\[
+A-\lambda I=\begin{pmatrix}-2\mathrm{i}&2\\-2&-2\mathrm{i}\end{pmatrix},
+\qquad -2\mathrm{i}x+2y=0\ \Longrightarrow\ y=\mathrm{i}x .
+\]
+取 $x=1$，得 $w=(1,\mathrm{i})^{\mathrm T}=u+\mathrm{i}v$，其中 $u=(1,0)^{\mathrm T}$，$v=(0,1)^{\mathrm T}$。
+
+第四步，写实解。代入 (2.5)：
+\[
+x=\mathrm{e}^{-t}\big(c_1\cos2t+c_2\sin2t\big),\qquad
+y=\mathrm{e}^{-t}\big(-c_1\sin2t+c_2\cos2t\big).
+\]
+在 $t=0$ 处 $x=c_1$，$y=c_2$，所以 $c_1,c_2$ 就是初值。
+
+第五步，定类型与稳定性。$\Delta>0$、$D<0$、$\tau/2=-1\neq0$，按表 3.1 是\textbf{焦点}；$\tau=-2<0$ 故\textbf{稳定焦点}。半径
+\[
+r(t)=\sqrt{x^{2}+y^{2}}=\mathrm{e}^{-t}\sqrt{c_1^{2}+c_2^{2}}\to0,
+\]
+角度以角速度 $2$ 增加（从 $(1,0)$ 出发时 $y'=-x=-1<0$，向下走，故为顺时针），所以是顺时针向内卷的螺旋，由定理 5.1(i) 零解\textbf{渐近稳定}。
+
+\textbf{答案}\ 唯一临界点 $(0,0)$；类型为\textbf{稳定焦点}；零解\textbf{渐近稳定}（指数衰减，每单位时间半径乘 $\mathrm{e}^{-1}$）。
+
+\textbf{自检}\ 取 $(c_1,c_2)=(1,0)$：$x=\mathrm{e}^{-t}\cos2t$，$y=-\mathrm{e}^{-t}\sin2t$。代第一式：
+\[
+x'=-\mathrm{e}^{-t}\cos2t-2\mathrm{e}^{-t}\sin2t,\qquad
+-x+2y=-\mathrm{e}^{-t}\cos2t-2\mathrm{e}^{-t}\sin2t,
+\]
+两边相同；第二式同理。再检查 $t=0$ 时 $(x,y)=(1,0)$，与取定的初值一致。
+
+%---------------------------------------------------------------------
+\qpagebreak
+\qbreak
+\subhdr{A.4\quad 第 2 题：平凡解不稳定}
+\label{app:a4}
+\qstem{（课件 L22--23 作业 第 2 题）\textbf{条件摘要}：$x_1'=x_1-x_1^{2}-x_1x_2$，$x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}$；平凡解指 $\X\equiv\mathbf{0}$。\textbf{研究平凡解的稳定性。}}
+
+\textbf{考点}\ 平凡解与临界点（§4.5）；雅可比矩阵 (6.9)（§6.2）；线性化定理 6.1(b) 及其"双曲"前提（§6.3、§6.4）；为什么不需要李雅普诺夫函数（§7.5）。
+
+\textbf{关键一步}\ 先确认 $\mathbf{0}$ 确是临界点（否则"平凡解"无从谈起），再只保留一次项算 $\Jac(\mathbf{0})$；只要特征值全不为零，线性化定理就能直接下结论，不需再碰二次项。
+
+\textbf{详解}\
+第一步，确认平凡解。把 $x_1=x_2=0$ 代入右端，两个式子都是 $0$，所以 $\X(t)\equiv\mathbf{0}$ 是解，且原点是临界点。
+
+第二步，线性化。记两个右端分别为 $P=x_1-x_1^{2}-x_1x_2$、$Q=0.5x_2-0.75x_1x_2-0.25x_2^{2}$，逐项求偏导：
+\[
+P_{x_1}=1-2x_1-x_2,\qquad P_{x_2}=-x_1,\qquad
+Q_{x_1}=-0.75x_2,\qquad Q_{x_2}=0.5-0.75x_1-0.5x_2 .
+\]
+在原点代入 $x_1=x_2=0$，得到
+\[
+\Jac(\mathbf{0})=\begin{pmatrix}P_{x_1}&P_{x_2}\\Q_{x_1}&Q_{x_2}\end{pmatrix}_{\mathbf{0}}
+=\begin{pmatrix}1&0\\0&0.5\end{pmatrix}.
+\]
+注意二次项在原点处的偏导全为零（$x_1^{2}$ 的偏导是 $2x_1$，$x_1x_2$ 对 $x_1$ 的偏导是 $x_2$，代 $0$ 都得零），所以 $\Jac(\mathbf{0})$ 恰好就是"线性部分的系数矩阵"。
+
+第三步，特征值。对角矩阵，$\lambda_1=1$，$\lambda_2=0.5$。
+
+第四步，判断。两个特征值都不为零，故原点是\textbf{双曲}临界点，定理 6.1 适用；$\lambda_1=1>0$，由定理 6.1(b)，平凡解\textbf{不稳定}。再由定理 6.2（Hartman--Grobman），邻域内的相图与线性系统 $\U'=\operatorname{diag}(1,0.5)\U$ 拓扑等价，即\textbf{不稳定结点}型：轨线沿两个坐标方向离开原点，$x_1$ 方向增长快（因子 $\mathrm{e}^{t}$），$x_2$ 方向增长慢（因子 $\mathrm{e}^{0.5t}$），见图 \ref{fig:hw2}(b)。
+
+第五步，说明不需要第二方法。$\Jac(\mathbf{0})$ 的特征值非零，属于定理 6.1 的适用情形，结论已经确定；再用李雅普诺夫函数既不能加强结论，也不是必需（§7.5）。
+
+\textbf{答案}\ 平凡解 $\X\equiv\mathbf{0}$ \textbf{不稳定}（既非稳定，也非渐近稳定）；线性化部分为不稳定结点（$\lambda=1,\ 0.5$）。
+
+\textbf{自检}\ 取初值 $(0.01,\,0)$：此时 $x_2\equiv0$，方程组退化为 $x_1'=x_1(1-x_1)$（逻辑斯蒂方程），其解
+\[
+x_1(t)=\frac{1}{1+99\,\mathrm{e}^{-t}},
+\]
+从 $0.01$ 单调增到 $1$——确实离开了原点（距离趋于 $1$），最后停在另一个临界点 $(1,0)$。这同时说明"不稳定"不等于"跑到无穷"：它只是"离开了原点"（§4.6）。另一个初值 $(0,\,0.01)$ 类似，会被 $(0,2)$ 接住。
+
+%=====================================================================
+\newpage
+\hdr{附录 B}{末项的题面歧义与替代读法}
+
+这道题是从手机截图转录的，末项 $0.25x_2^{2}$ 上的平方号很小，早期 OCR 曾把它读成线性的 $0.25x_2$。本讲义按\textbf{原图}（放大两倍后可见上标 $2$）取 $0.25x_2^{2}$。下面说明：即使按另一种读法，结论也不变——这一点值得写进答案，因为它说明结论对题面的小歧义是稳健的。
+
+\subhdr{B.1 两种读法与各自的雅可比矩阵}
+
+读法一（本讲义采用）：$x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}$。$\Jac(\mathbf{0})=\operatorname{diag}(1,\,0.5)$，特征值 $1$、$0.5$。
+
+读法二：$x_2'=0.5x_2-0.75x_1x_2-0.25x_2$，即末项线性。合并同类项得 $x_2'=0.25x_2-0.75x_1x_2$，于是 $\Jac(\mathbf{0})=\operatorname{diag}(1,\,0.25)$，特征值 $1$、$0.25$。
+
+两种读法的特征值都\textbf{为正、互不相等}，故都落在表 3.1 的"结点、$\tau>0$"一行：\textbf{不稳定结点}，平凡解\textbf{不稳定}。差别只在第二个特征值的大小（$0.5$ 与 $0.25$），它影响轨线"扁"的程度，不影响类型与稳定性。
+
+\subhdr{B.2 连系数读错也不影响结论}
+
+若交叉项系数 $0.75$ 被读成别的正数（例如 $0.25$），$\Jac(\mathbf{0})$ 仍然是 $\operatorname{diag}(1,\,0.5)$——因为 $\partial(x_1x_2)/\partial x_1=x_2$ 在原点为零，交叉项根本进不了一次项。所以这道题的"结论"只依赖两个线性系数（$1$ 与 $0.5$），与二次项的系数无关。这也是一个可写进答案的观察：\textbf{二次项只影响高阶修正，不影响线性化结论}。
+
+\subhdr{B.3 建议的写法}
+
+按原图作答，并在答案里把雅可比矩阵写出来：
+\[
+\Jac(\mathbf{0})=\begin{pmatrix}1&0\\0&0.5\end{pmatrix},\qquad \lambda_1=1>0,\ \lambda_2=0.5>0,
+\]
+然后引定理 6.1(b) 得"不稳定"。若担心老师原题是线性末项，可以加一句："若末项为 $0.25x_2$（线性），则第二特征值为 $0.25$，结论（不稳定结点）不变。"这句话既显示你检查过题面，也不会被判为答非所问。
+
+\subhdr{B.4 关于重根那一问的名称}
+
+有的教材不区分"临界结点"与普通结点，一律叫 node；本课程作业只要求"type"，写\ "结点（临界结点/星形结点，$g=2$）"\ 最稳妥：既给出中文名，也给出英文别名与判定依据。第 1 题 (1) 同理，写"结点（不稳定结点）"即可，不必纠结 proper/improper 的译名。
+
+\flowerrule
+
+\end{document}
+
+
+
+
+\end{document}
