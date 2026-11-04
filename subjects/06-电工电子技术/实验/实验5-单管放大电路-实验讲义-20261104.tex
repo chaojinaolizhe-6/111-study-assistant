@@ -1,0 +1,790 @@
+﻿% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,patterns}
+\usepackage[american]{circuitikz}
+\usepackage{graphicx}
+\settags{实验 5 · 单管放大电路}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{12\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{5.\ 单管放大电路实验}
+{静态工作点怎么算、动态指标怎么测、英文报告怎么写：一份能带进实验室的讲义}
+{依据：教材《电工学实验教程》第 2 版 §5.2（书 p.147--154 = PDF p.160--167，逐页读图）；课程课件 C4-2（4.2--4.3 静态分析）、C4-3（4.4 动态分析与小信号模型）；实验手册页 \textperiodcentered\ 2026-11-04}
+
+\callout{\textbf{这份讲义怎么用，以及中英文怎么分工。}
+§1 把四组偏置的静态工作点算完并判出区域，§2 从交流通路推到 $A_u$、$r_i$、$r_o$ 三个式子，§3 讲清 $S_1$ 那只 $200\,\Omega$ 在做什么，§4--§5 是接线与测量的可照做流程，§6 是六张空数据表，§7 是\textbf{英文报告}逐栏写法与术语表，§8--§9 是教材的预习问题与讨论题（题面在正文、详解在附录 A、附录 B）。
+
+\textbf{语言分工（本节是全篇的硬规则）：}讲义正文一律中文；凡\textbf{要抄进英文报告}的句子、栏目名、术语，一律给英文原样并附中文释义；符号（$U_{CE}$、$I_B$、$\beta$、$r_{be}$）与单位（V、mA、$\mathrm{k}\Omega$）在任何语言里都照抄不译。英文句子里不夹中文，中文讲解里也不把 “Q-point” 硬翻成“静态工作点”之外的第三种叫法。所有以 $12\,\mathrm{V}$、$\beta=100$、$U_{BE}=0.7\,\mathrm{V}$ 开头的数字都是\textbf{算例}：现场以你实测的 $U_B$、$U_C$、$U_E$ 为准，算例只用来判断“这个数合不合理”。}
+
+%=============================================================
+\hdr{§0}{教材坐标、记号与一条必须先说清的册页缺口}
+
+\subhdr{0.1 本次实验在教材的哪几页}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.8cm}p{8.0cm}p{6.3cm}@{}}
+\hline
+\thead{书页} & \thead{教材 §5.2 的内容} & \thead{本讲义对应} \\
+\hline
+p.147 & 5.2.1 实验目的及设备（表 5.2.1 仪器一览） & §4.1 器材与用途；§5 用哪台仪器测什么 \\
+p.147--148 & 5.2.2 预习要求（理论 4 问 + 实验内容 4 条） & §8 题面；附录 A 详解 \\
+p.148--151 & 5.2.3 放大电路的测量基础（静态、$A_u$、$r_i$、$r_o$、$U_{op\text{-}p}$、$f_{BW}$） & §5 逐项测量方法 \\
+p.151 & 5.2.4 晶体管的测试 & §5.0 进场第一步 \\
+p.151--154 & 5.2.5 单级低频放大电路（图 5.2.4、表 5.2.2--5.2.7） & §4 电路；§6 六张数据表 \\
+p.154 & 5.2.6 实验报告及问题讨论（7 问） & §9 题面；附录 B 详解 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{册页缺口（必须先说）：}本次实验的\textbf{英文实验手册（册）}对应的那几页，工作区里\textbf{还没有}。现有册页照片只到实验 2（p01--p08）与实验 3（3 张），实验 5 的 \texttt{I. Preliminary Work}、\texttt{Preliminary Work} 表格与 \texttt{Discussion of Results} 的具体栏目\textbf{未见到}。因此本讲义按\textbf{教材 §5.2 的题面}写（教材与册页在实验 2、3 上已核实高度一致，但并非逐字相同）。\textbf{进实验室前翻一下册子那几页}：若册上的栏目名、表号、问题条数与教材不同，以册为准，把差异记在报告页边，回来告诉我改讲义。}
+
+\subhdr{0.2 记号：先统一，后文不再回头}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.3cm}p{9.0cm}p{3.9cm}@{}}
+\hline
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\hline
+$U_{CC}$ & 直流电源电压（本实验 $12\,\mathrm{V}$） & V \\
+$U_{BE}$ & 基极—发射极电压（导通时约 $0.7\,\mathrm{V}$） & V \\
+$I_B,\ I_C,\ I_E$ & 基极、集电极、发射极的直流电流 & $\mu$A / mA \\
+$U_{CE}$ & 集电极—发射极电压（管压降） & V \\
+$\beta$ & 共射电流放大系数（本实验管标称 $100$） & 无量纲 \\
+$r_{be}$ & 晶体管输入端的交流等效电阻 & $\Omega$ \\
+$R_L$ & 负载电阻（$R_{L1}=3\,\mathrm{k}\Omega$ 与 $R_{P2}$ 串联，$3\sim13\,\mathrm{k}\Omega$） & $\mathrm{k}\Omega$ \\
+$R_L'$ & 交流负载 $R_L'=R_C\parallel R_L$ & $\mathrm{k}\Omega$ \\
+$A_u$ & 电压放大倍数（复数；中频段取模 $|A_u|$） & 无量纲 \\
+$r_i,\ r_o$ & 输入电阻、输出电阻 & $\mathrm{k}\Omega$ \\
+$U_{op\text{-}p}$ & 最大不失真输出电压的峰峰值 & V \\
+$f_{BW}$ & 通频带宽度，$f_{BW}=f_H-f_L$ & Hz \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{记号与课件一致：课件 C4-2 p22 把静态分析要定的四个量写成 $U_{BE}$、$I_B$、$I_C$、$U_{CE}$，本讲义沿用这个顺序；课件 C4-3 p25--p27 的 $r_i$、$r_o$、$A_u$ 与本讲义 §2 的三个式子是同一组，只是课件直接给结果、本讲义补了推导。}
+
+\subhdr{0.3 一句话说清这次实验在干什么}
+
+给一只 NPN 管加直流偏置，让它停在放大区的某个位置（\textbf{静态工作点}）；再加一个 $10\,\mathrm{mV}$、$1\,\mathrm{kHz}$ 的小正弦，看它被放大多少倍、输入口“吃”多少电流、输出口“看起来”内阻多大、能给出多大不失真摆幅、从多低到多高的频率还能放大。这五件事就是 $A_u$、$r_i$、$r_o$、$U_{op\text{-}p}$、$f_{BW}$——教材 §5.2.3 把这五个量合称“动态性能指标”。
+
+%=============================================================
+\hdr{§1}{静态工作点：四组偏置，一次算完，再判区域}
+
+\subhdr{1.1 为什么非要设一个工作点}
+
+放大电路在没有输入信号时也不能“关着”。因为三极管只在\textbf{发射结正偏、集电结反偏}（放大区）时才有 $I_C=\beta I_B$ 这个线性关系；输入的交流信号只是在这个直流工作点\textbf{上下摆动}。工作点取得太低（靠近截止），信号的下半周把管子推进截止；取得太高（靠近饱和），上半周被削平。两种情况都会让输出波形\textbf{削顶}，也就是教材说的“非线性失真”。
+
+教材 p.148 给的判据是一句很实用的话：\textbf{管压降 $U_{CE}$ 约等于电源电压 $U_{CC}$ 的一半}，工作点就基本合适。这句话的道理在 §1.4 讲（它与交流负载线的对称摆幅是一回事），本节先把四组偏置的数算出来，你到现场才有“应该读到多少”的参照。
+
+\subhdr{1.2 把分压偏置化成戴维南等效}
+
+图 5.2.4 的基极由 $R_{B1}$（上）与 $R_{B2}$（下）分压供给，$R_{P1}$ 在静态测量时调到零。对基极回路做戴维南等效，得到两个量：
+
+\[
+V_{BB}=\frac{R_{B2}}{R_{B1}+R_{B2}}\,U_{CC},
+\qquad
+R_B=R_{B1}\parallel R_{B2}=\frac{R_{B1}R_{B2}}{R_{B1}+R_{B2}} .
+\]
+
+\aside{这一步用的是“分压 + 并联”两个最基础的结论：把 $U_{CC}$ 与 $R_{B1}$、$R_{B2}$ 这条支路看成有源二端网络，开路电压是 $R_{B2}$ 上的分压，等效内阻是把 $U_{CC}$ 置零后从基极看进去的 $R_{B1}\parallel R_{B2}$。$R_{P1}=0$ 时它不在式子里；若你现场把 $R_{P1}$ 调大了，把它\textbf{加在 $R_{B1}$ 上}再代。}
+
+基极回路的回路方程（从 $V_{BB}$ 经 $R_B$、发射结、$R_{E1}+R_{E2}$ 回到地）是
+
+\[
+V_{BB}=I_BR_B+U_{BE}+I_ER_E,\qquad I_E=(1+\beta)I_B,\qquad R_E=R_{E1}+R_{E2}=1.2\,\mathrm{k}\Omega .
+\]
+
+把 $I_E$ 换成 $I_B$ 就解出
+
+\[
+I_B=\frac{V_{BB}-U_{BE}}{R_B+(1+\beta)R_E},
+\qquad
+I_C=\beta I_B,
+\qquad
+U_{CE}=U_{CC}-I_C(R_C+R_E).
+\]
+
+\aside{第三式来自集电极回路：$U_{CC}$ 降在 $R_C$ 上（$I_C R_C$）与管子上（$U_{CE}$）以及 $R_E$ 上（$I_E R_E\approx I_C R_E$）。因为 $\beta=100\gg1$，取 $I_E\approx I_C$ 的误差约 $1\%$，在估算里可以接受；报告里要把这个近似写出来。}
+
+\subhdr{1.3 四组偏置的算例（$U_{CC}=12\,\mathrm{V}$、$\beta=100$、$U_{BE}=0.7\,\mathrm{V}$、$S_1$ 断开）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.6cm}p{1.25cm}p{1.25cm}p{1.25cm}p{1.35cm}p{1.4cm}p{1.35cm}p{1.35cm}p{2.35cm}@{}}
+\hline
+\thead{组合} & \thead{$R_{B1}$} & \thead{$R_{B2}$} & \thead{$V_{BB}$} & \thead{$R_B$} & \thead{$I_B$} & \thead{$I_C$} & \thead{$U_{CE}$} & \thead{区域} \\
+ & & & /V & /$\mathrm{k}\Omega$ & /$\mu$A & /mA & /V & \\
+\hline
+1 & $30\,\mathrm{k}$ & $39\,\mathrm{k}$ & 6.78 & 16.96 & 44.0 & 4.40 & $-6.49$ & 饱和 \\
+2 & $30\,\mathrm{k}$ & $12\,\mathrm{k}$ & 3.43 & 8.57 & 21.0 & 2.10 & 3.17 & 放大·偏低 \\
+3 & $150\,\mathrm{k}$ & $39\,\mathrm{k}$ & 2.48 & 30.95 & 11.7 & 1.17 & 7.10 & 放大·最佳 \\
+4 & $150\,\mathrm{k}$ & $12\,\mathrm{k}$ & 0.89 & 11.11 & 1.43 & 0.143 & 11.40 & 放大·近截止 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{这张表怎么逐行读（不许只抄结果）：}
+
+\begin{itemize}
+\item \textbf{第 1 行}：$R_{B1}$ 小、$R_{B2}$ 大 $\Rightarrow$ 分压点高（$6.78\,\mathrm{V}$），基极电流大（$44\,\mu\mathrm{A}$），按 $I_C=\beta I_B$ 算得 $4.40\,\mathrm{mA}$。但 $4.40\,\mathrm{mA}$ 在 $R_C+R_E=4.2\,\mathrm{k}\Omega$ 上要压掉 $18.5\,\mathrm{V}$，比 $12\,\mathrm{V}$ 电源还大——\textbf{算出来是负的 $U_{CE}$，说明“放大区”这个前提已经不成立}，管子实际进了饱和。
+\item \textbf{第 2 行}：分压点降到 $3.43\,\mathrm{V}$，$I_C=2.10\,\mathrm{mA}$，$U_{CE}=3.17\,\mathrm{V}$。虽然仍在放大区，但 $U_{CE}$ 只有电源的约 $1/4$，输出波形的下半周容易先碰到饱和——现场会看到波形一头先削平。
+\item \textbf{第 3 行}：$U_{CE}=7.10\,\mathrm{V}$，最接近 $U_{CC}/2=6\,\mathrm{V}$，是四组里最“居中”的，后面所有动态测量都用这一组。
+\item \textbf{第 4 行}：分压点只有 $0.89\,\mathrm{V}$，$U_{BE}$ 就要 $0.7\,\mathrm{V}$，留给 $R_B$ 的只有 $0.19\,\mathrm{V}$，所以 $I_B$ 只有 $1.43\,\mu\mathrm{A}$、$I_C=0.143\,\mathrm{mA}$，$U_{CE}$ 顶到 $11.4\,\mathrm{V}$，几乎贴着截止。
+\end{itemize}
+
+\subhdr{1.4 边界：饱和那条线到底在哪}
+
+把“放大区公式算不通”翻译成一个可算的边界。饱和时 $U_{CE}$ 掉到饱和压降 $U_{CES}\approx0.3\,\mathrm{V}$ 就不再下降，此时集电极电流由外电路决定：
+
+\[
+I_{C,\max}=\frac{U_{CC}-U_{CES}}{R_C+R_E}
+=\frac{12-0.3}{4.2\,\mathrm{k}\Omega}=2.79\,\mathrm{mA}.
+\]
+
+用这个值反推第 1 组：$U_E=I_C R_E=3.34\,\mathrm{V}$，$U_C=U_{CC}-I_CR_C=3.64\,\mathrm{V}$，$U_{CE}=0.30\,\mathrm{V}$——三个电极电位都还在 $0\sim12\,\mathrm{V}$ 之内，这才是能读到的数。而按 $\beta I_B$ 算会得到 $U_C=12-4.40\times3=-1.2\,\mathrm{V}$，物理上不可能。\textbf{现场判断第 1 组是否饱和，就看 $U_{CE}$ 是不是只有零点几伏}；若你的表读到 $U_{CE}\approx0.2\sim0.4\,\mathrm{V}$、而 $\beta I_B$ 明显大于 $I_{C,\max}$，就是饱和，报告里要如实写“该组不能按放大区公式计算”。
+
+\warnbox{\textbf{现场别做的事：}发现第 1 组读数“不对”就把 $R_{P1}$ 拧大去凑 $U_{CE}=6\,\mathrm{V}$。教材 p.147 明写静态测量时 $R_{P1}$ 调到零，四组偏置要\textbf{在相同条件下}比较；你要调 $R_{P1}$ 是后面 §5.5 找最大不失真输出时才做的事，两件事不要混。}
+
+%=============================================================
+\hdr{§2}{交流通路与小信号模型：三个公式从哪来}
+
+\subhdr{2.1 画交流通路的三条规则}
+
+教材 p.149 说“动态是指有输入信号时的工作状态”，课件 C4-3 p19--p23 用三页把“原电路怎么变成交流通路”讲完了。规则只有三条：
+
+\begin{enumerate}
+\item \textbf{耦合电容短路}：$C_1$、$C_2$ 的容抗在中频段近似为零，交流信号直接通过；它们的作用只是“隔直流”，不让偏置被信号源和负载改掉。
+\item \textbf{旁路电容短路}：$C_E$ 把 $R_{E1}$ 两端交流短路，所以 $R_{E1}$ 上有直流压降、没有交流压降。
+\item \textbf{直流电源置零}：$U_{CC}$ 对交流是“恒压”，置零后就是一根接地线；于是 $R_C$ 的上端在交流上接地，$R_C$ 变成从集电极到地的电阻。
+\end{enumerate}
+
+按这三条画出来：输入口看进去是 $R_{B1}$、$R_{B2}$ 并联再并上管子的 $r_{be}$；输出口看进去是 $R_C$ 与 $R_L$ 并联；$S_1$ 断开时，发射极到地还多一个 $R_{E2}$ 没有被旁路。
+
+\subhdr{2.2 小信号模型：$r_{be}$ 是哪来的}
+
+\begin{center}
+\begin{circuitikz}[american, scale=1.15, transform shape]
+\draw (0.6,3.6) to[V=$U_s$] (0.6,2.0) to[R=$R_s$] (0.6,0.4);
+\draw (0.6,3.6) -- (2.2,3.6);
+\node[circ] at (2.2,3.6) {};
+\node[above] at (2.2,3.66) {\small B};
+\draw (2.2,3.6) to[R, l={\small $R_B$}] (2.2,0.4);
+\draw (2.2,3.6) -- (3.6,3.6);
+\node[circ] at (3.6,3.6) {};
+\draw (3.6,3.6) to[R, l={\small $r_{be}$}] (3.6,1.6);
+\node[circ] at (3.6,1.6) {};
+\node[below left] at (3.55,1.55) {\small E};
+\draw (3.6,1.6) to[R, l={$R_{E2}$}] (3.6,0.4);
+\draw[dashed, thick] (2.1,1.0) -- (2.1,0.4) -- (3.5,0.4);
+\node[left] at (2.05,0.7) {\small 短接};
+\draw (3.6,3.6) -- (5.2,3.6);
+\node[circ] at (5.2,3.6) {};
+\node[above] at (5.2,3.66) {\small C};
+\draw (5.2,3.6) to[I, l={$\beta i_b$}] (5.2,1.6);
+\draw (5.2,1.6) -- (3.6,1.6);
+\draw (5.2,3.6) -- (6.4,3.6);
+\draw (6.4,3.6) to[R, l_={\small $R_C$}] (6.4,0.4);
+\draw (0.6,0.4) -- (6.4,0.4);
+\node[ground] at (1.4,0.4) {};
+\end{circuitikz}
+
+{\small 图 2\quad 小信号等效电路（\textbf{重绘}）：实线为 $S_1$ 断开（$R_{E2}$ 接入，电流串联负反馈）；虚线表示 $S_1$ 闭合时 $R_{E2}$ 被短接。受控源 $\beta i_b$ 按惯例画成恒流源符号；$r_{be}$ 与 $R_{E2}$ 串联后接地，所以有反馈时所有式子里的 $r_{be}$ 都要换成 $r_{be}+(1+\beta)R_{E2}$。}
+\end{center}
+
+%=============================================================
+\hdr{§3}{$S_1$ 那只 $200\,\Omega$ 在做什么：负反馈的五件事}
+
+$S_1$ 与 $R_{E2}=200\,\Omega$ 并联。$S_1$ \textbf{闭合}时 $R_{E2}$ 被短接，发射极交流上直接接地；$S_1$ \textbf{断开}时 $R_{E2}$ 串在发射极回路里，发射极电流的交流分量在它上面产生压降，这个压降反过来减小 $u_{be}$——这就是\textbf{电流串联负反馈}。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{4.6cm}p{6.2cm}@{}}
+\hline
+\thead{指标} & \thead{$S_1$ 闭合（无反馈）} & \thead{$S_1$ 断开（有反馈）} \\
+\hline
+$A_u$（$R_L=3\,\mathrm{k}\Omega$） & $-61.8$ & $-6.63$（降到约 $1/9.3$） \\
+$r_i$ & $2.25\,\mathrm{k}\Omega$ & $13.1\,\mathrm{k}\Omega$（升高） \\
+$r_o$ & $\approx R_C=3\,\mathrm{k}\Omega$ & 略高于 $3\,\mathrm{k}\Omega$（升高） \\
+非线性失真 & 大 & 小（同样的输入，输出摆幅小，不易削顶） \\
+通频带 & 窄 & 宽 \\
+\hline
+\end{tabular}
+\end{center}
+
+有反馈时放大倍数要改成
+
+\[
+A_u=-\frac{\beta R_L'}{r_{be}+(1+\beta)R_{E2}} ,
+\]
+
+因为输入电压现在要分一部分给 $R_{E2}$：$u_i=i_b r_{be}+i_e R_{E2}=i_b[r_{be}+(1+\beta)R_{E2}]$。
+
+\aside{分母里的 $(1+\beta)R_{E2}$ 就是“发射极电阻折算到基极回路要乘 $(1+\beta)$”这条规则；它的物理意思是：发射极电流是基极电流的 $(1+\beta)$ 倍，所以同样的 $R_{E2}$ 在基极看来“大了 $(1+\beta)$ 倍”。这个折算在 §2 的 $r_i$ 式子里也会再出现一次。}
+
+\textbf{现场怎么看出反馈在起作用：}保持输入 $10\,\mathrm{mV}$ 不变，$S_1$ 由合到断，示波器上输出幅度明显变小（约小一个数量级），但波形更干净；再把输入加大到原来出现削顶的幅度，$S_1$ 断开时往往还不削顶。这三条现象对应表里的 $A_u\downarrow$、失真$\downarrow$，报告讨论题 3 就答这个。
+
+%=============================================================
+\hdr{§4}{实验电路、端子与接线}
+
+\subhdr{4.1 器材（教材表 5.2.1）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.4cm}p{2.8cm}p{8.2cm}@{}}
+\hline
+\thead{名称} & \thead{型号} & \thead{这次拿它干什么} \\
+\hline
+模拟电路实验箱 & THM-6 & 提供晶体管、电阻、电位器、电容与全部接线端子 \\
+直流稳压电源 & GPS-2303C & 供 $U_{CC}=12\,\mathrm{V}$；\textbf{先调压再接线} \\
+低频信号发生器 & SG1026 & 供 $1\,\mathrm{kHz}$、$10\,\mathrm{mV}$ 正弦；输出幅度可调 \\
+交流毫伏表 & DA-16 / SX2172 & 测 $U_i$、$U_o$ 的有效值（比万用表准） \\
+双踪示波器 & YB4320G & 同时看 $u_i$ 与 $u_o$，比相位、看削顶 \\
+数字万用表 & UT61 / MS8040 & 测 $U_B$、$U_C$、$U_E$ 直流电位；测 $R$ 阻值 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.2 电路（教材图 5.2.4 原图）}
+
+\begin{center}
+\includegraphics[width=0.90\linewidth]{图-实验5-教材图524-裁剪.png}
+
+{\small 图 1\quad 共射极单管放大电路（\textbf{裁剪}自教材图 5.2.4，书 p.151）。$S_1$ 与 $R_{E2}$ 并联（闭合即短接 $R_{E2}$）；$S_2$ 串在负载支路里，断开就是开路；a、b1/b2、d1/d2、c 是实验箱面上的接线柱，跳线方式见 §4.3。}
+\end{center}
+
+\subhdr{4.3 端子与开关：通电前逐项核对}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{6.2cm}p{6.6cm}@{}}
+\hline
+\thead{端子/开关} & \thead{作用} & \thead{接错会怎样} \\
+\hline
+a、b1、b2 & 上偏置电阻的选择与串接点（$R_{P1}$ 经 a 接到 b1 或 b2） & 悬空则基极没有偏置，$I_C\approx0$ \\
+d1、d2 & 下偏置电阻接地端 & 悬空则基极电位被抬到接近 $U_{CC}$，管子饱和 \\
+c & 公共地（与电源负极、示波器夹子同一根线） & 多点乱接地会引入干扰，读数抖动 \\
+$S_1$ & 与 $R_{E2}$ 并联：闭合=短接 $R_{E2}$（无反馈） & 记反了整张表 5.2.3 的解读就反了 \\
+$S_2$ & 负载接入开关：闭合=带载，断开=开路 & 开路时测的是 $U_{oc}$，别当成带载电压 \\
+$R_{P1}$ & 静态微调（静态测量时调到零） & 静态四组不可比 \\
+$R_{P2}$ & 负载电阻细调（$3\to13\,\mathrm{k}\Omega$） & 表 5.2.4 的 $R_L$ 与实际不符 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{图上这两处必须现场核对（原图与箱面可能不完全一致）：}1)  $R_{P1}$ 到底是“接在 $+U_{CC}$ 与 a 之间”还是“接在 a 与 b1 之间”——两种画法在箱面上靠跳线实现，\textbf{通电前用万用表电阻挡量一下 $U_{CC}$ 端到基极的阻值}，读数应约等于 $R_{P1}$ 当前值加 $R_{B1}$；2)  $C_E$ 是并在 $R_{E1}$ 两端还是并在 $R_{E1}+R_{E2}$ 两端——量一下 $C_E$ 两端是不是只跨 $1\,\mathrm{k}\Omega$。量错这两处，静态工作点与放大倍数都会对不上算例。}
+
+\subhdr{4.4 上电顺序（照这个顺序，不要跳）}
+
+\begin{enumerate}
+\item 电源\textbf{关机}、输出旋钮归零，按图接线；电解电容 $C_1$、$C_2$、$C_E$ 的 $+$ 端朝向高电位（$C_1$ 的 $+$ 朝基极、$C_2$ 的 $+$ 朝集电极、$C_E$ 的 $+$ 朝发射极）。
+\item 用万用表\textbf{电阻挡}查三处：$U_{CC}$ 到地不短路、基极到地约 $R_{B1}+R_{P1}$ 量级、集电极到地约 $R_C$。
+\item 接 $U_{CC}=12\,\mathrm{V}$，先不接信号源，$S_1$ 断开、$S_2$ 断开。
+\item 静点测量（§5.1）——四组偏置逐一测，填表 5.2.2。
+\item 选出最佳一组（预期第 3 组）后，再接信号源，做动态测量（§5.2--§5.6）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§5}{测量方法：每一项读什么、为什么这样读}
+
+\subhdr{5.0 进场第一件事：认管子}
+
+教材 §5.2.4 要求先用万用表电阻挡判管型与管脚（$b$、$c$、$e$），并记在报告里。判断法：用二极管挡测两个结，$b$--$e$、$b$--$c$ 都应单向导通（NPN 时红表笔接 $b$、黑表笔接 $e$ 或 $c$ 读数小）；两次都通的那只脚是 $b$，剩下两脚中与 $b$ 组成结压降略大的通常是 $e$。\textbf{报告里要写出你测到的管脚排列}，别只写“已测”。
+
+\subhdr{5.1 静态：三条规则 + 三个电位}
+
+\begin{enumerate}
+\item \textbf{输入短路}：$u_i=0$ 才叫“静态”，所以测量前把输入端对地短接（教材 p.148 原话：“应先将放大电路的输入端与地短接”）。
+\item \textbf{共地}：所有仪表的黑夹子接同一根地线（端子 c），电压表只能测“某点对地”的电压，不能跨接两点测。
+\item \textbf{不拆线测电流}：电流不直接测，而是测 $U_B$、$U_C$、$U_E$ 三个对地电位再推算。
+\end{enumerate}
+
+计算式（把测到的三个电位换成静态工作点）：
+
+\[
+I_B\approx\frac{U_{CC}-U_B}{R_{B1}}-\frac{U_B}{R_{B2}},\qquad
+I_C\approx\frac{U_{CC}-U_C}{R_C},\qquad
+U_{CE}=U_C-U_E .
+\]
+
+\aside{第一式是基极节点的 KCL：从 $U_{CC}$ 经 $R_{B1}$ 流入基极节点的电流，减去经 $R_{B2}$ 流到地的电流，剩下的就是流入基极的 $I_B$。这个式子在\textbf{放大区}才成立（此时 $I_B$ 很小、对分压点影响不大）；第 1 组饱和时 $I_B$ 很大，分压点会被显著拉低，算出来的 $I_B$ 与 $\beta I_B=I_C$ 对不上——这本身就是“饱和”的一个旁证。}
+
+\textbf{自检：}放大区里应满足 $I_C\approx\beta I_B$（误差 $10\%$ 以内可接受，因为 $\beta$ 的标称值与实际值本来就有分散）。若 $I_C$ 明显小于 $\beta I_B$，先怀疑饱和；若 $I_C$ 远小于 $\beta I_B$ 且 $U_{CE}\approx U_{CC}$，怀疑截止或基极没接上。
+
+\subhdr{5.2 电压放大倍数 $A_u$}
+
+给 $10\,\mathrm{mV}$、$1\,\mathrm{kHz}$ 正弦，\textbf{先用示波器确认输出没有削顶}，再用交流毫伏表读 $U_i$、$U_o$ 的有效值：
+
+\[
+|A_u|=\frac{U_o}{U_i}.
+\]
+
+注意三件事：1)  $U_i$ 要接在放大电路\textbf{输入端}（$C_1$ 左侧）测，不是信号发生器面板上的读数；2)  信号发生器的“输出幅度”旋钮刻度不准，$10\,\mathrm{mV}$ 要以毫伏表读数为准；3)  输出波形失真时读出的 $U_o$ 不能用来算 $A_u$（教材 p.152 注意事项 2）。
+
+\subhdr{5.3 输入电阻 $r_i$：串一只已知电阻}
+
+在信号源与放大电路输入端之间串一只 $R$（与 $r_i$ 同数量级，本实验取 $1\sim2\,\mathrm{k}\Omega$），分别测 $R$ 两端对地的电压 $U_s$（信号源侧）与 $U_i$（放大电路侧），则
+
+\[
+r_i=\frac{U_i}{U_s-U_i}\,R .
+\]
+
+\aside{这个式子的来历就是分压：$R$ 与 $r_i$ 串联分压，$U_i=U_s\frac{r_i}{R+r_i}$，解出 $r_i$ 即得。教材 (5.2.1) 直接给了结果，这一步补的是“为什么”。$R$ 取太大，$U_i$ 太小读不准；取太小，$U_i\approx U_s$，分母是两个相近数相减，误差被放大——所以要求“同数量级”。}
+
+教材还给了一个更省事的变体：把 $R$ 换成电位器 $R_P$，调它使 $U_i=0.5U_s$，此时 $r_i=R_P$，再把电位器拆下来量阻值。两种做法等价，任选一种，报告里写清用的是哪种。
+
+\subhdr{5.4 输出电阻 $r_o$：开路电压与带载电压}
+
+先断开 $S_2$（开路）测 $U_{oc}$，再闭合 $S_2$（接 $R_L$）测 $U_{oL}$，则
+
+\[
+r_o=\left(\frac{U_{oc}}{U_{oL}}-1\right)R_L .
+\]
+
+\aside{来历：把输出端看成“一个电压源 $U_{oc}$ 串一个内阻 $r_o$”，接上 $R_L$ 后 $U_{oL}=U_{oc}\frac{R_L}{r_o+R_L}$，解出 $r_o$ 即得上式。\textbf{关键条件}：带载前后输入信号 $u_i$ 的大小必须保持不变（否则 $U_{oc}$ 与 $U_{oL}$ 不是同一个“源”的两次测量），且两次都不能失真。}
+
+\subhdr{5.5 最大不失真输出 $U_{op\text{-}p}$：找对称削波}
+
+教材 p.150 给了五步，核心是“把输入一点点加大，同时微调 $R_{P1}$，直到上下同时出现饱和削波与截止削波”。判据是\textbf{两种失真基本对称}——这时工作点正好在交流负载线的中点，输出摆幅最大。此后把输入略减小到刚好不削顶，读 $U_o$ 的有效值，则
+
+\[
+U_{op\text{-}p}=2\sqrt{2}\,U_o .
+\]
+
+\aside{$2\sqrt{2}$ 的来历：正弦有效值 $U_o$ 对应峰值 $\sqrt2 U_o$，峰峰值是峰值的两倍，所以 $2\sqrt2 U_o$。这个因子与频率无关，纯属“有效值—峰值—峰峰值”的换算，报告里可以一句话说明。}
+
+\textbf{理论估算}（用来判断读数合不合理）：带载 $R_L=3\,\mathrm{k}\Omega$、第 3 组偏置时，交流负载线允许的摆幅约为 $2I_C R_L'=2\times1.167\,\mathrm{mA}\times1.5\,\mathrm{k}\Omega=3.5\,\mathrm{V}$，而“饱和侧余量” $2(U_{CE}-U_{CES})=2\times6.8=13.6\,\mathrm{V}$ 远大于它——所以\textbf{带载时先碰到的是截止侧（交流负载线）限制}，$U_{op\text{-}p}$ 应在 $3.5\,\mathrm{V}$ 量级。若你测到 $7\,\mathrm{V}$ 以上，先检查 $S_2$ 是否真的闭合、$R_L$ 是否真的是 $3\,\mathrm{k}\Omega$。
+
+\subhdr{5.6 通频带 $f_{BW}$：0.707 法}
+
+在最大不失真状态下固定输入幅度，只改频率：从 $1\,\mathrm{kHz}$ 往高处走，$U_o$ 降到中频值的 $0.707$ 倍时记下 $f_H$；往低处走，降到 $0.707$ 倍时记下 $f_L$；$f_{BW}=f_H-f_L$。
+
+\aside{$0.707=1/\sqrt2$ 对应功率减半（$-3\,\mathrm{dB}$），是“通频带”的通用约定，不是本实验特有的。表 5.2.5 只列到 $20\,\mathrm{kHz}$，而单管共射的上限频率通常在几百 $\mathrm{kHz}$，\textbf{这张表很可能测不到 $f_H$}——报告里要如实写“在 $20\,\mathrm{kHz}$ 内未见下降到 $0.707$ 倍，故 $f_H$ 未能测出”，不要编一个数。}
+
+%=============================================================
+\hdr{§6}{六张数据表（现场照填）}
+
+\noindent 表 6-1～6-6 对应教材表 5.2.2～5.2.7。\textbf{每张表都先写“条件行”}（$U_{CC}$、$R_{P1}$、$S_1$、$S_2$、输入幅度频率），再填数——条件不写，数据没法复算。
+
+\subhdr{6.1 表 6-1\quad 静态工作点（教材表 5.2.2；$U_{CC}=12\,\mathrm{V}$、$R_{P1}=0$、$S_1$ 断开、输入短路）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.8cm}p{2.8cm}p{1.7cm}p{1.7cm}p{1.7cm}p{1.9cm}p{1.9cm}p{1.7cm}@{}}
+\hline
+\thead{序号} & \thead{基极偏置电阻} & \thead{$U_B$/V} & \thead{$U_E$/V} & \thead{$U_C$/V} & \thead{$I_B$/$\,\mu$A} & \thead{$I_C$/mA} & \thead{$U_{CE}$/V} \\
+\hline
+1 & $R_{B11}$、$R_{B21}$ & & & & & & \\
+2 & $R_{B11}$、$R_{B22}$ & & & & & & \\
+3 & $R_{B12}$、$R_{B21}$ & & & & & & \\
+4 & $R_{B12}$、$R_{B22}$ & & & & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{教材表 5.2.2 的表头印错了：}$I_B$ 那一栏的单位印成 “V”，应为 $\mu$A（本讲义已改）。你如果照印错的表头抄进报告，老师一眼就能看出没核对——报告里用 $\mu$A。}
+
+\subhdr{6.2 表 6-2\quad 不同静态工作点下的输出（教材表 5.2.3；输入 $10\,\mathrm{mV}$、$1\,\mathrm{kHz}$、$S_2$ 断开）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.8cm}p{2.6cm}p{1.6cm}p{1.7cm}p{1.6cm}p{1.7cm}p{1.6cm}p{1.7cm}@{}}
+\hline
+\thead{序号} & \thead{偏置电阻} & \multicolumn{3}{c}{\thead{测量值 1（$S_1$ 闭合）}} & \multicolumn{3}{c}{\thead{测量值 2（$S_1$ 断开）}} \\
+\cline{3-8}
+ & & \thead{$u_o$ 波形} & \thead{$U_o$/V} & \thead{状态} & \thead{$u_o$ 波形} & \thead{$U_o$/V} & \thead{状态} \\
+\hline
+1 & $R_{B11}$、$R_{B21}$ & & & & & & \\
+2 & $R_{B11}$、$R_{B22}$ & & & & & & \\
+3 & $R_{B12}$、$R_{B21}$ & & & & & & \\
+4 & $R_{B12}$、$R_{B22}$ & & & & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+“状态”栏填：\textbf{不失真 / 饱和削波（下半周平）/ 截止削波（上半周平）/ 双向削波}。波形画在报告上，比写字省事也更准确。
+
+\subhdr{6.3 表 6-3\quad 不同负载（教材表 5.2.4；第 3 组偏置、$S_1$ 闭合、输入 $10\,\mathrm{mV}$、$1\,\mathrm{kHz}$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.8cm}p{1.8cm}p{1.8cm}p{1.9cm}p{2.4cm}p{1.8cm}p{2.2cm}@{}}
+\hline
+\thead{序号} & \thead{$R_L$/$\mathrm{k}\Omega$} & \thead{$U_i$/mV} & \thead{$U_o$/V} & \thead{$u_o$ 波形} & \thead{$|A_u|$} & \thead{$20\lg|A_u|$/dB} \\
+\hline
+1 & 3 & 10 & & & & \\
+2 & 6 & 10 & & & & \\
+3 & 13 & 10 & & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.4 表 6-4\quad 频率响应（教材表 5.2.5；固定 $U_i$，只改 $f$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}p{1.5cm}p{1.3cm}p{1.5cm}p{1.5cm}p{1.3cm}@{}}
+\hline
+\thead{$f$/Hz} & \thead{$U_o$/V} & \thead{$|A_u|$} & \thead{$f$/kHz} & \thead{$U_o$/V} & \thead{$|A_u|$} \\
+\hline
+10 & & & 10 & & \\
+50 & & & 100 & & \\
+100 & & & 1 000 & & \\
+200 & & & 2 000 & & \\
+400 & & & 4 000 & & \\
+700 & & & 8 000 & & \\
+1 000 & & & 10 000 & & \\
+2 000 & & & 20 000 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.5 表 6-5\quad 输入电阻（教材表 5.2.6；串 $R$，测 $U_s$、$U_i$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{2.0cm}p{1.6cm}p{1.8cm}p{1.8cm}p{2.3cm}@{}}
+\hline
+\thead{估算 $r_i$/$\mathrm{k}\Omega$} & \thead{串联 $R$/$\mathrm{k}\Omega$} & \thead{$S_1$} & \thead{$U_s$/mV} & \thead{$U_i$/mV} & \thead{计算 $r_i$/$\mathrm{k}\Omega$} \\
+\hline
+ & & 闭合 & & & \\
+ & & 断开 & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.6 表 6-6\quad 输出电阻（教材表 5.2.7；开路电压与带载电压）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{2.0cm}p{1.6cm}p{1.8cm}p{1.8cm}p{2.3cm}@{}}
+\hline
+\thead{估算 $r_o$/$\mathrm{k}\Omega$} & \thead{负载 $R_L$/$\mathrm{k}\Omega$} & \thead{$S_1$} & \thead{$U_{oc}$/V} & \thead{$U_{oL}$/V} & \thead{计算 $r_o$/$\mathrm{k}\Omega$} \\
+\hline
+ & & 闭合 & & & \\
+ & & 断开 & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{表 6-5 与 6-6 的共同前提：}$U_i$ 在接\emph{不}接 $R$、带\emph{不}带负载的两次测量中必须保持同一数值，且波形不失真。做不到就先回到 §5.2 把输入幅度固定住，再动 $R$ 或 $S_2$。}
+
+%=============================================================
+\hdr{§7}{英文报告怎么写：逐栏对照 + 术语表 + 五条语言纪律}
+
+\subhdr{7.1 报告的语言分工（这是“中英文问题”的正面回答）}
+
+电工实验报告\textbf{用英文写}（2026-09-28 已确认，沿用实验 1 模板语言）。但“英文报告”不等于“每一栏都必须英文”：\textbf{栏目名、正文、讨论题答案}用英文；\textbf{数据表里的符号与单位}（$U_{CE}$、mA、$\mathrm{k}\Omega$）照符号体系写，不译；\textbf{你自己在页边写的提醒、草稿}可以中文，只是别抄进正式栏。分开写，比整篇硬译省时间，也不容易出“中式英语”。
+
+\subhdr{7.2 六个栏目：英文原样 + 你要填什么}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.7cm}p{3.4cm}p{7.1cm}@{}}
+\hline
+\thead{报告栏目（照抄）} & \thead{中文意思} & \thead{这一栏填什么} \\
+\hline
+\textit{I. Experimental Objectives} & 实验目的 & 抄 §0.3 的三句话改成英文，别抄教材四条 \\
+\textit{II. Experimental Apparatus} & 实验器材 & 表 5.2.1 的六台仪器 + 型号；箱子上的元件不必逐个列 \\
+\textit{III. Experimental Principles} & 实验原理 & 静态工作点公式 + $r_{be}$ + 三个动态公式（§1--§2） \\
+\textit{IV. Experimental Procedure} & 实验步骤 & 按 §4.4、§5 的顺序写，写“做了什么”不写“应该怎样” \\
+\textit{V. Results and Analysis} & 数据与分析 & 六张表 + 每表后一段“这表说明什么” \\
+\textit{VI. Discussion and Conclusions} & 讨论与结论 & §9 七问，一问一段 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{栏目名各版本略有差异：实验 1 的模板是 \textit{Experimental Objectives / Experimental Principles / Experimental Content}，实验 5 的册页没见到，可能多一个 \textit{Conclusions}。\textbf{以册页印的为准}；册页上没有的栏目不要自己加，册页上有的不要漏。改动只发生在“栏目名”，内容仍按上表填。}
+
+\subhdr{7.3 可直接改写的英文句（每句后面是中文意思）}
+
+\callout{\textbf{Objectives.} To measure the quiescent operating point of a single-stage common-emitter amplifier, to determine the voltage gain, input resistance, output resistance, maximum undistorted output voltage and bandwidth, and to observe the effect of negative feedback.\par\vspace{2pt}
+\textit{（测单管共射放大器的静态工作点，测定电压放大倍数、输入电阻、输出电阻、最大不失真输出电压与通频带，并观察负反馈的影响。）}}
+
+\callout{\textbf{Principle.} With the coupling and bypass capacitors treated as short circuits and the dc supply set to zero, the amplifier reduces to the small-signal model in which the transistor is replaced by $r_{be}$ at the input and a controlled source $\beta i_b$ at the output. Hence $A_u=-\beta R_L'/r_{be}$, $r_i=R_B\parallel r_{be}$ and $r_o\approx R_C$.\par\vspace{2pt}
+\textit{（把耦合、旁路电容视为短路、直流电源置零后，放大器化为小信号模型：输入端为 $r_{be}$，输出端为受控源 $\beta i_b$，由此得上式。）}}
+
+\callout{\textbf{Results.} The measured quiescent point of the third bias combination is $U_{CE}=\underline{\quad}\,\mathrm{V}$, which is close to $U_{CC}/2$, so this combination gives the best operating point.\par\vspace{2pt}
+\textit{（第三组偏置的实测静点为……，接近 $U_{CC}/2$，故该组最佳。）}}
+
+\subhdr{7.4 术语表（英文 \(\leftrightarrow\) 中文 \(\leftrightarrow\) 符号）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.3cm}p{4.0cm}p{2.6cm}p{4.4cm}@{}}
+\hline
+\thead{英文（报告里写这个）} & \thead{中文} & \thead{符号} & \thead{别写成} \\
+\hline
+quiescent operating point / Q-point & 静态工作点 & $Q$ & static working point \\
+bias resistor & 偏置电阻 & $R_{B1}$、$R_{B2}$ & bias resistance \\
+coupling capacitor & 耦合电容 & $C_1$、$C_2$ & coupling condenser \\
+bypass capacitor & 旁路电容 & $C_E$ & bypass condenser \\
+voltage gain & 电压放大倍数 & $A_u$ & magnification \\
+input resistance & 输入电阻 & $r_i$ & input impedance（阻抗是复数） \\
+output resistance & 输出电阻 & $r_o$ & output impedance \\
+maximum undistorted output voltage & 最大不失真输出电压 & $U_{op\text{-}p}$ & max output voltage \\
+bandwidth & 通频带 & $f_{BW}$ & pass band \\
+negative feedback & 负反馈 & — & minus feedback \\
+saturation distortion & 饱和失真 & — & saturation error \\
+cutoff distortion & 截止失真 & — & cut-off error \\
+common-emitter amplifier & 共射放大电路 & — & common-emitter magnifier \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{7.5 五条语言纪律（写完自己扫一遍）}
+
+\begin{enumerate}
+\item \textbf{英文句子里不出现汉字}，中文标点（，。；：）一律换成半角 \texttt{, . ; :}。
+\item \textbf{术语只用表 7.4 的左列}，同一份报告里不换叫法；“静态工作点”第一次出现写全 \textit{quiescent operating point (Q-point)}，后文用 \textit{Q-point}。
+\item \textbf{符号与单位不翻译}：$U_{CE}$ 不写成 \textit{Uce} 或 \textit{VCE}；单位正体、与数字间留空格（\texttt{1.17 mA}，不写 \texttt{1.17mA}）；$\mathrm{k}\Omega$ 不写 \texttt{KΩ}。
+\item \textbf{时态分开}：\textit{Procedure} 用过去时（\textit{The supply was set to 12 V.}），\textit{Principle} 用现在时（\textit{The gain is given by ...}）。
+\item \textbf{数字报实测值}，不把算例当结果：报告里的 $U_{CE}$ 必须是你表上读到的数，算例的 $7.10\,\mathrm{V}$ 只能出现在“理论估算”一句里，并注明 \textit{estimated}。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{预习问题（教材 §5.2.2）：题面在这儿，详解在附录 A}
+
+\noindent 教材要求“复习理论知识”4 问 + “预习实验内容”4 条。按本工作区“先做后看”的口径，题面与考点留在正文，完整答案在\textbf{附录 A（第 \pageref{app:A} 页起）}。\textbf{先自己在纸上写一遍再看}，尤其第 1 问与第 4 条（要估算静态工作点、$r_i$、$r_o$），老师很可能课前查预习报告。
+
+\subhdr{8.1 复习理论知识}
+
+\begin{enumerate}
+\item \textbf{放大电路为何要设置合适的静态工作点？静态工作点有哪几种调整方法？一般采用哪种方法对动态放大影响最小？为什么？}\\
+\textit{考点：}工作点与非线性失真的关系；调 $R_B$、调 $R_C$、调 $U_{CC}$ 三种方法各自动了什么。
+\item \textbf{放大电路的动态性能指标有哪些？负载电阻的大小对动态性能指标有什么影响？}\\
+\textit{考点：}$A_u$、$r_i$、$r_o$、$U_{op\text{-}p}$、$f_{BW}$ 五个量；$R_L$ 进入 $R_L'=R_C\parallel R_L$ 后如何改变 $A_u$ 与 $U_{op\text{-}p}$。
+\item \textbf{负反馈对放大电路的动态性能指标有什么影响？}\\
+\textit{考点：}$S_1$ 断开引入的是哪一种反馈；它对 $A_u$、$r_i$、$r_o$、失真、带宽各是什么方向。
+\item \textbf{功率放大电路有哪几种工作方式？什么是交越失真？怎样消除交越失真？OTL 与 OCL 有什么区别？}\\
+\textit{考点：}甲类/乙类/甲乙类；交越失真的来源与消除（加偏置）；OTL 单电源、OCL 双电源。\textbf{这一问超出本次实验范围}，但教材把它列在预习要求里，简答三两句即可。
+\end{enumerate}
+
+\subhdr{8.2 预习实验内容}
+
+\begin{enumerate}
+\item 读教材第 1 章晶体管相关内容，掌握管型与管脚测试方法（对应 §5.0）。
+\item 读教材第 8 章，熟悉本次要用的仪器（对应 §4.1 表右列“拿它干什么”）。
+\item 读教材 §5.2.3，掌握静态与动态测试的基本内容与方法（对应 §5）。
+\item \textbf{预习 §5.2.4～§5.2.6，熟悉元件型号参数；估算图 5.2.4 共射极单管放大电路的静态工作点、输入电阻和输出电阻。}\\
+\textit{考点：}按 §1.3 的四个组合各算一遍，并说明哪一组最合适；$r_i$、$r_o$ 按 §2.4 给数。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{讨论题（教材 §5.2.6）：七问，题面在这儿，详解在附录 B}
+
+\begin{enumerate}
+\item 整理表 5.2.2 的测量数据，根据计算值判断各组偏置所对应的静态工作点位于输出特性曲线的哪个区域。
+\item 整理表 5.2.3 的数据，分析说明哪一组偏置比较合理，并总结静态工作点对放大电路的影响。
+\item 根据表 5.2.3 的数据，分析 $S_1$ 的断开与闭合对放大电路有哪些影响，并阐述产生这种影响的原因（理论依据）。
+\item 图 5.2.4 所示放大电路的最大输出动态范围是多少？分析在什么条件下才能得到最大输出电压。
+\item 整理表 5.2.4 的数据，总结放大倍数与负载电阻的关系。
+\item 根据表 5.2.5 的数据，计算电压放大倍数，画出幅频特性，估算通频带宽度。
+\item 分析表 5.2.6 与表 5.2.7 的数据，总结输入电阻与输出电阻的大小与哪些因素有关。
+\end{enumerate}
+
+%=============================================================
+\hdr{§10}{易错点（每条都能指回某个式子或某一步）}
+
+\begin{itemize}
+\item \textbf{把 $S_1$ 的开合记反。} $S_1$ 与 $R_{E2}$ \textbf{并联}，闭合是“短接 $R_{E2}$、无反馈、增益大”，断开才是“有反馈、增益小”。记反了，表 5.2.3 的两列会全部对调，讨论题 3 也就答反了。
+\item \textbf{用万用表交流挡测 $10\,\mathrm{mV}$。} 万用表在低频小信号上误差很大（教材表 5.2.1 写明“$1\,\mathrm{kHz}$ 以内交流电压有效值”，但小量程仍不准），要用交流毫伏表。
+\item \textbf{输入幅度不固定就换负载。} 表 5.2.4 要求“$U_i$ 不变”，因为 $A_u=U_o/U_i$ 的 $U_i$ 一变，$U_o$ 的变化就分不清是负载引起的还是输入引起的。
+\item \textbf{把 $U_{oc}$ 与 $U_{oL}$ 的输入幅度弄成不一样。} 测 $r_o$ 的两个电压必须来自同一次输入设置（§5.4 旁注）。
+\item \textbf{静态测量时没把输入短接。} 输入端悬空会拾取工频干扰，$U_B$ 读数跳动。
+\item \textbf{饱和组还按 $\beta I_B$ 算 $I_C$。} 第 1 组会算出 $4.4\,\mathrm{mA}$，而 $I_{C,\max}=2.79\,\mathrm{mA}$（§1.4），报告里要写“该组处于饱和，$\beta I_B$ 不成立”。
+\item \textbf{示波器两个探头的地夹子接到不同点。} 双踪示波器的两个地夹子内部是连通的，必须接同一根地线，否则会通过示波器把电路短路。
+\item \textbf{报告里写“放大倍数约 60 倍”却不写符号与条件。} 要写 $|A_u|=61.8$（$R_L=3\,\mathrm{k}\Omega$，$f=1\,\mathrm{kHz}$，$S_1$ 闭合），条件不写等于没测。
+\end{itemize}
+
+%=============================================================
+\hdr{§11}{缺口清单（教材/课件跳步与本讲义补了什么）}
+
+\gapitem{代数跳步}{教材 p.148--149 由 $U_B$、$U_C$、$U_E$ 推 $I_B$、$I_C$、$U_{CE}$ 只给结论，没写 KCL 与回路。本讲义 §5.1 补了两式的来历与“放大区才成立”的条件。}
+\gapitem{常数来源}{教材与课件都直接用 $r_{be}=200+\beta\cdot26/I_C(\mathrm{mA})$，没交代 $200\,\Omega$ 与 $26\,\mathrm{mV}$ 从哪来。本讲义 §2.2 旁注把\textbf{热电压 $kT/q$}（物理）、\textbf{基区体电阻}（器件参数）、\textbf{$(1+\beta)$ 折算}（电路约定）三种来源分开写。}
+\gapitem{压缩缺口}{教材 p.150 (5.2.2) 直接给 $r_o=(U_{oc}/U_{oL}-1)R_L$，中间“输出端看成电压源串内阻”这一步被压掉。本讲义 §5.4 旁注补了分压式与“两次输入必须相同”的前提。}
+\gapitem{适用区间}{教材 p.148 只说“$U_{CE}$ 约为 $U_{CC}$ 一半即合适”，没给饱和边界。本讲义 §1.4 用 $I_{C,\max}=(U_{CC}-U_{CES})/(R_C+R_E)=2.79\,\mathrm{mA}$ 把边界算出来，并解释第 1 组为何算出负 $U_{CE}$。}
+\gapitem{图缺/图替}{教材图 5.2.4 把 $R_{P1}$、$R_{B1}$、$R_{B2}$ 画成箱面接线柱（a、b1、b2、d1、d2），但正文没写这些端子怎么跳线；页码 p.151 只说“按图连接”。本讲义 §4.2 重绘并在 §4.3 给出端子表与“接错会怎样”，另在 §4.2 末标出两处需现场量电阻核对的接法。}
+\gapitem{边界缺口}{教材表 5.2.2 表头 $I_B$ 的单位印成 “V”（p.152），学生照抄会把量纲写错。本讲义 §6.1 已改为 $\mu$A 并加了提醒。}
+\gapitem{册页缺口}{实验 5 的英文册页（\textit{Preliminary Work}、\textit{Discussion of Results} 的具体栏目与表号）工作区\textbf{尚未收到}，本讲义 §7 的栏目名是按实验 1 模板与教材 §5.2 推的。进实验室前按册页核对，回来改。}
+
+%=============================================================
+\hdr{§12}{三句话总结与页码对照}
+
+\begin{enumerate}
+\item \textbf{静态决定能不能放大：}$U_{CE}\approx U_{CC}/2$ 最稳；本实验四组里第 3 组（$150\,\mathrm{k}$ 与 $39\,\mathrm{k}$）最接近，第 1 组已饱和、第 4 组近截止。
+\item \textbf{动态只看三个式子：}$A_u=-\beta R_L'/r_{be}$、$r_i=R_B\parallel r_{be}$、$r_o\approx R_C$；$S_1$ 断开时把 $r_{be}$ 换成 $r_{be}+(1+\beta)R_{E2}$，增益降到约 $1/9$、输入电阻升到约 $13\,\mathrm{k}\Omega$。
+\item \textbf{测量守三条：}静态先把输入短路、所有表共地、电流不拆线测而用电位推算；动态先确认不失真再读数，换负载/串电阻时输入幅度必须不变。
+\end{enumerate}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{2.4cm}p{8.6cm}@{}}
+\hline
+\thead{本讲义} & \thead{教材页} & \thead{内容} \\
+\hline
+§1 & p.148--149 & 静态工作点、四组偏置、饱和边界 \\
+§2 & p.149--150；课件 C4-3 p19--p27 & 交流通路、小信号模型、三个公式 \\
+§3 & p.150；教材讨论题 3 & $S_1$ 与 $R_{E2}$ 的负反馈 \\
+§4 & p.147、p.151--152 & 器材、图 5.2.4、端子与上电顺序 \\
+§5 & p.148--151 & 静态、$A_u$、$r_i$、$r_o$、$U_{op\text{-}p}$、$f_{BW}$ \\
+§6 & p.152--154 & 表 5.2.2--5.2.7 \\
+§7 & — & 英文报告栏目与术语（教材没有） \\
+§8--§9 & p.147--148、p.154 & 预习 4+4 问、讨论 7 问 \\
+\hline
+\end{tabular}
+\end{center}
+
+\flowerrule
+
+%=============================================================
+\newpage
+\hdr{附录 A}{预习问题详解（答案在题后，先自己写一遍）}\label{app:A}
+
+\noindent 以下每题先复述题面（教材 §5.2.2，书 p.147--148），再给\textbf{中文解答}与可抄进英文预习报告的\textbf{英文句}。帮助口径：本附录属讲解级帮助（$H\ge4$、全曝光），\textbf{不计为独立掌握证据}；真正检验在闭卷复测。
+
+\subhdr{A.1\quad 为什么设静态工作点？三种调法，哪种对动态影响最小}
+
+\qstem{（教材 p.147 第 1 问）放大电路为何要设置合适的静态工作点？静态工作点有哪几种调整方法？一般采用哪种方法对动态放大影响最小？为什么？}
+
+\textbf{考点：}工作点—失真—摆幅三者的关系；三种调法各自改的是“直流”还是“交流”。
+
+\textbf{关键一步：}先承认“放大区才线性”，再看工作点偏移时哪半周先被削。
+
+\textbf{详解：}三极管只在放大区（发射结正偏、集电结反偏）才有 $I_C=\beta I_B$ 的线性关系。交流信号是叠加在直流工作点上的摆幅：工作点定得合适，正负半周都留有余量，输出才不失真；定得太高（$U_{CE}$ 小）则信号一摆就进饱和，输出下半周被削平；定得太低（$U_{CE}$ 大）则一摆就进截止，输出上半周被削平；两种失真合称非线性失真。合适的位置是让 $U_{CE}\approx U_{CC}/2$，并且正好落在交流负载线的中点（这样正负半周同时到达边界，摆幅最大）。
+
+调法有三种：1) 调基极偏置电阻 $R_B$（本实验用 $R_{B1}$、$R_{B2}$ 与 $R_{P1}$）；2) 调集电极电阻 $R_C$；3) 调电源电压 $U_{CC}$。\textbf{调 $R_B$ 对动态影响最小}，因为 $R_B$ 在交流通路上与信号源并联、且通常远大于 $r_i$，改变它对 $A_u$ 的中频值几乎没有影响（$A_u=-\beta R_L'/r_{be}$ 里没有 $R_B$）；而 $R_C$ 直接进 $R_L'$、$U_{CC}$ 直接改直流负载线，两者都会同时改变动态指标。所以工程上调工作点优先调基极偏置。
+
+\textbf{答案（英文可抄）：}\textit{The quiescent point must be set inside the active region so that the transistor stays linear over the whole signal swing. Three methods are available: adjusting the base bias resistor, the collector resistor, or the supply voltage. Adjusting the base bias resistor is preferred because it changes the dc operating point while leaving the mid-band voltage gain almost unchanged.}
+
+\textbf{自检：}若有人问“为什么调 $R_C$ 不行”，答“$R_C$ 同时在 $R_L'$ 里，改它会改增益”；若问“$U_{CE}=U_{CC}/2$ 是不是绝对标准”，答“在交流负载线与直流负载线接近时是；接上 $R_L$ 后严格标准是交流负载线中点”。
+
+\subhdr{A.2\quad 动态指标有哪些？负载怎么影响它们}
+
+\qstem{（教材 p.148 第 2 问）放大电路的动态性能指标有哪些？负载电阻的大小对放大电路的动态性能指标有什么影响？}
+
+\textbf{考点：}五个指标的定义与 $R_L$ 进入哪个式子。
+
+\textbf{关键一步：}$R_L$ 只通过 $R_L'=R_C\parallel R_L$ 进入 $A_u$ 与 $U_{op\text{-}p}$，不进入 $r_i$；对 $r_o$ 也无直接影响。
+
+\textbf{详解：}动态指标五个：电压放大倍数 $A_u$、输入电阻 $r_i$、输出电阻 $r_o$、最大不失真输出电压 $U_{op\text{-}p}$、通频带 $f_{BW}$（教材 p.149 原话把前四个与 $f_{BW}$ 合称“放大电路性能的好坏”）。$R_L$ 越小，$R_L'=R_C\parallel R_L$ 越小，$|A_u|=\beta R_L'/r_{be}$ 越小；同时交流负载线越陡，允许的摆幅 $2I_CR_L'$ 也越小，$U_{op\text{-}p}$ 下降。$r_i$ 由 $R_B\parallel r_{be}$ 决定，与 $R_L$ 无关；$r_o\approx R_C$ 也与 $R_L$ 无关。$f_{BW}$ 主要受耦合电容与管子结电容影响，$R_L$ 改变会略微移动下限频率（$C_2$ 与 $R_C+R_L$ 构成高通），影响不大。
+
+\textbf{答案（英文可抄）：}\textit{The dynamic specifications are voltage gain, input resistance, output resistance, maximum undistorted output voltage and bandwidth. A smaller load resistance reduces both the gain and the maximum undistorted output, because the ac load $R_L'=R_C\parallel R_L$ becomes smaller; it has almost no effect on the input and output resistances.}
+
+\textbf{自检：}能说出“为什么 $r_i$ 与 $R_L$ 无关”（因为从输入口看进去看不到负载）。
+
+\subhdr{A.3\quad 负反馈对动态指标的影响}
+
+\qstem{（教材 p.148 第 3 问）负反馈对放大电路的动态性能指标有什么影响？}
+
+\textbf{考点：}$S_1$ 断开引入的是电流串联负反馈，判断它对五个量各自的方向。
+
+\textbf{关键一步：}负反馈的通则是“以增益换性能”：$A_u$ 降、$r_i$ 升（串联）、$r_o$ 升（电流取样）、失真降、带宽增。
+
+\textbf{详解：}$S_1$ 断开后 $R_{E2}$ 串在发射极，发射极电流的交流分量在 $R_{E2}$ 上产生压降，使 $u_{be}=u_i-i_eR_{E2}$ 减小——这是\textbf{电流串联负反馈}。定量：$A_u=-\beta R_L'/[r_{be}+(1+\beta)R_{E2}]$，分母变大，增益下降（本实验约降到 $1/9$）。串联反馈使输入电阻升高：$r_i=R_B\parallel[r_{be}+(1+\beta)R_{E2}]$，从 $2.25\,\mathrm{k}\Omega$ 升到 $13.1\,\mathrm{k}\Omega$。电流取样使输出电阻升高（$r_o$ 略大于 $R_C$）。反馈还使非线性失真减小（同样的输出摆幅下所需输入更大，工作点相对摆幅更小）、通频带展宽（增益下降而带宽乘积近似不变）。
+
+\textbf{答案（英文可抄）：}\textit{Negative feedback lowers the voltage gain, raises the input resistance, slightly raises the output resistance, reduces nonlinear distortion and widens the bandwidth. In this experiment the gain falls from about 62 to about 6.6 while the input resistance rises from 2.25 k$\Omega$ to 13.1 k$\Omega$.}
+
+\textbf{自检：}能说清“为什么 $r_o$ 升高”（电流取样把输出电流的变化反馈回来，抑制了电流变化，等效内阻变大）。
+
+\subhdr{A.4\quad 功率放大电路与交越失真}
+
+\qstem{（教材 p.148 第 4 问）功率放大电路有哪几种工作方式？什么是交越失真？怎样消除交越失真？OTL 功率放大电路与 OCL 功率放大电路有什么区别？}
+
+\textbf{考点：}甲类/乙类/甲乙类的导通角；交越失真的成因与消除；OTL 与 OCL 的电源与输出电容差异。
+
+\textbf{详解：}按导通角分：\textbf{甲类}（$360^\circ$，管子全程导通，失真小、效率低，最高约 $50\%$）；\textbf{乙类}（$180^\circ$，正负半周各一只管子，效率高但交界处失真）；\textbf{甲乙类}（$180^\circ\sim360^\circ$，给一点静态偏置，兼顾效率与失真）。\textbf{交越失真}出现在乙类：信号过零附近两只管子都还没真正导通（$u_{BE}$ 小于死区电压），输出出现一段“平”的失真。消除办法是给输出级加一点正向偏置，让它工作在甲乙类（二极管或 $U_{BE}$ 倍增电路）。\textbf{OTL}（Output TransformerLess）单电源供电、输出端串一个大电容隔直；\textbf{OCL}（Output CapacitorLess）双电源供电、输出直接接负载、没有输出电容。二者都不带输出变压器。
+
+\textbf{答案（英文可抄）：}\textit{Power amplifiers are classified as class A, class B and class AB according to the conduction angle. Crossover distortion occurs in class B because neither transistor conducts near the zero crossing; it is removed by adding a small forward bias so that the stage works in class AB. An OTL circuit uses a single supply and an output coupling capacitor, whereas an OCL circuit uses a dual supply and no output capacitor.}
+
+\textbf{自检：}能说出“为什么乙类效率高而失真大”（导通角小、静态电流小；但交界处死区）。
+
+\subhdr{A.5\quad 预习第 4 条：估算静态工作点、$r_i$、$r_o$}
+
+\qstem{（教材 p.148 预习内容第 4 条）预习 §5.2.4～§5.2.6，熟悉元件型号参数；估算图 5.2.4 共射极单管放大电路的静态工作点、输入电阻和输出电阻。}
+
+\textbf{考点：}把 §1.3 的四组算完，并挑出最佳一组；再按 §2.4 给 $r_i$、$r_o$。
+
+\textbf{关键一步：}先戴维南（$V_{BB}$、$R_B$），再 $I_B$，再 $I_C$、$U_{CE}$；$r_i$、$r_o$ 只在最佳一组上算。
+
+\textbf{详解：}四组结果见 §1.3 表：第 1 组饱和、第 2 组 $U_{CE}=3.17\,\mathrm{V}$ 偏低、第 3 组 $U_{CE}=7.10\,\mathrm{V}$ 最接近 $U_{CC}/2$、第 4 组 $U_{CE}=11.4\,\mathrm{V}$ 近截止。故取第 3 组（$R_{B1}=150\,\mathrm{k}\Omega$、$R_{B2}=39\,\mathrm{k}\Omega$）：$I_C=1.167\,\mathrm{mA}$，$r_{be}=200+100\times26/1.167=2.43\,\mathrm{k}\Omega$，$r_i=R_B\parallel r_{be}=30.95\parallel2.43=2.25\,\mathrm{k}\Omega$，$r_o\approx R_C=3\,\mathrm{k}\Omega$（$S_1$ 闭合）。
+
+\textbf{答案（英文可抄）：}\textit{For the third bias combination the estimated quiescent point is $I_C\approx1.17$ mA and $U_{CE}\approx7.1$ V, which is close to $U_{CC}/2$. The estimated input resistance is 2.25 k$\Omega$ and the output resistance is about 3 k$\Omega$.}
+
+\textbf{自检：}$r_i$ 应略小于 $r_{be}$ 而远小于 $R_B$（因为 $R_B$ 大、并联几乎不起作用）；若你算出 $r_i\approx R_B$，说明把并联写成了串联。
+
+%=============================================================
+\newpage
+\hdr{附录 B}{讨论题参考答法（七问，英文可抄 + 中文解释）}\label{app:B}
+
+\noindent 下面每题的“答案”是给你组织报告的骨架，\textbf{不是让你照抄的成品}：数据栏必须填你实测的数，括注里的算例数要换成你的读数。帮助口径同附录 A：讲解级、全曝光，不计独立掌握。
+
+\subhdr{B.1\quad 四组偏置各在哪个区域（对应表 5.2.2）}
+
+\qstem{（教材 p.154 第 1 问）整理表 5.2.2 中的测量数据，根据计算值判断各组偏置参数所对应的静态工作点位于输出特性曲线的哪个区域。}
+
+\textbf{答法：}对每一组先算 $I_C=(U_{CC}-U_C)/R_C$ 与 $U_{CE}=U_C-U_E$，再看三个判据：$U_{CE}\lesssim0.3\,\mathrm{V}$ 且 $\beta I_B$ 明显大于 $I_{C,\max}$ → 饱和；$U_{CE}\approx U_{CC}$ 且 $I_C\approx0$ → 截止；介于两者且 $I_C\approx\beta I_B$ → 放大。按算例，第 1 组饱和、第 2--4 组放大，其中第 3 组最居中。
+
+\textbf{英文骨架：}\textit{Group 1 is in saturation ($U_{CE}\approx0.3$ V, $\beta I_B>I_{C,\max}$), groups 2--4 are in the active region, and group 3 has the most centred Q-point ($U_{CE}\approx7.1$ V).}
+
+\subhdr{B.2\quad 哪一组合理？静态工作点对放大有什么影响（对应表 5.2.3）}
+
+\qstem{（教材 p.154 第 2 问）整理表 5.2.3 中的测量数据，分析说明哪一组偏置参数比较合理，并总结静态工作点对放大电路的影响。}
+
+\textbf{答法：}比较同输入下的输出波形与 $U_o$：波形先削顶的组说明工作点偏；$U_o$ 最大又不失真的组最合理。结论通常是第 3 组。影响分三条写：偏饱和 → 下半周先削；偏截止 → 上半周先削；居中 → 双向余量对称、$U_o$ 最大。
+
+\textbf{英文骨架：}\textit{Group 3 gives the largest undistorted output, so it is the most reasonable bias. A Q-point too close to saturation clips the lower half-cycle, one too close to cutoff clips the upper half-cycle, and a centred Q-point gives the largest symmetrical swing.}
+
+\subhdr{B.3\quad $S_1$ 开合的影响与理论依据（对应表 5.2.3）}
+
+\qstem{（教材 p.154 第 3 问）根据表 5.2.3 中的实验数据，分析在图 5.2.4 中开关 $S_1$ 的断开与闭合对放大电路有哪些影响，并阐述产生这种影响的原因（理论依据）。}
+
+\textbf{答法：}列四条对比：$U_o$ 明显变小、波形更干净、同样输入下不易削顶、$r_i$ 变大（表 5.2.6 会印证）。理论依据写 §3 的式子：$A_u=-\beta R_L'/[r_{be}+(1+\beta)R_{E2}]$，$R_{E2}$ 使分母增大；这是电流串联负反馈，牺牲增益换线性度与输入电阻。
+
+\textbf{英文骨架：}\textit{Opening $S_1$ inserts $R_{E2}$ into the emitter, which introduces current-series negative feedback. The gain falls from about 62 to 6.6, the waveform becomes cleaner, and the input resistance rises from 2.25 k$\Omega$ to 13.1 k$\Omega$.}
+
+\subhdr{B.4\quad 最大输出动态范围与获得条件（对应 §5.5）}
+
+\qstem{（教材 p.154 第 4 问）图 5.2.4 所示的放大电路的最大输出动态范围是多少？分析放大电路在什么条件下才能得到最大输出电压。}
+
+\textbf{答法：}先报实测 $U_{op\text{-}p}=2\sqrt2U_o$；再与两个理论限比较：交流负载线限 $2I_CR_L'$（带载 $3\,\mathrm{k}\Omega$ 时约 $3.5\,\mathrm{V}$）与饱和余量 $2(U_{CE}-U_{CES})$（约 $13.6\,\mathrm{V}$），取小者。条件是：工作点落在交流负载线中点、输入幅度刚好使正负半周同时到达饱和与截止边界、负载与电源不变。
+
+\textbf{英文骨架：}\textit{The measured maximum undistorted output is $U_{op\text{-}p}=2\sqrt2U_o$; theoretically it is limited by the ac load line, $2I_CR_L'\approx3.5$ V when $R_L=3$ k$\Omega$. It is obtained when the Q-point is at the centre of the ac load line and the input is just large enough to reach both boundaries simultaneously.}
+
+\subhdr{B.5\quad 放大倍数与负载的关系（对应表 5.2.4）}
+
+\qstem{（教材 p.154 第 5 问）整理表 5.2.4 的实验数据，总结放大倍数与负载电阻的关系。}
+
+\textbf{答法：}$R_L$ 增大 → $R_L'=R_C\parallel R_L$ 增大 → $|A_u|$ 增大，但增量越来越小（因为 $R_L'$ 以 $R_C$ 为上限）。三个点（$3/6/13\,\mathrm{k}\Omega$）对应约 $61.8/82.4/100.4$，开路时 $123.6$——正是“趋向 $R_C$ 的并联曲线”。
+
+\textbf{英文骨架：}\textit{The gain increases with the load resistance but saturates at the no-load value, because $R_L'=R_C\parallel R_L$ approaches $R_C$ as $R_L\to\infty$.}
+
+\subhdr{B.6\quad 幅频特性与通频带（对应表 5.2.5）}
+
+\qstem{（教材 p.154 第 6 问）根据表 5.2.5 的实验数据，计算出电压放大倍数，并画出放大电路的幅频特性，估算其通频带的宽度。}
+
+\textbf{答法：}横轴 $f$ 用对数刻度、纵轴 $20\lg|A_u|$ 或 $|A_u|$ 线性，把 16 个点描出来；中频段（约 $100\,\mathrm{Hz}\sim10\,\mathrm{kHz}$）应基本水平；低频端 $10\,\mathrm{Hz}$ 可能略降。$f_L$、$f_H$ 取 $0.707A_{um}$ 对应的频率。表格只到 $20\,\mathrm{kHz}$，若该点仍未降，如实写“$f_H>20\,\mathrm{kHz}$，未能测出”，并说明扫频范围不足。
+
+\textbf{英文骨架：}\textit{The magnitude response is flat in the mid-band and falls at low frequencies. Since the output does not drop to 0.707 of the mid-band value within 20 kHz, $f_H$ could not be determined from this measurement range.}
+
+\subhdr{B.7\quad 输入、输出电阻与哪些因素有关（对应表 5.2.6、5.2.7）}
+
+\qstem{（教材 p.154 第 7 问）分析表 5.2.6 和表 5.2.7 的实验数据，总结输入电阻与输出电阻的大小与哪些因素有关。}
+
+\textbf{答法：}$r_i=R_B\parallel r_{be}$：与 $R_B$、$\beta$、$I_C$（经 $r_{be}$）有关；$S_1$ 断开时多一项 $(1+\beta)R_{E2}$，故 $r_i$ 明显增大。$r_o\approx R_C$：主要由 $R_C$ 决定；$S_1$ 断开时负反馈使其略增。表 5.2.6 两行（合/断）与表 5.2.7 两行应各自成对，报告里要指出“同一个开关状态在两表中是同一套偏置”。
+
+\textbf{英文骨架：}\textit{The input resistance is $R_B\parallel r_{be}$, so it depends on the bias resistors, $\beta$ and $I_C$, and it increases when $R_{E2}$ is not bypassed. The output resistance is approximately $R_C$ and increases slightly with negative feedback.}
+
+\flowerrule
+
+\noindent\textit{本讲义依据：教材 §5.2 逐页读图（书 p.147--154 = PDF p.160--167）；课件 C4-2（4.2--4.3）、C4-3（4.4）；数值经 \texttt{\_scratch/ee-lab5-check-20261104.py}（sympy 精确分数）复核。实验 5 的英文册页尚未收到，§7 栏目名与 §9 题号以教材为准，进实验室前请按册页核对。}
+
+\end{document}

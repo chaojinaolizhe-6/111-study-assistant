@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-03 2026-11-03 14:23（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-04 2026-11-04 08:58（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -23,7 +23,7 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-11-03**（中国时间；系统英国日期 2026-11-03）。
+> 生成于 **2026-11-04**（中国时间；系统英国日期 2026-11-04）。
 > 事实源指纹：`attempts.jsonl` 52 条（sha256 `1388bfe3d536…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
@@ -225,8 +225,8 @@
 | 2026-10-22 | 目标节点 | `pilot-ode-integrating-factor:milestone` | 里程碑复核 | 独立解一阶线性 ODE（试点） 的 milestone = 2026-10-22 |
 | 2026-10-23 | 目标节点 | `tm-t4-conservation-laws:milestone` | 里程碑复核 | 独立求解理论力学 Topic 4 守恒定律问题 的 milestone = 2026-10-23 |
 | 2026-10-24 | 目标节点 | `ee-ac-circuits:milestone` | 里程碑复核 | 独立求解电工电子技术 交流电路（Chapter Two）计算题 的 milestone = 2026-10-24 |
-| 2026-11-08（+5d） | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
-| 2026-11-09（+6d） | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
+| 2026-11-08（+4d） | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
+| 2026-11-09（+5d） | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
 
 完整排期（含'未来才开放、不得提前安排'的项）见 `plan/schedule.md`（`tools/schedule_reviews.py` 生成）。
 **最终下一步以 `.tutor/config/status-narrative.yml` 的 `next` 行 + `plan/today-<日期>.md` 为准**（那是人工判断，不是机械候选）。
@@ -279,7 +279,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-11-03**（中国时间；系统英国日期 2026-11-03）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-11-04**（中国时间；系统英国日期 2026-11-04）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -287,11 +287,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-03（周二）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-04（周三）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-11-03.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-11-04.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -306,7 +306,7 @@
 **必须遵守的提醒**：⚠ **学习模式（2026-10-29 起，学习者决定）**：讲义驱动、考前集中闭卷验收（口径唯一来源＝`.tutor/config/study-mode.yml`）。讲授走讲义，答案放讲义最后；平时讲义与自测一律记讲解级帮助、不升能力等级，不得声称「已掌握」；`due` 早于 2026-10-29 的旧题已归档为考前素材，能力再测队列平时不显示。 ⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-11-03.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-11-04.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -364,7 +364,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-11-03.md` |
+| 当天清单（人工权威） | `plan/today-2026-11-04.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |
@@ -374,7 +374,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5286 个文件）
+## 3. 文件直达 URL 索引（5297 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -577,7 +577,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2287 个）
+### subjects（2292 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -1035,6 +1035,11 @@
 - `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.out
 - `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.pdf
 - `subjects/04-数学物理方法1/讲义/第四章-专题-大圆弧与小圆弧引理-20261102.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%B8%93%E9%A2%98-%E5%A4%A7%E5%9C%86%E5%BC%A7%E4%B8%8E%E5%B0%8F%E5%9C%86%E5%BC%A7%E5%BC%95%E7%90%86-20261102.tex
+- `subjects/04-数学物理方法1/讲义/第四章-作业3-约当引理详解-20261103.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86%E8%AF%A6%E8%A7%A3-20261103.aux
+- `subjects/04-数学物理方法1/讲义/第四章-作业3-约当引理详解-20261103.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86%E8%AF%A6%E8%A7%A3-20261103.log
+- `subjects/04-数学物理方法1/讲义/第四章-作业3-约当引理详解-20261103.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86%E8%AF%A6%E8%A7%A3-20261103.out
+- `subjects/04-数学物理方法1/讲义/第四章-作业3-约当引理详解-20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86%E8%AF%A6%E8%A7%A3-20261103.pdf
+- `subjects/04-数学物理方法1/讲义/第四章-作业3-约当引理详解-20261103.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86%E8%AF%A6%E8%A7%A3-20261103.tex
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.aux
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.log
 - `subjects/04-数学物理方法1/讲义/第四章-精讲-留数定理及应用-20261101.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8-20261101.out
@@ -4900,7 +4905,7 @@
 - `upstream/tutor/examples/subjects/math.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/math.yml
 - `upstream/tutor/subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/subjects/INDEX.md
 
-### output（133 个）
+### output（139 个）
 
 - `output/AI量化交易讲义/AI量化交易成熟技术清单.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E6%B8%85%E5%8D%95.xlsx
 - `output/AI量化交易讲义/AI量化交易成熟技术讲义.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E8%AE%B2%E4%B9%89.docx
@@ -5035,6 +5040,12 @@
 - `output/ai-quant-2026/tests/test_audit.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ai-quant-2026/tests/test_audit.py
 - `output/lect18-20-problem1-20261028/problem1-series.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/lect18-20-problem1-20261028/problem1-series.pdf
 - `output/lect18-20-problem1-20261028/problem1-series.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/lect18-20-problem1-20261028/problem1-series.tex
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-1.png
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-2.png
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-3.png
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-4.png
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-5.png
+- `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-6.png
 
 ### paste（26 个）
 

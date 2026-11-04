@@ -1,0 +1,74 @@
+﻿% !TEX program = xelatex
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+\setlength{\headheight}{20pt}
+\settags{实验 5 · 速查卡}{电工电子技术}
+\pagestyle{empty}
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{violetdeep} 实验 5 · 单管放大电路 速查卡}\\[4pt]
+{\small\color{inkgray} 2026-11-05（周四）15:30--17:45 \quad 综合一号教学楼 317 \quad 2502 班 \quad 10 分}
+\end{center}
+
+\vspace{-2pt}
+{\color{petal}\hrule height 1pt}
+\vspace{4pt}
+
+\textbf{\color{violetdeep}一、出门前}：教材《电工学实验教程》第 2 版、\textbf{预习报告}（没有不许做实验）、报告纸、铅笔直尺、计算器。
+
+\textbf{\color{violetdeep}二、四组偏置的静态工作点（算例：$U_{CC}=12$ V、$\beta=100$、$U_{BE}=0.7$ V、$S_1$ 断开）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.2cm}p{1.3cm}p{1.3cm}p{1.2cm}p{1.3cm}p{1.4cm}p{1.4cm}p{2.3cm}p{2.2cm}@{}}
+\hline
+\thead{组合} & \thead{$R_{B1}$} & \thead{$R_{B2}$} & \thead{$V_{BB}$} & \thead{$I_B$} & \thead{$I_C$} & \thead{$U_{CE}$} & \thead{区域} & \thead{现场判断} \\
+\hline
+1 & 30 k & 39 k & 6.78 V & 44 $\mu$A & 4.40 mA & $-6.49$ V & 饱和 & $U_{CE}\approx0.3$ V \\
+2 & 30 k & 12 k & 3.43 V & 21 $\mu$A & 2.10 mA & 3.17 V & 放大·偏低 & 下半周先削 \\
+3 & 150 k & 39 k & 2.48 V & 11.7 $\mu$A & 1.17 mA & 7.10 V & \textbf{放大·最佳} & 用这组做动态 \\
+4 & 150 k & 12 k & 0.89 V & 1.43 $\mu$A & 0.143 mA & 11.40 V & 放大·近截止 & 上半周先削 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{\color{violetdeep}三、三个公式（第 3 组：$r_{be}=200+100\times26/1.17\approx2.43$ k$\Omega$）}
+
+\[
+A_u=-\frac{\beta R_L'}{r_{be}}=-61.8\ (R_L=3\ \mathrm{k}\Omega),\qquad
+r_i=R_B\parallel r_{be}=2.25\ \mathrm{k}\Omega,\qquad
+r_o\approx R_C=3\ \mathrm{k}\Omega .
+\]
+
+\textbf{\color{violetdeep}四、$S_1$ 一开一合（$R_{E2}=200\,\Omega$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.4cm}p{4.3cm}p{4.3cm}p{4.5cm}@{}}
+\hline
+\thead{状态} & \thead{$A_u$（$R_L=3$ k）} & \thead{$r_i$} & \thead{其他} \\
+\hline
+$S_1$ 闭合（无反馈） & $-61.8$ & 2.25 k$\Omega$ & 失真大、频带窄 \\
+$S_1$ 断开（有反馈） & $-6.63$ & 13.1 k$\Omega$ & 失真小、频带宽 \\
+\hline
+\end{tabular}
+\end{center}
+
+有反馈时 $A_u=-\dfrac{\beta R_L'}{r_{be}+(1+\beta)R_{E2}}$。
+
+\textbf{\color{violetdeep}五、报告六栏（英文照抄）}：\textit{I. Experimental Objectives}｜\textit{II. Experimental Apparatus}｜\textit{III. Experimental Principles}｜\textit{IV. Experimental Procedure}｜\textit{V. Results and Analysis}｜\textit{VI. Discussion and Conclusions}
+
+\textbf{\color{violetdeep}六、现场三条纪律}
+
+\begin{enumerate}
+\item \textbf{静态先短路输入}：$u_i=0$、输入对地短接；所有表共地；电流不拆线，测 $U_B$、$U_C$、$U_E$ 再算。
+\item \textbf{动态先看波形}：示波器确认不削顶再读 $U_o$；$u_i$ 与 $u_o$ 反相 $180^\circ$；换负载、串电阻时\textbf{输入幅度不变}。
+\item \textbf{数字如实写}：$f_H$ 在 20 kHz 内测不到就写“未能测出”；饱和组写明“$\beta I_B$ 不成立”，不编数。
+\end{enumerate}
+
+\vspace{2pt}
+{\small\color{inkgray} 讲义全文（20 页，含六张数据表、术语表、预习与讨论题详解）：\texttt{实验5-单管放大电路-实验讲义-20261104.pdf}。}
+
+\end{document}

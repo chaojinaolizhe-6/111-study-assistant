@@ -1,0 +1,327 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第四章 · 作业 4（p78）约当引理应用详解（图片版）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{第四章 · 作业 4（p78）详解}{数学物理方法1}
+
+\setlength{\headheight}{22pt}
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+\setlength{\abovedisplayskip}{6pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{6pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
+
+% 五步标签（不用 ①② 等圈号：本机 CJK 字体缺这些字形，会静默丢字）
+\newcommand{\step}[1]{\par\smallskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.35em}}
+
+% 节头与小标题不许跨页：否则会出现“标题留在上一页、横线跑到下一页”
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{3\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{第四章　作业 4（p78）与约当引理}
+{三道含三角函数的无穷积分：约当引理在这里真正上场}
+{依据课件 p78（作业 4）与 p53--p54（约当引理）\quad 2026-11-03\quad 数学物理方法1}
+
+\callout{\textbf{这三题和 p62 那三题的性质不同}：p62 是纯有理式的无穷积分，弧上积分靠“次数差”消失；p78 这三题都带 $\cos mx$ 或 $\sin mx$，被积函数只按 $1/R$ 或更快衰减，其中\textbf{题 (2) 的衰减恰好是 $1/R$，大圆弧引理给不出零，只有约当引理能救}。因此本材料把约当引理放在正中间：先讲清它为什么能把弧上的积分压到零（§1），再把三题逐题算完（§3--§5）。}
+
+\hdr{§0}{三题答案与第一道关：$\cos$、$\sin$ 不能直接搬进复平面}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}c>{\centering\arraybackslash}p{0.50\linewidth}>{\centering\arraybackslash}p{0.24\linewidth}@{}}
+\thead{题} & \thead{积分} & \thead{结果}\\
+\multicolumn{3}{@{}l@{}}{\color{petal}\rule{\linewidth}{0.5pt}}\\
+(1) & $\displaystyle\int_{-\infty}^{\infty}\frac{\cos mx\dd x}{(x^{2}+1)(x^{2}+4)}\ (m>0)$ & $\dfrac{\pi}{6}\bigl(2e^{-m}-e^{-2m}\bigr)$\\[8pt]
+(2) & $\displaystyle\int_{-\infty}^{\infty}\frac{x\sin x\dd x}{x^{2}+1}$ & $\dfrac{\pi}{e}$\\[8pt]
+(3) & $\displaystyle\int_{-\infty}^{\infty}\frac{x\sin mx\dd x}{(x^{2}+a^{2})^{2}}\ (m,a>0)$ & $\dfrac{\pi m}{2a}\,e^{-am}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\step{第一道关。}$\cos z$、$\sin z$ 在复平面上\textbf{无界}：沿虚轴走，
+\[
+|\sin(iy)|=\frac{|e^{-y}-e^{y}|}{2}\sim\frac{e^{|y|}}{2}\longrightarrow\infty .
+\]
+所以不能把 $\cos mx$ 直接换成 $\cos mz$ 再补上半圆弧——那样弧上的模会指数爆炸，约当引理的条件也不成立。正确做法是\textbf{先换指数、后取实部或虚部}：
+\[
+\cos mx=\operatorname{Re}e^{imx},\qquad \sin mx=\operatorname{Im}e^{imx}.
+\]
+$x\cos(mx)$ 型就写成 $\operatorname{Re}\bigl[z e^{imz}\bigr]$，$x\sin(mx)$ 型写成 $\operatorname{Im}\bigl[z e^{imz}\bigr]$。
+
+于是三题都化归同一个形状：
+\[
+\int_{-\infty}^{\infty}h(x)e^{imx}\dd x\ \text{的实部或虚部},
+\qquad
+\text{对应的复变函数是 }h(z)e^{imz}.
+\]
+$h$ 只承担多项式衰减，$e^{imz}$ 承担振荡——分工明确，这正是约当引理要的格局。
+
+\clearpage
+\hdr{§1}{约当引理：陈述、证明、四条边界}
+
+\subhdr{1.1\quad 陈述（课件 p53）}
+
+设 $m>0$，$h$ 在 $C_R$ 上连续，且
+\[
+\max_{z\in C_R}|h(z)|\longrightarrow0\qquad(R\to\infty),
+\]
+则
+\[
+\lim_{R\to\infty}\int_{C_R}h(z)e^{imz}\dd z=0 .
+\]
+
+\subhdr{1.2\quad 证明的四个动作（可直接抄进卷面）}
+
+\step{动作一：参数化。}在 $C_R$ 上 $z=Re^{i\theta}$，$\theta:0\to\pi$，$\dd z=iRe^{i\theta}\dd\theta$，故 $|\dd z|=R\dd\theta$。
+
+\step{动作二：取模，并把 $e^{imz}$ 按实部、虚部拆开。}
+\[
+\bigl|e^{imz}\bigr|=\bigl|e^{im(R\cos\theta+iR\sin\theta)}\bigr|
+=\underbrace{\bigl|e^{imR\cos\theta}\bigr|}_{=\,1}\cdot
+\underbrace{\bigl|e^{-mR\sin\theta}\bigr|}_{=\,e^{-mR\sin\theta}}
+=e^{-mR\sin\theta}.
+\]
+实部只让因子在单位圆上转，模恒为 $1$；真正起作用的是\textbf{虚部}，它给出指数衰减。又因 $\theta\in[0,\pi]$ 时 $\sin\theta\ge0$，所以 $e^{-mR\sin\theta}\le1$。于是
+\[
+\left|\int_{C_R}he^{imz}\dd z\right|
+\le\int_0^{\pi}|h(Re^{i\theta})|\,e^{-mR\sin\theta}R\dd\theta
+\le M_RR\int_0^{\pi}e^{-mR\sin\theta}\dd\theta ,
+\]
+其中 $M_R=\max_{C_R}|h|$。
+
+\step{动作三：用 $\sin\theta\ge\dfrac{2\theta}{\pi}$ 把指数化成线性，就能积出来。}
+\[
+\int_0^{\pi}e^{-mR\sin\theta}\dd\theta
+=2\int_0^{\pi/2}e^{-mR\sin\theta}\dd\theta
+\le2\int_0^{\pi/2}e^{-2mR\theta/\pi}\dd\theta
+=2\cdot\frac{\pi}{2mR}\bigl(1-e^{-mR}\bigr).
+\]
+
+\step{动作四：取 $R\to\infty$。}代入得
+\[
+\left|\int_{C_R}he^{imz}\dd z\right|
+\le M_RR\cdot\frac{\pi}{mR}\bigl(1-e^{-mR}\bigr)
+=\frac{\pi M_R}{m}\bigl(1-e^{-mR}\bigr)\le\frac{\pi M_R}{m}\longrightarrow0 .
+\]
+$R$ \textbf{被约掉了}，约掉它靠的是 $m>0$（只有 $m>0$ 时 $e^{-mR}$ 才随 $R$ 掉下去）。\hfill$\square$
+
+\subhdr{1.3\quad 那个不等式从哪来}
+
+$\sin\theta$ 在 $[0,\pi/2]$ 上上凸（$\sin''\theta=-\sin\theta<0$），图像在弦的上方；连接 $(0,0)$ 与 $(\pi/2,1)$ 的弦正是 $y=2\theta/\pi$，故 $\sin\theta\ge2\theta/\pi$。等价地，$\sin\theta/\theta$ 在该区间递减，右端点取到最小值 $2/\pi$。这个常数就是动作三里 $2mR/\pi$ 的来历。
+
+\warnbox{\textbf{四条边界（扣分高发）}\\[2pt]
+1. \textbf{$m<0$ 不能走上半平面}：这时 $|e^{imz}|=e^{-mR\sin\theta}=e^{|m|R\sin\theta}$ 在上半平面爆炸。应改走下半个半圆（那里 $\sin\theta<0$），方向变顺时针，\textbf{结果多一个负号}。\\
+2. \textbf{$|h|$ 不一致趋于零则失效}：振荡只能压住不衰减的模，压不住发散的模（这也是 §0 那道关的由来）。\\
+3. \textbf{实轴上有极点不能直接闭合}：要先挖小半圆，此时围道极限是 $2\pi i\sum_{\text{上半}}\operatorname{Res}\pm i\pi\sum_{\text{实轴}}\operatorname{Res}$。\\
+4. \textbf{约当引理只管“弧”，不管“实积分收敛”}：它说明 $\int_{C_R}\to0$，不能替代 $\int_{-R}^{R}$ 的极限存在性；本三题的实积分都收敛，可以直接取极限。}
+
+\hdr{§2}{类型 3 的通用五步模板}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}cp{0.78\linewidth}@{}}
+\thead{步} & \thead{做什么}\\
+\multicolumn{2}{@{}l@{}}{\color{petal}\rule{\linewidth}{0.5pt}}\\
+1 & 换指数：$\cos mx\to\operatorname{Re}e^{imx}$，$\sin mx\to\operatorname{Im}e^{imx}$，把 $x^{k}$ 一并写进 $h(z)e^{imz}$\\[3pt]
+2 & 定围道：上半大圆弧 $C_R$ 补上 $[-R,R]$，列出上半平面极点及其阶数\\[3pt]
+3 & 用约当引理让弧上归零：写出 $M_R=\max_{C_R}|h|$，说明 $M_R\to0$ 一致\\[3pt]
+4 & 留数定理：$\oint_{\Gamma_R}he^{imz}\dd z=2\pi i\sum\operatorname{Res}$\\[3pt]
+5 & 取实部或虚部：按第 1 步的约定还原成实积分；若被积函数是偶函数，半轴再折半\\
+\end{tabular}
+\tabbot
+\end{center}
+
+三题的差别只在第 3 步的 $M_R$ 掉得多快，以及极点阶数：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}cp{0.30\linewidth}p{0.38\linewidth}@{}}
+\thead{题} & \thead{$h(z)$} & \thead{$M_R$ 的量级}\\
+\multicolumn{3}{@{}l@{}}{\color{petal}\rule{\linewidth}{0.5pt}}\\
+(1) & $\dfrac{1}{(z^{2}+1)(z^{2}+4)}$ & $\dfrac{1}{(R^{2}-1)(R^{2}-4)}\sim\dfrac{1}{R^{4}}$\\[8pt]
+(2) & $\dfrac{z}{z^{2}+1}$ & $\dfrac{R}{R^{2}-1}\sim\dfrac{1}{R}$（临界！）\\[8pt]
+(3) & $\dfrac{z}{(z^{2}+a^{2})^{2}}$ & $\dfrac{R}{(R^{2}-a^{2})^{2}}\sim\dfrac{1}{R^{3}}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{题 (2) 是分水岭}：它只按 $1/R$ 衰减，$RM_R\sim\dfrac{R^{2}}{R^{2}-1}\to1\neq0$，\textbf{大圆弧引理失效}；但 $M_R\to0$ 这一条仍然成立，所以\textbf{约当引理照用}。题 (1)(3) 两条引理都成立，按类型 3 统一写约当引理最省事，也最不容易被扣“用错工具”的分。
+
+\hdr{§3}{题 (1)：$\cos mx$ 型}
+
+\qstem{计算
+\[
+I_1=\int_{-\infty}^{\infty}\frac{\cos mx\dd x}{(x^{2}+1)(x^{2}+4)},\qquad m>0 .
+\]}
+
+\step{换指数。}$I_1=\operatorname{Re}J_1$，其中
+\[
+J_1=\int_{-\infty}^{\infty}\frac{e^{imx}\dd x}{(x^{2}+1)(x^{2}+4)},\qquad
+h(z)=\frac{1}{(z^{2}+1)(z^{2}+4)},\quad f(z)=h(z)e^{imz}.
+\]
+
+\step{极点。}$h$ 的一阶极点 $z=\pm i,\ \pm2i$，实轴上无奇点；上半平面是 $z=i$ 与 $z=2i$。
+
+\step{约当引理（弧上归零）。}在 $C_R$ 上（$R>2$）
+\[
+|z^{2}+1|\ge R^{2}-1,\quad |z^{2}+4|\ge R^{2}-4
+\Longrightarrow
+M_R=\max_{C_R}|h|\le\frac{1}{(R^{2}-1)(R^{2}-4)}\longrightarrow0 .
+\]
+$M_R\to0$ 一致，且 $m>0$，故\textbf{由约当引理} $\displaystyle\int_{C_R}he^{imz}\dd z\to0$。定量地：
+\[
+\left|\int_{C_R}f\dd z\right|\le\frac{\pi M_R}{m}\bigl(1-e^{-mR}\bigr)
+\le\frac{\pi}{m}\cdot\frac{1}{(R^{2}-1)(R^{2}-4)}\longrightarrow0 .
+\]
+（本题 $M_R\sim R^{-4}$，大圆弧引理其实也够用；但既然带 $e^{imx}$，按类型 3 走约当引理是标准写法。）
+
+\step{留数。}
+\[
+\operatorname{Res}_{z=i}f=\frac{e^{im\cdot i}}{(2i)(i^{2}+4)}=\frac{e^{-m}}{6i}=-\frac{i}{6}e^{-m},
+\qquad
+\operatorname{Res}_{z=2i}f=\frac{e^{im\cdot 2i}}{\bigl((2i)^{2}+1\bigr)(4i)}=\frac{e^{-2m}}{-12i}=\frac{i}{12}e^{-2m}.
+\]
+留数和 $=i\left(\dfrac{e^{-2m}}{12}-\dfrac{e^{-m}}{6}\right)=\dfrac{i}{12}\bigl(e^{-2m}-2e^{-m}\bigr)$。
+
+\step{取极限并取实部。}
+\[
+J_1=2\pi i\cdot\frac{i}{12}\bigl(e^{-2m}-2e^{-m}\bigr)=\frac{\pi}{6}\bigl(2e^{-m}-e^{-2m}\bigr)\in\mathbb{R},
+\qquad
+I_1=\operatorname{Re}J_1=\frac{\pi}{6}\bigl(2e^{-m}-e^{-2m}\bigr).
+\]
+本题 $J_1$ 恰为实数，所以“取实部”这一步看不出作用——但必须写，否则逻辑上只是算了一个复积分。
+
+\step{校验。}令 $m\to0$：公式给 $\dfrac{\pi}{6}(2-1)=\dfrac{\pi}{6}$，与 $\displaystyle\int_{-\infty}^{\infty}\frac{\dd x}{(x^{2}+1)(x^{2}+4)}=\frac{1}{3}\left(\pi-\frac{\pi}{2}\right)=\frac{\pi}{6}$ 一致。取 $m=2$：公式给 $0.1321327$，与数值积分一致。\hfill\checkmark
+
+\hdr{§4}{题 (2)：大圆弧引理失效的那一道}
+
+\qstem{计算
+\[
+I_2=\int_{-\infty}^{\infty}\frac{x\sin x\dd x}{x^{2}+1}.
+\]}
+
+\step{换指数。}$x\sin x=\operatorname{Im}\bigl(xe^{ix}\bigr)$，故 $I_2=\operatorname{Im}J_2$，其中
+\[
+J_2=\int_{-\infty}^{\infty}\frac{xe^{ix}\dd x}{x^{2}+1},\qquad
+h(z)=\frac{z}{z^{2}+1},\quad m=1,\quad f(z)=h(z)e^{iz}.
+\]
+
+\step{极点。}$z=\pm i$ 一阶极点，实轴无奇点；上半平面只有 $z=i$。
+
+\step{为什么必须用约当引理。}在 $C_R$ 上（$R>1$）
+\[
+M_R=\max_{C_R}|h|\le\frac{R}{R^{2}-1}\sim\frac1R,
+\qquad
+RM_R\le\frac{R^{2}}{R^{2}-1}\longrightarrow1\neq0 .
+\]
+\textbf{大圆弧引理要求 $RM_R\to0$，这里趋于 $1$，判据不成立}——只靠“$R$ 很大”根本得不到零。但 $M_R\to0$ 是一致的，约当引理的条件满足，于是
+\[
+\left|\int_{C_R}he^{iz}\dd z\right|
+\le M_RR\int_0^{\pi}e^{-R\sin\theta}\dd\theta
+\le\frac{R^{2}}{R^{2}-1}\cdot\frac{\pi}{R}\bigl(1-e^{-R}\bigr)
+\le\pi\cdot\frac{R}{R^{2}-1}\longrightarrow0 .
+\]
+最后一步是把 $R$ 约掉：约当引理给出的 $\dfrac{\pi}{mR}$ 里的 $\dfrac1R$ 抵掉了弧长带来的 $R$，剩下 $\dfrac{R}{R^{2}-1}\to0$。这正是“只有约当引理能救”的定量含义：\textbf{同一份 $h$，大圆弧引理算出 $\pi R\cdot\dfrac{R}{R^{2}-1}\to\pi$ 卡住，约当引理算出 $\dfrac{\pi}{m}\cdot\dfrac{R}{R^{2}-1}\to0$ 通了。}
+
+\step{留数。}
+\[
+\operatorname{Res}_{z=i}f=\frac{i\,e^{i\cdot i}}{2i}=\frac{e^{-1}}{2},
+\qquad
+J_2=2\pi i\cdot\frac{e^{-1}}{2}=\frac{\pi i}{e}.
+\]
+
+\step{取虚部。}
+\[
+I_2=\operatorname{Im}J_2=\frac{\pi}{e}\approx1.15573 .
+\]
+
+\step{校验。}被积函数是偶函数，故 $I_2=2\displaystyle\int_0^{\infty}\frac{x\sin x}{x^{2}+1}\dd x$；而 $\displaystyle\int_0^{\infty}\frac{x\sin(ax)}{x^{2}+b^{2}}\dd x=\frac{\pi}{2}e^{-ab}$（$a,b>0$），取 $a=b=1$ 得 $\dfrac{\pi}{2e}$，折半加倍后仍为 $\dfrac{\pi}{e}$。数值积分 $1.1557273$，一致。\hfill\checkmark
+
+\hdr{§5}{题 (3)：二阶极点 + 约当引理}
+
+\qstem{计算
+\[
+I_3=\int_{-\infty}^{\infty}\frac{x\sin mx\dd x}{(x^{2}+a^{2})^{2}},\qquad m>0,\ a>0 .
+\]}
+
+\step{换指数。}$I_3=\operatorname{Im}J_3$，其中
+\[
+J_3=\int_{-\infty}^{\infty}\frac{xe^{imx}\dd x}{(x^{2}+a^{2})^{2}},\qquad
+h(z)=\frac{z}{(z^{2}+a^{2})^{2}} .
+\]
+
+\step{极点。}$z=\pm ia$ 都是\textbf{二阶极点}，实轴无奇点；上半平面只有 $z=ia$。
+
+\step{约当引理（弧上归零）。}在 $C_R$ 上（$R>a$）
+\[
+M_R=\max_{C_R}|h|\le\frac{R}{(R^{2}-a^{2})^{2}}\sim\frac{1}{R^{3}}\longrightarrow0,
+\]
+一致趋于零，$m>0$，故 $\displaystyle\int_{C_R}he^{imz}\dd z\to0$。定量地
+\[
+\left|\int_{C_R}f\dd z\right|\le\frac{\pi M_R}{m}\le\frac{\pi}{m}\cdot\frac{R}{(R^{2}-a^{2})^{2}}\longrightarrow0 .
+\]
+
+\step{留数（二阶极点）。}
+\[
+\operatorname{Res}_{z=ia}f=\lim_{z\to ia}\frac{\dd}{\dd z}\left[\frac{ze^{imz}}{(z+ia)^{2}}\right]
+=\lim_{z\to ia}\frac{e^{imz}\bigl[(1+imz)(z+ia)-2z\bigr]}{(z+ia)^{3}} .
+\]
+在 $z=ia$ 处：$e^{imz}=e^{-ma}$，$1+imz=1-ma$，$z+ia=2ia$，于是方括号
+\[
+(1-ma)(2ia)-2ia=2ia-2ima^{2}-2ia=-2ima^{2},
+\]
+分母 $(2ia)^{3}=-8ia^{3}$。故
+\[
+\operatorname{Res}_{z=ia}f=\frac{e^{-ma}\,(-2ima^{2})}{-8ia^{3}}=\frac{m}{4a}e^{-ma},
+\qquad
+J_3=2\pi i\cdot\frac{m}{4a}e^{-ma}=\frac{i\pi m}{2a}e^{-ma}.
+\]
+
+\step{取虚部。}
+\[
+I_3=\operatorname{Im}J_3=\frac{\pi m}{2a}e^{-am}.
+\]
+
+\step{校验（用题 (2) 的推广式）。}已知 $\displaystyle\int_{-\infty}^{\infty}\frac{x\sin(mx)}{x^{2}+a^{2}}\dd x=\pi e^{-am}$，两边对 $a$ 求导：
+\[
+\frac{\dd}{\dd a}\int_{-\infty}^{\infty}\frac{x\sin(mx)}{x^{2}+a^{2}}\dd x
+=\int_{-\infty}^{\infty}\frac{-2a\,x\sin(mx)}{(x^{2}+a^{2})^{2}}\dd x
+=\frac{\dd}{\dd a}\bigl(\pi e^{-am}\bigr)=-\pi m e^{-am},
+\]
+于是
+\[
+I_3=-\frac{1}{2a}\bigl(-\pi m e^{-am}\bigr)=\frac{\pi m}{2a}e^{-am} .
+\]
+对 $a=1.7,\ m=2$ 作数值积分得 $0.06167366$，与公式一致。\hfill\checkmark
+
+\hdr{§6}{三个坑与一页速查}
+
+\warnbox{\textbf{三个坑}\\[2pt]
+1. \textbf{把 $\cos mx$ 直接换成 $\cos mz$}：$\cos z$ 沿虚轴指数增长，弧上积分不趋于零，约当引理前提不成立。必须“先 $e^{imz}$，后取实部／虚部”。\\
+2. \textbf{题 (2) 用大圆弧引理硬套}：$RM_R\to1\neq0$，判据不成立；应改口说“由约当引理”，并写出 $\frac{\pi M_R}{m}$ 被 $m>0$ 压住。\\
+3. \textbf{二阶极点求导漏项}：$\dfrac{\dd}{\dd z}\left[\dfrac{z\,e^{imz}}{(z+ia)^{2}}\right]$ 要用商法则（分子里的 $z$ 也要求导，一共两项），只对 $e^{imz}$ 求导会丢掉一项修正。}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.30\linewidth}p{0.22\linewidth}p{0.38\linewidth}@{}}
+\thead{被积函数} & \thead{用哪条} & \thead{先验什么}\\
+\multicolumn{3}{@{}l@{}}{\color{petal}\rule{\linewidth}{0.5pt}}\\
+带 $e^{imx}$、$\cos mx$、$\sin mx$，$m>0$ & 约当引理 & $\max_{C_R}|h|\to0$ 一致（哪怕只按 $1/R$）\\[3pt]
+同上，但 $m<0$ & 约当下半平面版 & 换下半半圆，注意顺时针负号\\[3pt]
+纯有理式，次数差 $\ge2$ & 大圆弧引理 & $|zh(z)|\to0$，即 $RM_R\to0$\\[3pt]
+实轴上有单极点 & 挖洞 + 小圆弧引理 & 小半圆 $\to\pm i\pi\operatorname{Res}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{三题答案}：$\dfrac{\pi}{6}(2e^{-m}-e^{-2m})$；$\dfrac{\pi}{e}$；$\dfrac{\pi m}{2a}e^{-am}$。\quad
+\textbf{一句话记法}：约当引理把 $e^{imz}$ 的振荡换成 $e^{-mR\sin\theta}$ 的衰减，再用 $\sin\theta\ge2\theta/\pi$ 积出 $\dfrac{\pi}{mR}$；那个 $\dfrac1R$ 恰好把弧长带来的 $R$ 约掉——这就是它比大圆弧引理强的全部原因。
+
+\vspace{4pt}
+{\small\color{inkgray} 三题结果经独立复核：25 位振荡积分与留数一致。}
+
+\end{document}

@@ -1,0 +1,676 @@
+### RIT Whelan notes10 — pages 3-7
+--- p3 ---
+Well, that’s interesting. If we deﬁne column vectors (3 × 1 matrices)1 L, rk and ω, (1.4) can
+be written
+L =
+N
+X
+k=1
+
+r2
+kω −rk(rk
+Tω)
+
+(1.5)
+where rkT is the 1 × 3 matrix which is the transpose of rk. But, now, matrix multiplication
+is associative, so
+rk(rk
+Tω) = (rkrk
+T)ω
+(1.6)
+where the quantity in parentheses on the right-hand side is the 3 × 3 matrix
+rkrk
+T =
+
+
+xkxk
+xkyk
+xkzk
+ykxk
+ykyk
+ykzk
+zkxk
+zkyk
+zkzk
+
+
+(1.7)
+So . . .
+L =
+N
+X
+k=1
+mk
+
+r2
+kω −(rkrk
+T)ω
+
+=
+( N
+X
+k=1
+mk
+
+r2
+k1 −rkrk
+T
+)
+ω = Iω
+(1.8)
+where
+1 =
+
+
+1
+0
+0
+0
+1
+0
+0
+0
+1
+
+
+(1.9)
+is the identity matrix and we’ve deﬁned the 3 × 3 matrix
+I =
+N
+X
+k=1
+mk
+
+r2
+k1 −rkrk
+T
+=
+N
+X
+k=1
+mk
+
+
+x2
+k + y2
+k + z2
+k
+0
+0
+0
+x2
+k + y2
+k + z2
+k
+0
+0
+0
+x2
+k + y2
+k + z2
+k
+
+−
+
+
+xkxk
+xkyk
+xkzk
+ykxk
+ykyk
+ykzk
+zkxk
+zkyk
+zkzk
+
+
+(1.10)
+2
+Tensors
+Of course, we don’t do physics in terms of matrices, but rather in terms of vectors to stress
+the geometrical signiﬁcance.2
+The operation
+rk
+Tω = xkωx + ykωy + zkωz = ⃗rk · ⃗ω
+(2.1)
+we understand as a dot (scalar) product. But how about rkrkT which would produce not a
+number but a 3 × 3 matrix?
+1We use boldfaced letters to describe matrices but not vectors, as deﬁned in the notational handout.
+2A matrix v is just a particular set of three numbers which may represent the components of a vector in
+one basis. A vector ⃗v is a geometric object which has meaning independent of any particular choice of basis.
+3
+
+--- p4 ---
+2.1
+The Tensor (dyad) Product
+We deﬁne a new notation. ⃗r ⊗⃗r is the Tensor Product of a vector with itself.3
+In general, the object ⃗A ⊗⃗B is a “dyad”, which is a kind of tensor. (In general a tensor
+is a dyad or a sum of dyads.) It is deﬁned by its dot product with a vector ⃗C, i.e.,
+( ⃗A ⊗⃗B) · ⃗C = ⃗A( ⃗B · ⃗C)
+(2.2)
+We deﬁne another kind of tensor, the identity tensor ←→
+1 by its dot product ←→
+1 · ⃗C = ⃗C.
+With this expansion of notation we can write
+⃗L = ←→
+I · ⃗ω
+(2.3)
+where
+←→
+I =
+N
+X
+k=1
+mk(r2
+k
+←→
+1 −⃗rk ⊗⃗rk)
+(2.4)
+is the inertia tensor, a property of the mass distribution.
+2.2
+Tensor Operation
+Given a tensor ←→
+T we can deﬁne the following operations:
+• Multiplication by a scalar a←→
+T
+• Addition of two tensors ←→
+S + ←→
+T
+• Dot product with a vector ←→
+T · ⃗A or ⃗A · ←→
+T (note these are in general not the same.
+As a warning, Symon’s equation (10.19) is trying to say that ←→
+T · ⃗C ̸= ⃗C · ←→
+T in general, but
+if you only read the equation and not the text around it, it looks like the opposite. As an
+explicit example, consider the case where ←→
+T = ˆx · ˆy and ⃗C = ˆx. Then
+←→
+T · ⃗C = (ˆx · ˆy) · ˆx = ˆx
+:0
+(ˆy · ˆx) = ⃗0
+(2.5)
+but
+←→
+T · ⃗C = ˆx · (ˆx · ˆy) = (ˆx · ˆx)ˆy = ˆy
+(2.6)
+2.3
+Components of a Tensor
+Just as any vector can be understood in terms of its components in an orthonormal basis:
+⃗C = Cxˆx + Cyˆy + Czˆz
+(2.7)
+any tensor also has components.
+3In Symon’s notation, the two vectors are just written side-by-side, so he calls this rr. This is potentially
+confusing notation, since it’s the same as ordinary scalar multiplication, so we will always include the “⊗”
+and you’re expected to do likewise on homeworks and exams.
+4
+
+--- p5 ---
+Start with a dyad:
+⃗A ⊗⃗B = (Ax ˆx + Ay ˆy + Az ˆz) ⊗(Bx ˆx + By ˆy + Bz ˆz)
+=
+AxBx ˆx ⊗ˆx + AxBy ˆx ⊗ˆy + AxBz ˆx ⊗ˆz
++ AyBx ˆy ⊗ˆx + AyBy ˆy ⊗ˆy + AyBz ˆy ⊗ˆz
++ AzBx ˆz ⊗ˆx + AzBy ˆz ⊗ˆy + AzBz ˆz ⊗ˆz
+(2.8)
+In general, any tensor can be written
+←→
+T =
+Txx ˆx ⊗ˆx + Txy ˆx ⊗ˆy + Txz ˆx ⊗ˆz
++ Tyx ˆy ⊗ˆx + Tyyˆy ⊗ˆy + Tyz ˆy ⊗ˆz
++ Tzx ˆz ⊗ˆx + Tzy ˆz ⊗ˆy + Tzz ˆz ⊗ˆz
+(2.9)
+2.3.1
+Tensor Components and the Matrix Representation
+Now we can make the connection to the matrix T in the analogy; if
+⃗X = ←→
+T · ⃗C =
+
+(Txx ˆx + Tyx ˆy + Tzx ˆz) ⊗ˆx + (Txy ˆx + Tyy ˆy + Tzy ˆz) ⊗ˆy
++ (Txz ˆx + Tyz ˆy + Tzz ˆz) ⊗ˆz
+
+· (Cx ˆx + Cy ˆy + Cz ˆz)
+= (TxxCx + TxyCy + TxzCz)ˆx + (TyxCx + TyyCy + TyzCz)ˆy + (TzxCx + TzyCy + TzzCz)ˆz
+(2.10)
+then
+X =
+
+
+TxxCx + TxyCy + TxzCz
+TyxCx + TyyCy + TyzCz
+TzxCx + TzyCy + TzzCz
+
+=
+
+
+Txx
+Txy
+Txz
+Tyx
+Tyy
+Tyz
+Tzx
+Tzy
+Tzz
+
+
+
+
+Cx
+Cy
+Cz
+
+= TC
+(2.11)
+To make the notation a little more compact, deﬁne
+x1 = x
+(2.12a)
+x2 = y
+(2.12b)
+x3 = z
+(2.12c)
+and
+ˆe1 = ˆx
+(2.13a)
+ˆe2 = ˆy
+(2.13b)
+ˆe3 = ˆz
+(2.13c)
+so that
+⃗C =
+3
+X
+i=1
+Ciˆei
+(2.14a)
+←→
+T =
+3
+X
+i=1
+3
+X
+j=1
+Tijˆei ⊗ˆej
+(2.14b)
+←→
+T · ⃗C =
+3
+X
+i=1
+3
+X
+j=1
+(TijCj)ˆei
+(2.14c)
+5
+
+--- p6 ---
+Note the repetition of the index j on TijCj; this is the standard pattern for matrix multipli-
+cation.
+2.4
+Inertia Tensor of a Solid Body
+Recall our deﬁnition of the inertia tensor
+←→
+I =
+N
+X
+k=1
+mk(r2
+k
+←→
+1 −⃗rk ⊗⃗rk)
+(2.15)
+This is for a collection of point masses. For a continuous mass distribution, we make the
+usual substitution
+N
+X
+k=1
+mk −→
+y
+ρ(⃗r) d3V
+(2.16)
+so
+←→
+I =
+y
+ρ(⃗r)
+h
+r2←→
+1 −⃗r ⊗⃗r
+i
+d3V
+(2.17)
+We can write this in terms of components as
+Iij =
+y
+ρ(⃗r)
+
+r2δij −rirj
+
+d3V
+(2.18)
+Where we have deﬁned the incredibly useful notation for the components of the identity
+tensor:
+←→
+1 =
+3
+X
+i=1
+3
+X
+j=1
+δij ˆei ⊗ˆej
+(2.19)
+or of the identity matrix:
+1 =
+
+
+δ11
+δ12
+δ13
+δ21
+δ22
+δ23
+δ31
+δ32
+δ33
+
+=
+
+
+1
+0
+0
+0
+1
+0
+0
+0
+1
+
+
+(2.20)
+so
+δij =
+(
+1
+if i = j
+0
+if i ̸= j
+(2.21)
+This is called the Kronecker delta and is incredibly useful. Learn it!
+3
+More Properties of Tensors
+3.1
+Transpose
+A vector ⃗C can correspond to a column vector C or a row vector CT, e.g., in
+⃗A · ⃗B = ATB
+(3.1)
+6
+
+--- p7 ---
+and
+⃗A ⊗⃗B ←→ABT
+(3.2)
+Given a tensor ←→
+T which has a corresponding 3 × 3 matrix T, we can take the transpose ←→
+T
+which is a diﬀerent 3 × 3 matrix and ask what tensor corresponds to that.
+In terms of components
+Tij
+T = Tji
+(3.3)
+so
+←→
+T
+T =
+3
+X
+i=1
+3
+X
+j=1
+Tij
+Tˆei ⊗ˆej =
+3
+X
+i=1
+3
+X
+j=1
+Tjiˆei ⊗ˆej =
+3
+X
+i=1
+3
+X
+j=1
+Tij ˆej ⊗ˆei
+| {z }
+(ˆej⊗ˆei)T
+(3.4)
+where we’ve renamed i to j and vice-versa in the last step.
+Another way to get this is to start from
+( ⃗A ⊗⃗B)
+T = ⃗B ⊗⃗A
+(3.5)
+A symmetric tensor obeys ←→
+T
+T = ←→
+T , i.e., Tij = Tji.
+An antisymmetric tensor obeys ←→
+T
+T = −←→
+T , i.e., Tij = −Tji.
+Examples of symmetric tensors include the identity tensor ←→
+1 , the dyad product of a
+vector with itself ⃗A ⊗⃗A, and the inertia tensor ←→
+I .
+As an example of an antisymmetric tensor, start with any vector ⃗A and deﬁne a tensor
+←→
+∗A which corresponds to the matrix
+∗A =
+
+
+0
+Az
+−Ay
+−Az
+0
+Ax
+Ay
+−Ax
+0
+
+
+(3.6)
+Note that
+∗A B =
+
+
+0
+Az
+−Ay
+−Az
+0
+Ax
+Ay
+−Ax
+0
+
+
+
+
+Bx
+By
+Bz
+
+=
+
+
+AzBy −AyBz
+−AzBx + AxBz
+AyBx −AxBy
+
+
+(3.7)
+So
+←→
+∗A · ⃗B = −⃗A × ⃗B
+(3.8)
+If we count the number of independent components, a symmetric tensor has six and an
+antisymmetric tensor had three, the same number as a vector.
+Symmetic:
+
+
+1
+4
+5
+·
+2
+6
+·
+·
+3
+
+
+Antisymmetic:
+
+
+×
+1
+2
+·
+×
+3
+·
+·
+×
+
+
+(3.9)
+So in fact any antisymmetric tensor can be written as the dual of a vector.
+7
+
+### LSU Dowling — pages 1-3
+--- p1 ---
+Here are some notes on vector and dyadic tensor notation similar to
+what I will be using in class, with just a couple of changes in
+notation.
+Notes = Dowling
+∧= × 
+British notation for Cross-Product vs. American (Dowling’s)
+A =
+
+A 
+Notation for Vector vs. Standard (Dowling’s).
+B =
+
+B
+Notation for Dyadic Tensor vs. Standard (Dowling’s).
+With these notes you should be able to make sense of the expressions
+in the vector identities pages below that involve the dyadic tensor T.
+(Notes courtesy of Peter Littlewood, University of Cambridge.)
+The vector identity pages are from the NRL Plasma Formulary – order
+your very own online or download the entire thing at:
+http://wwwppd.nrl.navy.mil/nrlformulary/ 
+--JPD
+
+--- p2 ---
+VECTOR IDENTITIES4
+Notation: f, g, are scalars; A, B, etc., are vectors; T is a tensor; I is the unit
+dyad.
+(1) A·B×C = A×B·C = B·C×A = B×C·A = C·A×B = C×A·B
+(2) A × (B × C) = (C × B) × A = (A · C)B −(A · B)C
+(3) A × (B × C) + B × (C × A) + C × (A × B) = 0
+(4) (A × B) · (C × D) = (A · C)(B · D) −(A · D)(B · C)
+(5) (A × B) × (C × D) = (A × B · D)C −(A × B · C)D
+(6) ∇(fg) = ∇(gf) = f∇g + g∇f
+(7) ∇· (fA) = f∇· A + A · ∇f
+(8) ∇× (fA) = f∇× A + ∇f × A
+(9) ∇· (A × B) = B · ∇× A −A · ∇× B
+(10) ∇× (A × B) = A(∇· B) −B(∇· A) + (B · ∇)A −(A · ∇)B
+(11) A × (∇× B) = (∇B) · A −(A · ∇)B
+(12) ∇(A · B) = A × (∇× B) + B × (∇× A) + (A · ∇)B + (B · ∇)A
+(13) ∇2f = ∇· ∇f
+(14) ∇2A = ∇(∇· A) −∇× ∇× A
+(15) ∇× ∇f = 0
+(16) ∇· ∇× A = 0
+If e1, e2, e3 are orthonormal unit vectors, a second-order tensor T can be
+written in the dyadic form
+(17) T = P
+i,j Tijeiej
+In cartesian coordinates the divergence of a tensor is a vector with components
+(18) (∇·T )i = P
+j(∂Tji/∂xj)
+[This deﬁnition is required for consistency with Eq. (29)]. In general
+(19) ∇· (AB) = (∇· A)B + (A · ∇)B
+(20) ∇· (fT ) = ∇f·T +f∇·T
+4
+
+--- p3 ---
+Let r = ix + jy + kz be the radius vector of magnitude r, from the origin to
+the point x, y, z. Then
+(21) ∇· r = 3
+(22) ∇× r = 0
+(23) ∇r = r/r
+(24) ∇(1/r) = −r/r3
+(25) ∇· (r/r3) = 4πδ(r)
+(26) ∇r = I
+If V is a volume enclosed by a surface S and dS = ndS, where n is the unit
+normal outward from V,
+(27)
+Z
+V
+dV ∇f =
+Z
+S
+dSf
+(28)
+Z
+V
+dV ∇· A =
+Z
+S
+dS · A
+(29)
+Z
+V
+dV ∇·T =
+Z
+S
+dS ·T
+(30)
+Z
+V
+dV ∇× A =
+Z
+S
+dS × A
+(31)
+Z
+V
+dV (f∇2g −g∇2f) =
+Z
+S
+dS · (f∇g −g∇f)
+(32)
+Z
+V
+dV (A · ∇× ∇× B −B · ∇× ∇× A)
+=
+Z
+S
+dS · (B × ∇× A −A × ∇× B)
+If S is an open surface bounded by the contour C, of which the line element is
+dl,
+(33)
+Z
+S
+dS × ∇f =
+I
+C
+dlf
+5
+
