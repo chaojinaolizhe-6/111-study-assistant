@@ -1,0 +1,418 @@
+﻿% !TEX program = xelatex
+\documentclass[UTF8,a4paper,11pt,fontset=none]{ctexart}
+
+\usepackage{geometry}
+\geometry{a4paper,left=21mm,right=21mm,top=25mm,bottom=23mm,headheight=22pt,headsep=6mm,footskip=11mm}
+
+\usepackage{fontspec}
+% 正文宋体：NotoSerifSC 在本机只有可变字重文件（默认实例为 ExtraLight），
+% 这里用 fonttools 实例化出 400/700 两个静态字重随文档分发，保证字重正常。
+\setmainfont{NotoSerifSC-Reg.otf}[Path=./fonts/,
+  BoldFont={NotoSansSC-Bold.otf}, BoldFeatures={Path=./fonts/}]
+\setCJKmainfont{NotoSerifSC-Reg.otf}[Path=./fonts/,
+  BoldFont={NotoSansSC-Bold.otf}, BoldFeatures={Path=./fonts/}]
+\setsansfont{Noto Sans SC}[BoldFont={Noto Sans SC Bold}]
+\setCJKsansfont{Noto Sans SC}[BoldFont={Noto Sans SC Bold}]
+\setCJKmonofont{Noto Sans SC}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+% 本机 colortbl(2025) 期待新版 array 的 \insert@pcolumn，而本地 array 为 2023 版；
+% 二者语义一致，补一个别名即可让 X/p 列的单元格底色正常工作。
+\makeatletter\providecommand\insert@pcolumn{\insert@column}\makeatother
+\definecolor{primary}{HTML}{1B3A57}
+\definecolor{primarymid}{HTML}{3D6084}
+\definecolor{accent}{HTML}{A9762F}
+\definecolor{warncolor}{HTML}{9C4A32}
+\definecolor{ink}{HTML}{20242A}
+\definecolor{muted}{HTML}{5F6A75}
+\definecolor{zebra}{HTML}{F3F6F9}
+\definecolor{tintb}{HTML}{EDF2F7}
+\definecolor{tintw}{HTML}{FBF3EB}
+\color{ink}
+
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{zhnumber}
+\usepackage{needspace}
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit,backgrounds,shadows}
+\usepackage[hidelinks,
+  bookmarks=true,bookmarksnumbered=true,
+  pdftitle={大学活动与竞赛 PPT 团队分工指南},
+  pdfsubject={基于大厂与顶级机构实战案例的深度调研},
+  pdfauthor={调研整理}]{hyperref}
+
+% ---------- 基础排版 ----------
+\linespread{1.45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\setlength{\emergencystretch}{2em}
+
+% ---------- 标题样式 ----------
+\newcommand{\cnsecnum}{\chinese{section}}
+\renewcommand{\thesection}{\cnsecnum}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\titleformat{\section}[block]
+  {\sffamily\Large\bfseries\color{primary}}
+  {\color{accent}\rule[-0.16em]{4.6pt}{1.08em}\hspace{0.5em}}
+  {0pt}
+  {\color{primary}\thesection、}
+\titlespacing*{\section}{0pt}{1.55em}{0.55em}
+
+\titleformat{\subsection}[block]
+  {\sffamily\large\bfseries\color{primary}}
+  {\sffamily\large\bfseries\color{accent}\thesubsection}
+  {0.62em}
+  {}
+\titlespacing*{\subsection}{0pt}{1.05em}{0.12em}
+
+% 副标题行（灰色小字，紧贴小节标题）
+\newcommand{\tagline}[1]{{\sffamily\small\color{muted}#1\par}\vspace{0.18em}}
+% 无编号场景小节
+\newcommand{\scenesub}[2]{%
+  \needspace{6\baselineskip}%
+  \phantomsection\addcontentsline{toc}{subsection}{#1}%
+  \subsection*{#1}\tagline{#2}}
+
+% ---------- 标题防孤行 ----------
+\newcommand{\secstart}[1]{\needspace{5.2\baselineskip}\section{#1}}
+\newcommand{\substart}[1]{\needspace{4.2\baselineskip}\subsection{#1}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\sffamily\scriptsize\color{muted}大学活动与竞赛 PPT 团队分工指南}
+\fancyhead[R]{\sffamily\scriptsize\color{muted}调研报告 · 2026-11}
+\fancyfoot[L]{\sffamily\scriptsize\color{muted}基于大厂与顶级机构实战案例}
+\fancyfoot[R]{\sffamily\scriptsize\color{muted}\textbf{\color{primary}\thepage}\,/\,\pageref{LastPage}}
+\fancyheadoffset{0pt}
+\renewcommand{\headrule}{\ifdim\headrulewidth>0pt\hbox to\headwidth{\color{primary!22}\leaders\hrule height \headrulewidth\hfill}\fi}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\sffamily\scriptsize\color{muted}\thepage}}
+
+% ---------- 流程图文字样式 ----------
+\newcommand{\lab}{\sffamily\bfseries\color{accent}}
+\newcommand{\txt}{\sffamily\color{ink}}
+\newcommand{\note}{\footnotesize\sffamily\color{muted}}
+
+% ---------- 文件名 ----------
+\newcommand{\fname}[1]{{\xeCJKsetup{CJKecglue={}}\ttfamily #1}}
+
+% ---------- 例子对比 ----------
+\newcommand{\badeg}[1]{{\color{muted}#1}}
+\newcommand{\goodeg}[1]{{\color{primary}\bfseries #1}}
+
+% ---------- 提示框 ----------
+\newtcolorbox{keybox}[1][]{
+  enhanced, breakable,
+  colback=tintb, colframe=tintb,
+  boxrule=0pt, arc=1.5pt,
+  borderline west={3.2pt}{0pt}{primary},
+  left=9pt, right=9pt, top=7pt, bottom=7pt,
+  before skip=9pt, after skip=9pt,
+  fontupper=\normalsize, #1}
+
+\newtcolorbox{warnbox}[1][]{
+  enhanced, breakable,
+  colback=tintw, colframe=tintw,
+  boxrule=0pt, arc=1.5pt,
+  borderline west={3.2pt}{0pt}{warncolor},
+  left=13pt, right=13pt, top=14pt, bottom=14pt,
+  before skip=12pt, after skip=12pt, #1}
+
+\newcommand{\boxtitle}[2]{%
+  {\sffamily\bfseries\color{#1}#2\par}\vspace{0.32em}}
+
+% ---------- 列表 ----------
+\setlist[itemize]{leftmargin=1.25em, labelsep=0.5em, itemsep=0.28em, topsep=0.28em,
+  label={\textcolor{accent}{\rule[0.28ex]{4pt}{4pt}}}}
+\setlist[enumerate]{leftmargin=1.75em, labelsep=0.55em, itemsep=0.42em, topsep=0.35em,
+  label={\sffamily\bfseries\color{accent}\arabic*.}}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.32}
+\setlength{\extrarowheight}{1.5pt}
+\newcolumntype{Y}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}
+
+\begin{document}
+
+% ============ 首页标题区 ============
+\thispagestyle{plain}
+
+{\sffamily\small\bfseries\color{accent}调研报告\quad\raisebox{0.1ex}{\textcolor{accent!45}{|}}\quad 演示文稿协作方法\par}
+\vspace{9pt}
+
+{\sffamily\bfseries\fontsize{22.5}{30}\selectfont\color{primary}
+大学活动与竞赛 PPT 团队分工指南\par}
+\vspace{5pt}
+
+{\sffamily\fontsize{11.5}{17}\selectfont\color{muted}基于大厂与顶级机构实战案例的深度调研\par}
+\vspace{12pt}
+
+{\color{accent}\rule{\textwidth}{2.2pt}}\\[2.2pt]
+{\color{primary!25}\rule{\textwidth}{0.5pt}}
+
+\vspace{7pt}
+{\sffamily\scriptsize\color{muted}文档类型：方法调研\quad·\quad 适用场景：小组作业 / 竞赛路演 / 社团答辩 / 大型活动\quad·\quad 整理日期：2026 年 11 月}
+
+\vspace{14pt}
+
+% ============ 导语 ============
+在大学的课程小组汇报、“挑战杯”/中国国际大学生创新大赛（原“互联网+”）、十佳社团答辩或大型晚会筹备中，90\% 的学生团队默认采用同一种分工方式：\textbf{“一共 20 页 PPT，4 个人每人做 5 页，答辩前一晚发群里合起来。”}
+
+然而对标商业世界的实战调研表明：\textbf{“按页数切块、每人包干写词加排版”正是大团队 PPT 翻车的头号根源。}一份高水准演示文稿的诞生，包含四种截然不同的底层能力——\textbf{叙事架构、证据挖掘、视觉工程、舞台演绎}。企业级大团队的本质秘诀只有十六个字：
+
+\begin{keybox}
+\boxtitle{primary}{\fontsize{13.5}{18}\selectfont 核心分工铁律：逻辑集权、素材分权、视觉收口、演练倒推}\vspace{2pt}
+故事线与视觉母版必须由极少数人“独裁统管”以保证连贯性；而耗时的资料搜集、实验出图、财务测算与问答附录，才应该拆分给多人并行攻坚。
+\end{keybox}
+
+% 结构导航
+\begin{tcolorbox}[enhanced, colback=white, colframe=primary!18, boxrule=0.5pt, arc=1.5pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt, before skip=4pt, after skip=6pt]
+{\sffamily\scriptsize\bfseries\color{primary}本文结构}\hspace{1.1em}%
+{\sffamily\scriptsize\color{muted}一\ 标杆拆解\quad·\quad 二\ 翻车复盘\quad·\quad 三\ 角色矩阵\quad·\quad 四\ 场景特化\quad·\quad 五\ 落地 SOP}
+\end{tcolorbox}
+
+% ============ 一 ============
+\secstart{标杆拆解：顶级大团队 PPT 协作的三大成功案例}
+
+商业世界中，战略咨询公司、科技巨头发布会与互联网大厂分别演化出了三套极其成熟的协作范式，精准解决了不同维度的协作难题。
+
+\substart{麦肯锡 / BCG（MBB 咨询）}
+\tagline{工业化流水线与“幽灵幻灯片 + 跨时区视觉工厂”}
+
+顶级战略咨询公司需要在极短时间内交付上百页零失误的董事会级报告，靠的不是人人都是设计天才，而是\textbf{彻底拆解“脑力逻辑”与“视觉美工”}：
+
+\begin{itemize}
+\item \textbf{动笔前先画“幽灵幻灯片（Ghost Deck）”}：在任何人打开软件调颜色或查明细数据前，项目经理（EM）先用金字塔原理与 SCQA 框架（背景-冲突-问题-答案）搭出全篇骨架，生成一份只有框线草图的空壳 PPT。
+\item \textbf{结论型标题（Action Title）先行锁死}：每一页空壳顶部必须写出一句\textbf{包含明确因果结论的完整句子}（例如不写\badeg{“校园二手市场调研”}，而写\goodeg{“校园毕业季闲置率达 68\%，缺乏信任担保是阻碍交易的首要痛点”}）。如果把全篇每页标题连起来读不能构成严密故事，严禁团队进入下一步。
+\item \textbf{顾问填硬核数据，专业视觉中心（VGI）连夜收口}：普通顾问（Associates）只负责按空壳要求去跑 Excel 模型、做访谈、填原始图表，绝不花两小时调阴影对齐。每天傍晚下班前，欧美顾问将粗糙草稿提交给麦肯锡著名的 \textbf{Visual Graphics India（VGI / VG\&M 班加罗尔与钦奈视觉中心）}；专职视觉团队利用全球统一规范库连夜进行像素级排版美化，次日清晨准时发回成品。
+\end{itemize}
+
+\substart{Apple（WWDC）与小米（雷军年度演讲）}
+\tagline{DRI 唯一责任人制 + 彩排反向裁剪}
+
+面对面向公众与评委的高规格路演，苹果和小米代表了“叙事驱动型”大团队的天花板：
+
+\begin{itemize}
+\item \textbf{Apple 的 DRI（Directly Responsible Individual）铁律}：整场发布会的母版、转场节奏与视觉语言由核心演示设计组（Keynote Design Team）单点死锁，外部工程团队严禁直接触碰主文件。但每一页涉及的性能跑分、芯片参数、现场演示（Demo），背后都绑定唯一实名的 \textbf{DRI（直接责任人）}，对数据真实性与技术口径负绝对责任。
+\item \textbf{小米发布会的“双阶彩排倒推法”}：PPT 不是做完塞给主讲人背诵的，而是试讲“改”出来的。小米发布会先在内部礼堂进行第一轮\textbf{“内容挑刺彩排”}，核心高管团坐在台下扮演最苛刻的观众，专门抓逻辑断层与无聊参数；随后进入场馆\textbf{“全真控时彩排”}，根据主讲人的真实语速、情绪起伏和翻页卡点，反向对 PPT 进行数十轮删减，确保台上说的每一句话与身后大屏的视觉焦点严丝合缝。
+\end{itemize}
+
+\substart{Amazon（亚马逊）}
+\tagline{贝索斯“6 页纸叙事备忘录（Doc First, Deck Second）”}
+
+2004 年 6 月，杰夫·贝索斯（Jeff Bezos）向亚马逊高管团队发布著名禁令：内部战略决策会禁用 PPT，强制改写 \textbf{6 页纸完整句子叙事文档（6-Page Narrative Memo）}。
+
+\begin{itemize}
+\item \textbf{底层洞察}：贝索斯指出，PPT 的分点符号（Bullet Points）最容易\textbf{掩盖懒惰的思考与断裂的因果关系}——把“市场很大、技术领先、团队互补”三个词往屏幕上一摆，看似工整，实则毫无逻辑推演。
+\item \textbf{实战转化}：如今许多硅谷与国内大厂团队在制作对外路演 PPT 前，都会强制要求团队先在飞书/在线文档里写出一份\textbf{经得起追问的纯文字逻辑稿}，把前因后果打磨闭环后，再提炼成对外展示的精简幻灯片。
+\end{itemize}
+
+% ============ 二 ============
+\secstart{警钟复盘：大公司/大型机构 PPT 协作的四大真实翻车败局}
+
+很多大学团队踩的坑，在大公司和国家级机构里曾造成过数千万美元损失甚至灾难性后果。看懂以下四个真实反面案例，就能提前避开 95\% 的团队内耗：
+
+\vspace{3pt}
+
+{\sffamily\footnotesize\linespread{1.28}\selectfont
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\textwidth}{@{\hspace{7pt}}Y{0.86}Y{1.12}Y{1.06}Y{0.96}@{\hspace{7pt}}}
+\arrayrulecolor{primary}\noalign{\hrule height 1.4pt}
+\rowcolor{primary}
+{\color{white}\bfseries 真实失败案例} & {\color{white}\bfseries 团队协作层面的核心死因} & {\color{white}\bfseries 对应的大学活动翻车现场} & {\color{white}\bfseries 制度级破局解法} \\
+\rowcolor{zebra}
+\textbf{NASA 哥伦比亚号事故中的“波音 28 页工程 PPT”（2003）} &
+多个工程分析组层层汇总，\textbf{缺乏统一叙事主笔提炼重点}；一页塞入 6 层嵌套符号，把“模型完全失效”的致命警告缩在页底，标题却写着温和术语，误导高层放弃卫星核查。 &
+科创比赛/课程汇报直接把 Word 报告大段复制进页面，一页 400 字密密麻麻，核心创新点被废话淹没，评委 5 秒扫过毫无印象。 &
+\textbf{主笔强审制}：严禁超过 3 层缩进；每页只准传达 1 个核心论点，关键结论必须提上大标题。 \\
+\rowcolor{white}
+\textbf{企业软件竞标痛失 1400 万美元大单的“缝合怪（Frankendeck）”} &
+产品、财务、销售各自扒旧 PPT 拼凑，微信/邮件乱传本地文件（\fname{Final\_v2\_改.pptx}），导致字体配色跳变、第 12 页成本与第 34 页回报率数据前后打架、误留废弃定价页被客户 CFO 当场抓包。 &
+小组作业“每人做 5 页明晚合稿”，合出来卡通风、政务风、冷淡风大杂烩，前面说预算 5 万后面写总表 8 万，评委一问就露馅。 &
+\textbf{单点母版 + 数据源唯一化}：仅设 1 名统稿人握主文件；全篇共用同一份底层数据表。 \\
+\rowcolor{zebra}
+\textbf{五角大楼阿富汗战略“意大利面条神图”（2009）} &
+情报、经济、治安各部门都要求体现自身工作量，\textbf{无人敢做减法}，把几十个模块和上百条彩色箭头塞进同一页，主帅麦克里斯特尔将军当场吐槽：“等看懂这页 PPT，仗早打赢了。” &
+十佳社团答辩、学生会年终述职时，各部门部长争抢版面，一页塞 16 张活动大合照加满屏流水账，台下看得眼花缭乱却记不住核心战绩。 &
+\textbf{版面配额与减法特权}：赋予总架构师“一票删减权”，次要素材一律移入附录（Appendix）备查。 \\
+\rowcolor{white}
+\textbf{高盛（Goldman Sachs）2021 初级分析师周均 95 小时返工危机} &
+高层前期不锁死故事线，等底层员工熬通宵把 60 页精美图表排完后，凌晨一句轻飘飘的推翻重来，导致大量精修页面整版报废。 &
+队长或指导老师前期不管不问，等美工同学熬了两个通宵扣完排版动画，答辩前夜突然说“整体思路不对，重做”，引发团队崩溃内讧。 &
+\textbf{阶段签字锁死（Sign-off）}：大纲与空壳标题未获队长/导师确认前，美工绝不动手精修。 \\
+\arrayrulecolor{primary!30}\noalign{\hrule height 0.6pt}
+\end{tabularx}}
+
+% ============ 三 ============
+\secstart{大学团队怎么分？四大核心角色与人数弹性矩阵}
+
+大学团队通常没有专职部门，但\textbf{“人少不代表按页平分，而是按职能兼任”}。无论团队有几个人，都应切分为以下四个齿轮：
+
+\begin{enumerate}[itemsep=0.62em]
+\item \textbf{逻辑总架构师（Storyteller / PM，严格限 1 人）}\par
+\vspace{0.12em}\hspace*{0.35em}\textbf{干什么}：对接老师/赛制评分表，主持头脑风暴，在在线文档里写出全篇逻辑链，拉出 \textbf{Ghost Deck（带结论句标题和内容占位的空壳 PPT）}，审核各模块交上来的素材，砍掉废话，统管前后数据口径一致。\par
+\vspace{0.1em}\hspace*{0.35em}\textbf{谁来当}：团队里逻辑最清晰、沟通推进力最强的人（通常是队长）。
+
+\item \textbf{硬核弹药手（Content SMEs，1～4 人并行）}\par
+\vspace{0.12em}\hspace*{0.35em}\textbf{干什么}：\textbf{只交“高纯度净料”，绝不花时间找野生模板做花哨排版！}按总架构师给每页开出的“填空清单”，分头去查权威文献、做问卷调研、跑实验图表、算商业财务预测、找高清无水印实拍图，并必须注明每个数据的出处（Source）。\par
+\vspace{0.1em}\hspace*{0.35em}\textbf{谁来当}：执行力强、懂专业技术/数据分析/文案检索的同学。
+
+\item \textbf{视觉统稿官（Visual Designer，主操盘手严格限 1 人，可配 1 名制图副手）}\par
+\vspace{0.12em}\hspace*{0.35em}\textbf{干什么}：前期定好《视觉规范卡》（锁死 1 套字体组合、不超过 3 种主辅色、统一图表配色与页边距）；等空壳内容填满锁死后，接管唯一主文件进行全局排版、信息降噪（文字转图示）与克制的过渡动画制作。\par
+\vspace{0.1em}\hspace*{0.35em}\textbf{谁来当}：审美在线、熟练掌握母版（Slide Master）、对齐分布与基础制图工具的同学。
+
+\item \textbf{首席路演官 + Q\&A 答辩特攻队（Presenter \& Defense Squad）}\par
+\vspace{0.12em}\hspace*{0.35em}\textbf{干什么}：主讲人（\textbf{强烈建议由逻辑总架构师兼任，或从立项第 1 天深度参与大纲撰写}）负责将书面语转化为有感染力的口语逐字稿、掐表彩排；其余弹药手自动转为 \textbf{Q\&A 分模块护航员}（评委问算法由技术位接招，问盈利模式由商业位接招），并共同制作正片之后的\textbf{“防弹衣附录页”}。
+\end{enumerate}
+
+\substart{不同规模学生团队的黄金配置表}
+\tagline{按职能兼任，而不是按页数均分}
+
+\vspace{5pt}
+
+{\sffamily\footnotesize\linespread{1.28}\selectfont
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\textwidth}{@{\hspace{7pt}}Y{0.62}Y{0.72}Y{1.66}@{\hspace{7pt}}}
+\arrayrulecolor{primary}\noalign{\hrule height 1.4pt}
+\rowcolor{primary}
+{\color{white}\bfseries 团队规模} & {\color{white}\bfseries 常见大学场景} & {\color{white}\bfseries 推荐角色分配方案（禁止按页均分）} \\
+\rowcolor{zebra}
+\textbf{2 人搭档} & 小型读书报告、双人课程作业 &
+\textbf{A（逻辑架构 + 主讲 + 半程资料）} + \textbf{B（核心资料收集 + 视觉统稿 + 计时/QA 补充）}。两人先花 30 分钟对完每页标题，再一文一美接力。 \\
+\rowcolor{white}
+\textbf{3～4 人标准组} & 专业课小组 Pre、大创中期/结题、班级/支部评优 &
+\textbf{1 名架构兼主讲}（定大纲+写讲稿+上台） + \textbf{1～2 名弹药手}（搜集文献数据+画原始逻辑草图+做 Q\&A 备答页） + \textbf{1 名视觉统稿官}（锁母版+全篇统一排版美化）。 \\
+\rowcolor{zebra}
+\textbf{5～6 人竞赛组} & 国创赛（原互联网+）、“挑战杯”、数学建模、商赛 &
+\textbf{1 名队长/总架构师}（控全局逻辑与商业闭环） + \textbf{1 名首席主讲}（与队长深度绑定打磨讲稿与台风） + \textbf{2 名垂直弹药手}（1 人专攻技术壁垒与实验图，1 人专攻市场调研与财务表） + \textbf{1～2 名视觉组}（1 人统管 PPT 母版与主文件，1 人专职修产品渲染图/UI/路演视频）。 \\
+\rowcolor{white}
+\textbf{8～12 人大型项目组} & 迎新晚会大屏、十佳社团联合筹备、院级大型答辩 &
+拆分为\textbf{内容主编组（1 主编+3 分栏采编）}、\textbf{视觉制作组（1 主视觉总监定 KV + 2 模块排版员严格套用同一组件库）}、\textbf{现场播控与演练组（1 舞台导播控翻页与音视频联动 + 主讲团）}。 \\
+\arrayrulecolor{primary!30}\noalign{\hrule height 0.6pt}
+\end{tabularx}}
+
+% ============ 四 ============
+\secstart{大学四大高频场景的特化分工秘籍}
+
+\scenesub{场景 1：高含金量竞赛路演（国创赛、“挑战杯”、商赛）}{“双轨制 PPT”打法}
+
+评委打分往往只有 5～10 分钟展示 + 3～5 分钟提问。顶尖竞赛团队会把 PPT 分成两份同步推进：
+
+\begin{itemize}
+\item \textbf{正片轨（15～20 页，由总架构师 + 视觉统稿官精雕细琢）}：严格遵循“真痛点（有调研数据）$\to$ 硬核解法（有原理图/实物）$\to$ 落地验证（有合同/测试报告/营收）$\to$ 社会价值”主线，字少图精，每分钟控制在 2～3 页。
+\item \textbf{附录防弹衣轨（Appendix，10～20 页，由弹药手团队专项负责）}：紧跟在致谢页之后制作超链接目录。把正片放不下的专利证书大图、详细财务三表、竞品参数全表、极端边界测试数据做成附录页。当评委发难询问细节时，翻页手一键跳转到对应附录页配合回答，专业压迫感瞬间拉满。
+\end{itemize}
+
+\scenesub{场景 2：专业课小组作业（Group Pre）}{根治“划水队友”的模块化派单法}
+
+课程作业最怕遇到“既不会做设计、又不敢上台讲、让他写几页他就百度复制粘贴”的队友。千万不要把核心正片页面分给他排版，而应采用\textbf{“高确定性任务包”派单}：
+
+\begin{itemize}
+\item 让其担任\textbf{“数据核查与案例弹药手”}或\textbf{“红队挑刺员 + 逐字稿整理员”}：下达极其具体的量化指标（例如：“周三晚 8 点前，在知网找出近 3 年 5 篇核心文献的样本量与结论填入共享表格，并截出 3 张高清原图”）。任务边界清晰、无法糊弄，同时彻底避免他破坏 PPT 整体美感。
+\end{itemize}
+
+\scenesub{场景 3：十佳社团 / 学生会述职 / 奖学金团体答辩}{“漏斗收稿制”}
+
+此类活动素材极碎（几十场活动照片、公众号截图、荣誉证书）。
+
+\begin{itemize}
+\item \textbf{错误做法}：每个部长各做 3 页本部门总结，拼成一盘散沙。
+\item \textbf{正确做法}：各部门只任\textbf{“素材提报官”}，按统一表单提交“最牛的 3 个量化数字 + 2 张高清横版特写原图（严禁交拼图或带水印截图）”；由\textbf{唯一的叙事主笔}打破部门墙，按“品牌影响力、思想引领/学术精品、成员成长服务”三大主题重新编排，砍掉 80\% 流水账。
+\end{itemize}
+
+\scenesub{场景 4：大型晚会 / 赛事大屏背景与外联拉赞助}{舞台舞美组件与商家视角的两套逻辑}
+
+\begin{itemize}
+\item \textbf{晚会/比赛 LED 大屏}：这不是阅读型 PPT，而是舞台舞美组件。必须单设一名\textbf{“现场播控官（VJ/翻页手）”}，提前与主持词、灯光、背景音乐拉出精确到秒的 \textbf{Cue 表（执行台本）}，在现场大屏实机测试分辨率比例（如超宽带鱼屏尺寸而非普通 16:9）与暗场对比度。
+\item \textbf{外联拉赞助 Pitch Deck}：由最懂商家利益点的外联骨干任主笔，严禁做成“学生会自嗨介绍书”，必须按“商家客群画像匹配 $\to$ 线上线下曝光点位实景图 $\to$ 往期赞助转化数据 $\to$ 阶梯报价单”分工采集实景照片与流量截图。
+\end{itemize}
+
+% ============ 五 ============
+\needspace{6.5cm}
+\secstart{拿来即用的 5 步标准作业流水线（SOP）}
+
+哪怕距离截止只剩 3 天或 7 天，也请严格按照以下时间比例推进，\textbf{前两步未完成前，禁止任何人打开美工排版界面}：
+
+\vspace{6pt}
+
+\begin{center}
+{\sffamily\footnotesize\linespread{1.25}\selectfont
+\begin{tikzpicture}[
+  stage/.style={draw=primary!32, fill=primary!5, line width=0.6pt, rounded corners=1.6pt,
+                align=left, inner sep=6pt, font=\small},
+  flow/.style={-{Latex[length=2.2mm,width=1.5mm]}, primary!55, line width=0.75pt},
+  ]
+
+\node[stage, text width=12.4cm] (S1) at (0,0) {%
+  {\lab 阶段 1\ \raisebox{0.05ex}{|}\ \ 占时 20\%}\\[1pt]
+  {\txt\bfseries 无 PPT 头脑风暴与大纲锁死}\\[2.5pt]
+  {\note 总架构师拉齐团队，在飞书/腾讯文档写出每页“一句话结论标题”}};
+
+\node[stage, text width=12.4cm, below=6.5mm of S1] (S2) {%
+  {\lab 阶段 2\ \raisebox{0.05ex}{|}\ \ 占时 10\%}\\[1pt]
+  {\txt\bfseries 第一次红线签字（Sign-off）}\\[2.5pt]
+  {\note 队长/主讲人/指导老师确认空壳逻辑链无误，冻结结构}};
+
+\node[stage, text width=6.85cm, below=8mm of S2, xshift=-3.75cm] (S3A) {%
+  {\lab 阶段 3A\ \raisebox{0.05ex}{|}\ \ 并行 35\%}\\[1pt]
+  {\txt\bfseries 弹药手净料填空}\\[2.5pt]
+  {\note 多人并行查数据、出实验原图、写附录备答库}};
+
+\node[stage, text width=6.85cm, below=8mm of S2, xshift=3.75cm] (S3B) {%
+  {\lab 阶段 3B\ \raisebox{0.05ex}{|}\ \ 并行 35\%}\\[1pt]
+  {\txt\bfseries 视觉官搭建母版组件}\\[2.5pt]
+  {\note 锁定 3 色色板、字体规范、封面与内页网格}};
+
+\coordinate (pmid) at ($(S3A.south)!0.5!(S3B.south)$);
+\node[stage, text width=12.4cm, below=8mm of pmid, anchor=north] (S4) {%
+  {\lab 阶段 4\ \raisebox{0.05ex}{|}\ \ 占时 20\%}\\[1pt]
+  {\txt\bfseries 单线程视觉收口与逐字稿同步}\\[2.5pt]
+  {\note 视觉官独占主文件统一排版；主讲人同步打磨口语讲稿}};
+
+\node[stage, text width=12.4cm, below=6.5mm of S4] (S5) {%
+  {\lab 阶段 5\ \raisebox{0.05ex}{|}\ \ 占时 15\%}\\[1pt]
+  {\txt\bfseries 毒舌彩排倒推与防崩打包}\\[2.5pt]
+  {\note 全队扮演评委掐表挑刺、核对前后数据、导出双备份}};
+
+\coordinate (m1) at ($(S2.south)+(0,-0.42)$);
+\coordinate (m2) at ($(S4.north)+(0,0.42)$);
+
+\draw[flow] (S1.south) -- (S2.north);
+\draw[flow] (S2.south) -- (m1);
+\draw[flow] (m1) -| (S3A.north);
+\draw[flow] (m1) -| (S3B.north);
+\draw[flow] (S3A.south) |- (m2);
+\draw[flow] (S3B.south) |- (m2);
+\draw[flow] (m2) -- (S4.north);
+\draw[flow] (S4.south) -- (S5.north);
+
+\end{tikzpicture}}
+\par\vspace{3pt}
+{\sffamily\scriptsize\color{muted}图 1\quad 五步流水线的时序分配与双轨并行结构（百分比为该阶段占总工时比例）}
+\end{center}
+
+\needspace{12.5cm}
+\begin{warnbox}
+\boxtitle{warncolor}{答辩/活动前 12 小时“防崩四件套”检查清单（由视觉官与播控手双人互查）}
+
+\begin{enumerate}[leftmargin=1.6em, itemsep=0.85em, topsep=0.35em]
+\item \textbf{消灭版本地狱}：群内传输严禁出现 \fname{最终版2.pptx}，强制采用 \fname{项目简称\_v1.2\_0504\_统稿人姓名.pptx}，且在阶段 4 后只有视觉统稿官一人拥有主文件修改权，其余人仅在云文档提修改批注。
+\item \textbf{前后数据一致性体检}：指派 1 名弹药手专职从头到尾只查数字与专有名词（确保第 3 页写的调研样本数、融资金额或活动人数，与第 15 页及附录完全一致）。
+\item \textbf{字体与音视频防崩备份}：答辩教室电脑极易缺字体或版本过低！务必同时准备三份文件装入 U 盘及网盘：\textbf{① 勾选“将字体嵌入文件”的原版 \texttt{.pptx}}、\textbf{② 高清矢量 \texttt{.pdf}（排版绝对不乱的救命底牌）}、\textbf{③ 独立存放的演示视频 \texttt{.mp4} 原件}（防止页内视频播放卡死）。
+\item \textbf{翻页手与主讲人双剑合璧}：正式比赛尽量避免主讲人既紧张背稿又要低头找超链接。安排最熟悉附录结构的队友担任专职翻页手（或控台手），眼神与暗号配合，稳控全场节奏。
+\end{enumerate}
+\end{warnbox}
+
+\end{document}

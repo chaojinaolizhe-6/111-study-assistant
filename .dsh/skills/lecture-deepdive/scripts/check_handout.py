@@ -18,6 +18,11 @@ r"""check_handout.py —— 讲义交付前的「一题一块」自动检查。
      2026-10-31 加：3.8 磁滞回线讲义 §7 Q2「并画图」答案块无图，就是这个漏检。
      阻断口径只到 Q 编号题块（预习问题／课后思考题，答案要能直接抄）；
      其余块（作业、自测、小节标题）只提示——作业可能故意不给答案图。
+  8. 警告：结论框（\boxed）前面看不到推导——窗口内既没有 \step／推理性连接词，
+     也没有 ≥2 组行间公式；或窗口里最近的段落是「数字例子／例如」。
+     这是「以例代证」的形状（对应 SKILL.md 硬性约束 16）。
+     2026-11-04 加：《专题·从张量到并矢》§1.3 用 45° 例子顶替 T'=RᵀTR 的推导就是它。
+     注意：这条只抓形状，真判据是「删例测试」——把例子整段遮住，还能不能走到结论。
 
 退出码：0 全通过；1 有错误；2 只有警告。
 """
@@ -37,6 +42,17 @@ ENG_BODY_RE = re.compile(r"(导通|截止|开关状态|电流方向|正半周|�
 DRAW_RE = re.compile(r"(画图|作图|画出[^，。；]{0,6}(曲线|回线|图)|示意图|sketch|Sketch|with sketches|\bdraw\b|\bDraw\b)")
 QUESTION_HEAD_RE = re.compile(r"(Q\s*\d|第\s*[（(]?\d+[)）]?\s*[题问]|作业\s*\d|例\s*\d|Exercise|Problem)")
 LOOKAHEAD = 12  # 标题后看几行
+
+# 约束 16：结论框前面必须有推导，不能靠数值例子顶替
+BOX_RE = re.compile(r"\\boxed\s*\{")
+DERIV_WORD_RE = re.compile(
+    r"(\\step\{|所以|于是|由此得|即得|代入|展开|合并|相减|两边|推出|注意到|因为|从而|可得)"
+)
+EXAMPLE_WORD_RE = re.compile(r"(数字例子|例如|举例|例子|试算|手动验算|取.{0,8}为例)")
+BOX_WINDOW = 45  # 结论框往前看几行
+# 这些记号说明这一行还在公式里（上一行行间公式的续行），不是散文断言
+MATHISH = (r"\tag", r"\Longrightarrow", r"\Rightarrow", r"\qquad", r"\quad", r"\\",
+           r"\sum", r"\frac", "^{", "_{", r"\cdot", r"\mathrm")
 
 
 def split_blocks(text: str) -> list[tuple[str, list[str]]]:
@@ -66,6 +82,73 @@ def is_question_block(title: str, body: list[str]) -> bool:
     if QUESTION_HEAD_RE.search(title):
         return True
     return any("\\qstem{" in line for line in body[1:])
+
+
+def prev_meaningful(lines: list[str], i: int, n: int = 3) -> list[str]:
+    r"""结论框往前的最后 n 行「有内容的行」，跳过空行与 \[ \] 之类的脚手架。"""
+    out: list[str] = []
+    for line in reversed(lines[max(0, i - 12):i]):
+        s = line.strip()
+        if not s or s in (r"\[", r"\]") or s.startswith(r"\end{") or s.startswith(r"\begin{"):
+            continue
+        out.append(s)
+        if len(out) >= n:
+            break
+    return out
+
+
+def check_boxes(lines: list[str]) -> list[str]:
+    r"""约束 16：结论框是「算出来的」还是「举例举出来的」。
+
+    只认一种形状（低误报）：**紧挨着结论框的那一行是散文断言**——
+    不含公式、不含推导连接词、不是定理／定义的陈述句——
+    而**同一小节里**（同一 \subhdr 之后）出现过「例子／例如／数字例子」。
+
+    这正好是「算完 45° 例子 → 于是这条规则是 → 黑框」的走法：
+    结论前面那行是「这条换算规则是」，而不是任何一行推导。
+
+    不报的三种（有意放过）：
+      ① 结论框前面紧挨着的是公式——那是推导链的末行；
+      ② 结论框前面是 \step／所以／代入…——推理性连接词在；
+      ③ 前面是「定理：…则」——定理陈述本来就不需要推导（约束 8 管它）。
+    真判据仍是「删例测试」，这里只负责把可疑处指出来。
+    """
+    warns: list[str] = []
+    for i, line in enumerate(lines):
+        if not BOX_RE.search(line):
+            continue
+
+        prev = prev_meaningful(lines, i, n=1)
+        if not prev:
+            continue
+        p = prev[0]
+        if "=" in p or any(tok in p for tok in MATHISH):
+            continue
+        if DERIV_WORD_RE.search(p):
+            continue
+        if re.search(r"(定理|定义|命题|引理|推论|性质)", p):
+            continue
+
+        head = -1
+        for k in range(i - 1, -1, -1):
+            if HEAD_RE.match(lines[k]):
+                head = k
+                break
+
+        ex = None
+        for k in range(i - 1, max(head, i - BOX_WINDOW), -1):
+            if EXAMPLE_WORD_RE.search(lines[k]):
+                ex = k
+                break
+        if ex is None:
+            continue  # 本小节里没有数值例子：不是这条要管的形状
+
+        warns.append(
+            f"第 {i + 1} 行的结论框，紧挨着的前一行是散文断言（「{p[:24]}…」），不是公式；"
+            f"同小节第 {ex + 1} 行起在举数值例子——例子给完 {i - ex} 行就直接上结论。"
+            "这是「以例代证」的形状（约束 16）：例子只算核对，推导要补在黑框之前，或按约束 1 给出课件页码"
+        )
+    return warns
 
 
 def check_file(path: Path) -> tuple[list[str], list[str]]:
@@ -102,6 +185,8 @@ def check_file(path: Path) -> tuple[list[str], list[str]]:
 
     if re.search(r"(作业汇总|题面照抄|题面成组)", text) and not re.search(r"(答案|详解)", text):
         errors.append("作业只有题面（「作业汇总／题面照抄」），全文没有答案或详解")
+
+    warns.extend(check_boxes(text.splitlines()))
 
     for no, line in enumerate(text.splitlines(), 1):
         if "✓" in line:

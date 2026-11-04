@@ -1,0 +1,2055 @@
+%=====================================================================
+% Topic 8 Part 2–3 · 惯量张量与刚体运动方程 精讲讲义
+% 依据：TM2026 - Topic 8 - P2.pdf（16 页）+ P3 v2(1).pdf（18 页）
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\linespread{1.22}
+\renewcommand{\qbreak}{\needspace{0.30\textheight}}
+\settags{Topic 8 精讲 · 惯量张量与运动方程}{Theoretical Mechanics 2026}
+
+\newcommand{\step}[1]{\par\vspace{3pt}\noindent
+  {\color{violet}\small$\blacktriangleright$}\hspace{3pt}{\bfseries\color{violetdeep}#1}\par\vspace{1pt}}
+
+\begin{document}
+
+%=====================================================================
+% Topic 8 Part 2–3 · 惯量张量与刚体运动方程 精讲讲义（片段 1：§0–§6）
+%=====================================================================
+
+\doctitle{刚体的惯量张量与运动方程}
+{Topic \#8 Motion of a Rigid Body, Parts 2--3}
+{依据课件：\texttt{TM2026 - Topic 8 - P2.pdf}（16 页）与 \texttt{TM2026 - Topic 8 - P3 v2(1).pdf}（18 页）\\
+整理日期：2026 年 11 月 5 日}
+
+%=====================================================================
+\hdr{§0}{课件坐标与记号约定}
+
+\subhdr{这两份课件各自在做什么}
+
+P2 回答一个静力学式的问句：\emph{一个刚体绕某点转起来时，它的角动量和转动动能有多大}；答案是把质量分布压缩成一个 $3\times3$ 矩阵——惯量张量 $I$。P3 回答动力学问句：\emph{给定外力和外力矩，这个刚体怎么动}；答案是把 $T=\frac12\vect{\Omega}\cdot I\vect{\Omega}$ 代进拉格朗日方程或角动量定理，得到欧拉方程。
+
+两块的依赖关系只有一处，但这处是全部：\textbf{P3 的每一个方程里都有 P2 的 $I$}。所以本讲义按「先造 $I$、再用 $I$」的顺序重排，不按课件页码顺序照抄。
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}ll@{}}
+\thead{P2 p3--p4} & 角动量与动能的分解：为什么要把原点搬回质心 \\[1pt]
+\thead{P2 p5--p6} & 惯量张量的定义、三种写法、矩阵表示、三条性质 \\[1pt]
+\thead{P2 p7--p8} & 主轴与主惯量；对称面、对称轴与三类陀螺 \\[1pt]
+\thead{P2 p9} & 广义惠更斯--施泰纳定理（平行轴定理的张量版） \\[1pt]
+\thead{P2 p10--p11} & 小结：$T_s=\frac12 I_\Omega\Omega^2$ 与 $I_\Omega$ 的含义 \\[1pt]
+\thead{P2 p12--p16} & 例题 E8.03--E8.06；作业 HW8.04--HW8.06 \\[2pt]
+\thead{P3 p3--p4} & 本体标架的转动、旋转算子；自由旋转的三种特例 \\[1pt]
+\thead{P3 p5--p6} & 对称陀螺的自由旋转：$\theta$ 不变、进动、章动 \\[1pt]
+\thead{P3 p7--p8} & 动量定理与角动量定理；欧拉动力学方程与运动学方程 \\[1pt]
+\thead{P3 p9--p11} & 六自由度拉格朗日量；由拉格朗日方程回到欧拉方程 \\[1pt]
+\thead{P3 p12--p13} & 小结（课件的正文式总结） \\[1pt]
+\thead{P3 p14--p18} & 例题 E8.07（物理摆）、E8.08（重对称陀螺）；作业 HW8.07--HW8.08 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\warnbox{\textbf{三处系统性缝合缝}（读完全篇你会发现它们反复出现；每一处都在正文对应小节里补）。
+\textbf{（一）}P2 p5 把 $I=\sum m(r^2\hat{1}-r\otimes r)$ 与 $I=\sum m(-r^\times r^\times)$ 并排写成等式，中间没有一步推导；而「$r^\times r^\times$」这个写法要等到你用它算例题时才显出好处。\S2.2 补。
+\textbf{（二）}P2 p9 的平行轴定理中间一行多了一个负号（$-\mu(2(\vect r_c\!\cdot\!\vect c)\hat1-\cdots)$），虽然下一行用 $\vect r_c=0$ 把它抹掉了，但照抄会在别处出错。\S5.2 点名。
+\textbf{（三）}P3 p5 把「$\vect{\Omega}\cdot\vect n_3=M/I_1$」当作守恒量写出，这个等式在 $\theta\neq0$ 时不成立（\S8.2 给出正确的值与推导）；p6 的 $\vect n_\rho(t)$ 第二项写成 $\vect n_3$，会让 $\vect a_3(t)$ 不再是单位矢量。两处都在 \S8 纠正。}
+
+\needspace{9cm}
+\subhdr{记号约定（全文只用这一套）}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{3.0cm}p{8.6cm}p{2.4cm}@{}}
+\thead{记号} & \thead{含义} & \thead{课件位置} \\[1pt]
+$\vect n_1,\vect n_2,\vect n_3$ & 固定系（惯性系）的正交单位基 & P2 p3; P3 p3 \\[1pt]
+$\vect a_1,\vect a_2,\vect a_3$ & 本体标架的正交单位基，刚性固定在刚体上 & P2 p7; P3 p3 \\[1pt]
+$\vect R,\ \vect r_\alpha$ & 质心（或基点）的矢径；第 $\alpha$ 个质点相对基点的矢径 & P2 p3 \\[1pt]
+$\vect r_c$ & 质心相对基点 $O$ 的矢径，$\vect r_c=\mu^{-1}\sum_\alpha m_\alpha\vect r_\alpha$ & P2 p3 \\[1pt]
+$\vect V,\ \vect{\Omega}$ & 基点的平动速度；刚体的角速度\textbf{矢量} & P2 p3; P3 p3 \\[1pt]
+$I,\ I_{jk},\ I'_jk$ & 惯量张量；其在固定基、本体基下的分量 & P2 p5--p6 \\[1pt]
+$I_1,I_2,I_3$ & 主转动惯量（$I$ 在主轴基下的三个对角元） & P2 p7 \\[1pt]
+$\vect a^\times$ & 矢量 $\vect a$ 的对偶张量，$\vect a^\times\vect b=\vect a\times\vect b$ & P2 p5 \\[1pt]
+$S(\varphi;\vect n)$ & 绕单位轴 $\vect n$ 转 $\varphi$ 的旋转算子 & P3 p3 \\[1pt]
+$\varphi,\theta,\psi$ & 欧拉角：进动、章动、自转 & P3 p8 \\[1pt]
+$I'_{33},\ I'_1$ & 对\textbf{固定点} $O$（不是质心）取的惯量分量 & P3 p14--p15 \\
+$M_3,\ M'_3$ & 重陀螺的两个循环动量（沿 $Z$ 轴与沿 $\vect a_3$ 的角动量投影） & P3 p16 \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+正文里凡是写 $I$ 而不带上标时，都指\textbf{对质心}取的中心惯量张量；凡是对非质心点取的，一律加撇并写明该点，例如 $I'$（对 $O$ 点）。这条区分是 P2 p9 与 P3 p14--p15 全部推导的起点——两页用了同一个字母 $I$，含义却不同。
+
+%=====================================================================
+\hdr{§1}{从质点系到刚体：角动量与动能的分解}
+
+\subhdr{1.1 角动量的分解（p3）}
+
+课件 p3 的出发点是「把刚体看成一大堆质点，每个质点用同一套速度场」。设基点 $O$ 的矢径为 $\vect R$，第 $\alpha$ 个质点相对 $O$ 的矢径为 $\vect r_\alpha$，则它的位置与速度是
+
+\[
+\vect\tau_\alpha=\vect R+\vect r_\alpha,\qquad
+\vect v_\alpha=\vect V+\vect{\Omega}\times\vect r_\alpha .
+\]
+
+\aside{速度场这一条来自 P1 p5（\texttt{Topic8-刚体运动学P1-精讲}）：刚体上任意一点的速度 $=$ 基点的速度 $+$ 绕基点转动的速度。这里只用到它的形式，不重推；$\vect{\Omega}$ 与基点选取无关，这一点在 P1 \S1.3 证明过。}
+
+总角动量（对固定原点、或对基点）是
+
+\[
+\vect M=\sum_\alpha m_\alpha\,\vect\tau_\alpha\times\vect v_\alpha
+=\sum_\alpha m_\alpha(\vect R+\vect r_\alpha)\times(\vect V+\vect{\Omega}\times\vect r_\alpha).
+\]
+
+p3 把右边一次展开成四项，中间没有写分配律的过程。我们把每一项对应到它来自哪个乘积：
+
+\[
+\begin{aligned}
+\vect M={}&\sum_\alpha m_\alpha\,\vect R\times\vect V
++\sum_\alpha m_\alpha\,\vect R\times(\vect{\Omega}\times\vect r_\alpha)\\
+&+\sum_\alpha m_\alpha\,\vect r_\alpha\times\vect V
++\sum_\alpha m_\alpha\,\vect r_\alpha\times(\vect{\Omega}\times\vect r_\alpha).
+\end{aligned}
+\]
+
+\step{第一步：把「和」提出来}
+四项里只有 $\vect r_\alpha$ 带下标，其余都是公共因子。记总质量 $\mu=\sum_\alpha m_\alpha$，质心位置 $\vect r_c=\mu^{-1}\sum_\alpha m_\alpha\vect r_\alpha$，则
+
+\[
+\sum_\alpha m_\alpha\vect r_\alpha=\mu\vect r_c,\qquad
+\sum_\alpha m_\alpha\,\vect R\times(\vect{\Omega}\times\vect r_\alpha)
+=\vect R\times\Bigl(\vect{\Omega}\times\sum_\alpha m_\alpha\vect r_\alpha\Bigr)
+=\mu\,\vect R\times(\vect{\Omega}\times\vect r_c).
+\]
+
+同理 $\sum_\alpha m_\alpha\vect r_\alpha\times\vect V=\mu\,\vect r_c\times\vect V$。
+
+\step{第二步：把四项并成课件 p3 的两行}
+于是
+
+\[
+\vect M=\mu\vect R\times\vect V+\mu\,\vect r_c\times\vect V+\mu\,\vect R\times(\vect{\Omega}\times\vect r_c)
++\sum_\alpha m_\alpha\,\vect r_\alpha\times(\vect{\Omega}\times\vect r_\alpha).
+\]
+
+这正是 p3 第三行（只是把 $\vect r_c\times\vect V$ 与 $\vect R\times(\vect{\Omega}\times\vect r_c)$ 两项的次序换了，加法可交换）。
+
+\step{第三步：令 $O$ 在质心}
+p3 接着写「If $O$ placed at the center of mass, then $\vect r_c=0$」，中间两项一起消失：
+
+\[
+\boxed{\ \vect M=\mu\vect R\times\vect V+\sum_\alpha m_\alpha\,\vect r_\alpha\times(\vect{\Omega}\times\vect r_\alpha)\ }
+\]
+
+\aside{这一步值得停一下：消失的\emph{不是}「两项都很小」，而是「两项都正比于 $\vect r_c$」。所以只要基点偏离质心一点，这两项就一点不小——\S5 的平行轴定理、\S8 的进动，量的都是这个偏离。}
+
+右边第二项只含本体内部的相对运动，给它一个名字：\textbf{内禀角动量}（intrinsic angular momentum）
+
+\[
+\vect M_s\equiv\sum_\alpha m_\alpha\,\vect r_\alpha\times(\vect{\Omega}\times\vect r_\alpha)
+=\sum_\alpha m_\alpha\bigl[\vect{\Omega}\,r_\alpha^2-\vect r_\alpha(\vect{\Omega}\cdot\vect r_\alpha)\bigr].
+\]
+
+第一项 $\mu\vect R\times\vect V=\vect R\times\vect P$ 是「把整个刚体当成质心处的一个质点」的轨道角动量。于是
+
+\[
+\vect M=\vect M_{\text{orb}}+\vect M_s .
+\]
+
+\subhdr{1.2 动能的分解（p4）}
+
+同一套速度场，代进动能：
+
+\[
+T=\sum_\alpha\frac{m_\alpha v_\alpha^2}{2}
+=\sum_\alpha\frac{m_\alpha}{2}(\vect V+\vect{\Omega}\times\vect r_\alpha)^2
+=\sum_\alpha\frac{m_\alpha}{2}\Bigl[V^2+2\vect V\cdot(\vect{\Omega}\times\vect r_\alpha)
++(\vect{\Omega}\times\vect r_\alpha)^2\Bigr].
+\]
+
+三项分别处理：
+
+\[
+\sum_\alpha\frac{m_\alpha}{2}V^2=\frac{\mu V^2}{2},\qquad
+\sum_\alpha m_\alpha\vect V\cdot(\vect{\Omega}\times\vect r_\alpha)
+=\vect V\cdot\bigl(\vect{\Omega}\times\mu\vect r_c\bigr)=\mu\,\vect r_c\cdot(\vect V\times\vect{\Omega}),
+\]
+
+最后一步用的是混合积的轮换 $\vect V\cdot(\vect{\Omega}\times\vect r_c)=\vect r_c\cdot(\vect V\times\vect{\Omega})$。于是
+
+\[
+T=\frac{\mu V^2}{2}+\mu\,\vect r_c\cdot(\vect V\times\vect{\Omega})
++\frac12\sum_\alpha m_\alpha(\vect{\Omega}\times\vect r_\alpha)^2 .
+\]
+
+\warnbox{\textbf{注意交叉项的位置。}它正比于 $\vect r_c$，所以「令 $O$ 在质心」同样把它消掉；但它\emph{不是}总能消掉的项——本讲义 \S5.3 讨论的「用 $O'$ 系写 $T$」里，只要 $O'$ 不在质心，这一项就必须留着。p4 的箭头只写了 $\vect r_c=0\Rightarrow$ 交叉项为零，没有说「否则如何」，容易让人以为它恒为零。}
+
+令 $\vect r_c=0$，得
+
+\[
+\boxed{\ T=\frac{\mu V^2}{2}+\frac12\sum_\alpha m_\alpha(\vect{\Omega}\times\vect r_\alpha)^2\ }
+\]
+
+第二项是\textbf{转动动能}，记 $T_s$。它只依赖 $\vect{\Omega}$ 和刚体内部的质量分布，因此一定可以写成「一个只描述刚体的矩阵」乘上 $\vect{\Omega}$ 的二次型——这就是下一节要造的东西。
+
+\subhdr{1.3 两条结论合看：为什么要先把原点搬到质心}
+
+p3 与 p4 的推导结构完全一样：展开 $\to$ 用 $\sum m\vect r=\mu\vect r_c$ 提公因子 $\to$ 令 $\vect r_c=0$。两次都得到同一个结论：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{量} & \thead{一般原点 $O$} & \thead{$O$ 取在质心} \\[1pt]
+$\vect M$ & $\mu\vect R\times\vect V+\mu\vect r_c\times\vect V+\mu\vect R\times(\vect{\Omega}\times\vect r_c)+\vect M_s$ & $\vect R\times\vect P+\vect M_s$ \\[1pt]
+$T$ & $\frac{\mu V^2}{2}+\mu\vect r_c\cdot(\vect V\times\vect{\Omega})+T_s$ & $\frac{\mu V^2}{2}+T_s$ \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表只是把上面两个展开式按「$O$ 是否在质心」读了一遍：右列是左列令 $\vect r_c=0$ 的结果；右列两个式子里，第一项是平动、第二项是转动，两项完全解耦。\textbf{解耦不是数学技巧，而是选对了原点}——这句话是后面所有「先写 $T=\frac12\mu V^2+\frac12\vect{\Omega}\cdot I\vect{\Omega}$」的前提。
+
+%=====================================================================
+\hdr{§2}{惯量张量：把质量分布压成一个矩阵}
+
+\subhdr{2.1 定义（p5 左栏）}
+
+从 $\vect M_s=\sum_\alpha m_\alpha\vect r_\alpha\times(\vect{\Omega}\times\vect r_\alpha)$ 出发。用「BAC--CAB」公式展开二重叉积：
+
+\[
+\vect r\times(\vect{\Omega}\times\vect r)=\vect{\Omega}\,r^2-\vect r(\vect{\Omega}\cdot\vect r).
+\]
+
+\aside{BAC--CAB：$\vect a\times(\vect b\times\vect c)=\vect b(\vect a\cdot\vect c)-\vect c(\vect a\cdot\vect b)$。这里把 $\vect a=\vect r$、$\vect b=\vect{\Omega}$、$\vect c=\vect r$ 代入，第二项是 $\vect r(\vect r\cdot\vect{\Omega})$。}
+
+于是
+
+\[
+\vect M_s=\sum_\alpha m_\alpha\bigl[\vect{\Omega}\,r_\alpha^2-\vect r_\alpha(\vect r_\alpha\cdot\vect{\Omega})\bigr]
+=\Bigl[\sum_\alpha m_\alpha\bigl(r_\alpha^2\hat 1-\vect r_\alpha\otimes\vect r_\alpha\bigr)\Bigr]\vect{\Omega}.
+\]
+
+方括号里是一个\textbf{只由刚体质量分布决定、与 $\vect{\Omega}$ 无关}的线性算子。定义
+
+\[
+\boxed{\ I\equiv\sum_\alpha m_\alpha\bigl(r_\alpha^2\,\hat 1-\vect r_\alpha\otimes\vect r_\alpha\bigr)\ }
+\qquad\Longrightarrow\qquad
+\vect M_s=I\vect{\Omega}.
+\]
+
+p5 同时给出另一个写法 $I=\sum_\alpha m_\alpha(-\vect r_\alpha^\times\vect r_\alpha^\times)$，以及转动动能 $T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}$。这两个式子都不带推导，下面一并补。
+
+\subhdr{2.2 三种写法为什么等价（p5 的三行）}
+
+p5 把四行式子并排放置，读者容易以为它们是四个不同的定义。其实是同一个算子的四种记法。逐一验证。
+
+\step{（a）$I\vect{\Omega}$ 与 $T_s$ 是同一个张量的两种用法}
+把 $\vect M_s=I\vect{\Omega}$ 两边点乘 $\vect{\Omega}$：
+
+\[
+\vect{\Omega}\cdot\vect M_s=\vect{\Omega}\cdot I\vect{\Omega}
+=\sum_\alpha m_\alpha\bigl[\Omega^2r_\alpha^2-(\vect{\Omega}\cdot\vect r_\alpha)^2\bigr]
+=\sum_\alpha m_\alpha|\vect{\Omega}\times\vect r_\alpha|^2 .
+\]
+
+而 $T_s=\frac12\sum_\alpha m_\alpha(\vect{\Omega}\times\vect r_\alpha)^2$，所以
+
+\[
+T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}.
+\]
+
+\aside{这一步说明 $T_s$ 与 $\vect M_s$ 不是两个独立结论：$T_s=\frac12\vect{\Omega}\cdot\vect M_s$，而 $\vect M_s=I\vect{\Omega}$。记住其中一个，另一个就是点乘。}
+
+\step{（b）$\vect r^\times\vect r^\times$ 与 $r^2\hat1-\vect r\otimes\vect r$ 是同一个算子}
+定义 $\vect r^\times$ 为「与 $\vect r$ 叉乘」这个线性算子：$\vect r^\times\vect b\equiv\vect r\times\vect b$。它的矩阵表示（右手基）是
+
+\[
+\vect r^\times=\begin{pmatrix}0&-x_3&x_2\\ x_3&0&-x_1\\ -x_2&x_1&0\end{pmatrix}.
+\]
+
+把它自己乘自己一次：
+
+\[
+\vect r^\times\vect r^\times\vect b=\vect r\times(\vect r\times\vect b)
+=\vect r(\vect r\cdot\vect b)-r^2\vect b
+=-\bigl(r^2\hat1-\vect r\otimes\vect r\bigr)\vect b .
+\]
+
+所以
+
+\[
+-\vect r^\times\vect r^\times=r^2\hat1-\vect r\otimes\vect r,
+\qquad\text{即}\qquad
+I=\sum_\alpha m_\alpha(-\vect r_\alpha^\times\vect r_\alpha^\times).
+\]
+
+\aside{这个写法的用处不在「更短」，而在「不依赖基」：$-\vect r^\times\vect r^\times$ 是矢量运算，换任何正交基，它的分量自动按张量法则变换；而 $r^2\hat1-\vect r\otimes\vect r$ 里的 $\hat1$ 容易被误当成「单位矩阵」而不是「单位张量」。后面 \S5 的平行轴定理、P3 p8 的欧拉方程都用这个无基形式。}
+
+\step{（c）矩阵元}
+在本体基 $\vect a_j$ 下，$x_i\equiv\vect r\cdot\vect a_i$，于是
+
+\[
+I'_{jk}=\vect a_j\cdot I\vect a_k=\sum_\alpha m_\alpha\bigl(r_\alpha^2\delta_{jk}-x_{\alpha j}x_{\alpha k}\bigr)
+=\sum_\alpha m_\alpha\bigl(x_{\alpha l}x_{\alpha l}\delta_{jk}-x_{\alpha j}x_{\alpha k}\bigr).
+\]
+
+\aside{这里 $r^2=x_lx_l$ 用了爱因斯坦求和约定（重复下标求和），$\delta_{jk}$ 是克罗内克符号。p6 把这一式写成 $I'_{jk}=\sum m(x_ix_i\delta_{jk}-x_jx_k)$，中间的 $i$ 就是这里的求和下标 $l$。}
+
+对连续体，$\sum_\alpha m_\alpha\to\int_V\rho\,\dd V$：
+
+\[
+I'_{jk}=\int_V\rho(\vect x)\bigl(x_lx_l\delta_{jk}-x_jx_k\bigr)\dd V .
+\]
+
+\subhdr{2.3 矩阵表示与两类分量（p6）}
+
+把上面三行三列写开（p6 的矩阵，照抄并标出每一格的身份）：
+
+\[
+\bigl(I'_{jk}\bigr)=
+\sum_\alpha m_\alpha
+\begin{pmatrix}
+x_2^2+x_3^2 & -x_1x_2 & -x_1x_3\\[2pt]
+-x_2x_1 & x_1^2+x_3^2 & -x_2x_3\\[2pt]
+-x_3x_1 & -x_3x_2 & x_1^2+x_2^2
+\end{pmatrix}.
+\]
+
+\step{怎么读这个矩阵}
+对角元 $I'_{11},I'_{22},I'_{33}$ 叫\textbf{轴转动惯量}（axial moments）：$I'_{11}=\sum m(x_2^2+x_3^2)$ 正是「到 $x_1$ 轴距离的平方」乘质量，也就是 P1 里那个标量转动惯量。非对角元 $I'_{jk}\ (j\neq k)$ 叫\textbf{离心转动惯量}（centrifugal moments），可以为负，代表质量分布相对坐标轴「斜」的程度。
+
+\aside{记号陷阱：$I'_{11}$ 的分母里没有 $x_1$，$I'_{22}$ 里没有 $x_2$。判断方法：绕哪根轴转，就看「到那根轴的距离」，即另外两个坐标的平方和。}
+
+\subhdr{2.4 三条性质（p6 右栏）}
+
+p6 用三行列出：对称、非负、可加。第一条一眼可见，第二条与第三条需要证明。
+
+\step{对称性：$I^{\mathsf T}=I$}
+矩阵元 $I'_{jk}=\sum m(x_lx_l\delta_{jk}-x_jx_k)$ 对 $j,k$ 对称（$\delta_{jk}$ 与 $x_jx_k$ 都对称），所以 $I'_{jk}=I'_{kj}$。用无基形式说：$r^2\hat1-\vect r\otimes\vect r$ 的两项都对称，故 $I=I^{\mathsf T}$。
+
+\step{非负性：$\vect{\Omega}\cdot I\vect{\Omega}\ge0$}
+由 \S2.2(a)，
+
+\[
+\vect{\Omega}\cdot I\vect{\Omega}=\sum_\alpha m_\alpha|\vect{\Omega}\times\vect r_\alpha|^2\ge0 .
+\]
+
+每个被加项是模长平方，故非负。\textbf{等号条件}是每个 $|\vect{\Omega}\times\vect r_\alpha|=0$，即所有 $\vect r_\alpha\parallel\vect{\Omega}$：整个刚体在一条直线上，且 $\vect{\Omega}$ 沿这条线。这正是 p6 那行 "Case $\Omega I\Omega=0$: the whole body lies along one straight line and the angular velocity directed along that line" 的来历——课件只写结论，这里补的是「为什么恰是这个条件」。
+
+\aside{这个条件马上要用：双原子分子（\S6.1）的 $I_3=0$ 就是它——所有质量在 $\vect a_3$ 轴上，绕 $\vect a_3$ 转的动能为零。p6 称之为「退化」，P3 p4 的「转子」就是这种退化体。}
+
+\step{可加性}
+若刚体分成 $A$、$B$ 两块，$I=I_A+I_B$：因为定义里的求和可以拆成两个求和。注意可加性要求\textbf{两块用同一个原点}；换原点要先用 \S5 的平行轴定理。
+
+%=====================================================================
+\hdr{§3}{主轴与主惯量}
+
+\subhdr{3.1 实对称矩阵一定能对角化（p7 的「Any symmetric matrix...」）}
+
+p7 第一句是 "Any symmetric matrix (tensor) can be reduced to diagonal form"，然后直接写出对角形。这句话是线性代数的谱定理，不是物理结论；但它是整个刚体动力学的支点，值得完整陈述一次。
+
+\subhdr{谱定理（实对称矩阵，完整陈述）}
+设 $A$ 是 $3\times3$ 实对称矩阵（$A^{\mathsf T}=A$）。则：
+（i）$A$ 的三个特征值 $\lambda_1,\lambda_2,\lambda_3$ 都是实数；
+（ii）存在三个两两正交的单位特征矢量 $\vect a_1,\vect a_2,\vect a_3$；
+（iii）以它们为列排成正交矩阵 $Q=(\vect a_1,\vect a_2,\vect a_3)$，则
+
+\[
+Q^{\mathsf T}AQ=\operatorname{diag}(\lambda_1,\lambda_2,\lambda_3).
+\]
+
+\aside{课件 P2 p7 给的是结论（iii）的矩阵形式；证明（实对称矩阵特征值为实、不同特征值的特征矢量正交、重根时可取正交基）属于线性代数，本讲义不重证，只把它当已给。这里要给的是「怎么把 $A$ 换成 $I$、把 $\lambda$ 换成 $I_k$」。}
+
+对惯量张量 $I$（实对称，由 \S2.4）用这条定理，取 $\vect a_k$ 为特征矢量、$I_k$ 为特征值：
+
+\[
+I\vect a_k=I_k\vect a_k,\qquad k=1,2,3;
+\qquad
+I=I_1\vect a_1\otimes\vect a_1+I_2\vect a_2\otimes\vect a_2+I_3\vect a_3\otimes\vect a_3 .
+\]
+
+$I_k$ 叫\textbf{主转动惯量}，$\vect a_k$ 叫\textbf{惯性主轴}。第二条写法是把对角矩阵还原成张量（谱分解）：在主轴基下，$I=\sum_k I_k\vect a_k\otimes\vect a_k$，作用在 $\vect a_j$ 上得 $I_j\vect a_j$，与第一式一致。
+
+\subhdr{3.2 主轴为什么「最方便」（p7 右栏）}
+
+把 $\vect{\Omega}$ 在主轴基下展开 $\vect{\Omega}=\Omega_1\vect a_1+\Omega_2\vect a_2+\Omega_3\vect a_3$，则
+
+\[
+\vect M_s=I\vect{\Omega}=I_1\Omega_1\vect a_1+I_2\Omega_2\vect a_2+I_3\Omega_3\vect a_3,
+\qquad
+T_s=\frac12\bigl(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2\bigr).
+\]
+
+这两式就是把 $I=\sum I_k\vect a_k\otimes\vect a_k$ 代进 $\vect M_s=I\vect{\Omega}$ 与 $T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}$ 的直接结果：交叉项全部消失，因为 $\vect a_j\cdot\vect a_k=\delta_{jk}$。
+
+\textbf{主轴的核心性质}：若 $\vect{\Omega}$ 沿某一主轴（例如 $\vect{\Omega}=\Omega_1\vect a_1$），则
+
+\[
+\vect M_s=I_1\Omega_1\vect a_1\ \parallel\ \vect{\Omega},
+\qquad
+T_s=\frac{I_1\Omega_1^2}{2}.
+\]
+
+「角动量与角速度平行」只在主轴方向上成立——这是 P3 整篇反复用到的判据（自由旋转时 $\vect M_s$ 守恒，$\vect{\Omega}$ 是否守恒，就看它是否沿主轴）。
+
+\subhdr{3.3 绕任意轴的转动惯量（HW8.04 的答案，先给结论）}
+
+设 $\vect n$ 是单位矢量。绕「过质心、方向为 $\vect n$」的轴的转动惯量是
+
+\[
+\boxed{\ I_n=\vect n\cdot I\vect n=n_jI_{jk}n_k\ }
+\]
+
+\step{推导}
+把 $\vect{\Omega}=\Omega\vect n$ 代入 $T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}$：
+
+\[
+T_s=\frac12\Omega^2\,(\vect n\cdot I\vect n)=\frac12 I_n\Omega^2
+\quad\Longrightarrow\quad
+I_n=\vect n\cdot I\vect n .
+\]
+
+另一个等价形式来自 \S2.2(a)：$I_n=\sum_\alpha m_\alpha|\vect n\times\vect r_\alpha|^2=\sum_\alpha m_\alpha\rho_\alpha^2$，$\rho_\alpha$ 是质点到轴的距离。两个形式在作业 HW8.04 里都会用到。
+
+\aside{$I_n$ 只对\textbf{过质心}的轴写成 $\vect n\cdot I\vect n$；对不过质心的轴，要先加上 \S5 的平行轴项 $\mu(\vect n\cdot\vect c)^2$ 的补正。作业 HW8.04 的题干写的是 "passing through the center of mass"，正是这个原因。}
+
+\subhdr{3.4 三个主惯量的三角形不等式（p7 末行）}
+
+p7 最后写 $I_1+I_2\ge I_3$，旁边配了一行 $\sum m(x_1^2+x_2^2+2x_3^2)\ge\sum m(x_1^2+x_2^2)$。这行不等式成立，但它和结论之间差一步「左边正好是 $I_1+I_2$」；补齐：
+
+\[
+I_1+I_2=\sum_\alpha m_\alpha\bigl[(x_2^2+x_3^2)+(x_1^2+x_3^2)\bigr]
+=\sum_\alpha m_\alpha\bigl(x_1^2+x_2^2+2x_3^2\bigr),
+\]
+
+而 $I_3=\sum_\alpha m_\alpha(x_1^2+x_2^2)$。两者相减：
+
+\[
+I_1+I_2-I_3=2\sum_\alpha m_\alpha x_3^2=2\int_V\rho\,x_3^2\dd V\ \ge\ 0 .
+\]
+
+\aside{这里默认 $\vect a_3$ 是第三主轴。若换一根轴做「第三轴」，结论同样成立：$I_1+I_2-I_3=2\int x_3^2\dd V$ 与基的选取无关（因为 $I_1+I_2+I_3=2\int r^2\dd V$ 是常数）。所以三个主惯量对任意排列都满足「每个不超过另两个之和」。}
+
+等号成立当且仅当 $x_3\equiv0$，即\textbf{所有质量落在 $\vect a_1\vect a_2$ 平面内}——这正是 \S4.4 的平面薄板。物理意义：刚体不可能「绕某根轴特别难转」到超过另外两根之和；三个主惯量构成一个三角形（退化时共线）。
+
+%=====================================================================
+\hdr{§4}{对称性、刚体分类与两个常用判据}
+
+\subhdr{4.1 三类陀螺（p8 左栏）}
+
+p8 按三个主惯量是否相等把刚体分成三类：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{类型} & \thead{条件} & \thead{惯性张量的形状} \\[1pt]
+不对称陀螺（asymmetrical top） & $I_1\neq I_2\neq I_3\neq I_1$ & $I_1\vect a_1\otimes\vect a_1+I_2\vect a_2\otimes\vect a_2+I_3\vect a_3\otimes\vect a_3$ \\[1pt]
+对称陀螺（symmetrical top） & $I_1=I_2\neq I_3$ & $I_1\hat1+(I_3-I_1)\vect a_3\otimes\vect a_3$ \\[1pt]
+球陀螺（spherical top） & $I_1=I_2=I_3=I$ & $I\hat1$ \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表只是把 p7 的谱分解在三种情形下各读一遍：第一行没有可合并的项；第二行把 $I_1(\vect a_1\otimes\vect a_1+\vect a_2\otimes\vect a_2)$ 用 $\hat1=\sum_k\vect a_k\otimes\vect a_k$ 换成 $I_1(\hat1-\vect a_3\otimes\vect a_3)$，再加上 $I_3\vect a_3\otimes\vect a_3$，合并得 $I_1\hat1+(I_3-I_1)\vect a_3\otimes\vect a_3$；第三行同理得 $I\hat1$。
+
+\begin{itemize}
+\item 对称陀螺：$\vect a_1,\vect a_2$ 在垂直于 $\vect a_3$ 的平面内可任意选取（因为 $I_1=I_2$，谱定理在重根情形下留了这一自由度）。课件写 "direction of one of the principal axes in the $x_1x_2$-plane may be chosen arbitrarily"。
+\item 球陀螺：任意三个互相垂直的方向都可当主轴，$I=I\hat1$。
+\end{itemize}
+
+\subhdr{4.2 对称面：法向是主轴（p8 中栏）}
+
+p8 给三条：质心在对称面内；平面法向是主轴；$I_1+I_2=I_3$。前两条是严格结论，第三条只在「平面薄板」时成立（\S4.4 澄清）。
+
+\step{证明：法向是主轴}
+设刚体关于平面 $\Pi$ 对称。取 $\Pi$ 为 $x_1x_2$ 平面、原点在质心，则「关于 $\Pi$ 反射」是刚体的一个对称变换：
+
+\[
+R=\operatorname{diag}(1,1,-1),\qquad R^2=\hat1 .
+\]
+
+质量分布在反射下不变，所以惯量张量也不变：$I=RI R^{\mathsf T}$。把 $R$ 代进去逐元比较：
+
+\[
+I_{13}=R_{1j}I_{jk}R_{k3}=I_{13}\cdot(1)(-1)=-I_{13}\ \Longrightarrow\ I_{13}=0,
+\]
+
+同理 $I_{23}=0$。于是 $I_{13}=I_{23}=0$，即 $x_3$ 方向与 $x_1$、$x_2$ 都不耦合——在 $I$ 的矩阵表示里，第三行第三列只剩对角元。因此 $\vect a_3$（平面法向）是主轴。
+
+\aside{「质心在对称面内」的理由：反射把每个质点映到另一质点，质量分布的整体平均（质心）必落在对称面上。这是对称性的一般结论，不是刚体特有的。}
+
+\subhdr{4.3 对称轴：轴本身是主轴（p8 右栏）}
+
+设刚体绕轴 $\vect a_3$ 有 $n$ 重旋转对称（$n\ge2$）：绕 $\vect a_3$ 转 $2\pi/n$ 后刚体与自身重合。旋转矩阵 $S(2\pi/n;\vect a_3)$ 与 $I$ 可交换，于是 $I$ 在垂直于 $\vect a_3$ 的平面内必须是各向同性的（否则转一下就变了）——具体地，$I_{13}=I_{23}=0$，$\vect a_3$ 是主轴。
+
+\step{为什么 $n>2$ 才有 $I_1=I_2$}
+在垂直平面内，旋转对称只允许 $I$ 的 $2\times2$ 块是标量矩阵 $I_1\hat1_{2\times2}$：若它有两个不同的特征值 $I_1\neq I_2$，则特征方向唯一确定，转一下就变了，与对称性矛盾。所以只要 $n\ge3$，$I_1=I_2$。
+
+$n=2$ 是例外：转 $180^\circ$ 把 $\vect a_1\to-\vect a_1$、$\vect a_2\to-\vect a_2$，两个方向各自不变号，$2\times2$ 块可以是各向异性的。p8 写 "if the order of symmetry $>2$ then $I_1=I_2$"，正是这个例外——$\vect a_3$ 是主轴但 $I_1\neq I_2$ 是允许的（例如长方体）。
+
+\subhdr{4.4 「对称面」不等于「平面薄板」}
+
+p8 在「Plane of symmetry」一栏最后写 $I_1+I_2=I_3$。这个式子对\textbf{平面薄板}（所有质量集中在一个平面内，$x_3\equiv0$）成立：
+
+\[
+I_3=\int(x_1^2+x_2^2)\dd m=I_1+I_2 .
+\]
+
+但它对一般的「有对称面」刚体\textbf{不成立}。反例：一个均匀长方体，有对称面，但它的三个主惯量一般不满足任何一条为另两条之和。课件的三行是并列写的，读者容易把它们当成「对称面的三个推论」。
+
+\warnbox{\textbf{读法纠正}：有对称面 $\Rightarrow$ 法向是主轴、质心在面内；\emph{平面薄板} $\Rightarrow$ 板面内两根轴的惯量之和 $=$ 法向那根轴的惯量。两个箭头方向不同，不能互换；而且「和」的两项是面内两轴、被加出来的是法向轴，下标要按几何摆，不能按字母顺序套。作业 HW8.05 的等腰三角形分子正是平面薄板：它的板面是 $x_1x_3$、法向是 $x_2$，所以那里出现的是 $I_2=I_1+I_3$，不是 $I_1+I_2=I_3$（附录 A.2）。}
+
+%=====================================================================
+\hdr{§5}{广义惠更斯--施泰纳定理（平行轴定理的张量版）}
+
+\subhdr{5.1 设定（p9 左栏）}
+
+取质心 $O$ 为原点的\textbf{中心}惯量张量 $I$。另取一点 $O'$，从 $O'$ 指向 $O$ 的矢量为 $\vect c$。刚体上任一点相对 $O$ 的矢径为 $\vect r$，相对 $O'$ 的矢径为 $\vect r'$，则
+
+\[
+\vect r'=\vect r+\vect c .
+\]
+
+（p9 的图上：$O'$ 在下方、$O$ 在上方，$\vect c$ 由 $O'$ 指向 $O$，所以「$O'$ 到点 $P$」$=$「$O'$ 到 $O$」$+$「$O$ 到 $P$」。）
+
+要求的是对 $O'$ 的惯量张量
+
+\[
+I'=\sum_\alpha m_\alpha\bigl(r_\alpha'^2\hat1-\vect r_\alpha'\otimes\vect r_\alpha'\bigr).
+\]
+
+\subhdr{5.2 展开与化简（p9 右栏）}
+
+\step{第一步：把 $\vect r'=\vect r+\vect c$ 代进去，逐项展开}
+\[
+\begin{aligned}
+I'&=\sum_\alpha m_\alpha\Bigl[(\vect r_\alpha+\vect c)^2\hat1-(\vect r_\alpha+\vect c)\otimes(\vect r_\alpha+\vect c)\Bigr]\\
+&=\sum_\alpha m_\alpha\bigl(r_\alpha^2\hat1-\vect r_\alpha\otimes\vect r_\alpha\bigr)
++\sum_\alpha m_\alpha\bigl(c^2\hat1-\vect c\otimes\vect c\bigr)\\
+&\qquad+\sum_\alpha m_\alpha\bigl[2(\vect r_\alpha\cdot\vect c)\hat1-\vect r_\alpha\otimes\vect c-\vect c\otimes\vect r_\alpha\bigr].
+\end{aligned}
+\]
+
+\step{第二步：把求和提到括号内}
+第一项就是 $I$。第二项不含下标，求和给出 $\mu(c^2\hat1-\vect c\otimes\vect c)$。第三项用 $\sum_\alpha m_\alpha\vect r_\alpha=\mu\vect r_c$：
+
+\[
+\sum_\alpha m_\alpha\bigl[2(\vect r_\alpha\cdot\vect c)\hat1-\vect r_\alpha\otimes\vect c-\vect c\otimes\vect r_\alpha\bigr]
+=\mu\bigl[2(\vect r_c\cdot\vect c)\hat1-\vect r_c\otimes\vect c-\vect c\otimes\vect r_c\bigr].
+\]
+
+\step{第三步：用质心条件 $\vect r_c=0$}
+第三项整体为零，得
+
+\[
+\boxed{\ I'=I+\mu\bigl(c^2\hat1-\vect c\otimes\vect c\bigr)\ }
+\]
+
+\step{分量形式}
+上式逐元写开：
+
+\[
+I'_{jk}=I_{jk}+\mu(c^2\delta_{jk}-c_jc_k).
+\]
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{轴} & \thead{张量式} & \thead{标量式} \\[1pt]
+过 $O'$ 且平行于 $\vect c$ 的轴 & $\vect c\cdot I'\vect c=\vect c\cdot I\vect c$ & $I'_{\parallel}=I_{\parallel}$ \\[1pt]
+过 $O'$ 且垂直于 $\vect c$ 的轴 & 含 $+\mu c^2$ 项 & $I'_{\perp}=I_{\perp}+\mu c^2$ \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表是把 $\mu(c^2\hat1-\vect c\otimes\vect c)$ 在两条特殊轴上读一遍：沿 $\vect c$ 方向，$c^2-\vect c\otimes\vect c$ 作用在 $\vect c$ 上得 $c^2\vect c-c^2\vect c=0$，所以\textbf{平行于偏移方向的惯量不变}；垂直于 $\vect c$ 的方向上它给出 $\mu c^2$，这就是中学那条 $I'=I+\mu c^2$。
+
+\warnbox{\textbf{p9 中间一行的负号是笔误。}课件把第三项写成
+$\displaystyle -\mu\bigl(2(\vect r_c\cdot\vect c)\hat1-\vect r_c\otimes\vect c-\vect c\otimes\vect r_c\bigr)$，
+而展开 $\bigl[2(\vect r_\alpha\cdot\vect c)\hat1-\vect r_\alpha\otimes\vect c-\vect c\otimes\vect r_\alpha\bigr]$ 求和得到的这一项是\textbf{正}的。因为它紧接着被 $\vect r_c=0$ 抹掉，结论 $I'=I+\mu(c^2\hat1-\vect c\otimes\vect c)$ 不受影响；但若把这一行当成「一般情形（$\vect r_c\neq0$）的公式」去用，符号会反。}
+
+\subhdr{5.3 p9 的 "Think about it"：用 $O'$ 系写 $T$ 与 $\vect M$}
+
+p9 下方有一个思考题："What is the expression for the kinetic energy and angular momentum when we use the coordinate system with origin $O'$?" 课件没有给答案，这里补上。
+
+以 $O'$ 为基点，速度场是 $\vect v=\vect V'+\vect{\Omega}\times\vect r'$，$\vect V'$ 是 $O'$ 的速度。由 \S1 的一般式（此时 $\vect r_c\neq0$，不能用「质心」那条捷径）：
+
+\[
+T=\frac{\mu V'^2}{2}+\mu\,\vect r_c'\cdot(\vect V'\times\vect{\Omega})+\frac12\vect{\Omega}\cdot I'\vect{\Omega},
+\qquad
+\vect M=\mu\vect R'\times\vect V'+\mu\,\vect r_c'\times\vect V'+\mu\vect R'\times(\vect{\Omega}\times\vect r_c')+\vect M_s,
+\]
+
+其中 $\vect r_c'=\vect c$ 是质心相对 $O'$ 的矢径（因为 $\vect r'=\vect r+\vect c$，而 $\sum m\vect r=0$）。
+
+\step{化简：把 $O'$ 的速度与质心速度连起来}
+质心相对 $O'$ 的位置是 $\vect c$，所以
+
+\[
+\vect V'=\vect V_C-\vect{\Omega}\times\vect c
+\]
+
+（$O'$ 相对质心的位置是 $-\vect c$，其速度 $=\vect V_C+\vect{\Omega}\times(-\vect c)$）。代入 $T$ 并整理，交叉项与 $\mu\vect r_c'$ 项恰好相消，回到
+
+\[
+T=\frac{\mu V_C^2}{2}+\frac12\vect{\Omega}\cdot I\vect{\Omega},
+\]
+
+与用质心系算的完全相同。这个结果的意义是：\textbf{动能是标量，不随基点变}；变的只是「平动项 $+$ 交叉项 $+$ 转动项」这三块怎么分。用 $I'$ 写转动项也可以，但那时交叉项必须留着。
+
+\aside{课件在 P2 p10 的小结里给了 $T'^{\vphantom{1}}_s=\frac{MV_c^2}{2}+T_s$ 与 $T'_s=\frac12 I'\Omega^2$ 的并列写法（p11）：那是「以瞬时转轴为轴」的算法，$I'$ 是对瞬时轴的标量惯量，与这里的张量 $I'$ 不是同一个量。记号相同、含义不同，读到 p11 时对照 \S6.6。}
+
+%=====================================================================
+% 片段 2：§6 标准刚体的惯量（P2 p10–p15）
+%=====================================================================
+
+%=====================================================================
+\hdr{§6}{标准刚体的惯量：四道例题与 p11 的 $I_\Omega$}
+
+\subhdr{6.0 这一节在做什么}
+
+p12--p15 是四道例题，p10--p11 是两页小结。先看小结里那个容易被跳过的量 $I_\Omega$，因为四道例题的答案最终都要落到「沿某根轴转，惯量是多少」这个问句上。
+
+\subhdr{6.1 p11 的 $I_\Omega$：绕瞬时转轴的标量惯量}
+
+p11 写
+
+\[
+T_s=\frac12\bigl(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2\bigr)
+=\frac{\Omega^2}{2}\bigl(I_1\cos^2\alpha+I_2\cos^2\beta+I_3\cos^2\gamma\bigr)
+\equiv\frac{I_\Omega\Omega^2}{2},
+\]
+
+其中 $\alpha,\beta,\gamma$ 是 $\vect{\Omega}$ 与三个主轴之间的夹角。
+
+\step{为什么能提出 $\Omega^2$}
+\[
+\Omega_1=\Omega\cos\alpha,\quad \Omega_2=\Omega\cos\beta,\quad \Omega_3=\Omega\cos\gamma
+\]
+
+（$\Omega=|\vect{\Omega}|$，$\cos\alpha=\Omega_1/\Omega$，以此类推），代进第一式即得括号里的式子。
+
+\step{$I_\Omega$ 是什么}
+\[
+I_\Omega\equiv I_1\cos^2\alpha+I_2\cos^2\beta+I_3\cos^2\gamma
+=\vect n_\Omega\cdot I\vect n_\Omega,\qquad \vect n_\Omega\equiv\vect{\Omega}/\Omega .
+\]
+
+由 \S3.3，它正是「绕 $\vect n_\Omega$ 方向的轴」的转动惯量。于是 p11 的下一句 "moment of inertia of the rigid body about an axis passing through the center of mass and parallel to the instantaneous angular velocity vector" 有了依据：$I_\Omega$ 不是新量，是 $I_n$ 在 $\vect n=\vect n_\Omega$ 时的值。
+
+\warnbox{p11 接着写 $T'_s=\frac12 I'\Omega^2$，并说 $I'$ 是「about the instantaneous axis of rotation, related to $I$ by the Huygens-Steiner theorem」。这里有两处记号重叠：这个 $I'$ 是\textbf{标量}（对瞬时轴的惯量），不是 \S5 的\textbf{张量} $I'$；而「对瞬时轴」意味着原点已不在质心，所以它 $=$ $I_\Omega+\mu\rho^2$（$\rho$ 是质心到瞬时轴的距离）。p11 末尾写 $T'_s=\frac{MV_c^2}{2}+T_s$，正是这个关系的另一种说法：从瞬时轴算的动能，等于质心平动动能加绕质心的转动动能。}
+
+\qbreak
+\subhdr{6.2 例 E8.03：双原子分子（p12）}
+
+\qbreak
+\qstem{（课件 P2 p12，Exercise E8.03）\textbf{Find the principle moment of inertia of a two-atomic molecule (rotator).} 两个质点 $m_1,m_2$，间距 $l$，把分子看成刚性转子。}
+
+\subhdr{考点}
+把「分子」抽象成两个质点，选坐标轴使一个质点在原点、另一个在 $z$ 轴上，然后按定义算三个主轴惯量。关键是先求质心。
+
+\subhdr{关键一步}
+\textbf{把原点放在 $m_1$ 上、$z$ 轴沿分子轴}。这样每个质点的两个坐标中有两个为零，三个积分（求和）立刻退化成一维。
+
+\subhdr{详解}
+坐标（见 p12 的图）：$m_1$ 在原点 $(0,0,0)$，$m_2$ 在 $(0,0,l)$。
+
+\step{第一步：质心}
+\[
+z_c=\frac{m_1\cdot0+m_2\cdot l}{m_1+m_2}=\frac{m_2l}{m_1+m_2},\qquad x_c=y_c=0 .
+\]
+
+\step{第二步：三个轴惯量}
+按定义 $I_k=\sum_\alpha m_\alpha\times$（到第 $k$ 轴距离的平方）。绕 $x$ 轴的距离平方是 $y^2+z^2$：
+
+\[
+I_1=\sum_{\alpha=1}^{2}m_\alpha\bigl[(y_\alpha-y_c)^2+(z_\alpha-z_c)^2\bigr].
+\]
+
+两个质点的 $x=y=0$，所以 $y_\alpha-y_c=0$，只剩 $z$ 的部分：
+
+\[
+I_1=m_1(0-z_c)^2+m_2(l-z_c)^2 .
+\]
+
+同理 $I_2=\sum m_\alpha[(x_\alpha-x_c)^2+(z_\alpha-z_c)^2]=I_1$（$x_\alpha=0$）。绕 $z$ 轴的距离平方是 $x^2+y^2$：
+
+\[
+I_3=\sum_{\alpha=1}^{2}m_\alpha\bigl[(x_\alpha-x_c)^2+(y_\alpha-y_c)^2\bigr]=0 .
+\]
+
+\aside{p12 把 $I_3$ 的式子写成 $\sum m_\alpha[(x_\alpha-x_c)^2+(y_\alpha-z_c)^2]$，第二项的下标应为 $y_c$——这是同一页上的排版笔误，不影响结论 $I_3=0$（两项都为零）。}
+
+\step{第三步：化简 $I_1$}
+把 $z_c$ 代入：
+
+\[
+I_1=m_1z_c^2+m_2(l-z_c)^2
+=m_1\frac{m_2^2l^2}{(m_1+m_2)^2}+m_2\frac{m_1^2l^2}{(m_1+m_2)^2}
+=\frac{m_1m_2l^2(m_2+m_1)}{(m_1+m_2)^2}
+=\frac{m_1m_2}{m_1+m_2}l^2 .
+\]
+
+\boxed{\ I_1=I_2=\frac{m_1m_2}{m_1+m_2}l^2=\mu l^2,\qquad I_3=0\ }
+
+\subhdr{答案的读法}
+$\mu=m_1m_2/(m_1+m_2)$ 正是二体问题的约化质量。所以双原子分子的主惯量就是「约化质量 $\times$ 键长平方」——与 P2 p4 的 $\mu$ 是同一个量，这里不是巧合：约化质量本来就是把二体相对运动折算成单体运动的系数。
+
+\subhdr{自检}
+把 $m_1=m_2=m$ 代入：$I_1=\frac{m}{2}l^2$。直接验证：两个质量各在距质心 $l/2$ 处，每个贡献 $m(l/2)^2=ml^2/4$，两个共 $ml^2/2$ $\checkmark$。$I_3=0$ 对应 \S2.4 的零条件：所有质量在 $z$ 轴上。
+
+\qbreak
+\subhdr{6.3 例 E8.04：$N$ 个共线原子（p13）}
+
+\qbreak
+\qstem{（课件 P2 p13，Exercise E8.04）\textbf{Find the principle moment of inertia of a molecule of $N$ collinear atoms.} $N$ 个质量 $m_\alpha$ 排在同一条直线上，坐标 $z_\alpha$。}
+
+\subhdr{考点}
+把 $I_1$ 写成「$\sum mz^2-\mu z_c^2$」的形式，再把它改写成「两两相对距离的加权和」。后者是分子光谱里常用的形式（转动常数直接由键长决定）。
+
+\subhdr{关键一步}
+\S5 的平行轴定理的标量版：$I_1=\sum m_\alpha z_\alpha^2-\mu z_c^2$。第一项是对原点的、第二项是质心偏移的修正。然后对第二项用「$\frac{1}{2\mu}\sum\sum m_\alpha m_\beta(z_\alpha-z_\beta)^2$」这个恒等式。
+
+\subhdr{详解}
+取 $z$ 轴沿分子轴（p13 的第一句），于是 $x=y=0$，只有 $I_1=I_2$ 非零。
+
+\step{第一步：质心与 $I_1$}
+\[
+z_c=\mu^{-1}\sum_{\alpha=1}^{N}m_\alpha z_\alpha,\qquad
+I_1=I_2=\sum_{\alpha=1}^{N}m_\alpha(z_\alpha-z_c)^2
+=\sum_\alpha m_\alpha z_\alpha^2-2z_c\sum_\alpha m_\alpha z_\alpha+z_c^2\sum_\alpha m_\alpha .
+\]
+
+中间项 $\sum m_\alpha z_\alpha=\mu z_c$，最后项 $\sum m_\alpha=\mu$，所以
+
+\[
+I_1=I_2=\sum_{\alpha=1}^{N}m_\alpha z_\alpha^2-\mu z_c^2 .
+\]
+
+\step{第二步：证明那个双重和的恒等式}
+课件 p13 中段写了一个「Consider expression」，把 $\frac{1}{2\mu}\sum_\alpha\sum_\beta m_\alpha m_\beta(z_\alpha-z_\beta)^2$ 展开成 $\sum mz^2-\mu z_c^2$。逐项：
+
+\[
+\frac{1}{2\mu}\sum_{\alpha,\beta}m_\alpha m_\beta(z_\alpha^2-2z_\alpha z_\beta+z_\beta^2)
+=\frac{1}{2\mu}\Bigl[\mu\sum_\alpha m_\alpha z_\alpha^2-2\mu^2z_c^2+\mu\sum_\beta m_\beta z_\beta^2\Bigr],
+\]
+
+括号里第一、三项相等（都是 $\mu\sum mz^2$），所以
+
+\[
+=\frac{1}{2\mu}\bigl[2\mu\sum_\alpha m_\alpha z_\alpha^2-2\mu^2z_c^2\bigr]
+=\sum_\alpha m_\alpha z_\alpha^2-\mu z_c^2=I_1 .
+\]
+
+\step{第三步：并成答案}
+\[
+\boxed{\ I_1=I_2=\frac{1}{2\mu}\sum_{\alpha=1}^{N}\sum_{\beta=1}^{N}m_\alpha m_\beta l_{\alpha\beta}^2,\qquad I_3=0\ }
+\qquad l_{\alpha\beta}\equiv z_\alpha-z_\beta\ \text{（两原子间距离）}.
+\]
+
+\subhdr{答案的读法}
+双重和里 $\alpha=\beta$ 的项 $l_{\alpha\alpha}=0$，不贡献；$\alpha\neq\beta$ 的项成对出现，每对给 $2m_\alpha m_\beta l_{\alpha\beta}^2$。对双原子（$N=2$）退回 \S6.2 的 $\mu l^2$：
+
+\[
+\frac{1}{2\mu}\bigl[m_1m_2l^2+m_2m_1l^2\bigr]=\frac{m_1m_2}{\mu}l^2=\frac{m_1m_2}{m_1m_2/(m_1+m_2)}l^2=(m_1+m_2)l^2\ \text{?}
+\]
+
+等一下——这个代换给出了 $(m_1+m_2)l^2$，与 \S6.2 的 $\mu l^2$ 不符。问题出在 $l_{\alpha\beta}=z_\alpha-z_\beta=l$ 时，$\frac{1}{2\mu}\cdot2m_1m_2l^2=\frac{m_1m_2}{\mu}l^2=(m_1+m_2)l^2$。
+
+\warnbox{\textbf{这里有一个必须查的常数。}若照抄「$I_1=\frac{1}{2\mu}\sum\sum m_\alpha m_\beta l_{\alpha\beta}^2$」，双原子应得 $\mu l^2$，而按上式算得 $(m_1+m_2)l^2$。矛盾出在 $\mu$ 的定义：p13 的 $\mu$ 被定义为 $\sum_\alpha m_\alpha z_\alpha$（见 p13 第二行，原文 $\mu=\sum_{\alpha}m_\alpha z_\alpha$），这不是质量、而是「质量矩」。课件在这里把 $\mu$ 的两层含义混用了：\S6.2 的 $\mu=m_1m_2/(m_1+m_2)$ 是约化质量，p13 的 $\mu$ 是总质量（p13 第一行 $z_c=\mu^{-1}\sum m_\alpha z_\alpha$ 要求 $\mu=\sum m_\alpha$）。取 $\mu=\sum_\alpha m_\alpha$ 时，双重和给出 $\frac{2m_1m_2}{2(m_1+m_2)}l^2=\mu_{\text{red}}l^2$ $\checkmark$，与 \S6.2 一致。}
+
+也就是说，p13 的公式里 $\mu$ 应读作\textbf{总质量} $M=\sum_\alpha m_\alpha$，而不是约化质量。p13 第二行「$\mu=\sum_{\alpha=1}^{N}m_\alpha z_\alpha$」是排版错误（正确应为 $\mu=\sum m_\alpha$）。用总质量 $M$ 重写：
+
+\[
+\boxed{\ I_1=I_2=\frac{1}{2M}\sum_{\alpha,\beta}m_\alpha m_\beta l_{\alpha\beta}^2,\qquad M=\sum_\alpha m_\alpha\ }
+\]
+
+\subhdr{自检}
+三原子等距 $l$、等质量 $m$（$m,m,m$）：$M=3m$，$l_{12}=l_{23}=l$，$l_{13}=2l$。双重和 $=2m^2l^2+2m^2(2l)^2+2m^2l^2=2m^2l^2(1+4+1)=12m^2l^2$，除以 $2M=6m$，得 $2ml^2$。直接算：质心在中间原子处，两个端原子各距 $l$，$I=2ml^2$ $\checkmark$。
+
+\qbreak
+\subhdr{6.4 例 E8.05：均匀圆柱（p14）}
+
+\qbreak
+\qstem{（课件 P2 p14，Exercise E8.05）\textbf{Find the principle moment of inertia of a cylinder of height $H$ and radius $R$.} 均匀实心圆柱，质量 $M$，高 $H$，底面半径 $R$。}
+
+\subhdr{考点}
+三重积分 + 柱坐标。$I_3$ 与 $I_1$ 用同一个体积元，差别只在被积函数。
+
+\subhdr{关键一步}
+取 $z$ 轴沿圆柱轴、原点在质心（圆柱中心），则 $z\in[-H/2,H/2]$、$r\in[0,R]$、$\varphi\in[0,2\pi]$，$\dd V=r\dd r\dd\varphi\dd z$。
+
+\subhdr{详解}
+\step{第一步：$I_3$（绕轴）}
+到 $z$ 轴的距离平方是 $x^2+y^2=r^2$：
+
+\[
+I_3=\int_V\rho(x^2+y^2)\dd V
+=\rho\int_{-H/2}^{H/2}\dd z\int_0^R r\dd r\int_0^{2\pi}\dd\varphi\ r^2
+=\rho H\cdot2\pi\cdot\frac{R^4}{4}
+=\frac{\rho\pi R^4H}{2}.
+\]
+
+用 $M=\rho\pi R^2H$ 换成 $M$：$\rho\pi R^4H=MR^2$，故
+
+\[
+I_3=\frac{MR^2}{2}.
+\]
+
+\step{第二步：$I_1$（过质心的横轴）}
+绕 $x$ 轴的距离平方是 $y^2+z^2=r^2\sin^2\varphi+z^2$：
+
+\[
+I_1=\rho\int_{-H/2}^{H/2}\dd z\int_0^R r\dd r\int_0^{2\pi}\dd\varphi\,\bigl(r^2\sin^2\varphi+z^2\bigr).
+\]
+
+先对 $\varphi$ 积分：$\int_0^{2\pi}\sin^2\varphi\dd\varphi=\pi$，$\int_0^{2\pi}\dd\varphi=2\pi$，得
+
+\[
+I_1=\rho\int_{-H/2}^{H/2}\dd z\int_0^R r\dd r\,\bigl(\pi r^2+2\pi z^2\bigr)
+=\pi\rho\int_{-H/2}^{H/2}\dd z\,\Bigl[\frac{R^4}{4}+\frac{R^2 z^2}{2}\Bigr]\cdot 2 .
+\]
+
+\aside{p14 把这一步写成 $\pi\rho\int\dd z\bigl(\frac{R^4}{4}+R^2z^2\bigr)$。差别只在 $\int r\dd r$ 的系数：$\int_0^R r^3\dd r=R^4/4$ 与 $\int_0^R r\dd r\cdot r^2=R^4/4$ 相同，但 $z^2$ 项的系数是 $2\pi\cdot\int_0^R r\dd r=2\pi R^2/2=\pi R^2$，所以括号里应是 $R^2z^2$（乘上外层的 $\pi\rho$ 与 $\int\dd z$ 后与这里一致）。两种写法在最后结果上相同，因为下面的 $H^3/12$ 项就是从这里来的。}
+
+完成 $z$ 积分：
+
+\[
+I_1=\pi\rho\Bigl[\frac{R^4}{4}H+R^2\frac{H^3}{12}\Bigr]
+=\pi\rho R^2H\Bigl(\frac{R^2}{4}+\frac{H^2}{12}\Bigr)
+=M\Bigl(\frac{R^2}{4}+\frac{H^2}{12}\Bigr)=\frac{M}{4}\Bigl(R^2+\frac{H^2}{3}\Bigr).
+\]
+
+\boxed{\ I_1=I_2=\frac{M}{4}\Bigl(R^2+\frac{H^2}{3}\Bigr),\qquad I_3=\frac{MR^2}{2}\ }
+
+\subhdr{自检}
+(i) 细杆极限 $R\to0$、$H\to L$：$I_1=M L^2/12$ $\checkmark$（细杆绕中点的横轴惯量）。
+(ii) 薄圆盘极限 $H\to0$：$I_1=MR^2/4$，$I_3=MR^2/2$，且 $I_1+I_2=I_3$ $\checkmark$（\S4.4 的平面薄板关系）。
+(iii) 三角形不等式：$I_1+I_2-I_3=2MH^2/12=MH^2/6\ge0$ $\checkmark$，且等于 $2\int z^2\dd m$（$z$ 的方差）。
+
+\qbreak
+\subhdr{6.5 例 E8.06：均匀球（p15）}
+
+\qbreak
+\qstem{（课件 P2 p15，Exercise E8.06）\textbf{Find the principle moment of inertia of a sphere of radius $R$.} 均匀实心球，质量 $M$，半径 $R$。}
+
+\subhdr{考点}
+两个算法并存：球坐标硬算（p15 的 "Brute force"）与「三个主惯量相等，用迹」的巧算（"Let's be smart about this"）。后者是这一页真正的教学内容。
+
+\subhdr{关键一步}
+球对称 $\Rightarrow I_1=I_2=I_3=I$；于是 $I_1+I_2+I_3=3I=2\int r^2\dd m$，不必算任何一个单独的积分，只算 $\int r^2\dd m$。
+
+\subhdr{详解（巧算）}
+\step{第一步：三个主惯量相等}
+球在任意旋转下不变 $\Rightarrow$ 惯性张量在任意正交基下相同 $\Rightarrow I=I\hat1$（\S4.1 的球陀螺）。所以 $I_1=I_2=I_3\equiv I$。
+
+\step{第二步：用迹}
+\[
+I_1+I_2+I_3=\operatorname{tr}I=\sum_\alpha m_\alpha\bigl[r_\alpha^2\cdot3-(\vect r_\alpha\otimes\vect r_\alpha):\hat1\bigr]
+=\sum_\alpha m_\alpha(3r_\alpha^2-r_\alpha^2)=2\int r^2\dd m .
+\]
+
+\aside{迹的算法：$\operatorname{tr}(\vect r\otimes\vect r)=\vect r\cdot\vect r=r^2$，而 $\operatorname{tr}(r^2\hat1)=3r^2$，相减得 $2r^2$。这个恒等式对任何质量分布都成立，不只是球。}
+
+\step{第三步：算 $\int r^2\dd m$}
+\[
+I=\frac{2}{3}\int_V\rho\,r^2\dd V
+=\frac{2}{3}\rho\int_0^R r^2\cdot4\pi r^2\dd r
+=\frac{2}{3}\rho\,4\pi\,\frac{R^5}{5}
+=\frac{8\pi\rho R^5}{15}.
+\]
+
+用 $M=\frac43\pi R^3\rho$ 换成 $M$：
+
+\[
+\boxed{\ I_1=I_2=I_3=\frac{2}{5}MR^2\ }
+\]
+
+\subhdr{硬算（p15 左栏）为什么也对}
+球坐标 $x=r\cos\varphi\sin\theta$、$y=r\sin\varphi\sin\theta$、$z=r\cos\theta$（注意 p15 把 $z$ 写成 "$z=z\cos\theta$"，是 $z=r\cos\theta$ 的笔误），$\dd V=r^2\sin\theta\dd r\dd\theta\dd\varphi$。绕 $z$ 轴的距离平方是 $r^2\sin^2\theta$：
+
+\[
+I_3=\rho\int_0^R r^4\dd r\int_0^\pi\sin^3\theta\dd\theta\int_0^{2\pi}\dd\varphi
+=\rho\frac{R^5}{5}\cdot\frac{4}{3}\cdot2\pi=\frac{8\pi\rho R^5}{15}=\frac{2}{5}MR^2 .
+\]
+
+其中 $\int_0^\pi\sin^3\theta\dd\theta=4/3$（p15 用三倍角公式 $\sin^3\theta=\frac14(3\sin\theta-\sin3\theta)$ 验证）。两条路给出同一答案——巧算省掉的只是这个积分。
+
+\subhdr{自检}
+(i) 球壳呢？把 $\rho\dd V$ 换成面质量，$\int r^2\dd m=R^2M$，$I=\frac23MR^2$。与实心球的 $2/5$ 不同，差在质量分布靠外。
+(ii) 三角形不等式取等号：$I+I-I=I=\frac25MR^2$ $\checkmark$（球是「三个都相等」的退化三角形）。
+
+\subhdr{6.6 四道例题的共同结构}
+
+四道题看起来各算各的，其实都在回答同一个问题：\textbf{质量分布离转轴有多远}。四种分布对应四种「距离」的读法：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{刚体} & \thead{关键距离} & \thead{结果} \\[1pt]
+双原子 / $N$ 原子链 & 到轴的垂直距离（全部质量在轴上） & $I_3=0$；$I_1=\mu l^2$（或双重和） \\[1pt]
+圆柱 & $\sqrt{x^2+y^2}$（绕轴）、$\sqrt{r^2\sin^2\varphi+z^2}$（横轴） & $I_3=\frac{MR^2}{2}$，$I_1=\frac{M}{4}(R^2+\frac{H^2}{3})$ \\[1pt]
+球 & $r\sin\theta$ & $I=\frac25MR^2$ \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+这张表只是把 \S6.2--\S6.5 的答案按「用了哪个距离」重排一遍；每一格的推导都在对应小节，不在这里重复。
+
+%=====================================================================
+% 片段 3：§7–§11（P3 p3–p17）
+%=====================================================================
+
+%=====================================================================
+\hdr{§7}{刚体的运动方程：从角动量定理到欧拉方程}
+
+\subhdr{7.1 本体标架怎么转（p3）}
+
+前六节把 $I$ 造好了，但 $I$ 是「刚性固定在刚体上」的张量：它在\textbf{本体标架} $\{\vect a_k\}$ 里分量不变，而本体标架本身在空间里转。p3 第一行就把这件事写成
+
+\[
+\frac{\dd\vect a_k}{\dd t}=\vect{\Omega}\times\vect a_k,\qquad k=1,2,3 .
+\]
+
+\step{为什么是 $\vect{\Omega}\times\vect a_k$}
+$\vect a_k$ 是固定在刚体上的单位矢量，所以它只随刚体转动，长度不变（$|\vect a_k|=1$）。刚体上任意一点的速度场是 $\vect v=\vect V+\vect{\Omega}\times\vect r$（P1 p5）；取 $\vect r=\vect a_k$、$\vect V=0$（只关心转动），就得到上式。
+
+\step{若 $\vect{\Omega}$ 不随时间，解是什么}
+p3 给出
+
+\[
+\vect a_k(t)=S(\Omega t;\vect n)\,\vect a_k(0),\qquad \vect n=\vect{\Omega}/\Omega,
+\]
+
+其中旋转算子是
+
+\[
+S(\varphi;\vect n)=\vect n\otimes\vect n+\bigl(\hat1-\vect n\otimes\vect n\bigr)\cos\varphi+\vect n^\times\sin\varphi .
+\]
+
+\aside{这个式子是 Rodrigues 公式的张量写法，P1 p11 已经推过：把 $\vect a$ 拆成沿 $\vect n$ 与垂直于 $\vect n$ 的两块，垂直块在转动下按 $\cos\varphi$、$\sin\varphi$ 旋转。这里只用到它的形式：$S$ 把 $\vect a_k(0)$ 绕 $\vect n$ 转 $\varphi$ 角，$\varphi=\Omega t$。}
+
+\step{验证 $S$ 的三个性质（用一次就知道它为什么长这样）}
+(i) $S(0;\vect n)=\hat1$：直接代入 $\cos0=1$、$\sin0=0$，第一、二项合并为 $\hat1$。
+(ii) 保长度：$S^{\mathsf T}S=\hat1$（正交），所以 $|S\vect a|=|\vect a|$。
+(iii) 导数：$\dfrac{\dd}{\dd\varphi}S(\varphi;\vect n)\big|_{\varphi=0}=\vect n^\times$，即无穷小转动 $S(\dd\varphi;\vect n)\approx\hat1+\vect n^\times\dd\varphi$，作用在 $\vect a$ 上给出 $\dd\vect a=\dd\varphi\,(\vect n\times\vect a)$，与 $\dot{\vect a}=\vect{\Omega}\times\vect a$ 一致。
+
+\subhdr{7.2 自由旋转的三个特例（p4）}
+
+「自由」指没有外力矩：$\vect K=0$，于是（由 \S7.3 的角动量定理）$\vect M_s=\text{const}$。但 $I$ 与 $\vect{\Omega}$ 都可以随时间变。p4 的做法是先把 $\vect{\Omega}$ 解出来：
+
+\[
+\vect M_s=I\vect{\Omega}\quad\Longrightarrow\quad
+\vect{\Omega}=I^{-1}\vect M_s,\qquad
+I^{-1}=\frac{1}{I_1}\vect a_1\otimes\vect a_1+\frac{1}{I_2}\vect a_2\otimes\vect a_2+\frac{1}{I_3}\vect a_3\otimes\vect a_3 .
+\]
+
+\aside{$I^{-1}$ 的这个形式来自谱分解：$I=\sum I_k\vect a_k\otimes\vect a_k$，求逆就是把每个系数换成倒数（因为 $\vect a_k$ 是正交基，$\vect a_k\otimes\vect a_k$ 是投影算子，投影算子的逆是它自己）。前提是所有 $I_k\neq0$。}
+
+\step{球陀螺（$I_1=I_2=I_3=I$）}
+$I=I\hat1$，$I^{-1}=\frac1I\hat1$，于是
+
+\[
+\vect{\Omega}=\frac1I\vect M_s=\text{const}.
+\]
+
+$\vect{\Omega}$ 是常矢量（大小方向都不变），刚体绕一根\textbf{空间固定}的轴匀速转动。
+
+\step{转子（rotator，$I_1=I_2=I>0$，$I_3=0$）}
+$I=I(\vect a_1\otimes\vect a_1+\vect a_2\otimes\vect a_2)$。p4 写
+
+\[
+I^{-1}=\frac1I(\vect a_1\otimes\vect a_1+\vect a_2\otimes\vect a_2),\qquad
+\vect{\Omega}=\frac1I(M_1\vect a_1+M_2\vect a_2)=\text{const},\qquad \vect{\Omega}\perp\vect a_3 .
+\]
+
+\warnbox{\textbf{$I_3=0$ 时 $I$ 没有逆矩阵}（行列式为零），p4 写的 $I^{-1}$ 是\textbf{伪逆}：只在 $\vect a_1\vect a_2$ 平面内求逆，$\vect a_3$ 方向留零。这不影响物理，因为 $\vect M_s$ 本身没有 $\vect a_3$ 分量：$M_3=I_3\Omega_3=0$。于是 $\Omega_3$ 完全不受约束（转子和绕自身轴的转动「无动能、无角动量」），\textbf{任何 $\Omega_3$ 都给出同一组可观测量}；p4 取 $\Omega_3=0$ 是一个规范选择。双原子分子（\S6.2）就是这种情况：绕分子轴转多少度，物理上没有区别。}
+
+\step{对称陀螺（$I_1=I_2\neq I_3$）}
+这是 \S8 的主题，p4 只点了一句，展开在 \S8。
+
+\subhdr{7.3 动量定理与角动量定理（p7）}
+
+p7 分两栏。左栏是平动：
+
+\[
+\vect P=\sum_\alpha\vect p_\alpha=\mu\vect V_C,\qquad
+\dot{\vect P}=\sum_\alpha\dot{\vect p}_\alpha=\sum_\alpha\bigl(\vect f_\alpha^{\text{int}}+\vect f_\alpha^{\text{ext}}\bigr)=\sum_\alpha\vect f_\alpha^{\text{ext}}=\vect F,
+\]
+
+\[
+\dot{\vect P}=\mu\dot{\vect V}_C=\vect F .
+\]
+
+\step{内力为什么消失}
+$\sum_\alpha\vect f_\alpha^{\text{int}}=0$：每一对内力 $\vect f_{\alpha\beta}$ 与 $\vect f_{\beta\alpha}$ 大小相等方向相反（牛顿第三定律），求和成对抵消。这一步与刚体无关，任何质点系都成立。
+
+右栏是转动，p7 先给一句方法论语："The equations of motion must have the same form in any inertial frame of reference (IFR)"，然后引入\textbf{瞬时共动惯性系}（instantaneously co-moving IFR）：相对它，刚体质心瞬时静止。在这个系里
+
+\[
+\vect M=\sum_\alpha\vect r_\alpha\times\vect p_\alpha,\qquad
+\dot{\vect M}=\sum_\alpha(\dot{\vect r}_\alpha\times\vect p_\alpha+\vect r_\alpha\times\dot{\vect p}_\alpha)=\sum_\alpha\vect r_\alpha\times\dot{\vect p}_\alpha .
+\]
+
+\step{为什么第一项消失}
+$\dot{\vect r}_\alpha\times\vect p_\alpha=\vect v_\alpha\times(m_\alpha\vect v_\alpha)=0$：速度与自身共线，叉乘为零。
+
+\step{第二项}
+\[
+\dot{\vect M}=\sum_\alpha\vect r_\alpha\times\bigl(\vect f_\alpha^{\text{int}}+\vect f_\alpha^{\text{ext}}\bigr)=\sum_\alpha\vect r_\alpha\times\vect f_\alpha^{\text{ext}}\equiv\vect K .
+\]
+
+\warnbox{\textbf{「内力矩为零」这一步比平动那一步需要更多条件。}平动只用「成对抵消」，转动要求 $\sum_\alpha\vect r_\alpha\times\vect f_\alpha^{\text{int}}=0$，即每对内力\textbf{沿两质点的连线}（中心力），或者更一般地：刚体的内部约束力是理想约束，对任何刚体虚位移做功为零，因而总力矩为零。课件 p7 直接写等号，没有说明这一点。对本课程（刚体 = 理想约束）它是成立的；但换成「非中心力」的质点系（例如带磁力的两体），$\dot{\vect M}=\vect K$ 不成立，角动量不守恒。}
+
+\step{换到任意惯性系}
+瞬时共动系里成立 $\dot{\vect M}=\vect K$；由于方程形式在任意 IFR 中相同（p7 第一句），换成实验室系也成立。这是 p7 那句方法论的用处。
+
+\subhdr{7.4 欧拉动力学方程（p8 上半）}
+
+把 $\dot{\vect M}=\vect K$ 投影到本体标架 $\vect a_k$ 上。这是整份讲义技术含量最高的一步：$\vect a_k$ 随刚体转动，\textbf{不能把 $\vect a_k$ 当常矢量提到导数外面}。
+
+\step{第一步：对 $\vect M=M_k\vect a_k$ 求导（$M_k$ 为分量）}
+\[
+\dot{\vect M}=\frac{\dd}{\dd t}(M_k\vect a_k)=\dot M_k\vect a_k+M_k\dot{\vect a}_k=\dot M_k\vect a_k+M_k\,\vect{\Omega}\times\vect a_k .
+\]
+
+\step{第二步：把 $\vect{\Omega}\times\vect a_k$ 用分量写开}
+用 $\vect a_i\cdot\vect a_l=\delta_{il}$ 与列维-奇维塔符号 $\varepsilon_{ijk}$（$\vect a_i\times\vect a_j=\varepsilon_{ijk}\vect a_k$）：
+
+\[
+\vect{\Omega}\times\vect a_k=\vect a_i\,\varepsilon_{ijl}\Omega_j(\vect a_k)_l
+=\vect a_i\,\varepsilon_{ijl}\Omega_j\delta_{kl}
+=\vect a_i\,\varepsilon_{ijk}\Omega_j .
+\]
+
+\aside{这里 $(\vect a_k)_l$ 是 $\vect a_k$ 在 $\vect a_l$ 方向的第 $l$ 个分量，即 $\delta_{kl}$。于是 $\varepsilon_{ijl}\delta_{kl}=\varepsilon_{ijk}$。}
+
+\step{第三步：并成方程组}
+\[
+\dot{\vect M}=\dot M_i\vect a_i+M_k\vect a_i\varepsilon_{ijk}\Omega_j
+=\vect a_i\bigl(\dot M_i+\varepsilon_{ijk}\Omega_jM_k\bigr)=\vect a_iK_i .
+\]
+
+因为 $\vect a_i$ 线性无关，各分量相等：
+
+\[
+\boxed{\ \dot M_i+\varepsilon_{ijk}\Omega_jM_k=K_i\ }
+\]
+
+\step{第四步：代入 $M_i=I_i\Omega_i$（主轴系，无求和）}
+\[
+I_i\dot\Omega_i+\varepsilon_{ijk}\Omega_jI_k\Omega_k=K_i .
+\]
+
+逐分量写开（$i=1,2,3$，注意 $\varepsilon_{123}=\varepsilon_{231}=\varepsilon_{312}=1$，其余反号）：
+
+\[
+\boxed{
+\begin{aligned}
+I_1\dot\Omega_1+(I_3-I_2)\Omega_2\Omega_3&=K_1,\\
+I_2\dot\Omega_2+(I_1-I_3)\Omega_1\Omega_3&=K_2,\\
+I_3\dot\Omega_3+(I_2-I_1)\Omega_1\Omega_2&=K_3 .
+\end{aligned}}
+\]
+
+\step{怎么读这三行（含一个检查）}
+每一行是「$I_i\dot\Omega_i$ $+$ 另外两个分量的乘积乘上惯量差 $=$ 外力矩投影」。检查办法：把三个式子循环置换 $1\to2\to3\to1$，应该互相变过去。逐行看：第一行的惯量差是 $I_3-I_2$、乘 $\Omega_2\Omega_3$；把下标 $1\to2\to3\to1$ 轮换，得 $I_2\dot\Omega_2+(I_1-I_3)\Omega_3\Omega_1$，正是第二行 $\checkmark$。
+
+\aside{若 $I_1=I_2=I_3$（球陀螺），三个惯量差全为零，方程退化成 $I\dot\Omega_i=K_i$，即 $\dot{\vect{\Omega}}=\vect K/I$——这与 \S7.2 的「$\vect{\Omega}$ 为常矢量」一致（自由时 $\vect K=0$）。}
+
+\subhdr{7.5 欧拉运动学方程（p8 下半）}
+
+欧拉方程左边是 $I_i\dot\Omega_i$，右边是 $K_i$，都是本体分量；但真正想求的是姿态（$\varphi,\theta,\psi$）。p8 直接给出两者之间的关系：
+
+\[
+\boxed{
+\begin{aligned}
+\Omega_1&=\dot\varphi\sin\psi\sin\theta+\dot\theta\cos\psi,\\
+\Omega_2&=\dot\varphi\cos\psi\sin\theta-\dot\theta\sin\psi,\\
+\Omega_3&=\dot\varphi\cos\theta+\dot\psi .
+\end{aligned}}
+\]
+
+\aside{这三行来自 P1 p13--p14 的欧拉角构造：$\dot\varphi$ 沿固定轴 $\vect n_3$、$\dot\theta$ 沿线节 $\vect n_\xi$、$\dot\psi$ 沿本体轴 $\vect a_3$，把它们投影到 $\vect a_{1,2,3}$ 上即得。P1 讲义已逐行推导，这里只把它当已给的「运动学字典」。}
+
+\warnbox{\textbf{欧拉角的适用范围与奇点。}P1 \S6 已经指出：$\theta=0$ 或 $\theta=\pi$ 时线节 $\vect n_\xi$ 不存在，欧拉角不唯一（万向节死锁）。p8 的三行在 $\theta=0$ 处也退化：前两行都只含 $\dot\psi$ 与 $\dot\theta$ 的组合。用它们做数值积分时，靠近 $\theta=0$ 要特别小心。P3 后面的例题（物理摆、重陀螺）都不在奇点附近，所以不受影响。}
+
+%=====================================================================
+\hdr{§8}{对称陀螺的自由旋转：$\theta$ 不变、进动与章动}
+
+\subhdr{8.1 设定与 $\vect{\Omega}$ 的分解（p5 上半）}
+
+对称陀螺 $I_1=I_2\equiv I_1$、$I_3\neq I_1$。由 \S4.1，
+
+\[
+I=I_1\hat1+(I_3-I_1)\vect a_3\otimes\vect a_3,\qquad
+I^{-1}=\frac{1}{I_1}\hat1+\Bigl(\frac{1}{I_3}-\frac{1}{I_1}\Bigr)\vect a_3\otimes\vect a_3 .
+\]
+
+\step{验证 $I^{-1}$ 是 $I$ 的逆}
+把两式相乘，用 $\vect a_3\otimes\vect a_3$ 是投影算子（$(\vect a_3\otimes\vect a_3)^2=\vect a_3\otimes\vect a_3$）：
+
+\[
+II^{-1}=\Bigl[I_1\hat1+(I_3-I_1)P_3\Bigr]\Bigl[\frac{1}{I_1}\hat1+\Bigl(\frac{1}{I_3}-\frac{1}{I_1}\Bigr)P_3\Bigr],
+\]
+
+其中 $P_3\equiv\vect a_3\otimes\vect a_3$。展开四项，注意 $P_3^2=P_3$；$\hat1$ 与 $P_3$ 可交换：
+
+\[
+=\hat1+\Bigl[\frac{I_1}{I_3}-1+1-\frac{I_3}{I_1}+(I_3-I_1)\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)\Bigr]P_3 .
+\]
+
+方括号里：$\frac{I_1}{I_3}-\frac{I_3}{I_1}+\frac{I_3-I_1}{I_3}-\frac{I_3-I_1}{I_1}
+=\frac{I_1}{I_3}-1+1-\frac{I_3}{I_1}=\frac{I_1}{I_3}-\frac{I_3}{I_1}$？逐项重算：
+
+\[
+(I_3-I_1)\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)=\frac{I_3-I_1}{I_3}-\frac{I_3-I_1}{I_1}
+=1-\frac{I_1}{I_3}-\frac{I_3}{I_1}+1 .
+\]
+
+于是方括号 $=\bigl[\frac{I_1}{I_3}-1+1-\frac{I_3}{I_1}+2-\frac{I_1}{I_3}-\frac{I_3}{I_1}\bigr]$——这个算法容易乱，改用「在两组基上验证」更省事：
+
+\step{验证（更省事的办法）}
+$I^{-1}$ 与 $I$ 都是「沿 $\vect a_3$ 一个系数、垂直 $\vect a_3$ 一个系数」的形状，所以只需验证两个特征方向：
+沿 $\vect a_3$：$I\vect a_3=I_3\vect a_3$，$I^{-1}\vect a_3=\bigl[\frac1{I_1}+(\frac1{I_3}-\frac1{I_1})\bigr]\vect a_3=\frac1{I_3}\vect a_3$，乘积为 $\vect a_3$ $\checkmark$；
+沿垂直方向 $\vect e\perp\vect a_3$：$I\vect e=I_1\vect e$，$I^{-1}\vect e=\frac1{I_1}\vect e$，乘积为 $\vect e$ $\checkmark$。
+两个特征方向都给出恒等，故 $II^{-1}=\hat1$。
+
+\step{自由旋转时的 $\vect{\Omega}$}
+自由旋转 $\vect M_s=\text{const}$，取 $\vect M_s=M\vect n_3$（$M=|\vect M_s|$，$\vect n_3$ 是空间固定方向）。代入
+
+\[
+\vect{\Omega}=I^{-1}M\vect n_3=\frac{M}{I_1}\vect n_3+M\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)(\vect a_3\cdot\vect n_3)\vect a_3 .
+\]
+
+记 $\theta$ 为 $\vect a_3$ 与 $\vect n_3$ 的夹角，$\vect a_3\cdot\vect n_3=\cos\theta$，得 p5 的式子：
+
+\[
+\boxed{\ \vect{\Omega}=\frac{M}{I_1}\vect n_3+M\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)\cos\theta\,\vect a_3\ }
+\]
+
+\subhdr{8.2 $\theta$ 为什么不变（p5 右栏第一行）}
+
+p5 用欧拉角分解 $\vect{\Omega}=\dot\varphi\vect n_3+\dot\theta\vect n_\xi+\dot\psi\vect a_3$，然后写
+
+\[
+\dot\theta=\vect{\Omega}\cdot\vect n_\xi=\vect{\Omega}\cdot\frac{\vect n_3\times\vect a_3}{|\vect n_3\times\vect a_3|}=0 .
+\]
+
+\step{为什么最后一个等号成立}
+由 \S8.1，$\vect{\Omega}$ 是 $\vect n_3$ 与 $\vect a_3$ 的线性组合：
+
+\[
+\vect{\Omega}=\alpha\vect n_3+\beta\vect a_3,\qquad \alpha=\frac{M}{I_1},\quad \beta=M\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)\cos\theta .
+\]
+
+它与 $\vect n_3\times\vect a_3$ 的点乘为零（因为 $\vect n_3\times\vect a_3$ 同时垂直于 $\vect n_3$ 与 $\vect a_3$）：$\vect n_3\cdot(\vect n_3\times\vect a_3)=0$，$\vect a_3\cdot(\vect n_3\times\vect a_3)=0$。所以 $\dot\theta=0$。
+
+\aside{这个论证值得记住：\textbf{$\vect{\Omega}$ 落在 $\vect n_3$ 与 $\vect a_3$ 张成的平面内}，平面内的矢量没有垂直于平面的分量，所以 $\dot\theta=0$。三步：（1） $\vect{\Omega}$ 是 $\vect n_3,\vect a_3$ 的组合（\S8.1）；（2） $\vect n_\xi\perp$ 这两者；（3） 故 $\vect{\Omega}\cdot\vect n_\xi=0$。}
+
+\subhdr{8.3 进动（p6 下半）}
+
+$\theta$ 不变意味着 $\vect a_3$ 与 $\vect n_3$ 的夹角固定。p6 接着求 $\vect a_3$ 怎么动：
+
+\[
+\dot{\vect a}_3=\vect{\Omega}\times\vect a_3
+=\Bigl(\frac{M}{I_1}\vect n_3+\beta\vect a_3\Bigr)\times\vect a_3
+=\frac{M}{I_1}\vect n_3\times\vect a_3
+\equiv\Omega_{\text{pr}}\,\vect n_3\times\vect a_3 .
+\]
+
+$\beta\vect a_3\times\vect a_3=0$，所以只有 $\vect n_3$ 那一项贡献。于是
+
+\[
+\boxed{\ \Omega_{\text{pr}}=\frac{M}{I_1}\ }
+\]
+
+——这就是\textbf{进动角速度}：$\vect a_3$ 绕 $\vect n_3$ 以恒定角速度 $\Omega_{\text{pr}}$ 转。
+
+\step{解出来}
+$\dot{\vect a}_3=\Omega_{\text{pr}}\,\vect n_3\times\vect a_3$ 与 \S7.1 的 $\dot{\vect a}=\vect{\Omega}\times\vect a$ 同型，直接套 $S$：
+
+\[
+\vect a_3(t)=S(\Omega_{\text{pr}}t;\vect n_3)\,\vect a_3(0).
+\]
+
+取 $\vect n_1$ 垂直于 $\vect n_3$ 且与 $\vect a_3(0)$ 共面，则 $\vect a_3(0)=\vect n_1\sin\theta+\vect n_3\cos\theta$。于是
+
+\[
+\vect a_3(t)=\vect n_\rho(t)\sin\theta+\vect n_3\cos\theta,\qquad
+\vect n_\rho(t)=S(\Omega_{\text{pr}}t;\vect n_3)\vect n_1=\vect n_1\cos\Omega_{\text{pr}}t+\vect n_2\sin\Omega_{\text{pr}}t .
+\]
+
+\warnbox{\textbf{p6 的 $\vect n_\rho(t)$ 写错了一项。}课件写
+$\vect n_\rho(t)=\vect n_1\cos\Omega_{\text{pr}}t+\vect n_3\sin\Omega_{\text{pr}}t$，
+但 $S(\Omega_{\text{pr}}t;\vect n_3)$ 把 $\vect n_1$ 转到 $\vect n_2$ 方向：由 $S$ 的定义，$(\hat1-\vect n_3\otimes\vect n_3)\vect n_1=\vect n_1$，$\vect n_3^\times\vect n_1=\vect n_2$，故第二项是 $\vect n_2$。用错版本会得到
+$|\vect a_3|^2=\sin^2\theta+\cos^2\theta+2\sin\theta\cos\theta\sin\Omega_{\text{pr}}t=1+\sin2\theta\sin\Omega_{\text{pr}}t\neq1$，
+即 $\vect a_3$ 不再是单位矢量；而且 $\vect a_3\cdot\vect n_3=\cos\theta+\sin\theta\sin\Omega_{\text{pr}}t$ 也不再是常数 $\cos\theta$，与 \S8.2 的「$\theta$ 不变」自相矛盾。正确版本下 $\vect n_\rho$ 在垂直于 $\vect n_3$ 的平面内、长度为 $1$，两项都成立。}
+
+\subhdr{8.4 $|\vect{\Omega}|$ 守恒（p6 上半）}
+
+p6 写 $\dot{\vect{\Omega}}=M(\frac1{I_3}-\frac1{I_1})\cos\theta\,\vect{\Omega}\times\vect a_3$，然后
+
+\[
+\frac{\dd|\vect{\Omega}|^2}{\dd t}=2\vect{\Omega}\cdot\dot{\vect{\Omega}}=2\vect{\Omega}\cdot\bigl(\cdots\vect{\Omega}\times\vect a_3\bigr)=0 .
+\]
+
+\step{为什么点乘为零}
+$\vect{\Omega}\cdot(\vect{\Omega}\times\vect a_3)=0$：一个矢量与「它自己的叉乘」正交。所以 $|\vect{\Omega}|$ 是运动常数。
+
+\subhdr{8.5 p5 两处守恒量的正确形式}
+
+p5 右栏还写了两行 "Constancy of $\vect{\Omega}\cdot\vect n_3$: $\vect{\Omega}\cdot\vect n_3=M/I_1$" 与 "Constancy of $\vect{\Omega}\cdot\vect a_3$: $\vect{\Omega}\cdot\vect a_3=M(1/I_3-1/I_1)\cos\theta$"。这两行把「$\vect{\Omega}$ 的两个分量」当成了两个点积，漏掉了另一个分量与基矢的点乘。正确的算法：
+
+\step{把 \S8.1 的 $\vect{\Omega}$ 分别点乘}
+\[
+\vect{\Omega}\cdot\vect n_3=\frac{M}{I_1}+M\Bigl(\frac1{I_3}-\frac1{I_1}\Bigr)\cos^2\theta,
+\qquad
+\vect{\Omega}\cdot\vect a_3=\frac{M\cos\theta}{I_3}.
+\]
+
+\step{验证第二式}
+$\vect{\Omega}\cdot\vect a_3=\frac{M}{I_1}(\vect n_3\cdot\vect a_3)+M(\frac1{I_3}-\frac1{I_1})\cos\theta(\vect a_3\cdot\vect a_3)
+=\frac{M\cos\theta}{I_1}+M(\frac1{I_3}-\frac1{I_1})\cos\theta=\frac{M\cos\theta}{I_3}$ $\checkmark$。
+
+\step{验证第一式}
+$\vect{\Omega}\cdot\vect n_3=\frac{M}{I_1}+M(\frac1{I_3}-\frac1{I_1})\cos\theta(\vect a_3\cdot\vect n_3)=\frac{M}{I_1}+M(\frac1{I_3}-\frac1{I_1})\cos^2\theta$ $\checkmark$。
+
+\warnbox{两式的物理意义仍然成立（都是常数），但\textbf{数值不是课件写的那个}。课件的两个式子在 $\theta=\pi/2$（$\vect a_3\perp\vect n_3$）时恰好与正确值一致：此时 $\cos\theta=0$，正确式退化为 $\vect{\Omega}\cdot\vect n_3=M/I_1$、$\vect{\Omega}\cdot\vect a_3=0$，与课件相同；$\theta$ 取其它值时两套写法不同，$\theta=0$ 时差得最明显（正确值 $M/I_3$，课件写 $M/I_1$）。凡 $\theta\neq\pi/2$ 的题目，必须用上面两式。}
+
+%=====================================================================
+\hdr{§9}{拉格朗日方程：从「六个坐标」回到欧拉方程}
+
+\subhdr{9.1 六个广义坐标（p9 上半）}
+
+刚体有六个自由度（P1 p4）。p9 取
+
+\[
+q_1=X_1,\ q_2=X_2,\ q_3=X_3,\qquad q_4=\varphi,\ q_5=\theta,\ q_6=\psi,
+\]
+
+即质心的三个坐标加三个欧拉角。动能（由 \S1.2 的分解，$O$ 取在质心）：
+
+\[
+T=\frac{\mu V^2}{2}+\frac12\vect{\Omega}\cdot I\vect{\Omega}
+=\frac{\mu}{2}\bigl(\dot X_1^2+\dot X_2^2+\dot X_3^2\bigr)
++\frac12\bigl(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2\bigr),
+\]
+
+其中 $V=\dot X_k\vect n_k$，$\vect{\Omega}=\Omega_k\vect a_k$，而 $\Omega_k$ 由 \S7.5 的三行给出。
+
+\step{拉格朗日量与方程}
+\[
+L=T-U=\frac{\mu}{2}\bigl(\dot X_1^2+\dot X_2^2+\dot X_3^2\bigr)
++\frac12\bigl(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2\bigr)-U(X_1,X_2,X_3,\varphi,\theta,\psi),
+\]
+
+\[
+\frac{\dd}{\dd t}\frac{\partial L}{\partial\dot q_s}-\frac{\partial L}{\partial q_s}=0,\qquad s=1,\dots,6 .
+\]
+
+p9 说方程分成两组：平动（$s=1,2,3$）与转动（$s=4,5,6$）。平动那组直接给出
+
+\[
+\frac{\dd}{\dd t}(\mu\dot X_k)=-\frac{\partial U}{\partial X_k}=F_k,
+\]
+
+因为 $T$ 的转动部分不含 $\dot X_k$、$U$ 的平动部分只通过 $X_k$ 出现。转动那组才是重点。
+
+\subhdr{9.2 用 $\psi$ 坐标走一遍（p10--p11）}
+
+取 $q_6=\psi$。需要 $\partial L/\partial\dot\psi$ 与 $\partial L/\partial\psi$。
+
+\step{第一步：$\dot\psi$ 只出现在 $\Omega_3$ 里}
+由 \S7.5，$\Omega_3=\dot\varphi\cos\theta+\dot\psi$，所以
+
+\[
+\frac{\partial L}{\partial\dot\psi}=I_3\Omega_3\frac{\partial\Omega_3}{\partial\dot\psi}=I_3\Omega_3 .
+\]
+
+\step{第二步：$\psi$ 出现在 $\Omega_1,\Omega_2$ 里}
+\[
+\frac{\partial L}{\partial\psi}=I_1\Omega_1\frac{\partial\Omega_1}{\partial\psi}
++I_2\Omega_2\frac{\partial\Omega_2}{\partial\psi}-\frac{\partial U}{\partial\psi}.
+\]
+
+由 \S7.5 对 $\psi$ 求偏导（$\dot\varphi,\dot\theta,\dot\psi,\theta$ 固定）：
+
+\[
+\frac{\partial\Omega_1}{\partial\psi}=\dot\varphi\cos\psi\sin\theta-\dot\theta\sin\psi=\Omega_2,
+\qquad
+\frac{\partial\Omega_2}{\partial\psi}=-\dot\varphi\sin\psi\sin\theta-\dot\theta\cos\psi=-\Omega_1 .
+\]
+
+于是
+
+\[
+\frac{\partial L}{\partial\psi}=(I_1-I_2)\Omega_1\Omega_2-\frac{\partial U}{\partial\psi}.
+\]
+
+\step{第三步：代入方程}
+\[
+I_3\dot\Omega_3-(I_1-I_2)\Omega_1\Omega_2+\frac{\partial U}{\partial\psi}=0
+\quad\Longrightarrow\quad
+I_3\dot\Omega_3+(I_2-I_1)\Omega_1\Omega_2=-\frac{\partial U}{\partial\psi}.
+\]
+
+这正是 \S7.4 欧拉方程的第三式，只要
+
+\[
+K_3=-\frac{\partial U}{\partial\psi}.
+\]
+
+\subhdr{9.3 $-\partial U/\partial\psi=K_3$ 是怎么来的（p10 下半）}
+
+p10 用虚位移证明 $-\partial U/\partial\varphi$ 是力矩在转轴上的投影。我们照它的思路做，但把它落到 $\psi$ 上（p11 的正文写 $\psi$，p10 的公式写 $\varphi$）。
+
+\step{虚位移}
+让 $\psi$ 变 $\delta\psi$，刚体绕 $\vect a_3$ 转 $\delta\psi$。第 $\alpha$ 个质点的位移
+
+\[
+\delta\vect r_\alpha=\delta\psi\,(\vect a_3\times\vect r_\alpha).
+\]
+
+\step{势能变}
+\[
+\delta U=-\sum_\alpha\vect f_\alpha\cdot\delta\vect r_\alpha
+=-\delta\psi\,\vect a_3\cdot\sum_\alpha\vect r_\alpha\times\vect f_\alpha
+=-\delta\psi\,\vect a_3\cdot\vect K .
+\]
+
+\aside{中间用了标量三重积的轮换：$\vect f\cdot(\vect a_3\times\vect r)=\vect a_3\cdot(\vect r\times\vect f)$。}
+
+\step{读出}
+\[
+\frac{\partial U}{\partial\psi}=-\vect a_3\cdot\vect K=-K_3
+\quad\Longrightarrow\quad
+-\frac{\partial U}{\partial\psi}=K_3 .
+\]
+
+\warnbox{\textbf{p10 与 p11 的记号不一致。}p10 末尾写 "$\partial U/\partial\varphi$ is a projection of the torque on the axis of rotation"，指的是\textbf{固定轴} $\vect n_3$（$\varphi$ 是绕固定轴的转角）；p11 的正文却写 "Since Euler angle $\psi$ describes the rotation about moving axis $\vect a_3$ the derivative $-\partial U/\partial\varphi$ is the projection of the torque $K_3$ on this axis"——这里把 $\varphi$ 和 $\psi$ 混了。正确说法：$-\partial U/\partial\psi=K_3$（绕本体轴 $\vect a_3$）；$-\partial U/\partial\varphi$ 是绕固定轴 $\vect n_3$ 的力矩投影。p11 最后一行写的是 $-\partial U/\partial\psi=K_3$，与正确结论一致，所以那行是对的，只有中间那句解释错了。}
+
+\subhdr{9.4 剩下两个方程靠循环置换（p11 下半）}
+
+p11 说：$\theta$、$\varphi$ 的方程分别给出「沿线节」与「沿固定 $Z$ 轴」的投影，这两组投影「不常用」；常用的是沿本体 $\vect a_1$、$\vect a_2$ 的投影，而它们可以由第三式\textbf{循环置换指标}得到。
+
+\step{为什么可以循环置换}
+欧拉方程的三行在「把 $1,2,3$ 轮换」下互相变过去（\S7.4 已检查）；而拉格朗日方程对三个欧拉角是对称的（$\varphi,\theta,\psi$ 三者在 $L$ 里以 $\Omega_k$ 的形式出现）。所以从 $\psi$ 那一行出发，轮换即得另两行：
+
+\[
+I_1\dot\Omega_1+(I_3-I_2)\Omega_2\Omega_3=K_1,\qquad
+I_2\dot\Omega_2+(I_1-I_3)\Omega_1\Omega_3=K_2 .
+\]
+
+\aside{严格说，「循环置换」给出的是「在主轴基里把 $\vect a_1\to\vect a_2\to\vect a_3$ 轮换后同形」，前提是 $I_1,I_2,I_3$ 也按同一轮换走。对不对称陀螺，这一步成立（三个惯量互不相同，没有偏好）；对对称陀螺（$I_1=I_2$），轮换 $1\leftrightarrow2$ 不改变方程形式，同样成立。}
+
+%=====================================================================
+\hdr{§10}{重对称陀螺：E8.08 的完整求积}
+
+\qbreak
+\subhdr{10.1 设定（p15）}
+
+\qbreak
+\qstem{（课件 P3 p15--p17，Exercise E8.08）\textbf{Reduce to quadratures the problem of the motion of a heavy symmetrical top whose lowest point is fixed.} 重对称陀螺，最低点 $O$ 固定，质心在轴上距 $O$ 为 $l$，重力竖直向下。}
+
+坐标取法（p15 图）：$O$ 为固定系与本体系的公共原点；$\vect g=-g\vect n_3$（$\vect n_3$ 竖直向上）；$\vect{OC}=l\vect a_3$。
+
+\step{惯量张量}
+对质心 $C$：$I=I_1(\vect a_1\otimes\vect a_1+\vect a_2\otimes\vect a_2)+I_3\vect a_3\otimes\vect a_3$。
+对固定点 $O$：用 \S5 的平行轴定理（$\vect c$ 从 $O$ 指向 $C$，$|\vect c|=l$，方向 $\vect a_3$）：
+
+\[
+I'=I+\mu\bigl(l^2\hat1-l^2\vect a_3\otimes\vect a_3\bigr)
+=I'_1(\vect a_1\otimes\vect a_1+\vect a_2\otimes\vect a_2)+I_3\vect a_3\otimes\vect a_3,
+\]
+
+\[
+I'_1=I_1+\mu l^2,\qquad I'_3=I_3 .
+\]
+
+\aside{为什么 $I'_3=I_3$：$I'$ 的 $\vect a_3\vect a_3$ 分量 $=I_3+\mu(l^2-l^2)=I_3$，因为偏移方向正是 $\vect a_3$，沿该方向的惯量不变（\S5.2 表格第一行）。}
+
+\step{势能}
+质心高度 $=l\cos\theta$（$\theta$ 是 $\vect a_3$ 与 $\vect n_3$ 的夹角），
+
+\[
+U=mgl\cos\theta .
+\]
+
+\subhdr{10.2 动能与拉格朗日量（p16 上半）}
+
+以 $O$ 为基点，$T=\frac12\vect{\Omega}\cdot I'\vect{\Omega}$（$O$ 固定，$\vect V=0$）：
+
+\[
+T=\frac{I'_1}{2}(\Omega_1^2+\Omega_2^2)+\frac{I_3}{2}\Omega_3^2 .
+\]
+
+代入 \S7.5 的欧拉角表达式。注意 $\Omega_1^2+\Omega_2^2=\dot\varphi^2\sin^2\theta+\dot\theta^2$（这是 \S7.5 前两行的平方和，$\cos^2\psi+\sin^2\psi=1$），于是
+
+\[
+\boxed{\ L=\frac{I'_1}{2}\bigl(\dot\varphi^2\sin^2\theta+\dot\theta^2\bigr)
++\frac{I_3}{2}\bigl(\dot\varphi\cos\theta+\dot\psi\bigr)^2-mgl\cos\theta\ }
+\]
+
+\subhdr{10.3 两个循环积分与能量积分（p16 下半）}
+
+$\varphi$ 与 $\psi$ 都不出现在 $L$ 里（只以 $\dot\varphi,\dot\psi$ 出现），所以是两个循环坐标：
+
+\[
+\frac{\partial L}{\partial\dot\varphi}=I'_1\sin^2\theta\,\dot\varphi+I_3\cos\theta(\dot\varphi\cos\theta+\dot\psi)=M_3=\text{const},
+\]
+
+\[
+\frac{\partial L}{\partial\dot\psi}=I_3(\dot\varphi\cos\theta+\dot\psi)=M'_3=\text{const}.
+\]
+
+\aside{$M_3$ 是与 $\varphi$ 共轭的动量，物理上是总角动量在\textbf{固定竖直轴} $\vect n_3$ 上的投影；$M'_3$ 是内禀角动量在\textbf{本体轴} $\vect a_3$ 上的投影。两个都是运动常数，名字相近但轴不同。}
+
+\step{能量}
+$L$ 不显含时间、约束不显含时间，所以 $E=T+U$ 守恒：
+
+\[
+E=\frac{I'_1}{2}\bigl(\dot\varphi^2\sin^2\theta+\dot\theta^2\bigr)
++\frac{I_3}{2}\bigl(\dot\varphi\cos\theta+\dot\psi\bigr)^2+mgl\cos\theta .
+\]
+
+\step{解出 $\dot\varphi$ 与 $\dot\psi$}
+由 $M'_3=I_3\Omega_3$ 得 $\Omega_3=M'_3/I_3$，即 $\dot\varphi\cos\theta+\dot\psi=M'_3/I_3$。代入 $M_3$：
+
+\[
+M_3=I'_1\sin^2\theta\,\dot\varphi+M'_3\cos\theta
+\quad\Longrightarrow\quad
+\boxed{\ \dot\varphi=\frac{M_3-M'_3\cos\theta}{I'_1\sin^2\theta}\ }
+\]
+
+\[
+\boxed{\ \dot\psi=\frac{M'_3}{I_3}-\cos\theta\,\frac{M_3-M'_3\cos\theta}{I'_1\sin^2\theta}\ }
+\]
+
+\subhdr{10.4 有效势（p16 末）}
+
+把 $\dot\varphi$ 代回能量式。$\dot\theta^2$ 项留着，其余归入有效势：
+
+\[
+\frac{I'_1\dot\theta^2}{2}+U_{\text{eff}}(\theta)=E',
+\]
+
+\[
+\boxed{\ U_{\text{eff}}(\theta)=\frac{(M_3-M'_3\cos\theta)^2}{2I'_1\sin^2\theta}-mgl(1-\cos\theta),
+\qquad E'=E-\frac{M'_3{}^2}{2I_3}-mgl\ }
+\]
+
+\step{核对：把 $\dot\varphi$ 代回能量式}
+\[
+E=\frac{I'_1\dot\theta^2}{2}+\frac{I'_1}{2}\sin^2\theta\cdot\frac{(M_3-M'_3\cos\theta)^2}{I'_1{}^2\sin^4\theta}
++\frac{M'_3{}^2}{2I_3}+mgl\cos\theta
+\]
+
+\[
+=\frac{I'_1\dot\theta^2}{2}+\frac{(M_3-M'_3\cos\theta)^2}{2I'_1\sin^2\theta}+\frac{M'_3{}^2}{2I_3}+mgl\cos\theta .
+\]
+
+移项：
+
+\[
+E-\frac{M'_3{}^2}{2I_3}-mgl=\frac{I'_1\dot\theta^2}{2}+\frac{(M_3-M'_3\cos\theta)^2}{2I'_1\sin^2\theta}-mgl(1-\cos\theta)
+\]
+
+右边正是 $\frac{I'_1\dot\theta^2}{2}+U_{\text{eff}}$，左边是 $E'$ $\checkmark$。
+
+\subhdr{10.5 求积与章动（p17）}
+
+\step{$\theta$ 的求积}
+由 $\dfrac{I'_1\dot\theta^2}{2}=E'-U_{\text{eff}}$，
+
+\[
+\boxed{\ t=\int\frac{\dd\theta}{\sqrt{\frac{2}{I'_1}\bigl(E'-U_{\text{eff}}(\theta)\bigr)}}+C\ }
+\]
+
+积分出来是 $t=t(\theta)$，反解得 $\theta=\theta(t)$。把它代回 $\dot\varphi$、$\dot\psi$ 的表达式再积分，得 $\varphi(t)$、$\psi(t)$。
+
+\step{实解的条件与章动区间}
+需要 $E'-U_{\text{eff}}(\theta)\ge0$。p17 说 $\lim_{\theta\to0^+}U_{\text{eff}}=+\infty$、$\lim_{\theta\to\pi^-}U_{\text{eff}}=+\infty$，所以允许区间是 $[\theta_1,\theta_2]$，$0<\theta_1\le\theta\le\theta_2<\pi$，$\theta_{1,2}$ 是 $U_{\text{eff}}(\theta)=E'$ 的根。
+
+\warnbox{\textbf{「$\theta\to0$ 时 $U_{\text{eff}}\to+\infty$」有前提。}分子是 $(M_3-M'_3\cos\theta)^2$，分母是 $\sin^2\theta$。当 $\theta\to0$ 时 $\cos\theta\to1$，分子 $\to(M_3-M'_3)^2$。若 $M_3\neq M'_3$，发散成立；若 $M_3=M'_3$（即 $\dot\varphi$ 在 $\theta\to0$ 时保持有限的那个特殊初值），分子与分母同阶，$U_{\text{eff}}$ 有有限极限。后者对应「陀螺轴线正好竖直向上、且不晃动」的平凡解。p17 的断言默认了 $M_3\neq M'_3$。}
+
+\step{三种运动形态（p17 下半）}
+\begin{itemize}
+\item 若 $0<\dot\varphi(\theta_1)<\dot\varphi(\theta_2)$：$\varphi$ 单调增，$\vect a_3$ 端点在单位球上画出\textbf{波浪线}（无环）。
+\item 若 $\dot\varphi(\theta_1)<0<\dot\varphi(\theta_2)$：$\vect a_3$ 端点画出\textbf{带环的轨迹}（loop）。
+\item 中间情形：$\dot\varphi$ 在端点处为零，轨迹出现\textbf{尖点}（cusp）。
+\end{itemize}
+
+\aside{这三种形态由 $\dot\varphi(\theta_{1,2})$ 的符号决定，而 $\dot\varphi$ 的分子 $M_3-M'_3\cos\theta$ 在 $[\theta_1,\theta_2]$ 上是 $\cos\theta$ 的线性函数——所以「变号与否」只取决于 $M_3/M'_3$ 与 $\cos\theta_{1,2}$ 的相对大小。p17 的图（若有）画的就是这三种。}
+
+%=====================================================================
+\hdr{§11}{物理摆：E8.07}
+
+\qbreak
+\subhdr{11.1 题干与设定（p14）}
+
+\qbreak
+\qstem{（课件 P3 p14，Exercise E8.07）\textbf{Find the frequency of small oscillations of a physical pendulum.} 刚体绕一根固定水平轴摆动，质心到轴的距离为 $l$，$\vect{OC}=l\vect n'_1$，转轴 $\vect n_3=\vect n'_3$。}
+
+\step{自由度与坐标}
+刚体只有一个自由度：绕固定轴转的角度 $\varphi$。速度场是 $\vect{\Omega}=\dot\varphi\vect n_3$。
+
+\step{动能}
+用对固定点 $O$ 的惯量张量：$T=\frac12\vect{\Omega}\cdot I'\vect{\Omega}=\frac12 I'_{33}\dot\varphi^2$。
+
+\aside{$I'_{33}=\vect n_3\cdot I'\vect n_3$ 是绕\textbf{固定转轴}的转动惯量。若物体绕轴 $n_3$ 转，只有这个分量进入动能；$I'_{11},I'_{22}$ 不出现。这与 \S10.2 的 $I'_1(\Omega_1^2+\Omega_2^2)$ 不同：那里 $\Omega$ 有三个分量，这里只有一个。}
+
+\step{势能}
+质心高度 $-l\cos\varphi$（取 $O$ 为原点、$\vect g=g\vect n_1$ 方向向下），
+
+\[
+U=-mgl\cos\varphi .
+\]
+
+\step{拉格朗日量}
+\[
+L=T-U=\frac{I'_{33}}{2}\dot\varphi^2+mgl\cos\varphi .
+\]
+
+\step{运动方程}
+\[
+\frac{\dd}{\dd t}\frac{\partial L}{\partial\dot\varphi}-\frac{\partial L}{\partial\varphi}=I'_{33}\ddot\varphi+mgl\sin\varphi=0 .
+\]
+
+\step{小振动}
+$|\varphi|\ll1$ 时 $\sin\varphi\approx\varphi$：
+
+\[
+I'_{33}\ddot\varphi+mgl\varphi=0
+\quad\Longrightarrow\quad
+\boxed{\ \omega^2_{\text{osc}}=\frac{mgl}{I'_{33}}\ }
+\]
+
+\subhdr{11.2 和「单摆」的关系}
+
+单摆是 $I'_{33}=ml^2$ 的特例，代入得 $\omega^2=g/l$ $\checkmark$。物理摆的 $I'_{33}$ 比 $ml^2$ 大（质量不集中在质心），所以\textbf{同长度下摆得更慢}。
+
+\step{$I'_{33}$ 怎么算}
+由 \S5 的平行轴定理，$I'_{33}=I_{33}+m(l^2-\text{沿轴分量}^2)$。若 $\vect{OC}$ 垂直于转轴（课件的情形：$\vect{OC}=l\vect n'_1$，转轴 $\vect n'_3$，两者垂直），则
+
+\[
+I'_{33}=I_{33}+ml^2 .
+\]
+
+\aside{注意这里 $I_{33}$ 是中心惯量张量的第三分量，$I'_{33}$ 是对固定点的。两者差 $ml^2$。p14 的 $\omega^2=mgl/I'_{33}$ 用的是哪一个，取决于题目给的是「绕轴的惯量」还是「中心惯量」——题干若给 $I'_{33}$ 就直接用，若给 $I_{33}$ 要先加 $ml^2$。}
+
+%=====================================================================
+% 片段 4：§12–§17 与附录（作业详解）
+%=====================================================================
+
+%=====================================================================
+\hdr{§12}{作业题面（先做后看）}
+
+本工作区的默认口径是「先做后看」：题面在这里，详解在附录 A。每道题的题干下写了「详解见附录第几页」，页码是自动解析的（编译两遍后稳定）。
+
+\qbreak
+\subhdr{12.1 P2 p16 的三道题}
+
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.04）\textbf{HW8.04} Express the moment of inertia $I_n$ about an axis parallel to the unit vector $\vect n$ and passing through the center of mass of the body in terms of the components of the inertia tensor.}
+
+\noindent\textbf{考点}：绕任意轴的标量惯量与张量分量的关系（\S3.3）。\quad\textbf{详解见附录第 \pageref{app:hw804} 页。}
+
+\bigskip
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.05）\textbf{HW8.05} Determine the principal moments of inertia for a triatomic molecule which is an isosceles triangle (see figure). 底边两端各一个质量 $m_1$、顶点一个质量 $m_2$；底边长 $a$，高 $h$；$x_3$ 沿对称轴，$x_1$ 沿底边。}
+
+\noindent\textbf{考点}：平面构型的主惯量；法向轴与面内轴的关系（\S4.4 的垂直轴定理）。\quad\textbf{详解见附录第 \pageref{app:hw805} 页。}
+
+\bigskip
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.06）\textbf{HW8.06} Determine the principal moments of inertia for a homogeneous circular cone of height $H$ and radius $R$.}
+
+\noindent\textbf{考点}：三重积分 + 质心位置 + 平行轴定理（\S5、\S6.4 的同型计算）。\quad\textbf{详解见附录第 \pageref{app:hw806} 页。}
+
+\qbreak
+\subhdr{12.2 P3 p18 的两道题}
+
+\qbreak
+\qstem{（课件 P3 p18，Task HW8.07）\textbf{HW8.07} A thin channel is drilled along the generatrix of a homogeneous circular cone of mass $M$, whose axis is vertical and vertex is pointing upward. The cone is given an initial angular velocity $\Omega_0$ about its axis, and simultaneously, a small ball of mass $m$ is dropped into the top opening of the channel without any initial velocity relative to the cone. What will be the angular velocity of the cone at the moment the ball exits the channel?}
+
+\noindent\textbf{考点}：绕固定轴的角动量守恒 + 变转动惯量（\S7.3 的角动量定理）。\quad\textbf{详解见附录第 \pageref{app:hw807} 页。}
+
+\bigskip
+\qbreak
+\qstem{（课件 P3 p18，Task HW8.08）\textbf{HW8.08} A symmetric top rotates about a fixed point that coincides with its center of mass. It is subjected to resistance forces from the surrounding medium, the moment of which about this point is $\vect K=-\mu\vect{\Omega}$, where $\mu=\text{const}>0$ and $\vect{\Omega}$ is the angular velocity of the body. According to what law does the angular velocity of the body change?\\
+Hint 1: use dynamic Euler equations. Hint 2: to integrate the system, introduce a complex variable $\xi=\Omega_1+i\Omega_2$.}
+
+\noindent\textbf{考点}：欧拉方程 + 复变量（\S7.4）。\quad\textbf{详解见附录第 \pageref{app:hw808} 页。}
+
+%=====================================================================
+\hdr{§13}{易错点（每条都指回某页某步）}
+
+\begin{enumerate}
+\item \textbf{把 $I$ 当成标量。}P2 p5 的 $I$ 是 $3\times3$ 张量，$\vect M_s=I\vect{\Omega}$ 里 $\vect M_s$ 与 $\vect{\Omega}$ 一般\textbf{不平行}（\S2.2）。只有沿主轴时才平行（\S3.2）。
+\item \textbf{原点乱换。}$I$ 的定义依赖原点；对质心的 $I$ 与对 $O'$ 的 $I'$ 差 $\mu(c^2\hat1-\vect c\otimes\vect c)$（\S5）。P3 p14 的 $I'_{33}$ 与中心惯量 $I_{33}$ 差 $ml^2$（\S11.2）。
+\item \textbf{把 $\vect r^\times$ 的符号搞反。}$-\vect r^\times\vect r^\times=r^2\hat1-\vect r\otimes\vect r$（\S2.2）。漏掉负号会把惯量张量的符号整体翻过来。
+\item \textbf{平行轴定理里 $\vect c$ 的方向。}$\vect c$ 是「从新原点到质心」，不是「从质心到新原点」。两者差一个负号，而 $c^2\hat1-\vect c\otimes\vect c$ 对 $\vect c$ 是偶的——所以这个错误只在\textbf{交叉项}上显形（\S5.2）。
+\item \textbf{把「对称面」当成「平面薄板」。}有对称面只推出「法向是主轴」，推不出 $I_1+I_2=I_3$（\S4.4）。
+\item \textbf{$I_3=0$ 时乱求逆。}转子的 $I$ 不可逆，$I^{-1}$ 是伪逆，$\Omega_3$ 是规范自由度（\S7.2）。
+\item \textbf{把 $\dot{\vect M}=\vect K$ 当成无条件成立。}它要求内力矩为零（中心力或理想约束）；非中心力的质点系不满足（\S7.3）。
+\item \textbf{把 $\vect a_k$ 当常矢量。}$\dot{\vect M}=\dot M_k\vect a_k+M_k\dot{\vect a}_k$，第二项给出欧拉方程的惯性项（\S7.4）。漏掉它就是「不会转的刚体」。
+\item \textbf{抄错 p5 的两个点积。}$\vect{\Omega}\cdot\vect n_3$ 与 $\vect{\Omega}\cdot\vect a_3$ 的正确值见 \S8.5；照抄 p5 会漏掉 $\cos^2\theta$ 项。
+\item \textbf{抄错 p6 的 $\vect n_\rho(t)$。}第二项是 $\vect n_2$，不是 $\vect n_3$（\S8.3）；用错版本 $\vect a_3$ 不是单位矢量。
+\item \textbf{把 $M_3$ 与 $M'_3$ 当一个量。}$M_3$ 沿固定轴 $\vect n_3$、$M'_3$ 沿本体轴 $\vect a_3$（\S10.3）。重陀螺的整个求积都靠这个区分。
+\item \textbf{「$U_{\text{eff}}\to\infty$」无条件用。}只有 $M_3\neq M'_3$ 时成立（\S10.5）；$M_3=M'_3$ 对应竖直不晃的平凡解。
+\item \textbf{物理摆的 $I'$ 与 $I$ 混用。}$\omega^2=mgl/I'_{33}$ 里的 $I'_{33}$ 是对\textbf{固定轴}的（\S11.2）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§14}{缺口清单（逐条：页码 + 原文短语 + 补了什么）}
+
+\gapitem{机制缺口}{P2 p5 的「$I=\sum m(r^2\hat1-r\otimes r)=\sum m(-r^\times r^\times)$」一行给出，$\vect r^\times\vect r^\times$ 与 $r^2\hat1-\vect r\otimes\vect r$ 的等价性没有推导。补法：用 $\vect r^{\times}\vect r^{\times}\vect b=-\vect r\times(\vect r\times\vect b)$ 展开（\S2.2）。}
+
+\gapitem{机制缺口}{P2 p9 的平行轴定理中间一行把第三项写成 $-\mu(2(\vect r_c\!\cdot\!\vect c)\hat1-\vect r_c\otimes\vect c-\vect c\otimes\vect r_c)$，正确的符号是 $+$。补法：由 $(\vect r+\vect c)^2$ 展开逐项对照（\S5.2），并说明因为 $\vect r_c=0$ 所以结论不变。}
+
+\gapitem{代数跳步}{P2 p7 的 $I_1+I_2\ge I_3$ 只配了一行「$\sum m(x_1^2+x_2^2+2x_3^2)\ge\sum m(x_1^2+x_2^2)$」，没有写出左边 $=I_1+I_2$、右边 $=I_3$。补法：两式相减得 $2\int x_3^2\dd V$（\S3.4）。}
+
+\gapitem{压缩缺口}{P2 p8 的「Plane of symmetry」一栏把三条结论并列，其中 $I_1+I_2=I_3$ 只在平面薄板时成立，却被写得像对称面的推论。补法：分开陈述，并给长方体反例（\S4.4）。}
+
+\gapitem{平凡解缺口}{P3 p4 的转子里 $I_3=0$，$I$ 不可逆，p4 仍写 $I^{-1}$。补法：说明这是伪逆，$\Omega_3$ 是规范自由度（\S7.2）。}
+
+\gapitem{自造缺口}{P3 p5 写「$\vect{\Omega}\cdot\vect n_3=M/I_1$」，漏掉 $M(1/I_3-1/I_1)\cos^2\theta$；同页「$\vect{\Omega}\cdot\vect a_3=M(1/I_3-1/I_1)\cos\theta$」漏掉 $M\cos\theta/I_1$。补法：把 \S8.1 的 $\vect{\Omega}$ 分别点乘两个基矢（\S8.5）。}
+
+\gapitem{自造缺口}{P3 p6 的 $\vect n_\rho(t)=\vect n_1\cos\Omega_{\text{pr}}t+\vect n_3\sin\Omega_{\text{pr}}t$，第二项应为 $\vect n_2$。补法：用 $S$ 算 $S(\Omega t;\vect n_3)\vect n_1$，并用 $|\vect a_3|=1$ 与「$\theta$ 恒定」两条独立检查（\S8.3）。}
+
+\gapitem{拼接缺口}{P3 p10 与 p11 对 $-\partial U/\partial\varphi$ 与 $-\partial U/\partial\psi$ 的使用不一致：p10 的虚位移是对固定轴 $\vect n_3$ 转，p11 却把同一句话套到本体轴 $\vect a_3$ 上。补法：分别给出 $-\partial U/\partial\varphi=K\cdot\vect n_3$ 与 $-\partial U/\partial\psi=K_3$（\S9.3）。}
+
+\gapitem{适用区间}{P3 p17 断言 $\lim_{\theta\to0}U_{\text{eff}}=+\infty$，实际要求 $M_3\neq M'_3$。补法：指出 $M_3=M'_3$ 时分子与分母同阶、极限有限（\S10.5）。}
+
+\gapitem{边界缺口}{P2 p13 的 $\mu$ 一处当「总质量」用（$z_c=\mu^{-1}\sum m_\alpha z_\alpha$）、一处写成「$\mu=\sum_\alpha m_\alpha z_\alpha$」（质量矩），且最终公式里的 $\mu$ 是总质量。补法：统一记总质量为 $M$，并给出的双重和除以 $2M$（\S6.3）。}
+
+\gapitem{记号冲突}{P2 p11 的 $I'$ 是「绕瞬时轴的标量惯量」，与 P2 p9 的「对非质心点的张量 $I'$」同名不同物。补法：在 \S6.1 明确区分，并给出两者的换算 $I'=I_\Omega+\mu\rho^2$。}
+
+\gapitem{排版笔误}{P2 p12 的 $I_3$ 公式里写 $(y_\alpha-z_c)^2$，应为 $(y_\alpha-y_c)^2$；P2 p15 的球坐标写 $z=z\cos\theta$，应为 $z=r\cos\theta$。两处均不影响结论，但照抄会出错（\S6.4、\S6.5 已标注）。}
+
+%=====================================================================
+\hdr{§15}{三句话}
+
+\begin{enumerate}
+\item \textbf{惯量张量是「质量分布的二次型」}：$T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}$、$\vect M_s=I\vect{\Omega}$，一切刚体转动问题都从这两式出发；主轴基下它对角化，$I=\sum I_k\vect a_k\otimes\vect a_k$。
+\item \textbf{运动方程是「角动量定理在本体基里投影」}：$\dot{\vect M}=\vect K$ 加上「本体基随刚体转」这一条，就得到欧拉方程的三个分量式；平动与转动在质心系里解耦。
+\item \textbf{对称陀螺的整套运动由三个常数决定}：$\vect M_s$（大小与方向）、$M'_3$、$E$；$\theta$ 在 $[{\theta_1},{\theta_2}]$ 内章动，$\varphi$ 的单调性决定轨迹是波浪线、环还是尖点。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§16}{页码对照表}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{2.6cm}p{4.4cm}p{6.4cm}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义落点} \\[1pt]
+P2 p3 & 角动量分解 & \S1.1 \\[1pt]
+P2 p4 & 动能分解 & \S1.2--\S1.3 \\[1pt]
+P2 p5 & 惯量张量定义 & \S2.1--\S2.2 \\[1pt]
+P2 p6 & 矩阵、三条性质 & \S2.3--\S2.4 \\[1pt]
+P2 p7 & 主轴、主惯量、$I_1+I_2\ge I_3$ & \S3 \\[1pt]
+P2 p8 & 对称面、对称轴、三类陀螺 & \S4 \\[1pt]
+P2 p9 & 平行轴定理；Think about it & \S5 \\[1pt]
+P2 p10--p11 & 小结；$I_\Omega$ & \S6.0--\S6.1 \\[1pt]
+P2 p12 & E8.03 双原子 & \S6.2 \\[1pt]
+P2 p13 & E8.04 共线原子 & \S6.3 \\[1pt]
+P2 p14 & E8.05 圆柱 & \S6.4 \\[1pt]
+P2 p15 & E8.06 球 & \S6.5 \\[1pt]
+P2 p16 & HW8.04--HW8.06 & \S12.1；附录 A \\[2pt]
+P3 p3 & 本体标架、$S$ 算子 & \S7.1 \\[1pt]
+P3 p4 & 自由旋转三特例 & \S7.2 \\[1pt]
+P3 p5--p6 & 对称陀螺：$\theta$、进动、章动 & \S8 \\[1pt]
+P3 p7 & 动量定理、角动量定理 & \S7.3 \\[1pt]
+P3 p8 & 欧拉方程（动力学 + 运动学） & \S7.4--\S7.5 \\[1pt]
+P3 p9--p11 & 拉格朗日方程 & \S9 \\[1pt]
+P3 p12--p13 & 小结 & \S15 \\[1pt]
+P3 p14 & E8.07 物理摆 & \S11 \\[1pt]
+P3 p15--p17 & E8.08 重对称陀螺 & \S10 \\[1pt]
+P3 p18 & HW8.07--HW8.08 & \S12.2；附录 A \\
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+%=====================================================================
+\hdr{附录 A}{作业详解（HW8.04--HW8.08）}
+
+\qbreak
+\subhdr{A.1 HW8.04：绕任意轴的转动惯量}\label{app:hw804}
+
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.04）求绕\textbf{过质心}、方向为 $\vect n$ 的轴的转动惯量 $I_n$，用惯量张量的分量表示。}
+
+\subhdr{考点}
+$T_s=\frac12\vect{\Omega}\cdot I\vect{\Omega}$ 在 $\vect{\Omega}=\Omega\vect n$ 时的标量化（\S3.3）。
+
+\subhdr{关键一步}
+把 $\vect{\Omega}$ 限制为「沿 $\vect n$ 的一维转动」，动能就必须写成 $\frac12 I_n\Omega^2$ 的形式，两式对照即得 $I_n$。
+
+\subhdr{详解}
+\step{第一步：代入}
+$\vect{\Omega}=\Omega\vect n$，$\Omega=|\vect{\Omega}|$：
+
+\[
+T_s=\frac12(\Omega\vect n)\cdot I(\Omega\vect n)=\frac{\Omega^2}{2}\,(\vect n\cdot I\vect n).
+\]
+
+\step{第二步：与「一维刚体」的动能对照}
+绕固定轴的转动动能的定义式是 $T_s=\frac12 I_n\Omega^2$，逐项比较得
+
+\[
+I_n=\vect n\cdot I\vect n .
+\]
+
+\step{第三步：写成分量}
+在主轴基下 $I=\sum_k I_k\vect a_k\otimes\vect a_k$，设 $n_k\equiv\vect n\cdot\vect a_k$，则
+
+\[
+\boxed{\ I_n=I_1n_1^2+I_2n_2^2+I_3n_3^2,\qquad n_1^2+n_2^2+n_3^2=1\ }
+\]
+
+在一般（非主轴）基下：
+
+\[
+I_n=I_{jk}n_jn_k .
+\]
+
+\subhdr{答案}
+$I_n=n_jI_{jk}n_k$；主轴基下 $I_n=I_1n_1^2+I_2n_2^2+I_3n_3^2$。
+
+\subhdr{自检}
+(i) $\vect n=\vect a_1$：$I_n=I_1$ $\checkmark$。
+(ii) 球陀螺：$I_n=I(n_1^2+n_2^2+n_3^2)=I$，与方向无关 $\checkmark$。
+(iii) 平面薄板（$x_3\equiv0$，$I_3=I_1+I_2$）：取 $\vect n$ 在平面内、与 $\vect a_1$ 成 $\alpha$ 角，$I_n=I_1\cos^2\alpha+I_2\sin^2\alpha$，介于 $I_1$ 与 $I_2$ 之间——这是「惯量椭球被平面截出的椭圆」的标准参数化。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A.2 HW8.05：等腰三角形三原子分子}\label{app:hw805}
+
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.05）等腰三角形三原子分子：底边两端各一个质量 $m_1$，顶点一个质量 $m_2$；底边长 $a$、高 $h$；$x_3$ 沿对称轴（过顶点与底边中点），$x_1$ 沿底边。求三个主转动惯量。}
+
+\subhdr{考点}
+平面构型的主惯量；\S4.4 的垂直轴定理 $I_{\text{法向}}=I_{\text{面内1}}+I_{\text{面内2}}$。
+
+\subhdr{关键一步}
+先认出\textbf{三个轴都是主轴}（由两个对称面），再分别算：$x_3$ 轴只需「到轴距离」，$x_1$ 轴只需「高度」，$x_2$ 轴用垂直轴定理一步得到。
+
+\subhdr{详解}
+坐标：底边中点为原点，$x_1$ 沿底边，$x_3$ 沿对称轴。三个原子位置：
+
+\[
+m_1:\ \Bigl(-\frac a2,0,0\Bigr),\qquad m_1:\ \Bigl(\frac a2,0,0\Bigr),\qquad m_2:\ (0,0,h).
+\]
+
+\step{第一步：为什么三个轴都是主轴}
+分子是\textbf{平面构型}（全部质量在 $x_1x_3$ 平面内）$\Rightarrow$ 平面 $x_1x_3$ 是对称面 $\Rightarrow$ 法向 $x_2$ 是主轴（\S4.2）。
+分子关于平面 $x_1=0$ 对称（左右两个 $m_1$ 互换）$\Rightarrow$ 法向 $x_1$ 是主轴。
+剩下 $x_3$ 与两者都正交，自动是第三主轴。所以 $I$ 在这组基下对角。
+
+\step{第二步：质心}
+\[
+x_{3c}=\frac{m_1\cdot0+m_1\cdot0+m_2\cdot h}{2m_1+m_2}=\frac{m_2h}{M},\qquad M\equiv2m_1+m_2,\qquad x_{1c}=x_{2c}=0 .
+\]
+
+\step{第三步：$I_3$（绕对称轴）}
+到 $x_3$ 轴的距离平方是 $x_1^2$：顶点在轴上（距离零），两个 $m_1$ 各距 $a/2$：
+
+\[
+I_3=2m_1\Bigl(\frac a2\Bigr)^2=\frac{m_1a^2}{2}.
+\]
+
+\step{第四步：$I_1$（绕底边方向的轴，过质心）}
+到 $x_1$ 轴的距离平方是 $x_2^2+x_3^2=x_3^2$。先对底边所在直线（$x_3=0$）算，再平行轴移到质心：
+
+\[
+I_1^{(\text{底边直线})}=m_2h^2\quad(\text{两个 }m_1\text{ 的 }x_3=0),
+\]
+
+\[
+I_1=I_1^{(\text{底边直线})}-M\,x_{3c}^2=m_2h^2-M\Bigl(\frac{m_2h}{M}\Bigr)^2
+=m_2h^2-\frac{m_2^2h^2}{M}
+=\frac{m_2h^2(M-m_2)}{M}
+=\frac{2m_1m_2}{M}h^2 .
+\]
+
+\aside{平行轴定理的标量版：$I_{\text{新}}=I_{\text{旧}}-Md^2$，$d$ 是两个平行轴的距离，这里 $d=x_{3c}$。方向是「减去」，因为新轴（过质心）比旧轴（过底边）更靠近质量。}
+
+\step{第五步：$I_2$（绕法向轴，过质心）}
+由垂直轴定理（平面薄板，法向 $x_2$）：
+
+\[
+I_2=I_1+I_3=\frac{2m_1m_2}{M}h^2+\frac{m_1a^2}{2}.
+\]
+
+也可以直接算验证：$I_2=\sum m(x_1^2+x_3^2)$ 对质心。对底边直线 $I_2^{(\text{底边})}=m_2h^2+m_1a^2/2+0$（顶点贡献 $m_2h^2$，两个底角各贡献 $m_1(a/2)^2$），再减 $Mx_{3c}^2=m_2^2h^2/M$：
+
+\[
+I_2=m_2h^2+\frac{m_1a^2}{2}-\frac{m_2^2h^2}{M}=\frac{2m_1m_2}{M}h^2+\frac{m_1a^2}{2}\ \checkmark
+\]
+
+\boxed{
+\begin{aligned}
+I_1&=\frac{2m_1m_2}{2m_1+m_2}\,h^2,\\
+I_2&=I_1+\frac{m_1a^2}{2}=\frac{2m_1m_2}{2m_1+m_2}\,h^2+\frac{m_1a^2}{2},\\
+I_3&=\frac{m_1a^2}{2}.
+\end{aligned}}
+
+\subhdr{答案的读法}
+三个主惯量\textbf{互不相等}：这是一个不对称陀螺（\S4.1）。$I_2=I_1+I_3$ 是平面薄板的签名（法向轴）。若 $m_2$ 很大，$I_1\to 2m_1h^2$（两个底角原子到顶点轴的距离变主导），$I_3$ 不变——因为 $I_3$ 只看到「离对称轴多远」，与高度无关。
+
+\subhdr{自检}
+(i) $m_2\to0$（只有两个底角原子）：$I_1\to0$（质量都在 $x_1$ 轴上，绕 $x_1$ 无惯量），$I_3=m_1a^2/2$，$I_2=I_3$ $\checkmark$（线性分子的 $I_1=0$）。
+(ii) $m_1\to0$（只剩顶点）：$I_1\to0$，$I_3\to0$，$I_2\to0$ $\checkmark$（单质点）。
+(iii) 等边三角形 $a=\sqrt3h$、$m_1=m_2=m$：$M=3m$，$I_1=\frac{2m^2}{3m}h^2=\frac{2m}{3}h^2$，$I_3=\frac{m}{2}\cdot3h^2=\frac{3mh^2}{2}$，$I_2=I_1+I_3=\frac{13mh^2}{6}$。三个不相等 $\checkmark$（等边三角形不是球陀螺）。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A.3 HW8.06：均匀圆锥}\label{app:hw806}
+
+\qbreak
+\qstem{（课件 P2 p16，Task HW8.06）均匀实心圆锥，高 $H$、底面半径 $R$、质量 $M$。求三个主转动惯量。}
+
+\subhdr{考点}
+三重积分 + 圆锥的质心位置 + 平行轴定理。
+
+\subhdr{关键一步}
+先算\textbf{对顶点}的 $I_1$（积分好算：半径随高度线性），再用平行轴平移到质心。$I_3$ 与质心无关（对称轴上，平行轴项为零）。
+
+\subhdr{详解}
+取顶点为原点、对称轴为 $z$ 轴、底面在 $z=H$。圆锥半径随 $z$ 线性：$r_{\max}(z)=Rz/H$。
+
+\step{第一步：$I_3$（绕对称轴）}
+\[
+I_3=\int_V\rho(x^2+y^2)\dd V
+=\rho\int_0^H\dd z\int_0^{Rz/H}r\dd r\int_0^{2\pi}\dd\varphi\,r^2
+=\rho\cdot2\pi\int_0^H\frac{1}{4}\Bigl(\frac{Rz}{H}\Bigr)^4\dd z .
+\]
+
+\[
+=\frac{\pi\rho R^4}{2H^4}\cdot\frac{H^5}{5}=\frac{\pi\rho R^4H}{10}.
+\]
+
+用 $M=\frac13\pi R^2H\rho$（圆锥体积 $=\frac13\pi R^2H$）换成 $M$：$\pi\rho R^4H=3MR^2$，故
+
+\[
+I_3=\frac{3}{10}MR^2 .
+\]
+
+\step{第二步：质心}
+\[
+z_c=\frac{\int z\dd m}{\int\dd m}
+=\frac{\int_0^H z\cdot\pi(Rz/H)^2\dd z}{\int_0^H\pi(Rz/H)^2\dd z}
+=\frac{H^4/4}{H^3/3}=\frac34H .
+\]
+
+（质心在距顶点 $3H/4$ 处，即距底面 $H/4$ 处。）
+
+\step{第三步：$I_1$ 对顶点}
+绕 $x$ 轴的距离平方是 $y^2+z^2=r^2\sin^2\varphi+z^2$：
+
+\[
+I_1^{(\text{顶点})}=\rho\int_0^H\dd z\int_0^{Rz/H}r\dd r\int_0^{2\pi}\dd\varphi\,(r^2\sin^2\varphi+z^2).
+\]
+
+先对 $\varphi$：$\int_0^{2\pi}\sin^2\varphi\dd\varphi=\pi$、$\int_0^{2\pi}\dd\varphi=2\pi$：
+
+\[
+I_1^{(\text{顶点})}=\rho\int_0^H\Bigl[\pi\frac{(Rz/H)^4}{4}+2\pi z^2\frac{(Rz/H)^2}{2}\Bigr]\dd z
+=\pi\rho\int_0^H\Bigl(\frac{R^4z^4}{4H^4}+\frac{R^2z^4}{H^2}\Bigr)\dd z .
+\]
+
+\[
+=\pi\rho\Bigl(\frac{R^4}{4H^4}+\frac{R^2}{H^2}\Bigr)\frac{H^5}{5}
+=\pi\rho R^2H\Bigl(\frac{R^2}{20}+\frac{H^2}{5}\Bigr)
+=\frac{3M}{5}\Bigl(\frac{R^2}{4}+H^2\Bigr)
+=\frac{3MR^2}{20}+\frac{3MH^2}{5}.
+\]
+
+\aside{最后一步用了 $\pi\rho R^2H=3M$（圆锥体积为 $\frac13\pi R^2H$）。核对两个系数：$\pi\rho R^2H\cdot\frac{R^2}{20}=\frac{3MR^2}{20}$，$\pi\rho R^2H\cdot\frac{H^2}{5}=\frac{3MH^2}{5}$，与中间式 $\frac{3M}{5}(\frac{R^2}{4}+H^2)$ 一致。}
+
+\step{第四步：平移到质心}
+\[
+I_1=I_1^{(\text{顶点})}-M z_c^2
+=\frac{3MR^2}{20}+\frac{3MH^2}{5}-M\frac{9H^2}{16}
+=\frac{3MR^2}{20}+MH^2\Bigl(\frac{3}{5}-\frac{9}{16}\Bigr).
+\]
+
+$\frac35-\frac9{16}=\frac{48-45}{80}=\frac{3}{80}$，所以
+
+\[
+I_1=\frac{3MR^2}{20}+\frac{3MH^2}{80}
+=\frac{3M}{20}\Bigl(R^2+\frac{H^2}{4}\Bigr)
+=\frac{3M}{80}\bigl(4R^2+H^2\bigr).
+\]
+
+\boxed{\ I_1=I_2=\frac{3M}{20}\Bigl(R^2+\frac{H^2}{4}\Bigr)=\frac{3M}{80}\bigl(4R^2+H^2\bigr),\qquad I_3=\frac{3}{10}MR^2\ }
+
+\subhdr{自检}
+(i) 细长圆锥 $R\to0$：$I_1\to\frac{3MH^2}{80}$。对照细杆绕质心：$I=ML^2/12=\frac{6.67}{80}ML^2$；圆锥的 $3/80$ 略小，因为质量向底部集中（质心在 $3H/4$，但质量分布在 $z\in[0,H]$，有效长度短）$\checkmark$ 数量级合理。
+(ii) 平板圆盘 $H\to0$（但保持 $M$ 有限需要 $\rho\to\infty$）：$I_1\to\frac{3MR^2}{20}$，$I_3=\frac{3MR^2}{10}=2I_1$ $\checkmark$，与平面薄板的 $I_3=I_1+I_2=2I_1$ 一致。
+(iii) 三角形不等式：$I_1+I_2-I_3=\frac{3M}{40}(4R^2+H^2)-\frac{3MR^2}{10}=\frac{3MR^2}{10}+\frac{3MH^2}{40}-\frac{3MR^2}{10}=\frac{3MH^2}{40}\ge0$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A.4 HW8.07：圆锥槽内的小球}\label{app:hw807}
+
+\qbreak
+\qstem{（课件 P3 p18，Task HW8.07）均匀圆锥质量 $M$，轴竖直、顶点向上。沿一条母线钻一条细槽。圆锥以 $\Omega_0$ 绕轴自转，同时把质量 $m$ 的小球从槽顶开口无初速（相对圆锥）投入。求小球从槽底离开时圆锥的角速度。}
+
+\subhdr{考点}
+绕竖直轴的\textbf{角动量守恒}：没有外力矩绕该轴（重力平行于轴，支持力过轴或与轴共面），而系统的转动惯量在变（小球沿槽下滑，离轴距离变大）。
+
+\subhdr{关键一步}
+小球在槽内的位置用「离轴距离 $\rho$」标记。小球随圆锥一起转（槽约束），所以它的角动量是 $m\rho^2\dot\varphi$；圆锥的是 $I_3\dot\varphi$。两者之和守恒。
+
+\subhdr{详解}
+\step{第一步：为什么角动量守恒}
+外力：重力（沿轴向下，对轴的力矩为零）、$O$ 点的支持力（过轴，力矩为零）、槽壁的法向力（在含轴平面内，对轴的力矩为零）。所以
+
+\[
+L_z=I_3\Omega+m\rho^2\Omega=\text{const}.
+\]
+
+\aside{这里用了「小球与圆锥同角速度 $\Omega$」：槽固定在圆锥上，小球被槽约束，只能沿母线滑动，不能相对圆锥转动。所以两者的 $\dot\varphi$ 相同。}
+
+\step{第二步：初态}
+小球在槽顶（圆锥顶点处），$\rho=0$；圆锥角速度 $\Omega_0$：
+
+\[
+L_z^{(0)}=I_3\Omega_0 .
+\]
+
+\step{第三步：末态}
+小球到达槽底（圆锥底面边缘），$\rho=R$；圆锥角速度记为 $\Omega$：
+
+\[
+L_z^{(f)}=(I_3+mR^2)\Omega .
+\]
+
+\step{第四步：守恒}
+\[
+(I_3+mR^2)\Omega=I_3\Omega_0
+\quad\Longrightarrow\quad
+\Omega=\frac{I_3}{I_3+mR^2}\Omega_0 .
+\]
+
+代入 $I_3=\frac{3}{10}MR^2$：
+
+\[
+\Omega=\frac{\frac{3}{10}MR^2}{\frac{3}{10}MR^2+mR^2}\Omega_0
+=\frac{3M}{3M+10m}\Omega_0 .
+\]
+
+\boxed{\ \Omega=\frac{3M}{3M+10m}\,\Omega_0\ }
+
+\subhdr{答案的读法}
+$\Omega<\Omega_0$：小球离轴越远，系统的「转动惯量」越大，角速度按 $1/I$ 降。极限情形：$m\ll M$ 时 $\Omega\approx\Omega_0$（小球几乎不影响）；$m\gg M$ 时 $\Omega\approx\frac{3M}{10m}\Omega_0\to0$（小球把转动「吃掉了」）。
+
+\subhdr{自检}
+(i) 量纲：$\frac{3M}{3M+10m}$ 无量纲 $\checkmark$。
+(ii) 极端检验：把小球固定在底面边缘（不滑动），则 $I_{\text{总}}=I_3+mR^2$，角速度 $\Omega=L/I_{\text{总}}$ $\checkmark$ 与上面一致。
+(iii) 能量去哪了？角速度变小，转动动能减少；差额转化为小球下滑的动能与（可能的）摩擦热。本题只需要角动量守恒，不需要能量守恒——这也是它简单的原因。
+
+\warnbox{\textbf{两个假设要写明}：（一）槽「细」到可以忽略它对圆锥惯量的影响（题干 "thin channel"）；（二）小球沿母线滑动时不被槽壁摩擦带动额外转动（理想约束）。若槽有质量或摩擦，$I_3$ 与 $L_z$ 都要改。}
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A.5 HW8.08：有阻力矩的对称陀螺}\label{app:hw808}
+
+\qbreak
+\qstem{（课件 P3 p18，Task HW8.08）对称陀螺绕固定点转，固定点就是质心。阻力矩 $\vect K=-\mu\vect{\Omega}$（$\mu>0$ 常数）。求 $\vect{\Omega}$ 的变化规律。提示：用欧拉方程；引入复变量 $\xi=\Omega_1+i\Omega_2$。}
+
+\subhdr{考点}
+欧拉方程在对称陀螺下的解耦；复变量把两个耦合方程合成一个。
+
+\subhdr{关键一步}
+$I_1=I_2\equiv I$，欧拉方程的前两式只通过 $\Omega_3$ 与彼此的线性组合耦合。令 $\xi=\Omega_1+i\Omega_2$，两式就合成一个一阶复方程。
+
+\subhdr{详解}
+\step{第一步：写欧拉方程}
+$I_1=I_2=I$，$\vect K=-\mu\vect{\Omega}$，$K_i=-\mu\Omega_i$：
+
+\[
+\begin{aligned}
+I\dot\Omega_1+(I_3-I)\Omega_2\Omega_3&=-\mu\Omega_1,\\
+I\dot\Omega_2+(I-I_3)\Omega_1\Omega_3&=-\mu\Omega_2,\\
+I_3\dot\Omega_3&=-\mu\Omega_3 .
+\end{aligned}
+\]
+
+\step{第二步：先解 $\Omega_3$}
+第三式是 $\dot\Omega_3=-\frac{\mu}{I_3}\Omega_3$，直接积分：
+
+\[
+\boxed{\ \Omega_3(t)=\Omega_3(0)\,e^{-\mu t/I_3}\ }
+\]
+
+\step{第三步：复变量}
+第一式 $+i\times$ 第二式：
+
+\[
+I(\dot\Omega_1+i\dot\Omega_2)+(I_3-I)\Omega_3(\Omega_2-i\Omega_1)=-\mu(\Omega_1+i\Omega_2).
+\]
+
+注意 $\Omega_2-i\Omega_1=-i(\Omega_1+i\Omega_2)=-i\xi$，于是
+
+\[
+I\dot\xi-i(I_3-I)\Omega_3\,\xi=-\mu\xi
+\quad\Longrightarrow\quad
+\boxed{\ \dot\xi=\Bigl[-\frac{\mu}{I}+i\,\frac{I_3-I}{I}\Omega_3(t)\Bigr]\xi\ }
+\]
+
+\step{第四步：积分}
+解是
+
+\[
+\xi(t)=\xi(0)\exp\Bigl[-\frac{\mu t}{I}+i\,\frac{I_3-I}{I}\int_0^t\Omega_3(t')\dd t'\Bigr].
+\]
+
+代入 $\Omega_3(t')=\Omega_3(0)e^{-\mu t'/I_3}$：
+
+\[
+\int_0^t\Omega_3\dd t'=\Omega_3(0)\frac{I_3}{\mu}\bigl(1-e^{-\mu t/I_3}\bigr).
+\]
+
+于是
+
+\[
+\xi(t)=\xi(0)\exp\Bigl[-\frac{\mu t}{I}\Bigr]\exp\Bigl[i\,\Phi(t)\Bigr],\qquad
+\Phi(t)\equiv\frac{(I_3-I)\Omega_3(0)}{\mu}\cdot\frac{I_3}{I}\bigl(1-e^{-\mu t/I_3}\bigr).
+\]
+
+\step{第五步：读回实变量}
+\[
+\Omega_1(t)=|\xi(t)|\cos\Phi(t),\qquad \Omega_2(t)=|\xi(t)|\sin\Phi(t),
+\qquad |\xi(t)|=|\xi(0)|e^{-\mu t/I}.
+\]
+
+\boxed{
+\begin{aligned}
+\Omega_3(t)&=\Omega_3(0)e^{-\mu t/I_3},\\
+\sqrt{\Omega_1^2+\Omega_2^2}&=\sqrt{\Omega_1^2(0)+\Omega_2^2(0)}\ \exp\Bigl(-\frac{\mu t}{I}\Bigr),\\
+\Phi(t)&=\frac{(I_3-I)\Omega_3(0)I_3}{\mu I}\bigl(1-e^{-\mu t/I_3}\bigr).
+\end{aligned}}
+
+\subhdr{答案的读法}
+三件事同时发生：
+（i）绕自身轴的分量 $\Omega_3$ 按时间常数 $I_3/\mu$ 指数衰减；
+（ii）横向分量的大小按时间常数 $I/\mu$ 指数衰减；
+（iii）横向分量绕 $\vect a_3$ 的相位 $\Phi(t)$ 累积，瞬时角速度是 $\Omega_{\text{pr}}(t)=\frac{I_3-I}{I}\Omega_3(t)$——进动本身也在衰减。
+
+\step{极限}
+$t\to\infty$：$\Omega_3\to0$，$\xi\to0$，$\vect{\Omega}\to0$。陀螺停下来，且方向最终沿 $\vect a_3$（因为横向分量比轴向量衰减得慢还是快，取决于 $I$ 与 $I_3$ 的大小；两者都趋于零，但比值决定末态方向）。
+
+\subhdr{自检}
+(i) $\mu=0$（无阻力）：$\Omega_3$ 常数、$|\xi|$ 常数、$\Phi=\frac{I_3-I}{I}\Omega_3t$——这是 \S8.3 的自由进动在\textbf{本体架}里的样子。注意它与 \S8.3 的空间进动率 $\Omega_{\text{pr}}=M/I_1$ \emph{不是同一个量}：$\Phi$ 的速率是「$\vect{\Omega}$ 的横向分量在本体平面 $\vect a_1\vect a_2$ 内转得多快」，而 $M/I_1$ 是「本体轴 $\vect a_3$ 绕空间固定轴 $\vect n_3$ 进动得多快」。取 $I_1=I=1$、$I_3=2$、$\Omega_3=1$、$\Omega_\perp=1$ 验算：体架速率 $=(I_3-I)\Omega_3/I=1$，而 $|M|=\sqrt{I^2\Omega_\perp^2+I_3^2\Omega_3^2}=\sqrt5$，空间速率 $=\sqrt5$，两者不等 $\checkmark$（两个速率都对，只是参考系不同）。
+(ii) 球陀螺 $I_3=I$：$\Phi=0$，$\xi$ 只衰减不转——因为球陀螺没有「本体轴」，谈不上进动 $\checkmark$。
+(iii) 量纲：$\mu t/I$ 无量纲（$\mu$ 的量纲是「力矩/角速度」$=$ 惯量/时间）$\checkmark$。
+
+\flowerrule
+
+\callout{\textbf{本讲义的依据与边界}：全部结论都回指课件页码（P2 p1--p16、P3 p1--p18）或给出完整推导；课件笔误共标出 4 处（P2 p9 负号、P2 p12 下标、P2 p15 球坐标、P3 p5--p6 的 $\vect{\Omega}$ 投影与 $\vect n_\rho$），每处都有独立的核对依据（\S5.2、\S6.2、\S6.5、\S8.3、\S8.5）。教材对照只用于确认标准答案（Landau《Mechanics》惯量张量与欧拉方程的标准形式），不引入课件没有的考点；凡属本讲义补写的推导，均标「补」或写在正文的 \texttt{\textbackslash step} 块里，读者可以逐行复算。}
+
+
+\end{document}

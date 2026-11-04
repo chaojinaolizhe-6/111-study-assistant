@@ -157,16 +157,57 @@ T\vect n_2\cdot\vect n_2=\frac{2+1}{2}=\frac32 .
 \]
 
 两个账本长得完全不一样，可它们描述的是同一件事：沿 $\vect e_1$ 方向拉两倍、沿 $\vect e_2$ 方向不变。
-\textbf{判断“是不是同一台机器”，不能看数字，要看数字怎么变。}这条换算规则是
+\textbf{判断“是不是同一台机器”，不能看数字，要看数字怎么变。}下面把这条换算规矩推出来，只有三步。
+
+\step{第一步：每个新分量都是两次点乘}
+回看上面的算法，新账本的每一个元素都长成同一个形状：
 
 \[
-\boxed{\;T'_{ij}=\sum_{k,l}R_{ki}R_{lj}T_{kl}\;}
-\qquad\text{其中 }R_{ki}=\vect n_i\cdot\vect e_k .
+T'_{ij}=\vect n_i\cdot(T\vect n_j).
 \]
 
-$R$ 的每一列是新基矢量在旧基下的分量；正交基之间 $R^{-1}=R^{\mathsf T}$（转置），所以上式也常写成 $\ten T'=\ten R^{\mathsf T}\ten T\ten R$。
+内层那个点乘在\textbf{输入侧}：$T$ 只认旧基坐标，所以得先把 $\vect n_j$ 翻译成旧基里的样子；
+外层那个点乘在\textbf{输出侧}：$T$ 吐出来的仍是旧基坐标，得再投影到 $\vect n_i$ 上，才算新基下的第 $i$ 个分量。
+\textbf{两次翻译，就是后面那两个求和。}这也正是“向量换基只乘一次、映射换基要乘两次”的来由：向量只有“分量”一个位置要翻，映射有“输入”和“输出”两个位置，各翻一次。
 
-\aside{上面那个例子里 $R=\frac{1}{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix}$。代入 $\ten R^{\mathsf T}\ten T\ten R$ 得 $\begin{pmatrix}3/2&-1/2\\-1/2&3/2\end{pmatrix}$，与逐项算的一致。这里不重证，只用来核对上面的两次投影没算错。}
+\step{第二步：把两次点乘按旧基写开}
+$\vect n_j$ 在旧基下的第 $l$ 个分量是 $R_{lj}=\vect e_l\cdot\vect n_j$；喂给 $T$ 之后再展开回旧基：
+
+\[
+T\vect n_j=\sum_{k}\Bigl(\sum_{l}T_{kl}R_{lj}\Bigr)\vect e_k .
+\]
+
+最后拿 $\vect n_i=\sum_k R_{ki}\vect e_k$ 去点它，$R_{ki}$ 就是第二个因子：
+
+\[
+T'_{ij}=\sum_{k}R_{ki}\Bigl(\sum_{l}T_{kl}R_{lj}\Bigr)=\sum_{k,l}R_{ki}T_{kl}R_{lj}.
+\]
+
+\step{第三步：读成两个矩阵乘}
+\[
+\boxed{\;\ten T'=\ten R^{\mathsf T}\ten T\ten R\;},\qquad R_{ki}=\vect n_i\cdot\vect e_k .
+\]
+
+$R$ 的第 $i$ 列是 $\vect n_i$ 在旧基下的分量；正交基之间 $R^{-1}=R^{\mathsf T}$（转置）。这个夹心结构怎么读，只看每个因子贴着哪一侧：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.26\linewidth}p{0.24\linewidth}p{0.44\linewidth}@{}}
+\thead{因子} & \thead{贴在} & \thead{它在干什么} \\
+\multicolumn{3}{@{}l@{}}{\color{petal}\rule{\linewidth}{0.5pt}}\\
+右边的 $\ten R$ & 输入侧 & 把新基坐标翻成旧基坐标，$T$ 才认 \\
+中间的 $\ten T$ & 机器本身 & 它只会在旧账本上算 \\
+左边的 $\ten R^{\mathsf T}$ & 输出侧 & 算完再翻回新基坐标 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+一句话口诀：\textbf{指标在哪一侧，翻译就贴在那一侧}——$i$ 是输出指标，配左边的 $\ten R^{\mathsf T}$；$j$ 是输入指标，配右边的 $\ten R$。
+顺序因此不能对调：$\ten R\ten T\ten R^{\mathsf T}$ 是另一台机器（把 $T$ 换成“先转过去、再拉、再转回来”那个映射），它与 $T$ 相似、迹和特征值都一样，但它不是 $T'$。
+
+\textbf{推广一句。}几阶张量换基就贴几个 $R$：矢量（一阶）贴一个，二阶贴两个，三阶贴三个。§4 那条变换律说的就是这件事。
+
+\aside{核对：上面那个例子里 $R=\frac{1}{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix}$，代入 $\ten R^{\mathsf T}\ten T\ten R$ 得 $\begin{pmatrix}3/2&-1/2\\-1/2&3/2\end{pmatrix}$，与逐项投影所得一致。注意这只是\textbf{核对}：规矩本身由上面三步推出，不是靠这个数值例子“试出来”的。}
 
 \subhdr{1.4\quad 账本里有没有不随基变的数}
 
