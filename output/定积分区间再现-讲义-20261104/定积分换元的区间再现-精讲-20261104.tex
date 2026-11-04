@@ -1,0 +1,581 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\settags{区间再现与对称性 · 专题精讲}{高等数学 · 定积分技巧}
+% 一题一块的起页保护：单块详解约占半页，用 0.5 页的阈值，不用 theme 里 0.92 页那档
+\newcommand{\qhalf}{\needspace{0.50\textheight}}
+
+\begin{document}
+
+\doctitle{定积分的「区间再现」}{一个换元，白拿一个积分 · 对称 / 周期 / 中点 三条线}%
+{依据：学习者 2026-11-04 转来的知识点条目（4 条结论 + 1 个常用公式）\quad\orn\quad 整理 2026-11-04}
+
+\hdr{§0}{先对账：你转来的条目，落在哪一节}
+
+\callout{\textbf{你卡住的是哪一步。}你说「这个知识点我卡住了」。从条目的写法看，卡点通常不在公式本身，
+而在三件事上：换元之后上下限跑到哪去了、什么时候该用哪一条、以及为什么这一类「看着根本积不出来」的积分忽然能一步算出。
+本讲义就按这三件事排：先只讲一个换元（§1），把它整理成一条「母式」（§2），三条推论都是从母式读出来的（§3--§5），
+三角函数的经典战场单独一节（§6），五道题放在 §7 供你先做，详解在附录（§10）。\\[3pt]
+\textbf{一个提醒。}你转来的文字里，四处结论下面的公式本身\textbf{没有显示出来}（只剩「则对于任意实数 $a$，都有：」这样的半句）。
+下面的标准形式是我按文字描述还原的；如果你手里的原式与此不同，把原式发我，我按时长补。}
+
+\subhdr{条目对照表}
+
+\tabtop
+\begin{tabular}{@{}p{0.60\linewidth}p{0.32\linewidth}@{}}
+\thead{你转来的条目} & \thead{本讲义位置}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.60\linewidth}p{0.32\linewidth}@{}}
+半周期公式：$f$ 以 $T$ 为周期 $\Rightarrow$ 任意 $a$ 的结论 & §4 推论 B\\
+$f(2\pi-x)=f(x)$（关于 $x=\pi$ 对称）在 $[0,2\pi]$ 上的结论 & §5 推论 C（并推广到任意 $[a,b]$）\\
+$f(2\pi-x)=-f(x)$（关于 $x=\pi$ 反对称）的结论 & §5 推论 C 的反对称版\\
+对称区间上的奇偶性，以及那个「变形公式」 & §3 推论 A；§2 母式\\
+分母带 $\sin x+\cos x$ 时「两个相同积分相加消元」 & §6 两条常用公式；例 1\\
+\end{tabular}
+\tabbot
+
+\subhdr{记号（全文统一）}
+
+$f$ 在所述区间上连续（可积即够，凡用到求导的地方会另行说明）；$I$ 一律表示待求的积分值；
+$\dd x$ 是微分符号；区间 $[a,b]$ 的中点记作 $m=\dfrac{a+b}{2}$。
+
+\subhdr{本讲义补了哪些缺口}
+
+\gapitem{公式缺}{你转来的四条结论，式子本身全部丢失。本讲义给出标准形式，并逐条补出完整推导，不依赖任何课件页码。}
+\gapitem{代数跳步}{从母式推出「相等 $\Rightarrow$ 两倍」时，必须\textbf{先切开区间、只对右半段换元}（§5）。直接套母式只会得到 $I=I$，什么也没说。这一步是最常被跳掉的。}
+\gapitem{适用条件}{条目只写了结论，没写「$f$ 连续」「$a$ 任意」「必须是整周期而不是半个周期」这些前提。§4、§8 逐条补。}
+\gapitem{形式改写}{「和是常数」「两者相等」「互为相反」是三种不同情形，对应三个不同式子，条目里混在一起。§5 结尾用一张表分开。}
+\gapitem{答案形态}{$\int_0^{\pi/2}$ 那条常被记成「$\sin$ 与 $\cos$ 互换」，但它真正的形式是对\textbf{整个被积函数}做 $x\mapsto\frac{\pi}{2}-x$，见 §6。}
+\gapitem{边界细节}{$\sin^2 x$ 之类函数的周期其实是 $\pi$ 而不是 $2\pi$，所以「半个 $2\pi$」对它照样成立（§4 末）。}
+
+\flowerrule
+
+\hdr{§1}{一个换元，为什么积分值一点没变}
+
+设 $f$ 在 $[a,b]$ 上连续，记
+\[
+I=\int_a^b f(x)\dd x .
+\]
+作换元
+\[
+x=a+b-t,\qquad \text{即}\quad t=a+b-x .
+\]
+当 $x=a$ 时 $t=b$；当 $x=b$ 时 $t=a$；又 $\dd x=-\dd t$。于是
+\[
+\int_a^b f(x)\dd x=\int_b^a f(a+b-t)\,(-\dd t)
+=\int_b^a f(a+b-t)\dd t\cdot(-1)
+=\int_a^b f(a+b-t)\dd t .
+\]
+把哑变量 $t$ 改回 $x$（定积分的值与积分变量叫什么无关），得到本讲义的主公式：
+\begin{equation}
+\boxed{\;\int_a^b f(x)\dd x=\int_a^b f(a+b-x)\dd x\;}
+\label{eq:king}
+\end{equation}
+
+\subhdr{几何读法：把区间翻个身}
+
+点 $a+b-x$ 与点 $x$ 到中点 $m$ 的距离相等、分居两侧，所以它俩关于 $m$ 对称。换元 $x\mapsto a+b-x$ 做的事就是
+「以 $m$ 为中心把整个区间翻过来」；而 $[a,b]$ 翻过来还是 $[a,b]$，于是上下限原封不动地回到原处，被积函数却换成了它的镜像。
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[->,inkgray] (-0.4,0)--(6.9,0);
+  \draw[inkgray] (0.6,0.09)--(0.6,-0.09); \node[below,font=\small] at (0.6,-0.10) {$a$};
+  \draw[inkgray] (6.2,0.09)--(6.2,-0.09); \node[below,font=\small] at (6.2,-0.10) {$b$};
+  \draw[violet,thick] (3.4,0.13)--(3.4,0); \node[below,font=\small,text=violet] at (3.4,-0.10) {$m=\frac{a+b}{2}$};
+  \fill[violetdeep] (2.0,0) circle(1.8pt); \node[above,font=\small] at (2.0,0.10) {$x$};
+  \fill[violetdeep] (4.8,0) circle(1.8pt); \node[above right,font=\small] at (4.88,0.05) {$a+b-x$};
+  \draw[<->,petal] (2.0,1.05) to[bend left=38] node[midway,above,font=\small]{关于 $m$ 镜像} (4.8,1.05);
+\end{tikzpicture}\\[-2pt]
+{\small\color{inkgray}图 1\quad 换元把区间 $[a,b]$ 翻了个身，区间还是它自己，所以积分值不变。}
+\end{center}
+
+\subhdr{两个负号，一个都不能省}
+
+上面那一行推导里出现了两次变号：一次来自 $\dd x=-\dd t$，一次来自上下限 $b\to a$ 的颠倒。
+它们恰好抵消，这正是「值不变」的全部算术原因。所以你每次手算时，只要发现换元之后上下限\textbf{没有}回到原来的两个数，
+就说明这个换元不是\emph{再现}型的，不能直接照搬 (\ref{eq:king})。
+
+\subhdr{最小数字例子（当场可复算）}
+
+取 $f(x)=x^2$，$[a,b]=[0,2]$，于是 $a+b-x=2-x$。左边
+\[
+\int_0^2 x^2\dd x=\frac{8}{3}.
+\]
+右边（把 $(2-x)^2$ 展开，老老实实算）
+\[
+\int_0^2 (2-x)^2\dd x=\int_0^2\left(x^2-4x+4\right)\dd x
+=\frac{8}{3}-8+8=\frac{8}{3}.
+\]
+两边确实相等。注意 $x^2$ 与 $(2-x)^2$ 是\emph{两个不同的函数}（除了 $x=1$，处处函数值不同），
+但它们在 $[0,2]$ 上圈出的面积一样大——这就是「形状不同、面积相同」。
+
+\hdr{§2}{母式：只算「一半」，并且那个一半常常是常数}
+
+因为 $I=\int_a^b f(x)\dd x$ 和 $I=\int_a^b f(a+b-x)\dd x$ 是同一个数，把两式相加再除以 $2$，得到
+\begin{equation}
+\boxed{\;I=\frac{1}{2}\int_a^b\Big[f(x)+f(a+b-x)\Big]\dd x\;}
+\label{eq:avg}
+\end{equation}
+后面所有结论都是从 (\ref{eq:avg}) 读出来的，所以叫它\textbf{母式}。
+
+\callout{\textbf{母式为什么好用。}右端只需要一样东西：和 $f(x)+f(a+b-x)$。
+只要这个和是常数 $c$，立刻有
+\[
+I=\frac{1}{2}\int_a^b c\,\dd x=\frac{c\,(b-a)}{2},
+\]
+连原函数都不用找。$\ln(1+\tan x)$、$\dfrac{1}{1+e^{\sin x}}$ 这类「根本积不出来」的函数能一步出答案，
+靠的不是它们好积，而是它们的镜像和恰好是常数。}
+
+\aside{母式 (\ref{eq:avg}) 与主公式 (\ref{eq:king}) 等价：由 (\ref{eq:avg}) 两边乘 $2$、把右端拆成
+$\int f(x)\dd x+\int f(a+b-x)\dd x=I+I=2I$，就回到 $0=0$。所以两式是同一件事的两种说法，
+后者管「算」，前者管「猜」。}
+
+\hdr{§3}{推论 A：对称区间（你条目里的「奇偶性 + 变形公式」）}
+
+取 $a=-A$、$b=A$，则 $a+b=0$，镜像点是 $-x$。母式给出
+\[
+\int_{-A}^{A} f(x)\dd x=\frac{1}{2}\int_{-A}^{A}\Big[f(x)+f(-x)\Big]\dd x .
+\]
+现在看被积函数 $g(x)=f(x)+f(-x)$：它满足 $g(-x)=g(x)$，是偶函数。偶函数在对称区间上的积分等于它在 $[0,A]$ 上的两倍，
+于是
+\begin{equation}
+\boxed{\;\int_{-A}^{A} f(x)\dd x=\int_0^{A}\Big[f(x)+f(-x)\Big]\dd x\;}
+\label{eq:sym}
+\end{equation}
+
+\aside{「偶函数在对称区间积分等于两倍半边」这一步本身也要一句话交代。令 $x=-t$（此时 $\dd x=-\dd t$），
+左半段化为 $\int_{-A}^{0}g(x)\dd x=\int_0^{A}g(-t)\dd t$；又因 $g$ 是偶函数，$g(-t)=g(t)$，
+所以左半段等于 $\int_0^{A}g(t)\dd t$，与右半段相同。}
+
+\subhdr{两个特例就是教科书上的奇偶性}
+
+$f$ 是奇函数时 $f(-x)=-f(x)$，方括号里恒为 $0$，故 $I=0$；$f$ 是偶函数时括号里是 $2f(x)$，故 $I=2\int_0^{A}f\dd x$。
+所以「奇函数在对称区间上积分为零」不是一条独立定理，它是 (\ref{eq:sym}) 的特例。
+
+\subhdr{但 (\ref{eq:sym}) 比奇偶性更强：它管「既非奇也非偶」的函数}
+
+\textbf{最小例。}计算 $\displaystyle\int_{-1}^{1}\frac{\dd x}{1+e^{x}}$。
+这个函数既不是奇函数也不是偶函数，奇偶性用不上。但
+\[
+\frac{1}{1+e^{x}}+\frac{1}{1+e^{-x}}
+=\frac{1}{1+e^{x}}+\frac{e^{x}}{e^{x}+1}
+=\frac{1+e^{x}}{1+e^{x}}=1 ,
+\]
+和是常数 $1$。由 (\ref{eq:sym})，
+\[
+\int_{-1}^{1}\frac{\dd x}{1+e^{x}}=\int_{0}^{1}1\dd x=1 .
+\]
+（若直接硬算，要拆成 $\ln(1+e^x)$ 在两端相减，也行，但这条路更稳当。）
+
+\hdr{§4}{推论 B：周期函数，起点随便放}
+
+设 $f$ 以 $T>0$ 为周期，即 $f(x+T)=f(x)$ 对一切 $x$ 成立。则对\emph{任意实数} $a$，
+\begin{equation}
+\boxed{\;\int_a^{a+T} f(x)\dd x=\int_0^{T} f(x)\dd x\;}
+\label{eq:period}
+\end{equation}
+
+\subhdr{证明（一行求导，最省事）}
+
+记 $F(a)=\displaystyle\int_a^{a+T}f(x)\dd x$。$f$ 连续时变上限积分可导，于是
+\[
+F'(a)=f(a+T)-f(a)=0 ,
+\]
+所以 $F$ 是常数，取 $a=0$ 定出这个常数：$F(a)\equiv F(0)=\int_0^{T}f\dd x$。证毕。
+
+\aside{若 $f$ 只可积不连续，改用「分段 + 平移」的论证：把 $[a,a+T]$ 超出某个整周期的那一截平移到另一头，
+每一截都只差一个整周期的平移，积分值不变，结论一致。本讲义此后默认 $f$ 连续。}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.02]
+  \draw[->,inkgray] (-0.2,0)--(3.7,0) node[right,font=\small]{$x$};
+  \foreach \kk in {0,1,2}{
+    \fill[bandviolet] plot[domain=\kk:\kk+1,samples=40,variable=\t] ({\t},{1.25*sin(deg(pi*(\t-\kk)))+0.10}) -- (\kk+1,0) -- (\kk,0) -- cycle;
+    \draw[violet,thick] plot[domain=\kk:\kk+1,samples=40,variable=\t] ({\t},{1.25*sin(deg(pi*(\t-\kk)))+0.10});
+  }
+  \draw[inkgray] (0,0.07)--(0,-0.07) node[below,font=\scriptsize]{$0$};
+  \draw[inkgray] (1,0.07)--(1,-0.07) node[below,font=\scriptsize]{$T$};
+  \draw[inkgray] (2,0.07)--(2,-0.07) node[below,font=\scriptsize]{$2T$};
+  \draw[inkgray] (3,0.07)--(3,-0.07) node[below,font=\scriptsize]{$3T$};
+  \draw[<->,petal,thick] (0.55,-0.55)--(1.55,-0.55) node[midway,below,font=\scriptsize]{长 $T$ 的任意窗口};
+\end{tikzpicture}\\[-4pt]
+{\small\color{inkgray}图 2\quad 每一段整周期上的图形完全相同，窗口挪到哪儿，圈出的面积都一样。}
+\end{center}
+
+\subhdr{跟着来的两条}
+
+\noindent（i）$\displaystyle\int_a^{a+nT}f\dd x=n\int_0^{T}f\dd x$（$n$ 为正整数）：把区间切成 $n$ 段长 $T$ 的，每段都等于 $\int_0^T f$。
+
+\noindent（ii）$\displaystyle\int_0^{nT}f\dd x=n\int_0^{T}f\dd x$：这是 (i) 取 $a=0$，或者直接用周期搬运。
+
+\subhdr{例（顺带说明「半周期」为什么不行）}
+
+计算 $\displaystyle\int_0^{4\pi}\sin^2x\dd x$。$\sin^2x$ 的周期是 $T=\pi$（不是 $2\pi$：$\sin^2(x+\pi)=\sin^2x$），所以
+\[
+\int_0^{4\pi}\sin^2x\dd x=4\int_0^{\pi}\sin^2x\dd x=4\cdot\frac{\pi}{2}=2\pi .
+\]
+
+\warnbox{\textbf{反例：半个周期不是周期。}$\sin x$ 的周期是 $2\pi$。取两个长度都是 $\pi/2$ 的区间：
+\[
+\int_0^{\pi/2}\sin x\dd x=1,\qquad \int_{\pi}^{3\pi/2}\sin x\dd x=-1 .
+\]
+长度一样、平移了 $\pi$（不到一个整周期），值差一个负号。所以 (\ref{eq:period}) 的区间长度\textbf{必须是一个整周期}。
+例外情形：如果 $f$ 本身就以 $T/2$ 为周期（如 $\sin^2x$、$|\sin x|$），那长度 $T/2$ 的区间当然也能搬——判据永远是「$f$ 的周期到底是多少」，不是「区间看起来像半个」。}
+
+\hdr{§5}{推论 C：关于中点对称（你条目里那两条 $2\pi$ 的）}
+
+设 $f$ 在 $[a,b]$ 上连续，$m=\dfrac{a+b}{2}$。
+
+\subhdr{情形一：图形关于竖直线 $x=m$ 对称，即 $f(a+b-x)=f(x)$}
+
+此时
+\begin{equation}
+\boxed{\;\int_a^b f(x)\dd x=2\int_a^{m} f(x)\dd x\;}
+\label{eq:half}
+\end{equation}
+
+\textbf{证明（关键是先切开）。}把积分在 $m$ 处切开：
+\[
+\int_a^b f(x)\dd x=\underbrace{\int_a^{m} f(x)\dd x}_{\text{左半}}
++\underbrace{\int_{m}^{b} f(x)\dd x}_{\text{右半}} .
+\]
+只对右半段作换元 $x=a+b-t$：$x=m\mapsto t=m$，$x=b\mapsto t=a$，$\dd x=-\dd t$，于是
+\[
+\int_{m}^{b} f(x)\dd x=\int_{m}^{a} f(a+b-t)(-\dd t)=\int_a^{m} f(a+b-t)\dd t=\int_a^{m} f(t)\dd t ,
+\]
+右半段恰好等于左半段，故总积分是左半段的两倍。
+
+\aside{这里\textbf{不能}直接套母式 (\ref{eq:avg})：把 $f(a+b-x)=f(x)$ 代进母式，得到的是
+$I=\frac12\int_a^b 2f(x)\dd x=I$，一句空话。突破口在「切一半、只翻右半」，不是在整段上取平均。}
+
+\subhdr{情形二：反对称，即 $f(a+b-x)=-f(x)$}
+
+同一套切法，右半段换成 $-\int_a^m f(t)\dd t$，两半相消：
+\begin{equation}
+\boxed{\;\int_a^b f(x)\dd x=0\;}
+\label{eq:antisym}
+\end{equation}
+
+\subhdr{你的两条，就是取 $a=0$、$b=2\pi$（中点 $m=\pi$）}
+
+\[
+f(2\pi-x)=f(x)\ \Longrightarrow\ \int_0^{2\pi}f(x)\dd x=2\int_0^{\pi}f(x)\dd x ;
+\qquad
+f(2\pi-x)=-f(x)\ \Longrightarrow\ \int_0^{2\pi}f(x)\dd x=0 .
+\]
+注意「关于 $x=\pi$ 对称」这句话里，$\pi$ 必须是区间 $[0,2\pi]$ 的中点；换一个区间，对称轴就跟着换成那个区间的中点。
+
+\subhdr{情形三：和是常数——这时才回到母式}
+
+如果既不是相等也不是相反，而是 $f(x)+f(a+b-x)\equiv c$（常数），那就用母式 (\ref{eq:avg})，得到 $I=\dfrac{c(b-a)}{2}$。
+\textbf{最小例。}计算 $\displaystyle\int_0^{2\pi}\frac{\dd x}{1+e^{\sin x}}$。此时 $a+b=2\pi$，镜像点是 $2\pi-x$，
+\[
+\frac{1}{1+e^{\sin x}}+\frac{1}{1+e^{\sin(2\pi-x)}}=\frac{1}{1+e^{\sin x}}+\frac{1}{1+e^{-\sin x}}=1 ,
+\]
+最后一步与 §3 那个小例同理（令 $u=e^{\sin x}$，两个分母互为倒数）。于是和是常数 $1$，
+\[
+\int_0^{2\pi}\frac{\dd x}{1+e^{\sin x}}=\frac{1}{2}\int_0^{2\pi}1\dd x=\pi .
+\]
+
+\subhdr{三种情形一张表}
+
+这张表只是把母式 (\ref{eq:avg}) 在三种不同的「镜像关系」下各读了一遍。
+
+\tabtop
+\begin{tabular}{@{}p{0.30\linewidth}p{0.30\linewidth}p{0.30\linewidth}@{}}
+\thead{$f(a+b-x)$ 与 $f(x)$ 的关系} & \thead{图形的说法} & \thead{能写出的结论}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.30\linewidth}p{0.30\linewidth}p{0.30\linewidth}@{}}
+$f(a+b-x)=f(x)$ & 关于竖直线 $x=m$ 对称 & $I=2\int_a^m f$\\
+$f(a+b-x)=-f(x)$ & 关于点 $(m,0)$ 中心对称 & $I=0$\\
+$f(x)+f(a+b-x)=c$ & 镜像来的两截拼成一块高 $c$ 的矩形 & $I=\dfrac{c\,(b-a)}{2}$\\
+\end{tabular}
+\tabbot
+
+逐行读法：第一行，右半段翻过来与左半段完全重合，所以总面积是左半的两倍；第二行，翻过来恰好上下翻转，两半抵消；
+第三行，你不必知道 $f$ 长什么样，只要知道每一对镜像点的函数值之和恒为 $c$，把它们逐对加起来就是 $(b-a)\cdot c$，再除以 $2$。
+
+关于端点：三种情形都只在切分点 $m$ 上「共用一个点」，而单个点不影响积分值，所以端点归左半还是归右半，结论都不变。
+
+\hdr{§6}{三角函数的战场：$\int_0^{\pi/2}$ 的对换，和消掉那个 $x$}
+
+\subhdr{6.1\quad $\sin$ 与 $\cos$ 互换，积分不变}
+
+取 $a=0$、$b=\dfrac{\pi}{2}$，则 $a+b-x=\dfrac{\pi}{2}-x$，而
+\[
+\sin\left(\frac{\pi}{2}-x\right)=\cos x,\qquad \cos\left(\frac{\pi}{2}-x\right)=\sin x .
+\]
+代进主公式 (\ref{eq:king})：
+\begin{equation}
+\boxed{\;\int_0^{\pi/2} \varphi(\sin x,\cos x)\dd x=\int_0^{\pi/2}\varphi(\cos x,\sin x)\dd x\;}
+\label{eq:trig}
+\end{equation}
+只要 $\varphi(u,v)$ 对调两个自变量后仍是同一个函数（例如 $\varphi(u,v)=\frac{u}{u+v}$），两边就是同一个积分，这时两式相加可以得到 $2I$。
+
+\aside{这条就是你说的「分母带 $\sin x+\cos x$ 时极其好用」的那一条。它是 (\ref{eq:king}) 在 $[0,\pi/2]$ 上的特例，
+不是新的原理；之所以专门记它，是因为 $\frac{\pi}{2}-x$ 这个镜子在三角题里出现得实在太频繁。}
+
+\subhdr{6.2\quad 两条常用推论}
+
+\noindent（i）$\displaystyle\int_0^{\pi} f(\sin x)\dd x=2\int_0^{\pi/2} f(\sin x)\dd x$。
+
+理由是 $\sin(\pi-x)=\sin x$，即 $f(\sin x)$ 关于 $x=\frac{\pi}{2}$ 对称，而 $\frac{\pi}{2}$ 正是 $[0,\pi]$ 的中点，
+这属于 §5 情形一（取 $a=0$、$b=\pi$）。
+
+\noindent（ii）设 $h$ 在 $[0,\pi]$ 上连续，且 $h(\pi-x)=h(x)$（图形关于 $x=\dfrac{\pi}{2}$ 对称），则
+\begin{equation}
+\boxed{\;\int_0^{\pi} x\,h(x)\dd x=\frac{\pi}{2}\int_0^{\pi} h(x)\dd x\;}
+\label{eq:xkill}
+\end{equation}
+取 $h(x)=f(\sin x)$ 就得到教科书上的那条 $\displaystyle\int_0^{\pi} x f(\sin x)\dd x=\frac{\pi}{2}\int_0^{\pi}f(\sin x)\dd x$，
+因为 $\sin(\pi-x)=\sin x$。
+
+\textbf{证明。}对 $[0,\pi]$ 用主公式 (\ref{eq:king})：$a+b=\pi$，镜像点 $\pi-x$；又 $h(\pi-x)=h(x)$，所以
+\[
+I=\int_0^{\pi} x\,h(x)\dd x=\int_0^{\pi}(\pi-x)\,h(\pi-x)\dd x=\int_0^{\pi}(\pi-x)\,h(x)\dd x .
+\]
+两式相加，右端的 $x$ 与 $\pi-x$ 合并成 $\pi$：
+\[
+2I=\int_0^{\pi}\pi\, h(x)\dd x=\pi\int_0^{\pi}h(x)\dd x ,
+\]
+两边除以 $2$ 即得。
+
+\aside{(ii) 的用处是把「带 $x$ 的积分」换成「不带 $x$ 的积分」。换完之后剩下的 $\int_0^\pi f(\sin x)\dd x$ 一般靠换元 $u=\cos x$ 或 $u=\sin x$ 就能算，
+而原来那个带着 $x$ 的积分基本没有初等原函数。}
+
+\hdr{§7}{五道题：先自己做，详解在附录}
+
+按由浅到深的顺序，每题标出考点与它对应本讲义的哪一节。详解统一放在 §10 附录（第 \pageref{sol1} 页起），
+建议先遮住附录独立做一遍，再回头对。
+
+\subhdr{例 1（考点：母式，和是常数）}
+
+\qstem{计算 $\displaystyle I_1=\int_0^{\pi/2}\frac{\sin x}{\sin x+\cos x}\dd x$。}
+
+考点：§2 母式；§6 式 (\ref{eq:trig})。\quad 详解见附录第 \pageref{sol1} 页。
+
+\subhdr{例 2（考点：母式，和对数型常数）}
+
+\qstem{计算 $\displaystyle I_2=\int_0^{\pi/4}\ln\big(1+\tan x\big)\dd x$。}
+
+考点：§2 母式（这一题的原函数不是初等函数，硬算走不通）。\quad 详解见附录第 \pageref{sol2} 页。
+
+\subhdr{例 3（考点：消掉因子 $x$）}
+
+\qstem{计算 $\displaystyle I_3=\int_0^{\pi}\frac{x\sin x}{1+\cos^2 x}\dd x$。}
+
+考点：§6 式 (8)，把 $x$ 换成常数提出来。\quad 详解见附录第 \pageref{sol3} 页。
+
+\subhdr{例 4（考点：$2\pi$ 中点，和是常数）}
+
+\qstem{计算 $\displaystyle I_4=\int_0^{2\pi}\frac{\dd x}{1+e^{\sin x}}$。}
+
+考点：§5 情形三。\quad 详解见附录第 \pageref{sol4} 页。
+
+\subhdr{例 5（考点：对称区间 + 奇偶 + 面积）}
+
+\qstem{计算 $\displaystyle I_5=\int_{-2}^{2}\left(x^3\cos\frac{x}{2}+\frac{1}{2}\right)\sqrt{4-x^2}\dd x$。}
+
+考点：§3 式 (\ref{eq:sym})；奇函数在对称区间上积分为 $0$；半圆的面积。\quad 详解见附录第 \pageref{sol5} 页。
+
+\hdr{§8}{用法四步，和四个容易踩的坑}
+
+\subhdr{四步用法（拿到一个积分就照这个顺序问）}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{看区间。}中点是谁？有没有一条竖直线像对称轴？区间长度凑不凑得上一个整周期？
+\item \textbf{写镜像。}把 $x$ 换成 $a+b-x$，算出 $f(a+b-x)$，或者直接算和 $f(x)+f(a+b-x)$。
+\item \textbf{对号入座。}相等 $\to$ 两倍半边（\ref{eq:half}）；互为相反 $\to$ 得零（\ref{eq:antisym}）；
+和是常数 $\to$ 矩形（\ref{eq:avg}）；纯周期 $\to$ 搬整周期（\ref{eq:period}）；对称区间 $\to$ 用 (\ref{eq:sym})。
+\item \textbf{验收。}换元后上下限有没有回到原样？$f$ 连不连续（不连续时用分段论证）？答案是不是一个「好看」的数（$\pi$、$\frac{\pi}{4}$ 这类）？
+\end{enumerate}
+
+\subhdr{四个坑}
+
+\warnbox{\textbf{坑 1：换元后上下限没回到原样，却照搬公式。}区间再现的前提是这个换元把 $[a,b]$ \emph{映到它自己}。
+如果你写的是 $x=2a-t$（把 $[a,b]$ 映到 $[2a-b,a]$ 之类），上下限变了，必须按新上下限重写，不能直接相等。}
+
+\warnbox{\textbf{坑 2：把「半个周期」当周期。}见 §4 的反例：$\int_0^{\pi/2}\sin x\dd x=1$ 而 $\int_{\pi}^{3\pi/2}\sin x\dd x=-1$。
+长度相同不代表能搬；能搬的前提是 $f(x+T)=f(x)$ 里的那个 $T$ 与区间长度一致。}
+
+\warnbox{\textbf{坑 3：用母式去证「关于中点对称 $\Rightarrow$ 两倍」。}这会得到 $I=I$ 的空话。
+正确做法是先在 $m$ 处切开、再只对右半段换元（§5 全过程的第一个等号）。}
+
+\warnbox{\textbf{坑 4：把「关于 $x=\pi$ 对称」当成固定说法。}$\pi$ 之所以出现，是因为它是 $[0,2\pi]$ 的中点；
+在 $[0,4\pi]$ 上，对称轴是 $2\pi$；在 $[a,b]$ 上，对称轴是 $\frac{a+b}{2}$。永远现算中点，不要背 $\pi$。}
+
+\hdr{§9}{三句话总结}
+
+\noindent\textbf{一、}换元 $x\mapsto a+b-x$ 把区间翻了个身，区间还是它自己，所以积分值不变（式 \ref{eq:king}）。
+
+\noindent\textbf{二、}由此得到母式 $I=\frac12\int_a^b[f(x)+f(a+b-x)]\dd x$；奇偶性、$2\pi$ 对称、$\sin$/$\cos$ 对换都是它的特例。
+
+\noindent\textbf{三、}看见「很难积、但镜像和是常数」的积分，先想区间再现，而不是先想原函数。
+
+\flowerrule
+
+\hdr{§10}{附录：例 1--例 5 详解}
+
+\noindent 说明：以下每题都先复述题干（含正文页码），再给关键一步与完整推导。答案与题干分开，方便你先做后看。
+
+\qhalf
+\subhdr{例 1 详解}
+\label{sol1}
+\qstem{（题干见正文 §7 例 1）计算 $\displaystyle I_1=\int_0^{\pi/2}\frac{\sin x}{\sin x+\cos x}\dd x$。}
+
+\textbf{关键一步。}取 $a=0$、$b=\frac{\pi}{2}$，则 $a+b-x=\frac{\pi}{2}-x$，$\sin$ 与 $\cos$ 互换，于是同一个 $I_1$ 可以写成两种样子。
+
+\textbf{推导。}记
+\[
+I_1=\int_0^{\pi/2}\frac{\sin x}{\sin x+\cos x}\dd x .
+\]
+对 $[0,\pi/2]$ 用式 (\ref{eq:trig})（即把 $x$ 换成 $\frac{\pi}{2}-x$，注意 $\dd x$ 换成 $-\dd t$ 与上下限颠倒相抵，值不变）：
+\[
+I_1=\int_0^{\pi/2}\frac{\sin\left(\frac{\pi}{2}-x\right)}{\sin\left(\frac{\pi}{2}-x\right)+\cos\left(\frac{\pi}{2}-x\right)}\dd x
+=\int_0^{\pi/2}\frac{\cos x}{\cos x+\sin x}\dd x .
+\]
+两式相加：
+\[
+2I_1=\int_0^{\pi/2}\frac{\sin x+\cos x}{\sin x+\cos x}\dd x=\int_0^{\pi/2}1\dd x=\frac{\pi}{2},
+\]
+故 $I_1=\dfrac{\pi}{4}$。
+
+\textbf{答案。}$I_1=\dfrac{\pi}{4}\approx 0.7854$。
+
+\textbf{自检。}被积函数在 $[0,\pi/2]$ 上介于 $0$ 与 $1$ 之间，平均值大约该是 $\frac12$。
+它关于 $x=\frac{\pi}{4}$ 的一对镜像点满足 $f\left(\frac{\pi}{4}+t\right)+f\left(\frac{\pi}{4}-t\right)=1$（$\sin$、$\cos$ 互换），
+每一对的平均值恰为 $\frac12$，再乘区间长 $\frac{\pi}{2}$ 得 $\frac{\pi}{4}$，与答案一致。
+
+\qhalf
+\subhdr{例 2 详解}
+\label{sol2}
+\qstem{（题干见正文 §7 例 2）计算 $\displaystyle I_2=\int_0^{\pi/4}\ln\big(1+\tan x\big)\dd x$。}
+
+\textbf{关键一步。}取 $a=0$、$b=\frac{\pi}{4}$，镜像点是 $\frac{\pi}{4}-x$。先把 $1+\tan\left(\frac{\pi}{4}-x\right)$ 化成 $1+\tan x$ 的倍数。
+
+\textbf{推导。}先用正切的和角公式
+\[
+\tan\left(\frac{\pi}{4}-x\right)=\frac{1-\tan x}{1+\tan x},
+\]
+于是
+\[
+1+\tan\left(\frac{\pi}{4}-x\right)=1+\frac{1-\tan x}{1+\tan x}
+=\frac{(1+\tan x)+(1-\tan x)}{1+\tan x}=\frac{2}{1+\tan x}.
+\]
+取对数：
+\[
+\ln\left[1+\tan\left(\frac{\pi}{4}-x\right)\right]=\ln 2-\ln(1+\tan x).
+\]
+再对 $[0,\pi/4]$ 用区间再现（把 $x$ 换成 $\frac{\pi}{4}-x$，积分值不变）：
+\[
+I_2=\int_0^{\pi/4}\left[\ln 2-\ln(1+\tan x)\right]\dd x
+=\frac{\pi}{4}\ln 2-I_2 .
+\]
+移项得 $2I_2=\dfrac{\pi}{4}\ln 2$。
+
+\textbf{答案。}$I_2=\dfrac{\pi\ln 2}{8}\approx 0.2722$。
+
+\textbf{自检。}$\ln(1+\tan x)$ 在 $[0,\pi/4]$ 上从 $\ln 1=0$ 增到 $\ln 2\approx 0.693$，平均值约 $0.347$，
+乘 $\frac{\pi}{4}\approx 0.785$ 得 $0.27$ 左右，与答案量级一致。
+
+\qhalf
+\subhdr{例 3 详解}
+\label{sol3}
+\qstem{（题干见正文 §7 例 3）计算 $\displaystyle I_3=\int_0^{\pi}\frac{x\sin x}{1+\cos^2 x}\dd x$。}
+
+\textbf{关键一步。}把被积函数写成 $x\,h(x)$，其中 $h(x)=\dfrac{\sin x}{1+\cos^2x}$；在 $x\mapsto\pi-x$ 下它不变，正好是 §6 式 (\ref{eq:xkill}) 的条件。
+
+\textbf{推导。}记 $h(x)=\dfrac{\sin x}{1+\cos^2x}$，则 $I_3=\displaystyle\int_0^{\pi} x\,h(x)\dd x$，而
+\[
+h(\pi-x)=\frac{\sin(\pi-x)}{1+\cos^{2}(\pi-x)}=\frac{\sin x}{1+\cos^{2}x}=h(x).
+\]
+由式 (\ref{eq:xkill})，
+\[
+I_3=\frac{\pi}{2}\int_0^{\pi}h(x)\dd x=\frac{\pi}{2}\int_0^{\pi}\frac{\sin x}{1+\cos^2x}\dd x .
+\]
+不套公式、现场推一遍也只要两行：对 $[0,\pi]$ 用区间再现（$x$ 换成 $\pi-x$），得
+$I_3=\int_0^{\pi}(\pi-x)h(x)\dd x$，与原来的 $I_3=\int_0^{\pi}x\,h(x)\dd x$ 相加即 $2I_3=\pi\int_0^{\pi}h(x)\dd x$。
+
+剩下的积分用换元 $u=\cos x$（$\dd u=-\sin x\dd x$，$x=0\mapsto u=1$，$x=\pi\mapsto u=-1$）：
+\[
+\int_0^{\pi}\frac{\sin x}{1+\cos^2x}\dd x=\int_1^{-1}\frac{-\dd u}{1+u^2}=\int_{-1}^{1}\frac{\dd u}{1+u^2}
+=\Big[\arctan u\Big]_{-1}^{1}=\frac{\pi}{2}.
+\]
+代入：
+\[
+2I_3=\pi\cdot\frac{\pi}{2}=\frac{\pi^2}{2},\qquad I_3=\frac{\pi^{2}}{4}.
+\]
+
+\textbf{答案。}$I_3=\dfrac{\pi^2}{4}\approx 2.4674$。
+
+\textbf{自检。}被积函数在 $[0,\pi]$ 上最大约 $\frac{\pi/2}{1}\approx 1.57$（在 $x=\frac{\pi}{2}$，$\cos^2=0$、$\sin=1$ 处取到，量级 $1.57$），
+平均值约为 $\frac{\pi}{4}\approx 0.785$，乘区间长 $\pi$ 得 $\frac{\pi^2}{4}$，一致。
+
+\aside{为什么不直接说「化成 $f(\sin x)$」：本题分母里的 $\cos^2x$ 满足 $h(\pi-x)=h(x)$，但整个 $h$ 并不是 $\sin x$ 的单一函数。
+判断标准永远是\textbf{「$h(\pi-x)=h(x)$ 成不成立」}，不是「形式上像不像 $f(\sin x)$」。}
+
+\qhalf
+\subhdr{例 4 详解}
+\label{sol4}
+\qstem{（题干见正文 §7 例 4）计算 $\displaystyle I_4=\int_0^{2\pi}\frac{\dd x}{1+e^{\sin x}}$。}
+
+\textbf{关键一步。}区间 $[0,2\pi]$ 的中点是 $\pi$，镜像点是 $2\pi-x$；把两个镜像点上的函数值加起来。
+
+\textbf{推导。}记 $u=e^{\sin x}$。当 $x$ 换成 $2\pi-x$ 时，$\sin(2\pi-x)=-\sin x$，于是 $u$ 变成 $u^{-1}$：
+\[
+\frac{1}{1+e^{\sin x}}+\frac{1}{1+e^{\sin(2\pi-x)}}=\frac{1}{1+u}+\frac{1}{1+u^{-1}}
+=\frac{1}{1+u}+\frac{u}{u+1}=1 .
+\]
+由母式 (\ref{eq:avg})（取 $a=0$、$b=2\pi$），
+\[
+I_4=\frac12\int_0^{2\pi}\left[\frac{1}{1+e^{\sin x}}+\frac{1}{1+e^{\sin(2\pi-x)}}\right]\dd x
+=\frac12\int_0^{2\pi}1\dd x=\frac{2\pi}{2}=\pi .
+\]
+
+\textbf{答案。}$I_4=\pi\approx 3.1416$。
+
+\textbf{自检。}被积函数 $\frac{1}{1+e^{\sin x}}$ 的值永远在 $\frac{1}{1+e}\approx 0.269$ 与 $\frac{1}{1+e^{-1}}\approx 0.731$ 之间，
+平均约 $\frac{0.269+0.731}{2}=0.5$，乘区间长 $2\pi$ 得 $\pi$，一致。
+
+\aside{注意这一题用的是「和是常数」而不是「相等」或「相反」：$f(2\pi-x)$ 既不等于 $f(x)$ 也不等于 $-f(x)$，
+但它俩加起来恒为 $1$。三种情形别混（§5 的表）。}
+
+\qhalf
+\subhdr{例 5 详解}
+\label{sol5}
+\qstem{（题干见正文 §7 例 5）计算 $\displaystyle I_5=\int_{-2}^{2}\left(x^3\cos\frac{x}{2}+\frac{1}{2}\right)\sqrt{4-x^2}\dd x$。}
+
+\textbf{关键一步。}把被积函数拆成奇部与偶部：奇部在对称区间上积分为 $0$，剩下的偶部是半个椭圆的面积。
+
+\textbf{推导。}先拆
+\[
+\left(x^3\cos\frac{x}{2}+\frac{1}{2}\right)\sqrt{4-x^2}
+=\underbrace{x^3\cos\frac{x}{2}\sqrt{4-x^2}}_{\text{奇函数}}
++\underbrace{\frac12\sqrt{4-x^2}}_{\text{偶函数}} .
+\]
+第一项：$x^3$ 是奇函数，$\cos\frac{x}{2}$ 是偶函数，$\sqrt{4-x^2}$ 是偶函数，奇 $\times$ 偶 $\times$ 偶 $=$ 奇。
+由 §3 的 (\ref{eq:sym})，奇函数的镜像和恒为 $0$，所以这一项在 $[-2,2]$ 上的积分为 $0$。
+第二项：
+\[
+\int_{-2}^{2}\frac12\sqrt{4-x^2}\dd x=\frac12\int_{-2}^{2}\sqrt{4-x^2}\dd x .
+\]
+而 $\int_{-2}^{2}\sqrt{4-x^2}\dd x$ 是以 $2$ 为半径的\emph{半个圆}（上半圆）的面积，等于 $\frac12\pi\cdot 2^2=2\pi$。于是
+\[
+I_5=\frac12\cdot 2\pi=\pi .
+\]
+
+\textbf{答案。}$I_5=\pi\approx 3.1416$。
+
+\textbf{自检。}第二项的图形是半椭圆：横向半轴 $a=2$、纵向半轴 $b=1$，面积 $\frac12\pi ab=\frac12\pi\cdot2\cdot1=\pi$，
+与答案一致；第一项是奇函数，贡献 $0$，不影响数值。
+
+\flowerrule
+
+\noindent{\color{inkgray}\small 本讲义到此结束。配套的公式速查：式 (\ref{eq:king}) 主公式、(\ref{eq:avg}) 母式、(\ref{eq:sym}) 对称区间、
+(\ref{eq:period}) 周期、(\ref{eq:half}) 与 (\ref{eq:antisym}) 中点对称两版、(\ref{eq:trig}) 三角对换。}
+
+\end{document}

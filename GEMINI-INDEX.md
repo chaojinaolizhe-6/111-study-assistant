@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-04 2026-11-04 10:44（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-04 2026-11-04 10:54（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -374,7 +374,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5715 个文件）
+## 3. 文件直达 URL 索引（5720 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -585,7 +585,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2343 个）
+### subjects（2348 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -1036,6 +1036,11 @@
 - `subjects/04-数学物理方法1/讲义/第三章-精讲-解析函数的幂级数展开-20261101.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%B8%89%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E7%9A%84%E5%B9%82%E7%BA%A7%E6%95%B0%E5%B1%95%E5%BC%80-20261101.out
 - `subjects/04-数学物理方法1/讲义/第三章-精讲-解析函数的幂级数展开-20261101.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%B8%89%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E7%9A%84%E5%B9%82%E7%BA%A7%E6%95%B0%E5%B1%95%E5%BC%80-20261101.pdf
 - `subjects/04-数学物理方法1/讲义/第三章-精讲-解析函数的幂级数展开-20261101.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%B8%89%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E7%9A%84%E5%B9%82%E7%BA%A7%E6%95%B0%E5%B1%95%E5%BC%80-20261101.tex
+- `subjects/04-数学物理方法1/讲义/第二章-专题-高阶导数公式的归纳步-20261104.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%93%E9%A2%98-%E9%AB%98%E9%98%B6%E5%AF%BC%E6%95%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E5%BD%92%E7%BA%B3%E6%AD%A5-20261104.aux
+- `subjects/04-数学物理方法1/讲义/第二章-专题-高阶导数公式的归纳步-20261104.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%93%E9%A2%98-%E9%AB%98%E9%98%B6%E5%AF%BC%E6%95%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E5%BD%92%E7%BA%B3%E6%AD%A5-20261104.log
+- `subjects/04-数学物理方法1/讲义/第二章-专题-高阶导数公式的归纳步-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%93%E9%A2%98-%E9%AB%98%E9%98%B6%E5%AF%BC%E6%95%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E5%BD%92%E7%BA%B3%E6%AD%A5-20261104.out
+- `subjects/04-数学物理方法1/讲义/第二章-专题-高阶导数公式的归纳步-20261104.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%93%E9%A2%98-%E9%AB%98%E9%98%B6%E5%AF%BC%E6%95%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E5%BD%92%E7%BA%B3%E6%AD%A5-20261104.pdf
+- `subjects/04-数学物理方法1/讲义/第二章-专题-高阶导数公式的归纳步-20261104.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%93%E9%A2%98-%E9%AB%98%E9%98%B6%E5%AF%BC%E6%95%B0%E5%85%AC%E5%BC%8F%E7%9A%84%E5%BD%92%E7%BA%B3%E6%AD%A5-20261104.tex
 - `subjects/04-数学物理方法1/讲义/第二章-精讲-复变函数的积分-20261101.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E5%A4%8D%E5%8F%98%E5%87%BD%E6%95%B0%E7%9A%84%E7%A7%AF%E5%88%86-20261101.log
 - `subjects/04-数学物理方法1/讲义/第二章-精讲-复变函数的积分-20261101.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E5%A4%8D%E5%8F%98%E5%87%BD%E6%95%B0%E7%9A%84%E7%A7%AF%E5%88%86-20261101.pdf
 - `subjects/04-数学物理方法1/讲义/第二章-精讲-复变函数的积分-20261101.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/%E8%AE%B2%E4%B9%89/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%B2%BE%E8%AE%B2-%E5%A4%8D%E5%8F%98%E5%87%BD%E6%95%B0%E7%9A%84%E7%A7%AF%E5%88%86-20261101.tex
