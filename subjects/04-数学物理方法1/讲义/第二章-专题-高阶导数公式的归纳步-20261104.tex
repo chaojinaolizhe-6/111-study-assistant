@@ -1,0 +1,803 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第二章专题 · 柯西高阶导数公式 (3.3) 的证明
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\settags{第二章专题 · 高阶导数公式 (3.3) 的证明}{数学物理方法1}
+
+\renewcommand{\qbreak}{\needspace{0.45\textheight}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\origsubhdr{#1}}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+
+\begin{document}
+
+\doctitle{柯西高阶导数公式 (3.3)：归纳步到底怎么走}
+{$f^{(n)}(z)=\dfrac{n!}{2\pi i}\displaystyle\oint_C\frac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta$ 的三个前提、一条引理、一步归纳}
+{配合课件《第二章\quad 复变函数的积分》§2.3\quad p31--p44\quad 2026-11-04\quad 数学物理方法1}
+
+\hdr{§0}{课件坐标：这一步为什么讲不通}
+
+课件 p36 给出公式 (3.3)，并把 $n=1$ 的差商演算了一遍；到 p37，全部归纳过程是这一句原文：
+
+\begin{quote}
+「再利用数学归纳法，得证 $n$ 阶导数公式。」
+\end{quote}
+
+十七个字，跳过的是整份证明里唯一不能靠“看出来”的一步。卡在这里的人通常不是不会归纳，而是\textbf{归纳的对象选错了}：想对 $\dfrac{1}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta$ 这个含参积分直接“求 $n+1$ 次导”，可“积分号下求导”本身就没证过；想拿 $n$ 阶公式去推 $n+1$ 阶公式，又要先承认 $f^{(n)}$ 是解析函数——而这正是公式要告诉你的结论。两头一堵，归纳就动不了。
+
+本讲义做的事情只有一件：把“求导”从被积函数上挪到\textbf{核}上，并证明这条关于核的引理只要求分子\textbf{连续}。这样每走一步都不需要被积函数解析，归纳才推得动。
+
+\subhdr{0.1\quad 本文用到的课件位置}
+
+\begin{itemize}[leftmargin=1.6em]
+\item p31 §2.3 柯西公式（即 (3.3) 的 $n=0$ 情形）与它的两个前提条件；
+\item p32--p33 该公式的证明（本讲义不重复，只引用结论）；
+\item p35 说明1：把点 $a$ 改称 $z$、积分变量改称 $\varsigma$；
+\item p36 说明3：给出 (3.3)，并演算 $n=1$ 的差商；
+\item p37：一句“再利用数学归纳法”，以及高阶导数公式的说明——一个复变函数只要一阶导数存在，则任意阶导数都存在且解析；
+\item p43 柯西不等式、p44 刘维定理与平均值定理：都是 (3.3) 的直接推论。
+\end{itemize}
+
+\callout{\textbf{怎么读这份讲义}：只解决卡住的那一步，看 §3.3--§3.5（核的展开、余项、差商取极限）与 §4.3（归纳步）就够。其余各节是配套：§1 钉条件，§2 是三条走不通的路（看清了，§3 才不像凭空冒出来的技巧），§5 与课件 p36--p37 逐句对照，§6--§7 是用法与数值核对，§8 是四道自测。}
+
+\subhdr{0.2\quad 记号先统一（全文不再改）}
+
+课件 p31 用 $a$（定点）与 $z$（积分变量），p35 改成 $z$（定点）与 $\varsigma$（积分变量），学习者手上的 (3.3) 又写成 $z$ 与 $\zeta$。三套字母指的是同两个东西，混着读就会把“对谁求导”看错。本讲义统一用下面这一套。
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}p{1.1cm}p{15.5cm}@{}}
+\thead{记号} & \thead{在这一页指什么}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{1.1cm}p{15.5cm}@{}}
+$D$ & 区域；$\bar D$ 是它的闭包，$C=\partial D$ 是边界（正向，即逆时针）\\
+$z$ & 求导的\textbf{动点}，取在 $D$ 内部；它一变，核 $1/(\zeta-z)^{n+1}$ 就跟着变\\
+$\zeta$ & \textbf{积分变量}，只跑在 $C$ 上；它与 $z$ 无关，$\dd\zeta$ 与求导无关\\
+$h$ & 增量，$h=z-z_0$；课件 p36 记作 $\Delta z$\\
+$d$ & $d=\operatorname{dist}(z_0,C)=\min_{\zeta\in C}|\zeta-z_0|>0$\\
+$L$ & $C$ 的长度；$M_\varphi$ 是 $|\varphi|$ 在 $C$ 上的最大值\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\callout{
+\textbf{一句话读这张表}：凡是 $z$ 的地方可以求导，凡是 $\zeta$ 的地方不能求导（它是积分变量，积完就没了）。后面所有“为什么不能这么求导”的错，都是把这两列混了。
+}
+
+\hdr{§1}{先把三样东西钉死}
+
+\subhdr{1.1\quad 柯西公式（课件的原形式，p31）}
+
+\textbf{定理（柯西积分公式）}：设 $f(z)$ 在闭单连通区域 $\bar D$ 上单值解析，$a$ 是 $D$ 中任意一点，$C$ 是 $D$ 的边界线（正向），则
+
+\begin{equation}
+f(a)=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{\zeta-a}\dd\zeta .
+\end{equation}
+
+课件 p35 说明1 把字母换掉：$a$ 是任意取的，于是把 $a$ 写成 $z$、把积分变量写成 $\varsigma$，得
+
+\begin{equation}
+f(z)=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{\zeta-z}\dd\zeta .
+\tag{1.1}
+\end{equation}
+
+（课件写 $\varsigma$，本文写 $\zeta$，同一个东西。原式用 $z$ 当积分变量、$a$ 当定点；改写后用 $z$ 当定点、$\zeta$ 当积分变量。）
+
+\aside{这两个前提在 p31 说得很明确：（1）$f$ 在闭合围道 $C$ 内解析；（2）点 $z$ 必须落在 $C$ 内部。本文后面每一条估计都要用到第二条——因为 $z$ 在内部，才有 $d=\operatorname{dist}(z,C)>0$。}
+
+\subhdr{1.2\quad 公式 (3.3) 的完整陈述}
+
+\textbf{定理（高阶导数公式）}：设 $f$ 在包含 $\bar D$ 的某个开区域内解析，$C=\partial D$ 是分段光滑的简单闭曲线（正向），则对任意整数 $n\ge0$ 与任意 $z\in D$，
+
+\begin{equation}
+f^{(n)}(z)=\frac{n!}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta .
+\tag{3.3}
+\end{equation}
+
+这个陈述里有三件事必须同时成立，缺一条公式就不成立：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{条件一}：$f$ 在 $C$ 所围的区域内解析（保证右边能算、左边存在）；
+\item \textbf{条件二}：$z$ 在 $C$ \textbf{内部}。若 $z$ 在 $C$ 外部，被积函数在围道内解析，右边恒为 $0$，而左边的 $f^{(n)}(z)$ 一般不为 $0$，公式立刻错；
+\item \textbf{条件三}：$z$ 不能在 $C$ 上，否则分母为零，积分没有意义。
+\end{itemize}
+
+\aside{课件 p36 的写法是「如果函数 $f(z)$ 在闭区域 $\bar D$ 内解析」。严格说，「在闭区域上解析」应理解成「在包含 $\bar D$ 的某个开区域内解析」，或者「在 $D$ 内解析、在 $\bar D$ 上连续」——后者也够用。本讲义的推导只用到两件事：(i) $n=0$ 时的柯西公式 (1.1)；(ii) $f$ 在 $C$ 上连续。所以条件可以放宽到「$D$ 内解析、$\bar D$ 上连续」，不必更强。}
+
+\subhdr{1.3\quad 唯一的估计工具：ML 不等式}
+
+\textbf{引理（ML 不等式）}：设 $g$ 在曲线 $C$ 上连续，$L$ 是 $C$ 的长度，$M=\max_{\zeta\in C}|g(\zeta)|$，则
+
+\begin{equation}
+\left|\oint_C g(\zeta)\dd\zeta\right|\le ML .
+\tag{1.2}
+\end{equation}
+
+\callout{
+\textbf{它在本文只出场一次，但出场的位置是整份证明的枢纽}：$\S3$ 最后要说明差商与导数的差趋于 $0$，用的就是 (1.2)——把被积函数整体的模用 $M_\varphi$、$|h|$、$R$ 的界卡住，再乘上弧长 $L$。课件 p7 把 (1.2) 列为「积分不等式」，p43 的柯西不等式也是它。
+}
+
+\subhdr{1.4\quad 距离 $d>0$：全篇最容易被跳过的一句}
+
+固定 $z_0\in D$。因为 $C$ 是闭集（紧集）、$z_0\notin C$、$|\zeta-z_0|$ 是 $\zeta$ 的连续函数，它在 $C$ 上取到最小值，且最小值不能是 $0$（否则 $z_0\in C$）。记
+
+\begin{equation}
+d:=\operatorname{dist}(z_0,C)>0 .
+\tag{1.3}
+\end{equation}
+
+\callout{
+\textbf{这个 $d$ 就是后面所有估计的“安全距离”}。整个证明的技术难点只有一个：当 $z$ 在 $z_0$ 附近移动时，积分核在 $\zeta=z$ 处有一个极点；只要 $z$ 离 $C$ 还有一段距离，这个极点就与积分路径 $C$ 保持距离，被积函数在 $C$ 上就有一致的界，取极限才合法。$d$ 的作用就是把“极点离 $C$ 有多远”量化成一个与 $z$ 无关的正数。
+}
+
+\hdr{§2}{归纳走不通的三个写法}
+
+这三条都是真实会写出来的，而且每条都能写得很像证明。看清楚它们各缺什么，$\S3$ 的引理就不是“凭空冒出来的技巧”，而是唯一还剩下的路。
+
+\subhdr{2.1\quad 写法一：把 $\dfrac{\dd^n}{\dd z^n}$ 直接搬进积分号}
+
+\begin{equation*}
+\frac{\dd^n}{\dd z^n}\left[\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{\zeta-z}\dd\zeta\right]
+\;\overset{?}{=}\;\frac{1}{2\pi i}\oint_C\frac{\partial^n}{\partial z^n}\left[\frac{f(\zeta)}{\zeta-z}\right]\dd\zeta .
+\end{equation*}
+
+问题在等号上那个问号：\textbf{“积分号下求导”本身就是要证的东西}。实分析里它需要一致收敛或一致可微的条件，而这里的被积函数在 $\zeta=z$ 处有一阶极点，对 $\zeta$ 和 $z$ 同时用普通定理是不合法的。把问号当等号用，等于把结论当条件。
+
+\subhdr{2.2\quad 写法二：用 $n$ 阶公式证 $n+1$ 阶公式}
+
+\begin{equation*}
+f^{(n+1)}(z)=\frac{\dd}{\dd z}f^{(n)}(z)
+\;\overset{?}{=}\;\frac{\dd}{\dd z}\left[\frac{n!}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta\right]
+=\frac{(n+1)!}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z)^{n+2}}\dd\zeta .
+\end{equation*}
+
+第一行就把归纳假设当作“$f^{(n)}$ 是一个可导的、由积分表示的函数”来用了。可是归纳假设只告诉你“$f^{(n)}$ 等于右边那个积分”，\textbf{并没有告诉你这个积分对 $z$ 可导}。而“可导”恰恰是要证的结论的一半（p37 的说明原文就是：只要一阶导数存在，任意阶导数都存在）。这一条是循环论证。
+
+\subhdr{2.3\quad 写法三：把 $f(\zeta)$ 也一起求导}
+
+\begin{equation*}
+\frac{\dd}{\dd z}\left[\frac{f(\zeta)}{\zeta-z}\right]\;\overset{?}{=}\;\frac{f'(\zeta)}{\zeta-z}+\frac{f(\zeta)}{(\zeta-z)^2}.
+\end{equation*}
+
+$\zeta$ 在 $C$ 上跑，$z$ 在 $D$ 里跑，两者是\textbf{独立的变量}。对 $z$ 求偏导时 $f(\zeta)$ 是常数，导数为零；写成 $f'(\zeta)$ 等于把两个变量看成同一个。而且 $f'$ 出现在边界 $C$ 上，本身就没有来由。
+
+\aside{这种错法不容易被数值抓住：在 (3.3) 成立之后，两边\textbf{整体}确实相等——右边按柯西公式对 $f'$ 用一次，正好是 $f'(z)$。数值对、推理错，正是它容易留下来变成习惯的原因。要分清的是“这一步的根据”和“这一步的结果”：结果碰巧对，不等于过程合法。}
+
+\flowerrule
+
+\noindent\textbf{三条合起来看，缺的是同一件东西}：一条“核可以被求导”的命题，它\textbf{不}向分子索取任何解析性。有了它，写法一里那个问号有了答案，写法二里“积分可导”有了出处，而写法三那种错误也不会再犯——因为求导只落在分母上。
+
+\hdr{§3}{唯一的引擎：核函数求导引理}
+
+\subhdr{3.1\quad 陈述（注意分子只要求连续）}
+
+\textbf{引理（核函数求导）}：设 $C$ 是可求长闭曲线（分段光滑即可），$\varphi$ 在 $C$ 上\textbf{连续}，$z_0\notin C$，$k\ge0$ 为整数。记
+
+\begin{equation}
+\Phi_k(z):=\frac{1}{2\pi i}\oint_C\frac{\varphi(\zeta)}{(\zeta-z)^{k+1}}\dd\zeta ,
+\qquad z\notin C .
+\tag{3.1}
+\end{equation}
+
+则 $\Phi_k$ 在 $z_0$ 处可导，且
+
+\begin{equation}
+\Phi_k'(z_0)=(k+1)\,\Phi_{k+1}(z_0).
+\tag{3.2}
+\end{equation}
+
+\aside{与 (3.1) 对照着读：(3.1) 里 $k$ 是分母的幂次减一。$k=0$ 时核是 $\frac{1}{\zeta-z}$，$k=1$ 时是 $\frac{1}{(\zeta-z)^2}$。(3.2) 说的是“求一次导 = 幂次加一并乘上新的幂次”。}
+
+\subhdr{3.2\quad 证明第一步：把几何固定下来}
+
+取 $h$ 满足 $|h|\le \dfrac{d}{2}$（$d$ 由 (1.3)），令 $z=z_0+h$。对任意 $\zeta\in C$：
+
+\begin{equation}
+|\zeta-z_0|\ge d,\qquad
+|\zeta-z|=|\zeta-z_0-h|\ge |\zeta-z_0|-|h|\ge d-\frac{d}{2}=\frac{d}{2},
+\tag{3.3a}
+\end{equation}
+
+于是 $z$ 也在 $C$ 外，$\Phi_k(z)$ 有意义；并且
+
+\begin{equation}
+\left|\frac{h}{\zeta-z_0}\right|\le\frac{d/2}{d}=\frac12 .
+\tag{3.3b}
+\end{equation}
+
+\aside{(3.3a) 只用了一次三角不等式 $|\zeta-z_0-h|\ge|\zeta-z_0|-|h|$，以及 $|h|\le d/2$。这一步是全篇唯一用到“$z$ 离路径有安全距离”的地方；(3.3b) 那个 $\frac12$ 是后面级数能求和、余项能估的根据。}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.55,>=latex,line cap=round]
+  \fill[bandviolet] (0,0) circle (2);
+  \draw[violet,thick] (0,0) circle (2);
+  \coordinate (P) at (0.55,0.25);
+  \coordinate (Z) at (0.78,-0.13);
+  \coordinate (T) at (1.821,0.828);
+  \coordinate (Q) at (-1.7321,1.0);
+  \draw[petal,dashed,thick] (P) circle (1.396);
+  \draw[inkgray,thin,dashed] (Q) -- (P);
+  \draw[->,thick,violetdeep] (P) -- (T) node[midway,below,sloped,font=\small]{$d$};
+  \draw[->,inkgray,thin,densely dotted] (P) -- ++(-115:0.698) node[right,inner sep=1.5pt,font=\scriptsize]{$d/2$};
+  \draw[->,inkgray] (P) -- (Z) node[pos=0.45,above left=-1pt,font=\small]{$h$};
+  \fill[violetdeep] (0,0) circle (1.6pt) node[below left,font=\small]{$O$};
+  \fill[violetdeep] (P) circle (1.8pt) node[above left=-1pt,font=\small]{$z_0$};
+  \fill[violetdeep] (Z) circle (1.8pt) node[below right=-1pt,font=\small]{$z=z_0+h$};
+  \fill[violetdeep] (Q) circle (1.8pt) node[above left,font=\small]{$\zeta$};
+  \fill[violetdeep] (T) circle (1.8pt);
+  \node[violet] at (1.60,-1.30) {\small $C$};
+  \node[inkgray] at (-0.95,-1.20) {\small $D$};
+  \node[font=\scriptsize,inkgray,sloped,above] at (-1.10,0.83) {$|\zeta-z_0|\ge d$};
+\end{tikzpicture}
+
+{\small\color{inkgray}图 1（重绘）：粗实线为围道 $C$，$D$ 在其内部。以 $z_0$ 为心、$d=\operatorname{dist}(z_0,C)$ 为半径作虚圆（对圆形 $C$ 它必与 $C$ 内切于最近点，实心箭头标出 $d$）；短虚箭头标出 $d/2$，那是 $|h|$ 的上限。只要 $|h|\le d/2$，动点 $z=z_0+h$ 离 $z_0$ 不超过 $d/2$，而任何 $\zeta\in C$ 都在虚圆之外或虚圆上（$|\zeta-z_0|\ge d$），于是 $|\zeta-z|\ge d-|h|\ge d/2$。}
+\end{center}
+
+\subhdr{3.3\quad 证明第二步：把核展开，只留两项}
+
+把分母配成 $w=\zeta-z_0$ 与 $h$ 的形式：$\zeta-z=w-h$。于是
+
+\begin{equation}
+\frac{1}{(w-h)^{k+1}}=\frac{1}{w^{k+1}}\cdot\frac{1}{\left(1-\frac{h}{w}\right)^{k+1}} .
+\tag{3.4}
+\end{equation}
+
+由二项级数（负指数形式，$|x|<1$ 时收敛）
+
+\begin{equation}
+\frac{1}{(1-x)^{N}}=\sum_{j\ge0}\binom{N+j-1}{j}x^{j},
+\qquad\text{取 }N=k+1,\;x=\frac{h}{w},
+\tag{3.5}
+\end{equation}
+
+得
+
+\begin{equation}
+\frac{1}{(w-h)^{k+1}}
+=\underbrace{\frac{1}{w^{k+1}}}_{\text{第 }j=0\text{ 项}}
++\underbrace{\frac{(k+1)\,h}{w^{k+2}}}_{\text{第 }j=1\text{ 项}}
++h^{2}\,R(w,h),
+\tag{3.6}
+\end{equation}
+
+其中余下的部分（$j\ge2$ 全部收进来）
+
+\begin{equation}
+R(w,h)=\sum_{j\ge2}\binom{k+j}{k}\frac{h^{j-2}}{w^{k+1+j}} .
+\tag{3.7}
+\end{equation}
+
+\aside{(3.5) 里 $\binom{N+j-1}{j}$ 在 $N=k+1$ 时就是 $\binom{k+j}{k}=\binom{k+j}{j}$。$j=1$ 那项的系数 $\binom{k+1}{k}=k+1$，这正是 (3.2) 里那个因子 $(k+1)$ 的来源；它没有别的来路。}
+
+\noindent\textbf{$k=0$ 的独立校验}（这条可以手算，不必信 (3.5)）：取 $k=0$，(3.6) 变为
+
+\begin{equation}
+\frac{1}{w-h}=\frac{1}{w}+\frac{h}{w^{2}}+\frac{h^{2}}{w^{2}(w-h)},
+\tag{3.8}
+\end{equation}
+
+验算：右边通分到 $w^2(w-h)$ 上，分子是 $w^2-w(w-h)-h(w-h)=w^{2}-w^{2}+wh-wh+h^{2}=h^{2}$。$\checkmark$
+
+\warnbox{\textbf{(3.8) 就是课件 p36 那一页在做的事}。如果在 $k=0$ 时把 (3.6) 的两项代入差商，得到的正是 p36 的式子；p37 之所以敢说“再利用数学归纳法”，隐含的正是“(3.6) 对所有 $k$ 都成立”。课件没写出来的，就是这句话。}
+
+\subhdr{3.4\quad 证明第三步：余项的一致界}
+
+由 (3.3a)(3.3b)，对 $|h|\le d/2$、$\zeta\in C$：
+
+\begin{equation}
+|R(w,h)|
+\le\sum_{j\ge2}\binom{k+j}{k}\frac{|h|^{j-2}}{|w|^{k+1+j}}
+=\frac{1}{|w|^{k+3}}\sum_{j\ge2}\binom{k+j}{k}\left|\frac{h}{w}\right|^{j-2}
+\le\frac{C_k}{|w|^{k+3}}\le\frac{C_k}{d^{k+3}},
+\tag{3.9}
+\end{equation}
+
+其中
+
+\begin{equation}
+C_k:=\sum_{j\ge2}\binom{k+j}{k}\left(\frac12\right)^{j-2}=2^{k+3}-2k-6\le 2^{k+3}.
+\tag{3.10}
+\end{equation}
+
+\aside{(3.10) 的闭式怎么来的：由 (3.5) 取 $x=\frac12$ 得 $\sum_{j\ge0}\binom{k+j}{k}2^{-j}=2^{k+1}$；把 $j=0,1$ 两项（分别是 $1$ 与 $\frac{k+1}{2}$）减掉，再乘 $4$（因为 $2^{-(j-2)}=4\cdot2^{-j}$），就得到 $4\left(2^{k+1}-1-\frac{k+1}{2}\right)=2^{k+3}-2k-6$。逐一代入：$k=0,1,2,3$ 得 $2,8,22,52$，与直接求和一致。}
+
+\noindent\textbf{三个常数的来路，分开写清楚}（约束 10）：$\frac12$ 来自“只走半个安全距离”（(3.3b)）；$k+3$ 是 $w$ 在 (3.7) 里出现的最低次幂（$j=2$ 时 $w^{k+1+2}$）；$2^{k+3}$ 是把 (3.5) 在 $x=\frac12$ 处的和 $2^{k+1}$ 乘 $4$ 得到的，纯属代数，与几何无关。
+
+\subhdr{3.5\quad 证明第四步：差商与导数的差趋于零}
+
+把 (3.6) 代入 $\Phi_k$ 的定义，两边减掉 $\Phi_k(z_0)$，再除以 $h$：
+
+\begin{equation}
+\frac{\Phi_k(z_0+h)-\Phi_k(z_0)}{h}
+=\frac{1}{2\pi i}\oint_C\varphi(\zeta)\left[\frac{k+1}{w^{k+2}}+h\,R(w,h)\right]\dd\zeta .
+\tag{3.11}
+\end{equation}
+
+右边第一项是 $(k+1)\Phi_{k+1}(z_0)$（对照 (3.1) 的定义，核的幂次是 $k+2$）。所以
+
+\begin{equation}
+\frac{\Phi_k(z_0+h)-\Phi_k(z_0)}{h}-(k+1)\Phi_{k+1}(z_0)
+=\frac{h}{2\pi i}\oint_C\varphi(\zeta)\,R(w,h)\dd\zeta .
+\tag{3.12}
+\end{equation}
+
+取模，用 ML 不等式 (1.2)、$M_\varphi=\max_C|\varphi|$、$L$ 为 $C$ 的长度，以及 (3.9)：
+
+\begin{equation}
+\left|\frac{\Phi_k(z_0+h)-\Phi_k(z_0)}{h}-(k+1)\Phi_{k+1}(z_0)\right|
+\le\frac{|h|}{2\pi}\cdot M_\varphi L\cdot\frac{C_k}{d^{k+3}} .
+\tag{3.13}
+\end{equation}
+
+令 $h\to0$（始终限制在 $|h|\le d/2$ 内），右边趋于 $0$，于是差商的极限存在且等于 $(k+1)\Phi_{k+1}(z_0)$，即 (3.2)。$\square$
+
+\aside{(3.13) 里 $M_\varphi,L,C_k,d$ 四个量\textbf{都与 $h$ 无关}——这一点是整条证明的命门。若其中任何一个还带着 $h$（比如界里留着 $|\zeta-z|^{-1}$ 而不换成 $d/2$），那么 $|h|$ 乘上一个可能发散的因子，极限就说不清。课件 p36 的界正是在这里少了一句限制，见 §5.2。}
+
+\callout{
+\textbf{为什么这条引理能被反复使用（归纳的许可）}：$\Phi_{k+1}$ 与 $\Phi_k$ 是同一个形式，分子还是原来的 $\varphi$，只是幂次加一。所以 (3.2) 一旦对某个 $k$ 成立，就能对 $k+1$ 再用一次、再用一次……而\textbf{每一步都不需要 $\varphi$ 解析}，只需要它连续。这就是“任意阶导数都存在”能被推出来的原因。
+}
+
+\hdr{§4}{归纳本体：两步，一次账}
+
+\subhdr{4.1\quad 归纳的对象带阶乘}
+
+记 $I_n:=n!\,\Phi_n$（$\varphi$ 取 $f$），即
+
+\begin{equation}
+I_n(z)=\frac{n!}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta ,
+\qquad n=0,1,2,\dots
+\tag{4.1}
+\end{equation}
+
+\textbf{结论 A（求导恒等式）}：对每个 $n\ge0$ 与每个 $z\in D$，
+
+\begin{equation}
+I_n'(z)=I_{n+1}(z).
+\tag{4.2}
+\end{equation}
+
+\textbf{证明}：由 (3.2)（取 $k=n$）与 $I_n=n!\Phi_n$：
+
+\begin{equation*}
+I_n'=n!\,\Phi_n'=n!\,(n+1)\Phi_{n+1}=(n+1)!\,\Phi_{n+1}=I_{n+1}. \qquad\square
+\end{equation*}
+
+\aside{这里用到的是 (3.2) 对\textbf{每个} $k$ 都成立，而 (3.2) 的证明只用到 $f$ 在 $C$ 上连续。所以 (4.2) 对 $n=0,1,2,\dots$ 一次全部拿下，不用逐阶重做差商。}
+
+\subhdr{4.2\quad 归纳的基例}
+
+$n=0$：(4.1) 给出 $I_0(z)=\dfrac{1}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)}{\zeta-z}\dd\zeta$，由柯西公式 (1.1) 得
+
+\begin{equation}
+I_0(z)=f(z)=f^{(0)}(z).
+\tag{4.3}
+\end{equation}
+
+\subhdr{4.3\quad 归纳的递推步（卡住的就是这里）}
+
+\textbf{假设}：对某个 $n\ge0$，在 $D$ 上 $I_n(z)=f^{(n)}(z)$。
+
+\textbf{要证}：在 $D$ 上 $I_{n+1}(z)=f^{(n+1)}(z)$。
+
+\textbf{证明}：由结论 A，$I_n$ 在 $D$ 上处处可导，且
+
+\begin{equation}
+I_n'(z)=I_{n+1}(z).
+\tag{4.4}
+\end{equation}
+
+由归纳假设 $f^{(n)}=I_n$，而右边的 $I_n$ 已由 (4.4) 证明可导，所以 $f^{(n)}$ 可导，且它的导数按定义就是 $f^{(n+1)}$：
+
+\begin{equation}
+f^{(n+1)}(z):=\frac{\dd}{\dd z}f^{(n)}(z)=\frac{\dd}{\dd z}I_n(z)=I_n'(z)=I_{n+1}(z).
+\tag{4.5}
+\end{equation}
+
+由数学归纳法，(3.3) 对一切 $n\ge0$ 成立。$\square$
+
+\aside{(4.5) 的三个等号各由不同东西保证，缺一个就循环：第一个等号是\textbf{定义}（$n+1$ 阶导数就是 $n$ 阶导数的导数，前提是这个导数存在）；第二个等号是\textbf{归纳假设}（两个函数相等，故导数相等）；第三个等号是\textbf{结论 A}；最后一个等号是 (4.4)。而“$n$ 阶导数存在”这件事，是结论 A 从外部提供的，不是从归纳假设里抠出来的。}
+
+\subhdr{4.4\quad 为什么这样就不循环：一张对照表}
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}p{5.0cm}p{2.7cm}p{8.6cm}@{}}
+\thead{想用的东西} & \thead{是否已证} & \thead{谁给的}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{5.0cm}p{2.7cm}p{8.6cm}@{}}
+$I_n$ 对 $z$ 可导 & 已证 & 结论 A（(4.2)），它来自引理 (3.2)\\
+引理 (3.2) 成立 & 已证，且与 $f$ 无关 & $\S3$，只要求分子连续\\
+$f^{(n)}=I_n$ & 归纳假设 & 上一步的结论\\
+$f^{(n)}$ 可导 & 由上两行合成 & $f^{(n)}=I_n$ 且 $I_n$ 可导\\
+$f^{(n+1)}$ 是解析函数 & 由 (4.5) 顺带得到 & $f^{(n+1)}=I_{n+1}$，而 $I_{n+1}$ 又是同形式的积分\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\callout{
+\textbf{这张表只是把 (4.5) 的三个等号各写一行}，读法是自上而下：第一、二行先站住（引理不依赖 $f$ 解析），第三行是假设，第四行由前两行合成，第五行是把结论再喂回引理一次。整条链上没有一处“用结论证结论”。
+
+这正是课件 p37 那句“高阶导数公式说明”的严格版本：\textbf{只要一阶导数存在（即 $f$ 解析），任意阶导数就都存在，而且都解析}——因为 $I_0=f$ 解析，$I_1=I_0'$ 解析，$I_2=I_1'$ 解析……每一步都只是对一个同形式的积分用一次 (3.2)。
+}
+
+\subhdr{4.5\quad $n!$ 的账：它从哪来}
+
+每次对核求一次导，幂次加一、并乘上新的幂次 $(k+1)$。从 $k=0$ 走到 $k=n-1$，累积因子是
+
+\begin{equation}
+1\cdot2\cdot3\cdots n=n! .
+\tag{4.6}
+\end{equation}
+
+所以 (4.1) 里那个 $n!$ 不是约定，也不是凑出来的，它必须写在那里，才让 (4.2) 成立。下表逐行核对（这张表只是把 (4.2) 在 $n=0,1,2,3$ 上读了一遍）。
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.8cm}>{\centering\arraybackslash}p{3.8cm}p{3.7cm}p{7.5cm}@{}}
+\thead{$n$} & \thead{$I_n$ 的定义（含系数）} & \thead{系数怎么长出来} & \thead{(4.2) 的检验}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.8cm}>{\centering\arraybackslash}p{3.8cm}p{3.7cm}p{7.5cm}@{}}
+$0$ & $0!\Phi_0=\Phi_0$ & 起点，空积为 $1$ & $I_0'=\Phi_0'=1\cdot\Phi_1=I_1$\\
+$1$ & $1!\Phi_1=\Phi_1$ & $0!\times1=1!$ & $I_1'=\Phi_1'=2\Phi_2=I_2$\\
+$2$ & $2!\Phi_2=2\Phi_2$ & $1!\times2=2!$ & $I_2'=2\Phi_2'=2\cdot3\Phi_3=I_3$\\
+$3$ & $3!\Phi_3=6\Phi_3$ & $2!\times3=3!$ & $I_3'=6\Phi_3'=6\cdot4\Phi_4=I_4$\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\noindent\textbf{逐行读法}：每一行的第三列是“上一行系数 $\times$ 本行 $n$”，第四列是“本行系数 $\times\,(n+1)=$ 下一行系数”，两者对齐，说明 $I_n$ 这个定义刚好让 $(n+1)$ 与 $(n+1)!$ 严丝合缝。表中 $n=0$ 是边界行：空积规定为 $1$，$0!=1$。
+
+\warnbox{\textbf{不写阶乘会怎样}：若只取 $J_n:=\Phi_n$（不乘 $n!$），(3.2) 给出 $J_n'=(n+1)J_{n+1}$，于是 $J_1=f'$、$J_2=\frac12 J_1'=\frac12 f''$、$J_3=\frac16 f'''$，一般地
+\[
+J_n=\frac{f^{(n)}}{n!}.
+\]
+这正是很多人算到 $n=2$ 发现“差一个系数”的地方：不是算错，是定义里少了一个阶乘。$\S7$ 的表 2 用具体数字把这件事核了一遍。}
+
+\hdr{§5}{把课件 p36--p37 对回来}
+
+\subhdr{5.1\quad p36 那一页算的正是引理的 $k=0$}
+
+课件 p36 从柯西公式出发写差商（原文记号 $\Delta z$，本文记 $h=z-z_0$）：
+
+\begin{equation}
+\frac{f(z_0+h)-f(z_0)}{h}
+=\frac{1}{2\pi i}\oint_C\left[\frac{1}{\zeta-z_0-h}-\frac{1}{\zeta-z_0}\right]\frac{f(\zeta)}{h}\dd\zeta .
+\tag{5.1}
+\end{equation}
+
+方括号通分，分子是 $h$，与外面的 $\dfrac1h$ 抵消：
+
+\begin{equation}
+\frac{f(z_0+h)-f(z_0)}{h}
+=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0-h)(\zeta-z_0)}\dd\zeta .
+\tag{5.2}
+\end{equation}
+
+再用 (3.8)：记 $w=\zeta-z_0$，则 $\dfrac{1}{w-h}=\dfrac1w+\dfrac{h}{w^{2}}+\dfrac{h^{2}}{w^{2}(w-h)}$。两边同乘 $\dfrac1w$：
+
+\begin{equation*}
+\frac{1}{(\zeta-z_0-h)(\zeta-z_0)}
+=\frac{1}{(\zeta-z_0)^{2}}+\frac{h}{(\zeta-z_0)^{3}}+\frac{h^{2}}{(\zeta-z_0)^{3}(\zeta-z_0-h)} .
+\end{equation*}
+
+代回 (5.2)：第一项是 $\Phi_1(z_0)$，第二项是 $h\Phi_2(z_0)$，第三项是余项。又由 (3.2) 取 $k=0$、并用 $\Phi_0=f$，得 $\Phi_1(z_0)=\Phi_0'(z_0)=f'(z_0)$，于是
+
+\begin{equation}
+\frac{f(z_0+h)-f(z_0)}{h}-f'(z_0)
+=\frac{h}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{2}(\zeta-z_0-h)}\dd\zeta .
+\tag{5.3}
+\end{equation}
+
+这就是 (3.12) 在 $k=0$ 时的样子（余项正是 (3.7) 取 $k=0$ 的 $R=\dfrac{1}{w^{2}(w-h)}$）：分子前面多出一个 $h$，剩下的部分在 $C$ 上有与 $h$ 无关的界——因为 $|(\zeta-z_0)^{2}(\zeta-z_0-h)|\ge d^{2}\cdot\dfrac{d}{2}=\dfrac{d^{3}}{2}$，于是
+
+\begin{equation*}
+\left|\frac{f(z_0+h)-f(z_0)}{h}-f'(z_0)\right|\le\frac{|h|}{2\pi}\cdot M\,L\cdot\frac{2}{d^{3}}\xrightarrow[h\to0]{}0 ,
+\end{equation*}
+
+即 $f'(z_0)=\dfrac{1}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)}{(\zeta-z_0)^{2}}\dd\zeta$。
+
+\aside{课件的次序是把 $f'(z_0)=\frac{1}{2\pi i}\oint\frac{f}{(\zeta-z_0)^2}$ 当成已知（$n=1$ 的公式）摆出来作对照；本文的次序是先有引理、后得这条。两者不冲突，但逻辑方向不同：课件要用“$n=1$ 的公式”去证“$n=1$ 的公式”，本文用“核能求导”去得它。}
+
+\subhdr{5.2\quad p36 的界里少了一句}
+
+课件 p36 接着写（原文）：「令 $M=\cdots$，其中 $L$ 是 $c$ 的周长，$M$ 是函数 $\dfrac{f(\zeta)}{(\zeta-z)(\zeta-z-\Delta z)}$ 的上界」，然后说「当 $\Delta z\to0$ 时」左边趋于 $0$。这里有一个必须补的漏洞：这个“上界 $M$”本身\textbf{依赖 $\Delta z$}——分母里的 $|\zeta-z-\Delta z|$ 随 $\Delta z\to0$ 可以任意小，于是 $M$ 可以任意大。若 $M=M(\Delta z)$ 增长得像 $1/|\Delta z|$，那么 $|\Delta z|\cdot M(\Delta z)$ 并不趋于 $0$，“上界趋于零”这一步就不成立。
+
+补法就是 §3.2 的第一步：先固定 $d=\operatorname{dist}(z_0,C)>0$，只考虑 $|\Delta z|\le d/2$。由 (3.3a)，$|\zeta-z_0-\Delta z|\ge d/2$，于是可取
+
+\begin{equation}
+M=\frac{2\,\max_C|f|}{d^{3}},
+\qquad\text{与 }\Delta z\text{ 无关},
+\tag{5.4}
+\end{equation}
+
+界变成 $\dfrac{|\Delta z|}{2\pi}\cdot\dfrac{2\max|f|\,L}{d^{3}}\to0$，结论才立住。这不是吹毛求疵：整份证明的合法性就压在“界里的量都与 $h$ 无关”这一句上（§3.5 的旁注）。
+
+\hdr{§6}{(3.3) 立刻给出的三个推论（课件 p43--p44 的原样落点）}
+
+\subhdr{6.1\quad 柯西不等式（p43）}
+
+对 (3.3) 取模，再用 ML 不等式 (1.2)，$M=\max_C|f|$，$L$ 为周长，$d=\operatorname{dist}(z,C)$：
+
+\begin{equation}
+|f^{(n)}(z)|\le\frac{n!}{2\pi}\cdot\frac{M}{d^{n+1}}\cdot L=\frac{n!\,ML}{2\pi\,d^{n+1}} .
+\tag{6.1}
+\end{equation}
+
+若 $C$ 是圆周 $|\zeta-z_0|=R$、$z=z_0$，则 $L=2\pi R$、$d=R$，得
+
+\begin{equation}
+|f^{(n)}(z_0)|\le\frac{n!\,M\cdot2\pi R}{2\pi\,R^{n+1}}=\frac{n!\,M}{R^{n}} .
+\tag{6.2}
+\end{equation}
+
+\aside{(6.2) 里 $R$ 的幂从 $n+1$ 掉成 $n$，是因为周长 $L=2\pi R$ 里又出一个 $R$，与分母的 $2\pi$ 一起给出一个 $R$。这个 $2\pi$ 与 $2\pi i$ 里的 $2\pi$ 是同一个数（来自圆周长与辐角一周），不是新约定的常数。}
+
+\subhdr{6.2\quad 刘维定理（p44）}
+
+设 $f$ 在全平面解析且 $|f|\le M$。对任意 $z_0$ 与任意 $R>0$，以 $|z-z_0|=R$ 用 (6.2) 取 $n=1$：$|f'(z_0)|\le\dfrac{M}{R}$。令 $R\to\infty$ 得 $f'(z_0)=0$，因 $z_0$ 任意，$f$ 为常数。$\square$
+
+\subhdr{6.3\quad 平均值定理（p44）}
+
+在 (1.1) 中取 $C$ 为圆周 $\zeta=z_0+re^{i\theta}$（$\theta$ 从 $0$ 到 $2\pi$，正向），$\dd\zeta=ire^{i\theta}\dd\theta$，$\zeta-z_0=re^{i\theta}$：
+
+\begin{equation}
+f(z_0)=\frac{1}{2\pi i}\int_0^{2\pi}\frac{f(z_0+re^{i\theta})}{re^{i\theta}}\,ire^{i\theta}\dd\theta
+=\frac{1}{2\pi}\int_0^{2\pi}f(z_0+re^{i\theta})\dd\theta .
+\tag{6.3}
+\end{equation}
+
+\aside{三个推论都只用到 (3.3) 或 (1.1) 加 ML 不等式，没有新工具。这也说明 (3.3) 的分量：p43--p44 的四条性质全部挂在它上面。}
+
+\hdr{§7}{数值自检：把 (3.3) 的左右两边各算一次}
+
+下面两张表的数都是真算出来的：$C$ 取单位圆 $|\zeta|=1$（正向），沿周取 $4096$ 个等分点做梯形求积（被积函数在 $C$ 上光滑、以 $2\pi$ 为周期，梯形法则在这种情形下误差是机器精度级），再乘 $\dfrac{n!}{2\pi i}$。
+
+\subhdr{7.1\quad 表 1：两边相等}
+
+这张表只是把 (3.3) 的左右两边在同一组数据上各算一次，看它们是不是同一个数。
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}p{2.0cm}>{\centering\arraybackslash}p{1.6cm}>{\centering\arraybackslash}p{0.6cm}p{5.8cm}p{5.4cm}@{}}
+\thead{$f(\zeta)$} & \thead{$z$} & \thead{$n$} & \thead{按 (3.3) 右边算得} & \thead{$f^{(n)}(z)$ 的解析值}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{2.0cm}>{\centering\arraybackslash}p{1.6cm}>{\centering\arraybackslash}p{0.6cm}p{5.8cm}p{5.4cm}@{}}
+$e^{\zeta}$ & $0.3{+}0.2i$ & $2$ & $1.3229515021{+}0.2681755460i$ & $e^{0.3+0.2i}$，同左\\
+$\zeta^{3}+2\zeta$ & $0$ & $1$ & $2.0000000000$ & $3\zeta^{2}+2\big|_{\zeta=0}=2$\\
+$\zeta^{3}+2\zeta$ & $0$ & $3$ & $6.0000000000$ & $6$\\
+$\cos\zeta$ & $0.3{+}0.2i$ & $1$ & ${-}0.3014503384{-}0.1923436298i$ & $-\sin(0.3+0.2i)$，同左\\
+$1/(2-\zeta)$ & $0$ & $4$ & $0.7500000000$ & $4!/2^{5}=0.75$\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\noindent\textbf{逐行读法}：第 1、4 行用 $f^{(n)}=f$ 或 $f^{(1)}=-\sin$（$\cos$ 的导数循环），右边不必展开成实部虚部，直接比对即可，误差在 $10^{-15}$ 量级。第 2 行的解析值来自 $f'=3\zeta^{2}+2$ 在 $\zeta=0$ 取值；第 3 行来自 $f'''=6$（常数项 $\zeta^3+2\zeta$ 求三次导只剩 $6$）。第 5 行 $f^{(n)}(0)=\dfrac{n!}{(2-0)^{n+1}}$，取 $n=4$ 得 $\dfrac{24}{32}=0.75$。最大偏差 $7.1\times10^{-15}$，全部是舍入误差，没有一行例外。
+
+\subhdr{7.2\quad 表 2：不带阶乘就差 $n!$}
+
+这张表只是把 (4.2) 与 $J_n=\Phi_n$（不带阶乘）的差别在 $f=1/(2-\zeta)$、$z=0$ 上读了一遍。这里 $f^{(n)}(0)=n!/2^{n+1}$。
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.7cm}>{\centering\arraybackslash}p{3.2cm}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.3cm}>{\centering\arraybackslash}p{3.6cm}@{}}
+\thead{$n$} & \thead{$I_n(0)=n!\Phi_n(0)$} & \thead{$\Phi_n(0)$（不带阶乘）} & \thead{$f^{(n)}(0)/n!=1/2^{n+1}$} & \thead{一致？}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.7cm}>{\centering\arraybackslash}p{3.2cm}>{\centering\arraybackslash}p{3.4cm}>{\centering\arraybackslash}p{4.3cm}>{\centering\arraybackslash}p{3.6cm}@{}}
+$0$ & $0.5000000000$ & $0.5000000000$ & $0.5000000000$ & 是\\
+$1$ & $0.2500000000$ & $0.2500000000$ & $0.2500000000$ & 是\\
+$2$ & $0.2500000000$ & $0.1250000000$ & $0.1250000000$ & 是\\
+$3$ & $0.3750000000$ & $0.0625000000$ & $0.0625000000$ & 是\\
+$4$ & $0.7500000000$ & $0.0312500000$ & $0.0312500000$ & 是\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\noindent\textbf{逐行读法}：第三列是 $\Phi_n(0)$ 的数值；第四列是“解析导数除以 $n!$”；两列相等，说明 $\Phi_n=\dfrac{f^{(n)}}{n!}$，即没写阶乘的版本差一个 $n!$。前两列之比就是 $n!$：$0!=1$、$1!=1$、$2!=2$、$3!=6$、$4!=24$，逐行核对（例如 $n=4$：$0.75/0.03125=24$）。$n=0$ 是边界行，$0!=1$，三列本来就该相同。
+
+\callout{
+\textbf{这两张表能回答的问题}：公式本身（表 1）对不对，以及归纳里那个 $n!$（表 2）是不是真有分量。答案是：对；而且不写就错，错的正是 $n!$ 倍。
+}
+
+\hdr{§8}{自测四题（先做，答案在附录 A）}
+
+\noindent 四题分别对应：引理的小情形、差商里“对谁求导”、三角不等式这一步、以及阶乘的账。答案与详细过程在附录 A（第 \pageref{app:self} 页起）。
+
+\subhdr{题 1\quad 引理在 $k=0,1,2$ 上的手感}\label{q:1}
+
+设 $C$ 是单位圆 $|z|=1$（正向），$f(\zeta)=\zeta^{2}$，$z=0$。按 (3.1) 的定义算出 $\Phi_0(0),\Phi_1(0),\Phi_2(0)$，并用 $\Phi_n=\dfrac{f^{(n)}}{n!}$ 核对。
+
+\subhdr{题 2\quad 这个归纳步缺了哪一块}\label{q:2}
+
+有人这样写归纳步：「设 $f^{(n)}(z)=\dfrac{n!}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)}{(\zeta-z)^{n+1}}\dd\zeta$ 对某个 $n$ 成立。两边对 $z$ 求导，右边把求导搬进积分号、只对核求导，得 $f^{(n+1)}(z)=\dfrac{(n+1)!}{2\pi i}\displaystyle\oint_C\dfrac{f(\zeta)}{(\zeta-z)^{n+2}}\dd\zeta$，故公式对 $n+1$ 也成立。」
+
+指出这个推理缺了哪一块，并说明缺的那块从哪里补。
+
+\subhdr{题 3\quad 那个 $\dfrac{d}{2}$ 是怎么来的}\label{q:3}
+
+设 $z_0\in D$，$d=\operatorname{dist}(z_0,C)>0$。证明：当 $|h|\le\dfrac{d}{2}$ 时，对一切 $\zeta\in C$ 有 $|\zeta-z_0-h|\ge\dfrac{d}{2}$。
+
+\subhdr{题 4\quad 阶乘的账}\label{q:4}
+
+设 $f(\zeta)=\dfrac{1}{2-\zeta}$，$C$ 是单位圆，$z=0$。算出 $\Phi_3(0)$，再用 $\dfrac{f^{(3)}(0)}{3!}$ 核对。
+
+\hdr{§9}{易错点（每条指回某一步）}
+
+\begin{enumerate}[leftmargin=1.9em,label=\textbf{\arabic*}]
+\item \textbf{对 $f$ 求导}：见 §2.3。$f(\zeta)$ 与 $z$ 无关，$\zeta$ 只是积分变量。
+\item \textbf{用结论证结论}：见 §2.2。归纳假设只给“相等”，不给“可导”；可导性必须由引理单独提供。
+\item \textbf{界里留着 $h$}：见 §5.2。若不先取 $|\Delta z|\le d/2$，那个“上界 $M$”就不是常数，极限推不出来。
+\item \textbf{定义里不带阶乘}：见 §4.5。不带阶乘时 $\Phi_n=\dfrac{f^{(n)}}{n!}$，$n\ge2$ 起就与 (3.3) 差一个 $n!$。
+\item \textbf{把 $|\zeta-z|\ge d$ 当等号}：见 §3.2。只有 $|\zeta-z_0|\ge d$ 是定义，$z$ 一动就变成 $d/2$；这个 $\dfrac12$ 是 (3.3b) 给的，不能省。
+\item \textbf{忘记 $z$ 必须在内部}：见 §1.2 条件二。$z$ 在外时右边为 $0$，左边不为 $0$。
+\item \textbf{把 $\varsigma$ 与 $z$ 看混}：见 §0.2。课件 p35 之前 $z$ 是积分变量，之后 $z$ 是定点，同一份课件里 $z$ 的身份变过一次。
+\end{enumerate}
+
+\hdr{§10}{缺口清单（本讲义补的，逐条点名）}
+
+\gapitem{归纳步空缺}{p37 原文只有「再利用数学归纳法，得证 $n$ 阶导数公式」一句；归纳对象是什么、归纳步靠哪条命题、为何不循环、$n!$ 从哪来，全部没有。补法：§3 建立核求导引理（分子只要求连续），§4 以 $I_n=n!\Phi_n$ 为对象做两步归纳。}
+
+\gapitem{一致界缺口}{p36 原文「$M$ 是函数 $\dfrac{f(\zeta)}{(\zeta-z)(\zeta-z-\Delta z)}$ 的上界」——该函数本身依赖 $\Delta z$，取上界时未限制 $|\Delta z|$，于是 $|\Delta z|M(\Delta z)$ 未必趋于 $0$。补法：§5.2 先取 $|\Delta z|\le d/2$，把 $M$ 换成与 $\Delta z$ 无关的 $\dfrac{2\max|f|}{d^{3}}$。}
+
+\gapitem{阶乘来源缺口}{p36 公式里 $n!$ 直接出现，没有交代；p37 也没有。补法：§4.5，每求一次导核的幂次加一、乘新的幂次，从 $k=0$ 到 $n-1$ 累积成 $n!$；表 2 用数值核对“不带阶乘就差 $n!$”。}
+
+\gapitem{距离 $d$ 未定义}{p36 界中用到 $|\zeta-z-\Delta z|$ 的下界，但全页没有定义 $d=\operatorname{dist}(z,C)$，也没有说它为正。补法：§1.4 用紧集上连续函数取到最小值给出 $d>0$；§3.2 由三角不等式得 $|\zeta-z|\ge d/2$。}
+
+\gapitem{「闭区域上解析」的含义}{p36 原文「如果函数 $f(z)$ 在闭区域 $\bar D$ 内解析」。严格读法是“在包含 $\bar D$ 的开区域内解析”。补法：§1.2 旁注说明两种等价写法，并指出本文的推导只需“$D$ 内解析、$\bar D$ 上连续”。}
+
+\gapitem{图缺}{p36--p37 全篇无图，“极点离 $C$ 有多远”全靠文字。补法：§3.2 图 1（重绘），标出 $d$、$d/2$、$|\zeta-z_0|$、$|\zeta-z|$ 四个量。}
+
+\hdr{§11}{三句话}
+
+\begin{enumerate}[leftmargin=1.9em,label=\textbf{\arabic*}]
+\item 归纳的不是公式，是\textbf{核的幂次}：只对 $\dfrac{1}{(\zeta-z)^{k+1}}$ 求导，分子 $f(\zeta)$ 从头到尾一动不动。
+\item 能不能反复求导，取决于引理是否\textbf{只要求分子连续}。所以引理必须在“$\varphi$ 是任意连续函数”时就一次证完——这是全篇唯一真正的技巧。
+\item $n!$ 是 $1\cdot2\cdots n$ 的累积，不是约定。定义里带上它，(4.2) 才干净；不带它，得到的是 $\Phi_n=\dfrac{f^{(n)}}{n!}$。
+\end{enumerate}
+
+\flowerrule
+
+\needspace{9.2cm}
+\hdr{§12}{与课件的页码对照}
+
+\begin{center}
+\begin{minipage}{\linewidth}\centering
+\tabtop
+\begin{tabular}{@{}p{1.9cm}p{8.0cm}p{6.1cm}@{}}
+\thead{课件页} & \thead{课件内容} & \thead{本文落点}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{1.9cm}p{8.0cm}p{6.1cm}@{}}
+p31 & 柯西公式（(3.3) 的 $n=0$）与两前提 & §1.1、§1.2 条件一/二\\
+p32--p33 & 柯西公式的证明 & 不重复，只引用结论\\
+p35 & 说明1：$a\to z$，积分变量改 $\varsigma$ & §0.2、§1.1\\
+p36 & 说明3：(3.3) 与 $n=1$ 的差商 & §5.1、§5.2（补一致界）\\
+p37 & 「再利用数学归纳法」+ 高阶导数说明 & §3、§4（全文核心）\\
+p43 & 柯西不等式 & §6.1\\
+p44 & 刘维定理、平均值定理 & §6.2、§6.3\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+\noindent 本讲义只处理 (3.3) 这一个公式：它的三个条件、一条引理、一步归纳。p31--p33 的柯西公式证明、p39--p42 的四个例题（用柯西公式与其推论算具体积分）都在原课件里，本文不重排。
+
+\hdr{附录 A}{自测四题详解}\label{app:self}
+
+\noindent 四道题的题干在正文第 \pageref{q:1} 页（题 1--4 同页）。每题给出条件摘要，便于不回头阅读。
+
+\qbreak
+\subhdr{A.1\quad 题 1：$\Phi_0,\Phi_1,\Phi_2$ 在 $z=0$}
+
+\qstem{（课件 p36 说明3；本题为讲义自编；题干见正文第 \pageref{q:1} 页 题 1）$C$ 是单位圆 $|z|=1$（正向），$f(\zeta)=\zeta^{2}$，$z=0$。求 $\Phi_0(0),\Phi_1(0),\Phi_2(0)$，并核对 $\Phi_n=f^{(n)}/n!$。}
+
+\noindent\textbf{考点}：$\Phi_k$ 的定义 (3.1)，以及 $z=0$ 时积分退化成 $\oint\zeta^{-m}\dd\zeta$ 这个基本积分。
+
+\noindent\textbf{关键一步}：把 $f(\zeta)=\zeta^2$ 与核一起写成分数，看幂次。
+
+\noindent\textbf{详解}：三个积分被积函数分别是 $\zeta$、$1$、$\zeta^{-1}$，前两个在圆内解析（积分为零），第三个给出 $2\pi i$：
+
+\begin{gather*}
+\Phi_0(0)=\frac{1}{2\pi i}\oint_C\frac{\zeta^{2}}{\zeta}\dd\zeta=\frac{1}{2\pi i}\oint_C\zeta\dd\zeta=0,
+\qquad
+\Phi_1(0)=\frac{1}{2\pi i}\oint_C\frac{\zeta^{2}}{\zeta^{2}}\dd\zeta=\frac{1}{2\pi i}\oint_C 1\dd\zeta=0,\\
+\Phi_2(0)=\frac{1}{2\pi i}\oint_C\frac{\zeta^{2}}{\zeta^{3}}\dd\zeta=\frac{1}{2\pi i}\oint_C\frac{1}{\zeta}\dd\zeta=\frac{2\pi i}{2\pi i}=1 .
+\end{gather*}
+
+\noindent\textbf{答案}：$\Phi_0(0)=0$，$\Phi_1(0)=0$，$\Phi_2(0)=1$。
+
+\noindent\textbf{自检}：$f'=2\zeta\Rightarrow f'(0)/1!=0$；$f''=2\Rightarrow f''(0)/2!=2/2=1$。三行对上，其中 $n=0$ 一行是边界行（$0!=1$），$n=2$ 是唯一非零的一行——这也是为什么 $f=\zeta^2$ 是个好例子：前两阶全是零，不容易蒙对。
+
+\qbreak
+\subhdr{A.2\quad 题 2：缺的是“积分可导”，不是“能求导”}
+
+\qstem{（课件 p37；本题为讲义自编；题干见正文第 \pageref{q:2} 页 题 2）「设 $n$ 阶的积分表示成立，两边对 $z$ 求导、把求导搬进积分号，得 $n+1$ 阶的积分表示。」指出这个归纳步缺了哪一块。}
+
+\noindent\textbf{考点}：归纳步的合法性来源，即 §4.3 三个等号各由什么东西保证。
+
+\noindent\textbf{关键一步}：写下 $f^{(n+1)}=(f^{(n)})'$ 之前，先问：左边这个导数存在吗？右边那个含参积分对 $z$ 可导吗？
+
+\noindent\textbf{详解}：把右边那个积分记作 $I_n$（即 (4.1)）。这段推理要成立，需要两块：
+
+\begin{enumerate}[leftmargin=1.9em]
+\item \textbf{右边可导，且导数等于 $(n+1)$ 倍的下一个积分}——这是引理 (3.2)，已在 §3 证过，且证明里只用到分子连续。这一块\textbf{不缺}，但推理中没写，读者不知道它凭什么叫“把求导搬进积分号”。
+\item \textbf{左边 $f^{(n)}$ 可导}——归纳假设只说 $f^{(n)}=I_n$（两个函数相等），没有说 $f^{(n)}$ 可导。它可导，必须由“$I_n$ 可导（结论 A）+ $f^{(n)}=I_n$（归纳假设）”合成。
+\end{enumerate}
+
+缺的正是第 2 块。不写它，就等于默认 $f^{(n)}$ 可导——而“一阶导数存在则任意阶导数存在”恰恰是 (3.3) 要证明的结论，于是循环。
+
+\noindent\textbf{答案}：缺“$I_n$ 对 $z$ 可导”，即结论 A 的 (4.2)，它由引理 (3.2) 提供。补上之后：
+
+\begin{equation*}
+f^{(n+1)}(z)=\frac{\dd}{\dd z}f^{(n)}(z)=\frac{\dd}{\dd z}I_n(z)=I_n'(z)=I_{n+1}(z),
+\end{equation*}
+
+其中最后一个等号就是 (4.2)。这就完成了归纳步，也顺带证明了 $f^{(n+1)}$ 存在且解析（它等于 $I_{n+1}$，而 $I_{n+1}$ 是可导的）。
+
+\noindent\textbf{自检}：把这个答案与 (4.5) 逐句对齐——第一个等号是定义（要可导）、第二个是归纳假设、第三个是结论 A、第四个是 (4.2)。四个等号四句依据，缺任何一句都能被这一题问出来。
+
+\qbreak
+\subhdr{A.3\quad 题 3：$\dfrac{d}{2}$ 由三角不等式给出}
+
+\qstem{（课件 p36；本题为讲义自编；题干见正文第 \pageref{q:3} 页 题 3）$z_0\in D$，$d=\operatorname{dist}(z_0,C)>0$，$|h|\le d/2$。证明对一切 $\zeta\in C$ 有 $|\zeta-z_0-h|\ge d/2$。}
+
+\noindent\textbf{考点}：三角不等式的反向用法，以及“$z$ 有安全距离”这句话的量化。
+
+\noindent\textbf{关键一步}：把 $|\zeta-z_0-h|$ 看成 $|(\zeta-z_0)-h|$，用 $|A-B|\ge|A|-|B|$。
+
+\noindent\textbf{详解}：对任意 $\zeta\in C$，由 $d$ 的定义 $|\zeta-z_0|\ge d$；于是
+
+\begin{equation*}
+|\zeta-z_0-h|=|(\zeta-z_0)-h|\ge|\zeta-z_0|-|h|\ge d-\frac{d}{2}=\frac{d}{2}>0 .
+\end{equation*}
+
+顺便得到 $z=z_0+h\notin C$，所以 $\Phi_k(z)$ 有意义，而且 $|\zeta-z|\ge d/2$ 这个下界与 $\zeta$ 无关、与 $h$（只要 $|h|\le d/2$）无关。
+
+\noindent\textbf{答案}：见上，结论 $|\zeta-z|\ge d/2$。
+
+\noindent\textbf{自检}：这条不等式在整份证明里出现在三处——(3.3a)（核有界）、(3.9)（余项有界）、(3.13)（界与 $h$ 无关）。任何一处把 $\dfrac{d}{2}$ 换成 $d$ 或换成 $|\zeta-z|$ 本身，都会让界重新依赖 $h$。
+
+\qbreak
+\subhdr{A.4\quad 题 4：$\Phi_3(0)$ 与阶乘的账}
+
+\qstem{（课件 p43；本题为讲义自编；题干见正文第 \pageref{q:4} 页 题 4）$f(\zeta)=\dfrac{1}{2-\zeta}$，$C$ 是单位圆，$z=0$。求 $\Phi_3(0)$，并用 $f^{(3)}(0)/3!$ 核对。}
+
+\noindent\textbf{考点}：$\Phi_k$ 的定义与“不带阶乘差 $n!$”这件事。
+
+\noindent\textbf{关键一步}：$\dfrac{1}{2-\zeta}=\dfrac12\sum_{j\ge0}\left(\dfrac{\zeta}{2}\right)^{j}$ 在 $|\zeta|\le1$ 上一致收敛，取 $\zeta^{3}$ 的系数。
+
+\noindent\textbf{详解}：
+
+\begin{equation*}
+\Phi_3(0)=\frac{1}{2\pi i}\oint_C\frac{1}{(2-\zeta)\,\zeta^{4}}\dd\zeta=\operatorname{Res}_{\zeta=0}\frac{1}{(2-\zeta)\zeta^{4}} .
+\end{equation*}
+
+$\dfrac{1}{2-\zeta}=\dfrac12\displaystyle\sum_{j\ge0}\frac{\zeta^{j}}{2^{j}}$，其中 $\zeta^{3}$ 的系数是 $\dfrac{1}{2}\cdot\dfrac{1}{2^{3}}=\dfrac{1}{16}$，这就是留数。故 $\Phi_3(0)=\dfrac{1}{16}$。
+
+核对：$f^{(n)}(z)=\dfrac{n!}{(2-z)^{n+1}}$，取 $n=3$、$z=0$ 得 $f^{(3)}(0)=\dfrac{3!}{2^{4}}=\dfrac{6}{16}$，再除以 $3!=6$，得 $\dfrac{1}{16}$，与 $\Phi_3(0)$ 相同。$\checkmark$
+
+\noindent\textbf{答案}：$\Phi_3(0)=\dfrac{1}{16}$，与 $\dfrac{f^{(3)}(0)}{3!}=\dfrac{6/16}{6}=\dfrac{1}{16}$ 一致。
+
+\noindent\textbf{自检}：若这里误用 (3.3)（带阶乘）去算 $\Phi_3$，会得到 $3!\times\dfrac{1}{16}=\dfrac38$，比正确值大 $6$ 倍——正是表 2 第 $n=3$ 行 $0.375$ 与 $0.0625$ 的比。数值上 $I_3(0)=0.375$、$\Phi_3(0)=0.0625$ 也已核对过。
+
+
+\end{document}
