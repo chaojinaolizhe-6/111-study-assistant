@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-05 2026-11-05 07:12（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-05 2026-11-05 07:44（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -374,7 +374,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5745 个文件）
+## 3. 文件直达 URL 索引（5786 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -554,12 +554,13 @@
 - `state/mistakes.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/state/mistakes.md
 - `state/reviews.jsonl` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/state/reviews.jsonl
 
-### plan（28 个）
+### plan（29 个）
 
 - `plan/2026-10-10-明天安排.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/2026-10-10-%E6%98%8E%E5%A4%A9%E5%AE%89%E6%8E%92.md
 - `plan/20261012-体检-时间与课表冲突核对.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/20261012-%E4%BD%93%E6%A3%80-%E6%97%B6%E9%97%B4%E4%B8%8E%E8%AF%BE%E8%A1%A8%E5%86%B2%E7%AA%81%E6%A0%B8%E5%AF%B9.md
 - `plan/20261031-大创开题-材料提交与答辩.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/20261031-%E5%A4%A7%E5%88%9B%E5%BC%80%E9%A2%98-%E6%9D%90%E6%96%99%E6%8F%90%E4%BA%A4%E4%B8%8E%E7%AD%94%E8%BE%A9.md
 - `plan/20261104-实验5-时间与准备.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/20261104-%E5%AE%9E%E9%AA%8C5-%E6%97%B6%E9%97%B4%E4%B8%8E%E5%87%86%E5%A4%87.md
+- `plan/20261104-马原免试口试-作战方案.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/20261104-%E9%A9%AC%E5%8E%9F%E5%85%8D%E8%AF%95%E5%8F%A3%E8%AF%95-%E4%BD%9C%E6%88%98%E6%96%B9%E6%A1%88.md
 - `plan/README.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/README.md
 - `plan/gaps.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/gaps.md
 - `plan/handoff-CURRENT.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/handoff-CURRENT.md
@@ -585,7 +586,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2348 个）
+### subjects（2354 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -634,8 +635,11 @@
 - `subjects/01-理论力学/讲义/T06-粒子碰撞-精讲-20261023.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T06-%E7%B2%92%E5%AD%90%E7%A2%B0%E6%92%9E-%E7%B2%BE%E8%AE%B2-20261023.tex
 - `subjects/01-理论力学/讲义/T07-小振动-精讲-20261023.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T07-%E5%B0%8F%E6%8C%AF%E5%8A%A8-%E7%B2%BE%E8%AE%B2-20261023.pdf
 - `subjects/01-理论力学/讲义/T07-小振动-精讲-20261023.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T07-%E5%B0%8F%E6%8C%AF%E5%8A%A8-%E7%B2%BE%E8%AE%B2-20261023.tex
+- `subjects/01-理论力学/讲义/T08-惯量张量与刚体动力学-精讲-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T08-%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F%E4%B8%8E%E5%88%9A%E4%BD%93%E5%8A%A8%E5%8A%9B%E5%AD%A6-%E7%B2%BE%E8%AE%B2-20261105.pdf
+- `subjects/01-理论力学/讲义/T08-惯量张量与刚体动力学-精讲-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/T08-%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F%E4%B8%8E%E5%88%9A%E4%BD%93%E5%8A%A8%E5%8A%9B%E5%AD%A6-%E7%B2%BE%E8%AE%B2-20261105.tex
 - `subjects/01-理论力学/讲义/Topic8-刚体运动学P1-精讲-20261025.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/Topic8-%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8%E5%AD%A6P1-%E7%B2%BE%E8%AE%B2-20261025.pdf
 - `subjects/01-理论力学/讲义/Topic8-刚体运动学P1-精讲-20261025.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/Topic8-%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8%E5%AD%A6P1-%E7%B2%BE%E8%AE%B2-20261025.tex
+- `subjects/01-理论力学/讲义/texput.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/texput.log
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.aux
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.log
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.out
@@ -651,6 +655,8 @@
 - `subjects/01-理论力学/讲义/竞赛选拔-A卷-八道典型题-20261019.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E7%AB%9E%E8%B5%9B%E9%80%89%E6%8B%94-A%E5%8D%B7-%E5%85%AB%E9%81%93%E5%85%B8%E5%9E%8B%E9%A2%98-20261019.pdf
 - `subjects/01-理论力学/讲义/竞赛选拔-A卷-八道典型题-20261019.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E7%AB%9E%E8%B5%9B%E9%80%89%E6%8B%94-A%E5%8D%B7-%E5%85%AB%E9%81%93%E5%85%B8%E5%9E%8B%E9%A2%98-20261019.tex
 - `subjects/01-理论力学/课件/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/INDEX.md
+- `subjects/01-理论力学/课件/TM2026 - Topic 8 - P2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/TM2026%20-%20Topic%208%20-%20P2.pdf
+- `subjects/01-理论力学/课件/TM2026 - Topic 8 - P3 v2(1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/TM2026%20-%20Topic%208%20-%20P3%20v2%281%29.pdf
 - `subjects/01-理论力学/课件/TM2026-Topic8-P1.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/TM2026-Topic8-P1.pdf
 - `subjects/01-理论力学/课件/TM_Topic_01_2026_student.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/TM_Topic_01_2026_student.pdf
 - `subjects/01-理论力学/课件/TM_Topic_01_submission.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AF%BE%E4%BB%B6/TM_Topic_01_submission.pdf
@@ -2640,6 +2646,7 @@
 - `subjects/08-马克思主义基本原理/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/08-%E9%A9%AC%E5%85%8B%E6%80%9D%E4%B8%BB%E4%B9%89%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/progress.md
 - `subjects/08-马克思主义基本原理/topics/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/08-%E9%A9%AC%E5%85%8B%E6%80%9D%E4%B8%BB%E4%B9%89%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/topics/INDEX.md
 - `subjects/08-马克思主义基本原理/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/08-%E9%A9%AC%E5%85%8B%E6%80%9D%E4%B8%BB%E4%B9%89%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/INDEX.md
+- `subjects/08-马克思主义基本原理/口试/8分钟逐字稿-v1-20261104.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/08-%E9%A9%AC%E5%85%8B%E6%80%9D%E4%B8%BB%E4%B9%89%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E5%8F%A3%E8%AF%95/8%E5%88%86%E9%92%9F%E9%80%90%E5%AD%97%E7%A8%BF-v1-20261104.md
 - `subjects/08-马克思主义基本原理/课件/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/08-%E9%A9%AC%E5%85%8B%E6%80%9D%E4%B8%BB%E4%B9%89%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E8%AF%BE%E4%BB%B6/INDEX.md
 - `subjects/09-体育/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/09-%E4%BD%93%E8%82%B2/INDEX.md
 - `subjects/09-体育/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/09-%E4%BD%93%E8%82%B2/progress.md
@@ -4550,7 +4557,7 @@
 - `obsidian/obsidian知识库/知识库_数物方法_柯朗希尔伯特_Vol2/逐节/第四章_§4.8_贝尔特拉米方程求解.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/obsidian%E7%9F%A5%E8%AF%86%E5%BA%93/%E7%9F%A5%E8%AF%86%E5%BA%93_%E6%95%B0%E7%89%A9%E6%96%B9%E6%B3%95_%E6%9F%AF%E6%9C%97%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_Vol2/%E9%80%90%E8%8A%82/%E7%AC%AC%E5%9B%9B%E7%AB%A0_%C2%A74.8_%E8%B4%9D%E5%B0%94%E7%89%B9%E6%8B%89%E7%B1%B3%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3.md
 - `obsidian/obsidian知识库/知识库_数物方法_柯朗希尔伯特_Vol2/逐节/第四章_§4.9_拟线性椭圆型方程与勒雷-肖德尔方法.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/obsidian/obsidian%E7%9F%A5%E8%AF%86%E5%BA%93/%E7%9F%A5%E8%AF%86%E5%BA%93_%E6%95%B0%E7%89%A9%E6%96%B9%E6%B3%95_%E6%9F%AF%E6%9C%97%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9_Vol2/%E9%80%90%E8%8A%82/%E7%AC%AC%E5%9B%9B%E7%AB%A0_%C2%A74.9_%E6%8B%9F%E7%BA%BF%E6%80%A7%E6%A4%AD%E5%9C%86%E5%9E%8B%E6%96%B9%E7%A8%8B%E4%B8%8E%E5%8B%92%E9%9B%B7-%E8%82%96%E5%BE%B7%E5%B0%94%E6%96%B9%E6%B3%95.md
 
-### .tutor（193 个）
+### .tutor（206 个）
 
 - `.tutor/cache/materials/021a546f01755f108b97b863fcb055b910f1a9c4179313e33e27b42db18001dc/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/021a546f01755f108b97b863fcb055b910f1a9c4179313e33e27b42db18001dc/extraction.json
 - `.tutor/cache/materials/032d7d49ad4538e06baac7dff27ab67a344addf677864c3a0719100bbe13e3fa/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/032d7d49ad4538e06baac7dff27ab67a344addf677864c3a0719100bbe13e3fa/extraction.json
@@ -4584,6 +4591,7 @@
 - `.tutor/cache/materials/2346a6834d525888eac9b7cb372f9d66624ff863e4206aea927a0a55d97a8e92/page-0005.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/2346a6834d525888eac9b7cb372f9d66624ff863e4206aea927a0a55d97a8e92/page-0005.png
 - `.tutor/cache/materials/2346a6834d525888eac9b7cb372f9d66624ff863e4206aea927a0a55d97a8e92/page-0015.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/2346a6834d525888eac9b7cb372f9d66624ff863e4206aea927a0a55d97a8e92/page-0015.png
 - `.tutor/cache/materials/293e1a8f38559c4aa3625267ec02110b4a9502e813bece9a85c9dd643bbcc464/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/293e1a8f38559c4aa3625267ec02110b4a9502e813bece9a85c9dd643bbcc464/extraction.json
+- `.tutor/cache/materials/36021d2416ba3f6faeeace5e032d34f9f1a757c9281e3fd684ffd3761decca42/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/36021d2416ba3f6faeeace5e032d34f9f1a757c9281e3fd684ffd3761decca42/extraction.json
 - `.tutor/cache/materials/3794229dd7eab61da5b36c5785bfea5dde2ff2dd075369c143239a745d7cc07f/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/3794229dd7eab61da5b36c5785bfea5dde2ff2dd075369c143239a745d7cc07f/extraction.json
 - `.tutor/cache/materials/392c2621f55f353c417e41cac49a1c368c0d1c5f806172f54f33db7e75b1bf9f/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/392c2621f55f353c417e41cac49a1c368c0d1c5f806172f54f33db7e75b1bf9f/extraction.json
 - `.tutor/cache/materials/392c2621f55f353c417e41cac49a1c368c0d1c5f806172f54f33db7e75b1bf9f/page-0003.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/392c2621f55f353c417e41cac49a1c368c0d1c5f806172f54f33db7e75b1bf9f/page-0003.png
@@ -4675,6 +4683,12 @@
 - `.tutor/cache/materials/a614cc1fd4c9bfcb5af672e1948c8b244c3772c499a8d1fff32422ef5daa1b24/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/a614cc1fd4c9bfcb5af672e1948c8b244c3772c499a8d1fff32422ef5daa1b24/extraction.json
 - `.tutor/cache/materials/baf080b3e2ee22b849809da7825b84d81ec8425dddf8482e9c782a7d1fe8d6ca/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/baf080b3e2ee22b849809da7825b84d81ec8425dddf8482e9c782a7d1fe8d6ca/extraction.json
 - `.tutor/cache/materials/baf080b3e2ee22b849809da7825b84d81ec8425dddf8482e9c782a7d1fe8d6ca/page-0005.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/baf080b3e2ee22b849809da7825b84d81ec8425dddf8482e9c782a7d1fe8d6ca/page-0005.png
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/extraction.json
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0005.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0005.png
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0006.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0006.png
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0014.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0014.png
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0015.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0015.png
+- `.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0017.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c079b66ac4f8d1afef7b7342e7e6c4b96c0e9852df08685953292edc8a20be67/page-0017.png
 - `.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/extraction.json
 - `.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/page-0011.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/page-0011.png
 - `.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/page-0012.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/c1c7179b67a76629180e92412ff20ce0eeba69ad6c7ed8e3915bcee6c67701e0/page-0012.png
@@ -4700,6 +4714,12 @@
 - `.tutor/cache/materials/f9b5b43fbb3f070741f970ecf2adbfaaef8b2f520eb5e2d350bae39557b1c7af/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/f9b5b43fbb3f070741f970ecf2adbfaaef8b2f520eb5e2d350bae39557b1c7af/extraction.json
 - `.tutor/cache/materials/fb097a7c8030989373524d39db348199276b74dde0a7621ef0ed4b8ae1b02436/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fb097a7c8030989373524d39db348199276b74dde0a7621ef0ed4b8ae1b02436/extraction.json
 - `.tutor/cache/materials/fc5939503af31bc815e41281bd9716b986e6ad08137c5031121a5fa526d0ffab/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fc5939503af31bc815e41281bd9716b986e6ad08137c5031121a5fa526d0ffab/extraction.json
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/extraction.json
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0003.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0003.png
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0004.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0004.png
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0009.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0009.png
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0012.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0012.png
+- `.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0016.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/fdbdb1861b8690c82c034f601b465d91266768d3fe01ac145bed16b24badf2cf/page-0016.png
 - `.tutor/cache/materials/ff928533136bbeeccc07df231983cdd5924f17e0a230fb90d6d8d8f73bcc23d9/extraction.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/cache/materials/ff928533136bbeeccc07df231983cdd5924f17e0a230fb90d6d8d8f73bcc23d9/extraction.json
 - `.tutor/config/external-evidence.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/config/external-evidence.md
 - `.tutor/config/knowledge-base.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/config/knowledge-base.md
@@ -4746,7 +4766,7 @@
 - `.tutor/evolution/reflections/.gitkeep` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/evolution/reflections/.gitkeep
 - `.tutor/evolution/reflections/2026-10-23-lecture-deepdive-表格与习题.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.tutor/evolution/reflections/2026-10-23-lecture-deepdive-%E8%A1%A8%E6%A0%BC%E4%B8%8E%E4%B9%A0%E9%A2%98.md
 
-### .dsh（10 个）
+### .dsh（11 个）
 
 - `.dsh/skills/ielts-session/SKILL.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/ielts-session/SKILL.md
 - `.dsh/skills/ielts-session/references/rubrics.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/ielts-session/references/rubrics.md
@@ -4755,6 +4775,7 @@
 - `.dsh/skills/lecture-deepdive/references/gap-checklist.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/lecture-deepdive/references/gap-checklist.md
 - `.dsh/skills/lecture-deepdive/references/worked-examples.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/lecture-deepdive/references/worked-examples.md
 - `.dsh/skills/lecture-deepdive/scripts/check_handout.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/lecture-deepdive/scripts/check_handout.py
+- `.dsh/skills/lecture-deepdive/scripts/fixture-example-as-proof.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/lecture-deepdive/scripts/fixture-example-as-proof.tex
 - `.dsh/skills/lecture-deepdive/scripts/read_slides.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/lecture-deepdive/scripts/read_slides.py
 - `.dsh/skills/tutor-assistant/SKILL.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/tutor-assistant/SKILL.md
 - `.dsh/skills/tutor-assistant/agents/openai.yaml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/.dsh/skills/tutor-assistant/agents/openai.yaml
@@ -4969,7 +4990,7 @@
 - `upstream/tutor/examples/subjects/math.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/math.yml
 - `upstream/tutor/subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/subjects/INDEX.md
 
-### output（175 个）
+### output（177 个）
 
 - `output/AI量化交易讲义/AI量化交易成熟技术清单.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E6%B8%85%E5%8D%95.xlsx
 - `output/AI量化交易讲义/AI量化交易成熟技术讲义.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E8%AE%B2%E4%B9%89.docx
@@ -5104,18 +5125,13 @@
 - `output/ai-quant-2026/tests/test_audit.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ai-quant-2026/tests/test_audit.py
 - `output/lect18-20-problem1-20261028/problem1-series.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/lect18-20-problem1-20261028/problem1-series.pdf
 - `output/lect18-20-problem1-20261028/problem1-series.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/lect18-20-problem1-20261028/problem1-series.tex
-- `output/定积分区间再现-讲义-20261104/_预览/p-01.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-01.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-02.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-02.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-03.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-03.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-04.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-04.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-05.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-05.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-06.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-06.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-07.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-07.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-08.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-08.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-09.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-10.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-11.png
-- `output/定积分区间再现-讲义-20261104/_预览/p-12.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/_%E9%A2%84%E8%A7%88/p-12.png
+- `output/ppt-team-guide-20261104/fonts/NotoSansSC-Bold.otf` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/fonts/NotoSansSC-Bold.otf
+- `output/ppt-team-guide-20261104/fonts/NotoSerifSC-Bold.otf` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/fonts/NotoSerifSC-Bold.otf
+- `output/ppt-team-guide-20261104/fonts/NotoSerifSC-Reg.otf` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/fonts/NotoSerifSC-Reg.otf
+- `output/ppt-team-guide-20261104/大学活动与竞赛PPT团队分工指南.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/%E5%A4%A7%E5%AD%A6%E6%B4%BB%E5%8A%A8%E4%B8%8E%E7%AB%9E%E8%B5%9BPPT%E5%9B%A2%E9%98%9F%E5%88%86%E5%B7%A5%E6%8C%87%E5%8D%97.pdf
+- `output/ppt-team-guide-20261104/大学活动与竞赛PPT团队分工指南.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/%E5%A4%A7%E5%AD%A6%E6%B4%BB%E5%8A%A8%E4%B8%8E%E7%AB%9E%E8%B5%9BPPT%E5%9B%A2%E9%98%9F%E5%88%86%E5%B7%A5%E6%8C%87%E5%8D%97.tex
+- `output/ppt-team-guide-20261104/预览-第1页.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/%E9%A2%84%E8%A7%88-%E7%AC%AC1%E9%A1%B5.png
+- `output/ppt-team-guide-20261104/预览-第7页-流程图.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/ppt-team-guide-20261104/%E9%A2%84%E8%A7%88-%E7%AC%AC7%E9%A1%B5-%E6%B5%81%E7%A8%8B%E5%9B%BE.png
 - `output/定积分区间再现-讲义-20261104/定积分换元的区间再现-精讲-20261104.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/%E5%AE%9A%E7%A7%AF%E5%88%86%E6%8D%A2%E5%85%83%E7%9A%84%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E7%B2%BE%E8%AE%B2-20261104.aux
 - `output/定积分区间再现-讲义-20261104/定积分换元的区间再现-精讲-20261104.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/%E5%AE%9A%E7%A7%AF%E5%88%86%E6%8D%A2%E5%85%83%E7%9A%84%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E7%B2%BE%E8%AE%B2-20261104.log
 - `output/定积分区间再现-讲义-20261104/定积分换元的区间再现-精讲-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/%E5%AE%9A%E7%A7%AF%E5%88%86%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E8%AE%B2%E4%B9%89-20261104/%E5%AE%9A%E7%A7%AF%E5%88%86%E6%8D%A2%E5%85%83%E7%9A%84%E5%8C%BA%E9%97%B4%E5%86%8D%E7%8E%B0-%E7%B2%BE%E8%AE%B2-20261104.out
@@ -5146,6 +5162,13 @@
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-4.png
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-5.png
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-6.png
+- `output/马原第5组-底线思维-20261104/模板候选/候选A_中国梦通用_27页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89A_%E4%B8%AD%E5%9B%BD%E6%A2%A6%E9%80%9A%E7%94%A8_27%E9%A1%B5.pptx
+- `output/马原第5组-底线思维-20261104/模板候选/候选B_党建教育_35页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89B_%E5%85%9A%E5%BB%BA%E6%95%99%E8%82%B2_35%E9%A1%B5.pptx
+- `output/马原第5组-底线思维-20261104/模板候选/候选C_不忘初心_29页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89C_%E4%B8%8D%E5%BF%98%E5%88%9D%E5%BF%83_29%E9%A1%B5.pptx
+- `output/马原第5组-底线思维-20261104/第5组_任务包认领图.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E4%BB%BB%E5%8A%A1%E5%8C%85%E8%AE%A4%E9%A2%86%E5%9B%BE.png
+- `output/马原第5组-底线思维-20261104/第5组_底线思维_任务认领表.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E4%BB%BB%E5%8A%A1%E8%AE%A4%E9%A2%86%E8%A1%A8.xlsx
+- `output/马原第5组-底线思维-20261104/第5组_底线思维_组长执行手册.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%BB%84%E9%95%BF%E6%89%A7%E8%A1%8C%E6%89%8B%E5%86%8C.docx
+- `output/马原第5组-底线思维-20261104/第5组_底线思维_组长执行手册.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%BB%84%E9%95%BF%E6%89%A7%E8%A1%8C%E6%89%8B%E5%86%8C.pdf
 
 ### paste（26 个）
 
@@ -5176,7 +5199,7 @@
 - `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
 - `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
-### tmp（862 个）
+### tmp（875 个）
 
 - `tmp/bisect/t_a.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.aux
 - `tmp/bisect/t_a.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.log
@@ -5655,6 +5678,8 @@
 - `tmp/partyclass-20261103/brute_xor.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/brute_xor.py
 - `tmp/partyclass-20261103/bubble_38b2.hevc` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/bubble_38b2.hevc
 - `tmp/partyclass-20261103/build_docx.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_docx.py
+- `tmp/partyclass-20261103/build_terms.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_terms.py
+- `tmp/partyclass-20261103/build_terms_docx.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_terms_docx.py
 - `tmp/partyclass-20261103/checklist.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checklist.txt
 - `tmp/partyclass-20261103/checks.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checks.json
 - `tmp/partyclass-20261103/checks2.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checks2.json
@@ -5828,6 +5853,13 @@
 - `tmp/partyclass-20261103/sheets.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/sheets.py
 - `tmp/partyclass-20261103/sixiang_202609.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/sixiang_202609.txt
 - `tmp/partyclass-20261103/sizes.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/sizes.py
+- `tmp/partyclass-20261103/terms.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms.pdf
+- `tmp/partyclass-20261103/terms2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms2.pdf
+- `tmp/partyclass-20261103/terms3.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms3.pdf
+- `tmp/partyclass-20261103/terms4.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms4.pdf
+- `tmp/partyclass-20261103/terms_check.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms_check.json
+- `tmp/partyclass-20261103/terms_raster.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms_raster.py
+- `tmp/partyclass-20261103/terms_raster2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/terms_raster2.py
 - `tmp/partyclass-20261103/test.hevc` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/test.hevc
 - `tmp/partyclass-20261103/test.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/test.jpg
 - `tmp/partyclass-20261103/test_variants.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/test_variants.py
@@ -5859,12 +5891,20 @@
 - `tmp/partyclass-20261103/thumbs/e7f03f46c36ad8a1b54e1974e00677ff.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/thumbs/e7f03f46c36ad8a1b54e1974e00677ff.jpg
 - `tmp/partyclass-20261103/thumbs/ebe49345a8f3b90c18d993def530749b.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/thumbs/ebe49345a8f3b90c18d993def530749b.jpg
 - `tmp/partyclass-20261103/tmp_probe.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tmp_probe.py
+- `tmp/partyclass-20261103/tpv/p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/p1.png
+- `tmp/partyclass-20261103/tpv/p2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/p2.png
+- `tmp/partyclass-20261103/tpv/q1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/q1.png
+- `tmp/partyclass-20261103/tpv/q_last.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/q_last.png
+- `tmp/partyclass-20261103/tpv/r1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/r1.png
+- `tmp/partyclass-20261103/tpv/s_last.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/tpv/s_last.png
 - `tmp/partyclass-20261103/trykeys.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/trykeys.py
+- `tmp/partyclass-20261103/verify_xlsx.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/verify_xlsx.py
 - `tmp/partyclass-20261103/xinde.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xinde.pdf
 - `tmp/partyclass-20261103/xinde.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xinde.txt
 - `tmp/partyclass-20261103/xinde2.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xinde2.pdf
 - `tmp/partyclass-20261103/xinde3.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xinde3.pdf
 - `tmp/partyclass-20261103/xinde4.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xinde4.pdf
+- `tmp/partyclass-20261103/xlsx_check.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/xlsx_check.json
 - `tmp/partyclass-20261103/附件/附件1：培训方案.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/%E9%99%84%E4%BB%B6/%E9%99%84%E4%BB%B61%EF%BC%9A%E5%9F%B9%E8%AE%AD%E6%96%B9%E6%A1%88.docx
 - `tmp/partyclass-20261103/附件/附件2：自主学习材料.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/%E9%99%84%E4%BB%B6/%E9%99%84%E4%BB%B62%EF%BC%9A%E8%87%AA%E4%B8%BB%E5%AD%A6%E4%B9%A0%E6%9D%90%E6%96%99.docx
 - `tmp/partyclass-20261103/附件/附件3：请假表.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/%E9%99%84%E4%BB%B6/%E9%99%84%E4%BB%B63%EF%BC%9A%E8%AF%B7%E5%81%87%E8%A1%A8.docx
@@ -6001,10 +6041,6 @@
 - `tmp/tikztest.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest.log
 - `tmp/tikztest.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest.pdf
 - `tmp/tikztest.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest.tex
-- `tmp/tikztest/t.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest/t.aux
-- `tmp/tikztest/t.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest/t.log
-- `tmp/tikztest/t.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest/t.pdf
-- `tmp/tikztest/t.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/tikztest/t.tex
 - `tmp/tm8/p16.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tm8/p16.png
 - `tmp/tm8/p17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tm8/p17.png
 - `tmp/tm8/p18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/tm8/p18.png
@@ -6041,10 +6077,13 @@
 - `tmp/zoom_p4bottom.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/zoom_p4bottom.png
 - `tmp/zoom_table.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/zoom_table.png
 
-### 入党（25 个）
+### 入党（29 个）
 
 - `入党/从申请人到正式党员-发展党员工作细则与党章研读讲义-20261027.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E4%BB%8E%E7%94%B3%E8%AF%B7%E4%BA%BA%E5%88%B0%E6%AD%A3%E5%BC%8F%E5%85%9A%E5%91%98-%E5%8F%91%E5%B1%95%E5%85%9A%E5%91%98%E5%B7%A5%E4%BD%9C%E7%BB%86%E5%88%99%E4%B8%8E%E5%85%9A%E7%AB%A0%E7%A0%94%E8%AF%BB%E8%AE%B2%E4%B9%89-20261027.docx
 - `入党/从申请人到正式党员-发展党员工作细则与党章研读讲义-20261027.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E4%BB%8E%E7%94%B3%E8%AF%B7%E4%BA%BA%E5%88%B0%E6%AD%A3%E5%BC%8F%E5%85%9A%E5%91%98-%E5%8F%91%E5%B1%95%E5%85%9A%E5%91%98%E5%B7%A5%E4%BD%9C%E7%BB%86%E5%88%99%E4%B8%8E%E5%85%9A%E7%AB%A0%E7%A0%94%E8%AF%BB%E8%AE%B2%E4%B9%89-20261027.pdf
+- `入党/党的常用名词规范表-20261104.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E7%9A%84%E5%B8%B8%E7%94%A8%E5%90%8D%E8%AF%8D%E8%A7%84%E8%8C%83%E8%A1%A8-20261104.xlsx
+- `入党/党的常用名词规范表-阅读版-20261104.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E7%9A%84%E5%B8%B8%E7%94%A8%E5%90%8D%E8%AF%8D%E8%A7%84%E8%8C%83%E8%A1%A8-%E9%98%85%E8%AF%BB%E7%89%88-20261104.docx
+- `入党/党课心得-代写提示词-20261104.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E8%AF%BE%E5%BF%83%E5%BE%97-%E4%BB%A3%E5%86%99%E6%8F%90%E7%A4%BA%E8%AF%8D-20261104.md
 - `入党/党课现场照片-20261031/08_101823.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E8%AF%BE%E7%8E%B0%E5%9C%BA%E7%85%A7%E7%89%87-20261031/08_101823.jpg
 - `入党/党课现场照片-20261031/09_104346.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E8%AF%BE%E7%8E%B0%E5%9C%BA%E7%85%A7%E7%89%87-20261031/09_104346.jpg
 - `入党/党课现场照片-20261031/10_112152.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E5%85%9A%E8%AF%BE%E7%8E%B0%E5%9C%BA%E7%85%A7%E7%89%87-20261031/10_112152.jpg
@@ -6068,6 +6107,7 @@
 - `入党/第36期入党积极分子培训-日程与准备清单-20261027.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E7%AC%AC36%E6%9C%9F%E5%85%A5%E5%85%9A%E7%A7%AF%E6%9E%81%E5%88%86%E5%AD%90%E5%9F%B9%E8%AE%AD-%E6%97%A5%E7%A8%8B%E4%B8%8E%E5%87%86%E5%A4%87%E6%B8%85%E5%8D%95-20261027.pdf
 - `入党/附件.zip` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E9%99%84%E4%BB%B6.zip
 - `入党/马泽宇 - 20251091006 - 入党积极分子半年动态.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E9%A9%AC%E6%B3%BD%E5%AE%87%20-%2020251091006%20-%20%E5%85%A5%E5%85%9A%E7%A7%AF%E6%9E%81%E5%88%86%E5%AD%90%E5%8D%8A%E5%B9%B4%E5%8A%A8%E6%80%81.docx
+- `入党/马泽宇 - 20251091006 - 入党积极分子半年动态（详细版）.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%85%A5%E5%85%9A/%E9%A9%AC%E6%B3%BD%E5%AE%87%20-%2020251091006%20-%20%E5%85%A5%E5%85%9A%E7%A7%AF%E6%9E%81%E5%88%86%E5%AD%90%E5%8D%8A%E5%B9%B4%E5%8A%A8%E6%80%81%EF%BC%88%E8%AF%A6%E7%BB%86%E7%89%88%EF%BC%89.docx
 
 ### 医保办理指南（15 个）
 
@@ -6087,7 +6127,7 @@
 - `医保办理指南/render_preview.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%8C%BB%E4%BF%9D%E5%8A%9E%E7%90%86%E6%8C%87%E5%8D%97/render_preview.py
 - `医保办理指南/大工学生医保办理指南.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%8C%BB%E4%BF%9D%E5%8A%9E%E7%90%86%E6%8C%87%E5%8D%97/%E5%A4%A7%E5%B7%A5%E5%AD%A6%E7%94%9F%E5%8C%BB%E4%BF%9D%E5%8A%9E%E7%90%86%E6%8C%87%E5%8D%97.pdf
 
-### 大创（19 个）
+### 大创（20 个）
 
 - `大创/20261023-开题材料提交清单.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261023-%E5%BC%80%E9%A2%98%E6%9D%90%E6%96%99%E6%8F%90%E4%BA%A4%E6%B8%85%E5%8D%95.md
 - `大创/20261029-定稿合规核查-2026秋季版.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261029-%E5%AE%9A%E7%A8%BF%E5%90%88%E8%A7%84%E6%A0%B8%E6%9F%A5-2026%E7%A7%8B%E5%AD%A3%E7%89%88.md
@@ -6098,6 +6138,7 @@
 - `大创/20261031-提交版/说明.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261031-%E6%8F%90%E4%BA%A4%E7%89%88/%E8%AF%B4%E6%98%8E.md
 - `大创/20261103-大创事项备忘-老师要求汇总.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261103-%E5%A4%A7%E5%88%9B%E4%BA%8B%E9%A1%B9%E5%A4%87%E5%BF%98-%E8%80%81%E5%B8%88%E8%A6%81%E6%B1%82%E6%B1%87%E6%80%BB.md
 - `大创/20261103-开题汇报PPT制作分工说明.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261103-%E5%BC%80%E9%A2%98%E6%B1%87%E6%8A%A5PPT%E5%88%B6%E4%BD%9C%E5%88%86%E5%B7%A5%E8%AF%B4%E6%98%8E.md
+- `大创/20261104-大创3分钟答辩PPT内容清单.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/20261104-%E5%A4%A7%E5%88%9B3%E5%88%86%E9%92%9F%E7%AD%94%E8%BE%A9PPT%E5%86%85%E5%AE%B9%E6%B8%85%E5%8D%95.pdf
 - `大创/2027开题报告-MPS-LD马赫探针-马泽宇-初稿-20261023.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/2027%E5%BC%80%E9%A2%98%E6%8A%A5%E5%91%8A-MPS-LD%E9%A9%AC%E8%B5%AB%E6%8E%A2%E9%92%88-%E9%A9%AC%E6%B3%BD%E5%AE%87-%E5%88%9D%E7%A8%BF-20261023.docx
 - `大创/2027开题报告-MPS-LD马赫探针-马泽宇-定稿-20261028.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/2027%E5%BC%80%E9%A2%98%E6%8A%A5%E5%91%8A-MPS-LD%E9%A9%AC%E8%B5%AB%E6%8E%A2%E9%92%88-%E9%A9%AC%E6%B3%BD%E5%AE%87-%E5%AE%9A%E7%A8%BF-20261028.docx
 - `大创/2027开题报告-MPS-LD马赫探针-马泽宇-定稿-20261028.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/%E5%A4%A7%E5%88%9B/2027%E5%BC%80%E9%A2%98%E6%8A%A5%E5%91%8A-MPS-LD%E9%A9%AC%E8%B5%AB%E6%8E%A2%E9%92%88-%E9%A9%AC%E6%B3%BD%E5%AE%87-%E5%AE%9A%E7%A8%BF-20261028.pdf

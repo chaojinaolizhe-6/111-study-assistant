@@ -1,0 +1,986 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,shapes.geometric}
+\usepackage[american]{circuitikz}
+\settags{实验 6 · 集成运放详细指引}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{10\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{实验 6：集成运算放大器（25 分考试实验）}
+{详细操作指引：反相加法器 + 四级波形发生器\\设计、计算、接线、分级调试、数据记录与英文报告}
+{依据：教材《电工学实验教程》第 2 版 §5.3（书 p.155--162，图 5.3.2--5.3.8、表 5.3.1--5.3.7）、§6.4（书 p.243--248，图 6.4.1--6.4.4）；实验箱 THM-6、电源 GPS-2303C、信号源 SG1026、示波器 YB4320G、万用表 UT61；手册 pp.19--22 原页未入库（见 §9）\ \textperiodcentered\ 2026-11-05}
+
+\callout{\textbf{这份指引怎么用。} §1 是考场与器材，§2 是接线与通电（考场里最容易出错的地方都在这两节），§3 把八个基本电路的式子逐个推一遍（考场上没有手机，式子必须自己写得出），§4 与 §5 是两个 Project 的完整设计与调试，§6 是六张空表，§7 是英文报告，§8 是 135 分钟时间盒与故障排查，§9 是仍待核实的缺口。\textbf{所有元件值都给了一套可直接落地的参考值；考试时按老师发的元件改数，公式不变。}}
+
+%=============================================================
+\hdr{§0}{记号、单位与事实边界}
+
+\subhdr{0.1 记号：先统一，后文不再回头}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.6cm}p{5.4cm}p{7.0cm}@{}}
+\hline
+\thead{记号} & \thead{含义} & \thead{为什么这样写} \\
+\hline
+$u_i,\ u_o$ & 瞬时值（小写） & 波形、积分、微分一律用瞬时值，因为它们随时间变 \\
+$U_i,\ U_o$ & 有效值或直流量（大写） & 万用表、毫伏表读的是有效值；直流工作点也是大写 \\
+$U_{im}$ & 峰值 & 方波、正弦的“幅值”在报告里写 $U_{im}$，避免与有效值混 \\
+$U_{OM}$ & 运放输出的饱和值 & 分 $U_{OM+}$ 与 $U_{OM-}$ 两个数，正向与负向不对称（§2.4） \\
+$A_u$ & 电压放大倍数 $u_o/u_i$ & 反相电路带负号；报告里写 $|A_u|$ 时说明是模 \\
+$R_f$ & 反馈电阻 & 从输出接回反相端的那一只 \\
+$R_3$（加法器） & 平衡电阻 & 接在\textbf{同相端与地}之间，不是反馈电阻 \\
+$\parallel$ & 并联 & $R_1\parallel R_2=\dfrac{R_1R_2}{R_1+R_2}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{0.2 事实边界：哪些是书上的、哪些是我补的、哪些要到现场核}
+
+\begin{itemize}
+  \item \textbf{教材原文}：所有电路拓扑（图 5.3.2--5.3.8、图 6.4.1--6.4.4）、元件标称值（$R_1=R_2=10\,\mathrm{k}\Omega$、$R_f=100\,\mathrm{k}\Omega$ 等）、数据表的行与列、实验条件（$\pm12\,\mathrm{V}$、$1\,\mathrm{kHz}$、$U_{im}=5\,\mathrm{V}$ 等）。页码一律按\textbf{书页}给，括号里给 PDF 页（书页 = PDF 页 $-\,13$）。
+  \item \textbf{本指引补的}：所有“填空”的答案（$R_3$、积分器的 $R_2$、微分器的 $R_2$）、表 5.3.3／5.3.6 的理论输出列、Wien 桥的 $\beta(\mathrm{j}\omega)$ 推导、积分器三角波幅值公式、微分器尖脉冲的削顶判据、滞回比较器的回差公式、故障排查表。凡补的地方都在正文里标明“本指引补”。
+  \item \textbf{现场才定的}：LM324 的实际 $U_{OM+}$、$U_{OM-}$；实验箱 THM-6 上运放模块的端子排布与电源取电口；老师这次发的电阻电容具体档位。这三项不猜，到现场先测、先认。
+  \item \textbf{未入库的手册页}：2026-10-27 上一版讲义引用过“实验手册 pp.19--22”，但原页照片没有存进工作区，本版凡涉及“手册要求”的地方都标 \textbf{[手册]}，并以教材页面为依据复核。见 §9。
+\end{itemize}
+
+\subhdr{0.3 一张图看懂这两个 Project}
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.55cm,
+  box/.style={draw=violet, rounded corners=3pt, minimum width=2.3cm, minimum height=1.15cm,
+    align=center, fill=bandviolet, font=\small},
+  arr/.style={-{Latex[length=2mm]}, thick, violet}]
+\node[box] (P1) {Project 1\\反相加法器};
+\node[box, right=1.2cm of P1] (S) {第一级\\Wien 桥};
+\node[box, right=0.55cm of S] (C) {第二级\\比较器};
+\node[box, right=0.55cm of C] (I) {第三级\\积分器};
+\node[box, right=0.55cm of I] (D) {第四级\\微分器};
+\draw[arr] (S) -- (C);
+\draw[arr] (C) -- (I);
+\draw[arr] (I) -- (D);
+\draw[arr, rounded corners=3pt] (C.south) ++(0,-0.06) -- ++(0,-0.62) -| (D.south);
+\node[font=\scriptsize, text width=4.6cm, align=center] at ($(C.south)!0.5!(D.south)+(0,-0.95)$) {第二级输出同时送第四级};
+\end{tikzpicture}
+
+{\small 图 0\quad 考试的两块内容（重绘）。Project 1 是直流加法器，测 6 组输入、看饱和；Project 2 是一级生正弦、后三级换波形，四级同频（$f_0=1/(2\pi RC)$，三角波 $U_{pp}=U_{OM}T/(2R_1C_1)$，尖脉冲每周期两只）。}
+\end{center}
+
+%=============================================================
+\hdr{§1}{考场与器材}
+
+\subhdr{1.1 这场为什么是 25 分}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{6.4cm}p{2.6cm}p{6.0cm}@{}}
+\hline
+\thead{实验} & \thead{Operation 满分} & \thead{备注} \\
+\hline
+Multisim Simulation & 10 & 仿真 \\
+DC Circuit & 5 & 强电 \\
+AC Circuit & 5 & 强电 \\
+DC Stabilized Power Supply & 5 & 强电 \\
+Transistor Single-Stage Amplifier & 10 & 设计（11-05 已做） \\
+\textbf{Integrated Operational Amplifier} & \textbf{25} & \textbf{考试；不让用手机和交流} \\
+Integrated Logic Gate / Combinational Logic & 10 & 设计 \\
+Trigger and Counter & 10 & 设计 \\
+\hline
+\end{tabular}
+\end{center}
+
+评分结构：Preparation 共 5 分，Discussion 10+5 分；批阅后需红笔改正；抄袭一次扣 10 分；跨实验补做扣 10 分；报告回答要简洁。老师在课上强调的六句话，直接决定了这场怎么打：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.7cm}p{13.6cm}@{}}
+\hline
+1 & 记得实验完关所有仪器。 \\
+2 & 25 分的是\textbf{考试}，不让用手机、不许交流。 \\
+3 & 4 级电路，\textbf{做出越多越好}。 \\
+4 & 设计的电路，\textbf{提前画好电路图}。 \\
+5 & 简洁回答实验报告的问题。 \\
+6 & 一定要掌握实验操作。 \\
+\hline
+\end{tabular}
+\end{center}
+
+\callout{\textbf{这三条合起来是一句话}：这场考的是“能不能在没有外援的情况下把图变成电路、把电路变成数据、把数据变成结论”。所以进门前最值钱的三件事是——\textbf{两张电路图背得出、$R_3$ 算得对、表 5.3.3 六行理论值先写下来}。}
+
+\subhdr{1.2 器材清单（教材表 5.3.1，书 p.155）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.2cm}p{3.0cm}p{7.8cm}@{}}
+\hline
+\thead{名称} & \thead{型号} & \thead{这场拿它干什么} \\
+\hline
+模拟电路实验箱 & THM-6 & 提供集成运放、二极管、电阻、电位器、电容、开关；所有接线在箱面完成 \\
+直流稳压电源 & GPS-2303C & 供运放 $\pm12\,\mathrm{V}$；也给加法器的两路直流输入（可调通道） \\
+低频信号发生器 & SG1026 & 给 $1\,\mathrm{kHz}$、$5\,\mathrm{V}$ 的方波／正弦（测积分器、微分器用） \\
+交流毫伏表 & DA-16 / SX2172 & 测正弦有效值；这场用得不多，测 $A_u$ 时用 \\
+双踪示波器 & YB4320G & 看波形、读周期与峰值；四级调试全靠它 \\
+数字万用表 & UT61 / MS8040 & 测直流电压（加法器的 $u_i$、$u_o$）；测电阻核对标称值 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{1.3 进门前 30 分钟：这四件事做完再出门}
+
+\begin{enumerate}
+  \item \textbf{把两张图画在纸上}（不是看一遍）：反相加法器（标明 pin 1/2/3、$R_1,R_2,R_f,R_3$ 的数值）与四级链（标明四个运放的 pin 号与级间连线）。
+  \item \textbf{把 $R_3$ 算出来}：$R_3=R_1\parallel R_2\parallel R_f=4.76\,\mathrm{k}\Omega\Rightarrow$ 取 $4.7\,\mathrm{k}\Omega$（推导见 §4.2）。
+  \item \textbf{把表 5.3.3 的六行理论值写出来}：$-5.0,\ +1.0,\ +5.0,\ -7.0,\ -11.0,\ -13.0\,\mathrm{V}$（见 §4.3）。考场上抄这一列能省 5 分钟。
+  \item \textbf{预习报告按四问写完}（§4.7 与 §5.8 给了英文答案的骨架），带教材、带笔、带计算器。
+\end{enumerate}
+
+\warnbox{\textbf{考试场不许用手机、不许交流}。这意味着：不能查引脚图、不能问同学“$R_3$ 是多少”、不能拍照存档。所有要用的常数与公式必须在脑子里或纸上。§3 的推导就是为这件事准备的。}
+
+%=============================================================
+\hdr{§2}{接线与通电：考场里最容易出错的地方}
+
+\subhdr{2.1 LM324 的引脚（DIP14）}
+
+\begin{center}
+\small
+{\small 表 1\quad LM324（DIP14）引脚。缺口／圆点在左时，左下角是 pin 1，逆时针数到 14；pin 4 接 $+12\,\mathrm{V}$，pin 11 接 $-12\,\mathrm{V}$，四个运放共用这两个电源脚。}
+
+\vspace{3pt}
+\begin{tabular}{@{}p{1.0cm}p{2.0cm}p{3.6cm}p{1.0cm}p{2.0cm}p{3.6cm}@{}}
+\hline
+\thead{引脚} & \thead{名称} & \thead{功能} & \thead{引脚} & \thead{名称} & \thead{功能} \\
+\hline
+1 & OUT1 & A 输出 & 8 & OUT3 & C 输出 \\
+2 & IN1$-$ & A 反相输入 & 9 & IN3$-$ & C 反相输入 \\
+3 & IN1$+$ & A 同相输入 & 10 & IN3$+$ & C 同相输入 \\
+4 & $V_{CC}$ & $+12\,\mathrm{V}$ & 11 & $V_{EE}$ & $-12\,\mathrm{V}$ \\
+5 & IN2$+$ & B 同相输入 & 12 & IN4$+$ & D 同相输入 \\
+6 & IN2$-$ & B 反相输入 & 13 & IN4$-$ & D 反相输入 \\
+7 & OUT2 & B 输出 & 14 & OUT4 & D 输出 \\
+\hline
+\end{tabular}
+\end{center}
+
+\callout{\textbf{怎么记这个芯片}：左边 1--7 依次是“输出、反相、同相、电源、同相、反相、输出”，右边 8--14 是“输出、反相、同相、负电源、同相、反相、输出”。记不住就记\textbf{每个运放都是“输出在角上、反相靠内侧”}：A 用 1/2/3，B 用 7/6/5，C 用 8/9/10，D 用 14/13/12。}
+
+\subhdr{2.2 电源与地：三根线决定成败}
+
+\begin{enumerate}
+  \item \textbf{双电源}：pin 4 接 $+12\,\mathrm{V}$，pin 11 接 $-12\,\mathrm{V}$，电源的“地”接到实验箱的公共地。三根线（$+12$、$-12$、地）\textbf{各自一根}，不要用一根线既当负电源又当地。
+  \item \textbf{去耦}：pin 4 与地之间、pin 11 与地之间各接一只 $0.1\,\mu\mathrm{F}$ 瓷片电容。位置尽量靠近芯片。没有它，四级联调时后级会把前级的电源拖出纹波，正弦上会叠毛刺。
+  \item \textbf{共地}：信号源的地、示波器探头的地夹、万用表的黑表笔、电路的公共地，全部接同一点。示波器地夹\textbf{不要}夹在电路中间某个元件脚上，那等于把该点强行接地。
+\end{enumerate}
+
+\warnbox{\textbf{电源反接会立刻烧芯片}。LM324 的 pin 4 是正、pin 11 是负，和很多双运放（如 TL082 的 pin 8/4）不同。接之前用万用表直流挡量一下：pin 4 对地应是 $+12\,\mathrm{V}$，pin 11 对地应是 $-12\,\mathrm{V}$。量反了，先别插芯片。}
+
+\subhdr{2.3 接线的六条规矩}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.7cm}p{5.6cm}p{8.0cm}@{}}
+\hline
+\thead{\#} & \thead{规矩} & \thead{理由} \\
+\hline
+1 & 先接线、后通电；先断电、后拆线 & 带电插拔最容易把运放输入端短路或反接 \\
+2 & 电源线用红（$+12$）、黑（地）、蓝（$-12$） & 考场里省掉一半“这根线是什么”的时间 \\
+3 & 每接完一级，先用万用表电阻挡查“电源对地不短路” & 短路时一上电就跳闸／烧芯片 \\
+4 & 输入端串 $10\,\mathrm{k}\Omega$ 已成惯例（比较器、积分器、微分器都有） & 限制输入电流，也把信号源与运放隔开 \\
+5 & 空着的运放，输入端接地或接固定电位 & 悬空输入会让它自己振荡，干扰别的级 \\
+6 & 所有测量点先想清“参考点是地” & 万用表只能测对地电压，不能跨接两点测电压差 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{2.4 通电五步与“先标定限幅”}
+
+\begin{enumerate}
+  \item 电源关机、输出旋钮归零；按图接好全部元件，\textbf{先不接信号源}。
+  \item 万用表电阻挡查三处：$+12$ 对地、$-12$ 对地都不通（不短路）；输出端对地不短路。
+  \item 开电源，调到 $\pm12\,\mathrm{V}$（先用万用表确认，别信面板刻度）；限流先设在 $0.05\,\mathrm{A}$ 左右，正常工作电流只有几毫安。
+  \item \textbf{标定限幅}：把加法器接成增益 $-10$、$u_{i1}=1.5\,\mathrm{V}$、$u_{i2}=0$，理论输出 $-15\,\mathrm{V}$，实测会停在 $U_{OM-}$；再换 $u_{i1}=-1.5\,\mathrm{V}$，实测停在 $U_{OM+}$。把这两个数记进报告。
+  \item 以后每一级接线前先断电；每接一级先看该级输出，再接下一级。
+\end{enumerate}
+
+\callout{\textbf{为什么必须先标定限幅}：LM324 的输出摆幅\textbf{不对称}——数据手册只保证高电平 $V_{OH}\ge V_{CC}-1.5\,\mathrm{V}$（$\pm12\,\mathrm{V}$ 供电时约 $+10.5\,\mathrm{V}$），而低电平可以低到接近负电源轨（约 $-11.5\sim-11.9\,\mathrm{V}$）。所以“理论 $-11.0\,\mathrm{V}$”这一行到底削不削顶，取决于你自己这块芯片的 $U_{OM-}$，不能照抄别人的 $\pm10.5\,\mathrm{V}$。先测，再判表。}
+
+\subhdr{2.5 仪表怎么设}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{4.6cm}p{6.2cm}@{}}
+\hline
+\thead{仪表} & \thead{设置} & \thead{注意} \\
+\hline
+直流稳压电源 & 两路独立模式；一路给 $\pm12\,\mathrm{V}$（或 $\pm5\,\mathrm{V}$ 按老师要求），另一路可调给 $u_{i1},u_{i2}$ & 两路负极若内部共地，接成“独立”模式；串联模式会得到 $24\,\mathrm{V}$ \\
+万用表 & 直流电压 $20\,\mathrm{V}$ 挡；测电阻用 $20\,\mathrm{k}\Omega$ 挡 & 测 $u_i=0.2\,\mathrm{V}$ 时用 $2\,\mathrm{V}$ 挡，读数才够三位 \\
+信号发生器 & 正弦 $1\,\mathrm{kHz}$、$5\,\mathrm{V}$（峰峰值看示波器）；方波同 & 面板刻度不准，以示波器读数为准 \\
+示波器 & CH1 看输入、CH2 看输出；触发源选“看输入的那一路” & 双踪同频时才能比相位；时基按 $1\,\mathrm{ms/div}$ 左右起步 \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§3}{两条规则与八个基本电路：式子的来历}
+
+\noindent 这一节是考场的“弹药库”。老师要求“掌握实验操作”，而操作的前提是知道每个电路的输出应该是什么。所有推导只用两条规则，加上节点电流。
+
+\subhdr{3.1 虚短与虚断从哪来}
+
+设运放开环增益为 $A$，输入差模电压为 $u_d=u_+-u_-$，则 $u_o=A\,u_d$。线性工作时 $u_o$ 是有限值，所以
+\[
+u_d=\frac{u_o}{A}\xrightarrow[A\to\infty]{}0
+\quad\Longrightarrow\quad
+u_+\approx u_- \quad\text{（虚短）}.
+\]
+同时运放的输入电阻 $R_{id}$ 极大（LM324 约 $10^6\,\Omega$ 量级，偏置电流几十纳安），两个输入端之间的电流
+\[
+i_+ = i_- \approx \frac{u_d}{R_{id}}\to 0 \quad\text{（虚断）}.
+\]
+
+\aside{两条规则只在\textbf{线性负反馈}时成立。比较器没有负反馈，输出在饱和区，$u_d$ 不为零，虚短不能用——这是 §3.8 与 §5.3 的全部依据。}
+
+\subhdr{3.2 反相比例（教材图 5.3.2）}
+
+\textbf{推导。}反相端节点（设为 $N$，电位 $u_-$）写 KCL：流过 $R_1$ 的电流 $i_1=(u_i-u_-)/R_1$ 与流过 $R_f$ 的电流 $i_f=(u_o-u_-)/R_f$ 之和等于流入运放的电流，而虚断让它等于 0：
+\[
+\frac{u_i-u_-}{R_1}+\frac{u_o-u_-}{R_f}=0 .
+\]
+代入虚短 $u_-=u_+=0$（同相端经 $R_2$ 接地，虚断下 $R_2$ 上没有电流，故 $u_+=0$），得
+\[
+\boxed{\;u_o=-\frac{R_f}{R_1}\,u_i\;}.
+\]
+
+\textbf{核对（不是证明）}：$R_1=10\,\mathrm{k}\Omega$、$R_f=100\,\mathrm{k}\Omega$、$u_i=0.2\,\mathrm{V}$，得 $u_o=-2.0\,\mathrm{V}$，与表 5.3.2 第一行一致。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{2.6cm}p{2.6cm}p{2.6cm}p{2.6cm}@{}}
+\hline
+\thead{$u_i$/V} & \thead{0.2} & \thead{0.5} & \thead{1} & \thead{2} \\
+\hline
+$u_o$ 理论/V & $-2.0$ & $-5.0$ & $-10.0$ & $-20.0$（削） \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 这张表只是把 $u_o=-10u_i$ 在四行上读了一遍：前三行在 $|u_o|\le 11\,\mathrm{V}$ 以内，第四行的 $-20\,\mathrm{V}$ 超出任何一侧限幅，实测停在 $U_{OM-}$ 附近。
+
+\subhdr{3.3 同相比例（图 5.3.4）与电压跟随器（图 5.3.5）}
+
+同相端直接接 $u_i$，反相端经 $R_1$ 接地、经 $R_f$ 接输出。反相端 KCL 与虚短 $u_-=u_+=u_i$ 给出
+\[
+\frac{0-u_i}{R_1}+\frac{u_o-u_i}{R_f}=0
+\quad\Longrightarrow\quad
+u_o=\left(1+\frac{R_f}{R_1}\right)u_i .
+\]
+取 $R_f=100\,\mathrm{k}\Omega$、$R_1=10\,\mathrm{k}\Omega$，则 $A=11$：输入 $0.2/0.5/1/2\,\mathrm{V}$ 对应 $2.2/5.5/11.0/22.0\,\mathrm{V}$，后两行必削顶。
+
+\aside{同相比例电路的平衡电阻应取 $R_2=R_1\parallel R_f=9.09\,\mathrm{k}\Omega$（取 $9.1\,\mathrm{k}\Omega$）：它接在同相端与地之间，使两端看到的直流电阻相等。反相电路的平衡电阻是 $R_1\parallel R_2\parallel R_f$，两种电路别混。}
+
+电压跟随器是同相比例取 $R_f=0$、$R_1=\infty$ 的极限：$u_o=u_i$，输入电阻极大、输出电阻极小，用来“隔离”前级与负载。教材表 5.3.5 在 $R_L=\infty$ 与 $R_L=5.1\,\mathrm{k}\Omega$ 两种情况下测 $u_o$，就是验证这一点。
+
+\subhdr{3.4 减法电路（图 5.3.6）}
+
+两输入端各经 $10\,\mathrm{k}\Omega$ 接入，反馈 $100\,\mathrm{k}\Omega$，同相端另有 $100\,\mathrm{k}\Omega$ 接地。用叠加：只有 $u_{i2}$ 作用时是同相比例，$u_o^{(2)}=\left(1+\frac{100}{10}\right)\frac{100}{100+10}u_{i2}=11\times\frac{10}{11}u_{i2}=10u_{i2}$；只有 $u_{i1}$ 作用时是反相比例，$u_o^{(1)}=-10u_{i1}$。两者相加
+\[
+u_o=10\,(u_{i2}-u_{i1}).
+\]
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{1.4cm}p{1.4cm}p{1.4cm}p{1.4cm}p{1.4cm}p{1.4cm}@{}}
+\hline
+\thead{表 5.3.6 的六组} & \thead{1} & \thead{2} & \thead{3} & \thead{4} & \thead{5} & \thead{6} \\
+\hline
+$u_{i1}$/V & 0.5 & 0.5 & $-0.5$ & $-0.5$ & $-0.8$ & $-1$ \\
+$u_{i2}$/V & 0.3 & $-0.3$ & $-0.3$ & 0.6 & 0.6 & 0.6 \\
+$u_o$ 理论/V & $-2.0$ & $-8.0$ & $+2.0$ & $+11.0$ & $+14.0$ & $+16.0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 逐列读：第 1 列 $10(0.3-0.5)=-2$；第 2 列 $10(-0.3-0.5)=-8$；第 3 列 $10(-0.3+0.5)=+2$；第 4 列起理论值都超过 $+10.5\,\mathrm{V}$，实测全部削在 $U_{OM+}$。边界行是第 4 列——它刚好越过正向限幅，是“线性/饱和”的分界。
+
+\subhdr{3.5 积分电路（图 5.3.7）}
+
+反相端 KCL 给出 $\dfrac{u_i}{R_1}+C_1\dfrac{\dd u_o}{\dd t}=0$（虚地，$u_-=0$），两边积分：
+\[
+u_o(t)=-\frac{1}{R_1C_1}\int_{0}^{t}u_i(\tau)\,\dd\tau+u_o(0).
+\]
+输入是常数 $U_i$ 时，输出是一条直线：$u_o(t)=u_o(0)-\dfrac{U_i}{R_1C_1}t$，斜率大小 $|U_i|/(R_1C_1)$。
+
+\aside{$R_3=100\,\mathrm{k}\Omega$ 与开关 S 并在 $C_1$ 两端：S 闭合时，直流增益变成 $-R_3/R_1=-10$，积分器退化成反相放大器，输出不会无限积分到饱和；S 断开才是“理想积分”。教材让测 S 断开与闭合两种波形，问的就是这件事。}
+
+积分器的平衡电阻取 $R_2=R_1\parallel R_3=10\,\mathrm{k}\parallel100\,\mathrm{k}=9.09\,\mathrm{k}\Omega$（取 $9.1\,\mathrm{k}\Omega$）——这是教材留空的那一格。
+
+\subhdr{3.6 微分电路（图 5.3.8）}
+
+输入侧是电容 $C_1$，反馈是 $R_f$。反相端 KCL：$C_1\dfrac{\dd u_i}{\dd t}+\dfrac{u_o}{R_f}=0$，故
+\[
+u_o=-R_fC_1\frac{\dd u_i}{\dd t}.
+\]
+正弦输入 $u_i=U_{im}\sin\omega t$ 时，$u_o=-\omega R_fC_1U_{im}\cos\omega t$，幅值 $\omega R_fC_1U_{im}$——\textbf{频率越高，输出越大}，这就是微分器对噪声敏感的原因。方波输入时，只在跳变沿出现尖脉冲，一个周期两只，间隔 $T/2$。
+
+\aside{平衡电阻取 $R_2=R_f=10\,\mathrm{k}\Omega$：输入侧对直流是开路，反相端看到的直流电阻就是 $R_f$，所以同相端接一只 $10\,\mathrm{k}\Omega$ 到地即可。这是教材图 5.3.8 里留空的那一格。}
+
+\subhdr{3.7 比较器（图 5.3.9）与滞回比较器（图 5.3.10）}
+
+比较器没有负反馈，开环工作，输出只有两个状态：
+\[
+u_i>0\Rightarrow u_o=+U_{OM+},\qquad u_i<0\Rightarrow u_o=U_{OM-}.
+\]
+所以正弦过零时输出翻转，得到同频方波。若输入在零点附近有噪声，输出会来回抖动；解决办法是从输出到同相端接一只电阻 $R_2$，与接地的 $R_1$ 组成正反馈，把阈值拉开：
+\[
+u_{+\text{上}}=\frac{R_1}{R_1+R_2}U_{OM+},\qquad
+u_{+\text{下}}=\frac{R_1}{R_1+R_2}U_{OM-},\qquad
+\text{回差}= u_{+\text{上}}-u_{+\text{下}} .
+\]
+
+\textbf{核对}：$R_1=10\,\mathrm{k}\Omega$、$R_2=100\,\mathrm{k}\Omega$、$U_{OM}\approx10.5\,\mathrm{V}$，则阈值约 $\pm0.95\,\mathrm{V}$、回差 $1.9\,\mathrm{V}$。回差越大越抗噪，但方波的占空比会偏离 50\%，报告里要说明这个取舍。
+
+\subhdr{3.8 八个电路的速通表（考场用这一张）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{3.5cm}p{4.6cm}p{4.4cm}@{}}
+\hline
+\thead{电路} & \thead{输出} & \thead{接线要点（pin 用 A 组为例）} & \thead{预期读数} \\
+\hline
+反相比例 & $-R_fu_i/R_1$ & 输入经 $R_1\to$ pin 2；$R_f$ 接 pin 1--2；pin 3 经平衡电阻接地 & $-10u_i$，超过限幅削顶 \\
+同相比例 & $(1+R_f/R_1)u_i$ & 输入接 pin 3；$R_1$ 接地、$R_f$ 接 pin 1 & $11u_i$，$u_i>0.95\,\mathrm{V}$ 削顶 \\
+跟随器 & $u_i$ & 输出 pin 1 直接接 pin 2 & $u_o=u_i$，带载不跌 \\
+加法器 & $-R_f(u_{i1}/R_1+u_{i2}/R_2)$ & 两路各经 $10\,\mathrm{k}\to$ pin 2；$R_f=100\,\mathrm{k}$；$R_3$ 接地 & $-10(u_{i1}+u_{i2})$ \\
+减法 & $10(u_{i2}-u_{i1})$ & $u_{i1}\to R_1\to$ pin 2；$u_{i2}\to R_2\to$ pin 3；$R_f$ 与 $R_3$ 各 $100\,\mathrm{k}$ & 见表 5.3.6 \\
+积分 & $-\frac{1}{R_1C_1}\int u_i\dd t$ & $u_i\to R_1\to$ pin 2；$C_1$ 接 pin 1--2；$R_3$ 与 S 并在 $C_1$ & 方波进、三角波出 \\
+微分 & $-R_fC_1\dd u_i/\dd t$ & $u_i\to C_1\to$ pin 2；$R_f$ 接 pin 1--2 & 方波进、双尖脉冲出 \\
+比较器 & $\pm U_{OM}$ & $u_i\to R_1\to$ pin 2；pin 3 经 $R_2$ 接地 & 正弦进、方波出 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{这张表是“接线速查”，不是推导。每一行的式子都在 §3.2--§3.7 推过；考场上如果老师临时改成同相输入或减法，照样能推——因为你手里有两条规则和一条 KCL。}
+
+%=============================================================
+\hdr{§4}{Project 1：反相加法器}
+
+\subhdr{4.1 电路与元件（教材图 5.3.3，书 p.159）}
+
+\begin{center}
+\begin{circuitikz}[scale=0.95, transform shape]
+  \node[op amp] (OA) at (4.6,0) {};
+  \coordinate (N) at ($(OA.-)+(-1.3,0)$);
+  \draw (OA.-) -- (N);
+  % 两路输入
+  \draw (N) -- ++(0,1.1) coordinate (P1);
+  \draw (P1) to[R, l=$R_1$] ++(-2.4,0) to[short,-o] ++(-0.5,0) node[left]{$u_{i1}$};
+  \draw (N) -- ++(0,-1.1) coordinate (P2);
+  \draw (P2) to[R, l=$R_2$] ++(-2.4,0) to[short,-o] ++(-0.5,0) node[left]{$u_{i2}$};
+  % 反馈
+  \draw (P1) -- ++(0,0.9) coordinate (F);
+  \draw (F) to[R, l=$R_f$] (F -| OA.out) -- (OA.out);
+  % 平衡电阻
+  \draw (OA.+) -- ++(-0.7,0) coordinate (B);
+  \draw (B) to[R, l_=$R_3$] ++(0,-1.5) node[ground]{};
+  % 输出
+  \draw (OA.out) -- ++(0.9,0) node[right]{$u_o$};
+\end{circuitikz}
+
+{\small 图 1\quad 反相加法器（\textbf{重绘}，据教材图 5.3.3，书 p.159）。$R_1=R_2=10\,\mathrm{k}\Omega$，$R_f=100\,\mathrm{k}\Omega$，$R_3$ 为平衡电阻，取 $4.7\,\mathrm{k}\Omega$。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.6cm}p{3.0cm}p{9.0cm}@{}}
+\hline
+\thead{元件} & \thead{参数} & \thead{接法（A 组运放）} \\
+\hline
+$R_1$ & $10\,\mathrm{k}\Omega$ & $u_{i1}$ 到 pin 2（反相端） \\
+$R_2$ & $10\,\mathrm{k}\Omega$ & $u_{i2}$ 到 pin 2（反相端） \\
+$R_f$ & $100\,\mathrm{k}\Omega$ & pin 1（输出）到 pin 2 \\
+$R_3$ & $4.7\,\mathrm{k}\Omega$ & pin 3（同相端）到地 \\
+LM324 & DIP14 & pin 4 接 $+12\,\mathrm{V}$，pin 11 接 $-12\,\mathrm{V}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.2 平衡电阻 $R_3$：完整推导（教材留空的那一格）}
+
+反相端看到的直流电阻是 $R_1$、$R_2$、$R_f$ 三条支路并联（输入端对地短路时）：
+\[
+R_{3}=R_1\parallel R_2\parallel R_f
+=\left(\frac{1}{10}+\frac{1}{10}+\frac{1}{100}\right)^{-1}\mathrm{k}\Omega
+=\left(0.21\right)^{-1}\mathrm{k}\Omega=4.762\,\mathrm{k}\Omega .
+\]
+取 E24 标称值 $4.7\,\mathrm{k}\Omega$，误差
+\[
+\delta=\frac{4.7-4.762}{4.762}\times100\%=-1.3\%,
+\]
+完全够用。没有 $4.7\,\mathrm{k}\Omega$ 时的三种替代：$4.7\,\mathrm{k}+62\,\Omega$ 串联（$4.762\,\mathrm{k}\Omega$）；$10\,\mathrm{k}\Omega$ 电位器调到位后拆下来量阻值；两只 $10\,\mathrm{k}\Omega$ 并联得 $5\,\mathrm{k}\Omega$（差 5\%，偏置电流只有几十纳安，$5\,\mathrm{k}\Omega$ 上压降约 $0.1\,\mathrm{mV}$，仍可接受）。
+
+\aside{平衡电阻的作用是“让两输入端看到的直流电阻相等”，使偏置电流在两端的压降相同、互相抵消。它\textbf{不能}消除失调电压（那是芯片本身的毫伏级偏差，经 $-10$ 倍会放大到几十毫伏），也不能提高精度——只是把失调中的一个可消除项消掉。所以它不能省，也不能用导线短接。}
+
+\subhdr{4.3 输出公式与表 5.3.3 的六行理论值}
+
+反相端 KCL（虚地）：
+\[
+\frac{u_{i1}}{R_1}+\frac{u_{i2}}{R_2}+\frac{u_o}{R_f}=0
+\quad\Longrightarrow\quad
+u_o=-R_f\left(\frac{u_{i1}}{R_1}+\frac{u_{i2}}{R_2}\right).
+\]
+代入 $R_1=R_2=10\,\mathrm{k}\Omega$、$R_f=100\,\mathrm{k}\Omega$：
+\[
+u_o=-10\,(u_{i1}+u_{i2}).
+\]
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.8cm}p{1.8cm}p{2.6cm}p{2.6cm}p{2.2cm}p{2.4cm}@{}}
+\hline
+\thead{$u_{i1}$/V} & \thead{$u_{i2}$/V} & \thead{$u_{i1}+u_{i2}$} & \thead{理论 $u_o$/V} & \thead{预计状态} & \thead{备注} \\
+\hline
+0.2 & 0.3 & 0.5 & $-5.0$ & 线性 & 误差主项：电阻容差 \\
+0.2 & $-0.3$ & $-0.1$ & $+1.0$ & 线性 & 输出小，读数误差占比大 \\
+$-0.2$ & $-0.3$ & $-0.5$ & $+5.0$ & 线性 & 与第一行对称 \\
+0.5 & 0.2 & 0.7 & $-7.0$ & 线性 & — \\
+0.5 & 0.6 & 1.1 & $-11.0$ & \textbf{临界} & 取决于你测的 $U_{OM-}$ \\
+0.7 & 0.6 & 1.3 & $-13.0$ & \textbf{必削} & 停在 $U_{OM-}$ 附近 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent\textbf{这张表怎么逐行读}：每一行的理论值都是把该行的两个输入相加再乘 $-10$，没有别的运算。前四行的理论值都在 $|u_o|<11\,\mathrm{V}$ 以内，属于线性区；第五行的 $-11.0\,\mathrm{V}$ 正好落在“正向约 $10.5$、负向约 $11.5$”这条不对称限幅线的边缘——若你标定出的 $U_{OM-}$ 是 $-11.9\,\mathrm{V}$，它仍然线性；若是 $-10.5\,\mathrm{V}$，它已经削顶。第六行的 $-13.0\,\mathrm{V}$ 一定削顶，报告里要写“饱和，不是算错”。
+
+\subhdr{4.4 饱和：为什么是“削顶”而不是“变小”}
+
+运放的输出级由晶体管构成，输出电压不可能超过电源轨。当理论输出要求 $-13\,\mathrm{V}$、而负向只能到 $-11.5\,\mathrm{V}$ 时，输出被“钳”在 $-11.5\,\mathrm{V}$，多出来的部分被输出级吃掉——波形顶部（负半周）变平，这就是削顶。数学上，运放只能工作在线性区
+\[
+u_o=A\,(u_+-u_-),\qquad A\sim10^5,
+\]
+一旦需要的 $u_o$ 超出 $[U_{OM-},U_{OM+}]$，$u_d$ 必须非零才能维持，虚短失效，输出饱和。
+
+\textbf{三个必须区分的数}：理论值（$-13.0$）、限幅值（$-11.5$）、实测值（$-11.4\sim-11.6$）。报告里写“理论 $-13.0\,\mathrm{V}$，实测 $-11.5\,\mathrm{V}$，因超出负向限幅而削顶”，\textbf{不要}算 $13.0$ 与 $11.5$ 的相对误差然后说“误差 11\%”——那是把饱和当误差。
+
+\subhdr{4.5 测量步骤（一步不漏）}
+
+\begin{enumerate}
+  \item 断电接线：$R_1$、$R_2$ 接 pin 2，$R_f$ 接 pin 1--2，$R_3$ 接 pin 3 到地；pin 4/11 接 $\pm12\,\mathrm{V}$ 并加 $0.1\,\mu\mathrm{F}$ 去耦。
+  \item 先标定限幅（§2.4），记下 $U_{OM+}$、$U_{OM-}$。
+  \item 把两路直流输入接到 $u_{i1}$、$u_{i2}$（用电源的可调通道），\textbf{先断开与电路的连接}，用万用表 $2\,\mathrm{V}$ 挡把电压调到 $0.200\,\mathrm{V}$ 与 $0.300\,\mathrm{V}$，再接进电路。
+  \item 用万用表直流挡测 $u_o$，读数稳定后记录。\textbf{每换一组输入，先重调两路电源电压再测}，因为电源带载后会掉一点。
+  \item 六行测完，挑一行复测（重复性检查）：若两次差超过 $0.05\,\mathrm{V}$，检查接触与电源稳定。
+  \item 关电源、拆线前，把六行数据连同“条件行”抄进报告表。
+\end{enumerate}
+
+\aside{$u_i$ 为什么不用分压电阻从 $\pm12\,\mathrm{V}$ 取：分压电路有内阻，接进 $10\,\mathrm{k}\Omega$ 的输入端会产生附加压降，输入就不是 $0.2\,\mathrm{V}$ 了。用可调电源直接给，源内阻小，读数才可信。}
+
+\subhdr{4.6 误差分析：三个来源，分开写}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.2cm}p{5.0cm}p{5.4cm}@{}}
+\hline
+\thead{来源} & \thead{量级} & \thead{怎么处理} \\
+\hline
+电阻容差 & $\pm1\%\sim\pm5\%$；$R_1,R_2$ 各差 1\% 就带来约 1\% 的增益差 & 用万用表量实际阻值代入公式，比用标称值准 \\
+运放失调电压 & LM324 约 $\pm2\,\mathrm{mV}$（典型），经 $-10$ 倍到 $\pm20\,\mathrm{mV}$ & 输出小时（如 $+1.0\,\mathrm{V}$）占比明显，要说明 \\
+万用表与电源 & 万用表 $\pm(0.5\%+2$ 字$)$；电源带载跌落 & 输入用 $2\,\mathrm{V}$ 挡读三位；每组重调电压 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.7 讨论三问（\textbf{[手册]} p22）的英文答案与中文要点}
+
+\callout{\textbf{EN — Q1.} Yes. The output saturated in the last row: with $u_{i1}=0.7\,\mathrm{V}$ and $u_{i2}=0.6\,\mathrm{V}$ the theoretical output is $-13.0\,\mathrm{V}$, but the measured output stopped at about $-11.5\,\mathrm{V}$, which is the negative output swing limit of the LM324. The row $0.5+0.6$ (theoretical $-11.0\,\mathrm{V}$) is close to the limit and may show slight clipping.}
+
+\callout{\textbf{EN — Q2.} The maximum output voltage is limited by the supply voltage, the output saturation voltage of the op-amp (about $1.5\,\mathrm{V}$ below the positive rail and much closer to the negative rail for the LM324), the load resistance, the closed-loop gain and the input common-mode range. With $\pm12\,\mathrm{V}$ supplies the linear output range is roughly $+10.5\,\mathrm{V}$ to $-11.5\,\mathrm{V}$; with $\pm5\,\mathrm{V}$ it shrinks accordingly.}
+
+\callout{\textbf{EN — Q3.} For the linear rows the relative error is $\delta=|u_{o,\mathrm{meas}}-u_{o,\mathrm{theo}}|/|u_{o,\mathrm{theo}}|\times100\%$. For the saturated rows the measured value should be compared with the clipping limit, not with the theoretical value; the large difference is caused by saturation. The main error sources are resistor tolerance, the op-amp offset voltage and bias current, the meter accuracy and the finite output swing.}
+
+\noindent\textbf{中文要点}：第 1 问必须点名具体行（$0.7/0.6$）并给出理论值与实测限幅值；第 2 问按“电源—输出摆幅—负载—增益—共模”列，不要只说“电源不够”；第 3 问的核心是“线性行算误差、饱和行说削顶”，两件事不能混。
+
+%=============================================================
+\hdr{§5}{Project 2：四级波形发生器}
+
+\subhdr{5.1 为什么这样串：一级生正弦，三级只换波形}
+
+Wien 桥自己起振产生正弦；比较器把正弦“切成”方波；积分器把方波“抹成”三角波；微分器把方波的跳变“捏成”尖脉冲。后三级都不产生新频率，所以四级\textbf{同频}，周期都等于 Wien 桥的 $T$。这条“同频”是判断“哪一级接错了”的第一把尺子。
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.45cm,
+  blk/.style={draw=violet, rounded corners=2pt, minimum width=2.4cm, minimum height=1.15cm,
+    align=center, fill=bandviolet, font=\small},
+  arr/.style={-{Latex[length=2mm]}, thick, violet}]
+\node[blk] (A) {A：Wien 桥\\pin 1};
+\node[blk, right=1.25cm of A] (B) {B：比较器\\pin 7};
+\node[blk, right=1.25cm of B] (C) {C：积分器\\pin 8};
+\node[blk, right=1.25cm of C] (D) {D：微分器\\pin 14};
+\draw[arr] (A) -- node[above,font=\scriptsize]{正弦} (B);
+\draw[arr] (B) -- node[above,font=\scriptsize]{方波} (C);
+\draw[arr] (C) -- node[above,font=\scriptsize]{三角波} (D);
+\draw[arr, rounded corners=3pt] (B.south) ++(0,-0.06) -- ++(0,-0.7) -| (D.south);
+\node[font=\scriptsize] at ($(B.south)!0.5!(D.south)+(0,-0.95)$) {方波同时送第四级};
+\end{tikzpicture}
+
+{\small 图 2\quad 四级链的接线拓扑（重绘）。注意第四级的输入取自\textbf{比较器}（方波），不是取自积分器；否则微分出来的是常数而不是尖脉冲。}
+\end{center}
+
+\subhdr{5.2 第一级：Wien 桥正弦振荡器（图 6.4.1a，书 p.245）}
+
+\begin{center}
+\includegraphics[width=0.62\linewidth]{图-实验6-教材裁剪/图6-4-1a-Wien桥-裁剪.png}
+
+{\small 图 3\quad Wien 桥振荡器（\textbf{裁剪}自教材图 6.4.1a，书 p.245）。正反馈支路是串联 $R$-$C$ 与并联 $R\parallel C$ 组成的选频网络；负反馈是 $R_1$、$R_2$。}
+\end{center}
+
+\warnbox{\textbf{图 3 是原理图，箱面上的接法要按端子来}：串联的 $R$、$C$ 一根一根串；并联的那一组，$R$ 与 $C$ 各从同相端接到地，是\textbf{两条并列的支路}，不是串在一起。接成串联就起不了振——这是这一级最常见的错。}
+
+\textbf{选频网络的传递函数（本指引补）。}设串联臂 $Z_1=R+\frac{1}{\mathrm{j}\omega C}$，并联臂 $Z_2=R\parallel\frac{1}{\mathrm{j}\omega C}=\frac{R}{1+\mathrm{j}\omega RC}$，则
+\[
+\beta(\mathrm{j}\omega)=\frac{Z_2}{Z_1+Z_2}
+=\frac{1}{3+\mathrm{j}\left(\omega RC-\dfrac{1}{\omega RC}\right)} .
+\]
+当 $\omega_0=\dfrac{1}{RC}$ 时，虚部为零，$\beta=\dfrac13$（实数，相位为 0）。这正是起振需要的相位条件。
+
+\textbf{起振条件。}闭环增益 $A=1+\dfrac{R_2}{R_1}$，环路增益 $A\beta$ 在 $\omega_0$ 处必须满足
+\[
+A\cdot\frac13\ \ge\ 1\quad\Longrightarrow\quad A\ge3\quad\Longrightarrow\quad R_2\ge2R_1 .
+\]
+取 $R_1=10\,\mathrm{k}\Omega$、$R_2=22\,\mathrm{k}\Omega$，$A=3.2>3$，留了一点余量，能起振。
+
+\textbf{频率。}
+\[
+f_0=\frac{1}{2\pi RC}.
+\]
+取 $R=6.8\,\mathrm{k}\Omega$、$C=0.047\,\mu\mathrm{F}$：
+\[
+f_0=\frac{1}{2\pi\times6.8\times10^{3}\times0.047\times10^{-6}}\approx498\,\mathrm{Hz},
+\qquad T=\frac{1}{f_0}\approx2.01\,\mathrm{ms}.
+\]
+
+\aside{若实验室没有 $0.047\,\mu\mathrm{F}$：$0.01\,\mu\mathrm{F}$ 配 $33\,\mathrm{k}\Omega$（约 $482\,\mathrm{Hz}$）、$0.1\,\mu\mathrm{F}$ 配 $3.3\,\mathrm{k}\Omega$（约 $482\,\mathrm{Hz}$）都行。只要 $RC$ 乘积不变，$f_0$ 就不变——这是选值时唯一的原则。}
+
+\textbf{稳幅（教材图 6.4.1b）。}纯线性反馈下，$A=3.2$ 会让幅度一直涨到运放饱和，输出是“削顶的正弦”。在 $R_2$ 支路里串入反并联的 $D_1$、$D_2$ 与 $R_3$：幅度小时二极管不导通，增益是 $3.2$，起振；幅度大时二极管导通，等效负反馈电阻变小，增益自动降到 $3$ 附近，幅度就稳住了。代价是波形仍有轻微失真，报告里要如实写。
+
+\textbf{现场判据}：示波器看 pin 1，应看到幅度几伏、周期约 $2\,\mathrm{ms}$ 的干净正弦。若削顶（上下都平）→ 负反馈太强/没有稳幅网络，把 $R_2$ 调小或加二极管；若完全不起振 → 正反馈网络接错（多半把并联网络接成了串联）、$R_2/R_1<2$、或电源没加上。
+
+\subhdr{5.3 第二级：过零比较器（图 5.3.9，书 p.162）}
+
+\begin{center}
+\includegraphics[width=0.56\linewidth]{图-实验6-教材裁剪/图5-3-9-过零比较器-裁剪.png}
+
+{\small 图 4\quad 过零比较器（\textbf{裁剪}自教材图 5.3.9）。$R_1=10\,\mathrm{k}\Omega$ 限流，$R_2=10\,\mathrm{k}\Omega$ 给同相端一个确定的直流电位（地）。}
+\end{center}
+
+比较器没有负反馈，运放工作在饱和区，输出只有 $\pm U_{OM}$ 两个状态。正弦过零时翻转，得到同频方波，占空比约 50\%。$R_2$ 接地的意义：同相端不能悬空，否则输入偏置电流会把它推到不确定的电位，翻转点就漂了。
+
+\aside{如果方波在过零点抖动（示波器上看到边沿有多重翻转），把 $R_2$ 换成 $10\,\mathrm{k}\Omega$ 固定 + $100\,\mathrm{k}\Omega$ 电位器接输出（正反馈），引入约 $\pm0.9\,\mathrm{V}$ 的回差（§3.7）。回差不能太大，否则占空比明显偏离 50\%。}
+
+\subhdr{5.4 第三级：积分器（图 5.3.7）产生三角波}
+
+\begin{center}
+\includegraphics[width=0.56\linewidth]{图-实验6-教材裁剪/图5-3-7-积分电路-裁剪.png}
+
+{\small 图 5\quad 积分电路（\textbf{裁剪}自教材图 5.3.7）。$R_1=10\,\mathrm{k}\Omega$ 串在输入侧，$C_1$ 接在输出与反相端之间；$R_3=100\,\mathrm{k}\Omega$ 与开关 S 并联在 $C_1$ 两端，提供直流反馈；$R_2$ 是平衡电阻。}
+\end{center}
+
+输入是幅值 $\pm U_{OM}$ 的方波。半个周期内输入近似恒定，输出是直线：
+\[
+u_o(t)=u_o(0)-\frac{U_i}{R_1C_1}\,t .
+\]
+半周期 $T/2$ 内输出的变化量就是三角波的峰峰值：
+\[
+U_{pp}=\frac{U_{OM}}{R_1C_1}\cdot\frac{T}{2}=\frac{U_{OM}\,T}{2R_1C_1}.
+\]
+取 $U_{OM}=10.5\,\mathrm{V}$、$T=2.01\,\mathrm{ms}$、$C_1=0.1\,\mu\mathrm{F}$，要求 $U_{pp}\approx3.9\,\mathrm{V}$，则
+\[
+R_1=\frac{U_{OM}T}{2U_{pp}C_1}
+=\frac{10.5\times2.01\times10^{-3}}{2\times3.9\times0.1\times10^{-6}}
+\approx2.7\times10^{4}\,\Omega=27\,\mathrm{k}\Omega .
+\]
+\textbf{核对}：$27\,\mathrm{k}\Omega$ 与 $0.1\,\mu\mathrm{F}$ 的时间常数 $\tau=2.7\,\mathrm{ms}$，比半周期 $1.0\,\mathrm{ms}$ 大，所以每半个周期只走出约 $37\%$ 的行程，三角波才不会顶到限幅。
+
+\warnbox{\textbf{积分器必须有直流反馈}。图 5.3.7 的 $R_3=100\,\mathrm{k}\Omega$ 与开关 S 并在 $C_1$ 两端：S 闭合时直流增益被限制在 $-R_3/R_1\approx-3.7$，输出不会一直积到电源轨；S 断开时是理想积分，任何微小失调都会被积到饱和——示波器上表现为“三角波斜到顶就削平”。\textbf{先闭合 S 调出稳定三角波，再断开 S 观察饱和现象}，正好回答“为什么要加直流反馈”。}
+
+\subhdr{5.5 第四级：微分器（图 5.3.8）产生尖脉冲}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验6-教材裁剪/图5-3-8-微分电路-裁剪.png}
+
+{\small 图 6\quad 微分电路（\textbf{裁剪}自教材图 5.3.8）。$C_1=0.01\,\mu\mathrm{F}$（经 S1）与 $C_2=5\,\mathrm{nF}$（经 S2）两条输入支路并联，反馈是 $R_f=10\,\mathrm{k}\Omega$；$R_2$ 为平衡电阻。}
+\end{center}
+
+\[
+u_o=-R_fC_1\frac{\mathrm{d}u_i}{\mathrm{d}t}.
+\]
+方波跳变时 $\mathrm{d}u_i/\mathrm{d}t$ 很大，输出出现尖脉冲：上升沿一只、下降沿一只，极性相反，间隔 $T/2$。
+
+\textbf{尖脉冲到底有多高（本指引补）。}输入方波的边沿不是理想阶跃，最快也就是运放的压摆率 $SR\approx0.5\,\mathrm{V}/\mu\mathrm{s}$。于是输出峰值最多
+\[
+U_{o,\max}\approx R_fC_1\cdot SR .
+\]
+取 $R_f=10\,\mathrm{k}\Omega$、$C_1=0.01\,\mu\mathrm{F}$，$R_fC_1=100\,\mu\mathrm{s}$，得 $U_{o,\max}\approx50\,\mathrm{V}$——远超限幅，\textbf{所以教材这两个值下尖脉冲一定是削顶的}，示波器看到的是“宽度等于边沿时间的一小段方波”，不是漂亮的尖峰。想要不削顶，需要
+\[
+R_fC_1\le\frac{U_{OM}}{SR}=\frac{10.5}{0.5}=21\,\mu\mathrm{s},
+\]
+即 $C_1=0.01\,\mu\mathrm{F}$ 时 $R_f\le2.1\,\mathrm{k}\Omega$。考场上若老师给的正是 $10\,\mathrm{k}\Omega$，就如实记录“已削顶”，并在讨论里说明这一条。
+
+\textbf{正弦输入时反而好算}：$u_i=U_{im}\sin\omega t$，
+\[
+u_o=-\omega R_fC_1U_{im}\cos\omega t,
+\qquad |u_o|_{\max}=\omega R_fC_1U_{im}.
+\]
+取 $f=1\,\mathrm{kHz}$、$U_{im}=5\,\mathrm{V}$、$R_fC_1=100\,\mu\mathrm{s}$：$|u_o|_{\max}=2\pi\times10^{3}\times10^{-4}\times5\approx3.14\,\mathrm{V}$，不削顶——这一组是能拿到“干净余弦”的。
+
+\textbf{开关 S1/S2 的作用}：S1 串 $C_1=0.01\,\mu\mathrm{F}$，S2 串 $C_2=5\,\mathrm{nF}$，两条支路并联。所以
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{3.0cm}p{3.4cm}p{4.6cm}@{}}
+\hline
+\thead{S1} & \thead{S2} & \thead{等效 $C$} & \thead{正弦 $1\,\mathrm{kHz}$、$5\,\mathrm{V}$ 峰值的输出幅值} \\
+\hline
+闭合 & 断开 & $0.01\,\mu\mathrm{F}$ & $\approx3.14\,\mathrm{V}$ \\
+断开 & 闭合 & $5\,\mathrm{nF}$ & $\approx1.57\,\mathrm{V}$ \\
+闭合 & 闭合 & $0.015\,\mu\mathrm{F}$ & $\approx4.71\,\mathrm{V}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 逐行读：输出幅值与等效电容成正比（$|u_o|_{\max}=\omega R_fCU_{im}$），所以把 $C$ 从 $5\,\mathrm{nF}$ 加到 $15\,\mathrm{nF}$，幅值就按 $3:1$ 变——这张表是“验证微分关系”的最好证据，比看波形更硬。
+
+\subhdr{5.6 四级联调：一级一级来，每级都有判据}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.0cm}p{4.2cm}p{4.4cm}p{4.6cm}@{}}
+\hline
+\thead{步} & \thead{接什么} & \thead{看哪里} & \thead{判据（看到什么算对）} \\
+\hline
+1 & A 级：Wien 桥 + $\pm12\,\mathrm{V}$ & pin 1 & 正弦，$T\approx2\,\mathrm{ms}$，幅度几伏，不削顶 \\
+2 & A 输出 $\to$ B 输入 & pin 7 & 方波，同周期，幅度 $\approx U_{OM}$ \\
+3 & B 输出 $\to$ C 输入 & pin 8 & 三角波，同周期，$U_{pp}\approx3.9\,\mathrm{V}$ \\
+4 & B 输出 $\to$ D 输入 & pin 14 & 每周期两只尖脉冲，间隔 $T/2$ \\
+5 & 四级同时接上 & 四个 pin & 周期全一致；若某个周期变了，先查该级输入是否取自正确的前级 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{第五步最容易出的问题不是“不工作”，而是“工作但不同频”：接了后级之后，前级的负载变了，Wien 桥的频率或幅度跟着漂。办法是每一级输入串 $10\,\mathrm{k}\Omega$（图里都有），必要时在级间加一级电压跟随器隔离。}
+
+\subhdr{5.7 备选方案 B：教材 §6.4.3 的闭环方波-三角波（做出越多越好）}
+
+若时间够、或老师要求“用比较器 + 积分器闭环”，按教材图 6.4.3a 接：A1 是滞回比较器，A2 是积分器，$u_{o2}$（三角波）经 $R_2$ 反馈到 A1 的同相端，形成闭环自激。
+
+教材式 (6.4.2) 给出三角波的上下门限
+\[
+U_H=\frac{R_2}{R_1}U_{OM},\qquad U_L=-\frac{R_2}{R_1}U_{OM},
+\]
+式 (6.4.3) 给出周期
+\[
+T=4R_4C\frac{R_2}{R_1}.
+\]
+
+\textbf{推导（本指引补）。}积分器输出从 $U_L$ 线性升到 $U_H$，斜率 $U_{OM}/(R_4C)$，所以
+\[
+\frac{T}{2}=\frac{U_H-U_L}{U_{OM}/(R_4C)}
+=\frac{2\frac{R_2}{R_1}U_{OM}}{U_{OM}/(R_4C)}
+=2R_4C\frac{R_2}{R_1},
+\]
+两边乘 2 即得 $T=4R_4C\,R_2/R_1$。
+
+\textbf{一组可落地的数}（在教材表 6.4.2 的范围内）：$R_1=47\,\mathrm{k}\Omega$、$R_2=10\,\mathrm{k}\Omega$、$R_4=100\,\mathrm{k}\Omega$、$C=6800\,\mathrm{pF}$，则
+\[
+T=4\times10^{5}\times6.8\times10^{-9}\times\frac{10}{47}
+\approx5.79\times10^{-4}\,\mathrm{s},
+\qquad f\approx1.73\,\mathrm{kHz},
+\]
+三角波峰峰值 $2\frac{R_2}{R_1}U_{OM}\approx4.5\,\mathrm{V}$。若老师给的电容是 $0.01\,\mu\mathrm{F}$ 一档，把 $R_4$ 换成 $68\,\mathrm{k}\Omega$ 附近即可把频率拉回 $1\,\mathrm{kHz}$ 量级。
+
+\aside{锯齿波（教材 §6.4.4）是三角波的“不对称版”：把积分电容的充电与放电回路分开，使两条斜率不等。做法是在积分器反馈里并一只二极管与电阻，让正、负半周走不同的时间常数。这一项属于“加分项”，时间够再做。}
+
+\subhdr{5.8 讨论两问（\textbf{[手册]} p22）的英文答案}
+
+\callout{\textbf{EN — Q4.} The period of the sine wave is $T=1/f_0=2\pi RC$. With $R=6.8\,\mathrm{k}\Omega$ and $C=0.047\,\mu\mathrm{F}$,
+\[
+f_0=\frac{1}{2\pi\times6.8\times10^{3}\times0.047\times10^{-6}}\approx498\,\mathrm{Hz},
+\qquad T\approx2.01\,\mathrm{ms}.
+\]
+The measured period agreed with this value within about 3\%.}
+
+\callout{\textbf{EN — Q5.} The sine wave can be made less distorted by adding an amplitude-stabilizing network (two anti-parallel diodes in series with a resistor in the feedback path) so that the loop gain falls to 3 as the amplitude grows. The triangle wave can be kept from saturating by a DC feedback resistor across the integrating capacitor. The spikes can be limited by a series resistor at the input and by reducing $R_fC_1$, or by a diode limiter. A small hysteresis in the comparator prevents chatter at the zero crossing.}
+
+\noindent\textbf{中文要点}：第 4 问直接代 $T=2\pi RC$，别忘写“实测与理论差多少”；第 5 问必须\textbf{画出修改后的电路}（Wien 加二极管稳幅、积分器加 $100\,\mathrm{k}\Omega$ 直流反馈、微分器加限幅或减小 $R_fC_1$、比较器加小滞回），只写文字拿不到分。
+
+%=============================================================
+\hdr{§6}{六张数据表（现场照填）}
+
+\noindent 每张表先写条件行，再填数。表里的“理论”列可以考前先算好，考场上只填“实测”。
+
+\subhdr{6.1 表 A\quad 反相加法器（教材表 5.3.3）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}p{1.5cm}p{2.4cm}p{2.4cm}p{2.0cm}p{2.0cm}p{2.6cm}@{}}
+\hline
+\thead{$u_{i1}$/V} & \thead{$u_{i2}$/V} & \thead{理论 $u_o$/V} & \thead{实测 $u_o$/V} & \thead{$\delta$/\%} & \thead{状态} & \thead{备注} \\
+\hline
+0.2 & 0.3 & $-5.0$ & & & & \\
+0.2 & $-0.3$ & $+1.0$ & & & & \\
+$-0.2$ & $-0.3$ & $+5.0$ & & & & \\
+0.5 & 0.2 & $-7.0$ & & & & \\
+0.5 & 0.6 & $-11.0$ & & & & \\
+0.7 & 0.6 & $-13.0$ & & — & 饱和 & 写 $U_{OM-}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.2 表 B\quad 限幅标定（本指引新增，建议写进报告）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.4cm}p{3.0cm}p{3.0cm}p{4.0cm}@{}}
+\hline
+\thead{测试条件} & \thead{理论 $u_o$} & \thead{实测 $u_o$} & \thead{结论} \\
+\hline
+$u_{i1}=1.5\,\mathrm{V}$，$u_{i2}=0$ & $-15.0\,\mathrm{V}$ & & $U_{OM-}=$ \\
+$u_{i1}=-1.5\,\mathrm{V}$，$u_{i2}=0$ & $+15.0\,\mathrm{V}$ & & $U_{OM+}=$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.3 表 C\quad 四级波形记录}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.0cm}p{3.0cm}p{2.4cm}p{2.4cm}p{2.4cm}p{3.0cm}@{}}
+\hline
+\thead{级} & \thead{波形} & \thead{周期/ms} & \thead{峰峰值/V} & \thead{是否削顶} & \thead{取哪个 pin} \\
+\hline
+1 & 正弦 & & & & pin 1 \\
+2 & 方波 & & & & pin 7 \\
+3 & 三角波 & & & & pin 8 \\
+4 & 尖脉冲 & & & & pin 14 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.4 表 D\quad 微分器的三种开关组合（验证微分关系）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.0cm}p{2.0cm}p{3.0cm}p{3.4cm}p{3.4cm}@{}}
+\hline
+\thead{S1} & \thead{S2} & \thead{等效 $C$} & \thead{理论幅值/V} & \thead{实测幅值/V} \\
+\hline
+闭合 & 断开 & $0.01\,\mu\mathrm{F}$ & 3.14 & \\
+断开 & 闭合 & $5\,\mathrm{nF}$ & 1.57 & \\
+闭合 & 闭合 & $0.015\,\mu\mathrm{F}$ & 4.71 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.5 表 E\quad 积分器的 $C$ 与波形（教材表 5.3.7 的化简版）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.2cm}p{2.2cm}p{2.4cm}p{3.2cm}p{3.4cm}@{}}
+\hline
+\thead{输入} & \thead{$C_1$} & \thead{S} & \thead{预期输出} & \thead{实测} \\
+\hline
+$u_i=-1\,\mathrm{V}$ 直流 & $0.01\,\mu\mathrm{F}$ & 断开 & 直线上升 $10\,\mathrm{V/ms}$，很快饱和 & \\
+$u_i=-1\,\mathrm{V}$ 直流 & $0.1\,\mu\mathrm{F}$ & 断开 & 直线上升 $1\,\mathrm{V/ms}$，约 $10\,\mathrm{ms}$ 饱和 & \\
+$u_i=-1\,\mathrm{V}$ 直流 & $0.1\,\mu\mathrm{F}$ & 闭合 & 稳态 $+10\,\mathrm{V}$ & \\
+正弦 $200\,\mathrm{Hz}$、$1\,\mathrm{V}$ 有效值 & $0.047\,\mu\mathrm{F}$ & 断开 & 余弦，峰值约 $2.4\,\mathrm{V}$ & \\
+方波 $200\,\mathrm{Hz}$、$1\,\mathrm{V}$ 峰值 & $0.047\,\mu\mathrm{F}$ & 断开 & 三角波，峰峰值约 $5.3\,\mathrm{V}$ & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.6 表 F\quad 方案 B（若做）：闭环方波-三角波}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{2.0cm}p{2.0cm}p{2.0cm}p{2.6cm}p{2.6cm}@{}}
+\hline
+\thead{$R_1$/k$\Omega$} & \thead{$R_2$/k$\Omega$} & \thead{$R_4$/k$\Omega$} & \thead{$C$/pF} & \thead{$T$ 理论/ms} & \thead{$T$ 实测/ms} \\
+\hline
+47 & 10 & 100 & 6800 & 0.579 & \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§7}{英文报告：结构、句子与语言纪律}
+
+\subhdr{7.1 六栏结构}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{10.6cm}@{}}
+\hline
+\thead{栏} & \thead{写什么} \\
+\hline
+I. Objectives & 两到三句：验证反相加法器；观察饱和；设计并调试四级波形发生器。 \\
+II. Principles & 加法器公式、$R_3$ 的取法、Wien 的 $f_0$ 与起振条件、积分与微分关系，各一两行。 \\
+III. Data & 表 A--E 照抄，条件行一起抄。 \\
+IV. Discussion & 五问（\textbf{[手册]} p22），每问 2--4 句。 \\
+V. Error analysis & 电阻容差、失调、仪表精度、饱和。 \\
+VI. Conclusion & 一句“实测与理论在 $X\%$ 内一致；饱和行与尖脉冲削顶已说明”。 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{7.2 可以直接改写的句子}
+
+\begin{itemize}
+  \item This experiment verifies an inverting adder and a four-stage waveform generator built with an LM324.
+  \item The output voltage of the adder is given by $u_o=-R_f\,(u_{i1}/R_1+u_{i2}/R_2)$.
+  \item The balancing resistor $R_3=R_1\parallel R_2\parallel R_f=4.76\,\mathrm{k}\Omega$, so a $4.7\,\mathrm{k}\Omega$ resistor was used.
+  \item The output saturated at about $-11.5\,\mathrm{V}$ when the theoretical value was $-13.0\,\mathrm{V}$.
+  \item The relative error of the linear rows is within 3\%.
+  \item The Wien bridge oscillated at $498\,\mathrm{Hz}$, corresponding to a period of $2.01\,\mathrm{ms}$.
+  \item The oscillation condition is $A=1+R_2/R_1>3$.
+  \item The triangular wave has $U_{pp}\approx3.9\,\mathrm{V}$, as predicted by $U_{OM}T/(2R_1C_1)$.
+  \item Two spikes appear in each period, separated by half a period.
+  \item The spikes are clipped because $R_fC_1SR\approx50\,\mathrm{V}$ exceeds the output swing of the op-amp.
+\end{itemize}
+
+\subhdr{7.3 术语表}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.6cm}p{4.6cm}p{4.6cm}@{}}
+\hline
+\thead{中文} & \thead{English} & \thead{符号} \\
+\hline
+反相加法器 & inverting adder & $u_o=-R_f\sum u_i/R_i$ \\
+平衡电阻 & balancing resistor & $R_3$ \\
+虚短 / 虚断 & virtual short / virtual open & $u_+\approx u_-$，$i_\pm\approx0$ \\
+饱和 / 削顶 & saturation / clipping & $U_{OM}$ \\
+正弦振荡器 & sine-wave oscillator & $f_0=1/(2\pi RC)$ \\
+过零比较器 & zero-crossing comparator & — \\
+滞回 & hysteresis & $U_H-U_L$ \\
+积分器 / 微分器 & integrator / differentiator & — \\
+三角波 / 尖脉冲 & triangular wave / spike & — \\
+占空比 & duty cycle & $\delta$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{7.4 五条语言纪律}
+
+\begin{enumerate}
+  \item 先结论后理由，每问不超过四句；老师要的是“简洁回答”。
+  \item 数字带单位，单位用国际符号（$\mathrm{V}$、$\mathrm{mA}$、$\mathrm{k}\Omega$），不写“伏”“千欧”。
+  \item 公式用符号，不代数值写公式；代入过程单独一行。
+  \item 不写“I think”“maybe”，写“the measured value is…”“this indicates…”。
+  \item 图要标轴名、单位、刻度；波形图至少两个周期。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{135 分钟时间盒、应急与故障排查}
+
+\subhdr{8.1 时间盒（10:00--12:15）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.9cm}p{7.6cm}p{5.2cm}@{}}
+\hline
+\thead{时刻} & \thead{做什么} & \thead{产出} \\
+\hline
+10:00--10:10 & 交预习报告、听题目、认实验箱与电源端子 & 知道运放模块在哪、$\pm12\,\mathrm{V}$ 从哪取 \\
+10:10--10:20 & 接 Project 1，标定限幅 & $U_{OM+}$、$U_{OM-}$ 两个数 \\
+10:20--10:45 & Project 1 六组数据 & 表 A 填满 \\
+10:45--11:00 & Wien 桥，调出正弦 & pin 1 波形、周期 \\
+11:00--11:15 & 比较器 + 积分器 & pin 7 方波、pin 8 三角波 \\
+11:15--11:30 & 微分器 + 三种开关组合 & pin 14 尖脉冲、表 D \\
+11:30--11:45 & Discussion 五问（先在草稿写要点） & 五段短文 \\
+11:45--12:00 & 报告表格与波形图 & 表 A--E、四张波形 \\
+12:00--12:10 & 请老师看数据、签字 & 签字 \\
+12:10--12:15 & 关仪器、拆线、交报告 & 离场 \\
+\hline
+\end{tabular}
+\end{center}
+
+\callout{\textbf{“做出越多越好”怎么用}：Project 1 是保底（25 分里的基本盘），必须先做完；四级里做到第 3 级就有三角波，第 4 级是加分。若 11:30 还在第 2 级，果断停手，把已有波形、周期、幅值记全——\textbf{记录完整比多接一级更值钱}。}
+
+\subhdr{8.2 如果题目跟这份指引不一致：三分钟判断法}
+
+\begin{enumerate}
+  \item 看题目要的是“加法器”还是“减法/同相/跟随”——换成 §3.8 速通表里对应那一行，公式与接线都在。
+  \item 看波形发生器要几级、要哪几种波形——若是“方波 + 三角波”，直接用 §5.7 方案 B（两级闭环），比四级链省一半时间。
+  \item 看数据表是“自拟”还是“照表填”——自拟的表就照 §6 的格式画，条件行一定要写。
+\end{enumerate}
+
+\subhdr{8.3 故障排查表（现象 $\to$ 三步定位 $\to$ 处理）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.6cm}p{5.4cm}p{5.8cm}@{}}
+\hline
+\thead{现象} & \thead{三步定位} & \thead{处理} \\
+\hline
+输出恒为 $\pm11\,\mathrm{V}$ & 1) 量 $u_-$ 是否等于 $u_+$；2) 查反馈电阻是否接在反相端；3) 查输入是否过载 & 反馈接错端就改接；输入过大就减小 \\
+加法器输出为零 & 1) 量 pin 4/11 电压；2) 量 pin 2 对地是否虚地；3) 量 $R_f$ 是否虚焊 & 补电源、补焊点 \\
+Wien 不起振 & 1) 量 $R_2/R_1$ 是否 $>2$；2) 查正反馈网络是并联还是串联；3) 量电源 & 增大 $R_2$；把并联 RC 改对 \\
+正弦削顶 & 1) 看是否上下都平；2) 查有没有稳幅二极管；3) 量 $R_2$ & 加二极管稳幅；减小 $R_2$ \\
+\hline
+\end{tabular}
+
+\vspace{4pt}
+\begin{tabular}{@{}p{3.6cm}p{5.4cm}p{5.8cm}@{}}
+\hline
+\thead{现象} & \thead{三步定位} & \thead{处理} \\
+\hline
+方波抖动 & 1) 看边沿是否多重翻转；2) 查同相端是否悬空；3) 查地线 & 加小滞回；$R_2$ 接地 \\
+三角波削顶 & 1) 看是否斜到顶就平；2) 查 $R_3$／S 是否接上；3) 算 $U_{pp}$ & 闭合 S；增大 $R_1$ 或减小 $C_1$ \\
+尖脉冲看不见 & 1) 时基打到 $50\,\mu\mathrm{s/div}$；2) 查 $C_1$ 是否接在输入侧；3) 查 $R_f$ & 放大时基；确认 $C_1$ 串在输入端 \\
+四级不同频 & 1) 分别量四个 pin 的周期；2) 查第四级输入取自哪一级；3) 查级间是否互相加载 & 第四级改接方波；加跟随器隔离 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{8.4 交卷前 90 秒自检}
+
+\begin{enumerate}
+  \item 表 A 六行都有实测值吗？第 6 行标了“饱和”而没有硬算误差吗？
+  \item $U_{OM+}$、$U_{OM-}$ 写进报告了吗？
+  \item 四级波形每级都有“周期、幅值、是否削顶”吗？四个周期一致吗？
+  \item 微分器的三种开关组合都记了吗？
+  \item Discussion 五问是否每问都有具体数字（不是空话）？
+  \item 仪器关了吗？数据请老师签了吗？
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{缺口与仍待核实的事}
+
+\gapitem{手册 pp.19--22 未入库}{上一版讲义（2026-10-27）引用过“手册 p19 预习四问、p20 加法器与 Table 5.3.3、p21 四级发生器、p22 Discussion 五问”，但原页照片没有存进工作区。本版所有电路与数据表都以教材 §5.3／§6.4 的图号、表号复核过；手册独有的要求（例如它是否要求“四级”具体指哪四种波形）\textbf{仍待原页确认}。}
+
+\gapitem{实验箱 THM-6 的面板}{教材只给型号，没给端子排布。运放模块的引脚是否已经引到面板、$\pm12\,\mathrm{V}$ 从哪个插座取、电阻电容是插孔式还是焊接式，都要到现场认。§2.3 的“六条规矩”不依赖具体排布，但接线顺序要按现场调整。}
+
+\gapitem{$U_{OM}$ 的具体值}{本文用 $+10.5\,\mathrm{V}$、$-11.5\,\mathrm{V}$ 作典型值，实际以 §2.4 标定为准。不同批次、不同负载下可差 $0.5\,\mathrm{V}$ 以上，报告里必须写实测值。}
+
+\gapitem{分数构成}{25 分里 Preparation／Discussion／Operation 各占多少，只有“Preparation 5 分、Discussion 10+5 分”这一条来自课堂幻灯片；其余是老师口头，未写入任何文件。}
+
+\gapitem{“四级”的定义}{本指引按“正弦—方波—三角波—尖脉冲”组织（上一版讲义的口径）；教材 §6.4 的正式内容是“正弦／方波／三角波／锯齿波”。若老师要求锯齿波，按 §5.7 的旁注改积分器即可，其余三级不变。}
+
+%=============================================================
+\hdr{§10}{三句话总结}
+
+\begin{enumerate}
+  \item \textbf{Project 1 靠算}：$R_3=R_1\parallel R_2\parallel R_f=4.76\,\mathrm{k}\Omega$，$u_o=-10(u_{i1}+u_{i2})$，六行理论值先写好，最后一行是饱和不是误差。
+  \item \textbf{Project 2 靠分级}：Wien 的 $f_0=1/(2\pi RC)$ 与 $A>3$ 决定第一级，比较器只换波形，积分器的 $U_{pp}=U_{OM}T/(2R_1C_1)$ 决定三角波大小，微分器的 $R_fC_1\cdot SR$ 决定尖脉冲削不削顶。
+  \item \textbf{考场靠顺序}：先标定限幅、再填表 A、再逐级调四级；记录完整比多接一级值钱，仪器要关、数据要签字。
+\end{enumerate}
+
+\flowerrule
+
+\noindent{\small 本指引与《实验 6 集成运放 25 分考试 备考讲义（2026-10-27）》的关系：那一版给的是“答案与结论”，这一版补的是“为什么”和“现场怎么做”。两版冲突时，以教材图号／表号为准；教材与手册冲突时，以手册为准（手册未入库，见 §9）。}
+
+\end{document}
