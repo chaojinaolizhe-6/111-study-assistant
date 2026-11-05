@@ -1,0 +1,995 @@
+%=====================================================================
+% 多重线性代数与交错张量 —— Munkres 第六章 §26--§27（书内页 219--236）
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[breakable]{tcolorbox}
+\newtcolorbox{notecall}{colback=bandviolet,colframe=rulepurple,boxrule=0.5pt,arc=1pt,
+  left=6pt,right=6pt,top=5pt,bottom=5pt,breakable,parbox=false}
+\setlength{\headheight}{22pt}
+\linespread{1.22}
+\renewcommand{\qbreak}{\needspace{0.22\textheight}}
+\settags{多重线性代数与交错张量}{Analysis on Manifolds · 第六章}
+
+\newcommand{\step}[1]{\par\vspace{3pt}\noindent
+  {\color{violet}\small$\blacktriangleright$}\hspace{3pt}{\bfseries\color{violetdeep}#1}\par\vspace{1pt}}
+\newcommand{\seep}[1]{{\small\color{inkgray}（详解见附录第 \pageref{#1} 页）}}
+\newcommand{\Lk}{\mathcal{L}}
+\newcommand{\Ak}{\mathcal{A}}
+\newcommand{\sgn}{\operatorname{sgn}}
+
+\begin{document}
+
+%=====================================================================
+\doctitle{多重线性代数与交错张量}
+{Munkres《Analysis on Manifolds》第六章 §26--§27}
+{依据教材：\texttt{Analysis on Manifolds}, James R. Munkres\\
+\textbf{书内页 219--236}（＝ PDF 第 232--249 页；本讲义页码一律用书内页）\\
+整理日期：2026 年 11 月 5 日}
+
+%=====================================================================
+\hdr{§0}{这十八页的位置、记号与前提}
+
+\subhdr{它在哪里}
+
+书内页 219--236 是第六章的开头，恰好是一个完整的单元：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{1.9cm}p{8.6cm}p{2.5cm}@{}}
+\thead{书内页} & \thead{内容} & \thead{本讲义} \\[1pt]
+p219 & 第六章开场：为什么微分形式要多重线性代数 & §1 \\[1pt]
+p220--223 & 张量、定理 26.1、引理 26.2、定理 26.3、例 1 & §2、§3 \\[1pt]
+p223--225 & 张量积、定理 26.4、拉回 $T^*$、定理 26.5 & §4、§5 \\[1pt]
+p226 & §26 的习题 1--8 & §10 \\[1pt]
+p226--229 & 置换、符号：引理 27.1、27.2 & §6 \\[1pt]
+p229--230 & 交错张量 $\Ak^k(V)$、例 1 & §7 \\[1pt]
+p230--233 & 引理 27.3、27.4、定理 27.5、维数 $\binom nk$ & §8 \\[1pt]
+p234--235 & 行列式的构造、定理 27.6、27.7、例 2 & §9 \\[1pt]
+p236 & §27 的习题 1--5；§28 楔积的开头一句 & §10、§9 末 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\warnbox{\textbf{与另一份讲义的接缝}。本区间开始处（p219）正是另一份讲义《边界、流形上的积分与多重线性代数》（书 p206--223）的结尾：那一份的 §9--§10 讲的就是这里的 p219--223。两份重叠四页，内容一致；从 p224 起（张量积的性质、拉回、交错张量）只有本讲义有。}
+
+\subhdr{记号约定（全篇只用这一套）}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{2.6cm}p{10.0cm}p{2.2cm}@{}}
+\thead{记号} & \thead{含义} & \thead{出现处} \\[1pt]
+$V,W$ & 实向量空间；$V$ 除另说外取定基 $a_1,\dots,a_n$ & §2 起 \\[1pt]
+$V^k$ & $V\times\cdots\times V$（$k$ 个） & §2 \\[1pt]
+$\Lk^k(V)$ & $V$ 上全体 $k$-张量（多重线性函数 $V^k\to\mathbb R$） & §2 \\[1pt]
+$\phi_I$ & 初等 $k$-张量，$I=(i_1,\dots,i_k)$（定理 26.3） & §3 \\[1pt]
+$f\otimes g$ & 张量积：$k$ 阶与 $\ell$ 阶拼成 $k+\ell$ 阶 & §4 \\[1pt]
+$T^*$ & 拉回：由 $T:V\to W$ 得到 $\Lk^k(W)\to\Lk^k(V)$ & §5 \\[1pt]
+$S_k$ & $\{1,\dots,k\}$ 上的置换群，有 $k!$ 个元素 & §6 \\[1pt]
+$\sgn\sigma$ & 符号：$+1$（偶）、$-1$（奇），按逆序数定 & §6 \\[1pt]
+$f^\sigma$ & $f^\sigma(v_1,\dots,v_k)=f(v_{\sigma(1)},\dots,v_{\sigma(k)})$ & §7 \\[1pt]
+$\Ak^k(V)$ & $V$ 上全体\textbf{交错} $k$-张量；$\Ak^1=\Lk^1$ & §7 \\[1pt]
+$\psi_I$ & 初等交错 $k$-张量（定理 27.5） & §8 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\begin{notecall}
+\textbf{这张表与 §15 的页码对照表都是台账}（速查用），不承载推导，所以不需要“表前一句 + 逐行读法 + 边界行”三件套。本讲义承载推导的地方一律写成公式串。
+\end{notecall}
+
+\subhdr{先认四条已有结论}
+
+\begin{itemize}
+  \item \textbf{定理 2.11（§2）}：满足三条公理（交换两行变号；对每一行分别线性；$\det I_n=1$）的行列式函数存在且唯一。这条在 §9 用来确认“新造出来的 $\det$ 就是原来的 $\det$”。
+  \item \textbf{向量空间的基与分量}：$\vect v=\sum_j c_j\vect a_j$ 的分量唯一。
+  \item \textbf{线性映射由基上的值唯一决定}：这是定理 26.3 里 $k=1$ 情形的原型。
+  \item \textbf{行列式的 Leibniz 公式}（§9 会重新推出，这里只作为对照）：$\det X=\sum_\sigma(\sgn\sigma)x_{1\sigma(1)}\cdots x_{n\sigma(n)}$。
+\end{itemize}
+
+%=====================================================================
+\hdr{§1}{第六章开场：为什么要把“场”换成张量（p219）}
+
+p219 只有一页，说的是一件事：第五章已经把“微分”与“积分”两件大事做完了，第六章做第三件——向量积分学，它的主定理以 Green、Gauss、Stokes 命名。在微积分里这件事只在 $\mathbb R^3$ 的曲线与曲面上做；换到 $\mathbb R^n$ 的 $k$-流形上，\textbf{线性代数与向量微积分都不够用了}，需要一套叫\textbf{多重线性代数}的东西（线性代数的续篇）。本章前三节只用到第一章的线性代数；后面才与第二章的微分接上。
+
+两个接口：
+
+\begin{notecall}
+\textbf{接口一（§26 $\to$ §27）}：$k$-张量是“吃 $k$ 个矢量、吐一个数”的多重线性函数。可积分的对象却必须对“交换两个矢量”有确定的反应——这就是\textbf{交错}张量（§27）。所以 §26 讲全部 $k$-张量，§27 从中挑出“换序变号”的那一半。
+
+\textbf{接口二（§27 $\to$ 行列式）}：交错张量里最简单的一个是 $\psi_{1,2,\dots,n}$，把它按列作用到 $\mathbb R^n$ 的 $n$ 个矢量上，就得到\textbf{行列式}（p234）。Munkres 在 §2 里“假设存在”的那个函数，到 p234 才真正造出来——这正是那句“at long last!”的意思。
+\end{notecall}
+
+%=====================================================================
+\hdr{§2}{张量：吃几个矢量、吐一个数（p220）}
+
+\subhdr{2.1 定义（p220，原形式）}
+
+\begin{notecall}
+\textbf{定义}．设 $V$ 是向量空间，$V^k=V\times\cdots\times V$。函数 $f:V^k\to\mathbb R$ 称为对\textbf{第 $i$ 个变量线性}，若固定其余 $k-1$ 个矢量后，$T(\vect v)=f(\vect v_1,\dots,\vect v_{i-1},\vect v,\vect v_{i+1},\dots,\vect v_k)$ 是线性的。若 $f$ 对每个 $i$ 都线性，称 $f$ \textbf{多重线性}，也称 $V$ 上的 \textbf{$k$-张量}（$k$ 阶张量）。全体记 $\Lk^k(V)$。$k=1$ 时 $\Lk^1(V)$ 就是 $V\to\mathbb R$ 的线性变换全体，即对偶空间 $V^*$。
+\end{notecall}
+
+\step{三个例子与一个反例（本讲义补）}
+\begin{enumerate}
+  \item $V=\mathbb R^n$：$f(\vect v)=3v_1-v_2$ 是 $1$-张量；一般 $1$-张量是 $\vect v\mapsto\sum_id_iv_i$。
+  \item $\langle\vect u,\vect v\rangle=\sum_iu_iv_i$ 与 $\det(\vect u,\vect v)=u_1v_2-u_2v_1$ 都是 $2$-张量：固定一个、对另一个线性。
+  \item \textbf{反例}：$f(\vect v)=\|\vect v\|^2$ 不是 $1$-张量，因为 $f(2\vect v)=4\|\vect v\|^2\ne2f(\vect v)$。
+\end{enumerate}
+判据：\textbf{逐变量}查，一次只让一个变量动，其余钉死。
+
+\subhdr{2.2 定理 26.1（p220）：$\Lk^k(V)$ 是向量空间}
+
+\begin{notecall}
+\textbf{定理 26.1}．全体 $k$-张量在逐点加法与数乘下构成向量空间：
+\[ (f+g)(\vect v_1,\dots,\vect v_k)=f(\cdot)+g(\cdot),\qquad (cf)(\cdot)=c\,f(\cdot). \]
+\end{notecall}
+
+\step{证明（课件写“The proof is left as an exercise”，这里补全）}
+把 $\Lk^k(V)$ 看成\textbf{全体函数} $V^k\to\mathbb R$ 构成的向量空间 $\mathcal F$ 的子集（$\mathcal F$ 的加法与数乘逐点定义，公理自动成立）。只需两句话：零张量 $z\equiv0$ 在子集里（固定其余变量后 $\vect v\mapsto0$ 线性）；子集对加法与数乘封闭——固定其余变量后，
+\[ \vect v\mapsto f(\dots,\vect v,\dots)+g(\dots,\vect v,\dots),\qquad \vect v\mapsto c\,f(\dots,\vect v,\dots) \]
+分别是“两个线性函数之和”与“线性函数的常数倍”，都线性。逐变量如此，故 $f+g$ 与 $cf$ 都多重线性。$\square$
+
+%=====================================================================
+\hdr{§3}{在基上给值就够了（p220--223）}
+
+\subhdr{3.1 引理 26.2（p220--221，原形式）}
+
+\begin{notecall}
+\textbf{引理 26.2}．设 $\vect a_1,\dots,\vect a_n$ 是 $V$ 的基。若 $k$-张量 $f,g$ 对每个 $k$ 元组 $I=(i_1,\dots,i_k)$（$i_j\in\{1,\dots,n\}$）都有
+\[ f(\vect a_{i_1},\dots,\vect a_{i_k})=g(\vect a_{i_1},\dots,\vect a_{i_k}), \]
+则 $f=g$。
+\end{notecall}
+
+\textbf{注意}（p221 首句）：\textbf{不要求} $i_1,\dots,i_k$ 互不相同，也不要求有序。$(1,1,3)$ 与 $(3,1,1)$ 都是合法元组，而且一般是两个不同的元组。
+
+\step{证明（课件写“and so on”，这里把归纳那步写出来）}
+把每个 $\vect v_i$ 按基展开：$\vect v_i=\sum_{j=1}^nc_{ij}\vect a_j$（$c_{ij}$ 是第 $i$ 个矢量的第 $j$ 个分量）。
+
+第 1 步：只对第 1 个变量用线性（其余钉死）：
+\[ f(\vect v_1,\dots,\vect v_k)=\sum_{j_1=1}^nc_{1j_1}f(\vect a_{j_1},\vect v_2,\dots,\vect v_k). \]
+第 2 步：把第 2 个变量展开（此时第 1 个位置已是基矢量，可以钉死）：
+\[ =\sum_{j_1=1}^n\sum_{j_2=1}^nc_{1j_1}c_{2j_2}f(\vect a_{j_1},\vect a_{j_2},\vect v_3,\dots,\vect v_k). \]
+第 $k$ 步后：
+\[ f(\vect v_1,\dots,\vect v_k)=\sum_{1\le j_1,\dots,j_k\le n}c_{1j_1}\cdots c_{kj_k}\,f(\vect a_{j_1},\dots,\vect a_{j_k}). \tag{26.1} \]
+$g$ 有同一个公式、同一组系数（只依赖 $\vect v_i$ 与基，不依赖 $f$）。故在全部基 $k$ 元组上相等 $\Rightarrow$ (26.1) 的两个和式逐项相等 $\Rightarrow$ $f=g$。$\square$
+
+\subhdr{3.2 定理 26.3（p221--222）：初等张量构成基}
+
+\begin{notecall}
+\textbf{定理 26.3}．设 $V$ 以 $\vect a_1,\dots,\vect a_n$ 为基，$I=(i_1,\dots,i_k)$ 是 $\{1,\dots,n\}$ 的 $k$ 元组。存在\textbf{唯一}的 $k$-张量 $\phi_I$ 使对每个 $k$ 元组 $J=(j_1,\dots,j_k)$，
+\[ \phi_I(\vect a_{j_1},\dots,\vect a_{j_k})=\begin{cases}0,&I\ne J,\\ 1,&I=J.\end{cases}\qquad(\ast) \]
+且 $\{\phi_I\}$ 是 $\Lk^k(V)$ 的基，于是 $\dim\Lk^k(V)=n^k$。$k=1$ 时 $\{\phi_1,\dots,\phi_n\}$ 是与 $\{\vect a_i\}$ 对偶的 $V^*$ 的基。
+\end{notecall}
+
+\step{证明四段}
+\textbf{唯一性}：引理 26.2。\textbf{存在性 $k=1$}：线性泛函由基上的值决定，取 $\phi_i(\vect a_j)=\delta_{ij}$。\textbf{存在性 $k>1$}：\textbf{定义成乘积}
+\[ \phi_I(\vect v_1,\dots,\vect v_k):=\phi_{i_1}(\vect v_1)\cdots\phi_{i_k}(\vect v_k). \tag{26.2} \]
+多线性：固定其余变量后，限制在 $\vect v_m$ 上是“常数 $\times\phi_{i_m}(\vect v_m)$”。取值：代入 $(\vect a_{j_1},\dots,\vect a_{j_k})$ 得 $\delta_{i_1j_1}\cdots\delta_{i_kj_k}$，它 $=1$ 当且仅当 $I=J$——这正是 $(\ast)$。\textbf{是基}：给定 $f$，令 $d_I=f(\vect a_{i_1},\dots,\vect a_{i_k})$、$g=\sum_Jd_J\phi_J$，则 $g$ 在每个基 $k$ 元组上的值 $=d_I=f(\cdot)$，由引理 26.2 得 $f=g$；无关性：$\sum_Jd_J\phi_J=0$ 在 $\vect a_I$ 上取值给 $d_I=0$。$\square$
+
+\subhdr{3.3 例 1（p223）：$V=\mathbb R^n$ 时张量就是分量的单项式}
+
+取标准基 $\vect e_1,\dots,\vect e_n$，则 $\phi_i(\vect x)=x_i$。对 $I=(i_1,\dots,i_k)$，
+\[ \phi_I(\vect x_1,\dots,\vect x_k)=x_{i_11}x_{i_22}\cdots x_{i_kk}, \]
+其中 $x_{ij}$ 是“第 $i$ 个矢量的第 $j$ 个分量”。所以 $\phi_I$ 就是\textbf{从各分量里各挑一个乘起来的单项式}，一般 $k$-张量是这些单项式的线性组合。于是
+\[ \text{一般 1-张量：}\ f(\vect x)=d_1x_1+\cdots+d_nx_n;\qquad \text{一般 2-张量：}\ g(\vect x,\vect y)=\sum_{i,j=1}^nd_{ij}x_iy_j. \]
+后一条由定理 26.3 与 $\phi_{(i,j)}(\vect x,\vect y)=x_iy_j$ 直接得到（$d_{(i,j)}$ 简写为 $d_{ij}$）。参数个数也对得上：$n^2$ 个 $d_{ij}$ $=$ $n^2$ 个基张量。
+
+\warnbox{\textbf{记号坑}：例 1 里 $\vect x_1,\dots,\vect x_k$ 是 $k$ 个\textbf{矢量}，$x_{ij}$ 是第 $i$ 个矢量的第 $j$ 个分量；而在“单个矢量 $\vect x$”的场合，$x_1,\dots,x_n$ 是它的 $n$ 个分量。同一个下标位置两种意思，读时先看挂的是“矢量编号”还是“分量编号”。}
+
+%=====================================================================
+\hdr{§4}{张量积：把两台机器拼成一台（p223--224）}
+
+\subhdr{4.1 定义（p223）}
+
+\begin{notecall}
+\textbf{定义}．$f$ 是 $k$-张量、$g$ 是 $\ell$-张量，定义 $k+\ell$ 阶张量
+\[ (f\otimes g)(\vect v_1,\dots,\vect v_{k+\ell})=f(\vect v_1,\dots,\vect v_k)\cdot g(\vect v_{k+1},\dots,\vect v_{k+\ell}). \]
+称 $f\otimes g$ 为 $f$ 与 $g$ 的\textbf{张量积}。
+\end{notecall}
+
+\step{多线性的验证（课件“It is easy to check”）}
+固定除第 $m$ 个之外的所有变量。若 $m\le k$，第一个因子对 $\vect v_m$ 线性、第二个因子是\textbf{常数}，乘积仍线性；若 $m>k$ 则反过来。逐变量如此。$\square$
+
+\step{读法：$\otimes$ 把槽分成两段}
+前 $k$ 个交给 $f$、后 $\ell$ 个交给 $g$，顺序是定义的一部分，所以一般 $f\otimes g\ne g\otimes f$。例如 $k=\ell=1$ 时 $(f\otimes g)(\vect u,\vect v)=f(\vect u)g(\vect v)$，而 $(g\otimes f)(\vect u,\vect v)=g(\vect u)f(\vect v)$。
+
+\subhdr{4.2 定理 26.4（p224，原形式）：四条性质}
+
+\begin{notecall}
+\textbf{定理 26.4}．设 $f,g,h$ 是 $V$ 上的张量。则
+\begin{enumerate}
+  \item[\textbf{(1)}]（结合）$f\otimes(g\otimes h)=(f\otimes g)\otimes h$；
+  \item[\textbf{(2)}]（齐性）$(cf)\otimes g=c(f\otimes g)=f\otimes(cg)$；
+  \item[\textbf{(3)}]（分配，要求 $f,g$ 同阶）$(f+g)\otimes h=f\otimes h+g\otimes h$，$h\otimes(f+g)=h\otimes f+h\otimes g$；
+  \item[\textbf{(4)}]（与初等张量的关系）$\phi_I=\phi_{i_1}\otimes\phi_{i_2}\otimes\cdots\otimes\phi_{i_k}$，其中 $I=(i_1,\dots,i_k)$。
+\end{enumerate}
+\end{notecall}
+
+\textbf{两点读法}（p224）：(4) 里不需要括号，因为 $\otimes$ 结合；这里\textbf{完全没有}交换律——它几乎从不成立。
+
+\step{证明（课件只证了 (1)，这里补 (2)(3)(4)）}
+\textbf{(1)} 设阶数分别为 $k,\ell,m$。按定义连乘两层：
+\[ \bigl(f\otimes(g\otimes h)\bigr)(\vect v_1,\dots,\vect v_{k+\ell+m})
+=f(\vect v_1,\dots)\cdot g(\vect v_{k+1},\dots)\cdot h(\vect v_{k+\ell+1},\dots), \]
+而 $\bigl((f\otimes g)\otimes h\bigr)$ 在同一点上的值按同一顺序把三个因子乘起来，相等。$\square$
+
+\textbf{(2)} 两边在 $(\vect v_1,\dots,\vect v_{k+\ell})$ 上都等于 $c\,f(\cdot)g(\cdot)$。
+
+\textbf{(3)} 设 $f,g$ 都是 $k$ 阶：
+\[ \bigl((f+g)\otimes h\bigr)(\vect v_1,\dots)=\bigl[f(\vect v_1,\dots,\vect v_k)+g(\vect v_1,\dots,\vect v_k)\bigr]h(\vect v_{k+1},\dots), \]
+展开即得；右边那一式同理。\textbf{注意}：这里必须 $f,g$ 同阶，否则“前 $k$ 个槽”对两者含义不同。
+
+\textbf{(4)} 由 (26.2) 与 $\otimes$ 的定义，$\phi_{i_1}\otimes\cdots\otimes\phi_{i_k}$ 在 $(\vect v_1,\dots,\vect v_k)$ 上等于 $\phi_{i_1}(\vect v_1)\cdots\phi_{i_k}(\vect v_k)$，正是 $\phi_I$ 的值；再由引理 26.2（在基元组上比较）两边相等。$\square$
+
+\subhdr{4.3 一条立刻能用的推论}
+
+由 (4) 与结合律：$\phi_I\otimes\phi_J=\phi_{(I,J)}$，其中 $(I,J)$ 是把两个元组接起来。这条在习题 6 里直接用。
+
+%=====================================================================
+\hdr{§5}{拉回：换一个空间看同一个张量（p224--225）}
+
+\subhdr{5.1 定义（p224）}
+
+\begin{notecall}
+\textbf{定义}．设 $T:V\to W$ 是线性变换。定义\textbf{对偶变换}（方向相反）
+\[ T^*:\Lk^k(W)\to\Lk^k(V),\qquad (T^*f)(\vect v_1,\dots,\vect v_k)=f(T\vect v_1,\dots,T\vect v_k). \]
+\end{notecall}
+
+$T^*f$ 是多重线性的（$T$ 线性、$f$ 多重线性），这一点“immediate”。
+
+\subhdr{5.2 定理 26.5（p225，原形式）}
+
+\begin{notecall}
+\textbf{定理 26.5}．设 $T:V\to W$ 线性，$T^*$ 如上。则
+\begin{enumerate}
+  \item[\textbf{(1)}] $T^*$ 线性；
+  \item[\textbf{(2)}] $T^*(f\otimes g)=T^*f\otimes T^*g$；
+  \item[\textbf{(3)}] 若 $S:W\to X$ 线性，则 $(S\circ T)^*f=T^*(S^*f)$。
+\end{enumerate}
+\end{notecall}
+
+\step{证明（课件只证 (1)，(2)(3) 是习题 3，这里补）}
+\textbf{(2)} 设 $f$ 是 $k$ 阶、$g$ 是 $\ell$ 阶，$(\vect v_1,\dots,\vect v_{k+\ell})$ 是 $V$ 中的元组。则
+\[ \bigl(T^*(f\otimes g)\bigr)(\vect v_1,\dots)= (f\otimes g)(T\vect v_1,\dots,T\vect v_{k+\ell})
+=f(T\vect v_1,\dots)\cdot g(T\vect v_{k+1},\dots), \]
+而右边 $=(T^*f)(\vect v_1,\dots)\cdot(T^*g)(\vect v_{k+1},\dots)$，正是 $T^*f\otimes T^*g$ 在同一点的值。
+
+\textbf{(3)} 直接代入两层：
+\[ \bigl((S\circ T)^*f\bigr)(\vect v_1,\dots)=f\bigl(S(T\vect v_1),\dots\bigr)
+=\bigl(S^*f\bigr)(T\vect v_1,\dots)=\bigl(T^*(S^*f)\bigr)(\vect v_1,\dots).\ \square \]
+一句话记法：\textbf{拉回把复合反过来}，与矩阵的转置是同一件事（习题 8 会算矩阵）。
+
+%=====================================================================
+\hdr{§6}{置换与符号（p226--229）}
+
+\subhdr{6.1 置换与基本置换（p227）}
+
+\begin{notecall}
+\textbf{定义}．$\{1,\dots,k\}$ 的一个\textbf{置换}是一个到自身的一一映射，全体记 $S_k$；$S_k$ 在复合下成群（对称群），有 $k!$ 个元素。
+
+\textbf{基本置换} $e_i$（$1\le i<k$）：只交换 $i$ 与 $i+1$，其余不动。注意 $e_i\circ e_i=\mathrm{id}$，所以每个 $e_i$ 是自己的逆。
+\end{notecall}
+
+\subhdr{6.2 引理 27.1（p227）：任何置换都是基本置换的复合}
+
+\begin{notecall}
+\textbf{引理 27.1}．若 $\sigma\in S_k$，则 $\sigma$ 等于若干基本置换的复合。
+\end{notecall}
+
+\step{证明（按“已经固定了前几个整数”归纳；课件 p227 的构造比较绕，这里重排）}
+称 $\sigma$ \textbf{固定前 $i$ 个整数}，若 $\sigma(j)=j$ 对 $1\le j\le i$ 成立。
+
+起点 $i=0$：任何 $\sigma$ 都满足。目标 $i=k$：固定前 $k$ 个整数 $\Rightarrow\sigma=\mathrm{id}$。
+
+\textbf{归纳步}：设 $\sigma$ 固定前 $i-1$ 个整数（$1\le i<k$），要把它改造成“固定前 $i$ 个”，代价只是左乘若干 $e$。
+
+因 $\sigma$ 固定 $1,\dots,i-1$ 且是一一的，$\sigma(i)$ 必 $\ne1,\dots,i-1$。
+\begin{itemize}
+  \item 若 $\sigma(i)=i$：不用动。
+  \item 若 $\sigma(i)=\ell>i$：令
+  \[ \sigma'=e_i\circ e_{i+1}\circ\cdots\circ e_{\ell-1}\circ\sigma . \]
+  这个复合把 $\ell$ 依次“往左挪”：$e_{\ell-1}$ 把 $\ell$ 换成 $\ell-1$，$e_{\ell-2}$ 再换成 $\ell-2$，……，最后 $e_i$ 把它送到 $i$。而 $1,\dots,i-1$ 这些值在右边被 $\sigma$ 固定、在左边也不被任何 $e_i,\dots,e_{\ell-1}$ 动到。所以 $\sigma'$ 固定前 $i$ 个整数。又
+  \[ \sigma=e_{\ell-1}\circ\cdots\circ e_i\circ\sigma' \]
+  （把上式两边依次左乘 $e_{\ell-1},\dots,e_i$，用 $e_j^{-1}=e_j$），即 $\sigma$ 是“$\sigma'$ 再左乘一串基本置换”。
+\end{itemize}
+于是每往前走一步（$i-1\to i$），$\sigma$ 就写成“$\sigma'$ 左乘一串 $e$”，归纳到底得 $\sigma$ 本身是基本置换的复合。$\square$
+
+\aside{这条引理的作用只有一个：\textbf{把“对任意置换成立”化归成“对基本置换成立”}。§7 定义交错张量时只要求“$f^{e_i}=-f$”，而引理 27.1 保证这等价于“$f^\sigma=(\sgn\sigma)f$ 对一切 $\sigma$”（引理 27.3(b)）。}
+
+\subhdr{6.3 符号（p228--229）}
+
+\begin{notecall}
+\textbf{定义}．设 $\sigma\in S_k$。满足 $i<j$ 但 $\sigma(i)>\sigma(j)$ 的数对 $\{i,j\}$ 称为 $\sigma$ 的\textbf{一个逆序}。逆序个数为奇时定义 $\sgn\sigma=-1$，为偶时 $\sgn\sigma=+1$。相应称 $\sigma$ 为奇置换／偶置换。
+\end{notecall}
+
+\step{为什么用逆序数而不直接数“交换次数”}
+因为交换次数不是置换的不变量（同一个置换可以有多种写法，长度奇偶却总相同）——这正是引理 27.2(a)(b) 要说的内容。
+
+\subhdr{6.4 引理 27.2（p228--229，原形式）}
+
+\begin{notecall}
+\textbf{引理 27.2}．设 $\sigma,\tau\in S_k$。
+\begin{enumerate}
+  \item[\textbf{(a)}] 若 $\sigma$ 是 $m$ 个基本置换的复合，则 $\sgn\sigma=(-1)^m$；
+  \item[\textbf{(b)}] $\sgn(\sigma\circ\tau)=(\sgn\sigma)(\sgn\tau)$；
+  \item[\textbf{(c)}] $\sgn\sigma^{-1}=\sgn\sigma$；
+  \item[\textbf{(d)}] 若 $p\ne q$，$\tau$ 是“只交换 $p$ 与 $q$、其余不动”的置换，则 $\sgn\tau=-1$。
+\end{enumerate}
+\end{notecall}
+
+\step{第一步：右乘一个基本置换恰好翻转符号}
+设 $\sigma$ 在 $1,\dots,k$ 上的值依次写成序列 $(\sigma(1),\dots,\sigma(k))$；$\tau=\sigma\circ e_i$ 的序列就是把第 $i$ 与第 $i+1$ 项\textbf{对调}。比较两个序列的逆序：
+
+\begin{itemize}
+  \item 任取一对位置上的值，若两个值都不在“被对调的那两个位置”上，它们的相对先后没变，逆序状态不变；
+  \item 若其中一个值在被对调的位置上，它与另一个值的\textbf{相对顺序也没变}（只是它挪了一格，另一格还在同一侧），逆序状态不变；
+  \item 唯一变化的是\textbf{被对调的那两个值之间}：原来成一个逆序，对调后就不是，反之亦然。
+\end{itemize}
+所以逆序数恰好改变 $1$，$\sgn(\sigma\circ e_i)=-\sgn\sigma$。
+
+\step{第二步：四条的证明}
+\textbf{(a)} 从恒等置换出发，$\sgn(\mathrm{id})=+1$（零个逆序）；每次右乘一个 $e$ 翻一次号，乘 $m$ 次得 $(-1)^m$。
+
+\textbf{(b)} 把 $\sigma$ 写成 $m$ 个基本置换的复合、$\tau$ 写成 $n$ 个，则 $\sigma\circ\tau$ 是 $m+n$ 个的复合（引理 27.1），由 (a)：$(-1)^{m+n}=(-1)^m(-1)^n$。
+
+\textbf{(c)} $\sigma^{-1}\circ\sigma=\mathrm{id}$，由 (b) 得 $\sgn(\sigma^{-1})\sgn(\sigma)=1$。
+
+\textbf{(d)} 设 $p<q$，$q=p+\ell$（$\ell\ge1$）。把 $\tau$ 的值写成序列
+\[ (1,\dots,p-1,\ \boxed{q},\ p+1,\dots,p+\ell-1,\ \boxed{p},\ p+\ell+1,\dots,k). \]
+它与自然顺序不同的地方只有：$q$ 被挪到了前面、$p$ 被挪到了后面。数逆序：
+\begin{itemize}
+  \item $q$ 与 $p+1,\dots,p+\ell-1$ 各成一个逆序：$\ell-1$ 个；
+  \item $p$ 与 $p+1,\dots,p+\ell-1$ 各成一个逆序：$\ell-1$ 个；
+  \item 加上 $\{q,p\}$ 本身：$1$ 个。
+\end{itemize}
+共 $2\ell-1$ 个，是奇数，故 $\sgn\tau=-1$。$\square$
+
+\aside{核对 $(d)$ 的 $\ell=1$（相邻交换）：$2\ell-1=1$，与“右乘 $e_p$ 翻一次号”一致；$\ell=2$（隔一个交换，如 $(1,2,3)\mapsto(3,2,1)$ 的 $p=1,q=3$）：$2\ell-1=3$ 个逆序，直接数是 $(3,2),(3,1),(2,1)$ 三对，符合。}
+
+%=====================================================================
+\hdr{§7}{交错张量（p229--230）}
+
+\subhdr{7.1 定义：把张量的槽位重排（p229）}
+
+\begin{notecall}
+\textbf{定义}．设 $f$ 是 $V$ 上的 $k$-张量，$\sigma$ 是 $\{1,\dots,k\}$ 的置换，定义
+\[ f^\sigma(\vect v_1,\dots,\vect v_k)=f(\vect v_{\sigma(1)},\dots,\vect v_{\sigma(k)}). \]
+$f^\sigma$ 仍是 $k$-张量。称 $f$ \textbf{对称}，若 $f^{e}=f$ 对每个基本置换 $e$ 成立；称 $f$ \textbf{交错}，若 $f^{e}=-f$ 对每个基本置换成立。
+\end{notecall}
+
+展开成一句话（p229）：$f$ 对称 $\iff f(\dots,\vect v_{i+1},\vect v_i,\dots)=f(\dots,\vect v_i,\vect v_{i+1},\dots)$；$f$ 交错 $\iff$ 交换任意两个相邻槽位时变号。
+
+\begin{notecall}
+\textbf{定义}．$\Ak^k(V)$ 记 $V$ 上全体交错 $k$-张量。两个交错张量之和、数乘仍交错，故 $\Ak^k(V)$ 是 $\Lk^k(V)$ 的\textbf{线性子空间}。“$1$-张量是交错的”这个条件恒真，故约定 $\Ak^1(V)=\Lk^1(V)$。
+\end{notecall}
+
+\subhdr{7.2 例 1（p230）：交错张量与行列式是一家人}
+
+$k>1$ 的初等张量 $\phi_I$ \textbf{不}交错（例如 $\phi_{1,2}(\vect v_1,\vect v_2)=v_{1,1}v_{2,2}$，交换两个槽位得到 $v_{1,2}v_{2,1}\ne-\phi_{1,2}$）。但某些线性组合交错。例如
+\[ f=\phi_{i,j}-\phi_{j,i}\quad\Longrightarrow\quad f(\vect x,\vect y)=x_iy_j-x_jy_i=\det\begin{bmatrix}x_i&y_i\\ x_j&y_j\end{bmatrix}, \]
+显然 $f(\vect y,\vect x)=-f(\vect x,\vect y)$。同理三阶的那个
+\[ g(\vect x,\vect y,\vect z)=\det\begin{bmatrix}x_i&y_i&z_i\\ x_j&y_j&z_j\\ x_k&y_k&z_k\end{bmatrix} \]
+是交错 $3$-张量，也可以写成
+\[ g=\phi_{i,j,k}+\phi_{j,k,i}+\phi_{k,i,j}-\phi_{j,i,k}-\phi_{i,k,j}-\phi_{k,j,i}. \]
+
+\aside{这六个 $\phi$ 的系数怎么来的：三阶行列式的 Leibniz 公式有 $3!=6$ 项，偶置换 $(123),(231),(312)$ 带 $+$、奇置换 $(132),(213),(321)$ 带 $-$。把每一项读成 $\phi_{i_{\sigma(1)},i_{\sigma(2)},i_{\sigma(3)}}$ 即可；§9 会把这个观察变成定义。}
+
+%=====================================================================
+\hdr{§8}{交错张量的结构（p230--233）}
+
+\subhdr{8.1 引理 27.3（p230--231，原形式）}
+
+\begin{notecall}
+\textbf{引理 27.3}．设 $f$ 是 $k$-张量，$\sigma,\tau\in S_k$。
+\begin{enumerate}
+  \item[\textbf{(a)}] $f\mapsto f^\sigma$ 是 $\Lk^k(V)\to\Lk^k(V)$ 的线性变换；且 $(f^\sigma)^\tau=f^{\tau\circ\sigma}$。
+  \item[\textbf{(b)}] $f$ 交错 $\iff f^\sigma=(\sgn\sigma)f$ 对一切 $\sigma$ 成立。并且：若 $f$ 交错且 $\vect v_p=\vect v_q$（$p\ne q$），则 $f(\vect v_1,\dots,\vect v_k)=0$。
+\end{enumerate}
+\end{notecall}
+
+\step{证明}
+\textbf{(a)} 线性显然（逐点相加/数乘后再重排槽位，等于先重排再相加/数乘）。复合那一式逐项算：
+\[ (f^\sigma)^\tau(\vect v_1,\dots)=f^\sigma(\vect v_{\tau(1)},\dots)
+=f\bigl(\vect v_{\tau(\sigma(1))},\dots\bigr)=f^{\tau\circ\sigma}(\vect v_1,\dots). \]
+（第 $i$ 个槽拿到的矢量是 $\vect v_{\tau(\sigma(i))}$，正是 $\tau\circ\sigma$ 的第 $i$ 个值。）
+
+\textbf{(b)} $\Leftarrow$：取 $\sigma=e_i$，$\sgn e_i=-1$（引理 27.2(d) 的 $\ell=1$），即得 $f^{e_i}=-f$。
+
+$\Rightarrow$：由引理 27.1 把 $\sigma$ 写成 $m$ 个基本置换的复合，反复用 (a) 与 $f^{e}=-f$：
+\[ f^\sigma=(-1)^mf=(\sgn\sigma)f, \]
+最后一步用引理 27.2(a)。
+
+最后一句：设 $\vect v_p=\vect v_q$，取只交换 $p,q$ 的置换 $\tau$（$\sgn\tau=-1$）。然后以 $\tau$ 为 $\{1,\dots,k\}$ 的一个置换（即作用在\textbf{槽位}上）：
+\[ f^\tau(\vect v_1,\dots,\vect v_k)=f(\vect v_{\tau(1)},\dots,\vect v_{\tau(k)})=f(\vect v_1,\dots,\vect v_k), \]
+因为 $\vect v_p=\vect v_q$，重排后的元组与原元组是同一列矢量；而由 (b) 前半，$f^\tau=(\sgn\tau)f=-f$。于是 $f=-f$，即 $f=0$。$\square$
+
+\subhdr{8.2 引理 27.4（p231）：递升元组就够了}
+
+\begin{notecall}
+\textbf{引理 27.4}．若交错 $k$-张量 $f,g$ 在\textbf{每个递升} $k$ 元组 $I=(i_1<\cdots<i_k)$ 上有 $f(\vect a_{i_1},\dots)=g(\vect a_{i_1},\dots)$，则 $f=g$。
+\end{notecall}
+
+\step{证明}
+按引理 26.2，只需比较任意基 $k$ 元组 $J=(j_1,\dots,j_k)$ 上的值。
+\begin{itemize}
+  \item 若 $J$ 中有两个下标相同：由引理 27.3(b) 末句，$f,g$ 都取零，相等。
+  \item 若 $J$ 的下标互不相同：取把 $J$ 排成递升的置换 $\sigma$（即 $(j_{\sigma(1)},\dots,j_{\sigma(k)})$ 递升）。则
+  \[ f(\vect a_{j_1},\dots,\vect a_{j_k})=f^\sigma(\vect a_{j_{\sigma(1)}},\dots)=(\sgn\sigma)f(\text{递升元组}), \]
+  $g$ 同理；两者在递升元组上相等，故在 $J$ 上也相等。$\square$
+\end{itemize}
+
+\subhdr{8.3 定理 27.5（p232--233，原形式）}
+
+\begin{notecall}
+\textbf{定理 27.5}．设 $V$ 以 $\vect a_1,\dots,\vect a_n$ 为基，$I=(i_1<\cdots<i_k)$ 是\textbf{递升} $k$ 元组。存在唯一的交错 $k$-张量 $\psi_I$，使对每个递升 $k$ 元组 $J$，
+\[ \psi_I(\vect a_{j_1},\dots,\vect a_{j_k})=\begin{cases}0,&I\ne J,\\ 1,&I=J.\end{cases} \]
+$\{\psi_I\}$ 是 $\Ak^k(V)$ 的基。并且
+\[ \psi_I=\sum_{\sigma\in S_k}(\sgn\sigma)\,\phi_I^{\sigma} \tag{27.1} \]
+（求和跑遍全部 $\sigma$）。称 $\psi_I$ 为相应于 $\vect a_1,\dots,\vect a_n$ 的\textbf{初等交错 $k$-张量}。
+\end{notecall}
+
+\step{证明：先造出来，再验四条}
+\textbf{\ding{172} 造}：按 (27.1) 定义。它是 $k$-张量的线性组合，故是 $k$-张量（§2 定理 26.1）。
+
+\textbf{\ding{173} 它是交错的}：由引理 27.3(a)(b) 与 $\sgn(\tau\circ\sigma)=\sgn\tau\cdot\sgn\sigma$：
+\[ (\psi_I)^\tau=\sum_\sigma(\sgn\sigma)\,(\phi_I^\sigma)^\tau
+=\sum_\sigma(\sgn\sigma)\,\phi_I^{\tau\circ\sigma}
+=(\sgn\tau)\sum_\rho(\sgn\rho)\,\phi_I^{\rho}=(\sgn\tau)\,\psi_I, \]
+第三个等号把 $\rho=\tau\circ\sigma$ 当作新求和指标（$\sigma\mapsto\tau\circ\sigma$ 是 $S_k$ 到自身的双射）。由引理 27.3(b) 前半，$\psi_I$ 交错。
+
+\aside{(27.1) 里的 $\phi_I^\sigma$ 与习题 5 的写法 $\phi_{I\sigma}$ 是同一件事：$(\phi_I)^\sigma=\phi_{I\sigma^{-1}}$（把第 $j$ 个槽拿到的下标重新编号即可），而对 $\sigma$ 求和时把 $\sigma$ 换成 $\sigma^{-1}$ 不改变和式（$\sgn\sigma^{-1}=\sgn\sigma$）。所以 $\psi_I=\sum_\sigma(\sgn\sigma)\phi_{I\sigma}$，其中 $I\sigma=(i_{\sigma(1)},\dots,i_{\sigma(k)})$。}
+
+\textbf{\ding{174} 它有要求的取值}：设 $J$ 递升，
+\[ \psi_I(\vect a_{j_1},\dots,\vect a_{j_k})=\sum_\sigma(\sgn\sigma)\,\phi_I(\vect a_{j_{\sigma(1)}},\dots,\vect a_{j_{\sigma(k)}}). \]
+其中每一项 $\phi_I(\text{基元组})$ 只有当 $(i_1,\dots,i_k)=(j_{\sigma(1)},\dots,j_{\sigma(k)})$ 时才为 $1$，否则为 $0$。既然 $I$ 与 $J$ 都递升，上式能成立只可能是 $I=J$ 且 $\sigma=\mathrm{id}$——那一项的值是 $1$。否则所有项全为 $0$。$\checkmark$
+
+\textbf{\ding{175} 是基}：给定交错 $f$，对每个递升 $I$ 令 $d_I=f(\vect a_{i_1},\dots,\vect a_{i_k})$，再令 $g=\sum_{[J]}d_J\psi_J$（$[J]$ 表示只对递升元组求和）。由 \ding{174}，$g$ 与 $f$ 在每个递升元组上取值相同，由引理 27.4 得 $f=g$；表示唯一也由引理 27.4（若 $\sum d_J\psi_J=0$，在 $\vect a_I$ 上取值得 $d_I=0$）。$\square$
+
+\subhdr{8.4 维数（p233）}
+
+每个 $k$ 元子集 $\{i_1<\cdots<i_k\}\subset\{1,\dots,n\}$ 恰好对应一个递升元组、一个 $\psi_I$。所以
+\[ \dim\Ak^k(V)=\binom{n}{k}=\frac{n!}{k!\,(n-k)!}. \]
+两个极端：$k>n$ 时 $\Ak^k(V)$ 只有零（$k$ 个基矢量必有两个重复，交错张量取零）；$k=n$ 时维数是 $1$——这条正是 §9 能定义行列式的原因。
+
+%=====================================================================
+\hdr{§9}{行列式：$\Ak^n(\mathbb R^n)$ 里唯一那个（p234--235）}
+
+\subhdr{9.1 定义（p234）}
+
+\begin{notecall}
+\textbf{定义}．设 $\vect e_1,\dots,\vect e_n$ 是 $\mathbb R^n$ 的标准基，$\phi_1,\dots,\phi_n$ 是对偶基。$\Ak^n(\mathbb R^n)$ 维数为 $1$，其中唯一的初等交错 $n$-张量是 $\psi_{1,2,\dots,n}$。若 $X=[\vect x_1\cdots\vect x_n]$ 是 $n\times n$ 矩阵，定义
+\[ \det X=\psi_{1,\dots,n}(\vect x_1,\dots,\vect x_n). \]
+\end{notecall}
+
+\step{为什么这真的是 §2 的 $\det$}
+记 $g(X)=\psi_{1,\dots,n}(\vect x_1,\dots,\vect x_n)$。逐条对照 §2 的三条公理（p15）：
+\begin{enumerate}
+  \item[\textbf{公理 1}]（交换两行变号）：$g$ 对\textbf{列}交错（$\psi$ 交错）；而“$g$ 关于列交错”与“$f(A)=g(A^{\mathsf T})$ 关于行交错”是一回事（转置把列换成行）。
+  \item[\textbf{公理 2}]（对每一行分别线性）：同上，由 $\psi$ 的多线性转过去。
+  \item[\textbf{公理 3}]（$\det I_n=1$）：$g(I_n)=\psi_{1,\dots,n}(\vect e_1,\dots,\vect e_n)=1$，就是定理 27.5 里“$I=J$ 时取 $1$”。
+\end{enumerate}
+于是 $f(A)=g(A^{\mathsf T})$ 满足三条公理。由 §2 的唯一性（定理 2.11），$f$ 就是原来的 $\det$；又定理 2.11 的推论给出 $\det A=\det A^{\mathsf T}$，所以 $g(A)=f(A^{\mathsf T})=f(A)=\det A$。$\square$
+
+\step{Leibniz 公式（p234 末）}
+把定理 27.5 的 (27.1) 代入 $I=(1,\dots,n)$：
+\[ \det X=\sum_\sigma(\sgn\sigma)\,\phi_{1,\dots,n}\bigl(\vect x_{\sigma(1)},\dots,\vect x_{\sigma(n)}\bigr)
+=\sum_\sigma(\sgn\sigma)\,x_{1,\sigma(1)}x_{2,\sigma(2)}\cdots x_{n,\sigma(n)}. \]
+（第一项里 $x_{i,\sigma(i)}$ 的下标：第 $i$ 行配第 $\sigma(i)$ 列。）这个式子有时被当作行列式的定义。
+
+\subhdr{9.2 定理 27.6（p234）：拉回保持交错}
+
+\begin{notecall}
+\textbf{定理 27.6}．设 $T:V\to W$ 线性。若 $f$ 是 $W$ 上的交错张量，则 $T^*f$ 是 $V$ 上的交错张量。
+\end{notecall}
+
+\step{证明（课件“left as an exercise”，即习题 4）}
+对任一基本置换 $e$ 与任意元组，
+\[ (T^*f)^e(\vect v_1,\dots)=(T^*f)(\vect v_{e(1)},\dots)=f(T\vect v_{e(1)},\dots) \]
+\[ =f^e(T\vect v_1,\dots)=-f(T\vect v_1,\dots)=-(T^*f)(\vect v_1,\dots). \]
+故 $T^*f\in\Ak^k(V)$。$\square$
+
+\subhdr{9.3 定理 27.7（p235）：$\psi_I$ 就是一个子式行列式}
+
+\begin{notecall}
+\textbf{定理 27.7}．设 $\psi_I$ 是 $\mathbb R^n$ 上相应于标准基的初等交错张量，$I=(i_1,\dots,i_k)$。对 $\vect x_1,\dots,\vect x_k\in\mathbb R^n$，令 $X=[\vect x_1\cdots\vect x_k]$。则
+\[ \psi_I(\vect x_1,\dots,\vect x_k)=\det X_I, \]
+其中 $X_I$ 是“依次取 $X$ 的第 $i_1,\dots,i_k$ 行”得到的 $k\times k$ 矩阵。
+\end{notecall}
+
+\step{证明}
+由 (27.1) 与 $\phi_I$ 的乘积式（26.2）：
+\[ \psi_I(\vect x_1,\dots,\vect x_k)=\sum_\sigma(\sgn\sigma)\prod_{m=1}^k\phi_{i_m}\bigl(\vect x_{\sigma(m)}\bigr)
+=\sum_\sigma(\sgn\sigma)\,x_{i_1,\sigma(1)}\cdots x_{i_k,\sigma(k)}, \]
+右边正是 $k\times k$ 矩阵 $X_I$ 的 Leibniz 公式（把 §9.1 的公式用在 $k$ 阶上）。$\square$
+
+\subhdr{9.4 例 2（p235）：$\Ak^3(\mathbb R^4)$ 有四个基元素}
+
+$\Ak^3(\mathbb R^4)$ 的基是 $\psi_{i,j,k}$，其中 $(i,j,k)$ 取 $(1,2,3),(1,2,4),(1,3,4),(2,3,4)$；每个都由
+\[ \psi_{i,j,k}(\vect x,\vect y,\vect z)=\det\begin{bmatrix}x_i&y_i&z_i\\ x_j&y_j&z_j\\ x_k&y_k&z_k\end{bmatrix} \]
+给出（定理 27.7）。一般元素是这四个的线性组合。维数 $\binom43=4$ $\checkmark$。
+
+\subhdr{9.5 记号说明（p235）}
+
+外积（exterior product）是多重线性代数里的标准构造：把向量空间的“$k$ 重张量积”取商。对有限维 $V$，作用于对偶空间 $V^*$ 得到 $\Ak(V^*)$，它与“$V$ 上的交错 $k$-张量空间”自然同构；所以不少书把后者写成 $\Ak(V^*)$，另一些书写 $\Ak(V)$。Munkres 采用中性的 $\Ak(V)$——\textbf{读别的书时要注意这个记号的分歧}。
+
+\subhdr{9.6 边界（p236 末）}
+
+p236 的最后三行是 §28 楔积（Wedge Product）的开头：$f\otimes g$ 几乎从不交错，即使 $f,g$ 都交错，所以需要另一个乘法。\textbf{§28 已出给定范围}，本讲义到此为止。
+
+%=====================================================================
+\hdr{§10}{教材习题：题面与考点（13 道，详解在附录 A）}
+
+\subhdr{分布}
+§26 的八道在 p226，§27 的五道在 p236。按“先做后看”整理：本节只给题面与考点，答案与详解在附录 A（同编号，块首带条件摘要）。题号、页码与教材一一对应。
+
+\qbreak
+\subhdr{26.1（p226 第 1 题）：线性组合仍是张量}
+\qbreak
+\qstem{（教材 p226 第 1 题）(a) 证明：若 $f,g:V^k\to\mathbb R$ 多重线性，则 $af+bg$ 多重线性；(b) 验证 $\Lk^k(V)$ 满足向量空间公理。}
+\textbf{考点}：§2.2 定理 26.1 的补证（子空间论证）。\seep{ax1}
+
+\qbreak
+\subhdr{26.2（p226 第 2 题）：张量积的多线性与四条性质}
+\qbreak
+\qstem{（教材 p226 第 2 题）(a) $f,g$ 多重线性 $\Rightarrow f\otimes g$ 多重线性；(b) 验证张量积的基本性质（定理 26.4）。}
+\textbf{考点}：§4.1 的多线性验证与 §4.2 的四条性质。\seep{ax2}
+
+\qbreak
+\subhdr{26.3（p226 第 3 题）：拉回的两条性质}
+\qbreak
+\qstem{（教材 p226 第 3 题）验证定理 26.5 的 (2) 与 (3)。}
+\textbf{考点}：§5.2 补的两段证明。\seep{ax3}
+
+\qbreak
+\subhdr{26.4（p226 第 4 题）：哪些是 $\mathbb R^4$ 上的张量}
+\qbreak
+\qstem{（教材 p226 第 4 题）判断下列哪些是 $\mathbb R^4$ 上的张量，并把是的用初等张量表示：
+$f(\vect x,\vect y)=3x_1y_2+5x_2x_3$；$g(\vect x,\vect y)=x_1y_2+x_2y_4+1$；$h(\vect x,\vect y)=x_1y_1-7x_2y_3$。}
+\textbf{考点}：多重线性是\textbf{逐槽}的：“每槽一个分量”才叫张量。\seep{ax4}
+
+\qbreak
+\subhdr{26.5（p226 第 5 题）：三阶的情形}
+\qbreak
+\qstem{（教材 p226 第 5 题）对上题的方法，考察
+$f(\vect x,\vect y,\vect z)=3x_1x_2z_3-x_3y_1z_4$；$g(\vect x,\vect y,\vect z,\vect u,\vect v)=5x_3y_2z_3u_4v_4$；$h(\vect x,\vect y,\vect z)=x_1y_2z_4+2x_1z_3$。}
+\textbf{考点}：同一槽里出现两个不同矢量的分量 $\Rightarrow$ 不线性；某槽整个不出现 $\Rightarrow$ 仍是线性（常数），但要小心“常数项”。\seep{ax5}
+
+\qbreak
+\subhdr{26.6（p226 第 6 题）：写出 $f\otimes g$}
+\qbreak
+\qstem{（教材 p226 第 6 题）设 $f(\vect x,\vect y,\vect z)=2x_1y_2z_2-x_2y_3z_1$，$g=\phi_{2,1}-5\phi_{3,1}$。(a) 把 $f\otimes g$ 写成初等 $5$-张量的线性组合；(b) 把 $(f\otimes g)(\vect x,\vect y,\vect z,\vect u,\vect v)$ 写成具体函数。}
+\textbf{考点}：§4.3 的 $\phi_I\otimes\phi_J=\phi_{(I,J)}$ 与分配律。\seep{ax6}
+
+\qbreak
+\subhdr{26.7（p226 第 7 题）：四条性质唯一刻画张量积}
+\qbreak
+\qstem{（教材 p226 第 7 题）证明：对有限维 $V$，定理 26.4 的四条性质唯一刻画张量积。}
+\textbf{考点}：先在基元组上验证 $\phi_I\otimes'\phi_J=\phi_I\otimes\phi_J$，再用多重线性展开。\seep{ax7}
+
+\qbreak
+\subhdr{26.8（p226 第 8 题）：拉回的矩阵}
+\qbreak
+\qstem{（教材 p226 第 8 题）设 $f$ 是 $\mathbb R^n$ 上的 $1$-张量，$f(\vect y)=A\cdot\vect y$（$A$ 为 $1\times n$）。设 $T:\mathbb R^m\to\mathbb R^n$，$T(\vect x)=B\cdot\vect x$。求 $\mathbb R^m$ 上 $1$-张量 $T^*f$ 的矩阵。}
+\textbf{考点}：$(T^*f)(\vect x)=f(B\vect x)$，矩阵是乘积。\seep{ax8}
+
+\qbreak
+\subhdr{27.1（p236 第 1 题）：哪些是交错张量}
+\qbreak
+\qstem{（教材 p236 第 1 题）下列哪些是 $\mathbb R^4$ 上的交错张量？$f(\vect x,\vect y)=x_1y_2-x_2y_1+x_1y_1$；$g(\vect x,\vect y)=x_1y_3-x_3y_2$；$h(\vect x,\vect y)=(x_1)^3(y_2)^3-(x_2)^3(y_1)^3$。}
+\textbf{考点}：交错 = 换序变号；同时还要先过“是不是张量”这一关（$h$ 是三次的）。\seep{ax9}
+
+\qbreak
+\subhdr{27.2（p236 第 2 题）：把置换写成基本置换的复合}
+\qbreak
+\qstem{（教材 p236 第 2 题）设 $\sigma\in S_5$ 满足 $(\sigma(1),\sigma(2),\sigma(3),\sigma(4),\sigma(5))=(3,1,4,5,2)$。按引理 27.1 证明里的办法把它写成基本置换的复合。}
+\textbf{考点}：§6.2 的归纳构造（等价于“冒泡排序”）。\seep{ax10}
+
+\qbreak
+\subhdr{27.3（p236 第 3 题）：$\psi_I$ 在任意元组上的值}
+\qbreak
+\qstem{（教材 p236 第 3 题）设 $\psi_I$ 是相应于基 $\vect a_1,\dots,\vect a_n$ 的初等交错 $k$-张量。若 $j_1,\dots,j_k$ 是 $\{1,\dots,n\}$ 中任意的 $k$ 元组，$\psi_I(\vect a_{j_1},\dots,\vect a_{j_k})$ 等于什么？}
+\textbf{考点}：重复下标 $\Rightarrow$ $0$；互不相同 $\Rightarrow$ 按“排成递升所需的置换”的符号取值。\seep{ax11}
+
+\qbreak
+\subhdr{27.4（p236 第 4 题）：拉回保持交错}
+\qbreak
+\qstem{（教材 p236 第 4 题）设 $T:V\to W$ 线性，$f\in\Ak^k(W)$。证明 $T^*f\in\Ak^k(V)$。}
+\textbf{考点}：§9.2 的证明。\seep{ax12}
+
+\qbreak
+\subhdr{27.5（p236 第 5 题）：$\psi_I$ 的另一个公式}
+\qbreak
+\qstem{（教材 p236 第 5 题）证明
+$\psi_I=\sum_\sigma(\sgn\sigma)\phi_{I\sigma}$，其中 $I=(i_1,\dots,i_k)$、$I\sigma=(i_{\sigma(1)},\dots,i_{\sigma(k)})$。[提示：先证 $(\phi_{I\sigma})^\sigma=\phi_I$。]}
+\textbf{考点}：§8.3 的 (27.1) 与两种写法的等价（旁注）。\seep{ax13}
+
+%=====================================================================
+\hdr{§11}{公式卡与易错点}
+
+\subhdr{公式卡（六条）}
+\begin{enumerate}
+  \item \textbf{定一个 $k$-张量}：只需在 $n^k$ 个基 $k$ 元组上给值；一般式 $f=\sum_Id_I\phi_I$，$d_I=f(\vect a_{i_1},\dots)$。
+  \item \textbf{初等张量}：$\phi_I(\vect v_1,\dots)=\prod_m\phi_{i_m}(\vect v_m)$；$\phi_I=\phi_{i_1}\otimes\cdots\otimes\phi_{i_k}$；$\phi_I\otimes\phi_J=\phi_{(I,J)}$。
+  \item \textbf{张量积}：$(f\otimes g)(\vect v_1..\vect v_{k+\ell})=f(\vect v_1..\vect v_k)g(\vect v_{k+1}..)$——前 $k$ 个槽给 $f$、后 $\ell$ 个给 $g$。
+  \item \textbf{拉回}：$(T^*f)(\vect v_1..)=f(T\vect v_1..T\vect v_k)$；$T^*(f\otimes g)=T^*f\otimes T^*g$；$(S\circ T)^*=T^*S^*$（顺序反过来）。
+  \item \textbf{交错}：$f^\sigma=(\sgn\sigma)f$ 对一切 $\sigma$；等价于对每个基本置换 $f^{e_i}=-f$；$\dim\Ak^k(V)=\binom nk$。
+  \item \textbf{行列式}：$\det X=\psi_{1..n}(\vect x_1,\dots,\vect x_n)=\sum_\sigma(\sgn\sigma)x_{1\sigma(1)}\cdots x_{n\sigma(n)}$；$\psi_I(\vect x_1..\vect x_k)=\det X_I$。
+\end{enumerate}
+
+\subhdr{易错点（七条）}
+\begin{enumerate}
+  \item \textbf{多重线性是逐槽的}（§2.1）：$5x_2x_3$ 里前一个槽出现了两个 $x$，所以不是张量的项；张量里每个槽最多出现一个矢量的分量。
+  \item \textbf{张量积不交换}（§4.1）：$f\otimes g$ 与 $g\otimes f$ 把槽分给了不同的因子。
+  \item \textbf{分配律要求同阶}（定理 26.4(3)）：$f,g$ 阶数不同时，“前 $k$ 个槽”对两者含义不同，(3) 不成立。
+  \item \textbf{$\sgn$ 不能用“交换次数”直接数}（§6.3）：同一置换的多种写法长度相同，这是引理 27.2(a)(b) 的结论，不是定义。
+  \item \textbf{交错不只是“换序变号”的直觉}（§7.1）：定义只要求对\textbf{基本置换}成立；推广到任意置换要靠引理 27.3(b)，中间用到了引理 27.1。
+  \item \textbf{递升元组才给值}（§8.2、§8.3）：$\psi_I$ 只在递升 $I$ 上定义并要求取值；任意元组的值由置换与符号算出（习题 27.3）。
+  \item \textbf{$\Ak^k(V)$ 与 $\Ak^k(V^*)$ 是两种记号}（§9.5）：不同书里指同一个空间或不同空间，读别的书先看它的约定。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{缺口清单：教材跳了哪几处，本讲义补在哪}
+
+\subhdr{十四条（每条：类型、页码、原文短语、补在哪）}
+
+\gapitem{压缩缺口（证明留给习题）\textbar\ p220}{定理 26.1 的 “The proof is left as an exercise”。补在 §2.2：用“子空间”论证一次说完，比逐条验公理短，也不依赖维数。}
+
+\gapitem{压缩缺口（“and so on”）\textbar\ p221}{引理 26.2 的证明只写 “and so on” 就得到 (26.1)。补在 §3.1：把第 $m$ 步的归纳写成显式求和。}
+
+\gapitem{代数跳步 \textbar\ p222}{定理 26.3 的 “One checks readily that it has the required value”。补在 §3.2：把 $\delta_{i_1j_1}\cdots\delta_{i_kj_k}$ 的取值逐项写出来。}
+
+\gapitem{压缩缺口 \textbar\ p224}{定理 26.4 的证明只做了 (1) 结合律，(2)(3)(4) 一句 “straightforward” 带过。补在 §4.2 的 (2)(3)(4)，并点明 (3) 要求同阶。}
+
+\gapitem{压缩缺口 \textbar\ p225}{定理 26.5 只证了 (1)，(2)(3) 是习题 3。补在 §5.2。}
+
+\gapitem{压缩缺口 \textbar\ p227}{引理 27.1 的证明用“$\sigma=e_i\circ\cdots\circ e_{\ell-1}\circ\sigma'$”一句话带过，读者很难看出 $\ell$ 是怎么被挪回 $i$ 的。补在 §6.2：把这串 $e$ 的作用逐次写出来，并注明两边同时左乘即可反解。}
+
+\gapitem{机制缺口 \textbar\ p228}{符号的定义给了“逆序个数”，但没解释为什么不用“交换次数”。补在 §6.3 末的一句：交换次数不是不变量，奇偶才是（引理 27.2(a)(b)）。}
+
+\gapitem{压缩缺口 \textbar\ p228--229}{引理 27.2 的 Step 1（右乘基本置换翻号）用一整段“比较两个序列”的文字说，Step 2 才给四条。补在 §6.4：把 Step 1 写成“三类位置”的清单，Step 2 逐条对应。}
+
+\gapitem{图缺/图替 \textbar\ p229}{p229 定义 $f^\sigma$ 时只有公式，没有“槽位重排”的图；读者容易把 $\sigma$ 作用在\textbf{值}上而不是\textbf{槽}上。补在 §7.1 的读法句与 §8.3 旁注里（$\tau$ 作用在槽位上）。}
+
+\gapitem{压缩缺口 \textbar\ p231}{引理 27.3(b) 的证明写 “$=(-1)^mf$ because $f$ is alternating”，中间的归纳没写。补在 §8.1：把 $\sigma=e_{i_1}\circ\cdots\circ e_{i_m}$ 逐次用引理 27.3(a) 剥开。}
+
+\gapitem{压缩缺口 \textbar\ p233}{定理 27.5 里 $\psi_I$ 的定义公式与“$(\psi_I)^\tau$ 的求和换指标”都跳了。补在 §8.3 的 \ding{173}：写出 $\rho=\tau\circ\sigma$ 的换元（$\sigma\mapsto\tau\circ\sigma$ 是双射）。}
+
+\gapitem{记号缺口 \textbar\ p233}{定理 27.5 的公式用 $\phi_I^\sigma$，习题 5 用 $\phi_{I\sigma}$，书中没有说明两者差一个 $\sigma^{-1}$。补在 §8.3 的旁注：$(\phi_I)^\sigma=\phi_{I\sigma^{-1}}$，求和时换元抹平。}
+
+\gapitem{压缩缺口 \textbar\ p234--235}{行列式的“公理验证”写得很紧（引入辅助函数 $f=\{g$ 作用在转置上$\}$，再引定理 2.11）。补在 §9.1：把三条公理逐条对照，并说明为什么 $g$ 与 $f$ 最终相同。}
+
+\gapitem{图缺/图替 \textbar\ p230、p235}{例 1 与例 2 全是行列式符号，没有“$k$ 个矢量张成的平行体体积”这层几何。本讲义在 §8.4 只说维数、在 §9.1 只说公理，没有补图；\textbf{这是本讲义自觉的一处留白}（该区间原文也没有几何论证，补图会越出“按书讲”的边界）。}
+
+\begin{notecall}
+\textbf{关于表}：本讲义三行以上的表只有 §0 的记号表与 §15 的页码对照表，两张都是\textbf{台账}（速查），不承载推导，故不需要三件套；凡承载推导处一律用公式串。
+\end{notecall}
+
+%=====================================================================
+\hdr{§13}{三句话总结}
+
+\begin{enumerate}
+  \item \textbf{§26}（§2--§5）的全部内容是“\textbf{张量在基上给值就够了}”：$k$-张量在 $n^k$ 个基 $k$ 元组上的值决定一切（引理 26.2），于是有基 $\phi_I$ 与维数 $n^k$（定理 26.3）；张量积把它们拼高（定理 26.4），拉回把它们搬到另一个空间（定理 26.5）。
+  \item \textbf{§27 前半}（§6--§8）做的是“\textbf{从全部张量里挑出换序变号的}”：置换的符号（引理 27.2）是全部技术核心，因为“交错”只对基本置换下定义，要靠引理 27.1 推到任意置换（引理 27.3）。挑出来之后，基从 $n^k$ 个缩到 $\binom nk$ 个（定理 27.5）。
+  \item \textbf{§27 后半}（§9）是回报：$\Ak^n(\mathbb R^n)$ 一维，它唯一的基元素作用在 $n$ 个列上就是\textbf{行列式}，Leibniz 公式与“子式 $=$ $\psi_I$”都成了定理 27.5 与 27.7 的读数。Munkres 在 §2 里“假设存在”的那个函数，到 p234 才被造出来。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§14}{与教材的页码对照}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{书内页} & \thead{内容} & \thead{本讲义} \\[1pt]
+p219 & 第六章开场 & §1 \\[1pt]
+p220 & 张量定义；定理 26.1；引理 26.2 陈述 & §2、§3.1 \\[1pt]
+p221 & 引理 26.2 证明；定理 26.3 陈述与证明（起） & §3.1、§3.2 \\[1pt]
+p222 & 定理 26.3 证明（续）；用基上值定义张量 & §3.2 \\[1pt]
+p223 & 例 1；张量积的定义 & §3.3、§4.1 \\[1pt]
+p224 & 定理 26.4；拉回 $T^*$ 的定义 & §4.2、§5.1 \\[1pt]
+p225 & 定理 26.5 与证明（只证 (1)） & §5.2 \\[1pt]
+p226 & §26 习题 1--8；§27 开场 & §10 \\[1pt]
+p227 & 置换、基本置换；引理 27.1 & §6.1、§6.2 \\[1pt]
+p228 & 逆序与符号；引理 27.2 陈述与 Step 1 & §6.3、§6.4 \\[1pt]
+p229 & 引理 27.2 Step 2 与 (d)；$f^\sigma$、对称/交错、$\Ak^k(V)$ & §6.4、§7.1 \\[1pt]
+p230 & 例 1；引理 27.3 陈述与 (a) & §7.2、§8.1 \\[1pt]
+p231 & 引理 27.3(b)；引理 27.4 & §8.1、§8.2 \\[1pt]
+p232 & 引理 27.4 证明；定理 27.5 陈述 & §8.2、§8.3 \\[1pt]
+p233 & 定理 27.5 证明；维数 $\binom nk$ & §8.3、§8.4 \\[1pt]
+p234 & 定理 27.6；行列式的定义与公理验证；Leibniz 公式 & §9.1、§9.2 \\[1pt]
+p235 & 定理 27.7；例 2；记号说明 & §9.3--§9.5 \\[1pt]
+p236 & §27 习题 1--5；§28 楔积开头（出范围） & §10、§9.6 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+%=====================================================================
+\newpage
+\hdr{附录 A}{教材习题详解（13 道）}
+
+\subhdr{用法}
+题面在 §10，这里按原题号给块，每块先用一行条件摘要复述题干（不必回翻）。26.1--26.8 是 §26 的八道（p226），27.1--27.5 是 §27 的五道（p236）。六样：考点／关键一步／详解／答案／自检。
+
+\qbreak
+\subhdr{26.1（p226 第 1 题）：线性组合仍是张量}\label{ax1}
+\qbreak
+\qstem{（教材 p226 第 1 题）$f,g:V^k\to\mathbb R$ 多重线性。(a) 证明 $af+bg$ 多重线性；(b) 验证 $\Lk^k(V)$ 满足向量空间公理。}
+
+\textbf{考点}：§2.2（定理 26.1 的补证）。
+
+\textbf{关键一步}：不要在 $\Lk^k(V)$ 上逐条验八条公理，而是把它看成“全体函数”空间的子集——公理自动继承，只剩“封闭 + 有零元素”。
+
+\textbf{详解}．(a) 固定除第 $i$ 个之外的所有变量，则
+\[ \vect v\mapsto(af+bg)(\dots,\vect v,\dots)=a\,f(\dots,\vect v,\dots)+b\,g(\dots,\vect v,\dots) \]
+是两个线性函数的线性组合，仍线性。对每个 $i$ 如此，即得多重线性。
+(b) 全体函数 $V^k\to\mathbb R$ 按逐点加法与数乘构成向量空间 $\mathcal F$（八条公理逐点验证）。$\Lk^k(V)\subset\mathcal F$ 非空（零函数多重线性），且对加法与数乘封闭（(a) 取 $a=b=1$ 与 $b=0$）。向量空间的子集若非空且对两种运算封闭，本身按同样运算构成向量空间——公理从 $\mathcal F$ 继承，不需要再验。
+
+\textbf{答案}：(a) 成立；(b) $\Lk^k(V)$ 是 $\mathcal F$ 的线性子空间，故是向量空间。
+
+\textbf{自检}：$k=1$ 时 $\Lk^1(V)=V^*$ 是线性泛函空间，维数 $n$——与“子空间”结论一致。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.2（p226 第 2 题）：$f\otimes g$ 的多线性与四条性质}\label{ax2}
+\qbreak
+\qstem{（教材 p226 第 2 题）(a) $f,g$ 多重线性 $\Rightarrow f\otimes g$ 多重线性；(b) 验证定理 26.4 的四条性质。}
+
+\textbf{考点}：§4.1、§4.2。
+
+\textbf{关键一步}：验证 $f\otimes g$ 的多线性时，\textbf{一次只动一个槽}；动到前 $k$ 个槽时 $g$ 那一因子是常数，动到后 $\ell$ 个时 $f$ 那一因子是常数。
+
+\textbf{详解}．(a) 设 $f$ 是 $k$ 阶、$g$ 是 $\ell$ 阶，固定除第 $m$ 个之外的所有变量。
+若 $m\le k$：$g(\vect v_{k+1},\dots)$ 不含 $\vect v_m$，是常数 $c$，于是
+\[ \vect v\mapsto f(\dots,\vect v,\dots)\cdot c \]
+是线性函数的常数倍，线性。若 $m>k$：对称地，$f$ 那一因子为常数。故 $f\otimes g$ 多重线性。
+(b) 四条即 §4.2 证明的 (1)(2)(3)(4)：结合律把三个因子按同一顺序连乘；齐性把常数提出；分配律要求同阶（“前 $k$ 个槽”才一致）；(4) 用 $\phi_I$ 的乘积式在基元组上比较。
+
+\textbf{答案}：(a)(b) 均成立。
+
+\textbf{自检}：$k=\ell=1$ 时 $(f\otimes g)(\vect u,\vect v)=f(\vect u)g(\vect v)$ 对 $\vect u,\vect v$ 分别线性——这就是“双线性”。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.3（p226 第 3 题）：拉回的两条性质}\label{ax3}
+\qbreak
+\qstem{（教材 p226 第 3 题）验证定理 26.5 的 (2) 与 (3)。}
+
+\textbf{考点}：§5.2。
+
+\textbf{关键一步}：(2) 只用到“$T^*$ 把 $T$ 塞进每个槽”；(3) 只用到“代入两层的顺序”。
+
+\textbf{详解}．(2) 见 §5.2 的第一段计算：两边在任意 $(\vect v_1,\dots,\vect v_{k+\ell})$ 上都等于 $f(T\vect v_1,\dots)g(T\vect v_{k+1},\dots)$。
+(3) 见 §5.2 的第二段：$\bigl((S\circ T)^*f\bigr)(\vect v)=f(S(T\vect v_1),\dots)=(S^*f)(T\vect v_1,\dots)=(T^*S^*f)(\vect v)$。
+
+\textbf{答案}：(2) $T^*(f\otimes g)=T^*f\otimes T^*g$；(3) $(S\circ T)^*=T^*\circ S^*$。
+
+\textbf{自检}：把 $T,S$ 换成矩阵，$T^*$ 对应“左乘转置”，(3) 就是 $(SB)^{\mathsf T}=B^{\mathsf T}S^{\mathsf T}$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.4（p226 第 4 题）：哪些是 $\mathbb R^4$ 上的张量}\label{ax4}
+\qbreak
+\qstem{（教材 p226 第 4 题）$f(\vect x,\vect y)=3x_1y_2+5x_2x_3$；$g(\vect x,\vect y)=x_1y_2+x_2y_4+1$；$h(\vect x,\vect y)=x_1y_1-7x_2y_3$。判断哪些是 $\mathbb R^4$ 上的张量，并把是的用初等张量表示。}
+
+\textbf{考点}：§2.1 的逐槽判据。
+
+\textbf{关键一步}：只看两项——\textbf{每个槽里是否只有一个矢量的分量}；\textbf{有没有不依赖任何矢量的常数项}。
+
+\textbf{详解}．
+\begin{itemize}
+  \item $f$：第二项 $5x_2x_3$ 只含 $\vect x$，且是 $\vect x$ 的\textbf{二次}式。固定 $\vect y$ 看 $\vect x\mapsto f(\vect x,\vect y)$，它含 $5x_2x_3$，不是线性的（如 $f(2\vect x,\vect y)\ne2f(\vect x,\vect y)$）。\textbf{不是张量}。
+  \item $g$：常数项 $1$ 使 $g(\vect 0,\vect 0)=1\ne0$，线性函数必须把零元送到零。\textbf{不是张量}。
+  \item $h=x_1y_1-7x_2y_3$：两项都是“$\vect x$ 一个分量 $\times$ $\vect y$ 一个分量”，对两槽分别线性。\textbf{是张量}，且
+  \[ h=\phi_{(1,1)}-7\phi_{(2,3)}. \]
+\end{itemize}
+
+\textbf{答案}：只有 $h$ 是张量，$h=\phi_{(1,1)}-7\phi_{(2,3)}$。
+
+\textbf{自检}：$h(\vect e_1,\vect e_1)=1$、$h(\vect e_2,\vect e_3)=-7$，与 $\phi_{(1,1)},\phi_{(2,3)}$ 在基元组上的取值一致。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.5（p226 第 5 题）：三阶的情形}\label{ax5}
+\qbreak
+\qstem{（教材 p226 第 5 题）$f(\vect x,\vect y,\vect z)=3x_1x_2z_3-x_3y_1z_4$；$g(\vect x,\vect y,\vect z,\vect u,\vect v)=5x_3y_2z_3u_4v_4$；$h(\vect x,\vect y,\vect z)=x_1y_2z_4+2x_1z_3$。}
+
+\textbf{考点}：同上，三阶。
+
+\textbf{详解}．
+\begin{itemize}
+  \item $f$：第一项 $3x_1x_2z_3$ 在第一个槽里放了 $\vect x$ 的两个分量，是 $\vect x$ 的二次式 $\Rightarrow$ 关于 $\vect x$ 不线性。\textbf{不是张量}。
+  \item $g$：五个槽各取一个分量：$\vect x$ 取第 $3$、$\vect y$ 取第 $2$、$\vect z$ 取第 $3$、$\vect u$ 取第 $4$、$\vect v$ 取第 $4$。\textbf{是张量}：
+  \[ g=5\,\phi_{(3,2,3,4,4)}. \]
+  \item $h$：第二项 $2x_1z_3$ 与 $\vect y$ \textbf{无关}。固定 $\vect x,\vect z$，$\vect y\mapsto h$ 是常数（不是线性——线性要求 $h(\vect x,\vect 0,\vect z)=0$，而这里是 $2x_1z_3$）。\textbf{不是张量}。
+\end{itemize}
+
+\textbf{答案}：只有 $g$ 是张量，$g=5\phi_{(3,2,3,4,4)}$。
+
+\textbf{自检}：容易误判成“$h$ 有两项，其中一项不含 $\vect y$ 也算线性”。判据是\textbf{代入零矢量必须得零}：$h(\vect x,\vect 0,\vect z)=2x_1z_3\ne0$，故不线性。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.6（p226 第 6 题）：写出 $f\otimes g$}\label{ax6}
+\qbreak
+\qstem{（教材 p226 第 6 题）$f(\vect x,\vect y,\vect z)=2x_1y_2z_2-x_2y_3z_1$，$g=\phi_{2,1}-5\phi_{3,1}$。(a) 把 $f\otimes g$ 写成初等 $5$-张量的线性组合；(b) 写出 $(f\otimes g)(\vect x,\vect y,\vect z,\vect u,\vect v)$。}
+
+\textbf{考点}：§4.3 的 $\phi_I\otimes\phi_J=\phi_{(I,J)}$ 与分配律。
+
+\textbf{关键一步}：先把 $f$ 也写成 $\phi_I$ 的组合，再让“$\otimes$ 就是接元组”。
+
+\textbf{详解}．$f=2\phi_{(1,2,2)}-\phi_{(2,3,1)}$，$g=\phi_{(2,1)}-5\phi_{(3,1)}$。用分配律展开（四项）：
+\[ f\otimes g=2\phi_{(1,2,2)}\otimes\phi_{(2,1)}-10\phi_{(1,2,2)}\otimes\phi_{(3,1)}
+-\phi_{(2,3,1)}\otimes\phi_{(2,1)}+5\phi_{(2,3,1)}\otimes\phi_{(3,1)}. \]
+再用 $\phi_I\otimes\phi_J=\phi_{(I,J)}$：
+\[ f\otimes g=2\phi_{(1,2,2,2,1)}-10\phi_{(1,2,2,3,1)}-\phi_{(2,3,1,2,1)}+5\phi_{(2,3,1,3,1)}. \]
+(b) 按定义 $(f\otimes g)(\vect x,\vect y,\vect z,\vect u,\vect v)=f(\vect x,\vect y,\vect z)\,g(\vect u,\vect v)$，而 $g(\vect u,\vect v)=u_2v_1-5u_3v_1$：
+\[ (f\otimes g)(\vect x,\vect y,\vect z,\vect u,\vect v)=\bigl(2x_1y_2z_2-x_2y_3z_1\bigr)\bigl(u_2v_1-5u_3v_1\bigr). \]
+
+\textbf{答案}：见上两式。
+
+\textbf{自检}：展开后应有 $2\times2=4$ 项，与原式项数一致；(b) 里 $g$ 只依赖 $\vect u,\vect v$，与 (a) 中 $g$ 的元组只有后两位相符。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.7（p226 第 7 题）：四条性质唯一刻画张量积}\label{ax7}
+\qbreak
+\qstem{（教材 p226 第 7 题）证明：对有限维 $V$，定理 26.4 的四条性质唯一刻画张量积。}
+
+\textbf{考点}：定理 26.3（基）与定理 26.4（性质）。
+
+\textbf{关键一步}：两个都满足四条性质的乘法 $\otimes,\otimes'$ 必须在\textbf{基张量}上一致；再用多重线性展开到全体。
+
+\textbf{详解}．设 $\otimes'$ 是另一个乘法，也满足 (1)--(4)。
+\textbf{第一步}：在初等张量上一致。由 (4) 与 (1)（结合），
+\[ \phi_I=\phi_{i_1}\otimes'\cdots\otimes'\phi_{i_k},\qquad \phi_I=\phi_{i_1}\otimes\cdots\otimes\phi_{i_k}. \]
+而对 $1$ 阶的情形，两个乘法都还是“把一个 $1$-张量与一个 $1$-张量相乘”，由 (4) 的定义性要求（$\phi_{(i)}=\phi_i$）与 (2)(3) 可逐项验证 $\phi_i\otimes'\phi_j=\phi_{(i,j)}=\phi_i\otimes\phi_j$；再结合律推到任意 $I,J$：
+\[ \phi_I\otimes'\phi_J=\phi_{(I,J)}=\phi_I\otimes\phi_J. \]
+\textbf{第二步}：展开到全体。任意 $k$ 阶 $f$ 有唯一表示 $f=\sum_Id_I\phi_I$（定理 26.3），$\ell$ 阶 $g=\sum_Je_J\phi_J$。由 (3) 分配律与 (2) 齐性，
+\[ f\otimes'g=\sum_{I,J}d_Ie_J\,\phi_I\otimes'\phi_J=\sum_{I,J}d_Ie_J\,\phi_I\otimes\phi_J=f\otimes g. \]
+（有限和，可以逐项用 (2)(3)。）故 $\otimes'=\otimes$。
+
+\textbf{答案}：成立；$\otimes$ 被这四条性质唯一确定。
+
+\textbf{自检}：这里用到 $V$ 有限维（基存在、表示唯一）；$\dim V=\infty$ 时第一步的“有限和”不成立，结论要另说。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{26.8（p226 第 8 题）：拉回的矩阵}\label{ax8}
+\qbreak
+\qstem{（教材 p226 第 8 题）$f$ 是 $\mathbb R^n$ 上的 $1$-张量，$f(\vect y)=A\cdot\vect y$（$A$ 为 $1\times n$）；$T:\mathbb R^m\to\mathbb R^n$，$T(\vect x)=B\cdot\vect x$。求 $T^*f$ 的矩阵。}
+
+\textbf{考点}：§5.1 的定义 + 矩阵乘法。
+
+\textbf{详解}．对任意 $\vect x\in\mathbb R^m$，
+\[ (T^*f)(\vect x)=f(T\vect x)=A\cdot(B\vect x)=(AB)\cdot\vect x. \]
+所以 $T^*f$ 的矩阵是 $1\times m$ 矩阵 $AB$。
+
+\textbf{答案}：$AB$。
+
+\textbf{自检}：$f$ 的矩阵 $A$ 是 $1\times n$、$B$ 是 $n\times m$，乘积 $AB$ 是 $1\times m$，与 $\mathbb R^m$ 上的 $1$-张量匹配 $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{27.1（p236 第 1 题）：哪些是交错张量}\label{ax9}
+\qbreak
+\qstem{（教材 p236 第 1 题）$f(\vect x,\vect y)=x_1y_2-x_2y_1+x_1y_1$；$g(\vect x,\vect y)=x_1y_3-x_3y_2$；$h(\vect x,\vect y)=(x_1)^3(y_2)^3-(x_2)^3(y_1)^3$。哪些是 $\mathbb R^4$ 上的交错张量？}
+
+\textbf{考点}：§7.1（交错的定义）＋ §2.1（先得是张量）。
+
+\textbf{关键一步}：交错要求 $f(\vect y,\vect x)=-f(\vect x,\vect y)$ 对\textbf{一切} $\vect x,\vect y$；只要找到一对反例就否掉。
+
+\textbf{详解}．
+\begin{itemize}
+  \item $f$：前两项是交错的（$\phi_{1,2}-\phi_{2,1}$），但第三项 $x_1y_1$ 是对称的。取 $\vect x=\vect y=\vect e_1$：$f=1-0+1=2$，而交错张量在 $\vect x=\vect y$ 上必须为 $0$（引理 27.3(b) 末句）。\textbf{不是}。
+  \item $g$：取 $\vect x=\vect e_1,\vect y=\vect e_3$：$g(\vect x,\vect y)=1\cdot1-0=1$；交换后 $g(\vect y,\vect x)=0\cdot0-1\cdot0=0\ne-1$。\textbf{不是}。
+  \item $h$：先看它是不是张量——它是分量的三次式（$x_1^3y_2^3$），$h(2\vect x,\vect y)=8h(\vect x,\vect y)$，关于 $\vect x$ 不线性。\textbf{不是张量}，更谈不上交错。
+\end{itemize}
+
+\textbf{答案}：三个都不是交错张量。
+
+\textbf{自检}：$h$ 虽然满足 $h(\vect y,\vect x)=-h(\vect x,\vect y)$（这一点会误导人），但“换序变号”只对\textbf{张量}才有意义；交错是张量内部的分类。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{27.2（p236 第 2 题）：把置换写成基本置换的复合}\label{ax10}
+\qbreak
+\qstem{（教材 p236 第 2 题）$\sigma\in S_5$ 满足 $(\sigma(1),\dots,\sigma(5))=(3,1,4,5,2)$。按引理 27.1 证明里的办法把它写成基本置换的复合。}
+
+\textbf{考点}：§6.2 的归纳构造（等价于冒泡排序）。
+
+\textbf{关键一步}：$\sigma$ 的“值序列”是 $(3,1,4,5,2)$；\textbf{右乘 $e_i$ 相当于交换序列的第 $i,i+1$ 项}。把序列排成 $(1,2,3,4,5)$，交换过程倒着读就是要的分解。
+
+\textbf{详解}．记 $\sigma_0=\sigma$，序列为 $[3,1,4,5,2]$。
+\begin{enumerate}
+  \item 交换第 1、2 项（右乘 $e_1$）：$[1,3,4,5,2]$；
+  \item 交换第 4、5 项（右乘 $e_4$）：$[1,3,4,2,5]$；
+  \item 交换第 3、4 项（右乘 $e_3$）：$[1,3,2,4,5]$；
+  \item 交换第 2、3 项（右乘 $e_2$）：$[1,2,3,4,5]$，即恒等。
+\end{enumerate}
+所以 $\sigma\circ e_1\circ e_4\circ e_3\circ e_2=\mathrm{id}$。两边右乘逆（每个 $e_i$ 是自己的逆，顺序反过来）：
+\[ \sigma=e_2\circ e_3\circ e_4\circ e_1. \]
+
+\textbf{答案}：$\sigma=e_2\circ e_3\circ e_4\circ e_1$（先作用 $e_1$）。
+
+\textbf{自检}：四个基本置换 $\Rightarrow$ $\sgn\sigma=(-1)^4=+1$；直接数逆序：$(3,1),(3,2),(4,2),(5,2)$ 共 $4$ 个，也是偶 $\checkmark$。再把 $\sigma$ 逐点验一遍：$\sigma(1)=e_2e_3e_4e_1(1)=e_2e_3e_4(2)=2\to2\to3$ $\checkmark$（$e_4,e_3,e_2$ 都不动 $2$，故 $e_2$ 把它送到 $3$，但注意要按右到左作用），$\sigma(5)=e_2e_3e_4e_1(5)=e_2e_3e_4(5)=e_2e_3(4)=e_2(3)=2$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{27.3（p236 第 3 题）：$\psi_I$ 在任意元组上的值}\label{ax11}
+\qbreak
+\qstem{（教材 p236 第 3 题）$\psi_I$ 是相应于基 $\vect a_1,\dots,\vect a_n$ 的初等交错 $k$-张量，$I=(i_1<\cdots<i_k)$。对任意 $k$ 元组 $J=(j_1,\dots,j_k)$，$\psi_I(\vect a_{j_1},\dots,\vect a_{j_k})$ 等于什么？}
+
+\textbf{考点}：§8.2、§8.3（引理 27.4 的证明手法）。
+
+\textbf{关键一步}：先把 $J$ 中“重复下标”与“互不相同”分开；互不相同时，用“把 $J$ 排成递升”的那个置换把值拉回已知情形。
+
+\textbf{详解}．
+\begin{itemize}
+  \item 若 $J$ 中有重复下标：由引理 27.3(b) 末句（交错张量在两个槽相同时取零），值为 $0$。
+  \item 若 $J$ 的下标互不相同：设 $\sigma\in S_k$ 使 $(\vect a_{j_{\sigma(1)}},\dots,\vect a_{j_{\sigma(k)}})$ 的下标递升。由 $f^\sigma=(\sgn\sigma)f$（引理 27.3(b)）：
+  \[ \psi_I(\vect a_{j_1},\dots)=\psi_I^{\sigma}\bigl(\vect a_{j_{\sigma(1)}},\dots\bigr)\cdot(\sgn\sigma)^{-1}
+  =(\sgn\sigma)\,\psi_I\bigl(\text{递升元组}\bigr), \]
+  这里 $\psi_I^\sigma=(\sgn\sigma)\psi_I$，所以 $(\sgn\sigma)^{-1}=\sgn\sigma$。而 $\psi_I$ 在递升元组上取值 $0$ 或 $1$（$I$ 是否等于那个递升元组）。
+\end{itemize}
+
+\textbf{答案}：
+\[ \psi_I(\vect a_{j_1},\dots,\vect a_{j_k})=\begin{cases}
+0,& J\ \text{有重复下标},\\
+0,& J\ \text{互不相同但递升重排}\ne I,\\
+\sgn\sigma,& J\ \text{互不相同且递升重排}=I,
+\end{cases} \]
+其中 $\sgn\sigma$ 是“把 $J$ 排成递升”所需置换的符号。
+
+\textbf{自检}：$k=1$ 时退化为 $1$ 阶：$\psi_I(\vect a_j)=\delta_{ij}$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{27.4（p236 第 4 题）：拉回保持交错}\label{ax12}
+\qbreak
+\qstem{（教材 p236 第 4 题）$T:V\to W$ 线性，$f\in\Ak^k(W)$。证明 $T^*f\in\Ak^k(V)$。}
+
+\textbf{考点}：§9.2（定理 27.6）。
+
+\textbf{关键一步}：交错的判据只用基本置换；“$T^*$ 把 $T$ 塞进每个槽”之后，槽的交换可以换到 $f$ 上去。
+
+\textbf{详解}．对任一基本置换 $e$ 与任意 $\vect v_1,\dots,\vect v_k\in V$：
+\[ (T^*f)^e(\vect v_1,\dots)=(T^*f)(\vect v_{e(1)},\dots)=f(T\vect v_{e(1)},\dots)=f^e(T\vect v_1,\dots). \]
+因 $f$ 交错，$f^e=-f$，故
+\[ (T^*f)^e(\vect v_1,\dots)=-f(T\vect v_1,\dots)=-(T^*f)(\vect v_1,\dots). \]
+即 $(T^*f)^e=-T^*f$ 对每个基本置换成立，所以 $T^*f$ 交错。
+
+\textbf{答案}：$T^*f\in\Ak^k(V)$。
+
+\textbf{自检}：$k=1$ 时 $\Ak^1=\Lk^1$，“交错”恒真，结论自动成立 $\checkmark$（与 §7.1 的约定相符）。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{27.5（p236 第 5 题）：$\psi_I$ 的另一个公式}\label{ax13}
+\qbreak
+\qstem{（教材 p236 第 5 题）证明 $\psi_I=\sum_\sigma(\sgn\sigma)\phi_{I\sigma}$，其中 $I\sigma=(i_{\sigma(1)},\dots,i_{\sigma(k)})$。[提示：先证 $(\phi_{I\sigma})^\sigma=\phi_I$。]}
+
+\textbf{考点}：§8.3 的 (27.1)，以及两种写法的换算（旁注）。
+
+\textbf{关键一步}：$(\phi_I)^\sigma=\phi_{I\sigma^{-1}}$——重排槽位等于把下标元组按相反方向重排。两种写法只差一个 $\sigma\to\sigma^{-1}$ 的换元。
+
+\textbf{详解}．
+\textbf{第一步}：算 $(\phi_{J})^\sigma$ 是什么。由 (26.2)，
+\[ (\phi_{J})^\sigma(\vect v_1,\dots)=\phi_{J}(\vect v_{\sigma(1)},\dots)=\prod_m\phi_{j_m}(\vect v_{\sigma(m)}). \]
+令 $r=\sigma(m)$（即 $m=\sigma^{-1}(r)$），右端 $=\prod_r\phi_{j_{\sigma^{-1}(r)}}(\vect v_r)=\phi_{J\sigma^{-1}}(\vect v_1,\dots)$。所以
+\[ (\phi_J)^\sigma=\phi_{J\sigma^{-1}}.\qquad(\star) \]
+取 $J=I\sigma$、并用 $\sigma^{-1}$ 代替 $\sigma$：$(\phi_{I\sigma})^{\sigma^{-1}}=\phi_{I\sigma\,\sigma^{-1}}=\phi_I$，即提示里那个式子（提示写的是 $(\phi_{I\sigma})^\sigma=\phi_I$，对 $\sigma$ 取逆后同义）。
+
+\textbf{第二步}：换元。定理 27.5 给的是 $\psi_I=\sum_\sigma(\sgn\sigma)(\phi_I)^\sigma$。用 $(\star)$，$(\phi_I)^\sigma=\phi_{I\sigma^{-1}}$，于是
+\[ \psi_I=\sum_\sigma(\sgn\sigma)\,\phi_{I\sigma^{-1}}. \]
+把求和指标换成 $\rho=\sigma^{-1}$：$\sigma\mapsto\sigma^{-1}$ 是 $S_k$ 到自身的双射，且 $\sgn\rho=\sgn\sigma$，故右端 $=\sum_\rho(\sgn\rho)\phi_{I\rho}$，即所求。
+
+\textbf{答案}：$\psi_I=\sum_\sigma(\sgn\sigma)\phi_{I\sigma}$，与 (27.1) 等价。
+
+\textbf{自检}：$k=2$、$I=(1,2)$：$\psi_{(1,2)}=\phi_{(1,2)}-\phi_{(2,1)}$（两个置换 $+,-$），与 §7.2 例 1 里 $f=\phi_{1,2}-\phi_{2,1}$ 一致 $\checkmark$。
+
+\begin{notecall}
+\textbf{附录的边界}：13 道全部写全。凡是能当场验算的地方（26.4/26.5 的判据、26.6 的项数、27.1 的反例、27.2 的符号与逆序数、27.5 的 $k=2$ 特例）都给了自检；数值与代数没有依赖外部计算的部分（这一节是纯线性代数）。
+\end{notecall}
+
+\end{document}

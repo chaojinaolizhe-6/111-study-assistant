@@ -1,0 +1,53 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+\setlength{\headheight}{22pt}
+\settags{实验 5 · 电路图页}{电工电子技术}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries 实验 5\quad 共射极单管放大电路\quad 电路图页}\\[4pt]
+{\small 图 5.2.4（教材 p.151 原图）· 端子与开关对照 · 报告里怎么用\ \textperiodcentered\ 2026-11-05}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.66\linewidth]{图-实验5-教材图524-无题注.png}
+
+{\small 图 5.2.4\quad 共射极单管放大电路（\textbf{裁剪}自教材书 p.151）。图中 a、b1、b2、d1、d2、c 六处小圆圈是\textbf{实验箱面上的接线柱}，不是元件；$S_1$、$S_2$ 是箱面开关，$R_{P1}$、$R_{P2}$ 是箱面电位器。}
+\end{center}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{1.7cm}p{6.2cm}p{6.6cm}@{}}
+\hline
+\thead{端子/开关} & \thead{它在图上的位置与作用} & \thead{箱面上怎么接、接错会怎样} \\
+\hline
+a & $R_{P1}$ 的下端，与 b1 或 b2 之间跳线 & 跳线选上偏置电阻；悬空则基极无偏置，$I_C\approx0$ \\
+b1 & $R_{B11}=30\,\mathrm{k}\Omega$ 的上端 & 与 a 相连时用 30 k 作上偏置 \\
+b2 & $R_{B12}=150\,\mathrm{k}\Omega$ 的上端 & 与 a 相连时用 150 k 作上偏置 \\
+d1 & $R_{B21}=39\,\mathrm{k}\Omega$ 的下端（接地侧） & 悬空则基极电位被抬到接近 $U_{CC}$，管子饱和 \\
+d2 & $R_{B22}=12\,\mathrm{k}\Omega$ 的下端（接地侧） & 同上 \\
+c & 公共地（与电源负极、示波器地夹同一根线） & 多点乱接地会引入干扰，读数抖动 \\
+$S_1$ & 与 $R_{E2}=200\,\Omega$ 并联 & \textbf{闭合＝短接 $R_{E2}$＝没有这级负反馈}；记反了表 5.2.3 全反 \\
+$S_2$ & 串在 $R_{L1}=3\,\mathrm{k}\Omega$ 负载支路里 & 闭合＝带载，断开＝开路；开路时测的是 $U_{oc}$ \\
+$R_{P1}$ & $10\,\mathrm{k}\Omega$，静态微调 & 静态测量时调到零（$0\,\Omega$），四组偏置才可比 \\
+$R_{P2}$ & $10\,\mathrm{k}\Omega$，负载细调 & 把 $R_L$ 从 $3\,\mathrm{k}\Omega$ 调到 $13\,\mathrm{k}\Omega$，调完要量实际阻值 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{通电前必须用万用表核对的四件事}：（一）a 与 b1/b2 的跳线是否按偏置组合接对；（二）基极到地的阻值是否约为 $R_{B1}+R_{P1}$；（三）$C_E$（$100\,\mu\mathrm{F}$）两端是否只跨 $R_{E1}=1\,\mathrm{k}\Omega$（若发现它跨在 $R_{E1}+R_{E2}$ 上，静态点与 $A_u$ 都会对不上算例）；（四）$C_1$、$C_2$、$C_E$ 三只电解电容的 $+$ 端是否朝高电位（$C_1$ 朝基极、$C_2$ 朝集电极、$C_E$ 朝发射极）。}
+
+\subhdr{报告里怎么用这张图（三条，照做即可）}
+
+\begin{enumerate}
+  \item \textbf{引用句（英文，可直接抄进 II. Experimental Principles）}：\textit{The common-emitter amplifier used in this experiment is shown in Fig.~1 (textbook Fig.~5.2.4). The base bias is supplied by the divider $R_{B1}$/$R_{B2}$; $R_{P1}$ was set to zero during the static measurements; $S_1$ shorts $R_{E2}$ when closed, and $S_2$ connects the load $R_{L1}$.}
+  \item \textbf{手绘顺序（五分钟能画完）}：先画 $+U_{CC}$ 与地两条横线 → 画晶体管 T（NPN，箭头朝外）→ 集电极串 $R_C=3\,\mathrm{k}\Omega$ → 基极接分压 $R_{B1}$、$R_{B2}$，上端经 $R_{P1}$ 到 $+U_{CC}$ → 发射极串 $R_{E1}$、$R_{E2}$，$C_E$ 并在 $R_{E1}$ 两端、$S_1$ 并在 $R_{E2}$ 两端 → 输入端 $C_1$ 串 $u_i$，输出端 $C_2$ 串负载支路（$S_2$、$R_{L1}$、$R_{P2}$）。
+  \item \textbf{图上必须标出的量}：$R_{B11}=30\,\mathrm{k}$、$R_{B12}=150\,\mathrm{k}$、$R_{B21}=39\,\mathrm{k}$、$R_{B22}=12\,\mathrm{k}$、$R_C=3\,\mathrm{k}$、$R_{E1}=1\,\mathrm{k}$、$R_{E2}=200\,\Omega$、$R_{P1}=R_{P2}=10\,\mathrm{k}$、$C_1=C_2=27\,\mu\mathrm{F}$、$C_E=100\,\mu\mathrm{F}$、$\beta=100$、$U_{CC}=12\,\mathrm{V}$。少标一个，批阅时会被要求补。
+\end{enumerate}
+
+\callout{\textbf{一句话记住这张图}：$R_{P1}$ 选上偏置、b1/b2 选 30 k 或 150 k、d1/d2 选 39 k 或 12 k——四组偏置就是这四只电阻的两种两种组合；$S_1$ 管负反馈、$S_2$ 管负载，其余全是 $\pm12\,\mathrm{V}$、地、输入输出四根线。}
+
+\end{document}

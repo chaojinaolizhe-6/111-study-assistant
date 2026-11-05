@@ -1,0 +1,1332 @@
+﻿%=====================================================================
+% 流形的边界、流形上的积分与多重线性代数
+% 依据：Analysis on Manifolds (James R. Munkres) PDF p219--p236 = 书内页 206--223
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[breakable]{tcolorbox}
+\newtcolorbox{notecall}{colback=bandviolet,colframe=rulepurple,boxrule=0.5pt,arc=1pt,
+  left=6pt,right=6pt,top=5pt,bottom=5pt,breakable,parbox=false}
+\setlength{\headheight}{22pt}
+\linespread{1.22}
+\renewcommand{\qbreak}{\needspace{0.22\textheight}}
+\settags{边界·流形积分·多重线性 精讲}{Analysis on Manifolds}
+
+\newcommand{\step}[1]{\par\vspace{3pt}\noindent
+  {\color{violet}\small$\blacktriangleright$}\hspace{3pt}{\bfseries\color{violetdeep}#1}\par\vspace{1pt}}
+\newcommand{\HH}{\mathbf{H}}
+\newcommand{\Vvol}{V}
+\newcommand{\seep}[1]{{\small\color{inkgray}（详解见附录第 \pageref{#1} 页）}}
+
+\begin{document}
+
+%=====================================================================
+\doctitle{边界、流形上的积分与多重线性代数}
+{Munkres《Analysis on Manifolds》§24 尾 — §25 — §26 前段}
+{依据教材：\texttt{Analysis on Manifolds}, James R. Munkres\\
+PDF p219--p236 ＝ 书内页 206--223（本讲义页码一律用\textbf{书内页}）\\
+整理日期：2026 年 11 月 5 日}
+
+%=====================================================================
+\hdr{§0}{这十八页在讲什么，先认六样东西}
+
+\subhdr{三段，两个接口}
+
+给定的十八页不是一整节，而是三段接起来的：
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{1.7cm}p{9.2cm}p{2.3cm}@{}}
+\thead{书内页} & \thead{内容} & \thead{本讲义} \\[1pt]
+p206--208 & §24 尾巴：引理 24.2、定理 24.3、定理 24.4 & §1、§2 \\[1pt]
+p209--218 & §25 整节：标量函数在流形上积分 & §3--§7 \\[1pt]
+p219 & 第六章开场：为何需要多重线性代数 & §9 开头 \\[1pt]
+p220--223 & §26 前四页：张量与张量积的定义 & §9、§10 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+两个接口值得先说清，否则三段读起来像三件事：
+
+\begin{notecall}
+\textbf{接口一（§24 $\to$ §25）}：§25 要“在流形上积分”，而流形可以是闭的（无边界）也可以是带边的。带边流形是不是流形、它的边界是不是流形，这是 §24 回答的。所以 §1、§2 不是§25的前奏闲笔，而是 §25 定义里 $U$ 为什么可能开在 $\HH^k$ 而不在 $\mathbb{R}^k$ 的唯一理由。
+
+\textbf{接口二（§25 $\to$ §26）}：§25 积的是\textbf{标量}函数 $f$，公式里只有一个因子 $\Vvol(D\alpha)$ 要照顾。一旦要积“带方向的东西”（场），一个 $\Vvol(D\alpha)$ 就不够了，需要一种能记录“每个槽分别怎么变换”的对象——那就是张量。这是 p219 那段开场话的意思。
+\end{notecall}
+
+\subhdr{记号约定（全篇只用这一套）}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}p{2.5cm}p{10.4cm}p{2.0cm}@{}}
+\thead{记号} & \thead{含义} & \thead{出现处} \\[1pt]
+$M$ & $\mathbb{R}^n$ 中 $C^r$ 的 $k$-流形；除非另说，$M$ 紧 & §1 起 \\[1pt]
+$\alpha:U\to V$ & 坐标垫：$U$ 开在 $\mathbb{R}^k$ 或 $\HH^k$，$V$ 开在 $M$，$\alpha$ 双射、$C^r$、$D\alpha$ 秩 $k$、逆连续 & §1 起 \\[1pt]
+$\HH^k,\ \HH^k_+$ & $\{x_k\ge 0\}$；$\{x_k>0\}$。$\partial\HH^k=\mathbb{R}^{k-1}\times 0$ & §1 \\[1pt]
+$\partial M$ & $M$ 的边界点集（见 §1.1 的定义；\textbf{与拓扑的 $\mathrm{Bd}\,M$ 无关}） & §1 \\[1pt]
+$\mathrm{Int}\,U,\ \mathrm{Bd}\,U$ & $U$ 在 $\mathbb{R}^k$ 中的拓扑内部／边界（不是 $M$ 的内部） & §3.3 \\[1pt]
+$D\alpha,\ D_jf$ & 导数（$n\times k$ 矩阵）／偏导数；$f:\mathcal{O}\to\mathbb{R}$ 时 $Df$ 是 $1\times n$ 行矩阵 & §1、§2 \\[1pt]
+$\Vvol(X)$ & $n\times k$ 矩阵 $X$ 的“$k$ 维体积”：$[\det(X^{\mathsf T}X)]^{1/2}$（定理 21.3，p182） & §3.1 \\[1pt]
+$\dd V$ & “对体积积分”的记号，不是微分形式（那里写 $f_A\dd\omega$，见 p190 的说明） & §3.2 \\[1pt]
+$\mathrm{Supp}\,f$ & 支持集：$\overline{\{x:f(x)\ne 0\}}$；$C=\mathrm{Supp}\,f$ 紧 & §3.3 \\[1pt]
+$\mathcal{L}^k(V)$ & $V$ 上全体 $k$-张量；$\mathcal{L}^1(V)=V^*$ 为对偶空间 & §9 \\[1pt]
+$\phi_I$ & 初等 $k$-张量，$I=(i_1,\dots,i_k)$（定理 26.3） & §9 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+\begin{notecall}
+\textbf{这张表和 §15 的页码对照表都只是台账}（记号／页码速查），不承载推导，所以不需要“表前一句 + 逐行读法 + 边界行”三件套。本讲义里承载推导的地方一律写成公式串，不写成表。
+\end{notecall}
+
+\subhdr{先认六条已有结论（本讲义只引用、不重证）}
+
+后面每走一步，凡用到本屏之外的东西，都用旁注把\textbf{陈述 + 代入本题的记号}写在台阶旁边。这六条是全书前面章节的结论，坐标如下：
+
+\begin{itemize}
+  \item \textbf{定理 8.2}（逆函数定理，p65）：$A$ 开在 $\mathbb{R}^n$，$f:A\to\mathbb{R}^n$ 是 $C^r$、在 $A$ 上单射、$Df$ 处处非奇异，则 $B=f(A)$ 开在 $\mathbb{R}^n$，且 $f^{-1}$ 是 $C^r$。
+  \item \textbf{定理 13.6}（p110）：$S$ 有界、$f$ 在 $S$ 上有界连续、$A=\mathrm{Int}\,S$；若 $f$ 在 $S$ 上可积，则 $f$ 在 $A$ 上可积且 $\int_S f=\int_A f$。
+  \item \textbf{定理 15.3(d)}（扩展积分的加性，p125）：$A,B$ 开在 $\mathbb{R}^n$，$f$ 在 $A\cup B$ 上连续且分别在 $A$、$B$ 上可积，则 $\int_{A\cup B}f=\int_Af+\int_Bf-\int_{A\cap B}f$。
+  \item \textbf{定理 16.3}（单位分解的存在，p139）：开集族 $\mathcal{A}$ 的并 $A$，存在 $C^\infty$ 的 $\psi_1,\psi_2,\dots:\mathbb{R}^n\to\mathbb{R}$，满足 $\psi_j\ge0$、$\mathrm{Supp}\,\psi_j$ 紧、被 $\mathcal{A}$ 支配（每个支持集落进某个成员）、局部有限（每点有邻域只与有限多个支持集相交）、且 $\sum_j\psi_j=1$ 在 $A$ 上。
+  \item \textbf{引理 18.1}（p152）：$A$ 开在 $\mathbb{R}^n$，$g:A\to\mathbb{R}^n$ 是 $C^1$；若 $E\subset A$ 在 $\mathbb{R}^n$ 中零测，则 $g(E)$ 零测。
+  \item \textbf{定理 21.3}（p181--182）：存在唯一的 $\Vvol$，使（1）对正交变换 $h$ 有 $\Vvol(h(X))=\Vvol(X)$；（2）当 $X=[Z;0]$（$Z$ 为 $k\times k$）时 $\Vvol(X)=|\det Z|$。并且 $\Vvol(x_1,\dots,x_k)=[\det(X^{\mathsf T}X)]^{1/2}$，其中 $X=[x_1\cdots x_k]$。
+\end{itemize}
+
+另有三条本讲义多次回指：\textbf{定理 22.1}（重参数化下积分不变，p189）、\textbf{引理 23.3}（垫限制到相对开子集仍是垫，p202）、\textbf{定理 24.1}（过渡函数 $C^r$、导数非奇异，p203）。
+
+%=====================================================================
+\hdr{§1}{边界上只有两种点：判据与维数（§24, p205--207）}
+
+\subhdr{1.1 定义：内点、边界点、$\partial M$}
+
+\begin{notecall}
+\textbf{定义（p205，原形式）}．设 $M$ 是 $\mathbb{R}^n$ 中的 $k$-流形，$p\in M$。若存在 $M$ 上 $p$ 处的坐标垫 $\alpha:U\to V$，使 $U$ \textbf{开在 $\mathbb{R}^k$}，称 $p$ 是 $M$ 的\textbf{内点}；否则称 $p$ 是 $M$ 的\textbf{边界点}。边界点全体记 $\partial M$，称为 $M$ 的\textbf{边界}。
+\end{notecall}
+
+这个定义的判据落在“\textbf{定义域开在哪里}”，不落在“点长什么样”。三条立刻要记住：
+
+\begin{enumerate}
+  \item $\partial M\subset M$。因为“边界点”是对 $M$ 的点定义的。于是定理 24.4 里的 $N$ 若写成 $\{f>0\}$，就与 $\partial N=M$ 直接冲突（见 §2 的警示框）。
+  \item 这里的 $\partial M$ 与一般拓扑的 $\mathrm{Bd}\,M$ \textbf{不是一回事}。任一集合 $S\subset\mathbb{R}^n$ 都有拓扑内部 $\mathrm{Int}\,S$、边界 $\mathrm{Bd}\,S$、外部 $\mathrm{Ext}\,S$；流形 $M$ 的边界记 $\partial M$、内部记 $M-\partial M$。p205 专门写了一段警告这一点。
+  \item $\HH^k$ 本身是 $\mathbb{R}^k$ 里的 $k$-流形（恒等映射就是一张定义域开在 $\HH^k$ 的垫），它的边界由下面的引理当场给出：$\partial\HH^k=\mathbb{R}^{k-1}\times 0$。
+\end{enumerate}
+
+\subhdr{1.2 引理 24.2（p205，原形式）：三种情形}
+
+\begin{notecall}
+\textbf{引理 24.2}．设 $M$ 是 $\mathbb{R}^n$ 中的 $k$-流形；$\alpha:U\to V$ 是 $M$ 上 $p$ 处的坐标垫。
+\begin{enumerate}
+  \item[(a)] 若 $U$ 开在 $\mathbb{R}^k$，则 $p$ 是内点。
+  \item[(b)] 若 $U$ 开在 $\HH^k$，且 $p=\alpha(x_0)$ 而 $x_0\in\HH^k_+$，则 $p$ 是内点。
+  \item[(c)] 若 $U$ 开在 $\HH^k$，且 $p=\alpha(x_0)$ 而 $x_0\in\mathbb{R}^{k-1}\times 0$，则 $p$ 是边界点。
+\end{enumerate}
+\end{notecall}
+
+\step{（a）就是定义}
+没有要证的。
+
+\step{（b）把定义域“剪到上半开半空间”}
+令 $U_0=U\cap\HH^k_+$。因 $\HH^k_+$ 开在 $\mathbb{R}^k$，故 $U_0$ 开在 $\mathbb{R}^k$。令 $V_0=\alpha(U_0)$。由引理 23.3，$\alpha|_{U_0}:U_0\to V_0$ 仍是 $M$ 上的坐标垫，而它的定义域开在 $\mathbb{R}^k$，并且 $x_0\in U_0$，故 $p=\alpha(x_0)$ 是内点。
+
+\aside{引理 23.3（p202）：若 $U_0\subset U$ 开在 $U$ 中，则限制 $\alpha|_{U_0}$ 仍是同一流形上的一张坐标垫。这里 $U_0=U\cap\HH^k_+$ 恰是 $U$ 中的相对开集，所以引理适用。}
+
+\step{（c）反证：假设它也是内点，逼出一个“不含负半轴的开球”}
+设 $p$ 同时是内点，即有坐标垫 $\alpha_1:U_1\to V_1$ 而 $U_1$ 开在 $\mathbb{R}^k$。令
+\[ W=V_0\cap V_1,\qquad W_i=\alpha_i^{-1}(W)\quad(i=0,1). \]
+$W$ 开在 $M$，于是 $W_0$ 开在 $\HH^k$ 且含 $x_0$，$W_1$ 开在 $\mathbb{R}^k$。由定理 24.1，过渡函数
+\[ \phi=\alpha_0^{-1}\circ\alpha_1:\ W_1\longrightarrow W_0 \]
+是 $C^r$ 的、双射、导数处处非奇异。把定理 8.2 用在 $\phi$ 上（$A=W_1$，$f=\phi$，$B=\phi(W_1)=W_0$）：
+
+\aside{定理 8.2（p65）：$A$ 开在 $\mathbb{R}^n$、$f:A\to\mathbb{R}^n$ 是 $C^r$、$f$ 单射、$Df$ 处处非奇异 $\Rightarrow$ $f(A)$ 开在 $\mathbb{R}^n$。取 $f=\phi$ 得\textbf{“$W_0$ 开在 $\mathbb{R}^k$”}。}
+
+于是 $W_0$ 开在 $\mathbb{R}^k$。但 $W_0\subset\HH^k$ 且 $x_0\in W_0$ 的最后坐标为 $0$：若 $W_0$ 开在 $\mathbb{R}^k$，就有 $\varepsilon>0$ 使开球 $B(x_0;\varepsilon)\subset W_0$；取
+\[ y=x_0-\tfrac{\varepsilon}{2}e_k, \]
+则 $\|y-x_0\|=\varepsilon/2<\varepsilon$，故 $y\in B(x_0;\varepsilon)\subset W_0$，可是 $y_k=-\varepsilon/2<0$，即 $y\notin\HH^k\supset W_0$。矛盾。所以 $p$ 只能是边界点。$\square$
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05,>={Stealth[length=2.2mm]}]
+  \fill[bandviolet] (-2.9,0) rectangle (3.2,1.9);
+  \draw[->] (-3.05,0)--(3.45,0) node[right]{\scriptsize $x_{k-1}$};
+  \draw[->] (0,-1.45)--(0,2.15) node[above]{\scriptsize $x_k$};
+  \draw[violet,thick] (-2.9,0)--(3.2,0);
+  \draw[violet,thick,fill=white] (-1.15,0) -- (-1.15,0.8)
+      .. controls (-0.4,1.28) and (0.9,1.22) .. (1.6,0.8) -- (1.6,0) -- cycle;
+  \node[violet] at (0.2,0.62) {\scriptsize $W_0$};
+  \draw[inkgray,dashed] (0,0) circle (0.6);
+  \fill (0,0) circle (1.4pt);
+  \node[below left] at (-0.1,-0.3) {\scriptsize $x_0$};
+  \node[violet,right] at (-2.86,-0.38) {\scriptsize $\partial\HH^k=\mathbb{R}^{k-1}\times0$};
+  \node[above right] at (2.3,0.07) {\scriptsize $\HH^k$};
+  \draw[inkgray,->] (0.42,-0.44)--(0.78,-0.62);
+  \node[below] at (1.15,-0.66) {\scriptsize $x_k<0$ 的一半};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}\textbf{图 1}（重绘，据 Figure 24.3 左半）：$W_0$ 夹在半空间里、$x_0$ 落在边界线上。只要 $W_0$ 开在 $\mathbb{R}^k$，球 $B(x_0;\varepsilon)$ 就必然伸到 $x_k<0$ 的一半，而那半边不属于 $W_0$。}
+\end{center}
+
+\subhdr{1.3 定理 24.3（p206，原形式）：$\partial M$ 是 $k-1$ 维无边流形}
+
+\begin{notecall}
+\textbf{定理 24.3}．设 $M$ 是 $\mathbb{R}^n$ 中 $C^r$ 的 $k$-流形。若 $\partial M$ 非空，则 $\partial M$ 是 $\mathbb{R}^n$ 中 $C^r$ 的 $k-1$ 维\textbf{无边}流形。
+\end{notecall}
+
+\step{\ding{172} 取出“最后坐标为零”的那一片}
+设 $p\in\partial M$，取 $p$ 处的垫 $\alpha:U\to V$。由引理 24.2，$p$ 属于情形 (c)：$U$ 开在 $\HH^k$，$p=\alpha(x_0)$，$x_0\in\partial\HH^k$。令
+\[ U_0=\{x\in\mathbb{R}^{k-1}:(x,0)\in U\}. \]
+$U$ 开在 $\HH^k$ 意味着存在开集 $\hat U\subset\mathbb{R}^k$ 使 $U=\hat U\cap\HH^k$；于是
+\[ U\cap\partial\HH^k=\hat U\cap\partial\HH^k=U_0\times0, \]
+而 $U_0$ 开在 $\mathbb{R}^{k-1}$。
+
+\aside{课件 p206 直接写“Let $U_0$ be the open set of $\mathbb{R}^{k-1}$ such that $U_0\times0=U\cap\partial\HH^k$”，没有交代它为什么开。上面三行就是那句“开”的来源：$\hat U$ 开在 $\mathbb{R}^k$，与超平面相交后投影下来仍开。}
+
+\step{\ding{173} 定义 $\alpha_0$，并核对它是双射}
+令 $\alpha_0(x)=\alpha(x,0)$（$x\in U_0$），值域取 $V_0=V\cap\partial M$。由引理 24.2 的两条：$U\cap\HH^k_+$ 的点被送到 $M$ 的内点，$U\cap\partial\HH^k$ 的点被送到 $\partial M$。所以
+\[ \alpha_0:\ U_0\longrightarrow V_0\quad\text{是双射}. \]
+
+\step{\ding{174} 核对 $\alpha_0$ 是 $\partial M$ 上的坐标垫}
+$C^r$ 来自 $\alpha$；$D\alpha_0(x)$ 的\textbf{秩为 $k-1$}：因为
+\[ D\alpha_0(x)=D\alpha(x,0)\cdot J,\qquad J=\begin{bmatrix} I_{k-1}\\ 0\end{bmatrix}\ (k\times(k-1)), \]
+即 $D\alpha_0$ 恰好是 $D\alpha(x,0)$ 的前 $k-1$ 列；而 $D\alpha(x,0)$ 秩为 $k$（故单射）、$J$ 单射，复合仍单射，秩为 $k-1$。
+
+\aside{课件写“its derivative has rank $k-1$ because $D\alpha_0(x)$ consists simply of the first $k-1$ columns”——“只由前 $k-1$ 列组成”本身并不蕴含秩 $k-1$（三列里第一列可能是另两列的组合）。这里真正用到的是：$D\alpha(x,0)$ 单射、$J$ 单射，故复合单射。}
+
+最后 $\alpha_0^{-1}$ 连续：它等于 $\alpha^{-1}|_{V_0}$ 再接投影 $\pi:\mathbb{R}^k\to\mathbb{R}^{k-1}$，两个连续映射的复合。
+
+\step{\ding{175} 为什么“没有边界”（课件只把结论写在陈述里，全程未证）}
+$\alpha_0$ 的定义域 $U_0$ 开在 $\mathbb{R}^{k-1}$，而\textbf{不是}只开在 $\HH^{k-1}$。于是对 $\partial M$ 上的\textbf{每一个}点，引理 24.2(a) 都成立：它是 $\partial M$ 的内点。按定义 $\partial(\partial M)=\varnothing$。
+
+\warnbox{\textbf{这一处是本讲义补的}。p206 的定理陈述写了“without boundary”，但证明到 $\alpha_0$ 是坐标垫就结束，没有一句话说明为什么 $\partial M$ 自己没有边界。缺的就是上面这一行：判据 (a) 与 (c) 的差别在“定义域开在 $\mathbb{R}^{k-1}$ 还是 $\HH^{k-1}$”，而 $U_0$ 是按 $\mathbb{R}^{k-1}$ 的开集造出来的，天然落在 (a) 那一侧。}
+
+\subhdr{1.4 推论（p206 末）：$\partial\HH^k=\mathbb{R}^{k-1}\times0$}
+
+$\HH^k$ 是 $\mathbb{R}^k$ 中的 $k$-流形，恒等映射是一张定义域开在 $\HH^k$ 的垫；由引理 24.2(b)(c)，$\HH^k$ 的内点恰是 $\HH^k_+$ 的点、边界点恰是 $\mathbb{R}^{k-1}\times0$ 的点。这一条在后面反复用：\textbf{把弯曲的边界拉直之后，边界就是已知的 $\mathbb{R}^{k-1}\times0$}。
+
+%=====================================================================
+\hdr{§2}{用水平集造流形：定理 24.4 的“拉直”（p207--208）}
+
+\subhdr{2.1 为什么需要它}
+
+§1 的判据要求“先有流形，再谈边界”。造流形最难的一步是“每点附近都找得到一张垫”。定理 24.4 给了一个批量造法：\textbf{只要一个函数的水平集上梯度不为零，水平集本身是无边流形，它围住的半边是带边流形，边界正是那个水平集}。球、实心球、实心环面、正交群 $O(n)$（§A 第 1、5、6 题）都靠它一次造出来。
+
+\subhdr{2.2 定理 24.4（p207，原形式）}
+
+\begin{notecall}
+\textbf{定理 24.4}．设 $\mathcal{O}$ 开在 $\mathbb{R}^n$；$f:\mathcal{O}\to\mathbb{R}$ 是 $C^r$。令
+\[ M=\{x:f(x)=0\},\qquad N=\{x:f(x)\ge0\}. \]
+设 $M$ 非空，且 $Df(x)$ 在 $M$ 上每点秩为 $1$。则 $N$ 是 $\mathbb{R}^n$ 中的 $n$-流形，且 $\partial N=M$。
+\end{notecall}
+
+\warnbox{\textbf{这里印的符号与同页证明里的符号不一致，必须先定下来}。定义行印的是 $N=\{x:f(x)>0\}$，而证明中写“$F$ carries $A\cap N$ onto $B\cap\HH^n$, since $x\in N$ if and only if $f(x)\ge0$”。两处不能同时成立：
+（一）按 $>$，$N$ 开在 $\mathbb{R}^n$，$M\cap N=\varnothing$；而 $\partial N\subset N$（§1.1 第一条），所以 $\partial N=M$ 会逼出 $M=\varnothing$，与“$M$ 非空”矛盾。
+（二）按 $\ge$，证明每一步都对，并且推论 24.5 也对：那里的 $B^n(a)$ 按 p207 的定义是\textbf{闭}球 $\{\|x\|\le a\}$，正是 $\{a^2-\|x\|^2\ge0\}$。
+所以\textbf{全篇一律读 $N=\{f\ge0\}$}；这是印刷符号的问题，不是定理的问题。§13 第 3 条、§12 第 2 条都指回这里。}
+
+\subhdr{2.3 证明：三步}
+
+\step{第一步：$f(p)>0$ 的点，用恒等映射当垫}
+令 $U=\{x:f(x)>0\}$，它开在 $\mathbb{R}^n$；令 $\alpha=\mathrm{id}:U\to U$。则 $\alpha$ 是 $N$ 上 $p$ 处的坐标垫：$C^r$、双射、$D\alpha=I_n$ 秩 $n$、逆连续，且 $U\cap N=U$（$f>0$ 蕴含 $f\ge0$）。定义域开在 $\mathbb{R}^n$，故 $p$ 是内点。
+
+\step{第二步：$f(p)=0$ 的点，把 $f$ 装成第 $n$ 个坐标}
+$Df(p)\ne0$（秩 $1$）故某个 $D_jf(p)\ne0$。把坐标重排，使 $D_nf(p)\ne0$。
+
+\aside{重排坐标是 $\mathbb{R}^n$ 的线性同构 $x\mapsto Px$（$P$ 为置换矩阵）。它把流形送到流形、把垫送到垫、把内点送到内点、把 $\HH^n$ 送到 $\HH^n$，所以对结论没有影响。课件默认了这一步，没有写。}
+
+定义
+\[ F:\mathcal{O}\to\mathbb{R}^n,\qquad F(x)=(x_1,\dots,x_{n-1},f(x)). \]
+于是
+\[ DF(x)=\begin{bmatrix} I_{n-1} & 0\\ D_1f(x)\ \cdots\ D_{n-1}f(x) & D_nf(x)\end{bmatrix}. \]
+逐块读：前 $n-1$ 行是 $F$ 的前 $n-1$ 个分量 $x_i$ 的导数，即 $e_i^{\mathsf T}$，合起来就是 $[\,I_{n-1}\ \ 0\,]$；最后一行是 $Df(x)$。沿第一列做 Laplace 展开，只有 $I_{n-1}$ 那一块贡献行列式：
+\[ \det DF(x)=1\cdot\det\bigl(I_{n-1}\bigr)\cdot D_nf(x)=D_nf(x). \]
+（矩阵里那个“$\ast$”就是 $D_1f,\dots,D_{n-1}f$，它落在对角块的下方，不进行列式。）
+
+\aside{课件写“$DF=\begin{bmatrix}I_{n-1}&0\\ \ast&D_nf\end{bmatrix}$, so that $DF(p)$ is non-singular”，把分块行列式这一步省了。补的就是上面这一行：分块上三角的行列式等于对角块行列式之积，而 $D_nf(p)\ne0$ 正是第二步开头重排坐标的目的。}
+
+\step{第三步：把 $F$ 反过来当垫}
+由定理 8.2，$F$ 把 $p$ 的某个邻域 $A$ 微分同胚地送到开集 $B=F(A)$，且 $F^{-1}$ 是 $C^r$。因为 $F$ 的\textbf{最后一个坐标就是 $f$}：
+\[ x\in N\iff f(x)\ge0\iff (F(x))_n\ge0\iff F(x)\in\HH^n, \]
+\[ x\in M\iff f(x)=0\iff F(x)\in\partial\HH^n. \]
+于是 $F(A\cap N)=B\cap\HH^n$、$F(A\cap M)=B\cap\partial\HH^n$。令
+\[ \alpha_0=F^{-1}\big|_{B\cap\HH^n}:\ B\cap\HH^n\longrightarrow A\cap N. \]
+它的定义域开在 $\HH^n$、像是 $A\cap N$（开在 $N$）、$C^r$、逆 $F$ 连续——即 $N$ 上 $p$ 处的一张垫。而定义域里含有点 $y_0=F(p)\in\partial\HH^n$，$y_0$ 的任何开在 $\HH^n$ 的邻域都不开在 $\mathbb{R}^n$，故由引理 24.2(c)（把 $M$ 换成 $N$、$\alpha$ 换成 $\alpha_0$），$p$ 是 $N$ 的边界点。
+
+合三步：第一步的垫覆盖 $N$ 的内点，第三步的垫覆盖 $M$ 的每个点；所以 $N$ 每点都有垫（$N$ 是 $n$-流形），且 $N$ 的边界点恰好是 $M$ 的点（$\partial N=M$）。$\square$
+
+\step{一句话的机制}
+$F$ 把“弯曲的 $f=0$”拉成“平的 $y_n=0$”，把“$f\ge0$”拉成“$y_n\ge0$”。拉直之后流形就是 $\HH^n$，而 $\HH^n$ 的边界是已知的（§1.4）。\textbf{整个 §24 只用了这一招：把边界问题化归成半空间问题。}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95,>={Stealth[length=2.2mm]}]
+  % 左：弯曲的 N
+  \begin{scope}
+    \draw[->] (-0.2,0)--(2.5,0) node[right]{\scriptsize $x_{n-1}$};
+    \draw[->] (0,-0.2)--(0,2.4) node[above]{\scriptsize $x_n$};
+    \fill[bandviolet] plot[smooth,domain=0:2.2] (\x,{0.85+0.32*sin(1.6*\x r)}) -- (2.2,1.9) -- (0,1.9) -- cycle;
+    \draw[violet,thick] plot[smooth,domain=0:2.2] (\x,{0.85+0.32*sin(1.6*\x r)});
+    \fill (1.0,{0.85+0.32*sin(1.6 r)}) circle (1.3pt);
+    \node[above left] at (1.0,{0.85+0.32*sin(1.6 r)}) {\scriptsize $p$};
+    \node at (1.35,1.62) {\scriptsize $N=\{f\ge0\}$};
+    \node[violet] at (1.55,0.62) {\scriptsize $M=\{f=0\}$};
+  \end{scope}
+  % 右：拉直后的 H^n
+  \begin{scope}[xshift=6.4cm]
+    \draw[->] (-0.2,0)--(2.5,0) node[right]{\scriptsize $y_{n-1}$};
+    \draw[->] (0,-0.2)--(0,2.4) node[above]{\scriptsize $y_n$};
+    \fill[bandviolet] (0,0.85) rectangle (2.2,1.9);
+    \draw[violet,thick] (0,0.85)--(2.2,0.85);
+    \fill (1.0,0.85) circle (1.3pt);
+    \node[below right] at (1.0,0.82) {\scriptsize $F(p)$};
+    \node at (1.1,1.55) {\scriptsize $\HH^n$};
+    \node[violet] at (1.5,0.62) {\scriptsize $\partial\HH^n=\{y_n=0\}$};
+  \end{scope}
+  \draw[->,violet,thick] (3.0,1.2) to[bend left=18] node[above]{\small $F$} (5.9,1.2);
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}\textbf{图 2}（重绘，据 Figure 24.4）：$F$ 只改最后一个坐标，把水平集 $f=0$ 整个搬到平面 $y_n=0$ 上；$f\ge0$ 的半个邻域随之变成 $\HH^n$。}
+\end{center}
+
+\subhdr{2.4 推论 24.5（p208）：球与球面}
+
+\begin{notecall}
+\textbf{推论 24.5}．$n$-球 $B^n(a)$ 是 $\mathbb{R}^n$ 中 $C^\infty$ 的 $n$-流形，且 $S^{n-1}(a)=\partial B^n(a)$。
+\end{notecall}
+
+\step{把定理 24.4 的三条前提逐条点名}
+取 $\mathcal{O}=\mathbb{R}^n$、$f(x)=a^2-\|x\|^2$。
+\begin{enumerate}
+  \item $f$ 是 $C^\infty$，且 $M=\{f=0\}=S^{n-1}(a)$。\textbf{$M\ne\varnothing$ 等价于 $a>0$}（$a=0$ 时 $M=\{0\}$）。
+  \item $Df(x)=[\,-2x_1\ \cdots\ -2x_n\,]$，在 $M$ 上秩为 $1$ 等价于 $x\ne0$，也等价于 $a>0$。
+  \item $N=\{a^2-\|x\|^2\ge0\}=\{\|x\|\le a\}=B^n(a)$（按 p207 的定义，$B^n(a)$ 是\textbf{闭}球）。
+\end{enumerate}
+三条都成立，故 $\partial B^n(a)=S^{n-1}(a)$。
+
+\warnbox{\textbf{常数 $a$ 的户口}：$a$ 出现在 $f$ 里，通过 $f\ge0\iff\|x\|\le a$ 变成\textbf{半径}；同时 $a>0$ 还是前提\ding{173}的等价条件。$a=0$ 时 $Df(0)=0$，秩为 $0$，定理 24.4 用不上，而 $B^n(0)=\{0\}$ 也确实不是 $n$-流形。所以“$a>0$”不是排版习惯。}
+
+%=====================================================================
+\hdr{§3}{单片积分：为什么乘的是 $\Vvol(D\alpha)$（p209--211）}
+
+\subhdr{3.1 问题与体积因子}
+
+$M$ 是 $\mathbb{R}^n$ 里的 $k$ 维曲面，一般不是 $\mathbb{R}^k$ 的开集，Lebesgue 测度无从谈起。p209 的定义给出的办法是：用垫把 $M$ 搬回 $\mathbb{R}^k$ 上算，\textbf{但不能只搬 $f$，还要乘一个拉伸因子}——那个因子就是 $\Vvol(D\alpha)$。
+
+先把 $\Vvol$ 认全（定理 21.3，p181--182）：对 $n\times k$ 矩阵 $X$，
+\[ \Vvol(X)=\bigl[\det(X^{\mathsf T}X)\bigr]^{1/2}. \]
+$k=n$ 时 $\Vvol(X)=|\det X|$；$k<n$ 时它\textbf{没有}行列式可谈，是 Gram 行列式的平方根。它满足正交不变（$\Vvol(AX)=\Vvol(X)$，$A$ 正交），这是“体积”该有的性质：转动不改变体积。
+
+\step{引理 A（体积因子的乘法公式）}
+设 $A$ 是 $n\times k$ 矩阵，$B$ 是 $k\times k$ 矩阵，则
+\[ \Vvol(AB)=\Vvol(A)\cdot|\det B|. \]
+
+\textbf{证明（三步）}。
+
+\step{第一步：把 $\Vvol$ 的定义平方掉}
+\[ [\Vvol(AB)]^2=\det\bigl((AB)^{\mathsf T}(AB)\bigr)=\det\bigl(B^{\mathsf T}A^{\mathsf T}AB\bigr). \]
+
+\step{第二步：用行列式的乘性与转置不变性，把 $B$ 从两边提出来}
+\[ \det\bigl(B^{\mathsf T}\cdot A^{\mathsf T}A\cdot B\bigr)=\det(B^{\mathsf T})\cdot\det(A^{\mathsf T}A)\cdot\det(B)=|\det B|^2\cdot[\Vvol(A)]^2. \]
+
+\step{第三步：两边开方（$\Vvol\ge0$）}
+\[ \Vvol(AB)=\Vvol(A)\,|\det B|. \qquad\square \]
+
+\aside{这条引理是 §25 全节的发动机：§3.2 的“为什么因子是它”、引理 25.1 的 (b)、定理 25.4 的 Step 2、§A 第 10 题，都只是它的一次代入。课件在 p190（定理 22.1 的证明里）已经用同样的三行算过一次，但没有单独编号；本讲义给它一个名字，后面直接引用。}
+
+\subhdr{3.2 定义（p189；p210 沿用）与“为什么必须乘它”}
+
+\begin{notecall}
+\textbf{定义}．设 $A$ 开在 $\mathbb{R}^k$，$\alpha:A\to\mathbb{R}^n$ 是 $C^r$，$Y=\alpha(A)$（参数化流形 $Y_\alpha$）；$f$ 在 $Y$ 上连续。定义
+\[ \int_{Y_\alpha}f\dd V=\int_A(f\circ\alpha)\Vvol(D\alpha). \]
+\end{notecall}
+
+在 §25 里 $A$ 换成垫 $\alpha:U\to V$，积分区域换成 $\mathrm{Int}\,U$（见 3.3）。
+
+\step{为什么必须乘 $\Vvol(D\alpha)$（本讲义补的动机）}
+同一张曲面可以参数化两次：$\alpha$ 与 $\beta$，且 $\alpha=\beta\circ g$（$g$ 是 $\mathbb{R}^k$ 中的微分同胚）。链法则给 $D\alpha=D\beta\cdot Dg$，引理 A 给
+\[ \Vvol(D\alpha)=\Vvol(D\beta)\cdot|\det Dg|. \]
+而换元公式（定理 22.1，p189）要求的正是“乘上 $|\det Dg|$”。两个因子一乘一抵，积分值不变：
+\[ \int_A(f\circ\alpha)\Vvol(D\alpha)=\int_A(f\circ\beta\circ g)\,\bigl(\Vvol(D\beta)\circ g\bigr)|\det Dg|=\int_{g(A)}(f\circ\beta)\Vvol(D\beta). \]
+所以 $\Vvol(D\alpha)$ 不是硬配上去的权重，\textbf{它是换元 Jacobian 的另一半}：少了它，积分就会被参数化的选取牵着走。这句话就是引理 25.1 的全部内容。
+
+\subhdr{3.3 引理 25.1（p210）：单片情形下良定义}
+
+\begin{notecall}
+\textbf{引理 25.1}．若 $f$ 的支持集能被\textbf{一张}坐标垫盖住，则 $\int_Mf\dd V$ 良定义，且与垫的选取无关。
+\end{notecall}
+
+\step{（a）缩小定义域不改变积分值}
+设垫 $\alpha:U\to V$ 盖住 $C=\mathrm{Supp}\,f$，$W\subset U$ 开、$\alpha(W)\supset C$。则
+\[ \int_{\mathrm{Int}\,W}(f\circ\alpha)\Vvol(D\alpha)=\int_{\mathrm{Int}\,U}(f\circ\alpha)\Vvol(D\alpha). \]
+理由：$F=(f\circ\alpha)\Vvol(D\alpha)$ 在 $U$ 上连续有界，且在 $\alpha^{-1}(C)$ 之外为零；而 $\alpha^{-1}(C)\subset W$，所以 $F$ 在 $U-W$ 上为零，多算的那一块没有贡献。
+
+\aside{课件这一句写“then one applies Theorem 13.6”。定理 13.6（p110）管的是“$U$ 与 $\mathrm{Int}\,U$ 之间的差”：$U$ 开在 $\HH^k$ 而不在 $\mathbb{R}^k$ 时，$U-\mathrm{Int}\,U\subset\partial\HH^k$ 是 $\mathbb{R}^k$ 的零测集，去掉不影响积分。两件事合起来才是上面那一行。}
+
+\step{（b）换一张垫也不变}
+设 $\alpha_i:U_i\to V_i$（$i=0,1$）都盖住 $C$。要证
+\[ \int_{\mathrm{Int}\,U_0}(f\circ\alpha_0)\Vvol(D\alpha_0)=\int_{\mathrm{Int}\,U_1}(f\circ\alpha_1)\Vvol(D\alpha_1). \]
+由 (a)，可把 $U_i$ 换成 $W_i=\alpha_i^{-1}(V_0\cap V_1)$。令
+\[ \phi=\alpha_1^{-1}\circ\alpha_0:\ W_0\to W_1. \]
+由定理 24.1，$\phi$ 是 $C^r$、双射、导数非奇异——即 $W_0\to W_1$ 的微分同胚。由链法则，$\alpha_0=\alpha_1\circ\phi$，故 $D\alpha_0=D\alpha_1\cdot D\phi$，引理 A 给
+\[ \Vvol(D\alpha_0)=\Vvol(D\alpha_1)\cdot|\det D\phi|. \]
+代进去：
+\[ \int_{\mathrm{Int}\,W_0}(f\circ\alpha_1\circ\phi)\bigl(\Vvol(D\alpha_1)\circ\phi\bigr)|\det D\phi|=\int_{\mathrm{Int}\,W_1}(f\circ\alpha_1)\Vvol(D\alpha_1), \]
+\textbf{最后这一步正是换元公式（定理 22.1）}。$\square$
+
+\aside{课件写的是“Since $\alpha_1^{-1}\circ\alpha_0:\mathrm{Int}\,W_0\to\mathrm{Int}\,W_1$ is a diffeomorphism, this result follows at once from Theorem 22.1.”。本讲义把“at once”展开成上面的链法则 + 引理 A + 换元三步：这三步是 §25 里唯一真正的推导，其余都是它的组合。}
+
+%=====================================================================
+\hdr{§4}{一般情形：单位分解（p211--212）}
+
+\subhdr{4.1 为什么单片不够}
+
+$S^2(a)$ 不能由一张垫覆盖（§7 例 2 的 $\alpha$ 漏掉一整条大圆弧），所以必须“拆”。拆的不是流形，是\textbf{函数}：把 $f$ 写成若干项之和，让每一项的支持集落进单张垫里，再逐项用 §3 的单片定义。
+
+\subhdr{4.2 引理 25.2（p211，原形式）}
+
+\begin{notecall}
+\textbf{引理 25.2}．设 $M$ 是 $\mathbb{R}^n$ 中紧的 $k$-流形（$C^r$）。给定 $M$ 的一个由坐标垫组成的覆盖，存在\textbf{有限}个 $C^\infty$ 函数 $\phi_1,\dots,\phi_\ell:\mathbb{R}^n\to\mathbb{R}$，使
+\begin{enumerate}
+  \item[(1)] $\phi_i(x)\ge0$；
+  \item[(2)] 给定 $i$，$\mathrm{Supp}\,\phi_i$ 紧，且覆盖中存在垫 $\alpha_i:U_i\to V_i$ 使 $(\mathrm{Supp}\,\phi_i)\cap M\subset V_i$；
+  \item[(3)] $\sum_{i=1}^{\ell}\phi_i(x)=1$ 对一切 $x\in M$。
+\end{enumerate}
+称 $\{\phi_1,\dots,\phi_\ell\}$ 为 $M$ 上被该垫覆盖\textbf{支配}的单位分解。
+\end{notecall}
+
+\step{三条各管什么（读法）}
+(1) 保证每一项不倒退；(3) 保证 $f=\sum_i\phi_if$ 是\textbf{精确}等式（在 $M$ 上逐点成立）；(2) 是命门——它保证\textbf{每一项 $\phi_if$ 的支持集落在单张垫里}，于是 §3 的单片定义对每一项都能用。若把 (2) 换成“支持集落在某处”，整个构造就落不到单片积分上。
+
+\subhdr{4.3 证明（四步；课件每步都压了一句）}
+
+\step{\ding{172} 把“$V$ 开在 $M$”翻译成 $\mathbb{R}^n$ 里的开集}
+对覆盖中的每张垫 $\alpha:U\to V$，取开集 $A_V\subset\mathbb{R}^n$ 使
+\[ A_V\cap M=V. \]
+这是“$V$ 开在 $M$”的定义（$M$ 的子空间拓扑）。
+
+\step{\ding{173} 把 $\{A_V\}$ 拼成一族 $\mathbb{R}^n$ 的开集}
+令 $A=\bigcup_V A_V$。$A$ 开在 $\mathbb{R}^n$（开集之并），且 $M\subset A$（每点落在自己的 $V$ 里，从而落在对应的 $A_V$ 里）。
+
+\step{\ding{174} 在 $A$ 上取单位分解}
+对开集族 $\{A_V\}$ 用定理 16.3（p139）：存在 $\psi_1,\psi_2,\dots:\mathbb{R}^n\to\mathbb{R}$，$C^\infty$、$\psi_j\ge0$、$\mathrm{Supp}\,\psi_j$ 紧、被 $\{A_V\}$ 支配、局部有限，且 $\sum_j\psi_j=1$ 在 $A$ 上。
+
+\step{\ding{175} 局部有限 + $M$ 紧 $\Rightarrow$ 只剩有限个（这一步是 $\ell$ 为什么有限）}
+局部有限：每点 $x\in A$ 有邻域只与有限多个 $\mathrm{Supp}\,\psi_j$ 相交。$M$ 紧，用这些邻域覆盖 $M$，取有限子覆盖，就有\textbf{只有有限多个 $\mathrm{Supp}\,\psi_j$ 与 $M$ 相交}；于是只有有限多个 $\psi_j$ 在 $M$ 上不恒为零。把它们重编号为 $\phi_1,\dots,\phi_\ell$。
+
+\aside{课件只写“Local finiteness guarantees that all but finitely many of the functions in the partition of unity vanish identically on $M$.”。本讲义补的是这句话的推理链：局部有限 $\to$ 每点有“只碰有限多个”的邻域 $\to$ 紧性取有限子覆盖 $\to$ 总共只剩有限个。若 $M$ 不紧，这一步就断，这也是引理 25.2 假设 $M$ 紧的原因。}
+
+三项条件逐条核对：(1) $\psi_j\ge0$ $\checkmark$；(2) $\mathrm{Supp}\,\psi_j$ 紧 $\checkmark$，且被支配意味着 $\mathrm{Supp}\,\psi_j\subset A_V$ 对某个 $V$，于是 $(\mathrm{Supp}\,\psi_j)\cap M\subset A_V\cap M=V$ $\checkmark$；(3) $\sum_j\psi_j=1$ 在 $A\supset M$ 上，丢掉的那些在 $M$ 上为零 $\checkmark$。$\square$
+
+\subhdr{4.4 一般定义（p211--212）}
+
+\begin{notecall}
+\textbf{定义}．设 $M$ 紧、$f:M\to\mathbb{R}$ 连续，取 $M$ 上被全体坐标垫支配的单位分解 $\phi_1,\dots,\phi_\ell$，定义
+\[ \int_Mf\dd V=\sum_{i=1}^{\ell}\left[\int_M(\phi_if)\dd V\right],\qquad v(M)=\int_M1\dd V. \]
+\end{notecall}
+
+\warnbox{\textbf{这不是递归定义}（课件在这里写了一个“by definition”，很容易读成自我指涉）。右边每一项的 $\mathrm{Supp}\,(\phi_if)\subset(\mathrm{Supp}\,\phi_i)\cap M\subset V_i$，落在\textbf{单张}垫里，所以每一项都能用 §3 的单片定义展开成 $\mathbb{R}^k$ 上的普通积分：
+\[ \int_M(\phi_if)\dd V=\int_{\mathrm{Int}\,U_i}\bigl((\phi_if)\circ\alpha_i\bigr)\Vvol(D\alpha_i). \]
+也就是说，一般定义是“\textbf{有限个单片定义之和}”。(2) 那一条的全部作用就在这里。}
+
+%=====================================================================
+\hdr{§5}{两处自洽，以及线性性（p212--213）}
+
+\subhdr{5.1 与单片定义一致（p212）}
+
+设 $\mathrm{Supp}\,f\subset V$（单张垫 $\alpha:U\to V$），令 $A=\mathrm{Int}\,U$。则
+\[ \sum_{i=1}^{\ell}\int_M(\phi_if)\dd V
+ =\sum_{i=1}^{\ell}\int_A(\phi_i\circ\alpha)(f\circ\alpha)\Vvol(D\alpha)
+ =\int_A\Bigl[\sum_{i=1}^{\ell}(\phi_i\circ\alpha)\Bigr](f\circ\alpha)\Vvol(D\alpha). \]
+其中第一个等号是\textbf{单项展开}（§4.4 的方框），第二个等号是普通积分对有限和的线性。再由
+\[ \sum_{i=1}^{\ell}(\phi_i\circ\alpha)=1\quad\text{在 }A\text{ 上}, \]
+（因为 $A\subset U$、$\alpha(A)\subset M$，而 $\sum_i\phi_i=1$ 在 $M$ 上）得
+\[ =\int_A(f\circ\alpha)\Vvol(D\alpha)=\int_Mf\dd V\quad\text{（单片定义）}. \]
+课件在这段里用了两次“by definition”，分别指“单项展开”和“单片定义”，这两层不点开会看不懂。
+
+\subhdr{5.2 与单位分解的选取无关（p212）}
+
+设 $\{\psi_1,\dots,\psi_m\}$ 是另一组单位分解。
+
+\step{第一步：对固定的 $j$，把 5.1 用在 $\psi_jf$ 上}
+$\mathrm{Supp}\,(\psi_jf)\subset\mathrm{Supp}\,\psi_j\cap M$ 落在单张垫里，所以 5.1 适用：
+\[ \sum_{i=1}^{\ell}\int_M(\phi_i\psi_jf)\dd V=\int_M(\psi_jf)\dd V. \qquad(5.1) \]
+
+\step{第二步：对 $j$ 求和，并交换有限和的次序}
+\[ \sum_{j=1}^{m}\sum_{i=1}^{\ell}\int_M(\phi_i\psi_jf)\dd V=\sum_{j=1}^{m}\int_M(\psi_jf)\dd V=\int_Mf\dd V, \]
+最后一个等号是 5.1 本身（把 $i$ 与 $j$ 的角色对换）。左边交换次序：
+\[ \sum_{i=1}^{\ell}\int_M\Bigl(\phi_i\Bigl(\sum_{j=1}^{m}\psi_j\Bigr)f\Bigr)\dd V=\sum_{i=1}^{\ell}\int_M(\phi_if)\dd V, \]
+因为 $\sum_j\psi_j=1$ 在 $M$ 上。于是用 $\{\phi_i\}$ 算出的值与用 $\{\psi_j\}$ 算出的值相等。$\square$
+
+\aside{课件把这一段压成一句“Symmetry shows that this double summation also equals $\sum_i[\int_M(\phi_if)\dd V]$, as desired.”。上面四行就是那个“symmetry”：先证单向、再对另一指标求和、再用一次 $\sum\psi_j=1$。}
+
+\subhdr{5.3 定理 25.3（p213）：线性性}
+
+\begin{notecall}
+\textbf{定理 25.3}．设 $M$ 紧、$f,g:M\to\mathbb{R}$ 连续。则
+\[ \int_M(af+bg)\dd V=a\int_Mf\dd V+b\int_Mg\dd V. \]
+\end{notecall}
+
+\step{证明（课件只画了一个 $\square$，这里补出来）}
+取定一组单位分解 $\{\phi_i\}$：
+\[ \int_M(af+bg)\dd V=\sum_i\int_M\phi_i(af+bg)\dd V \]
+\[ =\sum_i\int_M\bigl(a\,\phi_if+b\,\phi_ig\bigr)\dd V
+ =\sum_i\Bigl[a\int_M\phi_if\dd V+b\int_M\phi_ig\dd V\Bigr], \]
+第二步把每一项展开成单片积分后用普通积分的线性，第三步再收回有限和，并用 §5.2 的两个和式即得结论。$\square$
+
+%=====================================================================
+\hdr{§6}{拆片可算：定理 25.4（p213--216）}
+
+\subhdr{6.1 动机}
+
+§4 的定义理论上完备、计算上无用：没人愿意为了 $S^2$ 去造单位分解。定理 25.4 说：\textbf{只要把 $M$ 切成有限块“参数化片”再加一个零测集，就能逐片算、相加}。这是 §25 里唯一真正用来算的定理。
+
+\subhdr{6.2 流形上的零测集（p213）}
+
+\begin{notecall}
+\textbf{定义}．$M$ 紧、$C^r$。子集 $D\subset M$ 称为在 $M$ 中\textbf{零测}，若它能被可数多张垫 $\alpha_i:U_i\to V_i$ 覆盖，且 $D_i=\alpha_i^{-1}(D\cap V_i)$ 在 $\mathbb{R}^k$ 中对每个 $i$ 都零测。
+
+\textbf{等价定义}：对\textbf{任意}坐标垫 $\alpha:U\to V$，$\alpha^{-1}(D\cap V)$ 在 $\mathbb{R}^k$ 中零测。
+\end{notecall}
+
+\step{为什么两个定义等价（课件一句“this follows from the fact that...”）}
+设 $D$ 已被 $\{\alpha_i\}$ 按定义覆盖。任取一张垫 $\alpha$。把 $D\cap V$ 切成 $D\cap V\cap V_i$，逐个看：
+\[ \alpha^{-1}(D\cap V\cap V_i)=(\alpha^{-1}\circ\alpha_i)\bigl(\alpha_i^{-1}(D\cap V\cap V_i)\bigr)\subset(\alpha^{-1}\circ\alpha_i)(D_i), \]
+右边是零测集在 $C^r$ 映射下的像。这一步需要一条没写出来的事实：
+
+\aside{引理 18.1（p152）：$A$ 开在 $\mathbb{R}^n$、$g:A\to\mathbb{R}^n$ 是 $C^1$、$E\subset A$ 零测 $\Rightarrow g(E)$ 零测。取 $g=\alpha^{-1}\circ\alpha_i$、$E=D_i$，即得上式右端零测。}
+
+所以每个 $\alpha^{-1}(D\cap V\cap V_i)$ 零测，可数并仍零测，$\alpha^{-1}(D\cap V)$ 零测。$\square$
+
+\subhdr{6.3 定理 25.4（p213，原形式）}
+
+\begin{notecall}
+\textbf{定理 25.4}．设 $M$ 是紧的 $k$-流形（$C^r$），$f:M\to\mathbb{R}$ 连续。设 $\alpha_i:A_i\to M_i$（$i=1,\dots,N$）是 $M$ 上的坐标垫，$A_i$ \textbf{开在 $\mathbb{R}^k$}，且 $M$ 是开集 $M_1,\dots,M_N$ 与一个零测集 $K$ 的\textbf{不交并}。则
+\[ \int_Mf\dd V=\sum_{i=1}^{N}\left[\int_{A_i}(f\circ\alpha_i)\Vvol(D\alpha_i)\right]. \qquad(\ast) \]
+\end{notecall}
+
+读法：每片都“整片落在 $\mathbb{R}^k$ 里”（$A_i$ 开在 $\mathbb{R}^k$，不是 $\HH^k$），所以每片的积分是普通重积分；$K$ 是被丢掉的接缝，只要求零测、不要求空。
+
+\subhdr{6.4 证明：Step 1 与 Step 2}
+
+\step{Step 1：先把一般单位分解换成一个“局部”的等式}
+取一张垫 $\alpha:U\to V$ 盖住 $C=\mathrm{Supp}\,f$，并设 $U$ 有界（否则先缩小，由 3.3(a) 不影响积分）。令
+\[ W_i=\alpha^{-1}(M_i\cap V),\qquad L=\alpha^{-1}(K\cap V). \]
+则 $W_i$ 开在 $U$ 里（$M_i$ 开在 $M$），且
+\[ U=L\uplus\bigsqcup_iW_i \]
+（因为 $M=K\uplus\bigsqcup_iM_i$，取 $\alpha^{-1}$）。要证
+\[ \int_Mf\dd V=\sum_i\int_{W_i}(f\circ\alpha)\Vvol(D\alpha). \]
+记 $F=(f\circ\alpha)\Vvol(D\alpha)$。由 §3.2 的单片定义，$\int_Mf\dd V=\int_{\mathrm{Int}\,U}F$，而
+\[ \sum_i\int_{W_i}F=\int_{\mathrm{Int}\,U-L}F=\int_{\mathrm{Int}\,U}F=\int_Mf\dd V. \]
+三个等号分别的理由：
+\begin{enumerate}
+  \item[\textcircled{1}] \textbf{逐点相加}：$\mathrm{Int}\,U-L$ 是这些 $W_i$ 的不交并，$F$ 在每一块上有界、在 $\mathrm{Bd}\,W_i$ 上除去 $L$ 的部分附近为零，故每个 $\int_{W_i}F$ 都是普通积分，且 $\int_{\mathrm{Int}\,U-L}F=\sum_i\int_{W_i}F$。
+  \item[\textcircled{2}] $L$ 在 $\mathbb{R}^k$ 中零测、$F$ 有界 $\Rightarrow$ 把它挖掉不改变积分。
+  \item[\textcircled{3}] 单片定义。
+\end{enumerate}
+
+\aside{两处补记。\textbf{（一）}这里的“加性”不是定理 15.3(d) 的开集加性，而是“不交并上逐点相加”加上普通积分的线性——连 $W_i$ 是否开在 $\mathbb{R}^k$ 都不需要；这一点到 Step 2 才需要。\textbf{（二）}若 $U$ 开在 $\HH^k$ 而不在 $\mathbb{R}^k$，$W_i$ 只开在 $U$ 里。这不影响 Step 1；到 Step 2 要换元时，把 $W_i$ 换成 $\mathrm{Int}\,W_i$ 即可，差集落在 $\partial\HH^k$（$\mathbb{R}^k$ 的零测集）上，积分值不变。}
+
+\step{Step 2：把每一片从“$\alpha$ 的坐标”换成“$\alpha_i$ 的坐标”}
+要对第 $i$ 片证
+\[ \int_{W_i}F=\int_{A_i}F_i,\qquad F_i=(f\circ\alpha_i)\Vvol(D\alpha_i). \]
+令
+\[ B_i=\alpha_i^{-1}(M_i\cap V)\subset A_i,\qquad D_i=A_i-\alpha_i^{-1}(C). \]
+$B_i$ 开在 $A_i$ 从而开在 $\mathbb{R}^k$；$D_i$ 开在 $A_i$ 从而开在 $\mathbb{R}^k$。
+
+\step{（i）换元：$\alpha_i^{-1}\circ\alpha$ 把 $W_i$ 送到 $B_i$}
+因为 $\alpha(W_i)=M_i\cap V$，$\alpha_i^{-1}\circ\alpha:W_i\to B_i$ 是双射，且由定理 24.1 是 $C^r$ 微分同胚。记 $\beta=\alpha_i^{-1}\circ\alpha$，则 $\alpha=\alpha_i\circ\beta$，链法则 $D\alpha=D\alpha_i\cdot D\beta$，引理 A 给
+\[ \Vvol(D\alpha)=\Vvol(D\alpha_i)\cdot|\det D\beta|, \]
+于是 $F=(f\circ\alpha_i\circ\beta)\cdot(\Vvol(D\alpha_i)\circ\beta)\cdot|\det D\beta|$，由换元公式（定理 22.1 的单片版）：
+\[ \int_{W_i}F=\int_{B_i}F_i. \]
+（与 3.3(b) 是同一个三步，只把 $\alpha_0,\alpha_1$ 换成 $\alpha,\alpha_i$。）
+
+\step{（ii）把 $B_i$ 延长到 $A_i$}
+$F_i$ 在 $D_i$ 上为零（因为 $f$ 在 $C$ 之外为零，而 $C=\mathrm{Supp}\,f\supset\{f\ne0\}$）。$A_i,B_i,D_i$ 都是 $\mathbb{R}^k$ 的开集，用扩展积分的加性（定理 15.3(d)，p125）：
+\[ \int_{A_i}F_i=\int_{B_i}F_i+\int_{D_i}F_i-\int_{B_i\cap D_i}F_i=\int_{B_i}F_i+0-0=\int_{B_i}F_i. \]
+合 Step 1、Step 2：$\int_Mf\dd V=\sum_i\int_{W_i}F=\sum_i\int_{A_i}F_i$。$\square$
+
+\aside{第三处补记：$\int_{A_i}=\int_{B_i}+\int_{D_i}-\int_{B_i\cap D_i}$ 这步要求 $A_i$ 与 $B_i\cup D_i$ 是同一个开集。二者其实只差一个零测集——差集落在“$\alpha_i$ 的像落在别的 $M_j$ 或 $K$ 上的点”里，而 $\bigcup_{j\ne i}M_j\cup K$ 在 $M$ 中零测。课件没有交代这一句，但加性公式在这里需要它。}
+
+%=====================================================================
+\hdr{§7}{两个例子：$S^2(a)$ 的面积（p216--217）}
+
+\subhdr{7.1 例 1（p216）：两块 + 一个零测集}
+
+已知（§22 例 4）上半开半球的面积为 $2\pi a^2$；反射 $(x,y,z)\mapsto(x,y,-z)$ 是 $\mathbb{R}^3$ 的等距，所以下开半球的面积也是 $2\pi a^2$；上下两个\textbf{开}半球再加上赤道才是整个 $S^2(a)$，而赤道在 $S^2(a)$ 中零测。于是 $v(S^2(a))=4\pi a^2$。
+
+三处要核的：
+\begin{enumerate}
+  \item 定理 25.4 的前提对得上：$M_1,M_2$ 分别取 $\{z>0\}\cap S^2(a)$ 与 $\{z<0\}\cap S^2(a)$，都开在 $S^2(a)$；$K=$ 赤道，在 $S^2(a)$ 中零测（用 §7.2 的垫 $\alpha$：$K$ 的原像是线段 $\{z=0\}\times(0,2\pi)$，在 $\mathbb{R}^2$ 中零测）。
+  \item “反射不改变面积”这句在书里是 §25 \textbf{习题 4}，此处先用后证（§A 第 10 题）。这是例 1 的一处向后引用。
+  \item $2\pi a^2$ 来自 §22 例 4，本讲义不重算；§7.2 会独立算出 $4\pi a^2$，两者互为校验。
+\end{enumerate}
+
+\subhdr{7.2 例 2（p216--217）：一张垫算完，且不用广义积分}
+
+\step{参数化}
+对 $(t,z)\in A:=(0,2\pi)\times(-a,a)$，令
+\[ \alpha(t,z)=\bigl((a^2-z^2)^{1/2}\cos t,\ (a^2-z^2)^{1/2}\sin t,\ z\bigr). \]
+几何：固定 $z$，截面是圆 $x^2+y^2=a^2-z^2$（半径 $\sqrt{a^2-z^2}$）；$t$ 是绕 $z$ 轴的经度。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.98,>={Stealth[length=2.2mm]}]
+  % 左：参数域
+  \draw[->] (0,-1.45)--(0,1.6) node[above]{\scriptsize $z$};
+  \draw[->] (-0.2,0)--(3.5,0) node[right]{\scriptsize $t$};
+  \fill[bandviolet] (0.5,-1.05) rectangle (2.95,1.05);
+  \draw[violet,thick] (0.5,-1.05) rectangle (2.95,1.05);
+  \node[left] at (0.47,1.05) {\scriptsize $a$};
+  \node[left] at (0.47,-1.05) {\scriptsize $-a$};
+  \node[below right] at (0.53,-0.04) {\scriptsize $0$};
+  \node[below left] at (2.92,-0.04) {\scriptsize $2\pi$};
+  \node at (1.7,0) {\scriptsize $A$};
+  % 右：球面
+  \begin{scope}[xshift=7.6cm]
+    \draw[violet,thick] (0,0) circle (1.05);
+    \draw[violet,thick,dashed] (0,1.05)--(0,-1.05);
+    \draw[violet,densely dotted] (0,0) ellipse (1.05 and 0.32);
+    \node[right] at (0.95,0.5) {\scriptsize $S^2(a)$};
+    \node[below] at (0,-1.2) {\scriptsize 挖掉的经线 $\{t=0\}$};
+  \end{scope}
+  \draw[->,violet,thick] (3.75,0) to[bend left=14] node[above]{\small $\alpha$} (6.3,0);
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}\textbf{图 3}（重绘，据 Figure 25.5）：参数域是一个开矩形，“经度”方向的两边粘在一起；“纬度”方向到 $\pm a$ 时半径缩到 $0$（两极）。整条 $\{t=0\}$ 的经线拿不到，正是这张垫漏掉的那条弧。}
+\end{center}
+
+\step{（i）先核对它是坐标垫}
+$C^\infty$ $\checkmark$；\textbf{单射}：$z$ 由第三坐标确定，$|z|<a$ 使 $\sqrt{a^2-z^2}>0$，于是 $(\cos t,\sin t)$ 由 $(x,y)$ 唯一确定，$t\in(0,2\pi)$ 也就唯一；$D\alpha$ 秩 $2$（下面算出 $\Vvol(D\alpha)=a>0$，故两列线性无关）；逆连续（$t=\arctan$ 型、$z=z$）。它的像恰好是 $S^2(a)$ 去掉经线 $\{t=0\}$（连同两个极点），这条弧在 $S^2(a)$ 中零测，所以由定理 25.4 可以用它算整个球面。
+
+\step{（ii）导数与体积因子（课件写“whence $\Vvol(D\alpha)=a$, as you can check”——这正是要补的代数）}
+\[ D\alpha=\begin{bmatrix}
+-(a^2-z^2)^{1/2}\sin t & -z\cos t\,(a^2-z^2)^{-1/2}\\[2pt]
+ (a^2-z^2)^{1/2}\cos t & -z\sin t\,(a^2-z^2)^{-1/2}\\[2pt]
+ 0 & 1
+\end{bmatrix}, \]
+两列记为 $v_t,v_z$。逐项算三个内积：
+\[ v_t\!\cdot\! v_t=(a^2-z^2)(\sin^2t+\cos^2t)=a^2-z^2, \]
+\[ v_z\!\cdot\! v_z=\frac{z^2\cos^2t}{a^2-z^2}+\frac{z^2\sin^2t}{a^2-z^2}+1=\frac{z^2}{a^2-z^2}+1=\frac{a^2}{a^2-z^2}, \]
+\[ v_t\!\cdot\! v_z=(a^2-z^2)^{1/2}(-\sin t)\cdot\frac{-z\cos t}{(a^2-z^2)^{1/2}}+(a^2-z^2)^{1/2}\cos t\cdot\frac{-z\sin t}{(a^2-z^2)^{1/2}}=z\sin t\cos t-z\sin t\cos t=0. \]
+\textbf{两列正交}，于是 Gram 行列式就是两个长度平方之积：
+\[ \det(D\alpha^{\mathsf T}D\alpha)=(a^2-z^2)\cdot\frac{a^2}{a^2-z^2}=a^2,\qquad \Vvol(D\alpha)=\sqrt{a^2}=a. \]
+
+\step{这个 $a$ 从哪来（常数报户口）}
+两列的长度分别是 $\sqrt{a^2-z^2}$（纬线圈的半径）与 $a/\sqrt{a^2-z^2}$（经线方向的拉伸因子）。前者随 $z$ 增大而变小、后者随之变大，乘积恒为 $a$。所以“面积元恒等于 $a$”不是巧合：\textbf{纬线半径 $\times$ 经线因子 $=a$}，两个 $z$ 依赖正好抵消。这也解释了为什么这张垫的积分不需要广义积分——被积函数是常数。
+
+\step{（iii）积分}
+\[ v(S^2(a))=\int_A\Vvol(D\alpha)=\int_Aa=a\cdot|A|=a\cdot(2\pi)(2a)=4\pi a^2. \]
+\textbf{两个常数的分工}：$2\pi$ 来自 $t$ 的周期（经度一圈，是参数化的约定），$2a$ 来自 $z$ 的跨度（两极之间，是几何范围）。
+
+\step{自检}
+与例 1 的 $4\pi a^2$ 一致；$a=1$ 时得 $4\pi\approx12.566$，与球面面积公式吻合。
+
+%=====================================================================
+\hdr{§8}{课件习题：题面与考点（14 道，详解在附录 A）}
+
+\subhdr{题目分布}
+§24 的六道在 p208，§25 的八道在 p217--218。本工作区按“先做后看”整理：\textbf{这一节只给题面与考点，答案与详解统一放在附录 A}（同题号，块首带条件摘要）。题号、页码与课件一一对应，没有漏掉的题。
+
+\qbreak
+\subhdr{A1（§24 第 1 题，p208）：实心环面}
+\qstem{（课件 p208 第 1 题）证明实心环面是 3-流形，且它的边界是环面 $T$。（$T$ 见 §17 的习题。）[提示：写出 $T$ 的笛卡尔方程，再用定理 24.4。]}
+\textbf{考点}：§2 定理 24.4 的第一个具体用例——把“实心”写成 $\{f\ge0\}$，再核 $Df\ne0$。\seep{ax1}
+
+\qbreak
+\subhdr{A2（§24 第 2 题，p208）：定理 24.4 的多函数推广}
+\qstem{（课件 p208 第 2 题）证明：设 $f:\mathbb{R}^{n+k}\to\mathbb{R}^n$ 是 $C^r$ 的，$M=\{x:f(x)=0\}$ 非空，且 $Df(x)$ 在 $M$ 上每点秩为 $n$。则 $M$ 是 $\mathbb{R}^{n+k}$ 中的 $k$-流形、无边界。进一步，若 $N=\{x:f_1(x)=\cdots=f_{n-1}(x)=0,\ f_n(x)\ge0\}$，且矩阵 $\partial(f_1,\dots,f_{n-1})/\partial x$ 在 $N$ 上每点秩为 $n-1$，则 $N$ 是 $k+1$ 维流形，且 $\partial N=M$。}
+\textbf{考点}：§2 的“拉直”在“有 $n$ 个方程”时怎么改——把余下的 $k$ 个坐标补进去凑成满秩映射。\seep{ax2}
+
+\qbreak
+\subhdr{A3（§24 第 3 题，p208）：两个方程的解集什么时候是曲线}
+\qstem{（课件 p208 第 3 题）设 $f,g:\mathbb{R}^3\to\mathbb{R}$ 是 $C^r$ 的。在什么条件下你能断定方程组 $f(x,y,z)=0$、$g(x,y,z)=0$ 的解集是一条没有奇点的光滑曲线（即无边的 1-流形）？}
+\textbf{考点}：A2 的 $n=2$、$k=1$ 情形；条件是充分的、不是必要的（要能举出反例）。\seep{ax3}
+
+\qbreak
+\subhdr{A4（§24 第 4 题，p208）：上半球面与它的边界}
+\qstem{（课件 p208 第 4 题）证明由方程 $E^{n-1}_+(a)=S^{n-1}(a)\cap\HH^n$ 定义的上半球面是 $(n-1)$-流形。它的边界是什么？}
+\textbf{考点}：A2 的第二个断言（codim 2 的水平集 + 一个半空间条件）。\seep{ax4}
+
+\qbreak
+\subhdr{A5（§24 第 5 题，p208）：$O(3)$ 是紧的 3-流形}
+\qstem{（课件 p208 第 5 题）设 $\mathcal{O}(3)$ 是全体 $3\times3$ 正交矩阵，看作 $\mathbb{R}^9$ 的子空间。(a) 构造一个 $C^\infty$ 函数 $f:\mathbb{R}^9\to\mathbb{R}^6$，使 $\mathcal{O}(3)$ 是方程 $f(x)=0$ 的解集；(b) 证明 $\mathcal{O}(3)$ 是 $\mathbb{R}^9$ 中紧的、无边界的 3-流形。[提示：证明 $x\in\mathcal{O}(3)$ 时 $Df(x)$ 的各行线性无关。]}
+\textbf{考点}：$\mathbb{R}^9\to\mathbb{R}^6$ 上的 A2；秩的计算要用矩阵求导。\seep{ax5}
+
+\qbreak
+\subhdr{A6（§24 第 6 题，p208）：$O(n)$ 的维数}
+\qstem{（课件 p208 第 6 题）设 $\mathcal{O}(n)$ 是全体 $n\times n$ 正交矩阵，看作 $\mathbb{R}^N$（$N=n^2$）的子空间。证明 $\mathcal{O}(n)$ 是紧的、无边界的流形。它的维数是多少？}
+\textbf{考点}：A5 的一般 $n$；维数 $=N-\frac{n(n+1)}{2}$。\seep{ax6}
+
+\qbreak
+\subhdr{A7（§25 第 1 题，p217）：核对例 2}
+\qstem{（课件 p217 第 1 题）核对例 2 中所作的计算。}
+\textbf{考点}：§7.2 的 (ii)（Gram 矩阵与开方）。\seep{ax7}
+
+\qbreak
+\subhdr{A8（§25 第 2 题，p217）：横截面是圆的曲面}
+\qstem{（课件 p217 第 2 题）设 $\alpha(t),\beta(t),f(t)$ 是 $[0,1]$ 上 $C^1$ 的实值函数，且 $f(t)>0$。设 $M$ 是 $\mathbb{R}^3$ 中的 2-流形，它与平面 $z=t$ 的交是圆 $(x-\alpha(t))^2+(y-\beta(t))^2=(f(t))^2$（$0\le t\le1$），其余为空。(a) 建立 $M$ 面积的积分式 [提示：仿例 2]；(b) 当 $\alpha,\beta$ 为常数、$f(t)=1+t^2$ 时求值；(c) 当 $f$ 为常数、$\alpha(t)=0$、$\beta(t)=at$ 时积分成什么形状？（这个积分不能用初等函数表示。）}
+\textbf{考点}：§7.2 的方法换一个参数化；$V^2=\det(\cdot)$ 的代数化简；(c) 是椭圆积分。\seep{ax8}
+
+\qbreak
+\subhdr{A9（§25 第 3 题，p217--218）：环面的面积}
+\qstem{（课件 p217--218 第 3 题）考虑 §17 习题 7 的环面 $T$（$0<a<b$：$xz$ 平面内半径 $a$、圆心 $(b,0,0)$ 的圆绕 $z$ 轴旋转所得）。(a) 求 $T$ 的面积 [提示：柱坐标变换把柱面送到 $T$ 上；用“截线是圆”来参数化柱面]；(b) 求 $T$ 中满足 $x^2+y^2\ge b^2$ 的那一部分的面积。}
+\textbf{考点}：定理 25.4 的拆片 + 两列正交时 $\Vvol=$ 长度之积；(b) 要把条件翻译成参数的不等式。\seep{ax9}
+
+\qbreak
+\subhdr{A10（§25 第 4 题，p218）：等距不改变积分与体积}
+\qstem{（课件 p218 第 4 题）设 $M$ 是 $\mathbb{R}^n$ 中紧的 $k$-流形，$h:\mathbb{R}^n\to\mathbb{R}^n$ 是等距，$N=h(M)$。设 $f:N\to\mathbb{R}$ 连续。证明 $N$ 是 $\mathbb{R}^n$ 中的 $k$-流形，且 $\int_Nf\dd V=\int_M(f\circ h)\dd V$。由此得出 $M$ 与 $N$ 有相同的体积。}
+\textbf{考点}：垫的搬运 + 引理 A（$|\det A|=1$）+ 定理 25.4。§7.1 引用了它的结论。\seep{ax10}
+
+\qbreak
+\subhdr{A11（§25 第 5 题，p218）：$S^n$ 的体积与 $B^n$ 的体积}
+\qstem{（课件 p218 第 5 题）(a) 用 $B^{n-1}(a)$ 的体积表示 $S^n(a)$ 的体积 [提示：仿例 2]；(b) 证明 $t>0$ 时 $v(S^n(t))=D\,v(B^{n+1}(t))$ [提示：用 §19 习题 6 的结果]。}
+\textbf{考点}：切片法的一般形式；两个结论互为同一个 $\lambda$ 递推的两面。\seep{ax11}
+
+\qbreak
+\subhdr{A12（§25 第 6 题，p218）：对称流形的质心}
+\qstem{（课件 p218 第 6 题）紧流形 $M\subset\mathbb{R}^n$ 的质心按 §22 习题 3 的公式定义。证明：若 $M$ 关于子空间 $x_i=0$ 对称，则 $c_i(M)=0$。}
+\textbf{考点}：A10 的直接应用（取 $h$ 为反射、$f=x_i$、$f=-x_i$ 两式相减）。\seep{ax12}
+
+\qbreak
+\subhdr{A13（§25 第 7 题，p218，带 $*$）：上半球面的质心}
+\qstem{（课件 p218 第 7 题）设 $E^n_+(a)$ 表示 $S^n(a)$ 与上半空间 $\HH^{n+1}$ 的交，$\lambda_n=v(B^n(1))$。(a) 用 $\lambda_n$ 与 $\lambda_{n-1}$ 表示 $E^n_+(a)$ 的质心；(b) 用 $B^{n-1}_+(a)$ 的质心表示 $E^n_+(a)$ 的质心（见 §19 的习题）。}
+\textbf{考点}：$c_{n+1}$ 要算 $\int z\dd V$；(a) 的答案里 $\lambda$ 的比值正好给出 $n=1,2,3$ 的已知值。\seep{ax13}
+
+\qbreak
+\subhdr{A14（§25 第 8 题，p218）：乘积流形上的积分}
+\qstem{（课件 p218 第 8 题）设 $M,N$ 分别是 $\mathbb{R}^m,\mathbb{R}^n$ 中紧的、无边界的流形。(a) $f:M\to\mathbb{R}$、$g:N\to\mathbb{R}$ 连续，证明 $\int_{M\times N}f\cdot g\dd V=[\int_Mf\dd V][\int_Ng\dd V]$ [提示：先考虑 $f,g$ 的支持集各落在一张垫里的情形]；(b) 证明 $v(M\times N)=v(M)\,v(N)$；(c) 求 $\mathbb{R}^4$ 中 2-流形 $S^1\times S^1$ 的面积。}
+\textbf{考点}：垫的乘积 + $\Vvol$ 在两列正交时等于长度之积 + Fubini。\seep{ax14}
+
+%=====================================================================
+\hdr{§9}{张量：多重线性函数（p219--223）}
+
+\subhdr{9.1 p219 那一页在说什么（动机）}
+
+第五章做完了微分与积分两件事，p219 的开场说第五章结束时“还有第三件事没做”：向量积分学，其主定理以 Green、Gauss、Stokes 命名。在 R$^3$ 里那套语言（向量场、标量场、grad/curl/div）够用；换到 $\mathbb{R}^n$ 的 $k$-流形上就不够了，需要一套叫\textbf{多重线性代数}的东西（线性代数的续篇）。前几节只用第一章的材料，后面才与第二章的微分接上。
+
+本讲义只处理 p220--223 四页：张量的定义、定理 26.1、引理 26.2、定理 26.3、例 1、张量积的定义。\textbf{张量积的性质表从 p224 开始，已出给定范围}（见 §10 末）。
+
+\subhdr{9.2 定义（p220，原形式）}
+
+\begin{notecall}
+\textbf{定义}．设 $V$ 是向量空间，$V^k=V\times\cdots\times V$（$k$ 个）。函数 $f:V^k\to\mathbb{R}$ 称为对\textbf{第 $i$ 个变量线性}，若固定任意 $v_j$（$j\ne i$）后，函数
+\[ T(v)=f(v_1,\dots,v_{i-1},v,v_{i+1},\dots,v_k) \]
+是线性的。若 $f$ 对每个 $i$ 都线性，称 $f$ \textbf{多重线性}，也称为 $V$ 上的 \textbf{$k$-张量}（$k$ 阶张量）。全体 $k$-张量记 $\mathcal{L}^k(V)$。$k=1$ 时 $\mathcal{L}^1(V)$ 就是 $V\to\mathbb{R}$ 的线性变换全体，即 $V$ 的\textbf{对偶空间}，记 $V^*$。
+\end{notecall}
+
+\step{三个例子与一个反例（本讲义补，课件没有具体例子）}
+\begin{enumerate}
+  \item $V=\mathbb{R}^n$：$f(v)=3v_1-v_2$ 是 $1$-张量（线性泛函）；一般 $1$-张量是 $v\mapsto\sum_id_iv_i$（§9.4 会证）。
+  \item $V=\mathbb{R}^n$：$f(u,v)=\langle u,v\rangle=\sum_iu_iv_i$ 是 $2$-张量；$\det(u,v)=u_1v_2-u_2v_1$ 也是 $2$-张量。判据是逐变量查：固定 $v$，$u\mapsto\langle u,v\rangle$ 线性；固定 $u$，$v\mapsto\langle u,v\rangle$ 线性。
+  \item \textbf{反例}：$f(v)=\|v\|^2$ \textbf{不是} $1$-张量，因为 $f(2v)=4\|v\|^2\ne2f(v)$。
+\end{enumerate}
+多重线性要\textbf{逐变量}核：一次只让一个变量动，其余钉死。
+
+\subhdr{9.3 定理 26.1（p220）：$\mathcal{L}^k(V)$ 是向量空间}
+
+\begin{notecall}
+\textbf{定理 26.1}．全体 $k$-张量在下面两种运算下构成向量空间：
+\[ (f+g)(v_1,\dots,v_k)=f(v_1,\dots,v_k)+g(v_1,\dots,v_k),\qquad (cf)(v_1,\dots,v_k)=c\bigl(f(v_1,\dots,v_k)\bigr). \]
+\end{notecall}
+
+\step{证明（课件写“The proof is left as an exercise”，这里补全）}
+把 $\mathcal{L}^k(V)$ 看成\textbf{全体函数} $V^k\to\mathbb{R}$ 构成的向量空间 $\mathcal{F}$ 的子集（$\mathcal{F}$ 的加法与数乘就是逐点定义的，向量空间公理自动成立）。于是只需验证两句：零元素在子集里，且子集对加法与数乘封闭。
+
+零张量 $z\equiv0$：固定其余变量后 $v\mapsto0$ 线性 $\checkmark$。
+
+封闭性：固定其余变量，
+\[ v\mapsto(f+g)(\dots,v,\dots)=f(\dots,v,\dots)+g(\dots,v,\dots) \]
+是两个线性函数之和，故线性；而
+\[ v\mapsto(cf)(\dots,v,\dots)=c\cdot f(\dots,v,\dots) \]
+是线性函数的常数倍，故线性。逐变量如此，故 $f+g$ 与 $cf$ 都多重线性。$\square$
+
+（这一步对有限维、无限维的 $V$ 都成立。）
+
+\subhdr{9.4 引理 26.2（p220--221）：在基上的值决定张量}
+
+\begin{notecall}
+\textbf{引理 26.2}．设 $a_1,\dots,a_n$ 是 $V$ 的一组基。若 $k$-张量 $f,g$ 满足
+\[ f(a_{i_1},\dots,a_{i_k})=g(a_{i_1},\dots,a_{i_k}) \]
+对每个 $k$ 元组 $I=(i_1,\dots,i_k)$（$i_j\in\{1,\dots,n\}$）都成立，则 $f=g$。
+\end{notecall}
+
+\textbf{注意}（课件 p221 首句）：这里不要求 $i_1,\dots,i_k$ 互不相同，也不要求它们有次序。$(1,1,3)$ 与 $(3,1,1)$ 都是合法的 $k$ 元组，而且一般是两个不同的 $k$ 元组。
+
+\step{证明（课件写“and so on”，这里把归纳那一步写出来）}
+把每个 $v_i$ 按基展开：
+\[ v_i=\sum_{j=1}^{n}c_{ij}a_j\qquad(c_{ij}\ \text{是}\ v_i\ \text{的第}\ j\ \text{个系数}). \]
+\textbf{第 1 步}：只对第 1 个变量用线性（其余 $v_2,\dots,v_k$ 钉死）：
+\[ f(v_1,\dots,v_k)=\sum_{j_1=1}^{n}c_{1j_1}f(a_{j_1},v_2,\dots,v_k). \]
+\textbf{第 2 步}：把第 2 个变量展开（此时第 1 个位置已是基向量 $a_{j_1}$，可以钉死）：
+\[ =\sum_{j_1=1}^{n}\sum_{j_2=1}^{n}c_{1j_1}c_{2j_2}f(a_{j_1},a_{j_2},v_3,\dots,v_k). \]
+\textbf{第 $m$ 步（归纳）}：设前 $m-1$ 个已换成基向量，则
+\[ =\sum_{1\le j_1,\dots,j_m\le n}c_{1j_1}\cdots c_{mj_m}f(a_{j_1},\dots,a_{j_m},v_{m+1},\dots,v_k). \]
+\textbf{第 $k$ 步后}：
+\[ f(v_1,\dots,v_k)=\sum_{1\le j_1,\dots,j_k\le n}c_{1j_1}c_{2j_2}\cdots c_{kj_k}\,f(a_{j_1},\dots,a_{j_k}). \qquad(26.1) \]
+
+$g$ 有完全同一个公式、同一组系数 $c_{ij}$（系数只依赖 $v_i$ 与基，不依赖 $f$）。所以若 $f,g$ 在全部基 $k$ 元组上取值相同，(26.1) 的两个和式就逐项相同，于是 $f(v_1,\dots,v_k)=g(v_1,\dots,v_k)$ 对一切 $k$ 元组成立，即 $f=g$。$\square$
+
+\subhdr{9.5 定理 26.3（p221--222）：初等张量构成基}
+
+\begin{notecall}
+\textbf{定理 26.3}．设 $V$ 以 $a_1,\dots,a_n$ 为基，$I=(i_1,\dots,i_k)$ 是 $\{1,\dots,n\}$ 的 $k$ 元组。存在\textbf{唯一}的 $k$-张量 $\phi_I$，使对每个 $k$ 元组 $J=(j_1,\dots,j_k)$，
+\[ \phi_I(a_{j_1},\dots,a_{j_k})=\begin{cases}0,& I\ne J,\\ 1,& I=J.\end{cases} \qquad(\ast) \]
+并且 $\{\phi_I\}$ 构成 $\mathcal{L}^k(V)$ 的一组基；于是 $\dim\mathcal{L}^k(V)=n^k$。$k=1$ 时 $\{\phi_1,\dots,\phi_n\}$ 称为与 $\{a_i\}$ 对偶的 $V^*$ 的基。
+\end{notecall}
+
+\step{\ding{172} 唯一性}
+引理 26.2：两个张量在全部基 $k$ 元组上值相同就相等。
+
+\step{\ding{173} 存在性，$k=1$}
+线性泛函由它在基上的值唯一确定，所以直接定义 $\phi_i(a_j)=\delta_{ij}$ 即可。
+
+\step{\ding{174} 存在性，$k>1$：把 $\phi_I$ 定义成\textbf{乘积}}
+\[ \phi_I(v_1,\dots,v_k):=\phi_{i_1}(v_1)\cdot\phi_{i_2}(v_2)\cdots\phi_{i_k}(v_k). \qquad(26.2) \]
+\textbf{多线性}：固定其余变量，限制在 $v_m$ 上的函数是“常数 $\times\,\phi_{i_m}(v_m)$”，而 $\phi_{i_m}$ 线性、乘常数保持线性 $\checkmark$。
+
+\textbf{取值}：把 $(a_{j_1},\dots,a_{j_k})$ 代进 (26.2)，
+\[ \phi_I(a_{j_1},\dots,a_{j_k})=\delta_{i_1j_1}\delta_{i_2j_2}\cdots\delta_{i_kj_k}, \]
+它等于 $1$ 当且仅当 $i_m=j_m$ 对每个 $m$ 成立，即 $I=J$。这正是 ($\ast$)，也\textbf{正是课件那句“One checks readily that it has the required value on $(a_{j_1},\dots,a_{j_k})$”}。
+
+\step{\ding{175} $\{\phi_I\}$ 是基}
+\textbf{生成}：给定 $f\in\mathcal{L}^k(V)$，令 $d_I=f(a_{i_1},\dots,a_{i_k})$，再令
+\[ g=\sum_Jd_J\phi_J. \]
+由 ($\ast$)，对每个 $I$ 有 $g(a_{i_1},\dots,a_{i_k})=\sum_Jd_J\delta_{JI}=d_I=f(a_{i_1},\dots,a_{i_k})$；由引理 26.2，$f=g$。
+
+\aside{这里补的是“唯一性”那一句：课件写“Uniqueness of this representation of $f$ follows from the preceding lemma.”。展开就是：若 $\sum_Jd_J\phi_J=\sum_Jd'_J\phi_J$，两边在 $a_I$ 上取值，由 ($\ast$) 得 $d_I=d'_I$，对一切 $I$ 成立。}
+
+\textbf{线性无关}：若 $\sum_Jd_J\phi_J=0$，在 $a_I$ 上取值即得 $d_I=0$，对每个 $I$。
+
+\textbf{维数}：$k$ 元组 $I$ 共有 $n^k$ 个，而它们是基，故 $\dim\mathcal{L}^k(V)=n^k$。$\square$
+
+\subhdr{9.6 例 1（p223）：$V=\mathbb{R}^n$ 时张量就是分量单项式的组合}
+
+取标准基 $e_1,\dots,e_n$，对偶基 $\phi_1,\dots,\phi_n$。对 $x\in\mathbb{R}^n$，
+\[ \phi_i(x)=\phi_i(x_1e_1+\cdots+x_ne_n)=x_i, \]
+即 $\phi_i$ 就是“取第 $i$ 个坐标的投影”。更一般地，对 $I=(i_1,\dots,i_k)$，
+\[ \phi_I(x_1,\dots,x_k)=\phi_{i_1}(x_1)\cdots\phi_{i_k}(x_k)=x_{i_1 1}\,x_{i_2 2}\cdots x_{i_k k}, \]
+这里 $x_{ij}$ 表示“第 $i$ 个向量的第 $j$ 个分量”（把 $k$ 个向量排成矩阵 $X=[x_1\cdots x_k]$ 后，$x_{ij}$ 是第 $i$ 行第 $j$ 列）。\textbf{所以 $\phi_I$ 就是从各分量里各挑一个乘起来的单项式}，而一般的 $k$-张量是这些单项式的线性组合（定理 26.3）。于是：
+\[ \text{一般 1-张量：}\ f(x)=d_1x_1+\cdots+d_nx_n;\qquad \text{一般 2-张量：}\ g(x,y)=\sum_{i,j=1}^{n}d_{ij}x_iy_j. \]
+
+\step{后一条的来历（本讲义补一行推导）}
+由定理 26.3，$g=\sum_{(i,j)}d_{(i,j)}\phi_{(i,j)}$；而上面刚算出 $\phi_{(i,j)}(x,y)=x_iy_j$。把 $d_{(i,j)}$ 简写成 $d_{ij}$ 即得。数与维数也对得上：$n^2$ 个自由参数 $=$ $n^2$ 个基张量。
+
+\warnbox{\textbf{记号坑（必读）}：例 1 里的 $x_1,\dots,x_k$ 是\textbf{$k$ 个向量}，而 $x_{ij}$ 是“第 $i$ 个向量的第 $j$ 个分量”。但在“单个向量 $x$”的场合，课件又写 $x_1,\dots,x_n$ 表示它的 $n$ 个分量。同一个下标位置，两种语境两种意思。读的时候先看小写下标挂的是“向量的编号”还是“分量的编号”。}
+
+%=====================================================================
+\hdr{§10}{张量积，以及本讲义的边界（p223）}
+
+\subhdr{10.1 定义（p223，原形式）}
+
+\begin{notecall}
+\textbf{定义}．设 $f$ 是 $V$ 上的 $k$-张量，$g$ 是 $V$ 上的 $\ell$-张量。定义 $V$ 上的 $k+\ell$ 阶张量 $f\otimes g$：
+\[ (f\otimes g)(v_1,\dots,v_{k+\ell})=f(v_1,\dots,v_k)\cdot g(v_{k+1},\dots,v_{k+\ell}). \]
+称 $f\otimes g$ 为 $f$ 与 $g$ 的\textbf{张量积}。
+\end{notecall}
+
+\step{多线性的验证（课件写“It is easy to check”，这里补出来）}
+固定除第 $m$ 个之外的所有变量。若 $m\le k$，则第一个因子 $f(\dots,v_m,\dots)$ 对 $v_m$ 线性、第二个因子 $g(v_{k+1},\dots)$ 是\textbf{常数}，两个因子相乘仍线性；若 $m>k$，则反过来：$f$ 那一因子是常数，$g$ 对 $v_m$ 线性。逐变量如此，故 $f\otimes g$ 多重线性 $\checkmark$。
+
+\step{读法：$\otimes$ 把槽分成两段}
+前 $k$ 个变量交给 $f$、后 $\ell$ 个交给 $g$，顺序是定义的一部分。所以一般 $f\otimes g\ne g\otimes f$——右边把前 $\ell$ 个变量给了 $g$。例如 $k=\ell=1$ 时，$(f\otimes g)(u,v)=f(u)g(v)$，而 $(g\otimes f)(u,v)=g(u)f(v)$。
+
+\step{一条立刻能用的公式}
+由 (26.2) 与 $\otimes$ 的定义，
+\[ \phi_I=\phi_{i_1}\otimes\phi_{i_2}\otimes\cdots\otimes\phi_{i_k}, \]
+因为两边在 $(v_1,\dots,v_k)$ 上的值都是 $\phi_{i_1}(v_1)\cdots\phi_{i_k}(v_k)$。这说明\textbf{初等张量就是 $1$-张量的连乘}。
+
+\subhdr{10.2 到哪儿为止}
+
+p223 的最后一句是“We list some of the properties of this product operation:”，性质表从下一页（书内 224）开始，\textbf{已出给定的 p206--223}。所以本讲义不列那些性质，也不涉及交错张量与微分形式——那是 §26 后半与 §27 的内容。若继续往下读，接口是：交错张量（$\phi_I$ 在指标有重复时取零）$\to$ 微分形式 $\to$ 在流形上积分形式（§28 起），那时 $\int_M\omega$ 与 §25 的 $\int_Mf\dd V$ 是两件不同的事（p190 的“记号说明”专门警告过这一点）。
+
+%=====================================================================
+\hdr{§11}{公式卡：六条可执行的用法}
+
+\begin{enumerate}
+  \item \textbf{造带边流形（定理 24.4）}：写一个 $C^r$ 的 $f$；核 $M=\{f=0\}\ne\varnothing$ 且 $Df\ne0$ 在 $M$ 上；结论：$\{f\ge0\}$ 是 $n$-流形，边界 $=M$。\textbf{记得符号是 $\ge$。}
+  \item \textbf{认边界（引理 24.2）}：能取到“定义域开在 $\mathbb{R}^k$”的垫 $\Rightarrow$ 内点；只能取到“开在 $\HH^k$ 且参数点在 $\partial\HH^k$”的垫 $\Rightarrow$ 边界点。
+  \item \textbf{单片积分（§3）}：$\int_Mf\dd V=\int_{\mathrm{Int}\,U}(f\circ\alpha)\Vvol(D\alpha)$；换垫不变（引理 A）。
+  \item \textbf{一般／拆片（§4、定理 25.4）}：$M=M_1\uplus\cdots\uplus M_N\uplus K$，$M_i$ 开在 $M$，$K$ 在 $M$ 中零测，每片一张 $A_i$ 开在 $\mathbb{R}^k$ 的垫 $\Rightarrow$
+  \[ \int_Mf\dd V=\sum_{i=1}^{N}\int_{A_i}(f\circ\alpha_i)\Vvol(D\alpha_i). \]
+  \item \textbf{算 $\Vvol(D\alpha)$}：两列（或各列）互相正交时，$\Vvol=$ 各列长度之积；一般情形 $\Vvol=\sqrt{\det(D\alpha^{\mathsf T}D\alpha)}$（定理 21.3）。$k=n$ 时才是 $|\det D\alpha|$。
+  \item \textbf{定一个 $k$-张量（定理 26.3）}：只需在 $n^k$ 个基 $k$ 元组上给值；一般式
+  \[ f=\sum_Id_I\phi_I,\qquad d_I=f(a_{i_1},\dots,a_{i_k});\qquad \phi_I=\phi_{i_1}\otimes\cdots\otimes\phi_{i_k}. \]
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{易错点（每条指回某节某步）}
+
+\begin{enumerate}
+  \item \textbf{$\partial M$ 与 $\mathrm{Bd}\,M$ 不是一回事}（§1.1）。$\partial M$ 是“只能用定义域开在 $\HH^k$ 的垫”的点集；$\mathrm{Bd}\,M$ 是 $M$ 在 $\mathbb{R}^n$ 中的拓扑边界。同理 $\mathrm{Int}\,U$ 是 $\mathbb{R}^k$ 的拓扑内部，不是 $M$ 的内部。p205 专门警告过这一条。
+  \item \textbf{定理 24.4 的 $N$ 读 $\ge$，不读 $>$}（§2.2 的警示框）。按 $>$ 则 $N$ 开、$\partial N\subset N$ 与 $M\cap N=\varnothing$ 冲突，定理不成立。
+  \item \textbf{$a>0$ 不是排版习惯}（§2.4）。$a=0$ 时 $M=\{0\}$、$Df(0)=0$，定理 24.4 的前提失效。
+  \item \textbf{$\Vvol(D\alpha)$ 不是行列式}（§3.1）。$n\times k$ 且 $k<n$ 时没有行列式；它是 Gram 行列式的平方根。
+  \item \textbf{单位分解的第 (2) 条是命门}（§4.2）。没有“$(\mathrm{Supp}\,\phi_i)\cap M\subset V_i$”，单项展开就落不到单片积分上，一般定义会变成空的。
+  \item \textbf{定理 25.4 的 $M_i$ 要开在 $M$、$A_i$ 要开在 $\mathbb{R}^k$}（§6.3）。§7 的 $S^2(a)\setminus\{t=0\}$ 确实开在 $S^2(a)$；若片子的边界落进 $M$ 本体，$A_i$ 就不开在 $\mathbb{R}^k$，换元公式用不上。
+  \item \textbf{零测集不等于空集}（§6）。例 1 的赤道、定理 25.4 的 $K$ 都可以非空；它们的作用是“接缝可以扔”。
+  \item \textbf{张量不是任意多变量函数}（§9.2 反例）；$\phi_I$ 是\textbf{乘积}（26.2），不是“把函数值排成元组”。
+  \item \textbf{$\otimes$ 不交换}（§10.1）。它把前 $k$ 个槽给 $f$、后 $\ell$ 个给 $g$，顺序是定义的一部分。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§13}{缺口清单：课件跳了哪几处，本讲义补在哪}
+
+\subhdr{十二条，按类型编号（每条都有页码 + 原文短语）}
+
+\gapitem{机制缺口 \textbar\ p206}{“Then Theorem 8.2 tells us that the image set of this map is open in $\mathbb{R}^k$. But $W_0$ … so it is \emph{not} open in $\mathbb{R}^k$!”。缺的是“为什么取一个大球就必然越界”的正面写法。补在 §1.2 第三步（取 $y=x_0-\frac{\varepsilon}{2}e_k$ 直接给出矛盾点）。}
+
+\gapitem{压缩缺口（结论未证）\textbar\ p206}{定理 24.3 的陈述写了“$\partial M$ is a $k-1$ manifold \emph{without boundary}”，但证明到“$\alpha_0$ 是坐标垫”就结束，全文没有一句解释为什么 $\partial M$ 自己没有边界。补在 §1.3 第 \ding{175} 步：$U_0$ 开在 $\mathbb{R}^{k-1}$，故判据 (a) 对每个点成立。}
+
+\gapitem{答案形态（定义与证明不一致）\textbar\ p207}{定义行印 $N=\{f(x)>0\}$，同页证明写“$x\in N$ if and only if $f(x)\ge0$”。两处不能同时成立；按 $>$ 定理为假。补在 §2.2 的警示框：给出两条判据（$\partial N\subset N$ 与推论 24.5 的闭球），定为 $\ge$。}
+
+\gapitem{代数跳步 \textbar\ p207}{“$DF=\begin{bmatrix}I_{n-1}&0\\ \ast&D_nf\end{bmatrix}$, so that $DF(p)$ is non-singular”。缺的是分块上三角行列式 $=\det(I_{n-1})\cdot D_nf$ 这一步，以及“重排坐标使 $D_nf\ne0$”为什么允许。补在 §2.3 第二步（含重排坐标是线性同构的旁注）。}
+
+\gapitem{拼接缺口 \textbar\ p208}{推论 24.5 的证明只写“We apply the preceding theorem to $f(x)=a^2-\|x\|^2$. Then $Df(x)=[(-2x_1)\ \cdots\ (-2x_n)]$, which is non-zero at each point of $S^{n-1}(a)$.”。缺的是把定理 24.4 的三条前提逐条点名，尤其是 $a>0$。补在 §2.4 的三条列举。}
+
+\gapitem{机制缺口 \textbar\ p210}{“It is easy to see this integral exists as an ordinary integral, and hence as an extended integral”。缺的是 $\Vvol(D\alpha)$ 从哪里来（定理 21.3）以及为什么定义里积的是 $\mathrm{Int}\,U$ 而不是 $U$。补在 §3.1--3.3（含定理 13.6 在这里管什么）。}
+
+\gapitem{压缩缺口（“at once”）\textbar\ p211}{“Since $\alpha_1^{-1}\circ\alpha_0:\mathrm{Int}\,W_0\to\mathrm{Int}\,W_1$ is a diffeomorphism, this result follows at once from Theorem 22.1.”。缺的是链法则 $\to$ 引理 A $\to$ 换元三步。补在 §3.3(b)，并把引理 A（$\Vvol(AB)=\Vvol(A)|\det B|$）单独证出，作为全节的发动机。}
+
+\gapitem{机制缺口 \textbar\ p211}{引理 25.2 的证明写“choose an open set $A_V$ of $\mathbb{R}^n$ such that $A_V\cap M=V$”，接着“Local finiteness guarantees that all but finitely many … vanish identically on $M$”。缺的是“$A_V$ 为什么存在”（相对拓扑）与“局部有限 + 紧 $\Rightarrow$ 只剩有限个”的推理链。补在 §4.3 的 \ding{172}--\ding{175}。}
+
+\gapitem{压缩缺口（两次“by definition”）\textbar\ p212}{“$\sum_i[\int_M(\phi_if)\dd V]=\sum_i[\int_A(\phi_i\circ\alpha)(f\circ\alpha)\Vvol(D\alpha)]$ by definition … $=\int_Mf\dd V$ by definition.”。缺的是两个“by definition”分别指哪一个，以及 $\sum_if\circ\alpha=1$ 为什么在 $A$ 上成立。补在 §5.1。}
+
+\gapitem{压缩缺口（“symmetry”）\textbar\ p212}{“Symmetry shows that this double summation also equals $\sum_i[\int_M(\phi_if)\dd V]$, as desired.”。缺的是“先证单向、再对另一指标求和、再用 $\sum_j\psi_j=1$”这三行。补在 §5.2 的两步。}
+
+\gapitem{拼接缺口 \textbar\ p213}{零测集的两个定义“等价”只写“this follows from the fact that the set $\alpha_i^{-1}(D\cap V\cap V_i)$ has measure zero because it is a subset of $D_i$, and $\alpha^{-1}\circ\alpha_i$ is of class $C^r$”。缺的是一条没写出来的事实：$C^1$ 映射把零测集送到零测集。补在 §6.2 的旁注，点名引理 18.1（p152）。}
+
+\gapitem{压缩缺口（Step 1--2 的三处省略）\textbar\ p214--215}{Step 1 的“$\sum_i[\int_{W_i}F]=\int_{(\mathrm{Int}\,U)-L}F$ by additivity”、Step 2 的“just as in Theorem 22.1”、以及最后的“$\int_{A_i}=\int_{B_i}+\int_{D_i}-\int_{B_i\cap D_i}$”。缺的是：加性在这里是“不交并逐点相加”（不是 15.3(d)）、Step 2 与 §3.3(b) 是同一个三步、以及 $A_i$ 与 $B_i\cup D_i$ 只差一个零测集。补在 §6.4 的三个旁注。}
+
+\gapitem{代数跳步 \textbar\ p217}{“whence $\Vvol(D\alpha)=a$, as you can check”（例 2）。缺的是 $3\times2$ 矩阵的 Gram 行列式、两列正交的验证、以及 $a$ 这个常数从哪来。补在 §7.2 的 (ii)(iii)（含“纬线半径 $\times$ 经线因子 $=a$”的几何解释）。}
+
+\gapitem{机制缺口 \textbar\ p217}{“It is easy to check that $\alpha$ is a coordinate patch that covers all of $S^2(a)$ except for a great-circle arc, which has measure zero in the sphere.”。缺的是“为什么是垫”（单射、秩、逆连续）与“那条弧为什么零测”（用同一张垫核原像）。补在 §7.2 的 (i)。}
+
+\gapitem{压缩缺口（证明留给习题）\textbar\ p220--223}{定理 26.1 的“The proof is left as an exercise”、引理 26.2 的“and so on”、定理 26.3 的“One checks readily that it has the required value”、以及“Uniqueness … follows from the preceding lemma”。缺的是四处验证。补在 §9.3--9.5；张量积的“It is easy to check that $f\otimes g$ is multilinear”补在 §10.1。}
+
+\begin{notecall}
+\textbf{表的说明}：本讲义三行以上的表只有 §0 的记号表和 §15 的页码对照表，两张都是\textbf{台账表}（速查用，不承载推导），所以不配“表前一句 + 逐行读法 + 边界行”三件套；凡承载推导的地方（$\Vvol$ 的三个内积、Step 1 的三个等号、$\lambda$ 的递推）本讲义一律写成公式串，没有压成表。
+\end{notecall}
+
+%=====================================================================
+\hdr{§14}{三句话总结}
+
+\begin{enumerate}
+  \item \textbf{§24}（§1、§2）的全部内容是“把点的二分变成定义域类型的二分”：内点 $\iff$ 有定义域开在 $\mathbb{R}^k$ 的垫；这条判据一成立，“$\partial M$ 是 $k-1$ 维无边流形”就只剩“取最后坐标为 $0$ 的那一片”这一步（\ding{175} 就是“无边”）。造流形的工具是定理 24.4，它的证明只做一件事：\textbf{把弯曲的边界拉成平面}。
+  \item \textbf{§25}（§3--§7）的全部内容是一条小代数：$\Vvol(AB)=\Vvol(A)|\det B|$。定义里有它（为什么要乘 $\Vvol(D\alpha)$），引理 25.1 里用它（换垫不变），定理 25.4 的 Step 2 里用它（换片不变）；单位分解只负责把“整体”化成“单片”。会算 $\Vvol$、会拆片、会核对零测集，这一节就通了。
+  \item \textbf{§26 前四页}（§9、§10）的全部内容是“\textbf{张量在基上给值就够了}”：$k$-张量在 $n^k$ 个基 $k$ 元组上的值一旦给定，整个张量就定了（引理 26.2）；于是 $\mathcal{L}^k(V)$ 有基 $\phi_I$、维数 $n^k$（定理 26.3），而 $\mathbb{R}^n$ 上的 $k$-张量就是分量的 $k$ 次单项式的线性组合（例 1）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§15}{与课件的页码对照}
+
+\begin{center}
+{\color{violet}\rule{\linewidth}{1pt}}\\[3pt]
+\begin{tabular}{@{}lll@{}}
+\thead{书内页} & \thead{内容} & \thead{本讲义} \\[1pt]
+p200 & $\HH^k,\HH^k_+$ 的定义；引理 23.2（$\HH^k$ 上导数良定义） & §0、§1.1 \\[1pt]
+p201--202 & $k$-流形与坐标垫的定义；引理 23.3（垫的限制） & §1.2 \\[1pt]
+p203--205 & 定理 24.1（过渡函数）；引理 24.2(c) 证明的前半 & §1.2 \\[1pt]
+p205 & 内点／边界点／$\partial M$ 的定义；引理 24.2 的陈述 & §1.1、§1.2 \\[1pt]
+p206 & 引理 24.2(c) 证明、图 24.3、$\partial\HH^k$、定理 24.3 陈述 & §1.2、§1.3、§1.4 \\[1pt]
+p207 & 定理 24.3 证明；限制垫；定理 24.4 与证明；$B^n(a)$ 的定义 & §1.3、§2 \\[1pt]
+p208 & 图 24.4；推论 24.5；习题 1--6（起） & §2.4、§8 \\[1pt]
+p209 & §25 开场；单片积分的定义（起） & §3.1、§3.2 \\[1pt]
+p210 & 积分定义（式）；存在性；图 25.1；引理 25.1 & §3.2、§3.3 \\[1pt]
+p211 & 引理 25.1 证明；引理 25.2 与证明 & §3.3、§4 \\[1pt]
+p212 & 一般定义；与单片一致；与选取无关 & §4.4、§5.1、§5.2 \\[1pt]
+p213 & 定理 25.3；零测集定义；定理 25.4 陈述 & §5.3、§6.2、§6.3 \\[1pt]
+p214 & 图 25.2--25.3；Step 1 & §6.4 \\[1pt]
+p215 & Step 1 末；Step 2 与图 25.4 & §6.4 \\[1pt]
+p216 & 例 1；例 2（参数化） & §7.1、§7.2 \\[1pt]
+p217 & 例 2 的 $D\alpha$ 与 $\Vvol(D\alpha)=a$；图 25.5；习题 1--3 & §7.2、§8 \\[1pt]
+p218 & 习题 3(b)--8 & §8 \\[1pt]
+p219 & 第六章开场（为何需要多重线性代数） & §9.1 \\[1pt]
+p220 & 张量定义；定理 26.1；引理 26.2 陈述 & §9.2、§9.3、§9.4 \\[1pt]
+p221 & 引理 26.2 证明；定理 26.3 陈述与证明（起） & §9.4、§9.5 \\[1pt]
+p222 & 定理 26.3 证明（续）；用基上的值定义张量 & §9.5 \\[1pt]
+p223 & 例 1；张量积的定义；性质表起（p224 才是正文） & §9.6、§10 \\[2pt]
+\end{tabular}\\[3pt]
+{\color{rulepurple}\rule{\linewidth}{0.5pt}}
+\end{center}
+
+%=====================================================================
+\newpage
+\hdr{附录 A}{课件习题详解（14 道）}
+
+\subhdr{用法}
+题面在 §8，这里按原题号给块，每块开头用一行条件摘要把题干复述回来（不必回去翻）。A1--A6 是 §24（p208）的六道，A7--A14 是 §25（p217--218）的八道。每块六样：考点／关键一步／详解／答案／自检。所有数值与恒等式已用工作区的复核脚本逐条验算（含 Gram 行列式、面积精确值与 $\lambda$ 递推）。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A1（§24 第 1 题，p208）：实心环面是 3-流形，边界是 $T$}\label{ax1}
+\qstem{（课件 p208 第 1 题）设 $0<a<b$：把 $xz$ 平面内半径 $a$、圆心 $(b,0,0)$ 的圆绕 $z$ 轴旋转得环面 $T$；把同一圆盘旋转得实心环面。证明实心环面是 3-流形，且它的边界是 $T$。}
+
+\textbf{考点}：§2 定理 24.4 的第一个具体用例——把“实心”写成 $\{f\ge0\}$，再核 $Df\ne0$。
+
+\textbf{关键一步}：$T$ 的方程 $(x^2+y^2)^{1/2}$ 带根号，不能直接当 $f$；先移项使根号单独在一边，再平方，就得到一个多项式 $f$，而且\textbf{平方前后等价}（因为两边都非负）。
+
+\textbf{详解}．记 $\rho=\sqrt{x^2+y^2}$，$g=x^2+y^2+z^2+b^2-a^2=\rho^2+z^2+b^2-a^2$。$T$ 满足
+\[ (\rho-b)^2+z^2=a^2\iff \rho^2+z^2+b^2-a^2=2b\rho\iff g=2b\rho. \]
+把最后一个等式两边平方（$\rho\ge0$、$b>0$，故 $2b\rho\ge0$）：
+\[ g^2=4b^2\rho^2=4b^2(x^2+y^2). \]
+令
+\[ f(x,y,z)=4b^2(x^2+y^2)-\bigl(x^2+y^2+z^2+b^2-a^2\bigr)^2. \]
+两个方向都要说清：
+\begin{enumerate}
+  \item $\{f\ge0\}\iff g\le2b\rho$。因为 $b>a$ 保证 $g\ge b^2-a^2>0$ 处处成立，于是 $|g|=g$，$g^2\le4b^2\rho^2\iff g\le2b\rho$。而
+  $g\le2b\rho\iff\rho^2+z^2+b^2-a^2\le2b\rho\iff(\rho-b)^2+z^2\le a^2$，正是实心环面。
+  \item $\{f=0\}\iff g=2b\rho\iff(\rho-b)^2+z^2=a^2$，正是 $T$，非空。
+\end{enumerate}
+再算梯度。记 $g$ 如上一个式子，则
+\[ \partial_xf=8b^2x-4xg=4x(2b^2-g),\quad \partial_yf=4y(2b^2-g),\quad \partial_zf=-4zg. \]
+在 $T$ 上 $g=2b\rho$，因此
+\[ Df=8b\bigl(x(b-\rho),\ y(b-\rho),\ -\rho z\bigr). \]
+设 $Df=0$：第三分量给 $\rho z=0$，而 $T$ 上 $\rho\ge b-a>0$，故 $z=0$；代回 $T$ 得 $(\rho-b)^2=a^2$，即 $\rho=b\pm a\ne b$；再由前两个分量与 $\rho\ne b$ 得 $x=y=0$，即 $\rho=0$，与 $\rho=b\pm a>0$ 矛盾。所以 $Df\ne0$ 在 $T$ 上处处成立。
+
+由定理 24.4（取 $\mathcal{O}=\mathbb{R}^3$、$n=3$）：实心环面 $=\{f\ge0\}$ 是 3-流形，$\partial=$ 边界 $=\{f=0\}=T$。
+
+\textbf{答案}：实心环面是 $\mathbb{R}^3$ 中 $C^\infty$ 的 3-流形，$\partial($实心环面$)=T$。
+
+\textbf{自检}：\ding{172} $a<b$ 用了两次（$g>0$ 与 $\rho\ge b-a>0$），漏掉就做不出去；\ding{173} 取 $x=y=b,z=a$ 应满足 $f=0$：$g=2b^2+a^2$，$2b\rho=2b^2$，差 $a^2$，需要重算——正确取点是 $x=y$ 且 $\rho=b,\ z=\pm a$，此时 $g=b^2+a^2+b^2-a^2=2b^2=2b\rho$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A2（§24 第 2 题，p208）：把定理 24.4 推广到 $n$ 个方程}\label{ax2}
+\qstem{（课件 p208 第 2 题）设 $f:\mathbb{R}^{n+k}\to\mathbb{R}^n$ 是 $C^r$ 的，$M=\{x:f(x)=0\}$ 非空，$Df(x)$ 在 $M$ 上每点秩为 $n$。证明 $M$ 是 $\mathbb{R}^{n+k}$ 中无边的 $k$-流形。进一步，设 $N=\{x:f_1(x)=\cdots=f_{n-1}(x)=0,\ f_n(x)\ge0\}$，且 $\partial(f_1,\dots,f_{n-1})/\partial x$ 在 $N$ 上每点秩为 $n-1$，证明 $N$ 是 $(k+1)$-维流形且 $\partial N=M$。}
+
+\textbf{考点}：§2 的“拉直”在方程多于一个时怎么改：不是把 $f$ 装成最后一个坐标，而是把 $f$ 的 $n$ 个分量\textbf{与剩下的 $k$ 个坐标}拼成一个满秩映射。
+
+\textbf{关键一步}：在 $p\in M$ 处 $Df(p)$ 是 $n\times(n+k)$ 的行满秩矩阵，所以有 $n$ 个列线性无关。把这 $n$ 列对应的坐标整体记作 $u\in\mathbb{R}^n$、其余 $k$ 个记作 $v\in\mathbb{R}^k$；重排坐标后，块 $\partial f/\partial u$ 在 $p$ 处非奇异。于是
+\[ G(u,v)=\bigl(f(u,v),\ v\bigr) \]
+的导数是非奇异的“分块三角阵”，可以用定理 8.2。
+
+\textbf{详解（骨架）}．
+\begin{enumerate}
+  \item \textbf{$M$ 的部分}：$DG=\begin{bmatrix}\partial f/\partial u&\partial f/\partial v\\0&I_k\end{bmatrix}$，行列式 $=\det(\partial f/\partial u)\ne0$。由定理 8.2，$G$ 是 $p$ 某邻域 $A$ 到开集 $B$ 的 $C^r$ 微分同胚，而
+  \[ G(A\cap M)=B\cap\bigl(\{0\}\times\mathbb{R}^k\bigr), \]
+  右边是 $B$ 与一个 $k$ 维坐标子空间的交（开在 $\mathbb{R}^k$ 中）。于是 $G^{-1}|_{\{0\}\times\mathbb{R}^k}$ 是 $M$ 上 $p$ 处的垫，定义域开在 $\mathbb{R}^k$ $\Rightarrow$ $p$ 是内点，$M$ 是 $k$-无边流形。
+  \item \textbf{$N$ 的部分}：只把前 $n-1$ 个方程装进去。在 $N$ 上 $\partial(f_1,\dots,f_{n-1})/\partial x$ 秩为 $n-1$，故可选出 $n-1$ 个坐标 $u'\in\mathbb{R}^{n-1}$ 使对应块非奇异。令
+  \[ G(u',w)=\bigl(f_1,\dots,f_{n-1},\ w\bigr),\qquad w\in\mathbb{R}^{k+1}, \]
+  则 $DG$ 非奇异，$G$ 把 $N$ 局部送到
+  \[ \{0\}\times\HH^{k+1}\quad(\text{最后一个坐标就是 }f_n\ge0), \]
+  即 $\HH^{k+1}$ 的开集。于是 $N$ 是 $(k+1)$-维流形；而 $f_n=0$ 的那些点正落在 $\partial\HH^{k+1}$ 上，故
+  \[ \partial N=\{f_1=\cdots=f_{n-1}=0,\ f_n=0\}=\{f=0\}=M.\ \square \]
+\end{enumerate}
+
+\textbf{答案}：$M$ 是 $k$-无边流形；在附加条件下 $N$ 是 $(k+1)$-维流形，$\partial N=M$。
+
+\textbf{自检}：$n=1$ 时第一个断言退化为推论 24.5 的一半（$S^{n-1}(a)$ 无边界），第二个断言正是定理 24.4 $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A3（§24 第 3 题，p208）：两个方程的解集什么时候是曲线}\label{ax3}
+\qstem{（课件 p208 第 3 题）设 $f,g:\mathbb{R}^3\to\mathbb{R}$ 是 $C^r$ 的。在什么条件下你能断定 $f(x,y,z)=0$、$g(x,y,z)=0$ 的解集是一条没有奇点的光滑曲线（无边的 1-流形）？}
+
+\textbf{考点}：A2 的 $n=2$、$k=1$ 情形。
+
+\textbf{关键一步}：把 $(f,g)$ 看成一个映射 $\mathbb{R}^3\to\mathbb{R}^2$，“两个方程独立”就是“它的导数秩为 $2$”，也就是 $\nabla f$ 与 $\nabla g$ 在该点不平行。
+
+\textbf{详解}．令 $F=(f,g):\mathbb{R}^3\to\mathbb{R}^2$、$M=F^{-1}(0)$。A2 的第一个断言（$n=2$、$k=1$）给：\textbf{若 $M\ne\varnothing$ 且 $DF(x)$ 在 $M$ 上每点秩为 $2$，则 $M$ 是 $\mathbb{R}^3$ 中的 1-流形、无边界}——即光滑曲线。$DF=\begin{bmatrix}\nabla f^{\mathsf T}\\ \nabla g^{\mathsf T}\end{bmatrix}$ 秩为 $2$ 等价于 $\nabla f(x)\times\nabla g(x)\ne0$。
+
+\textbf{答案}：充分条件是
+\[ M=\{f=g=0\}\ne\varnothing,\qquad \nabla f(p)\times\nabla g(p)\ne0\ \ \text{对每个 }p\in M. \]
+这是\textbf{充分不必要}的。反例（说明不必要）：取 $f=x^2+y^2$、$g=x$，则 $M=\{(0,0,z):z\in\mathbb{R}\}$ 是 $z$ 轴，确实是光滑曲线，但在每一点 $\nabla f=0$，秩只有 $1$。另一个方向的反例（说明秩不够时结论可能错）：$f=x$、$g=x^2$ 的解集是平面 $\{x=0\}$，是 2 维而不是曲线。
+
+\textbf{自检}：维数账 $3-2=1$ $\checkmark$；题目问的是“能断定”，所以答充分条件、并点明不必要，才算答全。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A4（§24 第 4 题，p208）：上半球面与它的边界}\label{ax4}
+\qstem{（课件 p208 第 4 题）证明 $E^{n-1}_+(a)=S^{n-1}(a)\cap\HH^n$ 是 $(n-1)$-流形。它的边界是什么？}
+
+\textbf{考点}：A2 的\textbf{第二个}断言（codim 2 的水平集 + 一个半空间条件）。
+
+\textbf{关键一步}：上半球面 $=$ “球面”与“半空间”同时成立，正好是 A2 里 $N$ 的形状：$n-1$ 个方程取等号、第 $n$ 个函数取 $\ge0$。
+
+\textbf{详解}．取 $F=(f_1,f_2):\mathbb{R}^n\to\mathbb{R}^2$，
+\[ f_1(x)=a^2-\|x\|^2,\qquad f_2(x)=x_n\qquad(a>0). \]
+\begin{enumerate}
+  \item $M=\{f_1=f_2=0\}=S^{n-1}(a)\cap\{x_n=0\}=S^{n-2}(a)$（后者看作 $\mathbb{R}^{n-1}=\{x_n=0\}$ 中的球面）。
+  \item 秩：$DF(x)=\begin{bmatrix}-2x^{\mathsf T}\\ e_n^{\mathsf T}\end{bmatrix}$。在 $M$ 上 $x\ne0$ 且 $x_n=0$，故 $-2x$ 的前 $n-1$ 个分量不全为零，与 $e_n$ 线性无关 $\Rightarrow$ 秩 $2$。由 A2 第一个断言，$M$ 是 $(n-2)$-无边流形。
+  \item $N=\{f_1=0,\ f_2\ge0\}=S^{n-1}(a)\cap\HH^n=E^{n-1}_+(a)$。
+  \item A2 第二个断言（此处 $k=n-2$）给：$N$ 是 $(n-2)+1=(n-1)$ 维流形，且 $\partial N=M$。
+\end{enumerate}
+
+\textbf{答案}：$E^{n-1}_+(a)$ 是 $(n-1)$-流形，$\partial E^{n-1}_+(a)=S^{n-2}(a)=\{x:\|x\|=a,\ x_n=0\}$（赤道球面）。
+
+\textbf{自检}：$n=3$ 时上半球面（含赤道）是 2-流形、边界是赤道圆 $S^1(a)$ $\checkmark$；$n=2$ 时上半圆弧是 1-流形（闭弧）、边界是两个端点 $S^0(a)=\{(\pm a,0)\}$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A5（§24 第 5 题，p208）：$O(3)$ 是紧的 3-流形}\label{ax5}
+\qstem{（课件 p208 第 5 题）(a) 构造 $C^\infty$ 的 $f:\mathbb{R}^9\to\mathbb{R}^6$，使 $\mathcal{O}(3)=\{f=0\}$；(b) 证明 $\mathcal{O}(3)$ 是 $\mathbb{R}^9$ 中紧的、无边界的 3-流形。}
+
+\textbf{考点}：$\mathbb{R}^9\to\mathbb{R}^6$ 上的 A2；秩等于 $6$ 要用矩阵求导。
+
+\textbf{关键一步}：正交条件 $A^{\mathsf T}A=I$ 是一个对称矩阵等式，只有 $\frac{3\cdot4}{2}=6$ 个独立分量，正好对应 $\mathbb{R}^9\to\mathbb{R}^6$。秩要这样算：把 $f$ 看成 6 个函数，而
+\[ \text{“}f\text{ 在 }A\text{ 处的导数”作用于 }H\ \text{得到}\ A^{\mathsf T}H+H^{\mathsf T}A; \]
+取 $H=AS$（$S$ 对称）时这个值是 $2S$，于是导数在 6 维子空间上是“乘 $2$”，满秩。
+
+\textbf{详解}．
+(a) 令 $f_{ij}(A)=\sum_{k=1}^{3}A_{ki}A_{kj}-\delta_{ij}$，取 $(i,j)$ 满足 $1\le i\le j\le3$（6 个）。则 $f(A)=0\iff A^{\mathsf T}A=I_3\iff A$ 正交。
+
+(b) \textbf{紧}：$\mathcal{O}(3)=f^{-1}(0)$ 是闭集；正交矩阵的每一列是单位向量，故 $|A_{ij}|\le1$，即 $\mathcal{O}(3)$ 有界。闭 $+$ 有界 $\Rightarrow$ 紧。
+
+\textbf{3-流形}：用 A2（$n=6$、$k=3$），只需 $Df(A)$ 在 $\mathcal{O}(3)$ 上秩为 $6$。把 $f$ 的 6 个分量排在一起，$H\in\mathbb{R}^{3\times3}$ 处的方向导数是
+\[ Df(A)\cdot H=A^{\mathsf T}H+H^{\mathsf T}A\quad(\text{取对称部分，只保留 } i\le j \text{ 的 6 个分量}). \]
+取 6 维子空间 $\{H=AS:\ S\ \text{对称}\}$，则
+\[ A^{\mathsf T}(AS)+(AS)^{\mathsf T}A=S+S^{\mathsf T}=2S, \]
+即 $Df(A)$ 在这个 6 维子空间上等于“乘 $2$”，故秩为 $6$。由 A2，$\mathcal{O}(3)$ 是 $9-6=3$ 维无边流形。
+
+\textbf{答案}：$f(A)=A^{\mathsf T}A-I_3$ 的上三角 6 个分量；$\mathcal{O}(3)$ 是 $\mathbb{R}^9$ 中紧的、无边界的 3-流形。
+
+\textbf{自检}：维数两条路一致——$9-6=3$，而 $\frac{3\cdot2}{2}=3$（正交群的维数是 $n(n-1)/2$）$\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A6（§24 第 6 题，p208）：$O(n)$ 的维数}\label{ax6}
+\qstem{（课件 p208 第 6 题）设 $\mathcal{O}(n)$ 是全体 $n\times n$ 正交矩阵，看作 $\mathbb{R}^N$（$N=n^2$）的子空间。证明它是紧的、无边界的流形，并求其维数。}
+
+\textbf{考点}：A5 的一般 $n$。
+
+\textbf{关键一步}：$A^{\mathsf T}A-I_n$ 对称，独立分量数是 $\frac{n(n+1)}{2}$；维数 $=n^2-\frac{n(n+1)}{2}=\frac{n(n-1)}{2}$。
+
+\textbf{详解}．完全照 A5：
+\begin{enumerate}
+  \item $f:\mathbb{R}^{n^2}\to\mathbb{R}^{n(n+1)/2}$ 取 $A^{\mathsf T}A-I_n$ 的上三角分量（含对角），$C^\infty$；$\mathcal{O}(n)=\{f=0\}$。
+  \item 紧：闭（$f^{-1}(0)$）$+$ 有界（每列单位向量）。
+  \item 秩：$Df(A)\cdot H=A^{\mathsf T}H+H^{\mathsf T}A$，在 $\{H=AS:S\ \text{对称}\}$ 上等于 $2S$，该子空间维数 $\frac{n(n+1)}{2}$ = 目标空间维数 $\Rightarrow$ 秩满。
+  \item 由 A2（$N=n^2$、$k=n^2-\frac{n(n+1)}{2}$）：$\mathcal{O}(n)$ 是紧的、无边的 $\frac{n(n-1)}{2}$ 维流形。
+\end{enumerate}
+
+\textbf{答案}：$\dim\mathcal{O}(n)=\dfrac{n(n-1)}{2}$；$\mathcal{O}(n)$ 紧、无边界。
+
+\textbf{自检}：$n=2$ 时 $\dim=1$（圆）$\checkmark$；$n=3$ 时 $3$ $\checkmark$（A5）；$n=1$ 时 $0$（两个点 $\{\pm1\}$，0-流形）$\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A7（§25 第 1 题，p217）：核对例 2 的计算}\label{ax7}
+\qstem{（课件 p217 第 1 题）核对例 2 中所作的计算。}
+
+\textbf{考点}：§7.2 的 (ii)：$3\times2$ 矩阵的 Gram 行列式与开方。
+
+\textbf{关键一步}：$D\alpha$ 的两列恰好正交，所以不用算完整的 $2\times2$ 行列式，只要把两列长度平方相乘。
+
+\textbf{详解}．见 §7.2 的三个内积：
+\[ v_t\!\cdot\! v_t=a^2-z^2,\qquad v_z\!\cdot\! v_z=\frac{a^2}{a^2-z^2},\qquad v_t\!\cdot\! v_z=0, \]
+故
+\[ \det(D\alpha^{\mathsf T}D\alpha)=(a^2-z^2)\cdot\frac{a^2}{a^2-z^2}=a^2,\qquad \Vvol(D\alpha)=a. \]
+再乘以 $|A|=2\pi\cdot2a$：
+\[ v(S^2(a))=\int_Aa=a\cdot|A|=4\pi a^2. \]
+
+\textbf{答案}：$\Vvol(D\alpha)=a$，$v(S^2(a))=4\pi a^2$。
+
+\textbf{自检}：$z\to\pm a$ 时两个因子一个 $\to0$、一个 $\to\infty$，乘积仍为 $a$——这说明“面积元恒等于 $a$”不是巧合（§7.2 的几何解释）。代 $a=1$：$4\pi\approx12.566$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A8（§25 第 2 题，p217）：横截面是圆的曲面}\label{ax8}
+\qstem{（课件 p217 第 2 题）$\alpha,\beta,f\in C^1[0,1]$，$f>0$；$M$ 与平面 $z=t$ 的交是圆 $(x-\alpha(t))^2+(y-\beta(t))^2=f(t)^2$（$0\le t\le1$）。(a) 建立 $M$ 面积的积分式；(b) 求 $\alpha,\beta$ 为常数、$f(t)=1+t^2$ 时的值；(c) 求 $f$ 为常数、$\alpha(t)=0$、$\beta(t)=at$ 时的积分形状。}
+
+\textbf{考点}：§7.2 的方法换一个参数化；$\Vvol^2=\det$ 的代数化简；(c) 落到椭圆积分。
+
+\textbf{关键一步}：截线是半径 $f(t)$ 的圆，所以参数化是“圆心 $+$ 半径乘单位圆”。三个内积里那个“交叉项”会剩下
+\[ f^2\bigl[1+(f'+\alpha'\cos\theta+\beta'\sin\theta)^2\bigr], \]
+化简的窍门是把 $(\alpha'+f'\cos\theta)^2+(\beta'+f'\sin\theta)^2-(\beta'\cos\theta-\alpha'\sin\theta)^2$ 合成一个平方。
+
+\textbf{详解}．取
+\[ \Phi(t,\theta)=\bigl(\alpha(t)+f(t)\cos\theta,\ \beta(t)+f(t)\sin\theta,\ t\bigr),\qquad (t,\theta)\in(0,1)\times(0,2\pi). \]
+（$\theta$ 方向漏掉一条线，在 $M$ 中零测，由定理 25.4 不影响面积。）两列：
+\[ \partial_t\Phi=(\alpha'+f'\cos\theta,\ \beta'+f'\sin\theta,\ 1),\qquad \partial_\theta\Phi=(-f\sin\theta,\ f\cos\theta,\ 0). \]
+三个内积：
+\[ \partial_\theta\!\cdot\!\partial_\theta=f^2,\qquad \partial_t\!\cdot\!\partial_\theta=f\,(-\alpha'\sin\theta+\beta'\cos\theta), \]
+\[ \partial_t\!\cdot\!\partial_t=(\alpha'+f'\cos\theta)^2+(\beta'+f'\sin\theta)^2+1. \]
+于是
+\[ \det=(\partial_t\!\cdot\!\partial_t)(\partial_\theta\!\cdot\!\partial_\theta)-(\partial_t\!\cdot\!\partial_\theta)^2
+=f^2\Bigl[(\alpha'+f'\cos\theta)^2+(\beta'+f'\sin\theta)^2+1-(\beta'\cos\theta-\alpha'\sin\theta)^2\Bigr]. \]
+括号内前两项减去最后一项，逐项合并：
+\[ \alpha'^2\cos^2\theta+\beta'^2\sin^2\theta+2\alpha'\beta'\sin\theta\cos\theta+2f'(\alpha'\cos\theta+\beta'\sin\theta)+f'^2
+=\bigl(\alpha'\cos\theta+\beta'\sin\theta+f'\bigr)^2. \]
+故
+\[ \Vvol(D\Phi)=f(t)\sqrt{1+\bigl(f'(t)+\alpha'(t)\cos\theta+\beta'(t)\sin\theta\bigr)^2}. \]
+
+\textbf{(a) 答案}：
+\[ v(M)=\int_0^1\!\!\int_0^{2\pi}f(t)\sqrt{1+\bigl(f'(t)+\alpha'(t)\cos\theta+\beta'(t)\sin\theta\bigr)^2}\dd\theta\dd t. \]
+
+\textbf{(b)} $\alpha'=\beta'=0$，$f=1+t^2$，$f'=2t$，故 $\Vvol=(1+t^2)\sqrt{1+4t^2}$：
+\[ v(M)=2\pi\int_0^1(1+t^2)\sqrt{1+4t^2}\dd t. \]
+两个基本积分（分部积分、或查 $\int\sqrt{1+4t^2}$ 与 $\int t^2\sqrt{1+4t^2}$ 的表）：
+\[ \int_0^1\sqrt{1+4t^2}\dd t=\frac{\sqrt5}{2}+\frac14\ln(2+\sqrt5),\qquad
+   \int_0^1t^2\sqrt{1+4t^2}\dd t=\frac{9\sqrt5}{32}-\frac1{64}\ln(2+\sqrt5). \]
+相加：
+\[ \frac{\sqrt5}{2}+\frac{9\sqrt5}{32}=\frac{25\sqrt5}{32},\qquad \frac14-\frac1{64}=\frac{15}{64}, \]
+\[ v(M)=2\pi\Bigl[\frac{25\sqrt5}{32}+\frac{15}{64}\ln(2+\sqrt5)\Bigr]=\pi\Bigl[\frac{25\sqrt5}{16}+\frac{15}{32}\ln(2+\sqrt5)\Bigr]\approx13.1022. \]
+
+\textbf{(c)} $f$ 常数、$f'=0$、$\alpha'=0$、$\beta'=a$，故 $\Vvol=f\sqrt{1+a^2\sin^2\theta}$：
+\[ v(M)=f\int_0^{2\pi}\sqrt{1+a^2\sin^2\theta}\dd\theta=4f\sqrt{1+a^2}\,E\!\left(\frac{a^2}{1+a^2}\right), \]
+其中 $E(m)=\int_0^{\pi/2}\sqrt{1-m\sin^2\varphi}\dd\varphi$ 是第二类完全椭圆积分。（把 $1+a^2\sin^2\theta=(1+a^2)(1-m\cos^2\theta)$、再换 $\varphi=\pi/2-\theta$ 即得。）所以它\textbf{不是初等函数}——这正是题面括号里那句话的意思。
+
+\textbf{自检}：(b) 中取 $f\equiv1$、$\alpha'=\beta'=0$ 应回到正柱面 $2\pi\cdot1\cdot1=2\pi$：公式给 $2\pi\int_0^1 1\dd t=2\pi$ $\checkmark$。(c) 中 $a=0$ 时 $v=2\pi f$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A9（§25 第 3 题，p217--218）：环面的面积}\label{ax9}
+\qstem{（课件 p217--218 第 3 题）$0<a<b$，$T$ 是 $xz$ 平面内半径 $a$、圆心 $(b,0,0)$ 的圆绕 $z$ 轴旋转所得。(a) 求 $T$ 的面积；(b) 求 $T$ 中满足 $x^2+y^2\ge b^2$ 的那部分的面积。}
+
+\textbf{考点}：定理 25.4 拆片 + 两列正交时 $\Vvol=$ 各列长度之积；(b) 要把几何条件翻译成参数的不等式。
+
+\textbf{关键一步}：把 $T$ 看成“$\rho z$ 平面里的圆”经柱坐标变换过去的像，于是参数化就是
+\[ \gamma(t,\theta)=\bigl((b+a\cos t)\cos\theta,\ (b+a\cos t)\sin\theta,\ a\sin t\bigr). \]
+两列分别只改 $t$、只改 $\theta$，互不影响——所以正交，$\Vvol$ 就是两个长度之积。
+
+\textbf{详解}．
+\[ \partial_t\gamma=(-a\sin t\cos\theta,\ -a\sin t\sin\theta,\ a\cos t),\qquad |\partial_t\gamma|=a; \]
+\[ \partial_\theta\gamma=(-(b+a\cos t)\sin\theta,\ (b+a\cos t)\cos\theta,\ 0),\qquad |\partial_\theta\gamma|=b+a\cos t>0\ (\text{用 }b>a); \]
+\[ \partial_t\gamma\!\cdot\!\partial_\theta\gamma=a(b+a\cos t)\bigl(\sin t\cos\theta\sin\theta-\sin t\sin\theta\cos\theta\bigr)=0. \]
+（$t=0$、$\theta=0$ 两条参数线段被重复计数，它们在 $T$ 中零测，由定理 25.4 不影响面积。）于是
+\[ \Vvol=a(b+a\cos t). \]
+
+\textbf{(a)}：
+\[ v(T)=\int_0^{2\pi}\!\!\int_0^{2\pi}a(b+a\cos t)\dd t\dd\theta=a\cdot2\pi\cdot\Bigl[bt+a\sin t\Bigr]_0^{2\pi}=a\cdot2\pi\cdot2\pi b=4\pi^2ab. \]
+
+\textbf{(b)}：在 $T$ 上 $x^2+y^2=(b+a\cos t)^2$，而 $b+a\cos t>0$，所以
+\[ x^2+y^2\ge b^2\iff b+a\cos t\ge b\iff\cos t\ge0\iff t\in\Bigl[-\frac{\pi}{2},\frac{\pi}{2}\Bigr]\ (\mathrm{mod}\ 2\pi). \]
+\[ v=\int_0^{2\pi}\!\!\int_{-\pi/2}^{\pi/2}a(b+a\cos t)\dd t\dd\theta=2\pi a\Bigl(b\pi+2a\Bigr)=2\pi^2ab+4\pi a^2. \]
+
+\textbf{答案}：(a) $4\pi^2ab$；(b) $2\pi^2ab+4\pi a^2$（即 $2a\pi^2b+4\pi a^2$）。
+
+\textbf{自检}：$\int_0^{2\pi}(b+a\cos t)\dd t=2\pi b$ 就是“中线周长”，所以 (a) 等于“中线周长 $\times$ 管周长” $=2\pi b\cdot2\pi a$ $\checkmark$；$b\to\infty$ 时 (b)/(a) $\to\frac12$（大 $b$ 时外半边趋近半个环面）$\checkmark$。端点 $t=\pm\pi/2$ 满足 $\ge$，算进 (b)；端点只是两条曲线，对面积无影响。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A10（§25 第 4 题，p218）：等距不改变积分与体积}\label{ax10}
+\qstem{（课件 p218 第 4 题）$M\subset\mathbb{R}^n$ 是紧的 $k$-流形，$h:\mathbb{R}^n\to\mathbb{R}^n$ 是等距，$N=h(M)$，$f:N\to\mathbb{R}$ 连续。证明 $N$ 是 $k$-流形，且 $\int_Nf\dd V=\int_M(f\circ h)\dd V$；由此 $M$ 与 $N$ 体积相同。}
+
+\textbf{考点}：垫的搬运 + 引理 A（正交矩阵 $|\det|=1$）+ 定理 25.4。
+
+\textbf{关键一步}：等距是 $h(x)=Ax+b$（$A$ 正交），于是 $D(h\circ\alpha)=A\cdot D\alpha$，而 $\Vvol(A\cdot D\alpha)=\Vvol(D\alpha)|\det A|=\Vvol(D\alpha)$。也就是说：\textbf{等距不改变体积因子}。
+
+\textbf{详解}．
+\begin{enumerate}
+  \item $N$ 是 $k$-流形：若 $\alpha:U\to V$ 是 $M$ 上的垫，则 $h\circ\alpha:U\to h(V)$ 是 $N$ 上的垫——$C^r$ $\checkmark$、双射 $\checkmark$、$D(h\circ\alpha)=A\,D\alpha$ 与 $A$ 可逆故秩仍为 $k$ $\checkmark$、逆连续 $\checkmark$、$h(V)$ 开在 $N$ $\checkmark$。
+  \item 拆片：取 $M$ 的拆片 $\alpha_i:A_i\to M_i$（$i=1,\dots,N_0$）与零测集 $K$，满足定理 25.4。则 $h(M_i)$ 开在 $N$、两两不交，$N=h(M_1)\cup\cdots\cup h(M_{N_0})\cup h(K)$。而 $h(K)$ 在 $N$ 中零测：对垫 $h\circ\alpha_i$，原像 $(h\circ\alpha_i)^{-1}(h(K))=\alpha_i^{-1}(K)$ 零测 $\checkmark$。
+  \item 对 $N$ 用定理 25.4：
+  \[ \int_Nf\dd V=\sum_i\int_{A_i}(f\circ h\circ\alpha_i)\,\Vvol\bigl(D(h\circ\alpha_i)\bigr)=\sum_i\int_{A_i}(f\circ h\circ\alpha_i)\,\Vvol(D\alpha_i), \]
+  中间用了引理 A：
+  \[ \Vvol(A\cdot D\alpha_i)=\Vvol(D\alpha_i)\cdot|\det A|=\Vvol(D\alpha_i)\qquad(A\ \text{正交}). \]
+  最后再对 $M$ 用定理 25.4（被积函数是 $(f\circ h)$）：上式 $=\int_M(f\circ h)\dd V$。$\square$
+  \item 取 $f\equiv1$：$v(N)=\int_M1\dd V=v(M)$。
+\end{enumerate}
+
+\textbf{答案}：$N$ 是 $k$-流形；换元公式成立，故 $v(N)=v(M)$。
+
+\textbf{自检}：平移 $b$ 只影响 $F$ 的常数项、不影响导数 $\checkmark$；$|\det A|=1$ 来自 $A^{\mathsf T}A=I\Rightarrow(\det A)^2=1$ $\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A11（§25 第 5 题，p218）：$S^n$ 与 $B^n$ 的体积关系}\label{ax11}
+\qstem{（课件 p218 第 5 题）(a) 用 $B^{n-1}(a)$ 的体积表示 $S^n(a)$ 的体积；(b) 证明 $t>0$ 时 $v(S^n(t))=D\,v(B^{n+1}(t))$。}
+
+\textbf{考点}：§7.2 切片法的一般形式；两个结论是同一个 $\lambda$ 递推的两面（$\lambda_m=v(B^m(1))$）。
+
+\textbf{关键一步}：切片。$S^n(a)\subset\mathbb{R}^{n+1}$ 与超平面 $z=z_0$ 的交是 $(n-1)$-球面 $S^{n-1}\bigl(\sqrt{a^2-z_0^2}\bigr)$，而面积元因子仍是
+\[ \frac{a}{\sqrt{a^2-z_0^2}} \]
+——与 $n=2$ 的例 2 完全同一个因子（两列正交，长度分别是 $\sqrt{a^2-z^2}$ 与 $a/\sqrt{a^2-z^2}$）。
+
+\textbf{详解}．
+(a) 沿 $z$ 切片：
+\[ v(S^n(a))=\int_{-a}^{a}\frac{a}{\sqrt{a^2-z^2}}\;v\bigl(S^{n-1}(\sqrt{a^2-z^2})\bigr)\dd z. \]
+代入 $v(S^{m}(r))=(m+1)\lambda_{m+1}r^m$（这里 $m=n-1$）：
+\[ v(S^n(a))=a\,n\lambda_n\int_{-a}^{a}(a^2-z^2)^{(n-2)/2}\dd z=a\,n\lambda_n\,a^{n-1}\!\!\int_{-1}^{1}(1-u^2)^{(n-2)/2}\dd u. \]
+Beta 积分：$\int_{-1}^{1}(1-u^2)^{(n-2)/2}\dd u=\sqrt{\pi}\,\Gamma(n/2)/\Gamma\bigl((n+1)/2\bigr)$，而 $\lambda_n=\pi^{n/2}/\Gamma(n/2+1)$，$n\lambda_n=2\pi^{n/2}/\Gamma(n/2)$。代进去化简得
+\[ v(S^n(a))=2\pi a\cdot\lambda_{n-1}a^{n-1}=2\pi a\cdot v\bigl(B^{n-1}(a)\bigr). \]
+
+(b) $v(B^{n+1}(t))=\lambda_{n+1}t^{n+1}$，求导：
+\[ D\,v(B^{n+1}(t))=(n+1)\lambda_{n+1}t^n=v(S^n(t)). \]
+
+\textbf{答案}：(a) $v(S^n(a))=2\pi a\,v\bigl(B^{n-1}(a)\bigr)$；(b) 成立，且两式联手就给出 $\lambda$ 的递推
+\[ (n+1)\lambda_{n+1}=2\pi\lambda_{n-1}. \]
+
+\textbf{自检}：$n=1$：$v(S^1(a))=2\pi a$，而 $2\pi a\cdot v(B^0(a))=2\pi a\cdot1$ $\checkmark$；$n=2$：$2\pi a\cdot2a=4\pi a^2$ $\checkmark$；$n=3$：$2\pi a\cdot\pi a^2=2\pi^2a^3$ $\checkmark$。（这里约定 $v(B^0(a))=1$，即单点集的 0 维体积为 $1$。）
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A12（§25 第 6 题，p218）：对称流形的质心}\label{ax12}
+\qstem{（课件 p218 第 6 题）紧流形 $M$ 的质心按 §22 习题 3 的公式定义。证明：若 $M$ 关于子空间 $x_i=0$ 对称，则 $c_i(M)=0$。}
+
+\textbf{考点}：A10 的直接应用。
+
+\textbf{关键一步}：关于 $x_i=0$ 对称 $\iff$ 反射 $h$ 把 $M$ 送到自己。于是 $x_i$ 在 $h$ 下的“像”是 $-x_i$，而 A10 说积分在 $h$ 下不变。两边一比，积分只能为零。
+
+\textbf{详解}．设 $h$ 是“把第 $i$ 个坐标取负”的反射，它是等距且 $h(M)=M$。取 $N=h(M)=M$、$f(x)=x_i$（在 $N$ 上连续）。由 A10：
+\[ \int_Mx_i\dd V=\int_Nf\dd V=\int_M(f\circ h)\dd V=\int_M(-x_i)\dd V=-\int_Mx_i\dd V. \]
+移项得 $2\int_Mx_i\dd V=0$，即 $\int_Mx_i\dd V=0$。而
+\[ c_i(M)=\frac{1}{v(M)}\int_Mx_i\dd V=0\qquad(v(M)>0). \]
+
+\textbf{答案}：$c_i(M)=0$。
+
+\textbf{自检}：球心在原点时 $c=(0,\dots,0)$ $\checkmark$；上半球面在 $x_{n+1}$ 方向不对称，故那个分量不必为零（A13 正是去算它）$\checkmark$。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A13（§25 第 7 题，p218，带 $*$）：上半球面的质心}\label{ax13}
+\qstem{（课件 p218 第 7 题）$E^n_+(a)=S^n(a)\cap\HH^{n+1}$，$\lambda_n=v(B^n(1))$。(a) 用 $\lambda_n,\lambda_{n-1}$ 表示 $E^n_+(a)$ 的质心；(b) 用 $B^{n-1}_+(a)$ 的质心表示它。}
+
+\textbf{考点}：质心 $=$ 一阶矩 $/$ 体积；一阶矩用切片算；(a) 的答案里 $\lambda$ 的比值正好给出 $n=1,2,3$ 的已知值。
+
+\textbf{关键一步}：前 $n$ 个分量由 A12 直接为零（上半球面对每个 $x_i=0$，$i\le n$，都对称），只剩 $c_{n+1}$。算 $\int z\dd V$ 时仍按 §7.2 的方式切片，因子 $a/\sqrt{a^2-z^2}$ 会与体积因子里的分母对消，最后只剩一个幂函数积分。
+
+\textbf{详解}．
+(a) \textbf{体积}：$E^n_+(a)$ 是 $S^n(a)$ 的上半，故
+\[ v\bigl(E^n_+(a)\bigr)=\tfrac12 v\bigl(S^n(a)\bigr)=\tfrac12(n+1)\lambda_{n+1}a^n. \]
+\textbf{一阶矩}：对 $z\in(0,a)$ 切片，
+\[ \int_{E^n_+}z\dd V=\int_0^a z\cdot\frac{a}{\sqrt{a^2-z^2}}\cdot n\lambda_n\bigl(a^2-z^2\bigr)^{(n-1)/2}\dd z
+=a\,n\lambda_n\int_0^az\bigl(a^2-z^2\bigr)^{(n-2)/2}\dd z. \]
+换元 $u=a^2-z^2$（$\dd u=-2z\dd z$）：
+\[ \int_0^az\bigl(a^2-z^2\bigr)^{(n-2)/2}\dd z=\frac12\int_0^{a^2}u^{(n-2)/2}\dd u=\frac12\cdot\frac{(a^2)^{n/2}}{n/2}=\frac{a^n}{n}. \]
+所以
+\[ \int_{E^n_+}z\dd V=a\,n\lambda_n\cdot\frac{a^n}{n}=\lambda_n\,a^{n+1}. \]
+\textbf{相除}：
+\[ c_{n+1}=\frac{\lambda_na^{n+1}}{\frac12(n+1)\lambda_{n+1}a^n}=\frac{2\lambda_n\,a}{(n+1)\lambda_{n+1}}. \]
+再用 A11 的递推 $(n+1)\lambda_{n+1}=2\pi\lambda_{n-1}$：
+\[ c_{n+1}=\frac{\lambda_n\,a}{\pi\,\lambda_{n-1}}. \]
+
+\textbf{答案 (a)}：
+\[ c\bigl(E^n_+(a)\bigr)=\Bigl(0,\dots,0,\ \frac{\lambda_n}{\pi\lambda_{n-1}}\,a\Bigr). \]
+逐个数核对：$n=1$ 给 $\frac{2}{\pi}a$（上半圆弧的质心高度）$\checkmark$；$n=2$ 给 $\frac a2$（半球面的质心）$\checkmark$；$n=3$ 给 $\frac{4}{3\pi}a$ $\checkmark$。
+
+(b) 这一问要先把 $\frac{\lambda_n}{\lambda_{n-1}}$ 换成“$B^{n-1}_+(a)$ 的质心”，需要 §19 习题里 $B^{n-1}_+(a)$ 的记号与结果，\textbf{不在给定的 p206--223 范围内}；本讲义没有读到那段原文，所以不在这里凭记忆写闭式。可执行的路线是：由 A11 与 $\lambda$ 的递推把 $\lambda_n/\lambda_{n-1}$ 化成半球的“一阶矩 / 体积”，再与 §19 的公式对照。已经核对过的是 (a)，以及它在 $n=1,2,3$ 的值。
+
+\textbf{自检}：$n\to\infty$ 时 $\lambda_n/\lambda_{n-1}\approx\sqrt{2\pi/n}\to0$，即半球面的质心越来越靠赤道 $\checkmark$（高维球面的面积几乎全在赤道附近）。
+
+%---------------------------------------------------------------------
+\qbreak
+\subhdr{A14（§25 第 8 题，p218）：乘积流形上的积分}\label{ax14}
+\qstem{（课件 p218 第 8 题）$M\subset\mathbb{R}^m$、$N\subset\mathbb{R}^n$ 是紧的无边流形。(a) $f:M\to\mathbb{R}$、$g:N\to\mathbb{R}$ 连续，证明 $\int_{M\times N}f g\dd V=[\int_Mf\dd V][\int_Ng\dd V]$；(b) $v(M\times N)=v(M)v(N)$；(c) 求 $\mathbb{R}^4$ 中 $S^1\times S^1$ 的面积。}
+
+\textbf{考点}：垫的乘积 + “两列正交时 $\Vvol=$ 长度之积” + Fubini。
+
+\textbf{关键一步}：$M\times N$ 上的垫就是“两张垫的乘积” $\alpha\times\beta$；它的导数矩阵的列分成两组，一组只在前 $m$ 个坐标里动、一组只在后 $n$ 个坐标里动，所以两组互相正交，$\Vvol$ 就分裂成两个因子的乘积。于是二重积分分裂成两个单积分之积（Fubini）。
+
+\textbf{详解}．
+(a) \textbf{先设 $f,g$ 的支持集各落在一张垫里}（题面提示）：取 $\alpha:A\to V\subset M$、$\beta:B\to W\subset N$。则
+\[ \alpha\times\beta:\ A\times B\longrightarrow V\times W\subset M\times N,\qquad (\alpha\times\beta)(u,v)=\bigl(\alpha(u),\beta(v)\bigr) \]
+是 $M\times N$ 上的垫。它的导数是分块对角：
+\[ D(\alpha\times\beta)=\begin{bmatrix}D\alpha&0\\0&D\beta\end{bmatrix}. \]
+两列之间若一个来自 $D\alpha$、一个来自 $D\beta$，则内积为 $0$（一个只在前 $m$ 个坐标非零、另一个只在后 $n$ 个坐标非零）。所以 Gram 矩阵是分块对角，行列式 $=\det(D\alpha^{\mathsf T}D\alpha)\cdot\det(D\beta^{\mathsf T}D\beta)$，即
+\[ \Vvol\bigl(D(\alpha\times\beta)\bigr)=\Vvol(D\alpha)\cdot\Vvol(D\beta). \]
+再用 Fubini（$f\circ(\alpha\times\beta)=(f\circ\alpha)$、$g\circ(\alpha\times\beta)=(g\circ\beta)$，只依赖一个变量）：
+\[ \int_{M\times N}fg\dd V=\int_{A\times B}(f\circ\alpha)(g\circ\beta)\Vvol(D\alpha)\Vvol(D\beta) \]
+\[ =\Bigl[\int_A(f\circ\alpha)\Vvol(D\alpha)\Bigr]\Bigl[\int_B(g\circ\beta)\Vvol(D\beta)\Bigr]
+=\Bigl[\int_Mf\Bigr]\Bigl[\int_Ng\Bigr]. \]
+\textbf{一般情形}：由定理 25.4 把 $M$、$N$ 各自拆成有限片，$f$、$g$ 各自拆成有限项之和，把上面的等式按线性展开即可（有限和，可以逐项用）。
+
+(b) 取 $f\equiv g\equiv1$：
+\[ v(M\times N)=\int_{M\times N}1\dd V=\Bigl[\int_M1\Bigr]\Bigl[\int_N1\Bigr]=v(M)\,v(N). \]
+(c) $S^1\subset\mathbb{R}^2$ 是紧的 1-流形、$v(S^1)=2\pi$。由 (b)：
+\[ v(S^1\times S^1)=v(S^1)^2=(2\pi)^2=4\pi^2. \]
+
+\textbf{答案}：(a) 成立；(b) 成立；(c) $4\pi^2$。
+
+\textbf{自检}：(b) 的量纲对：$k$ 维体积 $\times$ $\ell$ 维体积 $=$ $(k+\ell)$ 维体积 $\checkmark$；(c) 与“两个圆都取单位圆”的量级吻合（$4\pi^2\approx39.48$）$\checkmark$。
+
+
+\begin{notecall}
+\textbf{附录的边界}：A13(b) 只给了路线而没给闭式，原因是它需要 §19 习题的记号与结果，而那几页不在本次给定范围（p206--223）内。其余 13 道的答案都写全了；凡涉及数值的地方（A1 的梯度和验证、A7 与 A8(b) 的积分值、A9 的两个面积、A11 与 A13 的 $\lambda$ 比值）都已用工作区脚本逐条验算。
+\end{notecall}
+
+\end{document}
