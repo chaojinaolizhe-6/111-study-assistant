@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-05 2026-11-05 13:40（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-05 2026-11-05 14:14（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -374,7 +374,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5811 个文件）
+## 3. 文件直达 URL 索引（5841 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -586,7 +586,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2368 个）
+### subjects（2392 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -645,11 +645,26 @@
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.out
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.pdf
 - `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261103.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261103.tex
+- `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261105.aux
+- `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261105.log
+- `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261105.out
+- `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261105.pdf
+- `subjects/01-理论力学/讲义/专题-从张量到并矢-精讲-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E5%B9%B6%E7%9F%A2-%E7%B2%BE%E8%AE%B2-20261105.tex
+- `subjects/01-理论力学/讲义/专题-多重线性代数与交错张量-Munkres-p219-236-精讲-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E4%BA%A4%E9%94%99%E5%BC%A0%E9%87%8F-Munkres-p219-236-%E7%B2%BE%E8%AE%B2-20261105.aux
+- `subjects/01-理论力学/讲义/专题-多重线性代数与交错张量-Munkres-p219-236-精讲-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E4%BA%A4%E9%94%99%E5%BC%A0%E9%87%8F-Munkres-p219-236-%E7%B2%BE%E8%AE%B2-20261105.log
+- `subjects/01-理论力学/讲义/专题-多重线性代数与交错张量-Munkres-p219-236-精讲-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E4%BA%A4%E9%94%99%E5%BC%A0%E9%87%8F-Munkres-p219-236-%E7%B2%BE%E8%AE%B2-20261105.out
+- `subjects/01-理论力学/讲义/专题-多重线性代数与交错张量-Munkres-p219-236-精讲-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E4%BA%A4%E9%94%99%E5%BC%A0%E9%87%8F-Munkres-p219-236-%E7%B2%BE%E8%AE%B2-20261105.pdf
+- `subjects/01-理论力学/讲义/专题-多重线性代数与交错张量-Munkres-p219-236-精讲-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E4%BA%A4%E9%94%99%E5%BC%A0%E9%87%8F-Munkres-p219-236-%E7%B2%BE%E8%AE%B2-20261105.tex
 - `subjects/01-理论力学/讲义/专题-并矢-从张量积到惯量张量-20261103.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%B9%B6%E7%9F%A2-%E4%BB%8E%E5%BC%A0%E9%87%8F%E7%A7%AF%E5%88%B0%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F-20261103.aux
 - `subjects/01-理论力学/讲义/专题-并矢-从张量积到惯量张量-20261103.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%B9%B6%E7%9F%A2-%E4%BB%8E%E5%BC%A0%E9%87%8F%E7%A7%AF%E5%88%B0%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F-20261103.log
 - `subjects/01-理论力学/讲义/专题-并矢-从张量积到惯量张量-20261103.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%B9%B6%E7%9F%A2-%E4%BB%8E%E5%BC%A0%E9%87%8F%E7%A7%AF%E5%88%B0%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F-20261103.out
 - `subjects/01-理论力学/讲义/专题-并矢-从张量积到惯量张量-20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%B9%B6%E7%9F%A2-%E4%BB%8E%E5%BC%A0%E9%87%8F%E7%A7%AF%E5%88%B0%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F-20261103.pdf
 - `subjects/01-理论力学/讲义/专题-并矢-从张量积到惯量张量-20261103.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E5%B9%B6%E7%9F%A2-%E4%BB%8E%E5%BC%A0%E9%87%8F%E7%A7%AF%E5%88%B0%E6%83%AF%E9%87%8F%E5%BC%A0%E9%87%8F-20261103.tex
+- `subjects/01-理论力学/讲义/专题-流形的边界·流形上的积分·多重线性代数-精讲-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E6%B5%81%E5%BD%A2%E7%9A%84%E8%BE%B9%E7%95%8C%C2%B7%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%C2%B7%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261105.aux
+- `subjects/01-理论力学/讲义/专题-流形的边界·流形上的积分·多重线性代数-精讲-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E6%B5%81%E5%BD%A2%E7%9A%84%E8%BE%B9%E7%95%8C%C2%B7%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%C2%B7%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261105.log
+- `subjects/01-理论力学/讲义/专题-流形的边界·流形上的积分·多重线性代数-精讲-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E6%B5%81%E5%BD%A2%E7%9A%84%E8%BE%B9%E7%95%8C%C2%B7%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%C2%B7%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261105.out
+- `subjects/01-理论力学/讲义/专题-流形的边界·流形上的积分·多重线性代数-精讲-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E6%B5%81%E5%BD%A2%E7%9A%84%E8%BE%B9%E7%95%8C%C2%B7%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%C2%B7%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261105.pdf
+- `subjects/01-理论力学/讲义/专题-流形的边界·流形上的积分·多重线性代数-精讲-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E4%B8%93%E9%A2%98-%E6%B5%81%E5%BD%A2%E7%9A%84%E8%BE%B9%E7%95%8C%C2%B7%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%C2%B7%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261105.tex
 - `subjects/01-理论力学/讲义/叉乘工具箱-20261001.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E5%8F%89%E4%B9%98%E5%B7%A5%E5%85%B7%E7%AE%B1-20261001.md
 - `subjects/01-理论力学/讲义/挂起-变上限积分与闭式求解-20261012.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E6%8C%82%E8%B5%B7-%E5%8F%98%E4%B8%8A%E9%99%90%E7%A7%AF%E5%88%86%E4%B8%8E%E9%97%AD%E5%BC%8F%E6%B1%82%E8%A7%A3-20261012.md
 - `subjects/01-理论力学/讲义/竞赛选拔-A卷-八道典型题-20261019.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/%E8%AE%B2%E4%B9%89/%E7%AB%9E%E8%B5%9B%E9%80%89%E6%8B%94-A%E5%8D%B7-%E5%85%AB%E9%81%93%E5%85%B8%E5%9E%8B%E9%A2%98-20261019.pdf
@@ -961,6 +976,8 @@
 - `subjects/03-微分方程/课件/19-20_power-series(II).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/19-20_power-series%28II%29.pdf
 - `subjects/03-微分方程/课件/2 (1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%20%281%29.pdf
 - `subjects/03-微分方程/课件/2(2).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/2%282%29.pdf
+- `subjects/03-微分方程/课件/21_22_Phase.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/21_22_Phase.pdf
+- `subjects/03-微分方程/课件/22-23_Linearization.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/22-23_Linearization.pdf
 - `subjects/03-微分方程/课件/3 (1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%20%281%29.pdf
 - `subjects/03-微分方程/课件/3(2).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/3%282%29.pdf
 - `subjects/03-微分方程/课件/4 (1).pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/4%20%281%29.pdf
@@ -982,6 +999,7 @@
 - `subjects/03-微分方程/课件/M.V. Makarets, V. Yu _Reshetnyak.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/M.V.%20Makarets%2C%20V.%20Yu%20_Reshetnyak.pdf
 - `subjects/03-微分方程/课件/M.V. Soare, P.P. Teodorescu, I. Toma.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/M.V.%20Soare%2C%20P.P.%20Teodorescu%2C%20I.%20Toma.pdf
 - `subjects/03-微分方程/课件/S.L. Ross.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/S.L.%20Ross.pdf
+- `subjects/03-微分方程/课件/Topics_of_final_exam.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AF%BE%E4%BB%B6/Topics_of_final_exam.pdf
 - `subjects/04-数学物理方法1/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/INDEX.md
 - `subjects/04-数学物理方法1/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/progress.md
 - `subjects/04-数学物理方法1/topics/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/04-%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86%E6%96%B9%E6%B3%951/topics/INDEX.md
@@ -1155,6 +1173,7 @@
 - `subjects/06-电工电子技术/实验/20261013-EE-lab-bench-setup.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/20261013-EE-lab-bench-setup.jpg
 - `subjects/06-电工电子技术/实验/20261013-电工电路实验装置-现场实拍.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/20261013-%E7%94%B5%E5%B7%A5%E7%94%B5%E8%B7%AF%E5%AE%9E%E9%AA%8C%E8%A3%85%E7%BD%AE-%E7%8E%B0%E5%9C%BA%E5%AE%9E%E6%8B%8D.jpg
 - `subjects/06-电工电子技术/实验/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/INDEX.md
+- `subjects/06-电工电子技术/实验/图-实验5-教材图524-无题注.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C5-%E6%95%99%E6%9D%90%E5%9B%BE524-%E6%97%A0%E9%A2%98%E6%B3%A8.png
 - `subjects/06-电工电子技术/实验/图-实验5-教材图524-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C5-%E6%95%99%E6%9D%90%E5%9B%BE524-%E8%A3%81%E5%89%AA.png
 - `subjects/06-电工电子技术/实验/图-实验6-教材裁剪/图5-3-7-积分电路-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C6-%E6%95%99%E6%9D%90%E8%A3%81%E5%89%AA/%E5%9B%BE5-3-7-%E7%A7%AF%E5%88%86%E7%94%B5%E8%B7%AF-%E8%A3%81%E5%89%AA.png
 - `subjects/06-电工电子技术/实验/图-实验6-教材裁剪/图5-3-8-微分电路-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C6-%E6%95%99%E6%9D%90%E8%A3%81%E5%89%AA/%E5%9B%BE5-3-8-%E5%BE%AE%E5%88%86%E7%94%B5%E8%B7%AF-%E8%A3%81%E5%89%AA.png
@@ -1216,6 +1235,11 @@
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.out
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.pdf
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.tex
+- `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.aux
+- `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.log
+- `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.out
+- `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.pdf
+- `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.tex
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.aux
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.log
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.out
@@ -5213,7 +5237,7 @@
 - `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
 - `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
-### tmp（879 个）
+### tmp（885 个）
 
 - `tmp/bisect/t_a.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.aux
 - `tmp/bisect/t_a.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/bisect/t_a.log
@@ -5695,6 +5719,7 @@
 - `tmp/partyclass-20261103/build_package.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_package.py
 - `tmp/partyclass-20261103/build_terms.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_terms.py
 - `tmp/partyclass-20261103/build_terms_docx.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/build_terms_docx.py
+- `tmp/partyclass-20261103/check_draft.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/check_draft.py
 - `tmp/partyclass-20261103/checklist.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checklist.txt
 - `tmp/partyclass-20261103/checks.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checks.json
 - `tmp/partyclass-20261103/checks2.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/checks2.json
@@ -5751,6 +5776,10 @@
 - `tmp/partyclass-20261103/final_pv/p3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/final_pv/p3.png
 - `tmp/partyclass-20261103/final_raster.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/final_raster.py
 - `tmp/partyclass-20261103/fixquotes.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/fixquotes.py
+- `tmp/partyclass-20261103/fmt.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/fmt.py
+- `tmp/partyclass-20261103/fonts.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/fonts.py
+- `tmp/partyclass-20261103/fonts.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/fonts.txt
+- `tmp/partyclass-20261103/gemini_draft.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/gemini_draft.txt
 - `tmp/partyclass-20261103/hdr.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/hdr.py
 - `tmp/partyclass-20261103/hevc2jpg.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/hevc2jpg.py
 - `tmp/partyclass-20261103/hist.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/hist.py
@@ -5860,6 +5889,7 @@
 - `tmp/partyclass-20261103/raster4.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/raster4.py
 - `tmp/partyclass-20261103/read_checklist.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/read_checklist.py
 - `tmp/partyclass-20261103/read_docx.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/read_docx.py
+- `tmp/partyclass-20261103/read_gemini.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/read_gemini.py
 - `tmp/partyclass-20261103/read_pdf.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/read_pdf.py
 - `tmp/partyclass-20261103/schema.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/schema.txt
 - `tmp/partyclass-20261103/score_xor.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/partyclass-20261103/score_xor.py

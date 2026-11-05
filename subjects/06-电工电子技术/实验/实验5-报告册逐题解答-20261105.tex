@@ -1,0 +1,382 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\setlength{\headheight}{22pt}
+\settags{实验 5 · 报告册逐题解答}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{9\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{实验 5 报告册逐题解答（中英对照）}
+{按你上传的册页：p14 预习四问 · p15--16 实验流程与表 1--4 · p09 器件测试 · p10 讨论五问}
+{依据：2025--2026(1) 实验报告册第 5 号实验《Transistor Single-Stage Amplifier Circuit Experiment》扫描页（学习者 2026-11-05 上传，已存入 \texttt{实验册-照片-实验5/}）\ \textperiodcentered\ 2026-11-05}
+
+\callout{\textbf{先说清一件事}：这册子上的电路和教材 §5.2 的图 5.2.4 \textbf{不是同一套}——册子是 $R_{b1}=R_{b2}=6.7\,\mathrm{k}\Omega$＋$R_W$ 调偏置、$R_c=2.4\,\mathrm{k}\Omega$、$R_e=1\,\mathrm{k}\Omega$、$R_f=100\,\Omega$ 由 $K1$ 切换、$C_1=C_2=10\,\mu\mathrm{F}$、$C_3=100\,\mu\mathrm{F}$、$U_{CC}=12\,\mathrm{V}$、输入 $5\,\mathrm{mV_{rms}}$／$2\,\mathrm{kHz}$。之前那份按“四组偏置 30k/150k/39k/12k”写的讲义是照教材另一张图做的，\textbf{与这本册子无关，请以本文为准}。}
+
+%=============================================================
+\hdr{§0}{这五页的坐标：每一页要你做什么}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}p{5.4cm}p{6.2cm}@{}}
+\hline
+\thead{册页} & \thead{内容} & \thead{本文对应节} \\
+\hline
+p14 & \textit{I. Preliminary Work} 四问（预习报告） & §2 \\
+p15 & 电路图 + \textit{1. Static Testing}（表 1）+ \textit{2. Dynamic Testing} 步骤 & §1、§3、§4 \\
+p16 & 表 2／表 3／表 4 + 饱和失真与负反馈两步操作 & §3、§4 \\
+p09 & \textit{3. Device Testing}：二极管／稳压管／LED、三极管、数码管 & §5 \\
+p10 & \textit{Discussion of Results} 五问 & §6 \\
+\hline
+\end{tabular}
+\end{center}
+
+\callout{\textbf{精度规则（册上原文，两处）}：静态测量数据一律\textbf{三位小数}；动态计算数据（$A_u$ 等）一律\textbf{一位小数}。这两条写在 p15 的步骤里，报告里照做，别一处三位一处两位。}
+
+%=============================================================
+\hdr{§1}{电路：一张图＋三句话}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{图-实验5-报告册电路-裁剪.png}
+
+{\small 图 1\quad 册 p15 的实验电路（\textbf{裁剪}自你的上传页）。$R_W$ 调基极偏置；$K1$ 与 $R_f$ 并联后与 $R_e$ 串联，$C_3$ 并在 $R_e$ 两端。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.3cm}p{2.9cm}p{8.4cm}@{}}
+\hline
+\thead{元件} & \thead{参数} & \thead{在本实验里的作用} \\
+\hline
+$R_c$ & $2.4\,\mathrm{k}\Omega$ & 集电极负载，决定电压增益与 $U_C$ 的静态值 \\
+$R_{b2}$、$R_{b1}$ & 各 $6.7\,\mathrm{k}\Omega$ & 基极分压，与 $R_W$ 一起决定 $U_B$ \\
+$R_W$ & 电位器 & \textbf{唯一要拧的旋钮}：调 $Q$ 点（静态、动态、饱和失真都用它） \\
+$R_e$ & $1\,\mathrm{k}\Omega$ & 发射极电阻，稳定静态工作点 \\
+$R_f$ & $100\,\Omega$ & 负反馈电阻，\textbf{$K1$ 闭合时被短接}，断开才接入 \\
+$K1$ & 开关 & 控制“有无 $R_f$ 反馈”，是表 2 与表 4 的唯一差别 \\
+$C_1$、$C_2$ & 各 $10\,\mu\mathrm{F}$ & 输入／输出耦合电容 \\
+$C_3$ & $100\,\mu\mathrm{F}$ & 旁路 $R_e$，使 $R_e$ 只对直流起作用 \\
+$R_{L1}$、$R_{L2}$ & $2.4\,\mathrm{k}\Omega$、$6\,\mathrm{k}\Omega$ & 负载（本册四张表都要求 $R_L=\infty$，即不接） \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{三句话记住这张图}：（一）$R_W$ 决定 $U_B$，$U_B$ 决定 $I_C$，$I_C$ 决定 $U_C$ 与 $U_{CE}$——所以“调 $Q$ 点”就是“拧 $R_W$”。（二）$K1$ 闭合时 $R_f$ 被短接，发射极交流通路被 $C_3$ 旁路，增益最大；$K1$ 断开时 $R_f=100\,\Omega$ 串进发射极，形成串联电流负反馈，增益掉到约 $R_c/R_f=24$ 的量级。（三）$C_3$ 只旁路 $R_e$，不旁路 $R_f$——否则 $K1$ 断开就起不到反馈作用。}
+
+%=============================================================
+\hdr{§2}{预习四问（p14）：英文答案＋中文解释}
+
+\subhdr{2.1 Q1：静态是什么状态？测静态工作点电压用万用表哪个挡？}
+
+\callout{\textbf{EN.} The static state of an amplifier is the condition in which no input signal is applied ($u_i=0$, input terminal shorted to ground) and only the DC supply acts on the circuit; the voltages and currents then are the quiescent operating point. The static operating point voltage must be measured with the \textbf{DC voltage range} of the multimeter (e.g. 20\,V DC), not the AC range, because these are direct voltages. The AC range is used only for the input and output signal amplitudes in the dynamic test.}
+
+\noindent\textbf{中文}：静态＝输入信号为零（$u_i=0$，输入端对地短接）、只有直流电源作用的状态，此时各点电压电流叫静态工作点。测静态电压用\textbf{直流电压挡}（20\,V DC），因为量的是直流量；交流挡只用于动态测试里量 $U_i$、$U_o$ 的有效值。
+
+\subhdr{2.2 Q2：画出饱和失真与截止失真的输出波形}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.92,>=Latex]
+  % 正常正弦
+  \begin{scope}[xshift=0cm]
+    \draw[->] (0,0) -- (3.4,0) node[right]{\scriptsize $t$};
+    \draw[->] (0,-1.35) -- (0,1.35);
+    \draw[thick,violet,domain=0:6.28,samples=120] plot ({\x/1.85},{sin(\x r)});
+    \node at (1.7,-1.65) {\scriptsize (a) 正常};
+    \node[above] at (0,1.35) {\scriptsize $u_o$};
+  \end{scope}
+  % 饱和失真（底部削平）
+  \begin{scope}[xshift=4.6cm]
+    \draw[->] (0,0) -- (3.4,0) node[right]{\scriptsize $t$};
+    \draw[->] (0,-1.35) -- (0,1.35);
+    \draw[thick,blue,domain=0:6.28,samples=160] plot ({\x/1.85},{max(-0.78,sin(\x r))});
+    \draw[dashed] (0,-0.78) -- (3.3,-0.78);
+    \node[below] at (3.05,-0.78) {\scriptsize $U_{CE(sat)}$};
+    \node at (1.7,-1.65) {\scriptsize (b) 饱和失真};
+    \node[above] at (0,1.35) {\scriptsize $u_o$};
+  \end{scope}
+  % 截止失真（顶部削平）
+  \begin{scope}[xshift=9.2cm]
+    \draw[->] (0,0) -- (3.4,0) node[right]{\scriptsize $t$};
+    \draw[->] (0,-1.35) -- (0,1.35);
+    \draw[thick,red,domain=0:6.28,samples=160] plot ({\x/1.85},{min(0.78,sin(\x r))});
+    \draw[dashed] (0,0.78) -- (3.3,0.78);
+    \node[above] at (3.0,0.78) {\scriptsize $U_{CC}$};
+    \node at (1.7,-1.65) {\scriptsize (c) 截止失真};
+    \node[above] at (0,1.35) {\scriptsize $u_o$};
+  \end{scope}
+\end{tikzpicture}
+
+{\small 波形示意（重绘）。共射电路反相：$u_i$ 正半周把 $u_o$ 往下推——推到 $U_{CE(sat)}$ 就\textbf{削底}（饱和）；推到 $U_{CC}$ 就\textbf{削顶}（截止）。}
+\end{center}
+
+\callout{\textbf{EN.} Saturation distortion clips the \textbf{bottom} of the output waveform: the collector voltage cannot fall below $U_{CE(sat)}$ (about 0.3\,V), so the troughs become flat. Cutoff distortion clips the \textbf{top}: the collector voltage cannot rise above $U_{CC}$ when the transistor is cut off, so the crests become flat. Because the common-emitter stage inverts, saturation is reached when the input swings positive and cutoff when it swings negative.}
+
+\noindent\textbf{中文}：共射极是反相放大。$u_i$ 正半周 → $u_o$ 往下走 → 撞到饱和压降 $U_{CE(sat)}\approx0.3\,\mathrm{V}$ 就\textbf{底部削平}（饱和失真）；$u_i$ 负半周 → $u_o$ 往上走 → 撞到 $U_{CC}$ 就\textbf{顶部削平}（截止失真）。报告上画两条，标出削平的位置与 $U_{CC}$／$U_{CE(sat)}$。
+
+\subhdr{2.3 Q3：为什么要有合适的静态工作点？哪种调法对动态性能影响最小？}
+
+\callout{\textbf{EN.} An appropriate quiescent point keeps the transistor in the active region during the whole signal swing, so the output is not clipped, the gain stays nearly constant (linear amplification) and the output swing is as large as possible. If the Q-point is too high (large $I_C$) the stage saturates on one side; if it is too low the stage cuts off on the other side. The Q-point is adjusted by changing the \textbf{base bias resistor} ($R_W$ in series with $R_{b2}$), which has the least influence on the dynamic performance, because it changes only the operating current (hence $r_{be}$) while $R_c$ and $R_e$—which set the gain, the input and the output resistance—are left unchanged. Changing $R_c$ or $R_e$ would alter the gain and the resistances directly.}
+
+\noindent\textbf{中文}：合适的 $Q$ 点让管子在整个信号摆幅内都工作在放大区：不失真、增益稳定、输出摆幅最大。$Q$ 点偏高（$I_C$ 大）→ 一侧饱和；偏低 → 另一侧截止。调法：拧\textbf{基极偏置电阻}（本实验就是 $R_W$），它只改工作电流（从而改 $r_{be}$），不动 $R_c$、$R_e$，所以对 $A_u$、$r_i$、$r_o$ 的影响最小；改 $R_c$ 或 $R_e$ 会直接改增益和输入输出电阻。
+
+\subhdr{2.4 Q4：实验里怎么把 $Q$ 点调到“放大效果最佳”？（教材 p.146）}
+
+\callout{\textbf{EN.} Set the Q-point so that $U_{CE}\approx U_{CC}/2$ (about 6\,V here), i.e. the operating point sits near the middle of the AC load line; then the output can swing almost equally towards saturation and cutoff. Practically: apply a small sine input, adjust $R_W$ until both the top and the bottom of the output waveform begin to clip \textbf{almost at the same time} (symmetric clipping), then turn $R_W$ back slightly until the waveform is just clean. Record the resulting $U_B$, $U_E$, $U_C$ as the static operating point.}
+
+\noindent\textbf{中文}：调到 $U_{CE}\approx U_{CC}/2\approx6\,\mathrm{V}$，即 $Q$ 点落在交流负载线中点附近，上下摆幅才对称。现场做法：加小信号，拧 $R_W$ 直到输出\textbf{上下几乎同时}开始削顶（对称削波），再退回一点到刚好不失真——此时记下 $U_B$、$U_E$、$U_C$ 就是表 1 的数据。
+
+%=============================================================
+\hdr{§3}{实验流程（p15--16）：四步，一步一张表}
+
+\subhdr{3.1 第一步：Static Testing（表 1，$R_f=0$）}
+
+\begin{enumerate}
+  \item \textbf{接线}：先断电，按图 1 接好；$K1$ \textbf{闭合}（此时 $R_f$ 被短接，$R_f=0$）；$U_{CC}=12\,\mathrm{V}$ 先调到 12\,V 再接入。
+  \item \textbf{输入端对地短接}：册上原话 \textit{ground the circuit's input terminal}——把 $u_i$ 端接地，保证“静态”。
+  \item \textbf{调 $Q$ 点}：拧 $R_W$，使 $U_{CE}$ 落在 $U_{CC}/2$ 附近（约 6\,V）；判据见 §2.4。
+  \item \textbf{测量并记录}：万用表直流挡测 $U_B$、$U_E$、$U_C$（都相对公共地），\textbf{三位小数}，填表 1。
+\end{enumerate}
+
+\subhdr{3.2 第二步：Dynamic Testing（表 2，$R_f=0$，$R_L=\infty$）}
+
+\begin{enumerate}
+  \item $K1$ 保持闭合；信号发生器给 \textbf{5\,mV$_{\mathrm{rms}}$、2\,kHz 正弦}，接到输入端（先确认示波器上看得到小信号）。
+  \item 示波器看 $U_o$：记波形形状、$V_{pp}$、周期 $T$；确认\textbf{没有削顶}再读数。
+  \item 用交流毫伏表（或示波器）测输入、输出\textbf{有效值} $U_i$（mV）与 $U_o$（V）。
+  \item 算 $A_u=U_o/U_i$（一位小数）；填表 2（$R_f=0$、$R_L=\infty$）。
+\end{enumerate}
+
+\aside{$5\,\mathrm{mV}$ 输入、增益约 160 时输出约 $0.8\,\mathrm{V_{rms}}$（$2.3\,\mathrm{V_{pp}}$），不会削顶；若你看到削顶，说明 $R_W$ 调得太偏或信号发生器实际输出远大于 5\,mV——先量 $U_i$ 再谈增益。}
+
+\subhdr{3.3 第三步：饱和失真（表 3）}
+
+\begin{enumerate}
+  \item 保持输入信号，拧 $R_W$（册上写 counterclockwise，即逆时针）直到输出波形出现\textbf{饱和失真}（底部削平）。
+  \item 记下这个波形的\textbf{最大值、最小值、周期}（报告里画出来，标 $U_{CE(sat)}$）。
+  \item \textbf{断开输入信号}（输入端接地），再测 $U_B$、$U_E$、$U_C$，填表 3。
+\end{enumerate}
+
+\warnbox{\textbf{方向别硬记}：册上写“逆时针”，但你手上电位器的接线可能相反。\textbf{以波形为准}：转到输出\textbf{底部}削平就是饱和，转到\textbf{顶部}削平就是截止（那是反方向）。转错方向就反向拧，报告里不必解释方向，只写“调 $R_W$ 至饱和”。}
+
+\subhdr{3.4 第四步：负反馈（表 4，$R_f=100\,\Omega$）}
+
+\begin{enumerate}
+  \item 重新接入输入信号（仍是 5\,mV$_{\mathrm{rms}}$／2\,kHz）。
+  \item \textbf{断开 $K1$}——$R_f=100\,\Omega$ 串进发射极，引入串联电流负反馈。
+  \item 看输出波形：记 $V_{pp}$、$T$；测输出有效值 $U_o$；算 $A_u$（一位小数）。
+  \item 填表 4（$R_f=100$、$R_L=\infty$）。
+\end{enumerate}
+
+\callout{\textbf{为什么增益会掉这么多}：$K1$ 闭合时发射极交流通路被 $C_3$ 旁路，$A_u\approx-\beta R_c/r_{be}$（约 $-160$）；$K1$ 断开后 $R_f$ 没被旁路，$A_u\approx-\beta R_c/[r_{be}+(1+\beta)R_f]$（约 $-21$）。\textbf{同一个输入，输出小了约 7.7 倍}——这就是“负反馈降低增益、换取失真小与频带宽”的现场证据。}
+
+%=============================================================
+\hdr{§4}{四张表怎么填（含示例算例）}
+
+\noindent 下面“示例”一列是按 $\beta=100$、$I_C\approx2\,\mathrm{mA}$ 算出来的\textbf{量级参考}，不是你的实测值；你的表里填实测，示例只用来判断读数合不合理。
+
+\subhdr{4.1 表 1：静态工作点（$U_{CC}$、$U_B$、$U_E$、$U_C$，三位小数）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.8cm}p{6.0cm}p{5.4cm}p{2.4cm}@{}}
+\hline
+\thead{量} & \thead{怎么读} & \thead{从它推出什么} & \thead{示例} \\
+\hline
+$U_{CC}$ & 电源面板／万用表直流挡 & 应为 $12.00\,\mathrm{V}$ & 12.000 V \\
+$U_B$ & 基极对地 & 分压结果，应在 $2\sim3\,\mathrm{V}$ 量级 & 2.700 V \\
+$U_E$ & 发射极对地 & $I_E=U_E/R_e$ & 2.000 V \\
+$U_C$ & 集电极对地 & $I_C=(U_{CC}-U_C)/R_c$ & 7.200 V \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 由表 1 推静态工作点（讨论第 1 问就是算这一步）：$I_E=U_E/R_e$、$I_C=(U_{CC}-U_C)/R_c$、$I_B=I_E-I_C$、$U_{CE}=U_C-U_E$。示例：$I_E=2.000\,\mathrm{mA}$、$I_C=2.000\,\mathrm{mA}$、$I_B\approx0.020\,\mathrm{mA}=20\,\mu\mathrm{A}$、$U_{CE}=5.200\,\mathrm{V}$，$I_C/I_B=100$。
+
+\subhdr{4.2 表 2：动态（$R_f=0$、$R_L=\infty$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.6cm}p{1.6cm}p{4.4cm}p{1.9cm}p{1.9cm}p{2.0cm}@{}}
+\hline
+\thead{$R_f/\Omega$} & \thead{$R_L$} & \thead{输出波形 $U_o$} & \thead{$U_i$/mV} & \thead{$U_o$/V} & \thead{$A_u$} \\
+\hline
+0 & $\infty$ & 画正弦，标 $V_{pp}$ 与 $T$ & 5.0 & 示例 0.8 & 示例 $-160.0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 波形栏画两个周期，横轴标 $T$（$2\,\mathrm{kHz}$ 对应 $0.5\,\mathrm{ms}$），纵轴标 $V_{pp}$；$A_u$ 写负值更严谨（共射反相），只写模也可以，但要在报告里说一句“$u_o$ 与 $u_i$ 反相 $180^\circ$”。
+
+\subhdr{4.3 表 3：饱和状态（$R_f=0$、$R_L=\infty$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.6cm}p{1.6cm}p{4.6cm}p{1.9cm}p{1.9cm}p{1.9cm}@{}}
+\hline
+\thead{$R_f/\Omega$} & \thead{$R_L$} & \thead{饱和波形 $U_o$} & \thead{$U_B$/V} & \thead{$U_E$/V} & \thead{$U_C$/V} \\
+\hline
+0 & $\infty$ & 画削底波形，标最大／最小／$T$ & 示例 5.6 & 示例 4.9 & 示例 0.3 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 判据：$U_C$ 掉到 $0.2\sim0.5\,\mathrm{V}$、$U_{CE}<1\,\mathrm{V}$，波形底部平——这就是饱和。若 $U_C$ 反而接近 12\,V，那是截止（$U_{CE}\approx U_{CC}$），说明 $R_W$ 拧反了。
+
+\subhdr{4.4 表 4：引入负反馈后（$R_f=100\,\Omega$、$R_L=\infty$）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.7cm}p{1.6cm}p{5.0cm}p{2.0cm}p{2.0cm}@{}}
+\hline
+\thead{$R_f/\Omega$} & \thead{$R_L$} & \thead{负反馈后波形 $U_o$} & \thead{$U_o$/V} & \thead{$A_u$} \\
+\hline
+100 & $\infty$ & 画正弦（比表 2 小很多） & 示例 0.10 & 示例 $-21.0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 对比一句写进讨论：$|A_u|$ 从约 160 掉到约 21，波形更干净、上下更对称——增益换来了线性度。
+
+%=============================================================
+\hdr{§5}{器件测试（p09）：三项怎么做、填什么}
+
+\subhdr{5.1 (1) Diode Test：二极管／稳压管／LED}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.1cm}p{5.8cm}p{2.7cm}p{2.6cm}@{}}
+\hline
+\thead{器件} & \thead{测法（万用表二极管挡）} & \thead{正常读数} & \thead{反接} \\
+\hline
+普通二极管 & 红笔接阳极、黑笔接阴极 & $0.55\sim0.75\,\mathrm{V}$ & 显示 OL（溢出） \\
+稳压管 & 先按普通二极管测正向，再反接测反向 & 正向 $0.6\sim0.7\,\mathrm{V}$ & 稳压值或 OL \\
+LED & 红笔接长脚（阳极） & 红 $1.6\sim2.0$、绿 $2.0\sim2.4$、蓝白 $2.8\sim3.4\,\mathrm{V}$，且微亮 & OL，不亮 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{稳压管反向读数要看表：多数万用表二极管挡只给约 $2\sim3\,\mathrm{V}$ 测试电压，遇到 $5.1\,\mathrm{V}$／$6.2\,\mathrm{V}$ 的稳压管会显示 OL——这不是坏，是表内电压不够。想测稳压值，用 $+12\,\mathrm{V}$ 经 $1\,\mathrm{k}\Omega$ 限流接稳压管，再用直流电压挡量两端。}
+
+\subhdr{5.2 (2) Transistor Test：判 e／b／c 与 NPN／PNP}
+
+\begin{enumerate}
+  \item 用二极管挡，任取一脚假设为基极 $b$，用红笔（或黑笔）依次碰另两脚，看是否都导通（$0.6\sim0.7\,\mathrm{V}$）。\textbf{两次都通的那一脚就是 $b$}。
+  \item 若\textbf{红笔接 $b$} 时两次都通 → \textbf{NPN}；若\textbf{黑笔接 $b$} 时两次都通 → \textbf{PNP}。
+  \item 剩下两脚：与 $b$ 组成的结压降略大（约 $0.65\sim0.7\,\mathrm{V}$）的一般是发射极 $e$，略小（$0.55\sim0.65\,\mathrm{V}$）的是集电极 $c$；也可用 $h_{FE}$ 插座按管脚排列验证。
+  \item 填：\textit{Transistor Model}（如 9013、9014、2N3904、S8550）与 \textit{Polarity Type}（NPN／PNP）。
+\end{enumerate}
+
+\subhdr{5.3 (3) LED Display Tube Test：位数／段数／共阴共阳／引脚图}
+
+\begin{enumerate}
+  \item 数一数：一位／两位／三位／四位 → 填 \_\_-digit；段 → 7 段（或 8 段，带小数点）→ 填 \_\_-segment。
+  \item 判共阴／共阳：二极管挡，黑笔固定接某脚，红笔依次碰其余脚——若多段同时亮，黑笔那只就是\textbf{公共阴极}（共阴）；红笔固定、黑笔依次碰而多段亮，则是\textbf{公共阳极}（共阳）。
+  \item 画引脚图：把数码管按实物摆放画成矩形，标出上／下排每只脚的序号，并在能点亮的脚旁写字母（a、b、c…g、dp），公共端标 COM。
+\end{enumerate}
+
+\warnbox{\textbf{拍一张实测的引脚图}：报告里要求 \textit{Pin diagram of the measured LED display tube}，必须是你这一只的实测结果（脚位因厂家而异），不能抄别人的。测的时候把点亮的段记下来，画完再复核一遍。}
+
+%=============================================================
+\hdr{§6}{讨论五问（p10）：英文答案＋中文}
+
+\subhdr{6.1 Q1：由表 1 算 $I_B$、$I_C$、$U_{CE}$；若 $I_B$ 为负，分析原因}
+
+\callout{\textbf{EN.} $I_C=(U_{CC}-U_C)/R_c$, $I_E=U_E/R_e$, $I_B=I_E-I_C$, $U_{CE}=U_C-U_E$. For the measured values $I_C\approx2.00\,\mathrm{mA}$, $I_B\approx20\,\mu\mathrm{A}$ and $U_{CE}\approx5.2\,\mathrm{V}$, so $I_C/I_B\approx100$, consistent with the transistor. If $I_B$ calculated from the bias divider, $I_B=(U_{CC}-U_B)/(R_W+R_{b2})-U_B/R_{b1}$, comes out negative, the assumption that base current flows into the base is wrong. Possible causes: (1) the transistor is cut off—$U_B<0.6\,\mathrm{V}$, no base current at all, and the node voltage is set by the divider alone; (2) $R_W$ is too large, so the divider cannot supply the base current and the computed current through $R_{b1}$ exceeds the divider current; (3) $R_{b1}$ and $R_{b2}$ were interchanged, or a resistor value was misread; (4) $U_B$ was measured with the wrong range or the probe made poor contact; (5) the multimeter loading changed the high-resistance divider voltage.}
+
+\noindent\textbf{中文}：先算 $I_C=(12-U_C)/2.4\,\mathrm{k}$、$I_E=U_E/1\,\mathrm{k}$、$I_B=I_E-I_C$、$U_{CE}=U_C-U_E$。若用分压式 $I_B=\dfrac{12-U_B}{R_W+6.7\,\mathrm{k}}-\dfrac{U_B}{6.7\,\mathrm{k}}$ 算出负数，说明“基极有电流流入”这个假设不成立：最可能是\textbf{管子已截止}（$U_B<0.6\,\mathrm{V}$，基极根本不取电流，节点电位由分压单独决定）；其次是 $R_W$ 太大、分压供不出基极电流；再就是 $R_{b1}$／$R_{b2}$ 接反或阻值记错、$U_B$ 量错挡位或接触不良、万用表内阻拉低了高阻分压点的电压。
+
+\subhdr{6.2 Q2：$K1$ 的作用？引入 $R_f$ 有什么影响？}
+
+\callout{\textbf{EN.} $K1$ is connected in parallel with $R_f$ and in series with $R_e$. When $K1$ is closed, $R_f$ is short-circuited ($R_f=0$) and the emitter is bypassed by $C_3$, so there is no AC feedback and the gain is maximum, $A_u\approx-\beta R_c/r_{be}$. When $K1$ is opened, $R_f=100\,\Omega$ is inserted in the emitter path and is not bypassed, so current-series negative feedback is introduced: the gain falls to about $-\beta R_c/[r_{be}+(1+\beta)R_f]$ (from about $-160$ to about $-21$), the input resistance rises from about $1.5\,\mathrm{k}\Omega$ to about $11.6\,\mathrm{k}\Omega$, the output resistance stays about $R_c$, and the waveform becomes more linear, with a wider bandwidth and a more stable operating point.}
+
+\noindent\textbf{中文}：$K1$ 与 $R_f$ 并联、再与 $R_e$ 串联——它是“有无发射极反馈”的切换开关。闭合：$R_f$ 被短接，发射极又被 $C_3$ 旁路，无交流反馈，增益最大（约 160）；断开：$R_f=100\,\Omega$ 接入且不被旁路，形成串联电流负反馈，增益降到约 21，输入电阻由约 $1.5\,\mathrm{k}\Omega$ 升到约 $11.6\,\mathrm{k}\Omega$，输出电阻仍约 $R_c$，同时失真变小、频带变宽、工作点更稳。
+
+\subhdr{6.3 Q3：测量要共地，本实验的参考点在哪？}
+
+\callout{\textbf{EN.} All instruments must share one common ground. In this experiment the ground reference point is the \textbf{negative terminal of the DC supply}, i.e. the bottom node of $R_e$ and of $C_3$, which is the common rail of the whole circuit. The black test lead of the multimeter, the ground clips of the oscilloscope probes and the ground of the signal generator are all connected to this point; voltages $U_B$, $U_E$, $U_C$ are then measured with respect to it.}
+
+\noindent\textbf{中文}：公共地就是\textbf{直流电源负极}——也就是 $R_e$ 下端／$C_3$ 下端那条公共母线。万用表黑笔、示波器探头地夹、信号源地都接这一点，$U_B$、$U_E$、$U_C$ 都是相对它测的。不要把地夹夹到电路中间某个元件脚上。
+
+\subhdr{6.4 Q4：稳压管正反向都导通说明什么？}
+
+\callout{\textbf{EN.} A zener diode should conduct in the forward direction (about $0.6\sim0.7\,\mathrm{V}$) and break down in the reverse direction at its nominal zener voltage. If it conducts in \textbf{both} directions with a low voltage drop, it has lost its unidirectional characteristic: the PN junction has been damaged (broken down permanently, short-circuited, or overheated), and the device must be replaced. If both directions show a normal forward drop, the component may simply be an ordinary diode rather than a zener.}
+
+\noindent\textbf{中文}：正常稳压管正向 $0.6\sim0.7\,\mathrm{V}$ 导通、反向在稳压值处击穿。若正反向都像导线一样低阻导通，说明它\textbf{已经击穿损坏}（结被烧穿或短路），要换；若正反向都是普通二极管的正向压降，那它可能是普通二极管而不是稳压管。
+
+\subhdr{6.5 Q5：怎么判断三极管坏了？}
+
+\callout{\textbf{EN.} Use the diode range of the multimeter and check the two junctions: for an NPN transistor, with the red lead on the base the $b$--$e$ and $b$--$c$ junctions should both read $0.6\sim0.7\,\mathrm{V}$, and with the leads reversed both should read OL; the $c$--$e$ path should read OL in both directions. The transistor is damaged if (1) a junction reads $0\,\Omega$ or a few ohms in both directions (short circuit), (2) a junction reads OL in both directions (open circuit), (3) $c$--$e$ reads a low resistance (punch-through), or (4) the $h_{FE}$ socket gives no reading or an absurdly low $\beta$ with a correct pin arrangement.}
+
+\noindent\textbf{中文}：用二极管挡测两个 PN 结。NPN：红笔接 $b$，黑笔分别接 $e$、$c$ 都应导通（$0.6\sim0.7\,\mathrm{V}$），反接都应 OL；$c$--$e$ 正反向都 OL。出现下列任一情况即判坏：（1）某结正反向都是 $0\,\Omega$ 或几欧（短路）；（2）某结正反向都 OL（开路）；（3）$c$--$e$ 之间低阻（击穿）；（4）管脚接对时 $h_{FE}$ 挡无读数或 $\beta$ 极低。
+
+%=============================================================
+\hdr{§7}{公式卡、英文句式与术语}
+
+\subhdr{7.1 公式卡}
+
+\[
+I_C=\frac{U_{CC}-U_C}{R_c},\qquad I_E=\frac{U_E}{R_e},\qquad I_B=I_E-I_C,\qquad U_{CE}=U_C-U_E,
+\]
+\[
+I_B^{(\text{分压})}=\frac{U_{CC}-U_B}{R_W+R_{b2}}-\frac{U_B}{R_{b1}},\qquad
+A_u=\frac{U_o}{U_i},\qquad U_{CE}\approx\frac{U_{CC}}{2}\ \text{（最佳 }Q\text{ 点）},
+\]
+\[
+A_u\approx-\frac{\beta R_c}{r_{be}}\ (K1\ \text{闭合}),\qquad
+A_u\approx-\frac{\beta R_c}{r_{be}+(1+\beta)R_f}\ (K1\ \text{断开}),
+\]
+\[
+r_{be}\approx200+(1+\beta)\frac{26\,\mathrm{mV}}{I_C},\qquad
+r_i\approx r_{be}\ \text{或}\ r_{be}+(1+\beta)R_f,\qquad r_o\approx R_c .
+\]
+
+\subhdr{7.2 可直接抄的英文句}
+
+\begin{itemize}
+  \item The quiescent point was set by adjusting $R_W$ until $U_{CE}\approx6\,\mathrm{V}$.
+  \item With $K1$ closed the measured voltage gain was $A_u=U_o/U_i=\underline{\ \ }$ at $2\,\mathrm{kHz}$.
+  \item The output saturated at $U_{CE}\approx0.3\,\mathrm{V}$; the bottom of the waveform was clipped.
+  \item Opening $K1$ inserted $R_f=100\,\Omega$ and introduced current-series negative feedback.
+  \item After the feedback was introduced the gain decreased from about 160 to about 21, while the waveform became more linear.
+  \item All instruments were connected to the common ground at the negative terminal of the supply.
+\end{itemize}
+
+\subhdr{7.3 术语}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.2cm}p{5.4cm}p{4.2cm}@{}}
+\hline
+\thead{中文} & \thead{English} & \thead{符号} \\
+\hline
+静态工作点 & quiescent operating point & $Q$ point \\
+饱和失真／截止失真 & saturation / cutoff distortion & — \\
+电压增益 & voltage gain & $A_u$ \\
+串联电流负反馈 & current-series negative feedback & $R_f$ \\
+输入／输出电阻 & input / output resistance & $r_i$, $r_o$ \\
+共射极放大电路 & common-emitter amplifier & — \\
+二极管挡 & diode test range & — \\
+共阴／共阳 & common cathode / common anode & — \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§8}{仍要你现场核的两处}
+
+\begin{enumerate}
+  \item \textbf{$R_W$ 的转向与量程}：册上写“逆时针到饱和”，实际取决于电位器接线。以波形为准（底部削平＝饱和）；另外记下 $R_W$ 的大致位置，方便复现同一 $Q$ 点。
+  \item \textbf{你手上那只三极管与数码管的型号／脚位}：型号抄在 \textit{Transistor Model} 栏；数码管位数、段数、共阴共阳与引脚图必须实测（§5.3），不同厂家脚位不同。
+\end{enumerate}
+
+\flowerrule
+
+\noindent{\small 一句话：\textbf{预习四问、器件测试三项、流程四步、四张表、讨论五问——本文按册页顺序一一对上，英文答案可直接抄，中文解释用来答老师的追问。}}
+
+\end{document}
