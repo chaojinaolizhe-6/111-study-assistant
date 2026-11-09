@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-09 2026-11-09 08:56（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-09 2026-11-09 12:09（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -381,7 +381,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（6041 个文件）
+## 3. 文件直达 URL 索引（6080 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -587,7 +587,7 @@
 - `plan/考试日程.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2466 个）
+### subjects（2475 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -1295,6 +1295,11 @@
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.out
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.pdf
 - `subjects/06-电工电子技术/实验/实验5-速查卡-20261104.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E9%80%9F%E6%9F%A5%E5%8D%A1-20261104.tex
+- `subjects/06-电工电子技术/实验/实验6-手册p19-22-逐页对照执行单-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E6%89%8B%E5%86%8Cp19-22-%E9%80%90%E9%A1%B5%E5%AF%B9%E7%85%A7%E6%89%A7%E8%A1%8C%E5%8D%95-20261109.aux
+- `subjects/06-电工电子技术/实验/实验6-手册p19-22-逐页对照执行单-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E6%89%8B%E5%86%8Cp19-22-%E9%80%90%E9%A1%B5%E5%AF%B9%E7%85%A7%E6%89%A7%E8%A1%8C%E5%8D%95-20261109.log
+- `subjects/06-电工电子技术/实验/实验6-手册p19-22-逐页对照执行单-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E6%89%8B%E5%86%8Cp19-22-%E9%80%90%E9%A1%B5%E5%AF%B9%E7%85%A7%E6%89%A7%E8%A1%8C%E5%8D%95-20261109.out
+- `subjects/06-电工电子技术/实验/实验6-手册p19-22-逐页对照执行单-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E6%89%8B%E5%86%8Cp19-22-%E9%80%90%E9%A1%B5%E5%AF%B9%E7%85%A7%E6%89%A7%E8%A1%8C%E5%8D%95-20261109.pdf
+- `subjects/06-电工电子技术/实验/实验6-手册p19-22-逐页对照执行单-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E6%89%8B%E5%86%8Cp19-22-%E9%80%90%E9%A1%B5%E5%AF%B9%E7%85%A7%E6%89%A7%E8%A1%8C%E5%8D%95-20261109.tex
 - `subjects/06-电工电子技术/实验/实验6-集成运放-25分考试-备考讲义-20261027.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-25%E5%88%86%E8%80%83%E8%AF%95-%E5%A4%87%E8%80%83%E8%AE%B2%E4%B9%89-20261027.aux
 - `subjects/06-电工电子技术/实验/实验6-集成运放-25分考试-备考讲义-20261027.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-25%E5%88%86%E8%80%83%E8%AF%95-%E5%A4%87%E8%80%83%E8%AE%B2%E4%B9%89-20261027.log
 - `subjects/06-电工电子技术/实验/实验6-集成运放-25分考试-备考讲义-20261027.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-25%E5%88%86%E8%80%83%E8%AF%95-%E5%A4%87%E8%80%83%E8%AE%B2%E4%B9%89-20261027.out
@@ -1310,6 +1315,10 @@
 - `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p14-实验5-预习四问.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p14-%E5%AE%9E%E9%AA%8C5-%E9%A2%84%E4%B9%A0%E5%9B%9B%E9%97%AE.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p15-实验5-实验电路与静态动态步骤.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p15-%E5%AE%9E%E9%AA%8C5-%E5%AE%9E%E9%AA%8C%E7%94%B5%E8%B7%AF%E4%B8%8E%E9%9D%99%E6%80%81%E5%8A%A8%E6%80%81%E6%AD%A5%E9%AA%A4.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p16-实验5-表2表3表4.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p16-%E5%AE%9E%E9%AA%8C5-%E8%A1%A82%E8%A1%A83%E8%A1%A84.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验6/20261109-手册p19-预习四问.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C6/20261109-%E6%89%8B%E5%86%8Cp19-%E9%A2%84%E4%B9%A0%E5%9B%9B%E9%97%AE.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验6/20261109-手册p20-反相加法器.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C6/20261109-%E6%89%8B%E5%86%8Cp20-%E5%8F%8D%E7%9B%B8%E5%8A%A0%E6%B3%95%E5%99%A8.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验6/20261109-手册p21-信号发生器.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C6/20261109-%E6%89%8B%E5%86%8Cp21-%E4%BF%A1%E5%8F%B7%E5%8F%91%E7%94%9F%E5%99%A8.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验6/20261109-手册p22-讨论五问.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C6/20261109-%E6%89%8B%E5%86%8Cp22-%E8%AE%A8%E8%AE%BA%E4%BA%94%E9%97%AE.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/INDEX.md
 - `subjects/06-电工电子技术/实验/实验册-照片/册-p01-实验清单-List of Experiments.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-p01-%E5%AE%9E%E9%AA%8C%E6%B8%85%E5%8D%95-List%20of%20Experiments.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/册-p02-电工学实验上课须知-中文.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-p02-%E7%94%B5%E5%B7%A5%E5%AD%A6%E5%AE%9E%E9%AA%8C%E4%B8%8A%E8%AF%BE%E9%A1%BB%E7%9F%A5-%E4%B8%AD%E6%96%87.jpg
@@ -5333,7 +5342,7 @@
 - `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
 - `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
-### tmp（988 个）
+### tmp（1018 个）
 
 - `tmp/_ch5_q9_left.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/_ch5_q9_left.png
 - `tmp/_ch5_q9_stem.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/_ch5_q9_stem.png
@@ -5610,6 +5619,36 @@
 - `tmp/ee-textbook/toc-p008.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p008.png
 - `tmp/ee-textbook/toc-p009.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p009.png
 - `tmp/ee-textbook/toc-p010.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p010.png
+- `tmp/ee6check/p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p1.png
+- `tmp/ee6check/p2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p2.png
+- `tmp/ee6check/p3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p3.png
+- `tmp/ee6check/p4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p4.png
+- `tmp/ee6check/p5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p5.png
+- `tmp/ee6check/p6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p6.png
+- `tmp/ee6check/p7.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/p7.png
+- `tmp/ee6check/q3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/q3.png
+- `tmp/ee6check/q4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/q4.png
+- `tmp/ee6check/q5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/q5.png
+- `tmp/ee6check/q6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/q6.png
+- `tmp/ee6check/r1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r1.png
+- `tmp/ee6check/r2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r2.png
+- `tmp/ee6check/r3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r3.png
+- `tmp/ee6check/r4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r4.png
+- `tmp/ee6check/r5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r5.png
+- `tmp/ee6check/r6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r6.png
+- `tmp/ee6check/r7.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/r7.png
+- `tmp/ee6check/t1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t1.png
+- `tmp/ee6check/t2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t2.png
+- `tmp/ee6check/t3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t3.png
+- `tmp/ee6check/t4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t4.png
+- `tmp/ee6check/t5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t5.png
+- `tmp/ee6check/t6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t6.png
+- `tmp/ee6check/t7.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/t7.png
+- `tmp/ee6check/u3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/u3.png
+- `tmp/ee6check/v3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/v3.png
+- `tmp/ee6check/w4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/w4.png
+- `tmp/ee6check/w5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/w5.png
+- `tmp/ee6check/w6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee6check/w6.png
 - `tmp/exam-crop-left.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/exam-crop-left.png
 - `tmp/exam-crop-room.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/exam-crop-room.png
 - `tmp/fig1-test.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/fig1-test.aux
