@@ -1,0 +1,260 @@
+﻿%=====================================================================
+%  L21-L23 临界点与稳定性 · 作业四题答案（名词附英文）
+%  交付形式：PDF → PNG 图片；每题一页
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+
+\settags{L22--23 作业答案（名词附英文）}{微分方程}
+
+% ---- 每题起新页 ----
+\renewcommand{\qbreak}{\needspace{0.28\textheight}}
+\newcommand{\qpagebreak}{\needspace{0.94\textheight}}
+
+% ---- 英文标注：斜体淡墨色，紧跟在中文名词后的括号里 ----
+\newcommand{\EN}[1]{{\itshape\color{inkgray}#1}}
+
+% ---- 记号 ----
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Jac}{J}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\sm}[1]{\left(\begin{smallmatrix}#1\end{smallmatrix}\right)}
+
+\begin{document}
+
+\doctitle{临界点与稳定性 · 四题答案}{L21--L23 作业 · 名词附英文}{%
+依据：Lecture 22--23 作业四小题（第 1 题 (1)(2)(3)、第 2 题）\\
+体例：每题一页；中文名词后的斜体括号内是对应英文；浅紫框内是可直接照抄的结论句\\
+数值：$\tau,\Delta,D$、特征值与特征向量、偏导、逻辑斯蒂解均用符号计算逐项验算}
+
+\hdr{§0}{四题结论速览}
+
+{\small
+\tabtop
+\begin{tabular}{@{}p{1.2cm} p{5.6cm} p{5.9cm} p{2.6cm}@{}}
+\thead{题号} & \thead{类型（type）} & \thead{稳定性（stability）} & \thead{特征值}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{1.2cm} p{5.6cm} p{5.9cm} p{2.6cm}@{}}
+1(1) & 不稳定结点（\EN{unstable node}） & 不稳定（\EN{unstable}） & $2,\ 5$\\
+1(2) & 临界结点（\EN{proper node}，$g=2$） & 渐近稳定（\EN{asymptotically stable}） & $-1,\ -1$\\
+1(3) & 稳定焦点（\EN{stable focus}） & 渐近稳定（\EN{asymptotically stable}） & $-1\pm2\mathrm{i}$\\
+2 & 双曲（\EN{hyperbolic}）的不稳定结点 & 不稳定（\EN{unstable}） & $1,\ 0.5$\\
+\end{tabular}
+\tabbot
+}
+
+\subhdr{0.1\quad 名词中英对照（按答案出现顺序）}
+
+{\small
+\tabtop
+\begin{tabular}{@{}l@{\hspace{1.15em}}l@{\hspace{1.6em}}l@{\hspace{1.15em}}l@{}}
+\thead{中文} & \thead{英文} & \thead{中文} & \thead{英文}\\[3pt]
+临界点 & \EN{critical point} & 平衡点 & \EN{equilibrium point}\\
+结点 & \EN{node} & 鞍点 & \EN{saddle point}\\
+焦点 & \EN{focus (spiral point)} & 中心 & \EN{center}\\
+临界结点 & \EN{proper node (star node)} & 退化结点 & \EN{improper node}\\
+稳定 & \EN{stable} & 渐近稳定 & \EN{asymptotically stable}\\
+不稳定 & \EN{unstable} & 双曲 & \EN{hyperbolic}\\
+特征值 & \EN{eigenvalue} & 特征向量 & \EN{eigenvector}\\
+迹 & \EN{trace} & 行列式 & \EN{determinant}\\
+判别式 & \EN{discriminant} & 几何重数 & \EN{geometric multiplicity}\\
+雅可比矩阵 & \EN{Jacobian matrix} & 线性化 & \EN{linearization}\\
+平凡解 & \EN{trivial solution} & 轨线 & \EN{trajectory}\\
+相图 & \EN{phase portrait} & 李雅普诺夫函数 & \EN{Lyapunov function}\\
+通解 & \EN{general solution} & 拓扑等价 & \EN{topologically equivalent}\\
+\end{tabular}
+\tabbot
+}
+
+{\small\color{inkgray}说明：中文名用课程讲义的叫法（“临界结点”即星形结点，“退化结点”即 improper node）；英文名取教材与作业里最常见的写法。两套名字都写进答案不会扣分。}
+
+%=====================================================================
+\qpagebreak
+\subhdr{A.1\quad 第 1 题 1)：不稳定结点（\EN{unstable node}）}
+\qstem{（L22--23 作业 第 1 题 1)；讲义《L21--L23 精讲》附录 A.1，第 23 页）\ $x'=3x+2y$，\ $y'=x+4y$。\textbf{Determine the type of the critical point and study the stability.}}
+\label{ans:a1}
+
+\textbf{考点}\ 临界点（\EN{critical point}）的唯一性；迹、行列式、判别式（\EN{trace, determinant, discriminant}）；结点（\EN{node}）与不稳定（\EN{unstable}）的符号判据。
+
+\textbf{关键一步}\ 先用行列式说明临界点唯一，再用 $\tau,\Delta,D$ 三个数代替解特征方程——这样“类型”只是一次查表，不必先写出通解。
+
+\textbf{详解}\
+第一步，临界点（\EN{critical point}）。令两个右端为零，系数矩阵
+\[
+A=\begin{pmatrix}3&2\\1&4\end{pmatrix},
+\qquad
+\Delta=\det A=12-2=10\neq0 .
+\]
+齐次线性方程组只有零解，所以\textbf{唯一}临界点是原点 $(0,0)$。
+
+第二步，三个数：
+\[
+\tau=\tr A=3+4=7,\qquad
+\Delta=10,\qquad
+D=\tau^{2}-4\Delta=49-40=9>0 .
+\]
+特征方程 $\lambda^{2}-7\lambda+10=(\lambda-2)(\lambda-5)=0$，故
+\[
+\lambda_1=2,\qquad \lambda_2=5 .
+\]
+
+第三步，特征向量（\EN{eigenvector}）与通解（\EN{general solution}）。对 $\lambda=2$，矩阵 $A-2I=\sm{1&2\\1&2}$ 的两行相同，方程化为 $x+2y=0$，取 $V_1=(-2,1)^{\mathrm T}$；对 $\lambda=5$，$A-5I=\sm{-2&2\\1&-1}$ 给出 $x=y$，取 $V_2=(1,1)^{\mathrm T}$。于是
+\[
+\X=c_1\begin{pmatrix}-2\\1\end{pmatrix}\mathrm{e}^{2t}
++c_2\begin{pmatrix}1\\1\end{pmatrix}\mathrm{e}^{5t}.
+\]
+
+第四步，定类型。$\Delta>0$ 排除鞍点（\EN{saddle point}）；$D>0$ 说明两个特征值都是实数；两根同号且不相等，故为\textbf{结点}（\EN{node}）。又 $\tau=7>0$，两根皆正，轨线（\EN{trajectory}）都向外走，所以是\textbf{不稳定结点}。几何上：$|\lambda_1|=2<5=|\lambda_2|$，靠近原点的一段与“慢”方向 $V_1=(-2,1)$ 相切，离开后最终沿“快”方向 $V_2=(1,1)$ 延伸。
+
+第五步，定稳定性。存在正特征值 $\lambda_2=5>0$，由定理 5.1(ii)，零解\textbf{不稳定}（\EN{unstable}）。也可直接指认一条越界轨线：初值 $(1,1)$ 给出 $\X=(1,1)^{\mathrm T}\mathrm{e}^{5t}$，$\norm{\X}=\sqrt2\,\mathrm{e}^{5t}\to\infty$，对任何 $\varepsilon$ 终将越界。
+
+\callout{\textbf{答案}\ 唯一临界点为 $(0,0)$；类型为\textbf{不稳定结点}（\EN{unstable node}，相异实特征值 $\lambda=2,\ 5$ 同为正）；零解\textbf{不稳定}（\EN{unstable}）。}
+
+\textbf{自检}\ 把 $\X=(1,1)^{\mathrm T}\mathrm{e}^{5t}$ 代回：$x'=y'=5\mathrm{e}^{5t}$，而 $3x+2y=5\mathrm{e}^{5t}$、$x+4y=5\mathrm{e}^{5t}$，两式都对；再看 $2+5=7=\tau$、$2\cdot5=10=\Delta$，与韦达定理一致。
+
+%=====================================================================
+\qpagebreak
+\subhdr{A.2\quad 第 1 题 2)：临界结点（\EN{proper node}）}
+\qstem{（L22--23 作业 第 1 题 2)；讲义《L21--L23 精讲》附录 A.2，第 24 页）\ $x'=-x$，\ $y'=-y$。\textbf{Determine the type of the critical point and study the stability.}}
+\label{ans:a2}
+
+\textbf{考点}\ 二重特征值与几何重数（\EN{geometric multiplicity}）；“临界结点”与“退化结点”的区别；$\tau<0$ 时的渐近稳定性。
+
+\textbf{关键一步}\ $D=0$ 只说明是重根，还不能定类型名；必须再看 $A-\lambda I$ 的零空间维数 $g$。$g=2$ 是临界结点，$g=1$ 是退化结点——这一步也决定了通解里有没有 $t\mathrm{e}^{\lambda t}$ 项。
+
+\textbf{详解}\
+第一步，临界点。$A=-I$，$\Delta=\det(-I)=1\neq0$，故唯一临界点是 $(0,0)$。
+
+第二步，三个数：
+\[
+\tau=-1-1=-2,\qquad \Delta=1,\qquad D=\tau^{2}-4\Delta=4-4=0 .
+\]
+特征方程 $\lambda^{2}+2\lambda+1=(\lambda+1)^{2}=0$，故 $\lambda=-1$ 是\textbf{二重}特征值（\EN{double eigenvalue}）。
+
+第三步，几何重数。$A-\lambda I=A+I$ 是零矩阵，方程 $(A-\lambda I)V=\mathbf 0$ 对任意 $V$ 都成立，所以线性无关的特征向量有两个，$g=2$。$g$ 等于代数重数，$A$ 可对角化（\EN{diagonalizable}），通解取最简单的一组基 $V_1=(1,0)^{\mathrm T}$、$V_2=(0,1)^{\mathrm T}$：
+\[
+x=c_1\mathrm{e}^{-t},\qquad y=c_2\mathrm{e}^{-t}.
+\]
+
+第四步，看轨线（\EN{trajectory}）形状。当 $c_1\neq0$ 时
+\[
+\frac{y(t)}{x(t)}=\frac{c_2}{c_1}=\text{常数},
+\]
+所以每条轨线都是\textbf{过原点的射线}（\EN{ray}）——这正是相图（\EN{phase portrait}）里的“直线束”。这种临界点叫\textbf{临界结点}（也叫星形结点，\EN{proper node / star node}）。对照：若 $g=1$（例如 $A=\sm{-1&1\\0&-1}$），通解含 $t\mathrm{e}^{-t}$ 项，轨线只沿一个方向进入，那叫\textbf{退化结点}（\EN{improper node}）。
+
+第五步，定稳定性。$\lambda=-1<0$，且
+\[
+\norm{\X(t)}=\sqrt{c_1^{2}+c_2^{2}}\;\mathrm{e}^{-t}\to0\quad(t\to\infty),
+\]
+由定理 5.1(i)，零解\textbf{渐近稳定}（\EN{asymptotically stable}），并且是指数衰减：每过一单位时间，到原点的距离乘 $\mathrm{e}^{-1}$。
+
+\callout{\textbf{答案}\ 唯一临界点为 $(0,0)$；类型为\textbf{临界结点}（\EN{proper node}，$g=2$ 的二重特征值 $\lambda=-1$）；零解\textbf{渐近稳定}（\EN{asymptotically stable}）。}
+
+\textbf{自检}\ 取 $(x_0,y_0)=(1,2)$：$x=\mathrm{e}^{-t}$、$y=2\mathrm{e}^{-t}$，恒有 $y=2x$，即轨线是直线 $y=2x$ 的一段，且 $t\to\infty$ 时趋于原点；代回原方程 $x'=-\mathrm{e}^{-t}=-x$、$y'=-2\mathrm{e}^{-t}=-y$，两式成立。
+
+%=====================================================================
+\qpagebreak
+\subhdr{A.3\quad 第 1 题 3)：稳定焦点（\EN{stable focus}）}
+\qstem{（L22--23 作业 第 1 题 3)；讲义《L21--L23 精讲》附录 A.3，第 25 页）\ $x'=-x+2y$，\ $y'=-2x-y$。\textbf{Determine the type of the critical point and study the stability.}}
+\label{ans:a3}
+
+\textbf{考点}\ 共轭复特征值与实值通解；焦点（\EN{focus}）与中心（\EN{center}）的分界；$\tau/2$ 的符号决定螺旋向内还是向外。
+
+\textbf{关键一步}\ 算出 $\tau,\Delta$ 后先看判别式：$D<0$ 说明轨线在旋转；再读 $\tau/2=\alpha$ 的符号。两句话就能定位，不必先解方程。
+
+\textbf{详解}\
+第一步，临界点。$\Delta=(-1)(-1)-2\cdot(-2)=1+4=5\neq0$，唯一临界点是 $(0,0)$。
+
+第二步，三个数：
+\[
+\tau=-1-1=-2,\qquad \Delta=5,\qquad D=\tau^{2}-4\Delta=4-20=-16<0 .
+\]
+特征方程 $\lambda^{2}+2\lambda+5=0$ 的根为
+\[
+\lambda=-1\pm2\mathrm{i},
+\qquad \alpha=-1,\quad \beta=2 .
+\]
+
+第三步，特征向量。对 $\lambda=-1+2\mathrm{i}$，
+\[
+A-\lambda I=\begin{pmatrix}-2\mathrm{i}&2\\-2&-2\mathrm{i}\end{pmatrix},
+\qquad -2\mathrm{i}x+2y=0\ \Longrightarrow\ y=\mathrm{i}x .
+\]
+取 $x=1$ 得 $w=(1,\mathrm{i})^{\mathrm T}=u+\mathrm{i}v$，其中 $u=(1,0)^{\mathrm T}$、$v=(0,1)^{\mathrm T}$。
+
+第四步，写实值解。把 $w\mathrm{e}^{\lambda t}=\mathrm{e}^{\alpha t}(u+\mathrm{i}v)(\cos\beta t+\mathrm{i}\sin\beta t)$ 分成实部与虚部，得到两个实值解
+\[
+\mathrm{e}^{\alpha t}\big(u\cos\beta t-v\sin\beta t\big),
+\qquad
+\mathrm{e}^{\alpha t}\big(u\sin\beta t+v\cos\beta t\big);
+\]
+代入 $u=(1,0)^{\mathrm T}$、$v=(0,1)^{\mathrm T}$ 并取线性组合，通解为
+\[
+x=\mathrm{e}^{-t}\big(c_1\cos2t+c_2\sin2t\big),\qquad
+y=\mathrm{e}^{-t}\big(-c_1\sin2t+c_2\cos2t\big).
+\]
+在 $t=0$ 处 $x=c_1$、$y=c_2$，所以 $c_1,c_2$ 就是初值。
+
+第五步，定类型与稳定性。$\Delta>0$、$D<0$ 说明有旋转；$\tau/2=-1\neq0$ 排除了中心（\EN{center}，那是 $\tau=0$、纯虚特征值的情形），故为\textbf{焦点}（\EN{focus}，也叫螺旋点）。又 $\alpha=-1<0$，于是是\textbf{稳定焦点}。半径满足
+\[
+r(t)=\sqrt{x^{2}+y^{2}}=\mathrm{e}^{-t}\sqrt{c_1^{2}+c_2^{2}}\to0\quad(t\to\infty),
+\]
+角度以角速度 $\beta=2$ 变化；从 $(1,0)$ 出发时 $x'=-1$、$y'=-2<0$，$y$ 在减小，故旋转为\textbf{顺时针}。轨线是顺时针向内卷的螺旋。由定理 5.1(i)，零解\textbf{渐近稳定}。
+
+\callout{\textbf{答案}\ 唯一临界点为 $(0,0)$；类型为\textbf{稳定焦点}（\EN{stable focus}，$\lambda=-1\pm2\mathrm{i}$）；零解\textbf{渐近稳定}（\EN{asymptotically stable}），每单位时间半径乘 $\mathrm{e}^{-1}$、转 $2$ 弧度。}
+
+\textbf{自检}\ 取 $(c_1,c_2)=(1,0)$：$x=\mathrm{e}^{-t}\cos2t$、$y=-\mathrm{e}^{-t}\sin2t$。代第一式
+\[
+x'=-\mathrm{e}^{-t}\cos2t-2\mathrm{e}^{-t}\sin2t,\qquad
+-x+2y=-\mathrm{e}^{-t}\cos2t-2\mathrm{e}^{-t}\sin2t,
+\]
+两边相同；第二式同理。且 $t=0$ 时 $(x,y)=(1,0)$，与取定的初值一致。
+
+%=====================================================================
+\qpagebreak
+\subhdr{A.4\quad 第 2 题：平凡解不稳定（\EN{unstable}）}
+\qstem{（L22--23 作业 第 2 题；讲义《L21--L23 精讲》附录 A.4，第 26 页）\ $x_1'=x_1-x_1^{2}-x_1x_2$，\ $x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}$。\textbf{Investigate the stability of the trivial solution.}}
+\label{ans:a4}
+
+\textbf{考点}\ 平凡解（\EN{trivial solution}）与临界点的关系；雅可比矩阵（\EN{Jacobian matrix}）与线性化（\EN{linearization}）；双曲（\EN{hyperbolic}）条件与线性化定理；为什么本题不需要李雅普诺夫函数。
+
+\textbf{关键一步}\ 先确认 $\mathbf 0$ 确实是临界点（否则“平凡解”无从谈起），再只保留一次项算出 $\Jac(\mathbf 0)$；只要特征值全不为零，线性化定理就直接给出结论，二次项不必再碰。
+
+\textbf{详解}\
+第一步，确认平凡解。把 $x_1=x_2=0$ 代入右端，两个式子都是 $0$，故 $\X(t)\equiv\mathbf 0$ 是解，原点是临界点（\EN{critical point}）。
+
+第二步，线性化。记 $P=x_1-x_1^{2}-x_1x_2$、$Q=0.5x_2-0.75x_1x_2-0.25x_2^{2}$，逐项求偏导：
+\[
+P_{x_1}=1-2x_1-x_2,\quad P_{x_2}=-x_1,\quad
+Q_{x_1}=-0.75x_2,\quad Q_{x_2}=0.5-0.75x_1-0.5x_2 .
+\]
+在原点代入 $x_1=x_2=0$，得
+\[
+\Jac(\mathbf 0)=\begin{pmatrix}1&0\\0&0.5\end{pmatrix}.
+\]
+二次项对一阶偏导在原点没有贡献（$x_1^{2}$ 的偏导含因子 $x_1$，$x_1x_2$ 的偏导是另一个变量），所以 $\Jac(\mathbf 0)$ 恰好就是线性部分的系数矩阵。
+
+第三步，特征值（\EN{eigenvalue}）。对角矩阵，$\lambda_1=1$、$\lambda_2=0.5$，两个都不为零，故原点是\textbf{双曲}临界点（\EN{hyperbolic critical point}），线性化定理适用。
+
+第四步，下结论。$\lambda_1=1>0$，由定理 6.1(b)，平凡解\textbf{不稳定}（\EN{unstable}）。再由定理 6.2（\EN{Hartman--Grobman}），原点邻域的相图（\EN{phase portrait}）与线性系统 $\U'=\operatorname{diag}(1,\,0.5)\U$ 拓扑等价（\EN{topologically equivalent}），故线性化类型为\textbf{不稳定结点}（\EN{unstable node}）：$x_1$ 方向按 $\mathrm{e}^{t}$ 快增长、$x_2$ 方向按 $\mathrm{e}^{0.5t}$ 慢增长，轨线离开原点后沿 $x_1$ 轴（快方向）延伸，靠近原点时与 $x_2$ 轴（慢方向）相切。
+
+第五步，说明不必用第二方法。特征值非零，定理 6.1 已把结论定死；李雅普诺夫函数（\EN{Lyapunov function}）只在非双曲情形（例如特征值为 $\pm\mathrm{i}$）才是必需的工具，这里用了也不能加强结论。
+
+\callout{\textbf{答案}\ 平凡解 $\X\equiv\mathbf 0$ \textbf{不稳定}（\EN{unstable}，既非稳定也非渐近稳定）；$\Jac(\mathbf 0)=\operatorname{diag}(1,\,0.5)$，$\lambda=1,\ 0.5$ 皆正且非零，故线性化类型为不稳定结点。}
+
+\textbf{自检}\ 取初值 $(0.01,\,0)$：此时 $x_2\equiv0$，方程组退化为逻辑斯蒂方程（\EN{logistic equation}）$x_1'=x_1(1-x_1)$，其解
+\[
+x_1(t)=\frac{1}{1+99\,\mathrm{e}^{-t}}
+\]
+从 $0.01$ 单调增到 $1$——确实离开了原点（到原点的距离趋于 $1$），最后停在另一个临界点 $(1,0)$（该点线性化特征值为 $-1$、$-0.25$，本身渐近稳定）。所以“不稳定”只是“离开原点”，并不等于“跑向无穷”。
+
+\flowerrule
+
+{\small\color{inkgray}附注：原点不是本题唯一的临界点。解 $P=Q=0$ 还得到 $(1,0)$、$(0,2)$、$(\tfrac12,\tfrac12)$；题目只问平凡解，故正文只对原点作线性化。}
+
+\end{document}

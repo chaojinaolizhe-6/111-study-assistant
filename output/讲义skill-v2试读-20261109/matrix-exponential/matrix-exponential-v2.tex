@@ -1,0 +1,1559 @@
+%=====================================================================
+%  矩阵指数：从定义到三种计算方法
+%  Lecture 16--17 全范围精讲（新版主题，2026-11-09 试读）
+%  依据：subjects/03-微分方程/课件/16_17_matrix_exponential.pdf（44 页）
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+% Local safeguards keep short headings and practice blocks with their content.
+\let\basesubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{8\baselineskip}\basesubhdr{#1}}
+\let\basehdr\hdr
+\renewcommand{\hdr}[2]{\needspace{11\baselineskip}\basehdr{#1}{#2}}
+\let\baseanswerstart\answerstart
+\renewcommand{\answerstart}[3]{\needspace{16\baselineskip}\baseanswerstart{#1}{#2}{#3}}
+\let\basepractice\practice
+\renewcommand{\practice}[5]{\par\medskip\noindent\begin{minipage}{\linewidth}\basepractice{#1}{#2}{#3}{#4}{#5}\end{minipage}\par\medskip}
+
+\settags{L16--17 矩阵指数}{微分方程}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\ee}{\mathrm{e}}
+
+\begin{document}
+
+\doctitle{矩阵指数：从定义到三种计算方法}%
+{ Lecture 16--17 全范围精讲 }%
+{依据：课件 \texttt{16\_17\_matrix\_exponential.pdf}（44 页，2026-10-13，W.Y., DLUT）\\
+本讲义引用的课件页码均为物理 PDF 页序（含标题与分隔页），不按页脚编号换算\\
+正文例 1--8 作教学示范跟随正文；作业 1--3 为独立练习，详解见附录 A}
+
+\callout{\textbf{本讲要解决的问题。}给定常矩阵 $A$ 与一阶线性方程组
+\[
+\vect{Y}'(x)=A\vect{Y}(x),\qquad \vect{Y}(x_0)=\vect{Y}_0,
+\]
+能不能用一个\textbf{矩阵}把解写出来？能，这个矩阵就是 $\ee^{Ax}$。它的定义只用到 $A$ 的幂与 $x$ 的幂，因此对相异实谱、复谱、重根谱一视同仁；但真要把它的元素算出来，级数并不好用。本讲给三条计算路线：对角化（§3）、Cayley--Hamilton 降阶（§4）、基本解矩阵（§5），并在 §6 给出选路与自检方法。}
+
+%=====================================================================
+\hdr{§0}{读法与记号}
+
+\subhdr{0.1 三条路线一页看}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.19\linewidth}p{0.24\linewidth}p{0.37\linewidth}p{0.10\linewidth}@{}}
+\thead{路线} & \thead{前提} & \thead{得到什么} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.19\linewidth}p{0.24\linewidth}p{0.37\linewidth}p{0.10\linewidth}@{}}
+级数定义 & 无 & $\ee^{Ax}=\sum A^kx^k/k!$，证明它给出全部解 & p3--p6\\
+对角化 & 每个特征值 $g_j=m_j$ & $\ee^{Ax}=V\ee^{\Lambda x}V^{-1}$ & p8--p15\\
+Cayley--Hamilton & 无 & $\ee^{Ax}=r_x(A)$，$\deg r_x\le n-1$ & p16--p38\\
+基本解矩阵 & 已有一组解 & $\ee^{Ax}=\Phi(x)\Phi^{-1}(0)$ & p39--p43\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表只是路线台账，不承载推导；每一行的条件、算法与适用范围在对应小节展开。
+
+\needspace{16\baselineskip}
+\subhdr{0.2 记号约定}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.18\linewidth}p{0.74\linewidth}@{}}
+\thead{记号} & \thead{含义}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.18\linewidth}p{0.74\linewidth}@{}}
+$A$ & $n\times n$ 常矩阵；除特别声明外取实矩阵，复情形会单独说明\\
+$E$ & $n$ 阶单位矩阵（课件用 $E$，等价于常见的 $I$）\\
+$\vect{Y}$ & $n$ 维列向量；$\vect{Y}'=A\vect{Y}$ 是 $n$ 个未知函数的一阶组\\
+$\mu_j$ & $A$ 的特征值；$m_j$ 是它的代数重数，$g_j$ 是几何重数\\
+$\lambda_j$ & 矩阵 $Ax$ 的特征值，$\lambda_j=x\mu_j$\\
+$\Delta(\mu)$ & 特征多项式 $\det(\mu E-A)$，首项系数为 $1$\\
+$\norm{A}$ & 行和范数 $\max_i\sum_j|a_{ij}|$，用于级数收敛估计\\
+$r_x(\mu)$ & Cayley--Hamilton 路线中次数不超过 $n-1$ 的插值多项式\\
+$\Phi(x)$ & 基本解矩阵，列为基本解组\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\aside{课件 p22 与 p29 把 $\lambda_i$ 明确写成“矩阵 $Ax$ 的特征值”，p29 还加了“(not $A$)”。本讲义把 $A$ 的特征值记 $\mu_j$、把 $Ax$ 的特征值记 $\lambda_j=x\mu_j$，两者不再混用。p23 的 Remark 简写成“eigenvalues of $A$”，属于记号不严，不是漏讲。}
+
+\subhdr{0.3 全篇地图}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.13\linewidth}p{0.58\linewidth}p{0.18\linewidth}@{}}
+\thead{本讲义} & \thead{内容} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.13\linewidth}p{0.58\linewidth}p{0.18\linewidth}@{}}
+§1 & 矩阵指数的定义、收敛、为什么是解、初值问题 & p3--p6\\
+§2 & 五条性质、对易性、特征向量映射、行列式 & p7\\
+§3 & 重数 $m$ 与 $g$、对角化、例 1 & p8--p15\\
+§4 & Cayley--Hamilton：降阶、谱条件、例 2--8 & p16--p38\\
+§5 & 基本解矩阵及其与 $\ee^{Ax}$ 的关系 & p39--p43\\
+§6 & 选路、自检清单 & 全篇\\
+§7 & 覆盖表、缺口、原课件印刷疑点、与旧稿差异 & 全篇\\
+附录 A & 作业 1--3 详解 & p44\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=====================================================================
+\hdr{§1}{矩阵指数是什么}
+
+\subhdr{1.1 从标量指数到矩阵指数（p4）}
+
+先看标量初值问题，其中撇号表示对自变量 $x$ 求导：
+\[
+y'=ay,\qquad y(0)=y_0
+\]
+（$a$ 为常数）的解是 $y(x)=y_0\ee^{ax}$。矩阵情形
+\[
+\vect{Y}'=A\vect{Y},\qquad \vect{Y}(0)=\vect{Y}_0
+\]
+能不能照抄成 $\vect{Y}=\ee^{Ax}\vect{Y}_0$？可以，但先要把 $\ee^{Ax}$ 定义成一个 $n\times n$ 矩阵，而不是数。
+
+先看几个最小的情形，把“对象是什么”分清。
+
+\begin{itemize}
+  \item $n=1$ 时 $A=(a)$ 是 $1\times1$ 矩阵，$\ee^{Ax}$ 就是数 $\ee^{ax}$，矩阵乘法退化为数乘。这是标量公式的嵌入，不是新东西。
+  \item $A=\diag(a,b)$ 时，$A^k=\diag(a^k,b^k)$，逐项求和得
+  \[
+  \ee^{Ax}=\diag(\ee^{ax},\ee^{bx}).
+  \]
+  例如 $A=\diag(1,2)$、$\vect{Y}_0=(1,1)^{\mathsf T}$，则
+  \[
+  \vect{Y}(x)=\ee^{Ax}\vect{Y}_0=\mat{\ee^{x}\\\ee^{2x}}.
+  \]
+  这里 $\ee^{Ax}$ 是 $2\times2$ 矩阵，$\vect{Y}$ 才是向量。
+  \item $A=\mat{0&1\\0&0}$ 满足 $A^2=0$，所以级数从第三项起全为零：
+  \[
+  \ee^{Ax}=E+Ax=\mat{1&x\\0&1}.
+  \]
+  这个例子说明 $\ee^{Ax}$ 的元素可以是 $x$ 的多项式，不必都含指数。
+\end{itemize}
+
+\textbf{一句话}：$\ee^{Ax}$ 接收“矩阵 $A$ 与标量 $x$”，返回一个 $n\times n$ 矩阵；$\ee^{Ax}\vect{Y}_0$ 才是方程的解向量。
+
+\subhdr{1.2 级数定义与收敛（p5，定理 1.1）}
+
+对 $n\times n$ 常矩阵 $A$，定义
+\begin{equation}
+\ee^{Ax}=E+Ax+\frac{A^2x^2}{2!}+\cdots+\frac{A^kx^k}{k!}+\cdots
+=\sum_{k=0}^{\infty}\frac{A^kx^k}{k!},
+\qquad A^0=E .
+\label{eq:def}
+\end{equation}
+课件说这个级数收敛。下面把“收敛”说具体，因为后面逐项求导要用到它。
+
+\warnbox{\textbf{先把范数说清楚。}对矩阵 $B=(b_{ij})$ 定义行和范数
+\[
+\norm{B}=\max_{1\le i\le n}\sum_{j=1}^{n}|b_{ij}| .
+\]
+它满足三条常用性质：
+\begin{enumerate}
+  \item $\norm{B+C}\le\norm{B}+\norm{C}$，$\norm{cB}=|c|\,\norm{B}$；
+  \item \textbf{次乘性}：$\norm{BC}\le\norm{B}\,\norm{C}$；
+  \item $\norm{E}=1$，从而 $\norm{B^k}\le\norm{B}^k$。
+\end{enumerate}
+次乘性的验证：设 $C=AB$，则对每一行 $i$，
+\[
+\sum_j|c_{ij}|
+=\sum_j\Bigl|\sum_k a_{ik}b_{kj}\Bigr|
+\le\sum_j\sum_k|a_{ik}||b_{kj}|
+=\sum_k|a_{ik}|\sum_j|b_{kj}|
+\le\norm{B}\sum_k|a_{ik}|
+\le\norm{B}\,\norm{A},
+\]
+对 $i$ 取最大即得。本段估计使用上述行和范数。换用 Frobenius 范数也能证明收敛，但须注意 $\norm{E}_{F}=\sqrt n$，不能照搬 $\norm{E}=1$；有限维空间上各范数等价，因此收敛性不依赖范数选择。}
+
+有了次乘性，对任意 $x$，
+\[
+\left\|\frac{A^kx^k}{k!}\right\|
+\le\frac{\norm{A}^k|x|^k}{k!},
+\]
+右端是标量指数级数 $\ee^{\norm{A}|x|}$ 的通项，对每个 $x$ 都收敛。于是矩阵级数在范数意义下绝对收敛：
+\[
+\sum_{k=0}^{\infty}\left\|\frac{A^kx^k}{k!}\right\|<\infty .
+\]
+范数收敛推出每个元素绝对收敛（因为 $|b_{ij}|\le\norm{B}$），所以 \eqref{eq:def} 对每个实数 $x$ 都有定义，且在任何有界区间上一致收敛。
+
+\aside{这里用到的“范数收敛 $\Rightarrow$ 元素收敛”是有限维空间的性质；不需要逐元素重新估计。后面 §1.3 的逐项求导还要再用一次次乘性。}
+
+\subhdr{1.3 它为什么是解（p5）}
+
+把 $\vect{Y}=\ee^{Ax}\vect{C}$ 代入方程，需要算 $\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}$。直观上，逐项求导：
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\sum_{k=0}^{\infty}\frac{A^kx^k}{k!}
+=\sum_{k=1}^{\infty}\frac{kA^kx^{k-1}}{k!}
+=\sum_{k=1}^{\infty}\frac{A^kx^{k-1}}{(k-1)!}
+=A\sum_{j=0}^{\infty}\frac{A^jx^j}{j!}
+=A\ee^{Ax}.
+\]
+最后一步把 $k-1$ 改记为 $j$，并用 $A^k=AA^{k-1}$。注意这里始终是同一个 $A$ 的幂，不涉及两个不同矩阵的乘法顺序。
+
+\textbf{严格性说明（选读）}：仅知道原级数一致收敛，还不足以断言可以逐项求导；需要导数级数也一致收敛。对 $|x|\le R$，
+\[
+\left\|\frac{kA^kx^{k-1}}{k!}\right\|
+=\left\|\frac{A^kx^{k-1}}{(k-1)!}\right\|
+\le\frac{\norm{A}^kR^{k-1}}{(k-1)!}
+=\norm{A}\,\frac{(\norm{A}R)^{k-1}}{(k-1)!},
+\]
+右端对 $k$ 求和收敛（指数级数），故导数级数在 $[-R,R]$ 上一致收敛。原级数在 $x=0$ 收敛，导数级数在每个有界区间一致收敛，由幂级数逐项求导定理，$\ee^{Ax}$ 可导且导数等于逐项求导的结果。$R$ 任意，所以对一切 $x$ 成立。
+
+于是
+\[
+\bigl(\ee^{Ax}\vect{C}\bigr)'-A\ee^{Ax}\vect{C}=0
+\]
+对任意常向量 $\vect{C}$ 成立，$\vect{Y}=\ee^{Ax}\vect{C}$ 是解。
+
+\subhdr{1.4 通解与初值问题（p5--p6）}
+
+上式只说明“$\ee^{Ax}\vect{C}$ 是解”。要说明它给出\textbf{全部}解，用初值问题的唯一性：设 $\vect{Y}(x)$ 是任一解，令 $\vect{C}=\vect{Y}(0)$，则 $\vect{Z}(x)=\ee^{Ax}\vect{C}$ 与 $\vect{Y}$ 满足同一个初值问题
+\[
+\vect{Z}'=A\vect{Z},\quad \vect{Z}(0)=\vect{C}=\vect{Y}(0).
+\]
+线性方程组的初值问题在给定区间上解唯一（L13 已建立），所以 $\vect{Z}=\vect{Y}$。因此
+\[
+\vect{Y}(x)=\ee^{Ax}\vect{C},\qquad \vect{C}\in\R^n
+\]
+是通解，且 $\vect{C}=\vect{Y}(0)$。
+
+若初值给在 $x_0$，把 $x_0$ 代入通解得 $\vect{C}=\ee^{-Ax_0}\vect{Y}_0$，于是
+\[
+\vect{Y}(x)=\ee^{Ax}\ee^{-Ax_0}\vect{Y}_0
+=\ee^{A(x-x_0)}\vect{Y}_0 .
+\]
+这一步用了同一矩阵的指数可合并：$\ee^{At}\ee^{As}=\ee^{A(t+s)}$（§2）。直接核对：$x=x_0$ 时 $\ee^{A\cdot0}=E$；对 $x$ 求导得 $A\ee^{A(x-x_0)}\vect{Y}_0$，满足方程。
+
+\subhdr{1.5 级数为什么不拿来算（p6 末句、p17）}
+
+$\ee^{Ax}$ 的元素是无穷级数，逐项算不现实；而且级数把 $A$ 的所有幂都混在一起，看不出与特征值的关系。后面三条路线做的是同一件事：把无穷级数换成有限表达式。
+\begin{itemize}
+  \item 对角化把 $\ee^{Ax}$ 换成 $n$ 个指数 $\ee^{\mu_jx}$ 与两个矩阵的乘积；
+  \item Cayley--Hamilton 把它换成 $E,A,\dots,A^{n-1}$ 的线性组合，系数由谱条件定；
+  \item 基本解矩阵直接跳过级数，用已经求出的一组解拼出 $\ee^{Ax}$。
+\end{itemize}
+
+%=====================================================================
+\hdr{§2}{性质：能直接用的几条}
+
+\subhdr{2.1 五条基本性质（p7，性质 1.1）}
+
+设 $A,B$ 为 $n\times n$ 矩阵，$r,s,t$ 为实数（或复数）。课件给出：
+\begin{enumerate}
+  \item $\ee^{A\cdot0}=E$。在 \eqref{eq:def} 中令 $x=0$，只剩 $k=0$ 项。
+  \item $\ee^{At}\ee^{As}=\ee^{A(t+s)}$。把两个级数相乘，用同一个 $A$ 的幂可合并：
+  \[
+  \ee^{At}\ee^{As}
+  =\sum_{n=0}^{\infty}A^n\sum_{k=0}^{n}\frac{t^k s^{n-k}}{k!(n-k)!}
+  =\sum_{n=0}^{\infty}\frac{A^n(t+s)^n}{n!}
+  =\ee^{A(t+s)}.
+  \]
+  中间用了二项式定理；因为始终是同一个 $A$ 的幂，$A^kA^{n-k}=A^n$，不需要额外的对易条件。
+  \item 若 $AB=BA$，则 $\ee^{A+B}=\ee^{A}\ee^{B}$。证明同样是把 $(A+B)^n$ 二项展开；对易条件保证展开式中的交叉项可以合并。若 $AB\ne BA$，这一步不成立，见 §2.2。
+  \item $\ee^{-At}=(\ee^{At})^{-1}$。在性质 2 中令 $s=-t$，得 $\ee^{At}\ee^{-At}=E$。
+  \item $\ee^{rtE}=\ee^{rt}E$。因为 $(rtE)^k=(rt)^kE$，级数每一项都带 $E$，求和得标量指数乘 $E$。
+\end{enumerate}
+
+\subhdr{2.2 对易性：充分条件，不是随便就能拆（p7）}
+
+课件的第 3 条是“若 $AB=BA$，则 $\ee^{A+B}=\ee^{A}\ee^{B}$”。这句话的方向要读准：\textbf{对易是拆开指数的充分条件}；不对易时，一般不能这样拆，但也不能反过来说“只要不对易，对任何具体的 $A,B$ 都一定不相等”。作为计算规则，安全的说法是：
+
+\begin{itemize}
+  \item 若已知 $AB=BA$，可以放心拆；
+  \item 若只知道 $AB\ne BA$，默认不能拆，除非另作验证。
+\end{itemize}
+
+给一个最小反例。取
+\[
+A=\mat{0&1\\0&0},\qquad B=\mat{0&0\\1&0}.
+\]
+则
+\[
+AB=\mat{1&0\\0&0},\qquad BA=\mat{0&0\\0&1},\qquad AB\ne BA.
+\]
+又 $A^2=B^2=0$，所以
+\[
+\ee^{A}=E+A=\mat{1&1\\0&1},\qquad
+\ee^{B}=E+B=\mat{1&0\\1&1},
+\]
+\[
+\ee^{A}\ee^{B}=\mat{1&1\\0&1}\mat{1&0\\1&1}=\mat{2&1\\1&1}.
+\]
+另一方面 $A+B=\mat{0&1\\1&0}$，$(A+B)^2=E$，于是
+\[
+\ee^{A+B}=\cosh(1)E+\sinh(1)(A+B)
+=\mat{\cosh1&\sinh1\\\sinh1&\cosh1}
+\approx\mat{1.5431&1.1752\\1.1752&1.5431}.
+\]
+\textbf{对易性反例的结论：}$\ee^A\ee^B$ 与 $\ee^{A+B}$ 两个结果不相等（$(1,1)$ 元素 $2\ne1.5431$）。所以“不对易也照拆”会出错。
+
+\aside{\textbf{一个容易过度概括的地方。}如果要求对一切实数 $t$ 都有 $\ee^{t(A+B)}=\ee^{tA}\ee^{tB}$，在 $t=0$ 处对 $t$ 求两次导数，左边给 $(A+B)^2$，右边给 $A^2+2AB+B^2$，比较得 $AB=BA$。所以在“对所有时间成立”的版本里，对易也是必要的。但课件只把它写成固定 $A,B$ 的充分条件；本讲义也按充分条件使用，不把“必须对易”当作对某一对矩阵的断言。}
+
+\subhdr{2.3 特征向量映到特征向量（p7，性质 1.2）}
+
+课件写的是 $\ee^{A}$：若 $A\vect{V}=\mu\vect{V}$，则 $\ee^{A}\vect{V}=\ee^{\mu}\vect{V}$。对 $\ee^{Ax}$ 同样有
+\[
+\ee^{Ax}\vect{V}
+=\sum_{k=0}^{\infty}\frac{A^kx^k}{k!}\vect{V}
+=\sum_{k=0}^{\infty}\frac{\mu^kx^k}{k!}\vect{V}
+=\ee^{\mu x}\vect{V}.
+\]
+中间用了 $A^k\vect{V}=\mu^k\vect{V}$：每作用一次 $A$ 提出一个 $\mu$。因此 $\vect{V}$ 仍是 $\ee^{Ax}$ 的特征向量，特征值从 $\mu$ 变成 $\ee^{\mu x}$。课件 p7 的 $\ee^{A}$ 是 $x=1$ 的情形。
+
+最小核对：$A=\diag(2,3)$、$\vect{V}=(1,0)^{\mathsf T}$，则
+\[
+\ee^{Ax}\vect{V}=\mat{\ee^{2x}&0\\0&\ee^{3x}}\mat{1\\0}=\ee^{2x}\mat{1\\0}.
+\]
+
+\warnbox{\textbf{不要把特征值写成“$1,\ee^{\lambda_1x},\dots$”。}对 $n\times n$ 矩阵 $A$，$\ee^{Ax}$ 有 $n$ 个特征值（按代数重数计），就是 $\ee^{\mu_1x},\dots,\ee^{\mu_nx}$，其中 $\mu_j$ 是 $A$ 的特征值。是否出现 $1$，要看是否有 $\ee^{\mu_jx}=1$：$x=0$ 时所有特征值都是 $1$；复特征值还可能因周期性给出 $1$（如例 5 在 $x=2\pi$ 时）。只有在 $x\ne0$ 且 $\mu_j$ 为实数时，$\ee^{\mu_jx}=1$ 才等价于 $\mu_j=0$。}
+
+\subhdr{2.4 行列式与逆（可由性质推出）}
+
+由特征值映射可得
+\[
+\det\ee^{Ax}=\prod_{j=1}^{n}\ee^{\mu_jx}=\ee^{x\sum_j\mu_j}=\ee^{x\tr A}.
+\]
+推导要点（选读）：在 $\C$ 上可选可逆矩阵 $S$，使 $A=STS^{-1}$，其中 $T$ 为上三角矩阵，对角元为 $\mu_j$。由幂级数有 $\ee^{Ax}=S\ee^{Tx}S^{-1}$；$\ee^{Tx}$ 为上三角矩阵，对角元为 $\ee^{\mu_jx}$。相似矩阵的行列式相同，因此得到上式。特别地 $\det\ee^{Ax}\neq0$，所以 $\ee^{Ax}$ 总可逆，且
+\[
+(\ee^{Ax})^{-1}=\ee^{-Ax}.
+\]
+这条可以当自检：算出 $\ee^{Ax}$ 后，检查 $\det$ 是否等于 $\ee^{x\tr A}$。例如例 1 的 $A$ 满足 $\tr A=2$，最终 $\det\ee^{Ax}$ 应为 $\ee^{2x}$。
+
+\subhdr{2.5 常见误用}
+
+\begin{enumerate}
+  \item 把 $\ee^{Ax}$ 当成数去和向量“约分”。本讲的未知量是列向量，$\ee^{Ax}\vect{Y}_0$ 按维数次序左乘；不能按标量规则约分。
+  \item 把 $\ee^{A+B}$ 直接拆成 $\ee^{A}\ee^{B}$ 而不检查 $AB=BA$。
+  \item 把“$AB\ne BA$”反推成“对这对 $A,B$ 一定不相等”。本讲义只说“一般不能拆”，反例用于说明不能无条件拆。
+  \item 把 $\ee^{Ax}$ 的特征值写成含 $1$ 的三个数。按重数计，特征值是 $\ee^{\mu_jx}$。
+  \item 把 $\ee^{A}$ 的性质 1.2 直接当成 $\ee^{Ax}$ 的特征值公式而不补 $x$。补法是：$\ee^{Ax}\vect{V}=\ee^{\mu x}\vect{V}$。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§3}{路线一：对角化}
+
+\subhdr{3.1 代数重数 $m$ 与几何重数 $g$（p8--p9）}
+
+设 $\mu_j$ 是 $A$ 的特征值。两个“重数”要分清：
+
+\begin{itemize}
+  \item \textbf{代数重数} $m_j$：$\mu_j$ 作为特征多项式 $\Delta(\mu)=\det(\mu E-A)$ 的根的重数，即
+  \[
+  \Delta(\mu)=(\mu-\mu_1)^{m_1}\cdots(\mu-\mu_s)^{m_s},\qquad m_1+\cdots+m_s=n .
+  \]
+  \item \textbf{几何重数} $g_j$：特征子空间 $\ker(A-\mu_jE)$ 的维数，即可独立选取的特征向量个数：
+  \[
+  g_j=\dim\ker(A-\mu_jE)=n-\rank(A-\mu_jE).
+  \]
+\end{itemize}
+
+总有 $1\le g_j\le m_j$。$A$ 可对角化（在 $\C$ 上）当且仅当每个特征值都满足 $g_j=m_j$，等价于 $A$ 有 $n$ 个线性无关的特征向量；这时把特征向量按列排成 $V$，$V$ 可逆，且
+\[
+V^{-1}AV=\Lambda=\diag(\underbrace{\mu_1,\dots,\mu_1}_{m_1},\dots).
+\]
+若 $A$ 是实矩阵但有复特征值，$V$ 与 $\Lambda$ 一般是复矩阵；这一步在 $\C$ 上做，最后 $\ee^{Ax}$ 仍是实矩阵（共轭项成对抵消）。
+
+\warnbox{\textbf{同一个重数，几何可以不同。}两个 $2\times2$ 矩阵都有二重特征值 $1$：
+\[
+A_1=\mat{1&0\\0&1},\qquad A_2=\mat{1&1\\0&1}.
+\]
+对 $A_1$：$m=2$，$A_1-E=0$，$\rank=0$，$g=2$，可对角化。
+对 $A_2$：$m=2$，$A_2-E=\mat{0&1\\0&0}$，$\rank=1$，$g=1$，不可对角化。
+两者的 $\ee^{Ax}$ 也不同：
+\[
+\ee^{A_1x}=\ee^{x}E,\qquad
+\ee^{A_2x}=\ee^{x}(E+x(A_2-E))=\ee^{x}\mat{1&x\\0&1}.
+\]
+所以“知道特征值”还不够；重根时要知道几何重数，或者直接用 §4 的 Cayley--Hamilton 方法。}
+
+\subhdr{3.2 从 $A=V\Lambda V^{-1}$ 到 $V\ee^{\Lambda x}V^{-1}$（p10--p11）}
+
+设 $A=V\Lambda V^{-1}$，$V$ 的列是特征向量。先算幂：
+\[
+A^k=(V\Lambda V^{-1})(V\Lambda V^{-1})\cdots(V\Lambda V^{-1})
+=V\Lambda^kV^{-1},
+\]
+中间相邻的 $V^{-1}V$ 逐个抵消。这一步对任意 $k\ge0$ 成立（$k=0$ 时约定 $\Lambda^0=E$）。代进级数：
+\[
+\ee^{Ax}
+=\sum_{k=0}^{\infty}\frac{A^kx^k}{k!}
+=V\Bigl(\sum_{k=0}^{\infty}\frac{\Lambda^kx^k}{k!}\Bigr)V^{-1}
+=V\ee^{\Lambda x}V^{-1}.
+\]
+因为 $\Lambda$ 是对角矩阵，$\Lambda^k=\diag(\mu_1^k,\dots,\mu_n^k)$，逐项求和得
+\[
+\ee^{\Lambda x}=\diag(\ee^{\mu_1x},\dots,\ee^{\mu_nx}).
+\]
+于是
+\begin{equation}
+\boxed{\ \ee^{Ax}=V\,\diag(\ee^{\mu_1x},\dots,\ee^{\mu_nx})\,V^{-1}\ }.
+\label{eq:diag}
+\end{equation}
+
+这个推导只用到 $V$ 可逆与 $A$ 的幂；不需要 $A$ 对称，也不要求特征值相异，只要求每个 $g_j=m_j$（这样才有 $n$ 个独立特征向量）。
+
+\subhdr{3.3 通解与初值问题（p12、p15）}
+
+把 \eqref{eq:diag} 代进通解，并令 $\vect{K}=V^{-1}\vect{C}=(k_1,\dots,k_n)^{\mathsf T}$：
+\[
+\vect{Y}=\ee^{Ax}\vect{C}=V\ee^{\Lambda x}\vect{K}
+=\sum_{i=1}^{n}k_i\vect{V}_i\ee^{\mu_ix}.
+\]
+这里 $\vect{C}=\vect{Y}(0)$，而 $\vect{K}$ 是它在特征向量基中的坐标，两个常向量不能直接视为同一个。
+若同一个特征值 $\mu_j$ 有 $m_j$ 个独立特征向量，令 $I_j$ 表示这一组的向量指标，则
+\[
+\vect{Y}=\sum_{j=1}^{s}\ee^{\mu_jx}\sum_{i\in I_j}k_i\vect{V}_i,
+\]
+
+
+初值问题 $\vect{Y}(x_0)=\vect{Y}_0$ 的解是
+\[
+\vect{Y}(x)=V\ee^{\Lambda(x-x_0)}V^{-1}\vect{Y}_0
+=\ee^{A(x-x_0)}\vect{Y}_0 .
+\]
+课件 p15 的 IVP 一行印成 $V\ee^{\Lambda x}V^{-1}\vect{Y}_0$，漏了平移 $x-x_0$。核对方法：在该式令 $x=x_0$，得 $V\ee^{\Lambda x_0}V^{-1}\vect{Y}_0$；$x_0\ne0$ 时该式一般不满足给定初值，不能保证对任意 $\vect{Y}_0$ 都成立；须用上面的平移形式。正确形式在课件 p12 已给出，p15 是排版遗漏。本讲义按 $x-x_0$ 写。
+
+\aside{课件 p12 按特征值分组展开，第一组的各项共同乘 $\ee^{\lambda_1x}$，再写其余组；省略号须连同重数范围一起读。若第一组只有一个向量，该组就只有一项，不应把模板中的第二项另当成确定的错误。本讲义用上面的 $I_j$ 指标集把分组范围写明。}
+
+\needspace{16\baselineskip}
+\subhdr{3.4 例 1：三阶相异实谱（p13--p15）}
+\label{ex:1:start}
+
+\qbreak\qstem{（课件 p13--p15 例 1）设
+\[
+A=\mat{1&-1&1\\1&1&-1\\2&-1&0},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+\textbf{第一步：特征值与特征向量。}特征多项式
+\[
+\Delta(\mu)=\det(\mu E-A)=(\mu-2)(\mu-1)(\mu+1),
+\]
+三个特征值 $2,1,-1$ 都是单根，所以 $g_j=m_j=1$，可对角化。特征向量取
+\[
+\vect{V}_1=\mat{1\\0\\1}\ (\mu=2),\qquad
+\vect{V}_2=\mat{1\\1\\1}\ (\mu=1),\qquad
+\vect{V}_3=\mat{-1\\3\\5}\ (\mu=-1).
+\]
+逐一代入可验：$A\vect{V}_1=2\vect{V}_1$，$A\vect{V}_2=\vect{V}_2$，$A\vect{V}_3=-\vect{V}_3$。
+
+\textbf{第二步：$V$、$\Lambda$ 与 $V^{-1}$。}按列排
+\[
+V=\mat{1&1&-1\\0&1&3\\1&1&5},\qquad
+\Lambda=\mat{2&0&0\\0&1&0\\0&0&-1},
+\]
+$\det V=6$。求逆得
+\[
+V^{-1}=\mat{\frac13&-1&\frac23\\[2pt]\frac12&1&-\frac12\\[2pt]-\frac16&0&\frac16}.
+\]
+\textbf{例 1（续）：逆矩阵与指数。}仍取上页的特征向量矩阵 $V$，其列对应特征值 $2,1,-1$。\par
+\textbf{与课件 p14 的差异}：课件把 $V^{-1}$ 的 $(1,2)$ 元素印成 $0$。用 $VV^{-1}=E$ 核对：$V$ 的第一行 $(1,1,-1)$ 与“错版”第二列 $(0,1,0)^{\mathsf T}$ 相乘得 $1$，而单位矩阵的 $(1,2)$ 元素是 $0$，矛盾。正确值是 $-1$。这个错误会直接影响乘积，不能照抄。
+
+\textbf{第三步：写出 $\ee^{Ax}$。}由 \eqref{eq:diag}，
+\[
+\ee^{Ax}=V\mat{\ee^{2x}&0&0\\0&\ee^{x}&0\\0&0&\ee^{-x}}V^{-1}.
+\]
+\needspace{13\baselineskip}
+\textbf{例 1（续）：展开指数。}已取 $V=\left(\begin{smallmatrix}1&1&-1\\0&1&3\\1&1&5\end{smallmatrix}\right)$，三列对应 $2,1,-1$。把列与 $V^{-1}$ 的行配对，可写成三个秩一矩阵之和：
+\begin{align*}
+\ee^{Ax}={}&\ee^{2x}\mat{\frac13&-1&\frac23\\0&0&0\\\frac13&-1&\frac23}
++\ee^{x}\mat{\frac12&1&-\frac12\\[2pt]\frac12&1&-\frac12\\[2pt]\frac12&1&-\frac12}\\
+&+\ee^{-x}\mat{\frac16&0&-\frac16\\[2pt]-\frac12&0&\frac12\\[2pt]-\frac56&0&\frac56}.
+\end{align*}
+每个矩阵是 $\vect{V}_i$ 乘 $V^{-1}$ 的第 $i$ 行（秩一）。例如 $(1,1)$ 元素为
+\[
+\frac{\ee^{2x}}{3}+\frac{\ee^{x}}{2}+\frac{\ee^{-x}}{6}
+=\frac{2\ee^{2x}+3\ee^{x}+\ee^{-x}}{6}.
+\]
+
+\textbf{第四步：通解与初值。}
+\[
+\vect{Y}(x)=\ee^{Ax}\vect{C}
+=k_1\mat{1\\0\\1}\ee^{2x}+k_2\mat{1\\1\\1}\ee^{x}+k_3\mat{-1\\3\\5}\ee^{-x},
+\]
+其中 $(k_1,k_2,k_3)^{\mathsf T}=V^{-1}\vect{C}$。初值解为 $\vect{Y}(x)=V\ee^{\Lambda(x-x_0)}V^{-1}\vect{Y}_0$。
+
+\textbf{核对（对一切 $x$，不只在 $x=0$）}：由 \eqref{eq:diag}，
+\[
+\ee^{Ax}\big|_{x=0}=VEV^{-1}=E,\qquad
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=V\Lambda\ee^{\Lambda x}V^{-1}
+=A\,V\ee^{\Lambda x}V^{-1}=A\ee^{Ax},
+\]
+因为 $V\Lambda V^{-1}=A$。所以 $F(0)=E$ 与 $F'=AF$ 都由构造直接成立。此外脚本对三个秩一矩阵逐项求和后的 $3\times3$ 矩阵做了全式符号核验，结果一致。
+
+%=====================================================================
+\label{ex:1:end}
+\hdr{§4}{路线二：Cayley--Hamilton}
+
+\subhdr{4.1 Cayley--Hamilton 定理（p17）}
+
+设
+\[
+\Delta(\mu)=\det(\mu E-A)=\mu^n+c_{n-1}\mu^{n-1}+\cdots+c_1\mu+c_0
+\]
+是 $A$ 的特征多项式（取首一版本）。Cayley--Hamilton 定理说
+\[
+\Delta(A)=A^n+c_{n-1}A^{n-1}+\cdots+c_1A+c_0E=[0].
+\]
+也就是说，$A$ 满足自己的特征多项式。这条定理把 $A^n$ 用低次幂表示，是整条路线的起点。
+
+\aside{课件 p17 写 $\det(A-\lambda E)=b_n\lambda^n+\cdots+b_0$。它与 $\det(\lambda E-A)$ 只差因子 $(-1)^n$，根相同，且 $\Delta(A)=[0]$ 不受影响。本讲义取首一版本，做多项式除法时余式更直接。p20 的例 2 是 $2\times2$，两种写法完全一样。}
+
+\needspace{10\baselineskip}
+\subhdr{4.2 多项式降阶（p19）与例 2（p20）}
+\label{ex:2:start}
+
+对任意多项式 $p$，做带余除法
+\[
+p(\mu)=q(\mu)\Delta(\mu)+r(\mu),\qquad \deg r\le n-1 .
+\]
+由 $\Delta(A)=[0]$，
+\[
+p(A)=q(A)\Delta(A)+r(A)=r(A).
+\]
+所以\textbf{任何 $A$ 的多项式都能降到 $n-1$ 次以内}。
+
+\qbreak\qstem{（课件 p20 例 2）设
+\[
+A=\mat{3&1\\1&2},\qquad p(A)=A^4+3A^3+2A^2+A+E .
+\]
+把 $p(A)$ 降阶并算出数值。}
+
+$n=2$，$\Delta(\mu)=\det(\mu E-A)=\mu^2-5\mu+5$。长除：
+\[
+\frac{\mu^4+3\mu^3+2\mu^2+\mu+1}{\mu^2-5\mu+5}
+=\mu^2+8\mu+37+\frac{146\mu-184}{\mu^2-5\mu+5}.
+\]
+即
+\[
+p(\mu)=(\mu^2+8\mu+37)(\mu^2-5\mu+5)+(146\mu-184).
+\]
+直接乘开核对：
+\[
+(\mu^2-5\mu+5)(\mu^2+8\mu+37)
+=\mu^4+3\mu^3+2\mu^2-145\mu+185,
+\]
+加上 $146\mu-184$ 正好回到 $p(\mu)$。由 Cayley--Hamilton，$p(A)=146A-184E$，于是
+\[
+p(A)=146\mat{3&1\\1&2}-184\mat{1&0\\0&1}
+=\mat{438&146\\146&292}-\mat{184&0\\0&184}
+=\mat{254&146\\146&108}.
+\]
+这不是数值巧合：$p(A)-r(A)=q(A)\Delta(A)=[0]$ 是恒等式。脚本另外直接计算了 $A^2,A^3,A^4$ 并与 $146A-184E$ 比较，结果相同。
+
+\label{ex:2:end}
+\needspace{16\baselineskip}
+\subhdr{4.3 解析函数的谱条件：把 $\ee^{Ax}$ 化成 $r_x(A)$（p21--p22、p28--p29）}
+
+\subhdr{4.3.1 一般定理}
+
+设 $A$ 的互异特征值为 $\mu_1,\dots,\mu_s$，代数重数为 $m_1,\dots,m_s$，$\sum_jm_j=n$。设 $f$ 在包含谱的区域内解析。则存在\textbf{唯一}的次数不超过 $n-1$ 的多项式 $r$，使得对每个 $j$ 与 $k=0,1,\dots,m_j-1$，
+\begin{equation}
+r^{(k)}(\mu_j)=f^{(k)}(\mu_j),
+\label{eq:hermite}
+\end{equation}
+并且
+\[
+f(A)=r(A).
+\]
+
+\textbf{为什么重根要加导数条件。}把 $A$ 化成 Jordan 形：每个块形如 $J_j=\mu_jE+N_j$，其中 $N_j$ 幂零，$N_j^{m_j}=[0]$（块的大小不超过 $m_j$）。对解析 $f$，在 $\mu_j$ 处 Taylor 展开：
+\[
+f(J_j)=\sum_{k=0}^{m_j-1}\frac{f^{(k)}(\mu_j)}{k!}N_j^k .
+\]
+若 $r$ 满足 \eqref{eq:hermite}，则 $r(J_j)$ 的展开式与 $f(J_j)$ 逐项相同，所以 $f(J_j)=r(J_j)$；对所有块成立，故 $f(A)=r(A)$。这也说明：\textbf{条件只用到代数重数 $m_j$}；几何重数 $g_j$ 给出该特征值的 Jordan 块个数，不能单独决定各块大小；本讲采用代数重数给出的充分条件，因此不需要先求出块大小。若 $\mu_j$ 是单根，$m_j=1$，只需一个值条件 $r(\mu_j)=f(\mu_j)$，不需要导数。
+
+这些条件确定 $r$ 的存在性与唯一性。先看齐次条件：若 $h^{(k)}(\mu_j)=0$ 对所有指定的 $j,k$ 成立，则 $h$ 在各 $\mu_j$ 处共有 $n$ 个零点（按重数计）；而 $\deg h\le n-1$，故 $h=0$。因此这 $n$ 个条件组成的 $n$ 元线性方程组只有零解，系数矩阵可逆；给定任意右端 $f^{(k)}(\mu_j)$，都存在唯一的 $n$ 个多项式系数。
+
+\subhdr{4.3.2 取 $f(\mu)=\ee^{x\mu}$}
+
+固定 $x$，令 $f(\mu)=\ee^{x\mu}$。则 $f^{(k)}(\mu)=x^k\ee^{x\mu}$。把 \eqref{eq:hermite} 写成
+\begin{equation}
+r_x^{(k)}(\mu_j)=x^k\ee^{x\mu_j},\qquad k=0,1,\dots,m_j-1,
+\label{eq:spectral}
+\end{equation}
+并令
+\[
+r_x(\mu)=\beta_{n-1}(x)\mu^{n-1}+\cdots+\beta_1(x)\mu+\beta_0(x).
+\]
+于是
+\begin{equation}
+\boxed{\ \ee^{Ax}=r_x(A)=\sum_{k=0}^{n-1}\beta_k(x)A^k\ }.
+\label{eq:ch}
+\end{equation}
+
+\warnbox{\textbf{两个求导对象要分清。}\eqref{eq:spectral} 左边的导数是对\textbf{谱参数 $\mu$} 求的，$x$ 在求导时当作常数；右边的 $x^k$ 是对 $\mu$ 求导 $k$ 次后留下的因子。不要对 $x$ 求导，也不要在对 $\mu$ 求导时把 $\beta_k(x)$ 当成变量。另一个常见混淆是把 $\lambda=x\mu$ 当成多项式变量：课件用 $r(\lambda)=\sum\alpha_k\lambda^k$，对 $\lambda$ 求导；本讲义用 $r_x(\mu)=\sum\beta_k\mu^k$，对 $\mu$ 求导。两者通过 $\beta_k=x^k\alpha_k$ 对应，见下。}
+
+\textbf{与课件记号的关系。}课件 p22 设 $\lambda$ 是矩阵 $Ax$ 的特征值，即 $\lambda_j=x\mu_j$，写
+\[
+\ee^{\lambda_j}=r(\lambda_j)=\sum_{k=0}^{n-1}\alpha_k\lambda_j^k,
+\]
+继续对照课件的谱参数：$\lambda$ 是 $Ax$ 的特征值，重根时对 $\lambda$ 求导。把 $\lambda=x\mu$ 代入，令 $\beta_k=x^k\alpha_k$，就得到本讲义的 \eqref{eq:spectral}。用 $\beta$ 形式的好处是：$x=0$ 时不需要除以 $x$，所有 $\beta_k(x)$ 都是普通的光滑函数，$\ee^{A\cdot0}=E$ 直接由 $r_0(\mu)\equiv1$ 得到（此时 \eqref{eq:spectral} 的右端为 $1,0,\dots,0$）。
+
+\aside{课件 p22 明确写“Let $Ax$ be a square matrix \dots\ with eigenvalues $\lambda_i$”，p29 更写“if $\lambda_i$ is an eigenvalue of $Ax$ (not $A$)”。所以“$\lambda_i$ 含 $x$”这件事课件是说明了的；p23 的 Remark 简写成“eigenvalues of $A$”属于记号放松。本讲义不把它登记为“课件漏讲”，只把两种记号并列写清。}
+
+\textbf{最小核对。}取 $A=\diag(1,2)$，$n=2$，两个单根。设 $r_x(\mu)=\beta_1\mu+\beta_0$。条件为
+\[
+\beta_1+\beta_0=\ee^{x},\qquad 2\beta_1+\beta_0=\ee^{2x}.
+\]
+相减得 $\beta_1=\ee^{2x}-\ee^{x}$，$\beta_0=2\ee^{x}-\ee^{2x}$。于是
+\[
+r_x(A)=\beta_1A+\beta_0E
+=\diag(\beta_1+\beta_0,\,2\beta_1+\beta_0)
+=\diag(\ee^{x},\ee^{2x}),
+\]
+与直接算的 $\ee^{Ax}$ 一致。
+
+\needspace{10\baselineskip}
+\subhdr{4.4 例 3：$n=2$ 与 $n=3$ 的通用结构（p23）}
+\label{ex:3:start}
+
+\qbreak\qstem{（课件 p23 例 3）不给定具体矩阵，写出 $n=2$ 与 $n=3$ 时 $\ee^{Ax}$ 的矩阵多项式结构，并说明系数由什么条件确定。}
+
+由 \eqref{eq:ch}，$n=2$ 时
+\[
+\ee^{Ax}=\beta_1(x)A+\beta_0(x)E,
+\]
+$n=3$ 时
+\[
+\ee^{Ax}=\beta_2(x)A^2+\beta_1(x)A+\beta_0(x)E.
+\]
+课件的写法是 $\ee^{Ax}=\alpha_1Ax+\alpha_0E$ 与 $\alpha_2A^2x^2+\alpha_1Ax+\alpha_0E$，与上式只差 $\beta_k=x^k\alpha_k$ 的记号。最高只需写到 $n-1$ 次，这是 Cayley--Hamilton 降阶的直接结果，不是额外假设。
+
+系数由 \eqref{eq:spectral} 确定：$n=2$ 时两个条件，$n=3$ 时三个条件；若某个特征值重数为 $m_j$，就把该处的值条件换成 $m_j$ 个（含导数）条件。条件总数始终是 $n$，与未知系数个数相同。
+
+\textbf{相异谱的显式解。}若 $A$ 有 $n$ 个互异特征值 $\mu_1,\dots,\mu_n$，则 $r_x$ 就是 $f(\mu)=\ee^{x\mu}$ 在节点 $\mu_j$ 的 Lagrange 插值多项式：
+\[
+r_x(\mu)=\sum_{j=1}^{n}\ee^{x\mu_j}L_j(\mu),
+\qquad
+L_j(\mu)=\prod_{k\ne j}\frac{\mu-\mu_k}{\mu_j-\mu_k}.
+\]
+把 $L_j$ 展开，$\mu^{k}$ 的系数就是 $\beta_k(x)$。$n=2$ 时可直接解出
+\[
+\beta_1=\frac{\ee^{x\mu_1}-\ee^{x\mu_2}}{\mu_1-\mu_2},\qquad
+\beta_0=\frac{\mu_1\ee^{x\mu_2}-\mu_2\ee^{x\mu_1}}{\mu_1-\mu_2}.
+\]
+$n=3$ 时同样把三个节点代入 \eqref{eq:spectral} 解三元一次方程组；用 Lagrange 形式可以避免每次重新消元。重根情形不能用这套分母，改用 §4.7 的 Hermite 形式。
+
+\textbf{这个例子为什么没有具体矩阵。}它示范的是“结构”与“条件数目”：给定 $A$ 的谱，就能写出 $r_x$ 的框架；给定具体 $A$，再把 $\mu_j$ 代入并代回 \eqref{eq:ch}。例 4--例 8 就是不同谱型下的代入。
+
+\label{ex:3:end}
+\subhdr{4.5 例 4：两个相异实根（p24--p25）}
+\label{ex:4:start}
+
+\qbreak\qstem{（课件 p24--p25 例 4）设
+\[
+A=\mat{1&1\\9&1},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+$\Delta(\mu)=\mu^2-2\mu-8=(\mu-4)(\mu+2)$，特征值 $\mu_1=4$、$\mu_2=-2$，都是单根。设
+\[
+\ee^{Ax}=\beta_1A+\beta_0E,\qquad r_x(\mu)=\beta_1\mu+\beta_0.
+\]
+由 \eqref{eq:spectral}，
+\[
+\ee^{4x}=4\beta_1+\beta_0,\qquad \ee^{-2x}=-2\beta_1+\beta_0.
+\]
+两式相减：
+\[
+\ee^{4x}-\ee^{-2x}=6\beta_1
+\quad\Longrightarrow\quad
+\beta_1=\frac{\ee^{4x}-\ee^{-2x}}{6}.
+\]
+为求 $\beta_0$，把第一式加第二式的两倍：
+\[
+\ee^{4x}+2\ee^{-2x}
+=(4\beta_1+\beta_0)+2(-2\beta_1+\beta_0)
+=3\beta_0,
+\]
+所以
+\[
+\beta_0=\frac{\ee^{4x}+2\ee^{-2x}}{3}.
+\]
+\warnbox{\textbf{不要写成“两式相加得 $2\beta_0$”。}直接相加得到的是
+\[
+\ee^{4x}+\ee^{-2x}=2\beta_1+2\beta_0,
+\]
+其中 $\beta_1$ 没有消掉。要单独得到 $\beta_0$，必须用“第一式加第二式的两倍”，这样 $\beta_1$ 的系数 $4+2(-2)=0$。这是本例题最容易写错的一步；最终矩阵不受影响，但消元文字必须与算式一致。}
+
+于是
+\[
+\ee^{Ax}=\beta_1A+\beta_0E
+=\frac16\mat{3\ee^{4x}+3\ee^{-2x}&\ee^{4x}-\ee^{-2x}\\[2pt]9\ee^{4x}-9\ee^{-2x}&3\ee^{4x}+3\ee^{-2x}}.
+\]
+通解为
+\[
+\vect{Y}(x)=\ee^{Ax}\vect{C}
+=k_1\ee^{4x}\mat{1\\3}+k_2\ee^{-2x}\mat{1\\-3},
+\]
+其中 $k_1=(3C_1+C_2)/6$，$k_2=(3C_1-C_2)/6$（$C_1,C_2$ 是 $\vect{C}$ 的分量）。这两个向量正是 $\mu=4$ 与 $\mu=-2$ 的特征向量，可直接代入 $A\vect{V}=\mu\vect{V}$ 核对。
+
+\aside{课件 p25 通解行省略了前面的 $\frac16$。沿用同一常向量时，应保留该因子，并用上面的 $k_1,k_2$ 换元；重新命名任意常数时则可吸收该因子，所得通解族不变。课件中 $\ee^{Ax}$ 本身的矩阵是正确的。}
+
+\needspace{12\baselineskip}
+\textbf{例 4（续）：核对候选矩阵。}这里 $A=\left(\begin{smallmatrix}1&1\\9&1\end{smallmatrix}\right)$，$F=\beta_1A+\beta_0E$，其中 $\beta_1=(\ee^{4x}-\ee^{-2x})/6$、$\beta_0=(\ee^{4x}+2\ee^{-2x})/3$。先算 $A^2$：
+\[
+A^2=\mat{10&2\\18&10}=2A+8E .
+\]
+于是
+\[
+A\ee^{Ax}=A(\beta_1A+\beta_0E)=\beta_1A^2+\beta_0A
+=(2\beta_1+\beta_0)A+8\beta_1E .
+\]
+另一方面
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=\beta_1'A+\beta_0'E.
+\]
+逐项比较系数，需要
+\[
+\beta_1'=2\beta_1+\beta_0,\qquad \beta_0'=8\beta_1 .
+\]
+直接求导：
+\[
+\beta_1'=\frac{4\ee^{4x}+2\ee^{-2x}}{6}=\frac{2\ee^{4x}+\ee^{-2x}}{3},
+\]
+而
+\[
+2\beta_1+\beta_0=\frac{\ee^{4x}-\ee^{-2x}}{3}+\frac{\ee^{4x}+2\ee^{-2x}}{3}
+=\frac{2\ee^{4x}+\ee^{-2x}}{3},
+\]
+第一式成立；
+\[
+\beta_0'=\frac{4\ee^{4x}-4\ee^{-2x}}{3}=\frac{4(\ee^{4x}-\ee^{-2x})}{3}=8\beta_1,
+\]
+第二式也成立。所以 $F'=AF$ 对一切 $x$ 成立，不需要只代入 $x=0$。同时 $\beta_1(0)=0$、$\beta_0(0)=1$，故 $F(0)=E$。
+
+%=====================================================================
+\label{ex:4:end}
+\subhdr{4.6 例 5：一对纯虚根与旋转矩阵（p26--p27）}
+\label{ex:5:start}
+
+\qbreak\qstem{（课件 p26--p27 例 5）设
+\[
+A=\mat{0&1\\-1&0},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+$\Delta(\mu)=\mu^2+1$，特征值 $\mu_1=\mathrm{i}$、$\mu_2=-\mathrm{i}$，都是单根。设
+\[
+\ee^{Ax}=\beta_1A+\beta_0E,\qquad r_x(\mu)=\beta_1\mu+\beta_0.
+\]
+条件为
+\[
+\ee^{\mathrm{i}x}=\mathrm{i}\beta_1+\beta_0,\qquad
+\ee^{-\mathrm{i}x}=-\mathrm{i}\beta_1+\beta_0.
+\]
+两式相加得 $\beta_0=\cos x$；相减除以 $2\mathrm{i}$ 得
+\[
+\beta_1=\frac{\ee^{\mathrm{i}x}-\ee^{-\mathrm{i}x}}{2\mathrm{i}}=\sin x.
+\]
+于是
+\[
+\ee^{Ax}=\beta_1A+\beta_0E
+=\mat{\cos x&\sin x\\-\sin x&\cos x}.
+\]
+\textbf{例 5（续）：解释与通解。}$\ee^{Ax}=\left(\begin{smallmatrix}\cos x&\sin x\\-\sin x&\cos x\end{smallmatrix}\right)$ 是绕原点旋转 $-\!x$（$x>0$ 时顺时针）的矩阵：行列式为 $1$，且 $(\ee^{Ax})^{\mathsf T}\ee^{Ax}=E$。通解为
+\[
+\vect{Y}=\ee^{Ax}\vect{C}
+=C_1\mat{\cos x\\-\sin x}+C_2\mat{\sin x\\\cos x}.
+\]
+
+\needspace{9\baselineskip}
+\textbf{例 5（续）：核对通解的列。}本例 $A=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$，$\ee^{Ax}=\left(\begin{smallmatrix}\cos x&\sin x\\-\sin x&\cos x\end{smallmatrix}\right)$。\par
+\textbf{与课件 p27 的差异}：课件末行把第二项写成 $C_2\binom{-\sin x}{\cos x}$。直接乘 $\ee^{Ax}\binom{C_1}{C_2}$：
+\[
+\vect{Y}=\mat{C_1\cos x+C_2\sin x\\-C_1\sin x+C_2\cos x},
+\]
+第二列应是 $\binom{\sin x}{\cos x}$，不是 $\binom{-\sin x}{\cos x}$。第一列 $\binom{\cos x}{-\sin x}$ 是正确的。
+
+\textbf{核对（对一切 $x$）}：$A^2=-E$，所以
+\[
+A\ee^{Ax}=\beta_1A^2+\beta_0A=-\beta_1E+\beta_0A,
+\qquad
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=\beta_1'A+\beta_0'E .
+\]
+比较系数，需要 $\beta_1'=\beta_0$、$\beta_0'=-\beta_1$。由 $\beta_1=\sin x$、$\beta_0=\cos x$，这两式正是 $\cos x=\cos x$ 与 $-\sin x=-\sin x$。所以 $F'=AF$ 恒成立；$F(0)=E$ 也由 $\sin0=0$、$\cos0=1$ 得到。
+
+%=====================================================================
+\needspace{10\baselineskip}
+\label{ex:5:end}
+\subhdr{4.7 例 6：谱 $5$（三重）与 $2$（单重）的 Hermite 插值（p30--p31）}
+\label{ex:6:start}
+
+\qbreak\qstem{（课件 p30--p31 例 6）设 $A$ 是 $4\times4$ 矩阵，$Ax$ 的特征值为 $\lambda=5x$（三重）与 $\lambda=2x$（单重）。求 $\ee^{Ax}$ 的矩阵多项式形式与系数。}
+
+这里没有给具体矩阵，但谱条件足够定出四个系数。取 $A$ 的特征值 $\mu_1=5$（$m_1=3$）与 $\mu_2=2$（$m_2=1$），$n=4$。设
+\[
+r_x(\mu)=\beta_3\mu^3+\beta_2\mu^2+\beta_1\mu+\beta_0,
+\qquad \ee^{Ax}=r_x(A).
+\]
+由 \eqref{eq:spectral}，四个条件是
+\[
+r_x(5)=\ee^{5x},\qquad
+r_x'(5)=x\ee^{5x},\qquad
+r_x''(5)=x^2\ee^{5x},\qquad
+r_x(2)=\ee^{2x}.
+\]
+课件 p31 把这四式列成方程组后停在这里；下面把它解完。
+
+\textbf{Hermite 形式。}在 $\mu=5$ 处用 Taylor 形式，先满足前三式：
+\[
+r_x(\mu)=\ee^{5x}\Bigl[1+x(\mu-5)+\frac{x^2}{2}(\mu-5)^2\Bigr]+c(x)(\mu-5)^3 .
+\]
+前三式自动成立（逐项求导可见）。再用 $r_x(2)=\ee^{2x}$ 定 $c(x)$：因为 $2-5=-3$，
+\[
+\ee^{2x}=\ee^{5x}\Bigl[1-3x+\frac{9x^2}{2}\Bigr]-27c(x),
+\]
+所以
+\[
+c(x)=\frac{\ee^{5x}\bigl(1-3x+\frac92x^2\bigr)-\ee^{2x}}{27}.
+\]
+\textbf{例 6（续）：闭式解。}仍取谱 $5$（三重）与 $2$（单根），上式给出光滑系数：$c(x)$ 由多项式和指数函数组成，分母只是非零常数 $27$，没有除以 $x$ 的步骤，因此在 $x=0$ 处也没有奇点。于是
+\[
+\boxed{\ \ee^{Ax}=\ee^{5x}\Bigl[E+x(A-5E)+\frac{x^2}{2}(A-5E)^2\Bigr]+c(x)(A-5E)^3\ }.
+\]
+
+\textbf{展开系数（可选核对）。}把 $r_x(\mu)$ 按 $\sum_{k=0}^3\beta_k\mu^k$ 展开，可得
+\[
+\begin{aligned}
+\beta_3&=\frac{(9x^2-6x+2)\ee^{5x}-2\ee^{2x}}{54},\\
+\beta_2&=\frac{(-18x^2+15x-5)\ee^{5x}+5\ee^{2x}}{9},\\
+\beta_1&=\frac{(135x^2-132x+50)\ee^{5x}-50\ee^{2x}}{18},\\
+\beta_0&=\frac{(-225x^2+240x-98)\ee^{5x}+125\ee^{2x}}{27}.
+\end{aligned}
+\]
+\textbf{检查四个系数。}令 $r_x(\mu)=\sum_{k=0}^3\beta_k(x)\mu^k$。四个式子都满足上面的谱条件；在 $x=0$ 处，$\beta_3=\beta_2=\beta_1=0$、$\beta_0=1$，故 $\ee^{A\cdot0}=E$。把 $\beta_k$ 代回 $\ee^{Ax}=\sum_{k=0}^{3}\beta_kA^k$ 即得答案。这里 $\deg r_x\le3$，一般写到 $A^3$，但在 $x=0$ 时多项式退化为常数 $1$。四次特征多项式已经把幂次降到至多三次；只有具体矩阵另外满足更低次的多项式关系时，才可继续化简，如例 7。
+
+\textbf{一个具体实现，用来核对公式。}取
+\[
+A_0=\mat{5&1&0&0\\0&5&1&0\\0&0&5&0\\0&0&0&2}
+=\diag(J_3(5),2).
+\]
+回到上面的 $A_0$：它的特征多项式正是 $(\mu-5)^3(\mu-2)$。对 $J_3(5)=5E+N$、$N^3=0$，
+\[
+\ee^{J_3(5)x}=\ee^{5x}\Bigl(E+xN+\frac{x^2}{2}N^2\Bigr),
+\]
+所以
+\[
+\ee^{A_0x}=\mat{\ee^{5x}&x\ee^{5x}&\frac{x^2}{2}\ee^{5x}&0\\0&\ee^{5x}&x\ee^{5x}&0\\0&0&\ee^{5x}&0\\0&0&0&\ee^{2x}}.
+\]
+这个矩阵等于 $r_x(A_0)$（因为 $r_x$ 与 $\ee^{x\mu}$ 在谱上按重数匹配），且直接求导可验 $F'=A_0F$、$F(0)=E$。它说明：重数 $3$ 需要两个导数条件，正对应 $N^2\ne0$ 的那一项 $\frac{x^2}{2}N^2$。
+
+\aside{课件 p30--p31 只列方程，不是“没有具体矩阵就解不出”。条件只用到谱，四个未知数由四个谱条件唯一确定；具体矩阵只在最后代回 $r_x(A)$ 时用到。若题目只给谱，答案就是一个“以 $A$ 为变量的矩阵多项式”，这是完整答案，不是半成品。}
+
+%=====================================================================
+\label{ex:6:end}
+\needspace{16\baselineskip}
+\subhdr{4.8 例 7：三重特征值与缺陷矩阵（p33--p35）}
+\label{ex:7:start}
+
+\qbreak\qstem{（课件 p33--p35 例 7）设
+\[
+A=\mat{0&-4&0\\1&-4&0\\1&-2&-2},
+\]
+求 $\ee^{Ax}$，并写出 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+$\Delta(\mu)=(\mu+2)^3$，特征值 $-2$ 的代数重数 $m=3$。求特征向量：解 $(A+2E)\vect{V}=0$，
+\[
+A+2E=\mat{2&-4&0\\1&-2&0\\1&-2&0}.
+\]
+第二、三两行相同，第一行是第二行的两倍，秩为 $1$，所以几何重数
+\[
+g=3-\rank(A+2E)=3-1=2.
+\]
+\textbf{例 7：特征向量核对。}本例 $A=\left(\begin{smallmatrix}0&-4&0\\1&-4&0\\1&-2&-2\end{smallmatrix}\right)$，唯一特征值为 $-2$。两个独立特征向量可取
+\[
+\vect{V}_1=\mat{2\\1\\0},\qquad \vect{V}_2=\mat{0\\0\\1},
+\]
+直接验 $A\vect{V}_1=-2\vect{V}_1$、$A\vect{V}_2=-2\vect{V}_2$。$g=2<3=m$，不可对角化。
+
+记 $N=A+2E$，则直接相乘可见 $N^2=[0]$。于是
+\[
+\ee^{Ax}=\ee^{-2x}\ee^{Nx}=\ee^{-2x}(E+xN)
+=\ee^{-2x}\mat{1+2x&-4x&0\\x&1-2x&0\\x&-2x&1}.
+\]
+继续例 7：这里用了 $N^2=0$，所以指数级数在 $xN$ 处只有两项；这不是“重根只能写一个指数”的一般结论，而是本例只有一个特征值且 $N$ 幂零到二阶的结果。
+
+\textbf{用 Cayley--Hamilton 复算，顺便核对系数。}设
+\[
+r_x(\mu)=\beta_2\mu^2+\beta_1\mu+\beta_0 .
+\]
+在 $\mu=-2$ 处，$m=3$，需要三个条件：
+\[
+r_x(-2)=\ee^{-2x},\qquad r_x'(-2)=x\ee^{-2x},\qquad r_x''(-2)=x^2\ee^{-2x}.
+\]
+\needspace{15\baselineskip}
+\textbf{例 7（续）：解谱条件。}这里 $r_x(\mu)=\beta_2\mu^2+\beta_1\mu+\beta_0$，唯一谱值为 $-2$，代数重数为 $3$。由 $r_x''=2\beta_2$ 得
+\[
+\beta_2=\frac{x^2}{2}\ee^{-2x}.
+\]
+由 $r_x'(-2)=-4\beta_2+\beta_1=x\ee^{-2x}$ 得
+\[
+\beta_1=\ee^{-2x}\Bigl(x+2x^2\Bigr).
+\]
+由 $r_x(-2)=4\beta_2-2\beta_1+\beta_0=\ee^{-2x}$ 得
+\[
+\beta_0=\ee^{-2x}\Bigl(1+2x+2x^2\Bigr).
+\]
+又由 $(A+2E)^2=0$ 展开得
+\[
+A^2=-4A-4E .
+\]
+于是
+\[
+\begin{aligned}
+r_x(A)&=\beta_2A^2+\beta_1A+\beta_0E\\
+&=(\beta_1-4\beta_2)A+(\beta_0-4\beta_2)E\\
+&=x\ee^{-2x}A+\ee^{-2x}(1+2x)E\\
+&=\ee^{-2x}\bigl[E+x(A+2E)\bigr]=\ee^{-2x}(E+xN),
+\end{aligned}
+\]
+与上面的结果一致。
+
+\textbf{通解。}按列展开：
+\[
+\vect{Y}=\ee^{Ax}\vect{C}
+=\ee^{-2x}\left[
+c_1\mat{1+2x\\x\\x}
++c_2\mat{-4x\\1-2x\\-2x}
++c_3\mat{0\\0\\1}
+\right].
+\]
+\textbf{例 7（续）：通解的另一种写法。}由 $\ee^{Ax}=\ee^{-2x}(E+xN)$，其中 $N=A+2E$、$N^2=0$，也可以写成
+\[
+\vect{Y}=\ee^{-2x}\Bigl[c_1\Bigl(\mat{1\\0\\0}+x\mat{2\\1\\1}\Bigr)
++c_2\Bigl(\mat{0\\1\\0}+x\mat{-4\\-2\\-2}\Bigr)
++c_3\mat{0\\0\\1}\Bigr].
+\]
+两个常向量 $\vect{V}_1=(2,1,0)^{\mathsf T}$、$\vect{V}_2=(0,0,1)^{\mathsf T}$ 给出纯指数解；第三个方向需要 $x\ee^{-2x}$，这是几何重数不足时出现多项式因子的来源。
+
+\textbf{核对（对一切 $x$）}：$F=\ee^{-2x}(E+xN)$，$N^2=0$，所以
+\[
+F'=-2\ee^{-2x}(E+xN)+\ee^{-2x}N
+=\ee^{-2x}\bigl(-2E-2xN+N\bigr),
+\]
+继续例 7 的核对：而 $A=-2E+N$，
+\[
+AF=\ee^{-2x}(A+AxN)
+=\ee^{-2x}\bigl(-2E+N+(-2E+N)xN\bigr)
+=\ee^{-2x}\bigl(-2E+N-2xN\bigr),
+\]
+两者相同。$F(0)=E$ 也直接可见。
+
+%=====================================================================
+\label{ex:7:end}
+\needspace{16\baselineskip}
+\subhdr{4.9 例 8：$0$ 与一对纯虚根并存（p36--p38）}
+\label{ex:8:start}
+
+\qbreak\qstem{（课件 p36--p38 例 8）设
+\[
+A=\mat{0&1&0\\0&-2&-5\\0&1&2},
+\]
+求 $\ee^{Ax}$。}
+
+$\Delta(\mu)=\mu(\mu^2+1)$，特征值 $0,\mathrm{i},-\mathrm{i}$，都是单根。设
+\[
+r_x(\mu)=\beta_2\mu^2+\beta_1\mu+\beta_0,\qquad \ee^{Ax}=\beta_2A^2+\beta_1A+\beta_0E .
+\]
+条件为
+\[
+r_x(0)=1,\qquad r_x(\mathrm{i})=\ee^{\mathrm{i}x},\qquad r_x(-\mathrm{i})=\ee^{-\mathrm{i}x}.
+\]
+第一式给 $\beta_0=1$。在 $\mu=\pm\mathrm{i}$ 处，$\mu^2=-1$，所以
+\[
+-\beta_2+\mathrm{i}\beta_1+1=\ee^{\mathrm{i}x},\qquad
+-\beta_2-\mathrm{i}\beta_1+1=\ee^{-\mathrm{i}x}.
+\]
+两式相减得 $2\mathrm{i}\beta_1=2\mathrm{i}\sin x$，故 $\beta_1=\sin x$；两式相加得
+\[
+-2\beta_2+2=2\cos x\quad\Longrightarrow\quad \beta_2=1-\cos x .
+\]
+于是
+\[
+\ee^{Ax}=(1-\cos x)A^2+\sin x\,A+E .
+\]
+先算 $A^2$：
+\[
+A^2=\mat{0&-2&-5\\0&-1&0\\0&0&-1}.
+\]
+\textbf{例 8（续）：代回矩阵。}这里 $A=\left(\begin{smallmatrix}0&1&0\\0&-2&-5\\0&1&2\end{smallmatrix}\right)$，$\ee^{Ax}=(1-\cos x)A^2+\sin x\,A+E$。代回并按元素整理：
+\[
+\ee^{Ax}=\mat{
+1& -2+2\cos x+\sin x& -5+5\cos x\\
+0& \cos x-2\sin x& -5\sin x\\
+0& \sin x& \cos x+2\sin x}.
+\]
+
+\textbf{与课件 p36 的差异}：p36 的中间矩阵 $(3,2)$ 元素印成 $-\alpha_1x$。该元素只来自 $\alpha_1x\,A$（因为 $(A^2)_{32}=0$，而 $A_{32}=1$），所以应为 $+\alpha_1x$。p38 的最终矩阵 $(3,2)$ 为 $\sin x$，是正确的；错误只在中间一步。本讲义统一用 $\beta_1=\alpha_1x=\sin x$ 的写法，避免这个符号问题。
+
+\textbf{核对（对一切 $x$）}：由 $\Delta(\mu)=\mu^3+\mu$ 与 Cayley--Hamilton 得 $A^3=-A$。于是
+\[
+A\ee^{Ax}=\beta_2A^3+\beta_1A^2+\beta_0A
+=\beta_1A^2+(\beta_0-\beta_2)A,
+\]
+继续例 8 的核对：而
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=\beta_2'A^2+\beta_1'A+\beta_0'E.
+\]
+\textbf{例 8（续）：核对系数。}候选矩阵为 $F=(1-\cos x)A^2+\sin x\,A+E$，且 $A^3=-A$。比较 $F'$ 与 $AF$ 的系数，需要
+\[
+\beta_2'=\beta_1,\qquad \beta_1'=\beta_0-\beta_2,\qquad \beta_0'=0 .
+\]
+由 $\beta_2=1-\cos x$、$\beta_1=\sin x$、$\beta_0=1$：
+\[
+\beta_2'=\sin x=\beta_1,\qquad
+\beta_1'=\cos x=1-(1-\cos x)=\beta_0-\beta_2,\qquad
+\beta_0'=0 .
+\]
+三式全部成立，所以 $F'=AF$ 恒成立。$F(0)=E$ 由 $\beta_2(0)=0$、$\beta_1(0)=0$、$\beta_0=1$ 得到。
+
+\aside{$\beta_2=1-\cos x$ 在 $x=0$ 附近是 $O(x^2)$，但它是普通的光滑函数，不需要写成 $x^2$ 的分式再取极限。这正是用 $A$ 的谱（$\mu$）而不是 $Ax$ 的谱（$\lambda=x\mu$）写系数的好处：$x=0$ 处不出现除以 $x$。}
+
+%=====================================================================
+\label{ex:8:end}
+\subhdr{4.10 一般缺陷矩阵的指数是什么形状}
+
+例 7 只有一个特征值，所以能写成 $\ee^{-2x}P(x)$。若矩阵有多个特征值，且其中某些特征值几何重数不足，$\ee^{Ax}$ 一般\textbf{不能}写成单个 $\ee^{\lambda x}P(x)$。准确的说法是：
+
+\callout{
+设 $A$ 的互异特征值为 $\mu_1,\dots,\mu_s$，代数重数为 $m_1,\dots,m_s$。则
+\[
+\ee^{Ax}=\sum_{j=1}^{s}\ee^{\mu_jx}P_j(x),
+\]
+其中 $P_j(x)$ 是 $n\times n$ 的\textbf{矩阵多项式}，次数不超过 $m_j-1$。
+}
+
+推导来自 Jordan 形：在每个块 $J_j=\mu_jE+N_j$ 上，
+\[
+\ee^{J_jx}=\ee^{\mu_jx}\sum_{k=0}^{m_j-1}\frac{x^k}{k!}N_j^k,
+\]
+把各块拼起来再共轭，就得到上面的和。若 $A$ 是实矩阵而有复特征值，共轭的两项可以合成实矩阵表达式，形如 $\ee^{ax}(P(x)\cos bx+Q(x)\sin bx)$。
+
+\textbf{最小对照。}取
+\[
+A=\mat{1&1&0\\0&1&0\\0&0&2}=\diag(J_2(1),2).
+\]
+则
+\[
+\ee^{Ax}=\mat{\ee^{x}&x\ee^{x}&0\\0&\ee^{x}&0\\0&0&\ee^{2x}}.
+\]
+它有两个特征值 $1$ 与 $2$，前者的块给出 $x\ee^{x}$，后者的块给出 $\ee^{2x}$。这个矩阵不能写成 $\ee^{\lambda x}P(x)$ 的形式：若提出 $\ee^{x}$，剩下的是 $\mat{1&x&0\\0&1&0\\0&0&\ee^{x}}$，最后一项 $\ee^{x}$ 不是多项式。它是 $\ee^{x}P_1(x)+\ee^{2x}P_2$ 的两项和。例 7 之所以能写成单项，是因为它只有一个特征值。
+
+另一个常见误解是“重数是 $m$，多项式次数就一定到 $m-1$”。$m_j-1$ 只是上界；例 7 的 $m=3$，但 $N^2=0$，实际次数只到 $1$。次数由 Jordan 块的大小决定，而块的大小不超过代数重数。
+
+%=====================================================================
+\subhdr{4.11 四步算法与适用情形（p32）}
+
+课件 p32 的四步可以照用，但建议把“$Ax$ 的特征值”换成“$A$ 的谱 + $x$ 的幂”，以避免 $x=0$ 的除法：
+
+\begin{enumerate}
+  \item 求 $A$ 的特征多项式，得到互异特征值 $\mu_j$ 与代数重数 $m_j$（$\sum_jm_j=n$）。
+  \item 设 $r_x(\mu)=\beta_{n-1}\mu^{n-1}+\cdots+\beta_1\mu+\beta_0$，并令 $\ee^{Ax}=r_x(A)$。
+  \item 对每个 $j$ 写 $m_j$ 个条件：$r_x^{(k)}(\mu_j)=x^k\ee^{x\mu_j}$，$k=0,1,\dots,m_j-1$。
+  \item 解出 $\beta_k$（相异谱可用 Lagrange 插值，重根用 Hermite 插值），代回 $\ee^{Ax}=\sum\beta_kA^k$。
+\end{enumerate}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.24\linewidth}p{0.33\linewidth}p{0.33\linewidth}@{}}
+\thead{谱型} & \thead{条件形式} & \thead{推荐做法}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.24\linewidth}p{0.33\linewidth}p{0.33\linewidth}@{}}
+$n$ 个互异实根 & $n$ 个值条件 & Lagrange 插值或直接消元\\
+一对共轭复根 & 复值条件，共轭成对 & 复数解出后用 Euler 公式\\
+重根 $m_j\ge2$ & 值 $+$ 到 $m_j-1$ 阶导数 & Hermite 插值；注意对 $\mu$ 求导\\
+可对角化且 $n$ 大 & 特征向量够 & 优先对角化，避免解 $n$ 元方程组\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{代价。}Cayley--Hamilton 要解由谱值和导数条件组成的 $n$ 元线性方程组；手工算时 $n\le3$ 最舒服，$n=4$ 若谱简单（如例 6）也不难。对角化要算特征向量与 $V^{-1}$，$n\ge3$ 时求逆可能比解方程组更繁。基本解矩阵适合“已经有一组解”的场合。
+
+%=====================================================================
+\hdr{§5}{路线三：基本解矩阵}
+
+\subhdr{5.1 定义与通解（p40）}
+
+设 $A(x)$ 在区间 $I$ 上连续，考虑
+\[
+\vect{Y}'(x)-A(x)\vect{Y}(x)=0 .
+\]
+若 $\{\vect{Y}_1,\dots,\vect{Y}_n\}$ 是它的一个基本解组（$n$ 个线性无关解），把解按列排成
+\[
+\Phi(x)=\bigl(\vect{Y}_1(x),\dots,\vect{Y}_n(x)\bigr),
+\]
+则称 $\Phi$ 为\textbf{基本解矩阵}。通解为
+\[
+\vect{Y}(x)=\Phi(x)\vect{C},\qquad \vect{C}\in\R^n .
+\]
+对常矩阵 $A$，$\Phi$ 的列就是 $n$ 个线性无关解；$\det\Phi(x)$ 是 Wronskian，基本解组保证它不为零。
+
+\subhdr{5.2 初值问题与 $\ee^{Ax}$ 的关系（p42）}
+
+本节回到常矩阵 $A$；区间 $I$ 包含初值点 $x_0$，使用 $\Phi(0)$ 时还要求 $0\in I$。给初值 $\vect{Y}(x_0)=\vect{Y}_0$。因为 $\Phi(x_0)$ 可逆，解 $\Phi(x_0)\vect{C}=\vect{Y}_0$ 得
+\[
+\vect{C}=\Phi^{-1}(x_0)\vect{Y}_0,
+\qquad
+\vect{Y}(x)=\Phi(x)\Phi^{-1}(x_0)\vect{Y}_0 .
+\]
+同一个初值问题在 §1.4 的解是 $\vect{Y}(x)=\ee^{A(x-x_0)}\vect{Y}_0$。由初值问题解的唯一性，两个表达式必须相等：
+\begin{equation}
+\Phi(x)\Phi^{-1}(x_0)=\ee^{A(x-x_0)},\qquad
+\text{特别地}\quad \Phi(x)\Phi^{-1}(0)=\ee^{Ax}.
+\label{eq:phi}
+\end{equation}
+若再取 $\Phi(0)=E$，就有 $\ee^{Ax}=\Phi(x)$。这说明：$\Phi$ 与 $\ee^{Ax}$ 只差一个右乘的常数矩阵；把基本解矩阵在 $0$ 处归一化，就得到矩阵指数。
+
+\subhdr{5.3 定理 4.1：$\ee^{Ax}$ 的列构成基本解组（p43）}
+
+课件 p43 的定理说：若 $A$ 是 $n\times n$ 常矩阵，则 $\ee^{Ax}$ 的列构成 $\vect{Y}'=A\vect{Y}$ 的基本解组，因此 $\ee^{Ax}$ 本身是基本解矩阵。
+
+核对要点有三条：
+\begin{enumerate}
+  \item 每一列都满足方程：若 $\vect{F}(x)=\ee^{Ax}$，则 $\vect{F}'=A\vect{F}$，所以每一列 $\vect{F}_{*j}$ 满足 $\vect{F}_{*j}'=A\vect{F}_{*j}$。
+  \item 每一列在 $x=0$ 处是 $E$ 的第 $j$ 列 $\vect{e}_j$，它们线性无关。
+  \item $\det\ee^{Ax}=\ee^{x\tr A}\ne0$，所以对每个 $x$ 列都线性无关（Wronskian 非零）。
+\end{enumerate}
+第三条由 §2.4 得到；前两条由定义与 §1.3 得到。
+
+\subhdr{5.4 一个具体对照}
+
+取 $A=\diag(1,2)$。基本解矩阵可以取
+\[
+\Phi(x)=\mat{\ee^{x}&0\\0&\ee^{2x}},
+\qquad \Phi(0)=E,
+\]
+于是 $\ee^{Ax}=\Phi(x)\Phi^{-1}(0)=\Phi(x)$。若另一组解写成
+\[
+\Psi(x)=\mat{2\ee^{x}&0\\0&3\ee^{2x}},
+\]
+则 $\Psi(0)=\diag(2,3)$，
+\[
+\Psi(x)\Psi^{-1}(0)
+=\mat{\ee^{x}&0\\0&\ee^{2x}}=\ee^{Ax}.
+\]
+对可对角化的 $A$，取 $\Phi(x)=V\ee^{\Lambda x}$，则 $\Phi(0)=V$，所以
+\[
+\ee^{Ax}=\Phi(x)\Phi^{-1}(0)=V\ee^{\Lambda x}V^{-1},
+\]
+与 \eqref{eq:diag} 一致。这条路线与对角化路线在“已有特征向量”时是同一件事；它的价值在于：即使没有特征向量，只要用别的方法（例如 L14--15 的待定系数或级数）找到一组基本解，也能拼出 $\ee^{Ax}$。
+
+\subhdr{5.5 三条路线对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.16\linewidth}p{0.30\linewidth}p{0.26\linewidth}p{0.18\linewidth}@{}}
+\thead{路线} & \thead{答案形式} & \thead{前提} & \thead{主要代价}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.16\linewidth}p{0.30\linewidth}p{0.26\linewidth}p{0.18\linewidth}@{}}
+对角化 & $V\ee^{\Lambda x}V^{-1}$ & 每个 $g_j=m_j$ & 求 $V^{-1}$\\
+C--H & $\sum_{k=0}^{n-1}\beta_kA^k$ & 无 & 解 $n$ 元谱方程组\\
+基本解矩阵 & $\Phi(x)\Phi^{-1}(0)$ & 已有一组基本解 & 求 $\Phi^{-1}(0)$\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+三条路线给的是同一个矩阵。选哪条取决于手头已有什么：有特征向量就对对角化；只有矩阵就对 C--H；已经解过一遍方程就用 $\Phi$。算完用 §6 的自检核对。
+
+%=====================================================================
+\hdr{§6}{选路、自检与作业}
+
+\subhdr{6.1 拿到 $A$ 时怎么选}
+
+\begin{enumerate}
+  \item \textbf{先看 $n$ 与谱。}若 $n=2$，Cayley--Hamilton 只要两个方程，通常最快；若谱是相异实根，直接 Lagrange 或消元。
+  \item \textbf{再看能否对角化。}算 $g_j=n-\rank(A-\mu_jE)$，与 $m_j$ 比较。全部相等时，对角化给出 $V\ee^{\Lambda x}V^{-1}$，结构清楚；$n\ge3$ 时若特征向量容易求，这条路省去解谱方程组。
+  \item \textbf{$g_j<m_j$ 时走 C--H。}按重数写导数条件，解出 $\beta_k$；若只有一个特征值且 $N=A-\mu E$ 幂零阶数低，可直接用 $\ee^{\mu x}\sum x^kN^k/k!$，如例 7。
+  \item \textbf{已经有一组解时用 $\Phi$。}把解按列排成 $\Phi$，再算 $\Phi(x)\Phi^{-1}(0)$。这适合接非齐次方程或已经用别的方法解过一遍的场合。
+\end{enumerate}
+
+\subhdr{6.2 答案自检清单}
+
+算完候选矩阵 $F(x)$ 后，可按下面几条核对。若对整个区间恒有 $F'=AF$，并且 $F(0)=E$，由初值问题解的唯一性就能证明 $F(x)=\ee^{Ax}$；仅在少数点代值则只是检查，不能替代恒等式证明。
+
+\begin{enumerate}
+  \item \textbf{形状}：$F(x)$ 是 $n\times n$ 矩阵；$F(0)=E$。
+  \item \textbf{微分方程}：对 $x$ 求导后逐元素比较 $F'$ 与 $AF$；要验恒等式，不能只代 $x=0$。$2\times2$ 时可用 $A^2=\alpha A+\beta E$ 把 $AF$ 化成 $A,E$ 的组合，再比较系数（例 4、例 5、作业 1、2 都这样做）。
+  \item \textbf{行列式}：$\det F(x)=\ee^{x\tr A}$。例如例 1 的 $\tr A=2$，最终 $\det F=\ee^{2x}$。
+  \item \textbf{特征值}：先把 $A$ 的特征值 $\mu_1,\dots,\mu_n$ 按代数重数列出，再逐项映成 $\ee^{\mu_1x},\dots,\ee^{\mu_nx}$。若映射后数值相同，它们的重数要相加；不要额外添上无关的 $1$。
+  \item \textbf{实性}：$A$ 实矩阵时 $F$ 实；若中间用复数对角化，最后应共轭抵消。
+  \item \textbf{初值}：$F(x)=\ee^{Ax}$ 满足 $F(0)=E$。若初值点为 $x_0$，应使用 $G(x)=F(x-x_0)=\ee^{A(x-x_0)}$，核对 $G(x_0)=E$，从而 $\vect{Y}(x_0)=G(x_0)\vect{Y}_0=\vect{Y}_0$。
+  \item \textbf{C--H 的谱条件}：把 $\beta_k$ 代回 $r_x$，逐条检查 \eqref{eq:spectral}；重根时导数条件一条不能少。
+  \item \textbf{对角化的两个乘积}：$V^{-1}V=E$ 与 $V\Lambda V^{-1}=A$ 都要核；只核一个不够。
+  \item \textbf{缺陷矩阵}：若用了 $N=A-\mu E$，检查 $N^m=[0]$ 的阶数是否够；$N^2=0$ 时指数只有两项。
+  \item \textbf{数值抽检}：取一个具体的 $x$（如 $x=0.3$）数值比较 $F'$ 与 $AF$，可发现符号错误；但抽样不能代替恒等式核对。
+\end{enumerate}
+
+\subhdr{6.3 作业（p44）}
+
+课件作业三题都是“求 $\ee^{Ax}$ 并解 $\vect{Y}'=A\vect{Y}$”。正文只列题干与考点；完整详解在附录 A。三题涵盖二阶与三阶矩阵。
+
+\practice{P1}{课件 p44 第 1 题}{设
+\[
+A=\mat{-6&-4\\8&6},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}{二阶矩阵指数的求法、通解与结果核验}{ans:P1}
+
+\practice{P2}{课件 p44 第 2 题}{设
+\[
+A=\mat{-4&4\\-5&4},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}{二阶矩阵指数的求法、实值通解与结果核验}{ans:P2}
+
+\practice{P3}{课件 p44 第 3 题}{设
+\[
+A=\mat{-24&0&0\\4&-2&0\\1&0&2},
+\]
+求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}{三阶矩阵指数的求法、通解与结果核验}{ans:P3}
+
+%=====================================================================
+\clearpage
+\hdr{§7}{来源核对与说明}
+
+\subhdr{7.1 课件页覆盖表}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.55\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.55\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}@{}}
+p1--p3 & 标题、Outline、Exponential Matrix 分隔页 & 封面、§0\\
+p4--p6 & 标量类比、级数定义、定理 1.1、通解、初值 & §1\\
+p7 & 性质 1.1 五条、性质 1.2 特征向量 & §2\\
+p8--p9 & 可对角化、$m$ 与 $g$、$V$ 与 $\Lambda$ & §3.1\\
+p10--p11 & 幂抵消、$V\ee^{\Lambda x}V^{-1}$、对角指数 & §3.2\\
+p12 & 通解、初值 & §3.3\\
+p13--p15 & 例 1、$V^{-1}$、$\ee^{Ax}$、通解、IVP & §3.4\\
+p16--p17 & Cayley--Hamilton 分隔页、定理 3.1 & §4.1\\
+p18--p19 & 定理 3.2、多项式降阶 & §4.2\\
+p20 & 例 2 & §4.2\\
+p21--p22 & 解析函数降阶、$\ee^{Ax}$ 的谱条件 & §4.3\\
+p23 & 例 3、$n=2,3$ 通用结构 & §4.4\\
+p24--p25 & 例 4、相异实根 & §4.5\\
+p26--p27 & 例 5、纯虚根与旋转 & §4.6\\
+p28--p29 & 重根导数条件、定理 3.3 & §4.3、§4.7\\
+p30--p31 & 例 6、谱 $5(3)$ 与 $2(1)$ & §4.7\\
+p32 & 四步总结 & §4.11\\
+p33--p35 & 例 7、三重根缺陷矩阵 & §4.8\\
+p36--p38 & 例 8、$0$ 与 $\pm\mathrm{i}$ & §4.9\\
+p39--p43 & 基本解矩阵、定理 4.1 & §5\\
+p44 & 作业 1--3、阅读 C.~Constanda pp.167--174 & §6.3、附录 A\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\textbf{例题与作业落点}：例 1（第\pageref{ex:1:start}--\pageref{ex:1:end}页）；例 2（第\pageref{ex:2:start}--\pageref{ex:2:end}页）；例 3（第\pageref{ex:3:start}--\pageref{ex:3:end}页）；例 4（第\pageref{ex:4:start}--\pageref{ex:4:end}页）；例 5（第\pageref{ex:5:start}--\pageref{ex:5:end}页）；例 6（第\pageref{ex:6:start}--\pageref{ex:6:end}页）；例 7（第\pageref{ex:7:start}--\pageref{ex:7:end}页）；例 8（第\pageref{ex:8:start}--\pageref{ex:8:end}页）；作业 1 附录（第\pageref{ans:P1}--\pageref{ans:P1:end}页）；作业 2 附录（第\pageref{ans:P2}--\pageref{ans:P2:end}页）；作业 3 附录（第\pageref{ans:P3}--\pageref{ans:P3:end}页）。
+
+\clearpage
+\subhdr{7.2 缺口清单}
+
+下表记录本讲义在核读课件时认为需要补讲的地方；分类按“读者能否辨认对象、判断条件、执行下一步”判断，不按页数凑数。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+\thead{类型} & \thead{来源与短语} & \thead{缺什么} & \thead{补在哪里}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+收敛性 & p5 “The sum of (2) is convergent” & 用哪个范数、次乘性、为何绝对收敛 & §1.2 行和范数与估计\\
+逐项求导 & p5 级数求导 & 原级数一致收敛不足以逐项求导 & §1.3 导数级数一致估计\\
+通解完备性 & p5 “$C$ 是任意常向量” & 只证“是解”，未证“全部解” & §1.4 唯一性\\
+对易条件 & p7 “If $AB=BA$” & 无反例、无“一般不能拆”的边界 & §2.2 最小反例与说明\\
+性质 1.2 & p7 只陈述 & 未证 $A^k\vect{V}=\mu^k\vect{V}$ & §2.3 级数推导\\
+幂抵消 & p10 $(V\Lambda V^{-1})^k$ 一带而过 & 相邻 $V^{-1}V$ 如何抵消 & §3.2 逐次写出\\
+重数对照 & p9 $g=n-\rank$ 一句带过 & $g<m$ 与可对角化的关系 & §3.1 $I_2$ 与 $J_2(1)$ 对照\\
+CH 定理 & p17 只陈述 & 定理本身未证 & §4.1 引用为标准结论并说明用途\\
+降阶机制 & p19 商余与 $p(A)=r(A)$ & 为什么可以只算余式 & §4.2 写全因果\\
+解析函数降阶 & p21--p22 $f(A)=r(A)$ & 未证；重根导数条件来源 & §4.3 Jordan 形与 Taylor\\
+$\lambda$ 与 $\mu$ & p22、p29 写 $Ax$；p23 Remark 简写 $A$ & 两种记号并列 & §0.2、§4.3\\
+重根方程数 & p28 “These are identical equations” & 为何补导数、补几个 & §4.3 条件计数\\
+例 3 & p23 只给结构 & 没有具体 $A$ 时系数怎么写 & §4.4 Lagrange 形式\\
+例 6 & p30--p31 停在四式 & 四个系数未解 & §4.7 Hermite 解出并核对\\
+例 7 & p33--p35 直接给结果 & $N^2=0$ 与 $x$ 项的来源 & §4.8 幂零推导\\
+定理 4.1 & p43 只陈述 & 列为何线性无关 & §5.3 三条核对\\
+讲义自身的泛化 & 旧稿 §5.5；课件 p34--p35 只讨论单谱例题 & 多谱时需写成指数与多项式的多项和 & §4.10 对照\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+\needspace{12\baselineskip}
+\subhdr{7.3 原课件印刷疑点的核对}
+
+以下四处是本讲义逐页核对原课件文字层并复算后确认的。修正不改变方法，只改具体符号或因子；读者对照旧稿时应知道以哪一版为准。
+
+\begin{enumerate}
+  \item \textbf{p14 的 $V^{-1}$}：印刷的 $(1,2)$ 元素为 $0$，实际为 $-1$。核对：$V$ 的第一行 $(1,1,-1)$ 与错版第二列 $(0,1,0)^{\mathsf T}$ 的内积为 $1$，而 $VV^{-1}$ 的 $(1,2)$ 应为 $0$。本讲义 §3.4 用正确值。
+  \item \textbf{p15 的初值解}：印刷为 $V\ee^{\Lambda x}V^{-1}\vect{Y}_0$，漏了 $x-x_0$。核对：令 $x=x_0$ 得 $V\ee^{\Lambda x_0}V^{-1}\vect{Y}_0$，一般不等于 $\vect{Y}_0$；p12 已给正确的 $\ee^{\Lambda(x-x_0)}$。本讲义 §3.3 用平移形式。
+  \item \textbf{p27 的通解第二列}：印刷为 $\binom{-\sin x}{\cos x}$，应为 $\binom{\sin x}{\cos x}$。核对：$\ee^{Ax}\binom{C_1}{C_2}$ 的第一分量是 $C_1\cos x+C_2\sin x$，第二分量是 $-C_1\sin x+C_2\cos x$。本讲义 §4.6 更正。
+  \item \textbf{p36 的中间矩阵}：$(3,2)$ 元素印成 $-\alpha_1x$，应为 $+\alpha_1x$。核对：$A_{32}=1$、$(A^2)_{32}=0$，该元素只来自 $\alpha_1x\,A$。p38 最终矩阵为 $\sin x$，是正确的。本讲义 §4.9 说明。
+\end{enumerate}
+
+另有一处常数换元说明和一处省略号的阅读提醒，供对照课件时使用：
+\begin{itemize}
+  \item p25 的通解一行省略了前面的 $\frac16$。若沿用同一常向量，等号中应保留该因子；若重新命名任意常数，则可吸收它，所得通解族不变。沿用原常数时，本讲义 §4.5 的换元为 $k_1=(3C_1+C_2)/6$、$k_2=(3C_1-C_2)/6$。
+  \item p12 的展开按特征值分组，省略号与该组重数范围共同决定项数；第一组只有一个向量时，该组只保留一项。这是阅读提醒，不列为已确认的源课件错误。本讲义 §3.3 用 $I_j$ 明写各组指标。
+\end{itemize}
+
+\subhdr{7.4 与旧稿的实质差异}
+
+这里只列会影响读者理解的修改，供新旧对照；不逐条罗列措辞变化。
+
+\begin{enumerate}
+  \item \textbf{撤掉“课件没说 $\lambda_i$ 是 $Ax$ 的特征值”这一误判。}p22 原文写 “Let $Ax$ be a square matrix \dots\ with eigenvalues $\lambda_i$”，p29 还写 “(not $A$)”。本讲义只指出 p23 的 Remark 记号放松，不登记为漏讲。
+  \item \textbf{收敛与求导的论证补全。}旧稿只用“原级数一致收敛”解释逐项求导；本讲义补导数级数的一致估计，并明确次乘性范数。
+  \item \textbf{对易性的措辞收紧。}旧稿写“不对易时指数不能拆”，容易被读成“对任何具体矩阵都一定不相等”。本讲义按充分条件写，用反例说明“一般不能拆”，并把“对一切 $t$ 成立时才必要”单独说明。
+  \item \textbf{$m$ 与 $g$ 的定义与最小对照。}补 $g_j=n-\rank(A-\mu_jE)$、$g\le m$、$I_2$ 与 $J_2(1)$ 的对照，说明同一特征值下可对角化与不可对角化的差别。
+  \item \textbf{Cayley--Hamilton 改用 $A$ 的谱写系数。}设 $r_x(\mu)=\sum\beta_k\mu^k$，条件为 $r_x^{(k)}(\mu_j)=x^k\ee^{x\mu_j}$；与课件的 $\lambda=x\mu$、$\alpha_k$ 记号并列，$x=0$ 时不出现除法。
+  \item \textbf{例 3 补全。}给出 $n=2$ 的显式系数与 $n=3$ 的 Lagrange 形式，不再只说“由谱条件确定”。
+  \item \textbf{例 6 解完。}用 Hermite 形式给出光滑闭式，并展开 $\beta_0,\dots,\beta_3$；用具体实现 $\diag(J_3(5),2)$ 核对，不再停在四个方程。
+  \item \textbf{例 7 补幂零机制。}用 $N=A+2E$、$N^2=0$ 推出 $\ee^{-2x}(E+xN)$，并说明一般多特征值情形是多项式乘指数之和（§4.10）。
+  \item \textbf{例 4 的消元文字改正。}旧稿写“相加得 $2\alpha_0$”；直接相加得到 $2x\alpha_1+2\alpha_0$，正确做法是第一式加第二式的两倍，得 $3\alpha_0=\ee^{4x}+2\ee^{-2x}$。
+  \item \textbf{四处印刷疑点的处理。}p14、p15、p27、p36 的修正在 §7.3 列出；旧稿已改 p14 与 p27，但 p15 的平移与 p36 的符号需要在新稿中明确。
+  \needspace{6\baselineskip}
+  \item \textbf{核验过程可复现。}旧稿印出的自检主要展示 $F(0)=E$ 与 $F'(0)=A$，页末另称做过符号核验；不能仅据印出的例子断言没有执行全式检查。本讲义保留可复现脚本，对全部明确矩阵例题与作业检查 $F(0)=E$、$F'=AF$，并在正文给出可手算的恒等核对。
+\end{enumerate}
+
+\needspace{10\baselineskip}
+\subhdr{7.5 本讲义的边界}
+
+\begin{itemize}
+  \item 本讲义是学习材料，不代替做题，也不表示读者已经掌握；页数与缺口条数只作描述。
+  \item 本讲义引用的课件页码均为物理 PDF 页序；页脚编号与物理页序没有统一的固定差值，对照时以 PDF 阅读器页序为准。
+  \item 课件 p44 的阅读材料 C.~Constanda, \emph{Differential Equations}, Springer, 2017, pp.167--174 未在讲义中展开；本讲义只覆盖课件 44 页本身。
+  \item 可复现的符号核验脚本与输出在讲义同目录：
+  \par\noindent\texttt{verify\_matrix\_exponential.py}（脚本）、\texttt{verify\_output.txt}（输出）。
+\end{itemize}
+
+%=====================================================================
+\clearpage
+\appendix
+\hdr{附录 A}{作业 1--3 详解}
+
+每题先复述题干与条件，再给步骤、答案与核对。核对不止代入 $x=0$：凡 $2\times2$ 题，都用 $A^2=\alpha A+\beta E$ 把 $F'$ 与 $AF$ 化成 $A,E$ 的组合逐项比较；三阶题给代表性元素的求导比较，并对全部元素作符号核验。
+
+\answerstart{P1}{课件 p44 第 1 题}{设 $A=\mat{-6&-4\\8&6}$，求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+\step{1. 谱}
+$\tr A=0$，$\det A=(-6)(6)-(-4)(8)=-36+32=-4$，所以
+\[
+\Delta(\mu)=\mu^2-(\tr A)\mu+\det A=\mu^2-4=(\mu-2)(\mu+2).
+\]
+特征值 $\mu_1=2$、$\mu_2=-2$，都是单根。
+
+\step{2. 设形式并解系数}
+设 $\ee^{Ax}=\beta_1A+\beta_0E$。条件为
+\[
+\ee^{2x}=2\beta_1+\beta_0,\qquad \ee^{-2x}=-2\beta_1+\beta_0.
+\]
+相减得（系数是 $2-(-2)=4$）：
+\[
+\ee^{2x}-\ee^{-2x}=4\beta_1
+\quad\Longrightarrow\quad
+\beta_1=\frac{\ee^{2x}-\ee^{-2x}}{4}=\frac{\sinh2x}{2}.
+\]
+两式相加得
+\[
+\ee^{2x}+\ee^{-2x}=2\beta_0
+\quad\Longrightarrow\quad
+\beta_0=\cosh2x .
+\]
+
+\step{3. 矩阵}
+\[
+\ee^{Ax}=\cosh2x\,E+\frac{\sinh2x}{2}A
+=\mat{\cosh2x-3\sinh2x&-2\sinh2x\\4\sinh2x&\cosh2x+3\sinh2x}.
+\]
+
+\step{4. 通解}
+$A$ 的特征向量：$\mu=2$ 时 $A-2E=\mat{-8&-4\\8&4}$，取 $(1,-2)^{\mathsf T}$；$\mu=-2$ 时 $A+2E=\mat{-4&-4\\8&8}$，取 $(1,-1)^{\mathsf T}$。所以
+\[
+\vect{Y}(x)=k_1\ee^{2x}\mat{1\\-2}+k_2\ee^{-2x}\mat{1\\-1}.
+\]
+初值解为 $\vect{Y}(x)=\ee^{A(x-x_0)}\vect{Y}_0$。
+
+
+\step{P1 续解：5. 核对（对一切 $x$）}
+本题 $A=\left(\begin{smallmatrix}-6&-4\\8&6\end{smallmatrix}\right)$，已得 $F=\cosh2x\,E+\frac{\sinh2x}{2}A$。由 $A^2=4E$，有
+\[
+A\ee^{Ax}=4\beta_1E+\beta_0A=2\sinh2x\,E+\cosh2x\,A,
+\]
+而
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=\beta_1'A+\beta_0'E
+=\cosh2x\,A+2\sinh2x\,E,
+\]
+两者相同。$F(0)=\cosh0\,E+\frac{\sinh0}{2}A=E$。
+
+\label{ans:P1:end}
+\answerstart{P2}{课件 p44 第 2 题}{设 $A=\mat{-4&4\\-5&4}$，求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+\step{1. 谱}
+$\tr A=0$，$\det A=(-4)(4)-4(-5)=-16+20=4$，所以
+\[
+\Delta(\mu)=\mu^2+4=(\mu-2\mathrm{i})(\mu+2\mathrm{i}).
+\]
+特征值 $\mu_1=2\mathrm{i}$、$\mu_2=-2\mathrm{i}$，都是单根。
+
+\step{2. 设形式并解系数}
+设 $\ee^{Ax}=\beta_1A+\beta_0E$。条件为
+\[
+\ee^{2\mathrm{i}x}=2\mathrm{i}\beta_1+\beta_0,\qquad
+\ee^{-2\mathrm{i}x}=-2\mathrm{i}\beta_1+\beta_0.
+\]
+两式相加得 $\beta_0=\cos2x$；相减除以 $4\mathrm{i}$ 得
+\[
+\beta_1=\frac{\ee^{2\mathrm{i}x}-\ee^{-2\mathrm{i}x}}{4\mathrm{i}}
+=\frac{\sin2x}{2}.
+\]
+
+\step{3. 矩阵}
+\[
+\ee^{Ax}=\cos2x\,E+\frac{\sin2x}{2}A
+=\mat{\cos2x-2\sin2x&2\sin2x\\[2pt]-\frac52\sin2x&\cos2x+2\sin2x}.
+\]
+
+\step{4. 通解}
+\[
+\vect{Y}(x)=\ee^{Ax}\vect{C}
+=C_1\mat{\cos2x-2\sin2x\\-\frac52\sin2x}
++C_2\mat{2\sin2x\\\cos2x+2\sin2x}.
+\]
+初值解为 $\vect{Y}(x)=\ee^{A(x-x_0)}\vect{Y}_0$。
+
+
+\step{P2 续解：5. 核对（对一切 $x$）}
+本题 $A=\left(\begin{smallmatrix}-4&4\\-5&4\end{smallmatrix}\right)$，已得 $F=\cos2x\,E+\frac{\sin2x}{2}A$。由 $A^2=-4E$，有
+\[
+A\ee^{Ax}=-4\beta_1E+\beta_0A=-2\sin2x\,E+\cos2x\,A,
+\]
+而
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\ee^{Ax}=\beta_1'A+\beta_0'E
+=\cos2x\,A-2\sin2x\,E,
+\]
+两者相同。$F(0)=E$。
+
+\label{ans:P2:end}
+\answerstart{P3}{课件 p44 第 3 题}{设 $A=\mat{-24&0&0\\4&-2&0\\1&0&2}$，求 $\ee^{Ax}$ 与 $\vect{Y}'=A\vect{Y}$ 的通解。}
+
+\step{1. 谱}
+$A$ 是下三角矩阵，特征值就是对角元 $-24,-2,2$，互异。特征多项式
+\[
+\Delta(\mu)=(\mu+24)(\mu+2)(\mu-2).
+\]
+设
+\[
+\ee^{Ax}=\beta_2A^2+\beta_1A+\beta_0E .
+\]
+三个谱条件为
+\[
+\begin{aligned}
+\ee^{-24x}&=(-24)^2\beta_2-24\beta_1+\beta_0,\\
+\ee^{-2x}&=(-2)^2\beta_2-2\beta_1+\beta_0,\\
+\ee^{2x}&=2^2\beta_2+2\beta_1+\beta_0.
+\end{aligned}
+\]
+
+\step{2. 解系数}
+第三式减去第二式：
+\[
+\ee^{2x}-\ee^{-2x}=4\beta_1
+\quad\Longrightarrow\quad
+\beta_1=\frac{\ee^{2x}-\ee^{-2x}}{4}=\frac{\sinh2x}{2}.
+\]
+第二式与第三式相加：
+\[
+\ee^{2x}+\ee^{-2x}=8\beta_2+2\beta_0
+\quad\Longrightarrow\quad
+\beta_0=\cosh2x-4\beta_2.
+\]
+代入第一式：
+\[
+\ee^{-24x}=576\beta_2-24\cdot\frac{\sinh2x}{2}+\cosh2x-4\beta_2
+=572\beta_2-12\sinh2x+\cosh2x .
+\]
+用 $\sinh2x=(\ee^{2x}-\ee^{-2x})/2$、$\cosh2x=(\ee^{2x}+\ee^{-2x})/2$，整理得
+\[
+572\beta_2=\ee^{-24x}+6\ee^{2x}-6\ee^{-2x}-\frac{\ee^{2x}+\ee^{-2x}}{2}
+=\ee^{-24x}+\frac{11\ee^{2x}-13\ee^{-2x}}{2}.
+\]
+所以
+\[
+\beta_2=\frac{2\ee^{-24x}+11\ee^{2x}-13\ee^{-2x}}{1144},
+\qquad
+\beta_0=\frac{66\ee^{2x}+78\ee^{-2x}-\ee^{-24x}}{143}.
+\]
+（$\beta_0$ 是把 $\beta_2$ 代回 $\cosh2x-4\beta_2$ 后通分得到的；也可直接由三式解线性方程组核对。）
+
+
+\step{P3 续解：3. 矩阵}
+本题 $A=\left(\begin{smallmatrix}-24&0&0\\4&-2&0\\1&0&2\end{smallmatrix}\right)$，沿用上页解出的系数，代入 $F=\beta_2A^2+\beta_1A+\beta_0E$。先算
+\[
+A^2=\mat{576&0&0\\-104&4&0\\-22&0&4}.
+\]
+代回 $\ee^{Ax}=\beta_2A^2+\beta_1A+\beta_0E$，逐元素化简：
+\[
+\ee^{Ax}=\mat{
+\ee^{-24x}&0&0\\[3pt]
+\dfrac{2\ee^{-2x}-2\ee^{-24x}}{11}&\ee^{-2x}&0\\[6pt]
+\dfrac{\ee^{2x}-\ee^{-24x}}{26}&0&\ee^{2x}}.
+\]
+
+\step{4. 通解}
+\[
+\vect{Y}(x)=\ee^{Ax}\vect{C}
+=\mat{
+C_1\ee^{-24x}\\
+\frac{2C_1}{11}(\ee^{-2x}-\ee^{-24x})+C_2\ee^{-2x}\\
+\frac{C_1}{26}(\ee^{2x}-\ee^{-24x})+C_3\ee^{2x}}.
+\]
+由于三个特征值互异，也可按特征向量写：
+\[
+\vect{Y}=k_1\ee^{-24x}\mat{286\\-52\\-11}+k_2\ee^{-2x}\mat{0\\1\\0}+k_3\ee^{2x}\mat{0\\0\\1}.
+\]
+两种写法张成同一个解空间，只是常数换元。
+
+\step{5. 核对（逐元素，不只 $x=0$）}
+$F(0)=E$ 可直接看出：三个对角元在 $0$ 处为 $1$，非对角元为 $0$。求导比较：
+\[
+F_{11}'=-24\ee^{-24x}=(AF)_{11},
+\]
+\[
+F_{21}'=\frac{-4\ee^{-2x}+48\ee^{-24x}}{11},
+\qquad
+(AF)_{21}=4F_{11}-2F_{21}
+=4\ee^{-24x}-\frac{4(\ee^{-2x}-\ee^{-24x})}{11}
+=\frac{-4\ee^{-2x}+48\ee^{-24x}}{11},
+\]
+其余七个元素同样逐项成立；脚本对全部九个元素做了符号核验（见同目录 \texttt{verify\_output.txt}）。所以 $F'=AF$ 恒成立。
+
+\label{ans:P3:end}
+\flowerrule
+
+{\small\color{inkgray}
+本讲义依据课件 \texttt{16\_17\_matrix\_exponential.pdf}（44 页，2026-10-13，W.Y., DLUT）编写。页码为物理 PDF 页序。
+例题 1--8 为正文教学示范；作业 1--3 为独立练习，详解在本附录。
+所有明确矩阵例题与作业的 $F(0)=E$、$F'=AF$ 已用 SymPy 全式核验；
+原课件印刷疑点、常数换元说明与分组省略号的阅读提醒见 §7.3。}
+
+\end{document}

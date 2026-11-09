@@ -1,0 +1,154 @@
+% !TEX program = xelatex
+% 数学物理方法2 · §7.2 · 课件 p19 作业第 4 题 · 解答卡（2026-11-09）
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{§7.2 作业 · 热流边界条件}{数学物理方法2}
+
+\geometry{left=1.9cm,right=1.9cm,top=1.9cm,bottom=2.0cm,headsep=10pt,footskip=18pt}
+\linespread{1.24}
+\setlength{\headheight}{22pt}
+\setlength{\parskip}{0pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\abovedisplayshortskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
+\newcommand{\step}[1]{\par\smallskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.35em}}
+\newcommand{\ok}{\textcolor{violet}{\ensuremath{\checkmark}}}
+
+% 紧凑节头：留白减半，并防止节头孤零零留在页底
+\newcommand{\chdr}[2]{%
+  \needspace{4\baselineskip}%
+  \par\vspace{4pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\bfseries #2}\par\nobreak
+  \vspace{1pt}{\color{petal}\hrule height 1pt}\vspace{4pt}}
+\let\hdr\chdr
+
+\begin{document}
+
+\doctitle{热流从两端流入：边界条件为什么左负右正}
+{§7.2 作业第 4 题（课件 p19）\ ·\ 杆长 $l$，两端各流入热流密度 $q_0$}
+{依据课件 p19 题面、p14 力边界条件、p15 热流边界条件\quad 2026-11-09\quad 数学物理方法\,2}
+
+\qstem{杆长 $l$，两端各有热流密度 $q_0$ 流入杆内（图上两个箭头都朝杆内）。请写出该问题的\textbf{边界条件}。\\[2pt]
+{\small\color{inkgray}课件 p19 原文：\emph{The heat flux into the ends of the rod (whose length is $l$) is $q_0$.}}}
+
+\hdr{§1}{认题：题目给的是热流密度，不是温度}
+
+未知量 $u(x,t)$ 是杆内温度。课件 p13--p16 把边界条件分成三类；\textbf{第二类}（p14）给定的是边界上的法向导数 $\partial u/\partial n$，而不是函数值本身。本题给的正是端面的热流密度 $q_0$，量纲 $\mathrm{W/m^2}$，所以它落在第二类，且是非齐次的（所给的值不为零）。
+
+\begin{center}
+\begin{tabular}{c@{}c@{}c}
+$q_0\;\longrightarrow$ & {\setlength{\fboxsep}{0pt}\fcolorbox{petal}{petal!45}{\rule{0pt}{0.45cm}\hspace{3.6cm}}} & $\longleftarrow\;q_0$\\[1pt]
+ & {\small\color{inkgray}\makebox[3.6cm][s]{$x=0$\hfill$x=l$}} &
+\end{tabular}\\[2pt]
+{\small\color{inkgray}（杆，长 $l$，温度 $u(x,t)$；两侧箭头表示热流流入）}
+\end{center}
+
+图上看，两端都是“流入”，但两端的\textbf{外法向方向相反}。同一个“流入”，在两个端面上对应着相反的空间方向——这是全题唯一容易翻车的地方，符号就出在这里。
+
+\hdr{§2}{唯一的工具：外法向 $+$ Fourier 定律}
+
+课件 p15 的约定是取\textbf{外法向} $n$（从杆指向杆外），热流密度沿外法向的分量由 Fourier 定律给出：
+
+\[
+q_n=-k\,\frac{\partial u}{\partial n}
+\]
+
+其中 $k$ 是热导率（$\mathrm{W\cdot m^{-1}\cdot K^{-1}}$）。这句话给出两条操作规则：
+
+\begin{itemize}
+\item \textbf{“流入”意味着热流逆着外法向}，所以 $q_n<0$；量值为 $q_0$ 时就是 $q_n=-q_0$。这一条在两端都成立，因为“流入”参照的始终是杆的内部。
+\item 把 $q_n$ 换回温度导数：$\dfrac{\partial u}{\partial n}=-\dfrac{q_n}{k}$，于是两端都有 $\dfrac{\partial u}{\partial n}=\dfrac{q_0}{k}$。
+\end{itemize}
+
+p15 已经替我们验过一遍右端：热流\textbf{流出}时 $\partial_xu|_{x=l}=-f/k$，\textbf{流入}时 $\partial_xu|_{x=l}=+f/k$，$f=0$ 则 $\partial_xu|_{x=l}=0$（绝热）。
+
+\hdr{§3}{两端分别落笔：先写 $\partial u/\partial n$，再换到 $\partial u/\partial x$}
+
+\step{统一形式（两端一样）}按 §2 的第二条，两个端面都满足
+
+\[
+\left.\frac{\partial u}{\partial n}\right|_{x=0}=\frac{q_0}{k},
+\qquad
+\left.\frac{\partial u}{\partial n}\right|_{x=l}=\frac{q_0}{k}.
+\]
+
+这一步之所以两端同号，是因为“外法向”本身就是随端面变的。
+
+\step{换到 $x$ 导数（符号在这里分开）}左端 $x=0$ 的外法向指向 $-x$，所以 $\dfrac{\partial u}{\partial n}=-\dfrac{\partial u}{\partial x}$；代入上式：
+
+\[
+-\left.\frac{\partial u}{\partial x}\right|_{x=0}=\frac{q_0}{k}
+\quad\Longrightarrow\quad
+\left.\frac{\partial u}{\partial x}\right|_{x=0}=-\frac{q_0}{k}.
+\]
+
+右端 $x=l$ 的外法向指向 $+x$，所以 $\dfrac{\partial u}{\partial n}=+\dfrac{\partial u}{\partial x}$；代入同一条统一形式：
+
+\[
+\left.\frac{\partial u}{\partial x}\right|_{x=l}=\frac{q_0}{k}.
+\]
+
+也就是说，两端的差别不在“流入”这件事上，而在“外法向朝哪边”。
+
+\hdr{§4}{答案}
+
+\[
+\boxed{\;\left.\frac{\partial u}{\partial x}\right|_{x=0}=-\frac{q_0}{k},
+\qquad
+\left.\frac{\partial u}{\partial x}\right|_{x=l}=+\frac{q_0}{k}\;}
+\]
+
+三种等价写法，考试写哪一种都算对，但同一份答案里只用一种：
+
+\[
+\text{外法向形式：}\ \left.\frac{\partial u}{\partial n}\right|_{\text{两端}}=\frac{q_0}{k};
+\qquad
+\text{通量形式：}\ -k\left.\frac{\partial u}{\partial x}\right|_{x=0}=q_0,\quad
+-k\left.\frac{\partial u}{\partial x}\right|_{x=l}=-q_0 .
+\]
+
+通量形式最后一个是负号，读法是：在 $x=l$ 处，$+x$ 方向的净热流是 $-q_0$，也就是真实热流沿 $-x$ 流进杆内。
+
+\hdr{§5}{四条自检}
+
+\begin{itemize}
+\item \textbf{量纲}：$\dfrac{q_0}{k}$ 的单位是 $\dfrac{\mathrm{W/m^2}}{\mathrm{W/(m\cdot K)}}=\mathrm{K/m}$，与 $\partial u/\partial x$ 一致 \ok{}。
+\item \textbf{退化}：$q_0=0$ 时两端 $\partial_xu=0$，正是 p15 的绝热情形 \ok{}。
+\item \textbf{温度形状}：两端都在吸热，端部比内部热，所以温度从左端往里降、从右端往里降，即左端 $u_x<0$、右端 $u_x>0$，与答案符号一致 \ok{}。
+\item \textbf{能量}：对 $u_t=a^2u_{xx}$ 积分得 $\dfrac{\dd}{\dd t}\displaystyle\int_0^l \rho c\,u\dd x=k\big[u_x(l)-u_x(0)\big]=2q_0>0$，热量持续流入，温度整体上升 \ok{}。顺便说明：本题\textbf{没有稳态}——稳态要求 $u_{xx}=0$，即 $u$ 是直线、两端斜率相等，与 $-\frac{q_0}{k}\neq\frac{q_0}{k}$ 矛盾。
+\end{itemize}
+
+\hdr{§6}{和 p14 是同一副符号，不必背两套}
+
+p14 的杆纵振动：两端受\textbf{向外}的力 $f$，Hooke 定律给 $f_n/S=E\,\partial u/\partial n$，于是两端 $\partial u/\partial n=f/(ES)$，换成 $x$ 导数也是“左端负、右端正”：
+
+\[
+\left.\frac{\partial u}{\partial x}\right|_{x=0}=-\frac{f}{ES},
+\qquad
+\left.\frac{\partial u}{\partial x}\right|_{x=l}=+\frac{f}{ES}.
+\]
+
+把 $f$ 换成 $q_0$、把 $ES$ 换成 $k$，就是本题。两题的共同结构是：\emph{同一个物理量作用在两个端面，写 $x$ 导数时符号必然相反，写外法向导数时符号相同。}
+
+\hdr{§7}{写进作业本的三行}
+
+\begin{enumerate}
+\item 取外法向 $n$，写出 Fourier 定律 $q_n=-k\,\partial u/\partial n$。
+\item 热流流入，$q_n=-q_0$；左端外法向沿 $-x$，右端沿 $+x$。
+\item 代入得 $\left.\dfrac{\partial u}{\partial x}\right|_{x=0}=-\dfrac{q_0}{k}$，$\left.\dfrac{\partial u}{\partial x}\right|_{x=l}=+\dfrac{q_0}{k}$。
+\end{enumerate}
+
+\gapitem{错法一 · 两端写成同一个符号}{根源是把“流入”当成了同一个空间方向。判据是温度形状：两端吸热时温度是“两端高、中间低”，所以 $u_x$ 在左端为负、右端为正；写成两个 $-\frac{q_0}{k}$ 或两个 $+\frac{q_0}{k}$ 都与这个形状矛盾。}
+
+\gapitem{错法二 · 系数写错}{把 $k$ 写成 $ES$ 是把热传导照抄成杆的纵振动。$ES$ 是拉压刚度，$k$ 是热导率；题目给的物理量换了，系数必须跟着换。漏写 $k$（写成 $\partial_xu=\mp q_0$）则是量纲不成立。}
+
+\gapitem{错法三 · 用了内法向却没改符号}{若取内法向，则“流入”对应 $q_n=+q_0$，$\partial u/\partial n=-\frac{q_0}{k}$；结论一样，但中间每一步的符号都得跟着翻。用哪种法向都行，\textbf{前提是整篇统一}。}
+
+\callout{\textbf{一句话带走}：边界条件的符号只由一件事决定——“流入”与所选法向的方向关系。取外法向后，两端流入都写成 $q_n=-q_0$；翻成 $\partial u/\partial x$ 时，左端才多出一个负号。}
+
+\vspace{2pt}
+{\small\color{inkgray}附注：本题只问边界条件。若要凑成完整的定解问题，还需一个初始条件 $u(x,0)=\varphi(x)$（温度分布），但题目没给，答案里不必臆造；热传导方程对时间是一阶的，初值只此一个。}
+
+\end{document}

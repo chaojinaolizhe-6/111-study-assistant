@@ -1,0 +1,53 @@
+迈克尔逊原理与预习节选：独立审核修订验收记录
+日期：2026-11-09
+
+产物：D:\aaa_D_usual\DSH\111学习助手\output\讲义skill-v2试读-20261109\michelson\michelson-excerpt-v2.pdf
+页数：17；不是完整实验讲义。
+PDF SHA256：1b10d1ab5ac8d8614716110e59aef869f0c325a1e1d029ff957385f74753eaba
+TEX SHA256：f6c07bc147667a1df8c80a9a6e6c9774285417e57228f605bb9bd7d64e3024a7
+
+来源与范围
+- 两份原始 PDF 的物理页码、文件 SHA256、各题映射见 source-map.json。
+- 7 项实验目的完整中英对照，选做标记为 (3)(4)(6)(7)；7 条英文逐项匹配源文。
+- 图 11-1 的 14 个编号部件完整列出，单独区分辅助器材与携带材料。
+- 只收 9 问：II-1、II-2、II-3、II-6、II-7、II-8、II-9，及预习 p3 报告问题 (1)(2)。
+- 9 个英文题干经 Unicode/空白/标点归一化逐一匹配源 PDF，均保留题号与中英答案。
+- 不覆盖 II-4/5/10/11、III-1 至 III-9、IV-1 至 IV-4、完整记录表与完整操作；不以这 17 页替代旧 28 页讲义。
+
+来源沿革
+- DSH 初稿在 1200 秒时限退出，未自然完成最终验收；初稿 PDF 为 16 页。
+- 原稿已封存于 ../dsh-初稿-审核前留档.zip；本目录当前 TEX/PDF 是独立审核后修订版。
+- 旧完整讲义为 2026-11-06 的 28 页版本，未改动；它与 DSH 本轮初稿是不同对象。
+
+修正与人工验收
+- p6：比较波面 CD 真正通过 C、D，且垂直出射光；AD 在光束 1 上；AB、BC、AC 与投影的几何数值一致，标注无重叠。
+- p7：续页重述 A/B/C/D、AB/BC/AD 和推导目标；非空气膜先加权膜内光程、再用 Snell 定律；补偿玻璃不等于总光程差为零。
+- p8-p9：相位差与连续级次 q 明确，整数才是亮纹；理想特例 phi0=0、K=3000、d0=0.9492 mm，重算半径 12.91/18.26/22.36/25.82 mm。
+- p9-p10：固定附加相位在数环时相消；说明完整周期及起止相位条件；20:1、6 行数环表和反推波长已验证。
+- p12：整机光路保留扩束镜，分开往返箭头；E/FG 标签与图注分离；虚像位置与 45 度分光板一致。
+- p13：II-2 英文短答完整且带题号；II-6 中英均区分“固定一圈外扩”和“整套条纹变疏”。
+- p16：来源章节不再作为孤立标题留在前页页尾。
+- 已渲染全 17 页并看全页缩览；重点放大核查 p6、7、8、9、12、13、15。图像位于 review-pages/。
+
+自动验证
+1. python -B verify_michelson.py：exit 0，50 条强断言通过。
+   覆盖膜几何、Snell/折射率式、固定相位数环、整数亮中心、新半径、角度表、鼓轮/逐差与气室双程关系。
+   记录：verify_michelson.out.txt；Python 3.12.9，SymPy 1.14.0。
+2. 故意调用 require_equal(1, 2, 'deliberate failure probe')：AssertionError，exit 1。
+   证明验证脚本不会仅打印 False 后仍成功退出。
+3. 最终修改后 XeLaTeX 连续两遍：exit 0、exit 0；最终交叉引用稳定。
+   记录：compile-pass-1.txt、compile-pass-2.txt、michelson-excerpt-v2.log。
+4. check_handout.py TEX --mode lab --log LOG：exit 0，错误 0，人工复核线索 0。
+5. 最终 log：{"latex_errors": 0, "overfull_boxes": 0, "missing_glyphs": 0, "unresolved_references": 0, "rerun_required": 0}。
+   字体实际为 SimSun/SimHei 等；没有 Missing character。MiKTeX 的更新提醒不影响本次编译。
+
+对照图
+- DSH 初稿 p6 -> 修订 p6：review-pages/before-dsh-06.png / after-06.png。
+- DSH 初稿 p12 -> 修订 p12：review-pages/before-dsh-12.png / after-12.png。
+- 旧完整讲义 p10 的等倾示意 -> 新节选 p6 的局部投影推导：review-pages/before-full-10.png / after-06.png。
+- 三者范围不同，不用页数作覆盖或质量结论。
+
+剩余限制
+- 镀膜相位、真实膜厚、波长与气室长度未给，不用教学数值冒充实际参数。
+- II-6 的口头目标、钠光源称谓、计数档位与空气测量次数仍有源材料口径问题，文内已列明。
+- 数学断言只验证指定恒等式与例值；本次并非对旧完整讲义或全部实验内容的重新审计。

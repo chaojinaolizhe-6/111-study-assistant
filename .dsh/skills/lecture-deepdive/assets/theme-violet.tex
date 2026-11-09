@@ -100,10 +100,21 @@
       \vspace{2pt}}}%
   \par\medskip}
 
-% \qbreak：一题一块的起页保护。剩余空间不足 0.92 页时先换页，
-% 让「题干 + 考点 + 关键一步 + 详解 + 答案 + 自检」整块落在同一页，
-% 不让读者在下一页开头看到一句没有题号的「详解：」。
-\newcommand{\qbreak}{\needspace{0.92\textheight}}
+% v2: 保护题干与开头，长题可跨页，续页补上下文。
+\newcommand{\qbreak}{\needspace{6\baselineskip}}
+% 独立练习：ID、来源、题干、考点、答案标签（通常 ans:ID）。
+\newcommand{\practice}[5]{%
+  \qbreak\subhdr{练习 #1}\qstem{（#2）#3}%
+  \textbf{考点}：#4\par
+  详解见附录第~\pageref{#5}~页。\par\medskip}
+% 附录开头：ID、来源、条件摘要；自动产生 ans:ID 标签。
+\newcommand{\answerstart}[3]{%
+  \qbreak\subhdr{#1\quad 详解}\label{ans:#1}\qstem{（#2）#3}}
+\newcommand{\answercontinue}[2]{%
+  \needspace{5\baselineskip}\subhdr{#1\quad 续解}%
+  {\small\color{inkgray}本页接续：#2}\par\medskip}
+% 延迟提供默认值，让旧讲义可在导言区保留自己的 \newcommand{\step}。
+\AtBeginDocument{\providecommand{\step}[1]{\needspace{3\baselineskip}\par\medskip\textbf{#1}\par}}
 
 % 前提旁注：只放在「需要理解的那一步」后面，给陈述 + 本题代入，不重证。
 \newcommand{\aside}[1]{%

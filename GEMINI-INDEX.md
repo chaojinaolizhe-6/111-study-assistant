@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-09 2026-11-09 15:19（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-10 2026-11-10 07:53（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -23,7 +23,7 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-11-09**（中国时间；系统英国日期 2026-11-09）。
+> 生成于 **2026-11-10**（中国时间；系统英国日期 2026-11-09）。
 > 事实源指纹：`attempts.jsonl` 52 条（sha256 `1388bfe3d536…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
@@ -227,11 +227,11 @@
 | 2026-10-24 | 目标节点 | `ee-ac-circuits:milestone` | 里程碑复核 | 独立求解电工电子技术 交流电路（Chapter Two）计算题 的 milestone = 2026-10-24 |
 | 2026-11-08 | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
 | 2026-11-09 | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
-| 2026-11-13（+4d） | 外部截止 | `exam-ru-1113` | 作业/考试截止 | 大学俄语1—基础阅读 考试（15:35–17:15 综353）（截止 2026-11-13，状态 未开始） |
-| 2026-11-21（+12d） | 外部截止 | `exam-ode-1121` | 作业/考试截止 | 微分方程 考试（10:05–11:45 综160）（截止 2026-11-21，状态 未开始） |
-| 2026-11-29（+20d） | 外部截止 | `exam-film-1129` | 作业/考试截止 | 影视鉴赏 考试（09:10–10:10 机房B601）（截止 2026-11-29，状态 未开始） |
-| 2026-12-06（+27d） | 外部截止 | `exam-marx-1206` | 作业/考试截止 | 马克思主义基本原理 考试（08:00–08:40 机房B606）（截止 2026-12-06，状态 未开始） |
-| 2026-12-27（+48d） | 外部截止 | `exam-history-1227` | 作业/考试截止 | 中国改革开放史 考试（14:20–15:00 机房B606）（截止 2026-12-27，状态 未开始） |
+| 2026-11-13（+3d） | 外部截止 | `exam-ru-1113` | 作业/考试截止 | 大学俄语1—基础阅读 考试（15:35–17:15 综353）（截止 2026-11-13，状态 未开始） |
+| 2026-11-21（+11d） | 外部截止 | `exam-ode-1121` | 作业/考试截止 | 微分方程 考试（10:05–11:45 综160）（截止 2026-11-21，状态 未开始） |
+| 2026-11-29（+19d） | 外部截止 | `exam-film-1129` | 作业/考试截止 | 影视鉴赏 考试（09:10–10:10 机房B601）（截止 2026-11-29，状态 未开始） |
+| 2026-12-06（+26d） | 外部截止 | `exam-marx-1206` | 作业/考试截止 | 马克思主义基本原理 考试（08:00–08:40 机房B606）（截止 2026-12-06，状态 未开始） |
+| 2026-12-27（+47d） | 外部截止 | `exam-history-1227` | 作业/考试截止 | 中国改革开放史 考试（14:20–15:00 机房B606）（截止 2026-12-27，状态 未开始） |
 
 完整排期（含'未来才开放、不得提前安排'的项）见 `plan/schedule.md`（`tools/schedule_reviews.py` 生成）。
 **最终下一步以 `.tutor/config/status-narrative.yml` 的 `next` 行 + `plan/today-<日期>.md` 为准**（那是人工判断，不是机械候选）。
@@ -284,7 +284,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-11-09**（中国时间；系统英国日期 2026-11-09）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-11-10**（中国时间；系统英国日期 2026-11-09）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -292,11 +292,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-09（周一）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-10（周二）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-11-09.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-11-10.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -311,7 +311,7 @@
 **必须遵守的提醒**：⚠ **学习模式（2026-10-29 起，学习者决定）**：讲义驱动、考前集中闭卷验收（口径唯一来源＝`.tutor/config/study-mode.yml`）。讲授走讲义，答案放讲义最后；平时讲义与自测一律记讲解级帮助、不升能力等级，不得声称「已掌握」；`due` 早于 2026-10-29 的旧题已归档为考前素材，能力再测队列平时不显示。 ⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-11-09.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-11-10.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -371,7 +371,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-11-09.md` |
+| 当天清单（人工权威） | `plan/today-2026-11-10.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |
@@ -381,7 +381,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（6092 个文件）
+## 3. 文件直达 URL 索引（6146 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -587,7 +587,7 @@
 - `plan/考试日程.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2481 个）
+### subjects（2535 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -842,11 +842,34 @@
 - `subjects/03-微分方程/期中模拟卷-Gemini出卷提示词-20261014.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E6%9C%9F%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%8D%B7-Gemini%E5%87%BA%E5%8D%B7%E6%8F%90%E7%A4%BA%E8%AF%8D-20261014.md
 - `subjects/03-微分方程/讲义/Cauchy-Euler方程-课件原题与练习单-20261016.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/Cauchy-Euler%E6%96%B9%E7%A8%8B-%E8%AF%BE%E4%BB%B6%E5%8E%9F%E9%A2%98%E4%B8%8E%E7%BB%83%E4%B9%A0%E5%8D%95-20261016.md
 - `subjects/03-微分方程/讲义/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/INDEX.md
+- `subjects/03-微分方程/讲义/L13-方程组入门-精讲-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L13-%E6%96%B9%E7%A8%8B%E7%BB%84%E5%85%A5%E9%97%A8-%E7%B2%BE%E8%AE%B2-20261109.aux
+- `subjects/03-微分方程/讲义/L13-方程组入门-精讲-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L13-%E6%96%B9%E7%A8%8B%E7%BB%84%E5%85%A5%E9%97%A8-%E7%B2%BE%E8%AE%B2-20261109.log
+- `subjects/03-微分方程/讲义/L13-方程组入门-精讲-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L13-%E6%96%B9%E7%A8%8B%E7%BB%84%E5%85%A5%E9%97%A8-%E7%B2%BE%E8%AE%B2-20261109.out
+- `subjects/03-微分方程/讲义/L13-方程组入门-精讲-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L13-%E6%96%B9%E7%A8%8B%E7%BB%84%E5%85%A5%E9%97%A8-%E7%B2%BE%E8%AE%B2-20261109.pdf
+- `subjects/03-微分方程/讲义/L13-方程组入门-精讲-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L13-%E6%96%B9%E7%A8%8B%E7%BB%84%E5%85%A5%E9%97%A8-%E7%B2%BE%E8%AE%B2-20261109.tex
+- `subjects/03-微分方程/讲义/L14-15-常系数齐次组-精讲-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L14-15-%E5%B8%B8%E7%B3%BB%E6%95%B0%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.aux
+- `subjects/03-微分方程/讲义/L14-15-常系数齐次组-精讲-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L14-15-%E5%B8%B8%E7%B3%BB%E6%95%B0%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.log
+- `subjects/03-微分方程/讲义/L14-15-常系数齐次组-精讲-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L14-15-%E5%B8%B8%E7%B3%BB%E6%95%B0%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.out
+- `subjects/03-微分方程/讲义/L14-15-常系数齐次组-精讲-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L14-15-%E5%B8%B8%E7%B3%BB%E6%95%B0%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.pdf
+- `subjects/03-微分方程/讲义/L14-15-常系数齐次组-精讲-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L14-15-%E5%B8%B8%E7%B3%BB%E6%95%B0%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.tex
+- `subjects/03-微分方程/讲义/L16-17-矩阵指数-精讲-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L16-17-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261109.aux
+- `subjects/03-微分方程/讲义/L16-17-矩阵指数-精讲-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L16-17-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261109.log
+- `subjects/03-微分方程/讲义/L16-17-矩阵指数-精讲-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L16-17-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261109.out
+- `subjects/03-微分方程/讲义/L16-17-矩阵指数-精讲-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L16-17-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261109.pdf
+- `subjects/03-微分方程/讲义/L16-17-矩阵指数-精讲-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L16-17-%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0-%E7%B2%BE%E8%AE%B2-20261109.tex
+- `subjects/03-微分方程/讲义/L17-18-非齐次组-精讲-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L17-18-%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.aux
+- `subjects/03-微分方程/讲义/L17-18-非齐次组-精讲-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L17-18-%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.log
+- `subjects/03-微分方程/讲义/L17-18-非齐次组-精讲-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L17-18-%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.out
+- `subjects/03-微分方程/讲义/L17-18-非齐次组-精讲-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L17-18-%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.pdf
+- `subjects/03-微分方程/讲义/L17-18-非齐次组-精讲-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L17-18-%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BB%84-%E7%B2%BE%E8%AE%B2-20261109.tex
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.aux
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.log
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.out
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.pdf
 - `subjects/03-微分方程/讲义/L18-L20-幂级数解法-精讲-20261028.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L18-L20-%E5%B9%82%E7%BA%A7%E6%95%B0%E8%A7%A3%E6%B3%95-%E7%B2%BE%E8%AE%B2-20261028.tex
+- `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.aux
+- `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.log
+- `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.out
 - `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.pdf
 - `subjects/03-微分方程/讲义/L21-L23-临界点与稳定性-精讲-20261103.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/L21-L23-%E4%B8%B4%E7%95%8C%E7%82%B9%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261103.tex
 - `subjects/03-微分方程/讲义/Lagrange方程-课件原题与练习单-20261016.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/Lagrange%E6%96%B9%E7%A8%8B-%E8%AF%BE%E4%BB%B6%E5%8E%9F%E9%A2%98%E4%B8%8E%E7%BB%83%E4%B9%A0%E5%8D%95-20261016.md
@@ -919,6 +942,32 @@
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed(1).jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed%281%29.jpg
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed.jpg
 - `subjects/03-微分方程/讲义/_Gemini页快照-20261020/优化并保存课件 - Google Gemini_files/unnamed.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_Gemini%E9%A1%B5%E5%BF%AB%E7%85%A7-20261020/%E4%BC%98%E5%8C%96%E5%B9%B6%E4%BF%9D%E5%AD%98%E8%AF%BE%E4%BB%B6%20-%20Google%20Gemini_files/unnamed.png
+- `subjects/03-微分方程/讲义/_chk-p16.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_chk-p16.png
+- `subjects/03-微分方程/讲义/_chk-p2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_chk-p2.png
+- `subjects/03-微分方程/讲义/_chk-p3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_chk-p3.png
+- `subjects/03-微分方程/讲义/_l13-p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p1.png
+- `subjects/03-微分方程/讲义/_l13-p13.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p13.png
+- `subjects/03-微分方程/讲义/_l13-p18.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p18.png
+- `subjects/03-微分方程/讲义/_l13-p2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p2.png
+- `subjects/03-微分方程/讲义/_l13-p3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p3.png
+- `subjects/03-微分方程/讲义/_l13-p4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p4.png
+- `subjects/03-微分方程/讲义/_l13-p5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p5.png
+- `subjects/03-微分方程/讲义/_l13-p6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l13-p6.png
+- `subjects/03-微分方程/讲义/_l1415-p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1415-p1.png
+- `subjects/03-微分方程/讲义/_l1415-p10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1415-p10.png
+- `subjects/03-微分方程/讲义/_l1415-p11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1415-p11.png
+- `subjects/03-微分方程/讲义/_l1415-p15.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1415-p15.png
+- `subjects/03-微分方程/讲义/_l1617-p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1617-p1.png
+- `subjects/03-微分方程/讲义/_l1617-p17.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1617-p17.png
+- `subjects/03-微分方程/讲义/_l1718-p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_l1718-p1.png
+- `subjects/03-微分方程/讲义/_preview-crop3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_preview-crop3.png
+- `subjects/03-微分方程/讲义/_预览-last.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-last.png
+- `subjects/03-微分方程/讲义/_预览-p1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p1.png
+- `subjects/03-微分方程/讲义/_预览-p2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p2.png
+- `subjects/03-微分方程/讲义/_预览-p3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p3.png
+- `subjects/03-微分方程/讲义/_预览-p4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p4.png
+- `subjects/03-微分方程/讲义/_预览-p5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p5.png
+- `subjects/03-微分方程/讲义/_预览-p6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/_%E9%A2%84%E8%A7%88-p6.png
 - `subjects/03-微分方程/讲义/figs-hw22/fig1-kinds.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig1-kinds.pdf
 - `subjects/03-微分方程/讲义/figs-hw22/fig2-taud.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig2-taud.pdf
 - `subjects/03-微分方程/讲义/figs-hw22/fig3-epsdelta.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/figs-hw22/fig3-epsdelta.pdf
@@ -936,6 +985,11 @@
 - `subjects/03-微分方程/讲义/存在唯一性-精讲-20261019.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E5%AD%98%E5%9C%A8%E5%94%AF%E4%B8%80%E6%80%A7-%E7%B2%BE%E8%AE%B2-20261019.pdf
 - `subjects/03-微分方程/讲义/方程组章-精讲-20261008.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%96%B9%E7%A8%8B%E7%BB%84%E7%AB%A0-%E7%B2%BE%E8%AE%B2-20261008.md
 - `subjects/03-微分方程/讲义/方程组章-跟课导读-20261008.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%96%B9%E7%A8%8B%E7%BB%84%E7%AB%A0-%E8%B7%9F%E8%AF%BE%E5%AF%BC%E8%AF%BB-20261008.md
+- `subjects/03-微分方程/讲义/期中之后-全景总纲-20261109.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E4%B9%8B%E5%90%8E-%E5%85%A8%E6%99%AF%E6%80%BB%E7%BA%B2-20261109.aux
+- `subjects/03-微分方程/讲义/期中之后-全景总纲-20261109.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E4%B9%8B%E5%90%8E-%E5%85%A8%E6%99%AF%E6%80%BB%E7%BA%B2-20261109.log
+- `subjects/03-微分方程/讲义/期中之后-全景总纲-20261109.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E4%B9%8B%E5%90%8E-%E5%85%A8%E6%99%AF%E6%80%BB%E7%BA%B2-20261109.out
+- `subjects/03-微分方程/讲义/期中之后-全景总纲-20261109.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E4%B9%8B%E5%90%8E-%E5%85%A8%E6%99%AF%E6%80%BB%E7%BA%B2-20261109.pdf
+- `subjects/03-微分方程/讲义/期中之后-全景总纲-20261109.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E4%B9%8B%E5%90%8E-%E5%85%A8%E6%99%AF%E6%80%BB%E7%BA%B2-20261109.tex
 - `subjects/03-微分方程/讲义/期中复习-缺口攻关双语指南-20261013.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0-%E7%BC%BA%E5%8F%A3%E6%94%BB%E5%85%B3%E5%8F%8C%E8%AF%AD%E6%8C%87%E5%8D%97-20261013.html
 - `subjects/03-微分方程/讲义/期中复习-缺口攻关双语指南-20261013.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0-%E7%BC%BA%E5%8F%A3%E6%94%BB%E5%85%B3%E5%8F%8C%E8%AF%AD%E6%8C%87%E5%8D%97-20261013.pdf
 - `subjects/03-微分方程/讲义/期中复习-缺口攻关双语指南-20261014.html` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/03-%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/%E8%AE%B2%E4%B9%89/%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0-%E7%BC%BA%E5%8F%A3%E6%94%BB%E5%85%B3%E5%8F%8C%E8%AF%AD%E6%8C%87%E5%8D%97-20261014.html

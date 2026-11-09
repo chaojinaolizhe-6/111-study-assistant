@@ -1,0 +1,185 @@
+﻿%=====================================================================
+% 两周时间表 2026-11-09 → 11-22
+% 编译：xelatex schedule.tex（两遍）
+% 注：theme-violet 的 \callout / \warnbox 是「命令」不是环境，用 \callout{...}
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{.dsh/skills/lecture-deepdive/assets/theme-violet}
+
+\settags{两周时间表 · 11-09 → 11-22}{111 学习助手 · 中国时间}
+\setmainfont{Times New Roman}[Ligatures=TeX]
+
+\renewcommand{\callout}[1]{%
+  \par\medskip\noindent
+  
+  \fcolorbox{rulepurple}{bandviolet}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\vspace*{5pt}#1\vspace*{5pt}}}%
+  \par\medskip}
+\renewcommand{\warnbox}[1]{%
+  \par\medskip\noindent
+  
+  \fcolorbox{rulepurple}{bandcream}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\vspace*{5pt}#1\vspace*{5pt}}}%
+  \par\medskip}
+
+\newcommand{\sech}[2]{%
+  \par\vspace{13pt}\needspace{5.5cm}%
+  {\color{violetdeep}\bfseries\large #1#2}\par
+  \vspace{2pt}{\color{petal}\hrule height 1.2pt}
+  \vspace{7pt}}
+
+\newcommand{\dayblock}[4]{%
+  \par\vspace{6pt}\needspace{3.0cm}%
+  \noindent{\colorbox{violetdeep}{\color{white}\bfseries\small\hspace{0.45em}#1\hspace{0.45em}}}\hspace{6pt}%
+  {\color{violetdeep}\bfseries #2}\hfill{\small\color{violet}主任务：#3}\par
+  \vspace{2pt}{\color{rulepurple}\hrule height 0.5pt}\vspace{3pt}%
+  \renewcommand{\arraystretch}{1.12}\begin{tabular}{@{}p{1.05cm}p{\dimexpr\linewidth-1.45cm\relax}@{}}
+  #4
+  \end{tabular}\par}
+
+\newcommand{\slota}[1]{\textbf{\color{violet}上午} & #1\\[2pt]}
+\newcommand{\slotp}[1]{\textbf{\color{violet}下午} & #1\\[2pt]}
+\newcommand{\slote}[1]{\textbf{\color{violet}晚上} & #1\\[1pt]}
+
+\begin{document}
+
+\doctitle{未来两周时间表}{2026-11-09（周一）→ 11-22（周日）· 第 11–12 周}%
+{中国时间 UTC+8\enspace·\enspace 8 个固定节点 + 1 场竞赛 + 4 次实验 + 2 场考试 + 1 个口试\\
+生成于 2026-11-09（周一）\enspace·\enspace 时间均为到场或开始时间，不含路上}
+
+\flowerrule
+
+\sech{一、}{这两周只认三条主线}
+
+\callout{%
+\textbf{本周（11-09 → 11-13）：俄语。}周五 15:35 考试，之前每一天都有一块俄语，别的一天不排新东西。\\
+\textbf{下周（11-15 → 11-20）：微分方程。}周六 10:05 考试，17 条考纲全考（见第四节），按讲义一份一份过。\\
+\textbf{贯穿两周：马原免试口试。}第 12 周（11-16 至 11-22）内某天，日期还没定；所以把两个「收口日」压在 11-15 一天里做完。\\[3pt]
+\textbf{其它课一律只跟课、不推进}：理力、光学、数物二、电工（实验除外）这两周不做额外复习。\\
+\textbf{每天两件固定动作}：睡前 10 分钟马原口述 3 个镜头（11-10 起）；22:30 收工，不熬。}
+
+\sech{二、}{固定节点（迟到不起的那种）}
+
+\tabtop
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{1.9cm}p{2.3cm}p{5.75cm}p{3.05cm}p{2.7cm}@{}}
+\thead{日期} & \thead{时间} & \thead{事项} & \thead{地点} & \thead{备注}\\
+\hline
+11-10 二 & 10:00–12:15 & 电工实验 6：集成运放（\textbf{25 分}考试实验） & 综一 317 & 场次待确认 \\
+11-13 五 & 15:35–17:15 & 大学俄语 1 · 结课考试 & 综 353 & 已确认 \\
+11-14 六 & 09:00–11:30 & 全国大学生数学竞赛（预赛） & 待确认 & 准考证自打 \\
+11-14 六 & 13:30–17:30 & 大物实验 3.12／3.13 分光计、光栅常量 & 综合楼 308 & 已预约 \\
+11-16 至 22 & 未定 & 马原免试口试（第 12 周） & 未定 & 日期待确认 \\
+11-19 四 & 13:00–15:15 & 电工实验 7：集成逻辑门 & 综一 317 & 已预约 \\
+11-21 六 & 10:05–11:45 & 微分方程 · 期末考试 & 综 160 & 17 条考纲 \\
+11-21 六 & 13:30–15:30 & 大物实验 5.3 温度计设计 & 综合楼 205 & 考完直接去 \\
+\end{tabular}}
+\tabbot
+
+\callout{\textbf{每天真正空着的时段}（按课表扣掉上课）：周一 15:35 后；周二 10:00 后；周三 10:00–11:40 与 21:20 后；周四 13:30 后；周五 13:30 后；周末全天（11-14 除外）。下面表里排的任务就落在这几个格子里。}
+
+\sech{三、}{逐日安排}
+
+\dayblock{11-09}{周一 · 第 11 周（今天）}{电工实验 6 预习}{%
+\slota{08:00 理力（综113）\enspace｜\enspace 10:00 马原（综309）}
+\slotp{13:30 数物二（综251）· 第七章开头}
+\slote{20:00–21:40 电工实验 6 预习：实验6·手册 p19–22 逐页对照执行单 ＋ 备考讲义里的评分点\newline 21:40–22:10 俄语 30 分：形容词词尾卡}}
+
+\dayblock{11-10}{周二}{俄语变格与词性}{%
+\slota{08:00 光学（一馆1-212）\enspace｜\enspace 10:00–12:15 电工实验 6（综一317）}
+\slotp{14:00–15:30 俄语：变格表 ＋ УРОК1–8 总复习课件前半（一卡一题，遮答案自测）}
+\slote{20:00–22:00 俄语：全课程精讲 §2 名词 ＋ §4 形容词（只读这两节，读完各做卡上 3 题）}}
+
+\dayblock{11-11}{周三}{俄语词性与复数}{%
+\slota{08:00 马原（综309）\enspace｜\enspace 10:00 起 俄语 60 分：-ь 词性 38 词卡 ＋ 复数三表}
+\slotp{13:30 形势与政策（综B501）\enspace｜\enspace 15:35 电工（综213）}
+\slote{19:40–21:20 改革开放史（综153）\enspace｜\enspace 21:20 起 俄语 40 分：总复习课件后半}}
+
+\dayblock{11-12}{周四}{俄语错题＋打印}{%
+\slota{08:00 理力（综113）\enspace｜\enspace 10:00 体育（体育馆）}
+\slotp{13:30–15:30 俄语：只过错题（形容词词尾、词性判断）；\textbf{15:30–16:00 打印准考证与实验数据表}}
+\slote{20:00–21:30 俄语：УРОК8 双语教程快速过 ＋ 阅读限时一篇}}
+
+\dayblock{11-13}{周五}{俄语考试}{%
+\slota{08:00 电工（综213）\enspace｜\enspace 10:00 光学（一馆1-212）}
+\slotp{13:30–15:00 只看知识卡，不碰新题（精讲 §8 四张速查表）\enspace｜\enspace \textbf{15:35–17:15 俄语考试（综353）}}
+\slote{不做马原。收拾明天：准考证、身份证、黑色签字笔、已打印的实验数据表、午饭地点}}
+
+\dayblock{11-14}{周六}{竞赛 ＋ 实验（当天不排学习）}{%
+\slota{08:00 出发（考场见准考证）\enspace｜\enspace 09:00–11:30 数学竞赛预赛}
+\slotp{13:30–17:30 大物实验 3.12／3.13：分光计调节 ＋ 光栅常量（综合楼308）}
+\slote{休息。21:00 前把马原逐字稿、PPT、手卡材料放到桌上，明天上午直接用}}
+
+\dayblock{11-15}{周日}{马原收口（上午一场、晚上一场）}{%
+\slota{09:00–12:00 收口日 1：全文朗读 5 遍、改 2 处、PPT 定稿、打印手卡}
+\slotp{14:00–16:00 微分方程：L13 方程组入门 ＋ L14–15 常系数齐次组（两份精讲，读后各做 2 题）}
+\slote{20:00–22:30 收口日 2：计时演练 4 遍（三遍落进 7 分 20 秒 – 7 分 40 秒）＋ 手机录像 1 遍}}
+
+\dayblock{11-16}{周一 · 第 12 周}{微分方程矩阵指数}{%
+\slota{08:00 理力（综113，本周最后一次）\enspace｜\enspace 10:00 马原（综309）}
+\slotp{13:30 数物二（综251）}
+\slote{20:00–20:40 马原全套 1 遍 ＋ 抽纸条 2 题\enspace｜\enspace 20:40–22:30 微分方程 L16–17 矩阵指数}}
+
+\dayblock{11-17}{周二}{微分方程非齐次组}{%
+\slota{08:00 光学（一馆1-212）\enspace｜\enspace 10:00–12:00 微分方程 L17–18 非齐次组（参数变易 ＋ 待定系数）}
+\slotp{14:00–15:30 微分方程：L16–18 的例题各闭卷做 1 题}
+\slote{20:00–20:40 马原 1 遍\enspace｜\enspace 20:40–22:30 微分方程 错题回炉}}
+
+\dayblock{11-18}{周三}{微分方程相图与稳定性}{%
+\slota{08:00 马原（综309）\enspace｜\enspace 10:00–11:40 微分方程 L21–23 临界点与稳定性}
+\slotp{13:30 形势与政策（综B501）\enspace｜\enspace 15:35 电工（综213）}
+\slote{19:40 改革开放史（综153）\enspace｜\enspace 21:30–22:15 电工实验 7 预习}}
+
+\dayblock{11-19}{周四}{实验 7 ＋ 微分方程限时自测}{%
+\slota{08:00 理力（综113，结课）\enspace｜\enspace 10:00 体育（体育馆）}
+\slotp{13:00–15:15 电工实验 7（综一317）\enspace｜\enspace 15:30–17:00 微分方程：期中之后总纲过一遍}
+\slote{20:00–20:40 马原 1 遍\enspace｜\enspace 20:40–22:30 微分方程 L1–L12 乱序自测（限时 90 分）}}
+
+\dayblock{11-20}{周五}{微分方程考前收口}{%
+\slota{08:00 电工（综213）\enspace｜\enspace 10:00 光学（一馆1-212）}
+\slotp{13:30–15:00 微分方程：只过错题 ＋ L1–L12 考点自查清单}
+\slote{20:00–21:00 微分方程最后过一遍知识卡\enspace｜\enspace 22:30 睡}}
+
+\dayblock{11-21}{周六}{考试 ＋ 实验}{%
+\slota{09:20 到综160\enspace｜\enspace 10:05–11:45 微分方程考试}
+\slotp{13:30–15:30 大物实验 5.3 温度计设计（综合楼205）}
+\slote{休息，不安排任何学习}}
+
+\dayblock{11-22}{周日}{报告清账 ＋ 理力恢复}{%
+\slota{09:00–11:30 补实验报告：3.12／3.13 分光计 ＋ 5.3 温度计}
+\slotp{14:00–16:30 理力 T5 封口：能量积分、转向点、有效势（T05 精讲）＋ T6 碰撞（T06）}
+\slote{20:00–21:00 马原口试彩排 1 遍\enspace｜\enspace 21:00–22:00 排下周（11-23 起）}}
+
+\sech{四、}{微分方程 11-21 考什么（课件作者 11-05 发的 17 条）}
+
+\warnbox{%
+\textbf{一阶}\enspace 定义与初值问题；可分离、齐次、可化齐次；恰当方程与积分因子；一阶线性、Riccati、Bernoulli；齐次极坐标方程；关于 $y$ 或关于 $x$ 可解、Clairaut、Lagrange。\\
+\textbf{高阶}\enspace 降阶（含不含 $x$、不含 $y$ 或前几阶导数）；线性相关与 Wronskian、基础解系；高阶线性（齐次／非齐次、参数变易、常系数）；Cauchy–Euler；幂级数法、Frobenius。\\
+\textbf{方程组}\enspace 定义与 Wronskian、$n$ 阶方程化组；常系数齐次组；$e^{Ax}$；非齐次组（参数变易／待定系数）。\\
+\textbf{定性}\enspace 齐次线性系统相图、临界点类型与稳定性；一阶近似下的稳定性。\\[2pt]
+对应讲义：L13、L14–15、L16–17、L17–18、L18–L20、L21–L23 精讲 ＋《期中之后·全景总纲》＋ L1–L12 乱序自测。}
+
+\sech{五、}{还要你确认的 6 件事}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.6em]
+\item \textbf{竞赛考场在哪、几点要求进场}（准考证／考生须知）——决定 11-14 从 11:30 到 13:30 够不够赶到综合楼。
+\item \textbf{电工实验 6 你是哪一场}：10:00–12:15（2502 班 20 人）还是 15:30–17:45（两班各 9 人）。
+\item \textbf{大物 3.12／3.13 与 5.3 的讲义、预习页}——库里只有 3.8 和 3.11 两份，没有底本就做不出讲义和数据表。
+\item \textbf{马原口试的确切日期与材料截止}——它决定 11-15 这天能不能安心让给收口。
+\item \textbf{数物二是不是只有周一 5–6 节}（第 6 周截图里周二也出现过一次）。
+\item \textbf{理力、光学的考试日期}（教务系统还没出）。
+\end{enumerate}
+
+\sech{六、}{这两周之外已经埋着的三处}
+
+\callout{%
+\textbf{11-24（周二）} 电工实验 8：触发器与计数器，10:00–12:15。\\
+\textbf{11-29（周日）上午硬冲突}：影视鉴赏考试 09:10–10:10 与 大物实验 4.9 光纤 08:00–10:00 重叠 —— 现在就要找老师换场，别拖到那周。\\
+\textbf{12-06（周日）} 马原机考 08:00–08:40 结束，09:00 电工综合设计实验二开始，只有 20 分钟转场。}
+
+\flowerrule
+{\footnotesize\color{inkgray}
+依据：课表（节次时间与周次）、考试日程（考试与考场）、大物实验六场安排、电工实验八次排课、
+马原免试口试作战方案（收口日与里程碑）、微分方程课件作者 11-05 发的 17 条考纲。\\
+本表是排期建议，不是已确认事实：标「待确认」的六项以你的回复为准，改一版重发即可。}
+
+\end{document}
+

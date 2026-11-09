@@ -1,0 +1,131 @@
+=== 例1 (课件 p13-p15) ===
+A1 = [[1, -1, 1], [1, 1, -1], [2, -1, 0]]
+char poly = (lambda - 2)*(lambda - 1)*(lambda + 1)
+eigenvects = [(-1, 1), (1, 1), (2, 1)]
+V1^-1 (实际) = [[1/3, -1, 2/3], [1/2, 1, -1/2], [-1/6, 0, 1/6]]
+V1^-1 * V1 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+课件 p14 印的 V^-1 = [[1/3, 0, 2/3], [1/2, 1, -1/2], [-1/6, 0, 1/6]]
+[例1] F(0)=I : True
+[例1] F'(x)=A F(x) : True
+e^{A1 x} = [[((2*exp(x) + 3)*exp(2*x) + 1)*exp(-x)/6, (1 - exp(x))*exp(x), ((4*exp(x) - 3)*exp(2*x) - 1)*exp(-x)/6], [sinh(x), exp(x), -sinh(x)], [((2*exp(x) + 3)*exp(2*x) - 5)*exp(-x)/6, (1 - exp(x))*exp(x), ((4*exp(x) - 3)*exp(2*x) + 5)*exp(-x)/6]]
+化为三个秩一指数项：
+  lambda=2: V1 W1 = [[1/3, -1, 2/3], [0, 0, 0], [1/3, -1, 2/3]]
+  lambda=1: V2 W2 = [[1/2, 1, -1/2], [1/2, 1, -1/2], [1/2, 1, -1/2]]
+  lambda=-1: V3 W3 = [[1/6, 0, -1/6], [-1/2, 0, 1/2], [-5/6, 0, 5/6]]
+初值通解 Y(x0)=Y0 用 e^{A(x-x0)} 核验：F1(x0)=I 仅当 x0=0
+
+=== 例2 (课件 p20) ===
+Delta(s) = s**2 - 5*s + 5  q(s) = s**2 + 8*s + 37  r(s) = 146*s - 184
+q*Delta+r - p = 0
+p(A) - (146A-184I) = [[0, 0], [0, 0]]
+146A-184I = [[254, 146], [146, 108]]
+
+=== 例3 (课件 p23) 通用结构 ===
+n=2 谱方程系数矩阵 det = -mu1 + mu2
+n=3 谱方程系数矩阵 det = -(mu1 - mu2)*(mu1 - mu3)*(mu2 - mu3)
+例7 重根 x=0 处方程组矩阵 [[4,-2,1],[-4,1,0],[2,0,0]] det = -2
+
+=== 例4 (课件 p24-p25) ===
+eigenvalues = {4: 1, -2: 1}
+alpha1*x = (exp(6*x) - 1)*exp(-2*x)/6  ; alpha0 = (exp(6*x) + 2)*exp(-2*x)/3
+[例4] F(0)=I : True
+[例4] F'(x)=A F(x) : True
+e^{A4 x} = [[(exp(6*x) + 1)*exp(-2*x)/2, (exp(6*x) - 1)*exp(-2*x)/6], [(3*exp(6*x) - 3)*exp(-2*x)/2, (exp(6*x) + 1)*exp(-2*x)/2]]
+解出 x*alpha1 = (exp(6*x) - 1)*exp(-2*x)/6  alpha0 = (exp(6*x) + 2)*exp(-2*x)/3
+直接相加得 2*x*alpha1 + 2*alpha0；第一式加第二式两倍得 3*alpha0 : 0
+
+=== 例5 (课件 p26-p27) ===
+[例5] F(0)=I : True
+[例5] F'(x)=A F(x) : True
+A5^2 = [[-1, 0], [0, -1]]
+课件 p27 展开通解印为 c1(cos,-sin)+c2(-sin,cos)；第二列应为 (sin,cos)
+
+=== 例7 (课件 p33-p35) ===
+char poly = (lambda + 2)**3
+eigenvects = [(-2, 3, [Matrix([
+[2],
+[1],
+[0]]), Matrix([
+[0],
+[0],
+[1]])])]
+N=A+2I = [[2, -4, 0], [1, -2, 0], [1, -2, 0]]  N^2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+geometric multiplicity g = 3 - rank(N) = 2
+[例7] F(0)=I : True
+[例7] F'(x)=A F(x) : True
+e^{A7 x} = [[(2*x + 1)*exp(-2*x), -4*x*exp(-2*x), 0], [x*exp(-2*x), (1 - 2*x)*exp(-2*x), 0], [x*exp(-2*x), -2*x*exp(-2*x), exp(-2*x)]]
+
+=== 例8 (课件 p36-p38) ===
+char poly = lambda*(lambda**2 + 1)
+A8^2 = [[0, -2, -5], [0, -1, 0], [0, 0, -1]]
+[例8] F(0)=I : True
+[例8] F'(x)=A F(x) : True
+按 alpha 形式：alpha2*x^2=1-cos x, alpha1*x=sin x, alpha0=1
+[例8(alpha形式)] F(0)=I : True
+[例8(alpha形式)] F'(x)=A F(x) : True
+p36 中间矩阵 (3,2) 项：printed -alpha1*x；应为 +alpha1*x（见上 A^2 与 A 的 (3,2)）
+
+=== 例6 (课件 p30-p31) 谱 5(三重), 2(单重) ===
+beta_0 = (-225*x**2*exp(3*x) + 240*x*exp(3*x) - 98*exp(3*x) + 125)*exp(2*x)/27
+beta_1 = (135*x**2*exp(3*x) - 132*x*exp(3*x) + 50*exp(3*x) - 50)*exp(2*x)/18
+beta_2 = (-18*x**2*exp(3*x) + 15*x*exp(3*x) - 5*exp(3*x) + 5)*exp(2*x)/9
+beta_3 = x**2*exp(5*x)/6 - x*exp(5*x)/9 + exp(5*x)/27 - exp(2*x)/27
+Hermite 形式 c(x) = ((9*x**2 - 6*x + 2)*exp(3*x) - 2)*exp(2*x)/54
+Hermite 形式与 beta 形式差 = 0
+rH(0,mu) = 1
+  d^0/dmu^0 rH at 5 减 期望 = 0
+  d^1/dmu^1 rH at 5 减 期望 = 0
+  d^2/dmu^2 rH at 5 减 期望 = 0
+  rH(2) - e^{2x} = 0
+[例6 具体实现 diag(J3(5),2)] F(0)=I : True
+[例6 具体实现 diag(J3(5),2)] F'(x)=A F(x) : True
+该实现 e^{Ax} = [[exp(5*x), x*exp(5*x), x**2*exp(5*x)/2, 0], [0, exp(5*x), x*exp(5*x), 0], [0, 0, exp(5*x), 0], [0, 0, 0, exp(2*x)]]
+
+=== 作业1 ===
+eigenvalues = {-2: 1, 2: 1}  A^2 = [[4, 0], [0, 4]]
+[作业1] F(0)=I : True
+[作业1] F'(x)=A F(x) : True
+e^{A x} = [[-3*sinh(2*x) + cosh(2*x), -2*sinh(2*x)], [4*sinh(2*x), 3*sinh(2*x) + cosh(2*x)]]
+
+=== 作业2 ===
+eigenvalues = {-2*I: 1, 2*I: 1}  A^2 = [[-4, 0], [0, -4]]
+[作业2] F(0)=I : True
+[作业2] F'(x)=A F(x) : True
+e^{A x} = [[-2*sin(2*x) + cos(2*x), 2*sin(2*x)], [-5*sin(2*x)/2, 2*sin(2*x) + cos(2*x)]]
+
+=== 作业3 ===
+eigenvalues = {-24: 1, -2: 1, 2: 1}
+g0 = (66*exp(26*x) + 78*exp(22*x) - 1)*exp(-24*x)/143
+g1 = sinh(2*x)/2
+g2 = (11*exp(26*x) - 13*exp(22*x) + 2)*exp(-24*x)/1144
+[作业3] F(0)=I : True
+[作业3] F'(x)=A F(x) : True
+A^2 = [[576, 0, 0], [-104, 4, 0], [-22, 0, 4]]
+e^{A x} = [[exp(-24*x), 0, 0], [(2*exp(22*x) - 2)*exp(-24*x)/11, exp(-2*x), 0], [(exp(26*x) - 1)*exp(-24*x)/26, 0, exp(2*x)]]
+
+=== 原课件 p14/p15/p27/p36 疑点复算 ===
+p14: V^-1 印刷 (1,2)=0；实际 V^-1(1,2) = -1
+p15: 印刷 Y=V e^{Lambda x} V^-1 Y0，在 x0=1 的初值下不满足 Y(x0)=Y0：
+  Y(1)-Y0 = [[-1 - exp(-1)/3 + exp(2)/3 + E], [-2 + 2*cosh(1)], [-3 + 5*exp(-1)/3 + exp(2)/3 + E]]
+  改用 e^{Lambda(x-x0)} 后 Y(1)-Y0 = [[0], [0], [0]]
+p27: 印刷第二列 (-sin,cos)，但 e^{Ax} 第二列 = [[sin(x)], [cos(x)]] ；A*第二列应等于其导数
+p36: 中间矩阵 (3,2) 印刷 -alpha1*x；实际 = sin(x) （A32=1, (A^2)32= 0 ）
+[例1 eigenvector factorization] residual zero: True
+[例2 polynomial division] residual zero: True
+[例2 matrix remainder] residual zero: True
+[例3 Vandermonde n=2 under distinct nodes] residual zero: True
+[例3 Vandermonde n=3 under distinct nodes] residual zero: True
+[例4 elimination] residual zero: True
+[例6 Hermite equals beta form] residual zero: True
+[例6 initial polynomial r_0(mu)=1] residual zero: True
+[例6 Hermite derivative order 0] residual zero: True
+[例6 Hermite derivative order 1] residual zero: True
+[例6 Hermite derivative order 2] residual zero: True
+[例6 Hermite at 2] residual zero: True
+[例7 nilpotence] residual zero: True
+[作业3 eigenvector -24] residual zero: True
+[平移初值 at x0=1] residual zero: True
+
+=== 结论 ===
+汇总：25/25 组核验通过；全部通过 = True
+符号核验检验打印公式的代数一致性；适用前提、覆盖与页面阅读质量另行审查。

@@ -1,0 +1,788 @@
+{
+  "artifact": "matrix-exponential-v2",
+  "generated_by": "DSH draft followed by independent source, mathematics and visual review; revised by Codex reviewer",
+  "date": "2026-11-09",
+  "source": {
+    "file": "subjects/03-微分方程/课件/16_17_matrix_exponential.pdf",
+    "pages": 44,
+    "date_on_slides": "2026-10-13",
+    "author": "W.Y., DLUT",
+    "page_convention": "All source references are 1-based physical PDF pages, including title and divider pages. Slide footer numbers do not have a single constant offset."
+  },
+  "outputs": {
+    "tex": "output/讲义skill-v2试读-20261109/matrix-exponential/matrix-exponential-v2.tex",
+    "pdf": "output/讲义skill-v2试读-20261109/matrix-exponential/matrix-exponential-v2.pdf",
+    "pdf_pages": 34,
+    "log": "output/讲义skill-v2试读-20261109/matrix-exponential/matrix-exponential-v2.log",
+    "verify_script": "output/讲义skill-v2试读-20261109/matrix-exponential/verify_matrix_exponential.py",
+    "verify_output": "output/讲义skill-v2试读-20261109/matrix-exponential/verify_output.txt",
+    "rendered_pages": [
+      "_review_render/revised-01.png",
+      "_review_render/revised-02.png",
+      "_review_render/revised-03.png",
+      "_review_render/revised-04.png",
+      "_review_render/revised-05.png",
+      "_review_render/revised-06.png",
+      "_review_render/revised-07.png",
+      "_review_render/revised-08.png",
+      "_review_render/revised-09.png",
+      "_review_render/revised-10.png",
+      "_review_render/revised-11.png",
+      "_review_render/revised-12.png",
+      "_review_render/revised-13.png",
+      "_review_render/revised-14.png",
+      "_review_render/revised-15.png",
+      "_review_render/revised-16.png",
+      "_review_render/revised-17.png",
+      "_review_render/revised-18.png",
+      "_review_render/revised-19.png",
+      "_review_render/revised-20.png",
+      "_review_render/revised-21.png",
+      "_review_render/revised-22.png",
+      "_review_render/revised-23.png",
+      "_review_render/revised-24.png",
+      "_review_render/revised-25.png",
+      "_review_render/revised-26.png",
+      "_review_render/revised-27.png",
+      "_review_render/revised-28.png",
+      "_review_render/revised-29.png",
+      "_review_render/revised-30.png",
+      "_review_render/revised-31.png",
+      "_review_render/revised-32.png",
+      "_review_render/revised-33.png",
+      "_review_render/revised-34.png"
+    ],
+    "compile_records": [
+      "_review_compile_pass1.txt",
+      "_review_compile_pass2.txt"
+    ]
+  },
+  "coverage": [
+    {
+      "section": "§0",
+      "source_pages": [
+        1,
+        2,
+        3
+      ],
+      "content": "title/outline/section divider; route map, notation, page map"
+    },
+    {
+      "section": "§1",
+      "source_pages": [
+        4,
+        5,
+        6
+      ],
+      "content": "scalar analogy, series definition, convergence, differentiation, general solution, IVP"
+    },
+    {
+      "section": "§2",
+      "source_pages": [
+        7
+      ],
+      "content": "properties 1.1 and 1.2, commutativity, eigenvalue mapping, determinant/inverse"
+    },
+    {
+      "section": "§3.1",
+      "source_pages": [
+        8,
+        9
+      ],
+      "content": "algebraic and geometric multiplicities, diagonalizability criterion"
+    },
+    {
+      "section": "§3.2",
+      "source_pages": [
+        10,
+        11
+      ],
+      "content": "power cancellation, V exp(Lambda x) V^-1, diagonal exponential"
+    },
+    {
+      "section": "§3.3",
+      "source_pages": [
+        12
+      ],
+      "content": "general solution, IVP, shifted exponential; p15 missing shift noted"
+    },
+    {
+      "section": "§3.4",
+      "source_pages": [
+        13,
+        14,
+        15
+      ],
+      "content": "Example 1, inverse V corrected, rank-one decomposition, general solution"
+    },
+    {
+      "section": "§4.1",
+      "source_pages": [
+        16,
+        17
+      ],
+      "content": "Cayley-Hamilton theorem"
+    },
+    {
+      "section": "§4.2",
+      "source_pages": [
+        18,
+        19,
+        20
+      ],
+      "content": "polynomial reduction, Example 2"
+    },
+    {
+      "section": "§4.3",
+      "source_pages": [
+        21,
+        22,
+        28,
+        29
+      ],
+      "content": "analytic function reduction, spectral conditions, repeated roots, lambda vs mu"
+    },
+    {
+      "section": "§4.4",
+      "source_pages": [
+        23
+      ],
+      "content": "Example 3 generic n=2 and n=3 structure; completed with Lagrange form"
+    },
+    {
+      "section": "§4.5",
+      "source_pages": [
+        24,
+        25
+      ],
+      "content": "Example 4 distinct real roots; 3 alpha_0 correction"
+    },
+    {
+      "section": "§4.6",
+      "source_pages": [
+        26,
+        27
+      ],
+      "content": "Example 5 imaginary pair, rotation; p27 sign noted"
+    },
+    {
+      "section": "§4.7",
+      "source_pages": [
+        30,
+        31
+      ],
+      "content": "Example 6 spectrum 5 triple / 2 simple; Hermite form solved"
+    },
+    {
+      "section": "§4.8",
+      "source_pages": [
+        33,
+        34,
+        35
+      ],
+      "content": "Example 7 defective triple eigenvalue; nilpotent simplification"
+    },
+    {
+      "section": "§4.9",
+      "source_pages": [
+        36,
+        37,
+        38
+      ],
+      "content": "Example 8 zero and imaginary pair; p36 sign noted"
+    },
+    {
+      "section": "§4.10",
+      "source_pages": [
+        34,
+        35
+      ],
+      "content": "Independent correction of the old handout generalization: multiple eigenvalues require a sum of polynomial-times-exponential terms. Source p34-p35 only treats its single-eigenvalue example, so the overgeneralization is not a source error."
+    },
+    {
+      "section": "§4.11",
+      "source_pages": [
+        32
+      ],
+      "content": "four-step summary and case table"
+    },
+    {
+      "section": "§5",
+      "source_pages": [
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "content": "fundamental matrix, IVP relation, Theorem 4.1"
+    },
+    {
+      "section": "§6",
+      "source_pages": [
+        44
+      ],
+      "content": "selection guidance, self-check list, homework P1-P3"
+    },
+    {
+      "section": "Appendix A",
+      "source_pages": [
+        44
+      ],
+      "content": "homework P1-P3 full solutions"
+    }
+  ],
+  "examples": [
+    {
+      "id": "example1",
+      "source_pages": [
+        13,
+        14,
+        15
+      ],
+      "topic": "3x3 distinct real spectrum, diagonalization",
+      "handout_section": "§3.4",
+      "handout_pages": [
+        10,
+        11
+      ],
+      "math_check": "SymPy: F(0)=I True, F'=AF True; V^-1 independently inverted; rank-one terms checked"
+    },
+    {
+      "id": "example2",
+      "source_pages": [
+        20
+      ],
+      "topic": "polynomial reduction",
+      "handout_section": "§4.2",
+      "handout_pages": [
+        12
+      ],
+      "math_check": "long division q*Delta+r=p; p(A)-(146A-184I)=0; matrix equals [[254,146],[146,108]]"
+    },
+    {
+      "id": "example3",
+      "source_pages": [
+        23
+      ],
+      "topic": "generic n=2 and n=3 structure",
+      "handout_section": "§4.4",
+      "handout_pages": [
+        14
+      ],
+      "math_check": "Vandermonde determinants nonzero; n=2 explicit coefficients residual 0; n=3 Lagrange residual 0 at nodes 1,2,3"
+    },
+    {
+      "id": "example4",
+      "source_pages": [
+        24,
+        25
+      ],
+      "topic": "2x2 distinct real roots",
+      "handout_section": "§4.5",
+      "handout_pages": [
+        15,
+        16
+      ],
+      "math_check": "SymPy: F(0)=I True, F'=AF True; 3 alpha_0 elimination identity checked; p25 factor 1/6 noted"
+    },
+    {
+      "id": "example5",
+      "source_pages": [
+        26,
+        27
+      ],
+      "topic": "pure imaginary pair, rotation",
+      "handout_section": "§4.6",
+      "handout_pages": [
+        16,
+        17
+      ],
+      "math_check": "SymPy: F(0)=I True, F'=AF True; A^2=-E; p27 second column corrected"
+    },
+    {
+      "id": "example6",
+      "source_pages": [
+        30,
+        31
+      ],
+      "topic": "spectrum 5 triple and 2 simple, no numeric A",
+      "handout_section": "§4.7",
+      "handout_pages": [
+        17,
+        18
+      ],
+      "math_check": "Hermite conditions at 5 (value, first, second derivative) and at 2 residual 0; r_x at x=0 equals 1; concrete realization diag(J3(5),2) F(0)=I and F'=AF True"
+    },
+    {
+      "id": "example7",
+      "source_pages": [
+        33,
+        34,
+        35
+      ],
+      "topic": "defective triple eigenvalue",
+      "handout_section": "§4.8",
+      "handout_pages": [
+        19,
+        20
+      ],
+      "math_check": "SymPy: F(0)=I True, F'=AF True; N^2=0; g=2; beta coefficients checked"
+    },
+    {
+      "id": "example8",
+      "source_pages": [
+        36,
+        37,
+        38
+      ],
+      "topic": "zero and imaginary pair",
+      "handout_section": "§4.9",
+      "handout_pages": [
+        21,
+        22
+      ],
+      "math_check": "SymPy: F(0)=I True, F'=AF True for both alpha and beta forms; p36 (3,2) sign corrected"
+    }
+  ],
+  "homework": [
+    {
+      "id": "P1",
+      "source_page": 44,
+      "practice_page": 26,
+      "answer_pages": [
+        31,
+        32
+      ],
+      "topic": "2x2 distinct real spectrum",
+      "math_check": "SymPy: F(0)=I True, F'=AF True; A^2=4E structural check in text"
+    },
+    {
+      "id": "P2",
+      "source_page": 44,
+      "practice_page": 26,
+      "answer_pages": [
+        32,
+        33
+      ],
+      "topic": "2x2 pure imaginary spectrum",
+      "math_check": "SymPy: F(0)=I True, F'=AF True; A^2=-4E structural check in text"
+    },
+    {
+      "id": "P3",
+      "source_page": 44,
+      "practice_page": 26,
+      "answer_pages": [
+        33,
+        34
+      ],
+      "topic": "3x3 lower triangular, three distinct real eigenvalues",
+      "math_check": "SymPy: F(0)=I True, F'=AF True; representative derivative entries in text; all nine entries checked in script"
+    }
+  ],
+  "errata": [
+    {
+      "page": 14,
+      "printed": "V^-1 entry (1,2)=0",
+      "correct": "-1",
+      "basis": "V V^-1 = I; coordinate-level text extraction of p14; direct inverse",
+      "handout": "§3.4"
+    },
+    {
+      "page": 15,
+      "printed": "Y(x)=V exp(Lambda x) V^-1 Y0 for IVP at x0",
+      "correct": "V exp(Lambda (x-x0)) V^-1 Y0",
+      "basis": "Substitution at x=x0 generally fails for arbitrary Y0 when the shift is omitted; special zero/periodic cases do not rescue the general formula. Source p12 includes the correct shift.",
+      "handout": "§3.3"
+    },
+    {
+      "page": 27,
+      "printed": "second column (-sin x, cos x)",
+      "correct": "(sin x, cos x)",
+      "basis": "Direct multiplication exp(Ax) C; p27 text layer confirmed",
+      "handout": "§4.6"
+    },
+    {
+      "page": 36,
+      "printed": "intermediate matrix entry (3,2) = -alpha1 x",
+      "correct": "+alpha1 x",
+      "basis": "A32=1, (A^2)32=0; p38 final entry sin x is correct",
+      "handout": "§4.9"
+    }
+  ],
+  "gap_log": [
+    {
+      "type": "convergence",
+      "source": "p5 'The sum of (2) is convergent'",
+      "missing": "which norm, submultiplicativity, absolute convergence",
+      "where": "§1.2"
+    },
+    {
+      "type": "termwise differentiation",
+      "source": "p5 differentiation of series",
+      "missing": "uniform convergence of original series alone is insufficient",
+      "where": "§1.3"
+    },
+    {
+      "type": "completeness of general solution",
+      "source": "p5 'C is an arbitrary vector'",
+      "missing": "why every solution is represented",
+      "where": "§1.4"
+    },
+    {
+      "type": "commutativity",
+      "source": "p7 'If AB=BA'",
+      "missing": "counterexample and 'generally not' boundary",
+      "where": "§2.2"
+    },
+    {
+      "type": "property 1.2 proof",
+      "source": "p7 statement only",
+      "missing": "A^k V = mu^k V derivation",
+      "where": "§2.3"
+    },
+    {
+      "type": "power cancellation",
+      "source": "p10 (V Lambda V^-1)^k",
+      "missing": "adjacent V^-1 V cancellation",
+      "where": "§3.2"
+    },
+    {
+      "type": "multiplicity contrast",
+      "source": "p9 g=n-rank one line",
+      "missing": "g<m and diagonalizability contrast",
+      "where": "§3.1"
+    },
+    {
+      "type": "Cayley-Hamilton theorem",
+      "source": "p17 statement only",
+      "missing": "theorem proof",
+      "where": "§4.1 (cited as standard, not reproved)"
+    },
+    {
+      "type": "reduction mechanism",
+      "source": "p19 quotient/remainder and p(A)=r(A)",
+      "missing": "why only remainder is needed",
+      "where": "§4.2"
+    },
+    {
+      "type": "analytic function reduction",
+      "source": "p21-p22 f(A)=r(A)",
+      "missing": "proof and origin of derivative conditions",
+      "where": "§4.3 Jordan/Taylor"
+    },
+    {
+      "type": "lambda vs mu notation",
+      "source": "p22/p29 say Ax; p23 Remark says A",
+      "missing": "consistent notation",
+      "where": "§0.2, §4.3"
+    },
+    {
+      "type": "repeated-root equation count",
+      "source": "p28 'These are identical equations'",
+      "missing": "why derivatives, how many",
+      "where": "§4.3"
+    },
+    {
+      "type": "Example 3 generic",
+      "source": "p23 structure only",
+      "missing": "explicit coefficients when no A is given",
+      "where": "§4.4 Lagrange form"
+    },
+    {
+      "type": "Example 6 stops at equations",
+      "source": "p30-p31",
+      "missing": "four coefficients not solved",
+      "where": "§4.7 Hermite solution"
+    },
+    {
+      "type": "Example 7 defective",
+      "source": "p33-p35 result given",
+      "missing": "N^2=0 and origin of x term",
+      "where": "§4.8"
+    },
+    {
+      "type": "Theorem 4.1",
+      "source": "p43 statement only",
+      "missing": "why columns are independent",
+      "where": "§5.3"
+    },
+    {
+      "type": "general defective shape",
+      "source": "Old handout §5.5; source p34-p35 only gives a single-eigenvalue example",
+      "missing": "Old handout extrapolated its single-exponential form to general defective matrices",
+      "where": "§4.10 contrast"
+    }
+  ],
+  "old_issue_resolution": [
+    {
+      "review_id": "false_source_gap",
+      "action": "Removed the false claim. §0.2 and §4.3 state that p22 explicitly says 'Let Ax be a square matrix ... with eigenvalues lambda_i' and p29 says '(not A)'; only p23 Remark is loose.",
+      "handout": "§0.2, §4.3"
+    },
+    {
+      "review_id": "norm",
+      "action": "Defined max-row-sum norm, proved submultiplicativity, and used it for absolute convergence.",
+      "handout": "§1.2"
+    },
+    {
+      "review_id": "differentiate",
+      "action": "Added uniform bound for derivative series on |x|<=R; original uniform convergence alone is explicitly said to be insufficient.",
+      "handout": "§1.3"
+    },
+    {
+      "review_id": "general_solution",
+      "action": "Used initial-value uniqueness to show every solution is exp(Ax)C.",
+      "handout": "§1.4"
+    },
+    {
+      "review_id": "commute",
+      "action": "Stated AB=BA as sufficient; gave counterexample; noted that for all t the condition is also necessary, without claiming necessity for a single pair.",
+      "handout": "§2.2"
+    },
+    {
+      "review_id": "eigenvalues",
+      "action": "List eigenvalues mu_j of A with algebraic multiplicity, then map each to exp(mu_j*x); equal mapped values combine multiplicities. An eigenvalue 1 may occur at x=0 or through complex periodicity, not only from mu=0.",
+      "handout": "§2.3"
+    },
+    {
+      "review_id": "g_m",
+      "action": "Defined m_j and g_j=n-rank(A-mu_j E); added I2 vs J2(1) contrast.",
+      "handout": "§3.1"
+    },
+    {
+      "review_id": "simple_root_count",
+      "action": "Distinct roots give n value conditions; repeated roots require derivative conditions; total n.",
+      "handout": "§4.3, §4.7"
+    },
+    {
+      "review_id": "hermite_variable",
+      "action": "Derivative is with respect to spectral mu at fixed x; beta_k=x^k alpha_k relation written explicitly.",
+      "handout": "§4.3.2"
+    },
+    {
+      "review_id": "x_zero",
+      "action": "Used A-spectrum beta form; no division by x; r_0(mu)=1; Example 6 and Example 8 coefficients are smooth at x=0.",
+      "handout": "§4.3.2, §4.7, §4.9"
+    },
+    {
+      "review_id": "example6",
+      "action": "Solved all four Hermite conditions, gave closed form and beta_0..beta_3, and checked a concrete realization.",
+      "handout": "§4.7"
+    },
+    {
+      "review_id": "mixed_spectrum",
+      "action": "Stated exp(Ax)=sum_j exp(mu_j x) P_j(x), deg P_j<=m_j-1; minimal contrast diag(J2(1),2).",
+      "handout": "§4.10"
+    },
+    {
+      "review_id": "example4_elimination",
+      "action": "Corrected 'sum gives 2 alpha_0' to 'first plus twice second gives 3 alpha_0'; final matrix unchanged.",
+      "handout": "§4.5"
+    },
+    {
+      "review_id": "solution_verification",
+      "action": "Current printed matrices independently checked for F(0)=I and F'=AF, with 25 aggregate checks reported in verify_output.txt. Old handout printed pointwise examples but also claimed symbolic verification in its footer; no claim is made that its author never ran full checks.",
+      "handout": "§3.4, §4.5-§4.9, §6.2, Appendix A"
+    }
+  ],
+  "verification": {
+    "compiler": "xelatex -halt-on-error -interaction=nonstopmode",
+    "final_consecutive_passes": 2,
+    "final_exit_codes": [
+      0,
+      0
+    ],
+    "log_scan": {
+      "errors": 0,
+      "overfull": 0,
+      "underfull": 0,
+      "missing_characters": 0,
+      "undefined_references": 0,
+      "latex_warnings": 0
+    },
+    "check_handout": {
+      "mode": "appendix",
+      "errors": 0,
+      "manual_clues": 0,
+      "note": "Static check does not substitute for mathematics or page inspection."
+    },
+    "symbolic_checks": {
+      "groups_passed": 25,
+      "groups_total": 25,
+      "source": "verify_output.txt",
+      "review_script_owner": "Root agent; final TeX/PDF reviewer did not edit verification script."
+    },
+    "page_references": {
+      "ans:P1": 31,
+      "ans:P2": 32,
+      "ans:P3": 33
+    },
+    "visual_review": {
+      "status": "performed",
+      "method": "Poppler PNG rendering; full body contact-sheet inspection and final single-page inspection of changed examples, practice page, and all appendix pages. Text page boundaries also checked.",
+      "final_single_page_inspection": [
+        11,
+        18,
+        22,
+        26,
+        31,
+        32,
+        33,
+        34
+      ],
+      "findings_resolved": [
+        "Practice statement, focus and answer reference kept together; no link-only page.",
+        "P1/P2/P3 actual continuations identify the task and matrix/candidate formula.",
+        "Next exercise may start on the remaining page; no forced two-page allocation per exercise.",
+        "Example 1,4,5,6,7,8 continuation paragraphs identify context.",
+        "General defective-matrix formula is fully inside its callout box.",
+        "Final P3 conclusion and endnote remain with substantive derivation; no orphan ending."
+      ],
+      "remaining_visible_issues": []
+    },
+    "font_environment_note": "MiKTeX emits font-probe/update notices in command output; final PDF renders with fallback fonts, and final LaTeX log has zero missing-character or overflow warnings."
+  },
+  "caveats": [
+    "This independent revision only wrote within the matrix-exponential output directory; source slides and the old handout were not modified.",
+    "Source p44 suggested external reading (Constanda pp.167-174) was not expanded; this artifact covers the supplied 44-page slide deck.",
+    "Symbolic checks establish formula consistency, not learner mastery or exhaustive proof of every prose statement.",
+    "No unreviewed claim that DSH completed normally; its draft timed out and was independently revised.",
+    "Physical PDF page numbers are used throughout; no fixed slide-footer offset is claimed."
+  ],
+  "production_status": {
+    "dsh": "Timed out after 1200 seconds; exited at 2026-11-09 13:13:06. Not a normal-completion claim.",
+    "draft_archive": "../dsh-初稿-审核前留档.zip",
+    "final_revision": "Independent revision after DSH exit; mathematical wording, practice separation, continuation context, final compilation and visual inspection completed.",
+    "review_date": "2026-11-09"
+  },
+  "reading_notes": [
+    {
+      "page": 12,
+      "classification": "grouped-ellipsis reading clarification, not a confirmed source error",
+      "note": "The first eigenvalue group has m1 terms. If m1=1, that group contains one term; the displayed generic second term cannot be asserted to be a wrong lambda2 term. The handout uses index sets I_j."
+    },
+    {
+      "page": 25,
+      "classification": "constant-renaming clarification",
+      "note": "With the same arbitrary vector, the displayed equality needs factor 1/6 and k1=(3C1+C2)/6, k2=(3C1-C2)/6. If arbitrary constants are renamed, the factor can be absorbed and the solution family is unchanged."
+    }
+  ],
+  "coverage_counts": {
+    "source_physical_pages": 44,
+    "mapped_source_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "examples": 8,
+    "independent_homework": 3
+  },
+  "old_new_comparison": [
+    {
+      "topic": "norm and differentiation prerequisites",
+      "old_pages": [
+        2
+      ],
+      "new_pages": [
+        4,
+        5
+      ]
+    },
+    {
+      "topic": "generic example 3 and repeated-root example 6",
+      "old_pages": [
+        5
+      ],
+      "old_note": "example 3 omitted as a worked generic example; example 6 stopped at equations",
+      "new_pages": [
+        14,
+        17,
+        18
+      ]
+    },
+    {
+      "topic": "example 4 elimination",
+      "old_pages": [
+        12
+      ],
+      "new_pages": [
+        15,
+        16
+      ]
+    },
+    {
+      "topic": "mixed-spectrum defective matrix limitation",
+      "old_pages": [
+        7
+      ],
+      "new_pages": [
+        22,
+        23
+      ]
+    },
+    {
+      "topic": "homework prompts and answers",
+      "old_pages": [
+        7,
+        16,
+        17,
+        18
+      ],
+      "new_practice_page": 26,
+      "new_answer_pages": [
+        31,
+        32,
+        33,
+        34
+      ]
+    }
+  ],
+  "artifact_hashes": {
+    "matrix-exponential-v2.tex": "f562012585469e347d8bb273b78575d0515712f461fdc37b121927f7083da1cd",
+    "matrix-exponential-v2.pdf": "95886c1373855fe87c905441ac5e9db525bf55d5670fa7f8c1da8492e268916f",
+    "verify_output.txt": "4fb1badd53fb61ceffbc050640621f39c2174c49a314ae880478772d8f12c155"
+  },
+  "final_editorial_note": "On PDF p18, kept the first continuation context and shortened the next two headings to 展开系数（可选核对） and 检查四个系数, retaining r_x definitions. Two subsequent compilations succeeded; all page mappings and p32/p33/p34 continuation starts stayed unchanged."
+}

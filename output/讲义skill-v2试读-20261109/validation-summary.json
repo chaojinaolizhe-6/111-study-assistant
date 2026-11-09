@@ -1,0 +1,117 @@
+{
+  "skill_version": "2.0.0",
+  "baseline_archive": "backups/lecture-deepdive-v1.5.0-full-before-v2-20261109.zip",
+  "focused_tests": {
+    "handout_tools": {
+      "passed": 17,
+      "failed": 0
+    },
+    "batch_runner": {
+      "passed": 16,
+      "failed": 0
+    }
+  },
+  "theme_smoke": "two compilations passed including legacy custom step and v2 macros",
+  "skill_validation": "passed",
+  "whole_tutor_suite": {
+    "run": 43,
+    "passed": 33,
+    "failures": 2,
+    "errors": 8,
+    "status": "not fully passing",
+    "cause": "Existing synthetic fixture copies current observations but omits the referenced physics-lab subject directory; paused tests inherit current handout-driven archive_before and their old-dated tasks are filtered. These paths do not load the modified lecture skill or tooling.",
+    "scope": "No real learning records or global settings changed."
+  },
+  "old_sample_tex_pdf": "all six original sample files match archived SHA256",
+  "generated_handouts_review": {
+    "status": "reviewed final PDFs complete; source-map/verification notes retained per sample",
+    "samples": [
+      {
+        "pdf": "matrix-exponential/matrix-exponential-v2.pdf",
+        "scope": "Full 44-page source, 8 examples, 3 homework exercises",
+        "pages": 34,
+        "symbolic_assertion_groups": 25,
+        "checker_errors": 0,
+        "checker_review_hints": 0,
+        "compilation": "two final XeLaTeX passes successful",
+        "review": "source and mathematical prose review; all-page overview and enlarged critical pages, including continuation pages 32-34"
+      },
+      {
+        "pdf": "michelson/michelson-excerpt-v2.pdf",
+        "scope": "Explicit excerpt: bilingual objectives and apparatus, optical-path geometry, numerical examples, II-1/2/3/6/7/8/9 and preview p3 (1)/(2)",
+        "pages": 17,
+        "assertions": 50,
+        "checker_errors": 0,
+        "checker_review_hints": 0,
+        "compilation": "two final XeLaTeX passes successful",
+        "review": "source-list and selected-question coverage, equations, sample preconditions, diagrams, all-page overview and enlarged critical pages"
+      }
+    ],
+    "comparison": {
+      "pdf": "新旧讲义对照.pdf",
+      "pages": 6,
+      "visual_review": "all six comparison pages inspected; source pages embedded as vectors",
+      "scope_note": "DSH drafts plus independent revisions; not a controlled experiment isolating the skill change"
+    },
+    "limitations": [
+      "Experimental handout is an excerpt, not a replacement for the complete old lab handout.",
+      "Learning effectiveness has not yet been evaluated by the user.",
+      "The broader tutor suite has the pre-existing fixture failures detailed above."
+    ]
+  },
+  "skill_package": {
+    "file": "lecture-deepdive-v2.0.0.zip",
+    "payload_files": 28,
+    "sha256": "2b027e875d519ad160bd34c3d4b17fbca0b24dce02bd945c589120ccf777e84f",
+    "manifest_crc_and_live_source_hashes": "passed"
+  },
+  "draft_generation": {
+    "engine": "DSH",
+    "sessions": [
+      {
+        "name": "dsh-matrix-v2-run",
+        "status": "timed_out",
+        "exit_code": 124,
+        "elapsed_seconds": 1200.078
+      },
+      {
+        "name": "dsh-michelson-v2-run",
+        "status": "timed_out",
+        "exit_code": 124,
+        "elapsed_seconds": 1200.047
+      }
+    ],
+    "preserved_draft_archive": "dsh-初稿-审核前留档.zip",
+    "finalization": "DSH produced TeX/PDF drafts and timed out during self-review; Codex reviewers corrected and completed the artifacts."
+  },
+  "delivered_artifacts": [
+    {
+      "file": "matrix-exponential/matrix-exponential-v2.pdf",
+      "bytes": 323644,
+      "sha256": "95886c1373855fe87c905441ac5e9db525bf55d5670fa7f8c1da8492e268916f",
+      "pages": 34
+    },
+    {
+      "file": "matrix-exponential/matrix-exponential-v2.tex",
+      "bytes": 76059,
+      "sha256": "f562012585469e347d8bb273b78575d0515712f461fdc37b121927f7083da1cd"
+    },
+    {
+      "file": "michelson/michelson-excerpt-v2.pdf",
+      "bytes": 270920,
+      "sha256": "1b10d1ab5ac8d8614716110e59aef869f0c325a1e1d029ff957385f74753eaba",
+      "pages": 17
+    },
+    {
+      "file": "michelson/michelson-excerpt-v2.tex",
+      "bytes": 52463,
+      "sha256": "f6c07bc147667a1df8c80a9a6e6c9774285417e57228f605bb9bd7d64e3024a7"
+    },
+    {
+      "file": "新旧讲义对照.pdf",
+      "bytes": 630987,
+      "sha256": "ba7ce856928829bb28d44f9978cbfab05e80034b31346c52fc0826083f31f955",
+      "pages": 6
+    }
+  ]
+}

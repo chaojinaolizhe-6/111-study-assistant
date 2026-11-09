@@ -1,0 +1,35 @@
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{测试}{大物实验}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{needspace}
+\begin{document}
+\doctitle{测试}{TikZ 与主题}{测试页}
+\hdr{§1}{测试}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[x=1.15cm,y=1.15cm,>=Stealth,font=\small]
+\draw[very thick] (-1.2,2)--(3.8,2); \draw[very thick] (-1.2,0)--(3.8,0);
+\node[left] at (-1.25,2) {$M_1$}; \node[left] at (-1.25,0) {$M_2'$};
+\draw[<->] (-0.9,0.05)--(-0.9,1.95); \node[left] at (-0.95,1.0) {$d$};
+\coordinate (A) at (0,2); \coordinate (B) at (1.1547,0); \coordinate (C) at (2.3094,2);
+\draw[->,thick] (-0.7,3.212)--(A); \draw[->,thick] (A)--(0.8,3.386);
+\draw[->,thick] (A)--(B); \draw[->,thick] (B)--(C); \draw[->,thick] (C)--(2.909,3.039);
+\node[above right] at (0.82,3.35) {光束 1}; \node[right] at (2.93,3.02) {光束 2};
+\draw[gray] (A)+(0,-0.8) arc[start angle=-90,end angle=-60,radius=0.8];
+\node at (0.32,1.32) {$\theta$};
+\end{tikzpicture}
+\caption{测试图。}
+\end{figure}
+\begin{longtable}{@{}p{0.8cm}p{5.5cm}p{5.5cm}p{3.0cm}@{}}
+\toprule
+\thead{No.} & \thead{English} & \thead{中文} & \thead{备注}\\
+\midrule
+\endhead
+1 & He-Ne laser & 氦氖激光器 & 光源\\
+\bottomrule
+\end{longtable}
+\end{document}

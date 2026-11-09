@@ -1,0 +1,216 @@
+% !TEX program = xelatex
+% 数学物理方法2 · §7.2 · 课件 p19 Assignments 1--4 · 四题中英答案（2026-11-09）
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{§7.2 作业 · 四题中英答案}{数学物理方法2}
+
+\geometry{left=1.8cm,right=1.8cm,top=1.8cm,bottom=1.9cm,headsep=9pt,footskip=16pt}
+\linespread{1.22}
+\setlength{\headheight}{21pt}
+\setlength{\parskip}{0pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 1pt}
+\newcommand{\ok}{\textcolor{violet}{\ensuremath{\checkmark}}}
+\newcommand{\en}[1]{\textit{#1}}
+\newcommand{\tagline}[1]{{\small\color{inkgray}#1}}
+
+\newcommand{\chdr}[2]{%
+  \needspace{5\baselineskip}%
+  \par\vspace{5pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\bfseries #2}\par\nobreak
+  \vspace{1pt}{\color{petal}\hrule height 1pt}\vspace{4pt}}
+\let\hdr\chdr
+
+% 讲块（题目前）：为什么这么做、用哪条判据
+\newcommand{\explain}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{rulepurple}{bandcream}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+    \vspace{2pt}{\color{violetdeep}\bfseries 讲解}\quad #1\vspace{2pt}}}%
+  \par\medskip}
+
+% 答案块（题目后）：中英并列
+\newcommand{\answerbox}[2]{%
+  \par\medskip\noindent
+  \fcolorbox{violet}{bandviolet}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+    \vspace{2pt}{\small\bfseries\color{violet}答案}\hspace{0.8em}#1\par\vspace{3pt}%
+    {\small\bfseries\color{violet}Answer}\hspace{0.8em}\en{#2}\vspace{2pt}}}%
+  \par\medskip}
+
+\newcommand{\rodfig}[2]{%
+  \begin{center}\small
+  \begin{tabular}{c@{}c@{}c}
+  #1 & {\setlength{\fboxsep}{0pt}\fcolorbox{petal}{petal!45}{\rule{0pt}{0.38cm}\hspace{2.6cm}}} & #2\\[1pt]
+   & {\color{inkgray}\makebox[2.6cm][s]{$x=0$\hfill$x=l$}} &
+  \end{tabular}
+  \end{center}}
+
+\begin{document}
+
+\doctitle{§7.2 作业四题：定解条件怎么写}
+{课件 p19 Assignments 1--4\ ·\ 每题按“讲解 $\to$ 题目 $\to$ 解答 $\to$ 答案（中英）”排列}
+{依据课件 p19 题面、p14 力边界条件、p15 热流边界条件\quad 2026-11-09\quad 数学物理方法\,2}
+
+\hdr{§0}{两条判据，四个符号}
+
+四道题只用到两件事。第一件是\textbf{边界的类型}：给定边界面上的值（固定端、给定温度）是第一类；给定法向导数（受力、给定热流、绝热）是第二类。第二件是\textbf{外法向}：$x=0$ 处 $n$ 沿 $-x$，$x=l$ 处 $n$ 沿 $+x$，所以
+
+\[
+\left.\frac{\partial u}{\partial n}\right|_{x=0}=-\left.\frac{\partial u}{\partial x}\right|_{x=0},
+\qquad
+\left.\frac{\partial u}{\partial n}\right|_{x=l}=+\left.\frac{\partial u}{\partial x}\right|_{x=l}.
+\]
+
+把物理量翻译成法向导数，靠的是两条定律（课件 p14、p15）：
+
+\[
+\text{杆受力：}\ \frac{f_n}{S}=E\frac{\partial u}{\partial n},
+\qquad
+\text{热流：}\ q_n=-k\frac{\partial u}{\partial n},
+\]
+
+$f_n$ 是外力沿\textbf{外法向}的分量（向外为正），$q_n$ 是热流沿外法向的分量（流出为正）。注意第二式自带一个负号，第四式的“流入”与第三式的“受压”箭头同向、符号却相反，根源就在这个负号上。
+
+\hdr{题 1}{左端固定，右端受外向拉力}
+
+\explain{先看两端各“给”了什么。左端写“fixed”，给的是位移被按死，属于第一类，条件是函数值等于零；右端写“a normal force acts outward”，给的是力，属于第二类，条件是法向导数等于力除以刚度。右端的外法向朝 $+x$，力又朝外，所以 $f_n=+F(t)$，代数上不用再翻号——这是四题里最顺的一道。}
+
+\qstem{\en{The left end of a rod (whose length is $l$) is fixed, and a normal force $F(t)=F_0\sin\omega t$ acts outward on the right end of the rod.}\\[3pt]
+\textbf{中}（p19 第 1 题）：长为 $l$ 的杆，左端固定，右端受一外向法向力 $F(t)=F_0\sin\omega t$。求边界条件。}
+
+\subhdr{解答过程}
+
+\begin{enumerate}
+\item 左端 $x=0$：固定端，位移恒为零，得第一类齐次条件 $u(0,t)=0$。
+\item 右端 $x=l$：受外力。外法向 $n$ 指向 $+x$，力沿 $+x$ 向外，故 $f_n=+F_0\sin\omega t$。
+\item 代入 Hooke 定律 $\dfrac{f_n}{S}=E\dfrac{\partial u}{\partial n}$，并用右端 $\partial u/\partial n=\partial u/\partial x$：
+\[
+\frac{F_0\sin\omega t}{S}=E\left.\frac{\partial u}{\partial x}\right|_{x=l}.
+\]
+\item 两边乘 $S$，写成作业常用的形式 $ES\,u_x(l,t)=F_0\sin\omega t$。
+\end{enumerate}
+
+\answerbox{$u(0,t)=0$（左端固定）；$\;ES\,u_x(l,t)=F_0\sin\omega t$，其中 $E$ 为杨氏模量、$S$ 为横截面积。（也可写成 $u_x|_{x=l}=F_0\sin\omega t/(ES)$。）}
+{Boundary conditions: $u(0,t)=0$ (the left end is fixed) and $ES\,u_x(l,t)=F_0\sin\omega t$ (an outward normal force acts on the right end), where $E$ is Young's modulus and $S$ the cross-sectional area.}
+
+\warnbox{\textbf{自检}：令 $F_0=0$，右端变成 $\left.u_x\right|_{x=l}=0$，正是 p14 的 “Free!”（自由端）\ok{}。反例：写成 $u(l,t)=0$ 就把右端当成了固定端，与“受拉力”矛盾。}
+
+\hdr{题 2}{两端固定的弦，$t=0$ 时一点受外力}
+
+\explain{这题问的是初始条件，不是边界条件——两端固定只是背景。“波动方程对时间二阶，所以初值要两个”：初始位移、初始速度。弦原本静止，位移初值为零；t=0 的一点受力，本质是一个\textbf{冲量}，它把速度在某一点上“打”成一个 $\delta$。判断用冲量—动量定理，量纲会替你检验：只有把 $F_0$ 当冲量（N$\cdot$s），$(F_0/\rho)\delta$ 才是速度。}
+
+\qstem{\en{A string, whose length is $l$, is fixed at its end points. At $t=0$, an external force $F_0$ acts on the point $x=h$.}\\[3pt]
+\textbf{中}（p19 第 2 题）：长为 $l$ 的弦，两端固定；$t=0$ 时在 $x=h$ 处受一外力 $F_0$。求初始条件。}
+
+\subhdr{解答过程}
+
+\begin{enumerate}
+\item 先把问题分开：两端固定属于边界条件（$u(0,t)=u(l,t)=0$），本题不问；要写的是 $t=0$ 的两个初始条件。
+\item 初始位移：$t<0$ 时弦静止在平衡位置，故 $u(x,0)=0$。
+\item 初始速度：取 $x=h$ 附近长 $\Delta x$ 的一小段，冲量 $F_0$ 使它获得动量 $\rho\,\Delta x\,u_t$，于是 $u_t=\dfrac{F_0}{\rho\,\Delta x}$；令 $\Delta x\to0$，该速度集中在一点，写成 $\delta$ 函数：
+\[
+u_t(x,0)=\frac{F_0}{\rho}\,\delta(x-h).
+\]
+\item 量纲核对：$\dfrac{F_0}{\rho}$ 的单位是 $\dfrac{\mathrm{N\cdot s}}{\mathrm{kg/m}}=\mathrm{m^2/s}$，再乘 $\delta$ 的 $\mathrm{m^{-1}}$ 得 $\mathrm{m/s}$，正是速度 \ok{}。
+\end{enumerate}
+
+\answerbox{$u(x,0)=0$；$\;u_t(x,0)=\dfrac{F_0}{\rho}\,\delta(x-h)$，其中 $\rho$ 为弦的线密度，$F_0$ 按冲量理解。}
+{Initial conditions: $u(x,0)=0$ and $u_t(x,0)=\dfrac{F_0}{\rho}\delta(x-h)$, where $\rho$ is the linear density of the string and $F_0$ is the impulse.}
+
+\warnbox{\textbf{一个必须说清的约定}：若把 $F_0$ 当成普通力（单位 N）而不是冲量，它就不属于初始条件，而属于方程右端的源项 $\dfrac{F_0}{\rho}\delta(x-h)$，此时初条件只剩 $u(x,0)=0$、$u_t(x,0)=0$。两种理解只差“力持续多久”，量纲一眼可分。}
+
+\hdr{题 3}{两端受压的杆}
+
+\explain{两端给的都是力，所以两端都是第二类；真正要小心的是方向。图里两个箭头都指向杆内，是压力。外法向在两端相反，“向内”在两端对应的空间方向也相反，于是最省事的写法是先统一写成 $f_n$（沿外法向的分量）：压力与外法向反向，$f_n=-F_0$，两端一样；最后换到 $\partial u/\partial x$ 时，左端才翻号。}
+
+\qstem{\en{A normal force $F_0$ acts on the ends of the rod (whose length is $l$).}\\[3pt]
+\textbf{中}（p19 第 3 题）：长为 $l$ 的杆，两端各受一法向力 $F_0$（图中箭头指向杆内，即两端受压）。求边界条件。}
+
+\rodfig{$F_0\;\longrightarrow$}{$\longleftarrow\;F_0$}
+
+\subhdr{解答过程}
+
+\begin{enumerate}
+\item 两端都只给力、不给位移，故两端都是第二类边界条件。
+\item 取外法向：左端 $n$ 沿 $-x$，右端 $n$ 沿 $+x$。压力方向与 $n$ 相反，所以两端都有 $f_n=-F_0$。
+\item 代入 $\dfrac{f_n}{S}=E\dfrac{\partial u}{\partial n}$，得两端统一的形式
+\[
+\left.\frac{\partial u}{\partial n}\right|_{\text{两端}}=-\frac{F_0}{ES}.
+\]
+\item 换成 $x$ 导数：左端 $\partial u/\partial n=-\partial u/\partial x$，故 $-\left.u_x\right|_{x=0}=-\dfrac{F_0}{ES}$，即 $\left.u_x\right|_{x=0}=+\dfrac{F_0}{ES}$；右端 $\partial u/\partial n=+\partial u/\partial x$，直接得 $\left.u_x\right|_{x=l}=-\dfrac{F_0}{ES}$。
+\end{enumerate}
+
+\answerbox{$\left.u_x\right|_{x=0}=+\dfrac{F_0}{ES}$，$\;\left.u_x\right|_{x=l}=-\dfrac{F_0}{ES}$；等价地，外法向形式 $\left.\dfrac{\partial u}{\partial n}\right|_{\text{两端}}=-\dfrac{F_0}{ES}$。}
+{$\left.u_x\right|_{x=0}=+F_0/(ES)$ and $\left.u_x\right|_{x=l}=-F_0/(ES)$; equivalently, in terms of the outward normal, $\partial u/\partial n=-F_0/(ES)$ at both ends.}
+
+\warnbox{\textbf{与 p14 对照}：p14 是“外力向外”，得左端 $-\frac{f}{ES}$、右端 $+\frac{f}{ES}$；本题力向内，整组变号。\textbf{不要}只翻一端——若只把右端改成负号、左端照抄 p14，就得到两端不同向的怪结果。}
+
+\hdr{题 4}{两端流入热流的杆}
+
+\explain{给的是热流密度，第二类；判据是 Fourier 定律，它自带负号。箭头朝内是“流入”，流入意味着热流逆着外法向，所以 $q_n=-q_0$，两端一样。换成 $\partial u/\partial x$ 后是“左负右正”，与题 3 正好相反——不是算错了，而是 Hooke 定律没有负号、Fourier 定律有负号。}
+
+\qstem{\en{The heat flux into the ends of the rod (whose length is $l$) is $q_0$.}\\[3pt]
+\textbf{中}（p19 第 4 题）：长为 $l$ 的杆，两端各流入热流密度 $q_0$。求边界条件。}
+
+\rodfig{$q_0\;\longrightarrow$}{$\longleftarrow\;q_0$}
+
+\subhdr{解答过程}
+
+\begin{enumerate}
+\item 未知量 $u$ 是温度，给定的是端面热流密度，故为第二类边界条件。
+\item 取外法向 $n$，Fourier 定律 $q_n=-k\dfrac{\partial u}{\partial n}$；热流流入杆内即逆着 $n$，故 $q_n=-q_0$，两端相同。
+\item 于是两端统一地有 $\dfrac{\partial u}{\partial n}=\dfrac{q_0}{k}$。
+\item 换成 $x$ 导数：左端 $-\left.u_x\right|_{x=0}=\dfrac{q_0}{k}$，故 $\left.u_x\right|_{x=0}=-\dfrac{q_0}{k}$；右端 $\left.u_x\right|_{x=l}=\dfrac{q_0}{k}$ 直接得出。
+\end{enumerate}
+
+\answerbox{$\left.u_x\right|_{x=0}=-\dfrac{q_0}{k}$，$\;\left.u_x\right|_{x=l}=+\dfrac{q_0}{k}$，$k$ 为热导率；等价地 $-k\left.u_x\right|_{x=0}=q_0$、$-k\left.u_x\right|_{x=l}=-q_0$（后一式读作：$+x$ 方向净热流为 $-q_0$，真实热流沿 $-x$ 流入）。}
+{$\left.u_x\right|_{x=0}=-q_0/k$ and $\left.u_x\right|_{x=l}=+q_0/k$ with $k$ the thermal conductivity; equivalently the inward heat flux at both ends is $q_0$.}
+
+\warnbox{\textbf{自检}：两端吸热，端部比内部热，温度从左端往里降、从右端往里降，故左端 $u_x<0$、右端 $u_x>0$ \ok{}；$q_0=0$ 时两端绝热（$\left.u_x\right|=0$），回到 p15 的 adiabatic \ok{}。}
+
+\hdr{§5}{四题答案速查（中英对照）}
+
+\par\smallskip
+\begin{itemize}
+\item \textbf{题 1}（左端固定，右端外向力 $F_0\sin\omega t$）：$u(0,t)=0$；$ES\,u_x(l,t)=F_0\sin\omega t$。\en{EN: $u(0,t)=0$; $ES\,u_x(l,t)=F_0\sin\omega t$.}
+\item \textbf{题 2}（两端固定弦，$t=0$ 于 $x=h$ 受冲量 $F_0$）：$u(x,0)=0$；$u_t(x,0)=\frac{F_0}{\rho}\delta(x-h)$。\en{EN: $u(x,0)=0$; $u_t(x,0)=\frac{F_0}{\rho}\delta(x-h)$.}
+\item \textbf{题 3}（两端受压 $F_0$）：$u_x(0)=\frac{F_0}{ES}$，$u_x(l)=-\frac{F_0}{ES}$。\en{EN: $u_x(0)=F_0/(ES)$; $u_x(l)=-F_0/(ES)$.}
+\item \textbf{题 4}（两端流入热流 $q_0$）：$u_x(0)=-\frac{q_0}{k}$，$u_x(l)=+\frac{q_0}{k}$。\en{EN: $u_x(0)=-q_0/k$; $u_x(l)=+q_0/k$.}
+\end{itemize}
+
+\hdr{§6}{四个错法，对号入座}
+
+\gapitem{题 1 把右端当固定端}{写成 $u(l,t)=0$ 就变成“两端固定”。题目给的是力，力只能进第二类条件（法向导数），不能变成位移为零。}
+
+\gapitem{题 2 只写位移、漏掉速度}{波动方程对 $t$ 是二阶的，一个初始条件不够。漏掉 $u_t(x,0)$ 等于只给了形状、没给初速度，解不唯一。}
+
+\gapitem{题 3 只翻一端的号}{“两端受压”意味着两端都反向。只把右端改成负号、左端照抄 p14 的 $-\frac{f}{ES}$，结果两端同号，与“两端受压”的对称性矛盾。}
+
+\gapitem{题 4 忘记 $k$}{写成 $u_x=\mp q_0$ 量纲不成立：$q_0$ 是 $\mathrm{W/m^2}$，$u_x$ 是 $\mathrm{K/m}$，中间必须有热导率 $k$ 才能换算。}
+
+\hdr{§7}{符号与量纲速查}
+
+{\small
+\tabtop
+\begin{tabular}{@{}c p{4.6cm} p{5.0cm} p{4.4cm}@{}}
+\thead{符号} & \thead{含义} & \thead{单位} & \thead{出现} \\
+\hline
+$u$ & 位移（题 1--3）／温度（题 4） & $\mathrm{m}$ ／ $\mathrm{K}$ & 四题 \\
+$E$ & 杨氏模量 & $\mathrm{Pa}=\mathrm{N/m^2}$ & 题 1、3 \\
+$S$ & 杆的横截面积 & $\mathrm{m^2}$ & 题 1、3 \\
+$f_n$ & 外力沿外法向的分量（向外为正） & $\mathrm{N}$ & 题 1、3 \\
+$F_0$ & 外力幅值；题 2 中按冲量理解 & $\mathrm{N}$ ／ $\mathrm{N\cdot s}$ & 题 1--3 \\
+$q_0$ & 热流密度 & $\mathrm{W/m^2}$ & 题 4 \\
+$k$ & 热导率 & $\mathrm{W/(m\cdot K)}$ & 题 4 \\
+$\rho$ & 弦的线密度 & $\mathrm{kg/m}$ & 题 2 \\
+$\delta(x-h)$ & 集中在一点的点源 & $\mathrm{m^{-1}}$ & 题 2 \\
+\end{tabular}
+\tabbot
+}
+
+\callout{\textbf{一句话带走}：四道题只有两种动作——\emph{给值的写第一类，给力或热流的写第二类}；写第二类时先把物理量写成“沿外法向的分量”，再用 Hooke（不带负号）或 Fourier（带负号）换成 $\partial u/\partial n$，最后按端面把 $\partial u/\partial n$ 换回 $\partial u/\partial x$。}
+
+\vspace{2pt}
+\tagline{第 4 题的展开版（三条等价写法、稳态讨论、与 p14 的同构对照）另见本目录《作业 4 解答卡（20261109）》。}
+
+\end{document}
