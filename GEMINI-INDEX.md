@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-05 2026-11-05 14:14（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-09 2026-11-09 08:05（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -23,7 +23,7 @@
 > **本文件由 `python -B tools/current_state.py` 生成，勿手工编辑**（派生视图）。
 > 这是**跨窗口续学的唯一事实来源**：`AGENTS.md` / `CLAUDE.md` 的 STATUS 与
 > `plan/handoff-CURRENT.md` 都**引用**它，不再各写一份叙述。
-> 生成于 **2026-11-05**（中国时间；系统英国日期 2026-11-05）。
+> 生成于 **2026-11-09**（中国时间；系统英国日期 2026-11-09）。
 > 事实源指纹：`attempts.jsonl` 52 条（sha256 `1388bfe3d536…`）＋ `corrections.jsonl` 55 条。
 > 手写意图（下一步想做什么、为什么暂缓）不在这里：见 `.tutor/config/status-narrative.yml`、`plan/today-<日期>.md`、`plan/gaps.md`。
 
@@ -225,8 +225,8 @@
 | 2026-10-22 | 目标节点 | `pilot-ode-integrating-factor:milestone` | 里程碑复核 | 独立解一阶线性 ODE（试点） 的 milestone = 2026-10-22 |
 | 2026-10-23 | 目标节点 | `tm-t4-conservation-laws:milestone` | 里程碑复核 | 独立求解理论力学 Topic 4 守恒定律问题 的 milestone = 2026-10-23 |
 | 2026-10-24 | 目标节点 | `ee-ac-circuits:milestone` | 里程碑复核 | 独立求解电工电子技术 交流电路（Chapter Two）计算题 的 milestone = 2026-10-24 |
-| 2026-11-08（+3d） | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
-| 2026-11-09（+4d） | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
+| 2026-11-08 | 目标节点 | `tm-t5-1d-motion:milestone` | 里程碑复核 | 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08 |
+| 2026-11-09 | 目标节点 | `ode-systems-const-coeff:milestone` | 里程碑复核 | 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09 |
 
 完整排期（含'未来才开放、不得提前安排'的项）见 `plan/schedule.md`（`tools/schedule_reviews.py` 生成）。
 **最终下一步以 `.tutor/config/status-narrative.yml` 的 `next` 行 + `plan/today-<日期>.md` 为准**（那是人工判断，不是机械候选）。
@@ -279,7 +279,7 @@
 > 📌 **当前事实不在本文件里** —— 全部在 **`state/current.md`**（由 `learning/` 重算，含指纹可核）。
 > 本文件只负责：①告诉你按什么顺序读；②把当前事实与人工意图**引用**过来；③给规则提醒。
 > ⚠ 旧文件 `plan/handoff-prompt-2026-09-28.md` 已标为**历史、勿用**（它是 09-28 上午的快照，会把进度倒退）。
-> 生成时间：**2026-11-05**（中国时间；系统英国日期 2026-11-05）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
+> 生成时间：**2026-11-09**（中国时间；系统英国日期 2026-11-09）。若与 `state/current.md` 不一致，**以 `state/current.md` 为准**。
 
 ---
 
@@ -287,11 +287,11 @@
 请按本工作区的 tutor 规则继续带我学习（AGENTS.md / CLAUDE.md 会自动注入）。
 
 【时间基准】系统时钟是英国时间，我的真实时间是中国大陆（UTC+8）。
-所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-05（周四）。
+所有「今天/明天/截止日/时间窗」一律按中国时间判断。今天是 2026-11-09（周一）。
 
 【先读这些（按顺序）】
 1. state/current.md —— **当前状态的唯一事实来源**（覆盖表、最近证据、帮助史、卡点、可数事实）
-2. plan/today-2026-11-05.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
+2. plan/today-2026-11-09.md —— 当天时间窗与清单（人工安排的权威；若不存在见下）
 3. learning/curriculum-coverage.md —— 课程范围与证据对账（未登记目标/无题/无独立证据；目录未核全则覆盖未知）
 4. plan/schedule.md —— 复习与再测的**日期化**排期（含「未来才开放、不得提前安排」的项）
 5. .tutor/core/protocol.md —— 当前协议；learning/README.md 在入账或核对帮助史时按需读
@@ -306,7 +306,7 @@
 **必须遵守的提醒**：⚠ **学习模式（2026-10-29 起，学习者决定）**：讲义驱动、考前集中闭卷验收（口径唯一来源＝`.tutor/config/study-mode.yml`）。讲授走讲义，答案放讲义最后；平时讲义与自测一律记讲解级帮助、不升能力等级，不得声称「已掌握」；`due` 早于 2026-10-29 的旧题已归档为考前素材，能力再测队列平时不显示。 ⚠ **时区**：系统为英国时间，计划与截止一律按**中国大陆时间**（换算见 `tools/timebase.py`，规则见 `.tutor/config/time-environment.yml`）；所有脚本的日期基准已统一走该模块。⚠ **本工作区 2026-09-30 维护后的规则（开新会话先读这四条）**：①**当前状态只有一个来源** —— `state/current.md`（由 `learning/attempts.jsonl` + `corrections.jsonl` + `goals.yaml` 重算）；`AGENTS.md/CLAUDE.md` 的 STATUS 与 `plan/handoff-CURRENT.md` 只是**引用**它，**不要在别处再手写一份计数或进度叙述**。②**收尾只有一个入口** —— `python -B tools/session-close.py --today <中国日期>`（10 步：校验→派生→覆盖表→事实卡→STATUS→handoff→排期→订正影响面→**一致性核对**）；任何一步失败都会显式打印 FAIL，**不允许只更新计数就宣称状态已同步**。③**写入必须走锁** —— `tools/append_attempt.py --event-id auto` 在锁内**机器取号**（`learning/attempts/_ids.json`），不再靠人读文本预留 attempt-N；订正走 `tools/record_correction.py`（强制 `reason` + `source` + `evidence_ref`，没有证据不给订正）；原始事件**不改不删**。④**帮助史不能漏记** —— 测验/练习中给出**针对具体试题**的方法提示，或**透露过含答案的文件**，都算帮助：`max_hint_level` 记实际级别、`solution_exposure` 非 none。**「此前学过通用方法」不等于「本次试题已曝光」**，两者不要混为一谈（详见 `learning/README.md`）。⚠ **作答默认闭卷**（学习者 2026-09-30 明确：开卷会特别说明）→ 不再逐次追问 `closed_book`；**提问必须指名到物**。⚠ 中文引号一律用「」，半角引号会让事件成为非法 JSON（写前可跑 `python -B tools/write_check.py <文件>` 用真解析器自检）。⚠ **保留的教学要点**：讲「为什么」要带上下文、不得只给结论口诀；课件原文与 `[教学归纳]` 分开标；手写读不准标 `[待确认]` 且不得据此改判；**别让学习者逐字转写自己的手写**（给一步自查更省事）；学习者说「我还是没明白」时直接给完整规则 + 课件页码对照，比继续追问更有效；**困难结案 ≠ 目标升级**、**同日教学后检验不构成延迟证据**（`min_delay_days: 2`）；**不得用整条事件的总评去逐目标升级**。⚠ 电工实验硬规则：无预习报告不允许做实验、不带教材不允许进实验室（材料登记在 `subjects/06-电工电子技术/实验/INDEX.md`）。⚠ 历史更正（泰勒/洛朗判据三次更正、`attempt-5` 曝光史、`hurdle-1` 口诀降级等）**已归档**：全文见 `learning/corrections.jsonl` 与 `learning/attempts/corrections.md`，冷启动入口不再堆积纠错过程；系统级问题清单见 `ISSUES-待改进.md`。
 
 【今天清单】
-⚠ **`plan/today-2026-11-05.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
+⚠ **`plan/today-2026-11-09.md` 尚未建立** —— 本轮没有人安排过今天；请先按下面的「回来先做什么」+ `plan/schedule.md` 的到期项，与学习者确认后再建。**不要凭空补一份。**
 
 【回来先做什么】
 **人工指定的下一步（权威）** —— 见上方 `next:` 行；要点摘录：
@@ -332,8 +332,8 @@
 2. `pilot-ode-integrating-factor:milestone`（目标节点｜里程碑复核）— 独立解一阶线性 ODE（试点） 的 milestone = 2026-10-22
 3. `tm-t4-conservation-laws:milestone`（目标节点｜里程碑复核）— 独立求解理论力学 Topic 4 守恒定律问题 的 milestone = 2026-10-23
 4. `ee-ac-circuits:milestone`（目标节点｜里程碑复核）— 独立求解电工电子技术 交流电路（Chapter Two）计算题 的 milestone = 2026-10-24
-
-未来才开放（**不得提前做**）2 条，最早一条 = `tm-t5-1d-motion:milestone` @ 2026-11-08（独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08）。
+5. `tm-t5-1d-motion:milestone`（目标节点｜里程碑复核）— 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08
+6. `ode-systems-const-coeff:milestone`（目标节点｜里程碑复核）— 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09
 
 【规则提醒】
 - 默认教学式：先让我短暂独立尝试 → 卡住给最小提示 → 收尾用无提示新题检查
@@ -364,7 +364,7 @@
 | **当前状态（唯一事实源）** | `state/current.md` |
 | 课程覆盖台账 | `learning/coverage.md` |
 | 复习/再测排期 | `plan/schedule.md` |
-| 当天清单（人工权威） | `plan/today-2026-11-05.md` |
+| 当天清单（人工权威） | `plan/today-2026-11-09.md` |
 | 答题与订正事实源 | `learning/attempts.jsonl` · `learning/corrections.jsonl` |
 | 订正人读视图 | `learning/attempts/corrections.md` |
 | 缺口台账 | `plan/gaps.md` |
@@ -374,7 +374,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（5841 个文件）
+## 3. 文件直达 URL 索引（5860 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -586,7 +586,7 @@
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2392 个）
+### subjects（2411 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -1173,6 +1173,7 @@
 - `subjects/06-电工电子技术/实验/20261013-EE-lab-bench-setup.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/20261013-EE-lab-bench-setup.jpg
 - `subjects/06-电工电子技术/实验/20261013-电工电路实验装置-现场实拍.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/20261013-%E7%94%B5%E5%B7%A5%E7%94%B5%E8%B7%AF%E5%AE%9E%E9%AA%8C%E8%A3%85%E7%BD%AE-%E7%8E%B0%E5%9C%BA%E5%AE%9E%E6%8B%8D.jpg
 - `subjects/06-电工电子技术/实验/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/INDEX.md
+- `subjects/06-电工电子技术/实验/图-实验5-报告册电路-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E7%94%B5%E8%B7%AF-%E8%A3%81%E5%89%AA.png
 - `subjects/06-电工电子技术/实验/图-实验5-教材图524-无题注.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C5-%E6%95%99%E6%9D%90%E5%9B%BE524-%E6%97%A0%E9%A2%98%E6%B3%A8.png
 - `subjects/06-电工电子技术/实验/图-实验5-教材图524-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C5-%E6%95%99%E6%9D%90%E5%9B%BE524-%E8%A3%81%E5%89%AA.png
 - `subjects/06-电工电子技术/实验/图-实验6-教材裁剪/图5-3-7-积分电路-裁剪.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%9B%BE-%E5%AE%9E%E9%AA%8C6-%E6%95%99%E6%9D%90%E8%A3%81%E5%89%AA/%E5%9B%BE5-3-7-%E7%A7%AF%E5%88%86%E7%94%B5%E8%B7%AF-%E8%A3%81%E5%89%AA.png
@@ -1235,6 +1236,11 @@
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.out
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.pdf
 - `subjects/06-电工电子技术/实验/实验5-单管放大电路-实验讲义-20261104.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E5%8D%95%E7%AE%A1%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF-%E5%AE%9E%E9%AA%8C%E8%AE%B2%E4%B9%89-20261104.tex
+- `subjects/06-电工电子技术/实验/实验5-报告册逐题解答-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E9%80%90%E9%A2%98%E8%A7%A3%E7%AD%94-20261105.aux
+- `subjects/06-电工电子技术/实验/实验5-报告册逐题解答-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E9%80%90%E9%A2%98%E8%A7%A3%E7%AD%94-20261105.log
+- `subjects/06-电工电子技术/实验/实验5-报告册逐题解答-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E9%80%90%E9%A2%98%E8%A7%A3%E7%AD%94-20261105.out
+- `subjects/06-电工电子技术/实验/实验5-报告册逐题解答-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E9%80%90%E9%A2%98%E8%A7%A3%E7%AD%94-20261105.pdf
+- `subjects/06-电工电子技术/实验/实验5-报告册逐题解答-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E6%8A%A5%E5%91%8A%E5%86%8C%E9%80%90%E9%A2%98%E8%A7%A3%E7%AD%94-20261105.tex
 - `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.aux
 - `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.log
 - `subjects/06-电工电子技术/实验/实验5-电路图页-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C5-%E7%94%B5%E8%B7%AF%E5%9B%BE%E9%A1%B5-20261105.out
@@ -1255,6 +1261,11 @@
 - `subjects/06-电工电子技术/实验/实验6-集成运放-详细实验指引-20261105.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-%E8%AF%A6%E7%BB%86%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%BC%95-20261105.out
 - `subjects/06-电工电子技术/实验/实验6-集成运放-详细实验指引-20261105.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-%E8%AF%A6%E7%BB%86%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%BC%95-20261105.pdf
 - `subjects/06-电工电子技术/实验/实验6-集成运放-详细实验指引-20261105.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C6-%E9%9B%86%E6%88%90%E8%BF%90%E6%94%BE-%E8%AF%A6%E7%BB%86%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%BC%95-20261105.tex
+- `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p09-实验5-器件测试.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p09-%E5%AE%9E%E9%AA%8C5-%E5%99%A8%E4%BB%B6%E6%B5%8B%E8%AF%95.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p10-实验5-讨论五问.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p10-%E5%AE%9E%E9%AA%8C5-%E8%AE%A8%E8%AE%BA%E4%BA%94%E9%97%AE.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p14-实验5-预习四问.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p14-%E5%AE%9E%E9%AA%8C5-%E9%A2%84%E4%B9%A0%E5%9B%9B%E9%97%AE.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p15-实验5-实验电路与静态动态步骤.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p15-%E5%AE%9E%E9%AA%8C5-%E5%AE%9E%E9%AA%8C%E7%94%B5%E8%B7%AF%E4%B8%8E%E9%9D%99%E6%80%81%E5%8A%A8%E6%80%81%E6%AD%A5%E9%AA%A4.jpg
+- `subjects/06-电工电子技术/实验/实验册-照片-实验5/册-p16-实验5-表2表3表4.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87-%E5%AE%9E%E9%AA%8C5/%E5%86%8C-p16-%E5%AE%9E%E9%AA%8C5-%E8%A1%A82%E8%A1%A83%E8%A1%A84.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/INDEX.md
 - `subjects/06-电工电子技术/实验/实验册-照片/册-p01-实验清单-List of Experiments.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-p01-%E5%AE%9E%E9%AA%8C%E6%B8%85%E5%8D%95-List%20of%20Experiments.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/册-p02-电工学实验上课须知-中文.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-p02-%E7%94%B5%E5%B7%A5%E5%AD%A6%E5%AE%9E%E9%AA%8C%E4%B8%8A%E8%AF%BE%E9%A1%BB%E7%9F%A5-%E4%B8%AD%E6%96%87.jpg
@@ -1267,6 +1278,14 @@
 - `subjects/06-电工电子技术/实验/实验册-照片/册-实验3-01-接线与图2.3.3-表234-235.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-%E5%AE%9E%E9%AA%8C3-01-%E6%8E%A5%E7%BA%BF%E4%B8%8E%E5%9B%BE2.3.3-%E8%A1%A8234-235.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/册-实验3-02-启辉值与电压三角形.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-%E5%AE%9E%E9%AA%8C3-02-%E5%90%AF%E8%BE%89%E5%80%BC%E4%B8%8E%E7%94%B5%E5%8E%8B%E4%B8%89%E8%A7%92%E5%BD%A2.jpg
 - `subjects/06-电工电子技术/实验/实验册-照片/册-实验3-03-Discussion-5问-页9.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C%E5%86%8C-%E7%85%A7%E7%89%87/%E5%86%8C-%E5%AE%9E%E9%AA%8C3-03-Discussion-5%E9%97%AE-%E9%A1%B59.jpg
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-01.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-01.jpg
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-01.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-01.md
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-02.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-02.jpg
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-02.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-02.md
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-03.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-03.jpg
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-03.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-03.md
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-04.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-04.jpg
+- `subjects/06-电工电子技术/实验报告/电工实验报告册-05.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/%E7%94%B5%E5%B7%A5%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E5%86%8C-05.jpg
 - `subjects/06-电工电子技术/讲义/Ch1-1-电路功能与电路模型-精讲-20261023.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E8%AE%B2%E4%B9%89/Ch1-1-%E7%94%B5%E8%B7%AF%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%94%B5%E8%B7%AF%E6%A8%A1%E5%9E%8B-%E7%B2%BE%E8%AE%B2-20261023.log
 - `subjects/06-电工电子技术/讲义/Ch1-1-电路功能与电路模型-精讲-20261023.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E8%AE%B2%E4%B9%89/Ch1-1-%E7%94%B5%E8%B7%AF%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%94%B5%E8%B7%AF%E6%A8%A1%E5%9E%8B-%E7%B2%BE%E8%AE%B2-20261023.pdf
 - `subjects/06-电工电子技术/讲义/Ch1-1-电路功能与电路模型-精讲-20261023.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/06-%E7%94%B5%E5%B7%A5%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E8%AE%B2%E4%B9%89/Ch1-1-%E7%94%B5%E8%B7%AF%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%94%B5%E8%B7%AF%E6%A8%A1%E5%9E%8B-%E7%B2%BE%E8%AE%B2-20261023.tex

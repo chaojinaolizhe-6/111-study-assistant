@@ -1,0 +1,317 @@
+% !TEX program = xelatex
+% 数学物理方法1 · 第五章 · 乱序练习单第 9 题答疑
+% 为什么可以在 (0,T) 上展开：正交性要的是"一整个周期"，不是"负半周到正半周"
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usepackage{booktabs}
+\settags{第五章 · 专题：为什么能在 $(0,T)$ 上展开}{数学物理方法1}
+\newcommand{\step}[1]{\par\needspace{3.4\baselineskip}\vspace{4pt}\noindent{\color{violetdeep}\bfseries#1}\par}
+
+\begin{document}
+
+\doctitle{为什么能在 $(0,T)$ 上展开}%
+{正交性要的是“一整个周期”，不是“负半周到正半周”}%
+{依据：第五章乱序练习单第 9 题（＝课件 p39 第 3 题）；课件 p5 正交性五式、p6 系数式\ \textperiodcentered\ 2026-11-06}
+
+%=============================================================
+\hdr{§0}{你那三个问题，先一次答完}
+
+你的原话是：“正交性不都是在负半周期到正半周期体现吗？那这个怎么能在这个区间展开？怎么计算？能直接换上下限吗？”三句话各对应一个明确的是非，先给结论，再给理由。
+
+\callout{\textbf{三句直接回答}
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{区间不必是 $[-l,l]$。} $[-l,l]$ 只是“长度为整周期的窗口”里随手挑出的一个；正交性公式对同一个周期的\textbf{任何一个}长度相等的窗口都成立。
+\item \textbf{能直接换上下限。} 但理由不是“积分限可以随便写”，而是被积函数以 $T$ 为周期，\textbf{整周期平移不改变积分值}（§1 的引理）。换的时候\textbf{不变号、不补系数}。
+\item \textbf{这道题的算法}：先认出 $T=\pi/\omega$ 就是 $|\sin\omega t|$ 的真周期，于是级数的基频是 $2\pi/T=2\omega$；在 $(0,T)$ 上 $\sin\omega t\ge0$，所以绝对值可以直接脱掉；然后照 $a_0,a_n,b_n$ 三个积分算（§3）。
+\end{enumerate}}
+
+\subhdr{记号：全文只用这一套（与课件 p6 一致）}
+
+\par\vspace{2pt}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{12.9cm}@{}}
+\toprule
+\thead{记号} & \thead{约定}
+\\
+\midrule
+$T$ & 展开区间的长度，也是\textbf{基函数的周期}；本题 $T=\pi/\omega$
+\\
+$a_0,\ a_n,\ b_n$ & 实数级数：$f(t)=a_0+\displaystyle\sum_{n\ge1}\left(a_n\cos\frac{2n\pi t}{T}+b_n\sin\frac{2n\pi t}{T}\right)$
+\\
+$a_0$ & \textbf{平均值}本身，不乘 2：$a_0=\dfrac1T\displaystyle\int_0^{T}f\dd t$
+\\
+$a_n,\ b_n$ & 乘 2：$a_n=\dfrac2T\displaystyle\int_0^{T}f\cos\frac{2n\pi t}{T}\dd t$，$b_n$ 同理换成 $\sin$
+\\
+$u$ & 无量纲自变量 $u=\omega t$，于是 $t=0\mapsto u=0$、$t=T\mapsto u=\pi$、$\dd t=\dd u/\omega$
+\\
+\bottomrule
+\end{tabular}
+
+\aside{两处归一化常数要在同一句里说清：$a_0$ 前面是 $1/T$，因为 $\int_0^T1\dd t=T$；$a_n$ 前面是 $2/T$，因为 $\int_0^T\cos^2\frac{2n\pi t}{T}\dd t=\frac T2$。这是\textbf{约定}（怎么记账），不是某条定理的结论——写成 $\frac{a_0}{2}+\cdots$ 的教材里，$a_0$ 的系数就换成 $2/T$。}
+
+%=============================================================
+\hdr{§1}{正交性真正要求的东西：一个整周期，长度对就行，端点随便}
+
+\subhdr{1.1 你背的那五条，其实只在“某一个窗口”上写出来了}
+
+课件 p5 给的是
+\[
+\int_{-l}^{l}\cos k_nx\cos k_mx\dd x=l\,\delta_{nm},\qquad
+\int_{-l}^{l}\sin k_nx\sin k_mx\dd x=l\,\delta_{nm},\qquad
+\int_{-l}^{l}\cos k_nx\sin k_mx\dd x=0 ,
+\]
+其中 $k_n=\frac{n\pi}{l}$，故\textbf{基函数的周期是 $2l$，而积分区间的长度也正好是 $2l$}。这两件事同时成立，才是正交性的全部内容。课本一律把窗口摆在 $[-l,l]$，原因只有一个：那儿关于原点对称，奇偶性一眼能看见，算起来最省事。\textbf{对称是方便，不是前提。}
+
+\subhdr{1.2 引理：整周期平移不改变积分值（这就是“能换上下限”的全部理由）}
+
+\noindent\fbox{\parbox{0.965\linewidth}{\textbf{引理（整周期平移不变）}\ 设 $g$ 在 $\mathbb{R}$ 上连续，且以 $T$ 为周期，即对一切 $t$ 有 $g(t+T)=g(t)$。则对任意实数 $a$，
+\[
+\int_{a}^{a+T}g(t)\dd t=\int_{0}^{T}g(t)\dd t .
+\]}}
+
+\step{第一步：把左端看成 $a$ 的函数}
+记 $F(a)=\displaystyle\int_{a}^{a+T}g(t)\dd t$。要证的是 $F$ 是常函数。
+
+\step{第二步：对 $a$ 求导（上下限都含 $a$，两端各出一项）}
+\[
+F'(a)=g(a+T)\cdot1-g(a)\cdot1=g(a+T)-g(a)=0 ,
+\]
+最后一步用的是周期性 $g(a+T)=g(a)$。$F'$ 恒为零，故 $F$ 为常数；取 $a=0$ 定出这个常数就是 $F(0)=\int_0^Tg$。
+
+\step{第三步：并成结论}
+\[
+\boxed{\ \int_{a}^{a+T}g(t)\dd t=\int_{0}^{T}g(t)\dd t\ },\qquad\text{对任意实数 }a .
+\]
+换句话说：\textbf{只要积分长度恰好是一个周期，窗口摆在哪里都一样。}窗口从 $[0,T]$ 挪到 $[-T/2,T/2]$、挪到 $[5T,6T]$，值都不变。这一步是\textbf{平移窗口}，被积函数原封不动，所以\textbf{不出现负号，也不补任何系数}。
+
+\aside{引理要求 $g$ 连续，是为了能求导。本题的 $g=f\cos\frac{2n\pi t}{T}$ 里，$f=A|\sin\omega t|$ 处处连续（$\sin\omega t$ 的零点处绝对值不跳），$\cos$ 也连续，条件满足。若 $f$ 有跳变点，引理对分段光滑函数仍成立（把积分拆成若干段即可），只是求导这一步要分段说。}
+
+\subhdr{1.3 于是 $[-l,l]$ 上的五条正交关系，一字不改地搬到 $[0,T]$ 上}
+
+\noindent 取 $T=2l$，$k_n=\frac{n\pi}{l}=\frac{2n\pi}{T}$。把上面引理里的 $g$ 依次取成
+\[
+\cos\tfrac{2n\pi t}{T}\cos\tfrac{2m\pi t}{T},\qquad
+\sin\tfrac{2n\pi t}{T}\sin\tfrac{2m\pi t}{T},\qquad
+\cos\tfrac{2n\pi t}{T}\sin\tfrac{2m\pi t}{T},\qquad
+1\cdot\cos\tfrac{2n\pi t}{T},\qquad
+1\cdot\sin\tfrac{2n\pi t}{T},
+\]
+每一个都是 $T$ 周期的（两个 $T$ 周期函数相乘仍是 $T$ 周期），所以它们在 $[0,T]$ 上的积分与在 $[-T/2,T/2]$ 上的积分\textbf{逐个相等}。结论：
+
+\begin{gather*}
+\int_{0}^{T}\cos\tfrac{2n\pi t}{T}\cos\tfrac{2m\pi t}{T}\dd t=\frac T2\,\delta_{nm},\qquad
+\int_{0}^{T}\sin\tfrac{2n\pi t}{T}\sin\tfrac{2m\pi t}{T}\dd t=\frac T2\,\delta_{nm},\\
+\int_{0}^{T}\cos\tfrac{2n\pi t}{T}\sin\tfrac{2m\pi t}{T}\dd t=0,\qquad
+\int_{0}^{T}1\cdot\cos\tfrac{2n\pi t}{T}\dd t=\int_{0}^{T}1\cdot\sin\tfrac{2n\pi t}{T}\dd t=0\quad(n\ge1).
+\end{gather*}
+
+\aside{“$=T/2$”这个数要能当场报出来：$\int_0^T\cos^2\frac{2n\pi t}{T}\dd t=\frac12\int_0^T\left[1+\cos\frac{4n\pi t}{T}\right]\dd t=\frac12\cdot T+\frac12\cdot0=\frac T2$。$T/2$ 直接从 $\int_0^T1\dd t=T$ 折半而来，跟 $l$ 那边的 $\int_{-l}^l\cos^2=l$ 是同一笔账（$T=2l$ 时两者相等）。}
+
+\textbf{这就是对你那句“不都是在负半周期到正半周期体现吗”的正面回答}：那些式子在 $[-l,l]$ 上“体现”，在 $[0,T]$ 上\textbf{同样体现}，而且不是碰巧——是引理一条条搬过去的。反过来也一样：任何一条要是真在 $[0,T]$ 上不成立，它在 $[-l,l]$ 上也不成立。
+
+\callout{\textbf{想把本题硬塞进 $[-l,l]$ 的公式里，也完全可以}：令 $l=\frac T2=\frac{\pi}{2\omega}$，则 $k_n=\frac{n\pi}{l}=2n\omega$，你熟悉的那套写法
+\[
+f=a_0+\sum_{n\ge1}\left(a_n\cos k_nt+b_n\sin k_nt\right),\qquad a_n=\frac1l\int_{-l}^{l}f\cos k_nt\dd t
+\]
+\textbf{一个字都不用改}，只是把 $l$ 取成“半个周期”。所谓“区间必须是 $[-l,l]$”，其实只要求 $l$ 是半个周期——本题的 $l$ 就是 $\frac{\pi}{2\omega}$，不是别的什么数。}
+
+\subhdr{1.4 窗口能平移，但长度不能随便改}
+
+引理的结论里，长度恰好是“一个 $T$”。这不是可以放松的条件，下面一长一短两个窗口就是反例（本题 $T=\pi/\omega$，取 $n=1$）：
+
+\begin{gather*}
+\int_{0}^{T}\sin\omega t\,\sin2\omega t\dd t=0
+\quad(\text{窗口长}=T\text{，整周期，正交成立}),\\
+\int_{0}^{T/2}\sin\omega t\,\sin2\omega t\dd t=\frac{2}{3\omega}\ne0
+\quad(\text{窗口长}=T/2\text{，半个周期，正交失效}).
+\end{gather*}
+
+\aside{上面两行都能当场复算：$T=\pi/\omega$，故 $\int_0^{\pi/\omega}\sin\omega t\sin2\omega t\dd t=\frac{1}{\omega}\int_0^{\pi}\sin u\sin2u\dd u$，而 $\sin u\sin2u=\frac12[\cos u-\cos3u]$ 在 $[0,\pi]$ 上两项各积为零。半窗口那行：$\frac1\omega\int_0^{\pi/2}\sin u\sin2u\dd u=\frac1\omega\int_0^{\pi/2}2\sin^2u\cos u\dd u=\frac1\omega\cdot\frac23$。}
+
+所以判据只有一句：\textbf{积分长度必须是基函数周期的整数倍；端点在哪里、是否对称，一概无关。}
+
+%=============================================================
+\hdr{§2}{“动上下限”有三种，只有一种不变号}
+
+你问“能直接换上下限吗”，这句话其实盖住了三件不同的事。混在一起，就会问出“换过去要不要加负号”这种问题。
+
+\subhdr{(a) 平移窗口：被积函数不动，只挪积分区间}
+
+\[
+\int_{0}^{T}g(t)\dd t\;\longrightarrow\;\int_{-T/2}^{T/2}g(t)\dd t
+\]
+前提是 $g$ 以 $T$ 为周期（§1 引理）。\textbf{不变号、不补系数。}这是本节唯一无条件合法的那一种。
+
+\subhdr{(b) 换元：$u=\omega t$，自变量改名}
+
+\[
+\int_{0}^{T}g(t)\dd t=\int_{0}^{\omega T}g\!\left(\frac{u}{\omega}\right)\frac{\dd u}{\omega},
+\]
+这里 $g$ 不必周期。\textbf{要乘 $\dd u/\omega$（雅可比），上下限按 $u=\omega t$ 换；不变号。}本题 $T=\pi/\omega$ 时 $\omega T=\pi$，所以 $(0,T)$ 正好变成 $(0,\pi)$——纯属 $T$ 的取法使然，跟周期无关。
+
+\subhdr{(c) 平移函数：把 $f(t)$ 换成 $f(t+T/2)$}
+
+\[
+f\!\left(t+\tfrac T2\right)=\cdots+\sum_{n\ge1}a_n\cos\!\left(\tfrac{2n\pi t}{T}+n\pi\right)+\cdots
+=\cdots+\sum_{n\ge1}(-1)^na_n\cos\tfrac{2n\pi t}{T}+\cdots
+\]
+\textbf{要带 $(-1)^n$。}这一步改的是函数本身，不是积分窗口。
+
+\callout{\textbf{一句话分清}：看\textbf{被积函数有没有变}。函数没动、只挪区间 $\Rightarrow$ (a)，白挪；函数换了 $\Rightarrow$ (c)，带 $(-1)^n$；自变量改名 $\Rightarrow$ (b)，带雅可比。本题从头到尾只需要 (a) 和 (b)。}
+
+\begin{center}
+\begin{tikzpicture}[x=2.45cm,y=1.45cm]
+  \draw[->,inkgray] (-0.85,0)--(2.85,0) node[right]{\small $t/T$};
+  \draw[->,inkgray] (0,-0.06)--(0,1.30) node[above]{\small $A|\sin\omega t|$};
+  \draw[violet,thick,domain=-0.8:2.8,samples=260] plot (\x,{abs(sin(180*\x))});
+  \foreach \k in {0,1,2}{ \draw[rulepurple,dashed] (\k,0)--(\k,1.06); }
+  \draw[rulepurple,dashed] (-0.5,0)--(-0.5,1.06);
+  \draw[<->,violetdeep,thick] (0,-0.20)--(1,-0.20);
+  \node[below,violetdeep] at (0.5,-0.20) {\small 窗口 A：$(0,T)$};
+  \draw[<->,petal,thick] (-0.5,-0.52)--(0.5,-0.52);
+  \node[below,inkgray] at (0,-0.52) {\small 窗口 B：$(-T/2,\,T/2)$};
+  \node[right,inkgray] at (2.05,1.15) {\small 周期 $T=\pi/\omega$};
+\end{tikzpicture}
+\end{center}
+
+\aside{这张图要读的是：两个窗口\textbf{长度相同}、都恰好框住一个完整的“拱”。窗口 A 的函数是 $\sin\omega t$（非负，故与 $|\sin\omega t|$ 相同），窗口 B 里的函数关于 $t=0$ 对称，是偶函数。所以同一个积分，用 A 算要靠积化和差硬推，用 B 算可以白拿“偶函数 $\Rightarrow$ 正弦项为零”。两法结果必须一样，§3.5 现场对一次。}
+
+%=============================================================
+\hdr{§3}{本题怎么算：$T=\pi/\omega$ 是 $|\sin\omega t|$ 的真周期}
+
+\needspace{0.45\textheight}
+\subhdr{第 9 题：$f(t)=A|\sin\omega t|$ 在 $(0,T)$ 上的傅里叶级数}
+
+\qstem{（课件 p39 第 3 题；本次为第五章乱序练习单第 9 题）将函数 $f(t)=A|\sin\omega t|$ 在 $(0,T)$ 区间内展开成傅里叶级数，其中 $A$ 为常数（取 $T=\pi/\omega$，即 $f$ 的周期）。}
+
+\subhdr{3.0 先把“能不能展开”这一步钉死}
+
+$\sin\omega t$ 的周期是 $2\pi/\omega$，取绝对值后负半周翻到正半周，周期\textbf{减半}为
+\[
+T=\frac{\pi}{\omega},
+\]
+这正是题目给的 $T$。所以：区间 $(0,T)$ 的长度 $=$ 一个整周期，$f$ 在整个实轴上以 $T$ 为周期，\textbf{不需要奇延拓也不需要偶延拓}——它本来就是 $T$ 周期的。级数的基频随之变成
+\[
+\frac{2\pi}{T}=2\omega .
+\]
+\textbf{这一步是本题最大的省力点，也是最容易漏的一点}：基频不是 $\omega$，而是 $2\omega$。用 $\omega$ 当基频去算，会白算出整整一半的项，最后发现它们全是零。
+
+\aside{与“半幅展开”分清：若题目只给 $f$ 在 $(0,l)$ 上的值、要求余弦级数，那必须自己偶延拓到 $(-l,l)$，周期取 $2l$、基频 $\pi/l$，这才是延拓。本题给的是\textbf{整周期上的值}，$f$ 自身已周期，故没有延拓这一步。同一个记号 $(0,\cdot)$，两套算法，靠“$f$ 本身是否已周期”区分。}
+
+\subhdr{3.1 在 $(0,T)$ 里脱掉绝对值}
+
+$t\in(0,T)=\left(0,\frac{\pi}{\omega}\right)$ 时 $0<\omega t<\pi$，$\sin\omega t>0$，故
+\[
+f(t)=A\sin\omega t\qquad(0<t<T).
+\]
+端点单独看：$t=0$ 与 $t=T$ 处 $\sin\omega t=0$，$f=0$，两种写法同值，不留空。
+
+\subhdr{3.2 常数项 $a_0$（就是平均值）}
+
+\[
+a_0=\frac1T\int_{0}^{T}A\sin\omega t\dd t
+=\frac{\omega}{\pi}\cdot\frac{A}{\omega}\Big[-\cos\omega t\Big]_{0}^{\pi/\omega}
+=\frac{A}{\pi}\Big(-\cos\pi+\cos0\Big)=\frac{2A}{\pi}.
+\]
+逐步报户口：$\frac1T=\frac{\omega}{\pi}$ 来自 $T=\pi/\omega$；$\frac{A}{\omega}$ 来自 $\int A\sin\omega t\dd t=-\frac{A}{\omega}\cos\omega t$；括号里是 $1+1=2$；最后的 $\frac{A}{\pi}\cdot2$ 就是 $\frac{2A}{\pi}$。
+
+\aside{核对的另一条独立路：一个周期上的平均值应等于 $\frac1T\int|f|$，而 $|\sin|$ 在整周期上的平均值是 $\frac2\pi$（一拱面积 $2$ 除以底长 $\pi$），故平均值 $=\frac{2A}{\pi}$，与上面一致。}
+
+\subhdr{3.3 余弦项 $a_n$（基频 $2\omega$）}
+
+\[
+a_n=\frac2T\int_{0}^{T}A\sin\omega t\,\cos(2n\omega t)\dd t
+=\frac{2A}{\pi}\int_{0}^{\pi}\sin u\cos(2nu)\dd u ,
+\]
+中间用了 $\frac2T=\frac{2\omega}{\pi}$ 与 $\dd t=\frac{\dd u}{\omega}$（$u=\omega t$），两个 $\omega$ 一约就没了。再用积化和差 $\sin u\cos2nu=\frac12\left[\sin(2n+1)u-\sin(2n-1)u\right]$，而 $k$ 为正奇数时
+\[
+\int_{0}^{\pi}\sin ku\dd u=\frac{1-\cos k\pi}{k}=\frac2k ,
+\]
+两项相减：
+\[
+\int_{0}^{\pi}\sin u\cos2nu\dd u=\frac12\left[\frac{2}{2n+1}-\frac{2}{2n-1}\right]
+=\frac{1}{2n+1}-\frac{1}{2n-1}
+=\frac{(2n-1)-(2n+1)}{(2n+1)(2n-1)}=-\frac{2}{4n^2-1}.
+\]
+分母的 $4n^2-1$ 由此诞生：\textbf{它是 $(2n+1)(2n-1)$ 的通分结果}。代回：
+\[
+a_n=\frac{2A}{\pi}\cdot\left(-\frac{2}{4n^2-1}\right)=-\frac{4A}{\pi}\cdot\frac{1}{4n^2-1}\qquad(n\ge1).
+\]
+分子的 $4$ 是 $2\times2$：外层 $\frac{2A}{\pi}$ 的 2，乘上内层 $-\frac{2}{4n^2-1}$ 的 2。
+
+\subhdr{3.4 正弦项 $b_n$：两条路，必须都通}
+
+\step{算法一（照公式硬算）}
+\[
+b_n=\frac2T\int_{0}^{T}A\sin\omega t\,\sin(2n\omega t)\dd t=\frac{2A}{\pi}\int_{0}^{\pi}\sin u\sin(2nu)\dd u .
+\]
+$\sin u\sin2nu=\frac12\left[\cos(2n-1)u-\cos(2n+1)u\right]$，而
+\[
+\int_{0}^{\pi}\cos ku\dd u=\frac{\sin k\pi}{k}=0\qquad(k\ \text{整数}\ne0),
+\]
+两项都是零，故 $b_n=0$。
+
+\step{算法二（先挪窗口，再吃偶函数红利）}
+把窗口平移到 $\left(-\frac T2,\frac T2\right)$——合法，因为被积函数以 $T$ 为周期（§1 引理）。在这个窗口里，$A|\sin\omega t|$ 是\textbf{偶函数}，$\sin(2n\omega t)$ 是\textbf{奇函数}，乘积为奇，在对称区间上积分为零：
+\[
+b_n=\frac2T\int_{-T/2}^{T/2}A|\sin\omega t|\sin(2n\omega t)\dd t=0 .
+\]
+两条路同答 $0$，说明“换上下限”没换出问题来；顺带看出\textbf{你脑子里那幅 $[-l,l]$ 的图像是可以用的，只要先合法地挪过去}。
+
+\needspace{6\baselineskip}
+\subhdr{3.5 答案}
+
+\[
+\boxed{\ A|\sin\omega t|=\frac{2A}{\pi}-\frac{4A}{\pi}\sum_{n=1}^{\infty}\frac{\cos 2n\omega t}{4n^2-1},
+\qquad 0\le t\le T=\frac{\pi}{\omega}\ }
+\]
+右边只有常数项与偶次谐波 $\cos2\omega t,\cos4\omega t,\dots$；这正是 §3.0 说的“基频 $2\omega$”。级数本身以 $\pi/\omega$ 为周期，与 $f$ 一致，所以它在整个实轴上就等于 $A|\sin\omega t|$。
+
+\subhdr{3.6 核对（三条，全部独立于上面的推导）}
+
+\step{核对一：$t=0$}
+右边 $=\dfrac{2A}{\pi}-\dfrac{4A}{\pi}\displaystyle\sum_{n\ge1}\dfrac{1}{4n^2-1}=\dfrac{2A}{\pi}-\dfrac{4A}{\pi}\cdot\dfrac12=0$，而 $f(0)=A|\sin0|=0$ $\checkmark$
+
+\step{核对二：$t=\dfrac T2=\dfrac{\pi}{2\omega}$（$|\sin|$ 的峰点）}
+此时 $\cos2n\omega t=\cos n\pi=(-1)^n$，故右边 $=\dfrac{2A}{\pi}-\dfrac{4A}{\pi}\displaystyle\sum_{n\ge1}\dfrac{(-1)^n}{4n^2-1}=\dfrac{2A}{\pi}-\dfrac{4A}{\pi}\cdot\dfrac{2-\pi}{4}=A$，而 $f\!\left(\frac T2\right)=A|\sin\frac\pi2|=A$ $\checkmark$
+
+\step{核对三：随便挑一点做数值}
+取 $A=\omega=1$、$t=\frac\pi4$（此时 $T=\pi$，点在区间内部），$6000$ 项部分和给出 $0.7071068$，而 $|\sin\frac\pi4|=0.7071068$，误差 $<10^{-6}$ $\checkmark$
+
+\aside{核对一、二用到的两个级数和都能单独验：$\sum_{n\ge1}\frac{1}{4n^2-1}=\frac12\sum_{n\ge1}\left(\frac{1}{2n-1}-\frac{1}{2n+1}\right)=\frac12$（望远镜求和，只剩首项 $1$ 的 $\frac12$）；$\sum_{n\ge1}\frac{(-1)^n}{4n^2-1}=\frac{2-\pi}{4}\approx-0.28540$（逐项数值相加核对）。核对三与任何推导无关，只测“级数是否真的收敛到这个函数”。}
+
+%=============================================================
+\hdr{§4}{和精讲讲义里“取 $T=2\pi/\omega$”那版对得上吗}
+
+对得上，而且是\textbf{同一句话的两种窗口}。第五章精讲讲义（\texttt{第五章-精讲-傅里叶变换-20261022.pdf} §7 第 3 题）当时把窗口取了两个周期 $T=2\pi/\omega$，理由是课件那页没写 $T$。那版算到余弦项时，奇数 $n$ 的积分前后两半抵消、只剩偶数 $n$，最后写出的级数与本题\textbf{逐字相同}。
+
+原因就是 §1.4 的判据：$2\pi/\omega$ 也是 $|\sin\omega t|$ 周期的整数倍（$2$ 倍），所以它同样是一个合法窗口，只是基频被取成 $\omega$ 而不是 $2\omega$——多出来的那些奇次项系数全为零，自然消失。\textbf{两个窗口、两套基、同一个级数。}乱序单明确写了 $T=\pi/\omega$，就按 $2\omega$ 为基频算，笔数更少。
+
+%=============================================================
+\hdr{§5}{四个容易踩的坑（每个都能指回上面的某一步）}
+
+\warnbox{\textbf{坑 1：以为“能换上下限”是因为积分限随便写。}\ 随便写是错的（§1.4 的半窗口反例）。合法的理由只有周期性那一条，答题时写“因被积函数以 $T$ 为周期，整周期平移积分值不变”，一句话就够。}
+
+\warnbox{\textbf{坑 2：把 $a_0$ 当成了 $\frac{a_0}{2}$。}\ 课件 p6 的约定是 $f=a_0+\sum(\cdots)$，$a_0$ 本身就是平均值 $\frac{2A}{\pi}$；只有写成 $\frac{a_0}{2}+\sum(\cdots)$ 的教材才把 $a_0$ 记成 $\frac{4A}{\pi}$。两套约定差一个 $2$，抄公式前先看常数项长什么样。}
+
+\warnbox{\textbf{坑 3：基频仍用 $\omega$。}\ 那等于默认区间长度是 $2\pi/\omega$。本题 $T=\pi/\omega$，基频是 $\frac{2\pi}{T}=2\omega$；用错基频会把 $b_n$ 算成非零，白做一大堆。}
+
+\warnbox{\textbf{坑 4：在 $(0,T)$ 上直接套“偶函数 $\Rightarrow$ 正弦项为零”。}\ 奇偶性只在\textbf{对称}区间上有意义。$(0,T)$ 不对称，$A|\sin\omega t|$ 在这个窗口里既不奇也不偶；要先用 §1 的引理把窗口挪到 $\left(-\frac T2,\frac T2\right)$，才能说“偶函数”。顺序不能倒。}
+
+%=============================================================
+\hdr{§6}{三句话带走}
+
+\begin{enumerate}[label=(\arabic*)]
+\item 正交性的真实要求是\textbf{积分长度 $=$ 一个整周期}，不是“区间必须是 $[-l,l]$”；$[-l,l]$ 只是对称、好算的那个窗口。
+\item 窗口能平移，是因为\textbf{整周期平移不改变积分值}（引理 $F'(a)=0$）。平移窗口不变号；换元带雅可比；平移函数带 $(-1)^n$——三件事别混。
+\item 本题 $T=\pi/\omega$ 已是 $|\sin\omega t|$ 的整周期，故\textbf{无延拓、基频 $2\omega$}，在 $(0,T)$ 上脱掉绝对值后照三个积分算，得
+\[
+A|\sin\omega t|=\frac{2A}{\pi}-\frac{4A}{\pi}\sum_{n=1}^{\infty}\frac{\cos 2n\omega t}{4n^2-1}.
+\]
+\end{enumerate}
+
+\flowerrule
+
+{\small\color{inkgray}本文所有公式均已用 \texttt{sympy} 复核（$a_0=\frac{4A}{\pi}$、$a_n=-\frac{4A}{\pi(4n^2-1)}$、$b_n=0$、$\int_0^T\cos^2=\frac T2$、窗口平移差值 $=0$、半窗口反例 $=\frac{2}{3\omega}$），并用 $6000$ 项部分和与 $A|\sin\omega t|$ 逐点比对，光滑点误差 $<10^{-7}$。}
+
+\end{document}

@@ -1,0 +1,87 @@
+﻿% !TEX program = xelatex
+% 数学物理方法1 · 第五章 · 选题 8（课件 p49--p50 例 1）卷积反解 · 解答卡
+\documentclass[10pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{第五章 · 选题 8}{数学物理方法1}
+
+\geometry{left=1.8cm,right=1.8cm,top=1.9cm,bottom=2.0cm,headsep=10pt,footskip=18pt}
+\linespread{1.22}
+\setlength{\headheight}{22pt}
+\setlength{\parskip}{0pt}
+\setlength{\abovedisplayskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{3pt plus 1pt minus 1pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+\newcommand{\step}[1]{\par\smallskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.35em}}
+\newcommand{\ok}{\textcolor{violet}{\ensuremath{\checkmark}}}
+
+% 紧凑节头：留白减半，并防止节头孤零零留在页底
+\newcommand{\chdr}[2]{%
+  \needspace{4\baselineskip}%
+  \par\vspace{3pt}%
+  \noindent\colorbox{violetdeep}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\bfseries #2}\par\nobreak
+  \vspace{1pt}{\color{petal}\hrule height 1pt}\vspace{3pt}}
+\let\hdr\chdr
+
+\begin{document}
+
+\doctitle{卷积定理反解：把 $|k|$ 请回来}
+{未知函数被卷积“藏”起来，除一下，再逆变换}
+{依据课件 p49--p50 例 1（第五章习题册第 8 题）\quad 2026-11-06\quad 数学物理方法\,1}
+
+\qstem{已知 $\displaystyle\int_{-\infty}^{\infty}\frac{f(\eta)}{(x-\eta)^{2}+a^{2}}\dd\eta=\frac{1}{x^{2}+b^{2}}$，且 $0<a<b$，求 $f(x)$。}
+
+\hdr{§1}{认题：左端就是一个卷积}
+
+$f$ 的自变量是 $\eta$，核的自变量是 $x-\eta$，只差一个平移——这正是卷积的定义形状。记 $f_{2}(x)=1/(x^{2}+a^{2})$，原式即 $f*f_{2}=1/(x^{2}+b^{2})$：卷积定理把“求函数”换成了“求像函数”。
+
+\hdr{§2}{两件工具：本章约定 A 与泊松核}
+
+本章 $F$ 的定义式带 $\dfrac{1}{2\pi}$，卷积定理因此还回来一个 $2\pi$（课件 p46，\textbf{两条不对称，必须配套用}）：
+\[
+F(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}f(x)e^{-ikx}\dd x,\qquad f(x)=\int_{-\infty}^{\infty}F(k)e^{ikx}\dd k,
+\qquad f_{1}*f_{2}\rightleftharpoons 2\pi F_{1}F_{2}.
+\]
+核的变换用留数算。因 $\left|e^{-ikz}\right|=e^{ky}$（$z=x+iy$），闭合方向被 $k$ 的符号定死：
+\[
+\mathcal F\!\left[\frac{1}{x^{2}+c^{2}}\right]
+=\frac{1}{2\pi}\cdot
+\begin{cases}
++2\pi i\operatorname{Res}_{z=ci} & k<0\ \text{（上半平面，逆时针）}\\[2pt]
+-2\pi i\operatorname{Res}_{z=-ci} & k>0\ \text{（下半平面，顺时针）}
+\end{cases}
+=\frac{e^{-|k|c}}{2c}.
+\]
+两条分支给出同一条结果——\textbf{绝对值不是“补”上去的，是分支算完的结果}。
+
+\hdr{§3}{代入卷积定理，把像函数解出来}
+
+对 $f*f_{2}=\dfrac{1}{x^{2}+b^{2}}$ 两边取变换，左端用卷积定理：
+\[
+2\pi\,\mathcal F[f]\cdot\frac{e^{-|k|a}}{2a}=\frac{e^{-|k|b}}{2b}
+\quad\Longrightarrow\quad
+\mathcal F[f]=\frac{1}{2\pi}\cdot\frac{e^{-|k|b}}{2b}\cdot\frac{2a}{e^{-|k|a}}
+=\frac{a}{2\pi b}\,e^{-|k|(b-a)} .
+\]
+分母对每个 $k$ 都非零，所以能“除”过去；而 $b>a$ 的作用，正是让 $e^{-|k|(b-a)}$ 在 $|k|\to\infty$ 时衰减。
+
+\hdr{§4}{反演：认出标准形，不必硬算积分}
+
+令 $c=b-a>0$，把 $\dfrac{a}{2\pi b}e^{-|k|c}$ 凑成 §2 的标准形 $\dfrac{e^{-|k|c}}{2c}$：
+\[
+\frac{a}{2\pi b}\,e^{-|k|c}=\frac{a(b-a)}{\pi b}\cdot\frac{e^{-|k|c}}{2(b-a)}
+\quad\Longrightarrow\quad
+\boxed{\;f(x)=\frac{a(b-a)}{\pi b}\cdot\frac{1}{x^{2}+(b-a)^{2}}\;}
+\]
+\textbf{自检：}$\int f\dd x=a/b<1$ \ok{}；$b\to a^{+}$ 时 $f\to\delta(x)$、原式退化为恒等式 \ok{}；$a=1,b=2,x=0$ 时左端 $=1/4=1/(0+2^{2})$ \ok{}（$x=0.5,1,2.5$ 亦已数值验过）。
+
+\hdr{§5}{对照你草稿上的三处卡点}
+
+\gapitem{卡点一 · 定义式的 $\frac{1}{2\pi}$}{草稿把 $\mathcal F\!\left[\frac{1}{x^{2}+a^{2}}\right]$ 写成 $\frac{\pi}{a}e^{ka}$，正确值是 $\frac{e^{-ka}}{2a}$——大 $2\pi$ 倍。算完 $2\pi i\cdot\operatorname{Res}$ 后，漏掉了定义式前面那个 $\frac{1}{2\pi}$。}
+\gapitem{卡点二 · 丢掉的 $|k|$}{写成 $e^{ka}$、$e^{kb}$ 而不带绝对值，等于默认 $k$ 只有一种符号。逆变换要让 $k$ 跑遍 $(-\infty,\infty)$，反向的一半 $e^{k(b-a)}$ 指数发散——你草稿卡在 $\int e^{ikx+k(b-a)}\dd k$ 算不下去，就是这个原因。}
+\gapitem{卡点三 · 硬算逆变换}{不必对 $e^{-|k|(b-a)+ikx}$ 直接积分：标准形 $\frac{e^{-|k|c}}{2c}$ 就是 $\frac{1}{x^{2}+c^{2}}$ 的像，认出即报。}
+
+\callout{\textbf{一句话带走}：卷积定理只做两件事——卷积变乘积、求函数变求像函数；工作量全在\emph{算好那一个核的变换}，而它一定带 $|k|$。}
+
+\end{document}
