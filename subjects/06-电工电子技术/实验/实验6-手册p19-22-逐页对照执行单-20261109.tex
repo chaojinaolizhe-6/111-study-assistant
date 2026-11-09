@@ -1,0 +1,298 @@
+﻿% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,shapes.geometric}
+\usepackage[american]{circuitikz}
+\usepackage{array}
+\settags{实验 6 · 手册逐页对照}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{8\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{实验 6：手册 p19--p22 逐页对照执行单}
+{每一栏填什么、对应教材哪一页、考场上几分钟做完\\反相加法器 + 四级波形发生器（25 分考试实验）}
+{依据：手册 pp.19--22 原页（2026-11-09 学习者上传）＋ 教材 §5.3／§6.4 ＋ 本工作区《详细实验指引》\\考场 2026-11-10（周二）10:00--12:15 · 综合一号教学楼 317 · 2502 班}
+
+\callout{\textbf{这份单子怎么用。} 手册只有四页，考场上你实际要做的事就是\textbf{把这四页的空白处填满}。下面按册子的页码顺序，一页一节：每一节先说这一页要你交什么，再给可以直接抄改的答案，最后标出它在 135 分钟里的位置。推导过程看《详细指引》§3--§5；本单只管「在册子的哪一格写什么」。}
+
+%=============================================================
+\hdr{§0}{手册四页的结构（先看清，再动笔）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.2cm}p{4.4cm}p{5.0cm}p{4.4cm}@{}}
+\hline
+\thead{册页} & \thead{标题原文} & \thead{你要交的东西} & \thead{对应教材} \\
+\hline
+p19 & I. Preliminary Work & 四道问答题（Preparation，5 分） & §5.3 反相／同相／积分／微分／比较器 \\
+p20 & II. Experimental Procedure，1. Inverting Adder Circuit & 补全图 5.3.3、$R_3$ 与替代方案、表 5.3.3 六行数据 & §5.3.4（图 5.3.3，书 p.159）、标称值表 p.367 \\
+p21 & 2. Design a simple signal generator & 1) 带参数的四级电路图；2) 四种波形各一格 & 图 6.4.1a（p.244）、图 5.3.9（p.159）、图 5.3.7／5.3.8（p.158） \\
+p22 & Discussion of Results & 五道讨论题 & 用 p19--p21 的数据回答 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{两处页码要对一下。} 手册 p21 写的是「Figure 6.4.1a on page 244」「Figure 5.3.9 on page 159」；本工作区《详细指引》按「p.245」「p.162」记。两处差一至三页，翻书时\textbf{认图号不认页码}：图 5.3.3、5.3.7、5.3.8、5.3.9、6.4.1a 都是唯一的。}
+
+\warnbox{\textbf{仪器型号以手册为准。} 手册 p19 要求复习 \textbf{DS2202A 示波器}与 \textbf{DG1032Z 函数发生器}（RIGOL 面板），《详细指引》里按 YB4320G／SG1026 写的。\textbf{按钮位置不同}，进考场先花一分钟认：通道选择、时基、电压档、触发、频率与幅度旋钮各在哪。}
+
+%=============================================================
+\hdr{§1}{册 p19：Preliminary Work 四问（Preparation，5 分）}
+
+\noindent 这四问是\textbf{预习分}，答案要能一句话说清因果，不要写成名词解释。下面每问给「可直接抄改的英文」＋「中文要点」。
+
+\subhdr{1.1 第一问：集成运放有哪几种输入方式}
+
+\callout{\textbf{EN.} An integrated op-amp has three input configurations: \textbf{inverting} (signal to the $-$ terminal, the $+$ terminal grounded), \textbf{non-inverting} (signal to the $+$ terminal, feedback to the $-$ terminal), and \textbf{differential} (two signals to the two terminals). The first two are single-ended inputs.}
+
+\noindent\textbf{中文要点}：反相、同相、差分（单端／双端）。后面三问全都建立在这三种接法的反馈极性上。
+
+\subhdr{1.2 第二问：负反馈电阻或积分电容能不能接在同相端与输出之间}
+
+\callout{\textbf{EN.} No. Any element connected from the output back to the \textbf{non-inverting} input provides \textbf{positive feedback}: the output would run to saturation or the circuit would oscillate. Negative feedback must return to the \textbf{inverting} input, which keeps $u_+\approx u_-$ (virtual short).}
+
+\noindent\textbf{中文要点}：同相端接回输出＝正反馈，结果是饱和或振荡；负反馈必须回反相端，靠的才是「虚短」。
+
+\subhdr{1.3 第三问：输入电压能不能任意取？最大输出电压与哪些因素有关}
+
+\callout{\textbf{EN.} No. The input is limited by the output swing: since $u_o=A_u u_i$ and $|u_o|\le U_{OM}$, the input must satisfy $|u_i|\le U_{OM}/|A_u|$; beyond that the op-amp saturates and the virtual short fails. The maximum output voltage depends on the \textbf{supply voltage} ($\pm12\,\mathrm{V}$ here), the \textbf{output stage} of the op-amp (for the LM324 the positive limit is about $1.5\,\mathrm{V}$ below $+V_{CC}$ and the negative limit is much closer to $-V_{EE}$), the \textbf{load resistance}, the \textbf{closed-loop gain}, the \textbf{input common-mode range}, and at high frequency the \textbf{slew rate}.}
+
+\noindent\textbf{中文要点}：$\pm12\,\mathrm{V}$ 供电时线性区约为 $+10.5\,\mathrm{V}$ 到 $-11.5\,\mathrm{V}$，\textbf{不对称}——这正是你现场标定 $U_{OM+}$、$U_{OM-}$ 的理由。
+
+\subhdr{1.4 第四问：平衡电阻怎么算}
+
+\callout{\textbf{EN.} The balancing resistor equals the parallel combination of all resistances connected to the inverting node (with the sources shorted to ground): $R_3=R_1\parallel R_2\parallel R_f$. It makes the DC resistance seen by the two inputs equal, so the bias-current drops cancel.}
+
+\noindent\textbf{中文要点}：
+\[
+R_3=R_1\parallel R_2\parallel R_f
+=\left(\frac{1}{10}+\frac{1}{10}+\frac{1}{100}\right)^{-1}\mathrm{k}\Omega
+=4.762\,\mathrm{k}\Omega .
+\]
+它\textbf{不能省、不能短接}，但它消不掉失调电压（那是芯片本身的毫伏级偏差，被 $-10$ 倍放大到几十毫伏）。
+
+\subhdr{1.5 预习时顺手要算好、画好的东西}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.9cm}p{5.1cm}p{5.7cm}@{}}
+\hline
+\thead{算什么} & \thead{式子} & \thead{参考数（老师给的元件不同就换数）} \\
+\hline
+平衡电阻 & $R_3=R_1\parallel R_2\parallel R_f$ & $4.762\,\mathrm{k}\Omega\to$ 取 $4.7\,\mathrm{k}\Omega$（$-1.3\%$） \\
+Wien 桥频率与周期 & $f_0=\dfrac{1}{2\pi RC}$，$T=1/f_0$ & $R=6.8\,\mathrm{k}\Omega$、$C=0.047\,\mu\mathrm{F}$：$f_0\approx498\,\mathrm{Hz}$，$T\approx2.01\,\mathrm{ms}$ \\
+起振条件 & $A=1+R_2/R_1\ge3$ & $R_1=10\,\mathrm{k}\Omega$、$R_2=22\,\mathrm{k}\Omega$：$A=3.2$ \\
+积分器电阻 & $R_1=\dfrac{U_{OM}T}{2U_{pp}C_1}$ & $U_{pp}\approx3.9\,\mathrm{V}$、$C_1=0.1\,\mu\mathrm{F}$：$R_1\approx27\,\mathrm{k}\Omega$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent\textbf{要画的三张草图}（考场上照抄到册子上）：① 反相加法器（图 5.3.3 的元件值补齐）；② 四级链 A$\to$B$\to$C、B$\to$D；③ Wien 桥加反并联二极管的稳幅支路。
+
+%=============================================================
+\hdr{§2}{册 p20：反相加法器（保底分，先做完）}
+
+\subhdr{2.1 第一件事：把图 5.3.3 补全}
+
+\begin{center}
+\begin{circuitikz}[scale=0.95, transform shape]
+  \node[op amp] (OA) at (7.8,0) {};
+  \coordinate (N) at (5.4,0.5);
+  \draw (OA.-) -- (N);
+  % 上输入 R1
+  \draw (1.2,2.0) to[short,-o] (0.7,2.0) node[left]{$u_{i1}$};
+  \draw (1.2,2.0) to[R, l=$R_1{=}10\,\mathrm{k}\Omega$] (4.2,2.0);
+  \draw (4.2,2.0) -- (5.4,2.0) -- (5.4,0.5);
+  % 下输入 R2
+  \draw (1.2,-1.4) to[short,-o] (0.7,-1.4) node[left]{$u_{i2}$};
+  \draw (1.2,-1.4) to[R, l_=$R_2{=}10\,\mathrm{k}\Omega$] (4.2,-1.4);
+  \draw (4.2,-1.4) -- (5.4,-1.4) -- (5.4,0.5);
+  % 反馈 Rf
+  \draw (4.2,2.0) -- (4.2,3.2);
+  \draw (4.2,3.2) to[R, l=$R_f{=}100\,\mathrm{k}\Omega$] (9.6,3.2);
+  \draw (9.6,3.2) -- (9.6,0) -- (OA.out);
+  % 输出
+  \draw (OA.out) -- (10.8,0) node[right]{$u_o$};
+  % 平衡电阻 R3：同相端左出再下地
+  \draw (OA.+) -- ++(-0.5,0) coordinate (B);
+  \draw (B) to[R] ++(0,-1.8) node[ground]{};
+  \node[left] at ($(B)+(-0.06,-0.9)$) {$R_3$};
+\end{circuitikz}
+
+{\small 图 1\quad 抄到册子 p20「Supplemental completion of Figure 5.3.3」的白框里；$R_3=4.7\,\mathrm{k}\Omega$（同相端到地）；LM324：反相端 pin 2，同相端 pin 3，输出 pin 1，pin 4 接 $+12\,\mathrm{V}$，pin 11 接 $-12\,\mathrm{V}$。}
+\end{center}
+
+\subhdr{2.2 第二件事：两道填空（Problem 1、2）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.0cm}p{13.4cm}@{}}
+\hline
+\thead{册上题号} & \thead{填什么} \\
+\hline
+1) & $R_3=\underline{\mathbf{4.7\,\mathrm{k}\Omega}}$（算得 $4.762\,\mathrm{k}\Omega$，按 p.367 的标称系列取最近的 $4.7\,\mathrm{k}\Omega$，误差 $-1.3\%$） \\
+2) & 没有 $4.7\,\mathrm{k}\Omega$ 时：\textbf{① $4.7\,\mathrm{k}\Omega+62\,\Omega$ 串联}（合 $4.762\,\mathrm{k}\Omega$）；\textbf{② 用 $10\,\mathrm{k}\Omega$ 电位器调到 $4.762\,\mathrm{k}\Omega$ 后拆下来量值}；\textbf{③ 两只 $10\,\mathrm{k}\Omega$ 并联得 $5\,\mathrm{k}\Omega$}（差 $5\%$，偏置电流只有几十纳安，仍可接受） \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{2.3 第三件事：表 5.3.3 六行（理论列现在就可预填）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.4cm}p{1.4cm}p{2.3cm}p{2.3cm}p{1.9cm}p{1.6cm}p{3.0cm}@{}}
+\hline
+\thead{$u_{i1}$/V} & \thead{$u_{i2}$/V} & \thead{理论 $u_o$/V} & \thead{实测 $u_o$/V} & \thead{$\delta$/\%} & \thead{状态} & \thead{备注} \\
+\hline
+0.2 & 0.3 & $-5.0$ & & & 线性 & 误差主项：电阻容差 \\
+0.2 & $-0.3$ & $+1.0$ & & & 线性 & 输出小，读数误差占比大 \\
+$-0.2$ & $-0.3$ & $+5.0$ & & & 线性 & 与第一行对称 \\
+0.5 & 0.2 & $-7.0$ & & & 线性 & — \\
+0.5 & 0.6 & $-11.0$ & & & 临界 & 看你测的 $U_{OM-}$ \\
+0.7 & 0.6 & $-13.0$ & & & \textbf{饱和} & 写 $U_{OM-}$，\textbf{别算误差} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent\textbf{填表顺序}（约 25 分钟）：先标定 $U_{OM+}$、$U_{OM-}$（用 $u_{i1}=\pm1.5\,\mathrm{V}$、$u_{i2}=0$，理论 $\mp15\,\mathrm{V}$，实测就是限幅值）$\to$ 每换一组\textbf{先把两路直流调准再接进电路}（电源带载会掉一点）$\to$ 六组测完挑一行复测（两次差 $>0.05\,\mathrm{V}$ 就查接触）。
+
+\warnbox{\textbf{手册 p20 还印了一个「Table 5.3.4」的题注，但照片里只有题注、没有表体。} 到现场先看它是哪张表：若是加法器的另一张数据表，内容与表 5.3.3 重复，照抄一份即可；若是别的项目，按题目要求另填。\textbf{不要把「没拍到」当成「不用填」。}}
+
+%=============================================================
+\hdr{§3}{册 p21：四级波形发生器（作出几种算几种）}
+
+\subhdr{3.1 题目要你交的三样东西}
+
+\begin{enumerate}
+  \item 一句话：\textbf{design} 一个信号发生器，输出 \textbf{sine, square, triangle, sharp pulse} 四种波形，频率固定在 \textbf{300\,Hz--1\,kHz} 之间；
+  \item 「1) Draw the experimental schematic diagram (specify component parameter values)」——\textbf{带参数}的四级电路图；
+  \item 「2) Output waveform」下的四个空框：Sine／Square／Triangular／Sharp Pulse，每框\textbf{标出周期与幅值}。
+\end{enumerate}
+
+\noindent 读这句要求要注意：\textbf{频率是一个固定值}（不是四种频率），所以四级必须\textbf{同频}——这是判「哪一级接错了」的第一把尺子。
+
+\subhdr{3.2 一套可落地的参数（老师给的不同就按 $RC$ 乘积换）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.9cm}p{2.9cm}p{5.7cm}p{2.2cm}p{3.4cm}@{}}
+\hline
+\thead{级} & \thead{电路} & \thead{参数} & \thead{取哪个 pin} & \thead{应看到} \\
+\hline
+A & Wien 桥正弦振荡 & $R=6.8\,\mathrm{k}\Omega$，$C=0.047\,\mu\mathrm{F}$；$R_1=10\,\mathrm{k}\Omega$，$R_2=22\,\mathrm{k}\Omega$ & pin 1 & 正弦，$T\approx2.01\,\mathrm{ms}$ \\
+B & 过零比较器 & 输入串 $R=10\,\mathrm{k}\Omega$，同相端 $10\,\mathrm{k}\Omega$ 接地 & pin 7 & 方波，$\pm U_{OM}$ \\
+C & 积分器 & $R_1=27\,\mathrm{k}\Omega$，$C_1=0.1\,\mu\mathrm{F}$，$R_3=100\,\mathrm{k}\Omega$ 与 S 并联 & pin 8 & 三角波，$U_{pp}\approx3.9\,\mathrm{V}$ \\
+D & 微分器 & $C_1=0.01\,\mu\mathrm{F}$（S1）/ $C_2=5\,\mathrm{nF}$（S2），$R_f=10\,\mathrm{k}\Omega$ & pin 14 & 每周期两只尖脉冲 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent 四个周期必须一致：$T_A=T_B=T_C=T_D\approx2.0\,\mathrm{ms}$。第四级的输入取自\textbf{比较器输出（方波）}，不是积分器输出——取自积分器，微分出来是常数，没有尖脉冲。
+
+\subhdr{3.3 四个波形框里画什么、标什么}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{3.9cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{4.3cm}@{}}
+\hline
+\thead{框} & \thead{画什么} & \thead{标什么} & \thead{判据} \\
+\hline
+Sine Wave & 一个半周期正弦 & $T\approx2.0\,\mathrm{ms}$、$U_{pp}$ 几伏 & 上下都不平（削顶就要改 $R_2$） \\
+Square Wave & 方波（占空比约 50\%） & $T$ 同、幅值 $\approx U_{OM}$ & 边沿不抖 \\
+Triangular Wave & 三角波，与方波同相无关 & $T$ 同、$U_{pp}\approx3.9\,\mathrm{V}$ & 斜线直到顶才折，不是斜到顶就平 \\
+Sharp Pulse & 每周期两只尖峰、极性相反 & 间隔 $T/2$、幅值（削顶就写「已削顶」） & 时基打到 $50\,\mu\mathrm{s/div}$ 才看得清 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{尖脉冲一定削顶，这不是你接错。} $R_fC_1=10\,\mathrm{k}\Omega\times0.01\,\mu\mathrm{F}=100\,\mu\mathrm{s}$，而方波边沿最快按压摆率 $0.5\,\mathrm{V}/\mu\mathrm{s}$ 算，输出峰值上限约 $50\,\mathrm{V}$，远超 $\pm11\,\mathrm{V}$。所以按手册给的 $10\,\mathrm{k}\Omega$ 接，看到的是「宽度等于边沿的一小段方波」。\textbf{如实记录「clipped」，并在讨论里说明}——不要为了波形好看偷偷改元件。}
+
+\warnbox{\textbf{Wien 桥最常见的接线错}：串联臂是 $R$ 与 $C$ \textbf{一根一根串}；并联臂是 $R$ 与 $C$ 各从同相端\textbf{分别接}到地，两条并列支路。接成串联就起不了振。}
+
+%=============================================================
+\hdr{§4}{册 p22：Discussion of Results 五问}
+
+\noindent 五问的形式是「先问现象、再问原因、最后要计算」。每问给英文骨架，\textbf{每段必须带具体数字}。
+
+\subhdr{4.1 Q1 有没有饱和？举例}
+
+\callout{\textbf{EN.} Yes. In the last row of the adder table ($u_{i1}=0.7\,\mathrm{V}$, $u_{i2}=0.6\,\mathrm{V}$) the theoretical output is $-13.0\,\mathrm{V}$, but the measured output stopped at about $-11.5\,\mathrm{V}$, the negative swing limit of the LM324. The row $0.5+0.6$ (theoretical $-11.0\,\mathrm{V}$) is close to the limit and may show slight clipping.}
+
+\subhdr{4.2 Q2 影响输出线性范围的因素}
+
+\callout{\textbf{EN.} The linear output range is set by the supply voltage ($\pm12\,\mathrm{V}$), the output stage of the op-amp (for the LM324 about $1.5\,\mathrm{V}$ below the positive rail, closer to the negative rail), the load resistance, the closed-loop gain, the input common-mode range, and at higher frequency the slew rate.}
+
+\noindent\textbf{写法}：按「电源 $\to$ 输出级 $\to$ 负载 $\to$ 增益 $\to$ 共模 $\to$ 压摆率」排，别只写「电源不够」。
+
+\subhdr{4.3 Q3 Project 1 的理论—实测误差与原因}
+
+\callout{\textbf{EN.} For the linear rows $\delta=|u_{o,\mathrm{meas}}-u_{o,\mathrm{theo}}|/|u_{o,\mathrm{theo}}|\times100\%$; the measured errors are within a few percent. The main causes are the resistor tolerance ($\pm5\%$ gives about the same gain error), the input offset voltage of the LM324 (about $\pm2\,\mathrm{mV}$, amplified by $-10$ to tens of millivolts, most visible in the $+1.0\,\mathrm{V}$ row), the meter accuracy, and the finite output swing for the last row. The saturated row should be compared with $U_{OM-}$, not with $-13.0\,\mathrm{V}$.}
+
+\subhdr{4.4 Q4 由设计参数算正弦周期}
+
+\callout{\textbf{EN.} The period is $T=1/f_0=2\pi RC$. With $R=6.8\,\mathrm{k}\Omega$ and $C=0.047\,\mu\mathrm{F}$, $f_0\approx498\,\mathrm{Hz}$ and $T\approx2.01\,\mathrm{ms}$; the measured period agreed within about $3\%$.}
+
+\subhdr{4.5 Q5 Project 2 怎么改才不失真（\textbf{只画电路图}）}
+
+\noindent 这一问\textbf{只画图、不写文字}，四处改动对应四种失真：
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{6.2cm}@{}}
+\hline
+\thead{失真现象} & \thead{改哪里} & \thead{图上要画出} \\
+\hline
+正弦削顶 & Wien 桥负反馈加\textbf{反并联二极管}稳幅 & $R_2$ 支路串 $D_1$、$D_2$（反并联）再串限流电阻 \\
+三角波斜到顶就平 & 积分器并\textbf{直流反馈} $R_3=100\,\mathrm{k}\Omega$ & $C_1$ 两端并 $R_3$ 与开关 S \\
+尖脉冲过窄/削顶 & 减小 $R_fC_1$ 或加限幅 & $C_1$ 前串限流电阻，或输出并双向二极管限幅 \\
+方波边沿抖动 & 比较器加\textbf{小滞回} & 同相端经 $100\,\mathrm{k}\Omega$ 电位器接输出 \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§5}{考场上 135 分钟怎么分（对应册子哪一栏）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{7.0cm}p{4.8cm}@{}}
+\hline
+\thead{时刻} & \thead{做什么} & \thead{落在册子哪里} \\
+\hline
+10:00--10:10 & 交预习报告、听题、认仪器（DS2202A／DG1032Z）与运放模块端子 & 册 p19 的答案已写 \\
+10:10--10:20 & 接 Project 1，标定 $U_{OM+}$、$U_{OM-}$ & 表 5.3.3 的条件行 \\
+10:20--10:45 & 六组数据（每组先调准输入再测） & 表 5.3.3 六行 \\
+10:45--11:00 & Wien 桥调出正弦 & p21 的 Sine Wave 框 \\
+11:00--11:15 & 比较器、积分器 & Square／Triangular 框 \\
+11:15--11:30 & 微分器 + 三种开关组合 & Sharp Pulse 框 \\
+11:30--11:50 & 五问讨论（草稿写要点，再誊） & p22 五段 \\
+11:50--12:05 & 补表格、补波形标注、请老师看数据签字 & 四页通查 \\
+12:05--12:15 & 关仪器、拆线、交 & — \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{若 11:30 还卡在第 2 级，\textbf{果断停手}：把已做出的波形、周期、幅值记全，回填讨论题。记录完整比多接一级值钱——Project 1 是保底分，四级是加分。}
+
+%=============================================================
+\hdr{§6}{交卷前 90 秒自检}
+
+\begin{enumerate}
+  \item p19 四问都写了吗（尤其第 2 问要出现「positive feedback / 正反馈」）？
+  \item p20 图 5.3.3 的元件值写了没有？$R_3$ 填的是 $4.7\,\mathrm{k}\Omega$ 而不是 $4.762\,\mathrm{k}\Omega$？
+  \item 表 5.3.3 六行都有实测值？第 6 行标了「饱和」而\textbf{没有}硬算误差？
+  \item $U_{OM+}$、$U_{OM-}$ 两个数写进报告了吗？
+  \item p21 四张波形：每张都标了 $T$、幅值、取哪个 pin 吗？四个 $T$ 一致吗？
+  \item p22 五问每问都有数字吗？Q5 画的是图不是文字吗？
+\end{enumerate}
+
+\flowerrule
+
+{\small\color{inkgray} 与《详细实验指引》（2026-11-05）的分工：那份给推导与故障排查（§3--§5、§8），这份给「册子每一格填什么」。两份页码写法若有出入，以教材\textbf{图号}为准；手册 p20 的 Table 5.3.4 表体未入照片，现场核对。}
+
+\end{document}
