@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-09 2026-11-09 08:10（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-09 2026-11-09 08:44（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -381,7 +381,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（6031 个文件）
+## 3. 文件直达 URL 索引（6036 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -554,7 +554,7 @@
 - `state/mistakes.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/state/mistakes.md
 - `state/reviews.jsonl` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/state/reviews.jsonl
 
-### plan（29 个）
+### plan（30 个）
 
 - `plan/2026-10-10-明天安排.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/2026-10-10-%E6%98%8E%E5%A4%A9%E5%AE%89%E6%8E%92.md
 - `plan/20261012-体检-时间与课表冲突核对.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/20261012-%E4%BD%93%E6%A3%80-%E6%97%B6%E9%97%B4%E4%B8%8E%E8%AF%BE%E8%A1%A8%E5%86%B2%E7%AA%81%E6%A0%B8%E5%AF%B9.md
@@ -584,6 +584,7 @@
 - `plan/today-2026-10-15.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/today-2026-10-15.md
 - `plan/week-plan.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/week-plan.md
 - `plan/冲刺日程-20261028-1113.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E5%86%B2%E5%88%BA%E6%97%A5%E7%A8%8B-20261028-1113.md
+- `plan/考试日程.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
 ### subjects（2466 个）
@@ -5107,7 +5108,7 @@
 - `upstream/tutor/examples/subjects/math.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/math.yml
 - `upstream/tutor/subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/subjects/INDEX.md
 
-### output（187 个）
+### output（188 个）
 
 - `output/AI量化交易讲义/AI量化交易成熟技术清单.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E6%B8%85%E5%8D%95.xlsx
 - `output/AI量化交易讲义/AI量化交易成熟技术讲义.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E8%AE%B2%E4%B9%89.docx
@@ -5289,6 +5290,7 @@
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-4.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-4.png
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-5.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-5.png
 - `output/第四章作业4-约当引理-图片-20261103/第四章作业4-约当引理-6.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A4-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-6.png
+- `output/考试日程卡-20261109.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B%E5%8D%A1-20261109.png
 - `output/马原第5组-底线思维-20261104/模板候选/候选A_中国梦通用_27页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89A_%E4%B8%AD%E5%9B%BD%E6%A2%A6%E9%80%9A%E7%94%A8_27%E9%A1%B5.pptx
 - `output/马原第5组-底线思维-20261104/模板候选/候选B_党建教育_35页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89B_%E5%85%9A%E5%BB%BA%E6%95%99%E8%82%B2_35%E9%A1%B5.pptx
 - `output/马原第5组-底线思维-20261104/模板候选/候选C_不忘初心_29页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89C_%E4%B8%8D%E5%BF%98%E5%88%9D%E5%BF%83_29%E9%A1%B5.pptx
@@ -5326,7 +5328,7 @@
 - `paste/compact/C4-2.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-2.md
 - `paste/compact/C4-3.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/paste/compact/C4-3.md
 
-### tmp（985 个）
+### tmp（988 个）
 
 - `tmp/_ch5_q9_left.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/_ch5_q9_left.png
 - `tmp/_ch5_q9_stem.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/_ch5_q9_stem.png
@@ -5504,6 +5506,7 @@
 - `tmp/build-hw22/zoom14b.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/build-hw22/zoom14b.png
 - `tmp/c1.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/c1.txt
 - `tmp/c2.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/c2.txt
+- `tmp/card-exam-20261109.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/card-exam-20261109.py
 - `tmp/card-optics-hw2.py` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/card-optics-hw2.py
 - `tmp/ch2_check.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/ch2_check.txt
 - `tmp/ch2_compile1.txt` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/ch2_compile1.txt
@@ -5602,6 +5605,8 @@
 - `tmp/ee-textbook/toc-p008.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p008.png
 - `tmp/ee-textbook/toc-p009.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p009.png
 - `tmp/ee-textbook/toc-p010.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/ee-textbook/toc-p010.png
+- `tmp/exam-crop-left.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/exam-crop-left.png
+- `tmp/exam-crop-room.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/exam-crop-room.png
 - `tmp/fig1-test.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/fig1-test.aux
 - `tmp/fig1-test.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/tmp/fig1-test.log
 - `tmp/fig1-test.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/tmp/fig1-test.pdf
