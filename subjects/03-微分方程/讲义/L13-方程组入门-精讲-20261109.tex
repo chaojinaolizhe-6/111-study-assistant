@@ -1,0 +1,949 @@
+%=====================================================================
+%  方程组入门 —— 从高阶方程到一阶组
+%  精讲讲义 · Lecture 13
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,arrows.meta}
+
+\settags{L13 方程组入门}{微分方程}
+
+\renewcommand{\qbreak}{\needspace{0.26\textheight}}
+\newcommand{\qpagebreak}{\needspace{0.92\textheight}}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\begin{document}
+
+\doctitle{方程组入门}%
+{从高阶方程到一阶组}%
+{依据：课件 \texttt{13\_DE\_systems.pdf}（37 页，2026-09-24，W.Y., DLUT）\\
+页码均为该 PDF 的页序（课件自己的 $k/32$ 编号另标）\\
+正文只给题面与考点，各例题与作业的详解统一在附录 A}
+
+\callout{\textbf{先读这一段。}期中之前你解的是“一个未知函数的高阶方程”，从这一讲起变成“一组未知函数的一阶方程”。这一讲不教怎么解方程，只做三件事：\textbf{说清为什么需要组}（§1 三个物理模型）、\textbf{把“解”这件事重新定义一遍}（§2--§5）、\textbf{给出两条互相逆行的通道}（§6：高阶方程怎么化成组；§7：常系数组怎么解——只开个头，留给 L14--15）。这一讲是整章的“语法课”，后面四讲都在用这里的词。}
+
+%=====================================================================
+\hdr{§0}{这一讲在整门课里的位置}
+
+期中考试（2026-10-08）之前，L1--L12 处理的是\textbf{一个}未知函数 $y(x)$ 的 $n$ 阶方程。L13 起，未知量变成一个向量
+
+\[
+\vect{Y}(x)=\bigl(y_1(x),\dots,y_n(x)\bigr)^{\mathsf T},
+\]
+
+方程变成 $\vect{Y}'=A(x)\vect{Y}+\vect{F}(x)$。这一转变不是换记号，而是换了问题的结构：高阶方程要配 $n$ 个初值，一阶组也要配 $n$ 个，两边恰好对应——§6 就把这件事写成一步变换。
+
+本讲课件 37 页，按内容分五块：
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.10\linewidth}p{0.18\linewidth}p{0.56\linewidth}@{}}
+\thead{页} & \thead{板块} & \thead{这一块在干什么}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.10\linewidth}p{0.18\linewidth}p{0.56\linewidth}@{}}
+p3--p6 & 物理来源 & 三个模型：两质量三弹簧、并联 LRC、弹簧-质量。说明为什么会有“组”\\
+p7--p10 & 定义与例子 & 系统、正规形、解、通解/特解/奇解；例 1、例 2\\
+p11--p18 & 线性系统 & 矩阵写法；存在唯一性；线性算子；叠加原理；例 3、例 4\\
+p19--p23 & 解的结构 & 线性相关、Wronskian、基本解组；定理 2.3--2.5；例 5\\
+p24--p31 & 变换 & $n$ 阶方程化成一阶组的五步；例 6、例 7\\
+p32--p36 & 常系数入口 & 试探解 $\vect{V}\mathrm{e}^{\lambda x}$、特征方程、代数重数\\
+p37 & 作业 & 一道题（化 $y'''=y''-x^2(y')^2$ 为一阶组）\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是页码台账，不承载推导；逐格都能在课件里对上。全讲的主线只有一句：\textbf{先承认“组”是自然的，再把“解方程组”翻译成“向量空间里挑 $n$ 个基”}。
+
+\subhdr{0.1 记号}
+
+本讲义与课件记号一致，只有一处需要提前声明：
+
+\begin{itemize}
+  \item $\vect{Y}$ 是\textbf{列向量} $(y_1,\dots,y_n)^{\mathsf T}$；$\vect{Y}_k$ 表示第 $k$ 个解向量，不是第 $k$ 个分量。
+  \item $A(x)$ 是 $n\times n$ 系数矩阵，$a_{ij}(x)$ 是第 $i$ 个方程里 $y_j$ 的系数（\textbf{先行后列}）。
+  \item $\mathcal{L}[\vect{Y}]=\vect{Y}'-A\vect{Y}$ 是线性算子，$\mathcal{L}[\vect{Y}]=\vect{F}$ 即原方程。
+  \item $W(\vect{Y}_1,\dots,\vect{Y}_n)$ 是由这 $n$ 个\textbf{列}向量拼成的行列式，见 §5.2。
+\end{itemize}
+
+%=====================================================================
+\hdr{§1}{三个模型：为什么需要“组”}
+
+课件用三页各给一个物理系统（p4、p5、p6），目的不是教你建模，而是让你接受一件事：\textbf{真实系统从来不止一个未知函数}。两质量系统有两个位移，LRC 电路有电压和电流两个状态量，弹簧-质量只有一个位移但它是一阶导也出现的二阶方程——三种情形最后都写成同一个形状。
+
+\subhdr{1.1 两质量三弹簧（p4）}
+
+两个质量 $m_1,m_2$ 在光滑水平面上，三根弹簧常数 $k_1,k_2,k_3$：左墙—$k_1$—$m_1$—$k_2$—$m_2$—$k_3$—右墙。设 $x_1,x_2$ 是两质量相对各自平衡位置的位移，\textbf{向右为正}；外力 $F_1(t),F_2(t)$ 也向右为正。
+
+\begin{center}
+\begin{tikzpicture}[font=\small,>=Stealth]
+  \draw[gray!55] (-0.2,-1.42) -- (7.9,-1.42);
+  \foreach \x in {0.1,0.7,...,7.7} {\draw[gray!55] (\x,-1.42) -- (\x-0.16,-1.64);}
+  \node[gray!70,anchor=west] at (7.95,-1.55) {\footnotesize 光滑水平面};
+  \draw[thick] (0,0.55) -- (0,-1.42);
+  \foreach \y in {0.4,0.15,...,-1.30} {\draw[gray!45] (0,\y) -- (-0.22,\y-0.18);}
+  \draw[decorate,decoration={zigzag,segment length=5pt,amplitude=3pt}] (0,-0.42) -- (1.7,-0.42);
+  \node at (0.85,0.58) {$k_1$};
+  \draw[thick,fill=bandviolet] (1.7,-0.95) rectangle (2.72,-0.05);
+  \node at (2.21,-0.52) {$m_1$};
+  \draw[decorate,decoration={zigzag,segment length=5pt,amplitude=3pt}] (2.72,-0.42) -- (4.62,-0.42);
+  \node at (3.67,0.58) {$k_2$};
+  \draw[thick,fill=bandviolet] (4.62,-0.95) rectangle (5.64,-0.05);
+  \node at (5.13,-0.52) {$m_2$};
+  \draw[decorate,decoration={zigzag,segment length=5pt,amplitude=3pt}] (5.64,-0.42) -- (7.5,-0.42);
+  \node at (6.57,0.58) {$k_3$};
+  \draw[thick] (7.5,0.55) -- (7.5,-1.42);
+  \foreach \y in {0.4,0.15,...,-1.30} {\draw[gray!45] (7.5,\y) -- (7.72,\y-0.18);}
+  \draw[->] (2.21,-1.16) -- (2.86,-1.16) node[right] {\footnotesize $x_1$};
+  \draw[->] (5.13,-1.16) -- (5.78,-1.16) node[right] {\footnotesize $x_2$};
+  \draw[->,violet] (2.73,-0.52) -- (3.21,-0.52) node[right,black] {\footnotesize $F_1(t)$};
+  \draw[->,violet] (5.65,-0.52) -- (6.13,-0.52) node[right,black] {\footnotesize $F_2(t)$};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}图 1\quad 两质量三弹簧系统（按课件 p4 重绘）：三根弹簧的伸长量分别是 $x_1$、$x_2-x_1$、$x_2$。}
+\end{center}
+
+\textbf{受力怎么逐项读出来}（课件 p4 直接给了结果，没写这一步）。三根弹簧的“伸长量”分别是：
+
+\begin{itemize}
+  \item 左弹簧：$m_1$ 的位移就是它的伸长量，$x_1$；它把 $m_1$ 往左拉，力为 $-k_1x_1$。
+  \item 中弹簧：两端分别是 $m_1$ 与 $m_2$，伸长量是 $x_2-x_1$；它拉 $m_1$ 向右、拉 $m_2$ 向左，对 $m_1$ 的力是 $+k_2(x_2-x_1)$，对 $m_2$ 是 $-k_2(x_2-x_1)$。
+  \item 右弹簧：$m_2$ 的位移是它的伸长量，$x_2$；把 $m_2$ 往左拉，力为 $-k_3x_2$。
+\end{itemize}
+
+于是
+
+\[
+m_1\ddot x_1=-(k_1+k_2)x_1+k_2x_2+F_1(t),\qquad
+m_2\ddot x_2=k_2x_1-(k_2+k_3)x_2+F_2(t),
+\]
+
+与课件 p4 的两个式子逐项相同。写成矩阵就是
+
+\[
+\mat{\ddot x_1\\[2pt]\ddot x_2}
+=\mat{-(k_1+k_2)/m_1 & k_2/m_1\\[3pt] k_2/m_2 & -(k_2+k_3)/m_2}
+\mat{x_1\\[2pt]x_2}+\mat{F_1/m_1\\[2pt]F_2/m_2}.
+\]
+
+\textbf{注意}：这还是二阶的组（两个二阶方程），不是课件最后要的一阶组。要变成一阶组，还要再降一次阶——这正是 §1.3 与 §6 要做的事。
+
+\subhdr{1.2 并联 LRC 电路（p5）}
+
+$R,L,C$ 三者并联。设 $V$ 是电容两端电压，$I$ 是流过电感的电流。课件直接给出
+
+\[
+\frac{\mathrm{d}I}{\mathrm{d}t}=\frac{V}{L},\qquad
+\frac{\mathrm{d}V}{\mathrm{d}t}=-\frac{I}{C}-\frac{V}{RC},
+\]
+
+但没写这两步怎么来。补上：并联意味着三者两端\textbf{电压相同}，都是 $V$；元件的本构关系是
+
+\[
+V=L\frac{\mathrm{d}I}{\mathrm{d}t}\ \ (\text{电感}),\qquad
+I_C=C\frac{\mathrm{d}V}{\mathrm{d}t}\ \ (\text{电容}),\qquad
+I_R=\frac{V}{R}\ \ (\text{电阻}).
+\]
+
+在三个支路汇合的节点上用基尔霍夫电流定律：无外接电流时，流出节点之和为零，
+
+\[
+C\frac{\mathrm{d}V}{\mathrm{d}t}+\frac{V}{R}+I=0
+\ \Longrightarrow\
+\frac{\mathrm{d}V}{\mathrm{d}t}=-\frac{I}{C}-\frac{V}{RC},
+\]
+
+第一式由 $V=L\,\mathrm{d}I/\mathrm{d}t$ 直接除 $L$ 得到。两个式子合起来是\textbf{两个一阶方程}，未知函数是 $I$ 和 $V$——天然就是正规形。
+
+\begin{center}
+\begin{tikzpicture}[font=\small,>=Stealth]
+  \draw (0,0) -- (6,0);
+  \draw (0,-2.7) -- (6,-2.7);
+  \draw (1.2,0) -- (1.2,-0.75);
+  \draw (0.85,-0.75) rectangle (1.55,-1.35);
+  \node at (1.2,-1.05) {$R$};
+  \draw (1.2,-1.35) -- (1.2,-2.7);
+  \draw (3,0) -- (3,-0.75);
+  \draw[decorate,decoration={coil,aspect=0.55,segment length=5pt,amplitude=3.6pt}] (3,-0.75) -- (3,-1.55);
+  \node at (3.42,-1.15) {$L$};
+  \draw (3,-1.55) -- (3,-2.7);
+  \draw[->] (3,-1.95) -- (3,-2.28);
+  \node at (3.3,-2.12) {\footnotesize $I$};
+  \draw (4.8,0) -- (4.8,-1.05);
+  \draw (4.45,-1.05) -- (5.15,-1.05);
+  \draw (4.45,-1.32) -- (5.15,-1.32);
+  \node at (5.38,-1.18) {$C$};
+  \draw (4.8,-1.32) -- (4.8,-2.7);
+  \draw[<->] (0.42,0) -- (0.42,-2.7) node[midway,left] {$V$};
+  \node at (0.64,0.24) {\footnotesize $+$};
+  \node at (0.64,-2.94) {\footnotesize $-$};
+  \fill (0,0) circle (1.6pt); \fill (0,-2.7) circle (1.6pt);
+  \fill (6,0) circle (1.6pt); \fill (6,-2.7) circle (1.6pt);
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}图 2\quad 并联 LRC（按课件 p5 重绘）：三条支路电压同为 $V$，$I$ 由 $L$ 支路自上而下。}
+\end{center}
+
+\textbf{符号约定先定死}：$I$ 向下流过电感为正，$V$ 上端相对下端为正。换一种约定，两个方程的符号会同时变，但“一阶组”这个结构不变。
+
+\subhdr{1.3 弹簧-质量（p6）}
+
+单个质量，阻尼 $\gamma$，弹簧常数 $k$，外力 $F(t)$，$u$ 为位移（平衡位置为原点，向下为正）：
+
+\[
+m u''+\gamma u'+k u=F(t).
+\]
+
+课件写“can be transformed into a system of first-order differential equations”，然后直接给出 $x_1=u,\ x_2=u'$ 与结果。补上中间这一步：由 $x_1=u$ 得 $x_1'=u'=x_2$；由 $x_2=u'$ 得 $x_2'=u''$，而原方程解出 $u''=\bigl(F-\gamma u'-ku\bigr)/m$，代入 $u=x_1,u'=x_2$：
+
+\[
+x_1'=x_2,\qquad
+x_2'=-\frac{k}{m}x_1-\frac{\gamma}{m}x_2+\frac{F(t)}{m},
+\]
+
+与课件 p6 一致。\textbf{这一步就是 §6 的一般变换在 $n=2$ 时的样子}，只是这里手工做了一遍。
+
+\subhdr{1.4 三个模型的共同点}
+
+三个系统的物理内容完全不同，落到纸上却是同一个形状：\textbf{若干未知函数的一阶导数，被写成这些未知函数的线性组合加一个已知项}。这就是本讲的主对象：
+
+\[
+\vect{Y}'=A\vect{Y}+\vect{F}(t).
+\]
+
+后面 §2--§5 建立“解”的语言，§6 说明任何 $n$ 阶方程都能化到这个形状，§7 开始处理 $A$ 为常矩阵的情形。
+
+%=====================================================================
+\hdr{§2}{系统、正规形、解}
+
+\subhdr{2.1 一般系统与正规形（p7）}
+
+课件给两个定义。第一个是\textbf{一般系统}：$n$ 个一阶方程，每个都写成隐式
+
+\[
+F_k(x,y_1,\dots,y_n,y_1',\dots,y_n')=0,\qquad k=1,\dots,n .
+\]
+
+第二个是\textbf{正规形}（normal system）：每个方程都已经解出对应的导数
+
+\[
+y_k'=f_k(x,y_1,\dots,y_n),\qquad k=1,\dots,n ,
+\]
+
+再配初值 $y_k(x_0)=y_k^0$。
+
+\textbf{这里有一个课件没说的前提}：从一般形写到正规形，要能\textbf{解出} $y_k'$。这件事不是永远做得到的——例如 $(y_1')^2+y_1-1=0$ 就只能写成两个分支 $y_1'=\pm\sqrt{1-y_1}$。本课程后面处理的都是正规形，所以这个前提实际上被默认了；但你写答案时如果遇到“化不成正规形”的情形，要说明一句。
+
+\subhdr{2.2 解与初值问题（p8）}
+
+一组函数 $y_k=\varphi_k(x)$ 在区间 $I$ 上称为解，如果把它代进系统后\textbf{在 $I$ 上每一点}都成立。几何上，解是 $n$ 维空间里的一条曲线，初值决定这条曲线的起点；系统加初值就是\textbf{初值问题}（IVP）。
+
+\textbf{“在区间上每点成立”不是废话}。例 2 的通解 $y_1=(x+c_1)^2$ 只在 $x+c_1\ge0$ 时满足 $y_1'=2\sqrt{y_1}$：因为 $\sqrt{(x+c_1)^2}=|x+c_1|$，当 $x+c_1<0$ 时右边是 $-2(x+c_1)$，符号反了。所以这道题的解只能定义在半区间上——这是非线性方程特有的麻烦，线性系统不会出现（§4.1 的 Remark 2.1）。
+
+\subhdr{2.3 通解、特解、奇解（p9）}
+
+课件的定义是：含 $n$ 个任意常数 $c_1,\dots,c_n$ 的一组函数，如果对区域 $D$ 内每一点都能取到，就称通解；取定常数值得到特解；不能由通解取常数得到的解叫奇解。
+
+课件原文在“for every point $(x,y_1,\dots,y_n)\in D$”这一句被排版截断了，读起来不知道条件是什么。这里给一个\textbf{可操作的判据}：把初值 $(x_0,\vect{y}^0)$ 代进通解，得到关于 $c_1,\dots,c_n$ 的 $n$ 个方程；若这个方程组对 $D$ 内每一点都有唯一解，则这组函数是通解。换句话说，\textbf{常数个数够、而且能反解出初值}，两条都满足才算通解。
+
+\textbf{“$n$ 个常数”不能多也不能少}：少了覆盖不了所有初值，多了则常数之间不独立、本质上还是 $n$ 个。例 1 的 $c_1\cos(x-c_2)$ 与 $A\cos x+B\sin x$ 都是两个常数，等价，见附录 A.1。
+
+\subhdr{2.4 例 1 与例 2（p10）}
+
+两道题都在这页，题干与考点如下。
+
+\qbreak
+\qstem{（课件 p10 例 1）$\dfrac{\mathrm{d}y_1}{\mathrm{d}x}=y_2,\quad \dfrac{\mathrm{d}y_2}{\mathrm{d}x}=-y_1$。课件给通解 $y_1=c_1\cos(x-c_2)$，$y_2=-c_1\sin(x-c_2)$。\textbf{验证它是解，并说明常数怎么写都行。}}
+\par\textbf{考点}：解的定义（代回恒成立）；通解里常数的等价写法。
+\par\textbf{关键一步}：把两个式子分别求导，代回右端；再令 $A=c_1\cos c_2,\ B=c_1\sin c_2$ 看两种写法是否互推。
+\par\textbf{详解}：附录 A.1，第 \pageref{app:a1} 页。
+
+\qbreak
+\qstem{（课件 p10 例 2）$\dfrac{\mathrm{d}y_1}{\mathrm{d}x}=2\sqrt{y_1},\quad \dfrac{\mathrm{d}y_2}{\mathrm{d}x}=y_1$。课件给通解 $y_1=(x+c_1)^2$，$y_2=\tfrac13(x+c_1)^3+c_2$，以及奇解 $y_1=0,\ y_2=c$。\textbf{验证通解与奇解。}}
+\par\textbf{考点}：非线性方程的定义域限制；“奇解”为什么真的是新的解。
+\par\textbf{关键一步}：先解只含 $y_1$ 的第一式；再检查 $x+c_1<0$ 时 $\sqrt{y_1}$ 的符号；最后看 $y_1\equiv0$ 能否由通解取常数得到。
+\par\textbf{详解}：附录 A.2，第 \pageref{app:a2} 页。
+
+%=====================================================================
+\hdr{§3}{线性系统与矩阵写法}
+
+\subhdr{3.1 一般线性系统（p12）}
+
+线性系统的正规形是
+
+\[
+y_k'=\sum_{j=1}^{n}a_{kj}(x)y_j+f_k(x),\qquad k=1,\dots,n,
+\]
+
+即每个方程的右端对未知函数是\textbf{一次齐次}的（可以带 $x$ 的函数系数），外加一个只依赖 $x$ 的项。矩阵形式是
+
+\[
+\vect{Y}'(x)=A(x)\vect{Y}+\vect{F}(x),\qquad
+A=(a_{kj}),\quad \vect{Y}=(y_1,\dots,y_n)^{\mathsf T},\quad \vect{F}=(f_1,\dots,f_n)^{\mathsf T}.
+\]
+
+$\vect{F}\equiv\vect{0}$ 时称齐次，否则非齐次。
+
+\subhdr{3.2 课件的一处排版笔误（p13）}
+
+p13 的矩阵 $A$ 第二行最后一个元素印成了 $a_{1n}$，按定义应为 $a_{2n}$。这不影响理解，但抄公式时容易照抄错。正确的写法是
+
+\[
+A=\mat{
+a_{11} & a_{12} & \cdots & a_{1n}\\
+a_{21} & a_{22} & \cdots & a_{2n}\\
+\vdots & \vdots & & \vdots\\
+a_{n1} & a_{n2} & \cdots & a_{nn}}.
+\]
+
+\textbf{记法只有一条}：$a_{kj}$ 是第 $k$ 个方程里 $y_j$ 的系数，先行后列。写矩阵时逐行抄系数，比“先写列”不容易错。
+
+\subhdr{3.3 例 3（p14）}
+
+\qbreak
+\qstem{（课件 p14 例 3）设 $x(t),y(t),z(t)$ 未知：$x'=y-z,\ y'=x+y,\ z'=x+z$。\textbf{写成矩阵形式，并判断是否齐次。}}
+\par\textbf{考点}：逐行读系数；齐次的判断。
+\par\textbf{关键一步}：第一行里 $x$ 的系数是 $0$（没出现），$y$ 是 $1$，$z$ 是 $-1$；按 $x,y,z$ 顺序排成一行。
+\par\textbf{详解}：附录 A.3，第 \pageref{app:a3} 页。
+
+%=====================================================================
+\hdr{§4}{存在唯一性、算子、叠加原理}
+
+\subhdr{4.1 定理 2.1（p15）}
+
+设 $a_{kj}(x),f_k(x)$ 在 $[a,b]$ 上连续，则对任意 $x_0\in[a,b]$ 与任意初值 $\vect{y}^0$，初值问题
+
+\[
+y_k'=\sum_{j=1}^{n}a_{kj}(x)y_j+f_k(x),\qquad y_k(x_0)=y_k^0
+\]
+
+在 $x_0$ 的某个邻域内\textbf{存在且唯一}解。
+
+课件紧接着给了一条 Remark：\textbf{线性系统没有奇解}。这句话的理由课件没写，补在这里：只要系数连续，解可以沿区间一路延拓，不会在中途“断掉”或“分叉”；既然每个初值都唯一对应一条解，就不可能存在“通解之外另有一条解”的情形。这与例 2 的非线性方程形成对照：那里 $y_1\equiv0$ 是一条真实的、通解取不到的轨道。
+
+\subhdr{4.2 线性算子与性质 2.1（p16）}
+
+定义算子
+
+\[
+\mathcal{L}[\vect{Y}]=\frac{\mathrm{d}\vect{Y}}{\mathrm{d}x}-A\vect{Y}.
+\]
+
+齐次方程就是 $\mathcal{L}[\vect{Y}]=\vect{0}$，非齐次是 $\mathcal{L}[\vect{Y}]=\vect{F}$。性质 2.1 说 $\mathcal{L}$ 是线性的：
+
+\[
+\mathcal{L}[c\vect{Y}]=c\,\mathcal{L}[\vect{Y}],\qquad
+\mathcal{L}[\vect{Y}_1+\vect{Y}_2]=\mathcal{L}[\vect{Y}_1]+\mathcal{L}[\vect{Y}_2].
+\]
+
+由此立刻得到：齐次解的任意线性组合仍是齐次解。
+
+最后一条要单独说：\textbf{若 $A$ 是实矩阵，而复值解 $\vect{Y}=\vect{U}+\mathrm{i}\vect{V}$ 满足 $\mathcal{L}[\vect{Y}]=\vect{0}$，则实部 $\vect{U}$ 与虚部 $\vect{V}$ 也都是解}。理由是 $\mathcal{L}$ 只做求导与乘实矩阵，实部虚部互不干扰：
+
+\[
+\vect{0}=\mathcal{L}[\vect{U}+\mathrm{i}\vect{V}]=\mathcal{L}[\vect{U}]+\mathrm{i}\,\mathcal{L}[\vect{V}]
+\ \Longrightarrow\
+\mathcal{L}[\vect{U}]=\vect{0},\quad \mathcal{L}[\vect{V}]=\vect{0}.
+\]
+
+这一条在 L14--15 处理共轭复特征值时会直接用到：先得复值解 $\vect{V}\mathrm{e}^{(\alpha+\mathrm{i}\beta)x}$，再取实部虚部得到两个实解。
+
+\subhdr{4.3 叠加原理与定理 2.2（p17）}
+
+叠加原理：若 $\vect{Y}_1$ 是 $\mathcal{L}[\vect{Y}]=\vect{F}$ 的解、$\vect{Y}_0$ 是齐次解，则 $\vect{Y}_0+\vect{Y}_1$ 仍是 $\mathcal{L}[\vect{Y}]=\vect{F}$ 的解。一行验证：
+
+\[
+\mathcal{L}[\vect{Y}_0+\vect{Y}_1]=\mathcal{L}[\vect{Y}_0]+\mathcal{L}[\vect{Y}_1]=\vect{0}+\vect{F}=\vect{F}.
+\]
+
+定理 2.2（课件只给结论，这里补证明）：非齐次方程的通解是
+
+\[
+\vect{Y}(x)=\vect{Z}(x)+\tilde{\vect{Y}}(x),
+\]
+
+其中 $\vect{Z}$ 是齐次通解、$\tilde{\vect{Y}}$ 是非齐次的一个特解。
+
+\textbf{证明}：设 $\vect{Y}$ 是任一解。令 $\vect{W}=\vect{Y}-\tilde{\vect{Y}}$，由线性性
+
+\[
+\mathcal{L}[\vect{W}]=\mathcal{L}[\vect{Y}]-\mathcal{L}[\tilde{\vect{Y}}]=\vect{F}-\vect{F}=\vect{0},
+\]
+
+所以 $\vect{W}$ 是齐次解，即 $\vect{W}=\vect{Z}$，于是 $\vect{Y}=\vect{Z}+\tilde{\vect{Y}}$。反方向由叠加原理直接得到。$\square$
+
+这个证明只有一个动作：\textbf{两个解相减消掉右端}。后面 L17--18 求非齐次特解时，反复用的就是这一条。
+
+性质 2.2（右端可拆）：若 $\vect{Y}_i$ 是 $\mathcal{L}[\vect{Y}]=\vect{F}_i$ 的解，则 $\sum_i\vect{Y}_i$ 是 $\mathcal{L}[\vect{Y}]=\sum_i\vect{F}_i$ 的解。它说明非齐次项可以一项一项地攻。
+
+\subhdr{4.4 例 4（p18）}
+
+\qbreak
+\qstem{（课件 p18 例 4）$\vect{Y}'=\mat{1&1\\4&1}\vect{Y}$。验证 $\vect{Y}_1=\mat{1\\2}\mathrm{e}^{3x}$、$\vect{Y}_2=\mat{1\\-2}\mathrm{e}^{-x}$ 都是解，从而 $c_1\vect{Y}_1+c_2\vect{Y}_2$ 是解。}
+\par\textbf{考点}：解的定义；叠加原理。
+\par\textbf{关键一步}：算 $A\vect{Y}_1$，看它是否等于 $3\vect{Y}_1$（因为 $\vect{Y}_1'=3\vect{Y}_1$）。
+\par\textbf{详解}：附录 A.4，第 \pageref{app:a4} 页。
+
+%=====================================================================
+\hdr{§5}{线性相关、Wronskian、基本解组}
+
+这一节回答一个问题：\textbf{齐次方程要几个解才够？}答案是 $n$ 个，而且这 $n$ 个必须线性无关。判据是 Wronskian。
+
+\subhdr{5.1 线性相关与线性无关（p19）}
+
+$n$ 个向量函数 $\vect{Y}_1,\dots,\vect{Y}_n$ 在 $[a,b]$ 上线性相关，指存在不全为零的常数 $c_1,\dots,c_n$ 使
+
+\[
+c_1\vect{Y}_1+\cdots+c_n\vect{Y}_n=\vect{0},\qquad x\in[a,b].
+\]
+
+注意是\textbf{在整个区间上恒为零}，不是某一点为零。否则任何两个在某点碰头的解都会被判成相关。
+
+\subhdr{5.2 Wronskian（p20）}
+
+把 $n$ 个列向量排成一个矩阵，取行列式：
+
+\[
+W(\vect{Y}_1,\dots,\vect{Y}_n)(x)=\det\begin{pmatrix}
+y_{11}(x) & y_{21}(x) & \cdots & y_{n1}(x)\\
+y_{12}(x) & y_{22}(x) & \cdots & y_{n2}(x)\\
+\vdots & \vdots & & \vdots\\
+y_{1n}(x) & y_{2n}(x) & \cdots & y_{nn}(x)
+\end{pmatrix},
+\]
+
+其中 $\vect{Y}_k=(y_{k1},\dots,y_{kn})^{\mathsf T}$，\textbf{按列排}。课件 p20 把同一个行列式先按列写、又按行写，两种写法互为转置，数值相同（行列式转置不变），但下标容易看错。本讲义统一按上面的写法：\textbf{第 $k$ 列就是 $\vect{Y}_k$}。
+
+课件 p20 还有一处小笔误：线性组合写成 $\sum_{j=0}^{n}y_{kj}c_j$，下标应从 $j=1$ 起。
+
+\warnbox{\textbf{一个必须点明的坑}：$W\equiv0$ 并\textbf{不}等于线性相关。这条等价关系只对“齐次线性方程组的解”成立（定理 2.3），对任意向量函数不成立。反例：}
+
+\[
+\vect{Y}_1=\mat{1\\ x},\qquad \vect{Y}_2=\mat{x\\ x^2}.
+\]
+
+它们的 Wronskian 是 $1\cdot x^2-x\cdot x\equiv0$，但两者线性无关：若 $c_1\vect{Y}_1+c_2\vect{Y}_2=\vect{0}$ 对一切 $x$ 成立，看第一个分量得 $c_1+c_2x\equiv0$，只能 $c_1=c_2=0$。
+
+\warnbox{考试里若用 Wronskian 判无关，\textbf{前提必须先说清}：“这两个是齐次线性方程的解，所以 $W\not\equiv0$ 与线性无关等价”。少了这句前提，反例就能推翻你的论证。}
+
+\subhdr{5.3 定理 2.3（p21）}
+
+齐次系统 $\vect{Y}'=A\vect{Y}$ 的 $n$ 个解 $\vect{Y}_1,\dots,\vect{Y}_n$ 线性无关，\textbf{当且仅当}存在一点 $x_0$ 使 $W(x_0)\neq0$；此时对区间内任意 $x$ 都有 $W(x)\neq0$。
+
+后半句“一旦非零就处处非零”不是显然的，它来自 Abel 公式（一阶线性方程的 Wronskian 满足 $W'=(\tr A)W$，故 $W(x)=W(x_0)\exp\int_{x_0}^{x}\tr A$，指数因子永不为零）。L13 只引用结论不证，这里给一个指针：学到 L16--17 时可以把 $\tr A$ 与矩阵指数的行列式对上。
+
+\subhdr{5.4 基本解组与定理 2.5（p22）}
+
+定理 2.4：齐次解的任意线性组合仍是解（就是性质 2.1 的复述）。
+
+定义：齐次系统的 $n$ 个\textbf{线性无关}的解，称为\textbf{基本解组}（fundamental set of solutions, FSS）。
+
+定理 2.5：若 $\{\vect{Y}_1,\dots,\vect{Y}_n\}$ 是基本解组，则齐次方程的通解可写成
+
+\[
+\vect{Y}=\sum_{k=1}^{n}c_k\vect{Y}_k .
+\]
+
+\textbf{为什么恰好是 $n$ 个？}因为解空间是 $n$ 维的：给定 $x_0$，每个初值向量 $\vect{Y}(x_0)\in\mathbb{R}^n$ 由定理 2.1 唯一决定一条解，反过来每条解也由它的初值唯一决定。于是“解”与“$\mathbb{R}^n$ 中的向量”一一对应，$\mathbb{R}^n$ 的一组基（$n$ 个线性无关向量）就对应一组基本解。这就是“$n$ 个”的来历，也是定理 2.5 能说“任意解都是线性组合”的理由。
+
+\subhdr{5.5 例 5（p23）}
+
+\qbreak
+\qstem{（课件 p23 例 5）仍取 $\mathrm{d}y_1/\mathrm{d}x=y_2,\ \mathrm{d}y_2/\mathrm{d}x=-y_1$。给定 $\vect{Y}_1=(\cos x,-\sin x)^{\mathsf T}$、$\vect{Y}_2=(\sin x,\cos x)^{\mathsf T}$，算 Wronskian 并写通解。}
+\par\textbf{考点}：Wronskian 的计算；由基本解组写通解。
+\par\textbf{关键一步}：$W=\cos x\cdot\cos x-(-\sin x)\cdot\sin x$，用 $\cos^2+\sin^2=1$ 收尾。
+\par\textbf{详解}：附录 A.5，第 \pageref{app:a5} 页。
+
+%=====================================================================
+\hdr{§6}{变换：$n$ 阶方程化成一阶组}
+
+这是本讲最“工程”的一节：给定一个 $n$ 阶方程，怎么机械地写出一阶组。课件的例 6 用五步走完一般情形，例 7 给一个具体方程。
+
+\subhdr{6.1 一般构造（p25）}
+
+设方程已经解出最高阶导数：
+
+\[
+y^{(n)}=f\bigl(x,y,y',\dots,y^{(n-1)}\bigr).
+\]
+
+令
+
+\[
+y_1=y,\quad y_2=y',\quad y_3=y'',\quad \dots,\quad y_n=y^{(n-1)} .
+\]
+
+则前 $n-1$ 个方程是“下一行就是上一行的导数”，最后一个方程把 $y^{(n)}$ 用 $f$ 写成 $y_1,\dots,y_n$ 的函数：
+
+\[
+y_1'=y_2,\quad y_2'=y_3,\quad\dots,\quad y_{n-1}'=y_n,\quad y_n'=f(x,y_1,\dots,y_n).
+\]
+
+初值也跟着走：$y(x_0)=c_0,\dots,y^{(n-1)}(x_0)=c_{n-1}$ 对应 $y_k(x_0)=c_{k-1}$。
+
+\textbf{这个变换是可逆的}：从组回到方程，只需把前 $n-1$ 个式子逐次求导代进最后一个；从方程到组，就是上面的定义。所以“解 $n$ 阶方程”与“解这个特殊形状的一阶组”是同一件事。
+
+\subhdr{6.2 例 6：五步与那个“倒序”（p26--p29）}
+
+课件把一般线性方程
+
+\[
+b_0(t)y^{(n)}+b_1(t)y^{(n-1)}+\cdots+b_{n-1}(t)y'+b_n(t)y=g(t),\qquad b_0\neq0
+\]
+
+化成 $\vect{Y}'=A(t)\vect{Y}+\vect{F}(t)$，走了五步。
+
+\textbf{第 1 步，归一化}：两边除 $b_0$，把最高阶导数解出来：
+
+\[
+y^{(n)}=a_1(t)y^{(n-1)}+\cdots+a_{n-1}(t)y'+a_n(t)y+f(t),
+\qquad a_j=-\frac{b_j}{b_0},\quad f=\frac{g}{b_0}.
+\]
+
+\textbf{第 2 步，设变量}：$y_1=y,\ y_2=y',\ \dots,\ y_n=y^{(n-1)}$。
+
+\textbf{第 3 步，写前 $n-1$ 个方程}：$y_k'=y_{k+1}$（$k=1,\dots,n-1$）。
+
+\textbf{第 4 步，写最后一个方程}：$y_n'=y^{(n)}$，把归一化后的右端用 $y_1,\dots,y_n$ 代掉：
+
+\[
+y_n'=a_n y_1+a_{n-1}y_2+\cdots+a_1y_n+f(t).
+\]
+
+\textbf{第 5 步，拼矩阵}：
+
+\[
+A=\begin{pmatrix}
+0&1&0&\cdots&0\\
+0&0&1&\cdots&0\\
+\vdots& & &\ddots&\vdots\\
+0&0&0&\cdots&1\\
+a_n&a_{n-1}&a_{n-2}&\cdots&a_1
+\end{pmatrix},
+\qquad
+\vect{F}=\mat{0\\ \vdots\\ 0\\ f(t)},\qquad
+\vect{Y}(t_0)=\mat{c_0\\ \vdots\\ c_{n-1}}.
+\]
+
+\textbf{为什么最后一行是倒序 $(a_n,a_{n-1},\dots,a_1)$？}这是最容易写错的地方，课件 p28 只给结果没解释。看第 4 步的式子：$y_1$ 乘的是 $a_n$，$y_2$ 乘的是 $a_{n-1}$，……，$y_n$ 乘的是 $a_1$。而矩阵乘法里第 $n$ 行第 $j$ 列的元素正好乘 $y_j$，所以按 $y_1,\dots,y_n$ 的顺序排出来就是 $a_n,a_{n-1},\dots,a_1$。\textbf{一句话：系数下标与变量下标反着走。}
+
+\subhdr{6.3 例 7（p30--p31）}
+
+\qbreak
+\qstem{（课件 p30 例 7）$t^4\dfrac{\mathrm{d}^2x}{\mathrm{d}t^2}+\sin t\dfrac{\mathrm{d}x}{\mathrm{d}t}-4x=\ln t,\quad t>0$。\textbf{化为一阶线性组。}}
+\par\textbf{考点}：归一化后再设变量；系数含 $t$ 时矩阵 $A(t)$ 怎么写。
+\par\textbf{关键一步}：先除 $t^4$ 解出 $x''$；再令 $y=x'$。注意这里的 $x,y$ 是原方程的未知函数与其导数，不是 §6.2 里的 $y_1,y_2$。
+\par\textbf{详解}：附录 A.7，第 \pageref{app:a7} 页。
+
+\subhdr{6.4 一个 $n=3$ 的模板}
+
+把 §6.2 的 $n=3$ 写出来，方便对照作业：
+
+\[
+y'''=a_1y''+a_2y'+a_3y+f
+\ \Longrightarrow\
+A=\mat{0&1&0\\0&0&1\\ a_3&a_2&a_1},\qquad \vect{F}=\mat{0\\0\\f}.
+\]
+
+最后一行按 $y_1,y_2,y_3$ 排，是 $(a_3,a_2,a_1)$——再一次是倒序。作业里那道题不是线性的，所以拼不成这个 $A$，但前两行完全一样。
+
+%=====================================================================
+\hdr{§7}{常系数齐次组的入口（p32--p36）}
+
+这一节只开个头：$A$ 是常矩阵时，解长什么样。完整的三种情形在 L14--15。
+
+\subhdr{7.1 从 $n=1$ 找类比（p33）}
+
+$n=1$ 时方程退化成 $y'=ay$，解是 $y=c\mathrm{e}^{ax}$。这里 $a$ 是常数、$c$ 由初值定。这一行是全部猜想的来源。
+
+\subhdr{7.2 试探解与特征方程（p34--p35）}
+
+对 $\vect{Y}'=A\vect{Y}$，猜
+
+\[
+\vect{Y}(x)=\vect{V}\mathrm{e}^{\lambda x},\qquad \vect{V}\neq\vect{0}\ \text{常向量}.
+\]
+
+代进方程：左边 $\vect{Y}'=\lambda\vect{V}\mathrm{e}^{\lambda x}$，右边 $A\vect{V}\mathrm{e}^{\lambda x}$；约掉 $\mathrm{e}^{\lambda x}$（它恒不为零）得
+
+\[
+A\vect{V}=\lambda\vect{V}.
+\]
+
+于是\textbf{微分方程问题被换成了代数问题}：找 $A$ 的特征值 $\lambda$ 与特征向量 $\vect{V}$。把 $A\vect{V}=\lambda\vect{V}$ 移项得 $(A-\lambda E)\vect{V}=\vect{0}$；这是关于 $\vect{V}$ 分量的齐次线性方程组，要它有非零解，必须
+
+\[
+\det(A-\lambda E)=0 .
+\]
+
+这叫\textbf{特征方程}，它的左端叫特征多项式，次数是 $n$。
+
+\subhdr{7.3 代数重数与几何重数（p36）}
+
+特征多项式可分解为
+
+\[
+\det(A-\lambda E)=(\lambda-\lambda_1)^{m_1}\cdots(\lambda-\lambda_k)^{m_k},
+\qquad m_1+\cdots+m_k=n .
+\]
+
+$m_j$ 叫特征值 $\lambda_j$ 的\textbf{代数重数}；$m=1$ 时叫单特征值，此时不同的特征值对应的特征向量自动线性无关。
+
+课件 p36 最后一句是：“若 $\lambda$ 的重数 $k>1$，则 $\lambda$ 有 $1$ 到 $k$ 个线性无关的特征向量（或广义特征向量）。”这句话是全章最重要的伏笔，但它没给名字、没给算法。补上：
+
+\[
+g=\dim\ker(A-\lambda E)=n-\rank(A-\lambda E),\qquad 1\le g\le m .
+\]
+
+$g$ 叫\textbf{几何重数}，即“特征向量够不够多”。$g=m$ 时特征向量够用，解全部是 $\mathrm{e}^{\lambda x}$ 乘向量；$g<m$ 时不够，要补广义特征向量，解里会出现 $x\mathrm{e}^{\lambda x}$ 这样的项。这两种情形就是 L14--15 的 Case 3a 与 Case 3b。
+
+%=====================================================================
+\hdr{§8}{作业（p37）}
+
+\qbreak
+\qstem{（课件 p37 作业 I）把方程 $y'''=y''-x^2(y')^2$ 化为等价的一阶方程组。（课件原注：It's not a linear system.）}
+\par\textbf{考点}：§6.1 的一般变换在非线性方程上的用法；为什么这次拼不出矩阵 $A$。
+\par\textbf{关键一步}：照 §6.4 的模板设 $y_1=y,\ y_2=y',\ y_3=y''$，前两行照抄，第三行把 $y'''$ 用原方程换掉。
+\par\textbf{详解}：附录 A.8，第 \pageref{app:a8} 页。
+
+%=====================================================================
+\hdr{§9}{易错点}
+
+\begin{enumerate}
+  \item \textbf{通解的常数必须“够且能反解”}。例 1 的 $c_1\cos(x-c_2)$ 与 $A\cos x+B\sin x$ 都是两个常数；但写在答卷上时，若用前者，要能说清 $c_1,c_2$ 与初值的关系（见 A.1）。
+  \item \textbf{$W\equiv0$ 不等于线性相关}。只对“齐次线性方程的解”成立；反例见 §5.2。答卷上必须写出“这是齐次解”这个前提。
+  \item \textbf{变换矩阵的最后一行是倒序}。$A$ 的最后一行按 $y_1,\dots,y_n$ 排是 $(a_n,\dots,a_1)$，不是 $(a_1,\dots,a_n)$（§6.2）。
+  \item \textbf{非线性方程化成的组不能写成 $A\vect{Y}$}。作业那题的第三式含 $x^2y_2^2$，是二次项，只能写成 $\vect{Y}'=\vect{F}(x,\vect{Y})$。
+  \item \textbf{奇解只出现在非线性方程}。例 2 有奇解，线性系统没有（Remark 2.1 的理由见 §4.1）。
+  \item \textbf{$a_{kj}$ 先行后列}。写矩阵时逐行抄系数，别按“先写各变量”去拼；课件 p13 第二行末元素的笔误说明这条线也会被印错。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§10}{缺口清单}
+
+下表的“缺口”指课件跳过的步骤或表述不清处，逐条给页码与原文短语。
+
+\gapitem{机制缺口}{p4 “The two masses move on a frictionless surface … = −(k1+k2)x1 + k2x2 + F1” 只给结果，未说明三根弹簧的伸长量分别是 $x_1$、$x_2-x_1$、$x_2$。本讲义 §1.1 逐项补受力。}
+\gapitem{机制缺口}{p5 “Let V be the voltage drop … dV/dt = −I/C − V/(RC)” 直接给方程，未写基尔霍夫与元件本构。本讲义 §1.2 补推导。}
+\gapitem{代数跳步}{p6 “The above equation can be transformed … Let x1 = u and x2 = u'.” 只声明可化，未演示。本讲义 §1.3 补出中间一步。}
+\gapitem{表述不清}{p9 “is called the general solution on the domain D, if for every point (x, y1, …, yn) $\in$ D” 条件被截断。本讲义 §2.3 给可操作判据：常数个数 + 初值可反解。}
+\gapitem{平凡解／奇解}{p10 “Singular Solution: y1 = 0, y2 = c” 未说明为何不是通解取常数。本讲义 A.2 补理由：需 $(x+c_1)^2\equiv0$。}
+\gapitem{排版笔误}{p13 矩阵第二行末元素印成 $a_{1n}$，应为 $a_{2n}$。本讲义 §3.2 更正。}
+\gapitem{排版笔误}{p20 线性组合写成 $\sum_{j=0}^{n}y_{kj}c_j$（下标应从 1 起），且 Wronskian 行列式先按列后按行两种写法并列。本讲义 §5.2 统一为按列排列。}
+\gapitem{适用区间}{p21 定理 2.3 未说明“$W\neq0\Leftrightarrow$ 线性无关”只对解成立。本讲义 §5.2 给反例并标明前提。}
+\gapitem{代数跳步}{p28 矩阵最后一行写成 $(a_n,a_{n-1},\dots,a_1)$ 未解释倒序。本讲义 §6.2 说明“系数下标与变量下标反着走”。}
+\gapitem{术语未定义}{p36 “anywhere from 1 to k linearly independent eigenvectors” 只描述现象，未定义几何重数。本讲义 §7.3 补 $g=n-\rank(A-\lambda E)$。}
+
+%=====================================================================
+\hdr{§11}{三句话}
+
+\begin{enumerate}
+  \item 方程组不是新东西：真实系统本来就是多个未知函数，L13 只是把它们写成向量。
+  \item 解的结构是线性的：齐次解的任意组合仍是解，非齐次解 $=$ 齐次通解 $+$ 一个特解；齐次只需 $n$ 个线性无关的解，判据是 Wronskian（\textbf{只对解}成立）。
+  \item 任何 $n$ 阶方程都能化成一阶组：设 $y_k=y^{(k-1)}$，前 $n-1$ 行是 $0,1$ 的移位，最后一行是系数倒序；$A$ 为常矩阵时，再把问题换成特征值。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{与课件的页码对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}p{0.38\linewidth}@{}}
+\thead{本讲义} & \thead{内容} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}p{0.38\linewidth}@{}}
+§1.1 & 两质量三弹簧与受力 & p4\\
+§1.2 & 并联 LRC 与基尔霍夫 & p5\\
+§1.3 & 弹簧-质量化一阶组 & p6\\
+§2.1 & 一般系统与正规形 & p7\\
+§2.2 & 解与初值问题 & p8\\
+§2.3 & 通解、特解、奇解 & p9\\
+§2.4 & 例 1、例 2 & p10\\
+§3.1 & 线性系统一般形 & p12--p13\\
+§3.2 & 矩阵写法与笔误 & p13\\
+§3.3 & 例 3 & p14\\
+§4.1 & 定理 2.1 与 Remark 2.1 & p15\\
+§4.2 & 线性算子与性质 2.1 & p16\\
+§4.3 & 叠加原理、定理 2.2 & p17\\
+§4.4 & 例 4 & p18\\
+§5.1 & 线性相关与无关 & p19\\
+§5.2 & Wronskian 与反例 & p20\\
+§5.3 & 定理 2.3 & p21\\
+§5.4 & 定理 2.4、FSS、定理 2.5 & p22\\
+§5.5 & 例 5 & p23\\
+§6.1 & 一般变换 & p25\\
+§6.2 & 例 6 五步与倒序 & p26--p29\\
+§6.3 & 例 7 & p30--p31\\
+§7 & 常系数入口：试探解与特征方程 & p32--p36\\
+§8 & 作业 & p37\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=====================================================================
+\newpage
+\hdr{附录 A}{各题详解}
+
+每块自成一页（块前用 \verb|\qpagebreak| 保证整块不跨页），按“题干 → 考点 → 关键一步 → 详解 → 答案 → 自检”排。题干里的条件是完整复述，不回头也能做。
+
+\qpagebreak
+\subhdr{A.1\quad 例 1：验证通解与常数的等价写法}
+\label{app:a1}
+
+\qbreak
+\qstem{（课件 p10 例 1）$\dfrac{\mathrm{d}y_1}{\mathrm{d}x}=y_2$，$\dfrac{\mathrm{d}y_2}{\mathrm{d}x}=-y_1$。验证 $y_1=c_1\cos(x-c_2)$、$y_2=-c_1\sin(x-c_2)$ 是解，并说明常数可以换写法。}
+
+\textbf{考点}\ 解的定义（代回恒成立）；通解里常数的等价性。
+
+\textbf{关键一步}\ 分别求导，代回右端；再用和角公式把 $c_1\cos(x-c_2)$ 展开成 $A\cos x+B\sin x$。
+
+\textbf{详解}\ 先验证第一式：$y_1'=-c_1\sin(x-c_2)$，而右端 $y_2=-c_1\sin(x-c_2)$，两者相同。再验证第二式：$y_2'=-c_1\cos(x-c_2)$，右端 $-y_1=-c_1\cos(x-c_2)$，也相同。所以这组函数是解。
+
+再看常数：由和角公式
+
+\[
+c_1\cos(x-c_2)=c_1\cos c_2\cos x+c_1\sin c_2\sin x=A\cos x+B\sin x,
+\]
+
+其中 $A=c_1\cos c_2$，$B=c_1\sin c_2$。反过来，给定 $A,B$（不同时为零），取 $c_1=\sqrt{A^2+B^2}$、$c_2=\arctan(B/A)$ 即可还原。两种写法覆盖的解集合相同，都是两个任意常数。
+
+\textbf{但两者的“常数”不是同一组数}：$A,B$ 就是 $x=0$ 处的初值 $y_1(0),y_2(0)$；而 $c_1,c_2$ 是振幅与相位，$c_1=\sqrt{y_1(x_0)^2+y_2(x_0)^2}$，$c_2=x_0-\arctan\bigl(-y_2(x_0)/y_1(x_0)\bigr)$。答卷上写哪一种都行，但不能两种混着用。
+
+\textbf{答案}\ 两式代回均恒成立；$c_1\cos(x-c_2)$ 与 $A\cos x+B\sin x$ 等价，常数个数都是 2。
+
+\textbf{自检}\ 取 $c_1=1,c_2=0$：$y_1=\cos x$，$y_2=-\sin x$。$y_1'=-\sin x=y_2$ \ding{51}；$y_2'=-\cos x=-y_1$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.2\quad 例 2：通解、定义域与奇解}
+\label{app:a2}
+
+\qbreak
+\qstem{（课件 p10 例 2）$\dfrac{\mathrm{d}y_1}{\mathrm{d}x}=2\sqrt{y_1}$，$\dfrac{\mathrm{d}y_2}{\mathrm{d}x}=y_1$。验证通解 $y_1=(x+c_1)^2$、$y_2=\tfrac13(x+c_1)^3+c_2$，以及奇解 $y_1=0,\ y_2=c$。}
+
+\textbf{考点}\ 非线性方程的定义域限制；“奇解”为什么确实不能由通解取常数得到。
+
+\textbf{关键一步}\ 第一式只含 $y_1$，先解它；检查 $\sqrt{(x+c_1)^2}=|x+c_1|$ 与 $x+c_1$ 的符号；最后看 $y_1\equiv0$ 是否可能。
+
+\textbf{详解}\ 第一式分离变量：$\mathrm{d}y_1/(2\sqrt{y_1})=\mathrm{d}x$，积分得 $\sqrt{y_1}=x+c_1$（取正支），平方得 $y_1=(x+c_1)^2$。代回验算：$y_1'=2(x+c_1)$，而 $2\sqrt{y_1}=2|x+c_1|$，两者相等\textbf{仅当} $x+c_1\ge0$。所以这条解只在 $[-c_1,+\infty)$ 上成立——这是非线性方程特有的。
+
+第二式：$y_2'=y_1=(x+c_1)^2$，积分得 $y_2=\tfrac13(x+c_1)^3+c_2$。验算 $y_2'=(x+c_1)^2=y_1$ \ding{51}。
+
+再看奇解：$y_1\equiv0$ 时第一式两边都是 $0$，成立；$y_2\equiv c$ 时第二式也是 $0=0$，成立。它能否由通解取常数得到？要 $y_1=(x+c_1)^2\equiv0$ 对区间内所有 $x$ 成立，必须 $x+c_1=0$ 对所有 $x$ 成立——不可能。所以它是通解之外的新解，即奇解。
+
+\textbf{答案}\ 通解在 $x\ge-c_1$ 上成立；奇解为 $y_1\equiv0,\ y_2\equiv c$。
+
+\textbf{自检}\ 把 $(y_1,y_2)=(0,5)$ 代入：$y_1'=0=2\sqrt0$ \ding{51}；$y_2'=0=y_1$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.3\quad 例 3：写成矩阵}
+\label{app:a3}
+
+\qbreak
+\qstem{（课件 p14 例 3）$x'=y-z$，$y'=x+y$，$z'=x+z$，未知函数为 $x(t),y(t),z(t)$。写成矩阵形式并判断是否齐次。}
+
+\textbf{考点}\ 逐行读系数；齐次判断。
+
+\textbf{关键一步}\ 按 $x,y,z$ 的顺序，把每个方程里三个系数依次抄成一行；没出现的变量系数写 $0$。
+
+\textbf{详解}\ 第一式 $x'=0\cdot x+1\cdot y+(-1)\cdot z$，系数行 $(0,1,-1)$；第二式 $y'=1\cdot x+1\cdot y+0\cdot z$，行 $(1,1,0)$；第三式 $z'=1\cdot x+0\cdot y+1\cdot z$，行 $(1,0,1)$。于是
+
+\[
+\mat{x'\\ y'\\ z'}=\mat{0&1&-1\\ 1&1&0\\ 1&0&1}\mat{x\\ y\\ z}.
+\]
+
+右端没有只依赖 $t$ 的项，故\textbf{齐次}。
+
+\textbf{答案}\ $A=\mat{0&1&-1\\1&1&0\\1&0&1}$，齐次线性系统。
+
+\textbf{自检}\ 取 $(x,y,z)=(1,0,0)$：右端 $(0,1,1)$，矩阵乘同样得 $(0,1,1)$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.4\quad 例 4：验证两解与叠加}
+\label{app:a4}
+
+\qbreak
+\qstem{（课件 p18 例 4）$\vect{Y}'=\mat{1&1\\4&1}\vect{Y}$，$\vect{Y}_1=\mat{1\\2}\mathrm{e}^{3x}$，$\vect{Y}_2=\mat{1\\-2}\mathrm{e}^{-x}$。验证两者是解，从而 $c_1\vect{Y}_1+c_2\vect{Y}_2$ 是解。}
+
+\textbf{考点}\ 解的定义；叠加原理。
+
+\textbf{关键一步}\ 对 $\vect{Y}_k=\vect{V}_k\mathrm{e}^{\lambda_k x}$，只需验证 $A\vect{V}_k=\lambda_k\vect{V}_k$——指数因子两边可约掉。
+
+\textbf{详解}\ 第一式：
+
+\[
+A\vect{Y}_1=\mat{1&1\\4&1}\mat{1\\2}\mathrm{e}^{3x}=\mat{3\\6}\mathrm{e}^{3x}=3\mat{1\\2}\mathrm{e}^{3x}=3\vect{Y}_1 ,
+\]
+
+而 $\vect{Y}_1'=3\vect{Y}_1$，故 $A\vect{Y}_1=\vect{Y}_1'$ \ding{51}。第二式：
+
+\[
+A\vect{Y}_2=\mat{1&1\\4&1}\mat{1\\-2}\mathrm{e}^{-x}=\mat{-1\\2}\mathrm{e}^{-x}=(-1)\mat{1\\-2}\mathrm{e}^{-x}=\vect{Y}_2' .
+\]
+
+两式都是齐次方程的解，由性质 2.1，任意线性组合仍是解。
+
+\textbf{答案}\ 两者都是解；$c_1\vect{Y}_1+c_2\vect{Y}_2$ 是通解（两解线性无关：Wronskian $=\det\mat{\mathrm{e}^{3x}&\mathrm{e}^{-x}\\2\mathrm{e}^{3x}&-2\mathrm{e}^{-x}}=-4\mathrm{e}^{2x}\neq0$）。
+
+\textbf{自检}\ 取 $c_1=c_2=1$：$\vect{Y}=\vect{Y}_1+\vect{Y}_2$。在 $x=0$ 处 $\vect{Y}(0)=(1,2)+(1,-2)=(2,0)$；求导得 $\vect{Y}'(0)=3(1,2)-1(1,-2)=(2,8)$；而右端
+
+\[
+A\vect{Y}(0)=\mat{1&1\\4&1}\mat{2\\0}=\mat{2\\8},
+\]
+
+两边相同 \ding{51}。这也说明：$A\vect{Y}_k=\lambda_k\vect{Y}_k$ 成立时，组合的每一项各按自己的 $\lambda$ 走，互不干扰。
+
+\qpagebreak
+\subhdr{A.5\quad 例 5：Wronskian 与通解}
+\label{app:a5}
+
+\qbreak
+\qstem{（课件 p23 例 5）$\mathrm{d}y_1/\mathrm{d}x=y_2$，$\mathrm{d}y_2/\mathrm{d}x=-y_1$；$\vect{Y}_1=(\cos x,-\sin x)^{\mathsf T}$，$\vect{Y}_2=(\sin x,\cos x)^{\mathsf T}$。算 $W$ 并写通解。}
+
+\textbf{考点}\ Wronskian 的计算；由基本解组写通解。
+
+\textbf{关键一步}\ 按列排：第一列 $\vect{Y}_1$，第二列 $\vect{Y}_2$，算 $2\times2$ 行列式。
+
+\textbf{详解}\
+
+\[
+W(x)=\det\mat{\cos x & \sin x\\ -\sin x & \cos x}
+=\cos^2x-(-\sin x)\sin x=\cos^2x+\sin^2x=1\neq0 .
+\]
+
+两个解在每一点都不为零，故线性无关，构成基本解组；由定理 2.5，
+
+\[
+\vect{Y}=C_1\vect{Y}_1+C_2\vect{Y}_2
+\ \Longrightarrow\
+y_1=C_1\cos x+C_2\sin x,\quad y_2=-C_1\sin x+C_2\cos x .
+\]
+
+\textbf{答案}\ $W\equiv1$；通解如上。
+
+\textbf{自检}\ 取 $C_1=1,C_2=0$：$y_1=\cos x,\ y_2=-\sin x$，与 A.1 的验证一致 \ding{51}。初值 $y_1(0)=C_1,\ y_2(0)=C_2$，说明常数就是初值，任意初值都能取到。
+
+\qpagebreak
+\subhdr{A.6\quad 例 6：一般线性方程的五步变换}
+\label{app:a6}
+
+\qbreak
+\qstem{（课件 p26--p29 例 6）$b_0(t)y^{(n)}+b_1(t)y^{(n-1)}+\cdots+b_{n-1}(t)y'+b_n(t)y=g(t)$，$b_0\neq0$，初值 $y(t_0)=c_0,\dots,y^{(n-1)}(t_0)=c_{n-1}$。化为 $\vect{Y}'=A(t)\vect{Y}+\vect{F}(t)$。}
+
+\textbf{考点}\ 归一化；变量替换；系数矩阵的构造（尤其最后一行的倒序）。
+
+\textbf{关键一步}\ 先除 $b_0$ 把最高阶导数解出来，再设 $y_k=y^{(k-1)}$；最后一行按“$y_1$ 乘 $a_n$”的顺序排。
+
+\textbf{详解}\ 第一步归一化：$y^{(n)}=a_1y^{(n-1)}+\cdots+a_{n-1}y'+a_ny+f$，其中 $a_j=-b_j/b_0$，$f=g/b_0$。
+
+第二步设 $y_1=y,\ y_2=y',\ \dots,\ y_n=y^{(n-1)}$，于是 $y_k'=y_{k+1}$（$k=1,\dots,n-1$）。
+
+第三步写最后一式：$y_n'=y^{(n)}=a_1y_n+a_2y_{n-1}+\cdots+a_ny_1+f$，按 $y_1,\dots,y_n$ 的顺序重排：
+
+\[
+y_n'=a_ny_1+a_{n-1}y_2+\cdots+a_1y_n+f .
+\]
+
+第四步拼矩阵：前 $n-1$ 行是移位，最后一行是上面的系数：
+
+\[
+A=\begin{pmatrix}
+0&1&0&\cdots&0\\
+0&0&1&\cdots&0\\
+\vdots& & &\ddots&\vdots\\
+0&0&0&\cdots&1\\
+a_n&a_{n-1}&a_{n-2}&\cdots&a_1
+\end{pmatrix},\quad
+\vect{F}=\mat{0\\ \vdots\\ 0\\ f},\quad
+\vect{Y}(t_0)=\mat{c_0\\ \vdots\\ c_{n-1}}.
+\]
+
+\textbf{答案}\ 如上；关键是最后一行按 $y_1,\dots,y_n$ 记为 $(a_n,\dots,a_1)$。
+
+\textbf{自检（$n=3$）}\ 取 $y'''=y''+2y'+3y$，即 $a_1=1,a_2=2,a_3=3$，最后一行应为 $(3,2,1)$：
+
+\[
+A=\mat{0&1&0\\0&0&1\\3&2&1}.
+\]
+
+验证：第一行给 $y_1'=y_2$ \ding{51}；第二行给 $y_2'=y_3$ \ding{51}；第三行给 $y_3'=3y_1+2y_2+y_3=3y+2y'+y''$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.7\quad 例 7：含 $t$ 的二阶方程}
+\label{app:a7}
+
+\qbreak
+\qstem{（课件 p30--p31 例 7）$t^4\dfrac{\mathrm{d}^2x}{\mathrm{d}t^2}+\sin t\dfrac{\mathrm{d}x}{\mathrm{d}t}-4x=\ln t$，$t>0$。化为一阶线性组并写成矩阵形式。}
+
+\textbf{考点}\ 归一化后设变量；变系数矩阵 $A(t)$。
+
+\textbf{关键一步}\ 先除 $t^4$：$x''=\dfrac{4}{t^4}x-\dfrac{\sin t}{t^4}x'+\dfrac{\ln t}{t^4}$；再令 $y=x'$。
+
+\textbf{详解}\ 设 $y=x'$，则 $y'=x''$，于是
+
+\[
+\begin{cases}
+x'=y,\\[3pt]
+y'=\dfrac{4}{t^4}x-\dfrac{\sin t}{t^4}y+\dfrac{\ln t}{t^4}.
+\end{cases}
+\]
+
+写成矩阵：
+
+\[
+\mat{x'\\ y'}=\mat{0&1\\[2pt] \dfrac{4}{t^4}&-\dfrac{\sin t}{t^4}}\mat{x\\ y}+\mat{0\\[2pt]\dfrac{\ln t}{t^4}}.
+\]
+
+右端有只依赖 $t$ 的项，故\textbf{非齐次}。
+
+\textbf{答案}\ 如上；$A(t)$ 的两行分别来自 $x'=y$ 与归一化后的 $x''$。
+
+\textbf{自检}\ 取 $t=1$：$x''=4x-(\sin1)x'+\ln1=4x-0.8415x'$，与矩阵在 $t=1$ 的取值一致 \ding{51}。
+
+\qpagebreak
+\subhdr{A.8\quad 作业：把 $y'''=y''-x^2(y')^2$ 化为一阶组}
+\label{app:a8}
+
+\qbreak
+\qstem{（课件 p37 作业 I）把方程 $y'''=y''-x^2(y')^2$ 化为等价的一阶方程组。课件原注：It's not a linear system。}
+
+\textbf{考点}\ 一般变换在非线性方程上的用法；为什么不能写成 $A\vect{Y}$。
+
+\textbf{关键一步}\ 设 $y_1=y,\ y_2=y',\ y_3=y''$；前两式照抄，第三式把 $y'''$ 用原方程替换。
+
+\textbf{详解}\ 由定义：$y_1'=y_2$，$y_2'=y_3$。第三式：$y_3'=y'''$，而原方程给 $y'''=y''-x^2(y')^2$，用新变量代掉 $y''$ 与 $y'$：
+
+\[
+y_3'=y_3-x^2y_2^2 .
+\]
+
+于是
+
+\[
+\begin{cases}
+y_1'=y_2,\\[3pt]
+y_2'=y_3,\\[3pt]
+y_3'=y_3-x^2y_2^2 .
+\end{cases}
+\]
+
+\textbf{为什么拼不成 $A(x)\vect{Y}$？}右端对 $y_2$ 是二次的（$y_2^2$），不是线性组合，所以只能写成 $\vect{Y}'=\vect{F}(x,\vect{Y})$，其中
+
+\[
+\vect{F}(x,\vect{Y})=\bigl(y_2,\ y_3,\ y_3-x^2y_2^2\bigr)^{\mathsf T}.
+\]
+
+第一、二行仍是“移位”形式，与 §6.4 的模板一样；非线性的部分只落在第三行。
+
+\textbf{答案}\ 如上三式；是非线性系统，不能写成矩阵乘向量。
+
+\textbf{自检}\ 在 $x=0$ 处非线性项消失，系统退化为 $y'''=y''$，其解为 $y=c_1+c_2x+c_3\mathrm{e}^{x}$。代进系统：$y_1=c_1+c_2x+c_3\mathrm{e}^x$，$y_2=c_2+c_3\mathrm{e}^x$，$y_3=c_3\mathrm{e}^x$。三式验证：$y_1'=c_2+c_3\mathrm{e}^x=y_2$ \ding{51}；$y_2'=c_3\mathrm{e}^x=y_3$ \ding{51}；$y_3'=c_3\mathrm{e}^x=y_3-x^2y_2^2\big|_{x=0}$ \ding{51}。
+
+\flowerrule
+
+{\small\color{inkgray}
+依据课件：\texttt{13\_DE\_systems.pdf}（37 页，2026-09-24，W.Y., DLUT）。页码为该 PDF 页序。
+缺口 10 条见 §10；示意图两张为本文重绘（弹簧-质量、并联 LRC），元件与端口按课件 Figure 1、Figure 2 的约定标注。}
+
+\end{document}

@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-09 2026-11-09 12:09（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-09 2026-11-09 15:19（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -381,7 +381,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（6080 个文件）
+## 3. 文件直达 URL 索引（6092 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -587,7 +587,7 @@
 - `plan/考试日程.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2475 个）
+### subjects（2481 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -702,6 +702,12 @@
 - `subjects/02-光学/作业/20261010-例题1.4-第一镜高斯式-学习者作答.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261010-%E4%BE%8B%E9%A2%981.4-%E7%AC%AC%E4%B8%80%E9%95%9C%E9%AB%98%E6%96%AF%E5%BC%8F-%E5%AD%A6%E4%B9%A0%E8%80%85%E4%BD%9C%E7%AD%94.jpg
 - `subjects/02-光学/作业/20261010-例题1.4-第二镜高斯式-学习者作答.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261010-%E4%BE%8B%E9%A2%981.4-%E7%AC%AC%E4%BA%8C%E9%95%9C%E9%AB%98%E6%96%AF%E5%BC%8F-%E5%AD%A6%E4%B9%A0%E8%80%85%E4%BD%9C%E7%AD%94.jpg
 - `subjects/02-光学/作业/20261010-例题1.4-高斯法合成结果-学习者作答.jpg` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261010-%E4%BE%8B%E9%A2%981.4-%E9%AB%98%E6%96%AF%E6%B3%95%E5%90%88%E6%88%90%E7%BB%93%E6%9E%9C-%E5%AD%A6%E4%B9%A0%E8%80%85%E4%BD%9C%E7%AD%94.jpg
+- `subjects/02-光学/作业/20261109-外教Polarization-作业解答与速查.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E4%BD%9C%E4%B8%9A%E8%A7%A3%E7%AD%94%E4%B8%8E%E9%80%9F%E6%9F%A5.aux
+- `subjects/02-光学/作业/20261109-外教Polarization-作业解答与速查.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E4%BD%9C%E4%B8%9A%E8%A7%A3%E7%AD%94%E4%B8%8E%E9%80%9F%E6%9F%A5.log
+- `subjects/02-光学/作业/20261109-外教Polarization-作业解答与速查.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E4%BD%9C%E4%B8%9A%E8%A7%A3%E7%AD%94%E4%B8%8E%E9%80%9F%E6%9F%A5.out
+- `subjects/02-光学/作业/20261109-外教Polarization-作业解答与速查.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E4%BD%9C%E4%B8%9A%E8%A7%A3%E7%AD%94%E4%B8%8E%E9%80%9F%E6%9F%A5.pdf
+- `subjects/02-光学/作业/20261109-外教Polarization-作业解答与速查.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E4%BD%9C%E4%B8%9A%E8%A7%A3%E7%AD%94%E4%B8%8E%E9%80%9F%E6%9F%A5.tex
+- `subjects/02-光学/作业/20261109-外教Polarization-原题-HomeworkTask.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261109-%E5%A4%96%E6%95%99Polarization-%E5%8E%9F%E9%A2%98-HomeworkTask.docx
 - `subjects/02-光学/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/02-光学/作业/第三课-课件页/p06-球面不成完善像.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/%E7%AC%AC%E4%B8%89%E8%AF%BE-%E8%AF%BE%E4%BB%B6%E9%A1%B5/p06-%E7%90%83%E9%9D%A2%E4%B8%8D%E6%88%90%E5%AE%8C%E5%96%84%E5%83%8F.png
 - `subjects/02-光学/作业/第三课-课件页/p07-基本关系-Snell与正余弦定理.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/%E7%AC%AC%E4%B8%89%E8%AF%BE-%E8%AF%BE%E4%BB%B6%E9%A1%B5/p07-%E5%9F%BA%E6%9C%AC%E5%85%B3%E7%B3%BB-Snell%E4%B8%8E%E6%AD%A3%E4%BD%99%E5%BC%A6%E5%AE%9A%E7%90%86.png
@@ -5117,7 +5123,7 @@
 - `upstream/tutor/examples/subjects/math.yml` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/examples/subjects/math.yml
 - `upstream/tutor/subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/upstream/tutor/subjects/INDEX.md
 
-### output（193 个）
+### output（199 个）
 
 - `output/AI量化交易讲义/AI量化交易成熟技术清单.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E6%B8%85%E5%8D%95.xlsx
 - `output/AI量化交易讲义/AI量化交易成熟技术讲义.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E8%AE%B2%E4%B9%89/AI%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%88%90%E7%86%9F%E6%8A%80%E6%9C%AF%E8%AE%B2%E4%B9%89.docx
@@ -5285,6 +5291,10 @@
 - `output/并矢讲义-预览-20261103/p-09.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%B9%B6%E7%9F%A2%E8%AE%B2%E4%B9%89-%E9%A2%84%E8%A7%88-20261103/p-09.png
 - `output/并矢讲义-预览-20261103/p-10.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%B9%B6%E7%9F%A2%E8%AE%B2%E4%B9%89-%E9%A2%84%E8%A7%88-20261103/p-10.png
 - `output/并矢讲义-预览-20261103/p-11.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E5%B9%B6%E7%9F%A2%E8%AE%B2%E4%B9%89-%E9%A2%84%E8%A7%88-20261103/p-11.png
+- `output/校外劳动课-20261109/checks.json` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/output/%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-20261109/checks.json
+- `output/校外劳动课-20261109/教学记录表-校外劳动课-已填时间地点.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-20261109/%E6%95%99%E5%AD%A6%E8%AE%B0%E5%BD%95%E8%A1%A8-%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-%E5%B7%B2%E5%A1%AB%E6%97%B6%E9%97%B4%E5%9C%B0%E7%82%B9.xlsx
+- `output/校外劳动课-20261109/校外劳动课-时间地点卡.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-20261109/%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-%E6%97%B6%E9%97%B4%E5%9C%B0%E7%82%B9%E5%8D%A1.png
+- `output/校外劳动课-20261109/预览-表头与上课时间地点.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E6%A0%A1%E5%A4%96%E5%8A%B3%E5%8A%A8%E8%AF%BE-20261109/%E9%A2%84%E8%A7%88-%E8%A1%A8%E5%A4%B4%E4%B8%8E%E4%B8%8A%E8%AF%BE%E6%97%B6%E9%97%B4%E5%9C%B0%E7%82%B9.png
 - `output/比赛报名-20261108/参赛人员信息表-20261108.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E6%AF%94%E8%B5%9B%E6%8A%A5%E5%90%8D-20261108/%E5%8F%82%E8%B5%9B%E4%BA%BA%E5%91%98%E4%BF%A1%E6%81%AF%E8%A1%A8-20261108.pdf
 - `output/比赛报名-20261108/参赛人员信息表-20261108.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E6%AF%94%E8%B5%9B%E6%8A%A5%E5%90%8D-20261108/%E5%8F%82%E8%B5%9B%E4%BA%BA%E5%91%98%E4%BF%A1%E6%81%AF%E8%A1%A8-20261108.xlsx
 - `output/第四章作业3-约当引理-图片-20261103/第四章作业3-约当引理-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-%E5%9B%BE%E7%89%87-20261103/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E4%BD%9C%E4%B8%9A3-%E7%BA%A6%E5%BD%93%E5%BC%95%E7%90%86-1.png
@@ -5307,6 +5317,8 @@
 - `output/马原第5组-底线思维-20261104/模板候选/候选C_不忘初心_29页.pptx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E6%A8%A1%E6%9D%BF%E5%80%99%E9%80%89/%E5%80%99%E9%80%89C_%E4%B8%8D%E5%BF%98%E5%88%9D%E5%BF%83_29%E9%A1%B5.pptx
 - `output/马原第5组-底线思维-20261104/第5组_任务包认领图.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E4%BB%BB%E5%8A%A1%E5%8C%85%E8%AE%A4%E9%A2%86%E5%9B%BE.png
 - `output/马原第5组-底线思维-20261104/第5组_底线思维_任务认领表.xlsx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E4%BB%BB%E5%8A%A1%E8%AE%A4%E9%A2%86%E8%A1%A8.xlsx
+- `output/马原第5组-底线思维-20261104/第5组_底线思维_答辩卡.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%AD%94%E8%BE%A9%E5%8D%A1.docx
+- `output/马原第5组-底线思维-20261104/第5组_底线思维_答辩卡.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%AD%94%E8%BE%A9%E5%8D%A1.pdf
 - `output/马原第5组-底线思维-20261104/第5组_底线思维_组长执行手册.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%BB%84%E9%95%BF%E6%89%A7%E8%A1%8C%E6%89%8B%E5%86%8C.docx
 - `output/马原第5组-底线思维-20261104/第5组_底线思维_组长执行手册.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E7%BB%84%E9%95%BF%E6%89%A7%E8%A1%8C%E6%89%8B%E5%86%8C.pdf
 - `output/马原第5组-底线思维-20261104/第5组_底线思维_逐字稿_12分钟.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/output/%E9%A9%AC%E5%8E%9F%E7%AC%AC5%E7%BB%84-%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4-20261104/%E7%AC%AC5%E7%BB%84_%E5%BA%95%E7%BA%BF%E6%80%9D%E7%BB%B4_%E9%80%90%E5%AD%97%E7%A8%BF_12%E5%88%86%E9%92%9F.docx

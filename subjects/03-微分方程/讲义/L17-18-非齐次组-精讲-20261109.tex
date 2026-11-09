@@ -1,0 +1,566 @@
+%=====================================================================
+%  非齐次线性方程组：参数变易法与待定系数法
+%  精讲讲义 · Lecture 17--18
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+
+\settags{L17--18 非齐次组}{微分方程}
+
+\renewcommand{\qbreak}{\needspace{0.26\textheight}}
+\newcommand{\qpagebreak}{\needspace{0.92\textheight}}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\begin{document}
+
+\doctitle{非齐次线性方程组}%
+{参数变易法与待定系数法}%
+{依据：课件 \texttt{17\_18\_Nonhomogeneous-linear-systems.pdf}（49 页，2026-10-15 / 10-20，W.Y., DLUT）\\
+页码为该 PDF 的页序\\
+正文给两条方法的判据与设形规则，例题与作业的详解统一在附录 A}
+
+\callout{\textbf{先读这一段。}前三讲都在解 $\vect{Y}'=A\vect{Y}$（齐次）。这一讲加一个外力项：$\vect{Y}'=A(x)\vect{Y}+\vect{F}(x)$。结构上只有一句话——\textbf{通解 $=$ 齐次通解 $+$ 一个特解}（§1）。力气全花在"怎么找一个特解"上，两条路：\textbf{参数变易法}（把常数换成函数，万能但要积分，§2--§3）与\textbf{待定系数法}（猜形状、比较系数，快但只对常系数与特定 $\vect{F}$，§4）。§5 给出选路的判据，§6 用一道题把三条路走一遍。}
+
+%=====================================================================
+\hdr{§0}{问题、结构与两条路}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.16\linewidth}p{0.26\linewidth}p{0.34\linewidth}p{0.10\linewidth}@{}}
+\thead{方法} & \thead{前提} & \thead{代价} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.16\linewidth}p{0.26\linewidth}p{0.34\linewidth}p{0.10\linewidth}@{}}
+参数变易（逐分量） & 已知基本解组 & 解 $n$ 元一次方程组 + 积分 & p6--p10\\
+参数变易（矩阵） & 已知 $\Phi$ 或 $\mathrm{e}^{Ax}$ & 求 $\Phi^{-1}$ + 积分 & p11--p16\\
+待定系数 & $A$ 常矩阵，$\vect{F}$ 是"多项式×指数×三角" & 猜形 + 解矩阵方程 & p18--p28\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是路线台账；两条参数变易本质是同一条（§3.1 说明），待定系数则是另一条思路。
+
+%=====================================================================
+\hdr{§1}{解的结构：通解 = 齐次通解 + 一个特解}
+
+\subhdr{1.1 定理（p4）}
+
+设
+
+\[
+\vect{Y}'=A(x)\vect{Y}+\vect{F}(x)\tag{N}
+\]
+
+的系数矩阵与 $\vect{F}$ 连续。则 (N) 的通解是
+
+\[
+\vect{Y}(x)=\vect{Y}_c(x)+\vect{Y}_p(x),
+\]
+
+其中 $\vect{Y}_c$ 是齐次方程 $\vect{Y}'=A\vect{Y}$ 的通解（$\sum c_k\vect{Y}_k$ 或 $\Phi(x)\vect{C}$），$\vect{Y}_p$ 是 (N) 的\textbf{任意一个}特解。
+
+\subhdr{1.2 为什么（L13 定理 2.2 的复习）}
+
+设 $\vect{Y}$ 是 (N) 的任一解，$\vect{Y}_p$ 是已知的一个特解。令 $\vect{W}=\vect{Y}-\vect{Y}_p$，则
+
+\[
+\vect{W}'-A\vect{W}=(\vect{Y}'-A\vect{Y})-(\vect{Y}_p'-A\vect{Y}_p)=\vect{F}-\vect{F}=\vect{0},
+\]
+
+所以 $\vect{W}$ 是齐次解，即 $\vect{W}=\vect{Y}_c$。反方向由叠加原理直接得到。
+
+\textbf{这个证明只有一个动作：两个解相减，右端消掉。}后面所有"求特解"的工作，都是为了拿到那一个 $\vect{Y}_p$；齐次部分不用重算。
+
+\subhdr{1.3 一个常见的误解}
+
+$\vect{Y}_p$ \textbf{不唯一}：任何特解加一个齐次解仍是特解。所以两条方法给出的"特解"可能长得不一样，但通解一定相同。答卷上不必追求与答案逐字相同，只要代回原方程成立即可。
+
+%=====================================================================
+\hdr{§2}{参数变易法 I：逐分量版（p6）}
+
+\subhdr{2.1 设形}
+
+设 $\{\vect{Y}_1,\dots,\vect{Y}_n\}$ 是齐次方程的基本解组。把通解 $\sum c_k\vect{Y}_k$ 里的\textbf{常数换成函数}：
+
+\[
+\vect{Y}_p(x)=c_1(x)\vect{Y}_1(x)+\cdots+c_n(x)\vect{Y}_n(x).
+\]
+
+这正是"参数变易"（variation of parameters）这个名字的来历——L8 的标量常数变易法是它在 $n=1$ 时的样子。
+
+\subhdr{2.2 关键一步：$c_k'$ 满足的方程}
+
+对 $\vect{Y}_p$ 求导：
+
+\[
+\vect{Y}_p'=\sum_k c_k'\vect{Y}_k+\sum_k c_k\vect{Y}_k'
+=\sum_k c_k'\vect{Y}_k+A\sum_k c_k\vect{Y}_k
+=\sum_k c_k'\vect{Y}_k+A\vect{Y}_p .
+\]
+
+最后一步用了 $\vect{Y}_k'=A\vect{Y}_k$（它们是齐次解）。要 $\vect{Y}_p$ 满足 (N)，必须
+
+\[
+\vect{Y}_p'=A\vect{Y}_p+\vect{F}
+\ \Longleftrightarrow\
+\sum_{k=1}^{n}c_k'(x)\vect{Y}_k(x)=\vect{F}(x).\tag{$\star$}
+\]
+
+\textbf{课件 p6 从"$\vect{Y}_p'=A\vect{Y}_p+\vect{F}$"直接跳到 ($\star$)，中间省略的就是"$c_k$ 那一半正好等于 $A\vect{Y}_p$、与右边抵消"}。
+
+\subhdr{2.3 为什么 ($\star$) 一定有唯一解}
+
+把 ($\star$) 看成关于 $c_1',\dots,c_n'$ 的线性方程组，系数矩阵正是 $\Phi=(\vect{Y}_1,\dots,\vect{Y}_n)$：
+
+\[
+\Phi(x)\vect{C}'(x)=\vect{F}(x),\qquad \vect{C}'=(c_1',\dots,c_n')^{\mathsf T}.
+\]
+
+由于 $\{\vect{Y}_k\}$ 是基本解组，$\det\Phi(x)=W(x)\neq0$，所以 $\vect{C}'=\Phi^{-1}\vect{F}$ 唯一确定。这就是逐分量版与矩阵版是同一件事的理由。
+
+\subhdr{2.4 操作四步}
+
+\begin{enumerate}
+  \item 求齐次基本解组 $\vect{Y}_1,\dots,\vect{Y}_n$（用 L14--15 的三情形）。
+  \item 写出 ($\star$)，解出 $c_1',\dots,c_n'$。
+  \item 积分得 $c_k(x)$（积分常数取 $0$，因为只要一个特解）。
+  \item 代回 $\vect{Y}_p=\sum c_k\vect{Y}_k$，再加齐次通解。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§3}{参数变易法 II：矩阵版（p11--p13）}
+
+\subhdr{3.1 设形与方程}
+
+设 $\Phi(x)$ 是齐次方程的基本解矩阵，齐次通解是 $\Phi(x)\vect{C}$。把常向量换成向量函数：
+
+\[
+\vect{Y}_p(x)=\Phi(x)\vect{C}(x).
+\]
+
+求导：
+
+\[
+\vect{Y}_p'=\Phi'(x)\vect{C}(x)+\Phi(x)\vect{C}'(x)=A\Phi\vect{C}+\Phi\vect{C}'
+=A\vect{Y}_p+\Phi\vect{C}' .
+\]
+
+要它满足 (N)，必须
+
+\[
+\Phi(x)\vect{C}'(x)=\vect{F}(x)
+\ \Longleftrightarrow\
+\vect{C}'(x)=\Phi^{-1}(x)\vect{F}(x).\tag{3.1}
+\]
+
+\subhdr{3.2 积分与通解（p12）}
+
+积分：
+
+\[
+\vect{C}(x)=\int_{x_0}^{x}\Phi^{-1}(s)\vect{F}(s)\,\mathrm{d}s+\vect{C}_1 .
+\]
+
+代回：
+
+\[
+\vect{Y}_p(x)=\Phi(x)\int_{x_0}^{x}\Phi^{-1}(s)\vect{F}(s)\,\mathrm{d}s,
+\qquad
+\vect{Y}(x)=\underbrace{\Phi(x)\vect{C}}_{\text{齐次通解}}+\underbrace{\Phi(x)\int_{x_0}^{x}\Phi^{-1}(s)\vect{F}(s)\,\mathrm{d}s}_{\text{一个特解}} .
+\]
+
+\textbf{为什么积分下限可以任取？}因为 $\Phi\vect{C}_1$ 已经被齐次通解吸收；取下限 $x_0$ 是为了让特解在 $x=x_0$ 处为零，方便接初值。
+
+\subhdr{3.3 初值问题（p12--p13）}
+
+若给 $\vect{Y}(x_0)=\vect{Y}_0$，则
+
+\[
+\vect{Y}(x)=\Phi(x)\Bigl(\Phi^{-1}(x_0)\vect{Y}_0+\int_{x_0}^{x}\Phi^{-1}(s)\vect{F}(s)\,\mathrm{d}s\Bigr).
+\]
+
+常系数时取 $\Phi(x)=\mathrm{e}^{Ax}$，上式化为
+
+\[
+\boxed{\ \vect{Y}(x)=\mathrm{e}^{A(x-x_0)}\vect{Y}_0+\int_{x_0}^{x}\mathrm{e}^{A(x-s)}\vect{F}(s)\,\mathrm{d}s\ }.
+\]
+
+第二项叫\textbf{卷积项}：它把每个时刻 $s$ 的外力 $\vect{F}(s)$ 用 $\mathrm{e}^{A(x-s)}$ 传播到 $x$，再累加。这个公式是这一讲最有用的结论——只要知道 $\mathrm{e}^{Ax}$，非齐次初值问题一步写出。
+
+\subhdr{3.4 为什么 $\Phi^{-1}$ 一定存在}
+
+$\det\Phi(x)=W(x)$ 是基本解组的 Wronskian。由 L13 定理 2.3，$W$ 在区间上处处非零（一旦某点非零就处处非零），所以 $\Phi^{-1}$ 处处存在。课件 p12 写 "$\det\Phi(x)\neq0$ for all admissible $x$"，理由就在这里。
+
+%=====================================================================
+\hdr{§4}{待定系数法（p18--p28）}
+
+\subhdr{4.1 三条适用条件（p18）}
+
+\begin{enumerate}
+  \item \textbf{$A$ 是常矩阵}。变系数时"猜形"里的指数底数会随 $x$ 变，比较系数无从谈起。
+  \item \textbf{$\vect{F}$ 的元素是多项式、指数、正弦余弦，或它们的有限和与积}。其它函数（如 $\ln x$、$1/x$）猜不出来。
+  \item \textbf{系数向量待定}：与标量情形不同，这里的"系数"是 $n$ 维\textbf{向量}。
+\end{enumerate}
+
+\subhdr{4.2 设形规则（p27--p28）}
+
+\textbf{Case 1}（多项式 × 指数）：
+
+\[
+\vect{F}(x)=\mathrm{e}^{rx}\bigl(\alpha_0x^m+\alpha_1x^{m-1}+\cdots+\alpha_m\bigr),\qquad \alpha_i\in\mathbb{R}^n .
+\]
+
+设
+
+\[
+\vect{Y}_p(x)=\mathrm{e}^{rx}\bigl(\gamma_0x^k+\gamma_1x^{k-1}+\cdots+\gamma_k\bigr),
+\qquad
+k=\begin{cases}
+m, & r\text{ 不是 }A\text{ 的特征值},\\
+m+\text{（}r\text{ 的重数）}, & r\text{ 是 }A\text{ 的特征值}.
+\end{cases}
+\]
+
+\textbf{Case 2}（三角）：
+
+\[
+\vect{F}(x)=\mathrm{e}^{rx}\bigl(P_m(x)\cos sx+Q_m(x)\sin sx\bigr),
+\]
+
+设 $\vect{Y}_p=\mathrm{e}^{rx}\bigl(\Gamma_k(x)\cos sx+\mathrm{N}_k(x)\sin sx\bigr)$，其中 $\Gamma_k,\mathrm{N}_k$ 是 $k$ 次向量多项式，$k$ 的取法同上——判据是 $r+\mathrm{i}s$ 是不是 $A$ 的特征值。
+
+\subhdr{4.3 "共振"到底在加什么}
+
+规则里 $k=m+\text{重数}$ 的那一项，与标量方程里"共振时乘 $x$"是同一件事。\textbf{为什么必须加}：若 $r$ 是特征值，把 $\mathrm{e}^{rx}\gamma_0x^m$ 代进去，最高次项会给出 $(A-rE)\gamma_0=0$——这个方程非零解要求 $\gamma_0$ 是特征向量，但 $\gamma_0$ 同时还要匹配 $\vect{F}$ 的方向，一般做不到。加一次幂次，让最高次项先被 $(A-rE)$ 吃掉，才能解出系数。
+
+\subhdr{4.4 比较系数得到的是一组矩阵方程}
+
+以 Case 1 的 $m=1$、$r$ 不是特征值为例：设 $\vect{Y}_p=\alpha x+\beta$，代入 $\vect{Y}_p'=A\vect{Y}_p+\vect{F}$ 得
+
+\[
+\alpha=A(\alpha x+\beta)+\gamma x+\delta
+\ \Longrightarrow\
+\begin{cases}
+A\alpha+\gamma=0, & (x\text{ 的系数})\\
+\alpha=A\beta+\delta, & (\text{常数项})
+\end{cases}
+\]
+
+先解第一式得 $\alpha=-A^{-1}\gamma$（$r=0$ 不是特征值时 $A$ 可逆），再解第二式得 $\beta=A^{-1}(\alpha-\delta)$。
+
+\textbf{共振时 $A$ 不可逆}，第一式变成 $A\alpha=-\gamma$，它有解的条件是 $-\gamma\in\operatorname{Range}(A)$——这就是课件 p25、p39 里那个"相容性比式"的来源（见 §4.6）。
+
+\subhdr{4.5 与标量待定系数法逐条对照}
+
+这一节的方法不是新东西，是 L8/L11 标量待定系数法的"向量化"。下表把两边逐条对上：
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.18\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+\thead{} & \thead{标量（L8/L11）} & \thead{方程组（本讲）}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.18\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+方程 & $y''+py'+qy=f$ & $\vect{Y}'=A\vect{Y}+\vect{F}$\\
+齐次解 & 两个基 $y_1,y_2$ & $\Phi$ 的列\\
+设形 & $y_p=\mathrm{e}^{rx}P_m(x)$ & $\vect{Y}_p=\mathrm{e}^{rx}\bigl(\gamma_0x^k+\cdots+\gamma_k\bigr)$\\
+“系数” & 数 $a_i$ & 向量 $\gamma_i\in\mathbb{R}^n$\\
+共振判据 & $r$ 是特征根 & $r$ 是 $A$ 的特征值\\
+共振处理 & 乘 $x^{(\text{重数})}$ & $k=m+(\text{重数})$\\
+定系数 & 比较同次幂 & 比较同次幂，得到\textbf{矩阵方程}\\
+解方程 & 一元一次 & $n$ 元一次（$A$ 奇异时要验相容性）\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是对照台账，不承载推导；它让你把已经会的标量流程直接搬过来，只改两处：\textbf{系数变向量}、\textbf{方程变矩阵方程}。
+
+\subhdr{4.6 相容性条件：为什么会出现一个比式}
+
+当 $A$ 奇异时，$A\alpha=-\gamma$ 不一定有解。判断办法是看增广矩阵的秩：
+
+\[
+\rank(A)=\rank(A\mid-\gamma).
+\]
+
+若 $A$ 的秩是 $n-1$，这个条件化成一个标量方程（例如 $2\beta_1+\beta_2=9$）。课件 p25 写 "$\alpha_1+5=-2\alpha_1+8$"、p39 写 "$-5:2=(2\alpha_1-3):(-\alpha_1)$"，都是这个秩条件的具体化——\textbf{它们不是新公式，是"方程要有解"的约束}。
+
+%=====================================================================
+\hdr{§5}{两条方法怎么选}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.20\linewidth}p{0.36\linewidth}p{0.34\linewidth}@{}}
+\thead{看什么} & \thead{参数变易} & \thead{待定系数}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.20\linewidth}p{0.36\linewidth}p{0.34\linewidth}@{}}
+$A$ 是否常矩阵 & 不限 & 必须常矩阵\\
+$\vect{F}$ 的形状 & 不限 & 只能多项式×指数×三角\\
+要不要积分 & 要（可能很难） & 不要，只解代数方程\\
+要不要猜 & 不用，有公式 & 要猜，猜错白做\\
+$\mathrm{e}^{Ax}$ 已有 & 直接用（最省） & 不必用\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是判据台账；两条方法的结论一定一致（最多差一个齐次解），所以\textbf{可以互相验算}。
+
+%=====================================================================
+\hdr{§6}{一道题的三种做法（p32--p48）}
+
+课件用同一道题演示了三条路，值得单独说，因为它把"什么时候用哪条"讲活了。题目是
+
+\[
+x''=-2x'-5y+3,\qquad y'=x'+2y,\qquad x(0)=0,\ x'(0)=0,\ y(0)=1 .
+\]
+
+\textbf{做法一：化成一阶组 + 待定系数}（p32--p40）。令 $x_1=x,\ x_2=x',\ x_3=y$，得 $3\times3$ 常系数系统，外力是常向量 $(0,3,0)^{\mathsf T}$。因为 $0$ 是特征值（课件 p34 算出 $\lambda=0$），按 §4.2 的规则要设 $\vect{X}_p=\alpha t+\beta$（$m=0$，重数 $1$，故 $k=1$）。代进去得到 $A\alpha=0$、$A\beta+\gamma=\alpha$，再由相容性定出 $\alpha=(-6,0,0)$、$\beta=(0,-6,3)$。
+
+\textbf{做法二：化成一阶组 + 参数变易}（p41--p45）。先算 $\Phi$ 与 $\Phi^{-1}$，再算 $\vect{C}'=\Phi^{-1}\vect{F}$，积分后乘回去。课件把 $\Phi^{-1}\vect{F}$ 的三个分量都写出来了，积分也不难——因为外力是常数向量。
+
+\textbf{做法三：化回二阶方程}（p46--p48）。从 $y'=x'+2y$ 解出 $x'=y'-2y$，再求导得 $x''=y''-2y'$，代入第一式得 $y''+y=3$，用标量方法解出 $y$，再回代求 $x$。
+
+\textbf{三条路给出的答案相同}（p45、p48）：
+
+\[
+x(t)=-2-6t+2\cos t+6\sin t,\qquad y(t)=3-2\cos t+2\sin t .
+\]
+
+\textbf{什么时候选哪条}：题目已经是一阶组、且外力形状简单——走做法一；外力复杂或 $A$ 变系数——走做法二；原题本来就是二阶方程、且能消元——走做法三（少一次求逆）。课件把三条都走一遍，是为了让你看到"同一件事的不同代价"，不是让你每题都走三遍。
+
+%=====================================================================
+\hdr{§7}{作业（p49）}
+
+\qbreak
+\qstem{（课件 p49）用参数变易法与待定系数法各解一次：
+$y_1'=-2y_1-2y_2+2y_3+2x+3$，$y_2'=-3y_1+y_2-4y_3+3x-1$，$y_3'=-3y_1+2y_2-5y_3+3x-2$。}
+\par\textbf{考点}：常系数 $3\times3$、多项式外力；两种方法互验。
+\par\textbf{关键一步}：特征值 $-1,-2,-3$ 互异；外力是一次多项式且 $0$ 不是特征值，故设 $\vect{Y}_p=\alpha x+\beta$，比较系数得 $A\alpha=-(2,3,3)^{\mathsf T}$、$\alpha=A\beta+(3,-1,-2)^{\mathsf T}$。
+\par\textbf{详解}：附录 A.7，第 \pageref{app:hw} 页。
+
+%=====================================================================
+\hdr{§8}{易错点}
+
+\begin{enumerate}
+  \item \textbf{特解不唯一}。两条方法的结果可以差一个齐次解，别以为算错了（§1.3）。
+  \item \textbf{参数变易的积分常数取零}。取非零只是把齐次解重复算进去（§2.4）。
+  \item \textbf{待定系数的"系数"是向量}，不是数；每个 $\gamma_k$ 有 $n$ 个分量（§4.1）。
+  \item \textbf{共振要乘 $x$（或提高次数）}，判据是"$r$ 是不是特征值"，不是"$\vect{F}$ 里有没有 $x$"（§4.2）。
+  \item \textbf{$A$ 奇异时先验相容性}，否则解不出 $\alpha$ 还以为是自己算错（§4.5）。
+  \item \textbf{常系数公式里的指数是 $\mathrm{e}^{A(x-s)}$}，不是 $\mathrm{e}^{Ax}\mathrm{e}^{-As}$ 随便写——两者相等，但积分时前者更好用（§3.3）。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§9}{缺口清单}
+
+\gapitem{代数跳步}{p6 从 $\vect{Y}_p'=A\vect{Y}_p+\vect{F}$ 直接跳到 $\sum c_k'\vect{Y}_k=\vect{F}$。本讲义 §2.2 补出"$c_k$ 那半正好抵消"的一步。}
+\gapitem{适用条件缺失}{p6 未说明 ($\star$) 为何有唯一解。本讲义 §2.3 补：系数矩阵是 $\Phi$，行列式非零。}
+\gapitem{证明缺口}{p12 “$\det\Phi(x)\neq0$ for all admissible $x$” 未给理由。本讲义 §3.4 补 Wronskian 处处非零。}
+\gapitem{边界处理}{p12 积分写成不定积分再加 $\vect{C}_1$，未说明 $\vect{C}_1$ 与齐次通解的关系。本讲义 §3.2 说明取下限 $x_0$ 的理由。}
+\gapitem{机制缺口}{p18 只给“只适用于常系数、不能用于任意 $\vect{F}$”，未解释原因。本讲义 §4.1 补三条理由。}
+\gapitem{机制缺口}{p23 “for a system, the corresponding form $\alpha x\mathrm{e}^x$ does not work” 未说明为何。本讲义 §4.3 补：$\alpha$ 要同时匹配 $\vect{F}$ 方向与特征向量，一般做不到。}
+\gapitem{代数跳步}{p25 “admits solutions if and only if $\alpha_1+5=-2\alpha_1+8$” 直接给条件。本讲义 §4.6 补秩判据 $\rank(A)=\rank(A\mid-\gamma)$。}
+\gapitem{记号含糊}{p27--p28 的 $k$ 规则写成 “algebraic multiplicity $+m$”，未说清是“$m$ 加重数”。本讲义 §4.2 改写为 $m+$（重数）。}
+\gapitem{代数跳步}{p39 的相容性比式 “$-5:2=(2\alpha_1-3):(-\alpha_1)$” 来源未说明。本讲义 §4.6 统一解释为秩条件。}
+\gapitem{数据不一致}{p29 例 5 的矩阵 $A$ 的迹是 $1$，与所标“特征值 $0,\pm5\mathrm{i}$”（其和为零）矛盾；按打印的 $A,\mu,\nu$ 解出的 $\alpha,\beta$ 也与 p31 的答案不符（该矩阵的实际特征值是 $1,\pm5\mathrm{i}$）。本讲义 A.5 改用一个可核对的补例演示三角外力的设形。}
+\gapitem{拼接缺口}{p46 化二阶方程时，“$x'=y'-2y$ 再求导得 $x''=y''-2y'$” 两步合并。本讲义 §6 说明这是“解出 $x'$ 再求导”的标准动作。}
+
+%=====================================================================
+\hdr{§10}{三句话}
+
+\begin{enumerate}
+  \item 非齐次的结构只有一句：通解 $=$ 齐次通解 $+$ 一个特解；齐次部分用前三讲的方法，力气全在特解。
+  \item 参数变易法万能：$\vect{C}'=\Phi^{-1}\vect{F}$，积分即得；常系数时化为卷积公式
+\[
+\vect{Y}(x)=\mathrm{e}^{A(x-x_0)}\vect{Y}_0+\int_{x_0}^{x}\mathrm{e}^{A(x-s)}\vect{F}(s)\,\mathrm{d}s .
+\]
+  \item 待定系数法快但挑食：常系数 $+$ 特定 $\vect{F}$；设形看"$r$（或 $r+\mathrm{i}s$）是不是特征值"，是就提高次数，比较系数时先解 $A\alpha=\cdots$、再验相容性。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§11}{与课件的页码对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.46\linewidth}p{0.32\linewidth}@{}}
+\thead{本讲义} & \thead{内容} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.12\linewidth}p{0.46\linewidth}p{0.32\linewidth}@{}}
+§1 & 解的结构 $\vect{Y}_c+\vect{Y}_p$ & p4\\
+§2 & 参数变易 I：逐分量 & p6--p10\\
+§3 & 参数变易 II：矩阵与卷积公式 & p11--p16\\
+§4 & 待定系数：条件、设形、共振、相容性 & p18--p28\\
+§6 & 同一题的三种做法 & p32--p48\\
+§7 & 作业 & p49\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=====================================================================
+\newpage
+\hdr{附录 A}{例题与作业详解}
+
+每块自成一页，按“题干 → 考点 → 关键一步 → 详解 → 答案 → 自检”排。
+
+\qpagebreak
+\subhdr{A.1\quad 例 1：参数变易（逐分量）（p7--p10）}
+\label{app:ex1}
+\qbreak
+\qstem{（课件 p7 例 1）$y_1'=\tfrac73y_1+\tfrac23y_2-5\mathrm{e}^x$，$y_2'=\tfrac43y_1+\tfrac53y_2-8\mathrm{e}^x$，$y_1(0)=1,\ y_2(0)=4$。用参数变易法解。}
+\par\textbf{考点}\ 逐分量参数变易的全流程。
+\par\textbf{关键一步}\ 先求齐次基本解组，再解 $c_1'\vect{Y}_1+c_2'\vect{Y}_2=\vect{F}$。
+\par\textbf{详解}\ $A=\mat{7/3&2/3\\4/3&5/3}$，特征方程 $\lambda^2-4\lambda+3=0$，$\lambda=1,3$；特征向量 $\vect{V}_1=(-1,2)^{\mathsf T}$、$\vect{V}_2=(1,1)^{\mathsf T}$，故
+\[
+\vect{Y}_1=\mathrm{e}^{x}\mat{-1\\2},\qquad \vect{Y}_2=\mathrm{e}^{3x}\mat{1\\1}.
+\]
+设 $\vect{Y}_p=c_1\vect{Y}_1+c_2\vect{Y}_2$，由 ($\star$)：
+\[
+-c_1'\mathrm{e}^x+c_2'\mathrm{e}^{3x}=-5\mathrm{e}^x,\qquad
+2c_1'\mathrm{e}^x+c_2'\mathrm{e}^{3x}=-8\mathrm{e}^x .
+\]
+两式相减：$3c_1'\mathrm{e}^x=-3\mathrm{e}^x$，故 $c_1'=-1$；代回得 $c_2'\mathrm{e}^{3x}=-6\mathrm{e}^x$，故 $c_2'=-6\mathrm{e}^{-2x}$。积分（常数取零）：$c_1=-x$，$c_2=3\mathrm{e}^{-2x}$。于是
+\[
+\vect{Y}_p=-x\mathrm{e}^x\mat{-1\\2}+3\mathrm{e}^{-2x}\mathrm{e}^{3x}\mat{1\\1}=\mathrm{e}^x\mat{x+3\\-2x+3}.
+\]
+\textbf{答案}\ 通解 $\vect{Y}=\vect{Y}_p+c_1\vect{Y}_1+c_2\vect{Y}_2$；代初值 $(1,4)$ 得 $c_1=1,c_2=-1$，故
+\[
+\vect{Y}=\mathrm{e}^x\mat{x+2\\-2x+5}-\mathrm{e}^{3x}\mat{1\\1}.
+\]
+\par\textbf{自检}\ 代 $x=0$：$(2,5)-(1,1)=(1,4)$ \ding{51}。代回第一式：$y_1=(\mathrm{e}^x(x+2))'-\mathrm{e}^{3x}=\mathrm{e}^x(x+3)-3\mathrm{e}^{3x}$，而右端 $\tfrac73y_1+\tfrac23y_2-5\mathrm{e}^x=\mathrm{e}^x[\tfrac73(x+2)+\tfrac23(-2x+5)-5]+\mathrm{e}^{3x}[-\tfrac73-\tfrac23]=\mathrm{e}^x(x+3)-3\mathrm{e}^{3x}$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.2\quad 例 2：参数变易（矩阵 / $\mathrm{e}^{Ax}$）（p14--p16）}
+\label{app:ex2}
+\qbreak
+\qstem{（课件 p14 例 2）同一题，改用 $\mathrm{e}^{Ax}$ 与卷积公式。}
+\par\textbf{考点}\ 卷积公式 $\vect{Y}=\mathrm{e}^{Ax}\vect{Y}_0+\int_0^x\mathrm{e}^{A(x-s)}\vect{F}(s)\mathrm{d}s$。
+\par\textbf{关键一步}\ 先用 C--H 求 $\mathrm{e}^{Ax}$（$A$ 的特征值 $1,3$），再代公式。
+\par\textbf{详解}\ 由 C--H：$\mathrm{e}^{Ax}=\alpha_1Ax+\alpha_0E$，$\mathrm{e}^{x}=x\alpha_1+\alpha_0$、$\mathrm{e}^{3x}=3x\alpha_1+\alpha_0$，解得 $x\alpha_1=\tfrac12(\mathrm{e}^{3x}-\mathrm{e}^x)$、$\alpha_0=\tfrac12(3\mathrm{e}^x-\mathrm{e}^{3x})$。代回整理：
+\[
+\mathrm{e}^{Ax}=\frac13\mat{2\mathrm{e}^{3x}+\mathrm{e}^x&\mathrm{e}^{3x}-\mathrm{e}^x\\2\mathrm{e}^{3x}-2\mathrm{e}^x&\mathrm{e}^{3x}+2\mathrm{e}^x}.
+\]
+卷积项 $\int_0^x\mathrm{e}^{A(x-s)}\vect{F}(s)\mathrm{d}s$ 的被积函数是 $\mathrm{e}^{A(x-s)}\binom{-5}{-8}\mathrm{e}^{s}$，逐项积分（指数为 $\mathrm{e}^{2s}$、$\mathrm{e}^{4s}$ 型），结果与例 1 的 $\vect{Y}_p$ 相同。
+\par\textbf{答案}\ 同 A.1：$\vect{Y}=\mathrm{e}^x\binom{x+2}{-2x+5}-\mathrm{e}^{3x}\binom{1}{1}$。
+\par\textbf{自检}\ 两条路给出同一答案，说明 $\vect{C}'=\mathrm{e}^{-Ax}\vect{F}$ 与逐分量解 $c_k'$ 等价 \ding{51}。
+
+\qpagebreak
+\subhdr{A.3\quad 例 3：待定系数（多项式外力）（p19--p21）}
+\label{app:ex3}
+\qbreak
+\qstem{（课件 p19 例 3）$\vect{Y}'=\mat{1&2\\3&2}\vect{Y}+x\binom{2}{-4}$，求通解。}
+\par\textbf{考点}\ Case 1 且 $r=0$ 不是特征值：设 $\vect{Y}_p=\alpha x+\beta$。
+\par\textbf{关键一步}\ 比较系数得 $A\alpha=-\gamma$、$\alpha=A\beta+\delta$，其中 $\gamma=(2,-4)^{\mathsf T}$、$\delta=\vect{0}$。
+\par\textbf{详解}\ $A$ 的特征值：$\lambda^2-3\lambda-4=0$，$\lambda=-1,4$；特征向量 $(1,-1)$、$(2,3)$。
+设 $\vect{Y}_p=\alpha x+\beta$，$\vect{Y}_p'=\alpha$，代入：
+\[
+\alpha=A\alpha x+A\beta+\gamma x
+\ \Longrightarrow\
+A\alpha=-\gamma,\quad \alpha=A\beta .
+\]
+第一式：$\mat{1&2\\3&2}\alpha=\binom{-2}{4}$，解得 $\alpha=\binom{3}{-5/2}$。
+第二式：$A\beta=\alpha$，即 $\mat{1&2\\3&2}\beta=\binom{3}{-5/2}$，解得 $\beta=\binom{-11/4}{23/8}$。
+\par\textbf{答案}\ $\vect{Y}=c_1\mathrm{e}^{-x}\binom{1}{-1}+c_2\mathrm{e}^{4x}\binom{2}{3}+x\binom{3}{-5/2}+\binom{-11/4}{23/8}$。
+\par\textbf{自检}\ 把 $\vect{Y}_p$ 代回：$\vect{Y}_p'=\binom{3}{-5/2}$；$A\vect{Y}_p+\vect{F}=\binom{3}{-5/2}x+\binom{0}{0}+x\binom{2}{-4}$？逐项：$A\alpha x+A\beta+\gamma x=(-2,4)^{\mathsf T}x+(3,-5/2)^{\mathsf T}+(2,-4)^{\mathsf T}x=(3,-5/2)^{\mathsf T}$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.4\quad 例 4：共振（$r$ 是特征值）（p22--p26）}
+\label{app:ex4}
+\qbreak
+\qstem{（课件 p22 例 4）$A=\mat{7/3&2/3\\4/3&5/3}$，$\vect{F}=\binom{-5}{-8}\mathrm{e}^x$，$\vect{Y}(0)=\binom14$。用待定系数法解。}
+\par\textbf{考点}\ 共振：$r=1$ 是特征值，必须设 $\vect{Y}_p=\mathrm{e}^x(\alpha x+\beta)$。
+\par\textbf{关键一步}\ 比较系数得 $\alpha=A\alpha$（$\alpha$ 是特征向量）与 $\beta+\alpha=A\beta+\gamma$；后者是 $(A-E)\beta=\alpha-\gamma$，要验相容性。
+\par\textbf{详解}\ 齐次解 $c_1\mathrm{e}^x\binom{-1}{2}+c_2\mathrm{e}^{3x}\binom11$。
+设 $\vect{Y}_p=\mathrm{e}^x(\alpha x+\beta)$，求导：$\vect{Y}_p'=\mathrm{e}^x(\alpha x+\beta+\alpha)$；右端 $A\vect{Y}_p+\vect{F}=\mathrm{e}^x(A\alpha x+A\beta+\gamma)$。比较：
+\[
+x\mathrm{e}^x:\ \alpha=A\alpha;\qquad \mathrm{e}^x:\ \beta+\alpha=A\beta+\gamma .
+\]
+第一式说明 $\alpha$ 是 $\lambda=1$ 的特征向量，故 $\alpha=k\binom{-1}{2}$。第二式即 $(A-E)\beta=\alpha-\gamma$。这里 $\rank(A-E)=1$，相容性要求 $\alpha-\gamma$ 与 $(A-E)$ 的行空间正交，具体化为
+\[
+\alpha_1+5=-2\alpha_1+8\ \Longrightarrow\ \alpha_1=1,
+\]
+故 $\alpha=\binom{1}{-2}$。代回解出 $2\beta_1+\beta_2=9$，取 $\beta=\binom44$ 即得 $\beta=\binom{4}{1}$。
+\par\textbf{答案}\ $\vect{Y}=c_1\mathrm{e}^x\binom{-1}{2}+c_2\mathrm{e}^{3x}\binom11+x\mathrm{e}^x\binom{1}{-2}+\mathrm{e}^x\binom41$；代初值得 $c_1=2,c_2=-1$，即 $\vect{Y}=\mathrm{e}^x\binom{x+2}{-2x+5}-\mathrm{e}^{3x}\binom11$（与 A.1 相同）。
+\par\textbf{自检}\ 把 $c_1=2,c_2=-1$ 代回初值条件：
+\[
+2\binom{-1}{2}+(-1)\binom11+\binom41=\binom{-2-1+4}{4-1+1}=\binom14 \ \text{\ding{51}}.
+\]
+即 $c_1\binom{-1}{2}+c_2\binom11+\binom41=\binom14$ 解出 $c_1=2,c_2=-1$，与上面一致。
+
+\qpagebreak
+\subhdr{A.5\quad 三角外力：一个可核对的补例}
+\label{app:ex5}
+\qbreak
+\qstem{（本讲义补例；课件 p29 例 5 的数据自相矛盾，说明见 §9）解 $\vect{Y}'=A\vect{Y}+\vect{F}$，$A=\mat{1&0\\0&2}$，$\vect{F}=\binom{\cos2x}{\sin2x}$。}
+\par\textbf{考点}\ Case 2：$r+\mathrm{i}s=2\mathrm{i}$ 不是特征值（特征值是 $1,2$），设 $\vect{Y}_p=\alpha\cos2x+\beta\sin2x$。
+\par\textbf{关键一步}\ 求导得 $-2\alpha\sin2x+2\beta\cos2x$，与 $A(\alpha\cos2x+\beta\sin2x)+\vect{F}$ 比较 $\cos$、$\sin$ 的系数。
+\par\textbf{详解}\ 比较系数：
+\[
+\cos2x:\ 2\beta=A\alpha+\binom{1}{0};\qquad \sin2x:\ -2\alpha=A\beta+\binom{0}{1}.
+\]
+写成分量（设 $\alpha=(a_1,a_2)$、$\beta=(b_1,b_2)$）：
+\[
+2b_1=a_1+1,\quad 2b_2=2a_2;\qquad -2a_1=b_1,\quad -2a_2=2b_2+1 .
+\]
+第一组代第二组：$b_1=-2a_1$ 代入 $2b_1=a_1+1$ 得 $-4a_1=a_1+1$，即 $a_1=-\tfrac15$，$b_1=\tfrac25$；$b_2=a_2$ 代入 $-2a_2=2a_2+1$ 得 $a_2=-\tfrac14$，$b_2=-\tfrac14$。
+\par\textbf{答案}\
+\[
+\vect{Y}_p=\binom{-\tfrac15\cos2x+\tfrac25\sin2x}{-\tfrac14\cos2x-\tfrac14\sin2x},
+\]
+通解再加齐次部分 $c_1\mathrm{e}^{x}\binom10+c_2\mathrm{e}^{2x}\binom01$。
+\par\textbf{自检}\ 代回第一个分量：$\vect{Y}_{p,1}'=\tfrac25\cos2x+\tfrac45\sin2x$；右端 $y_{p,1}+\cos2x=-\tfrac15\cos2x+\tfrac25\sin2x+\cos2x=\tfrac45\cos2x+\tfrac25\sin2x$ \ding{51}。第二个分量：$\vect{Y}_{p,2}'=\tfrac12\sin2x-\tfrac12\cos2x$；右端 $2y_{p,2}+\sin2x=-\tfrac12\cos2x-\tfrac12\sin2x+\sin2x=-\tfrac12\cos2x+\tfrac12\sin2x$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.6\quad 例 6：三种做法（p32--p48）}
+\label{app:ex6}
+\qbreak
+\qstem{（课件 p32 例 6）$x''=-2x'-5y+3$，$y'=x'+2y$，$x(0)=0,x'(0)=0,y(0)=1$。}
+\par\textbf{考点}\ 一题三解：系统 + 待定系数、系统 + 参数变易、化二阶方程。
+\par\textbf{关键一步}\ 三种做法的公共起点是"把二阶方程化成一阶组"或"把组化成二阶方程"，二选一。
+\par\textbf{详解}\ \textbf{做法一}：令 $x_1=x,x_2=x',x_3=y$，得 $3\times3$ 系统，$A$ 的特征值 $0,\pm\mathrm{i}$。外力是常向量，$0$ 是特征值，故设 $\vect{X}_p=\alpha t+\beta$，比较系数得 $A\alpha=0$、$A\beta+\gamma=\alpha$，相容性给出 $\alpha=(-6,0,0)$、$\beta=(0,-6,3)$。
+\textbf{做法二}：同一系统，用 $\Phi$ 与 $\vect{C}'=\Phi^{-1}\vect{F}$，积分后乘回，得同一 $\vect{X}_p$。
+\textbf{做法三}：由 $y'=x'+2y$ 解出 $x'=y'-2y$，求导得 $x''=y''-2y'$，代入第一式得 $y''+y=3$；解 $y=c_1\cos t+c_2\sin t+3$，回代求 $x$。
+\par\textbf{答案}\ $x=-2-6t+2\cos t+6\sin t$，$y=3-2\cos t+2\sin t$。
+\par\textbf{自检}\ $x(0)=0$、$x'(0)=-6+6=0$、$y(0)=1$ \ding{51}；且 $y'=2\sin t+2\cos t$，$x'+2y=(-6-2\sin t+6\cos t)+(6-4\cos t+4\sin t)=2\sin t+2\cos t$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.7\quad 作业：两种方法各解一次}
+\label{app:hw}
+\qbreak
+\qstem{（课件 p49）$y_1'=-2y_1-2y_2+2y_3+2x+3$，$y_2'=-3y_1+y_2-4y_3+3x-1$，$y_3'=-3y_1+2y_2-5y_3+3x-2$。}
+\par\textbf{考点}\ $3\times3$ 常系数、多项式外力，两条方法互验。
+\par\textbf{关键一步}\ 特征值 $-1,-2,-3$ 互异；$0$ 不是特征值，设 $\vect{Y}_p=\alpha x+\beta$。
+\par\textbf{详解}\ $A=\mat{-2&-2&2\\-3&1&-4\\-3&2&-5}$，特征值 $-1,-2,-3$，特征向量
+\[
+\lambda=-1:\ \vect{V}_1=\mat{-2\\5\\4},\qquad \lambda=-2:\ \vect{V}_2=\mat{-1\\3\\3},\qquad \lambda=-3:\ \vect{V}_3=\mat{0\\1\\1}.
+\]
+\textbf{待定系数法}：设 $\vect{Y}_p=\alpha x+\beta$，外力写成 $\gamma x+\delta$，$\gamma=(2,3,3)^{\mathsf T}$、$\delta=(3,-1,-2)^{\mathsf T}$。比较系数：
+\[
+A\alpha=-\gamma,\qquad \alpha=A\beta+\delta .
+\]
+第一式解得 $\alpha=(1,0,0)^{\mathsf T}$；第二式解得 $\beta=(0,1,0)^{\mathsf T}$。故 $\vect{Y}_p=(x,1,0)^{\mathsf T}$。
+\textbf{参数变易法}：取 $\Phi=V\mathrm{e}^{\Lambda x}$，$V=(\vect{V}_1,\vect{V}_2,\vect{V}_3)$。计算 $\Phi^{-1}\vect{F}$ 得
+\[
+\Phi^{-1}\vect{F}=\mat{\mathrm{e}^{x}\\(-2x-5)\mathrm{e}^{2x}\\9(x+1)\mathrm{e}^{3x}},
+\]
+积分：$\vect{C}=\bigl(\mathrm{e}^x,\,-(x+2)\mathrm{e}^{2x},\,(3x+2)\mathrm{e}^{3x}\bigr)^{\mathsf T}$。乘回去：
+\[
+\Phi\vect{C}=\mat{x\\1\\0},
+\]
+与待定系数法\textbf{完全相同}——两条方法在这题上给出同一个特解。
+\par\textbf{答案}\
+\[
+\vect{Y}=c_1\mathrm{e}^{-x}\mat{-2\\5\\4}+c_2\mathrm{e}^{-2x}\mat{-1\\3\\3}+c_3\mathrm{e}^{-3x}\mat{0\\1\\1}+\mat{x\\1\\0}.
+\]
+\par\textbf{自检}\ 代 $\vect{Y}_p=(x,1,0)$：$\vect{Y}_p'=(1,0,0)$，而 $A\vect{Y}_p+\vect{F}=\mat{-2x-2+2x+3\\-3x+1+3x-1\\-3x+2+3x-2}=(1,0,0)$ \ding{51}。
+
+\flowerrule
+
+{\small\color{inkgray}
+依据课件：\texttt{17\_18\_Nonhomogeneous-linear-systems.pdf}（49 页，2026-10-15 / 10-20，W.Y., DLUT）。页码为该 PDF 页序。
+缺口 10 条见 §9；作业两法的结果已用符号计算核对（特解相同、代回残差为零）。}
+
+\end{document}

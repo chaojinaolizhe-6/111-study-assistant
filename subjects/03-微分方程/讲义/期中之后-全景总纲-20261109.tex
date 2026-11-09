@@ -1,0 +1,303 @@
+%=====================================================================
+%  期中之后 · 全景总纲  —— Lecture 13–23 导览
+%  依据：本课程课件 8 份的目录页与正文（L13–L23，共 334 页）
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+
+\settags{期中之后 · 全景总纲}{微分方程}
+
+% ---- 流程图用的两个小宏（不依赖 tikz）----
+\newcommand{\fnode}[2][0.74\linewidth]{%
+  \par\medskip\noindent\makebox[\linewidth]{%
+  \fcolorbox{rulepurple}{bandviolet}{\parbox{#1}{\centering #2}}}\par\medskip}
+\newcommand{\farrow}[1][\relax]{%
+  \par\vspace{-2pt}\noindent\makebox[\linewidth]{%
+  {\color{petal}\small$\Downarrow$}\hspace{6pt}{\small\color{inkgray}#1}}\par\vspace{-2pt}}
+
+\begin{document}
+
+\doctitle{期中之后 · 全景总纲}%
+{微分方程组 · 幂级数 · 非线性与稳定性}%
+{依据：本课程课件 8 份（Lecture 13--23，共 334 页）的目录页与正文\\
+范围：期中考试（2026-10-08）之后的全部内容；此前 L1--L12 不在本总纲内\\
+用途：先看骨架，再按 §6 的顺序读各讲讲义}
+
+\callout{\textbf{先读这一段。}期中之后老师换了三个题目，但其实是同一件事的三层：先问“多个未知函数怎么一起解”（L13--18），再问“系数不是常数怎么办”（L18--20），最后问“根本解不出来时看什么”（L21--23）。这份总纲只做一件事——把这三层的关系摆清楚，并标出每一讲在链条上的位置。具体推导、例题与作业，在各讲讲义里。}
+
+%=====================================================================
+\hdr{§0}{这份总纲管什么}
+
+期中考试（2026-10-08）的范围是 L1--L12，考到“高阶线性方程”为止。之后老师进入三个新题目，共 \textbf{8 份课件、334 页}：
+
+\begin{center}
+\begin{minipage}{0.92\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}>{\raggedleft\arraybackslash}p{0.28\linewidth}@{}}
+\thead{块} & \thead{讲次} & \thead{课件页数}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}>{\raggedleft\arraybackslash}p{0.28\linewidth}@{}}
+方程组章 & L13、L14--15、L16--17、L17--18 & $37+64+44+49=194$\\
+幂级数章 & L18、L19--20 & $37+42=79$\\
+非线性章 & L21--22、L22--23 & $43+18=61$\\
+\hline
+合计 & & $194+79+61=334$\\
+\end{tabular}
+\tabbot
+\end{minipage}
+\end{center}
+
+这张表只是页数台账，不承载推导；它的用处是让你知道每一块有多少东西要看——方程组章占了全段的六成，所以它才是复习的主战场。
+
+\warnbox{\textbf{一个编号上的坑。}课件文件名里 \texttt{17\_18} 是「非齐次线性方程组」，而 \texttt{18\_power-series} 是「幂级数」，两份都标了 10 月 20 日。也就是说 L18 这天老师同时收尾方程组、开启幂级数。\textbf{按标题认，不要按文件名里的数字认}——本总纲把 \texttt{17\_18} 归入方程组章，把 \texttt{18} 归入幂级数章。}
+
+%=====================================================================
+\hdr{§1}{一条主线：这十一讲在回答同一个问题}
+
+期中之前你解的是\textbf{一个}未知函数的高阶方程。从 L13 起，问题变成\textbf{一组}未知函数的一阶方程：
+
+\[
+\mathbf{x}'=A\mathbf{x}+\mathbf{f}(t),\qquad \mathbf{x}\in\mathbb{R}^{n}.
+\]
+
+整段内容的走法，就是把这个问题一层层剥开。下面这张流程图是本总纲的骨架，后面每一节都在解释其中一格。
+
+\begin{center}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{@{}c@{}}
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{172}\;一个高阶方程}\quad $y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=f(x)$}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L13：用一个变换，把它拆成一阶组}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{173}\;一阶线性方程组}\quad $\mathbf{x}'=A\mathbf{x}+\mathbf{f}(t)$}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L14--15：$A$ 是常矩阵、$\mathbf{f}=0$ 时，用特征值拼出解}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{174}\;齐次常系数}\quad 三种特征值情形，各给一套基本积木}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L16--17：三种情形合成为一个对象 $e^{Ax}$}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{175}\;统一写法}\quad $\mathbf{x}(t)=e^{At}\mathbf{x}_0$，三种情形都收进这一个矩阵}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L17--18：$\mathbf{f}\neq0$ 时，再补一个特解}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{176}\;有外力}\quad $\mathbf{x}=\mathbf{x}_c+\mathbf{x}_p$，两种求 $\mathbf{x}_p$ 的办法}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L18、L19--20：$A$ 不再是常矩阵，怎么办}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{177}\;变系数}\quad 常点用幂级数，奇点用 Frobenius 级数}}\\[1pt]
+{\color{petal}$\Downarrow$}\enspace{\small\color{inkgray}L21--22、L22--23：方程非线性、解不出来，怎么办}\\[10pt]
+\fcolorbox{rulepurple}{bandviolet}{\parbox{0.88\linewidth}{\centering
+  \textbf{\ding{178}\;非线性}\quad 不解方程，画相图定性；在临界点附近借用线性}}\\
+\end{tabular}
+\end{center}
+
+读这张图要抓住一处：\textbf{\ding{173}\ding{174}\ding{175}\ding{176} 是一条竖线}（同一个问题的四种情形），\textbf{\ding{177}\ding{178} 是两次换问题}——一次换“系数”，一次换“能不能解出来”。所以复习时不要把八讲平铺，先走完竖线，再看两次换问题。
+
+%=====================================================================
+\hdr{§2}{三段：每段在换什么}
+
+\subhdr{2.1 第一段：线性方程组（L13--L18，194 页）}
+
+这一段只做一件事——把 $\mathbf{x}'=A\mathbf{x}+\mathbf{f}$ 解出来。它分四步走，对应四讲：
+
+\begin{itemize}
+  \item \textbf{L13 建立语言}：什么叫方程组、什么叫线性、高阶方程怎么化成一阶组；线性系统的解为什么满足叠加原理，什么叫基本解组与 Wronskian。
+  \item \textbf{L14--15 给积木}：$A$ 是常矩阵时，试探解 $\mathbf{x}=e^{\lambda x}\mathbf{v}$ 把微分方程变成代数方程 $A\mathbf{v}=\lambda\mathbf{v}$。于是解的形态完全由特征值决定，分三种情形（相异实根、共轭复根、重根，重根里还要分几何重数够不够）。
+  \item \textbf{L16--17 换写法}：三种情形能不能写成同一个式子？能，就是矩阵指数 $e^{Ax}$。这一讲给三条算它的路：对角化、Cayley--Hamilton、基本解矩阵 $\Phi$。
+  \item \textbf{L17--18 加外力}：$\mathbf{f}\neq0$ 时，通解 $=$ 齐次通解 $+$ 一个特解；求特解两种办法——参数变易法（用 $\Phi$ 直接积分）与待定系数法（猜形状、代进去定常数）。
+\end{itemize}
+
+\subhdr{2.2 第二段：幂级数（L18--L20，79 页）}
+
+这一段换的是\textbf{系数}：$A$ 不再是常矩阵，而是随 $x$ 变。常系数那套“特征值”失效，于是改设解是幂级数 $\sum a_n(x-x_0)^n$，把它代进方程，让同次幂的系数相等，得到递推关系。
+
+分两种点：\textbf{常点}（L18）直接把级数代进去就能算；\textbf{奇点}（L19--20）要先判正则性，正则奇点用 Frobenius 级数（多一个待定指标 $r$），其中 Euler 方程与 Bessel 方程是两个必考的样本。
+
+\subhdr{2.3 第三段：非线性与稳定性（L21--23，61 页）}
+
+这一段换的是\textbf{问题本身}：方程非线性，解不出来，也不再求解析解。改问三个定性问题——临界点在哪、附近的轨线长什么样、初始条件稍微变一点解会不会跑掉。
+
+L21--22 先把“稳定性”定义清楚，再把线性系统的四类相图（鞍点、结点、焦点/中心、重临界点）画出来；L22--23 给出本段最有用的一条定理：\textbf{在双曲临界点附近，非线性系统可以当成它的线性化来看}——这就是作业里“研究平凡解稳定性”的标准做法。
+
+%=====================================================================
+\hdr{§3}{逐讲定位表}
+
+下表一行一讲。第三列是“这一讲如果只记一句话，记哪句”；第四列是核心工具；最后一列是课件页数，用来估读的时间。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.09\linewidth}p{0.12\linewidth}p{0.29\linewidth}p{0.30\linewidth}>{\raggedleft\arraybackslash}p{0.06\linewidth}@{}}
+\thead{讲次} & \thead{日期} & \thead{一句话} & \thead{核心工具} & \thead{页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.09\linewidth}p{0.12\linewidth}p{0.29\linewidth}p{0.30\linewidth}>{\raggedleft\arraybackslash}p{0.06\linewidth}@{}}
+L13 & 09-24 & 把高阶方程换成一阶组，问题从此是矩阵问题 & 变换、解的结构、Wronskian & 37\\
+L14--15 & 09-29、10-08 & 特征值三种情形，各给一套解 & $e^{\lambda x}\mathbf{v}$、广义特征向量 & 64\\
+L16--17 & 10-13 & 三种情形压成一个 $e^{Ax}$ & 对角化、Cayley--Hamilton、$\Phi$ & 44\\
+L17--18 & 10-15、10-20 & 有外力时，补一个特解 & 参数变易、待定系数 & 49\\
+L18 & 10-20 & 常点附近，解写成幂级数 & 递推关系、收敛半径 & 37\\
+L19--20 & 10-22 & 奇点附近，用 Frobenius 级数 & 指标方程、Euler、Bessel & 42\\
+L21--22 & 10-29 & 不解方程，画相图看轨线 & 临界点分类、稳定性定义 & 43\\
+L22--23 & 11-03 & 非线性在临界点附近当作线性 & 雅可比矩阵、第一近似定理 & 18\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+读法：第 2 列是课件首页标的日期，其中 L14--15、L17--18 各跨两次课（国庆假期把 L14 与 L15 分开了）；第 5 列是这份课件的页数，不是有效教学页数。这张表是台账，不承载推导，逐格可查课件首页。
+
+%=====================================================================
+\hdr{§4}{三个反复出现的动作}
+
+这八讲看起来换了很多题目，落到手上只有三个动作。考试与作业里的每一问，基本都能归到其中之一。
+
+\subhdr{4.1 见到方程，先写矩阵}
+
+不管是高阶方程还是一阶组，第一步都是把未知量排成向量、把系数写成矩阵：
+
+\[
+y''+py'+qy=f \quad\Longleftrightarrow\quad
+\mathbf{x}'=\begin{pmatrix}0&1\\-q&-p\end{pmatrix}\mathbf{x}+\begin{pmatrix}0\\f\end{pmatrix},
+\qquad \mathbf{x}=\begin{pmatrix}y\\y'\end{pmatrix}.
+\]
+
+这一个动作把“方程”变成“矩阵”，后面所有工具（特征值、矩阵指数、相图）都作用在矩阵上。L13 讲的就是这一步为什么合法，以及变换之后解的结构怎么保留。
+
+\subhdr{4.2 特征值决定解的形状}
+
+常系数齐次组 $\mathbf{x}'=A\mathbf{x}$ 的解，完全由 $A$ 的特征值决定。三种情形对应三种形状：
+
+\begin{itemize}
+  \item \textbf{两个相异实根} $\lambda_1\neq\lambda_2$：$\mathbf{x}=c_1e^{\lambda_1x}\mathbf{v}_1+c_2e^{\lambda_2x}\mathbf{v}_2$，两条直线方向上的拉伸或收缩。
+  \item \textbf{一对共轭复根} $\alpha\pm\mathrm{i}\beta$：解里出现 $e^{\alpha x}\cos\beta x$ 与 $e^{\alpha x}\sin\beta x$，轨线是绕原点旋转的螺旋；$\alpha$ 的符号决定向内还是向外。
+  \item \textbf{重根} $\lambda$：若几何重数 $g=m$（特征向量够用），解仍是纯指数；若 $1\le g<m$，解里会多出 $xe^{\lambda x}$ 这样的项，因为特征向量不够，要补广义特征向量。
+\end{itemize}
+
+\textbf{重根这一支是最容易出错的地方}，因为“特征值是重根”并不等于“解里一定出现 $x$”——要看几何重数。L14--15 的 Case 3a 与 3b 就是把这两半分开讲。
+
+\subhdr{4.3 稳定性只看实部；非线性只在临界点借用线性}
+
+稳定性不是解出来的，是读出来的：线性系统零解渐近稳定的充要条件是\textbf{所有特征值的实部为负}。实部为零（纯虚根）时是临界情形，线性化给不出结论，必须另想办法。
+
+非线性系统则只有一条便宜路：先在临界点算雅可比矩阵 $J$，若 $J$ 的特征值全都非零（双曲），则非线性系统在该点附近的稳定性与线性化系统相同；若出现零实部，这条路就断了。
+
+%=====================================================================
+\hdr{§5}{依赖链：哪一讲塌了，会连累哪一讲}
+
+这八讲不是并列的，后面几讲直接踩在前面几讲上。下表是“如果这一讲不熟，会在哪里卡住”，按你的情况可以先补上游。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.10\linewidth}p{0.29\linewidth}p{0.49\linewidth}@{}}
+\thead{这一讲} & \thead{供给什么} & \thead{不熟会卡在哪}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.10\linewidth}p{0.29\linewidth}p{0.49\linewidth}@{}}
+L13 & 解的结构、叠加原理 & L17--18 的 $\mathbf{x}=\mathbf{x}_c+\mathbf{x}_p$ 变成一句背下来的口号；不知道为什么齐次解要两个\\
+L14--15 & 特征值三情形 & L16--17 的“Case 1 对角化”看不懂条件从哪来；L21--23 的类型判据只能背表，说不清为什么\\
+L16--17 & $e^{Ax}$ 与 $\Phi$ & L17--18 的参数变易法没有可用的积分核；非齐次题只能做“好猜”的那一类\\
+L18 & 幂级数递推 & L19--20 的 Frobenius 连第一步都下不了手（指标方程是从递推的常数项读出来的）\\
+L21--22 & 相图与稳定性定义 & L22--23 的“双曲”“第一近似”没有几何直觉，只能记结论\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是依赖台账，不是知识表；每一格的依据是各讲课件里工具的出场顺序，逐条可在对应讲义 §0 的“前置”一栏核对。
+
+%=====================================================================
+\hdr{§6}{两条学习路线}
+
+\subhdr{6.1 路线 A：通读（建议 12--15 小时）}
+
+按 §1 的竖线走，一次只换一个问题：
+
+\[
+\text{L13}\to\text{L14--15}\to\text{L16--17}\to\text{L17--18}
+\quad\text{（方程组，约 8 小时）}
+\]
+\[
+\text{L18}\to\text{L19--20}\quad\text{（幂级数，约 3 小时）}
+\qquad
+\text{L21--22}\to\text{L22--23}\quad\text{（非线性，约 2 小时）}
+\]
+
+每讲读完的过关标志只有一句：\textbf{能不能不看讲义，把这一讲的主定理复述出来，并做一道例题}。做不到就退回该讲，不要往下走——越往后越依赖前面。
+
+\subhdr{6.2 路线 B：速通（考前，建议 5 小时）}
+
+只抓三块，按顺序：
+
+\begin{enumerate}
+  \item \textbf{L14--15 的三情形}（约 1.5 小时）：会写 $e^{\lambda x}\mathbf{v}$，会判重根的 $g$，会写复根对应的实解。
+  \item \textbf{L21--23 的判据}（约 1.5 小时）：$\tau,\Delta,D$ 三个数定类型；双曲才能线性化。
+  \item \textbf{L17--18 的两种求特解}（约 2 小时）：参数变易的积分式、待定系数的设形规则。
+\end{enumerate}
+
+速通不包括 L16--17 的 Cayley--Hamilton 与 L19--20 的 Frobenius——它们是“会了加分、不会也能及格”的部分，但若考试明确考，必须回到路线 A。
+
+%=====================================================================
+\hdr{§7}{讲义清单与制作状态}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}>{\raggedleft\arraybackslash}p{0.07\linewidth}p{0.14\linewidth}@{}}
+\thead{讲次} & \thead{讲义} & \thead{页数} & \thead{状态}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}>{\raggedleft\arraybackslash}p{0.07\linewidth}p{0.14\linewidth}@{}}
+L13--23 & 期中之后 · 全景总纲（本文件） & 见页脚 & 已交付\\
+L13 & 方程组入门——从高阶方程到一阶组 & 待定 & 制作中\\
+L14--15 & 常系数齐次组——三种情形 & 待定 & 制作中\\
+L16--17 & 矩阵指数——三种情形的统一写法 & 待定 & 制作中\\
+L17--18 & 非齐次组——两种求特解的办法 & 待定 & 制作中\\
+L18--20 & L18--L20 幂级数解法精讲（2026-10-28） & 40 & 已有\\
+L21--23 & 临界点与稳定性精讲（2026-11-03） & 27 & 已有\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+已有两份的定位：\texttt{L18-L20} 覆盖常点与奇点两讲，含作业全解；\texttt{L21-L23} 覆盖相图与线性化，以那道作业为主线。四份待做的按讲义规范写：一讲一册，课件每页都有落点，作业一题一块，详解进附录。
+
+%=====================================================================
+\hdr{§8}{三句话}
+
+\begin{enumerate}
+  \item 期中之后老师只换了三个问题：\textbf{多个未知函数怎么一起解}、\textbf{系数不是常数怎么办}、\textbf{解不出来时看什么}。
+  \item 方程组章（194 页）是主战场：\textbf{特征值决定形状}（L14--15），\textbf{矩阵指数统一写法}（L16--17），\textbf{非齐次补特解}（L17--18）。
+  \item 后面两章各是一次“换问题”：幂级数换掉常系数假设，相图与线性化换掉“求解”这个目标——但判据仍然只有一条：\textbf{看特征值的实部}。
+\end{enumerate}
+
+\hdr{§9}{中英术语对照}
+
+课件是英文的，讲义是中文的，两边名词先对上，读课件才不会卡在字面上。下表每行两组词，各自独立，不是一一对应的四列。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.26\linewidth}p{0.18\linewidth}p{0.27\linewidth}p{0.18\linewidth}@{}}
+\thead{课件写法} & \thead{中文} & \thead{课件写法} & \thead{中文}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.26\linewidth}p{0.18\linewidth}p{0.27\linewidth}p{0.18\linewidth}@{}}
+system of ODEs & 微分方程组 & fundamental matrix & 基本解矩阵\\
+linear system & 线性系统 & matrix exponential & 矩阵指数\\
+homogeneous & 齐次的 & Cayley--Hamilton & 凯莱--哈密顿\\
+nonhomogeneous & 非齐次的 & variation of parameters & 参数变易\\
+fundamental set & 基本解组 & undetermined coefficients & 待定系数\\
+Wronskian & 朗斯基行列式 & ordinary point & 常点\\
+regular singular point & 正则奇点 & indicial equation & 指标方程\\
+Frobenius method & 弗罗贝尼乌斯法 & Bessel equation & 贝塞尔方程\\
+phase portrait & 相图 & critical point & 临界点\\
+saddle & 鞍点 & node & 结点\\
+focus & 焦点 & center & 中心\\
+hyperbolic & 双曲的 & first approximation & 第一近似\\
+asymptotically stable & 渐近稳定 & linearization & 线性化\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是名词台账，不承载推导，逐格可回课件核对。少数术语各教材译法不同（focus 也译“螺旋点”、node 也译“节点”），本总纲与各讲讲义统一用上表的译名。
+
+\flowerrule
+
+{\small\color{inkgray}
+制表：2026-11-09。依据为课件 L13--L23 共 8 份的目录页与正文；页码为各课件首页标注的讲次与日期。
+本总纲只给骨架与坐标，不含推导；推导、例题与作业见各讲讲义。}
+
+\end{document}

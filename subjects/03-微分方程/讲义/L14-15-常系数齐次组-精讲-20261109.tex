@@ -1,0 +1,811 @@
+%=====================================================================
+%  常系数齐次线性方程组：三种特征值情形
+%  精讲讲义 · Lecture 14--15
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+
+\settags{L14--15 常系数齐次组}{微分方程}
+
+\renewcommand{\qbreak}{\needspace{0.26\textheight}}
+\newcommand{\qpagebreak}{\needspace{0.92\textheight}}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\begin{document}
+
+\doctitle{常系数齐次方程组}%
+{三种特征值情形：实根、复根、重根}%
+{依据：课件 \texttt{14\_15\_Linear-DE-systems-with-constant-coefficients.pdf}（64 页，2026-09-29 / 10-08，W.Y., DLUT）\\
+页码为该 PDF 的页序；课件另有 $k/59$ 的编号\\
+正文给方法与判据，各例题与作业的详解统一在附录 A}
+
+\callout{\textbf{先读这一段。}这一讲只解决一个方程：$\vect{Y}'=A\vect{Y}$，$A$ 是常矩阵。全部内容由特征值分成三支：\textbf{相异实根}（§3）、\textbf{共轭复根}（§4）、\textbf{重根}（§6–§7，还要再分 $g=m$ 与 $g<m$）。三种情形的解长得不一样，但来源只有一个：猜 $\vect{Y}=\vect{V}\mathrm{e}^{\lambda x}$（§2）。你要练的不是"背三种公式"，而是\textbf{拿到一个矩阵，先算出 $\lambda$ 与 $m,g$，再决定走哪一支}。§8 把这件事做成一张六步检查表。}
+
+%=====================================================================
+\hdr{§0}{三种情形一览，与三个要一直盯住的量}
+
+先把结论摆出来，后面的每一节都是在解释这张表怎么来的。
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.16\linewidth}p{0.20\linewidth}p{0.42\linewidth}p{0.14\linewidth}@{}}
+\thead{情形} & \thead{特征值} & \thead{解的基本形状} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.16\linewidth}p{0.20\linewidth}p{0.42\linewidth}p{0.14\linewidth}@{}}
+Case 1 & 相异实根 $\lambda_k$ & $\vect{V}_k\mathrm{e}^{\lambda_k x}$，各管各的 & p9--p15\\
+Case 2 & 共轭复根 $a\pm\mathrm{i}b$ & $\mathrm{e}^{ax}\bigl(\vect{P}\cos bx-\vect{Q}\sin bx\bigr)$ 与其虚部 & p16--p25\\
+Case 3a & 重根，$g=m$ & 仍是 $\mathrm{e}^{\lambda x}$ 乘 $m$ 个独立特征向量 & p30--p38\\
+Case 3b & 重根，$1\le g<m$ & 出现 $x\mathrm{e}^{\lambda x}$、$\tfrac{x^2}{2}\mathrm{e}^{\lambda x}$ 的链 & p39--p45\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是路线台账，不承载推导；它回答的是"算完特征值之后走哪条路"，每一行的理由在后面各节。
+
+\textbf{三个要一直盯住的量}：
+
+\begin{itemize}
+  \item $\lambda$：特征值，解里指数的底数。
+  \item $m$：\textbf{代数重数}，$\lambda$ 在特征多项式里出现的次数。
+  \item $g$：\textbf{几何重数}，$g=n-\rank(A-\lambda E)$，即"这个 $\lambda$ 能拿出几个线性无关的特征向量"。
+\end{itemize}
+
+永远有 $1\le g\le m$。三条路的分岔点不是"$m$ 等于几"，而是"\textbf{$g$ 够不够}"：$g=m$ 走 Case 3a，$g<m$ 走 Case 3b。这一点课件在 p7 埋了一句，到 p31 才给出定义，中间夹着一整个 Case 1 与 Case 2，很容易读丢。
+
+%=====================================================================
+\hdr{§1}{特征值问题：从 $A\vect{V}=\lambda\vect{V}$ 到特征方程}
+
+\subhdr{1.1 定义与特征方程（p3、p6）}
+
+设 $A$ 是 $n\times n$ 实常矩阵。若存在数 $\lambda$ 与非零向量 $\vect{V}$ 使
+
+\[
+A\vect{V}=\lambda\vect{V},
+\]
+
+则 $\lambda$ 叫特征值、$\vect{V}$ 叫对应的特征向量。把它移项：
+
+\[
+(A-\lambda E)\vect{V}=\vect{0}.
+\]
+
+这是一个关于 $\vect{V}$ 各分量的\textbf{齐次线性代数方程组}。齐次方程组只有两种命运：要么只有零解，要么有无穷多非零解。我们要的是后者，而后者成立的充要条件是系数行列式为零：
+
+\[
+\det(A-\lambda E)=0 .
+\]
+
+这就是\textbf{特征方程}；左端是关于 $\lambda$ 的 $n$ 次多项式，叫特征多项式。
+
+\subhdr{1.2 代数重数与几何重数（p7）}
+
+把特征多项式分解：
+
+\[
+\det(A-\lambda E)=(\lambda-\lambda_1)^{m_1}\cdots(\lambda-\lambda_k)^{m_k},
+\qquad m_1+\cdots+m_k=n .
+\]
+
+$m_j$ 叫 $\lambda_j$ 的\textbf{代数重数}。对每个 $\lambda_j$，解 $(A-\lambda_jE)\vect{V}=\vect{0}$ 得到的\textbf{线性无关特征向量的个数}，叫\textbf{几何重数}
+
+\[
+g_j=\dim\ker(A-\lambda_jE)=n-\rank(A-\lambda_jE),
+\]
+
+并且总有 $1\le g_j\le m_j$。
+
+\textbf{为什么 $g\le m$？}直觉上，$g$ 是"解空间维数"，$m$ 是"根在这点重复了几次"；特征值每重复一次，最多多给一个独立方向，给不出更多。这个不等式是后面一切分类的基础，但课件 p7 只写了结论，没解释，也没告诉你怎么算——算的办法就是"数秩"，$g=n-\rank$。
+
+\subhdr{1.3 三个量与三条路的对应}
+
+拿到 $A$ 之后，先算特征多项式，得到两样东西：\textbf{有哪些 $\lambda$}、\textbf{每个 $\lambda$ 的 $m$}。然后对每个 $\lambda$ 算 $g=n-\rank(A-\lambda E)$。
+
+\begin{itemize}
+  \item 所有 $\lambda$ 都是单根（$m=1$，于是 $g=1$）：\textbf{Case 1}。
+  \item 出现一对共轭复根：\textbf{Case 2}（复根一定成对出现，见 §4.4）。
+  \item 某个 $\lambda$ 的 $m>1$：看它的 $g$。$g=m$ 走 \textbf{Case 3a}；$g<m$ 走 \textbf{Case 3b}。
+\end{itemize}
+
+一个矩阵里可以同时出现多种情形：例如 $\lambda=2$（$m=1$）与 $\lambda=3$（$m=2$，$g=2$）并存，就一半走 Case 1、一半走 Case 3a。各支互不干扰，最后把解加起来（叠加原理）。
+
+%=====================================================================
+\hdr{§2}{为什么猜 $\vect{Y}=\vect{V}\mathrm{e}^{\lambda x}$}
+
+\subhdr{2.1 $n=1$ 的类比（p4）}
+
+$n=1$ 时方程退化成 $y'=ay$（$a$ 常数），解是 $y=c\mathrm{e}^{ax}$。这一条是全部猜想的来源：方程右端是"常数乘自己"，解就该是"指数乘常数"。
+
+\subhdr{2.2 代入与约化（p5）}
+
+设 $\vect{Y}(x)=\vect{V}\mathrm{e}^{\lambda x}$，其中 $\vect{V}$ 是非零常向量。求导：
+
+\[
+\vect{Y}'=\lambda\vect{V}\mathrm{e}^{\lambda x},\qquad
+A\vect{Y}=A\vect{V}\mathrm{e}^{\lambda x}.
+\]
+
+两边相等，而 $\mathrm{e}^{\lambda x}$ 恒不为零，可以约掉，剩下
+
+\[
+\lambda\vect{V}=A\vect{V}.
+\]
+
+\textbf{这一步是整章的关键}：微分方程问题被换成了代数问题——找矩阵的特征值。约掉指数之所以合法，是因为 $\mathrm{e}^{\lambda x}$ 处处非零；这也解释了为什么解里必然带指数。
+
+\subhdr{2.3 为什么偏偏是指数}
+
+从另一头看：$\vect{Y}'=A\vect{Y}$ 的解，每个分量都是若干个 $\mathrm{e}^{\lambda x}$（或 $x^k\mathrm{e}^{\lambda x}$）的线性组合。理由在于常系数线性方程的解空间是有限维的，而指数函数是求导算子的"特征函数"——求导把它送回自己乘一个常数。这一条是直觉，严格证明要用矩阵指数（L16--17 的 $\mathrm{e}^{Ax}$），这里先用着。
+
+%=====================================================================
+\hdr{§3}{Case 1：相异实根（p9--p15）}
+
+\subhdr{3.1 定理与通解（p10）}
+
+设 $A$ 的 $n$ 个特征值 $\lambda_1,\dots,\lambda_n$ 互不相同，对应的特征向量为 $\vect{V}_1,\dots,\vect{V}_n$。则
+
+\[
+\vect{Y}_k(x)=\vect{V}_k\mathrm{e}^{\lambda_k x},\qquad k=1,\dots,n
+\]
+
+是 $n$ 个线性无关的解，通解为
+
+\[
+\vect{Y}(x)=\sum_{k=1}^{n}c_k\vect{V}_k\mathrm{e}^{\lambda_k x}.
+\]
+
+\textbf{为什么线性无关}（课件 p10 的定理 2.1 只给结论，这里补）：设
+
+\[
+c_1\vect{V}_1\mathrm{e}^{\lambda_1x}+\cdots+c_n\vect{V}_n\mathrm{e}^{\lambda_nx}=\vect{0}
+\]
+
+对一切 $x$ 成立。两边乘 $\mathrm{e}^{-\lambda_1x}$，再令 $x\to+\infty$：若某个 $c_k\neq0$ 且 $\lambda_k>\lambda_1$，则对应项会发散，等式不可能成立；于是只能 $c_1=0$。逐个消去，得所有 $c_k=0$。所以无关。
+
+\textbf{更直接的判据}：这 $n$ 个解拼成的 Wronskian 在 $x=0$ 处等于 $\det(\vect{V}_1,\dots,\vect{V}_n)$。而分属不同特征值的特征向量必线性无关（否则 $A\vect{V}_i=\lambda_i\vect{V}_i$ 与 $A\vect{V}_j=\lambda_j\vect{V}_j$ 会推出 $\lambda_i=\lambda_j$），故行列式非零。
+
+\subhdr{3.2 操作三条}
+
+\begin{enumerate}
+  \item 写出 $A$，解 $\det(A-\lambda E)=0$ 得全部 $\lambda_k$（要检查是否互异）。
+  \item 对每个 $\lambda_k$ 解 $(A-\lambda_kE)\vect{V}_k=\vect{0}$，取一个非零解（通常把某个自由变量取 $1$）。
+  \item 拼 $\vect{Y}=\sum c_k\vect{V}_k\mathrm{e}^{\lambda_k x}$。
+\end{enumerate}
+
+\textbf{注意}：特征向量可以乘任意非零常数，不同人取的 $\vect{V}_k$ 可能差一个倍数，但通解集合相同。答卷上不必统一"最美"的写法，只要非零即可。
+
+%=====================================================================
+\hdr{§4}{Case 2：共轭复根（p16--p25）}
+
+\subhdr{4.1 复值解怎么来的（p17--p18）}
+
+设 $\lambda_1=a+\mathrm{i}b$（$b\neq0$）是特征值，$\vect{V}_1$ 是对应特征向量。形式上
+
+\[
+\vect{Y}_1(x)=\vect{V}_1\mathrm{e}^{(a+\mathrm{i}b)x}
+=\mathrm{e}^{ax}\bigl(\cos bx+\mathrm{i}\sin bx\bigr)\vect{V}_1
+\]
+
+确实是解——但它是\textbf{复值}的，而原方程是实系数的，我们要实值解。
+
+\subhdr{4.2 取实部与虚部：为什么合法（p19、p21）}
+
+把 $\vect{V}_1$ 拆成实部与虚部：$\vect{V}_1=\vect{P}+\mathrm{i}\vect{Q}$（$\vect{P},\vect{Q}$ 实向量）。则
+
+\[
+\vect{Y}_1(x)=\underbrace{\mathrm{e}^{ax}\bigl(\vect{P}\cos bx-\vect{Q}\sin bx\bigr)}_{\vect{U}(x)}
++\mathrm{i}\underbrace{\mathrm{e}^{ax}\bigl(\vect{P}\sin bx+\vect{Q}\cos bx\bigr)}_{\vect{W}(x)}.
+\]
+
+\textbf{$\vect{U}$ 与 $\vect{W}$ 都是解}。理由是线性算子 $\mathcal{L}[\vect{Y}]=\vect{Y}'-A\vect{Y}$ 只做求导与乘实矩阵，对复值的实部虚部互不干扰：
+
+\[
+\vect{0}=\mathcal{L}[\vect{Y}_1]=\mathcal{L}[\vect{U}]+\mathrm{i}\mathcal{L}[\vect{W}]
+\ \Longrightarrow\ \mathcal{L}[\vect{U}]=\vect{0},\ \mathcal{L}[\vect{W}]=\vect{0}.
+\]
+
+课件 p19 用的是另一种说法：$\vect{U}=(\vect{Y}_1+\bar{\vect{Y}}_1)/2$、$\vect{W}=(\vect{Y}_1-\bar{\vect{Y}}_1)/(2\mathrm{i})$，再由叠加原理得它们是解。两种说法等价，本质都是"线性算子把实部虚部分开"。
+
+\textbf{它们线性无关}：课件 p19 直接算了 Wronskian（例 2 里 $W=\mathrm{e}^{-x}\neq0$）。一般地，$\vect{U},\vect{W}$ 的线性组合若为零，等价于 $\vect{V}_1\mathrm{e}^{\lambda_1x}$ 与其共轭的某个实组合为零，由 $\vect{P},\vect{Q}$ 与 $\cos,\sin$ 的独立性可推出系数全零。
+
+\subhdr{4.3 一般公式（p20）}
+
+设 $\lambda_1=a+\mathrm{i}b$、$\lambda_2=a-\mathrm{i}b$（$b\neq0$）是一对共轭复根，其余 $\lambda_3,\dots,\lambda_n$ 为实数且互异。则通解为
+
+\[
+\vect{Y}(x)=c_1\vect{U}(x)+c_2\vect{W}(x)+\sum_{k=3}^{n}c_k\vect{V}_k\mathrm{e}^{\lambda_k x},
+\]
+
+其中
+
+\[
+\vect{U}(x)=\mathrm{e}^{ax}\Bigl(\operatorname{Re}(\vect{V}_1)\cos bx-\operatorname{Im}(\vect{V}_1)\sin bx\Bigr),
+\qquad
+\vect{W}(x)=\mathrm{e}^{ax}\Bigl(\operatorname{Im}(\vect{V}_1)\cos bx+\operatorname{Re}(\vect{V}_1)\sin bx\Bigr).
+\]
+
+\textbf{实操只有一句}：\textbf{只算 $\lambda=a+\mathrm{i}b$ 这一个特征值}，取 $\vect{V}=\vect{P}+\mathrm{i}\vect{Q}$，代进上面两式。共轭的那一半不用算，它给出的正是 $\vect{U},\vect{W}$ 的同一对组合。
+
+\subhdr{4.4 为什么复根一定成对（p21）}
+
+$A$ 是实矩阵，特征多项式的系数全是实数。实系数多项式的复根必成共轭对出现，所以 $\lambda_2=\bar\lambda_1$ 也是特征值；并且 $\bar{\vect{V}}_1$ 就是它的特征向量。这一条保证"只算一半"永远够用。
+
+\subhdr{4.5 一个必须提防的坑}
+
+复根情形下，\textbf{不要}把 $\vect{V}\mathrm{e}^{\lambda x}$ 直接当答案交上去——那不是实值解。也不要只写"$\cos$ 那一半"：$\vect{U}$ 与 $\vect{W}$ 都要，它们是两个独立解，缺一个就少一维。
+
+%=====================================================================
+\hdr{§5}{四维的例子：多自由度弹簧-质量（p26--p29）}
+
+\subhdr{5.1 建模（p26）}
+
+两个质量、三根弹簧的系统，化成四个一阶方程：令 $y_1=x_1$、$y_2=x_2$、$y_3=x_1'$、$y_4=x_2'$，则
+
+\[
+\vect{Y}'=\begin{pmatrix}
+0&0&1&0\\
+0&0&0&1\\
+-2&3/2&0&0\\
+4/3&-3&0&0
+\end{pmatrix}\vect{Y}.
+\]
+
+矩阵里 $2\times2$ 的零块与单位块，是"两个二阶方程降阶"留下的痕迹；下面 $2\times2$ 的块是刚度矩阵除以质量。
+
+\warnbox{\textbf{课件 p26 有一处符号笔误}：它写 $m_2x_2''=-k_2x_1-(k_2+k_3)x_2$，但按 L13 p4 的受力约定应为 $+k_2x_1$；p27 的矩阵第四行也确实是 $+4/3$。以矩阵为准，p26 的 $-\tfrac43x_1$ 应为 $+\tfrac43x_1$。}
+
+\subhdr{5.2 特征方程里只有 $\lambda$ 的偶次幂（p27）}
+
+\[
+\det(A-\lambda E)=\lambda^4+5\lambda^2+4=(\lambda^2+1)(\lambda^2+4),
+\]
+
+所以 $\lambda=\pm\mathrm{i},\ \pm2\mathrm{i}$：\textbf{四个纯虚根}。
+
+\textbf{纯虚根意味着什么？}指数是 $\mathrm{e}^{\pm\mathrm{i}bt}$，没有实部，振幅不增不减——这是\textbf{无阻尼的简谐振动}。这正对应模型里没有阻尼项：方程组里没有 $x'$ 的一次项，矩阵的上右块是单位块、下右块是零块，于是特征方程只含 $\lambda$ 的偶次幂。这个结构不是巧合，是"无阻尼"在代数上的样子。
+
+\subhdr{5.3 复根在四维里的用法}
+
+$\lambda=\mathrm{i}$ 的特征向量是 $\vect{V}_1=(3,2,3\mathrm{i},2\mathrm{i})^{\mathsf T}$（课件 p27）。取实部虚部得到两条实解；$\lambda=2\mathrm{i}$ 同样处理，再得两条。四条拼起来就是通解（课件 p29）。注意：$b=1$ 与 $b=2$ 对应两个不同的振动频率，$\cos t$ 与 $\cos2t$ 各是一阶模态。
+
+%=====================================================================
+\hdr{§6}{Case 3a：重根但 $g=m$（p30--p38）}
+
+\subhdr{6.1 定义与定理（p31）}
+
+设 $\lambda_1$ 的代数重数为 $m_1$，几何重数
+
+\[
+g_1=n-\rank(A-\lambda_1E).
+\]
+
+\textbf{定理 2.3}：若 $g_1=m_1$，则恰有 $m_1$ 个线性无关的特征向量 $\vect{V}_1,\dots,\vect{V}_{m_1}$ 对应 $\lambda_1$。
+
+\subhdr{6.2 通解（p32）}
+
+\[
+\vect{Y}(x)=\bigl(c_1\vect{V}_1+\cdots+c_{m_1}\vect{V}_{m_1}\bigr)\mathrm{e}^{\lambda_1x}
++\sum_{k=m_1+1}^{n}c_k\vect{V}_k\mathrm{e}^{\lambda_kx}.
+\]
+
+注意它和 Case 1 的差别只在"同一个 $\lambda$ 配了好几个特征向量"：\textbf{指数还是 $\mathrm{e}^{\lambda x}$，没有 $x$ 因子}。$g=m$ 时特征向量够用，不需要广义特征向量。
+
+\subhdr{6.3 判别 $g=m$ 的算法}
+
+\begin{enumerate}
+  \item 算 $A-\lambda_1E$，用初等行变换化成阶梯形，数非零行数 = $\rank$。
+  \item $g=n-\rank$。若 $g=m$，进入本情形。
+  \item 解 $(A-\lambda_1E)\vect{V}=\vect{0}$，把自由变量逐个取 $1$（其余取 $0$），得到 $g$ 个独立特征向量。
+\end{enumerate}
+
+\subhdr{6.4 初值问题的六步（p37--p38）}
+
+课件把整套流程写成六步，适用于所有情形（复根时在第 III 步取实虚部）：
+
+\begin{enumerate}
+  \item 求全部特征值 $\lambda_1,\dots,\lambda_k$；
+  \item 求对应的特征向量（或广义特征向量）$\vect{V}_1,\dots,\vect{V}_n$；
+  \item 造解 $\vect{Y}_k=\vect{V}_k\mathrm{e}^{\lambda_kx}$；复根时改取实部、虚部；
+  \item 验 $W=\det(\vect{Y}_1,\dots,\vect{Y}_n)\neq0$（课件注明"通常自动满足"）；
+  \item 写通解 $\vect{Y}=\sum c_k\vect{Y}_k$；
+  \item 若给初值 $\vect{Y}(0)$，代入定 $c_1,\dots,c_n$。
+\end{enumerate}
+
+第 IV 步不能省：它保证你找到的 $n$ 个解真的构成基本解组。$g=m$ 时这一条自动成立（$m$ 个独立特征向量）；$g<m$ 时就要靠链的构造来保证。
+
+%=====================================================================
+\hdr{§7}{Case 3b：重根且 $1\le g<m$（p39--p45）}
+
+这一节是全讲最绕的地方。课件用"试错"的方式引出广义特征向量，中间的逻辑跳了一步，这里补全。
+
+\subhdr{7.1 第一次尝试为什么失败（p40）}
+
+$\lambda$ 是二重根、却只有一个特征向量 $\vect{V}_1$。自然的想法是再乘一个 $x$：设
+
+\[
+\vect{Y}_2=x\mathrm{e}^{\lambda x}\vect{V}_1 .
+\]
+
+求导得 $\vect{Y}_2'=(1+\lambda x)\mathrm{e}^{\lambda x}\vect{V}_1$，而 $A\vect{Y}_2=\lambda x\mathrm{e}^{\lambda x}\vect{V}_1$。要相等，必须
+
+\[
+1+\lambda x=\lambda x,
+\]
+
+对任何 $x$ 都不成立。\textbf{失败的原因}：$\vect{V}_1$ 已经在 $A-\lambda E$ 的核里，乘一个 $x$ 只改变系数，不产生新的方向。
+
+\subhdr{7.2 修正：加一个待定向量（p41）}
+
+改设
+
+\[
+\vect{Y}_2=x\mathrm{e}^{\lambda x}\vect{V}_1+\mathrm{e}^{\lambda x}\vect{V}^{(1)},
+\]
+
+其中 $\vect{V}^{(1)}$ 待定。求导：
+
+\[
+\vect{Y}_2'=\mathrm{e}^{\lambda x}\bigl[\lambda x\vect{V}_1+(\vect{V}_1+\lambda\vect{V}^{(1)})\bigr],
+\qquad
+A\vect{Y}_2=\mathrm{e}^{\lambda x}\bigl[\lambda x\vect{V}_1+A\vect{V}^{(1)}\bigr].
+\]
+
+比较两项（$x\mathrm{e}^{\lambda x}$ 的系数自动相等，剩下的常数项必须相等）：
+
+\[
+\vect{V}_1+\lambda\vect{V}^{(1)}=A\vect{V}^{(1)}
+\ \Longleftrightarrow\
+(A-\lambda E)\vect{V}^{(1)}=\vect{V}_1 .
+\]
+
+\textbf{这个方程就是把"缺的那一维"补出来的地方}。它一般有解（只要 $\vect{V}_1$ 落在 $A-\lambda E$ 的像里），$\vect{V}^{(1)}$ 就叫 $\lambda$ 对应的\textbf{广义特征向量}。
+
+\subhdr{7.3 链：$g$ 与 $m$ 差多少，就接多长（p43）}
+
+一般情形：若 $\lambda_1$ 有 $g_1$ 个独立特征向量、代数重数 $m_1$，则需要 $k=m_1-g_1$ 个广义特征向量，串成一条链：
+
+\[
+(A-\lambda_1E)\vect{V}=\vect{0},\quad
+(A-\lambda_1E)\vect{V}^{(1)}=\vect{V},\quad
+(A-\lambda_1E)\vect{V}^{(2)}=\vect{V}^{(1)},\ \dots,\
+(A-\lambda_1E)\vect{V}^{(k)}=\vect{V}^{(k-1)}.
+\]
+
+\textbf{一个容易忽略的条件}：链的起点 $\vect{V}$ 必须是"能接上"的特征向量，即 $\vect{V}\in\operatorname{Range}(A-\lambda_1E)$。判别法是比较
+
+\[
+\rank(A-\lambda_1E)\quad\text{与}\quad\rank\bigl(A-\lambda_1E\mid\vect{V}\bigr).
+\]
+
+两者相等，才有 $\vect{V}^{(1)}$；不相等就换一个特征向量（或换成几个特征向量的组合）。课件 p61 在三维 $g=2$ 的例子正是这么做的：取 $\vect{V}=(0,0,1)$ 时两个秩不等，接不上；改成 $\vect{V}=(2,1,1)=(2,1,0)+(0,0,1)$ 就能接上。
+
+\subhdr{7.4 通解的一般形式（p44、p45）}
+
+把这些解加起来：
+
+\[
+\vect{Y}=\bigl(c_1\vect{V}_1+\cdots+c_{g}\vect{V}_{g}\bigr)\mathrm{e}^{\lambda x}
++\sum_{j=1}^{k}c_{g+j}\Bigl(\vect{V}\frac{x^{j}}{j!}+\vect{V}^{(1)}\frac{x^{j-1}}{(j-1)!}+\cdots+\vect{V}^{(j)}\Bigr)\mathrm{e}^{\lambda x}
++\sum_{\text{其余 }\lambda}c_k\vect{V}_k\mathrm{e}^{\lambda_kx}.
+\]
+
+\textbf{读法}：括号里是"$\vect{V}$ 配 $x^j/j!$、$\vect{V}^{(1)}$ 配 $x^{j-1}/(j-1)!$、……、$\vect{V}^{(j)}$ 配常数"，系数正好是泰勒展开的系数。$k=1$ 时退化成 $(\vect{V}x+\vect{V}^{(1)})\mathrm{e}^{\lambda x}$，就是 §7.2 的结果。
+
+\subhdr{7.5 一张对照表（p45）}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.20\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+\thead{} & \thead{$g=m$} & \thead{$1\le g<m$（$k=m-g$）}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.20\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+特征向量 & $\vect{V}_1,\dots,\vect{V}_m$ & $\vect{V}_1,\dots,\vect{V}_g$\\
+广义特征向量 & 不需要 & $\vect{V}^{(1)},\dots,\vect{V}^{(k)}$\\
+解 & 全乘 $\mathrm{e}^{\lambda x}$ & $\vect{V}\mathrm{e}^{\lambda x}$、$(\vect{V}x+\vect{V}^{(1)})\mathrm{e}^{\lambda x}$、$\bigl(\vect{V}\tfrac{x^2}{2}+\vect{V}^{(1)}x+\vect{V}^{(2)}\bigr)\mathrm{e}^{\lambda x}$、……\\
+解够不够 & 够（$m$ 条） & 单独几条不够，要接成链才够\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+这张表是形态对照，不承载推导：它能告诉你"该长什么样"，但链怎么接、$\vect{V}^{(1)}$ 怎么解，仍要回到 §7.2、§7.3。
+
+%=====================================================================
+\hdr{§8}{拿到一个矩阵时的六步检查表}
+
+\begin{enumerate}
+  \item \textbf{写 $A$}，检查是否常系数、是否齐次。
+  \item \textbf{算特征多项式} $\det(A-\lambda E)$，因式分解，列出所有 $\lambda$ 与各自的 $m$。
+  \item \textbf{算 $g$}：对每个重根算 $n-\rank(A-\lambda E)$。这一步决定后面走 3a 还是 3b；单根不用算（$g=m=1$）。
+  \item \textbf{求向量}：单根与 $g=m$ 的情形解 $(A-\lambda E)\vect{V}=0$；复根只算一个，取实虚部；$g<m$ 时先求特征向量，再按链解 $(A-\lambda E)\vect{V}^{(j)}=\vect{V}^{(j-1)}$（并检查秩条件）。
+  \item \textbf{拼解}，数一数总共是不是 $n$ 条。
+  \item \textbf{验}：把解代回原方程（至少验一条），或算 Wronskian 看是否非零；有初值再代初值。
+\end{enumerate}
+
+\textbf{第 5 步的数数是最便宜的检查}：解的总数必须恰好等于 $n$。少了，说明某条链断了或某个复根只取了一半；多了，说明有两列线性相关。
+
+%=====================================================================
+\hdr{§9}{解长什么样：三种情形的几何与稳定性}
+
+前面三节解决"怎么算出解"，这一节回答"解画出来是什么"。这一节不是可有可无的补充：\textbf{下一章（L21--23 相图与稳定性）整章都建立在这里}，那章用的 $\tau$--$\Delta$ 判据，就是把本节三种情形翻译成迹与行列式的语言。
+
+\subhdr{8.1 一个实根：轨道是一条射线}
+
+若解里只有一项 $c\vect{V}\mathrm{e}^{\lambda x}$（$c\neq0$），把它写成参数式：$\vect{Y}(x)=c\mathrm{e}^{\lambda x}\vect{V}$。无论 $x$ 取什么值，$\vect{Y}$ 永远是 $\vect{V}$ 的常数倍，所以\textbf{轨道落在过原点、方向为 $\vect{V}$ 的直线上}：
+
+\begin{itemize}
+  \item $\lambda<0$：$c\mathrm{e}^{\lambda x}\to0$，轨道沿直线缩向原点（$c>0$ 从 $\vect{V}$ 那一侧来，$c<0$ 从对侧来）。
+  \item $\lambda>0$：轨道沿直线离开原点，趋向无穷。
+  \item $\lambda=0$：$c\mathrm{e}^{0}\vect{V}$ 不动——这是平衡点，不出现在一般情形。
+\end{itemize}
+
+两个相异实根时，通解是两条直线方向的叠加，轨道一般是一条穿过原点的曲线，被两个特征方向"夹"住：$x\to+\infty$ 时由 $|\lambda|$ 较大的那项主导，轨道趋于那个特征方向；$x\to-\infty$ 时由另一项主导。若一正一负（$\Delta<0$），轨道从一个方向进来、从另一个方向出去——这就是\textbf{鞍点}。
+
+\subhdr{8.2 一对复根：轨道是螺旋}
+
+复根情形下 $\vect{U}(x)=\mathrm{e}^{ax}\bigl(\vect{P}\cos bx-\vect{Q}\sin bx\bigr)$。在 $\vect{P},\vect{Q}$ 张成的平面里看，它是一条\textbf{对数螺旋}：
+
+\begin{itemize}
+  \item 半径按 $\mathrm{e}^{ax}$ 变化：$a<0$ 向内卷，$a>0$ 向外卷；
+  \item 角度按 $bx$ 匀速增加：每走 $\Delta x=2\pi/b$ 转一圈；
+  \item $a=0$（纯虚根）：半径不变，轨道是闭合椭圆——这就是\textbf{中心}，对应无阻尼振动（§5 的弹簧系统正是这种）。
+\end{itemize}
+
+\textbf{注意旋转方向}：它由 $b$ 的符号与 $\vect{P},\vect{Q}$ 的取向共同决定，不能只看 $b$。要判断，取 $x=0$ 处的点 $\vect{P}$，看导数 $\vect{U}'(0)=a\vect{P}-b\vect{Q}$ 指向哪边。
+
+\subhdr{8.3 重根：$g=m$ 还是刚才的直线，$g<m$ 会弯}
+
+\begin{itemize}
+  \item $g=m$：解全是 $\mathrm{e}^{\lambda x}$ 乘特征向量，轨道与 8.1 一样是射线，只是同一个 $\lambda$ 下有好几条。
+  \item $g<m$：解里多出 $x\mathrm{e}^{\lambda x}\vect{V}$。$x\to\pm\infty$ 时 $x$ 项压过常数项，所以轨道\textbf{最终平行于 $\vect{V}$}，但中途会偏离；$\lambda<0$ 时整体仍缩向原点，只是"绕着直线弯进来"；$\lambda>0$ 时向外甩。
+\end{itemize}
+
+\textbf{一句话区分}：$g<m$ 的重根不会给你新的方向，只给你"沿同一方向多走一会儿"的自由——这就是为什么解里出现 $x$，而轨道不出现新的直线。
+
+\subhdr{8.4 与 L21--23 的 $\tau$--$\Delta$ 判据对接}
+
+$n=2$ 时，两个特征值满足
+
+\[
+\tau=\lambda_1+\lambda_2=\operatorname{tr}A,\qquad
+\Delta=\lambda_1\lambda_2=\det A,\qquad
+D=\tau^2-4\Delta=(\lambda_1-\lambda_2)^2\ge0 .
+\]
+
+于是本节的三种情形可以逐条翻译成代数判据：
+
+\begin{itemize}
+  \item $D>0$：两个不同实根 → 两条特征方向（结点，或 $\Delta<0$ 时的鞍点）；
+  \item $D<0$：一对共轭复根 → 螺旋（焦点；$\tau=0$ 时是中心）；
+  \item $D=0$：重根 → 星形结点（$g=2$）或退化结点（$g=1$）。
+\end{itemize}
+
+\textbf{这不是新知识，是同一件事换了语言}：L22--23 作业里要求你算 $\tau,\Delta,D$ 再查表，查的就是这里 8.1–8.3 的三种情形；螺旋的朝向由 $\tau$ 的符号定（$\tau<0$ 向内、$\tau>0$ 向外），与 $a=\tau/2$ 的符号一致。
+
+\subhdr{8.5 稳定性的一句话}
+
+把上面收成一句：
+
+\[
+\text{渐近稳定}\iff\text{所有 }\operatorname{Re}\lambda<0;
+\qquad
+\text{不稳定}\iff\text{存在 }\operatorname{Re}\lambda>0 .
+\]
+
+若出现 $\operatorname{Re}\lambda=0$（纯虚根或零根），线性化\textbf{给不出结论}——轨道可能是中心，也可能是缓慢旋出/旋进的细焦点，要看高阶项。这一条是 L22--23 的入口，本讲义只点到，不展开。
+
+%=====================================================================
+\hdr{§10}{作业（p64）}
+
+课件作业四题，都是"解 $\vect{Y}'=A\vect{Y}$"。题干与考点如下，详解在附录。
+
+\qbreak
+\qstem{（课件 p64 第 1 题）$A=\mat{1&1&-3\\3&2&-3\\1&0&1}$，求 $\vect{Y}'=A\vect{Y}$ 的通解。}
+\par\textbf{考点}：重根 + $g<m$ 的链；三维链长 2。
+\par\textbf{关键一步}：特征值 $1$（$m=2$）与 $2$（$m=1$）；对 $\lambda=1$ 算 $g=3-\rank(A-E)$，若 $g=1<m$ 就要接一个广义特征向量。
+\par\textbf{详解}：附录 A.10，第 \pageref{app:hw1} 页。
+
+\qbreak
+\qstem{（课件 p64 第 2 题）$A=\mat{-2&1\\-5&2}$，求通解。}
+\par\textbf{考点}：纯虚特征值与实值化的写法。
+\par\textbf{关键一步}：先看迹（$=0$）与行列式（$=1$），猜出 $\lambda=\pm\mathrm{i}$；只算 $\lambda=\mathrm{i}$ 一个，取实虚部。
+\par\textbf{详解}：附录 A.11，第 \pageref{app:hw2} 页。
+
+\qbreak
+\qstem{（课件 p64 第 3 题）$A=\mat{-2&-1&1\\-3&-3&2\\-4&-3&2}$，求通解。}
+\par\textbf{考点}：三重根、$g=1$，需要长度 3 的链。
+\par\textbf{关键一步}：$\lambda=-1$，$m=3$；算 $g=3-\rank(A+E)=1$，于是要解两次 $(A+E)\vect{W}=\vect{V}$、$(A+E)\vect{U}=\vect{W}$。
+\par\textbf{详解}：附录 A.12，第 \pageref{app:hw3} 页。
+
+\qbreak
+\qstem{（课件 p64 第 4 题）$A=\mat{1&1\\9&1}$，求通解。}
+\par\textbf{考点}：相异实根，Case 1 的基本操作。
+\par\textbf{关键一步}：特征方程 $\lambda^2-2\lambda-8=0$，两根 $4$ 与 $-2$；各配一个特征向量。
+\par\textbf{详解}：附录 A.13，第 \pageref{app:hw4} 页。
+
+%=====================================================================
+\hdr{§11}{易错点}
+
+\begin{enumerate}
+  \item \textbf{重根不一定出现 $x$}。$g=m$ 时全是纯指数；只有 $g<m$ 才出现 $x\mathrm{e}^{\lambda x}$。判据是 $g$，不是 $m$（§6、§7）。
+  \item \textbf{复根要把实虚部都留下}。只写 $\vect{U}$ 少一维；只写复值解不合题意（§4.5）。
+  \item \textbf{链只能从"能接上"的特征向量起头}。要比较 $\rank(A-\lambda E)$ 与 $\rank(A-\lambda E\mid\vect{V})$（§7.3）。
+  \item \textbf{广义特征向量有无穷多个，选一个就行}。方程 $(A-\lambda E)\vect{V}^{(1)}=\vect{V}$ 的解不唯一，差一个特征向量；任取一个非零解都可以。
+  \item \textbf{解的总数必须等于 $n$}。这是最便宜的自检（§8 第 5 步）。
+  \item \textbf{特征向量可以乘任意非零常数}，但同一个 $\lambda$ 的多个特征向量必须线性无关，不能取成倍数。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§12}{缺口清单}
+
+\gapitem{机制缺口}{p4--p5 “Seek a solution in the form $Y(x)=Ve^{\lambda x}$” 直接猜形状，未说明为什么可以这样猜。本讲义 §2.1--§2.2 补 $n=1$ 类比与代入约化。}
+\gapitem{术语未定义}{p7 “If $\lambda_j$ has $g_j$ linearly independent eigenvectors, then $\lambda$ has geometric multiplicity $g_j$” 只给名字，未给算法，且“anywhere from 1 to k”没有解释。本讲义 §1.2 补 $g=n-\rank(A-\lambda E)$ 与 $1\le g\le m$ 的理由。}
+\gapitem{证明缺口}{p10 定理 2.1 只陈述“distinct $\Rightarrow$ independent”，未证。本讲义 §3.1 补两条证明（指数线性无关论证与 Wronskian 论证）。}
+\gapitem{机制缺口}{p19 “According to the principle of superposition” 一句带过实虚部是解，未说明为什么。本讲义 §4.2 补线性算子对实部虚部分离。}
+\gapitem{形式改写}{p20 一般公式只用 $\operatorname{Re}$、$\operatorname{Im}$ 记号给出。本讲义 §4.3 展开成显式 $\cos b x$、$\sin b x$ 形式，便于代初值。}
+\gapitem{排版笔误}{p26 写 $m_2x_2''=-k_2x_1-(k_2+k_3)x_2$，与 L13 p4 的 $+k_2x_1$ 及 p27 矩阵第四行 $+4/3$ 矛盾。本讲义 §5.1 指出应为 $+k_2x_1$。}
+\gapitem{排版笔误}{p36 通解首行把 $c_1\vect{V}_1$ 配 $\mathrm{e}^{3x}$、$c_2\vect{V}_2$ 配 $\mathrm{e}^{2x}$，与 $\lambda_1=2$、$\lambda_2=3$ 矛盾（下一行分量式才对）。本讲义 A.5 按 $\lambda_1=2$ 重写。}
+\gapitem{代数跳步}{p41 “Comparing terms” 跳过“$x\mathrm{e}^{\lambda x}$ 项自动相等、只剩常数项”这一步。本讲义 §7.2 展开比较过程。}
+\gapitem{机制缺口}{p40 只说 $1+\lambda x=\lambda x$ “doesn't work”，未解释失败原因。本讲义 §7.1 补：$\vect{V}_1$ 已在核里，乘 $x$ 不产生新方向。}
+\gapitem{适用条件缺失}{p43 未说明链的起点必须在 $\operatorname{Range}(A-\lambda E)$ 中；p61 的秩比较没有文字解释。本讲义 §7.3 补秩判据。}
+
+%=====================================================================
+\hdr{§13}{三句话}
+
+\begin{enumerate}
+  \item 全部内容来自一个猜测：$\vect{Y}=\vect{V}\mathrm{e}^{\lambda x}$，代进方程就变成 $A\vect{V}=\lambda\vect{V}$。
+  \item 分三支看特征值：相异实根各乘各的指数；共轭复根取实部虚部；重根看 $g$——$g=m$ 仍是纯指数，$g<m$ 要接广义特征向量的链。
+  \item 判断走哪支的钥匙是 $\rank(A-\lambda E)$ 给出的 $g$，不是 $m$；链能否接上，也要看秩。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§14}{与课件的页码对照}
+
+\begin{minipage}{\linewidth}
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.44\linewidth}p{0.34\linewidth}@{}}
+\thead{本讲义} & \thead{内容} & \thead{课件页}\\
+\end{tabular}
+\tabmid
+\begin{tabular}{@{}p{0.12\linewidth}p{0.44\linewidth}p{0.34\linewidth}@{}}
+§1 & 特征值、特征方程、$m$ 与 $g$ & p3--p7\\
+§2 & 为什么猜 $\vect{V}\mathrm{e}^{\lambda x}$ & p4--p5\\
+§3 & Case 1：相异实根 & p9--p15\\
+§4 & Case 2：共轭复根 & p16--p25\\
+§5 & 四维弹簧-质量例 & p26--p29\\
+§6 & Case 3a：$g=m$ & p30--p38\\
+§7 & Case 3b：$1\le g<m$ & p39--p45\\
+§9 & 六步检查表 & p37--p38\\
+§10 & 作业四题 & p64\\
+\end{tabular}
+\tabbot
+\end{minipage}
+
+%=====================================================================
+\newpage
+\hdr{附录 A}{例题与作业详解}
+
+每块自成一页，按“题干 → 考点 → 关键一步 → 详解 → 答案 → 自检”排。题号后标课件页码。
+
+\qpagebreak
+\subhdr{A.1\quad 例 1：三个相异实根（p11--p15）}
+\label{app:ex1}
+\qbreak
+\qstem{（课件 p11 例 1）解 $\vect{Y}'=A\vect{Y}$，
+$A=\mat{1&-1&1\\1&1&-1\\2&-1&0}$。}
+\textbf{考点}\ Case 1：特征方程、特征向量、通解。
+\textbf{关键一步}\ 特征多项式是三次的，试根 $\lambda=1$ 命中，再降为二次。
+\textbf{详解}\ 特征方程
+\[
+\det(A-\lambda E)=\begin{vmatrix}1-\lambda&-1&1\\1&1-\lambda&-1\\2&-1&-\lambda\end{vmatrix}
+=(2-\lambda)(1-\lambda)(\lambda+1)=0,
+\]
+故 $\lambda_1=2$，$\lambda_2=1$，$\lambda_3=-1$。
+对 $\lambda_1=2$：$A-2E=\mat{-1&-1&1\\1&-1&-1\\2&-1&-2}$，行化简得 $(1,0,1)^{\mathsf T}$ 方向，取 $\vect{V}_1=(1,0,1)^{\mathsf T}$。检验 $A\vect{V}_1=(2,0,2)^{\mathsf T}=2\vect{V}_1$。
+对 $\lambda_2=1$：$A-E=\mat{0&-1&1\\1&0&-1\\2&-1&-1}$，解得 $\vect{V}_2=(1,1,1)^{\mathsf T}$；$A\vect{V}_2=(1,1,1)^{\mathsf T}$。
+对 $\lambda_3=-1$：$A+E=\mat{2&-1&1\\1&2&-1\\2&-1&1}$，解得 $\vect{V}_3=(-1,3,5)^{\mathsf T}$；$A\vect{V}_3=(1,-3,-5)^{\mathsf T}=-\vect{V}_3$。
+\textbf{答案}\ $\vect{Y}=c_1\mat{1\\0\\1}\mathrm{e}^{2x}+c_2\mat{1\\1\\1}\mathrm{e}^{x}+c_3\mat{-1\\3\\5}\mathrm{e}^{-x}$，即三个分量 $y_1=c_1\mathrm{e}^{2x}+c_2\mathrm{e}^{x}-c_3\mathrm{e}^{-x}$、$y_2=c_2\mathrm{e}^{x}+3c_3\mathrm{e}^{-x}$、$y_3=c_1\mathrm{e}^{2x}+c_2\mathrm{e}^{x}+5c_3\mathrm{e}^{-x}$。
+\textbf{自检}\ 取 $c_1=1$ 其余为零：$\vect{Y}=(1,0,1)^{\mathsf T}\mathrm{e}^{2x}$，$\vect{Y}'=(2,0,2)^{\mathsf T}\mathrm{e}^{2x}=A\vect{Y}$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.2\quad 例 2：一对共轭复根（p17--p19）}
+\label{app:ex2}
+\qbreak
+\qstem{（课件 p17 例 2）求 $\vect{Y}'=A\vect{Y}$ 的实值基本解组，$A=\mat{-1/2&1\\-1&-1/2}$。}
+\textbf{考点}\ Case 2：复特征值、实值化、Wronskian。
+\textbf{关键一步}\ 特征方程是 $(\lambda+\tfrac12)^2+1=0$；取 $\lambda=-\tfrac12+\mathrm{i}$，特征向量 $(1,\mathrm{i})^{\mathsf T}$。
+\textbf{详解}\ $\det(A-\lambda E)=(-\tfrac12-\lambda)^2+1=0$，故 $\lambda=-\tfrac12\pm\mathrm{i}$，即 $a=-\tfrac12$、$b=1$。
+对 $\lambda=-\tfrac12+\mathrm{i}$，$(A-\lambda E)\vect{V}=0$ 化为 $-\mathrm{i}v_1+v_2=0$，取 $\vect{V}=(1,\mathrm{i})^{\mathsf T}=\vect{P}+\mathrm{i}\vect{Q}$，其中 $\vect{P}=(1,0)^{\mathsf T}$、$\vect{Q}=(0,1)^{\mathsf T}$。
+代入 §4.3 的公式：
+\[
+\vect{U}=\mathrm{e}^{-x/2}\bigl(\vect{P}\cos x-\vect{Q}\sin x\bigr)=\mathrm{e}^{-x/2}\mat{\cos x\\-\sin x},
+\]
+\[
+\vect{W}=\mathrm{e}^{-x/2}\bigl(\vect{P}\sin x+\vect{Q}\cos x\bigr)=\mathrm{e}^{-x/2}\mat{\sin x\\\cos x}.
+\]
+\textbf{答案}\ 基本解组为 $\vect{U},\vect{W}$；Wronskian
+\[
+W=\det\mat{\mathrm{e}^{-x/2}\cos x&\mathrm{e}^{-x/2}\sin x\\-\mathrm{e}^{-x/2}\sin x&\mathrm{e}^{-x/2}\cos x}=\mathrm{e}^{-x}\neq0 .
+\]
+\textbf{自检}\ 直接代 $\vect{U}$：$U_1'=\mathrm{e}^{-x/2}(-\tfrac12\cos x-\sin x)$，而 $-\tfrac12U_1+U_2=\mathrm{e}^{-x/2}(-\tfrac12\cos x-\sin x)$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.3\quad 例 3：实根与复根混合（p22--p25）}
+\label{app:ex3}
+\qbreak
+\qstem{（课件 p22 例 3）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{2&1&0\\1&3&-1\\-1&2&3}$。}
+\textbf{考点}\ 同一矩阵里 Case 1 与 Case 2 并用。
+\textbf{关键一步}\ 特征多项式 $(2-\lambda)(\lambda^2-6\lambda+10)$；二次因子给一对复根 $3\pm\mathrm{i}$。
+\textbf{详解}\ $\lambda_1=2$：$A-2E=\mat{0&1&0\\1&1&-1\\-1&2&1}$，解得 $\vect{V}_1=(1,0,1)^{\mathsf T}$，检验 $A\vect{V}_1=(2,0,2)^{\mathsf T}$ \ding{51}。
+$\lambda=3+\mathrm{i}$：$A-(3+\mathrm{i})E$ 化简后取 $\vect{V}=\mat{1\\1\\2}+\mathrm{i}\mat{0\\1\\-1}$，即 $\vect{P}=(1,1,2)^{\mathsf T}$、$\vect{Q}=(0,1,-1)^{\mathsf T}$，$a=3$、$b=1$。
+\[
+\vect{U}=\mathrm{e}^{3x}\bigl(\vect{P}\cos x-\vect{Q}\sin x\bigr),\qquad
+\vect{W}=\mathrm{e}^{3x}\bigl(\vect{P}\sin x+\vect{Q}\cos x\bigr).
+\]
+\textbf{答案}\ $\vect{Y}=c_1\vect{V}_1\mathrm{e}^{2x}+c_2\vect{U}+c_3\vect{W}$，分量式为
+$y_1=c_1\mathrm{e}^{2x}+\mathrm{e}^{3x}(c_2\cos x+c_3\sin x)$、
+$y_2=\mathrm{e}^{3x}[c_2(\cos x-\sin x)+c_3(\cos x+\sin x)]$、
+$y_3=c_1\mathrm{e}^{2x}+\mathrm{e}^{3x}[c_2(2\cos x+\sin x)+c_3(2\sin x-\cos x)]$。
+\textbf{自检}\ 取 $c_2=1$、其余为零，看 $x=0$：$\vect{U}(0)=\vect{P}=(1,1,2)$，而
+\[
+\vect{U}'(0)=3\vect{P}-\vect{Q}=(3,3,6)-(0,1,-1)=(3,2,7),
+\]
+另一边 $A\vect{P}=(2+1,\ 1+3-2,\ -1+2+6)=(3,2,7)$，两边相同 \ding{51}。注意这里用的是 $\vect{U}=\mathrm{e}^{3x}(\vect{P}\cos x-\vect{Q}\sin x)$ 的导数在 $0$ 处等于 $3\vect{P}-\vect{Q}$，不是 $3\vect{P}+\vect{Q}$——符号错了这一验就对不上。
+
+\qpagebreak
+\subhdr{A.4\quad 例 4：四维弹簧-质量（p27--p29）}
+\label{app:ex4}
+\qbreak
+\qstem{（课件 p27 例 4）解四维系统，$A=\mat{0&0&1&0\\0&0&0&1\\-2&3/2&0&0\\4/3&-3&0&0}$。}
+\textbf{考点}\ 纯虚特征值；四维复根的实值化。
+\textbf{关键一步}\ 特征方程只含 $\lambda^2$，令 $\mu=\lambda^2$ 解二次方程。
+\textbf{详解}\ $\det(A-\lambda E)=\lambda^4+5\lambda^2+4=(\lambda^2+1)(\lambda^2+4)$，故 $\lambda=\pm\mathrm{i},\pm2\mathrm{i}$。
+$\lambda=\mathrm{i}$ 的特征向量为 $\vect{V}_1=(3,2,3\mathrm{i},2\mathrm{i})^{\mathsf T}$。逐行验算 $A\vect{V}_1$：第一行取 $y_3=3\mathrm{i}$；第二行取 $y_4=2\mathrm{i}$；第三行 $-2\cdot3+\tfrac32\cdot2=-6+3=-3$；第四行 $\tfrac43\cdot3-3\cdot2=4-6=-2$。于是 $A\vect{V}_1=(3\mathrm{i},2\mathrm{i},-3,-2)^{\mathsf T}=\mathrm{i}\vect{V}_1$ \ding{51}。
+取实部虚部得两条实解；$\lambda=2\mathrm{i}$ 的特征向量 $\vect{V}_3=(3,-4,6\mathrm{i},-8\mathrm{i})^{\mathsf T}$ 再给两条。
+\textbf{答案}\ 通解由四条实解线性组合而成（课件 p29）：
+\[
+\vect{Y}=c_1\mat{3\cos t\\2\cos t\\-3\sin t\\-2\sin t}+c_2\mat{3\sin t\\2\sin t\\3\cos t\\2\cos t}
++c_3\mat{3\cos2t\\-4\cos2t\\-6\sin2t\\8\sin2t}+c_4\mat{3\sin2t\\-4\sin2t\\6\cos2t\\-8\cos2t}.
+\]
+\textbf{自检}\ 取 $c_1=1$ 其余 $0$、$t=0$：$\vect{Y}(0)=(3,2,0,0)$，$\vect{Y}'(0)=(0,0,-3,-2)$；而 $A\vect{Y}(0)$ 第一行 $=y_3=0$、第二行 $=y_4=0$、第三行 $=-6+3=-3$、第四行 $=4-6=-2$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.5\quad 例 5：$g=m=2$ 的重根（p33--p36）}
+\label{app:ex5}
+\qbreak
+\qstem{（课件 p33 例 5）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{4&-1&-1\\1&2&-1\\1&-1&2}$。}
+\textbf{考点}\ Case 3a：重根但特征向量够用。
+\textbf{关键一步}\ 先算 $\rank(A-3E)$：它是 $1$，所以 $g=3-1=2=m$。
+\textbf{详解}\ 特征方程 $(3-\lambda)(\lambda-3)(\lambda-2)=0$，即 $(\lambda-3)^2(\lambda-2)=0$，故 $\lambda_1=2$（$m_1=1$）、$\lambda_2=3$（$m_2=2$）。
+$\lambda_1=2$：$A-2E=\mat{2&-1&-1\\1&0&-1\\1&-1&1}$，解得 $\vect{V}_1=(1,1,1)^{\mathsf T}$，检验 $A\vect{V}_1=(2,2,2)^{\mathsf T}$ \ding{51}。
+$\lambda_2=3$：$A-3E=\mat{1&-1&-1\\1&-1&-1\\1&-1&-1}$，秩 $1$，故 $g=2$；方程只约束 $v_1=v_2+v_3$，取 $(v_2,v_3)=(1,0)$ 与 $(0,1)$ 得 $\vect{V}_2=(1,1,0)^{\mathsf T}$、$\vect{V}_3=(1,0,1)^{\mathsf T}$。检验 $A\vect{V}_2=(3,3,0)^{\mathsf T}$、$A\vect{V}_3=(3,0,3)^{\mathsf T}$ \ding{51}。
+\textbf{答案}\ $\vect{Y}=c_1\mat{1\\1\\1}\mathrm{e}^{2x}+c_2\mat{1\\1\\0}\mathrm{e}^{3x}+c_3\mat{1\\0\\1}\mathrm{e}^{3x}$。
+\textbf{自检}\ 三个解在 $x=0$ 的向量为 $(1,1,1),(1,1,0),(1,0,1)$，行列式 $=-1\neq0$，故构成基本解组 \ding{51}。
+
+\qpagebreak
+\subhdr{A.6\quad 例 6：$g=1<m=2$ 的重根（p39--p42）}
+\label{app:ex6}
+\qbreak
+\qstem{（课件 p39 例 6）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{1&-1\\1&3}$。}
+\textbf{考点}\ Case 3b 的最小例子：二重根、只有一个特征向量。
+\textbf{关键一步}\ $(A-2E)=\mat{-1&-1\\1&1}$ 秩 $1$，$g=2-1=1<m=2$，要接一个广义特征向量。
+\textbf{详解}\ $\det(A-\lambda E)=(\lambda-2)^2$，$\lambda=2$（$m=2$）。
+特征向量：$v_1+v_2=0$，取 $\vect{V}_1=(1,-1)^{\mathsf T}$。
+广义特征向量：解 $(A-2E)\vect{V}^{(1)}=\vect{V}_1$：
+\[
+\mat{-1&-1\\1&1}\mat{w_1\\w_2}=\mat{1\\-1}
+\Longrightarrow -w_1-w_2=1,
+\]
+取 $w_1=0$ 得 $w_2=-1$，即 $\vect{V}^{(1)}=(0,-1)^{\mathsf T}$。
+\textbf{答案}\ $\vect{Y}=c_1\mathrm{e}^{2x}\mat{1\\-1}+c_2\Bigl[x\mathrm{e}^{2x}\mat{1\\-1}+\mathrm{e}^{2x}\mat{0\\-1}\Bigr]$。
+\textbf{自检}\ 取 $c_2=1,c_1=0$：$\vect{Y}=(x,\,-x-1)^{\mathsf T}\mathrm{e}^{2x}$。求导
+\[
+\vect{Y}'=\mathrm{e}^{2x}\bigl[(1,1)^{\mathsf T}+2(x,-x-1)^{\mathsf T}\bigr]=\mathrm{e}^{2x}(1+2x,\ -3-2x)^{\mathsf T}.
+\]
+另一边逐行算 $A\vect{Y}$：第一行 $=y_1-y_2=x-(-x-1)=2x+1$；第二行 $=y_1+3y_2=x-3x-3=-2x-3$。两边相同 \ding{51}。
+
+\qpagebreak
+\subhdr{A.7\quad 复习例 (1)：三重根、$g=1$（p46--p51）}
+\label{app:rev1}
+\qbreak
+\qstem{（课件 p46 复习例 (1)）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{4&-1&0\\3&1&-1\\1&0&1}$。}
+\textbf{考点}\ 长度 2 的链（$m=3$、$g=1$ 时链长 $m-g=2$）。
+\textbf{关键一步}\ 先求 $\vect{V}_1$，再解两次 $(A-2E)\vect{V}^{(1)}=\vect{V}_1$、$(A-2E)\vect{V}^{(2)}=\vect{V}^{(1)}$。
+\textbf{详解}\ $\det(A-\lambda E)=-(\lambda-2)^3$，$\lambda=2$（$m=3$）。$A-2E=\mat{2&-1&0\\3&-1&-1\\1&0&-1}$，秩 $2$，故 $g=3-2=1$。特征向量 $\vect{V}_1=(1,2,1)^{\mathsf T}$。
+链：$(A-2E)\vect{V}^{(1)}=\vect{V}_1$ 取 $\vect{V}^{(1)}=(1,1,0)^{\mathsf T}$（检验：第一行 $2-1=1$ \ding{51}，第二行 $3-1=2$ \ding{51}，第三行 $1=1$ \ding{51}）。
+$(A-2E)\vect{V}^{(2)}=\vect{V}^{(1)}$ 取 $\vect{V}^{(2)}=(0,-1,0)^{\mathsf T}$（第一行 $1=1$？：$2\cdot0-(-1)=1$ \ding{51}；第二行 $1=1$ \ding{51}；第三行 $0$ \ding{51}）。
+\textbf{答案}\ $\vect{Y}=c_1\vect{V}_1\mathrm{e}^{2x}+c_2(\vect{V}_1x+\vect{V}^{(1)})\mathrm{e}^{2x}+c_3\bigl(\vect{V}_1\tfrac{x^2}{2}+\vect{V}^{(1)}x+\vect{V}^{(2)}\bigr)\mathrm{e}^{2x}$。
+\textbf{自检}\ 用 $x=0$：三条解在 $0$ 处为 $(1,2,1),(1,1,0),(0,-1,0)$，行列式非零 \ding{51}。
+
+\qpagebreak
+\subhdr{A.8\quad 复习例 (2)：实根 + 重根（p52--p57）}
+\label{app:rev2}
+\qbreak
+\qstem{（课件 p52 复习例 (2)）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{-1&1&-2\\4&1&0\\2&1&-1}$。}
+\textbf{考点}\ 一个单根与一个重根并存；重根 $g=1<m=2$。
+\textbf{关键一步}\ 特征方程 $(1-\lambda^2)(\lambda+1)=0$，即 $\lambda=1$ 与 $\lambda=-1$（$m=2$）。
+\textbf{详解}\ $\lambda_1=1$：$A-E=\mat{-2&1&-2\\4&0&0\\2&1&-2}$，解得 $\vect{V}_1=(0,2,1)^{\mathsf T}$。
+$\lambda_2=-1$（$m=2$）：$A+E=\mat{0&1&-2\\4&2&0\\2&1&0}$，秩 $2$，$g=3-2=1$；特征向量 $\vect{V}_2=(-1,2,1)^{\mathsf T}$。
+广义：解 $(A+E)\vect{V}^{(1)}=\vect{V}_2$，即 $w_2-2w_3=-1$、$4w_1+2w_2=2$、$2w_1+w_2=1$，取 $w_3=0$ 得 $w_2=-1$、$w_1=1$，或按课件取 $\vect{V}^{(1)}=(0,1,1)^{\mathsf T}$（检验：$1-2=-1$ \ding{51}，$2=2$ \ding{51}，$1=1$ \ding{51}）。
+\textbf{答案}\ $\vect{Y}=c_1\mat{0\\2\\1}\mathrm{e}^{x}+c_2\mat{-1\\2\\1}\mathrm{e}^{-x}+c_3\Bigl[\mat{-1\\2\\1}x+\mat{0\\1\\1}\Bigr]\mathrm{e}^{-x}$。
+\textbf{自检}\ 三个解在 $x=0$ 为 $(0,2,1),(-1,2,1),(0,1,1)$，行列式非零 \ding{51}。
+
+\qpagebreak
+\subhdr{A.9\quad 复习例 (3)：三重根、$g=2$（p58--p63）}
+\label{app:rev3}
+\qbreak
+\qstem{（课件 p58 复习例 (3)）解 $\vect{Y}'=A\vect{Y}$，$A=\mat{0&-4&0\\1&-4&0\\1&-2&-2}$。}
+\textbf{考点}\ $g=2$、$m=3$：两个特征向量，但只有一个能接上链。
+\textbf{关键一步}\ 先取两个特征向量 $\vect{V}_1=(2,1,0)^{\mathsf T}$、$\vect{V}_2=(0,0,1)^{\mathsf T}$；再检验哪个在 $\operatorname{Range}(A+2E)$ 里（比较秩）。
+\textbf{详解}\ $\det(A-\lambda E)=-(\lambda+2)^3$，$\lambda=-2$（$m=3$）。$A+2E=\mat{2&-4&0\\1&-2&0\\1&-2&0}$ 秩 $1$，$g=3-1=2$；特征向量由 $v_1=2v_2$ 给出：$\vect{V}_1=(2,1,0)^{\mathsf T}$、$\vect{V}_2=(0,0,1)^{\mathsf T}$。
+\textbf{关键处}：$(A+2E)\vect{W}=\vect{V}$ 要有解，需 $\rank(A+2E\mid\vect{V})=\rank(A+2E)=1$。
+取 $\vect{V}=\vect{V}_2=(0,0,1)$：增广矩阵第三行给 $w_1-2w_2=1$，与第一、二行的 $0$ 矛盾，无解。
+取 $\vect{V}=\vect{V}_1+\vect{V}_2=(2,1,1)$：满足条件，解 $(A+2E)\vect{W}=(2,1,1)$ 得 $\vect{W}=(1,0,0)^{\mathsf T}$（检验：$(2,1,1)$ \ding{51}）。
+\textbf{答案}\ $\vect{Y}=c_1\mat{0\\0\\1}\mathrm{e}^{-2x}+c_2\mat{2\\1\\1}\mathrm{e}^{-2x}+c_3\Bigl[\mat{1\\0\\0}+x\mat{2\\1\\1}\Bigr]\mathrm{e}^{-2x}$。
+\textbf{自检}\ 三个向量 $(0,0,1),(2,1,1),(1,0,0)$ 线性无关 \ding{51}；且 $(A+2E)(1,0,0)^{\mathsf T}=(2,1,1)^{\mathsf T}$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.10\quad 作业第 1 题（p64）}
+\label{app:hw1}
+\qbreak
+\qstem{（课件 p64 第 1 题）$A=\mat{1&1&-3\\3&2&-3\\1&0&1}$，解 $\vect{Y}'=A\vect{Y}$。}
+\textbf{考点}\ 一重根 + 二重根（链长 1）。
+\textbf{关键一步}\ 特征多项式 $\lambda^3-4\lambda^2+5\lambda-2=(\lambda-1)^2(\lambda-2)$；对 $\lambda=1$ 算 $g$。
+\textbf{详解}\ $\lambda_1=1$（$m=2$）、$\lambda_2=2$（$m=1$）。
+$\lambda=1$：$A-E=\mat{0&1&-3\\3&1&-3\\1&0&0}$，秩 $2$，$g=3-2=1<m$；特征向量由 $v_1=0$、$v_2=3v_3$ 得 $\vect{V}_1=(0,3,1)^{\mathsf T}$。
+广义：$(A-E)\vect{W}=\vect{V}_1$，即 $w_1=1$、$w_2-3w_3=0$、$3w_1+w_2-3w_3=3$，取 $w_3=0$ 得 $\vect{W}=(1,0,0)^{\mathsf T}$。
+$\lambda=2$：$A-2E=\mat{-1&1&-3\\3&0&-3\\1&0&-1}$，解得 $\vect{V}_2=(1,4,1)^{\mathsf T}$。
+\textbf{答案}\ $\vect{Y}=c_1\mat{0\\3\\1}\mathrm{e}^{x}+c_2\Bigl[\mat{1\\0\\0}+x\mat{0\\3\\1}\Bigr]\mathrm{e}^{x}+c_3\mat{1\\4\\1}\mathrm{e}^{2x}$。
+\textbf{自检}\ $(A-E)(1,0,0)^{\mathsf T}=(0,3,1)^{\mathsf T}$ \ding{51}；$A(1,4,1)^{\mathsf T}=(1+4-3,3+8-3,1+1)=(2,8,2)=2(1,4,1)$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.11\quad 作业第 2 题（p64）}
+\label{app:hw2}
+\qbreak
+\qstem{（课件 p64 第 2 题）$A=\mat{-2&1\\-5&2}$，解 $\vect{Y}'=A\vect{Y}$。}
+\textbf{考点}\ 纯虚根；实值化。
+\textbf{关键一步}\ 迹 $=0$、行列式 $=1$，特征方程 $\lambda^2+1=0$。
+\textbf{详解}\ $\lambda=\pm\mathrm{i}$，$a=0$、$b=1$。
+对 $\lambda=\mathrm{i}$：$A-\mathrm{i}E=\mat{-2-\mathrm{i}&1\\-5&2-\mathrm{i}}$，方程 $(-2-\mathrm{i})v_1+v_2=0$，取 $\vect{V}=(1,2+\mathrm{i})^{\mathsf T}=\vect{P}+\mathrm{i}\vect{Q}$，$\vect{P}=(1,2)$、$\vect{Q}=(0,1)$。
+\[
+\vect{U}=\vect{P}\cos x-\vect{Q}\sin x=\mat{\cos x\\2\cos x-\sin x},\qquad
+\vect{W}=\vect{P}\sin x+\vect{Q}\cos x=\mat{\sin x\\2\sin x+\cos x}.
+\]
+\textbf{答案}\ $\vect{Y}=c_1\mat{\cos x\\2\cos x-\sin x}+c_2\mat{\sin x\\2\sin x+\cos x}$。
+\textbf{自检}\ 取 $\vect{U}$ 在 $x=0$：$\vect{U}(0)=(1,2)$，$\vect{U}'(0)=(0,-1)$；$A\vect{U}(0)=(-2+2,-5+4)=(0,-1)$ \ding{51}。
+
+\qpagebreak
+\subhdr{A.12\quad 作业第 3 题（p64）}
+\label{app:hw3}
+\qbreak
+\qstem{（课件 p64 第 3 题）$A=\mat{-2&-1&1\\-3&-3&2\\-4&-3&2}$，解 $\vect{Y}'=A\vect{Y}$。}
+\textbf{考点}\ 三重根、$g=1$：链长 2。
+\textbf{关键一步}\ 特征多项式 $(\lambda+1)^3$；$A+E$ 的秩为 $2$，故 $g=1$。
+\textbf{详解}\ $\lambda=-1$（$m=3$）。$A+E=\mat{-1&-1&1\\-3&-2&2\\-4&-3&3}$，化简得秩 $2$；特征向量由 $v_2=v_3$、$v_1=0$ 给出，$\vect{V}=(0,1,1)^{\mathsf T}$。
+$(A+E)\vect{W}=\vect{V}$：取 $\vect{W}=(-1,-3,-4)^{\mathsf T}$（检验：$1+3-4=0$ \ding{51}；$3+6-8=1$ \ding{51}；$4+9-12=1$ \ding{51}）。
+$(A+E)\vect{U}=\vect{W}$：取 $\vect{U}=(1,0,0)^{\mathsf T}$（检验：$(-1,-3,-4)$ \ding{51}）。
+\textbf{答案}\ $\vect{Y}=c_1\vect{V}\mathrm{e}^{-x}+c_2(\vect{W}+x\vect{V})\mathrm{e}^{-x}+c_3\bigl(\vect{U}+x\vect{W}+\tfrac{x^2}{2}\vect{V}\bigr)\mathrm{e}^{-x}$，其中 $\vect{V}=(0,1,1)$、$\vect{W}=(-1,-3,-4)$、$\vect{U}=(1,0,0)$。
+\textbf{自检}\ 三个向量线性无关（行列式 $=-1$）\ding{51}；链的两步已逐行验算 \ding{51}。
+
+\qpagebreak
+\subhdr{A.13\quad 作业第 4 题（p64）}
+\label{app:hw4}
+\qbreak
+\qstem{（课件 p64 第 4 题）$A=\mat{1&1\\9&1}$，解 $\vect{Y}'=A\vect{Y}$。}
+\textbf{考点}\ 相异实根，Case 1 的最基本操作。
+\textbf{关键一步}\ 迹 $2$、行列式 $-8$，特征方程 $\lambda^2-2\lambda-8=0$。
+\textbf{详解}\ $\lambda_1=4$、$\lambda_2=-2$。
+$\lambda=4$：$A-4E=\mat{-3&1\\9&-3}$，$-3v_1+v_2=0$，取 $\vect{V}_1=(1,3)^{\mathsf T}$。
+$\lambda=-2$：$A+2E=\mat{3&1\\9&3}$，$3v_1+v_2=0$，取 $\vect{V}_2=(1,-3)^{\mathsf T}$。
+\textbf{答案}\ $\vect{Y}=c_1\mat{1\\3}\mathrm{e}^{4x}+c_2\mat{1\\-3}\mathrm{e}^{-2x}$。
+\textbf{自检}\ $A(1,3)^{\mathsf T}=(1+3,9+3)=(4,12)=4(1,3)$ \ding{51}；$A(1,-3)^{\mathsf T}=(1-3,9-3)=(-2,6)=-2(1,-3)$ \ding{51}。
+
+\flowerrule
+
+{\small\color{inkgray}
+依据课件：\texttt{14\_15\_Linear-DE-systems-with-constant-coefficients.pdf}（64 页，2026-09-29 / 10-08，W.Y., DLUT）。
+缺口 10 条见 §12；附录 A.10--A.13 的四题解答已用符号计算核对（特征值、广义特征向量与代回残差）。}
+
+\end{document}
