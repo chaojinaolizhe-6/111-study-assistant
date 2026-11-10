@@ -1,0 +1,173 @@
+matrix-exponential 精讲讲义 · round-02 返工验证与检查记录
+======================================================================
+生成日期：2026-11-10
+任务：依据审核问题单修订 DSH 自己的 round-01 首稿；round-01 保持只读、未改动。
+规则版本：rule-versions/2.1.1/lecture-deepdive/SKILL.md（优先于 .dsh 旧快照）。
+输出目录：matrix-exponential/round-02/
+
+一、输入与产物
+----------------------------------------------------------------------
+输入（唯一原始资料）
+  inputs/16_17_matrix_exponential.pdf
+  44 个物理页；sha256 = 7e23b1402a27ed7313500e6d86a311deabf6572db738dd7f255c6bea8370d692
+  与 inputs-and-skill-manifest.json 一致。
+
+产物（本轮实际编译后取值）
+  handout.tex      sha256 = 02a9814f8afcfdb042303f7b553c6e8892a699a788bf4981c3430b2b47994bb4
+  handout.pdf      sha256 = ce80b37e073ee5c9296a44b9d5f2e556e47ebadeefaf5928e9de67f9099cc3cf
+                   32 页
+  handout.log      sha256 = f1c8c107a9952f4a5bf568b5fdc6de7b4cecebd08e652f021ac573a4ec14baf8
+                   最终（第二遍）编译日志
+  source-map.json  44 页逐页覆盖；本轮哈希、页数、检查脚本与 R1/R3 备注已更新
+  issue-response.json  逐项记录 R1--R8 的核实结论、修改位置与证据
+  scripts/         本轮实际执行的验算、源级检查、页面/版面/像素检查脚本与输出
+  renders/         handout 32 页 150 dpi 渲染图（供外部只读目视复核）
+
+二、审核问题单与处理位置（摘要；详细证据见 issue-response.json）
+----------------------------------------------------------------------
+R1 重根导数条件与定理前提
+  已改 §4.5、§4.9、Theorem 3.3。
+  关键点：不再把只在一点成立的 e^λ=r(λ) 直接对 λ 求导；改为由
+  f(s)-r(s)=Δ_x(s)q(s) 与 Δ_x 在 λ_i 的 m_i 阶零点得到
+  e^{λ_i}=r(λ_i),…,e^{λ_i}=r^{(m_i-1)}(λ_i)。
+  定理框明确 r 是 e^s 在谱上的 Hermite 插值多项式（次数 ≤ n-1，唯一），
+  并明确结论只对这个特定的 r 成立。
+  Jordan 论证区分块大小 ℓ 与代数重数 m：只用到 ℓ≤m；纯量矩阵 ℓ=1 的
+  情形单独说明，多出的导数条件不改变 r(Ax)。
+
+R2 Cauchy 乘积指标范围
+  已改 §2.1 性质 (2)。t^k s^{n-k} 与两个矩阵幂分式同在内层 k 求和内；
+  每行均可独立解读。
+
+R3 特征多项式首一约定与解析函数除法范围
+  已改记号表、§3.1、§4.1、§4.2、§4.3、§4.4、§4.5。
+  全稿需要“首一”或做除法时用 Δ(s)=det(sE-A)（或 det(sE-Ax)）；
+  只求特征值时写 det(A-λE)=0 仍可。§4.5 说明：不把“任何幂级数都能
+  长除”当通则；先按 Hermite 条件定出 r，再验证 f-r 被 Δ 整除。
+
+R4 A 的固定特征值与 Ax 的伸缩特征值
+  已改 §4.5.1（新增适用范围）、例4、例5、例6、例7、例8。
+  明确 x≠0 时 λ_i(x)=xμ_i 与 μ_i 一一对应、重数相同；x=0 时 Ax=0，
+  所有特征值合并为 0（代数重数 n），例子中的 α_k 在 0 处按极限取值。
+  例4/例5/例8 的“互不相同”均限定 x≠0，并区分 A 的固定特征值。
+
+R5 独立练习考点泄露谱类型
+  已改 §6 导语与 H1/H2/H3 的考点。正文只保留矩阵阶数、任务
+  （矩阵指数、通解）与附录页码；不再出现“实特征值”“共轭复特征值”
+  “三个不同实特征值”或“三题特征值类型各不相同”。
+  本记录不展开附录中的具体谱分析，避免二次泄露。
+
+R6 真实跨页
+  以本轮重新编译的 32 页 PDF 实际分页为准（不沿用 round-01 页码）：
+  - p2→p3：p3 以 §0.4 标题开始，不再有“式）。”类残句。
+  - 例1：p10、p11 续页均带“例 1（续）”与当前 A/目标；大矩阵不在无上下文页首。
+  - 例4：p16 以“例 4（续）”开始，带 A、e^{Ax}=α1Ax+α0E。
+  - 例5：p17 以“例 5（续）”开始，带 A 与任务。
+  - 例6：p20 以“例 6（补充，续）”开始，说明上页闭式与 x=0 处理。
+  - 例7：p22 以“例 7（续）”开始，带 A 与“e^{Ax} 见上一页”。
+  - 例8：p23 以“例 8（续）”开始，带 A、勘误说明与下一步。
+  - 附录 H1/H3 续页摘要已带 A 与上一页对象；H1/H2/H3 的附录页码
+    与 PDF 实际答案页一致（27/28/29）。
+  - §3、§5 另起页，页底无孤立节标题。
+
+R7 范数与逐项求导（建议项，已处理）
+  §0.3 增列“矩阵大小（范数，可选）”前置；§1.3 用最大行和给出最小
+  必要说明（次乘性、级数被 e^{||A|| |x|} 控制），可作选读；
+  §1.4 明确逐项求导依据是幂级数在收敛区间内部的性质，不是任意函数项
+  级数的通则。
+
+R8 过强表述与常数重命名（建议项，已处理）
+  §4.11 末段改为“两条局部自检能抓住常见错误，但不保证整体正确，
+  仍要逐列代回方程”；§4.7 补一句：固定同一矩阵等式时 1/6 是真实遗漏；
+  若只关心通解族，任意常数可重新命名，那是另一回事。
+
+三、数学验证（可复现，实际执行）
+----------------------------------------------------------------------
+脚本：scripts/verify_matrix_exponential.py
+输出：scripts/verify_output.txt
+结果：共 102 条断言，失败 0 条，退出码 0，末行 "ALL CHECKS PASSED"。
+断言覆盖：
+- 定义与五条性质、求导、x=0、AB≠BA 反例、特征向量性质；
+- 例1--例8 的特征值/特征向量/闭式/通解/自检与已列勘误；
+- 作业 H1--H3 的闭式、通解、x=0、导数与交叉核对；
+- 基本矩阵关系；
+- 本轮新增：R1 纯量矩阵（最大块 1）与 3×3 Jordan 块的 Hermite 条件、
+  R3 首一/非首一特征多项式的 (−1)^n 关系、R4 特征值只在 x=0 合并。
+说明：这些断言核对数值/符号结果与条件实例，不替代正文的一般推导；
+R1 的一般论证在正文，脚本只核对关键实例与反例。
+
+四、源级返工检查（实际执行）
+----------------------------------------------------------------------
+脚本：scripts/check_revision.py
+输出：scripts/revision_output.txt
+结果：37 条源级断言，失败 0 条，退出码 0。
+覆盖：R1 关键措辞与定理前提、R2 求和范围、R3 首一约定与除法范围、
+R4 适用范围与例子限定、R5 三道练习考点不含谱分类、R6 续页标记、
+R8 自检措辞与常数重命名。
+
+五、编译与静态检查（实际执行）
+----------------------------------------------------------------------
+编译：在 matrix-exponential/round-02 下执行两遍
+  xelatex -halt-on-error -interaction=nonstopmode -output-directory=build handout.tex
+  两遍退出码均为 0；最终 PDF 32 页。root 的 handout.pdf / handout.log
+  从本轮 build/ 复制，哈希见第一节。
+最终日志 handout.log：
+  - 无 LaTeX 错误（无 "^!" 行）；
+  - 无 Overfull \hbox / \vbox；
+  - 无 Missing character；
+  - 无 undefined reference / multiply defined labels；
+  - "Output written on ... handout.pdf (32 pages)"。
+check_handout（rule-versions/2.1.1 版）：
+  python -B rule-versions/2.1.1/lecture-deepdive/scripts/check_handout.py \
+    matrix-exponential/round-02/handout.tex --mode appendix \
+    --log matrix-exponential/round-02/handout.log
+  结果：错误 0 条，人工复核线索 0 条，退出码 0。
+  该工具只查结构/引用/日志，不证明数学正确或版面视觉合格。
+
+六、PDF 页面、版面与渲染检查（实际执行的范围）
+----------------------------------------------------------------------
+1) scripts/check_layout.py → scripts/layout_output.txt
+   硬性失败 0 条，提示 0 条，退出码 0。
+   检查：32 页均有正文、无空白页；正文未越出左右/上下边界；无图片对象；
+   22 个字体 xref 均可提取（嵌入）；8 个课件例题、3 个练习、附录 A/B、
+   B.3/B.4、H1/H3 续解标题均在 PDF 中；H1/H2/H3 附录页码与实际答案页
+   27/28/29 一致；H1/H3 的续解标题只出现在真实跨页处。
+2) scripts/check_pages.py → scripts/pages_output.txt
+   硬性失败 0 条：未发现已知坏页首（“式）。”“即”“乘开后是”等）、
+   未发现页首以标点开头、未发现页底孤立标题。
+3) scripts/render_and_check_pixels.py → scripts/pixel_output.txt
+   32 页以 150 dpi 渲染到 renders/handout-p01.png ... handout-p32.png；
+   失败 0 条：无空白渲染，无墨迹触及页面边缘；墨迹覆盖率 0.51%--5.62%。
+   其中 p9、p10 为行变换大矩阵页，覆盖率偏低但非空白。
+
+七、检查边界与未完成项（如实报告）
+----------------------------------------------------------------------
+1. 本会话模型不能接收图像输入，因此没有、也不能声称做过目视验收。
+   本轮实际做的是：文字层逐页核对、页面首末行/断页检查、版面几何与
+   字体/结构程序化检查、150 dpi 渲染后的像素墨迹与裁切检查。
+   renders/ 已保存，供支持看图的审核者只读查看并交回具体问题；
+   后续图文修改仍由 DSH 完成。
+2. 程序化检查通过不等于数学或版面已获外部验收；已解决项与证据见
+   issue-response.json。外部审核未通过前，不宣称“审核通过”。
+3. 原课件 6 处公式勘误仍按原页只读处理；讲义按正确形式表述，附录 B
+   列出来源与判断依据。
+4. 例6 原课件只列到四个方程，§4.10 的解出 α 部分明示为“讲义补写”；
+   例3 本来就是待定形式说明；这两点不作为缺项或独立练习。
+
+八、文件清单
+----------------------------------------------------------------------
+matrix-exponential/round-02/
+  handout.tex, handout.pdf, handout.log
+  source-map.json
+  verification.txt（本文件）
+  issue-response.json
+  scripts/verify_matrix_exponential.py, verify_output.txt
+  scripts/check_revision.py, revision_output.txt
+  scripts/check_layout.py, layout_output.txt
+  scripts/check_pages.py, pages_output.txt
+  scripts/check_handout_output.txt
+  scripts/render_and_check_pixels.py, pixel_output.txt
+  scripts/build_sourcemap.py
+  scripts/dump_pages.py, source_text.txt（核对用）
+  renders/handout-p01.png ... handout-p32.png
+  build/（xelatex 中间文件与本轮 PDF/log 副本）

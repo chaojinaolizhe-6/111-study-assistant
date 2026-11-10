@@ -1,0 +1,2110 @@
+# 16_17_matrix_exponential.pdf（共 44 页，本次取 44 页）
+
+
+—— p1 · 133 字符 ——
+Differential Equations
+Lecture 16-17 Matrix Exponential
+W. Y.
+DLUT
+October 13, 2026
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+0 / 38
+
+—— p2 · 195 字符 ——
+Outline
+1
+Introduction to Exponential Matrix
+2
+Matrix Diagonalization: Case 1 (𝑔= 𝑚)
+3
+The Cayley-Hamilton Method
+4
+Fundamental Matrix
+5
+Homework
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+0 / 38
+
+—— p3 · 68 字符 ——
+Exponential Matrix
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+0 / 38
+
+—— p4 · 454 字符 ——
+Introduction to Exponential Matrix
+Consider scalar IVP
+𝑥′ = 𝑎𝑥, 𝑥(0) = 𝑥0,
+where 𝑎∈R is a constant. The solution
+is 𝑥= 𝑥0𝑒𝑎𝑡𝑥.
+Consider the IVP in the case of system:
+𝑑𝑌
+𝑑𝑥= 𝐴𝑌, 𝑌(0) = 𝑌0, 𝑥∈R,
+(1)
+where 𝐴is a constant 𝑛× 𝑛matrix. Is
+the solution given by 𝑌(𝑥) = 𝑒𝐴𝑥𝑌0?
+Taylor Series
+𝑒𝑎𝑡=
+∞
+∑︁
+𝑛=0
+𝑎𝑛𝑡𝑛
+𝑛!
+= 1 + 1
+1!𝑎𝑡+ 1
+2!𝑎2𝑡2 + · · ·
+𝑒𝐴𝑥=
+∞
+∑︁
+𝑛=0
+𝐴𝑛𝑥𝑛
+𝑛!
+= 𝐸+ 1
+1!𝐴𝑥+ 1
+2!𝐴2𝑥2 + · · ·
+,
+where 𝐴0 = 𝐸.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+1 / 38
+
+—— p5 · 621 字符 ——
+Theorem 1.1
+Let 𝐴be an 𝑛× 𝑛matrix. The exponential of 𝐴𝑥to be the matrix is given by
+𝑒𝐴𝑥= 𝐸+ 𝐴𝑥+ · · · + 𝐴𝑘𝑥𝑘
+𝑘!
++ · · · =
+∞
+∑︁
+𝑘=0
+𝐴𝑘𝑥𝑘
+𝑘!
+.
+(2)
+The sum of (2) is convergent.
+𝑒𝐴𝑥is called exponential matrix.
+(NB! 𝑒𝐴𝑥is an 𝑛× 𝑛matrix!)
+The general solution of 𝑌′ = 𝐴𝑌can be expressed as the form of 𝑌(𝑥) = 𝑒𝐴𝑥𝐶, where 𝐶is an
+𝑛-dimensional column vector. Noting
+(𝑒𝐴𝑥𝐶)′ −𝐴𝑒𝐴𝑥𝐶= d
+d𝑥
+(︃∞
+∑︁
+𝑘=0
+(𝐴𝑥)𝑘
+𝑘!
+)︃
+𝐶−𝐴
+∞
+∑︁
+𝑘=0
+(𝐴𝑥)𝑘
+𝑘!
+𝐶
+=
+∞
+∑︁
+𝑘=1
+𝑘𝐴(𝐴𝑥)𝑘−1
+𝑘!
+𝐶−𝐴
+∞
+∑︁
+𝑘=0
+(𝐴𝑥)𝑘
+𝑘!
+𝐶= 𝐴
+∞
+∑︁
+𝑘=0
+(𝐴𝑥)𝑘
+𝑘!
+𝐶−𝐴
+∞
+∑︁
+𝑘=0
+(𝐴𝑥)𝑘
+𝑘!
+𝐶= [0],
+which implies 𝑒𝐴𝑥𝐶is a solution to 𝑌′ = 𝐴𝑌.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+2 / 38
+
+—— p6 · 288 字符 ——
+Consider the IVP in the case of system:
+d𝑌
+d𝑥= 𝐴𝑌, 𝑌(𝑥0) = 𝑌0.
+The solution is given by
+𝑌(𝑥) = 𝑒𝐴(𝑥−𝑥0)𝑌0,
+where
+𝑒𝐴(𝑥−𝑥0) = 𝐸+ 𝐴(𝑥−𝑥0) + · · · + 𝐴𝑘(𝑥−𝑥0)𝑘
+𝑘!
++ · · ·
+For actually computing the elements of 𝑒𝐴𝑥, (2) is not generally useful.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+3 / 38
+
+—— p7 · 428 字符 ——
+Properties of the Matrix Exponential Function
+Property 1.1
+Let 𝐴, 𝐵be 𝑛× 𝑛matrices and 𝑟, 𝑠, and 𝑡be real (or complex) numbers. Then,
+𝑒𝐴0 = 𝑒[0] = 𝐸, where [0] is 𝑛× 𝑛matrix.
+𝑒𝐴𝑡𝑒𝐴𝑠= 𝑒𝐴(𝑡+𝑠).
+If 𝐴𝐵= 𝐵𝐴, then 𝑒𝐴+𝐵= 𝑒𝐴𝑒𝐵.
+𝑒−𝐴𝑡= (𝑒𝐴𝑡)−1.
+𝑒𝑟𝑡𝐸= 𝑒𝑟𝑡𝐸.
+Property 1.2
+If 𝑉∈R𝑛is the eigenvector of 𝐴associated with the eigenvalue 𝜆, then 𝑉is also an eigenvector of 𝑒𝐴
+associated with 𝑒𝜆.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+4 / 38
+
+—— p8 · 87 字符 ——
+Matrix Diagonalization: Case 1 (𝑔= 𝑚)
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+4 / 38
+
+—— p9 · 625 字符 ——
+Characteristic Equation
+det(𝐴−𝜆𝐸) = (𝜆−𝜆1)𝑚1(𝜆−𝜆𝑚1+1) · · · (𝜆−𝜆𝑛) = 0.
+Suppose that the algebraic multiplicity of 𝜆1 is 𝑚1, and the geometric multiplicity of 𝜆1 is
+𝑔1 = 𝑛−rank(𝐴−𝜆1𝐸) = 𝑚1.
+Let 𝑉1, · · · , 𝑉𝑚1 be eigenvectors associated with 𝜆1, and 𝑉𝑘be eigenvector associated with 𝜆𝑘for
+𝑘= 𝑚1 + 1, · · · , 𝑛. Then 𝑉1, · · · , 𝑉𝑚1, 𝑉𝑚1+1, · · · , 𝑉𝑛are linearly independent eigenvectors. Let
+𝑉= (𝑉1, · · · , 𝑉𝑛).
+(3)
+Then
+Λ = 𝑉−1𝐴𝑉= diag(
+𝑚1
+⏞
+ ⏟
+ 
+𝜆1, · · · , 𝜆1, 𝜆𝑚1+1, · · · , 𝜆𝑛)
+=
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝜆1
+...
+𝜆1
+𝜆𝑚1+1
+...
+𝜆𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+.
+(4)
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+5 / 38
+
+—— p10 · 434 字符 ——
+𝐴= 𝑉Λ𝑉−1.
+𝑒𝐴𝑥= 𝐸+ 𝐴𝑥+ · · · + (𝐴𝑥)𝑘
+𝑘!
++ · · ·
+= 𝐸+ 𝑉Λ𝑉−1𝑥+ 𝑥2
+2! (𝑉Λ𝑉−1)(𝑉Λ𝑉−1) + · · · + 𝑥𝑘
+𝑘!
+𝑘
+⏞
+ ⏟
+ 
+(𝑉Λ𝑉−1) · · · (𝑉Λ𝑉−1) + · · ·
+= 𝐸+ 𝑉Λ𝑉−1𝑥+ 𝑥2
+2! (𝑉Λ2𝑉−1) + · · · + 𝑥𝑘
+𝑘! (𝑉Λ𝑘𝑉−1) + · · ·
+= 𝑉
+∞
+∑︁
+𝑘=0
+Λ𝑘𝑥𝑘
+𝑘!
+𝑉−1 = 𝑉𝑒Λ𝑥𝑉−1
+where
+Λ =
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝜆1
+...
+𝜆1
+𝜆𝑚1+1
+...
+𝜆𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+, Λ𝑘=
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝜆𝑘
+1
+...
+𝜆𝑘
+1
+𝜆𝑘
+𝑚1+1
+...
+𝜆𝑘
+𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+for 𝑘= 1, 2, . . .
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+6 / 38
+
+—— p11 · 239 字符 ——
+𝐴= 𝑉Λ𝑉−1.
+𝑒𝐴𝑥= 𝑉𝑒Λ𝑥𝑉−1.
+𝑒Λ𝑥=
+∞
+∑︁
+𝑘=0
+Λ𝑘𝑥𝑘
+𝑘!
+=
+⎛
+⎜
+⎜
+⎜
+⎝
+∑︀∞
+𝑘=0
+𝜆𝑘
+1𝑥𝑘
+𝑘!
+...
+∑︀∞
+𝑘=0
+𝜆𝑘
+𝑛𝑥𝑘
+𝑘!
+⎞
+⎟
+⎟
+⎟
+⎠=
+⎛
+⎜
+⎜
+⎝
+𝑒𝜆1𝑥
+...
+𝑒𝜆𝑛𝑥
+⎞
+⎟
+⎟
+⎠
+𝑒𝐴𝑥= 𝑉𝑒Λ𝑥𝑉−1 = 𝑉
+⎛
+⎜
+⎜
+⎝
+𝑒𝜆1𝑥
+...
+𝑒𝜆𝑛𝑥
+⎞
+⎟
+⎟
+⎠𝑉−1.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+7 / 38
+
+—— p12 · 363 字符 ——
+𝑑𝑌
+𝑑𝑥= 𝐴𝑌, 𝑌(𝑥0) = 𝑌0, 𝑥∈R.
+Solution of IVP
+𝑌(𝑥) = 𝑒𝐴(𝑥−𝑥0)𝑌0 = 𝑉𝑒Λ(𝑥−𝑥0)𝑉−1𝑌0.
+General solution Let 𝑒−Λ𝑥0𝑉−1𝑌0 = (𝑐1, · · · , 𝑐𝑛)𝑇.
+𝑌(𝑥) = 𝑉𝑒Λ(𝑥−𝑥0)𝑉−1𝑌0 = 𝑉𝑒Λ𝑥𝑒−Λ𝑥0𝑉−1𝑌0
+= (𝑉1, · · · , 𝑉𝑛)
+⎛
+⎜
+⎜
+⎝
+𝑒𝜆1𝑥
+...
+𝑒𝜆𝑛𝑥
+⎞
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑐1
+...
+𝑐𝑛
+⎞
+⎟
+⎟
+⎟
+⎠
+= 𝑐1𝑉1𝑒𝜆1𝑥+ 𝑐2𝑉2𝑒𝜆1𝑥+ · · · + 𝑐𝑚1𝑉𝑚1𝑒𝜆1𝑥+
+𝑛
+∑︁
+𝑘=𝑚1+1
+𝑐𝑘𝑉𝑘𝑒𝜆𝑘𝑥
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+8 / 38
+
+—— p13 · 443 字符 ——
+Example 1(Lecture 14-15 Example 1)
+𝐴=
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+−1
+1
+1
+1
+−1
+2
+−1
+0
+⎞
+⎟
+⎟
+⎟
+⎠
+Solution.
+𝜆1 = 2, 𝑚1 = 1; 𝑉1 =
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+𝜆2 = 1, 𝑚2 = 1; 𝑉2 =
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+𝜆3 = −1, 𝑚3 = 1; 𝑉3 =
+⎛
+⎜
+⎜
+⎜
+⎝
+−1
+3
+5
+⎞
+⎟
+⎟
+⎟
+⎠
+⎫
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎬
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎪
+⎭
+=⇒Λ =
+⎛
+⎜
+⎜
+⎜
+⎝
+2
+0
+0
+0
+1
+0
+0
+0
+−1
+⎞
+⎟
+⎟
+⎟
+⎠, 𝑉=
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+0
+1
+3
+1
+1
+5
+⎞
+⎟
+⎟
+⎟
+⎠
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+9 / 38
+
+—— p14 · 750 字符 ——
+Λ =
+⎛
+⎜
+⎜
+⎜
+⎝
+2
+0
+0
+0
+1
+0
+0
+0
+−1
+⎞
+⎟
+⎟
+⎟
+⎠=⇒𝑒Λ𝑥=
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑒2𝑥
+0
+0
+0
+𝑒𝑥
+0
+0
+0
+𝑒−𝑥
+⎞
+⎟
+⎟
+⎟
+⎠, 𝑉=
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+0
+1
+3
+1
+1
+5
+⎞
+⎟
+⎟
+⎟
+⎠
+By a row operation, we can find the inverse of 𝑉:
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+1
+0
+0
+0
+1
+3
+0
+1
+0
+1
+1
+5
+0
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠∼
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+1
+0
+0
+0
+1
+3
+0
+1
+0
+0
+0
+6
+−1
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠∼
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+1
+0
+0
+0
+1
+0
+1
+2
+1
+−1
+2
+0
+0
+1
+−1
+6
+0
+1
+6
+⎞
+⎟
+⎟
+⎟
+⎠
+∼
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+0
+1
+3
+0
+2
+3
+0
+1
+0
+1
+2
+1
+−1
+2
+0
+0
+1
+−1
+6
+0
+1
+6
+⎞
+⎟
+⎟
+⎟
+⎠=⇒𝑉−1 =
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+3
+0
+2
+3
+1/2
+1
+−1/2
+−1
+6
+0
+1
+6
+⎞
+⎟
+⎟
+⎟
+⎠.
+The matrix exponential function 𝑒𝐴𝑥is obtained by
+𝑒𝐴𝑥= 𝑉𝑒Λ𝑥𝑉−1 =
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+0
+1
+3
+1
+1
+5
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑒2𝑥
+0
+0
+0
+𝑒𝑥
+0
+0
+0
+𝑒−𝑥
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+3
+0
+2
+3
+1
+2
+1
+−1
+2
+−1
+6
+0
+1
+6
+⎞
+⎟
+⎟
+⎟
+⎠
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+10 / 38
+
+—— p15 · 386 字符 ——
+d𝑌
+d𝑥= 𝐴𝑌
+General solution is
+𝑌(𝑥) = 𝑉𝑒Λ𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑐1
+𝑐2
+𝑐3
+⎞
+⎟
+⎟
+⎟
+⎠=
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+−1
+0
+1
+3
+1
+1
+5
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑒2𝑥
+0
+0
+0
+𝑒𝑥
+0
+0
+0
+𝑒−𝑥
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑐1
+𝑐2
+𝑐3
+⎞
+⎟
+⎟
+⎟
+⎠
+= 𝑐1
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠𝑒2𝑥+ 𝑐2
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+1
+1
+⎞
+⎟
+⎟
+⎟
+⎠𝑒𝑥+ 𝑐3
+⎛
+⎜
+⎜
+⎜
+⎝
+−1
+3
+5
+⎞
+⎟
+⎟
+⎟
+⎠𝑒−𝑥
+d𝑌
+d𝑥= 𝐴𝑌, 𝑌(𝑥0) = 𝑌0.
+Solution is
+𝑌(𝑥) = 𝑉𝑒Λ𝑥𝑉−1𝑌0.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+11 / 38
+
+—— p16 · 77 字符 ——
+The Cayley-Hamilton Method
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+11 / 38
+
+—— p17 · 388 字符 ——
+𝑒𝐴𝑥= 𝐸+ 𝐴𝑥+ · · · + 𝐴𝑘𝑥𝑘
+𝑘!
++ · · · =
+∞
+∑︁
+𝑘=0
+𝐴𝑘𝑥𝑘
+𝑘!
+.
+(2)
+For actually computing the elements of 𝑒𝐴𝑥, (2) is not generally useful.
+Theorem 3.1 (Cayley-Hamilton Theorem)
+Any square matrix satisfies its own characteristic polynomial. That is, if
+det(𝐴−𝜆𝐸) = 𝑏𝑛𝜆𝑛+ 𝑏𝑛−1𝜆𝑛−1 + · · · + 𝑏1𝜆+ 𝑏0,
+then
+𝑏𝑛𝐴𝑛+ 𝑏𝑛−1𝐴𝑛−1 + · · · + 𝑏1𝐴+ 𝑏0𝐸= [0].
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+12 / 38
+
+—— p18 · 375 字符 ——
+It follows from Cayley-Hamilton Theorem, applied to the matrix 𝐴𝑥, that the infinite series can be reduced to a
+polynomial in 𝑥.
+Theorem 3.2
+If 𝐴is a matrix having 𝑛rows and 𝑛columns, then
+𝑒𝐴𝑥= 𝛼𝑛−1𝐴𝑛−1𝑥𝑛−1 + 𝛼𝑛−2𝐴𝑛−2𝑥𝑛−2 + · · · + 𝛼1𝐴𝑥+ 𝛼0𝐸,
+(5)
+where 𝛼0, · · · , 𝛼𝑛−1 are functions of 𝑥which must be determined for each 𝐴.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+13 / 38
+
+—— p19 · 600 字符 ——
+Reduce the order of a polynomial in 𝐴
+Let 𝐴be a 𝑛square matrix, 𝑝(𝐴) = 𝑐𝑘𝐴𝑘+ 𝑐𝑘−1(𝐴)𝑘−1 + · · · + 𝑐1𝐴+ 𝑐0𝐸, and
+𝑝(𝑠) = 𝑐𝑘𝑠𝑘+ 𝑐𝑘−1𝑠𝑘−1 + · · · + 𝑐1𝑠+ 𝑐0.
+Δ(𝑠) = det(𝐴−𝑠𝐸) = 𝑏𝑛𝑠𝑛+ 𝑏𝑛−1𝑠𝑛−1 + · · · + 𝑏1𝑠+ 𝑏0(𝑘≥𝑛). Then
+Δ(𝐴) = 𝑏𝑛𝐴𝑛+ 𝑏𝑛−1𝐴𝑛−1 + · · · + 𝑏1𝐴+ 𝑏0𝐸(𝑘≥𝑛).
+Then
+𝑝(𝑠) = 𝑞(𝑠)Δ(𝑠) + 𝑟(𝑠),
+where 𝑞(𝑠) is found by long division, and the remainder polynomial deg(𝑟) ≤𝑛−1.
+If 𝑠= 𝜆𝑖, 𝑖= 1, · · · , 𝑛are eigenvalues of 𝐴, then Δ(𝜆𝑖) = 0.
+𝑝(𝜆𝑖) = 𝑟(𝜆𝑖).
+Then 𝑝(𝐴) = 𝑞(𝐴)Δ(𝐴) + 𝑟(𝐴).
+Cayley-Hamilton Theorem states that Δ(𝐴) = [0], therefore
+𝑝(𝐴) = 𝑟(𝐴).
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+14 / 38
+
+—— p20 · 524 字符 ——
+Example 2
+Reduce the order of 𝑝(𝐴) = 𝐴4 + 3𝐴3 + 2𝐴2 + 𝐴+ 𝐸for the matrix
+𝐴=
+⎛
+⎝3
+1
+1
+2
+⎞
+⎠
+Solution. Characteristic polynomial
+Δ(𝑠) = det(𝐴−𝑠𝐸) = 𝑠2 −5𝑠+ 5.
+𝑝(𝑠)
+Δ(𝑠) = 𝑠4 + 3𝑠3 + 2𝑠2 + 𝑠+ 1
+𝑠2 −5𝑠+ 5
+= 𝑠2 + 8𝑠+ 37 + 146𝑠−184
+𝑠2 −5𝑠+ 5
+Thus,
+𝑝(𝑠) = (𝑠2 + 8𝑠+ 37)Δ(𝑠) + 146𝑠−184 =⇒𝑟(𝑠) = 146𝑠−184.
+Then for the given 𝐴, 𝑝(𝐴) = 𝑟(𝐴), or
+𝑝(𝐴) = 146𝐴−184𝐸.
+Summary: A matrix polynomial, of a matrix 𝐴of degree 𝑛, can always be expressed as a polynomial of degree
+(𝑛−1) or less.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+15 / 38
+
+—— p21 · 651 字符 ——
+Analytic Functions of a Matrix
+Assume that a scalar function 𝑓(𝑠) may be expressed as a polynomial
+𝑓(𝑠) =
+∞
+∑︁
+𝑘=0
+𝛽𝑘𝑠𝑘.
+Let 𝐴be a square matrix of dimension 𝑛, with characteristic polynomial Δ(𝑠) and eigenvalues 𝜆𝑖.
+𝑓(𝑠) = Δ(𝑠)𝑞(𝑠) + 𝑟(𝑠), where 𝑟(𝑠) is of degree (𝑛−1) or less.
+For 𝑠= 𝜆𝑖, we have
+𝑓(𝜆𝑖) = Δ(𝜆𝑖)𝑞(𝜆𝑖) + 𝑟(𝜆𝑖) = 𝑟(𝜆𝑖) =
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝜆𝑘
+𝑖.
+(6)
+Since the 𝜆𝑖, 𝑖= 1...𝑛are known, (6) defines a set of simultaneous linear equations that will generate the
+coefficients 𝛼0, · · · , 𝛼𝑛.
+𝑓(𝐴) =
+∞
+∑︁
+𝑘=0
+𝛽𝑘𝐴𝑘= Δ(𝐴)𝑞(𝐴) + 𝑟(𝐴) = 𝑟(𝐴) =
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝐴𝑘,
+where the 𝛼𝑖’s may be found from Eq. (6).
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+16 / 38
+
+—— p22 · 423 字符 ——
+Computation of the matrix exponential 𝑒𝐴𝑥
+𝑓(𝑠) = 𝑒𝑠= ∑︀∞
+𝑘=0
+𝑠𝑘
+𝑘! .
+Let 𝐴𝑥be a square matrix of dimension 𝑛, with characteristic polynomial Δ(𝑠) = det(𝐴𝑥−𝑠𝐸) and
+eigenvalues 𝜆𝑖.
+𝑒𝐴𝑥= 𝑟(𝐴𝑥) := 𝛼𝑛−1𝐴𝑛−1𝑥𝑛−1 + 𝛼𝑛−2𝐴𝑛−2𝑥𝑛−2 + · · · + 𝛼1𝐴𝑥+ 𝛼0𝐸,
+where the 𝛼𝑖’s are determined from the set of equations given by the eigenvalues of 𝐴𝑥.
+For 𝑠= 𝜆𝑖, we have
+𝑒𝜆𝑖=
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝜆𝑘
+𝑖.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+17 / 38
+
+—— p23 · 315 字符 ——
+Example 3.
+Find 𝑒𝐴𝑥.
+If 𝐴has two columns and two rows, then 𝑛= 2 and
+𝑒𝐴𝑥= 𝛼1𝐴𝑥+ 𝛼0𝐸.
+If 𝐴has three columns and three rows, then 𝑛= 3 and
+𝑒𝐴𝑥= 𝛼2𝐴2𝑥2 + 𝛼1𝐴𝑥+ 𝛼0𝐸.
+Remark
+All the functions 𝛼𝑖(𝑥) are determined from the set of equations given by the eigenvalues of 𝐴.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+18 / 38
+
+—— p24 · 333 字符 ——
+Example 4.
+𝐴=
+⎛
+⎝1
+1
+9
+1
+⎞
+⎠
+Solution.
+𝑒𝐴𝑥= 𝛼1𝐴𝑥+ 𝛼0𝐸=
+⎛
+⎝𝛼1𝑥+ 𝛼0
+𝛼1𝑥
+9𝛼1𝑥
+𝛼1𝑥+ 𝛼0
+⎞
+⎠
+𝑟(𝜆) = 𝛼1𝜆+ 𝛼0
+det(𝐴𝑥−𝜆𝐸) = (𝜆−4𝑥)(𝜆+ 2𝑥) = 0 =⇒𝜆1 = 4𝑥, 𝜆2 = −2𝑥(multiplicity =1).
+Since 𝑒𝜆𝑖= 𝑟(𝜆𝑖), we have
+𝑒4𝑥= 4𝑥𝛼1 + 𝛼0,
+𝑒−2𝑥= −2𝑥𝛼1 + 𝛼0.
+=⇒
+⎛
+⎝4
+1
+−2
+1
+⎞
+⎠
+⎛
+⎝𝑥𝛼1
+𝛼0
+⎞
+⎠=
+⎛
+⎝𝑒4𝑥
+𝑒−2𝑥
+⎞
+⎠
+b
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+19 / 38
+
+—— p25 · 512 字符 ——
+⎛
+⎝4
+1
+−2
+1
+⎞
+⎠
+⎛
+⎝𝑥𝛼1
+𝛼0
+⎞
+⎠=
+⎛
+⎝𝑒4𝑥
+𝑒−2𝑥
+⎞
+⎠
+Solving these equations for 𝑥𝛼1 and 𝛼0, we find that
+𝛼1𝑥= 1
+6(𝑒4𝑥−𝑒−2𝑥), 𝛼0 = 1
+3(𝑒4𝑥+ 2𝑒−2𝑥)
+Thus, we have
+𝑒𝐴𝑥= 𝛼1𝐴𝑥+ 𝛼0𝐸=
+⎛
+⎝𝛼1𝑥+ 𝛼0
+𝛼1𝑥
+9𝛼1𝑥
+𝛼1𝑥+ 𝛼0
+⎞
+⎠= 1
+6
+⎛
+⎝3𝑒4𝑥+ 3𝑒−2𝑥
+𝑒4𝑥−𝑒−2𝑥
+9𝑒4𝑥−9𝑒−2𝑥
+3𝑒4𝑥+ 3𝑒−2𝑥
+⎞
+⎠
+The general solution of the system 𝑌′ = 𝐴𝑌is
+𝑌(𝑥) = 𝑒𝐴𝑥𝐶=
+⎛
+⎝3𝑒4𝑥+ 3𝑒−2𝑥
+𝑒4𝑥−𝑒−2𝑥
+9𝑒4𝑥−9𝑒−2𝑥
+3𝑒4𝑥+ 3𝑒−2𝑥
+⎞
+⎠
+⎛
+⎝𝑐1
+𝑐2
+⎞
+⎠= ˜𝑐1𝑒4𝑥
+⎛
+⎝1
+3
+⎞
+⎠+ ˜𝑐2𝑒−2𝑥
+⎛
+⎝1
+−3
+⎞
+⎠,
+where ˜𝑐1 = 3𝑐1 + 𝑐2 and ˜𝑐2 = 3𝑐1 −𝑐2.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+20 / 38
+
+—— p26 · 369 字符 ——
+Example 5. Solve 𝑌′ = 𝐴𝑌, where
+𝐴=
+⎛
+⎝0
+1
+−1
+0
+⎞
+⎠.
+Solution. First, find 𝑒𝐴𝑥for 𝐴. Set
+𝑒𝐴𝑥= 𝛼1𝐴𝑥+ 𝛼0𝐸=
+⎛
+⎝𝛼0
+𝛼1𝑥
+−𝛼1𝑥
+𝛼0
+⎞
+⎠
+𝑟(𝜆) = 𝛼1𝜆+ 𝛼0
+det(𝐴𝑥−𝜆𝐸) = 𝜆2 + 𝑥2 = 0 =⇒𝜆1 = 𝑖𝑥, 𝜆2 = −𝑖𝑥(multiplicity =1).
+Since 𝑒𝜆𝑖= 𝑟(𝜆𝑖), we have
+𝑒𝑖𝑥= 𝑖𝑥𝛼1 + 𝛼0,
+𝑒−𝑖𝑥= −𝑖𝑥𝛼1 + 𝛼0.
+=⇒
+𝛼1𝑥= 𝑒𝑖𝑥−𝑒−𝑖𝑥
+2𝑖
+= sin 𝑥,
+𝛼0 = 𝑒𝑖𝑥+ 𝑒−𝑖𝑥
+2
+= cos 𝑥.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+21 / 38
+
+—— p27 · 319 字符 ——
+𝛼1𝑥= sin 𝑥, 𝛼0 = cos 𝑥.
+Thus, we have
+𝑒𝐴𝑥= 𝛼1𝐴𝑥+ 𝛼0𝐸=
+⎛
+⎝𝛼0
+𝛼1𝑥
+−𝛼1𝑥
+𝛼0
+⎞
+⎠=
+⎛
+⎝cos 𝑥
+sin 𝑥
+−sin 𝑥
+cos 𝑥
+⎞
+⎠.
+So the general solution to 𝑌′ = 𝐴𝑌is 𝑌(𝑥) = 𝑒𝐴𝑥𝐶, that is
+𝑌(𝑥) =
+⎛
+⎝cos 𝑥
+sin 𝑥
+−sin 𝑥
+cos 𝑥
+⎞
+⎠
+⎛
+⎝𝑐1
+𝑐2
+⎞
+⎠= 𝑐1
+⎛
+⎝cos 𝑥
+−sin 𝑥
+⎞
+⎠+ 𝑐2
+⎛
+⎝−sin 𝑥
+cos 𝑥
+⎞
+⎠.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+22 / 38
+
+—— p28 · 524 字符 ——
+Note:
+If one or more of the eigenvalues is repeated, e.g. 𝜆𝑖= 𝜆𝑗, 𝑖̸= 𝑗, then
+𝑓(𝜆𝑖) =
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝜆𝑘
+𝑖,
+𝑓(𝜆𝑗) =
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝜆𝑘
+𝑗.
+These are identical equations.
+There will not be a set of 𝑛independent equations.
+For an eigenvalue of multiplicity 𝑚, the first (𝑚−1) derivatives of Δ(𝑠) all vanish at the eigenvalues,
+therefore for any given analytic function 𝑓, we have
+𝑓(𝜆𝑖) =
+𝑛−1
+∑︁
+𝑘=0
+𝛼𝑘𝜆𝑘
+𝑖= 𝑟(𝜆𝑖),
+𝑓′(𝜆𝑖) = 𝑟′(𝜆𝑖), 𝑓′′(𝜆𝑖) = 𝑟′′(𝜆𝑖), · · · , 𝑓(𝑚−1)(𝜆𝑖) = 𝑟(𝑚−1)(𝜆𝑖).
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+23 / 38
+
+—— p29 · 415 字符 ——
+Theorem 3.3
+Let 𝐴be in Theorem 3.2, and define
+𝑟(𝜆) = 𝛼𝑛−1𝜆𝑛−1 + 𝛼𝑛−2𝜆𝑛−2 + · · · + 𝛼1𝜆1 + 𝛼0.
+Then if 𝜆𝑖is an eigenvalue of 𝐴𝑥(not 𝐴),
+𝑒𝜆𝑖= 𝑟(𝜆𝑖).
+Furthermore, if 𝜆𝑖is an eigenvalue of multiplicity 𝑚, 𝑚> 1, then the following equations are also valid:
+𝑒𝜆𝑖=
+d
+d𝜆𝑟(𝜆)
+⃒⃒⃒⃒
+𝜆=𝜆𝑖
+, 𝑒𝜆𝑖=
+d2
+d𝜆2 𝑟(𝜆)
+⃒⃒⃒⃒
+𝜆=𝜆𝑖
+, · · · · · · · · · · · · , 𝑒𝜆𝑖=
+d𝑚−1
+d𝜆𝑚−1 𝑟(𝜆)
+⃒⃒⃒⃒
+𝜆=𝜆𝑖
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+24 / 38
+
+—— p30 · 519 字符 ——
+Example 6.
+Let 𝐴have four rows and four columns and let 𝜆= 5𝑥and 𝜆= 2𝑥be eigenvalues of 𝐴𝑥of
+multiplicities three and one, respectively.
+Solution.
+𝑛= 4. Let 𝑒𝐴𝑥= 𝛼3𝐴3𝑥3 + 𝛼2𝐴2𝑥2 + 𝛼1𝐴𝑥+ 𝛼0𝐸.
+𝑟(𝜆) = 𝛼3𝜆3 + 𝛼2𝜆2 + 𝛼1𝜆+ 𝛼0,
+𝑟′(𝜆) = 3𝛼3𝜆2 + 2𝛼2𝜆+ 𝛼1
+𝑟′′(𝜆) = 6𝛼3𝜆+ 2𝛼2.
+Since 𝜆= 5𝑥is an eigenvalue of multiplicity three, it follows that 𝑒5𝑥= 𝑟(5𝑥),𝑒5𝑥= 𝑟′(5𝑥), and
+𝑒5𝑥= 𝑟′′(5𝑥). Thus,
+𝑒5𝑥= 𝛼3(5𝑥)3 + 𝛼2(5𝑥)2 + 𝛼1(5𝑥) + 𝛼0,
+𝑒5𝑥= 3𝛼3(5𝑥)2 + 2𝛼2(5𝑥) + 𝛼1,
+𝑒5𝑥= 6𝛼3(5𝑥) + 2𝛼2.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+25 / 38
+
+—— p31 · 349 字符 ——
+Since 𝜆= 2𝑥is an eigenvalue of multiplicity one, it follows that 𝑒2𝑥= 𝑟(2𝑥). Thus,
+𝑒2𝑥= 𝛼3(2𝑥)3 + 𝛼2(2𝑥)2 + 𝛼1(2𝑥) + 𝛼0.
+Now we have four equations in the four unknown 𝛼′𝑠.
+𝑒5𝑥= 𝛼3(5𝑥)3 + 𝛼2(5𝑥)2 + 𝛼1(5𝑥) + 𝛼0,
+𝑒5𝑥= 3𝛼3(5𝑥)2 + 2𝛼2(5𝑥) + 𝛼1,
+𝑒5𝑥= 6𝛼3(5𝑥) + 2𝛼2,
+𝑒2𝑥= 𝛼3(2𝑥)3 + 𝛼2(2𝑥)2 + 𝛼1(2𝑥) + 𝛼0.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+26 / 38
+
+—— p32 · 602 字符 ——
+Summary of finding 𝑒𝐴𝑥
+Step 1. Find the eigenvalues of 𝐴𝑥. Suppose
+det(𝐴𝑥−𝜆𝐸) = (𝜆−𝜆1)𝑚1(𝜆−𝜆2)𝑚2 · · · (𝜆−𝜆𝑠)𝑚𝑠(𝑚1 + 𝑚2 + · · · + 𝑚𝑠= 𝑛).
+Step 2. Set
+𝑒𝐴𝑥= 𝛼𝑛−1(𝐴𝑥)𝑛−1 + 𝛼𝑛−2(𝐴𝑥)𝑛−2 + · · · + 𝛼1(𝐴𝑥) + 𝛼0𝐸,
+𝑟(𝜆) = 𝛼𝑛−1𝜆𝑛−1 + 𝛼𝑛−2𝜆𝑛−2 + · · · + 𝛼1𝜆+ 𝛼0.
+Step 3. Determine the values of 𝛼0, · · · , 𝛼𝑛−1 by solving the following algebraic system:
+𝑒𝜆1 = 𝑟(𝜆1), 𝑒𝜆1 = 𝑟′(𝜆1), · · · , 𝑒𝜆1 = 𝑟𝑚1−1(𝜆1),
+· · · · · · · · ·
+𝑒𝜆𝑠= 𝑟(𝜆𝑠), 𝑒𝜆𝑠= 𝑟′(𝜆𝑠), · · · , 𝑒𝜆𝑠= 𝑟𝑚𝑠−1(𝜆𝑠).
+Step 4. Plug 𝛼0, · · · , 𝛼𝑛−1 into 𝑒𝐴𝑥= 𝛼𝑛−1(𝐴𝑥)𝑛−1 + 𝛼𝑛−2(𝐴𝑥)𝑛−2 + · · · + 𝛼1(𝐴𝑥) + 𝛼0𝐸.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+27 / 38
+
+—— p33 · 390 字符 ——
+Example 7
+𝐴=
+⎛
+⎜
+⎜
+⎜
+⎝
+0
+−4
+0
+1
+−4
+0
+1
+−2
+−2
+⎞
+⎟
+⎟
+⎟
+⎠
+Solution.
+𝑛= 3.
+𝑒𝐴𝑥= 𝛼2𝐴2𝑥2 + 𝛼1𝐴𝑥+ 𝛼0𝐸
+= 𝛼2𝑥2
+⎛
+⎜
+⎜
+⎜
+⎝
+−4
+16
+0
+−4
+12
+0
+−4
+8
+4
+⎞
+⎟
+⎟
+⎟
+⎠+ 𝛼1𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+0
+−4
+0
+1
+−4
+0
+1
+−2
+−2
+⎞
+⎟
+⎟
+⎟
+⎠+ 𝛼0
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+0
+0
+1
+0
+0
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+𝑟(𝜆) = 𝛼2𝜆2 + 𝛼1𝜆+ 𝛼0
+det(𝐴𝑥−𝜆𝐸) = 0 =⇒𝜆1 = −2𝑥, 𝑚= 3.
+Then, 𝑒𝜆1 = 𝑟(𝜆1), 𝑒𝜆1 = 𝑟′(𝜆1) and 𝑒𝜆1 = 𝑟′′(𝜆1).
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+28 / 38
+
+—— p34 · 562 字符 ——
+So
+𝑒−2𝑥= (−2𝑥)2𝛼2 + (−2𝑥)𝛼1 + 𝛼0,
+𝑒−2𝑥= 2(−2𝑥)𝛼2 + 𝛼1,
+𝑒−2𝑥= 2𝛼2.
+=⇒
+⎛
+⎜
+⎜
+⎜
+⎝
+4
+−2
+1
+−4
+1
+0
+2
+0
+0
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑥2𝛼2
+𝑥𝛼1
+𝛼0
+⎞
+⎟
+⎟
+⎟
+⎠=
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑒−2𝑥
+𝑥𝑒−2𝑥
+𝑥2𝑒−2𝑥
+⎞
+⎟
+⎟
+⎟
+⎠
+Solving these equations for 𝛼2𝑥2, 𝛼1𝑥and 𝛼0, we find that
+𝛼2𝑥2 = 1
+2𝑒−2𝑥𝑥2, 𝛼1𝑥= (1 + 2𝑥)𝑥𝑒−2𝑥, 𝛼0 = (1 + 2𝑥+ 2𝑥2)𝑒−2𝑥
+Thus, we have
+𝑒𝐴𝑥=𝛼2𝑥2
+⎛
+⎜
+⎜
+⎜
+⎝
+−4
+16
+0
+−4
+12
+0
+−4
+8
+4
+⎞
+⎟
+⎟
+⎟
+⎠+ 𝛼1𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+0
+−4
+0
+1
+−4
+0
+1
+−2
+−2
+⎞
+⎟
+⎟
+⎟
+⎠+ 𝛼0
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+0
+0
+1
+0
+0
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+= 𝑒−2𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+2𝑥+ 1
+−4𝑥
+0
+𝑥
+−2𝑥+ 1
+0
+𝑥
+−2𝑥
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+29 / 38
+
+—— p35 · 466 字符 ——
+If we suppose 𝑌0 = (𝑐1, 𝑐2, 𝑐3)𝑇, then the solution is obtained by
+𝑌(𝑥) = 𝑒𝐴𝑥𝑌0 = 𝑒−2𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+2𝑥+ 1
+−4𝑥
+0
+𝑥
+−2𝑥+ 1
+0
+𝑥
+−2𝑥
+1
+⎞
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎝
+𝑐1
+𝑐2
+𝑐3
+⎞
+⎟
+⎟
+⎟
+⎠= 𝑒−2𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+(2𝑥+ 1)𝑐1 −4𝑐2𝑥
+𝑥𝑐1 + (−2𝑥+ 1)𝑐2
+𝑥𝑐1 −2𝑐2𝑥+ 𝑐3
+⎞
+⎟
+⎟
+⎟
+⎠
+= ˜𝑐1𝑒−2𝑥(𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+2
+1
+1
+⎞
+⎟
+⎟
+⎟
+⎠+
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+0
+0
+⎞
+⎟
+⎟
+⎟
+⎠) + 𝑐2𝑒−2𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+2
+1
+1
+⎞
+⎟
+⎟
+⎟
+⎠+ ˜𝑐3𝑒−2𝑥
+⎛
+⎜
+⎜
+⎜
+⎝
+0
+0
+1
+⎞
+⎟
+⎟
+⎟
+⎠,
+where ˜𝑐1 = 𝑐1 −2𝑐2 and ˜𝑐3 = 𝑐3 −2𝑐2.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+30 / 38
+
+—— p36 · 259 字符 ——
+Example 8
+𝐴=
+⎛
+⎜
+⎜
+⎜
+⎝
+0
+1
+0
+0
+−2
+−5
+0
+1
+2
+⎞
+⎟
+⎟
+⎟
+⎠
+Solution.
+𝑛= 3.
+𝑒𝐴𝑥= 𝛼2𝐴2𝑥2 + 𝛼1𝐴𝑥+ 𝛼0𝐸
+=
+⎛
+⎜
+⎜
+⎜
+⎝
+𝛼0
+−2𝛼2𝑥2 + 𝛼1𝑥
+−5𝛼2𝑥2
+0
+−𝛼2𝑥2 −2𝛼1𝑥+ 𝛼0
+−5𝛼1𝑥
+0
+−𝛼1𝑥
+−𝛼2𝑥2 + 2𝛼1𝑥+ 𝛼0
+⎞
+⎟
+⎟
+⎟
+⎠
+𝑟(𝜆) = 𝛼2𝜆2 + 𝛼1𝜆+ 𝛼0.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+31 / 38
+
+—— p37 · 347 字符 ——
+The eigenvalues of 𝐴𝑥are 𝜆1 = 0, 𝜆2 = 𝑖𝑥, and 𝜆3 = −𝑖𝑥.
+Then, we obtain three equations
+𝑒0 = (0)2𝛼2 + (0)𝛼1 + 𝛼0,
+𝑒𝑖𝑥= (𝑖𝑥)2𝛼2 + (𝑖𝑥)𝛼1 + 𝛼0,
+𝑒−𝑖𝑥= (−𝑖𝑥)2𝛼2 + (−𝑖𝑥)𝛼1 + 𝛼0.
+Solving these equations for 𝛼2, 𝛼1 and 𝛼0, we find that
+𝛼2𝑥2 = 𝑒𝑖𝑥+ 𝑒−𝑖𝑥−2
+−2
+= 1 −cos 𝑥,
+𝛼1𝑥= 𝑒𝑖𝑥−𝑒−𝑖𝑥
+2𝑖
+= sin 𝑥,
+𝛼0 = 1.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+32 / 38
+
+—— p38 · 309 字符 ——
+𝛼2𝑥2 = 1 −cos 𝑥, 𝛼1𝑥= sin 𝑥, 𝛼0 = 1.
+𝑒𝐴𝑥= 𝛼2𝐴2𝑥2 + 𝛼1𝐴𝑥+ 𝛼0𝐸
+=
+⎛
+⎜
+⎜
+⎜
+⎝
+𝛼0
+−2𝛼2𝑥2 + 𝛼1𝑥
+−5𝛼2𝑥2
+0
+−𝛼2𝑥2 −2𝛼1𝑥+ 𝛼0
+−5𝛼1𝑥
+0
+−𝛼1𝑥
+−𝛼2𝑥2 + 2𝛼1𝑥+ 𝛼0
+⎞
+⎟
+⎟
+⎟
+⎠
+=
+⎛
+⎜
+⎜
+⎜
+⎝
+1
+−2 + 2 cos 𝑥+ sin 𝑥
+−5 + 5 cos 𝑥
+0
+cos 𝑥−2 sin 𝑥
+−5 sin 𝑥
+0
+sin 𝑥
+cos 𝑥+ 2 sin 𝑥
+⎞
+⎟
+⎟
+⎟
+⎠
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+33 / 38
+
+—— p39 · 69 字符 ——
+Fundamental Matrix
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+33 / 38
+
+—— p40 · 704 字符 ——
+Consider
+𝑌′(𝑥) −𝐴(𝑥)𝑌= 0.
+(𝐻)
+Suppose {𝑌1(𝑥), 𝑌2(𝑥), · · · , 𝑌𝑛(𝑥)} is a fundamental set of solutions to system (H). Then
+Φ(𝑥) = (𝑌1(𝑥), · · · , 𝑌𝑛(𝑥))
+is called fundamental matrix for (H).
+General solution of (H):
+𝑌(𝑥) = 𝑐1𝑌1(𝑥) + 𝑐2𝑌2(𝑥) + · · · + 𝑐𝑛𝑌𝑛(𝑥) = 𝑐1
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝑦11
+𝑦12
+...
+𝑦1𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
++ · · · + 𝑐𝑛
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝑦𝑛1
+𝑦𝑛2
+...
+𝑦𝑛𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+=
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝑐1𝑦11 + 𝑐2𝑦21 + · · · + 𝑐𝑛𝑦𝑛1
+𝑐1𝑦12 + 𝑐2𝑦22 + · · · + 𝑐𝑛𝑦𝑛2
+· · ·
+𝑐1𝑦1𝑛+ 𝑐2𝑦2𝑛+ · · · + 𝑐𝑛𝑦𝑛𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+=
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝑦11
+𝑦21
+· · ·
+𝑦𝑛1
+𝑦12
+𝑦22
+· · ·
+𝑦𝑛2
+· · ·
+· · ·
+𝑦1𝑛
+𝑦2𝑛
+· · ·
+𝑦𝑛𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+⎛
+⎜
+⎜
+⎜
+⎜
+⎜
+⎜
+⎝
+𝑐1
+𝑐2
+...
+𝑐𝑛
+⎞
+⎟
+⎟
+⎟
+⎟
+⎟
+⎟
+⎠
+= Φ(𝑥)𝐶.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+34 / 38
+
+—— p41 · 369 字符 ——
+Matrix Exponential and Fundamental Matrix
+𝑌′(𝑥) −𝐴𝑌= 0,
+(𝐻1)
+where 𝐴is a constant 𝑛× 𝑛matrix.
+The general solution can be expressed in the form of
+𝑌(𝑥) = 𝑒𝐴𝑥𝐶,
+where 𝐶is an arbitrary 𝑛-dimensional column vector.
+The general solution of (H1) can be expressed as
+𝑌(𝑥) = Φ(𝑥)𝐶.
+Q: What’s the relation between 𝑒𝐴𝑥and Φ(𝑥)?
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+35 / 38
+
+—— p42 · 517 字符 ——
+Consider the IVP:
+d𝑌
+d𝑥= 𝐴𝑌, 𝑌(𝑥0) = 𝑌0.
+(7)
+Since 𝑌(𝑥0) = Φ(𝑥0)𝐶= 𝑌0 and det(Φ(𝑥)) ̸= 0 (by the reason of Wronskian of linearly independent solutions
+of (H) being nonzero), we have that 𝐶= Φ−1(𝑥0)𝑌0. Then
+𝑌(𝑥) = Φ(𝑥)𝐶= Φ(𝑥)Φ−1(𝑥0)𝑌(𝑥0) = (Φ(𝑥)Φ−1(𝑥0))𝑌0.
+Solution of IVP
+𝑌(𝑥) = (Φ(𝑥)Φ−1(𝑥0))𝑌0.
+Remark.
+Since the solution of IVP (7) can be expressed in the form of 𝑌(𝑥) = 𝑒𝐴(𝑥−𝑥0)𝑌(𝑥0), we have
+Φ(𝑥)Φ−1(𝑥0) = 𝑒𝐴(𝑥−𝑥0).
+Φ(𝑥)Φ−1(0) = 𝑒𝐴𝑥.
+If Φ(0) = 𝐸, then 𝑒𝐴𝑥= Φ(𝑥).
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+36 / 38
+
+—— p43 · 255 字符 ——
+Theorem 4.1
+If 𝐴is an 𝑛× 𝑛constant matrix, then the columns of the matrix exponential 𝑒𝐴𝑥form a fundamental solution
+set for the system 𝑌′(𝑥) = 𝐴𝑌(𝑥). Therefore, 𝑒𝐴𝑥is a fundamental matrix for the system.
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+37 / 38
+
+—— p44 · 289 字符 ——
+Homework
+For reading.
+PDF presentation.
+C. Constanda, Differential Equations, Springer, 2017. PP. 167-174.
+Problems.
+Find 𝑒𝐴𝑥and solving 𝑌′ = 𝐴𝑌.
+1. 𝐴=
+⎛
+⎝−6
+−4
+8
+6
+⎞
+⎠
+2. 𝐴=
+⎛
+⎝−4
+4
+−5
+4
+⎞
+⎠
+3. 𝐴=
+⎛
+⎜
+⎜
+⎜
+⎝
+−24
+0
+0
+4
+−2
+0
+1
+0
+2
+⎞
+⎟
+⎟
+⎟
+⎠
+W.Y. (DLUT)
+Lecture 16-17
+October 13, 2026
+38 / 38

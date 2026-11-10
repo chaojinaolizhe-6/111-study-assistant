@@ -1,0 +1,757 @@
+% !TeX program = xelatex
+% 迈克尔逊干涉仪：原理与预习节选 —— 独立试生成首稿（2026-11-10）
+% 源资料：inputs/Exp.11TheAdjustmentofMichelsonInterferometer.pdf（p1–p5）
+%         inputs/PreviewforMichelsoninterferometer-2025.pdf（p1, p3）
+% 编译：xelatex 两遍（本文件所在目录执行）
+\documentclass[11pt]{ctexart}
+\input{../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{15pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\emergencystretch=2.5em
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% 配方与读数贯穿全文，统一记法
+\newcommand{\Dl}{d}
+\newcommand{\lam}{\lambda}
+% 问答块保持同页：先量出块高，再要求页面留够（不足则整块移到下一页）
+\newcommand{\qaneed}[1]{\needspace{#1\textheight}}
+
+\settags{迈克尔逊干涉仪·原理与预习节选}{大学物理实验}
+\begin{document}
+
+\doctitle{迈克尔逊干涉仪：原理与预习节选}%
+{Michelson Interferometer: Principles and Selected Pre-Lab Questions}%
+{来源：\textit{Exp.~11 The Adjustment of Michelson Interferometer}（p1--p5）；\textit{Preview for Michelson Interferometer 2025}（p1、p3）\\
+本讲为节选精讲，只覆盖任务指定的栏目与预习问答；独立生成于 2026-11-10}
+
+\callout{\textbf{本讲怎么读。}§1 是实验目的与仪器的中英对照（源 p1--p2，完整照录）；
+§2 从两臂光路推到等效空气膜与光程差 $2\Dl\cos\theta$，再推到条纹间距与计数公式（源 p2--p5）；
+§3 是三个自编数值小例，用来核对膜厚、倾角与计数三条关系，参数不是课堂实测值；
+§4 是预习单指定题目的原题与中英答案（源预习 p1、p3）；§5 是覆盖台账、源资料内部不一致与未覆盖项。\\
+约定：\textbf{pN} 指 PDF 物理页码（与源文件页码一致）；\textbf{(11-$n$)}、\textbf{图 11-$n$} 沿用源资料编号；
+本讲自己补出的中间式不编号，按上下文称「上式」。}
+
+%============================================================
+\hdr{§1}{实验目的与仪器：中英对照}
+%============================================================
+
+\subhdr{1.1 实验目的\quad Experimental Objectives（源 p1）}
+
+源资料把第 (3)(4)(6)(7) 项标为 Optional（选做）。本讲照录全部七项，不作增删。
+
+{\small
+\begin{longtable}{@{}C{0.9cm}L{8.3cm}L{6.6cm}@{}}
+\toprule
+\thead{编号} & \thead{English（源 p1 原文）} & \thead{中文} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{编号} & \thead{English（续）} & \thead{中文（续）} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+(1) & Understand the structure of Michelson interferometer & 理解迈克耳孙干涉仪的结构 \\
+(2) & Adjust the non-localized interference fringe and measure the laser wavelength & 调节非定域干涉条纹，测量激光波长 \\
+(3) & Adjust the localized fringe and measure the wavelength of the sodium laser (Optional) & 调节定域条纹，测量钠激光的波长（选做。原文作 sodium laser，操作部分 p8 写作钠灯 sodium lamp，见 §5.3） \\
+(4) & Adjust white-light interference fringes (Optional) & 调节白光干涉条纹（选做） \\
+(5) & Measure the refractive index of air & 测量空气的折射率 \\
+(6) & Measure the refractive index of transparent sheet (Optional) & 测量透明薄片的折射率（选做） \\
+(7) & Observe multi-beam interference (Optional) & 观察多光束干涉（选做） \\
+\end{longtable}}
+
+预习单第 1 页另列了一组「预习目标」（I.1--I.3）：熟悉各部件（激光器、动镜、定镜、分光板、补偿板、扩束镜、气室、气压计等）的功能与各调节螺钉；掌握迈克耳孙干涉仪的使用要求、原理与方法；掌握测激光波长与空气折射率的方法。它们与上表的 (1)(2)(5) 对应：部件功能见 §1.2 的部件表与 §4 的 II-1、II-2，原理与方法见 §2，测激光波长见 §4 II-8；空气折射率测量（II-10）不在本次节选范围。
+
+\subhdr{1.2 仪器：SGM-2 迈克尔逊／法布里—珀罗干涉仪（源 p1--p2）}
+
+\textbf{中文。}SGM-2 干涉仪把迈克尔逊干涉仪与法布里—珀罗（F-P）干涉仪装在同一块方形平台底座上，底座下面装有一块厚钢板以保持稳定（图 11-1）。
+底板（部件 2）上有两个孔，可按两条光路各自的要求安装并锁定光源。3 是扩束镜，它自身可作二维调节，并可在导轨上移动。4 是迈克尔逊干涉仪的定镜（参考镜），其法线方向可调。5 是分光板，表面镀有半反射膜。6 是补偿板，材料与厚度都和分光板相同；5 与 6 出厂前已互相平行预装好，非特殊情况不必再调。7、8 是 F-P 干涉仪的两块反射镜，7 固定，8 与迈克尔逊的动镜 10 一起装在托盘 12 上，由预置螺杆 9 控制。微调鼓轮 11 每转过 $0.01\ \mathrm{mm}$，动镜相应移动 $0.0005\ \mathrm{mm}$。毛玻璃屏 13 用来接收迈克耳孙条纹。14 是 E、E$'$ 两个观察位置。
+
+\textbf{English（源 p2 原文，仅修顺病句，不改部件与功能）。}The SGM-2 interferometer integrates a Michelson and a Fabry--Perot (F-P) interferometer on a square platform base with a thick steel plate underneath for stability (Figure 11-1). There are two holes on plate 2 for mounting and locking the light source according to the two light paths. 3 is a beam expander, which can be adjusted two-dimensionally itself and moved on the guide rail. 4 is the fixed mirror (reference mirror) of the Michelson interferometer; its normal direction is adjustable. 5 is the light splitter, on whose surface a semi-permeable film is coated. 6 is the compensation plate, whose material and thickness are the same as those of the light splitter; 5 and 6 were pre-installed parallel to each other before delivery, and in non-special cases they need not be adjusted again. 7 and 8 are the two mirrors of the F-P interferometer; 7 is fixed, while 8 and the moving mirror 10 of the Michelson interferometer are installed on pallet 12 and controlled by the presetting screw 9. For every $0.01\ \mathrm{mm}$ rotation of the micrometer screw 11, the moving mirror moves $0.0005\ \mathrm{mm}$. The frosted glass screen 13 receives the Michelson fringes. 14 is the observation position E, E$'$.
+
+{\small
+\begin{longtable}{@{}C{0.9cm}L{6.4cm}L{8.2cm}@{}}
+\toprule
+\thead{编号} & \thead{英文名称（源 p2 图 11-1 图注）} & \thead{中文名与作用} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{编号} & \thead{英文名称（续）} & \thead{中文名与作用（续）} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1 & Helium-Neon laser (He-Ne laser) & He-Ne 激光器：单色、相干光源 \\
+2 & side plate & 底板／侧板：有两个光源安装孔，按两条光路定位光源 \\
+3 & beam expander & 扩束镜：把细激光束扩成扩展光束，可在导轨上移动、二维调节 \\
+4 & fixed mirror M1 & 定镜（参考镜）M$_1$：法线方向可调 \\
+5 & light splitter G1 & 分光板 G$_1$：表面镀半反射膜，分振幅并合束 \\
+6 & compensation plate G2 & 补偿板 G$_2$：材料、厚度与 G$_1$ 相同，补平两束光的玻璃路程 \\
+7 & F-P fixed mirror P1 & F-P 干涉仪定镜 P$_1$（多光束干涉用） \\
+8 & F-P moving mirror P2 & F-P 干涉仪动镜 P$_2$，装在托盘上 \\
+9 & presetting screw & 预置螺杆：预先设定托盘（及动镜）的粗位置 \\
+10 & moving mirror M2 & 动镜 M$_2$：沿臂长方向平移，改变等效空气膜厚度 $\Dl$ \\
+11 & micrometer screw & 微调鼓轮：每转 $0.01\ \mathrm{mm}$，动镜移动 $0.0005\ \mathrm{mm}$（20:1） \\
+12 & moving mirror pallet & 动镜托盘：承载 M$_2$ 与 P$_2$ \\
+13 & frosted glass screen FG & 毛玻璃屏：接收并显示干涉条纹 \\
+14 & E, E$'$ observation position & 观察位置（迈克尔逊／F-P 两路各一个） \\
+\end{longtable}}
+
+\warnbox{\textbf{一个必须记住的仪器参数（源 p2）。}微调鼓轮每转 $0.01\ \mathrm{mm}$，动镜只移动 $0.0005\ \mathrm{mm}$，即读数与实际位移之比为 $20:1$。
+本讲后面所有「鼓轮读数差 $\Delta l$ → 动镜位移 $\Delta\Dl$」的换算都用
+$\Delta\Dl=\Delta l/20$。这一条在 §2.4 推、在例 3.1／3.3 用、在 II-9 与 II-8 答。}
+
+%============================================================
+\hdr{§2}{原理：分振幅、等效空气膜与光程差}
+%============================================================
+
+\subhdr{2.1 两臂光路与「分振幅」}
+
+一束光从光源 S 射到分光板 G$_1$：一部分被半反射膜反射，一部分透射，两束光强度近似相等。G$_1$ 与入射方向成 $45^\circ$，于是两束光互相垂直，分别垂直射向定镜 M$_1$ 与动镜 M$_2$。经两镜反射后，两束光回到 G$_1$ 的半反射膜处重新合成一束，在 E 方向可以观察到干涉条纹（源 p3）。
+两束光来自同一入射波列被「按振幅」分开的两部分，因此是相干光——这正是「分振幅干涉」这一名称的来历（源 p1）。
+补偿板 G$_2$ 的作用是让 I、II 两束光在毛玻璃屏上的光程完全相同（源 p3）：玻璃中光速比空气中慢，两束光穿过的玻璃厚度不同就会多出一段光程差；G$_2$ 与 G$_1$ 同材料、同厚度、平行放置，补上这段差额。对激光，多出的差额只是一个常数；对相干长度极短的白光，这段差额足以让条纹消失（见 §4 附加 (2)）。
+
+\textbf{顺带数一下玻璃路程（据源 p7 的反射位置）。}源 p7 指出，两束光分别从 G$_1$ 背面的内侧与外侧反射。按这个位置逐段数：射向 M$_1$ 的那束光三次穿过 G$_1$ 的玻璃（入射一次、反射后出射一次、回来的路上再一次）；射向 M$_2$ 的那束光只在入射时穿过一次，回来时直接从膜面反射出去。把 G$_2$ 放进射向 M$_2$ 的那条臂，它出、回各穿一次，这束光也变成三次。于是两束光的玻璃路程相等。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.7pt]
+  % 光源
+  \draw[fill=bandviolet] (-4.55,-0.2) rectangle (-3.95,0.2);
+  \node[font=\scriptsize] at (-4.25,0) {激光};
+  \node[below,font=\scriptsize] at (-4.25,-0.28) {S（He-Ne）};
+  % 入射束
+  \draw[->] (-3.95,0) -- (-0.12,0);
+  % 分光板 G1：45 度，双线表示玻璃，粗紫线表示半反射膜（背面）
+  \draw[thick] (-1.06,-1.06) -- (1.06,1.06);
+  \draw[thick,color=violet] (-0.975,-1.145) -- (1.145,0.975);
+  \node[font=\scriptsize,anchor=west] at (1.20,-1.22) {G$_1$ 分光板};
+  % 定镜 M1
+  \draw[line width=1.6pt] (-0.75,3.3) -- (0.75,3.3);
+  \foreach \x in {-0.65,-0.35,-0.05,0.25,0.55}{\draw (\x,3.3) -- (\x+0.18,3.52);}
+  \node[font=\scriptsize,anchor=west] at (0.85,3.3) {M$_1$（定镜）};
+  % 动镜 M2
+  \draw[line width=1.6pt] (4.15,-0.7) -- (4.15,0.7);
+  \foreach \y in {-0.6,-0.3,0,0.3,0.6}{\draw (4.15,\y) -- (4.33,\y+0.18);}
+  \node[font=\scriptsize,anchor=south] at (4.15,0.82) {M$_2$（动镜）};
+  % 补偿板 G2（在 M2 臂内）
+  \draw[thick] (1.35,-0.45) -- (2.25,0.45);
+  \draw[thick] (1.47,-0.33) -- (2.37,0.57);
+  \node[font=\scriptsize,anchor=north] at (1.86,-0.52) {G$_2$ 补偿板};
+  % 两臂往返
+  \draw[<->] (0,0.12) -- (0,3.15);
+  \node[font=\scriptsize,anchor=east] at (-0.12,1.75) {I};
+  \draw[<->] (0.12,0) -- (4.0,0);
+  \node[font=\scriptsize,anchor=south] at (0.72,0.12) {II};
+  % 出射到屏
+  \draw[->] (0,-0.12) -- (0,-3.1);
+  \node[font=\scriptsize,anchor=east] at (-0.15,-2.2) {合成光};
+  % 毛玻璃屏
+  \draw[line width=1.4pt] (-0.85,-3.25) -- (0.85,-3.25);
+  \foreach \x in {-0.75,-0.45,-0.15,0.15,0.45,0.75}{\draw (\x,-3.25) -- (\x-0.16,-3.45);}
+  \node[font=\scriptsize,anchor=west] at (0.95,-3.25) {FG（屏）／E};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray}图 1\quad 迈克尔逊干涉仪的两臂光路。据源资料 p3 图 11-2 的光路说明与 p2 的部件表重绘：
+S→G$_1$ 分成 I（射向定镜 M$_1$）、II（穿过补偿板 G$_2$ 射向动镜 M$_2$）两束；两束返回半反射膜后合成一束，射向毛玻璃屏上的 E 位置。
+G$_1$ 上的紫色粗线表示半反射膜（位于与两臂相对的背面上）。}
+\end{center}
+
+\subhdr{2.2 等效空气膜：M$_2'$ 是 M$_2$ 经 G$_1$ 所成的虚像}
+
+从观察者一侧看，两束相干光好像分别由定镜 M$_1$ 和「动镜 M$_2$ 经 G$_1$ 反射所成的虚像 M$_2'$」反射而来（源 p3）。所以迈克尔逊干涉仪产生的干涉，可以等效成 M$_1$ 与 M$_2'$ 之间那层空气膜的干涉来分析（图 2）。
+设 M$_1$ 到 G$_1$ 上那条半反射膜的距离为 $l_1$、M$_2$ 到该膜的距离为 $l_2$，则等效膜的厚度是
+\[
+  \Dl=|l_1-l_2| .
+\]
+$l_1$、$l_2$ 都以同一条半反射膜为零点——这也是 G$_2$ 要「补平玻璃路程」的原因：玻璃路程补平之后，中心处两束光的光程差才恰好等于 $2\Dl$。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.7pt]
+  \draw[line width=1.5pt] (-1.5,1.6) -- (1.7,1.6);
+  \draw[thick,dashed] (-1.5,2.2) -- (1.7,2.2);
+  \draw[<->] (1.32,1.6) -- (1.32,2.2);
+  \node[font=\scriptsize,anchor=west] at (1.42,1.9) {$d$};
+  \node[font=\scriptsize,anchor=west] at (1.76,1.6) {M$_1$};
+  \node[font=\scriptsize,anchor=west] at (1.76,2.2) {M$_2'$};
+  % 观察方向与两支反射光
+  \coordinate (E) at (0,0);
+  \draw[->] (E) -- (0.9,1.6);
+  \node[font=\scriptsize,anchor=west] at (0.92,1.40) {光 1};
+  \draw[->] (E) -- (0.55,1.6);
+  \draw[-] (0.55,1.6) -- (0.756,2.2);
+  \node[font=\scriptsize,anchor=east] at (0.28,2.02) {光 2};
+  \fill (E) circle (1.2pt);
+  \node[font=\scriptsize,anchor=north] at (0,-0.12) {E（观察方向）};
+  \node[font=\scriptsize,anchor=west] at (0.95,2.55) {M$_2'$（虚线）：M$_2$ 的虚像};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray}图 2\quad 等效空气膜。M$_1$（实线）与 M$_2'$（虚线）平行，间距 $\Dl$；
+从 E 看进去，两束相干光等效于由这两面反射，干涉就等效为这层厚度为 $\Dl$ 的空气膜的干涉。}
+\end{center}
+
+\warnbox{\textbf{先分清两种图样（源 p4）。}M$_1$ 与 M$_2'$ 大致平行时，屏上得到同心圆环（等倾干涉，§2.3）；
+两者有小夹角、且膜很薄时，得到近直条纹（等厚干涉，源 p6--p7，本讲不展开）；
+其它情形得到椭圆或双曲线条纹。本讲只处理圆环，凡说「条纹」都指圆环。}
+
+\subhdr{2.3 光程差 $2\Dl\cos\theta$ 的几何推导}
+
+\textbf{第一步：膜内两支反射光的路程差。}设等效膜的两个面平行、间距 $\Dl$，膜内是空气（折射率取 $1$）。一条光线以倾角 $\theta$（与膜面法线的夹角）打到上表面 B 点，在那里分成两支：光 1 直接反射；光 2 进入膜内，在下表面 C 点反射，再从上表面 D 点射出。两支射出后方向相同，都是倾角 $\theta$（图 3）。
+
+光 2 在膜内走的路程是
+\[
+  BC+CD=\frac{\Dl}{\cos\theta}+\frac{\Dl}{\cos\theta}=\frac{2\Dl}{\cos\theta}.
+\]
+光 1 与光 2 要在「垂直于光线」的同一波前上比较相位。从 D 向光 1 引垂线，垂足记作 F，则光 1 已经走过 $BF$，而
+\[
+  BF=BD\sin\theta=(2\Dl\tan\theta)\sin\theta .
+\]
+（$BD$ 是两支光在上表面上的横向错开量，$2\Dl\tan\theta$；把它投影到光线方向上就乘 $\sin\theta$。）
+于是两支光的光程差
+\begin{equation}
+  \Delta L=(BC+CD)-BF=\frac{2\Dl}{\cos\theta}-2\Dl\tan\theta\sin\theta
+  =2\Dl\,\frac{1-\sin^2\theta}{\cos\theta}
+  =2\Dl\cos\theta .
+  \label{eq:dl}
+\end{equation}
+推导用到的条件要能自己核对：(a) 两面平行，否则两支光不再平行、没有同一波前可比；(b) 膜内折射率取 1，若膜内是介质（如玻璃片）则 $\Delta L=2n\Dl\cos\theta$；(c) 只取同一入射方向的这两支光，其它方向的干涉图样位置不同。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.7pt,scale=1]
+  % 两面
+  \draw[line width=1.4pt] (-1.30,0) -- (2.45,0);
+  \draw[line width=1.4pt] (-1.30,-1.2) -- (2.45,-1.2);
+  \node[font=\scriptsize,anchor=east] at (-1.34,0) {面 1（M$_1$）};
+  \node[font=\scriptsize,anchor=east] at (-1.34,-1.2) {面 2（M$_2'$）};
+  % 法线
+  \draw[dashed] (0,0.75) -- (0,-1.28);
+  % 法线（不标文字，由图注说明，避免与光线重叠）
+  % 入射
+  \draw[->] (-0.77,1.1) -- (-0.03,0.04);
+  % 光 1（反射）
+  \draw[->] (0.03,-0.04) -- (0.92,1.22);
+  \node[font=\scriptsize,anchor=west] at (0.96,1.08) {光 1};
+  % 光 2（透射→下表面反射→出射）
+  \draw[->] (0.04,-0.06) -- (0.83,-1.16);
+  \draw[->] (0.85,-1.22) -- (1.66,-0.03);
+  \draw[->] (1.70,-0.03) -- (2.58,1.22);
+  \node[font=\scriptsize,anchor=west] at (2.60,1.14) {光 2};
+  % 垂足 F 与垂线
+  \coordinate (F) at (0.5526,0.7892);
+  \draw[dashed] (F) -- (1.68,0);
+  \draw ($(F)+(0.10,0.14)$) -- ($(F)+(0.24,0.03)$) -- ($(F)+(0.14,-0.11)$);
+  \fill (F) circle (0.9pt);
+  \node[font=\scriptsize,anchor=west] at (0.80,0.95) {F};
+  % 点与字母
+  \node[font=\scriptsize,anchor=east] at (-0.10,0.10) {B};
+  \node[font=\scriptsize,anchor=north west] at (0.86,-1.24) {C};
+  \node[font=\scriptsize,anchor=south] at (1.80,0.10) {D};
+  % 角 theta
+  \draw (0,-0.34) arc (-90:-55:0.34);
+  \node[font=\scriptsize] at (0.16,-0.44) {$\theta$};
+  % 厚度 d
+  \draw[<->] (2.06,0) -- (2.06,-1.2);
+  \node[font=\scriptsize,anchor=west] at (2.10,-0.60) {$d$};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray}图 3\quad 等效空气膜内的光程差（虚线为过 B 点的法线和过 D 点的波前）。两支反射光 1、2 方向相同；光 2 在膜内走 $BC+CD=2\Dl/\cos\theta$，
+光 1 在到达同一波前（过 D 且垂直于光线的虚线）前多走 $BF=2\Dl\tan\theta\sin\theta$；两者相减得 $2\Dl\cos\theta$。
+图中 B、C、D、F 的位置与式中线段一一对应。}
+\end{center}
+
+\textbf{第二步：从虚光源看，同一个 $2\Dl\cos\theta$。}点光源照明时，两束光等效于由虚光源 S$_1$、S$_2'$ 发出（源 p3--p4）。S$_1$、S$_2'$ 在垂直于屏的轴线上，相距 $2\Dl$，屏到它们中点的距离为 $z$。屏上任一点 P 到两虚光源的距离差（图 4）是
+\[
+  \Delta L=S_2'P-S_1P
+  =\sqrt{(z-\Dl)^2+r^2}-\sqrt{(z+\Dl)^2+r^2}
+  \approx-\frac{2\Dl z}{\sqrt{z^2+r^2}}
+  =-2\Dl\cos\theta ,
+\]
+其中 $r$ 是 P 到屏中心 O 的距离，$\theta$ 是视线与轴线的夹角，$\cos\theta=z/\sqrt{z^2+r^2}$。取绝对值即得与式~\eqref{eq:dl} 相同的 $2\Dl\cos\theta$：膜内几何与虚光源两种图像给出同一个光程差。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.7pt]
+  % 轴线与屏
+  \draw[dashed] (-2.30,0) -- (2.55,0);
+  \draw[line width=1.4pt] (2.4,-1.55) -- (2.4,1.55);
+  \node[font=\scriptsize,anchor=south] at (2.4,1.58) {屏};
+  % 虚光源：同在垂直屏的轴线上，相距 2d（沿轴线分开，不是横截方向）
+  \coordinate (S1) at (-1.98,0);
+  \coordinate (S2) at (-1.38,0);
+  \fill (S1) circle (1.3pt); \fill (S2) circle (1.3pt);
+  \node[font=\scriptsize,anchor=east] at (-2.04,-0.22) {S$_1$};
+  \node[font=\scriptsize,anchor=west] at (-1.32,-0.24) {S$_2'$};
+  \draw[<->] (-1.98,0.30) -- (-1.38,0.30);
+  \node[font=\scriptsize,anchor=south] at (-1.68,0.32) {$2d$};
+  % P 与两条光路
+  \coordinate (P) at (2.4,1.0);
+  \fill (P) circle (1.3pt);
+  \node[font=\scriptsize,anchor=west] at (2.46,1.10) {P};
+  \draw[->] (S1) -- (P);
+  \draw[->] (S2) -- (P);
+  % 角 theta（在 S2' 处：水平轴与该射线之间的夹角）
+  \draw (-0.08,0) arc (0:14.8:1.30);
+  \node[font=\scriptsize,anchor=west] at (0.26,0.22) {$\theta$};
+  % r 与 z
+  \draw[<->] (2.52,0) -- (2.52,1.0);
+  \node[font=\scriptsize,anchor=west] at (2.56,0.50) {$r$};
+  \draw[<->] (-1.38,-1.05) -- (2.40,-1.05);
+  \node[font=\scriptsize,anchor=north] at (0.51,-1.08) {$z$};
+  \node[font=\scriptsize,anchor=north west] at (2.30,-0.06) {O};
+\end{tikzpicture}\\[3pt]
+{\small\color{inkgray}图 4\quad 虚光源 S$_1$、S$_2'$ 与屏。两者都在垂直屏的轴线上，相距 $2\Dl$（沿轴线分开）；
+屏到两者中点的距离为 $z$，P 到屏中心 O 的距离为 $r$，视线与轴线夹角 $\theta\approx r/z$，故 $\Delta L=S_2'P-S_1P\approx2\Dl\cos\theta$。}
+\end{center}
+
+\textbf{第三步：小角度展开与明纹条件。}因为 $r\ll z$，有 $\theta\approx r/z$、$\cos\theta\approx1-\theta^2/2$，所以
+\[
+  \Delta L\approx 2\Dl\left(1-\frac{r^2}{2z^2}\right).
+\]
+明纹条件是 $\Delta L=k\lambda$（$k$ 为整数级次），代进去就是源资料 p4 的式 (11-1)：
+\begin{equation}
+  2\Dl\left(1-\frac{r^2}{2z^2}\right)=k\lambda .
+  \tag{11-1}
+\end{equation}
+取屏中心 $r=0$，得中心处 $2\Dl=k_0\lambda$，即 $k_0=2\Dl/\lambda$ 是整个图样的最高级次。
+把 (11-1) 看成 $r^2$ 的方程，解得第 $k$ 级亮环的半径
+\begin{equation}
+  r_k^2=2z^2\left(1-\frac{k\lambda}{2\Dl}\right).
+  \label{eq:rk}
+\end{equation}
+$k$ 越小，$r_k$ 越大：级次由中心向外逐次减 1，所以\textbf{中心处级次最高、边缘处级次最低}（源 p4）。
+
+\textbf{第四步：条纹间距（源 p4 省略了这一步，这里补出）。}把同一 $\Dl$ 下相邻两级 $k$ 与 $k-1$ 的两个式子相减：
+\[
+  r_k^2-r_{k-1}^2=\frac{\lambda z^2}{\Dl}
+  \quad\Longrightarrow\quad
+  (r_k-r_{k-1})(r_k+r_{k-1})=\frac{\lambda z^2}{\Dl}.
+\]
+再用 $r_k+r_{k-1}\approx2r_k$，就得到源资料 p4 的条纹间距式
+\begin{equation}
+  \Delta r=r_k-r_{k-1}\approx\frac{\lambda z^2}{2\Dl\,r_k}.
+  \tag{补}
+\end{equation}
+注意这一步近似只把「两环半径之和」换成了 $2r_k$。若相邻两环半径差得不小，用 $r_k$ 代入会偏大；用两环的平均半径 $\bar r=(r_k+r_{k-1})/2$ 代入则是精确的（例 3.2 会给具体数字）。
+
+\textbf{第五步：疏密规律与「涌出／陷入」。}由上式，条纹间距由四个因素决定（源 p4--p5）：
+\begin{itemize}
+  \item 同一图样中，越靠中心 $\Delta r$ 越大——\textbf{中心疏、边缘密}；
+  \item $\Dl$ 越小，$\Delta r$ 越大——\textbf{$\Dl$ 小则条纹疏}；
+  \item $z$ 越大，$\Delta r$ 越大——屏（以及光源、两镜）离分光板越远，条纹越疏；
+  \item $\lambda$ 越长，条纹越疏。
+\end{itemize}
+再看环的运动。固定某一级次 $k$ 的环，由式~\eqref{eq:rk}：$\Dl$ 增大时 $r_k$ 增大，这一圈环向外扩张；
+同时中心级次 $k_0=2\Dl/\lambda$ 随 $\Dl$ 增大而增大，每增大 $\lambda/2$ 就在中心多出一级，于是新环不断从中心「冒出」，
+这就是源 p5 说的条纹\textbf{涌出}（spit）。反过来，$\Dl$ 减小时每一圈向中心收缩、逐个消失，即\textbf{陷入}（swallow）。
+
+取屏中心 $r=0$，明纹条件为 $2\Dl=k\lambda$。设动镜移动 $\Delta\Dl$ 期间有 $N$ 个环通过中心，则级次改变 $\Delta k=N$，于是
+\begin{equation}
+  2\Delta\Dl=N\lambda .
+  \tag{11-2}
+\end{equation}
+知道波长可以数环测长度，知道位移可以数环测波长——后者就是本实验测激光波长的基本原理（源 p5）。
+
+\aside{\textbf{相位突变只平移级次，不改 (11-2)。}源 p7 指出：两束光分别从 G$_1$ 背面的内侧与外侧反射，相位突变不同，
+会多出一个附加相位差 $\delta_0$（例如未镀膜的玻璃背面会带来半波损失，此时 M$_1$ 与 M$_2'$ 交点处的条纹是暗的）。
+把 $\delta_0$ 写进去，明纹条件变成 $2\Dl\cos\theta=(k-\delta_0/2\pi)\lambda$。$\delta_0$ 与 $\Dl$ 无关，
+只是把级次整体平移；所以「$\Dl$ 每变 $\lambda/2$ 过一个环」这一条不变，(11-2) 照样成立。
+本讲后面凡写 $2\Dl=k\lambda$，都按这个约定理解。}
+
+\subhdr{2.4 从鼓轮读数到动镜位移：20:1}
+
+仪器给出的直接读数是微调鼓轮 11 上的位置，不是动镜位移。源 p2 给出换算：鼓轮每转 $0.01\ \mathrm{mm}$，动镜沿臂长移动 $0.0005\ \mathrm{mm}$。写成式子就是
+\begin{equation}
+  \Delta\Dl=\frac{\Delta l}{20},\qquad \text{或}\qquad \Delta l=20\,\Delta\Dl ,
+  \label{eq:ratio}
+\end{equation}
+其中 $\Delta l$ 是鼓轮读数差。预习单第 3 页的数据表也把「实际移动距离」写成 $\Delta\Dl=\overline{\Delta\Dl_i}/20$，与本式一致（源预习 p3）。
+
+为什么需要这个 $20:1$？由 (11-2)，一个环对应 $\Delta\Dl=\lambda/2\approx0.3\ \mu\mathrm{m}$，而鼓轮的最小分度是 $0.01\ \mathrm{mm}=10\ \mu\mathrm{m}$。若读数与位移 $1:1$，一个环只对应约三十分之一格（$0.32\ \mu\mathrm{m}$ 对 $10\ \mu\mathrm{m}$），根本读不出来；经 $20:1$ 减速，一个环对应约 $0.63$ 格，才既数得清环、又读得准读数（例 3.3）。
+
+\subhdr{2.5 公式速查}
+
+{\small
+\begin{longtable}{@{}L{4.1cm}L{8.1cm}L{3.1cm}@{}}
+\toprule
+\thead{要算的量} & \thead{关系式} & \thead{出处} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{要算的量（续）} & \thead{关系式（续）} & \thead{出处（续）} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+膜内两支光的光程差 & $\Delta L=2\Dl\cos\theta$（膜内 $n=1$） & 源 p4；本讲式~\eqref{eq:dl} \\
+中心明纹 & $2\Dl=k_0\lambda$ & (11-1) 取 $r=0$ \\
+亮环条件（屏距 $z$） & $2\Dl\left(1-\dfrac{r^2}{2z^2}\right)=k\lambda$ & (11-1) \\
+第 $k$ 级亮环半径 & $r_k=z\sqrt{2\left(1-\dfrac{k\lambda}{2\Dl}\right)}$ & 式~\eqref{eq:rk} \\
+环间距 & $\Delta r\approx\dfrac{\lambda z^2}{2\Dl\,r}$ & 源 p4；本讲补出推导 \\
+计数 & $2\Delta\Dl=N\lambda$ & (11-2) \\
+波长 & $\lambda=\dfrac{2\Delta\Dl}{N}=\dfrac{\Delta l}{10N}$ & (11-2) 与式~\eqref{eq:ratio} \\
+鼓轮读数→动镜位移 & $\Delta\Dl=\Delta l/20$ & 源 p2；预习 p3 \\
+条纹可见度 & $V=\dfrac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}=\dfrac{2\sqrt{I_1I_2}}{I_1+I_2}$ & 本讲补（§4 附加 (1) 用） \\
+\end{longtable}}
+
+%============================================================
+\hdr{§3}{教学小例：膜厚、角度与条纹计数}
+%============================================================
+
+下面三个例子都是\textbf{本讲自编的数值示例}，用来核对 §2 的三条关系与单位，\textbf{不是课堂实测值}。
+三个例子共用同一组设定：He-Ne 激光波长取 $\lambda=632.8\ \mathrm{nm}$（该谱线真空波长的常用值，示例取值），
+读数与位移之比取仪器给出的 $20:1$。每例都把结果代回原式核对一次。
+
+\subhdr{例 3.1\quad 膜厚与环数：数 50 个环，动镜走了多远？}
+
+\textbf{已知}：$\lambda=632.8\ \mathrm{nm}$；单向转动鼓轮，数到 $N=50$ 个环通过中心（源 p8 的记数方式就是每 50 环读一次）。
+\textbf{求}：动镜位移 $\Delta\Dl$ 与鼓轮读数差 $\Delta l$。
+
+\textbf{解}：由 (11-2)，$\Delta\Dl=N\lambda/2=50\times632.8\ \mathrm{nm}/2=15\,820\ \mathrm{nm}=15.82\ \mu\mathrm{m}$。
+再由式~\eqref{eq:ratio}，$\Delta l=20\Delta\Dl=0.3164\ \mathrm{mm}\approx0.32\ \mathrm{mm}$。
+
+\textbf{代回核对}：鼓轮每 $0.01\ \mathrm{mm}$ 对应 $0.5\ \mu\mathrm{m}$ 位移；$0.3164\ \mathrm{mm}$ 合 $31.64$ 格，
+$31.64\times0.5\ \mu\mathrm{m}=15.82\ \mu\mathrm{m}$，与上面一致。
+
+\textbf{读数误差的量级}：数错一个环，$\Delta\Dl$ 就差 $\lambda/2\approx316\ \mathrm{nm}$；对 $N=50$ 来说相当于 $2\%$。
+所以数环要盯住中心、按同一方向转鼓轮（避免回程差），这与源 p9 注意事项里「转动要轻、不要快、不要斜向用力」的要求一致。
+
+\subhdr{例 3.2\quad 倾角与环半径：给定的 $\Dl$ 和 $z$，环有多大、间距多少？}
+
+\textbf{设定}：$z=1.00\ \mathrm{m}$（屏到虚光源的距离，示例取值）；把 $\Dl$ 调到使中心恰为亮纹，即 $2\Dl=k_0\lambda$，取 $k_0=316$，
+则 $\Dl=316\lambda/2=99.982\ \mu\mathrm{m}\approx0.100\ \mathrm{mm}$。这个「中心为亮纹」的取法是必要的：否则各环半径会差一个由 $\Dl$ 的小数部分决定的量，用 (11-1) 直接数 $m$ 就不准。
+
+\textbf{求}：第 1、2 个亮环（从中心向外数，$m=1,2$）的半径、倾角与间距；并比较源 p4 的间距式与精确值。
+
+\textbf{解}：中心为亮纹时，(11-1) 可整成更简单的形式。由 $2\Dl=k_0\lambda$ 与 $k=k_0-m$，
+\[
+  \frac{\Dl}{z^2}r_m^2=m\lambda
+  \quad\Longrightarrow\quad
+  r_m=z\sqrt{\frac{m\lambda}{\Dl}} .
+\]
+代入数值：
+\begin{align*}
+  r_1&=1.00\times\sqrt{\frac{632.8\times10^{-9}}{99.982\times10^{-6}}}=7.956\times10^{-2}\ \mathrm{m}=79.56\ \mathrm{mm},\\
+  r_2&=1.00\times\sqrt{\frac{2\times632.8\times10^{-9}}{99.982\times10^{-6}}}=1.1251\times10^{-1}\ \mathrm{m}=112.51\ \mathrm{mm}.
+\end{align*}
+倾角 $\theta_m=\arctan(r_m/z)$：$\theta_1=4.55^\circ$，$\theta_2=6.42^\circ$（即 $0.0796$ rad 与 $0.1125$ rad）。
+
+精确间距 $r_2-r_1=32.95\ \mathrm{mm}$。用源 p4 的间距式，若把 $r=r_1$ 代入：
+\[
+  \Delta r\approx\frac{\lambda z^2}{2\Dl r_1}=\frac{632.8\times10^{-9}}{2\times99.982\times10^{-6}\times0.07956}=39.78\ \mathrm{mm},
+\]
+比精确值大 $20.7\%$；若把两环平均半径 $\bar r=(r_1+r_2)/2=96.03\ \mathrm{mm}$ 代入，得 $32.95\ \mathrm{mm}$，与精确值相同——这一步不是近似而是恒等：$r_k^2-r_{k-1}^2=\lambda z^2/\Dl$ 给出
+\[
+  r_k-r_{k-1}=\frac{\lambda z^2}{\Dl\,(r_k+r_{k-1})}=\frac{\lambda z^2}{2\Dl\,\bar r}.
+\]
+
+\textbf{代回核对（同一组数，两种近似的误差差很多）}：把 $\Delta L$ 的近似值与精确值比一下。
+精确值 $2\Dl\cos\theta_2=198.71\ \mu\mathrm{m}$；近似值 $2\Dl(1-r_2^2/2z^2)=198.70\ \mu\mathrm{m}$，差 $0.012\ \mu\mathrm{m}$，只有 $0.019$ 个条纹。
+也就是说：$r\ll z$ 的二级近似对 $\Delta L$ 几乎无误差；而间距式里「$r_k+r_{k-1}\approx2r_k$」这一步在相邻环差得较大时会带来 $20\%$ 的误差。
+本例 $r_2/z=0.11$，已经接近「$r\ll z$」的边缘，正是该留意的地方。
+
+\subhdr{例 3.3\quad 计数与波长：读数差 $3.164\ \mathrm{mm}$、数到 500 环}
+
+\textbf{已知}：单向转动鼓轮，读数从 $l_1$ 到 $l_2$，读数差 $\Delta l=3.164\ \mathrm{mm}$；期间 $N=500$ 个环通过中心。
+\textbf{求}：波长 $\lambda$。
+
+\textbf{解}：先把读数换成动镜位移，$\Delta\Dl=\Delta l/20=0.1582\ \mathrm{mm}$；
+再由 (11-2)，$\lambda=2\Delta\Dl/N=2\times158.2\ \mu\mathrm{m}/500=632.8\ \mathrm{nm}$。
+
+\textbf{合成一个工作式}：把式~\eqref{eq:ratio} 代进 (11-2) 得
+\[
+  \lambda=\frac{\Delta l}{10N}.
+\]
+本例 $\lambda=3.164\ \mathrm{mm}/(10\times500)=6.328\times10^{-7}\ \mathrm{m}$，与上面一致。这个式子可以直接用来检查数据：读数差的毫米数除以「10 倍环数」就是波长的米数。
+
+\textbf{换个波长核对同一读数方式}：若换成钠黄光 $\lambda=589.3\ \mathrm{nm}$（示例取值，对应目标 (3) 的钠光源），同样数 500 环，
+应移动 $\Delta\Dl=500\times589.3\ \mathrm{nm}/2=147.3\ \mu\mathrm{m}$，即鼓轮读数差 $\Delta l=2.947\ \mathrm{mm}$。
+两种光源的读数差只差 $7\%$——所以数环和读数的相对精度要优于 $1\%$，测得的两条谱线才分得开。
+
+%============================================================
+\hdr{§4}{预习问答节选（中英对照）}
+%============================================================
+
+题号、英文题面按预习单原文照录（源预习 p1、p3），中文为题意；答案先中文、后英文。
+英文答案按实验报告的写法组织，可直接抄进报告。本讲只答 II-1、II-2、II-3、II-6、II-7、II-8、II-9 与第 3 页附加 (1)(2)，
+其余题目未覆盖的原因见 §5.2。
+
+\qaneed{0.86}
+\subhdr{II-1\quad 光路图与主要部件}
+
+\qstem{（预习 p1，II-1）\emph{Please draw the light path diagram of this experiment and explain the main components and corresponding functions of Michelson interferometer.}\\
+\textbf{中文题意}：画出本实验的光路图，并说明迈克耳孙干涉仪的主要部件及相应作用。}
+
+\textbf{答（中文）}：光路见图 A1。He-Ne 激光器发出的细光束经扩束镜扩束后，以 $45^\circ$ 射到分光板 G$_1$，被半反射膜分成强度近似相等的两束：I 束被反射，向上射向定镜 M$_1$；II 束透射，穿过补偿板 G$_2$ 向右射向动镜 M$_2$。两束光经各自平面镜反射后回到 G$_1$ 的半反射膜处重新合成一束，沿 E 方向射出，在毛玻璃屏上形成干涉条纹。
+各部件的对应作用：激光器提供单色相干光；扩束镜把细光束扩成足够宽的光束，使屏上有足够大的条纹场；G$_1$ 完成分振幅与合束，是本实验「分振幅干涉」的关键；G$_2$ 补平两束光在玻璃中的路程（见 II-2）；M$_1$ 是固定的参考镜；M$_2$ 装在托盘上，由预置螺杆预置位置、由微调鼓轮 11 驱动沿臂长平移，用来改变等效空气膜厚度 $\Dl$；毛玻璃屏用来接收条纹，E 为观察位置。
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,font=\small,line width=0.6pt,scale=0.72]
+  \draw[fill=bandviolet] (-4.5,-0.18) rectangle (-3.9,0.18);
+  \node[below,font=\scriptsize] at (-4.2,-0.22) {激光};
+  \draw[->] (-3.9,0) -- (-0.1,0);
+  \draw[thick] (-1.0,-1.0) -- (1.0,1.0);
+  \node[font=\scriptsize,anchor=west] at (1.06,0.86) {G$_1$};
+  \draw[line width=1.5pt] (-0.7,3.2) -- (0.7,3.2);
+  \node[font=\scriptsize,anchor=west] at (0.78,3.2) {M$_1$};
+  \draw[line width=1.5pt] (4.0,-0.6) -- (4.0,0.6);
+  \node[font=\scriptsize,anchor=south] at (4.0,0.66) {M$_2$};
+  \draw[thick] (1.4,-0.4) -- (2.3,0.5);
+  \node[font=\scriptsize,anchor=north] at (1.85,-0.46) {G$_2$};
+  \draw[<->] (0,0.1) -- (0,3.05);
+  \node[font=\scriptsize,anchor=east] at (-0.1,1.7) {I};
+  \draw[<->] (0.1,0) -- (3.9,0);
+  \node[font=\scriptsize,anchor=south] at (0.7,0.08) {II};
+  \draw[->] (0,-0.1) -- (0,-3.0);
+  \draw[line width=1.3pt] (-0.7,-3.15) -- (0.7,-3.15);
+  \node[font=\scriptsize,anchor=west] at (0.78,-3.15) {FG／E};
+\end{tikzpicture}\\[2pt]
+{\small\color{inkgray}图 A1\quad 本实验的光路简图（与图 1 同一光路，略去斜线阴影与文字说明）。}
+\end{center}
+
+\textbf{Answer (English).} The light path is shown in Figure A1. The narrow beam of the He-Ne laser is widened by the beam expander and strikes the beam splitter G$_1$ at $45^\circ$; the semi-reflecting film divides it into two beams of nearly equal intensity. Beam I is reflected upward to the fixed mirror M$_1$, beam II is transmitted through the compensation plate G$_2$ to the moving mirror M$_2$. After reflection the two beams return to the film of G$_1$, recombine into one beam and leave in the direction E, producing interference fringes on the frosted glass screen.
+Functions of the components: the laser supplies monochromatic coherent light; the beam expander widens the beam so that a fringe field large enough is obtained; G$_1$ performs the amplitude splitting and the recombination and is therefore the key element of this two-beam interferometer; G$_2$ equalizes the glass path of the two beams (see II-2); M$_1$ is the fixed reference mirror; M$_2$ is mounted on the pallet, preset by the presetting screw and moved along its arm by the micrometer screw 11, so that the equivalent film thickness $\Dl$ can be changed; the frosted glass screen receives the fringes, with E as the observation position.
+
+\qaneed{0.68}
+\subhdr{II-2\quad 分光板、补偿板与半反射膜}
+
+\qstem{（预习 p1，II-2）\emph{Describe the functions of the light splitter and compensation plate, and point out the position and function of the semi-reflective membrane.}\\
+\textbf{中文题意}：说明分光板与补偿板的作用，并指出半反射膜的位置与作用。}
+
+\textbf{答（中文）}：分光板 G$_1$ 是一块两面平行的玻璃板，其中一个表面镀半反射膜。膜把这个表面上的入射光分成反射光与透射光，两束强度近似相等；两束光返回后又在同一膜面上合成，所以它同时承担「分振幅」与「合束」两个作用。
+\textbf{膜的位置}：源 p2 只说明膜镀在 G$_1$ 的表面上；源 p7 进一步说明两束光分别从 G$_1$ \textbf{背面的内侧与外侧}反射，因此膜在背面——即与两条臂相对、远离光源的那一面。它在分光时让一部分光反射、一部分光透射，在合束时又让两束光重新相遇于同一处，是「同一波列分成两支再合并」这一相干条件的物理解释。
+补偿板 G$_2$ 与 G$_1$ 材料相同、厚度相同，并与其平行放置。按 §2.1 的逐段计数：射向 M$_1$ 的光三次穿过 G$_1$ 的玻璃，射向 M$_2$ 的光只穿过一次；G$_2$ 放进 M$_2$ 臂后，这束光也三次穿过玻璃，两束光的玻璃路程才相等。没有 G$_2$ 时，玻璃中光速较慢，这段差额变成额外光程差；对激光它只是一个常数（相当于把 $\Dl$ 的零点平移），对相干长度极短的白光则足以让条纹消失（见附加 (2)）。
+
+\textbf{Answer (English).} The light splitter G$_1$ is a plane-parallel glass plate with a semi-reflecting film on one of its faces. The film divides the incident light into a reflected and a transmitted beam of nearly equal intensity, and after the two beams have returned it recombines them at the same film, so it performs both the amplitude splitting and the recombination.
+Position of the film: the manual states only that the film is coated on a surface of G$_1$, and it adds that the two beams are reflected from the inner and the outer side of the \emph{back} face of G$_1$; the film is therefore on that back face, i.e. the face turned towards the two arms and away from the source.
+Compensation plate G$_2$: it has the same material and the same thickness as G$_1$ and is parallel to it. As counted in §2.1, the beam travelling to M$_1$ crosses the glass of G$_1$ three times, whereas the beam travelling to M$_2$ crosses it only once. Placed in the M$_2$ arm, G$_2$ makes this beam cross glass three times as well, so that both beams accumulate the same glass path. Without G$_2$ the difference in glass path becomes an extra optical path difference: for a laser it is only a constant (a shift of the zero of $\Dl$), but for white light, whose coherence length is very short, it is enough to destroy the fringes (see the second additional question).
+
+\qaneed{0.72}
+\subhdr{II-3\quad 圆环产生的条件与动镜、定镜的位置关系}
+
+\qstem{（预习 p1，II-3）\emph{Give the conditions of generating the Michelson interference rings at the frosted glass screen and describe the relationship between the positions of the moving mirror and the fixed mirror.}\\
+\textbf{中文题意}：给出在毛玻璃屏上产生迈克耳孙干涉圆环的条件，并说明动镜与定镜的位置关系。}
+
+\textbf{答（中文）}：产生圆环要同时满足四件事。
+(i) 相干条件：两束光由同一光源经分振幅得到，频率相同、振动方向有平行分量、相位差恒定——G$_1$ 与 G$_2$ 的安装方式保证了这一点。
+(ii) 光程差在相干长度以内：He-Ne 激光的相干长度远大于本实验的 $\Dl$ 量级，容易满足；若换白光，就必须让两臂光程差接近零。
+(iii) 等效膜的两面平行：M$_2$ 经 G$_1$ 所成的虚像 M$_2'$ 要与 M$_1$ 近似平行，且夹角尽量小；这样同一倾角的光程差相同，条纹才是同心圆（等倾条纹）。
+(iv) 照明与屏的方位：用扩束镜把激光变成球面波（点光源照明），并让屏与 S$_1$S$_2'$ 连线垂直，圆心就落在该连线与屏的交点 O 上。
+位置关系：M$_1$ 固定不动；M$_2$ 由预置螺杆定好粗位置后，由微调鼓轮沿臂长平移，所以两臂到半反射膜的距离 $l_1$、$l_2$ 可以差出一个可调的 $\Dl=|l_1-l_2|$。要求 $\Dl$ 尽量小（两臂近等光程）：一方面保证光程差在相干长度内，另一方面由式~\eqref{eq:rk}，$\Dl$ 小时条纹疏、视场里的环数少，便于观察与计数。若 M$_1$ 与 M$_2'$ 出现小夹角，圆环会退化为直条纹（源 p4、p6--p7），此时应重新微调 M$_2$ 的倾角，直到圆环恢复同心。
+
+\textbf{Answer (English).} Four conditions must hold at the same time.
+(i) Coherence: the two beams are obtained from one source by amplitude splitting, so they have the same frequency, parallel components of vibration and a constant phase difference; the mounting of G$_1$ and G$_2$ ensures this.
+(ii) The optical path difference must stay within the coherence length: for the He-Ne laser this is easily satisfied, whereas white light would require the two arms to be almost equal.
+(iii) The two surfaces of the equivalent film must be parallel: the virtual image M$_2'$ of M$_2$ formed by G$_1$ must be approximately parallel to M$_1$, with a very small angle, so that beams of the same inclination have the same path difference and the fringes are concentric circles (equal-inclination fringes).
+(iv) Illumination and screen orientation: the laser beam is expanded into a spherical wave (point-source illumination) and the screen is perpendicular to the line S$_1$S$_2'$, so that the centre of the rings is at the intersection O of this line with the screen.
+Position relation: M$_1$ is fixed; M$_2$ is first preset by the presetting screw and then translated along its arm by the micrometer screw, so the distances $l_1$ and $l_2$ from the film of G$_1$ to the two mirrors differ by an adjustable $\Dl=|l_1-l_2|$. This difference should be kept small: it must remain within the coherence length, and, by Eq. (11-1), a small $\Dl$ gives sparse fringes and few rings in the field, which are easier to observe and to count. If a small angle appears between M$_1$ and M$_2'$, the rings degenerate into straight fringes, and the tilt of M$_2$ must be readjusted until concentric rings are restored.
+
+\qaneed{0.86}
+\subhdr{II-6\quad 把半径小的圆环调成半径大的}
+
+\qstem{（预习 p1，II-6）\emph{How to adjust the interference rings with small radius to the one with large radius?}\\
+\textbf{中文题意}：怎样把半径较小的干涉圆环调成半径较大的？}
+
+\textbf{答（中文）}：这个问题要先说明「半径」指的是什么，两种口径的方向正好相反。
+（a）跟住\textbf{同一级次的那一圈}（连续观察时能盯住、并且向外扩张的那一圈）：由 (11-1) 得
+\[
+  r_k^2=2z^2\left(1-\frac{k\lambda}{2\Dl}\right),
+\]
+$\Dl$ 增大时 $r_k$ 增大——这正是源 p5 的写法「$\Dl$ 增大，$r$ 也增大，条纹从中心涌出」。要让这一圈变大，应使 $\Dl$ 增大。
+（b）数\textbf{视场里有多少圈、间距多大}：由 $\Delta r\approx\lambda z^2/(2\Dl r)$，$\Dl$ 减小时条纹变疏；视场里的环数又随 $\Dl$ 成正比，所以环也变少。要「图样大、条纹疏」，应使 $\Dl$ 减小。
+\textbf{为什么两种说法都成立}：视场里的环数 $m_{\max}\propto\Dl$。$\Dl$ 变大时，每一圈都向外扩张，但中心同时不断生出新环，所以「每一圈更大」与「环更多、更密」一起发生；$\Dl$ 变小时，每一圈向中心收缩、逐个消失，所以「每一圈更小」与「图样更疏、环数更少」一起发生。两者都由 (11-1) 给出，不矛盾。
+\textbf{实验室里的判据}（不必记方向，看现象）：环从中心冒出并向外扩张，说明 $\Dl$ 正在增大（视场越来越密）；环向中心收缩并逐个消失，说明 $\Dl$ 正在减小（条纹变疏、环数变少）。报告里写「圆环半径变大」时，注明是「同一圈变大」还是「图样变疏」，就不会自相矛盾。
+源 p5 第 (ii) 条把 $\Delta r$ 大写成 ``thinner''、又把 $\Dl$ 大写成 ``denser''，与该式相反；本讲一律按公式取「$\Dl$ 小则疏」（见 §5.3 第 1 条）。
+
+\textbf{Answer (English).} One must first state what ``radius'' means, because the two possible readings give opposite instructions.
+(a) If one follows \emph{one ring of a given order} (a ring that can be tracked while it expands), Eq. (11-1) gives $r_k^2=2z^2(1-k\lambda/2\Dl)$; $r_k$ increases with $\Dl$. This is the statement of the manual: when $\Dl$ increases, $r$ increases and the fringes gush out of the centre. To enlarge that ring, increase $\Dl$.
+(b) If one counts \emph{how many rings are in the field of view and how far apart they are}, then $\Delta r\approx\lambda z^2/(2\Dl r)$ shows that decreasing $\Dl$ makes the fringes sparser; the number of rings in the field is proportional to $\Dl$, so the rings also become fewer. To obtain a larger, sparser pattern, decrease $\Dl$.
+Why both statements hold: the number of rings in the field is proportional to $\Dl$. When $\Dl$ increases, every ring expands outwards while new rings are born at the centre, so ``each ring larger'' and ``more and denser rings'' occur at the same time; when $\Dl$ decreases, every ring contracts into the centre and disappears one by one, so ``each ring smaller'' and ``sparser pattern with fewer rings'' occur together. Both follow from Eq. (11-1).
+Practical criterion in the laboratory (no need to remember the sense of rotation): if the rings come out of the centre and expand, $\Dl$ is increasing (the field becomes denser); if they shrink into the centre and vanish one by one, $\Dl$ is decreasing (the fringes become sparser and fewer). When writing ``the ring radius becomes larger'' in the report, state whether it is the radius of one ring (a) or the sparseness of the pattern (b). Note that item (ii) on p5 of the manual writes ``thinner'' for a larger $\Delta r$ and ``denser'' for a larger $\Dl$, which contradicts this formula; the formula is used throughout this handout.
+
+\qaneed{0.66}
+\subhdr{II-7\quad 用公式解释条纹为什么涌出或陷入}
+
+\qstem{（预习 p1，II-7）\emph{Please use the formula to explain why the interference rings gush out or sink in?}\\
+\textbf{中文题意}：请用公式解释干涉环为什么会涌出或陷入。}
+
+\textbf{答（中文）}：对某一固定级次 $k$ 的环，(11-1) 给出
+\[
+  2\Dl\cos\theta_k=k\lambda .
+\]
+当 $\Dl$ 增大时，要保持左边等于同一个 $k\lambda$，$\cos\theta_k$ 必须减小，即倾角 $\theta_k$ 增大，这一圈环的半径 $r_k=z\tan\theta_k$ 随之变大——环向外扩张，看起来像从中心「涌出」。
+同时，屏中心的级次是 $k_0=2\Dl/\lambda$：$\Dl$ 每增大 $\lambda/2$，$k_0$ 就增加 $1$，中心处就多容纳一级，于是每过 $\lambda/2$ 就有一个新环从中心生出并向外走。这就是「涌出」（spit）。
+反过来，$\Dl$ 减小时 $\cos\theta_k$ 必须增大、$\theta_k$ 减小，环向中心收缩，$k_0$ 每减小 $1$ 就有一个环在中心消失，即「陷入」（swallow）。
+把中心的级次变化数记作 $N=\Delta k$，就得到 (11-2)：$2\Delta\Dl=N\lambda$。所以「涌出／陷入」不是额外的现象，它就是 (11-1) 中 $\Dl$ 与 $\theta_k$ 的单调关系在屏上的表现。
+
+\textbf{Answer (English).} For a ring of fixed order $k$, Eq. (11-1) reads $2\Dl\cos\theta_k=k\lambda$. If $\Dl$ increases, $\cos\theta_k$ must decrease so that the left-hand side stays equal to the same $k\lambda$; hence the inclination $\theta_k$ increases and the radius $r_k=z\tan\theta_k$ of that ring becomes larger. The ring moves outwards, which looks like fringes gushing out of the centre. At the same time the order at the centre is $k_0=2\Dl/\lambda$: every increase of $\lambda/2$ in $\Dl$ raises $k_0$ by one, so a new ring is born at the centre and travels outwards. This is the ``spitting''. Conversely, when $\Dl$ decreases, $\cos\theta_k$ must increase and $\theta_k$ decreases, the rings contract towards the centre and one ring disappears there for every unit decrease of $k_0$; this is the ``swallowing''. Denoting by $N=\Delta k$ the number of orders passing the centre, one obtains $2\Delta\Dl=N\lambda$, i.e. Eq. (11-2). The gushing-out and sinking-in are therefore not separate phenomena but simply the monotonic relation between $\Dl$ and $\theta_k$ in Eq. (11-1).
+
+\qaneed{0.86}
+\subhdr{II-8\quad 测激光波长的公式、方法与步骤}
+
+\qstem{（预习 p1，II-8）\emph{Write down the formula for measuring the laser wavelength, and try to describe the measuring method and steps.}\\
+\textbf{中文题意}：写出测量激光波长的公式，并描述测量方法与步骤。}
+
+\textbf{答（中文）}：\textbf{公式}：$\lambda=2\Delta\Dl/N$，其中 $N$ 是通过中心的环数，$\Delta\Dl$ 是动镜位移；由式~\eqref{eq:ratio} 换成鼓轮读数差，得
+\[
+  \lambda=\frac{2}{N}\cdot\frac{\Delta l}{20}=\frac{\Delta l}{10N}.
+\]
+\textbf{方法}：让 M$_1\parallel$M$_2'$、$\Dl$ 较小，得到清晰、稀疏的同心圆环；单向转动微调鼓轮，数通过中心的环数 $N$，同时读鼓轮位置，由 (11-2) 反算波长。
+\textbf{步骤}（按源 p8 的操作与预习 p3 的数据表）：
+(1) 把扩束镜移出光路，装好毛玻璃屏，调激光支架使光束平行于台面、从分光板中心入射，并使各镜上的入射点与台面大致等高；
+(2) 调 M$_1$、M$_2$ 的倾角，使两组光点大致重合在屏中心，再把扩束镜放回光路，得到圆环；
+(3) 微调 M$_2$ 的倾角，直到圆环同心、疏密合适；
+(4) 单向转动微调鼓轮（始终同一方向，消除回程差），每通过 50 个环记录一次鼓轮读数（源 p8），数到 550 环；
+(5) 用逐差法处理：预习 p3 的表按 40 环间隔取 8 个读数、跨 4 个间隔，故 $\Delta N=160$，逐项算 $\Delta\Dl_i=\Dl_{i+4}-\Dl_i$，取平均后再除以 20 得实际位移，或用 $\lambda=\Delta l/(10N)$ 直接算；
+(6) 由 $\lambda=2\Delta\Dl/\Delta N$ 得波长，并与 $\lambda=\Delta l/(10\Delta N)$ 互相核对。
+\textbf{一处口径不一致要留意}：源 p8 写「每 50 环记一次，直到 550 环」，而预习 p3 的数据表是 40 环间隔、8 个读数、$\Delta N=160$。两者不能同时照做，本讲按预习 p3 的表说明逐差法（那是要交的表），实际操作以课上发的表格为准（§5.3 第 4 条）。
+
+\textbf{Answer (English).} Formula: $\lambda=2\Delta\Dl/N$, where $N$ is the number of rings passing the centre and $\Delta\Dl$ the displacement of the moving mirror. Using $\Delta\Dl=\Delta l/20$, where $\Delta l$ is the reading difference of the micrometer screw, this becomes $\lambda=\Delta l/(10N)$.
+Method: adjust the interferometer so that M$_1\parallel$M$_2'$ with a small $\Dl$, which gives clear, sparse concentric rings; turn the micrometer screw in one direction, count the rings passing the centre and read the screw position; then obtain the wavelength from Eq. (11-2).
+Steps: (1) move the beam expander out of the Michelson path, mount the frosted screen, and adjust the laser bracket so that the beam is parallel to the table and enters the centre of the beam splitter, with the incidence points on the mirrors at roughly the same height; (2) adjust the tilts of M$_1$ and M$_2$ until the two sets of light points overlap near the centre of the screen, then put the beam expander back to obtain the rings; (3) fine-adjust the tilt of M$_2$ until the rings are concentric with a suitable spacing; (4) turn the micrometer screw always in the same direction (to avoid backlash), record the reading every 50 rings and continue up to 550 rings; (5) process the data by the successive-difference method: the table on p3 of the preview sheet takes eight readings at intervals of 40 rings, spanning four intervals, so $\Delta N=160$; compute $\Delta\Dl_i=\Dl_{i+4}-\Dl_i$, average, divide by 20 to obtain the real displacement, or use $\lambda=\Delta l/(10N)$ directly; (6) compute $\lambda=2\Delta\Dl/\Delta N$ and check it against $\lambda=\Delta l/(10\Delta N)$.
+Note: p8 of the manual says ``record every 50 rings up to 550 rings'', whereas the data table on p3 of the preview sheet uses intervals of 40 rings, eight readings and $\Delta N=160$. The two cannot be followed at the same time; this handout follows the preview table because that is the table to be submitted, while the actual record should follow the sheet handed out in class.
+
+\qaneed{0.68}
+\subhdr{II-9\quad 鼓轮转动距离与动镜实际位移的定量关系}
+
+\qstem{（预习 p1，II-9）\emph{Write down the quantitative relationship between the rotation distance of the micrometer screw and the actual moving distance of the moving mirror.}\\
+\textbf{中文题意}：写出微调鼓轮转动距离与动镜实际移动距离之间的定量关系。}
+
+\textbf{答（中文）}：源 p2 给出：微调鼓轮每转 $0.01\ \mathrm{mm}$，动镜沿臂长方向移动 $0.0005\ \mathrm{mm}$。因此
+\[
+  \Delta\Dl=\frac{\Delta l}{20},\qquad \Delta l=20\Delta\Dl ,
+\]
+即读数与实际位移之比为 $20:1$：读数的 $1\ \mathrm{mm}$ 对应动镜 $0.05\ \mathrm{mm}$，或每 $0.01\ \mathrm{mm}$ 读数对应 $0.5\ \mu\mathrm{m}$ 位移。
+这个传动比来自鼓轮经预置螺杆、托盘带动动镜的机械结构；它的意义是把 $\lambda/2\approx0.3\ \mu\mathrm{m}$ 这样一个极小的位移放大 20 倍放到刻度上，使读数可分辨（一个环约对应 $0.63$ 格）。
+用法：处理数据时先把读数差除以 20 再代入 (11-2)；预习 p3 的表把「实际移动距离」写成 $\Delta\Dl=\overline{\Delta\Dl_i}/20$，正是这个关系。注意两个常见错误：把读数差直接当成动镜位移（结果偏大 20 倍）；或把 $\Delta\Dl$ 与两臂光程差 $2\Delta\Dl$ 混用（(11-2) 里已经是 $2\Delta\Dl$，不要再乘一次 2）。
+
+\textbf{Answer (English).} The manual states that for every $0.01\ \mathrm{mm}$ rotation of the micrometer screw the moving mirror moves $0.0005\ \mathrm{mm}$. Hence $\Delta\Dl=\Delta l/20$, i.e. a reading-to-displacement ratio of $20:1$: $1\ \mathrm{mm}$ on the screw corresponds to $0.05\ \mathrm{mm}$ of mirror movement, and $0.01\ \mathrm{mm}$ to $0.5\ \mu\mathrm{m}$. The reduction is produced by the screw-pallet mechanism that drives the mirror; its purpose is to magnify the extremely small displacement $\lambda/2\approx0.3\ \mu\mathrm{m}$ by a factor of 20 on the scale, so that one ring corresponds to about $0.63$ of a division. In the data processing, divide the reading difference by 20 before using Eq. (11-2); the table on p3 of the preview sheet, which writes the real moving distance as $\Delta\Dl=\overline{\Delta\Dl_i}/20$, uses exactly this relation. Two common mistakes should be avoided: taking the reading difference as the mirror displacement (a result 20 times too large), and confusing $\Delta\Dl$ with the two-arm path difference $2\Delta\Dl$ already contained in Eq. (11-2).
+
+\qaneed{0.58}
+\subhdr{附加 (1)\quad 为什么要求反射光与透射光强度接近 1:1}
+
+\qstem{（预习 p3，附加 (1)）\emph{The beam splitter plate G1 of Michelson interferometer should make the light intensity ratio of reflected light and transmitted light close to 1:1. Why?}\\
+\textbf{中文题意}：迈克耳孙干涉仪的分光板 G$_1$ 应使反射光与透射光的光强比接近 $1:1$，为什么？}
+
+\textbf{答（中文）}：两束光强度越接近，条纹的可见度越高。设两束光强为 $I_1$、$I_2$，则
+\[
+  I_{\max}=I_1+I_2+2\sqrt{I_1I_2},\qquad
+  I_{\min}=I_1+I_2-2\sqrt{I_1I_2},\qquad
+  V=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}=\frac{2\sqrt{I_1I_2}}{I_1+I_2}.
+\]
+$I_1=I_2$ 时 $V=1$：暗纹完全变黑、亮纹最亮，条纹最清晰，便于判断圆心、数环和调平行。若一束明显偏弱，比如 $9:1$，则 $V=2\sqrt{9}/10=0.6$：取 $I_2=1$ 时 $I_{\max}=16$、$I_{\min}=4$，暗纹的强度只有亮纹的 25%，明暗对比变差，数环容易数错。
+选 $1:1$ 还有一层理由：分光板把一束光一分为二，两束强度相等时，两束光携带的能量也相等，干涉场的总光强最大，屏上最亮，观察最舒服。
+
+\textbf{Answer (English).} The closer the intensities of the two beams, the higher the visibility of the fringes. With $I_1$ and $I_2$,
+$I_{\max}=I_1+I_2+2\sqrt{I_1I_2}$, $I_{\min}=I_1+I_2-2\sqrt{I_1I_2}$ and
+$V=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})=2\sqrt{I_1I_2}/(I_1+I_2)$.
+When $I_1=I_2$, $V=1$: the dark fringes are completely black and the bright ones are brightest, so the centre can be located and the rings counted reliably, and the parallel adjustment can be judged. If one beam is much weaker, say $9:1$, then $V=2\sqrt{9}/10=0.6$, and with $I_{\max}=16$ and $I_{\min}=4$ (taking $I_2=1$) the dark fringes have only 25% of the intensity of the bright ones, so the rings are easily miscounted. In addition, when the beam is split into two beams of equal intensity, the two beams carry equal energy, the total intensity of the interference field is largest and the screen is brightest.
+
+\qaneed{0.74}
+\subhdr{附加 (2)\quad 没有补偿板为什么得不到白光干涉条纹}
+
+\qstem{（预习 p3，附加 (2)）\emph{Why can't a white interference fringe be obtained without a compensation plate?}\\
+\textbf{中文题意}：没有补偿板时，为什么得不到白光干涉条纹？}
+
+\textbf{答（中文）}：白光不是单一波长，而是连续谱，相干长度极短。取 $\lambda\approx550\ \mathrm{nm}$、$\Delta\lambda\approx300\ \mathrm{nm}$ 粗估，相干长度 $L_c\sim\lambda^2/\Delta\lambda\approx1\ \mu\mathrm{m}$（量级估计，不是测量值）。
+没有 G$_2$ 时，两束光穿过的玻璃厚度不相等（§2.1 数出是一次与三次之差）。玻璃折射率随波长变化（色散），所以这个「玻璃路程差」不仅大，而且各波长不相同：
+对 $1\ \mathrm{mm}$ 量级的玻璃，两者光程差可达 $(n-1)t\sim0.5\ \mathrm{mm}$（$n\approx1.5$ 的示例取值），是相干长度 $1\ \mu\mathrm{m}$ 的几百倍；
+再加上各波长的零级位置彼此错开，一种颜色的亮纹会落在另一种颜色的暗纹上，条纹被冲淡，屏上得不到彩色条纹（最多在很窄的范围内剩一点模糊的彩色）。
+加上 G$_2$ 后两束光的玻璃路程相等，色散差被消掉，只剩下 M$_1$ 与 M$_2'$ 之间那层空气膜的光程差。白光只在 $\Dl$ 近于零、光程差小于相干长度的范围内才出现条纹，所以此时得到的是在 M$_1$ 与 M$_2'$ 交点附近的少量彩色直条纹（源 p7 也讨论了交点处条纹的明暗与半波损失）。
+
+\textbf{Answer (English).} White light is not monochromatic but a continuous spectrum, so its coherence length is extremely short: with $\lambda\approx550\ \mathrm{nm}$ and $\Delta\lambda\approx300\ \mathrm{nm}$, $L_c\sim\lambda^2/\Delta\lambda\approx1\ \mu\mathrm{m}$ (an order-of-magnitude estimate only).
+Without G$_2$ the two beams cross different thicknesses of glass (once and three times, as counted in §2.1). Since the refractive index of glass depends on wavelength, this glass path difference is not only large but also different for different wavelengths: for a plate of the order of $1\ \mathrm{mm}$, the difference reaches $(n-1)t\sim0.5\ \mathrm{mm}$ (with $n\approx1.5$), hundreds of times the coherence length, and the zero-order positions of the different wavelengths are displaced with respect to each other. The bright fringes of one colour then fall on the dark fringes of another, the fringes are washed out and no coloured fringes are seen.
+With G$_2$ the two beams traverse the same thickness of glass and the dispersion difference cancels, leaving only the air film between M$_1$ and M$_2'$. White-light fringes appear only where $\Dl$ is close to zero and the path difference is shorter than the coherence length, which gives a few coloured straight fringes near the intersection of M$_1$ and M$_2'$; the manual also discusses the brightness of the central fringe there and the half-wave loss.
+
+%============================================================
+\needspace{0.62\textheight}
+\hdr{§5}{覆盖台账、源资料问题与未覆盖项}
+%============================================================
+
+\subhdr{5.1 源栏目与讲义位置的对应}
+
+{\small
+\begin{longtable}{@{}L{4.9cm}C{1.5cm}L{9.3cm}@{}}
+\toprule
+\thead{源栏目（文件 · 栏目）} & \thead{页码} & \thead{本讲位置} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{源栏目（续）} & \thead{页码（续）} & \thead{本讲位置（续）} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Exp.~11 · Experimental Objectives (1)--(7) & p1 & §1.1 表（中英对照，含 Optional 标注） \\
+Exp.~11 · Experimental Instruments 与图 11-1 图注 & p1--p2 & §1.2 中英段落＋部件表 \\
+Exp.~11 · I. The optical path（图 11-2） & p2--p3 & §2.1 正文与图 1 \\
+Exp.~11 · II. Pattern of the interference fringes（图 11-3、11-4） & p3--p4 & §2.2 图 2；§2.3 图 3、图 4 \\
+Exp.~11 · 式 (11-1) 与条纹间距式 & p4 & §2.3 第三步、第四步（补出相减一步） \\
+Exp.~11 · 条纹「涌出／陷入」与式 (11-2) & p5 & §2.3 第五步 \\
+Exp.~11 · 20:1 传动（p2 句） & p2 & §2.4、例 3.1／3.3、II-9 \\
+Exp.~11 · Notices 中的「单向转、动作轻」 & p9 & 例 3.1 读数误差段（只引该条） \\
+Preview · I. 目的 1--3 & p1 & §1.1 表下注（部件功能 → §1.2、§4 II-1／II-2；原理与方法 → §2；测波长 → II-8；测空气折射率不在节选） \\
+Preview · II. 预习 1--11 & p1 & §4 中的 II-1、2、3、6、7、8、9 \\
+Preview · 第 3 页 Questions (1)(2) & p3 & §4 附加 (1)(2) \\
+Preview · 第 3 页数据表（$\Delta\Dl=\overline{\Delta\Dl_i}/20$） & p3 & §2.4、II-8 步骤 (5) \\
+\end{longtable}}
+
+\subhdr{5.2 预习题目覆盖状态}
+
+{\small
+\begin{longtable}{@{}C{1.8cm}C{1.3cm}L{12.6cm}@{}}
+\toprule
+\thead{题号} & \thead{状态} & \thead{说明} \\
+\midrule
+\endfirsthead
+\toprule
+\thead{题号（续）} & \thead{状态（续）} & \thead{说明（续）} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+II-1 & 覆盖 & §4 II-1，含图 A1 与部件作用 \\
+II-2 & 覆盖 & §4 II-2，含膜的位置与逐段计数的玻璃路程 \\
+II-3 & 覆盖 & §4 II-3，四个条件与动镜／定镜位置关系 \\
+II-4 & 未覆盖 & 调出圆环的操作步骤，属源 p8 操作栏目；本次节选不含操作流程 \\
+II-5 & 未覆盖 & 圆心偏离屏中心时如何调整，属操作栏目；同上 \\
+II-6 & 覆盖 & §4 II-6，附「两种半径口径」的区分 \\
+II-7 & 覆盖 & §4 II-7，由 (11-1) 推「涌出／陷入」 \\
+II-8 & 覆盖 & §4 II-8，公式、方法与步骤，并注明 50 环／40 环口径冲突 \\
+II-9 & 覆盖 & §4 II-9，20:1 关系、用法与两个常见错误 \\
+II-10 & 未覆盖 & 空气折射率测量（源 p8--p9 的 $n=1+\frac{N\lambda}{2l}\cdot\frac{p_{\mathrm{amb}}}{\Delta p}$），不在本次节选 \\
+II-11 & 未覆盖 & 注意事项，源 p9 Notices 原文完整，本次不展开 \\
+附加 (1) & 覆盖 & §4 附加 (1)，可见度公式与 $9:1$ 的数值对照 \\
+附加 (2) & 覆盖 & §4 附加 (2)，相干长度与色散两条理由 \\
+III-1 -- III-9 & 未覆盖 & 思考题（口试用，不写入报告），源预习 p1--p2，不在本次节选 \\
+IV-1 -- IV-4 & 未覆盖 & 拓展／选做题，源预习 p2，不在本次节选 \\
+\end{longtable}}
+
+未覆盖不等于资料没有这些内容，只是本讲按任务指定的节选范围处理；各题所在页码已列在表中，后续补齐时可直接按页核对。
+
+\subhdr{5.3 源资料内部不一致与处理}
+
+\begin{enumerate}[leftmargin=2.1em]
+  \item \textbf{p5 第 (ii) 条的「thinner／denser」与公式相反。}原文：$\Delta r$ 随 $\Dl$ 减小而增大，随后却说「$\Dl$ 小则条纹 thinner、$\Dl$ 大则 denser」。
+        按 $\Delta r\approx\lambda z^2/(2\Dl r)$，$\Dl$ 越小 $\Delta r$ 越大，条纹应变疏。本讲一律按公式取「$\Dl$ 小则疏」，并在 II-6 说明该条英文表述与公式冲突。
+  \item \textbf{p4 条纹间距式省掉了相减一步}。原文直接给出 $\Delta r\approx\lambda z^2/(2\Dl r_k)$，没有写「相邻两级相减」和「$r_k+r_{k-1}\approx2r_k$」。§2.3 第四步补出，并用例 3.2 给出这步近似的误差量级（$r_1$ 代入偏大 $20\%$，平均半径代入几乎无误差）。
+  \item \textbf{p2 关于扩束镜的英文句子重复且不成句}：「3 is a beam expander, and two-dimensional adjust itself can do, which can be adjusted two-dimensionally itself and moved on the guide rail.」§1.2 的中译按「扩束镜自身可作二维调节，并可在导轨上移动」处理，英文段落只修顺句子，不改部件与功能。
+  \item \textbf{数环口径不一致：50 环还是 40 环？}p8 写「每 50 环记一次，直到 550 环」；预习 p3 的数据表按 40 环间隔、8 个读数、$\Delta N=160$ 设计。两者不能同时照做。§4 II-8 按预习 p3 的表说明逐差法（那是要交的表），并提示以课上表格为准。
+  \item \textbf{(11-1) 未写相位突变。}(11-1) 与 (11-2) 都按 $2\Dl=k\lambda$ 写，未计两支光反射时的相位突变。源 p7 说明两束光分别从 G$_1$ 背面内侧与外侧反射，相位突变不同，交点处条纹可为暗。§2.3 末尾旁注把附加相位记为常数 $\delta_0$，说明它只平移级次、不改变 (11-2) 与波长测量。
+  \item \textbf{目标 (3) 的 sodium laser 与操作部分的 sodium lamp。}§1.1 表照录原文并加注；这不影响本讲覆盖的题目（II-1--II-9 与附加 (1)(2) 都不涉及钠光源测量）。
+\end{enumerate}
+
+\subhdr{5.4 缺口清单（已核对源页后补写）}
+
+\gapitem{机制缺口｜p3「G$_2$ 使两束光在屏上的光程完全相同」}{原资料给了结论没给机制：玻璃厚度差怎样变成光程差、为什么对白光致命。补在 §2.1 的逐段计数与 §4 II-2、附加 (2)。}
+\gapitem{代数跳步｜p4 条纹间距式}{相邻两级方程相减、$r_k+r_{k-1}\approx2r_k$ 被省略。补在 §2.3 第四步，并给近似误差的数值检查（例 3.2）。}
+\gapitem{前提未说明｜p4 式 $2\Dl\cos\theta$}{未说明两面平行、膜内 $n=1$、只取同一方向的两支光，也未说明常数相位。补在式~\eqref{eq:dl} 后的条件核对与 §2.3 末尾旁注。}
+\gapitem{图缺｜p4 由 S$_1$、S$_2'$ 到 $\Delta L=2\Dl\cos\theta$}{原页只有装置图与虚光源图，没有把 $r$、$z$、$\theta$ 与光程差对应起来的投影关系。补图 3（膜内投影与垂足 F）与图 4（虚光源、$r$、$z$、$\theta$）。}
+\gapitem{对象混用｜p5「固定级次的环半径」与「视场内条纹疏密」}{两者随 $\Dl$ 的变化方向不同，资料没有分开说，读者容易得出矛盾结论。补在 §2.3 第五步与 II-6 的「两种半径口径」。}
+\gapitem{表述不一致｜p5 第 (ii) 条}{见 §5.3 第 1 条；正文按公式，不按该句英文。}
+
+\subhdr{5.5 本讲没有做的事}
+
+本讲是节选：不含操作流程（源 p8--p9 步骤 1--4）、不含 F-P 多光束干涉（源 p9、图 11-7/11-8）、不含等倾／等厚条纹的完整推导（源 p5--p7、式 (11-3)--(11-5)）、不含空气折射率与透明薄片测量（源 p8--p9）、不含数据处理表的填写与误差计算、不含 III／IV 类思考题。
+图 1--4 与图 A1 都是本讲按正文描述重绘的示意图（不是源图扫描件），标注了对应的源图号；源图为位图，本讲没有逐像素比对原图。
+
+\end{document}

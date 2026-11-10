@@ -1,0 +1,209 @@
+{
+  "handout": {
+    "title": "迈克尔逊干涉仪：原理与预习节选",
+    "subtitle": "Michelson Interferometer: Principles and Selected Pre-Lab Questions",
+    "round": "round-02（审核返工稿；基于 michelson/round-01 冻结首稿，首稿未被修改）",
+    "generated": "2026-11-10",
+    "tex": "michelson/round-02/handout.tex",
+    "pdf": "michelson/round-02/handout.pdf",
+    "compile_log": "michelson/round-02/handout.log",
+    "compile_pass_logs": [
+      "michelson/round-02/compile-pass1.log",
+      "michelson/round-02/compile-pass2.log"
+    ],
+    "pages": 21,
+    "sha256": {
+      "tex": "3fefd555e000f73d28f3edf1ddbe81c1a2b708fd63a3c196bf8feb85fe88764a",
+      "pdf": "d6f739d55d6aebf6747fbd9a638f84ed1a98d3d67aeb716f9c72b4b1b810bd12",
+      "log": "67ed9f31396a002bf7d5a3f94920dfa5923f7ed1c1f36a4170c035fa4e4fa506"
+    },
+    "frozen_round01": {
+      "tex_sha256": "04fd79fb94ea130f2d318840c8c9b036e5406827c122d15321190faf873be166",
+      "pdf_sha256": "72b3be00741147aeb68acfdd31c2ab2c60cb0076f43540effbf28b1c300d3821",
+      "untouched": true
+    },
+    "skill": {
+      "path": "rule-versions/2.1.1/lecture-deepdive/SKILL.md",
+      "version": "2.1.1",
+      "theme": "rule-versions/2.1.1/lecture-deepdive/assets/theme-violet.tex",
+      "theme_sha256": "172434d7d7938dc5427a8fa9ba87aad5a614d9853412e969dce96f3faeb616e4",
+      "engine": "MiKTeX-XeTeX 4.10（ctexart 11pt，A4）"
+    }
+  },
+  "inputs": [
+    {
+      "file": "inputs/Exp.11TheAdjustmentofMichelsonInterferometer.pdf",
+      "pages": 10,
+      "pages_read": "1-10（全文；重点 p1-p9；图 11-1 至 11-8 为位图，按页面文字与图注核读）",
+      "sha256": "52a88867858c16b10a114646cc8d2eb7639a1130c0853cf51c9755dd3be7bdb7",
+      "manifest_match": true
+    },
+    {
+      "file": "inputs/PreviewforMichelsoninterferometer-2025.pdf",
+      "pages": 3,
+      "pages_read": "1-3（全文）",
+      "sha256": "1c6d3439faf6c6b238b26f959a7ed10995cae1402d1e41d528634f5d9fdfa30b",
+      "manifest_match": true
+    }
+  ],
+  "sections": [
+    {
+      "id": "§1",
+      "title": "实验目的与仪器：中英对照",
+      "handout_pages": [1, 2],
+      "sources": [
+        {"file": "Exp.11", "pages": [1], "locator": "Experimental Objectives (1)-(7)，含 4 项 Optional"},
+        {"file": "Exp.11", "pages": [1, 2], "locator": "Experimental Instruments 段落＋图 11-1 图注（部件 1-14）"},
+        {"file": "Preview", "pages": [1], "locator": "I. 预习目标 1-3（转写为 §1.1 表下注）"}
+      ],
+      "handout": "表 1（七项目的双语）、§1.2 中文段落＋英文段落、表 2（部件 1-14 双语与作用）、20:1 参数提示框（明确源 p2 未把 0.01 mm 定义为最小分度）"
+    },
+    {
+      "id": "§2",
+      "title": "原理：分振幅、等效空气膜与光程差",
+      "handout_pages": [3, 4, 5, 6, 7],
+      "sources": [
+        {"file": "Exp.11", "pages": [1], "locator": "partial amplitude（分振幅）"},
+        {"file": "Exp.11", "pages": [2, 3], "locator": "I. The optical path（图 11-2）：45°、两臂、G2 作用"},
+        {"file": "Exp.11", "pages": [3, 4], "locator": "II. Pattern（图 11-3、11-4）：M2' 虚像、等效空气膜、S1/S2'"},
+        {"file": "Exp.11", "pages": [4], "locator": "ΔL=S2'P−S1P、2d cosθ、式 (11-1)、级次分布、条纹间距式"},
+        {"file": "Exp.11", "pages": [5], "locator": "涌出/陷入、式 (11-2)、四因素②③"},
+        {"file": "Exp.11", "pages": [7], "locator": "G1 背面内外反射→相位突变（用于 δ0）"},
+        {"file": "Exp.11", "pages": [2], "locator": "微调鼓轮 0.01 mm ↔ 动镜 0.0005 mm"}
+      ],
+      "handout": "§2.1 两臂光路＋图 1（区分 G2 补偿的玻璃路程与可调 2d）；§2.2 等效空气膜＋图 2；§2.3 五步推导（式 eq:dl、图 3、图 4、理想 (11-1)、含 δ0 的 (11-1')、环半径 eq:rk、环号 m 与正间距、式 (11-2)）；§2.4 20:1（eq:ratio，最小分度为说明用假设）；§2.5 公式速查表"
+    },
+    {
+      "id": "§3",
+      "title": "教学小例：膜厚、角度与条纹计数",
+      "handout_pages": [8, 9],
+      "sources": [
+        {"file": "自编", "pages": [], "locator": "三个数值示例（λ=632.8 nm、z=1.00 m 等示例取值）；明确 δ0=0 教学约定"},
+        {"file": "Exp.11", "pages": [5], "locator": "式 (11-2) 用于例 3.1/3.3"},
+        {"file": "Exp.11", "pages": [2], "locator": "20:1 换算用于例 3.1/3.3"},
+        {"file": "Exp.11", "pages": [4], "locator": "条纹间距式用于例 3.2 的误差对照"},
+        {"file": "Exp.11", "pages": [8], "locator": "每 50 环记一次读数（例 3.1 的计数方式）"},
+        {"file": "Exp.11", "pages": [9], "locator": "转动要轻、不要快（例 3.1 读数误差段引用）"}
+      ],
+      "handout": "例 3.1（膜厚↔环数）、例 3.2（倾角↔环半径与间距，含 m 编号、正间距方向、δ0=0 前提、近似适用条件）、例 3.3（计数↔波长，含 mm→m 单位链与 λ[nm]=10^5Δl[mm]/N）"
+    },
+    {
+      "id": "§4",
+      "title": "预习问答节选（中英对照）",
+      "handout_pages": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      "sources": [
+        {"file": "Preview", "pages": [1], "locator": "II-1、II-2、II-3、II-6、II-7、II-8、II-9 原题"},
+        {"file": "Preview", "pages": [3], "locator": "Questions (1)(2) 原题"}
+      ],
+      "handout": "每题：原题英文＋中文题意＋中文答＋英文答；题干与英文答案同页；II-1 附简图 图 A1；II-2 区分玻璃路程与总光程差；II-9 区分源对应关系与最小分度假设；附加 (1) 区分可见度/峰值/平均总强度；附加 (2) 相干长度与色散"
+    },
+    {
+      "id": "§5",
+      "title": "覆盖台账、源资料疑点与未覆盖项",
+      "handout_pages": [19, 20, 21],
+      "sources": [
+        {"file": "Exp.11 / Preview", "pages": [], "locator": "对上述全部来源的覆盖核对与题目清单"}
+      ],
+      "handout": "§5.1 源栏目→讲义位置；§5.2 预习题目覆盖状态；§5.3 源资料疑点、用词与处理（6 条）；§5.4 缺口清单（6 条）；§5.5 本讲没有做的事"
+    }
+  ],
+  "equations": [
+    {"tag": "eq:dl（ΔL=2d cosθ，本讲补出推导）", "source": "Exp.11 p4 的结果式", "handout_page": 4, "equation_number": 1},
+    {"tag": "(11-1)（理想亮纹条件，取 δ0=0）", "source": "Exp.11 p4", "handout_page": 6},
+    {"tag": "(11-1′)（含附加相位 δ0 的一般亮纹条件）", "source": "由 Exp.11 p7 的相位突变补出", "handout_page": 6},
+    {"tag": "eq:rk（r_k²=2z²(1−kλ/2d)，由 (11-1) 解出）", "source": "Exp.11 p4", "handout_page": 6, "equation_number": 2},
+    {"tag": "环号 m 的 r_m=z√(mλ/d) 与正间距 Δr=r_{k−1}−r_k", "source": "本讲补（§2.3 第四步）", "handout_page": 6},
+    {"tag": "(11-2)（2Δd=Nλ）", "source": "Exp.11 p5", "handout_page": 7},
+    {"tag": "eq:ratio（Δd=Δl/20）", "source": "Exp.11 p2；Preview p3 表下公式", "handout_page": 7, "equation_number": 3},
+    {"tag": "λ=Δl/(10N) 与 λ[nm]=10^5Δl[mm]/N", "source": "本讲导出（含单位链）", "handout_page": 9}
+  ],
+  "figures": [
+    {"id": "图1", "source": "Exp.11 图 11-2（p3）＋p2 部件表", "redrawn": true, "handout_page": 4,
+     "note": "两臂光路：S→G1→M1/M2（经 G2），返回半反射膜后合成射向 FG；紫粗线表示半反射膜；G2 在 M2 臂（与源 p3 图示一致，未改）"},
+    {"id": "图2", "source": "Exp.11 图 11-3（p3）与 p3 正文（M2' 虚像）", "redrawn": true, "handout_page": 4,
+     "note": "等效空气膜：M1 与 M2'（虚线）平行，间距 d；两支反射光"},
+    {"id": "图3", "source": "本讲据 p4 的 2d cosθ 推导自绘", "redrawn": true, "handout_page": 5,
+     "note": "膜内光程差：B、C、D、F 与 BC+CD、BF 一一对应"},
+    {"id": "图4", "source": "Exp.11 图 11-4（p4）与 p3-p4 虚光源说明", "redrawn": true, "handout_page": 5,
+     "note": "S1、S2' 在垂直屏的轴线上相距 2d；z 尺寸线从两虚光源中点 M 量到屏；θ 顶点在 M，是 M→P 视线与轴线夹角；ΔL≡S2'P−S1P<0，大小 |ΔL|=2d cosθ（M04 返工重点）"},
+    {"id": "图A1", "source": "同图 1（简图）", "redrawn": true, "handout_page": 10,
+     "note": "II-1 答案内附，满足“要求作图的答案实际有图”"}
+  ],
+  "preview_questions": [
+    {"id": "II-1", "status": "covered", "handout_page": 10, "source": "Preview p1"},
+    {"id": "II-2", "status": "covered", "handout_page": 11, "source": "Preview p1"},
+    {"id": "II-3", "status": "covered", "handout_page": 12, "source": "Preview p1"},
+    {"id": "II-4", "status": "not_covered", "handout_page": null, "source": "Preview p1", "reason": "调环操作步骤（Exp p8 操作栏目），不在本次节选"},
+    {"id": "II-5", "status": "not_covered", "handout_page": null, "source": "Preview p1", "reason": "圆心偏离时如何调整（操作栏目），不在本次节选"},
+    {"id": "II-6", "status": "covered", "handout_page": 13, "source": "Preview p1"},
+    {"id": "II-7", "status": "covered", "handout_page": 14, "source": "Preview p1"},
+    {"id": "II-8", "status": "covered", "handout_page": 15, "source": "Preview p1"},
+    {"id": "II-9", "status": "covered", "handout_page": 16, "source": "Preview p1"},
+    {"id": "II-10", "status": "not_covered", "handout_page": null, "source": "Preview p1", "reason": "空气折射率测量（Exp p8-p9 公式），不在本次节选"},
+    {"id": "II-11", "status": "not_covered", "handout_page": null, "source": "Preview p1", "reason": "注意事项（Exp p9 Notices），不在本次节选"},
+    {"id": "附加(1)", "status": "covered", "handout_page": 17, "source": "Preview p3"},
+    {"id": "附加(2)", "status": "covered", "handout_page": 18, "source": "Preview p3"},
+    {"id": "III-1..III-9", "status": "not_covered", "handout_page": null, "source": "Preview p1-p2", "reason": "口试思考题，不在节选范围"},
+    {"id": "IV-1..IV-4", "status": "not_covered", "handout_page": null, "source": "Preview p2", "reason": "拓展/选做题，不在节选范围"},
+    {"id": "Preview p3 数据表", "status": "not_covered", "handout_page": null, "source": "Preview p3", "reason": "数据记录与处理表不由讲义代填；只在 §2.4、II-8 引用其 Δd=Δd̄/20 与 ΔN=160 口径"}
+  ],
+  "source_notes": [
+    {"id": 1, "where": "Exp p5 第 (ii) 条", "issue": "thinner/denser 用词易误读为“更细/更粗”", "handling": "§5.3 第 1 条与 II-6 说明：读作“更疏/更密”时与 Δr∝1/d 一致，不列为公式冲突", "classification": "用词疑点"},
+    {"id": 2, "where": "Exp p4 条纹间距式", "issue": "省略相邻级次相减，未区分整数级次与环号", "handling": "§2.3 第四步补出 r_{k−1}²−r_k²=λz²/d、引入环号 m、明确正间距；例 3.2 给误差量级"},
+    {"id": 3, "where": "Exp p2 扩束镜英文句", "issue": "重复、不成句", "handling": "§1.2 中译按意图，英文只修顺句子，不改部件与功能"},
+    {"id": 4, "where": "Exp p8 与 Preview p3", "issue": "数环口径 50 环/550 环 与 40 环/ΔN=160 冲突", "handling": "按预习 p3 的表说明逐差法，并注明以课上表格为准"},
+    {"id": 5, "where": "Exp p4 (11-1) 与 p7", "issue": "(11-1) 未写相位突变", "handling": "§2.3 第三步给出 (11-1′) 与 δ0；教学小例明确 δ0=0；计数公式 (11-2) 不变"},
+    {"id": 6, "where": "Exp p1 目标 (3) 与 p8", "issue": "sodium laser 与 sodium lamp 用词不一", "handling": "§1.1 表照录原文并加注，不影响本期覆盖的题目"}
+  ],
+  "gaps_addressed": [
+    {"type": "机制缺口", "source": "Exp p3 G2 作用", "gap": "玻璃厚度差怎样变成光程差、为什么对白光致命；G2 只补玻璃部分、不消除可调 2d", "where": "§2.1、II-2、附加(2)"},
+    {"type": "代数跳步", "source": "Exp p4 间距式", "gap": "相邻两级相减、r_{k−1}+r_k≈2r_k、整数级次与环号的编号方向", "where": "§2.3 第四步、例 3.2"},
+    {"type": "前提未说明", "source": "Exp p4 2d cosθ 与 (11-1)", "gap": "两面平行、n=1、同一方向、常数相位 δ0、近似条件 d≪√(z²+r²) 与 r≪z", "where": "式 eq:dl 后的条件核对、§2.3 第二步与第三步"},
+    {"type": "图缺", "source": "Exp p4 由 S1、S2' 到 2d cosθ", "gap": "z 以两虚光源中点 M 为起点、θ 顶点在中点的投影关系", "where": "图 3、图 4"},
+    {"type": "对象混用", "source": "Exp p5", "gap": "固定级次环半径与视场疏密随 d 的变化不同", "where": "§2.3 第五步、II-6 的两种半径口径"},
+    {"type": "用词疑点", "source": "Exp p5 第 (ii) 条", "gap": "thinner/denser 易误读为更细/更粗", "where": "§5.3 第 1 条；正文按“d 小则疏”使用该句"}
+  ],
+  "rework": {
+    "based_on": "michelson/round-01（冻结）",
+    "review_report": "D:/aaa_D_usual/CODEX/AI-SKILL/output/review-20261110/michelson-round-01-final/review-final.md",
+    "issue_response": "michelson/round-02/issue-response.json",
+    "issues": ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09"],
+    "non_blocking_handled": [
+      "封面写清主要讲解范围 p1-p5 与实际参考页 p7-p9",
+      "例 3.2 的续页补“接上页例 3.2：d=99.982 µm、z=1.00 m，求 r1,r2”线索",
+      "不扩张核心范围；图 1 的 G2 位置不改（审核已确认与源 p3 一致）"
+    ]
+  },
+  "verification": {
+    "scripts": {
+      "verify": "michelson/round-02/tools/verify.py（121 条断言，含图 4 源坐标解析）",
+      "content_check": "michelson/round-02/tools/content_check.py（96 条断言，查实际 PDF 文字与源文件）",
+      "figure4_pdf_check": "michelson/round-02/tools/figure4_pdf_check.py（11 条断言，查实际 PDF 尺寸线端点）",
+      "render_check": "michelson/round-02/tools/render_check.py（PDF 版面几何）",
+      "page_index": "michelson/round-02/tools/page_index.py（页码索引）",
+      "render_pages": "michelson/round-02/tools/render_pages.py（21 页 PNG，150 dpi）",
+      "check_handout": "rule-versions/2.1.1/lecture-deepdive/scripts/check_handout.py --mode lab --log"
+    },
+    "outputs": [
+      "michelson/round-02/verify-output.txt",
+      "michelson/round-02/content-check.txt",
+      "michelson/round-02/figure4-pdf-check.txt",
+      "michelson/round-02/check-render.txt",
+      "michelson/round-02/check-handout.txt",
+      "michelson/round-02/page-index.txt",
+      "michelson/round-02/render-pages.txt",
+      "michelson/round-02/renders/handout-p01.png … handout-p21.png",
+      "michelson/round-02/page-17-text.txt（M03 成品页文字）",
+      "michelson/round-02/page-09-text.txt（续页线索页文字）"
+    ],
+    "result": "check_handout 0 错误 0 线索；verify 121/121；content_check 96/96；figure4_pdf_check 11/11；render_check 0 失败；编译日志无 Overfull/Underfull/Missing character/LaTeX Warning/未解析引用；两遍 xelatex 退出码 0，21 页"
+  },
+  "unresolved": [
+    "执行模型本轮无图像输入：21 页 PNG 已保存，页面观感与图形美观未由本执行者目视验收；外部支持看图的审核者仍需只读看图并交回具体布局/几何问题。",
+    "源资料图 11-1 至 11-8 为位图，本讲未逐像素比对；图 1-4 与图 A1 是按文字与图注重绘的示意图，已标源图号。",
+    "G2 在源图 11-2 中的具体臂位仍只能按源 p7 的反射位置与 p3 文字判断；审核已确认图 1 的 G2 在 M2 臂与原资料 p3 图示一致，本轮不改。",
+    "II-6 仍保留“同一级次环半径”与“视场疏密”两种可辩护口径，并给操作判据；未替课程指定唯一答案。",
+    "§4 每题独占一页造成的页末留白是排版选择，不是溢出；本轮不设页数目标。",
+    "外部审核尚未通过；本轮只报告 DSH 已完成的修改与自检结果。"
+  ]
+}

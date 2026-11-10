@@ -1,0 +1,185 @@
+迈克尔逊干涉仪：原理与预习节选 —— round-02 生成与验证记录
+================================================================
+产物版本：round-02（收到外部正式问题单后的 DSH 返工稿）
+首稿：michelson/round-01（冻结，未修改；tex sha256 04fd79fb…，pdf sha256 72b3be00…）
+生成日期：2026-11-10
+执行者：DSH（本目录唯一执行者）
+规则版本：rule-versions/2.1.1/lecture-deepdive/SKILL.md（2.1.1）＋其 references
+
+一、交付物与哈希
+----------------
+handout.tex   sha256 3fefd555e000f73d28f3edf1ddbe81c1a2b708fd63a3c196bf8feb85fe88764a   76551 B
+handout.pdf   sha256 d6f739d55d6aebf6747fbd9a638f84ed1a98d3d67aeb716f9c72b4b1b810bd12  316107 B  21 页
+handout.log   sha256 67ed9f31396a002bf7d5a3f94920dfa5923f7ed1c1f36a4170c035fa4e4fa506   41966 B（第二遍编译日志）
+compile-pass1.log / compile-pass2.log   两遍编译日志（本轮）
+compile-command.txt                     编译命令、工具版本与日志硬性检查
+source-map.json                         来源→讲义页码、题目覆盖、源资料疑点、缺口与未解决项
+issue-response.json                     问题单 M01–M09 的核实、修改位置与证据
+verify-output.txt / content-check.txt / figure4-pdf-check.txt / check-render.txt /
+check-handout.txt / page-index.txt / render-pages.txt   本轮实际检查的原始输出
+renders/handout-p01.png … handout-p21.png（150 dpi，21 页）
+page-17-text.txt（M03 成品页全文）、page-09-text.txt（例 3.2 续页线索）
+
+二、输入与规则核验
+------------------
+1. inputs/Exp.11TheAdjustmentofMichelsonInterferometer.pdf（10 页）
+   sha256 52a88867858c16b10a114646cc8d2eb7639a1130c0853cf51c9755dd3be7bdb7 —— 与 manifest 一致
+   已读完 p1–p10；本轮重点复核 p2-p5、p7-p9 的原文措辞与图注。
+2. inputs/PreviewforMichelsoninterferometer-2025.pdf（3 页）
+   sha256 1c6d3439faf6c6b238b26f959a7ed10995cae1402d1e41d528634f5d9fdfa30b —— 与 manifest 一致
+   已读完 p1–p3；复核 II-1、II-2、II-3、II-6、II-7、II-8、II-9 与第 3 页 Questions (1)(2)。
+3. 规则与主题：rule-versions/2.1.1/lecture-deepdive/
+   theme-violet.tex sha256 172434d7d7938dc5427a8fa9ba87aad5a614d9853412e969dce96f3faeb616e4
+   handout.tex 用 \input{../../rule-versions/2.1.1/lecture-deepdive/assets/theme-violet} 直接引用，未改主题文件。
+4. 只读边界：未读取旧项目讲义、协调器修订稿、审核者计算脚本或其它学科任务；未修改 round-01；
+   未运行 git、学习记录入账、收尾、同步或外发。
+
+三、编译（两遍，退出码均 0）
+----------------------------
+在 michelson/round-02 下执行：
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex   （第一遍，exit 0）
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex   （第二遍，exit 0）
+结果：Output written on handout.pdf (21 pages)。
+handout.log 硬性检查：
+  Overfull \hbox / \vbox   0
+  Underfull \hbox / \vbox  0
+  Missing character        0
+  LaTeX Warning            0
+  Undefined control        0
+  未解析引用 / Rerun       0
+编译过程中的必要修复（没有为消警告删内容）：
+  (a) 正文两处 “↔” 在 latin 字体缺字，改为 $\leftrightarrow$；
+  (b) fancyhdr 要求 \headheight 至少 22pt，由 15pt 调到 22pt，未缩字号。
+
+四、结构检查 check_handout --mode lab --log（退出码 0）
+------------------------------------------------------
+命令：python -B rule-versions/2.1.1/lecture-deepdive/scripts/check_handout.py \
+        michelson/round-02/handout.tex --mode lab --log michelson/round-02/handout.log
+输出：静态检查未发现问题；合计：错误 0 条，人工复核线索 0 条。
+说明：该脚本只查源结构与日志，不证明推导正确，也不代替 PDF 页面检查。
+
+五、数值、推导与图 4 源坐标核验 tools/verify.py（121 条断言，0 失败，退出码 0）
+-----------------------------------------------------------------------------
+覆盖：
+  1) 20:1 传动（0.01 mm ↔ 0.0005 mm；每 0.01 mm 读数对应 0.5 µm）；
+  2) λ/2≈0.3164 µm；1:1 时一个环占 0.01 mm 间隔的 1/31.6；20:1 时为 0.6328 个间隔；
+  3) ΔL=2d cosθ 的恒等变形（θ=5°/20°/35°/45°）；
+  4) 虚光源 ΔL=S2'P−S1P 为负，大小与 2d cosθ 相对误差 <1e-9；
+  5) 图 4 源坐标解析：S1/S2'/M/P、屏幕、z 尺寸线、θ 弧；M 是中点、z 从 M 量到屏、
+     θ 弧心在 M、θ=atan(r/z)；|S2'P−S1P|/(2d cosθ)=1（<1e-3）；若 z 从 S2' 量会短 d=0.30；
+  6) M05：2d=316λ 在 δ0=0 下为中心亮纹；若 δ0=π，2d/λ+1/2=316.5 非整数，中心变暗；
+  7) M01：固定 d 时 r_(k−1)>r_k；r_k²−r_{k−1}²=−λz²/d；r_{k−1}²−r_k²=+λz²/d；
+     r_m=r_(k0−m)；r_m²−r_(m−1)²=λz²/d>0；
+  8) 例 3.2：d=99.982 µm、k0=316、r1=79.56 mm、r2=112.51 mm、θ1=4.55°、θ2=6.42°、
+     Δr=32.95 mm；较内环 r1 代入 39.78 mm（偏大 20.7%），平均半径代入 32.95 mm（恒等）；
+  9) ΔL 精确值 198.711 µm 与二级近似 198.699 µm（差 0.012 µm=0.019 条纹）；
+ 10) 例 3.1（50 环 → 15.82 µm → 0.3164 mm，31.64 个 0.01 mm 间隔，数错一环 2%）；
+ 11) 例 3.3 与 M02：λ=Δl/(10N) 在 Δl=3.164 mm 时先得 6.328×10^-4 mm；
+     换算为 6.328×10^-7 m=632.8 nm；若把 6.328×10^-4 直接当米会大 1000 倍；
+     λ[nm]=10^5Δl[mm]/N=632.8；钠光 589.3 nm→2.947 mm（差 6.85%）；ΔN=160→1.0125 mm；
+ 12) M06：固定 I1+I2=10 时，等分 Imax=20、Imin=0、V=1；9:1 时 Imax=16、Imin=4、V=0.6；
+     相位平均总强度始终为 10；等分最大化 Imax、最小化 Imin；
+ 13) M08：无 G2 时玻璃光程差 2t(n−1)=1.0 mm（t=1 mm、n=1.5），有 G2 后为 0；
+     改变 d 仍改变总光程差（G2 不能消除 2d）；
+ 14) M09：Δr∝1/d，d 越小 Δr 越大，与源 p5“smaller d → thinner”读作“更疏”一致；
+ 15) 图 3：C、D、F 坐标与 BF²+DF²=BD²、DF⊥光 1。
+运行：python -B michelson/round-02/tools/verify.py（输出见 verify-output.txt）
+
+六、成品文字与源文件核对 tools/content_check.py（96 条断言，0 失败，退出码 0）
+------------------------------------------------------------------------------
+重点：
+  M03：实际 PDF 第 17 页出现“暗纹的强度只有亮纹的 25%，明暗对比变差”，英文出现
+       “only 25% of the intensity of the bright ones … so the rings are easily miscounted”；
+       不存在“25 选”“only 25 : 16”或以 25 结尾的截断行；源文件两处均为 25\%。
+  M01：源文件有“符号不能反”、r_{k−1}²−r_k²=λz²/d、r_m²−r_(m−1)²=λz²/d>0，
+       且旧的 r_k²−r_{k−1}²=λz²/d 正号错误式已不存在。
+  M02：源文件有 6.328×10^-4 mm、λ[nm]=10^5Δl[mm]/N，旧句“就是波长的米数”已不存在。
+  M04：图注含“尺寸线从 M 量到屏”“M 是其中点”“θ 的顶点在 M”，并区分 ΔL<0 与 |ΔL|。
+  M05：源文件有 (11-1′) 的 k−δ0/(2π) 形式、§3 采用 δ0=0、例 3.2 落到自己的前提。
+  M06：中英均写明 I1+I2 固定、平均总强度不变、收益是对比度。
+  M07：源文件明确“没有说 0.01 mm 就是最小分度”，并把它写成说明用假设。
+  M08：源文件明确 G2 补偿玻璃部分、不是两臂总光程差、不消除可调 2d。
+  M09：“用词问题，不是可证明的公式冲突”在位；“与公式相反”“与该式相反”均已删除。
+  实验目的 7 项英文原文与 4 处 Optional 中文标注、仪器 14 件英文名均在。
+  日志无 Overfull/Underfull/Missing character/LaTeX Warning/Undefined control。
+运行：python -B michelson/round-02/tools/content_check.py（输出见 content-check.txt）
+
+七、图 4 在最终 PDF 中的实际尺寸线端点 tools/figure4_pdf_check.py（11 条，0 失败）
+--------------------------------------------------------------------------------
+为什么要单独查：TikZ 的 <-> 箭头会让可见线段短于标称长度，单看“某线段=4.08 cm”会误判。
+方法：以图 4 轴线（-2.30→2.55 cm=137.48 pt）定标 28.347 pt/cm；用 2d 尺寸线（标称 0.60 cm）
+反推箭头内缩量 1.44 pt；再还原 z 尺寸线的标称端点。
+结果（第 5 页）：
+  z 标称端点 245.04→360.70 pt（115.65 pt），与 4.08 cm×28.347=115.66 pt 一致；
+  245.04 pt 正是 M（x=-1.68 cm），360.70 pt 正是屏（x=2.40 cm）；
+  更接近 M 而不是 S2'（253.55 pt）；
+  不存在旧稿 3.78 cm（107.2 pt）的 z 尺寸线。
+运行：python -B michelson/round-02/tools/figure4_pdf_check.py（输出见 figure4-pdf-check.txt）
+
+八、渲染版面检查 tools/render_check.py（0 失败，退出码 0）
+--------------------------------------------------------
+页面 A4 595.3×841.9 pt，21 页，正文宽 481.9 pt。
+  1) 文字无越左右/下边界；未解析引用 0。
+  2) 正文行间重叠 0；图形越界 0；线段穿字 0。
+  3) 图 1、2、3、4、A1 均与图注同页且图在上：间距 14.6 / 29.0 / 24.0 / 12.5 / 17.7 pt。
+  4) II-1…II-9 与附加 (1)(2) 的题干与英文答案均同页（p10、p11、p12、p13、p14、p15、p16、p17、p18）。
+  5) 节标题无孤行；跨页长表重复表头。
+  6) 页末留白（p11、p12、p14、p16、p17、p18、p21）来自 \qaneed 保证问答同页，不是溢出；
+     本轮无页数目标，未为填满页面删内容。
+逐页正文充填率：p1 100%、p2 101%、p3 97%、p4 100%、p5 100%、p6 101%、p7 97%、p8 97%、
+p9 101%、p10 86%、p11 74%、p12 81%、p13 97%、p14 60%、p15 99%、p16 72%、p17 71%、
+p18 67%、p19 101%、p20 99%、p21 61%。
+运行：python -B michelson/round-02/tools/render_check.py（输出见 check-render.txt）
+
+九、页码索引（source-map 用）
+-----------------------------
+§1 p1；§2 p3；§3 p8；§4 p9；§5 p19。
+图1 p4；图2 p4；图3 p5；图4 p5；图A1 p10。
+II-1 p10；II-2 p11；II-3 p12；II-6 p13；II-7 p14；II-8 p15；II-9 p16；
+附加(1) p17；附加(2) p18。
+运行：python -B michelson/round-02/tools/page_index.py（输出见 page-index.txt）
+
+十、渲染保存与“未目视验收”边界
+------------------------------
+python -B michelson/round-02/tools/render_pages.py 已把 21 页渲染为 150 dpi PNG，
+保存在 renders/。本执行模型本轮不能接收图像输入，因此：
+  - 已完成：编译、文本抽取、边界/重叠/图注同页/问答同页/表头重复、数值与推导、
+    图 4 源坐标与实际 PDF 尺寸线端点、M03 成品页文字；
+  - 未完成：逐页人眼观感、图形美观、颜色/字体观感、跨页阅读体验；
+  - 不能把“编译通过、坐标检查通过、像素占用”说成“已目视验收”。
+外部审核者可用只读方式查看 renders/*.png 并交回具体布局/几何问题；修改仍由 DSH 完成。
+
+十一、M01–M09 处理位置摘要（详见 issue-response.json）
+-----------------------------------------------------
+M01  §2.3 第三/四步、§2.5 表、例 3.2、§5.3 第 2 条、§5.4；verify 的 k/m 与符号断言。
+M02  §3 例 3.3、§2.5 表、§4 II-8 步骤 (5)；verify 的 mm→m 单位断言；content_check 的 nm 工作式。
+M03  §4 附加 (1) 中英句；content_check 查实际 PDF 第 17 页；page-17-text.txt。
+M04  §2.3 第二步与图 4（z 从 M 量到屏、θ 顶点在 M、ΔL<0 与 |ΔL|）；verify 源坐标 + figure4_pdf_check 实际 PDF。
+M05  §2.3 第三步 (11-1′) 与 δ0、例 3.2 设定、II-7 的 δ0=0 限定；verify 相位断言。
+M06  §4 附加 (1) 中英答案；verify 固定 I1+I2 的峰值/谷值/平均强度断言；content_check 新句。
+M07  §1.2 提示框、§2.4、例 3.1、II-9；verify 三十分之一/0.63 间隔断言；content_check 假设措辞。
+M08  §2.1、§2.2、II-2；verify 玻璃光程差与 2d 不消除断言；content_check 限定语句。
+M09  §4 II-6 中英、§5.3 第 1 条、§5.4；content_check 禁用旧“与公式相反”句。
+
+十二、未解决项与待审核事项（如实报告）
+--------------------------------------
+1. 外部目视验收尚未进行；本执行者不能声称看图通过。renders/ 已备好。
+2. 源资料位图（图 11-1 至 11-8）未逐像素比对；图 1-4 与图 A1 是按文字与图注重绘的示意图。
+3. G2 具体臂位仍按源 p7 反射位置与 p3 文字判断；审核已确认图 1 与源 p3 图示一致，本轮不改。
+4. II-6 保留两种可辩护口径并给操作判据，未替课程指定唯一答案。
+5. §4 每题独占一页的留白是排版选择，不是溢出；无页数目标。
+6. 外部审核尚未通过；本轮只报告 DSH 已完成的返工与自检结果。
+
+十三、复现命令
+--------------
+  cd michelson/round-02
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex
+  cd ../..
+  python -B rule-versions/2.1.1/lecture-deepdive/scripts/check_handout.py michelson/round-02/handout.tex --mode lab --log michelson/round-02/handout.log
+  python -B michelson/round-02/tools/verify.py
+  python -B michelson/round-02/tools/content_check.py
+  python -B michelson/round-02/tools/figure4_pdf_check.py
+  python -B michelson/round-02/tools/render_check.py
+  python -B michelson/round-02/tools/page_index.py
+  python -B michelson/round-02/tools/render_pages.py

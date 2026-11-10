@@ -1,0 +1,132 @@
+== A. 定义与性质（p4--p7） ==
+[PASS] 幂零 N^2=0 与 e^{Nx}=E+Nx
+[PASS] 幂零 e^{N0}=E
+[PASS] 对角 e^{Dx}=diag(e^{x},e^{2x},e^{-3x})
+[PASS] 纯量矩阵 e^{r x E}=e^{rx}E
+[PASS] 1x1: e^{at}=exp(at)，不是 exp(atx)
+[PASS] 求导公式 d/dx e^{Ax}=A e^{Ax}
+[PASS] x=0 时 e^{A0}=E
+[PASS] x=0 时导数=A
+[PASS] e^{At}e^{As}=e^{A(t+s)}
+[PASS] e^{-At}=(e^{At})^{-1}
+[PASS] 反例：AB-BA != 0
+[PASS] 反例：e^A=E+A
+[PASS] 反例：e^B=E+B
+[PASS] 反例：e^{A+B} != e^A e^B
+[PASS] 反例数值：e^A e^B=[[2,1],[1,1]]
+[PASS] 特征向量性质 e^{Ax}V=e^{2x}V
+
+== B. 课件例题 1（p13--p15，3x3 对角化） ==
+[PASS] Ex1 特征多项式恒等式
+[PASS] Ex1 AV=VΛ
+[PASS] Ex1 det V=6
+[PASS] Ex1 V^{-1}（正确值，含 (1,2)=-1）
+[PASS] Ex1 V V^{-1}=E
+[PASS] Ex1 e^{Ax} 与 SymPy Matrix.exp 一致
+[PASS] Ex1 x=0 得 E
+[PASS] Ex1 导数在 0 处=A
+[PASS] Ex1 通解 = V e^{Λx} C
+[PASS] 勘误 p14：原印刷 V^{-1} 不满足 V V^{-1}=E
+
+== C. 课件例题 2（p20，多项式降阶） ==
+[PASS] Ex2 长除法恒等式
+[PASS] Ex2 p(A)=146A-184E
+[PASS] Ex2 直接值 [[254,146],[146,108]]
+
+== D. 课件例题 4（p24--p25，实特征值 4,-2） ==
+[PASS] Ex4 特征多项式 (λ-4x)(λ+2x)
+[PASS] Ex4 α1x 与 α0
+[PASS] Ex4 闭式矩阵
+[PASS] Ex4 导数在 0 处=A
+[PASS] Ex4 通解（正确 c̃1,c̃2）
+[PASS] 勘误 p25：缺 1/6 的 c̃ 不满足通解
+
+== E. 课件例题 5（p26--p27，特征值 ±i） ==
+[PASS] Ex5 特征多项式 λ^2+x^2
+[PASS] Ex5 e^{Ax}=[[cos,sin],[-sin,cos]]
+[PASS] Ex5 导数在 0 处=A
+[PASS] Ex5 det e^{Ax}=1
+[PASS] Ex5 通解（正确符号）
+[PASS] 勘误 p27：印刷的第二个基向量不满足 Y'=AY
+
+== F. 课件例题 6（p30--p31，重特征值方程组与补充解） ==
+[PASS] Ex6 解满足 r(5x)=e^{5x}
+[PASS] Ex6 解满足 r'(5x)=e^{5x}
+[PASS] Ex6 解满足 r''(5x)=e^{5x}
+[PASS] Ex6 解满足 r(2x)=e^{2x}
+[PASS] Ex6 x→0 时 α3→1/6
+[PASS] Ex6 x→0 时 α2→1/2
+[PASS] Ex6 x→0 时 α1→1
+[PASS] Ex6 x→0 时 α0→1
+[PASS] Ex6 讲义 α3 与解一致
+[PASS] Ex6 讲义 α2 与解一致
+[PASS] Ex6 讲义 α1 与解一致
+[PASS] Ex6 讲义 α0 与解一致
+
+== G. 课件例题 7（p33--p35，三重特征值 -2） ==
+[PASS] Ex7 A^2
+[PASS] Ex7 特征多项式 det(A-λE)=-(λ+2)^3
+[PASS] Ex7 e^{Ax} 闭式
+[PASS] Ex7 导数在 0 处=A
+[PASS] Ex7 通解（正确 c̃3=c3-c2）
+[PASS] 勘误 p35：c̃3=c3-2c2 不满足通解
+
+== H. 课件例题 8（p36--p38，0,±i） ==
+[PASS] Ex8 A^2
+[PASS] Ex8 特征多项式 det(A-λE)=-λ(λ^2+1)
+[PASS] Ex8 e^{Ax} 闭式
+[PASS] Ex8 导数在 0 处=A
+[PASS] 勘误 p36：(3,2) 印成 -α1x 与 e^{Ax} 不符
+
+== I. 作业 H1（p44 第 1 题，实特征值 ±2） ==
+[PASS] H1 特征多项式 λ^2-4
+[PASS] H1 det V=1
+[PASS] H1 V^{-1}
+[PASS] H1 e^{Ax} 闭式
+[PASS] H1 导数在 0 处=A
+[PASS] H1 x=0 得 E
+[PASS] H1 通解
+[PASS] H1 Cayley--Hamilton 交叉核对
+
+== J. 作业 H2（p44 第 2 题，共轭复特征值 ±2i） ==
+[PASS] H2 特征多项式 λ^2+4
+[PASS] H2 e^{Ax} 闭式
+[PASS] H2 导数在 0 处=A
+[PASS] H2 x=0 得 E
+[PASS] H2 通解
+[PASS] H2 Cayley--Hamilton 交叉核对
+[PASS] H2 复特征向量 AV=2iV
+
+== K. 作业 H3（p44 第 3 题，三个不同实特征值） ==
+[PASS] H3 det V=286
+[PASS] H3 V^{-1}
+[PASS] H3 AV=VΛ
+[PASS] H3 e^{Ax} 闭式
+[PASS] H3 导数在 0 处=A
+[PASS] H3 x=0 得 E
+[PASS] H3 通解
+
+== L. 基本矩阵（p39--p43） ==
+[PASS] Φ(x)Φ^{-1}(x0)=e^{A(x-x0)}
+[PASS] e^{Ax}e^{-Ax}=E
+[PASS] Φ(0)=E 时 e^{Ax}=Φ(x)
+
+== M. 条件与反例 ==
+[PASS] 2x2 Jordan 块 e^{Ax}=e^{μx}[[1,x],[0,1]]
+[PASS] Jordan 块几何重数 g=1<代数重数 m=2
+
+== N. 重根插值条件与首一约定（R1/R3/R4） ==
+[PASS] R1 纯量矩阵：Hermite 条件给出 r(Ax)=e^{Ax}
+[PASS] R1 纯量矩阵：r(μx)=e^{μx}
+[PASS] R1 纯量矩阵：r'(μx)=e^{μx}
+[PASS] R1 纯量矩阵：只用值条件 r(Ax) 仍为 e^{Ax}
+[PASS] R1 零多项式不满足 r(μx)=e^{μx}
+[PASS] R1 3x3 Jordan 块：r(J)=e^J
+[PASS] R3 n=3：det(λE-A)=(λ+2)^3
+[PASS] R3 n=3：det(A-λE)=(-1)^3 det(λE-A)
+[PASS] R3 Example 8：det(λE-A)=λ(λ^2+1)
+[PASS] R4 4x 与 -2x 仅在 x=0 重合
+[PASS] R4 ix 与 -ix 仅在 x=0 重合
+
+共执行 102 条断言，失败 0 条。
+ALL CHECKS PASSED

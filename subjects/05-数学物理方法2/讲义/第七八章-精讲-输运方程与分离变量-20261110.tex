@@ -1,0 +1,1396 @@
+% !TEX program = xelatex
+% 数学物理方法2 · 第七—八章精讲（第七、八章合册）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing}
+\settags{第七—八章 · 输运方程与分离变量}{数学物理方法2}
+
+% 同一张表内的中隔线（\\tabmid 只能放在 tabular 之外）
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 单位：正文里也能直接写 \unit{N\cdot m^{-1}}，自动切进数学模式
+\newcommand{\unit}[1]{\ifmmode\mathrm{#1}\else$\mathrm{#1}$\fi}
+
+% 圈码①②③交给中文字体（默认会被塞进 Latin 字体而缺字）
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% 表头：主题的 \thead 以 {\color...} 开头，在 p{} 列里会把标题挤到第二行
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.94\linewidth}\centering}{\end{minipage}\end{center}\par}
+
+% 详解块起页保护放宽到半页
+\renewcommand{\qbreak}{\needspace{0.42\textheight}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% 公式上下留白收紧
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{第七—八章　输运方程与分离变量}
+{从傅里叶定律到矩形域级数解：热传导、扩散、泊松方程、三类边界条件，再到分离变量法}
+{依据课件《Chapter 7 -- 20261103.pdf》19 页、《Chapter 8 -- 20261110.pdf》13 页\\2026-11-10\quad 数学物理方法2}
+
+\callout{\textbf{这本讲义怎么用。}正文按课件页序推进，凡是课件压缩掉的中间步都补出来，并且标了页码。两个例外请先知道：第八章课件 p2、p12 各留了一个「$C_n=?$」「$D_{nm}=?$」的填空题，本讲都算完了（\S4.3、\S6.5）；第七章课件 p14 左端的第二类边界条件与右端式子按同一符号理解时不自洽，本讲改用「沿 $+x$ 方向的分量」统一写，并给出两个自检（\S3.4.2）。
+
+\textbf{与旧稿的关系。}2026-11-02 那份《第七章-精讲-数学物理方程》依据的是 16 页的旧课件（内容是 \S7.1 波动方程的推导）。现在课件的 19 页版本从 \S7.2 起，\S7.1 的弦、杆、膜、电磁波推导不在本册范围内，需要时回看那份旧稿；本册与之不重复。
+
+\textbf{练习在哪。}正文里第 \pageref{sec:practice} 页列出课件 p19 的四道定解条件题（11-09 已讲过，这里是复习）与第八章 p13 的四道作业；八题的完整过程都在附录，题号对应（\S A、\S B）。本册没有另外编新题。}
+
+\subhdr{目录（页码自动解析）}
+\tabtop
+\begin{tabular}{@{}p{0.10\linewidth}p{0.74\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+§0 & 三条主线与一份记号表 & \pageref{sec:s0} \\
+§1 & \S7.2 输运方程：热传导与扩散 & \pageref{sec:s1} \\
+§2 & \S7.3 泊松方程：稳态的三种外衣 & \pageref{sec:s2} \\
+§3 & \S7.4 定解条件：方程为什么定不住解 & \pageref{sec:s3} \\
+§4 & \S8.1 齐次输运方程：分离变量法 & \pageref{sec:s4} \\
+§5 & \S8.3 二维 Laplace：矩形域稳态热传导 & \pageref{sec:s5} \\
+§6 & \S8.4 矩形区域热传导：两个方向各一个特征值 & \pageref{sec:s6} \\
+§7 & 速查与易错 & \pageref{sec:s7} \\
+§8 & 课件页码对照表 & \pageref{sec:s8} \\
+§9 & 三句话总结 & \pageref{sec:s9} \\
+§10 & 练习：课件 p19 与 p13 共八题 & \pageref{sec:practice} \\
+附录 A & 课件 p19 四题（复习：11-09 已讲过） & \pageref{sec:appA} \\
+附录 B & 课件 Ch8 p13 四题（本次新解） & \pageref{sec:appB} \\
+\end{tabular}
+\tabbot
+\clearpage
+
+%=====================================================================
+\hdr{\S0}{三条主线与一份记号表}
+\phantomsection\label{sec:s0}
+%=====================================================================
+
+这一章要做的事只有三件，先摆出来，后面每一节都往这三件事上挂：
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{把物理守恒律写成偏微分方程}——热传导、扩散（\S1）与静电场、稳态（\S2）。
+  \item \textbf{说清一个方程什么时候才定得住解}——初始条件与边界条件（\S3）。
+  \item \textbf{在矩形区域上把方程解出来}——分离变量法（\S4--\S6）。
+\end{enumerate}
+
+第三件依赖第二件：分离变量时，边界条件决定特征值，初始条件决定系数。所以「边界条件写错一个符号，后面整条级数都跟着错」不是危言耸听——本册 \S3.4.2 会给出一个真实例子。
+
+\subhdr{0.1\quad 记号}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{记号} & \thead{含义与单位} \\
+\tabmidrule
+$u(\vect r,t)$ & 待求场：位移 \unit{m}、温度 \unit{K}、浓度 \unit{mol\cdot m^{-3}}、电位 \unit{V} \\
+$a$ & 输运系数，\S1 里 $a^2=k/(c\rho)$ 或 $a^2=D$；波动问题里 $a$ 是波速 \\
+$k$ & 热导率 \unit{W\cdot m^{-1}\cdot K^{-1}}（\textbf{注意}：\S3.4.3 第三类条件里的 $k$ 是弹簧劲度系数，两者不是一回事） \\
+$c$ & 比热容 \unit{J\cdot kg^{-1}\cdot K^{-1}} \\
+$\rho$ & 体密度 \unit{kg\cdot m^{-3}}；线密度 \unit{kg\cdot m^{-1}}（弦、杆） \\
+$D$ & 扩散系数 \unit{m^2\cdot s^{-1}} \\
+$E,S$ & 杨氏模量 \unit{Pa}、横截面积 \unit{m^2} \\
+$q$ & 通量：热流 \unit{W\cdot m^{-2}}、扩散流 \unit{mol\cdot m^{-2}\cdot s^{-1}} \\
+$\lambda,\mu,\nu$ & 分离变量引出的常数（特征值） \\
+$\ell$ & 一维区域的长度；二维矩形用 $a,b$ 或 $\ell_1,\ell_2$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{0.2\quad 三个方程一眼看清}
+
+后面反复用的只有三个方程，写法如下（$\Delta$ 或 $\nabla^2$ 都是拉普拉斯算子）：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{方程} & \thead{标准形式} & \thead{时间导数的阶} \\
+\tabmidrule
+波动方程 & $u_{tt}-a^2\Delta u=f$ & 二阶 $\Rightarrow$ 两个初始条件 \\
+输运方程（热传导/扩散） & $u_t-a^2\Delta u=f$ & 一阶 $\Rightarrow$ 一个初始条件 \\
+泊松方程（稳态） & $\Delta u=-f/a^2$ & 零阶 $\Rightarrow$ 没有初始条件 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+这张表最后那一列是本册最该记住的一句话：\textbf{时间导数的阶数决定要几个初始条件}。它出现的次数会比你以为的多（\S3.2、\S7.2 都还要用）。
+
+%=====================================================================
+\hdr{\S1}{\S7.2 输运方程：热传导与扩散}
+\phantomsection\label{sec:s1}
+%=====================================================================
+
+课件 p1 用一块 CPU 的散热照片开场，问的是同一件事：给定初始温度分布，杆上每一点的温度 $u(x,t)$ 以后怎样变？要回答它，先得知道热量怎么流。
+
+\subhdr{1.1\quad 傅里叶定律：\ $q=-k\,\dfrac{\partial u}{\partial x}$}
+
+课件 p2 上方的句子是定义，值得逐词读：\emph{单位面积、单位时间流过的热流率，正比于温度梯度的负值}。
+
+\begin{itemize}
+  \item $q$ 是热流密度，单位 \unit{W\cdot m^{-2}}，方向取 $+x$；
+  \item $k>0$ 是热导率，材料属性；
+  \item 那个负号是全部要害：温度沿 $+x$ 升高（$u_x>0$）时，$q<0$，热量朝 $-x$ 流。热量永远从高温流向低温。
+\end{itemize}
+
+量纲核对一下：$[k]=\unit{W\cdot m^{-1}\cdot K^{-1}}$，$[u_x]=\unit{K\cdot m^{-1}}$，乘起来是 \unit{W\cdot m^{-2}}，与 $q$ 一致。
+
+\subhdr{1.2\quad 微元上的能量守恒（课件 p2 的四步）}
+
+取杆上 $x$ 到 $x+\Delta x$ 一小段，截面积 $S$，体密度 $\rho$。四步：
+
+\begin{enumerate}[label=\textbf{第 \arabic* 步}]
+  \item \textbf{数流入}。在左端面 $x$ 处，$\Delta t$ 内流进这段的热量是
+  \begin{equation}
+    Q\big|_x=-S\,\Delta t\,k\,u_x\big|_x .
+  \end{equation}
+  $S\Delta t$ 是「面积 $\times$ 时间」，$q=-ku_x$ 是单位面积单位时间的热量，两者相乘得热量；前面的负号已经在 $q$ 里了，这里只是把 $q$ 在 $x$ 处取值。
+
+  \item \textbf{数流出}。同样地在右端面 $x+\Delta x$ 处
+  \begin{equation}
+    Q\big|_{x+\Delta x}=-S\,\Delta t\,k\,u_x\big|_{x+\Delta x} .
+  \end{equation}
+
+  \item \textbf{数吸收}。这段杆升温 $\Delta u$ 需要吸收
+  \begin{equation}
+    Q=c\,(S\Delta x\,\rho)\,\Delta u ,
+  \end{equation}
+  即「比热 $\times$ 质量 $\times$ 温升」。$S\Delta x\rho$ 就是这段的质量。
+
+  \item \textbf{守恒并取极限}。流入减流出等于吸收：
+  \begin{equation}
+    Q\big|_x-Q\big|_{x+\Delta x}=c\,(S\Delta x\,\rho)\,\Delta u .
+  \end{equation}
+  把前两步的式子代进来，$S\Delta t$ 约掉：
+  \begin{equation}
+    k\Big(u_x\big|_{x+\Delta x}-u_x\big|_x\Big)=c\rho\,\Delta x\,\frac{\Delta u}{\Delta t}
+    \quad\Longrightarrow\quad
+    \frac{k}{c\rho}\cdot\frac{u_x\big|_{x+\Delta x}-u_x\big|_x}{\Delta x}=\frac{\Delta u}{\Delta t}.
+  \end{equation}
+  令 $\Delta x\to0$、$\Delta t\to0$，左边那个差商就是 $u_{xx}$：
+  \begin{equation}
+    \boxed{\;u_t-a^2u_{xx}=0,\qquad a^2=\frac{k}{c\rho}=\kappa\;}
+  \end{equation}
+  其中 $\kappa$ 叫热扩散率。课件 p2 把 $a$ 写成 $\sqrt{k/(c\rho)}=\kappa$，同一个东西。
+\end{enumerate}
+
+\begin{figbox}
+\begin{tikzpicture}[xscale=1.15,yscale=0.85]
+  \fill[bandviolet] (0.6,0) rectangle (5.4,0.85);
+  \draw[violet,thick] (0.6,0) rectangle (5.4,0.85);
+  \draw[decorate,decoration={snake,amplitude=0.6pt,segment length=6pt},petal]
+        (0.6,0.42) -- (5.4,0.42);
+  \draw[dashed] (0.6,-0.35) -- (0.6,1.15);
+  \draw[dashed] (5.4,-0.35) -- (5.4,1.15);
+  \node[below] at (0.6,-0.38) {$x$};
+  \node[below] at (5.4,-0.38) {$x+\Delta x$};
+  \node[above] at (0.6,1.12) {$u(x,t)$};
+  \node[above] at (5.4,1.12) {$u(x+\Delta x,t)$};
+  \draw[-{Stealth[length=4pt]},violet,thick] (0.05,0.42) -- (0.55,0.42);
+  \node[left,align=right] at (0.02,0.42) {$Q|_x$\\流入};
+  \draw[-{Stealth[length=4pt]},violet,thick] (5.45,0.42) -- (5.95,0.42);
+  \node[right,align=left] at (5.98,0.42) {$Q|_{x+\Delta x}$\\流出};
+  \node[below] at (3.0,-0.08) {\small 截面积 $S$，密度 $\rho$，比热 $c$};
+\end{tikzpicture}
+
+\small 图 1\quad 微元 $[x,x+\Delta x]$ 的热量收支。流入减流出等于这段吸收的热量（课件 p1 图的重绘，标的是课件 p2 的记号）。
+\end{figbox}
+
+\subhdr{1.3\quad 三维与内热源（课件 p3--p4）}
+
+三维只是把同样的账在三个方向上各记一遍。三个方向净流入的热量加起来是
+\begin{equation}
+  \Delta Q=k\,v\,t\left(\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}+\frac{\partial^2 u}{\partial z^2}\right)
+  =k\,v\,t\,\Delta u ,
+\end{equation}
+于是
+\begin{equation}
+  u_t-a^2\Delta u=0,\qquad a^2=\frac{k}{c\rho}.
+\end{equation}
+
+有内热源时（课件 p4），设 $F(\vect r,t)$ 是单位时间单位体积产生的热量，单位 \unit{W\cdot m^{-3}}。它进入守恒式的方式与「吸收」并列，最后得到
+\begin{equation}
+  u_t-a^2\Delta u=f(\vect r,t),\qquad f=\frac{F}{c\rho}.
+\end{equation}
+$f$ 的量纲是 \unit{K\cdot s^{-1}}：$F$ 除以 $c\rho$。核对一次：$[F]=\unit{W\cdot m^{-3}}$，$[c\rho]=\unit{J\cdot m^{-3}\cdot K^{-1}}$，相除得 \unit{K\cdot s^{-1}}，正是温度的变化率，对。
+
+课件 p4 末尾特意加了一句 \emph{Remark}：热传导方程里对 $t$ 的导数是\textbf{一阶}。这一句是为 \S3.2 埋的伏笔——初值只给一个。
+
+\subhdr{1.4\quad 扩散方程：换名字不换骨架（课件 p5--p6）}
+
+把温度换成浓度、热量换成粒子数，得到完全平行的一套：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{环节} & \thead{热传导} & \thead{扩散} \\
+\tabmidrule
+本构关系 & 傅里叶定律 $q=-k\,u_x$ & 菲克定律 $q=-D\,u_x$ \\
+$q$ 的单位 & \unit{W\cdot m^{-2}} & \unit{mol\cdot m^{-2}\cdot s^{-1}} \\
+守恒律 & 能量守恒 & 质量守恒 \\
+方程 & $u_t-a^2u_{xx}=0$，$a^2=\dfrac{k}{c\rho}$ & $u_t-a^2u_{xx}=0$，$a^2=D$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+课件 p5 的推导与 \S1.2 逐字对应，只把 $c\rho$ 换成 $1$：因为「吸收」在这里就是这段体积内粒子数增加 $\Delta u\cdot S\Delta x$，不需要比热。
+
+\callout{
+\textbf{这一节的结论只有一句。}热传导与扩散是同一个方程，差别全在系数叫什么。所以后面所有求解方法对两者同时有效；考试里真正需要判断的是\emph{这一次的 $a^2$ 由哪几个物理量组成}，以及\emph{边界条件在说什么}。
+}
+
+\subhdr{1.5\quad 一个小例子：先把稳态认出来}
+
+一根杆两端分别保持温度 $0$ 和 $u_1$，时间足够长以后温度不再变化。这时 $u_t=0$，方程退化成
+\begin{equation}
+  a^2u_{xx}=0\ \Longrightarrow\ u_{xx}=0\ \Longrightarrow\ u(x)=Ax+B .
+\end{equation}
+代入两端：$u(0)=0\Rightarrow B=0$；$u(\ell)=u_1\Rightarrow A=u_1/\ell$。所以 $u(x)=u_1x/\ell$，温度沿杆线性分布。
+
+这个例子只用了一次求导和两个边界条件，却包含了本册后面所有方法的影子：方程定「形状」，边界定「常数」。$\ell=1\unit{m}$、$u_1=100\unit{K}$ 时，$u(0.3)=30\unit{K}$、$u(0.7)=70\unit{K}$——线性，可以口算核对。
+
+%=====================================================================
+\hdr{\S2}{\S7.3 泊松方程：稳态的三种外衣}
+\phantomsection\label{sec:s2}
+%=====================================================================
+
+如果场不随时间变，$u_t=0$，输运方程就退化成一个只含空间导数的方程。它在不同物理里换三件外衣，本体是同一个。
+
+\subhdr{2.1\quad 静电场（课件 p7）}
+
+真空中的高斯定理与电位的关系是
+\begin{equation}
+  \nabla\cdot\vect E=\frac{\rho}{\varepsilon_0},\qquad \vect E=-\nabla u ,
+\end{equation}
+其中 $\rho$ 是体电荷密度 \unit{C\cdot m^{-3}}，$u$ 是电位。把第二式代入第一式：
+\begin{equation}
+  \nabla\cdot(-\nabla u)=\frac{\rho}{\varepsilon_0}
+  \ \Longrightarrow\
+  \boxed{\;\Delta u=-\frac{\rho}{\varepsilon_0}\;}
+\end{equation}
+
+\textbf{这里有两处要盯住。}
+\begin{itemize}
+  \item 负号来自 $\vect E=-\nabla u$：电场指向电位降低的方向。
+  \item 若该区域没有电荷（$\rho=0$），方程变成 $\Delta u=0$，这就是拉普拉斯方程。课件 p7 把它单独列出来，不是新方程，是泊松方程的特例。
+\end{itemize}
+
+\subhdr{2.2\quad 稳态热传导（课件 p8）}
+
+令 $u_t=0$，输运方程 $u_t-a^2\Delta u=f$ 给出
+\begin{equation}
+  \Delta u=-\frac{f}{a^2}.
+\end{equation}
+若没有内热源（$f=0$），则 $\Delta u=0$。
+
+$\Delta u=0$ 有一个非常强的物理含义，值得记下来：\textbf{稳态、无内热源的温度场没有局部极值}（在区域内部）。也就是说最高温和最低温只能出现在边界上；如果边界温度处处相同，内部温度就必须处处相同。第八章例 8.1.5 求矩形域温度分布时，最后那幅等温线图正是这个结论的图形版。
+
+\subhdr{2.3\quad 稳态扩散（课件 p8）}
+
+同一句话：源和边界不随时间变，浓度最终也不随时间变，于是
+\begin{equation}
+  \Delta u=-\frac{f}{a^2},\qquad a^2=D .
+\end{equation}
+课件 p8 的原话是 \emph{In the same form as Poisson's equation!}——形式相同，只是 $f/a^2$ 的含义不同。
+
+\subhdr{2.4\quad 三个方程放在一张表里}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.20\linewidth}p{0.20\linewidth}p{0.22\linewidth}p{0.24\linewidth}@{}}
+\thead{方程} & \thead{原型} & \thead{数学形式} & \thead{由哪个守恒律来} \\
+\tabmidrule
+波动 & 弦的横振动 & $u_{tt}=a^2\Delta u+f$ & 牛顿第二定律（质点） \\
+输运 & 热传导、扩散 & $u_t=a^2\Delta u+f$ & 能量守恒 / 质量守恒 \\
+稳态 & 静电场、稳态温度 & $\Delta u=-f/a^2$ & 高斯定理 / 稳态守恒 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{2.5\quad 课件 p9 的两条提醒}
+
+课件在这里停了停，说了两句容易被跳过、但决定了后面所有推导适用范围的话。
+
+\textbf{(1) 线性是有前提的假设。}波速、热扩散率、扩散系数在推导中都被当成与待求函数无关的常数。正因为如此，$a^2$ 才能提到导数外面，方程才是线性的。现实里 $k$ 随温度变、$D$ 随浓度变，方程就非线性了。本册后面全部依赖这一步，所以凡是遇到「$a$ 是不是常数」的判断题，答案的关键在于「材料参数是否随 $u$ 变」。
+
+\textbf{(2) 三种现象现实中是耦合的。}课件举的例子是电磁波在等离子体里传播：场改变浓度与温度分布，分布又反过来改变传播。分开建模只是近似。
+
+\warnbox{
+\textbf{这两条对做题的实际影响。}考试里如果题目说「$k$ 为常数」「小振幅」，那是在给你线性化的授权，可以直接用本册的方法；如果题目特意强调 $k=k(u)$，那这道题落在本册方法之外，不要硬套分离变量。
+}
+
+%=====================================================================
+\hdr{\S3}{\S7.4 定解条件：方程为什么定不住解}
+\phantomsection\label{sec:s3}
+%=====================================================================
+
+课件 p10 的第一句是全章最容易被低估的一句：\emph{仅有方程，系统的状态无法确定，因为演化还取决于「历史」与「环境」}。历史就是初始条件，环境就是边界条件。
+
+\subhdr{3.1\quad 一个直观的对照}
+
+同一个方程 $u_t-a^2u_{xx}=0$，初始温度一条是常数 $T_0$（杆处处同温），一条是 $\sin(\pi x/\ell)$（中间热、两端冷）。这两条曲线的后续完全不同：前者永远不变，后者逐渐被抹平。方程本身没有区别，区别在初始条件。所以「解一个定解问题」= 方程 + 初始条件 + 边界条件，缺一不可。
+
+\subhdr{3.2\quad 初始条件：个数由时间导数的阶数决定}
+
+这一条在 \S0.2 的表里已经列过，这里给出来源：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{方程类型} & \thead{初始条件个数} & \thead{标准写法} \\
+\tabmidrule
+输运 $u_t=a^2\Delta u+f$ & 一个 & $u\big|_{t=0}=\varphi(\vect r)$ \\
+波动 $u_{tt}=a^2\Delta u+f$ & 两个 & $u\big|_{t=0}=\varphi(\vect r)$，\ $u_t\big|_{t=0}=\psi(\vect r)$ \\
+泊松 $\Delta u=-f/a^2$ & 没有 & 稳态没有「历史」可给 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{为什么是这个数？}因为初始条件要能唯一确定解在 $t=0$ 附近的行为。$u_t$ 里含一阶时间导数，给了 $u(0)$ 就够；$u_{tt}$ 里含二阶，需要同时给位移和速度。这在常微分方程里是同一件事：$y'=f$ 给一个初值，$y''=f$ 给两个。
+
+课件 p10 把四个名字并排列出：初始位移、初始速度、初始温度、初始浓度。它们属于同一类条件的不同物理外衣。
+
+\subhdr{3.3\quad 例题（课件 p11）：三角形初始位移}
+
+\qstem{（课件 p11）一根长 $\ell$ 的弦两端固定（$u(0,t)=u(\ell,t)=0$）。$t=0$ 时把 $x=b$ 处从平衡位置拉开高度 $h$，然后松手。写出这个问题的初始条件。}
+
+\textbf{读题的关键在图不在字。}课件 p11 的图上画的是一条\textbf{折线}：从 $(0,0)$ 直线升到 $(b,h)$，再直线降到 $(\ell,0)$。这是把弦在 $b$ 处顶起后形成的三角形状，不是「只有一点位移」。
+
+所以初始位移是分段函数
+\begin{equation}
+  u(x,0)=\varphi(x)=
+  \begin{cases}
+    \dfrac{h}{b}\,x, & 0\le x<b,\\[8pt]
+    \dfrac{h}{\ell-b}\,(\ell-x), & b<x\le \ell .
+  \end{cases}
+\end{equation}
+两段在 $x=b$ 处都等于 $h$，连续；在 $x=0$、$x=\ell$ 处都等于 $0$，与固定端的边界条件相容。
+
+松手表示没有初速度：
+\begin{equation}
+  u_t(x,0)=\psi(x)=0 .
+\end{equation}
+
+\warnbox{
+\textbf{这里最常见的两个错。}(1) 把初始位移写成 $h\delta(x-b)$：那是「只有一点被抬起、其余处处为零」的位移，与图上折线不符，而且它给出的位移量纲也不对（$\delta$ 的量纲是 $1/\unit{m}$，乘 $h$ 后不是长度）。真正需要用 $\delta$ 的是\emph{冲量}——见附录 A.2。(2) 只写 $u(x,0)$ 而不写 $\varphi$ 在端点为零：虽然边界条件会管住端点，但初始位移与边界条件必须在端点相容，否则解的级数在端点处不收敛到给定值。
+}
+
+\subhdr{3.4\quad 边界条件：三种类型}
+
+边界条件管的是「环境」。课件 p12 先给三种类型的一般形式，再 p13--p16 各给一个物理例子。一般形式（边界记作 $S$，$\vect n$ 为外法向，$\partial u/\partial n$ 是沿外法向的方向导数）：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{类型} & \thead{一般形式} & \thead{管住的是} \\
+\tabmidrule
+第一类（Dirichlet） & $u\big|_S=f$ & 函数值本身 \\
+第二类（Neumann） & $\dfrac{\partial u}{\partial n}\Big|_S=f$ & 法向变化率 \\
+第三类（Robin） & $\Big(\alpha u+\beta\dfrac{\partial u}{\partial n}\Big)\Big|_S=f$ & 函数值与变化率的线性组合 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+右端 $f=0$ 时称\textbf{齐次}，否则称\textbf{非齐次}。这个区分不是名词游戏：分离变量法要求边界条件齐次，非齐次的要先化掉（\S5.1 会做一次）。
+
+\subhdr{3.4.1\quad 第一类：值被固定（课件 p13）}
+
+\begin{itemize}
+  \item 弦的两端固定：
+  \begin{equation}
+    u(0,t)=0,\qquad u(\ell,t)=0 .
+  \end{equation}
+  齐次。
+  \item 杆的左端泡在冰水里（$0^\circ\mathrm C$，取为零点）、右端温度按给定函数变化：
+  \begin{equation}
+    u(0,t)=0,\qquad u(\ell,t)=f(t).
+  \end{equation}
+  左端齐次、右端非齐次。
+\end{itemize}
+
+\textbf{怎么判断是这一类？}看题目给的是不是「这一点的某个物理量等于多少」。固定、恒温、给定温度曲线，都是第一类。
+
+\subhdr{3.4.2\quad 第二类：变化率被固定（课件 p14--p15）}\label{sec:bc2}
+
+这一类在考试里最容易错符号，所以推导要慢。课件 p14 的思路是：端点的内力等于外力，而内力由胡克定律与应变（即 $u_x$）联系。课件写的是「外法向胡克定律」
+\begin{equation}
+  \frac{f_n}{S}=E\,\frac{\partial u}{\partial n}.
+\end{equation}
+
+\textbf{右端。}$x=\ell$ 处外法向 $\vect n=+\vect x$，所以 $\partial u/\partial n=u_x$。若外力沿 $+x$ 的分量为 $f_x$，则
+\begin{equation}
+  ES\,u_x(\ell,t)=f_x(\ell,t).
+\end{equation}
+这与课件 p14 的 $\partial u/\partial x\big|_{x=\ell}=f(t)/(ES)$ 一致（那里 $f$ 就是沿 $+x$ 的外力）。
+
+\textbf{左端。}$x=0$ 处外法向 $\vect n=-\vect x$，所以 $\partial u/\partial n=-u_x$。同一个胡克定律要求
+\begin{equation}
+  ES\,u_x(0,t)=-f_x(0,t).
+\end{equation}
+
+课件 p14 把左端写成 $\partial u/\partial x\big|_{x=0}=-f(t)/(ES)$，其中 $f$ 被解释为「外法向分量」。这两种写法在\emph{同一个端点}上只是记号差别，但\textbf{不能把两端的 $f$ 都当成同一个外法向分量直接代入}：左端的外法向是 $-\vect x$，一旦外力方向反过来，「外法向分量」的正负也跟着反，符号就丢了。
+
+\warnbox{
+\textbf{一个能自查的判据。}无体力时静止杆满足 $u_{xx}=0$，所以 $u_x$ 在整根杆上是\emph{同一个常数}。用它检验两端条件：
+
+\textbf{两端同时受压}（各受 $F_0$ 指向杆内）：左端 $f_x=+F_0$，右端 $f_x=-F_0$，于是 $u_x(0)=-F_0/(ES)$、$u_x(\ell)=-F_0/(ES)$，两端一致，杆被均匀压缩，$u_x<0$，物理上正确。
+
+\textbf{两端同时受拉}（各受 $f$ 指向杆外）：左端 $f_x=-f$，右端 $f_x=+f$，于是 $u_x(0)=+f/(ES)$、$u_x(\ell)=+f/(ES)$，两端一致，均匀拉伸，$u_x>0$，正确。
+
+反过来，如果把课件 p14 的两式按「同一个外法向分量 $f$」直接照抄成 $u_x(0)=-f/(ES)$、$u_x(\ell)=+f/(ES)$，那么两端等大受拉时会要求 $u_x$ 同时等于 $-f/(ES)$ 和 $+f/(ES)$，只有 $f=0$ 才成立——条件互相矛盾。这就是本册改用「沿 $+x$ 的分量 $f_x$」的原因：\emph{一个符号约定管两端，才不会在端点翻转处丢负号}。
+}
+
+\textbf{热传导的对应版本（课件 p15）。}傅里叶定律写成外法向形式是 $q_n=-k\,\partial u/\partial n$。右端 $\vect n=+\vect x$：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{情形} & \thead{条件} & \thead{读法} \\
+\tabmidrule
+热流从右端\textbf{流出}，大小为 $f$ & $u_x(\ell,t)=-\dfrac{f(t)}{k}$ & 流出时 $u$ 沿 $+x$ 下降 \\
+热流从右端\textbf{流入}，大小为 $f$ & $u_x(\ell,t)=+\dfrac{f(t)}{k}$ & 流入时 $u$ 沿 $+x$ 上升 \\
+\textbf{绝热}（$f=0$） & $u_x(\ell,t)=0$ & 端面没有热交换 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+绝热对应「第二类齐次」，这是第八章例 8.1.3 用到的条件。
+
+\textbf{杆的「自由端」也在这里。}$f(t)=0$ 时 $u_x=0$，物理上是端面不受力、可以自由伸缩，所以叫自由端。第八章 p13 作业 2 就用了左固定（第一类）＋右自由（第二类齐次）的组合。
+
+\subhdr{3.4.3\quad 第三类：值与变化率被绑在一起（课件 p16）}\label{sec:bc3}
+
+课件 p16 的模型是：杆的右端通过一根弹簧连到固定物上（平衡位置 $u_0$，劲度系数 $k$）。端点的应力等于弹簧的回弹力：
+\begin{equation}
+  \Big(ES\,\frac{\partial u}{\partial n}\Big)\Big|_{x=\ell}=-k\,(u-u_0)\big|_{x=\ell}
+  \ \Longrightarrow\
+  \Big(u+\frac{ES}{k}\,\frac{\partial u}{\partial x}\Big)\Big|_{x=\ell}=u_0 .
+\end{equation}
+
+这就是第三类：$u$ 与 $u_x$ 的线性组合被固定为常数。课件 p16 强调 $\alpha,\beta$ 都是非零常数——两者缺一，就退化成第一类或第二类了。
+
+\warnbox{
+\textbf{$k$ 有两个身份。}\S1 里 $k$ 是热导率 \unit{W\cdot m^{-1}\cdot K^{-1}}；这里 $k$ 是弹簧劲度系数 \unit{N\cdot m^{-1}}。同一个字母，两套量纲。做题时先看题目上下文，别把 $\mathrm{ES}/k$ 当成长度以外的量：$\mathrm{ES}/k$ 的量纲是 $\unit{N}/\unit{N\cdot m^{-1}}=\unit{m}$，与 $u$ 一致，这正是它得以加在 $u$ 旁边的理由。
+}
+
+\subhdr{3.5\quad 另外两类条件：自然边界条件与周期条件（课件 p17）}
+
+\textbf{自然边界条件。}在极坐标、柱坐标、球坐标里，$r=0$ 与 $r\to\infty$ 以及 $\theta=0$、$\theta=\pi$ 不是真的「边界」，但解在那里必须有意义：通常要求有界。课件 p17 的表述是 \emph{the function should be finite}。
+
+\textbf{周期条件。}系统对旋转对称（圆、柱、球）时，绕一圈回来应回到原值：
+\begin{equation}
+  u(\varphi)=u(\varphi+2\pi).
+\end{equation}
+它是第三类的「近亲」——不是把值与导数绑在一起，而是把两端的值与导数分别相等。课件 p17 还留了两个反问：\emph{Without boundary conditions? Without initial conditions?} 这两个问题的答案是：方程会定不住解，或者解会多到无法挑出物理上那一个。
+
+\subhdr{3.6\quad 衔接条件（课件 p18）}
+
+两种材料接在一起时，界面处两个条件缺一不可：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{物理情形} & \thead{条件一（连续）} & \thead{条件二（流量连续）} \\
+\tabmidrule
+两段不同材料的杆 & $u_1\big|_{x=x_0}=u_2\big|_{x=x_0}$ & $E_1\dfrac{\partial u_1}{\partial x}\Big|_{x_0}=E_2\dfrac{\partial u_2}{\partial x}\Big|_{x_0}$ \\
+两种介质的界面（无面电荷） & $u_1\big|_{x=x_0}=u_2\big|_{x=x_0}$ & $\varepsilon_1\dfrac{\partial u_1}{\partial x}\Big|_{x_0}=\varepsilon_2\dfrac{\partial u_2}{\partial x}\Big|_{x_0}$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+第一条说「界面不裂开」（位移或电位连续），第二条说「界面不积攒」（力或电位移法向分量连续）。两条各管一件事，少一条就定不住。
+
+\subhdr{3.7\quad 拿到题先问三步}
+
+\begin{enumerate}[label=\textbf{第 \arabic* 问}]
+  \item \textbf{方程是几阶时间导数？}一阶给一个初始条件，二阶给两个，稳态不给。
+  \item \textbf{每个端点在说什么？}给值是第一类；给变化率（力、热流、绝热、自由）是第二类；给两者的组合（弹性连接、对流换热）是第三类。端点接另一种材料则是衔接条件。
+  \item \textbf{有没有对称性？}有旋转对称就加周期条件；极坐标还要加自然边界条件。
+\end{enumerate}
+
+三问过后，定解问题就完整了。第八章所有例题的第一步都是这三问，不再重复。
+
+%=====================================================================
+\hdr{\S4}{\S8.1 齐次输运方程：分离变量法}
+\phantomsection\label{sec:s4}
+%=====================================================================
+
+从这里开始解方程。先看第八章的第一个例题，它把方法的所有零件都摆了一次。
+
+\subhdr{4.1\quad 五步骨架}
+
+对\emph{齐次方程 + 齐次边界条件}的问题：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.06\linewidth}p{0.86\linewidth}@{}}
+\thead{步} & \thead{做什么} \\
+\tabmidrule
+1 & 设 $u(x,t)=X(x)T(t)$，代入方程，把只含 $x$ 的项与只含 $t$ 的项分开 \\
+2 & 两边只能等于同一个常数 $\lambda$；得到两个常微分方程，其中 \textbf{$X$ 的方程带上齐次边界条件}成为特征值问题 \\
+3 & 解特征值问题，得 $\lambda_n$ 与 $X_n(x)$ \\
+4 & 把 $\lambda_n$ 代回 $T$ 的方程，得 $T_n(t)$；叠加成级数 \\
+5 & 用初始条件定系数（利用 $X_n$ 的正交性） \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{这五步里只有第 2、3 步是「难的」。}第 4、5 步是机械操作。所以做题的时间应该压在前两步上：分离是否正确、特征值问题是否解对。
+
+\subhdr{4.2\quad 例 8.1.3：左端零温、右端绝热（课件 p1--p3）}
+
+题目（课件 p1，Example 8.1.3）：长 $\ell$ 的杆，左端温度恒为零、右端绝热，初始温度分布为 $f(x)$，求之后各时刻的温度 $u(x,t)$。写成定解问题是
+\begin{equation}
+  \begin{cases}
+    u_t-a^2u_{xx}=0, & 0<x<\ell,\ t>0,\\
+    u(0,t)=0, & \text{左端恒温零（第一类齐次）},\\
+    u_x(\ell,t)=0, & \text{右端绝热（第二类齐次）},\\
+    u(x,0)=f(x), & \text{初始温度}.
+  \end{cases}
+\end{equation}
+
+\step{第 1 步：分离}
+代入 $u=XT$：$X T'=a^2X''T$，两边除以 $a^2XT$：
+\begin{equation}
+  \frac{T'}{a^2T}=\frac{X''}{X}=\text{常数}.
+\end{equation}
+左边只含 $t$、右边只含 $x$，要恒等就只能都是常数。记这个常数为 $-\lambda$（为什么带负号，下面第 3 步会看到）：
+
+\begin{equation}
+  \frac{X''}{X}=-\lambda,\qquad \frac{T'}{a^2T}=-\lambda .
+\end{equation}
+
+\step{第 2 步：边界条件跟着 $X$ 走}
+$u(0,t)=X(0)T(t)=0$ 要对所有 $t$ 成立。若 $T\equiv0$ 则 $u\equiv0$（平凡解，不要），所以只能 $X(0)=0$。同理 $X'(\ell)=0$。特征值问题是
+\begin{equation}
+  \begin{cases}
+    X''+\lambda X=0,\\
+    X(0)=0,\\
+    X'(\ell)=0 .
+  \end{cases}
+\end{equation}
+
+\step{第 3 步：解特征值问题}
+按 $\lambda$ 的符号分三种情况——这一步不能跳，跳了就无法说明为什么只要正的。
+
+\textbf{若 $\lambda<0$}，记 $\lambda=-s^2$（$s>0$），方程 $X''=s^2X$，通解 $X=A\mathrm e^{sx}+B\mathrm e^{-sx}$。由 $X(0)=0$ 得 $B=-A$，所以 $X=2A\sinh(sx)$；由 $X'(\ell)=A\cdot2s\cosh(s\ell)=0$ 得 $A=0$（因为 $\cosh>0$）。只有平凡解。
+
+\textbf{若 $\lambda=0$}，方程 $X''=0$，$X=A+Bx$。$X(0)=0\Rightarrow A=0$；$X'(\ell)=B=0$。又是平凡解。
+
+\textbf{若 $\lambda>0$}，记 $\lambda=k^2$（$k>0$），$X=A\cos kx+B\sin kx$。$X(0)=0\Rightarrow A=0$，所以 $X=B\sin kx$；$X'(\ell)=Bk\cos k\ell=0$。因为要非平凡解，$B\neq0$，$k\neq0$，只能
+\begin{equation}
+  \cos k\ell=0\ \Longrightarrow\ k\ell=\frac{\pi}{2}+n\pi=\Big(n+\frac12\Big)\pi,\qquad n=0,1,2,\dots
+\end{equation}
+于是
+\begin{equation}
+  \boxed{\;\lambda_n=\Big(\frac{n+\frac12}{\ell}\pi\Big)^2,\qquad
+  X_n(x)=\sin\Big(\frac{n+\frac12}{\ell}\pi x\Big),\quad n=0,1,2,\dots\;}
+\end{equation}
+
+这就是课件 p2 的结果。注意 $n$ 从 $0$ 开始，对应 $\cos$ 的第一个零点 $\pi/2$；换成 $n=1,2,\dots$ 时写成 $\lambda_n=\big(\frac{2n-1}{2\ell}\pi\big)^2$、$X_n=\sin\big(\frac{2n-1}{2\ell}\pi x\big)$，是同一个级数的两种编号。
+
+\step{第 4 步：解 $T$ 并叠加}
+$T'+a^2\lambda_nT=0$ 是一阶线性方程，解是 $T_n(t)=B_n\mathrm e^{-a^2\lambda_n t}$。由于 $\lambda_n>0$，指数总是负的，\textbf{$T_n$ 随时间指数衰减}——这是 $-\lambda$ 这个负号带来的物理后果。乘积
+\begin{equation}
+  u_n(x,t)=C_n\,\mathrm e^{-a^2\lambda_n t}\sin\Big(\frac{n+\frac12}{\ell}\pi x\Big)
+\end{equation}
+满足方程与两个边界条件，任意有限个之和也满足，于是叠加成
+\begin{equation}
+  u(x,t)=\sum_{n=0}^{\infty}C_n\,\mathrm e^{-\left(\frac{n+\frac12}{\ell}\pi a\right)^2t}
+  \sin\Big(\frac{n+\frac12}{\ell}\pi x\Big).
+\end{equation}
+
+\step{第 5 步：用初始条件定 $C_n$}
+令 $t=0$：
+\begin{equation}
+  f(x)=\sum_{n=0}^{\infty}C_n\sin\Big(\frac{n+\frac12}{\ell}\pi x\Big).
+\end{equation}
+利用 $X_n$ 在 $[0,\ell]$ 上正交（模方 $\ell/2$，见验证脚本第二组断言），两端同乘 $X_m$ 再积分：
+\begin{equation}
+  \boxed{\;C_n=\frac{2}{\ell}\int_0^{\ell}f(x)\sin\Big(\frac{n+\frac12}{\ell}\pi x\Big)\dd x\;}
+\end{equation}
+
+\subhdr{4.3\quad 补算：课件 p2 的「$C_n=?$」}\label{sec:c-n}
+
+课件在给出 $C_n$ 的公式后，马上给了一个特例：若
+\begin{equation}
+  f(x)=u_0\frac{x}{\ell},
+\end{equation}
+$C_n$ 等于多少？（课件把这一问留在了页面上。）算一下：
+
+\begin{equation}
+  C_n=\frac{2}{\ell}\cdot\frac{u_0}{\ell}\int_0^{\ell}x\sin\Big(\frac{n+\frac12}{\ell}\pi x\Big)\dd x .
+\end{equation}
+记 $\beta=\frac{(n+\frac12)\pi}{\ell}$，则 $\int_0^{\ell}x\sin\beta x\dd x=\Big[-\frac{x\cos\beta x}{\beta}+\frac{\sin\beta x}{\beta^2}\Big]_0^{\ell}$。因为 $\cos\beta\ell=\cos\big((n+\frac12)\pi\big)=0$，第一项消失；$\sin\beta\ell=\sin\big((n+\frac12)\pi\big)=(-1)^n$，所以
+\begin{equation}
+  \int_0^{\ell}x\sin\beta x\dd x=\frac{(-1)^n}{\beta^2}=\frac{(-1)^n\ell^2}{\big(n+\frac12\big)^2\pi^2}.
+\end{equation}
+代回：
+\begin{equation}
+  C_n=\frac{2u_0}{\ell^2}\cdot\frac{(-1)^n\ell^2}{\big(n+\frac12\big)^2\pi^2}
+  =\boxed{\;\frac{8u_0(-1)^n}{(2n+1)^2\pi^2}\;}
+\end{equation}
+
+前三个系数可以口算核对：$C_0=\dfrac{8u_0}{\pi^2}\approx0.811\,u_0$，$C_1=-\dfrac{8u_0}{9\pi^2}\approx-0.090\,u_0$，$C_2=\dfrac{8u_0}{25\pi^2}\approx0.032\,u_0$。符号交替、按 $1/n^2$ 衰减——一个跳变的端点（$x=0$ 处 $f$ 的导数不连续于边界条件）会让系数衰减得比光滑情况慢。
+
+\subhdr{4.4\quad 例 8.1.4：两端绝热（课件 p4--p5）}
+
+定解问题：
+\begin{equation}
+  \begin{cases}
+    u_t-a^2u_{xx}=0,\\
+    u_x(0,t)=0,\qquad u_x(\ell,t)=0, & \text{两端都绝热},\\
+    u(x,0)=f(x).
+  \end{cases}
+\end{equation}
+同法分离，$T$ 的方程不变，$X$ 的问题换成
+\begin{equation}
+  X''+\lambda X=0,\qquad X'(0)=0,\qquad X'(\ell)=0 .
+\end{equation}
+
+\step{解特征值问题}
+$\lambda<0$ 时 $X=2A\sinh(sx)$，$X'(0)=2As\neq0$ 除非 $A=0$，平凡。$\lambda=0$ 时 $X=A$（常数）\emph{满足} $X'=0$——这一次零不是平凡解！所以 $\lambda_0=0$ 是特征值，$X_0=1$。$\lambda>0$ 时 $X=B\sin kx$（由 $X'(0)=0$ 得 $A=0$），$X'(\ell)=Bk\cos k\ell=0$ 给出 $k\ell=n\pi$，即 $\lambda_n=(n\pi/\ell)^2$，$X_n=\cos(n\pi x/\ell)$，$n=1,2,\dots$
+
+合起来（把常数模并进编号 $n=0$）：
+\begin{equation}
+  \boxed{\;\lambda_n=\Big(\frac{n\pi}{\ell}\Big)^2,\qquad X_n(x)=\cos\Big(\frac{n\pi}{\ell}x\Big),\quad n=0,1,2,\dots\;}
+\end{equation}
+
+\step{叠加与定系数}
+\begin{equation}
+  u(x,t)=\sum_{n=0}^{\infty}C_n\,\mathrm e^{-\left(\frac{n\pi a}{\ell}\right)^2t}\cos\Big(\frac{n\pi}{\ell}x\Big)
+\end{equation}
+令 $t=0$ 并利用 $\cos$ 系的正交性（$n=0$ 与 $n\ge1$ 的模方不同：$\ell$ 与 $\ell/2$），
+\begin{equation}
+  C_0=\frac{1}{\ell}\int_0^{\ell}f(x)\dd x,\qquad
+  C_n=\frac{2}{\ell}\int_0^{\ell}f(x)\cos\Big(\frac{n\pi}{\ell}x\Big)\dd x\quad(n\ge1).
+\end{equation}
+
+\subhdr{4.5\quad $n=0$ 这一项不是多余的：总热量守恒}
+
+课件 p5 右上角的红框问了一句：\emph{$T'+a^2\lambda T=0$ 的解依赖 $\lambda$ 吗？}答案是依赖的，而且这个依赖在 $n=0$ 时特别有意思：$\lambda_0=0$ 使 $T_0'=0$，即 $T_0$ 是常数，\textbf{不衰减}。
+
+物理含义正是守恒：两端绝热时整根杆不与外界交换热量。把方程对 $x$ 积分，
+\begin{equation}
+  \frac{\dd}{\dd t}\int_0^{\ell}u\dd x=a^2\int_0^{\ell}u_{xx}\dd x=a^2\big[u_x(\ell,t)-u_x(0,t)\big]=0,
+\end{equation}
+两个端点条件让右端为零，所以 $\int_0^\ell u\dd x$ 不随时间变。而级数里只有 $C_0$ 项对积分有贡献（$n\ge1$ 的 $\cos$ 在一个周期内积分为零），$\ell C_0=\int_0^\ell f\dd x$ 恰好就是初始总热量。
+
+\callout{
+\textbf{一个立刻能用的检验。}对两端绝热的题，把级数解代入 $\int_0^\ell u\dd x$ 应该只得到 $\ell C_0$，与 $t$ 无关。若你做出来的解在 $t\to\infty$ 时整体趋于零，那么 $C_0$ 一定算错了或者漏掉了 $n=0$ 这一项——绝热杆不会自己变凉。
+}
+
+\subhdr{4.6\quad 四组边界，一张速查表}
+
+分离变量时遇到的特征值问题只有以下几种（$\ell$ 为区间长度）：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}llll@{}}
+\thead{边界} & \thead{$\lambda_n$} & \thead{$X_n(x)$} & \thead{系数公式} \\
+\tabmidrule
+$X(0)=X(\ell)=0$ & $\Big(\dfrac{n\pi}{\ell}\Big)^2$，$n\ge1$ & $\sin\dfrac{n\pi x}{\ell}$ & $C_n=\dfrac{2}{\ell}\displaystyle\int_0^{\ell}f\sin\dfrac{n\pi x}{\ell}\dd x$ \\
+$X'(0)=X'(\ell)=0$ & $\Big(\dfrac{n\pi}{\ell}\Big)^2$，$n\ge0$ & $\cos\dfrac{n\pi x}{\ell}$ & $n=0$ 用 $\dfrac1\ell$，$n\ge1$ 用 $\dfrac2\ell$ \\
+$X(0)=X'(\ell)=0$ & $\Big(\dfrac{(n+\frac12)\pi}{\ell}\Big)^2$，$n\ge0$ & $\sin\dfrac{(n+\frac12)\pi x}{\ell}$ & $C_n=\dfrac{2}{\ell}\displaystyle\int_0^{\ell}f\sin\dfrac{(n+\frac12)\pi x}{\ell}\dd x$ \\
+$X'(0)=X(\ell)=0$ & $\Big(\dfrac{(n+\frac12)\pi}{\ell}\Big)^2$，$n\ge0$ & $\cos\dfrac{(n+\frac12)\pi x}{\ell}$ & $C_n=\dfrac{2}{\ell}\displaystyle\int_0^{\ell}f\cos\dfrac{(n+\frac12)\pi x}{\ell}\dd x$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{怎么记？}看哪个端点是「值为零」、哪个是「导数为零」：值零的一端 $\sin$ 或 $\cos$ 取零点，导数零的一端取极值点。两端的零点决定 $\lambda_n$ 里的「半整数」是否出现。第四行（左自由右固定）用 $\cos$ 的半整数版本，第八章 p13 作业 2 是它的变体（左固定、右自由，$X(0)=X'(\ell)=0$，即第三行）。
+
+\subhdr{4.7\quad 结果讨论（课件 p3）}
+
+课件 p3 对例 8.1.3 的解给了两条讨论，都值得记住。
+
+\textbf{(1) 只能往后算，不能往前算。}$t=0$ 的温度分布决定 $t>0$ 的分布，但反过来不行：从当前温度无法唯一推出过去。数学上的原因是 $\lambda_n>0$ 时 $\mathrm e^{-a^2\lambda_nt}$ 在 $t>0$ 衰减、在 $t<0$ \emph{增长}，级数在 $t<0$ 一般发散。
+
+\textbf{(2) 长时间后趋于零。}因为没有热源，热量的唯一去向是被两端「吸走」（左端恒为 0）。$t\to\infty$ 时每一项都趋于零。课件把它概括为「数学上 $t<0$ 发散，物理上热传导不可逆」。
+
+\warnbox{
+\textbf{对比记一句。}例 8.1.4（两端绝热）长时间后趋于\textbf{平均温度}，不为零；例 8.1.3（一端恒零）长时间后趋于\textbf{零}。两题的方程一模一样，差别全在边界条件。这就是 \S3.7 三问里第二问为什么重要。
+}
+
+%=====================================================================
+\hdr{\S5}{\S8.3 二维 Laplace：矩形域稳态热传导}
+\phantomsection\label{sec:s5}
+%=====================================================================
+
+课件 p6--p9 处理的是二维稳态问题。方法没变，只是分离两次，其中一次分离出的是双曲函数而不是指数衰减。
+
+\subhdr{5.1\quad 问题与齐次化}
+
+矩形 $0<x<a$、$0<y<b$，三条边恒温 $u_0$，第四条边恒温 $U$：
+\begin{equation}
+  \begin{cases}
+    u_{xx}+u_{yy}=0, & 0<x<a,\ 0<y<b,\\
+    u\big|_{x=0}=u_0,\quad u\big|_{x=a}=u_0,\quad u\big|_{y=0}=u_0, & \text{三边},\\
+    u\big|_{y=b}=U, & \text{第四边}.
+  \end{cases}
+\end{equation}
+
+\textbf{直接分离不行。}分离变量要求边界条件齐次，这里四个都不齐次。所以先化齐次。
+
+课件 p7 的做法最简单：令
+\begin{equation}
+  u(x,y)=v(x,y)+u_0 .
+\end{equation}
+为什么常数 $u_0$ 就够？因为它满足 $\Delta u_0=0$（常数的二阶导数为零），并且它在三条边上的取值正好就是 $u_0$。把它减掉，三条边变成零：
+
+\begin{equation}
+  \begin{cases}
+    v_{xx}+v_{yy}=0,\\
+    v\big|_{x=0}=0,\quad v\big|_{x=a}=0,\quad v\big|_{y=0}=0, & \text{已齐次},\\
+    v\big|_{y=b}=U-u_0, & \text{剩下的非齐次}.
+  \end{cases}
+\end{equation}
+
+\callout{
+\textbf{课件 p6 先试过另一种分解。}那里把解拆成 $u=v+w$，让 $w$ 承担全部非齐次边界、$v$ 全齐次。两种做法都合法，但对本题常数平移已经够用——因为三条边同值这件事本身就是「常数部分」。判断标准只有一条：\emph{减掉之后有几个边界变齐次}。减 $u_0$ 一次化掉三个，这就是最优。
+}
+
+\subhdr{5.2\quad 分离：$X$ 给特征值，$Y$ 给双曲函数}
+
+设 $v=X(x)Y(y)$，代入 $v_{xx}+v_{yy}=0$ 并除以 $XY$：
+\begin{equation}
+  \frac{X''}{X}=-\frac{Y''}{Y}=\text{常数}=-\lambda .
+\end{equation}
+这里选 $-\lambda$ 而不是 $+\lambda$，理由与 \S4.2 相同，但更快能看出来：带齐次边界的是 $X$（$X(0)=X(a)=0$），只有取负号时它才有非平凡解。
+
+\begin{equation}
+  \begin{cases}
+    X''+\lambda X=0,\\
+    X(0)=0,\quad X(a)=0
+  \end{cases}
+  \qquad\Longrightarrow\qquad
+  \lambda_n=\Big(\frac{n\pi}{a}\Big)^2,\quad X_n=\sin\frac{n\pi x}{a},\quad n=1,2,\dots
+\end{equation}
+
+$Y$ 的方程是
+\begin{equation}
+  Y''-\lambda_nY=0\ \Longrightarrow\ Y=A\mathrm e^{\frac{n\pi}{a}y}+B\mathrm e^{-\frac{n\pi}{a}y}.
+\end{equation}
+
+\textbf{关键的一步：换写成双曲函数。}因为 $v\big|_{y=0}=0$，即 $Y(0)=0$，而 $A+B=0$。于是
+\begin{equation}
+  Y=B\big(\mathrm e^{\frac{n\pi}{a}y}-\mathrm e^{-\frac{n\pi}{a}y}\big)=2B\sinh\frac{n\pi y}{a}.
+\end{equation}
+直接把 $Y$ 写成 $\sinh$ 形式，后面就少一次化常数。这与课件 p9 的 $A_n\mathrm e^{n\pi y/a}+B_n\mathrm e^{-n\pi y/a}$ 是同一个函数族，只是把两个常数换成了一个。
+
+叠加：
+\begin{equation}
+  v(x,y)=\sum_{n=1}^{\infty}A_n\sinh\frac{n\pi y}{a}\sin\frac{n\pi x}{a}.
+\end{equation}
+
+\subhdr{5.3\quad 定系数：只剩奇数项}
+
+用最后一条非齐次边界 $v\big|_{y=b}=U-u_0$：
+\begin{equation}
+  \sum_{n=1}^{\infty}A_n\sinh\frac{n\pi b}{a}\sin\frac{n\pi x}{a}=U-u_0 .
+\end{equation}
+这是常数 $U-u_0$ 在 $[0,a]$ 上的正弦展开。系数
+\begin{equation}
+  A_n\sinh\frac{n\pi b}{a}=\frac{2}{a}\int_0^a(U-u_0)\sin\frac{n\pi x}{a}\dd x
+  =\frac{2(U-u_0)}{n\pi}\big(1-\cos n\pi\big).
+\end{equation}
+因为 $1-\cos n\pi$ 在 $n$ 为偶数时是 $0$、奇数时是 $2$，
+\begin{equation}
+  A_n\sinh\frac{n\pi b}{a}=
+  \begin{cases}
+    \dfrac{4(U-u_0)}{n\pi}, & n\ \text{奇},\\[6pt]
+    0, & n\ \text{偶}.
+  \end{cases}
+\end{equation}
+
+\textbf{偶数项为什么消失？}因为右端 $U-u_0$ 是\emph{常数}，关于矩形中线 $x=a/2$ 对称；而 $\sin\frac{n\pi x}{a}$ 在 $n$ 为偶数时关于中线反对称。对称的右端不能由反对称的项拼出来。这是「用对称性砍掉一半计算量」的标准例子。
+
+\subhdr{5.4\quad 最终解}
+
+把 $A_n$ 代回，写成 $n=2k+1$：
+\begin{equation}
+  \boxed{\;
+  u(x,y)=u_0+\frac{4(U-u_0)}{\pi}\sum_{k=0}^{\infty}\frac{1}{2k+1}\cdot
+  \frac{\sinh\dfrac{(2k+1)\pi y}{a}}{\sinh\dfrac{(2k+1)\pi b}{a}}
+  \sin\dfrac{(2k+1)\pi x}{a}\;}
+\end{equation}
+
+这与课件 p9 的式子逐项一致。课件给的算例是 $u_0=3$、$U=10$、$a=5$、$b=10$（单位任意，取一致即可）。
+
+\begin{figbox}
+\begin{tikzpicture}[scale=1.0]
+  \draw[violet,thick] (0,0) rectangle (3.2,2.6);
+  \draw[-{Stealth[length=4pt]}] (-0.45,0) -- (3.7,0);
+  \draw[-{Stealth[length=4pt]}] (0,-0.4) -- (0,3.0);
+  \node[below left] at (0,0) {$0$};
+  \node[below] at (3.2,-0.05) {$a$};
+  \node[left] at (-0.08,2.6) {$b$};
+  \node[below] at (1.6,-0.42) {$x$};
+  \node[left] at (-0.42,1.3) {$y$};
+  \node[above] at (1.6,2.72) {$u=U$};
+  \node[left] at (-0.22,1.3) {$u=u_0$};
+  \node[right] at (3.42,1.3) {$u=u_0$};
+  \node[below] at (1.6,0.12) {$u=u_0$};
+\end{tikzpicture}
+
+\small 图 2\quad 例 8.1.5 的矩形与边界（课件 p7 图的重绘）。三条边 $u_0$、一条边 $U$；把常数 $u_0$ 减掉后，三条边归零，问题只剩一条非齐次边界。
+\end{figbox}
+
+\subhdr{5.5\quad 三条自检（拿到答案后必做）}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{$y=0$：}$\sinh 0=0$，级数每一项都是零，$v=0$，$u=u_0$。对。
+  \item \textbf{$y=b$：}$\sinh$ 之比为 $1$，级数变成 $(U-u_0)$ 的正弦展开，收敛到 $U-u_0$，$u=U$。对。
+  \item \textbf{$x=0$ 与 $x=a$：}$\sin\frac{(2k+1)\pi x}{a}$ 在这两处为零，$v=0$，$u=u_0$。对。
+\end{enumerate}
+
+另外两条值得记住的性质：$\sinh$ 是单调递增的，所以温度随 $y$ 单调从 $u_0$ 升到 $U$，中间不会出现「比两端更热」的点；这与 \S2.2 讲的「稳态无内热源的温度场在区域内部没有极值」一致。若把 $\sinh$ 误写成 $\sin$ 或 $\cosh$，$y=0$ 的自检立刻失败——这就是为什么自检要挑边界做，而不是挑中间点。
+
+%=====================================================================
+\hdr{\S6}{\S8.4 矩形区域热传导：两个方向各一个特征值}
+\phantomsection\label{sec:s6}
+%=====================================================================
+
+课件 p10--p12 把分离变量用到二维、含时间的输运方程。这一节是前面所有零件的组装。
+
+\subhdr{6.1\quad 问题}
+
+矩形 $0<x<\ell_1$、$0<y<\ell_2$，四条边全部绝热：
+\begin{equation}
+  \begin{cases}
+    u_t=a^2(u_{xx}+u_{yy}), & 0<x<\ell_1,\ 0<y<\ell_2,\ t>0,\\
+    u_x(0,t)=u_x(\ell_1,t)=0, & \text{左右绝热},\\
+    u_y(0,t)=u_y(\ell_2,t)=0, & \text{上下绝热},\\
+    u(x,y,0)=\varphi(x,y), & \text{初始温度}.
+  \end{cases}
+\end{equation}
+
+\subhdr{6.2\quad 第一次分离：时间与空间}
+
+设 $u=v(x,y)T(t)$，代入并整理：
+\begin{equation}
+  \frac{T'}{a^2T}=\frac{v_{xx}+v_{yy}}{v}=-\lambda .
+\end{equation}
+于是
+\begin{equation}
+  T'+a^2\lambda T=0,\qquad v_{xx}+v_{yy}+\lambda v=0 .
+\end{equation}
+注意第二个方程里 $\lambda$ 还是未知的——它要由空间边界条件确定。$v$ 的方程带着四个齐次边界，构成二维特征值问题。
+
+\subhdr{6.3\quad 第二次分离：$x$ 与 $y$ 各拿一个特征值}
+
+设 $v=X(x)Y(y)$，代入 $v_{xx}+v_{yy}+\lambda v=0$ 并除以 $XY$：
+\begin{equation}
+  \frac{X''}{X}+\frac{Y''}{Y}+\lambda=0
+  \ \Longrightarrow\
+  \frac{X''}{X}=-\mu,\qquad \frac{Y''}{Y}=-\nu,\qquad \mu+\nu=\lambda .
+\end{equation}
+
+两个问题各自独立，各自带自己方向的两个齐次边界：
+
+\begin{equation}
+  \begin{cases}
+    X''+\mu X=0,\quad X'(0)=0,\quad X'(\ell_1)=0\\
+    \ \Longrightarrow\ \mu_n=\Big(\dfrac{n\pi}{\ell_1}\Big)^2,\quad X_n=\cos\dfrac{n\pi x}{\ell_1},\quad n=0,1,2,\dots
+  \end{cases}
+\end{equation}
+\begin{equation}
+  \begin{cases}
+    Y''+\nu Y=0,\quad Y'(0)=0,\quad Y'(\ell_2)=0\\
+    \ \Longrightarrow\ \nu_m=\Big(\dfrac{m\pi}{\ell_2}\Big)^2,\quad Y_m=\cos\dfrac{m\pi y}{\ell_2},\quad m=0,1,2,\dots
+  \end{cases}
+\end{equation}
+
+所以
+\begin{equation}
+  \lambda_{nm}=\mu_n+\nu_m=\Big(\frac{n\pi}{\ell_1}\Big)^2+\Big(\frac{m\pi}{\ell_2}\Big)^2,
+  \qquad
+  v_{nm}=\cos\frac{n\pi x}{\ell_1}\cos\frac{m\pi y}{\ell_2}.
+\end{equation}
+
+\textbf{$\lambda$ 是两项之和，不是新东西。}这是二维问题与一维最大的区别：\emph{每一个方向各自的特征值相加}，得到二维的「总特征值」。
+
+\subhdr{6.4\quad 时间部分与级数解}
+
+由 $T'+a^2\lambda_{nm}T=0$ 得 $T_{nm}=\mathrm e^{-a^2\lambda_{nm}t}$，于是
+\begin{equation}
+  u(x,y,t)=\sum_{n=0}^{\infty}\sum_{m=0}^{\infty}D_{nm}\,
+  \mathrm e^{-a^2\lambda_{nm}t}\cos\frac{n\pi x}{\ell_1}\cos\frac{m\pi y}{\ell_2}.
+\end{equation}
+令 $t=0$ 并用二重正交性定系数：
+\begin{equation}
+  \boxed{\;
+  D_{nm}=\frac{4}{\ell_1\ell_2\,\delta_n\delta_m}
+  \int_0^{\ell_1}\!\!\int_0^{\ell_2}\varphi(x,y)
+  \cos\frac{n\pi x}{\ell_1}\cos\frac{m\pi y}{\ell_2}\dd x\dd y\;}
+\end{equation}
+其中
+\begin{equation}
+  \delta_n=\begin{cases}2,& n=0\\ 1,& n\ne0\end{cases},\qquad
+  \delta_m=\begin{cases}2,& m=0\\ 1,& m\ne0\end{cases}.
+\end{equation}
+
+\textbf{$\delta$ 是怎么来的？}一维时 $\int_0^{\ell}\cos^2\frac{n\pi x}{\ell}\dd x$ 在 $n\ge1$ 是 $\ell/2$、在 $n=0$ 是 $\ell$。二维的模方是两个一维模方相乘：$\frac{\ell_1}{2}\cdot\frac{\ell_2}{2}$（都非零）或 $\ell_1\cdot\frac{\ell_2}{2}$（$n=0$）等。把「除以模方」统一写成 $\frac{\ell_1\ell_2}{4}\delta_n\delta_m$，就得到了分母上的 $\delta_n\delta_m$。少写一个 $\delta$，$n=0$ 或 $m=0$ 的那些项就会大一倍。
+
+\subhdr{6.5\quad 补算：课件 p12 的「$D_{nm}=?$」}\label{sec:dnm}
+
+课件给的例子是
+\begin{equation}
+  \varphi(x,y)=u_0\frac{xy}{\ell_1\ell_2},
+\end{equation}
+要求 $D_{nm}$。把二重积分拆成两个一维积分的乘积：
+\begin{equation}
+  \int_0^{\ell_1}x\cos\frac{n\pi x}{\ell_1}\dd x=\frac{\ell_1^2}{n^2\pi^2}\big[(-1)^n-1\big]\qquad(n\ge1),
+\end{equation}
+（$n=0$ 时该积分是 $\ell_1^2/2$），$y$ 方向同理。代回并按 $n,m$ 是否为零分情况，得到
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{情形} & \thead{$D_{nm}$} & \thead{说明} \\
+\tabmidrule
+$n=0,\ m=0$ & $\dfrac{u_0}{4}$ & 平均值项 \\
+$n=0,\ m$ 奇 & $-\dfrac{2u_0}{m^2\pi^2}$ & 只沿 $y$ 变化 \\
+$n$ 奇,\ $m=0$ & $-\dfrac{2u_0}{n^2\pi^2}$ & 只沿 $x$ 变化 \\
+$n$ 奇,\ $m$ 奇 & $\dfrac{16u_0}{n^2m^2\pi^4}$ & 二维模态 \\
+其余（任一为非零偶数） & $0$ & 对称性砍掉 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{两条独立的检验。}
+
+(1) \emph{平均值守恒。}$\lambda_{00}=0$，所以 $D_{00}$ 这一项不随时间衰减。而 $\varphi$ 在矩形上的平均值正是 $\frac{u_0}{\ell_1\ell_2}\cdot\frac{\ell_1}{2}\cdot\frac{\ell_2}{2}=\frac{u_0}{4}$，与 $D_{00}$ 相等。这与 \S4.5 的一维守恒是同一件事：四边绝热，总热量不变，最终温度趋于这个平均值。
+
+(2) \emph{级数确实还原 $\varphi$。}验证脚本用 $41\times41$ 项检查了矩形内若干点，误差小于 $5\times10^{-3}$（截断余项）。
+
+\warnbox{
+\textbf{这里最容易出的错是把 $\lambda_{00}=0$ 忘掉。}如果只写 $n,m\ge1$，那么解在 $t\to\infty$ 时趋于零，等于说一块绝热的板会自己降到零度。正确结果是趋于 $u_0/4$：\emph{绝热系统的平均温度守恒，这就是 $n=m=0$ 这一项的全部职责}。
+}
+
+%=====================================================================
+\hdr{\S7}{速查与易错}
+\phantomsection\label{sec:s7}
+%=====================================================================
+
+\subhdr{7.1\quad 定解条件速查}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.16\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+\thead{要写什么} & \thead{判据} & \thead{典型触发词} \\
+\tabmidrule
+一个初始条件 & 时间一阶（输运） & 初始温度、初始浓度、给定 $u(x,0)$ \\
+两个初始条件 & 时间二阶（波动） & 初始位移 + 初始速度、松手（$\psi=0$）、给冲量（用 $\delta$） \\
+没有初始条件 & 稳态（泊松/Laplace） & 稳态、充分长时间以后、不随时间变 \\
+第一类边界 & 给值 & 固定、恒温、冰水、给定函数 $f(t)$ \\
+第二类边界 & 给法向导数 & 受外力、热流（流入/流出）、绝热、自由端 \\
+第三类边界 & 值与法向导数的线性组合 & 弹簧连接、弹性支承、对流换热 \\
+衔接条件 & 界面两侧配对 & 两种材料、两种介质、分界面 \\
+周期 + 自然 & 对称性与原点 & 圆、圆柱、球、极坐标、$r=0$ 有界 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{7.2\quad 十条易错（每条回指本讲某一步）}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{把「$k$」当成同一个 $k$。}热导率 $\unit{W\cdot m^{-1}\cdot K^{-1}}$ 与弹簧劲度 $\unit{N\cdot m^{-1}}$ 完全两回事（\S3.4.3）。
+  \item \textbf{给稳态问题写初始条件。}泊松方程没有「历史」（\S3.2）。
+  \item \textbf{第二类边界丢负号。}用「沿 $+x$ 的分量 $f_x$」一个约定管两端，再用「两端同压应变同号」自检（\S3.4.2）。
+  \item \textbf{把绝热写成 $u=0$。}绝热是 $u_x=0$；$u=0$ 是恒温，两者物理完全不同（\S3.4.2）。
+  \item \textbf{把自由端写成 $u=0$。}自由端是 $u_x=0$（端面不受力）。
+  \item \textbf{非齐次边界直接分离。}先平移或找特解，把齐次化做实（\S5.1）。
+  \item \textbf{两端绝热时漏掉 $n=0$。}否则解会自己趋于零，违反总热量守恒（\S4.5、\S6.5）。
+  \item \textbf{$\lambda=0$ 一律判为平凡。}只有在 $X(0)=X(\ell)=0$ 时 $\lambda=0$ 才平凡；两端绝热时 $\lambda=0$ 是非平凡解，必须保留（\S4.4）。
+  \item \textbf{用 $\delta$ 写初始位移。}一点被抬起在几何上是折线；只有集中冲量才写成 $\delta$（\S3.3、附录 A.2）。
+  \item \textbf{系数公式的模方记混。}正弦系一律 $\ell/2$；余弦系的 $n=0$ 是 $\ell$、其余 $\ell/2$；二维是两者相乘（\S6.4）。
+\end{enumerate}
+
+\subhdr{7.3\quad 分离变量的检查清单}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item 方程与边界是否齐次？不齐次先化齐次。
+  \item 带边界的那一半取 $-\lambda$，另一半点出 $T$ 或 $Y$ 的方程。
+  \item 特征值问题里 $\lambda<0$、$=0$、$>0$ 三种情况是否都看过？（$=0$ 尤其别跳过。）
+  \item 级数叠加后，$t=0$（或非齐次那一边）是否被还原？用模方检查系数。
+  \item 解的长时间行为是否与守恒律一致？
+\end{enumerate}
+
+%=====================================================================
+\hdr{\S8}{课件页码对照表}
+\phantomsection\label{sec:s8}
+%=====================================================================
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{课件} & \thead{本讲位置} \\
+\tabmidrule
+Ch7 p1--p2\quad 热传导、傅里叶定律、微元守恒 & \S1.1--\S1.2 \\
+Ch7 p3\quad 三维热传导 & \S1.3 \\
+Ch7 p4\quad 有内热源、一维/三维写法 & \S1.3 \\
+Ch7 p5--p6\quad 扩散方程、菲克定律 & \S1.4 \\
+Ch7 p7\quad 静电场与泊松方程 & \S2.1 \\
+Ch7 p8\quad 稳态热传导、稳态扩散 & \S2.2--\S2.3 \\
+Ch7 p9\quad 线性化假设与耦合 & \S2.5 \\
+Ch7 p10\quad 初始条件与方程阶数 & \S3.2 \\
+Ch7 p11\quad 三角形初始位移例题 & \S3.3 \\
+Ch7 p12\quad 三类边界条件总表 & \S3.4 \\
+Ch7 p13\quad 第一类条件实例 & \S3.4.1 \\
+Ch7 p14\quad 第二类：杆端受力 & \S3.4.2（含符号订正） \\
+Ch7 p15\quad 第二类：热流与绝热 & \S3.4.2 \\
+Ch7 p16\quad 第三类：弹性连接 & \S3.4.3 \\
+Ch7 p17\quad 自然边界条件、周期条件 & \S3.5 \\
+Ch7 p18\quad 衔接条件 & \S3.6 \\
+Ch7 p19\quad 四道定解条件作业 & 第 \pageref{sec:practice} 页、附录 A \\
+Ch8 p1--p3\quad 例 8.1.3 与结果讨论 & \S4.2--\S4.3、\S4.7 \\
+Ch8 p4--p5\quad 例 8.1.4、$\lambda$ 依赖性问题 & \S4.4--\S4.5 \\
+Ch8 p6--p9\quad 二维 Laplace 与矩形稳态 & \S5 \\
+Ch8 p10--p12\quad 矩形区域热传导、$D_{nm}$ & \S6 \\
+Ch8 p13\quad 四道作业 & 第 \pageref{sec:practice} 页、附录 B \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S9}{三句话总结}
+\phantomsection\label{sec:s9}
+%=====================================================================
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{方程来自守恒律加本构关系}，输运方程的时间导数是一阶，所以只要一个初始条件；稳态把它降成泊松/Laplace，初始条件随之消失。
+  \item \textbf{边界条件分三类}：给值、给法向导数、给两者的线性组合。符号统一用「沿 $+x$ 的分量」来写，再用「两端同压同拉」自检，可以避免端点翻转的负号陷阱。
+  \item \textbf{分离变量只是把一个偏微分方程拆成两个常微分方程}：带齐次边界的那一半给特征值，另一半给时间（或另一方向的）行为；系数由正交性定，守恒律用来检验。
+\end{enumerate}
+
+%=====================================================================
+%=====================================================================
+\hdr{\S10}{练习：课件 p19 与 p13 共八题}\phantomsection\label{sec:practice}
+%=====================================================================
+
+八题分两组，性质不同，先说清楚：
+
+\begin{itemize}
+  \item \textbf{题 1--4}（第七章课件 p19）：定解条件练习。2026-11-09 已经出过中英详解，所以这四题是\textbf{复习}，不是未曝光的练习，答案见附录 A。
+  \item \textbf{题 5--8}（第八章课件 p13）：分离变量练习，此前没有讲过，答案见附录 B。
+\end{itemize}
+
+每题下面只给题干、考点与附录页码，正文不给步骤。建议先合上讲义自己写一遍，再翻附录对照——尤其题 3、题 4 的符号，本讲在 \S3.4.2 特意给了自检方法，值得先试。
+
+\practice{P1}{课件 Ch7 p19 第 1 题（已讲过，复习）}{长 $\ell$ 的杆，左端固定；右端受一个沿外法向、大小为 $F(t)=F_0\sin\omega t$ 的力。写出这个问题的边界条件。}{第一类与第二类边界条件的区分：题目给的是值还是力}{ans:P1}
+
+\practice{P2}{课件 Ch7 p19 第 2 题（已讲过，复习）}{长 $\ell$ 的弦两端固定。$t=0$ 时在 $x=h$ 处受一个外力 $F_0$。写出这个问题的初始条件。}{时间二阶问题要几个初始条件；集中冲量与集中位移在数学表示上的区别}{ans:P2}
+
+\practice{P3}{课件 Ch7 p19 第 3 题（已讲过，复习）}{长 $\ell$ 的杆，两端各受一个大小 $F_0$ 的法向力，方向都指向杆内。写出边界条件。}{两端受压时第二类条件的符号，以及两个端点的方向是否一致}{ans:P3}
+
+\practice{P4}{课件 Ch7 p19 第 4 题（已讲过，复习）}{长 $\ell$ 的杆，两端各有热流 $q_0$ 流入杆内。写出边界条件。}{热流边界的方向判定：流入、流出与外法向的关系}{ans:P4}
+
+\practice{P5}{课件 Ch8 p13 第 1 题}{长 $\ell$ 的弦两端固定，初始位移为三角形分布
+$\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为零。求 $u(x,t)$。}{两端固定弦的自由振动；分段初值的展开与哪些模态不激发}{ans:P5}
+
+\practice{P6}{课件 Ch8 p13 第 2 题}{长 $\ell$ 的杆左端固定、右端自由；初始位移为零，初始速度为 $\psi(x)=bx/\ell$。求 $u(x,t)$。}{一端固定一端自由的特征值问题；初速度给定时的系数定法}{ans:P6}
+
+\practice{P7}{课件 Ch8 p13 第 3 题}{长 $\ell$ 的杆两端温度为零，初始温度 $u(x,0)=bx(\ell-x)/\ell^2$。求温度分布 $u(x,t)$。}{输运方程的分离变量；初值的对称性如何减少非零项}{ans:P7}
+
+\practice{P8}{课件 Ch8 p13 第 4 题}{矩形 $0<x<a$、$0<y<b$，求 Laplace 方程的解，边界条件为 $u(0,y)=u(a,y)=0$、$u(x,0)=A(1-x/a)$、$u(x,b)=0$。}{二维稳态的两次分离；非齐次边界位置如何决定双曲函数的形式}{ans:P8}
+
+\clearpage
+\appendix
+\hdr{附录 A}{课件 p19 四题（复习：11-09 已讲过）}
+\phantomsection\label{sec:appA}
+%=====================================================================
+
+这四题是第七章的定解条件练习。2026-11-09 已经出过一版中英详解，这里按同一思路重写，只补两处：题 3 的符号、题 4 的方向判定。
+
+\answerstart{P1}{课件 Ch7 p19 第 1 题（复习）}{长 $\ell$ 的杆，左端固定，右端受沿外法向、大小为 $F(t)=F_0\sin\omega t$ 的力。求边界条件。}
+
+\textbf{左端。}固定就是位移为零：
+\begin{equation}
+  u(0,t)=0 .
+\end{equation}
+
+\textbf{右端。}外法向沿 $+x$，力也沿 $+x$，所以 $f_x=F_0\sin\omega t$。由 \S3.4.2 的右端公式
+\begin{equation}
+  \boxed{\;u(0,t)=0,\qquad ES\,u_x(\ell,t)=F_0\sin\omega t\;}
+\end{equation}
+
+\textbf{为什么不是 $u(\ell,t)=F_0\sin\omega t$？}因为题目给的是\textbf{力}，不是位移。力与应变 $u_x$ 成正比（胡克定律），不直接约束位移。若写成第一类，等于把杆端强行按到某个位移上，物理上完全变了。
+
+\textbf{量纲核对：}$[ES u_x]=\unit{N\cdot m^{-2}}\cdot\unit{m^2}=\unit{N}$，与 $F_0\sin\omega t$ 一致。
+
+\answerstart{P2}{课件 Ch7 p19 第 2 题（复习）}{长 $\ell$ 的弦两端固定；$t=0$ 时在 $x=h$ 处受外力 $F_0$。求初始条件。}
+
+\textbf{先分清题问什么。}题目问的是\emph{初始条件}，所以两端固定只是背景（它是边界条件 $u(0,t)=u(\ell,t)=0$），不写进答案。
+
+\textbf{初始位移。}冲量在 $t=0$ 瞬间作用，弦还来不及移动：
+\begin{equation}
+  u(x,0)=0 .
+\end{equation}
+
+\textbf{初始速度。}取 $x=h$ 附近一小段长 $\Delta x$，冲量 $F_0$ 使它获得动量，由动量定理 $\rho\Delta x\,u_t=F_0$（$\rho$ 为线密度），即
+\begin{equation}
+  u_t=\frac{F_0}{\rho\,\Delta x}.
+\end{equation}
+令 $\Delta x\to0$，速度集中到一点，写成 $\delta$ 函数：
+\begin{equation}
+  \boxed{\;u(x,0)=0,\qquad u_t(x,0)=\frac{F_0}{\rho}\,\delta(x-h)\;}
+\end{equation}
+其中 $F_0$ 按\textbf{冲量}理解（单位 \unit{N\cdot s}）。
+
+\textbf{量纲核对：}$[F_0/\rho]=\unit{N\cdot s}/(\unit{kg\cdot m^{-1}})=\unit{m^2\cdot s^{-1}}$，再乘 $[\delta]=\unit{m^{-1}}$ 得 $\unit{m\cdot s^{-1}}$，是速度，对。
+
+\warnbox{
+\textbf{为什么这一题用 $\delta$，而 \S3.3 的例题不用？}两者是不同的问题：\S3.3 给定的是\textbf{位移形状}（弦被顶成一个折线，几何上必须连续），所以用分段函数；这里给定的是\textbf{冲量}（作用在一个点上，作用时间趋零），速度允许在一点上跳变，所以用 $\delta$。\emph{位移不会跳，速度可以跳}——记住这一条就不会混。
+}
+
+\answerstart{P3}{课件 Ch7 p19 第 3 题（复习）}{长 $\ell$ 的杆两端各受法向力 $F_0$，方向都指向杆内（即两端同时受压）。求边界条件。}
+
+\textbf{逐端写分量。}用 \S3.4.2 的统一写法（$f_x$ 是外力沿 $+x$ 的分量）：
+
+\begin{itemize}
+  \item 左端 $x=0$：力指向 $+x$（压向杆内），$f_x(0)=+F_0$，所以
+  \begin{equation}
+    ES\,u_x(0,t)=-f_x(0)=-F_0 ;
+  \end{equation}
+  \item 右端 $x=\ell$：力指向 $-x$，$f_x(\ell)=-F_0$，所以
+  \begin{equation}
+    ES\,u_x(\ell,t)=f_x(\ell)=-F_0 .
+  \end{equation}
+\end{itemize}
+
+\begin{equation}
+  \boxed{\;u_x(0,t)=-\frac{F_0}{ES},\qquad u_x(\ell,t)=-\frac{F_0}{ES}\;}
+\end{equation}
+
+\textbf{检验。}两端应变同号且为负，杆被均匀压缩——这正是「两端同压」应有的结果。若照课件 p14 的左端式子直接抄，会得到 $u_x(0)=+F_0/(ES)$，与右端符号相反，等于说杆一端被压、一端被拉，物理上不可能。
+
+\answerstart{P4}{课件 Ch7 p19 第 4 题（复习）}{长 $\ell$ 的杆两端各有热流 $q_0$ 流入杆内。求边界条件。}
+
+\textbf{用外法向的傅里叶定律。}$q_n=-k\,\partial u/\partial n$，其中 $q_n$ 是沿外法向流出的热流。
+
+\textbf{左端 $x=0$。}外法向 $-\vect x$，热流 $q_0$ 沿 $+x$ 流入（与外法向反向），故 $q_n=-q_0$。又 $\partial u/\partial n=-u_x$，所以
+\begin{equation}
+  -q_0=-k(-u_x(0,t))=k\,u_x(0,t)
+  \ \Longrightarrow\
+  u_x(0,t)=-\frac{q_0}{k}.
+\end{equation}
+
+\textbf{右端 $x=\ell$。}外法向 $+\vect x$，热流 $q_0$ 沿 $-x$ 流入（同样与外法向反向），$q_n=-q_0$，而 $\partial u/\partial n=u_x$：
+\begin{equation}
+  -q_0=-k\,u_x(\ell,t)
+  \ \Longrightarrow\
+  u_x(\ell,t)=+\frac{q_0}{k}.
+\end{equation}
+
+\begin{equation}
+  \boxed{\;u_x(0,t)=-\frac{q_0}{k},\qquad u_x(\ell,t)=+\frac{q_0}{k}\;}
+\end{equation}
+
+\textbf{方向判定。}左端 $u_x<0$：温度沿 $+x$ 下降，即左端更热，热自然向 $+x$ 流——与「从左边流入」一致。右端 $u_x>0$：温度沿 $+x$ 上升，即右端更热，热向 $-x$ 流——也与「从右边流入」一致。两端都对，说明符号没丢。
+
+%=====================================================================
+\hdr{附录 B}{课件 Ch8 p13 四题（本次新解）}
+\phantomsection\label{sec:appB}
+%=====================================================================
+
+这四题是第八章的作业，训练点是「分离变量 + 定系数」的四组不同特征值问题。前三题一维、第四题二维稳态。
+
+\answerstart{P5}{课件 Ch8 p13 第 1 题}{长 $\ell$ 的弦两端固定，初始位移为三角形
+$\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为零。求 $u(x,t)$。}
+
+\step{定解问题}
+\begin{equation}
+  \begin{cases}
+    u_{tt}=a^2u_{xx},\\
+    u(0,t)=u(\ell,t)=0,\\
+    u(x,0)=\varphi(x),\qquad u_t(x,0)=0 .
+  \end{cases}
+\end{equation}
+
+\step{分离与特征值}
+设 $u=X T$，得 $T''+a^2\lambda T=0$ 与 $X''+\lambda X=0$。边界 $X(0)=X(\ell)=0$ 给出
+\begin{equation}
+  \lambda_n=\Big(\frac{n\pi}{\ell}\Big)^2,\qquad X_n=\sin\frac{n\pi x}{\ell},\qquad n=1,2,\dots
+\end{equation}
+
+\step{时间部分}
+令 $\omega_n=\dfrac{n\pi a}{\ell}$，则 $T_n=A_n\cos\omega_nt+B_n\sin\omega_nt$。初始速度为零意味着 $T_n'(0)=0$，故 $B_n=0$：
+\begin{equation}
+  u(x,t)=\sum_{n=1}^{\infty}C_n\cos\omega_nt\,\sin\frac{n\pi x}{\ell}.
+\end{equation}
+
+\step{定系数}
+由 $u(x,0)=\varphi(x)$：
+\begin{equation}
+  C_n=\frac{2}{\ell}\int_0^{\ell}\varphi(x)\sin\frac{n\pi x}{\ell}\dd x
+  =\frac{2}{\ell}\left[\int_0^{b}\frac{hx}{b}\sin\frac{n\pi x}{\ell}\dd x
+  +\int_b^{\ell}\frac{h(\ell-x)}{\ell-b}\sin\frac{n\pi x}{\ell}\dd x\right].
+\end{equation}
+两个积分都是 $\int x\sin\beta x\dd x$ 型，合并后得到
+\begin{equation}
+  \boxed{\;C_n=\frac{2h\ell^2}{n^2\pi^2\,b(\ell-b)}\,\sin\frac{n\pi b}{\ell}\;}
+\end{equation}
+
+\textbf{数值核对。}取 $\ell=3$、$b=1$、$h=2$：$C_1\approx1.579$、$C_2\approx0.395$、$C_3=0$、$C_4\approx-0.0987$。验证脚本用 400 项级数在 $[0,\ell]$ 上还原了三角形状，误差小于 $2\times10^{-3}$。
+
+\textbf{$C_3$ 为什么为零？}因为 $\sin\frac{3\pi b}{\ell}=\sin\pi=0$。更一般的说法：当 $n\,b/\ell$ 为整数时，第 $n$ 个模态在 $x=b$ 处恰好为零，无法表现那里的尖角，所以这个模态不被激发。这是「初始条件的对称性/节点位置决定哪些模态出现」的一个实例。
+
+\step{最终答案}
+\begin{equation}
+  u(x,t)=\sum_{n=1}^{\infty}\frac{2h\ell^2}{n^2\pi^2b(\ell-b)}\sin\frac{n\pi b}{\ell}\,
+  \cos\frac{n\pi at}{\ell}\,\sin\frac{n\pi x}{\ell}.
+\end{equation}
+
+\answerstart{P6}{课件 Ch8 p13 第 2 题}{长 $\ell$ 的杆，左端固定、右端自由；初始位移为零，初始速度 $\psi(x)=bx/\ell$。求 $u(x,t)$。}
+
+\step{定解问题}
+\begin{equation}
+  \begin{cases}
+    u_{tt}=a^2u_{xx},\\
+    u(0,t)=0, & \text{左端固定（第一类齐次）},\\
+    u_x(\ell,t)=0, & \text{右端自由（第二类齐次）},\\
+    u(x,0)=0,\qquad u_t(x,0)=\dfrac{bx}{\ell}.
+  \end{cases}
+\end{equation}
+
+\step{特征是「半整数」那一组}
+$X(0)=0$、$X'(\ell)=0$ 属于 \S4.6 速查表第三行：
+\begin{equation}
+  \lambda_n=\Big(\frac{(n+\frac12)\pi}{\ell}\Big)^2,\qquad
+  X_n=\sin\frac{(n+\frac12)\pi x}{\ell},\qquad n=0,1,2,\dots
+\end{equation}
+
+\step{时间部分}
+$T_n''+a^2\lambda_nT_n=0$，而 $u(x,0)=0$ 要求 $T_n(0)=0$，所以只剩正弦项：
+\begin{equation}
+  u(x,t)=\sum_{n=0}^{\infty}A_n\sin\omega_nt\,\sin\frac{(n+\frac12)\pi x}{\ell},
+  \qquad \omega_n=\frac{(n+\frac12)\pi a}{\ell}.
+\end{equation}
+
+\step{用初速度定系数}
+对 $t$ 求导并令 $t=0$：
+\begin{equation}
+  \sum_{n=0}^{\infty}A_n\omega_n\sin\frac{(n+\frac12)\pi x}{\ell}=\frac{bx}{\ell}.
+\end{equation}
+用正交性（模方 $\ell/2$）：
+\begin{equation}
+  A_n\omega_n=\frac{2}{\ell}\int_0^{\ell}\frac{bx}{\ell}\sin\frac{(n+\frac12)\pi x}{\ell}\dd x .
+\end{equation}
+记 $\beta=\frac{(n+\frac12)\pi}{\ell}=\frac{(2n+1)\pi}{2\ell}$，则 $\int_0^\ell x\sin\beta x\dd x=(-1)^n/\beta^2$（因为 $\cos\beta\ell=0$、$\sin\beta\ell=(-1)^n$）：
+\begin{equation}
+  A_n\omega_n=\frac{2b}{\ell^2}\cdot\frac{(-1)^n}{\beta^2}
+  =\frac{8b(-1)^n}{(2n+1)^2\pi^2}.
+\end{equation}
+于是
+\begin{equation}
+  \boxed{\;A_n=\frac{8b(-1)^n}{(2n+1)^2\pi^2}\cdot\frac{2\ell}{(2n+1)\pi a}
+  =\frac{16b\ell(-1)^n}{(2n+1)^3\pi^3a}\;}
+\end{equation}
+
+\textbf{最终答案}
+\begin{equation}
+  u(x,t)=\sum_{n=0}^{\infty}\frac{16b\ell(-1)^n}{(2n+1)^3\pi^3a}
+  \sin\frac{(2n+1)\pi at}{2\ell}\sin\frac{(2n+1)\pi x}{2\ell}.
+\end{equation}
+
+\textbf{两条检验。}(1) $u(x,0)=0$，因为每个 $\sin\omega_n t$ 在 $t=0$ 为零，符合初始位移为零。(2) $u_t(x,0)$ 的级数收敛到 $bx/\ell$（验证脚本用 600 项在若干点核对，误差小于 $3\times10^{-3}$）。
+
+\answerstart{P7}{课件 Ch8 p13 第 3 题}{长 $\ell$ 的杆两端温度为零，初始温度 $u(x,0)=bx(\ell-x)/\ell^2$。求温度分布。}
+
+\step{定解问题}
+\begin{equation}
+  \begin{cases}
+    u_t=a^2u_{xx},\\
+    u(0,t)=u(\ell,t)=0,\\
+    u(x,0)=\dfrac{bx(\ell-x)}{\ell^2}.
+  \end{cases}
+\end{equation}
+
+\step{特征值与时间部分}
+$\lambda_n=\Big(\frac{n\pi}{\ell}\Big)^2$，$X_n=\sin\frac{n\pi x}{\ell}$；$T_n=\mathrm e^{-(n\pi a/\ell)^2t}$：
+\begin{equation}
+  u(x,t)=\sum_{n=1}^{\infty}C_n\mathrm e^{-\left(\frac{n\pi a}{\ell}\right)^2t}\sin\frac{n\pi x}{\ell}.
+\end{equation}
+
+\step{定系数}
+\begin{equation}
+  C_n=\frac{2}{\ell}\int_0^{\ell}\frac{bx(\ell-x)}{\ell^2}\sin\frac{n\pi x}{\ell}\dd x .
+\end{equation}
+用 $\int_0^{\ell}x(\ell-x)\sin\frac{n\pi x}{\ell}\dd x=\dfrac{2\ell^3}{n^3\pi^3}\big(1-\cos n\pi\big)$，得
+\begin{equation}
+  C_n=\frac{4b}{n^3\pi^3}\big(1-(-1)^n\big)=
+  \begin{cases}
+    \dfrac{8b}{n^3\pi^3}, & n\ \text{奇},\\[6pt]
+    0, & n\ \text{偶}.
+  \end{cases}
+\end{equation}
+
+\textbf{最终答案}
+\begin{equation}
+  \boxed{\;u(x,t)=\frac{8b}{\pi^3}\sum_{n\ \text{奇}}\frac{1}{n^3}
+  \mathrm e^{-\left(\frac{n\pi a}{\ell}\right)^2t}\sin\frac{n\pi x}{\ell}\;}
+\end{equation}
+
+\textbf{为什么只剩奇数项？}因为初温 $x(\ell-x)$ 关于 $\ell/2$ 对称，而 $\sin\frac{n\pi x}{\ell}$ 在 $n$ 为偶数时关于中点反对称。对称的初值不能激发反对称模态——与 \S5.3 中「常数不激发偶数项」是同一个理由。
+
+\textbf{系数衰减得比前两题快。}这里是 $1/n^3$（前两题是 $1/n^2$），因为 $x(\ell-x)$ 在两端取值与导数都为零，比三角波的尖角光滑得多。\emph{初始条件越光滑，系数衰减越快，级数收敛越快}——这条在考试里可以用来检查自己算的系数是不是漏了项。
+
+\answerstart{P8}{课件 Ch8 p13 第 4 题}{矩形 $0<x<a$、$0<y<b$，求 Laplace 方程的解，边界条件为
+$u(0,y)=u(a,y)=0$，$u(x,0)=A(1-x/a)$，$u(x,b)=0$。}
+
+\step{定解问题}
+\begin{equation}
+  \begin{cases}
+    u_{xx}+u_{yy}=0,\\
+    u(0,y)=u(a,y)=0, & \text{两侧齐次（第一类）},\\
+    u(x,b)=0, & \text{上边齐次},\\
+    u(x,0)=A\Big(1-\dfrac{x}{a}\Big), & \text{下边非齐次}.
+  \end{cases}
+\end{equation}
+
+\textbf{与 \S5 的差别只有一处：非齐次边界在 $y=0$ 而不是 $y=b$。}这决定了 $Y$ 用哪个双曲函数，别把 \S5 的结果照抄。
+
+\step{分离}
+$u=XY$，与 \S5.2 完全相同地得到
+\begin{equation}
+  X_n=\sin\frac{n\pi x}{a},\qquad \lambda_n=\Big(\frac{n\pi}{a}\Big)^2,\qquad n=1,2,\dots
+\end{equation}
+$Y$ 满足 $Y''-\lambda_nY=0$。这一次用上边条件 $u(x,b)=0$，即 $Y(b)=0$。把通解写成方便的形式：
+\begin{equation}
+  Y_n(y)=\sinh\frac{n\pi(b-y)}{a}
+\end{equation}
+它在 $y=b$ 处为 $\sinh0=0$，自动满足上边条件。
+
+\step{叠加与定系数}
+\begin{equation}
+  u(x,y)=\sum_{n=1}^{\infty}A_n\,\frac{\sinh\frac{n\pi(b-y)}{a}}{\sinh\frac{n\pi b}{a}}\sin\frac{n\pi x}{a}
+\end{equation}
+（分母的 $\sinh\frac{n\pi b}{a}$ 是为让 $y=0$ 处的系数干净而预先除掉的。）$y=0$ 时：
+\begin{equation}
+  \sum_{n=1}^{\infty}A_n\sin\frac{n\pi x}{a}=A\Big(1-\frac{x}{a}\Big)
+  \ \Longrightarrow\
+  A_n=\frac{2}{a}\int_0^aA\Big(1-\frac{x}{a}\Big)\sin\frac{n\pi x}{a}\dd x=\frac{2A}{n\pi}.
+\end{equation}
+
+\textbf{最终答案}
+\begin{equation}
+  \boxed{\;u(x,y)=\frac{2A}{\pi}\sum_{n=1}^{\infty}\frac{1}{n}\cdot
+  \frac{\sinh\frac{n\pi(b-y)}{a}}{\sinh\frac{n\pi b}{a}}\sin\frac{n\pi x}{a}\;}
+\end{equation}
+
+\textbf{三条自检。}(1) $y=b$：$\sinh0=0$，$u=0$。对。(2) $y=0$：级数是 $A(1-x/a)$ 的正弦展开，收敛到给定值（验证脚本用 400 项核对，误差小于 $2\times10^{-2}$，是截断余项）。(3) $x=0$ 与 $x=a$：正弦为零，$u=0$。对。
+
+\callout{
+\textbf{四个小题恰好覆盖四组特征值。}作业 1 是 $X(0)=X(\ell)=0$（正弦整数）；作业 2 是 $X(0)=0$、$X'(\ell)=0$（正弦半整数）；作业 3 与作业 1 同组但方程换成输运；作业 4 是二维 Laplace、$y$ 方向用双曲。把 \S4.6 的速查表与这四题对上，第七章第八节的边界条件分类才真正落地。
+}
+
+\end{document}
+

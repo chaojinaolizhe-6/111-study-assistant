@@ -1,0 +1,182 @@
+{
+  "round": 2,
+  "task": "依据审核问题单修订 DSH 自己的 round-01 首稿；只写 matrix-exponential/round-02/",
+  "review_issue_list": "D:/aaa_D_usual/CODEX/AI-SKILL/reviews/DS-matrix-round01-20261110/review-final.md",
+  "rule_version": "2.1.1",
+  "source_handout_frozen": "matrix-exponential/round-01/ 未修改；本轮所有改动只在新目录 round-02/",
+  "deliverables": [
+    "matrix-exponential/round-02/handout.tex",
+    "matrix-exponential/round-02/handout.pdf",
+    "matrix-exponential/round-02/handout.log",
+    "matrix-exponential/round-02/source-map.json",
+    "matrix-exponential/round-02/verification.txt",
+    "matrix-exponential/round-02/issue-response.json",
+    "matrix-exponential/round-02/scripts/",
+    "matrix-exponential/round-02/renders/"
+  ],
+  "issues": [
+    {
+      "id": "R1",
+      "title": "重根导数条件的来源与定理前提不完整",
+      "review_location": "round-01 PDF p14 §4.9；TeX 728--768；相关 §4.5 581--599",
+      "verification": "确认问题成立。原稿把只在一点成立的 e^λ=r(λ) 直接对 λ 求导；Jordan 段把块大小与代数重数混同；Theorem 3.3 没有说明 r 的构造前提，确实不能对任意次数 ≤ n−1 的多项式断言结论。",
+      "changes": [
+        "§4.5：先取次数 ≤ n−1 的 Hermite 插值多项式 r（n 个条件唯一确定），再令 q=(e^s−r)/Δ_x；由 f−r 在 λ_i 的 m_i 阶零点得到导数条件，不再对点值等式求导。",
+        "§4.9：导数条件改写为 f(s)−r(s)=Δ_x(s)q(s) 的直接结果；Jordan 块论证只用块大小 ℓ≤m，并明确 ℓ 与代数重数 m 的区别；纯量矩阵 ℓ=1 的情形单独说明，多出的导数条件不改变 r(Ax)。保留原 2×2 Jordan 小例。",
+        "Theorem 3.3：增补完整前提——r 是 e^s 在谱上的唯一 Hermite 插值多项式，f−r 被 Δ_x 整除；结论只对这个特定的 r 成立。"
+      ],
+      "evidence": [
+        "scripts/verify_matrix_exponential.py N 节：纯量矩阵 Hermite 条件、只用值条件、零多项式反例、3×3 Jordan 块 r(J)=e^J；全脚本 102 条断言 0 失败（scripts/verify_output.txt）。",
+        "scripts/check_revision.py 的 R1 条目全部通过（scripts/revision_output.txt）。",
+        "PDF p15--p18 文字层核对：f−r=Δ_x q、m_i 阶零点、Jordan 块、块大小与代数重数。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R2",
+      "title": "Cauchy 乘积一行中 k 脱离求和范围",
+      "review_location": "round-01 PDF p5 §2.1 性质 (2)；TeX 236",
+      "verification": "确认问题成立。原式把 t^k s^{n−k} 放在内层 k 求和之外，内层结束后仍出现未约束的 k；性质本身正确，但该行不是有效的同一求和表达式。",
+      "changes": [
+        "§2.1 性质 (2)：把 A^k t^k/k! 与 A^{n−k}s^{n−k}/(n−k)! 一并放入内层 k 求和；所有含 k 的因子都受相应求和约束。"
+      ],
+      "evidence": [
+        "scripts/check_revision.py R2 条目：旧模式已删除、新双重求和模式存在。",
+        "PDF p5 文字层核对：e^{At}e^{As}=Σ_n Σ_{k=0}^n [A^k t^k/k!][A^{n−k}s^{n−k}/(n−k)!]。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R3",
+      "title": "特征多项式约定与“首一”陈述不一致；解析函数商余关系适用范围未说明",
+      "review_location": "round-01 PDF p10--p11 §4.2、§4.5；TeX 534、559、581；对照 512--513",
+      "verification": "确认问题成立。原稿前文用 Δ(s)=det(A−sE)，§4.5 又不加限定地称 Δ 为首一；n 为奇数时首项系数为 −1。另“幂级数的长除法总可以进行”把有限多项式除法无条件推广了。",
+      "changes": [
+        "记号表、§3.1、§4.1、§4.2、§4.3、§4.4、§4.5：凡需要“首一”或做除法时统一用 Δ(s)=det(sE−A) 或 Δ_x(s)=det(sE−Ax)；只求特征值时仍可写 det(A−λE)=0，并说明二者相差 (−1)^n。",
+        "§4.5：删除“幂级数的长除法总可以进行”的无条件说法；改为先按 Hermite 条件定出 r，再验证 f−r 被 Δ 整除，明确这是“先定余式再验证整除”，不是对任何幂级数做长除。"
+      ],
+      "evidence": [
+        "scripts/verify_matrix_exponential.py R3 条目：n=3 的 det(λE−A)=(λ+2)^3、det(A−λE)=(−1)^3 det(λE−A)、例8 的 λ(λ^2+1)，均通过。",
+        "scripts/check_revision.py R3 条目全部通过（首一记号、删除旧说法、先定 r 再验证整除）。",
+        "PDF p11--p15 文字层核对。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R4",
+      "title": "Ax 的“互不相同”特征值缺少 x=0 限定",
+      "review_location": "round-01 PDF p12 例4、p13 例5；TeX 636、696；兼查同类叙述与按 x、x^2 缩放的方程",
+      "verification": "确认问题成立。4x 与 −2x、ix 与 −ix 只在 x≠0 时互不相同；x=0 时合并。原稿部分“互不相同”未限定 x，且按 x、x^2 缩放的方程在 x=0 退化。各例最终闭式在 x=0 的值本身正确。",
+      "changes": [
+        "新增 §4.5.1：区分 A 的固定特征值 μ_i 与 Ax 的伸缩特征值 λ_i(x)=xμ_i；说明 x≠0 时一一对应、重数相同，x=0 时 Ax=0、所有特征值合并为 0（代数重数 n），α_k 在 0 处按极限取值。",
+        "例4、例5、例8 的“互不相同”均限定 x≠0，并同时写出 A 的固定特征值；例6、例7 补充 x=0 的合并与极限处理。例4/例5/例8 的最终闭式保留，未改数值。"
+      ],
+      "evidence": [
+        "scripts/verify_matrix_exponential.py R4 条目：4x 与 −2x 仅在 x=0 重合；ix 与 −ix 仅在 x=0 重合；各例 x=0 与导数自检仍通过。",
+        "scripts/check_revision.py R4 条目：§4.5.1 存在、x=0 合并说明、例4/例5/例8 的 x≠0 限定均通过。",
+        "PDF p15--p23 文字层核对。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R5",
+      "title": "独立练习的“考点”透露待求矩阵的谱类型",
+      "review_location": "round-01 PDF p20 §6；TeX 1070、1074、1078、1082",
+      "verification": "确认问题成立。原考点写出实特征值、共轭复特征值、三个不同实特征值，导语还说三题特征值类型不同；这些是具体矩阵计算/判断后的中间结论，不只是中性知识点。",
+      "changes": [
+        "§6 导语：删除“特征值类型各不相同”，改为只说明三题分别是 2×2、2×2、3×3 矩阵，要求求矩阵指数与通解。",
+        "H1/H2/H3 的考点改为“矩阵阶数；常系数系统；矩阵指数；通解”，不含谱分类、方法分支或具体性质。附录详解仍保留完整分析。",
+        "verification.txt 中“练习页无泄露”的自查改为：正文只给中性考点，不预告具体矩阵的谱分类；本记录也不复述附录谱分析。"
+      ],
+      "evidence": [
+        "scripts/check_revision.py R5 条目：3 道练习考点均不含实特征值/复特征值/共轭/三个不同/谱类型/可对角化/Jordan；导语与旧考点串均不存在。",
+        "PDF p26 文字层核对：三题只有题干、中性考点与附录页码。",
+        "verification.txt 第二节 R5 与第七节说明。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R6",
+      "title": "实际跨页后有残句、题干拆断和缺少必要上下文",
+      "review_location": "round-01 PDF p2→p3、p7→p8、p8→p9、p15→p16、p17→p18、p21→p22、p23→p24",
+      "verification": "确认问题成立，但旧页码只对应 round-01。本轮按重新生成的 PDF 实际分页逐页核对：p2→p3 残句已消除；例1、例4、例5、例6、例7、例8 的续页均补了题号/当前 A/目标；H1/H3 续解摘要补了 A 与上一页对象；§3、§5 另起页，页底无孤立标题。",
+      "changes": [
+        "§0.4 前加 needspace，p3 以 §0.4 标题开始，不再出现上一条残句。",
+        "例1：在行变换第二段与第四步前分别加“例 1（续）”，带当前 A 与目标；p10、p11 均为有上下文续页。",
+        "例4、例5：在第二步/解前加“例 4（续）”“例 5（续）”，带 A 与待定式。",
+        "例6：在补充解前加“例 6（补充，续）”，说明上页闭式与 x=0 处理。",
+        "例7、例8：在第五步/第二步前加“例 7（续）”“例 8（续）”，带 A、上一页对象与下一步。",
+        "§3、§5 前加 clearpage；例4/例5/例7 等自然步骤处按实际断页加 clearpage 或 needspace。",
+        "H1/H3 的 answercontinue 摘要改为携带 A 与 e^{Ax} 所在页；H1/H2/H3 的附录页码由 PDF 实际答案页校验为 27/28/29。"
+      ],
+      "evidence": [
+        "本轮 PDF 32 页：p3 §0.4；p10/p11 例1续；p16 例4续；p17 例5续；p20 例6补充续；p22 例7续；p23 例8续；p28 H1续；p30 H3续。",
+        "scripts/check_pages.py：硬性失败 0 条（无已知坏页首、无页首标点、无页底孤立标题）。",
+        "scripts/check_layout.py：硬性失败 0 条；H1/H2/H3 附录页码 27/28/29 与 PDF 实际答案页一致；H1/H3 续解标题只在真实跨页处。",
+        "scripts/pixel_output.txt：32 页均非空白、墨迹未触边。"
+      ],
+      "status": "resolved",
+      "residual": "外部目视验收待审：本会话不能接收图像，未声称已目视读图；renders/ 已保存供支持看图的审核者只读查看。"
+    },
+    {
+      "id": "R7",
+      "title": "范数与逐项求导的说明可更适合初学者（建议项）",
+      "review_location": "round-01 PDF p3--p4 §1.3--1.4；TeX 138--143、156",
+      "verification": "确认原说明对初学者偏密：算子范数、2-范数、等价、次乘性密集出现，前置清单未列；“绝对收敛保证逐项求导”容易被读成一般函数项级数规则。",
+      "changes": [
+        "§0.3 增加“矩阵的‘大小’（范数，可选）”前置条目，说明只需接受两条性质，后文不依赖具体范数。",
+        "§1.3 改用最大行和 ||B||=max_i Σ_j |b_ij| 给出最小必要说明：次乘性、||A^k||≤||A||^k、级数被 e^{||A|| |x|} 控制；明确可作选读。",
+        "§1.4 明确逐项求导依据是幂级数在收敛区间内部的性质，且在任意有限区间一致收敛；不能对任意函数项级数照搬。"
+      ],
+      "evidence": [
+        "PDF p2--p4 文字层核对：前置条目、最大行和说明、幂级数逐项求导依据均已在正文。",
+        "scripts/check_handout.py：0 错误、0 人工复核线索，未因新增说明产生结构问题。"
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "R8",
+      "title": "两处说明可避免过强理解（建议项）",
+      "review_location": "round-01 PDF p15，TeX 839；p25 的 1/6 勘误说明",
+      "verification": "确认两处表述可更稳：x=0 与导数自检不能保证整个矩阵函数正确；1/6 勘误在固定同一矩阵等式时成立，但若只讨论通解族，任意常数可重命名，二者需区分。",
+      "changes": [
+        "§4.11 末段：把“几乎能抓住所有符号与系数错误”改为“能抓住常见错误；但只是局部检查，通过两条不保证整体正确，仍要逐列代回方程（第三条）”。",
+        "§4.7：在 1/6 勘误说明后补一句：这里固定的是同一个矩阵等式两边的常数；若只关心通解族，任意常数可以重新命名，1/6 可被吸收到新常数里，那是另一回事。"
+      ],
+      "evidence": [
+        "scripts/check_revision.py R8 条目：旧“几乎能抓住所有”不存在；局部检查不保证整体正确、任意常数重命名的说明存在。",
+        "PDF p16、p20 文字层核对。"
+      ],
+      "status": "resolved",
+      "residual": null
+    }
+  ],
+  "overall": {
+    "math_assertions": 102,
+    "math_failures": 0,
+    "revision_assertions": 37,
+    "revision_failures": 0,
+    "compile_passes": 2,
+    "final_pdf_pages": 32,
+    "check_handout_errors": 0,
+    "check_handout_warnings": 0,
+    "layout_hard_failures": 0,
+    "page_edge_hard_failures": 0,
+    "pixel_failures": 0,
+    "external_visual_acceptance": "pending; this model session cannot accept image input and does not claim visual acceptance",
+    "unresolved_math_objections": [],
+    "notes": [
+      "Round-01 remains frozen and untouched.",
+      "No page-count target was used; page breaks were fixed at actual new breaks.",
+      "All 8 examples, 3 homework problems, in-text mini-examples and appendix solutions are retained.",
+      "The issue list R1--R6 are fixed; R7--R8 advisory items were implemented.",
+      "This response does not claim external review passed."
+    ]
+  }
+}

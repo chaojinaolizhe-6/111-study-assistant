@@ -1,0 +1,136 @@
+迈克尔逊干涉仪：原理与预习节选 —— 生成与验证记录
+=====================================================
+产物版本：round-01（首稿，独立试生成；未含外部反馈返工）
+生成日期：2026-11-10
+执行者：DSH（本目录唯一执行者）
+
+一、交付物与哈希
+----------------
+handout.tex   sha256 04fd79fb94ea130f2d318840c8c9b036e5406827c122d15321190faf873be166  67575 B
+handout.pdf   sha256 72b3be00741147aeb68acfdd31c2ab2c60cb0076f43540effbf28b1c300d3821 293023 B  20 页
+handout.log   sha256 3fab558ddc3a1c2a94aa5eefd88c8cba10555fd8dcb953626073700289c072bf  48453 B（最终第二遍编译日志）
+source-map.json   来源→讲义页码映射、题目覆盖、缺口与未解决项
+check-handout.txt / verify-output.txt / check-render.txt  三项检查的原始输出
+tools/verify.py、tools/render_check.py、tools/page_index.py、tools/inspect_source.py、
+tools/dump_figure_geometry.py、tools/diagnose_pdf.py（勘察用）——均为本轮脚本，可复现
+
+二、输入与规则核验
+------------------
+1. inputs/Exp.11TheAdjustmentofMichelsonInterferometer.pdf（10 页）
+   sha256 52a88867858c16b10a114646cc8d2eb7639a1130c0853cf51c9755dd3be7bdb7 —— 与 inputs-and-skill-manifest.json 一致
+   已按物理页码读完全文 p1–p10（目的、仪器、光路、非定域/定域条纹、操作、注意事项、思考题）。
+2. inputs/PreviewforMichelsoninterferometer-2025.pdf（3 页）
+   sha256 1c6d3439faf6c6b238b26f959a7ed10995cae1402d1e41d528634f5d9fdfa30b —— 与 manifest 一致
+   已读完 p1–p3（I 目标、II 预习题 1–11、III 思考题、IV 拓展题、p3 数据表与 Questions (1)(2)）。
+3. 主题：.dsh/skills/lecture-deepdive/assets/theme-violet.tex
+   sha256 172434d7d7938dc5427a8fa9ba87aad5a614d9853412e969dce96f3faeb616e4 —— 与 manifest 一致
+   handout.tex 用 \input{../../.dsh/skills/lecture-deepdive/assets/theme-violet} 直接引用，未改动主题文件。
+4. 图：源资料图 11-1～11-4 为位图（PyMuPDF 勘察：p2 一张 PNG 518×399，p3 两张 PNG）。
+   本讲图 1–4 与图 A1 全部自绘（TikZ），按源页文字与图注重绘，标注了对应源图号；
+   未对源位图做像素级比对（执行模型无图像输入）。勘察脚本 tools/inspect_source.py、
+   tools/dump_figure_geometry.py 记录了每页的图片/矢量数量与图注坐标。
+
+三、编译
+--------
+命令（在 michelson/round-01 下执行，两遍）：
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex   （两遍）
+结果：Output written on handout.pdf (20 pages)。
+日志检查（handout.log）：
+  Overfull \hbox / \vbox   0 处
+  Underfull \hbox          0 处
+  Missing character        0 处
+  未解析引用 / Rerun       0 处
+  Package/LaTeX/Class Warning 0 条（早期 fancyhdr \headheight 警告已通过设置
+  \headheight=15pt 修掉，未删任何内容）
+
+四、结构检查 check_handout --mode lab --log
+------------------------------------------
+命令：python -B .dsh/skills/lecture-deepdive/scripts/check_handout.py \
+        michelson/round-01/handout.tex --mode lab --log michelson/round-01/handout.log
+输出：静态检查未发现问题；合计：错误 0 条，人工复核线索 0 条（退出码 0）。
+说明：该脚本只查源结构与日志，不证明推导正确，也不代替 PDF 页面检查；下列两项另行完成。
+
+五、数值与推导核验 tools/verify.py（66 条断言，全部通过，退出码 0）
+-----------------------------------------------------------------
+覆盖内容：
+  1) 20:1 传动（0.01 mm ↔ 0.0005 mm；每格 0.5 µm）；
+  2) ΔL=2d cosθ 的恒等变形（θ=5°/20°/35°/45° 四个值）；
+  3) 虚光源 ΔL=S2'P−S1P 与 2d cosθ 的相对误差 <1e-6；
+  4) 例 3.2 全部数字：d=316λ/2=99.982 µm、k0=316、r1=79.56 mm、r2=112.51 mm、
+     θ1=4.55°、θ2=6.42°、Δr=32.95 mm；代 r1 的间距 39.78 mm（偏大 20.7%），
+     代平均半径 32.95 mm（与该恒等式一致）；
+  5) 同一组数下 ΔL 的精确值 198.711 µm 与二级近似 198.699 µm（差 0.012 µm = 0.019 条纹），
+     用以对照“ΔL 的近似几乎无误差、间距式的近似有 20% 误差”；
+  6) 例 3.1（50 环 → 15.82 µm → 0.3164 mm，数错一环 2%）；
+  7) 例 3.3（N=500、Δl=3.164 mm → 632.8 nm；λ=Δl/(10N) 等价；钠光 589.3 nm → 2.947 mm；
+     两光源读数差 6.85%）与逐差法 ΔN=160 → 1.0125 mm；
+  8) 附加 (1) 可见度 V：1:1→1、9:1→0.6、99:1→0.199；
+  9) 附加 (2) 相干长度 λ²/Δλ≈1.008 µm 与 (n−1)t=0.5 mm（约为相干长度 496 倍）；
+ 10) 涌出/陷入与疏密方向（固定级次 r_k 随 d 增大而增大；Δr∝1/d；每 λ/2 过一个环）；
+ 11) 图 3、图 4 的作图坐标与公式自洽：C=(d tanθ,−d)、D=(2d tanθ,0)、
+     F=2d tanθ sinθ·(sinθ,cosθ)（与 TikZ 代码值 0.5526/0.7892 相符）、DF⊥光 1、
+     BF²+DF²=BD²；图 4 中 ΔL/(2d cosθ)=1.0005、两束光夹角 1.95°（接近平行）。
+运行：python -B michelson/round-01/tools/verify.py（输出见 verify-output.txt）
+
+六、渲染版面检查 tools/render_check.py（0 失败）
+---------------------------------------------
+检查项与结果：
+  1) 页面：A4 595.3×841.9 pt，20 页；正文宽 481.9 pt（左右各 2.0 cm）。
+  2) 文字边界：无越界（中文标点悬挂 ≤10 pt、字体下沉 ≤13 pt 属正常；正文末行距页脚 ≥6 pt）。
+  3) 行间重叠：无（只比正常行高的正文行；上下标/分式碎片不计）。
+  4) 图形边界：无越界。
+  5) 图与图注同页且图在注上方：图 1 p3（间距 13.3 pt）、图 2 p4（29.0 pt）、图 3 p5（24.0 pt）、
+     图 4 p5（12.5 pt）、图 A1 p9（17.7 pt）。
+  6) 问答位置：II-1 p9、II-2 p10、II-3 p11、II-6 p12、II-7 p13、II-8 p14、II-9 p15、
+     附加 (1) p16、附加 (2) p17 —— 每题题干、中文答、英文答案都在同一页
+     （插入了 \qaneed 逐块要求留够页面；实测每题独占一页，无跨页拆题）。
+  7) 节标题孤行：无。
+  8) 跨页长表重复表头：部件表 p2→p3（“英文名称（续）”“中文名与作用（续）”均在 p3）、
+     公式速查表 p6→p7（“要算的量（续）”在 p7）；§5.1、§5.2 表各占一页未拆。
+  9) 线段穿字（TikZ 标注与线重叠）：0 处（曾发现并修正 4 处：G1 标签压 G2 板、
+     “粗线：半反射膜”横穿 G2、“法线”压光线、F 与 S2'、光 2 压 d 箭头）。
+ 10) 未解析引用 “??”：0 处。
+逐页正文充填率（页末 y / 正文高）：p1 99%、p2 100%、p3 98%、p4 94%、p5 102%、p6 99%、
+p7 101%、p8 95%、p9 85%、p10 68%、p11 80%、p12 91%、p13 59%、p14 93%、p15 59%、
+p16 46%、p17 66%、p18 100%、p19 98%、p20 41%。
+说明：§4 每题独占一页，故 p10、p13、p15、p16、p17 页末留白 20%–54%，这是为保证
+“题干与答案不拆页”的排版选择，不是溢出；p20 为末页，留白属正常。
+
+七、实际检查范围
+----------------
+- 逐页读过全部 20 页的**抽取文本**与其坐标（每页行数、首末行、图注位置、题号位置），
+  据此判断分页、续页、图表邻接与问答位置。
+- 用几何量化的方式代替人眼看图：文字/图形的边界、行间重叠、线段穿字、图注与图的
+  相对位置、长表表头重复、每题问答同页。
+- 定量复核了正文所有报出的数值（verify.py 的 66 条断言）与三幅图的作图坐标。
+- 未做：逐页的人眼观感验收（执行模型无图像输入，无法读取渲染位图）；
+  对源资料位图（图 11-1～11-4）的像素级比对；对 TikZ 图形“美观程度”的主观判断。
+
+八、未解决项（如实报告）
+------------------------
+1. G2 在源图 11-2 中画在哪条臂，无法从文字确认。本讲按源 p7“两束光分别从 G1 背面
+   的内侧与外侧反射”逐段数出玻璃路程（射向 M1 的光 3 次、射向 M2 的光 1 次），
+   据此把 G2 画在 M2 臂；若课程图把 G2 画在 M1 臂，本讲结论（G2 补平玻璃路程）不受影响，
+   但图 1 的摆放需按课程图调整。
+2. 部件 2 的英文为 “side plate”，源资料未给中文名，本讲译作“底板／侧板”。
+3. 源图 11-1（装置图）未重绘；§1.2 以部件表和图注为准，未逐像素核对图上的编号位置。
+4. 两处源资料口径差异已记录并按一处处理（§5.3）：
+   (a) Exp p8“每 50 环记一次、到 550 环”与 Preview p3 表“40 环间隔、ΔN=160”冲突；
+   (b) Exp p5 第 (ii) 条 “thinner/denser” 与 Δr 公式相反。
+   两处都写进了讲义正文与台账，未擅自改动源文。
+5. II-6（小半径环调成大半径环）存在两种可辩护口径：跟踪“同一级次的那一圈”（d 增大）
+   与数“视场里的环数/疏密”（d 减小）。本讲两种都给出、给出唯一可操作判据
+   （看环是向外扩张还是向中心消失），未替课程指定唯一答案。
+6. 图 3、图 4 为示意图（非按比例）；图 3 的 θ=35°、图 4 的 d/z≈0.07 只为看清几何关系，
+   公式的适用条件（两面平行、n=1、r≪z）在正文与图注中写明，示例数值另行核对。
+
+九、复现命令
+------------
+  cd michelson/round-01
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex
+  xelatex -halt-on-error -interaction=nonstopmode handout.tex
+  cd ../..
+  python -B .dsh/skills/lecture-deepdive/scripts/check_handout.py michelson/round-01/handout.tex --mode lab --log michelson/round-01/handout.log
+  python -B michelson/round-01/tools/verify.py
+  python -B michelson/round-01/tools/render_check.py
+  python -B michelson/round-01/tools/page_index.py

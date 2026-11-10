@@ -1,0 +1,190 @@
+matrix-exponential 精讲讲义 · 验证与检查记录
+======================================================================
+生成日期：2026-11-10
+任务：从 inputs/16_17_matrix_exponential.pdf 独立生成可自学精讲讲义
+输出目录：matrix-exponential/round-01/
+
+一、输入与产物
+----------------------------------------------------------------------
+输入（唯一原始资料）
+  inputs/16_17_matrix_exponential.pdf
+  44 个物理页；sha256 = 7e23b1402a27ed7313500e6d86a311deabf6572db738dd7f255c6bea8370d692
+  与 inputs-and-skill-manifest.json 记录一致。
+
+产物
+  handout.tex      sha256 = a5c34a6c6bf2835ac5fcdb3a9e4c1738a672576ca15f0d46234e6b860a1284f4
+  handout.pdf      sha256 = 61d801c63fa08083a30dced9860b0cc5db74602c7b3a3e1c90822d4592b74ae9
+                   26 页，277704 字节
+  handout.log      最终（第二遍）编译日志，30819 字节
+  source-map.json  44 页逐页覆盖、26 个条目、6 条勘误、5 条记号说明
+  scripts/         可复现验证脚本、输出、渲染与检查脚本
+  renders/         源 PDF 44 页 170 dpi 渲染图（供人工目视复核）
+
+二、原资料核读范围与方法
+----------------------------------------------------------------------
+1. 文字层：read_slides.py 逐页读取 p1-p44 全文，确认每页均有文字层，
+   没有 image_only 页；p1-p44 的标题、公式、例题与作业均已进入映射。
+2. 位置重建：幻灯片中的矩阵在 PDF 中由独立字形拼成，纯文本抽取会丢失行列。
+   以 PyMuPDF 的 span 坐标逐页还原矩阵行列、上下标与正负号；关键页（p4、p5、
+   p7、p9-p15、p20、p23-p38、p40-p44）逐行核对。
+3. 原课件结论独立复算：所有 e^{Ax}、特征值、特征向量、V^{-1}、通解与作业题
+   都用 SymPy 重新计算，未沿用课件中间结果。
+4. 页面渲染：44 页已渲染为 renders/src-p01.png ... src-p44.png。
+   本会话模型不支持图像输入，无法读取 PNG 做像素级目视检查；因此改用
+   （a）全 26 页文字层逐页阅读，（b）PDF 版面几何与字体/结构程序化检查。
+   这是本次检查的实际边界，见第六节。
+
+三、数学验证（可复现）
+----------------------------------------------------------------------
+脚本：scripts/verify_matrix_exponential.py
+运行：python -B matrix-exponential/round-01/scripts/verify_matrix_exponential.py
+输出：scripts/verify_output.txt
+结果：共 91 条断言，失败 0 条，退出码 0，末行 "ALL CHECKS PASSED"。
+
+覆盖内容（每条断言均已实际执行）：
+- 定义与性质（p4-p7）：幂零/对角/纯量矩阵；1x1 情形确认 p4 印的 e^{atx}
+  与定义矛盾；求导公式；x=0 与导数在 0 处的自检；e^{At}e^{As}=e^{A(t+s)}；
+  e^{-At}=(e^{At})^{-1}；AB≠BA 的反例（e^{A+B}≠e^Ae^B，且给出两矩阵）；
+  特征向量性质。
+- Example 1（p13-p15）：特征多项式、V、Λ、V^{-1}（正确值 (1,2)=-1）、
+  e^{Ax} 与 SymPy Matrix.exp() 逐元素一致、x=0、导数、通解；
+  并验证原印刷 V^{-1} 不满足 VV^{-1}=E。
+- Example 2（p20）：长除法恒等式、p(A)=146A-184E、直接矩阵值。
+- Example 4（p24-p25）：特征方程、α1x/α0、闭式矩阵、导数、通解；
+  验证缺 1/6 的原 c̃ 不满足通解。
+- Example 5（p26-p27）：特征方程、旋转矩阵、导数、det=1、通解；
+  验证原第二基向量 (-sin x, cos x) 不满足 Y'=AY。
+- Example 6（p30-p31）：解 4x4 方程组；r(5x)、r'(5x)、r''(5x)、r(2x)
+  四条方程全部成立；x→0 极限为 1/6、1/2、1、1；讲义四个闭式与解一致。
+- Example 7（p33-p35）：A^2、特征多项式、e^{Ax}、导数、通解；
+  验证原 c̃3=c3-2c2 不满足通解。
+- Example 8（p36-p38）：A^2、特征多项式、e^{Ax}、导数；
+  验证 p36 的 (3,2)=-α1x 与 e^{Ax} 不符。
+- 作业 H1/H2/H3（p44）：特征多项式、特征向量、V^{-1}、e^{Ax}、x=0、
+  导数在 0 处=A、通解；H1/H2 另用 Cayley-Hamilton 交叉核对；
+  H2 复特征向量 AV=2iV；H3 V、V^{-1}、e^{Ax}。
+- 基本矩阵（p39-p43）：Φ(x)Φ^{-1}(x0)=e^{A(x-x0)}；e^{Ax}e^{-Ax}=E；
+  Φ(0)=E 情形；2x2 Jordan 块与几何重数 g=1<2。
+
+四、内容与覆盖自查
+----------------------------------------------------------------------
+- 44 页逐页落点见 source-map.json 的 coverage 数组；每页均有明确正文位置
+  （p1 封面、p2 目录、p3/p8/p16/p39 章节页也有对应说明）。
+- 课件 8 个编号例题全部在正文，且均标注“教学示范”并给出完整过程：
+  Example 1（§3.5）、2（§4.4）、3（§4.6）、4（§4.7）、5（§4.8）、
+  6（§4.10）、7（§4.12）、8（§4.13）。
+- 3 道作业在 §6 以 practice 形式给出：只有题干、考点、附录页码；
+  完整详解在附录 A 的 H1/H2/H3。正文练习页（p20）已核对无步骤、无结果、
+  无答案。H1/H2/H3 的“详解见附录第 N 页”与实际答案起始页 21/22/23 一致
+  （程序化检查确认）。
+- 概念小例与教学示范：§1.6 三种可直算矩阵、§2.3 反例、§4.5 插值、
+  §4.9 Jordan 块解释导数条件；均紧跟相关正文。
+- 前提与自检：§0.3 前置操作检查、§0.4 三条自检；每个例题后至少两项自检。
+- 来源核对：正文与附录 B 说明勘误；source-map.json 的 errata 数组给出
+  页、原印刷、应改为、判断依据。
+
+五、编译与静态检查
+----------------------------------------------------------------------
+编译：在 matrix-exponential/round-01 下执行
+  xelatex -halt-on-error -interaction=nonstopmode -output-directory=build handout.tex
+  连续两遍（第二遍用于交叉引用稳定）；退出码 0。
+最终日志 handout.log：
+  - 无 LaTeX 错误（无 "^!" 行）；
+  - 无 Overfull \hbox / \vbox；
+  - 无 Missing character；
+  - 无 undefined reference / multiply defined labels；
+  - "Output written on ... handout.pdf (26 pages)"。
+主题版本：.dsh/skills/lecture-deepdive/assets/theme-violet.tex（紫色主题）。
+版式修正：为避免 fancyhdr 的 \headheight 警告并保持正文高度，用
+  \geometry{headheight=22pt} 重新计算，而不是直接改 \headheight；
+  重新编译后正文边界与页脚位置正常，日志无版面溢出。
+
+check_handout（skill 指定）：
+  python -B .dsh/skills/lecture-deepdive/scripts/check_handout.py \
+    matrix-exponential/round-01/handout.tex --mode appendix \
+    --log matrix-exponential/round-01/handout.log
+结果：错误 0 条，人工复核线索 0 条。
+说明：该工具只查结构/引用/日志，不证明数学正确或版面视觉合格；
+数学正确性由第三节 91 条断言另行核验。
+
+六、PDF 页面与版面检查
+----------------------------------------------------------------------
+脚本：scripts/check_layout.py；输出：scripts/layout_output.txt；结果：
+硬性失败 0 条，提示 0 条，退出码 0。
+检查项：
+  - 26 页均有正文；无空白页；
+  - 正文未越出左右页边距（允许 ctex 标点悬挂约 8pt；本 PDF 实测最大
+    伸出约 8pt，属中文标点悬挂，不是内容溢出；日志也无 Overfull）；
+  - 正文纵向范围在正文区内，页脚（页码）已排除；
+  - 无页底孤立节标题（按行合并检查，已修正 p1/p10/p18/p19/p25 的
+    页底标题问题，改为 \clearpage 后标题与正文同页/新页开始）；
+  - 无图片对象；22 个字体 xref 均可提取（嵌入）；
+  - 8 个“课件例题”标题、3 个练习、附录 A/B、B.3、B.4 均在 PDF 中；
+  - H1/H3 的“续解”标题只在真实跨页处出现（p22 顶部、p24 顶部），
+    未在未跨页处滥用 \answercontinue。
+逐页文字层已通读 26 页（p1-p26）；重点复核了附录 A 的 H1/H2/H3
+与附录 B 的勘误表。
+
+补充渲染检查：用 scripts/render_and_check_pixels.py 把讲义 26 页以 120 dpi
+渲染为 renders/handout-p01.png ... handout-p26.png，并做像素墨迹检查
+（scripts/pixel_output.txt）：
+  - 26 页均有墨迹，无空白页；墨迹覆盖率 1.70%-6.74%；
+  - 无墨迹触及页面边缘（6px 边框内无墨迹），可排除整页裁切；
+  - 渲染页尺寸 993x1404，页眉/页脚均在页内。
+这仍是程序化像素检查，不是人眼对版面美观、公式间距、断行质量的判断。
+
+七、勘误（已核实并处理，原 PDF 不修改）
+----------------------------------------------------------------------
+E1 p4   x=x0e^{atx} → x=x0e^{at}
+        依据：代入 x'=ax 不成立；1x1 矩阵指数给出 e^{at}。
+E2 p14  V^{-1} 的 (1,2) 元 0 → -1
+        依据：V V^{-1}≠E；代数余子式；x=0 自检。
+E3 p25  c̃1=3c1+c2, c̃2=3c1-c2 → 各除以 6
+        依据：矩阵等式含公共因子 1/6；x=0 必须给 (c1,c2)。
+E4 p27  第二解向量 (-sin x,cos x) → (sin x,cos x)
+        依据：e^{Ax} 第二列；导数自检。
+E5 p35  c̃3=c3-2c2 → c3-c2
+        依据：x=0 第三分量应为 c3。
+E6 p36  e^{Ax} 的 (3,2) 元 -α1x → +α1x
+        依据：A^2、Ax 逐项乘加；p38 最终结果取正号。
+记号/措辞（不影响结论）：
+  p9/p12 重特征值压缩排列 λ1,...,λ1,λ_{m1+1},...,λ_n 已在 §3.1 解释为约定；
+  p21 "α0,...,α_n" 应为 α0,...,α_{n-1}；
+  p28 "前 m-1 阶导数" 的准确表述是 Δ^{(j)}(λ_i)=0, j=0..m-1；
+  p32 r^{m1-1} 应读作 r^{(m1-1)}。
+另有 p24 左下角孤立的字母 "b"（排版残留），与数学内容无关，未在正文处理。
+
+八、未解决项与检查边界（如实报告）
+----------------------------------------------------------------------
+1. 本会话模型不支持图像输入，无法对源 PDF 渲染图或讲义 PDF 页面做
+   像素级目视检查。实际替代检查是：44 页文字层+字形坐标核读、
+   26 页文字层逐页阅读、PDF 版面几何/字体/结构程序化检查，
+   以及 26 页 120 dpi 渲染后的像素墨迹/裁切检查。
+   若需像素级视觉验收，需由具备图像输入的审核者查看 renders/ 与 handout.pdf。
+2. 运行 check_handout 与 check_layout 通过，不等于数学或版面已获人工验收；
+   本记录只说明这些程序化检查的实际范围与结果。
+3. Example 6 原课件只列到四个方程，未解完；§4.10 的解出 α 部分已明示为
+   “讲义补写”，不是课件原文内容。
+4. Example 3 本质上是待定形式与 Remark 的示范，没有具体矩阵数值；
+   正文按教学示范处理，未伪造计算题。
+5. H3 特征向量取 (286,-52,-11)^T 是为避免分数的合法非零倍数；
+   任何非零倍数均可，这一点正文已说明。
+6. 原资料中的上述 6 处公式勘误无法在原始 PDF 内修正；讲义按正确形式
+   表述并在附录 B 说明，原 PDF 保持只读。
+
+九、文件清单
+----------------------------------------------------------------------
+matrix-exponential/round-01/
+  handout.tex, handout.pdf, handout.log
+  source-map.json
+  verification.txt（本文件）
+  scripts/verify_matrix_exponential.py
+  scripts/verify_output.txt
+  scripts/check_layout.py
+  scripts/layout_output.txt
+  scripts/render_and_check_pixels.py
+  scripts/pixel_output.txt
+  scripts/read_slides/dump/inspect 等辅助脚本
+  renders/src-p01.png ... src-p44.png（源页）
+  renders/handout-p01.png ... handout-p26.png（讲义页）
+  build/（xelatex 中间文件与最终 PDF/log 副本）

@@ -1,0 +1,226 @@
+{
+  "round": "michelson/round-02",
+  "based_on": "michelson/round-01（冻结，未修改）",
+  "review_report": "D:/aaa_D_usual/CODEX/AI-SKILL/output/review-20261110/michelson-round-01-final/review-final.md",
+  "executor": "DSH",
+  "date": "2026-11-10",
+  "issues": [
+    {
+      "id": "M01",
+      "severity": "P1",
+      "review_claim": "先说明 k 越小 r_k 越大，却把 r_k²−r_{k−1}² 与 r_k−r_{k−1} 都写成正量；例 3.2 用 m 编号得到正间距，不能因此改变前面 k 的编号方向。",
+      "verification": "核实成立。按 r_k²=2z²(1−kλ/2d)，r_k²−r_{k−1}²=−λz²/d，r_k−r_{k−1}<0；旧稿正号确与自己的半径式矛盾。例 3.2 的 m=1,2 正间距本身不错，但正文与例使用了不同的编号方向且未说明。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.3 第三步末尾", "change": "明确 k 越小半径越大；把整数级次 k 与从中心数的环号 m 分开命名。"},
+        {"file": "handout.tex", "location": "§2.3 第四步", "change": "引入 m=1,2,…，给出 k=k0−m、r_m=z√(mλ/d)；把正的物理间距定义为 r_{k−1}−r_k（较外减较内），写 r_{k−1}²−r_k²=λz²/d；加“符号不能反”一段，指出 r_k²−r_{k−1}² 为负。"},
+        {"file": "handout.tex", "location": "§2.5 公式速查表", "change": "环间距行改为 Δr=r_{k−1}−r_k≈λz²/(2d r_k)，注明用平均半径代入精确；新增“从中心数第 m 环”行。"},
+        {"file": "handout.tex", "location": "§3 例 3.2", "change": "间距恒等式改为 r_{k−1}²−r_k²=λz²/d，r_{k−1}−r_k=λz²/(2d r̄)；明确较外环减较内环。"},
+        {"file": "handout.tex", "location": "§5.3 第 2 条、§5.4", "change": "把“省略相减一步”与“未说明编号方向”一并记录。"},
+        {"file": "tools/verify.py", "location": "M01 段", "change": "新增符号断言：r_k²−r_{k−1}²=−λz²/d、r_{k−1}²−r_k²=+λz²/d、r_m 与 k=k0−m 一致、r_m²−r_{m−1}²>0。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "121 条断言 0 失败；上述符号与编号断言全部通过"},
+        {"check": "content_check.py", "result": "源文件有“符号不能反”、r_{k−1}²−r_k²=λz²/d、“r_m²−r_{m−1}²=λz²/d>0”；旧的正号错误式已不存在"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M02",
+      "severity": "P1",
+      "review_claim": "工作式口述“读数差的毫米数除以 10 倍环数就是波长的米数”会造成 1000 倍单位错误；脚本先把输入换成米，因而没有验证这句说明。",
+      "verification": "核实成立。3.164/(10×500)=6.328×10^-4；输入是毫米时结果仍是毫米，等于 6.328×10^-4 mm=6.328×10^-7 m=632.8 nm。旧口述把毫米数直接当米数，确实差 1000 倍。",
+      "changes": [
+        {"file": "handout.tex", "location": "§3 例 3.3", "change": "写全单位链 6.328×10^-4 mm=6.328×10^-7 m=632.8 nm；新增 λ[nm]=10^5Δl[mm]/N；口述改为“先定单位，再算数值”，明确禁止把毫米数直接当米数。"},
+        {"file": "handout.tex", "location": "§2.5 公式速查表", "change": "波长行补 λ[nm]=10^5Δl[mm]/N。"},
+        {"file": "handout.tex", "location": "§4 II-8 步骤 (5) 与英文 Steps", "change": "同步说明 Δl 用毫米时 λ=Δl/(10N) 先得毫米，换米乘 10^-3；或直接用 nm 工作式。"},
+        {"file": "tools/verify.py", "location": "例 3.3 段", "change": "输入改用 3.164 mm 的数值，分别断言毫米结果、换米结果与“当米用会大 1000 倍”。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "λ=6.328×10^-4 mm、6.328×10^-7 m、632.8 nm；lam_mm/(632.8 nm)=1000，全部通过"},
+        {"check": "content_check.py", "result": "源文件含 6.328×10^-4 mm 与 10^5Δl[mm]/N；旧句“就是波长的米数”已不存在"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M03",
+      "severity": "P1",
+      "review_claim": "附加 (1) 的中英文答案里 25% 的百分号把该行后续内容变成注释，最终 PDF 中文出现“25 选 1:1…”、英文停在“only 25”。",
+      "verification": "核实成立。round-01 的 TEX 第 641/647 行是未转义的 25%；冻结 PDF 第 16 页抽取文字确为“暗纹的强度只有亮纹的 25 选 1:1 还有一层理由”与“dark fringes have only 25”。",
+      "changes": [
+        {"file": "handout.tex", "location": "§4 附加 (1) 中文答", "change": "改为 25\\%；同时按 M06 重写后半段比较条件。"},
+        {"file": "handout.tex", "location": "§4 附加 (1) 英文答", "change": "改为 25\\%；同时按 M06 重写后半段比较条件。"},
+        {"file": "tools/content_check.py", "location": "M03 段", "change": "不只查源文件，而是查最终 PDF 第 17 页：中文“25%，明暗对比变差”、英文“only 25% of the intensity… so the rings are easily miscounted”同时可见；禁止“25 选”“only 25 : 16”和以 25 结尾的行。"}
+      ],
+      "evidence": [
+        {"check": "content_check.py", "result": "96 条断言 0 失败；M03 成品页文字检查全部通过"},
+        {"check": "page-17-text.txt", "result": "实际 PDF 第 17 页全文包含“的25%，明暗对比变差，数环容易数错”与“have only 25% of the intensity of the bright ones, so the rings are easily miscounted”"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M04",
+      "severity": "P2",
+      "review_claim": "图 4 的 z 尺寸线从 S2' 量到屏（3.78）而非正文定义的中点距离 4.08；θ 以 S2' 为顶点，而 cosθ 用的是中点距离；正文把有符号差写负后又取绝对值，图注把同一差写成正值；近似条件未说明；脚本检查的不是图上的标记对象。",
+      "verification": "核实成立。旧图 S1=−1.98、S2'=−1.38、中点 −1.68；z 尺寸线 −1.38→2.40=3.78，而正文 z=4.08；θ 弧心在 S2'；图注把 S2'P−S1P 写成正值；脚本按中点 4.08 计算，未与图上 3.78 对齐。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.3 第二步", "change": "明确 z 是屏到两虚光源中点 M 的距离；ΔL≡S2'P−S1P<0；写明近似条件 d≪√(z²+r²)（略去 d²）与 r≪z；把“取绝对值”后的 |ΔL|=2d cosθ 与有符号 ΔL=−2d cosθ 分开。"},
+        {"file": "handout.tex", "location": "图 4 及其图注", "change": "重绘：z 尺寸线从 M（−1.68）量到屏（2.40）；θ 弧心在 M、弧从 0° 到 13.7716°；虚线 M→P 表示视线；图注写明“尺寸线从 M 量到屏”“θ 的顶点在 M”“ΔL<0，大小 |ΔL|=2d cosθ”。"},
+        {"file": "tools/verify.py", "location": "figure4_checks", "change": "直接解析 handout.tex 中图 4 的实际 TikZ 坐标（S1、S2'、M、P、屏幕、z 线、θ 弧），断言 z 线起点 x=M、终点=屏、弧心=M、θ=atan(r/z)、|S2'P−S1P|/(2d cosθ)=1，并记录“从 S2' 量会短 d=0.30”。"},
+        {"file": "tools/figure4_pdf_check.py", "location": "新增", "change": "在最终 PDF 上以轴线定标、用 2d 尺寸线反推箭头内缩量，还原 z 尺寸线标称端点，确认真实画出的是 M→屏 4.08 cm，而不是 S2'→屏 3.78 cm。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "图 4 源坐标断言全部通过：M 是中点、z 线 x=−1.68→2.40、弧心=M、θ=13.7716°、|ΔL|/(2d cosθ)=1"},
+        {"check": "figure4_pdf_check.py", "result": "11 条 0 失败；实际 PDF 第 5 页 z 标称端点 245.04→360.70 pt（115.65 pt），与 4.08 cm 一致；更接近 M 而非 S2'；无 3.78 cm 旧线"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M05",
+      "severity": "P2",
+      "review_claim": "一般亮纹条件含 δ0，但例 3.2 同时指定整数 k0=316 与 2d=k0λ 保证中心亮，没有说明本例的附加相位；若 δ0 为半周期，这组 d、λ 不保证中心亮。",
+      "verification": "核实成立。旧稿旁注给出 2d cosθ=(k−δ0/2π)λ，又说以后写 2d=kλ 都按此理解；例 3.2 未说明 δ0，若 δ0=π 则 2d/λ=316 对应 k=316.5，不是亮纹。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.3 第三步", "change": "给出含 δ0 的一般条件 (11-1′)；说明 δ0 只平移整数级次、不改变计数；§3 教学小例明确采用 δ0=0 约定；δ0=π 时把整数 k 换成 k−1/2。"},
+        {"file": "handout.tex", "location": "§3 例 3.2 设定", "change": "明写“本讲采用 δ0=0，因此中心亮纹条件就是 2d=k0λ；若 δ0=π 应改用 2d=(k0−1/2)λ，k0 相应平移，环间距不变”。"},
+        {"file": "handout.tex", "location": "§4 II-7 与 §5.3 第 5 条", "change": "II-7 的 k0=2d/λ 加“在 δ0=0 约定下”；§5.3 记录 (11-1) 未写相位及本讲处理。"},
+        {"file": "tools/verify.py", "location": "M05 段", "change": "断言 2d=316λ 在 δ0=0 下为中心亮纹；δ0=π 时 2d/λ+1/2=316.5 非整数，中心变暗。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "δ0=0 与 δ0=π 两种条件的断言均通过"},
+        {"check": "content_check.py", "result": "源文件含 (11-1′) 的 k−δ0/(2π) 形式、§3 的 δ0=0 约定、例 3.2 的中心亮纹前提"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M06",
+      "severity": "P2",
+      "review_claim": "把“两束强度相等”直接解释成“干涉场总光强最大、屏上最亮”，没有定义总光强、保持不变的条件或哪个输出端；可见度、亮纹峰值、平均强度与输出端功率不是同一对象。",
+      "verification": "核实成立。在 I1+I2 固定时，等分使 Imax 最大、Imin 最小、V 最大，但相位平均总强度仍是 I1+I2，不因等分增大；特定输出端功率还要看分光比。旧句把可见度理由换成了未经建立的总光强结论。",
+      "changes": [
+        {"file": "handout.tex", "location": "§4 附加 (1) 中文答", "change": "改为“在入射总功率 I1+I2 保持不变的前提下，等分使 Imax 最大、Imin 最小、V 最高；平均总强度仍是 I1+I2；输出端功率另看分配比；等分真正带来更高对比度”。"},
+        {"file": "handout.tex", "location": "§4 附加 (1) 英文答", "change": "同步写明 if the total incident power I1+I2 is held fixed；period-averaged total intensity 不变；输出端口另论；收益是 higher contrast。"},
+        {"file": "tools/verify.py", "location": "M06 段", "change": "固定 S=10 断言等分 Imax=20、Imin=0、V=1；9:1 时 Imax=16、Imin=4、V=0.6；平均总强度恒为 10；等分最大化 Imax、最小化 Imin。"},
+        {"file": "tools/content_check.py", "location": "M06 段", "change": "断言中英都写了固定 I1+I2 的条件、平均总强度不变、收益是对比度。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "M06 全部断言通过"},
+        {"check": "content_check.py", "result": "中英比较条件、平均强度、对比度语句均在位"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M07",
+      "severity": "P2",
+      "review_claim": "源资料只给“0.01 mm 读数变化对应 0.0005 mm 实际位移”，稿件进一步把 0.01 mm 当成确定的“最小分度”，据此推每环多少格；应区分真实规格与说明用假设。",
+      "verification": "核实成立。源 p2 只给对应关系，未说 0.01 mm 是最小分度；旧稿 §2.4、例 3.1、II-9 把它写成确定分度。20:1 关系本身可保留。",
+      "changes": [
+        {"file": "handout.tex", "location": "§1.2 提示框", "change": "明确源 p2 只给一个“读数变化 ↔ 位移”对应关系，没有说明 0.01 mm 是最小分度。"},
+        {"file": "handout.tex", "location": "§2.4", "change": "把最小分度 0.01 mm 明确写成“说明用假设”，不是已查明规格；实际分度不同按 20:1 改算。"},
+        {"file": "handout.tex", "location": "§3 例 3.1 与 §4 II-9", "change": "把“31.64 格”“0.63 格”改为“31.64 个 0.01 mm 读数间隔（按 §2.4 假设）”“0.63 个读数间隔”；II-9 明说源 p2 未定义最小分度。"},
+        {"file": "tools/verify.py", "location": "M07 段", "change": "断言 20:1、每 0.01 mm 对应 0.5 µm、一个环占 1/31.6 个间隔、20:1 后 0.6328 个间隔。"},
+        {"file": "tools/content_check.py", "location": "M07 段", "change": "断言“没有说 0.01 mm 就是最小分度”“说明用假设”“按同一 20:1 比例改算”均在位。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "M07 数值断言全部通过"},
+        {"check": "content_check.py", "result": "假设措辞与改算说明均在位"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M08",
+      "severity": "P2",
+      "review_claim": "把 G2 的作用写成让两束光在屏上“光程完全相同”，接着解释的却是玻璃路程；后面又由镜位置产生非零、可调的 2d，学生得到与后续模型冲突的结论。",
+      "verification": "核实成立。源 p3 的宽泛措辞被照搬，未限定对象；G2 只能补偿玻璃路程（材料、厚度、平行），不能消除由 M1、M2 位置差产生的可调 2d。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.1 补偿板段", "change": "改为“补偿的是穿过玻璃的那部分光程差，不是两臂总光程差”；引用源 p3 时说明应理解为“把玻璃路程补平”；明确 2d 由镜位置决定、可调，G2 不能也不应消除。"},
+        {"file": "handout.tex", "location": "§2.2", "change": "把“中心处才恰好等于 2d”改为“总光程差只由等效空气膜的 d 与 θ 决定，即 2d cosθ（中心为 2d）”。"},
+        {"file": "handout.tex", "location": "§4 II-2 中英答", "change": "写明无 G2 时的玻璃路程差对激光是与 d 无关的常数（可并入 δ0），不改变环间距与计数；并补“G2 只补玻璃部分，不消除可调 2d”。"},
+        {"file": "tools/verify.py", "location": "M08 段", "change": "断言无 G2 时玻璃光程差 2t(n−1)=1.0 mm、有 G2 后为 0；改变 d 仍改变总光程差。"},
+        {"file": "tools/content_check.py", "location": "M08 段", "change": "断言“玻璃部分”“不是两臂总光程差”“不消除可调 2d”均在位。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "M08 玻璃与空气项断言全部通过"},
+        {"check": "content_check.py", "result": "限定语句均在位"}
+      ],
+      "status": "resolved",
+      "residual": null
+    },
+    {
+      "id": "M09",
+      "severity": "P2",
+      "review_claim": "原讲义 p4-p5 先说 d 小使间距大，再说 d 小时 thinner、d 大时 denser；稿件把这整句判为“与公式相反”，但“d 大则 denser”本身与公式一致，thinner 用词可能含糊；不应把未证明的错误当事实反复写入正文、双语答案与台账。",
+      "verification": "核实成立。源 p5 的完整句是“d 越小 Δr 越大，条纹 thinner；d 越大 denser”；把 thinner 读作“更疏”时与 Δr∝1/d 完全一致，d 大→denser 也一致。旧稿把整句判成反结论缺乏充分证据，属于用词/翻译疑点。",
+      "changes": [
+        {"file": "handout.tex", "location": "§4 II-6 中文答末句", "change": "改为“thinner 形容 Δr 大（更疏）、denser 形容 d 大（更密），结合同句与公式一致；只是字面易误读，本讲按更疏/更密理解”。"},
+        {"file": "handout.tex", "location": "§4 II-6 英文答末句", "change": "同步改为 uses thinner for a larger Δr (sparser) and denser for a larger d (closer); read this way it agrees with the formula."},
+        {"file": "handout.tex", "location": "§5.3 第 1 条", "change": "标题与正文改为“用词问题，不是可证明的公式冲突”，并说明 thinner 读作“更疏”即自洽。"},
+        {"file": "handout.tex", "location": "§5.4", "change": "把“表述不一致”改为“用词疑点｜thinner/denser 易误读为更细/更粗，实为更疏/更密”。"},
+        {"file": "source-map.json", "location": "source_notes", "change": "把该项从“源资料错误”改为“用词疑点”，handling 与正文一致。"},
+        {"file": "tools/content_check.py", "location": "M09 段", "change": "断言“是用词问题，不是可证明的公式冲突”在位；“与公式相反”“与该式相反”已删除。"}
+      ],
+      "evidence": [
+        {"check": "verify.py", "result": "Δr∝1/d、d 越小 Δr 越大的断言通过，确认用词读法自洽"},
+        {"check": "content_check.py", "result": "新表述在位，旧“相反”句已不存在"}
+      ],
+      "status": "resolved_by_reclassification",
+      "residual": "不保留“源资料公式冲突”这一未经证明的判据；§5.3 仍如实记录该句的用词歧义。"
+    }
+  ],
+  "non_blocking_handled": [
+    {
+      "item": "封面来源页",
+      "verification": "round-01 封面写 Exp.11 p1-p5，正文实际引用 p7-p9。",
+      "change": "封面改为“主要讲解范围 p1-p5；另参考 p7-p9”，未误称原 PDF 只有 5 页。"
+    },
+    {
+      "item": "续页目标/条件线索",
+      "verification": "例 3.2 的“代入数值”在 round-02 落到第 9 页页首。",
+      "change": "第 9 页首改为“代入数值（接上页例 3.2：d=99.982 µm、z=1.00 m，求 r1,r2）”，page-09-text.txt 可核。"
+    },
+    {
+      "item": "图 1 的 G2 位置",
+      "verification": "审核已确认 G2 在 M2 臂与原资料 p3 图示一致；本轮不改。",
+      "change": "图 1 保持原样；source-map 与 verification 记录该能力边界。"
+    },
+    {
+      "item": "范围",
+      "verification": "9 道选题与实验目的/仪器范围未变。",
+      "change": "未扩张核心范围；未补未选题、完整操作或全部数据处理。"
+    }
+  ],
+  "visual_review": {
+    "performed_by_executor": false,
+    "reason": "本轮执行模型不能接收图像输入；未反复调用不支持的图像输入。",
+    "geometry_and_text_checks": [
+      "render_check.py：边界、重叠、图注同页、问答同页、表头重复、线段穿字，0 失败",
+      "figure4_pdf_check.py：图 4 实际 PDF 尺寸线端点，11 条 0 失败",
+      "content_check.py：实际 PDF 文字，96 条 0 失败"
+    ],
+    "saved_renders": "michelson/round-02/renders/handout-p01.png … handout-p21.png",
+    "pending": "外部支持看图的审核者只读查看 renders/ 并交回具体布局/几何问题；修改仍由 DSH 完成。"
+  },
+  "overall": {
+    "all_issues_addressed": true,
+    "checks_passed": [
+      "xelatex 两遍 exit 0，21 页，日志无 Overfull/Underfull/Missing character/LaTeX Warning/未解析引用",
+      "check_handout --mode lab：0 错误 0 线索",
+      "verify.py：121/121",
+      "content_check.py：96/96",
+      "figure4_pdf_check.py：11/11",
+      "render_check.py：0 失败"
+    ],
+    "not_claimed": [
+      "不声称外部审核已通过",
+      "不声称已目视验收 PDF 页面",
+      "不声称源位图已逐像素比对",
+      "不声称生成讲义等于学习者已掌握"
+    ]
+  }
+}
