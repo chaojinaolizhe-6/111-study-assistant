@@ -1,0 +1,1482 @@
+% !TEX program = xelatex
+% 大物实验 · 实验 3.12/3.13 分光计的调节与应用 · 原理与流程精讲（lecture-deepdive 规范）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{实验 3.12/3.13 分光计原理与流程精讲}{大物实验}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{needspace}
+\setlength{\headheight}{22pt}
+
+% 圆圈数字 ①…⑳ 归入 CJK 字符类，否则 xeCJK 会去 Latin 字体找、报缺字
+\xeCJKDeclareCharClass{CJK}{"2460->"2473}
+
+\newcommand{\blank}{\textcolor{black!45}{\rule[-2pt]{1.05cm}{0.4pt}}}
+\newcommand{\blankcell}{\rule{0pt}{16pt}\textcolor{black!45}{\rule[-3pt]{1.35cm}{0.4pt}}}
+\newcommand{\rowstrut}{\rule{0pt}{17pt}}
+
+\tikzset{
+  comp/.style={fill=white,draw=black,thick},
+  arr/.style={->,>=Stealth,thick},
+  arrd/.style={->,>=Stealth,thick,dashed},
+  lab/.style={font=\small},
+  dimlab/.style={font=\footnotesize\color{inkgray}}
+}
+
+\begin{document}
+
+\doctitle{分光计的调节与应用}
+{实验 3.12/3.13 原理与流程精讲 $\cdot$ 从一台测角的仪器到折射率、光栅常量与角色散}
+{依据：Exp.12 讲义（15 页）与 Preview for Experiment 12（3 页）$\cdot$ 2026-11-14（周六）13:30--17:30 $\cdot$ 综合楼 308 $\cdot$ 王淑芬 $\cdot$ 2026-11-11 整理}
+
+%=====================================================================
+\hdr{§0}{本讲坐标、记号与报告任务}
+
+这次一场四小时要连着做三件测量，它们共用\emph{同一台仪器、同一套调节}，只是换载物台上的东西：
+
+\begin{center}
+\begin{tabular}{@{}p{2.0cm}p{7.6cm}p{4.4cm}@{}}
+\toprule
+\thead{阶段} & \thead{做什么} & \thead{本讲位置} \\
+\midrule
+调仪器 & 望远镜聚焦无穷远、望远镜轴与准直管轴都垂直主轴 & §2--§5 \\
+测顶角 & 三棱镜两个面的反射像，得顶角 $\alpha$ & §6 \\
+测折射率 & 最小偏向角法得 $\delta_{\min}$，代入 $\alpha$ 得 $n$ & §7 \\
+测光栅 & 光栅方程得光栅常量 $d$、一级双线得角色散 $D$ & §8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+路线是这样的：先把\emph{仪器的三条轴}讲清楚（§1），再把\emph{望远镜为什么能看见自己的像}推到能算的程度（§3 的 $a/f$ 那一步是关键），读数为什么必须用两个游标（§4），然后才是五步调节（§5）和三套测量（§6--§8）。§9 是打印带去课堂的空白表，§10 是表怎么算，§11--§13 是报告必答的 8 道预习题、口试的 9 道思考题和 3 道选做。§14 易错，§15 是两份材料彼此不一致、或没写明而本讲补上的地方。
+
+\callout{\raggedright\textbf{两份材料的页码约定}：本讲义中的「讲义 pX」指下面第一份 PDF 的物理页（共 15 页）；「预习 pX」指第二份 PDF 的物理页（共 3 页）。\\[2pt]
+{\footnotesize\ttfamily 讲义＝Exp.12.AdjustmentandApplicationofSpectrometer.pdf}\\
+{\footnotesize\ttfamily 预习＝Printityourselfandbringittoclass\_PreviewforExp.12adjustmentand\-applicationofspectrometer.pdf}\\[3pt]
+\textbf{预习 p3 是「Print it yourself and bring it to class」那一页}（四张数据表），出门前务必打印——本讲 §9 按同一栏目重排了一份，两者任选其一，但\textbf{必须带纸质表进场}。}
+
+\subhdr{§0.1 记号表（全文统一）}
+
+\begin{center}
+\begin{tabular}{@{}p{1.6cm}p{7.4cm}p{2.0cm}@{}}
+\toprule
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\midrule
+$\alpha$ & 三棱镜顶角（两折射面的夹角） & $^{\circ}$ \\
+$\delta$ & 偏向角：入射光与出射光方向的夹角 & $^{\circ}$ \\
+$\delta_{\min}$ & 最小偏向角 & $^{\circ}$ \\
+$i,\ i'$ & 入射角、出射角（对各自面的法线） & $^{\circ}$ \\
+$r,\ r'$ & 两面的折射角 & $^{\circ}$ \\
+$n$ & 三棱镜玻璃对该波长的折射率 & --- \\
+$f$ & 望远镜物镜焦距 & mm \\
+$a$ & 分划板上透光「十」到中心横丝的距离 & mm \\
+$\varepsilon$ & 偏心差引起的读数误差 & $'$ \\
+$e,\ R$ & 度盘中心与主轴中心的偏心量、度盘半径 & mm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}p{1.9cm}p{7.4cm}p{2.0cm}@{}}
+\toprule
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\midrule
+$\phi_1,\ \phi_1'$ & 望远镜在位置 I 时\textbf{两个游标}的读数 & $^{\circ}\,'$ \\
+$\phi_2,\ \phi_2'$ & 望远镜在位置 II 时两个游标的读数 & $^{\circ}\,'$ \\
+$\theta_{k},\ \theta_{k}'$ & 第 $k$ 级谱线在两个游标上的读数 & $^{\circ}\,'$ \\
+$\varphi_k$ & 第 $k$ 级衍射角 & $^{\circ}$ \\
+$d$ & 光栅常量（相邻两缝的间距） & $\mu$m 或 nm \\
+$N$ & 光栅刻线密度（每毫米线数） & 线/mm \\
+$\lambda$ & 波长 & nm \\
+$D$ & 角色散 $\mathrm{d}\varphi/\mathrm{d}\lambda$ & $'$/nm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+全文只用这一套记号。有两处必须一开始就分清，否则后面每一步都会代错：
+
+\begin{itemize}
+\item $\phi$ 与 $\varphi$ 是两类不同的角：\textbf{$\phi$ 是望远镜（或游标）在度盘上的方位读数}，$\varphi_k$ 是\textbf{ diffraction 角本身}（两条光线的夹角）。读数相减才得到角，两者不能混用。
+\item 带撇与不带撇：$\phi_1$ 与 $\phi_1'$ 是\textbf{同一次望远镜位置的两个游标}（相差约 $180^{\circ}$），不是两次测量。$|{\phi_2-\phi_1}|$ 与 $|{\phi_2'-\phi_1'}|$ 必须各自算差值，再相加。
+\end{itemize}
+
+\subhdr{§0.2 报告要交什么}
+
+\callout{\textbf{预习（进实验室前）}：预习 II 的 8 道题，答案写在实验报告里（本讲 §11 已备中英对照）。\\
+\textbf{数据表}：预习 p3 或本讲 §9，打印带去、课上填完。\\
+\textbf{数据处理（课后）}：讲义 p14 的六项——顶角、最小偏向角、折射率、衍射角、光栅常量、角色散。\\
+\textbf{口试}：预习 III 的 9 道思考题与讲义 p14 的 8 道 Questions 内容重合，课上可能被问（§12 已备要点），不必写进报告。\\
+\textbf{选做}：预习 IV 的 3 道扩展题（§13）。}
+
+\subhdr{§0.3 四个数先记住}
+
+\begin{center}
+\begin{tabular}{@{}p{6.2cm}p{8.2cm}@{}}
+\toprule
+\thead{关系} & \thead{现场怎么用} \\
+\midrule
+等边棱镜 $\alpha=60^{\circ}$ $\Rightarrow$ 两反射像夹角 $2\alpha=120^{\circ}$ & 望远镜从一个反射像转到另一个，应转过约 $120^{\circ}$；差很多就是棱镜没放正 \\
+玻璃 $n\approx1.5$ $\Rightarrow$ $\delta_{\min}\approx37^{\circ}$（$\alpha=60^{\circ}$） & 两次读数差应约 $74^{\circ}$；算出 $n$ 超出 $1.45$--$1.65$ 就回去查读数 \\
+$300$ 线/mm 光栅、一级绿线 $\Rightarrow\varphi\approx9.43^{\circ}$ & 一级在 $9^{\circ}$ 出头、二级在 $19^{\circ}$；一级只有 $3^{\circ}$ 说明是 $100$ 线/mm \\
+双游标读数应恒差 $180^{\circ}00'$（±$5'$ 内） & 每次读数顺手对一眼，偏了就是读错游标或算错 $360^{\circ}$ 折回 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+第三条最有用。汞灯绿线 $\lambda=546.1\ \mathrm{nm}$，若光栅是 $300$ 线/mm，则 $d=1/300\ \mathrm{mm}=3.333\ \mu\mathrm{m}$，
+
+\[
+\sin\varphi_1=\frac{\lambda}{d}=\frac{546.1\ \mathrm{nm}}{3.333\ \mu\mathrm{m}}=0.16383
+\quad\Longrightarrow\quad
+\varphi_1=9.429^{\circ},\qquad \varphi_2=19.127^{\circ}.
+\]
+
+所以\textbf{你还没开始测就能知道答案大概在哪个位置}：转望远镜一级谱线应该在零级两边各 $9.4^{\circ}$ 处出现。如果转了半圈还找不到，问题不在计算，在光栅没调好（§8.3）。
+
+%=====================================================================
+\hdr{§1}{分光计：一台把角度读成$1'$的仪器}
+
+\subhdr{1.1 为什么非要一台专门测角的仪器}
+
+光在反射、折射、衍射、散射时都会改变方向，而方向改变量往往就是要求的那件事本身：棱镜的偏向角里藏着折射率，光栅的衍射角里藏着光栅常量，光谱线的角位置里藏着波长。肉眼能判断「偏了」，但偏了多少，得靠角度的绝对测量。
+
+分光计（spectrometer，也叫光学测角仪）做的就是这件事，而且读到 $1'$（$\approx1/60$ 度，约 $2.9\times10^{-4}\ \mathrm{rad}$）。讲义 p1 给的理由很实在：它\emph{不}只是本实验用的仪器，而是所有带「棱镜光谱仪、光栅光谱仪、单色仪」字样的仪器的共同底座——调节的思路、方法、手感是同一套。这也是为什么实验的第一项任务不是测量，而是\emph{把它调到能用}。
+
+\subhdr{1.2 五个部件（讲义 p1 图 12-1）}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{fig-3.12/fig12-1-instrument.png}
+\caption{JJY1 型分光计全貌（裁剪自讲义 p2 图 12-1，保留原图 1--28 编号；原图英文图注见讲义 p2，本讲把它整理成下表）。}
+\end{figure}
+
+讲义把结构分成五部分：\textbf{望远镜}（telescope）、\textbf{载物台}（specimen stage）、\textbf{准直管}（collimator）、\textbf{度盘}（dial plate）、\textbf{底座}（base）。五部分的唯一共同要求是：它们的「轴」必须彼此垂直或平行，否则你读到的角度不是你要的那个角度。原文（讲义 p8）把三条要求写得很清楚：
+
+\begin{enumerate}[label=\arabic*)]
+\item 准直管发出平行光；
+\item 望远镜能接收平行光（即聚焦于无穷远）；
+\item 待测光学元件的光（入射、折射、反射、衍射）所在的平面垂直于仪器主轴——也就是说，\textbf{准直管与望远镜的光轴都垂直于旋转轴，待测元件的光学面平行于旋转轴}。
+\end{enumerate}
+
+\subhdr{1.3 二十八个编号里，你真正会动的只有十一个}
+
+图 12-1 标了 28 个零件。不必全记，按「什么时候动它」整理成三组就够了——这是本讲对原图注的重新编排，编号与原名不变：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.7cm}p{6.3cm}p{7.6cm}@{}}
+\toprule
+\thead{编号} & \thead{名称（英文原名）} & \thead{什么时候动它} \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{A. 望远镜这一路（\S2、\S5 步骤 2--3）}}\\
+8 & 望远镜 \emph{telescope} & 转它去找像、去找谱线 \\
+9 & 目镜（筒）锁紧 \emph{locking screw of eyepiece} & 松开后目镜筒才能前后移动 \\
+11 & 目镜视度调节手轮 \emph{adjustment hand wheel} & \textbf{最先动它}：把叉丝本身看清 \\
+12 & 望远镜光轴竖直调节 \emph{vertical adjustment screw} & \textbf{自准直各半法调它} \\
+13 & 望远镜光轴水平调节 \emph{horizontal adjustment screw} & 目测粗调时让它对准准直管 \\
+15 & 望远镜微调 \emph{fine tuning screw} & 把像对到叉丝中心时用 \\
+17 & 望远镜锁紧 \emph{locking screw of telescope} & 对准后锁死 \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{B. 准直管这一路（\S3、\S5 步骤 4--5）}}\\
+1 & 狭缝装置 \emph{slit device} & 旋转它，让狭缝像竖直 \\
+2 & 狭缝锁紧 \emph{slit device locking screw} & 松—移—紧一次完成，之后别碰 \\
+26 & 准直管光轴水平调节 \emph{horizontal screw} & 目测粗调时对准望远镜 \\
+27 & 准直管光轴竖直调节 \emph{vertical screw} & \textbf{步骤 5 调它}：像要落在视场中央 \\
+28 & 缝宽调节手轮 \emph{hand wheel of slit width} & 调到约 $0.5$~mm（范围 $0.2$--$2$~mm） \\
+\midrule
+\multicolumn{3}{@{}l}{\textbf{C. 载物台、度盘与游标（\S4、\S5 步骤 3、\S6）}}\\
+5 & 载物台 \emph{specimen stage} & 放平面镜、三棱镜、光栅 \\
+6 & 载物台调平螺钉 \emph{leveling bolt}（三个 $a_1a_2a_3$） & \textbf{各半法调它}；三螺钉成正三角形 \\
+16 & 游标盘与度盘的锁紧 \emph{locking screw}（背面） & \textbf{决定「谁跟谁一起转」}；一组测量开始后不许再改 \\
+21 & 游标 \emph{vernier}（两个，相差 $180^{\circ}$） & \textbf{读数看它} \\
+22 & 度盘 \emph{dial plate}（$0$--$360^{\circ}$） & 读数看它 \\
+24 & 游标盘微调 \emph{fine tuning screw of alidade} & 把像对到叉丝中心 \\
+25 & 游标盘锁紧 \emph{locking screw of alidade} & 对准后锁死 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{第 16 号螺钉是全篇最容易事后才明白的一颗。}松开它，游标盘座与度盘\textbf{一起}转；拧紧它，两者可以\textbf{相对}转。这直接决定你读到的是什么：测量时要的是「望远镜相对度盘转过的角」，所以两个读数必须\textbf{相对于同一个度盘}。于是规矩是：\textbf{一旦开始一组测量，16 号螺钉的状态就不能再改}。想锁死望远镜时用 17 号，不要动 16 号。}
+
+\subhdr{1.4 一个常见误解}
+
+「分光计是看光谱的」——不是。它本身\emph{不}分光、不产生光谱，它只是把一束光的方向精确地读成一个角度；光谱是汞灯加光栅造出来的。分光计唯一的功能是\textbf{测角}。这个认识很重要：本实验里所有「算出某个物理量」的步骤，都是先用它测一个角，再把角代进公式。所以\textbf{角测错了，公式再对也没用}。
+
+%=====================================================================
+\hdr{§2}{望远镜：自准直法为什么能看见自己的像}
+
+\subhdr{2.1 阿贝目镜的构造}
+
+讲义 p2--p3 与图 12-2 讲清了这台望远镜的特殊之处：它不是普通的「物镜 + 目镜」，而是在物镜和目镜之间插了一块\textbf{分划板}（reticle），并在分划板前面放了一块\textbf{全反射棱镜}（全反射小棱镜），棱镜的一侧贴着分划板上的透光「十」，另一侧对着目镜筒上的小孔，小孔下方装一只\textbf{绿色 LED}。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\linewidth]{fig-3.12/fig12-2-telescope.png}
+\caption{自准直望远镜的光学结构（裁剪自讲义 p2 图 12-2）：目镜（Eyepiece）—分划板（Reticle）—物镜（Objective lens），分划板前有全反射棱镜（Prism），小灯（Light）从侧面照明。}
+\end{figure}
+
+绿光从小孔进棱镜，被全反射后照亮分划板上的透光「十」。这个「十」于是变成了一枚\textbf{发光的物}，位置就在分划板上。接下来发生什么，取决于分划板离物镜多远。
+
+\subhdr{2.2 分划板上的四个标记}
+
+讲义 p3 与图 12-3(a) 把分划板上的图形说清楚了，但图小、字密，这里按空间关系重述一遍（这是理解后文全部调节的前提）：
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\linewidth]{fig-3.12/fig12-3-reticle.png}
+\caption{分划板与反射「十」像（裁剪自讲义 p3 图 12-3）：(a) 分划板本身：1 上叉丝、2 中心横丝、3 透光「十」、4 绿色透光区；(b) 反射像 5 落在上叉丝下方；(c) 反射像与上叉丝重合——即调好的状态。}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{中心横丝}（2）与竖直叉丝构成十字，是望远镜的\textbf{光轴标记}：光轴就是过十字交点的直线。
+\item \textbf{上叉丝}（1）是顶部的一条短横丝，另带一小段竖丝，构成一个小十字。
+\item \textbf{透光「十」}（3）在中心横丝\textbf{下方}，被绿光照亮，可透光。
+\item 讲义原文说得很关键：「the top line of reticle and the transparent '十' engraving line are \textbf{symmetrical to center line of reticle}」——\textbf{上叉丝与透光「十」关于中心横丝对称}。把「十」到中心线的距离记作 $a$，则上叉丝到中心线也是 $a$。
+\end{itemize}
+
+\textbf{记住这条对称关系}：它是下节那个「为什么像落在上叉丝而不是落回『十』自己身上」的全部原因。
+
+\subhdr{2.3 核心问题：像为什么落在\textbf{上}叉丝}
+
+这是本实验最值得想明白的一步，也是讲义只用一句「if the optical axis of the telescope is perpendicular to the plane mirror, the reflection '十' image will coincide with the top line of reticle」带过、而多数人现场想不通的一步。分三句话说：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item 分划板正好在物镜焦面上时，从「十」发出的光经物镜后成为\textbf{平行光}。但它不是沿光轴出去的一束平行光——因为「十」不在光轴上，它在轴下方 $a$ 处。从「十」经过物镜光心的那条光线不偏折，它自己就定出了这束平行光的方向：与光轴成角
+\[
+\theta=\arctan\frac{a}{f}\approx\frac{a}{f}.
+\]
+方向是\textbf{向上}——物点在轴下方，过光心的光线自然是往上走的。
+
+\item 平面镜的法线沿光轴。反射只把「沿轴向的分量」反过来，与轴垂直的分量不变：一束与轴成 $\theta$ 向上出射的平行光，反射后仍然与轴成 $\theta$，但\textbf{反向传播}。所以回来的这束平行光，相对光轴是「另一侧」的倾斜。
+
+\item 这束回来的平行光再穿过物镜，被聚焦到焦面上的一点。取其中经过光心的那条光线（不偏折），它从右侧进来、与轴成 $\theta$ 向上，反向延长到焦面，落在\textbf{中心横丝上方 $f\tan\theta=a$ 处}——正好是上叉丝。
+\end{enumerate}
+
+一句话总结：\textbf{反射像与物点关于光轴对称}。物在轴下 $a$，像就在轴上 $a$。所以调好的判据是「绿色十字像与上叉丝重合」，而不是「像回到『十』身上」。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth,line join=round]
+  % ---- 光轴
+  \draw[dash dot,color=black!45] (-1.0,0) -- (8.8,0);
+
+  % ---- 分划板（x=0）
+  \draw[thick] (0,-1.9) -- (0,1.9);
+  \draw[thick] (-0.24,0.5) -- (0.24,0.5);                   % 上叉丝 = +a
+  \draw[thick] (-0.36,0) -- (0.36,0);                       % 中心横丝
+  \draw[thick,color=violet] (-0.13,-0.5) -- (0.13,-0.5);    % 透光「十」= -a
+  \draw[thick,color=violet] (0,-0.63) -- (0,-0.37);
+  \node[font=\footnotesize,anchor=east,color=violetdeep] at (-0.17,0.50){上叉丝（像点 $+a$）};
+  \node[font=\footnotesize,anchor=east] at (-0.17,0){中心横丝};
+  \node[font=\footnotesize,anchor=east,color=violet] at (-0.17,-0.50){透光「十」（物点 $-a$）};
+  \node[font=\footnotesize] at (0,-2.10){分划板};
+
+  % ---- 物镜（x=3）
+  \draw[thick] (3,-1.9) to[bend left=16] (3,1.9);
+  \draw[thick] (3,-1.9) to[bend right=16] (3,1.9);
+  \node[font=\footnotesize] at (3,-2.10){物镜（焦距 $f$）};
+
+  % ---- 平面镜（x=8，法线沿光轴）
+  \draw[thick] (8,-1.8) -- (8,2.2);
+  \foreach \y in {-1.7,-1.4,...,2.1}{\draw[black!50] (8,\y) -- (8.24,\y-0.24);}
+  \node[font=\footnotesize,anchor=west] at (8.06,2.32){平面镜（法线 $\parallel$ 光轴）};
+
+  % ---- 一条光线的完整路径：物点 -> 光心 -> 镜面 -> 物镜 -> 像点
+  \draw[arr,color=violetdeep] (0,-0.5) -- (3,0);
+  \draw[arr,color=violetdeep] (3,0) -- (7.96,0.827);
+  \draw[arrd,color=black!70] (7.96,0.827) -- (3,1.6667);
+  \draw[arrd,color=black!70] (3,1.6667) -- (0.04,0.507);
+  \fill[violetdeep] (0,0.5) circle (0.055);
+  \fill[black!70] (8,0.8333) circle (0.045);
+
+  % ---- 夹角与文字
+  \draw[black!55] (4.70,0) arc[start angle=0,end angle=9.46,radius=0.45];
+  \node[font=\footnotesize] at (4.96,0.19){$\theta$};
+  \node[font=\footnotesize,anchor=north] at (5.10,-0.42){出射：平行光};
+  \node[font=\footnotesize,anchor=south] at (5.60,1.78){返回：仍是平行光};
+\end{tikzpicture}
+\caption{为什么像是上叉丝（示意，角度已放大；实际 $\theta=a/f\approx0.6^{\circ}$）。紫色实线＝出射，灰色虚线＝返回。物点「十」在轴下 $a$，经物镜成平行光向上倾斜；反射只反转轴向分量，回来的平行光向另一侧倾斜，再经物镜落在轴上 $+a$，即上叉丝。}
+\end{figure}
+
+\callout{\textbf{这个设计的价值在灵敏度。}设镜面相对光轴偏了 $\gamma$，由反射定律，返回光的方向偏了 $2\gamma$，像点在上叉丝旁移开 $2f\gamma$。取 $f=200\ \mathrm{mm}$、$\gamma=1'=2.9\times10^{-4}\ \mathrm{rad}$：像移 $2\times200\times2.9\times10^{-4}\ \mathrm{mm}=0.12\ \mathrm{mm}$——肉眼看得见。所以自准直法把角度的分辨能力\textbf{放大了一倍}，这就是为什么它比「看上去大致对准」准得多。}
+
+\subhdr{2.4 无视差 = 分划板在焦面上}
+
+讲义 p9 步骤 (IV) 把整套判断压成一句「移动眼睛看像与叉丝有没有相对位移」。原理是：
+
+\begin{itemize}
+\item 若分划板\textbf{正好}在物镜焦面上，从「十」发出的光严格平行，返回后严格聚焦回焦面，像与叉丝\textbf{在同一平面}——眼睛上下左右移动，两者一起动，\textbf{没有相对位移}（无视差）。
+\item 若分划板\textbf{不在}焦面上，出射光不是严格平行（是发散或会聚的），返回后被聚焦到焦面之外，像与叉丝\textbf{不在同一平面}——眼睛一移，两者相对错动（有视差）。
+\end{itemize}
+
+所以\textbf{「无视差」不是一个额外的好习惯，它就是「望远镜聚焦于无穷远」的判据}。操作上：松开 9 号螺钉，前后移目镜筒（改变分划板到物镜的距离），直到像清晰\textbf{且}无视差。
+
+\warnbox{\textbf{顺序不能颠倒。}必须先用 11 号手轮把\emph{叉丝本身}看清（这叫视度调节，调的是眼睛与分划板的关系），再去找绿色十字像。叉丝都没看清就去找像，等于在一张没对焦的照片上找细节。}
+
+\subhdr{2.5 「看见了」有三个层次}
+
+现场最常见的困惑是「我好像看到了，但又好像不对」。把「看到」分成三层，逐层确认，就不会含糊：
+
+\begin{center}
+\begin{tabular}{@{}p{1.2cm}p{4.0cm}p{6.4cm}@{}}
+\toprule
+\thead{层} & \thead{看到什么} & \thead{说明什么} \\
+\midrule
+第一层 & 分划板的叉丝清楚、边缘锐 & 目镜视度已调好（11 号手轮），与实验无关 \\
+第二层 & 一个模糊的绿色十字像 & 平面镜把光反射回来了，但\textbf{没聚焦}——分划板还不在焦面上 \\
+第三层 & 绿色十字像清晰、无视差、并与上叉丝重合 & 望远镜已聚焦无穷远，且光轴 $\perp$ 平面镜——\textbf{到位} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+现场只要记住一句话：\textbf{第二层是「找到了」，第三层才是「调好了」}。大多数人卡在第二层就去转下一步，结果后面所有角度都带着一个固定偏差。
+
+\subhdr{2.6 找不到绿色十字像，按这个顺序查}
+
+\begin{center}
+\begin{tabular}{@{}p{0.7cm}p{5.4cm}p{6.4cm}@{}}
+\toprule
+\thead{\#} & \thead{现象} & \thead{先查什么} \\
+\midrule
+1 & 视场全黑，什么都没有 & 电源是否接（18 号插座）、绿 LED 是否亮；11 号手轮是否把叉丝调没了 \\
+2 & 有叉丝，但转动载物台也找不到绿像 & 平面镜是否放平、反射面是否朝向望远镜；\textbf{回到目测粗调}（12、27 号螺钉） \\
+3 & 绿像是在视场边缘掠过 & 望远镜光轴偏得太多：微调 12（竖直）与 13（水平） \\
+4 & 绿像很模糊、怎么调都不清 & 目镜筒（9 号螺钉）位置不对，前后移；注意别把镜筒拉出来 \\
+5 & 像清楚了，但一动眼睛就跑 & 还有视差 → 继续微移目镜筒，直到像与叉丝一起动 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+讲义 p9 说得直白：「It is necessary to turn coarse adjustment again if the spot cannot be found.」——找不到就回去粗调，不要在细调上死磕。粗调不是「随便摆一下」，它是细调能成立的\textbf{前提}。
+
+%=====================================================================
+\hdr{§3}{准直管：一束平行光是怎么造出来的}
+
+\subhdr{3.1 狭缝在焦面上，出来就是平行光}
+
+准直管（collimator）一端是\textbf{会聚透镜}，另一端插着\textbf{狭缝套筒}。讲义 p3 的原话：「When the slit is located on the main focal surface of the lens, the collimator produces a parallel light beam.」理由与望远镜那一步是对称的：点光源放在透镜的前焦面上，出射光就是平行光。狭缝不是点，而是一条细线，所以出来的是「一片平行的光幕」——这正是我们需要的：光源的\textbf{位置}信息被换成了\textbf{方向}信息，方向才是分光计能读的量。
+
+\textbf{这一步调好的标志}：把望远镜对准准直管，看到一条\textbf{清晰、边缘锐、无视差}的狭缝像。有视差＝狭缝不在焦面上＝出来的不是平行光；后面测顶角时，就因为「入射光不平行」而系统偏小或偏大。
+
+\subhdr{3.2 缝宽为什么定在 $0.5$ mm}
+
+讲义 p3 给出可调范围 $0.2$--$2\ \mathrm{mm}$，p10 步骤 (IV) 要求「Adjust the slit width to about $0.5$ mm」。这是一个三方折中，不是随便定的：
+
+\begin{center}
+\begin{tabular}{@{}p{2.4cm}p{5.0cm}p{5.2cm}@{}}
+\toprule
+\thead{缝宽} & \thead{好处} & \thead{代价} \\
+\midrule
+太宽（$>1$ mm） & 亮，容易找到 & 狭缝像变成一条宽带，\textbf{对准它的中心}就带了主观误差；两条靠近的谱线会并成一条 \\
+太窄（$<0.2$ mm） & 谱线细锐，分辨好 & 太暗，暗室里也看不清；缝的衍射使像边缘发虚，反而更难对准 \\
+$0.5$ mm 左右 & 亮度够、宽度约等于叉丝宽度 & —— \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+思考题 8「slit too wide or too narrow」问的就是这张表。答题时不要只说「太宽看不清」，要说到\textbf{对准精度}与\textbf{分辨两条谱线}这两件事上。
+
+\subhdr{3.3 狭缝方向：两个方向的像都要看}
+
+讲义 p10 步骤 (5) 里有一个容易漏的动作：先把狭缝转到「像平行于横向叉丝」，调好高度；\textbf{再把狭缝转 $90^{\circ}$}，让像平行于竖直叉丝。前一步判的是\textbf{准直管光轴与主轴是否垂直}（像在视场中是否居中），后一步判的是\textbf{狭缝本身是否竖直}（后面测衍射角时，谱线必须是竖直的细线，否则读数会因谱线倾斜而含糊）。
+
+\warnbox{转完 $90^{\circ}$ 之后不要再碰 2 号（狭缝锁紧）以外的任何调节。讲义特意写了「Be careful not to break the focus of the collimator」——转狭缝套筒时如果连套筒的前后位置一起动了，聚焦就破了，刚才调的平行光全白费。}
+
+
+%=====================================================================
+\hdr{§4}{读数：度盘、游标，与为什么必须读两个游标}
+
+\subhdr{4.1 一度一格、半分一格、读到一分}
+
+图 12-4 是度盘与游标的实际样子（讲义 p3--p4）。分度关系必须记准，否则读数会把 $1'$ 当 $1^{\circ}$：
+
+\begin{itemize}
+\item \textbf{度盘（主尺）}：$0$--$360^{\circ}$ 一圈，大格 $1^{\circ}$，大格之间还有一条\textbf{半度刻线}，所以主尺的最小分格是 $30'$。
+\item \textbf{游标}：标着 $0,10,20,30$ 的那一圈，共 30 格，从 $0$ 走到 $30'$。
+\item 30 格的游标跨过主尺的 29 个格子（$29\times30'=870'$），所以游标每格 $=870'/30=29'$。主尺一格 $30'$ 减游标一格 $29'$，得\textbf{分度值 $1'$}。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{fig-3.12/fig12-4-dial.png}
+\caption{度盘与游标（裁剪自讲义 p4 图 12-4）：外圈是度盘主尺（$335,340,345,350$ 可见），内圈是游标（$0$--$30$）。主尺最小分格 $30'$，游标分度值 $1'$。}
+\end{figure}
+
+\subhdr{4.2 一次读数做三步}
+
+讲义 p4 给了一个完整算例，本讲把它拆成能照做的三步（示例数值取自原文 $334^{\circ}47'$）：
+
+\begin{enumerate}[label=\textbf{第 \arabic* 步}]
+\item \textbf{找游标零线。}就是游标上标 \textbf{0} 的那条线。它落在主尺的哪两个刻线之间，决定了这一步的上界与下界。
+\item \textbf{读主尺。}取游标零线\emph{已经越过}的那条主尺刻线（按读数增加的方向，紧挨在零线后方的那条）。原文算例里这条是 $334^{\circ}30'$。
+\item \textbf{读游标。}沿游标从 0 往 30 找，找那条\textbf{与主尺某条刻线连成一条直线}（视觉上完全对齐、看不出错位）的游标线。它是第几格，就加几分钟。原文算例里是第 $17$ 格，即 $17'$。
+\item \textbf{相加。}主尺 $+$ 游标：
+\[
+334^{\circ}30'+17'=334^{\circ}47'.
+\]
+\end{enumerate}
+
+\textbf{两个自检}（现场特别有用）：
+
+\begin{itemize}
+\item 结果必须落在第 2 步确定的那两个主尺刻线之间。$334^{\circ}47'$ 落在 $334^{\circ}30'$ 与 $335^{\circ}$ 之间 $\checkmark$。若算出 $335^{\circ}47'$ 或 $334^{\circ}17'$，说明方向搞反或加错了。
+\item 游标读数永远小于 $30'$，所以它只会改变「分」，不会改变「度」。凡是算出超过 $30'$ 的游标读数，一定是把格数算错了。
+\end{itemize}
+
+\warnbox{\textbf{原文的一处措辞要注意。}讲义 p4 写的是「note the angle of the minor tick mark on the outer scale that is \emph{just to the right} of the zero (right end) of the inner scale」。按字面「零线右边」取刻线，得到的会是 $335^{\circ}$ 而不是 $334^{\circ}30'$，与它自己的算例矛盾。所以\textbf{以算例为准}：取零线\emph{已越过}的那条（读数更小的那条）。现场先读一次，用上面第一个自检确认方向，再往下读。}
+
+\subhdr{4.3 为什么要两个游标：偏心差}
+
+度盘的中心（$O'$）与仪器主轴（$O$）在加工上不可能严格重合——讲义 p4 说得直白：「two central axes are not easy to overlap fully which will inevitably produce centering error」。后果是：望远镜绕主轴真正转过的角 $\phi$，与度盘上读出的角并不相等，差值随方位变化。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.46\linewidth]{fig-3.12/fig12-5-eccentricity.png}
+\caption{度盘中心与主轴中心的偏心（裁剪自讲义 p5 图 12-5）：$O$ 是主轴中心，$O'$ 是度盘中心，$\phi$ 是望远镜绕主轴的实际转角，$\theta_1,\theta_2$ 是两个游标给出的读数。图中标出的四个角就是讲义 $(12\text{-}1)(12\text{-}2)$ 里的 $\angle 1$--$\angle 4$。}
+\end{figure}
+
+\textbf{一阶推导。}设偏心量 $e=OO'$，度盘半径 $R$，偏心方向在度盘上的方位为 $\psi$。游标随望远镜绕 $O$ 转，读的却是从 $O'$ 出发的度盘刻度，于是读数误差是「从 $O$ 看」与「从 $O'$ 看」同一条半径的方向差。把三角形 $OO'V$（$V$ 为游标位置）在 $V$ 处的外角差展开，一阶近似为
+
+\[
+\varepsilon(\phi)\approx\frac{e}{R}\sin(\phi-\psi).
+\]
+
+两个游标装在一条直径的两端，方位相差 $180^{\circ}$，所以
+
+\[
+\varepsilon(\phi+180^{\circ})\approx\frac{e}{R}\sin(\phi+180^{\circ}-\psi)=-\frac{e}{R}\sin(\phi-\psi)=-\varepsilon(\phi).
+\]
+
+\textbf{两个游标的误差等大反号}。于是
+
+\[
+\theta_1=\phi+\varepsilon,\qquad \theta_2=\phi-\varepsilon
+\quad\Longrightarrow\quad
+\boxed{\;\phi=\frac{\theta_1+\theta_2}{2}\;}
+\]
+
+这正是讲义 p4 的结论（原文写作 $\Phi=(\theta_1+\theta_2)/2$）。它还顺带给了一个副产品：把两式相减得 $\varepsilon=(\theta_1-\theta_2)/2$，也就是\textbf{两个游标的读数差本身就量出了偏心误差}——所以现场可以用它做自检（§4.5）。
+
+\textbf{量级。}取 $e=0.02\ \mathrm{mm}$、$R=60\ \mathrm{mm}$，则 $e/R=3.3\times10^{-4}$，单个游标的最大误差
+
+\[
+\varepsilon_{\max}=\arctan\frac{e}{R}\approx1.15'\approx1'.
+\]
+
+比读数精度还大——所以\textbf{不平均就白测了}。平均之后剩下的误差是 $(e/R)^2$ 量级，约 $0.01''$，完全可以忽略。
+
+\callout{\textbf{操作上的三条硬规矩}（都从这一个式子来）：\\
+① \textbf{每读一次方位，必须两个游标都读}，只读一个等于主动引入最多 $1'$ 的误差；\\
+② 算任何角度，都先用\textbf{两个游标各自}算出转角，再取平均，不要「先把两个读数平均成一个读数、再相减」——数学上等价，但现场容易把两个游标对错位置；\\
+③ 一组测量开始后 16 号螺钉状态不许再改，否则「同一度盘」这个前提就破了。}
+
+\subhdr{4.4 原文 $(12\text{-}1)(12\text{-}2)$ 的印刷问题}
+
+讲义 p4 印的是
+
+\[
+\Phi+\angle 1=\theta_1+\angle 2,\qquad \Phi+\angle 3=\theta_2+\angle 4,
+\qquad\text{with}\quad \angle 1=\angle 2,\ \angle 3=\angle 4 ,
+\]
+
+若真按 $\angle 1=\angle 2$ 代进第一式，立刻得到 $\Phi=\theta_1$；按 $\angle 3=\angle 4$ 代进第二式，又得 $\Phi=\theta_2$。两式必须同时成立，就只能 $\theta_1=\theta_2$——与「两个游标相差 $180^{\circ}$」直接矛盾。所以\textbf{印刷的这两式与它自己的结论不相容}，属笔误。
+
+结论 $\phi=(\theta_1+\theta_2)/2$ 是对的（本讲 §4.3 用偏心几何重新推了一遍），\textbf{操作完全不受影响}，只是不必照着那两行字去理解。这一条记在 §15 缺口清单里。
+
+\subhdr{4.5 现场自检：两个读数应该差多少}
+
+同一个望远镜位置，两个游标的读数应当\textbf{恒差 $180^{\circ}00'$}（差的是度盘刻线与读数误差，量级几个角分）。这一条几乎能查出所有读数错误：
+
+\begin{center}
+\begin{tabular}{@{}p{3.4cm}p{5.4cm}p{5.4cm}@{}}
+\toprule
+\thead{读数差} & \thead{说明什么} & \thead{怎么办} \\
+\midrule
+$180^{\circ}00'\pm5'$ & 正常 & 继续 \\
+差约 $1'$ 且两值都能用 & 偏心误差（正常现象） & 照常取平均 \\
+差 $30'$ 或 $1^{\circ}$ 的整倍数 & 把半度刻线或整度读错 & 回 §4.2 重读 \\
+差 $2^{\circ}$ 以上 & 读错了游标（或漏了 $360^{\circ}$ 折回） & 两个值各自 $\pm180^{\circ}$ 核对 \\
+差得很离谱 & 中间动过 16 号螺钉 & 这一组作废，重来 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§5}{调节五步：每一步的目标、动作与判据}
+
+\subhdr{5.0 先把「调好」翻译成一个几何条件}
+
+讲义 p8 列了三条要求。把三条翻成一句几何话，后面五步就都有归宿：
+
+\callout{\textbf{望远镜的光轴、准直管的光轴、仪器的旋转主轴，三者两两垂直；待测元件（镜、棱镜、光栅）的光学面平行于主轴。}}
+
+为什么非要这样：所有角度公式（$\alpha$、$\delta_{\min}$、$d\sin\varphi=k\lambda$）都是在\textbf{垂直于主轴的那个平面}里推的。光一旦离开这个平面，你读到的角就不是公式里的角。这个平面有个名字叫\textbf{主截面}（main section），思考题 1 问的就是它。
+
+五步的分工：步骤 1 把三条轴摆到「大致垂直」；步骤 2 让望远镜能接收平行光；步骤 3 让望远镜轴真的垂直主轴；步骤 4 让准直管真的发出平行光；步骤 5 让准直管轴也垂直主轴。\textbf{顺序不能换}：步骤 3 用镜子、步骤 4 用狭缝，后者要望远镜先能看平行光。
+
+\subhdr{5.1 步骤 1：目测粗调}
+
+\textbf{目标}：望远镜与准直管大致等高、大致对望；载物台大致水平。
+
+\textbf{动作}：按眼睛的判断，调 12（望远镜光轴竖直）与 27（准直管光轴竖直），使两个镜筒的光轴大致在一条直线上、且都垂直于立柱；再调载物台下面三个调平螺钉，使台面大致水平。
+
+\textbf{判据}：眼睛贴着望远镜目镜看出去（不通过目镜，直接沿镜筒方向瞄），准直管的筒身大致正对；把平面镜放在台上，镜面大致竖直。
+
+\textbf{为什么不能省}：讲义 p8 的原话是「Coarse adjustment is not only the basis for fine-tuning but also the key to fine-tuning success.」细调螺钉的行程只有几度，而绿十字像要落在目镜视场（约 $1^{\circ}$ 量级）里才看得见。粗调差 $5^{\circ}$，后面怎么调都是白调。
+
+\subhdr{5.2 步骤 2：让望远镜聚焦于无穷远（自准直法）}
+
+\textbf{目标}：分划板落在物镜的焦面上，望远镜能接收平行光。
+
+\textbf{动作}（讲义 p8 步骤 (2) 的四小步，本讲加了判据）：
+
+\begin{enumerate}[label=(\Roman*)]
+\item 接通电源，转 11 号手轮，把分划板上的叉丝\textbf{本身}看清。
+\item 把双面平面镜按图 12-10 放在载物台上（(a) 或 (b) 两种摆法都行），慢慢转动载物台，让一个反射面朝向望远镜；在视场里找那个\textbf{模糊的绿色十字像}。找不到就回步骤 1（讲义原话：turn coarse adjustment again）。
+\item 松开 9 号螺钉，前后移动目镜筒（改变分划板到物镜的距离），让绿色十字像变\textbf{清晰}。
+\item 消视差：眼睛上下左右移，看绿像与叉丝是否相对移动。有相对移动就继续微移目镜筒，直到\textbf{两者一起动}。此时望远镜聚焦于无穷远。
+\end{enumerate}
+
+\textbf{判据}：绿像清晰\textbf{且}无视差（§2.4）。两者缺一都不算到位。
+
+\textbf{异常}：像始终发虚 → 目镜筒位置差太多，先把镜筒拉回中间位置重来；眼睛一动像就「跳」→ 视差没消，继续第 (IV) 步。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.50\linewidth]{fig-3.12/fig12-10-mirror.png}
+\caption{平面镜在载物台上的两种摆法（裁剪自讲义 p9 图 12-10）：(a) 镜面平行于一对螺钉连线；(b) 镜面垂直于一对螺钉连线。两种都可以，关键是让反射面朝向望远镜、镜面竖直。图中 $a,b,c$ 是载物台的三个调平螺钉。}
+\end{figure}
+
+\subhdr{5.3 步骤 3：望远镜轴垂直主轴（各半法）}
+
+\textbf{目标}：望远镜光轴与仪器主轴垂直。
+
+\textbf{判据}（讲义 p9）：「When the green cross image reflected by the front and rear reflection surfaces of the plane mirror can overlap with the upper crosshair, the optical axis of the telescope is perpendicular to the rotation axis.」——\textbf{镜子的正反两个面}反射的绿十字都要与上叉丝重合。
+
+\textbf{动作}（各半法）：
+
+\begin{enumerate}[label=(\arabic*)]
+\item 在当前位置把绿十字调到与上叉丝重合（这一步用 12 号也能做到，但先别急，见下）。
+\item 载物台转 $180^{\circ}$，找另一个面的反射像。找不到就用眼睛直接看镜面里像的位置，先把调平螺钉 \textbf{a} 转到能看见。
+\item 看到像后有偏差 $d$：先调\textbf{调平螺钉 a}，把像与上叉丝的距离\textbf{减半}；再调 12 号（望远镜光轴竖直），让像\textbf{落到}上叉丝上。
+\item 再转 $180^{\circ}$，重复 (3)，直到两个面都重合。
+\end{enumerate}
+
+\warnbox{\textbf{为什么必须「各半」，而不能一次调到位？}两个偏差来源对两个面的影响方式\textbf{不一样}：望远镜轴歪了，两个面的像是\textbf{同向}偏（一起高或一起低）；载物台歪了（因而镜面不垂直主轴），转过 $180^{\circ}$ 后误差\textbf{反号}（一面偏高、另一面偏低）。设同向分量为 $v$、反向分量为 $u$，则正面偏差 $=v+u$、反面偏差 $=v-u$。\\
+调 12 号只改 $v$，调 a 只改 $u$。若在一个面上用 a 一次把偏差全部消掉，等于把 $u$ 全部转嫁给另一个面（$v$ 一点没动），另一面的偏差反而变大；而「先减半、再归零」相当于每轮把 $v$ 与 $u$ 同时压掉一半，两三轮回合两个面就同时到位。这就是原文叫它 \emph{asymptotic method}（渐近法）的原因。}
+
+\textbf{异常}：转 $180^{\circ}$ 后完全看不到像 → 镜子没放平，或载物台太高/太低挡住了光路；把镜子的一个边贴住台面重放，必要时松开 7 号降台面。
+
+\subhdr{5.4 步骤 4：让准直管发出平行光}
+
+\textbf{目标}：狭缝落在准直管透镜的焦面上。
+
+\textbf{动作}：取下平面镜，用汞灯照亮狭缝；把望远镜转过来对准准直管，从目镜看狭缝像；松开 2 号螺钉，前后移动狭缝套筒，使狭缝像\textbf{清晰、边缘锐、无视差}；再把缝宽调到约 $0.5$~mm。
+
+\textbf{判据}：狭缝像清晰且无视差（眼睛移动时像与叉丝不相对错动）。有视差＝狭缝不在焦面＝出来的不是平行光。
+
+\textbf{异常}：像太暗看不见 → 缝太窄或汞灯没对准狭缝；像是一条模糊的宽带 → 缝太宽，或没聚焦。
+
+\subhdr{5.5 步骤 5：准直管轴垂直主轴，并让狭缝竖直}
+
+\textbf{动作}（讲义 p10 步骤 (5)）：
+
+\begin{enumerate}[label=(\arabic*)]
+\item 转动狭缝套筒，使狭缝像\textbf{平行于横向叉丝}；
+\item 调 27 号（准直管光轴竖直），把像\textbf{升/降到视场中央}，与横向叉丝重合——此时准直管光轴垂直主轴；
+\item 把狭缝套筒\textbf{转 $90^{\circ}$}，使像平行于\textbf{竖直}叉丝；
+\item 拧紧 2 号螺钉，锁住；注意整个过程不要把套筒前后推动（会破坏步骤 4 的聚焦）。
+\end{enumerate}
+
+\textbf{判据}：狭缝像竖直、细锐、位于视场中央，与叉丝重合。
+
+\subhdr{5.6 卡住了看这张表}
+
+\begin{center}
+\begin{tabular}{@{}p{5.0cm}p{4.2cm}p{4.6cm}@{}}
+\toprule
+\thead{现象} & \thead{最可能的原因} & \thead{回去做哪一步} \\
+\midrule
+找不到绿色十字像 & 粗调没做好 & 步骤 1 \\
+两个面的像都偏高/偏低 & 望远镜轴歪（$v\neq0$） & 步骤 3，调 12 号 \\
+一面偏高、一面偏低 & 台面歪（$u\neq0$） & 步骤 3，调 a \\
+狭缝像模糊、有视差 & 狭缝不在焦面 & 步骤 4 \\
+狭缝像不在视场中央 & 准直管轴未垂直主轴 & 步骤 5，调 27 号 \\
+狭缝像斜着 & 狭缝没转正 & 步骤 5，转套筒 \\
+读数总差一个固定角 & 望远镜轴不垂直主轴 & 整段重做步骤 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§6}{测三棱镜顶角：反射法}
+
+\subhdr{6.1 一条定理：两面夹角 $\alpha$，两反射光夹角 $2\alpha$}
+
+把一束方向固定的平行光同时照到三棱镜的两个折射面上（把棱镜的顶点对着准直管即可），两个面各反射一束光。\textbf{这两束反射光的夹角等于 $2\alpha$}，$\alpha$ 是顶角。
+
+\textbf{证明}：单个平面镜转过 $\gamma$，反射光线转过 $2\gamma$（这是反射定律的直接推论：入射方向不变时，$k'=k-2(k\cdot n)n$，法线转 $\gamma$，$k'$ 就转 $2\gamma$）。现在两个面不是同一面镜，但它们对同一束入射光的取向差就是 $\alpha$，所以两束反射光的取向差是 $2\alpha$。
+
+\warnbox{\textbf{这里有个很容易答错的地方：为什么不是 $2(180^{\circ}-\alpha)$？}棱镜两面的\textbf{外法线}夹角确实是 $180^{\circ}-\alpha$（$\alpha=60^{\circ}$ 时法线夹角 $120^{\circ}$）。但反射光的方向差是 $2\times120^{\circ}=240^{\circ}$，而\textbf{两条直线的夹角取小于 $180^{\circ}$ 的那个}，$360^{\circ}-240^{\circ}=120^{\circ}=2\alpha$。所以无论从哪条路算，望远镜要转的都是 $2\alpha=120^{\circ}$。}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.42\linewidth]{fig-3.12/fig12-11-prism-stage.png}
+\caption{三棱镜在载物台上的方位（裁剪自讲义 p11 图 12-11）：$AB\perp a_1a_2$、$AC\perp a_2a_3$、$BC\perp a_3a_1$。这样 $a_1$ 只改变 $AB$ 面的法线方向、$a_3$ 只改变 $AC$ 面的法线方向，两个面可以\textbf{各自独立}调平。}
+\end{figure}
+
+\subhdr{6.2 公式里的 $1/4$ 是怎么来的}
+
+讲义 $(12\text{-}4)$ 印的是
+
+\[
+\alpha=\frac{1}{2}\left[\frac{|\phi_2-\phi_1|}{2}+\frac{|\phi_2'-\phi_1'|}{2}\right]
+=\frac{1}{4}\bigl(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|\bigr),
+\]
+
+那个 $\frac{1}{4}$ 让很多人背下来却说不清。它其实是\textbf{两个 $\frac{1}{2}$ 叠起来}：
+
+\begin{enumerate}[label=\textbf{第 \arabic* 个 $\tfrac12$}]
+\item \textbf{几何的 $\tfrac12$}：望远镜在位置 I、II 之间转过的角等于 $2\alpha$（§6.1），所以 $\alpha=\tfrac12\times$ 转角。
+\item \textbf{读数的 $\tfrac12$}：转角本身要用两个游标平均（§4.3），$\text{转角}=\tfrac12(|{\phi_2-\phi_1}|+|{\phi_2'-\phi_1'}|)$。
+\end{enumerate}
+
+两式相乘，$\tfrac12\times\tfrac12=\tfrac14$。所以\textbf{看到 $\tfrac14$ 就想「双镜 $\times$ 双游标」}，不必死记。
+
+\subhdr{6.3 棱镜怎么摆，调哪两个螺钉}
+
+\textbf{摆放}（图 12-11）：让 $AB$、$AC$、$BC$ 分别垂直于三个调平螺钉两两的连线 $a_1a_2$、$a_2a_3$、$a_3a_1$；顶角稍微靠近载物台中心（讲义 p11 的提醒），这样两个面都能被准直管的光照到。
+
+\textbf{调平}：用自准直法，先找到 $AB$ 面的绿十字像，调 $a_1$ 让它与上叉丝重合；再转载物台找 $AC$ 面的像，调 $a_3$ 让它重合；反复直到两面都重合。此时\textbf{棱镜的主截面垂直主轴}。
+
+\textbf{为什么偏偏不能调 $a_2$}：在这个摆法下，$a_1$ 只改 $AB$ 面的法线、$a_3$ 只改 $AC$ 面的法线，而 $a_2$ 会\textbf{同时}改动两个面——刚调好的一个面立刻被破坏，等于把两个独立的问题耦合成一个解不开的问题。讲义 p11 用一句「Note: Do not adjust the screw a2.」带过，原因在这里。
+
+\subhdr{6.4 读数怎么配对}
+
+\begin{itemize}
+\item 把望远镜转到能看见 $AB$ 面反射的狭缝像，用\textbf{竖直叉丝}对准像的中心，锁 17 号（或 25 号），读\textbf{两个游标}：$\phi_1$ 与 $\phi_1'$。
+\item 把望远镜转到 $AC$ 面的反射像，同样对准，读 $\phi_2$ 与 $\phi_2'$。
+\item 一组就是这四个数。重复三组（预习 p3 的表）或五组（讲义正文的口径，见 §15 缺口 1）。
+\end{itemize}
+
+\warnbox{\textbf{一个容易被忽略的前提}：$\phi_1$ 与 $\phi_1'$ 必须是\textbf{同一次}望远镜位置的两个游标，$\phi_2,\phi_2'$ 同理。若中间动过 16 号螺钉（让度盘跟游标盘一起转了），四个数就不再对应同一个度盘，整组作废。}
+
+\subhdr{6.5 读数差超过 $180^{\circ}$ 怎么办}
+
+讲义 p11 的原话：「if the reading difference $|\phi_2-\phi_1|$ or $|\phi_2'-\phi_1'|$ is greater than $180^{\circ}$, the value should be subtracted from $360^{\circ}$.」
+
+理由是：度盘是 $0$--$360$ 的圆，望远镜实际转过的角是\textbf{较小的那个角}。若从 $100^{\circ}12'$ 转到 $40^{\circ}14'$，直接相减得 $239^{\circ}59'$，但望远镜真正转的是 $360^{\circ}-239^{\circ}59'=120^{\circ}01'$。所以：
+
+\[
+|\phi_2-\phi_1|>180^{\circ}\ \Longrightarrow\ \text{改用}\ 360^{\circ}-|\phi_2-\phi_1| .
+\]
+
+这个折回\textbf{必须对两个游标分别做}，因为它们可能一个越过 $0^{\circ}$ 一个没有。
+
+\subhdr{6.6 例算（示例数据，非实测）}
+
+设某组读数为 $\phi_1=100^{\circ}12'$、$\phi_1'=280^{\circ}13'$、$\phi_2=220^{\circ}13'$、$\phi_2'=40^{\circ}14'$。
+
+第一步，各自算差并折回：
+
+\[
+|\phi_2-\phi_1|=119^{\circ}61'=120^{\circ}01',\qquad
+|\phi_2'-\phi_1'|=239^{\circ}59'\ \xrightarrow{\ \times\ }\ 120^{\circ}01'.
+\]
+
+第二步，取平均得转角，再取一半得顶角：
+
+\[
+\text{转角}=\frac{120^{\circ}01'+120^{\circ}01'}{2}=120^{\circ}01',
+\qquad
+\alpha=\frac{120^{\circ}01'}{2}=60^{\circ}00.5'.
+\]
+
+第三步，用 $1/4$ 公式验算：$\alpha=\tfrac14(120^{\circ}01'+120^{\circ}01')=60^{\circ}00.5'$ $\checkmark$。
+
+\textbf{结果怎么判断对不对}：等边棱镜的顶角是 $60^{\circ}$，实测落在 $59^{\circ}55'$--$60^{\circ}05'$ 很正常；若算出 $59^{\circ}$ 或 $61^{\circ}$，先查是不是把某个游标读成了另一个（差 $180^{\circ}$），再查棱镜主截面是否真的垂直主轴。
+
+
+
+%=====================================================================
+\hdr{§7}{测最小偏向角，进而得折射率}
+
+\subhdr{7.1 偏向角：一条光线穿过棱镜转了多少}
+
+一束单色平行光射到棱镜的 $AB$ 面，折射后从 $AC$ 面射出。入射方向与出射方向的夹角叫\textbf{偏向角} $\delta$。讲义 p5 给的三条关系，只要把每个三角形里的角标清楚就都能推出来：
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.46\linewidth]{fig-3.12/fig12-6-prism.png}
+\caption{棱镜主截面内的折射（裁剪自讲义 p6 图 12-6）：$A$ 为顶角 $\alpha$，$S\to O$ 为入射光，$O'\to S'$ 为出射光，$\delta$ 为偏向角；$i,i'$ 为两个面上的入射角、$r,r'$ 为折射角，$N,N'$ 为两面法线。}
+\end{figure}
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{两个面的折射定律}：
+\[
+\sin i=n\sin r,\qquad n\sin r'=\sin i'.
+\]
+\item \textbf{顶角关系}：在由 $A$、$O$、$O'$ 组成的四边形里，两个法线的夹角是 $180^{\circ}-\alpha$，而三角形 $AOO'$ 的内角和给出 $r+r'=\alpha$。
+\item \textbf{偏向角}：光线在 $AB$ 面偏了 $i-r$（向法线弯），在 $AC$ 面又偏了 $i'-r'$，两次偏向同向叠加：
+\[
+\delta=(i-r)+(i'-r')=i+i'-(r+r')=i+i'-\alpha .
+\]
+\end{enumerate}
+
+第 (3) 步值得盯一眼：$\delta=i+i'-\alpha$ 说明\textbf{偏向角只由两个入射角与顶角决定}，中间的 $r,r'$ 已经被顶角关系消掉了。验算：等边棱镜、$i=i'$、$r=r'=30^{\circ}$，则 $\delta=2i-60^{\circ}$；若 $n=1.5$，$\sin i=0.75$，$i=48.59^{\circ}$，$\delta=37.18^{\circ}$——与 §7.3 的一致。
+
+\subhdr{7.2 最小偏向角的条件：$i=i'$}
+
+把棱镜慢慢转动，入射角 $i$ 连续变化，$\delta$ 随之变化，并在某个位置取极小值，叫\textbf{最小偏向角} $\delta_{\min}$。这个极小值出现在 $i=i'$ 处。证明如下（讲义 p5 只给结论「When incident angle $i$ is equal to ejection angle $i'$, the deviation angle $\delta$ exist a minimum value」，这里补上为什么）。
+
+由 (1)(2) 把 $i'$ 看成 $i$ 的函数：$\sin i'=n\sin r'$，且 $r'=\alpha-r$，$r=\arcsin(\sin i/n)$。逐层求导：
+
+\[
+\cos i\dd i=n\cos r\dd r,\qquad
+\cos i'\dd i'=n\cos r'\dd r'=-n\cos r'\dd r,
+\]
+两式相除消去 $\dd r$：
+\[
+\frac{\dd i'}{\dd i}=-\frac{\cos i\,\cos r'}{\cos i'\,\cos r}.
+\]
+
+$\delta=i+i'-\alpha$ 取极值的条件是 $\dd\delta/\dd i=1+\dd i'/\dd i=0$，即
+
+\[
+\cos i\,\cos r'=\cos i'\,\cos r .
+\]
+
+两边平方，把 $\cos^2=1-\sin^2$ 展开，再用 $\sin i=n\sin r$、$\sin i'=n\sin r'$ 代入，化简后只剩
+
+\[
+\Bigl(1-\frac{1}{n^{2}}\Bigr)\sin^{2}i=\Bigl(1-\frac{1}{n^{2}}\Bigr)\sin^{2}i',
+\]
+
+因为 $n\neq1$，得 $\sin i=\sin i'$，而在 $0<i,i'<90^{\circ}$ 内正弦单调，所以
+
+\[
+\boxed{\,i=i'\,}
+\]
+
+代回顶角关系，$r=r'=\alpha/2$；代回偏向角，$\delta_{\min}=2i-\alpha$，即
+
+\[
+i=\frac{\delta_{\min}+\alpha}{2}.
+\]
+
+\textbf{这个驻点为什么是极小而不是极大}：物理上，掠过入射（$i\to90^{\circ}$）或掠过出射时，光线被极度弯折，$\delta$ 迅速增大；$\delta(i)$ 在定义域内只有一个驻点，两端都大，故驻点只能是极小。
+
+\subhdr{7.3 折射率公式}
+
+把 $i=(\delta_{\min}+\alpha)/2$ 与 $r=\alpha/2$ 代进 $\sin i=n\sin r$：
+
+\[
+\boxed{\;
+n=\frac{\sin\dfrac{\delta_{\min}+\alpha}{2}}{\sin\dfrac{\alpha}{2}}
+\;}
+\qquad\text{（讲义 (12-3)）}
+\]
+
+这就是本实验测折射率的全部公式。它只要求两个角：顶角 $\alpha$（§6 已测）与最小偏向角 $\delta_{\min}$（本节测）。\textbf{不需要知道棱镜的尺寸、厚度、材料}——这是最小偏向角法最漂亮的地方。
+
+\subhdr{7.4 怎么找最小偏向角：盯住「停顿点」}
+
+讲义 p12 的描述是操作的核心，值得逐句读：
+
+\callout{转望远镜找到出射光（狭缝像）后，\textbf{慢慢转载物台}改变入射角，同时盯住狭缝像的移动方向。像若远离入射光方向，偏向角在增大；像若靠近，偏向角在减小。朝\textbf{偏向角减小}的方向转载物台，并用望远镜\emph{跟踪}狭缝像，让它始终留在视场里。转到某个位置，像会\textbf{停住}，然后朝相反方向移动——这个\textbf{折返点}就是最小偏向角的位置。}
+
+\textbf{为什么折返点就是极小值}：$i$ 随载物台转动单调变化，而 $\delta(i)$ 在 $i=i'$ 处取极小。像的横向位置 $\propto\delta$，所以像的位置随台面转动先向一侧移、到极小点停住、再折回。\textbf{停住那一刻}就是 $\delta_{\min}$。
+
+\textbf{操作要点}：
+
+\begin{enumerate}[label=(\arabic*)]
+\item 台面转动要\textbf{慢}，越靠近极小点像移动越慢，转快了会直接跳过折返点。
+\item 望远镜要\textbf{始终跟着像}（松 17 号，手扶镜筒跟，或松 25 号转游标盘）。
+\item 找到折返点后\textbf{锁住台面}（7 号），再用微调（24 号）把像对到竖直叉丝中心，然后读两个游标。
+\item 然后\textbf{把棱镜转到另一面作入射面}（讲义 p12 图 12-13(b)），用同样办法找折返点，再读两个游标。
+\end{enumerate}
+
+\subhdr{7.5 为什么两次读数差是 $2\delta_{\min}$，为什么又是 $1/4$}
+
+入射光方向是固定的。位置 1 时，出射光相对入射光偏 $+\delta_{\min}$；把棱镜转到另一面作入射面后，出射光偏 $-\delta_{\min}$（偏向到另一侧）。望远镜要从一侧的出射光转到另一侧，自然转过
+
+\[
+2\delta_{\min}.
+\]
+
+所以 $\delta_{\min}=\tfrac12\times$ 望远镜转角，而转角本身又要用两个游标平均，于是
+
+\[
+\delta_{\min}=\frac12\cdot\frac{|\phi_2-\phi_1|+|\phi_2'-\phi_1'|}{2}
+=\frac14\bigl(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|\bigr),
+\]
+
+与讲义 $(12\text{-}5)$ 一致。结构与 §6.2 完全相同：\textbf{又是「双镜的 $\tfrac12$」乘「双游标的 $\tfrac12$」}，只不过这里的 $\tfrac12$ 来自「偏向角的正负对称」。
+
+\warnbox{这一次\textbf{没有}「两反射面夹角 $2\alpha$」那层几何，而是「同一入射方向、两个相反偏向」。两处公式长得一样（都是 $\tfrac14$ 括号里两差相加），但物理来源不同，别混。判断方法：看角标的含义——若两次是\textbf{同一束光的两个反射像}，$\tfrac12$ 来自双镜；若是\textbf{同一入射光、棱镜换面}的两个透射像，$\tfrac12$ 来自偏向角的反号。}
+
+\subhdr{7.6 例算与量级}
+
+设已测得 $\alpha=60^{\circ}00'$，四读数为 $\phi_1=100^{\circ}00'$、$\phi_1'=280^{\circ}00'$、$\phi_2=174^{\circ}22'$、$\phi_2'=354^{\circ}21'$。
+
+\[
+|\phi_2-\phi_1|=74^{\circ}22',\qquad |\phi_2'-\phi_1'|=74^{\circ}21',
+\]
+\[
+\delta_{\min}=\frac{74^{\circ}22'+74^{\circ}21'}{4}=37^{\circ}10.8',
+\qquad
+n=\frac{\sin\frac{60^{\circ}00'+37^{\circ}10.8'}{2}}{\sin30^{\circ}}
+=\frac{\sin48^{\circ}35.4'}{0.5}.
+\]
+
+$\sin48^{\circ}35.4'=0.7500$，故 $n=1.500$。
+
+\textbf{对照表}（$\alpha=60^{\circ}$，用来判断数量级；本表由 §10 的复核脚本算出）：
+
+\begin{center}
+\begin{tabular}{@{}p{2.6cm}p{3.4cm}p{3.4cm}p{4.4cm}@{}}
+\toprule
+\thead{$n$} & \thead{$\delta_{\min}$} & \thead{$2\delta_{\min}$（读数差）} & \thead{材料参考} \\
+\midrule
+$1.50$ & $37^{\circ}10.8'$ & $74^{\circ}21.6'$ & 冕牌玻璃量级 \\
+$1.52$ & $38^{\circ}55.7'$ & $77^{\circ}51.4'$ & 普通光学玻璃 \\
+$1.55$ & $41^{\circ}36.6'$ & $83^{\circ}13.2'$ &  \\
+$1.60$ & $46^{\circ}15.6'$ & $92^{\circ}31.2'$ & 火石玻璃量级 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{现场判断法}：若读数差算出 $2\delta_{\min}$ 小于 $60^{\circ}$ 或大于 $100^{\circ}$，几乎一定有错——最可能的是两次的位置不是「同一束入射光的两个相反偏向」，而是把某个反射像当成了透射像。
+
+%=====================================================================
+\hdr{§8}{光栅：光栅常量与角色散}
+
+\subhdr{8.1 光栅方程}
+
+一束平行光垂直照到光栅上，相邻两条缝到同一方向的平行光之间有光程差
+
+\[
+\Delta=d\sin\varphi ,
+\]
+
+$d$ 是相邻两缝的间距（\textbf{光栅常量}），$\varphi$ 是衍射方向与光栅法线的夹角。相邻缝的光程差是波长的整数倍时，所有缝发出的光在该方向上同相叠加，出现亮纹：
+
+\[
+\boxed{\,d\sin\varphi=k\lambda\,}\qquad k=0,\pm1,\pm2,\dots
+\]
+
+$k$ 叫\textbf{衍射级次}。$k=0$ 是零级（所有波长都不偏折，重合在中央），$k=\pm1,\pm2$ 对称分布在两侧。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.84\linewidth]{fig-3.12/fig12-7-grating.png}
+\caption{光栅衍射的几何（裁剪自讲义 p7 图 12-7）：入射平行光照到间距为 $d$ 的缝上，沿与法线成 $\varphi$ 的方向，相邻缝的光程差为 $d\sin\varphi$；屏幕上对称出现零级与 $\pm1,\pm2$ 各级主极大。}
+\end{figure}
+
+\callout{\textbf{为什么光栅的亮纹那么细？}单缝衍射的极大很宽（中央亮纹张角 $\sim\lambda/a$），而 $N$ 条缝的干涉把能量压进宽度 $\propto1/N$ 的尖峰里。所以光栅的谱线又亮又细，才能分辨很接近的两条谱线（比如钠双线 $589.0$ 与 $589.6\ \mathrm{nm}$）。这一点在思考题 7、8 里会用到。}
+
+\subhdr{8.2 $d$ 与 $N$ 的单位陷阱}
+
+光栅出厂标的是\textbf{每毫米多少条缝} $N$，而公式里要的是\textbf{间距} $d$。两者关系是 $d=1/N$（$d$ 以 mm 计）。讲义 p6 写成
+
+\[
+N=\frac{1}{1000\,d}\qquad(d\ \text{以 m 计}),
+\]
+
+这个 $1000$ 就是「$1\ \mathrm{m}=1000\ \mathrm{mm}$」。代进两个数验一下：
+
+\begin{center}
+\begin{tabular}{@{}p{2.4cm}p{3.6cm}p{4.0cm}p{3.8cm}@{}}
+\toprule
+\thead{$N$（线/mm）} & \thead{$d=1/N$} & \thead{一级绿线 $\sin\varphi$} & \thead{一级 $\varphi$} \\
+\midrule
+$100$ & $10.000\ \mu\mathrm{m}$ & $0.05461$ & $3.130^{\circ}$ \\
+$300$ & $3.333\ \mu\mathrm{m}$ & $0.16383$ & $9.429^{\circ}$ \\
+$600$ & $1.667\ \mu\mathrm{m}$ & $0.32766$ & $19.127^{\circ}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+（$\lambda=546.1\ \mathrm{nm}$。）所以\textbf{看到一级谱线大约在几度，就能反推光栅是多少线}——这是现场最快的一次自检。若你的一级绿线在 $19^{\circ}$ 附近，说明是 $600$ 线/mm，而不是以为的 $300$。
+
+\warnbox{\textbf{三处最容易出错的地方}：① 把 $N$ 当 $d$ 直接代进 $d\sin\varphi=k\lambda$；② $d$ 用 $\mu$m 而 $\lambda$ 用 nm，忘了换算（$1\ \mu\mathrm{m}=1000\ \mathrm{nm}$）；③ 把 $N=1/(1000d)$ 里的 $1000$ 漏掉，算出的 $d$ 差 1000 倍。统一做法：\textbf{先把 $d$ 换到 nm}，再与 $\lambda$ 一起代。}
+
+\subhdr{8.3 光栅怎么放：只调一侧的理由}
+
+\textbf{要求}（讲义 p12）：栅面垂直准直管光轴；栅缝平行主轴。
+
+\textbf{动作}（讲义 p13 的五个小步，本讲按「先对零级、再调栅面、最后调栅缝」重排）：
+
+\begin{enumerate}[label=(\arabic*)]
+\item 先把望远镜转到正对准直管，让竖直叉丝与狭缝像重合，\textbf{锁住望远镜}（17 号）。
+\item 把光栅放到载物台上：从上方看，$b_1b_2$ 的连线应被栅面\textbf{垂直平分}。
+\item 转载物台让栅面朝向望远镜，慢慢转找栅面反射的绿色「$+$」像；调 \textbf{$b_1$、$b_2$}（\textbf{不要调 $b_3$}）让绿像与上叉丝重合。此时栅面垂直望远镜光轴。
+\item 调 27 号（准直管光轴竖直），让零级亮线被横丝\textbf{垂直平分}，且像最亮最清晰。
+\item 松 17 号，转望远镜看 $\pm1,\pm2$ 各级谱线是否\textbf{等高}；不等高就调 \textbf{$b_3$}，直到各级在同一高度——这一步让栅缝平行于主轴。
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.36\linewidth]{fig-3.12/fig12-14-gratingadj.png}
+\caption{光栅在载物台上的方位与三个螺钉（裁剪自讲义 p13 图 12-14）：$b_1,b_2$ 调栅面垂直光轴，$b_3$ 调栅缝方向；$b_1b_2$ 连线被栅面垂直平分。}
+\end{figure}
+
+\callout{\textbf{讲义 p13 在这里问了一句：「You only need to adjust one side of the grating. You don't need to rotate 180 degrees. Think about why?」}\\
+答案：光栅只需要\textbf{栅面垂直望远镜光轴}这一条（因为它只用一个面工作，测量时也不会翻面）。而平面镜那一步之所以要转 $180^{\circ}$ 查两面，是因为那里要同时定出\textbf{台面倾斜}与\textbf{望远镜轴倾斜}两个未知量，必须用两个面的「同向/反向」信息把它们分开（§5.3 各半法）。光栅这里只有一个未知量（栅面与轴的夹角），一面就够，转 $180^{\circ}$ 反而会去查那个根本不用工作的背面。\\
+再补一句更本质的：望远镜轴已垂直主轴，所以「栅面垂直望远镜轴」等价于「栅面平行主轴」。栅面平行主轴，转载物台时栅面的法线就始终与主轴垂直——衍射角读出来才是真的。}
+
+\subhdr{8.4 测 $\pm k$ 级衍射角，以及为什么用 $\pm k$ 平均}
+
+转动望远镜，把竖直叉丝依次对准 $k=\pm1,\pm2$ 各条谱线的中心，每条读两个游标。第 $k$ 级的衍射角是
+
+\[
+\varphi_k=\frac14\bigl(|\theta_k-\theta_{-k}|+|\theta_k'-\theta_{-k}'|\bigr),
+\]
+
+其中 $\theta_k,\theta_k'$ 是 $+k$ 级在两游标上的读数，$\theta_{-k},\theta_{-k}'$ 是 $-k$ 级的。
+
+\textbf{为什么用 $\pm k$ 平均}：零级（栅面法线方向）在度盘上的读数没人去测，它可能整体偏了一个小角（栅面没完全垂直轴，或望远镜零位没对准）。设这个偏置为 $\beta$，则实测 $+k$ 级与 $-k$ 级分别偏了 $+\beta$ 与 $-\beta$。两者相减，$\beta$ 自动抵消——这与双游标消偏心是同一个思路：\textbf{用对称的两个测量把共同的偏置减掉}。所以这里又是两个 $\tfrac12$（对称平均 $\times$ 双游标）叠成 $\tfrac14$。
+
+\subhdr{8.5 角色散，以及与棱镜光谱的区别}
+
+\textbf{角色散}定义为单位波长差对应的角间距：
+
+\[
+D=\frac{\Delta\varphi}{\Delta\lambda}\quad(\text{直接测量法，讲义 p14 第 6 项}),
+\qquad
+D=\frac{\dd\varphi}{\dd\lambda}=\frac{k}{d\cos\varphi}\quad(\text{由光栅方程求导}).
+\]
+
+本实验用一级的紫线与绿线算 $D$：$\Delta\lambda=546.1-435.8=110.3\ \mathrm{nm}$，$\Delta\varphi=\varphi_{1,\text{绿}}-\varphi_{1,\text{紫}}$。
+
+\begin{center}
+\begin{tabular}{@{}p{2.6cm}p{4.6cm}p{5.8cm}@{}}
+\toprule
+\thead{比较项} & \thead{光栅} & \thead{棱镜} \\
+\midrule
+分光机制 & 多缝干涉（$d\sin\varphi=k\lambda$） & 折射率随波长变（色散） \\
+谱线排列 & 长波偏折大（\textbf{红在外}） & 短波偏折大（\textbf{紫在外}） \\
+角色散 & 近似常数（$\propto1/\cos\varphi$），谱线\textbf{等间距} & 短波端大，谱线\textbf{不等间距} \\
+级次 & 有多级，各级会\textbf{重叠} & 只有一套光谱 \\
+亮度 & 能量集中在少数级次 & 一部分光被棱镜吸收、反射损失 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+思考题 7 问「两种光谱哪条线偏折最大」，答：光栅是\textbf{波长最长}的那条（汞灯里是 $579.0\ \mathrm{nm}$ 黄线），棱镜是\textbf{波长最短}的那条（$404.7\ \mathrm{nm}$ 紫线）。
+
+\subhdr{8.6 例算}
+
+设 $300$ 线/mm 光栅，测得一级绿线 $\varphi_1=9^{\circ}26'$，一级紫线 $\varphi_1=7^{\circ}31'$。
+
+\[
+d=\frac{\lambda}{\sin\varphi_1}=\frac{546.1\ \mathrm{nm}}{\sin 9^{\circ}26'}
+=\frac{546.1}{0.16387}=3333\ \mathrm{nm}=3.333\ \mu\mathrm{m},
+\]
+\[
+N=\frac{1}{d}=\frac{1}{3.333\times10^{-3}\ \mathrm{mm}}=300\ \text{线/mm}\ \checkmark
+\]
+\[
+D=\frac{9^{\circ}26'-7^{\circ}31'}{110.3\ \mathrm{nm}}=\frac{1^{\circ}55'}{110.3\ \mathrm{nm}}
+=\frac{115'}{110.3\ \mathrm{nm}}=1.04\ '/\mathrm{nm}.
+\]
+
+与解析式 $D=k/(d\cos\varphi)=1/(3.333\ \mu\mathrm{m}\times\cos9.43^{\circ})=0.0174^{\circ}/\mathrm{nm}=1.045'/\mathrm{nm}$ 一致 $\checkmark$。所以\textbf{$300$ 线/mm 的光栅，一级角色散约 $1'/\mathrm{nm}$}，汞灯紫绿两条线在一级里相差约 $1^{\circ}55'$——这个量级要记住，找谱线时心里有数。
+
+%=====================================================================
+\hdr{§9}{数据记录表（打印带去，当场填）}
+
+这一节按预习 p3 的四张表重排，栏目与公式完全一致，可直接打印使用。\textbf{带纸质表进场}，不要只在手机里记。
+
+\subhdr{9.1 表 9-1：反射法测三棱镜顶角}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.3cm}p{2.6cm}p{2.6cm}p{2.6cm}p{2.6cm}p{2.2cm}@{}}
+\toprule
+\thead{次数} & \thead{$\phi_1$} & \thead{$\phi_1'$} & \thead{$\phi_2$} & \thead{$\phi_2'$} & \thead{备注} \\
+\midrule
+\rowstrut 1 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 2 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 3 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\midrule
+\rowstrut 平均 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+\alpha=\frac14\Bigl(|\overline{\phi_2}-\overline{\phi_1}|+|\overline{\phi_2'}-\overline{\phi_1'}|\Bigr)=\underline{\hspace{3.2cm}}
+\]
+
+\subhdr{9.2 表 9-2：最小偏向角法（汞灯绿线 $546.1$ nm）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.3cm}p{2.6cm}p{2.6cm}p{2.6cm}p{2.6cm}p{2.2cm}@{}}
+\toprule
+\thead{次数} & \thead{$\phi_1$} & \thead{$\phi_1'$} & \thead{$\phi_2$} & \thead{$\phi_2'$} & \thead{备注} \\
+\midrule
+\rowstrut 1 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 2 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 3 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\midrule
+\rowstrut 平均 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+\delta_{\min}=\frac14\Bigl(|\overline{\phi_2}-\overline{\phi_1}|+|\overline{\phi_2'}-\overline{\phi_1'}|\Bigr)=\underline{\hspace{3.2cm}}
+\qquad
+n=\frac{\sin\frac{\delta_{\min}+\alpha}{2}}{\sin\frac{\alpha}{2}}=\underline{\hspace{2.4cm}}
+\]
+
+\subhdr{9.3 表 9-3：汞灯一、二级衍射角}
+
+\begin{center}
+\scriptsize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}p{1.9cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}@{}}
+\toprule
+\thead{颜色} & \thead{$\theta_1$} & \thead{$\theta_1'$} & \thead{$\theta_2$} & \thead{$\theta_2'$} & \thead{$\theta_{-1}$} & \thead{$\theta_{-1}'$} & \thead{$\theta_{-2}$} & \thead{$\theta_{-2}'$} \\
+\midrule
+\rowstrut 紫 $435.8$~nm & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell \\
+\rowstrut 绿 $546.1$~nm & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+\varphi_k=\frac14\bigl(|\theta_k-\theta_{-k}|+|\theta_k'-\theta_{-k}'|\bigr)
+\]
+\[
+\varphi_{\text{紫},1}=\underline{\hspace{2.2cm}}\quad
+\varphi_{\text{紫},2}=\underline{\hspace{2.2cm}}\quad
+\varphi_{\text{绿},1}=\underline{\hspace{2.2cm}}\quad
+\varphi_{\text{绿},2}=\underline{\hspace{2.2cm}}
+\]
+
+\subhdr{9.4 表 9-4：结果汇总}
+
+\begin{center}
+\begin{tabular}{@{}p{4.4cm}p{4.4cm}p{5.0cm}@{}}
+\toprule
+\thead{量} & \thead{测得值} & \thead{与预期是否相符} \\
+\midrule
+\rowstrut 顶角 $\alpha$ & & 等边棱镜应 $\approx60^{\circ}$ \\
+\rowstrut 最小偏向角 $\delta_{\min}$ & & $n\approx1.5$ 时 $\approx37^{\circ}$ \\
+\rowstrut 折射率 $n$ & & 玻璃应 $1.45$--$1.65$ \\
+\rowstrut 光栅常量 $d$ & & 对应 $N$ 应为整数（$100/300/600$） \\
+\rowstrut 角色散 $D$（一级） & & $300$ 线/mm 时 $\approx1.0\ '/\mathrm{nm}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+
+%=====================================================================
+\hdr{§10}{数据处理六项：一步一步算}
+
+讲义 p14 列了六项。顺序不能换：后一项要用前一项的结果。
+
+\subhdr{10.1 第 1 项：顶角 $\alpha$}
+
+\begin{enumerate}[label=(\arabic*)]
+\item 对每一行，先算两个差：$|\phi_2-\phi_1|$ 与 $|\phi_2'-\phi_1'|$；\textbf{任一个超过 $180^{\circ}$，就用 $360^{\circ}$ 减它}（§6.5）。
+\item 三行取平均，得 $\overline{\phi_1},\overline{\phi_1'},\overline{\phi_2},\overline{\phi_2'}$。
+\item 代入
+\[
+\alpha=\frac14\Bigl(|\overline{\phi_2}-\overline{\phi_1}|+|\overline{\phi_2'}-\overline{\phi_1'}|\Bigr).
+\]
+\end{enumerate}
+
+\textbf{注意}：折回要在\textbf{每一行}上都判断，不能只在平均之后判断一次——某一行的原始差可能是 $240^{\circ}$，折回后是 $120^{\circ}$，直接平均会得出一个荒谬的顶角。
+
+\subhdr{10.2 第 2 项：最小偏向角 $\delta_{\min}$}
+
+公式与第 1 项\textbf{形式完全相同}：
+
+\[
+\delta_{\min}=\frac14\Bigl(|\overline{\phi_2}-\overline{\phi_1}|+|\overline{\phi_2'}-\overline{\phi_1'}|\Bigr).
+\]
+
+同样的折回规则。区别只在数据的来源：这一组四读数是\textbf{同一束入射光、棱镜换面}得到的两组出射方向（§7.4）。
+
+\subhdr{10.3 第 3 项：折射率 $n$}
+
+\[
+n=\frac{\sin\dfrac{\delta_{\min}+\alpha}{2}}{\sin\dfrac{\alpha}{2}}.
+\]
+
+\textbf{有效数字}：$\alpha$ 与 $\delta_{\min}$ 只到 $0.5'$--$1'$，所以 $n$ 报\textbf{三位小数}（如 $1.512$）就够了，报四位是虚假精度。给一个量级感觉：对 $n\approx1.5$、$\alpha=60^{\circ}$，
+
+\[
+\frac{\dd n}{\dd\delta_{\min}}=\frac{\cos\frac{\delta_{\min}+\alpha}{2}}{2\sin\frac{\alpha}{2}}
+=\frac{\cos48.6^{\circ}}{2\times0.5}=0.661,
+\]
+
+即 $\delta_{\min}$ 差 $1'=2.9\times10^{-4}\ \mathrm{rad}$ 只让 $n$ 变 $0.0002$。\textbf{结论：$n$ 的误差主要不是来自读数的 $1'$，而是来自仪器没调好（系统误差）}——这也是为什么 §5 的五步值得花时间。
+
+\subhdr{10.4 第 4 项：衍射角 $\varphi_k$}
+
+对紫、绿两条线、$k=1,2$ 各级：
+
+\[
+\varphi_k=\frac14\bigl(|\theta_k-\theta_{-k}|+|\theta_k'-\theta_{-k}'|\bigr).
+\]
+
+\textbf{自检（比什么都灵）}：光栅方程要求 $\sin\varphi_k=k\sin\varphi_1$。所以算完一级二级之后，退回来看
+
+\[
+\frac{\sin\varphi_2}{\sin\varphi_1}\approx2 .
+\]
+
+若算出 $1.8$ 或 $2.2$，说明某一级读错了游标或认错了谱线（最常见：把二级的某一色当成了一级）。
+
+\subhdr{10.5 第 5 项：光栅常量 $d$}
+
+用\textbf{一级绿线}（讲义 p14 第 5 项明确指定）：
+
+\[
+d=\frac{\lambda}{\sin\varphi_1}\qquad(\lambda=546.1\ \mathrm{nm}).
+\]
+
+\textbf{用二级做一次独立核对}：$d'=\dfrac{2\lambda}{\sin\varphi_2}$。理论上 $d'=d$，实测应相差在 $1\%$ 以内。两个值差很多，说明某一级的角度测偏了（多半是栅面没垂直光轴，或者谱线不等高）。
+
+最后换算成刻线密度并与出厂值对照：
+
+\[
+N=\frac{1}{d}\quad(d\ \text{以 mm 计}),\qquad
+\text{或}\quad N=\frac{1}{1000\,d}\quad(d\ \text{以 m 计}).
+\]
+
+$N$ 应接近整数（$100$、$300$、$600$）。算出 $293$ 或 $307$ 是正常的测量偏差；算出 $2930$ 说明单位换算错了 10 倍。
+
+\subhdr{10.6 第 6 项：角色散 $D$}
+
+用\textbf{一级}的紫线与绿线（讲义 p14 第 6 项）：
+
+\[
+D=\frac{\Delta\varphi}{\Delta\lambda}
+=\frac{\varphi_{1,\text{绿}}-\varphi_{1,\text{紫}}}{546.1-435.8}
+=\frac{\Delta\varphi}{110.3\ \mathrm{nm}}.
+\]
+
+单位要写清：$^{\circ}/\mathrm{nm}$ 或 $'/\mathrm{nm}$（后者更常用，因为数值在 $1$ 附近）。\textbf{顺便与解析式对照}：
+
+\[
+D_{\text{理论}}=\frac{k}{d\cos\varphi_1}=\frac{1}{d\cos\varphi_1},
+\]
+
+两者应相差 $1\%$ 以内。
+
+\subhdr{10.7 误差来源与不确定度（简表）}
+
+\begin{center}
+\begin{tabular}{@{}p{4.2cm}p{4.0cm}p{5.6cm}@{}}
+\toprule
+\thead{来源} & \thead{影响哪个量} & \thead{怎么减小} \\
+\midrule
+度盘读数（$1'$ 分辨，估读 $0.5'$） & 全部角量 & 双游标取平均；重复多组 \\
+偏心差（未平均时可达 $1'$） & 全部角量 & 必须读两个游标（§4.3） \\
+望远镜未聚焦无穷远 & $\alpha,\delta_{\min}$ 系统偏 & 消视差（§5.2） \\
+望远镜轴/准直管轴不垂直主轴 & 全部角量系统偏 & 各半法反复调到两面都重合 \\
+棱镜主截面不垂直主轴 & $\alpha,\delta_{\min}$ & 只调 $a_1,a_3$，不碰 $a_2$ \\
+找最小偏向角时跳过折返点 & $\delta_{\min}$ 偏大 & 慢转、盯住停顿点 \\
+栅面不垂直光轴 & $d$ 偏大或偏小 & $b_1,b_2$ 调到绿像与上叉丝重合 \\
+谱线不等高 & $\varphi_k$ 含糊 & 调 $b_3$ 使各级等高 \\
+缝太宽 & 全部角量 & 缝宽 $0.5$~mm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{10.8 交报告前的合理性检查}
+
+\begin{center}
+\begin{tabular}{@{}p{3.6cm}p{5.2cm}p{5.4cm}@{}}
+\toprule
+\thead{量} & \thead{合理范围} & \thead{越界先查什么} \\
+\midrule
+$\alpha$ & $59^{\circ}55'$--$60^{\circ}05'$（等边棱镜） & 折回做了没有；棱镜方位对不对 \\
+$\delta_{\min}$ & $37^{\circ}$--$39^{\circ}$（$n\approx1.5$） & 两位置是否都是透射像 \\
+$n$ & $1.45$--$1.65$ & 公式里用的是 $\alpha/2$ 还是 $\alpha$ \\
+$\sin\varphi_2/\sin\varphi_1$ & $2.00\pm0.05$ & 二级是否认错谱线 \\
+$d$ 与 $d'$ & 相差 $<1\%$ & 栅面是否垂直光轴 \\
+$N$ & 接近 $100/300/600$ & 单位换算（$\mu$m、nm、mm） \\
+$D$ & $1.0\ '/\mathrm{nm}$ 量级（$300$ 线/mm） & 用的是不是一级、是不是同一色序 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§11}{预习 8 题：中英答案（报告必写）}
+
+预习 p1 的 II 明确要求「Answer the following pre-study questions in your experimental report」。下面每题先给\textbf{可直接抄进报告的英文}，再给\textbf{中文解释}（理解用，不必抄）。题目原文保留。
+
+\subhdr{Q1}
+
+\qstem{（预习 p1，II-1 原题）What are the requirements for fine adjustment of the spectrometer?}
+
+\textbf{EN.} Three conditions must be satisfied. (1) The collimator must emit a parallel beam, i.e. its slit lies exactly in the focal plane of the collimator lens. (2) The telescope must be able to receive parallel light, i.e. it is focused at infinity, with its reticle lying exactly in the focal plane of the objective. (3) The optical axes of both the telescope and the collimator must be perpendicular to the rotation axis of the instrument, and the optical surface of the element under test must be parallel to that axis, so that the main section of the element is perpendicular to the rotation axis.
+
+\textbf{中文.} 三条：准直管出平行光、望远镜收平行光（聚焦无穷远）、两轴都垂直主轴且待测元件的光学面平行主轴。第三条是本实验最容易只做一半的一条——前两条只保证「平行光」，第三条才保证「角度读数有意义」。
+
+\subhdr{Q2}
+
+\qstem{（预习 p1，II-2 原题）What is the purpose of visual coarse adjustment? How to carry out a coarse adjustment?}
+
+\textbf{EN.} Purpose: to bring the optical axes of the telescope and the collimator roughly perpendicular to the rotation axis and to make the stage roughly horizontal, so that the autocollimated image can be found within the small field of view of the telescope. The fine-adjustment screws have a range of only a few degrees, so fine adjustment cannot succeed from a badly misaligned starting position. Method: by eye, turn the vertical adjusting screws of the telescope (No.\,12) and of the collimator (No.\,27) until the two tubes are at the same height and point at each other; then adjust the three leveling screws under the stage until the stage, and hence the plane mirror on it, is roughly horizontal.
+
+\textbf{中文.} 目的是把三条轴摆进「细调能起作用」的范围；方法是眼睛直接瞄两个筒是否等高对望，再把载物台调平。讲义原话说粗调「是细调成功的关键」，不是客套。
+
+\subhdr{Q3}
+
+\qstem{（预习 p1，II-3 原题）Explain the principle of focusing on infinity by using the self-aligning method.}
+
+\textbf{EN.} The transparent cross engraved on the reticle is illuminated by a green LED through a total-reflection prism, so it acts as a luminous object located on the reticle. If the reticle lies exactly in the focal plane of the objective, the light from this cross leaves the objective as a parallel beam; after reflection from a plane mirror it returns as a parallel beam and is focused back onto the reticle plane. The reflected green cross image and the crosshair are then in the same plane, so no relative displacement (no parallax) is observed when the eye is moved. If the reticle is not in the focal plane, the emergent beam is not parallel, the return image falls outside the reticle plane, and parallax appears. Therefore the telescope is focused at infinity when the green cross image is sharp and free from parallax.
+
+\textbf{中文.} 关键在「物在焦面上 $\Longleftrightarrow$ 出射平行 $\Longleftrightarrow$ 返回后仍聚焦在焦面 $\Longleftrightarrow$ 无视差」。这三件事是同一件事的三种说法，答题时把这条链说完整，比只背「调到这里没有视差」得分高。
+
+\subhdr{Q4}
+
+\qstem{（预习 p1，II-4 原题）Draw a schematic sketch to show how the plane mirror should be placed \ldots{} How to judge \ldots?}
+
+\textbf{EN.} (Sketch: draw the stage as a circle with three leveling screws $a,b,c$; draw the plane mirror as a vertical rectangle standing on the stage, with one reflecting face turned toward the telescope and its plane vertical, i.e. parallel to the rotation axis --- positions as in Fig.\,12-10 (a) or (b).) Judgment: after the telescope has been focused at infinity, the green cross image reflected by the front face must coincide with the upper crosshair of the reticle; the stage is then rotated by $180^{\circ}$, and the image reflected by the other (rear) face must also coincide with the upper crosshair. Only when both faces give coincidence is the optical axis of the telescope perpendicular to the rotation axis.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.30\linewidth]{fig-3.12/fig12-10-mirror.png}
+\caption{答案里照这张画（讲义 p9 图 12-10）：镜面竖直立在载物台上，一个反射面朝向望远镜，三个调平螺钉 $a,b,c$ 标出。}
+\end{figure}
+
+\textbf{中文.} 画图要素：载物台三个螺钉、镜子竖直立在台上、一个反射面朝望远镜。判据是\textbf{两面都重合}，不是一面重合。
+
+\subhdr{Q5}
+
+\qstem{（预习 p1，II-5 原题）How to judge that the parallel light from the collimator is perpendicular to the rotation axis?}
+
+\textbf{EN.} Align the telescope with the collimator and observe the slit image. Rotate the slit sleeve until the slit image is parallel to the horizontal crosshair, then adjust the vertical adjusting screw of the collimator (No.\,27) to raise or lower the image until it is vertically centred in the field of view and the slit is symmetric about the centre of the field. At this point the optical axis of the collimator is perpendicular to the rotation axis. Finally rotate the slit sleeve by $90^{\circ}$ so that the image is parallel to the vertical crosshair, and lock the slit with screw No.\,2.
+
+\textbf{中文.} 判据有两个层次：像\textbf{居中}（说明轴垂直主轴）与像\textbf{竖直}（说明狭缝本身竖直，这是后面读衍射角的前提）。别忘了最后转 $90^{\circ}$ 锁紧。
+
+\subhdr{Q6}
+
+\qstem{（预习 p1，II-6 原题）Draw a schematic sketch to illustrate the principle of measuring the vertex angle of the prism by the reflection method, and give the calculation formula.}
+
+\textbf{EN.} (Sketch: the collimator sends a parallel beam onto the vertex $A$; the beam is reflected by faces $AB$ and $AC$; the telescope is placed successively at position I (aimed at the beam reflected from $AB$) and position II (aimed at the beam reflected from $AC$).) Principle: when a plane mirror is rotated through an angle $\gamma$, the reflected ray is rotated through $2\gamma$. The two reflecting faces differ in orientation by the vertex angle $\alpha$, so the two reflected beams differ in direction by $2\alpha$; the telescope therefore turns through $2\alpha$ between the two positions. Formula:
+\[
+\alpha=\frac14\bigl(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|\bigr),
+\]
+where $\phi_1,\phi_1'$ and $\phi_2,\phi_2'$ are the readings of the two verniers at positions I and II.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.34\linewidth]{fig-3.12/fig12-12-vertex.png}
+\caption{答案里照这张画（讲义 p11 图 12-12）：顶点 $A$ 对着准直管，$AB$、$AC$ 两个反射面各反射一束光，望远镜在位置 I 与 II 分别读数 $\phi_1,\phi_1'$ 与 $\phi_2,\phi_2'$。}
+\end{figure}
+
+\textbf{中文.} 图上必须画出：准直管、顶点、两个反射面、两个反射光束、望远镜的两个位置 I 与 II、四个角标。公式的 $\tfrac14$ 来自「双镜的 $\tfrac12$」乘「双游标的 $\tfrac12$」（§6.2）。
+
+\subhdr{Q7}
+
+\qstem{（预习 p1，II-7 原题）Draw a schematic sketch to illustrate the method of measuring the minimum deflection angle.}
+
+\textbf{EN.} (Sketch: draw the prism twice --- in (a) the beam enters face $AB$ and leaves face $AC$; in (b) the same incident beam enters face $AC$ and leaves face $AB$ --- with the telescope at position 1 and position 2 respectively, and the angle $2\delta_{\min}$ between the two emergent directions.) Method: rotate the stage slowly and watch the slit image; the image first moves in one direction, stops, then reverses. The turning (stationary) point corresponds to the minimum deflection angle. At that position align the slit image with the vertical crosshair and read both verniers; then turn the prism to the other face and repeat. Since the incident direction is fixed and the deviation is $+\delta_{\min}$ in one case and $-\delta_{\min}$ in the other, the telescope turns through $2\delta_{\min}$:
+\[
+\delta_{\min}=\frac14\bigl(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|\bigr).
+\]
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.34\linewidth]{fig-3.12/fig12-13-mindev.png}
+\caption{答案里照这张画（讲义 p12 图 12-13）：(a) 光从 $AB$ 入、$AC$ 出；(b) 同一入射光改从 $AC$ 入、$AB$ 出；两次出射方向各偏 $\delta_{\min}$，夹角 $2\delta_{\min}$。}
+\end{figure}
+
+\textbf{中文.} 图要能看出「入射方向不变、出射方向在两侧各偏 $\delta_{\min}$」。文字部分一定要写「像停住后折返」这个判据，那是操作的核心。
+
+\subhdr{Q8}
+
+\qstem{（预习 p1，II-8 原题）Explain the principle of measuring grating constants and give the grating equation.}
+
+\textbf{EN.} For a parallel beam incident normally on a grating of spacing $d$, the optical path difference between light from two adjacent slits in a direction making an angle $\varphi$ with the grating normal is $d\sin\varphi$. Constructive interference, i.e. a bright spectral line, occurs when this path difference is an integer number of wavelengths:
+\[
+d\sin\varphi=k\lambda\qquad(k=0,\pm1,\pm2,\dots).
+\]
+If the diffraction angle $\varphi_1$ of a line of known wavelength $\lambda$ is measured with the spectrometer, the grating constant follows from $d=\lambda/\sin\varphi_1$, and the line density is $N=1/d$ (with $d$ in mm).
+
+\textbf{中文.} 答题要把「光程差 $d\sin\varphi$」这一步写出来，只写公式不写来源通常扣分。
+
+%=====================================================================
+\hdr{§12}{思考题：口试要点（中英）}
+
+讲义 p14 的 8 问与预习 p2 的 III（9 问）内容大量重合。下面把两处合并成 12 个问题，每题标明来源，答英文要点即可应对口试。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.6cm}p{5.4cm}p{9.8cm}@{}}
+\toprule
+\thead{\#} & \thead{问题} & \thead{要点} \\
+\midrule
+1 & 分光计由几部分组成？各起什么作用？（讲义 Q1） & 五部分：望远镜（接收平行光、带自准直目镜定位方向）、准直管（产生平行光并把缝变成方向信息）、载物台（放待测件并能绕主轴转）、度盘与游标（把方位读成 $1'$）、底座（支撑与定位主轴）。 \\
+2 & 主截面是什么？（预习 III.1） & 垂直于棱镜两折射面交线（折射棱）的截面。只有主截面内的光线满足 $\alpha=r+r'$ 与 $\delta=i+i'-\alpha$；主截面垂直主轴是所有角度公式成立的前提。 \\
+3 & 为什么要求望远镜光轴平行于棱镜主截面？怎么调？（预习 III.2） & 因为偏向角公式在主截面内推导。调法：让棱镜主截面垂直主轴——找 $AB$、$AC$ 两面的自准直像都与上叉丝重合（只调 $a_1,a_3$，不调 $a_2$）。 \\
+4 & 自准直的步骤与「能接收平行光」的判据？（讲义 Q2） & 四步：目镜看清叉丝 → 载物台转找绿十字 → 前后移目镜筒至像清晰 → 消视差。判据是\textbf{像清晰且无视差}。原因：无视差 $\Longleftrightarrow$ 像与叉丝同面 $\Longleftrightarrow$ 分划板在焦面 $\Longleftrightarrow$ 出射与返回都是平行光。 \\
+5 & 为什么光轴垂直镜面时绿十字与\textbf{上叉丝}重合？（讲义 Q3） & 透光「十」在轴下 $a$、上叉丝在轴上 $a$，两者关于中心横丝对称。从「十」出射的平行光与轴成 $\theta=a/f$；反射只反转轴向分量，返回光向另一侧倾斜，经物镜落在 $+a$，正是上叉丝。 \\
+6 & 细调的要求有哪些？（讲义 Q4） & 同 §11 Q1 的三条。 \\
+7 & 找不到平面镜的「$+$」像怎么办？（预习 III.3） & 回目测粗调：查电源与绿 LED、镜子是否放平且反射面朝望远镜、12/13 号螺钉是否偏太多、9 号镜筒位置是否把像推出视场。 \\
+8 & 测顶角时转望远镜找不到棱镜反射像怎么办？（讲义 Q5 / 预习 III.4） & 同样先回粗调；再查棱镜方位（$AB\perp a_1a_2$、$AC\perp a_2a_3$、$BC\perp a_3a_1$）、顶点是否靠近台心且朝向准直管、台面高矮是否挡住光路。 \\
+9 & 怎样判断最小偏向角？（讲义 Q6 / 预习 III.5） & 慢转载物台并跟踪狭缝像，像\textbf{停住后折返}的位置即 $\delta_{\min}$；物理依据是 $\delta(i)$ 在 $i=i'$ 处取极小。 \\
+10 & 入射光不垂直光栅面会怎样？（预习 III.6） & 实际起作用的缝间距变成 $d\cos\gamma$（$\gamma$ 为倾斜角），测出的 $d$ 偏大；$\pm k$ 级不再对称，谱线也不等高。必须调 $b_1,b_2$ 使栅面垂直光轴。 \\
+11 & 光栅光谱与棱镜光谱有何不同？哪条线偏折最大？（讲义 Q8 / 预习 III.7） & 光栅：多级、近似等间距（$D\approx$ 常数）、长波偏折大（红在外）；棱镜：单套、不等间距、短波偏折大（紫在外）。光栅里偏折最大的是 $579.0\ \mathrm{nm}$ 黄线；棱镜里是 $404.7\ \mathrm{nm}$ 紫线。 \\
+12 & 缝太宽或太窄会怎样？（预习 III.8） & 太宽：像成宽带，对准其中心带来主观误差，两条近谱线并成一条；太窄：太暗看不清，衍射使边缘发虚。取 $0.5$~mm 折中。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{补充两问}（讲义 Q7 与预习 III.9，上面表里没单列）：
+
+\begin{itemize}
+\item \textbf{讲义 Q7「两条谱线不等高会怎样」}：竖直叉丝对准谱线时，谱线是斜的，叉丝与谱线的交点位置随像的高低变化，$\theta_k$ 因此带一个与高度差成正比的读数误差；$\pm k$ 也不再对称。所以要用 $b_3$ 调到等高。
+\item \textbf{预习 III.9「本实验的注意事项」}：手不要碰光栅与棱镜的光学面（指纹会散射光，且擦不掉）；汞灯不要频繁开关（缩短寿命）、不要直视（强紫外）；不要自己合闸/调电源；读数前确认 16 号螺钉状态没变；狭缝与光栅调好后不要再动。
+\end{itemize}
+
+
+
+%=====================================================================
+\hdr{§13}{扩展题 3 道（选做）}
+
+预习 p2 的 IV 是选做。下面给方法与依据，标了「补充」的部分不在本次资料里，属本讲补的知识。
+
+\subhdr{13.1 除反射法外，还有什么办法测顶角}
+
+\textbf{自准直法。}把棱镜放在载物台上，用自准直法分别让望远镜对准 $AB$ 面与 $AC$ 面的\textbf{法线}（绿十字与上叉丝重合），两次望远镜位置之差就是\textbf{两法线的夹角}。棱镜两面的外法线夹角是 $180^{\circ}-\alpha$，所以
+
+\[
+\alpha=180^{\circ}-\text{转角}.
+\]
+
+\textbf{证明}：自准直的条件是望远镜光轴与镜面法线重合，所以两次望远镜位置分别对应两条法线；法线夹角由 §6.1 已算过是 $180^{\circ}-\alpha$，取小于 $180^{\circ}$ 的那个即可。
+
+\warnbox{\textbf{一个巧合会骗人}：对等边棱镜（$\alpha=60^{\circ}$），反射法要转 $2\alpha=120^{\circ}$，自准直法要转 $180^{\circ}-\alpha=120^{\circ}$——\textbf{两种方法转的角居然一样}。所以只看「转了 $120^{\circ}$」不能分辨用的是哪种方法；换成 $\alpha=45^{\circ}$ 的棱镜，反射法转 $90^{\circ}$、自准直法转 $135^{\circ}$，差别就出来了。作答时把公式写清，不要只写数字。}
+
+\subhdr{13.2 除最小偏向角法，还有什么办法测棱镜折射率}
+
+\textbf{掠入射法（极限角法）。}让光以接近 $90^{\circ}$ 的角掠射入 $AB$ 面，另一面 $AC$ 射出的光会有一个\textbf{极限角} $\delta$（再往某个方向转，出射光就消失）。测出这个极限角，由（补充，本讲推导）
+
+\[
+\boxed{\;n=\sqrt{1+\left(\frac{\sin\delta+\cos\alpha}{\sin\alpha}\right)^{2}}\;}
+\]
+
+\textbf{推导思路}：掠入射时 $i\to90^{\circ}$，故 $\sin r=1/n$；由 $r+r'=\alpha$ 得 $r'=\alpha-r$；再把 $n\sin r'=\sin\delta$ 展开：
+
+\[
+\sin\delta=n\sin(\alpha-r)=n(\sin\alpha\cos r-\cos\alpha\sin r)=\sin\alpha\sqrt{n^{2}-1}-\cos\alpha ,
+\]
+
+移项平方即得上式。（核对：$n=1.5$、$\alpha=60^{\circ}$ 时 $\sin\delta=0.4682$，$\delta=27.92^{\circ}$；代回得 $n=1.500$ $\checkmark$。）
+
+\textbf{为什么这个方法有用}：它不需要找最小偏向角那个「折返点」，只要找出射光消失的边界，操作上更容易自动化（这也是商用阿贝折射仪的原理基础）。
+
+\subhdr{13.3 分光计还能测什么}
+
+\begin{center}
+\begin{tabular}{@{}p{5.2cm}p{8.4cm}@{}}
+\toprule
+\thead{可测量} & \thead{怎么测（用本实验已建立的能力）} \\
+\midrule
+未知波长 & 用已知 $d$ 的光栅，测某条谱线的 $\varphi_k$，得 $\lambda=d\sin\varphi_k/k$ \\
+光栅的色分辨本领 & 看钠双线 $589.0/589.6\ \mathrm{nm}$ 能否分开，$R=\lambda/\Delta\lambda$ \\
+棱镜的色散曲线 & 对多条谱线测 $\delta_{\min}$，得 $n(\lambda)$ 曲线 \\
+棱镜的角色散 & 与光栅的 $D$ 同样定义，$D=\Delta\delta/\Delta\lambda$，比较两者随波长的变化 \\
+介质折射率（多种） & 最小偏向角法、掠入射法、临界角法 \\
+谱线的精细结构 & 高线数光栅的高级次把近邻谱线分开 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§14}{易错清单：最贵的五个错}
+
+\begin{center}
+\begin{tabular}{@{}p{0.7cm}p{5.8cm}p{7.1cm}@{}}
+\toprule
+\thead{\#} & \thead{错法} & \thead{后果与正确做法} \\
+\midrule
+1 & 只读一个游标 & 直接引入最多 $1'$ 的偏心误差，$\alpha$ 与 $\delta_{\min}$ 都偏。\textbf{每读一次方位必须两个游标都读}。 \\
+2 & 把「像找到了」当成「调好了」 & 绿十字模糊或带视差就开始测，所有角量带一个固定偏差。判据是\textbf{清晰 + 无视差 + 与上叉丝重合}三件齐。 \\
+3 & 各半法一次调到位 & 一面重合、另一面偏差更大，且怎么转都不收敛。正确是\textbf{先减半、再归零}，两三轮。 \\
+4 & 折回 $360^{\circ}$ 只在平均后做一次 & 某一行的原始差是 $240^{\circ}$ 却当成 $240^{\circ}$ 参与平均，$\alpha$ 直接错几十度。\textbf{每行都判断}。 \\
+5 & $d$ 与 $N$ 混用 / 单位没换 & $d\sin\varphi=k\lambda$ 里代进「线/mm」，或 $\mu$m 与 nm 混着算，结果差 $10^3$ 量级。\textbf{先把 $d$ 换到 nm}。 \\
+\midrule
+6 & 调 $a_2$ 想「一起摆平」 & 两个面被同时扰动，之前调好的面立刻失效。\textbf{只调 $a_1,a_3$}。 \\
+7 & 测最小偏向角时转太快 & 直接跳过折返点，读到的 $\delta$ 偏大。\textbf{慢转、盯住停顿}。 \\
+8 & 光栅只调了 $b_1,b_2$ 没调 $b_3$ & 谱线不等高，叉丝与斜谱线的交点含糊，$\varphi_k$ 带误差。 \\
+9 & 中途动了 16 号螺钉 & 前后读数不属同一度盘，整组数据作废。\textbf{一组测量开始后就别碰它}。 \\
+10 & 读数写成 $335^{\circ}47'$ 而实际是 $334^{\circ}47'$ & 没做「结果必须落在两刻线之间」的自检。\textbf{每次读完顺手验一遍}。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{如果时间不够，只能保三件事}：① 望远镜聚焦到无视差；② 望远镜轴垂直主轴（两面都重合）；③ 每次读数都读两个游标。这三件保证了数据的\textbf{系统性}；其余的（比如少测一组、二级没测）都只是精度损失，可以事后说明。反过来，这三件里缺任何一件，数据就\textbf{不可救}。}
+
+%=====================================================================
+\hdr{§15}{缺口与待确认：两份材料没说清的地方}
+
+按「来源与位置｜问题｜本讲怎么处理」列出。凡本讲做了假设的地方，都写在这里。
+
+\begin{enumerate}[label=\textbf{G\arabic*.},leftmargin=2.6em]
+\item \textbf{重复次数冲突}｜讲义 p11、p12 都写「Repeat the measurement five times」，而预习 p3 的数据表只留 3 行（Times 1,2,3, Average）｜本讲 §9 按\textbf{3 行}排表（因为要打印带去的是预习表）；若现场老师说 5 次，临时加两行即可，不要为此重排表。
+\item \textbf{$(12\text{-}1)(12\text{-}2)$ 与结论不相容}｜讲义 p4｜按 $\angle1=\angle2$ 代入会得 $\Phi=\theta_1$，与 $\Phi=\theta_2$ 矛盾｜本讲 §4.3 用偏心几何重新推导，结论 $\phi=(\theta_1+\theta_2)/2$ 不变；操作不受影响。
+\item \textbf{游标读数方向的措辞}｜讲义 p4「just to the right of the zero」与它自己的算例（$334^{\circ}30'+17'$）矛盾｜本讲 §4.2 以\textbf{算例}为准（取零线已越过的刻线），并给了「结果必须落在两刻线之间」的自检。
+\item \textbf{dispersive power vs angular dispersion}｜讲义 p1 引言写「\emph{dispersive power}」，p14 第 6 项定义的却是 $D=\Delta\varphi/\Delta\lambda$（\emph{angular dispersion}，角色散）｜本讲一律按\textbf{角色散}处理（单位 $^{\circ}/\mathrm{nm}$ 或 $'/\mathrm{nm}$）。若老师另指 $(n-1)$ 之类的「色散率」，以老师口径为准。
+\item \textbf{钠灯的用途未说明}｜讲义 p1 器材清单列了 sodium lamp，但全部流程只用 mercury lamp｜本讲未给钠灯的操作，按「可能用于换光源或色散曲线」处理，不编造步骤。
+\item \textbf{光栅线数未给}｜讲义 p6 只给 $N=1/(1000d)$，没给具体 $N$｜§0.3、§8.2、§8.6 的预期值都按\textbf{300 线/mm} 假设并已标明；\textbf{现场先看光栅框上标的线数}，若不是 300，用 §8.2 的表换算预期角。
+\item \textbf{棱镜材料与是否等边}｜讲义未写｜§6.6、§7.6 按\textbf{等边棱镜（$\alpha=60^{\circ}$）、$n\approx1.5$} 做例算，并标为「示例数据，非实测」。
+\item \textbf{图 12-12 的角标}｜讲义 p11 图里第二个游标印成 $\phi_2''$，正文与数据表用 $\phi_2'$｜本讲统一用 $\phi_2'$。
+\item \textbf{两套螺钉编号}｜图 12-10 用 $a,b,c$，图 12-11 用 $a_1,a_2,a_3$，不是同一套｜正文已分别注明；现场先看清载物台上的刻字。
+\item \textbf{「调平螺钉 a」是哪一个}｜讲义 p9 步骤 (3)(I) 只说「adjust the leveling screw ''a''」｜本讲按\textbf{图 12-10 中标 a 的那个}（顶部那个）处理；若现场刻字不同，以「只改一个面法线方向」为准挑螺钉。
+\item \textbf{栅面方位靠目视}｜讲义 p13 第②步「$b_1b_2$ 连线被栅面垂直平分」是文字描述｜实际需目视微调，本讲未给角度判据（材料没有）。
+\item \textbf{角色散的单位与位数}｜讲义 p14 未规定｜本讲按 $'/\mathrm{nm}$、保留两位有效数字处理。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§16}{出门清单与四小时时间盒}
+
+\subhdr{16.1 必带}
+
+\begin{itemize}
+\item \textbf{预习 3 页的打印件}（p1 题目、p2 思考题、\textbf{p3 数据表}——讲义原文写明「Print it yourself and bring it to class」）。
+\item 本讲义 §9 的表（若不用预习表，就把 §9 打出来，二选一，别带两张）。
+\item 铅笔、橡皮、直尺（作图题要用）、计算器。
+\item 校园卡/学生证（签到、借仪器可能要用）。
+\end{itemize}
+
+\callout{\textbf{关于手机}：本次两份材料里没有禁止使用手机的明文（那是电工实验 6 考试场次的规矩，不同课程）。但\textbf{数据表必须是纸质的}，而且填表时手上有纸笔更快、更不容易记错游标，所以建议按「纸笔为主、计算器为辅」准备。}
+
+\subhdr{16.2 四小时怎么分（13:30--17:30，共 240 分钟）}
+
+\begin{center}
+\begin{tabular}{@{}p{2.6cm}p{1.4cm}p{9.4cm}@{}}
+\toprule
+\thead{时段} & \thead{用时} & \thead{做什么} \\
+\midrule
+13:30--13:45 & 15 min & 认零件、目测粗调（步骤 1）；把 11/12/13/27/6/16 号找出来 \\
+13:45--14:20 & 35 min & 望远镜聚焦无穷远（步骤 2）＋ 各半法让轴垂直主轴（步骤 3） \\
+14:20--14:40 & 20 min & 准直管出平行光（步骤 4）＋ 轴垂直主轴、狭缝竖直（步骤 5） \\
+14:40--15:05 & 25 min & 棱镜摆放、主截面调平、测顶角 3 组 \\
+15:05--15:40 & 35 min & 最小偏向角：两个方向各找折返点、各 3 组 \\
+15:40--15:55 & 15 min & 换光栅、对零级、调栅面（$b_1,b_2$）、调等高（$b_3$） \\
+15:55--16:40 & 45 min & 测紫/绿一级二级共 8 个方位，每个读两游标 \\
+16:40--17:05 & 25 min & \textbf{现场粗算}：$\alpha$、$\delta_{\min}$、$n$、$d$、$D$ 各算一遍 \\
+17:05--17:20 & 15 min & 补测可疑点（哪个数不自洽就重测那个） \\
+17:20--17:30 & 10 min & 数据表签字、清点器材、收台 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\callout{\textbf{最后一句提醒}：前 50 分钟全花在调仪器上不亏。后面三个测量共用同一套调节——仪器没调好，三个测量会一起偏，而且偏的是\textbf{系统误差}，事后无法用平均补救。反过来，只要仪器调到「两面都重合、像清晰无视差」，剩下的事就是把像对准叉丝、把两个游标抄下来。}
+
+
+\end{document}
