@@ -28,7 +28,7 @@ description: 在本工作区辅导大学课程与语言训练、检查作业、�
   - **必须先教后做**：先用通顺好读的中文讲清物理/数学动机、核心公式及成立条件、配一个最简数字小例子，经学习者确认看懂后再让其作答。
 
 ## 3. 备课复用与续学规程
-- **首次学某章或资料更新**：按 `prepare-materials` 主动核读课件结构与重点、对齐既定教材并缓存到 `learning/chapter-guides/`；正文随教学按需细读。必要前置纳入主线，课件未涉及的较难教材内容列为拓展。
+- **首次学某章或资料更新**：按 `prepare-materials` 主动核读课件结构与重点、对齐既定教材并缓存到 `learning/chapter-guides/`；正文随教学按需细读。必要前置纳入路线，拓展按当前理解与应用是否必需区分，依 `.tutor/docs/课件与教材协同学习.md`；讲义的具体组织与补充深度依 lecture-deepdive。
 - **续学**：先跑 `python -B tools/chapter_guide.py check --chapter <id>` 核对已有章节地图，有效则直接复用，不重复全章扫描。沿用原题定义与参数，不临时改写势能系数或加数值重配。
 - **硬性算术复核**：凡报给学习者的数值、留数、积分值、化简结果，必须先用 `python -B tools/verify_math.py` 验算；长讲义或易混提示可用 `python -B tools/cross_verify.py` 做后台审校。
 

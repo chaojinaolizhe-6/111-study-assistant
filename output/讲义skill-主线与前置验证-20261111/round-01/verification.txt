@@ -1,0 +1,157 @@
+round-01 验证记录
+==================
+
+产物版本
+--------
+- 源文件：round-01/sample.tex（最终编译前最后一次修改后未再改 TeX）
+- PDF：round-01/sample.pdf（17 页，A4 595.28 × 841.89 pt）
+- 规则版本：lecture-deepdive v2.3.0
+- 本轮性质：基于旧稿范围的独立改写；不是学习者试读，不是全书重写。
+- 最终重建：在 §1.4 分块矩阵后补一句“右下角正是 B”的续页上下文后，重新执行
+  build.ps1；仍为 17 页，最终遍日志仍无错误/溢出，check_handout 与 check_layout 仍通过。
+
+环境
+----
+- Windows / PowerShell 7
+- MiKTeX-XeTeX 4.10（MiKTeX 24.1）
+- Python 3.12.9；sympy 1.14.0；numpy 2.4.6；PyMuPDF 1.27.2.3
+- 主题：../.dsh/skills/lecture-deepdive/assets/theme-violet
+
+实际核读的来源
+--------------
+1. inputs/TM2026-Topic8-P1.pdf，pp.7–11（重点 p9；p8、p10–p11 用于核相邻记号）。
+   - p8：正交基、求和约定、εijk、对偶张量。
+   - p9：张量积（Dyad）、左右作用、转置、线性算子 b=Ta、二次型 E=aTa、单位张量。
+   - p10–p11：旋转算子与角速度；属于后续内容，本片段不展开。
+2. inputs/RIT-Whelan-notes10-tensor.pdf，pp.7–12（重点 pp.8–10；p11–p12 用于核惯量接口）。
+   - pp.8–10：换基、对称张量对角化的 Claim、特征方程、实特征值、不同特征值特征向量正交、
+     重特征值与正交特征基的路线。
+   - 原页是主题/结论来源，没有把存在性和 2×2 判别式写成完整证明；本片段在 §1.4 补足。
+3. inputs/baseline-handout.tex：
+   - §1 开头与 §1.1–§1.5：TeX 365–569（旧 PDF pp.8–12）。
+   - P7 题干：TeX 1806–1808（旧 PDF p.34）；详解：TeX 2008–2024（旧 PDF p.41）。
+   - 旧 §0 只用于核对记号范围，未整段搬入。
+4. learner-background.json：
+   - 已确认：用户仅自述“只会简单的线性代数知识”。
+   - 未确认：点积/长度/正交、一元导数与极值、偏导与多元极值、连续性及极值存在性质。
+   - 本轮准备时提问仍为 pending；没有新的真实回复，未把未答当作已会。
+
+数学验证
+--------
+命令：
+  python -B verify_sample.py
+
+输出（verify-math.txt）：
+  checks executed: 7620
+  ALL ASSERTIONS PASSED
+
+覆盖的实际断言（不是只打印数值）：
+- 非对称二次型 T=[[1,2],[0,1]] 与对称部分 S 给出同一个 (x+y)^2；
+- 二维椭圆 T=[[2,1],[1,2]] 的 n1、n2 确为 3、1 特征向量，正交且单位，代入后 E=3u^2+v^2；
+- 三维 D=[[6,2,0],[2,6,0],[0,0,1]] 的特征多项式分解、三个特征向量、正交归一性、
+  8n1n1^T+4n2n2^T+n3n3^T=D、迹 13、行列式 32；
+- 随机 2×2 实对称矩阵的判别式、实根、显式特征向量与正交性（500 组）；
+- 随机 3×3 实对称矩阵的实特征值、正交特征向量、谱重构，以及 T 保持特征向量正交补（500 组）；
+- 随机矩阵的迹循环性、随机正交矩阵的 tr(R^T T R)=tr T（200 组）；
+- 惯量小例 J=diag(1,2,3)、n=(1,1,1)/√3 给出 I=2，并检查瑞利商上下界（500 组）。
+
+编译
+----
+命令：
+  pwsh -File build.ps1
+
+构建脚本执行两遍：
+  xelatex -halt-on-error -interaction=nonstopmode sample.tex
+  （第一遍后复制 sample.log -> build-pass1.log；第二遍后 -> build-pass2.log）
+
+build-pass1.log（首遍，允许出现待解析引用）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 2；Warning 5；Error 0
+  - hyperref 提示 rerun 以生成 PageLabels；
+  - ans:P7 首遍未解析；
+  - 首遍的 labels may have changed / rerun 提示。
+  Output written on sample.pdf (17 pages).
+
+build-pass2.log（最终遍）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 0；Warning 0；Error 0
+  Output written on sample.pdf (17 pages).
+
+静态检查
+--------
+命令：
+  python -B ../.dsh/skills/lecture-deepdive/scripts/check_handout.py sample.tex --mode appendix --log build-pass2.log
+
+输出（check-handout.txt）：
+  [检查] sample.tex
+     静态检查未发现问题；尚不代表数学正确或 PDF 页面已验收
+  合计：错误 0 条，人工复核线索 0 条
+
+版面/坐标检查
+-------------
+命令：
+  python -B check_layout.py
+
+输出要点（layout-report.txt）：
+- 17 页，A4；正文文字均在页面内；
+- 正文 span 包络：x0=50.51、x1=546.59、y0=71.66、y1=766.09；
+- 横向伸出为 CJK 标点悬挂：左 6.18 pt、右 8.01 pt（检查阈值 9 pt）；
+- 图 1 在第 8 页、图 2 在第 12 页，检测到自绘矢量图；
+- ISSUES: none。
+- 说明：这里只做坐标/边界检查，不等同于目视读图。
+
+最终页渲染
+----------
+命令：
+  python -B render_pages.py
+
+输出（render-run.txt 末行）：
+  rendered 17 pages at 110 dpi into render/
+
+每页 PNG 为 910×1287。当前模型不支持图像输入，未目视检查渲染页；
+渲染图与坐标记录交外部视觉审核者检查。
+
+实际印出链条核对
+----------------
+在最终 PDF 中搜索并核对：
+- 谱定理陈述：p.10；
+- 第一步 2×2 引理：p.10；
+- 第二步 3×3 存在实特征值：p.11；
+- 第三步 T 保持 u1 的正交补：p.11；
+- 第四步 在平面内用 2×2 引理：p.12；
+- 第五步 正交性与分解式：p.13；
+- “谱定理证完”：p.13；
+- P7 题干：p.16；P7 详解：p.17。
+
+另外核对：
+- 图 1 与图注在同一页（p.8）；图 2 与图注在同一页（p.12）。
+- P7 正文只有题干、考点和附录页码，没有关键步骤或答案；详解在附录 p.17。
+- 附录详解自带题干、迹的定义、循环性证明、两步换基和条件说明。
+- 正文实际印出的证明使用 §0.4 的实根引理、§0.3 的非零解判据、§0.2 的转置恒等式，
+  未使用梯度/拉格朗日乘子/闭有界连续。
+
+冻结输入核对
+------------
+用 ../trial-provenance.json 的 SHA256/字节数逐项复核，全部匹配：
+- .dsh/skills/lecture-deepdive/assets/theme-violet.tex
+- 8 个 references 文件与 5 个 scripts/测试文件
+- AGENTS.md
+- inputs/baseline-handout.pdf、inputs/baseline-handout.tex
+- inputs/RIT-Whelan-notes10-tensor.pdf、inputs/TM2026-Topic8-P1.pdf
+- learner-background.json、tools/verify_math.py
+输出：ALL FROZEN INPUTS MATCH。
+
+交付清单校验
+------------
+命令：
+  python -B make_manifest.py
+  （随后用清单中的 sha256/bytes 逐项重新计算）
+
+结果：41 个文件；全部 SHA256 与字节数匹配；冻结输入与 trial-provenance.json 一致。
+清单不把 delivery-manifest.json 自身计入；它是在最终构建和最终报告之后生成的。
+
+未解决/边界
+-----------
+- 没有学习者试读；不能报告“已理解/已掌握/学习效率提高”。
+- 当前模型不能读图；未目视验收布局、字形、图线位置，需外部视觉审核。
+- 第 16 页只有 P7 一题，留白较多；这是单题样本的排版结果。
+- 旧稿全文 48 页未重检；本轮只检查所选片段和 P7。
+- 首遍编译的 undefined reference 是正常的两遍编译中间状态，最终遍为 0。

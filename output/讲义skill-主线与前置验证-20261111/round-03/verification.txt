@@ -1,0 +1,166 @@
+round-03 验证记录
+==================
+
+本轮性质与范围
+--------------
+- 收到 revision-index-r3 后的局部返工；基于 round-02（只读保留）与 v2.2.2 旧稿，不是独立首稿，也不是学习者试读。
+- 只处理三项：MAIN-MATH-03（全部特征根/重数闭合）、MAIN-READ-R2-LOCAL-01（P7 承诺收窄）、MAIN-META-R2-01（连续性/极值依赖说明）。
+- round-02 的最终外审仍把 MAIN-MATH-03 列为 active_in_final_r2；本文件不把 round-02 的自评当成外审已闭合。
+
+产物版本
+--------
+- 源文件：round-03/sample.tex（最终编译前最后一次内容修改后未再改 TeX）
+  SHA256 67485398d0d3708e10364f7940d951e36b3b351c88255eade0d37bddf5a9bddf，54281 bytes
+- PDF：round-03/sample.pdf（19 页，A4 595.28 × 841.89 pt）
+  SHA256 b1e513221581a9f88efea5d06b37146601ad7a608c9059bc7bba8f50a312694e，239773 bytes
+- 规则版本：lecture-deepdive v2.3.0
+- 最终重建：最后一次 TeX 修改（P7 指引收窄；§1.4 第四步末补换基论证；证明用量框同步）后执行 build.ps1；
+  两遍 xelatex 成功，随后 check_handout、check_layout、render_pages、dump_page_text 全部执行；之后未再改 TeX。
+  sample.pdf 的修改时间晚于 sample.tex，PDF 不是早于最终 TeX 的旧产物。
+
+环境
+----
+- Windows / PowerShell 7
+- MiKTeX-XeTeX 4.10（MiKTeX 24.1）
+- Python 3.12.9；sympy 1.14.0；numpy 2.4.6；PyMuPDF 1.27.2.3
+- 主题：../.dsh/skills/lecture-deepdive/assets/theme-violet
+
+来源核读
+--------
+- round-02 已核读并记录的 TM2026-Topic8-P1 pp.7–11、RIT-Whelan notes10 pp.8–10、baseline-handout 的 §1 与 P7，
+  以及 learner-background 文件，本轮未改；沿用其结论，不重复新的来源研究。
+- 本轮只重读旧稿/既有记录以核对依赖说明与 P7 承诺；20 个 frozen_inputs 与 learner-background-confirmed.json 未改。
+
+数学验证
+--------
+命令：
+  python -B verify_sample.py
+
+输出（verify-math.txt）：
+  checks executed: 8569
+  ALL ASSERTIONS PASSED
+
+覆盖的实际断言：
+- 既有 8349 条断言全部复跑通过（点积几何、非对称二次型、2D/3D 例、2×2 引理、随机谱分解、正交补、
+  迹循环、瑞利商、半轴分支等）。
+- 新增 220 条断言：
+  - 20 组随机实对称矩阵：核对正交特征基 Q^TQ=I、Q^T T Q=diag(λ)，并在 4 个 λ 点核对
+    det(T−λI)=∏(λk−λ)；
+  - 20 组由正交相似生成的含重根矩阵（特征值 2,2,5）：同样核对分解，专门覆盖“构造出的特征值重复”
+    的情形。
+- 说明：该脚本只核对数值/符号断言，不能替代正文证明、来源核对或页面阅读；任一断言失败会以非零退出码报告。
+
+编译
+----
+命令：
+  pwsh -File build.ps1
+
+构建脚本执行两遍：
+  xelatex -halt-on-error -interaction=nonstopmode sample.tex
+  （第一遍后复制 sample.log -> build-pass1.log；第二遍后 -> build-pass2.log）
+
+build-pass1.log（首遍，允许出现待解析引用）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 2；LaTeX Warning 3；Error 0；
+  Output written on sample.pdf (19 pages)。
+  - ans:P7 首遍未解析；hyperref 的 PageLabels 与 labels may have changed / rerun 提示属于正常中间状态。
+
+build-pass2.log（最终遍）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 0；LaTeX Warning 0；Error 0；
+  Output written on sample.pdf (19 pages)。
+
+静态检查
+--------
+命令：
+  python -B ../.dsh/skills/lecture-deepdive/scripts/check_handout.py sample.tex --mode appendix --log sample.log
+
+输出（check-handout.txt）：
+  [检查] sample.tex
+     静态检查未发现问题；尚不代表数学正确或 PDF 页面已验收
+  合计：错误 0 条，人工复核线索 0 条
+
+版面/坐标检查
+------------
+命令：
+  python -B check_layout.py
+
+输出要点（layout-report.txt）：
+- 19 页，A4；正文文字均在页面内；
+- 正文 span 包络：x0=50.51、x1=546.60、y0=71.66、y1=766.56；
+- 横向伸出为 CJK 标点悬挂：左 6.18 pt、右 8.01 pt（检查阈值 9 pt）；
+- 图 1 在第 8 页、图 2 在第 12 页，检测到自绘矢量图；
+- ISSUES: none。
+- 说明：这里只做坐标/边界检查，不等同于目视读图。
+
+最终页渲染
+----------
+命令：
+  python -B render_pages.py
+
+输出（render-run.txt 末行）：
+  rendered 19 pages at 110 dpi into render/
+
+每页 PNG 为 910×1287。当前模型不支持图像输入（read_image 明确返回模型未声明图像输入），
+未目视检查渲染页；渲染图与坐标记录交外部视觉审核者检查。
+
+命令：
+  python -B dump_page_text.py
+
+输出（page-text-run.txt）：
+  wrote page-text.txt: 19 pages
+该转储用于定位改动页与核对实际断页；它不等于目视读图。
+
+实际印出链条与受影响页
+----------------------
+只列本轮受影响或重排的页；其余页沿用 final-r2 已接受的页面结果。
+- p.3：§0.2 的 P7 指引句收窄，不再承诺“分量依据”。
+- p.4：受 p.3 断行影响，§0.2 转置证明的跨页位置改变；文字未改写。
+- pp.14–15：§1.4 第四步新增换基论证。
+  - p.14 保留实特征向量核对，并写 Q^T T Q=D、T−λI=Q(D−λI)Q^T 与 3×3 行列式乘法性质；
+  - p.15 由 det(T−λI)=det(D−λI)=∏(λk−λ) 得出 p_T 的全部根（含重数）为 λ1,λ2,λ3。
+- p.15：证明用量框增加“3×3 行列式乘法性质”一项；其后“重复特征值”段保留。
+- pp.16–19：§1.5、§1.6、P7 因新增内容整体后移一页；P7 题干 p.18，详解 p.19。
+正文实际印出的依据：
+- §1.4 第四步使用 §0.4 的实根引理、§0.3 的非零解判据、第三步的 T(P)⊂P 与第一步的 2×2 引理；
+- 末尾只按 3×3 使用一次 det(XY)=detX·detY，并在正文写出它的形式、条件与本处应用；
+- 未使用极值存在定理、约束极值或拉格朗日乘子；
+- §0.4 仍使用多项式连续性与介值/二分（p.5），这是正文实际依赖，不能写成“不用连续性”。
+
+问题复核对应
+------------
+- MAIN-MATH-03：sample.tex:780–829，pp.14–15；见 issue-response.json 的 MAIN-MATH-03 条。
+- MAIN-READ-R2-LOCAL-01：sample.tex:170，p.3；见 issue-response.json 的 MAIN-READ-R2-LOCAL-01 与 MAIN-READ-P7-01 条。
+- MAIN-META-R2-01：preparation.json 的 unresolved、issue-response.json 的 residual_items、本文件的“未解决/边界”、
+  comparison.json 的 C2 与 summary；正文依据在 sample.tex:270、276、860。
+- 其余已关闭项（点积几何、正式概念顺序、2D/3D 具体示范、符号/半轴条件、来源归属、对比公平性）未改，
+  沿用 round-02 已接受证据，不重复审查。
+
+冻结输入
+--------
+用 ../trial-provenance.json 的 SHA256/字节数逐项复核，20 个 frozen_inputs 全部匹配：
+- .dsh/skills/lecture-deepdive/assets/theme-violet.tex
+- 8 个 references 文件与 5 个 scripts/测试文件
+- AGENTS.md
+- inputs/baseline-handout.pdf、inputs/baseline-handout.tex
+- inputs/RIT-Whelan-notes10-tensor.pdf、inputs/TM2026-Topic8-P1.pdf
+- learner-background.json、tools/verify_math.py
+输出：frozen inputs checked: 20 mismatches: []。
+另外 learner-background-confirmed.json 的 SHA256 与 trial-provenance.json 的 learner_update
+记录一致（66c73dc91585b02f9bbf3d184ba30612158974fc2ca82ae8f5b210ac33023912）。
+
+JSON 与交付清单
+---------------
+- preparation.json、comparison.json、issue-response.json 与 delivery-manifest.json 均已用 json.load 实际解析通过。
+- delivery-manifest.json 在本文件写定后生成；清单不把自身计入，但会列出本文件与所有最终产物、脚本、日志、
+  渲染页、page-text 与冻结输入。生成后按清单中的 SHA256/字节数逐项重新计算，结果：48 个文件全部匹配，
+  3 项外部审核输入也匹配。
+
+未解决/边界
+-----------
+- 没有学习者试读；不能报告“已理解/已掌握/学习效率提高”。
+- 当前模型不能读图；未目视验收布局、字形、图线位置，p.3–4、14–19 的改动与重排需外部视觉审核。
+- 第 18 页只有 P7 一题，留白较多；这是单题样本的排版结果。
+- 旧稿全文 48 页未重检；本轮只检查所选片段和 P7。
+- 极值存在定理/约束极值/拉格朗日乘子的可用理解仍未确认；当前证明路线不使用它们。
+- §0.4 的多项式连续性与介值/二分是正文实际使用，其本人理解也尚未确认；本轮只把依赖说明分清，未改路线。
+- §1.4 第四步末尾的 det(XY)=detX·detY 只按 3×3 写出形式、条件与本处应用，正文未重证；这是本轮唯一新引入的非核心工具，未展开整套行列式理论。
+- 首遍编译的 undefined reference 是正常的两遍编译中间状态，最终遍为 0。

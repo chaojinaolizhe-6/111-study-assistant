@@ -1,0 +1,274 @@
+新旧对比册 · 收尾检查记录（verification.txt）
+================================================
+
+生成：2026-11-11 06:20 UTC（北京时间 14:20）  DSH
+范围：只读核验已冻结的对比册成品。未重排版、未重编译、未改写
+      comparison.pdf、comparison.tex、crops.json、figs/ 或任何 round/inputs 文件。
+权威选择：final-selection.json
+      sha256 = f0b81a66c599e1662c17d9673ece46bb4eb529148d196253608cae314d7e1f48
+      selected_at_utc = 2026-11-11T05:59:27.574635+00:00
+      status = "handout accepted for trial reading; comparison pending; delivery not yet ready"
+      delivery_ready = false
+本记录不改变 final-selection 的状态，也不声称对比册已获外部审核或试读通过。
+
+------------------------------------------------
+一、实际交付文件与哈希
+------------------------------------------------
+1) comparison/comparison.pdf
+   字节数：2,409,701（2.30 MiB，小于 25 MiB）
+   页数：17（A4，595.28 × 841.89 pt；全部页面通过 A4 检查）
+   PDF 版本/生成器：PDF 1.5；MiKTeX-dvipdfmx (20231124)；creator = LaTeX with hyperref
+   创建时间：D:20261111061406Z（与编译日志一致）
+   sha256 = fa05192cda01d3aabdae19b226185b8e42ac53d7414d52f602935ecd7884b9a4
+
+2) comparison/comparison.tex
+   字节数：27,713
+   sha256 = 0e0f29e5c421e1c05f3cdceec3641d5e9f3ac216c9cd2c333b3ea621cc847fdc
+
+3) comparison/crops.json
+   字节数：6,103；23 个裁剪定义；200 dpi；横向范围 x=48..548 pt
+   sha256 = ebef9dec6125bd0d3b1106bb61f6ba23cebfa3662b59a00fb17e070ace2809c0
+
+4) comparison/comparison.log
+   字节数：33,611
+   编译结束行："Output written on comparison.pdf (17 pages)."
+   sha256 = 6bcc852948d7037a5799149740034599cb6fddef4f74a5a715e864533fcbbc9a
+
+5) comparison/render/（本册最终页渲染，本轮已按现 PDF 重渲染）
+   17 个 page-NN.png，150 dpi，每张 1241 × 1754 px，合计 5,021,203 字节
+   文件名与顺序：page-01.png .. page-17.png
+   渲染集合聚合 sha256（按 "文件名:文件sha256" 排序拼接）
+     = df78f2582b4d3bbcfbc3ee70da78bdb1d821472eb92634cfe85959f5152a2787
+
+6) 本轮新增记录（不改变成品）
+   comparison/verification.txt（本文件）
+   comparison/交付清单.md
+   comparison/delivery-manifest.json
+   comparison/checks/：facts.json、collect_facts.py、check_compare.log、
+     verify_old_new_math.log、render_pages.log、layout_probe.log、
+     collect_facts.log、pagetext-sample.txt
+
+------------------------------------------------
+二、源文件对账（与 final-selection.json 声明逐项比较）
+------------------------------------------------
+旧稿 inputs/old-handout.pdf
+   字节数：357,629；页数：29（声明 29，一致）
+   创建时间：D:20261105023454Z；producer：MiKTeX-dvipdfmx (20231124)
+   sha256 = 97bb902fe8fb96f35a54f101be1798dce9b8a6235e62fece9fd7bbdda8119462
+   与 final-selection 声明一致：是
+   版本事实：文件版本为 20261105，封面仍印 20261103。本册正文第 1 页已如实说明，
+   未据封面改称版本，也未另找同名更早稿。此项是已知版本标注差异，不是源文件不匹配。
+
+新稿 round-04/handout.pdf
+   字节数：466,123；页数：48（声明 48，一致）
+   创建时间：D:20261111055619Z；producer：MiKTeX-dvipdfmx (20231124)
+   sha256 = 6e78c5480938445ad7c4bd6f31a9101975ad857c28a6007e4884e1c1c9753053
+   与 final-selection 声明一致：是
+
+新稿源文件 round-04/handout.tex
+   字节数：151,832
+   sha256 = 92629492da51c86097dbf5c00e1a146ae35c10d9b5007caf8b5003a771cdb3c3
+
+结论：两份源 PDF 的哈希、页数与 final-selection 完全一致，未发现源 PDF 不匹配。
+对比册 PDF 的创建时间（D:20261111061406Z）晚于 comparison.tex 的最后修改且
+编译日志记录了 17 页输出，说明最后一次编译已完成，未发现编译未完成。
+本轮已执行的检查未发现需返工的失败；但也未做目视或学习者试读（见第四节）。
+
+------------------------------------------------
+三、页码 / 裁剪 / 日志 / 文字层检查结果
+------------------------------------------------
+3.1 页码与文字层（comparison.pdf，17 页）
+   - 每页均有运行页眉（“新旧对比册”+“理论力学”）：17/17 通过。
+   - 每页均有页脚页码（形如 ": n :"）：17/17 通过。
+   - 全部 17 页都有可提取文字，文字层总字符数 11,995。
+   - 24 个关键章节/内容字符串全部出现在文字层（新旧对比册、本次性质与分工、
+     轮次与规则、比较方法、起点支持、中间步骤与例图、选读与主线、未解释术语、
+     旧稿未被否定的部分、仍未验证与不应声称的、本册的检查范围、裁剪清单、
+     20261105、20261103、R1、2.2.1、2.2.2、没有本轮具体问题单、不能声称、
+     试读未发生、不把页数更多、协调器只维护skill、review_limits、未做。未看图 等）。
+   - 无未解析 "??"，无 TODO/“占位”文本。
+   - 每页文字块均位于页面框内（x 35..560、y 18..825 的保守边界）；
+     24 处大幅图片均在版心内且宽度不超过 479 pt（版心宽）。
+
+3.2 裁剪（23 个键，200 dpi，共 23 张 PNG，合计 1,793,517 字节）
+   - 用当前冻结的源 PDF 重新核验 crops.json 的 23 个裁剪：
+     矩形均在源页面内；每个 require 锚字符串均能在该裁剪矩形的文字层中找到。
+     结果：23/23 通过，失败 0。
+   - 23 张 PNG 均存在，像素尺寸与 render-crops.json 记录一致；
+     现有 PNG 的 sha256 与 render-crops.json 记录逐一相同（漂移 0 张）。
+   - 对比册 PDF 中 23 个裁剪键全部被引用，无缺失键、无未知键；
+     \cropimg 调用共 24 次，old-p17-center 在正文第 11、13 页各用一次，
+     与 PDF 内 24 处大幅图片放置一致。
+   - 每个裁剪的标签（来源与页号 + 裁剪 y 起点）都在 PDF 文字层对应当页出现；
+     23/23 通过（old-p17-center 在正文第 11、13 页两处出现，与实际复用一致）。
+
+3.3 编译日志（comparison.log）
+   - 日志有结束行 "Output written on comparison.pdf (17 pages)."，页数与 PDF 实际页数一致。
+   - 无 Overfull \hbox / \vbox；无 Missing character；无 LaTeX Error；
+     无 Undefined control sequence / undefined references；Underfull \hbox 计数为 0。
+
+3.4 自动检查汇总
+   - check_compare.py：66 项通过，0 项失败（逐条见附录 A）。
+   - verify_old_new_math.py：17 项通过，0 项失败（逐条见附录 B；
+     覆盖变换律 B1、λ=5 特征向量 B2、ε 符号 A2、图 8 端面与 30° 分解 B3）。
+   - render_pages.py：17/17 页重渲染成功，150 dpi；渲染数量与 PDF 页数一致（17 vs 17）。
+   - layout_probe.py：17 页，正文文字纵坐标 35..811 pt；每页大幅图片 0..3 张。
+
+3.5 既有 round-04 渲染（未在本轮重新生成）
+   - round-04/render/ 有 48 张 page-NN.png（对应新稿 48 页）与 4 张 contact-*.png，
+     生成于 2026-11-11 05:56 UTC（round-04 收尾时）。本轮只更新对比册的 render/，
+     未重生成这 48 页，仅记录其存在与数量。
+
+------------------------------------------------
+四、边界：未做与不能声称
+------------------------------------------------
+1) 未目视。当前模型不支持图像输入（对比册第 1 页同样说明）。本记录全部基于
+   PDF 文字层、坐标、文件哈希与编译日志；未对 comparison/render/*.png、
+   comparison/figs/*.png 或两份源 PDF 的页面做像素级目视。
+   字体是否缺字、箭头是否被遮挡、图注是否压线、裁图是否清晰、排版观感如何，
+   均未由本模型检查。必要渲染已完成不等于目视通过。
+2) 未试读。未进行学习者试读，未测学习效果、可读性或“是否读懂”；
+   对比册对两稿的具体差别描述不等于教学效果证据。
+3) 未重新编译/重排。comparison.pdf、comparison.tex、crops.json、figs/ 与
+   inputs/、round-*/ 均未被本轮修改；本轮只在 comparison/ 下写入上述记录、
+   render/ 渲染与 checks/ 证据文件。
+4) 未外发。微信发送、git、同步、学习记录入账均未执行（超出本任务授权）。
+5) 外部审核未完成。final-selection 仍标注 comparison 为 pending、delivery_ready=false；
+   本记录只说明“结构/文字层检查通过、可供外部审核”，不等于审核通过或交付完成。
+6) 覆盖面：只检查了本册选出的 23 处裁剪与 17 页自身；未逐页审计旧稿 29 页或
+   新稿 48 页，不能据此断言“旧稿只有这些错”或“新稿没有其它错”。
+
+------------------------------------------------
+五、工具与已知事实（未自行修补）
+------------------------------------------------
+1) build.ps1 的第 6 步调用 verification_report.py，但 comparison/ 下没有该文件；
+   因此整份 build.ps1 当前不能一键跑完。且 build.ps1 会重裁图并重编译，与本轮
+   “只读冻结成品”的约束冲突，故本轮没有运行整脚本，改为直接运行
+   render_pages.py、check_compare.py、verify_old_new_math.py 并手写本记录。
+   这是脚本链缺口，不影响已生成的 comparison.pdf。
+2) build.ps1 以 "check_compare.py --strict" 调用，但 check_compare.py 实际不解析参数、
+   没有 strict 模式；该参数被忽略。不影响本次 66 项检查结果。
+3) comparison.pdf 第 17 页的文件清单提到“交付清单.md”；本轮同时生成
+   交付清单.md 与机器可读的 delivery-manifest.json，使实际文件集与册内清单一致。
+4) 旧稿封面日期 20261103 与文件版本 20261105 的差异，是本册已说明的版本标注事实，
+   不是源文件哈希或页数不匹配。
+5) 本轮未发现：源 PDF 与 final-selection 不匹配、编译未完成、检查失败、
+   裁剪锚字符串缺失、页边距越界、日志错误。若后续外部审核发现问题，应按新问题单返工，
+   不在本记录内自行改稿。
+
+------------------------------------------------
+六、结论
+------------------------------------------------
+源文件匹配，编译完成；17 页均通过页码/文字层/页边距/裁剪引用与日志检查；
+23 个裁剪的锚字符串、尺寸与哈希一致；17 项数值/代数检查通过。
+本册达到“可供外部审核与学习者试读”的状态，但未获目视验收或试读验收，
+按 final-selection 保持 delivery_ready=false。未执行外发。
+
+------------------------------------------------
+附录 A：check_compare.py 逐条输出（66 passed, 0 failed）
+------------------------------------------------
+[PASS] comparison.pdf exists
+[PASS] comparison.pdf < 25 MiB | 2.30 MiB
+[INFO] comparison.pdf sha256 = fa05192cda01d3aabdae19b226185b8e42ac53d7414d52f602935ecd7884b9a4
+[PASS] comparison.pdf page count is plausible | pages=17
+[PASS] all pages A4
+[PASS] text contains '新旧对比册'
+[PASS] text contains '本次性质与分工'
+[PASS] text contains '轮次与规则'
+[PASS] text contains '比较方法'
+[PASS] text contains '起点支持'
+[PASS] text contains '中间步骤与例图'
+[PASS] text contains '选读与主线'
+[PASS] text contains '未解释术语'
+[PASS] text contains '旧稿未被否定的部分'
+[PASS] text contains '仍未验证与不应声称的'
+[PASS] text contains '本册的检查范围'
+[PASS] text contains '裁剪清单'
+[PASS] text contains '20261105'
+[PASS] text contains '20261103'
+[PASS] text contains 'R1'
+[PASS] text contains '2.2.1'
+[PASS] text contains '2.2.2'
+[PASS] text contains '没有本轮具体问题单'
+[PASS] text contains '不能声称'
+[PASS] text contains '试读未发生'
+[PASS] text contains '不把页数更多'
+[PASS] text contains '协调器只维护skill'
+[PASS] text contains 'review_limits'
+[PASS] text contains '未做。未看图'
+[PASS] crop label old-p01-audience at 旧稿 p1 y=176 | found on pages [5]
+[PASS] crop label old-p01-route at 旧稿 p1 y=706 | found on pages [11]
+[PASS] crop label old-p11-summation at 旧稿 p11 y=300 | found on pages [6]
+[PASS] crop label old-p11-law at 旧稿 p11 y=676 | found on pages [8]
+[PASS] crop label old-p12-quotient at 旧稿 p12 y=326 | found on pages [8]
+[PASS] crop label old-p12-optional at 旧稿 p12 y=528 | found on pages [12]
+[PASS] crop label old-p15-epsilon at 旧稿 p15 y=160 | found on pages [7]
+[PASS] crop label old-p17-center at 旧稿 p17 y=138 | found on pages [11, 13]
+[PASS] crop label old-p21-continuum at 旧稿 p21 y=394 | found on pages [14]
+[PASS] crop label old-p22-fig5 at 旧稿 p22 y=148 | found on pages [10]
+[PASS] crop label old-p23-eig at 旧稿 p23 y=376 | found on pages [9]
+[PASS] crop label new-p01-assume at 新稿 p1 y=180 | found on pages [5]
+[PASS] crop label new-p02-actions at 新稿 p2 y=230 | found on pages [5]
+[PASS] crop label new-p02-route at 新稿 p2 y=146 | found on pages [11]
+[PASS] crop label new-p03-summation at 新稿 p3 y=104 | found on pages [6]
+[PASS] crop label new-p16-epsilon at 新稿 p16 y=684 | found on pages [7]
+[PASS] crop label new-p17-quotient at 新稿 p17 y=628 | found on pages [8]
+[PASS] crop label new-p20-optional at 新稿 p20 y=66 | found on pages [12]
+[PASS] crop label new-p23-center at 新稿 p23 y=410 | found on pages [13]
+[PASS] crop label new-p30-continuum at 新稿 p30 y=578 | found on pages [14]
+[PASS] crop label new-p31-quotientref at 新稿 p31 y=155 | found on pages [12]
+[PASS] crop label new-p32-fig8 at 新稿 p32 y=66 | found on pages [10]
+[PASS] crop label new-p38-p1 at 新稿 p38 y=505 | found on pages [9]
+[PASS] all crops used in tex | missing=[] unknown=[]
+[PASS] all crop pngs present with recorded dimensions and in-page rects
+[PASS] all page images inside margins and text width
+[PASS] PDF contains at least 24 substantial page images | image placements=24, xobjects=24
+[PASS] all text blocks inside page
+[PASS] no unresolved ?? in text
+[PASS] no TODO placeholder
+[PASS] every page has running header
+[PASS] log has no Overfull
+[PASS] log has no Missing character
+[PASS] log has no undefined control/reference
+[PASS] log has no LaTeX error
+[PASS] log records final page count | expected 17
+[INFO] Underfull hbox count = 0
+[PASS] render count equals PDF page count | 17 vs 17
+[PASS] render files non-trivial
+
+TOTAL: 66 passed, 0 failed
+
+------------------------------------------------
+附录 B：verify_old_new_math.py 逐条输出（17 passed, 0 failed）
+------------------------------------------------
+[PASS] B1 direct projection == R^T T R | max|diff|=2.220e-16
+[PASS] B1 direct projection != R T R^T | max|diff|=1.000e+00
+[PASS] B1 old §4.4 component law == R^T T R | max|diff|=2.220e-16
+[PASS] B1 new §2.7: u'=T'v' holds with T'=R^T T R
+[PASS] B2 (D-5I)(1,1,0)=0
+[PASS] B2 (-1,1,0) is not in the null space | |M(-e1+e2)|=2.828
+[PASS] B2 P1 eigenvalues are 2,3,5
+[PASS] B2 n1 is a unit eigenvector of lambda=5
+[PASS] B2 P1 tr/det/D:D = 10/30/38
+[PASS] A2 old/new epsilon matrices agree
+[PASS] A2 A_23 = -a_1 | A_23=-1.000
+[PASS] A2 a^x x = a cross x | max|diff|=0.000e+00
+[PASS] B3 t(+e1)=+sigma0 e1
+[PASS] B3 t(-e1)=-sigma0 e1
+[PASS] B3 30deg tn=3/4 sigma0 | tn=1.500000
+[PASS] B3 30deg tau=sqrt3/4 sigma0 | tau=0.866025
+[PASS] B3 t is along +e1 | t=(1.732051,0.000000,0.000000)
+
+TOTAL: 17 passed, 0 failed
+
+------------------------------------------------
+附录 C：本轮检查命令（均在 comparison/ 下运行）
+------------------------------------------------
+python -B render_pages.py
+python -B check_compare.py
+python -B verify_old_new_math.py
+python -B layout_probe.py
+python -B checks/collect_facts.py
+
+完整机器可读事实见 comparison/checks/facts.json；
+逐条原始日志见 comparison/checks/*.log。

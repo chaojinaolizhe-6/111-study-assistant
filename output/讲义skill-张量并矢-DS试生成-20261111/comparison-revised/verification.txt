@@ -1,0 +1,131 @@
+新旧对比册（内容修订版）· 检查记录（verification.txt）
+========================================================
+
+生成：2026-11-11 14:44（北京时间，UTC+8）  DSH
+范围：comparison-revised/ 自身；只读引用 inputs/old-handout.pdf 与
+      round-04/handout.pdf。未修改讲义、规则、原输入或原 comparison/。
+修订依据：comparison/final-fix-index.json（4 项局部修正）；活跃项 COMP-C1, COMP-C2, COMP-C3, COMP-C4, CMP-MATH-01, CMP-REV-MATH-01, CMP-REV-MATH-02, COMP-V1。
+权威选择：final-selection.json
+      sha256 = f0b81a66c599e1662c17d9673ece46bb4eb529148d196253608cae314d7e1f48
+      status = 'handout accepted for trial reading; comparison pending; delivery not yet ready'
+      delivery_ready = False
+本记录不改变 final-selection 的状态，也不声称本修订版已获外部复核或学习者试读。
+
+--------------------------------------------------------
+一、交付文件与哈希
+--------------------------------------------------------
+1) comparison-revised/comparison.pdf
+   字节数：2,897,655（2.76 MiB，小于 25 MiB）
+   页数：21（A4，595.28 x 841.89 pt；全部页面通过 A4 检查：True）
+   PDF 版本/生成器：PDF 1.5；MiKTeX-dvipdfmx (20231124)；creator = LaTeX with hyperref
+   创建时间：D:20261111064340Z
+   sha256 = f779d0e33e8e279fda8ad51abc7412661ea233b5319edd199e4187fc9e0003a4
+2) comparison-revised/comparison.tex
+   字节数：35,288
+   sha256 = 253a0f6c289d09481b9320ec5e4ab42dddcf9f01b4b4c62a0fbbaa4d0f93d9c5
+3) comparison-revised/crops.json
+   字节数：7,847；28 个裁剪定义；200 dpi；x=48..548 pt
+   sha256 = 1f61304ef545c4658e807071bb3d467e0fbdad55d7b824ad419c33f70e4e4358
+4) comparison-revised/comparison.log
+   字节数：34,278
+   编译结束行：Output written on comparison.pdf (21 pages)
+   sha256 = de68fd9accb4f8bc25095da5b4034bd71671d43ac7be0ff15f388b6b2304eeec
+5) comparison-revised/figs/（28 张裁剪 PNG）
+   合计字节数：2,214,036
+   渲染集合聚合 sha256 = de37d48395c9b2b554af27587669f461d4ffbade76d719b313b957bad054362c
+6) comparison-revised/render/（本册最终每页渲染）
+   21 个 page-NN.png，150 dpi；渲染数量与 PDF 页数一致：True
+   渲染集合聚合 sha256 = d6894bafeb7c7870942a6084e366532af8ef724468e7d8b82d2da4777381dc93
+7) comparison-revised/issue-response.json（逐项回应 COMP-C1..C4、CMP-MATH-01 及本轮 COMP-C1 残留、CMP-REV-MATH-01/02、COMP-V1）
+   字节数：25,642；sha256 = f50240ac5c5a7ef860c3737762ee8a53205fda6363c10d593833bb452ea22fef
+
+--------------------------------------------------------
+二、源文件对账（与 final-selection.json 逐项比较）
+--------------------------------------------------------
+旧稿 inputs/old-handout.pdf
+   字节数：357,629；页数：29（声明 29）
+   sha256 = 97bb902fe8fb96f35a54f101be1798dce9b8a6235e62fece9fd7bbdda8119462
+   与 final-selection 声明一致：True
+   版本事实：文件版本 20261105；封面仍印 20261103。
+新稿 round-04/handout.pdf
+   字节数：466,123；页数：48（声明 48）
+   sha256 = 6e78c5480938445ad7c4bd6f31a9101975ad857c28a6007e4884e1c1c9753053
+   与 final-selection 声明一致：True
+   审核状态：accepted within documented content, math and visual scope
+结论：两份源 PDF 的哈希与页数完全一致；未发现源 PDF 不匹配。
+
+--------------------------------------------------------
+三、两遍编译、评价/引文/裁剪与全篇页面检查
+--------------------------------------------------------
+3.1 两遍 xelatex：checks/xelatex-pass1.log、checks/xelatex-pass2.log 均存在；
+    comparison.log 记录 21 页，PDF 实际 21 页，一致：True。
+    无 Overfull：True；无 Missing character：True；无 LaTeX Error：True；无未定义引用：True；Underfull 计数：1。
+3.2 裁剪与裁剪位置：crops.json 28 个；render-crops.json 28 个；
+    failures 空：True；所有 require 锚字符串命中：True； figs 数量匹配：True。
+3.3 受改评价/引文：check_claims.py 29 项通过、0 项失败；逐条见 checks/check_claims.log。
+    该检查只证明引文仍存在于所引源页，不证明解释或可读性。
+3.4 本册结构：check_compare.py 89 项通过、0 项失败；逐条见 checks/check_compare.log。
+3.5 数值/代数断言：verify_old_new_math.py 26 项通过、0 项失败；逐条见 checks/verify_old_new_math.log。
+3.6 页眉/页边距/图片几何：每页运行页眉：True；文字块在页面内：True；大幅图片在版心内且宽度不超版心：True；大幅图片放置数：29。
+3.7 每页文字层：21 页均有可提取文字，总字符数 15,540；无未解析 '??'：True；无 TODO/占位：True。
+
+逐页抽样（页 / 文字字符数 / 大幅图片数 / 文字 y 范围）：
+  p01:  1214 chars, 0 img, y 45..811 pt
+  p02:   931 chars, 0 img, y 45..811 pt
+  p03:  1068 chars, 0 img, y 45..811 pt
+  p04:   886 chars, 0 img, y 45..811 pt
+  p05:   556 chars, 3 img, y 45..811 pt
+  p06:   639 chars, 2 img, y 45..811 pt
+  p07:   694 chars, 3 img, y 45..811 pt
+  p08:   618 chars, 3 img, y 45..811 pt
+  p09:   587 chars, 2 img, y 45..811 pt
+  p10:   611 chars, 2 img, y 45..811 pt
+  p11:   897 chars, 3 img, y 45..811 pt
+  p12:   290 chars, 3 img, y 45..811 pt
+  p13:   732 chars, 1 img, y 45..811 pt
+  p14:   363 chars, 3 img, y 45..811 pt
+  p15:   458 chars, 0 img, y 45..811 pt
+  p16:   586 chars, 2 img, y 45..811 pt
+  p17:   383 chars, 2 img, y 45..811 pt
+  p18:  1516 chars, 0 img, y 45..811 pt
+  p19:   585 chars, 0 img, y 45..811 pt
+  p20:  1590 chars, 0 img, y 45..811 pt
+  p21:   336 chars, 0 img, y 45..811 pt
+
+--------------------------------------------------------
+四、边界：未做与不能声称
+--------------------------------------------------------
+1) DSH 自身没有图像输入。本记录全部基于 PDF 文字层、坐标、文件哈希与编译日志；
+   未对本册 render/*.png、figs/*.png 或两份源 PDF 做像素级目视。字体是否缺字、
+   箭头是否遮挡、图注是否压线、裁图是否清晰、排版观感如何，均未由 DSH 目视。
+   必要渲染已完成不等于目视通过。
+2) 新稿 round-04 的外部内容、数学、视觉审核已完成，记录在 final-selection.json 与
+   visual-review-round04.json；本记录不把‘DSH 没看图’写成‘新稿缺少外部视觉审核’。
+3) 原 comparison 的版面已由外部视觉审核接受，但内容审核提出 5 项并要求修订；
+   本修订版逐项回应，仍需外部复核。
+4) 未试读。未进行学习者试读，未测学习效果、可读性或‘是否读懂’。
+5) 未外发。微信发送、git、同步、学习记录入账均未执行（超出本任务授权）。
+6) 覆盖有限。只检查本册选出的 28 处裁剪与自身页面；未逐页审计旧稿 29 页或新稿 48 页。
+
+--------------------------------------------------------
+五、结论
+--------------------------------------------------------
+源文件匹配：True；两遍编译完成：True；体积小于 25 MiB：True。
+check_compare：89 passed / 0 failed；verify_old_new_math：26 passed / 0 failed；check_claims：29 passed / 0 failed。
+整体自检：通过（文字层/坐标/哈希/编译范围）。
+本册达到‘可供外部复核与学习者试读’的状态；未获目视验收或试读验收，
+按 final-selection 保持 delivery_ready=false。
+
+--------------------------------------------------------
+六、复现命令（均在 comparison-revised/ 下运行）
+--------------------------------------------------------
+python -B render_crops.py
+xelatex -halt-on-error -interaction=nonstopmode comparison.tex  （两遍）
+python -B render_pages.py
+python -B verify_old_new_math.py
+python -B check_compare.py --strict
+python -B check_claims.py
+python -B verification_report.py
+或直接运行 powershell -File build.ps1。
+
+逐条原始日志：checks/*.log；机器可读清单：delivery-manifest.json。

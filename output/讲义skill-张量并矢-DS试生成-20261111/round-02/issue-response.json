@@ -1,0 +1,277 @@
+{
+  "round": "round-02",
+  "reviewed_round": "round-01",
+  "review_input": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\review-round01.json",
+  "reviewed_artifacts": {
+    "handout.tex_sha256": "7c94d90ce624d0a3275238e4af6702567c66c19dd2e680e5247b27de01aa9c0e",
+    "handout.pdf_sha256": "bc6e4e59b67894fc9fa4ee50f7987b41e3dfaa6cb0ff8b60df9438545b4f2012",
+    "pdf_pages": 45
+  },
+  "basis": "只处理 review-round01.json 各报告 active_sections 列出的 16 个有效项；撤回项不作为缺陷。所有改动只写入 round-02；round-01、inputs、规则目录保持只读。使用 rule-versions/2.2.1 的 SKILL 与参考，theme 也从 2.2.1 快照读入。",
+  "active_issue_ids": [
+    "READ-01", "READ-02",
+    "M2", "M3", "M4", "M5", "M6", "M7", "M8",
+    "S1", "S2", "S3",
+    "V1", "V4", "V5",
+    "Q1"
+  ],
+  "issues": [
+    {
+      "id": "READ-01",
+      "priority": 2,
+      "verified": true,
+      "conclusion": "成立。§5.3 原先把两条一阶导数关系直接称为“简谐振子的方程”并给出正弦解，没有说明为何是匀速圆周、φ0 控制什么、怎样与初始横向矢量对上。已改为用二维横向速度与位置垂直说明半径不变，再给显式解、代回核验和初始条件定常数；不再把“简谐振子”当理由。",
+      "changes": [
+        {"file": "handout.tex", "location": "§5.3 对称陀螺", "lines": [1531, 1575], "what": "加入横向矢量 (ω1,ω2) 的二维速度解释、|w⊥| 不变的推导、显式解代回、ω⊥ 与 φ0 由初值定出的公式，以及 φ0=0/π/2 的简单初始状态。"}
+      ],
+      "evidence": [
+        "verify.py：READ-01 对 (1.2,0.3)、(-0.5,0.8)、(0.0,1.0) 三组初值检查方程残差、初值配对与 |w⊥| 不变，全部 PASS。",
+        "verify.py：READ-01 Ω>0 时横向速度使矢量逆时针转，PASS。",
+        "PDF 文字层 p29--p30 含“速度与位置垂直”“给定初始横向矢量”“φ0”等表述；排版页位见 layout-report.txt。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "READ-02",
+      "priority": 2,
+      "verified": true,
+      "conclusion": "成立。§6.4 原先只把偏导写成另一个缩并记号，没有说明保持什么不变、对哪个分量随哪个坐标求导，也没有位置相关应力例。已先解释 ∂j 固定其余坐标，再用小立方体差值说明净面力，给线性应力例 σ11=σ0x1/L、体力平衡和三个方向的展开式；严格 Gauss 证明仍留在选读。",
+      "changes": [
+        {"file": "handout.tex", "location": "§6.4 平衡方程", "lines": [1721, 1771], "what": "新增“偏导在做什么”“为什么它的和是净面力”“一个能算的例子”“三个方向的方程”；把三个方程放进同一个 align*，避免跨页拆散。"}
+      ],
+      "evidence": [
+        "verify.py：READ-02 线性应力差分 ∂1σ11=σ0/L、小盒净面力/体积=σ0/L、体力与净面力平衡、均匀应力小盒净力为零，全部 PASS。",
+        "verify.py 结构检查：TeX 含 ∂1σ31 与 ∂3σ13，三个方向展开存在。",
+        "PDF 文字层 p32 起含偏导说明、小盒推导与线性应力例。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M2",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。§2.1 原固定第一槽，§2.2 却按第二槽给出右作用，两者在非对称例上不是同一算子。已统一为固定第二槽，并把第一槽明确说成转置；用 a=e1、b=e2、输入 e1 给出“第二槽给 0、第一槽给 e2”，同时说明左右作用与转置的对应。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.1 槽位约定与转置", "lines": [619, 643], "what": "固定第二槽；加入非对称例与转置关系。"},
+        {"file": "handout.tex", "location": "§2.2 右作用", "lines": [645, 658], "what": "明确右作用就是 §2.1 固定第二槽的机器，左作用对应第一槽的转置识别。"}
+      ],
+      "evidence": [
+        "verify.py：M2 固定第二槽输入 e1 给 0；固定第一槽输入 e1 给 e2；两矩阵互为转置；双线性式与右作用在 u=e1、v=e2 上相符，全部 PASS。",
+        "PDF 文字层 p13--p14 含“固定第二槽”“转置”“输入 e1 给 0/e2”的说明。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M3",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。原式 x_iD_ij=D_ji x_i 对一般 D 不成立，且“a⊗b 不对称”写得过强。已把指标链改为 x_iD_ij=D_ijx_i=(D^T x)_j，对称条件写成对所有输入成立，并补 a∥b 时 n⊗n 对称、与 §2.5 投影并矢一致。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.3 左右作用不一样", "lines": [726, 736], "what": "修正指标链与对称判据；把“a⊗b 不对称”限定为一般情形，补 n⊗n 对称。"}
+      ],
+      "evidence": [
+        "verify.py：M3 x_iD_ij=(D^T x)_j；非对称 D 下 x_iD_ij 与 D_ji x_i 不同；对称时左右相同、非对称时不等，全部 PASS。",
+        "PDF 文字层 p14--p15 含修正后的指标链与“一般不对称”的限定。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M4",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。原来说 P 与 I-P 的迹 1、2 “正对应投影掉几个自由度”，把保留维数与消去维数说反。已改为 P 保留 1 个方向、I-P 保留 2 个方向，并说明三维中投影算子的迹等于保留方向数。",
+      "changes": [
+        {"file": "handout.tex", "location": "§2.5 单位并矢与投影并矢", "lines": [764, 782], "what": "重写迹的解释，明确保留/去掉的方向数。"}
+      ],
+      "evidence": [
+        "verify.py：M4 rank(P)=1 且 tr(P)=1；rank(I-P)=2 且 tr(I-P)=2，PASS。",
+        "PDF 文字层 p15--p16 含“保留 1 个方向/保留 2 个方向”的表述。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M5",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。原并矢版求导漏掉 D_ij 系数，后面的分量定义与单并矢等式差负号，盒式与核对不形成一致链条。已保留 D_ij 展开，改用 Ω^× 的普通矩阵乘法统一乘积求导、分量式、盒式和单并矢核对，删去会差负号的 D×Ω 写法；并用非对称并矢 e1⊗e2、Ω=e3 核验。",
+      "changes": [
+        {"file": "handout.tex", "location": "§5.1 输运定理并矢版", "lines": [1431, 1503], "what": "三项求导保留 D_ij；定义 Ω^×·(a⊗b) 与 (a⊗b)·Ω^×；盒式写成 Ω^×·D-D·Ω^×；补矩阵分量式、非对称并矢核对和 D=1 检查。"}
+      ],
+      "evidence": [
+        "verify.py：M5 LHS=(Ω×a)⊗b+a⊗(Ω×b)=diag(-1,1,0)，RHS=Ω^×D-DΩ^× 相同；输入并矢 e1⊗e2 非对称；ε 分量式与矩阵乘积一致；D=1 时陀螺项为零，全部 PASS。",
+        "PDF 文字层 p27--p28 含三项展开、Ω^× 的矩阵乘法写法与非对称并矢数字核对。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M6",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。§4.5 与 P4 把 (1,1,1)/√3 称为 1×2×3 / 2×3×4 长方体的体对角线，而实际空间对角线分别是 (1,2,3)/√14 与 (2,3,4)/√29。已统一改称为“与三条棱成等角的方向”，并明确说明它不是空间对角线；所有相关计算、P4 题干与附录详解同步。",
+      "changes": [
+        {"file": "handout.tex", "location": "§4.5 教学示范", "lines": [1349, 1360], "what": "改称等角方向；补空间对角线 (1,2,3)/√14 的说明。"},
+        {"file": "handout.tex", "location": "P4 题干", "lines": [1792, 1793], "what": "改称等角方向，注明不是 P2 长方体的空间对角线。"},
+        {"file": "handout.tex", "location": "附录 A P4", "lines": [1947, 1948], "what": "同步改称，并写出空间对角线 (2,3,4)/√29。"}
+      ],
+      "evidence": [
+        "verify.py：M6 (1,1,1)/√3 与三条棱等角；它不是 1×2×3 的空间对角线；空间对角线为 (1,2,3)/√14，全部 PASS。",
+        "verify.py 结构检查：TeX 不再含“体对角线”；P4 题干含“不是 P2 长方体的空间对角线”。",
+        "PDF 文字层 p26、p34、p39 相关段落一致。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M7",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。附录 A P1 的 λ=5 步骤把 -e1+e2 称为方程给出的方向，随后却给出正确的 (e1+e2)/√2。已写出 (D-5I) 的行方程 -x+y=0、z=0，给出 (1,1,0)，并代回核验；λ=3、λ=2 的行方程也补齐。",
+      "changes": [
+        {"file": "handout.tex", "location": "附录 A P1", "lines": [1898, 1911], "what": "补 (D-5I) 矩阵、行方程、单位化、代回核验；补 λ=3、λ=2 的行方程。"}
+      ],
+      "evidence": [
+        "verify.py：M7 (D-5I)(1,1,0)=0；错误方向 -e1+e2 不是零空间；(D-3I)(1,-1,0)=0；(D-2I)e3=0，全部 PASS。",
+        "PDF 文字层 p38 含修正后的主轴步骤。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "M8",
+      "priority": "必须修复",
+      "verified": true,
+      "conclusion": "成立。附录 A P5 末句说 c 沿 a 时两边“仍差一个因子”，但直接代入 c=ka 时两边相等。已改为给出代入式并说明特殊输入可以相等，但不把两个表达式当成同一个。",
+      "changes": [
+        {"file": "handout.tex", "location": "附录 A P5", "lines": [1984, 1994], "what": "改为 c=ka 的代入核对，删去“仍差一个因子”。"}
+      ],
+      "evidence": [
+        "verify.py：M8 随机 a,b 与 c=k a 时 (a⊗b)·c=(a·b)c，PASS。",
+        "verify.py 结构检查：TeX 不含“仍差一个因子”，含 c=ka 的代入式。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "S1",
+      "priority": "局部条件对齐",
+      "verified": true,
+      "conclusion": "成立。§1.3 原说“惯量椭球总是真的椭球”，与 §4.2 的细杆零惯量退化例外冲突。已改为“通常正定、退化时有一个零主值”，并说明谱定理只需实对称、正定只保证等值面是椭球；§2.9 的应力椭球措辞与 §4.2 的“谱定理全套可用”表述同步。",
+      "changes": [
+        {"file": "handout.tex", "location": "§1.3 aside", "lines": [470, 470], "what": "改条件与退化说明；区分实对称/正定。"},
+        {"file": "handout.tex", "location": "§2.9 椭球图像", "lines": [940, 940], "what": "应力张量主值不同号时不画椭球。"},
+        {"file": "handout.tex", "location": "§4.2 正定与谱定理", "lines": [1239, 1239], "what": "改为“通常正定；不管正定与否总是实对称，谱定理可用；正定只额外保证等值面是椭球”。"}
+      ],
+      "evidence": [
+        "verify.py：S1 奇异对称张量仍可正交对角化；存在零主值；正定不是谱定理前提，全部 PASS。",
+        "PDF 文字层 p10 与 p19 含修正后的条件。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "S2",
+      "priority": "局部措辞修正",
+      "verified": true,
+      "conclusion": "成立。§6.4 提示框原说非对称时把缩并指标对换会“差一个符号”，但两者一般既不相同也不互为相反数。已改为“对称时相等；非对称时一般不同，不是简单差一个整体符号”，保留已正确的 t_i=σij n_j 与 ∂jσij。",
+      "changes": [
+        {"file": "handout.tex", "location": "§6.4 指标顺序提示框", "lines": [1769, 1769], "what": "限定对换指标的后果，不再说差一个符号。"}
+      ],
+      "evidence": [
+        "verify.py：S2 非对称线性场下 ∂jσij 与 ∂jσji 不同，且不互为相反数，PASS。",
+        "PDF 文字层 p32 含修正后的提示框。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "S3",
+      "priority": "例子与所解释错误对齐",
+      "verified": true,
+      "conclusion": "成立。附录 A P9 原用 r=(1,0,0)，非对角元全为零，随后却改了整个外积项的符号，验证的不是题干所说的“丢掉 J12 的负号”。已改用 r=(1,1,1) 的点质量例子，让 J12 真正非零；只翻 J12=J21 的符号后，矩阵仍对称，主值由 0,3m,3m 变为 m,m,4m，直接检验题干错误。",
+      "changes": [
+        {"file": "handout.tex", "location": "附录 A P9", "lines": [2042, 2064], "what": "替换为 r=(1,1,1) 的非零非对角元例子；给出真实/翻符号矩阵、主值与特征多项式；另加一句区分“整个构造变号”的更粗错误；在真实 J 矩阵后加 answercontinue{P9} 续页摘要。"}
+      ],
+      "evidence": [
+        "verify.py：S3 P9 真实 J 与主值 0,3m,3m；翻 J12 符号后的矩阵仍对称，主值 m,m,4m，特征多项式 (λ-1)^2(λ-4)，全部 PASS。",
+        "PDF 文字层 p41--p42 含 r=(1,1,1)、两个矩阵与特征方程；P9 续解在 p42 页首。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "V1",
+      "priority": "must_fix",
+      "verified": true,
+      "conclusion": "成立。图 8 右图灰色 n 轴原为 45°，而法向分量箭头与 30° 角标为 30°；左端面向左的箭头却标 +σ0e1，图注又说两端面力都是 σ0e1。已把 n 参考轴改为 30°、与法向分量同线；左端改为 -σ0e1，图注按 t(±e1)=±σ0e1 重写，并说明灰色虚线是 n 方向参考轴而非 x 轴；切向仍与 n 垂直。",
+      "changes": [
+        {"file": "handout.tex", "location": "图 8", "lines": [1691, 1718], "what": "n 参考轴改 30°；左端标签 -σ0e1、右端 +σ0e1；图注重写并加“示意”说明。"}
+      ],
+      "evidence": [
+        "verify.py：V1 右图 n 轴 30°、法向分量 30°、法向+切向=t、切向⊥n；左端 -σ0e1、右端 +σ0e1 与图注文本，全部 PASS。",
+        "PDF 文字层 p32 明确出现 +σ0e1、−σ0e1、30°、n 与图注；渲染页 render/page-32.png 已保存，待外部目视。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "V4",
+      "priority": "minor_fix",
+      "verified": true,
+      "conclusion": "成立。§5 章标题原在 p26 页底，§5.1 从 p27 开始。已把章标题的 needspace 从 5 行提高到 10 行；重排后 §5 标题与 §5.1 正文同在 p27（标题后同页 771 字）。",
+      "changes": [
+        {"file": "handout.tex", "location": "导言区 \\hdr 重定义", "lines": [24, 26], "what": "needspace 5 -> 10 baselineskip。"},
+        {"file": "handout.tex", "location": "§5 章标题", "lines": [1382, 1384], "what": "重排后与 §5.1 同页。"}
+      ],
+      "evidence": [
+        "layout_check.py：§5 标题 p27，后随 771 字；未发现“标题后同页正文不足 60 字”的章节标题。",
+        "verify.py PDF 文字层：V4 §5 标题与 §5.1 正文同页，PASS。",
+        "PDF p27 含 §5 标题、5.1 标题与输运定理正文。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "V5",
+      "priority": "minor_fix",
+      "verified": true,
+      "conclusion": "成立。图 6 右图 e1 轴标签原压在“体系：n′k 定死…”行末。第一次只把标签移到正端，PDF bbox 复核仍发现它与图注首行有约 1.7pt 重叠；第二次改为 above right 并把图注下移到 y=-1.70，最终 e1 标签 y≈386–395，图注首行 y≈405–414，无重叠。",
+      "changes": [
+        {"file": "handout.tex", "location": "图 6 右图", "lines": [1410, 1418], "what": "e1 轴延伸到 (1.62,-1.012) 并标为 above right；两条图注下移到 y=-1.70。"}
+      ],
+      "evidence": [
+        "verify.py V5 bbox 检查：e1 标签候选=2、图注首行片段=8、无 overlap，PASS。",
+        "verify.py 结构检查：V5 图6 e1 标签在正端且图注下移，PASS。",
+        "PDF 文字层 p27 的 span 坐标显示 e1 在 (444.4,386.4)-(452.5,395.1)，图注首行在 y≈405–414；render/page-27.png 已保存，待外部目视。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "Q1",
+      "priority": "moderate",
+      "verified": true,
+      "conclusion": "成立。verify.py 原以“覆盖至少 15 条、旧稿勘误至少 8 条”为通过条件，门槛没有来源。已删除这两个数量门槛，改为逐条字段完整、原题 P1-P10 与旧稿题号一一对应、P11/P12 标新增、勘误新位置可在 TeX 定位、无重复条目；未删除任何覆盖或勘误内容（仍为 18 条覆盖、11 条旧稿勘误）。",
+      "changes": [
+        {"file": "verify.py", "location": "source-map 检查段", "lines": [840, 886], "what": "删除 >=15 与 >=8；新增字段完整、原题映射、P11/P12 新增、新位置定位、无重复、issue_fixes 覆盖检查。"},
+        {"file": "build_source_map.py", "location": "meta / gaps / issue_fixes / open_items", "lines": [8, 280], "what": "round-02、2.2.1、47 页、12 条 gap、16 条 issue_fixes；未删覆盖/旧稿条目。"}
+      ],
+      "evidence": [
+        "verify.py：覆盖映射每条都有来源、位置与说明（18 条，不设最少条数）；原题清单 P1-P10 与旧稿题号一一对应；P11/P12 标新增；旧稿勘误字段完整（11 条）且新位置可定位；无重复；issue_fixes 覆盖 16 个问题，全部 PASS。",
+        "source-map.json 由 build_source_map.py 生成，coverage=18、practice_map=12、gaps=12、old_issues=11。"
+      ],
+      "dissent": null
+    }
+  ],
+  "withdrawn_items": [
+    {"id": "M1", "decision": "不作为本轮缺陷", "reason": "审核已撤回；round-01 自修成果保留，本轮未回退。"},
+    {"id": "V2", "decision": "不作为本轮缺陷", "reason": "图 8 与关键图注在 round-01 已同页；本轮只修 V1 的几何/标签。"},
+    {"id": "V3", "decision": "不作为本轮缺陷", "reason": "审核已撤回；本轮仍保留 P2/P8/P10 的续解摘要，并为 P9/P11 补了页首续解。"},
+    {"id": "V4-table", "decision": "不作为本轮缺陷", "reason": "C.2 标题、表头与表体在 round-01 已同页；本轮重排后仍连续。"}
+  ],
+  "run_summary": {
+    "final_pdf_pages": 47,
+    "compile": "xelatex -halt-on-error -interaction=nonstopmode 两遍，退出码 0；handout.log 无 Overfull/Underfull/Missing character/undefined/multiply defined",
+    "check_handout": "appendix 模式，错误 0、人工复核线索 0",
+    "verify": "通过 299 条，失败 0 条",
+    "render": "47 页 PNG（150 dpi）+ 4 张联系表，见 render/；页边检查 flagged 0",
+    "layout": "layout-report.txt：未发现章节标题孤行；§5 标题与 §5.1 同页 p27；图 8 p32、图 6 p27",
+    "not_claimed": "未声称外部目视验收通过；未声称学习者已理解或已掌握；外部审核仍可能提出新问题。"
+  },
+  "open_items": [
+    "外部目视审核尚未进行：当前模型不支持图像输入，render/ 下 47 页 PNG 与 4 张联系表待支持看图的审核者检查字体、重叠与图内标号。",
+    "学习者实际试读尚未发生；本轮只做阅读路径自查与静态/数值/页位检查。",
+    "P2/P8/P10 的续解标题在本轮重排后位于同页中部；内容仍提供前步结果与当前目标，但未逐页调整到页首。P9 的续解在 p42 页首，P11 的续解在 p43 中部。",
+    "图 6 的 e1 标签已用 PDF span bbox 证明不与图注首行重叠，但图内其它视觉细节仍需外部目视。"
+  ]
+}

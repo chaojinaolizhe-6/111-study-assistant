@@ -1,0 +1,206 @@
+round-02 验证记录
+==================
+
+产物版本
+--------
+- 源文件：round-02/sample.tex（最终编译前最后一次内容修改后未再改 TeX）
+  SHA256 c521955e1fc9ad38414d1a0cf2154c45723936a3d13ec1170f94b670ede5edf1，52799 bytes
+- PDF：round-02/sample.pdf（18 页，A4 595.28 × 841.89 pt）
+  SHA256 b9241a54f03f7437277988e7d5f8b4455b47fee644be1bf040a74cc079fe3742，236041 bytes
+- 规则版本：lecture-deepdive v2.3.0
+- 本轮性质：收到 revision-index-r2 后的 DSH 返工稿；基于 round-01 与原始 v2.2.2 旧稿，不是独立首稿，也不是学习者试读。
+- 最终重建：最后一次 TeX 修改（§0.1 余弦定理说明、P7 附录循环性句式、§1.4 实特征值结论措辞）后执行 build.ps1；
+  两遍 xelatex 成功，随后 check_handout、check_layout、render_pages 全部执行；之后未再改 TeX。
+
+环境
+----
+- Windows / PowerShell 7
+- MiKTeX-XeTeX 4.10（MiKTeX 24.1）
+- Python 3.12.9；sympy 1.14.0；numpy 2.4.6；PyMuPDF 1.27.2.3
+- 主题：../.dsh/skills/lecture-deepdive/assets/theme-violet
+
+实际核读的来源
+--------------
+1. inputs/TM2026-Topic8-P1.pdf，pp.7–11（重点 p9；p8、p10–p11 用于核相邻记号）。
+   - p8：正交基、求和约定、εijk、对偶张量。
+   - p9：张量积（Dyad）、左右作用、转置、线性算子 b=Ta、二次型 E=aTa、单位张量。
+   - p10–p11：旋转算子与角速度；属于后续内容，本片段不展开。
+2. inputs/RIT-Whelan-notes10-tensor.pdf，pp.8–10（复核原页；p7、p11–p12 用于核惯量接口）。
+   - p8：换基/正交矩阵、对称张量对角化 Claim、特征问题 (T−λ1)v=0 与逆矩阵判据。
+   - p9：由 det(T−λ1)=0 得三次特征多项式；直接列实特征值为实、不同特征值特征向量垂直、
+     重特征值可组合，并由已有特征基推分解。
+   - p10：回顾与惯量接口。
+   - 原页没有奇次实多项式引理、2×2 判别式引理与正交补降维的证明；本片段 §1.4 的五步
+     证明路线是本片段自行补足的论证，来源归属已按此改写（TeX 44，PDF p.1）。
+3. inputs/baseline-handout.tex：
+   - §1 开头与 §1.1–§1.5：TeX 365–569（旧 PDF pp.8–12）。
+   - P7 题干：TeX 1806–1808（旧 PDF p.34）；详解：TeX 2008–2024（旧 PDF p.41）。
+   - 旧全文 §0：TeX 73–363（已有点积/投影、矩阵/转置、换基等支持）；本片段只把它作为
+     “抽取独立片段的自足适配”对照，不把未附前文写成旧完整稿缺讲。
+4. learner-background-confirmed.json（SHA256 66c73dc9…，1240 bytes）：
+   - 点积、向量长度、两向量垂直的计算与几何含义：用户回复“这些也需要补讲”。
+   - 一元和多元的基本求导、极值：用户回复“都学过”（自述，不是熟练性测验）。
+   - 仍未确认：连续性与极值存在定理的可用理解；拉格朗日乘数等具体方法是否会用。
+   - 两条回复在 round-01 启动后收到；round-02 不追溯改写首稿，也不把修订冒充首稿已适配本人。
+5. learner-background.json（初始资料）：仅保留“只会简单的线性代数知识”的初始自述；
+   其“未确认”列表不再覆盖本轮已收到的两条真实回复，但也不把自述升级为熟练性证据。
+
+数学验证
+--------
+命令：
+  python -B verify_sample.py
+
+输出（verify-math.txt）：
+  checks executed: 8349
+  ALL ASSERTIONS PASSED
+
+覆盖的实际断言（不是只打印数值）：
+- 点积几何：3-4-5 三角形 a·b=9、|a|=3、|b|=5、cosθ=3/5、b 在 a 方向投影长 3；
+  c=(0,4) 与 a 正交；a=(1,2,2) 沿 n=(1,1,1)/√3 的投影标量 5/√3、余项 (-2/3,1/3,1/3)
+  与 n 正交；
+- 非对称二次型 T=[[1,2],[0,1]] 与对称部分 S 给出同一个 (x+y)^2；
+- 二维椭圆 T=[[2,1],[1,2]] 的 n1、n2 确为 3、1 特征向量，正交且单位，代入后 E=3u^2+v^2；
+  半轴 t=±1/√3 两个端点都满足 E=1，半轴长为 |t|；
+- 三维 D=[[6,2,0],[2,6,0],[0,0,1]] 的特征多项式分解、三个特征向量、正交归一性、
+  8n1n1^T+4n2n2^T+n3n3^T=D、迹 13、行列式 32；
+- §1.4 新坐标提升例 T=[[5,0,0],[0,2,1],[0,1,2]]：u1=i、P=yz 平面、e2=j、e3=k；
+  B=[[2,1],[1,2]] 的分量对应；T(y e2+z e3)=(2y+z)e2+(y+2z)e3；B(1,0)^T=(2,1)^T 拼回
+  T e2=2e2+e3；c2,c3 拼回 u2,u3 后 Tu2=3u2、Tu3=u3；u1,u2,u3 正交归一；迹 9、行列式 15；
+- 随机 2×2 实对称矩阵的判别式、实根、显式特征向量与正交性（500 组）；
+- 随机 3×3 实对称矩阵的实特征值、正交特征向量、谱重构、T 保持正交补（500 组），并检查
+  特征值集合等于 {λ1} ∪ eig(B)（500 组）；
+- 随机矩阵的迹循环性、随机正交矩阵的 tr(R^T T R)=tr T、以及 Q^T S Q 的对称性保持（200 组）；
+- 惯量小例 J=diag(1,2,3)、n=(1,1,1)/√3 给出 I=2，并检查瑞利商上下界（500 组）。
+
+说明：该脚本只核对数值/符号断言，不能替代正文证明或页面阅读；`不通过会以非零退出码报告`。
+
+编译
+----
+命令：
+  pwsh -File build.ps1
+
+构建脚本执行两遍：
+  xelatex -halt-on-error -interaction=nonstopmode sample.tex
+  （第一遍后复制 sample.log -> build-pass1.log；第二遍后 -> build-pass2.log）
+
+build-pass1.log（首遍，允许出现待解析引用）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 2；Warning 5；Error 0
+  - hyperref 提示 rerun 以生成 PageLabels；
+  - ans:P7 首遍未解析；
+  - 首遍的 labels may have changed / rerun 提示。
+  Output written on sample.pdf (18 pages).
+
+build-pass2.log（最终遍）：
+  Overfull 0；Underfull 0；Missing character 0；undefined 0；Warning 0；Error 0
+  Output written on sample.pdf (18 pages).
+
+静态检查
+--------
+命令：
+  python -B ../.dsh/skills/lecture-deepdive/scripts/check_handout.py sample.tex --mode appendix --log sample.log
+
+输出（check-handout.txt）：
+  [检查] sample.tex
+     静态检查未发现问题；尚不代表数学正确或 PDF 页面已验收
+  合计：错误 0 条，人工复核线索 0 条
+
+版面/坐标检查
+-------------
+命令：
+  python -B check_layout.py
+
+输出要点（layout-report.txt）：
+- 18 页，A4；正文文字均在页面内；
+- 正文 span 包络：x0=50.51、x1=546.60、y0=71.66、y1=766.15；
+- 横向伸出为 CJK 标点悬挂：左 6.18 pt、右 8.01 pt（检查阈值 9 pt）；
+- 图 1 在第 8 页、图 2 在第 12 页，检测到自绘矢量图；
+- ISSUES: none。
+- 说明：这里只做坐标/边界检查，不等同于目视读图。
+
+最终页渲染
+----------
+命令：
+  python -B render_pages.py
+
+输出（render-run.txt 末行）：
+  rendered 18 pages at 110 dpi into render/
+
+每页 PNG 为 910×1287。当前模型不支持图像输入（read_image 明确返回模型未声明图像输入），
+未目视检查渲染页；渲染图与坐标记录交外部视觉审核者检查。
+
+实际印出链条与受影响页核对
+--------------------------
+在最终 PDF 中搜索并核对实际断页：
+- §0.1 点积/长度/夹角/垂直/投影：pp.1–3；余弦定理说明与 3-4-5 核对在 p.2；
+- §0.2 矩阵/转置/对称：pp.3–4；结合律只保留规则形式；
+- §0.3 行列式与非零解判据：p.4；不再定义特征值/特征方程；
+- §0.4 实根引理与服务框：p.5；“第二步”回指已改正；
+- §1.1 二次型与对称部分：pp.6–7；
+- §1.2 特征值/特征向量正式定义与二维椭圆例：pp.7–8；图 1 与图注同在 p.8；
+- §1.3 特征方程首次建立与 D 例：pp.9–10；
+- §1.4 谱定理陈述与五步证明：pp.10–15；
+  - 第一步 2×2 引理：pp.11–12；
+  - 第二步 3×3 实特征值：p.12；
+  - 第三步 T(P)⊂P 与图 2：p.12；
+  - 第四步 具体 T/P/基/B/c/u 例（pp.13–14）与一般拼回：pp.13–14；
+  - 实特征值结论改用“沿 u1 与 P 分解”：p.14；
+  - 第五步 正交性与分解式、谱定理证完：pp.14–15；
+  - “这个证明实际用了什么”：p.15；
+- §1.5 换基/对称保持/二次型/瑞利商/半轴公式：pp.15–16；
+- §1.6 惯量与应力接口：pp.16–17；
+- P7 题干与考点：p.17；附录详解：p.18。
+另外核对：
+- P7 正文只有题干、考点和附录页码，没有关键步骤或答案；详解在附录 p.18。
+- 附录详解自带题干、迹的定义、循环性证明、两步换基和条件说明；末句已改为“题目已给
+  循环性作为工具，要求证明 tr(R^T T R)=tr T 并说明每步性质”。
+- 正文实际印出的 §1.4 证明使用 §0.4 的实根引理、§0.3 的非零解判据、§0.2 的转置恒等式、
+  第三步的 T(P)⊂P 与第四步的 2×2 引理；没有使用未证明的分块行列式恒等式，也没有使用
+  梯度/拉格朗日乘子/闭有界连续。
+
+问题复核对应
+------------
+- MAIN-READ-01：§0.1 TeX 56–154，PDF pp.1–3；见 issue-response.json 第 1 条。
+- MAIN-READ-02：§0.3/§1.2/§1.3/§1.5，TeX 211–245、381–405、475–490、867–873。
+- MAIN-READ-03：§1.4 第四步，TeX 718–797，PDF pp.13–14。
+- MAIN-READ-SOURCE-01：TeX 44，PDF p.1。
+- MAIN-READ-RETURN-01：TeX 280，PDF p.5。
+- MAIN-READ-P7-01：TeX 166–174、967–969、975–1028，PDF pp.3、17、18。
+- MAIN-MATH-01：TeX 383–393，PDF p.7。
+- MAIN-MATH-02：TeX 910–916，PDF p.16。
+- MAIN-MATH-03：TeX 780–797，PDF p.14。
+- MAIN-COMP-01：comparison.json 的 C3/C7/summary；旧 TeX 427、472、367 与旧 §0 73–363
+  已重读。
+
+冻结输入核对
+------------
+用 ../trial-provenance.json 的 SHA256/字节数逐项复核，20 个 frozen_inputs 全部匹配：
+- .dsh/skills/lecture-deepdive/assets/theme-violet.tex
+- 8 个 references 文件与 5 个 scripts/测试文件
+- AGENTS.md
+- inputs/baseline-handout.pdf、inputs/baseline-handout.tex
+- inputs/RIT-Whelan-notes10-tensor.pdf、inputs/TM2026-Topic8-P1.pdf
+- learner-background.json、tools/verify_math.py
+输出：ALL FROZEN INPUTS MATCH。
+另外 learner-background-confirmed.json 的 SHA256 与 trial-provenance.json 的 learner_update
+记录一致（66c73dc91585b02f9bbf3d184ba30612158974fc2ca82ae8f5b210ac33023912）。
+
+交付清单校验
+------------
+命令：
+  python -B make_manifest.py
+  （随后用清单中的 sha256/bytes 逐项重新计算）
+
+说明：delivery-manifest.json 在 verification.txt 写定后生成；清单不把自身计入，但会列出
+本文件与所有最终产物、脚本、日志、渲染页和输入。
+结果：45 个文件；清单中的 SHA256/字节数逐项重新计算全部匹配；3 项外部审核输入也匹配。
+（修改本段后已重新生成清单，清单中的 verification.txt 哈希对应本最终版本。）
+
+未解决/边界
+-----------
+- 没有学习者试读；不能报告“已理解/已掌握/学习效率提高”。
+- 当前模型不能读图；未目视验收布局、字形、图线位置，需外部视觉审核。
+- 第 17 页只有 P7 一题，留白较多；这是单题样本的排版结果。
+- 旧稿全文 48 页未重检；本轮只检查所选片段和 P7。
+- 连续性与极值存在定理的可用理解仍未确认；正文不依赖它。
+- 拉格朗日乘数等具体方法未确认；所选证明路线不需要，未追问。
+- 首遍编译的 undefined reference 是正常的两遍编译中间状态，最终遍为 0。

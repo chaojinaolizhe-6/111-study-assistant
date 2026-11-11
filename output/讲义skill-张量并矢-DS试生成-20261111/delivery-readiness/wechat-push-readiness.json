@@ -1,0 +1,74 @@
+{
+  "task": "wechat-push-delivery-readiness",
+  "mode": "dry-run only; no text or file was sent",
+  "checked_at": "2026-11-11 04:44 (local)",
+  "sender_entry": "D:/aaa_D_usual/DSH/社交信息整理助手/scripts/wechat_push.py",
+  "gateway": {
+    "channel": "openclaw-weixin",
+    "port": 18869,
+    "listening": true
+  },
+  "binding": {
+    "bound_owner_found": true,
+    "owner_domain": "@im.wechat",
+    "token_present": true,
+    "bound_owner_count": 1,
+    "identifiers": "<redacted: account id, owner id and credentials intentionally omitted>"
+  },
+  "sample_file": {
+    "path": "inputs/old-handout.pdf",
+    "bytes": 357629,
+    "mib": 0.341,
+    "magic": "%PDF-",
+    "is_pdf": true,
+    "nonempty": true,
+    "under_25mib_channel_limit": true,
+    "tool_validate_passed": true
+  },
+  "reply_window": {
+    "age_hours": 0.14,
+    "warn_threshold_hours": 20,
+    "warning": false
+  },
+  "retry_queue": {
+    "pending_count": 0,
+    "sent_count": 16,
+    "sent_kinds": { "file": 10, "text": 6 }
+  },
+  "last_real_delivery_evidence": {
+    "latest_source": "file-queue/sent newest jobs",
+    "kind": "file+text batch",
+    "status": "sent",
+    "has_message_id": true,
+    "attempts": 1,
+    "note": "past success only; it does not prove the next send will succeed"
+  },
+  "end_to_end_dry_run": {
+    "command_attempted": "python wechat_push.py -f <workspace>/inputs/old-handout.pdf --dry-run --json",
+    "completed": false,
+    "stage": "staging step of send_batch()",
+    "exit_code": 1,
+    "detail": "dry-run still copies the sample into <sender-project>/data/openclaw/media/outbox/<stamp>; the write was denied (WinError 5) because this session is a workspace-write sandbox. A single retry with wider access was refused: no approval channel available.",
+    "dry_run_receipt": false,
+    "side_effect": "none; mkdir failed so no outbox folder and no queue job was left behind"
+  },
+  "ready": {
+    "gateway": true,
+    "binding": true,
+    "file_capability": true,
+    "retry_queue_clear": true,
+    "end_to_end_dry_run": false
+  },
+  "blockers": [
+    {
+      "what": "delivery-side file-write permission",
+      "impact": "a send launched from a workspace-write session (like this one) fails at staging before reaching the gateway; the WeChat chain itself is not at fault",
+      "owner_action": "run the final send from the desktop/main-service context that already owns the sender project's data dir, or grant this kind of session write access to that data dir through an approval channel"
+    }
+  ],
+  "user_action_needed": [
+    "No re-binding or QR scan is needed; binding is already valid.",
+    "No gateway restart is needed; it is already listening.",
+    "Before the real send, confirm the delivering session can write <sender-project>/data/openclaw (the dry-run staging location)."
+  ]
+}

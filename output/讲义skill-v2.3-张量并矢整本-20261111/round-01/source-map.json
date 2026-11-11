@@ -1,0 +1,188 @@
+{
+  "created_at_utc": "2026-11-11T13:05:00+00:00",
+  "book": "从张量到并矢：二次型主轴、并矢运算与三处力学落点",
+  "round": "round-01",
+  "page_numbering": "PDF 页码，与 handout.pdf 页脚一致；正文 §0--§8、附录 A--C。",
+  "source_files": [
+    {
+      "path": "inputs/TM2026-Topic8-P1.pdf",
+      "sha256": "36021d2416ba3f6faeeace5e032d34f9f1a757c9281e3fd684ffd3761decca42",
+      "pages_used": [8, 9, 10, 11, 12, 15],
+      "pages_excluded": [13, 14, 16, 17, 18],
+      "excluded_reason": "p13--p18 是欧拉角、E8.01/E8.02、HW8.01--HW8.03，原专题未覆盖，不扩入。"
+    },
+    {
+      "path": "inputs/RIT-Whelan-notes10-tensor.pdf",
+      "sha256": "ae82d431160a0d16bbb6cb6636ff62c36c3c2e9dfdd5968cdd91fc76336994b0",
+      "pages_used": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "role": "惯量张量构造、谱分解、椭球例与平行轴定理的对照来源；其定理证明不完整处由本稿补足。"
+    },
+    {
+      "path": "inputs/baseline-full-v2.2.2.tex",
+      "sha256": "92629492da51c86097dbf5c00e1a146ae35c10d9b5007caf8b5003a771cdb3c3",
+      "role": "旧整本；只作为范围、题目身份与可用讲解参考，不原样拼接。"
+    },
+    {
+      "path": "inputs/accepted-mainline-v2.3.tex",
+      "sha256": "67485398d0d3708e10364f7940d951e36b3b351c88255eade0d37bddf5a9bddf",
+      "role": "已验收的二次型—主轴—谱定理片段；复用其实际成立的讲解、证明与 P7 详解，并放回全书依赖。"
+    }
+  ],
+  "source_claims": [
+    {
+      "id": "TM-p8-basis-dot-cross-epsilon-dual",
+      "source": "TM2026-Topic8-P1.pdf p8",
+      "source_claim": "正交归一基、坐标 a_k=a·n_k、求和约定、点积、叉乘、Levi-Civita 符号、对偶张量及其矩阵",
+      "new_location": ["§0.1 第 2 页", "§0.2 第 3 页", "§2.6 第 25 页", "附录 B 第 54 页"],
+      "status": "used_as_source",
+      "note": "对偶张量的矩阵与作用按本稿记号重写；Whelan 的符号相反处已在 §2.6 注出。"
+    },
+    {
+      "id": "TM-p9-dyad-operator-quadratic-unit",
+      "source": "TM2026-Topic8-P1.pdf p9",
+      "source_claim": "张量积（Dyad）、左右作用、转置、一般张量、线性算子 b=Ta、二次型 E=aTa、单位张量",
+      "new_location": ["§1.1 第 10 页", "§2.2 第 22 页", "§2.3 第 23 页", "§2.4 第 24 页", "§2.5 第 24 页", "§2.8 第 26 页"],
+      "status": "used_as_source",
+      "note": "p9 没有给出谱定理与并矢缩并的完整证明；本稿在 §1.4、§2.4、§2.5 补足。"
+    },
+    {
+      "id": "TM-p10-rotation-operator",
+      "source": "TM2026-Topic8-P1.pdf p10",
+      "source_claim": "固定基与随体基、半径矢量两种展开、S(t)=Σ n'_k⊗n_k",
+      "new_location": ["§3.1 第 28 页", "§3.2 第 28 页"],
+      "status": "used_as_source",
+      "note": "本稿补出 S e_j=n'_j 的唯一性核对与矩阵列约定。"
+    },
+    {
+      "id": "TM-p11-orthogonality-rotation-formula",
+      "source": "TM2026-Topic8-P1.pdf p11",
+      "source_claim": "S^T S=SS^T=1、保点积、绕单位轴 n 转 φ 的显式公式、无穷小旋转及其交换性",
+      "new_location": ["§3.3 第 29 页", "§3.4 第 29 页", "§3.5 第 30 页"],
+      "status": "used_as_source",
+      "note": "本稿用并矢点乘逐项算出两个正交性等式，并补 det S=+1 的连续性论证。"
+    },
+    {
+      "id": "TM-p12-angular-velocity",
+      "source": "TM2026-Topic8-P1.pdf p12",
+      "source_claim": "A=dS/dt S^T 反对称、Ω^×=dS/dt S^T、dn'_k/dt=Ω×n'_k、无穷小情形 Ω=dφ/dt",
+      "new_location": ["§3.5 第 30 页", "§5.1 第 35 页"],
+      "status": "used_as_source",
+      "note": "p12 只有旋转算子求导与角速度定义；没有欧拉方程、对称陀螺两方程或 Gauss 并矢版。旧元数据把后两者挂到 p12 是错的，见 metadata_corrections。"
+    },
+    {
+      "id": "TM-p15-rigid-velocity",
+      "source": "TM2026-Topic8-P1.pdf p15",
+      "source_claim": "v=V+Ω×r；原点平移时 V'=V+Ω×a、Ω 不变；V·Ω=0 时存在瞬时转轴",
+      "new_location": ["§3.6 第 31 页", "§4.1 第 31 页"],
+      "status": "used_as_premise",
+      "note": "本稿只用 v=V+Ω×r 与换基点关系；瞬时转轴的细节不展开，因为本稿不处理平面运动学。"
+    },
+    {
+      "id": "Whelan-pp2-3-angular-momentum",
+      "source": "RIT-Whelan-notes10-tensor.pdf pp.2--3",
+      "source_claim": "角动量与角速度、L=Iω 的矩阵动机、I=Σ m(r²1-rr^T)",
+      "new_location": ["§4.1 第 31 页", "§4.2 第 32 页"],
+      "status": "used_as_comparison",
+      "note": "本稿从 L=∫r×v dm 重新推导，未照抄 Whelan 的矩阵动机。"
+    },
+    {
+      "id": "Whelan-pp4-6-dyad-components-inertia",
+      "source": "RIT-Whelan-notes10-tensor.pdf pp.4--6",
+      "source_claim": "并矢积、单位张量、惯量张量、张量运算、分量与矩阵、连续体 dm=ρdV、δ_ij",
+      "new_location": ["§2.2 第 22 页", "§2.4 第 24 页", "§4.1 第 31 页", "§4.2 第 32 页"],
+      "status": "used_as_comparison",
+      "note": "本稿的并矢定义、左右作用与缩并规则按 TM p9 与自己的记号组织。"
+    },
+    {
+      "id": "Whelan-p7-transpose-dual",
+      "source": "RIT-Whelan-notes10-tensor.pdf p7",
+      "source_claim": "转置、对称/反对称、对偶张量 *A，且 *A·B=-A×B（与本稿 a^× 符号相反）；对称张量 6 个独立分量、反对称 3 个",
+      "new_location": ["§2.3 第 23 页", "§2.6 第 25 页"],
+      "status": "used_as_comparison",
+      "note": "符号差异在 §2.6 明确注出，避免读者按 Whelan 的 *A 直接套本稿公式。"
+    },
+    {
+      "id": "Whelan-p8-change-basis",
+      "source": "RIT-Whelan-notes10-tensor.pdf p8",
+      "source_claim": "换基 T'=A^T T A、正交矩阵、对称张量可对角化的断言",
+      "new_location": ["§0.4 第 5 页", "§2.7 第 25 页"],
+      "status": "used_as_comparison",
+      "note": "本稿在 §0.4 用三步投影推导换基公式；p8 的“可对角化”只是断言，证明在 §1.4。"
+    },
+    {
+      "id": "Whelan-p9-spectral-assertions",
+      "source": "RIT-Whelan-notes10-tensor.pdf p9",
+      "source_claim": "特征方程、实对称特征值实、不同特征值特征向量正交、重根与正交基、谱分解",
+      "new_location": ["§1.3 第 12 页", "§1.4 第 14--19 页", "§1.5 第 19 页"],
+      "status": "used_as_comparison",
+      "note": "Whelan 给的是断言与骨架；本稿 §1.4 的 2×2 引理、实根引理、正交补降维与实性论证是完整的自足证明。"
+    },
+    {
+      "id": "Whelan-pp10-14-inertia",
+      "source": "RIT-Whelan-notes10-tensor.pdf pp.10--14",
+      "source_claim": "惯量张量分量、椭球常密度例、惯量张量与原点有关、平行轴定理",
+      "new_location": ["§4.2 第 32 页", "§4.3 第 33 页", "§4.4 第 33 页", "§4.5 第 34 页"],
+      "status": "used_as_comparison",
+      "note": "本稿保留椭球例为选读，平行轴定理按自己的展开重写；Whelan pp.13--14 只作对照。"
+    }
+  ],
+  "old_draft_topics": [
+    {"old": "旧 §1--§2（矩阵、换基、迹、行列式、特征多项式）", "new": "§0.2--§0.6，第 4--8 页", "treatment": "重组；换基改为三步推导 + 45° 核对，明确 R 的列约定。"},
+    {"old": "旧 §3（二次型、椭球、特征值、谱定理）", "new": "§1，第 9--21 页", "treatment": "谱定理从选读提升为正文，补 2×2 引理与正交补降维。"},
+    {"old": "旧 §4（阶、张量积、指标、变换律、商法则、上下标）", "new": "§2.1、§2.2、§2.7，第 21--26 页", "treatment": "上下标移入选读；商法则用换基公式证明。"},
+    {"old": "旧 §5（并矢、左右作用、点积与双点积、单位与投影、转置与对称分解、对偶张量、缩并表、谱分解）", "new": "§2.3--§2.6、§2.8，第 23--27 页", "treatment": "缩并表作为查阅表；谱分解与 §1.3 的例子对上。"},
+    {"old": "旧 §6（三记号字典）", "new": "§2.8，第 26--27 页", "treatment": "保留并补充“并矢不是矩阵”。"},
+    {"old": "旧 §7（惯量张量）", "new": "§4，第 31--35 页", "treatment": "补半正定性、三角形不等式、对称轴判断与平行轴推导；惯量椭球标为选读。"},
+    {"old": "旧 §8（输运定理、欧拉方程、对称陀螺）", "new": "§5，第 35--38 页", "treatment": "补并矢版输运定理的逐项推导与两个核对；对称陀螺教学示范换数字。"},
+    {"old": "旧 §9（应力张量）", "new": "§6，第 39--42 页", "treatment": "补柯西四面体论证、切应力力矩平衡、指标顺序与平衡方程。"},
+    {"old": "旧 §10（四道例题）", "new": "P1--P4，第 42、47--48 页", "treatment": "改为独立练习；教学示范另换数字，避免提前曝光。"},
+    {"old": "旧 §11（易错与速查）", "new": "§8，第 45--46 页", "treatment": "改为八条，并与正文交叉引用。"},
+    {"old": "旧 §12（缺口清单）", "new": "附录 C.3--C.4，第 55--57 页", "treatment": "自补推导与选读清单分开列；机器可读版见本文件。"},
+    {"old": "旧附录 A（指标速查）", "new": "附录 B，第 54 页", "treatment": "保留并补对偶张量符号注。"},
+    {"old": "旧附录 B（自测六问）", "new": "P5--P10，第 43、49--52 页", "treatment": "答案移入附录 A；题干按本轮记号重写。"}
+  ],
+  "exercises": [
+    {"id": "P1", "old_source": "旧稿例 1", "new_page": 42, "answer_page": 47, "content": "并矢分量、右作用、迹/行列式/双点积、特征值与主轴、谱分解"},
+    {"id": "P2", "old_source": "旧稿例 2", "new_page": 42, "answer_page": 48, "content": "长方体惯量张量、薄板极限、垂直轴定理"},
+    {"id": "P3", "old_source": "旧稿例 3", "new_page": 42, "answer_page": 48, "content": "对称陀螺 A=B、横向角速度与周期"},
+    {"id": "P4", "old_source": "旧稿例 4", "new_page": 42, "answer_page": 48, "content": "沿任意方向的转动惯量、ω·L=2K"},
+    {"id": "P5", "old_source": "旧稿附录 B 第 1 问", "new_page": 42, "answer_page": 49, "content": "并矢右作用与两种点乘顺序"},
+    {"id": "P6", "old_source": "旧稿附录 B 第 2 问", "new_page": 43, "answer_page": 49, "content": "张量变换律、位置矢量与平移"},
+    {"id": "P7", "old_source": "旧稿附录 B 第 3 问", "new_page": 43, "answer_page": 49, "answer_continuation_page": 50, "content": "迹的循环性与正交换基不变性"},
+    {"id": "P8", "old_source": "旧稿附录 B 第 4 问", "new_page": 43, "answer_page": 50, "answer_continuation_page": 51, "content": "二次型只与对称部分有关"},
+    {"id": "P9", "old_source": "旧稿附录 B 第 5 问", "new_page": 43, "answer_page": 51, "answer_continuation_page": 52, "content": "惯量张量非对角元负号、对称不等于正确"},
+    {"id": "P10", "old_source": "旧稿附录 B 第 6 问", "new_page": 43, "answer_page": 52, "content": "单轴拉伸最大剪应力与 45° 截面"},
+    {"id": "P11", "old_source": "旧稿练习 P11", "new_page": 43, "answer_page": 52, "answer_continuation_page": 53, "content": "旋转算子矩阵、正交性、角速度"},
+    {"id": "P12", "old_source": "旧稿练习 P12", "new_page": 44, "answer_page": 53, "content": "欧拉方程分量与陀螺项"}
+  ],
+  "self_derived_or_supplemented": [
+    {"topic": "三维实对称矩阵谱定理的完整证明", "location": "§1.4，第 14--19 页", "basis": "Whelan p9 只给断言；本稿用 2×2 引理、实根引理、正交补降维、实性与分解式补足。", "status": "self_derived_proof"},
+    {"topic": "奇次实多项式有实根", "location": "§0.7，第 9 页", "basis": "本稿补的引理与二分法证明；服务 §1.4 第二步。", "status": "self_derived_proof"},
+    {"topic": "张量变换律与商法则", "location": "§2.7，第 25--26 页", "basis": "由 §0.4 换基公式推出；用于 §6.1 判定应力张量。", "status": "self_derived_proof"},
+    {"topic": "转动惯量张量的完整构造", "location": "§4.1，第 31 页", "basis": "从 L=∫r×v dm 与三矢量叉乘公式推出；Whelan pp.2--3 提供主题对照。", "status": "self_derived_derivation"},
+    {"topic": "平行轴定理的并矢展开", "location": "§4.5，第 34 页", "basis": "用质心定义消去交叉项；Whelan pp.13--14 同主题对照。", "status": "self_derived_derivation"},
+    {"topic": "输运定理（矢量版与并矢版）", "location": "§5.1，第 35--36 页", "basis": "TM p12 只给 dn'_k/dt；本稿逐项求导并用单并矢、单位张量核对。", "status": "self_derived_derivation"},
+    {"topic": "欧拉方程", "location": "§5.2，第 36 页", "basis": "TM p12 没有欧拉方程；本稿从角动量定理与输运公式推出。", "status": "self_derived_derivation"},
+    {"topic": "对称陀螺 A=B≠C 的解", "location": "§5.3，第 37 页", "basis": "TM p12 没有对称陀螺两方程；本稿由欧拉方程在 A=B、M=0 时解出。", "status": "self_derived_derivation"},
+    {"topic": "柯西应力与 t=σ·n", "location": "§6.1，第 39 页", "basis": "课件没有应力章；本稿用四面体面积投影与力平衡推出，并用商法则判定张量。", "status": "self_derived_derivation"},
+    {"topic": "应力对称性", "location": "§6.2，第 39 页", "basis": "课件没有；本稿用小立方体两对切应力力矩平衡推出。", "status": "self_derived_derivation"},
+    {"topic": "应力平衡方程", "location": "§6.4，第 41 页", "basis": "课件没有；本稿用小立方体净面力与高斯定理推出。", "status": "self_derived_derivation"}
+  ],
+  "metadata_corrections": [
+    {
+      "wrong_claim": "旧来源说明把“对称陀螺两方程”和“Gauss 并矢版”挂到 TM p12。",
+      "checked_fact": "TM p12 原页只有 dS/dt S^T 的反对称性、Ω^×=dS/dt S^T、dn'_k/dt=Ω×n'_k、无穷小情形 Ω=dφ/dt。",
+      "correction": "p12 没有这些内容；本稿在 §5.2、§5.3、§6 按自己的推导补出。§6.4 只用分量形式的高斯定理，不另称“Gauss 并矢版”为课件原有；本文件 self_derived_or_supplemented 与附录 C.3 都如此记录。"
+    },
+    {
+      "wrong_claim": "旧稿把谱定理证明标为选读，并把“会用三条结论”作为主要目标。",
+      "checked_fact": "本轮任务要求重要定理有完整论证；v2.3 规则不允许把重要证明标选读。",
+      "correction": "§1.4 把谱定理证明放入正文，补 2×2 引理、实根引理、正交补降维与实性论证；§1.6 另讲重根与不变量。"
+    }
+  ],
+  "source_boundary": {
+    "included": "TM p8--p12 的数学主线和 p15 的刚体速度关系；全专题的教学主题与 P1--P12。",
+    "excluded": "TM p13--p18 的欧拉角、E8.01/E8.02、HW8.01--HW8.03；非正交坐标的完整上下标理论；连续介质本构与应变；重力矩陀螺的完整定点运动。",
+    "not_claimed": "本文件不表示用户已读、已理解或已掌握；用户试读反馈尚未提供。"
+  }
+}

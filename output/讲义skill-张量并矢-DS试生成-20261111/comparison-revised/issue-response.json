@@ -1,0 +1,381 @@
+{
+  "issue_response_version": "1.1",
+  "round": "comparison-revised-01",
+  "author": "DSH",
+  "created_for": "comparison/comparison.pdf 内容审核修订（revision-index.json）",
+  "basis": {
+    "revision_index": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\revision-index.json",
+    "content_review": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\content-review.json",
+    "math_review": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\math-review.json",
+    "method": "读取 revision-index 的 5 个活跃项、两份审核报告的相关 findings、final-selection、四轮历史与两稿被质疑完整段落/旁注；只写 comparison-revised/。未读取审核者独立计算脚本，未复制审核稿作成品，未修改 comparison/、inputs/、round-04/、规则或 final-selection。"
+  },
+  "reviewed_artifacts": {
+    "original_comparison_pdf": {
+      "path": "comparison/comparison.pdf",
+      "bytes": 2409701,
+      "pages": 17,
+      "sha256": "fa05192cda01d3aabdae19b226185b8e42ac53d7414d52f602935ecd7884b9a4"
+    },
+    "original_comparison_tex": {
+      "path": "comparison/comparison.tex",
+      "bytes": 27713,
+      "sha256": "0e0f29e5c421e1c05f3cdceec3641d5e9f3ac216c9cd2c333b3ea621cc847fdc"
+    },
+    "original_crops_json": {
+      "path": "comparison/crops.json",
+      "bytes": 6103,
+      "sha256": "ebef9dec6125bd0d3b1106bb61f6ba23cebfa3662b59a00fb17e070ace2809c0"
+    },
+    "old_handout": {
+      "path": "inputs/old-handout.pdf",
+      "pages": 29,
+      "bytes": 357629,
+      "sha256": "97bb902fe8fb96f35a54f101be1798dce9b8a6235e62fece9fd7bbdda8119462",
+      "file_version": "20261105",
+      "cover_date_note": "封面仍印 20261103；本册按文件版本称 20261105 版。"
+    },
+    "new_handout": {
+      "path": "round-04/handout.pdf",
+      "pages": 48,
+      "bytes": 466123,
+      "sha256": "6e78c5480938445ad7c4bd6f31a9101975ad857c28a6007e4884e1c1c9753053",
+      "review_status": "accepted within documented content, math and visual scope"
+    }
+  },
+  "delivered_artifacts": {
+    "comparison_pdf": {
+      "path": "comparison-revised/comparison.pdf",
+      "bytes": 2897655,
+      "pages": 21,
+      "sha256": "f779d0e33e8e279fda8ad51abc7412661ea233b5319edd199e4187fc9e0003a4",
+      "note": "页数由内容决定；不把 17→21 页当作质量指标。"
+    },
+    "comparison_tex": {
+      "path": "comparison-revised/comparison.tex",
+      "bytes": 35288,
+      "sha256": "253a0f6c289d09481b9320ec5e4ab42ddd9f01b4b4c62a0fbbaa4d0f93d9c5"
+    },
+    "crops_json": {
+      "path": "comparison-revised/crops.json",
+      "bytes": 7847,
+      "sha256": "1f61304ef545c4658e807071bb3d467e0fbdad55d7b824ad419c33f70e4e4358",
+      "crops": 28
+    },
+    "verification_txt": "comparison-revised/verification.txt",
+    "delivery_manifest": "comparison-revised/delivery-manifest.json",
+    "renders": "comparison-revised/render/page-01.png .. page-21.png (150 dpi)",
+    "figs": "comparison-revised/figs/ (28 crops, 200 dpi)"
+  },
+  "active_issue_ids": [
+    "COMP-C1",
+    "COMP-C2",
+    "COMP-C3",
+    "COMP-C4",
+    "CMP-MATH-01",
+    "CMP-REV-MATH-01",
+    "CMP-REV-MATH-02",
+    "COMP-V1"
+  ],
+  "final_fix_round": {
+    "round": "comparison-revised-02",
+    "basis": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\final-fix-index.json",
+    "reports": [
+      "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\content-review-revised.json（active: COMP-C1）",
+      "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\math-review-revised.json（active: CMP-REV-MATH-01、CMP-REV-MATH-02）",
+      "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\comparison\\visual-review-revised.json（active: COMP-V1）"
+    ],
+    "scope": "只处理 final-fix-index.json 的 4 个有效项：COMP-C1 引言残留、CMP-REV-MATH-01/02 两处公式转述、COMP-V1 两裁图之间的中间式；已通过的比较、审核状态区分与学习者未知边界不变。",
+    "result": "4 项均已就地修正；本轮完整构建与自检记录见 comparison-revised/verification.txt 与 delivery-manifest.json。"
+  },
+  "issues": [
+    {
+      "id": "COMP-C1",
+      "priority": 2,
+      "location": "原 comparison p6 A1 及其小节标题",
+      "original_claim": "“约定本身没有在旧稿正文出现”；标题把旧稿写成“把它交给课件”。",
+      "verified": true,
+      "conclusion": "成立，原评价不忠实。旧稿 §4.3（p11）在正文写出规则本身：“课件 p8 已经给了求和约定：同一项里重复出现两次的指标自动求和，不写 Σ。本讲义正文照旧写求和号（免得看错缩并了哪个指标），只在 §6 的字典与 §7 之后的推导里用约定。”旧稿附录 A（p28）又重复一次。原 comparison 用省略号隐去了定义句，并把“旧稿给了定义但位置较晚”误写成“正文没有定义”。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§A A1 标题与三段",
+          "action": "标题改为“旧稿在 §4.3 写出规则，新稿前移到 §0.1 并配口算例”；oldlbl 完整抄录旧稿规则并注明 p28 重复；newlbl/bndlbl 只比较“前移 + 操作例”，不再声称旧稿缺定义。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§A A1 裁剪与锚",
+          "action": "保留 old-p11-summation 并在 require 中加入“重复出现两次的指标自动求和”，确保裁剪覆盖定义句；new-p03-summation 保留。"
+        }
+      ],
+      "evidence": [
+        "旧 p11 文字层：课件p8已经给了求和约定：同一项里重复出现两次的指标自动求和，不写P。本讲义正文照旧写求和号…只在§6的字典与§7之后的推导里用约定。",
+        "旧 p28 文字层：▷爱因斯坦求和约定：同一项里重复出现两次的指标自动求和。本讲义正文写求和号…",
+        "check_claims.py：old p11 两条、old p28 一条均 PASS。",
+        "check_compare.py：修订文本含“旧稿在§4.3写出规则”；已撤回句“约定本身没有在旧稿正文出现”“旧稿把它交给课件”均不在本册。"
+      ],
+      "old_support_acknowledged": "旧稿确实提供了求和定义，并在附录 A 重复；本册不再把它算作旧稿缺口。",
+      "residual_scope": "新稿的前移与口算例是否一次读懂，仍需学习者试读；本册不声称学习效果。",
+      "final_fix": {
+        "round": "comparison-revised-02",
+        "finding": "§A 引言仍把求和约定归入“假定已会，或由课件 p8 提供”，与已修订的 A1 和旧稿 p11 §4.3 的正文规则冲突。",
+        "change": "§A 开头改为：基、分量、点乘、叉乘按读者声明/课件 p8 处理；求和约定不同，旧稿 §4.3（p11）已在正文写出规则，只是位置放在前面几节按分量写开之后。",
+        "evidence": "旧 p11 文字层：“课件p8 已经给了求和约定：同一项里重复出现两次的指标自动求和，不写Σ。本讲义正文照旧写求和号……”；check_claims.py 的 old p11 两条仍 PASS。",
+        "residual_scope": "不改变 A1 三段与裁剪；不新增比较组或分析；学习者是否读懂未试读。"
+      },
+      "dissent": null
+    },
+    {
+      "id": "COMP-C2",
+      "priority": 2,
+      "location": "原 comparison p12 C2 与 p13 D1",
+      "original_claim": "C2 说旧稿上下标预告“看不出可跳过”；D1 说旧稿 §7.1 的“定点、质心、瞬时轴”三个词都没解释。",
+      "verified": true,
+      "conclusion": "两部分都成立，但原评价都过强。(a) 旧稿 §4.6（p12）段内明确写“本讲义正文不用”，并说“那时再回来补这半页即可”；它已经给了跳过与回补指引，只是没有把该小节标成“选读”。(b) 旧稿 §7.1（p17）只使用“定点”“质心”，没有使用“瞬时轴”；“瞬时轴”是新稿 §4.1 为解释 v=ω×r 而自己引入并定义的术语，不能倒算成旧稿漏讲。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§C C2（整组替换）",
+          "action": "删除原 C2 的 old-p12-optional/new-p20-optional 比较与“看不出可跳过”评价，替换为旧稿 §8.3 与新稿 §5.3 的对称陀螺局部验证/初值比较；新组不涉及旧稿跳过提示。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§E 旧稿未被否定的部分",
+          "action": "新增一条明确承认旧稿 §4.6 段内已有“本讲义正文不用”和“那时再回来补这半页即可”；差别只在标题标记与固定续读落点，不是旧稿没有提示。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§D D1 标题与三段",
+          "action": "标题改为“定点、质心与 v=ω×r（瞬时轴是新稿自己引入并解释的术语）”；oldlbl 只列旧稿实际使用的定点/质心，并明说旧稿这一段没有使用瞬时轴；newlbl 说明瞬时轴由新稿定义；bndlbl 明确不倒算成旧稿缺口。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§C 引言",
+          "action": "记录已撤回的旧说法（§4.6“看不出可跳过”、§1.4“只会在特征值一词停下”），并说明 C2/C3 改用旧稿确实缺少的操作桥梁。"
+        }
+      ],
+      "evidence": [
+        "旧 p12 文字层：你以后会看到…这里给半页说明，本讲义正文不用。…等到连续介质力学…那时再回来补这半页即可。",
+        "旧 p17 文字层：对刚体，绕定点（或取质心为基点）转动时，任一点的速度是v=ω×r；该页没有“瞬时轴”一词。",
+        "新 p23 文字层：新稿旁注定义“瞬时轴是某一瞬间速度为零的点的连线，角速度ω就沿它”；“质心是质量加权平均位置…”。",
+        "check_claims.py：old p12 两条、old p17“绕定点”、new p23 两条均 PASS；ABSENT 检查 old p17 不含“瞬时轴” PASS。",
+        "check_compare.py：修订文本含“旧稿§8.3”“旧稿§9.4”“瞬时轴是新稿”；已撤回句“瞬时轴三个词没有解释”不在本册。"
+      ],
+      "old_support_acknowledged": "旧稿 §4.6 已给跳过/回补指引；旧稿 §8.3 的解式与 Ω 定义正确；旧稿 §9.4 的公式与平衡式正确。旧稿只是没有把可选性写进标题、没有把两处操作桥梁展开。",
+      "residual_scope": "“瞬时轴”是新稿术语，本册只说明新稿自己定义了它，不评价该定义是否足够；学习者未试读。",
+      "dissent": null
+    },
+    {
+      "id": "COMP-C3",
+      "priority": 2,
+      "location": "原 comparison p12 C3",
+      "original_claim": "“只会在‘特征值’一词上需要回看 §1.4 一页。”",
+      "verified": true,
+      "conclusion": "成立，原评价是无法由页面证明的读者结果预测，且与同段“§1.3 已局部给出 Tn=λn”自相矛盾。省略节号本身不等于阅读阻断；§1.4 还包含正式定义、det(T−λ1)=0 的求解构造与特征多项式，不能压缩成“一个词”。原审核已撤回“旧稿缺特征值定义”的缺陷，本册不复活它。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§C C3（整组替换）",
+          "action": "删除原 C3 的 new-p31-quotientref 比较与“只会在特征值一词回看一页”的预测，替换为旧稿 §9.4 与新稿 §6.4 的“应力变化→净力”桥梁比较。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§C C1 边界",
+          "action": "如需保留省略事实，只写：新稿主线省略 §1.4 的正式定义与 det(T−λ1)=0 的求解构造；新稿 §1.3 已局部给出 Tn=λn，§1.5 的定理陈述可独立使用；省略是否构成阅读阻断未试读，本册不写“只会在特征值一词回看一页”。同时保留 §6.1 引用 §2.7 而主线不列 §2.7 的事实。"
+        }
+      ],
+      "evidence": [
+        "新 p9/§1.3 文字层：已局部写 Tn=λn；新 p10/§1.4 仍有“若存在非零矢量…”的正式定义与特征多项式求解。",
+        "check_claims.py：new p9 的 Tn=λn、new p10 的“若存在非零矢量”均 PASS。",
+        "check_compare.py：已撤回句“只会在‘特征值’一词上需要回看”不在本册；C1 边界改用“省略是事实，未试读”。"
+      ],
+      "old_support_acknowledged": "新稿 §1.3 已有局部定义，未撤回为“缺定义”；本册只区分“正式构造被省略”与“读者必然停下”两件事。",
+      "residual_scope": "实际读者是否在 §1.4 停下，未试读，不能由页面断言。",
+      "dissent": null
+    },
+    {
+      "id": "COMP-C4",
+      "priority": 2,
+      "location": "原 comparison p15 F.2；并限定 p1/p2/p16 的相关说法",
+      "original_claim": "“外部目视未完成…新稿 48 页渲染…需支持看图的审核者检查。”",
+      "verified": true,
+      "conclusion": "成立，原说法把“DSH 没有图像输入”与“项目审核状态”混在一起。final-selection 明确记录 round-04 已 accepted within documented content, math and visual scope，且有 visual-review-round04.json 支撑；DSH 没有自己看图是事实，旧 comparison 的视觉审核已完成也是事实，但不能据此暗示新稿仍缺外部视觉审核。本修订版对比册本身仍需外部复核。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "p1 事实边界第 (4) 条",
+          "action": "分开写：DSH 自身没有图像输入，本册裁剪与页渲染待支持看图的审核者目视；新稿 round-04 的外部内容、数学、视觉审核已完成，见 final-selection 与 visual-review-round04；这里说的是 DSH 没看图，不是新稿缺少外部视觉审核。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "p2“这不是评审结论”callout",
+          "action": "补充 final-selection 的 accepted 范围与 visual-review-round04 已完成；保留 comparison 当时仍待制作、review_limits 未测学习改善。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§B B3 边界",
+          "action": "图 8 箭头的文字层比较不冒充目视；说明 round-04 外部视觉审核已完成，若外部审核对图 8 有意见应查该报告。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§F F.2/F.4 与 §G warnbox",
+          "action": "F.2 改为“DSH 没有图像输入，本册仍需外部复核”；F.4 承认新稿 content/math/visual 外部审核已完成；G 只声明本册自身与裁剪未由 DSH 目视，本修订版仍需外部复核。"
+        }
+      ],
+      "evidence": [
+        "final-selection.json：handout.review_status = accepted within documented content, math and visual scope；review_reports 含 visual-review-round04.json。",
+        "visual-review-round04.json 记录外部视觉审核；本册未复制其结论，只引用状态。",
+        "check_compare.py：修订文本含“外部内容、数学、视觉审核已完成”“仍需外部复核”；已撤回句“外部目视未完成”不在本册。",
+        "comparison-revised/verification.txt：明确 DSH 无图像输入、本册未目视、新稿外部审核已完成、本修订版仍需外部复核。"
+      ],
+      "old_support_acknowledged": "旧 comparison 的版面已有外部视觉审核接受；本修订版沿用其排版，只改内容评价、引文与必要裁剪。",
+      "residual_scope": "本修订版仍需外部视觉/内容复核；学习者实际试读未发生，不能声称已读懂或效果更好。",
+      "dissent": null
+    },
+    {
+      "id": "CMP-MATH-01",
+      "priority": "需要修正比较表述及选段",
+      "location": "原 comparison p7 A2 εijk 比较",
+      "original_claim": "旧稿读者“无法自己算 A23=−a1 这类核对，只能记住矩阵的三个元素”。",
+      "verified": true,
+      "conclusion": "成立，原评价抹去了旧稿已有的局部核对。旧稿 p15 下方旁注（y≈383–429）解释两种 ε 写法的哑指标改写与反对称关系，并实际印出“用分量核一遍最省事：第三种写法给出 A23=−ε231a1=−a1，与课件矩阵的(2,3)元一致”。原裁剪只到 y=330，恰好排除了这段旁注。旧稿确实没有给出六排列与重复指标取零的完整通用规则；这个较窄差异成立，但不能据此说旧稿连 A23 核对都没有。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§A A2 标题与三段",
+          "action": "标题改为“旧稿有局部 A23 核对，新稿补六个排列与重复指标规则”；oldlbl 承认并抄录旁注的 A23 核对；newlbl 只保留新稿六排列/重复指标规则的差异；bndlbl 明说不再说旧稿读者无法自己核对 A23。"
+        },
+        {
+          "file": "crops.json",
+          "location": "新增 old-p15-note",
+          "action": "新增 y=377–432 的裁剪，覆盖旁注；require 含“▷课件p8”“A23=−ε231a1”“与课件矩阵的(2,3)元一致”；原 old-p15-epsilon 保留。"
+        },
+        {
+          "file": "comparison.tex",
+          "location": "§A A2 与 §C 引言",
+          "action": "删除“只能记住矩阵的三个元素”的说法；用“旧稿并非只能背下三个矩阵元”表述，避免把撤回句重新带入正文。"
+        }
+      ],
+      "evidence": [
+        "旧 p15 文字层：用分量核一遍最省事：第三种写法给出A23=−ε231a1=−a1，与课件矩阵的(2,3)元一致。",
+        "render_crops.py：old-p15-note 的 3 条 require 全部命中；old-p15-epsilon 原裁剪保留。",
+        "check_claims.py：old p15 两条均 PASS。",
+        "check_compare.py：已撤回句“只能记住矩阵的三个元素”不在本册；修订文本含“新稿补六个排列与重复指标规则”。"
+      ],
+      "old_support_acknowledged": "旧稿 p15 旁注已有 A23 分量核对；旧稿对偶张量公式与矩阵一致，本册不否定其正确性。",
+      "residual_scope": "新稿六排列/重复指标规则是否足够可操作，仍需读者试读；本册只核对页面文字与锚点。",
+      "dissent": null
+    },
+    {
+      "id": "CMP-REV-MATH-01",
+      "priority": "局部公式转述修正",
+      "location": "comparison-revised §C C2 newlbl（原审核 p13）",
+      "original_claim": "新稿说明横向速度“大小 Ω|w⊥|”。",
+      "verified": true,
+      "conclusion": "成立。最终 round-04 p29 写的是 |Ω||w⊥|，并在同页说明 Ω<0 时反向；比较册漏掉 Ω 的绝对值，会把负 Ω 时的速度大小写成负数。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§C C2 newlbl",
+          "action": "改为“大小 |Ω||w⊥|”，并由 Ω 的正负说明旋转方向（Ω<0 时反向）；末尾 Ω=1.5 的数值例不动。"
+        }
+      ],
+      "evidence": [
+        "round-04 p29 文字层：“即横向‘速度’与w⊥垂直、大小是|Ω| |w⊥|。……（Ω<0时反向）。”",
+        "check_claims.py：new p29 的“直接代回可以当场核对”“给定初始横向矢量”等仍 PASS。"
+      ],
+      "residual_scope": "只改转述，不改新稿或数值例；学习者未试读。",
+      "dissent": null
+    },
+    {
+      "id": "CMP-REV-MATH-02",
+      "priority": "局部引述范围修正",
+      "location": "comparison-revised §C C3 oldlbl（原审核 p14）",
+      "original_claim": "旧稿给出“∇·σ+f=0（静力学/动力学）”。",
+      "verified": true,
+      "conclusion": "成立。旧 p22 分别写 ∇·σ+f=0（静力学）与 ∇·σ+f=ρa（动力学）；比较册把两者压成一个零右端式并标静/动力学，遗漏惯性项。",
+      "changes": [
+        {
+          "file": "comparison.tex",
+          "location": "§C C3 oldlbl",
+          "action": "改为分别转述两式：∇·σ+f=0（静力学）、∇·σ+f=ρa（动力学）；后文“旧静/动力学式正确”与各自方程对应。"
+        }
+      ],
+      "evidence": [
+        "旧 p22 文字层：“与体力f 平衡得 ∇·σ+f=0（静力学）, ∇·σ+f=ρa（动力学）。”",
+        "check_claims.py：old p22 的“写得开就是”“三个方程”仍 PASS。"
+      ],
+      "residual_scope": "只改引述范围；不重判旧稿公式，不新增推导；学习者未试读。",
+      "dissent": null
+    },
+    {
+      "id": "COMP-V1",
+      "priority": "minor_readability_fix",
+      "location": "comparison-revised §C C2 裁图 new-p29-symtop / new-p29-bridge（原审核 pp12–13）",
+      "original_claim": "C2 两裁图之间缺 d(ω1,ω2)/dt=Ω(−ω2,ω1) 这条二维矢量导数式。",
+      "verified": true,
+      "conclusion": "成立。原 new-p29-symtop y206–342 止于“上式说”，下一 new-p29-bridge y395–685 从“即横向‘速度’”开始；公式在 round-04 p29 的 y341.7–388.0，正好落在两裁图之间。",
+      "changes": [
+        {
+          "file": "crops.json",
+          "location": "new-p29-symtop",
+          "action": "下边界 342→392，把二维矢量导数式完整纳入；note 与 require 增加该式（anchor “−ω2”），不新增裁剪、不重写推导。"
+        }
+      ],
+      "evidence": [
+        "round-04 p29 文字层：“把横向部分看成一个二维矢量……上式说 d/dt(ω1,ω2)=Ω(−ω2,ω1)，即横向‘速度’……”",
+        "render_crops.py：new-p29-symtop 在 y=206–392 的 clip 内命中“−ω2”锚。"
+      ],
+      "residual_scope": "DSH 未目视；裁图字号、完整性与图文对应仍需外部视觉复核。",
+      "dissent": null
+    }
+  ],
+  "withdrawn_items": [
+    {
+      "id": "COMP-C2-old-skip-guidance",
+      "decision": "撤回“旧稿看不出可跳过”",
+      "reason": "旧稿 §4.6 段内已有“本讲义正文不用”和“那时再回来补这半页即可”；本修订版在 §E 明确承认，不再把导航标记差别写成缺失。"
+    },
+    {
+      "id": "COMP-C2-instantaneous-axis",
+      "decision": "撤回“旧稿三个词包括瞬时轴都未解释”",
+      "reason": "旧稿 §7.1 未使用“瞬时轴”；该词由新稿 §4.1 引入并定义，不能倒算成旧稿漏讲。"
+    },
+    {
+      "id": "COMP-C3-eigenvalue-reading-block",
+      "decision": "撤回“只会在特征值一词回看 §1.4 一页”",
+      "reason": "这是无页面证据的读者结果预测，且新稿 §1.3 已局部给出 Tn=λn；省略 §1.4 的事实与“读者必然停下”必须分开。"
+    },
+    {
+      "id": "comparison-page-count-as-quality",
+      "decision": "不把 17→21 页当作改善",
+      "reason": "页数由新增的两处操作桥梁与必要旁注裁剪决定；本册不按页数、图数或断言条数评价学习效果。"
+    }
+  ],
+  "preserved": [
+    "版本与源页码：旧稿 20261105 文件版本 29 页（封面 20261103）、新稿 round-04 48 页；SHA-256 与 final-selection 一致；引用页码仍指物理页。",
+    "四轮讲义历史：R1 skill 2.2.0 无本轮问题单、R2 16 项、R3 5 项、R4 1 项 V8；R4 只改 P11 续解分页，不改内容。",
+    "旧稿优点：§1.3 换基三步推导与数值核对、§2.1 迹不变、图 1 椭球、§7.3/§7.4、§12 缺口清单仍保留；§4.6 跳过指引与 §5.5 A23 旁注在本轮明确承认。",
+    "规则与具体反馈不能拆开归因：R2–R4 同时有具体问题单，本册不把某处改动单独归因给 2.2.1/2.2.2 的某条规则。",
+    "用户实际试读未发生：本册不声称已学会、已读懂或效果更好。",
+    "DSH 无图像输入：本册只做文字层/坐标/哈希/编译检查；外部目视与新稿外部审核状态分开写。",
+    "原 comparison 的版面已由外部视觉审核接受；本修订版只改内容评价、引文与必要裁剪，不改 round-04 讲义、规则或原输入。"
+  ],
+  "verification": {
+    "compile": "xelatex 两遍，退出码 0；comparison.log 记录 21 页，PDF 实际 21 页。",
+    "pages": 21,
+    "bytes": 2897655,
+    "sha256": "f779d0e33e8e279fda8ad51abc7412661ea233b5319edd199e4187fc9e0003a4",
+    "check_compare": "89 passed, 0 failed",
+    "verify_old_new_math": "26 passed, 0 failed",
+    "check_claims": "29 passed, 0 failed",
+    "crop_anchors": "28/28 crops rendered and anchor-checked",
+    "render_pages": "21/21 pages at 150 dpi",
+    "visual": "DSH 未目视；本修订版仍需外部复核；新稿 round-04 外部 content/math/visual 审核已完成。"
+  },
+  "open_items": [
+    "本修订版对比册仍需外部内容/视觉复核；DSH 没有图像输入，不能声称已目视。",
+    "学习者实际试读尚未发生；不能声称已读懂或学习效果。",
+    "C2/C3 的讲解是否足够支持当前读者，需试读；本册只核对页面实际印出的内容与数值。",
+    "页面 21 页是内容自然分页结果；若外部复核要求压缩，应另立返工，不为页数删必要内容。"
+  ]
+}

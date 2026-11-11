@@ -1,0 +1,172 @@
+{
+  "round": "round-03",
+  "reviewed_round": "round-02",
+  "review_input": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\review-round02.json",
+  "reviewed_artifacts": {
+    "handout.tex_sha256": "577f69b76ae36bb1e2d3a3fc3c141986804cb3636b65254ef7b3c67ae0628eb0",
+    "handout.pdf_sha256": "087cae27d540f0f139d82bafea0beccd5a487f5175d28a4babe9c54c90bba3c5",
+    "pdf_pages": 48
+  },
+  "basis": "只处理 review-round02.json 两报告 active_sections 列出的 5 个有效项：R2-READ02、R2-S3、R2-M3、V6、V7。round-02 及其已通过内容只读；所有新改动只写入 round-03。阅读/质量报告只作为信息性输入，未按新增缺陷处理。使用 rule-versions/2.2.1 的 SKILL 与 theme。",
+  "active_issue_ids": [
+    "R2-READ02",
+    "R2-S3",
+    "R2-M3",
+    "V6",
+    "V7"
+  ],
+  "prior_rounds": [
+    {
+      "round": "round-02",
+      "record": "../round-02/issue-response.json",
+      "active_issue_ids": [
+        "READ-01", "READ-02", "M2", "M3", "M4", "M5", "M6", "M7", "M8",
+        "S1", "S2", "S3", "V1", "V4", "V5", "Q1"
+      ],
+      "result": "16 项已处理并通过 round-02 主体复核；本轮保持这些内容与结论，不回退、不重写。"
+    }
+  ],
+  "preserved_accepted_scope": [
+    "READ-01 explanation and READ-02 operational bridge accepted; READ-02 local wording is counted once as R2-READ02.",
+    "Main M2-M8 corrections and S1/S2 accepted; S3 example is valid, normalization still needs explanation. M3 main section accepted, summary still needs synchronization.",
+    "Q1 arbitrary quantity floors removed. V1/V4/V5 passed actual visual review.",
+    "Original themes and P1-P10 preserved, P11-P12 retained."
+  ],
+  "issues": [
+    {
+      "id": "R2-READ02",
+      "priority": "局部修正",
+      "verified": true,
+      "conclusion": "成立。原句用“σ0 不随 x1 变”解释均匀应力，但 σ0 在上例中只是常数系数，线性场本身仍随 x1 变化。已把均匀情形明确写成“换成另一个应力场”：σ11(x)≡σc（常数），并说明它不是上面那个线性场；均匀条件作用于整个应力分量，故 ∂1σ11=0。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "§6.4 线性应力例后的均匀场说明",
+          "lines": [1749, 1749],
+          "what": "把“若应力是均匀的（σ0 不随 x1 变）”改为“换成另一个应力场：σ11≡σc，不再随 x1 变化”，并保留“内部无净面力、只有端面外力”的解释。"
+        }
+      ],
+      "evidence": [
+        "verify.py：线性场 σ11=σ0x1/L 的 ∂1σ11=σ0/L 仍 PASS；另取常数场 σ11≡σc=3，差分 ∂1σ11=0 PASS；两者导数不同 PASS。",
+        "verify.py 文本检查：TeX/PDF 含“换成另一个应力场”“整个应力分量处处相同”；旧句“σ0 不随 x1 变”不存在，PASS。",
+        "PDF 文字层 p32：线性例、体力平衡与新的均匀场说明同页连续。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "R2-S3",
+      "priority": "局部修正",
+      "verified": true,
+      "conclusion": "成立。J′=m(2,1,−1;1,2,−1;−1,−1,2) 带整体因子 m，正文却把 (λ−1)^2(λ−4)=0 直接称为 J′ 的特征方程。已明确写成 J′=mA，A 为去掉 m 的同一矩阵；整体因子只把特征值乘 m，所以上述方程属于 A，J′ 主值为 m,m,4m，并补直接解 det(J′−λ1)=0 的等价说明。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "附录 A P9",
+          "lines": [2064, 2069],
+          "what": "加入 J′=mA 与 A 的显式矩阵；把特征方程明确归给 A，再说明 J′ 主值 m,m,4m；补 det(J′−λ1)=0 的等价路径。"
+        }
+      ],
+      "evidence": [
+        "verify.py：np.poly(A=J′/m) 为 [1,−6,9,−4]（根 1,1,4），PASS；np.poly(J′) 为 m 尺度多项式 [1,−6m,9m²,−4m³]，PASS；J′ 主值 = m×A 主值，PASS。",
+        "verify.py 文本检查：TeX 含“J′=mA”与“整体因子只把特征值乘上 m”，PASS。",
+        "PDF 文字层 p42：J′ 矩阵、A 矩阵、A 的特征方程与 J′ 主值 m,m,4m 在同一段可读。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "R2-M3",
+      "priority": "同类措辞同步",
+      "verified": true,
+      "conclusion": "成立。§2.3 已正确限定“对所有 x 成立、当且仅当 D 对称”，但 §8 速查第 3 条与三句话总结仍保留过强表述。已把两处同步为：左右作用作为算子一般不同；对所有 x 相同才要求 D 对称；一般旋转算子通常出错，但特定输入仍可能碰巧相同。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "§8 八个高频错误第 3 条",
+          "lines": [1835, 1835],
+          "what": "改为“作为算子…对所有 x 相同，当且仅当 D 对称”，并补“特定输入仍可能碰巧相同”。"
+        },
+        {
+          "file": "handout.tex",
+          "location": "§8 三句话总结第 2 条",
+          "lines": [1866, 1866],
+          "what": "把“左右不对称”改为“左右作用作为算子一般不对称，只有张量对称时才对所有输入相同”。"
+        }
+      ],
+      "evidence": [
+        "verify.py 文本检查：新速查句“它们对\\textbf{所有} $\\vect x$ 相同”“一般旋转算子…通常出错”存在；新总结句“左右作用作为算子一般不对称，只有张量对称时才对所有输入相同”存在；旧句“$\\ten D\\cdot\\vect x\\ne\\vect x\\cdot\\ten D$，除非”不存在，全部 PASS。",
+        "PDF 文字层 p36（速查第 3 条）与 p37（三句话总结）均含同步后的范围表述。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "V6",
+      "priority": "minor_readability_fix",
+      "verified": true,
+      "conclusion": "成立。图 2 整图落在 p14 页底，两行图注单独落到 p15 页首。已把图与图注放进同一个不可分块；最终分页为 p15 顶部整图 + 两行关键图注，§2.3 紧随其后。图注内容未删减、字号未缩小。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "§2.2 图 2 与图注",
+          "lines": [686, 705],
+          "what": "在 center 内用 minipage 包住 tikzpicture 与 figcap，避免图与图注之间断页；最终整块移到 p15 页首。"
+        }
+      ],
+      "evidence": [
+        "verify.py PDF 文字层/bbox：p15 图内标签“b·x=0.4”所在块底 y≈144.7，图注块顶 y≈158.9；同一页且标签在图注上方，PASS。",
+        "layout-report.txt：图 2 所在页 = p15；P15 首块即图 2 标签，图注两行紧随。",
+        "render/page-15.png 已保存，待外部目视确认图注与图内箭头；当前模型不支持图像输入，未声称目视通过。"
+      ],
+      "dissent": null
+    },
+    {
+      "id": "V7",
+      "priority": "minor_readability_fix",
+      "verified": true,
+      "conclusion": "成立。P4 在 p39 算出 I(n) 后换页，p40 直接以“验证：取 ω=n…”开头，缺少 P4 续解标识。已在验证段前插入 \\answercontinue{P4}，重列 n、J 与 I(n)=145/18，并标明本页验证 ω·L=2K；实际位置在 p40 页首。另因最终分页 P9 不再跨页，删去其落在同页中部的旧续解标记。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "附录 A P4",
+          "lines": [1965, 1965],
+          "what": "在“验证：取 ω=n”前插入 P4 续解：n=(1,1,1)/√3、J=diag(125/12,100/12,65/12)、I(n)=145/18、本页目标 ω·L=2K。"
+        },
+        {
+          "file": "handout.tex",
+          "location": "附录 A P9",
+          "lines": [2058, 2060],
+          "what": "删除旧 \\answercontinue{P9}：最终分页 P9 在 p42 一页内完成，续解标记已无实际断页对应。"
+        }
+      ],
+      "evidence": [
+        "verify.py PDF 文字层：P4 详解 p39；P4 续解 p40；续页含“验证：取”“I(n)=145/18”“ω·L=2K”，PASS。",
+        "layout-report.txt：P4 详解 p39、续解 p40；P9 详解 p42 且续解 None。",
+        "render/page-39.png、page-40.png 已保存，待外部目视；未把文字层检查称为目视通过。"
+      ],
+      "dissent": null
+    }
+  ],
+  "withdrawn_items": [
+    {
+      "id": "information_only",
+      "decision": "未作为本轮工作要求",
+      "reason": "reading-review-round02.json 与 quality-review-round02.json 为信息性输入；只用其核对 READ-02 合并计数与结构检查范围，未按新缺陷另开项目。"
+    }
+  ],
+  "run_summary": {
+    "final_pdf_pages": 48,
+    "compile": "xelatex -halt-on-error -interaction=nonstopmode 两遍，退出码 0；handout.log 无 Overfull/Underfull/Missing character/undefined/multiply defined",
+    "check_handout": "appendix 模式，错误 0、人工复核线索 0",
+    "verify": "通过 314 条，失败 0 条",
+    "render": "48 页 PNG（150 dpi）+ 4 张联系表，见 render/；check_margins.py flagged 0",
+    "layout": "layout-report.txt：48 页；图 2 p15；P4 详解 p39/续解 p40；P9 详解 p42；正文 12 条“详解见附录第 N 页”与附录实际页全部一致",
+    "pagination_change": "P9 的归一化说明增补后，附录 A 后段顺延：附录 B 44→45、附录 C 45→46、总页数 47→48；所有 \\pageref 跳转经两遍编译后自动更新并由 verify.py 逐条核对。",
+    "not_claimed": "未声称外部目视验收通过；未声称学习者已理解或已掌握；外部审核仍可能提出新问题。"
+  },
+  "open_items": [
+    "外部目视审核尚未进行：当前模型不支持图像输入，render/ 下 48 页 PNG 与 4 张联系表待支持看图的审核者检查字体、重叠、图内标号与图注位置。",
+    "学习者实际试读尚未发生；本轮只做阅读路径自查与静态/数值/页位检查。",
+    "P2/P8/P10/P11 的续解标题仍在同页中部，沿自 round-02 的已知排版小问题，本轮未扩大改动；P4 续解已在实际续页 p40 页首，P9 在最终分页上一页完成并删除旧标记。",
+    "页数由 47 变为 48 是 P9 归一化说明增补后的自然分页结果；未压缩字号或推导来凑页。附录 B/C 后移一页，练习跳转已逐条复核。",
+    "图 2 只做了文字层/坐标同页检查；图中箭头、紫色分量与图注的视觉对应仍需外部目视。"
+  ]
+}

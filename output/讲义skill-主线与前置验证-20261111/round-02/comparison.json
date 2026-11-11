@@ -1,0 +1,140 @@
+{
+  "baseline": "inputs/baseline-handout.tex（v2.2.2；旧 §1 位于 PDF pp.8–12，P7 题干 p.34、详解 p.41；旧全文 48 页，§0 已有矩阵/点积/换基等支持）",
+  "new": "round-02/sample.tex（PDF 18 页：§1.4 在 pp.10–15，P7 题干 p.17、详解 p.18）",
+  "method": "以 TeX 行号和最终 PDF 页码定位；摘录只取足以辨认变化的短句。对比区分‘新目标要求的变化’‘抽取独立片段的自足适配’与‘旧稿在原目标下的缺陷’，并如实承认旧稿已正确的内容。",
+  "profile_update": {
+    "record": "learner-background-confirmed.json",
+    "confirmed_self_report": [
+      "点积、向量长度、两向量垂直的计算与几何含义：需要补讲。",
+      "一元和多元的基本求导、极值：学过。"
+    ],
+    "still_unknown": [
+      "连续性与极值存在定理的可用理解",
+      "拉格朗日乘数等具体方法是否会用；所选路线不需要"
+    ],
+    "boundary": "round-01 启动早于这两条回复；本稿不把修订冒充首稿已适配本人，也不把‘学过求导/极值’说成熟练性测验。"
+  },
+  "items": [
+    {
+      "id": "C1",
+      "aspect": "谱定理在正文中的地位",
+      "baseline_location": "inputs/baseline-handout.tex:367（旧 §1 开头；PDF p.8）",
+      "baseline_excerpt": "目标不是会证明谱定理，而是会用它的三条结论……",
+      "new_location": "round-02/sample.tex:548–839（§1.4；PDF pp.10–15）",
+      "new_excerpt": "谱定理（实对称矩阵，三维）……下面给出完整证明……谱定理证完。",
+      "change_type": "target_upgrade",
+      "assessment": "旧稿在 v2.2.2 的‘会用即可’目标下是自洽的，不能据此说旧稿算错；新目标要求重要定理完整证明，所以把证明移入正文主体。"
+    },
+    {
+      "id": "C2",
+      "aspect": "谱定理证明路线与前置",
+      "baseline_location": "inputs/baseline-handout.tex:552–569（§1.5 选读框）",
+      "baseline_excerpt": "选读（可跳过）：谱定理 (i)+(iii) 的证明思路……用拉格朗日乘子法（约束极值的条件是两个梯度平行）……",
+      "new_location": "round-02/sample.tex:247–282（§0.4 实根引理）与 548–839（§1.4 五步证明）",
+      "new_excerpt": "引理（奇次实多项式有实根）……用二分法……谱定理证完。",
+      "change_type": "target_upgrade_and_profile_update",
+      "assessment": "旧稿的证明依赖梯度、约束极值、闭有界连续，并把证明标为可跳过；新目标要求可跟随的完整证明。用户已自述学过一元/多元基本求导与极值，但连续性与极值存在定理、拉格朗日乘数仍未确认。新稿保留自己的 2×2 判别式 + 正交补降维路线：它不需要约束极值或拉格朗日乘子，因此不因‘学过微积分’强制改换已成立路线。round-01 准备时尚未收到回复，这一更新不追溯改写首稿。"
+    },
+    {
+      "id": "C3",
+      "aspect": "特征值/特征向量的定义顺序",
+      "baseline_location": "inputs/baseline-handout.tex:427（旧 §1.3 旁注）与 472（旧 §1.4 正式定义）",
+      "baseline_excerpt": "本节会先借用两个词：若存在非零矢量 n 与数 λ 使 Tn=λn，就把 n 叫主轴方向（正式名称是特征向量），把 λ 叫对应的主值（正式名称是特征值）。§1.4 会给出正式定义与求法；这里先用这个含义读椭圆的两个轴。",
+      "new_location": "round-02/sample.tex:381–405（§1.2 正式定义与几何含义）与 475–490（§1.3 特征方程）",
+      "new_excerpt": "定义（特征值与特征向量）……沿这条直线的带符号坐标乘以 λ，长度乘以 |λ|……特征方程在 §1.3 建立一次。",
+      "change_type": "organizational_change_not_old_defect",
+      "assessment": "旧稿 §1.3 先用 Tn=λn 给出局部预告，并写明正式名称和‘§1.4 会给出正式定义’，§1.4 再正式展开；这是旧稿已有的组织选择，不是未解释的先用。新片段把唯一的正式定义放到 §1.2（主轴第一次成为主线对象处），把唯一的特征方程推导放到 §1.3；§0.3 只承担行列式与非零解判据，不再定义特征值/特征方程。Round-01 仍在 §0.3 与 §1.2 重复定义，本条是本轮针对实际重复与依赖顺序的组织变化，不是‘旧稿缺陷被修复’的证据。"
+    },
+    {
+      "id": "C4",
+      "aspect": "二维旋转椭圆与图 1",
+      "baseline_location": "inputs/baseline-handout.tex:435–466（旧 §1.3；PDF p.10 含图 1）",
+      "baseline_excerpt": "T=[[2,1],[1,2]]……特征向量 n1=(1,1)/√2（λ=3），n2=(−1,1)/√2（λ=1）……E=3u²+v²。",
+      "new_location": "round-02/sample.tex:407–473（§1.2；图在 PDF p.8）",
+      "new_excerpt": "沿 u 的特征值是 3，半轴只有 1/√3；沿 v 的特征值是 1，半轴是 1。",
+      "change_type": "retained_correct",
+      "assessment": "旧稿的椭圆方程、特征值 3/1、主轴方向和半轴 1/√3、1 都正确；新稿保留数学并重绘图，同时补了‘半轴=1/√λ（λ>0）’的一般读法。没有声称旧稿此处有错。"
+    },
+    {
+      "id": "C5",
+      "aspect": "三维对角化例子 D",
+      "baseline_location": "inputs/baseline-handout.tex:487–511（旧 §1.4；PDF p.11）",
+      "baseline_excerpt": "取 D=[[6,2,0],[2,6,0],[0,0,1]]……特征值是 8,4,1……8n1n1^T+4n2n2^T+n3n3^T=D。",
+      "new_location": "round-02/sample.tex:487–546（§1.3；PDF pp.9–10）",
+      "new_excerpt": "det(D−λI)=(1−λ)(λ−4)(λ−8)……三个方向两两正交，长度都是 1……拼回去。",
+      "change_type": "retained_correct",
+      "assessment": "旧稿 D 的特征多项式、三个特征向量与拼回都正确；新稿重算并加迹/行列式抽查。这是保留并补检查，不是修旧错。"
+    },
+    {
+      "id": "C6",
+      "aspect": "二次型对角化与瑞利商",
+      "baseline_location": "inputs/baseline-handout.tex:540–550（旧 §1.5；PDF p.12）",
+      "baseline_excerpt": "E=a·Ta=λ1(n1·a)²+……；瑞利商介于 λmin 与 λmax 之间。",
+      "new_location": "round-02/sample.tex:841–916（§1.5；PDF pp.15–16）",
+      "new_excerpt": "E(a)=Σλk(uk·a)²……权重非负且和为 1，因此 λmin≤ρ(a)≤λmax。",
+      "change_type": "retained_and_expanded",
+      "assessment": "旧稿已经给出这两个公式，不能说是新稿首次补出；新稿补的是逐行推导、权重解释和半轴条件（含 t=±1/√λ 的两个端点），使其可独立读。"
+    },
+    {
+      "id": "C7",
+      "aspect": "片段的自足前置",
+      "baseline_location": "inputs/baseline-handout.tex:365–367（旧 §1 开头）与 73–363（旧全文 §0 的点积/矩阵/换基支持）",
+      "baseline_excerpt": "这一节把“二次型—椭圆—特征值—主轴”连成一条线。目标不是会证明谱定理，而是会用它的三条结论（特征值与特征向量的正式定义见 §1.4）……",
+      "new_location": "round-02/sample.tex:52–282（§0）；随后 §1 在 284 起",
+      "new_excerpt": "§0 读前工具：只补本节要用的……点积、长度、正交与投影，矩阵作用与转置，行列式与非零解判据，奇次实多项式有实根。",
+      "change_type": "standalone_adaptation_not_old_defect",
+      "assessment": "旧稿原本是完整 48 页文档，前面 §0（TeX 73–363）已经讲过正交归一基、点乘与投影、矩阵作用/转置、换基等；因此不能把‘抽成独立片段后未附前文’写成旧稿缺讲。新稿 §0 是为了让所选 §1 片段单独可读而重建的入口与返回关系，属于抽取片段的自足适配，不宣称旧全文没有这些支持。此前把‘定义与记号见 §0’当作旧 TeX 367 的原句是不准确的编辑概括；本条改用逐字摘录并另注旧 §0 行号。"
+    },
+    {
+      "id": "C8",
+      "aspect": "独立练习 P7 与详解",
+      "baseline_location": "inputs/baseline-handout.tex:1806–1808（题干；PDF p.34）与 2008–2024（详解；PDF p.41）",
+      "baseline_excerpt": "用 tr(AB)=tr(BA) 写出两步，证明 tr(R^T T R)=tr T，并说明每一步用了什么性质。",
+      "new_location": "round-02/sample.tex:967–969（题干；PDF p.17）与 975–1028（详解；PDF p.18）",
+      "new_excerpt": "先把用到的两个工具说清楚……第一步用循环性……第二步把括号重新结合，并用正交性。",
+      "change_type": "retained_correct_with_local_support",
+      "assessment": "旧稿 P7 的题干与两步证明本身正确，且已在题干给出循环性、在答案用到处说明循环性/结合律/正交性；新稿保留这一边界，未把完整结合律原理前移为开读必修。Round-01 曾在 §0.2 展开完整分量证明并明写‘P7 会用到’，本轮按 P7 角色边界收回为规则形式，附录仍在使用处说明。题目给定工具与待证结论也已分开表述。"
+    },
+    {
+      "id": "C9",
+      "aspect": "惯量与应力的应用接口",
+      "baseline_location": "inputs/baseline-handout.tex:388–392（旧 §1.1 转动动能）与 470（旧 §1.3 末尾的惯量/应力提及）",
+      "baseline_excerpt": "刚体的转动动能 K=1/2 ω·Jω 就是二次型……惯量椭球通常是真椭球；应力张量可以有负的主值。",
+      "new_location": "round-02/sample.tex:918–961（§1.6；PDF pp.16–17）",
+      "new_excerpt": "落点一：惯量张量……落点二：应力张量……这张表只是把已经讲过的对应关系并排放在一起。",
+      "change_type": "added_application_interface",
+      "assessment": "旧稿已有零散物理指向；新稿把它们集中成接口，并加 J=diag(1,2,3) 的小例和一张对照表，但仍不展开惯量构造、欧拉方程或应力平衡。"
+    },
+    {
+      "id": "C10",
+      "aspect": "正交补降维的示意图",
+      "baseline_location": "旧稿无对应图（旧 §1.5 只用文字和公式）",
+      "baseline_excerpt": "（无）",
+      "new_location": "round-02/sample.tex:670–716（§1.4 第三步后；图 2 在 PDF p.12）",
+      "new_excerpt": "图 2（自绘，示意）：u1 与平面 P 垂直；若 x∈P，则 Tx 仍在 P 内。",
+      "change_type": "added_support",
+      "assessment": "新增图只服务第三步的包含关系，明确标为示意、不表示长度，也不替代一般证明；不是旧稿错误。"
+    }
+  ],
+  "summary": {
+    "target_upgrade": [
+      "C1：证明从‘会用即可’变为正文完整证明。",
+      "C2：证明路线从多元极值改为 2×2 判别式 + 正交补降维，并供给实根工具；该路线不依赖尚未确认的连续极值/拉格朗日乘子。"
+    ],
+    "organizational_changes_not_old_defects": [
+      "C3：旧稿有局部预告+后续正式展开；新片段把正式定义集中到 §1.2、特征方程集中到 §1.3，§0.3 只留工具。这是本轮的实际组织变化，也修正了 round-01 仍存在的重复定义。",
+      "C7：旧全文已有 §0 支持；新 §0 是把 §1 抽成独立片段后的自足适配，不是旧稿缺讲。"
+    ],
+    "retained_correct": [
+      "C4：二维椭圆例子与图。",
+      "C5：三维 D 例子。",
+      "C6：二次型对角化与瑞利商公式。",
+      "C8：P7 题干、两步证明与局部技巧说明。"
+    ],
+    "added": [
+      "C9：应用接口、惯量小例与对照表。",
+      "C10：正交补降维示意图。"
+    ],
+    "not_claimed": "没有把旧稿的椭圆例子、D 例子、P7 答案或瑞利商公式说成错误；没有把旧稿的局部预告说成未解释先用；没有把抽取片段的自足需求说成旧完整稿缺讲；也没有预设新版一定更好。新稿的真实变化集中在证明地位/路线、定义顺序、片段自足性、应用接口，以及按本轮基础更新对点积几何的补讲。"
+  }
+}

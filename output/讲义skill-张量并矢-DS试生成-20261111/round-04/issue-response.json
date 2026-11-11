@@ -1,0 +1,123 @@
+{
+  "round": "round-04",
+  "rule_version": "2.2.2",
+  "reviewed_round": "round-03",
+  "review_input": "D:\\aaa_D_usual\\CODEX\\AI-SKILL\\reviews\\tensor-dyad-20261111\\review-round03.json",
+  "reviewed_artifacts": {
+    "handout.tex_sha256": "577f69b76ae36bb1e2d3a3fc3c141986804cb3636b65254ef7b3c67ae0628eb0",
+    "handout.pdf_sha256": "087cae27d540f0f139d82bafea0beccd5a487f5175d28a4babe9c54c90bba3c5",
+    "pdf_pages": 48
+  },
+  "delivered_artifacts": {
+    "handout.tex_sha256": "92629492DA51C86097DBF5C00E1A146AE35C10D9B5007CAF8B5003A771CDB3C3",
+    "handout.pdf_sha256": "6E78C5480938445AD7C4BD6F31A9101975AD857C28A6007E4884E1C1C9753053",
+    "pdf_pages": 48
+  },
+  "basis": "只处理 review-round03.json 唯一有效项 V8。round-03 的数学、阅读内容与此前已通过结论只读保留；本轮只改 P11 续解标记的分页位置与续页说明，不改推导、题干、数字或图。使用 rule-versions/2.2.2 的 SKILL 与 theme。",
+  "active_issue_ids": [
+    "V8"
+  ],
+  "prior_rounds": [
+    {
+      "round": "round-03",
+      "record": "../round-03/issue-response.json",
+      "active_issue_ids": [
+        "R2-READ02",
+        "R2-S3",
+        "R2-M3",
+        "V6",
+        "V7"
+      ],
+      "result": "5 项已按 review-round02.json 处理；review-round03.json 判定数学与阅读内容通过，仅保留 V8。本轮保留其正文与结论，不回退、不重写。"
+    },
+    {
+      "round": "round-02",
+      "record": "../round-02/issue-response.json",
+      "active_issue_ids": [
+        "READ-01",
+        "READ-02",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "S1",
+        "S2",
+        "S3",
+        "V1",
+        "V4",
+        "V5",
+        "Q1"
+      ],
+      "result": "16 项已处理并通过 round-02 主体复核；本轮的移动只涉及 P11 续解标记，不回退这些内容。"
+    }
+  ],
+  "preserved_accepted_scope": [
+    "review-round03.json 判定 round-03 数学报告与阅读内容通过；本轮未改任何数学推导或讲解正文。",
+    "V6 图 2 与图注同页（p15）、V7 P4 续解在 p40 页首均保持；P9 仍在 p42 一页完成且无续解标记。",
+    "P1--P12 题干、数字、解答、图 1--图 8、§0--§8、附录 A--C 的来源映射与已通过措辞保持不改。",
+    "round-03 的 48 页分页与附录 B/C 页位（p45/p46）保持；所有练习跳转仍由 pageref 自动给出并经逐条核对。"
+  ],
+  "issues": [
+    {
+      "id": "V8",
+      "priority": "minor_readability_fix",
+      "verified": true,
+      "conclusion": "成立。round-03 的 P11 在 p43 开始，p43 页底已算完 SᵀS=1 并由 SSᵀ=1 确认正交性；p44 直接以“(c) 求导”开头，缺少 P11 续页标识，题设 φ=αt 与 c/s 记号留在前页。旧续解标记落在 p43 中部，并未对应实际断页。已删除该旧标记，把续解块放到 p44 实际续页页首，并写成：题设仍是绕 e3 转 φ=αt；上页已确认 SᵀS=SSᵀ=1；本页做 (c) 求导，记 c=cos αt、s=sin αt。",
+      "changes": [
+        {
+          "file": "handout.tex",
+          "location": "附录 A P11（旧标记，round-03 第 2104 行）",
+          "lines": [2104, 2104],
+          "what": "删除落在 p43 中部的旧 \\answercontinue{P11}：它对应的断页并不存在，且内容只泛说“读列向量、验证正交性并求角速度”。"
+        },
+        {
+          "file": "handout.tex",
+          "location": "附录 A P11（实际续页 p44 页首，round-04 第 2125 行）",
+          "lines": [2125, 2125],
+          "what": "在“同理 SSᵀ=1…”之后、“(c) 求导”之前插入新的 \\answercontinue{P11}，使续页首块为“P11 续解”，并重述题号、题设 φ=αt、c=cos αt、s=sin αt、上页已完成的正交性核验与本页的 (c) 求导步骤。"
+        }
+      ],
+      "evidence": [
+        "verify.py：P11 详解=[43]，续解=[44]；续页首块为“P11续解”；续页文字含 φ=αt、c=cosαt、s=sinαt、(c)求导，PASS。",
+        "verify.py：旧同页中部标记已移除（P11 详解页 43 不在续解页列表），P12 仍在 p44 一页完成且无 P12 续解，附录 B/C 保持 p45/p46，全部 PASS。",
+        "layout-report.txt：P11 题干[35]、详解[43]、续解[44]；p43 尾为“同理 SSᵀ=1，所以 S 是正交算子”，p44 首为“P11”。",
+        "page-boundary-check.json：p44 首块=P11续解，续页首条为“本页接续：题设仍是绕 e3 转 φ=αt…本页做(c)求导…”。",
+        "两遍 xelatex 退出码 0，handout.log 记录 48 页，无 Overfull/Underfull/Missing character/undefined/multiply defined；check_handout.py --mode appendix 错误 0、人工复核线索 0。",
+        "render/ 已保存 48 页 PNG 与 4 张联系表；check_margins.py flagged 0；尚未目视验收，未声称已看图。"
+      ],
+      "dissent": null
+    }
+  ],
+  "withdrawn_items": [
+    {
+      "id": "page_count_as_quality_criterion",
+      "decision": "未作为本轮目标",
+      "reason": "48 页是自然分页结果；V8 不要求把长题压成一页，也没有为凑页缩小字号或删推导。"
+    },
+    {
+      "id": "P2/P8/P10_midpage_markers",
+      "decision": "保持原状，未扩大改动",
+      "reason": "这三处续解标题仍是 round-02 起已知的同页中部标记；review-round03.json 只把 P11 的实际跨页列为 V8。本轮只移动 P11 的失效标记，并在 open_items 保留这三处，未声称它们已修复。"
+    }
+  ],
+  "run_summary": {
+    "final_pdf_pages": 48,
+    "compile": "xelatex -halt-on-error -interaction=nonstopmode 两遍，退出码 0；compile-pass1.log/compile-pass2.log 与 handout.log 均属本轮，handout.log 无 Overfull/Underfull/Missing character/undefined/multiply defined",
+    "check_handout": "rule-versions/2.2.2 的 appendix 模式：错误 0、人工复核线索 0",
+    "verify": "通过 321 条，失败 0 条（含 V8 的 7 条页位/续页检查）",
+    "render": "48 页 PNG（150 dpi）+ 4 张联系表，见 render/；check_margins.py flagged 0",
+    "layout": "layout-report.txt：48 页；P11 详解 p43/续解 p44；P12 详解 p44 无续解；附录 B p45、附录 C p46；正文 12 条“详解见附录第 N 页”与附录实际页全部一致",
+    "pagination_change": "总页数 48 不变。P11 续解由 p43 中部移到 p44 页首；P12 仍完整落在 p44，附录 B/C 仍 p45/p46，练习跳转随 pageref 自动保持正确。",
+    "not_claimed": "未声称外部目视验收通过；未声称学习者已理解或已掌握；未把 P2/P8/P10 的同页中部标记说成已修复。"
+  },
+  "open_items": [
+    "外部目视审核尚未进行：当前模型不支持图像输入，render/ 下 48 页 PNG 与 4 张联系表待支持看图的审核者检查字体、重叠、图内标号与页首排版。",
+    "学习者实际试读尚未发生；本轮只做阅读路径自查与静态/数值/页位检查，不声称读者已理解。",
+    "P2/P8/P10 的续解标题仍在同页中部（round-02 起已知）；本轮未扩大改动，也未把它们当作 V8 已修复。",
+    "P11 续页首块、φ=αt、c/s 与 (c) 求导已由 PDF 文字层和 bbox 核对；字体、灰字对比与页首视觉留白仍待外部目视确认。",
+    "数学公式未改，未重做整套数值验算；verify.py 保留既有数值与结构断言，只新增 V8 页位检查。"
+  ]
+}

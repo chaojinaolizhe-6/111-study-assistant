@@ -1,0 +1,418 @@
+% !TEX program = xelatex
+% 从张量到并矢：新旧对比册
+% 输入（只读）：inputs/old-handout.pdf（20261105 文件版本，29 页）
+%               round-04/handout.pdf（48 页，sha256 6e78...3053）
+% 生成：python -B render_crops.py  ->  figs/*.png + cropmeta.tex
+% 编译：xelatex 两遍
+\documentclass[11pt]{ctexart}
+\input{../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{longtable}
+\settags{新旧对比册}{理论力学}
+\setlength{\headheight}{22pt}
+\setlength{\emergencystretch}{3em}
+\graphicspath{{figs/}}
+
+\makeatletter
+\newcommand{\cropdata}[5]{\@namedef{crop@#1}{#2 p#3\enspace·\enspace #4\enspace·\enspace #5}}
+\newcommand{\cropimg}[2][1.0]{%
+  \par\medskip\noindent
+  \begin{minipage}{\linewidth}%
+  {\small\bfseries\color{violet}\csname crop@#2\endcsname}\par\vspace{2pt}%
+  \fcolorbox{rulepurple}{white}{\includegraphics[width=\dimexpr#1\linewidth-2\fboxsep-2\fboxrule\relax]{figs/#2.png}}\par
+  \end{minipage}\par\medskip}
+\makeatother
+\input{cropmeta.tex}
+
+\newcommand{\oldlbl}{\par\smallskip\noindent{\bfseries\color{violetdeep}旧稿卡在哪里。}\hspace{0.2em}}
+\newcommand{\newlbl}{\par\smallskip\noindent{\bfseries\color{violetdeep}新稿改了什么。}\hspace{0.2em}}
+\newcommand{\bndlbl}{\par\smallskip\noindent{\bfseries\color{violetdeep}边界与未验证。}\hspace{0.2em}}
+\newcommand{\cmpitem}[2]{\needspace{7\baselineskip}\subhdr{#1\quad #2}}
+\newcommand{\srcsmall}[1]{{\small\color{inkgray}#1}}
+
+\begin{document}
+
+\doctitle{从张量到并矢：新旧对比册}%
+{旧稿 20261105 文件版本（29 页）与 round-04 新稿（48 页）的页面级对照}%
+{2026-11-11\enspace·\enspace DSH 制作\enspace·\enspace 只比较实际成品页面}
+
+\callout{\raggedright\textbf{本次性质与分工。}本次不是从零试生成，也不是协调器代写。以用户指定的旧稿
+\texttt{inputs/old-handout.pdf}（冻结的 2026-11-05 文件版本，物理页 1--29；封面日期仍印
+2026-11-03，所以按文件版本称 20261105 版，不据封面改称 20261103 版）和 \texttt{inputs} 内原资料为输入，
+由 DSH 独立返工出新稿 \texttt{round-04/handout.pdf}（48 页）。协调器只维护 skill、给范围与只读审核，
+没有写正文、图、解答或脚本。本册由 DSH 制作并自检。}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{1.35cm}p{4.25cm}p{1.15cm}X@{}}
+\thead{角色} & \thead{文件} & \thead{物理页} & \thead{版本与摘要}\\
+\hline
+旧稿 & \texttt{inputs/old-handout.pdf} & 29 & 文件版本 20261105；封面 20261103；SHA-256 \texttt{97bb...9462}\\
+新稿 & \texttt{round-04/handout.pdf} & 48 & skill 2.2.2，round-04；SHA-256 \texttt{6e78...3053}；审核状态 accepted within documented content, math and visual scope\\
+\end{tabularx}
+\end{center}
+
+\warnbox{\textbf{事实边界。}\;(1) 学习者只自述“只会简单的线性代数知识”，未做逐项诊断；本册把这句话当作
+\emph{声明}，不当作已核实的掌握清单。(2) 学习者实际试读尚未发生；本册不声称任何人已学会、已读懂，也不声称
+教学效果已经验证。(3) 本册不把页数更多、例子更多、自动检查更多当作“效果更好”的证据；它只指出具体页面上的
+具体差别。(4) 当前模型不支持图像输入，本册所有裁剪和最终页面已保存渲染，待支持看图的审核者目视；文中对
+“图注文字”的比较只依据 PDF 文字层，不冒充看图。(5) 旧稿 29 页、新稿 48 页是各自的实际页数，不是评价指标。}
+
+\vspace{4pt}
+\srcsmall{引用约定：以下“旧 p11”指旧稿 PDF 的物理第 11 页，“新 p16”指新稿 PDF 的物理第 16 页；
+“§4.3”“§2.6”分别是两稿自己的小节号。裁剪矩形以 PDF 点（pt）计，页面 A4 为 595$\times$842 pt。}
+
+\clearpage
+\hdr{一}{输入、页码与读法}
+
+本册只回答四个问题：旧稿的简单线性代数起点有没有得到必要支持；具体例图与中间步骤是否真的有用；
+标为可跳过的选读是否真的能跳过；是否引入了没有解释的新术语。每组都选两边都实际存在、能指到具体句子和
+具体页面的段落，不构造旧稿的弱点。找不到具体差别的主题不写。
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{1.55cm}Xp{2.75cm}@{}}
+\thead{组} & \thead{比较内容} & \thead{本册位置}\\
+\hline
+A & 起点支持：分量、求和约定、$\varepsilon_{ijk}$ 是否在正文可用 & §A\\
+B & 中间步骤与例图：商法则证明、例 1 主轴、图 5/图 8 端面符号 & §B\\
+C & 选读与主线：最短路线是否漏定义、选读是否标清、新稿主线还剩什么 & §C\\
+D & 未解释术语：质心/瞬时轴、连续体/面力 & §D\\
+\end{tabularx}
+\end{center}
+
+\textbf{裁剪原则。}每张裁剪都保留该小节的标题或紧邻的前提句，不裁掉判断所依据的上一句；每张裁剪在原页面上的
+矩形和“必须出现在裁剪里的字符串”都写进 \texttt{crops.json}，由 \texttt{render\_crops.py} 逐张核对。渲染 200 dpi，
+按页宽（多图项按 0.9 页宽）排入本册，等效约 190--214 dpi；正文 11 pt 原字在纸上约 7.8--8.6 pt，可放大阅读。正文引用原句时直接抄录，
+不润色成“更该如此”的样子。
+
+\textbf{每项三段。}“旧稿卡在哪里”只写读者在该页会实际撞到的句子或缺口；“新稿改了什么”只写新稿页面上实际
+印出的内容；“边界与未验证”区分已核对的文字/数值与尚未做的目视、试读。
+
+\callout{\textbf{这不是评审结论。}\texttt{final-selection.json} 已接受新稿，但同页写明 comparison 仍待制作，
+且 review\_limits 明说“学习改善与用户理解尚未由学习者检验”“接受反映已审内容与页面，不按页数或断言条数”。
+本册是新旧页面差异的说明，不替代评审报告。}
+
+\clearpage
+\hdr{二}{轮次与规则：真实历史，不写成一次提示}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{1.15cm}p{1.15cm}p{2.6cm}p{1.05cm}X@{}}
+\thead{轮次} & \thead{skill} & \thead{本轮具体问题单} & \thead{页数} & \thead{处理结果}\\
+\hline
+R1 & 2.2.0 & 无 & 45 & 以旧稿和原资料独立重修；未收到本轮具体问题单\\
+R2 & 2.2.1 & 有（16 项） & 47 & DS 按问题单修改\\
+R3 & 2.2.1 & 有（5 项） & 48 & DS 按问题单修改\\
+R4 & 2.2.2 & 有（1 项 V8） & 48 & DS 按问题单修改；最终接受\\
+\end{tabularx}
+\end{center}
+
+\textbf{不能含糊的三件事。}第一，R1 是“没有本轮具体问题单”的第一版：它已经以用户指定旧稿为范围与题目来源、
+以原资料为依据独立重写，因此新稿的起点支持（§0 六个动作、必读/选读标记、最短主线）在 R1 就出现了，不能记到
+后续反馈或 2.2.1/2.2.2 规则头上。第二，R2--R4 都是收到问题单后的 DS 修改，逐项证据在各轮
+\texttt{issue-response.json}；这不是一句提示自动完成全部改善。第三，R1 也照搬了旧稿的两处问题——例 1 的中间步
+（把 $-e_1+e_2$ 当作 $\lambda=5$ 的方向）和把 $(1,1,1)/\sqrt3$ 叫“体对角线”；前者由 R2 的 M7、后者由 R2 的 M6
+修正。可见“第一版自动全对”不成立。
+
+\textbf{规则变化与暴露的问题。}2.2.1 增加三条检查：推荐阅读路线是否真的通到后面的应用/练习；例子是否真的
+激活它要说明的现象或术语；输入/槽位/顺序与实际印出的中间推理是否一致，而不只看意图中的最终公式。R2 的 M2（固定槽位与右作用对齐）、M7（例 1 中间步）、S3（例子没有激活它要解释的错误）正好落在这三条上，
+但这些同时是具体问题单里的条目，不能把改动单独归因给某条规则。2.2.2 只要求内容/版面改动后复查受影响的下游题块与续解
+标记；R4 只移动 P11 的续解位置，没有改内容，所以本册的内容差异不来自 2.2.2。规则修改与外部具体反馈共同产生了
+变化，二者不能互相冒充。
+
+\srcsmall{依据：\texttt{final-selection.json} 的 generation\_history、rule\_updates 与各轮 issue-response.json。
+本册不引用父项目其它讲义，也不读协调器成品脚本。}
+
+\clearpage
+\hdr{三}{比较方法：只比较能指到句子的差别}
+
+\begin{itemize}
+\item \textbf{选段。}先在两稿文字层里找同一主题，再确认两边都有可引用的句子与页面；只有一边有、或只能靠常识
+推断“旧稿大概没讲”的，不写。
+\item \textbf{裁剪。}用 PyMuPDF 按矩形裁原页面，保留小节标题与前提句；每张裁剪的矩形、DPI、像素尺寸、SHA-256 和
+必须包含的字符串都写进 \texttt{render-crops.json}。裁剪不缩放原字，只按页宽排入。
+\item \textbf{数值。}\texttt{verify\_old\_new\_math.py} 复核本册实际引用的四条断言：旧稿商法则末句的
+$T'=RTR^{\mathsf T}$ 与它自己 §4.4 的 $T'=R^{\mathsf T}TR$ 不同、且只有后者与逐项投影一致；例 1 的
+$(D-5\hat1)(1,1,0)=0$ 而 $(-1,1,0)$ 不是零空间；$\varepsilon$ 符号给出 $A_{23}=-a_1$；图 8 的
+$t(\pm e_1)=\pm\sigma_0e_1$ 与 $30^\circ$ 截面的 $t_n=\tfrac34\sigma_0$、$\tau=\tfrac{\sqrt3}{4}\sigma_0$。
+\item \textbf{不做的。}不按“新稿多了几张图/几道题/多少条断言”评分；不把审核通过当作学习效果；不对未读的页面
+下结论。本册只覆盖实际列出的 23 处裁剪。
+\end{itemize}
+
+{\raggedright
+\textbf{复现命令。}在 \texttt{comparison/} 下：\texttt{python -B render\_crops.py} 生成裁剪与
+\texttt{cropmeta.tex}；\texttt{xelatex -halt-on-error -interaction=nonstopmode comparison.tex} 两遍；
+\texttt{python -B verify\_old\_new\_math.py}；\texttt{python -B check\_compare.py --strict}。最终每页渲染见
+\texttt{render/}。\par}
+
+\clearpage
+\hdr{A}{起点支持：简单线性代数能否直接接上}
+
+旧稿第 1 页说，它是“为‘会算矩阵乘法，但二次型、迹、特征值都很生疏，张量完全没学过’的读者写”。这个声明比
+本轮自述更具体：它要求会矩阵乘法，并把基、分量、点乘、叉乘、求和约定都当作已会，或由课件 p8 提供。新稿第 1 页
+把假设收窄成一张可核对的清单：“写矢量的分量、做点乘与叉乘、做矩阵乘矢量、取转置”，再加“导数与积分各一句
+话”；然后用 §0 的六个动作各练一个能口算的例子。
+
+\cropimg{old-p01-audience}
+\cropimg{new-p01-assume}
+\cropimg{new-p02-actions}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{3.15cm}p{4.95cm}X@{}}
+\thead{六个动作} & \thead{旧稿首次直接使用} & \thead{新稿首次给出/复练}\\
+\hline
+写分量、点乘、叉乘 & 旧 p2 §1.1 基展开；旧 p3 §1.3 点乘、叉乘 & 新 p2 §0.1 定义基、分量、$\delta_{ik}$、点乘、叉乘，并给口算例\\
+矩阵乘矢量 & 旧 p3 §1.2 & 新 p4 §0.3\\
+换基 & 旧 p3--4 §1.3 & 新 p4--6 §0.4\\
+迹、行列式 & 旧 p5 §2.1--2.2 & 新 p6--7 §0.5\\
+\end{tabularx}
+\end{center}
+
+\cmpitem{A1}{求和约定：旧稿把它交给课件，新稿在正文给定义}
+\cropimg{old-p11-summation}
+\cropimg{new-p03-summation}
+
+\oldlbl 旧稿 §4.3 的第一句是“课件 p8 已经给了求和约定……本讲义正文照旧写求和号”。约定本身没有在旧稿正文
+出现；读者若手头没有课件 p8，看到 $T=T_{ij}e_i\otimes e_j$、$(Tx)_i=T_{ij}x_j$ 时，无法确定重复指标是否
+求和、对谁求和。对只学过“简单线性代数”的读者，这不是复习，而是缺一条操作规则。
+
+\newlbl 新稿 §0.1（p3）先写“同一项里同一个指标出现两次，就自动对 1,2,3 求和”，给
+$a\cdot b=a_kb_k$、$(Tx)_i=T_{ij}x_j$、$a_i=\delta_{ij}a_j$ 三例，并提醒同一指标出现三次不是约定用法；
+随后用 $a=(1,2,2)$、$b=(2,1,0)$ 的口算例把点乘、投影与叉乘各走一遍。
+
+\bndlbl 这条只保证“能读式子”；点乘、叉乘、矩阵乘矢量仍按清单假定已会，新稿没有重教。约定段本身尚未经过
+学习者试读，是否一次读懂未知。
+
+\needspace{26\baselineskip}
+\cmpitem{A2}{$\varepsilon_{ijk}$：旧稿直接用，新稿给六个排列}
+\cropimg{old-p15-epsilon}
+\cropimg{new-p16-epsilon}
+
+\oldlbl 旧稿 §5.5 直接写 $A_{ij}=-\varepsilon_{ijk}a_k$、$a_k=-\tfrac12\varepsilon_{kij}A_{ij}$，并说“就是
+课件 p8 的对偶张量”；全篇没有给出 $\varepsilon$ 的定义（第 1 页只在取材声明里提到 $\varepsilon_{ijk}$）。
+读者若没有 p8，就无法自己算 $A_{23}=-a_1$ 这类核对，只能记住矩阵的三个元素。
+
+\newlbl 新稿 §2.6（p16）定义 $\varepsilon_{ijk}$：偶排列（123, 231, 312）取 $+1$，奇排列（132, 213, 321）取
+$-1$，有重复指标取 0，并说“六个排列已在括号里列全，直接查表”；接着核对第一分量
+$\varepsilon_{123}a_2b_3+\varepsilon_{132}a_3b_2=a_2b_3-a_3b_2$。p17 还注明课件 p8 与 RIT Whelan notes 10
+的符号约定差别。
+
+\bndlbl 新稿把“偶/奇排列”压在一句括号里，仍要求读者愿意按六个排列查表；这是可操作但仍需动手的第一步，
+未试读。旧稿的对偶张量公式本身与它 p15 的矩阵一致，缺的是 $\varepsilon$ 的定义，不是结论错误。
+
+\clearpage
+\hdr{B}{中间步骤与例图：实际印出的推理是否自洽}
+
+\cmpitem{B1}{商法则证明：旧稿末句的转置位置与自己的 §4.4 相反}
+\cropimg[0.9]{old-p12-quotient}
+\cropimg[0.9]{old-p11-law}
+\cropimg[0.9]{new-p17-quotient}
+
+\oldlbl 旧稿 §4.5（p12）写：“把 $u'=Ru$、$v'=Rv$ 代进去，与 $u=TRv$ 比较，就逼出 $T'=RTR^{\mathsf T}$，
+正是 §4.4 的变换律。”但 §4.4（p11）自己印的是 $T'_{ij}=R_{ki}R_{lj}T_{kl}$，即 $T'=R^{\mathsf T}TR$。
+两者不是同一个矩阵；按 p12 的字面走，读者会把 $RTR^{\mathsf T}$ 当成换基后的账本，而旧稿 p4 自己刚提醒过
+$RTR^{\mathsf T}$ 是“另一台机器”。
+
+\newlbl 新稿 §2.7（p17）把证明写成三步：$u'=T'v'$，代入 $u'=R^{\mathsf T}u$、$v'=R^{\mathsf T}v$ 得
+$R^{\mathsf T}u=T'R^{\mathsf T}v$，于是 $u=RT'R^{\mathsf T}v$；与 $u=Tv$ 比较得 $T=RT'R^{\mathsf T}$，两边
+左乘 $R^{\mathsf T}$、右乘 $R$，得 $T'=R^{\mathsf T}TR$。三步都印在页面上。
+
+\bndlbl 这是一处证明书写差异，不推翻旧稿“$\sigma$ 一定是张量”的结论；旧稿的结论仍成立，只是中间一步写反。
+新稿的写法已由本册数值断言复核（只有 $R^{\mathsf T}TR$ 与逐项投影一致），但学习者是否跟得上三步未试读。
+
+\cmpitem{B2}{例 1 主轴：旧稿中间步给出的方向不是零空间}
+\cropimg{old-p23-eig}
+\cropimg{new-p38-p1}
+
+\oldlbl 旧稿 p23 写：“$\lambda=5$ 时 $(D-5\hat1)$ 的前两块给出 $-e_1+e_2$ 方向，即 $n_1=(e_1+e_2)/\sqrt2$。”
+前半句给出的 $(-1,1,0)$ 不是 $D-5\hat1$ 的零空间；后半句的 $n_1$ 才是正确的。中间步与最终答案不一致，
+且没有代回核验；照着“$-e_1+e_2$”走的读者会得到错误特征向量。
+
+\newlbl 新稿附录 A 的 P1（p38）先印出 $D-5\hat1$，由前两行 $-x+y=0$、第三行 $-3z=0$ 得 $(1,1,0)$，单位化
+$n_1=(e_1+e_2)/\sqrt2$，再代回 $(D-5\hat1)(1,1,0)=0$ 核验；$\lambda=3$、$\lambda=2$ 也补了行方程。注意：
+这不是第一版就有的——R1 的 P1（p36）与旧稿同样写“前两块给出 $-e_1+e_2$”，R2 按问题单 M7 才改。
+
+\bndlbl 新稿把这道题从正文例题移到附录练习详解，正文只给题干与考点；这是结构选择，不构成“更容易学会”的
+证据。旧稿例 1 其余步骤（$D\cdot x$、$\mathrm{tr}$、$\det$、$D:D$、特征方程、谱分解）的数值正确。
+
+\needspace{26\baselineskip}
+\cmpitem{B3}{图 5 与图 8：端面符号的文字层差别}
+\cropimg{old-p22-fig5}
+\cropimg{new-p32-fig8}
+
+\oldlbl 旧稿 p22 图注写“两端面（法向沿 $\pm e_1$）上的面力是 $\sigma_0e_1$”。按 $t(n)=\sigma\cdot n$，
+$n=-e_1$ 时 $t=-\sigma_0e_1$；图注把两个端面写成同一个 $+\sigma_0e_1$，与正文的 $\sigma\cdot n$ 规则不一致。
+从文字层看，图内两个标签也都是 $\sigma_0e_1$。
+
+\newlbl 新稿图 8（p32）图注写：“右端面的外法向是 $+e_1$，面力 $t(+e_1)=+\sigma_0e_1$；左端面的外法向是
+$-e_1$，面力 $t(-e_1)=-\sigma_0e_1$。两个向量都指向试件外侧，所以是‘拉’而不是‘压’。”图内标
+$+\sigma_0e_1$、$-\sigma_0e_1$，灰色 $n$ 参考轴标 $30^\circ$。这一处同样是问题单 V1 之后改的，R1 的图 8 也
+有端面符号与 $n$ 轴角度的不一致。
+
+\bndlbl 本册只核对了图注与图内标签的文字层；箭头几何、箭头长度、遮挡与图注位置未目视，待外部看图审核。
+旧稿 $45^\circ$ 截面的最大剪应力 $\sigma_0/2$ 计算本身正确；新稿把“最大剪应力在哪个角度”留到练习 P10，
+是编排差异，不是旧稿算错。
+
+\clearpage
+\hdr{C}{选读与主线：哪条路真的能走通}
+
+\cmpitem{C1}{旧稿的最短路线漏掉了 §7.1 要用的 §5.4}
+\cropimg{old-p01-route}
+\cropimg{old-p17-center}
+\cropimg{new-p02-route}
+
+\oldlbl 旧稿 p1 的“读法”给出最短路径 §1.2 → §2.1 → §3.3 → §4.3 → §5.1 → §7.1，并声明“这条路上不跳过
+任何‘后面才用’的定义”。但 §7.1（p17）把 $r^2\hat1\cdot\omega$ 与 $(r\otimes r)\cdot\omega$ 都注为
+“单位并矢的定义，§5.4”“投影并矢的作用，§5.4”；§5.4（p14）恰不在最短路径上。类似地，§2.1 的迹不变证明用
+§1.3 的 $R$，而 §1.3 也被跳过。按字面走，读者在 p17 会撞到两个未读定义。
+
+\newlbl 新稿 p2 的“最短主线”把 §0.3、§0.4、§2.2、§2.3、§2.5、§2.9 都列入，并说“跳过所有标（选读）的
+段落即可；这些段落里没有后面要用的定义”。§2.5 正是单位并矢与投影并矢。R4 的阅读路径自查也逐条走了这条线，
+记录了四处选读不喂后文。
+
+\bndlbl 新稿主线仍有两处前向引用（见 C3），不能把“路线已完全自足”写成结论。旧稿 §5.4 的内容本身正确，
+还配了图 2；问题在“最短路线”的声明，不在这一节的内容。
+
+\cmpitem{C2}{未标选读的拓展：旧稿 §4.6 与新稿 §2.10 的导航差别}
+\cropimg{old-p12-optional}
+\cropimg{new-p20-optional}
+
+\oldlbl 旧稿 §4.6“预告：上下标是从哪来的”是正文编号的小节，只在段中说“本讲义正文不用”；读者在正文里
+看不出它可跳过，也不知道跳过之后从哪里继续。
+
+\newlbl 新稿 p20 把同一主题写成“选读（可跳过）：上下标是从哪来的”，段末给“跳过后从§3 继续”。
+
+\bndlbl 两稿内容实质相同：正交基下上下标不分，非正交基用度规 $g_{ij}$ 转换。旧稿这段写得准确，不需要贬低；
+差别是导航标记，不是数学内容。
+
+\cmpitem{C3}{新稿自身的边界：主线仍有两处前向引用}
+\cropimg{new-p31-quotientref}
+
+\oldlbl 这一项不是旧稿的卡点，而是新稿仍存的边界，写在这里是为了不把新稿说成没有缺口。p2 主线在
+§1.3→§1.5 之间省略 §1.4；§1.3 明说“本节会先借用两个词……§1.4 会给出正式定义”，§1.5 的谱定理仍用
+“特征值”。§6.1（p31）又把“$t=\sigma n$ 对任意 $n$ 成立”直接接到“§2.7 商法则的前提”，而主线不列 §2.7。
+
+\newlbl 新稿在 §5.1 就地补了 $\Omega^\times$ 对并矢的作用规则，所以跳过 §2.6 仍能往下读；§1.3 也已用
+“$T n=\lambda n$”把“$\lambda$ 是伸缩倍数”说清，所以按字面走不会卡死。
+
+\bndlbl 只会在“特征值”一词上需要回看 §1.4 一页；§6.1 若不读 §2.7，只能接受“$\sigma$ 自动是张量”的
+结论而不能看证明。学习者未试读，实际是否停在这里未知。
+
+\clearpage
+\hdr{D}{未解释术语：力学词是否被当作已知}
+
+\cmpitem{D1}{定点、质心、瞬时轴与 $v=\omega\times r$}
+\cropimg{old-p17-center}
+\cropimg{new-p23-center}
+
+\oldlbl 旧稿 §7.1（p17）开头：“对刚体，绕定点（或取质心为基点）转动时，任一点的速度是 $v=\omega\times r$。”
+定点、质心、瞬时轴三个词没有解释，$v=\omega\times r$ 也没有理由；对只学过线性代数的读者，这一段是术语加
+断言。
+
+\newlbl 新稿 §4.1（p23）先解释 $v=\omega\times r$ 为什么成立（到瞬时轴距离为 $\rho$ 时速度大小 $\omega\rho$，
+方向垂直轴与 $r$ 张成的平面），再用旁注给“质心是质量加权平均位置 $R=\int r\,dm/m$”和“瞬时轴是某一瞬间
+速度为零的点的连线，角速度 $\omega$ 就沿它”。
+
+\bndlbl 旁注只有一句一个定义，真正建立刚体运动学直觉仍要靠力学课；新稿也明说“这是刚体运动学的基本结论，
+本稿从它出发”，没有假装证明。
+
+\cmpitem{D2}{连续体与面力}
+\cropimg{old-p21-continuum}
+\cropimg{new-p30-continuum}
+
+\oldlbl 旧稿 §9.1（p21）：“在连续体里过一点取一个截面……叫面力矢量。”没有解释连续体是什么，也没有说
+面力是“哪一侧材料对哪一侧的作用”；随后直接引用柯西应力定理。
+
+\newlbl 新稿 §6.1（p30）先写“把物体看成连续分布的物质，而不是一个个离散质点”，再给面力矢量的读法
+“法向为 $n$ 的那一侧材料，对另一侧单位面积的作用力”，然后用四面体平衡给出线性性。
+
+\bndlbl 连续体是力学模型，不是数学定义；新稿的一句解释也只够启动阅读。四面体推导是新增的中间步骤，本册
+未逐行复核其物理假设（准静态、体积力作为高阶小量忽略）；这些属于原资料与力学课范围。
+
+\clearpage
+\hdr{E}{旧稿未被否定的部分：保留它已经成立的解释}
+
+比较不等于把旧稿说成一无是处。下列内容在本册实际核对的两稿页面上都成立，且旧稿写得并不差：
+
+\begin{itemize}
+\item \textbf{§1.3 换基三步推导 + 数值核对}（旧 p3--4）。旧稿 §12 自己记录了“旧版用 $45^\circ$ 数值例子直接
+跳到 $T'=R^{\mathsf T}TR$，2026-11-04 已改成三步推导 + 核对”；本册比较的 20261105 版已含这一修正。新稿
+§0.4 保留同样的三步结构，并补了 $R^{\mathsf T}x$ 与“另一本书把 $R$ 的行当新基”的约定提醒。
+\item \textbf{§2.1 迹不变的循环性证明}（旧 p5）：一行 $\mathrm{tr}(AB)=\mathrm{tr}(BA)$ 加 $RR^{\mathsf T}=\hat1$。
+新稿 §0.5 保留同一证明。
+\item \textbf{图 1 椭球与主轴}（旧 p8）：旧稿已画出 $\lambda=3/1$ 对应的半轴 $1/\sqrt3$ 与 1，并写“半轴
+$=1/\sqrt\lambda$”。新稿图 1 保留这一读法，并加“与代入的 $u,v$ 逐项对应”。
+\item \textbf{§7.3 对称轴判据、§7.4 平行轴定理的并矢版}（旧 p18）：新稿 §4.3/§4.4 保留同一结构和三角形
+不等式验算。
+\item \textbf{§12 缺口清单}（旧 p27--28）：旧稿逐条列出课件跳过的机制/压缩/拼接/图缺，并自记“以例代证”
+的历史。这是有用的来源档案；新稿改用附录 C 与 \texttt{source-map.json}，形式不同，不能据此说旧稿没有
+来源意识。
+\end{itemize}
+
+\srcsmall{这些不是“新稿更好”的证据。它们只说明旧稿并非全面失败，比较应针对具体页面的具体差别；旧稿保留的
+优点不应为了让新稿显得更好而被删掉或贬低。}
+
+\needspace{12\baselineskip}
+\hdr{F}{仍未验证与不应声称的}
+
+\begin{enumerate}
+\item \textbf{学习者试读未发生。}不能声称已学会、已读懂或“效果更好”；本册只做页面与文字层比较。
+\item \textbf{外部目视未完成。}当前模型不支持图像输入；本册 23 处裁剪、新稿 48 页渲染、本册自身页渲染均已
+保存，需支持看图的审核者检查字体、箭头、遮挡、图注位置。文字层检查不叫目视。
+\item \textbf{覆盖面有限。}本册只比较选出的 23 处裁剪；没有逐页审计旧稿 29 页或新稿 48 页，不能据此断言
+“旧稿只有这些错”或“新稿没有其它错”。
+\item \textbf{接受的边界。}新稿的 accepted 是“documented content, math and visual scope”内的接受；
+\texttt{review\_limits} 明说未测学习改善。接受不等于教学效果已验证。
+\item \textbf{规则归因有限。}R2--R4 同时有具体问题单，无法把某处改动单独归因给 2.2.1/2.2.2 的某一条；本册
+只把规则变化当作背景，不当作效果证据。
+\item \textbf{交付。}本册 PDF 已按单份小于 25 MiB 检查；实际微信外发未在本会话执行（任务边界要求不外发），
+交付动作由外部执行。
+\item \textbf{旧稿版本。}旧稿封面印 20261103、文件版本为 20261105；本册按实际文件版本与物理页码区分，未另找
+同名更早稿，也不据封面改称版本。
+\end{enumerate}
+
+\clearpage
+\hdr{G}{本册的检查范围：文字层、页码、裁剪与编译}
+
+以下检查由脚本执行，结果逐条写入 \texttt{verification.txt}；它们证明“本册引用的页面与文字确实来自这两份
+PDF”“裁剪没有越界、锚字符串都在”“PDF 文字层与页码自洽”，不证明内容对学习者可读。
+
+\begin{itemize}
+\item 两份源 PDF 的页数、创建日期、SHA-256；旧稿 29 页、新稿 48 页与 \texttt{final-selection.json} 一致。
+\item 23 处裁剪：矩形在页面内；裁剪文字层含每条 \texttt{require} 字符串；PNG 像素尺寸与 DPI 记录在案。
+\item 本册 PDF：页数、每页文字层抽样、章节标题页位、裁剪图引用齐全、无未解析引用、日志无 Overfull/
+Missing character。
+\item 页边距：每页文字块在页面框内；图片不超出版心。
+\item 文件大小与 SHA-256；最终每页渲染数量与 PDF 页数一致。
+\end{itemize}
+
+\warnbox{\textbf{未做。}未看图：上述检查全部基于 PDF 文字层、坐标与编译日志。字体是否缺字、箭头是否遮挡、
+图注是否压线，仍需外部目视；本册不把文字层通过写成目视通过。}
+
+\clearpage
+\hdr{附录}{裁剪清单、文件清单与复现}
+
+\begingroup\small
+\begin{longtable}{@{}p{3.55cm}p{1.05cm}p{0.95cm}p{3.9cm}p{3.15cm}@{}}
+\thead{裁剪键} & \thead{来源} & \thead{页} & \thead{裁剪（pt）} & \thead{像素（200 dpi）}\\
+\hline
+\endhead
+\input{croplist.tex}
+\end{longtable}
+\endgroup
+
+{\raggedright
+\textbf{文件清单。}\texttt{comparison.tex}（本册源文件）、\texttt{cropmeta.tex}（页码/裁剪标签，由脚本生成）、
+\texttt{croplist.tex}（上表，由脚本生成）、\texttt{crops.json}（裁剪定义）、\texttt{render\_crops.py}、
+\texttt{verify\_old\_new\_math.py}、\texttt{check\_compare.py}、\texttt{figs/}（23 张裁剪）、
+\texttt{render/}（本册最终页渲染）、\texttt{verification.txt}、\texttt{交付清单.md}、\texttt{render-crops.json}、
+\texttt{old-text.txt}/\texttt{new-text.txt}（文字层工作转储，不随册交付）。\par}
+
+\textbf{复现。}\texttt{python -B render\_crops.py} → 生成 \texttt{figs/}、\texttt{cropmeta.tex}、
+\texttt{croplist.tex}；两遍 \texttt{xelatex}；\texttt{python -B verify\_old\_new\_math.py}；
+\texttt{python -B check\_compare.py --strict}。
+
+\end{document}
