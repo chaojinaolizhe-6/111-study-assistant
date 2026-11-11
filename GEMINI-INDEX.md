@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-11 2026-11-11 23:11（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-11 2026-11-11 23:16（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -382,7 +382,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（7562 个文件）
+## 3. 文件直达 URL 索引（7582 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -591,7 +591,7 @@
 - `plan/考试日程.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%80%83%E8%AF%95%E6%97%A5%E7%A8%8B.md
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 
-### subjects（2575 个）
+### subjects（2595 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -3138,11 +3138,25 @@
 - `subjects/14-大物实验/实验/2026秋季-大物实验时间安排.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/2026%E7%A7%8B%E5%AD%A3-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C%E6%97%B6%E9%97%B4%E5%AE%89%E6%8E%92.md
 - `subjects/14-大物实验/实验/Experiment3.8previewquestions.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/Experiment3.8previewquestions.pdf
 - `subjects/14-大物实验/实验/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/INDEX.md
+- `subjects/14-大物实验/实验/PreviewforExp.12-AdjustmentandApplicationofSpectrometer.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/PreviewforExp.12-AdjustmentandApplicationofSpectrometer.pdf
 - `subjects/14-大物实验/实验/PreviewforMichelsoninterferometer-2025.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/PreviewforMichelsoninterferometer-2025.pdf
 - `subjects/14-大物实验/实验/实验3.8-报告素材-中英对照-20261027.docx` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C3.8-%E6%8A%A5%E5%91%8A%E7%B4%A0%E6%9D%90-%E4%B8%AD%E8%8B%B1%E5%AF%B9%E7%85%A7-20261027.docx
 - `subjects/14-大物实验/实验/实验3.8-报告素材-中英对照-20261027.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C/%E5%AE%9E%E9%AA%8C3.8-%E6%8A%A5%E5%91%8A%E7%B4%A0%E6%9D%90-%E4%B8%AD%E8%8B%B1%E5%AF%B9%E7%85%A7-20261027.md
 - `subjects/14-大物实验/讲义/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/INDEX.md
 - `subjects/14-大物实验/讲义/fig-3.11/fig11-1-device.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.11/fig11-1-device.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-1-instrument.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-1-instrument.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-10-mirror.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-10-mirror.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-11-prism-stage.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-11-prism-stage.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-12-vertex.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-12-vertex.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-13-mindev.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-13-mindev.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-14-gratingadj.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-14-gratingadj.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-2-telescope.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-2-telescope.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-3-reticle.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-3-reticle.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-4-dial.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-4-dial.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-5-eccentricity.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-5-eccentricity.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-6-prism.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-6-prism.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-7-grating.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-7-grating.png
+- `subjects/14-大物实验/讲义/fig-3.12/fig12-9-spectra.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.12/fig12-9-spectra.png
 - `subjects/14-大物实验/讲义/fig-3.8-orig/fig3.8-1.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.8-orig/fig3.8-1.png
 - `subjects/14-大物实验/讲义/fig-3.8-orig/fig3.8-2.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.8-orig/fig3.8-2.png
 - `subjects/14-大物实验/讲义/fig-3.8-orig/fig3.8-3.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/fig-3.8-orig/fig3.8-3.png
@@ -3158,12 +3172,18 @@
 - `subjects/14-大物实验/讲义/实验3.11-迈克尔逊干涉仪-原理与流程精讲-20261106.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.11-%E8%BF%88%E5%85%8B%E5%B0%94%E9%80%8A%E5%B9%B2%E6%B6%89%E4%BB%AA-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261106.out
 - `subjects/14-大物实验/讲义/实验3.11-迈克尔逊干涉仪-原理与流程精讲-20261106.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.11-%E8%BF%88%E5%85%8B%E5%B0%94%E9%80%8A%E5%B9%B2%E6%B6%89%E4%BB%AA-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261106.pdf
 - `subjects/14-大物实验/讲义/实验3.11-迈克尔逊干涉仪-原理与流程精讲-20261106.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.11-%E8%BF%88%E5%85%8B%E5%B0%94%E9%80%8A%E5%B9%B2%E6%B6%89%E4%BB%AA-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261106.tex
+- `subjects/14-大物实验/讲义/实验3.12-分光计-原理与流程精讲-20261111.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.12-%E5%88%86%E5%85%89%E8%AE%A1-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261111.aux
+- `subjects/14-大物实验/讲义/实验3.12-分光计-原理与流程精讲-20261111.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.12-%E5%88%86%E5%85%89%E8%AE%A1-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261111.log
+- `subjects/14-大物实验/讲义/实验3.12-分光计-原理与流程精讲-20261111.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.12-%E5%88%86%E5%85%89%E8%AE%A1-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261111.out
+- `subjects/14-大物实验/讲义/实验3.12-分光计-原理与流程精讲-20261111.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.12-%E5%88%86%E5%85%89%E8%AE%A1-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261111.pdf
+- `subjects/14-大物实验/讲义/实验3.12-分光计-原理与流程精讲-20261111.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.12-%E5%88%86%E5%85%89%E8%AE%A1-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261111.tex
 - `subjects/14-大物实验/讲义/实验3.8-磁滞回线-原理与流程精讲-20261027.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.8-%E7%A3%81%E6%BB%9E%E5%9B%9E%E7%BA%BF-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261027.aux
 - `subjects/14-大物实验/讲义/实验3.8-磁滞回线-原理与流程精讲-20261027.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.8-%E7%A3%81%E6%BB%9E%E5%9B%9E%E7%BA%BF-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261027.log
 - `subjects/14-大物实验/讲义/实验3.8-磁滞回线-原理与流程精讲-20261027.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.8-%E7%A3%81%E6%BB%9E%E5%9B%9E%E7%BA%BF-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261027.out
 - `subjects/14-大物实验/讲义/实验3.8-磁滞回线-原理与流程精讲-20261027.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.8-%E7%A3%81%E6%BB%9E%E5%9B%9E%E7%BA%BF-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261027.pdf
 - `subjects/14-大物实验/讲义/实验3.8-磁滞回线-原理与流程精讲-20261027.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AE%B2%E4%B9%89/%E5%AE%9E%E9%AA%8C3.8-%E7%A3%81%E6%BB%9E%E5%9B%9E%E7%BA%BF-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%B5%81%E7%A8%8B%E7%B2%BE%E8%AE%B2-20261027.tex
 - `subjects/14-大物实验/课件/Exp.11TheAdjustmentofMichelsonInterferometer.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AF%BE%E4%BB%B6/Exp.11TheAdjustmentofMichelsonInterferometer.pdf
+- `subjects/14-大物实验/课件/Exp.12.AdjustmentandApplicationofSpectrometer.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AF%BE%E4%BB%B6/Exp.12.AdjustmentandApplicationofSpectrometer.pdf
 - `subjects/14-大物实验/课件/Experiment3.8.MagnetizationCurveandHysteresisLoop.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AF%BE%E4%BB%B6/Experiment3.8.MagnetizationCurveandHysteresisLoop.pdf
 - `subjects/14-大物实验/课件/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/14-%E5%A4%A7%E7%89%A9%E5%AE%9E%E9%AA%8C/%E8%AF%BE%E4%BB%B6/INDEX.md
 - `subjects/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/INDEX.md
