@@ -1,0 +1,1873 @@
+%=====================================================================
+% 光学（02）外教 Lecture 2 · Polarization 精讲讲义
+% 来源：subjects/02-光学/课件/Polarization L2.pdf（60 页）
+% 编译：xelatex 两遍
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{graphicx}
+\graphicspath{{fig-l2/}}
+% theme 的 \tabmid 在 tabular 内会把横线塞进首格，这里改成 \noalign 形式
+\renewcommand{\tabmid}{\noalign{\vskip 2pt{\color{petal}\hrule height 0.5pt}\vskip 3pt}}
+\settags{Polarization · L2 精讲}{光学（02）· 外教 Lecture 2}
+% 节标题跟至少 4 行正文，避免标题孤零零落在页底
+\let\subhdrtheme\subhdr
+\renewcommand{\subhdr}[1]{\needspace{4\baselineskip}\subhdrtheme{#1}}
+% § 级标题同样跟一段正文走
+\let\hdrorig\hdr
+\renewcommand{\hdr}[2]{\needspace{11\baselineskip}\hdrorig{#1}{#2}}
+
+\begin{document}
+
+\doctitle{光的偏振（第二讲）：把偏振算出来}
+{椭圆 · 琼斯矢量 · 波片 · 布儒斯特 · 斯托克斯参数 · 旋光与光弹}
+{依据：\texttt{Polarization L2.pdf}（60 页，Lecture 2）\\
+作业：课件 p60 的 Problem 1--3（题干与详解见 §15 与附录 B）\\
+光学（02）｜整理日期 2026-11-12}
+
+%=====================================================================
+\hdr{§0}{这一讲要解决什么问题}
+
+上一讲（Lecture 1）回答的是「偏振是什么、从哪来」：光是横波，电场在垂直于传播方向的平面里怎么摆，
+就叫什么偏振；二向色性、反射、散射、双折射四条路都能造出偏振光。这一讲把同一件事彻底定量化，
+并且换了一套语言来讲它。
+
+\textbf{三条主线。}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.0em]
+\item \textbf{怎么描述。}先用几何：两个正交分量加一个相位差，描出一个椭圆（§1）。再用代数：
+把这两个分量装进一个复二维矢量，偏振态就变成一个点，光学元件变成一个 $2\times2$ 矩阵（§2）。
+\item \textbf{怎么产生、怎么改变。}偏振片按 Malus 定律削振幅（§3--§4）；双折射晶体把两个分量错开一段光程，
+做成波片（§5）；界面反射在布儒斯特角上只放 s 分量出去（§6）。
+\item \textbf{怎么测量、怎么用。}转动检偏器能读出偏振态，四个斯托克斯参数把它写成可测的强度组合（§8）；
+这些参数对应球面上的一个点，元件对应 $4\times4$ 的穆勒矩阵（§9）。最后两条应用线：旋光测糖浓度（§11）、
+光弹看应力分布（§12）。
+\end{enumerate}
+
+\textbf{这一讲的作业只用到三条公式}：自然光过偏振片减半、Malus 定律、波片相位差 $\Delta\varphi=2\pi|n_e-n_o|d/\lambda$，
+外加布儒斯特角 $\tan\theta_B=n_2/n_1$。所以如果时间紧，先读 §3、§4、§5、§6 四节，
+把作业做出来；§7--§12 是这节课的正课内容，概念题会从这里出。
+
+
+\needspace{12\baselineskip}
+\subhdr{0.1 记号约定（全篇统一，遇到别的书不一样时以这里为准）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.4cm}p{11.6cm}@{}}
+\thead{记号} & \thead{含义} \\
+\tabmid
+$\vect E$, $E_x$, $E_y$ & 电场矢量及其两个正交分量；只谈电场，因为推动电子的是它 \\
+\tabmid
+$a_x$, $a_y$ & 两个分量的振幅（非负实数） \\
+\tabmid
+$\tau=kz-\omega t$ & 相位变量；固定 $z$ 时它对时间求导为 $-\omega$ \\
+\tabmid
+$\delta=\delta_y-\delta_x$ & $y$ 分量相对 $x$ 分量的相位差；$\delta>0$ 表示 $y$ 在时间上落后（$y$ 是慢轴） \\
+\tabmid
+$s$, $p$ & $s$：电场\emph{垂直}于入射面（德语 \emph{senkrecht}）；$p$：电场\emph{平行}于入射面（\emph{parallel}） \\
+\tabmid
+$\Delta\varphi$ & 波片让两分量产生的相位延迟，$\Delta\varphi=\dfrac{2\pi}{\lambda}|n_e-n_o|d$ \\
+\tabmid
+$\psi$, $\chi$ & 椭圆的方位角（长轴与 $x$ 轴夹角）与椭圆率角 \\
+\tabmid
+$S_0,S_1,S_2,S_3$ & 斯托克斯参数；$s_i=S_i/S_0$ 为归一化值 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\needspace{19\baselineskip}
+\subhdr{0.2 页码路线：60 页课件怎么对应到本讲义}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.1cm}p{6.6cm}p{6.3cm}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义} \\
+\tabmid
+p2--p5 & 波动方程、偏振椭圆、三种偏振态 & §1 \\
+\tabmid
+p6, p15 & 琼斯矢量、波片的琼斯矩阵 & §2 \\
+\tabmid
+p7--p8 & 产生偏振：二向色性、散射、双折射 & §3 \\
+\tabmid
+p9 & Malus 定律的推导、三片偏振片 & §4（课件 p52--p53 例题） \\
+\tabmid
+p10--p15 & 双折射、光轴、正负晶体、波片厚度 & §5 \\
+\tabmid
+p16--p22 & 菲涅耳公式、反射率、布儒斯特角、偏振度 & §6（课件 p54--p56 例题） \\
+\tabmid
+p23--p24 & 圆偏振与椭圆偏振的产生、椭圆率角 & §7 \\
+\tabmid
+p25--p34 & 转动检偏器、斯托克斯参数、偏振度、测量 & §8 \\
+\tabmid
+p35--p37 & 庞加莱球、穆勒矩阵 & §9 \\
+\tabmid
+p38--p40 & 菲涅耳--阿拉戈三定律 & §10 \\
+\tabmid
+p41--p45 & 旋光现象、Biot 定律、圆双折射 & §11 \\
+\tabmid
+p46--p48 & 光弹性、应力--光学定律、条纹级数 & §12 \\
+\tabmid
+p49--p51 & 三个 FAQ & §13 \\
+\tabmid
+p52--p59 & 三道例题（三片偏振片、布儒斯特、波片） & §4.4、§6.8、§14 \\
+\tabmid
+p60 & 作业三题 & §15、附录 B \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+%=====================================================================
+\hdr{§1}{偏振的几何：两个分量 + 一个相位差 = 一个椭圆}
+
+\subhdr{1.1 平面波的写法：$\delta$ 到底是什么}
+
+沿 $z$ 传播的单色平面波，电场可以在 $x$、$y$ 两个方向都有分量（$z$ 方向没有，
+因为光在真空中是横波）：
+
+\[
+\vect E(z,t)=a_x\cos(kz-\omega t+\delta_x)\,\hat{\vect x}
++a_y\cos(kz-\omega t+\delta_y)\,\hat{\vect y}.
+\]
+
+两个分量各自是一个简谐振动，频率相同，只是振幅和初相可以不同。把相位差的公共部分提出来，
+记 $\tau=kz-\omega t+\delta_x$、$\delta=\delta_y-\delta_x$，就得到课件 p2 的写法：
+
+\[
+E_x=a_x\cos\tau,\qquad E_y=a_y\cos(\tau+\delta).
+\]
+
+\textbf{$\delta$ 是相位差，不是时间差，也不是角度差。}它决定两件事：
+两个分量谁先到峰值（谁"落后"），以及在 $\tau$ 变化一个周期时两个分量如何配合。
+$|\delta|$ 不同，合成出来的轨迹形状就不同——这就是偏振态的全部内容。
+
+\subhdr{1.2 消去 $\tau$：椭圆方程的来历}
+
+$E_x$、$E_y$ 都通过同一个 $\tau$ 变化，所以它们的端点轨迹一定在一条曲线上。把 $\tau$ 消掉就能
+看清这条曲线。由第一式
+
+\[
+\cos\tau=\frac{E_x}{a_x},\qquad \sin\tau=\pm\sqrt{1-\frac{E_x^2}{a_x^2}},
+\]
+
+第二式展开：
+
+\[
+\frac{E_y}{a_y}=\cos\tau\cos\delta-\sin\tau\sin\delta
+=\frac{E_x}{a_x}\cos\delta\mp\sin\delta\sqrt{1-\frac{E_x^2}{a_x^2}}.
+\]
+
+把带根号的一项留在右边、两边平方，根号就被消掉：
+
+\[
+\left(\frac{E_y}{a_y}-\frac{E_x}{a_x}\cos\delta\right)^2
+=\sin^2\delta\left(1-\frac{E_x^2}{a_x^2}\right).
+\]
+
+左边展开、右边移项、再两边同除以 $\sin^2\delta$，整理成对称的形式就是课件 p3 的偏振椭圆方程：
+
+\[
+\boxed{\ \left(\frac{E_x}{a_x}\right)^2+\left(\frac{E_y}{a_y}\right)^2
+-2\frac{E_xE_y}{a_xa_y}\cos\delta=\sin^2\delta\ }
+\]
+
+这是一个二次曲线。把它看成 $E_x$、$E_y$ 的二次型，判别式为
+$-4\left(\frac{1}{a_x^2a_y^2}-\frac{\cos^2\delta}{a_x^2a_y^2}\right)=-\frac{4\sin^2\delta}{a_x^2a_y^2}\le 0$，
+所以它总是椭圆（$\delta\neq 0,\pi$ 时）或退化成一条线段（$\delta=0,\pi$ 时）。
+换句话说：\textbf{任何一束完全偏振的单色光，端点轨迹都是椭圆（圆和直线是它的两个特例）}，
+区别只在于椭圆的形状、朝向和绕行方向。
+
+\needspace{8\baselineskip}
+\subhdr{1.3 三种特例}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.1cm}p{3.0cm}p{6.7cm}@{}}
+\thead{条件} & \thead{轨迹} & \thead{为什么} \\
+\tabmid
+$\delta=0$ & 直线，斜率 $+a_y/a_x$ & 两分量同相，$E_y=(a_y/a_x)E_x$ \\
+\tabmid
+$\delta=\pi$ & 直线，斜率 $-a_y/a_x$ & 两分量反相，$E_y=-(a_y/a_x)E_x$ \\
+\tabmid
+$\delta=\pm\pi/2$，且 $a_x=a_y$ & 圆 & 椭圆方程化为 $E_x^2+E_y^2=a^2$ \\
+\tabmid
+其他 $\delta$，或 $a_x\neq a_y$ & 椭圆 & 一般情形 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\begin{center}
+\begin{minipage}{0.70\linewidth}
+\centering
+\includegraphics[width=\linewidth]{fig1_states.png}\\[2pt]
+{\small\color{inkgray}图 1\quad 三种偏振态的电场轨迹（固定 $z$，金色箭头指向时间增加）。}
+\end{minipage}
+\end{center}
+
+关于图 1 要提醒一句：画的是 $E_x$--$E_y$ 平面，箭头方向按「时间增加」画。这一点很容易搞错，
+因为 $E_x=a\cos\tau$ 中的 $\tau=kz-\omega t$ 随时间\emph{减小}，所以参数 $\tau$ 增大时对应的是时间倒退。
+课件 p4 的动画按时间画，方向是对的；自己推的时候一定要先确认这一点。
+
+\subhdr{1.4 绕行方向与手性：三套约定，别混用}
+
+把 $z$ 轴定成指向读者，$x$ 向右、$y$ 向上，则 $\delta=+\pi/2$（$y$ 落后 $90^\circ$）对应
+$E_x=a\cos\omega t$、$E_y=a\sin\omega t$：$t=0$ 时在 $+x$，稍后转向 $+y$，即\textbf{逆时针}。
+不同的书给这个态起的名字不同，原因只是「从哪边看」和「谁算正号」不同：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.7cm}p{5.0cm}p{4.5cm}@{}}
+\thead{约定} & \thead{正号定义} & \thead{$\delta=+\pi/2$ 时叫什么} \\
+\tabmid
+光学惯用（Born--Wolf、Hecht、赵凯华） & 迎着光看（观察者面向光源） & 左旋（逆时针） \\
+\tabmid
+IEEE / 雷达 / 椭偏惯用 & 沿传播方向看，顺时针为右旋 & 右旋 \\
+\tabmid
+量子光学（光子自旋） & 与光子自旋投影符号挂钩 & 视 $\sigma^{\pm}$ 定义而定 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\textbf{实用规则}：写答案时先写「等幅、相差 $90^\circ$、圆偏振」，再在括号里注明所用约定。
+只写「左旋」或「右旋」而不说约定，在不同教材之间必然被扣分——课件 p24 自己也提了这一条。
+
+\subhdr{1.5 教学小例：$\delta=0$ 与 $\delta=\pi$ 给出两条不同的直线}
+
+取 $a_x=2$、$a_y=1$。$\delta=0$ 时 $E_y=E_x/2$，轨迹是过原点、斜率 $1/2$ 的直线，
+与 $x$ 轴夹角 $\arctan(1/2)=26.57^\circ$；$\delta=\pi$ 时 $E_y=-E_x/2$，轨迹是斜率 $-1/2$ 的直线，
+夹角 $-26.57^\circ$。
+
+两条都是线偏振，但方向不同。这说明一件事：\textbf{振幅前面多一个负号，不是"相位变了 $180^\circ$ 所以还是同一条线"，
+而是偏振方向发生镜像翻转}。做判断题时若看到「$\delta=\pi$ 的线偏振与 $\delta=0$ 的完全相同」，这句是错的。
+
+%=====================================================================
+\hdr{§2}{琼斯矢量：把偏振态写成一个复矢量}
+
+\subhdr{2.1 为什么要换成复数}
+
+§1 的两个实余弦写起来占地方，做一次「过偏振片」就要展开一次三角函数。用复数可以把振幅和相位
+一起装进一个二维矢量：
+
+\[
+\vect J=\begin{pmatrix}a_xe^{i\delta_x}\\ a_ye^{i\delta_y}\end{pmatrix},
+\qquad
+\vect E(z,t)=\mathrm{Re}\left\{\vect J\,e^{i(kz-\omega t)}\right\}.
+\]
+
+约定 $\vect J$ 归一化，即 $\vect J^{\dagger}\vect J=a_x^2+a_y^2=1$（$\dagger$ 表示共轭转置）。
+归一化的好处是总强度直接是 $1$，比较不同态时不用再除。
+
+\textbf{整体相位没有物理意义。}$\vect J$ 乘上任意 $e^{i\phi}$ 描述同一个偏振态，因为
+$\mathrm{Re}\{\vect J e^{i\phi}e^{i(kz-\omega t)}\}$ 只是把时间原点挪了一下。
+有意义的只有两分量之间的相对相位 $\delta=\delta_y-\delta_x$。
+
+\needspace{10\baselineskip}
+\subhdr{2.2 常用态的琼斯矢量}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.4cm}p{3.6cm}p{5.6cm}@{}}
+\thead{偏振态} & \thead{$\vect J$} & \thead{说明} \\
+\tabmid
+水平线偏振（沿 $x$） & $\begin{pmatrix}1\\0\end{pmatrix}$ & $a_y=0$ \\
+\tabmid
+竖直线偏振（沿 $y$） & $\begin{pmatrix}0\\1\end{pmatrix}$ & $a_x=0$ \\
+\tabmid
+$+45^\circ$ 线偏振 & $\dfrac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}$ & $a_x=a_y$，$\delta=0$ \\
+\tabmid
+$-45^\circ$ 线偏振 & $\dfrac{1}{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix}$ & $a_x=a_y$，$\delta=\pi$ \\
+\tabmid
+右旋圆偏振（IEEE 记法） & $\dfrac{1}{\sqrt2}\begin{pmatrix}1\\i\end{pmatrix}$ & $a_x=a_y$，$\delta=+\pi/2$ \\
+\tabmid
+左旋圆偏振（IEEE 记法） & $\dfrac{1}{\sqrt2}\begin{pmatrix}1\\-i\end{pmatrix}$ & $a_x=a_y$，$\delta=-\pi/2$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{2.3 元件就是矩阵}
+
+偏振元件对光的作用是线性的（电场线性叠加），所以每个元件都能写成一个 $2\times2$ 复矩阵 $\vect M$，
+出射态 $\vect J_{\text{out}}=\vect M\vect J_{\text{in}}$。两个最常用的：
+
+\textbf{透振方向与 $x$ 轴成 $\theta$ 的理想线偏振片}
+\[
+\vect P(\theta)=
+\begin{pmatrix}
+\cos^2\theta & \sin\theta\cos\theta\\[2pt]
+\sin\theta\cos\theta & \sin^2\theta
+\end{pmatrix}.
+\]
+
+\textbf{快轴沿 $x$、延迟量为 $\Delta\varphi$ 的波片}（课件 p15 用对称写法，两者只差整体相位）
+\[
+\vect W=\begin{pmatrix}1&0\\0&e^{i\Delta\varphi}\end{pmatrix}
+\quad\text{或}\quad
+\vect W'=\begin{pmatrix}e^{i\Delta\varphi/2}&0\\0&e^{-i\Delta\varphi/2}\end{pmatrix}.
+\]
+
+波片矩阵对角，意思是它\emph{不改变两个分量各自的振幅，只改变它们的相对相位}。这一点记住，
+后面 §5 的所有结论（波片不改强度、半波片转 $2\alpha$、四分之一波片把线变圆）都是它的推论。
+
+\subhdr{2.4 教学小例：用矩阵重算 Malus 定律}
+
+设入射是 $+45^\circ$ 线偏振 $\vect J_{\text{in}}=\frac{1}{\sqrt2}(1,1)^{T}$，
+经过透振方向 $\theta=30^\circ$ 的偏振片：
+
+\[
+\vect P(30^\circ)=
+\begin{pmatrix}
+0.75 & 0.4330\\ 0.4330 & 0.25
+\end{pmatrix},
+\qquad
+\vect J_{\text{out}}=\frac{1}{\sqrt2}
+\begin{pmatrix}0.75+0.4330\\ 0.4330+0.25\end{pmatrix}
+=\frac{1}{\sqrt2}\begin{pmatrix}1.183\\ 0.683\end{pmatrix}.
+\]
+
+强度 $I_{\text{out}}=|\vect J_{\text{out}}|^2=\frac{1}{2}(1.183^2+0.683^2)
+=\frac{1}{2}(1.3995+0.4665)=0.933$。
+同一件事用 Malus 定律算：入射偏振方向与透振方向相差 $45^\circ-30^\circ=15^\circ$，
+$I=I_0\cos^2 15^\circ=0.933I_0$。两者一致。
+
+这个例子说明：矩阵方法与「投影后平方」是同一件事的两种写法，不是两套理论。
+考试时用 Malus 更快；遇到「偏振片后再来一片波片」这种组合，矩阵法才不会乱。
+
+\subhdr{2.5 琼斯矢量的边界}
+
+琼斯矢量只能描述\textbf{完全偏振、且彼此相干}的光。自然光、部分偏振光没有确定的 $\delta$，
+写不出一个 $\vect J$——这正是 §8 要引入斯托克斯参数的原因。反过来，只要光是完全偏振的，
+琼斯矢量就够用，而且比斯托克斯参数省事（$2\times2$ 对 $4\times4$）。
+
+%=====================================================================
+\hdr{§3}{产生偏振的四条路}
+
+课件 p7--p8 把四条路并排给出，这一节只讲清每条路的「机制一句话」和「用哪个公式」，
+其中双折射与反射留到 §5、§6 细讲。
+
+\subhdr{3.1 选择性吸收（二向色性）}
+
+某些材料对两个正交振动方向的吸收本领不同：一个方向被大量吸收，另一个方向几乎原样通过。
+这样的片子就是偏振片。入射电场与透振方向成 $\theta$ 时，透过的是它的投影：
+
+\[
+E_{\text{trans}}=E_0\cos\theta
+\quad\Longrightarrow\quad
+I_{\text{trans}}=I_0\cos^2\theta .
+\]
+
+这就是 Malus 定律（§4 细讲）。自然光入射时，两个正交分量各占一半强度，透过后只剩一个分量，
+故 $I=I_0/2$。
+
+\subhdr{3.2 散射：瑞利散射为什么让天空偏振}
+
+空气分子里的电子被入射电场推着振荡，像一个极小的偶极天线，向四周再辐射。
+偶极天线沿自己的振动方向不辐射，垂直于振动方向辐射最强，所以散射光的强度正比于 $\sin^2\Theta$
+（$\Theta$ 是从偶极轴量起的角度）。自然光可以拆成两个等强、不相干的正交分量，各自按自己的
+$\sin^2\Theta$ 散射，于是散射光变成部分偏振。课件 p8 给的公式是
+
+\[
+P=\frac{1-\cos^2\theta_s}{1+\cos^2\theta_s}
+\]
+
+其中 $\theta_s$ 是散射角（入射方向与观察方向之间的夹角）。三个数值可以手算核对：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{3.2cm}p{7.8cm}@{}}
+\thead{散射角 $\theta_s$} & \thead{偏振度 $P$} & \thead{物理图像} \\
+\tabmid
+$0^\circ$ 或 $180^\circ$ & $0$ & 顺着入射方向看，两个分量的散射强度一样，没有偏振 \\
+\tabmid
+$45^\circ$ & $1/3$ & 部分偏振 \\
+\tabmid
+$60^\circ$ & $0.6$ & 更接近完全偏振 \\
+\tabmid
+$90^\circ$ & $1$ & 只剩垂直于「入射方向—观察方向」平面的那个分量，100\% 线偏振 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+这就是「天空在离太阳 $90^\circ$ 的方向上偏振最强」的来历，也是蜜蜂、蚂蚁靠天空偏振导航的物理基础。
+
+\subhdr{3.3 双折射（预告 §5）}
+
+各向异性晶体里，一束光会劈成两束：o 光与 e 光，偏振方向互相垂直，传播速度一般不同。
+利用这个速度差，可以把两个分量错开正好四分之一波长，做成波片。
+
+\subhdr{3.4 反射与折射（预告 §6）}
+
+在布儒斯特角上，p 分量的反射率为零，反射光里只剩 s 分量，是 100\% 线偏振。
+这是偏振太阳镜和摄影偏振镜的原理。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.0cm}p{4.8cm}@{}}
+\thead{方法} & \thead{机制一句话} & \thead{代表器件／现象} \\
+\tabmid
+选择性吸收 & 一个振动方向被吸收掉 & Polaroid 偏振片、电气石 \\
+\tabmid
+散射 & 偶极再辐射沿振动方向为零 & 蓝天、蜜蜂导航 \\
+\tabmid
+双折射 & 两个正交分量速度不同 & 方解石、波片、尼科尔棱镜 \\
+\tabmid
+反射 & 布儒斯特角上 $R_p=0$ & 水面反光、偏振太阳镜 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+%=====================================================================
+\hdr{§4}{Malus 定律与「三片偏振片」}
+
+\subhdr{4.1 自然光过第一片为什么正好一半}
+
+自然光（非偏振光）的定义是：在垂直于传播方向的平面里，各个方向的机会均等，且两个正交分量之间
+没有固定的相位关系（不相干）。把它拆成沿透振方向与垂直于透振方向的两个分量，两者的平均强度相等，
+各为 $I_0/2$；偏振片只放行前者、吸收后者，所以透射强度
+
+\[
+I_1=\frac{I_0}{2}.
+\]
+
+这里有一个必须强调的区别：\textbf{这一步是"减半"，不是"乘 $\cos^2\theta$"}。
+Malus 定律的前提是入射光\emph{已经是线偏振}；自然光没有「偏振方向」，谈不上和透振方向的夹角。
+把 $I_0\cos^2 30^\circ$ 用在自然光上，是这类题最典型的错法。
+
+\subhdr{4.2 Malus 定律}
+
+入射线偏振光的振幅为 $E_0$，偏振方向与透振方向成 $\theta$。透过的电场是原电场在透振方向上的投影：
+
+\[
+E=E_0\cos\theta
+\quad\Longrightarrow\quad
+I\propto E^2=I_0\cos^2\theta .
+\]
+
+这个式子的两个极端正好对应两种常识：$\theta=0$ 全过，$\theta=90^\circ$ 全挡（正交偏振片，
+即「消光位置」）。检偏器找消光就是靠这一条。
+
+\subhdr{4.3 三片偏振片：为什么中间插一片反而亮}
+
+设入射为自然光 $I_0$，三片透振方向依次为 $0^\circ$、$\theta$、$90^\circ$。第一步减半，之后每一步乘 $\cos^2$：
+
+\[
+I_3=\frac{I_0}{2}\cos^2\theta\cos^2(90^\circ-\theta)
+=\frac{I_0}{2}\cos^2\theta\sin^2\theta
+=\frac{I_0}{8}\sin^2 2\theta .
+\]
+
+第一片与第三片正交，若没有中间那片则透射为零；插上中间那片后透射不为零，
+在 $\theta=45^\circ$ 时最大：
+
+\[
+I_{3,\max}=\frac{I_0}{8}\qquad(\theta=45^\circ).
+\]
+
+物理图像：第一片把光变成沿 $0^\circ$ 的线偏振；第二片只让它在 $\theta$ 方向的分量通过，
+出射光已经变成沿 $\theta$ 的线偏振；第三片再取它在 $90^\circ$ 方向的分量。
+\textbf{每一次投影都是「换个方向、折一次强度」，两次投影合起来反而不为零}——这就是「三片比两片亮」的全部秘密。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.0cm}p{4.2cm}p{6.6cm}@{}}
+\thead{$\theta$} & \thead{$I_3/I_0$} & \thead{备注} \\
+\tabmid
+$0^\circ$ & $0$ & 第二片与第一片同向，第三片全挡 \\
+\tabmid
+$30^\circ$ & $3/32=0.0938$ & 课件 p53 的数字：$I_0=100$ 时 $9.375$ \\
+\tabmid
+$45^\circ$ & $1/8=0.125$ & 最大值 \\
+\tabmid
+$90^\circ$ & $0$ & 第二片与第三片同向 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{4.4 教学示范：课件 p52--p53 的完整过程}
+
+\textbf{（这是课件自带的例题，用来示范写法；它与本次作业的题不同，可以放心当范例看。）}
+
+\qstem{（课件 p52）Unpolarized light $I_0=100\ \mathrm{W/m^2}$ passes through three ideal linear polarizers.
+The first is vertical, the second is rotated by $\theta=30^\circ$, the third is horizontal.
+(a) Find the intensity after each polarizer. (b) Find the $\theta$ that maximizes the final intensity,
+and that maximum.}
+
+\textbf{第一步（第一片减半）}\quad
+自然光过第一片，出射沿竖直方向线偏振：
+\[
+I_1=\frac{I_0}{2}=50\ \mathrm{W/m^2}.
+\]
+
+\textbf{第二步（第二片，与第一片差 $30^\circ$）}\quad
+\[
+I_2=I_1\cos^2 30^\circ=50\times\frac34=37.5\ \mathrm{W/m^2}.
+\]
+
+\textbf{第三步（第三片，与第二片差 $90^\circ-30^\circ=60^\circ$）}\quad
+注意这里用的是「与第二片的夹角」，不是「与第一片的夹角」：
+\[
+I_3=I_2\cos^2 60^\circ=37.5\times\frac14=9.375\ \mathrm{W/m^2}.
+\]
+
+\textbf{第四步（求最佳 $\theta$）}\quad
+把一般式写出来再配方：
+\[
+I_3(\theta)=\frac{I_0}{2}\cos^2\theta\sin^2\theta=\frac{I_0}{8}\sin^2 2\theta
+\ \Longrightarrow\
+\theta=45^\circ,\quad I_{3,\max}=\frac{100}{8}=12.5\ \mathrm{W/m^2}.
+\]
+
+\subhdr{4.5 三条最容易丢分的错法}
+
+\warnbox{
+\textbf{错法 1：对自然光用 $\cos^2$。}$1200\cos^2 30^\circ=900$ 这种数是错的，正确是 $1200/2=600$。
+
+\textbf{错法 2：角度相加。}$30^\circ$ 与 $45^\circ$ 是\emph{相邻两片之间}的夹角，不是 $75^\circ$。
+光过第二片之后，振动方向已经跟着第二片走，第三片只跟第二片比。
+
+\textbf{错法 3：把「三片」当成「两片加衰减片」。}中间那片不是衰减，它把偏振方向转了一次；
+去掉它，第一片与第三片正交，透射为零。
+}
+
+%=====================================================================
+%=====================================================================
+\hdr{§5}{双折射与波片：让两个分量错开一段光程}
+
+\subhdr{5.1 光轴、o 光、e 光}
+
+单轴晶体里有一个特殊方向叫\textbf{光轴}。沿着光轴传播时，任何偏振方向的速度都相同，
+不会发生双折射；一旦传播方向与光轴有夹角，一束光就分成两束，偏振方向互相垂直：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{o 光（ordinary）}：偏振方向\emph{垂直}于光轴。它感受到的折射率永远是 $n_o$，
+与传播方向无关。
+\item \textbf{e 光（extraordinary）}：偏振方向在「光轴与传播方向构成的平面」内，
+它感受到的折射率 $n_e(\theta)$ 与传播方向和光轴的夹角 $\theta$ 有关。
+\end{itemize}
+
+$n_e(\theta)$ 的精确式（选读，作业不用，但能解释为什么波片要「垂直于光轴切割」）：
+
+\[
+\frac{1}{n_e^2(\theta)}=\frac{\cos^2\theta}{n_o^2}+\frac{\sin^2\theta}{n_e^2}.
+\]
+
+沿光轴 $\theta=0$ 时 $n_e(0)=n_o$——两种偏振速度相同，没有双折射；垂直光轴 $\theta=90^\circ$ 时
+$n_e(90^\circ)=n_e$，这就是主折射率 $n_e$。所以「光垂直光轴入射」时两个分量的折射率差正好是
+$|n_e-n_o|$，差值最大，波片最薄最好用。本次作业里的「cut so that light propagates perpendicular
+to the optic axis」就是这个意思。
+
+\subhdr{5.2 正晶体与负晶体、快轴与慢轴}
+
+$v=c/n$：折射率大的方向光走得慢。由此分两类（课件 p13）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.4cm}p{2.6cm}p{3.4cm}p{4.6cm}@{}}
+\thead{类型} & \thead{条件} & \thead{谁快} & \thead{快轴／慢轴} \\
+\tabmid
+正晶体 & $n_e>n_o$ & o 光快，e 光慢 & 垂直光轴方向为快轴，光轴本身为慢轴 \\
+\tabmid
+负晶体 & $n_e<n_o$ & e 光快，o 光慢 & 光轴为快轴 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+石英是正晶体（$n_o=1.544<n_e=1.553$）；方解石是负晶体（$n_o=1.658>n_e=1.486$）。
+\textbf{判断口诀}：先比 $n_e$ 与 $n_o$，大的那个方向慢；「快轴」永远是折射率小的那个轴。
+
+\subhdr{5.3 波面的形状：正晶体椭球在球内（订正课件 p14）}
+
+把晶体里一点发出的光波面画出来：o 光各方向速度相同，波面是\textbf{球}；e 光速度随方向变，
+波面是绕光轴旋转的\textbf{椭球}。两个波面沿光轴方向相切（沿光轴两种偏振速度相同）。
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{fig3_crystals.png}\\[2pt]
+{\small\color{inkgray}图 2\quad 正、负单轴晶体的波面。相切点始终在光轴方向；椭球在球内还是球外，
+由 $v_e$ 与 $v_o$ 谁大决定。}
+\end{center}
+
+\warnbox{
+\textbf{课件 p14 这一页要小心。}它的文字说：「正晶体：椭球沿光轴拉长（prolate），
+在赤道处位于球面之外，两极相切」，并把「拉伸」当成正晶体的标志。这与它自己 p13 的结论矛盾：
+正晶体 $n_e>n_o\Rightarrow v_e<v_o$，垂直光轴方向上 e 光更慢、走得更短，所以 e 波面应当落在
+o 波面\emph{里面}。按图 2：(a) 正晶体，椭球在球内；(b) 负晶体，椭球在球外。
+
+混淆的来源很可能是把两个不同的曲面搞混了：课本里还画「折射率椭球（indicatrix）」，
+它的半轴是 $n_o,n_o,n_e$，正晶体沿光轴的半轴 $n_e$ 更长，确实是「沿光轴拉长」的。
+但那是折射率的图，不是波面（速度）的图，两者沿光轴的拉长/压扁恰好相反。
+考试若问「正晶体波面与球面的位置关系」，按速度判：\emph{在球内}。
+}
+
+\subhdr{5.4 相位延迟与三种波片}
+
+光穿过厚度 $d$ 的晶片，两个分量走过的光程分别是 $n_od$ 与 $n_ed$，光程差为 $|n_e-n_o|d$。
+把它换算成相位差：
+
+\[
+\Delta\varphi=\frac{2\pi}{\lambda}\,|n_e-n_o|\,d .
+\]
+
+$\Delta\varphi$ 叫\textbf{相位延迟}（retardation）。\textbf{波片不改变两个分量各自的振幅，
+也不改变总强度，只改变它们的相对相位}——这一点是 §2.3 里波片矩阵是对角矩阵的直接后果。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.2cm}p{2.2cm}p{3.2cm}p{4.4cm}@{}}
+\thead{波片} & \thead{$\Delta\varphi$} & \thead{最小厚度} & \thead{对线偏振的作用} \\
+\tabmid
+全波片 & $2\pi$ & $\lambda/|n_e-n_o|$ & 偏振态不变 \\
+\tabmid
+半波片（$\lambda/2$） & $\pi$ & $\lambda/(2|n_e-n_o|)$ & 线偏振仍是线偏振，方向转过 $2\alpha$ \\
+\tabmid
+四分之一波片（$\lambda/4$） & $\pi/2$ & $\lambda/(4|n_e-n_o|)$ & $45^\circ$ 线偏振 $\leftrightarrow$ 圆偏振 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+「最小厚度」的意思是取 $m=0$ 的那一片。更一般地，满足 $\Delta\varphi=(2m+1)\pi/2$ 的厚度
+都是四分之一波片，但最薄的那片最常用（越厚越难加工，而且对波长更敏感）。
+
+\subhdr{5.5 半波片为什么把方向转 $2\alpha$}
+
+这份推导只用矩阵，不用三角函数，值得记住。设入射是线偏振，振动方向与快轴成 $\alpha$：
+
+\[
+\vect J_{\text{in}}=\begin{pmatrix}\cos\alpha\\ \sin\alpha\end{pmatrix},
+\qquad
+\vect W_{\lambda/2}=\begin{pmatrix}1&0\\0&e^{i\pi}\end{pmatrix}
+=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+
+\[
+\vect J_{\text{out}}=\begin{pmatrix}\cos\alpha\\ -\sin\alpha\end{pmatrix}
+=\begin{pmatrix}\cos(-\alpha)\\ \sin(-\alpha)\end{pmatrix}.
+\]
+
+出射仍是线偏振，但方向从 $+\alpha$ 变成 $-\alpha$，也就是相对快轴\emph{镜像}了，
+等价于\textbf{整体转过 $2\alpha$}。这就是课件 p10 那句「rotates the plane of linear polarization
+by $2\alpha$」的来历。
+
+同样的算法可以解释四分之一波片：入射 $\alpha=45^\circ$ 时 $\vect J_{\text{in}}=\frac{1}{\sqrt2}(1,1)^{T}$，
+出射 $\vect J_{\text{out}}=\frac{1}{\sqrt2}(1,e^{i\pi/2})^{T}=\frac{1}{\sqrt2}(1,i)^{T}$，
+两个分量等幅、相差 $90^\circ$，即圆偏振。
+
+\subhdr{5.6 教学小例：三句话记住三个数}
+
+取石英 $\lambda=589\ \mathrm{nm}$、$|n_e-n_o|=0.009$：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 半波片：$d=\dfrac{589}{2\times0.009}=32\,722\ \mathrm{nm}\approx32.7\ \mu\mathrm{m}$；
+\item 四分之一波片：$d=\dfrac{589}{4\times0.009}=16\,361\ \mathrm{nm}\approx16.4\ \mu\mathrm{m}$（正好一半）；
+\item 全波片：$d\approx65.4\ \mu\mathrm{m}$。
+\end{itemize}
+
+「半波片是四分之一波片的两倍厚」这句话在数值上成立、在物理上也好记：
+$\Delta\varphi$ 与 $d$ 成正比，厚度翻倍就是延迟翻倍。
+
+\subhdr{5.7 三条容易错的地方}
+
+\warnbox{
+\textbf{1. 折射率差要取绝对值。}石英是正晶体，$n_o-n_e=-0.009$；厚度公式里用 $|n_e-n_o|=0.009$。
+符号只决定「谁是慢轴」，不决定厚度。
+
+\textbf{2. 波片不改强度。}「光过波片后变暗」是错觉；变的是偏振态，不是强度。
+
+\textbf{3. 45° 这个条件不能丢。}四分之一波片把\emph{45° 入射}的线偏振变成圆偏振；
+如果入射方向平行于快轴（$\alpha=0$），出射仍是同方向的线偏振，什么都没发生。
+}
+
+%=====================================================================
+\hdr{§6}{反射与折射：菲涅耳公式与布儒斯特角}
+
+\subhdr{6.1 几何与 s／p 的定义}
+
+光从折射率 $n_1$ 的介质射向 $n_2$，入射角 $\theta_i$、折射角 $\theta_t$，满足 Snell 定律
+
+\[
+n_1\sin\theta_i=n_2\sin\theta_t .
+\]
+
+「入射面」是入射光线与法线张成的平面。电场相对这个平面只有两种取向（图 3）：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{s 偏振}：电场\emph{垂直}于入射面（$s$ 来自德语 \emph{senkrecht}，垂直）。
+\item \textbf{p 偏振}：电场\emph{平行}于入射面（$p$ 来自 \emph{parallel}）。
+\end{itemize}
+
+s 与 p 是两个正交方向，任意偏振态都能拆成它们的叠加，所以只要分别算出 s、p 的反射与透射，
+任何入射偏振都能处理。
+
+\begin{center}
+\includegraphics[width=0.80\linewidth]{fig2_brewster.png}\\[2pt]
+{\small\color{inkgray}图 3\quad 布儒斯特角上的几何：反射光与折射光互相垂直。红色虚线是折射光方向
+$\vect k_t$，它同时就是「反射光里 p 分量若存在，必须沿着的振动方向」。}
+\end{center}
+
+\subhdr{6.2 s 分量的菲涅耳公式（完整推导）}
+
+用界面上的边界条件：电场的\textbf{切向}分量连续，磁场的\textbf{切向}分量连续（非磁性介质 $\mu_1=\mu_2=\mu_0$）。
+记入射、反射、透射的 s 分量振幅为 $E_i,E_r,E_t$，三者取同一个正方向。
+
+电场切向连续：
+\[
+E_i+E_r=E_t. \tag{6.1}
+\]
+
+磁场切向连续。对平面波 $H=\dfrac{n}{\mu_0c}E$，切向分量再乘 $\cos\theta$：
+\[
+\frac{n_1}{\mu_0c}(E_i-E_r)\cos\theta_i=\frac{n_2}{\mu_0c}E_t\cos\theta_t
+\ \Longrightarrow\
+n_1\cos\theta_i(E_i-E_r)=n_2\cos\theta_t E_t. \tag{6.2}
+\]
+
+把 (6.1) 代入 (6.2) 消掉 $E_t$：
+\[
+n_1\cos\theta_i(E_i-E_r)=n_2\cos\theta_t(E_i+E_r)
+\ \Longrightarrow\
+E_i\,(n_1\cos\theta_i-n_2\cos\theta_t)=E_r\,(n_1\cos\theta_i+n_2\cos\theta_t).
+\]
+
+于是
+
+\[
+\boxed{\ r_s=\frac{E_r}{E_i}=\frac{n_1\cos\theta_i-n_2\cos\theta_t}{n_1\cos\theta_i+n_2\cos\theta_t}\ }
+\qquad
+t_s=\frac{E_t}{E_i}=1+r_s=\frac{2n_1\cos\theta_i}{n_1\cos\theta_i+n_2\cos\theta_t}.
+\]
+
+\subhdr{6.3 p 分量的结果与符号约定}
+
+同样用边界条件（这次是磁场切向连续给出代数式、电场切向连续给出带 $\cos$ 的式子），解得
+
+\[
+r_p=\frac{n_2\cos\theta_i-n_1\cos\theta_t}{n_2\cos\theta_i+n_1\cos\theta_t},
+\qquad
+t_p=\frac{2n_1\cos\theta_i}{n_2\cos\theta_i+n_1\cos\theta_t}.
+\]
+
+注意 s 与 p 的分子里 $n_1$、$n_2$ 的位置正好互换。这份讲义采用课件 p17 的符号约定：
+垂直入射（$\theta_i=\theta_t=0$）时 $r_p=-r_s$。别的书可能整体相差一个负号，
+但反射率 $R=|r|^2$ 与透射率不受影响，所以算能量时不必纠结。
+
+\subhdr{6.4 反射率与透射率}
+
+振幅系数的平方不是能量比，还要乘上「光束截面积」的修正。正确的能量关系是
+
+\[
+R_s=|r_s|^2,\quad R_p=|r_p|^2,
+\qquad
+T_s=\frac{n_2\cos\theta_t}{n_1\cos\theta_i}|t_s|^2,\quad
+T_p=\frac{n_2\cos\theta_t}{n_1\cos\theta_i}|t_p|^2 .
+\]
+
+对无吸收的电介质，$R_s+T_s=1$、$R_p+T_p=1$。这条可以用来检查算错没有：
+算出 $R_s+T_s\neq1$，一定是哪一步代错了。
+
+\subhdr{6.5 布儒斯特角：让 p 分量彻底不反射}
+
+布儒斯特角的定义是「使 $r_p=0$ 的入射角」。由 $r_p$ 的表达式，$r_p=0$ 等价于分子为零：
+
+\[
+n_2\cos\theta_i=n_1\cos\theta_t. \tag{6.3}
+\]
+
+再与 Snell 定律 $n_1\sin\theta_i=n_2\sin\theta_t$ 联立。两式相乘：
+
+\[
+n_1n_2\sin\theta_i\cos\theta_i=n_1n_2\sin\theta_t\cos\theta_t
+\ \Longrightarrow\
+\sin 2\theta_i=\sin 2\theta_t .
+\]
+
+$\sin$ 相等有两种可能：$\theta_i=\theta_t$（这要求 $n_1=n_2$，没有界面）或
+$\theta_i+\theta_t=90^\circ$。后者就是布儒斯特角的特征。把它代回 (6.3) 或直接用 Snell：
+
+\[
+n_1\sin\theta_B=n_2\sin(90^\circ-\theta_B)=n_2\cos\theta_B
+\ \Longrightarrow\
+\boxed{\ \tan\theta_B=\frac{n_2}{n_1}\ }
+\]
+
+\textbf{配套关系}（考小题最爱）：在布儒斯特角上，$\theta_B+\theta_t=90^\circ$，
+所以折射角可以直接写出 $\theta_t=90^\circ-\theta_B$，不必解反三角函数。
+
+\subhdr{6.6 为什么 p 分量反射不出去（几何 + 偶极）}
+
+这一步是整节最容易背错的地方，值得用几何核一遍。取入射面为 $xz$ 平面、界面为 $z=0$，
+入射、反射、透射的波矢分别为
+
+\[
+\vect k_i\propto(\sin\theta_i,0,\cos\theta_i),\quad
+\vect k_r\propto(\sin\theta_i,0,-\cos\theta_i),\quad
+\vect k_t\propto(\sin\theta_t,0,\cos\theta_t).
+\]
+
+反射光里 p 分量的振动方向必须同时（i）垂直于 $\vect k_r$、（ii）在入射面内，解出来是
+
+\[
+\hat{\vect e}_{r,p}=(\cos\theta_i,0,\sin\theta_i).
+\]
+
+现在代入布儒斯特条件 $\theta_t=90^\circ-\theta_i$，于是 $\sin\theta_t=\cos\theta_i$、$\cos\theta_t=\sin\theta_i$，得到
+
+\[
+\vect k_t\propto(\cos\theta_i,0,\sin\theta_i)=\hat{\vect e}_{r,p}.
+\]
+
+\textbf{反射光的 p 方向，正好平行于折射光的传播方向。}而介质 2 里被驱动的电子沿 $\vect E_t$ 振动，
+$\vect E_t$ 垂直于 $\vect k_t$；偶极子沿自己的振动方向不辐射，所以沿 $\vect k_t$ 方向没有反射波，
+即 $R_p=0$。
+
+一句话记法：\textbf{在布儒斯特角上，p 分量「想」沿着折射光的方向振动，而那正是偶极子不辐射的方向。}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.2cm}p{3.0cm}p{3.4cm}p{3.4cm}@{}}
+\thead{入射角} & \thead{$R_s$} & \thead{$R_p$} & \thead{反射光的偏振} \\
+\tabmid
+$0^\circ$（垂直入射） & $\left(\dfrac{n_1-n_2}{n_1+n_2}\right)^2$ & 同 $R_s$ & 自然光入射时反射光仍非偏振 \\
+\tabmid
+布儒斯特角 & $\cos^2(2\theta_B)$ & $0$ & 100\% s，完全线偏振 \\
+\tabmid
+其他角度 & $R_s>R_p$ & $R_p>0$ & 部分偏振，$s$ 占优 \\
+\tabmid
+$90^\circ$（掠射） & $\to1$ & $\to1$ & 接近全反射 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+表中 $R_s=\cos^2(2\theta_B)$ 这个简洁式子是本节推导的副产品：把 $\theta_t=90^\circ-\theta_B$ 代进
+$R_s=|r_s|^2$ 并化简即得（也可由 $\theta_B-\theta_t=2\theta_B-90^\circ$ 与
+$R_s=\sin^2(\theta_B-\theta_t)$ 得到）。
+
+\subhdr{6.7 反射光的偏振度}
+
+自然光入射时，反射光里的 s 与 p 强度分别是 $R_s$ 与 $R_p$（各乘入射的 $I_0/2$，比值里约掉）：
+
+\[
+P=\frac{R_s-R_p}{R_s+R_p},\qquad 0\le P\le1 .
+\]
+
+布儒斯特角上 $R_p=0$，故 $P=1$；其他角度 $P<1$，越远离 $\theta_B$ 越小。
+这就是课件 p22 那条式子。
+
+\subhdr{6.8 教学示范：课件 p54--p56 的完整过程}
+
+\qstem{（课件 p54）Light in air ($n_1=1.00$) strikes glass ($n_2=1.50$). (a) Brewster's angle.
+(b) Degree of polarization of the reflected light at $\theta_B$ for unpolarized incidence.
+(c) At $\theta_i=45^\circ$, compute $R_s$, $R_p$, and the degree of polarization.}
+
+\textbf{(a)} $\tan\theta_B=1.50/1.00=1.50\Rightarrow\theta_B=56.31^\circ$。
+
+\textbf{(b)} 布儒斯特角上 $r_p=0$，故
+\[
+P=\frac{|r_s|^2-|r_p|^2}{|r_s|^2+|r_p|^2}=\frac{R_s-0}{R_s+0}=1 .
+\]
+
+\textbf{(c)} 先由 Snell 求折射角：
+\[
+\sin\theta_t=\frac{1.00\sin45^\circ}{1.50}=0.4714\ \Longrightarrow\ \theta_t=28.13^\circ,
+\]
+于是 $\cos\theta_i=0.7071$、$\cos\theta_t=0.8821$。
+
+s 分量：
+\[
+r_s=\frac{1.00\times0.7071-1.50\times0.8821}{1.00\times0.7071+1.50\times0.8821}
+=\frac{0.7071-1.3232}{0.7071+1.3232}=-0.3034,
+\qquad R_s=r_s^2=0.0921 .
+\]
+
+p 分量：
+\[
+r_p=\frac{1.50\times0.7071-1.00\times0.8821}{1.50\times0.7071+1.00\times0.8821}
+=\frac{1.0607-0.8821}{1.0607+0.8821}=0.0919,
+\qquad R_p=r_p^2=0.00845 .
+\]
+
+偏振度：
+\[
+P=\frac{0.0921-0.00845}{0.0921+0.00845}=\frac{0.0837}{0.1006}=0.832 .
+\]
+
+翻译成人话：$45^\circ$ 入射时反射光有 $83\%$ 是 s 偏振，还不是「纯」的；要到布儒斯特角才 $100\%$。
+
+\needspace{8\baselineskip}
+\subhdr{6.9 常用数据表}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.4cm}p{2.2cm}p{2.6cm}p{4.2cm}@{}}
+\thead{界面（空气入射）} & \thead{$n_2$} & \thead{$\theta_B$} & \thead{布儒斯特角上 $R_s$} \\
+\tabmid
+水 & 1.33 & $53.1^\circ$ & $0.077$ \\
+\tabmid
+普通玻璃 & 1.50 & $56.3^\circ$ & $0.148$ \\
+\tabmid
+重火石玻璃 & 1.60 & $58.0^\circ$ & $0.192$ \\
+\tabmid
+高折射率玻璃 & 2.00 & $63.4^\circ$ & $0.360$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+规律：$n$ 越大，$\theta_B$ 越大，反射光里的 s 分量也越强。这也解释了为什么「钻石更亮」——
+折射率大，反射率大。
+
+%=====================================================================
+\hdr{§7}{圆偏振与椭圆偏振}
+
+\subhdr{7.1 产生条件}
+
+两个正交分量加一个相位差，组合起来只有三种结果：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.6cm}p{8.4cm}@{}}
+\thead{条件} & \thead{出射偏振态} \\
+\tabmid
+$\delta=0$ 或 $\pi$ & 线偏振（方向由振幅比决定） \\
+\tabmid
+$a_x=a_y$ 且 $\delta=\pm\pi/2$ & 圆偏振（等幅、相差 $90^\circ$） \\
+\tabmid
+其他 & 椭圆偏振（长短轴由振幅比与 $\delta$ 共同决定） \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+四分之一波片提供的就是 $\delta=\pm\pi/2$ 这一条：只要入射的线偏振与快轴成 $45^\circ$，
+两个分量等幅，出射就是圆偏振。这也是「圆偏振光怎么造」的标准答案。
+
+\subhdr{7.2 椭圆率角与方位角}
+
+完全偏振光的椭圆可以用两个角描述：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 方位角 $\psi$：长轴与 $x$ 轴的夹角；
+\item 椭圆率角 $\chi$：$\tan\chi=\pm b/a$（$b$、$a$ 是短、长半轴），$\chi=0$ 是线偏振，
+$\chi=\pm45^\circ$ 是圆偏振。
+\end{itemize}
+
+它们与斯托克斯参数的关系很干净（下一节会用到）：
+
+\[
+S_1=S_0\cos2\chi\cos2\psi,\quad
+S_2=S_0\cos2\chi\sin2\psi,\quad
+S_3=S_0\sin2\chi .
+\]
+
+所以课件 p24 说「等幅时 $\chi=45^\circ$，即圆偏振」——因为 $S_3/S_0=\sin2\chi=1$ 对应 $\chi=45^\circ$。
+
+\subhdr{7.3 怎么用一片检偏器区分圆偏振与自然光}
+
+这两者转动检偏器时强度都不变（都是 $I_0/2$），单靠检偏器分不出来。加一片四分之一波片就分开了：
+圆偏振光经过 $\lambda/4$ 变成线偏振，再转检偏器会出现消光；自然光经过 $\lambda/4$ 仍是自然光，
+怎么转都不消光。这就是「用 $\lambda/4$ + 检偏器测圆偏振度」的原理（§8.9）。
+
+\subhdr{7.4 教学小例：$45^\circ$ 线偏振过 $\lambda/4$ 的三种验算}
+
+入射 $\vect J=\frac{1}{\sqrt2}(1,1)^{T}$，波片快轴沿 $x$、$\Delta\varphi=\pi/2$：
+
+\[
+\vect J_{\text{out}}=\begin{pmatrix}1&0\\0&e^{i\pi/2}\end{pmatrix}
+\frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}
+=\frac{1}{\sqrt2}\begin{pmatrix}1\\ i\end{pmatrix}.
+\]
+
+三种验算方式，答案必须一致：
+\begin{enumerate}[label=(\arabic*),leftmargin=1.8em]
+\item 振幅：$|1/\sqrt2|=|i/\sqrt2|$，等幅；
+\item 相位：$y$ 比 $x$ 多 $90^\circ$，符合圆偏振条件；
+\item 强度：$|\vect J|^2=\frac12+\frac12=1$，没有衰减。
+\end{enumerate}
+
+%=====================================================================
+\hdr{§8}{偏振光的分析：斯托克斯参数}
+
+\subhdr{8.1 转动检偏器能看出什么}
+
+把一片线偏振片（检偏器）放在探测器前面，绕光轴转动，记录透射强度 $I(\theta)$。三种偏振态给出
+三条完全不同的曲线（课件 p25）：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.2cm}p{5.2cm}p{4.6cm}@{}}
+\thead{入射态} & \thead{$I(\theta)$} & \thead{特征} \\
+\tabmid
+线偏振 & $I_0\cos^2(\theta-\theta_0)$ & 有两个完全消光的位置（$\theta_0+90^\circ$） \\
+\tabmid
+圆偏振 & $I_0/2$，与 $\theta$ 无关 & 转一圈强度不变，且不为零 \\
+\tabmid
+椭圆偏振 & $I_{\max}\cos^2\theta+I_{\min}\sin^2\theta$ & 有强弱起伏但不会完全消光 \\
+\tabmid
+自然光 & $I_0/2$，与 $\theta$ 无关 & 与圆偏振一样平坦，需加 $\lambda/4$ 才能区分 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{8.2 四个斯托克斯参数的定义}
+
+前面说过，自然光和部分偏振光写不出琼斯矢量（没有确定的 $\delta$）。斯托克斯参数改用
+\textbf{可测的强度}来刻画偏振，四个实数就够：
+
+\[
+S_0=a_x^2+a_y^2,\quad
+S_1=a_x^2-a_y^2,\quad
+S_2=2a_xa_y\cos\delta,\quad
+S_3=2a_xa_y\sin\delta .
+\]
+
+（有的书把 $S_0$、$S_1$ 再除以 $2$，只是整体归一化不同，比值与偏振度不受影响。）
+它们的物理意义直接对应四次测量：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{1.6cm}p{4.6cm}p{7.0cm}@{}}
+\thead{参数} & \thead{测量含义} & \thead{读法} \\
+\tabmid
+$S_0$ & $I_{\text{total}}$ & 总强度，恒非负 \\
+\tabmid
+$S_1$ & $I_H-I_V$ & $>0$ 偏水平；$<0$ 偏竖直；$=0$ 无净线偏振（水平/竖直方向） \\
+\tabmid
+$S_2$ & $I_{+45^\circ}-I_{-45^\circ}$ & $>0$ 偏 $+45^\circ$；$<0$ 偏 $-45^\circ$ \\
+\tabmid
+$S_3$ & $I_{\text{RCP}}-I_{\text{LCP}}$ & $>0$ 偏右旋圆；$<0$ 偏左旋圆 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{8.3 归一化与「完全／部分／非偏振」的判据}
+
+除以总强度得到归一化矢量 $\vect s=(1,s_1,s_2,s_3)$，其中 $s_i=S_i/S_0$。判据非常整齐：
+
+\[
+s_1^2+s_2^2+s_3^2
+\begin{cases}
+=1 & \text{完全偏振}\\
+<1 & \text{部分偏振}\\
+=0 & \text{自然光（非偏振）}
+\end{cases}
+\]
+
+（这里假设没有吸收，$S_0>0$。）几何上，这三个情况分别是「球面上」「球内」「球心」，见 §9。
+
+\needspace{11\baselineskip}
+\subhdr{8.4 常见偏振态的斯托克斯矢量}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.6cm}p{6.4cm}p{3.0cm}@{}}
+\thead{偏振态} & \thead{$(S_0,S_1,S_2,S_3)$} & \thead{归一化 $(s_1,s_2,s_3)$} \\
+\tabmid
+自然光 & $(I_0,0,0,0)$ & $(0,0,0)$ \\
+\tabmid
+水平线偏振 & $(I_0,I_0,0,0)$ & $(1,0,0)$ \\
+\tabmid
+竖直线偏振 & $(I_0,-I_0,0,0)$ & $(-1,0,0)$ \\
+\tabmid
+$+45^\circ$ 线偏振 & $(I_0,0,I_0,0)$ & $(0,1,0)$ \\
+\tabmid
+$-45^\circ$ 线偏振 & $(I_0,0,-I_0,0)$ & $(0,-1,0)$ \\
+\tabmid
+右旋圆偏振 & $(I_0,0,0,I_0)$ & $(0,0,1)$ \\
+\tabmid
+左旋圆偏振 & $(I_0,0,0,-I_0)$ & $(0,0,-1)$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{8.5 偏振度与「偏振部分 + 非偏振部分」的分解}
+
+\[
+P=\frac{\sqrt{S_1^2+S_2^2+S_3^2}}{S_0},\qquad 0\le P\le1 .
+\]
+
+任何一束光都能唯一地拆成「完全偏振的一部分」加「非偏振的一部分」：
+
+\[
+I_{\text{pol}}=P\,S_0,\qquad I_{\text{unpol}}=(1-P)\,S_0 .
+\]
+
+另外两个常用的分量是线偏振度 $P_L=\sqrt{S_1^2+S_2^2}/S_0$ 与圆偏振度 $P_C=|S_3|/S_0$。
+课件 p55 里用反射率算的 $P=(R_s-R_p)/(R_s+R_p)$，正是这里的特例（只有线偏振分量）。
+
+\subhdr{8.6 与琼斯矢量的换算}
+
+对完全偏振光，两者描述同一个态，可以直接换：
+
+\[
+S_0=|E_x|^2+|E_y|^2,\quad
+S_1=|E_x|^2-|E_y|^2,\quad
+S_2=2\,\mathrm{Re}(E_xE_y^{*}),\quad
+S_3=2\,\mathrm{Im}(E_x^{*}E_y).
+\]
+
+注意 $S_3$ 里是 $E_x^{*}E_y$（$x$ 取共轭）而不是 $E_xE_y^{*}$：两种写法差一个负号，
+对应「右旋／左旋」名字的互换。算完可以用 $\delta$ 核对：$S_3=2a_xa_y\sin\delta$，
+$\delta>0$ 时 $S_3>0$。
+
+\subhdr{8.7 测量：转动检偏器 + 一片 $\lambda/4$}
+
+\begin{enumerate}[label=\arabic*.,leftmargin=1.8em]
+\item 只用检偏器，测四个方位：$I(0^\circ),I(90^\circ),I(45^\circ),I(-45^\circ)$，得
+\[
+S_0=I(0^\circ)+I(90^\circ),\quad
+S_1=I(0^\circ)-I(90^\circ),\quad
+S_2=I(45^\circ)-I(-45^\circ).
+\]
+\item 在检偏器前插入 $\lambda/4$（快轴沿 $0^\circ$），再测 $I(0^\circ)$ 与 $I(90^\circ)$，其差就是 $S_3$。
+\end{enumerate}
+
+一般的转动检偏器读数满足
+\[
+I(\theta)=\tfrac12\left(S_0+S_1\cos2\theta+S_2\sin2\theta\right),
+\]
+这就是「四个参数、四次测量」的全部内容。
+
+\subhdr{8.8 教学小例：把两个态换算成斯托克斯参数}
+
+\textbf{例 1（完全偏振）}：$\vect J=\frac{1}{\sqrt2}(1,i)^{T}$。则
+\[
+S_0=\tfrac12+\tfrac12=1,\quad S_1=0,\quad
+S_2=2\,\mathrm{Re}\!\left(\tfrac{1}{\sqrt2}\cdot\overline{\tfrac{i}{\sqrt2}}\right)=0,\quad
+S_3=2\,\mathrm{Im}\!\left(\tfrac{1}{\sqrt2}\cdot\tfrac{i}{\sqrt2}\right)=1 .
+\]
+归一化后 $(1,0,0,1)$：右旋圆偏振，与 §8.4 的表一致。
+
+\textbf{例 2（部分偏振）}：测得一束光 $S_0=100$、$S_1=30$、$S_2=0$、$S_3=40$（任意单位）。则
+\[
+P=\frac{\sqrt{30^2+0^2+40^2}}{100}=\frac{50}{100}=0.5,
+\]
+即「$50$ 的完全偏振部分 + $50$ 的非偏振部分」；偏振部分的长轴沿水平（$S_2=0$、$S_1>0$），
+椭圆率角满足 $\sin2\chi=S_3/\sqrt{S_1^2+S_2^2+S_3^2}=40/50=0.8$，故 $\chi=26.6^\circ$。
+
+%=====================================================================
+\hdr{§9}{庞加莱球与穆勒矩阵}
+
+\subhdr{9.1 一个球把偏振态全装下}
+
+归一化斯托克斯矢量满足 $s_1^2+s_2^2+s_3^2\le1$，正好是单位球的内部或表面。把 $(s_1,s_2,s_3)$
+当直角坐标，就得到庞加莱球（课件 p35）：
+
+\begin{center}
+\includegraphics[width=0.55\linewidth]{fig4_poincare.png}\\[2pt]
+{\small\color{inkgray}图 4\quad 庞加莱球示意：球面是完全偏振光，球内是部分偏振光，球心是自然光。}
+\end{center}
+
+\begin{itemize}[leftmargin=1.6em]
+\item 赤道 $s_3=0$：所有线偏振；$H$、$V$、$\pm45^\circ$ 是赤道上的四个方位。
+\item 北极 $s_3=+1$：右旋圆偏振；南极 $s_3=-1$：左旋圆偏振。
+\item 球内：部分偏振；球心：自然光。
+\end{itemize}
+
+这个球的好处是「过一片波片」变成「绕一条轴转一个角」：波片让态在球面上绕一条通过球心的轴旋转，
+转过的角度正是 $\Delta\varphi$。复杂元件串起来，就是球面上的一串旋转。
+
+\subhdr{9.2 穆勒矩阵}
+
+把 $4\times1$ 的斯托克斯矢量乘上 $4\times4$ 的实矩阵，就得到元件的作用：$\vect S_{\text{out}}=\vect M\vect S_{\text{in}}$。
+例如透振方向为 $\theta$ 的理想线偏振片：
+
+\[
+\vect M=\frac12
+\begin{pmatrix}
+1 & \cos2\theta & \sin2\theta & 0\\
+\cos2\theta & \cos^22\theta & \sin2\theta\cos2\theta & 0\\
+\sin2\theta & \sin2\theta\cos2\theta & \sin^22\theta & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}.
+\]
+
+穆勒矩阵比琼斯矩阵「大」，换来的是能描述\textbf{部分偏振与退偏}：琼斯矩阵作用在复振幅上，
+要求完全相干；穆勒矩阵作用在强度上，部分偏振、散射退偏都能写进去。
+
+\needspace{8\baselineskip}
+\subhdr{9.3 三种语言的分工}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{3.6cm}p{3.6cm}p{3.4cm}@{}}
+\thead{} & \thead{琼斯} & \thead{斯托克斯} & \thead{穆勒} \\
+\tabmid
+对象 & 复振幅 $\vect J$（2 维） & 强度 $\vect S$（4 维） & $4\times4$ 实矩阵 \\
+\tabmid
+能描述 & 完全偏振、相干 & 任意（含部分偏振） & 任意，含退偏 \\
+\tabmid
+元件 & $2\times2$ 复矩阵 & —— & $4\times4$ 实矩阵 \\
+\tabmid
+典型用途 & 波片、偏振片串联计算 & 测量、成像、遥感 & 退偏介质、偏振测量仪 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+记住一个换算关系就够用：完全偏振时琼斯与斯托克斯等价（§8.6），
+部分偏振时只有斯托克斯能写。
+
+%=====================================================================
+%=====================================================================
+\hdr{§10}{菲涅耳--阿拉戈三定律：正交偏振为什么不干涉}
+
+\subhdr{10.1 三条定律}
+
+\begin{enumerate}[label=\textbf{定律 \arabic*.},leftmargin=3.2em]
+\item 两束相干光，若线偏振方向\emph{互相垂直}，则不产生干涉条纹，合强度就是两者相加：
+\[
+\vect E_1\perp\vect E_2\ \Longrightarrow\ I=I_1+I_2 .
+\]
+\item 若线偏振方向\emph{平行}，则按通常的干涉公式：
+\[
+I=I_1+I_2+2\sqrt{I_1I_2}\cos\Delta\varphi .
+\]
+\item 两束正交线偏振的光，如果在后面加一片检偏器，让它的透振方向与两个偏振方向都成 $45^\circ$，
+条纹会\emph{重新出现}。
+\end{enumerate}
+
+\subhdr{10.2 为什么：交叉项里的点积}
+
+干涉的本质是电场矢量相加后再平方：
+
+\[
+I=|\vect E_1+\vect E_2|^2=I_1+I_2+2\,\vect E_1\cdot\vect E_2 .
+\]
+
+第三项（干涉项）正比于两个电场的\emph{点积}。正交偏振时 $\vect E_1\cdot\vect E_2=0$，干涉项整项消失，
+所以没有条纹。这不是「两束光不相干」，而是「相干但投影到同一方向上为零」——
+两束光的相对相位信息仍然完好地保存在各自的偏振方向上。
+
+定律 3 之所以成立，是因为检偏器把两个电场都投影到同一条轴上：
+$\vect E_1\to E_1\cos45^\circ$、$\vect E_2\to E_2\cos45^\circ$，投影后两者平行，
+点积不再为零，条纹就回来了。
+
+\subhdr{10.3 教学小例：投影前后条纹可见度的变化}
+
+设两束光强度都是 $I_0$，相位差 $\Delta\varphi$。
+
+\textbf{不加检偏器}（正交偏振）：
+\[
+I=I_0+I_0+0=2I_0\quad(\text{与 }\Delta\varphi\text{ 无关，无条纹}).
+\]
+
+\textbf{加 $45^\circ$ 检偏器}：每束投影后的强度变成 $I_0/2$，振幅变成 $E_0/\sqrt2$，
+交叉项为 $2\cdot\frac{I_0}{2}\cos\Delta\varphi$：
+\[
+I=\frac{I_0}{2}+\frac{I_0}{2}+2\cdot\frac{I_0}{2}\cos\Delta\varphi
+=I_0(1+\cos\Delta\varphi).
+\]
+条纹可见度 $V=\dfrac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}=\dfrac{2I_0-0}{2I_0}=1$，
+也就是\emph{投影后条纹是满对比度的}。这个结论有点反直觉：加了一片「吸收一半光」的片子，
+条纹反而从无到有、而且对比度满格。
+
+\subhdr{10.4 为什么值得单独讲}
+
+\begin{itemize}[leftmargin=1.6em]
+\item 偏振干涉仪、椭偏仪都靠「投影能不能恢复条纹」来工作；
+\item 相干理论里，菲涅耳--阿拉戈定律是偏振相干矩阵（coherency matrix）的经典来源；
+\item 量子层面：正交偏振的两个光子态是可区分的，检偏器相当于抹掉「哪条路」的信息，
+条纹恢复——这是量子擦除（quantum erasure）的经典前身。
+\end{itemize}
+
+%=====================================================================
+\hdr{§11}{旋光：偏振面的旋转}
+
+\subhdr{11.1 现象与 Biot 定律}
+
+线偏振光穿过某些物质（石英、糖溶液、许多有机分子）后，仍然是线偏振，但偏振面转过了一个角度 $\alpha$。
+这个现象叫\textbf{旋光}（optical activity），1811 年由 Arago 在石英中发现，Biot 做了系统研究。
+
+\textbf{固体}（如石英）：
+\[
+\alpha=\rho\,l,
+\]
+$\rho$ 是单位长度的旋光率（比旋光），$l$ 是光在介质中的路程。
+
+\textbf{溶液}（如糖水）：
+\[
+\alpha=\alpha_D\,c\,l,
+\]
+$\alpha_D$ 是钠 D 线（$589.3\ \mathrm{nm}$）下的比旋光，$c$ 是浓度（常用 $\mathrm{g/mL}$），
+$l$ 是光程（常用 $\mathrm{dm}$）。这个式子是糖度计（saccharimetry）的全部原理。
+
+旋光方向分两种：右旋（$+$，迎着光看顺时针）、左旋（$-$）。同一种物质的左旋与右旋异构体
+（对映体）旋光方向相反、大小相等。
+
+\subhdr{11.2 圆双折射：为什么线偏振会转}
+
+把线偏振拆成等幅的右旋圆与左旋圆两个分量：
+
+\[
+\vect E_{\text{lin}}=\frac{E_0}{2}\left(\hat{\vect e}_R+\hat{\vect e}_L\right).
+\]
+
+如果介质对这两种圆偏振的折射率不同（$n_R\neq n_L$），走完距离 $d$ 后两者积累的相位不同：
+
+\[
+\varphi_R=\frac{2\pi}{\lambda}n_Rd,\qquad
+\varphi_L=\frac{2\pi}{\lambda}n_Ld .
+\]
+
+两个反向旋转的圆再合起来，仍然是一个线偏振，但偏振面转过了
+
+\[
+\boxed{\ \Delta\theta=\frac{\pi d}{\lambda}\,(n_L-n_R)\ }
+\]
+
+这就是旋光与「圆双折射」之间的定量联系（课件 p43--p44）。方向规则：
+$n_L>n_R$ 时左旋；$n_R>n_L$ 时右旋。
+
+\subhdr{11.3 四条必须记住的性质}
+
+\begin{enumerate}[label=\arabic*.,leftmargin=1.8em]
+\item \textbf{互易性}：光往返穿过同一介质，旋转角\emph{累加}（去 $+\alpha$、回再 $+\alpha$，
+总共 $2\alpha$）。法拉第旋转则相反，往返抵消——这是一条常考的区别。
+\item \textbf{外消旋混合物不旋光}：等量左旋与右旋分子混在一起，转角相互抵消。反过来，
+测不出旋光就说明可能是外消旋。
+\item \textbf{旋光随波长变化}（旋光色散）：远离吸收带时 $\alpha\propto1/\lambda^2$，紫光转得多。
+\item \textbf{与手性直接相关}：分子没有镜面对称才有旋光，这是 Pasteur（1848）分离酒石酸盐的物理基础。
+\end{enumerate}
+
+\subhdr{11.4 教学小例：糖溶液浓度测量}
+
+已知蔗糖的比旋光 $\alpha_D=+66.5\ \mathrm{deg\cdot mL/(g\cdot dm)}$。用 $2.0\ \mathrm{dm}$ 的样品管，
+测得转角 $\alpha=+13.3^\circ$，求浓度。
+
+直接代公式：
+\[
+c=\frac{\alpha}{\alpha_D\,l}=\frac{13.3}{66.5\times2.0}=0.100\ \mathrm{g/mL}=10\%.
+\]
+
+这就是糖度计的工作方式：转角读数直接换算成浓度。要点是三个量的单位必须配套——
+比旋光用 $\mathrm{deg\cdot mL/(g\cdot dm)}$，浓度用 $\mathrm{g/mL}$，管长用 $\mathrm{dm}$。
+
+%=====================================================================
+\hdr{§12}{光弹性：把应力变成条纹}
+
+\subhdr{12.1 现象}
+
+本来各向同性的透明材料（有机玻璃、环氧树脂、玻璃），在机械应力下会变得\emph{各向异性}，
+产生双折射。把受力样品放在两块正交偏振片之间，就能看到彩色条纹——条纹的形状直接画出应力分布。
+这就是光弹性法（photoelasticity），由 Brewster 在 1815 年发现，20 世纪初被 Coker 与 Filon
+发展成完整的实验应力分析方法。
+
+\subhdr{12.2 应力--光学定律}
+
+应力使材料的主光轴与主应力方向重合，两个主折射率之差与主应力差成正比：
+
+\[
+\Delta n=n_1-n_2=C\,(\sigma_1-\sigma_2),
+\]
+
+$C$ 是应力--光学系数（材料常数，单位 $\mathrm{Pa^{-1}}$，习惯用 Brewster：$1\ \mathrm{B}=10^{-12}\ \mathrm{Pa^{-1}}$）。
+
+光穿过厚度 $d$ 的样品，积累的相位差与条纹级数为
+
+\[
+\Delta\varphi=\frac{2\pi}{\lambda}\Delta n\,d
+=\frac{2\pi}{\lambda}C(\sigma_1-\sigma_2)d,
+\qquad
+N=\frac{\Delta n\,d}{\lambda}=\frac{C(\sigma_1-\sigma_2)d}{\lambda}.
+\]
+
+$N$ 是「延迟相当于几个波长」，每增加 $1$ 就出现一条暗纹。定义材料条纹值
+
+\[
+f_\sigma=\frac{\lambda}{C}
+\quad\Longrightarrow\quad
+\sigma_1-\sigma_2=\frac{Nf_\sigma}{d}.
+\]
+
+实践中先标定 $f_\sigma$，之后数条纹级数 $N$ 就能读出主应力差。
+
+\subhdr{12.3 为什么正交偏振片下是暗纹}
+
+两片正交偏振片之间放样品，出射强度与相位差的关系是
+
+\[
+I\propto\sin^2\frac{\Delta\varphi}{2}.
+\]
+
+$\Delta\varphi=2\pi N$（整数个波长）时 $\sin^2(\pi N)=0$，全暗；$\Delta\varphi=(2N+1)\pi$ 时最亮。
+所以暗纹的位置对应「光程差恰为整数个波长」的等值线，叫等色线（isochromatic fringe）。
+
+\subhdr{12.4 教学小例：一块有机玻璃板要加多大应力才出现第一条暗纹}
+
+取 $C=30\times10^{-12}\ \mathrm{Pa^{-1}}$、$\lambda=589\ \mathrm{nm}$、$d=1.0\ \mathrm{mm}$。
+第一条暗纹对应 $N=1$：
+
+\[
+\sigma_1-\sigma_2=\frac{\lambda}{Cd}
+=\frac{589\times10^{-9}}{30\times10^{-12}\times1.0\times10^{-3}}
+=\frac{5.89\times10^{-7}}{3.0\times10^{-14}}
+=1.96\times10^{7}\ \mathrm{Pa}\approx19.6\ \mathrm{MPa}.
+\]
+
+也就是每增加约 $19.6\ \mathrm{MPa}$ 的主应力差，就多一条暗纹。样品越薄（$d$ 越小），
+同样的应力产生的条纹越少——这就是为什么光弹性实验要用较厚的模型。
+
+%=====================================================================
+\hdr{§13}{课件三个 FAQ 的要点}
+
+课件 p49--p51 有三问，答案很长，这里提炼成能背的三句话。
+
+\subhdr{13.1 琼斯矢量与斯托克斯参数，为什么两个都要}
+
+琼斯矢量是复二维矢量，描述\emph{完全偏振、相干}的光；它的好处是元件变成 $2\times2$ 矩阵，
+计算方便，但它写不出自然光和部分偏振光。斯托克斯参数是四个实数（$S_0$ 总强度、$S_1$ 水平/竖直、
+$S_2$ 对角、$S_3$ 圆），全部对应可测强度，能描述任何偏振态，还能对不相干光束直接相加，
+并与穆勒矩阵、庞加莱球配套。所以：算波片、偏振片串联用琼斯；测量、成像、部分偏振用斯托克斯。
+
+\subhdr{13.2 正交偏振的两束光为什么不干涉}
+
+因为强度里的交叉项正比于 $\vect E_1\cdot\vect E_2$，正交时为零，$I=I_1+I_2$，没有条纹。
+但相干性并没有丢：在两束光后面加一片 $45^\circ$ 的检偏器，把两个电场投影到同一方向，
+交叉项重新非零，条纹恢复。这就是菲涅耳--阿拉戈第三定律。
+
+\subhdr{13.3 光弹性里的条纹代表什么}
+
+条纹是\emph{主应力差}的等值线。$\Delta n=C(\sigma_1-\sigma_2)$，
+$\Delta\varphi=2\pi\Delta n\,d/\lambda$，正交偏振下 $I\propto\sin^2(\Delta\varphi/2)$，
+故暗纹满足 $\Delta\varphi=2\pi N$，而 $\sigma_1-\sigma_2=Nf_\sigma/d$。
+条纹越密，应力梯度越大；条纹的形状就是应力场的「等高线」。
+
+%=====================================================================
+\hdr{§14}{课件例题：四分之一波片与琼斯矢量（p57--p59）}
+
+\qstem{（课件 p57）A quartz plate is cut so that light propagates perpendicular to the optic axis.
+Quartz is positive with $n_o=1.544$, $n_e=1.553$ at $\lambda=589\ \mathrm{nm}$.
+(a) Minimum thickness of a quarter-wave plate. (b) Linearly polarized light with amplitude $E_0$ is incident
+at $45^\circ$ to the optic axis: describe the output and write its Jones vector.
+(c) [课件 p59] If the thickness is doubled, what is the output?}
+
+\textbf{(a) 厚度}\quad 相位延迟条件 $\Delta\varphi=\pi/2$：
+\[
+\frac{\pi}{2}=\frac{2\pi}{\lambda}(n_e-n_o)d
+\ \Longrightarrow\
+d=\frac{\lambda}{4(n_e-n_o)}
+=\frac{589\times10^{-9}}{4\times0.009}
+=1.636\times10^{-5}\ \mathrm{m}\approx16.4\ \mu\mathrm{m}.
+\]
+
+\textbf{(b) 琼斯矢量}\quad $45^\circ$ 入射意味着两个分量等幅：
+\[
+\vect J_{\text{in}}=\frac{E_0}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}.
+\]
+石英是正晶体，e 光慢，取快轴（o 光方向）沿 $x$、慢轴沿 $y$，延迟 $\Delta\varphi=\pi/2$ 加在 $y$ 上：
+\[
+\vect J_{\text{out}}=\begin{pmatrix}1&0\\0&e^{i\pi/2}\end{pmatrix}
+\frac{E_0}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix}
+=\frac{E_0}{\sqrt2}\begin{pmatrix}1\\ i\end{pmatrix}.
+\]
+等幅、相差 $90^\circ$，出射是\textbf{圆偏振}。旋向按 §1.4 的约定命名，答题时把约定写出来。
+
+\textbf{(c) 厚度加倍}\quad 延迟加倍：$\Delta\varphi'=2\cdot\pi/2=\pi$，成为半波片：
+\[
+\vect J_{\text{out}}'=\frac{E_0}{\sqrt2}\begin{pmatrix}1\\ e^{i\pi}\end{pmatrix}
+=\frac{E_0}{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix},
+\]
+即 $-45^\circ$ 的线偏振。原来 $+45^\circ$，现在 $-45^\circ$，偏振面转了 $90^\circ=2\alpha$，
+与 §5.5 的结论一致。
+
+\aside{课件 p59 把 $(1,i)^{T}$ 标为「left-circular」，而 p30 的表格用「$S_3>0$ 为 right-circular」。
+两个说法各自在自己的约定下都对（§1.4），但同一道题里不能混用；本讲义统一用 IEEE 记法，
+$(1,i)^{T}$ 记为右旋。详见附录 C。}
+
+%=====================================================================
+\hdr{§15}{本次作业与练习}
+
+\subhdr{15.1 作业三题（课件 p60）}
+
+作业要求（外教口头规则）：手写、写明 Given／所用公式／逐步计算／带单位的最终答案、
+英文签名，课前放到讲台。每题 10 分。
+
+\practice{P1}{课件 p60 Problem 1}{Unpolarized light of intensity $I_0=80\ \mathrm{W/m^2}$ passes through a
+linear polarizer. The transmitted light then passes through a second polarizer (analyzer) whose transmission
+axis is at an angle $\theta=60^\circ$ relative to the first.
+(a) Intensity after the first polarizer. (b) Intensity after the second.
+(c) At what angle $\theta$ would the transmitted intensity after the second polarizer be $10\ \mathrm{W/m^2}$?}
+{自然光过第一片减半；之后用 Malus；第三问反解 $\cos^2\theta$ 并讨论 $\pm$ 两个解}{ans:P1}
+
+\practice{P2}{课件 p60 Problem 2}{Light travels in air ($n_1=1.00$) and strikes a glass surface with
+$n_2=1.50$. (a) Brewster's angle $\theta_B$. (b) Polarization state of the reflected light at $\theta_B$
+if the incident light is unpolarized. (c) If the incident light is p-polarized, what is the reflected
+intensity at $\theta_B$?}
+{$\tan\theta_B=n_2/n_1$；布儒斯特角上 $R_p=0$、$\theta_B+\theta_t=90^\circ$}{ans:P2}
+
+\practice{P3}{课件 p60 Problem 3}{A birefringent crystal has $n_o=1.658$, $n_e=1.486$ at $\lambda=500\ \mathrm{nm}$,
+cut so that light propagates perpendicular to the optic axis.
+(a) Minimum thickness of a quarter-wave plate at this wavelength.
+(b) What phase retardation (in degrees) would a plate of thickness $d=10\ \mu\mathrm{m}$ produce?
+(c) Linearly polarized light at $45^\circ$ to the optic axis passes through the quarter-wave plate of (a):
+what is the output polarization state?}
+{$\Delta\varphi=2\pi|n_o-n_e|d/\lambda$；$\lambda/4$ 厚度；$45^\circ$ 等幅 + $90^\circ$ 相差 = 圆偏振}{ans:P3}
+
+\subhdr{15.2 两道变式（换数字，用来检验自己是否真的会做）}
+
+\practice{P4}{变式（对应课件 p52--p53 的题型）}{Unpolarized light $I_0=100\ \mathrm{W/m^2}$ passes through
+three polarizers: the first vertical, the second at $\theta=20^\circ$ to the first, the third horizontal.
+(a) Find the intensity after each polarizer. (b) At what $\theta$ is the final intensity largest, and what
+is that maximum?}
+{三片串联：先减半、再两次 $\cos^2$；角度取相邻两片；$I_3=\frac{I_0}{8}\sin^22\theta$}{ans:P4}
+
+\practice{P5}{变式（布儒斯特角，光密到光疏）}{Light in glass ($n_1=1.50$) strikes air ($n_2=1.00$).
+(a) Brewster's angle. (b) Angle of refraction at $\theta_B$. (c) Polarization state of the reflected light
+at $\theta_B$ for unpolarized incidence. (d) If the incident light is p-polarized, what is the reflected
+intensity at $\theta_B$?}
+{注意 $\tan\theta_B=n_2/n_1$ 中分子分母的顺序；光密到光疏时 $\theta_B<45^\circ$}{ans:P5}
+
+%=====================================================================
+\appendix
+\hdr{附录 A}{英文术语表（课上听不清时翻这里）}
+
+\needspace{13\baselineskip}
+\subhdr{A-1 基础描述}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{5.0cm}p{4.0cm}p{5.0cm}@{}}
+\thead{英文} & \thead{中文} & \thead{一句话} \\
+\tabmid
+unpolarized / natural light & 自然光（非偏振光） & 各方向机会均等、无固定相位差 \\
+\tabmid
+linear polarization & 线偏振 & 端点走一条直线 \\
+\tabmid
+circular polarization & 圆偏振 & 等幅 + 相差 $90^\circ$ \\
+\tabmid
+elliptical polarization & 椭圆偏振 & 一般情形 \\
+\tabmid
+transmission axis & 透振方向 & 偏振片放行的振动方向 \\
+\tabmid
+analyzer & 检偏器 & 用来检测偏振态的偏振片 \\
+\tabmid
+Malus's law & 马吕斯定律 & $I=I_0\cos^2\theta$ \\
+\tabmid
+degree of polarization & 偏振度 & $P=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})$ \\
+\tabmid
+plane of incidence & 入射面 & 入射光线与法线张成的平面 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\needspace{15\baselineskip}
+\subhdr{A-2 反射、双折射与器件}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{5.0cm}p{4.0cm}p{5.0cm}@{}}
+\thead{英文} & \thead{中文} & \thead{一句话} \\
+\tabmid
+Brewster angle & 布儒斯特角 & $\tan\theta_B=n_2/n_1$ \\
+\tabmid
+s / p polarization & s／p 偏振 & 垂直／平行于入射面 \\
+\tabmid
+Fresnel coefficients & 菲涅耳系数 & $r_s,r_p,t_s,t_p$ \\
+\tabmid
+reflectance / transmittance & 反射率／透射率 & $R=|r|^2$，$T$ 带面积修正 \\
+\tabmid
+birefringence & 双折射 & 两个正交偏振速度不同 \\
+\tabmid
+optic axis & 光轴 & 沿此方向无双折射 \\
+\tabmid
+ordinary / extraordinary ray & o 光／e 光 & 折射率 $n_o$／$n_e(\theta)$ \\
+\tabmid
+positive / negative crystal & 正晶体／负晶体 & $n_e>n_o$／$n_e<n_o$ \\
+\tabmid
+fast / slow axis & 快轴／慢轴 & 折射率小／大的方向 \\
+\tabmid
+retardation & 相位延迟 & $\Delta\varphi=2\pi|n_e-n_o|d/\lambda$ \\
+\tabmid
+quarter / half-wave plate & $\lambda/4$／$\lambda/2$ 波片 & $\Delta\varphi=\pi/2$／$\pi$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\needspace{16\baselineskip}
+\subhdr{A-3 偏振分析与应用}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{5.0cm}p{4.0cm}p{5.0cm}@{}}
+\thead{英文} & \thead{中文} & \thead{一句话} \\
+\tabmid
+Jones vector / matrix & 琼斯矢量／矩阵 & 复二维描述，完全偏振 \\
+\tabmid
+Stokes parameters & 斯托克斯参数 & $S_0,S_1,S_2,S_3$，可测强度 \\
+\tabmid
+Poincar\'e sphere & 庞加莱球 & 偏振态的球面表示 \\
+\tabmid
+Mueller matrix & 穆勒矩阵 & $4\times4$ 实矩阵，可含退偏 \\
+\tabmid
+degree of linear polarization & 线偏振度 & $\sqrt{S_1^2+S_2^2}/S_0$ \\
+\tabmid
+Fresnel--Arago laws & 菲涅耳--阿拉戈定律 & 正交偏振不干涉；投影后恢复 \\
+\tabmid
+optical activity & 旋光 & 偏振面旋转 \\
+\tabmid
+specific rotation & 比旋光 & 单位长度／浓度／光程的转角 \\
+\tabmid
+circular birefringence & 圆双折射 & $n_R\neq n_L$ \\
+\tabmid
+photoelasticity & 光弹性 & 应力致双折射 \\
+\tabmid
+stress-optic coefficient & 应力--光学系数 & $\Delta n=C(\sigma_1-\sigma_2)$ \\
+\tabmid
+fringe order & 条纹级数 & $N=\Delta n\,d/\lambda$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\hdr{附录 B}{练习详解}
+
+%---------------------------------------------------------------
+\answerstart{P1}{课件 p60 Problem 1}{自然光 $I_0=80\ \mathrm{W/m^2}$ 过两片偏振片，第二片与第一片成 $60^\circ$。
+求 (a) 第一片后强度；(b) 第二片后强度；(c) 第二片后强度为 $10\ \mathrm{W/m^2}$ 时的角度。}
+
+\textbf{(a) 第一片：减半。}自然光两个正交分量各占一半，偏振片只放行一个：
+\[
+I_1=\frac{I_0}{2}=\frac{80}{2}=40\ \mathrm{W/m^2}.
+\]
+此时光已沿第一片的透振方向线偏振。
+
+\textbf{(b) 第二片：Malus 定律。}入射已是线偏振，夹角 $60^\circ$：
+\[
+I_2=I_1\cos^2 60^\circ=40\times\frac14=10\ \mathrm{W/m^2}.
+\]
+
+\textbf{(c) 反解角度。}第一片后的强度 $40\ \mathrm{W/m^2}$ 与角度无关，是固定的；要求 $I_2=10$：
+\[
+40\cos^2\theta=10\ \Longrightarrow\ \cos^2\theta=\frac14
+\ \Longrightarrow\ \cos\theta=\pm\frac12
+\ \Longrightarrow\ \theta=60^\circ\ \text{或}\ 120^\circ .
+\]
+两个解都满足方程，物理上对应检偏器轴的两个不同取向（二者关于第一片轴对称）。
+再加 $180^\circ$ 回到同一条轴，所以在 $0^\circ\le\theta<180^\circ$ 内就这两个。
+
+\textbf{答案}\quad (a) $40\ \mathrm{W/m^2}$；(b) $10\ \mathrm{W/m^2}$；(c) $60^\circ$ 或 $120^\circ$。
+
+\textbf{自检}\quad (c) 的答案里包含 (b) 用过的 $60^\circ$，说明 (c) 就是 (b) 的反问题，数值自洽。
+
+%---------------------------------------------------------------
+\answerstart{P2}{课件 p60 Problem 2}{空气到玻璃（$n_1=1.00,n_2=1.50$）。
+(a) 布儒斯特角；(b) 自然光入射时布儒斯特角上反射光的偏振态；(c) p 偏振入射时的反射强度。}
+
+\textbf{(a)}
+\[
+\tan\theta_B=\frac{n_2}{n_1}=\frac{1.50}{1.00}=1.50
+\ \Longrightarrow\
+\theta_B=\arctan1.50=56.31^\circ\approx56.3^\circ .
+\]
+
+\textbf{(b)} 布儒斯特角的定义就是 $r_p=0$ 的角，反射光里只剩 s 分量。
+s 分量的电场垂直于入射面，所以反射光是\textbf{完全线偏振，振动方向垂直于入射面}。
+注意入射光本身是非偏振的——「非偏振入射、完全偏振反射」正是布儒斯特角最反直觉的地方。
+
+\textbf{(c)} p 偏振入射时，反射系数 $r_p=0$，故
+\[
+I_{\text{refl}}=I_0|r_p|^2=0 .
+\]
+这不是「反射很弱」，而是精确为零：p 分量在布儒斯特角上完全不反射。
+
+\textbf{答案}\quad (a) $56.3^\circ$；(b) $100\%$ 线偏振，垂直于入射面（纯 s）；(c) $0$。
+
+\textbf{自检}\quad 用 Snell 核对：$1.00\sin56.31^\circ=0.8321$，$1.50\sin(90^\circ-56.31^\circ)
+=1.50\times0.5547=0.8321$，一致，说明 $\theta_B+\theta_t=90^\circ$。
+
+%---------------------------------------------------------------
+\answerstart{P3}{课件 p60 Problem 3}{$n_o=1.658$、$n_e=1.486$、$\lambda=500\ \mathrm{nm}$，光垂直光轴入射。
+(a) $\lambda/4$ 最小厚度；(b) 厚度 $10\ \mu\mathrm{m}$ 的相位差（度）；(c) $45^\circ$ 线偏振过 (a) 的波片后的偏振态。}
+
+\textbf{(a)} $\lambda/4$ 要求 $(n_o-n_e)d=\lambda/4$（两者差取绝对值 $0.172$）：
+\[
+d=\frac{\lambda}{4|n_o-n_e|}=\frac{500\ \mathrm{nm}}{4\times0.172}
+=\frac{500}{0.688}\ \mathrm{nm}=726.7\ \mathrm{nm}\approx0.727\ \mu\mathrm{m}.
+\]
+
+\textbf{(b)} 厚度 $10\ \mu\mathrm{m}=1.0\times10^4\ \mathrm{nm}$：
+\[
+\Delta\varphi=\frac{2\pi}{\lambda}|n_o-n_e|d
+=\frac{2\pi}{500\ \mathrm{nm}}\times0.172\times1.0\times10^4\ \mathrm{nm}
+=2\pi\times3.44=21.61\ \mathrm{rad}.
+\]
+换算成度：$3.44\times360^\circ=1238.4^\circ$；减去 $3$ 个整圈得 $158.4^\circ$。
+
+\textbf{(c)} $45^\circ$ 入射意味着两个分量等幅；波片把其中一个推迟 $90^\circ$，出射等幅且相差 $90^\circ$，
+即\textbf{圆偏振}。若用琼斯矢量（快轴为 $x$）：$\vect J=\frac{1}{\sqrt2}(1,i)^{T}$。
+
+\textbf{答案}\quad (a) $726.7\ \mathrm{nm}\approx0.727\ \mu\mathrm{m}$；
+(b) $1238.4^\circ$（等价于 $158.4^\circ$，或 $21.61\ \mathrm{rad}=3.44$ 个波长）；
+(c) 圆偏振（等幅、$90^\circ$ 相差；旋向按约定声明）。
+
+\textbf{自检}\quad $3.44$ 个波长的延迟介于 $3$ 与 $4$ 之间，所以既不是 $\lambda/4$ 也不是 $\lambda/2$ 波片；
+而 (a) 的厚度对应 $0.25$ 个波长，正好落在 $45^\circ$ 入射 → 圆偏振的条件上。
+
+%---------------------------------------------------------------
+\answerstart{P4}{变式}{自然光 $100\ \mathrm{W/m^2}$，三片偏振片依次为 $0^\circ$、$20^\circ$、$90^\circ$。
+(a) 求每片后强度；(b) 中间片取多大角最亮，最大值多少。}
+
+\textbf{(a)}
+\[
+I_1=\frac{100}{2}=50\ \mathrm{W/m^2};
+\qquad
+I_2=50\cos^2 20^\circ=50\times0.8830=44.15\ \mathrm{W/m^2};
+\]
+第三片与第二片相差 $90^\circ-20^\circ=70^\circ$：
+\[
+I_3=44.15\cos^2 70^\circ=44.15\times0.11698=5.17\ \mathrm{W/m^2}.
+\]
+
+\textbf{(b)} 一般式 $I_3=\frac{I_0}{8}\sin^22\theta$（第一、三片正交），最大值在 $\theta=45^\circ$：
+\[
+I_{3,\max}=\frac{100}{8}=12.5\ \mathrm{W/m^2}.
+\]
+
+\textbf{答案}\quad (a) $50$、$44.15$、$5.17\ \mathrm{W/m^2}$；(b) $\theta=45^\circ$，$12.5\ \mathrm{W/m^2}$。
+
+\textbf{自检}\quad $20^\circ$ 的结果应当小于 $45^\circ$ 的最大值（$5.17<12.5$），且第一、三片正交时
+无中间片则透射为零，插片后不为零，符合直觉。
+
+%---------------------------------------------------------------
+\answerstart{P5}{变式}{玻璃到空气（$n_1=1.50,n_2=1.00$）。(a) 布儒斯特角；(b) 折射角；(c) 反射光偏振态；
+(d) p 偏振入射时的反射强度。}
+
+\textbf{(a)} 注意 $\tan\theta_B=n_2/n_1$ 的分子是\emph{出射}介质的折射率：
+\[
+\tan\theta_B=\frac{1.00}{1.50}=0.6667
+\ \Longrightarrow\
+\theta_B=33.69^\circ\approx33.7^\circ .
+\]
+（光从光密到光疏时布儒斯特角小于 $45^\circ$，这是与本作业 P2 最直观的差别。）
+
+\textbf{(b)}
+\[
+\theta_t=90^\circ-\theta_B=90^\circ-33.69^\circ=56.31^\circ .
+\]
+用 Snell 核对：$1.50\sin33.69^\circ=0.8321$，$1.00\sin56.31^\circ=0.8321$，一致。
+另外，全反射临界角是 $\arcsin(1/1.50)=41.8^\circ$，$33.7^\circ<41.8^\circ$，所以仍有折射光。
+
+\textbf{(c)} 布儒斯特角上 $r_p=0$，反射光为\textbf{纯 s 偏振}（垂直于入射面）。
+
+\textbf{(d)} p 偏振入射时 $r_p=0$，故反射强度为 $0$。
+
+\textbf{答案}\quad (a) $33.7^\circ$；(b) $56.3^\circ$；(c) $100\%$ 线偏振、垂直入射面；(d) $0$。
+
+%=====================================================================
+\clearpage
+\hdr{附录 C}{页码对照、缺口清单与口径说明}
+
+\subhdr{C.1 课件没讲透、本讲义补上的六处}
+
+\gapitem{补充 1}{课件 p7 直接给出「自然光过偏振片减半」，没说为什么。本讲义 §4.1 用「两个正交分量等强、
+不相干」补齐，并说明这一步不能套 Malus 定律。}
+
+\gapitem{补充 2}{课件 p3 只给椭圆方程的结果。本讲义 §1.2 给出消去 $\tau$ 的完整代数，
+并说明为什么它总是椭圆（判别式 $\le0$）。}
+
+\gapitem{补充 3}{课件 p21 由 $r_p=0$ 推出 $\theta_i+\theta_t=90^\circ$ 后直接给 $\tan\theta_B=n_2/n_1$，
+没有解释「p 分量为什么真的反射不出去」。本讲义 §6.6 用波矢几何证明
+$\hat{\vect e}_{r,p}\parallel\vect k_t$，再用偶极不沿自身振动方向辐射解释。}
+
+\gapitem{补充 4}{课件没明说「波片为什么不改变强度」。本讲义 §2.3 指出波片矩阵是对角的，
+只改相对相位；§5.4 用它推出三种波片的作用。}
+
+\gapitem{补充 5}{课件 p33 同时写了 $S_3=2\mathrm{Im}(E_x^{*}E_y)$ 与 $S_3=-2\mathrm{Im}(E_xE_y^{*})$，
+没解释符号。本讲义 §8.6 说明两者差一个负号，并给出用 $\delta$ 核对的方法。}
+
+\gapitem{补充 6}{课件 p36 只说穆勒矩阵「更一般」，没说为什么。本讲义 §9.2 指出：琼斯矩阵作用在复振幅上、
+要求相干；穆勒矩阵作用在强度上，因此能描述部分偏振与退偏。}
+
+\subhdr{C.2 三处需要声明的口径}
+
+\warnbox{
+\textbf{口径 1（正/负晶体的波面，课件 p14 与 p13 矛盾）。}
+p14 说正晶体「椭球沿光轴拉长、在赤道处位于球面之外」，p13 说正晶体中 e 光比 o 光慢。
+按 $v=c/n$ 两者不能同时成立：$n_e>n_o\Rightarrow v_e<v_o$，垂直光轴方向上 e 光走得更短，
+椭球应在球\emph{内}。本讲义 §5.3 与图 2 按速度判定。混淆很可能来自「折射率椭球（indicatrix）」
+——那里正晶体沿光轴确实拉长，但那是折射率的图，不是波面的图。
+
+\textbf{口径 2（圆偏振的旋向命名）。}
+p6 用的是光学惯用（迎着光看，$(1,-i)^{T}$ 记 right），p30 的斯托克斯表用的是 IEEE 惯用
+（$S_3>0$ 记 right，对应 $(1,i)^{T}$）。两套各自自洽，但同一题里混用就会「同一个态既叫左旋又叫右旋」。
+本讲义统一用 IEEE，并在 §1.4 列出对照表；答题时写明约定。
+
+\textbf{口径 3（波片矩阵的写法）。}
+p15 写 $\mathrm{diag}(e^{i\Delta\varphi/2},e^{-i\Delta\varphi/2})$，p59 用 $(1,e^{i\pi/2})^{T}$。
+前者把相位对称分给两轴，后者把公共相位去掉，两者只差一个整体相位因子——整体相位无物理意义（§2.1），
+所以结果一致。写作业时任选一种，但要前后一致。
+}
+
+\subhdr{C.3 与上一讲讲义的一处更正}
+
+2026-11-09 的 L1 讲义 §3.3 曾指出「课件 p31 说 p 分量振动平行于折射光方向是错的，应为平行于反射光方向」。
+按本讲义 §6.6 的矢量复核，\textbf{课件原文是对的}：在布儒斯特角上，反射光中 p 分量的振动方向
+$\hat{\vect e}_{r,p}=(\cos\theta_B,0,\sin\theta_B)$ 与折射光波矢
+$\vect k_t\propto(\sin\theta_t,0,\cos\theta_t)=(\cos\theta_B,0,\sin\theta_B)$ 完全同向。
+L1 讲义那一句应删去；本讲义的 §6.6 给出正确表述与证明。
+
+\needspace{9\baselineskip}
+\subhdr{C.4 这份讲义覆盖了什么、没覆盖什么}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{7.2cm}@{}}
+\thead{已覆盖} & \thead{说明} \\
+\tabmid
+课件 p2--p60 全部 60 页 & 每节开头标出对应页码；p49--p51 的三问提炼在 §13 \\
+\tabmid
+课件 p52--p59 三道例题 & §4.4、§6.8、§14 作为教学示范逐题走完 \\
+\tabmid
+课件 p60 作业三题 & §15 题干 + 附录 B 详解 \\
+\tabmid
+补充教学小例 8 个 & §1.5、§2.4、§5.6、§7.4、§8.8、§10.3、§11.4、§12.4 \\
+\tabmid
+未做 & 课件里的插图没有逐张复制，仅按需要重绘 4 张示意图 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\flowerrule
+{\small\color{inkgray}
+一句话收尾：这一讲把「偏振」从一句定性描述变成了三套可算的语言——几何（椭圆）、
+代数（琼斯矢量）、测量（斯托克斯参数）。作业只用到其中最基础的三条：
+自然光减半、Malus 乘 $\cos^2$、波片看光程差是 $\lambda/4$ 还是 $\lambda/2$；
+再加上布儒斯特角的 $\tan\theta_B=n_2/n_1$，四道防线就够了。}
+
+\end{document}
+

@@ -322,9 +322,11 @@ I_3=I_2\cos^2 45^\circ=\frac{I_0}{4}\cdot\frac12=\frac{I_0}{8}.
 \subhdr{3.3 为什么 p 分量反射不出去（p31 第一问）}
 
 这是全课最值得想清楚的一步。看几何：Brewster 角上反射光与折射光垂直。
-折射光里的 p 分量，其电场必须垂直于折射光、又留在入射面内——满足这两个条件的那个方向，
-正好\textbf{平行于反射光的方向}。可反射光自己也是横波，电场不能沿自己的传播方向振动，
-所以 p 分量根本没有「可以振」的方向，反射不出来。剩下的只有 s 分量，于是反射光 100\% 是 s 偏振。
+反射光里 p 分量的电场必须垂直于反射光、又留在入射面内——满足这两个条件的那个方向，
+正好\textbf{平行于折射光的方向}（记作 $\vect k_t$）。而折射光在介质 2 里驱动的偶极子，
+是沿着 $\vect E_t$ 振动的，$\vect E_t$ 又垂直于 $\vect k_t$；偶极子沿自己的振动方向不辐射，
+所以沿 $\vect k_t$ 方向收不到反射波——p 分量完全反射不出去。剩下的只有 s 分量，
+于是反射光 100\% 是 s 偏振。
 
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,scale=0.92]
@@ -347,12 +349,14 @@ I_3=I_2\cos^2 45^\circ=\frac{I_0}{4}\cdot\frac12=\frac{I_0}{8}.
   \node[lab,anchor=west] at (2.15,0.78) {$\theta_B+\theta_2=90^\circ$};
   \node[lab,anchor=west] at (2.15,0.30) {反射光与折射光垂直};
 \end{tikzpicture}\\[2pt]
-{\small\color{inkgray} 图 3\quad Brewster 角的几何（按 $\theta_B=60^\circ$、$\theta_2=30^\circ$ 画出）。折射光里 p 分量的振动方向平行于反射光，所以反射不出 p 分量。}
+{\small\color{inkgray} 图 3\quad Brewster 角的几何（按 $\theta_B=60^\circ$、$\theta_2=30^\circ$ 画出）。反射光里 p 分量若存在，振动方向必须平行于折射光 $\vect k_t$——那正是偶极子不辐射的方向，所以反射不出 p 分量。}
 \end{center}
 
-\warnbox{\textbf{课件 p31 这句话的指向要改。}课件原文说 p 分量的振动「would be parallel to the direction of the
-refracted ray（平行于折射光方向）」。按几何核对，应为「\textbf{平行于反射光方向}」——反射光与折射光正好差 $90^\circ$，
-这两个说法差了一整个直角。结论（反射光纯 s、折射光部分偏振）不受影响；但理由记错，遇到「换一个角度还成不成立」的变式题就会推错。}
+\warnbox{\textbf{这一处 2026-11-12 更正过。}课件 p31 原文说 p 分量的振动「would be parallel to the direction of the
+refracted ray（平行于折射光方向）」——这句话是\emph{对的}。按矢量核对：反射光 p 方向的单位矢量
+$(\cos\theta_B,0,\sin\theta_B)$，与 $\vect k_t\propto(\sin\theta_2,0,\cos\theta_2)$ 在 $\theta_B+\theta_2=90^\circ$
+时完全同向。本讲义 11-09 版曾把这条判为「写错」，那是判错了；现在按正确几何重写，
+配图与结论不变。详见 \texttt{外教L2-Polarization-精讲讲义-20261112.pdf} 附录 C.3。}
 
 \subhdr{3.4 Fresnel 公式与反射率（p28、p60）}
 
@@ -672,7 +676,7 @@ $d_{\min}\approx17.6\ \mu\mathrm{m}$；厚度加倍变半波片，理由写「�
 
 \gapitem{推导缺口}{p18 直接给 $I=I_0\cos^2\theta$，没有说明它是「振幅投影的平方」。§2.4 补：$E=E_0\cos\theta$、$I\propto E^2$。}
 \gapitem{机制缺口}{p6--p7 直接给自然光透射 $I_0/2$。§2.3 补：随机相位使交叉项平均为零，加上各方向等价，所以与偏振片角度无关。}
-\gapitem{理由错误}{p31 的 FAQ 说 p 分量振动「平行于折射光方向」；按几何应为「平行于反射光方向」。§3.3 与图 3 已按正确几何重写，结论不变。}
+\gapitem{已核验（2026-11-12 更正）}{p31 的 FAQ 说 p 分量振动「平行于折射光方向」，这句是对的：Brewster 角上反射光的 p 方向与 $\vect k_t$ 同向，而介质 2 的偶极子沿 $\vect E_t\perp\vect k_t$ 振动、不沿自身振动方向辐射，故 $R_p=0$。§3.3 已按此重写。}
 \gapitem{压缩缺口}{p60 把 $R_s=\sin^2(\theta_B-\theta_2)$ 与 Fresnel 系数并列，没写两者的关系。§3.4 补：它是 $|r_s|=\sin(\theta_1-\theta_2)/\sin(\theta_1+\theta_2)$ 在 $\theta_1+\theta_2=90^\circ$ 时的特例。}
 \gapitem{条件缺口}{p47 与 p58 的波片公式没写绝对值，也没说「最小厚度」。§5.4 补：厚度用 $|n_o-n_e|$，加整数个全波片厚度相位差不变。}
 \gapitem{术语缺口}{课件没有定义快轴与慢轴。§5.4 补：折射率小的方向是快轴；石英的光轴是慢轴，方解石的光轴是快轴。}

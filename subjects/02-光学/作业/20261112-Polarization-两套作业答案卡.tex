@@ -1,0 +1,244 @@
+%=====================================================================
+% Polarization 作业答案卡（两套）
+% 编译：xelatex 两遍
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\usepackage[a4paper,left=1.9cm,right=1.9cm,top=1.7cm,bottom=1.8cm,footskip=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{array}
+\usepackage{fancyhdr}
+
+\definecolor{ink}{RGB}{25,25,30}
+\definecolor{mid}{RGB}{95,95,105}
+\definecolor{rule}{RGB}{150,150,160}
+\definecolor{band}{RGB}{246,246,248}
+
+\linespread{1.18}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancyhead[L]{\footnotesize\color{mid}OPTICS 02 · Polarization homework \textemdash{} answer sheet}
+\fancyhead[R]{\footnotesize\color{mid}2026-11-12}
+\fancyfoot[C]{\footnotesize\color{mid}\thepage}
+
+\newcommand{\sethead}[2]{%
+  \par\vspace{2pt}%
+  \noindent\colorbox{band}{\parbox{\dimexpr\linewidth-2\fboxsep}{\vspace{1pt}%
+    {\small\bfseries #1}\hfill{\small\color{mid} #2}\vspace{1pt}}}%
+  \par\vspace{4pt}}
+
+\newcommand{\prob}[2]{%
+  \needspace{9\baselineskip}%
+  \par\vspace{5pt}%
+  \noindent{\bfseries #1}\quad{\small\color{mid}#2}\par
+  \vspace{1pt}{\color{rule}\hrule height 0.6pt}\vspace{3pt}}
+
+\newcommand{\ansline}[1]{\par\vspace{2pt}\noindent\fcolorbox{rule}{band}{%
+  \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\vspace{1pt}#1\vspace{1pt}}}\par\vspace{3pt}}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Polarization \textemdash{} Homework Answer Sheets}\\[3pt]
+  {\small\color{mid}OPTICS 02 · Lecture 1 \& Lecture 2 sets · worked solutions for handwriting \\[1pt]
+  prepared 2026-11-12 · each problem gives Given / Formulas / Steps / Answers with units}
+\end{center}
+\vspace{-2pt}
+{\color{rule}\hrule height 0.8pt}
+
+\sethead{Set A \textemdash{} the three-problem sheet (L1)}{$I_0=1200$; $n=1.6$; quartz $632.8$ nm}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 1}{Malus's law and natural light}
+\textbf{Given}\quad $I_0=1200\ \mathrm{W/m^2}$ (unpolarized); $\theta_{12}=30^\circ$; $\theta_{23}=45^\circ$.
+
+\textbf{Formulas}\quad Natural light through the first polaroid: $I_1=I_0/2$;\quad
+Malus's law: $I=I_{\text{before}}\cos^2\theta$.
+
+\textbf{Steps}\quad
+Natural light has no preferred direction, so polaroid 1 passes exactly one half and leaves
+linearly polarized light along its axis:
+\[
+I_1=\frac{I_0}{2}=\frac{1200}{2}=600\ \mathrm{W/m^2}.
+\]
+The light reaching polaroid 2 is now linearly polarized, so Malus's law applies with $\theta_{12}=30^\circ$:
+\[
+I_2=I_1\cos^2 30^\circ=600\left(\frac{\sqrt3}{2}\right)^2=600\times\frac34=450\ \mathrm{W/m^2}.
+\]
+The light leaving polaroid 2 oscillates along the axis of polaroid 2, so the third polaroid is
+$45^\circ$ away \emph{from the second}, not from the first:
+\[
+I_3=I_2\cos^2 45^\circ=450\times\frac12=225\ \mathrm{W/m^2}.
+\]
+Fraction transmitted:
+\[
+\frac{I_3}{I_0}=\frac{225}{1200}=0.1875=18.75\%=\frac12\cdot\frac34\cdot\frac12=\frac{3}{16}.
+\]
+\ansline{\textbf{Answers}\quad (a) $I_1=600\ \mathrm{W/m^2}$,\ $I_2=450\ \mathrm{W/m^2}$,\ $I_3=225\ \mathrm{W/m^2}$;
+\quad (b) $I_3/I_0=0.1875=18.75\%$ (i.e.\ $3/16$).}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 2}{Brewster's law and Fresnel reflection}
+\textbf{Given}\quad $n_1=1.00$ (air), $n_2=1.6$ (glass), $n_{21}=1.6$; incident natural light $I_0=500\ \mathrm{W/m^2}$.
+
+\textbf{Formulas}\quad $\tan\theta_B=n_{21}$;\quad
+at the Brewster angle $\theta_B+\theta_2=90^\circ$;\quad
+$R_s=\sin^2(\theta_B-\theta_2)$;\quad $I_{\text{refl}}=\tfrac12 I_0 R_s$ (only the s half is reflected).
+
+\textbf{Steps}\quad
+\[
+\tan\theta_B=1.6\ \Longrightarrow\ \theta_B=\arctan 1.6=57.99^\circ\approx 58.0^\circ .
+\]
+At the Brewster angle the reflected and refracted rays are perpendicular:
+\[
+\theta_2=90^\circ-\theta_B=90^\circ-57.99^\circ=32.01^\circ\approx 32.0^\circ
+\]
+(check by Snell: $1.00\sin 57.99^\circ=0.8480$, $1.6\sin 32.01^\circ=0.8480$).
+With $\theta_B-\theta_2=25.99^\circ$:
+\[
+R_s=\sin^2 25.99^\circ=(0.4382)^2=0.192 .
+\]
+Natural light carries $I_0/2$ in the s component and $I_0/2$ in the p component, and at $\theta_B$ the p
+component is not reflected at all, so
+\[
+I_{\text{refl}}=\frac{I_0}{2}R_s=\frac{500}{2}\times 0.192=48.0\ \mathrm{W/m^2}.
+\]
+\ansline{\textbf{Answers}\quad (a) $\theta_B=57.99^\circ\approx 58.0^\circ$;\ \
+(b) $\theta_2=32.01^\circ\approx 32.0^\circ$;\ \
+(c) $R_s=0.192=19.2\%$;\ \
+(d) $I_{\text{refl}}\approx 48\ \mathrm{W/m^2}$, and it is $100\%$ s-polarized.}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 3}{Quarter-wave plate (quartz)}
+\textbf{Given}\quad $n_o=1.544$, $n_e=1.553$, $\lambda=632.8\ \mathrm{nm}$, $\Delta n=|n_e-n_o|=0.009$.
+
+\textbf{Formulas}\quad
+$\Delta\varphi=\dfrac{2\pi}{\lambda}(n_e-n_o)d$;\quad
+quarter-wave plate: $\Delta\varphi=\pi/2\Rightarrow d_{\lambda/4}=\dfrac{\lambda}{4|n_e-n_o|}$.
+
+\textbf{Steps}\quad
+For linear input to leave circularly polarized, one component must be retarded by a quarter of a
+wavelength, i.e.\ $(n_e-n_o)d=\lambda/4$. Solving:
+\[
+d=\frac{\lambda}{4|n_e-n_o|}=\frac{632.8\ \mathrm{nm}}{4\times 0.009}=\frac{632.8}{0.036}\ \mathrm{nm}
+=1.7578\times 10^{4}\ \mathrm{nm}=1.758\times 10^{-5}\ \mathrm{m}\approx 17.6\ \mu\mathrm{m}.
+\]
+Doubling the thickness doubles the optical path difference:
+\[
+d'=2d\ \Longrightarrow\ (n_e-n_o)d'=\frac{\lambda}{2}
+\ \Longrightarrow\ \Delta\varphi'=2\times\frac{\pi}{2}=\pi .
+\]
+A retardation of $\pi$ is a half-wave plate: linear light stays linear, with its plane of polarization
+rotated by $2\vartheta$ ($\vartheta$ = angle between the incident vibration and the fast axis).
+\ansline{\textbf{Answers}\quad (a) $d_{\min}=1.758\times10^{-5}\ \mathrm{m}\approx 17.6\ \mu\mathrm{m}$;\ \
+(b) it becomes a half-wave ($\lambda/2$) plate, because the retardation becomes $\lambda/2$ ($\Delta\varphi=\pi$).}
+
+%================================================================================
+\sethead{Set B \textemdash{} the three problems on the Lecture 2 slides (p60)}{$I_0=80$; $n_2=1.50$; $\lambda=500$ nm}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 1}{Two polarizers (Malus's law)}
+\textbf{Given}\quad $I_0=80\ \mathrm{W/m^2}$ (unpolarized); $\theta=60^\circ$ between the two transmission axes.
+
+\textbf{Formulas}\quad First polarizer on natural light: $I_1=I_0/2$;\quad
+second polarizer (Malus): $I_2=I_1\cos^2\theta$.
+
+\textbf{Steps}\quad
+\[
+I_1=\frac{I_0}{2}=\frac{80}{2}=40\ \mathrm{W/m^2},\qquad
+I_2=I_1\cos^2 60^\circ=40\times\frac14=10\ \mathrm{W/m^2}.
+\]
+For part (c) solve Malus's law backwards, with $I_2=10\ \mathrm{W/m^2}$ and $I_1=40\ \mathrm{W/m^2}$ fixed:
+\[
+40\cos^2\theta=10\ \Longrightarrow\ \cos^2\theta=\frac14\ \Longrightarrow\ \cos\theta=\pm\frac12
+\ \Longrightarrow\ \theta=60^\circ\ \text{or}\ 120^\circ .
+\]
+(Both give the same transmitted intensity; $60^\circ$ and $120^\circ$ are the two distinct orientations of
+the analyzer axis. Adding $180^\circ$ reproduces the same axis, so these are all the solutions in
+$0^\circ\le\theta<180^\circ$.)
+\ansline{\textbf{Answers}\quad (a) $I_1=40\ \mathrm{W/m^2}$;\quad (b) $I_2=10\ \mathrm{W/m^2}$;\quad
+(c) $\theta=60^\circ$ or $120^\circ$ (i.e.\ $|\cos\theta|=1/2$).}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 2}{Brewster's angle}
+\textbf{Given}\quad $n_1=1.00$ (air), $n_2=1.50$ (glass), $n_{21}=1.50$.
+
+\textbf{Formulas}\quad $\tan\theta_B=n_2/n_1$;\quad
+$r_p=\dfrac{n_2\cos\theta_i-n_1\cos\theta_t}{n_2\cos\theta_i+n_1\cos\theta_t}$;\quad $R_p=|r_p|^2$.
+
+\textbf{Steps}\quad
+\[
+\tan\theta_B=\frac{1.50}{1.00}=1.50\ \Longrightarrow\ \theta_B=\arctan 1.50=56.31^\circ\approx 56.3^\circ .
+\]
+At $\theta_B$ the reflected and refracted rays are perpendicular, so the p component would have to
+oscillate along the direction of the refracted ray \textemdash{} impossible for a transverse wave. Hence
+$R_p=0$ and the reflected beam contains only the s component, which is linearly polarized
+\emph{perpendicular} to the plane of incidence.
+\[
+R_p=|r_p|^2=0\ \Longrightarrow\ I_{\text{refl}}=I_0\,R_p=0\ \mathrm{W/m^2}.
+\]
+\ansline{\textbf{Answers}\quad (a) $\theta_B=56.31^\circ\approx 56.3^\circ$;\quad
+(b) the reflected light is $100\%$ linearly polarized with its electric field perpendicular to the plane of
+incidence (pure s-polarization), even though the incident light is unpolarized;\quad
+(c) for p-polarized incidence at $\theta_B$ the reflected intensity is $0$.}
+
+%--------------------------------------------------------------------------------
+\prob{Problem 3}{Quarter-wave plate thickness and retardation}
+\textbf{Given}\quad $n_o=1.658$, $n_e=1.486$, $\lambda=500\ \mathrm{nm}$, propagation perpendicular to the optic axis;
+$|n_o-n_e|=0.172$.
+
+\textbf{Formulas}\quad
+$\Delta\varphi=\dfrac{2\pi}{\lambda}|n_o-n_e|d$;\quad
+$d_{\lambda/4}=\dfrac{\lambda}{4|n_o-n_e|}$.
+
+\textbf{Steps}\quad
+\[
+d_{\lambda/4}=\frac{500\ \mathrm{nm}}{4\times 0.172}=\frac{500}{0.688}\ \mathrm{nm}
+=726.7\ \mathrm{nm}=7.267\times10^{-7}\ \mathrm{m}\approx 0.727\ \mu\mathrm{m}.
+\]
+For $d=10\ \mu\mathrm{m}=1.0\times10^{4}\ \mathrm{nm}$:
+\[
+\Delta\varphi=\frac{2\pi}{500\ \mathrm{nm}}\times 0.172\times 1.0\times10^{4}\ \mathrm{nm}
+=2\pi\times 3.44=21.61\ \mathrm{rad},
+\]
+\[
+\Delta\varphi=3.44\times 360^\circ=1238.4^\circ\equiv 158.4^\circ\ (\mathrm{mod}\ 360^\circ).
+\]
+Part (c): light polarized at $45^\circ$ to the optic axis has two equal components along the ordinary and
+extraordinary directions. The quarter-wave plate delays one of them by $90^\circ$, so the two equal
+components emerge with a $90^\circ$ phase difference and the output is circularly polarized.
+\ansline{\textbf{Answers}\quad (a) $d_{\min}=726.7\ \mathrm{nm}\approx 0.727\ \mu\mathrm{m}$;\quad
+(b) $\Delta\varphi=1238.4^\circ\approx 1.24\times10^{3}$ degrees, i.e.\ $158.4^\circ$ modulo $360^\circ$
+(equivalently $21.61$ rad $=3.44\lambda$);\quad
+(c) the output is circularly polarized (equal amplitudes, $90^\circ$ phase difference).}
+
+\vspace{4pt}
+{\footnotesize\color{mid}
+Handedness note for (c): the sign of the circular polarization is a convention. Writing
+$\vect E=\mathrm{Re}\{\vect J e^{i(kz-\omega t)}\}$ and defining $\delta=\delta_y-\delta_x$, here the
+extraordinary axis ($n_e=1.486$, the fast axis because $n_e<n_o$) is taken along $x$ and the ordinary
+axis along $y$, so $J=(1,e^{i\pi/2})^T/\sqrt2=(1,i)^T/\sqrt2$. State the convention you use; the
+essential result \textemdash{} equal amplitudes with a $90^\circ$ retardation \textemdash{} does not depend on it.}
+
+\vspace{10pt}
+{\color{rule}\hrule height 0.4pt}
+\vspace{5pt}
+{\small\color{mid}
+\textbf{Before you hand it in} \ (the instructor's submission rules)\\[2pt]
+1.\ Handwritten, with clear step-by-step working.\quad
+2.\ A Given section, the formulas used, the calculations, and final answers with units.\\
+3.\ Your name signed in English.\quad
+4.\ Placed on the instructor's desk before the lecture starts.\\
+Each three-problem set is worth 30 points (10 points per problem).}
+
+\end{document}
+
+
