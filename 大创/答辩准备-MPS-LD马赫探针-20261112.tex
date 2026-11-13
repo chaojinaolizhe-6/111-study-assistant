@@ -1,0 +1,288 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=2.2cm,top=2.4cm,bottom=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{array,booktabs,longtable}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{1B2A33}
+\definecolor{accent}{HTML}{1F5C7A}
+\definecolor{soft}{HTML}{F2F6F8}
+\definecolor{line}{HTML}{C9D8E0}
+\definecolor{warn}{HTML}{8A3B12}
+
+\color{ink}
+\linespread{1.18}
+\setlength{\parskip}{3pt}
+
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+\newcommand{\tagbox}[1]{\colorbox{accent}{\color{white}\bfseries\,#1\,}}
+\newcommand{\key}[1]{\textbf{\color{accent}#1}}
+\newcommand{\qt}[1]{\par\medskip\noindent\textbf{\color{accent}Q#1}\hspace{0.3em}}
+\newcommand{\ans}{\par\noindent\hspace{1.1em}\textbf{答：}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\color{accent}MPS-LD 马赫探针 · 开题答辩准备}
+\fancyhead[R]{\small\color{accent}马泽宇　物理学院}
+\fancyfoot[C]{\small\color{accent}\thepage}
+
+\begin{document}
+
+\begin{center}
+{\small\color{accent}大连理工大学大学生创新创业训练计划 · 项目开题答辩}\\[8pt]
+{\LARGE\bfseries MPS-LD 马赫探针研制与多诊断联合测量}\\[6pt]
+{\large 开题答辩：内容梳理与问答准备}\\[10pt]
+{\small 项目负责人：马泽宇　｜　指导教师：桑超峰　｜　物理学院}\\[3pt]
+{\small 项目编号 20271014111371　｜　2026 年 11 月}
+\end{center}
+
+\vspace{2pt}
+\noindent\colorbox{soft}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+\textbf{用法}：第 1--4 节是把 PPT 六页正文展开成可讲的话；第 5 节是 20 个可能被问到的问题与答法；
+第 6 节是三个最该主动说在前面的软肋。答辩 3 分钟，讲解只走第 1--2 节，其余留给提问。}}
+
+\section{项目一句话}
+
+在 MPS-LD 直线等离子体装置上自制一台\key{双面马赫探针}，测靶前等离子体沿磁场的流速；
+再与\key{汤姆逊散射（TS）}、\key{发射光谱（OES）}、\key{质谱}联合，使电子参数、离子组分与离子通量
+落在同一时间、同一空间、同一套误差体系里。
+
+\textbf{交付物}：一套探针实物（探头 + 偏置与采集电路 + 安装结构）＋一套三诊断时空对应规范＋一组带误差预算的混合气体数据。
+
+\textbf{为什么值得做}：直线装置造价低、参数可控、诊断口多，适合做边界输运与等离子体—材料相互作用；
+但“流速”这个量目前装置上没有直接诊断。CRAFT 那套马赫探针（Mei 等）不能照搬——磁场、放电条件、接口都不同，
+器件尺寸与模型系数必须重新论证。
+
+\section{三个核心公式（被问到必答）}
+
+\subsection*{① 电流比}
+
+\begin{equation}
+R=\frac{|I_1|/A_1}{|I_2|/A_2}
+\end{equation}
+
+两个收集面朝向相反（一迎流、一背流），各测离子饱和电流 $I$，\key{先按有效面积 $A$ 归一}再取比值。
+不归一的后果：面积差会直接乘进 $R$，而 $M_\parallel\propto\ln R$，5\% 的面积差就变成可观的流速偏差。
+
+\subsection*{② 换算}
+
+\begin{equation}
+M_\parallel \approx \frac{\ln R}{K},\qquad u_\parallel = M_\parallel\cdot v_{\mathrm{norm}}
+\end{equation}
+
+$K$ 与 $v_{\mathrm{norm}}$ 由所选收集模型配套给出，\key{不是常数}——随磁化程度、碰撞区间、离子温度变化。
+答辩时不说“$K$ 等于多少”，只说“$K$ 由哪套模型在什么条件下给出”。
+
+\subsection*{③ 模型适用性判据}
+
+把三个长度与探头特征尺寸比：德拜长度 $\lambda_D$、离子回旋半径 $\rho_i$、碰撞自由程 $\lambda_{\mathrm{mfp}}$。
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item $\rho_i \gg$ 探头尺寸 $\Rightarrow$ 离子感受不到磁场，用\key{非磁化模型}；
+\item $\rho_i \lesssim$ 探头尺寸 $\Rightarrow$ 用\key{磁化模型}；
+\item $\lambda_{\mathrm{mfp}}$ 与探头尺寸、鞘层厚度相比 $\Rightarrow$ 判断\key{无碰撞（鞘层主导）}还是\key{有碰撞}。
+\end{itemize}
+
+\textbf{模型条件不足时的处理}（一定要主动说）：只报告电流比及其随工况的变化，\key{不把电流比当绝对流速}。
+
+\section{关键数字}
+
+\begin{table}[h]
+\centering\small
+\caption{三种单气体的基准工况（按装置既有运行区间拟定）}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+气种 & 射频功率 & 工质流量 & 磁场强度与位形 & 模式转变阈值 \\
+\midrule
+Ar & 0.5--5.0 kW & 140 sccm & 0.10 T，均匀 & 约 1.5 kW \\
+He & 2.0--7.0 kW & 200 sccm & 0.03 + 0.10--0.15 T，磁镜 & 约 3.0 kW \\
+D$_2$ & 1.0--8.0 kW & 150 sccm & 0.03 + 0.10 T，磁镜 & 约 4.0 kW \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering\small
+\caption{拟达到的主要技术指标（阶段性验收）}
+\begin{tabular}{@{}cll@{}}
+\toprule
+序号 & 指标项 & 拟定值 \\
+\midrule
+1 & 两路有效收集面积一致性 & 相对偏差 $\le 5\%$ \\
+2 & 电学线性度 & 每通道 $\ge$5 点 $\times$ 3 轮，$R^2\ge 0.999$ \\
+3 & 两路串扰 & $\le 1\%$ \\
+4 & 零点漂移 & 连续 30 min $\le 1\%$ 满量程 \\
+5 & 射频残余抑制 & 偏置线射频残余 $\le 5\%$（额定射频功率工况） \\
+6 & TS 电子温度不确定度 & $T_e\ge 5$ eV 时 $\le 15\%$ \\
+7 & OES 波长标定偏差 & $\le 0.05$ nm \\
+8 & 三诊断时序对齐 & 触发抖动 $\le 10$ ns，积分窗口显式记录 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{周期与经费}：2026.09--2027.09；预算 1 万元（材料 6000、资料 500、版面 2000、专利 1000、加工 500）。
+
+\section{三类混合体系怎么判}
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{10.2cm}@{}}
+\toprule
+体系 & 配气 & 判断组分的方式 \\
+\midrule
+He--Ar & Ar 体积分数 0--30\% & 两组分均为单原子离子，近似满足局部热平衡（PLTE）：取 He I、Ar I 各一条特征线，
+按 Saha--Boltzmann 关系配 NIST 原子参数得 $n(\mathrm{Ar^+})/n(\mathrm{He^+})$，再用准中性 $n_e=n(\mathrm{He^+})+n(\mathrm{Ar^+})$ 解出绝对值与占比。\\
+He--D$_2$ & D$_2$ 固定 50\% & 有分子，Saha 关系不适用：OES 取 He I、D$\alpha$/D$\beta$ 与 D$_2$ 的 Fulcher-$\alpha$ 带（约 601--606 nm），
+质谱确认 D$^+$、D$_2^+$、D$_3^+$；He 侧用氦原子 CR 模型，D 侧用氘原子—分子 CR 模型。\\
+Ar--D$_2$ & D$_2$ 体积分数 0--30\% & 存在离子—分子反应 $\mathrm{Ar^+ + D_2 \to ArD^+ + D}$，主导离子由 Ar$^+$ 转为 ArD$^+$/D$_3^+$；
+质谱分辨 Ar$^+$/ArD$^+$/D$^+$/D$_2^+$/D$_3^+$，近质量峰 He$^+$(4)/D$_2^+$(4)、Ar$^+$(40)/ArD$^+$(42)。\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{组分分辨通量}：声速 $c_s\propto m_i^{-1/2}$，按占比 $f_k$ 修正 $c_s$，再把总粒子通量拆开
+$\Gamma_k=f_k\,\Gamma_{\mathrm{total}}$，逐项给不确定度。混合体系里把探针电流比直接当流速会引入系统性偏差，
+必须按组分占比对声速做质量加权修正。
+
+\clearpage
+\section{答辩问答（20 题）}
+
+\subsection*{A 原理}
+
+\qt{1}为什么用马赫探针测流速？朗缪尔探针不行吗？\ans
+朗缪尔探针给 $n_e$、$T_e$，本身不含方向信息；测流速要用定向离子能量分析器、LIF 或马赫探针。
+马赫探针被动、结构简单、能进狭小空间、抗辐照，代价是依赖收集模型——这正是本项目要论证的部分。
+
+\qt{2}$R$ 为什么要按面积归一？\ans
+两面有效面积不可能天然相等，只有电流密度之比才对应流速。若面积差 5\%，$\ln R$ 里就混入常数偏置，
+相当于始终有一股“假流速”。归一是把几何误差从物理量里剥出来，也是“两面对称”成为第一约束的原因。
+
+\qt{3}$K$ 取多少？\ans
+$K$ 不取固定值，由模型配套给出，随磁化程度、碰撞区间、离子温度变化。先用 $\rho_i$、$\lambda_D$、
+$\lambda_{\mathrm{mfp}}$ 与探头尺寸比较定模型，再由模型给 $K$ 与 $v_{\mathrm{norm}}$；条件不足只报 $R$。
+
+\qt{4}怎么判断磁化还是非磁化？\ans
+看离子回旋半径与探头特征尺寸之比。$\rho_i$ 远大于探头尺度，离子穿过鞘层近似走直线，用非磁化模型；
+$\rho_i$ 小于探头尺度，离子沿磁力线进鞘层，用磁化模型。边界附近两种都算，差异写进误差。
+
+\qt{5}$v_{\mathrm{norm}}$ 是什么？\ans
+模型配套的归一化速度（通常是离子声速或含鞘层修正的特征速度），$u_\parallel=M_\parallel v_{\mathrm{norm}}$
+才把无量纲马赫数变成 m/s。它与 $K$ 同源，不能一个用磁化模型、一个用非磁化模型。
+
+\qt{6}混合气体里声速怎么算？\ans
+$c_s\sim\sqrt{k_BT_e/m_i}$。ArD$^+$ 的质量是 Ar$^+$ 的两倍多，同 $T_e$ 下声速差约 $\sqrt2$。
+所以必须先定占比 $f_k$、做质量加权，再换算流速；否则组分一变流速就系统性偏掉。
+
+\qt{7}探针测的是流速还是通量？\ans
+本质是定向离子通量（电流），换算成流速还要除以密度，而密度来自 TS 的 $n_e$。所以探针单独只能给电流比，
+必须与 TS 联合才叫“流速测量”——这正是“多诊断联合”的意义。
+
+\subsection*{B 结构与电学}
+
+\qt{8}两面怎么保证对称？5\% 够用吗？\ans
+设计上电极对称布置、陶瓷绝缘支撑，图纸二次复核；装配后用离子饱和电流比对反推等效面积，
+几何测量与电学比对两条线互相校验。5\% 是验收线下限，装配后希望做到 2--3\%。
+
+\qt{9}电极材料和二次电子发射怎么处理？\ans
+钨或钼，耐溅射；绝缘用可加工陶瓷。二次电子发射会抬高表观电流、改变饱和区斜率，
+靠偏压扫描看饱和平台识别：平台不平或斜率异常就是有二次电子或鞘层扩张，报告中标注并避开该偏压区。
+
+\qt{10}偏压怎么选？\ans
+从负偏压扫到离子饱和区，取平台平坦段工作，同时检查两面在同一偏压下饱和行为是否一致。
+范围按预期 $T_e$ 定（$e|V|$ 显著大于 $T_e$），在设计评审时固化。
+
+\qt{11}探头插进去会不会扰动等离子体、挡住光路？\ans
+会。所以设计插入/退出对照：同一放电条件下各测一轮，把差异作为扰动项写进误差预算，而非假设“没有影响”。
+空间上探针、散射体积与 OES 视线用同一组标记靶定位，避免互相遮挡。
+
+\qt{12}射频干扰从哪进来？滤波器怎么设计？5\% 怎么测？\ans
+主要经偏置线与采集链耦合，也可能经接地回路。先测背景频谱确定干扰频段，再匹配滤波与屏蔽；
+验收用频谱仪测滤波前后偏置线上的残余，$\le 5\%$ 合格；采集端多次平均，保留滤波前后对照。
+
+\qt{13}两路串扰、共地怎么办？\ans
+两路独立前置放大、各自屏蔽；单路输入读另一路响应（$\le1\%$ 验收）；必要时浮地或差分输入，
+避免共模电流把两路“绑”在一起。台架先做已知输入扫描（$\ge5$ 点 $\times$ 3 轮，$R^2\ge0.999$），
+把线性与串扰分开量化。
+
+\subsection*{C 联合测量}
+
+\qt{14}三种诊断怎么在时间和空间上对齐？\ans
+空间用标记靶定位三个测区；时间共用外触发，实测通道延迟与积分窗口（示波器测触发抖动 $\le10$ ns），
+按实际采样与积分窗口配对，而不是假设同时。这是“三诊断时空对应规范”的核心。
+
+\qt{15}TS 的绝对标定为什么用氮气拉曼？15\% 可信吗？\ans
+拉曼散射截面已知、随气压线性，可把散射光强度换算成绝对电子密度标定；电子温度由谱线多普勒展宽拟合
+（非集体散射、麦克斯韦分布假设）。15\% 是 $T_e\ge5$ eV 的验收线；装置既往数据表明高密度
+（$n_e\sim1.3\times10^{19}\,\mathrm{m^{-3}}$）可到 5\% 以内，低密度纯 He 升至 10\% 以上，
+所以把检测限单列成指标，不硬报数值。
+
+\qt{16}OES 是视线积分，怎么和局部探针比？\ans
+不做直接相减。建立视线前向积分模型（沿弦积分发射系数），必要时做空间反演，得到与探针同一体积的
+平均量再比较；体积差异与积分窗口差异逐项进误差预算。
+
+\qt{17}三套数据打架听谁的？\ans
+质谱判离子种类（最直接），TS 的 $n_e,T_e$ 做与组分无关的锚点，OES 在 PLTE/CR 模型成立时给占比，
+探针负责通量与方向。冲突时先查模型假设（PLTE、EEDF、自吸收），再查时空对齐，最后才怀疑测量本身。
+
+\subsection*{D 混合气体}
+
+\qt{18}He--Ar 凭什么用 PLTE？不成立怎么办？\ans
+两单原子体系、电子碰撞激发—去激发主导，$n_e$ 较高时激发态布居接近 Saha--Boltzmann。检验方法：
+多取一条同元素谱线看是否给出一致 $T_e$，看 $n_e$ 是否超过 PLTE 判据。不成立就退到碰撞辐射模型，
+或只报相对占比不报绝对值。
+
+\qt{19}ArD$^+$ 怎么影响结果？质谱分辨得开吗？\ans
+ArD$^+$（42）与 Ar$^+$（40）只差 2，但它决定有效离子质量，直接影响声速与通量拆分。
+质谱要标定近质量峰分辨能力，用已知混合气验证；分辨不足时用粒子平衡约束 ArD$^+$ 份额，
+并作为不确定度来源列出。
+
+\qt{20}组分通量的不确定度怎么给？\ans
+按输入量逐项合成：$f_k$（OES/质谱）、$c_s$ 的质量加权、$R$ 的面积与电学误差、$n_e$ 的 TS 误差，
+给合成不确定度而非单一数字；对模型假设的偏离单列“系统项”。
+
+\subsection*{E 项目本身}
+
+\qt{21}一年做得完吗？最可能卡在哪？\ans
+前六个月出探针首版与台架标定，随后纯气体基准、He--Ar 联测，含氘体系视供气条件推进。
+最可能卡在加工周期与装置排期，因此预留加工缓冲、先用简化样件验证电学链路，
+并把“基准工况 + 误差定位”作为不可让的最小交付。
+
+\qt{22}氘的操作与安全？拿不到氘怎么办？\ans
+含氘实验放在条件具备后（2027.06--07），按实验室氘使用规范执行。拿不到就把 He--Ar 做透，
+把方法学在单原子体系上验证完整，含氘部分明确写成后续工作。
+
+\qt{23}创新点到底是什么？\ans
+① 面向 MPS-LD 的具体磁场与端口做“结构—模型”协同设计，不照搬 CRAFT；
+② 把双通道误差辨识（面积、线性、串扰、零漂、射频残余）纳入研制流程，使“两路一致”成为可检验指标；
+③ 用组分无关的电子参数做锚点，把总束流拆成组分分辨束流。
+
+\qt{24}专利和论文凭什么保证？\ans
+专利落在探头结构与标定方法（对称设计 + 双通道误差辨识流程）；论文落在“混合体系下马赫探针的
+系统误差与质量加权修正”这套方法学。即使含氘数据不足，纯气体与 He--Ar 的方法学也够成文。
+
+\section{三个最该主动说在前面的软肋}
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=3pt]
+\item \textbf{“你的 $K$ 到底是多少？”}\quad 不要给数。回答：$K$ 由模型给，模型由
+$\rho_i/\lambda_D/\lambda_{\mathrm{mfp}}$ 与探头尺寸的比较定；条件不足只报 $R$。这句话说出来，评委会认为你懂边界。
+\item \textbf{“探针会不会干扰你要测的东西？”}\quad 不要否认。回答：做插入/退出对照，把扰动写进误差预算。
+\item \textbf{“混合气体里你怎么知道测的是哪个离子？”}\quad 回答：质谱定种类，TS 定电子参数做锚点，
+OES 在模型成立时给占比；三者不一致时以质谱为准。
+\end{enumerate}
+
+\vfill
+\begin{center}
+{\small\color{accent}本材料依据开题报告（定稿 2026-10-29）与六页研究正文整理；所有数字均出自报告表 2--表 4。}
+\end{center}
+
+\end{document}

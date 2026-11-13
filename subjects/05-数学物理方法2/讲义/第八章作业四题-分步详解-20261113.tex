@@ -1,0 +1,988 @@
+% !TEX program = xelatex
+% 数学物理方法2 · 第八章 p13 四道作业 · 分步详解（2026-11-13）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\settags{第八章作业四题 · 分步详解}{数学物理方法2}
+
+% 同一张表内的中隔线
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 表头在 p{} 列里不塌行
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.94\linewidth}\centering}{\end{minipage}\end{center}\par}
+
+% 详解块起页保护放宽
+\renewcommand{\qbreak}{\needspace{0.40\textheight}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{7\baselineskip}\orighdr{#1}{#2}}
+
+% 页眉高度：fancyhdr 默认 12pt 不够，会报警告
+\setlength{\headheight}{22pt}
+
+% 公式上下留白收紧
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{第八章作业四题　分步详解}
+{分离变量法的四个零件：三角初位移、自由端杆、热传导、矩形 Laplace}
+{依据课件《Chapter 8 -- 20261110.pdf》第 13 页作业页（2026-11-13 核对原页）\\
+数学物理方法2\quad 2026-11-13}
+
+\callout{\textbf{这份答案怎么用。}四道题就是第八章课件 p13 的四道作业，题干按课件原文重新录入，没有改写参数。每题都按同一条流水线走七步：\textbf{定解问题 $\to$ 分离变量 $\to$ 特征值问题 $\to$ 另一个因子 $\to$ 叠加 $\to$ 定系数 $\to$ 自检}，每一步都写清楚为什么这样做、积分怎么算。四题的系数全部用 sympy 符号积分复算过，级数又用截断和数值比较过（附录 A 给实测误差），所以答案里的每个系数都可以直接抄。
+
+\textbf{一处先说明。}作业 1 里的 $h$ 是三角波的\textbf{斜率}，不是峰值；峰值是 $h\ell/2$。不少教材把峰值记作 $u_0$，写出的系数是 $8u_0\sin(n\pi/2)/(n^2\pi^2)$，与本文的 $4h\ell\sin(n\pi/2)/(n^2\pi^2)$ 是同一个结果，只是换了一个记号。两种写法都对，混着用就会差一个因子 2。
+
+\textbf{与 11-13 新课件的接口。}11-13 新到的课件从 §8.2 极坐标分离变量讲起，那部分本册没有覆盖；四道作业都属于 §8.1 直角坐标，需要时先看第 \pageref{sec:bridge} 页的接口说明。}
+
+\subhdr{目录}
+\tabtop
+\begin{tabular}{@{}p{0.10\linewidth}p{0.72\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+§0 & 四题速览：一眼看清四组边界与四个答案 & \pageref{sec:s0} \\
+§1 & 一台机器四个零件：五步流水线与三张判定表 & \pageref{sec:s1} \\
+§2 & 作业 1：弦的三角初位移（峰在中点） & \pageref{sec:q1} \\
+§3 & 作业 2：杆左固定、右自由，初速度线性 & \pageref{sec:q2} \\
+§4 & 作业 3：两端零温的热传导杆 & \pageref{sec:q3} \\
+§5 & 作业 4：矩形域的 Laplace 方程 & \pageref{sec:q4} \\
+§6 & 四题对照与一张自检清单 & \pageref{sec:s6} \\
+§7 & 七个常见错误（按题号定位） & \pageref{sec:s7} \\
+§8 & 与 11-13 新课件 §8.2 的接口 & \pageref{sec:bridge} \\
+附录 A & 数值核验记录与脚本 & \pageref{sec:appA} \\
+\end{tabular}
+\tabbot
+
+%=====================================================================
+\hdr{\S0}{四题速览：四组边界，四台不同的机器}
+\phantomsection\label{sec:s0}
+%=====================================================================
+
+先把四道题的骨架并排放在一起。看这张表要抓的不是公式，而是\textbf{四道题的差别只出现在两处}：边界条件决定特征函数长什么样，方程的类型决定另一个因子是振荡、衰减还是双曲。
+
+\subhdr{表 0-1\quad 题目骨架：方程、边界与特征值}
+
+\tabtop
+\begin{tabular}{@{}p{0.05\linewidth}p{0.20\linewidth}p{0.27\linewidth}p{0.19\linewidth}p{0.19\linewidth}@{}}
+\thead{题} & \thead{方程} & \thead{边界条件} & \thead{$\lambda_n$} & \thead{特征函数} \\
+\tabmidrule
+1 & $u_{tt}=a^2u_{xx}$ & $u(0,t)=u(\ell,t)=0$ & $\left(\dfrac{n\pi}{\ell}\right)^2$ & $\sin\dfrac{n\pi x}{\ell}$ \\
+\tabmidrule
+2 & $u_{tt}=a^2u_{xx}$ & $u(0,t)=0,\ u_x(\ell,t)=0$ & $\left(\dfrac{(2n+1)\pi}{2\ell}\right)^2$ & $\sin\dfrac{(2n+1)\pi x}{2\ell}$ \\
+\tabmidrule
+3 & $u_{t}=a^2u_{xx}$ & $u(0,t)=u(\ell,t)=0$ & $\left(\dfrac{n\pi}{\ell}\right)^2$ & $\sin\dfrac{n\pi x}{\ell}$ \\
+\tabmidrule
+4 & $u_{xx}+u_{yy}=0$ & $u(0,y)=u(a,y)=0$,\ $u(x,b)=0$ & $\left(\dfrac{n\pi}{a}\right)^2$ & $\sin\dfrac{n\pi x}{a}$ \\
+\end{tabular}
+\tabbot
+
+第 2 行的特征值是「半整数」：因为右端给的是\textbf{导数为零}，$\cos(k\ell)=0$ 的零点落在 $\pi/2$ 的奇数倍上，于是 $k_n\ell=(n+\tfrac12)\pi$。第 4 行看上去也是 $\sin$，但 $x$ 方向两端都给零，所以沿 $x$ 走的是和作业 1 同一组特征值；$y$ 方向只给了一端，另一端是非齐次的，所以不用特征值，改成双曲函数。
+
+\subhdr{表 0-2\quad 另一个因子、系数与衰减速度}
+
+\tabtop
+\begin{tabular}{@{}p{0.05\linewidth}p{0.27\linewidth}p{0.31\linewidth}p{0.12\linewidth}@{}}
+\thead{题} & \thead{另一个因子} & \thead{待定系数} & \thead{衰减} \\
+\tabmidrule
+1 & $\cos\dfrac{n\pi at}{\ell}$ & $C_n=\dfrac{4h\ell}{n^2\pi^2}\sin\dfrac{n\pi}{2}$ & $1/n^2$ \\
+\tabmidrule
+2 & $\sin\dfrac{(2n+1)\pi at}{2\ell}$ & $A_n=\dfrac{16b\ell\,(-1)^n}{(2n+1)^3\pi^3a}$ & $1/n^3$ \\
+\tabmidrule
+3 & $\exp\left[-\left(\dfrac{n\pi a}{\ell}\right)^2t\right]$ & $C_n=\dfrac{8b}{n^3\pi^3}\ (n\ \text{奇})$ & $1/n^3$ \\
+\tabmidrule
+4 & $\dfrac{\sinh\frac{n\pi(b-y)}{a}}{\sinh\frac{n\pi b}{a}}$ & $A_n=\dfrac{2A}{n\pi}$ & $1/n$ \\
+\end{tabular}
+\tabbot
+
+\textbf{为什么衰减速度不一样。}作业 1 的初位移是三角波，$x=\ell/2$ 处有尖角，系数只能按 $1/n^2$ 衰减；作业 3 的初温 $x(\ell-x)$ 在两端值与导数都是零，光滑得多，系数按 $1/n^3$ 衰减；作业 2 的系数里多除了一个 $\omega_n\sim n$，也跟着变成 $1/n^3$；作业 4 的边界值 $A(1-x/a)$ 在 $x=0$ 处从 $A$ 跳到 $0$（把它按奇延拓看，就是真正的间断），系数最慢，只有 $1/n$。\textbf{这条规律可以用来查错}：算出的系数如果比预期衰减得慢，多半是把边界或初值的光滑程度看错了。
+
+%=====================================================================
+\hdr{\S1}{一台机器四个零件：五步流水线与三张判定表}
+\phantomsection\label{sec:s1}
+%=====================================================================
+
+四道题用的是同一台机器。机器只有五个动作，四道题的差别全部塞在「零件」里。先把零件摆清楚，后面每题就只需指出「这次用的是哪个零件」。
+
+\subhdr{1.1\quad 五个动作}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{写定解问题}：方程、边界条件、初始条件三样齐了，题目才算翻译完。物理上先回答三个问题——方程是哪一类（波动／输运／稳态）、边界属于哪一类（值固定／导数固定／混合）、初始条件给了几个（波动要两个，输运要一个）。
+  \item \textbf{分离变量}：令 $u=X(x)T(t)$（或 $u=X(x)Y(y)$、$u=R(r)\Phi(\phi)$），把偏微分方程拆成两个常微分方程，中间那个常数记作 $\lambda$。
+  \item \textbf{解特征值问题}：带齐次边界的那一个常微分方程就是特征值问题，它的解给出 $\lambda_n$ 与特征函数 $X_n$。\textbf{四道题真正的考点都在这一步。}
+  \item \textbf{解另一个因子并叠加}：把 $\lambda_n$ 代进另一个常微分方程，解出 $T_n$（或 $Y_n$），写成 $\sum$ 的形式。此时系数还没有定。
+  \item \textbf{定系数、再自检}：用非齐次的那个条件（初值或非齐次边界）和正交性把系数算出来，然后逐条核对边界、初值、量纲与极限。
+\end{enumerate}
+
+\subhdr{1.2\quad 零件一：边界条件决定特征函数（四组常用结果）}
+
+\tabtop
+\begin{tabular}{@{}p{0.34\linewidth}p{0.27\linewidth}p{0.27\linewidth}@{}}
+\thead{区间 $[0,\ell]$ 上的边界} & \thead{特征值 $\lambda_n$} & \thead{特征函数 $X_n$} \\
+\tabmidrule
+$X(0)=X(\ell)=0$\newline（两端固定／零温） & $(n\pi/\ell)^2$ & $\sin\dfrac{n\pi x}{\ell}$ \\
+\tabmidrule
+$X'(0)=X'(\ell)=0$\newline（两端自由／绝热） & $(n\pi/\ell)^2$ & $\cos\dfrac{n\pi x}{\ell}$ \\
+\tabmidrule
+$X(0)=0,\ X'(\ell)=0$\newline（左固定右自由） & $\left(\dfrac{(2n+1)\pi}{2\ell}\right)^2$ & $\sin\dfrac{(2n+1)\pi x}{2\ell}$ \\
+\tabmidrule
+$X'(0)=0,\ X(\ell)=0$\newline（左自由右固定） & $\left(\dfrac{(2n+1)\pi}{2\ell}\right)^2$ & $\cos\dfrac{(2n+1)\pi x}{2\ell}$ \\
+\end{tabular}
+\tabbot
+
+\textbf{怎么记。}看哪个端点是「值为零」、哪个是「导数为零」：值为零的那一端，$\sin$ 或 $\cos$ 取零点；导数为零的那一端，取极值点。两端都是零点时波长恰好是 $2\ell/n$，指数是整数 $n$；只要有一端换成导数零，半波长就多出 $\ell$，指数里就冒出 $(n+\tfrac12)$。作业 1、3 用第一行，作业 2 用第三行。
+
+\textbf{为什么只有第二行会出现 $\lambda=0$。}第二行的常数模态 $X\equiv1$ 在两端导数都为零，确实满足边界，所以 $\lambda=0$ 是一个合法特征值（$n=0$）；而「两端值为零」时常数只能取零，$\lambda=0$ 就被排除。做绝热边界或自由端的题时，这一条会直接决定答案里有没有一个常数项。
+
+\subhdr{1.3\quad 零件二：方程类型决定另一个因子}
+
+\tabtop
+\begin{tabular}{@{}p{0.26\linewidth}p{0.26\linewidth}p{0.36\linewidth}@{}}
+\thead{方程} & \thead{另一个因子的方程} & \thead{解的形状} \\
+\tabmidrule
+波动 $u_{tt}=a^2u_{xx}$ & $T''+a^2\lambda_nT=0$ & $\cos\omega_nt$ 与 $\sin\omega_nt$，$\omega_n=a\sqrt{\lambda_n}$ \\
+\tabmidrule
+输运 $u_t=a^2u_{xx}$ & $T'+a^2\lambda_nT=0$ & $\exp(-a^2\lambda_nt)$，只会衰减 \\
+\tabmidrule
+Laplace $u_{xx}+u_{yy}=0$ & $Y''-\lambda_nY=0$ & $\cosh k_ny$ 与 $\sinh k_ny$，$k_n=\sqrt{\lambda_n}$ \\
+\end{tabular}
+\tabbot
+
+Laplace 那一行还有一个更顺手的写法：\textbf{哪条边给的是零，就把双曲函数写成「在那条边上等于零」的形式}。如果 $Y(b)=0$，直接写 $Y=\sinh k_n(b-y)$；如果 $Y(0)=0$，写 $Y=\sinh k_ny$。这样做的好处是边界条件自动满足，剩下的系数只需由另一条非齐次边定，不必回头解方程组。
+
+\subhdr{1.4\quad 零件三：初值给的是 $u$ 还是 $u_t$}
+
+波动方程有两个初始条件，作用完全不同：
+
+\begin{itemize}
+  \item 给了 $u(x,0)=\varphi(x)$，则每个模态的\textbf{余弦}系数由它定，正弦项留到下一步；
+  \item 给了 $u_t(x,0)=\psi(x)$，则要先对级数求一次时间导数再令 $t=0$，得到的是 $A_n\omega_n$，还要再除一个 $\omega_n$ 才是 $A_n$。\textbf{作业 2 就卡在这一步}，忘了除 $\omega_n$ 是最常见的错误。
+\end{itemize}
+
+输运方程只有一个初始条件，没有「初速度」，所以时间因子只会是指数，不会出现 $\cos$ 与 $\sin$ 的组合。
+
+\subhdr{1.5\quad 正交性与模方}
+
+所有定系数都用同一句话：把展开式两边乘上第 $m$ 个特征函数，在区间上积分，只剩 $n=m$ 那一项。三种情形要用的模方是
+
+\[
+\int_0^{\ell}\sin\frac{n\pi x}{\ell}\sin\frac{m\pi x}{\ell}\dd x=\frac{\ell}{2}\delta_{nm},
+\qquad
+\int_0^{a}\sin\frac{n\pi x}{a}\sin\frac{m\pi x}{a}\dd x=\frac{a}{2}\delta_{nm},
+\]
+
+半整数那一组同样成立：
+
+\[
+\int_0^{\ell}\sin\frac{(2n+1)\pi x}{2\ell}\sin\frac{(2m+1)\pi x}{2\ell}\dd x=\frac{\ell}{2}\delta_{nm}.
+\]
+
+\textbf{最容易漏的就是这个 $2/\ell$。}漏了它，系数会整体大一倍，而边界和初值看上去还能「大致对上」，很不容易发现。
+
+\subhdr{1.6\quad 记号约定（四题共用，注意字母重复）}
+
+四道题是四次独立作业，字母各自定义，\textbf{同一个字母在不同题里含义不同}，抄答案时最容易在这里串味。先把它们列清楚：
+
+\tabtop
+\begin{tabular}{@{}p{0.12\linewidth}p{0.46\linewidth}p{0.26\linewidth}@{}}
+\thead{符号} & \thead{含义} & \thead{出现在} \\
+\tabmidrule
+$a$ & 波速（$a^2=T/\rho$ 或 $a^2=E/\rho$）或导温系数（$a^2=k/(c\rho)$） & 题 1、2、3 \\
+\tabmidrule
+$\ell$ & 弦或杆的长度 & 题 1、2、3 \\
+\tabmidrule
+$h$ & 三角初位移左半段的\textbf{斜率}（不是峰值） & 题 1 \\
+\tabmidrule
+$b$ & 题 2：初速度的系数（量纲 $L/T$）；题 3：初温的系数（量纲为温度）；题 4：矩形的宽（量纲为长度） & 题 2、3、4 \\
+\tabmidrule
+$A$ & 题 4 下边界的最高温度 & 题 4 \\
+\tabmidrule
+$\lambda_n,\ k_n,\ \omega_n$ & 特征值、波数（$k_n=\sqrt{\lambda_n}$）、角频率（$\omega_n=ak_n$） & 全题 \\
+\end{tabular}
+\tabbot
+
+\textbf{特别提醒 $b$。}题 2 的 $b$ 是速度、题 3 的 $b$ 是温度、题 4 的 $b$ 是长度。三题分开做不会混，但把答案抄在一起复习时，务必看题目自己的量纲——系数里出现 $[b\ell/a]$ 这种组合的，只可能是题 2。
+
+%=====================================================================
+\hdr{\S2}{作业 1：弦的三角初位移（峰在中点）}
+\phantomsection\label{sec:q1}
+%=====================================================================
+
+\qstem{（课件 p13 第 1 题）长 $\ell$ 的弦，两端固定。初始位移为
+$\varphi(x)=hx\ (0<x<\ell/2)$、$\varphi(x)=h(\ell-x)\ (\ell/2<x<\ell)$，初始速度为零，$h$ 为常数。求 $u(x,t)$。}
+
+\begin{figbox}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[->,inkgray] (-0.35,0)--(5.05,0) node[right,font=\small]{$x$};
+  \draw[->,inkgray] (0,-0.30)--(0,2.35) node[above,font=\small]{$\varphi$};
+  \draw[very thick,violet] (0,0)--(2.2,1.8)--(4.4,0);
+  \draw[dashed,petal] (2.2,0)--(2.2,1.8);
+  \node[below,font=\small] at (2.2,0) {$\ell/2$};
+  \node[below,font=\small] at (4.4,0) {$\ell$};
+  \node[left,font=\small] at (2.2,1.8) {$h\ell/2$};
+  \node[font=\small,violetdeep] at (1.0,0.48) {$hx$};
+  \node[font=\small,violetdeep] at (3.25,0.34) {$h(\ell-x)$};
+\end{tikzpicture}
+\par\smallskip{\small\color{inkgray}图 2-1\quad 初位移是底边为 $\ell$、峰在中点的三角波；$h$ 是左半段的斜率，峰值是 $h\ell/2$。}
+\end{figbox}
+
+\step{第 1 步：写定解问题}
+
+弦的横振动满足 $u_{tt}=a^2u_{xx}$，其中 $a^2=T/\rho$（张力除以线密度）。两端固定是第一类齐次条件；初始位移给定、初始速度为零。于是
+
+\[
+\begin{cases}
+u_{tt}=a^2u_{xx}, & 0<x<\ell,\ t>0,\\[2pt]
+u(0,t)=u(\ell,t)=0, & t\ge 0,\\[2pt]
+u(x,0)=\varphi(x),\quad u_t(x,0)=0, & 0\le x\le\ell .
+\end{cases}
+\]
+
+\textbf{先记下量纲。}$\varphi=hx$ 说明 $[h]=[u]/L$，峰值是 $h\ell/2$，量纲为长度。最后核对系数时，$[C_n]$ 也必须是长度——这是检查「有没有把 $h$ 当峰值」的最快办法。
+
+\step{第 2 步：分离变量}
+
+设 $u(x,t)=X(x)T(t)$ 且不恒为零，代入方程得 $XT''=a^2X''T$，两边除以 $a^2XT$：
+
+\[
+\frac{T''}{a^2T}=\frac{X''}{X}=-\lambda .
+\]
+
+左边只含 $t$、右边只含 $x$，要恒等就必须都等于常数 $-\lambda$。于是得到一对常微分方程
+
+\[
+X''+\lambda X=0,
+\qquad
+T''+a^2\lambda T=0 .
+\]
+
+\textbf{为什么 $\lambda>0$。}这一步不能跳，因为「$\lambda$ 必须为正」是边界条件逼出来的，不是假设。
+
+\begin{itemize}
+  \item 若 $\lambda=-\kappa^2<0$：$X=A\cosh\kappa x+B\sinh\kappa x$。$X(0)=0$ 给出 $A=0$；再由 $X(\ell)=B\sinh\kappa\ell=0$ 得 $B=0$（因为 $\sinh\kappa\ell\ne0$）。只有零解，排除。
+  \item 若 $\lambda=0$：$X=Ax+B$。$X(0)=0$ 给出 $B=0$，$X(\ell)=A\ell=0$ 给出 $A=0$。仍只有零解，排除。（$\lambda=0$ 只在两端都给「导数为零」时才可能，那时特征函数是常数。）
+  \item 若 $\lambda=k^2>0$：$X=A\cos kx+B\sin kx$。$X(0)=0$ 给出 $A=0$；$X(\ell)=B\sin k\ell=0$。要非零解必须 $\sin k\ell=0$，即 $k\ell=n\pi$。
+\end{itemize}
+
+\step{第 3 步：解特征值问题}
+
+由上一步，
+
+\[
+\lambda_n=\left(\frac{n\pi}{\ell}\right)^2,
+\qquad
+X_n(x)=\sin\frac{n\pi x}{\ell},
+\qquad n=1,2,3,\dots
+\]
+
+$n$ 从 $1$ 开始：$n=0$ 给出 $X\equiv0$，不是解。这一步的结论可以和第 \pageref{sec:s1} 页的表 1.2 第一行直接对照。
+
+\step{第 4 步：时间因子与初始速度}
+
+把 $\lambda_n$ 代入时间方程：
+
+\[
+T_n''+\omega_n^2T_n=0,
+\qquad
+\omega_n=\frac{n\pi a}{\ell},
+\]
+
+其通解为 $T_n=C_n\cos\omega_nt+D_n\sin\omega_nt$。叠加起来
+
+\[
+u(x,t)=\sum_{n=1}^{\infty}\left(C_n\cos\omega_nt+D_n\sin\omega_nt\right)\sin\frac{n\pi x}{\ell}.
+\]
+
+现在用初始速度：对 $t$ 求导，
+
+\[
+u_t(x,t)=\sum_{n=1}^{\infty}\omega_n\left(-C_n\sin\omega_nt+D_n\cos\omega_nt\right)\sin\frac{n\pi x}{\ell}.
+\]
+
+令 $t=0$，得 $\sum_{n\ge1}\omega_nD_n\sin\frac{n\pi x}{\ell}=0$。两边乘 $\sin\frac{m\pi x}{\ell}$ 并在 $[0,\ell]$ 上积分，由正交性得 $\omega_mD_m\cdot\frac{\ell}{2}=0$，故每个 $D_m=0$。
+
+于是级数里只剩余弦项：
+
+\[
+u(x,t)=\sum_{n=1}^{\infty}C_n\cos\frac{n\pi at}{\ell}\,\sin\frac{n\pi x}{\ell}.
+\]
+
+\textbf{物理读法。}余弦表示每个模态在 $t=0$ 时处在最大位移处、速度为零——这正是「把弦拉成三角波后松手」的初始状态。
+
+\step{第 5 步：用初位移定系数}
+
+令 $t=0$：
+
+\[
+\sum_{n=1}^{\infty}C_n\sin\frac{n\pi x}{\ell}=\varphi(x).
+\]
+
+两边乘 $\sin\frac{m\pi x}{\ell}$ 并从 $0$ 积到 $\ell$，右边只有 $n=m$ 项留下：
+
+\[
+C_n=\frac{2}{\ell}\int_0^{\ell}\varphi(x)\sin\frac{n\pi x}{\ell}\dd x
+=\frac{2}{\ell}\left[\int_0^{\ell/2}hx\sin\beta x\dd x+\int_{\ell/2}^{\ell}h(\ell-x)\sin\beta x\dd x\right],
+\qquad \beta=\frac{n\pi}{\ell}.
+\]
+
+两个积分都要分部积分。先备好两个原函数：
+
+\[
+\int x\sin\beta x\dd x=-\frac{x\cos\beta x}{\beta}+\frac{\sin\beta x}{\beta^2},
+\qquad
+\int(\ell-x)\sin\beta x\dd x=-\frac{(\ell-x)\cos\beta x}{\beta}-\frac{\sin\beta x}{\beta^2}.
+\]
+
+\textbf{左半段。}下限 $x=0$ 处两项都是零，只剩上限 $x=\ell/2$：
+
+\[
+I_1=\int_0^{\ell/2}hx\sin\beta x\dd x
+=h\left[-\frac{(\ell/2)\cos(\beta\ell/2)}{\beta}+\frac{\sin(\beta\ell/2)}{\beta^2}\right].
+\]
+
+\textbf{右半段。}上限 $x=\ell$ 处 $\ell-x=0$ 且 $\sin\beta\ell=\sin n\pi=0$，整项为零；于是
+
+\[
+\begin{aligned}
+I_2&=\int_{\ell/2}^{\ell}h(\ell-x)\sin\beta x\dd x\\
+&=0-h\left[-\frac{(\ell/2)\cos(\beta\ell/2)}{\beta}-\frac{\sin(\beta\ell/2)}{\beta^2}\right]\\
+&=h\left[\frac{(\ell/2)\cos(\beta\ell/2)}{\beta}+\frac{\sin(\beta\ell/2)}{\beta^2}\right].
+\end{aligned}
+\]
+
+两段相加，含 $\cos(\beta\ell/2)$ 的项正好抵消：
+
+\[
+I_1+I_2=\frac{2h}{\beta^2}\sin\frac{\beta\ell}{2}
+=\frac{2h\ell^2}{n^2\pi^2}\sin\frac{n\pi}{2}.
+\]
+
+代回 $C_n$ 的定义：
+
+\[
+C_n=\frac{2}{\ell}\cdot\frac{2h\ell^2}{n^2\pi^2}\sin\frac{n\pi}{2}
+=\boxed{\ \frac{4h\ell}{n^2\pi^2}\sin\frac{n\pi}{2}\ }.
+\]
+
+\textbf{分奇偶写开。}当 $n=2k$ 时 $\sin k\pi=0$；当 $n=2k+1$ 时 $\sin\frac{(2k+1)\pi}{2}=(-1)^k$。所以
+
+\[
+C_{2k}=0,
+\qquad
+C_{2k+1}=\frac{4h\ell}{(2k+1)^2\pi^2}(-1)^k,
+\qquad k=0,1,2,\dots
+\]
+
+\textbf{数值感受。}取 $\ell=1$、$h=1$（峰值 $0.5$）：$C_1=4/\pi^2\approx0.405$，$C_3=-4/(9\pi^2)\approx-0.045$，$C_5=4/(25\pi^2)\approx0.016$。三项相加在 $x=1/2$ 处给出 $0.405-0.045+0.016\approx0.376$，还差一点，正好说明收敛不快（$1/n^2$），需要更多项才能把尖角堆出来。
+
+\step{第 6 步：最终答案}
+
+\[
+\boxed{\;
+u(x,t)=\frac{4h\ell}{\pi^2}\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)^2}
+\cos\frac{(2k+1)\pi at}{\ell}\,
+\sin\frac{(2k+1)\pi x}{\ell}
+\;}
+\]
+
+等价的紧凑写法是
+
+\[
+u(x,t)=\sum_{n=1}^{\infty}\frac{4h\ell}{n^2\pi^2}\sin\frac{n\pi}{2}\,
+\cos\frac{n\pi at}{\ell}\,\sin\frac{n\pi x}{\ell},
+\]
+
+两种写法完全一样，考试里写哪一种都行，但要保证 $n$ 的取值说清楚（第二种里偶数项自动为零，不必额外声明）。
+
+\step{第 7 步：自检}
+
+\begin{itemize}
+  \item \textbf{边界。}每个 $\sin\frac{n\pi x}{\ell}$ 在 $x=0$ 与 $x=\ell$ 处都为零，所以 $u(0,t)=u(\ell,t)=0$ 对任意 $t$ 成立。$\checkmark$
+  \item \textbf{初速度。}级数对 $t$ 求导后每项都带 $\sin\omega_nt$，$t=0$ 时为零。$\checkmark$
+  \item \textbf{初位移。}$C_n$ 正是 $\varphi$ 的傅里叶正弦系数，$t=0$ 时级数回到三角波。用 400 项截断在 $[0,\ell]$ 上比较，最大偏差 $5.1\times10^{-4}$（峰值 $0.5$），属于尖角处的截断余项，不是算错。
+  \item \textbf{量纲。}$[C_n]=[h][\ell]$，与位移同量纲。$\checkmark$
+  \item \textbf{为什么偶数项为零。}三角波关于 $x=\ell/2$ 对称，而 $n$ 为偶数时 $\sin\frac{n\pi x}{\ell}$ 关于中点反对称：对称的初值不能激发反对称的模态。也可以从节点看：偶数模态在 $x=\ell/2$ 处恰好为零，无法表现那里的尖角。
+  \item \textbf{峰值换写。}若记峰值 $u_0=h\ell/2$，则 $C_n=\frac{8u_0}{n^2\pi^2}\sin\frac{n\pi}{2}$，与常见教材一致。用 $h$ 写时千万别漏 $\ell$，否则量纲就不对了。
+  \item \textbf{收敛性。}位移级数按 $1/n^2$ 绝对一致收敛；逐项求导一次得到的 $u_t$ 按 $1/n$ 收敛，在尖角处只是条件收敛——这解释了为什么三角初位移的「速度场」在 $x=\ell/2$ 附近不好惹。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S3}{作业 2：杆左固定、右自由，初速度线性}
+\phantomsection\label{sec:q2}
+%=====================================================================
+
+\qstem{（课件 p13 第 2 题）长 $\ell$ 的杆，左端固定、右端自由。初始速度 $\psi(x)=bx/\ell$，初始位移为零，$b$ 为常数。求 $u(x,t)$。}
+
+\step{第 1 步：写定解问题}
+
+杆的纵振动同样满足 $u_{tt}=a^2u_{xx}$，其中 $a=\sqrt{E/\rho}$（杨氏模量除以密度）。左端固定是第一类齐次；右端自由表示端面不受力，应变 $\partial u/\partial x$ 为零，是第二类齐次：
+
+\[
+\begin{cases}
+u_{tt}=a^2u_{xx}, & 0<x<\ell,\ t>0,\\[2pt]
+u(0,t)=0,\quad u_x(\ell,t)=0, & t\ge0,\\[2pt]
+u(x,0)=0,\quad u_t(x,0)=\dfrac{bx}{\ell}, & 0\le x\le\ell .
+\end{cases}
+\]
+
+\textbf{与作业 1 的两处差别。}一是右端条件从「位移为零」换成「导数为零」，特征值会变；二是初值给的是速度而不是位移，定系数的路径不同。这两处差别恰好是本题的两个考点。
+
+\textbf{量纲。}$\psi=bx/\ell$ 是速度，$[b]=L/T$；最后 $[A_n]=[b\ell/a]=L$，仍是长度。
+
+\step{第 2 步：分离变量与特征值问题}
+
+与作业 1 完全一样地得到 $X''+\lambda X=0$、$T''+a^2\lambda T=0$。$\lambda<0$ 与 $\lambda=0$ 的排除过程也相同（$\lambda=0$ 时 $X=Ax+B$，$X(0)=0$ 给 $B=0$，$X'(\ell)=A=0$，仍只有零解）。所以只讨论 $\lambda=k^2>0$：
+
+\[
+X=A\cos kx+B\sin kx .
+\]
+
+左端：$X(0)=A=0$，于是 $X=B\sin kx$。
+
+右端：$X'(\ell)=Bk\cos k\ell=0$。要非零解，必须
+
+\[
+\cos k\ell=0
+\quad\Longrightarrow\quad
+k_n\ell=\left(n+\frac12\right)\pi
+\quad\Longrightarrow\quad
+k_n=\frac{(2n+1)\pi}{2\ell},
+\qquad n=0,1,2,\dots
+\]
+
+这里 $n$ 从 $0$ 开始，因为 $k_0=\pi/(2\ell)$ 本身就是一个允许的模态（$\cos\frac{\pi}{2}=0$）。于是
+
+\[
+\lambda_n=\left(\frac{(2n+1)\pi}{2\ell}\right)^2,
+\qquad
+X_n(x)=\sin\frac{(2n+1)\pi x}{2\ell}.
+\]
+
+\textbf{一条容易记错的边界。}如果右端也是固定（$X(\ell)=0$），答案就退回 $\sin\frac{n\pi x}{\ell}$，与作业 1 相同；正因为右端是「自由」，才出现半整数。做题时先看两端是「值」还是「导数」，再决定用哪一组。
+
+\step{第 3 步：时间因子与初始位移}
+
+时间方程是 $T_n''+\omega_n^2T_n=0$，$\omega_n=ak_n=\frac{(2n+1)\pi a}{2\ell}$，通解为
+
+\[
+T_n=A_n\cos\omega_nt+B_n\sin\omega_nt .
+\]
+
+初始位移为零：$u(x,0)=0$ 要求每个 $T_n(0)=A_n=0$（同样用正交性逐项判断）。所以
+
+\[
+u(x,t)=\sum_{n=0}^{\infty}B_n\sin\omega_nt\,\sin\frac{(2n+1)\pi x}{2\ell}.
+\]
+
+为了和最终答案的记号一致，下面把这个待定系数记作 $A_n$（它乘在 $\sin\omega_nt$ 上，不是 $\cos$ 的系数）：
+
+\[
+u(x,t)=\sum_{n=0}^{\infty}A_n\sin\omega_nt\,\sin\frac{(2n+1)\pi x}{2\ell}.
+\]
+
+\step{第 4 步：用初速度定系数}
+
+对 $t$ 求导并令 $t=0$：
+
+\[
+u_t(x,0)=\sum_{n=0}^{\infty}A_n\omega_n\sin\frac{(2n+1)\pi x}{2\ell}=\frac{bx}{\ell}.
+\]
+
+两边乘 $\sin\frac{(2m+1)\pi x}{2\ell}$ 并在 $[0,\ell]$ 上积分。半整数特征函数同样正交，模方仍为 $\ell/2$：
+
+\[
+A_n\omega_n=\frac{2}{\ell}\int_0^{\ell}\frac{bx}{\ell}\sin\frac{(2n+1)\pi x}{2\ell}\dd x
+=\frac{2b}{\ell^2}\int_0^{\ell}x\sin k_nx\dd x .
+\]
+
+\textbf{算积分。}记 $k=k_n$，由分部积分
+
+\[
+\int_0^{\ell}x\sin kx\dd x
+=\left[-\frac{x\cos kx}{k}+\frac{\sin kx}{k^2}\right]_0^{\ell}
+=-\frac{\ell\cos k\ell}{k}+\frac{\sin k\ell}{k^2}.
+\]
+
+这里两个三角函数值都由 $k\ell=(n+\tfrac12)\pi$ 决定：
+
+\[
+\cos k\ell=0,
+\qquad
+\sin k\ell=\sin\left(n\pi+\frac{\pi}{2}\right)=(-1)^n .
+\]
+
+所以积分值只剩第二项：
+
+\[
+\int_0^{\ell}x\sin k_nx\dd x=\frac{(-1)^n}{k_n^2}
+=\frac{4\ell^2(-1)^n}{(2n+1)^2\pi^2}.
+\]
+
+代回：
+
+\[
+A_n\omega_n=\frac{2b}{\ell^2}\cdot\frac{4\ell^2(-1)^n}{(2n+1)^2\pi^2}
+=\frac{8b(-1)^n}{(2n+1)^2\pi^2}.
+\]
+
+\textbf{别忘了再除 $\omega_n$。}$\omega_n=\frac{(2n+1)\pi a}{2\ell}$，所以
+
+\[
+A_n=\frac{8b(-1)^n}{(2n+1)^2\pi^2}\cdot\frac{2\ell}{(2n+1)\pi a}
+=\boxed{\ \frac{16b\ell\,(-1)^n}{(2n+1)^3\pi^3a}\ }.
+\]
+
+这一步是本题唯一容易翻车的地方：如果不除 $\omega_n$，直接写 $A_n=\frac{8b(-1)^n}{(2n+1)^2\pi^2}$，量纲立刻不对（速度量纲），而且 $t$ 的量纲也进不去。
+
+\step{第 5 步：最终答案}
+
+\[
+\boxed{\;
+u(x,t)=\sum_{n=0}^{\infty}\frac{16b\ell\,(-1)^n}{(2n+1)^3\pi^3a}
+\sin\frac{(2n+1)\pi at}{2\ell}\,
+\sin\frac{(2n+1)\pi x}{2\ell}
+\;}
+\]
+
+展开前三项看看它长什么样：
+
+\[
+u=\frac{16b\ell}{\pi^3a}\left[
+\sin\frac{\pi at}{2\ell}\sin\frac{\pi x}{2\ell}
+-\frac{1}{27}\sin\frac{3\pi at}{2\ell}\sin\frac{3\pi x}{2\ell}
++\frac{1}{125}\sin\frac{5\pi at}{2\ell}\sin\frac{5\pi x}{2\ell}-\cdots
+\right].
+\]
+
+\textbf{数值感受。}首项系数 $\frac{16}{\pi^3}\approx0.516$，第二项只有它的 $1/27\approx3.7\%$。所以 $t$ 稍大以后，杆的振动几乎就是「四分之一波长」那个基模在晃。
+
+\step{第 6 步：自检}
+
+\begin{itemize}
+  \item \textbf{初始位移。}每项都带 $\sin\omega_nt$，$t=0$ 时全为零。$\checkmark$
+  \item \textbf{初始速度。}求导后得到 $\sum A_n\omega_n\sin k_nx$，系数 $\frac{8b(-1)^n}{(2n+1)^2\pi^2}$ 正是 $\psi=bx/\ell$ 的半整数正弦系数。用 600 项截断比较，最大偏差 $3.4\times10^{-4}$。$\checkmark$
+  \item \textbf{右端自由。}对 $x$ 求导，$\frac{\dd}{\dd x}\sin k_nx=k_n\cos k_nx$，在 $x=\ell$ 处 $\cos k_n\ell=0$，所以 $u_x(\ell,t)=0$。$\checkmark$
+  \item \textbf{左端固定。}$\sin0=0$，$u(0,t)=0$。顺带核一下：$u_t(0,t)=0$ 与初速度在 $x=0$ 处为零（$\psi(0)=0$）是相容的。
+  \item \textbf{量纲。}$[A_n]=[b][\ell]/([a])$，而 $[a]=L/T$、$[b]=L/T$，故 $[A_n]=L$。$\checkmark$
+  \item \textbf{系数为什么是 $1/n^3$。}$A_n\omega_n$ 按 $1/n^2$ 衰减：$\psi=bx/\ell$ 在 $x=\ell$ 处值不为零，按「偶延拓」看过去在端点有折角，所以展开系数只能到 $1/n^2$；再除以 $\omega_n\sim n$，就得到 $1/n^3$。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S4}{作业 3：两端零温的热传导杆}
+\phantomsection\label{sec:q3}
+%=====================================================================
+
+\qstem{（课件 p13 第 3 题）长 $\ell$ 的杆，两端温度为零，初始温度分布 $u(x,0)=bx(\ell-x)/\ell^2$，$b$ 为常数。求温度分布 $u(x,t)$。}
+
+\step{第 1 步：写定解问题}
+
+一维热传导 $u_t=a^2u_{xx}$，$a^2=k/(c\rho)$（热导率除以比热与密度之积）。两端零温是第一类齐次；初始温度给定：
+
+\[
+\begin{cases}
+u_t=a^2u_{xx}, & 0<x<\ell,\ t>0,\\[2pt]
+u(0,t)=u(\ell,t)=0, & t\ge0,\\[2pt]
+u(x,0)=\dfrac{bx(\ell-x)}{\ell^2}, & 0\le x\le\ell .
+\end{cases}
+\]
+
+\textbf{量纲。}$x(\ell-x)/\ell^2$ 是无量纲的，所以 $[b]=$ 温度。这一点对检查系数很有用：最终 $C_n$ 必须与 $b$ 同量纲。
+
+\step{第 2 步：分离变量与特征值问题}
+
+设 $u=XT$，代入得
+
+\[
+\frac{T'}{a^2T}=\frac{X''}{X}=-\lambda
+\quad\Longrightarrow\quad
+X''+\lambda X=0,\qquad T'+a^2\lambda T=0 .
+\]
+
+\textbf{注意与波动方程的区别。}时间方程是一阶的，只有 $T'=-a^2\lambda T$，所以时间因子只有指数、没有振荡。这是「输运」与「波动」最本质的差别：热传导没有惯性，不会来回晃。
+
+边界条件与作业 1 完全相同（两端为零），所以特征值问题一字不改：
+
+\[
+\lambda_n=\left(\frac{n\pi}{\ell}\right)^2,
+\qquad
+X_n=\sin\frac{n\pi x}{\ell},
+\qquad n=1,2,\dots
+\]
+
+\step{第 3 步：时间因子与叠加}
+
+把 $\lambda_n$ 代入，$T_n'=-\frac{n^2\pi^2a^2}{\ell^2}T_n$，解为
+
+\[
+T_n(t)=\exp\left[-\left(\frac{n\pi a}{\ell}\right)^2t\right].
+\]
+
+叠加：
+
+\[
+u(x,t)=\sum_{n=1}^{\infty}C_n\exp\left[-\left(\frac{n\pi a}{\ell}\right)^2t\right]\sin\frac{n\pi x}{\ell}.
+\]
+
+每个模态都带一个负指数：$n$ 越大衰减越快，高频（细碎的温度起伏）先被抹平，剩下的是越来越光滑的低频形状。这就是热传导「抹平细节」的数学版本。
+
+\step{第 4 步：用初温定系数}
+
+令 $t=0$：
+
+\[
+u(x,0)=\sum_{n=1}^{\infty}C_n\sin\frac{n\pi x}{\ell}=\frac{bx(\ell-x)}{\ell^2}.
+\]
+
+由正交性，
+
+\[
+C_n=\frac{2}{\ell}\int_0^{\ell}\frac{bx(\ell-x)}{\ell^2}\sin\beta x\dd x
+=\frac{2b}{\ell^3}\int_0^{\ell}x(\ell-x)\sin\beta x\dd x,
+\qquad \beta=\frac{n\pi}{\ell}.
+\]
+
+\textbf{把积分拆开算。}记 $J=\int_0^{\ell}x(\ell-x)\sin\beta x\dd x=\ell\int_0^\ell x\sin\beta x\dd x-\int_0^\ell x^2\sin\beta x\dd x$。两个原函数是
+
+\[
+\int x\sin\beta x\dd x=-\frac{x\cos\beta x}{\beta}+\frac{\sin\beta x}{\beta^2},
+\qquad
+\int x^2\sin\beta x\dd x=-\frac{x^2\cos\beta x}{\beta}+\frac{2x\sin\beta x}{\beta^2}+\frac{2\cos\beta x}{\beta^3}.
+\]
+
+\textbf{上限 $x=\ell$。}利用 $\sin\beta\ell=\sin n\pi=0$、$\cos\beta\ell=(-1)^n$：
+
+\[
+\ell\left[-\frac{\ell\cos\beta\ell}{\beta}\right]-\left[-\frac{\ell^2\cos\beta\ell}{\beta}+\frac{2\cos\beta\ell}{\beta^3}\right]
+=-\frac{2\cos\beta\ell}{\beta^3}.
+\]
+
+（含 $\ell^2\cos\beta\ell/\beta$ 的两项正好抵消。）
+
+\textbf{下限 $x=0$。}只有 $x^2$ 那一个原函数的常数项不为零，取负号后贡献 $+\dfrac{2}{\beta^3}$。于是
+
+\[
+J=\frac{2}{\beta^3}\left[1-\cos\beta\ell\right]
+=\frac{2\ell^3}{n^3\pi^3}\left[1-(-1)^n\right].
+\]
+
+代回：
+
+\[
+C_n=\frac{2b}{\ell^3}\cdot\frac{2\ell^3}{n^3\pi^3}\left[1-(-1)^n\right]
+=\boxed{\ \frac{4b}{n^3\pi^3}\left[1-(-1)^n\right]\ }.
+\]
+
+分奇偶写开：
+
+\[
+C_{2k}=0,
+\qquad
+C_{2k+1}=\frac{8b}{(2k+1)^3\pi^3},
+\qquad k=0,1,2,\dots
+\]
+
+\textbf{这里没有交错符号。}作业 1 的奇数项带 $(-1)^k$，本题不带——因为初温 $bx(\ell-x)/\ell^2$ 在中点两侧都为正（单峰），而三角波的奇数次模态在中点两侧符号相反，两者「对齐」的方式不同。这一点最容易在抄答案时抄错。
+
+\step{第 5 步：最终答案}
+
+\[
+\boxed{\;
+u(x,t)=\frac{8b}{\pi^3}\sum_{k=0}^{\infty}\frac{1}{(2k+1)^3}
+\exp\left[-\left(\frac{(2k+1)\pi a}{\ell}\right)^2t\right]
+\sin\frac{(2k+1)\pi x}{\ell}
+\;}
+\]
+
+\step{第 6 步：自检}
+
+\begin{itemize}
+  \item \textbf{初温。}用 400 项截断在 $[0,\ell]$ 上比较 $u(x,0)$ 与 $bx(\ell-x)/\ell^2$，最大偏差 $1.5\times10^{-7}$——比作业 1 小三个数量级，因为初温光滑（两端值与导数都为零）。$\checkmark$
+  \item \textbf{边界。}每个 $\sin\frac{n\pi x}{\ell}$ 在两端为零。$\checkmark$
+  \item \textbf{长时间行为。}$t\to\infty$ 时每个指数都趋于零，$u\to0$：两端零温、热量不断流出，最终整根杆降到零度。$\checkmark$
+  \item \textbf{为什么只剩奇数项。}初温关于 $x=\ell/2$ 对称，偶数模态关于中点反对称，对称的初值不激发反对称模态。与作业 1 是同一个理由。
+  \item \textbf{平均温度的独立核对。}直接算初温的平均值：
+  \[
+  \frac{1}{\ell}\int_0^{\ell}\frac{bx(\ell-x)}{\ell^2}\dd x=\frac{b}{6}.
+  \]
+  再从级数算：$\frac{1}{\ell}\int_0^\ell\sin\frac{n\pi x}{\ell}\dd x=\frac{2}{n\pi}$（$n$ 奇），故平均值为
+  \[
+  \sum_{k\ge0}\frac{8b}{(2k+1)^3\pi^3}\cdot\frac{2}{(2k+1)\pi}
+  =\frac{16b}{\pi^4}\sum_{k\ge0}\frac{1}{(2k+1)^4}
+  =\frac{16b}{\pi^4}\cdot\frac{\pi^4}{96}=\frac{b}{6}.
+  \]
+  两条路给出同一个数，说明系数没有漏项、也没有多一个因子。这条自检推荐在考试里用，几十秒就能验完。
+  \item \textbf{量纲与衰减。}$[C_n]=[b]$，正确；系数按 $1/n^3$ 衰减，级数一致收敛，且可逐项求导（热方程的解在 $t>0$ 后是解析的）。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S5}{作业 4：矩形域的 Laplace 方程}
+\phantomsection\label{sec:q4}
+%=====================================================================
+
+\qstem{（课件 p13 第 4 题）矩形域 $0<x<a$、$0<y<b$ 上解 Laplace 方程，边界条件为
+$u(0,y)=u(a,y)=0$、$u(x,0)=A(1-x/a)$、$u(x,b)=0$。}
+
+\begin{figbox}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[very thick,violet] (0,0) rectangle (5.0,3.0);
+  \node[font=\small] at (2.5,1.55) {$\nabla^2u=0$};
+  \node[below,font=\small,violetdeep] at (2.5,-0.30) {$u(x,0)=A(1-x/a)$};
+  \node[above,font=\small,violetdeep] at (2.5,3.32) {$u(x,b)=0$};
+  \node[left,font=\small,violetdeep,rotate=90] at (-0.55,1.5) {$u(0,y)=0$};
+  \node[right,font=\small,violetdeep,rotate=90] at (5.55,1.5) {$u(a,y)=0$};
+  \node[font=\small] at (-0.45,-0.32) {$0$};
+  \node[font=\small] at (5.05,-0.22) {$a$};
+  \node[font=\small] at (-0.22,3.05) {$b$};
+\end{tikzpicture}
+\par\smallskip{\small\color{inkgray}图 5-1\quad 三条边齐次，只有下边 $y=0$ 非齐次。非齐次边在下面，这决定了 $y$ 方向用 $\sinh k(b-y)$ 而不是 $\sinh ky$。}
+\end{figbox}
+
+\step{第 1 步：写定解问题}
+
+稳态、无内热源的温度场满足 Laplace 方程，四条边界给齐：
+
+\[
+\begin{cases}
+u_{xx}+u_{yy}=0, & 0<x<a,\ 0<y<b,\\[2pt]
+u(0,y)=u(a,y)=0, & 0\le y\le b,\\[2pt]
+u(x,b)=0, & 0\le x\le a,\\[2pt]
+u(x,0)=A\left(1-\dfrac{x}{a}\right), & 0\le x\le a .
+\end{cases}
+\]
+
+注意边界条件的「三齐一非」结构：$x=0$、$x=a$、$y=b$ 三条边都是零，只有 $y=0$ 非齐次。这个结构决定了解的形式。
+
+\step{第 2 步：决定沿哪个方向分离}
+
+二维问题有两个方向，选哪个方向做特征值问题，取决于哪一对边界是齐次的：
+
+\begin{itemize}
+  \item $x$ 方向的两条边 $x=0$、$x=a$ 都给零——\textbf{齐次、成对}，适合做特征值问题；
+  \item $y$ 方向只有 $y=b$ 给零，$y=0$ 是非齐次的——\textbf{不能}做特征值问题，只能解出通解后用两条边定常数。
+\end{itemize}
+
+所以令 $u=X(x)Y(y)$，$X$ 走特征值问题，$Y$ 走双曲函数，最后用 $y=0$ 的展开定系数。
+
+\step{第 3 步：分离变量与 $X$ 的特征值}
+
+代入 $u_{xx}+u_{yy}=0$：
+
+\[
+\frac{X''}{X}=-\frac{Y''}{Y}=-\lambda
+\quad\Longrightarrow\quad
+X''+\lambda X=0,\qquad Y''-\lambda Y=0 .
+\]
+
+$X$ 的边界条件是 $X(0)=X(a)=0$，与作业 1 完全同型（只是 $\ell$ 换成 $a$）：
+
+\[
+\lambda_n=\left(\frac{n\pi}{a}\right)^2,
+\qquad
+X_n(x)=\sin\frac{n\pi x}{a},
+\qquad n=1,2,\dots
+\]
+
+\step{第 4 步：$Y$ 的方程与双曲函数}
+
+把 $\lambda_n$ 代入：$Y''-k_n^2Y=0$，$k_n=\frac{n\pi}{a}$。通解是
+
+\[
+Y_n(y)=C_n\cosh k_ny+D_n\sinh k_ny .
+\]
+
+\textbf{用 $y=b$ 的条件。}$Y_n(b)=0$ 给出一个关系式，但更省事的做法是直接把它写成「在 $y=b$ 处为零」的形式：
+
+\[
+Y_n(y)=\sinh k_n(b-y).
+\]
+
+验证一下：$y=b$ 时 $\sinh0=0$；对 $y$ 求两次导，$\frac{\dd^2}{\dd y^2}\sinh k(b-y)=k^2\sinh k(b-y)$，所以满足 $Y''-k^2Y=0$。这两个条件它都自动满足，不需要再解方程组。
+
+\textbf{为什么不用 $\sinh k_ny$。}$\sinh k_ny$ 满足 $y=0$ 处的条件（值为零），却满足不了 $y=b$ 处的条件；本题非齐次边在 $y=0$，齐次边在 $y=b$，所以要用 $\sinh k_n(b-y)$。如果像课件例 8.1.5 那样非齐次边在上边 $y=b$，就要换成 $\sinh k_ny$。\textbf{看哪条边是零，双曲函数就在哪条边上取零}——这是本题最实用的判断法。
+
+\step{第 5 步：叠加与定系数}
+
+把每个模态乘起来求和，并把分母 $\sinh k_nb$ 预先除掉（这样 $y=0$ 处的系数就是干净的 $A_n$）：
+
+\[
+u(x,y)=\sum_{n=1}^{\infty}A_n\,\frac{\sinh k_n(b-y)}{\sinh k_nb}\,\sin k_nx .
+\]
+
+先核一下这个写法没有破坏边界：$y=b$ 时分子为零；$x=0,a$ 时 $\sin k_nx=0$；只有 $y=0$ 处的条件还没用。
+
+令 $y=0$，注意 $\sinh k_nb/\sinh k_nb=1$：
+
+\[
+\sum_{n=1}^{\infty}A_n\sin\frac{n\pi x}{a}=A\left(1-\frac{x}{a}\right).
+\]
+
+两边乘 $\sin\frac{m\pi x}{a}$ 并在 $[0,a]$ 上积分，模方为 $a/2$：
+
+\[
+A_n=\frac{2}{a}\int_0^aA\left(1-\frac{x}{a}\right)\sin\frac{n\pi x}{a}\dd x .
+\]
+
+\textbf{算积分。}令 $t=x/a$，$\dd x=a\dd t$：
+
+\[
+\int_0^a\left(1-\frac{x}{a}\right)\sin\frac{n\pi x}{a}\dd x
+=a\int_0^1(1-t)\sin(n\pi t)\dd t .
+\]
+
+再分部积分（$u=1-t$，$\dd v=\sin n\pi t\dd t$）：
+
+\[
+\int_0^1(1-t)\sin n\pi t\dd t
+=\left[-\frac{(1-t)\cos n\pi t}{n\pi}\right]_0^1-\int_0^1\frac{\cos n\pi t}{n\pi}\dd t
+=\frac{1}{n\pi}-0=\frac{1}{n\pi}.
+\]
+
+（第二个积分 $\int_0^1\cos n\pi t\dd t=\frac{\sin n\pi}{n\pi}=0$。）
+
+于是
+
+\[
+A_n=\frac{2A}{a}\cdot\frac{a}{n\pi}
+=\boxed{\ \frac{2A}{n\pi}\ }.
+\]
+
+\step{第 6 步：最终答案}
+
+\[
+\boxed{\;
+u(x,y)=\frac{2A}{\pi}\sum_{n=1}^{\infty}\frac{1}{n}\cdot
+\frac{\sinh\frac{n\pi(b-y)}{a}}{\sinh\frac{n\pi b}{a}}\,
+\sin\frac{n\pi x}{a}
+\;}
+\]
+
+\textbf{读法。}每一项是「$x$ 方向的正弦驻波」乘「$y$ 方向从下往上衰减的双曲比例」。$n$ 越大，$\frac{\sinh k(b-y)}{\sinh kb}\approx e^{-ky}$ 衰减越快，所以高次项只在 $y=0$ 附近（下边界的热源附近）有影响；离下边越远，温度越接近零，符合「上边零温」的直觉。
+
+\step{第 7 步：自检}
+
+\begin{itemize}
+  \item \textbf{上边。}$y=b$ 时 $\sinh0=0$，每一项为零，$u(x,b)=0$。数值上逐项代入，最大偏差为 $0$（机器精度）。$\checkmark$
+  \item \textbf{两侧。}$x=0$ 与 $x=a$ 时 $\sin\frac{n\pi x}{a}=0$，$u=0$。$\checkmark$
+  \item \textbf{下边。}$y=0$ 时级数就是 $A(1-x/a)$ 的正弦展开。用 2000 项在内部点比较，最大偏差 $2.0\times10^{-3}$；端点 $x=0$ 附近有吉布斯现象（把 $A(1-x/a)$ 按奇延拓看，$x=0$ 是真正的间断），所以端点不参与比较。$\checkmark$
+  \item \textbf{方程。}逐项代入：$\partial_{xx}\sin k_nx\cdot\sinh=-\ k_n^2\sin k_nx\sinh$，$\partial_{yy}$ 给出 $+k_n^2\sin k_nx\sinh$，相加为零。$\checkmark$
+  \item \textbf{最大值原理。}所有 $A_n>0$，$\sinh k_n(b-y)$ 随 $y$ 单调减，所以 $u$ 在 $y=0$ 最大、向 $y=b$ 单调降到零，$0\le u\le A$。与「内部无热源、边界温度非负」的定性结论一致。
+  \item \textbf{量纲与极限。}$[A_n]=[A]$；$b\to\infty$ 时 $\sinh$ 比值趋于 $e^{-k_ny}$，解退化为半无限长条的情形；$A\to0$ 时解为零。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S6}{四题对照与一张自检清单}
+\phantomsection\label{sec:s6}
+%=====================================================================
+
+\subhdr{6.1\quad 四题其实是「同一台机器换零件」}
+
+\tabtop
+\begin{tabular}{@{}p{0.05\linewidth}p{0.17\linewidth}p{0.22\linewidth}p{0.24\linewidth}p{0.18\linewidth}@{}}
+\thead{题} & \thead{方程类型} & \thead{特征值来自哪里} & \thead{定系数用的条件} & \thead{系数衰减} \\
+\tabmidrule
+1 & 波动 & $X(0)=X(\ell)=0$ & 初位移 $u(x,0)$ & $1/n^2$ \\
+\tabmidrule
+2 & 波动 & $X(0)=0,\ X'(\ell)=0$ & 初速度 $u_t(x,0)$ & $1/n^3$ \\
+\tabmidrule
+3 & 输运 & $X(0)=X(\ell)=0$ & 初温 $u(x,0)$ & $1/n^3$ \\
+\tabmidrule
+4 & 稳态 & $X(0)=X(a)=0$ & 非齐次边 $u(x,0)$ & $1/n$ \\
+\end{tabular}
+\tabbot
+
+四道题把「分离变量」的四种组合各练了一遍：整数与半整数特征值、初位移与初速度、输运与稳态、一维与二维。考试里遇到新题，先在第 \pageref{sec:s1} 页的两张判定表里对号，再动笔。
+
+\subhdr{6.2\quad 交卷前的六条自检}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{边界。}把 $x=0$、$x=\ell$（或 $y=0$、$y=b$）代进最终级数，逐条看是否为零。这一步能抓住绝大部分符号错误。
+  \item \textbf{初值。}令 $t=0$，看级数是否就是你给的初值（类型对不对：$\cos$ 还是 $\sin$，指数在不在）。
+  \item \textbf{量纲。}系数乘上特征函数后必须与 $u$ 同量纲；系数里出现不该有的量纲，多半是漏除了一个 $\omega_n$ 或一个 $k_n$。
+  \item \textbf{衰减。}光滑的初值对应快速衰减的系数；如果算出 $1/n$ 却预期 $1/n^3$，回去查积分或边界。
+  \item \textbf{奇偶。}对称的初值不激发反对称模态；如果答案里本该消失的项没消失，先怀疑系数算错而不是怀疑对称性。
+  \item \textbf{极限。}输运问题看 $t\to\infty$ 是否趋于稳态；Laplace 问题看 $A\to0$、$b\to\infty$ 等极限是否合理。
+\end{enumerate}
+
+%=====================================================================
+\hdr{\S7}{七个常见错误（按题号定位）}
+\phantomsection\label{sec:s7}
+%=====================================================================
+
+\warnbox{\textbf{错误 1（作业 2 最常见）。}右端自由却仍用 $\lambda_n=(n\pi/\ell)^2$、$X_n=\sin\frac{n\pi x}{\ell}$。这两个式子只属于「两端都为零」。右端给的是 $u_x=0$，必须解 $\cos k\ell=0$，得到半整数。检验办法：把 $\sin\frac{n\pi x}{\ell}$ 的导数在 $x=\ell$ 处算一下，$\cos n\pi=(-1)^n\ne0$，立刻露馅。}
+
+\warnbox{\textbf{错误 2（作业 1）。}把题目里的 $h$ 当成峰值，直接写 $C_n=\frac{8h}{n^2\pi^2}\sin\frac{n\pi}{2}$。课件里 $\varphi=hx$，峰值是 $h\ell/2$，正确系数是 $\frac{4h\ell}{n^2\pi^2}\sin\frac{n\pi}{2}$，差一个因子 $\ell/2$。量纲检查能立刻发现：$h$ 的量纲是「长度／长度」，不带 $\ell$ 的系数不是长度。}
+
+\warnbox{\textbf{错误 3（作业 2）。}求出 $A_n\omega_n=\frac{8b(-1)^n}{(2n+1)^2\pi^2}$ 之后直接把它当 $A_n$，忘了除以 $\omega_n$。症状：最终答案里没有 $a$，量纲是速度而不是位移。}
+
+\warnbox{\textbf{错误 4（作业 3）。}把 $C_n$ 写成带 $(-1)^n$ 的形式（照抄作业 1）。本题初温是单峰正函数，奇数项应当同号；$1-(-1)^n$ 展开只有 $+8b/(n^3\pi^3)$，没有交错因子。用平均温度 $\frac{b}{6}$ 核对最快。}
+
+\warnbox{\textbf{错误 5（作业 3）。}指数写成 $\exp\left(-\frac{n\pi a}{\ell}t\right)$，漏了平方。正确的时间常数是 $\left(\frac{n\pi a}{\ell}\right)^2t$，量纲必须是「无量纲」：$a^2t/\ell^2$ 无量纲，$at/\ell$ 也无量纲，两者都能过这一关，所以要回到方程 $T'=-a^2\lambda_nT$ 去核，$\lambda_n$ 带平方。}
+
+\warnbox{\textbf{错误 6（作业 4）。}$Y$ 用 $\sinh k_ny$，结果 $y=b$ 处不为零。正确的是 $\sinh k_n(b-y)$（非齐次边在下）或 $\sinh k_ny$（非齐次边在上）。口诀：\textbf{双曲函数在零边界那条边上取零}。}
+
+\warnbox{\textbf{错误 7（作业 4）。}忘记除 $\sinh k_nb$，却仍用 $A_n=\frac{2A}{n\pi}$。这两个选择必须配套：不除分母时，$y=0$ 处的方程变成 $\sum A_n\sinh k_nb\sin k_nx=A(1-x/a)$，系数要相应改成 $\frac{2A}{n\pi\sinh k_nb}$。两种写法都对，混用就错。}
+
+%=====================================================================
+\hdr{\S8}{与 11-13 新课件 §8.2 的接口}
+\phantomsection\label{sec:bridge}
+%=====================================================================
+
+11-13 新到的课件从 §8.2「极坐标下的分离变量」讲起：Laplace 方程换成极坐标形式，令 $u=R(r)\Phi(\phi)$，把角度方向交给周期性边界条件。它与这四道作业是同一台机器，只换了坐标：
+
+\begin{itemize}
+  \item \textbf{特征值来自周期性。}$\Phi(\phi+2\pi)=\Phi(\phi)$ 要求 $\lambda=m^2$，$m=0,1,2,\dots$，特征函数是 $\cos m\phi$ 与 $\sin m\phi$。这一步相当于直角坐标里的「两端为零」。
+  \item \textbf{径向方程是欧拉方程。}$r^2R''+rR'-m^2R=0$，解为 $R=C r^m+D r^{-m}$（$m>0$），$m=0$ 时是 $C+D\ln r$。相当于直角坐标里的 $\sinh$ 与 $\cosh$。
+  \item \textbf{自然边界条件。}圆内（$r\to0$ 有界）要去掉 $r^{-m}$ 与 $\ln r$；圆外要去掉 $r^m$；环域则两套都留，用内外两个圆上的边界条件定系数——这正是课件里环形区域那道例题的做法。
+\end{itemize}
+
+所以极坐标部分不需要重新学一套方法，只需要把表 1.3 的第三行换成「欧拉方程」。这部分目前还没有讲义，需要的话可以单独做一份 §8.2 的精讲。
+
+%=====================================================================
+\hdr{附录 A}{数值核验记录与脚本}
+\phantomsection\label{sec:appA}
+%=====================================================================
+
+本册所有系数都做了两道核验：先用 sympy 符号积分把系数重新算一遍，与正文公式逐项相减；再把级数截断，与初始条件或边界条件逐点比较。下表是实测结果，脚本退出码为 $0$（全部断言通过）。脚本位置：\texttt{verify\_ch8\_hw4-20261113.py}，与本文放在同一目录。
+
+\tabtop
+\begin{tabular}{@{}p{0.30\linewidth}p{0.30\linewidth}p{0.32\linewidth}@{}}
+\thead{检查项} & \thead{方法} & \thead{实测结果} \\
+\tabmidrule
+作业 1 的 $C_n$ & sympy 符号积分 & 与正文公式之差为 $0$ \\
+\tabmidrule
+作业 2 的 $A_n\omega_n$ 与 $A_n$ & sympy 符号积分 & 与正文公式之差为 $0$ \\
+\tabmidrule
+作业 3 的 $C_n$ & sympy 符号积分 & 与正文公式之差为 $0$ \\
+\tabmidrule
+作业 4 的 $A_n$ & sympy 符号积分 & 与正文公式之差为 $0$ \\
+\tabmidrule
+四个级数项是否满足 PDE & 逐项代入化简 & 波动、输运、Laplace 全部为 $0$ \\
+\tabmidrule
+作业 1 初位移 & 400 项级数 vs 三角波 & 最大偏差 $5.1\times10^{-4}$ \\
+\tabmidrule
+作业 2 初速度 & 600 项级数 vs $bx/\ell$ & 最大偏差 $3.4\times10^{-4}$ \\
+\tabmidrule
+作业 3 初温 & 400 项级数 vs $bx(\ell-x)/\ell^2$ & 最大偏差 $1.5\times10^{-7}$ \\
+\tabmidrule
+作业 4 下边 & 2000 项级数（内部点） & 最大偏差 $2.0\times10^{-3}$ \\
+\tabmidrule
+作业 4 上边与两侧 & 逐项代入 & 偏差为 $0$ \\
+\end{tabular}
+\tabbot
+
+\textbf{关于误差的量级。}作业 1 的 $5\times10^{-4}$、作业 4 的 $2\times10^{-3}$ 都出现在边界或尖角附近，属于傅里叶级数截断的固有误差（吉布斯现象），不是公式错误；把项数加到几千项，内部点的误差会继续下降，但端点附近的振荡幅度不会消失。作业 3 的误差小到 $10^{-7}$，因为初温光滑，级数收敛极快——这与正文里「初值越光滑、系数衰减越快」的结论互相印证。
+
+\textbf{没有核验的部分。}本册只核验了「系数公式」与「级数是否回到初值/边界」，没有做三维绘图的目视检查，也没有与教材例题逐式对照（本课没有指定教材版本）。如果老师课上用的记号不同（例如把 $a^2$ 写成 $c^2$、把 $h$ 写成 $u_0$），公式的形状不变，只需换符号。
+
+\end{document}
+

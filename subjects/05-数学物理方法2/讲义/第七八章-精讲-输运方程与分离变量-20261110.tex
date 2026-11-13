@@ -1204,7 +1204,8 @@ $\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为�
 这四题是第八章的作业，训练点是「分离变量 + 定系数」的四组不同特征值问题。前三题一维、第四题二维稳态。
 
 \answerstart{P5}{课件 Ch8 p13 第 1 题}{长 $\ell$ 的弦两端固定，初始位移为三角形
-$\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为零。求 $u(x,t)$。}
+$\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为零。求 $u(x,t)$。
+（这里把尖角放在任意位置 $b$、峰值记作 $h$；课件原题取 $b=\ell/2$、左半段斜率为 $h_{\rm c}$，峰值 $h_{\rm c}\ell/2$，换算见下。）}
 
 \step{定解问题}
 \begin{equation}
@@ -1238,6 +1239,13 @@ $\varphi(x)=hx/b\ (0<x<b)$、$h(\ell-x)/(\ell-b)\ (b<x<\ell)$，初始速度为�
 \begin{equation}
   \boxed{\;C_n=\frac{2h\ell^2}{n^2\pi^2\,b(\ell-b)}\,\sin\frac{n\pi b}{\ell}\;}
 \end{equation}
+
+\textbf{课件原题怎么代回。}课件 p13 第 1 题的三角波峰在中点，左半段斜率是 $h_{\rm c}$、峰值是 $h_{\rm c}\ell/2$，即本式的 $b=\ell/2$、$h=h_{\rm c}\ell/2$。代入上式：
+\begin{equation}
+  C_n=\frac{2(h_{\rm c}\ell/2)\ell^2}{n^2\pi^2(\ell^2/4)}\sin\frac{n\pi}{2}
+  =\frac{4h_{\rm c}\ell}{n^2\pi^2}\sin\frac{n\pi}{2},
+\end{equation}
+与《第八章作业四题-分步详解》（2026-11-13）的答案一致。\textbf{两种记号的换算只差一个因子}：峰值 $h=h_{\rm c}\ell/2$。抄答案时看清题目给的是斜率还是峰值。
 
 \textbf{数值核对。}取 $\ell=3$、$b=1$、$h=2$：$C_1\approx1.579$、$C_2\approx0.395$、$C_3=0$、$C_4\approx-0.0987$。验证脚本用 400 项级数在 $[0,\ell]$ 上还原了三角形状，误差小于 $2\times10^{-3}$。
 
