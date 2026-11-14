@@ -1,0 +1,71 @@
+\hdr{§5}{重积分：把“区域”画对，题就成了一半}
+
+\textbf{这一章在竞赛里的样子。}一道计算题，二重或三重，15 分。难点从来不是积分本身，而是\emph{区域的边界怎么写、积分次序怎么定}。经验：先画图，再写不等式，最后才动手积。
+
+\subhdr{5.1 二重积分：两种坐标，四种写法}
+
+\textbf{直角坐标}：
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item $X$ 型（竖条）：$a\le x\le b$，$\varphi_1(x)\le y\le\varphi_2(x)$，先对 $y$ 积。
+\item $Y$ 型（横条）：$c\le y\le d$，$\psi_1(y)\le x\le\psi_2(y)$，先对 $x$ 积。
+\end{itemize}
+
+\textbf{换序}：画出区域，换一个方向切条。换序的价值在于\emph{把积不出的内层积分变成积得出的}——例如内层是 $e^{-x^2}$、$\frac{\sin x}{x}$、$\sqrt{1+y^3}$ 这类没有初等原函数的式子，必须换序。
+
+\textbf{极坐标}：$x=r\cos\theta$，$y=r\sin\theta$，面积元 $\dd x\dd y=r\dd r\dd\theta$。适用特征：区域含 $x^2+y^2$、圆、扇形、心形线。
+
+\callout{\textbf{例 1（极坐标）} 计算 $\displaystyle\iint_D(x^2+y^2)\dd x\dd y$，其中 $D:\ x^2+y^2\le2x$。
+
+\textbf{化区域}：$x^2+y^2\le2x\iff (x-1)^2+y^2\le1$，是以 $(1,0)$ 为心、半径 1 的圆。极坐标下 $r^2\le2r\cos\theta$，即 $0\le r\le2\cos\theta$；由 $r\ge0$ 得 $\cos\theta\ge0$，故 $-\frac\pi2\le\theta\le\frac\pi2$。
+\[
+\iint_D(x^2+y^2)\dd x\dd y=\int_{-\pi/2}^{\pi/2}\dd\theta\int_0^{2\cos\theta}r^2\cdot r\dd r
+=\int_{-\pi/2}^{\pi/2}\frac{(2\cos\theta)^4}{4}\dd\theta
+=4\int_{-\pi/2}^{\pi/2}\cos^4\theta\dd\theta .
+\]
+再用偶函数与华里士公式：$\int_{-\pi/2}^{\pi/2}\cos^4\theta\dd\theta=2\cdot\frac{3!!}{4!!}\cdot\frac\pi2=\frac{3\pi}{8}$，故原式 $=4\cdot\frac{3\pi}{8}=\frac{3\pi}{2}$。\\
+\textbf{要点}：极坐标下\emph{上下限里可以出现 $\theta$}，这是它与直角坐标最大的不同；先由 $r\ge0$ 定出 $\theta$ 的范围，再写 $r$ 的上限。}
+
+\callout{\textbf{例 2（换序）} 计算 $\displaystyle I=\int_0^1\dd y\int_y^1 e^{-x^2}\dd x$。
+
+\textbf{为什么换序}：$e^{-x^2}$ 没有初等原函数，直接对 $x$ 积走不通。画出区域：$0\le y\le1$，$y\le x\le1$，即三角形 $0\le y\le x\le1$。换成先对 $y$ 积：
+\[
+I=\int_0^1\dd x\int_0^{x}e^{-x^2}\dd y=\int_0^1 xe^{-x^2}\dd x=\left[-\frac12e^{-x^2}\right]_0^1=\frac12\left(1-\frac1e\right).
+\]
+\textbf{要点}：换序后内层出现 $x$（常数因子），恰好凑成 $xe^{-x^2}$ 的微分。凡是内层“积不出”的题，换序几乎必然是答案。}
+
+\subhdr{5.2 三重积分：三种坐标系}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{坐标} & \thead{体积元} & \thead{适用}\\
+\hline
+直角 $(x,y,z)$ & $\dd x\dd y\dd z$ & 长方体、平面围成的立体\\
+柱面 $(r,\theta,z)$ & $r\dd r\dd\theta\dd z$ & 含 $x^2+y^2$、旋转体、圆柱\\
+球面 $(\rho,\varphi,\theta)$ & $\rho^2\sin\varphi\dd\rho\dd\varphi\dd\theta$ & 含 $x^2+y^2+z^2$、球、锥\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{先二后一（截面法）}：$\displaystyle\iiint_\Omega f\dd V=\int_{z_1}^{z_2}\dd z\iint_{D_z}f\dd x\dd y$。当被积函数只与 $z$ 有关、或截面形状简单时最好用。
+
+\textbf{先一后二（投影法）}：$\displaystyle\iiint_\Omega f\dd V=\iint_D\dd x\dd y\int_{z_1(x,y)}^{z_2(x,y)}f\dd z$。
+
+\subhdr{5.3 对称性：不算就得分}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{关于坐标面对称}：$\Omega$ 关于 $xOy$ 面对称，若 $f(x,y,-z)=-f(x,y,z)$，则积分为 0；若为偶函数，则等于上半部分的两倍。
+\item \textbf{轮换对称}：若 $D$ 关于直线 $y=x$ 对称，则 $\displaystyle\iint_D f(x,y)\dd\sigma=\iint_D f(y,x)\dd\sigma$。于是
+\[
+\iint_D\frac{x^2}{x^2+y^2}\dd\sigma=\frac12\iint_D\frac{x^2+y^2}{x^2+y^2}\dd\sigma=\frac12\iint_D 1\dd\sigma=\frac{S_D}{2}.
+\]
+\item \textbf{平移对称}：圆域上积分 $x$、$y$ 的一次项常为 0，因为正负抵消——先看区域重心是不是原点。
+\end{itemize}
+
+\warnbox{\textbf{本章五个高频失分点。}
+(1)区域写错（把 $x^2+y^2\le2x$ 当成半径 2 的圆）；
+(2)极坐标忘乘 $r$；
+(3)换序时上下限仍写旧次序的表达式；
+(4)三重积分柱坐标忘乘 $r$、球坐标忘乘 $\rho^2\sin\varphi$；
+(5)对称性用错：函数关于 $z$ 是奇函数、区域却不对称，不能直接判 0。}

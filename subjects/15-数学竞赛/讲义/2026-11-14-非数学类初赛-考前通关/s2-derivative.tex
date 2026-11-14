@@ -1,0 +1,139 @@
+\hdr{§2}{一元微分学：中值定理是竞赛的心脏}
+
+\textbf{这一章在竞赛里的样子。}两道题：一道纯计算（高阶导、极值、渐近线），一道证明（中值定理或不等式）。后者几乎是解答题的固定成员，而它的全部难点只有一个——\emph{把要证的结论改写成某个辅助函数的罗尔定理}。
+
+\subhdr{2.1 导数定义：三类“只能用它”的题}
+
+导数定义 $\displaystyle f'(x_0)=\lim_{h\to0}\frac{f(x_0+h)-f(x_0)}{h}$。以下三种情形不能直接用求导公式，必须回到定义：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{分段点}：先算左右导数（用定义），两者相等才可导。
+\item \textbf{含绝对值}：$|x|$ 在 0 处左右导数分别为 $-1,1$，不可导；$|x|^3$ 在 0 处可导且导数为 0（因为 $|x|^3/h\to0$）。
+\item \textbf{抽象函数给的是极限式}：如已知 $\lim_{x\to0}\frac{f(1-\cos x)}{x^2}=1$，求 $f'(0)$——用 $1-\cos x\sim x^2/2$ 把自变量凑成 $f(0+u)-f(0)$ 的形式。
+\end{itemize}
+
+\warnbox{\textbf{可导一定能连续，连续不一定可导。}判断“可导”必须两边都算；判断“连续”只需 $\lim f=f(x_0)$。竞赛喜欢在分段点同时问这两件事，答案往往一个是、一个不是。}
+
+\subhdr{2.2 高阶导数：四个公式 + 一个莱布尼茨}
+
+\begin{align*}
+(x^m)^{(n)} &= m(m-1)\cdots(m-n+1)x^{m-n}, &
+(e^{ax})^{(n)} &= a^n e^{ax},\\
+(\sin x)^{(n)} &= \sin\!\left(x+\frac{n\pi}{2}\right), &
+(\cos x)^{(n)} &= \cos\!\left(x+\frac{n\pi}{2}\right),\\
+(\ln x)^{(n)} &= \frac{(-1)^{n-1}(n-1)!}{x^n}, &
+\left(\frac{1}{ax+b}\right)^{(n)} &= \frac{(-1)^n n!\,a^n}{(ax+b)^{n+1}}.
+\end{align*}
+
+\textbf{莱布尼茨公式}：$\displaystyle(uv)^{(n)}=\sum_{k=0}^{n}\binom{n}{k}u^{(k)}v^{(n-k)}$。当其中一个因子是多项式时，只有前几项非零。
+
+\callout{\textbf{例 1} 求 $y=x^2e^{2x}$ 的 $y^{(n)}$。
+
+$u=e^{2x}$，$v=x^2$。$v$ 只有 $v,v',v''$ 非零：
+\[
+y^{(n)}=\binom n0 x^2\cdot2^ne^{2x}+\binom n1 2x\cdot2^{n-1}e^{2x}+\binom n2 2\cdot2^{n-2}e^{2x}
+=2^{n-2}e^{2x}\bigl(4x^2+4nx+n(n-1)\bigr).
+\]
+\textbf{要点}：把求导简单的那个（指数）放 $u$，多项式放 $v$，项数立刻塌缩成三项。}
+
+\subhdr{2.3 中值定理族：条件与结论}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.2cm}p{4.6cm}p{5.2cm}@{}}
+\thead{定理} & \thead{条件} & \thead{结论}\\
+\hline
+费马引理 & 内部点取极值且可导 & $f'(\xi)=0$\\
+罗尔 & $[a,b]$ 连续，$(a,b)$ 可导，$f(a)=f(b)$ & $\exists\xi\in(a,b)$，$f'(\xi)=0$\\
+拉格朗日 & $[a,b]$ 连续，$(a,b)$ 可导 & $f(b)-f(a)=f'(\xi)(b-a)$\\
+柯西 & 两者都连续可导，$g'\ne0$ & $\dfrac{f(b)-f(a)}{g(b)-g(a)}=\dfrac{f'(\xi)}{g'(\xi)}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{2.4 构造辅助函数：七个模板 \ding{72}\ding{72}\ding{72}}
+
+看到要证的结论，先把它整理成“$F'(\xi)=0$”的形状，再对 $F$ 用罗尔。下表左侧是\emph{结论里出现的式子}，右侧是\emph{该构造的 $F$}。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{6.4cm}p{6.6cm}@{}}
+\thead{要证的结论} & \thead{辅助函数 $F(x)$}\\
+\hline
+$f'(\xi)=0$（已知 $f$ 在两端相等） & $f(x)$ 本身\\
+$f'(\xi)+\lambda f(\xi)=0$ & $e^{\lambda x}f(x)$\\
+$f'(\xi)-\lambda f(\xi)=0$ & $e^{-\lambda x}f(x)$\\
+$\xi f'(\xi)+k f(\xi)=0$ & $x^{k}f(x)$\\
+$f'(\xi)g(\xi)-f(\xi)g'(\xi)=0$ & $\dfrac{f(x)}{g(x)}$\\
+$f'(\xi)+f(\xi)g'(\xi)=0$ & $e^{g(x)}f(x)$\\
+含 $\displaystyle\int_a^{\xi}f(t)\dd t$ 的等式 & $F(x)=\displaystyle\int_a^{x}f(t)\dd t$，再对它用中值定理\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{用法}：把结论里的 $\xi$ 全部换成 $x$，移项成一边为零，然后\emph{猜}哪个函数的导数等于左边。猜的依据是乘积求导法则 $F'=uv'+u'v$ 的逆用——上表每一行都是某个乘积的导数。
+
+\callout{\textbf{例 2（$e^{\lambda x}$ 模板）} 设 $f$ 在 $[0,1]$ 上连续，$(0,1)$ 内可导，$f(0)=0$，$f(1)=1$。证明：对任意实数 $\lambda$，存在 $\xi\in(0,1)$，使
+\[
+f'(\xi)-\lambda f(\xi)=1-\lambda\xi .
+\]
+
+\textbf{第一步：把结论整理成导数等于零。}移项：$f'(\xi)-\lambda f(\xi)-1+\lambda\xi=0$。注意到 $-\lambda f+\lambda\xi=-\lambda(f-\xi)$，而 $(f-\xi)'=f'-1$，于是整个左边等于
+\[
+\bigl[(f(x)-x)\bigr]'-\lambda\bigl[f(x)-x\bigr].
+\]
+这正是 $e^{-\lambda x}\bigl(f(x)-x\bigr)$ 的导数乘上 $e^{\lambda x}$。\\
+\textbf{第二步：验证罗尔条件。}令 $F(x)=e^{-\lambda x}\bigl(f(x)-x\bigr)$。则 $F(0)=f(0)-0=0$，$F(1)=e^{-\lambda}\bigl(f(1)-1\bigr)=0$。$F$ 在 $[0,1]$ 连续、$(0,1)$ 可导。\\
+\textbf{第三步：写结论。}由罗尔定理，存在 $\xi\in(0,1)$ 使 $F'(\xi)=0$，即
+\[
+e^{-\lambda\xi}\Bigl[f'(\xi)-1-\lambda\bigl(f(\xi)-\xi\bigr)\Bigr]=0
+\ \Longrightarrow\ f'(\xi)-\lambda f(\xi)=1-\lambda\xi .
+\]
+\textbf{要点}：$\lambda$ 是参数，模板照用；难点在第一步的“整理”，而整理的方向永远是\emph{凑成一个乘积的导数}。}
+
+\subhdr{2.5 不等式证明：五条路，按顺序试}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item \textbf{作差 + 单调性}：令 $g(x)=$ 左 $-$ 右，证 $g'\ge0$ 且 $g(a)\ge0$。最常用。
+\item \textbf{最值法}：证 $g$ 的最小值 $\ge0$（求驻点、比较端点）。
+\item \textbf{拉格朗日}：把 $f(b)-f(a)$ 换成 $f'(\xi)(b-a)$，再估计 $f'$ 的界。
+\item \textbf{泰勒}：在特殊点展开，用 $f''$ 的符号控制余项。
+\item \textbf{凸函数（Jensen）}：$f''>0$ 时 $f\!\left(\frac{x+y}{2}\right)\le\frac{f(x)+f(y)}{2}$，推广到 $n$ 个点。
+\end{enumerate}
+
+\callout{\textbf{例 3（作差 + 单调）} 证明：$x>0$ 时 $\displaystyle x-\frac{x^2}{2}<\ln(1+x)<x$。
+
+\textbf{右边}：令 $g(x)=x-\ln(1+x)$。$g(0)=0$，$g'(x)=1-\frac{1}{1+x}=\frac{x}{1+x}>0$（$x>0$），故 $g$ 严格递增，$g(x)>g(0)=0$，即 $\ln(1+x)<x$。\\
+\textbf{左边}：令 $h(x)=\ln(1+x)-x+\frac{x^2}{2}$。$h(0)=0$，
+\[
+h'(x)=\frac{1}{1+x}-1+x=\frac{x^2}{1+x}>0,
+\]
+故 $h$ 严格递增，$h(x)>0$，即 $\ln(1+x)>x-\frac{x^2}{2}$。\\
+\textbf{要点}：两个不等式分别构造，不要试图用一个函数同时证两边。端点值 $g(0)=h(0)=0$ 是这类题的关键，题目给的区间端点往往就是“零点”。}
+
+\subhdr{2.6 泰勒公式：两种余项，两种用途}
+
+\[
+f(x)=\sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k+R_n(x).
+\]
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{佩亚诺余项} $R_n=o\bigl((x-x_0)^n\bigr)$：用于\emph{求极限}，因为只需要知道阶。
+\item \textbf{拉格朗日余项} $R_n=\dfrac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}$，$\xi$ 介于 $x_0$ 与 $x$ 之间：用于\emph{证明不等式与估计误差}，因为它给出具体的界。
+\end{itemize}
+
+\subhdr{2.7 极值、凹凸、渐近线（填空常客）}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 极值必要条件：$f'(x_0)=0$ 或 $f'$ 不存在。充分条件：$f'$ 变号；或 $f'(x_0)=0$ 且 $f''(x_0)\ne0$（$f''>0$ 极小，$f''<0$ 极大）。
+\item 凹凸：$f''>0$ 凹（下凸，切线在曲线下方）；$f''<0$ 凸。拐点处 $f''$ 变号。
+\item 斜渐近线：$a=\lim_{x\to\infty}\frac{f(x)}{x}$，$b=\lim_{x\to\infty}\bigl[f(x)-ax\bigr]$，则 $y=ax+b$。水平渐近线是 $a=0$ 的特例；垂直渐近线找使 $f\to\infty$ 的 $x_0$。
+\end{itemize}
+
+\warnbox{\textbf{本章四个高频失分点。}
+(1)中值定理题只写“由拉格朗日定理得”，没写辅助函数和区间；
+(2)构造出的 $F$ 没验证 $F(a)=F(b)$ 就直接用罗尔；
+(3)证明不等式时只证了 $g'>0$，忘了写 $g(a)\ge0$ 这个起点；
+(4)泰勒展开用错余项：求极限用了拉格朗日余项（写不出 $\xi$ 的具体信息），证不等式用了佩亚诺余项（得不到界）。}

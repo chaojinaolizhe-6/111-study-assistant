@@ -1,0 +1,102 @@
+\hdr{§6}{曲线与曲面积分：三个公式管住整章}
+
+\textbf{这一章在竞赛里的样子。}一道 15 分的计算题，几乎必然要\emph{把曲线／曲面积分转成重积分}——也就是格林公式或高斯公式。只要把“方向”和“补面”两件事弄清楚，这章是全书最套路化的部分。
+
+\subhdr{6.1 第一类（对弧长／对面积）：与方向无关}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{类型} & \thead{化法} & \thead{微元}\\
+\hline
+第一类曲线 $\int_L f\dd s$ & 参数化 $x=x(t),y=y(t)$ & $\dd s=\sqrt{x'^2+y'^2}\dd t$\\
+第一类曲面 $\iint_\Sigma f\dd S$ & $z=z(x,y)$ 投影到 $D$ & $\dd S=\sqrt{1+z_x^2+z_y^2}\dd x\dd y$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+第一类的特点是\emph{没有方向}：把曲线／曲面反过来，积分值不变。
+
+\subhdr{6.2 第二类曲线与格林公式 \ding{72}\ding{72}\ding{72}}
+
+第二类曲线积分 $\displaystyle\int_L P\dd x+Q\dd y$ 是\emph{有向}的，反向要变号。
+
+\textbf{格林公式}：$L$ 是区域 $D$ 的\emph{正向}（逆时针，区域在左侧）边界，$P,Q$ 在 $D$ 上有连续偏导，则
+\[
+\oint_L P\dd x+Q\dd y=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\dd x\dd y .
+\]
+
+三种用法：
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item \textbf{直接转二重}：边界是闭曲线、$Q_x-P_y$ 简单。
+\item \textbf{补线}：$L$ 不闭合时，补一段简单的线（通常是直线段）成闭合，再用格林，最后减去补线那一段。
+\item \textbf{挖洞}：$P,Q$ 在 $D$ 内有奇点（如分母含 $x^2+y^2$）时，用一个小圆把奇点挖掉，在大区域与小圆之间的环形区域上用格林。
+\end{enumerate}
+
+\callout{\textbf{例 1（补线与方向）} 计算 $\displaystyle I=\oint_L(e^x\sin y-y)\dd x+(e^x\cos y-1)\dd y$，其中 $L$ 为上半圆周 $y=\sqrt{2x-x^2}$ 与 $x$ 轴围成的正向闭曲线。
+
+\textbf{先定方向}：区域是上半圆盘。正向（逆时针）走法是：沿 $x$ 轴从 $(0,0)$ 到 $(2,0)$，再沿上半圆弧回到 $(0,0)$。题目给的“上半圆周 + $x$ 轴”正是这条闭曲线。
+
+\textbf{再用格林}：
+\[
+P=e^x\sin y-y,\quad Q=e^x\cos y-1,\qquad Q_x-P_y=e^x\cos y-(e^x\cos y-1)=1 .
+\]
+所以
+\[
+I=\iint_D 1\dd x\dd y=S_D=\frac{\pi}{2}\cdot1^2=\frac{\pi}{2}.
+\]
+\textbf{要点}：$Q_x-P_y$ 化成常数，是格林公式最理想的形态——积分值直接等于区域的面积（乘常数）。看到 $e^x\sin y$ 与 $e^x\cos y$ 成对出现，就该想到它们的交叉偏导会互相抵消。}
+
+\textbf{路径无关}：在单连通区域 $D$ 上，以下四条等价：
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item $\displaystyle\int_L P\dd x+Q\dd y$ 与路径无关；
+\item 沿 $D$ 内任一闭曲线积分为 0；
+\item $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$ 在 $D$ 内恒成立；
+\item 存在 $u(x,y)$ 使 $\dd u=P\dd x+Q\dd y$（此时积分 $=u(B)-u(A)$）。
+\end{enumerate}
+求 $u$ 的方法：$u=\displaystyle\int_{x_0}^{x}P(x,y_0)\dd x+\int_{y_0}^{y}Q(x,y)\dd y$，或凑全微分。
+
+\subhdr{6.3 第二类曲面与高斯公式 \ding{72}\ding{72}\ding{72}}
+
+第二类曲面积分 $\displaystyle\iint_\Sigma P\dd y\dd z+Q\dd z\dd x+R\dd x\dd y$ 与曲面\emph{侧}有关（外侧／内侧、上侧／下侧）。
+
+\textbf{高斯公式}：$\Sigma$ 是空间闭区域 $\Omega$ 的\emph{外侧}边界，$P,Q,R$ 有连续偏导，则
+\[
+\oiint_\Sigma P\dd y\dd z+Q\dd z\dd x+R\dd x\dd y=\iiint_\Omega\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)\dd V .
+\]
+
+\callout{\textbf{例 2（高斯公式）} 计算 $\displaystyle I=\oiint_\Sigma x\dd y\dd z+y\dd z\dd x+z\dd x\dd y$，$\Sigma$ 为球面 $x^2+y^2+z^2=a^2$ 的外侧。
+
+$P=x,Q=y,R=z$，散度 $P_x+Q_y+R_z=3$，故
+\[
+I=\iiint_\Omega 3\dd V=3\cdot\frac43\pi a^3=4\pi a^3 .
+\]
+\textbf{要点}：球面上算通量，被积函数是坐标本身时，答案就是“3 倍体积”。这题也说明：\emph{先算散度，再决定用不用高斯}，不要一上来就参数化球面。}
+
+\textbf{斯托克斯公式}（低频，但要知道）：
+\[
+\oint_\Gamma P\dd x+Q\dd y+R\dd z=\iint_\Sigma
+\begin{vmatrix}
+\dd y\dd z & \dd z\dd x & \dd x\dd y\\[2pt]
+\dfrac{\partial}{\partial x} & \dfrac{\partial}{\partial y} & \dfrac{\partial}{\partial z}\\[4pt]
+P & Q & R
+\end{vmatrix},
+\]
+$\Gamma$ 的方向与 $\Sigma$ 的法向成右手系。
+
+\subhdr{6.4 散度与旋度（填空可能考定义）}
+
+\[
+\operatorname{div}\boldsymbol F=\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z},\qquad
+\operatorname{rot}\boldsymbol F=\nabla\times\boldsymbol F .
+\]
+$\operatorname{div}\boldsymbol F$ 是“源强”，$\operatorname{rot}\boldsymbol F$ 是“旋转强度”。
+
+\warnbox{\textbf{本章六个高频失分点。}
+(1)格林公式方向取反（结果差一个负号）——先画箭头确认逆时针；
+(2)补线后忘了减去补线上的积分；
+(3)奇点没挖洞，直接用格林（此时 $Q_x-P_y$ 在奇点无定义）；
+(4)高斯公式用了内侧；
+(5)曲面不闭合却没补面；
+(6)第二类曲面积分投影到坐标面时，法向与坐标轴夹角为钝角要加负号。}

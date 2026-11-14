@@ -1,0 +1,97 @@
+\hdr{§4}{多元函数微分学：从“切线”升级到“切平面”}
+
+\textbf{这一章在竞赛里的样子。}填空题一道（偏导、全微分、方向导数、切平面），解答题一道（条件极值或最值应用题）。它是一元微分学的平移：一元看斜率，多元看\emph{方向}；一元要求“左右极限相等”，多元要求“从所有方向逼近都一致”。
+
+\subhdr{4.1 偏导、全微分、可微：三件事不是一回事}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{偏导} $f_x$：把 $y$ 当常数，对 $x$ 求导。它只描述沿坐标轴方向的变化。
+\item \textbf{全微分}：$\Delta z=A\Delta x+B\Delta y+o(\rho)$，$\rho=\sqrt{\Delta x^2+\Delta y^2}$。此时 $A=f_x$、$B=f_y$，记 $\dd z=f_x\dd x+f_y\dd y$。
+\item \textbf{可微} $\Rightarrow$ 偏导存在；偏导连续 $\Rightarrow$ 可微；但\emph{偏导存在推不出连续}，更推不出可微。
+\end{itemize}
+
+\callout{\textbf{例 1（偏导存在但不可微）} 设
+\[
+f(x,y)=\begin{cases}\dfrac{xy}{\sqrt{x^2+y^2}}, & (x,y)\ne(0,0),\\[4pt] 0, & (x,y)=(0,0).\end{cases}
+\]
+验证：$f_x(0,0)=\lim_{h\to0}\frac{f(h,0)-0}{h}=0$，同理 $f_y(0,0)=0$。但
+\[
+\frac{f(h,k)-f(0,0)-0\cdot h-0\cdot k}{\sqrt{h^2+k^2}}=\frac{hk}{h^2+k^2},
+\]
+沿 $h=k$ 趋于 $\frac12\ne0$，故不可微。\\
+\textbf{要点}：验证可微必须检查\emph{所有方向}；只要找到一条路径使比值不趋于 0，就不可微。反过来要证可微，标准做法是说明偏导连续（$f_x,f_y$ 在点附近连续 $\Rightarrow$ 可微）。}
+
+\subhdr{4.2 复合函数与隐函数}
+
+\textbf{链式法则}：$z=f(u,v)$，$u=u(x,y)$，$v=v(x,y)$，则
+\[
+\frac{\partial z}{\partial x}=f_u\,u_x+f_v\,v_x,\qquad
+\frac{\partial z}{\partial y}=f_u\,u_y+f_v\,v_y .
+\]
+
+\textbf{隐函数}：$F(x,y,z)=0$ 确定 $z=z(x,y)$，则
+\[
+z_x=-\frac{F_x}{F_z},\qquad z_y=-\frac{F_y}{F_z}\qquad(F_z\ne0).
+\]
+记不住就用“两边对 $x$ 求偏导、把 $z$ 看成 $x,y$ 的函数”重新推一遍，比背公式稳。
+
+\subhdr{4.3 方向导数与梯度：几何意义比公式重要}
+
+\[
+\frac{\partial f}{\partial \boldsymbol l}=\nabla f\cdot \boldsymbol e_{\boldsymbol l}
+=|\nabla f|\cos\theta ,
+\]
+其中 $\boldsymbol e_{\boldsymbol l}$ 是方向单位向量，$\theta$ 是它与梯度的夹角。由此立刻读出三条：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 梯度方向是函数\emph{增长最快}的方向，最大变化率为 $|\nabla f|$；
+\item 沿等值线切线方向的方向导数为 0（梯度垂直于等值线）；
+\item 曲面 $F(x,y,z)=0$ 在点 $P$ 的法向量是 $\nabla F(P)$，切平面为
+\[
+F_x(P)(x-x_0)+F_y(P)(y-y_0)+F_z(P)(z-z_0)=0 .
+\]
+\end{itemize}
+
+\subhdr{4.4 极值：先无条件，再条件}
+
+\textbf{无条件极值}：先解 $f_x=f_y=0$ 得驻点，再用判别式
+\[
+A=f_{xx},\quad B=f_{xy},\quad C=f_{yy},\quad \Delta=AC-B^2 .
+\]
+$\Delta>0$ 且 $A>0$ 为极小；$\Delta>0$ 且 $A<0$ 为极大；$\Delta<0$ 为鞍点（非极值）；$\Delta=0$ 失效，需另想办法（通常配方或定义）。
+
+\textbf{条件极值（拉格朗日乘数法）}：求 $f$ 在约束 $g=0$ 下的极值，令
+\[
+L=f+\lambda g,\qquad L_x=L_y=L_z=0,\quad g=0 .
+\]
+解出驻点后，把各点函数值算出来比较；应用题中若驻点唯一且实际问题必有最值，则该驻点就是最值点。
+
+\callout{\textbf{例 2（条件极值的标准写法）} 求 $u=x+2y+3z$ 在球面 $x^2+y^2+z^2=1$ 上的最大值与最小值。
+
+\textbf{设} $L=x+2y+3z+\lambda(x^2+y^2+z^2-1)$。令偏导为零：
+\[
+1+2\lambda x=0,\quad 2+2\lambda y=0,\quad 3+2\lambda z=0
+\ \Longrightarrow\ x=-\frac{1}{2\lambda},\ y=-\frac{2}{2\lambda},\ z=-\frac{3}{2\lambda}.
+\]
+代入约束：
+\[
+\frac{1+4+9}{4\lambda^2}=1\ \Longrightarrow\ \lambda=\pm\frac{\sqrt{14}}{2}.
+\]
+于是 $(x,y,z)=\pm\dfrac{(1,2,3)}{\sqrt{14}}$，对应 $u=\pm\sqrt{14}$。\\
+\textbf{结论}：最大值 $\sqrt{14}$，最小值 $-\sqrt{14}$。\\
+\textbf{要点}：线性目标 + 球面约束时，答案就是“系数向量的模”——$|(1,2,3)|=\sqrt{14}$。这个结论可用来验算。}
+
+\callout{\textbf{例 3（最值应用题的写法）} 用铁皮做一个体积为 $V$ 的无盖长方体水箱，问长宽高各为多少时用料最省。
+
+\textbf{建模}：设长宽为 $x,y$，高为 $z$，则 $xyz=V$，用料面积 $S=xy+2xz+2yz$。由约束解出 $z=\frac{V}{xy}$，代入：
+\[
+S=xy+\frac{2V}{y}+\frac{2V}{x}.
+\]
+令 $S_x=y-\frac{2V}{x^2}=0$，$S_y=x-\frac{2V}{y^2}=0$，得 $x=y=\sqrt[3]{2V}$，$z=\frac{V}{x^2}=\frac{1}{2}\sqrt[3]{2V}$。即\emph{底面为正方形，高为底边的一半}时最省。\\
+\textbf{要点}：应用题先把约束代掉、化成一元或二元无约束，再求驻点；最后用“实际问题必有最值 + 驻点唯一”收尾，不必做二阶判别。}
+
+\warnbox{\textbf{本章四个高频失分点。}
+(1)把“偏导存在”当成“可微”；
+(2)求 $z_x$ 时忘了 $z$ 也是 $x$ 的函数（隐函数）；
+(3)拉格朗日乘数法只写了 $L_x=L_y=0$，漏掉约束方程；
+(4)条件极值求出驻点后没有比较函数值就下结论。}

@@ -1,0 +1,97 @@
+\hdr{§7}{无穷级数：判敛靠表，求和靠“先积后导”}
+
+\textbf{这一章在竞赛里的样子。}填空一道（判敛或收敛半径）＋解答题一道（幂级数求和，或常数项级数求和）。它是“上册的极限”加“下册的新语言”，套路固定，是性价比最高的一章。
+
+\subhdr{7.1 正项级数：六条判据，按顺序试}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{6.2cm}p{4.2cm}@{}}
+\thead{判据} & \thead{条件与结论} & \thead{什么时候用}\\
+\hline
+比较 & $u_n\le v_n$，$\sum v_n$ 收敛则 $\sum u_n$ 收敛 & 能直接放缩\\
+极限比较 & $\lim\frac{u_n}{v_n}=c\in(0,\infty)$ & 与 $p$ 级数、几何级数比阶\\
+比值 & $\lim\frac{u_{n+1}}{u_n}=\rho$，$\rho<1$ 收敛，$>1$ 发散 & 含 $n!$、$a^n$\\
+根值 & $\lim\sqrt[n]{u_n}=\rho$，同上 & 含 $n$ 次方、$(\ )^n$\\
+积分 & $f$ 单调减非负，$\sum f(n)$ 与 $\int_1^\infty f$ 同敛散 & 含 $\ln n$\\
+$p$ 级数 & $\sum\frac{1}{n^p}$ 收敛 $\iff p>1$ & 基准\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\warnbox{\textbf{比值法与根值法在 $\rho=1$ 时失效。}此时必须换比较法或积分法。例：$\sum\frac1{n}$ 与 $\sum\frac1{n^2}$ 的比值极限都是 1，但一个发散一个收敛。}
+
+\subhdr{7.2 交错级数与任意项级数}
+
+\textbf{莱布尼茨判据}：$u_n$ 单调递减且 $\lim u_n=0$，则 $\sum(-1)^{n-1}u_n$ 收敛，且余项 $|r_n|\le u_{n+1}$。
+
+\textbf{绝对收敛与条件收敛}：$\sum|u_n|$ 收敛称绝对收敛（此时 $\sum u_n$ 必收敛）；$\sum u_n$ 收敛但 $\sum|u_n|$ 发散称条件收敛。典型：$\sum\frac{(-1)^{n-1}}{n}$ 条件收敛，$\sum\frac{(-1)^{n-1}}{n^2}$ 绝对收敛。
+
+判断顺序：先看 $\sum|u_n|$ 是否收敛（用正项级数六条），不收敛再用莱布尼茨。
+
+\subhdr{7.3 幂级数：收敛域三步走}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item \textbf{求收敛半径} $R=\lim\left|\dfrac{a_n}{a_{n+1}}\right|$（或 $R=\dfrac{1}{\lim\sqrt[n]{|a_n|}}$）。
+\item \textbf{得开区间} $|x-x_0|<R$。
+\item \textbf{端点单独判}：把 $x=x_0\pm R$ 代回，变成常数项级数，用 §7.1、§7.2 判。
+\end{enumerate}
+
+\textbf{和函数的四条路}：
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 直接用几何级数：$\displaystyle\sum_{n=0}^\infty x^n=\frac{1}{1-x}$（$|x|<1$）。
+\item \textbf{先积后导}：系数分母有 $n$ 时，先逐项积分把 $n$ 消掉，再求导还原。
+\item \textbf{先导后积}：系数是 $n$ 的多项式时，先逐项求导，再积分还原。
+\item \textbf{凑已知展开}：$e^x$、$\sin x$、$\cos x$、$\ln(1+x)$、$\arctan x$。
+\end{itemize}
+
+常用和函数：
+\begin{align*}
+\sum_{n=1}^\infty nx^{n-1}&=\frac{1}{(1-x)^2}, &
+\sum_{n=1}^\infty \frac{x^n}{n}&=-\ln(1-x),\\
+\sum_{n=0}^\infty\frac{x^n}{n!}&=e^x, &
+\sum_{n=0}^\infty(-1)^n\frac{x^{2n+1}}{2n+1}&=\arctan x .
+\end{align*}
+
+\callout{\textbf{例 1（判敛）} 判断 $\displaystyle\sum_{n=1}^\infty\frac{n!}{n^n}$ 的敛散性。
+
+用比值法：
+\[
+\frac{u_{n+1}}{u_n}=\frac{(n+1)!}{(n+1)^{n+1}}\cdot\frac{n^n}{n!}=\frac{n^n}{(n+1)^n}=\left(1+\frac1n\right)^{-n}\longrightarrow \frac1e<1 .
+\]
+故级数收敛。\\
+\textbf{要点}：$\left(1+\frac1n\right)^n\to e$ 这个极限在级数题里出现频率极高，看到 $\frac{n^n}{(n+1)^n}$ 就要立刻认出来。}
+
+\callout{\textbf{例 2（求和）} 求 $\displaystyle\sum_{n=1}^\infty\frac{n}{2^n}$。
+
+\textbf{识别}：系数是 $n$，属“先导后积”型。由 $\sum_{n=1}^\infty nx^{n-1}=\frac{1}{(1-x)^2}$，两边乘 $x$：
+\[
+\sum_{n=1}^\infty nx^n=\frac{x}{(1-x)^2}.
+\]
+取 $x=\frac12$：
+\[
+\sum_{n=1}^\infty\frac{n}{2^n}=\frac{1/2}{(1/2)^2}=2 .
+\]
+\textbf{要点}：把常数项级数看成幂级数在某个 $x$ 处的值，是这类题的通用入口。先写出和函数，再代值，比直接凑技巧可靠。}
+
+\subhdr{7.4 傅里叶级数（低频，记结论即可）}
+
+$f$ 以 $2\pi$ 为周期、在 $[-\pi,\pi]$ 上满足狄利克雷条件（连续或只有有限个第一类间断点、只有有限个极值点），则
+\[
+f(x)\sim\frac{a_0}{2}+\sum_{n=1}^\infty\bigl(a_n\cos nx+b_n\sin nx\bigr),
+\]
+\[
+a_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos nx\dd x,\qquad
+b_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin nx\dd x .
+\]
+在连续点收敛于 $f(x)$，在间断点收敛于 $\dfrac{f(x^-)+f(x^+)}{2}$。
+
+奇函数只有正弦项，偶函数只有余弦项——先看奇偶性能省一半计算。
+
+\warnbox{\textbf{本章五个高频失分点。}
+(1)收敛半径求出后不检查端点；
+(2)把“条件收敛”当成“发散”；
+(3)幂级数求导／积分时忘了收敛半径不变、端点可能变；
+(4)求和时代入的 $x$ 超出收敛域；
+(5)傅里叶级数在间断点直接写 $f(x_0)$，应写左右极限平均。}

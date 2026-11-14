@@ -1,0 +1,128 @@
+\clearpage
+\appendix
+\hdr{附录 A}{一页速查（明早只看这一份）}
+
+\subhdr{A.1 导数与积分}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+$(\tan x)'=\sec^2x$ & $(\cot x)'=-\csc^2x$ & $(\sec x)'=\sec x\tan x$ & $(\arcsin x)'=\frac{1}{\sqrt{1-x^2}}$\\
+$(\arctan x)'=\frac{1}{1+x^2}$ & $(\ln|x|)'=\frac1x$ & $(a^x)'=a^x\ln a$ & $(\ln\ln x)'=\frac{1}{x\ln x}$\\
+$\int\tan x\dd x=-\ln|\cos x|+C$ & $\int\cot x\dd x=\ln|\sin x|+C$ & $\int\sec x\dd x=\ln|\sec x+\tan x|$ & $\int\frac{\dd x}{1+x^2}=\arctan x$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{A.2 泰勒展开（$x\to0$）}
+
+\begin{align*}
+e^x&=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots, &
+\ln(1+x)&=x-\frac{x^2}{2}+\frac{x^3}{3}-\cdots,\\
+\sin x&=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots, &
+\cos x&=1-\frac{x^2}{2!}+\frac{x^4}{4!}-\cdots,\\
+(1+x)^\alpha&=1+\alpha x+\frac{\alpha(\alpha-1)}{2!}x^2+\cdots, &
+\frac{1}{1-x}&=1+x+x^2+\cdots .
+\end{align*}
+
+\subhdr{A.3 三角恒等式（积分化简常用）}
+
+\[
+\sin^2x=\frac{1-\cos2x}{2},\quad
+\cos^2x=\frac{1+\cos2x}{2},\quad
+\sin x\cos x=\frac{\sin2x}{2},
+\]
+\[
+\sin A\sin B=\frac{\cos(A-B)-\cos(A+B)}{2},\quad
+\sin A\cos B=\frac{\sin(A+B)+\sin(A-B)}{2}.
+\]
+
+\subhdr{A.4 级数判敛一览}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{级数} & \thead{敛散}\\
+\hline
+$\sum\dfrac{1}{n^p}$ & $p>1$ 收敛\\
+$\sum q^n$ & $|q|<1$ 收敛\\
+$\sum\dfrac{1}{n\ln^p n}$ & $p>1$ 收敛\\
+$\sum\dfrac{(-1)^{n-1}}{n^p}$ & $p>0$ 收敛（$p>1$ 绝对，$0<p\le1$ 条件）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{A.5 常微分方程解法一览}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.2cm}p{8.0cm}@{}}
+\thead{类型} & \thead{解法要点}\\
+\hline
+$y'=f(x)g(y)$ & 分离变量，$\int\frac{\dd y}{g(y)}=\int f\dd x$\\
+$y'=\varphi(y/x)$ & $u=y/x$，$y'=u+xu'$\\
+$y'+Py=Q$ & $y=e^{-\int P}\left(\int Qe^{\int P}\dd x+C\right)$\\
+$y'+Py=Qy^n$ & $z=y^{1-n}$\\
+二阶常系数齐次 & 特征根：两实根／重根／复根，三种通解\\
+二阶常系数非齐次 & 特解 $x^kQ_m(x)e^{\lambda x}$，$k$ 为重数\\
+$x^2y''+pxy'+qy=f$ & $x=e^t$，化为常系数\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{A.6 三个积分公式的适用条件}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{5.0cm}p{4.4cm}@{}}
+\thead{公式} & \thead{条件} & \thead{方向}\\
+\hline
+格林 & $P,Q$ 在 $D$ 上有连续偏导，$L$ 为 $D$ 的边界 & $L$ 逆时针（正向）\\
+高斯 & $P,Q,R$ 在 $\Omega$ 上有连续偏导，$\Sigma$ 闭合 & $\Sigma$ 外侧\\
+斯托克斯 & $P,Q,R$ 有连续偏导，$\Gamma$ 为 $\Sigma$ 的边界 & 右手系\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\clearpage
+\hdr{附录 B}{自测 10 题（明早 20 分钟，答案在最后）}
+
+\textbf{用法}：合上手册，每题限时 2 分钟，只写关键步骤，不要求完整书写。对 7 题以上，说明手感在；低于 5 题，回看对应章节的“识别—动作”表。
+
+\begin{enumerate}[leftmargin=2.0em,itemsep=6pt]
+\item 求 $\displaystyle\lim_{x\to0}\frac{e^x-1-x}{x^2}$。
+\item 求 $\displaystyle\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\sin\frac{k\pi}{n}$。
+\item 设 $y=xe^{2x}$，求 $y^{(n)}$。
+\item 设 $f$ 在 $[0,1]$ 上连续，在 $(0,1)$ 内可导，$f(0)=0$，$f(1)=1$。证明存在 $\xi\in(0,1)$ 使 $f'(\xi)=2\xi$。
+\item 求 $\displaystyle\int_0^{\pi/2}\sin^3x\dd x$。
+\item 求 $\displaystyle\iint_{x^2+y^2\le1}(x^2+y^2)\dd x\dd y$。
+\item 求 $\displaystyle\oint_L x\dd y-y\dd x$，$L$ 为圆 $x^2+y^2=1$ 的正向。
+\item 求 $\displaystyle\sum_{n=1}^{\infty}\frac{1}{n\cdot2^n}$。
+\item 求 $y'-2y=e^x$ 的通解。
+\item 求点 $(1,2,3)$ 到平面 $x+y+z=1$ 的距离。
+\end{enumerate}
+
+\vspace{6pt}
+\hdr{附录 B 答案}{}
+
+\begin{enumerate}[leftmargin=2.0em,itemsep=3pt]
+\item $\dfrac12$（泰勒：$e^x=1+x+\frac{x^2}{2}+o(x^2)$）。
+\item $\dfrac{2}{\pi}$（黎曼和：$\displaystyle\int_0^1\sin(\pi x)\dd x$）。
+\item $2^{n-1}e^{2x}(2x+n)$（莱布尼茨，只有两项）。
+\item 令 $F(x)=f(x)-x^2$，则 $F(0)=0$，$F(1)=0$，由罗尔定理得 $f'(\xi)=2\xi$。
+\item $\dfrac23$（华里士：$\frac{2!!}{3!!}=\frac23$）。
+\item $\dfrac{\pi}{2}$（极坐标：$\int_0^{2\pi}\dd\theta\int_0^1r^3\dd r=2\pi\cdot\frac14$）。
+\item $2\pi$（格林：$Q_x-P_y=2$，等于 $2\times$ 面积）。
+\item $\ln2$（$\sum\frac{x^n}{n}=-\ln(1-x)$，取 $x=\frac12$）。
+\item $y=Ce^{2x}-e^x$（一阶线性，$P=-2$，$Q=e^x$）。
+\item $\dfrac{5}{\sqrt3}$（$\frac{|1+2+3-1|}{\sqrt3}$）。
+\end{enumerate}
+
+\vspace{10pt}
+\flowerrule
+
+\callout{\textbf{最后一句。}这份手册覆盖的是“标准题”——它能保证你在会做的题上不丢分，但不能替你在考场上想出没有思路的题。明天遇到完全没见过的题，先做三件事：写下相关定义、写出特殊情形、把能算的中间量算出来。这三件事本身就是分。}

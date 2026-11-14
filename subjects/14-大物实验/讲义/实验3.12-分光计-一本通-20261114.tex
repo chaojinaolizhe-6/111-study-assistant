@@ -1,0 +1,199 @@
+% !TEX program = xelatex
+% 大物实验 · 实验 3.12/3.13 分光计 · 一本通（五环闭环结构）
+% 结构：§P 总图 → §0 基础桥 → J0 调节与读数 → J1 顶角 → J2 最小偏向角与折射率
+%       → J3 光栅衍射角 → J4 光栅常量与角色散 → 附录 A/B/C/D
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{分光计 3.12/3.13 一本通}{大物实验}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{needspace}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+\setlength{\headheight}{22pt}
+
+% 圆圈数字归入 CJK 字符类，避免 xeCJK 去 Latin 字体里找
+\xeCJKDeclareCharClass{CJK}{"2460->"2473}
+
+\newcommand{\blank}{\textcolor{black!45}{\rule[-2pt]{1.05cm}{0.4pt}}}
+\newcommand{\blankcell}{\rule{0pt}{16pt}\textcolor{black!45}{\rule[-3pt]{1.35cm}{0.4pt}}}
+\newcommand{\rowstrut}{\rule{0pt}{17pt}}
+\newcommand{\tick}{$\square$}
+
+\tikzset{
+  comp/.style={fill=white,draw=black,thick},
+  arr/.style={->,>=Stealth,thick},
+  arrd/.style={->,>=Stealth,thick,dashed},
+  lab/.style={font=\small},
+  dimlab/.style={font=\footnotesize\color{inkgray}}
+}
+
+\begin{document}
+
+\doctitle{分光计：一台仪器，四个数}
+{实验 3.12/3.13 一本通 $\cdot$ 调节 $\to$ 顶角 $\to$ 折射率 $\to$ 光栅常量与角色散}
+{依据：Exp.12 讲义 15 页 + Preview for Experiment 12 三页 $\cdot$ 2026-11-14（周六）13:30--17:30 $\cdot$ 综合楼 308 $\cdot$ 王淑芬}
+
+%=====================================================================
+\hdr{§P}{四小时一张图：五个环节，一条链}
+
+这场实验不是「一个实验」，是\textbf{一台仪器、四个测量}。四个测量共用同一套调节，只是往载物台上换东西；而它们的数还互相喂：顶角 $\alpha$ 是折射率公式的输入，光栅的衍射角 $\varphi_k$ 是光栅常量的输入。所以本书按\textbf{环节}分，不按「原理 / 操作 / 数据」分——每一环从「要交出什么」讲到「怎么写进报告」，中间不再跳页。
+
+\subhdr{P.1 这一场要交出的五个数}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{0.9cm}p{4.6cm}p{3.6cm}p{5.4cm}@{}}
+\toprule
+\thead{环节} & \thead{交出什么} & \thead{交给谁} & \thead{合格判据} \\
+\midrule
+J0 & 一台可信的仪器 & 后面全部环节 & 两面都重合、像清晰无视差、双游标恒差 $180^{\circ}$ \\
+J1 & 顶角 $\alpha$ & J2 的公式 & $60^{\circ}\pm5'$（等边棱镜） \\
+J2 & $\delta_{\min}$ 与折射率 $n$ & 报告 & $n$ 落在 $1.45$--$1.65$ \\
+J3 & 一、二级衍射角 $\varphi_1,\varphi_2$ & J4 & $\sin\varphi_2/\sin\varphi_1\approx2$ \\
+J4 & 光栅常量 $d$、线数 $N$、角色散 $D$ & 报告 & $N$ 接近整数；$D\approx1'/\mathrm{nm}$ \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\textbf{依赖链}：J0 是地基，后面两条支路并联。
+
+\[
+\text{J0}\ \longrightarrow\
+\begin{cases}
+\text{J1}\ (\alpha)\ \longrightarrow\ \text{J2}\ (\delta_{\min}\to n)\\[2pt]
+\text{J3}\ (\varphi_k)\ \longrightarrow\ \text{J4}\ (d,\,N,\,D)
+\end{cases}
+\]
+
+两条支路\textbf{互不需要对方的数}，所以现场哪条先做都行；但如果仪器没调好，两条会一起偏，而且偏的是系统误差，事后平均不回来。
+
+\subhdr{P.2 每环固定六段}
+
+每一环都是同一套六段，位置固定，翻到哪一环都按同样的顺序读：
+
+\begin{enumerate}[label=\textbf{\arabic*},leftmargin=2.2em]
+\item \textbf{这一环交出什么}——产出、判据、用时；
+\item \textbf{为什么这样能测}——只讲这一环要用的原理，从你已经有的光学基础接上；
+\item \textbf{手怎么动}——编号步骤，每步写清「动哪个件 / 看到什么 / 什么算到位」；
+\item \textbf{当场记这些数}——表就放在这里，栏目含义、读几组、什么时候锁紧；
+\item \textbf{当场算}——表 $\to$ 公式 $\to$ 代入 $\to$ 自洽判据，做完就知道对不对；
+\item \textbf{写进报告的一句话}——方法、数据、结果、误差来源。
+\end{enumerate}
+
+\subhdr{P.3 四小时怎么分}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.5cm}p{1.3cm}p{9.6cm}@{}}
+\toprule
+\thead{时段} & \thead{用时} & \thead{做什么（对应本文章节）} \\
+\midrule
+13:30--13:50 & 20 min & 认零件、目测粗调、望远镜聚焦无穷远（J0.3 步骤 1--2） \\
+13:50--14:25 & 35 min & 各半法调到两面重合；准直管两步；读数练 2 次（J0.3 步骤 3--5、J0.5） \\
+14:25--14:50 & 25 min & 棱镜摆位、测顶角 3 组（J1） \\
+14:50--15:30 & 40 min & 最小偏向角：两个方向各找折返点、各 3 组（J2） \\
+15:30--15:45 & 15 min & 换光栅、对零级、调 $b_1b_2$、调等高（J3.3） \\
+15:45--16:35 & 50 min & 测紫/绿 $\pm1,\pm2$ 共 8 个方位，每个读两游标（J3.4） \\
+16:35--17:05 & 30 min & 现场粗算：$\alpha$、$\delta_{\min}$、$n$、$\varphi_k$、$d$、$D$ 各算一遍（J4.5） \\
+17:05--17:30 & 25 min & 补测不自洽的那个数、签字、清点器材 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\callout{\textbf{只有一句话值得现在记住}：前 50 分钟全花在调仪器上不亏。仪器调到「两面都重合、像清晰无视差、每组都读两个游标」，剩下的事就是把像对准叉丝、把两个数抄下来。这三件事缺任何一件，后面的数据不可救；其余的（少测一组、二级没测）都只是精度损失。}
+
+%=====================================================================
+\hdr{§0}{你已经有一半了：三条基础桥}
+
+这门实验最容易劝退人的地方，是它看起来要一整套光学。其实\textbf{你只需要三件已经学过的东西}，加一个新概念。
+
+\subhdr{0.1 这门实验从你的光学课里借什么}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{4.2cm}p{4.8cm}p{6.0cm}@{}}
+\toprule
+\thead{分光计要用的} & \thead{你已经有的} & \thead{这次只加这一层} \\
+\midrule
+折射定律、棱镜把光掰弯 & 第一章第一课：反射折射四定律、棱镜、全反射 & 偏向角 $\delta=i+i'-\alpha$，与「什么时候最小」\\
+焦面与平行光 & 第一章第三、四课：薄透镜、望远镜 & 分划板放在焦面 $\Rightarrow$ 能看见自己的像\\
+光程差与双缝干涉 & 第五章：杨氏双缝、多光束 & $d\sin\varphi=k\lambda$，光栅就是很多条缝\\
+折射率随波长变 & 第一章、第四章：界面与折射率 & 角色散 $D=\mathrm{d}\varphi/\mathrm{d}\lambda$ 的定义\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\textbf{你真的要新学的只有一个概念}：一束平行光斜着穿过一排等间距的缝时，相邻两条缝的光「多走了多少路」正好是 $d\sin\varphi$；这个多走的量是波长的整数倍，那个方向上就亮。这一句话就是光栅方程的全部来历，J3 里会用一整节把它讲透。
+
+\callout{\textbf{光学课没讲到的部分，本文按「没学过」处理。}凡是用到衍射强度分布、菲涅耳/夫琅禾费积分的地方，本文一概不用；光栅只从双缝的光程差推，不引入新的波动理论。你在第五章学过的「光程差决定明暗」这一条，足够支撑全书。}
+
+\subhdr{0.2 记号表（全书统一）}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{1.5cm}p{7.6cm}p{2.2cm}@{}}
+\toprule
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\midrule
+$\alpha$ & 三棱镜顶角（两折射面的夹角） & $^{\circ}$ \\
+$\delta,\ \delta_{\min}$ & 偏向角、最小偏向角 & $^{\circ}$ \\
+$i,\ i'$ & 两个面上的入射角 & $^{\circ}$ \\
+$r,\ r'$ & 两个面上的折射角 & $^{\circ}$ \\
+$n$ & 三棱镜玻璃对该波长的折射率 & --- \\
+$f,\ a$ & 望远镜物镜焦距；透光「十」到中心横丝的距离 & mm \\
+$\phi_1,\phi_1'$ & 望远镜在位置 I 时\textbf{两个游标}的读数 & $^{\circ}\,'$ \\
+$\phi_2,\phi_2'$ & 望远镜在位置 II 时两个游标的读数 & $^{\circ}\,'$ \\
+$\theta_{\pm k},\theta_{\pm k}'$ & 第 $\pm k$ 级谱线在两个游标上的读数 & $^{\circ}\,'$ \\
+$\varphi_k$ & 第 $k$ 级衍射角（两条光线的夹角） & $^{\circ}$ \\
+$d,\ N$ & 光栅常量（相邻缝距）；刻线密度 & nm；线/mm \\
+$D$ & 角色散 $\mathrm{d}\varphi/\mathrm{d}\lambda$ & $'/\mathrm{nm}$ \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\warnbox{\textbf{两处一开始就要分清，否则每一步都会代错。}\\
+\textbf{(1) $\phi$ 与 $\varphi$ 不是一回事。}$\phi$ 是望远镜在度盘上的\textbf{方位读数}，$\varphi_k$ 是\textbf{两条光线的夹角}（衍射角）。读数必须相减才成为角。\\
+\textbf{(2) 带撇与不带撇。}$\phi_1$ 与 $\phi_1'$ 是\textbf{同一次}望远镜位置上的\textbf{两个游标}（相差约 $180^{\circ}$），不是两次测量。算角度时 $|\phi_2-\phi_1|$ 与 $|\phi_2'-\phi_1'|$ 要各自算差、再相加。}
+
+\subhdr{0.3 还没开始测就能知道的四个数}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{6.4cm}p{7.8cm}@{}}
+\toprule
+\thead{关系} & \thead{现场怎么用} \\
+\midrule
+等边棱镜 $\alpha=60^{\circ}$，两反射像夹角 $120^{\circ}$ & 望远镜从一个像转到另一个应转过约 $120^{\circ}$；差很多是棱镜没放正 \\
+玻璃 $n\approx1.5$（$\alpha=60^{\circ}$）$\Rightarrow\delta_{\min}\approx37^{\circ}$ & 两位置读数差应约 $74^{\circ}$；算出 $n$ 超出 $1.45$--$1.65$ 就回去查读数 \\
+$300$ 线/mm、一级绿线 $\Rightarrow\varphi\approx9.4^{\circ}$ & 一级在 $9^{\circ}$ 出头、二级在 $19^{\circ}$；一级只有 $3^{\circ}$ 说明是 $100$ 线/mm \\
+双游标读数恒差 $180^{\circ}00'$（$\pm5'$） & 每读一次顺手对一眼，偏了就是读错游标或漏了 $360^{\circ}$ 折回 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+第三条最有用。汞灯绿线 $\lambda=546.1\ \mathrm{nm}$，若光栅为 $300$ 线/mm，则 $d=1/300\ \mathrm{mm}=3.333\ \mu\mathrm{m}$：
+
+\[
+\sin\varphi_1=\frac{\lambda}{d}=\frac{546.1\ \mathrm{nm}}{3333\ \mathrm{nm}}=0.16383
+\quad\Longrightarrow\quad
+\varphi_1=9.43^{\circ},\qquad \varphi_2=19.13^{\circ}.
+\]
+
+所以还没开始测，你就知道一级谱线该出现在零级两边各 $9.4^{\circ}$ 处。转了半圈还找不到，问题不在计算，在光栅没调好（J3.3）。
+
+\input{spec-p1-j0}
+\input{spec-p2-j1}
+\input{spec-p3-j2}
+\input{spec-p4-j3}
+\input{spec-p5-j4}
+\input{spec-p6-appendix}
+\input{spec-p7-report}
+
+\end{document}

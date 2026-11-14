@@ -1,0 +1,160 @@
+%=====================================================================
+\clearpage
+\hdr{J3}{光栅：一、二级衍射角}
+
+\subhdr{① 这一环交出什么}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{3.6cm}p{6.0cm}p{4.4cm}@{}}
+\toprule
+\thead{产出} & \thead{合格判据} & \thead{交给谁} \\
+\midrule
+$\varphi_1,\varphi_2$（紫、绿；一、二级） & 一级 $7.5^{\circ}$（紫）、$9.4^{\circ}$（绿）；二级 $15.2^{\circ}$、$19.1^{\circ}$ & J4 算 $d,N,D$ \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+用时约 65 分钟：调光栅 20 分钟，八个方位读数 45 分钟。
+
+\subhdr{② 为什么这样能测：从双缝干涉接过来}
+
+这一节假设你\textbf{没有学过衍射}。不需要——光栅方程可以从你在第五章学过的双缝干涉直接推出来，只多一步。
+
+\subhdr{2.1 先把「多走了多少路」算出来}
+
+两条缝相距 $d$。平行光垂直照到缝上，两缝的光往同一个方向走——这个方向与光栅法线的夹角记作 $\varphi$。
+
+本来两束光是「同时出发」的；斜着走的时候，靠后的那条缝射出的光要多走一段路，这段路就是\textbf{光程差}：
+
+\[
+\Delta=d\sin\varphi .
+\]
+
+这就是全部的几何：从一条缝的光线上，向另一条光线作一条垂线，那个直角三角形的斜边是 $d$、对边就是 $d\sin\varphi$。
+
+\subhdr{2.2 什么时候亮：光程差是波长的整数倍}
+
+你在干涉那一章学过的判据是：两束光的光程差是波长的整数倍时，波峰对波峰，\textbf{加强}（亮）；是半波长的奇数倍时，波峰对波谷，\textbf{相消}（暗）。于是亮纹条件写成
+
+\[
+\boxed{\,d\sin\varphi=k\lambda\,}\qquad k=0,\pm1,\pm2,\dots
+\]
+
+这就是\textbf{光栅方程}。$k$ 叫\textbf{衍射级次}：$k=0$ 是零级（$\varphi=0$，各波长都不偏折，全落在中央一条上），$k=\pm1,\pm2$ 对称分布在两侧。
+
+\textbf{光栅与双缝只差「缝的条数」。}双缝的两条缝也能产生这个条件，但亮纹很宽、很暗；光栅有成千条缝，同一方向上所有缝的光都同相叠加，于是亮纹变得\textbf{又亮又细}。所以光栅能分辨很靠近的两条谱线（钠双线 $589.0$ 与 $589.6$ nm 就靠这个分开）。这一点口试会问，记住「多缝同相叠加 $\Rightarrow$ 又亮又细」即可，不需要算强度分布。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\linewidth]{fig-3.12/fig12-7-grating.png}
+\caption{光栅衍射的几何（讲义 p7 图 12-7）：间距 $d$ 的相邻缝，沿与法线成 $\varphi$ 的方向，光程差为 $d\sin\varphi$；对称出现零级与 $\pm1,\pm2$ 各级主极大。}
+\end{figure}
+
+\subhdr{2.3 为什么紫在内、绿在外}
+
+同一块光栅、同一级次，$\lambda$ 越小则 $\sin\varphi$ 越小，也就是\textbf{偏折越小、越靠近零级}。汞灯里紫线 $\lambda=435.8$ nm、绿线 $546.1$ nm，所以紫在内、绿在外。这和棱镜正好相反（棱镜靠折射率随波长变，紫的 $n$ 大、偏得多，紫在外）——口试的第 11 问就是这个对比。
+
+\textbf{还没测就能知道答案}：若光栅是 $300$ 线/mm，$d=3333$ nm，则
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.6cm}p{3.4cm}p{3.4cm}p{3.4cm}@{}}
+\toprule
+\thead{谱线} & \thead{$\sin\varphi_1=\lambda/d$} & \thead{一级 $\varphi_1$} & \thead{二级 $\varphi_2$} \\
+\midrule
+紫 $435.8$ nm & $0.1307$ & $7.51^{\circ}$ & $15.16^{\circ}$ \\
+绿 $546.1$ nm & $0.1638$ & $9.43^{\circ}$ & $19.13^{\circ}$ \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+现场拿这张表对：一级绿线若出现在 $3^{\circ}$ 出头，你的光栅是 $100$ 线/mm；若出现在 $19^{\circ}$ 附近，是 $600$ 线/mm。\textbf{先看光栅框上标的线数}，再对表。
+
+\subhdr{③ 手怎么动}
+
+\textbf{第 1 步：对零级。}把望远镜转到正对准直管，让竖直叉丝与狭缝像重合，锁 17 号。这一步定的是「零级方向」。
+
+\textbf{第 2 步：放光栅。}取下棱镜，把光栅放上载物台：从上方看，$b_1b_2$ 的连线应被栅面\textbf{垂直平分}。
+
+\textbf{第 3 步：调栅面垂直光轴。}慢慢转载物台让栅面朝向望远镜，找栅面反射的绿色「$+$」像；调 \textbf{$b_1$、$b_2$}（\textbf{不要调 $b_3$}）让绿像与上叉丝重合。此时栅面垂直望远镜光轴。
+
+\textbf{第 4 步：零级居中。}调 27 号（准直管光轴竖直），让零级亮线被横丝\textbf{垂直平分}，且像最亮最清晰。
+
+\textbf{第 5 步：调等高。}松 17 号，转望远镜看 $\pm1,\pm2$ 各级谱线是否\textbf{等高}；不等高就调 \textbf{$b_3$}，直到各级在同一高度——这一步让栅缝平行主轴。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.36\linewidth]{fig-3.12/fig12-14-gratingadj.png}
+\caption{光栅在载物台上的方位与三个螺钉（讲义 p13 图 12-14）：$b_1,b_2$ 调栅面垂直光轴，$b_3$ 调栅缝方向；$b_1b_2$ 连线被栅面垂直平分。}
+\end{figure}
+
+\callout{\textbf{讲义 p13 问了一句：「只需调光栅的一侧，为什么不用转 $180^{\circ}$？」}因为光栅只有\textbf{一个面}工作，测量时也不会翻面；这里只有一个未知量（栅面与轴的夹角），一面就够。而平面镜那一步之所以要转 $180^{\circ}$，是因为那里要同时定出「台面倾斜」与「望远镜轴倾斜」两个未知量，必须用两个面的同向/反向信息把它们分开。栅面垂直望远镜轴 $\Leftrightarrow$ 栅面平行主轴，衍射角读出来才是真的。}
+
+\subhdr{第 6 步：测 $\pm k$ 级}
+
+转动望远镜，把竖直叉丝依次对准 $k=\pm1$、$\pm2$ 各条谱线的中心，\textbf{每条读两个游标}。一个方位四个动作：对准、锁 17、读两游标、记下来。
+
+顺序建议：先测绿线（亮、好找）的 $+1$、$-1$、$+2$、$-2$，再测紫线同样四个。紫线暗，若一时找不到，先把缝宽略微调大一点点再找，找到后调回去。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth]{fig-3.12/fig12-9-spectra.png}
+\caption{汞灯的多级光谱（讲义 p8 图 12-9）：中央是零级（白亮），两侧对称出现一级、二级。级次越高越暗、越散开，所以二级要仔细找。}
+\end{figure}
+
+\subhdr{④ 当场记这些数}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{2.2cm}p{1.55cm}p{1.55cm}p{1.55cm}p{1.55cm}p{1.55cm}p{1.55cm}p{1.55cm}p{1.55cm}@{}}
+\toprule
+\thead{颜色} & \thead{$\theta_1$} & \thead{$\theta_1'$} & \thead{$\theta_2$} & \thead{$\theta_2'$} & \thead{$\theta_{-1}$} & \thead{$\theta_{-1}'$} & \thead{$\theta_{-2}$} & \thead{$\theta_{-2}'$} \\
+\midrule
+\rowstrut 紫 $435.8$ nm & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell \\
+\rowstrut 绿 $546.1$ nm & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell & \blankcell \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\textbf{栏目含义}：$\theta_k$ 与 $\theta_k'$ 是\textbf{同一级}谱线在两个游标上的读数；下标带负号的是零级\textbf{另一侧}的同级谱线。一行 8 个数，两行共 16 个数——这就是手册表 4 的全部内容。
+
+\subhdr{⑤ 当场算}
+
+\[
+\varphi_k=\frac14\bigl(|\theta_k-\theta_{-k}|+|\theta_k'-\theta_{-k}'|\bigr).
+\]
+
+\textbf{为什么是 $\tfrac14$}：$\pm k$ 两级的夹角是 $2\varphi_k$（对称分布），这是第一个 $\tfrac12$；两个游标各给一次、取平均，是第二个 $\tfrac12$。和 J1、J2 同一个结构。
+
+\textbf{为什么用 $\pm k$ 平均而不是各自算}：零级在度盘上的读数没有人去测，它可能整体偏了一个小角 $\beta$（栅面没完全垂直轴，或望远镜零位没对准）。设偏置为 $\beta$，则 $+k$ 级偏 $+\beta$、$-k$ 级偏 $-\beta$；两者相减，$\beta$ 自动抵消——与双游标消偏心是同一个思路：\textbf{用对称的两个测量把共同的偏置减掉}。
+
+\textbf{例算}：测得绿线 $\theta_1=9^{\circ}26'$、$\theta_{-1}=350^{\circ}34'$（零级偏置已包含在这两个数里），则
+
+\[
+|\theta_1-\theta_{-1}|=|9^{\circ}26'-350^{\circ}34'|=341^{\circ}08'
+\ \xrightarrow{\ 360^{\circ}-\ \ }18^{\circ}52',
+\]
+
+这个 $18^{\circ}52'$ 是 $2\varphi_1$，故 $\varphi_1=9^{\circ}26'$——与预期 $9.43^{\circ}$ 相符。（真实数据里两个游标各给一次，四项一起平均。）
+
+\textbf{最灵的自检}：光栅方程要求 $\sin\varphi_k=k\sin\varphi_1$，所以
+
+\[
+\frac{\sin\varphi_2}{\sin\varphi_1}\approx2 .
+\]
+
+算出 $1.8$ 或 $2.2$，说明某一级读错了游标或认错了谱线（最常见：把二级的某一色当成了一级）。这条自检比任何复核都管用，算完立刻做。
+
+\subhdr{⑥ 写进报告的一句话}
+
+\callout{
+「以汞灯为光源，测得一级衍射角 $\varphi_1(\text{紫})=7.5^{\circ}$、$\varphi_1(\text{绿})=9.4^{\circ}$，二级 $\varphi_2(\text{紫})=15.2^{\circ}$、$\varphi_2(\text{绿})=19.1^{\circ}$；$\sin\varphi_2/\sin\varphi_1\approx2.00$，说明两级读数自洽。」
+}
+\warnbox{
+\textbf{台前只看这一段}：光栅放好后 $b_1b_2$ 调「栅面垂直光轴」、$b_3$ 调「各级等高」；先对零级，再测 $\pm1$、$\pm2$，每条读两个游标；$\varphi_k=\tfrac14\bigl(|\theta_k-\theta_{-k}|+|\theta_k'-\theta_{-k}'|\bigr)$；算完立刻查 $\sin\varphi_2/\sin\varphi_1\approx2$。
+}

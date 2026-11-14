@@ -1,0 +1,128 @@
+\hdr{§8}{常微分方程：认方程的类型，比会解更重要}
+
+\textbf{这一章在竞赛里的样子。}一道 15 分的计算题，绝大多数是“给一个方程，求通解或特解”，偶尔是“由几何／物理条件建模”或“由积分方程反推”。全部工作量都在\emph{认出它属于哪一类}——类型一认对，剩下的就是套公式。
+
+\subhdr{8.1 一阶方程：五种类型，五个动作}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.6cm}p{4.2cm}p{5.4cm}@{}}
+\thead{类型} & \thead{形式} & \thead{动作}\\
+\hline
+可分离 & $y'=f(x)g(y)$ & 写成 $\dfrac{\dd y}{g(y)}=f(x)\dd x$，两边积分\\
+齐次 & $y'=\varphi\!\left(\dfrac yx\right)$ & 令 $u=\dfrac yx$，则 $y'=u+xu'$\\
+一阶线性 & $y'+P(x)y=Q(x)$ & 公式 $y=e^{-\int P}\left(\int Qe^{\int P}\dd x+C\right)$\\
+伯努利 & $y'+Py=Qy^{n}$ & 令 $z=y^{1-n}$，化为线性\\
+全微分 & $P\dd x+Q\dd y=0$，$P_y=Q_x$ & 求 $u$ 使 $\dd u=0$，解 $u=C$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\callout{\textbf{例 1（一阶线性）} 解 $y'+\dfrac1x y=x^2$（$x>0$）。
+
+$P=\frac1x$，$\int P\dd x=\ln x$，$e^{\int P}=x$，$e^{-\int P}=\frac1x$。代入公式：
+\[
+y=\frac1x\left(\int x^2\cdot x\dd x+C\right)=\frac1x\left(\frac{x^4}{4}+C\right)=\frac{x^3}{4}+\frac Cx .
+\]
+\textbf{要点}：$\int P\dd x$ 不写常数（它会被 $e^{-\int P}$ 吸收）；最后别忘 $C$。验算方法：把答案代回原方程，左边应恒等于右边。}
+
+\warnbox{\textbf{伯努利方程的代换方向。}$z=y^{1-n}$ 中 $n$ 是 $y$ 的指数。例如 $y'+y=xy^2$ 中 $n=2$，令 $z=y^{-1}$，得 $z'-z=-x$。代换后方程应变成\emph{关于 $z$ 的线性方程}；如果没变线性，说明 $n$ 取错了。}
+
+\subhdr{8.2 可降阶的二阶方程}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{形式} & \thead{缺什么} & \thead{动作}\\
+\hline
+$y''=f(x)$ & 缺 $y,y'$ & 直接积分两次\\
+$y''=f(x,y')$ & 缺 $y$ & 令 $p=y'$，则 $y''=p'$，得一阶方程\\
+$y''=f(y,y')$ & 缺 $x$ & 令 $p=y'$，则 $y''=p\dfrac{\dd p}{\dd y}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{8.3 二阶常系数线性方程 \ding{72}\ding{72}\ding{72}}
+
+\textbf{齐次} $y''+py'+qy=0$：写特征方程 $r^2+pr+q=0$。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{特征根} & \thead{通解}\\
+\hline
+两个不同实根 $r_1,r_2$ & $y=C_1e^{r_1x}+C_2e^{r_2x}$\\
+重根 $r$ & $y=(C_1+C_2x)e^{rx}$\\
+共轭复根 $\alpha\pm\beta i$ & $y=e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{非齐次} $y''+py'+qy=f(x)$：通解 = 齐次通解 + 一个特解 $y^*$。特解按右端项设法：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.6cm}p{8.2cm}@{}}
+\thead{右端 $f(x)$} & \thead{特解设法（$k$ 为“$\lambda$ 是特征根的重数”）}\\
+\hline
+$P_m(x)$（$m$ 次多项式） & $y^*=x^kQ_m(x)$，$k$ 为 $0$ 是特征根的重数\\
+$P_m(x)e^{\lambda x}$ & $y^*=x^kQ_m(x)e^{\lambda x}$\\
+$e^{\alpha x}(A\cos\beta x+B\sin\beta x)$ & $y^*=x^ke^{\alpha x}(C\cos\beta x+D\sin\beta x)$，$k$ 为 $\alpha\pm\beta i$ 是特征根的重数\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\callout{\textbf{例 2（重根 + 共振）} 求 $y''-2y'+y=e^x$ 的通解。
+
+\textbf{齐次}：$r^2-2r+1=0$，$r=1$ 是二重根，$y_h=(C_1+C_2x)e^x$。
+
+\textbf{特解}：右端 $e^x$ 对应 $\lambda=1$，而 $1$ 恰是\emph{二重}特征根，故 $k=2$，设 $y^*=Ax^2e^x$。代入：
+\[
+y^{*\prime\prime}-2y^{*\prime}+y^*=2Ae^x \ \Longrightarrow\ A=\frac12 .
+\]
+所以通解
+\[
+y=(C_1+C_2x)e^x+\frac12x^2e^x .
+\]
+\textbf{要点}：$k$ 取重数这一步是唯一的坑。$\lambda$ 不是特征根取 $k=0$，是单根取 $k=1$，是重根取 $k=2$。取错则代入后 $A$ 解不出来（会出现 $0=1$ 之类的矛盾）。}
+
+\subhdr{8.4 欧拉方程}
+
+形如 $x^2y''+pxy'+qy=f(x)$（$x>0$）。令 $x=e^t$（即 $t=\ln x$），则
+\[
+xy'=\frac{\dd y}{\dd t},\qquad x^2y''=\frac{\dd^2y}{\dd t^2}-\frac{\dd y}{\dd t},
+\]
+方程化为常系数线性方程，解完再把 $t$ 换回 $\ln x$。
+
+\subhdr{8.5 由积分方程反推微分方程}
+
+\callout{\textbf{例 3（变上限积分 → 微分方程）} 设 $f$ 连续，满足
+\[
+f(x)=x+\int_0^x(x-t)f(t)\dd t ,
+\]
+求 $f$。
+
+\textbf{第一步：拆积分号}。$f(x)=x+x\int_0^xf(t)\dd t-\int_0^xtf(t)\dd t$。
+
+\textbf{第二步：求导}。$f'(x)=1+\int_0^xf(t)\dd t+xf(x)-xf(x)=1+\int_0^xf(t)\dd t$。
+
+\textbf{第三步：再求导}。$f''(x)=f(x)$。
+
+\textbf{第四步：初始条件}。由原式 $f(0)=0$；由 $f'$ 的表达式 $f'(0)=1$。
+
+\textbf{第五步：解}。$f''-f=0$，$r=\pm1$，$f=C_1e^x+C_2e^{-x}$。代入 $f(0)=0$、$f'(0)=1$ 得 $C_1=\frac12$、$C_2=-\frac12$，故
+\[
+f(x)=\frac{e^x-e^{-x}}{2}=\sinh x .
+\]
+\textbf{要点}：这类题的固定节奏是“拆—导—再导—找初值—解方程”。初值必须从\emph{原积分式}里取（令 $x=0$），不能凭空写。}
+
+\warnbox{\textbf{本章五个高频失分点。}
+(1)一阶线性公式里 $e^{\int P}$ 与 $e^{-\int P}$ 乘反；
+(2)伯努利代换后忘了 $y^n$ 项也要换；
+(3)二阶非齐次的特解漏掉 $x^k$；
+(4)通解只写齐次部分，忘了加特解；
+(5)积分方程求导后没有补初始条件，$C_1,C_2$ 定不出来。}

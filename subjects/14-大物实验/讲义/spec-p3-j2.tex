@@ -1,0 +1,156 @@
+%=====================================================================
+\clearpage
+\hdr{J2}{测最小偏向角，进而得折射率}
+
+\subhdr{① 这一环交出什么}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{3.4cm}p{4.0cm}p{6.6cm}@{}}
+\toprule
+\thead{产出} & \thead{合格判据} & \thead{用谁的数据} \\
+\midrule
+$\delta_{\min}$ 与 $n$ & $n$ 落在 $1.45$--$1.65$；两位置读数差约 $74^{\circ}$ & $\delta_{\min}$ 本环测；$\alpha$ 用 J1 的 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+用时约 40 分钟：一个方向找折返点 12 分钟，换面再找 12 分钟，读数与复核 16 分钟。
+
+\subhdr{② 为什么这样能测：偏向角、它与顶角的关系、以及「什么时候最小」}
+
+一束单色平行光射到棱镜 $AB$ 面，折射后从 $AC$ 面射出。入射方向与出射方向的夹角叫\textbf{偏向角} $\delta$。三条关系，把每个三角形里的角标清就能推：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item 两个面的折射定律：$\sin i=n\sin r$，$\quad n\sin r'=\sin i'$。
+\item 顶角关系：两个法线夹角是 $180^{\circ}-\alpha$，三角形 $AOO'$ 的内角和给出 $r+r'=\alpha$。
+\item 偏向角：光线在 $AB$ 面偏了 $i-r$，在 $AC$ 面又偏了 $i'-r'$，两次同向叠加：$\delta=(i-r)+(i'-r')=i+i'-\alpha$。
+\end{enumerate}
+
+第 (3) 式说明\textbf{偏向角只由两个入射角与顶角决定}，中间的折射角已被顶角关系消掉。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.44\linewidth]{fig-3.12/fig12-6-prism.png}
+\caption{棱镜主截面内的折射（讲义 p6 图 12-6）：$A$ 顶角 $\alpha$，$S\to O$ 入射，$O'\to S'$ 出射，$\delta$ 偏向角，$i,i'$ 入射角，$r,r'$ 折射角，$N,N'$ 法线。}
+\end{figure}
+
+\textbf{最小偏向角出现在 $i=i'$ 处。}把 $i'$ 看成 $i$ 的函数，逐层求导：$\cos i\dd i=n\cos r\dd r$、$\cos i'\dd i'=-n\cos r'\dd r$，两式相除消去 $\dd r$ 得 $\dd i'/\dd i=-\cos i\cos r'/(\cos i'\cos r)$。$\delta=i+i'-\alpha$ 取极值要求 $\dd\delta/\dd i=1+\dd i'/\dd i=0$，即
+
+\[
+\cos i\cos r'=\cos i'\cos r .
+\]
+
+两边平方，用 $\cos^2=1-\sin^2$ 展开，再代 $\sin i=n\sin r$、$\sin i'=n\sin r'$，化简后只剩 $(1-1/n^2)\sin^2 i=(1-1/n^2)\sin^2 i'$；因 $n\neq1$，得 $\sin i=\sin i'$，在 $0<i,i'<90^{\circ}$ 内正弦单调，故
+
+\[
+\boxed{\,i=i'\,}
+\]
+
+代回顶角关系得 $r=r'=\alpha/2$，代回偏向角得 $\delta_{\min}=2i-\alpha$，即 $i=(\delta_{\min}+\alpha)/2$。再从 $\sin i=n\sin r$：
+
+\[
+\boxed{\;
+n=\frac{\sin\dfrac{\delta_{\min}+\alpha}{2}}{\sin\dfrac{\alpha}{2}}
+\;}
+\qquad\text{（讲义 (12-3)）}
+\]
+
+\textbf{这个驻点为什么是极小}：掠入射（$i\to90^{\circ}$）或掠出射时，光线被极度弯折，$\delta$ 迅速增大；$\delta(i)$ 在定义域内只有一个驻点，两端都大，故驻点只能是极小。
+
+\textbf{它只要求两个角}：顶角 $\alpha$（J1 已测）与最小偏向角 $\delta_{\min}$（本环测）。\textbf{不需要知道棱镜的尺寸、厚度、材料}——这是最小偏向角法最漂亮的地方。
+
+\callout{\textbf{为什么两个位置的读数差是 $2\delta_{\min}$。}入射光方向固定：位置 1 时出射光相对入射光偏 $+\delta_{\min}$；把棱镜转到另一面作入射面后，出射光偏 $-\delta_{\min}$。望远镜要从一侧的出射光转到另一侧，自然转过 $2\delta_{\min}$。于是
+\[
+\delta_{\min}=\frac12\times\frac{|\phi_2-\phi_1|+|\phi_2'-\phi_1'|}{2}
+=\frac14\bigl(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|\bigr).
+\]
+结构与 J1 完全相同（都是 $\tfrac14$ 括号里两差相加），但\textbf{物理来源不同}：J1 的 $\tfrac12$ 来自「两反射面夹角 $2\alpha$」，这里的 $\tfrac12$ 来自「偏向角一正一负」。判断方法看角标含义——同一束光的两个\textbf{反射}像用前者，同一入射光、棱镜\textbf{换面}的两个\textbf{透射}像用后者。}
+
+\subhdr{③ 手怎么动：盯住「停顿点」}
+
+\textbf{第 1 步：找到出射光。}转载物台到棱镜一个面朝向准直管，转望远镜找到狭缝像（这是\textbf{透射}像，比反射像暗，别和反射像混）。找到后锁 17 号，让望远镜先稳住。
+
+\textbf{第 2 步：慢慢转载物台，跟踪像。}松 17 号，手扶望远镜始终跟着像走，同时一点一点转载物台改变入射角。像若远离入射光方向，偏向角在增大；像若靠近，偏向角在减小。朝\textbf{偏向角减小}的方向转。
+
+\textbf{第 3 步：抓折返点。}转到某个位置，像会\textbf{停住}，然后朝相反方向移动——这个折返点就是最小偏向角的位置。
+
+\textbf{第 4 步：锁台、微调、读数。}锁住载物台（7 号），用微调（24 号）把像对到竖直叉丝中心，读两个游标。
+
+\textbf{第 5 步：换面重复。}把棱镜转到另一面作入射面，用同样办法再找一次折返点，再读两个游标。四个数成一组。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.50\linewidth]{fig-3.12/fig12-13-mindev.png}
+\caption{最小偏向角的两次测量（讲义 p12 图 12-13）：(a) 光从 $AB$ 入、$AC$ 出；(b) 同一入射光改从 $AC$ 入、$AB$ 出。两次出射方向各偏 $\delta_{\min}$，夹角 $2\delta_{\min}$。}
+\end{figure}
+
+\warnbox{\textbf{三个操作要点。}① \textbf{台面转得越慢越好}：越靠近极小点，像移动越慢，转快了会直接跳过折返点，读到的 $\delta$ 偏大。② \textbf{望远镜要始终跟着像}，不要转一下松手再找，那样会跟丢。③ \textbf{找的是透射像不是反射像}：透射像较暗、位置更偏，若把 $AB$ 面的反射像当成出射光，两位置夹角会完全不对。}
+
+\subhdr{④ 当场记这些数}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\small
+\begin{tabular}{@{}p{1.4cm}p{2.7cm}p{2.7cm}p{2.7cm}p{2.7cm}p{2.0cm}@{}}
+\toprule
+\thead{次数} & \thead{$\phi_1$（位置 I）} & \thead{$\phi_1'$} & \thead{$\phi_2$（位置 II）} & \thead{$\phi_2'$} & \thead{备注} \\
+\midrule
+\rowstrut 1 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 2 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\rowstrut 3 & \blankcell & \blankcell & \blankcell & \blankcell & \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+栏目与 J1 完全一样，但含义不同：这里的「位置 I / II」是\textbf{同一束入射光、棱镜换面}后的两个出射方向，不是两个反射像。
+
+\subhdr{⑤ 当场算}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item 每行算两个差并折回（规则同 J0.5）：$|\phi_2-\phi_1|$、$|\phi_2'-\phi_1'|$。
+\item 三行取平均，得 $\overline{|\Delta_1|}$、$\overline{|\Delta_2|}$。
+\item $\delta_{\min}=\tfrac14\bigl(\overline{|\Delta_1|}+\overline{|\Delta_2|}\bigr)$。
+\item 代 $n=\sin\frac{\delta_{\min}+\alpha}{2}\big/\sin\frac{\alpha}{2}$，其中 $\alpha$ 用 J1 的结果。
+\end{enumerate}
+
+\textbf{例算（示例数据，非实测）}：$\alpha=60^{\circ}00'$，$\phi_1=100^{\circ}00'$、$\phi_1'=280^{\circ}00'$、$\phi_2=174^{\circ}22'$、$\phi_2'=354^{\circ}21'$。
+
+\[
+|\phi_2-\phi_1|=74^{\circ}22',\qquad |\phi_2'-\phi_1'|=74^{\circ}21',
+\]
+\[
+\delta_{\min}=\frac{74^{\circ}22'+74^{\circ}21'}{4}=37^{\circ}10.8',
+\qquad
+n=\frac{\sin 48^{\circ}35.4'}{\sin 30^{\circ}}=\frac{0.7500}{0.5}=1.500 .
+\]
+
+\textbf{现场数量级判断}：$n\approx1.5$ 的玻璃，$\delta_{\min}$ 应在 $37^{\circ}$--$39^{\circ}$，两位置读数差应在 $74^{\circ}$ 附近。若读数差小于 $60^{\circ}$ 或大于 $100^{\circ}$，几乎一定有错——最可能是把反射像当成了透射像，或两次不是「同一束入射光换面」。
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{2.2cm}p{3.0cm}p{3.6cm}p{4.6cm}@{}}
+\toprule
+\thead{$n$} & \thead{$\delta_{\min}$} & \thead{读数差 $2\delta_{\min}$} & \thead{材料参考} \\
+\midrule
+$1.50$ & $37^{\circ}11'$ & $74^{\circ}22'$ & 冕牌玻璃量级 \\
+$1.52$ & $38^{\circ}56'$ & $77^{\circ}51'$ & 普通光学玻璃 \\
+$1.55$ & $41^{\circ}37'$ & $83^{\circ}13'$ & \\
+$1.60$ & $46^{\circ}16'$ & $92^{\circ}31'$ & 火石玻璃量级 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\textbf{$n$ 报几位}：$\alpha$ 与 $\delta_{\min}$ 只到 $0.5'$--$1'$，所以 $n$ 报\textbf{三位小数}（如 $1.512$）足够。给个量级感觉：$\delta_{\min}$ 差 $1'$（$=2.9\times10^{-4}$ rad）只让 $n$ 变 $0.0002$——\textbf{$n$ 的误差主要不是读数，而是仪器没调好}。这就是 J0 值得花五十分钟的原因。
+
+\subhdr{⑥ 写进报告的一句话}
+
+\callout{
+「用最小偏向角法测得汞灯绿线（$546.1$ nm）在三棱镜中的最小偏向角 $\delta_{\min}=37^{\circ}10.8'$，结合顶角 $\alpha=60^{\circ}00'$ 得折射率 $n=1.500$；误差主要来自最小偏向角位置的判断（折返点附近 $\delta$ 变化平缓，位置不易精确重复）与度盘估读。」
+}
+\warnbox{
+\textbf{台前只看这一段}：转载物台\textbf{慢慢}转、望远镜\textbf{跟着}像走，像\textbf{停住再折返}的那一点就是 $\delta_{\min}$；锁台、微调对叉丝、读两个游标；换棱镜另一面再做一次；$\delta_{\min}=\tfrac14(|\phi_2-\phi_1|+|\phi_2'-\phi_1'|)$，$n=\sin\frac{\delta_{\min}+\alpha}{2}/\sin\frac{\alpha}{2}$。
+}

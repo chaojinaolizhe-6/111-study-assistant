@@ -1,0 +1,725 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\settags{特征值问题 · 四类边界条件}{常微分方程}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{12\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{$X''+\lambda X=0$ 的特征值问题}
+{三种 $\lambda$ 的通解、四类边界条件的判据、$\lambda\ge0$ 的统一证明}
+{底稿：学习者提供的讲义笔记（2026-11-13）\ \textperiodcentered\ 本讲义补齐底稿四处留空的判据式，并用系数行列式与能量恒等式独立复核\ \textperiodcentered\ 全部算式经 sympy 逐条核对}
+
+\callout{\textbf{这份讲义在做什么。}
+底稿已经把四类边界条件逐条代入过一遍，但每到“为使 $C_2\neq0$，必须满足：”就留空了。四处留空填的是同一个判据式家族：
+\[
+\sin(\mu l)=0\quad\text{（第 1、4 类）},\qquad
+\cos(\mu l)=0\quad\text{（第 2、3 类）}.
+\]
+本讲义把它们补出来，并回答三个底稿没有展开的问题：\textbf{为什么}必须分三种 $\lambda$ 讨论；\textbf{为什么}这四类边界条件只在 $\lambda>0$ 时给出非零解（第四类还多一个 $\lambda=0$）；求出来的特征函数\textbf{为什么}正好是正弦/余弦而不是双曲函数。
+
+\textbf{五分钟读法}：§1.3 的判据（把“存在非零解”变成一个行列式），§3 的四张结论框（四类情形的最终答案），§4.1 的定理（一句话解释 $\lambda<0$ 为什么全军覆没）。其余是推导与接口。}
+
+%=============================================================
+\hdr{§1}{问题、记号与解题框架}
+
+\subhdr{1.1 问题是什么}
+
+在区间 $(0,l)$ 上找实数 $\lambda$ 与非零函数 $X(x)$，使
+\begin{equation}\label{eq:ode}
+X''(x)+\lambda X(x)=0,\qquad 0<x<l,
+\end{equation}
+并满足四条边界条件中的一条。四条边界条件的共同点是：\textbf{每个端点给出一个齐次线性条件}，即在该端点要么要求 $X$ 等于零，要么要求 $X'$ 等于零：
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\hline
+\thead{情形} & \thead{边界条件} & \thead{两端的条件类型} \\
+\hline
+1 & $X(0)=0,\ X(l)=0$ & 两端都是 $X=0$（两端固定）\\
+2 & $X(0)=0,\ X'(l)=0$ & 左端固定、右端自由 \\
+3 & $X'(0)=0,\ X(l)=0$ & 左端自由、右端固定 \\
+4 & $X'(0)=0,\ X'(l)=0$ & 两端都自由 \\
+\hline
+\end{tabular}
+\end{center}
+称满足条件的 $\lambda$ 为\textbf{特征值}（本征值），对应的 $X$ 为\textbf{特征函数}。要求 $X\not\equiv0$，是因为 $X\equiv0$ 对任何 $\lambda$ 都成立，不携带信息。
+
+\subhdr{1.2 为什么必须分三种 $\lambda$ 讨论}
+
+\eqref{eq:ode} 是二阶线性齐次方程，系数为常数，所以它的解空间是二维的：只要找到两个线性无关的解，通解就是它们的线性组合。特征方程是
+\[
+r^2+\lambda=0\qquad\Longrightarrow\qquad r^2=-\lambda .
+\]
+$r^2$ 是非负的，所以 $-\lambda$ 的符号直接决定了根是实数还是虚数。于是实数 $\lambda$ 被分成互不重叠的三段：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.2cm}p{3.2cm}p{5.4cm}p{3.4cm}@{}}
+\hline
+\thead{$\lambda$ 的范围} & \thead{$r^2=-\lambda$} & \thead{根} & \thead{解的形态} \\
+\hline
+$\lambda=-\mu^2<0$ & $r^2=\mu^2>0$ & $r=\pm\mu$（两实根） & 指数/双曲，单调增长 \\
+$\lambda=0$ & $r^2=0$ & $r=0$（二重根） & 一次函数 $C_1+C_2x$ \\
+$\lambda=\mu^2>0$ & $r^2=-\mu^2<0$ & $r=\pm i\mu$（共轭虚根） & 三角，来回振动 \\
+\hline
+\end{tabular}
+\end{center}
+
+这三段合起来恰好覆盖全部实数，既不遗漏也不重叠，因此“分三种情况”不是技巧，而是把 $\lambda$ 的整个取值域处理完。\textbf{漏掉 $\lambda=0$ 是这类题最常见的失分点}：它是二重根，通解不是 $e^{0\cdot x}=1$，而是 $C_1+C_2x$。
+
+\subhdr{1.3 判据：把“存在非零解”变成一个行列式}
+
+把通解 $X=C_1\varphi_1+C_2\varphi_2$ 代入两条边界条件，得到关于 $C_1,C_2$ 的两个齐次线性方程，可以写成矩阵形式
+\[
+A(\mu)\begin{pmatrix}C_1\\C_2\end{pmatrix}=0,\qquad A(\mu)\ \text{是}\ 2\times2\ \text{实矩阵}.
+\]
+
+\textbf{引理.} 齐次方程组 $A\mathbf{c}=0$ 有非零解，当且仅当 $\det A=0$。
+
+\textbf{证明.} 若 $\det A\neq0$，则 $A$ 可逆，两边左乘 $A^{-1}$ 得 $\mathbf{c}=0$，只有零解。若 $\det A=0$，则 $A$ 的两行线性相关，秩不超过 $1$；除 $A=0$ 这一平凡情形外秩恰为 $1$，于是两个方程只给出一个独立约束，解空间是一维的，非零解存在。证完。
+
+这个引理的价值在于：\textbf{它把“能不能找到非零的 $C_1,C_2$”转成“一个数是不是零”}，而那个数就是 $\sin(\mu l)$ 或 $\cos(\mu l)$ 之类的具体表达式。底稿里“为使 $C_2\neq0$，必须满足”后面留空的那一步，写出来就是 $\det A=0$。
+
+以第 1 类情形、$\lambda=\mu^2>0$ 为例，把 $X=C_1\cos(\mu x)+C_2\sin(\mu x)$ 代入两条边界条件：
+\[
+A=\begin{pmatrix}
+\cos 0 & \sin 0\\[2pt]
+\cos(\mu l) & \sin(\mu l)
+\end{pmatrix}
+=\begin{pmatrix}
+1 & 0\\[2pt]
+\cos(\mu l) & \sin(\mu l)
+\end{pmatrix},
+\qquad
+\det A=\sin(\mu l).
+\]
+第一行来自 $x=0$：$\cos 0=1$、$\sin 0=0$，所以它直接把 $C_1$ 钉成 $0$。剩下 $C_2\sin(\mu l)=0$，要让 $C_2\ne0$，只能 $\sin(\mu l)=0$。
+
+\callout{\textbf{四类边界的行列式都由同一个模式生成。} 每个端点贡献一行：该端点要求 $X=0$，这一行就是 $(\varphi_1,\varphi_2)$ 在端点的值；要求 $X'=0$，这一行就是 $(\varphi_1',\varphi_2')$ 在端点的值。四类边界条件只是“哪一端要 $X$、哪一端要 $X'$”的四种组合。§3 就按这个模式逐条算。}
+
+\subhdr{1.4 底稿的足迹与本节新增的内容}
+
+\textbf{沿用底稿的三块。} 一是三种 $\lambda$ 的通解与导数（§2 照用，只补“为什么用双曲函数”）；二是四类边界条件逐条代入的过程（§3 照用，只在留空处填上判据式 $\sin(\mu l)=0$、$\cos(\mu l)=0$）；三是第四类里 $\lambda=0$ 的单独处理（§3.4 照用，并说明它恰好等于通式中 $n=0$ 的那一项）。
+
+\textbf{本讲义新增的三块。} 一是 §1.3 的行列式判据，把“存在非零解”统一翻译成 $\det A=0$，四类情形因此变成同一道题的四种取值；二是 §4 的能量恒等式，一次说明 $\lambda<0$ 为什么对四类都无解、$\lambda=0$ 为什么只在第四类出现；三是 §5 的正交性与归一化，把特征函数接到分离变量法的展开公式上。
+
+底稿不缺结论，缺的是这三条把它们串起来的线索。下面的推导按底稿的顺序走，遇到留空就以方框给出判据式。
+
+%=============================================================
+\hdr{§2}{预备：三种 $\lambda$ 下的通解}
+
+\subhdr{2.1 $\lambda=-\mu^2<0$（$\mu>0$）}
+
+特征根 $r=\pm\mu$，所以
+\begin{equation}\label{eq:neg}
+X(x)=C_1\cosh(\mu x)+C_2\sinh(\mu x),\qquad
+X'(x)=\mu C_1\sinh(\mu x)+\mu C_2\cosh(\mu x).
+\end{equation}
+它与 $C_1e^{\mu x}+C_2e^{-\mu x}$ 是同一族解，因为
+\[
+\cosh(\mu x)=\frac{e^{\mu x}+e^{-\mu x}}{2},\qquad
+\sinh(\mu x)=\frac{e^{\mu x}-e^{-\mu x}}{2},
+\]
+而这两个变换的行列式不为零，所以 $\{\cosh,\sinh\}$ 与 $\{e^{\mu x},e^{-\mu x}\}$ 都是基本解组。
+
+\textbf{为什么改用双曲函数。} 三条理由，按重要性排列：
+
+（a）\textbf{端点值干净。} 由 $\cosh0=1$、$\sinh0=0$ 得
+\[
+X(0)=C_1,\qquad X'(0)=\mu C_2 .
+\]
+这与 $\lambda>0$ 情形的 $X(0)=C_1$、$X'(0)=\mu C_2$ 完全平行。若用指数形式，$X(0)=A+B$、$X'(0)=\mu(A-B)$，解 $A,B$ 要先解一个二元方程组。
+
+（b）\textbf{定号容易。} 当 $\mu l>0$ 时
+\[
+\cosh(\mu l)\ge1>0,\qquad \sinh(\mu l)>0 .
+\]
+这两个不等式是排除 $\lambda<0$ 的唯一工具：行列式一旦化到 $\sinh(\mu l)$ 或 $\mu\cosh(\mu l)$，立刻可以断言“不为零”。若用 $e^{\pm\mu l}$，要比较的是 $e^{2\mu l}$ 与 $1$，多绕一步。
+
+（c）\textbf{与三角情形一一对应。} 把 $\cos$/$\sin$ 换成 $\cosh$/$\sinh$、把符号换成相应位置，两种情形的代入过程逐字相同（对照 \eqref{eq:neg} 与 \eqref{eq:pos} 即可看出）。
+
+\callout{\textbf{本讲义用到的双曲函数性质只有四条}：$\cosh0=1$，$\sinh0=0$，$(\cosh)'=\sinh$，$(\sinh)'=\cosh$；以及 $\mu l>0$ 时 $\cosh(\mu l)\ge1$、$\sinh(\mu l)>0$。不需记忆其它公式。}
+
+\subhdr{2.2 $\lambda=0$}
+
+方程退化为 $X''=0$，直接积分两次：
+\begin{equation}\label{eq:zero}
+X(x)=C_1+C_2x,\qquad X'(x)=C_2 .
+\end{equation}
+注意 $X'(x)$ 是常数：只要 $C_2\ne0$，$X$ 就是一条斜直线，它在 $(0,l)$ 上不可能取零两次，也不可能两端斜率都为零。下面逐条处理时会看到，这个几何图像正好对应两种结局——要么被边界条件钉死成零，要么（第四类）保留下来成为特征函数。
+
+\subhdr{2.3 $\lambda=\mu^2>0$（$\mu>0$）}
+
+特征根 $r=\pm i\mu$，实解为
+\begin{equation}\label{eq:pos}
+X(x)=C_1\cos(\mu x)+C_2\sin(\mu x),\qquad
+X'(x)=-\mu C_1\sin(\mu x)+\mu C_2\cos(\mu x),
+\end{equation}
+端点值同样是 $X(0)=C_1$、$X'(0)=\mu C_2$。
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.6cm}p{5.2cm}p{2.5cm}p{2.5cm}@{}}
+\hline
+\thead{$\lambda$} & \thead{通解} & \thead{$X(0)$} & \thead{$X'(0)$} \\
+\hline
+$-\mu^2$ & $C_1\cosh(\mu x)+C_2\sinh(\mu x)$ & $C_1$ & $\mu C_2$ \\
+$0$ & $C_1+C_2x$ & $C_1$ & $C_2$ \\
+$\mu^2$ & $C_1\cos(\mu x)+C_2\sin(\mu x)$ & $C_1$ & $\mu C_2$ \\
+\hline
+\end{tabular}
+\end{center}
+
+这张表是后面所有推导的出发点：\textbf{凡是在 $x=0$ 处给条件，都是直接读 $C_1$ 或 $C_2$；凡是在 $x=l$ 处给条件，都要把 $l$ 代进去。}
+
+%=============================================================
+\hdr{§3}{四类边界条件：判定与结果}
+
+每小节的结构相同：先用 $\lambda<0$ 与 $\lambda=0$ 排除，再对 $\lambda=\mu^2>0$ 写出判据式，最后把 $\mu_n$ 换成 $\lambda_n$ 并写出特征函数。结论框里是最终答案。
+
+\subhdr{3.1 第 1 类：$X(0)=0,\ X(l)=0$（两端固定）}
+
+\textbf{$\lambda=-\mu^2<0$。} 由 \eqref{eq:neg}，$X(0)=C_1=0$，于是 $X(x)=C_2\sinh(\mu x)$。代入 $X(l)=0$ 得
+\[
+C_2\sinh(\mu l)=0 .
+\]
+$\mu l>0$ 时 $\sinh(\mu l)>0$，所以 $C_2=0$：只有零解，\textbf{无负特征值}。
+
+\textbf{$\lambda=0$。} 由 \eqref{eq:zero}，$X(0)=C_1=0$，$X(l)=C_2l=0$。$l>0$，故 $C_2=0$：只有零解，\textbf{$\lambda=0$ 不是特征值}。
+
+\textbf{$\lambda=\mu^2>0$。} 由 \eqref{eq:pos}，$X(0)=C_1=0$，于是 $X(x)=C_2\sin(\mu x)$，$X(l)=C_2\sin(\mu l)$。要让 $C_2\ne0$（否则 $X\equiv0$），必须
+\[
+\boxed{\ \sin(\mu l)=0\ }
+\quad\Longrightarrow\quad
+\mu l=n\pi,\quad n=1,2,3,\dots
+\]
+这里 $n$ 从 $1$ 开始：$n=0$ 给出 $\mu=0$，与 $\lambda=\mu^2>0$ 的前题矛盾；若硬把 $n=0$ 写进通式，$\sin(0\cdot x)=0$ 是零函数，也不是特征函数。$n$ 取负只改变 $\mu$ 的符号，而 $\lambda=\mu^2$ 不变，故只取 $n\ge1$。
+
+\warnbox{\textbf{第 1 类结论。}
+\[
+\lambda_n=\left(\frac{n\pi}{l}\right)^2,\qquad
+X_n(x)=\sin\!\left(\frac{n\pi}{l}x\right),\qquad n=1,2,3,\dots
+\]
+最小特征值 $\lambda_1=(\pi/l)^2$；$X_n$ 在 $(0,l)$ 内恰有 $n-1$ 个零点（即两相邻波节之间的振动段数为 $n$）。}
+
+\subhdr{3.2 第 2 类：$X(0)=0,\ X'(l)=0$（左固定、右自由）}
+
+\textbf{$\lambda=-\mu^2<0$。} $X(0)=C_1=0$，于是 $X'(x)=\mu C_2\cosh(\mu x)$。代入 $X'(l)=0$：
+\[
+\mu C_2\cosh(\mu l)=0 .
+\]
+$\mu>0$、$\cosh(\mu l)\ge1$，所以 $C_2=0$：只有零解，\textbf{无负特征值}。
+
+\textbf{$\lambda=0$。} $X(0)=C_1=0$，$X'(x)=C_2$，$X'(l)=C_2=0$：只有零解，\textbf{$\lambda=0$ 不是特征值}。
+
+\textbf{$\lambda=\mu^2>0$。} $X(0)=C_1=0$，故 $X(x)=C_2\sin(\mu x)$、$X'(x)=\mu C_2\cos(\mu x)$。代入 $X'(l)=0$：
+\[
+\mu C_2\cos(\mu l)=0 .
+\]
+$C_2\ne0$、$\mu>0$，所以必须
+\[
+\boxed{\ \cos(\mu l)=0\ }
+\quad\Longrightarrow\quad
+\mu l=\frac{\pi}{2}+n\pi=\left(n+\frac12\right)\pi,\quad n=0,1,2,\dots
+\]
+这里 $n$ 从 $0$ 开始：$\mu=\pi/(2l)>0$ 是合法解，且给出最小的正特征值。这是第 2 类与第 1 类在“$n$ 从几开始”上的唯一区别。
+
+\warnbox{\textbf{第 2 类结论。}
+\[
+\lambda_n=\left(\frac{n+\frac12}{l}\pi\right)^2,\qquad
+X_n(x)=\sin\!\left(\frac{n+\frac12}{l}\pi x\right),\qquad n=0,1,2,\dots
+\]
+最小特征值 $\lambda_0=(\pi/2l)^2$，只有第 1 类最小特征值的 $1/4$。$X_n$ 在 $(0,l)$ 内恰有 $n$ 个零点。}
+
+\subhdr{3.3 第 3 类：$X'(0)=0,\ X(l)=0$（左自由、右固定）}
+
+\textbf{$\lambda=-\mu^2<0$。} $X'(0)=\mu C_2=0$，故 $C_2=0$，$X(x)=C_1\cosh(\mu x)$。代入 $X(l)=0$：
+\[
+C_1\cosh(\mu l)=0 .
+\]
+$\cosh(\mu l)\ge1$，故 $C_1=0$：只有零解，\textbf{无负特征值}。
+
+\textbf{$\lambda=0$。} $X'(0)=C_2=0$，$X(x)=C_1$，$X(l)=C_1=0$：只有零解，\textbf{$\lambda=0$ 不是特征值}。
+
+\textbf{$\lambda=\mu^2>0$。} $X'(0)=\mu C_2=0$，故 $C_2=0$，$X(x)=C_1\cos(\mu x)$。代入 $X(l)=0$：
+\[
+C_1\cos(\mu l)=0
+\quad\Longrightarrow\quad
+\boxed{\ \cos(\mu l)=0\ }
+\quad\Longrightarrow\quad
+\mu l=\left(n+\frac12\right)\pi,\quad n=0,1,2,\dots
+\]
+判据式与第 2 类完全相同，只是留下的是 $C_1$（余弦）而不是 $C_2$（正弦）。
+
+\warnbox{\textbf{第 3 类结论。}
+\[
+\lambda_n=\left(\frac{n+\frac12}{l}\pi\right)^2,\qquad
+X_n(x)=\cos\!\left(\frac{n+\frac12}{l}\pi x\right),\qquad n=0,1,2,\dots
+\]
+特征值与第 2 类逐一相同，特征函数互换成正弦/余弦的对应物。}
+
+\textbf{为什么第 2、3 类的特征值完全一样？} 做自变量替换 $y=l-x$，令 $Y(y)=X(l-y)$。则 $Y'(y)=-X'(l-y)$，于是
+\[
+X(0)=0\iff Y(l)=0,\qquad X'(l)=0\iff Y'(0)=0 .
+\]
+也就是说，\textbf{把区间左右翻转，第 2 类就变成第 3 类}，而方程 $Y''+\lambda Y=0$ 的形式不变（$Y''(y)=X''(l-y)$）。两个问题只差一个保长的坐标变换，谱当然一样。特征函数也按同一变换对应：把第 2 类的 $\sin\big((n+\frac12)\pi x/l\big)$ 翻转过来，得到
+\[
+\cos\Big((n+\tfrac12)\pi\,\frac{l-y}{l}\Big)=\cos\Big((n+\tfrac12)\pi\,\frac{y}{l}\Big),
+\]
+正是第 3 类余弦解的样子（只差一个符号，而符号可被常数 $C_1$ 吸收）。
+
+\subhdr{3.4 第 4 类：$X'(0)=0,\ X'(l)=0$（两端自由）}
+
+这一类是唯一出现“常数解”的地方，$\lambda=0$ 必须单独、认真地处理。
+
+\textbf{$\lambda=-\mu^2<0$。} $X'(0)=\mu C_2=0$，故 $C_2=0$，$X(x)=C_1\cosh(\mu x)$，$X'(x)=\mu C_1\sinh(\mu x)$。代入 $X'(l)=0$：
+\[
+\mu C_1\sinh(\mu l)=0 .
+\]
+$\mu>0$、$\sinh(\mu l)>0$，故 $C_1=0$：只有零解，\textbf{无负特征值}。
+
+\textbf{$\lambda=0$。} $X'(0)=C_2=0$，于是 $X(x)=C_1$，即常函数；而 $X'(l)=0$ 对常函数自动成立。\textbf{此时 $C_1$ 完全自由}：取 $C_1=1$ 得 $X_0(x)=1$，这是货真价实的非零解。所以
+\[
+\lambda_0=0\ \text{是特征值},\qquad X_0(x)=1 .
+\]
+
+\textbf{$\lambda=\mu^2>0$。} $X'(0)=\mu C_2=0$，故 $C_2=0$，$X(x)=C_1\cos(\mu x)$，$X'(x)=-\mu C_1\sin(\mu x)$。代入 $X'(l)=0$：
+\[
+-\mu C_1\sin(\mu l)=0
+\quad\Longrightarrow\quad
+\boxed{\ \sin(\mu l)=0\ }
+\quad\Longrightarrow\quad
+\mu l=n\pi,\quad n=1,2,3,\dots
+\]
+（$n\ge1$，理由同 §3.1。）
+
+\warnbox{\textbf{第 4 类结论。} 把 $\lambda=0$ 与 $\lambda>0$ 合并，用同一个通式表示：
+\[
+\lambda_n=\left(\frac{n\pi}{l}\right)^2,\qquad
+X_n(x)=\cos\!\left(\frac{n\pi}{l}x\right),\qquad n=0,1,2,\dots
+\]
+合并是合法的：$n=0$ 时通式给出 $\lambda_0=0$、$X_0=\cos0=1$，与上面单独得到的结果逐字一致。这是四类中\textbf{唯一}最小特征值为 $0$ 的情形。}
+
+\subhdr{3.5 汇总：四张结论合成一张表}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{3.3cm}p{2.4cm}p{4.1cm}p{3.5cm}p{1.8cm}@{}}
+\hline
+\thead{边界条件} & \thead{判据式} & \thead{$\lambda_n$} & \thead{$X_n(x)$} & \thead{$n$} \\
+\hline
+$X(0)=X(l)=0$ & $\sin(\mu l)=0$ & $\left(\frac{n\pi}{l}\right)^2$ & $\sin\left(\frac{n\pi}{l}x\right)$ & $1,2,\dots$ \\
+$X(0)=X'(l)=0$ & $\cos(\mu l)=0$ & $\left(\frac{(n+\frac12)\pi}{l}\right)^2$ & $\sin\left(\frac{(n+\frac12)\pi}{l}x\right)$ & $0,1,2,\dots$ \\
+$X'(0)=X(l)=0$ & $\cos(\mu l)=0$ & $\left(\frac{(n+\frac12)\pi}{l}\right)^2$ & $\cos\left(\frac{(n+\frac12)\pi}{l}x\right)$ & $0,1,2,\dots$ \\
+$X'(0)=X'(l)=0$ & $\sin(\mu l)=0$ & $\left(\frac{n\pi}{l}\right)^2$ & $\cos\left(\frac{n\pi}{l}x\right)$ & $0,1,2,\dots$ \\
+\hline
+\end{tabular}
+\end{center}
+
+再把 $\lambda<0$ 与 $\lambda=0$ 的判定并进来。下表每一格是系数矩阵的行列式 $\det A$；“$\ne0$”意味着只有零解，“$=0$”意味着有非零解（已用 sympy 逐格核对）：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.4cm}p{2.6cm}p{1.8cm}p{2.6cm}@{}}
+\hline
+\thead{边界条件} & \thead{$\lambda<0$：$\det A$} & \thead{$\lambda=0$} & \thead{$\lambda>0$：$\det A$} \\
+\hline
+$X(0)=X(l)=0$ & $\sinh(\mu l)\ne0$ & $l\ne0$ & $\sin(\mu l)$ \\
+$X(0)=X'(l)=0$ & $\mu\cosh(\mu l)\ne0$ & $1\ne0$ & $\mu\cos(\mu l)$ \\
+$X'(0)=X(l)=0$ & $-\mu\cosh(\mu l)\ne0$ & $-1\ne0$ & $-\mu\cos(\mu l)$ \\
+$X'(0)=X'(l)=0$ & $-\mu^2\sinh(\mu l)\ne0$ & $\mathbf{0}$ & $\mu^2\sin(\mu l)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{第四类的 $\lambda=0$ 格子里是 $0$，而其余三格都是非零数——这就是“常数解只出现在第四类”在行列式层面的全部内容。若把 $\lambda=0$ 当作第四类通式在 $n=0$ 的特例，则判据式 $\sin(\mu l)=0$ 在 $\mu=0$ 处也自动成立，两套说法一致。}
+
+%=============================================================
+\hdr{§4}{统一视角：一次说明 $\lambda<0$ 为何全部失败}
+
+\subhdr{4.1 定理（能量恒等式）}
+
+\textbf{定理.} 设 $X\in C^2[0,l]$ 满足 \eqref{eq:ode} 与四类边界条件之一，则
+\begin{equation}\label{eq:energy}
+\lambda=\frac{\displaystyle\int_0^l X'^2\dd x}{\displaystyle\int_0^l X^2\dd x}\ \ge0 .
+\end{equation}
+并且 $\lambda=0$ 当且仅当 $X\equiv$ 常数；若再要求 $X\not\equiv0$，则只有第 4 类（$X'(0)=X'(l)=0$）允许，此时 $X$ 是某个非零常数。
+
+\textbf{证明.} 用 $X$ 乘 \eqref{eq:ode} 并在 $(0,l)$ 上积分：
+\[
+\int_0^l XX''\dd x+\lambda\int_0^l X^2\dd x=0 .
+\]
+对第一项分部积分：
+\[
+\int_0^l XX''\dd x=\Big[XX'\Big]_0^l-\int_0^l X'^2\dd x .
+\]
+代入得
+\[
+\lambda\int_0^l X^2\dd x=\int_0^l X'^2\dd x-\Big[X(l)X'(l)-X(0)X'(0)\Big].
+\]
+关键一步：\textbf{四类边界条件都保证每个端点上“$X$ 与 $X'$ 至少有一个为零”}，所以
+\[
+X(0)X'(0)=0,\qquad X(l)X'(l)=0 ,
+\]
+边界项整体为零。于是 \eqref{eq:energy} 成立。右端分子分母都非负，且 $X\not\equiv0$ 使分母为正，故 $\lambda\ge0$。
+
+再论等号：$\lambda=0$ 当且仅当 $\int_0^l X'^2\dd x=0$，即 $X'\equiv0$，$X\equiv$ 常数 $c$。若第 1--3 类中有一端要求 $X=0$，则 $c=0$，与 $X\not\equiv0$ 矛盾；只有第 4 类两端都不要求 $X=0$，常数解 $X=c\ne0$ 才被允许。证完。
+
+\callout{\textbf{这条定理的价值不是算出 $\lambda$，而是把 §3 的四次“逐条排除”换成一次条件核对。} §3 里对 $\lambda<0$ 的处理需要四次代入、四次观察双曲函数的符号；定理只说一句：$\lambda$ 等于一个非负商，所以不可能为负。它同时预告了 $\lambda=0$ 只可能出现在第四类——而这正是 §3.4 单独处理的那一格。
+
+反过来说，定理\textbf{不能}替代 §3：它不给特征值和特征函数，只给 $\lambda$ 的范围。特征值是“离散的 $\mu_n$”这件事，仍然要靠 $\det A=0$ 这条判据。}
+
+\subhdr{4.2 最大原理：另一种看法（备注）}
+
+$\lambda=-\mu^2<0$ 时 \eqref{eq:ode} 变成
+\[
+X''=\mu^2X ,
+\]
+即 $X''$ 与 $X$ 处处同号。若 $X$ 在某内点取正的最大值，则该点 $X''\le0$，但同号性要求 $X''=\mu^2X>0$，矛盾；取负的最小值同理。剩下的可能是最大值出现在端点：若该端要求 $X=0$，端点值 $0$ 不可能是正的最大值；若该端要求 $X'=0$，则在该点 $X'=0$ 而 $X''>0$，这是一处极小而非极大，矛盾。四条边界条件穷尽了这些可能，所以 $\lambda<0$ 一律无解。
+
+这个论证与 §4.1 是同一件事的两种说法（一个是积分形式，一个是逐点形式），考试里写哪一种都可以；本讲义建议写 §4.1，因为它顺带给出 $\lambda=0$ 的完整判定。
+
+\subhdr{4.3 一个几乎免费的检查}
+
+把 §3 四张结论框里的 $\lambda_n$ 代进 \eqref{eq:energy} 应当自动成立。以第 1 类为例，$X_n=\sin(n\pi x/l)$：
+\[
+\int_0^l X_n'^2\dd x=\left(\frac{n\pi}{l}\right)^2\int_0^l\cos^2\frac{n\pi x}{l}\dd x
+=\left(\frac{n\pi}{l}\right)^2\frac{l}{2},
+\qquad
+\int_0^l X_n^2\dd x=\frac{l}{2},
+\]
+两者相除正好是 $(n\pi/l)^2=\lambda_n$。这不是新结论，但如果某一步的 $\lambda_n$ 抄错了（例如漏掉因子 $1/4$），这个除法会立刻暴露它。四类情形都已用脚本按此核对。
+
+%=============================================================
+\hdr{§5}{正交性与归一化：特征函数怎么用}
+
+\subhdr{5.1 定理（正交性）}
+
+\textbf{定理.} 设 $X_m,X_n$ 是同一类边界条件下、对应不同特征值 $\lambda_m\ne\lambda_n$ 的两个特征函数，则
+\[
+\int_0^l X_m(x)X_n(x)\dd x=0 .
+\]
+
+\textbf{证明.} 由方程
+\[
+X_m''=-\lambda_mX_m,\qquad X_n''=-\lambda_nX_n .
+\]
+第一式乘 $X_n$、第二式乘 $X_m$ 后相减：
+\[
+X_m''X_n-X_n''X_m=-(\lambda_m-\lambda_n)X_mX_n .
+\]
+在 $(0,l)$ 上积分，左边是
+\[
+\int_0^l\big(X_m''X_n-X_n''X_m\big)\dd x
+=\Big[X_m'X_n-X_mX_n'\Big]_0^l ,
+\]
+因为被积函数恰是 $(X_m'X_n-X_mX_n')'$。边界项在端点 $0$ 与 $l$ 处各自是“一个端点函数值乘另一个端点导数值”：每个端点至少有一个因子为零（四类边界条件保证），所以边界项为零。于是
+\[
+-(\lambda_m-\lambda_n)\int_0^lX_mX_n\dd x=0 ,
+\]
+而 $\lambda_m\ne\lambda_n$，故积分为零。证完。
+
+\aside{若 $\lambda_m=\lambda_n$（同一特征值），积分一般不为零，它给出该特征函数的“长度平方”。本讲义的四类情形中每个特征值只对应一个特征函数（几何重数为 1），不存在需要正交化的简并情形。}
+
+\subhdr{5.2 归一化值}
+
+把 §3 的特征函数平方后积分，结果只有三个数（下表第二列就是 $\int_0^lX_n^2\dd x$）：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.4cm}p{3.2cm}p{4.0cm}@{}}
+\hline
+\thead{特征函数} & \thead{平方积分} & \thead{归一化常数 $c_n$} \\
+\hline
+$\sin\left(\frac{n\pi}{l}x\right)$，$n\ge1$ & $l/2$ & $\sqrt{2/l}$ \\
+$\sin\left(\frac{(n+\frac12)\pi}{l}x\right)$，$n\ge0$ & $l/2$ & $\sqrt{2/l}$ \\
+$\cos\left(\frac{(n+\frac12)\pi}{l}x\right)$，$n\ge0$ & $l/2$ & $\sqrt{2/l}$ \\
+$\cos\left(\frac{n\pi}{l}x\right)$，$n\ge1$ & $l/2$ & $\sqrt{2/l}$ \\
+$\cos 0=1$，即 $n=0$ & $l$ & $\sqrt{1/l}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+“归一化常数”指使 $\int_0^l(c_nX_n)^2\dd x=1$ 的那个 $c_n$。注意第四类 $n=0$ 那一行是唯一的例外：常数函数在整段上的平方积分是 $l$ 而不是 $l/2$，归一化常数因此是 $1/\sqrt l$ 而不是 $\sqrt{2/l}$。
+
+\subhdr{5.3 完备性（引用，本讲不证）}
+
+\textbf{背景结果（Sturm--Liouville 展开定理）.} 对上述四类边界条件中的任意一类，任一在 $[0,l]$ 上分段光滑的函数 $f$ 都可按该类的特征函数展开：
+\[
+f(x)\sim\sum_{n}a_nX_n(x),\qquad
+a_n=\frac{\displaystyle\int_0^l fX_n\dd x}{\displaystyle\int_0^l X_n^2\dd x},
+\]
+且级数在 $f$ 的连续点收敛到 $f$。
+
+这条定理是分离变量法能够写出级数解的根据，其完整证明属于 Sturm--Liouville 理论（本课程课件目录中收有 Coddington 的教材，任一本标准教材的 Sturm--Liouville 章都有证明）。本讲义只用它，不证它；需要理解的是：\textbf{正交性（§5.1）负责“系数公式为什么长这样”，完备性负责“级数为什么收得住”}，两者缺一不可。
+
+%=============================================================
+\hdr{§6}{教学小例：$l=1$ 的具体数字}
+
+\subhdr{6.1 第 1 类：$X_1=\sin(\pi x)$ 逐条核对}
+
+取 $l=1$、$n=1$，则 $\lambda_1=\pi^2\approx9.8696$，$X_1(x)=\sin(\pi x)$。核对四件事：
+
+（a）方程：$X_1''=-\pi^2\sin(\pi x)=-\lambda_1X_1$，成立。
+
+（b）边界：$X_1(0)=\sin0=0$，$X_1(1)=\sin\pi=0$，成立。
+
+（c）正交：$\displaystyle\int_0^1\sin(\pi x)\sin(2\pi x)\dd x=0$（与 $X_2$ 正交），而 $\displaystyle\int_0^1\sin^2(\pi x)\dd x=\frac12$。
+
+（d）零点：$X_1$ 在 $(0,1)$ 内没有零点（$n-1=0$），$X_2=\sin(2\pi x)$ 在 $x=\frac12$ 处有一个零点（$n-1=1$）。这与“第 $n$ 个模态有 $n$ 段”的图像一致。
+
+\subhdr{6.2 第 4 类：常数模态与它的“零个零点”}
+
+取 $l=1$。$n=0$ 给 $\lambda_0=0$、$X_0=1$：它满足 $X_0'(0)=X_0'(1)=0$，方程也满足（$0+0\cdot1=0$）。它的图像是一条水平线，与 $x$ 轴没有交点——“$n$ 个零点”的规律在 $n=0$ 时退化为“零个零点”，并不矛盾。
+
+$n=1$ 给 $\lambda_1=\pi^2$、$X_1=\cos(\pi x)$：$X_1'(0)=-\pi\sin0=0$，$X_1'(1)=-\pi\sin\pi=0$，零点在 $x=\frac12$，恰一个。
+
+\subhdr{6.3 第 2 类：为什么最小特征值降到 $\pi^2/4$}
+
+取 $l=1$。$n=0$ 给 $\lambda_0=\pi^2/4\approx2.4674$、$X_0=\sin(\pi x/2)$。核对：$X_0(0)=0$，$X_0'(x)=\frac{\pi}{2}\cos\frac{\pi x}{2}$，$X_0'(1)=\frac{\pi}{2}\cos\frac{\pi}{2}=0$。
+
+与第 1 类相比，区间同样是单位长，但右端从“钉死”放松成“自由”，最小特征值从 $\pi^2\approx9.87$ 降到 $\pi^2/4\approx2.47$，正好是 $1/4$。直观解释：右端自由意味着波形只要“斜率归零”即可，不必回到零，于是半个波形就能塞进区间（$\sin$ 的半个拱），而两端固定必须塞进一整个拱。这就是“放松约束使频率降低”的最简单例子。
+
+\begin{center}
+\begin{tikzpicture}[x=5.7cm,y=1.42cm,>=Latex]
+% (a) 第 1 类
+\begin{scope}
+\draw[->,inkgray] (-0.06,0) -- (1.14,0) node[right] {\scriptsize $x$};
+\draw[->,inkgray] (0,-1.42) -- (0,1.75) node[above] {\scriptsize $X$};
+\draw[rulepurple,dashed] (1,-1.42) -- (1,1.05);
+\foreach \y/\t in {1/1,-1/-1}{\draw[inkgray] (-0.03,\y) -- (0.03,\y);
+  \node[left,font=\tiny,inkgray] at (-0.03,\y) {\t};}
+\foreach \n/\c in {1/violet,2/petal,3/violetdeep}{
+  \draw[domain=0:1,samples=220,\c,thick] plot (\x,{sin(\n*\x*180)});
+}
+\node[font=\scriptsize] at (0.52,1.55)
+  {\textcolor{violet}{$n=1$}\quad\textcolor{petal}{$n=2$}\quad\textcolor{violetdeep}{$n=3$}};
+\node[font=\scriptsize,inkgray,align=center] at (0.5,-1.78) {(a) $X(0)=X(l)=0$\\两端为零};
+\end{scope}
+% (b) 第 4 类
+\begin{scope}[xshift=7.4cm]
+\draw[->,inkgray] (-0.06,0) -- (1.14,0) node[right] {\scriptsize $x$};
+\draw[->,inkgray] (0,-1.42) -- (0,1.75) node[above] {\scriptsize $X$};
+\draw[rulepurple,dashed] (1,-1.42) -- (1,1.05);
+\foreach \y/\t in {1/1,-1/-1}{\draw[inkgray] (-0.03,\y) -- (0.03,\y);
+  \node[left,font=\tiny,inkgray] at (-0.03,\y) {\t};}
+\draw[domain=0:1,samples=2,violet,thick] plot (\x,{cos(0*\x*180)});
+\foreach \n/\c in {1/petal,2/violetdeep}{
+  \draw[domain=0:1,samples=220,\c,thick] plot (\x,{cos(\n*\x*180)});
+}
+\node[font=\scriptsize] at (0.52,1.55)
+  {\textcolor{violet}{$n=0$}\quad\textcolor{petal}{$n=1$}\quad\textcolor{violetdeep}{$n=2$}};
+\node[font=\scriptsize,inkgray,align=center] at (0.5,-1.78) {(b) $X'(0)=X'(l)=0$\\两端斜率为零};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\textbf{图怎么读。} 两幅图的横轴是 $x\in[0,l]$，竖轴是 $X$，竖直虚线标出右端点 $x=l$，顶上的彩色字标出每条曲线对应的 $n$，左侧小刻度线标在 $X=\pm1$ 处。
+
+左图是第 1 类：每条曲线在 $x=0$ 和 $x=l$ 处都等于零（两端穿过横轴），$n=1$ 是一个完整的拱，$n=2$ 是两个拱，中间多出一个零点。右图是第 4 类：每条曲线在两端的斜率都为零（曲线在端点处“变平”），$n=0$ 是 $X\equiv1$ 的水平线，$n=1$ 是一个完整的余弦拱，$n=2$ 是两个拱。
+
+两张图的共同点是\textbf{零点个数随 $n$ 增加而增加}；区别只在端点行为，而端点行为正是边界条件。图中 $l=1$。
+
+%=============================================================
+\hdr{§7}{这些特征函数用在哪里}
+
+本节的四类问题不是孤立的习题，它们是分离变量法的最后一步。以波动方程为例，设
+\[
+\frac{\partial^2u}{\partial t^2}=a^2\frac{\partial^2u}{\partial x^2},\qquad 0<x<l,\ t>0,
+\]
+边界条件取四类之一，则令 $u(x,t)=T(t)X(x)$ 后，$X$ 恰好满足 \eqref{eq:ode} 与同一类边界条件。求得 $\lambda_n=\mu_n^2$ 后，时间部分满足 $T''+a^2\mu_n^2T=0$，于是
+\[
+u(x,t)=\sum_{n}\Big(A_n\cos(a\mu_n t)+B_n\sin(a\mu_n t)\Big)X_n(x).
+\]
+这里 $a\mu_n$ 是第 $n$ 个\textbf{固有频率}，$X_n$ 是第 $n$ 个\textbf{模态（驻波形状）}，而 $X_n$ 的零点就是驻波的\textbf{波节}。系数 $A_n,B_n$ 由初值用 §5.3 的展开公式定出——这一步之所以能进行，靠的正是 §5.1 的正交性。
+
+四条边界条件的物理读法：第 1 类“两端固定”，第 4 类“两端自由”，第 2、3 类“一端固定一端自由”。放松约束使最低频率降低（§6.3 的 $1/4$），这一现象在弦、杆、管风琴里都能看到。
+
+%=============================================================
+\hdr{§8}{易错点清单}
+
+\begin{enumerate}
+  \item \textbf{漏掉 $\lambda=0$。} 它只在第四类给出特征值，但“只在第四类”不等于“可以跳过”：不检查就不知道它属于哪一类。
+  \item \textbf{把 $n$ 的起点写死成 $1$。} 第 1、4 类的 $\sin(\mu l)=0$ 从 $n=1$ 起（$n=0$ 给零函数或 $\mu=0$）；第 2、3 类的 $\cos(\mu l)=0$ 从 $n=0$ 起（$n=0$ 给合法的 $\mu=\pi/2l$）。
+  \item \textbf{把判据式写反。} 留下 $C_2\sin(\mu l)$ 的是 $\sin$ 判据，留下 $C_1\cos(\mu l)$ 的是 $\cos$ 判据。判断依据只有一个：$x=l$ 处要的是 $X$ 还是 $X'$。
+  \item \textbf{用指数形式硬算。} $e^{\mu x}$、$e^{-\mu x}$ 代入 $x=0$ 得到 $A+B$，必须解二元方程组；换成 $\cosh,\sinh$ 直接读出 $C_1=X(0)$、$C_2=X'(0)/\mu$。
+  \item \textbf{误以为 $\mu<0$ 也是解。} $\lambda=\mu^2$ 只依赖 $\mu^2$，所以按惯例取 $\mu>0$；$\mu<0$ 不给新特征值，只给相反的 $\mu$。
+  \item \textbf{忘记特征函数可乘任意常数。} $X_n$ 与 $cX_n$ 是同一个特征函数；只有归一化（§5.2）之后常数才被固定。
+  \item \textbf{把第 2、3 类的谱当成不同。} 它们通过 $x\mapsto l-x$ 互换，谱完全相同；特征函数一个用 $\sin$ 一个用 $\cos$，但 $\lambda_n$ 一字不差。
+  \item \textbf{用 §4.1 的定理代替求解。} 定理只说 $\lambda\ge0$ 和 $\lambda=0$ 的位置，不给出 $\lambda_n$ 的离散取值；要求特征值，仍须解 $\det A=0$。
+\end{enumerate}
+
+%=============================================================
+\hdr{§9}{一页小结}
+
+\callout{\textbf{三句话。}
+\begin{enumerate}
+  \item 三种 $\lambda$ 覆盖全部实轴：$\lambda=-\mu^2$ 用 $\cosh,\sinh$（两实根），$\lambda=0$ 用 $1,x$（二重根），$\lambda=\mu^2$ 用 $\cos,\sin$（共轭虚根）。
+  \item 把边界条件代入通解得到 $2\times2$ 齐次方程组，\textbf{有非零解 $\iff\det A=0$}；由此四类分别得到 $\sin(\mu l)=0$ 或 $\cos(\mu l)=0$，解出 $\mu_n$ 即得 $\lambda_n$ 与 $X_n$。
+  \item $\lambda<0$ 对四类都无解（能量恒等式：$\lambda=\int X'^2/\int X^2\ge0$）；$\lambda=0$ 只对第 4 类有解，且解是常数 $X_0=1$。
+\end{enumerate}}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{4.4cm}p{3.6cm}p{2.0cm}@{}}
+\hline
+\thead{边界条件} & \thead{$\lambda_n$} & \thead{$X_n$} & \thead{$n$} \\
+\hline
+$X(0)=X(l)=0$ & $\left(\frac{n\pi}{l}\right)^2$ & $\sin\left(\frac{n\pi}{l}x\right)$ & $1,2,\dots$ \\
+$X(0)=X'(l)=0$ & $\left(\frac{(n+\frac12)\pi}{l}\right)^2$ & $\sin\left(\frac{(n+\frac12)\pi}{l}x\right)$ & $0,1,\dots$ \\
+$X'(0)=X(l)=0$ & $\left(\frac{(n+\frac12)\pi}{l}\right)^2$ & $\cos\left(\frac{(n+\frac12)\pi}{l}x\right)$ & $0,1,\dots$ \\
+$X'(0)=X'(l)=0$ & $\left(\frac{n\pi}{l}\right)^2$ & $\cos\left(\frac{n\pi}{l}x\right)$ & $0,1,\dots$ \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§10}{练习（先自己做，详解在最后）}
+
+三道题分别练：第 3 类的完整求解（P1）、$\lambda<0$ 的两种排除方式（P2）、把一般的 $l$ 代成具体值的计算（P3）。题干只给条件与要求，不给提示。
+
+\practice{P1}{自编，2026-11-13}{在 $(0,1)$ 上求 $X''+\lambda X=0$ 满足 $X'(0)=0$、$X(1)=0$ 的全部特征值与特征函数；写出 $\lambda_0,\lambda_1,\lambda_2$ 的三位小数，并指出 $X_1$ 在 $(0,1)$ 内的零点位置。}{第 3 类边界条件的判据式、$n$ 的起点、特征函数的零点。}{ans:P1}
+
+\practice{P2}{自编，2026-11-13}{对边界条件 $X(0)=0$、$X'(l)=0$，说明 $\lambda<0$ 时没有非零解。要求写出两种论证：(a) 直接代入排除；(b) 用 §4.1 的能量恒等式。再说明为什么 $\lambda=0$ 也不是特征值。}{三种 $\lambda$ 的分段讨论、双曲函数的定号、能量恒等式与边界项为零的理由。}{ans:P2}
+
+\practice{P3}{自编，2026-11-13}{取 $l=\pi$、边界条件 $X(0)=X(\pi)=0$。写出 $\lambda_n$ 与 $X_n$ 的精确表达式（$n=1,2,3$），求归一化常数 $c_n$ 使 $\int_0^\pi(c_nX_n)^2\dd x=1$，并验证 $n=1$ 与 $n=2$ 的特征函数在 $(0,\pi)$ 上正交。}{把一般的 $l$ 代成具体值、平方积分、归一化、正交性的具体验证。}{ans:P3}
+
+%=============================================================
+\appendix
+\hdr{附录}{练习详解}
+
+\qstem{（本讲义自编）本附录收 §10 三道练习的详解。每道题开头都重述对象、条件与目标，可以不翻回正文直接读；解法里的每一步都写了依据。}
+
+\answerstart{P1}{自编，2026-11-13}{区间 $(0,1)$，$X''+\lambda X=0$，$X'(0)=0$、$X(1)=0$；求全部 $\lambda_n$、$X_n$ 及 $\lambda_0,\lambda_1,\lambda_2$ 的数值。}
+
+\textbf{第一步：分三种 $\lambda$。} 这是第 3 类边界条件（$l=1$）：左端给 $X'$、右端给 $X$。
+
+（i）$\lambda=-\mu^2<0$：$X=C_1\cosh(\mu x)+C_2\sinh(\mu x)$，$X'=\mu C_1\sinh(\mu x)+\mu C_2\cosh(\mu x)$。$X'(0)=\mu C_2=0\Rightarrow C_2=0$，$X=C_1\cosh(\mu x)$；$X(1)=C_1\cosh\mu=0$，而 $\cosh\mu\ge1$，故 $C_1=0$。只有零解。
+
+（ii）$\lambda=0$：$X=C_1+C_2x$，$X'=C_2$。$X'(0)=C_2=0$，$X(1)=C_1=0$。只有零解，$\lambda=0$ 不是特征值。
+
+（iii）$\lambda=\mu^2>0$：$X=C_1\cos(\mu x)+C_2\sin(\mu x)$，$X'(0)=\mu C_2=0\Rightarrow C_2=0$，故 $X=C_1\cos(\mu x)$。代入 $X(1)=0$：
+\[
+C_1\cos\mu=0\quad\Longrightarrow\quad \cos\mu=0\quad\Longrightarrow\quad \mu=\left(n+\frac12\right)\pi,\quad n=0,1,2,\dots
+\]
+
+\textbf{第二步：写特征值与特征函数。} 由 $l=1$，
+\[
+\lambda_n=\mu_n^2=\left(n+\frac12\right)^2\pi^2,\qquad
+X_n(x)=\cos\!\left(\left(n+\frac12\right)\pi x\right),\qquad n=0,1,2,\dots
+\]
+
+\textbf{第三步：数值。}
+\[
+\lambda_0=\frac{\pi^2}{4}\approx2.467,\qquad
+\lambda_1=\frac{9\pi^2}{4}\approx22.207,\qquad
+\lambda_2=\frac{25\pi^2}{4}\approx61.685 .
+\]
+
+\textbf{第四步：零点。} $X_1(x)=\cos\frac{3\pi x}{2}=0$ 要求 $\frac{3\pi x}{2}=\frac{\pi}{2}+k\pi$，即 $x=\frac{1+2k}{3}$。在 $(0,1)$ 内只有 $k=0$ 的 $x=\frac13$（$k=1$ 给 $x=1$，是端点）。所以 $X_1$ 有一个内点零点 $x=\frac13$，与“$n=1$ 时有 $n$ 个内点零点”一致。
+
+\textbf{自检。} 能量恒等式应给出 $\lambda_1=\int_0^1X_1'^2/\int_0^1X_1^2$。由 $\int_0^1\cos^2\frac{3\pi x}{2}\dd x=\frac12$、$\int_0^1\left(\frac{3\pi}{2}\sin\frac{3\pi x}{2}\right)^2\dd x=\frac{9\pi^2}{4}\cdot\frac12$，商为 $\frac{9\pi^2}{4}$，与 $\lambda_1$ 一致。
+
+\answercontinue{P1}{本题条件：区间 $(0,1)$，$X(0)=0$ 改为 $X'(0)=0$（第 3 类），右端 $X(1)=0$；答案 $\lambda_n=(n+\frac12)^2\pi^2$，$X_n=\cos((n+\frac12)\pi x)$。}
+
+\textbf{常见错误与纠正。}
+\begin{itemize}
+  \item 把 $n$ 从 $1$ 开始：会漏掉 $\lambda_0=\pi^2/4$ 这个最小的特征值。判据是“$\mu>0$ 是否允许”，$\mu=\pi/2>0$ 允许，故 $n=0$ 必须保留。
+  \item 把特征函数写成 $\sin$：错。$X'(0)=0$ 时留下的是余弦（$X=C_1\cos\mu x$，$C_1\ne0$），因为 $\cos$ 在 $x=0$ 处斜率为零。
+  \item 把 $\lambda=0$ 也算进去：错。$X'(0)=0$ 迫使 $C_2=0$，$X=C_1$ 是常数；再由 $X(1)=0$ 得 $C_1=0$。只有当右端条件也是 $X'=0$ 时，常数才活下来。
+\end{itemize}
+
+%=============================================================
+
+\answerstart{P2}{自编，2026-11-13}{$X(0)=0$、$X'(l)=0$（第 2 类），$l>0$；要求证明 $\lambda<0$ 无非零解，并说明 $\lambda=0$ 也不是特征值。}
+
+\textbf{(a) 直接代入。} $\lambda=-\mu^2<0$ 时通解与导数如 \eqref{eq:neg}：
+\[
+X=C_1\cosh(\mu x)+C_2\sinh(\mu x),\qquad
+X'=\mu C_1\sinh(\mu x)+\mu C_2\cosh(\mu x).
+\]
+由 $X(0)=0$ 得 $C_1\cosh0+C_2\sinh0=C_1=0$，故 $X=C_2\sinh(\mu x)$、$X'=\mu C_2\cosh(\mu x)$。由 $X'(l)=0$：
+\[
+\mu C_2\cosh(\mu l)=0 .
+\]
+这里 $\mu>0$，且 $\cosh(\mu l)\ge1>0$，两个因子都不为零，只能是 $C_2=0$，于是 $X\equiv0$。所以 $\lambda<0$ 时只有零解。
+
+\textbf{(b) 能量恒等式。} 用 $X$ 乘方程并在 $(0,l)$ 上积分、分部积分：
+\[
+\lambda\int_0^lX^2\dd x=\int_0^lX'^2\dd x-\Big[X(l)X'(l)-X(0)X'(0)\Big].
+\]
+本题的边界条件是 $X(0)=0$、$X'(l)=0$，所以 $X(0)X'(0)=0$、$X(l)X'(l)=0$，边界项为零。于是
+\[
+\lambda=\frac{\int_0^lX'^2\dd x}{\int_0^lX^2\dd x}\ge0,
+\]
+与 $\lambda<0$ 矛盾。故无非零解。（这正是 §4.1 定理的一个实例：定理不依赖 $\lambda$ 的符号，直接把 $\lambda$ 夹在非负数里。）
+
+\textbf{$\lambda=0$ 为什么也不行。} $\lambda=0$ 时 $X=C_1+C_2x$，$X'=C_2$。$X(0)=C_1=0$，$X'=C_2$，$X'(l)=C_2=0$，故 $X\equiv0$。用能量恒等式看：$\lambda=0$ 要求 $\int X'^2=0$，即 $X$ 为常数；而 $X(0)=0$ 把这个常数压成 $0$。
+
+\answercontinue{P2}{本题条件：$X(0)=0$、$X'(l)=0$，$l>0$；已得 $\lambda<0$ 与 $\lambda=0$ 均只有零解。}
+
+\textbf{与正特征值的对照。} 本题的 $\lambda>0$ 判据是 $\cos(\mu l)=0$，即 $\mu_n=(n+\frac12)\pi/l$、$\lambda_n=((n+\frac12)\pi/l)^2$，全部为正，与 (a)(b) 的结论相容。
+
+\textbf{为什么 (b) 比 (a) 更省事。} (a) 要写通解、代两个端点、观察 $\cosh$ 的符号；(b) 只有一个式子，且不需要写出通解。代价是 (b) 不告诉你 $\lambda$ 到底取哪些值——它只排除了 $\lambda<0$ 与（当有 Dirichlet 端时）$\lambda=0$。求特征值仍须解判据式。
+
+\textbf{一个易错点。} 分部积分后边界项是 $X(l)X'(l)-X(0)X'(0)$，两个端点各是一对“值乘导数”。若误以为边界项只要 $X$ 在端点为零就整个为零，就会在只给 $X'$ 的端点上出错。正确的判断是：\textbf{每个端点单独看，$X$ 与 $X'$ 至少有一个为零，该端点的乘积才为零}。
+
+%=============================================================
+
+\answerstart{P3}{自编，2026-11-13}{$l=\pi$，$0<x<\pi$，$X''+\lambda X=0$，$X(0)=X(\pi)=0$；求 $\lambda_n$、$X_n$（$n=1,2,3$）、归一化常数 $c_n$，并验证 $n=1,2$ 正交。}
+
+\textbf{第一步：套用第 1 类的通式。} 由 §3.1，$\lambda_n=(n\pi/l)^2$、$X_n=\sin(n\pi x/l)$，$n\ge1$。代入 $l=\pi$：
+\[
+\lambda_n=n^2,\qquad X_n(x)=\sin(nx),\qquad n=1,2,3,\dots
+\]
+展开写：
+\[
+\lambda_1=1,\ X_1=\sin x;\qquad
+\lambda_2=4,\ X_2=\sin2x;\qquad
+\lambda_3=9,\ X_3=\sin3x .
+\]
+核对边界：$\sin0=0$，$\sin(n\pi)=0$，成立。核对方程：$X_n''=-n^2X_n=-\lambda_nX_n$，成立。
+
+\textbf{第二步：平方积分。} 用 $\sin^2\theta=\frac{1-\cos2\theta}{2}$：
+\[
+\int_0^\pi\sin^2(nx)\dd x=\int_0^\pi\frac{1-\cos(2nx)}{2}\dd x=\frac{\pi}{2}-\frac{1}{2}\cdot\frac{\sin(2n\pi)}{2n}=\frac{\pi}{2},
+\]
+最后一步用了 $\sin(2n\pi)=0$（$n$ 为整数）。
+
+\textbf{第三步：归一化。} 要求 $\int_0^\pi(c_nX_n)^2\dd x=1$，即 $c_n^2\cdot\frac{\pi}{2}=1$，故
+\[
+c_n=\sqrt{\frac{2}{\pi}}\quad(\text{对一切 }n\ \text{相同}).
+\]
+于是归一化后的特征函数是 $\sqrt{2/\pi}\,\sin(nx)$，满足 $\int_0^\pi\left(\sqrt{2/\pi}\sin nx\right)^2\dd x=1$。
+
+\textbf{第四步：验证正交。} 用积化和差 $\sin A\sin B=\frac{\cos(A-B)-\cos(A+B)}{2}$，取 $n=1$、$m=2$：
+\[
+\int_0^\pi\sin x\sin2x\dd x
+=\frac12\int_0^\pi\big(\cos x-\cos3x\big)\dd x
+=\frac12\Big[\sin x-\frac{\sin3x}{3}\Big]_0^\pi=0,
+\]
+因为 $\sin\pi=\sin0=0$、$\sin3\pi=\sin0=0$。这与 §5.1 的一般证明一致：$X_1$ 与 $X_2$ 属于不同特征值（$1\ne4$），必正交。
+
+\answercontinue{P3}{本题条件：$l=\pi$，$X(0)=X(\pi)=0$；已得 $\lambda_n=n^2$、$X_n=\sin nx$、$c_n=\sqrt{2/\pi}$。}
+
+\textbf{一般情形的正交性（供对照）。} 对任意整数 $m\ne n$，
+\[
+\int_0^\pi\sin(mx)\sin(nx)\dd x
+=\frac12\left[\frac{\sin((m-n)x)}{m-n}-\frac{\sin((m+n)x)}{m+n}\right]_0^\pi=0,
+\]
+因为 $\sin$ 在 $\pi$ 的整数倍处为零。所以 $\{c_nX_n\}$ 是一组标准正交函数系——这正是 §5.3 展开公式里系数 $a_n=\int fX_n/\int X_n^2$ 的分母为常数 $\pi/2$ 的原因。
+
+\textbf{与 $l$ 的关系。} 若把 $l$ 从 $\pi$ 换回一般的 $l$，$\lambda_n$ 变成 $(n\pi/l)^2$、平方积分变成 $l/2$、归一化常数变成 $\sqrt{2/l}$。三者都随 $l$ 变，但“$\sin$ 型、$n$ 从 $1$ 起、平方积分是长度的一半”这三件事不变。
+
+\flowerrule
+\callout{\textbf{复核记录。} 本讲义的四类结论（特征值、特征函数、$n$ 的起点）、$\lambda<0$ 与 $\lambda=0$ 的 $2\times2$ 行列式、正交性与归一化值、能量恒等式、内点零点个数、附录三道练习的数值（$2.467$、$22.207$、$61.685$、$x=1/3$、$c_n=\sqrt{2/\pi}$），均已用 sympy 脚本 \texttt{verify-sl-eigen-20261113.py} 逐条断言核对，共 150 条，全部通过。\textbf{未完成的部分}：§5.3 的完备性只作引用、未作证明（属 Sturm--Liouville 理论）；最大原理（§4.2）与正交性（§5.1）是逻辑推导，未做数值复核，但正交性已用具体 $m,n$ 数值抽样验证。}
+
+\end{document}

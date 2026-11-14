@@ -1,0 +1,109 @@
+\hdr{§10}{十个通用套路：竞赛题与课本题的差别就在这}
+
+\textbf{这一章怎么用。}前面九章是“按章节”的知识，这一章是“跨章节”的动作。竞赛卷里那些看起来没见过的题，九成是下面十个套路之一。\emph{今晚只记标题和第一步}，明早在考场上能想起来就够了。
+
+\subhdr{套路 1：构造辅助函数（三步法）}
+
+\textbf{第一步}把结论里的 $\xi$ 换成 $x$，移项成“某式 $=0$”；\textbf{第二步}把那个式子看成某个 $F$ 的导数，写出 $F$；\textbf{第三步}验证 $F$ 在两端相等（或满足罗尔条件），下结论。
+
+\textbf{最常见的三种结论与对应 $F$}：
+\[
+f'+f=0\Rightarrow F=e^xf;\qquad
+xf'+kf=0\Rightarrow F=x^kf;\qquad
+\frac{f'g-fg'}{g^2}=0\Rightarrow F=\frac fg .
+\]
+
+\subhdr{套路 2：积分不等式的三件武器}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.4cm}p{6.4cm}p{3.6cm}@{}}
+\thead{武器} & \thead{式子} & \thead{何时用}\\
+\hline
+柯西--施瓦茨 & $\left(\int fg\right)^2\le\int f^2\int g^2$ & 出现 $(\int f)^2$\\
+Jensen & $f''>0$：$f\!\left(\frac{a+b}{2}\right)\le\frac{f(a)+f(b)}{2}$ & 出现中点、平均\\
+变上限单调 & $F(x)=\int_a^x$ 差，证 $F'\ge0$ & 出现“证明 $\int_a^b f\ge$ 某值”\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{套路 3：把和式变成积分（黎曼和）}
+
+看到 $\displaystyle\frac1n\sum_{k=1}^n f\!\left(\frac kn\right)$ 就是 $\displaystyle\int_0^1f$。三个常见变体：
+\[
+\frac1{n^2}\sum_{k=1}^n k f\!\left(\frac kn\right)\to\int_0^1xf(x)\dd x,\qquad
+\frac1n\sum_{k=1}^n f\!\left(\frac{2k-1}{2n}\right)\to\int_0^1f(x)\dd x .
+\]
+后者是“中点法”，$2k-1$ 恰好取每个小区间的中点。
+
+\subhdr{套路 4：夹逼与放缩}
+
+\textbf{常用放缩}（$n\ge1$）：
+\[
+0\le\frac{n}{2^n}\le\frac{1}{n},\qquad
+\ln n\le n-1,\qquad
+\frac{1}{n+1}\le\ln\left(1+\frac1n\right)\le\frac1n .
+\]
+最后一式是“$\ln$ 的切线夹逼”，用来估计调和级数的部分和。
+
+\subhdr{套路 5：对称性与轮换对称}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 积分区域关于 $x$ 轴对称，被积函数关于 $y$ 是奇函数 $\Rightarrow$ 积分为 0。
+\item 区域关于 $y=x$ 对称 $\Rightarrow$ $\iint f(x,y)=\iint f(y,x)$，常用来把 $\frac{x^2}{x^2+y^2}$ 变成 $\frac12$。
+\item 曲线／曲面同理，但注意\emph{第二类}积分还要看法向是否随对称翻转。
+\end{itemize}
+
+\subhdr{套路 6：变上限积分}
+
+把“证明积分不等式”或“解积分方程”统一成：设 $F(x)=\int_a^xf$，对 $F$ 求导、用单调性、或把它变成微分方程。这是 §3.3 与 §8.5 的合体，出现频率极高。
+
+\subhdr{套路 7：泰勒定阶}
+
+极限题里“展开到几阶”由分母决定；不等式题里“展开到几阶”由需要控制的导数阶决定。经验：出现 $x-\sin x$ 展开到 $x^3$，出现 $e^x-1-x$ 展开到 $x^2$，出现 $\ln(1+x)-x$ 展开到 $x^2$。
+
+\subhdr{套路 8：幂级数求和的两条路}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 系数分母含 $n$：\textbf{先积后导}——先逐项积分（$x^n/n\to x^{n+1}/(n(n+1))$ 之类），化成几何级数，再求导回去。
+\item 系数是 $n$ 的多项式：\textbf{先导后积}——先逐项求导，系数降次后凑几何级数，再积分回去。
+\end{itemize}
+
+\subhdr{套路 9：格林补线、高斯补面}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item 画图，确认要算的是“开口”的曲线／曲面；
+\item 补上最简单的闭合部分（直线段、坐标面片）；
+\item 对闭合面用公式；
+\item \textbf{减去}补的部分上的积分。
+\end{enumerate}
+补的部分要选“积分容易算”的——通常取坐标轴上的线段或平面片，其上某个微元为 0。
+
+\subhdr{套路 10：由几何条件建微分方程}
+
+把文字条件翻译成 $y,y'$ 的关系：
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item “曲线上任一点处的切线在 $x$ 轴上的截距等于 $\ldots$”：切线方程 $Y-y=y'(X-x)$，令 $Y=0$ 得截距 $X=x-\frac{y}{y'}$。
+\item “曲边梯形的面积与 $\ldots$ 成正比”：面积 $=\int_0^x y\dd t$，求导得 $y$ 的方程。
+\item “体积与 $\ldots$”：旋转体体积 $=\pi\int_0^x y^2\dd t$，求导得 $\pi y^2=\ldots$。
+\end{itemize}
+
+\subhdr{附：不等式武器库（证明题常用）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{不等式} & \thead{条件／等号}\\
+\hline
+$e^x\ge1+x$ & 一切 $x$，$x=0$ 取等\\
+$\ln(1+x)\le x$ & $x>-1$，$x=0$ 取等\\
+$\sin x\le x\le\tan x$ & $0\le x<\pi/2$，$x=0$ 取等\\
+$\dfrac{x}{1+x}\le\ln(1+x)\le x$ & $x\ge0$\\
+$(1+x)^\alpha\ge1+\alpha x$ & $x\ge-1$，$\alpha\ge1$ 或 $\alpha\le0$；$0<\alpha<1$ 时反向\\
+AM--GM & $\dfrac{a_1+\cdots+a_n}{n}\ge\sqrt[n]{a_1\cdots a_n}$，全等取等\\
+柯西 & $(\sum a_ib_i)^2\le\sum a_i^2\sum b_i^2$\\
+\end{tabular}
+\tabbot
+\end{center}

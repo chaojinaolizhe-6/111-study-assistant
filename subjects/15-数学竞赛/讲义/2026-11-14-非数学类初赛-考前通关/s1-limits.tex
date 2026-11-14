@@ -1,0 +1,118 @@
+\hdr{§1}{极限与连续：先算对，再谈存在}
+
+\textbf{这一章在竞赛里的样子。}填空题第一道几乎每年都是极限，5 分，30 秒内应当出结果；解答题偶尔考“证明极限存在”或“由极限定义函数”。核心只有一句话：\emph{极限题不是靠灵感，是靠把式子化成已知的几类}。
+
+\subhdr{1.1 极限的四种算法，按“看到什么”选}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.6cm}p{8.2cm}@{}}
+\thead{你看到的特征} & \thead{该做的事}\\
+\hline
+分式，分子分母都趋于 0 或 $\infty$ & 先做\textbf{等价无穷小替换}；替换后仍为 $0/0$ 再用洛必达或泰勒\\
+含 $\sin,\tan,\ln(1+x),e^x-1$ 的复合 & \textbf{泰勒展开}，展开到“分子分母同阶”为止\\
+$1^\infty$ 型：$u(x)^{v(x)}$，$u\to 1,\ v\to\infty$ & 取对数或直接用 $e^{\lim (u-1)v}$\\
+$n$ 项和、$n$ 个因子连乘 & 先提 $1/n$ 或 $1/n^2$，写成\textbf{黎曼和}，转成定积分\\
+无理式相减 & 有理化，或乘共轭因子\\
+$n$ 项递推 $a_{n+1}=f(a_n)$ & \textbf{单调有界}：先证有界（归纳）、再证单调（作差或看 $f$ 的单调性），最后令 $a=\lim a_n$ 解方程\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{1.2 等价无穷小（$x\to 0$）\ding{72}必背}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}llll@{}}
+$\sin x\sim x$ & $\tan x\sim x$ & $\arcsin x\sim x$ & $\arctan x\sim x$\\
+$1-\cos x\sim \dfrac{x^2}{2}$ & $\ln(1+x)\sim x$ & $e^x-1\sim x$ & $a^x-1\sim x\ln a$\\
+$(1+x)^{\alpha}-1\sim \alpha x$ & $x-\sin x\sim \dfrac{x^3}{6}$ & $\tan x-x\sim \dfrac{x^3}{3}$ & $\arcsin x-x\sim \dfrac{x^3}{6}$\\
+$\tan x-\sin x\sim \dfrac{x^3}{2}$ & $x-\ln(1+x)\sim \dfrac{x^2}{2}$ & $\sqrt{1+x}-1\sim \dfrac{x}{2}$ & $\sin x-x\cos x\sim \dfrac{x^3}{3}$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\warnbox{\textbf{替换只在“乘除因子”上合法。}加减法里整体替换会丢阶：$\tan x-\sin x$ 若分别换成 $x-x=0$ 就错了，正确做法是先提出 $\tan x(1-\cos x)$ 再替换，得 $x\cdot\frac{x^2}{2}=\frac{x^3}{2}$。\\
+\textbf{替换的方向要一致。}所有因子必须换成\emph{同阶}的等价量；一个换到 $x^3$、另一个只换到 $x$，结果就不可信。}
+
+\subhdr{1.3 泰勒：把“抵消”算到底}
+
+常用展开（佩亚诺余项，$x\to0$）：
+\begin{align*}
+e^x &= 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+o(x^3), &
+\sin x &= x-\frac{x^3}{3!}+\frac{x^5}{5!}+o(x^5),\\
+\cos x &= 1-\frac{x^2}{2!}+\frac{x^4}{4!}+o(x^4), &
+\ln(1+x) &= x-\frac{x^2}{2}+\frac{x^3}{3}+o(x^3),\\
+(1+x)^{\alpha} &= 1+\alpha x+\frac{\alpha(\alpha-1)}{2}x^2+o(x^2), &
+\arctan x &= x-\frac{x^3}{3}+o(x^3),\\
+\tan x &= x+\frac{x^3}{3}+o(x^3), &
+\arcsin x &= x+\frac{x^3}{6}+o(x^3).
+\end{align*}
+
+\textbf{阶数怎么定}：看分母的最低次幂。分母是 $x^3$，分子就展开到 $x^3$，多展开的项写进 $o(x^3)$。如果展开到某阶后分子恰好为 0，说明需要再降一阶看——这正是“抵消”的含义。
+
+\callout{\textbf{例 1（$1^\infty$ 型）} 求 $\displaystyle\lim_{x\to0}(\cos x)^{1/x^2}$。
+
+\textbf{为什么这样做}：底数 $\to1$、指数 $\to\infty$，属 $1^\infty$。写成 $e^{\frac{\ln\cos x}{x^2}}$，指数部分是一个 $0/0$ 极限，用泰勒一次算到底。
+\[
+\ln\cos x=\ln\!\left(1-\frac{x^2}{2}+o(x^2)\right)=-\frac{x^2}{2}+o(x^2),
+\]
+因为 $\ln(1+u)=u+o(u)$ 且 $u=-\frac{x^2}{2}+o(x^2)$。于是
+\[
+\frac{\ln\cos x}{x^2}\to-\frac12,\qquad \text{原式}=e^{-1/2}.
+\]
+\textbf{要点}：$\ln\cos x$ 不能直接等价成 $\cos x-1$ 就完事——要先确认 $\cos x-1\sim -x^2/2$，两者一致，但写成 $\ln(1+u)$ 的形式才不会在下一步丢阶。}
+
+\subhdr{1.4 洛必达：什么时候能用，什么时候会骗你}
+
+使用条件三条：(1)$0/0$ 或 $\infty/\infty$；(2)在去心邻域内分子分母可导且分母导数不为 0；(3)$\lim f'/g'$ 存在（或为 $\pm\infty$）。
+
+\warnbox{\textbf{反例}：$\displaystyle\lim_{x\to\infty}\frac{x+\sin x}{x}=1$，但 $\dfrac{(x+\sin x)'}{x'}=1+\cos x$ 的极限不存在。可见“导数之比的极限不存在”不能反推“原极限不存在”。此时应用夹逼：$1-\frac1x\le\frac{x+\sin x}{x}\le1+\frac1x$。\\
+\textbf{另一类失效}：含 $\sqrt{x^2}$ 之类在 $x\to\infty$ 时导数震荡的式子，洛必达会把简单问题变复杂。看到 $\sin,\cos$ 在无穷远处，先想夹逼。}
+
+\subhdr{1.5 数列极限的三个固定套路}
+
+\textbf{(a) 黎曼和。}若 $a_n=\dfrac1n\sum_{k=1}^{n}f\!\left(\dfrac kn\right)$，则 $a_n\to\displaystyle\int_0^1 f(x)\dd x$。
+
+\callout{\textbf{例 2} 求 $\displaystyle\lim_{n\to\infty}\frac1n\left(\sqrt{1+\frac1n}+\sqrt{1+\frac2n}+\cdots+\sqrt{1+\frac nn}\right)$。
+
+\textbf{识别}：$\frac1n$ 提出后，括号里是 $f(k/n)$ 的求和，$f(x)=\sqrt{1+x}$。
+\[
+\lim=\int_0^1\sqrt{1+x}\dd x=\frac23(1+x)^{3/2}\Big|_0^1=\frac23(2\sqrt2-1).
+\]
+\textbf{要点}：区间不一定是 $[0,1]$。若和式是 $\frac1n\sum f\!\left(1+\frac kn\right)$，对应 $\int_1^2 f$；若是 $\frac1n\sum f\!\left(\frac{2k}{n}\right)$，对应 $\int_0^2 f$——看 $k/n$ 的系数。}
+
+\textbf{(b) 单调有界。}两步：先证有界（通常用归纳法），再证单调（$a_{n+1}-a_n$ 定号，或 $a_{n+1}=f(a_n)$ 且 $f$ 单调）。两步都成立后，极限存在，设为 $a$，对递推式两边取极限解方程。
+
+\callout{\textbf{例 3} $a_1=\sqrt2$，$a_{n+1}=\sqrt{2+a_n}$，求 $\lim a_n$。
+
+\textbf{有界}：$a_1=\sqrt2<2$；若 $a_n<2$，则 $a_{n+1}=\sqrt{2+a_n}<\sqrt4=2$。故 $a_n<2$ 对一切 $n$ 成立。\\
+\textbf{单调}：$a_{n+1}^2-a_n^2=2+a_n-a_n^2=(2-a_n)(1+a_n)>0$，故 $a_{n+1}>a_n$。\\
+\textbf{求值}：设极限为 $a$，则 $a=\sqrt{2+a}$，即 $a^2-a-2=0$，得 $a=2$ 或 $a=-1$；因 $a_n>0$，取 $a=2$。}
+
+\textbf{(c) 夹逼。}把和式放缩成“能求和的上下界”，两端极限相同即得。常用放缩：$\frac{1}{n+n}\le\frac{1}{n+k}\le\frac1n$；$\sqrt[n]{n}\to1$；$0\le\frac{n}{2^n}\to0$。
+
+\subhdr{1.6 连续、间断点与“证明存在”}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item 连续三要素：$f(x_0)$ 有定义、极限存在、二者相等。
+\item 间断点分类：可去（极限存在但不等于函数值）、跳跃（左右极限存在不等）、无穷、振荡。
+\item \textbf{零点定理}：$f$ 在 $[a,b]$ 连续且 $f(a)f(b)<0$，则 $(a,b)$ 内至少一个零点。这是“证明方程有解”的唯一常用工具。
+\item \textbf{介值定理}：连续函数取遍两端之间的所有值。
+\item \textbf{最值定理}：闭区间连续函数必有最大最小值。证明不等式时常用：先证最值非负。
+\end{itemize}
+
+\callout{\textbf{例 4（存在性证明的写法）} 证明方程 $x=\cos x$ 在 $(0,\pi/2)$ 内有且仅有一个实根。
+
+\textbf{存在}：令 $f(x)=x-\cos x$。$f(0)=-1<0$，$f(\pi/2)=\pi/2>0$，$f$ 连续，由零点定理，$(0,\pi/2)$ 内至少一根。\\
+\textbf{唯一}：$f'(x)=1+\sin x>0$ 在 $(0,\pi/2)$ 内恒成立，$f$ 严格递增，故至多一根。\\
+\textbf{结论}：恰有一根。\\
+\textbf{要点}：竞赛的“证明有解”几乎都是“存在性用零点定理 + 唯一性用单调性”这两句，分开写清楚。}
+
+\warnbox{\textbf{本章四个高频失分点。}
+(1)等价无穷小在加减法里乱替换（见 §1.2 警告）；
+(2)洛必达前没验证 $0/0$ 或 $\infty/\infty$，直接求导；
+(3)数列题只证了单调、没证有界，或反过来；
+(4)用零点定理时忘了写“$f$ 在 $[a,b]$ 上连续”——这一步是给分点。}

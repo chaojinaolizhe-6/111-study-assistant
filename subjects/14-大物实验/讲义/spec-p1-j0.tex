@@ -1,0 +1,203 @@
+%=====================================================================
+\hdr{J0}{把仪器调到能用：五步，与怎么读数}
+
+\subhdr{① 这一环交出什么}
+
+不交数，交一个\textbf{状态}：三条轴摆正、望远镜聚焦无穷远、游标读数可信。这一环的产物是后面四个测量的前提，用时约 55 分钟。
+
+三条判据，缺一条后面全部带系统误差：
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item 平面镜\textbf{正反两个面}反射的绿十字都与上叉丝重合；
+\item 狭缝像\textbf{清晰、竖直、居中}，且眼睛移动时无视差；
+\item 每次读数都读两个游标，两值恒差 $180^{\circ}$。
+\end{enumerate}
+
+\subhdr{② 为什么这样能测：三条轴与一个自准直}
+
+讲义 p8 把「调好」写成三条要求。翻成一句几何话，后面五步就都有归宿：
+
+\callout{\textbf{望远镜光轴、准直管光轴、仪器主轴三者两两垂直；待测元件的光学面平行于主轴。}}
+
+为什么非要这样：所有角度公式（$\alpha$、$\delta_{\min}$、$d\sin\varphi=k\lambda$）都是在\textbf{垂直于主轴的那个平面}里推的。光一旦离开这个平面，你读到的角就不是公式里的角。这个平面叫\textbf{主截面}（main section），口试问的就是它。
+
+\textbf{自准直为什么能看见自己的像。}望远镜不是普通「物镜 + 目镜」：物镜与目镜之间插了一块\textbf{分划板}，分划板前有一块全反射小棱镜，把绿色 LED 的光引到分划板上那个透光的「十」上——于是「十」变成一枚\textbf{发光的物}，位置就在分划板上。接下来取决于分划板离物镜多远，分三步说：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+\item 分划板正好在物镜焦面上时，从「十」发出的光经物镜后成为\textbf{平行光}；但「十」不在光轴上（在轴下方 $a$），所以这束平行光与光轴成角 $\theta\approx a/f$，方向朝上。
+\item 平面镜的法线沿光轴，反射只把\textbf{沿轴的分量}反过来，垂直分量不变；返回的仍是平行光，但倾斜到\textbf{另一侧}。
+\item 这束平行光再穿过物镜，被聚焦回焦面，落在\textbf{中心横丝上方} $f\tan\theta=a$ 处——正好是\textbf{上叉丝}。
+\end{enumerate}
+
+一句话：\textbf{像与物关于光轴对称}。物在轴下 $a$，像就在轴上 $a$。所以判据是「绿十字与\textbf{上叉丝}重合」，不是「像回到『十』身上」。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth,line join=round,scale=0.92,transform shape]
+  \draw[dash dot,color=black!45] (-1.0,0) -- (8.8,0);
+  % 分划板
+  \draw[thick] (0,-1.9) -- (0,1.9);
+  \draw[thick] (-0.24,0.5) -- (0.24,0.5);
+  \draw[thick] (-0.36,0) -- (0.36,0);
+  \draw[thick,color=violet] (-0.13,-0.5) -- (0.13,-0.5);
+  \draw[thick,color=violet] (0,-0.63) -- (0,-0.37);
+  \node[font=\footnotesize,anchor=east,color=violetdeep] at (-0.17,0.50){上叉丝};
+  \node[font=\footnotesize,anchor=east] at (-0.17,0){中心横丝};
+  \node[font=\footnotesize,anchor=east,color=violet] at (-0.17,-0.50){透光「十」};
+  \node[font=\footnotesize] at (0,-2.10){分划板（焦面）};
+  % 物镜
+  \draw[thick] (3,-1.9) to[bend left=16] (3,1.9);
+  \draw[thick] (3,-1.9) to[bend right=16] (3,1.9);
+  \node[font=\footnotesize] at (3,-2.10){物镜（焦距 $f$）};
+  % 平面镜
+  \draw[thick] (8,-1.8) -- (8,2.2);
+  \foreach \y in {-1.7,-1.4,...,2.1}{\draw[black!50] (8,\y) -- (8.24,\y-0.24);}
+  \node[font=\footnotesize,anchor=west] at (8.10,2.34){平面镜};
+  % 光线
+  \draw[arr,color=violetdeep] (0,-0.5) -- (3,0);
+  \draw[arr,color=violetdeep] (3,0) -- (7.96,0.827);
+  \draw[arrd,color=black!70] (7.96,0.827) -- (3,1.6667);
+  \draw[arrd,color=black!70] (3,1.6667) -- (0.04,0.507);
+  \fill[violetdeep] (0,0.5) circle (0.055);
+  \fill[black!70] (8,0.8333) circle (0.045);
+  \draw[black!55] (4.70,0) arc[start angle=0,end angle=9.46,radius=0.45];
+  \node[font=\footnotesize] at (4.96,0.19){$\theta$};
+  \node[font=\footnotesize,anchor=north] at (5.10,-0.42){出射：平行光};
+  \node[font=\footnotesize,anchor=south] at (5.60,1.78){返回：平行光};
+\end{tikzpicture}
+\caption{为什么像落在上叉丝（示意，角度已放大；实际 $\theta=a/f\approx0.6^{\circ}$）。紫实线＝出射，灰虚线＝返回。物点「十」在轴下 $a$，出射平行光上倾；反射后向另一侧倾斜，经物镜落在轴上 $+a$，即上叉丝。}
+\end{figure}
+
+\textbf{为什么用自准直而不用眼睛看「对准了」}：镜面偏 $\gamma$，返回光偏 $2\gamma$，像点移开 $2f\gamma$。取 $f=200\ \mathrm{mm}$、$\gamma=1'$：像移约 $0.12\ \mathrm{mm}$，肉眼看得见。角度被\textbf{放大一倍}，这就是它比「大致对准」准得多的原因。
+
+\subhdr{③ 手怎么动：五步}
+
+\textbf{顺序不能换}：步骤 3 用平面镜，步骤 4 用狭缝；后者要望远镜先能看平行光。
+
+\subhdr{步骤 1：目测粗调（5 分钟，决定后面顺不顺）}
+
+\textbf{目标}：两筒大致等高对望，载物台大致水平。\quad
+\textbf{动作}：调 12（望远镜光轴竖直）与 27（准直管光轴竖直），眼睛直接沿筒身瞄，让两筒轴线大致在一条直线上；再调载物台三个调平螺钉，使台面大致水平。\quad
+\textbf{判据}：把平面镜放上台，镜面大致竖直、反射面朝望远镜。\\
+\textbf{为什么不能省}：细调螺钉的行程只有几度，而绿十字像要落进视场（约 $1^{\circ}$ 量级）才看得见。粗调差 $5^{\circ}$，后面怎么调都是白调。
+
+\subhdr{步骤 2：望远镜聚焦无穷远（自准直法）}
+
+\textbf{目标}：分划板落在物镜焦面上。\\
+\textbf{动作}：(I) 转 11 号手轮，先把\textbf{叉丝本身}看清；(II) 把双面平面镜放在载物台上，慢慢转载物台让一个反射面朝向望远镜，在视场里找那个\textbf{模糊的绿十字像}（找不到就回步骤 1）；(III) 松 9 号螺钉，前后移目镜筒，让绿像变\textbf{清晰}；(IV) 消视差：眼睛上下左右移，看绿像与叉丝是否相对移动，有就继续微移，直到\textbf{两者一起动}。\\
+\textbf{判据}：绿像清晰\textbf{且}无视差。\\
+\textbf{为什么}：无视差 $\Leftrightarrow$ 像与叉丝同面 $\Leftrightarrow$ 分划板在焦面 $\Leftrightarrow$ 出射与返回都是平行光。这三句是同一件事的三种说法。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.46\linewidth]{fig-3.12/fig12-10-mirror.png}
+\caption{平面镜在载物台上的两种摆法（讲义 p9 图 12-10）：(a) 镜面平行于一对螺钉连线；(b) 镜面垂直于一对螺钉连线。两种都行，关键是反射面朝望远镜、镜面竖直。$a,b,c$ 是三个调平螺钉。}
+\end{figure}
+
+\subhdr{步骤 3：望远镜轴垂直主轴（各半法）}
+
+\textbf{目标}：望远镜光轴 $\perp$ 主轴。\\
+\textbf{判据}（讲义 p9）：镜子的\textbf{正反两个面}反射的绿十字都要与上叉丝重合。\\
+\textbf{动作}：(1) 当前位置把绿十字调到与上叉丝重合；(2) 载物台转 $180^{\circ}$，找另一个面的像（找不到就用眼睛直接看镜面里像的位置，先把调平螺钉 $a$ 转到能看见）；(3) 看到偏差 $d$：先调\textbf{调平螺钉 $a$} 把距离\textbf{减半}，再调 \textbf{12 号} 让像\textbf{落到}上叉丝上；(4) 再转 $180^{\circ}$ 重复 (3)，直到两面都重合。
+
+\warnbox{\textbf{为什么必须「各半」，不能一次调到位？}两个偏差来源对两个面的影响方式不一样：望远镜轴歪了，两个面的像\textbf{同向}偏（一起高或一起低）；载物台歪了（镜面不垂直主轴），转 $180^{\circ}$ 后误差\textbf{反号}。设同向分量 $v$、反向分量 $u$，则正面偏差 $=v+u$、反面偏差 $=v-u$。调 12 号只改 $v$，调 $a$ 只改 $u$。若在一个面上用 $a$ 一次把偏差消光，等于把 $u$ 全转嫁给另一面而 $v$ 没动；「先减半、再归零」才是每轮把两者同时压一半，两三轮回合就都到位——原文叫它 \emph{asymptotic method}（渐近法）。}
+
+\subhdr{步骤 4：让准直管发出平行光}
+
+\textbf{目标}：狭缝落在准直管透镜的焦面上。\\
+\textbf{动作}：取下平面镜，用汞灯照亮狭缝；望远镜转过来对准准直管，从目镜看狭缝像；松 2 号螺钉，前后移狭缝套筒，使像\textbf{清晰、边缘锐、无视差}；再把缝宽调到约 $0.5$~mm。\\
+\textbf{判据}：像清晰且无视差。有视差＝狭缝不在焦面＝出来的不是平行光。\\
+\textbf{缝宽为什么定 $0.5$~mm}：太宽（$>1$~mm）亮度够，但像成宽带，对准中心全凭主观，两条近谱线还会并成一条；太窄（$<0.2$~mm）谱线细锐却太暗，缝的衍射反而让边缘发虚。$0.5$~mm 是亮度与对准精度的折中。
+
+\subhdr{步骤 5：准直管轴垂直主轴，并让狭缝竖直}
+
+\textbf{动作}：(1) 转狭缝套筒，使像\textbf{平行于横向叉丝}；(2) 调 27 号，把像\textbf{升/降到视场中央}与横向叉丝重合——此时准直管光轴 $\perp$ 主轴；(3) 把套筒\textbf{转 $90^{\circ}$}，让像平行于\textbf{竖直}叉丝；(4) 拧紧 2 号锁住。整个过程不要把套筒前后推动，那会破坏步骤 4 的聚焦。\\
+\textbf{判据}：狭缝像竖直、细锐、居中。
+
+\subhdr{步骤 6：这一次一定要记住的螺钉}
+
+\warnbox{\textbf{16 号螺钉决定「谁跟谁一起转」。}松开它，游标盘座与度盘一起转；拧紧它，两者可相对转。测量要的是「望远镜相对度盘转过的角」，所以两个读数必须相对于\textbf{同一个度盘}。规矩：\textbf{一组测量开始后，16 号的状态不许再改}。想锁死望远镜用 17 号，不要动 16 号。}
+
+\subhdr{④ 状态确认清单（调完逐项打勾，不合格就回对应步骤）}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{0.7cm}p{8.6cm}p{4.4cm}@{}}
+\toprule
+\thead{\tick} & \thead{确认什么} & \thead{不合格回哪} \\
+\midrule
+\rowstrut \tick & 叉丝本身清楚、边缘锐 & 步骤 2 第 (I) 小步 \\
+\rowstrut \tick & 绿十字像清晰、无视差 & 步骤 2 第 (III)(IV) 小步 \\
+\rowstrut \tick & 镜面正反两面都与上叉丝重合 & 步骤 3 \\
+\rowstrut \tick & 狭缝像清晰、竖直、居中 & 步骤 4、5 \\
+\rowstrut \tick & 缝宽约 $0.5$~mm & 步骤 4 \\
+\rowstrut \tick & 16 号螺钉状态记下了（松/紧） & 步骤 6 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\textbf{卡住了查这张表}（讲义没有，按现象倒推）：
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\begin{tabular}{@{}p{5.0cm}p{4.2cm}p{4.6cm}@{}}
+\toprule
+\thead{现象} & \thead{最可能的原因} & \thead{回去做哪一步} \\
+\midrule
+找不到绿色十字像 & 粗调没做好 & 步骤 1 \\
+两个面的像都偏高/偏低 & 望远镜轴歪（$v\neq0$） & 步骤 3，调 12 号 \\
+一面偏高、一面偏低 & 台面歪（$u\neq0$） & 步骤 3，调 $a$ \\
+狭缝像模糊、有视差 & 狭缝不在焦面 & 步骤 4 \\
+狭缝像不在视场中央 & 准直管轴未垂直主轴 & 步骤 5，调 27 号 \\
+狭缝像斜着 & 狭缝没转正 & 步骤 5，转套筒 \\
+读数总差一个固定角 & 望远镜轴不垂直主轴 & 整段重做步骤 3 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subhdr{⑤ 怎么读数：三步，与两个自检}
+
+\textbf{分度关系必须记准}：度盘大格 $1^{\circ}$，大格之间有一条半度刻线，所以\textbf{主尺最小分格 $30'$}；游标共 30 格、跨主尺 29 格，每格 $29'$，故\textbf{分度值 $1'$}。
+
+\textbf{一次读数做三步}（示例取自说明书算例）：
+\begin{enumerate}[label=\textbf{第 \arabic* 步}]
+\item \textbf{找游标零线}：游标上标 \textbf{0} 的那条线，看它落在主尺哪两条刻线之间。
+\item \textbf{读主尺}：取零线\textbf{已经越过}的那条主尺刻线（读数更小的那条）。算例中是 $334^{\circ}30'$。
+\item \textbf{读游标}：沿游标从 0 往 30 找那条与主尺刻线\textbf{连成一条直线}的线，它是第几格就加几分钟（算例第 $17$ 格，即 $17'$）。
+\item \textbf{相加}：$334^{\circ}30'+17'=334^{\circ}47'$。
+\end{enumerate}
+
+\textbf{两个自检}：① 结果必须落在第 2 步那两条刻线之间（$334^{\circ}47'$ 在 $334^{\circ}30'$ 与 $335^{\circ}$ 之间，$\checkmark$）；② 游标读数永远小于 $30'$，只改「分」不改「度」。
+
+\warnbox{\textbf{说明书有一处措辞要注意。}原文写「取零线\emph{右边}那条刻线」，按字面会得 $335^{\circ}$，与它自己的算例矛盾。\textbf{以算例为准}：取零线已越过的那条。现场先读一次，用自检 ① 确认方向。}
+
+\textbf{为什么必须读两个游标：偏心差。}度盘中心与主轴中心在加工上不可能重合，于是望远镜真正转过的角 $\phi$ 与盘上读出的角不相等，误差随方位变化：
+
+\[
+\varepsilon(\phi)\approx\frac{e}{R}\sin(\phi-\psi),
+\]
+
+$e$ 是偏心量、$R$ 是度盘半径、$\psi$ 是偏心方位。两个游标相差 $180^{\circ}$，所以 $\varepsilon(\phi+180^{\circ})=-\varepsilon(\phi)$——\textbf{等大反号}，取平均就消掉：
+
+\[
+\theta_1=\phi+\varepsilon,\quad \theta_2=\phi-\varepsilon
+\quad\Longrightarrow\quad
+\boxed{\;\phi=\frac{\theta_1+\theta_2}{2}\;}
+\]
+
+量级：$e=0.02\ \mathrm{mm}$、$R=60\ \mathrm{mm}$ 时单个游标最大误差约 $1.15'\approx1'$，比读数精度还大；平均后只剩二阶项，可忽略。所以\textbf{不读两个游标，等于白测}。
+
+\textbf{三条硬规矩}：① 每读一次方位，两个游标都读；② 先各自算差再平均，不要「先平均读数再相减」（数学等价，现场容易对错游标）；③ 一组测量开始后不许动 16 号。
+
+\textbf{折回规则}（J1、J2 会用）：度盘是 $0$--$360$ 的圆，望远镜实际转的是\textbf{较小的那个角}。若 $|\phi_2-\phi_1|>180^{\circ}$，改用 $360^{\circ}-|\phi_2-\phi_1|$。\textbf{必须对两个游标分别判断}，因为它们可能一个越过 $0^{\circ}$、一个没有。
+
+\subhdr{⑥ 写进报告的一句话}
+
+\callout{
+「经自准直法调节，望远镜聚焦于无穷远（绿十字像清晰无视差），平面镜正反两面反射像均与上叉丝重合，准直管出射平行光且狭缝竖直居中，满足三条调节要求。」
+}
+\warnbox{
+\textbf{台前只看这一段}：调好 = ①叉丝清 ②绿像清且无视差 ③镜面两面都重合 ④缝像竖直居中 ⑤缝宽 $0.5$~mm ⑥不动 16 号。\\
+读数 = 主尺（越过的那条）$+$ 游标（对齐的第几格）；两个游标都读，差值应 $180^{\circ}\pm5'$。
+}

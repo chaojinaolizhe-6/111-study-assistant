@@ -1,0 +1,96 @@
+\hdr{§9}{向量代数与空间解析几何：填空 5 分，背公式即可}
+
+\textbf{这一章在竞赛里的样子。}填空题的一道，考平面／直线方程、距离、夹角，或旋转曲面方程。全是公式题，不需要“想”，只需要记准。
+
+\subhdr{9.1 三个乘法}
+
+设 $\boldsymbol a=(a_1,a_2,a_3)$，$\boldsymbol b=(b_1,b_2,b_3)$。
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \textbf{点积}：$\boldsymbol a\cdot\boldsymbol b=a_1b_1+a_2b_2+a_3b_3=|\boldsymbol a||\boldsymbol b|\cos\theta$。用于求夹角、判断垂直（$\cdot=0$）、求投影。
+\item \textbf{叉积}：
+\[
+\boldsymbol a\times\boldsymbol b=
+\begin{vmatrix}
+\boldsymbol i&\boldsymbol j&\boldsymbol k\\
+a_1&a_2&a_3\\
+b_1&b_2&b_3
+\end{vmatrix},
+\]
+$|\boldsymbol a\times\boldsymbol b|$ 是以 $\boldsymbol a,\boldsymbol b$ 为邻边的平行四边形面积；方向由右手法则定。用于求法向量、判断平行（$\times=\boldsymbol0$）。
+\item \textbf{混合积}：$(\boldsymbol a,\boldsymbol b,\boldsymbol c)=\boldsymbol a\cdot(\boldsymbol b\times\boldsymbol c)$，绝对值是以三者棱的平行六面体体积。三向量共面 $\iff$ 混合积为 0。
+\end{itemize}
+
+\subhdr{9.2 平面与直线}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{4.6cm}@{}}
+\thead{对象} & \thead{方程} & \thead{要素}\\
+\hline
+平面（点法式） & $A(x-x_0)+B(y-y_0)+C(z-z_0)=0$ & 法向量 $\boldsymbol n=(A,B,C)$\\
+平面（一般式） & $Ax+By+Cz+D=0$ & 同上\\
+直线（对称式） & $\dfrac{x-x_0}{l}=\dfrac{y-y_0}{m}=\dfrac{z-z_0}{n}$ & 方向向量 $\boldsymbol s=(l,m,n)$\\
+直线（参数式） & $x=x_0+lt,\ y=y_0+mt,\ z=z_0+nt$ & 同上\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{距离与夹角}：
+\[
+d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}\quad(\text{点到平面}),
+\]
+\[
+\cos\theta=\frac{|\boldsymbol s_1\cdot\boldsymbol s_2|}{|\boldsymbol s_1||\boldsymbol s_2|}\ (\text{线线}),
+\qquad
+\sin\varphi=\frac{|\boldsymbol s\cdot\boldsymbol n|}{|\boldsymbol s||\boldsymbol n|}\ (\text{线面}).
+\]
+线面夹角用 $\sin$，因为方向向量与法向量夹角的余角才是线面角。
+
+\textbf{异面直线距离}：$\displaystyle d=\frac{|(\overrightarrow{M_1M_2},\boldsymbol s_1,\boldsymbol s_2)|}{|\boldsymbol s_1\times\boldsymbol s_2|}$，其中 $M_1,M_2$ 是两直线上各一点。
+
+\callout{\textbf{例 1（点到平面）} 求点 $P(1,1,1)$ 到平面 $x+2y+2z-3=0$ 的距离。
+\[
+d=\frac{|1+2+2-3|}{\sqrt{1+4+4}}=\frac{2}{3}.
+\]
+\textbf{要点}：分子是“把点代进去取绝对值”，分母是法向量的模。代入前先把平面方程整理成 $Ax+By+Cz+D=0$ 的标准形。}
+
+\subhdr{9.3 曲面：旋转曲面与常见二次曲面}
+
+\textbf{旋转曲面}：$xOy$ 面上的曲线 $F(x,y)=0$ 绕 $x$ 轴旋转，所得曲面方程为
+\[
+F\bigl(x,\ \pm\sqrt{y^2+z^2}\bigr)=0 .
+\]
+口诀：\emph{绕谁转，谁不变；另一个变量换成“剩下两个的平方和开根”}。
+
+\callout{\textbf{例 2（旋转曲面）} 曲线 $y^2=2x$（$xOy$ 面上）绕 $x$ 轴旋转，求曲面方程。
+
+绕 $x$ 轴转，$x$ 不变，$y$ 换成 $\pm\sqrt{y^2+z^2}$：
+\[
+(\pm\sqrt{y^2+z^2})^2=2x\ \Longrightarrow\ y^2+z^2=2x .
+\]
+这是旋转抛物面。}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{名称} & \thead{标准方程}\\
+\hline
+椭球面 & $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}+\dfrac{z^2}{c^2}=1$\\
+椭圆抛物面 & $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=z$\\
+单叶双曲面 & $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=1$\\
+双叶双曲面 & $\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=1$\\
+锥面 & $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=\dfrac{z^2}{c^2}$\\
+柱面 & $F(x,y)=0$（母线平行于 $z$ 轴）\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{识别技巧}：看平方项的系数符号。三个正号且等于 1 是椭球；两个正一个负、右边为 1 是单叶双曲面；一个正两个负、右边为 1 是双叶双曲面；右边是 $z$（一次）是抛物面；右边为 0 是锥面。
+
+\warnbox{\textbf{本章三个高频失分点。}
+(1)线面夹角用了 $\cos$（应为 $\sin$）；
+(2)旋转曲面忘了 $\pm$，导致只写出一半；
+(3)平面方程里 $D$ 的符号代错——先化成标准形再代点。}

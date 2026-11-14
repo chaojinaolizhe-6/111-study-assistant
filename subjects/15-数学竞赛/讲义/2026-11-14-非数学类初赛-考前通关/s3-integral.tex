@@ -1,0 +1,150 @@
+\hdr{§3}{一元积分学：技巧最多、也最容易拿分}
+
+\textbf{这一章在竞赛里的样子。}一道计算题（不定积分或定积分技巧），一道与积分有关的证明（变上限、积分不等式），再加填空里的对称性小计算。合计常在 20--30 分。好消息是：积分技巧是\emph{有限清单}，背完表就能覆盖九成。
+
+\subhdr{3.1 不定积分：五类技术，按被积函数长相选}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.4cm}p{8.4cm}@{}}
+\thead{被积函数长相} & \thead{技术}\\
+\hline
+复合函数 × 内层导数 & \textbf{凑微分}：$\int f(\varphi(x))\varphi'(x)\dd x=\int f(u)\dd u$\\
+多项式 × 指数／三角 & \textbf{分部积分}，多项式求导到零（表格法）\\
+有理分式 & \textbf{部分分式}：先化真分式，再拆成 $\frac{A}{x-a}$、$\frac{Bx+C}{x^2+px+q}$\\
+只含 $\sin x,\cos x$ 的有理式 & \textbf{万能代换} $t=\tan\frac x2$，或先看奇偶性用 $\cos x$／$\sin x$ 代换\\
+含 $\sqrt{a^2\pm x^2}$ 或 $\sqrt{x^2-a^2}$ & \textbf{三角代换} $x=a\sin t$／$a\tan t$／$a\sec t$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{基本积分表（在课本基础上补这几个）}：
+\begin{align*}
+\int\sec x\dd x&=\ln|\sec x+\tan x|+C, &
+\int\csc x\dd x&=\ln|\csc x-\cot x|+C,\\
+\int\frac{\dd x}{a^2+x^2}&=\frac1a\arctan\frac xa+C, &
+\int\frac{\dd x}{\sqrt{a^2-x^2}}&=\arcsin\frac xa+C,\\
+\int\frac{\dd x}{x^2-a^2}&=\frac{1}{2a}\ln\left|\frac{x-a}{x+a}\right|+C, &
+\int\sqrt{a^2-x^2}\dd x&=\frac x2\sqrt{a^2-x^2}+\frac{a^2}{2}\arcsin\frac xa+C.
+\end{align*}
+
+\textbf{分部积分表格法}：以 $\int x^2e^x\dd x$ 为例，左列反复求导、右列反复积分，斜向相乘、符号交替：
+\[
+\int x^2e^x\dd x=x^2e^x-2xe^x+2e^x+C .
+\]
+多项式几次就几行，比反复写 $uv-\int v\dd u$ 快得多。
+
+\warnbox{\textbf{万能代换不是首选。}它一定成功，但会把三角式变成复杂有理式。先看：若 $R(-\sin x,\cos x)=-R(\sin x,\cos x)$，令 $u=\cos x$；若 $R(\sin x,-\cos x)=-R(\sin x,\cos x)$，令 $u=\sin x$；两者都满足时令 $u=\tan x$。都不满足才用 $t=\tan\frac x2$。}
+
+\subhdr{3.2 定积分：三个“白送分”的性质 \ding{72}\ding{72}\ding{72}}
+
+\textbf{(a) 奇偶对称}：$\displaystyle\int_{-a}^{a}f(x)\dd x=0$（$f$ 奇），$\displaystyle=2\int_0^a f(x)\dd x$（$f$ 偶）。
+
+\textbf{(b) 区间再现}：令 $x=a+b-t$，得
+\[
+\int_a^b f(x)\dd x=\int_a^b f(a+b-x)\dd x .
+\]
+特别地 $\displaystyle\int_0^{\pi}xf(\sin x)\dd x=\frac{\pi}{2}\int_0^{\pi}f(\sin x)\dd x$，以及 $\displaystyle\int_0^{\pi/2}f(\sin x)\dd x=\int_0^{\pi/2}f(\cos x)\dd x$。
+
+\textbf{(c) 华里士（点火）公式}：
+\[
+\int_0^{\pi/2}\sin^n x\dd x=\int_0^{\pi/2}\cos^n x\dd x=
+\begin{cases}
+\dfrac{(n-1)!!}{n!!}\cdot\dfrac{\pi}{2}, & n \text{ 为偶数},\\[6pt]
+\dfrac{(n-1)!!}{n!!}, & n \text{ 为奇数}.
+\end{cases}
+\]
+其中 $n!!=n(n-2)(n-4)\cdots$。例：$\int_0^{\pi/2}\sin^4x\dd x=\frac{3!!}{4!!}\cdot\frac\pi2=\frac{3\pi}{16}$。
+
+\callout{\textbf{例 1（区间再现的标准用法）} 求 $\displaystyle I=\int_0^{\pi}\frac{x\sin x}{1+\cos^2x}\dd x$。
+
+\textbf{为什么用区间再现}：$x$ 是“讨厌的因子”，而 $\sin x/(1+\cos^2x)$ 关于 $x=\pi/2$ 对称。把 $x$ 换成 $\pi-x$：
+\[
+I=\int_0^\pi\frac{(\pi-x)\sin x}{1+\cos^2x}\dd x=\pi\int_0^\pi\frac{\sin x}{1+\cos^2x}\dd x-I .
+\]
+所以
+\[
+2I=\pi\int_0^\pi\frac{\sin x}{1+\cos^2x}\dd x
+=\pi\Bigl[-\arctan(\cos x)\Bigr]_0^\pi
+=\pi\left(\frac\pi4+\frac\pi4\right)=\frac{\pi^2}{2},
+\]
+故 $I=\dfrac{\pi^2}{4}$。\\
+\textbf{要点}：形如 $\int_0^\pi x f(\sin x)\dd x$ 的题，区间再现后 $x$ 自动变成 $\pi-x$，两式相加把 $x$ 消掉。这是固定套路，见到就用。}
+
+\subhdr{3.3 变上限积分：竞赛证明题的主战场}
+
+若 $F(x)=\displaystyle\int_{v(x)}^{u(x)}f(t)\dd t$，则
+\[
+F'(x)=f\bigl(u(x)\bigr)u'(x)-f\bigl(v(x)\bigr)v'(x).
+\]
+
+三个高频用法：
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item \textbf{把积分等式变成微分方程}：$f(x)=x+\int_0^x(x-t)f(t)\dd t$，先把 $x$ 提到积分号外，再求导两次。
+\item \textbf{证明积分不等式}：令 $F(x)=\int_a^x$ 差，证 $F'\ge0$ 且 $F(a)=0$。
+\item \textbf{求极限}：$\displaystyle\lim_{x\to0}\frac{\int_0^x\sin t^2\dd t}{x^3}$，洛必达一次即得 $\frac13$。
+\end{enumerate}
+
+\warnbox{\textbf{被积函数里含 $x$ 时不能直接求导。}例如 $\int_0^x(x-t)f(t)\dd t$，必须先拆成 $x\int_0^xf(t)\dd t-\int_0^xtf(t)\dd t$，再对 $x$ 求导。直接对 $x$ 求导会漏掉 $x$ 作为被积函数一部分的那一项。}
+
+\subhdr{3.4 积分不等式：四件武器}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{保号性}：$f\le g$ 则 $\int_a^b f\le\int_a^b g$；$|f|$ 可积时 $\left|\int f\right|\le\int|f|$。
+\item \textbf{积分中值定理}：$f$ 连续，则 $\exists\xi\in[a,b]$，$\displaystyle\int_a^b f=f(\xi)(b-a)$。
+\item \textbf{柯西--施瓦茨}：$\displaystyle\left(\int_a^b fg\right)^2\le\int_a^b f^2\int_a^b g^2$。
+\item \textbf{构造变上限}：把要证的不等式写成 $F(b)\ge F(a)$，证 $F'\ge0$。
+\end{itemize}
+
+\callout{\textbf{例 2（柯西--施瓦茨）} 证明 $\displaystyle\left(\int_0^1 e^x\dd x\right)^2\le\int_0^1 1\dd x\cdot\int_0^1 e^{2x}\dd x$，并说明等号不成立。
+
+左边 $=(e-1)^2\approx2.95$，右边 $=\frac{e^2-1}{2}\approx3.19$，确实成立。等号成立要求 $f$ 与 $g$ 成比例，这里 $g\equiv1$、$f=e^x$ 不是常数，故严格小于。\\
+\textbf{要点}：柯西--施瓦茨的用法是“把平方的积分拆成两个函数的乘积”，常用于证明形如 $(\int f)^2\le(b-a)\int f^2$ 的估计。}
+
+\needspace{9\baselineskip}
+\subhdr{3.5 反常积分：只考判敛，很少考值}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}lll@{}}
+\thead{类型} & \thead{收敛条件} & \thead{备注}\\
+\hline
+$\displaystyle\int_1^\infty\frac{\dd x}{x^p}$ & $p>1$ & $p\le1$ 发散\\
+$\displaystyle\int_0^1\frac{\dd x}{x^p}$ & $p<1$ & $p\ge1$ 发散\\
+$\displaystyle\int_0^\infty e^{-ax}\dd x$ & $a>0$ & 值为 $1/a$\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{比较判别法（极限形式）}：$f,g\ge0$，$\lim\frac{f}{g}=c$，$0<c<\infty$，则 $\int f$ 与 $\int g$ 同敛散。实战中把被积函数换成“最高阶项”与 $1/x^p$ 比。
+
+\textbf{绝对收敛}：$\int|f|$ 收敛则 $\int f$ 收敛；反之不成立（如 $\int_1^\infty\frac{\sin x}{x}\dd x$ 条件收敛）。
+
+\subhdr{3.6 定积分的应用（填空里的 5 分）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{量} & \thead{公式}\\
+\hline
+面积（直角坐标） & $\displaystyle\int_a^b|f-g|\dd x$\\
+面积（极坐标） & $\displaystyle\frac12\int_\alpha^\beta r^2(\theta)\dd\theta$\\
+旋转体体积（绕 $x$ 轴，圆盘） & $\displaystyle\pi\int_a^b y^2\dd x$\\
+旋转体体积（绕 $y$ 轴，柱壳） & $\displaystyle2\pi\int_a^b x\,y\dd x$\\
+弧长 & $\displaystyle\int_a^b\sqrt{1+y'^2}\dd x$\\
+旋转曲面面积（绕 $x$ 轴） & $\displaystyle2\pi\int_a^b y\sqrt{1+y'^2}\dd x$\\
+曲率 & $\displaystyle K=\frac{|y''|}{(1+y'^2)^{3/2}}$，曲率半径 $\rho=1/K$\\
+平面薄片质心 & $\displaystyle\bar x=\frac1A\iint_D x\dd\sigma$，$A$ 为区域面积\\
+\end{tabular}
+\tabbot
+\end{center}
+
+\warnbox{\textbf{本章五个高频失分点。}
+(1)不定积分忘写 $+C$；
+(2)定积分换元后忘了换上下限（换元必须同时换限，或最后换回原变量）；
+(3)三角代换后没有回代，答案里留着 $t$；
+(4)变上限积分求导时被积函数含 $x$ 却直接求导；
+(5)华里士公式把奇偶的 $\pi/2$ 记反——偶次才乘 $\pi/2$。}
