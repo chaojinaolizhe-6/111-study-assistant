@@ -1,0 +1,320 @@
+{
+  "round": "round-04",
+  "generated_at_utc": "2026-11-14T10:00:05+00:00",
+  "time_note": "该时间是在生成本文件时读到的机器时钟读数（系统时区即 UTC）；之后若仍有文字修订，最终字节的写入时间以文件 mtime 为准。不写预计结束时间。",
+  "book": "从张量到并矢：二次型主轴、并矢运算与三处力学落点",
+  "input_reports": {
+    "reconciliation": "reviews/lecture-full-20261111/r3-final-reconciliation.json",
+    "math_working": "reviews/lecture-full-20261111/math-r3-working-review.json",
+    "math_final": "reviews/lecture-full-20261111/math-r3-final-review.json",
+    "source_reading_working": "reviews/lecture-full-20261111/source-reading-r3-working-review.json",
+    "source_reading_metadata": "reviews/lecture-full-20261111/source-reading-r3-metadata-review.json",
+    "source_reading_final": "reviews/lecture-full-20261111/source-reading-r3-final-review.json",
+    "visual_working": "reviews/lecture-full-20261111/visual-r3-working-review.json",
+    "visual_final": "reviews/lecture-full-20261111/visual-r3-final-review.json"
+  },
+  "editing_base": "round-03/handout.tex（sha256 e5b7c118de34282e3a56912f19e4dd8df3b69e73ee66ed1beb37cb9480126dda，64 页）；round-01/、round-02/、round-03/、inputs/、.dsh/、tools/ 只读保留",
+  "verification_commands": [
+    {
+      "command": "xelatex -halt-on-error -interaction=nonstopmode handout.tex（两遍）",
+      "exit_code": 0,
+      "result": "Output written on handout.pdf (65 pages)；Overfull hbox 0、Overfull vbox 0、Missing character 0、未解析引用 0、Underfull hbox 6"
+    },
+    {
+      "command": "python -B check_handout.py（冻结 v2.3.0 检查器，--mode appendix --log handout.log）",
+      "exit_code": 0,
+      "result": "错误 0 条，人工复核线索 0 条"
+    },
+    {
+      "command": "python -B verify_handout.py",
+      "exit_code": 0,
+      "result": "断言 269 条，失败 0 条；含 round-04 新增的位置矢量三操作、P9 断言范围、P10 截面几何、右手基示例工具边界、题型分类、谱分解回指、续解页首等针对性断言"
+    },
+    {
+      "command": "python -B layout_audit.py",
+      "exit_code": 0,
+      "result": "坐标层面：无出界、无空白页、11 幅图图本体页=图注页、9 张表表头上粗线同页、4 条续解全在实际续页页首、跨页详解续页均有题号、无孤立小节标题"
+    },
+    {
+      "command": "python -B render_pages.py",
+      "exit_code": 0,
+      "result": "65 页全部渲染为非空 PNG（rendered/page-001..065.png，index.txt）；渲染不等于目视"
+    },
+    {
+      "command": "python -B make_source_map.py",
+      "exit_code": 0,
+      "result": "45 个小节锚点、11 幅图（figure_body_page/caption_page/same_page）、12 道练习题干页与详解页、续解页全部由最终 PDF 定位"
+    }
+  ],
+  "summary": {
+    "review_ids_total": 18,
+    "fixed": 18,
+    "merged_into_others": 2,
+    "kept_with_reason": 0,
+    "unresolved": 3,
+    "merged_note": "R3READ-02 与 R3-MATH-01 同一根因，按一条处理；R3META-01 与 R3READ-03 同一处，按一条处理。18 个编号里含这两对重复。"
+  },
+  "items": [
+    {
+      "id": "R3-MATH-01",
+      "also_covers": "R3READ-02",
+      "source": "math + source_reading",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "round-03 的修复仍把三种操作混在一起：标题笼统称“位置矢量不是张量”；“以固定原点为起点的位置矢量……平移原点时起点跟着挪，差不变”把“两个固定端点只换坐标”和“换掉位置矢量自身的起点”说成同一件事；下一句又否认换基点会让分量出现常数项，与 §3.6 明写的 r'=r−a 冲突。",
+      "action": "§2.7 改为三种操作并列：（甲）一个点的坐标——原点从 O 挪到 O+a 时同一个点的坐标变成 x−a，多出常数项、不再齐次；（乙）两点之差——两个几何点都不动、只换坐标原点，P,Q 的坐标同时减去 a，差值不变，任何情况下都是矢量；（丙）位置矢量——从选定基点指向 P 的箭头，换基点就是把箭头的一个端点换掉，得到的是另一支箭头 r'=r−a（并明确“换基点不是换账本”）。标题改成“一个要分清操作的对象：点的坐标、位移、位置矢量”。§3.6 换基点段补 a 的定义（旧基点到新基点的箭头）并注明这是（丙）、“换的是箭头的起点”；该段公式与 Ω 不变的推导未动。P6 题干点明例子是“一个点的坐标”，详解按（甲）（乙）（丙）回答并让位置矢量与两点之差对照。",
+      "where": {
+        "pdf_pages": [27, 32, 47, 53],
+        "sections": ["§2.7", "§3.6", "§7 P6 题干", "附录 A P6 详解"]
+      },
+      "how_verified": "verify_handout.py round04_scope_checks：三处在文本上都用（甲）（乙）（丙）；含混句“起点跟着挪”已不在全文；数值上同一物理点换基点后 r'=r−a、两点之差在平移下不变，并核对“把点坐标平移当作换基点”会得到不同结果。逐句读了 §2.7、§3.6、P6 三个位置的 PDF 实际印文（p27、p32、p53）。",
+      "residual": "本稿仍只在“绕固定原点的正交变换”下作张量判定；这是行文约定，正文已明确，不扩展仿射几何。"
+    },
+    {
+      "id": "R3-MATH-02",
+      "related_previous": "MATH-RESUME-12",
+      "source": "math",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "P9 把“丢负号后不再等于这个物体的惯量”加强成“不是任何真实质量分布的惯量张量”，§8 又加“主值也不再是真实主惯量”，都不允许偶然同谱。反例：四个质量 1/2 的质点在 ±(1,1,0)、±(0,0,1) 时 J=[[2,−1,0],[−1,2,0],[0,0,2]]；把各点 x 反号后得到 J*=[[2,1,0],[1,2,0],[0,0,2]]，只翻 J12/J21，谱仍是 1,2,3，而它同样是真实惯量。",
+      "action": "P9 详解改成：先说丢负号后的矩阵“已经不是这个物体在同一基点、同一组基下的惯量张量”；再明确“不能说得更强”，给出四质点同谱反例，说明判断依据是构造式与这个物体，不是“谱一定变”。单质点例保留，但把它单独判掉的方式改成三角形不等式：该具体谱 m,m,4m 违反 I1+I2≥I3（m+m<4m），所以连别的质量分布也做不到——并注明这条“不可能”只对这个谱成立，不能推广成“凡翻符号都不可能”。§8 第 5 条同步收窄为“不是这个物体在同一基点下的惯量”“主值一般也不再是这个物体的主惯量（可能碰巧同谱）”，并保留“改一个符号仍可能是别的质量分布的惯量，判断依据是构造式”。",
+      "where": {
+        "pdf_pages": [49, 55, 56, 57],
+        "sections": ["§8 第 5 条", "附录 A P9 详解（含两条续解）"]
+      },
+      "how_verified": "verify_handout.py：由四个质量 1/2 的质点按构造式重算 J 与 J*，核对矩阵、只翻 J12/J21、两者谱同为 1,2,3；单质点例核对谱 {1,1,4} 且 1+1<4；文本上核对全称断言已撤、§8 同步。P9 的两页续解页首分别带题号与当前目标。",
+      "residual": "四质点例只用于说明“可能同谱”，不替代构造式本身。"
+    },
+    {
+      "id": "R3-MATH-03",
+      "related_previous": "MATH-RESUME-13",
+      "source": "math",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "P10 在补绝对值后把 θ=45° 与 135° 说成“同一个截面换了法向”。按本题固定参数 n(θ)=(cosθ,sinθ,0)：n(45°)=(1,1,0)/√2，n(135°)=(−1,1,0)/√2，点积为 0，互相垂直，并不互为反号；反法向对应角度相差 180°。两者都达到同一最大剪应力，但几何上是两个不同截面。",
+      "action": "保留 |sin2θ|、τmax=σ0/2 与 45° 的最大值结论，只改几何解释：写出四个参数值 45°、135°、225°、315° 及对应的四个法向，指出 n(45°)·n(135°)=0（垂直，不是反法向），反法向是 45°↔225°、135°↔315°；按无向截面计数最大剪应力出现在两个互相垂直的截面上，按有向法向计数是四个法向、两个截面；两个截面上的法向应力都是 σ0/2；并补一句本题限定（法向只在 e1e2 面内）。",
+      "where": {
+        "pdf_pages": [57, 58],
+        "sections": ["附录 A P10 详解（含续页）"]
+      },
+      "how_verified": "verify_handout.py：数值核对 n(45°)·n(135°)=0、n(225°)=−n(45°)、n(315°)=−n(135°)；四个参数值都达到 σ0/2 而 θ=41° 不最大；按无向平面归并后只有 2 个不同平面；45° 与 135° 的法向应力都是 σ0/2。文本上核对“同一个截面换了法向”已删。",
+      "residual": "三维下“凡与 e1 成 45° 的截面都达同一最大值”只用一句话提示，未展开为完整截面族讨论（题目只要求面内截面）。"
+    },
+    {
+      "id": "R3READ-01",
+      "source": "source_reading",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "§0.2 的右手基警告在 §0.3 矩阵/转置、§0.4 换基、§0.5 行列式建立之前就用了 R=diag(−1,1,1)、R^T a、det=−1；学习者只自述“会简单线性代数”，按本稿路线这些工具还没讲。",
+      "action": "把该例改成只用当前已讲对象：把一根基矢量换成反向即得左手基，取 b1=e1、b2=e2、b3=−e3；用右手定则说明它是左手基；再用同一分量式计算 b1×b2，算出 +b3，而几何叉乘是 e3=−b3，差一个负号。完整矩阵/行列式的重述留到 §3.3，那里工具已建立，并且只讲行列式的符号。",
+      "where": {
+        "pdf_pages": [4],
+        "sections": ["§0.2 警告框", "§3.3 前向回指"]
+      },
+      "how_verified": "verify_handout.py 断言该段不含 \\det、operatorname{diag}、\\ten R；含“左手基”与 b1×b2 的分量式反例。逐句读了 p4 的实际印文。",
+      "residual": "§2.6 与附录 B 仍各写一次同一边界（这是刻意的重复提醒），都只用已讲对象。"
+    },
+    {
+      "id": "R3READ-03",
+      "also_covers": "R3META-01",
+      "source": "source_reading + metadata",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "§7 把 P9/P10/P11 与 P1/P2/P3/P4/P12 一起说成“要代入题目自己的数值”，与题干不符：P9 是概念辨析（反例由答案自选）、P10 给符号 σ0、P11 给符号 α。preparation.json 的分类也照此写错。",
+      "action": "§7 改成四类：P7/P8 回忆复现；P5/P6/P9 概念辨析（含“必要时自己举反例”）；P10/P11 符号推导（题干给 σ0、α，没有一组数字）；P1/P2/P3/P4/P12 代入题目自己的数值。开头导语同步改为“哪些是复现、哪些是符号推导、哪些要代入题目数值”。preparation.json 的 exercise_classification 改为相同的四分法。",
+      "where": {
+        "pdf_pages": [46],
+        "sections": ["§7 开头", "preparation.json assessment_and_evidence"]
+      },
+      "how_verified": "verify_handout.py 文本断言：P10/P11 归入符号推导；只有 P1/P2/P3/P4/P12 归入代入数值；全文不再出现“P9、P10、P11”合并成数值题的句子。P1--P12 题号与题干未动。",
+      "residual": "P9 的“概念辨析”里仍会现选一个单质点例（作为反例演示），题干本身不给数字。"
+    },
+    {
+      "id": "R3NAV-01",
+      "source": "source_reading",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "完整谱分解的并矢落点仍附 §2.5，而 §2.5 只建立单位并矢与投影并矢，不给出完整谱分解。",
+      "action": "§1.3 末尾改为“并矢形式的谱分解写在 §1.4 的分解式与 §2.8 字典的最后一行”，并注明 §2.5 只建立单位并矢与投影并矢；§8 速查表“求主轴与主值”一行改指 §1.4、§2.8。",
+      "where": {
+        "pdf_pages": [20, 49],
+        "sections": ["§1.3 末段", "§8 速查表"]
+      },
+      "how_verified": "verify_handout.py 断言旧的“§2.5 与 §2.8 再把它写成并矢形式”已不存在，且“（§1.4、§2.8）”在文中。",
+      "residual": "无"
+    },
+    {
+      "id": "R3META-02",
+      "source": "metadata",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "source-map 把 §7 起页写成第一道题的页，而章标题与练习用法在上一页；verification 里 C.2 两表的复核页也沿用了旧页数。",
+      "action": "make_source_map.py 增加“§7 章标题页”的独立定位（含“独立练习”“下面十二道题”的页），映射项写成“§7 章标题与用法在第 46 页；题干页 [46, 47, 48]”，并说明 P1 题干就在章标题页末。verification.txt 的图表页、练习页、附录小节页全部按本轮最终 PDF 重新统计，不再沿用旧页。",
+      "where": {
+        "pdf_pages": [46, 47, 48, 60, 61, 62, 63, 64],
+        "sections": ["source-map.json", "verification.txt"]
+      },
+      "how_verified": "make_source_map.py 从 PDF 定位（找不到锚点会非零退出）；layout_audit.py 的章节起页检查同样报 §7=46；两处一致。",
+      "residual": "无"
+    },
+    {
+      "id": "R3META-03",
+      "source": "metadata",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "round-03 的 verification 写了实际未到达的结束时刻（10:05 UTC），而进程实际在 09:39:40 结束；这是把预计结束时间写进已完成记录。",
+      "action": "本轮不写预计结束时间，也不写区间。记录中只保留实际读到的时钟读数（09:54:51 渲染、09:54:53 source-map、09:55:13 preparation、09:56:46 记录写入）与文件自身的写入时间；不修订 round-03 的旧文件，旧记录保持原样。",
+      "where": {
+        "pdf_pages": [],
+        "sections": ["verification.txt", "preparation.json time_basis", "source-map.json created_at_utc"]
+      },
+      "how_verified": "对照 verification.txt 顶部读到的时钟、文件 mtime 与 source-map/preparation 的生成时间，三者一致；全文搜索没有未来时刻。",
+      "residual": "旧轮的时间记录不改，符合“不修订旧轮伪造历史”。"
+    },
+    {
+      "id": "R3META-04",
+      "source": "metadata",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "页数增长被归因为“新增 §0.6/§0.7”，但那两节在 round-02 就存在；把相对 v2.2.2 的累计变化说成本轮新增。",
+      "action": "verification.txt 的页数说明只写本轮 64→65 的实际原因（两条新增续页标识、图与表的不拆分保护带来的页底空白、C.1 标题与表同页），并明确“相对冻结基线 v2.2.2 的累计变化（如 §0.6/§0.7）是早先轮次已经存在的，不记到本轮名下”。",
+      "where": {
+        "pdf_pages": [],
+        "sections": ["verification.txt 第七节"]
+      },
+      "how_verified": "页数由 handout.log 与 PDF 实际页数核对（65）；逐条改动与本轮 diff 对应。",
+      "residual": "无"
+    },
+    {
+      "id": "R3META-05",
+      "source": "metadata + visual",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "图页表只定位图注页，却被写成“11 幅图均与图注同页”；round-03 实际图6 图形 p34、图注 p35，图8 图形 p40、图注 p41。",
+      "action": "版面：11 幅图与图注统一放进同一个不拆分块（minipage），保证同页。记录：source-map 的 figure_pages 改为 {figure, figure_body_page, caption_page, same_page}；make_source_map.py 用“图注上方 340pt 内的矢量绘图簇”判定图本体页，发现分页会非零退出；layout_audit 逐幅复核同样条件；verification.txt 分开写图本体页/图注页，不再用图注文字冒充共页证据。",
+      "where": {
+        "pdf_pages": [13, 17, 24, 25, 30, 35, 38, 40, 42, 43, 44],
+        "sections": ["11 幅自绘图与图注", "source-map.json figure_pages", "verification.txt 第二节"]
+      },
+      "how_verified": "layout_audit.py 与 make_source_map.py 都报 11/11 same_page=True，并给出每幅图绘图簇的 y 区间；图6、图8 的图注现在与图形同页（p35、p40）。这只是坐标层面的共页证据，不是目视。",
+      "residual": "图形几何是否正确仍需看图复核。"
+    },
+    {
+      "id": "VIS-R3-01",
+      "source": "visual",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "图6 在 p34 底部、整段图注推到 p35；图8 在 p40 底部、图注推到 p41。",
+      "action": "把每幅图的 tikzpicture 与 figcap 放进同一个 minipage（不拆分的块），图不会与图注分页；本轮重排后图6、图8 都与各自图注同页。",
+      "where": {
+        "pdf_pages": [35, 40],
+        "sections": ["§4.3 图6", "§5.3 图8"]
+      },
+      "how_verified": "layout_audit 逐幅报告图本体页=图注页；图注紧跟图形下方（图6 图形 y∈[57.3,192.7]，图注从 205.4；图8 图形 y∈[477.6,735.6]，图注从 749.0）。",
+      "residual": "图8 的图注起点接近正文区下界（y≈749，正文区到 797），是否“贴页底”需要看图判断；脚本只保证未越界且与图形同页。"
+    },
+    {
+      "id": "VIS-R3-02",
+      "source": "visual",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "P10 详解在 round-03 的 p57→p58 断开，p58 开头直接是最大剪应力结论，没有题号、没有单轴拉伸/角度设定。",
+      "action": "结合 R3-MATH-03 的几何改写，在最终实际断页（p58 页首）放 P10 续解，明确写出本题身份与当前条件：σ=σ0 e1⊗e1、n(θ)=(cosθ,sinθ,0) 限制在 e1e2 面内、本页要说明 τmax=σ0/2 落在哪两个不同截面上，再收尾“要不要背”与断裂面注意点。",
+      "where": {
+        "pdf_pages": [57, 58, 59],
+        "sections": ["附录 A P10 详解续页"]
+      },
+      "how_verified": "verify_handout.py：P10 续解在 p58 正文第 1 行；续解说明含 σ0 与 θ；layout_audit 的续页规则也要求跨页详解页首能认出题号，本轮全部通过。",
+      "residual": "自然阅读是否顺畅仍需要人读。"
+    },
+    {
+      "id": "VIS-R3-03",
+      "source": "visual",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "谱定理“证明路线：证明分五步”一句孤零零留在页底，五个列表项全在下一页。",
+      "action": "在该句前加 \\needspace{9\\baselineskip}，使引言与列表至少第一项同页。",
+      "where": {
+        "pdf_pages": [15],
+        "sections": ["§1.4 证明路线"]
+      },
+      "how_verified": "本轮最终 PDF 的 p15 同时印出“证明路线。证明分五步：”与五条列表项；layout_audit 另有“小节标题不得孤立在页底”的检查（本轮通过）。",
+      "residual": "无"
+    },
+    {
+      "id": "VIS-R3-04",
+      "source": "visual",
+      "priority": "P3",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "主线的“写法/结果/分量”表上粗线留在 p27 页底、表头与表体在 p28；附录 C.2 的第二张表上粗线在 p62 引言下方、表头与表体在 p63。",
+      "action": "在 7 张可跨页表的 \\begin{center}\\tabtop 之前加 \\needspace{7\\baselineskip}，让上粗线跟着表头走；同时给 C.1 小节标题加 \\needspace{22\\baselineskip}，使小节标题与小节表同页。",
+      "where": {
+        "pdf_pages": [6, 22, 27, 28, 49, 60, 61, 62, 63],
+        "sections": ["§0.4 表", "§2.1 表", "§2.8 两张表", "§8 速查表", "附录 B 表", "附录 C.1/C.2 表"]
+      },
+      "how_verified": "layout_audit 逐张表核对：每张表表头正上方 40pt 内都有同页的上粗线（9/9），列出表头 y 与上粗线 y；没有出现“页底孤线”导致表头找不到上粗线的情况。",
+      "residual": "表格内容是否好读仍需看图。"
+    },
+    {
+      "id": "VIS-R3-05",
+      "source": "visual",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "round-03 最终稿里 P8 的“续解”落在 p56 页中（页首其实是数值例子），P9 的“续解”落在 p57 页中（页首先印了 A、再重复 A）；续解标记不再标识真正的续页开头。",
+      "action": "按最终实际断页重新摆放：P8 的详解本来就在 p55 一页内，删除它的页中续解（不再机械保留标题）；P9 恰好跨两页，p56、p57 页首各一条续解（第一条接“同谱反例”的论证，第二条接特征多项式与主值）；P10 在 p58、P11 在 p59 页首。不设“每题最多一条续页”。",
+      "where": {
+        "pdf_pages": [55, 56, 57, 58, 59],
+        "sections": ["附录 A P8/P9/P10/P11 详解"]
+      },
+      "how_verified": "verify_handout.py 与 layout_audit.py 都检查：4 条续解标记全部在所在页正文第 1 行；P9 两条都在其详解起页之后；每题续页次数不设上限；P8 没有续解标记且详解不跨页。",
+      "residual": "无"
+    },
+    {
+      "id": "R3VERIFY-01",
+      "source": "coordinator",
+      "priority": "P2",
+      "verdict": "confirmed_and_fixed",
+      "what_i_found": "round-03 的校验脚本把续解检查放宽成“页首，或页中但后随 ≥3 行”，并且每题至多一条、只查已有的 \\answercontinue 宏；于是页中续解被判通过，P10 真正缺续页的情况也没被发现。",
+      "action": "恢复“实际续页”口径：每一条 \\answercontinue 必须落在真正续页的页首（正文前 3 行），页中一律失败；不限制每题条数；另加反向检查——凡某题详解跨到下一页，该页开头必须能认出题号（题号或“续解”），这样才能发现“实际续页缺标识”的情况（P10 的 round-03 情形）。layout_audit 同步实现同一口径。不能可靠自动判断的部分（续页文字是否自然、图形几何、整页观感）在 verification.txt 与本节 residual 中明确交人工/视觉复核，不报告“全已通过”。",
+      "where": {
+        "pdf_pages": [],
+        "sections": ["verify_handout.py structure_checks", "layout_audit.py"]
+      },
+      "how_verified": "本轮脚本对本轮 PDF 报 4 条续解全在页首、所有跨页详解续页都有题号。“跨页详解页首必须有题号”这条反向检查正是为了覆盖 round-03 的 P10 情形而设；本轮只在 round-04 的最终 PDF 上运行，没有回跑旧稿，因此不声称已在旧稿上验证过它会报错。",
+      "residual": "文本位置的“前 3 行”不能判断可读性；图形几何与观感不在脚本能力内。"
+    }
+  ],
+  "kept_from_round03": [
+    "真实基础说明（2026-11-14 自述：会简单线代、点积/垂直需补、叉乘方向需回顾、积分可用），不当作已掌握",
+    "均质椭球物体的惯量张量选读与 2MR²/5 球极限，以及与“惯量椭球”的区分",
+    "维持力矩的计算后置到 §5.4（§4.6 只记录问题）",
+    "Ω 的带符号旋向与 A=B 时 L⊥/ω⊥ 同向的说明",
+    "质心相对速度、转动动能与总动能（含质心平动项）的区分",
+    "应力条件、局部小立方体平衡链与高斯定理选读的适用条件",
+    "来源约定（TM p12 只归旋转算子求导与角速度；Whelan p8 的 R=A^T）与冻结基线 §0--§8 的真实章号映射",
+    "谱定理的完整证明（2×2 引理、实根引理、正交补降维、实性、正交性、分解式）——本轮未重做，只复核了它未被改动"
+  ],
+  "unresolved": [
+    {
+      "id": "UNRESOLVED-VISUAL",
+      "statement": "本会话模型不具备图像输入能力，本轮\textbf{没有目视任何渲染页}。已完成：65 页逐页渲染为非空 PNG；文本与矢量坐标层面的出界、空白页、图与图注同页、表头上粗线同页、续解页首、小节标题孤立检查；页底空白实测。图形几何、断行观感、整页均衡与新续页读起来是否自然，仍需支持看图的审核者只读复核。",
+      "handoff": "round-04/rendered/page-001..065.png + index.txt"
+    },
+    {
+      "id": "UNRESOLVED-INDEPENDENT-REVIEW",
+      "statement": "本轮所有“通过”都是作者自审与脚本结果，不是独立验收；一般性证明（谱定理、输运定理、欧拉方程、柯西应力、应力对称）由作者逐段复查并结合数值核对，没有第二方独立复核。本轮不声称已通过外部验收。",
+      "handoff": "由协调器复审；本文件逐条给出位置与验证方式便于定位。"
+    },
+    {
+      "id": "UNRESOLVED-LEARNER-TRIAL",
+      "statement": "没有用户对本次整本的实际试读反馈，也没有任何理解/掌握证据；本轮不编造试读。",
+      "handoff": "如需试读反馈，应由学习者实际阅读后提供。"
+    }
+  ],
+  "notes": {
+    "not_all_reports_are_final": "round-03 的 working 报告只用于确认中间状态；页码与布局以三份 final 报告与 r3-final-reconciliation 为准。最终稿与工作快照的差异已逐条读 diff 核实（见 r3-final-reconciliation 的说明）。",
+    "no_claim_of_understanding": "讲义覆盖、脚本通过、审核意见闭合都不记为学习者已掌握。",
+    "no_git_or_messages": "本轮没有 git、同步、学习记录收尾，也没有对外发送消息；微信交付是另一个已授权任务，需在独立验收之后另派。"
+  },
+  "layout_note": "版面事实以本轮最终 PDF（65 页）为准：图 11/11 与图注同页；表 9/9 上粗线随表头；续解 4 条全在真正续页页首（P9 p56、p57；P10 p58；P11 p59），P8 不再有页中续解；§7 章标题 p46、题干 p46--48；附录 A p51 起。"
+}

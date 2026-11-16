@@ -1,0 +1,1371 @@
+% !TEX program = xelatex
+% 数学物理方法2 · §8.2 极坐标下的分离变量（精讲讲义）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+\settags{\S8.2 · 极坐标下的分离变量}{数学物理方法2}
+
+% 同一张表内的中隔线（\\tabmid 只能放在 tabular 之外）
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 圈码①②③交给中文字体（默认会被塞进 Latin 字体而缺字）
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% 表头：主题的 \thead 以 {\color...} 开头，在 p{} 列里会把标题挤到第二行
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+
+% 文本列：左对齐并允许换行（默认两端对齐会把窄列拉出大片空隙）
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.96\linewidth}\centering}{\end{minipage}\end{center}\par}
+\newcommand{\figcap}[1]{\par\vspace{4pt}{\small\color{inkgray}#1}\par}
+
+% 详解块起页保护放宽（默认 0.42 会把短题块挤到下一页）
+\renewcommand{\qbreak}{\needspace{0.28\textheight}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% 定理与证明（不引 amsthm，保持与旧讲义同一套版式）
+\newcommand{\thm}[2]{\par\medskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.5em}{\bfseries #2}\par\nobreak\vspace{2pt}}
+\newcommand{\pfline}{\par\smallskip\noindent\textbf{证明。}\enspace}
+\newcommand{\qedsym}{\hfill$\blacksquare$}
+
+% 公式上下留白收紧
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{\S8.2\quad 极坐标下的分离变量}
+{从拉普拉斯算子的极坐标形式，到圆域、环域与均匀场中的带电导线}
+{依据课件《Chapter 8 -- 20261113.pdf》12 页（\S8.2，p1--p12）\\2026-11-16\quad 数学物理方法2}
+
+\callout{\textbf{这本讲义怎么用。}正文按课件的 12 页推进，凡是课件压缩掉的中间步都补出来，并在小标题里标了页码。三件事请先知道：
+
+\textbf{一、}这一节的方法骨架与 \S8.1 的直角坐标版完全一样（分离 $\rightarrow$ 特征值 $\rightarrow$ 叠加 $\rightarrow$ 定系数），换掉的只是坐标。所以本讲反复把它和 \S8.1 并排放，凡是“和矩形域不同”的地方都单独点出来。
+
+\textbf{二、}课件 p7--p12 的导线例题里，$\varphi$ 方向的通解系数与 $r\to\infty$ 的条件只定下“主部”，\(D_0\) 这个常数要等到题目说明“导线是否带电”才定得下来。这个常数就是单位长度电荷 \(q_0\)，\S8.4 会把它与高斯定理接起来；课件 p10 只写了结论 $D_0=-q_0/(2\pi\varepsilon_0)$。
+
+\textbf{三、}课件 p7 的插图画的是竖直方向的外场，p7--p11 的算式却按 $x$ 方向的外场写 $u=-E_0x=-E_0r\cos\varphi$；两者差一个 $90^\circ$ 旋转，结论不变。本讲统一取外场沿 $+x$ 方向，\S8.7 列了这处差异与另一处记号差异（p11 图注的 \(r_0\) 就是正文的 \(a\)）。}
+
+\subhdr{目录（页码自动解析）}
+\tabtop
+\begin{tabular}{@{}p{0.09\linewidth}p{0.76\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+\S0 & 本节要解决什么：一张主线图与一份记号表 & \pageref{sec:s0} \\
+\S1 & 极坐标下的拉普拉斯方程 & \pageref{sec:s1} \\
+\S2 & 分离变量：一个方程拆成两个 & \pageref{sec:s2} \\
+\S3 & $\varphi$ 方向：周期条件把 $\lambda$ 钉成 $m^2$ & \pageref{sec:s3} \\
+\S4 & $r$ 方向：欧拉方程与两组解 & \pageref{sec:s4} \\
+\S5 & 把特解拼成通解：通解定理与证明 & \pageref{sec:s5} \\
+\S6 & 圆内：自然边界条件与 Fourier 系数 & \pageref{sec:s6} \\
+\S7 & 环域：两个 $r$ 方向条件都要用（课件 p5--p6） & \pageref{sec:s7} \\
+\S8 & 应用：均匀场中的无限长导线（课件 p7--p12） & \pageref{sec:s8} \\
+\S9 & 速查、易错与记号统一 & \pageref{sec:s9} \\
+\S10 & 课件页码对照表 & \pageref{sec:s10} \\
+\S11 & 三句话总结 & \pageref{sec:s11} \\
+\S12 & 独立练习（四题，自编） & \pageref{sec:practice} \\
+附录 A & 四道练习的详解 & \pageref{sec:app} \\
+\end{tabular}
+\tabbot
+
+%=====================================================================
+\hdr{\S0}{本节要解决什么：一张主线图与一份记号表}
+\phantomsection\label{sec:s0}
+%=====================================================================
+
+\S8.1 在矩形域上做分离变量，靠的是边界正好落在坐标面上：$x=0$、$x=a$ 是两条线，所以 $\sin(n\pi x/a)$ 这种“在两端为零”的函数天然可用。圆域不是这样：它的边界是圆周 $r=\rho_0$，在直角坐标里对应方程 $x^2+y^2=\rho_0^2$，没有任何一条坐标轴与它重合。于是问题变成一句话：
+
+\begin{quote}
+\textbf{换到让边界变成坐标面的坐标系里去。}极坐标里 $r=\text{常数}$ 正是圆周，圆域 $a<r<b$ 在 $(r,\varphi)$ 平面上就是一块矩形。
+\end{quote}
+
+换过去以后，\S8.1 的四步照旧能用，但每一处都多了一个“极坐标特色”：$\varphi$ 方向没有边界，只有“绕一圈回到原处”的周期条件；$r$ 方向有一个退化点 $r=0$ 或一个无穷远点 $r\to\infty$。这两处正是本节最容易出错的地方。
+
+下面的图是全篇的路线。图里的页码指本讲义的节号，不是课件页码。
+
+\begin{center}
+\begin{minipage}{0.99\linewidth}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ovcore/.style={draw=violetdeep,fill=bandviolet,rounded corners=3pt,align=left,inner xsep=6pt,inner ysep=4pt,line width=1pt,font=\footnotesize},
+  ovbox/.style={draw=violet,fill=bandviolet,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=3pt,line width=0.7pt,font=\footnotesize},
+  ovcream/.style={draw=violet,fill=bandcream,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=3pt,line width=0.7pt,font=\footnotesize},
+  ova/.style={-{Stealth[length=2.2mm,width=1.6mm]},violet,line width=0.9pt},
+  ovline/.style={violet,line width=0.9pt}]
+
+\node[ovcore,text width=15.0cm,anchor=north west] (CORE) at (0.2,0.05) {%
+\textbf{\color{violetdeep}要解决的事}\quad 圆域、环域上解 $\nabla^2u=0$（静电场、稳态温度），边界落在 $r=$ 常数上，\S8.1 的 $\sin(n\pi x/a)$ 用不上。\\
+\textbf{两处极坐标特色}\quad $\varphi$ 方向无边界、只有周期条件（定谱）；$r$ 方向有退化点 $r=0$ 或无穷远（筛项）。};
+
+\node[ovbox,text width=6.3cm,anchor=north west] (A) at (0.2,-1.95) {%
+\textbf{\color{violetdeep}\S1\quad 换坐标}\\[1pt]
+写出 $\nabla^2$ 的极坐标形式：\\
+\ \ $\dfrac1r\dfrac{\partial}{\partial r}\Big(r\dfrac{\partial}{\partial r}\Big)+\dfrac1{r^2}\dfrac{\partial^2}{\partial\varphi^2}$\\[1pt]
+{\color{inkgray}链式法则两步推出，决定后面所有式子}};
+
+\node[ovbox,text width=8.5cm,anchor=north west] (B) at (6.9,-1.95) {%
+\textbf{\color{violetdeep}\S2\quad 设乘积解 $u=R(r)\Phi(\varphi)$}\\[1pt]
+代入后 $r$ 与 $\varphi$ 分居等号两侧 $\Rightarrow$ 两侧都等于常数 $\lambda$\\
+$\Rightarrow$ 两个常微分方程，一个管 $\varphi$，一个管 $r$\\[1pt]
+{\color{inkgray}为什么“必须”是常数：\S2.2 的论证}};
+
+\node[ovbox,text width=6.3cm,anchor=north west] (C) at (0.2,-4.55) {%
+\textbf{\color{violetdeep}\S3\quad 定谱：$\lambda=m^2$}\\[1pt]
+$\Phi''+\lambda\Phi=0$，周期条件\\
+$\Rightarrow$ $\lambda=m^2$，$m=0,1,2,\dots$\\
+$\Rightarrow$ 特征函数 $1,\ \cos m\varphi,\ \sin m\varphi$};
+
+\node[ovbox,text width=8.5cm,anchor=north west] (D) at (6.9,-4.55) {%
+\textbf{\color{violetdeep}\S4\quad 解 $r$ 的方程：欧拉方程}\\[1pt]
+$r^2R''+rR'-m^2R=0$，令 $r=e^t$ 化为常系数\\
+$\Rightarrow$ $R=r^{m},\,r^{-m}$；$m=0$ 时是 $1,\,\ln r$\\[1pt]
+{\color{inkgray}$\ln r$ 与 $r^{-m}$ 就是“源在原点”的那部分场}};
+
+\node[ovcream,text width=15.0cm,anchor=north west] (JOIN) at (0.2,-7.15) {%
+\textbf{\color{violetdeep}\S5\quad 叠加成通解，并证明“没有别的解”}\\[1pt]
+$u=C_0+D_0\ln r+\sum_{m\ge1}(A_mr^m+C_mr^{-m})\cos m\varphi$\\
+$\qquad\qquad\qquad{}+\sum_{m\ge1}(B_mr^m+D_mr^{-m})\sin m\varphi$\\[1pt]
+{\color{inkgray}定理 2 的证明给出两件事：每个系数必须满足欧拉方程；级数在紧致子域上一致收敛。}};
+
+\node[ovbox,text width=4.75cm,anchor=north west] (F1) at (0.2,-9.75) {%
+\textbf{\color{violetdeep}\S6\quad 圆内}\\[1pt]
+$r\to0$ 有界：丢 $\ln r$、$r^{-m}$\\
+{\color{inkgray}只剩 $C_0$ 与 $r^m$ 项}};
+
+\node[ovbox,text width=4.75cm,anchor=north west] (F2) at (5.35,-9.75) {%
+\textbf{\color{violetdeep}\S7\quad 环域}\\[1pt]
+两端 $r=a,b$ 都有条件\\
+{\color{inkgray}四项全留，每阶 4 个常数待定}};
+
+\node[ovbox,text width=4.75cm,anchor=north west] (F3) at (10.5,-9.75) {%
+\textbf{\color{violetdeep}\S8\quad 圆外}\\[1pt]
+$r\to\infty$ 的给定行为逐阶筛\\
+{\color{inkgray}$\ln r$ 与常数留待总电荷定}};
+
+\node[ovcream,text width=15.0cm,anchor=north west] (COEF) at (0.2,-11.95) {%
+\textbf{\color{violetdeep}\S6--\S7\quad 定系数}\quad 代入 $r=$ 常数的条件得到 $\varphi$ 的恒等式，用 $\{1,\cos m\varphi,\sin m\varphi\}$ 的正交性逐阶读出（课件 p5 那句 “Properties of trigonometric functions?” 指的就是它）。};
+
+\node[ovbox,text width=7.3cm,anchor=north west] (AP1) at (0.2,-13.45) {%
+\textbf{\color{violetdeep}\S7\quad 例：环域（课件 p5--p6）}\\[1pt]
+内圆给 $u$、外圆给 $u_r$\\
+$\Rightarrow$ 只剩 $m=0$ 与 $m=2$ 两阶\\[1pt]
+{\color{inkgray}练“非齐次 $r$ 条件 + 逐阶比较”}};
+
+\node[ovbox,text width=7.3cm,anchor=north west] (AP2) at (8.0,-13.45) {%
+\textbf{\color{violetdeep}\S8\quad 例：均匀场中的导线（p7--p12）}\\[1pt]
+三条定解条件，$D_0$ 留给电荷\\
+$\Rightarrow$ 表面场 $2E_0\cos\varphi$，$\pm2E_0$ 处击穿\\[1pt]
+{\color{inkgray}练“一边有限、一边到无穷”的筛项}};
+
+\draw[ova] (CORE.south -| A.north) ++(0,0.05) -- (A.north);
+\draw[ova] (CORE.south -| B.north) ++(0,0.05) -- (B.north);
+\draw[ova] (A.south) -- (C.north);
+\draw[ova] (B.south) -- (D.north);
+\draw[ova] (C.south) -- (C.south |- JOIN.north);
+\draw[ova] (D.south) -- (D.south |- JOIN.north);
+\draw[ovline] (JOIN.south -| F1.north) ++(0,0.05) -- (F1.north);
+\draw[ovline] (JOIN.south -| F2.north) ++(0,0.05) -- (F2.north);
+\draw[ovline] (JOIN.south -| F3.north) ++(0,0.05) -- (F3.north);
+\draw[ovline] (F1.south) -- (F1.south |- COEF.north);
+\draw[ovline] (F2.south) -- (F2.south |- COEF.north);
+\draw[ovline] (F3.south) -- (F3.south |- COEF.north);
+\draw[ova] (COEF.south -| AP1.north) ++(0,0.05) -- (AP1.north);
+\draw[ova] (COEF.south -| AP2.north) ++(0,0.05) -- (AP2.north);
+\end{tikzpicture}
+\figcap{图 0-1\quad 本节主线：换坐标 $\to$ 分离 $\to$ 定谱 $\to$ 解 $r$ 方程 $\to$ 叠加（并证明没有别的解）$\to$ 按区域筛项 $\to$ 用 $r$ 条件定系数 $\to$ 两个应用。}
+\end{minipage}
+\end{center}
+
+\callout{\textbf{读法。}第一次读不必认识图里每个符号。只要抓住三条：第一，$\lambda=m^2$ 不是猜的，是周期条件逼出来的（\S3）；第二，通解里 $\ln r$ 与 $r^{-m}$ 不是“多余的项”，它们是原点处有源时才会出现的那部分场，区域形状决定要不要它们（\S5.3）；第三，所有系数都由 $r=$ 常数的边界条件定，和 $\varphi$ 方向的条件无关——$\varphi$ 方向的条件只负责给出谱。}
+
+\subhdr{0.1\quad 记号}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}ll@{}}
+\thead{记号} & \thead{含义} \\
+\tabmidrule
+$r,\ \varphi$ & 极坐标；$x=r\cos\varphi$，$y=r\sin\varphi$，$r\ge0$，$\varphi\in[0,2\pi)$ \\
+$\rho_0$ & 圆域的半径（课件 p3 用 $\rho_0$，p5 起环域改记 $a,b$） \\
+$a,\ b$ & 环域的内、外半径，$0<a<b$；圆外问题只有 $a$ \\
+$u$ & 待求的位函数：静电场里是电位，稳态热传导里是温度 \\
+$\lambda$ & 分离变量引出的常数（特征值）；\S3 证明它只能取 $m^2$ \\
+$m$ & 非负整数，$\lambda=m^2$；$m=0$ 单独一支 \\
+$A_m,B_m$ & $r^{m}$ 的两个系数（$\cos m\varphi$、$\sin m\varphi$） \\
+$C_m,D_m$ & $r^{-m}$ 的两个系数 \\
+$C_0,D_0$ & $m=0$ 的两个系数：常数项与 $\ln r$ 项 \\
+$E_0$ & 无穷远处的均匀外场（导线例题），沿 $+x$ 方向 \\
+$q_0$ & 导线单位长度电荷；中性导线 $q_0=0$ \\
+$\varepsilon_0$ & 真空电容率；本讲只用 SI 制 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\warnbox{\textbf{一个记号坑。}课件的 $D_0$ 是 $\ln r$ 的系数，而 $D_m$（$m\ge1$）是 $r^{-m}\sin m\varphi$ 的系数：同一个字母 D，下标 0 与下标 $m$ 指的是完全不同的两支。本讲保留课件记号以便对照，但每次出现都会写明“$\ln r$ 的系数 $D_0$”或“$r^{-m}\sin m\varphi$ 的系数 $D_m$”。}
+
+%=====================================================================
+\hdr{\S1}{极坐标下的拉普拉斯方程}
+\phantomsection\label{sec:s1}
+%=====================================================================
+
+\subhdr{1.1\quad 为什么换坐标（课件 p1）}
+
+二维极坐标的坐标线只有两种：$r=$ 常数是圆心在原点的圆，$\varphi=$ 常数是从原点出发的射线。圆域 $a<r<b$、$0\le\varphi<2\pi$ 在 $(r,\varphi)$ 平面上是一块矩形，它的两条“竖直边”$r=a$、$r=b$ 正好就是原问题的两条边界。这就是换坐标的全部理由：把弯曲边界变成坐标面，边界条件才能落到一维常微分方程的解上。
+
+代价有两个，先记下来，后面各节都会遇到：
+
+\begin{enumerate}[label=(\arabic*)]
+  \item $\varphi$ 方向没有真正的边界。$0$ 与 $2\pi$ 是同一条射线，所以“边界条件”只是一句 $\Phi(\varphi+2\pi)=\Phi(\varphi)$，这叫\textbf{周期条件}。它不给边界值，只给约束——但正是这个约束定出了谱（\S3）。
+  \item 原点是退化点。$r=0$ 处 $\varphi$ 没有定义，极坐标在那里不可逆。所以圆内问题必须在圆心处额外说一句“有界”，这就是课件 p3 标着 “Natural boundary condition!” 的那一条（\S6.1）。
+\end{enumerate}
+
+\begin{figbox}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[->,inkgray,line width=0.7pt] (-0.6,0)--(4.6,0) node[right,font=\small]{$x$};
+  \draw[->,inkgray,line width=0.7pt] (0,-0.6)--(0,3.9) node[above,font=\small]{$y$};
+  \draw[violet,line width=1pt] (0,0) circle (2.3);
+  \node[font=\footnotesize,violet] at (0.4,-2.62) {$r=\rho_0$（边界）};
+  \coordinate (P) at (1.762,1.478);
+  \draw[violetdeep,line width=0.8pt] (0,0)--(P);
+  \node[font=\footnotesize,violetdeep] at (0.55,1.15) {$r$};
+  \draw[violetdeep,line width=0.8pt] (0.75,0) arc (0:40:0.75);
+  \node[font=\footnotesize,violetdeep] at (1.0,0.28) {$\varphi$};
+  \draw[dashed,inkgray] (0,0)--(48:3.7);
+  \node[font=\footnotesize,inkgray] at (3.35,2.35) {$\varphi=$ 常数（射线）};
+  \fill[violetdeep] (P) circle (1.6pt);
+  \node[font=\footnotesize,violetdeep,right] at (P) {$P(r,\varphi)$};
+  \draw[densely dotted,inkgray] (P)--(1.762,0);
+  \draw[densely dotted,inkgray] (P)--(0,1.478);
+  \node[font=\scriptsize,inkgray] at (1.05,-0.25) {$r\cos\varphi$};
+  \node[font=\scriptsize,inkgray,rotate=90] at (-0.25,1.05) {$r\sin\varphi$};
+\end{tikzpicture}
+\figcap{图 1-1\quad 极坐标与它的两组坐标线。边界 $r=\rho_0$ 是坐标线，$a<r<b$ 在 $(r,\varphi)$ 平面上是矩形；$r=0$ 处 $\varphi$ 无定义，是退化点。}
+\end{figbox}
+
+\subhdr{1.2\quad 算子怎么来：两步链式法则}
+
+由 $x=r\cos\varphi$、$y=r\sin\varphi$ 得 $r^2=x^2+y^2$、$\tan\varphi=y/x$，求偏导：
+
+\[
+r_x=\frac{x}{r}=\cos\varphi,\qquad r_y=\frac{y}{r}=\sin\varphi,\qquad
+\varphi_x=-\frac{y}{r^2}=-\frac{\sin\varphi}{r},\qquad \varphi_y=\frac{x}{r^2}=\frac{\cos\varphi}{r}.
+\]
+
+把它们代进链式法则 $\partial_x=r_x\partial_r+\varphi_x\partial_\varphi$、$\partial_y=r_y\partial_r+\varphi_y\partial_\varphi$，得到一阶算子
+
+\begin{equation}
+\partial_x=\cos\varphi\,\partial_r-\frac{\sin\varphi}{r}\,\partial_\varphi,
+\qquad
+\partial_y=\sin\varphi\,\partial_r+\frac{\cos\varphi}{r}\,\partial_\varphi .
+\label{eq:d1}
+\end{equation}
+
+二阶导数就是把这个算子作用两遍。以 $\partial_x^2u$ 为例，先写出 $\partial_xu=\cos\varphi\,u_r-\dfrac{\sin\varphi}{r}u_\varphi$，再作用一次 $\partial_x$：第一项对 $r$ 求导时要记住 $\partial_r(\sin\varphi/r)=-\sin\varphi/r^2$，第二项对 $\varphi$ 求导时要记住 $\partial_\varphi(\sin\varphi/r)=\cos\varphi/r$。把两段都展开、按 $u$ 的偏导数归类，得到
+
+\begin{equation}
+\partial_x^2u=\cos^2\varphi\,u_{rr}-\frac{2\sin\varphi\cos\varphi}{r}u_{r\varphi}
++\frac{\sin^2\varphi}{r}u_r+\frac{2\sin\varphi\cos\varphi}{r^2}u_\varphi
++\frac{\sin^2\varphi}{r^2}u_{\varphi\varphi},
+\label{eq:d2x}
+\end{equation}
+
+同理（$\partial_y$ 的两项与上式只差 $\sin\leftrightarrow\cos$ 和若干符号）
+
+\begin{equation}
+\partial_y^2u=\sin^2\varphi\,u_{rr}+\frac{2\sin\varphi\cos\varphi}{r}u_{r\varphi}
++\frac{\cos^2\varphi}{r}u_r-\frac{2\sin\varphi\cos\varphi}{r^2}u_\varphi
++\frac{\cos^2\varphi}{r^2}u_{\varphi\varphi}.
+\label{eq:d2y}
+\end{equation}
+
+把 \eqref{eq:d2x} 与 \eqref{eq:d2y} 逐项相加，会看到三组抵消：
+
+\begin{itemize}
+  \item $u_{r\varphi}$ 的系数是 $-\frac{2\sin\varphi\cos\varphi}{r}$ 与 $+\frac{2\sin\varphi\cos\varphi}{r}$，相加为零；
+  \item $u_\varphi$ 的系数是 $+\frac{2\sin\varphi\cos\varphi}{r^2}$ 与 $-\frac{2\sin\varphi\cos\varphi}{r^2}$，相加为零；
+  \item $u_{rr}$、$u_r$、$u_{\varphi\varphi}$ 的系数分别用 $\cos^2\varphi+\sin^2\varphi=1$ 合并，得 $1$、$1/r$、$1/r^2$。
+\end{itemize}
+
+于是
+
+\begin{equation}
+\nabla^2u=\frac{\partial^2u}{\partial r^2}+\frac1r\frac{\partial u}{\partial r}
++\frac1{r^2}\frac{\partial^2u}{\partial\varphi^2}
+=\frac1r\frac{\partial}{\partial r}\Big(r\frac{\partial u}{\partial r}\Big)
++\frac1{r^2}\frac{\partial^2u}{\partial\varphi^2}.
+\label{eq:lap}
+\end{equation}
+
+最后那个等号只是把前两项合起来：$\dfrac1r\dfrac{\partial}{\partial r}\big(r u_r\big)=u_{rr}+\dfrac{u_r}{r}$。课件 p1 直接把方括号里的算子甩出来，中间这两步就是它省略的部分。
+
+\callout{\textbf{两句话记住它。}极坐标下的 $\nabla^2$ 比直角坐标多两个因子：一阶项系数 $1/r$，二阶角向导数系数 $1/r^2$。这两个 $r$ 的负幂次在后面会变成“$r^{-m}$ 必须靠有界性丢掉”的依据——因为 $r\to0$ 时 $r^{-m}$ 发散，而算子本身在 $r=0$ 是奇异的。}
+
+\subhdr{1.3\quad 代入方程，先看清结构}
+
+本节要解的是二维 Laplace 方程（静电场无电荷区、稳态无内热源的温度场都是它）：
+
+\begin{equation}
+\nabla^2u=0\quad\Longleftrightarrow\quad
+r^2u_{rr}+ru_r+u_{\varphi\varphi}=0,
+\label{eq:laplace}
+\end{equation}
+
+右边是把 \eqref{eq:lap} 乘以 $r^2$ 得到的。乘 $r^2$ 这一步不是装饰：乘完之后每一项对 $r$ 的“幂次与导数阶数之和”都等于 $2$（$r^2u_{rr}$、$ru_r$、$u_{\varphi\varphi}$ 分别是 $2+0$、$1+1$、$0+2$），这正是欧拉方程的特征（\S4.1），也是后面能令 $r=e^t$ 的原因。
+
+%=====================================================================
+\hdr{\S2}{分离变量：一个方程拆成两个}
+\phantomsection\label{sec:s2}
+%=====================================================================
+
+\subhdr{2.1\quad 设乘积解（课件 p1）}
+
+分离变量的第一步是一个假设：
+
+\begin{equation}
+u(r,\varphi)=R(r)\,\Phi(\varphi).
+\label{eq:ansatz}
+\end{equation}
+
+把它代入 \eqref{eq:laplace}：$u_{rr}=R''\Phi$，$u_r=R'\Phi$，$u_{\varphi\varphi}=R\Phi''$，于是
+
+\[
+r^2R''\Phi+rR'\Phi+R\Phi''=0.
+\]
+
+两边除以 $R\Phi$（在 $R\Phi\ne0$ 处；$R\Phi\equiv0$ 只给出平凡解 $u\equiv0$，不影响结论），并移项：
+
+\begin{equation}
+\frac{r^2R''+rR'}{R}=-\frac{\Phi''}{\Phi}.
+\label{eq:sep}
+\end{equation}
+
+左边只含 $r$，右边只含 $\varphi$。
+
+\subhdr{2.2\quad 为什么两边“必须”都是常数}
+
+这是分离变量法唯一需要小心的一步，课件 p1 只用一句 “Here, $\lambda$ is a constant” 带过。完整论证如下。
+
+取定 $r_0\in(a,b)$ 使 $R(r_0)\ne0$（若 $R$ 恒为零则 $u\equiv0$，是平凡解，不讨论）。在 \eqref{eq:sep} 里把 $r$ 固定成 $r_0$，右边仍等于常数
+
+\[
+\lambda_0:=\frac{r_0^2R''(r_0)+r_0R'(r_0)}{R(r_0)},
+\]
+
+所以对一切 $\varphi$ 都有 $-\Phi''(\varphi)/\Phi(\varphi)=\lambda_0$，即
+
+\[
+\Phi''(\varphi)+\lambda_0\Phi(\varphi)=0
+\]
+
+在所有 $\Phi\ne0$ 的点成立。$\Phi$ 连续，故这个等式由连续性延拓到整个区间：即使某点 $\Phi=0$，也有 $\Phi''=-\lambda_0\Phi=0$ 成立。同理，把 \eqref{eq:sep} 里的 $\varphi$ 固定，左边对一切 $r$ 都等于同一个 $\lambda_0$。于是
+
+\begin{equation}
+\Phi''+\lambda\Phi=0,
+\qquad
+r^2R''+rR'-\lambda R=0,
+\qquad \lambda=\lambda_0 .
+\label{eq:twoode}
+\end{equation}
+
+\textbf{这一步的实质}：两个自变量的乘积区域上，“只含 $r$ 的量 = 只含 $\varphi$ 的量”迫使两边都是常数。所以分离常数 $\lambda$ 不是人为引入的参数，而是方程结构逼出来的；这也解释了为什么下面 $\lambda$ 的取值不是任意的——它要同时满足 $\varphi$ 方向的周期条件和 $r$ 方向的方程。
+
+\subhdr{2.3\quad 两个方程与课件的写法对照}
+
+课件 p1 把 \eqref{eq:twoode} 写成
+
+\[
+\begin{cases}
+\Phi''(\varphi)+\lambda\Phi(\varphi)=0,\\[2pt]
+r\dfrac{\mathrm d}{\mathrm dr}\Big(r\dfrac{\mathrm dR}{\mathrm dr}\Big)-\lambda R=0,
+\end{cases}
+\]
+
+第二式展开就是 $r^2R''+rR'-\lambda R=0$，与本讲一致。注意它与 \eqref{eq:laplace} 的区别：原方程里 $r$ 的系数是 $+1$（对应 $+ru_r$），分离后 $R$ 的方程里 $\lambda$ 前面是负号。这个负号决定了 $m>0$ 时 $R$ 的解是 $r^{\pm m}$ 而不是振荡函数——\S4 会看到。
+
+\subhdr{2.4\quad 一个小例：乘积解不是空假设}
+
+取 $u=r\cos\varphi$（就是直角坐标里的 $x$）。它对应 $R(r)=r$、$\Phi(\varphi)=\cos\varphi$。验一下两个方程，取 $\lambda=1$：
+
+\[
+\Phi''+\Phi=-\cos\varphi+\cos\varphi=0,\qquad
+r^2R''+rR'-R=0+r-r=0 .
+\]
+
+两式都成立，所以 $u=r\cos\varphi$ 确实是 \eqref{eq:twoode} 在 $\lambda=1$ 下的一个乘积解。它的意义不只是“能代进去”：$u=x$ 是均匀电场的电位（$E=-\nabla u$ 沿 $x$ 方向），所以 \textbf{$m=1$ 项就是均匀场}。后面导线例题里 $A_1=-E_0$ 落在这个位置上，不是巧合。
+
+这个例子只说明“乘积解能装下东西”，还没说明“所有解都是乘积解之和”。后者是 \S5 的定理，需要先把 $\lambda$ 的取值定下来。
+
+%=====================================================================
+\hdr{\S3}{$\varphi$ 方向：周期条件把 $\lambda$ 钉成 $m^2$}
+\phantomsection\label{sec:s3}
+%=====================================================================
+
+\subhdr{3.1\quad 周期条件的来源（课件 p2）}
+
+$(r,\varphi)$ 与 $(r,\varphi+2\pi)$ 是同一个点，所以 $u$ 必须满足
+
+\begin{equation}
+u(r,\varphi+2\pi)=u(r,\varphi).
+\label{eq:per}
+\end{equation}
+
+代入 $u=R\Phi$ 得 $\Phi(\varphi+2\pi)=\Phi(\varphi)$。若 $u$ 对 $\varphi$ 一阶连续可导，对 \eqref{eq:per} 求导还得到 $\Phi'(\varphi+2\pi)=\Phi'(\varphi)$，即\textbf{函数值与导数都以 $2\pi$ 为周期}。这两条合称周期边界条件。
+
+注意它和 \S8.1 的矩形域完全不同：那里 $x=0$ 与 $x=a$ 是两个不同的边界，各给一个条件；这里 $0$ 与 $2\pi$ 是同一条射线，给的是“首尾相等”。这也意味着 $\varphi$ 方向不存在“第一类、第二类”的区分——只有周期这一种。
+
+\subhdr{3.2\quad 定理 1：谱只能是 $m^2$}
+
+\thm{定理 1（周期问题的特征值）}{设 $\Phi\in C^2(\mathbb R)$、以 $2\pi$ 为周期、$\Phi\not\equiv0$，且满足 $\Phi''+\lambda\Phi=0$。则}
+
+\[
+\lambda\ge0;\qquad
+\lambda=m^2\ (m=0,1,2,\dots);\qquad
+\Phi=\begin{cases}
+\text{常数}, & m=0,\\[2pt]
+A\cos m\varphi+B\sin m\varphi, & m\ge1.
+\end{cases}
+\]
+
+\pfline
+
+\textbf{第 1 步（能量恒等式）：先证 $\lambda\ge0$。}用 $\Phi$ 乘方程 $\Phi''+\lambda\Phi=0$，在 $[0,2\pi]$ 上积分：
+
+\[
+\int_0^{2\pi}\Phi\Phi''\dd\varphi+\lambda\int_0^{2\pi}\Phi^2\dd\varphi=0 .
+\]
+
+第一项分部积分一次：$\displaystyle\int_0^{2\pi}\Phi\Phi''\dd\varphi=\big[\Phi\Phi'\big]_0^{2\pi}-\int_0^{2\pi}(\Phi')^2\dd\varphi$。由周期性，$[\Phi\Phi']_0^{2\pi}=\Phi(2\pi)\Phi'(2\pi)-\Phi(0)\Phi'(0)=0$，于是
+
+\begin{equation}
+\lambda=\frac{\displaystyle\int_0^{2\pi}(\Phi')^2\dd\varphi}{\displaystyle\int_0^{2\pi}\Phi^2\dd\varphi}\ \ge0 .
+\label{eq:rayleigh}
+\end{equation}
+
+分母不为零（$\Phi\not\equiv0$ 且连续），分子非负，故 $\lambda\ge0$。这个式子还顺便说明：$\lambda=0$ 当且仅当分子为零，即 $\Phi'\equiv0$。
+
+\textbf{第 2 步（$\lambda=0$）：}由上面，$\Phi'\equiv0$，所以 $\Phi$ 是常数。代回方程确实成立（$\Phi''=0$），且常数满足周期条件。
+
+\textbf{第 3 步（$\lambda>0$）：}记 $k=\sqrt\lambda>0$，通解为 $\Phi=A\cos k\varphi+B\sin k\varphi$。代入周期条件 $\Phi(0)=\Phi(2\pi)$、$\Phi'(0)=\Phi'(2\pi)$：
+
+\[
+A=A\cos2\pi k+B\sin2\pi k,\qquad kB=-kA\sin2\pi k+kB\cos2\pi k .
+\]
+
+整理成关于 $(A,B)$ 的齐次线性方程组，其系数行列式为
+
+\[
+(1-\cos2\pi k)^2+(\sin2\pi k)^2=2\,(1-\cos2\pi k).
+\]
+
+要有非零解 $(A,B)\ne(0,0)$，必须 $\cos2\pi k=1$，即 $k$ 为正整数。于是 $\lambda=k^2=m^2$（$m=1,2,3,\dots$），而 $\cos m\varphi$、$\sin m\varphi$ 都满足周期条件。
+
+\textbf{第 4 步（没有别的）：}对固定的 $m$，方程 $\Phi''+m^2\Phi=0$ 的解空间是二维的，由 $\cos m\varphi$、$\sin m\varphi$ 张成，所以这两个函数之外没有别的特征函数。$\square$
+
+\subhdr{3.3\quad 三种 $\lambda$ 的直观，与一个反例}
+
+课件 p2 用三行列出了 “$\lambda<0$ 不满足周期条件 / $\lambda=0$ 常数可以 / $\lambda>0$ 且 $\sqrt\lambda$ 为整数才行”。这三行的理由可以一眼看清：
+
+\begin{itemize}
+  \item $\lambda<0$：写 $\lambda=-\mu^2$（$\mu>0$），解是 $e^{\mu\varphi}$ 与 $e^{-\mu\varphi}$（或 $\cosh\mu\varphi$、$\sinh\mu\varphi$）。以 $\mu=1$ 为例，$\Phi=e^{\varphi}$ 满足 $\Phi(0)=1$ 而 $\Phi(2\pi)=e^{2\pi}\approx535$，绕一圈回不到原值，任何非零线性组合也回不去。所以 $\lambda<0$ 一个解都没有。
+  \item $\lambda=0$：解是 $\Phi=C_1+C_2\varphi$。周期条件逼 $C_2=0$，只剩常数。
+  \item $\lambda>0$：解是“绕一圈正好走整数个波长”的正弦、余弦；$k$ 不是整数时，绕一圈相位差不为 $2\pi$ 的整数倍，首尾对不上。
+\end{itemize}
+
+\textbf{一个容易混的点}：周期条件同时约束 $\Phi$ 与 $\Phi'$，但证明里只用到了 $\Phi(0)=\Phi(2\pi)$ 与 $\Phi'(0)=\Phi'(2\pi)$ 两式；这是因为 $C^2$ 解在 $[0,2\pi]$ 内不会有跳跃。若只要求 $\Phi$ 连续而允许 $\Phi'$ 跳，则 $k$ 还可以是半整数（例如 $\Phi=\sin\frac\varphi2$，$\Phi(0)=\Phi(2\pi)=0$ 但 $\Phi'(0)=-\Phi'(2\pi)$），解在 $\varphi=0$ 与 $\varphi=2\pi$ 的接缝处出现“折角”，那就不再是 $C^2$ 的调和函数了——本课程不讨论这种情形。
+
+\subhdr{3.4\quad 与直角坐标并排看}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}p{0.16\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+\thead{环节} & \thead{\S8.1 矩形域} & \thead{本节圆域} \\
+\tabmidrule
+角向方程 & $X''+\lambda X=0$，$0<x<a$ & $\Phi''+\lambda\Phi=0$，$0\le\varphi<2\pi$ \\
+两端条件 & 边界值给在 $x=0$、$x=a$ & 无边界值，只有 $\Phi(\varphi+2\pi)=\Phi(\varphi)$ \\
+谱怎么来 & 解 $\tan(\sqrt\lambda\,a)=0$ 这类超越方程 & 周期条件直接给出 $\lambda=m^2$，不用解超越方程 \\
+谱的形状 & $\lambda_n=(n\pi/a)^2$，依赖区域长度 $a$ & $\lambda=m^2$，与半径无关（无量纲的整数平方） \\
+特征函数 & $\sin(n\pi x/a)$ 或 $\cos(n\pi x/a)$ & $1,\ \cos m\varphi,\ \sin m\varphi$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+最该记住的是第三行：\textbf{直角坐标的谱依赖区域尺寸，极坐标的角向谱只依赖“绕一圈”这件事}。所以极坐标下的 $m$ 永远是非负整数，不会出现 $m$ 依赖 $\rho_0$ 的情形。半径只影响 $r$ 方向的解与系数的大小，不影响谱。
+
+%=====================================================================
+\hdr{\S4}{$r$ 方向：欧拉方程与两组解}
+\phantomsection\label{sec:s4}
+%=====================================================================
+
+\subhdr{4.1\quad 方程的形状（课件 p2）}
+
+把 $\lambda=m^2$ 代进 \eqref{eq:twoode} 的第二式：
+
+\begin{equation}
+r^2R''+rR'-m^2R=0 .
+\label{eq:euler}
+\end{equation}
+
+这叫\textbf{欧拉方程}（也叫等维方程）。判别方法就是看“$r$ 的幂次与导数阶数之和”：$r^2R''$ 是 $2+0$，$rR'$ 是 $1+1$，$m^2R$ 是 $0+2$，三项都是 2。凡是这种方程，令 $r=e^t$ 就能化为常系数。
+
+\subhdr{4.2\quad 令 $r=e^t$：把变系数变常系数}
+
+设 $r>0$，令 $t=\ln r$、$y(t)=R(e^t)$。由链式法则
+
+\[
+R'(r)=\frac{\dd R}{\dd r}=\frac{\dd y}{\dd t}\frac{\dd t}{\dd r}=\frac{y'}{r},
+\qquad
+R''(r)=\frac{\dd}{\dd r}\Big(\frac{y'}{r}\Big)=\frac{y''}{r^2}-\frac{y'}{r^2}=\frac{y''-y'}{r^2}.
+\]
+
+代进 \eqref{eq:euler}：
+
+\[
+(y''-y')+y'-m^2y=0\quad\Longrightarrow\quad y''-m^2y=0 .
+\]
+
+这一行值得多看一眼：$y'$ 的两项正好抵消，这就是欧拉方程“等维”的好处——换元后一阶项自动消失。
+
+\subhdr{4.3\quad 两组解（课件 p2 下半页）}
+
+\begin{itemize}
+  \item $m>0$：$y''-m^2y=0$ 的解是 $y=C_me^{mt}+D_me^{-mt}$，回代 $t=\ln r$：
+  \[
+  R(r)=C_mr^m+D_mr^{-m},\qquad m=1,2,3,\dots
+  \]
+  \item $m=0$：$y''=0$ 的解是 $y=C_0+D_0t$，回代：
+  \[
+  R(r)=C_0+D_0\ln r .
+  \]
+\end{itemize}
+
+也可以不换元直接看 $m=0$：$r(rR')'=0\Rightarrow rR'=D_0\Rightarrow R=C_0+D_0\ln r$，与上面一致。
+
+\subhdr{4.4\quad 一个小例：$m=2$ 代回去验一遍}
+
+取 $m=2$、$R=Cr^2+Dr^{-2}$。先算导数：$R'=2Cr-2Dr^{-3}$，$R''=2C+6Dr^{-4}$。代入 \eqref{eq:euler} 左边：
+
+\[
+r^2(2C+6Dr^{-4})+r(2Cr-2Dr^{-3})-4(Cr^2+Dr^{-2})
+=(2C+2C-4C)\,r^2+(6D-2D-4D)\,r^{-2}=0 .
+\]
+
+两组系数各自为零，说明 $r^2$ 与 $r^{-2}$ 都是解，而且它们的任意线性组合也是解（方程线性）。这个验算同时提示一件事：$r^m$ 与 $r^{-m}$ 是“两种不同的增长方式”，在 $r\to0$ 与 $r\to\infty$ 处的行为完全相反——这正是不同区域要丢不同项的原因。
+
+\subhdr{4.5\quad 这两组解的物理含义}
+
+\begin{itemize}
+  \item $r^m\cos m\varphi$、$r^m\sin m\varphi$（$m\ge1$）在原点处为零，在远处增长。它们是“原点附近没有源”的那部分场。$m=1$ 是均匀场，$m=2$ 是四极场，依此类推。
+  \item $r^{-m}\cos m\varphi$、$r^{-m}\sin m\varphi$ 在原点处发散、在远处衰减。它们是“原点处有源”的那部分场（二维偶极线、四极线等）。
+  \item $\ln r$ 是原点处有一根线电荷（或线热源）的电位；$r\to0$ 时它趋于 $-\infty$（系数为正时），所以圆内问题必须把它丢掉。
+  \item 常数 $C_0$ 是电位的零点，没有物理意义，但在定系数时要用（它由边界条件定）。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S5}{把特解拼成通解：通解定理与证明}
+\phantomsection\label{sec:s5}
+%=====================================================================
+
+\subhdr{5.1\quad 先叠加，再问“够不够”}
+
+对每个 $m\ge1$，$r^m\cos m\varphi$、$r^m\sin m\varphi$、$r^{-m}\cos m\varphi$、$r^{-m}\sin m\varphi$ 都是 \eqref{eq:laplace} 的解；$m=0$ 时 $1$ 与 $\ln r$ 是解。方程线性，所以有限个这样的项相加仍是解。课件 p3 直接写成无穷和：
+
+\begin{equation}
+u(r,\varphi)=C_0+D_0\ln r+\sum_{m=1}^{\infty}\Big[(A_mr^m+C_mr^{-m})\cos m\varphi+(B_mr^m+D_mr^{-m})\sin m\varphi\Big].
+\label{eq:general}
+\end{equation}
+
+但“每一项都是解”不等于“所有解都能写成这样”。这一步必须证明，否则定系数时会出现“我们只找到了这一类解”的漏洞。下面给出证明。它的思路很直接：\textbf{先固定 $r$，把 $u(r,\cdot)$ 展成 $\varphi$ 的 Fourier 级数；再证明每个 Fourier 系数作为 $r$ 的函数必须满足欧拉方程。}
+
+\subhdr{5.2\quad 定理 2：环域上的通解}
+
+\thm{定理 2（环域内 Laplace 方程的通解）}{设 $0<a<b$，$u\in C^2(a<r<b)\cap C^0(a\le r\le b)$，$u$ 对 $\varphi$ 以 $2\pi$ 为周期，且在环域内满足 $\nabla^2u=0$。则存在常数 $C_0,D_0$ 与 $A_m,B_m,C_m,D_m$（$m\ge1$），使 \eqref{eq:general} 在环域内每一点成立；并且该级数在任一紧致子域 $a'\le r\le b'$（$a<a'<b'<b$）上绝对一致收敛。}
+
+\pfline
+
+\textbf{第 1 步（把 $u$ 在 $\varphi$ 方向展开）。}固定 $r$，定义
+
+\begin{align*}
+a_0(r)&=\frac1{2\pi}\int_0^{2\pi}u(r,\varphi)\dd\varphi,\\
+a_m(r)&=\frac1\pi\int_0^{2\pi}u(r,\varphi)\cos m\varphi\dd\varphi,\qquad
+b_m(r)=\frac1\pi\int_0^{2\pi}u(r,\varphi)\sin m\varphi\dd\varphi .
+\end{align*}
+
+因为 $u\in C^2$，积分号下可以对 $r$ 求导两次，所以 $a_0,a_m,b_m$ 都是 $r$ 的 $C^2$ 函数。
+
+\textbf{第 2 步（每个系数满足欧拉方程）。}把方程 \eqref{eq:laplace} 写成 $u_{rr}+\dfrac1ru_r+\dfrac1{r^2}u_{\varphi\varphi}=0$，乘以 $\cos m\varphi$ 后在 $[0,2\pi]$ 上积分。第一、二项直接给出 $\pi\big(a_m''+\frac1ra_m'\big)$。第三项要分部积分两次：
+
+\[
+\int_0^{2\pi}u_{\varphi\varphi}\cos m\varphi\dd\varphi
+=\underbrace{\big[u_\varphi\cos m\varphi\big]_0^{2\pi}}_{=0}
++m\int_0^{2\pi}u_\varphi\sin m\varphi\dd\varphi,
+\]
+
+\[
+m\int_0^{2\pi}u_\varphi\sin m\varphi\dd\varphi
+=m\Big(\underbrace{\big[u\sin m\varphi\big]_0^{2\pi}}_{=0}-m\int_0^{2\pi}u\cos m\varphi\dd\varphi\Big)=-m^2\pi a_m .
+\]
+
+（两个方括号都为零，靠的是 $u$ 与 $u_\varphi$ 的 $2\pi$ 周期性。）代入整理得
+
+\[
+r^2a_m''+ra_m'-m^2a_m=0,\qquad m\ge1 .
+\]
+
+对 $b_m$ 完全同理；对 $a_0$（$m=0$）得 $r^2a_0''+ra_0'=0$，即 $(r a_0')'=0$。
+
+\textbf{第 3 步（解出形式）。}由第 3 节与第 4 节的结果：
+
+\[
+a_0=C_0+D_0\ln r,\qquad
+a_m=A_mr^m+C_mr^{-m},\qquad
+b_m=B_mr^m+D_mr^{-m}.
+\]
+
+\textbf{第 4 步（逐点还原 $u$）。}固定 $r$，$u(r,\cdot)\in C^2$ 且以 $2\pi$ 为周期，是分段光滑函数。由 Fourier 级数的收敛定理（数学分析中已建立：分段光滑的 $2\pi$ 周期函数，其 Fourier 级数在每点收敛到左右极限的平均；在连续点收敛到函数值），
+
+\[
+u(r,\varphi)=a_0(r)+\sum_{m=1}^{\infty}\big[a_m(r)\cos m\varphi+b_m(r)\sin m\varphi\big]
+\]
+
+在每点成立。把第 3 步的结果代进去，就是 \eqref{eq:general}。
+
+\textbf{第 5 步（一致收敛）。}对 $a_m$ 再分部积分两次（用 $\cos m\varphi$ 的二阶导数 $=-m^2\cos m\varphi$），
+
+\[
+a_m(r)=\frac1\pi\int_0^{2\pi}u(r,\varphi)\cos m\varphi\dd\varphi
+=-\frac1{m^2\pi}\int_0^{2\pi}u_{\varphi\varphi}(r,\varphi)\cos m\varphi\dd\varphi ,
+\]
+
+于是 $|a_m(r)|\le\dfrac{K_1}{m^2}$，$K_1=\sup|u_{\varphi\varphi}|$ 与 $r$ 无关；$b_m$ 同理。取 $a<a'<b'<b$，记 $s=b'/a'>1$。由 $a_m(a')=A_ma'^m+C_ma'^{-m}$ 与 $a_m(b')=A_mb'^m+C_mb'^{-m}$ 解出
+
+\[
+C_m=\frac{a_m(a')\,b'^m-a_m(b')\,a'^m}{\big(b'/a'\big)^m-\big(a'/b'\big)^m},
+\]
+
+故
+
+\[
+|C_m|\,a'^{-m}\le\frac{2K_1}{m^2}\cdot\frac{1}{1-s^{-2}},\qquad
+|A_m|\,b'^m\le\frac{K_1}{m^2}+\frac{2K_1}{m^2}\cdot\frac{1}{1-s^{-2}} .
+\]
+
+也就是说，在 $a'\le r\le b'$ 上 $|A_mr^m|\le K_2/m^2$、$|C_mr^{-m}|\le K_2/m^2$（$K_2$ 与 $m$ 无关）。于是
+
+\[
+\sum_{m\ge1}\Big(|A_m|b'^m+|C_m|a'^{-m}\Big)\big(|\cos m\varphi|+|\sin m\varphi|\big)
+\le\sum_{m\ge1}\frac{4K_2}{m^2}<\infty ,
+\]
+
+由 Weierstrass 判别法，\eqref{eq:general} 在 $a'\le r\le b'$ 上绝对一致收敛。$\square$
+
+\warnbox{\textbf{这个证明用到了什么，没用到了什么。}用到了：$u$ 在环域内 $C^2$、在闭环域上连续、$\varphi$ 周期、方程成立。没用到的：$u$ 在 $r=a,b$ 上的具体值。所以定理 2 说的是“\emph{任何}解都是这个形状”，边界值只影响系数。另外，第 4 步引用的 Fourier 收敛定理是已建立的工具，证明里没有重证它；若要完全自足，需要先讲傅里叶级数的收敛性——那属于数学分析的内容，不在本课程范围。}
+
+\subhdr{5.3\quad 三种区域：该丢哪些项}
+
+\eqref{eq:general} 是环域的通解。具体问题里，区域形状决定哪些项必须为零，理由都是“在该区域的端点处不能发散”。
+
+\needspace{0.30\textheight}
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.13\linewidth}L{0.55\linewidth}L{0.24\linewidth}@{}}
+\thead{区域} & \thead{筛法} & \thead{留下的} \\
+\tabmidrule
+圆内 & $r\to0$ 时 $\ln r\to-\infty$、$r^{-m}\to\infty$，故 $D_0=C_m=D_m=0$（自然边界条件） & $C_0$ 与 $r^m$ 项 \\
+环域 & 两端都远离奇点，四项全留 & 全部 \\
+圆外 & $r\to\infty$ 时 $r^m$（$m\ge2$）增长过快，要看题目给定的渐近行为逐阶决定；$\ln r$ 与常数是低阶项，留待 $r=a$ 的条件与总电荷决定 & 视题目而定 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+第三行是本讲最不“公式化”的一行，课件 p9 用 “Main part” 三个字带过，\S8.3 会把它的逻辑写全。原则只有一句：\textbf{先看 $r\to\infty$ 时有没有给定行为，再按 $r$ 的幂次从高到低逐个比较；$r=a$ 的是边界值，不是渐近条件。}
+
+%=====================================================================
+\hdr{\S6}{圆内：自然边界条件与 Fourier 系数}
+\phantomsection\label{sec:s6}
+%=====================================================================
+
+\subhdr{6.1\quad “自然边界条件”是什么意思（课件 p3）}
+
+圆内区域是 $0<r<\rho_0$。极坐标在 $r=0$ 处退化（$\varphi$ 无定义），所以通解 \eqref{eq:general} 在 $r=0$ 处要单独检查。若 $D_0\ne0$，当 $r\to0^+$ 时 $D_0\ln r\to-\infty$（$D_0>0$）；若某个 $C_m\ne0$，则 $C_mr^{-m}\cos m\varphi$ 沿 $\cos m\varphi\ne0$ 的方向趋于无穷。物理上电位在圆心必须有界（圆心不是一个源），数学上要求 $u$ 在 $r=0$ 处有连续延拓，两者都要求
+
+\[
+D_0=0,\qquad C_m=D_m=0\quad(m\ge1).
+\]
+
+这就是课件 p3 标的 “Natural boundary condition”。它和矩形域里的“两端为零”不同：那里是人为指定的边界值，这里是\textbf{解自身在有界性要求下被筛掉一部分}。所以叫“自然”条件——不是题给的条件，而是区域形状自动强加的条件。
+
+\subhdr{6.2\quad 圆内的解与系数公式（课件 p3）}
+
+丢掉上述项后，圆内的解只能是
+
+\begin{equation}
+u(r,\varphi)=C_0+\sum_{m=1}^{\infty}r^m\big(A_m\cos m\varphi+B_m\sin m\varphi\big).
+\label{eq:disksol}
+\end{equation}
+
+设圆周上的边界值是 $f(\varphi)$（连续、分段光滑）：
+
+\begin{equation}
+u(\rho_0,\varphi)=f(\varphi).
+\label{eq:diskbc}
+\end{equation}
+
+把 \eqref{eq:disksol} 在 $r=\rho_0$ 处写出，得
+
+\[
+f(\varphi)=C_0+\sum_{m=1}^{\infty}\rho_0^m\big(A_m\cos m\varphi+B_m\sin m\varphi\big).
+\]
+
+这是 $f$ 的 Fourier 级数，只是每一项多乘了 $\rho_0^m$。用 $\{1,\cos m\varphi,\sin m\varphi\}$ 在 $[0,2\pi]$ 上的正交性（下面四式），两边分别乘 $1$、$\cos m\varphi$、$\sin m\varphi$ 后积分，就能把每一项单独解出来。
+
+\begin{gather*}
+\int_0^{2\pi}\cos m\varphi\cos n\varphi\dd\varphi=\pi\delta_{mn},\qquad
+\int_0^{2\pi}\sin m\varphi\sin n\varphi\dd\varphi=\pi\delta_{mn},\\
+\int_0^{2\pi}\cos m\varphi\sin n\varphi\dd\varphi=0,\qquad
+\int_0^{2\pi}1\dd\varphi=2\pi\qquad(m,n\ge1).
+\end{gather*}
+
+结果就是课件 p3 右下的三个式子：
+
+\begin{equation}
+\begin{aligned}
+C_0&=\frac1{2\pi}\int_0^{2\pi}f(\varphi)\dd\varphi,\\
+A_m&=\frac1{\pi\rho_0^m}\int_0^{2\pi}f(\varphi)\cos m\varphi\dd\varphi,\qquad
+B_m=\frac1{\pi\rho_0^m}\int_0^{2\pi}f(\varphi)\sin m\varphi\dd\varphi .
+\end{aligned}
+\label{eq:diskcoef}
+\end{equation}
+
+\textbf{量纲自检}：$f$ 与 $u$ 同量纲，$\rho_0^m$ 的量纲是 $[\text{长度}]^m$，所以 $A_m$ 的量纲是 $[u]/[\text{长度}]^m$——与 \eqref{eq:disksol} 里 $r^m$ 的量纲正好抵消。若算出的 $A_m$ 忘了除 $\rho_0^m$，量纲就对不上，这是本类题最常见的错。
+
+\subhdr{6.3\quad 一个小例：$f(\varphi)=\cos\varphi$}
+
+取单位圆盘 $\rho_0=1$，边界值 $f(\varphi)=\cos\varphi$。代入 \eqref{eq:diskcoef}：$C_0=0$；$A_1=\frac1\pi\int_0^{2\pi}\cos^2\varphi\dd\varphi=1$；其余全为零。于是
+
+\[
+u(r,\varphi)=r\cos\varphi=x .
+\]
+
+这正是 \S2.4 里验证过的乘积解。它说明两件事：第一，系数公式给出的结果与“直接猜”一致；第二，\textbf{边界值只含一个谐波时，解就只含一个谐波}——这为下一节“逐阶比较”提供了合法性：正交性保证没有别的谐波被混进来。
+
+\subhdr{6.4\quad 解为什么是唯一的}
+
+由定理 2，圆内任何满足条件的解在 $r>0$ 内都有 \eqref{eq:general} 的形式；有界性又要求 $D_0=C_m=D_m=0$，所以它必须有 \eqref{eq:disksol} 的形式。而 \eqref{eq:disksol} 的系数由 \eqref{eq:diskbc} 与正交性唯一确定（\eqref{eq:diskcoef}）。两条合起来：\textbf{圆内 Dirichlet 问题的解存在且唯一}，并且唯一性不需要动用最大值原理——它直接来自“所有解都是这个形状”这一条。
+
+%=====================================================================
+\hdr{\S7}{环域：两个 $r$ 方向条件都要用（课件 p5--p6）}
+\phantomsection\label{sec:s7}
+%=====================================================================
+
+\subhdr{7.1\quad 为什么环域要两个条件}
+
+\eqref{eq:euler} 是二阶方程，每一阶 $m$ 有两个独立常数（$A_m,C_m$ 或 $B_m,D_m$）。两个常数需要两个条件，而环域正好有两个端点 $r=a$ 与 $r=b$。这是环域与圆内的根本区别：圆内有一个端点是奇点，奇点处只能提“有界”，相当于一个条件，所以只剩一个常数待定，正好由圆周上的边界值定下。
+
+\begin{figbox}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \fill[bandviolet] (0,0) circle (2.0);
+  \fill[white] (0,0) circle (1.0);
+  \draw[violet,line width=1pt] (0,0) circle (1.0);
+  \draw[violet,line width=1pt] (0,0) circle (2.0);
+  \node[font=\footnotesize,inkgray] at (55:1.5) {$\nabla^2u=0$};
+  \node[font=\scriptsize,violetdeep,anchor=east,align=right] (L1) at (-2.30,1.40) {内圆 $r=a$：\\$u=1-a^4\cos2\varphi$};
+  \draw[->,violet,line width=0.7pt] (L1.east) -- (-0.70,0.71);
+  \node[font=\scriptsize,violetdeep,anchor=east,align=right] (L2) at (-2.30,-1.50) {外圆 $r=b$：\\$u_r=-4b^3\cos2\varphi$};
+  \draw[->,violet,line width=0.7pt] (L2.east) -- (-1.80,-0.87);
+\end{tikzpicture}
+\figcap{图 7-1\quad 课件 p5 的环域问题：内圆给的是 $u$ 的值，外圆给的是 $u_r$ 的值。两个条件都落在 $r=$ 常数上，正好定下每一阶的两个常数。}
+\end{figbox}
+
+\subhdr{7.2\quad “比较系数”为什么合法}
+
+课件 p5 在通解下面画了个问号 “Properties of trigonometric functions?”，指的就是这一步。把通解代入 $r=a$ 的条件，得到的是一个关于 $\varphi$ 的恒等式，形如
+
+\[
+\sum_{m\ge0}\big[\alpha_m\cos m\varphi+\beta_m\sin m\varphi\big]=0\quad\text{对一切 }\varphi .
+\]
+
+两边乘 $\cos n\varphi$ 后在 $[0,2\pi]$ 上积分，由 \S6.2 的正交性表，只剩下 $m=n$ 那一项，得 $\pi\alpha_n=0$。所以\textbf{每个 $\alpha_n$、$\beta_n$ 必须各自为零}，这就是“逐阶比较”的合法性来源：不是“看起来像”，而是正交性把每一项单独分离出来了。
+
+对 $u_r$ 的条件做法一样：$u_r$ 也是 $\varphi$ 的函数（系数里多带 $r$ 的幂），对它同样可以用正交性逐阶读出。
+
+\subhdr{7.3\quad 例题完整解算（课件 p5--p6）}
+
+\textbf{题目}（课件 p5）。在环域 $a\le r\le b$ 内解 $\nabla^2u=0$，边界条件为
+
+\[
+u\big|_{r=a}=1-a^4\cos2\varphi,\qquad
+u_r\big|_{r=b}=-4b^3\cos2\varphi .
+\]
+
+\textbf{第 1 步（先化简通解）。}两条边界值里只出现两样东西：常数 $1$ 与 $\cos2\varphi$。由正交性，$m=0$ 与 $m=2$ 之外的系数必须为零；又因为两条边界值都是 $\varphi$ 的偶函数（只含 $\cos$），$\sin$ 项的系数也必须为零。所以通解只剩四项：
+
+\begin{equation}
+u(r,\varphi)=C_0+D_0\ln r+\big(A_2r^2+C_2r^{-2}\big)\cos2\varphi .
+\label{eq:annform}
+\end{equation}
+
+这就是课件 p5 那句 “The solution is simplified according to the boundary condition” 的完整理由。
+
+\textbf{第 2 步（代入内圆条件）。}令 $r=a$：
+
+\[
+C_0+D_0\ln a+\big(A_2a^2+C_2a^{-2}\big)\cos2\varphi=1-a^4\cos2\varphi .
+\]
+
+\textbf{第 3 步（代入外圆条件）。}先求导：$u_r=\dfrac{D_0}{r}+\big(2A_2r-2C_2r^{-3}\big)\cos2\varphi$，令 $r=b$：
+
+\[
+\frac{D_0}{b}+\big(2A_2b-2C_2b^{-3}\big)\cos2\varphi=-4b^3\cos2\varphi .
+\]
+
+\textbf{第 4 步（逐阶比较）。}常数项与 $\cos2\varphi$ 项各自相等：
+
+\begin{equation}
+\begin{cases}
+C_0+D_0\ln a=1,\\[2pt]
+\dfrac{D_0}{b}=0,
+\end{cases}
+\qquad\qquad
+\begin{cases}
+A_2a^2+C_2a^{-2}=-a^4,\\[2pt]
+2A_2b-2C_2b^{-3}=-4b^3 .
+\end{cases}
+\label{eq:annsys}
+\end{equation}
+
+左边一组立刻给出 $D_0=0$、$C_0=1$。注意第二式是 $u_r$ 条件的常数项，它把 $D_0$ 也管住了——这就是 \S7.4 要提醒的那个坑。
+
+\textbf{第 5 步（解 $2\times2$ 方程组）。}由第二式 $C_2=A_2b^4+2b^6$（两边乘 $b^3/2$ 再移项）。代进第一式：
+
+\[
+A_2a^2+\big(A_2b^4+2b^6\big)a^{-2}=-a^4
+\ \Longrightarrow\
+A_2\,\frac{a^4+b^4}{a^2}=-\frac{a^6+2b^6}{a^2},
+\]
+
+所以
+
+\[
+A_2=-\frac{a^6+2b^6}{a^4+b^4},
+\qquad
+C_2=A_2b^4+2b^6=\frac{-a^6b^4-2b^{10}+2a^4b^6+2b^{10}}{a^4+b^4}
+=\frac{a^4b^4\,(2b^2-a^2)}{a^4+b^4}.
+\]
+
+\textbf{第 6 步（回代并核对）。}把 $C_0=1$、$D_0=0$ 与 $A_2,C_2$ 代回 \eqref{eq:annform}：
+
+\begin{equation}
+u(r,\varphi)=1+\left[-\frac{a^6+2b^6}{a^4+b^4}\,r^2+\frac{a^4b^4(2b^2-a^2)}{a^4+b^4}\,\frac1{r^2}\right]\cos2\varphi .
+\label{eq:annsol}
+\end{equation}
+
+与课件 p6 最后一行的结果一致。三处核对：
+
+\begin{itemize}
+  \item \textbf{内圆}：$r=a$ 时方括号里是 $-\dfrac{a^6+2b^6}{a^4+b^4}a^2+\dfrac{a^4b^4(2b^2-a^2)}{a^4+b^4}\cdot\dfrac1{a^2}
+  =\dfrac{-a^8-2a^2b^6+2a^2b^6-a^6}{a^4+b^4}=-a^4$，故 $u=1-a^4\cos2\varphi$，对。
+  \item \textbf{外圆}：对 $r$ 求导后令 $r=b$，$r^2$ 项给 $2A_2b$，$r^{-2}$ 项给 $-2C_2b^{-3}$，由第 5 步的构造正好是 $-4b^3$，对。
+  \item \textbf{量纲}：$A_2$ 的量纲是 $[u]/[\text{长度}]^2$（分子 $a^6$、分母 $a^4$），$C_2$ 的量纲是 $[u]\cdot[\text{长度}]^2$（分子 $a^4b^4\cdot b^2$、分母 $a^4$），与 $r^2$、$r^{-2}$ 各自抵消。课件把 $a,b$ 当纯数处理，量纲上看不出这一点，但换成有单位的数值时必须一致。
+\end{itemize}
+
+\subhdr{7.4\quad 课件 p4 的那条 Remark}
+
+课件 p4 写着：“The boundary condition with respect to $r$ could be inhomogeneous. The coefficients are obtained by using the inhomogeneous boundary condition with respect to $r$.” 这句话有两个意思，都值得记住。
+
+\needspace{0.16\textheight}
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.13\linewidth}L{0.40\linewidth}L{0.40\linewidth}@{}}
+\thead{方向} & \thead{条件的性质} & \thead{作用} \\
+\tabmidrule
+$\varphi$ 方向 & 必须齐次：$\Phi(\varphi+2\pi)-\Phi(\varphi)=0$ & 定谱（$\lambda=m^2$）；换成非齐次就不再是同一类问题 \\
+$r$ 方向 & 可以非齐次，例如 $u(a,\varphi)=f(\varphi)$、$u_r(b,\varphi)=g(\varphi)$ & 定系数；非齐次正是“数据入口”，齐次反而使所有系数为零 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+所以“边界条件非齐次”不是缺陷，而是常态：分离变量法把“齐次”要求留给角向，把“非齐次数据”全部放到径向条件上。这也是为什么 \S8.1 里矩形域要先做“齐次化”，而极坐标下这里不需要——非齐次数据本来就在 $r$ 方向，直接用作定系数的入口。
+
+\subhdr{7.5\quad 一个高频错误}
+
+若外圆条件给的是 $u_r$，求导后 $m=0$ 的项不是零而是 $\dfrac{D_0}{r}$。所以 $u_r\big|_{r=b}$ 的常数项等于 $\dfrac{D_0}{b}$，若题给常数项为 $0$，就得到 $D_0=0$。若漏掉这一项，$D_0$ 会一直留到答案里，最后验证内圆条件时才发现对不上。本讲的 \eqref{eq:annsys} 左边一组就是这个坑的标准写法。
+
+%=====================================================================
+\hdr{\S8}{应用：均匀场中的无限长导线（课件 p7--p12）}
+\phantomsection\label{sec:s8}
+%=====================================================================
+
+\subhdr{8.1\quad 把物理问题翻成定解问题（课件 p7）}
+
+带电云与地面之间本来有均匀外场 $E_0$；中间横放一根无限长导线，半径 $a$，表面电位为零（接地或与地同电位）。感应电荷会使导线附近的场畸变，要求导线外的电场分布。
+
+翻译成数学问题的三步：
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{二维}。导线无限长，沿 $z$ 方向没有变化，所以 $u=u(x,y)$。柱坐标下 $\nabla^2u=u_{rr}+\frac1ru_r+\frac1{r^2}u_{\varphi\varphi}$，与 \eqref{eq:lap} 相同（没有 $z$ 项）。
+  \item \textbf{方程}。导线外无自由电荷，$u$ 满足 $\nabla^2u=0$（$r>a$）。
+  \item \textbf{条件}。导线表面是等位面，取电位零点：$u(a,\varphi)=0$；远处场未被导线影响，仍是均匀场 $E_0$（沿 $+x$），故 $u\to-E_0x=-E_0r\cos\varphi$；再加上 $\varphi$ 的周期条件。
+\end{enumerate}
+
+\begin{figbox}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+  \draw[->,inkgray,line width=0.7pt] (-3.2,0)--(3.5,0) node[right,font=\small]{$x$};
+  \draw[->,inkgray,line width=0.7pt] (0,-2.3)--(0,2.4) node[above,font=\small]{$y$};
+  \foreach \yy in {-1.6,-1.0,-0.4,0.4,1.0,1.6}{
+    \draw[->,violetdeep,line width=0.7pt] (-3.0,\yy)--(-2.3,\yy);
+    \draw[->,violetdeep,line width=0.7pt] (2.3,\yy)--(3.0,\yy);
+  }
+  \node[font=\footnotesize,violetdeep] at (-2.62,1.95) {$E_0$};
+  \fill[bandviolet] (0,0) circle (1.0);
+  \draw[violet,line width=1pt] (0,0) circle (1.0);
+  \node[font=\footnotesize,violetdeep] at (0,0.26) {$u=0$};
+  \node[font=\scriptsize,violetdeep] at (0,-0.34) {$r=a$};
+\end{tikzpicture}
+\figcap{图 8-1\quad 导线横截面（角度 $\varphi$ 自 $+x$ 轴起算）。外场沿 $+x$，与课件算式一致；课件 p7 的插图把外场画成竖直方向，见 \S8.7。$r=a$ 上 $u=0$，$r\to\infty$ 时 $u\to-E_0r\cos\varphi$。}
+\end{figbox}
+
+\subhdr{8.2\quad 三条条件够不够}
+
+题面给了三条：方程、$u(a,\varphi)=0$、$r\to\infty$ 的渐近行为（外加周期条件）。这三条能不能唯一确定解？下面的求解会显示：\textbf{不能，会留下一个常数}。这个常数对应导线的单位长度电荷 $q_0$，题面没有给，所以“求电场分布”的完整答案里必然含 $q_0$（或等价地含 $D_0$）。课件 p11 用 “If the wire is electrically neutral” 补上这一条，才把常数定死。
+
+这不是题目出得不严，而是物理事实：一根孤立导线放在外场里，它的净电荷是独立的一个自由度，外场和接地条件都管不住它。解题时应当把这个自由度明确写出来，而不是默认它为零。
+
+\subhdr{8.3\quad 求解（课件 p8--p10）}
+
+\textbf{第 1 步（通解）。}环域通解 \eqref{eq:general} 对圆外区域同样成立（对每个 $a<r<R$ 用定理 2，再让 $R\to\infty$ 取极限）：
+
+\[
+u=C_0+D_0\ln r+\sum_{m\ge1}\big[(A_mr^m+C_mr^{-m})\cos m\varphi+(B_mr^m+D_mr^{-m})\sin m\varphi\big].
+\]
+
+\textbf{第 2 步（代入 $u(a,\varphi)=0$）。}$r=a$ 时上式为零，对一切 $\varphi$ 成立。逐阶比较（\S7.2 的正交性）：
+
+\[
+C_0+D_0\ln a=0,\qquad
+a^mA_m+a^{-m}C_m=0,\qquad
+a^mB_m+a^{-m}D_m=0 .
+\]
+
+即
+
+\begin{equation}
+C_0=-D_0\ln a,\qquad C_m=-a^{2m}A_m,\qquad D_m=-a^{2m}B_m .
+\label{eq:wirea}
+\end{equation}
+
+\textbf{第 3 步（用 $r\to\infty$ 定主部）。}当 $r$ 很大时，各项按 $r$ 的幂次分级：$r^m$（$m\ge2$）增长最快，$r^1$ 次之，$\ln r$ 与常数最慢，$r^{-m}$ 趋于零。题给的条件是 $u\to-E_0r\cos\varphi$，即“只允许一个一次增长项，系数为 $-E_0$，且只含 $\cos\varphi$”。逐级比较：
+
+\begin{itemize}
+  \item $m\ge2$ 的 $A_m$、$B_m$ 必须为零，否则出现 $r^2$ 及更高次的增长；
+  \item $m=1$：$A_1=-E_0$，$B_1=0$；
+  \item 其余 $B_m=0$（题给条件里没有 $\sin m\varphi$）；
+  \item $D_0$、$C_0$ 是 $\ln r$ 与常数级，比 $r$ 低阶，\textbf{不影响主部}，所以这一步定不了它们。
+\end{itemize}
+
+\textbf{第 4 步（回代）。}由 \eqref{eq:wirea}：$C_1=-a^2A_1=E_0a^2$；其余 $C_m=D_m=0$；$C_0=-D_0\ln a$。于是
+
+\begin{equation}
+u(r,\varphi)=D_0\ln\frac{r}{a}-E_0r\cos\varphi+E_0\frac{a^2}{r}\cos\varphi .
+\label{eq:wiresol}
+\end{equation}
+
+\eqref{eq:wiresol} 里三项的物理含义，课件 p10 用三个箭头标了出来，值得逐项读：
+
+\begin{itemize}
+  \item $D_0\ln(r/a)$：$\ln r$ 项，来自导线的净电荷。这一项在 $r=a$ 处为零（因为减去了 $\ln a$），所以不破坏表面电位为零的条件。
+  \item $-E_0r\cos\varphi=-E_0x$：外场的电位。
+  \item $E_0\dfrac{a^2}{r}\cos\varphi$：感应电荷产生的“反向偶极”项。它在 $r=a$ 处正好抵消外场项，使表面电位为零。
+\end{itemize}
+
+\subhdr{8.4\quad $D_0$ 就是单位长度电荷（课件 p10 的 $q_0$）}
+
+对 \eqref{eq:wiresol} 求径向场：
+
+\[
+E_r=-\frac{\partial u}{\partial r}=-\frac{D_0}{r}+E_0\cos\varphi\Big(1+\frac{a^2}{r^2}\Big).
+\]
+
+取半径为 $r$ 的圆柱面（单位长度）作高斯面：只有 $E_r$ 的通量不为零（$u$ 与 $z$ 无关，上下底面通量相消），故
+
+\[
+\oint E_r\,r\dd\varphi=2\pi r\Big(-\frac{D_0}{r}\Big)+0=-\frac{q_0}{\varepsilon_0}
+\quad\Longrightarrow\quad
+D_0=-\frac{q_0}{2\pi\varepsilon_0}.
+\]
+
+这里 $q_0$ 是导线单位长度的净电荷；由上式，$D_0$ 与 $q_0$ 反号。第二步里 $\cos\varphi$ 项对 $\varphi$ 积分零，所以它不带净通量——感应电荷在导线两侧一正一负，净和为零。代入 \eqref{eq:wiresol}：
+
+\begin{equation}
+u(r,\varphi)=-\frac{q_0}{2\pi\varepsilon_0}\ln\frac{r}{a}-E_0r\cos\varphi+E_0\frac{a^2}{r}\cos\varphi .
+\label{eq:wireq}
+\end{equation}
+
+中性导线 $q_0=0$，即 $D_0=0$，只剩后两项：
+
+\begin{equation}
+u(r,\varphi)=E_0\frac{a^2}{r}\cos\varphi-E_0r\cos\varphi .
+\label{eq:wireneutral}
+\end{equation}
+
+这与课件 p11 第一行一致。
+
+\subhdr{8.5\quad 场分布与表面场强（课件 p11）}
+
+由 \eqref{eq:wiresol} 求两个分量：
+
+\begin{equation}
+E_r=-\frac{\partial u}{\partial r}=-\frac{D_0}{r}+E_0\cos\varphi\Big(1+\frac{a^2}{r^2}\Big),
+\qquad
+E_\varphi=-\frac1r\frac{\partial u}{\partial\varphi}=-E_0\sin\varphi\Big(1-\frac{a^2}{r^2}\Big).
+\label{eq:wireEF}
+\end{equation}
+
+\textbf{两个自检}（做这类题时应当顺手检查）：
+
+\begin{itemize}
+  \item $r=a$ 处 $E_\varphi=-E_0\sin\varphi(1-1)=0$。导体表面切向场必须为零，否则电荷会沿表面移动。这一条能查出符号错误。
+  \item $r\to\infty$ 处 $E_r\to E_0\cos\varphi$、$E_\varphi\to-E_0\sin\varphi$，正是沿 $+x$ 的均匀场在极坐标下的分量。这一条能查出主部是否取对。
+\end{itemize}
+
+\textbf{中性导线的表面场强}（$D_0=0$，$r=a$）：
+
+\[
+E_r(a,\varphi)=2E_0\cos\varphi,\qquad E_\varphi(a,\varphi)=0 .
+\]
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lcccccc@{}}
+\thead{$\varphi$} & $0^\circ$ & $45^\circ$ & $60^\circ$ & $90^\circ$ & $135^\circ$ & $180^\circ$ \\
+\tabmidrule
+$E_r(a,\varphi)/E_0$ & $2$ & $\sqrt2\approx1.41$ & $1$ & $0$ & $-\sqrt2$ & $-2$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+最大场强出现在 $\varphi=0$ 与 $\varphi=\pi$（正对来场与背向来场两端），等于 $2E_0$，是外场的两倍；$\varphi=\pm90^\circ$ 处为零。课件 p11 在 $\pm2E_0$ 旁标了 “Breakdown!”，指的就是这个位置最容易先击穿（空气的击穿场强约 $3\times10^6\ \mathrm{V/m}$，所以高压导线附近会出现电晕放电）。为什么恰好是两倍，可以这样看：\eqref{eq:wireneutral} 里有两项，$-E_0r\cos\varphi$ 是外场（在 $r=a$ 处给 $-E_0\cos\varphi$），$E_0\dfrac{a^2}{r}\cos\varphi$ 是感应电荷的偶极项（在 $r=a$ 处给 $+E_0\cos\varphi$）。求 $-\partial_r$ 时两者同号相加，于是表面场是 $2E_0\cos\varphi$。也就是说，一倍来自外场，一倍来自感应电荷。
+
+\textbf{有净电荷时}：若 $q_0\ne0$，表面场多一项 $-D_0/a=q_0/(2\pi\varepsilon_0a)$，正比于自身电荷。所有 $\varphi$ 上同号叠加，最大场强与最小场强不再对称——课件 p12 的两幅图（$D_0>0$ 与 $D_0<0$）画的就是这个差别。
+
+\subhdr{8.6\quad 等位线与“零电位面”}
+
+取中性导线，\eqref{eq:wireneutral} 有一个容易被误读的性质：当 $\varphi=\pm\pi/2$ 时 $\cos\varphi=0$，所以 $u=0$ \textbf{对一切 $r$}。也就是说整条 $y$ 轴（$x=0$ 的平面）都是零电位面。
+
+这不是“那里有一块接地导体板”。它只是\textbf{反对称面}：外场沿 $+x$，把 $x\to-x$ 时电位变号，所以 $x=0$ 上必须为零。物理上没有导体，也没有边界条件加在那里；它是解的一个对称性。若真有接地平板，还会多出“镜像”项，解就不止 \eqref{eq:wireneutral} 这么简单。
+
+\subhdr{8.7\quad 课件与讲义的差异（三处）}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.13\linewidth}L{0.38\linewidth}L{0.43\linewidth}@{}}
+\thead{位置} & \thead{课件} & \thead{本讲处理} \\
+\tabmidrule
+p7 插图 & 外场画成竖直向下，导线画成横截面；但算式写 $u=-E_0x=-E_0r\cos\varphi$，按 $x$ 方向 & 统一取外场沿 $+x$。图 8-1 按算式画，避免“图上一个方向、式子里另一个方向” \\
+p11 图注 & 写 $r_0=5$，正文用半径 $a$ & 记 $r_0=a$；$\varphi=0,\pi$ 处 $E_r=\pm2E_0$ 与 $a$ 无关，图上取 $a=5$、$E_0=3$ 只是为了画图 \\
+p12 两幅图 & 只标 $D_0>0$、$D_0<0$ & 补一句：$D_0>0$ 即 $q_0<0$（带负电），因为 $D_0=-q_0/(2\pi\varepsilon_0)$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S9}{速查、易错与记号统一}
+\phantomsection\label{sec:s9}
+%=====================================================================
+
+\subhdr{9.1\quad 六个式子}
+
+\needspace{0.22\textheight}
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.22\linewidth}L{0.70\linewidth}@{}}
+\thead{对象} & \thead{式子} \\
+\tabmidrule
+极坐标 Laplace 算子 & $\nabla^2u=u_{rr}+\frac1ru_r+\frac1{r^2}u_{\varphi\varphi}=\frac1r(ru_r)_r+\frac1{r^2}u_{\varphi\varphi}$ \\
+分离后的两方程 & $\Phi''+\lambda\Phi=0$；$r^2R''+rR'-\lambda R=0$ \\
+角向谱 & $\lambda=m^2$，$m=0,1,2,\dots$；$\Phi=1,\ \cos m\varphi,\ \sin m\varphi$ \\
+径向解 & $m>0$：$r^m,\ r^{-m}$；$m=0$：$1,\ \ln r$ \\
+通解 & 式 \eqref{eq:general} \\
+圆内系数 & 式 \eqref{eq:diskcoef} \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\subhdr{9.2\quad 七条易错}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{只记 $\Phi(\varphi+2\pi)=\Phi(\varphi)$，忘了导数也周期。}在 $C^2$ 下两者自动同时成立；若解不光滑（如两种材料拼接），要分开检查。
+  \item \textbf{把 $\lambda=0$ 与 $m=0$ 当成一回事。}它们确实对应同一支（$\lambda=0=m^2$，$m=0$），但 $m=0$ 的径向解有\emph{两个}：$1$ 与 $\ln r$，不是“只有一个常数”。
+  \item \textbf{圆内保留 $\ln r$ 或 $r^{-m}$。}这两个在 $r\to0$ 发散，圆内必须丢掉；反过来，\textbf{圆外与环域必须保留}，否则遇到线电荷或外场时会丢解。
+  \item \textbf{用 $u_r$ 条件时漏掉 $\dfrac{D_0}{r}$。}求导后 $m=0$ 项不是常数而是 $D_0/r$，见 \S7.5。
+  \item \textbf{系数公式漏掉 $\rho_0^m$。}见 \S6.2 的量纲自检。
+  \item \textbf{把“比较系数”当成“看着像就相等”。}合法性来自正交性（\S7.2）；对 $u_r$ 条件也要用同一套正交性。
+  \item \textbf{把 $r\to\infty$ 的条件当成“所有系数都定下来”。}它只定主部（增长最快的项），$\ln r$ 与常数要留给 $r=a$ 的条件和总电荷（\S8.2）。
+\end{enumerate}
+
+\subhdr{9.3\quad 一句话对照 \S8.1}
+
+矩形域的四步是“分离 $\to$ 定谱 $\to$ 叠加 $\to$ 定系数”。极坐标完全一样，只是“两端条件”换成了“周期条件 + 有界性/渐近行为”，而“定谱”从解超越方程变成了直接读出 $\lambda=m^2$。方法没变，变的是条件从哪里来。
+
+%=====================================================================
+\needspace{0.44\textheight}
+\hdr{\S10}{课件页码对照表}
+\phantomsection\label{sec:s10}
+%=====================================================================
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.09\linewidth}L{0.54\linewidth}L{0.30\linewidth}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲位置} \\
+\tabmidrule
+p1 & 极坐标 Laplace 方程；$u=R\Phi$ 分离出两方程 & \S1.2、\S2.1--2.3 \\
+p2 & 周期条件；$\lambda=m^2$；欧拉方程；$r^{\pm m}$、$\ln r$ & \S3.2、\S4.2--4.3 \\
+p3 & 通解；圆内（自然边界条件）；系数积分公式 & \S5.2、\S6.1--6.2 \\
+p4 & 三步总结；Remark：$r$ 方向条件可以非齐次 & \S7.4、\S9.1 \\
+p5 & 环域例题：边界条件；化简通解 & \S7.3 第 1--2 步 \\
+p6 & 比较系数；解 $2\times2$；最终解 & \S7.3 第 4--6 步 \\
+p7 & 导线例题：背景、定解条件、$u\to-E_0r\cos\varphi$ & \S8.1--8.2 \\
+p8 & 通解；$u(a)=0$ 定出 $C_0,C_m,D_m$ & \S8.3 第 1--2 步 \\
+p9 & $r\to\infty$ 的主部；$A_1=-E_0$，其余为零 & \S8.3 第 3 步 \\
+p10 & 回代；三项的物理含义；$D_0$ 与 $q_0$ & \S8.3 第 4 步、\S8.4 \\
+p11 & 中性导线；$\varphi=\pm\pi/2$ 上 $u=0$；表面场 $\pm2E_0$ & \S8.5--8.6 \\
+p12 & $D_0>0$ 与 $D_0<0$ 的场线图 & \S8.5 末段、\S8.7 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S11}{三句话总结}
+\phantomsection\label{sec:s11}
+%=====================================================================
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{换坐标是为了让边界变成坐标面。}极坐标把圆周 $r=\rho_0$ 变成一条坐标线，代价是 $\varphi$ 方向没有边界、只剩周期条件，且 $r=0$ 成为退化点。
+  \item \textbf{周期条件逼出 $\lambda=m^2$，欧拉方程给出 $r^m$、$r^{-m}$、$\ln r$；通解就是它们的和。}定理 2 证明了这个和不是“一类解”，而是全部解。
+  \item \textbf{区域形状筛项，$r$ 方向条件定系数。}圆内丢掉在原点发散的项，环域全留，圆外按 $r\to\infty$ 的给定行为逐阶筛；系数由 $r=$ 常数的边界值与正交性唯一确定。
+\end{enumerate}
+
+%=====================================================================
+\hdr{\S12}{独立练习（四题，自编）}
+\phantomsection\label{sec:practice}
+%=====================================================================
+
+下面四题都是本讲方法的直接应用，不重复课件原题。题干只给条件与要求，详解在附录 A，先自己做再看。
+
+\practice{P1}{自编，仿课件 p3 的圆内类型}{单位圆盘 $r<1$ 内解 $\nabla^2u=0$，圆周上 $u(1,\varphi)=\sin^2\varphi$。(1) 求 $u(r,\varphi)$；(2) 把它写成直角坐标 $x,y$ 的形式，并说明它为什么满足 $\nabla^2u=0$。}{边界值的余弦级数展开；圆内自然边界条件筛项}{ans:P1}
+
+\practice{P2}{自编，仿课件 p5 的环域类型}{同轴圆筒之间 $a<r<b$：内筒 $u(a,\varphi)=0$，外筒 $u(b,\varphi)=U_0$（常数）。(1) 求 $u$；(2) 求径向场 $E_r$ 与内筒表面电荷密度 $\sigma_a$；(3) 求单位长度电容，并与平行板电容的极限对照。}{$m=0$ 分支；$\ln r$；两个 $r$ 条件定两个常数}{ans:P2}
+
+\practice{P3}{自编，仿课件 p5 的类型但角向条件改为固定端点}{上半圆盘 $r<a,\ 0<\varphi<\pi$ 内解 $\nabla^2u=0$，边界条件为 $u(r,0)=u(r,\pi)=0$（$r<a$）与 $u(a,\varphi)=U_0$（$0<\varphi<\pi$）。(1) 写出 $\varphi$ 方向的特征值与特征函数；(2) 求 $u$ 的级数解，写出前三项；(3) 说明级数在 $r=a$ 上收敛到什么，以及两个角点 $(a,0)$、$(a,\pi)$ 处发生了什么。}{角向为固定端点条件时的谱与特征函数；奇偶项取舍}{ans:P3}
+
+\practice{P4}{自编，判断类型}{下列四个函数都在 $r>0$ 上满足二维 Laplace 方程（可自行验算）。问：哪几个可以作为单位圆盘 $r<1$ 内 Laplace 方程的解？对每一个说明是与不是的理由，理由要落到具体条件上。\ (a) $r^{-1}\cos\varphi$；\ (b) $\ln r$；\ (c) $r^2\sin2\varphi$；\ (d) $r^{1/2}\cos(\varphi/2)$。}{通解的两道筛子：$\varphi$ 方向的单值与 $r$ 方向端点的有界性}{ans:P4}
+
+\clearpage
+\appendix
+
+%=====================================================================
+\hdr{附录 A}{四道练习的详解}
+\phantomsection\label{sec:app}
+%=====================================================================
+
+\answerstart{P1}{自编，圆内 Dirichlet 问题}{单位圆盘 $r<1$，$\nabla^2u=0$，$u(1,\varphi)=\sin^2\varphi$。求 $u$ 及其直角坐标形式。}
+
+\textbf{第 1 步（把边界值写成级数）。}用半角公式
+
+\[
+\sin^2\varphi=\frac{1-\cos2\varphi}{2}=\frac12-\frac12\cos2\varphi .
+\]
+
+这是一个只含常数与 $\cos2\varphi$ 的式子，正好是 $\{1,\cos m\varphi\}$ 的有限组合。
+
+\textbf{第 2 步（圆内通解与筛项）。}圆内解必须是 \eqref{eq:disksol} 的形状（$\ln r$ 与 $r^{-m}$ 在原点发散，丢掉）：
+
+\[
+u(r,\varphi)=C_0+\sum_{m\ge1}r^m\big(A_m\cos m\varphi+B_m\sin m\varphi\big).
+\]
+
+在 $r=1$ 处令其等于边界值：
+
+\[
+C_0+\sum_{m\ge1}\big(A_m\cos m\varphi+B_m\sin m\varphi\big)=\frac12-\frac12\cos2\varphi .
+\]
+
+\textbf{第 3 步（逐阶比较）。}左边是 $\varphi$ 的 Fourier 级数，右边只含两项。由正交性（乘 $1$、$\cos2\varphi$ 后积分），
+
+\[
+C_0=\frac12,\qquad A_2=-\frac12,\qquad \text{其余 }A_m=B_m=0 .
+\]
+
+\textbf{第 4 步（写出解）。}
+
+\[
+u(r,\varphi)=\frac12-\frac12r^2\cos2\varphi .
+\]
+
+\textbf{第 5 步（化成直角坐标）。}由 $r^2\cos2\varphi=r^2(\cos^2\varphi-\sin^2\varphi)=x^2-y^2$，
+
+\[
+u(x,y)=\frac12-\frac{x^2-y^2}{2}=\frac12-\frac{x^2}{2}+\frac{y^2}{2}.
+\]
+
+\textbf{第 6 步（核对）。}直接求导：$u_{xx}=-1$，$u_{yy}=1$，故 $u_{xx}+u_{yy}=0$，满足方程。在 $r=1$ 上回到极坐标：$\frac12-\frac12\cos2\varphi=\sin^2\varphi$，满足边界条件。两条都对，解确定（唯一性见 \S6.4）。
+
+\aside{这个解是“常数 + 一个二次调和多项式”。在极坐标通解里，二次项只有 $r^2\cos2\varphi=x^2-y^2$ 与 $r^2\sin2\varphi=2xy$ 两个独立形式；一次项是 $x=r\cos\varphi$ 与 $y=r\sin\varphi$，零次项是 $1$。本题用的是 $1$ 与 $x^2-y^2$。}
+
+\answerstart{P2}{自编，环域 $m=0$ 分支}{$a<r<b$，$u(a)=0$，$u(b)=U_0$，求 $u$、$E_r$、$\sigma_a$ 与单位长度电容。}
+
+\textbf{第 1 步（筛项）。}两条边界值都与 $\varphi$ 无关，是常数。由正交性，所有 $m\ge1$ 的系数为零（否则右边会出现 $\cos m\varphi$、$\sin m\varphi$ 项）。于是只剩 $m=0$ 的两个常数：
+
+\[
+u(r)=C_0+D_0\ln r .
+\]
+
+\textbf{第 2 步（定两个常数）。}
+
+\[
+\begin{cases}
+C_0+D_0\ln a=0,\\[2pt]
+C_0+D_0\ln b=U_0 .
+\end{cases}
+\]
+
+两式相减：$D_0\ln\dfrac{b}{a}=U_0$，故 $D_0=\dfrac{U_0}{\ln(b/a)}$；代回第一式 $C_0=-D_0\ln a$。于是
+
+\[
+u(r)=U_0\,\frac{\ln(r/a)}{\ln(b/a)} .
+\]
+
+核对：$r=a$ 时 $\ln1=0$，$u=0$；$r=b$ 时 $\ln(b/a)/\ln(b/a)=1$，$u=U_0$。都对。
+
+\textbf{第 3 步（场）。}
+
+\[
+E_r=-\frac{\dd u}{\dd r}=-\frac{U_0}{r\ln(b/a)},\qquad E_\varphi=0 .
+\]
+
+$E_r<0$（$U_0>0$ 时）表示场指向内筒：外筒电位高，场从外向内。这与“内筒带负电、外筒带正电”一致。
+
+\textbf{第 4 步（内筒表面电荷）。}
+
+\[
+\sigma_a=\varepsilon_0E_r(a)=-\frac{\varepsilon_0U_0}{a\ln(b/a)},\qquad
+Q'=2\pi a\,\sigma_a=-\frac{2\pi\varepsilon_0U_0}{\ln(b/a)} .
+\]
+
+\textbf{第 5 步（电容）。}
+
+\[
+C=\frac{|Q'|}{U_0}=\frac{2\pi\varepsilon_0}{\ln(b/a)} .
+\]
+
+\textbf{第 6 步（极限对照）。}当 $b=a+d$、$d\ll a$ 时，$\ln(b/a)=\ln(1+d/a)\approx d/a$，于是
+
+\[
+C\approx\frac{2\pi\varepsilon_0 a}{d}=\frac{\varepsilon_0\,(2\pi a)}{d},
+\]
+
+正是“面积为 $2\pi a$（单位长度）、间距为 $d$”的平行板电容。这说明 $\ln r$ 这一支不是数学游戏：它在大间距时给出对数衰减，在小间距时退化为平行板。
+
+\answerstart{P3}{自编，半圆盘的固定端点条件}{$r<a,\ 0<\varphi<\pi$，$\nabla^2u=0$；$u(r,0)=u(r,\pi)=0$，$u(a,\varphi)=U_0$。求级数解。}
+
+\textbf{第 1 步（角向问题换成固定端点）。}分离后仍是 $\Phi''+\lambda\Phi=0$，但 $\varphi$ 的区间是 $(0,\pi)$，条件不再是“周期”，而是两端为零：
+
+\[
+\Phi(0)=0,\qquad \Phi(\pi)=0 .
+\]
+
+\textbf{第 2 步（定谱）。}能量恒等式 \eqref{eq:rayleigh} 在这里照样成立（边界项 $\Phi\Phi'$ 在两端为零），所以 $\lambda\ge0$。$\lambda=0$ 时 $\Phi=C_1+C_2\varphi$，两端为零逼 $C_1=C_2=0$，舍去。$\lambda=k^2>0$ 时 $\Phi=A\cos k\varphi+B\sin k\varphi$；$\Phi(0)=0$ 给 $A=0$，$\Phi(\pi)=0$ 给 $B\sin k\pi=0$，故 $k=n$（正整数）。于是
+
+\[
+\lambda=n^2,\qquad \Phi_n(\varphi)=\sin n\varphi,\qquad n=1,2,3,\dots
+\]
+
+注意 $\cos n\varphi$ 被排除：它在 $\varphi=0$ 处等于 $1$，不可能为零。这就是“固定端点”与“周期”两种条件的差别——谱都是整数平方，但特征函数只取一半。
+
+\textbf{第 3 步（径向解与筛项）。}$R=r^n$ 与 $r^{-n}$ 都满足欧拉方程；圆内 $r\to0$ 有界，丢掉 $r^{-n}$。于是
+
+\[
+u(r,\varphi)=\sum_{n\ge1}A_n\,r^n\sin n\varphi .
+\]
+
+\textbf{第 4 步（用 $r=a$ 的条件定系数）。}
+
+\[
+\sum_{n\ge1}A_n\,a^n\sin n\varphi=U_0,\qquad 0<\varphi<\pi .
+\]
+
+在 $[0,\pi]$ 上用正弦系的正交性 $\displaystyle\int_0^\pi\sin n\varphi\sin m\varphi\dd\varphi=\frac\pi2\delta_{mn}$，两边乘 $\sin n\varphi$ 积分：
+
+\[
+A_n\,a^n\cdot\frac\pi2=\int_0^\pi U_0\sin n\varphi\dd\varphi=\frac{U_0\,(1-\cos n\pi)}{n}.
+\]
+
+所以
+
+\[
+A_n\,a^n=\frac{2U_0}{n\pi}\big(1-(-1)^n\big)=
+\begin{cases}
+\dfrac{4U_0}{n\pi}, & n\text{ 为奇数},\\[6pt]
+0, & n\text{ 为偶数}.
+\end{cases}
+\]
+
+\textbf{第 5 步（写出级数）。}令 $n=2k+1$：
+
+\begin{equation}
+u(r,\varphi)=\frac{4U_0}{\pi}\sum_{k=0}^{\infty}\frac{1}{2k+1}\Big(\frac{r}{a}\Big)^{2k+1}\sin\big((2k+1)\varphi\big).
+\label{eq:halfdisk}
+\end{equation}
+
+前三项：
+
+\[
+u=\frac{4U_0}{\pi}\left[\Big(\frac ra\Big)\sin\varphi+\frac13\Big(\frac ra\Big)^{3}\sin3\varphi+\frac15\Big(\frac ra\Big)^{5}\sin5\varphi+\cdots\right].
+\]
+
+\textbf{第 6 步（在边界上收敛到什么）。}在 $r=a$ 上，\eqref{eq:halfdisk} 是常数 $U_0$ 在 $(0,\pi)$ 上的正弦级数。由 Fourier 收敛定理，它在每点 $0<\varphi<\pi$ 收敛到 $U_0$；在两端 $\varphi=0,\pi$ 各项为零，级数收敛到 $0$，而那里题给的条件也是 $0$（$u(r,0)=u(r,\pi)=0$），所以端点上的值也与条件一致。
+
+\textbf{第 7 步（两个角点）。}在角点 $(a,0)$ 与 $(a,\pi)$，圆弧上的边界值 $U_0$ 与直径上的边界值 $0$ 直接相接，题给的数据本身在这两点跳变。因此解在角点附近不可能连续地取到两边的值：靠近角点时级数会出现 Gibbs 现象（在 $r=a$ 附近振荡），而在区域内部 $r<a$ 一切正常。严格地说，这题的解满足“区域内部方程 + 去掉两个角点后的边界条件”，在角点上不存在连续的边界延拓。这是半圆域问题的固有性质，不是解法的问题。
+
+\aside{若把圆盘换成四分之一圆，谱仍是 $n^2$ 但特征函数变成 $\sin(2n\varphi)$（因为在 $\varphi=\pi/2$ 处也要为零，$n$ 必须为偶数）。谱的“整数平方”来自区间长度 $\pi$ 与两端为零，换成别的角宽就会变成 $\lambda=(n\pi/\alpha)^2$——这与 \S3.4 里“直角坐标的谱依赖区域尺寸”是同一件事。}
+
+\answerstart{P4}{自编，判断四个函数能否作圆内的解}{单位圆盘 $r<1$ 内，(a) $r^{-1}\cos\varphi$；(b) $\ln r$；(c) $r^2\sin2\varphi$；(d) $r^{1/2}\cos(\varphi/2)$，哪几个可以是 $\nabla^2u=0$ 的解？}
+
+判据只有两条，都来自 \S6：\textbf{(i) 在圆内（不含 $r=0$ 的奇点）满足 $\nabla^2u=0$；(ii) 在 $r=0$ 处有界，且对 $\varphi$ 以 $2\pi$ 为周期（单值）。}题干已说四个都满足 (i)，所以只需查 (ii)。
+
+\textbf{(a) $r^{-1}\cos\varphi$。}它是 $m=1$ 的 $r^{-m}$ 项，属于通解 \eqref{eq:general}，在 $r>0$ 上调和。但 $r\to0$ 时 $\dfrac{\cos\varphi}{r}$ 沿 $\varphi=0$ 方向趋于 $+\infty$、沿 $\varphi=\pi$ 方向趋于 $-\infty$，无界。\textbf{不能}作为圆内的解（它是圆外或环域里的偶极线场）。
+
+\textbf{(b) $\ln r$。}这是 $m=0$ 的第二个解，$\nabla^2\ln r=0$（$r>0$）。但 $r\to0^+$ 时 $\ln r\to-\infty$，无界。\textbf{不能}作为圆内的解。（它的物理对应是原点处的一根线电荷；圆内若真有线电荷，方程右边就不是 $0$ 而是 $\delta$ 函数，问题性质就变了。）
+
+\textbf{(c) $r^2\sin2\varphi$。}这是 $m=2$ 的 $r^m$ 项，属于 \eqref{eq:disksol}。$r\le1$ 时 $|r^2\sin2\varphi|\le1$，有界；$\sin2\varphi$ 以 $2\pi$ 为周期，单值。\textbf{可以}。写成直角坐标：$r^2\sin2\varphi=2r^2\sin\varphi\cos\varphi=2xy$，而 $\partial_x^2(2xy)+\partial_y^2(2xy)=0$，与判据一致。
+
+\textbf{(d) $r^{1/2}\cos(\varphi/2)$。}它在 $r>0$ 上调和：记 $u=r^{1/2}\cos\frac\varphi2$，则
+
+\[
+u_{rr}=-\frac14r^{-3/2}\cos\frac\varphi2,\qquad
+\frac{u_r}{r}=\frac12r^{-3/2}\cos\frac\varphi2,\qquad
+\frac{u_{\varphi\varphi}}{r^2}=-\frac14r^{-3/2}\cos\frac\varphi2,
+\]
+
+三项相加为零。$r\to0$ 时 $r^{1/2}\to0$，也有界。但把 $\varphi$ 换成 $\varphi+2\pi$：
+
+\[
+r^{1/2}\cos\Big(\frac{\varphi+2\pi}{2}\Big)=r^{1/2}\cos\Big(\frac\varphi2+\pi\Big)=-r^{1/2}\cos\frac\varphi2 ,
+\]
+
+变号了。绕原点一圈回来，函数值变成相反数，不是单值函数；沿 $\varphi=\pi$（负 $x$ 轴）它从 $0$ 跳到 $0$ 但两侧符号相反，实际上是两支拼在一起。\textbf{不能}作为圆域上的解。它对应的物理情形是“割线问题”（例如一张沿负实轴剪开的平面），不属于本节的圆域问题。
+
+\textbf{结论}：只有 (c) 可以。
+
+\aside{这道题的用处是把“通解”当筛子用：(a)(b) 是通解里被有界性筛掉的项，(c) 是留下来的项，(d) 是连 $\varphi$ 的周期性都不满足的项。考试里常见的问法是“下列函数中哪个是圆内调和函数”，判据就是这两条，不要只查 $\nabla^2u=0$。}
+
+\end{document}

@@ -1,0 +1,101 @@
+{
+  "round": "round-02",
+  "task": "《从张量到并矢》开篇主线概览：审核后的窄范围返工",
+  "status": "rework_complete_pending_coordinator_review",
+  "sent": false,
+  "baseline": {
+    "path": "D:/aaa_D_usual/CODEX/AI-SKILL/output/lecture-overview-20261114/author-r1-working-snapshot/handout.tex",
+    "tex_sha256": "3968ca32937af1a0103e1c21a0cef15473d8d6974c383f25d22c3e7e6e005482",
+    "note": "协调器按字节锁定的 round-01 工作快照；作者仍在整理检查记录，本轮不把它当作已验收最终稿。"
+  },
+  "resolutions": [
+    {
+      "review_id": "OVERVIEW-READ-01",
+      "change": "重排为三层路线图：核心问题 → 共用的语言（§0、§2）→ 两座桥（§1.4 谱定理、§3 旋转）→ 三处落点（§4、§5、§6）。每框用“问题 / 得到 / 用于”三句写清这一步做什么、得到什么、供哪里用；落点框用“问题 / 条件 / 得到”。",
+      "formula_policy": "公式只保留能帮助认方向的 8 个短关系式（换基律、并矢作用、谱分解、v=V+Ω×r、v=Ω×r、L=J·ω、t=σ·n、∇·σ+f=0）；删去原稿并排的 trace/det 验算式、二次型对角式与旋转算子求和式，详细公式与推导回正文。",
+      "acceptance": "首次读者可从图中说出每步的问题与结果；未规定字数/节点数，未缩小字号（仍 \\footnotesize），覆盖 §0--§6 与三处落点，章节号与章内范围保留。"
+    },
+    {
+      "review_id": "OV-MATH-01",
+      "change": "惯量框不再直接写 v=Ω×r。现写：问题为绕定点的 L 与 ω 关系；条件为“基点取惯性系定点（V=0；质心用相对速度），才有 v=Ω×r”；得到 J 对称半正定、谱定理给惯量主轴、L=J·ω 一般不平行于 ω（§4.6）。§3 框保留一般式 v=V+Ω×r。",
+      "evidence": "独立反例：V=e2、Ω=0 时 v=V 而 Ω×r=0，关于原点的 L=e3 而 J·Ω=0；固定点 V=0 时 v=Ω×r 成立。"
+    },
+    {
+      "review_id": "OV-MATH-02",
+      "change": "欧拉/陀螺框改为：换到主轴系的体坐标（J 对角的 A,B,C 恒定），多出陀螺项得欧拉方程；条件句写“A=B 且 M=0 时，横向分量才在体坐标里绕体轴匀速转（§5.3）”。不再把 A=B 说成充分条件。",
+      "evidence": "独立反例：A=B=1、C=1.5、ω=(1,0,1)、M=(1,0,0) 时 d(ω1²+ω2²)/dt=2≠0；M=0 时该量恒为 0。"
+    },
+    {
+      "review_id": "OV-MATH-03",
+      "change": "应力框保留“σ 对称”的前提为经典无体力偶模型；平衡方程明确写“∇·σ+f=0 是静力平衡，动力学右端为 ρa（§6.4）”。不再把零右端关系当一般净力关系。",
+      "evidence": "独立反例：零应力场 + 真实体力 f=e1 的加速体只满足动力学式；允许同阶体力偶时仅靠角动量守恒不能推出 σ21=σ12。"
+    },
+    {
+      "review_id": "OVERVIEW-NAV-01 / OV-VIS-01",
+      "change": "图 0 与完整 3 行图注同在第 1 页（图注 y=728.0..771.6pt，正文区下界约 789pt），图在图注上方，不再出现图注末行单独成页；导语缩短为 3 行，图与读法相邻。",
+      "evidence": "PDF 文字层：第 1 页含图注末句“不代替定义与证明”，第 2 页以开篇使用说明开始。"
+    },
+    {
+      "review_id": "OV-VIS-02",
+      "change": "所有连线改用节点边界锚点，箭杆从方框外出发；几何检查 8 条箭杆均不进入方框内部（§2→§3 竖线从框边界外出发，不穿框内文字）。",
+      "evidence": "PDF 矢量坐标检查：箭杆与方框内部无交叠。"
+    },
+    {
+      "review_id": "VERSION-NOTE",
+      "change": "开篇“本轮身份”改为短的“版本说明”，删去 round 编号、PDF 哈希、验收过程与页数等内部信息；只保留对读者有用的说明：在整本讲义基础上只新增图 0、正文与解答未改、图只给路线。原有自述基础、取材边界与使用说明未动；末页版本行同步去掉 round-04 编号与 65 页字样。",
+      "evidence": "正文保持区与已验收 round-04 逐字符一致（135827 字符，sha256 76549c66…）。"
+    }
+  ],
+  "figure0": {
+    "page": 1,
+    "caption_page": 1,
+    "lead_page": 1,
+    "nodes": 8,
+    "arrows": 8,
+    "font": "footnotesize（未缩小字号）",
+    "structure": "核心问题 1 框；语言层 §0/§2；桥梁层 §1/§3；落点层 §4/§5/§6",
+    "dropped_short_arrow": "§4→§5 未画短线（两框间隙约 7pt，箭头会退化成半个箭头），改用 §4“用于 §5”与 §5“接 §4 的 J”表达"
+  },
+  "body_preservation": {
+    "region": "\\hdr{§0} 起点 … 交付说明 callout 之前",
+    "chars": 135827,
+    "sha256": "76549c66aa1b7c04c34536ad3f0e2a929f73d741634da8a3e84a5a883507d461",
+    "same_as_round04": true,
+    "pdf_text_same_until_delivery_note": true
+  },
+  "pagination": {
+    "pages": 65,
+    "sec0": 2,
+    "sec4": 33,
+    "sec5": 38,
+    "sec6": 42,
+    "appendix_a": 51,
+    "answer_pages": {
+      "P1": 51, "P2": 52, "P3": 52, "P4": 52, "P5": 53, "P6": 53,
+      "P7": 54, "P8": 55, "P9": 55, "P10": 57, "P11": 58, "P12": 59
+    }
+  },
+  "checks": {
+    "xelatex_passes": 2,
+    "targeted_assertions": 83,
+    "targeted_failures": 0,
+    "static_check": "check_handout.py --mode appendix：错误 0，人工复核线索 0",
+    "unresolved_references": 0,
+    "page_refs_matched": "12/12",
+    "inherited_underfull_hbox": 4,
+    "previously_accepted_269": "未重跑；属于此前已验收范围，本轮不冒称执行"
+  },
+  "files": {
+    "tex": "round-02/handout.tex",
+    "pdf": "round-02/handout.pdf",
+    "rendered": "round-02/rendered/（65 页 + 第 1 页 220dpi）",
+    "verification": "round-02/verification.txt",
+    "manifest": "round-02/delivery-manifest.json"
+  },
+  "unresolved": [
+    "本机模型无图像输入，未目视渲染页；已做文字层与矢量坐标检查，最终逐页 PNG 交协调器复核。",
+    "§5 图框标题用简称“输运与欧拉方程”，正文标题为“输运定理、欧拉方程与对称陀螺”；章节号与 A=B、M=0 条件在框内。",
+    "图内 §3→§4 与 §1→§6 两条斜线在框间空白处相交一次，未压字/穿框（几何检查），观感待协调器目视。",
+    "未发送微信，未运行 git/同步/学习记录收尾。"
+  ]
+}

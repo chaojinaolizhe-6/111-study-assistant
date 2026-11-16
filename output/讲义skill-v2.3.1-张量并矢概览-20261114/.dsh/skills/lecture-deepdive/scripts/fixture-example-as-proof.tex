@@ -1,0 +1,32 @@
+% 回归测试样本：复刻《专题·从张量到并矢》§1.3 修复前的形状（以例代证）
+\documentclass{article}
+\begin{document}
+\subhdr{1.3\quad 换基：账本变，机器不变}
+
+\textbf{二维例子。}机器 $T$ 是“沿 $x$ 轴拉伸两倍”。转了 $45^\circ$ 之后逐项投影：
+
+\[
+T\vect n_1\cdot\vect n_1=\frac{2+1}{2}=\frac32
+\]
+
+于是同一台机器的账本变成
+
+\[
+\ten T'=\begin{pmatrix}3/2&-1/2\\-1/2&3/2\end{pmatrix}.
+\]
+
+两个账本长得完全不一样。判断“是不是同一台机器”，不能看数字，要看数字怎么变。这条换算规则是
+
+\[
+\boxed{\;\ten T'=\ten R^{\mathsf T}\ten T\ten R\;}
+\]
+
+\subhdr{1.4\quad 定理块（不该被误报）}
+
+\begin{center}
+定理：设 $y_1,\dots,y_n$ 是方程的解，则其朗斯基行列式满足
+\[
+\boxed{\;W'+a_1(x)W=0\;}
+\]
+\end{center}
+\end{document}
