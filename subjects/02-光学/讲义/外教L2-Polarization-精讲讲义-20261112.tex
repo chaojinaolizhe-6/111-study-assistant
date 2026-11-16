@@ -6,10 +6,15 @@
 \documentclass[11pt]{ctexart}
 \input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
 \graphicspath{{fig-l2/}}
 % theme 的 \tabmid 在 tabular 内会把横线塞进首格，这里改成 \noalign 形式
 \renewcommand{\tabmid}{\noalign{\vskip 2pt{\color{petal}\hrule height 0.5pt}\vskip 3pt}}
 \settags{Polarization · L2 精讲}{光学（02）· 外教 Lecture 2}
+\tikzset{>={Stealth[length=2.0mm]},
+  box/.style={draw=violet,rounded corners=2pt,fill=bandviolet,align=center,inner sep=3.2pt},
+  boxc/.style={draw=petal,rounded corners=2pt,fill=bandcream,align=center,inner sep=3.2pt}}
 % 节标题跟至少 4 行正文，避免标题孤零零落在页底
 \let\subhdrtheme\subhdr
 \renewcommand{\subhdr}[1]{\needspace{4\baselineskip}\subhdrtheme{#1}}
@@ -23,7 +28,7 @@
 {椭圆 · 琼斯矢量 · 波片 · 布儒斯特 · 斯托克斯参数 · 旋光与光弹}
 {依据：\texttt{Polarization L2.pdf}（60 页，Lecture 2）\\
 作业：课件 p60 的 Problem 1--3（题干与详解见 §15 与附录 B）\\
-光学（02）｜整理日期 2026-11-12}
+光学（02）｜整理日期 2026-11-12；\textbf{2026-11-16 修订}：按最新讲义规范增补 §0.1 主线概览图，其余内容未改}
 
 %=====================================================================
 \hdr{§0}{这一讲要解决什么问题}
@@ -48,9 +53,38 @@
 外加布儒斯特角 $\tan\theta_B=n_2/n_1$。所以如果时间紧，先读 §3、§4、§5、§6 四节，
 把作业做出来；§7--§12 是这节课的正课内容，概念题会从这里出。
 
+\subhdr{0.1 主线概览}
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+\node[box,text width=7.2cm] (g1) at (4.0,0)
+  {\textbf{几何}：两个正交分量 + 相位差 $\delta$ $\Rightarrow$ 一个椭圆（§1）};
+\node[box,text width=7.2cm] (g2) at (12.4,0)
+  {\textbf{代数}：琼斯矢量 $\vect J=(E_x,\ E_y e^{i\delta})$；元件 $\to$ $2\times2$ 矩阵（§2）};
+\draw[->,violet] (g1)--(g2);
+
+\node[boxc,text width=3.5cm] (m1) at (2.1,-2.5) {\textbf{四条路}（§3）\\ 吸收·反射·散射·双折射};
+\node[boxc,text width=3.5cm] (m2) at (6.2,-2.5) {\textbf{Malus}（§4）\\ $I=I_0\cos^2\theta$};
+\node[boxc,text width=3.5cm] (m3) at (10.3,-2.5) {\textbf{双折射/波片}（§5）\\ $\Delta\varphi=\frac{2\pi}{\lambda}\Delta n\,d$};
+\node[boxc,text width=3.5cm] (m4) at (14.4,-2.5) {\textbf{反射/折射}（§6）\\ $\tan\theta_B=n_2/n_1$};
+\draw[->,violet] (8.2,-0.95) -- (8.2,-1.95);
+
+\node[box,text width=4.4cm] (s1) at (2.7,-4.7) {\textbf{斯托克斯参数}（§8）\\ 四次强度测量定出 $S_0$--$S_3$};
+\node[box,text width=4.4cm] (s2) at (8.2,-4.7) {\textbf{庞加莱球 / 穆勒矩阵}（§9）\\ 一个点、一个 $4\times4$ 矩阵};
+\node[box,text width=4.4cm] (s3) at (13.7,-4.7) {\textbf{菲涅耳--阿拉戈}（§10）\\ 正交分量不干涉};
+\draw[->,violet] (8.2,-3.35) -- (8.2,-4.05);
+
+\node[boxc,text width=6.6cm] (a1) at (4.4,-6.6) {\textbf{旋光}（§11）：$\alpha=[\alpha]_D cL$——糖度计、药物浓度};
+\node[boxc,text width=6.6cm] (a2) at (12.2,-6.6) {\textbf{光弹性}（§12）：$\sigma_1-\sigma_2=n\lambda/(dC)$——偏振光弹仪};
+\draw[->,violet] (8.2,-5.4) -- (8.2,-6.0);
+\end{tikzpicture}
+
+{\small\color{inkgray}读法：上＝怎么描述（几何 $\leftrightarrow$ 代数）；中＝怎么造、怎么改；下＝怎么测、用在哪。}
+\end{center}
+
 
 \needspace{12\baselineskip}
-\subhdr{0.1 记号约定（全篇统一，遇到别的书不一样时以这里为准）}
+\subhdr{0.2 记号约定（全篇统一，遇到别的书不一样时以这里为准）}
 
 \begin{center}
 \small
@@ -78,11 +112,11 @@ $S_0,S_1,S_2,S_3$ & 斯托克斯参数；$s_i=S_i/S_0$ 为归一化值 \\
 \normalsize
 \end{center}
 
-\needspace{19\baselineskip}
-\subhdr{0.2 页码路线：60 页课件怎么对应到本讲义}
+\needspace{6\baselineskip}
+\subhdr{0.3 页码路线：60 页课件怎么对应到本讲义}
 
 \begin{center}
-\small
+\footnotesize
 \tabtop
 \begin{tabular}{@{}p{2.1cm}p{6.6cm}p{6.3cm}@{}}
 \thead{课件页} & \thead{内容} & \thead{本讲义} \\
@@ -1870,4 +1904,6 @@ L1 讲义那一句应删去；本讲义的 §6.6 给出正确表述与证明。
 再加上布儒斯特角的 $\tan\theta_B=n_2/n_1$，四道防线就够了。}
 
 \end{document}
+
+
 
