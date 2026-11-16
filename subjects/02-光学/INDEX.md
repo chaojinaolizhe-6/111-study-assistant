@@ -12,6 +12,17 @@
 - 主题：[topics/INDEX.md](topics/INDEX.md)
 - 学习进度：[progress.md](progress.md)
 
+## 讲义固定格式（2026-11-17 学习者要求）
+
+每份光学讲义按同一骨架：**主线概览图 → 页码覆盖表 → 记号表 → 正文推导/例题 → 练习（题干＋考点，指向附录）→ 附录**。
+
+附录固定两份：
+
+- **中文详解**：条件、逐步推导、自检、易错；
+- **English solution sheet**：英文题干 + `Given / Formulas used / step-by-step calculation / Answers with units`，末尾附手写与英文签名提醒——直接照抄即可交作业。
+
+现存讲义：L1 精讲（附录 B 为自编练习，无英文版）、L2 精讲（附录 B 中文 + 附录 D 英文）、L3 精讲（附录 B、C 中文 + 附录 D 英文）。
+
 ## 三态标记（防"传了课件就以为会了"）
 
 - 老师已讲：课堂讲过的部分
