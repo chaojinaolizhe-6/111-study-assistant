@@ -1,0 +1,922 @@
+% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,shapes.geometric}
+\settags{实验 7 · 逻辑门与组合逻辑}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{10\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\xeCJKDeclareCharClass{CJK}{"2014, "2013, "2018, "2019, "201C, "201D}
+\begin{document}
+
+\doctitle{实验 7：集成逻辑门与组合逻辑器件}
+{给电平、看灯、填表：135 分钟里要做的九个模块}
+{依据：教材《电工学实验教程》第 2 版 §5.4（书 p.163--170）＋ §5.5（书 p.171--180），\\
+书页 = PDF 页 $-\,13$；实验箱 THD-2、电源 GPS-2303C、信号源 SG1026、示波器 YB4320G、万用表 UT61\\
+场次：2026-11-19（周四）13:00--15:15，综合一号教学楼 317，2502 班全体，$10$ 分 \textperiodcentered\ 2026-11-17}
+
+\callout{\textbf{这份讲义怎么用。}§0 是坐标与地图，§1 是器材和芯片引脚（现场翻开就能接线），§2 是数字电路实验的十条硬规矩（\textbf{扣分绝大多数出在这一节}，不是出在逻辑设计上），§3--§5 是 A、B、C 三组共九个模块，每个模块都写清「接什么、测什么、记什么、理论值是多少、看到什么算对」。§6 是英文报告，§7 是预习题答案，§8 是讨论题答案，§9 是 135 分钟时间盒，§10 是故障排查，§11 是还没核实的地方。\textbf{凡是标「书上原文」的，都可以在教材对应页找到；标「本讲义补」的，是我为理解补的推导与算例；标「现场才定」的，请当场问老师或看实验册，不要按本讲义猜。}}
+
+%=============================================================
+\hdr{§0}{坐标、事实边界与一张图}
+
+\subhdr{0.1 这一场的坐标}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{12.2cm}@{}}
+\hline
+\thead{项} & \thead{值} \\
+\hline
+时间地点 & 2026-11-19（周四）13:00--15:15（5--6 节），综合一号教学楼 \textbf{317}，2502 班全体 \\
+分值 & $10$ 分（册 p01 的 \textit{Operation Full Marks}） \\
+实验名 & \textit{Integrated Logic Gate and Combinational Logic Function Devices Experiment} \\
+对应教材 & §5.4 基本逻辑门电路实验（书 p.163--170）＋ §5.5 组合逻辑功能器件实验（书 p.171--180） \\
+    & 两节合起来正好是「逻辑门」＋「组合逻辑器件」，与实验名一一对应 \\
+对应理论课 & 第 6 章 组合逻辑电路：6.4 组合逻辑电路设计（课件 \texttt{[C6-3 p4--p17]}）、6.5 编码器（\texttt{p18--p46}）、6.6 译码器（\texttt{p47--p57}） \\
+器材 & 数字电路实验箱 \textbf{THD-2}；直流稳压电源 GPS-2303C；低频信号发生器 SG1026（仅 §5.4 用）；双踪示波器 YB4320G（仅 §5.4 用）；数字万用表 UT61/MS8040 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{先分清两台箱子。}实验 6（11-10 集成运放）用的是运放实验箱 \textbf{THM-6}；这一场用的是数字电路实验箱 \textbf{THD-2}。两台箱子的模块、端子排布\textbf{完全不同}，不要照实验 6 的位置去找端子。THD-2 提供与非门、或非门、异或门、三态门、编码器、译码器、数据选择器、全加器、LED 显示器、LED 指示灯、电阻、逻辑开关等固定模块，\textbf{芯片不一定是插在面包板上的}，具体位置进场先认（教材表 5.4.1、表 5.5.1 只给「提供什么」，不给面板排布）。}
+
+\subhdr{0.2 事实边界：哪些是书上写的、哪些是我补的、哪些要现场定}
+
+\begin{itemize}
+  \item \textbf{书上原文（可直接引用）}：§5.4／§5.5 的实验目的、仪器表（表 5.4.1、5.5.1）、预习要求、芯片引脚图（图 5.4.2--5.4.5、图 5.5.1--5.5.6）、实验电路（图 5.4.6--5.4.8、图 5.5.7--5.5.11）、数据表（表 5.4.2--5.4.5、表 5.5.2--5.5.7）、报告讨论题（§5.4.7 六问、§5.5.8 八问）。
+  \item \textbf{本讲义补的}：所有数据表的\textbf{理论预期值}（第 4、5 章各表右半或整表）、$Y_1$／$Y_2$ 的化简与门级实现、$t_{\mathrm{pd}}=T/6$ 的算例、74LS125 使能极性的用法说明、用 74LS151 实现任意逻辑函数的方法、时间盒与故障排查表。
+  \item \textbf{现场才定（不猜）}：实验箱 THD-2 面板上各模块的端子位置与电源取电口；老师这次发的连线方式（用面包板还是用箱上固定模块）；示波器与信号源的档位；老师要求做哪几个模块。
+  \item \textbf{还没入库的资料}：\textbf{本校英文实验册「实验 7」的册页照片没有}（实验 1--6 的册页或手册都在库里，实验 7 一份都没有）。所以本讲义里凡涉及「报告第几栏、表号、预习几问、讨论几问」的地方，一律按\textbf{教材}的编号写，并在 §11 列出需要现场核对的位置。\textbf{册页优先于本讲义}：拿到册页后，先按 §11 的对照表核一遍，再动手。
+\end{itemize}
+
+\subhdr{0.3 一张图看完这九个模块}
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.42cm and 0.55cm,
+  box/.style={draw=violet, rounded corners=3pt, minimum height=0.95cm, align=center,
+    fill=bandviolet, font=\scriptsize, inner sep=3pt},
+  lab/.style={font=\scriptsize\bfseries, text=violetdeep},
+  arr/.style={-{Latex[length=1.8mm]}, thick, violet}]
+
+% 三列：A 基础 / B 应用 / C 器件
+\node[lab] (hA) at (0,4.35) {A\ 基础：先证明「灯会灭」};
+\node[box, below=0.12cm of hA, text width=3.5cm] (A1) {A1 与非门电压传输特性\\（图 5.4.6，表 5.4.2）};
+\node[box, below=0.22cm of A1, text width=3.5cm] (A2) {A2 平均传输延迟 $t_{\mathrm{pd}}$\\（图 5.4.7，$T=6t_{\mathrm{pd}}$）};
+
+\node[lab] (hB) at (5.4,4.35) {B\ 应用：门能算逻辑};
+\node[box, below=0.12cm of hB, text width=3.9cm] (B1) {B1 逻辑电路设计 $Y_1$、$Y_2$\\（表 5.4.3，$Y_2$ 只用与非门）};
+\node[box, below=0.22cm of B1, text width=3.9cm] (B2) {B2 三态门：功能 + 总线\\（图 5.4.8，表 5.4.4、5.4.5）};
+
+\node[lab] (hC) at (11.2,4.35) {C\ 器件：整块芯片干整件事};
+\node[box, below=0.12cm of hC, text width=4.0cm] (C1) {C1 74LS148 8--3 优先编码（表 5.5.2）\\[1pt] C2 74LS147 10--4（表 5.5.3）};
+\node[box, below=0.16cm of C1, text width=4.0cm] (C2) {C3 4511 + LED 数码管（表 5.5.4）\\[1pt] C4 74LS151 8 选 1（表 5.5.5）};
+\node[box, below=0.16cm of C2, text width=4.0cm] (C3) {C5 74LS183 双全加器\\（表 5.5.6、5.5.7）};
+
+\draw[arr] (A2.south) |- ++(0,-0.28) -| node[pos=0.25, below, font=\scriptsize, text=inkgray]{先会读电平} (B1.south);
+\draw[arr] (B2.east) -- ++(0.3,0) |- (C1.west);
+\draw[arr] (A1.east) -- ++(0.25,0) |- (B2.west);
+
+\node[draw=petal, rounded corners=3pt, fill=white, font=\scriptsize, align=center,
+  below=2.9cm of B1, text width=14.6cm] (S) {%
+  \textbf{一条主线（九个模块共用同一套动作）}：\ 确定输入组合 $\rightarrow$ 在实验箱上把每个输入接成「高（接 $U_{CC}$）或低（接 GND）」$\rightarrow$ 看 LED／读万用表／读示波器 $\rightarrow$ 把读数填进表 $\rightarrow$ \textbf{与理论值比，不等的先查接线再查读数} $\rightarrow$ 写进英文报告};
+\end{tikzpicture}
+
+{\small 图 0\quad 九个模块与它们的关系。A 组决定你「会不会读电平」，B 组是「用门做逻辑」和「三个门共享一根线」，C 组是「一块芯片内部已经做好了一个逻辑功能，你只负责给它输入、读它输出」。}
+\end{center}
+
+%=============================================================
+\hdr{§1}{器材、芯片与进门五分钟}
+
+\subhdr{1.1 仪器（表 5.4.1 与表 5.5.1 合并）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.2cm}p{2.9cm}p{8.0cm}@{}}
+\hline
+\thead{名称} & \thead{型号或规格} & \thead{用途、注意事项} \\
+\hline
+数字电路实验箱 & THD-2 & §5.4 提供与非门、或非门、异或门、三态门、LED 指示灯、电阻、电位器、电容、逻辑开关；§5.5 另提供编码器、译码器、数据选择器、全加器、LED 显示器 \\
+直流稳压电源 & GPS-2303C & 提供 $+5\ \mathrm{V}$ 直流工作电源（TTL）；CMOS 那半要 $+8\ \mathrm{V}$（教材 §5.4.5 明确写 $U_{DD}=+8\ \mathrm{V}$） \\
+低频信号发生器 & SG1026 & §5.4 用：给方波（$t_{\mathrm{pd}}$ 测试）与 $1\ \mathrm{Hz}$／$2\ \mathrm{Hz}$ 方波（三态门总线，图 5.4.8b） \\
+双踪示波器 & YB4320G & §5.4 用：读环形振荡器周期 $T$、看总线波形。\textbf{§5.5 不用示波器} \\
+数字万用表 & UT61 / MS8040 & 测直流电位（$U_i$、$U_o$）；确认挡位与量程 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{为什么 §5.5 不用示波器和信号源：§5.5 的五个模块全是\textbf{静态}的——给一组开关状态，看灯亮不亮或读一个电位，没有波形要看。表 5.5.1 里也确实没有列出信号源与示波器。}
+
+\subhdr{1.2 十块芯片与它们的引脚}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.35cm}p{4.0cm}p{2.0cm}p{6.6cm}@{}}
+\hline
+\thead{型号} & \thead{功能} & \thead{本实验用} & \thead{要记的两件事} \\
+\hline
+74LS00 & 四 2 输入与非门 & B1、A1、A2 & 每片 4 个门，共用 $U_{CC}$（14 脚）与 GND（7 脚）；1A/1B/1Y 是 1、2、3 脚 \\
+4011 & 四 2 输入与非门（CMOS） & A1（CMOS 对比） & $U_{DD}$ 而不是 $U_{CC}$；引脚与 74LS00 一一对应 \\
+74LS20 / 4012 & 二 4 输入与非门 & 备用 & 4 个输入端要全部处理，不能留悬空 \\
+74LS27 / 4001 & 2 输入、3 输入或非门 & 备用 & 多余输入端接\textbf{低}电平（与与非门相反） \\
+74LS86 & 四 2 输入异或门 & 备用 & 异或＝「相异为 1」；半加器里的和就是异或 \\
+74LS125 & 四三态门 & B2 & \textbf{使能低有效}：$1\overline{EN}=0$ 才传数据，$=1$ 输出高阻 \\
+74LS148 & 8 线--3 线优先编码器 & C1 & 输入、输出都低有效；有 $\overline{EI}$、$EO$、$GS$ 三个控制／标志端 \\
+74LS147 & 10 线--4 线优先编码器 & C2 & 只有 9 条输入线（$\overline{I_1}\sim\overline{I_9}$），全高电平代表十进制 0 \\
+4511 & 七段显示译码器（CMOS） & C3 & 驱动\textbf{共阴极}数码管；$\overline{LT}$、$\overline{BI}$、$LE$ 三个控制端 \\
+74LS48/248 & 七段显示译码器（TTL） & C3 对照 & 引脚与 4511 相同，只有 4、5 脚不同（$\overline{BI}/RBO$、$\overline{RBI}$） \\
+74LS151 & 8 选 1 数据选择器 & C4 & 地址 $A_2A_1A_0$ 选 $D_0\sim D_7$；$\overline{EN}$ 低有效；$Y_1$、$Y_2$ 互补 \\
+74LS183 & 双全加器 & C5 & 每半片：$A$、$B$、$C_{i-1}\rightarrow S_i$、$C_i$；两半可级联成 2 位加法器 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{1.3 引脚图（教材原图，现场照着接线）}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.4.2-4011与74LS00.png}\\[2pt]
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.4.3-4012与74LS20.png}\\[2pt]
+{\small 图 1\quad 四 2 输入与非门 4011／74LS00（上）与二 4 输入与非门 4012／74LS20（下）。教材图 5.4.2、5.4.3（书 p.167）。}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.4.4-4001与74LS27.png}\\[2pt]
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.4.5-74LS125与74LS86.png}\\[2pt]
+{\small 图 2\quad 2 输入和 3 输入或非门 4001／74LS27（上）与三态门 74LS125、异或门 74LS86（下）。教材图 5.4.4、5.4.5（书 p.167--168）。}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.5.1与5.5.2-优先编码器.png}\\[2pt]
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.5.3-七段显示译码器.png}\\[2pt]
+{\small 图 3\quad 74LS148（8--3 线）与 74LS147（10--4 线）优先编码器（上）；4511 与 74LS48 七段显示译码器（下）。教材图 5.5.1--5.5.3（书 p.173）。}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.72\linewidth]{图-实验7/图5.5.4-LED显示器引脚.png}\\[2pt]
+\includegraphics[width=0.94\linewidth]{图-实验7/图5.5.5与5.5.6-151与183.png}\\[2pt]
+{\small 图 4\quad LED 数码管（上）；74LS151 与 74LS183（下）。教材图 5.5.4--5.5.6（书 p.174--175）。}
+\end{center}
+
+\subhdr{1.4 进门五分钟：先做四件事，别急着接电路}
+
+\begin{enumerate}
+  \item \textbf{对号入座}：找到 THD-2 上「与非门」「逻辑开关」「LED 指示灯」「$U_{CC}$／GND」四处端子的位置，并在纸上一句话记下（后面九个模块全靠这四处）。
+  \item \textbf{上电自检（2 分钟，最值钱的两分钟）}：取 74LS00 的一个门，$1A$ 接逻辑开关、$1B$ 接 $U_{CC}$（高电平，多余输入端这样处理），$1Y$ 串 $510\ \Omega$ 电阻接 LED。拨开关：灯亮、灯灭各一次。\textbf{这一步过了，说明芯片、电源、LED、开关全好}；不过就别往下接，直接喊老师。
+  \item \textbf{认数据表}：把册页（或本讲义 §4、§5 的表）翻到要填的那一页，数清有几行几列。行数对不上就是册页与教材不同，先按册页。
+  \item \textbf{把 $+5\ \mathrm{V}$ 的量程设好}：万用表拨直流 $20\ \mathrm{V}$ 挡（TTL 的高电平约 $3.4\sim3.6\ \mathrm{V}$，低电平约 $0.1\sim0.2\ \mathrm{V}$，$20\ \mathrm{V}$ 挡够用且不容易打表）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§2}{数字电路实验的十条例硬规矩}
+
+\callout{这一节几乎全部是教材 §5.4.3「数字集成电路使用注意事项」的原文要点（书 p.165--166），加上现场操作把原文变成动作。\textbf{逻辑设计错了顶多重接一次线，电源接反或输出并联会直接烧芯片}，而烧芯片的组当场就做不完了。}
+
+\subhdr{2.1 「给高电平」「给低电平」在箱上是什么动作}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.6cm}p{6.2cm}p{6.2cm}@{}}
+\hline
+\thead{要做的事} & \thead{TTL（74LS 系列）} & \thead{CMOS（4000 系列）} \\
+\hline
+给逻辑 1 & 输入端接 $U_{CC}$（$+5\ \mathrm{V}$）或经几千欧上拉电阻接 $U_{CC}$ & 输入端接 $U_{DD}$（本实验用 $+8\ \mathrm{V}$） \\
+给逻辑 0 & 输入端接 GND & 输入端接 $U_{SS}$（即 GND） \\
+判「1」的电位 & $U_{OH}\ge 2.4\ \mathrm{V}$（实测约 $3.4\sim3.6\ \mathrm{V}$） & 近似等于 $U_{DD}$ \\
+判「0」的电位 & $U_{OL}\le 0.4\ \mathrm{V}$（实测约 $0.1\sim0.2\ \mathrm{V}$） & 近似 $0\ \mathrm{V}$ \\
+电源范围 & $U_{CC}=+5\ \mathrm{V}$，限 $4.75\sim5.25\ \mathrm{V}$ & $U_{DD}=3\sim18\ \mathrm{V}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{「悬空等于高电平」是被教材明确否定的做法。}教材原文：多余输入端不要悬空——虽然悬空相当于高电平，并不影响与非门的逻辑功能，但悬空容易受干扰，有时会造成电路误动作，在时序电路中表现更明显。所以\textbf{看见悬空的输入脚就是一处待修的错}，不是「反正它是 1」。}
+
+\subhdr{2.2 输出怎么读：三种读法，各有各的坑}
+
+\begin{itemize}
+  \item \textbf{LED 指示灯}（看亮灭）：教材的接法是输出经 $510\ \Omega$ 限流电阻接 LED，再回 GND（图 5.5.7--5.5.11 都是这样画）。此时\textbf{灯亮＝输出高电平}。接线前先确认 LED 的极性（长脚为正），接反了永远不亮。
+  \item \textbf{万用表测电位}：直接量输出脚对 GND 的电压，$>2.4\ \mathrm{V}$ 记 1，$<0.4\ \mathrm{V}$ 记 0。\textbf{读数落在中间区（$0.4\sim2.4\ \mathrm{V}$）说明这脚不是正常输出}：可能悬空、可能被别的输出顶着、可能芯片没电。
+  \item \textbf{示波器看波形}（只有 §5.4 的 A2 与 B2 用）：A2 读周期 $T$；B2 看三只三态门轮流把 $u_1$、$u_2$、$u_3$ 送上同一根总线。
+\end{itemize}
+
+\subhdr{2.3 多余输入端怎么处理（预习第 1 问的答案就在这里）}
+
+教材给了三条，考试与报告都按这三条写：
+
+\begin{enumerate}
+  \item \textbf{与门、与非门}的多余输入端接\textbf{高电平}：可直接接 $U_{CC}$，也可经几千欧的上拉电阻接到 $U_{CC}$。
+  \item \textbf{或门、或非门}的多余输入端接\textbf{低电平}：直接接地即可。
+  \item \textbf{各种门}都可以把多个输入端\textbf{并联}使用（并联不破坏逻辑关系，但会增加前级的负载电容）。
+\end{enumerate}
+
+\aside{为什么恰好是这样：与门的输出是「全 1 才 1」，把多余端按在 1 上等于让这个端不参与判断；或门的输出是「有 1 就 1」，把多余端按在 0 上同理。反过来按，输出就被这个端钉死了。例如 2 输入与非门要把 $A$ 当反相器用：另一个输入端接 1，输出就是 $\overline{A}$。}
+
+\subhdr{2.4 输出端能不能并联：除三态门和集电极开路门外，一律不许}
+
+教材原文两条：（1） 除三态门和集电极开路门外，输出端不允许并联使用；（2） 输出端不允许与电源或地短路，但可以通过电阻与 $U_{CC}$ 相连以提高逻辑 1 的输出电位，该电阻称为上拉电阻。
+
+\aside{这条规矩正是 §4.6「三态门做总线」的来历：普通门不能并联，可是数字系统里确实需要很多个输出共用一根线，于是造出第三态——高阻。高阻的门等于「从这根线上摘下来」，所以任意时刻只要\textbf{只有一个}门不是高阻，就不会打架。}
+
+\subhdr{2.5 TTL 与 CMOS 的六条操作差别}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.4cm}p{5.6cm}p{5.6cm}@{}}
+\hline
+\thead{项} & \thead{TTL（74LS）} & \thead{CMOS（4000）} \\
+\hline
+电源电压 & 不得高于 $+5.5\ \mathrm{V}$，不能与地颠倒 & 不得超过允许范围，极性不能接反 \\
+输入端电压 & 不得直接接高于 $+5.5\ \mathrm{V}$、低于 $-0.5\ \mathrm{V}$ 的低阻电源 & 须满足 $U_{SS}<U_i<U_{DD}$ \\
+多余输入端 & 不能悬空（按 §2.3 处理） & \textbf{绝对不能悬空}，按不破坏逻辑关系处理 \\
+上电顺序 & 无特殊要求 & \textbf{先接芯片电源，后加输入信号}；关机时\textbf{先断输入信号，后断电源} \\
+焊接 & — & 用 $20\ \mathrm{W}$ 内热式电烙铁，烙铁要良好接地 \\
+存放 & — & 要屏蔽（防静电击穿） \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{本实验里 CMOS 只在 A1 的「CMOS 与非门电压传输特性」用到（$U_{DD}=+8\ \mathrm{V}$，4011）。TTL 那半是 $+5\ \mathrm{V}$。\textbf{一台电源两个输出，改电压前先断电}，别把 $8\ \mathrm{V}$ 加在 74LS 上。}
+
+\subhdr{2.6 通电、拆线的顺序（写进报告的「注意事项」也行）}
+
+\begin{enumerate}
+  \item 接线时\textbf{断电}；接完先自查：电源正负有没有反、$U_{CC}$ 与 GND 有没有直接短路、输出有没有并联、有没有悬空输入。
+  \item 自查完\textbf{请老师看一眼再上电}（实验 3 的册页上就有「不许自己合闸」的原文；本实验册页未见此句，但按同一习惯做不会错）。
+  \item 上电后先量 $U_{CC}$ 是不是 $5.0\ \mathrm{V}$ 左右，再开始测。
+  \item 测完\textbf{先断电，再拆线}；改接一处就复查一处，不要一次改三处（错了说不清是哪处）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§3}{A 组：门电路的特性测试}
+
+\subhdr{3.1 与非门的电压传输特性（教材 §5.4.5.1，图 5.4.6，表 5.4.2）}
+
+\textbf{要测什么}：输出电压 $U_o$ 与输入电压 $U_i$ 的关系 $U_o=f(U_i)$。它把「逻辑关系」翻译成「电压关系」：输入低于某个值时输出高，高于某个值时输出低，中间那段陡降就是门电路的门槛。
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{图-实验7/图5.4.6与5.4.7-特性测试电路.png}\\[2pt]
+{\small 图 5\quad 左：与非门电压传输特性测试电路（图 5.4.6）；右：与非门平均传输延迟时间测试电路（图 5.4.7）。教材书 p.168。}
+\end{center}
+
+\textbf{怎么接}（图 5.4.6）：$R_1=200\ \Omega$ 与电位器 $R_p=1\ \mathrm{k}\Omega$ 串起来做分压，$R_p$ 的滑动端给出 $U_i$；$V_1$ 量 $U_i$，$V_2$ 量 $U_o$；门的另一个输入按 §2.3 接高电平。$U_{CC}=+5\ \mathrm{V}$。
+
+\textbf{怎么测}：调 $R_p$，按表 5.4.2 给定的 12 个 $U_i$ 值（$0.5,\ 1,\ 1.5,\ 2,\ 2.3,\ 2.35,\ 2.4,\ 2.45,\ 2.5,\ 2.55,\ 2.8,\ 3\ \mathrm{V}$）逐点把 $U_i$ 调到该值，读 $U_o$。\textbf{注意这 12 个点是教材特意在 $2.3\sim2.55\ \mathrm{V}$ 之间加密的}——转折就发生在这一小段，点稀了画不出陡降。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.4.2\quad TTL 与非门电压传输特性测试数据（教材书 p.167，行数照印）
+\vspace{2pt}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$U_i/\mathrm{V}$ & 0.5 & 1 & 1.5 & 2 & 2.3 & 2.35 & 2.4 & 2.45 & 2.5 & 2.55 & 2.8 & 3 \\
+\hline
+$U_o/\mathrm{V}$ & \multicolumn{12}{c|}{（实测填入）} \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{画完曲线要回答的四个量}（讨论题 1）：使输出\textbf{维持高电平}的最高输入电位 $U_{IH(\min)}$ 附近、使输出\textbf{维持低电平}的最低输入电位、门槛电压（转折点）、以及 $U_{OH}$／$U_{OL}$ 的实际值。
+
+\aside{教学小例（本讲义补，不是实测）。设某 74LS00 实测：$U_i=0.5\ \mathrm{V}$ 时 $U_o=3.55\ \mathrm{V}$；$U_i=1.5\ \mathrm{V}$ 时 $3.50\ \mathrm{V}$；$U_i=2.3\ \mathrm{V}$ 时 $2.95\ \mathrm{V}$；$U_i=2.45\ \mathrm{V}$ 时 $0.45\ \mathrm{V}$；$U_i=3\ \mathrm{V}$ 时 $0.12\ \mathrm{V}$。则读法为：高电平段 $U_{OH}\approx3.5\ \mathrm{V}$（判 1），低电平段 $U_{OL}\approx0.12\ \mathrm{V}$（判 0），转折落在 $2.3\sim2.45\ \mathrm{V}$，门槛（$U_o$ 降到高电平一半处）约 $1.8\ \mathrm{V}$。报告里写「$U_{OH}=3.5\ \mathrm{V}$、$U_{OL}=0.12\ \mathrm{V}$、转折区 $2.3\sim2.45\ \mathrm{V}$」，比写「曲线很陡」有用得多。}
+
+\textbf{CMOS 那一半（可选，看老师要求）}：教材让换一种 CMOS 与非门（4011），$U_{DD}=+8\ \mathrm{V}$，输入点自己定，数据表自拟。\textbf{CMOS 的转折点约在 $U_{DD}/2\approx4\ \mathrm{V}$ 附近}，与 TTL 的 $1.4\ \mathrm{V}$ 附近完全不同——这就是讨论题 1 问「TTL 与 CMOS 电压传输特性有何异同」的答案要点：形状相同（都是反相器式陡降），门槛位置不同（TTL 固定在 $1.4\ \mathrm{V}$ 上下、由内部电路决定；CMOS 随 $U_{DD}$ 走，约一半电源电压），且 CMOS 的高低电平更接近电源轨。
+
+\subhdr{3.2 平均传输延迟时间 $t_{\mathrm{pd}}$（教材 §5.4.5.2，图 5.4.7）}
+
+\textbf{原理（书上原文）}：用三个与非门构成环形振荡器，设三个门的 $t_{\mathrm{pd}}$ 相等，则振荡周期等于一个门延迟的 6 倍，即
+\[
+T=6\,t_{\mathrm{pd}},\qquad t_{\mathrm{pd}}=\frac{T}{6}.
+\]
+为什么是 6：信号绕一圈要经过 3 个门，每个门的输出从「变」到「稳定」要 $t_{\mathrm{pd}}$，一圈里上升沿与下降沿各走一趟，所以 $3\times2=6$。
+
+\textbf{怎么接}：三个与非门首尾相接成环，每个门的另一个输入接高电平（当反相器用），$G_3$ 的输出 $u_{o3}$ 接示波器（图 5.4.7）。
+
+\textbf{怎么读}：示波器上读周期 $T$（不是频率），代 $t_{\mathrm{pd}}=T/6$。
+
+\warnbox{\textbf{这台示波器可能读不出来，这不是你的错。}74LS 系列 $t_{\mathrm{pd}}$ 典型值约 $10\ \mathrm{ns}$，对应 $T\approx60\ \mathrm{ns}$、频率约 $16.7\ \mathrm{MHz}$。YB4320G 是 $20\ \mathrm{MHz}$ 带宽的模拟示波器，读 $16\ \mathrm{MHz}$ 的方波很勉强（波形会变小、变圆）。\textbf{如果屏幕上确实读不出稳定周期，报告里如实写「超出本机频响范围，未能读出」并给出估算依据}，不要编一个数填进去——教材讨论题 2 要的是「计算两种与非门的平均传输延迟时间」，你可以用示波器能读到的低档位波形或直接引用器件手册的典型值来说明。}
+
+\aside{教学小例（本讲义补）。若示波器读出 $T=96\ \mathrm{ns}$，则 $t_{\mathrm{pd}}=96/6=16\ \mathrm{ns}$，振荡频率 $f=1/T=10.4\ \mathrm{MHz}$。如果换成 CMOS 4011（$t_{\mathrm{pd}}$ 约几十 ns），$T$ 会变成几百 ns，示波器反而好读——这就是教材让两种门各测一次的原因。}
+
+%=============================================================
+\hdr{§4}{B 组：门电路的基本应用}
+
+\subhdr{4.1 从真值表到电路：$Y_1$ 的四步}
+
+教材 §5.4.6 给了两个设计题，第一题：
+
+\[
+Y_1=ABC+\overline{A}\,\overline{B}\,\overline{C}.
+\]
+
+\textbf{第一步：列真值表}（三个输入 8 种组合）。$ABC$ 项只在 $111$ 时为 1，$\overline{A}\,\overline{B}\,\overline{C}$ 项只在 $000$ 时为 1，两项相或，所以 $Y_1$ 只在 $000$ 与 $111$ 时为 1——\textbf{这是一个「三个输入全同」的判别电路}（全 0 或全 1 输出 1）。
+
+\begin{center}
+\small
+\begin{tabular}{@{}cccc|cc@{}}
+\hline
+\thead{$A$} & \thead{$B$} & \thead{$C$} & \thead{$ABC$} & \thead{$\overline{A}\,\overline{B}\,\overline{C}$} & \thead{$Y_1$} \\
+\hline
+0 & 0 & 0 & 0 & 1 & \textbf{1} \\
+0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 0 & \textbf{1} \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{第二步：能不能再化简？} 不能。$ABC+\overline{A}\overline{B}\overline{C}$ 已经是两项的最小和，它不含任何可以合并的相邻项。
+
+\textbf{第三步：选门}。三项与、两项或，直接用与门和或门就是 2 个三输入与门 + 1 个或门。因为实验箱上非门不一定单独给，$\overline{A}$、$\overline{B}$、$\overline{C}$ 可以用\textbf{与非门接成反相器}得到（一个输入接信号、另一个接高电平）。
+
+\textbf{第四步：画接线图并标引脚号}（教材硬要求：「要在图中标注出输入、输出端的引脚号」）。用一片 74LS00 的四个门就够：三个门做三个反相器，第四个门做 $\overline{A}\overline{B}\overline{C}$ 那一步，剩下的与、或再用另一片 74LS00 拼（见 §4.3）。
+
+\subhdr{4.2 第二题：全部用与非门实现 $Y_2$}
+
+\[
+Y_2=\overline{A}BC+A\overline{B}C+AB\overline{C}.
+\]
+
+\textbf{物理意义先看清}：三项分别在 $(A,B,C)=(0,1,1)$、$(1,0,1)$、$(1,1,0)$ 时为 1，即\textbf{恰好有两个输入为 1}。这是一个「三取二」的判别电路。
+
+\textbf{题目要求「全部采用与非门」}，所以要做两步变换：
+
+1. 先把「与或式」写成「与非—与非」形式（两次取反、德摩根）：
+\[
+Y_2=\overline{\overline{\overline{A}BC}\cdot\overline{A\overline{B}C}\cdot\overline{AB\overline{C}}}.
+\]
+这一步的读法：\textbf{最外层是一个与非门}，它的三个输入分别来自三个「与非门做的与项」。也就是说：三个 2 输入与非门各把一项「与」出来并取反，再送进一个三输入与非门再取反一次——两次取反抵消，得到原来的与或式。
+
+2. 每个 $\overline{A}BC$ 这样的项，用与非门拼：先把 $A$ 反相（与非门两输入并联或一端接高），再与 $B$、$C$ 相与。一片 74LS00（四个 2 输入与非门）不够，用两片：\textbf{引脚怎么分见 §4.3}。
+
+\aside{为什么教材偏爱「全部用与非门」：实际芯片库里与非门最便宜、最通用（74LS00 一片四个门），而且任何与或式都能用「与非—与非」两级实现。这也是理论课 6.4.4 里三个例题（三人表决器、半加器、电机故障指示）反复用的手法。}
+
+\subhdr{4.3 引脚号怎么分（最容易在报告里丢分的地方）}
+
+74LS00 一片含 4 个 2 输入与非门，引脚固定：
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\thead{门} & \thead{输入 A} & \thead{输入 B} & \thead{输出 Y} & \thead{备注} \\
+\hline
+第 1 个 & 1 脚 & 2 脚 & 3 脚 & \\
+第 2 个 & 4 脚 & 5 脚 & 6 脚 & \\
+第 3 个 & 9 脚 & 10 脚 & 8 脚 & 注意 8、9、10 的顺序与第 1 个不同 \\
+第 4 个 & 12 脚 & 13 脚 & 11 脚 & \\
+电源 & 14 脚 $U_{CC}$ & 7 脚 GND & — & 第 3、4 个门夹在电源脚两侧 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{写进报告的做法}：画原理图时在每个门的三个端旁边直接写脚号（例如「1A(1)、1B(2)、1Y(3)」），再画一张接线图把「$A$ 接哪个逻辑开关、$Y$ 接哪个 LED」标出来。教材在 §5.4.5.2 的提示里专门说过：「在接线前，应对照芯片引脚，先在图中标注出各个端的引脚号。这样接线不易出错。在实验报告中，也应该画出标有引脚号的原理图。」——\textbf{这句话几乎就是评分点}。
+
+\subhdr{4.4 表 5.4.3 的理论值（先算再测）}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.4.3\quad 逻辑运算真值表（左三列照教材，右两列是本讲义补的理论值）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|cc@{}}
+\hline
+\thead{$A$} & \thead{$B$} & \thead{$C$} & \thead{$Y_1=ABC+\overline{A}\overline{B}\overline{C}$} & \thead{$Y_2=\overline{A}BC+A\overline{B}C+AB\overline{C}$} \\
+\hline
+0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 \\
+1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 1 \\
+1 & 1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{这张表就是现场的自检表：8 行里有 4 行 $Y_2=1$、2 行 $Y_1=1$。如果你测出来 $Y_1$ 有 3 行亮，多半是某个反相器没接上（变成 $ABC+\overline{A}BC$ 之类）；如果 $Y_2$ 全 0，先看最外层那个三输入与非门的三个输入有没有都接上。}
+
+\subhdr{4.5 三态门：第三态是从哪来的（本节按「未学」讲起）}
+
+理论课到 6.6 讲完译码器为止，\textbf{三态门还没讲过}（课件 C6-3 里没有三态门的内容），所以这里从零讲。
+
+\textbf{为什么需要第三种状态}：§2.4 说过，普通门的输出不许并联——两个输出一个要 1、一个要 0，直接对电源短路，烧芯片。可数字系统里经常要「很多个输出共用一根线」（叫总线），怎么办？让每个门多一个\textbf{使能端}：
+\begin{itemize}
+  \item 使能有效：这个门正常输出 0 或 1，叫「接管总线」；
+  \item 使能无效：这个门的输出\textbf{内部断开}，对总线既不出 1 也不出 0，好像从线上摘下来了，这个状态叫\textbf{高阻态}（记 $Z$）。
+\end{itemize}
+于是「0、1、$Z$」三种输出状态，就是「三态门」这个名字的来历。规则只有一句：\textbf{同一时刻，接在同一根线上的所有三态门中，最多只能有一个不是高阻}。
+
+\textbf{74LS125 的使能是低有效的}（这是本节最容易接错的地方）：引脚图上写的是 $1\overline{EN}$，上面那横线表示\textbf{低电平有效}。所以
+
+\begin{center}
+\small
+\begin{tabular}{@{}cc|c|l@{}}
+\hline
+\thead{$1\overline{EN}$} & \thead{$1A$} & \thead{$1Y$} & \thead{含义} \\
+\hline
+0 & 0 & 0 & 使能有效，正常传数据（输出低） \\
+0 & 1 & 1 & 使能有效，正常传数据（输出高） \\
+1 & 0 & $Z$ & 使能无效，输出高阻（内部断开） \\
+1 & 1 & $Z$ & 使能无效，输出高阻（内部断开） \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{表 5.4.4 就是照上表印的}（四行：$1\overline{EN}$ 与 $1A$ 各取 0、1）。\textbf{别把使能端当成「1 就通」}——74LS125 是 $0$ 通。若测出来「使能＝1 时灯反而亮」，先回去看使能端接的是哪个开关，不要怀疑芯片。}
+
+\subhdr{4.6 三态门做总线（图 5.4.8，表 5.4.5）}
+
+\begin{center}
+\includegraphics[width=0.88\linewidth]{图-实验7/图5.4.8-三态门总线.png}\\[2pt]
+{\small 图 6\quad 三态门实现总线传输的原理图（a）与三路输入信号（b）。教材图 5.4.8（书 p.170）。}
+\end{center}
+
+\textbf{接法}：三只三态门 $G_1$、$G_2$、$G_3$ 的输出并接成一根总线 $F$；三个使能端 $1\overline{EN}$、$2\overline{EN}$、$3\overline{EN}$ 分别由逻辑开关 $S_1$、$S_2$、$S_3$ 控制；三个输入端 $1A$、$2A$、$3A$ 分别接 $u_1$、$u_2$、$u_3$。总线上再串 $R$（几百欧）与 LED，用来直观地看 $F$ 是高还是低。
+
+\textbf{三路信号}：$u_1$ 与 $u_2$ 由信号发生器给\textbf{$1\ \mathrm{Hz}$ 与 $2\ \mathrm{Hz}$ 的方波}（频率取这么低，是为了肉眼能通过 LED 看清状态）；$u_3$ 是高低电平的间隔转换，直接接逻辑开关。
+
+\textbf{测什么}：按表 5.4.5 的四种开关组合，依次用示波器看 $F$ 的波形并记录。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.4.5\quad 总线状态表（左三列照教材，右列是本讲义补的预期）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|c|l@{}}
+\hline
+\thead{$S_1$} & \thead{$S_2$} & \thead{$S_3$} & \thead{$F$（实测记录）} & \thead{本讲义的预期与理由} \\
+\hline
+1 & 1 & 1 & & 三只全禁 $\rightarrow$ $F$ 高阻，LED 不亮，示波器上是一条飘忽的线 \\
+1 & 1 & 0 & & 只有 $G_3$ 使能 $\rightarrow$ $F=u_3$（逻辑开关给的高低电平） \\
+1 & 0 & 1 & & 只有 $G_2$ 使能 $\rightarrow$ $F=u_2$（$2\ \mathrm{Hz}$ 方波） \\
+0 & 1 & 1 & & 只有 $G_1$ 使能 $\rightarrow$ $F=u_1$（$1\ \mathrm{Hz}$ 方波） \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{讨论题 5 要的「工作过程」怎么写}：一句话概括——\textbf{任意时刻最多只有一个使能有效，于是总线上的信号按开关组合被「分时」接通到某一路上}。这正是教材开篇说的「分时利用总线传输信号」；总线上任一瞬间只有一个门在驱动，所以八个、十六个门都可以挂上来，线还是这一根。
+
+\textbf{讨论题 6：能不能用普通万用表判断三态门处于高阻态？}——\textbf{不能可靠判断}，理由要写三层：（1） 万用表测电压时本身有内阻（十几兆欧的量级），高阻输出的引脚电位由外部电路决定，读数没有确定意义；（2） 输出端悬空且处于高阻时，表笔接上去看到的既不是 1 也不是 0，而是随环境漂移的中间值，无法区分「高阻」与「芯片没电」；（3） 判定高阻要用\textbf{看总线行为}的办法：让该门使能接入一个已知信号，再断开，看总线上是否恢复成「另一只门的信号」，或用示波器看总线上出现「谁都不驱动」的悬空段。\textbf{所以这道题的正确答案是「不能」，而不是「能量到某个电压所以能」。}
+
+%=============================================================
+\hdr{§5}{C 组：组合逻辑功能器件}
+
+\callout{§5.5 的五个模块和 §5.4 不一样：\textbf{逻辑功能已经由芯片内部做好了}，你不再设计门，只做三件事——认引脚、给输入、读输出。评分点也变了：从「电路设计对不对」变成「\textbf{会不会按真值表逐行给输入、会不会把反码读成正码}」。三处最容易错的地方本讲义都用醒目框标了：74LS148 的输出是反码、74LS147 少一根输入线、74LS125／4511 的控制端是低有效。}
+
+\subhdr{5.1 74LS148：8 线--3 线优先编码器}
+
+\textbf{编码是什么}：把「若干根线里哪一根有效」翻译成「一个二进制码」。普通二进制编码器只允许一根输入有效；\textbf{优先编码器}允许几根同时有效，它输出\textbf{优先级最高}那根的编码。74LS148 的优先级是 $\overline{I_7}$ 最高、$\overline{I_0}$ 最低。
+
+\begin{center}
+\includegraphics[width=0.62\linewidth]{图-实验7/图5.5.7-148实验电路.png}\\[2pt]
+{\small 图 7\quad 8 线--3 线优先编码器实验电路（$S_1\sim S_9$ 为逻辑开关，输出经 $510\ \Omega$ 接 LED）。教材图 5.5.7（书 p.175）。}
+\end{center}
+
+\textbf{引脚功能（书上原文）}：$\overline{I_0}\sim\overline{I_7}$ 输入，\textbf{低电平有效}；$\overline{Y_0}\sim\overline{Y_2}$ 输出，\textbf{低电平有效}；$\overline{EI}$ 选通输入（输入使能），低电平有效，$\overline{EI}=0$ 时才允许编码；$EO$ 选通输出，在编码状态且无输入信号时 $EO=0$，级联时接到另一片的 $\overline{EI}$；$GS$ 编码工作状态标志，有输入信号且处于编码状态时 $GS=0$，否则 $GS=1$。
+
+\warnbox{\textbf{「输出低电平有效」＝输出的是编码的反码。}例如输入 $\overline{I_5}=0$（其余为 1），编码是 $5=101$，但芯片输出 $\overline{Y_2}\overline{Y_1}\overline{Y_0}=010$（把 101 逐位取反）。\textbf{写报告时两种写法都行，但要写清楚}：要么写「实测 $\overline{Y_2}\overline{Y_1}\overline{Y_0}=010$，对应编码 $101=5$」，要么直接把表头写成「$\overline{Y_2}\ \overline{Y_1}\ \overline{Y_0}$」并填反码。最怕的是表头写 $\overline{Y}$、格子填正码，读者会以为你测错了。}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.2\quad 8 线--3 线优先编码器功能表（左照教材，右两列本讲义补）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|cccccccc|c|cc@{}}
+\hline
+\thead{$\overline{EI}$} & \thead{$\overline{I_7}$} & \thead{$\overline{I_6}$} & \thead{$\overline{I_5}$} & \thead{$\overline{I_4}$} & \thead{$\overline{I_3}$} & \thead{$\overline{I_2}$} & \thead{$\overline{I_1}$} & \thead{$\overline{I_0}$} & \thead{$\overline{Y_2}\overline{Y_1}\overline{Y_0}$} & \thead{$GS$} & \thead{$EO$} \\
+\hline
+1 & × & × & × & × & × & × & × & × & （不编码） & 1 & 1 \\
+0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 111 & 1 & 0 \\
+0 & 0 & × & × & × & × & × & × & × & 000 & 0 & 1 \\
+0 & 1 & 0 & × & × & × & × & × & × & 001 & 0 & 1 \\
+0 & 1 & 1 & 0 & × & × & × & × & × & 010 & 0 & 1 \\
+0 & 1 & 1 & 1 & 0 & × & × & × & × & 011 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 0 & × & × & × & 100 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 1 & 0 & × & × & 101 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & × & 110 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 111 & 0 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{注意第 2 行与第 10 行：\textbf{都是 111}。区别靠 $GS$ 与 $EO$——全都无效时 $GS=1$、$EO=0$；$\overline{I_0}$ 有效时 $GS=0$、$EO=1$。这就是讨论题 1 问「$GS$ 端的作用」的答案：它把「没有输入」和「输入为零号」区分开了。}
+
+\subhdr{5.2 74LS147：10 线--4 线优先编码器}
+
+\begin{center}
+\includegraphics[width=0.62\linewidth]{图-实验7/图5.5.8-147实验电路.png}\\[2pt]
+{\small 图 8\quad 10 线--4 线优先编码器实验电路。教材图 5.5.8（书 p.176）。}
+\end{center}
+
+74LS147 把 9 条数据线编成 4 线 8421 BCD 反码，$\overline{I_9}$ 优先级最高。\textbf{它只有 9 条输入线（$\overline{I_1}\sim\overline{I_9}$），没有 $\overline{I_0}$}：书上原文——「如果 9 个输入均为高电平（相当于没有输入），则编码输出为 1111，可以代表十进制数零，故没有设置 $\overline{I_0}$ 输入端。」
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.3\quad 10 线--4 线优先编码器功能表（左照教材，右列本讲义补）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|c|c@{}}
+\hline
+\thead{输入（哪一个为 0）} & \thead{$\overline{Y_3}\overline{Y_2}\overline{Y_1}\overline{Y_0}$} & \thead{对应十进制（取反后）} \\
+\hline
+全部为 1（无输入） & 1111 & 0 \\
+$\overline{I_9}=0$ & 0110 & 9 \\
+$\overline{I_8}=0$ & 0111 & 8 \\
+$\overline{I_7}=0$ & 1000 & 7 \\
+$\overline{I_6}=0$ & 1001 & 6 \\
+$\overline{I_5}=0$ & 1010 & 5 \\
+$\overline{I_4}=0$ & 1011 & 4 \\
+$\overline{I_3}=0$ & 1100 & 3 \\
+$\overline{I_2}=0$ & 1101 & 2 \\
+$\overline{I_1}=0$ & 1110 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{这一块最典型的错误是「读数差一」。}LED 上看到的是 $\overline{Y_3}\overline{Y_2}\overline{Y_1}\overline{Y_0}$，取反才是 BCD 码。例如灯显示 0110，取反得 1001 $=9$；若直接把 0110 当二进制读成 6，就正好错成「输入 $\overline{I_6}$」那一行。\textbf{现场做法}：手指点在表上，先写反码、再用一条竖线写取反后的十进制，两列都写进报告。}
+
+\subhdr{5.3 4511 与 LED 数码管：七段译码}
+
+\textbf{译码是编码的反过程}：把二进制码「翻译」成对应的输出线（这里是七个笔段 a--g）。
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/图5.5.9-4511实验电路.png}\\[2pt]
+{\small 图 9\quad 译码器与显示器实验电路（4511 + 共阴极 LED 数码管，七段各串 $510\ \Omega$）。教材图 5.5.9（书 p.178）。}
+\end{center}
+
+\textbf{4511 的引脚（书上原文）}：$A\sim D$ 是 4 位 BCD 输入；$a\sim g$ 是 7 个输出；$\overline{LT}$ 灯测试、低有效（$\overline{LT}=0$ 时显示「8」）；$\overline{BI}$ 灭灯输入、低有效（$\overline{BI}=0$ 时字形消隐，$\overline{BI}=1$ 才正常显示）；$LE$ 锁存、高有效（$LE=1$ 时不接收新信号，输出锁定在 $LE=1$ 之前的状态；$LE=0$ 时正常接收并输出）。另外，4511 有\textbf{拒绝伪码}的特点：输入超过十进制 9（即 1001）时，字形自行消隐。
+
+\textbf{共阴与共阳}：LED 数码管内部七个（或八个）发光二极管有两种接法——\textbf{共阴极}把七个阴极接在一起（公共端 COM 接地），某段阳极给高电平就亮；\textbf{共阳极}把七个阳极接在一起（COM 接高电平），某段阴极给低电平才亮。4511 与 74LS48/248 都驱动\textbf{共阴极}。引脚排列对两种接法相同。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.4\quad 译码器--显示器逻辑功能表（前 3 行照教材的三种控制组合，后 16 行按 BCD 输入；右列本讲义补）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|cccc|c|l@{}}
+\hline
+\thead{$\overline{LT}$} & \thead{$\overline{BI}$} & \thead{$LE$} & \thead{$D$} & \thead{$C$} & \thead{$B$} & \thead{$A$} & \thead{$a\,b\,c\,d\,e\,f\,g$} & \thead{显示} \\
+\hline
+0 & 1 & 0 & × & × & × & × & 1111111 & 8（灯测试） \\
+1 & 0 & 0 & × & × & × & × & 0000000 & 全灭（消隐） \\
+1 & 1 & 1 & × & × & × & × & 保持 & 锁存上一状态 \\
+\hline
+1 & 1 & 0 & 0 & 0 & 0 & 0 & 1111110 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 1 & 0110000 & 1 \\
+1 & 1 & 0 & 0 & 0 & 1 & 0 & 1101101 & 2 \\
+1 & 1 & 0 & 0 & 0 & 1 & 1 & 1111001 & 3 \\
+1 & 1 & 0 & 0 & 1 & 0 & 0 & 0110011 & 4 \\
+1 & 1 & 0 & 0 & 1 & 0 & 1 & 1011011 & 5 \\
+1 & 1 & 0 & 0 & 1 & 1 & 0 & 1011111 & 6 \\
+1 & 1 & 0 & 0 & 1 & 1 & 1 & 1110000 & 7 \\
+1 & 1 & 0 & 1 & 0 & 0 & 0 & 1111111 & 8 \\
+1 & 1 & 0 & 1 & 0 & 0 & 1 & 1111011 & 9 \\
+1 & 1 & 0 & 1 & 0 & 1 & 0 & 0000000 & 全灭（伪码） \\
+1 & 1 & 0 & 1 & 0 & 1 & 1 & 0000000 & 全灭（伪码） \\
+1 & 1 & 0 & 1 & 1 & 0 & 0 & 0000000 & 全灭（伪码） \\
+1 & 1 & 0 & 1 & 1 & 0 & 1 & 0000000 & 全灭（伪码） \\
+1 & 1 & 0 & 1 & 1 & 1 & 0 & 0000000 & 全灭（伪码） \\
+1 & 1 & 0 & 1 & 1 & 1 & 1 & 0000000 & 全灭（伪码） \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{段码怎么记：「1」只有右边两竖（b、c）；「7」是三横加右上竖（a、b、c）；「4」是 f、g、b、c 四段。报告里若要求画段码表，照上表抄就等于自己算过一遍——这一栏是给分点，因为讨论题 5 要「分析比较 74LS248 与 4511 的异同」。}
+
+\textbf{讨论题 5 的答案要点}（比较 74LS248 与 4511）：相同——都是七段显示译码器、都驱动共阴极、引脚排列相同（只有 4、5 脚不同）、都给 $a\sim g$ 七段输出；不同——4511 是 CMOS 型（$U_{DD}$ 范围宽、输出驱动能力弱一些），74LS48/248 是 TTL 型（内部有上拉电阻、$U_{CC}=5\ \mathrm{V}$）；74LS248 与 74LS48 的差别只在显示的「6」「9」字形；74LS48 多出 $\overline{RBI}$ 动态灭零输入与 $RBO$ 动态灭零输出（用于多位显示时灭掉前导零），4511 没有这两个功能，但有 $\overline{LT}$／$\overline{BI}$／$LE$ 三个控制端。
+
+\subhdr{5.4 74LS151：8 选 1 数据选择器（本节按「未学」讲起）}
+
+理论课讲到 6.6 译码器结束，\textbf{数据选择器还没讲}（课件 C6-3 里没有），所以这里也从零讲。
+
+\textbf{它做什么}：有 8 个数据输入端 $D_0\sim D_7$、一个 3 位地址 $A_2A_1A_0$、一个输出 $Y_1$。地址给出几号，输出就等于几号那一路的输入：$Y_1=D_{A}$。像是「八选一的开关」。
+
+\textbf{为什么它还能实现任意逻辑函数}（预习第 4 问，也是讨论题 6 的关键）：把三个变量 $A$、$B$、$C$ 接到地址端 $A_2$、$A_1$、$A_0$，那么每一种输入组合对应的就是某一个数据端；你把这个函数在该组合下应该输出的值（0 或 1）预先接在对应数据端上——\textbf{函数就被「存」在这 8 个接线里了}。所以 8 选 1 选择器可以实现任意三变量逻辑函数，而 4 选 1 能实现任意二变量函数。
+
+\begin{center}
+\includegraphics[width=0.58\linewidth]{图-实验7/图5.5.10-151实验电路.png}\\[2pt]
+{\small 图 10\quad 数据选择器实验电路（$S_1\sim S_{12}$ 为逻辑开关，$Y_1$、$Y_2$ 各经 $510\ \Omega$ 接 LED）。教材图 5.5.10（书 p.179）。}
+\end{center}
+
+\textbf{引脚（书上原文）}：$D_0\sim D_7$ 数据输入；$Y_1$、$Y_2$ 两个状态互补的数据输出，$Y_2=\overline{Y_1}$；$A_0\sim A_2$ 地址输入；$\overline{EN}$ 使能输入，低电平有效。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.5\quad 数据选择器逻辑功能表（照教材：$\overline{EN}=1$ 一行，$\overline{EN}=0$ 八行；$D_7\sim D_0=10101010$）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|ccc|cccccccc|cc@{}}
+\hline
+\thead{$\overline{EN}$} & \thead{$A_2$} & \thead{$A_1$} & \thead{$A_0$} & \thead{$D_7$} & \thead{$D_6$} & \thead{$D_5$} & \thead{$D_4$} & \thead{$D_3$} & \thead{$D_2$} & \thead{$D_1$} & \thead{$D_0$} & \thead{$Y_1$} & \thead{$Y_2$} \\
+\hline
+1 & × & × & × & × & × & × & × & × & × & × & × & 0 & 1 \\
+\hline
+0 & 0 & 0 & 0 & \multicolumn{8}{c|}{$1\ 0\ 1\ 0\ 1\ 0\ 1\ 0$} & 0 & 1 \\
+0 & 0 & 0 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 0 & 1 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 0 & 1 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 1 & 0 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 1 & 0 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 1 & 1 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 1 & 1 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{这张表的规律：地址是奇数（$A_0=1$）时 $Y_1=1$，所以\textbf{在教材给的这组输入下，$Y_1=A_0$}——讨论题 6 第一问「写出 Y1 的逻辑函数式」要的就是这句话：$Y_1=A_0$（并解释：因为 $D_1=D_3=D_5=D_7=1$，其余为 0）。}
+
+\textbf{讨论题 6 第二问：用 74LS151 实现 $Y_1=\overline{A}\,\overline{B}C+\overline{A}B\overline{C}+A\overline{B}\,\overline{C}+ABC$}。这个函数在 $(A,B,C)=001,010,100,111$ 时为 1——正好是「1 的个数为奇数」，即\textbf{奇校验}。做法：$A\to A_2$、$B\to A_1$、$C\to A_0$，然后 $D_1=D_2=D_4=D_7=1$（接 $U_{CC}$），$D_0=D_3=D_5=D_6=0$（接 GND），$\overline{EN}=0$。按地址 $000\sim111$ 排列，$D_7D_6D_5D_4D_3D_2D_1D_0=1\,0\,0\,1\,0\,1\,1\,0$。报告里把这张「地址—数据」对照写出来，比只画一张电路图清楚十倍。
+
+\textbf{讨论题 7（并行转串行）}：把 8 位并行数据 $D_7\dots D_0$ 接在八个数据端，地址 $A_2A_1A_0$ 用计数器（或手动）从 $000$ 递增到 $111$，$Y_1$ 就按时序逐位输出——\textbf{地址每变一次，输出换一位}。所以「怎样产生地址码」的答案是：用二进制计数器驱动 $A_2A_1A_0$（或手动逐个给），地址的递增节拍就是串行输出的位节拍。
+
+\subhdr{5.5 74LS183：双全加器}
+
+\textbf{半加与全加}（理论课 6.4.4 例 2 已讲）：半加器算两个 1 位二进制数之和，不考虑低位进位；全加器算三个 1 位数（$A$、$B$ 与低位进位 $C_{i-1}$）之和，输出本位和 $S_i$ 与向高位的进位 $C_i$：
+
+\[
+S_i=A\oplus B\oplus C_{i-1},\qquad C_i=AB+AC_{i-1}+BC_{i-1}.
+\]
+
+\textbf{74LS183 一片含两个独立的全加器}，所以两片（或用一片的两个半片）就能连成 2 位加法器：低位那半的 $C_i$ 接到高位那半的 $C_{i-1}$。
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/图5.5.11-183实验电路.png}\\[2pt]
+{\small 图 11\quad 全加器实验电路。教材图 5.5.11（书 p.179）。}
+\end{center}
+
+\textbf{引脚（书上原文）}：$1A$、$1B$／$2A$、$2B$ 是二进制数码输入；$1C_{i-1}$、$1C_i$／$2C_{i-1}$、$2C_i$ 分别是低位来的进位与向高位的进位；$1S_i$／$2S_i$ 是本位全加和。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.6\quad 两位全加器真值表（之一）：低位全加器 $1C_{i-1}=0$ 与 $=1$ 两组（$2A=1A=0$）
+\vspace{2pt}
+
+\begin{tabular}{@{}cccc|cc|cc@{}}
+\hline
+\thead{$2A$} & \thead{$1A$} & \thead{$2B$} & \thead{$1B$} & \thead{$1C_{i-1}$} & \thead{$2S_i\ 1S_i$} & \thead{$1C_i$} & \thead{$2C_i$} \\
+\hline
+0 & 0 & 0 & 0 & 0 & 00 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 01 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 10 & 0 & 0 \\
+0 & 0 & 1 & 1 & 0 & 11 & 0 & 0 \\
+\hline
+0 & 0 & 0 & 0 & 1 & 01 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 & 10 & 1 & 0 \\
+0 & 0 & 1 & 0 & 1 & 11 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 & 00 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{这 8 行就是一个「$B+0$」与「$B+1$」的对照：低四位看 $1C_{i-1}=0$ 那组，高四位看 $=1$ 那组。第 8 行（$B=3$、$1C_{i-1}=1$）最有意思：$1+1$ 进 1，$1+1+1=3$ 又进 1，所以和是 $00$、进位 $1C_i=2C_i=1$，即 $3+1=100$（二进制 4）。}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.7\quad 两位全加器真值表（之二）：$A+B$ 全表（$2C_{i-1}=0$），右列写成三位和
+\vspace{2pt}
+
+\begin{tabular}{@{}cc|ccc|c@{}}
+\hline
+\thead{$A$（$2A1A$）} & \thead{$B$（$2B1B$）} & \thead{$2C_i$} & \thead{$2S_i$} & \thead{$1S_i$} & \thead{即 $A+B$} \\
+\hline
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 1 & 1 \\
+0 & 2 & 0 & 1 & 0 & 2 \\
+0 & 3 & 0 & 1 & 1 & 3 \\
+1 & 0 & 0 & 0 & 1 & 1 \\
+1 & 1 & 0 & 1 & 0 & 2 \\
+1 & 2 & 0 & 1 & 1 & 3 \\
+1 & 3 & 1 & 0 & 0 & 4 \\
+2 & 0 & 0 & 1 & 0 & 2 \\
+2 & 1 & 0 & 1 & 1 & 3 \\
+2 & 2 & 1 & 0 & 0 & 4 \\
+2 & 3 & 1 & 0 & 1 & 5 \\
+3 & 0 & 0 & 1 & 1 & 3 \\
+3 & 1 & 1 & 0 & 0 & 4 \\
+3 & 2 & 1 & 0 & 1 & 5 \\
+3 & 3 & 1 & 1 & 0 & 6 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{一致性自检（现场很有用）：表 5.5.6 里同一行的 $1C_i$，应当等于表 5.5.7 里同一组 $(A,B)$ 的 $2C_{i-1}$——因为两半是级联的，低位的进位就是高位的进位输入。\textbf{如果对不上，先查两片之间的那根进位线有没有接错}，再查读数。}
+
+\textbf{讨论题 8}：表 5.5.6 与表 5.5.7 实现的算术运算是「两个 2 位二进制数相加」（$A+B$，输出含进位）。若要实现两个 8 位二进制数的加法，需要 8 个全加器，即 \textbf{4 片 74LS183}（每片两个）。设 1 位加法用时 $11\ \mathrm{ns}$，8 位串行进位加法器要等进位从最低位传到最高位，共 8 级，故 \textbf{一次加法约 $8\times11=88\ \mathrm{ns}$}。
+
+%=============================================================
+\hdr{§6}{报告怎么写（英文）}
+
+\subhdr{6.1 栏目（按实验 1 的模板与教材口径推定，册页到手后以册页为准）}
+
+教材的每一节都按同一顺序排：\textit{Experimental Objectives}（目的）$\rightarrow$ \textit{Apparatus}（仪器，表 5.4.1／5.5.1）$\rightarrow$ \textit{Preliminary Work}（预习要求，§5.4.2／§5.5.2）$\rightarrow$ \textit{Experimental Content}（内容与数据表）$\rightarrow$ \textit{Discussion of Results}（讨论题）。实验 1 的电子报告模板就是「I. Objectives / II. Principles / III. Content」三段加讨论。所以报告按这五栏写不会跑偏。
+
+\subhdr{6.2 术语（英文报告里要用的词，别自己造）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.2cm}p{5.2cm}p{4.4cm}@{}}
+\hline
+\thead{中文} & \thead{英文} & \thead{备注} \\
+\hline
+逻辑门／与非门 & logic gate / NAND gate & \\
+电压传输特性 & voltage transfer characteristic & 曲线用 $U_o$--$U_i$ \\
+门槛电压 & threshold voltage & \\
+平均传输延迟时间 & average propagation delay time & $t_{\mathrm{pd}}$ \\
+环形振荡器 & ring oscillator & \\
+真值表 & truth table & \\
+三态门／高阻态 & three-state gate / high-impedance state & 记 $Z$ \\
+总线 & bus & \\
+优先编码器 & priority encoder & \\
+七段显示译码器 & seven-segment display decoder & \\
+共阴极／共阳极 & common cathode / common anode & \\
+数据选择器 & data selector / multiplexer & \\
+全加器 & full adder & \\
+进位 & carry & $C_i$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{6.3 可以照抄的句式（改数字即可）}
+
+\begin{itemize}
+  \item \textit{The voltage transfer characteristic was measured at 12 input voltages from $0.5\ \mathrm{V}$ to $3\ \mathrm{V}$, with extra points between $2.3\ \mathrm{V}$ and $2.55\ \mathrm{V}$ to resolve the transition region.}
+  \item \textit{The measured high-level output was $U_{OH}=3.5\ \mathrm{V}$ and the low-level output was $U_{OL}=0.12\ \mathrm{V}$, which agree with the datasheet limits ($U_{OH}\ge2.4\ \mathrm{V}$, $U_{OL}\le0.4\ \mathrm{V}$).}
+  \item \textit{The three-state gates share a common bus. At any instant at most one gate is enabled, so the bus carries the signal of the enabled gate only.}
+  \item \textit{The measured code is the complement of the decimal digit, because the outputs of the 74LS148 are active LOW.}
+  \item \textit{Discrepancies between the measured and the theoretical values are attributed to wiring resistance, contact resistance of the breadboard, and the finite resolution of the multimeter.}
+\end{itemize}
+
+\warnbox{\textbf{报告纪律三条}：（1） 数据表里\textbf{理论值与实测值分两栏写}（教材的表就是这么设计的）；（2） 凡与理论不符的行，\textbf{在报告里写明原因}，不要改数字去凑；（3） 抄数据、编数据、抄报告按册 p01 记 $0$ 分——这条是明文。}
+
+%=============================================================
+\hdr{§7}{预习题的答案（中英双语，可直接写进预习报告）}
+
+\subhdr{7.1 §5.4.2 复习理论知识两问}
+
+\textbf{（1）有哪些基本门电路？门电路的逻辑功能有哪几种表示方式？}\\
+\emph{Answer.} The basic gates are AND, OR, NOT, NAND, NOR, XOR and XNOR (plus the three-state gate as a special output stage). The logic function of a gate can be expressed in four ways: (i) a truth table, (ii) a logic expression (Boolean equation), (iii) a logic symbol (schematic symbol), and (iv) a waveform/timing diagram.\\
+中文要点：基本门＝与、或、非、与非、或非、异或、同或（三态门属于输出级的一种特殊形式）；表示方式＝真值表、逻辑表达式、逻辑符号、波形图。
+
+\textbf{（2）简述 TTL 与非门的主要参数及电压传输特性所表示的物理意义。}\\
+\emph{Answer.} Main parameters: $U_{OH}$ (output high, $\ge2.4\ \mathrm{V}$), $U_{OL}$ (output low, $\le0.4\ \mathrm{V}$), $I_{OH}/I_{OL}$ (fan-out current), $t_{\mathrm{pd}}$ (average propagation delay, a few ns), and the transfer characteristic's threshold (about $1.4\ \mathrm{V}$ for TTL). The voltage transfer characteristic $U_o=f(U_i)$ shows that the gate does not switch abruptly: the output stays high while the input is below the threshold, falls steeply through the transition region, and stays low above it. It therefore defines the legal ``0'' and ``1'' input ranges and the noise margin.\\
+中文要点：$U_{OH}\ge2.4\ \mathrm{V}$、$U_{OL}\le0.4\ \mathrm{V}$、$t_{\mathrm{pd}}$ 为几 ns、门槛约 $1.4\ \mathrm{V}$；传输特性说明「输入低于门槛输出为高、高于门槛输出为低」，转折区对应允许的输入 0／1 范围与噪声容限。
+
+\subhdr{7.2 §5.4.2 预习实验内容四问}
+
+\textbf{（1）门电路不使用的多余输入端有哪些处置方法？试画出原理图说明。}\\
+\emph{Answer.} (i) AND/NAND: tie the unused input to HIGH, either directly to $U_{CC}$ or through a resistor of a few k$\Omega$ (pull-up). (ii) OR/NOR: tie it to LOW, i.e. directly to GND. (iii) Any gate: unused inputs may be paralleled with a used input, which keeps the logic function unchanged. Never leave an input floating.\\
+中文要点：与门／与非门接高（$U_{CC}$ 或几千欧上拉）；或门／或非门接低（接地）；也可把多余端与使用中的输入端并联；\textbf{一律不许悬空}。原理图画法：与非门的多余端画一条线接 $U_{CC}$（或经 $R$ 接 $U_{CC}$），或门的多余端画一条线接 GND。
+
+\textbf{（2）在数字电路实验中，怎样给输入端施加高、低电平？怎样检测输出端的状态？}\\
+\emph{Answer.} Inputs are set by logic switches on the experiment box: switching to $U_{CC}$ gives logic 1, switching to GND gives logic 0. Outputs are read by an LED indicator (through a $510\ \Omega$ series resistor; LED on = high) or by a multimeter ($>2.4\ \mathrm{V}$ = 1, $<0.4\ \mathrm{V}$ = 0), and waveforms by an oscilloscope.\\
+中文要点：输入端用实验箱的逻辑开关，接 $U_{CC}$ 为 1、接 GND 为 0；输出用 LED（串 $510\ \Omega$，亮为高）或万用表（$>2.4\ \mathrm{V}$ 记 1、$<0.4\ \mathrm{V}$ 记 0），需要波形时用示波器。
+
+\textbf{（3）几个门电路的输出端能否直接并联在一起以实现或逻辑功能？几个三态门的输出端是否允许直接并联在一起？有何条件限制？}\\
+\emph{Answer.} Ordinary gates must not have their outputs tied together: if one output is high while another is low, a large short-circuit current flows and the devices may be destroyed. Three-state gates may share a line (a bus), on condition that at most one of them is enabled at any instant; all the others must be in the high-impedance state.\\
+中文要点：普通门输出端\textbf{不允许并联}（一个出 1 一个出 0 会短路烧器件）；三态门\textbf{允许}并联成总线，条件是\textbf{任何时刻最多只有一个使能有效}，其余为高阻。
+
+\textbf{（4）确定所有实验电路所使用的芯片，对照芯片引脚图，在电路中标注出各个门电路输入与输出端的引脚号。}\\
+\emph{Answer.} 见本讲义 §1.2 的芯片表与 §1.3 的引脚图；$Y_1$、$Y_2$ 的设计用一片 74LS00（四个门：三个做反相器、一个做 $\overline{A}\overline{B}\overline{C}$）加第二片 74LS00（拼与、或／与非）。芯片清单：74LS00（§5.4 全部模块）、4011（CMOS 对比）、74LS125（三态门）、74LS148、74LS147、4511、74LS151、74LS183。
+
+\subhdr{7.3 §5.5.2 复习理论知识五问（要点版）}
+
+\begin{enumerate}
+  \item \textbf{组合逻辑电路的基本特点}：任一时刻的输出只取决于该时刻的输入，与电路原来的状态无关（无记忆、无反馈）。
+  \item \textbf{编码与译码的区别、种类}：编码是「把某根线的有效状态翻成一个二进制码」，译码是「把二进制码翻回对应的输出线」；编码器分普通二进制编码器、二--十进制（BCD）编码器、优先编码器；优先编码器允许几根输入同时有效，按优先级只输出最高的那一个，普通编码器只允许一根有效。
+  \item \textbf{8421 BCD 该选哪种译码器；共阴与共阳的区别；译码驱动电路是否相同}：选「七段显示译码器」（如 4511、74LS48/248）；共阴极是七段阴极共接地、段给高电平才亮，共阳极是七段阳极共接高、段给低电平才亮；\textbf{驱动电路不同}（输出极性相反），所以同一片译码器只配一种数码管，4511／74LS48 配共阴极。
+  \item \textbf{数据选择器的逻辑功能；为什么能实现任意逻辑函数；怎样并行转串行}：在地址控制下从多路输入中选一路送到输出；把变量接到地址端、把函数值接到数据端，等于用接线「存」了真值表，故能实现任意函数；并行转串行＝数据固定接八个数据端、地址用计数器递增，输出即逐位串行。
+  \item \textbf{全加器的逻辑功能；多位加法速度如何、为什么}：全加器把两个 1 位数与低位进位相加，输出本位和与进位；普通的串行进位加法器速度慢，因为高位的进位必须等低位算完，延迟随位数线性增加（8 位约 8 级门延迟）。
+\end{enumerate}
+
+%=============================================================
+\hdr{§8}{讨论题的答案}
+
+\subhdr{8.1 §5.4.7 六问}
+
+\textbf{1）画电压传输特性曲线；维持高电平的最高输入电位？维持低电平的最低输入电位？TTL 与 CMOS 有何异同？}\\
+曲线见 §3.1 的表 5.4.2 逐点描出。使输出维持高电平的最高输入电位（$U_{IL(\max)}$）与使输出维持低电平的最低输入电位（$U_{IH(\min)}$）由实测曲线上「输出开始离开高电平」与「输出已降到低电平」两点读出；TTL 典型为 $U_{IL(\max)}\approx0.8\ \mathrm{V}$、$U_{IH(\min)}\approx2.0\ \mathrm{V}$。异同：\textbf{形状相同}（都是反相器式陡降），\textbf{门槛不同}（TTL 固定约 $1.4\ \mathrm{V}$；CMOS 随 $U_{DD}$ 变，约 $U_{DD}/2$），\textbf{电平摆幅不同}（CMOS 更接近电源轨）。
+
+\textbf{2）画环形振荡器各点波形 $u_{o1}$、$u_{o2}$、$u_{o3}$；计算两种与非门的 $t_{\mathrm{pd}}$。}\\
+三点波形依次反相、各差一个 $t_{\mathrm{pd}}$：$u_{o1}$ 与 $u_{o2}$ 反相、$u_{o2}$ 与 $u_{o3}$ 反相、$u_{o3}$ 与 $u_{o1}$ 同相。$t_{\mathrm{pd}}=T/6$，两种门各代各的 $T$。
+
+\textbf{3）根据表 5.4.3，分析两个逻辑电路所做逻辑运算的物理意义。}\\
+$Y_1=ABC+\overline{A}\overline{B}\overline{C}$ 是「三输入全同」判别（全 0 或全 1 输出 1），即同或；$Y_2=\overline{A}BC+A\overline{B}C+AB\overline{C}$ 是「恰好两个输入为 1」判别，即三取二。二者都不是「多数表决」（多数表决是 $AB+BC+CA$，比 $Y_2$ 多一个 $ABC$ 项）。
+
+\textbf{4）画测试三态门功能的电路图；总结 74LS125 的逻辑功能；使能端处于何种状态时实现数据传输？}\\
+电路：$1\overline{EN}$ 与 $1A$ 各接一个逻辑开关，$1Y$ 串 $510\ \Omega$ 接 LED（图见实验册）。功能：$\overline{EN}=0$ 时 $Y=A$（正常传输）；$\overline{EN}=1$ 时 $Y=Z$（高阻）。所以\textbf{使能端为低电平时实现数据传输}。
+
+\textbf{5）根据表 5.4.5，分析图 5.4.8 的工作过程。}\\
+见 §4.6：四种开关组合里只有一种使能有效（或全无效），于是 $F$ 分别等于 $u_1$、$u_2$、$u_3$ 或悬空；总线上任何时刻只有一个门驱动，实现分时复用。
+
+\textbf{6）能否用普通万用表判断三态门是否处于输出高阻态？}\\
+不能可靠判断，理由见 §4.6 末段三层论述（表内阻干扰、读数无确定含义、需看总线行为）。
+
+\subhdr{8.2 §5.5.8 八问}
+
+\textbf{1）分析 74LS148 的逻辑功能，说明 $GS$ 端的作用。}\\
+8 线--3 线优先编码：$\overline{I_7}$ 优先最高，输出为编码的反码；$\overline{EI}=1$ 时不编码。$GS$ 是「编码工作状态标志」：有输入且处于编码状态时 $GS=0$，否则 $GS=1$——它把「没有输入」与「$\overline{I_0}$ 有效」这两种都输出 111 的情况区分开。
+
+\textbf{2）用两片 74LS148 设计 16 位输入、4 位输出的优先编码器（同样有 $\overline{EI}$、$EO$、$GS$）。}\\
+级联法：第一片（高位）管 8 路高优先级输入，其 $EO$ 接第二片的 $\overline{EI}$；第二片（低位）管 8 路低优先级输入。4 位输出的最高位由「哪一片在编码」决定：第一片 $GS=0$ 时最高位取 1，否则取 0；低 3 位由两片的 $\overline{Y_2}\overline{Y_1}\overline{Y_0}$ 经选择（或直接用与非门合成）得到。总 $GS$ 取两片 $GS$ 的与（任一在编码即为 0），总 $EO$ 取第二片的 $EO$。
+
+\textbf{3）根据表 5.5.3，总结 74LS147 的逻辑功能。}\\
+10 线--4 线优先编码：9 条输入线低有效、$\overline{I_9}$ 优先最高；输出为 8421 BCD 的反码；全部输入为高时输出 1111，代表十进制 0。
+
+\textbf{4）在一片 74LS147 基础上设计 10 位（0--9）输入的 8421 BCD 编码器。}\\
+74LS147 本身已经是 10 线--4 线（用 9 条线加「全高代表 0」），所以「10 位输入」的做法是：把第 10 路（代表 0 的那一位）单独引出，与 74LS147 的「全高」状态对应——即把 0 号输入经一级与非门取反后接到 $\overline{EI}$ 不需要（74LS147 无 $\overline{EI}$），实际做法是把 0 号键用一只与非门做成「其余 9 键全无效时才有效」的判别，或者直接用 9 条线加一只「全 0 检测」门得到 0 的编码 0000。报告里写清「$\overline{I_1}\sim\overline{I_9}$ 接 1--9 号键，0 号键由‘全高’状态得到」即可。
+
+\textbf{5）比较 74LS248 与 4511 的异同。}\\
+见 §5.3 末段的四点比较（工艺与电源、内部上拉、字形差别、动态灭零功能）。
+
+\textbf{6）写出表 5.5.5 输入时 $Y_1$ 的逻辑函数式；用 74LS151 实现奇校验 $Y_1$。}\\
+表 5.5.5 的输入下 $Y_1=A_0$（因 $D_1=D_3=D_5=D_7=1$）。实现奇校验：$A\to A_2$、$B\to A_1$、$C\to A_0$，$D_1=D_2=D_4=D_7=1$，其余接 0，$\overline{EN}=0$。
+
+\textbf{7）并行转串行应怎样产生地址码？选择器怎样连接？}\\
+八个数据端接 8 位并行数据，地址 $A_2A_1A_0$ 由二进制计数器（或手动）按位节拍从 $000$ 递增到 $111$，$Y_1$ 即串行输出；$\overline{EN}=0$，$Y_2$ 不用。
+
+\textbf{8）表 5.5.6 与表 5.5.7 实现的算术运算是什么？8 位加法需几片 74LS183？一次加法多久？}\\
+两个 2 位二进制数相加（含进位输出）。8 位加法需 8 个全加器＝4 片 74LS183；按 $1$ 位 $11\ \mathrm{ns}$、串行进位 8 级计，约 $88\ \mathrm{ns}$。
+
+%=============================================================
+\hdr{§9}{135 分钟时间盒}
+
+\callout{\textbf{九个模块不可能平均用力。}下面按「先保证报告里分值最高的两块（§5.4.6 的电路设计与 §5.5 的器件功能表）做完，再补测量类」排。\textbf{如果老师当场只要求做其中几个，按老师的要求裁剪，本表就作废}；如果老师要求全做，就按「并行」理解：A、B 组用箱上的门电路区，C 组用器件区，两组可以两个同学分工同时进行。}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.4cm}p{3.2cm}p{8.6cm}@{}}
+\hline
+\thead{时间} & \thead{做什么} & \thead{要点与产出} \\
+\hline
+13:00--13:10 & 进场四件事 & 认箱、上电自检（74LS00 一个门 + LED）、认数据表、万用表拨 $20\ \mathrm{V}$ 挡（§1.4） \\
+13:10--13:30 & B1 接 $Y_1$、$Y_2$ & 按预习交的原理图接线，标引脚号；先接 $Y_1$（门少），再接 $Y_2$（全与非门） \\
+13:30--13:40 & 测表 5.4.3 & 8 行，两列一起测；与 §4.4 的理论值逐行对 \\
+13:40--13:55 & A1 电压传输特性 & 12 点，$2.3\sim2.55\ \mathrm{V}$ 要慢调；CMOS 那半视时间与老师要求 \\
+13:55--14:10 & B2 三态门 & 功能 4 行（表 5.4.4）+ 总线 4 行（表 5.4.5）；信号源给 $1\ \mathrm{Hz}$／$2\ \mathrm{Hz}$ \\
+14:10--14:20 & A2 $t_{\mathrm{pd}}$ & 环形振荡器 + 示波器；读不出就记录「超出频响」并说明 \\
+14:20--14:50 & C 组四块 & 148（10 行）$\rightarrow$ 147（10 行）$\rightarrow$ 4511（16 行）$\rightarrow$ 151（8 行）；每块先接好再逐行拨开关 \\
+14:50--15:00 & C5 全加器 & 183 的表 5.5.6（8 行）与 5.5.7（16 行）；用 §5.5 的一致性自检 \\
+15:00--15:10 & 补测与送批 & 把写好的数据给指导老师看，\textbf{数据须教师确认批改才有效}（册 p02） \\
+15:10--15:15 & 收尾 & 断电、拆线、清点芯片与器材、确认报告要带走还是留下 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{最小可行集（时间不够时保这四块）}：（1） 表 5.4.3（$Y_1$／$Y_2$，预习要交的设计题的实测）；（2） 表 5.5.2 与 5.5.3（两块编码器，行数少、规律清楚）；（3） 表 5.5.4 的 0--9 十行（段码表是讨论题 5 的依据）；（4） 表 5.5.6／5.5.7 各取前 4 行。剩下的在报告里如实写「未测」，不要凭空填。}
+
+%=============================================================
+\hdr{§10}{故障排查}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.4cm}p{4.4cm}p{5.4cm}@{}}
+\hline
+\thead{现象} & \thead{最可能的原因} & \thead{先查这一处} \\
+\hline
+LED 永远不亮 & LED 接反；限流电阻太大；输出其实一直是低 & 把 LED 两端对调试；改用万用表直接量输出脚电压 \\
+所有输出都是 1 & 芯片没接 GND & 量 7 脚与 GND 之间的电压，应为 $0\ \mathrm{V}$ \\
+所有输出都是 0 & 芯片没接 $U_{CC}$；输入端全悬空 & 量 14 脚 $U_{CC}$ 应为 $5.0\ \mathrm{V}$ \\
+某一行结果与理论不符 & 该行的某个输入没接（悬空被当 1）；接线错一格 & 断电，用万用表通断挡逐根核对这一行的输入 \\
+编码器读数差 1 & 把反码当正码 & 按 §5.2 的醒目框：先写反码再取反 \\
+数码管不亮或乱亮 & 共阴／共阳接错；COM 没接；某段没接电阻 & 先量 COM 的接法（共阴应接 GND） \\
+三态门「使能＝1 时反而通」 & 把低有效当高有效 & 看引脚名上的横线：$1\overline{EN}$ \\
+总线波形看不出规律 & 两个以上使能同时有效（打架） & 逐个把开关拨到「只有一个 0」再测 \\
+示波器上无波形 & 环形振荡器没起振（某个门输入悬空） & 三个门的另一个输入都要接高电平 \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§11}{缺口与现场待核（不猜）}
+
+\begin{itemize}
+  \item \textbf{实验册「实验 7」的册页未入库}：本讲义的表号、栏目名、预习几问、讨论几问全部按\textbf{教材}写。现场拿到册页后请核五处：（1） 数据表编号与行数（教材是表 5.4.2--5.4.5、5.5.2--5.5.7）；（2） 预习要求是几问（教材 §5.4.2 是 2+4 问、§5.5.2 是 5+2 问）；（3） 讨论题是几问（教材 §5.4.7 六问、§5.5.8 八问）；（4） 芯片型号是否与教材一致（若老师换了芯片，接线以现场为准）；（5） 报告语言与提交方式。
+  \item \textbf{THD-2 面板端子排布未知}：教材只给「实验箱提供什么」，不给面板位置。进场先认（§1.4 第 1 条）。
+  \item \textbf{$t_{\mathrm{pd}}$ 能否读出未知}：取决于 YB4320G 的实际带宽与门的实际延迟（§3.2 的警示框）。
+  \item \textbf{老师本次要求做哪几个模块未知}：教材是全给，课时只有 135 分钟。按 §9 的裁剪原则，以老师当场要求为准。
+  \item \textbf{智慧树平台是否另有中文预习题}：实验 2 时平台上发过中文预习题并计入 5 分。本次是否有、截止何时，需要本人上平台看（本讲义不替平台发言）。
+\end{itemize}
+
+\flowerrule
+{\small\color{inkgray}本讲义依据教材 §5.4、§5.5 逐页核读（书 p.163--180 = PDF p.176--193），图片为教材原图按页裁剪；数据表的理论值由 \texttt{\_scratch/ee7-20261117/tables.py} 生成并带断言校验。\textbf{讲义已交付 $\ne$ 已学 $\ne$ 已验收}：现场数据与实验后的闭卷复测才计入能力。}
+
+\end{document}

@@ -1,0 +1,975 @@
+% !TEX program = xelatex
+% 大物实验 · 实验 4.3（排期 5.3）热敏电阻温度计设计 · 一本通
+% 结构：§P 主线 → §0 记号与边界 → §1 感温头 → §2 电桥零点 → §3 完整推导
+%       → §4 设计 → §5 灵敏度与量程 → §6 现场七步 → §7 数据表
+%       → §8 报告 → §9 预习五题 → §10 口试 → §11 扩展 → §12 易错与冲突 → §13 清单
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\settags{热敏电阻温度计 · 实验 4.3}{大物实验}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{needspace}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\setlength{\headheight}{22pt}
+% 圈码归入 CJK 字符类，避免 xeCJK 去 Latin 字体里找
+\xeCJKDeclareCharClass{CJK}{"2460->"2473}
+
+\newcommand{\blank}{\textcolor{black!45}{\rule[-2pt]{1.05cm}{0.4pt}}}
+\newcommand{\blankcell}{\rule{0pt}{16pt}\textcolor{black!45}{\rule[-3pt]{1.35cm}{0.4pt}}}
+\newcommand{\rowstrut}{\rule{0pt}{17pt}}
+\newcommand{\tick}{$\square$}
+\newcommand{\degC}{\ensuremath{\,^\circ\mathrm{C}}}
+
+\tikzset{
+  comp/.style={fill=white,draw=black,thick},
+  arr/.style={->,>=Stealth,thick},
+  arrd/.style={->,>=Stealth,thick,dashed},
+  lab/.style={font=\small},
+  dimlab/.style={font=\footnotesize\color{inkgray}},
+  box/.style={draw=violet,rounded corners=2pt,fill=bandviolet,inner sep=5pt,
+              font=\small\bfseries\color{violetdeep},align=center}
+}
+
+\begin{document}
+
+\doctitle{热敏电阻温度计：把温度读成微安}
+{实验 4.3（排期写作 5.3）· 一次校准，一支温度计}
+{依据：Exp.43 实验讲义 4 页 + Preview for Experiment 43 一页 $\cdot$ 2026-11-21（周六）13:30--15:30
+ $\cdot$ 综合楼 205 $\cdot$ 王明娥}
+
+%=====================================================================
+\hdr{§P}{一页看懂：这条测量链只有四步，两个旋钮}
+
+这支温度计不是“拿一个表去测温度”。它是把温度先换成电阻、再把电阻换成电流，最后靠一张\textbf{事先标定好的电流—温度表}把指针位置读回温度。所以你手上其实有两件东西：一台\textbf{仪器}（电桥＋微安表），和一张\textbf{刻度}（$I_g$–$t$ 校准曲线）。做实验的后半段，就是在给前半段造出来的仪器刻刻度。
+
+\vspace{2pt}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % 主链：竖着排，箭头右侧写“这一步做了什么”
+  \node[box,text width=4.9cm] (T) at (0,0)      {温度 $t$};
+  \node[box,text width=4.9cm] (R) at (0,-1.45)   {热敏电阻 $R_t(t)$};
+  \node[box,text width=4.9cm] (I) at (0,-2.90)   {电桥电流 $I_g$};
+  \node[box,text width=4.9cm] (O) at (0,-4.35)   {读数 $t$（查曲线）};
+
+  \draw[arr] (T) -- node[right=1mm,lab]{① 感温：NTC 把温度换成电阻} (R);
+  \draw[arr] (R) -- node[right=1mm,lab]{② 桥路：$U_{cd}$ 把电阻差换成电流} (I);
+  \draw[arr] (I) -- node[right=1mm,lab]{③ 标定：这张电流对应多少度} (O);
+
+  % 闭合回路：读数还要回到温度
+  \draw[arrd] (O.west) -- (-3.4,-4.35) -- (-3.4,0) -- (T.west);
+  \node[lab,rotate=90,color=inkgray] at (-3.05,-2.2) {④ 同一条曲线反查};
+
+  % 右栏：两个必须自己定的旋钮
+  \node[box,fill=bandcream,draw=violet!60,text width=5.2cm] (D) at (6.1,-1.45)
+     {\textbf{设计}：$R_1=R_2$、$U_{cd}$、$R_3$\\决定零点与斜率};
+  \node[box,fill=bandcream,draw=violet!60,text width=5.2cm] (C) at (6.1,-4.35)
+     {\textbf{校准}：电阻箱模拟 $R_t(20\ldots70\degC)$};
+  \draw[arrd,draw=violet!60] (D.west) -- (R.east);
+  \draw[arrd,draw=violet!60] (C.west) -- (O.east);
+\end{tikzpicture}
+\end{center}
+
+\textbf{读图}：外圈是这台温度计的工作链，按 ①→④ 走一圈就是一次测温。内圈两个框是本场实验真正要你\textbf{动手决定}的事：左边“设计”决定这支温度计\textbf{零点在哪、每度多少微安}；右边“校准”用电阻箱把已知温度对应的电阻一个个接进去，量出电流，得到刻度。两者都不做，微安表的读数就只是一个数字，不是温度。
+
+\subhdr{P.1 这场实验要交出的六样东西}
+
+\begin{center}
+\begin{tabular}{@{}p{0.8cm}p{4.4cm}p{2.6cm}p{6.4cm}@{}}
+\toprule
+\thead{环节} & \thead{交出什么} & \thead{交给谁} & \thead{合格判据} \\
+\midrule
+J0 & $R_g$、$R_1=R_2$、设计 $U_{cd}$ & 数据表 & $R_1$ 落在 4--9\,k$\Omega$，算出的 $U_{cd}$ 落在 1.3--1.8\,V \\
+J1 & 一张让老师点头的接线 & 老师 & 极性、开关、分压器位置全对，通电前经老师检查 \\
+J2 & 零点（$R_3$ 锁定） & 数据表 & 指针指零，且 $R_3$ 数值记下来（它就是热敏电阻在零点温度下的阻值）\\
+J3 & 实测 $U_{cd}$ & 数据表 & 万用表读数，与 J0 的设计值同量级 \\
+J4 & 11 个 $I_g$ 读数 & 数据表 & 20--70\degC 每 5\degC 一点，单调递增 \\
+J5 & 手掌温度 & 报告 & 反查曲线得 $t$，与酒精温度计比对 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{P.2 两个小时的钟}
+
+\begin{tabular}{@{}p{2.2cm}p{6.0cm}p{6.2cm}@{}}
+\toprule
+\thead{时刻} & \thead{做什么} & \thead{卡住时先看} \\
+\midrule
+13:30--13:45 & 量 $R_g$、选 $R_1=R_2$、算 $U_{cd}$（§4） & 还不知道 $R_t(t)$ 表 → 立刻问老师 \\
+13:45--14:05 & 接线，请老师检查后再通电（§6 步骤 2） & 表针反偏 → 微安表极性反了 \\
+14:05--14:25 & 调零，锁 $R_3$（步骤 3） & 调不到零 → 分压器档位太低 \\
+14:25--14:35 & 升到满偏，万用表测 $U_{cd}$（步骤 4） & 到不了满偏 → 分压器没到 g 档 \\
+14:35--15:05 & 11 点校准（步骤 5） & 读数跳 → 接触不良，按住插孔根部 \\
+15:05--15:15 & 手掌测温比对（步骤 6） & 读数漂 → 手别抖，等指针稳定 \\
+15:15--15:30 & 断电源、拆线、数据给老师批改 & 顺序反了会带电拆线 \\
+\bottomrule
+\end{tabular}
+
+\callout{\textbf{一句话}：这是一台“用电阻代替温度”的仪器——先让电桥记住一个零点 $R_3$，再用 $U_{cd}$ 把最坏情况刚好推到满刻，最后用电阻箱把 20--70\degC 的每个阻值逐个接进去，量出 11 个电流。读数不是温度，曲线才是温度。}
+
+%=====================================================================
+\hdr{§0}{记号、约定与事实边界}
+
+\subhdr{0.1 符号表}
+
+\begin{center}
+\begin{tabular}{@{}p{1.5cm}p{8.2cm}p{4.4cm}@{}}
+\toprule
+\thead{记号} & \thead{含义} & \thead{来源} \\
+\midrule
+$R_1,R_2$ & 电桥两个上臂，本实验设计成相等 & 手册：各取 4--9\,k$\Omega$ \\
+$R_3$ & 电桥下臂之一，调零后锁定 & 手册：10--15\,k$\Omega$ 多圈电位器 \\
+$R_t$ & 热敏电阻（NTC），下臂之一 & 手册：元件转移箱内的待测元件 \\
+$R_g$ & 微安表内阻，用万用表实测 & 手册：必须记录 \\
+$U_{cd}$ & 电桥 C、D 两点之间的电压 & 手册：万用表实测，1.3--1.8\,V \\
+$I_g$ & 流过微安表的电流 & 表头量程 0--100\,$\mu$A \\
+$R$ & 分压电位器 470\,$\Omega$/2\,W & 手册：作分压用 \\
+$t_0$ & 零点温度，即 $R_t(t_0)=R_3$ 的那个温度 & 本讲义由 $R_3$ 反推 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{0.2 哪些是手册给的，哪些是本讲义推的}
+
+这件事在报告里要分得清，所以先讲明三档：
+
+\begin{itemize}
+\item \textbf{手册原文（4 页）给的事实}：目的 2 条、器材清单、平衡条件 $R_1/R_2=R_3/R_t$、七个操作步骤、$I_g$–$t$ 表（20--70\degC，11 列）、三道“写进报告”的数据处理、两道思考题。这些照抄不改。
+\item \textbf{本讲义补的推导与例子}：$I_g$ 的完整表达式（§3）、设计式 $U_{cd}=I_{g,\max}(R_1+2R_g)$（§4）、示例热敏电阻（$R_{25}=5.00\,\mathrm{k}\Omega$、$B=3500$\,K）下的全部数值（§1、§5、§7）。示例数值用来把方法讲通，\textbf{不是本次要测的数据}。
+\item \textbf{必须现场确认的}：$R_g$ 实测值、$R_t(t)$ 从哪来（§12 第 1 条）、老师对“满偏落在哪个电阻”的口径（§4.5）、热敏电阻的实际 $B$ 与 $R_{25}$。
+\end{itemize}
+
+\warnbox{\textbf{一个必须事先知道的区别}：本实验的“校准”\textbf{不是}把热敏电阻泡进 20--70\degC 的水里。手册第 5 步是“调整电阻箱，使其阻值等于热敏电阻在 65、60、\ldots、25\degC 时的阻值”，也就是用\textbf{电阻箱假扮}热敏电阻。真正被“测”的温度只有一处：手掌（第 6 步，与酒精温度计比对）。}
+
+%=====================================================================
+\hdr{§1}{感温头：为什么电阻可以代表温度}
+
+\subhdr{1.1 NTC 的一条指数曲线}
+
+半导体热敏电阻（NTC）的电阻随温度升高而下降，常用式子是
+
+\[
+R_t(t)=R_{25}\exp\!\left[B\left(\frac{1}{T}-\frac{1}{T_{25}}\right)\right],
+\qquad T=273.15+t\ (^{\circ}\mathrm{C}),
+\]
+
+其中 $R_{25}$ 是 25\degC 时的阻值，$B$ 称为材料常数（常见 3000--4500\,K）。对它求导就得到\textbf{温度系数}
+
+\[
+\alpha\equiv\frac{1}{R_t}\frac{\mathrm{d}R_t}{\mathrm{d}T}=-\frac{B}{T^{2}},
+\]
+
+负号说明电阻随温度升高而下降；$|\alpha|$ 在室温附近约 $4\%$/K，比铂电阻（约 $0.4\%$/K）灵敏十倍，这是热敏电阻做温度计的资本，也是它“不好伺候”的原因（见 1.3）。
+
+\subhdr{1.2 一个最小数字例子：26\degC 比 25\degC 小多少}
+
+取 $R_{25}=5.00\,\mathrm{k}\Omega$、$B=3500$\,K，温度从 25\degC 升到 26\degC：
+
+\[
+R_t(26)=5000\times\exp\!\left[3500\left(\frac{1}{299.15}-\frac{1}{298.15}\right)\right]=4807.6\ \Omega .
+\]
+
+也就是 \textbf{1\,K 掉了 192\,$\Omega$，相对变化 $-3.85\%$}。这个例子说明两件事：第一，温度只要变一点点，电阻就动得很明显，所以电桥有活干；第二，$192\,\Omega$ 是个\textbf{不小的数}，可它对应的温度只有 1\,K——说明后面对电流读数的分辨率要求会很细（§5）。
+
+\subhdr{1.3 这条曲线的两个后果（后面每一步都会用到）}
+
+\begin{itemize}
+\item \textbf{非线性}：$R_t$ 随 $t$ 不是直线，所以 $I_g$–$t$ 也不会是直线（§5 会算出它在高温端变钝）。因此校准必须逐点做表、画曲线，不能只用两点连线当公式。
+\item \textbf{阻值跨度大}：示例参数下 $R_t(20)=6108\,\Omega$、$R_t(70)=1073\,\Omega$，比值约 5.7 倍。电桥要在这么宽的范围内保持“同一方向偏转、不超满刻”，必须靠 §4 的设计。
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+$t/^{\circ}\mathrm{C}$ & 20 & 25 & 30 & 40 & 50 & 60 & 70 \\
+\midrule
+$R_t/\Omega$ & 6108 & 5000 & 4120 & 2850 & 2016 & 1457 & 1073 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\aside{上表是按 $R_{25}=5.00\,\mathrm{k}\Omega$、$B=3500$\,K 算的\textbf{示例}。现场请用老师给的 $R_t$–$t$ 表（或元件转移箱上标的 $B$、$R_{25}$）重算；两者不同就改写本节与 §7 的表。}
+
+%=====================================================================
+\hdr{§2}{电桥：先给它一个零点}
+
+\subhdr{2.1 平衡条件与“零点温度”}
+
+图 \ref{fig:bridge} 是手册 p1 的原图（题注印错，见 §12）。C、D 接电源，A、B 之间接微安表。四个臂是 $R_1,R_2,R_3,R_t$。设 C 点电位为 $U_{cd}$、D 点为 0，则 A、B 两点电位分别是
+
+\[
+V_A=U_{cd}\frac{R_2}{R_1+R_2},\qquad V_B=U_{cd}\frac{R_t}{R_3+R_t}.
+\]
+
+当 $V_A=V_B$ 时表头无电流，电桥平衡。把两式相等、消去 $U_{cd}$，得到手册 p1 那条式子：
+
+\[
+\frac{R_1}{R_2}=\frac{R_3}{R_t}
+\quad\Longleftrightarrow\quad
+R_1R_t=R_2R_3 .
+\]
+
+\textbf{注意它和 $U_{cd}$ 无关}——平衡条件只由四个臂决定。这一点很要紧：后面调 $U_{cd}$ 时，零点不会跟着跑。
+
+设计时取 $R_1=R_2$，于是平衡条件退化成 $R_3=R_t$。也就是说，\textbf{$R_3$ 调好之后的那一个阻值，就是热敏电阻在“零点温度” $t_0$ 下的阻值}。把 $R_3$ 反过来喂给 §1 的曲线，就得到 $t_0$：
+
+\[
+t_0=R_3^{-1}\ \text{在}\ R_t(t)\ \text{曲线上对应的温度}.
+\]
+
+示例：$R_3=14.641\,\mathrm{k}\Omega$ 对应 $t_0\approx 0.0\degC$。
+
+\subhdr{2.2 为什么取 $R_1=R_2$（三个理由，第二个最实用）}
+
+\begin{enumerate}
+\item \textbf{手册就是这么给的}：$R_1=R_2$ 各取 4--9\,k$\Omega$，$R_3$ 取 10--15\,k$\Omega$，两个区间是配着来的（§4 会证明它们其实是同一条式子）。
+\item \textbf{零点与 $U_{cd}$ 无关}：$R_1=R_2$ 时平衡条件只剩 $R_3=R_t$。于是“先调零、再升电压到满偏”这两步互不干扰——若 $R_1\ne R_2$，每次动 $U_{cd}$ 都要重新确认零点，两小时的实验根本来不及。
+\item \textbf{对称时公式最简单}：$I_g$ 的表达式里 $R_1+R_2$ 变成 $2R$，设计式可以直接解出 $R_1$（§4.2）。
+\end{enumerate}
+
+\subhdr{2.3 零点为什么故意放在量程之外}
+
+手册给的 $R_3$ 是 10--15\,k$\Omega$，而示例热敏电阻在 20\degC 才 6.1\,k$\Omega$。也就是说零点温度 $t_0$ 落在 20\degC \textbf{以下}（示例约 0\degC）。这不是笔误，而是有意为之：
+
+\begin{itemize}
+\item 若 $t_0$ 落在 20--70\degC 之间，量程里就会出现“指针先往左、再往右”的换向，0--100\,$\mu$A 的单向表头没法读。
+\item 把零点压到量程下方，20--70\degC 全程 $R_t<R_3$，$I_g$ 始终同号、单调上升，表头只要往一个方向偏。
+\item 代价是满量程用不满（§5 会算出 70\degC 只到约 76\,$\mu$A）。\textbf{这是正常现象，不是电路接错}。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\linewidth]{fig-4.3/fig43-2-bridge.png}
+\caption{手册 p1 的原图（裁自 PDF 第 1 页，300\,dpi 以上）。C、D 之间为 $U_{cd}$；A、B 之间为微安表；$R_t$ 是热敏电阻，其余三个是可调电阻。原题注误印为“Schematic diagram of digital oscilloscope”，照原样保留以便对页。}
+\label{fig:bridge}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.95, transform shape]
+  % 桥（方形画法，节点位置与手册一致：A 上、B 下、C 左、D 右）
+  \coordinate (C) at (-2.30,1.30);
+  \coordinate (D) at ( 2.30,1.30);
+  \coordinate (A) at ( 0.00,1.30);
+  \coordinate (B) at ( 0.00,-1.30);
+
+  % 上臂
+  \draw[thick] (C) -- (-1.75,1.30);
+  \draw[comp] (-1.75,1.10) rectangle (-0.75,1.50); \node[lab] at (-1.25,0.90) {$R_1$};
+  \draw[thick] (-0.75,1.30) -- (A);
+  \draw[thick] (A) -- (0.75,1.30);
+  \draw[comp] (0.75,1.10) rectangle (1.75,1.50); \node[lab] at (1.25,0.90) {$R_2$};
+  \draw[thick] (1.75,1.30) -- (D);
+
+  % 下臂
+  \draw[thick] (C) -- (-2.30,-1.30) -- (-1.75,-1.30);
+  \draw[comp] (-1.75,-1.50) rectangle (-0.75,-1.10); \node[lab] at (-1.25,-1.85) {$R_3$};
+  \draw[thick] (-0.75,-1.30) -- (B);
+  \draw[thick] (B) -- (0.75,-1.30);
+  \draw[comp] (0.75,-1.50) rectangle (1.75,-1.10);
+  \draw[thick] (0.60,-1.65) -- (1.90,-0.95);           % 热敏电阻斜线
+  \node[lab] at (1.25,-1.85) {$R_t$};
+  \draw[thick] (1.75,-1.30) -- (D) -- (2.30,-1.30);
+
+  % 表头
+  \draw[thick] (A) -- (0,0.32);
+  \draw[thick] (0,-0.32) -- (B);
+  \draw[thick,fill=white] (0,0) circle (0.32);
+  \node[font=\footnotesize] at (0,0) {$\mu$A};
+
+  % 分压器
+  \draw[comp] (-1.60,-3.40) rectangle (1.60,-3.10);
+  \node[lab] at (0.00,-3.70) {$R$（470\,$\Omega$）};
+  \draw[thick] (-2.30,1.30) -- (-2.30,-3.25) -- (-1.60,-3.25);
+  \draw[thick] (1.60,-3.25) -- (3.40,-3.25) -- (3.40,-4.30);
+  % 滑片 -> D
+  \draw[thick,->,>=Stealth] (0.30,-3.05) -- (0.30,-3.42);
+  \draw[thick] (0.30,-3.05) -- (0.30,-2.20) -- (2.90,-2.20) -- (2.90,1.30) -- (D);
+
+  % 电源与开关
+  \draw[thick] (3.40,-4.30) -- (0.75,-4.30);
+  \draw[thick] (0.75,-4.30) -- (0.55,-4.10);
+  \draw[thick] (0.45,-4.30) circle (0.05);
+  \draw[thick] (-0.05,-4.30) circle (0.05);
+  \node[lab] at (0.35,-4.66) {$K$};
+  \draw[thick] (-0.30,-4.10) -- (-0.30,-4.55);
+  \draw[thick] (-0.38,-4.32) -- (-0.22,-4.32);
+  \draw[thick] (-0.48,-4.38) -- (-0.12,-4.38);
+  \node[lab] at (-0.30,-4.85) {$E$};
+  \draw[thick] (-0.30,-4.44) -- (-0.30,-4.30) -- (-1.60,-4.30) -- (-1.60,-3.40);
+  \draw[thick] (-1.60,-3.25) -- (-2.30,-3.25);
+
+  % 节点与标注
+  \node[lab,above] at (A) {$A$};
+  \node[lab,below] at (B) {$B$};
+  \node[lab,above left] at (C) {$C$};
+  \node[lab,above right] at (D) {$D$};
+  \draw[dashed,violet,->,>=Stealth,bend left=32] (C) to node[above,font=\small,color=violetdeep] {$U_{cd}$（万用表测这两点）} (D);
+\end{tikzpicture}
+\caption{同一张电路，按本讲义的画法重排（$A$ 上、$B$ 下、$C$ 左、$D$ 右，与手册原图位置一致）。分压器接法：电源 $E$ 与开关 $K$ 跨接在电位器 $R$ 的\textbf{两端}，C 接 $R$ 的一端、D 接\textbf{滑片}，所以 C、D 之间的电压是 $R$ 上被切出的那一段。$U_{cd}\le E$，可用滑片连续调。}
+\label{fig:bridge2}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{@{}p{2.6cm}p{5.2cm}p{5.6cm}@{}}
+\toprule
+\thead{端子} & \thead{接到哪里} & \thead{现场辨认} \\
+\midrule
+C & 分压器 $R$ 的\textbf{一端}（固定端） & 九孔板上一根竖线到底，再接横向 \\
+\quad & 与电池负极侧同一节点 & 用万用表通断档确认 \\
+D & 分压器 $R$ 的\textbf{滑片} & 单圈电位器中间那个可转动的触点 \\
+A & $R_1$ 与 $R_2$ 的交点，接表头 $+$ & 表针必须正偏 \\
+B & $R_3$ 与 $R_t$ 的交点，接表头 $-$ & 反偏就掉换两根接线 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\hdr{§3}{不平衡之后：$I_g$ 到底是多少（预习 II-1 的完整推导）}
+
+预习页 II-1 要求“按基尔霍夫定律并在 $R_1=R_2$ 的条件下导出 $I_g$ 的表达式”。手册只给了平衡条件，没给这条式子，所以这一节必须自己补全——它是预习第一题的答案，也是 §4 设计式的地基。
+
+\subhdr{3.1 先把“看表头”换成“看两个节点”}
+
+表头接在 A、B 之间，所以 $I_g$ 只由 A、B 两点之间的“推力”和“阻碍”决定。把 A、B 左边那一整块（电源＋四个臂）看成二端网络，用戴维南定理两步取出来：
+
+\textbf{第一步：开路电压} $U_{AB}^{\rm oc}$。断开表头（$R_g\to\infty$）时，A 点电位由 $R_1$、$R_2$ 分压给出，B 点电位由 $R_3$、$R_t$ 分压给出：
+
+\[
+U_{AB}^{\rm oc}=V_A-V_B
+=U_{cd}\left(\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right).
+\]
+
+\textbf{第二步：等效内阻} $R_{\rm th}$。把 $U_{cd}$ 短路（电压源短路），从 A、B 看进去：A 点经 $R_1$、$R_2$ 并联到地（C、D 已成同一点），B 点经 $R_3$、$R_t$ 并联到地，两组串联：
+
+\[
+R_{\rm th}=\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t}.
+\]
+
+\textbf{第三步：接上表头}，欧姆定律：
+
+\[
+I_g=\frac{U_{AB}^{\rm oc}}{R_{\rm th}+R_g}.
+\]
+
+到这里就是通用的不平衡电桥公式。\textbf{检查一下它是否可信}：令 $R_1/R_2=R_3/R_t$，则 $V_A=V_B$，$I_g=0$，与 §2 的平衡条件一致；量纲上分子是 V、分母是 $\Omega$，得 A，也一致。
+
+\subhdr{3.2 代入 $R_1=R_2=R$：化简成一条能算的式子}
+
+令 $R_1=R_2=R$，则 $R_1+R_2=2R$，于是
+
+\[
+U_{AB}^{\rm oc}=U_{cd}\left(\frac12-\frac{R_t}{R_3+R_t}\right)
+=\frac{U_{cd}}{2}\cdot\frac{R_3-R_t}{R_3+R_t},
+\qquad
+R_{\rm th}=\frac{R}{2}+\frac{R_3R_t}{R_3+R_t}.
+\]
+
+代入 $I_g=U_{AB}^{\rm oc}/(R_{\rm th}+R_g)$，分子分母同乘 $2(R_3+R_t)$，整理得
+
+\[
+\boxed{\;
+I_g=\frac{U_{cd}\,(R_3-R_t)}{R\,(R_3+R_t)+2R_3R_t+2R_g\,(R_3+R_t)}\;}
+\qquad (R_1=R_2=R)
+\]
+
+这条式子有四个可以直接读出来的性质：
+
+\begin{enumerate}
+\item \textbf{零点}：$R_t=R_3$ 时分子为零，$I_g=0$，与 $U_{cd}$ 无关。
+\item \textbf{方向}：$R_t<R_3$（比零点热）时 $I_g>0$；$R_t>R_3$（比零点冷）时 $I_g<0$。这正是 §2.3 要把零点压到量程下方的理由。
+\item \textbf{正比于 $U_{cd}$}：$I_g\propto U_{cd}$。所以“升电压”就是“放大信号”，也就是 §5 说的提高灵敏度。
+\item \textbf{饱和}：$R_t\to0$ 时分子、分母都趋于有限值，$I_g\to U_{cd}/(R+2R_g)$，不再增大。这条极限就是 §4 设计式的来源。
+\end{enumerate}
+
+\subhdr{3.3 用第二节的节点法复核（可选读，但值得看一遍）}
+
+设 C 点电位 $U_{cd}$、D 点 0，对 A、B 两点写基尔霍夫电流定律：
+
+\[
+\frac{V_A-U_{cd}}{R_1}+\frac{V_A}{R_2}+\frac{V_A-V_B}{R_g}=0,
+\qquad
+\frac{V_B-U_{cd}}{R_3}+\frac{V_B}{R_t}+\frac{V_B-V_A}{R_g}=0 .
+\]
+
+这是两个未知量的线性方程组，解出 $V_A,V_B$ 后取 $I_g=(V_A-V_B)/R_g$，与 3.1 的戴维南结果\textbf{逐项相同}（本讲义已用符号运算验过，差为零）。预习答案写戴维南那条就够，但如果你在报告里被问“凭什么”，这条就是依据。
+
+\subhdr{3.4 数字核对：示例设计下 45\degC 该读多少}
+
+取 $U_{cd}=1.5$\,V、$R=6.0$\,k$\Omega$、$R_3=14.641$\,k$\Omega$、$R_g=4.5$\,k$\Omega$，在 $t=45\degC$ 时 $R_t=2390\,\Omega$：
+
+{\small
+\[
+I_g=\frac{1.5\times(14.641-2.390)}
+{6.0\times(14.641+2.390)+2\times14.641\times2.390+2\times4.5\times(14.641+2.390)}
+=\frac{18.38}{325.5}\ \mathrm{mA}=56.5\ \mu\mathrm{A}.
+\]}
+
+（阻值一律用 k$\Omega$ 代入：分子 V$\cdot$k$\Omega$、分母 k$\Omega^2$，商为 mA。）
+
+这个 56.5\,$\mu$A 是后面 §5、§7 全部数值的样板：三个电阻、一个电压、一个内阻，就能算出一个读数。
+
+\warnbox{
+\textbf{符号约定}：本讲义一律取“$I_g$ 从 A 经表头流向 B 为正”。手册没写方向，现场以表针右偏为正；若反偏，掉换表头两根线，或把 $R_3-R_t$ 取反。报告里要写清你用的是哪一种，别让读者猜。
+}
+
+%=====================================================================
+\hdr{§4}{设计：由满偏反推 $U_{cd}$ 与 $R_1=R_2$}
+
+预习 II-2 是这场实验唯一真正“设计”的地方：给定表头满偏 100\,$\mu$A、$U_{cd}$ 只能在 1.3--1.8\,V 之间，要定出 $R_1=R_2$。手册把这一步压缩成一句“根据元件额定功率，$R_1,R_2$ 取 4--9\,k$\Omega$，对应电压 1.3--1.8\,V”，既没给式子也没给推导——本节把它补出来，并说明这两个区间其实是同一条式子的两端。
+
+\subhdr{4.1 先定“满偏落在哪”：最坏情况法}
+
+表头量程是 0--100\,$\mu$A，指针打到 100\,$\mu$A 就是满偏。设计要回答的是：\textbf{在什么情况下让它刚好满偏？}最稳妥的答案是——
+
+\begin{center}
+\textbf{让“电桥最不平衡”的那一点刚好满偏}，即 $R_t\to0$（热敏电阻被短路、或温度高到阻值掉到远小于 $R_3$）。
+\end{center}
+
+这样选的道理是保护：真实量程 20--70\degC 内 $R_t$ 不小于 1\,k$\Omega$，读数永远到不了满刻；而一旦出现短路、接错或温度失控，指针最多打到满刻，不会打表。这个选择还有个好处：此时式子里只剩 $R$、$R_g$ 和 $U_{cd}$，能直接解出来——
+
+把 $R_t=0$ 代入 §3 的式子：
+
+\[
+I_{g,\max}=\lim_{R_t\to0}I_g=\frac{U_{cd}}{R+2R_g}.
+\]
+
+\subhdr{4.2 设计式与反解}
+
+把它反过来，就得到这条\textbf{设计式}：
+
+\[
+\boxed{\;U_{cd}=I_{g,\max}\,(R_1+2R_g)\;}
+\qquad\text{等价于}\qquad
+\boxed{\;R_1=R_2=\frac{U_{cd}}{I_{g,\max}}-2R_g.\;}
+\]
+
+用法看你要问什么：\textbf{先定 $R_1=R_2$，就算需要多少电压}（做实验时走这条）；\textbf{先定电压，就算该选多大电阻}（预习 II-2 走这条）。手册的“$R_1,R_2$ 取 4--9\,k$\Omega$ $\Rightarrow$ 电压 1.3--1.8\,V”就是后者，只不过它没说是谁把两个区间配起来的。
+
+\subhdr{4.3 关键核对：手册的两个区间正好是同一条式子的两端}
+
+把 $I_{g,\max}=100\,\mu$A 代进去，看 $R_1$ 与 $U_{cd}$ 的对应：
+
+\begin{center}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+$R_1=R_2$ / k$\Omega$ & 4 & 5 & 6 & 7 & 8 & 9 \\
+\midrule
+所需 $U_{cd}$ / V & 1.30 & 1.40 & 1.50 & 1.60 & 1.70 & 1.80 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\footnotesize 计算方式：$U_{cd}=I_{g,\max}(R_1+2R_g)$，取 $R_g=4.5$\,k$\Omega$。
+\end{center}
+
+注意两端：$R_1=4$\,k$\Omega$ 给出 1.30\,V，$R_1=9$\,k$\Omega$ 给出 1.80\,V——\textbf{正好是手册说的 1.3--1.8\,V}，误差为零。这不是巧合：只有当 $2R_g=9.0$\,k$\Omega$（即 $R_g\approx4.5$\,k$\Omega$）时两端才能同时对上。所以结论有两条：
+
+\begin{itemize}
+\item 手册那两个区间不是各自独立的规定，而是\textbf{同一条设计式的两个端点}。这也反过来告诉你：这台微安表的内阻大概在 4--5\,k$\Omega$ 量级。
+\item 手册把区间归因于“元件额定功率”是\textbf{站不住的}：$R_1$ 上的功率约 $U_{cd}^2/(4R_1)\approx0.1$\,mW，比 2\,W 额定值小四个数量级，根本限不住。真正把 4--9\,k$\Omega$ 与 1.3--1.8\,V 绑在一起的，是这条设计式。
+\end{itemize}
+
+\subhdr{4.4 一步一步选出你的参数（示例）}
+
+\begin{center}
+\begin{tabular}{@{}p{0.7cm}p{3.4cm}p{4.4cm}p{5.4cm}@{}}
+\toprule
+\thead{步} & \thead{做什么} & \thead{示例取值} & \thead{判据 / 备注} \\
+\midrule
+1 & 万用表量 $R_g$ & 4.5\,k$\Omega$（示例） & 记录，后面所有式子都要用 \\
+2 & 在 4--9\,k$\Omega$ 内选 $R_1=R_2$ & 6.0\,k$\Omega$ & 取中值，两端留余量 \\
+3 & 算设计 $U_{cd}$ & 1.50\,V & $=100\,\mu\mathrm{A}\times(6.0+2\times4.5)$\,k$\Omega$ \\
+4 & 取 $R_3$（=零点温度下的 $R_t$） & 14.641\,k$\Omega$ & 必须落在 10--15\,k$\Omega$ \\
+5 & 反查零点温度 $t_0$ & 约 0\degC & 落在量程外，读数全程同号 \\
+6 & 预测 11 点读数 & 见 §5 表 & 用来判断现场对不对 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{4.5 一个必须现场判定的口径问题}
+
+手册第 4 步说“慢慢升分压器直到满偏，此时的 $U_{cd}$ 就是第一步设定的值”。问题是：\textbf{此刻电阻箱设在多少？}手册没写清（原文有句 “adjust the value of the resistor box to the same time”，语义不全）。有两种读法：
+
+\begin{center}
+\begin{tabular}{@{}p{3.4cm}p{5.2cm}p{5.6cm}@{}}
+\toprule
+\thead{读法} & \thead{操作} & \thead{结果} \\
+\midrule
+A. 最坏情况（本讲义采用） & 电阻箱打到 0 附近，再升分压器到满偏 & $U_{cd}$ 正好 1.3--1.8\,V，与手册一致 \\
+B. 量程上限 & 电阻箱置 $R_t(70\degC)\approx1.07$\,k$\Omega$，升到满偏 & 需 $U_{cd}\approx2.0$--2.2\,V，\textbf{超出}手册区间 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+按 A 做，你会看到：电阻箱归零、分压器升到某个位置时指针到 100\,$\mu$A，此时万用表读数应约为 1.5\,V，与第 3 步算的一致。\textbf{如果你发现必须升到 2\,V 以上才满偏}，说明老师用的是 B 口径，或者 $R_g$ 实测远大于 4.5\,k$\Omega$；此时按老师的做，并在报告里如实写“实测 $U_{cd}$ 与设计值偏差的成因”。
+
+\gapitem{未定}{手册没印出第 4 步引用的式 (43-7)。本讲义的
+$U_{cd}=I_{g,\max}(R_1+2R_g)$ 是由“式子里只出现 $R_1,R_2,R_g,I_g$”加上手册
+1.3/1.8\,V 两个端点反推的，与手册区间完全自洽，但仍属推断。现场若老师给出印好的式子，以印出页面为准。}
+
+%=====================================================================
+\hdr{§5}{灵敏度、分辨率：这支温度计哪一段准}
+
+\subhdr{5.1 每升 1\degC 指针走多少}
+
+把 §3 的 $I_g$ 对温度求导（$R_t$ 随 $t$ 变，走 §1 的指数曲线），得到温度灵敏度 $S=\mathrm{d}I_g/\mathrm{d}t$。示例参数下：
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$t$ / $^{\circ}\mathrm{C}$ & 20 & 45 & 70 \\
+\midrule
+$S=\mathrm{d}I_g/\mathrm{d}t$ / ($\mu$A/K) & 1.35 & 1.02 & 0.58 \\
+1\,$\mu$A 对应 & 0.74\,K & 0.98\,K & 1.72\,K \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{读法}：在 20\degC 附近，指针走 1 格（约 1\,$\mu$A）只相当于 0.7\,K；到 70\degC 附近，同样 1 格要 1.7\,K 才动。所以这支温度计\textbf{低温端比高温端灵敏}，报告里讨论误差时应当分开说，不能用一个数概括。
+
+\subhdr{5.2 高温端为什么变钝（一句话机理）}
+
+$R_t$ 掉到接近 0 时，分子 $R_3-R_t$ 趋近上限 $R_3$，分母也趋于常数，$I_g$ 逼近 $U_{cd}/(R+2R_g)$ 后不再上升——\textbf{饱和}。温度越高，$R_t$ 越小，越靠近这个饱和平台，所以每度换来的电流越来越少。这是 NTC 的指数特性与电桥分压叠加的必然结果，不是仪器坏。
+
+\subhdr{5.3 为什么 70\degC 只到 76\,$\mu$A 而不是 100\,$\mu$A}
+
+因为设计把满偏留给了 $R_t\to0$ 这个现实中到不了的点（§4.1）。示例设计的完整预测如下，\textbf{这 11 个数就是现场读数的对照表}：
+
+\begin{center}
+\begin{tabular}{@{}lccccccccccc@{}}
+\toprule
+$t$ / $^{\circ}\mathrm{C}$ & 20 & 25 & 30 & 35 & 40 & 45 & 50 & 55 & 60 & 65 & 70 \\
+$R_t$ / $\Omega$ & 6108 & 5000 & 4120 & 3416 & 2850 & 2390 & 2016 & 1710 & 1457 & 1247 & 1073 \\
+$I_g$ / $\mu$A & 26.1 & 32.8 & 39.3 & 45.4 & 51.2 & 56.5 & 61.3 & 65.7 & 69.6 & 73.1 & 76.2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\warnbox{
+\textbf{现场判读三条}：
+① 读数必须\textbf{单调上升}（$R_t$ 单调下降、$R_3$ 固定，一定如此）；
+② 20\degC 处读数应在满量程的 20\%--40\% 之间，70\degC 处应在 70\%--80\% 之间；
+③ 若某一点突然跳大或跳小，先怀疑接触（插孔根部按住），不要怀疑曲线。
+}
+
+\subhdr{5.4 想让量程正好落在 20--70\,$\mu$A 怎么办（预习 IV 的答案骨架）}
+
+“只用表头的 20--70\,$\mu$A 段”等于要求 $I_g(20\degC)=20\,\mu$A、$I_g(70\degC)=70\,\mu$A。这是两个条件，可调的量也有两个——\textbf{零点}（$R_3$）和\textbf{斜率}（$U_{cd}$）。只调 $U_{cd}$ 会同时改变两点，解不唯一；两把旋钮一起解才唯一。示例参数下的解是
+
+\[
+R_3=11.99\ \mathrm{k}\Omega,\qquad U_{cd}=1.421\ \mathrm{V},
+\]
+
+代入后正好 $I_g(20\degC)=20.0\,\mu$A、$I_g(70\degC)=70.0\,\mu$A，且落在手册给的器件区间内（$R_3$ 10--15\,k$\Omega$、$U_{cd}$ 1.3--1.8\,V）。§11 展开。
+
+%=====================================================================
+\hdr{§6}{现场七步：每一步看什么算到位}
+
+\subhdr{步骤 1　量 $R_g$，选 $R_1=R_2$，算 $U_{cd}$（约 15 分钟）}
+
+\textbf{目标}：拿到 $R_g$、$R_1=R_2$、目标 $U_{cd}$ 三个数。\quad
+\textbf{动作}：万用表电阻档量微安表内阻（断开电路再量）；多圈电位器调到所选 $R_1$、$R_2$ 值，用万用表核对后记录；按 §4.2 算 $U_{cd}$。\quad
+\textbf{判据}：$R_1$ 落在 4--9\,k$\Omega$，算出的 $U_{cd}$ 落在 1.3--1.8\,V。\quad
+\textbf{异常}：算出的 $U_{cd}$ 不在 1.3--1.8\,V $\Rightarrow$ $R_1$ 选偏了或 $R_g$ 量错了；换 $R_1$ 重算，不要硬做。
+
+\subhdr{步骤 2　接线（约 20 分钟）}
+
+\textbf{目标}：一张能让老师点头的电路。\quad
+\textbf{动作}：按图 \ref{fig:bridge2} 接；\textbf{用六位电阻箱暂时代替 $R_t$}；开关 $K$ 先断开；分压器滑片置最低档（a，$U_{cd}\approx0$）；微安表电流从正端流入。插拔元件\textbf{握住根部}，不要从顶上使劲。接完请老师检查后再通电。\quad
+\textbf{判据}：老师同意通电；通电后表针不反偏、不猛打到头。\quad
+\textbf{异常}：表针反偏 $\Rightarrow$ 表头两根线对调；一通电就满偏 $\Rightarrow$ 分压器没在 a 档或 $R_3$ 太小。
+
+\subhdr{步骤 3　调零（约 15--20 分钟）}
+
+\textbf{目标}：让 $R_3$ 记住零点，并\textbf{从此不再动它}。\quad
+\textbf{动作}：电阻箱置 $R_{t1}$（取 10--15\,k$\Omega$ 内的值，例如 14.6\,k$\Omega$），电源开到 2\,V。先\textbf{粗调}：分压器放中档（d），调 $R_3$ 让指针接近零；再\textbf{细调}：分压器升到最大档（g），细调 $R_3$ 让指针\textbf{精确指零}。此时 $R_3$ 的读数就是 $R_{t1}$（即热敏电阻在零点温度 $t_0$ 的阻值）。\quad
+\textbf{判据}：指针在零刻度线上不动；$R_3$ 记录值 $\approx$ 电阻箱设定值。\quad
+\textbf{异常}：怎么调都到不了零 $\Rightarrow$ 分压器档位太低（电压小、灵敏度不够）或 $R_3$ 与 $R_{t1}$ 差太远（换 $R_{t1}$ 靠近 $R_3$）。
+
+\warnbox{
+\textbf{为什么先粗后排细}：$I_g\propto U_{cd}$，电压越高，同样的 $R_3$ 偏差换来的电流越大——先用低压把指针拉到零附近（不刺表），再用高压把最后一点偏差放大看清楚。这就是预习思考题 III-1 的答案：\textbf{提高灵敏度 = 提高 $U_{cd}$}。
+}
+
+\subhdr{步骤 4　定 $U_{cd}$（约 10 分钟）}
+
+\textbf{目标}：把电桥推到“最不平衡处刚好满偏”，并实测此时的 $U_{cd}$。\quad
+\textbf{动作}：分压器回最低档（a）；电阻箱调到 0 附近（最大不平衡，§4.5 读法 A）；顺时针缓慢升分压器，直到指针\textbf{刚好}满偏；\textbf{此后分压器不再动}；用万用表测 C、D 两点电压，记下 $U_{cd}$。\quad
+\textbf{判据}：满偏时万用表读数 $\approx$ §4.2 算出的设计值（示例 1.5\,V）。\quad
+\textbf{异常}：升到 2\,V 仍不满偏 $\Rightarrow$ 见 §4.5 读法 B；满偏太早（例如 1.0\,V 就满）$\Rightarrow$ $R_3$ 偏小或 $R_1$ 偏小。
+
+\subhdr{步骤 5　校准 11 点（约 25--30 分钟）}
+
+\textbf{目标}：11 组 $(t,\ I_g)$。\quad
+\textbf{动作}：把电阻箱依次调到 $R_t(20),R_t(25),\ldots,R_t(70)$（用老师给的 $R_t$–$t$ 表，或按 §1 公式算），每调一次记录微安表读数；\textbf{从低温端往高温端做}（读数单调上升，不会漏点、不用回头找）。\quad
+\textbf{判据}：读数单调上升，量级与 §5.3 的预测表相当（绝对值可以因为 $R_g$、$R_t$ 不同而整体偏移）。\quad
+\textbf{异常}：相邻两点跳变 $\Rightarrow$ 接触不良或电阻箱读错档；整条曲线整体偏高 $\Rightarrow$ $U_{cd}$ 比设计值大。
+
+\subhdr{步骤 6　手掌测温（约 5--10 分钟）}
+
+\textbf{目标}：用自己做的温度计测一个真实温度。\quad
+\textbf{动作}：断开 $K_1$，取下电阻箱，把热敏电阻 $R_t$ 接回电桥；手握住热敏电阻（等指针稳定，约十几秒），读 $I_g$；同时读酒精温度计。\quad
+\textbf{判据}：由 $I_g$ \textbf{反查校准曲线}得到的温度与酒精温度计读数相差在几度以内（手掌约 33--36\degC）。\quad
+\textbf{异常}：读数超出曲线范围 $\Rightarrow$ 手太热/接触不良；读数不动 $\Rightarrow$ $R_t$ 没接通或 $K_1$ 没合上。
+
+\subhdr{步骤 7　收尾（5 分钟）}
+
+\textbf{动作}：\textbf{先断电源开关，再拆线}；把数据表交给老师批改（手册明确“所有记录须教师确认，否则无效”）；核对六个填空：$R_g$、$R_1$、$R_2$、$U_{cd}$、$R_3$（零点）、$t_0$。\quad
+\textbf{判据}：老师在你的数据表上签了字/批了改。\quad
+\textbf{异常}：数据没批改 $\Rightarrow$ 现场补，离开实验室就没机会了。
+
+%=====================================================================
+\hdr{§7}{可打印的数据表}
+
+手册 p3 写明“the following need to print by yourself, submit your report in class”——\textbf{表格自己印，报告当堂交}。下面这四张表就是可以直接打印带去的那几页。
+
+\subhdr{表 7-1　六个必须先记下来的数}
+
+\begin{center}
+\begin{tabular}{@{}p{4.2cm}p{3.6cm}p{4.4cm}p{3.2cm}@{}}
+\toprule
+\thead{量} & \thead{实测/选定值} & \thead{怎么得到} & \thead{用在哪} \\
+\midrule
+$R_g$（表头内阻） & \blankcell & 万用表电阻档 & §4 设计式 \\
+$R_1=R_2$ & \blankcell & 多圈电位器，万用表核 & §3 化简前提 \\
+设计 $U_{cd}$ & \blankcell & $=I_{g,\max}(R_1+2R_g)$ & 步骤 4 对照 \\
+实测 $U_{cd}$ & \blankcell & 万用表测 C、D 两点 & 报告第 4 项 \\
+$R_3$（零点阻值） & \blankcell & 调零后的读数 & 反查 $t_0$ \\
+零点温度 $t_0$ & \blankcell & $R_3$ 在 $R_t$–$t$ 表上的温度 & 判断全程同号 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{表 7-2　校准原始数据（照手册 p3 版面，11 列）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{1.5cm}*{11}{c}@{}}
+\toprule
+$I_g$ ($\mu$A) & & & & & & & & & & & \\
+\midrule
+$t$ ($^{\circ}\mathrm{C}$) & 20 & 25 & 30 & 35 & 40 & 45 & 50 & 55 & 60 & 65 & 70 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\small
+$R_g=$ \blank\quad $R_1=R_2=$ \blank\quad $U_{cd}=$ \blank
+\end{center}
+
+\subhdr{表 7-3　手掌测温比对}
+
+\begin{center}
+\begin{tabular}{@{}p{5.2cm}p{3.4cm}p{3.4cm}p{3.2cm}@{}}
+\toprule
+\thead{量} & \thead{读数} & \thead{由曲线得} & \thead{备注} \\
+\midrule
+热敏电阻接回后的 $I_g$ & \blankcell $\mu$A & $t=$ \blank $^{\circ}\mathrm{C}$ & 反查曲线（见表下）\\
+酒精温度计 & — & \blank $^{\circ}\mathrm{C}$ & 同一时刻读 \\
+两者之差 & — & \blank $^{\circ}\mathrm{C}$ & 写进报告讨论 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{表 7-4　数据处理与误差}
+
+\begin{center}
+\begin{tabular}{@{}p{5.4cm}p{3.5cm}p{3.5cm}p{3.0cm}@{}}
+\toprule
+\thead{项目} & \thead{公式} & \thead{你的数} & \thead{结论} \\
+\midrule
+平均灵敏度 & $\dfrac{I_g(70)-I_g(20)}{70-20}$ & \blank $\mu$A/K & 与 §5 比较 \\
+由 (43-7) 反算 $U_{cd}$ & $I_{g,\max}(R_1+2R_g)$ & \blank V & 设计值 \\
+相对误差 & $\dfrac{|U_{\text{测}}-U_{\text{算}}|}{U_{\text{算}}}$ & \blank \% & 报告第 4 项 \\
+主要误差来源 & — & — & 见 §8.3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % 坐标轴
+  \draw[->,>=Stealth] (-0.7,0) -- (11.2,0) node[right,font=\footnotesize]{$t/^{\circ}\mathrm{C}$};
+  \draw[->,>=Stealth] (0,-0.6) -- (0,8.9) node[above,font=\footnotesize]{$I_g/\mu\mathrm{A}$};
+  % 刻度
+  \foreach \i/\t in {0/20,1/25,2/30,3/35,4/40,5/45,6/50,7/55,8/60,9/65,10/70} {
+    \draw[thick] (\i,0) -- (\i,-0.14);
+    \node[font=\scriptsize,below] at (\i,-0.15) {\t};
+  }
+  \foreach \j/\v in {0/0,0.8/10,1.6/20,2.4/30,3.2/40,4.0/50,4.8/60,5.6/70,6.4/80,7.2/90,8.0/100} {
+    \draw[thick] (0,\j) -- (-0.14,\j);
+    \node[font=\scriptsize,left] at (-0.15,\j) {\v};
+  }
+  % 示例校准曲线（§5.3 的 11 个数）
+  \draw[violet,very thick]
+    (0,2.090) -- (1,2.623) -- (2,3.140) -- (3,3.632) -- (4,4.092)
+    -- (5,4.517) -- (6,4.905) -- (7,5.254) -- (8,5.569) -- (9,5.848) -- (10,6.096);
+  \foreach \x/\y in {0/2.090,1/2.623,2/3.140,3/3.632,4/4.092,5/4.517,6/4.905,7/5.254,8/5.569,9/5.848,10/6.096}
+    \fill[violet] (\x,\y) circle (0.055);
+  % 反查示范：Ig = 40 μA -> t $\approx$ 30.6 °C
+  \draw[dashed,inkgray] (0,3.2) -- (2.12,3.2) -- (2.12,0);
+  \node[font=\scriptsize,color=inkgray,above right] at (0.15,3.2) {$40\ \mu\mathrm{A}$};
+  \node[font=\scriptsize,color=inkgray,above] at (2.12,0.02) {$\approx 30.6\degC$};
+  % 正查示范：t = 45 °C -> 56.5 μA
+  \draw[dashed,inkgray] (5,0) -- (5,4.517) -- (0,4.517);
+  \node[font=\scriptsize,color=inkgray,below left] at (5,4.517) {$56.5\ \mu\mathrm{A}$};
+\end{tikzpicture}
+\caption{校准曲线怎么用（曲线按 §5.3 的示例参数画，现场用你自己的 11 个数重画）。\textbf{正查}：已知温度 $45\degC$ 竖直上去交曲线，再横读到 $56.5\,\mu$A，用来检查测量是否合理。\textbf{反查}（真正测温时用）：已知电流 $40\,\mu$A 横着交曲线，再竖直下来读 $\approx30.6\degC$。注意反查不是把坐标轴交换着画，而是在同一条曲线上换方向走。}
+\label{fig:curve}
+\end{figure}
+
+%=====================================================================
+\hdr{§8}{报告：当堂要交的四样东西}
+
+\subhdr{8.1 报告结构与材料位置}
+
+\begin{center}
+\begin{tabular}{@{}p{0.6cm}p{4.6cm}p{6.4cm}p{4.0cm}@{}}
+\toprule
+\thead{\#} & \thead{栏目（英文报告用右列）} & \thead{写什么} & \thead{材料在哪} \\
+\midrule
+I & Experimental Objectives & 手册 p1 的两条目的 & §9 前的译文 \\
+II & Experimental Instruments & 器材清单（照手册列表） & 手册 p1 \\
+III & Experimental Principle & 电桥平衡 + $I_g$ 表达式（II-1 的答案） & §2、§3、§9 \\
+IV & Data and Processing & 表 7-2、图 \ref{fig:curve} 的曲线、手掌比对、$U_{cd}$ 复核 & §7、§9 \\
+V & Discussion & 误差来源、曲线形状、灵敏度差异 & §8.3、§5 \\
+VI & Answers to Preview Questions & II 的 5 题 & §9 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+手册明确要求第 4 项：\textbf{把实测 $U_{cd}$ 代入式 (43-7) 计算，与选定值比较、算误差、分析误差来源}。这就是表 7-4 的最后两行。
+
+\subhdr{8.2 校准曲线怎么画}
+
+\begin{enumerate}
+\item 横轴 $t$（20--70\degC，每 5\degC 一格）、纵轴 $I_g$（0--100\,$\mu$A，每 10\,$\mu$A 一格），用现成的坐标纸（手册 p3 就印了一张）。
+\item 11 个点标出后画一条\textbf{平滑}曲线，\textbf{不要}用折线连点，也\textbf{不要}强行过原点。
+\item 标出零点温度 $t_0$（曲线与横轴的交点，或延伸后的交点）与 70\degC 端读数，这两处是讨论的抓手。
+\item 报告的曲线上要能读出“任意电流对应的温度”，所以纵轴刻度要够密（每 10\,$\mu$A 一条线，估读到 1\,$\mu$A）。
+\end{enumerate}
+
+\subhdr{8.3 误差分析：五个来源，按重要性排}
+
+\begin{enumerate}
+\item \textbf{$R_g$ 的测量误差（影响最大）}。设计式里 $2R_g$ 与 $R_1$ 同量级：$R_g$ 偏 5\%，$U_{cd}$ 约偏 3\%。万用表电阻档测 k$\Omega$ 级尚可，但要记下档位与读数。
+\item \textbf{满偏判定}。指针“刚好到 100\,$\mu$A 刻线”是目视判断，1 格 $\approx$ 1\,$\mu$A，直接给 $U_{cd}$ 带来约 1\% 的误差。
+\item \textbf{分压器的负载效应与接触电阻}。470\,$\Omega$ 电位器给 k$\Omega$ 级电桥供电，桥的电流会改变“空载分压比”，所以档位（a--g）不能当电压读，必须万用表实测；旋钮接触电阻也会让 $U_{cd}$ 轻微不稳。
+\item \textbf{设计式的理想化}。$U_{cd}=I_{g,\max}(R_1+2R_g)$ 对应 $R_t\to0$，而实际满偏时电阻箱还有几欧到几十欧残值，所以实测 $U_{cd}$ 会\textbf{略高于}设计值。
+\item \textbf{表头等级}。0--100\,$\mu$A 表若是 2.5 级，满刻处允差约 $\pm2.5\,\mu$A；换算成温度（用 §5 的 $S$），在 70\degC 端约 $\pm4$\,K。
+\end{enumerate}
+
+\aside{报告里不要只写“仪器误差”，要写\textbf{哪一项、大约多少、怎么算出来的}。上面每条都能给出量级，比一句“存在误差”有用得多。}
+
+%=====================================================================
+\hdr{§9}{预习 II 五题：中文讲清 + 英文可抄}
+
+预习页写明：II 的 5 题\textbf{要写进实验报告}；III 的思考题不必写、可能口试；IV 选做。以下英文段落可直接抄进报告（每题 50--70 词），中文部分是给你理解用的。
+
+\subhdr{II-1　画测温原理图，并按基尔霍夫定律、$R_1=R_2$ 导出 $I_g$}
+
+\textbf{中文}：先画四个臂（$R_1$ 与 $R_2$ 为两上臂、$R_3$ 与 $R_t$ 为两下臂）、表头接在 A、B 之间、C、D 接 $U_{cd}$。然后按 §3 的戴维南三步走：开路电压 $U_{AB}^{\rm oc}=U_{cd}\left(\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right)$，等效内阻 $R_{\rm th}=\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t}$，最后 $I_g=U_{AB}^{\rm oc}/(R_{\rm th}+R_g)$。代入 $R_1=R_2=R$ 化简得 §3.2 的框式。
+
+\textbf{英文（可抄）}：The sensing element $R_t$ forms one arm of a bridge whose other arms are $R_1,R_2,R_3$, with the micro-ammeter between A and B and the supply $U_{cd}$ between C and D. By Kirchhoff's laws the open-circuit voltage between A and B is $U_{cd}\left[\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right]$ and the bridge output resistance is $\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t}$. Hence $I_g=U_{AB}/(R_{\rm th}+R_g)$. For $R_1=R_2=R$, $I_g=\frac{U_{cd}(R_3-R_t)}{R(R_3+R_t)+2R_3R_t+2R_g(R_3+R_t)}$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.78, transform shape]
+  \coordinate (C) at (-1.9,1.05); \coordinate (D) at (1.9,1.05);
+  \coordinate (A) at (0,1.05);   \coordinate (B) at (0,-1.05);
+  \draw[thick] (C) -- (-1.55,1.05);
+  \draw[comp] (-1.55,0.85) rectangle (-0.65,1.25); \node[lab] at (-1.10,0.66) {$R_1$};
+  \draw[thick] (-0.65,1.05) -- (A) -- (0.65,1.05);
+  \draw[comp] (0.65,0.85) rectangle (1.55,1.25); \node[lab] at (1.10,0.66) {$R_2$};
+  \draw[thick] (1.55,1.05) -- (D);
+  \draw[thick] (C) -- (-1.9,-1.05) -- (-1.55,-1.05);
+  \draw[comp] (-1.55,-1.25) rectangle (-0.65,-0.85); \node[lab] at (-1.10,-1.45) {$R_3$};
+  \draw[thick] (-0.65,-1.05) -- (B) -- (0.65,-1.05);
+  \draw[comp] (0.65,-1.25) rectangle (1.55,-0.85);
+  \draw[thick] (0.50,-1.40) -- (1.70,-0.70);
+  \node[lab] at (1.10,-1.45) {$R_t$};
+  \draw[thick] (1.55,-1.05) -- (D) -- (1.9,-1.05);
+  \draw[thick] (A) -- (0,0.28); \draw[thick] (0,-0.28) -- (B);
+  \draw[thick,fill=white] (0,0) circle (0.28); \node[font=\scriptsize] at (0,0) {$\mu$A};
+  \node[lab,above] at (A) {$A$}; \node[lab,below] at (B) {$B$};
+  \node[lab,left] at (C) {$C$}; \node[lab,right] at (D) {$D$};
+  \draw[thick] (-1.9,1.05) -- (-2.4,1.05) node[left,font=\footnotesize] {$U_{cd}$};
+  \draw[thick] (1.9,1.05) -- (2.4,1.05);
+\end{tikzpicture}
+\end{center}
+
+\subhdr{II-2　参数设计：由 $I_g$ 表达式导出 $R_1,R_2$ 的计算式}
+
+\textbf{中文}：表头满偏 100\,$\mu$A、$U_{cd}$ 只能在 1.3--1.8\,V。取最坏情况 $R_t\to0$（“电桥最不平衡时刚好满偏”），$I_g$ 表达式退化为 $I_{g,\max}=U_{cd}/(R_1+2R_g)$，反解得 $R_1=R_2=\dfrac{U_{cd}}{I_{g,\max}}-2R_g$。用现场量到的 $R_g$ 代入，在 1.3--1.8\,V 之间选一个电压，就得到该选的 $R_1=R_2$（$R_g=4.5$\,k$\Omega$ 时对应 4.0--9.0\,k$\Omega$，正是手册区间）。
+
+\textbf{英文（可抄）}：With $R_t\to0$ the bridge is at its most unbalanced point and the meter should just reach full scale, so $I_{g,\max}=U_{cd}/(R_1+2R_g)$. Solving gives $R_1=R_2=U_{cd}/I_{g,\max}-2R_g$. Taking $I_{g,\max}=100\,\mu$A, $R_g$ measured by multimeter, and $U_{cd}$ between 1.3\,V and 1.8\,V, we obtain $R_1=R_2$ in the range 4.0--9.0\,k$\Omega$, which agrees with the values specified for this experiment. The same equation predicts the $U_{cd}$ that should be measured at full scale.
+
+\subhdr{II-3　实验步骤的初步设计}
+
+\textbf{中文}：设计要回答的顺序是“先量什么 → 再定什么 → 然后怎么验”。建议写成六步：① 量 $R_g$；② 选 $R_1=R_2$，算设计 $U_{cd}$；③ 取 $R_3$（=零点温度下的 $R_t$，落在 10--15\,k$\Omega$）；④ 用电阻箱代替 $R_t$，在低压下调零、锁 $R_3$；⑤ 升到满偏，实测 $U_{cd}$；⑥ 用电阻箱逐点模拟 20--70\degC，记录 $I_g$，最后接回热敏电阻测手掌并与温度计比对。
+
+\textbf{英文（可抄）}：The procedure is designed in the following order: measure the meter resistance $R_g$; choose $R_1=R_2$ and calculate the required $U_{cd}$; select $R_3$ equal to the thermistor resistance at the chosen zero point; replace $R_t$ by a resistance box and balance the bridge at low voltage, then lock $R_3$; raise $U_{cd}$ until full scale and measure it with a multimeter; finally simulate each temperature from 20 to 70\,$^{\circ}$C with the box, record $I_g$, reconnect the thermistor and compare the palm temperature with an alcohol thermometer.
+
+\subhdr{II-4　分压电阻 $R$ 起什么作用？接线时滑片应在哪一端？}
+
+\textbf{中文}：$R$ 把固定的电源电压 $E$ 变成一个\textbf{连续可调、且基本不受负载影响}的 $U_{cd}$（三端分压）。没有它，电桥就直接接电源，$U_{cd}$ 只能靠电源刻度调，既不准也没法细调。接线（通电前）滑片应放在\textbf{a 档——分压最小、$U_{cd}\approx0$ 的那一端}：这样合上开关时桥上没有电压，指针不会被打，也不会过流。
+
+\textbf{英文（可抄）}：The resistor $R$ works as a three-terminal voltage divider: it converts the fixed supply $E$ into a continuously adjustable bridge voltage $U_{cd}$, which is almost independent of the bridge current. Before switching on, the slider must be set to the lowest position (position a), where the divided voltage is nearly zero, so that no current flows through the bridge and the meter pointer cannot be damaged when the circuit is energised.
+
+\subhdr{II-5　开关 $K$ 应怎样接入电路？}
+
+\textbf{中文}：$K$ 要\textbf{串联在电源支路里}（与 $E$ 串在一起，串在“分压器—电源”这条回路上），不能并联在任何元件两端。作用有两个：一是接线、拆线时能确保整条回路断电；二是当异常（指针猛打、冒烟、闻到焦味）时能第一时间切断。接线时 $K$ 置断开位；收尾时\textbf{先断 $K$、再拆线}。
+
+\textbf{英文（可抄）}：The switch $K$ must be connected in series with the supply $E$, in the loop that feeds the divider, never in parallel with any component. In this position it cuts the whole circuit off for safe wiring and for emergency interruption. The switch is kept open while the circuit is being connected, and at the end of the experiment the switch is opened first and only then are the wires removed.
+
+%=====================================================================
+\hdr{§10}{口试与思考题：四问的要点}
+
+\subhdr{III-1　调零时怎样调更准（提高电桥灵敏度）}
+
+\textbf{要点}：$I_g\propto U_{cd}$，所以最直接的办法是\textbf{把 $U_{cd}$ 调高}——手册的“细调升到最大档 g”正是这个意思：先把指针用低压拉到零附近（不刺表），再用高压把最后一点偏差放大。第二招是\textbf{逼近法}：从两侧各逼近一次零，取两次读数的中点，抵消游丝与轴隙的回差。第三招是减小 $R_3$ 的步进（多圈电位器细调圈）。
+
+\textbf{英文一句话}：Sensitivity improves with the bridge voltage, so zeroing is done in two stages: a coarse balance at medium $U_{cd}$ followed by a fine balance at maximum $U_{cd}$, approaching zero from both sides to cancel backlash.
+
+\subhdr{III-2　能否先定 $U_{cd}$、再由它算 $R_1,R_2$，然后与实测比较}
+
+\textbf{要点}：能，而且这就是设计的两个方向。设计式 $U_{cd}=I_{g,\max}(R_1+2R_g)$ 是同一个约束，先定哪一边都行：先定 $R_1$ 就算该用多大电压；先定电压就算该取多大电阻。比较时要注意三件事——① $R_g$ 必须\textbf{实测}，它是式子里最不确定的量；② 实测 $U_{cd}$ 一定要用\textbf{万用表}量 C、D 两点，不能读分压器的档位；③ 两者不相等是正常的，差值就是 §8.3 的误差分析对象。
+
+\subhdr{手册思考题 1　不平衡电桥能测电阻吗？怎么测？}
+
+\textbf{要点}：能。方法是\textbf{先标定、再反查}：固定 $U_{cd}$ 与 $R_3$，用标准电阻箱逐点给出已知电阻 $R$，记下对应的 $I_g$，得到 $I_g$–$R$ 曲线；测未知电阻时读出 $I_g$ 反查即可。本实验做的正是这件事，只不过把“电阻”换成了“温度”。代价是精度依赖 $U_{cd}$、$R_g$ 的稳定性，所以不如平衡法（指零法）准；平衡法测的是“相等”，不平衡法测的是“差多少”。
+
+\textbf{英文一句话}：Yes. The unbalanced bridge measures resistance indirectly: the relation $I_g(R)$ is calibrated first with standard resistors at fixed $U_{cd}$ and $R_3$, and an unknown resistance is then obtained by reading $I_g$ and interpolating on that curve, exactly as this experiment calibrates $I_g(t)$.
+
+\subhdr{手册思考题 2　$R$ 改用限流接法，还能用直流电源完成实验吗？}
+
+\textbf{要点}：能通电，但\textbf{不好用}，原因可以算出来。
+
+\begin{center}
+\begin{tabular}{@{}p{3.6cm}p{5.4cm}p{5.6cm}@{}}
+\toprule
+\thead{接法} & \thead{$U_{cd}$ 的取值范围} & \thead{问题} \\
+\midrule
+分压（三端，手册用） & $0\sim E$，连续可调，与桥流几乎无关 & 需要三根线，接线稍复杂 \\
+限流（两端，串在电源里） & $E\cdot\dfrac{R_b}{R+E\ \text{内}}$，470\,$\Omega$ 对 $\approx7.5$\,k$\Omega$ 的桥只能降约 0.13\,V & $U_{cd}$ 几乎等于 $E$，调不动；且 $U_{cd}$ 随 $R_t$ 变 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+用 §5 的示例参数算：$R_t$ 从 20\degC 走到 70\degC 时桥阻从 7.60\,k$\Omega$ 降到 6.80\,k$\Omega$，限流接法下 $U_{cd}$ 会从 1.500\,V 漂到 1.490\,V（约 $-0.68\%$），这条漂移会\textbf{弯曲}校准曲线；而分压接法里 $U_{cd}$ 基本不动。优点是接线简单（两根线）、天然限流。所以答案是：\textbf{能做完，但精度与可重复性都下降，这正是手册用分压接法的理由}。
+
+\textbf{答题时怎么画图}：把图 \ref{fig:bridge2} 改两笔——去掉滑片引线，$R$ 直接串在 $E$ 与 C 之间，D 接电源另一端；$K$ 仍串在电源支路里。
+
+%=====================================================================
+\hdr{§11}{扩展题：把量程配到 20--70\,$\mu$A}
+
+\textbf{题目}：原表头 0--100\,$\mu$A，怎样让设计的温度计只工作在 20--70\,$\mu$A 这一段？
+
+\subhdr{11.1 先看清“两个条件、两把旋钮”}
+
+要 $I_g(20\degC)=20\,\mu$A 且 $I_g(70\degC)=70\,\mu$A，这是两个方程。可调的量也是两个：\textbf{零点}（由 $R_3$ 定，即 §3 的 $I_g=R_3-R_t$ 的过零点）与\textbf{斜率}（由 $U_{cd}$ 定，$I_g\propto U_{cd}$）。若只调 $U_{cd}$，两点同比例变，比例式对不上；只调 $R_3$，两点同时平移，也难同时命中。必须两把一起解。
+
+\subhdr{11.2 解出来的数（示例参数）}
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & \thead{$R_3$} & \thead{$U_{cd}$} & \thead{验证} \\
+\midrule
+原设计 & 14.641\,k$\Omega$ & 1.500\,V & 26.1 / 76.2\,$\mu$A \\
+改后 & 11.99\,k$\Omega$ & 1.421\,V & 20.0 / 70.0\,$\mu$A \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+两个解都落在手册的器件范围里（$R_3$ 10--15\,k$\Omega$、$U_{cd}$ 1.3--1.8\,V），说明这个要求在本实验器材下\textbf{确实可实现}，不必换器件。
+
+\subhdr{11.3 代价是什么}
+
+零点温度从 $0\degC$ 附近上移到约 $8\degC$（$R_3=11.99$\,k$\Omega$ 对应的 $R_t$），量程内仍全程同号；但低端留白变小，一旦温度低于 20\degC 就可能读到 20\,$\mu$A 以下——对“只测 20--70\degC”的用途无所谓，对宽量程就不可接受。设计题的标准答法是\textbf{把取舍讲清楚}，而不是只说“能”。
+
+%=====================================================================
+\hdr{§12}{易错八条与资料口径冲突}
+
+\subhdr{12.1 现场最容易犯的八个错}
+
+\begin{enumerate}
+\item \textbf{调完 $R_3$ 又去碰它}。零点一动，前面所有读数报废。调完立刻把 $R_3$ 的旋钮记住，后面只动电阻箱和分压器（分压器在步骤 4 之后也不能动）。
+\item \textbf{用档位当电压}。a--g 是位置不是电压；$U_{cd}$ 必须万用表实测（§8.3 第 3 条）。
+\item \textbf{表头极性接反}。指针反偏不是“坏了”，是对调两根线的事；但反偏时读数负值没有意义。
+\item \textbf{通电前分压器不在 a 档}。合闸瞬间电桥满压，指针猛打，长期会打弯指针。
+\item \textbf{插拔元件从顶上使劲}。手册专门写了“hold the root”，九孔板很容易被撬坏。
+\item \textbf{忘记把电阻箱换回热敏电阻}。步骤 6 要断开 $K_1$、取下电阻箱、接上 $R_t$，漏一步就测不到手掌。
+\item \textbf{校准点顺序乱}。从 20\degC 往 70\degC 单调做，读数一路上升，漏点一眼能看出。
+\item \textbf{先拆线后断电}。手册第 7 步写得很明确：先断电源开关，再拆线。
+\end{enumerate}
+
+\subhdr{12.2 资料本身的八处冲突（不猜，列出来）}
+
+\gapitem{缺}{手册从未给出 $R_t(t)$ 表。第 5 步要求“调到热敏电阻在 65、60、\ldots、25\degC 时的阻值”，可这个阻值从哪来，四页里一个字没有。\textbf{现场第一件事就是问老师要这张表，或要热敏电阻的 $B$ 与 $R_{25}$（再用 §1 的公式算）。}这是本场实验最大的一处空白。}
+
+\gapitem{缺}{手册正文第 4 步引用了“式 (43-7)”，但四页里没有任何编号公式（43-1 至 43-7 全无）。报告第 4 项要求“把实测 $U_{cd}$ 代入 (43-7)”，本讲义按“只含 $R_1,R_2,R_g,I_g$”与 1.3/1.8\,V 两端反推出 $U_{cd}=I_{g,\max}(R_1+2R_g)$，与手册两个区间完全自洽，但仍属推断。}
+
+\gapitem{错}{p1 图注印成“Figure 4-2 Schematic diagram of digital oscilloscope”——数字示波器与本实验无关，显然是套模板留下的错注。正文第 2 步又引用“Figure 43-1”，而图只有一个。\textbf{认图不认号}：唯一那张桥路图标号错、题注也错，按图接线即可。}
+
+\gapitem{冲}{第 5 步写“65、60、\ldots、25\degC”（11 个点里只有 25--65），而 p3 的数据表印的是 20--70\degC（11 列）。\textbf{以数据表为准}（报告口径），按 20→70 顺序做。}
+
+\gapitem{冲}{第 4 步“使微安表满偏”时电阻箱该置多少没写清（原文 “adjust the value of the resistor box to the same time” 语义不全）。本讲义取“电阻箱打到 0 附近、对应最坏情况”（§4.5 读法 A）；若现场按“70\degC 对应满偏”（读法 B），则 $U_{cd}$ 会到 2\,V 以上、超出手册区间。\textbf{以老师口令为准，并在报告里写明你用的是哪种口径。}}
+
+\gapitem{疑}{手册把 $R_1,R_2$ 取 4--9\,k$\Omega$ 归因于“元件额定功率”，但实际功率约 0.1\,mW，远低于 2\,W 额定。真正把 4--9\,k$\Omega$ 与 1.3--1.8\,V 绑起来的是设计式（§4.3）。\textbf{报告里可以指出这一点，但不要据此改动器件取值。}}
+
+\gapitem{疑}{手册第 1 步说 $R_1,R_2$ “取 4--9\,k$\Omega$”，而多圈电位器 $R_1,R_2$ 的规格写 4--9\,k$\Omega$/2\,W、$R_3$ 写 10--15\,k$\Omega$/2\,W，取值是\textbf{连续可调}的，不是档位。所以“选 6.0\,k$\Omega$”这种说法要靠在电位器上调出来、再用万用表核对，不能靠刻度估。}
+
+\gapitem{疑}{手册第 6 步的“验证”只测手掌一处，没有第二个已知温度做交叉检验；而“手掌温度”本身受接触热阻影响（热敏电阻贴手 vs 酒精温度计测环境）。报告讨论处要说明这一点，不要把手掌当成标准温度源。}
+
+%=====================================================================
+\hdr{§13}{出门清单与结课说明}
+
+\subhdr{13.1 带什么}
+
+\begin{tabular}{@{}p{0.7cm}p{6.4cm}p{6.6cm}@{}}
+\toprule
+\tick & \thead{物件} & \thead{为什么} \\
+\midrule
+\tick & 本讲义 §7 的三张表（打印） & 手册要求自己打印、当堂交 \\
+\tick & 笔、直尺、计算器（或手机计算器） & 调零与校准要现场算 \\
+\tick & 实验报告纸/册 & 当堂提交 \\
+\tick & 学生证 & 按学校要求 \\
+\bottomrule
+\end{tabular}
+
+\subhdr{13.2 三个数字出门前再记一遍}
+
+\begin{center}
+\begin{tabular}{@{}p{7.6cm}p{7.2cm}@{}}
+\toprule
+\thead{数} & \thead{含义} \\
+\midrule
+$U_{cd}=I_{g,\max}(R_1+2R_g)$ & 设计式：由 $R_1$、$R_g$ 定电压 \\
+$I_g=\dfrac{U_{cd}(R_3-R_t)}{R(R_3+R_t)+2R_3R_t+2R_g(R_3+R_t)}$ & 任何一点的读数都能算 \\
+$R_t=R_{25}\exp\!\left[B\left(\frac1T-\frac1{T_{25}}\right)\right]$ & 把温度换成电阻（校准时用） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{13.3 边界（必须写清的三件事）}
+
+\begin{itemize}
+\item \textbf{讲义已备不等于已学，更不等于已验收}。本文是预习材料，帮你把原理和流程想通；它不会替你接线、调零、读数。
+\item \textbf{本文的示例数值不是实验数据}。$R_{25}=5.00\,\mathrm{k}\Omega$、$B=3500$\,K、$R_g=4.5\,\mathrm{k}\Omega$、$R_3=14.641\,\mathrm{k}\Omega$、$U_{cd}=1.500$\,V 全是为讲清方法而设；报告里填的必须是现场实测值。
+\item \textbf{四处待现场确认}：$R_t(t)$ 表从哪来（§12 第 1 条）、$R_g$ 实测值、满偏口径（§4.5）、老师对报告的具体格式要求。
+\end{itemize}
+
+\flowerrule
+
+{\small\color{inkgray}\raggedright
+来源：\texttt{subjects/14-大物实验/课件/Exp.43Thermistorthermometerdesign.pdf}\\
+（4 页，SHA256 \texttt{EA50F9A1\ldots65A5}）\\
+\texttt{subjects/14-大物实验/实验/PreviewforExp.43-Thermistorthermometerdesign.pdf}\\
+（1 页，SHA256 \texttt{14451BC9\ldots{}A412}）\\
+数值复核脚本：\texttt{\_scratch/lab43-check-20261117.py}（sympy，断言全部通过）。\par}
+
+\end{document}
