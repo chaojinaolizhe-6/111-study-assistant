@@ -249,28 +249,26 @@ t_0=R_3^{-1}\ \text{在}\ R_t(t)\ \text{曲线上对应的温度}.
 \centering
 \begin{tikzpicture}[scale=0.95, transform shape]
   % 桥（方形画法，节点位置与手册一致：A 上、B 下、C 左、D 右）
-  \coordinate (C) at (-2.30,1.30);
-  \coordinate (D) at ( 2.30,1.30);
+  \coordinate (C) at (-2.40,1.30);
+  \coordinate (D) at ( 2.40,1.30);
   \coordinate (A) at ( 0.00,1.30);
   \coordinate (B) at ( 0.00,-1.30);
 
   % 上臂
-  \draw[thick] (C) -- (-1.75,1.30);
-  \draw[comp] (-1.75,1.10) rectangle (-0.75,1.50); \node[lab] at (-1.25,0.90) {$R_1$};
-  \draw[thick] (-0.75,1.30) -- (A);
-  \draw[thick] (A) -- (0.75,1.30);
-  \draw[comp] (0.75,1.10) rectangle (1.75,1.50); \node[lab] at (1.25,0.90) {$R_2$};
-  \draw[thick] (1.75,1.30) -- (D);
+  \draw[thick] (C) -- (-1.85,1.30);
+  \draw[comp] (-1.85,1.10) rectangle (-0.85,1.50); \node[lab] at (-1.35,0.90) {$R_1$};
+  \draw[thick] (-0.85,1.30) -- (A) -- (0.85,1.30);
+  \draw[comp] (0.85,1.10) rectangle (1.85,1.50); \node[lab] at (1.35,0.90) {$R_2$};
+  \draw[thick] (1.85,1.30) -- (D);
 
-  % 下臂
-  \draw[thick] (C) -- (-2.30,-1.30) -- (-1.75,-1.30);
-  \draw[comp] (-1.75,-1.50) rectangle (-0.75,-1.10); \node[lab] at (-1.25,-1.85) {$R_3$};
-  \draw[thick] (-0.75,-1.30) -- (B);
-  \draw[thick] (B) -- (0.75,-1.30);
-  \draw[comp] (0.75,-1.50) rectangle (1.75,-1.10);
-  \draw[thick] (0.60,-1.65) -- (1.90,-0.95);           % 热敏电阻斜线
-  \node[lab] at (1.25,-1.85) {$R_t$};
-  \draw[thick] (1.75,-1.30) -- (D) -- (2.30,-1.30);
+  % 下臂（左竖线是公共母线：C 与 R3 左端、分压器左端、电池回路都挂在它上面）
+  \draw[thick] (C) -- (-2.40,-1.30) -- (-1.85,-1.30);
+  \draw[comp] (-1.85,-1.50) rectangle (-0.85,-1.10); \node[lab] at (-1.35,-1.80) {$R_3$};
+  \draw[thick] (-0.85,-1.30) -- (B) -- (0.85,-1.30);
+  \draw[comp] (0.85,-1.50) rectangle (1.85,-1.10);
+  \draw[thick] (0.80,-1.56) -- (1.90,-1.04);            % 热敏电阻符号的斜线
+  \node[lab] at (1.35,-1.80) {$R_t$};
+  \draw[thick] (1.85,-1.30) -- (2.40,-1.30) -- (D);      % 右侧竖线回到 D
 
   % 表头
   \draw[thick] (A) -- (0,0.32);
@@ -278,34 +276,35 @@ t_0=R_3^{-1}\ \text{在}\ R_t(t)\ \text{曲线上对应的温度}.
   \draw[thick,fill=white] (0,0) circle (0.32);
   \node[font=\footnotesize] at (0,0) {$\mu$A};
 
-  % 分压器
-  \draw[comp] (-1.60,-3.40) rectangle (1.60,-3.10);
-  \node[lab] at (0.00,-3.70) {$R$（470\,$\Omega$）};
-  \draw[thick] (-2.30,1.30) -- (-2.30,-3.25) -- (-1.60,-3.25);
-  \draw[thick] (1.60,-3.25) -- (3.40,-3.25) -- (3.40,-4.30);
+  % 分压器：电源与开关跨接在 R 两端，C 接 R 一端，D 接滑片
+  \draw[thick] (-2.40,-1.30) -- (-2.40,-4.30);
+  \draw[comp] (-1.70,-3.45) rectangle (1.70,-3.15);
+  \node[lab] at (-0.55,-3.80) {$R$（470\,$\Omega$）};
+  \draw[thick] (-2.40,-3.30) -- (-1.70,-3.30);
+  \draw[thick] (1.70,-3.30) -- (3.10,-3.30) -- (3.10,-4.30);
   % 滑片 -> D
-  \draw[thick,->,>=Stealth] (0.30,-3.05) -- (0.30,-3.42);
-  \draw[thick] (0.30,-3.05) -- (0.30,-2.20) -- (2.90,-2.20) -- (2.90,1.30) -- (D);
+  \draw[thick,->,>=Stealth] (0.35,-2.92) -- (0.35,-3.14);
+  \draw[thick] (0.35,-2.92) -- (0.35,-2.20) -- (2.95,-2.20) -- (2.95,1.30) -- (D);
 
   % 电源与开关
-  \draw[thick] (3.40,-4.30) -- (0.75,-4.30);
-  \draw[thick] (0.75,-4.30) -- (0.55,-4.10);
-  \draw[thick] (0.45,-4.30) circle (0.05);
-  \draw[thick] (-0.05,-4.30) circle (0.05);
-  \node[lab] at (0.35,-4.66) {$K$};
-  \draw[thick] (-0.30,-4.10) -- (-0.30,-4.55);
-  \draw[thick] (-0.38,-4.32) -- (-0.22,-4.32);
-  \draw[thick] (-0.48,-4.38) -- (-0.12,-4.38);
-  \node[lab] at (-0.30,-4.85) {$E$};
-  \draw[thick] (-0.30,-4.44) -- (-0.30,-4.30) -- (-1.60,-4.30) -- (-1.60,-3.40);
-  \draw[thick] (-1.60,-3.25) -- (-2.30,-3.25);
+  \draw[thick] (3.10,-4.30) -- (0.80,-4.30);
+  \draw[thick] (0.80,-4.30) -- (0.44,-4.04);
+  \draw[thick] (0.80,-4.30) circle (0.05);
+  \draw[thick] (0.38,-4.30) circle (0.05);
+  \node[lab] at (0.59,-4.70) {$K$};
+  \draw[thick] (0.38,-4.30) -- (-1.02,-4.30);
+  \draw[thick] (-1.05,-4.14) -- (-1.05,-4.46);          % 电池长极（+）
+  \draw[thick] (-1.17,-4.21) -- (-1.17,-4.39);          % 电池短极（−）
+  \node[lab] at (-1.11,-4.72) {$E$};
+  \draw[thick] (-1.17,-4.30) -- (-2.40,-4.30);
 
   % 节点与标注
-  \node[lab,above] at (A) {$A$};
+  \node[lab,above left] at (A) {$A$};
   \node[lab,below] at (B) {$B$};
   \node[lab,above left] at (C) {$C$};
   \node[lab,above right] at (D) {$D$};
-  \draw[dashed,violet,->,>=Stealth,bend left=32] (C) to node[above,font=\small,color=violetdeep] {$U_{cd}$（万用表测这两点）} (D);
+  \draw[dashed,violet,->,>=Stealth] (C) .. controls (-1.2,2.62) and (1.2,2.62) .. (D);
+  \node[font=\small,color=violetdeep] at (0,2.78) {$U_{cd}$（用万用表量这两点）};
 \end{tikzpicture}
 \caption{同一张电路，按本讲义的画法重排（$A$ 上、$B$ 下、$C$ 左、$D$ 右，与手册原图位置一致）。分压器接法：电源 $E$ 与开关 $K$ 跨接在电位器 $R$ 的\textbf{两端}，C 接 $R$ 的一端、D 接\textbf{滑片}，所以 C、D 之间的电压是 $R$ 上被切出的那一段。$U_{cd}\le E$，可用滑片连续调。}
 \label{fig:bridge2}
@@ -570,23 +569,32 @@ R_3=11.99\ \mathrm{k}\Omega,\qquad U_{cd}=1.421\ \mathrm{V},
 
 \subhdr{步骤 1　量 $R_g$，选 $R_1=R_2$，算 $U_{cd}$（约 15 分钟）}
 
-\textbf{目标}：拿到 $R_g$、$R_1=R_2$、目标 $U_{cd}$ 三个数。\quad
-\textbf{动作}：万用表电阻档量微安表内阻（断开电路再量）；多圈电位器调到所选 $R_1$、$R_2$ 值，用万用表核对后记录；按 §4.2 算 $U_{cd}$。\quad
-\textbf{判据}：$R_1$ 落在 4--9\,k$\Omega$，算出的 $U_{cd}$ 落在 1.3--1.8\,V。\quad
+\textbf{目标}：拿到 $R_g$、$R_1=R_2$、目标 $U_{cd}$ 三个数。
+
+\textbf{动作}：万用表电阻档量微安表内阻（断开电路再量）；多圈电位器调到所选 $R_1$、$R_2$ 值，用万用表核对后记录；按 §4.2 算 $U_{cd}$。
+
+\textbf{判据}：$R_1$ 落在 4--9\,k$\Omega$，算出的 $U_{cd}$ 落在 1.3--1.8\,V。
+
 \textbf{异常}：算出的 $U_{cd}$ 不在 1.3--1.8\,V $\Rightarrow$ $R_1$ 选偏了或 $R_g$ 量错了；换 $R_1$ 重算，不要硬做。
 
 \subhdr{步骤 2　接线（约 20 分钟）}
 
-\textbf{目标}：一张能让老师点头的电路。\quad
-\textbf{动作}：按图 \ref{fig:bridge2} 接；\textbf{用六位电阻箱暂时代替 $R_t$}；开关 $K$ 先断开；分压器滑片置最低档（a，$U_{cd}\approx0$）；微安表电流从正端流入。插拔元件\textbf{握住根部}，不要从顶上使劲。接完请老师检查后再通电。\quad
-\textbf{判据}：老师同意通电；通电后表针不反偏、不猛打到头。\quad
+\textbf{目标}：一张能让老师点头的电路。
+
+\textbf{动作}：按图 \ref{fig:bridge2} 接；\textbf{用六位电阻箱暂时代替 $R_t$}；开关 $K$ 先断开；分压器滑片置最低档（a，$U_{cd}\approx0$）；微安表电流从正端流入。插拔元件\textbf{握住根部}，不要从顶上使劲。接完请老师检查后再通电。
+
+\textbf{判据}：老师同意通电；通电后表针不反偏、不猛打到头。
+
 \textbf{异常}：表针反偏 $\Rightarrow$ 表头两根线对调；一通电就满偏 $\Rightarrow$ 分压器没在 a 档或 $R_3$ 太小。
 
 \subhdr{步骤 3　调零（约 15--20 分钟）}
 
-\textbf{目标}：让 $R_3$ 记住零点，并\textbf{从此不再动它}。\quad
-\textbf{动作}：电阻箱置 $R_{t1}$（取 10--15\,k$\Omega$ 内的值，例如 14.6\,k$\Omega$），电源开到 2\,V。先\textbf{粗调}：分压器放中档（d），调 $R_3$ 让指针接近零；再\textbf{细调}：分压器升到最大档（g），细调 $R_3$ 让指针\textbf{精确指零}。此时 $R_3$ 的读数就是 $R_{t1}$（即热敏电阻在零点温度 $t_0$ 的阻值）。\quad
-\textbf{判据}：指针在零刻度线上不动；$R_3$ 记录值 $\approx$ 电阻箱设定值。\quad
+\textbf{目标}：让 $R_3$ 记住零点，并\textbf{从此不再动它}。
+
+\textbf{动作}：电阻箱置 $R_{t1}$（取 10--15\,k$\Omega$ 内的值，例如 14.6\,k$\Omega$），电源开到 2\,V。先\textbf{粗调}：分压器放中档（d），调 $R_3$ 让指针接近零；再\textbf{细调}：分压器升到最大档（g），细调 $R_3$ 让指针\textbf{精确指零}。此时 $R_3$ 的读数就是 $R_{t1}$（即热敏电阻在零点温度 $t_0$ 的阻值）。
+
+\textbf{判据}：指针在零刻度线上不动；$R_3$ 记录值 $\approx$ 电阻箱设定值。
+
 \textbf{异常}：怎么调都到不了零 $\Rightarrow$ 分压器档位太低（电压小、灵敏度不够）或 $R_3$ 与 $R_{t1}$ 差太远（换 $R_{t1}$ 靠近 $R_3$）。
 
 \warnbox{
@@ -595,29 +603,40 @@ R_3=11.99\ \mathrm{k}\Omega,\qquad U_{cd}=1.421\ \mathrm{V},
 
 \subhdr{步骤 4　定 $U_{cd}$（约 10 分钟）}
 
-\textbf{目标}：把电桥推到“最不平衡处刚好满偏”，并实测此时的 $U_{cd}$。\quad
-\textbf{动作}：分压器回最低档（a）；电阻箱调到 0 附近（最大不平衡，§4.5 读法 A）；顺时针缓慢升分压器，直到指针\textbf{刚好}满偏；\textbf{此后分压器不再动}；用万用表测 C、D 两点电压，记下 $U_{cd}$。\quad
-\textbf{判据}：满偏时万用表读数 $\approx$ §4.2 算出的设计值（示例 1.5\,V）。\quad
+\textbf{目标}：把电桥推到“最不平衡处刚好满偏”，并实测此时的 $U_{cd}$。
+
+\textbf{动作}：分压器回最低档（a）；电阻箱调到 0 附近（最大不平衡，§4.5 读法 A）；顺时针缓慢升分压器，直到指针\textbf{刚好}满偏；\textbf{此后分压器不再动}；用万用表测 C、D 两点电压，记下 $U_{cd}$。
+
+\textbf{判据}：满偏时万用表读数 $\approx$ §4.2 算出的设计值（示例 1.5\,V）。
+
 \textbf{异常}：升到 2\,V 仍不满偏 $\Rightarrow$ 见 §4.5 读法 B；满偏太早（例如 1.0\,V 就满）$\Rightarrow$ $R_3$ 偏小或 $R_1$ 偏小。
 
 \subhdr{步骤 5　校准 11 点（约 25--30 分钟）}
 
-\textbf{目标}：11 组 $(t,\ I_g)$。\quad
-\textbf{动作}：把电阻箱依次调到 $R_t(20),R_t(25),\ldots,R_t(70)$（用老师给的 $R_t$–$t$ 表，或按 §1 公式算），每调一次记录微安表读数；\textbf{从低温端往高温端做}（读数单调上升，不会漏点、不用回头找）。\quad
-\textbf{判据}：读数单调上升，量级与 §5.3 的预测表相当（绝对值可以因为 $R_g$、$R_t$ 不同而整体偏移）。\quad
+\textbf{目标}：11 组 $(t,\ I_g)$。
+
+\textbf{动作}：把电阻箱依次调到 $R_t(20),R_t(25),\ldots,R_t(70)$（用老师给的 $R_t$–$t$ 表，或按 §1 公式算），每调一次记录微安表读数；\textbf{从低温端往高温端做}（读数单调上升，不会漏点、不用回头找）。
+
+\textbf{判据}：读数单调上升，量级与 §5.3 的预测表相当（绝对值可以因为 $R_g$、$R_t$ 不同而整体偏移）。
+
 \textbf{异常}：相邻两点跳变 $\Rightarrow$ 接触不良或电阻箱读错档；整条曲线整体偏高 $\Rightarrow$ $U_{cd}$ 比设计值大。
 
 \subhdr{步骤 6　手掌测温（约 5--10 分钟）}
 
-\textbf{目标}：用自己做的温度计测一个真实温度。\quad
-\textbf{动作}：断开 $K_1$，取下电阻箱，把热敏电阻 $R_t$ 接回电桥；手握住热敏电阻（等指针稳定，约十几秒），读 $I_g$；同时读酒精温度计。\quad
-\textbf{判据}：由 $I_g$ \textbf{反查校准曲线}得到的温度与酒精温度计读数相差在几度以内（手掌约 33--36\degC）。\quad
+\textbf{目标}：用自己做的温度计测一个真实温度。
+
+\textbf{动作}：断开 $K_1$，取下电阻箱，把热敏电阻 $R_t$ 接回电桥；手握住热敏电阻（等指针稳定，约十几秒），读 $I_g$；同时读酒精温度计。
+
+\textbf{判据}：由 $I_g$ \textbf{反查校准曲线}得到的温度与酒精温度计读数相差在几度以内（手掌约 33--36\degC）。
+
 \textbf{异常}：读数超出曲线范围 $\Rightarrow$ 手太热/接触不良；读数不动 $\Rightarrow$ $R_t$ 没接通或 $K_1$ 没合上。
 
 \subhdr{步骤 7　收尾（5 分钟）}
 
-\textbf{动作}：\textbf{先断电源开关，再拆线}；把数据表交给老师批改（手册明确“所有记录须教师确认，否则无效”）；核对六个填空：$R_g$、$R_1$、$R_2$、$U_{cd}$、$R_3$（零点）、$t_0$。\quad
-\textbf{判据}：老师在你的数据表上签了字/批了改。\quad
+\textbf{动作}：\textbf{先断电源开关，再拆线}；把数据表交给老师批改（手册明确“所有记录须教师确认，否则无效”）；核对六个填空：$R_g$、$R_1$、$R_2$、$U_{cd}$、$R_3$（零点）、$t_0$。
+
+\textbf{判据}：老师在你的数据表上签了字/批了改。
+
 \textbf{异常}：数据没批改 $\Rightarrow$ 现场补，离开实验室就没机会了。
 
 %=====================================================================
@@ -660,6 +679,38 @@ $t$ ($^{\circ}\mathrm{C}$) & 20 & 25 & 30 & 35 & 40 & 45 & 50 & 55 & 60 & 65 & 7
 $R_g=$ \blank\quad $R_1=R_2=$ \blank\quad $U_{cd}=$ \blank
 \end{center}
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % 坐标轴
+  \draw[->,>=Stealth] (-0.7,0) -- (11.2,0) node[right,font=\footnotesize]{$t/^{\circ}\mathrm{C}$};
+  \draw[->,>=Stealth] (0,-0.6) -- (0,8.9) node[above,font=\footnotesize]{$I_g/\mu\mathrm{A}$};
+  % 刻度
+  \foreach \i/\t in {0/20,1/25,2/30,3/35,4/40,5/45,6/50,7/55,8/60,9/65,10/70} {
+    \draw[thick] (\i,0) -- (\i,-0.14);
+    \node[font=\scriptsize,below] at (\i,-0.15) {\t};
+  }
+  \foreach \j/\v in {0.8/10,1.6/20,2.4/30,3.2/40,4.0/50,4.8/60,5.6/70,6.4/80,7.2/90,8.0/100} {
+    \draw[thick] (0,\j) -- (-0.14,\j);
+    \node[font=\scriptsize,left] at (-0.15,\j) {\v};
+  }
+  % 示例校准曲线（§5.3 的 11 个数）
+  \draw[violet,very thick]
+    (0,2.090) -- (1,2.623) -- (2,3.140) -- (3,3.632) -- (4,4.092)
+    -- (5,4.517) -- (6,4.905) -- (7,5.254) -- (8,5.569) -- (9,5.848) -- (10,6.096);
+  \foreach \x/\y in {0/2.090,1/2.623,2/3.140,3/3.632,4/4.092,5/4.517,6/4.905,7/5.254,8/5.569,9/5.848,10/6.096}
+    \fill[violet] (\x,\y) circle (0.055);
+  % 反查示范：Ig = 40 μA -> t ≈ 30.6 °C
+  \draw[dashed,black!55] (0,3.2) -- (2.12,3.2) -- (2.12,0);
+  \node[font=\scriptsize,black!60,below left] at (1.05,3.15) {反查：$40\,\mu$A $\to$ $\approx30.6\degC$};
+  % 正查示范：t = 45 °C -> 56.5 μA
+  \draw[dashed,black!55] (5,0) -- (5,4.517) -- (0,4.517);
+  \node[font=\scriptsize,black!60,above left] at (4.9,4.60) {正查：$45\degC$ $\to$ $56.5\,\mu$A};
+\end{tikzpicture}
+\caption{校准曲线怎么用（曲线按 §5.3 的示例参数画，现场用你自己的 11 个数重画）。\textbf{正查}：已知温度 $45\degC$ 竖直上去交曲线，再横读到 $56.5\,\mu$A，用来检查测量是否合理。\textbf{反查}（真正测温时用）：已知电流 $40\,\mu$A 横着交曲线，再竖直下来读 $\approx30.6\degC$。注意反查不是把坐标轴交换着画，而是在同一条曲线上换方向走。}
+\label{fig:curve}
+\end{figure}
+
 \subhdr{表 7-3　手掌测温比对}
 
 \begin{center}
@@ -689,38 +740,7 @@ $R_g=$ \blank\quad $R_1=R_2=$ \blank\quad $U_{cd}=$ \blank
 \end{tabular}
 \end{center}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=1.0]
-  % 坐标轴
-  \draw[->,>=Stealth] (-0.7,0) -- (11.2,0) node[right,font=\footnotesize]{$t/^{\circ}\mathrm{C}$};
-  \draw[->,>=Stealth] (0,-0.6) -- (0,8.9) node[above,font=\footnotesize]{$I_g/\mu\mathrm{A}$};
-  % 刻度
-  \foreach \i/\t in {0/20,1/25,2/30,3/35,4/40,5/45,6/50,7/55,8/60,9/65,10/70} {
-    \draw[thick] (\i,0) -- (\i,-0.14);
-    \node[font=\scriptsize,below] at (\i,-0.15) {\t};
-  }
-  \foreach \j/\v in {0/0,0.8/10,1.6/20,2.4/30,3.2/40,4.0/50,4.8/60,5.6/70,6.4/80,7.2/90,8.0/100} {
-    \draw[thick] (0,\j) -- (-0.14,\j);
-    \node[font=\scriptsize,left] at (-0.15,\j) {\v};
-  }
-  % 示例校准曲线（§5.3 的 11 个数）
-  \draw[violet,very thick]
-    (0,2.090) -- (1,2.623) -- (2,3.140) -- (3,3.632) -- (4,4.092)
-    -- (5,4.517) -- (6,4.905) -- (7,5.254) -- (8,5.569) -- (9,5.848) -- (10,6.096);
-  \foreach \x/\y in {0/2.090,1/2.623,2/3.140,3/3.632,4/4.092,5/4.517,6/4.905,7/5.254,8/5.569,9/5.848,10/6.096}
-    \fill[violet] (\x,\y) circle (0.055);
-  % 反查示范：Ig = 40 μA -> t $\approx$ 30.6 °C
-  \draw[dashed,inkgray] (0,3.2) -- (2.12,3.2) -- (2.12,0);
-  \node[font=\scriptsize,color=inkgray,above right] at (0.15,3.2) {$40\ \mu\mathrm{A}$};
-  \node[font=\scriptsize,color=inkgray,above] at (2.12,0.02) {$\approx 30.6\degC$};
-  % 正查示范：t = 45 °C -> 56.5 μA
-  \draw[dashed,inkgray] (5,0) -- (5,4.517) -- (0,4.517);
-  \node[font=\scriptsize,color=inkgray,below left] at (5,4.517) {$56.5\ \mu\mathrm{A}$};
-\end{tikzpicture}
-\caption{校准曲线怎么用（曲线按 §5.3 的示例参数画，现场用你自己的 11 个数重画）。\textbf{正查}：已知温度 $45\degC$ 竖直上去交曲线，再横读到 $56.5\,\mu$A，用来检查测量是否合理。\textbf{反查}（真正测温时用）：已知电流 $40\,\mu$A 横着交曲线，再竖直下来读 $\approx30.6\degC$。注意反查不是把坐标轴交换着画，而是在同一条曲线上换方向走。}
-\label{fig:curve}
-\end{figure}
+
 
 %=====================================================================
 \hdr{§8}{报告：当堂要交的四样东西}
@@ -772,32 +792,49 @@ VI & Answers to Preview Questions & II 的 5 题 & §9 \\
 
 \subhdr{II-1　画测温原理图，并按基尔霍夫定律、$R_1=R_2$ 导出 $I_g$}
 
-\textbf{中文}：先画四个臂（$R_1$ 与 $R_2$ 为两上臂、$R_3$ 与 $R_t$ 为两下臂）、表头接在 A、B 之间、C、D 接 $U_{cd}$。然后按 §3 的戴维南三步走：开路电压 $U_{AB}^{\rm oc}=U_{cd}\left(\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right)$，等效内阻 $R_{\rm th}=\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t}$，最后 $I_g=U_{AB}^{\rm oc}/(R_{\rm th}+R_g)$。代入 $R_1=R_2=R$ 化简得 §3.2 的框式。
+\textbf{中文}：先画四个臂（$R_1$ 与 $R_2$ 为两上臂、$R_3$ 与 $R_t$ 为两下臂）、表头接在 A、B 之间、C、D 接 $U_{cd}$。然后按 §3 的戴维南三步走：
 
-\textbf{英文（可抄）}：The sensing element $R_t$ forms one arm of a bridge whose other arms are $R_1,R_2,R_3$, with the micro-ammeter between A and B and the supply $U_{cd}$ between C and D. By Kirchhoff's laws the open-circuit voltage between A and B is $U_{cd}\left[\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right]$ and the bridge output resistance is $\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t}$. Hence $I_g=U_{AB}/(R_{\rm th}+R_g)$. For $R_1=R_2=R$, $I_g=\frac{U_{cd}(R_3-R_t)}{R(R_3+R_t)+2R_3R_t+2R_g(R_3+R_t)}$.
+\[
+U_{AB}^{\rm oc}=U_{cd}\left(\frac{R_2}{R_1+R_2}-\frac{R_t}{R_3+R_t}\right),
+\qquad
+R_{\rm th}=\frac{R_1R_2}{R_1+R_2}+\frac{R_3R_t}{R_3+R_t},
+\qquad
+I_g=\frac{U_{AB}^{\rm oc}}{R_{\rm th}+R_g}.
+\]
+
+代入 $R_1=R_2=R$ 化简，就得到 §3.2 的框式。
+
+\textbf{英文（可抄）}：The sensing element $R_t$ forms one arm of a bridge whose other arms are $R_1,R_2,R_3$, with the micro-ammeter between A and B and the supply $U_{cd}$ between C and D. By Kirchhoff's laws the open-circuit voltage is $U_{cd}[R_2/(R_1+R_2)-R_t/(R_3+R_t)]$ and the output resistance is $R_1R_2/(R_1+R_2)+R_3R_t/(R_3+R_t)$, so $I_g=U_{AB}^{\rm oc}/(R_{\rm th}+R_g)$. With $R_1=R_2=R$ this reduces to $I_g=U_{cd}(R_3-R_t)/[R(R_3+R_t)+2R_3R_t+2R_g(R_3+R_t)]$.
 
 \begin{center}
-\begin{tikzpicture}[scale=0.78, transform shape]
-  \coordinate (C) at (-1.9,1.05); \coordinate (D) at (1.9,1.05);
-  \coordinate (A) at (0,1.05);   \coordinate (B) at (0,-1.05);
-  \draw[thick] (C) -- (-1.55,1.05);
-  \draw[comp] (-1.55,0.85) rectangle (-0.65,1.25); \node[lab] at (-1.10,0.66) {$R_1$};
-  \draw[thick] (-0.65,1.05) -- (A) -- (0.65,1.05);
-  \draw[comp] (0.65,0.85) rectangle (1.55,1.25); \node[lab] at (1.10,0.66) {$R_2$};
-  \draw[thick] (1.55,1.05) -- (D);
-  \draw[thick] (C) -- (-1.9,-1.05) -- (-1.55,-1.05);
-  \draw[comp] (-1.55,-1.25) rectangle (-0.65,-0.85); \node[lab] at (-1.10,-1.45) {$R_3$};
-  \draw[thick] (-0.65,-1.05) -- (B) -- (0.65,-1.05);
-  \draw[comp] (0.65,-1.25) rectangle (1.55,-0.85);
-  \draw[thick] (0.50,-1.40) -- (1.70,-0.70);
-  \node[lab] at (1.10,-1.45) {$R_t$};
-  \draw[thick] (1.55,-1.05) -- (D) -- (1.9,-1.05);
-  \draw[thick] (A) -- (0,0.28); \draw[thick] (0,-0.28) -- (B);
-  \draw[thick,fill=white] (0,0) circle (0.28); \node[font=\scriptsize] at (0,0) {$\mu$A};
-  \node[lab,above] at (A) {$A$}; \node[lab,below] at (B) {$B$};
-  \node[lab,left] at (C) {$C$}; \node[lab,right] at (D) {$D$};
-  \draw[thick] (-1.9,1.05) -- (-2.4,1.05) node[left,font=\footnotesize] {$U_{cd}$};
-  \draw[thick] (1.9,1.05) -- (2.4,1.05);
+\small 原理图：四个臂 $+$ 表头 $+$ $U_{cd}$（II-1 要画的就是这一张）\\[3pt]
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \coordinate (C) at (-2.00,1.00); \coordinate (D) at (2.00,1.00);
+  \coordinate (A) at (0.00,1.00);  \coordinate (B) at (0.00,-1.00);
+  % 上臂
+  \draw[thick] (C) -- (-1.55,1.00);
+  \draw[comp] (-1.55,0.82) rectangle (-0.85,1.18); \node[lab] at (-1.20,0.62) {$R_1$};
+  \draw[thick] (-0.85,1.00) -- (A) -- (0.85,1.00);
+  \draw[comp] (0.85,0.82) rectangle (1.55,1.18); \node[lab] at (1.20,0.62) {$R_2$};
+  \draw[thick] (1.55,1.00) -- (D);
+  % 下臂
+  \draw[thick] (C) -- (-2.00,-1.00) -- (-1.55,-1.00);
+  \draw[comp] (-1.55,-1.18) rectangle (-0.85,-0.82); \node[lab] at (-1.20,-1.38) {$R_3$};
+  \draw[thick] (-0.85,-1.00) -- (B) -- (0.85,-1.00);
+  \draw[comp] (0.85,-1.18) rectangle (1.55,-0.82);
+  \draw[thick] (0.80,-1.24) -- (1.60,-0.76);
+  \node[lab] at (1.20,-1.38) {$R_t$};
+  \draw[thick] (1.55,-1.00) -- (2.00,-1.00) -- (D);
+  % 表头
+  \draw[thick] (A) -- (0,0.27); \draw[thick] (0,-0.27) -- (B);
+  \draw[thick,fill=white] (0,0) circle (0.27); \node[font=\scriptsize] at (0,0) {$\mu$A};
+  % 端点与 Ucd
+  \draw[thick] (C) -- (-2.55,1.00) node[left,font=\small] {$U_{cd}$};
+  \draw[thick] (D) -- (2.55,1.00);
+  \node[lab,below left] at (C) {$C$};
+  \node[lab,below right] at (D) {$D$};
+  \node[lab,above] at (A) {$A$};
+  \node[lab,below] at (B) {$B$};
 \end{tikzpicture}
 \end{center}
 
@@ -849,12 +886,13 @@ VI & Answers to Preview Questions & II 的 5 题 & §9 \\
 \textbf{要点}：能通电，但\textbf{不好用}，原因可以算出来。
 
 \begin{center}
-\begin{tabular}{@{}p{3.6cm}p{5.4cm}p{5.6cm}@{}}
+\begin{tabular}{@{}p{3.4cm}p{6.0cm}p{5.2cm}@{}}
 \toprule
-\thead{接法} & \thead{$U_{cd}$ 的取值范围} & \thead{问题} \\
+\thead{接法} & \thead{$U_{cd}$ 能怎么调} & \thead{问题} \\
 \midrule
-分压（三端，手册用） & $0\sim E$，连续可调，与桥流几乎无关 & 需要三根线，接线稍复杂 \\
-限流（两端，串在电源里） & $E\cdot\dfrac{R_b}{R+E\ \text{内}}$，470\,$\Omega$ 对 $\approx7.5$\,k$\Omega$ 的桥只能降约 0.13\,V & $U_{cd}$ 几乎等于 $E$，调不动；且 $U_{cd}$ 随 $R_t$ 变 \\
+分压（三端，手册用） & $U_{cd}=E\,r/R$（$r$ 为滑片切出的那一段），$0\sim E$ 连续可调；桥流对它的影响小 & 需要三根线，接线稍复杂 \\
+\midrule
+限流（两端，串在电源里） & $U_{cd}\approx E\dfrac{R_b}{R+R_b}$（$R_b$ 为整个桥的电阻）。470\,$\Omega$ 对 $\approx7.5$\,k$\Omega$：最多只能降约 0.13\,V & $U_{cd}$ 几乎等于 $E$，调不动；且 $U_{cd}$ 随 $R_t$ 变 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -962,6 +1000,59 @@ $R_t=R_{25}\exp\!\left[B\left(\frac1T-\frac1{T_{25}}\right)\right]$ & 把温度�
 \item \textbf{本文的示例数值不是实验数据}。$R_{25}=5.00\,\mathrm{k}\Omega$、$B=3500$\,K、$R_g=4.5\,\mathrm{k}\Omega$、$R_3=14.641\,\mathrm{k}\Omega$、$U_{cd}=1.500$\,V 全是为讲清方法而设；报告里填的必须是现场实测值。
 \item \textbf{四处待现场确认}：$R_t(t)$ 表从哪来（§12 第 1 条）、$R_g$ 实测值、满偏口径（§4.5）、老师对报告的具体格式要求。
 \end{itemize}
+
+%=====================================================================
+\clearpage
+\hdr{§14}{台前卡：撕下来带进实验室}
+
+{\small\bfseries 实验 4.3 热敏电阻温度计设计 ｜ 2026-11-21（六）13:30--15:30 ｜ 综合楼 205 ｜ 王明娥}
+
+\subhdr{进实验室先抄下这六个空}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.8cm}p{2.8cm}p{2.9cm}p{2.9cm}p{3.2cm}@{}}
+\toprule
+$R_g$ & $R_1=R_2$ & 设计 $U_{cd}$ & 实测 $U_{cd}$ & $R_3$（零点）与 $t_0$ \\
+\midrule
+\blankcell & \blankcell & \blankcell & \blankcell & \blankcell \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subhdr{三个式子（写在草稿纸角上）}
+
+\begin{itemize}
+\item $U_{cd}=I_{g,\max}(R_1+2R_g)$\quad 由选的 $R_1$ 反推该用多少电压（$I_{g,\max}=100\,\mu$A）
+\item $I_g=\dfrac{U_{cd}(R_3-R_t)}{R(R_3+R_t)+2R_3R_t+2R_g(R_3+R_t)}$\quad 算任何一点的读数（$R=R_1=R_2$）
+\item $R_t=R_{25}\exp\!\left[B\left(\frac1T-\frac1{T_{25}}\right)\right]$\quad 把温度换成电阻（校准时用）
+\end{itemize}
+
+\subhdr{七步顺序（做完一步划掉一步）}
+
+\begin{enumerate}
+\item 量 $R_g$ $\to$ 选 $R_1=R_2$ $\to$ 算设计 $U_{cd}$
+\item 接线：电阻箱代 $R_t$，$K$ 断开，分压器 a 档 $\to$ \textbf{请老师检查}
+\item 调零：d 档粗调、g 档细调 $\to$ $R_3$ 锁定
+\item 电阻箱归零 $\to$ 升分压器到\textbf{刚好满偏} $\to$ 万用表测 $U_{cd}$ $\to$ 分压器不动
+\item 校准：20$\to$70\degC，每 5\degC 一点，共 11 点
+\item 断开 $K_1$、换回 $R_t$ $\to$ 测手掌 $\to$ 与酒精温度计比
+\item \textbf{先断电源、再拆线} $\to$ 数据交老师批改
+\end{enumerate}
+
+\subhdr{五条纪律}
+
+\begin{enumerate}
+\item $R_3$ 锁定后不再动；分压器在步骤 4 之后不再动。
+\item $U_{cd}$ 只认万用表读数，不认档位（a--g 是位置，不是电压）。
+\item 通电前分压器放 a 档；接线接完先请老师检查，再合开关。
+\item 插拔元件\textbf{握住根部}，不要从顶上使劲（九孔板容易撬坏）。
+\item 读数不单调 = 先怀疑接触（按住插孔根部），不要怀疑曲线。
+\end{enumerate}
+
+\warnbox{
+\textbf{如果 20\degC 那一端就读到 70\,$\mu$A 以上}：说明零点温度被设到了量程里面（$R_3$ 偏小），读数会先增后减——这时不要改 $R_3$ 硬凑，按老师口径重做零点，并在报告里说明。
+}
 
 \flowerrule
 
