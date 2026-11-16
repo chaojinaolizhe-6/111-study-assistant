@@ -23,7 +23,7 @@
 
 | 课件 | 讲义 PDF | 页数 | 覆盖 |
 |---|---|---|---|
-| Polarization.pptx（69 页，Lecture 1） | [外教L1-Polarization-课堂讲义-20261110.pdf](外教L1-Polarization-课堂讲义-20261110.pdf) | 18 | 四条产生偏振的方法、Malus、Brewster、双折射、考前速查卡、四道练习 |
+| Polarization.pptx（69 页，Lecture 1） | [外教L1-Polarization-课堂讲义-20261110.pdf](外教L1-Polarization-课堂讲义-20261110.pdf)（速览版）<br>[外教L1-Polarization-精讲讲义-20261116.pdf](外教L1-Polarization-精讲讲义-20261116.pdf)（精讲版，2026-11-16 新增） | 18<br>**24** | 四条产生偏振的方法、Malus、Brewster、双折射、考前速查卡、四道练习；精讲版增补：主线概览图、自然光减半的两种算法、偏振度的定义与推导、Fresnel 系数从边界条件的完整推导、Brewster 角的代数推导（$r_p=0\Rightarrow\theta_1+\theta_2=90^\circ$）、$R_s$ 的 $\sin$ 形式、偶极辐射的 $\sin^2\chi$ 与天空偏振度、波片的琼斯矩阵与 $\lambda/2$、$\lambda/4$ 推导、真实偏振片的消光比、波片级次与消色差、$R_s/R_p$ 随入射角的曲线图、69 页逐段覆盖表、附录 C |
 | **Polarization L2.pdf（60 页，Lecture 2）** | [外教L2-Polarization-精讲讲义-20261112.pdf](外教L2-Polarization-精讲讲义-20261112.pdf) | **32** | p2–p60 全部：偏振椭圆（含推导）、琼斯矢量与矩阵、四种产生方法、三片偏振片、双折射与波片（正负晶体波面订正）、菲涅耳公式推导与布儒斯特（含 p 分量不反射的几何+偶极解释）、圆/椭圆偏振与手性约定、斯托克斯参数与偏振度、庞加莱球与穆勒矩阵、菲涅耳–阿拉戈三定律、旋光（Biot 定律与圆双折射推导）、光弹（条纹级数）、三问 FAQ、课件三道例题、作业三题 + 两道变式、附录 A 术语表 / B 逐题详解 / C 缺口清单与三处口径说明。插图 4 张见 `fig-l2/` |
 | **Polarization Devices 1.pdf（110 页，Lecture 3）** | [外教L3-偏振器件与干涉-精讲讲义-20261116.pdf](外教L3-偏振器件与干涉-精讲讲义-20261116.pdf) | **28** | p2–p110 全部：主线概览图；偏振棱镜（Nicol 临界角 69.2° 的推导、Rochon/Wollaston 几何、Glan 家族、薄膜立方、选型与规格表）；偏振测量（转动检偏器→S1/S2 的推导、零位法）；DIC／糖度计／椭偏仪；波片（$\Delta n d$ 与相位差、快慢轴与正负晶体、λ/4 的 45° 推导、λ/2 的 $2\theta-\alpha$ 推导、零级与多级、消色差）；补偿器（Babinet 的 $2x\tan\alpha$ 来历、Soleil–Babinet、Sénarmont $R=\theta\lambda/180^\circ$、Berek）；偏振光干涉（Fresnel–Arago、$I=I_0\sin^2 2\varphi\sin^2(\delta/2)$ 完整推导、三个工作例、色偏振与牛顿色序、p95 口径核对、干涉图、Lyot/光弹/调制器）；课件 p107–p109 三道例题；p110 作业三题（题干在 §25、详解在附录 B）；附录 C 为上一讲 p60 三题详解（讲义的最后一节）|
 
