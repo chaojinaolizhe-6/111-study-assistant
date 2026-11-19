@@ -1,4 +1,4 @@
-﻿% !TEX program = xelatex
+% !TEX program = xelatex
 \documentclass[11pt]{ctexart}
 \input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
 \setlength{\headheight}{22pt}
@@ -220,9 +220,9 @@ p.23--27（学习者 2026-11-17 提供照片）＋ 教材 §5.4／§5.5；2026-1
 \callout{\textbf{四问都是两段}：先「\textbf{英文答案（可直接抄进 p.23）}」，再「\textbf{中文对照}」。图 7、图 8 是第 1 题要画的两张图，表 A 是第 3 题的功能表，图 9 是第 4 题要画的结构图——照它们抄或描即可。}
 
 %----------------------------------------------- Q1
-\subhdr{Q1\quad 用 4011 画与门、或门，并标引脚号与电源脚}
+\subhdr{Q1\quad Draw the circuit diagrams for AND gates, OR gates constructed using the dual-input 4011 NAND gate chip. Label the pin numbers of the utilized chips and the power supply pins in the diagrams.}
 
-\qstem{册页原文（册页 p23 第 1 题）：Draw the circuit diagrams for AND gates, OR gates constructed using the dual-input 4011 NAND gate chip. Label the pin numbers of the utilized chips and the power supply pins in the diagrams.}
+\qstem{中文题意（册页 p23 第 1 题）：用双输入与非门 4011 搭出与门、或门，画出电路图，并在图上标出所用芯片的引脚号与电源脚。}
 
 \textbf{英文答案（可直接抄进 p.23）}\\
 \emph{Answer.} (a) AND gate: connect inputs $A$ and $B$ to pins 1 and 2 of the first NAND gate; its output, pin 3, is fed to \textbf{both} inputs of a second NAND gate (pins 5 and 6), whose output pin 4 gives $Y=AB$. (b) OR gate: tie both inputs of the first gate to $A$ (pins 1 and 2) to obtain $\overline{A}$ at pin 3, and both inputs of the second gate to $B$ (pins 5 and 6) to obtain $\overline{B}$ at pin 4; feed these two signals to pins 8 and 9 of a third gate, whose output pin 10 gives $Y=A+B$. In both diagrams the supply pins must be labelled: pin 14 to $U_{DD}$ and pin 7 to GND. The unused fourth gate must not be left floating; its inputs (pins 12 and 13) are tied to $U_{DD}$ or GND.
@@ -276,9 +276,9 @@ p.23--27（学习者 2026-11-17 提供照片）＋ 教材 §5.4／§5.5；2026-1
 \aside{画的时候三件事不能漏：（1）$14$ 脚 $U_{DD}$、$7$ 脚 GND 必须画在图上（册页明确要求 label the power supply pins）；（2）每个门的输入、输出脚号写在对应端旁（如「$1A(1)$、$1B(2)$、$1Y(3)$」）；（3）4011 是 CMOS，第 4 个门不用也要把 12、13 接 $U_{DD}$ 或 GND。}
 
 %----------------------------------------------- Q2
-\subhdr{Q2\quad 输出端能不能并联？三态门呢？}
+\subhdr{Q2\quad Can the output terminals of several logic gates be directly connected in parallel? Can the output terminals of several tri-state gates be connected in parallel? What are the constraints?}
 
-\qstem{册页原文（册页 p23 第 2 题）：Can the output terminals of several logic gates be directly connected in parallel? Can the output terminals of several tri-state gates be connected in parallel? What are the constraints?}
+\qstem{中文题意（册页 p23 第 2 题）：几个逻辑门的输出端能否直接并联？几个三态门的输出端能否并联？限制条件是什么？}
 
 \textbf{英文答案（可直接抄进 p.23）}\\
 \emph{Answer.} The outputs of ordinary logic gates must not be tied together: if one gate drives high while another drives low, a large current flows through the output stages and the devices may be destroyed. Three-state gate outputs may be connected in parallel to form a bus, provided that \textbf{at most one gate is enabled at any instant} and all the others are held in the high-impedance state.
@@ -287,9 +287,9 @@ p.23--27（学习者 2026-11-17 提供照片）＋ 教材 §5.4／§5.5；2026-1
 \textbf{普通门：不能。}两个普通门输出并在一起时，若一个要输出高、另一个要输出低，中间的半导体通路近似短路，电流很大，会损坏器件（教材另两条同源规矩：输出端不许与电源或地短路；除三态门和集电极开路门外，输出端不许并联）。\textbf{三态门：可以。}三态门有第三态（高阻 $Z$），不接管总线时等于从线上「摘下来」；\textbf{限制条件}是同一时刻接在同一根线上的三态门中，\textbf{最多只能有一个使能有效}，其余必须高阻——两个同时有效且输出相反，就退化成普通门并联的短路问题。
 
 %----------------------------------------------- Q3
-\subhdr{Q3\quad 74LS147 的功能；图 5.5.2 那处印错的引脚}
+\subhdr{Q3\quad Briefly describe the functions of the 74LS147 chip. There is a printing error on one pin in the 74LS147 pin diagram shown in Figure 5.5.2 on Page 170 of the textbook. Please identify it.}
 
-\qstem{册页原文（册页 p23 第 3 题）：Briefly describe the functions of the 74LS147 chip. There is a printing error on one pin in the 74LS147 pin diagram shown in Figure 5.5.2 on Page 170 of the textbook. Please identify it.}
+\qstem{中文题意（册页 p23 第 3 题）：简述 74LS147 的功能；教材 p.170 的图 5.5.2（74LS147 引脚图）上有一处引脚印错，指出来。}
 
 \textbf{英文答案（可直接抄进 p.23）}\\
 \emph{Answer.} The 74LS147 is a 10-line-to-4-line (8421 BCD) priority encoder. Both its inputs and its outputs are active LOW. When several inputs are active at the same time, only the one with the highest priority is encoded, $\overline{I_9}$ having the highest priority and $\overline{I_1}$ the lowest. The chip has only nine input lines ($\overline{I_1}\sim\overline{I_9}$): it has \textbf{no $\overline{I_0}$}, because the all-high state of the nine inputs is used to represent decimal 0, for which the output is 1111. The printing error is on \textbf{pin 10}: it should be labelled $\overline{I_9}$ (the highest-priority input), not $\overline{I_0}$.
@@ -324,9 +324,9 @@ p.23--27（学习者 2026-11-17 提供照片）＋ 教材 §5.4／§5.5；2026-1
 \aside{为什么最容易错在第 10 脚：74LS147 的引脚排列基本沿用 74LS148 的图，而 \textbf{74LS148 的第 10 脚正是 $\overline{I_0}$}，照抄就会把 147 的第 10 脚误标成 $\overline{I_0}$。\textbf{手里这版教材（第 2 版，书 p.173 的图 5.5.2）已经印成 $\overline{I_9}$}，所以你在这版上找不到错；依据是册页写的「Page 170」比第 2 版低 3 页，对的是另一印次。\textbf{现场按老师的答案核一遍}：若老师说的是别的脚（例如第 15 脚空脚），以老师的为准，并在报告里注明「按第 1 版图 5.5.2」。}
 
 %----------------------------------------------- Q4
-\subhdr{Q4\quad CD4511 驱动共阴极还是共阳极？画出结构图}
+\subhdr{Q4\quad Which type of LED (common-anode or common-cathode) is driven by CD4511? Draw the circuit structure diagram of this type of LED.}
 
-\qstem{册页原文（册页 p23 第 4 题）：Which type of LED (common-anode or common-cathode) is driven by CD4511? Draw the circuit structure diagram of this type of LED.}
+\qstem{中文题意（册页 p23 第 4 题）：CD4511 驱动共阳极还是共阴极数码管？画出这类 LED 的结构图。}
 
 \textbf{英文答案（可直接抄进 p.23）}\\
 \emph{Answer.} The CD4511 is a BCD-to-seven-segment decoder/driver for \textbf{common-cathode} LED displays. In a common-cathode display the seven cathodes are joined internally to one COM terminal, which is connected to ground, and each anode is fed through a series current-limiting resistor from the corresponding segment output ($a\sim g$). A segment lights when its output is high.
@@ -357,6 +357,41 @@ CD4511 驱动\textbf{共阴极}数码管。共阴极数码管内部七个阴极�
 
 {\small 图 9\quad 共阴极 LED 数码管的结构（本讲义绘）。七段阳极经各自限流电阻接 4511 的 $a\sim g$；七段阴极在数码管内部已连成一点，只引出 COM 一个端子，接 GND。}
 \end{center}
+
+
+%----------------------------------------------- 预习要交的图
+\subhdr{预习还要交的：八项的接线图（用现成图，不重画）}
+
+\callout{册页 p.23 开头那句是硬要求：「\textbf{During preparation, design and draw circuit diagrams for all experimental projects as required}」——\textbf{八项都要有接线图}，不是只有 Q1 那两张。下面按项列出\textbf{照哪张现成图描}；描的时候只需补两样东西：\textbf{芯片脚号}与\textbf{电源脚（$U_{DD}$／$U_{CC}$ 与 GND）}。}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.7cm}p{3.3cm}p{4.6cm}p{4.6cm}@{}}
+\hline
+\thead{项} & \thead{要画的图} & \thead{照哪张现成图} & \thead{描完要补的} \\
+\hline
+1 & 4012 四输入与非门验证 & 本讲义图 2（教材图 5.4.3a） & 输入 2、3、4、5 脚，输出 1 脚；14／7 脚 \\
+2 & 用 4011 搭与门、或门 & 本讲义图 7、图 8 & 1、2→3；5、6→4；8、9→10；14／7 脚 \\
+3 & 三人表决器 & \textbf{本讲义图 10}（课件 C6-3 p7 的现成电路）＋表 C 的脚号 & 三个二输入门与一个三输入门各是几脚 \\
+4 & 三态门与总线 & 本讲义图 11（教材图 5.4.8） & 三个 $1\overline{EN}$／$2\overline{EN}$／$3\overline{EN}$ 与 $1A$／$2A$／$3A$ 的脚号；14／7 脚 \\
+5 & 74LS147 编码器 & 本讲义图 12（教材图 5.5.8） & 九条输入与四条输出的脚号；16／8 脚 \\
+6 & CD4511 译码显示 & 本讲义图 13（教材图 5.5.9） & $A\sim D$、$a\sim g$、$\overline{LT}$／$\overline{BI}$／$LE$ 的脚号；16／8 脚 \\
+7 & 74LS151 数据选择器 & 本讲义图 14（教材图 5.5.10） & $D_0\sim D_7$、$A_0\sim A_2$、$\overline{EN}$ 的脚号；16／8 脚 \\
+8 & Multisim 仿真（选做） & 无现成图，按 §3.8 的最小方案自己搭 & 截图贴在册页 p.27 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{下面就是把现成图里的「表决器」补给你}（课件 6.4.4 例 1 的原图，结构正好是三个二输入与非门 → 一个三输入与非门，与 §2 Q1 的答案、§3.3 的表 C 完全对得上）：
+
+\begin{center}
+\begin{minipage}{0.78\linewidth}
+\centering
+\includegraphics[width=0.82\linewidth]{图-实验7/现成-表决器电路-课件C6-3p7.png}\\[2pt]
+{\small 图 10\quad 三人表决器的现成电路（课件《Chapter Six-3》6.4.4 例 1，第 7 页）。左边三个二输入与非门各做一个乘积项，右边一个三输入与非门把三项再与非一次——\textbf{一共 4 个与非门}。描到册页上时，把每个门的输入、输出脚号按 §3.3 表 C 补上（4011 三个门 + 4012 一个门）。}
+\end{minipage}
+\end{center}
+
 
 %=============================================================
 \hdr{§3}{I. Experimental Procedure：册页八项按序走}
@@ -515,7 +550,7 @@ F=AB+BC+CA=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}} .
 
 \begin{center}
 \includegraphics[width=0.86\linewidth]{图-实验7/图5.4.8-三态门总线.png}\\[2pt]
-{\small 图 10\quad 三态门实现总线传输（教材图 5.4.8，书 p.170）。$u_1$、$u_2$ 由信号源给 $1\ \mathrm{Hz}$／$2\ \mathrm{Hz}$ 方波，$u_3$ 由逻辑开关给高低电平。}
+{\small 图 11\quad 三态门实现总线传输（教材图 5.4.8，书 p.170）。$u_1$、$u_2$ 由信号源给 $1\ \mathrm{Hz}$／$2\ \mathrm{Hz}$ 方波，$u_3$ 由逻辑开关给高低电平。}
 \end{center}
 
 \needspace{9\baselineskip}
@@ -546,7 +581,7 @@ F=AB+BC+CA=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}} .
 
 \begin{center}
 \includegraphics[width=0.62\linewidth]{图-实验7/图5.5.8-147实验电路.png}\\[2pt]
-{\small 图 11\quad 10--4 线优先编码器实验电路（教材图 5.5.8，书 p.176）。}
+{\small 图 12\quad 10--4 线优先编码器实验电路（教材图 5.5.8，书 p.176）。}
 \end{center}
 
 \needspace{9\baselineskip}
@@ -583,7 +618,7 @@ F=AB+BC+CA=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}} .
 
 \begin{center}
 \includegraphics[width=0.60\linewidth]{图-实验7/图5.5.9-4511实验电路.png}\\[2pt]
-{\small 图 12\quad 译码器与显示器实验电路（教材图 5.5.9，书 p.178）。}
+{\small 图 13\quad 译码器与显示器实验电路（教材图 5.5.9，书 p.178）。}
 \end{center}
 
 \needspace{7\baselineskip}
@@ -643,7 +678,7 @@ F=AB+BC+CA=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}} .
 
 \begin{center}
 \includegraphics[width=0.60\linewidth]{图-实验7/图5.5.10-151实验电路.png}\\[2pt]
-{\small 图 13\quad 数据选择器实验电路（教材图 5.5.10，书 p.179）。}
+{\small 图 14\quad 数据选择器实验电路（教材图 5.5.10，书 p.179）。}
 \end{center}
 
 \needspace{9\baselineskip}
