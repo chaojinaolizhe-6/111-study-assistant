@@ -1,0 +1,212 @@
+% !TEX program = xelatex
+% 数学物理方法2 · §8.4 球坐标下的分离变量（精讲讲义，2026-11-17）
+% 依据课件《Chapter 8 - 20261117.pdf》10 页（p1--p10）
+\documentclass[11pt]{ctexart}
+\input{../../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+
+\settags{\S8.4 · 球坐标下的分离变量}{数学物理方法2}
+
+% 同一张表内的中隔线
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 圈码交给中文字体
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% 表头不进第二行
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+% 文本列：左对齐，避免窄列被拉出大片空隙
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.96\linewidth}\centering}{\end{minipage}\end{center}\par}
+\newcommand{\figcap}[1]{\par\vspace{4pt}{\small\color{inkgray}#1}\par}
+
+% 详解块起页保护
+\renewcommand{\qbreak}{\needspace{0.28\textheight}}
+
+% 三级标题
+\newcommand{\hdrsub}[2]{%
+  \par\vspace{10pt}\needspace{4\baselineskip}%
+  \noindent
+  \colorbox{petal}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\bfseries\large #2}\par\nobreak
+  \vspace{2pt}{\color{rulepurple}\hrule height 0.6pt}\vspace{5pt}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% 定理与证明
+\newcommand{\thm}[2]{\par\medskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.5em}{\bfseries #2}\par\nobreak\vspace{2pt}}
+\newcommand{\pfline}{\par\smallskip\noindent\textbf{证明。}\enspace}
+\newcommand{\qedsym}{\hfill$\blacksquare$}
+
+% 单位
+\newcommand{\unit}[1]{\ifmmode\mathrm{#1}\else$\mathrm{#1}$\fi}
+% 组标题
+\newcommand{\grp}[1]{%
+  \par\vspace{11pt}\needspace{3\baselineskip}%
+  \noindent{\color{violetdeep}\bfseries\large\orn\enspace #1}\par\nobreak
+  \vspace{3pt}{\color{petal}\hrule height 1pt}\vspace{5pt}}
+
+% 公式间距
+\setlength{\headheight}{22pt}
+\setlength{\emergencystretch}{1.5em}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{\S8.4\quad 球坐标下的分离变量}
+{从球坐标的 Laplace 算子，到 Legendre 多项式、球谐函数与球贝塞尔}
+{依据课件《Chapter 8 -- 20261117.pdf》10 页（\S8.4，p1--p10）\\2026-11-17\quad 数学物理方法2}
+
+\callout{\textbf{这本讲义怎么用。}正文按课件的 10 页推进，凡是课件压缩掉的中间步都补出来，并在小标题里标了页码。三件事请先知道：
+
+\textbf{一、}课件 p1--p2 用两页做完「径向与角向分离、角向再分离、周期条件定 $m$」三件事，跳步很多；本讲把每一步的「为什么」写全（\S1--\S3），因为后面 $\theta$ 方程与径向方程的全部常数都从这三步来。
+
+\textbf{二、}课件 p3--p4 把 Legendre 方程与关联 Legendre 方程直接当已知（只标「Chapter 12」）。但「$\lambda$ 为什么只能是 $l(l+1)$」「$P_l^m$ 里的 $m$ 为什么只能取到 $l$」这两句，不知道有界性的论证就只是口号。本讲补了 \S4：Legendre 方程的有界性、前几个多项式、Rodrigues 公式、正交性与模。
+
+\textbf{三、}课件 p8 的球贝塞尔同样只给结论（标「Chapter 13」）。本讲补了 \S7.3：$x=kr$ 与 $R=x^{-1/2}y$ 两步换元怎样把球贝塞尔方程变成半整数阶贝塞尔方程，以及 $j_0,n_0,j_1,n_1$ 的显式——球对称问题（$l=0$）只用 $j_0,n_0$ 就能手算。}
+
+\clearpage
+
+\subhdr{全书主线}
+
+\begin{center}
+\begin{minipage}{0.99\linewidth}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  core/.style={draw=violetdeep,fill=bandviolet,rounded corners=3pt,align=left,inner xsep=6pt,inner ysep=5pt,line width=1pt,font=\footnotesize},
+  box/.style={draw=violet,fill=bandviolet,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=4pt,line width=0.7pt,font=\footnotesize},
+  cream/.style={draw=violet,fill=bandcream,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=4pt,line width=0.7pt,font=\footnotesize},
+  ova/.style={-{Stealth[length=2.2mm,width=1.6mm]},violet,line width=0.9pt}]
+
+\node[core,text width=15.2cm,anchor=north west] (CORE) at (0.2,0) {%
+\textbf{\color{violetdeep}要解决的事}\quad 球域（$r\le r_0$）、球外或球壳上的 Laplace、波动、输运方程；边界落在 $r=$ 常数与 $\theta=0,\pi$ 上。\\
+\textbf{难点}\quad 角向有两个变量 $(\theta,\varphi)$，且 $\nabla^2$ 里的 $\sin\theta$、$\sin^2\theta$ 让 $\theta$ 方程变系数——这一步没有初等解。};
+
+\node[box,text width=7.3cm,minimum height=3.4cm,anchor=north west] (A) at (0.2,-2.10) {%
+\textbf{\color{violetdeep}\S1--\S2\quad 第一次分离：$u=R(r)Y(\theta,\varphi)$}\\[1pt]
+$\dfrac1R\dfrac{d}{dr}\Big(r^2\dfrac{dR}{dr}\Big)=\lambda$（径向）\\
+角向：$\dfrac{1}{Y\sin\theta}\partial_\theta(\sin\theta\,\partial_\theta Y)+\dfrac{1}{Y\sin^2\theta}\partial_\varphi^2Y=-\lambda$\\[1pt]
+{\color{inkgray}两边一个是 $r$、一个是 $(\theta,\varphi)$，只能同等于常数}};
+
+\node[box,text width=7.3cm,minimum height=3.4cm,anchor=north west] (B) at (7.9,-2.10) {%
+\textbf{\color{violetdeep}\S3\quad 第二次分离：$Y=\Theta(\theta)\Phi(\varphi)$}\\[1pt]
+$\Phi''+\mu\Phi=0$，周期条件 $\Rightarrow\mu=m^2$\\
+$\sin\theta\dfrac{d}{d\theta}\Big(\sin\theta\dfrac{d\Theta}{d\theta}\Big)+(\lambda\sin^2\theta-m^2)\Theta=0$\\[1pt]
+{\color{inkgray}$\mu=m^2$ 是周期条件逼出来的，不是猜的}};
+
+\node[cream,text width=7.3cm,minimum height=3.4cm,anchor=north west] (C) at (0.2,-5.75) {%
+\textbf{\color{violetdeep}\S4\quad $x=\cos\theta$：关联 Legendre 方程}\\[1pt]
+$\dfrac{d}{dx}\Big[(1-x^2)y'\Big]+\Big(\lambda-\dfrac{m^2}{1-x^2}\Big)y=0$\\
+$x=\pm1$ 有界 $\Rightarrow\lambda=l(l+1)$，$l=0,1,2,\dots$\\
+解 $P_l^m(\cos\theta)$，$0\le m\le l$\\[1pt]
+{\color{inkgray}补：有界性论证、$P_l$ 前几个、正交模方}};
+
+\node[cream,text width=7.3cm,minimum height=3.4cm,anchor=north west] (D) at (7.9,-5.75) {%
+\textbf{\color{violetdeep}\S5\quad 径向：Euler 方程}\\[1pt]
+$r^2R''+2rR'-l(l+1)R=0$\\
+$\Rightarrow R=C_l r^l+D_l r^{-(l+1)}$\\
+球内（含 $r=0$）丢 $r^{-(l+1)}$\\[1pt]
+{\color{inkgray}三种区域各丢哪一项，只看 $r=0$ 与 $r\to\infty$}};
+
+\node[box,text width=15.2cm,minimum height=3.2cm,anchor=north west] (E) at (0.2,-9.45) {%
+\textbf{\color{violetdeep}\S6\quad 球坐标 Laplace 的通解与定系数}\quad
+$u=\sum_{l=0}^{\infty}\sum_{m=0}^{l}\big(A_l^m r^l+C_l^m r^{-(l+1)}\big)P_l^m(\cos\theta)\big(\text{$\cos m\varphi$ 或 $\sin m\varphi$}\big)$\\
+球面 $u(r_0,\theta,\varphi)=f(\theta,\varphi)$：用 $P_l^m$ 的正交性逐阶读出系数；轴对称（$m=0$）只剩 $P_l(\cos\theta)$\\
+{\color{inkgray}教学小例：球内 $u(r_0,\theta)=U_0\cos\theta$ 的解是 $\dfrac{U_0}{r_0}\,r\cos\theta=\dfrac{U_0}{r_0}z$——一个均匀场}};
+
+\node[box,text width=15.2cm,minimum height=2.9cm,anchor=north west] (F) at (0.2,-13.05) {%
+\textbf{\color{violetdeep}\S7\quad 波动与输运：球贝塞尔与三重级数}\quad
+$u=T(t)V(\mathbf r)\Rightarrow\nabla^2V+k^2V=0$，$T''+a^2k^2T=0$\\
+径向 $\big(r^2R'\big)'+\big[r^2k^2-l(l+1)\big]R=0$，换元 $x=kr,\ R=x^{-1/2}y$ $\Rightarrow$ 半整数阶贝塞尔，解 $R=Cj_l(kr)+Dn_l(kr)$\\
+球面齐次 $\Rightarrow k=k_{ln}$；三重级数 $\sum_n\sum_l\sum_m R_lP_l^m\Phi_mT_n$};
+
+\node[cream,text width=15.2cm,minimum height=1.4cm,anchor=north west] (G) at (0.2,-16.35) {%
+\textbf{\color{violetdeep}\S8\quad 本征值问题总表（课件 p10 的作业）}\quad
+直角、极、柱、球四种坐标 $\times$ Laplace、波动、输运三类方程，本征值分别由哪一组条件定：周期、自然（$r=0$ 或 $x=\pm1$ 有界）、齐次边界。};
+
+\draw[ova] ([xshift=-3.4cm]CORE.south) -- ([xshift=-3.4cm]A.north);
+\draw[ova] ([xshift=3.4cm]CORE.south) -- ([xshift=3.4cm]B.north);
+\draw[ova] ([xshift=-3.4cm]A.south) -- ([xshift=-3.4cm]C.north);
+\draw[ova] ([xshift=3.4cm]B.south) -- ([xshift=3.4cm]D.north);
+\draw[ova] ([xshift=-3.4cm]C.south) -- ([xshift=-3.4cm]E.north);
+\draw[ova] ([xshift=3.4cm]D.south) -- ([xshift=3.4cm]E.north);
+\draw[ova] (E.south) -- (F.north);
+\draw[ova] (F.south) -- (G.north);
+
+\end{tikzpicture}
+\figcap{图 0-1\quad 本节主线：两次分离定出 $\lambda$ 与 $m$，$x=\cos\theta$ 把 $\theta$ 方程变成关联 Legendre 方程，自然边界定 $l$，径向按区域取舍，最后用球谐正交性定系数。}
+\end{minipage}
+\end{center}
+
+\clearpage
+
+\subhdr{记号}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.16\linewidth}L{0.76\linewidth}@{}}
+\thead{记号} & \thead{含义} \\
+\tabmidrule
+$r,\ \theta,\ \varphi$ & 球坐标：$0\le r<\infty$，$0\le\theta\le\pi$（自 $+z$ 轴起算的极角），$0\le\varphi<2\pi$（方位角） \\
+$x$ & $x=\cos\theta\in[-1,1]$；$\theta=0,1$ 对应 $x=1,-1$ \\
+$r_0$ & 球面半径；球内的区域是 $r<r_0$ \\
+$\lambda$ & 第一次分离的常数（径向/角向）；后文证明它只能取 $l(l+1)$ \\
+$\mu,\ m$ & 第二次分离的常数；周期条件给出 $\mu=m^2$，$m=0,1,2,\dots$ \\
+$l,\ m$ & 角量子数与磁量子数；$l=0,1,2,\dots$，$m=0,1,\dots,l$ \\
+$P_l,\ P_l^m$ & Legendre 多项式、关联 Legendre 函数（本讲不写 Condon--Shortley 的 $(-1)^m$） \\
+$Y_l^m$ & 球谐函数；实形式取 $P_l^m(\cos\theta)\cos m\varphi$ 与 $P_l^m(\cos\theta)\sin m\varphi$ \\
+$k$ & 时间分离的常数（波数，单位 $1/$长度）；$k=k_{ln}$ 由球面条件定 \\
+$j_l,\ n_l$ & 第一类、第二类球贝塞尔函数；$j_0=\sin x/x$，$n_0=-\cos x/x$ \\
+$a$ & 波速或 $\sqrt{\kappa/(\rho c)}$（输运），量纲随方程而定 \\
+$A_l^m,\ C_l^m$ & $r^l$ 与 $r^{-(l+1)}$ 的系数；$B_l^m,\ D_l^m$ 是 $\sin m\varphi$ 那一支 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\warnbox{\textbf{两个记号坑。}①本讲的 $m$ 是整数（$0\le m\le l$），不是 §8.3 柱坐标里那个「$\mu$ 的三种符号」的 $\mu$；两处都写作 $m$ 时看上下文。②$P_l^m$ 的符号约定各家不同：有的教材带 $(-1)^m$（Condon--Shortley），本讲按 $P_l^m=(1-x^2)^{m/2}\dfrac{d^m}{dx^m}P_l$ 取，不带上标负号；对照其他书时先确认这一条。}
+
+\clearpage
+
+\subhdr{目录（页码自动解析）}
+\tabtop
+\begin{tabular}{@{}p{0.10\linewidth}p{0.74\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+\S0 & 本节要解决什么：主线与记号 & \pageref{sec:s0} \\
+\S1 & 球坐标与它的 Laplace 算子 & \pageref{sec:s1} \\
+\S2 & 第一次分离：径向与角向 & \pageref{sec:s2} \\
+\S3 & 第二次分离：$\varphi$ 与 $\theta$ & \pageref{sec:s3} \\
+\S4 & Legendre 方程、自然边界与球谐函数 & \pageref{sec:s4} \\
+\S5 & 径向方程：Euler 方程与两组解 & \pageref{sec:s5} \\
+\S6 & 球坐标 Laplace 的通解与定系数 & \pageref{sec:s6} \\
+\S7 & 波动与输运：球贝塞尔与三重级数 & \pageref{sec:s7} \\
+\S8 & 本征值问题总表（课件 p10 作业） & \pageref{sec:s8} \\
+\S9 & 速查与易错 & \pageref{sec:s9} \\
+\S10 & 三句话总结 & \pageref{sec:s10} \\
+\S11 & 独立练习（五题） & \pageref{sec:practice} \\
+附录 A & 五道练习的详解 & \pageref{sec:app} \\
+\end{tabular}
+\tabbot
+
+\clearpage
+
+\input{s0-3}
+\input{s4}
+\input{s5-7}
+\input{s8-10}
+\input{exercises}
+\input{answers}
+
+\end{document}
+
+

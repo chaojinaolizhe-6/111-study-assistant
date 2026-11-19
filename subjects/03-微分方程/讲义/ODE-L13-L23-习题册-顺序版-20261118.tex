@@ -1,0 +1,1018 @@
+\documentclass[10.5pt]{ctexart}
+\usepackage[a4paper,left=1.7cm,right=1.7cm,top=1.9cm,bottom=1.9cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{bm}
+
+\definecolor{deepblue}{RGB}{12,82,160}
+\definecolor{deepnavy}{RGB}{18,60,104}
+\definecolor{accent}{RGB}{176,58,20}
+\definecolor{band}{RGB}{242,246,251}
+\definecolor{band2}{RGB}{250,247,238}
+\definecolor{rulegray}{RGB}{198,210,226}
+\definecolor{inkgray}{RGB}{96,104,116}
+
+\linespread{1.18}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlist{nosep,leftmargin=1.6em}
+
+\newcommand{\vect}[1]{\bm{#1}}
+
+\pagestyle{fancy}
+\setlength{\headheight}{19pt}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{inkgray}微分方程 期中之后（L13--L23）\quad 习题册 · 顺序版}
+\fancyhead[R]{\footnotesize\color{inkgray}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+
+\newcommand{\hdr}[1]{%
+  \par\vspace{10pt}%
+  \needspace{3\baselineskip}%
+  \noindent{\color{deepblue}\large\bfseries #1}\par\vspace{1pt}%
+  \noindent{\color{deepblue}\rule{\linewidth}{1pt}}\par\vspace{5pt}}
+
+\newcommand{\parttitle}[2]{%
+  \par\vspace{6pt}\begin{center}
+  {\color{deepblue}\LARGE\bfseries #1}\\[3pt]
+  {\color{inkgray}\small #2}
+  \end{center}\vspace{4pt}}
+
+% 有序清单条目：编号 / 要求 / 出处
+\newcommand{\itmh}[3]{%
+  \par\vspace{6pt}\needspace{6\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{5pt}{\bfseries #2}\hfill
+  {\scriptsize\color{inkgray}#3}\par\nopagebreak\vspace{-2pt}}
+
+% 乱序练习条目
+\newcommand{\drillh}[2]{%
+  \par\vspace{7pt}\needspace{7\baselineskip}%
+  \noindent{\color{accent}\bfseries #1}\hspace{5pt}{\small\color{inkgray}#2}\par\nopagebreak\vspace{-2pt}}
+
+\newcommand{\writelines}{%
+  \par\vspace{3pt}\noindent
+  {\scriptsize\color{inkgray}类型：\rule{4.9cm}{0.35pt}\quad 解法：\rule{5.4cm}{0.35pt}}\par\vspace{1pt}
+  \noindent{\scriptsize\color{inkgray}结果：\rule{13.2cm}{0.35pt}}\par\vspace{2pt}}
+
+% 答案条目：编号 / 原题号 / 类型 / 解法
+\newcommand{\ansh}[4]{%
+  \par\vspace{7pt}\needspace{9\baselineskip}%
+  \noindent{\color{deepblue}\bfseries #1}\hspace{4pt}{\scriptsize\color{inkgray}（原题 #2）}\hspace{6pt}%
+  {\small\textbf{类型}：#3}\hspace{6pt}{\small\textbf{解法}：#4}\par\nopagebreak\vspace{-3pt}}
+
+\newcommand{\ansnote}[1]{\par\vspace{-2pt}\noindent{\scriptsize\color{inkgray}注：#1}\par}
+
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{center}
+\vspace*{1.0cm}
+{\color{deepblue}\Huge\bfseries 微分方程\quad 期中之后}\\[8pt]
+{\color{deepblue}\Large\bfseries 课件题目习题册\quad（顺序版）}\\[16pt]
+{\large W.~Y. 课件 8 份\quad Lecture 13--23}\\[4pt]
+{\small 共 334\ 页\quad｜\quad 逐页识别：例题 55\ 道 ＋ 课后作业 19\ 道 ＝ \textbf{74} 道}\\[2pt]
+{\small 生成日期 2026-11-18\quad｜\quad 核验：121 项符号／数值断言全部通过}
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabular}{|c|>{\raggedright\arraybackslash}p{6.4cm}|c|c|c|}
+\hline
+\textbf{讲次} & \textbf{主题} & \textbf{课件页} & \textbf{例题} & \textbf{作业}\\\hline
+L13 & 方程组入门 & 37 & 7 & 1\\\hline
+L14--15 & 常系数齐次组 & 64 & 9 & 4\\\hline
+L16--17 & 矩阵指数 & 44 & 7 & 3\\\hline
+L17--18 & 非齐次线性组 & 49 & 6 & 1\\\hline
+L18 & 幂级数（常点） & 37 & 6 & 1\\\hline
+L19--20 & 幂级数（奇点） & 42 & 6 & 2\\\hline
+L21--22 & 相图与稳定性 & 43 & 9 & 3\\\hline
+L22--23 & 线性化 & 18 & 5 & 4\\\hline
+\hline
+\textbf{合计} & & \textbf{334} & \textbf{55} & \textbf{19}\\\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.35cm}
+\begin{center}
+\begin{minipage}{0.9\linewidth}
+\small
+\textbf{怎么用这份册子（三步）}
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{先看第一部分}：按讲次排好的原始清单，每题只给方程与要求，用来确认“这一讲讲过的题到底长什么样”。
+  \item \textbf{自己先做}：遮住第二部分，逐题写下类型与解法；卡住时只回看讲次，不要先翻答案。
+  \item \textbf{再对第二部分}：答案按同编号排列，每条给“类型／解法／结果”，并注明课件页码，方便回课件定位。
+\end{enumerate}
+\vspace{2pt}
+\textbf{收录口径}：课件里凡以 Example／例 编号提出问题、或以 Homework／作业 布置的每个小问，逐条收录。不计入的有：纯定义、定理陈述、“For reading”书单、Remark；以及三处只做演示不作题目的 “Example.”（L18 p11 三则幂级数运算示范，L16--17 例 3 的设形说明），它们在正文里已说明用途。同一张幻灯片的多帧动画只算一题；同一题在两次作业里重复出现时各记一条，并在答案里互相标注。
+\end{minipage}
+\end{center}
+\clearpage
+
+\parttitle{第一部分\quad 题目总清单（按讲次）}{同一批题，按 L13$\to$L23 的讲课顺序排列；此处不给答案}
+
+\hdr{第 13 讲\quad 方程组入门}
+{\small\color{inkgray}把高阶方程化成一阶组；解的结构、Wronskian、基本解组}\par\vspace{4pt}
+\itmh{L13-01}{验证给定的二元函数组是通解，并写成两个任意常数的形式}{例题 $\cdot{}$ p10}
+\[
+\frac{\mathrm{d}y_1}{\mathrm{d}x}=y_2,\qquad \frac{\mathrm{d}y_2}{\mathrm{d}x}=-y_1,
+\qquad y_1=c_1\cos(x-c_2),\quad y_2=-c_1\sin(x-c_2)
+\]
+\itmh{L13-02}{求通解与奇解，并说明解为什么可以不唯一}{例题 $\cdot{}$ p10}
+\[
+\frac{\mathrm{d}y_1}{\mathrm{d}x}=2\sqrt{y_1},\qquad \frac{\mathrm{d}y_2}{\mathrm{d}x}=y_1
+\]
+\itmh{L13-03}{把方程组写成矩阵形式，并判断齐次/非齐次}{例题 $\cdot{}$ p14}
+\[
+x'=y-z,\qquad y'=x+y,\qquad z'=x+z
+\]
+\itmh{L13-04}{验证两个向量函数都是解，并用叠加原理说明它们的线性组合也是解}{例题 $\cdot{}$ p18}
+\[
+\vect{Y}'=\begin{pmatrix}1&1\\ 4&1\end{pmatrix}\vect{Y},\qquad
+\vect{Y}_1(x)=\begin{pmatrix}1\\ 2\end{pmatrix}\mathrm{e}^{3x},\quad
+\vect{Y}_2(x)=\begin{pmatrix}1\\ -2\end{pmatrix}\mathrm{e}^{-x}
+\]
+\itmh{L13-05}{验证两个解线性无关（算 Wronskian），并写出通解}{例题 $\cdot{}$ p23}
+\[
+\frac{\mathrm{d}y_1}{\mathrm{d}x}=y_2,\qquad \frac{\mathrm{d}y_2}{\mathrm{d}x}=-y_1,
+\qquad \vect{Y}_1=\begin{pmatrix}\cos x\\ -\sin x\end{pmatrix},\quad
+\vect{Y}_2=\begin{pmatrix}\sin x\\ \cos x\end{pmatrix}
+\]
+\itmh{L13-06}{把 $n$ 阶线性方程化成一阶矩阵系统，写出 $A(t)$、$\vect{F}(t)$ 与初值向量}{例题 $\cdot{}$ p26--p29}
+\[
+b_0(t)y^{(n)}+b_1(t)y^{(n-1)}+\cdots+b_{n-1}(t)y'+b_n(t)y=g(t),\quad b_0(t)\neq0,
+\qquad y(t_0)=c_0,\ \dots,\ y^{(n-1)}(t_0)=c_{n-1}
+\]
+\itmh{L13-07}{把二阶方程化成一阶组并写成矩阵形式，判断类型}{例题 $\cdot{}$ p30--p31}
+\[
+t^4\frac{\mathrm{d}^2x}{\mathrm{d}t^2}+\sin t\,\frac{\mathrm{d}x}{\mathrm{d}t}-4x=\ln t,\qquad t>0
+\]
+\itmh{L13-08}{把三阶方程化为等价的一阶方程组，并说明它是否线性}{作业 $\cdot{}$ p37}
+\[
+y'''=y''-x^2\,(y')^2
+\]
+
+\hdr{第 14--15 讲\quad 常系数齐次组}
+{\small\color{inkgray}特征值三种情形：互异实根／共轭复根／重根（$g=m$ 与 $g<m$）}\par\vspace{4pt}
+\itmh{L14-01}{求通解（相异实特征值）}{例题 $\cdot{}$ p11--p15}
+\[
+\begin{cases}y_1'=y_1-y_2+y_3\\ y_2'=y_1+y_2-y_3\\ y_3'=2y_1-y_2\end{cases}
+\quad\Longleftrightarrow\quad
+A=\begin{pmatrix}1&-1&1\\ 1&1&-1\\ 2&-1&0\end{pmatrix}
+\]
+\itmh{L14-02}{求一组实值基本解组，并算 Wronskian 验证线性无关}{例题 $\cdot{}$ p17--p19}
+\[
+\vect{Y}'=\begin{pmatrix}-\tfrac12&1\\[2pt]-1&-\tfrac12\end{pmatrix}\vect{Y}
+\]
+\itmh{L14-03}{求通解（一个实根 + 一对共轭复根）}{例题 $\cdot{}$ p22--p25}
+\[
+\begin{cases}y_1'=2y_1+y_2\\ y_2'=y_1+3y_2-y_3\\ y_3'=-y_1+2y_2+3y_3\end{cases},
+\qquad A=\begin{pmatrix}2&1&0\\ 1&3&-1\\ -1&2&3\end{pmatrix}
+\]
+\itmh{L14-04}{求四维弹簧-质量系统的通解}{例题 $\cdot{}$ p26--p29}
+\[
+\begin{pmatrix}y_1'\\ y_2'\\ y_3'\\ y_4'\end{pmatrix}=
+\begin{pmatrix}0&0&1&0\\ 0&0&0&1\\ -2&3/2&0&0\\ 4/3&-3&0&0\end{pmatrix}
+\begin{pmatrix}y_1\\ y_2\\ y_3\\ y_4\end{pmatrix}
+\quad(y_1=x_1,\ y_2=x_2,\ y_3=x_1',\ y_4=x_2')
+\]
+\itmh{L14-05}{求通解（重根但几何重数够：$g=m=2$）}{例题 $\cdot{}$ p33--p36}
+\[
+\begin{cases}y_1'=4y_1-y_2-y_3\\ y_2'=y_1+2y_2-y_3\\ y_3'=y_1-y_2+2y_3\end{cases},
+\qquad A=\begin{pmatrix}4&-1&-1\\ 1&2&-1\\ 1&-1&2\end{pmatrix}
+\]
+\itmh{L14-06}{求通解（重根且 $g=1<m=2$）}{例题 $\cdot{}$ p39--p42}
+\[
+A=\begin{pmatrix}1&-1\\ 1&3\end{pmatrix},\qquad \vect{Y}'=A\vect{Y}
+\]
+\itmh{L14-07}{求通解（三重根、$g=1$，要接两级广义特征向量）}{复习例 $\cdot{}$ p46--p51}
+\[
+A=\begin{pmatrix}4&-1&0\\ 3&1&-1\\ 1&0&1\end{pmatrix},\qquad \vect{Y}'=A\vect{Y}
+\]
+\itmh{L14-08}{求通解（一个单根 + 一个二重根、$g=1$）}{复习例 $\cdot{}$ p52--p57}
+\[
+A=\begin{pmatrix}-1&1&-2\\ 4&1&0\\ 2&1&-1\end{pmatrix},\qquad \vect{Y}'=A\vect{Y}
+\]
+\itmh{L14-09}{求通解（三重根、$g=2$，只需接一级）}{复习例 $\cdot{}$ p58--p63}
+\[
+A=\begin{pmatrix}0&-4&0\\ 1&-4&0\\ 1&-2&-2\end{pmatrix},\qquad \vect{Y}'=A\vect{Y}
+\]
+\itmh{L14-10}{解齐次系统 $\vect{Y}'=A\vect{Y}$（第 1 题）}{作业 $\cdot{}$ p64}
+\[
+A=\begin{pmatrix}1&1&-3\\ 3&2&-3\\ 1&0&1\end{pmatrix}
+\]
+\itmh{L14-11}{解齐次系统 $\vect{Y}'=A\vect{Y}$（第 2 题）}{作业 $\cdot{}$ p64}
+\[
+A=\begin{pmatrix}-2&1\\ -5&2\end{pmatrix}
+\]
+\itmh{L14-12}{解齐次系统 $\vect{Y}'=A\vect{Y}$（第 3 题）}{作业 $\cdot{}$ p64}
+\[
+A=\begin{pmatrix}-2&-1&1\\ -3&-3&2\\ -4&-3&2\end{pmatrix}
+\]
+\itmh{L14-13}{解齐次系统 $\vect{Y}'=A\vect{Y}$（第 4 题）}{作业 $\cdot{}$ p64}
+\[
+A=\begin{pmatrix}1&1\\ 9&1\end{pmatrix}
+\]
+
+\hdr{第 16--17 讲\quad 矩阵指数}
+{\small\color{inkgray}$\mathrm{e}^{Ax}$ 三条路线：对角化、Cayley--Hamilton、基本解矩阵}\par\vspace{4pt}
+\itmh{L16-01}{用对角化求 $\mathrm{e}^{Ax}$，并写出 $\vect{Y}'=A\vect{Y}$ 的通解}{例题 $\cdot{}$ p13--p15}
+\[
+A=\begin{pmatrix}1&-1&1\\ 1&1&-1\\ 2&-1&0\end{pmatrix}
+\]
+\itmh{L16-02}{把矩阵多项式 $p(A)$ 降阶}{例题 $\cdot{}$ p20}
+\[
+p(A)=A^4+3A^3+2A^2+A+E,\qquad A=\begin{pmatrix}3&1\\ 1&2\end{pmatrix}
+\]
+\itmh{L16-03}{用 Cayley--Hamilton 法求 $\mathrm{e}^{Ax}$ 与通解}{例题 $\cdot{}$ p24--p25}
+\[
+A=\begin{pmatrix}1&1\\ 9&1\end{pmatrix}
+\]
+\itmh{L16-04}{求 $\mathrm{e}^{Ax}$ 并解 $\vect{Y}'=A\vect{Y}$（纯虚根，旋转）}{例题 $\cdot{}$ p26--p27}
+\[
+A=\begin{pmatrix}0&1\\ -1&0\end{pmatrix}
+\]
+\itmh{L16-05}{写出 $\mathrm{e}^{Ax}$ 的设形，并列出确定 $\alpha_i$ 的代数方程组}{例题 $\cdot{}$ p30--p31}
+\[
+n=4;\quad \lambda=5x\ (m=3),\qquad \lambda=2x\ (m=1)
+\quad\text{是 $Ax$ 的特征值}
+\]
+\itmh{L16-06}{求 $\mathrm{e}^{Ax}$（三重根，定理 3.3 的三个方程）}{例题 $\cdot{}$ p33--p35}
+\[
+A=\begin{pmatrix}0&-4&0\\ 1&-4&0\\ 1&-2&-2\end{pmatrix}
+\]
+\itmh{L16-07}{求 $\mathrm{e}^{Ax}$（特征值 $0$ 与 $\pm\mathrm{i}$ 并存）}{例题 $\cdot{}$ p36--p38}
+\[
+A=\begin{pmatrix}0&1&0\\ 0&-2&-5\\ 0&1&2\end{pmatrix}
+\]
+\itmh{L16-08}{求 $\mathrm{e}^{Ax}$ 并解 $\vect{Y}'=A\vect{Y}$（第 1 题）}{作业 $\cdot{}$ p44}
+\[
+A=\begin{pmatrix}-6&-4\\ 8&6\end{pmatrix}
+\]
+\itmh{L16-09}{求 $\mathrm{e}^{Ax}$ 并解 $\vect{Y}'=A\vect{Y}$（第 2 题）}{作业 $\cdot{}$ p44}
+\[
+A=\begin{pmatrix}-4&4\\ -5&4\end{pmatrix}
+\]
+\itmh{L16-10}{求 $\mathrm{e}^{Ax}$ 并解 $\vect{Y}'=A\vect{Y}$（第 3 题）}{作业 $\cdot{}$ p44}
+\[
+A=\begin{pmatrix}-24&0&0\\ 4&-2&0\\ 1&0&2\end{pmatrix}
+\]
+
+\hdr{第 17--18 讲\quad 非齐次线性组}
+{\small\color{inkgray}参数变易（逐分量／矩阵）与待定系数（含共振）}\par\vspace{4pt}
+\itmh{L17-01}{用参数变易法（逐分量版）解初值问题}{例题 $\cdot{}$ p7--p10}
+\[
+y_1'=\tfrac73y_1+\tfrac23y_2-5\mathrm{e}^{x},\quad y_1(0)=1;\qquad
+y_2'=\tfrac43y_1+\tfrac53y_2-8\mathrm{e}^{x},\quad y_2(0)=4
+\]
+\itmh{L17-02}{用参数变易法（矩阵版，含 $\mathrm{e}^{Ax}$）解同一个初值问题}{例题 $\cdot{}$ p14--p16}
+\[
+\vect{Y}'=A\vect{Y}+\vect{F}(x),\quad \vect{Y}(0)=\begin{pmatrix}1\\4\end{pmatrix},\quad
+A=\begin{pmatrix}7/3&2/3\\ 4/3&5/3\end{pmatrix},\quad
+\vect{F}=\begin{pmatrix}-5\\-8\end{pmatrix}\mathrm{e}^{x}
+\]
+\itmh{L17-03}{用待定系数法求通解（多项式右端）}{例题 $\cdot{}$ p19--p21}
+\[
+\vect{Y}'=\begin{pmatrix}1&2\\ 3&2\end{pmatrix}\vect{Y}+x\begin{pmatrix}2\\-4\end{pmatrix}
+\]
+\itmh{L17-04}{用待定系数法解初值问题（共振情形）}{例题 $\cdot{}$ p22--p26}
+\[
+y_1'=\tfrac73y_1+\tfrac23y_2-5\mathrm{e}^{x},\ y_1(0)=1;\qquad
+y_2'=\tfrac43y_1+\tfrac53y_2-8\mathrm{e}^{x},\ y_2(0)=4
+\]
+\itmh{L17-05}{用待定系数法求通解（三角右端）}{例题 $\cdot{}$ p29--p31}
+\[
+\begin{cases}
+y_1'=-8y_1+y_2-5y_3+13\cos2x+3\sin2x\\
+y_2'=18y_1-y_2+10y_3-28\cos2x-10\sin2x\\
+y_3'=11y_1-7y_2+10y_3-19\cos2x-12\sin2x
+\end{cases}
+\]
+\itmh{L17-06}{用三种方法解同一个初值问题（化系统 / 化二阶方程 / 矩阵指数）}{例题 $\cdot{}$ p32--p48}
+\[
+x''=-2x'-5y+3,\qquad y'=x'+2y,\qquad x(0)=0,\ x'(0)=0,\ y(0)=1
+\]
+\itmh{L17-07}{用参数变易法与待定系数法各解一次}{作业 $\cdot{}$ p49}
+\[
+\begin{cases}
+y_1'=-2y_1-2y_2+2y_3+2x+3\\
+y_2'=-3y_1+y_2-4y_3+3x-1\\
+y_3'=-3y_1+2y_2-5y_3+3x-2
+\end{cases}
+\]
+
+\hdr{第 18 讲\quad 幂级数（常点）}
+{\small\color{inkgray}幂级数工具、递推关系、常点邻域的级数解}\par\vspace{4pt}
+\itmh{L18-01}{求收敛半径，并判定两个端点的收敛性}{例题 $\cdot{}$ p6--p7}
+\[
+\sum_{n=1}^{\infty}\frac{(x+1)^{n}}{n\,2^{n}}
+\]
+\itmh{L18-02}{把级数改写为从 $n=0$ 开始}{例题 $\cdot{}$ p15}
+\[
+\sum_{n=2}^{\infty}a_nx^{n}
+\]
+\itmh{L18-03}{把表达式写成通项含 $x^{r+n}$ 的级数}{例题 $\cdot{}$ p16}
+\[
+x^{2}\sum_{n=0}^{\infty}(r+n)a_nx^{r+n-1}
+\]
+\itmh{L18-04}{用幂级数求 $y''+y=0$ 的通解}{例题 $\cdot{}$ p23--p26}
+\[
+y''+y=0,\qquad -\infty<x<\infty
+\]
+\itmh{L18-05}{求初值问题的幂级数解（系数含 $\mathrm{e}^{x}$）}{例题 $\cdot{}$ p29--p32}
+\[
+y''(x)+\mathrm{e}^{x}y'(x)+(1+x^{2})y(x)=0,\qquad y(0)=1,\quad y'(0)=0
+\]
+\itmh{L18-06}{求 $x=0$ 处级数解每一支的前四项}{例题 $\cdot{}$ p33--p35}
+\[
+(x^{2}+1)y''-4xy'+6y=0,\qquad -\infty<x<\infty
+\]
+\itmh{L18-07}{求两个线性无关的级数解（各前五个非零项），并说明保证收敛的区间}{作业 $\cdot{}$ p36}
+\[
+y''+(1-x)y'+(x^{2}-1)y=0,\qquad x=0\ \text{附近}
+\]
+
+\hdr{第 19--20 讲\quad 幂级数（奇点）}
+{\small\color{inkgray}正则奇点、Euler 方程、Frobenius 方法、Bessel 方程}\par\vspace{4pt}
+\itmh{L19-01}{找出并分类所有奇点（正则/非正则）}{例题 $\cdot{}$ p6--p7}
+\[
+(x^{2}-1)^{2}y''(x)+(x+1)y'(x)-y(x)=0
+\]
+\itmh{L19-02}{解 Euler 方程初值问题（两个互异实根）}{例题 $\cdot{}$ p10--p11}
+\[
+2x^{2}y''+3xy'-15y=0,\qquad y(1)=0,\quad y'(1)=1
+\]
+\itmh{L19-03}{解 Euler 方程（共轭复根）}{例题 $\cdot{}$ p13}
+\[
+x^{2}y''+3xy'+4y=0
+\]
+\itmh{L19-04}{解 Euler 方程（重根）}{例题 $\cdot{}$ p15}
+\[
+x^{2}y''-7xy'+16y=0
+\]
+\itmh{L19-05}{解平移型 Euler 方程（在任意不含 $x=-6$ 的区间上）}{例题 $\cdot{}$ p19}
+\[
+3(x+6)^{2}y''+25(x+6)y'-16y=0,\qquad x\neq-6
+\]
+\itmh{L19-06}{在正则奇点 $x=0$ 处求一个 Frobenius 级数解（取大根 $r_1$）}{例题 $\cdot{}$ p32--p34}
+\[
+xy''(x)+4y'(x)-xy(x)=0,\qquad x>0
+\]
+\itmh{L19-07}{同一方程取小根 $r_2=-3$，说明这样能得到第二个线性无关解（且不带 $\ln x$）}{作业 $\cdot{}$ p34}
+\[
+xy''(x)+4y'(x)-xy(x)=0,\qquad r_2=-3
+\]
+\itmh{L19-08}{求两个线性无关解（各前五个非零项），并给出幂级数成立的最小收敛区间}{作业 $\cdot{}$ p42}
+\[
+2x^{2}y''+(2x^{2}+x)y'+(3x-1)y=0,\qquad x>0
+\]
+
+\hdr{第 21--22 讲\quad 相图与稳定性}
+{\small\color{inkgray}鞍点／结点／焦点／中心；$\tau$--$\Delta$ 判据}\par\vspace{4pt}
+\itmh{L21-01}{讨论 $x_0(0)=0$ 这一零解在三种参数下的稳定性}{例题 $\cdot{}$ p6--p9}
+\[
+x'=ax,\qquad t\ge0;\qquad x_0(t)\equiv0
+\]
+\itmh{L21-02}{求平衡解并判定各自的稳定性}{例题 $\cdot{}$ p10}
+\[
+x'=x-x^{2},\qquad t\ge0
+\]
+\itmh{L21-03}{求临界点类型与稳定性，并说明相图的画法}{例题 $\cdot{}$ p13--p18}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}1&1\\ 4&1\end{pmatrix}
+\]
+\itmh{L21-04}{求通解并画出相图（同号实根）}{例题 $\cdot{}$ p19--p22}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}-3&2\\ 1&-2\end{pmatrix}
+\]
+\itmh{L21-05}{已知特征值与特征向量，画相图并判断类型}{例题 $\cdot{}$ p23}
+\[
+\lambda_1=3,\ \vect{V}_1=\begin{pmatrix}1\\2\end{pmatrix};\qquad
+\lambda_2=4,\ \vect{V}_2=\begin{pmatrix}1\\-3\end{pmatrix}
+\]
+\itmh{L21-06}{画相图并判断类型（纯虚根）}{例题 $\cdot{}$ p26--p28}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}0&-4\\ 1&0\end{pmatrix}
+\]
+\itmh{L21-07}{求通解，判断临界点类型与稳定性}{例题 $\cdot{}$ p29--p31}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}3&-2\\ 4&-1\end{pmatrix}
+\]
+\itmh{L21-08}{求通解，说明轨线形状与临界点名称}{例题 $\cdot{}$ p33--p34}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}1&0\\ 0&1\end{pmatrix}
+\]
+\itmh{L21-09}{求通解，说明轨线形状与临界点名称（重根、只有一个特征向量）}{例题 $\cdot{}$ p35--p39}
+\[
+\vect{X}'=A\vect{X},\qquad A=\begin{pmatrix}7&1\\ -4&3\end{pmatrix}
+\]
+\itmh{L21-10}{判定临界点类型并讨论稳定性（第 1 题）}{作业 $\cdot{}$ p43}
+\[
+x'=3x+2y,\qquad y'=x+4y
+\]
+\itmh{L21-11}{判定临界点类型并讨论稳定性（第 2 题）}{作业 $\cdot{}$ p43}
+\[
+x'=-x,\qquad y'=-4y
+\]
+\itmh{L21-12}{判定临界点类型并讨论稳定性（第 3 题）}{作业 $\cdot{}$ p43}
+\[
+x'=4y,\qquad y'=-x
+\]
+
+\hdr{第 22--23 讲\quad 线性化}
+{\small\color{inkgray}第一近似定理、雅可比矩阵、单摆两个临界点}\par\vspace{4pt}
+\itmh{L22-01}{说明变系数线性系统的稳定性为什么不能看特征值}{例题 $\cdot{}$ p5}
+\[
+\vect{X}'=A(t)\vect{X},\qquad
+A(t)=\begin{pmatrix}-1-9\cos^{2}6t+12\sin6t\cos6t & 12\cos^{2}6t+9\sin6t\cos6t\\
+-12\sin^{2}6t+9\sin6t\cos6t & -1-9\sin^{2}6t-12\sin6t\cos6t\end{pmatrix}
+\]
+\itmh{L22-02}{写出第一近似系统，并据此判断零解稳定性}{例题 $\cdot{}$ p10}
+\[
+\frac{\mathrm{d}x_1}{\mathrm{d}t}=4\sin x_1+x_2,\qquad
+\frac{\mathrm{d}x_2}{\mathrm{d}t}=x_1+x_2+x_1^{3}x_2
+\]
+\itmh{L22-03}{用等价无穷小写出第一近似系统，并判断零解稳定性}{例题 $\cdot{}$ p11--p12}
+\[
+\frac{\mathrm{d}x_1}{\mathrm{d}t}=\mathrm{e}^{x_1}-\mathrm{e}^{-3x_3},\quad
+\frac{\mathrm{d}x_2}{\mathrm{d}t}=4x_3-3\sin(x_1+x_2),\quad
+\frac{\mathrm{d}x_3}{\mathrm{d}t}=\ln(1-3x_1+x_3)
+\]
+\itmh{L22-04}{写出第一近似系统，并判断零解稳定性}{例题 $\cdot{}$ p13--p14}
+\[
+\frac{\mathrm{d}x_1}{\mathrm{d}t}=-\tan(x_1-x_3)\cos x_2,\quad
+\frac{\mathrm{d}x_2}{\mathrm{d}t}=\sin^{3}x_3-\sin x_2-x_3,\quad
+\frac{\mathrm{d}x_3}{\mathrm{d}t}=\sin(x_2-x_3)\cos(x_1-x_3)
+\]
+\itmh{L22-05}{求单摆的全部临界点，并判定它们的类型与稳定性}{例题 $\cdot{}$ p15--p17}
+\[
+ml^{2}\frac{\mathrm{d}^{2}\theta}{\mathrm{d}t^{2}}=-cl\frac{\mathrm{d}\theta}{\mathrm{d}t}-mgl\sin\theta
+\ \Longleftrightarrow\
+\begin{cases}x'=y\\ y'=-\omega^{2}\sin x-\gamma y\end{cases}
+\quad\left(\gamma=\frac{c}{ml},\ \omega^{2}=\frac{g}{l}\right)
+\]
+\itmh{L22-06}{判定临界点类型并讨论稳定性（第 1 题 (1)）}{作业 $\cdot{}$ p18}
+\[
+x'=3x+2y,\qquad y'=x+4y
+\]
+\itmh{L22-07}{判定临界点类型并讨论稳定性（第 1 题 (2)）}{作业 $\cdot{}$ p18}
+\[
+x'=-x,\qquad y'=-y
+\]
+\itmh{L22-08}{判定临界点类型并讨论稳定性（第 1 题 (3)）}{作业 $\cdot{}$ p18}
+\[
+x'=-x+2y,\qquad y'=-2x-y
+\]
+\itmh{L22-09}{研究非线性系统平凡解的稳定性（第 2 题）}{作业 $\cdot{}$ p18}
+\[
+x_1'=x_1-x_1^{2}-x_1x_2,\qquad
+x_2'=0.5x_2-0.75x_1x_2-0.25x_2^{2}
+\]
+
+\clearpage
+
+\parttitle{第二部分\quad 答案}{按题号排列；“类型／解法／结果”三件套，结果后附核验注}
+
+\ansh{L13-01}{p10}{一阶线性方程组 · 通解的验证与改写}{逐分量求导后代入原方程；再用和角公式把 $c_1\cos(x-c_2)$ 展开，把相位 $c_2$ 吸收进两个新常数}
+\[
+y_1=C_1\cos x+C_2\sin x,\qquad y_2=-C_1\sin x+C_2\cos x
+\]
+\ansnote{课件原写法 $c_1\cos(x-c_2)$ 与上式等价：取 $C_1=c_1\cos c_2$、$C_2=c_1\sin c_2$ 即得。注意 $y_2$ 必须等于 $y_1'$，这正好是改写式的自检。}
+
+\ansh{L13-02}{p10}{非线性方程组 · 通解与奇解}{先解第一个方程（可分离变量），再把它代进第二个方程积分；检查 $y_1\equiv0$ 这一支是否被通解包含}
+\[
+y_1=(x+c_1)^2,\qquad y_2=\tfrac13(x+c_1)^3+c_2;
+\qquad\text{奇解：}\ y_1=0,\ y_2=c
+\]
+\ansnote{$y_1=0$ 时 $\sqrt{y_1}$ 不满足 Lipschitz 条件，所以奇解存在，通解取不到它。L13 定理 2.1（线性系统的存在唯一性）正是因为线性而排除了奇解。}
+
+\ansh{L13-03}{p14}{线性方程组的矩阵写法}{把未知函数排成向量 $\vect{Y}=(x,y,z)^{\mathsf T}$，右端的系数逐行抄成矩阵}
+\[
+\vect{Y}'=\begin{pmatrix}0&1&-1\\ 1&1&0\\ 1&0&1\end{pmatrix}\vect{Y},
+\qquad\text{齐次线性系统}
+\]
+\ansnote{常数项全为 0，所以是齐次；系数矩阵每行对应一个方程，列序必须与 $\vect{Y}$ 的分量顺序一致。}
+
+\ansh{L13-04}{p18}{齐次线性系统 · 叠加原理}{算出 $\vect{Y}_i'-A\vect{Y}_i$ 看是否为零向量；再用线性算子的性质 $\mathcal{L}[c_1\vect{Y}_1+c_2\vect{Y}_2]=0$}
+\[
+A\vect{Y}_1=3\vect{Y}_1,\quad A\vect{Y}_2=-\vect{Y}_2
+\ \Longrightarrow\ \vect{Y}=c_1\vect{Y}_1+c_2\vect{Y}_2\ \text{是解}
+\]
+\ansnote{两个向量恰好是 $A$ 的特征向量，特征值 $3$ 与 $-1$——这就是 L14--15 全部方法的出发点。}
+
+\ansh{L13-05}{p23}{齐次线性系统 · 基本解组与 Wronskian}{把两列排成矩阵取行列式；$W\neq0$ 说明线性无关，于是构成基本解组}
+\[
+W(x)=\begin{vmatrix}\cos x & \sin x\\ -\sin x & \cos x\end{vmatrix}=1\neq0,
+\qquad \vect{Y}=C_1\vect{Y}_1+C_2\vect{Y}_2
+\]
+\ansnote{$W\equiv1$ 与 $x$ 无关。L13 定理 2.3 说：只要某一点 $W\neq0$，则整个区间上都不为零。}
+
+\ansh{L13-06}{p26--p29}{高阶方程化一阶组（一般情形）}{五步：(1) 解出最高阶导；(2) 令 $y_k=y^{(k-1)}$；(3) 把 $y^{(n)}$ 用新变量表示；(4) 排成矩阵；(5) 初值排成向量}
+\[
+\vect{Y}'=A(t)\vect{Y}+\vect{F}(t),\quad
+A(t)=\begin{pmatrix}0&1&&\\ &\ddots&\ddots&\\ &&0&1\\ a_n&a_{n-1}&\cdots&a_1\end{pmatrix},\quad
+\vect{F}=\begin{pmatrix}0\\ \vdots\\0\\ f\end{pmatrix}
+\]
+\ansnote{其中 $a_j=-b_j/b_0$（$j=1,\dots,n$）、$f=g/b_0$、$\vect{Y}(t_0)=(c_0,\dots,c_{n-1})^{\mathsf T}$。这个矩阵叫友矩阵（companion matrix），它的特征多项式就是原方程的特征多项式。}
+
+\ansh{L13-07}{p30--p31}{变系数二阶方程化一阶组}{先除以 $t^4$ 解出 $x''$，再令 $y=x'$}
+\[
+\begin{pmatrix}x'\\ y'\end{pmatrix}=
+\begin{pmatrix}0&1\\ \dfrac{4}{t^4}&-\dfrac{\sin t}{t^4}\end{pmatrix}
+\begin{pmatrix}x\\ y\end{pmatrix}+\begin{pmatrix}0\\ \dfrac{\ln t}{t^4}\end{pmatrix},
+\qquad t>0
+\]
+\ansnote{右端非零，所以是非齐次线性系统；系数随 $t$ 变，常系数方法（特征值）在这里不适用。}
+
+\ansh{L13-08}{p37}{高阶方程化一阶组（非线性）}{令 $y_1=y$、$y_2=y'$、$y_3=y''$，逐级写一阶导}
+\[
+y_1'=y_2,\qquad y_2'=y_3,\qquad y_3'=y_3-x^2y_2^{\,2}
+\]
+\ansnote{第三个方程含 $y_2^2$，所以这个组是\textbf{非线性}的（课件特意提示 "It's not a linear system"）。化组的动作与线性无关，但化完之后可用的工具不同。}
+
+\ansh{L14-01}{p11--p15}{常系数齐次组 · Case 1（互异实根）}{特征方程 $(2-\lambda)(1-\lambda)(\lambda+1)=0$；逐个解 $(A-\lambda E)\vect{V}=0$ 得特征向量；按 $\sum c_k\vect{V}_k\mathrm{e}^{\lambda_k x}$ 拼通解}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\ 0\\ 1\end{pmatrix}\mathrm{e}^{2x}+c_2\begin{pmatrix}1\\ 1\\ 1\end{pmatrix}\mathrm{e}^{x}+c_3\begin{pmatrix}-1\\ 3\\ 5\end{pmatrix}\mathrm{e}^{-x}
+\]
+\ansnote{即 $y_1=c_1\mathrm{e}^{2x}+c_2\mathrm{e}^{x}-c_3\mathrm{e}^{-x}$，$y_2=c_2\mathrm{e}^{x}+3c_3\mathrm{e}^{-x}$，$y_3=c_1\mathrm{e}^{2x}+c_2\mathrm{e}^{x}+5c_3\mathrm{e}^{-x}$。}
+
+\ansh{L14-02}{p17--p19}{常系数齐次组 · Case 2（共轭复根）}{特征方程 $(\lambda+\tfrac12)^2+1=0$ 得 $\lambda=-\tfrac12\pm\mathrm{i}$；取 $\vect{V}_1=(1,\mathrm{i})^{\mathsf T}$，再取 $\mathrm{e}^{\lambda_1x}\vect{V}_1$ 的实部与虚部}
+\[
+\vect{U}=\mathrm{e}^{-x/2}\begin{pmatrix}\cos x\\ -\sin x\end{pmatrix},\qquad
+\vect{V}=\mathrm{e}^{-x/2}\begin{pmatrix}\sin x\\ \cos x\end{pmatrix},\qquad W=\mathrm{e}^{-x}\neq0
+\]
+\ansnote{复值解 $\vect{V}_1\mathrm{e}^{\lambda_1x}$ 与它的共轭各是一解，二者相加除 2 得实部、相减除 $2\mathrm{i}$ 得虚部——依据仍是叠加原理。}
+
+\ansh{L14-03}{p22--p25}{常系数齐次组 · Case 2（实根与复根混合）}{$(2-\lambda)(\lambda^2-6\lambda+10)=0$ 得 $\lambda_1=2$、$\lambda_{2,3}=3\pm\mathrm{i}$；复根对应的特征向量拆成实部虚部两支}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\0\\1\end{pmatrix}\mathrm{e}^{2x}
++c_2\mathrm{e}^{3x}\begin{pmatrix}\cos x\\ \cos x-\sin x\\ 2\cos x+\sin x\end{pmatrix}
++c_3\mathrm{e}^{3x}\begin{pmatrix}\sin x\\ \cos x+\sin x\\ 2\sin x-\cos x\end{pmatrix}
+\]
+\ansnote{复特征向量 $(1,1,2)^{\mathsf T}+\mathrm{i}(0,1,-1)^{\mathsf T}$：实部解取 $\operatorname{Re}$，虚部解取 $\operatorname{Im}$，两列自动线性无关。}
+
+\ansh{L14-04}{p26--p29}{常系数齐次组 · 四维、纯虚特征值}{特征方程 $\lambda^4+5\lambda^2+4=(\lambda^2+1)(\lambda^2+4)=0$ 得 $\pm\mathrm{i},\pm2\mathrm{i}$；两对复根各取实部虚部，共四个实解}
+\[
+\vect{Y}=c_1\begin{pmatrix}3\cos t\\2\cos t\\-3\sin t\\-2\sin t\end{pmatrix}
++c_2\begin{pmatrix}3\sin t\\2\sin t\\3\cos t\\2\cos t\end{pmatrix}
++c_3\begin{pmatrix}3\cos 2t\\-4\cos 2t\\-6\sin 2t\\8\sin 2t\end{pmatrix}
++c_4\begin{pmatrix}3\sin 2t\\-4\sin 2t\\6\cos 2t\\-8\cos 2t\end{pmatrix}
+\]
+\ansnote{物理意义：两自由度振动，两个固有频率 $\omega=1$ 与 $\omega=2$，解是两组简谐振动叠加，不会衰减。}
+
+\ansh{L14-05}{p33--p36}{常系数齐次组 · Case 3a（$g=m$）}{$(\lambda-2)(\lambda-3)^2=0$；对 $\lambda=3$ 解 $(A-3E)\vect{V}=0$ 得两个线性无关特征向量（秩为 1，故 $g=2=m$），解仍是纯指数}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\1\\1\end{pmatrix}\mathrm{e}^{2x}
++c_2\begin{pmatrix}1\\1\\0\end{pmatrix}\mathrm{e}^{3x}
++c_3\begin{pmatrix}1\\0\\1\end{pmatrix}\mathrm{e}^{3x}
+\]
+\ansnote{判据：$g=n-\operatorname{rank}(A-\lambda E)$。这里 $\operatorname{rank}(A-3E)=1$，$g=3-1=2=m$，所以不需要广义特征向量，解里\textbf{不会}出现 $x\mathrm{e}^{3x}$。}
+
+\ansh{L14-06}{p39--p42}{常系数齐次组 · Case 3b（$1\le g<m$）}{$(\lambda-2)^2=0$，$g=2-\operatorname{rank}(A-2E)=2-1=1$；求广义特征向量解 $(A-2E)\vect{V}^{(1)}=\vect{V}_1$，再拼 $(x\vect{V}_1+\vect{V}^{(1)})\mathrm{e}^{2x}$}
+\[
+\vect{Y}=c_1\mathrm{e}^{2x}\begin{pmatrix}1\\-1\end{pmatrix}
++c_2\mathrm{e}^{2x}\left[x\begin{pmatrix}1\\-1\end{pmatrix}+\begin{pmatrix}0\\-1\end{pmatrix}\right]
+\]
+\ansnote{先试 $x\mathrm{e}^{\lambda x}\vect{V}_1$ 会失败（差一个 $\mathrm{e}^{\lambda x}\vect{V}_1$），差的那一项正好由广义特征向量补上。}
+
+\ansh{L14-07}{p46--p51}{常系数齐次组 · Case 3b（$m=3$、$g=1$）}{$-(\lambda-2)^3=0$，$\operatorname{rank}(A-2E)=2$ 故 $g=1$；解链 $(A-2E)\vect{V}_1=0$、$(A-2E)\vect{V}^{(1)}=\vect{V}_1$、$(A-2E)\vect{V}^{(2)}=\vect{V}^{(1)}$}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\2\\1\end{pmatrix}\mathrm{e}^{2x}
++c_2\left[\begin{pmatrix}1\\1\\0\end{pmatrix}+x\begin{pmatrix}1\\2\\1\end{pmatrix}\right]\mathrm{e}^{2x}
++c_3\left[\begin{pmatrix}0\\-1\\0\end{pmatrix}+x\begin{pmatrix}1\\1\\0\end{pmatrix}+\frac{x^2}{2}\begin{pmatrix}1\\2\\1\end{pmatrix}\right]\mathrm{e}^{2x}
+\]
+\ansnote{$g$ 与 $m$ 差多少，就接多长的链：这里差 2，所以第三个解里出现 $x$ 与 $x^2/2$。}
+
+\ansh{L14-08}{p52--p57}{常系数齐次组 · 混合情形}{$(1-\lambda^2)(\lambda+1)=0$ 得 $\lambda_1=1$、$\lambda_2=-1$（$m=2$）；后者 $\operatorname{rank}(A+E)=2$ 故 $g=1$，需一个广义特征向量}
+\[
+\vect{Y}=C_1\begin{pmatrix}0\\2\\1\end{pmatrix}\mathrm{e}^{x}
++C_2\begin{pmatrix}-1\\2\\1\end{pmatrix}\mathrm{e}^{-x}
++C_3\left[x\begin{pmatrix}-1\\2\\1\end{pmatrix}+\begin{pmatrix}0\\1\\1\end{pmatrix}\right]\mathrm{e}^{-x}
+\]
+\ansnote{等价写法：$y_1=-C_2\mathrm{e}^{-x}-C_3x\mathrm{e}^{-x}$，$y_2=2C_1\mathrm{e}^{x}+2C_2\mathrm{e}^{-x}+C_3(1+2x)\mathrm{e}^{-x}$，$y_3=C_1\mathrm{e}^{x}+C_2\mathrm{e}^{-x}+C_3(1+x)\mathrm{e}^{-x}$。}
+
+\ansh{L14-09}{p58--p63}{常系数齐次组 · Case 3b（$m=3$、$g=2$）}{$-(\lambda+2)^3=0$，$\operatorname{rank}(A+2E)=1$ 故 $g=2$；两个特征向量任取一组，再对一个求广义特征向量}
+\[
+\vect{Y}=c_1\begin{pmatrix}0\\0\\1\end{pmatrix}\mathrm{e}^{-2x}
++c_2\begin{pmatrix}2\\1\\1\end{pmatrix}\mathrm{e}^{-2x}
++c_3\left[\begin{pmatrix}1\\0\\0\end{pmatrix}+x\begin{pmatrix}2\\1\\1\end{pmatrix}\right]\mathrm{e}^{-2x}
+\]
+\ansnote{特征空间是 $\\{v_1=2v_2\\}$，所以 $(2,1,0)^{\mathsf T}$、$(0,0,1)^{\mathsf T}$、$(2,1,1)^{\mathsf T}$ 都是特征向量；广义向量取 $\vect{V}^{(1)}=(1,0,0)^{\mathsf T}$ 满足 $(A+2E)\vect{V}^{(1)}=(2,1,1)^{\mathsf T}$。}
+
+\ansh{L14-10}{p64}{常系数齐次组 · 混合（单根 + 二重根 $g=1$）}{$(\lambda-2)(\lambda-1)^2=0$；$\lambda=1$ 时 $\operatorname{rank}(A-E)=2$，$g=1<m=2$，接一级广义特征向量}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\4\\1\end{pmatrix}\mathrm{e}^{2x}
++c_2\begin{pmatrix}0\\3\\1\end{pmatrix}\mathrm{e}^{x}
++c_3\left[x\begin{pmatrix}0\\3\\1\end{pmatrix}+\begin{pmatrix}1\\0\\0\end{pmatrix}\right]\mathrm{e}^{x}
+\]
+\ansnote{$(A-E)\vect{V}=(0,0,0)$ 给出 $\vect{V}=(0,3,1)^{\mathsf T}$；广义向量解 $(A-E)\vect{V}^{(1)}=\vect{V}$ 得 $(1,0,0)^{\mathsf T}$。}
+
+\ansh{L14-11}{p64}{常系数齐次组 · 纯虚特征值（中心）}{$\lambda^2+1=0$ 得 $\lambda=\pm\mathrm{i}$；特征向量取 $(2+\mathrm{i},5)^{\mathsf T}$ 一支，取实部虚部}
+\[
+\vect{Y}=c_1\begin{pmatrix}2\cos x+\sin x\\ 5\cos x\end{pmatrix}
++c_2\begin{pmatrix}2\sin x-\cos x\\ 5\sin x\end{pmatrix}
+\]
+\ansnote{特征值是纯虚数，轨线是闭合椭圆，原点为中心（L21--22 会用到这个结论）。}
+
+\ansh{L14-12}{p64}{常系数齐次组 · 三重根、$g=1$}{$(\lambda+1)^3=0$；$\operatorname{rank}(A+E)=2$，$g=1$，需接两级广义特征向量}
+\[
+\vect{Y}=c_1\begin{pmatrix}0\\1\\1\end{pmatrix}\mathrm{e}^{-x}
++c_2\left[x\begin{pmatrix}0\\1\\1\end{pmatrix}+\begin{pmatrix}-1\\0\\-1\end{pmatrix}\right]\mathrm{e}^{-x}
++c_3\left[\frac{x^2}{2}\begin{pmatrix}0\\1\\1\end{pmatrix}+x\begin{pmatrix}-1\\0\\-1\end{pmatrix}+\begin{pmatrix}-2\\0\\-3\end{pmatrix}\right]\mathrm{e}^{-x}
+\]
+\ansnote{链长由 $m-g=2$ 决定：$(A+E)\vect{V}=0$、$(A+E)\vect{V}^{(1)}=\vect{V}$、$(A+E)\vect{V}^{(2)}=\vect{V}^{(1)}$，取 $\vect{V}^{(1)}=(-1,0,-1)^{\mathsf T}$、$\vect{V}^{(2)}=(-2,0,-3)^{\mathsf T}$。}
+
+\ansh{L14-13}{p64}{常系数齐次组 · 互异实根}{$\lambda^2-2\lambda-8=(\lambda-4)(\lambda+2)=0$；特征向量 $(1,3)^{\mathsf T}$ 与 $(1,-3)^{\mathsf T}$}
+\[
+\vect{Y}=c_1\begin{pmatrix}1\\3\end{pmatrix}\mathrm{e}^{4x}
++c_2\begin{pmatrix}1\\-3\end{pmatrix}\mathrm{e}^{-2x}
+\]
+\ansnote{这道题与 L16--17 例 4 是同一矩阵，那里要求的是 $\mathrm{e}^{Ax}$。}
+
+\ansh{L16-01}{p13--p15}{矩阵指数 · 路线一（对角化，$g=m$）}{三个互异特征值 $2,1,-1$ 与特征向量拼成 $V$；算 $V^{-1}$，用 $\mathrm{e}^{Ax}=V\mathrm{e}^{\Lambda x}V^{-1}$}
+\[
+\mathrm{e}^{Ax}=\frac16\begin{pmatrix}
+2\mathrm{e}^{2x}+3\mathrm{e}^{x}+\mathrm{e}^{-x} & 6(\mathrm{e}^{x}-\mathrm{e}^{2x}) & 4\mathrm{e}^{2x}-3\mathrm{e}^{x}-\mathrm{e}^{-x}\\
+6\sinh x & 6\mathrm{e}^{x} & -6\sinh x\\
+2\mathrm{e}^{2x}+3\mathrm{e}^{x}-5\mathrm{e}^{-x} & 6(\mathrm{e}^{x}-\mathrm{e}^{2x}) & 4\mathrm{e}^{2x}-3\mathrm{e}^{x}+5\mathrm{e}^{-x}
+\end{pmatrix}
+\]
+\ansnote{三个特征向量为 $(1,0,1)^{\mathsf T}$、$(1,1,1)^{\mathsf T}$、$(-1,3,5)^{\mathsf T}$，$\Lambda=\operatorname{diag}(2,1,-1)$。通解 $\vect{Y}=c_1(1,0,1)^{\mathsf T}\mathrm{e}^{2x}+c_2(1,1,1)^{\mathsf T}\mathrm{e}^{x}+c_3(-1,3,5)^{\mathsf T}\mathrm{e}^{-x}$，与 L14--15 例 1 一致。}
+
+\ansh{L16-02}{p20}{Cayley--Hamilton · 多项式降阶}{$\Delta(s)=\det(A-sE)=s^2-5s+5$；做多项式长除 $p(s)=\Delta(s)q(s)+r(s)$，$\deg r\le1$，再用 $\Delta(A)=[0]$}
+\[
+p(A)=146A-184E=\begin{pmatrix}254&146\\ 146&108\end{pmatrix}
+\]
+\ansnote{商 $q(s)=s^2+8s+37$，余式 $r(s)=146s-184$。注意 $\Delta(s)$ 用 $(s-\lambda)$ 写法时要取对符号，否则余式差一个负号。}
+
+\ansh{L16-03}{p24--p25}{矩阵指数 · 路线二（Cayley--Hamilton，互异实根）}{设 $\mathrm{e}^{Ax}=\alpha_1Ax+\alpha_0E$，$r(\lambda)=\alpha_1\lambda+\alpha_0$；把 $\lambda=4x,-2x$ 代入 $\mathrm{e}^{\lambda}=r(\lambda)$ 解出 $\alpha_1x,\alpha_0$}
+\[
+\mathrm{e}^{Ax}=\frac16\begin{pmatrix}3\mathrm{e}^{4x}+3\mathrm{e}^{-2x} & \mathrm{e}^{4x}-\mathrm{e}^{-2x}\\
+9\mathrm{e}^{4x}-9\mathrm{e}^{-2x} & 3\mathrm{e}^{4x}+3\mathrm{e}^{-2x}\end{pmatrix}
+\]
+\ansnote{$\alpha_1x=\tfrac16(\mathrm{e}^{4x}-\mathrm{e}^{-2x})$，$\alpha_0=\tfrac13(\mathrm{e}^{4x}+2\mathrm{e}^{-2x})$。通解 $\vect{Y}=\mathrm{e}^{Ax}\vect{C}$，整理后与 L14--15 作业第 4 题同一组基。}
+
+\ansh{L16-04}{p26--p27}{矩阵指数 · Cayley--Hamilton（纯虚根）}{$\lambda^2+x^2=0$ 得 $\lambda=\pm\mathrm{i}x$；$r(\lambda)=\alpha_1\lambda+\alpha_0$，由 $\mathrm{e}^{\pm\mathrm{i}x}=r(\pm\mathrm{i}x)$ 解出 $\alpha_1x=\sin x$、$\alpha_0=\cos x$}
+\[
+\mathrm{e}^{Ax}=\begin{pmatrix}\cos x&\sin x\\ -\sin x&\cos x\end{pmatrix},
+\qquad \vect{Y}=c_1\begin{pmatrix}\cos x\\ -\sin x\end{pmatrix}+c_2\begin{pmatrix}-\sin x\\ \cos x\end{pmatrix}
+\]
+\ansnote{$\mathrm{e}^{Ax}$ 是旋转矩阵——这就是“纯虚特征值 → 闭合轨线”的矩阵解释。}
+
+\ansh{L16-05}{p30--p31}{矩阵指数 · 重特征值（定理 3.3）}{设 $\mathrm{e}^{Ax}=\alpha_3(Ax)^3+\alpha_2(Ax)^2+\alpha_1(Ax)+\alpha_0E$；对 $m$ 重特征值用 $\mathrm{e}^{\lambda}=r(\lambda),r'(\lambda),\dots,r^{(m-1)}(\lambda)$ 共 $m$ 个方程}
+\[
+\begin{aligned}
+\mathrm{e}^{5x}&=\alpha_3(5x)^3+\alpha_2(5x)^2+\alpha_1(5x)+\alpha_0\\
+\mathrm{e}^{5x}&=3\alpha_3(5x)^2+2\alpha_2(5x)+\alpha_1\\
+\mathrm{e}^{5x}&=6\alpha_3(5x)+2\alpha_2\\
+\mathrm{e}^{2x}&=\alpha_3(2x)^3+\alpha_2(2x)^2+\alpha_1(2x)+\alpha_0
+\end{aligned}
+\]
+\ansnote{重根不补方程就会少一个条件（$\mathrm{e}^{5x}=r(5x)$ 重复三次），这正是“重根要逐阶求导”的原因。}
+
+\ansh{L16-06}{p33--p35}{矩阵指数 · 重根三重}{$\lambda=-2x$，$m=3$：$\mathrm{e}^{-2x}=r(\lambda)$、$\mathrm{e}^{-2x}=r'(\lambda)$、$\mathrm{e}^{-2x}=r''(\lambda)$，解出 $\alpha_2x^2,\alpha_1x,\alpha_0$}
+\[
+\mathrm{e}^{Ax}=\mathrm{e}^{-2x}\begin{pmatrix}2x+1&-4x&0\\ x&-2x+1&0\\ x&-2x&1\end{pmatrix}
+\]
+\ansnote{$\alpha_2x^2=\tfrac12x^2\mathrm{e}^{-2x}$，$\alpha_1x=x(1+2x)\mathrm{e}^{-2x}$，$\alpha_0=(1+2x+2x^2)\mathrm{e}^{-2x}$。与 L14--15 复习例 (3) 是同一矩阵。}
+
+\ansh{L16-07}{p36--p38}{矩阵指数 · 互异根含零与纯虚}{$Ax$ 的特征值为 $0,\pm\mathrm{i}x$；设 $\mathrm{e}^{Ax}=\alpha_2(Ax)^2+\alpha_1(Ax)+\alpha_0E$，由 $\mathrm{e}^{0}=r(0)$、$\mathrm{e}^{\pm\mathrm{i}x}=r(\pm\mathrm{i}x)$ 解出}
+\[
+\mathrm{e}^{Ax}=\begin{pmatrix}
+1 & -2+2\cos x+\sin x & -5+5\cos x\\
+0 & \cos x-2\sin x & -5\sin x\\
+0 & \sin x & \cos x+2\sin x\end{pmatrix}
+\]
+\ansnote{$\alpha_0=1$、$\alpha_1x=\sin x$、$\alpha_2x^2=1-\cos x$。与 L17--18 例 6 的齐次部分同一个 $A$。}
+
+\ansh{L16-08}{p44}{矩阵指数 · 互异实根 $\pm2$}{$\lambda=\pm2$；设 $\mathrm{e}^{Ax}=\alpha_1Ax+\alpha_0E$，由 $\mathrm{e}^{2x}=r(2x)$、$\mathrm{e}^{-2x}=r(-2x)$ 解出}
+\[
+\mathrm{e}^{Ax}=\begin{pmatrix}2\mathrm{e}^{-2x}-\mathrm{e}^{2x} & \mathrm{e}^{-2x}-\mathrm{e}^{2x}\\
+2(\mathrm{e}^{2x}-\mathrm{e}^{-2x}) & 2\mathrm{e}^{2x}-\mathrm{e}^{-2x}\end{pmatrix}
+\]
+\ansnote{特征向量 $(1,-1)^{\mathsf T}$（$\lambda=2$）、$(1,-2)^{\mathsf T}$（$\lambda=-2$）。通解 $\vect{Y}=\mathrm{e}^{Ax}\vect{C}$。}
+
+\ansh{L16-09}{p44}{矩阵指数 · 纯虚根 $\pm2\mathrm{i}$}{$\lambda^2+4=0$ 得 $\pm2\mathrm{i}$；$\alpha_0=\cos 2x$，$\alpha_1x=\tfrac12\sin 2x$}
+\[
+\mathrm{e}^{Ax}=\begin{pmatrix}\cos 2x-2\sin 2x & 2\sin 2x\\
+-\tfrac52\sin 2x & \cos 2x+2\sin 2x\end{pmatrix}
+\]
+\ansnote{轨线是闭合椭圆（中心），旋转方向由 $A(1,0)^{\mathsf T}=(-4,-5)^{\mathsf T}$ 定出为顺时针。}
+
+\ansh{L16-10}{p44}{矩阵指数 · 下三角矩阵，三个互异实根}{特征值 $-24,-2,2$（三角阵即为对角元）；用 Cayley--Hamilton 设三次多项式，或用 $A-\lambda E$ 的三角结构逐列回代}
+\[
+\mathrm{e}^{Ax}=\begin{pmatrix}\mathrm{e}^{-24x}&0&0\\
+\tfrac{2}{11}\left(\mathrm{e}^{-2x}-\mathrm{e}^{-24x}\right)&\mathrm{e}^{-2x}&0\\
+\tfrac{1}{26}\left(\mathrm{e}^{2x}-\mathrm{e}^{-24x}\right)&0&\mathrm{e}^{2x}\end{pmatrix}
+\]
+\ansnote{下三角阵的指数仍是下三角阵，只是对角元换成各自的指数——这条规律可以先用来自检。}
+
+\ansh{L17-01}{p7--p10}{非齐次线性组 · 参数变易法 I（逐分量）}{先求齐次基本解组 $\vect{Y}_1=\mathrm{e}^{x}(-1,2)^{\mathsf T}$、$\vect{Y}_2=\mathrm{e}^{3x}(1,1)^{\mathsf T}$；设 $\vect{Y}_p=c_1(x)\vect{Y}_1+c_2(x)\vect{Y}_2$，解 $\sum c_k'\vect{Y}_k=\vect{F}$}
+\[
+\begin{pmatrix}y_1\\ y_2\end{pmatrix}
+=\begin{pmatrix}(x+2)\mathrm{e}^{x}-\mathrm{e}^{3x}\\ (5-2x)\mathrm{e}^{x}-\mathrm{e}^{3x}\end{pmatrix}
+\]
+\ansnote{$c_1'=-1$、$c_2'=-6\mathrm{e}^{-2x}$，取 $c_1=-x$、$c_2=3\mathrm{e}^{-2x}$；代初值得 $c_1=1$、$c_2=-1$。}
+
+\ansh{L17-02}{p14--p16}{非齐次线性组 · 参数变易法 II（矩阵版）}{先算 $\mathrm{e}^{Ax}=\tfrac13\begin{pmatrix}2\mathrm{e}^{3x}+\mathrm{e}^{x}&\mathrm{e}^{3x}-\mathrm{e}^{x}\\ 2\mathrm{e}^{3x}-2\mathrm{e}^{x}&\mathrm{e}^{3x}+2\mathrm{e}^{x}\end{pmatrix}$，再用 $\vect{Y}=\mathrm{e}^{Ax}\left(\vect{Y}_0+\int_0^x\mathrm{e}^{-As}\vect{F}(s)\,\mathrm{d}s\right)$}
+\[
+\vect{Y}(x)=\begin{pmatrix}(x+2)\mathrm{e}^{x}-\mathrm{e}^{3x}\\ (5-2x)\mathrm{e}^{x}-\mathrm{e}^{3x}\end{pmatrix}
+\]
+\ansnote{与例 1 同一道题、同一答案——两种写法的差别只在“积分核”是基本解组还是 $\mathrm{e}^{-As}$。}
+
+\ansh{L17-03}{p19--p21}{非齐次线性组 · 待定系数法（多项式型）}{齐次部分 $\lambda=-1,4$；右端是 1 次多项式且 0 不是特征值，故设 $\vect{Y}_p=\alpha x+\beta$（$\alpha,\beta$ 为向量），比较 $x^1$ 与 $x^0$ 的系数}
+\[
+\vect{Y}=c_1\mathrm{e}^{-x}\begin{pmatrix}1\\-1\end{pmatrix}
++c_2\mathrm{e}^{4x}\begin{pmatrix}2\\3\end{pmatrix}
++x\begin{pmatrix}3\\-\tfrac52\end{pmatrix}+\begin{pmatrix}-\tfrac{11}{4}\\[2pt]\tfrac{23}{8}\end{pmatrix}
+\]
+\ansnote{比较系数得 $A\alpha=-\gamma$、$\alpha=A\beta$，即 $\alpha=(3,-5/2)^{\mathsf T}$、$\beta=(-11/4,23/8)^{\mathsf T}$。}
+
+\ansh{L17-04}{p22--p26}{非齐次线性组 · 待定系数法（共振，$r$ 是特征值）}{$\lambda=1$ 是单特征值且右端含 $\mathrm{e}^{x}$，故设 $\vect{Y}_p=\mathrm{e}^{x}(\alpha x+\beta)$；比较 $x\mathrm{e}^{x}$ 与 $\mathrm{e}^{x}$ 的系数得 $\alpha=A\alpha$、$\beta+\alpha=A\beta+\gamma$}
+\[
+\vect{Y}=-\mathrm{e}^{3x}\begin{pmatrix}1\\1\end{pmatrix}
++\mathrm{e}^{x}\begin{pmatrix}x+2\\ -2x+5\end{pmatrix}
+\]
+\ansnote{第一式给出 $\alpha$ 必须是 $\lambda=1$ 的特征向量，第二式解出 $\beta$ 时出现\textbf{相容性条件} $\alpha_1+5=-2\alpha_1+8$，定出 $\alpha_1=1$。取 $\beta=(4,1)^{\mathsf T}$，与例 1 答案一致。}
+
+\ansh{L17-05}{p29--p31}{非齐次线性组 · 待定系数法（三角右端）}{特征值 $0,\pm5\mathrm{i}$，而 $2\mathrm{i}$ 不是特征值，故设 $\vect{Y}_p=\alpha\cos2x+\beta\sin2x$；比较 $\cos2x$、$\sin2x$ 的系数}
+\[
+\vect{Y}_p=\begin{pmatrix}\cos2x\\ 0\\ \cos2x+\sin2x\end{pmatrix},
+\qquad \vect{Y}=\vect{Y}_c+\vect{Y}_p
+\]
+\ansnote{齐次部分为 $c_1(-1,1,2)^{\mathsf T}+c_2\operatorname{Re}(\mathrm{e}^{5\mathrm{i}x}\vect{V}_2)+c_3\operatorname{Im}(\mathrm{e}^{5\mathrm{i}x}\vect{V}_2)$，$\vect{V}_2=(5,-10,-35)^{\mathsf T}+\mathrm{i}(-25,50,45)^{\mathsf T}$。注意：课件 p29 把 $\vect{F}$ 的第一分量印成 $-13$，而方程组原文是 $+13\cos2x$；按 $+13$ 计算才对得上它给出的特解。}
+
+\ansh{L17-06}{p32--p48}{非齐次组 · 三种解法对照}{(1) 令 $x_1=x,x_2=x',x_3=y$ 化成三阶一维组；(2) 由第二式解出 $x'=y'-2y$，代回得 $y''+y=3$；(3) 直接对组用 $\mathrm{e}^{At}$ 与参数变易}
+\[
+x(t)=-2-6t+2\cos t+6\sin t,\qquad y(t)=3-2\cos t+2\sin t
+\]
+\ansnote{方法 (2) 最快：$y''+y=3\Rightarrow y=c_1\cos t+c_2\sin t+3$；再由 $x'=y'-2y$ 积分并用 $x(0)=0$、$x'(0)=0$ 定常数。}
+
+\ansh{L17-07}{p49}{非齐次线性组 · 多项式右端（两种方法）}{特征值 $-1,-2,-3$（互异），0 不是特征值，故设 $\vect{Y}_p=\alpha x+\beta$；比较系数得 $A\alpha=-\gamma_1$、$\alpha=A\beta+\gamma_0$}
+\[
+\vect{Y}_p=\begin{pmatrix}x\\ 1\\ 0\end{pmatrix},
+\qquad \vect{Y}=c_1\mathrm{e}^{-x}\begin{pmatrix}-1/2\\ 5/4\\ 1\end{pmatrix}
++c_2\mathrm{e}^{-2x}\begin{pmatrix}-1/3\\ 1\\ 1\end{pmatrix}
++c_3\mathrm{e}^{-3x}\begin{pmatrix}0\\ 1\\ 1\end{pmatrix}
++\begin{pmatrix}x\\ 1\\ 0\end{pmatrix}
+\]
+\ansnote{代回自检：$\alpha=(1,0,0)^{\mathsf T}$、$\beta=(0,1,0)^{\mathsf T}$，$A\vect{Y}_p+\vect{F}=(1,0,0)^{\mathsf T}=\vect{Y}_p'$。}
+
+\ansh{L18-01}{p6--p7}{幂级数 · 收敛半径与端点}{比值法 $\lim\left|a_n/a_{n+1}\right|=2$ 得 $r=2$；端点必须\textbf{单独}代入判敛散}
+\[
+r=2;\qquad \text{收敛区间}\ -3\le x<1\ \ (\text{绝对收敛 }-3<x<1)
+\]
+\ansnote{$x=1$ 时化为调和级数 $\sum1/n$，发散；$x=-3$ 时化为 $\sum(-1)^n/n$，条件收敛。端点结论不能由 $r$ 推出。}
+
+\ansh{L18-02}{p15}{幂级数 · 指标平移}{令 $m=n-2$，即把下限搬到 0，同时把通项的幂次数减 2}
+\[
+\sum_{n=2}^{\infty}a_nx^{n}=\sum_{n=0}^{\infty}a_{n+2}x^{n+2}
+\]
+\ansnote{平移只改索引与幂次，不改系数本身；回代校验时把 $n=0$ 展开应得到 $a_2x^2$。}
+
+\ansh{L18-03}{p16}{幂级数 · 乘 $x^2$ 后再平移}{先把 $x^2$ 乘进和号得 $x^{r+n+1}$，再把指标下移 1（下限随之提高 1）}
+\[
+x^{2}\sum_{n=0}^{\infty}(r+n)a_nx^{r+n-1}
+=\sum_{n=1}^{\infty}(r+n-1)a_{n-1}x^{r+n}
+\]
+\ansnote{这一步在 Frobenius 方法里天天用：乘 $x^2$ 会把递推的“相位”往后推一格，下限同时变。}
+
+\ansh{L18-04}{p23--p26}{常点级数解 · 递推关系}{设 $y=\sum a_kx^k$，代入后合并同次幂得 $(k+2)(k+1)a_{k+2}+a_k=0$；偶次与奇次两支各自递推}
+\[
+y=a_0\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
++a_1\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}x^{2k+1}
+=a_0\cos x+a_1\sin x
+\]
+\ansnote{两个级数恰好是 $\cos x$ 与 $\sin x$ 的 Maclaurin 展开——这是“级数法结果应与已知初等解一致”的最好自检。}
+
+\ansh{L18-05}{p29--p32}{常点级数解 · 变系数、初值定系数}{把 $\mathrm{e}^{x}$、$y$、$y'$、$y''$ 都展成幂级数，用 Cauchy 乘积合并同次幂；$a_0=y(0)$、$a_1=y'(0)$ 逐阶定出 $a_2,\dots$}
+\[
+y(x)=1-\frac{x^{2}}{2}+\frac{x^{3}}{6}-\frac{x^{5}}{120}+\frac{11x^{6}}{720}+\cdots
+\]
+\ansnote{系数：$a_2=-\tfrac12$、$a_3=\tfrac16$、$a_4=0$、$a_5=-\tfrac1{120}$、$a_6=\tfrac{11}{720}$。$p(x)=\mathrm{e}^{x}$、$q(x)=1+x^2$ 在全平面解析，所以级数对一切 $x$ 收敛。}
+
+\ansh{L18-06}{p33--p35}{常点级数解 · 递推截断}{$P(0)=1\neq0$ 故 $x=0$ 为常点；得 $(k-2)(k-3)a_k+(k+2)(k+1)a_{k+2}=0$。$k=2,3$ 时分子为零，递推自动截断}
+\[
+y=a_0\left(1-3x^{2}\right)+a_1\left(x-\frac{x^{3}}{3}\right),\qquad |x|<1
+\]
+\ansnote{截断不是巧合：$k=2,3$ 使 $(k-2)(k-3)=0$，所以 $a_4=a_5=0$，此后全为零。收敛半径由 $P(x)=x^2+1$ 的零点 $\pm\mathrm{i}$ 到 0 的距离定为 1。}
+
+\ansh{L18-07}{p36}{常点级数解 · 通解构造}{设 $y=\sum a_nx^n$，合并同次幂得 $(n+2)(n+1)a_{n+2}=(n+1)(a_n-a_{n+1})-a_{n-2}$；分别取 $(a_0,a_1)=(1,0)$ 与 $(0,1)$}
+\[
+\begin{aligned}
+y_1&=1+\frac{x^{2}}{2}-\frac{x^{3}}{6}+\frac{x^{4}}{12}-\frac{x^{5}}{20}+\cdots\\
+y_2&=x-\frac{x^{2}}{2}+\frac{x^{3}}{2}-\frac{x^{4}}{4}+\frac{x^{5}}{10}+\cdots
+\end{aligned}
+\]
+\ansnote{$p(x)=1-x$、$q(x)=x^{2}-1$ 都是多项式，在 $\mathbb{R}$ 上解析，故两级数对一切 $x$ 收敛（$r=\infty$）。}
+
+\ansh{L19-01}{p6--p7}{奇点分类 · 正则判据}{先化标准形写 $p=Q/P$、$q=R/P$；奇点处检查 $(x-x_0)p$ 与 $(x-x_0)^2q$ 是否解析}
+\[
+p=\frac{1}{(x+1)(x-1)^{2}},\quad q=-\frac{1}{(x-1)^{2}(x+1)^{2}};
+\qquad x=1\ \text{非正则},\quad x=-1\ \text{正则}
+\]
+\ansnote{在 $x=1$：$(x-1)p=1/[(x+1)(x-1)]$ 仍发散 → 非正则。在 $x=-1$：$(x+1)p=1/(x-1)^2$、$(x+1)^2q=-1/(x-1)^2$ 都解析 → 正则。}
+
+\ansh{L19-02}{p10--p11}{Cauchy--Euler 方程 · 互异实根 + 初值}{代 $y=x^r$ 得指标方程 $2r(r-1)+3r-15=0$，$r=\tfrac52,-3$；通解 $c_1x^{5/2}+c_2x^{-3}$，再代初值}
+\[
+y(x)=\frac{2}{11}x^{5/2}-\frac{2}{11}x^{-3},\qquad x>0
+\]
+\ansnote{$y(1)=c_1+c_2=0$，$y'(1)=\tfrac52c_1-3c_2=1$，解得 $c_1=\tfrac2{11}$、$c_2=-\tfrac2{11}$。定义域必须取 $x>0$：$x^{5/2}$ 在负半轴无定义，$x^{-3}$ 在 0 处发散。}
+
+\ansh{L19-03}{p13}{Cauchy--Euler 方程 · 共轭复根}{指标方程 $r(r-1)+3r+4=r^{2}+2r+4=0$，$r=-1\pm\sqrt3\,\mathrm{i}$；用 $x^{r}=\mathrm{e}^{r\ln x}$ 取实部虚部}
+\[
+y(x)=c_1x^{-1}\cos\!\left(\sqrt3\ln x\right)+c_2x^{-1}\sin\!\left(\sqrt3\ln x\right),\qquad x>0
+\]
+\ansnote{复根对应“对数周期”振荡：$\ln x$ 均匀增长时解在无限次振荡中衰减到 0。}
+
+\ansh{L19-04}{p15}{Cauchy--Euler 方程 · 重根}{指标方程 $r(r-1)-7r+16=(r-4)^{2}=0$；重根时第二解补 $\ln x$}
+\[
+y(x)=c_1x^{4}+c_2x^{4}\ln x,\qquad x>0
+\]
+\ansnote{重根必补 $\ln x$，与常系数方程重根补 $x$ 是同一件事（$x=\mathrm{e}^{t}$ 换元后 $\ln x$ 就是 $t$）。}
+
+\ansh{L19-05}{p19}{Cauchy--Euler 方程 · 平移型}{令 $u=x+6$ 化为标准 Euler 方程，指标方程 $3r(r-1)+25r-16=0$；解出后用 $|x+6|$ 表示}
+\[
+y(x)=c_1\left|x+6\right|^{2/3}+c_2\left|x+6\right|^{-8},\qquad x\neq-6
+\]
+\ansnote{根为 $\tfrac23$ 与 $-8$。取绝对值是为了让解在 $x<-6$ 也成立：$(x+6)^{2/3}$ 在负底数上不能直接写。}
+
+\ansh{L19-06}{p32--p34}{Frobenius 方法 · $r_1$ 支}{$p_0=4$、$q_0=0$，指标方程 $r(r-1)+4r=r(r+3)=0$ 得 $r_1=0$、$r_2=-3$；代 $\sum a_nx^{n+r}$ 得递推 $a_{k+1}=a_{k-1}/[(k+r+1)(k+r+4)]$}
+\[
+y_1(x)=a_0\left\{1+\sum_{k=1}^{\infty}\frac{x^{2k}}{2^{k}k!\,[5\cdot7\cdots(2k+3)]}\right\},\qquad x>0
+\]
+\ansnote{取 $r=0$ 时第二式给出 $4a_1=0$，故 $a_1=0$，只剩偶次项。前几项：$1+\tfrac{x^2}{10}+\tfrac{x^4}{280}+\tfrac{x^6}{15120}+\cdots$。}
+
+\ansh{L19-07}{p34}{Frobenius 方法 · $r_2$ 支（指标差为整数）}{代 $y=x^{-3}\sum b_kx^{k}$，递推为 $b_j=b_{j-2}/[(j-3)j]$；在 $j=3$ 处分母为零，但此时右边 $b_1=0$，等式自动成立，无需补对数项}
+\[
+y_2(x)=x^{-3}\left\{1-\sum_{m=1}^{\infty}\frac{x^{2m}}{(2m-3)!!\,2^{m}m!}\right\}
+=x^{-3}\left(1-\frac{x^{2}}{2}-\frac{x^{4}}{8}-\frac{x^{6}}{144}-\cdots\right)
+\]
+\ansnote{$r_1-r_2=3$ 是整数，一般情形第二解要带 $\ln x$；这里因为 $b_1=0$ 使“共振”位置自动相容，才得到纯 Frobenius 级数。}
+
+\ansh{L19-08}{p42}{Frobenius 方法 · 指标根 $1$ 与 $-\tfrac12$}{化标准形：$p_0=\tfrac12$、$q_0=-\tfrac12$，指标方程 $r(r-1)+\tfrac r2-\tfrac12=0$ 得 $r_1=1$、$r_2=-\tfrac12$；两支分别递推}
+\[
+\begin{aligned}
+y_1&=x\left(1-x+\frac{x^{2}}{2}-\frac{x^{3}}{6}+\frac{x^{4}}{24}+\cdots\right)=x\,\mathrm{e}^{-x},\\
+y_2&=x^{-1/2}\left(1+2x-4x^{2}+\frac{8}{3}x^{3}-\frac{16}{15}x^{4}+\cdots\right)
+\end{aligned}
+\]
+\ansnote{两支递推分别为 $a_{k+1}=-\dfrac{(2k+5)a_k}{(k+2)(2k+3)-1}$ 与 $b_{k+1}=-\dfrac{2(k+1)b_k}{k(2k+1)-1}$。方程唯一的奇点是 $x=0$，故级数在 $(0,\infty)$ 上收敛。}
+
+\ansh{L21-01}{p6--p9}{稳定性定义 · 一维线性方程}{受扰解 $x(t)=C\mathrm{e}^{at}$；按 $\varepsilon$-$\delta$ 定义逐条验证三种情形}
+\[
+a<0:\ \text{渐近稳定};\qquad a=0:\ \text{稳定但不渐近};\qquad a>0:\ \text{不稳定}
+\]
+\ansnote{$a=0$ 时 $|x(t)|=|C|$ 不趋于 0，所以只有“稳定”。这三行就是二维判据（实部符号）的一维原型。}
+
+\ansh{L21-02}{p10}{稳定性 · 一维非线性方程}{解 $x-x^2=0$ 得平衡点 $0$ 与 $1$；解出通解 $x(t)=C\mathrm{e}^{t}/(1+C\mathrm{e}^{t})$ 后看受扰解的去向}
+\[
+x\equiv0:\ \text{不稳定};\qquad x\equiv1:\ \text{渐近稳定}
+\]
+\ansnote{也可用线性化：$f'(0)=1>0$（不稳定），$f'(1)=-1<0$（渐近稳定）——一维非线性也遵循“看导数符号”。}
+
+\ansh{L21-03}{p13--p18}{相图 · 鞍点（异号实根）}{特征值 $-1$ 与 $3$，特征向量 $(1,-2)^{\mathsf T}$、$(1,2)^{\mathsf T}$；两条过原点的直线就是轨线，其余轨线沿稳定方向进入、沿不稳定方向逃出}
+\[
+\lambda_1=-1,\ \vect{V}_1=(1,-2)^{\mathsf T};\quad \lambda_2=3,\ \vect{V}_2=(1,2)^{\mathsf T};
+\qquad\text{鞍点，不稳定}
+\]
+\ansnote{通解 $\vect{X}=c_1\mathrm{e}^{-t}(1,-2)^{\mathsf T}+c_2\mathrm{e}^{3t}(1,2)^{\mathsf T}$。$t\to\infty$ 时沿 $\vect{V}_2$ 方向逃逸，$t\to-\infty$ 时贴着 $\vect{V}_1$ 方向靠近。}
+
+\ansh{L21-04}{p19--p22}{相图 · 结点（同号负实根，汇）}{$\lambda_1=-1$、$\vect{V}_1=(1,1)^{\mathsf T}$；$\lambda_2=-4$、$\vect{V}_2=(-2,1)^{\mathsf T}$；两条特征方向都是轨线，其余轨线切向“慢方向”$\vect{V}_1$ 进入原点}
+\[
+\vect{X}=c_1\mathrm{e}^{-t}\begin{pmatrix}1\\1\end{pmatrix}+c_2\mathrm{e}^{-4t}\begin{pmatrix}-2\\1\end{pmatrix};
+\qquad\text{结点（汇），渐近稳定}
+\]
+\ansnote{“慢方向”指 $|\lambda|$ 小的那个：$t\to\infty$ 时 $\mathrm{e}^{-4t}$ 先消失，所以轨线最后沿 $\vect{V}_1$ 方向进入原点。}
+
+\ansh{L21-05}{p23}{相图 · 结点（同号正实根，源）}{两个正实特征值 + 两个线性无关特征向量 → 结点；$\lambda_2>\lambda_1$，故 $t\to\infty$ 时沿 $\vect{V}_2$ 方向远离原点}
+\[
+\vect{X}=c_1\mathrm{e}^{3t}\begin{pmatrix}1\\2\end{pmatrix}+c_2\mathrm{e}^{4t}\begin{pmatrix}1\\-3\end{pmatrix};
+\qquad\text{结点（源），不稳定}
+\]
+\ansnote{画图要点：先画两条特征方向（都朝外），再把每条轨线画成“进入时平行于 $\vect{V}_1$、出去时平行于 $\vect{V}_2$”。}
+
+\ansh{L21-06}{p26--p28}{相图 · 中心}{$\lambda=\pm2\mathrm{i}$，特征向量 $(0,1)^{\mathsf T}+\mathrm{i}(2,0)^{\mathsf T}$；取实部虚部得两解，消去 $t$ 得椭圆方程}
+\[
+\left(\frac{x_1}{2}\right)^{2}+x_2^{2}=\text{const};\qquad \text{中心，稳定但非渐近稳定}
+\]
+\ansnote{方向：在 $(1,0)$ 处 $\vect{X}'=A\vect{X}=(0,1)$，指向上方，故逆时针。轨线闭合，互不相交（唯一性）。}
+
+\ansh{L21-07}{p29--p31}{相图 · 焦点（复根，实部非零）}{$\lambda=1\pm2\mathrm{i}$，特征向量 $(1,1)^{\mathsf T}+\mathrm{i}(0,-1)^{\mathsf T}$；取实部虚部得两支实解}
+\[
+\vect{X}=c_1\mathrm{e}^{t}\begin{pmatrix}\cos2t\\ \cos2t+\sin2t\end{pmatrix}
++c_2\mathrm{e}^{t}\begin{pmatrix}\sin2t\\ \sin2t-\cos2t\end{pmatrix};
+\qquad\text{焦点，不稳定}
+\]
+\ansnote{$\alpha=1>0$ 故向外发散成螺旋。方向：$(1,0)$ 处 $\vect{X}'=(3,4)$ 指向上方 → 逆时针。}
+
+\ansh{L21-08}{p33--p34}{相图 · 正常结点（星形点，$g=m=2$）}{$\lambda=1$ 为二重根但 $g=2$；通解为 $\mathrm{e}^{t}(c_1,c_2)^{\mathsf T}$，比值 $x_2/x_1=c_2/c_1$ 与 $t$ 无关}
+\[
+\vect{X}=\mathrm{e}^{t}\begin{pmatrix}c_1\\ c_2\end{pmatrix};
+\qquad \text{正常结点（星形点），不稳定}
+\]
+\ansnote{每条轨线都是过原点的直线（射线）。$\lambda$ 换成负数时全部箭头的方向反过来，仍叫正常结点，但变为渐近稳定。}
+
+\ansh{L21-09}{p35--p39}{相图 · 退化结点（$g=1<m=2$）}{$\lambda=5$ 二重，$\operatorname{rank}(A-5E)=1$ 故 $g=1$；特征向量 $(1,-2)^{\mathsf T}$，广义向量解 $(A-5E)\vect{V}^{(1)}=\vect{V}$ 得 $(0,1)^{\mathsf T}$}
+\[
+\vect{X}=c_1\mathrm{e}^{5t}\begin{pmatrix}1\\-2\end{pmatrix}
++c_2\mathrm{e}^{5t}\left[t\begin{pmatrix}1\\-2\end{pmatrix}+\begin{pmatrix}0\\1\end{pmatrix}\right];
+\qquad\text{退化结点，不稳定}
+\]
+\ansnote{轨线仍切向 $\vect{V}_1$：$\lim x_2/x_1=-\tfrac12$。与正常结点的区别就在这里——轨线不是直线，而是弯着贴向同一方向。}
+
+\ansh{L21-10}{p43}{相图 · 结点（同号正实根）}{$A=\begin{pmatrix}3&2\\1&4\end{pmatrix}$，$\det(A-\lambda E)=(\lambda-2)(\lambda-5)$；两个正实根 → 结点（源）}
+\[
+\lambda_1=2,\ \vect{V}_1=(-2,1)^{T};\quad \lambda_2=5,\ \vect{V}_2=(1,1)^{T};
+\qquad\text{结点（源），不稳定}
+\]
+\ansnote{通解 $\vect{X}=c_1\mathrm{e}^{2t}(-2,1)^{\mathsf T}+c_2\mathrm{e}^{5t}(1,1)^{\mathsf T}$。与 L22--23 作业第 1 题 (1) 是同一系统。}
+
+\ansh{L21-11}{p43}{相图 · 结点（同号负实根）}{对角阵，特征值即对角元 $-1$ 与 $-4$；坐标轴就是两条特征方向}
+\[
+\lambda_1=-1,\ \vect{V}_1=(1,0)^{T};\quad \lambda_2=-4,\ \vect{V}_2=(0,1)^{T};
+\qquad\text{结点（汇），渐近稳定}
+\]
+\ansnote{通解 $x=c_1\mathrm{e}^{-t}$、$y=c_2\mathrm{e}^{-4t}$；轨线是 $y=Cx^{4}$ 型的曲线，最后都切向 $x$ 轴进入原点。}
+
+\ansh{L21-12}{p43}{相图 · 中心}{$A=\begin{pmatrix}0&4\\-1&0\end{pmatrix}$，$\lambda^2+4=0$ 得 $\pm2\mathrm{i}$；纯虚根 → 中心}
+\[
+\lambda=\pm2\mathrm{i};\quad \frac{x^{2}}{4}+y^{2}=\text{const};
+\qquad\text{中心，稳定但非渐近稳定}
+\]
+\ansnote{方向：$(1,0)$ 处 $(x',y')=(0,-1)$，指向下方 → 顺时针（与 L21--22 例 6 的逆时针相反，差别就在 $A$ 的符号）。}
+
+\ansh{L22-01}{p5}{稳定性 · 变系数反例}{直接算 $A(t)$ 的特征值（恒为 $-10$ 与 $-1$，与 $t$ 无关），再看课件给出的通解里 $\mathrm{e}^{2t}$ 项}
+\[
+\lambda_{1,2}\equiv-10,\,-1\ \ (\text{恒为负}),\qquad\text{而课件给出的通解含 }\mathrm{e}^{2t}\Rightarrow\ \text{零解不稳定}
+\]
+\ansnote{课件通解：$x_1=\mathrm{e}^{2t}(\cos6t+2\sin6t)c_1+\mathrm{e}^{-13t}(\sin6t-2\cos6t)c_2$，$x_2=\mathrm{e}^{2t}(\cos6t-\sin6t)c_1+\mathrm{e}^{-13t}(2\sin6t+\cos6t)c_2$。核验提示：特征值恒为 $-10,-1$ 已验证；但把这两条解代回课件所印的 $A(t)$ 会得到非零残差（本册已用符号计算核过），可见其中至少一处转录有误。结论仍然成立——变系数时特征值不能用来判稳定性；引用时不要把这两条解当作该矩阵的解。}
+
+\ansh{L22-02}{p10}{第一近似 · 雅可比矩阵}{在原点算偏导：$a_{11}=4\cos0=4$、$a_{12}=1$、$a_{21}=1+3x_1^2x_2|_0=1$、$a_{22}=1+x_1^3|_0=1$}
+\[
+\begin{cases}x_1'=4x_1+x_2\\ x_2'=x_1+x_2\end{cases},\qquad
+\lambda_{1,2}=\frac{5\pm\sqrt{13}}{2}>0\ \Rightarrow\ \text{不稳定}
+\]
+\ansnote{非线性项 $g_i$ 是 $|\vect{x}|^{2}$ 阶（$x_1^3x_2$ 是 4 阶），满足定理 2.1 的小量条件，所以线性化结论可直接搬回原系统。}
+
+\ansh{L22-03}{p11--p12}{第一近似 · 三元、超越右端}{把 $\mathrm{e}^{u}$、$\sin u$、$\ln(1+u)$ 都展开到一次项，只留线性部分}
+\[
+\begin{cases}x_1'=x_1+3x_3\\ x_2'=-3x_1-3x_2+4x_3\\ x_3'=-3x_1+x_3\end{cases},\quad
+\lambda^{3}+\lambda^{2}+4\lambda+30=0;\quad \lambda_1=-3,\ \lambda_{2,3}=1\pm3\mathrm{i}
+\]
+\ansnote{有正实部（$1$）$\Rightarrow$ 零解\textbf{不稳定}。三阶特征多项式靠试根：$\lambda=-3$ 使 $-27+9-12+30=0$。}
+
+\ansh{L22-04}{p13--p14}{第一近似 · 三元、乘积型右端}{乘积先逐因子取一次项再相乘（高阶项丢弃）；$\sin^3x_3$ 是三阶小量，对线性部分没有贡献}
+\[
+\begin{cases}x_1'=-x_1+x_3\\ x_2'=-x_2-x_3\\ x_3'=x_2-x_3\end{cases},\quad
+\lambda_1=-1,\ \lambda_{2,3}=-1\pm\mathrm{i}
+\]
+\ansnote{全部实部为负 $\Rightarrow$ 零解\textbf{渐近稳定}。注意 $\sin^3x_3$ 这一项直接消失——这是最容易多写一项的地方。}
+
+\ansh{L22-05}{p15--p17}{第一近似 · 单摆（两个临界点）}{临界点由 $y=0$、$\sin x=0$ 得 $(\pm n\pi,0)$；在 $(0,0)$ 与 $(0,\pi)$ 分别线性化（后者先平移 $\tilde x=x-\pi$）}
+\[
+\begin{cases}\lambda_{1,2}=\dfrac{-\gamma\pm\sqrt{\gamma^{2}-4\omega^{2}}}{2}&\Rightarrow\ (0,0)\ \text{渐近稳定}\\[6pt]
+\lambda_{1,2}=\dfrac{-\gamma\pm\sqrt{\gamma^{2}+4\omega^{2}}}{2}&\Rightarrow\ (0,\pi)\ \text{鞍点，不稳定}\end{cases}
+\]
+\ansnote{两条结论都只在 $\gamma>0$（有阻尼）且临界点双曲时成立：$(0,\pi)$ 处两特征值一正一负，必为鞍点；$(0,0)$ 处实部恒为负。}
+
+\ansh{L22-06}{p18}{临界点判据 · 同号正实根}{$\tau=7$、$\Delta=10>0$、$\tau^{2}-4\Delta=49-40=9>0$；两正实根 → 结点（源）}
+\[
+\lambda_1=2,\ \lambda_2=5;\qquad\text{结点，不稳定}
+\]
+\ansnote{与 L21--22 作业第 1 题同一系统，两讲给了同一个答案——L22--23 要求的是“先用 $\tau,\Delta$ 判类型，再谈稳定性”。}
+
+\ansh{L22-07}{p18}{临界点判据 · 重根且 $g=m=2$}{$A=-E$，$\lambda=-1$ 二重，$\operatorname{rank}(A+E)=0$ 故 $g=2$；两个独立特征向量 → 正常结点}
+\[
+\lambda_{1,2}=-1,\ g=m=2;\qquad\text{正常结点（星形点），渐近稳定}
+\]
+\ansnote{注意与“$x'=-x,\ y'=-4y$”区分：那个是同号\textbf{互异}实根的结点；这个是重根但 $g=2$，轨线是直线（射线）而不是 $y=Cx^4$ 型曲线。}
+
+\ansh{L22-08}{p18}{临界点判据 · 共轭复根（实部为负）}{$\tau=-2$、$\Delta=5>0$、$\tau^{2}-4\Delta=4-20<0$；复根 $\lambda=-1\pm2\mathrm{i}$ → 焦点}
+\[
+\lambda=-1\pm2\mathrm{i};\qquad\text{焦点，渐近稳定}
+\]
+\ansnote{$\tau=-2<0$ 说明 $\alpha<0$，螺旋向内收敛。若 $\tau=0$ 则为中心（稳定但不渐近），差一点结论就变了。}
+
+\ansh{L22-09}{p18}{第一近似 · 二维非线性}{在原点求雅可比矩阵：$\partial f_1/\partial x_1=1-2x_1-x_2\to1$、$\partial f_1/\partial x_2=-x_1\to0$、$\partial f_2/\partial x_1=-0.75x_2\to0$、$\partial f_2/\partial x_2=0.5-0.75x_1-0.5x_2\to0.5$}
+\[
+J=\begin{pmatrix}1&0\\ 0&0.5\end{pmatrix},\qquad \lambda_1=1,\ \lambda_2=0.5>0
+\ \Rightarrow\ \text{平凡解不稳定}
+\]
+\ansnote{两个特征值都为正，结论与二次项系数取哪一组无关（把 $-0.25x_2^2$ 读成别的系数也不影响）。线性化要写清“在原点处”的雅可比矩阵。}
+
+
+\end{document}

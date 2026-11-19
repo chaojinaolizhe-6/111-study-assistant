@@ -1,0 +1,797 @@
+﻿% !TEX program = xelatex
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{22pt}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\settags{实验 7 · 按册页 p23--27}{电工电子技术}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\needspace{10\baselineskip}\orighdr{#1}{#2}}
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\origsubhdr{#1}}
+
+\begin{document}
+
+\doctitle{实验 7 册页版：集成逻辑门与组合逻辑器件}
+{严格按实验册 p23--27 的流程与顺序：预习四问 ＋ 实验八项}
+{依据：本校实验册《2025--2026 (1) 7. Integrated Logic Gate and Combinational Logic Function Devices Experiment》\\
+p.23--27（学习者 2026-11-17 提供照片）＋ 教材 §5.4／§5.5；2026-11-19（周四）13:00--15:15，综一 317，2502 班，$10$ 分}
+
+\callout{\textbf{这一版和上一版的区别。}上一版按\textbf{教材}的两节（§5.4＋§5.5）铺开，把电压传输特性、$t_{\mathrm{pd}}$、74LS148、74LS183 都写了——\textbf{册页里这些都不做}。本版按\textbf{册页}重排：先 §2 逐题答预习四问（Preliminary Work），再 §3 逐项走实验八项（Experimental Procedure），编号与册页一致，可以直接对着册页写。\textbf{册页用到的芯片只有六片：4011、4012、74LS125、74LS147、CD4511、74LS151}；教材里的 74LS00、74LS148、74LS48、74LS183 这次不用。}
+
+%=============================================================
+\hdr{§0}{一页看完这本册子}
+
+\subhdr{0.1 册页的八项与教材位置}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.7cm}p{4.6cm}p{3.4cm}p{5.6cm}@{}}
+\hline
+\thead{项} & \thead{册页标题} & \thead{教材位置} & \thead{你要产出} \\
+\hline
+1 & Verification Test of the 4012 NAND Gate & §5.4.4、§5.4.5（四输入与非门） & 表 1（4 行） \\
+2 & AND / OR Gate Test & §5.4.6（用与非门搭与、或） & 表 2（4 行） \\
+3 & Design a three-person voting circuit & §5.4.6、理论课 6.4.4 例 1 & F 表达式＋电路图＋结果表＋0/1 定义 \\
+4 & Three-state gate experiment & §5.4.6（三态门与总线） & 表 5.4.4（4 行，含 $1Y$ 电压）、表 5.4.5（4 行） \\
+5 & Encoder Logic Function Test & §5.5.4（10--4 线优先编码器） & 表 5.5.3（10 行） \\
+6 & Decoder Logic Function Test & §5.5.5（译码器与显示器） & 表 5.5.4（3＋16 行） \\
+7 & Data Selector Logic Function Test & §5.5.6（数据选择器） & 表 5.5.5（1＋8 行） \\
+8 & Multisim Digital Circuit Simulation（\textbf{选做}） & §9.4.3（教材 p.362） & 原理图＋仿真截图 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{0.2 三条必须先记住的差异}
+
+\begin{enumerate}
+  \item \textbf{教材要读，但不都做}：册页第一句就是「Read Sections 5.4 and 5.5 of the textbook」——要读；可\textbf{册页列的项目只覆盖其中一部分}。教材 §5.4.5 的电压传输特性（表 5.4.2）与 $t_{\mathrm{pd}}$、§5.5.4 的 74LS148、§5.5.7 的全加器 74LS183，\textbf{本次册页没有要求}，不用接线、不用填表（但讨论/理解时可能被问到，上一版讲义保留着，需要时翻）。
+  \item \textbf{芯片只有六片}：4011（CMOS 四 2 输入与非门）、4012（CMOS 双 4 输入与非门）、74LS125（TTL 四三态门）、74LS147（TTL 10--4 线优先编码器）、CD4511（CMOS 七段译码器）、74LS151（TTL 8 选 1）。\textbf{CMOS 三片用 $U_{DD}$，TTL 三片用 $U_{CC}=+5\ \mathrm{V}$}，一台电源两路输出时改电压前先断电。
+  \item \textbf{册页的页码和手里这版教材对不上}：册页写「Figure 5.5.2 on Page 170」「page 173」「page 174」「page 175」「page 362」，而第 2 版里对应内容在 p.173／p.175--176／p.177／p.178／§9.4（约 p.365）。\textbf{差 2--3 页，按节号和图号找，不要按页码翻}。
+\end{enumerate}
+
+\subhdr{0.3 一张图看完流程}
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.5cm,
+  box/.style={draw=violet, rounded corners=3pt, minimum height=1.0cm, align=center,
+    fill=bandviolet, font=\scriptsize, text width=3.7cm, inner sep=3pt},
+  arr/.style={-{Latex[length=2mm]}, thick, violet}]
+\node[box] (a) {项 1\ 4012 四输入与非门\\（表 1，4 行）};
+\node[box, right=0.55cm of a] (b) {项 2\ 用 4011 搭与门/或门\\（表 2，4 行）};
+\node[box, right=0.55cm of b] (c) {项 3\ 三人表决器\\（设计 + 8 行结果）};
+\node[box, below=0.55cm of c] (d) {项 4\ 三态门 + 总线\\（表 5.4.4 / 5.4.5）};
+\node[box, left=0.55cm of d] (e) {项 5\ 74LS147 编码\\（表 5.5.3，10 行）};
+\node[box, left=0.55cm of e] (f) {项 6\ CD4511 译码显示\\（表 5.5.4，19 行）};
+\node[box, below=0.55cm of f] (g) {项 7\ 74LS151 选择\\（表 5.5.5，9 行）};
+\node[box, right=0.55cm of g] (h) {项 8\ Multisim（选做）\\循环显示学号};
+\draw[arr] (a)--(b); \draw[arr] (b)--(c); \draw[arr] (c)--(d);
+\draw[arr] (d)--(e); \draw[arr] (e)--(f); \draw[arr] (f)--(g); \draw[arr] (g)--(h);
+\end{tikzpicture}
+
+{\small 图 0\quad 册页的八项（蛇形顺序即册页顺序）。前四项在「门电路」区做，后四项在「器件」区做，中间不必换箱子。}
+\end{center}
+
+%=============================================================
+\hdr{§1}{六片芯片：引脚、电源、用哪一半}
+
+\textbf{先说电源}：4011、4012、CD4511 是 \textbf{CMOS}，用 $U_{DD}$（实验箱给多少就用多少，$3\sim18\ \mathrm{V}$ 都行；教材 §5.4.5 的例子取 $+8\ \mathrm{V}$，本实验箱一般 $+5\ \mathrm{V}$ 即可）；74LS125、74LS147、74LS151 是 \textbf{TTL}，用 $U_{CC}=+5\ \mathrm{V}$，\textbf{绝不许超过 $+5.5\ \mathrm{V}$}。每片都是 14 脚（4511 与 147、151 是 16 脚）双列直插，芯片上有个缺口或圆点，缺口在左手边时左下角是 1 脚，逆时针数。
+
+\subhdr{1.1 4011（CMOS 四 2 输入与非门）：项 2、项 3 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-4011引脚.png}\\[2pt]
+{\small 图 1\quad 4011 引脚（教材图 5.4.2a，书 p.167）。$14=U_{DD}$，$7=\mathrm{GND}$。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\thead{门} & \thead{输入 A} & \thead{输入 B} & \thead{输出 Y} & \thead{备注} \\
+\hline
+第 1 个 & 1 脚 & 2 脚 & 3 脚 & \\
+第 2 个 & 5 脚 & 6 脚 & 4 脚 & \textbf{输入在 5、6，输出在 4}，顺序反着 \\
+第 3 个 & 9 脚 & 8 脚 & 10 脚 & 注意 8、9 与 10 的对应 \\
+第 4 个 & 13 脚 & 12 脚 & 11 脚 & \\
+电源 & 14 脚 $U_{DD}$ & 7 脚 GND & — & CMOS：未用输入不能悬空 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{1.2 4012（CMOS 双 4 输入与非门）：项 1、项 3 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-4012引脚.png}\\[2pt]
+{\small 图 2\quad 4012 引脚（教材图 5.4.3a，书 p.167）。$14=U_{DD}$，$7=\mathrm{GND}$，$6$、$8$ 为空脚。}
+\end{center}
+
+第 1 个门：四个输入 \textbf{2、3、4、5 脚}，输出 \textbf{1 脚}（$1Y$）；第 2 个门：四个输入 \textbf{12、11、10、9 脚}，输出 \textbf{13 脚}（$2Y$）。\textbf{项 3 的三输入与非门就用它}：三个输入接三路，第四个输入接 $U_{DD}$（接高电平＝不参与判断）。
+
+\subhdr{1.3 74LS125（TTL 四三态门）：项 4 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-74LS125引脚.png}\\[2pt]
+{\small 图 3\quad 74LS125 引脚（教材图 5.4.5a，书 p.168）。$14=U_{CC}$，$7=\mathrm{GND}$。}
+\end{center}
+
+第 1 个门：使能 $1\overline{EN}$=\textbf{1 脚}、输入 $1A$=\textbf{2 脚}、输出 $1Y$=\textbf{3 脚}。\textbf{使能是低有效}（引脚名上的横线），即 $\overline{EN}=0$ 才传数据，$\overline{EN}=1$ 输出高阻 $Z$。
+
+\subhdr{1.4 74LS147（TTL 10--4 线优先编码器）：项 5 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-74LS147引脚.png}\\[2pt]
+{\small 图 4\quad 74LS147 引脚（教材图 5.5.2，书 p.173）。$16=U_{CC}$，$8=\mathrm{GND}$，$15$ 空脚。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}l|l@{}}
+\hline
+\thead{脚} & \thead{功能} \\
+\hline
+1、2、3、4、5 & $\overline{I_4}$、$\overline{I_5}$、$\overline{I_6}$、$\overline{I_7}$、$\overline{I_8}$（输入，低有效） \\
+11、12、13 & $\overline{I_1}$、$\overline{I_2}$、$\overline{I_3}$（输入，低有效） \\
+10 & $\overline{I_9}$（输入，低有效；\textbf{优先级最高}） \\
+6、7、9 & $\overline{Y_2}$、$\overline{Y_1}$、$\overline{Y_0}$（输出，低有效） \\
+14 & $\overline{Y_3}$（输出最高位，低有效） \\
+8、16、15 & GND、$U_{CC}$、空脚 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{1.5 CD4511（CMOS 七段显示译码器）：项 6 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-CD4511引脚.png}\\[2pt]
+{\small 图 5\quad 4511 引脚（教材图 5.5.3a，书 p.173）。$16=U_{DD}$，$8=\mathrm{GND}$。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}l|l@{}}
+\hline
+\thead{脚} & \thead{功能} \\
+\hline
+7、1、2、6 & $A$、$B$、$C$、$D$（BCD 输入，$A$ 最低位） \\
+13、12、11、10、9、15、14 & $a$、$b$、$c$、$d$、$e$、$f$、$g$（七段输出） \\
+3 & $\overline{LT}$ 灯测试，低有效（$=0$ 时全亮显示「8」） \\
+4 & $\overline{BI}$ 灭灯，低有效（$=0$ 时消隐） \\
+5 & $LE$ 锁存，\textbf{高有效}（$=1$ 时锁住不接收新数据） \\
+8、16 & GND、$U_{DD}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{1.6 74LS151（TTL 8 选 1 数据选择器）：项 7 用}
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/单片-74LS151引脚.png}\\[2pt]
+{\small 图 6\quad 74LS151 引脚（教材图 5.5.5，书 p.175）。$16=U_{CC}$，$8=\mathrm{GND}$。}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}l|l@{}}
+\hline
+\thead{脚} & \thead{功能} \\
+\hline
+4、3、2、1 & $D_0$、$D_1$、$D_2$、$D_3$（数据输入） \\
+15、14、13、12 & $D_4$、$D_5$、$D_6$、$D_7$（数据输入） \\
+11、10、9 & $A_0$、$A_1$、$A_2$（地址输入，$A_0$ 最低位） \\
+5、6 & $Y_1$、$Y_2$（互补输出，$Y_2=\overline{Y_1}$） \\
+7 & $\overline{EN}$ 使能，\textbf{低有效}（$=1$ 时输出被禁：$Y_1=0$、$Y_2=1$） \\
+8、16 & GND、$U_{CC}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{六片芯片的「悬空」规矩不一样，别一视同仁。}CMOS 三片（4011、4012、4511）\textbf{任何输入脚都不许悬空}——悬空会被静电或干扰拉到一个不确定电平，还可能损坏芯片；不用的门就把它的输入按到 $U_{DD}$ 或 GND。TTL 三片（125、147、151）的未用输入同样不许悬空，要按 §3.3 的规矩接到高或低。\textbf{唯一例外}：74LS151 的 $D_0\sim D_7$ 在只测某一路时可以悬空（TTL 悬空当 1），但报告里要写清「按 1 处理」。}
+
+%=============================================================
+\hdr{§2}{I. Preliminary Work：册页四问逐题答案（p23）}
+
+\callout{册页原文：「Read Sections 5.4 and 5.5 of the textbook. During preparation, design and draw circuit diagrams for all experimental projects as required, and answer the following questions. The chips used in this experiment are: 4011, 4012, 74LS125, 74LS147, CD4511, 74LS151.」——注意最后一句：\textbf{这六片就是全部}，凡是六片之外的芯片出现在你的图里，就是抄错了。}
+
+\subhdr{Q1\quad 用 4011（双输入与非门）画与门、或门电路图，并标出引脚号与电源脚}
+
+\qstem{册页原文（册页 p23 第 1 题）：Draw the circuit diagrams for AND gates, OR gates constructed using the dual-input 4011 NAND gate chip. Label the pin numbers of the utilized chips and the power supply pins in the diagrams.}
+
+\textbf{（a）与门} $Y=AB$：用\textbf{两个}与非门。第一个取反一次，第二个把它的两个输入并接在一起再取反一次——两次取反抵消，就得到「与」。
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.6cm and 1.0cm,
+  g/.style={draw=violet, thick, minimum width=1.25cm, minimum height=0.95cm, fill=bandviolet,
+    align=center, font=\scriptsize},
+  w/.style={-{Latex[length=1.6mm]}, thick, violet}]
+\node[g] (g1) {\textbf{\&}\\{\tiny 1,2$\to$3}};
+\node[g, right=1.25cm of g1] (g2) {\textbf{\&}\\{\tiny 5,6$\to$4}};
+\draw[w] ($(g1.west)+(-0.9,0.22)$) node[left,font=\scriptsize]{$A$} -- ($(g1.west)+(0,0.22)$);
+\draw[w] ($(g1.west)+(-0.9,-0.22)$) node[left,font=\scriptsize]{$B$} -- ($(g1.west)+(0,-0.22)$);
+\draw[w] (g1.east) -- node[above,font=\scriptsize]{3} (g2.west);
+\draw[w] (g1.east) ++(0.35,0) |- ($(g2.west)+(0,-0.22)$);
+\draw[w] (g2.east) -- ++(0.8,0) node[right,font=\scriptsize]{$Y=AB$（4 脚）};
+\node[font=\scriptsize, text=inkgray, below=0.55cm of g1] {14 脚接 $U_{DD}$};
+\node[font=\scriptsize, text=inkgray, below=0.55cm of g2] {7 脚接 GND};
+\end{tikzpicture}
+
+{\small 图 7\quad 用 4011 搭与门（本讲义绘）。第 1 门的两个输入就是 $A$、$B$；第 2 门的两个输入都接到第 1 门的输出，输出 $2Y$ 就是 $AB$。}
+\end{center}
+
+\textbf{（b）或门} $Y=A+B$：用\textbf{三个}与非门。先各自反相（同一信号接两个输入），再把两个反相结果相与非——由德摩根，$\overline{\overline{A}\cdot\overline{B}}=A+B$。
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.5cm and 1.1cm,
+  g/.style={draw=violet, thick, minimum width=1.2cm, minimum height=0.85cm, fill=bandviolet,
+    align=center, font=\scriptsize},
+  w/.style={-{Latex[length=1.6mm]}, thick, violet}]
+\node[g] (g1) {\textbf{\&}\\{\tiny 1,2$\to$3}};
+\node[g, below=0.55cm of g1] (g2) {\textbf{\&}\\{\tiny 5,6$\to$4}};
+\node[g, right=1.4cm of $(g1)!0.5!(g2)$] (g3) {\textbf{\&}\\{\tiny 8,9$\to$10}};
+\draw[w] ($(g1.west)+(-0.8,0)$) node[left,font=\scriptsize]{$A$} -- (g1.west);
+\draw[w] ($(g1.west)+(-0.8,0)$) ++(0,-0.28) -| ($(g1.west)+(0,-0.26)$);
+\draw[w] ($(g2.west)+(-0.8,0)$) node[left,font=\scriptsize]{$B$} -- (g2.west);
+\draw[w] ($(g2.west)+(-0.8,0)$) ++(0,-0.28) -| ($(g2.west)+(0,-0.26)$);
+\draw[w] (g1.east) -| node[above,font=\scriptsize,pos=0.28]{3} (g3.west);
+\draw[w] (g2.east) -| node[below,font=\scriptsize,pos=0.28]{4} (g3.west);
+\draw[w] (g3.east) -- ++(0.7,0) node[right,font=\scriptsize]{$Y=A+B$（10 脚）};
+\node[font=\scriptsize, text=inkgray, right=0.2cm of g1] {$\overline{A}$};
+\node[font=\scriptsize, text=inkgray, right=0.2cm of g2] {$\overline{B}$};
+\end{tikzpicture}
+
+{\small 图 8\quad 用 4011 搭或门（本讲义绘）。第 1 门把 $A$ 接两个输入，得 $\overline{A}$；第 2 门同法得 $\overline{B}$；第 3 门把两者相与非，得 $A+B$。}
+\end{center}
+
+\textbf{要写进预习报告的三句话}：（1） 芯片 4011 的 $14$ 脚接 $U_{DD}$、$7$ 脚接 GND，图上必须画出来（册页明确要求 label the power supply pins）；（2） 每个门的输入、输出脚号写在图上的对应端旁（如「$1A(1)$、$1B(2)$、$1Y(3)$」）；（3） 4011 是 CMOS，\textbf{没用到的第 4 个门（12、13、11 脚）要把 12、13 接到 $U_{DD}$ 或 GND}，不能空着。
+
+\subhdr{Q2\quad 几个逻辑门的输出端能直接并联吗？几个三态门呢？限制条件是什么？}
+
+\qstem{册页原文（册页 p23 第 2 题）：Can the output terminals of several logic gates be directly connected in parallel? Can the output terminals of several tri-state gates be connected in parallel? What are the constraints?}
+
+\textbf{普通门：不能。}两个普通门输出并在一起时，若一个要输出高、另一个要输出低，中间的半导体通路近似短路，电流很大，会损坏器件。教材里还有两条同源的规矩：输出端不允许与电源或地短路；除三态门和集电极开路门外，输出端不允许并联使用。
+
+\textbf{三态门：可以。}三态门有第三态（高阻 $Z$），不接管总线时它等于从线上「摘下来」。\textbf{限制条件}：同一时刻接在同一根线上的三态门中，\textbf{最多只能有一个使能有效}，其余必须是高阻。一旦两个同时有效且输出相反，就退化成普通门并联的短路问题。
+
+\textbf{英文答案（可直接抄进预习报告）}\\
+\emph{Answer.} The outputs of ordinary logic gates must not be tied together: if one gate drives high while another drives low, a large current flows through the output stages and the devices may be destroyed. Three-state gate outputs may be connected in parallel to form a bus, provided that \textbf{at most one gate is enabled at any instant} and all the others are held in the high-impedance state.
+
+\subhdr{Q3\quad 74LS147 的功能；图 5.5.2 上有一处印错的引脚，指出来}
+
+\qstem{册页原文（册页 p23 第 3 题）：Briefly describe the functions of the 74LS147 chip. There is a printing error on one pin in the 74LS147 pin diagram shown in Figure 5.5.2 on Page 170 of the textbook. Please identify it.}
+
+\textbf{（a）功能。}74LS147 是 \textbf{10 线--4 线优先编码器}：把「哪一条输入线有效」翻成 4 位 \textbf{8421 BCD 码}。它的特点是三点：（1） 输入、输出\textbf{都低有效}；（2） 同时有多条输入有效时，只编\textbf{优先级最高}的一条，$\overline{I_9}$ 最高、$\overline{I_1}$ 最低；（3） 它只有 \textbf{9 条输入线}（$\overline{I_1}\sim\overline{I_9}$），\textbf{没有 $\overline{I_0}$}——9 条全为高电平（无输入）时输出 1111，就代表十进制 0。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 A\quad 74LS147 功能表（左照教材表 5.5.3，右列是取反后的十进制）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|c|c@{}}
+\hline
+\thead{哪一脚为 0} & \thead{$\overline{Y_3}\overline{Y_2}\overline{Y_1}\overline{Y_0}$} & \thead{对应十进制} \\
+\hline
+全部为 1（无输入） & 1111 & 0 \\
+10 脚（$\overline{I_9}$） & 0110 & 9 \\
+5 脚（$\overline{I_8}$） & 0111 & 8 \\
+4 脚（$\overline{I_7}$） & 1000 & 7 \\
+3 脚（$\overline{I_6}$） & 1001 & 6 \\
+2 脚（$\overline{I_5}$） & 1010 & 5 \\
+1 脚（$\overline{I_4}$） & 1011 & 4 \\
+13 脚（$\overline{I_3}$） & 1100 & 3 \\
+12 脚（$\overline{I_2}$） & 1101 & 2 \\
+11 脚（$\overline{I_1}$） & 1110 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{（b）那处印错的引脚：第 10 脚。}正确的写法是 $\overline{I_9}$（最高优先级那条输入线），\textbf{不是 $\overline{I_0}$}——74LS147 根本没有 $\overline{I_0}$（十进制 0 靠「9 条全高」表示）。这一脚最容易错，因为 74LS147 的引脚排列基本沿用 74LS148 的图，而 \textbf{74LS148 的第 10 脚正是 $\overline{I_0}$}；照抄 148 的图就会把 147 的第 10 脚误标成 $\overline{I_0}$。
+
+\aside{手里这版教材（第 2 版，书 p.173 的图 5.5.2）已经把这一脚印成 $\overline{I_9}$，所以你在这版上找不到错。依据是：册页写的「Page 170」比第 2 版低 3 页（§5.5.2 在本版 p.173），说明册页对的是另一印次；那一印次若沿用 148 的图，错的只能是第 10 脚这一处。\textbf{现场按老师的答案核一遍}，若老师说的是别的脚（例如第 15 脚空脚），以老师的为准，并在报告里注明「按第 1 版图 5.5.2」。}
+
+\subhdr{Q4\quad CD4511 驱动共阴极还是共阳极？画出这类 LED 的结构图}
+
+\qstem{册页原文（册页 p23 第 4 题）：Which type of LED (common-anode or common-cathode) is driven by CD4511? Draw the circuit structure diagram of this type of LED.}
+
+\textbf{答案：共阴极（common cathode）。}4511 的 $a\sim g$ 输出在点亮时给\textbf{高电平}（内部是拉电流输出），所以数码管的七个阴极要连在一起接地，阳极经限流电阻接 $a\sim g$。
+
+\begin{center}
+\begin{tikzpicture}[font=\scriptsize, thick, violet,
+  blk/.style={draw=violet, fill=bandviolet, rounded corners=2pt, align=center}]
+% 左：译码器
+\node[blk, minimum width=2.0cm, minimum height=4.4cm] (ic) at (0,0) {\textbf{4511}\\译码器};
+% 右：数码管
+\node[blk, minimum width=2.6cm, minimum height=4.4cm] (led) at (7.4,0) {共阴极\\数码管};
+% 七路 a~g
+\foreach \k/\s in {1.65/a,1.1/b,0.55/c,0/d,-0.55/e,-1.1/f,-1.65/g}{
+  \draw[violet] ($(ic.east)+(0,\k)$) -- ($(led.west)+(0,\k)$);
+  \node[font=\tiny, above] at ($(ic.east)+(0.22,\k)$) {$\s$};
+  \fill[violet] ($(led.west)+(0,\k)$) circle (0.6pt);
+}
+\node[font=\tiny, text=inkgray, above] at ($(ic.east)!.5!(led.west)+(0,1.68)$) {每路串 $510\ \Omega$};
+% 共阴极出线
+\draw[violet] (led.south) -- ++(0,-0.55) coordinate (com);
+\node[font=\tiny, right, text=inkgray] at (com) {COM};
+% GND 符号
+\draw[violet] (com) -- ++(0,-0.15);
+\draw[violet] ($(com)+(0,-0.15)$) -- ++(-0.22,0);
+\draw[violet] ($(com)+(0,-0.32)$) -- ++(-0.13,0);
+\draw[violet] ($(com)+(0,-0.49)$) -- ++(-0.05,0);
+\node[font=\tiny, below] at ($(com)+(0,-0.55)$) {接 GND（共阴）};
+% 左侧说明
+\node[font=\tiny, align=left, text=inkgray, anchor=east] at ($(ic.west)+(-0.15,0)$) {$a\sim g$\\七路输出\\（高电平\\点亮该段）};
+\end{tikzpicture}
+
+{\small 图 9\quad 共阴极 LED 数码管的结构（本讲义绘）。七段阳极经各自限流电阻接 4511 的 $a\sim g$；七段阴极在数码管内部已连成一点，只引出 COM 一个端子，接 GND。}
+\end{center}
+
+\textbf{英文答案}\\
+\emph{Answer.} The CD4511 is a BCD-to-seven-segment decoder/driver for \textbf{common-cathode} LED displays. In a common-cathode display the seven cathodes are joined internally to one COM terminal which is connected to ground, and each anode is fed through a series current-limiting resistor from the corresponding segment output ($a\sim g$). A segment lights when its output is high.
+
+%=============================================================
+\hdr{§3}{I. Experimental Procedure：册页八项按序走}
+
+\subhdr{3.1 项 1：4012 四输入与非门验证（表 1）}
+
+\textbf{册页原话}：Select a 4-input NAND gate. Connect its four inputs to the logic level switch jacks on the experimental box, and its output to the LED level display jack on the box. Observe the on/off state of the LED to determine the circuit output (1 or 0).
+
+\textbf{接法}：用 4012 的第 1 个门——四个输入接 \textbf{2、3、4、5 脚}，输出看 \textbf{1 脚}（$1Y$）；$14$ 脚接 $U_{DD}$，$7$ 脚接 GND。四个输入各接一个逻辑开关，$1Y$ 接箱上的 LED 电平显示插孔（红灯亮记 1，灭记 0）。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 1（册页 Table 1，4 行；右列是本讲义补的理论值）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|cccc|c|c@{}}
+\hline
+\thead{No.} & \thead{$A$} & \thead{$B$} & \thead{$C$} & \thead{$D$} & \thead{输出（实测）} & \thead{应为} \\
+\hline
+1 & 1 & 1 & 1 & 1 & & 0 \\
+2 & 0 & 0 & 0 & 0 & & 1 \\
+3 & \multicolumn{4}{c|}{（自选一组）} & & \\
+4 & \multicolumn{4}{c|}{（自选一组）} & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{第 3、4 行怎么选最省事又最说明问题：选\textbf{只有一个 0}（如 0 1 1 1）与\textbf{只有一个 1}（如 1 0 0 0）。前者应为 1、后者应为 1——「只要有一个输入为 0，输出就是 1」正是与非门的定义；配上第 1 行的全 1 出 0，四条就足以证明这是四输入与非门而不是与门或或门。}
+
+\subhdr{3.2 项 2：AND / OR Gate Test（表 2）}
+
+\textbf{册页原话}：Complete the following experiment according to the circuit diagram provided in the preparatory requirements. Ensure the chip's power pins are connected\ldots record the results.
+
+\textbf{做法}：把 §2 Q1 画的两张图分别搭出来——先搭\textbf{与门}（两个门，图 7），$A$、$B$ 接两个逻辑开关，$2Y$（4 脚）接 LED；测 4 组输入；再拆掉搭\textbf{或门}（三个门，图 8），$3Y$（10 脚）接 LED，再测 4 组。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 2（册页 Table 2，4 行；右侧两列是本讲义补的理论值）
+\vspace{2pt}
+
+\begin{tabular}{@{}cc|c|c|c@{}}
+\hline
+\thead{$A$} & \thead{$B$} & \thead{与门实测} & \thead{与门应为} & \thead{或门应为} \\
+\hline
+0 & 0 & & 0 & 0 \\
+0 & 1 & & 0 & 1 \\
+1 & 0 & & 0 & 1 \\
+1 & 1 & & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{表 2 只印了一列「Output」，而预习要求你画了与门和或门两张图}。两种处理都可以，但要先问清老师：（1） 同一张表分两栏（左栏与门、右栏或门），或（2） 与门用这张表、或门另附一页同样的四行表。\textbf{不要只测一个门就交}——册页标题写的是 AND / OR，两个都要有数据。}
+
+\subhdr{3.3 项 3：三人表决器（设计题，册页留了三块空白：电路图、F 表达式、实验结果）}
+
+\textbf{题目要求}：多数通过、弃权不算（即只看三人的赞成／反对）、\textbf{用最少的与非门}、化简到\textbf{最简与非—与非形式}、画出实验电路图并说明图中符号、把结果记成表并说明数据里 0 和 1 的含义、芯片要接电源。
+
+\textbf{第一步：真值表。}三人各一票，$A$、$B$、$C$ 为 1 表示赞成；赞成票 $\ge2$ 时 $F=1$（通过）。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 B\quad 三人表决器真值表（本讲义补；第八列是你现场要填的实测）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|c|c@{}}
+\hline
+\thead{$A$} & \thead{$B$} & \thead{$C$} & \thead{$F$（理论）} & \thead{$F$（实测）} \\
+\hline
+0 & 0 & 0 & 0 & \\
+0 & 0 & 1 & 0 & \\
+0 & 1 & 0 & 0 & \\
+0 & 1 & 1 & 1 & \\
+1 & 0 & 0 & 0 & \\
+1 & 0 & 1 & 1 & \\
+1 & 1 & 0 & 1 & \\
+1 & 1 & 1 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{第二步：表达式与化简。}写出三个最小项之和，再合并：
+
+\[
+F=\overline{A}BC+A\overline{B}C+AB\overline{C}+ABC
+=BC+A C+A B .
+\]
+
+（合并的依据：$\overline{A}BC+ABC=BC$，同理另外两组；理论课 6.4.4 的三人表决器就是这么化简的。）
+
+\textbf{第三步：最简与非—与非形式。}把「与或式」两次取反，再用德摩根：
+
+\[
+F=AB+BC+CA=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}} .
+\]
+
+读法：\textbf{最外面是一个三输入与非门}，它的三个输入分别来自三个二输入与非门（每个负责一个乘积项并取反）。
+
+\textbf{第四步：最少几个与非门？四个。}三个二输入与非门（各做一个乘积项）＋一个三输入与非门。\textbf{这也是册页为什么把 4012 列进芯片清单}：4011 只有二输入门，三输入与非门正好用 4012 的四输入门，把第四个输入接 $U_{DD}$（接高电平即不参与判断）。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 C\quad 四个门的引脚分配（按本讲义建议；写进报告的电路图就用这套编号）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|c|c|c|p{2.3cm}@{}}
+\hline
+\thead{芯片} & \thead{作用} & \thead{输入脚} & \thead{输出脚} & \thead{接到哪里} \\
+\hline
+4011 第 1 门 & $\overline{AB}$ & 1（$A$）、2（$B$） & 3 & 4012 的一个输入 \\
+4011 第 2 门 & $\overline{BC}$ & 5（$B$）、6（$C$） & 4 & 4012 的第二个输入 \\
+4011 第 3 门 & $\overline{CA}$ & 9（$C$）、8（$A$） & 10 & 4012 的第三个输入 \\
+4012 第 1 门 & $F=\overline{\overline{AB}\cdot\overline{BC}\cdot\overline{CA}}$ & 2、3、4（分别接 3、4、10 脚），5 脚接 $U_{DD}$ & 1 & 接 LED \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{两片芯片的电源：4011 的 14 脚接 $U_{DD}$、7 脚接 GND；4012 的 14 脚接 $U_{DD}$、7 脚接 GND。4011 剩下的第 4 个门（12、13 脚输入，11 脚输出）不用，但 \textbf{12、13 必须接到 $U_{DD}$ 或 GND}——CMOS 不许悬空。}
+
+\textbf{第五步：数据里 0 和 1 的含义}（册页明确要求 specify the meanings）。照这样写：\textbf{输入}：$A$、$B$、$C$ 为 1 表示该人\textbf{赞成}，0 表示\textbf{反对}（弃权按反对处理，因为题目要求 disregarding abstentions）；\textbf{输出}：$F$ 为 1 表示\textbf{表决通过}（至少两票赞成），0 表示\textbf{未通过}；LED 亮 = 1。
+
+\textbf{第六步：图里的符号说明}。报告里要写清：矩形内的 \textbf{\&} 表示与非门（输出端的小圆圈表示取反）；图上的数字是\textbf{引脚号}；$U_{DD}$、GND 是电源端子。若老师要求用「与非门符号＋反相圈」画，就按上面表 C 的四个门画成四个 \& 框。
+
+\subhdr{3.4 项 4：三态门与总线（表 5.4.4、表 5.4.5）}
+
+\textbf{册页原话}：Complete the three-state gate experiment as required on page 167 of the textbook.（本版教材在 §5.4.6.2，书 p.169--170。）
+
+\textbf{（a）三态门功能（表 5.4.4）。}用 74LS125 的第 1 个门：使能 $1\overline{EN}$（1 脚）与输入 $1A$（2 脚）各接一个逻辑开关，$1Y$（3 脚）经 $510\ \Omega$ 电阻接 LED 到 GND；\textbf{另用万用表直流电压挡量 $1Y$ 对 GND 的电压}，填进「$1Y$ Voltage」那一栏。
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.4.4（册页表格；右侧两列是本讲义补的预期）
+\vspace{2pt}
+
+\begin{tabular}{@{}cc|c|c|l@{}}
+\hline
+\thead{$1\overline{EN}$} & \thead{$1A$} & \thead{$1Y$（实测）} & \thead{$1Y$ 电压（实测）} & \thead{应为} \\
+\hline
+0 & 0 & & & $0$，电压约 $0.1\sim0.2\ \mathrm{V}$ \\
+0 & 1 & & & $1$，电压约 $3.4\sim3.6\ \mathrm{V}$ \\
+1 & 0 & & & $Z$（高阻），LED 灭，电压约 $0\ \mathrm{V}$ \\
+1 & 1 & & & $Z$（高阻），LED 灭，电压约 $0\ \mathrm{V}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{后两行的电压会读到接近 $0\ \mathrm{V}$，但那不是逻辑 0。}高阻态时 $1Y$ 与芯片内部断开，脚上只剩「$510\ \Omega$ 电阻串 LED 到地」这条无源支路，没有电流、没有电压，万用表读出来就是 $0\ \mathrm{V}$——和真正的逻辑 0 读数是同一个数。\textbf{判高阻要看 LED 与总线行为，不能只看电压}；这正是册页让你把电压也记下来的原因：用数据自己证明「电压分不出 $Z$ 和 0」。}
+
+\textbf{（b）三态门总线（表 5.4.5）。}按教材图 5.4.8 接线：三个三态门（74LS125 的 1 号、2 号、3 号门）输出并成一根总线 $F$，三个使能端分别由逻辑开关 $S_1$、$S_2$、$S_3$ 控制，三个输入 $1A$、$2A$、$3A$ 分别接 $u_1$、$u_2$、$u_3$；总线上串 $R$（几百欧）与 LED 观察 $F$。
+
+\begin{center}
+\includegraphics[width=0.86\linewidth]{图-实验7/图5.4.8-三态门总线.png}\\[2pt]
+{\small 图 10\quad 三态门实现总线传输（教材图 5.4.8，书 p.170）。$u_1$、$u_2$ 由信号源给 $1\ \mathrm{Hz}$／$2\ \mathrm{Hz}$ 方波，$u_3$ 由逻辑开关给高低电平。}
+\end{center}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.4.5（册页表格；右列是本讲义补的预期）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|c|l@{}}
+\hline
+\thead{$S_1$} & \thead{$S_2$} & \thead{$S_3$} & \thead{$F$（实测）} & \thead{应为} \\
+\hline
+1 & 1 & 1 & & 三只全禁 → $F$ 悬空，LED 不亮 \\
+1 & 1 & 0 & & 只有第 3 门通 → $F=u_3$ \\
+1 & 0 & 1 & & 只有第 2 门通 → $F=u_2$ \\
+0 & 1 & 1 & & 只有第 1 门通 → $F=u_1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{三个使能端都是低有效，所以「$S=0$ 的那一路通」。四行测试各让一个 $0$ 出现，正是为了验证「任意时刻最多一个有效」；第一行三个都是 1，谁都不通，总线上什么都没有（LED 不亮、示波器上是一条飘忽的线）。}
+
+\subhdr{3.5 项 5：74LS147 编码器（表 5.5.3，10 行）}
+
+\textbf{册页原话}：Complete the 10-4 wire priority encoder logic function test as specified on page 173 of the textbook.
+
+\textbf{接法}（教材图 5.5.8）：9 条输入 $\overline{I_1}\sim\overline{I_9}$ 各接一个逻辑开关（$S_1\sim S_9$），4 条输出 $\overline{Y_3}\sim\overline{Y_0}$ 各经 $510\ \Omega$ 电阻接一个 LED；$16$ 脚接 $U_{CC}$，$8$ 脚接 GND。
+
+\begin{center}
+\includegraphics[width=0.62\linewidth]{图-实验7/图5.5.8-147实验电路.png}\\[2pt]
+{\small 图 11\quad 10--4 线优先编码器实验电路（教材图 5.5.8，书 p.176）。}
+\end{center}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.3（册页表格；右两列是本讲义补的预期）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|cccc|cc@{}}
+\hline
+\thead{测次} & \thead{哪一脚为 0} & \thead{$\overline{Y_3}\overline{Y_2}\overline{Y_1}\overline{Y_0}$（实测）} & & & \thead{应为} & \thead{十进制} \\
+\hline
+1 & 全部为 1 & & & & 1111 & 0 \\
+2 & 10 脚（$\overline{I_9}$） & & & & 0110 & 9 \\
+3 & 5 脚（$\overline{I_8}$） & & & & 0111 & 8 \\
+4 & 4 脚（$\overline{I_7}$） & & & & 1000 & 7 \\
+5 & 3 脚（$\overline{I_6}$） & & & & 1001 & 6 \\
+6 & 2 脚（$\overline{I_5}$） & & & & 1010 & 5 \\
+7 & 1 脚（$\overline{I_4}$） & & & & 1011 & 4 \\
+8 & 13 脚（$\overline{I_3}$） & & & & 1100 & 3 \\
+9 & 12 脚（$\overline{I_2}$） & & & & 1101 & 2 \\
+10 & 11 脚（$\overline{I_1}$） & & & & 1110 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{两条读数纪律}：（1） 表头是 $\overline{Y_3}\overline{Y_2}\overline{Y_1}\overline{Y_0}$（\textbf{反码}），灯的状态直接填进去；要在旁边写出十进制，就\textbf{先取反再读}（例如灯 0110 → 取反 1001 → 9）。（2） 每测一次只让\textbf{一个}输入为 0，其余全部为 1；同时两个为 0 时输出的是优先级高的那个，容易把行对错。
+
+\subhdr{3.6 项 6：CD4511 译码与显示（表 5.5.4）}
+
+\textbf{册页原话}：Complete the decoder logic function test as specified in Section 5.5.5 on page 174 of the textbook.
+
+\textbf{接法}（教材图 5.5.9）：$A$、$B$、$C$、$D$（7、1、2、6 脚）各接一个逻辑开关；七段输出 $a\sim g$ 各经 $510\ \Omega$ 电阻接共阴极数码管的对应段；$\overline{LT}$（3 脚）、$\overline{BI}$（4 脚）、$LE$（5 脚）各接一个逻辑开关；$16$ 脚接 $U_{DD}$，$8$ 脚接 GND，数码管的 COM 接 GND。
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/图5.5.9-4511实验电路.png}\\[2pt]
+{\small 图 12\quad 译码器与显示器实验电路（教材图 5.5.9，书 p.178）。}
+\end{center}
+
+\needspace{7\baselineskip}
+\begin{center}
+\small
+表 5.5.4(a)（册页表格的前三行：三个控制端；右两列是本讲义补的预期）
+\vspace{2pt}
+
+\begin{tabular}{@{}ccc|cccc|l|c@{}}
+\hline
+\thead{$\overline{LT}$} & \thead{$\overline{BI}$} & \thead{$LE$} & \thead{$D$} & \thead{$C$} & \thead{$B$} & \thead{$A$} & \thead{应有显示} & \thead{实测} \\
+\hline
+0 & 1 & 0 & × & × & × & × & 8（灯测试，七段全亮） & \\
+1 & 0 & 0 & × & × & × & × & 全灭（消隐） & \\
+1 & 1 & 1 & × & × & × & × & 锁存上一状态 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\needspace{20\baselineskip}
+\begin{center}
+\small
+表 5.5.4(b)（册页表格的后 16 行：BCD 输入与显示；段序 $a\,b\,c\,d\,e\,f\,g$）
+\vspace{2pt}
+
+\begin{tabular}{@{}cccc|l|c|c@{}}
+\hline
+\thead{$D$} & \thead{$C$} & \thead{$B$} & \thead{$A$} & \thead{应有显示} & \thead{段码} & \thead{实测} \\
+\hline
+0 & 0 & 0 & 0 & 0 & 1111110 & \\
+0 & 0 & 0 & 1 & 1 & 0110000 & \\
+0 & 0 & 1 & 0 & 2 & 1101101 & \\
+0 & 0 & 1 & 1 & 3 & 1111001 & \\
+0 & 1 & 0 & 0 & 4 & 0110011 & \\
+0 & 1 & 0 & 1 & 5 & 1011011 & \\
+0 & 1 & 1 & 0 & 6 & 1011111 & \\
+0 & 1 & 1 & 1 & 7 & 1110000 & \\
+1 & 0 & 0 & 0 & 8 & 1111111 & \\
+1 & 0 & 0 & 1 & 9 & 1111011 & \\
+1 & 0 & 1 & 0 & 全灭（伪码） & 0000000 & \\
+1 & 0 & 1 & 1 & 全灭（伪码） & 0000000 & \\
+1 & 1 & 0 & 0 & 全灭（伪码） & 0000000 & \\
+1 & 1 & 0 & 1 & 全灭（伪码） & 0000000 & \\
+1 & 1 & 1 & 0 & 全灭（伪码） & 0000000 & \\
+1 & 1 & 1 & 1 & 全灭（伪码） & 0000000 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{三个控制端各测一次就够}（表 5.5.4a 的三行）：$\overline{LT}=0$ 时应显示「8」（所有段都亮，用来快速查数码管有没有坏段）；$\overline{BI}=0$ 时应全灭；$LE=1$ 时保持前一次显示不变。\textbf{表 5.5.4b 的 16 行}用 $D\,C\,B\,A$ 从 $0000$ 数到 $1111$，前 10 行显示 0--9，后 6 行（1010--1111）是伪码，4511 会自动消隐（全灭）——这一条要写进报告，它是 4511 的一个特点。
+
+\subhdr{3.7 项 7：74LS151 数据选择器（表 5.5.5）}
+
+\textbf{册页原话}：Perform the logic function test for the data selector according to the requirements in Section 5.5.6 on page 175 of the textbook.
+
+\textbf{接法}（教材图 5.5.10）：$D_0\sim D_7$（4、3、2、1、15、14、13、12 脚）各接逻辑开关；$A_2$、$A_1$、$A_0$（9、10、11 脚）各接逻辑开关；$\overline{EN}$（7 脚）接逻辑开关；$Y_1$（5 脚）、$Y_2$（6 脚）各经 $510\ \Omega$ 接 LED；$16$ 脚接 $U_{CC}$，$8$ 脚接 GND。
+
+\begin{center}
+\includegraphics[width=0.60\linewidth]{图-实验7/图5.5.10-151实验电路.png}\\[2pt]
+{\small 图 13\quad 数据选择器实验电路（教材图 5.5.10，书 p.179）。}
+\end{center}
+
+\needspace{9\baselineskip}
+\begin{center}
+\small
+表 5.5.5（册页表格；右三列是本讲义补的预期，输入 $D_7\sim D_0=1\,0\,1\,0\,1\,0\,1\,0$）
+\vspace{2pt}
+
+\begin{tabular}{@{}c|ccc|cccccccc|cc@{}}
+\hline
+\thead{$\overline{EN}$} & \thead{$A_2$} & \thead{$A_1$} & \thead{$A_0$} & \thead{$D_7$} & \thead{$D_6$} & \thead{$D_5$} & \thead{$D_4$} & \thead{$D_3$} & \thead{$D_2$} & \thead{$D_1$} & \thead{$D_0$} & \thead{$Y_1$ 应} & \thead{$Y_2$ 应} \\
+\hline
+1 & × & × & × & × & × & × & × & × & × & × & × & 0 & 1 \\
+\hline
+0 & 0 & 0 & 0 & \multicolumn{8}{c|}{$1\ 0\ 1\ 0\ 1\ 0\ 1\ 0$} & 0 & 1 \\
+0 & 0 & 0 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 0 & 1 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 0 & 1 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 1 & 0 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 1 & 0 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+0 & 1 & 1 & 0 & \multicolumn{8}{c|}{同上} & 0 & 1 \\
+0 & 1 & 1 & 1 & \multicolumn{8}{c|}{同上} & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\aside{这张表的规律一眼可见：地址低位 $A_0=0$ 时 $Y_1=0$、$A_0=1$ 时 $Y_1=1$——因为 $D_1=D_3=D_5=D_7=1$ 而 $D_0=D_2=D_4=D_6=0$。所以\textbf{在这组输入下 $Y_1=A_0$}。$Y_2$ 永远是 $Y_1$ 的反（互补输出）。}
+
+\subhdr{3.8 项 8：Multisim 仿真（选做）}
+
+\textbf{册页原话}：Complete the simulation following Section 9.4.3 on Page 362 of the textbook. You may design a circuit to cyclically display your student ID. Print the schematic diagram and screenshots of simulation results, then paste them on this page.
+
+\textbf{注意}：§9.4.3 在手里这版教材约在 p.365（同样差 3 页），\textbf{按节号找}。这是\textbf{选做}项，做与不做先问老师是否计分。
+
+\textbf{最小可行方案}（若做，照这个来省时间）：（1） 用一片 74LS160/161 计数器接成十进制循环；（2） 其 BCD 输出接 4511，4511 驱动七段数码管；（3） 时钟用函数发生器给 $1\ \mathrm{Hz}$ 方波。这样数码管就循环显示 0--9。\textbf{要显示学号}：用一个 8 选 1 或多个 BCD 开关手动置数（把学号各位依次置入并截图），或用计数器产生 0--9 循环后截取学号中出现的数字——后者最省事，老师要的是「原理图＋仿真截图」，不是完整学号机。
+
+\textbf{仿真里最容易犯的两处}：（1） \textbf{忘放接地点}——Multisim 用节点法求解，每张原理图必须有 GND 参考点，否则报错；（2） TTL 输入端悬空在仿真里被当成高电平，看着能跑，但实际接线会误动作——\textbf{仿真通过不等于接线正确}。
+
+%=============================================================
+\hdr{§4}{写报告：册页结构、术语与交前自检}
+
+\subhdr{4.1 报告就是册页本身}
+
+这本册子的报告不是另写一份，而是\textbf{在册页上填}：p.23 的四问（预习）＋ p.24--27 的八项（每项下面的空白、Table 1、Table 2、$F$ Expression、Experimental Results、表 5.4.4／5.4.5／5.5.3／5.5.4／5.5.5）。所以：
+
+\begin{itemize}
+  \item \textbf{预习部分}（p.23）要在\textbf{进实验室之前}写完：两张门电路图（标引脚号与电源脚）、并联限制的答案、74LS147 的功能与那处印刷错误、共阴极结构图。
+  \item \textbf{实验部分}（p.24--27）边做边填，数据\textbf{当堂请老师批改签字}（册 p.02 的规矩：所有记录须指导教师确认批改，否则无效）。
+  \item \textbf{报告语言}：册页是英文，答案用英文写；中文理解可以写在草稿上，不要混进册页。
+\end{itemize}
+
+\subhdr{4.2 术语（英文报告用，别自己造词）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.6cm}p{5.6cm}p{4.2cm}@{}}
+\hline
+\thead{中文} & \thead{英文} & \thead{备注} \\
+\hline
+四输入与非门 & 4-input NAND gate & \\
+真值表 & truth table & \\
+引脚号 & pin number & 报告里必须标 \\
+高阻态 & high-impedance state ($Z$) & \\
+使能端（低有效） & enable input (active LOW) & 引脚名上加横线 \\
+总线 & bus & \\
+优先编码器 & priority encoder & \\
+反码 & complement code & 输出低有效即反码 \\
+七段显示译码器 & seven-segment decoder/driver & \\
+共阴极 & common cathode & 4511 配这种 \\
+消隐／灯测试／锁存 & blanking / lamp test / latch & $\overline{BI}$／$\overline{LT}$／$LE$ \\
+数据选择器 & data selector (multiplexer) & \\
+地址 & address & $A_2A_1A_0$ \\
+多数表决 & majority vote & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{4.3 交前自检（八条，逐条打勾）}
+
+\begin{enumerate}
+  \item p.23 四问都写了？两张与／或门图\textbf{标了引脚号和 14／7 脚电源}？
+  \item 表 1 四行都有数据？第 3、4 行的输入组合写清了？
+  \item 表 2 四行都有数据？与门、或门\textbf{两个都测了}？
+  \item 三人表决器：$F$ 表达式化简到 $AB+BC+CA$、最简与非形式写了、电路图标了脚号、8 行结果齐、0／1 含义写了？
+  \item 表 5.4.4 的 $1Y$ 电压四格都填了？表 5.4.5 四行都填了？
+  \item 表 5.5.3 十行、表 5.5.4 十九行、表 5.5.5 九行，行数都对上了？
+  \item 所有芯片的电源脚都接了？CMOS 的未用输入都处理了？
+  \item 数据给老师看过、批改签字了？册子带走了还是留下了？
+\end{enumerate}
+
+%=============================================================
+\hdr{§5}{135 分钟时间盒（按册页顺序）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{2.3cm}p{3.4cm}p{8.5cm}@{}}
+\hline
+\thead{时间} & \thead{做什么} & \thead{要点} \\
+\hline
+13:00--13:08 & 进场、认箱 & 找逻辑开关插孔、LED 电平显示插孔、$U_{DD}$／$U_{CC}$／GND、六片芯片位置 \\
+13:08--13:18 & 项 1（表 1） & 4012 四输入与非门；先测全 1、全 0，再补一组单 0、一组单 1 \\
+13:18--13:33 & 项 2（表 2） & 4011 搭与门（2 门）→ 测 4 组 → 改搭或门（3 门）→ 测 4 组 \\
+13:33--14:00 & 项 3（表决器） & 4011 三个门 + 4012 一个门；接完先自查电源与未用输入；8 组实测 \\
+14:00--14:20 & 项 4（三态门） & 表 5.4.4 四行＋电压四格；表 5.4.5 四行（要信号源给 $1$／$2\ \mathrm{Hz}$） \\
+14:20--14:35 & 项 5（147） & 十行；每行只让一个输入为 0 \\
+14:35--14:55 & 项 6（4511） & 先三行控制端，再 $0000\sim1111$ 十六行 \\
+14:55--15:10 & 项 7（151） & 一行使能禁止 + 八行地址；$D_7\sim D_0$ 按册页给 $10101010$ \\
+15:10--15:15 & 收尾 & 断电拆线、清点芯片、把数据拿给老师批改 \\
+\hline
+\end{tabular}
+\end{center}
+
+\warnbox{\textbf{时间不够时的顺序}：先保\textbf{项 3（表决器，唯一的设计题，分值最重）}、再保\textbf{项 4（三态门，两个表都短）}、再保\textbf{项 5 与项 7（行数少、规律清楚）}；项 6 的十六行最耗时，可以只做 0--9 十行并在报告里注明「伪码段未测」。\textbf{不要为了凑满行数编数据}——册 p.01 明文：抄袭数据、编造数据、抄袭报告记 0 分。}
+
+%=============================================================
+\hdr{§6}{故障排查（按册页八项对号）}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.6cm}p{4.3cm}p{5.3cm}@{}}
+\hline
+\thead{现象} & \thead{最可能的原因} & \thead{先查这一处} \\
+\hline
+LED 一直不亮 & LED 接反；限流电阻太大；输出其实一直是低 & LED 对调试；万用表直接量输出脚电压 \\
+该亮全亮／该灭全灭都不变 & 芯片没接 $U_{DD}$ 或 GND & 量 14 脚与 7 脚的电压 \\
+CMOS 芯片发烫 & 电源接反或电压超过 $U_{DD}$ 上限 & 立刻断电，重查 14／7 脚 \\
+与门测出来像或门 & 第二个门的两个输入没并接，只接了一个 & 看图 7：第 2 门的 5、6 脚必须都接到第 1 门的 3 脚 \\
+或门永远输出 1 或 0 & 三个门的顺序接错（把与非当或非用） & 按图 8 逐门核对脚号，特别是 8、9→10 \\
+表决器结果与真值表不符 & 4012 的第 4 个输入没接高电平（悬空） & 把 5 脚接 $U_{DD}$ \\
+三态门「使能＝1 反而通」 & 把低有效当高有效 & 看引脚名上的横线：$1\overline{EN}$ \\
+表 5.4.4 后两行也读出 $0\ \mathrm{V}$ & 这是高阻，不是逻辑 0 & 看 LED：灭 + 电压 $0$ ＝ 高阻；判据见 §3.4 \\
+147 读数差 1 & 把反码当正码 & 先取反再读十进制 \\
+数码管乱亮或某段不亮 & 段线接错；某段漏了电阻；COM 没接 GND & 用 $\overline{LT}=0$ 测全亮，坏段一眼看出 \\
+151 输出恒为 0 & $\overline{EN}$ 接成了高电平 & 7 脚必须接 GND（或逻辑 0） \\
+\hline
+\end{tabular}
+\end{center}
+
+%=============================================================
+\hdr{§7}{证据边界、与上一版的关系、还没核实的地方}
+
+\subhdr{7.1 证据边界}
+
+\begin{itemize}
+  \item 本讲义\textbf{按册页 p.23--27 的照片}重排，项目编号、表格行列、空白位置都与册页一致；教材只用来补原理与引脚。
+  \item 全部数据表的「应为」列是本讲义补的（教材表格只印输入、留空输出），由 \texttt{tables2.py}（在 \texttt{\_scratch/ee7-20261117/}）生成并带断言校验；\textbf{现场仍以实测为准}，与理论不符的行要在报告里写原因。
+  \item \textbf{帮助史}：讲解级帮助（$exposure=$ full、$hint\_level\ge$ H4），\textbf{不计独立掌握}；现场数据与实验后的闭卷复测才计入能力。
+\end{itemize}
+
+\subhdr{7.2 与上一版（教材版，2026-11-17 上午）的关系}
+
+上一版按教材 §5.4＋§5.5 铺开，27 页，内容更全但\textbf{顺序与本册子不同}，且包含本次不做的三块（电压传输特性与 $t_{\mathrm{pd}}$、74LS148、74LS183）。两版的用途分工：
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.0cm}p{8.4cm}@{}}
+\hline
+\thead{用途} & \thead{用哪一版} \\
+\hline
+预习四问、现场按项做、填表、写报告 & \textbf{本版（册页版）} \\
+想补原理（为什么 4511 要共阴、优先编码器怎么级联、$t_{\mathrm{pd}}$ 怎么测） & 上一版（教材版）的 §3、§5 \\
+考试或讨论复述教材口径 & 两版都可，以教材页码为准 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subhdr{7.3 还没核实的（不猜）}
+
+\begin{enumerate}
+  \item \textbf{册页 p.28 及以后没拍到}：本册子的 Discussion／成绩栏可能在 p.28，本讲义不含讨论题；若老师要求写讨论，按教材 §5.4.7／§5.5.8 的问题准备（上一版 §8 有答案）。
+  \item \textbf{表 2 的「一列输出」怎么填}（与门、或门共用一张表还是各一张）：见 §3.2 的警示框，现场问老师。
+  \item \textbf{图 5.5.2 那处印刷错误}：本版教材已改成 $\overline{I_9}$，讲义按「第 10 脚」推断（依据见 §2 Q3 的旁注），\textbf{以老师答案为准}。
+  \item \textbf{THD-2 面板端子排布}：教材不给，进场先认。
+  \item \textbf{Multisim 选做是否计分}：问老师；本机没有 Multisim（实验 1 时已确认），只能用机房电脑。
+  \item \textbf{智慧树平台是否另有中文预习题}：本次未知，需本人上平台看。
+\end{enumerate}
+
+\flowerrule
+{\small\color{inkgray}本讲义依据学习者 2026-11-17 提供的实验册照片（p.23--27）重排，教材 §5.4／§5.5 逐页核读（书 p.163--180 = PDF p.176--193）。\textbf{讲义已交付 $\ne$ 已学 $\ne$ 已验收}。}
+
+\end{document}

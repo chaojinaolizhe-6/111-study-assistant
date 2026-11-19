@@ -1,0 +1,148 @@
+﻿% ===================== 封面与前言 =====================
+\phantomsection\label{sec:front}
+\doctitle{数学物理方法（II）\\ 第七—八章　精讲讲义}
+{从守恒律到三类方程，从定解条件到三种坐标下的分离变量}
+{依据课件《Chapter 7 -- 20261103.pdf》19 页、《Chapter 8 -- 20261110/13/16.pdf》\\
+2026-11-17\quad 数学物理方法2\quad 合集本}
+
+\callout{\textbf{这本书是什么。}它把此前分成五份的精讲合成一本：§7.1 的波动方程推导（2026-11-02 旧稿）、
+§7.2--§7.4 与 §8.1 的合册（2026-11-10）、§8.2 极坐标（11-16）、§8.3 柱坐标与贝塞尔（11-16），
+外加三份作业与题解材料。合并时做了四件事：按最新课件的节号统一编号；同一知识点只完整讲一次，其余处引用；
+把五套速查并成两处（各章末与全书末）；把二十道题的题干与详解分开，题干在前、详解在附录。
+
+\textbf{页码体系。}正文提到「课件 p$n$」时，指该节所依据的那一版课件页；文末的\textbf{课件页码对照表}
+把四个版本的课件逐页对到本书的节号。2026-11-03 起 Chapter 7 的 19 页版不含 §7.1；§7.1 依据的是
+11-02 的 16 页版，这一点在那一节开头也写明了。
+
+\textbf{练习在哪。}正文练习章（第 \pageref{sec:practice} 页）列 P1--P20 的题干与考点，
+详解在附录（第 \pageref{sec:answers} 页起），题号一一对应。P5--P12 是老师布置的作业，
+此前已给过详解，属于复习；P1--P4、P13--P20 的讲解同样是完整推导，不是只报答案。}
+
+\clearpage
+
+\subhdr{全书主线}
+
+\begin{center}
+\begin{minipage}{0.99\linewidth}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  core/.style={draw=violetdeep,fill=bandviolet,rounded corners=3pt,align=left,inner xsep=6pt,inner ysep=5pt,line width=1pt,font=\footnotesize},
+  box/.style={draw=violet,fill=bandviolet,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=4pt,line width=0.7pt,font=\footnotesize},
+  cream/.style={draw=violet,fill=bandcream,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=4pt,line width=0.7pt,font=\footnotesize},
+  ar/.style={-{Stealth[length=2.2mm,width=1.6mm]},violet,line width=0.9pt}]
+
+\node[core,text width=15.4cm,anchor=north west] (TOP) at (0.2,0) {%
+\textbf{\color{violetdeep}要解决的事}\quad 给定一个物理过程（弦、杆、膜、电磁波、热传导、扩散、静电场），
+求场量 $u(\vect r,t)$ 或 $u(\vect r)$：它满足什么方程、要配哪些条件、怎样解出来。};
+
+\node[box,text width=7.3cm,anchor=north west] (M1) at (0.2,-1.78) {%
+\textbf{\color{violetdeep}第七章\quad 建模：把物理写成方程}\\[1pt]
+守恒律（能量、动量、电荷）$+$ 本构关系（傅里叶、菲克、胡克、麦克斯韦）\\
+$\Rightarrow$ 取微元、小量近似、除尺度取极限\\
+$\Rightarrow$ 三类方程：波动（$\partial_t^2$）、输运（$\partial_t$）、泊松（无 $t$）};
+
+\node[box,text width=7.3cm,anchor=north west] (M2) at (8.2,-1.78) {%
+\textbf{\color{violetdeep}第八章\quad 求解：把方程拆成两个常微分方程}\\[1pt]
+设乘积解 $u=X(x)T(t)$（或 $R(r)\Phi(\varphi)$、$R\Phi Z$）\\
+$\Rightarrow$ 两边等于同一常数 $\lambda$\\
+$\Rightarrow$ 带齐次边界的那一半给\textbf{特征值问题}，另一半给时间或另一方向的因子};
+
+\node[cream,text width=7.3cm,anchor=north west] (M3) at (0.2,-5.30) {%
+\textbf{\color{violetdeep}定解条件（§7.4）}\\[1pt]
+初始条件：时间二阶要两个，一阶要一个，稳态不要\\
+边界条件：第一类给值、第二类给法向导数、第三类给线性组合\\
+另有周期条件、自然边界条件（$r=0$ 有界）、衔接条件};
+
+\node[cream,text width=7.3cm,anchor=north west] (M4) at (8.2,-5.10) {%
+\textbf{\color{violetdeep}定系数：正交性（§8.1）}\\[1pt]
+把级数两边乘第 $m$ 个特征函数再积分，只剩 $n=m$ 一项\\
+正弦系模方 $\ell/2$；余弦系的 $n=0$ 是 $\ell$；二维是两者相乘\\
+初值给 $u$ 还是 $u_t$，决定系数要不要再除一个 $\omega_n$};
+
+\node[box,text width=15.4cm,anchor=north west] (M5) at (0.2,-9.00) {%
+\textbf{\color{violetdeep}三种坐标，同一台机器：换掉的只是特征函数}\\[2pt]
+\begin{tabular}{@{}p{1.85cm}p{2.9cm}p{5.6cm}p{4.0cm}@{}}
+\textbf{坐标} & \textbf{区域} & \textbf{角向/横向的谱} & \textbf{另一个方向} \\
+\hline
+直角 & 矩形 & $\sin\frac{n\pi x}{\ell}$、$\cos\frac{n\pi x}{\ell}$，$\lambda_n=(n\pi/\ell)^2$ & 双曲函数 $\sinh k_ny$ \\
+极坐标 & 圆、环 & $1,\ \cos m\varphi,\ \sin m\varphi$，$\lambda=m^2$ & $r^{\pm m}$、$\ln r$ \\
+柱坐标 & 圆柱 & $J_m\big(\frac{x_n^{(m)}r}{a}\big)$、$\cos m\varphi$、$e^{\pm i\nu z}$ & 贝塞尔零点定 $k$ \\
+\end{tabular}};
+
+\node[cream,text width=15.4cm,anchor=north west] (M6) at (0.2,-13.10) {%
+\textbf{\color{violetdeep}检验（每一步都要做）}\quad 边界逐条代回；$t=0$（或非齐次边）还原初值；
+量纲与系数衰减速度；守恒律（总热量、总电荷）；$t\to\infty$ 与 $r\to0,\infty$ 的极限。};
+
+\draw[ar] ([xshift=-3.6cm]TOP.south) -- ([xshift=-3.6cm]M1.north);
+\draw[ar] ([xshift=3.6cm]TOP.south) -- ([xshift=3.6cm]M2.north);
+\draw[ar] ([xshift=-3.7cm]M1.south) -- ([xshift=-3.7cm]M3.north);
+\draw[ar] ([xshift=3.7cm]M2.south) -- ([xshift=3.7cm]M4.north);
+\draw[ar] ([xshift=-3.7cm]M3.south) -- ([xshift=-3.7cm]M5.north);
+\draw[ar] ([xshift=3.7cm]M4.south) -- ([xshift=3.7cm]M5.north);
+\draw[ar] (M5.south) -- (M6.north);
+
+\end{tikzpicture}
+\figcap{图 0-1\quad 全书主线：第七、八章各管一半，中间由「边界条件决定特征值、初值决定系数」扣在一起。}
+\end{minipage}
+\end{center}
+
+\clearpage
+
+\subhdr{全书共用记号}
+
+各节还有各自的局部记号（如 §8.2 的 $A_m,C_m$、§8.3 的 $\mu,\nu$），下表只收跨章反复出现的那些。
+\textbf{三个最容易串的记号}：①§7.2 的热导率 $k$ 与 §7.4.4.3 的弹簧劲度 $k$ 不是一回事；
+②§8.2 的 $D_0$ 是 $\ln r$ 的系数，$D_m$（$m\ge1$）是 $r^{-m}\sin m\varphi$ 的系数；
+③$a$ 在一维波速、极坐标圆半径、柱坐标半径三处反复出现，看量纲最快。
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.13\linewidth}L{0.78\linewidth}@{}}
+\thead{记号} & \thead{含义与单位} \\
+\tabmidrule
+$u(\vect r,t)$ & 待求场：位移 \unit{m}、温度 \unit{K}、浓度 \unit{mol\cdot m^{-3}}、电位 \unit{V} \\
+$a$ & 输运系数：$a^2=k/(c\rho)$（热传导）或 $a^2=D$（扩散）；波动问题里是波速 \unit{m\cdot s^{-1}} \\
+$k$ & 热导率 \unit{W\cdot m^{-1}\cdot K^{-1}}；\textbf{注意} §7.4.4.3 第三类条件里的 $k$ 是弹簧劲度，两者不同 \\
+$c,\ \rho$ & 比热容 \unit{J\cdot kg^{-1}\cdot K^{-1}}、体密度 \unit{kg\cdot m^{-3}}（弦、杆用线密度） \\
+$D$ & 扩散系数 \unit{m^2\cdot s^{-1}} \\
+$E,\ S$ & 杨氏模量 \unit{Pa}、横截面积 \unit{m^2} \\
+$T$ & 张力 \unit{N}（弦）或单位长度张力 \unit{N\cdot m^{-1}}（膜）；也用作温度，看上下文 \\
+$q,\ J$ & 热流密度 \unit{W\cdot m^{-2}}、扩散流密度 \unit{mol\cdot m^{-2}\cdot s^{-1}} \\
+$f$ & 非齐次项：单位质量（或单位体积、单位长度）的外加源，量纲随方程而定 \\
+$\lambda,\ \lambda_n$ & 分离变量引出的常数与特征值；二维时写成 $\lambda_n,\mu_m$ 或 $k_n^2$ \\
+$X_n,\ T_n$ & 特征函数与另一个方向的因子；$u=\sum X_nT_n$ \\
+$\ell,\ a,\ b$ & 一维长度；二维矩形的边长；环域的内外半径 \\
+$r,\varphi,z$ & 极坐标与柱坐标 \\
+$J_m,\ N_m$ & 第一类、第二类柱函数（贝塞尔、诺伊曼）；$x_n^{(m)}$ 是 $J_m$ 的第 $n$ 个正零点 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\clearpage
+
+\subhdr{目录}
+
+\tabtop
+\begin{tabular}{@{}p{0.14\linewidth}p{0.70\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+前言 & 全书主线、共用记号、本书的用法 & \pageref{sec:front} \\
+§7.1 & 波动方程：弦、杆、膜、电磁波的同一条骨架 & \pageref{sec:71} \\
+§7.2 & 输运方程：热传导与扩散 & \pageref{sec:72} \\
+§7.3 & 泊松方程：稳态的三种外衣 & \pageref{sec:73} \\
+§7.4 & 定解条件：方程为什么定不住解 & \pageref{sec:74} \\
+§7.5 & 速查与易错（定解条件表、推导八条、条件十条） & \pageref{sec:75} \\
+§7.6 & 三句话总结 & \pageref{sec:76} \\
+§8.1 & 直角坐标下的分离变量（四个例子） & \pageref{sec:81} \\
+§8.2 & 极坐标下的分离变量（圆、环、导线） & \pageref{sec:82} \\
+§8.3 & 柱坐标下的分离变量与贝塞尔方程 & \pageref{sec:83} \\
+速查 & 三类方程、四组边界、判据与课件页码对照 & \pageref{sec:quickref} \\
+练习 & P1--P20 题干与考点 & \pageref{sec:practice} \\
+附录 & P1--P20 详解（A--E 五组） & \pageref{sec:answers} \\
+\end{tabular}
+\tabbot
+
+\clearpage
+
+
+

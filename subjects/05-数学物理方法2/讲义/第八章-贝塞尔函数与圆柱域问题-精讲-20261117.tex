@@ -1,0 +1,930 @@
+% !TEX program = xelatex
+% 数学物理方法2 · 第八章 贝塞尔函数与圆柱域问题（精讲讲义）
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\settags{第八章 · 贝塞尔函数与圆柱域问题}{数学物理方法2}
+% 页眉用 \songti 后高度约 22pt，提前留足避免 fancyhdr 报 headheight 太小
+\setlength{\headheight}{22pt}
+
+% 同一张表内的中隔线
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+
+% 圈码交给中文字体
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% 表头不进第二行
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+% 文本列：左对齐，避免窄列被拉出大片空隙
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% 图与图注不分页
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.96\linewidth}\centering}{\end{minipage}\end{center}\par}
+\newcommand{\figcap}[1]{\par\vspace{4pt}{\small\color{inkgray}#1}\par}
+
+% 详解块起页保护
+\renewcommand{\qbreak}{\needspace{0.28\textheight}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% 定理与证明
+\newcommand{\thm}[2]{\par\medskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.5em}{\bfseries #2}\par\nobreak\vspace{2pt}}
+\newcommand{\pfline}{\par\smallskip\noindent\textbf{证明。}\enspace}
+
+% 公式间距
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}
+
+\begin{document}
+
+\doctitle{第八章\quad 贝塞尔函数与圆柱域问题}
+{从圆域的两次分离变量，到贝塞尔方程、零点本征值与圆柱的三重级数}
+{依据课件《Chapter 8 -- 20261116.pdf》15 页（p1--p15）\\2026-11-17\quad 数学物理方法2}
+
+\callout{\textbf{这本讲义怎么用。}课件 15 页讲了同一件事的两个层次：先在\textbf{圆域}（$r,\varphi$ 两个变量）里解波动、输运与稳态方程（p1--p6），再进到\textbf{圆柱}（$r,\varphi,z$ 三个变量，p7--p15）。整册只有一条主线：\textbf{分离变量把偏微分方程拆成一串常微分方程，最后那一条径向的变系数方程，它的解就是贝塞尔函数}。
+
+三件事请先知道：
+
+\textbf{一、为什么会有贝塞尔函数？}不是我们想引入新函数。圆域里只要\textbf{出现时间}（波动或输运），第一次分离就多出一个常数 $k$，极坐标下第二次分离后，径向方程 $x^2R''+xR'+(x^2-m^2)R=0$ 没有初等函数解，只能表成 $J_m$ 与 $N_m$。反过来，圆域里\textbf{没有时间}（纯 Laplace，如课件两道作业）时，径向方程退化成欧拉方程，解是 $r^{\pm m}$ 与 $\ln r$，根本用不到贝塞尔。这个分界（\S4）是本节最重要的判断点。
+
+\textbf{二、课件把贝塞尔函数当成已知（p2 只写 “Chapter 13”）。}但“$k$ 由 $J_m$ 的零点决定”这句话，若不知道零点的存在性与正交性，就只是口号。所以本讲补了 \S2：级数解、$J_m$ 与 $N_m$ 的区别、零点的性质、正交性与模、Fourier--Bessel 展开，以及级数的收敛性。这是必要前置，不是选读。
+
+\textbf{三、下标要写全。}课件里 $k_n$ 与 $\mu_n$ 只写了下标 $n$，实际上它们还依赖阶数 $m$（因为 $x_n^{(m)}$ 是 $m$ 阶贝塞尔的第 $n$ 个零点）。本讲一律写 $k_{mn}=x_n^{(m)}/a$，并在 \S6.3 说明这处记号。}
+
+\subhdr{目录（页码自动解析）}
+\tabtop
+\begin{tabular}{@{}L{0.08\linewidth}L{0.78\linewidth}r@{}}
+\thead{节} & \thead{内容} & \thead{页} \\
+\tabmidrule
+\S0 & 主线图、记号、两个核心问题 & \pageref{sec:s0} \\
+\S1 & 圆域波动方程：两次分离与贝塞尔方程的出场（p1--p3） & \pageref{sec:s1} \\
+\S2 & 贝塞尔函数与诺伊曼函数：级数解、零点、正交性、展开（前置） & \pageref{sec:s2} \\
+\S3 & 圆域的完整求解流程：本征值、系数积分、收敛性（p3--p5） & \pageref{sec:s3} \\
+\S4 & 圆域 Laplace：$r^{m}$ 解与两道课件习题（p6） & \pageref{sec:s4} \\
+\S5 & 圆柱域：$\mu$ 的三种符号与三重级数（p7--p15） & \pageref{sec:s5} \\
+\S6 & 常见错误与检查点 & \pageref{sec:s6} \\
+\S7 & 速查卡 & \pageref{sec:s7} \\
+\S8 & 课件页码对照表 & \pageref{sec:s8} \\
+\S9 & 三句话总结 & \pageref{sec:s9} \\
+\end{tabular}
+\tabbot
+
+%=====================================================================
+\hdr{\S0}{主线图、记号、两个核心问题}
+\phantomsection\label{sec:s0}
+%=====================================================================
+
+在矩形域（\S8.1）里，边界正好落在坐标面上：$x=0$、$x=a$ 是两条直线，所以 $\sin(n\pi x/a)$ 这种“在两端为零”的函数天然可用。圆域不是这样：边界是圆周 $r=\rho_0$，在直角坐标里对应 $x^2+y^2=\rho_0^2$，没有任何坐标轴与它重合。所以第一步是：
+
+\begin{quote}
+\textbf{换到让边界变成坐标面的坐标系里去。}极坐标里 $r=\text{常数}$ 正是圆周；圆域 $0<r<\rho_0$ 在 $(r,\varphi)$ 平面上就是一块矩形，圆环 $\rho_1<r<\rho_2$ 也是矩形。换过去之后，分离变量这套机器才能照常运转。
+\end{quote}
+
+换过去以后，每一步都多了一个“圆域特色”：$\varphi$ 方向没有边界，只有“绕一圈回到原处”的\textbf{周期条件}；$r$ 方向有一个退化点 $r=0$（圆内）或两个端点（圆环）。这两处正是出错的高发区。
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ovcore/.style={draw=violetdeep,fill=bandviolet,rounded corners=3pt,align=left,inner xsep=6pt,inner ysep=4pt,line width=1pt,font=\footnotesize},
+  ovbox/.style={draw=violet,fill=bandviolet,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=3pt,line width=0.7pt,font=\footnotesize},
+  ovcream/.style={draw=violet,fill=bandcream,rounded corners=2.5pt,align=left,inner xsep=5pt,inner ysep=3pt,line width=0.7pt,font=\footnotesize},
+  ova/.style={-{Stealth[length=2.2mm,width=1.6mm]},violet,line width=0.9pt},
+  ovline/.style={violet,line width=0.9pt}]
+
+\node[ovcore,text width=15.0cm,anchor=north west] (CORE) at (0.2,0.05) {%
+\textbf{\color{violetdeep}要解决的事}\quad 圆域、圆柱内解 $\nabla^2u=0$（稳态）、$u_t=a^2\nabla^2u$（输运）、$u_{tt}=a^2\nabla^2u$（波动）。\\
+\textbf{两处圆域特色}\quad $\varphi$ 方向只有周期条件（定 $m$）；$r$ 方向有退化点 $r=0$ 或边界 $r=$ 常数（筛项、定谱）。};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (A) at (0.2,-1.85) {%
+\textbf{\color{violetdeep}\S1\quad 第一次分离：$u=T(t)V$}\\[1pt]
+波：$T''+a^2k^2T=0$；输运：$T'+a^2k^2T=0$\\
+空间统一：$\nabla^2V+k^2V=0$（Helmholtz）\\[1pt]
+{\color{inkgray}时间决定“振荡还是衰减”，空间决定“展开用什么基”}};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (B) at (7.8,-1.85) {%
+\textbf{\color{violetdeep}\S2\quad 前置：贝塞尔方程}\\[1pt]
+级数解 $J_m$、第二解 $N_m$、零点 $x_n^{(m)}$\\
+带权 $r$ 的正交性与模，Fourier--Bessel 展开\\[1pt]
+{\color{inkgray}没有这段，“$k$ 由零点定”无从谈起}};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (C) at (0.2,-4.65) {%
+\textbf{\color{violetdeep}\S3\quad 边界定本征值、初值定系数}\\[1pt]
+圆内有界 $\Rightarrow$ 丢 $N_m$；$r=a$ 齐次 $\Rightarrow J_m(ka)=0$\\
+$\Rightarrow k_{mn}=x_n^{(m)}/a$；系数用正交性积分求出\\[1pt]
+{\color{inkgray}谱的离散性来自零点，不来自区间长度}};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (D) at (7.8,-4.65) {%
+\textbf{\color{violetdeep}\S4\quad 没有时间会怎样？}\\[1pt]
+纯 Laplace：径向退化欧拉方程 $\Rightarrow r^{\pm m},\ln r$\\
+课件作业 5、7 就用这一套，不碰贝塞尔\\[1pt]
+{\color{inkgray}$r^m$ 还是 $J_m$，看“有没有时间或 $z$ 方向”}};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (E) at (0.2,-7.55) {%
+\textbf{\color{violetdeep}\S3\quad 输运：同一个空间谱}\\[1pt]
+空间部分与波动完全相同，时间换成 $e^{-a^2k^2t}$\\[1pt]
+{\color{inkgray}高阶模态衰减快，只剩最低阶}};
+
+\node[ovbox,text width=7.2cm,anchor=north west] (F) at (7.8,-7.55) {%
+\textbf{\color{violetdeep}\S5\quad 圆柱：第三次分离}\\[1pt]
+$u=R\Phi Z$：$\lambda=m^2$，$Z''-\mu Z=0$，径向方程随 $\mu$ 变\\
+$\mu>0$ 贝塞尔 \quad $\mu<0$ 修正贝塞尔 \quad $\mu=0$ 欧拉\\[1pt]
+{\color{inkgray}选哪一种，由“哪组边界齐次”决定}};
+
+\node[ovcream,text width=15.0cm,anchor=north west] (JOIN) at (0.2,-10.35) {%
+\textbf{\color{violetdeep}最后一步：叠加成级数，用正交性定系数}\quad
+圆域是二重和（$m$ 角向、$n$ 径向），圆柱是三重和（再加轴向 $n$）。\\
+{\color{inkgray}基函数从 $\{\sin,\cos\}$ 换成 $\{J_m(k_{mn}r)\}$，但“谱由齐次边界给、系数由数据给”的原则不变。}};
+
+\draw[ova] (CORE.south -| A.north) ++(0,0.05) -- (A.north);
+\draw[ova] (CORE.south -| B.north) ++(0,0.05) -- (B.north);
+\draw[ova] (A.south) -- (C.north);
+\draw[ova] (B.south) -- (D.north);
+\draw[ovline] (C.south -| JOIN.north) ++(0,0.05) -- (JOIN.north);
+\draw[ovline] (D.south -| JOIN.north) ++(0,0.05) -- (JOIN.north);
+\draw[ova] (JOIN.south -| E.north) ++(0,0.05) -- (E.north);
+\draw[ova] (JOIN.south -| F.north) ++(0,0.05) -- (F.north);
+\end{tikzpicture}
+\figcap{图 0-1\quad 本节主线：先分离时间（若没有时间就直接分离空间），再分离空间；空间部分的角向给 $m$，径向给欧拉方程或贝塞尔方程，柱坐标再多一个 $z$ 方向。本征值一律由齐次边界条件（零点或 $n\pi/h$）确定。}
+\end{center}
+
+\callout{\textbf{读法。}第一次读只要抓住三件事：第一，$k$ 不是任意的，它是“让 $J_m(ka)=0$ 的那一串数除以 $a$”；第二，纯 Laplace 用 $r^m$，一旦有时间或 $z$ 方向才用贝塞尔；第三，所有级数的系数都用同一套正交性公式定，只是基函数从 $\{\sin,\cos\}$ 换成 $\{J_m(k_{mn}r)\}$。}
+
+\subhdr{0.1\quad 记号}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.14\linewidth}L{0.78\linewidth}@{}}
+\thead{记号} & \thead{含义} \\
+\tabmidrule
+$a,\ \rho_0$ & 圆/圆柱的半径（课件 p1--p5 用 $\rho_0$，p7 起用 $a$） \\
+$h$ & 圆柱的高（p10 起） \\
+$k$ & 第一次分离的常数，单位 $1/$长度；波与输运都用它 \\
+$k_{mn}$ & $=x_n^{(m)}/a$，第 $m$ 阶贝塞尔第 $n$ 个零点除以半径 \\
+$x_n^{(m)}$ & $J_m$ 的第 $n$ 个正零点（$x_1^{(0)}=2.4048$，$x_2^{(0)}=5.5201$，$\dots$） \\
+$\lambda$ & 角向分离常数，$\lambda=m^2$ \\
+$\mu$ & 柱坐标里 $z$ 方向的分离常数，可为正、负、零 \\
+$\nu$ & $\mu=-\nu^2<0$ 时的正数，$\nu_n=n\pi/h$ \\
+$J_m,\ N_m$ & 第一类、第二类柱函数（贝塞尔、诺伊曼） \\
+$I_m,\ K_m$ & 第一类、第二类修正贝塞尔函数 \\
+$\rho_1,\rho_2$ & 环域的内外半径（作业 7） \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S1}{圆域波动方程：两次分离与贝塞尔方程的出场（p1--p3）}
+\phantomsection\label{sec:s1}
+%=====================================================================
+
+\subhdr{1.1\quad 第一次分离：时间与空间（课件 p1）}
+
+在圆域里解齐次波动方程。先写极坐标下的拉普拉斯算子（由链式法则推出，$\nabla^2$ 的极坐标形式）：
+
+\begin{equation}
+u_{tt}=a^2\nabla^2u\quad\Longleftrightarrow\quad u_{tt}=a^2\Big[\frac1r\frac{\partial}{\partial r}\Big(r\frac{\partial u}{\partial r}\Big)+\frac1{r^2}\frac{\partial^2u}{\partial\varphi^2}\Big].
+\label{eq:wave}
+\end{equation}
+
+设 $u=T(t)V(r,\varphi)$（\textbf{乘积解}的动机：方程是线性的、系数不显含 $t$，希望时间与空间各管各的），代入并除以 $a^2TV$：
+
+\[
+\frac{T''}{a^2T}=\frac{\nabla^2V}{V}.
+\]
+
+左边只含 $t$，右边只含 $r,\varphi$。要两边恒等，只能都等于同一个常数。记它为 $-k^2$（\textbf{为什么带负号}：波动是振动，时间解必须是振荡的 $\cos$、$\sin$，这要求 $T''/T<0$；若取 $+k^2$，时间解变成指数增长或衰减，与“振动”不符）：
+
+\begin{equation}
+T''+a^2k^2T=0,
+\qquad
+\nabla^2V+k^2V=0 .
+\label{eq:helm}
+\end{equation}
+
+右边叫 \textbf{Helmholtz 方程}。这一步的意义：时间被彻底分离出去，剩下的 $V$ 只由空间边界决定；而 $k$ 是待定的，要由边界条件挑出一串离散值，这一步在 \S1.4 才落实。
+
+\subhdr{1.2\quad 第二次分离：Helmholtz 的极坐标形式（课件 p1--p2）}
+
+在极坐标下 \eqref{eq:helm} 是
+
+\begin{equation}
+\Big[\frac1r\frac{\partial}{\partial r}\Big(r\frac{\partial}{\partial r}\Big)+\frac1{r^2}\frac{\partial^2}{\partial\varphi^2}+k^2\Big]V=0 .
+\label{eq:helmPolar}
+\end{equation}
+
+再设 $V=R(r)\Phi(\varphi)$，乘以 $r^2/(R\Phi)$：
+
+\begin{equation}
+\frac{r}{R}\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)+k^2r^2=-\frac{\Phi''}{\Phi}=\lambda .
+\label{eq:sep2}
+\end{equation}
+
+左边只含 $r$、右边只含 $\varphi$，故 $\lambda$ 是常数。得到两个方程：
+
+\begin{equation}
+\Phi''+\lambda\Phi=0,
+\qquad
+r\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)+(k^2r^2-\lambda)R=0 .
+\label{eq:two}
+\end{equation}
+
+\textbf{角向的谱。}由周期条件 $\Phi(\varphi+2\pi)=\Phi(\varphi)$，照 \S8.2 的论证，$\lambda=m^2$（$m=0,1,2,\dots$），$\Phi_m=A_m\cos m\varphi+B_m\sin m\varphi$。把 $\lambda=m^2$ 代入径向方程：
+
+\begin{equation}
+r\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)+(k^2r^2-m^2)R=0 .
+\label{eq:radial}
+\end{equation}
+
+\subhdr{1.3\quad 换元 $x=kr$：贝塞尔方程（课件 p2）}
+
+令 $x=kr$（$k>0$），记 $R(r)=\tilde R(x)$。由 $\dfrac{\mathrm d}{\mathrm dr}=k\dfrac{\mathrm d}{\mathrm dx}$，有 $r\dfrac{\mathrm d}{\mathrm dr}=x\dfrac{\mathrm d}{\mathrm dx}$，代入 \eqref{eq:radial} 并除以 $k^2$：
+
+\begin{equation}
+x\frac{\mathrm d}{\mathrm dx}\Big(x\frac{\mathrm d\tilde R}{\mathrm dx}\Big)+(x^2-m^2)\tilde R=0
+\quad\Longleftrightarrow\quad
+\frac{\mathrm d^2\tilde R}{\mathrm dx^2}+\frac1x\frac{\mathrm d\tilde R}{\mathrm dx}+\Big(1-\frac{m^2}{x^2}\Big)\tilde R=0 .
+\label{eq:bessel}
+\end{equation}
+
+右边这一形式叫 \textbf{$m$ 阶贝塞尔方程}。它的两个线性无关解记作 $J_m(x)$ 与 $N_m(x)$，于是
+
+\begin{equation}
+R_m(r)=C_mJ_m(kr)+D_mN_m(kr).
+\label{eq:Rgen}
+\end{equation}
+
+到这里，“为什么会出现贝塞尔函数”已经回答完了：它来自 $x^2R''+xR'+(x^2-m^2)R=0$ 这条变系数方程，而这条方程是 Helmholtz 方程在极坐标下分离的必然产物，不是人为引入的。它的两条线性无关解在 $x=0$ 处的行为天差地别，这正是下一节区分 $J_m$ 与 $N_m$ 的根据。
+
+\subhdr{1.4\quad 圆内的两个条件：有界性丢 $N_m$，边界定 $k$（课件 p3）}
+
+\thm{命题 1.1（$k$ 的取值）}{设圆域 $0<r<\rho_0$ 内 $V$ 有界、$2\pi$ 周期，且 $V(\rho_0,\varphi)=0$（第一类齐次边界）。则
+\[
+k=k_{mn}=\frac{x_n^{(m)}}{\rho_0}\qquad(m=0,1,2,\dots;\ n=1,2,3,\dots),
+\]
+其中 $x_n^{(m)}$ 是 $J_m$ 的第 $n$ 个正零点；对应的径向函数是 $J_m(k_{mn}r)$。}
+
+\pfline
+
+\textbf{第一步：丢掉 $N_m$。}$x\to0$ 时 $N_0(x)\sim\dfrac2\pi\ln\dfrac x2\to-\infty$，$N_m(x)\sim-\dfrac{(m-1)!}{\pi}\Big(\dfrac2x\Big)^m\to\infty$（$m\ge1$）。若 $D_m\ne0$，解在圆心附近无界，与“圆内有界”矛盾。所以 $D_m=0$，只剩 $J_m(kr)$。
+
+\textbf{第二步：用边界条件。}$V(\rho_0,\varphi)=0$ 对一切 $\varphi$ 成立，而 $R_m(\rho_0)=C_mJ_m(k\rho_0)$，故必须有 $J_m(k\rho_0)=0$（$C_m\ne0$，否则解恒为零）。于是 $k\rho_0$ 必须是 $J_m$ 的零点，即 $k\rho_0=x_n^{(m)}$。$\square$
+
+这个命题里有两件事值得单独记住：
+
+\begin{itemize}
+  \item \textbf{谱的离散性来自零点，不来自区间长度。}$J_m$ 有无穷多个正零点（\S2.2 会陈述这一点），所以 $k$ 有无穷多个取值，且相邻间隔不等距（$x_1^{(0)}=2.405$，$x_2^{(0)}=5.520$，间隔 $3.115$；$x_2-x_1$ 与 $x_3-x_2=3.134$ 并不相等）。这与 \S8.1 的 $n\pi/a$（等距）形成对照。
+  \item \textbf{零点依赖阶数 $m$。}$x_1^{(0)}=2.405$，$x_1^{(1)}=3.832$，$x_1^{(2)}=5.136$。所以严格写法是 $k_{mn}$，不能只写 $k_n$。课件 p3 写成 $k_n=x_n^{(m)}/a$，是把 $m$ 当参数看——本讲保留 $k_{mn}$ 以免混淆。
+\end{itemize}
+
+%=====================================================================
+\hdr{\S2}{贝塞尔函数与诺伊曼函数：级数解、零点、正交性、展开}
+\phantomsection\label{sec:s2}
+%=====================================================================
+
+课件把这一节留给“Chapter 13”。但 \S1.4 已经用到三件事：$J_m$ 有无穷多零点、$J_m$ 在 $x=0$ 有界而 $N_m$ 无界、以及“用 $J_m(k_{mn}r)$ 展开”是合法的。这三件事不补，后面的级数就只是记号的堆叠。本节只补到“够用”为止。
+
+\subhdr{2.1\quad 级数解：$J_m$ 是怎么来的}
+
+\eqref{eq:bessel} 在 $x=0$ 处是正则奇点。按 Frobenius 方法设
+
+\[
+\tilde R(x)=x^{\rho}\sum_{j=0}^{\infty}c_jx^j\quad(c_0\ne0),
+\]
+
+代入 \eqref{eq:bessel} 并令最低次幂的系数为零，得指标方程
+
+\[
+\rho^2-m^2=0\quad\Longrightarrow\quad \rho=\pm m .
+\]
+
+取 $\rho=m$（保证 $x=0$ 处有界），逐次比较系数得到 $c_1=0$，且 $c_{2k}=-\dfrac{c_{2k-2}}{(2k)(2k+2m)}$，解出 $c_{2k}=\dfrac{(-1)^k}{2^{2k}k!\,(k+m)!}c_0$。取 $c_0=2^{-m}$ 作归一化，得到
+
+\begin{equation}
+J_m(x)=\sum_{k=0}^{\infty}\frac{(-1)^k}{k!\,(k+m)!}\Big(\frac x2\Big)^{2k+m}.
+\label{eq:Jseries}
+\end{equation}
+
+这个级数对一切 $x$ 收敛（相邻项之比的极限为 $0$），所以 $J_m$ 是整函数。前几项是
+
+\[
+J_0(x)=1-\frac{x^2}{4}+\frac{x^4}{64}-\cdots,\qquad
+J_1(x)=\frac x2-\frac{x^3}{16}+\frac{x^5}{384}-\cdots .
+\]
+
+\textbf{第二个解。}指标方程的两个根 $\rho=\pm m$ 相差整数 $2m$，当 $m$ 为整数时第二个根给出的级数与 $J_m$ 只差常数倍，必须另找解。第二解记作 $N_m$（诺伊曼函数），它在 $x=0$ 处无界：
+
+\[
+N_0(x)\sim\frac2\pi\ln\frac x2,\qquad
+N_m(x)\sim-\frac{(m-1)!}{\pi}\Big(\frac2x\Big)^m\ (m\ge1).
+\]
+
+这两条渐近式就是 \S1.4 “圆内丢 $N_m$” 的依据。
+
+\subhdr{2.2\quad $J_m$ 与 $N_m$ 的区别与选取原则}
+
+把二者的差别压成一张表，这是本节最该背下的一张：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.20\linewidth}L{0.36\linewidth}L{0.36\linewidth}@{}}
+\thead{项目} & \thead{$J_m$（第一类柱函数）} & \thead{$N_m$（第二类柱函数）} \\
+\tabmidrule
+$x\to0$ 行为 & 有界：$J_m(x)\sim\dfrac1{m!}\Big(\dfrac x2\Big)^m$ & 无界：$N_0\sim\dfrac2\pi\ln\dfrac x2$，$N_m\sim-\dfrac{(m-1)!}{\pi}\Big(\dfrac2x\Big)^m$ \\
+$x\to\infty$ 行为 & $\sqrt{\dfrac{2}{\pi x}}\cos\Big(x-\dfrac{m\pi}2-\dfrac\pi4\Big)$ & $\sqrt{\dfrac{2}{\pi x}}\sin\Big(x-\dfrac{m\pi}2-\dfrac\pi4\Big)$ \\
+含 $r=0$ 的区域 & \textbf{保留} & \textbf{丢掉} \\
+不含 $r=0$ 的区域（环域） & 保留 & 保留 \\
+\end{tabular}
+\tabbot
+\par\vspace{4pt}{\small\color{inkgray}表 2-1\quad $J_m$ 与 $N_m$ 的区别与选取原则}
+\end{center}
+
+选取原则一句话：\textbf{凡是区域包含 $r=0$（圆内、实心圆柱、含轴），解必须有界，于是丢掉 $N_m$；只有不碰 $r=0$ 的区域（圆环、空心柱）才保留 $N_m$。}这个“有界性筛项”是分离变量在极坐标/柱坐标里特有的，矩形域里没有对应物——因为矩形域没有“坐标退化点”。
+
+\subhdr{2.3\quad 零点的存在性与分布}
+
+\thm{命题 2.2（$J_m$ 的零点）}{对每个整数 $m\ge0$，$J_m(x)$ 在 $x>0$ 上有无穷多个零点 $0<x_1^{(m)}<x_2^{(m)}<\cdots$，它们都是单零点，且 $x_n^{(m)}\to\infty$；相邻零点的间隔趋于 $\pi$。}
+
+这里不给出完整证明（它属于常微分方程的振荡理论），但可以说明为什么合理：$J_m$ 满足的方程在 $x\to\infty$ 时趋近于 $\tilde R''+\tilde R=0$，其解是 $\sin x$、$\cos x$，零点间隔趋于 $\pi$；而 $x_n^{(m)}$ 的数值也确实如此（表 2-2）。
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}lcccc@{}}
+\thead{阶} & \thead{第 1 个} & \thead{第 2 个} & \thead{第 3 个} & \thead{第 4 个} \\
+\tabmidrule
+$J_0$ & 2.4048 & 5.5201 & 8.6537 & 11.7915 \\
+$J_1$ & 3.8317 & 7.0156 & 10.1735 & 13.3237 \\
+$J_2$ & 5.1356 & 8.4172 & 11.6198 & 14.7960 \\
+\end{tabular}
+\tabbot
+\par\vspace{4pt}{\small\color{inkgray}表 2-2\quad $J_0,J_1,J_2$ 的前四个正零点（由数值求解得到）}
+\end{center}
+
+\subhdr{2.4\quad 正交性与模}
+
+\thm{定理 2.3（贝塞尔函数的正交性）}{设 $k_{mn}=x_n^{(m)}/a$，其中 $x_n^{(m)}$ 是 $J_m$ 的第 $n$ 个正零点。则
+\[
+\int_0^aJ_m(k_{ml}r)J_m(k_{mn}r)\,r\dd r=0\quad(l\ne n),
+\qquad
+\int_0^a\big[J_m(k_{mn}r)\big]^2r\dd r=\frac{a^2}{2}\big[J_{m+1}(x_n^{(m)})\big]^2 .
+\]
+注意积分带权 $r$（不是 $\dd r$，而是 $r\dd r$）。}
+
+\pfline
+
+把 \eqref{eq:bessel} 写成自伴形式。令 $Z_n(r)=J_m(k_{mn}r)$，它满足
+
+\[
+\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dZ_n}{\mathrm dr}\Big)+\Big(k_{mn}^2r-\frac{m^2}{r}\Big)Z_n=0 .
+\]
+
+对 $l$ 写同样一式，乘 $Z_n$ 与 $Z_l$ 后相减，得
+
+\[
+\frac{\mathrm d}{\mathrm dr}\Big[r\Big(Z_lZ_n'-Z_nZ_l'\Big)\Big]=\big(k_{ml}^2-k_{mn}^2\big)rZ_lZ_n .
+\]
+
+两边从 $0$ 到 $a$ 积分。左端等于 $\big[r(Z_lZ_n'-Z_nZ_l')\big]_0^a$：$r=0$ 处因 $Z_n(0)$ 有界、$rZ_n'\to0$ 而为零；$r=a$ 处因 $Z_n(a)=Z_l(a)=0$ 而为零。所以
+
+\[
+\big(k_{ml}^2-k_{mn}^2\big)\int_0^aZ_lZ_n\,r\dd r=0 .
+\]
+
+当 $l\ne n$ 时 $k_{ml}\ne k_{mn}$（零点互不相同），故积分为零。$\square$
+
+模的公式由 $l\to n$ 的极限得到（或用 $J_m$ 的递推式把 $\partial_kZ$ 化成 $J_{m+1}$），这里直接引用结果；它的用处只有一个：给展开系数配分母。
+
+\subhdr{2.5\quad Fourier--Bessel 展开与收敛性}
+
+由定理 2.3，$\{J_m(k_{mn}r)\}_{n\ge1}$ 在带权 $r$ 的意义下正交。若 $f(r)$ 在 $(0,a)$ 上分段光滑，则可展开为
+
+\begin{equation}
+f(r)=\sum_{n=1}^{\infty}A_nJ_m(k_{mn}r),\qquad
+A_n=\frac{2}{a^2\big[J_{m+1}(x_n^{(m)})\big]^2}\int_0^af(r)J_m(k_{mn}r)\,r\dd r .
+\label{eq:fb}
+\end{equation}
+
+\textbf{收敛性（与 Fourier 级数同类）。}在 $(0,a)$ 的每个连续点，级数收敛到 $f(r)$；在间断点，收敛到左右极限的平均 $\tfrac12\big[f(r+0)+f(r-0)\big]$。端点 $r=a$ 处每一项 $J_m(k_{mn}a)=0$，所以级数在 $r=a$ 恒等于 $0$：若 $f(a)\ne0$，端点就有一个跳跃，级数“够不到” $f(a)$，而是在 $r\to a^-$ 时趋于 $0$（这正是下面 \S2.6 例子里 $f=1$ 的情形）。系数衰减的快慢也由边界值决定：$f(a)\ne0$ 时 $A_n$ 只按 $1/\sqrt{x_n}\sim1/\sqrt n$ 衰减（收敛慢）；$f(a)=0$ 且 $f$ 更光滑时衰减快得多（见 \S3.2 的 $f=1-r^2/a^2$ 例子，按 $1/x_n^3$）。
+
+这一步就是“用贝塞尔函数当基”的全部内容。它与 Fourier 级数的关系：若把 $r$ 换成 $\varphi$、$J_m(k_{mn}r)$ 换成 $\cos n\varphi$、权 $r\dd r$ 换成 $\dd\varphi$，公式 \eqref{eq:fb} 在结构上一字不差。
+
+\subhdr{2.6\quad 一个可以手算的例子：$f(r)=1$ 的 $J_0$ 展开}
+
+取 $m=0$、$f(r)=1$。先算积分。由 $\dfrac{\mathrm d}{\mathrm dx}\big[xJ_1(x)\big]=xJ_0(x)$（这可由 \eqref{eq:Jseries} 直接验证），
+
+\[
+\int_0^aJ_0(k_{0n}r)\,r\dd r
+=\frac1{k_{0n}^2}\int_0^{x_n^{(0)}}J_0(t)\,t\dd t
+=\frac1{k_{0n}^2}\Big[tJ_1(t)\Big]_0^{x_n^{(0)}}
+=\frac{a^2J_1(x_n^{(0)})}{x_n^{(0)}} .
+\]
+
+代进 \eqref{eq:fb}：
+
+\[
+A_n=\frac{2}{a^2J_1^2(x_n^{(0)})}\cdot\frac{a^2J_1(x_n^{(0)})}{x_n^{(0)}}=\frac{2}{x_n^{(0)}J_1(x_n^{(0)})}.
+\]
+
+前三个系数（用表 2-2 与 $J_1(2.4048)=0.5191$、$J_1(5.5201)=-0.3403$、$J_1(8.6537)=0.2715$）：
+
+\begin{gather*}
+A_1=\frac{2}{2.4048\times0.5191}=1.602,\qquad
+A_2=\frac{2}{5.5201\times(-0.3403)}=-1.065,\\
+A_3=\frac{2}{8.6537\times0.2715}=0.851 .
+\end{gather*}
+
+于是
+
+\[
+1=\sum_{n=1}^{\infty}\frac{2}{x_n^{(0)}J_1(x_n^{(0)})}\,J_0\Big(\frac{x_n^{(0)}r}{a}\Big),\qquad 0<r<a .
+\]
+
+\textbf{两条核对}（做作业时可用来检查自己的系数）：在 $r=0$ 处，$J_0(0)=1$，右边成为 $\sum A_n$，它应收敛到 $1$（部分和 $1.602-1.065+0.851-\cdots$ 在 $1$ 附近摆动，收敛很慢，因为系数只按 $1/\sqrt{x_n}\sim1/\sqrt n$ 衰减）；在 $r\to a^-$ 处，每一项 $J_0(x_n^{(0)})=0$，级数趋于 $0$，而 $f(a^-)=1$——这是端点处必然的跳跃（Fourier--Bessel 级数在端点收敛到左右极限的平均，$(1+0)/2=1/2$），不是算错。
+
+%=====================================================================
+\hdr{\S3}{圆域的完整求解流程：本征值、系数积分、收敛性（p3--p5）}
+\phantomsection\label{sec:s3}
+%=====================================================================
+
+把 \S1 的波动方程走到底，得到一条可以复用的“四步流程”。圆域波动、输运、以及 \S5 的圆柱问题，走的都是这四步，只是步数随变量个数增加。
+
+\subhdr{3.1\quad 四步流程（以波动方程为例）}
+
+\begin{enumerate}[label=\textbf{第 \arabic* 步}]
+  \item \textbf{分离时间。}$u=T(t)V(r,\varphi)$，得 $T''+a^2k^2T=0$ 与 Helmholtz 方程 $\nabla^2V+k^2V=0$。
+  \item \textbf{分离空间。}$V=R(r)\Phi(\varphi)$，得 $\Phi''+m^2\Phi=0$（周期条件给 $m=0,1,2,\dots$）与径向贝塞尔方程，径向解 $R=C_mJ_m(kr)+D_mN_m(kr)$。
+  \item \textbf{边界定谱（本征值）。}圆内有界丢 $N_m$；$r=\rho_0$ 齐次给 $J_m(k\rho_0)=0$，即 $k_{mn}=x_n^{(m)}/\rho_0$。时间方程这时才可解：$T_{mn}=E_{mn}\cos(a k_{mn}t)+F_{mn}\sin(a k_{mn}t)$。
+  \item \textbf{叠加定系数（系数积分）。}把所有 $(m,n)$ 的特解加起来，再用初值条件和 \S2.5 的正交性逐项积分出系数。
+\end{enumerate}
+
+前三步已经做完（\S1）。第四步给出通解：
+
+\begin{equation}
+u(r,\varphi,t)=\sum_{m=0}^{\infty}\sum_{n=1}^{\infty}J_m(k_{mn}r)\big(A_m\cos m\varphi+B_m\sin m\varphi\big)\big(E_{mn}\cos(a k_{mn}t)+F_{mn}\sin(a k_{mn}t)\big).
+\label{eq:wavegen}
+\end{equation}
+
+\eqref{eq:wavegen} 里每个 $(m,n)$ 有四个待定常数（$\cos m\varphi\cos\omega t$、$\cos m\varphi\sin\omega t$、$\sin m\varphi\cos\omega t$、$\sin m\varphi\sin\omega t$ 的系数）。它们由两个初始条件 $u(r,\varphi,0)=f$、$u_t(r,\varphi,0)=g$ 定：先把 $f,g$ 对 $\varphi$ 做 Fourier 展开（得到 $A_m,B_m$ 的组合），再对 $r$ 做 Fourier--Bessel 展开（得到 $E,F$ 的组合）。两层正交性都用 \S2.4--\S2.5 的公式，只是换基。
+
+\warnbox{\textbf{一个常见误解。}有人把 \eqref{eq:wavegen} 里的 $J_m(k_{mn}r)$ 当成“径向的解”，以为 $m$ 与 $n$ 可以独立取。其实 $k_{mn}$ 的第二个下标 $n$ 就是径向的编号，$m$ 是角向编号；两者通过零点 $x_n^{(m)}$ 绑在一起，不能拆开。}
+
+\subhdr{3.2\quad 输运方程：只换时间方程（课件 p4--p5）}
+
+齐次输运方程 $u_t=a^2\nabla^2u$ 做同样的第一次分离 $u=T(t)V(r,\varphi)$：
+
+\[
+\frac{T'}{a^2T}=\frac{\nabla^2V}{V}=-k^2 ,
+\]
+
+得到
+
+\begin{equation}
+T'+a^2k^2T=0,
+\qquad
+\nabla^2V+k^2V=0 .
+\label{eq:transport}
+\end{equation}
+
+\textbf{空间方程与波动方程完全相同}（都是 Helmholtz \eqref{eq:helm}），所以 \S1.2--\S1.4 的结论照搬：$V=R_m(r)\Phi_m(\varphi)$、$k=k_{mn}=x_n^{(m)}/\rho_0$、$R_m=J_m(k_{mn}r)$。变的只有时间：
+
+\[
+T_{mn}(t)=E_{mn}e^{-a^2k_{mn}^2t}.
+\]
+
+于是
+
+\begin{equation}
+u(r,\varphi,t)=\sum_{m=0}^{\infty}\sum_{n=1}^{\infty}J_m(k_{mn}r)\big(A_m\cos m\varphi+B_m\sin m\varphi\big)E_{mn}e^{-a^2k_{mn}^2t}.
+\label{eq:heatgen}
+\end{equation}
+
+系数 $A_mB_mE_{mn}$ 由初始条件 $u(r,\varphi,0)=f(r,\varphi)$ 定：把 $t=0$ 代入，用 \eqref{eq:fb} 逐阶展开。
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.16\linewidth}L{0.34\linewidth}L{0.40\linewidth}@{}}
+\thead{环节} & \thead{波动方程} & \thead{输运方程} \\
+\tabmidrule
+时间方程 & $T''+a^2k^2T=0$ & $T'+a^2k^2T=0$ \\
+时间解 & $\cos(a kt)$、$\sin(a kt)$ & $e^{-a^2k^2t}$ \\
+初始条件个数 & 两个（$u$ 与 $u_t$） & 一个（$u$） \\
+空间部分 & \multicolumn{2}{c}{完全相同：$\nabla^2V+k^2V=0$，$k=k_{mn}$，$V=J_m(k_{mn}r)\Phi_m$} \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{为什么高阶项衰减得快。}$e^{-a^2k^2t}$ 的指数里是 $k^2$，而 $k_{mn}=x_n^{(m)}/\rho_0$ 随 $n$ 增大。所以 $t$ 稍大以后，只剩 $n=1$（以及 $m=0$ 的那一项）在起作用：温度场迅速变成“最低阶模态”的形状。这是热传导与振动最直观的差别——振动的高阶模态只是频率高，不会自动消失；热传导的高阶模态衰减得极快。
+
+\subhdr{3.3\quad 系数积分的完整示例（$f=1-r^2/a^2$ 的 $J_0$ 展开）}
+
+\S2.6 已经算了 $f=1$（有端点跳跃）。这里再算一个 $f(0)=1$、$f(a)=0$ 的（无端点跳跃，收敛快），看系数积分怎么逐项走。取 $m=0$、$f(r)=1-\dfrac{r^2}{a^2}$，$k_{0n}=x_n^{(0)}/a$。
+
+\textbf{第 1 步（系数公式）。}由 \eqref{eq:fb}：
+
+\[
+A_n=\frac{2}{a^2J_1^2(x_n^{(0)})}\int_0^a\Big(1-\frac{r^2}{a^2}\Big)J_0\Big(\frac{x_n^{(0)}r}{a}\Big)r\dd r .
+\]
+
+\textbf{第 2 步（算积分）。}令 $t=x_n^{(0)}r/a$，则 $r=at/x_n$，$r\dd r=(a/x_n)^2t\dd t$：
+
+\[
+\int_0^a\Big(1-\frac{r^2}{a^2}\Big)J_0\Big(\frac{x_nr}{a}\Big)r\dd r
+=\Big(\frac{a}{x_n}\Big)^2\int_0^{x_n}\Big(1-\frac{t^2}{x_n^2}\Big)J_0(t)\,t\dd t .
+\]
+
+用 $\int_0^ztJ_0(t)\dd t=zJ_1(z)$、$\int_0^zt^3J_0(t)\dd t=z^3J_1(z)-2z^2J_2(z)$ 以及递推式 $J_2=\dfrac2xJ_1-J_0$ 与 $J_0(x_n)=0$：
+
+\[
+\int_0^{x_n}\Big(1-\frac{t^2}{x_n^2}\Big)J_0(t)t\dd t
+=x_nJ_1(x_n)-\frac1{x_n^2}\Big[x_n^3J_1(x_n)-2x_n^2J_2(x_n)\Big]
+=2J_2(x_n)
+=\frac{4J_1(x_n)}{x_n}.
+\]
+
+于是
+
+\[
+\int_0^a\Big(1-\frac{r^2}{a^2}\Big)J_0\Big(\frac{x_nr}{a}\Big)r\dd r
+=\Big(\frac{a}{x_n}\Big)^2\frac{4J_1(x_n)}{x_n} .
+\]
+
+\textbf{第 3 步（系数）。}代回 \eqref{eq:fb}：
+
+\[
+A_n=\frac{2}{a^2J_1^2(x_n)}\cdot\Big(\frac{a}{x_n}\Big)^2\cdot\frac{4J_1(x_n)}{x_n}
+=\frac{8}{x_n^3J_1(x_n)} .
+\]
+
+\textbf{第 4 步（前三个数值）。}用 $x_1=2.4048$、$J_1(x_1)=0.5191$；$x_2=5.5201$、$J_1(x_2)=-0.3403$；$x_3=8.6537$、$J_1(x_3)=0.2715$：
+
+\begin{gather*}
+A_1=\frac{8}{2.4048^3\times0.5191}=1.108,\qquad
+A_2=\frac{8}{5.5201^3\times(-0.3403)}=-0.140,\\
+A_3=\frac{8}{8.6537^3\times0.2715}=0.0455 .
+\end{gather*}
+
+\textbf{第 5 步（收敛性对比）。}系数按 $1/x_n^3$ 衰减，比 $f=1$ 那个例子快得多——因为 $1-r^2/a^2$ 在 $r=a$ 处等于零，没有端点跳跃。$r=a$ 时每项 $J_0(x_n)=0$，级数为零；而 $f(a)=0$，两者一致，不存在跳跃。这与 \S2.6 的 $f=1$ 情形（$f(a)=1$ 而级数给 $0$，端点跳跃到 $1/2$）形成对照，验证了 \S2.5 的收敛性判断。
+
+%=====================================================================
+\hdr{\S4}{圆域 Laplace：$r^{m}$ 解与两道课件习题（p6）}
+\phantomsection\label{sec:s4}
+%=====================================================================
+
+\subhdr{4.1\quad 没有时间：贝塞尔退化成欧拉}
+
+课件 p6 的两道作业是 \textbf{纯 Laplace 方程} $\nabla^2u=0$，没有时间。把 \S1.2 的 \eqref{eq:sep2} 里的 $k^2$ 换成 $0$，径向方程变成
+
+\begin{equation}
+r\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)-m^2R=0
+\quad\Longleftrightarrow\quad
+r^2R''+rR'-m^2R=0 .
+\label{eq:euler}
+\end{equation}
+
+这是\textbf{欧拉方程}，解是初等函数：
+
+\[
+m=0:\ R=C_0+D_0\ln r;\qquad
+m>0:\ R=C_mr^m+D_mr^{-m}.
+\]
+
+圆内有界丢 $\ln r$ 与 $r^{-m}$；圆环（不碰 $r=0$）两者都保留。于是圆内通解是
+
+\begin{equation}
+u(r,\varphi)=C_0+\sum_{m\ge1}r^m\big(A_m\cos m\varphi+B_m\sin m\varphi\big).
+\label{eq:polarInt}
+\end{equation}
+
+\textbf{关键对比（这是本节最重要的判断点）：}$r^m$ 还是 $J_m$？看方程里有没有时间或 $z$ 方向。纯圆域 Laplace 只有 $r^m$；一旦出现时间（波动/输运，多出 $k^2$ 项）或 $z$ 方向（柱坐标，多出 $\mu$ 项），径向方程就升级成贝塞尔方程，解换成 $J_m$。下面两道课件习题都用 \eqref{eq:polarInt}，全程不碰贝塞尔。
+
+\subhdr{4.2\quad 课件习题 5：圆内 Laplace（教学示范，逐步求解）}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.98\linewidth}@{}}
+\thead{课件 p6 作业 5}\quad 在半径 $\rho_0$ 的圆内解 $\nabla^2u(r,\varphi)=0$，边界条件分别为：(1) $u\big|_{r=\rho_0}=A\cos\varphi$；(2) $u\big|_{r=\rho_0}=A+B\sin\varphi$，其中 $A,B$ 为常数。分别求 $u$。 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{第 1 步（圆内通解）。}由 \eqref{eq:polarInt}，圆内有界解是
+
+\[
+u(r,\varphi)=C_0+\sum_{m\ge1}r^m\big(A_m\cos m\varphi+B_m\sin m\varphi\big)
+\]
+
+（用 $A_m,B_m$ 以免与题给的常数 $A,B$ 混淆）。
+
+\textbf{第 2 步（情形 (1)）。}边界值只含 $\cos\varphi$ 一项，故只有 $m=1$ 的余弦系数非零：
+
+\[
+A_1\rho_0=A,\qquad C_0=0,\qquad \text{其余为零},
+\]
+
+所以
+
+\[
+u(r,\varphi)=A\,\frac{r}{\rho_0}\cos\varphi=A\,\frac{x}{\rho_0}.
+\]
+
+\textbf{核对。}$\Delta u=0$（$x$ 是调和函数）；$r=\rho_0$ 时 $u=A\cos\varphi$，对。
+
+\textbf{第 3 步（情形 (2)）。}边界值含常数与 $\sin\varphi$ 两项：
+
+\[
+C_0=A,\qquad B_1\rho_0=B,\qquad \text{其余为零},
+\]
+
+所以
+
+\[
+u(r,\varphi)=A+B\,\frac{r}{\rho_0}\sin\varphi=A+B\,\frac{y}{\rho_0}.
+\]
+
+\textbf{核对。}常数与 $y$ 都调和；$r=\rho_0$ 时回到 $A+B\sin\varphi$，对。两问都说明一件事：\textbf{边界值只含有限个谐波时，解只含那几项}，不需要写无穷级数。
+
+\subhdr{4.3\quad 课件习题 7：圆环稳态热传导（教学示范，逐步求解）}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.98\linewidth}@{}}
+\thead{课件 p6 作业 7}\quad 内半径 $\rho_1$、外半径 $\rho_2$ 的环域内解稳态热传导 $\nabla^2u=0$；内圆温度 $u\big|_{r=\rho_1}=u_1\cos2\varphi$，外圆温度 $u\big|_{r=\rho_2}=u_2\sin\varphi$。求温度分布。 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{第 1 步（通解的形式）。}环域不碰 $r=0$，正负幂次都保留：
+
+\[
+u(r,\varphi)=C_0+D_0\ln r+\sum_{m\ge1}\big(A_mr^m+C_mr^{-m}\big)\cos m\varphi+\sum_{m\ge1}\big(B_mr^m+D_mr^{-m}\big)\sin m\varphi .
+\]
+
+\textbf{第 2 步（筛项）。}两条边界值里只有 $\cos2\varphi$ 与 $\sin\varphi$，所以只保留 $m=2$ 的余弦与 $m=1$ 的正弦（其它谐波系数由正交性为零，$C_0=D_0=0$：边界值没有常数项）：
+
+\[
+u(r,\varphi)=\big(A_2r^2+C_2r^{-2}\big)\cos2\varphi+\big(B_1r+D_1r^{-1}\big)\sin\varphi .
+\]
+
+\textbf{第 3 步（定 $\cos2\varphi$ 的系数）。}由 $r=\rho_1$ 与 $r=\rho_2$：
+
+\[
+\begin{cases}
+A_2\rho_1^2+C_2\rho_1^{-2}=u_1,\\[2pt]
+A_2\rho_2^2+C_2\rho_2^{-2}=0 .
+\end{cases}
+\]
+
+第二式给 $C_2=-A_2\rho_2^4$；代入第一式：$A_2\big(\rho_1^2-\rho_2^4\rho_1^{-2}\big)=u_1$，即
+
+\[
+A_2=\frac{u_1\rho_1^2}{\rho_1^4-\rho_2^4},\qquad C_2=\frac{u_1\rho_1^2\rho_2^4}{\rho_2^4-\rho_1^4}.
+\]
+
+\textbf{第 4 步（定 $\sin\varphi$ 的系数）。}
+
+\[
+\begin{cases}
+B_1\rho_1+D_1\rho_1^{-1}=0,\\[2pt]
+B_1\rho_2+D_1\rho_2^{-1}=u_2,
+\end{cases}
+\quad\Longrightarrow\quad
+B_1=\frac{u_2\rho_2}{\rho_2^2-\rho_1^2},\qquad D_1=-\frac{u_2\rho_1^2\rho_2}{\rho_2^2-\rho_1^2}.
+\]
+
+\textbf{第 5 步（写出答案并核对）。}
+
+\[
+u=A_2\Big(r^2-\frac{\rho_2^4}{r^2}\Big)\cos2\varphi
++B_1\Big(r-\frac{\rho_1^2}{r}\Big)\sin\varphi ,
+\]
+
+其中 $A_2,B_1$ 如上。核对：$r=\rho_1$ 时第二项为零、第一项为 $A_2(\rho_1^2-\rho_2^4/\rho_1^2)\cos2\varphi=u_1\cos2\varphi$；$r=\rho_2$ 时第一项为零、第二项为 $B_1(\rho_2-\rho_1^2/\rho_2)\sin\varphi=u_2\sin\varphi$。两处都对。
+
+\aside{本题最容易错的地方是把两个不同阶的谐波混在一个方程组里。它们的 $\varphi$ 依赖不同（$\cos2\varphi$ 与 $\sin\varphi$），由正交性各自独立，必须分开解两个 $2\times2$ 方程组。}
+
+%=====================================================================
+\hdr{\S5}{圆柱域：$\mu$ 的三种符号与三重级数（p7--p15）}
+\phantomsection\label{sec:s5}
+%=====================================================================
+
+圆域两个变量已经走通。圆柱多一个 $z$ 方向，多一次分离，也多一个分离常数 $\mu$。整个 \S8.3 的核心就是一张判据表：$\mu$ 的符号由\textbf{哪一组边界是齐次的}决定。
+
+\subhdr{5.1\quad 柱坐标 Laplace 的三变量分离（课件 p7--p8）}
+
+柱坐标下的 Laplace 方程是
+
+\begin{equation}
+\nabla^2u=\frac1r\frac{\partial}{\partial r}\Big(r\frac{\partial u}{\partial r}\Big)+\frac1{r^2}\frac{\partial^2u}{\partial\varphi^2}+\frac{\partial^2u}{\partial z^2}=0 .
+\label{eq:lapcyl}
+\end{equation}
+
+设 $u=R(r)\Phi(\varphi)Z(z)$，代入并除以 $R\Phi Z$，乘以 $r^2$：
+
+\[
+\frac{r}{R}(rR')'+\frac{\Phi''}{\Phi}+\frac{r^2Z''}{Z}=0 .
+\]
+
+前两项只含 $r,\varphi$，第三项只含 $z$，于是 $\dfrac{Z''}{Z}=\mu$ 是常数；剩下 $\dfrac{\Phi''}{\Phi}=-\lambda$，合并成课件 p7 右下那个方程组：
+
+\begin{equation}
+\Phi''+\lambda\Phi=0,
+\qquad
+Z''-\mu Z=0,
+\qquad
+\frac1r\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)+\Big(\mu-\frac{\lambda}{r^2}\Big)R=0 .
+\label{eq:cylsys}
+\end{equation}
+
+由周期条件，$\lambda=m^2$（$m=0,1,2,\dots$），$\Phi_m=A_m\cos m\varphi+B_m\sin m\varphi$。至此还剩两个常数 $m$ 与 $\mu$，以及径向方程。
+
+\subhdr{5.2\quad 为什么 $\mu$ 的符号决定一切（课件 p8）}
+
+径向方程 $\dfrac1r(rR')'+\Big(\mu-\dfrac{m^2}{r^2}\Big)R=0$ 的“身份”完全由 $\mu$ 的符号决定：
+
+\[
+\mu>0:\ \text{令 }x=\sqrt\mu\,r\ \Rightarrow\ \text{贝塞尔方程};
+\]
+\[
+\mu<0:\ \text{令 }x=\sqrt{-\mu}\,r\ \Rightarrow\ \text{修正贝塞尔方程};
+\qquad
+\mu=0:\ \text{欧拉方程}.
+\]
+
+而 $\mu$ 的符号不是自由选的：它由 $Z$ 的方程 $Z''-\mu Z=0$ 与\textbf{上下底面的边界条件}共同决定。$\mu>0$ 时 $Z$ 是双曲函数（指数），$\mu<0$ 时 $Z$ 是三角函数（振荡），$\mu=0$ 时 $Z$ 是线性的。于是有一个非常好用的判据：
+
+\begin{quote}
+\textbf{若上下底面给的是齐次条件（$Z$ 必须在这两个 $z$ 值处为零），则 $Z$ 必须振荡，$\mu<0$；若侧面给的是齐次条件（$R$ 必须在 $r=a$ 处为零），则 $R$ 必须振荡，$\mu>0$。}
+\end{quote}
+
+这个判据的道理是：\textbf{齐次条件要求对应的函数“回到零”，只有振荡型函数能反复回到零}；指数型函数最多回到零一次（或者根本回不去），给不出无穷多个本征值。
+
+\subhdr{5.3\quad 三种情形的完整解（课件 p9--p11）}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.11\linewidth}L{0.24\linewidth}L{0.25\linewidth}L{0.29\linewidth}@{}}
+\thead{项目} & \thead{$\mu>0$（p9）} & \thead{$\mu=-\nu^2<0$（p10）} & \thead{$\mu=0$（p11）} \\
+\tabmidrule
+适用 & 侧面 $r=a$ 齐次 & 上下底 $z=0,h$ 齐次 & 侧面为第二类齐次（$\partial_ru=0$）且轴对称 \\
+$Z$ 的方程 & $Z''-\mu Z=0$ & $Z''+\nu^2Z=0$ & $Z''=0$ \\
+$Z$ 的解 & $E e^{\sqrt\mu z}+F e^{-\sqrt\mu z}$ & $E\sin\nu z+F\cos\nu z$ & $A+Bz$ \\
+$Z$ 的本征值 & 由侧面条件定（不需要） & $\nu_n=n\pi/h$ & 无 \\
+$R$ 的方程 & 贝塞尔方程 & 修正贝塞尔方程 & 欧拉方程 \\
+$R$ 的解 & $CJ_m(\sqrt\mu r)+DN_m(\sqrt\mu r)$ & $CI_m(\nu r)+DK_m(\nu r)$ & $m=0$：$C_1+C_2\ln r$；$m>0$：$C_1r^m+C_2r^{-m}$ \\
+$R$ 的本征值 & $\mu_j=\big(x_j^{(m)}/a\big)^2$ & 无（$\nu$ 已由底面定） & 无 \\
+\end{tabular}
+\tabbot
+\par\vspace{4pt}{\small\color{inkgray}表 5-1\quad $\mu$ 的三种符号与被选中的径向方程}
+\end{center}
+
+三种情形各有一句“为什么”：
+
+\begin{itemize}
+  \item \textbf{$\mu>0$（p9）}：$Z$ 是实指数，不能反复回零，所以 $z$ 方向不给本征值；本征值只能来自侧面的 $J_m(\sqrt\mu\,a)=0$，即 $\sqrt\mu=x_j^{(m)}/a$。注意这里 $Z$ 在 $z$ 方向没有齐次条件，$E,F$ 由上下底的具体（非齐次）数据定。
+  \item \textbf{$\mu<0$（p10）}：$Z=\sin\nu z$、$\cos\nu z$ 可以满足 $Z(0)=Z(h)=0$（取 $\sin$，$\nu_n=n\pi/h$）。此时径向方程变成修正贝塞尔方程，$I_m$ 随 $r$ 增长、$K_m$ 随 $r$ 衰减且 $K_m(0)=\infty$；在实心圆柱里必须丢掉 $K_m$。
+  \item \textbf{$\mu=0$（p11）}：$Z=A+Bz$，$\Phi$ 最好是常数（轴对称，$\lambda=0$）。径向方程是欧拉方程，$m=0$ 时 $R=C_1+C_2\ln r$；它的导数 $R'=C_2/r$，在 $r=a$ 上等于 $C_2/a$。若侧面条件是第二类齐次 $\partial_ru|_{r=a}=0$，则 $C_2=0$，$R=C_1$ 自动满足——这就是课件 p11 说 “This satisfies the second kind homogeneous boundary condition of the side of the cylinder” 的意思。
+\end{itemize}
+
+\warnbox{\textbf{一个容易错的点。}$\mu>0$ 时 $Z$ 用 $e^{\pm\sqrt\mu z}$，但很多题目里上下底是 $u=0$（齐次）。这时不能用 $\mu>0$——因为 $e^{\pm\sqrt\mu z}$ 在 $z=0$ 与 $z=h$ 同时为零只有平凡解。判断的依据始终是“齐次条件要求函数反复回零”，不是“书上画的是哪种”。}
+
+\subhdr{5.4\quad 柱坐标的波与输运：三重级数（课件 p13--p15）}
+
+波动方程 $u_{tt}=a^2\nabla^2u$ 第一次分离给出 $T''+a^2k^2T=0$ 与 Helmholtz 方程。把 Helmholtz 写在柱坐标，设 $V=R\Phi Z$，与 \S5.1 同样的推导给出（注意 $Z$ 的方程变成 $Z''+\nu^2Z=0$，因为 $k^2$ 已占“正项”）：
+
+\begin{equation}
+\Phi''+\lambda\Phi=0,\qquad
+Z''+\nu^2Z=0,\qquad
+\frac1r\frac{\mathrm d}{\mathrm dr}\Big(r\frac{\mathrm dR}{\mathrm dr}\Big)+\Big(k^2-\nu^2-\frac{\lambda}{r^2}\Big)R=0 .
+\label{eq:helmsys}
+\end{equation}
+
+其中径向方程里的组合
+
+\begin{equation}
+\mu=k^2-\nu^2 .
+\label{eq:mudef}
+\end{equation}
+
+只有 $\mu>0$ 时径向方程才是贝塞尔方程。三组本征值：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.18\linewidth}L{0.34\linewidth}L{0.38\linewidth}@{}}
+\thead{方向} & \thead{条件} & \thead{本征值} \\
+\tabmidrule
+角向 & 周期 & $\lambda=m^2$，$m=0,1,2,\dots$；$\Phi_m=\cos m\varphi,\ \sin m\varphi$ \\
+轴向 & $Z(0)=Z(h)=0$（底面齐次） & $\nu_n=\dfrac{n\pi}{h}$，$n=1,2,\dots$；$Z_n=\sin\dfrac{n\pi z}{h}$ \\
+径向 & $R(a)=0$（侧面齐次） & $\mu_j=\Big(\dfrac{x_j^{(m)}}{a}\Big)^2$，$j=1,2,\dots$；$R_m=J_m(\sqrt{\mu_j}\,r)$ \\
+频率 & $k^2=\mu+\nu^2$ & $k_{nj}=\sqrt{\mu_j+\nu_n^2}$；$T_{nj}=G\cos(k_{nj}at)+H\sin(k_{nj}at)$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+把三部分乘起来、对三个指标求和（输运方程只是把时间因子换成 $e^{-a^2k_{nj}^2t}$）：
+
+\begin{equation}
+\begin{aligned}
+u(r,\varphi,z,t)=\sum_{m=0}^{\infty}\sum_{n=1}^{\infty}\sum_{j=1}^{\infty}&J_m(\sqrt{\mu_j}\,r)\sin\frac{n\pi z}{h}\\
+&\times\big(A_m\cos m\varphi+B_m\sin m\varphi\big)\big(G_{nj}\cos(k_{nj}at)+H_{nj}\sin(k_{nj}at)\big).
+\end{aligned}
+\label{eq:triple}
+\end{equation}
+
+系数由初始条件与可能存在的非齐次边界值确定，用的仍是 \eqref{eq:fb} 的那套正交性——只是要在 $r$、$\varphi$、$z$ 三个方向各用一次。
+
+\warnbox{\textbf{三重和不是“随便乘”。}三个指标的来源不同：$m$ 来自 $\varphi$ 的周期条件，$n$ 来自 $z$ 的两端条件，$j$ 来自 $r=a$ 的条件。少一个条件，就少一个求和指标。若侧面不是齐次（比如 $u(a,\varphi,z)$ 给定），径向就没有本征值，$\mu$ 要由 $z$ 方向定，级数结构随之改变——这正是表 5-1 存在的理由。}
+
+%=====================================================================
+\hdr{\S6}{常见错误与检查点}
+\phantomsection\label{sec:s6}
+%=====================================================================
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{把 $k$ 当成连续参数。}$k$ 必须让 $J_m(ka)=0$，所以 $k$ 是离散的一串 $x_n^{(m)}/a$。写答案时若 $k$ 还带“任意常数”的味道，就是没做完。
+  \item \textbf{把 $k_n$ 写成只依赖 $n$。}零点依赖阶数：$x_1^{(0)}=2.405$，$x_1^{(1)}=3.832$。严格写 $k_{mn}$。
+  \item \textbf{圆内保留 $N_m$。}$N_m$ 在 $r\to0$ 发散；圆内必须丢，环域才保留（环域不与 $r=0$ 相接）。
+  \item \textbf{纯 Laplace 却去用贝塞尔。}圆域 $\nabla^2u=0$ 没有时间、没有 $z$，径向是欧拉方程，解是 $r^{\pm m}$、$\ln r$。只有出现时间或 $z$ 方向，径向才升级成贝塞尔方程（\S4.1 的分界）。
+  \item \textbf{$\mu$ 的符号选错。}判据是“哪一组边界齐次”，见表 5-1；不是“贝塞尔函数好看就用 $\mu>0$”。
+  \item \textbf{把波动的时间因子写成衰减。}波动是 $\cos(a kt)$、$\sin(a kt)$（两个初始条件，二阶时间导数）；输运是 $e^{-a^2k^2t}$（一个初始条件，一阶）。两者的空间谱相同，时间因子不同。
+  \item \textbf{系数积分忘了权 $r$。}Fourier--Bessel 展开的积分是 $\int_0^a f(r)J_m(k_{mn}r)\,r\dd r$，带权 $r$；忘了 $r$ 或忘了分母 $a^2J_{m+1}^2(x_n^{(m)})/2$ 都会算错系数。
+\end{enumerate}
+
+\textbf{检查点}（做完题自检）：
+
+\begin{itemize}
+  \item 解在圆内是否有界？（$r=0$ 处不能有 $\ln r$、$r^{-m}$、$N_m$、$K_m$。）
+  \item 边界条件是否逐点回到给定值？（把 $r=a$、$r=\rho_0$ 代回。）
+  \item 本征值下标是否写全 $m,n$？零点数值是否对应正确的阶？
+  \item 时间因子对不对？（波动振荡、输运衰减。）
+  \item 系数是否随 $n$ 合理衰减？（端点有跳跃时慢，无跳跃时快，见 \S2.5--\S3.3。）
+\end{itemize}
+
+%=====================================================================
+\hdr{\S7}{速查卡}
+\phantomsection\label{sec:s7}
+%=====================================================================
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.22\linewidth}L{0.72\linewidth}@{}}
+\thead{对象} & \thead{式子} \\
+\tabmidrule
+柱坐标 Laplace 算子 & $\nabla^2u=\dfrac1r(ru_r)_r+\dfrac1{r^2}u_{\varphi\varphi}+u_{zz}$ \\
+贝塞尔方程 & $x^2R''+xR'+(x^2-m^2)R=0$，或 $R''+\dfrac1xR'+\big(1-\dfrac{m^2}{x^2}\big)R=0$ \\
+贝塞尔级数 & $J_m(x)=\displaystyle\sum_{k\ge0}\dfrac{(-1)^k}{k!(k+m)!}\big(\dfrac x2\big)^{2k+m}$ \\
+$J_m$ vs $N_m$（$x\to0$） & $J_m\sim\dfrac1{m!}\big(\dfrac x2\big)^m$ 有界；$N_m\sim-\dfrac{(m-1)!}{\pi}\big(\dfrac2x\big)^m$ 无界 \\
+正交性 & $\displaystyle\int_0^aJ_m(k_{ml}r)J_m(k_{mn}r)r\dd r=\dfrac{a^2}2J_{m+1}^2(x_n^{(m)})\delta_{ln}$ \\
+展开系数 & $A_n=\dfrac{2}{a^2J_{m+1}^2(x_n^{(m)})}\displaystyle\int_0^af(r)J_m(k_{mn}r)r\dd r$ \\
+圆内通解（Laplace） & $u=C_0+\displaystyle\sum_{m\ge1}r^m(A_m\cos m\varphi+B_m\sin m\varphi)$ \\
+环域通解（Laplace） & $u=C_0+D_0\ln r+\displaystyle\sum_{m\ge1}\big[(A_mr^m+C_mr^{-m})\cos m\varphi+(B_mr^m+D_mr^{-m})\sin m\varphi\big]$ \\
+三类径向方程 & $\mu>0$ 贝塞尔；$\mu<0$ 修正贝塞尔；$\mu=0$ 欧拉 \\
+零点头几个 & $x_1^{(0)}=2.405$，$x_1^{(1)}=3.832$，$x_1^{(2)}=5.136$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S8}{课件页码对照表}
+\phantomsection\label{sec:s8}
+%=====================================================================
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.08\linewidth}L{0.56\linewidth}L{0.30\linewidth}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲位置} \\
+\tabmidrule
+p1 & 波动方程；$u=T(t)V$；$k^2$；Helmholtz；极坐标分离 & \S1.1--1.2 \\
+p2 & $\lambda=m^2$；径向方程；$x=kr$；贝塞尔方程；$J_m,N_m$ & \S1.3 \\
+p3 & $k=x_n^{(m)}/a$；$T$ 的方程；通解 & \S1.4、\S3.1 \\
+p4 & 输运方程；$T'+a^2k^2T=0$；通解 & \S3.2 \\
+p5 & 两次分离的总结；两组本征值 & \S3.2、\S7 \\
+p6 & 作业 5、7 & \S4.2、\S4.3 \\
+p7 & 柱坐标 Laplace；$u=R\Phi Z$；三个方程 & \S5.1 \\
+p8 & $\lambda=m^2$；$\mu$ 的作用 & \S5.1--5.2 \\
+p9 & $\mu>0$：贝塞尔；$\mu_j=(x_j^{(m)}/a)^2$；$Z=e^{\pm\sqrt\mu z}$ & \S5.3 \\
+p10 & $\mu=-\nu^2$：修正贝塞尔；$\nu_n=n\pi/h$ & \S5.3 \\
+p11 & $\mu=0$：欧拉方程；第二类侧面条件 & \S5.3 \\
+p12 & 柱坐标通解；三种情形总结 & \S5.3 \\
+p13 & Helmholtz 柱坐标；$Z''+\nu^2Z=0$；$\mu=k^2-\nu^2$ & \S5.4 \\
+p14 & 三组本征值；$k=\sqrt{\mu+\nu^2}$ & \S5.4 \\
+p15 & 三重级数；输运的指数衰减 & \S5.4 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S9}{三句话总结}
+\phantomsection\label{sec:s9}
+%=====================================================================
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{贝塞尔函数不是新假设，是分离变量的必然结果。}圆域里出现时间或 $z$ 方向，就出现 $k$ 或 $\mu$；极坐标/柱坐标把 Helmholtz 拆开之后，径向方程 $x^2R''+xR'+(x^2-m^2)R=0$ 只能给出 $J_m$ 与 $N_m$。纯圆域 Laplace 没有这些，径向是欧拉方程，解是 $r^{\pm m}$。
+  \item \textbf{谱由齐次边界条件给出。}圆内有界丢 $N_m$；$r=a$ 齐次给 $J_m(ka)=0$，即 $k=x_n^{(m)}/a$；底面齐次给 $n\pi/h$。不同边界给出不同的基，但正交性与展开公式是同一套（带权 $r$）。
+  \item \textbf{柱坐标里 $\mu$ 的符号由“哪组边界齐次”决定：}侧面齐次 $\to$ 贝塞尔（$\mu>0$）；上下底齐次 $\to$ 修正贝塞尔（$\mu<0$）；侧面第二类且轴对称 $\to$ 欧拉（$\mu=0$）。
+\end{enumerate}
+
+\end{document}

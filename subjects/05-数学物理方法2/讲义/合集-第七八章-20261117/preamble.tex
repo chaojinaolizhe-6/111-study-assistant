@@ -1,0 +1,98 @@
+% =====================================================================
+% preamble.tex —— 第七—八章合集的统一导言区
+% 由各分册的导言合并而成：只保留一份，避免同一宏定义多次重定义。
+% =====================================================================
+
+\input{../../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+
+\settags{数学物理方法（II）· 第七—八章}{精讲讲义 · 2026-11-17}
+\hypersetup{pdftitle={数学物理方法（II）第七—八章精讲讲义},
+            pdfsubject={第七章 数学物理方程与定解条件；第八章 分离变量法（直角、极坐标、柱坐标）},
+            pdfkeywords={数学物理方法, 分离变量, 定解条件, 贝塞尔函数}}
+
+% ---------------------------------------------------------------- 编号与标题
+% 三级标题（如 7.1.1）：介于 \hdr（节）与 \subhdr（四级）之间
+\newcommand{\hdrsub}[2]{%
+  \par\vspace{10pt}\needspace{4\baselineskip}%
+  \noindent
+  \colorbox{petal}{\color{white}\bfseries\small\;#1\;}\hspace{7pt}%
+  {\color{violetdeep}\bfseries\large #2}\par\nobreak
+  \vspace{2pt}{\color{rulepurple}\hrule height 0.6pt}\vspace{5pt}}
+
+% 章标题：另起一页，居中，带花饰
+\newcommand{\chapterhead}[2]{%
+  \clearpage
+  \par\vspace*{1.4cm}
+  \begin{center}
+  {\color{petal}\small \orn\enspace\ornstar\enspace\orn}\\[10pt]
+  {\color{violetdeep}\bfseries\Huge #2}\\[8pt]
+  {\color{inkgray}\large #1}\\[10pt]
+  {\color{petal}\rule{0.46\linewidth}{1.2pt}}
+  \end{center}
+  \vspace{0.9cm}}
+
+% 组标题：8.1 里的「一维 / 二维」分组，不带编号
+\newcommand{\grp}[1]{%
+  \par\vspace{11pt}\needspace{3\baselineskip}%
+  \noindent{\color{violetdeep}\bfseries\large\orn\enspace #1}\par\nobreak
+  \vspace{3pt}{\color{petal}\hrule height 1pt}\vspace{5pt}}
+
+% 标题不落页底
+\let\origsubhdr\subhdr
+\renewcommand{\subhdr}[1]{\par\needspace{3\baselineskip}\origsubhdr{#1}}
+\let\orighdr\hdr
+\renewcommand{\hdr}[2]{\par\needspace{6\baselineskip}\orighdr{#1}{#2}}
+
+% ---------------------------------------------------------------- 表格与列
+\newcommand{\tabmidrule}{\noalign{\vspace{1pt}{\color{petal}\hrule height 0.5pt}\vspace{1pt}}}
+\renewcommand{\thead}[1]{\leavevmode{\bfseries\color{violetdeep}#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ---------------------------------------------------------------- 图
+\newenvironment{figbox}{\par\begin{center}\begin{minipage}{0.96\linewidth}\centering}{\end{minipage}\end{center}\par}
+\newcommand{\figcap}[1]{\par\vspace{4pt}{\small\color{inkgray}#1}\par}
+
+% ---------------------------------------------------------------- 定理与证明
+\newcommand{\thm}[2]{\par\medskip\noindent{\color{violetdeep}\bfseries #1}\hspace{0.5em}{\bfseries #2}\par\nobreak\vspace{2pt}}
+\newcommand{\pfline}{\par\smallskip\noindent\textbf{证明。}\enspace}
+\newcommand{\qedsym}{\hfill$\blacksquare$}
+
+% ---------------------------------------------------------------- 单位与圈码
+\newcommand{\unit}[1]{\ifmmode\mathrm{#1}\else$\mathrm{#1}$\fi}
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+
+% ---------------------------------------------------------------- 详解块
+\renewcommand{\qbreak}{\needspace{0.30\textheight}}
+
+% ---------------------------------------------------------------- 题解用的宏
+% 来自 2026-11-09 的《p19 作业四题中英答案》，附录 B 沿用它的版式
+\newcommand{\ok}{\textcolor{violet}{\ensuremath{\checkmark}}}
+\newcommand{\en}[1]{\textit{#1}}
+\newcommand{\tagline}[1]{{\small\color{inkgray}#1}}
+\newcommand{\explain}[1]{%
+  \par\medskip\noindent
+  \fcolorbox{rulepurple}{bandcream}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+    \vspace{2pt}{\color{violetdeep}\bfseries 讲解}\quad #1\vspace{2pt}}}%
+  \par\medskip}
+\newcommand{\answerbox}[2]{%
+  \par\medskip\noindent
+  \fcolorbox{violet}{bandviolet}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+    \vspace{2pt}{\small\bfseries\color{violet}答案}\hspace{0.8em}#1\par\vspace{3pt}%
+    {\small\bfseries\color{violet}Answer}\hspace{0.8em}\en{#2}\vspace{2pt}}}%
+  \par\medskip}
+\newcommand{\rodfig}[2]{%
+  \begin{center}\small
+  \begin{tabular}{c@{}c@{}c}
+  #1 & {\setlength{\fboxsep}{0pt}\fcolorbox{petal}{petal!45}{\rule{0pt}{0.38cm}\hspace{2.6cm}}} & #2\\[1pt]
+   & {\color{inkgray}\makebox[2.6cm][s]{$x=0$\hfill$x=l$}} &
+  \end{tabular}
+  \end{center}}
+
+% ---------------------------------------------------------------- 页面细节
+\setlength{\headheight}{22pt}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{5pt plus 1pt minus 1pt}

@@ -1,0 +1,259 @@
+% ===================== §0–§3 =====================
+\hdr{\S0}{本节要解决什么：与前三节的关系}
+\phantomsection\label{sec:s0}
+
+§8.1 在矩形域上分离变量，§8.2 换到极坐标（圆、环），§8.3 加了第三个变量 $z$（柱）。这一节再换一次坐标：
+球坐标 $(r,\theta,\varphi)$，区域是球、球外或球壳。
+
+换坐标的理由和 §8.2 一样：\textbf{让边界落成坐标面}。球面 $r=r_0$ 在球坐标里就是「$r=$ 常数」，
+和圆域里的 $r=\rho_0$ 是一回事。真正的麻烦不在 $r$，而在角向：球坐标的角向有\textbf{两个}变量
+$\theta$ 与 $\varphi$，而 $\nabla^2$ 里的 $\sin\theta$、$\sin^2\theta$ 让 $\theta$ 的方程变成变系数方程。
+这一节的全部新东西，都来自「怎么处理这个变系数的 $\theta$ 方程」。
+
+方法骨架与 §8.1--§8.3 完全一样，只是多分离一次：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item 第一次分离：$u=R(r)Y(\theta,\varphi)$，把 $r$ 与角向分开，得到一个常数 $\lambda$（\S2）；
+  \item 第二次分离：$Y=\Theta(\theta)\Phi(\varphi)$，把 $\theta$ 与 $\varphi$ 分开，得到第二个常数 $\mu=m^2$（\S3）；
+  \item 换元 $x=\cos\theta$，把 $\theta$ 方程变成\textbf{关联 Legendre 方程}；自然边界条件定出 $\lambda=l(l+1)$（\S4）；
+  \item 径向方程在 $\lambda=l(l+1)$ 时是 Euler 方程，解为 $r^{l}$ 与 $r^{-(l+1)}$（\S5）；
+  \item 球面条件定系数：用 $P_l^m$ 的正交性逐阶读出（\S6）；
+  \item 若方程含时间，时间分离会多出一个 $k$，径向方程变成球贝塞尔方程（\S7）。
+\end{enumerate}
+
+要提醒一句：第 (3) 步的「自然边界条件」是本节的\textbf{主定理}，因为它同时干了两件事——
+把 $\lambda$ 从连续谱钉成离散的 $l(l+1)$，并且决定了 $m$ 只能取到 $l$。不知道这一步的论证，
+后面所有 $P_l^m$ 的求和上限都只是背下来的。
+
+%=====================================================================
+\hdr{\S1}{球坐标与它的 Laplace 算子}
+\phantomsection\label{sec:s1}
+%=====================================================================
+
+\subhdr{1.1\quad 坐标、区域与三个退化点（课件 p1）}
+
+球坐标与直角坐标的关系是
+\[
+x=r\sin\theta\cos\varphi,\qquad
+y=r\sin\theta\sin\varphi,\qquad
+z=r\cos\theta,
+\]
+其中 $r\ge0$、$0\le\theta\le\pi$、$0\le\varphi<2\pi$。
+
+\begin{itemize}
+  \item $r$：到原点的距离；球面就是 $r=r_0$。
+  \item $\theta$：与 $+z$ 轴的夹角，叫极角（polar angle）。\textbf{不是}与 $xy$ 平面的夹角——这是最容易混的一处。
+  \item $\varphi$：在 $xy$ 平面内自 $+x$ 轴起算的方位角，与 §8.2、§8.3 的 $\varphi$ 是同一个。
+\end{itemize}
+
+三个退化点先记下来，后面每一个都会用到：
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{$r=0$}：原点处 $\theta,\varphi$ 都没有定义；球内问题的解必须在 $r\to0$ 时有界，这就是「自然边界条件」的第一处来源。
+  \item \textbf{$\theta=0$ 与 $\theta=\pi$}：即 $+z$ 轴与 $-z$ 轴。这两条线上 $\varphi$ 无定义，所以解在 $\theta\to0,\pi$ 时也必须有界；
+        换成 $x=\cos\theta$ 后，就是 $x=\pm1$ 有界。这是 $\lambda=l(l+1)$ 的来源（\S4）。
+  \item \textbf{$\varphi=0$ 与 $\varphi=2\pi$}：是同一张半平面，所以 $\varphi$ 方向是周期条件，$\Phi(\varphi+2\pi)=\Phi(\varphi)$，给出 $\mu=m^2$（\S3）。
+\end{enumerate}
+
+一句话：球坐标里有\textbf{一个周期条件}（$\varphi$）与\textbf{两处自然边界}（$r=0$ 或 $r\to\infty$，以及 $x=\pm1$）。
+三类条件各管一个常数，这就是本节要分离三次的原因。
+
+\subhdr{1.2\quad 算子的来源：为什么长这样（课件 p1）}
+
+课件 p1 直接写出球坐标下的 Laplace 算子：
+\begin{equation}
+\nabla^2u=\frac{1}{r^2}\frac{\partial}{\partial r}\Big(r^2\frac{\partial u}{\partial r}\Big)
++\frac{1}{r^2\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial u}{\partial\theta}\Big)
++\frac{1}{r^2\sin^2\theta}\frac{\partial^2u}{\partial\varphi^2}.
+\label{eq:lap}
+\end{equation}
+
+课件只写「Laplace operator in spherical coordinates」，没有给推导。这里补三件事，够用它，不展开九项链式法则。
+
+\textbf{第一，三项各管什么。}第一项只含 $r$，是\textbf{径向}部分；第二、三项只含角向，是\textbf{角向}部分。
+角向部分前面乘了 $1/r^2$，所以后面分离变量时可以把 $r$ 整体提出来——这就是第一次分离能成功的原因。
+
+\textbf{第二，为什么第一项写成 $\frac1{r^2}\partial_r(r^2\partial_r\cdot)$ 而不是直接 $\partial_r^2$。}
+在直角坐标里 $\partial_x^2+\partial_y^2+\partial_z^2$ 是「三个方向各求两次导」；换到球坐标后，
+半径方向的「面积」随 $r^2$ 增长，散度的形式变了。这个写法等价于
+\[
+\frac{1}{r^2}\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)=R''+\frac2rR',
+\]
+后面 \S5 解径向方程时会反复用它。两种写法都要认得。
+
+\textbf{第三，用特例核对。}取球对称解 $u=u(r)$（与 $\theta,\varphi$ 无关），算子只剩第一项：
+\[
+\nabla^2u=\frac{1}{r^2}\frac{d}{dr}\Big(r^2\frac{du}{dr}\Big).
+\]
+取 $u=1/r$ 算一下：$r^2u'=-1$，再对 $r$ 求导得 $0$，故\allowbreak $\nabla^2(1/r)=0$（$r\ne0$）。
+
+这正是静电学的点电荷电位，说明第一项没写错。再取 $u=r^2$：$r^2\cdot2r=2r^3$，求导得 $6r^2$，
+除以 $r^2$ 得 $6$；而直角坐标下 $\nabla^2(x^2+y^2+z^2)=6$，两边一致。
+
+\aside{如果要自己推一遍：从 $x,y,z$ 到 $r,\theta,\varphi$ 的链式法则共有九项，整理时需要用到
+$\partial r/\partial x=x/r=\sin\theta\cos\varphi$ 这类关系。推导的细节不属于本讲范围；
+只要记住三项的\textbf{结构}（径向一项、角向两项、公共因子 $1/r^2$），分离变量的每一步都不会错。}
+
+%=====================================================================
+\hdr{\S2}{第一次分离：径向与角向}
+\phantomsection\label{sec:s2}
+%=====================================================================
+
+\subhdr{2.1\quad 设乘积解 $u=R(r)Y(\theta,\varphi)$（课件 p1）}
+
+把 $u=R(r)Y(\theta,\varphi)$ 代入 \eqref{eq:lap}，两边除以 $RY$（先假定 $R,Y$ 不恒为零）：
+
+\[
+\frac{1}{R}\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)
++\frac{1}{Y\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial Y}{\partial\theta}\Big)
++\frac{1}{Y\sin^2\theta}\frac{\partial^2Y}{\partial\varphi^2}=0.
+\]
+
+第一项只含 $r$，后两项只含 $\theta,\varphi$。把后两项移到右边：
+\begin{equation}
+\underbrace{\frac{1}{R}\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)}_{\text{只含 }r}
+=\underbrace{-\frac{1}{Y\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial Y}{\partial\theta}\Big)
+-\frac{1}{Y\sin^2\theta}\frac{\partial^2Y}{\partial\varphi^2}}_{\text{只含 }\theta,\varphi}
+\equiv\lambda .
+\label{eq:sep1}
+\end{equation}
+
+\subhdr{2.2\quad 为什么两边必须同等于常数}
+
+左边的式子里没有 $\theta,\varphi$，右边的式子里没有 $r$。可是两边恒等——对\textbf{任意}的 $r,\theta,\varphi$ 都成立。
+固定一组 $(\theta,\varphi)$，让 $r$ 变：左边一般会变，右边却不变；既然两边永远相等，左边也只能不变。
+同理右边也与 $\theta,\varphi$ 无关。于是两边都等于同一个常数，记作 $\lambda$。
+
+这一步与 §8.2.2、§8.3.4 的论证是同一句话，只是变量换了。它的作用是把一个偏微分方程
+\textbf{拆成两个}：一个只含 $r$，一个只含角向。
+
+\subhdr{2.3\quad 拆出来的两个方程（课件 p2）}
+
+由 \eqref{eq:sep1} 得
+
+\textbf{径向方程}（Euler 型，课件 p2 左上）：
+\begin{equation}
+\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)-\lambda R=0
+\quad\Longleftrightarrow\quad
+r^2R''+2rR'-\lambda R=0 .
+\label{eq:radial}
+\end{equation}
+
+\textbf{角向方程}（球谐方程，课件 p2 右上）：
+\begin{equation}
+\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial Y}{\partial\theta}\Big)
++\frac{1}{\sin^2\theta}\frac{\partial^2Y}{\partial\varphi^2}+\lambda Y=0 .
+\label{eq:angular}
+\end{equation}
+
+课件 p2 在角向方程旁边写了「$Y(\theta,\varphi)$: spherical harmonics」——球谐函数。这个名字先记住，
+它的具体形状要等 \S4 把 $\lambda$ 定成 $l(l+1)$ 之后才写得出来。
+
+\warnbox{\textbf{$\lambda$ 的符号还没定。}现在只知道它是一个常数，不知道正负。三种可能（$\lambda>0$、$=0$、$<0$）
+都要在 \S4--\S5 里过一遍：$\lambda=l(l+1)\ge0$ 最后由自然边界条件逼出来，
+而 $\lambda=0$ 是其中的 $l=0$ 特例（不是「平凡解」）。这与 §8.1 里「$\lambda=0$ 是否平凡要看边界」是同一件事。}
+
+%=====================================================================
+\hdr{\S3}{第二次分离：$\varphi$ 与 $\theta$}
+\phantomsection\label{sec:s3}
+%=====================================================================
+
+\subhdr{3.1\quad 设 $Y=\Theta(\theta)\Phi(\varphi)$（课件 p2）}
+
+角向方程 \eqref{eq:angular} 里还有两个变量。再设 $Y=\Theta(\theta)\Phi(\varphi)$，代入并乘以 $\sin^2\theta/(\Theta\Phi)$：
+
+\[
+\frac{\sin\theta}{\Theta}\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)+\lambda\sin^2\theta
+=-\frac{1}{\Phi}\frac{d^2\Phi}{d\varphi^2}.
+\]
+
+左边只含 $\theta$，右边只含 $\varphi$，故两边同等于常数，记作 $\mu$（课件 p2 中间）：
+\begin{equation}
+\frac{\sin\theta}{\Theta}\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)+\lambda\sin^2\theta
+=-\frac{1}{\Phi}\frac{d^2\Phi}{d\varphi^2}\equiv\mu .
+\label{eq:sep2}
+\end{equation}
+
+拆成两个方程：
+
+\textbf{$\varphi$ 的方程}：
+\begin{equation}
+\Phi''+\mu\Phi=0 .
+\label{eq:phi}
+\end{equation}
+
+\textbf{$\theta$ 的方程}：
+\begin{equation}
+\sin\theta\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)+(\lambda\sin^2\theta-\mu)\Theta=0 .
+\label{eq:theta}
+\end{equation}
+
+\subhdr{3.2\quad 周期条件把 $\mu$ 钉成 $m^2$（课件 p2）}
+
+$\varphi$ 方向的边界条件是周期条件：$\varphi$ 与 $\varphi+2\pi$ 是空间里同一条射线，所以
+\[
+\Phi(\varphi+2\pi)=\Phi(\varphi),\qquad \Phi'(\varphi+2\pi)=\Phi'(\varphi).
+\]
+
+方程 \eqref{eq:phi} 是常系数二阶方程，$\mu$ 的符号决定解的形状：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.10\linewidth}L{0.30\linewidth}L{0.48\linewidth}@{}}
+\thead{$\mu$} & \thead{通解} & \thead{能否满足周期条件} \\
+\tabmidrule
+$\mu<0$ & $Ae^{\sqrt{-\mu}\,\varphi}+Be^{-\sqrt{-\mu}\,\varphi}$ & 不能：指数函数以 $2\pi$ 为周期只有恒为零 \\
+$\mu=0$ & $A+B\varphi$ & 不能（除非 $B=0$，此时是常数，对应 $m=0$） \\
+$\mu>0$ & $A\cos\sqrt{\mu}\,\varphi+B\sin\sqrt{\mu}\,\varphi$ & 能，但要求 $\sqrt{\mu}$ 是整数 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+于是 $\mu=m^2$，$m=0,1,2,\dots$，特征函数为
+\begin{equation}
+\Phi_m(\varphi)=A_m\cos m\varphi+B_m\sin m\varphi .
+\label{eq:phim}
+\end{equation}
+
+$m=0$ 时 $\Phi_0=A_0$ 是常数，对应轴对称（解与 $\varphi$ 无关）。这就是课件 p2 右侧那一支：
+$\mu=m^2$ 与 $\Phi_m=A_m\cos m\varphi+B_m\sin m\varphi$。
+
+\subhdr{3.3\quad $\theta$ 方程：本节真正的新东西（课件 p3 上半）}
+
+把 $\mu=m^2$ 代回 \eqref{eq:theta}：
+\begin{equation}
+\sin\theta\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)+(\lambda\sin^2\theta-m^2)\Theta=0 .
+\label{eq:theta2}
+\end{equation}
+
+这个方程\textbf{没有初等解}——$\sin\theta$ 在分母、系数随 $\theta$ 变，直接猜解猜不出来。
+课件 p3 的处理是换元 $x=\cos\theta$，把它变成 Legendre 方程。这一步是本节的分水岭，
+\S4 专门做。
+
+\aside{先把「为什么值得换元」说清：\eqref{eq:theta2} 在 $\theta=0,\pi$（即 $x=\pm1$）附近是奇异的，
+而物理上解在这两点必须有界。$x=\cos\theta$ 把 $0\le\theta\le\pi$ 拉直成 $-1\le x\le1$，
+奇异点就变成区间的两个端点；「解在端点有界」这件事，在 $x$ 的方程里变成一句标准的\textbf{自然边界条件}，
+和 §8.2 圆内问题里「$r\to0$ 有界」是同一类条件。}
+
+\subhdr{3.4\quad 与柱坐标的对照：为什么球坐标多分离了一次}
+
+柱坐标 $(r,\varphi,z)$ 的 Laplace 只分离两次：$u=R(r)\Phi(\varphi)Z(z)$，因为 $z$ 方向是直的，
+$Z''-\mu Z=0$ 直接解。球坐标的「第三个方向」$\theta$ 不是直线，而是一段角度，所以：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.14\linewidth}L{0.26\linewidth}L{0.24\linewidth}L{0.26\linewidth}@{}}
+\thead{坐标} & \thead{第一次分离} & \thead{角向} & \thead{第三个方向} \\
+\tabmidrule
+直角 $(x,y,z)$ & $X(x)Y(y)Z(z)$ & — & $Z''-\lambda Z=0$，三角 \\
+极坐标 $(r,\varphi)$ & $R(r)\Phi(\varphi)$ & $\Phi''+m^2\Phi=0$ & — \\
+柱坐标 $(r,\varphi,z)$ & $R(r)\Phi(\varphi)Z(z)$ & $\Phi''+m^2\Phi=0$ & $Z''-\mu Z=0$，三角或双曲 \\
+球坐标 $(r,\theta,\varphi)$ & $R(r)Y(\theta,\varphi)$ & $\Phi''+m^2\Phi=0$ & $\theta$：关联 Legendre 方程 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+表中最后一列是本节唯一的「新方程」。其余部分——周期条件、Euler 方程、级数叠加、正交定系数——
+与 §8.1--§8.3 逐条对应，只是换了特征函数。
+
+\clearpage

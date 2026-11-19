@@ -1,0 +1,122 @@
+% ===================== 全书速查 =====================
+\phantomsection\label{sec:quickref}
+\hdr{全书速查}{三种坐标、四组边界与课件页码对照}
+
+这一节只放跨章的表，不重复各节已经讲过的推导。每张表都注明了它的详细解释在哪一节。
+
+\hdrsub{一}{三种坐标的同一台机器}
+
+同一个分离变量法，在三种坐标下的差别只有「特征函数是什么」和「另一个方向解成什么样」。
+下表把三节并排放（细节分别在 §8.1、§8.2、§8.3）。
+
+\tabtop
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.55cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.0cm}@{}}
+\thead{坐标} & \thead{典型区域} & \thead{带边界的那一半：谱} & \thead{另一个方向} & \thead{模方 / 系数} \\
+\tabmidrule
+直角 & 矩形 $0<x<a$、$0<y<b$ & $X''+\lambda X=0$；四组边界给 $\sin\frac{n\pi x}{\ell}$ 或 $\cos$，$\lambda_n=(n\pi/\ell)^2$；一端固定一端自由时 $(2n+1)\pi/(2\ell)$ & $Y''-\lambda_nY=0$，给 $\cosh k_ny$、$\sinh k_ny$（$k_n=\sqrt{\lambda_n}$）；时间方向给 $e^{-a^2\lambda_nt}$ 或 $\cos\omega_nt$ & 正弦、余弦 $\ell/2$；余弦的 $n=0$ 是 $\ell$ \\
+\tabmidrule
+极坐标 & 圆盘 $r<a$、环域 $a<r<b$、圆外 $r>a$ & $\Phi''+m^2\Phi=0$，周期条件给 $\lambda=m^2$，特征函数 $1,\cos m\varphi,\sin m\varphi$ & $r^2R''+rR'-m^2R=0$（欧拉），给 $r^{m}$、$r^{-m}$，$m=0$ 给 $1$、$\ln r$ & $\pi$（$m\ge1$）、$2\pi$（$m=0$）；见 §8.2.6 \\
+\tabmidrule
+柱坐标 & 有限高圆柱 $r<a,\ 0<z<h$ & 角向同上，$\lambda=m^2$；径向 $r^2R''+rR'+(k^2r^2-m^2)R=0$ 给 $J_m(kr)$，边界定 $k=x_n^{(m)}/a$ & $Z''-\mu Z=0$：$\mu>0$ 给 $e^{\pm\nu z}$，$\mu=-\nu^2<0$ 给 $\cos\nu z$（$\nu_n=n\pi/h$），$\mu=0$ 给 $1,z$ & $\frac{a^2}{2}J_{m+1}^2(x_n^{(m)})$；见 §8.3.2 \\
+\end{tabular}
+\tabbot
+
+\textbf{读表的口诀}：\emph{哪一组边界是齐次的，特征值就从那一组来}。侧面齐次 $\Rightarrow$ 用 $J_m$（$\mu>0$）；
+上下底齐次 $\Rightarrow$ 用 $\cosh/\cos$（$\mu<0$）；侧面是第二类齐次且轴对称 $\Rightarrow$ $\mu=0$，径向退化成欧拉方程。
+四组一维边界的完整表在 §8.1.2，$\mu$ 的判据在 §8.3.4.2。
+
+\hdrsub{二}{四组一维边界与特征值}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.36\linewidth}L{0.22\linewidth}L{0.28\linewidth}@{}}
+\thead{$[0,\ell]$ 上的边界} & \thead{$\lambda_n$} & \thead{$X_n$} \\
+\tabmidrule
+$X(0)=X(\ell)=0$（两端固定／零温） & $(n\pi/\ell)^2$ & $\sin\frac{n\pi x}{\ell}$ \\
+$X'(0)=X'(\ell)=0$（两端自由／绝热） & $(n\pi/\ell)^2$，含 $n=0$ & $\cos\frac{n\pi x}{\ell}$ \\
+$X(0)=0,\ X'(\ell)=0$（左固定右自由） & $\left(\frac{(2n+1)\pi}{2\ell}\right)^2$ & $\sin\frac{(2n+1)\pi x}{2\ell}$ \\
+$X'(0)=0,\ X(\ell)=0$（左自由右固定） & $\left(\frac{(2n+1)\pi}{2\ell}\right)^2$ & $\cos\frac{(2n+1)\pi x}{2\ell}$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+只有第二行会出现 $\lambda=0$：常数模态 $X\equiv1$ 满足两端导数为零。两端值为零时常数只能取零，$\lambda=0$ 被排除。
+这一条直接决定绝热或自由端的问题里有没有常数项（§8.1.2、§8.1.9）。
+
+\hdrsub{三}{定解条件：要几个、写哪一类}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.24\linewidth}L{0.24\linewidth}L{0.42\linewidth}@{}}
+\thead{要写什么} & \thead{判据} & \thead{典型触发词} \\
+\tabmidrule
+一个初始条件 & 时间一阶（输运） & 初始温度、初始浓度、给定 $u(x,0)$ \\
+两个初始条件 & 时间二阶（波动） & 初始位移加初始速度；松手（$\psi=0$）；给冲量（用 $\delta$） \\
+没有初始条件 & 稳态（泊松／Laplace） & 稳态、充分长时间以后、不随时间变 \\
+第一类边界 & 给值 & 固定、恒温、冰水、给定函数 $f(t)$ \\
+第二类边界 & 给法向导数 & 受外力、热流（流入／流出）、绝热、自由端 \\
+第三类边界 & 值与法向导数的线性组合 & 弹簧连接、弹性支承、对流换热 \\
+衔接条件 & 界面两侧配对 & 两种材料、两种介质、分界面 \\
+周期加自然 & 对称性与原点 & 圆、圆柱、球、极坐标、$r=0$ 有界 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+逐条的推导与符号陷阱在 §7.4；八条推导易错见 §7.5.2，十条条件易错见 §7.5.3。
+
+\hdrsub{四}{课件页码对照}
+
+四个版本的课件合起来覆盖了七、八两章。下表的「本书位置」指本书节号。
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.20\linewidth}L{0.30\linewidth}L{0.40\linewidth}@{}}
+\thead{课件} & \thead{内容} & \thead{本书位置} \\
+\tabmidrule
+\textbf{Ch7 20261102}（16 页） & p1--p4 §7.1 弦的横振动、外力 & §7.1.2--§7.1.3 \\
+ & p5--p8 杆的纵振动 & §7.1.4 \\
+ & p9--p14 膜、电磁波 & §7.1.5--§7.1.6 \\
+ & p15--p16 附录（梯度、散度、旋度） & §7.1.1.2 的算子说明 \\
+\tabmidrule
+\textbf{Ch7 20261103}（19 页） & p1--p4 §7.2 输运方程 & §7.2.1--§7.2.3 \\
+ & p5--p6 扩散方程、菲克定律 & §7.2.4 \\
+ & p7--p9 §7.3 泊松方程与两条 Remark & §7.3.1--§7.3.5 \\
+ & p10--p11 §7.4 初始条件、三角形初位移例题 & §7.4.2--§7.4.3 \\
+ & p12--p16 三类边界条件 & §7.4.4（p14 的符号订正见 §7.4.4.2） \\
+ & p17--p18 自然、周期与衔接条件 & §7.4.5--§7.4.6 \\
+ & p19 四道定解条件作业 & 练习 P5--P8 \\
+\tabmidrule
+\textbf{Ch8 20261110}（13 页） & p1--p5 §8.1 例 8.1.3、例 8.1.4 与 $\lambda=0$ & §8.1.6--§8.1.10 \\
+ & p6--p9 二维 Laplace 与矩形稳态（例 8.1.5） & §8.1.11--§8.1.15 \\
+ & p10--p12 矩形区域热传导与 $D_{nm}$ & §8.1.16--§8.1.20 \\
+ & p13 四道分离变量作业 & 练习 P9--P12 \\
+\tabmidrule
+\end{tabular}
+\tabbot
+\end{center}
+
+\clearpage
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.20\linewidth}L{0.30\linewidth}L{0.40\linewidth}@{}}
+\thead{课件} & \thead{内容} & \thead{本书位置} \\
+\tabmidrule
+\textbf{Ch8 20261113}（12 页） & p1--p3 §8.2 极坐标 Laplace、分离、周期条件 & §8.2.1--§8.2.3 \\
+ & p4 三步小结与 Remark & §8.2.7.4 \\
+ & p5--p6 环形区域例题 & §8.2.7 \\
+ & p7--p12 均匀场中的无限长带电导线 & §8.2.8 \\
+\tabmidrule
+\textbf{Ch8 20261116}（15 页） & p1--p3 圆域齐次波动方程、贝塞尔方程 & §8.3.1 \\
+ & p4--p5 圆域输运方程 & §8.3.3 \\
+ & p6 作业 5、作业 7 & 练习 P17--P18 \\
+ & p7--p12 §8.3 柱坐标 Laplace、$\mu$ 的三种符号 & §8.3.4 \\
+ & p13--p15 柱坐标 Helmholtz 与三重级数 & §8.3.5 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{版本变动提醒。}Ch7 的 16 页版与 19 页版不是同一份课件的增补：19 页版从 §7.2 开始，删去了 §7.1 的波动方程推导。
+本书把 §7.1 保留在开头（依据 16 页版），因为弦、杆、膜是后面所有分离变量问题的物理来源。
+Ch8 的三个版本则是逐次推进的：20261110 讲 §8.1，20261113 讲 §8.2，20261116 讲 §8.3。
+

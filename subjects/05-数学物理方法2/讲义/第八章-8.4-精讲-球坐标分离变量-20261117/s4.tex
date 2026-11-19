@@ -1,0 +1,251 @@
+% ===================== §4 Legendre =====================
+\hdr{\S4}{Legendre 方程、自然边界与球谐函数}
+\phantomsection\label{sec:s4}
+
+这一节做三件事：把 $\theta$ 方程换成 $x=\cos\theta$ 的方程（\S4.1）；用 $x=\pm1$ 的有界性把 $\lambda$ 钉成 $l(l+1)$（\S4.2）；
+写出解 $P_l$、$P_l^m$ 与它们的正交性（\S4.3--\S4.6）。课件 p3--p4 把这三件事压成两页，
+其中「有界性为什么只留整数 $l$」与「$m$ 为什么只能取到 $l$」两处只给了结论，本节补上论证。
+
+\subhdr{4.1\quad 换元 $x=\cos\theta$：从 $\theta$ 方程到 Legendre 方程（课件 p3）}
+
+令
+\[
+x=\cos\theta,\qquad y(x)=\Theta(\theta).
+\]
+因为 $\theta\in[0,\pi]$，所以 $x\in[-1,1]$，且
+\[
+\frac{d}{d\theta}=\frac{dx}{d\theta}\frac{d}{dx}=-\sin\theta\frac{d}{dx},
+\qquad \sin^2\theta=1-x^2 .
+\]
+
+把 $\dfrac{d\Theta}{d\theta}=-\sin\theta\,y'$ 代入 $\theta$ 方程 \eqref{eq:theta2}。先算第一项：
+\[
+\sin\theta\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)
+=\sin\theta\frac{d}{d\theta}\Big(-\sin^2\theta\,y'\Big)
+=\sin\theta\cdot(-\sin\theta)\frac{d}{dx}\Big(-(1-x^2)y'\Big)
+=\sin^2\theta\frac{d}{dx}\Big[(1-x^2)y'\Big].
+\]
+（第二步用了 $\frac{d}{d\theta}=-\sin\theta\frac{d}{dx}$；第三步把两个负号抵消。）
+
+代回 \eqref{eq:theta2}，两边除以 $\sin^2\theta=1-x^2$：
+\begin{equation}
+\frac{d}{dx}\Big[(1-x^2)\frac{dy}{dx}\Big]+\Big(\lambda-\frac{m^2}{1-x^2}\Big)y=0 .
+\label{eq:assoc}
+\end{equation}
+
+这就是课件 p3 的\textbf{关联 Legendre 方程}（Associated Legendre's equation）。$m=0$ 时它退化为
+\begin{equation}
+\frac{d}{dx}\Big[(1-x^2)\frac{dy}{dx}\Big]+\lambda y=0 ,
+\label{eq:legendre}
+\end{equation}
+叫 \textbf{Legendre 方程}（课件 p4 下半）。
+
+\warnbox{\textbf{换元时最容易丢的两处。}①$d/d\theta=-\sin\theta\,d/dx$，负号不能丢，但它会在下一步与另一个负号抵消，
+所以最终方程里看不到；②$\sin^2\theta=1-x^2$，不是 $x^2-1$。这两处写错，得到的方程会差一个整体符号。
+自检办法：$x=0$（$\theta=\pi/2$）附近，$(1-x^2)\approx1$，方程应近似 $y''+\lambda y\approx0$——这与 $\theta$ 方程的近似一致。}
+
+\subhdr{4.2\quad 自然边界条件：为什么 $\lambda=l(l+1)$（课件 p3 下半）}
+
+课件 p3 写的是：
+
+\begin{quote}
+\textbf{Eigenvalue $\lambda$?} $\to$ \textbf{Natural boundary condition}\\
+The solution is finite at $x=1$ and $x=-1$ (i.e., $\theta=0$ and $\theta=\pi$), then we get
+$\lambda=l(l+1)$, $l=0,1,2,3,\dots$ \quad (Chapter 12)
+\end{quote}
+
+「解在 $x=\pm1$ 有界」为什么就能把 $\lambda$ 钉成 $l(l+1)$？下面给完整的思路。结论先写出来：
+
+\thm{定理 1（Legendre 方程的有界谱）}{方程 \eqref{eq:legendre} 在 $[-1,1]$ 上有非零有界解的充要条件是
+\[
+\lambda=l(l+1),\qquad l=0,1,2,\dots
+\]
+此时有界解就是 $l$ 次 Legendre 多项式 $P_l(x)$（差一个常数倍）。}
+
+\pfline
+
+\textbf{第一步：在 $x=0$ 附近求幂级数解。}设 $y=\sum_{k\ge0}a_kx^k$（$x=0$ 是方程的常点，幂级数解一定存在，收敛半径至少到最近的奇点 $x=\pm1$）。代入 \eqref{eq:legendre}：
+
+\[
+(1-x^2)\sum_k k(k-1)a_kx^{k-2}-2x\sum_k ka_kx^{k-1}+\lambda\sum_ka_kx^k=0 .
+\]
+
+把三项都整理成 $x^k$ 的系数，得到递推关系
+\begin{equation}
+a_{k+2}=\frac{k(k+1)-\lambda}{(k+2)(k+1)}\,a_k,\qquad k=0,1,2,\dots
+\label{eq:recur}
+\end{equation}
+（偶数项与奇数项各自成链，$a_0,a_1$ 自由，所以有两个线性无关解。）
+
+\textbf{第二步：截断的条件。}若 $\lambda=l(l+1)$（$l$ 为非负整数），则 $k=l$ 时分子
+$l(l+1)-\lambda=0$，于是 $a_{l+2}=0$，此后所有同奇偶的系数都为零——级数\textbf{截断}成 $l$ 次多项式。
+这就是 $P_l(x)$。反过来，若 $\lambda$ 不是这种形式，递推永远不会截断。
+
+\textbf{第三步：不截断时在端点发散。}设 $\lambda$ 不是 $l(l+1)$。由 \eqref{eq:recur}，
+当 $k$ 很大时 $a_{k+2}/a_k\to1$，级数的通项不趋于零（更精确地说，$a_k$ 只按 $1/k$ 的幂衰减，不够快），
+在 $x=\pm1$ 处级数发散。具体地：把级数在 $x=1$ 附近重排，可以证明两个线性无关解中至少有一个在 $x=1$ 或 $x=-1$ 呈
+\[
+y\sim \ln(1-x)\quad\text{或}\quad y\sim\frac{1}{1-x}
+\]
+型的发散（哪一端发散取决于 $\lambda$ 落在哪两个整数之间）。总之：\textbf{只要不截断，就至少有一端无界}。
+
+\textbf{第四步：结论。}物理上 $\theta=0,\pi$ 是两个极点，解在那里必须有限（否则场强发散、温度无穷）。
+排除掉发散的解之后，只剩下截断的那一支，于是 $\lambda=l(l+1)$。\qedsym
+
+\aside{证明里只用到一个事实：\textbf{两个线性无关解，一个在端点有界、另一个一般无界}。这与 §8.2 圆内问题
+「$r=0$ 有界丢掉 $\ln r$ 与 $r^{-m}$」是同一件事——都是「自然边界条件筛掉奇异解」。
+区别只在：圆内是一个端点（$r=0$），球面是两个端点（$x=\pm1$），所以球坐标的谱比极坐标多一个整数 $l$。}
+
+\subhdr{4.3\quad Legendre 多项式：定义、前几个与 Rodrigues 公式（课件 p4）}
+
+$\lambda=l(l+1)$ 时的有界解记作 $P_l(x)$，叫 $l$ 次 Legendre 多项式。它的标准定义（Rodrigues 公式）是
+\begin{equation}
+P_l(x)=\frac{1}{2^l\,l!}\frac{d^l}{dx^l}(x^2-1)^l,\qquad l=0,1,2,\dots
+\label{eq:rodrigues}
+\end{equation}
+
+前几个（必须记住，后面定系数要用）：
+\begin{align}
+P_0(x)&=1, \label{eq:P0}\\
+P_1(x)&=x, \label{eq:P1}\\
+P_2(x)&=\frac{3x^2-1}{2}, \label{eq:P2}\\
+P_3(x)&=\frac{5x^3-3x}{2}, \label{eq:P3}\\
+P_4(x)&=\frac{35x^4-30x^2+3}{8}. \label{eq:P4}
+\end{align}
+
+三条常用性质：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{端点值}：$P_l(1)=1$，$P_l(-1)=(-1)^l$。代入 \eqref{eq:P0}--\eqref{eq:P4} 可验。
+  \item \textbf{奇偶性}：$P_l(-x)=(-1)^lP_l(x)$。$l$ 偶是偶函数，$l$ 奇是奇函数——这直接决定球面对称的初值只激发哪些 $l$。
+  \item \textbf{递推}：$(l+1)P_{l+1}=(2l+1)xP_l-lP_{l-1}$，用来从低阶算高阶，比每次求导快。
+\end{enumerate}
+
+\aside{\textbf{用 $P_l$ 表示「球面上的 $z$ 的多项式」。}因为 $x=\cos\theta=z/r$，所以
+\[
+P_0=1,\qquad P_1=\frac{z}{r},\qquad P_2=\frac{3z^2-r^2}{2r^2},\qquad P_3=\frac{5z^3-3zr^2}{2r^3}.
+\]
+在球面 $r=r_0$ 上，它们就是 $1$、$z/r_0$、$(3z^2-r_0^2)/(2r_0^2)$……——球面上的「多项式基」。
+后面 \S6 的定系数，本质上就是把边界值按这组基展开。}
+
+\subhdr{4.4\quad 正交性与模：$\int_{-1}^{1}P_lP_{l'}\,dx=\frac{2}{2l+1}\delta_{ll'}$}
+
+Legendre 方程可以写成 Sturm--Liouville 形式
+\[
+\frac{d}{dx}\Big[(1-x^2)y'\Big]+\lambda y=0 ,
+\]
+其中 $p(x)=1-x^2$ 在端点为零、$q=0$、权函数 $w=1$。于是不同本征值的特征函数正交：
+\begin{equation}
+\int_{-1}^{1}P_l(x)P_{l'}(x)\,dx=\frac{2}{2l+1}\,\delta_{ll'} .
+\label{eq:orthP}
+\end{equation}
+
+\textbf{推导（两行）。}把 $P_l$ 与 $P_{l'}$ 的方程分别乘以对方再相减：
+\[
+\frac{d}{dx}\Big[(1-x^2)(P_l'P_{l'}-P_lP_{l'}')\Big]+\big[l(l+1)-l'(l'+1)\big]P_lP_{l'}=0 .
+\]
+在 $[-1,1]$ 上积分，第一项是全导数，端点处 $1-x^2=0$，所以它为零；剩下的就是
+$\big[l(l+1)-l'(l+1)\big]\int P_lP_{l'}=0$。$l\ne l'$ 时前因子不为零，故积分为零。模方 $2/(2l+1)$
+可由 $P_l(1)=1$ 与递推关系算出，这里直接引用。
+
+\textbf{三个模方值}（常用）：
+\[
+\int_{-1}^1P_0^2\,dx=2,\qquad
+\int_{-1}^1P_1^2\,dx=\frac23,\qquad
+\int_{-1}^1P_2^2\,dx=\frac25 .
+\]
+
+\warnbox{\textbf{权函数是 $1$，区间是 $[-1,1]$。}换成 $\theta$ 的积分时要乘 $\sin\theta\,d\theta$：
+\[
+\int_0^\pi P_l(\cos\theta)P_{l'}(\cos\theta)\sin\theta\,d\theta=\frac{2}{2l+1}\delta_{ll'} .
+\]
+这个式子后面定系数时直接用；漏掉 $\sin\theta$ 是最常见的错。}
+
+\subhdr{4.5\quad 关联 Legendre 函数：$m\ne0$ 的那一支（课件 p4）}
+
+回到 $m\ne0$ 的关联 Legendre 方程 \eqref{eq:assoc}。它的有界解是
+\begin{equation}
+P_l^m(x)=(1-x^2)^{m/2}\frac{d^m}{dx^m}P_l(x),\qquad 0\le m\le l .
+\label{eq:assocP}
+\end{equation}
+
+三点说明：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{$m$ 只能取到 $l$。}$P_l$ 是 $l$ 次多项式，求 $l+1$ 次导数为零；所以 $m>l$ 时 $P_l^m\equiv0$，
+        不是「另一个解」，而是没有解。这就是课件 p4 那行「$m=0,1,2,\dots,l-1,l$，Be careful about $m$!!!」的意思。
+  \item \textbf{$m=0$ 退化}：$P_l^0=P_l$，即普通的 Legendre 多项式（课件 p4 下半：$m=0$ 时是轴对称问题，方程退化为 Legendre 方程）。
+  \item \textbf{因子 $(1-x^2)^{m/2}=\sin^m\theta$}：它在 $\theta=0,\pi$ 处为零，保证 $P_l^m$ 在极点仍然有界
+        （虽然导数可能发散，但函数值有限）。这个因子正是「$m$ 越大、角向越集中在赤道附近」的来源。
+\end{enumerate}
+
+前几个关联函数（$m=1,2$）：
+\begin{align}
+P_1^1(x)&=(1-x^2)^{1/2}=\sin\theta, \label{eq:P11}\\
+P_2^1(x)&=3x(1-x^2)^{1/2}=3\cos\theta\sin\theta, \label{eq:P21}\\
+P_2^2(x)&=3(1-x^2)=3\sin^2\theta . \label{eq:P22}
+\end{align}
+
+正交性（固定 $m$，对 $l$ 正交）：
+\begin{equation}
+\int_{-1}^{1}P_l^m(x)P_{l'}^m(x)\,dx=\frac{2}{2l+1}\cdot\frac{(l+m)!}{(l-m)!}\,\delta_{ll'} .
+\label{eq:orthPm}
+\end{equation}
+
+注意模方里多出的因子 $(l+m)!/(l-m)!$：$m$ 越大，模方越大，所以同样大小的边界值在 $m$ 大的模态上
+系数要更小。这一条在 \S6 定系数时会直接用。
+
+\subhdr{4.6\quad 球谐函数：把 $\theta$ 与 $\varphi$ 合起来}
+
+把 \eqref{eq:phim} 与 \eqref{eq:assocP} 乘起来，得到角向方程 \eqref{eq:angular} 的解。实形式的球谐函数是
+\begin{equation}
+Y_{lm}(\theta,\varphi)=P_l^m(\cos\theta)\cos m\varphi
+\quad\text{与}\quad
+\tilde Y_{lm}(\theta,\varphi)=P_l^m(\cos\theta)\sin m\varphi ,
+\qquad 0\le m\le l .
+\label{eq:spherical}
+\end{equation}
+（$m=0$ 时 $\sin0\varphi\equiv0$，只剩 $P_l(\cos\theta)$ 一支。）
+
+它们满足角向方程
+\[
+\frac{1}{\sin\theta}\partial_\theta(\sin\theta\,\partial_\theta Y)+\frac{1}{\sin^2\theta}\partial_\varphi^2Y+l(l+1)Y=0 ,
+\]
+并且在球面上正交：
+\begin{equation}
+\int_0^{2\pi}\!\!\int_0^{\pi}Y_{lm}Y_{l'm'}\,\sin\theta\,d\theta\,d\varphi
+=\frac{2\pi}{2l+1}\frac{(l+m)!}{(l-m)!}\,\delta_{ll'}\delta_{mm'}\cdot
+\begin{cases}
+2,& m=0,\\
+1,& m\ge1,
+\end{cases}
+\label{eq:orthY}
+\end{equation}
+其中 $\sin m\varphi$ 与 $\cos m\varphi$ 之间也正交（对 $\varphi$ 积分为零）。
+
+\aside{\textbf{为什么只取 $m\ge0$？}负的 $m$ 并不给出新函数：$\cos(-m\varphi)=\cos m\varphi$、$\sin(-m\varphi)=-\sin m\varphi$，
+只是同一个函数差一个符号。所以在实形式里把 $m$ 限制在 $0\le m\le l$，一共 $2l+1$ 个独立函数（$m=0$ 一个，
+$m=1,\dots,l$ 各两个）。这就是「$l$ 层有 $2l+1$ 个球谐」的来源。}
+
+\subhdr{4.7\quad 教学小例：最低三阶球谐在球面上的样子}
+
+取球面 $r=r_0$，把 $P_l$ 写成直角坐标（用 $x=\cos\theta=z/r_0$）：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.10\linewidth}L{0.30\linewidth}L{0.50\linewidth}@{}}
+\thead{$l$} & \thead{$P_l(\cos\theta)$} & \thead{球面上的形状} \\
+\tabmidrule
+$0$ & $1$ & 常数：整个球面同值 \\
+$1$ & $\cos\theta=z/r_0$ & 北半球正、南半球负，赤道为零：一个偶极分布 \\
+$2$ & $\dfrac{3\cos^2\theta-1}{2}=\dfrac{3z^2-r_0^2}{2r_0^2}$ & 两极正、赤道负（或反过来）：一个四极分布 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\aside{这三行可以直接用来核对后面的解。例如球内 Laplace 问题，边界值 $u(r_0,\theta)=U_0\cos\theta$，
+只含 $l=1$ 的 $P_1$，所以解只能是 $u=C r\cos\theta$；在 $r=r_0$ 上定出 $C r_0=U_0$，
+于是 $u=U_0\,(r/r_0)\cos\theta=U_0 z/r_0$——一个沿 $z$ 方向的均匀场。这与 §8.2 里「边界值只含一个谐波，
+解就只含那一项」是同一句话，只是基函数从 $\cos m\varphi$ 换成了 $P_l(\cos\theta)$。}
+
+\clearpage

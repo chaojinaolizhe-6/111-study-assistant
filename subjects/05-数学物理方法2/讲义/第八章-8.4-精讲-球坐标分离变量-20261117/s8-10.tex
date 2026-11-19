@@ -1,0 +1,126 @@
+% ===================== §8–§10 =====================
+\hdr{\S8}{本征值问题总表（课件 p10 作业）}
+\phantomsection\label{sec:s8}
+
+课件 p10 的作业只有一句话：
+
+\begin{quote}
+\textbf{Assignments}\quad Summarize the eigenvalue problems of Laplace's equation, wave equation
+and transport equation in polar, cylindrical and spherical coordinates.
+\end{quote}
+
+这句话要求把 §8.1--§8.4 的谱问题并成一张表。本节给三张表（Laplace 一张、波与输运各一张）与一段判据，
+读者可以拿它当复习提纲。
+
+\subhdr{8.1\quad Laplace 方程：三种坐标的谱}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.10\linewidth}L{0.17\linewidth}L{0.27\linewidth}L{0.26\linewidth}@{}}
+\thead{坐标} & \thead{区域} & \thead{谱（由什么条件定）} & \thead{另一个方向} \\
+\tabmidrule
+极 & 圆、环 & $\lambda=m^2$（周期条件），$m=0,1,2,\dots$；特征函数 $1,\cos m\varphi,\sin m\varphi$ & $r^m$、$r^{-m}$（$m=0$：$1,\ln r$） \\
+柱 & 圆柱（$z$ 有界） & 角向同上；$z$ 方向 $\mu$：哪组边界齐次定符号，$\mu>0$ 贝塞尔、$\mu<0$ 三角、$\mu=0$ 欧拉 & $J_m(kr)$ 或 $I_m$ 或 $r^{\pm m}$ \\
+球 & 球、球壳 & $\lambda=l(l+1)$（$x=\pm1$ 有界），$m=0,\dots,l$；特征函数 $P_l^m(\cos\theta)\cos m\varphi$、$\sin m\varphi$ & $r^l$、$r^{-(l+1)}$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{三行的共同点}：角向（$\varphi$）永远是周期条件给 $m^2$；差别在「第二个方向」——
+极坐标的 $r$ 是 Euler、柱坐标的 $z$ 有三种情形、球坐标的 $\theta$ 是 Legendre。
+三者的谱都是\textbf{离散}的，因为都有一组齐次边界/周期/自然条件。
+
+\subhdr{8.2\quad 波动与输运：多出的时间因子}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.10\linewidth}L{0.24\linewidth}L{0.24\linewidth}L{0.26\linewidth}@{}}
+\thead{坐标} & \thead{空间谱（同表 8-1）} & \thead{径向/第三方向（含 $k$）} & \thead{时间因子} \\
+\tabmidrule
+极 & $m^2$ & $J_m(kr)$，$k=x_n^{(m)}/a$ & 波：$\cos(kat),\sin(kat)$；输运：$e^{-a^2k^2t}$ \\
+柱 & $m^2$ 与 $\mu$ 的三种符号 & $J_m$、$\cos/\sin$、$e^{\pm\nu z}$ 三者组合 & 同上 \\
+球 & $l(l+1)$、$m^2$ & $j_l(kr)$，$k=x_{ln}/r_0$ & 同上 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{读法}：时间是最后分离的（或最先，取决于你从哪一步开始），它只多一个因子，不改变空间谱。
+所以「波动与输运的本征值问题」=「Laplace 的空间谱」+「球面/边界上的 $k$ 条件」+「时间因子」。
+
+\subhdr{8.3\quad 三个判据：本征值到底由谁定}
+
+把 §8.1--§8.4 里所有「定本征值」的话压缩成三条：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{周期条件定角向}：$\Phi(\varphi+2\pi)=\Phi(\varphi)\Rightarrow\mu=m^2$。三种坐标共用。
+  \item \textbf{自然边界条件定「退化点」}：$r=0$ 有界丢掉奇异解（极、柱、球的径向）；$x=\pm1$ 有界定 $\lambda=l(l+1)$（球的 $\theta$）。
+  \item \textbf{齐次边界条件定「有限区间」}：矩形两端定 $n\pi/\ell$；圆/圆柱/球的表面定 $k$（$J_m$ 或 $j_l$ 的零点）。
+\end{enumerate}
+
+一句话：\textbf{谱来自「齐次」的那一处}。哪一组条件是齐次的、边界是周期的还是退化的，就决定了谱的样子。
+非齐次的数据只用来定系数，不参与定谱——这就是 \S6.7 第二条 Remark 的确切含义。
+
+\subhdr{8.4\quad 与前三节的衔接}
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.12\linewidth}L{0.24\linewidth}L{0.52\linewidth}@{}}
+\thead{本节} & \thead{对应前面} & \thead{差别} \\
+\tabmidrule
+\S1 球坐标算子 & §8.2 极坐标算子 & 多一个 $\theta$ 项；$r$ 的公共因子仍是 $1/r^2$ \\
+\S3 周期条件 & §8.2 定理 1 & 同一个论证，变量换成 $\varphi$ \\
+\S4 Legendre & §8.2 欧拉方程 & 从「常系数/欧拉」升级成「变系数」，靠有界性定谱 \\
+\S5 Euler 径向 & §8.2 的 $r^{\pm m}$ & 指数从 $\pm m$ 变成 $l,-(l+1)$ \\
+\S7 球贝塞尔 & §8.3 柱贝塞尔 & 方程多一个 $2/r$，换元两步，阶数变成半整数 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+%=====================================================================
+\hdr{\S9}{速查与易错}
+\phantomsection\label{sec:s9}
+
+\subhdr{9.1\quad 六个式子}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item 球坐标 Laplace 算子：
+        $\nabla^2u=\dfrac{1}{r^2}\partial_r(r^2\partial_ru)+\dfrac{1}{r^2\sin\theta}\partial_\theta(\sin\theta\,\partial_\theta u)+\dfrac{1}{r^2\sin^2\theta}\partial_\varphi^2u$。
+  \item 两次分离后：$\lambda=l(l+1)$，$\mu=m^2$；径向 $r^2R''+2rR'-l(l+1)R=0$。
+  \item 关联 Legendre 方程：$\dfrac{d}{dx}\Big[(1-x^2)y'\Big]+\Big(l(l+1)-\dfrac{m^2}{1-x^2}\Big)y=0$，$x=\cos\theta$。
+  \item $P_l$ 前几个：$P_0=1$，$P_1=x$，$P_2=(3x^2-1)/2$；模方 $\int_{-1}^1P_l^2dx=2/(2l+1)$。
+  \item 球坐标 Laplace 通解：$\sum_{l,m}(A_l^mr^l+C_l^mr^{-(l+1)})P_l^m(\cos\theta)(\cos m\varphi,\sin m\varphi)$。
+  \item 球贝塞尔：$R=Cj_l(kr)+Dn_l(kr)$，$j_0=\sin x/x$，$n_0=-\cos x/x$；$k$ 由 $j_l(kr_0)=0$ 定。
+\end{enumerate}
+
+\subhdr{9.2\quad 六条易错（每条回指某一步）}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{把 $\theta$ 当成与 $xy$ 平面的夹角。}$\theta$ 自 $+z$ 轴起算，$x=\cos\theta=z/r$（\S1.1）。写错这一条，
+        后面 $P_1=z/r$ 全反号。
+  \item \textbf{换元时丢负号或写错 $\sin^2\theta$。}$d/d\theta=-\sin\theta\,d/dx$，$\sin^2\theta=1-x^2$（\S4.1 的警示框）。
+  \item \textbf{把 $P_l^m$ 的 $m$ 取到无穷。}$m\le l$，$m>l$ 时 $P_l^m\equiv0$（\S4.5 第 (1) 条）。
+  \item \textbf{球内问题保留 $r^{-(l+1)}$。}$r=0$ 处发散，必须丢（\S5.2）；球外若远处有外场，$r^l$ 又不能丢。
+  \item \textbf{正交性漏掉 $\sin\theta$ 或 $r^2$。}$\theta$ 的积分要乘 $\sin\theta$，$r$ 的积分要乘 $r^2$（\S4.4、\S7.5）。
+  \item \textbf{把 $j_l$ 的零点当成 $n\pi$。}只有 $l=0$ 是 $n\pi$；$l\ge1$ 的零点是 $\tan x=x$ 一类的超越方程根（\S7.4）。
+\end{enumerate}
+
+\subhdr{9.3\quad 一句话对照 §8.2}
+
+极坐标的四步是「分离 $\to$ 定谱 $\to$ 叠加 $\to$ 定系数」；球坐标多一步「第二次分离」，
+其余四步不变，只是特征函数从 $\cos m\varphi$ 变成 $P_l^m(\cos\theta)\cos m\varphi$。
+换句话说：\textbf{球坐标不是新方法，是同一个方法在二维球面上的版本}。
+
+%=====================================================================
+\hdr{\S10}{三句话总结}
+\phantomsection\label{sec:s10}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{球坐标的两次分离各出一个常数}：第一次（$r$ 与角向）出 $\lambda$，第二次（$\varphi$ 与 $\theta$）出 $\mu=m^2$。
+        $\mu$ 由周期条件定，$\lambda$ 由 $x=\pm1$ 的有界性定成 $l(l+1)$。
+  \item \textbf{三类条件各管一件事}：周期条件定 $m$，自然边界定 $l$，球面齐次条件定 $k$。
+        三者都只定谱，非齐次数据只定系数。
+  \item \textbf{球坐标的解 = 球谐 × 径向因子}：Laplace 的径向是 $r^l$ 与 $r^{-(l+1)}$，
+        波与输运的径向是 $j_l(kr)$ 与 $n_l(kr)$；球内丢掉在 $r=0$ 发散的那一支，球外丢掉在 $r\to\infty$ 发散的那一支。
+\end{enumerate}
+
+\clearpage

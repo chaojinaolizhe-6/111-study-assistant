@@ -2,7 +2,7 @@
 name: lecture-deepdive
 description: '依据课件 PDF、指定教材章节或实验手册生成可独立自学的精讲讲义，交付 LaTeX 与 PDF；补推导、解释前提、配置教学小例与图示。用于课件变讲义、章节精讲、实验预习及旧讲义修订；不用于单纯摘要、OCR、出卷或无来源编造。'
 metadata:
-  version: "2.3.1"
+  version: "2.3.2"
   requires:
     anyBins: [python, python3, py]
 ---

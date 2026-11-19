@@ -1,0 +1,370 @@
+% ===================== §5–§7 =====================
+\hdr{\S5}{径向方程：Euler 方程与两组解}
+\phantomsection\label{sec:s5}
+
+\subhdr{5.1\quad $\lambda=l(l+1)$ 时的径向方程（课件 p5）}
+
+把 $\lambda=l(l+1)$ 代回径向方程 \eqref{eq:radial}：
+\begin{equation}
+\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)-l(l+1)R=0
+\quad\Longleftrightarrow\quad
+r^2R''+2rR'-l(l+1)R=0 .
+\label{eq:euler}
+\end{equation}
+
+这是\textbf{Euler 方程}（变系数，但每项的次数与求导阶数相同）。试解 $R=r^\alpha$：$R'=\alpha r^{\alpha-1}$，$R''=\alpha(\alpha-1)r^{\alpha-2}$，代入得
+\[
+\alpha(\alpha-1)+2\alpha-l(l+1)=\alpha^2+\alpha-l(l+1)=0 .
+\]
+即
+\[
+(\alpha-l)\big(\alpha+(l+1)\big)=0
+\quad\Longrightarrow\quad
+\alpha=l\ \ \text{或}\ \ \alpha=-(l+1).
+\]
+
+所以
+\begin{equation}
+R_l(r)=C_l\,r^{l}+D_l\,r^{-(l+1)} .
+\label{eq:Rl}
+\end{equation}
+
+$l=0$ 时两项是 $1$ 与 $1/r$——这正是静电学的常数电位与点电荷电位（\S1.2 用 $u=1/r$ 核对过算子）。
+
+\aside{\textbf{与 §8.3 柱坐标 Euler 方程的区别。}柱坐标的径向方程是
+\[
+r^2R''+rR'-m^2R=0\quad\Rightarrow\quad R=C r^m+D r^{-m},
+\]
+指数是 $\pm m$；球坐标的方程多了一个 $r$（$2rR'$ 而不是 $rR'$），指数变成 $l$ 与 $-(l+1)$，两者之和为 $-1$。
+这个差别来自球坐标的「面积」按 $r^2$ 增长、柱坐标按 $r$ 增长。记的时候把两条放在一起看，不容易混。}
+
+\subhdr{5.2\quad 三种区域，各丢哪一项（课件 p5--p6）}
+
+$r^l$ 与 $r^{-(l+1)}$ 在 $r=0$ 与 $r\to\infty$ 的行为相反，所以「留哪一项」完全由区域决定：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.16\linewidth}L{0.25\linewidth}L{0.25\linewidth}L{0.24\linewidth}@{}}
+\thead{区域} & \thead{$r^l$} & \thead{$r^{-(l+1)}$} & \thead{保留} \\
+\tabmidrule
+球内 $0\le r<r_0$ & $r\to0$ 时有界 & $r\to0$ 时发散 & 只留 $r^l$ \\
+球外 $r>r_0$ & $r\to\infty$ 时发散 & 有界（趋于零） & 只留 $r^{-(l+1)}$ \\
+球壳 $a<r<b$ & 两端都有界 & 两端都有界 & 两组都留 \\
+\end{tabular}
+\tabbot
+\end{center}
+
+\textbf{三个例外必须记住：}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{球外如果还有外场（如均匀电场 $E_0$），$r^l$ 不能丢。}因为远处不是零，而是给定的外场；
+        外场本身在球坐标里就是 $r^lP_l$ 型的项（$E_0r\cos\theta=E_0rP_1$）。此时通解两组都留，
+        用「$r\to\infty$ 时趋于给定外场」与「球面条件」各定一部分系数。§8.2 的导线例题就是这个结构。
+  \item \textbf{球内如果有源（点电荷、点热源），$r^{-(l+1)}$ 不能丢。}源在原点时，解在 $r=0$ 本来就不有界；
+        这时的「自然边界条件」不再是「有界」，而是「在源以外有界、在源处给定强度」。
+  \item \textbf{$l=0$ 的 $r^{-(l+1)}=1/r$ 是球对称的点源解。}它在 $r=0$ 发散，但在球外问题里是合法的。
+\end{enumerate}
+
+\subhdr{5.3\quad 球内问题为什么只留 $r^l$：一个直观的核对}
+
+取球内 $l=1$ 的两项：$r$ 与 $r^{-2}$。前者在原点为零，后者在原点无穷大。
+若边界条件给的是球面 $u(r_0,\theta)=U_0\cos\theta$（有限），那么解在球内也必须有限（否则球心处物理量无意义），
+所以只能留 $r$。\S6 会算出 $u=U_0(r/r_0)\cos\theta$，在 $r=0$ 处为零，符合。
+
+%=====================================================================
+\hdr{\S6}{球坐标 Laplace 的通解与定系数}
+\phantomsection\label{sec:s6}
+%=====================================================================
+
+\subhdr{6.1\quad 通解（课件 p5）}
+
+把径向 \eqref{eq:Rl} 与角向 \eqref{eq:spherical} 乘起来并叠加，得到球坐标 Laplace 方程的通解：
+\begin{equation}
+\begin{aligned}
+u(r,\theta,\varphi)={}&\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+\big(A_l^m r^l+C_l^m r^{-(l+1)}\big)P_l^m(\cos\theta)\cos m\varphi\\
+&+\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+\big(B_l^m r^l+D_l^m r^{-(l+1)}\big)P_l^m(\cos\theta)\sin m\varphi .
+\end{aligned}
+\label{eq:general}
+\end{equation}
+
+这就是课件 p5 那个双和：一组 $\cos m\varphi$、一组 $\sin m\varphi$，每组里 $r^l$ 与 $r^{-(l+1)}$ 各带两个系数。
+
+\textbf{读法}：对每一个 $(l,m)$，径向有两个自由度（$r^l$、$r^{-(l+1)}$），角向也有两个（$\cos m\varphi$、$\sin m\varphi$），
+所以一对 $(l,m)$ 最多四个待定系数。区域一确定（丢哪一项），自由度立减一半。
+
+\subhdr{6.2\quad 球内：只留 $r^l$（课件 p5 下半）}
+
+球内 $r<r_0$，丢掉 $r^{-(l+1)}$：
+\begin{equation}
+u(r,\theta,\varphi)=\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+r^l\big(a_l^m\cos m\varphi+b_l^m\sin m\varphi\big)P_l^m(\cos\theta) .
+\label{eq:inside}
+\end{equation}
+
+轴对称（$m=0$）时只剩
+\begin{equation}
+u(r,\theta)=\sum_{l=0}^{\infty}C_l\,r^lP_l(\cos\theta) .
+\label{eq:axisym}
+\end{equation}
+
+这就是课件 p6 上半的式子。
+
+\subhdr{6.3\quad 球外：课件留的那个问题（课件 p5 下）}
+
+课件 p5 在球内公式下面写了一个红框：\textbf{「The solution outside a sphere?」}——没有给答案。补在这里。
+
+球外 $r>r_0$，若远处没有外场（$u\to0$ 当 $r\to\infty$），丢掉 $r^l$：
+\begin{equation}
+u(r,\theta,\varphi)=\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+r^{-(l+1)}\big(a_l^m\cos m\varphi+b_l^m\sin m\varphi\big)P_l^m(\cos\theta) .
+\label{eq:outside}
+\end{equation}
+
+\textbf{若球外还有均匀外场}（例如导体球放在均匀电场 $E_0\hat z$ 里），则远处 $u\to-E_0z=-E_0r\cos\theta=-E_0rP_1(\cos\theta)$，
+这是一个 $l=1$ 的 $r^l$ 项，不能丢。此时解写成
+\[
+u=-E_0r\cos\theta+\sum_{l,m}r^{-(l+1)}(\cdots)P_l^m(\cos\theta)(\cdots),
+\]
+球面 $u(r_0)=0$ 再把 $l=1$ 的 $r^{-2}$ 系数定出来，最终
+\[
+u=-E_0r\cos\theta+E_0\frac{r_0^3}{r^2}\cos\theta
+=-E_0\Big(r-\frac{r_0^3}{r^2}\Big)\cos\theta .
+\]
+（这个结果与 §8.2 的导线例题同构：都是「均匀外场 + 一个球/柱的感应项」，只是柱坐标的感应项是 $r^{-1}$、球坐标是 $r^{-2}$。）
+
+\subhdr{6.4\quad 球壳：两组都留}
+
+球壳 $a<r<b$：$r^l$ 与 $r^{-(l+1)}$ 在 $[a,b]$ 上都有界，所以两组都留：
+\[
+u=\sum_{l,m}\big(A_l^mr^l+C_l^mr^{-(l+1)}\big)P_l^m(\cos\theta)\cos m\varphi+\cdots .
+\]
+内球面与外球面各给一个条件，正好定下每一阶的两个径向系数——与 §8.2 环域问题的结构完全一样。
+
+\subhdr{6.5\quad 定系数：用 $P_l^m$ 的正交性逐阶读出（课件 p6）}
+
+设球面条件为
+\[
+u(r_0,\theta,\varphi)=f(\theta,\varphi).
+\]
+把 \eqref{eq:inside} 在 $r=r_0$ 取值，得
+\[
+f(\theta,\varphi)=\sum_{l,m}r_0^l\big(a_l^m\cos m\varphi+b_l^m\sin m\varphi\big)P_l^m(\cos\theta).
+\]
+两边乘 $P_{l'}^{m'}(\cos\theta)\cos m'\varphi$，再对 $\theta\in[0,\pi]$、$\varphi\in[0,2\pi]$ 积分（权 $\sin\theta\,d\theta\,d\varphi$），
+用正交性 \eqref{eq:orthY} 只剩 $(l,m)=(l',m')$ 那一项，于是
+\begin{equation}
+a_l^m=\frac{1}{r_0^l}\cdot\frac{(2l+1)}{2\pi}\cdot\frac{(l-m)!}{(l+m)!}\cdot\frac{1}{\epsilon_m}
+\int_0^{2\pi}\!\!\int_0^{\pi}f(\theta,\varphi)P_l^m(\cos\theta)\cos m\varphi\,\sin\theta\,d\theta\,d\varphi ,
+\label{eq:coef}
+\end{equation}
+其中 $\epsilon_0=2$、$\epsilon_m=1$（$m\ge1$）。$b_l^m$ 把 $\cos m\varphi$ 换成 $\sin m\varphi$ 即可。
+
+这组公式与 \eqref{eq:orthPm} 的模方是同一件事，只是多除了 $r_0^l$。实际做题时，多数题目只含少数几阶，
+不必套公式——直接比较系数更快。
+
+\subhdr{6.6\quad 教学小例：三个能直接看出答案的球面条件}
+
+\textbf{例 1（一阶）}：球内，$u(r_0,\theta)=U_0\cos\theta$。
+
+边界只含 $P_1(\cos\theta)$，所以解只含 $l=1$ 的 $r$ 项：$u=C_1rP_1(\cos\theta)=C_1r\cos\theta$。
+在 $r=r_0$ 上：$C_1r_0=U_0$，故
+\[
+u=U_0\frac{r}{r_0}\cos\theta=U_0\frac{z}{r_0}.
+\]
+这是一个沿 $z$ 方向的均匀场（在球内）。核对：$\nabla^2z=0$ $\checkmark$，球面上取值 $U_0z/r_0=U_0\cos\theta$ $\checkmark$。
+
+\textbf{例 2（零阶）}：球内，$u(r_0,\theta)=U_0$（常数）。
+
+边界只含 $P_0=1$，解只含 $l=0$ 的 $r^0$ 项：$u=C_0$，$C_0=U_0$。解在球内是常数。
+核对：常数的 $\nabla^2$ 为零 $\checkmark$；这与「无内热源的稳态温度场在区域内部没有极值」一致——边界处处同温，内部只能同温。
+
+\textbf{例 3（混合两阶）}：球内，$u(r_0,\theta)=U_0\cos^2\theta$。
+
+先把边界值按 $P_l$ 展开。用 $x=\cos\theta$：
+\[
+x^2=\frac{2}{3}P_2(x)+\frac{1}{3}P_0(x)
+\quad\Longrightarrow\quad
+U_0\cos^2\theta=\frac{U_0}{3}P_0+\frac{2U_0}{3}P_2 .
+\]
+所以解为
+\[
+u=\frac{U_0}{3}+\frac{2U_0}{3}\Big(\frac{r}{r_0}\Big)^2P_2(\cos\theta)
+=\frac{U_0}{3}+\frac{U_0}{3}\Big(\frac{r}{r_0}\Big)^2(3\cos^2\theta-1).
+\]
+核对：$r=r_0$ 时回到 $U_0\cos^2\theta$ $\checkmark$；$r=0$ 时为 $U_0/3$（有限） $\checkmark$。
+（这一步用了 $x^2=\frac{2}{3}P_2+\frac13P_0$，可由 $P_0=1$、$P_2=(3x^2-1)/2$ 反解得到。）
+
+\subhdr{6.7\quad 课件 p6 的两条 Remark}
+
+课件 p6 底部写了两条 Remark，逐条解释：
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+  \item \textbf{「本征值 $\mu$ 与 $\lambda$ 由周期边界条件与自然边界条件确定」}——
+        $\mu=m^2$ 来自 $\varphi$ 的周期条件（\S3.2），$\lambda=l(l+1)$ 来自 $x=\pm1$ 的有界性（\S4.2）。
+        这两条都\textbf{不}来自球面上的边界条件；球面条件只用来定系数。
+  \item \textbf{「球面边界条件可以是非齐次的」}——这与 §8.1 矩形域要先做「齐次化」不同：球坐标里
+        $r=r_0$ 上的非齐次数据直接作为定系数的入口，不需要先平移。原因与 §8.2 环域相同：
+        非齐次数据落在 $r$ 方向，而 $r$ 方向本来就没有「谱」要定，所以不冲突。
+\end{enumerate}
+
+%=====================================================================
+\hdr{\S7}{波动与输运：球贝塞尔与三重级数}
+\phantomsection\label{sec:s7}
+%=====================================================================
+
+\subhdr{7.1\quad 时间分离：从波动方程到 Helmholtz（课件 p7）}
+
+齐次波动方程 $u_{tt}-a^2\nabla^2u=0$。设 $u(\mathbf r,t)=T(t)V(\mathbf r)$，代入并除以 $a^2TV$：
+\[
+\frac{T''}{a^2T}=\frac{\nabla^2V}{V}\equiv-k^2 .
+\]
+（为什么取 $-k^2$：波动问题的解在时间上要振荡，$T''<0$，所以这个常数必须为负。若取 $+k^2$，时间解是指数，
+与「振动」不符。这与 §8.3.1.1 的论证是同一句。）
+
+于是得到
+\begin{equation}
+\nabla^2V+k^2V=0\quad\text{（Helmholtz 方程）},\qquad
+T''+a^2k^2T=0 .
+\label{eq:helm}
+\end{equation}
+
+\textbf{输运方程}走同一条路：$u_t-a^2\nabla^2u=0$，分离得
+\[
+\nabla^2V+k^2V=0,\qquad T'+a^2k^2T=0 .
+\]
+空间部分完全相同，只有时间方程差一阶——所以输运的时间因子是 $e^{-a^2k^2t}$，只会衰减（\S7.5）。
+
+\subhdr{7.2\quad Helmholtz 在球坐标里的分离（课件 p7 下半）}
+
+把 \eqref{eq:lap} 里的 $\nabla^2$ 换成 $\nabla^2+k^2$，再设 $V=R(r)\Theta(\theta)\Phi(\varphi)$。
+与 Laplace 情形同样的两步分离给出：
+\begin{equation}
+\Phi''+m^2\Phi=0 ,
+\label{eq:phi2}
+\end{equation}
+\begin{equation}
+\sin\theta\frac{d}{d\theta}\Big(\sin\theta\frac{d\Theta}{d\theta}\Big)+\big[\lambda\sin^2\theta-m^2\big]\Theta=0 ,
+\label{eq:theta3}
+\end{equation}
+\begin{equation}
+\frac{d}{dr}\Big(r^2\frac{dR}{dr}\Big)+\big[r^2k^2-\lambda\big]R=0 .
+\label{eq:radialk}
+\end{equation}
+
+注意前两个方程与 Laplace 情形\textbf{一字不差}（\eqref{eq:phi2} 同 \eqref{eq:phi}，\eqref{eq:theta3} 同 \eqref{eq:theta2}），
+所以 $\mu=m^2$、$\lambda=l(l+1)$ 的结论原封不动。变化只在径向：多出的 $r^2k^2$ 让 Euler 方程变成球贝塞尔方程。
+
+\subhdr{7.3\quad 球贝塞尔方程：两步换元（课件 p8）}
+
+取 $\lambda=l(l+1)$，径向方程 \eqref{eq:radialk} 写成
+\begin{equation}
+R''+\frac{2}{r}R'+\Big(k^2-\frac{l(l+1)}{r^2}\Big)R=0 .
+\label{eq:sphbessel}
+\end{equation}
+这就是\textbf{球贝塞尔方程}。
+
+\textbf{第一步：令 $x=kr$。}则 $d/dr=k\,d/dx$，$d^2/dr^2=k^2d^2/dx^2$，方程变成
+\begin{equation}
+\frac{d^2R}{dx^2}+\frac{2}{x}\frac{dR}{dx}+\Big(1-\frac{l(l+1)}{x^2}\Big)R=0 .
+\label{eq:sphbesselx}
+\end{equation}
+
+\textbf{第二步：令 $R=x^{-1/2}y(x)$。}这一步的目的是消去一阶导项。算一下：
+\[
+R'=-\tfrac12x^{-3/2}y+x^{-1/2}y',\qquad
+R''=\tfrac34x^{-5/2}y-x^{-3/2}y'+x^{-1/2}y'' .
+\]
+代入 \eqref{eq:sphbesselx}，乘 $x^{1/2}$ 整理：
+\begin{equation}
+y''+\frac{1}{x}y'+\Big[1-\frac{(l+\frac12)^2}{x^2}\Big]y=0 .
+\label{eq:halfbessel}
+\end{equation}
+
+这正是\textbf{半整数阶贝塞尔方程}（阶数 $\nu=l+\tfrac12$）。它的两个线性无关解是 $J_{l+1/2}(x)$ 与 $N_{l+1/2}(x)$，
+所以
+\begin{equation}
+R_l(r)=C_l\,j_l(kr)+D_l\,n_l(kr),
+\label{eq:Rbessel}
+\end{equation}
+其中
+\begin{equation}
+j_l(x)=\sqrt{\frac{\pi}{2x}}\,J_{l+1/2}(x),\qquad
+n_l(x)=\sqrt{\frac{\pi}{2x}}\,N_{l+1/2}(x)
+\label{eq:jlnl}
+\end{equation}
+叫第一类、第二类\textbf{球贝塞尔函数}（课件 p8 的 the first / second kind spherical Bessel functions）。
+
+\aside{\textbf{为什么值得记 $j_0,n_0$。}低阶的球贝塞尔是初等函数：
+\[
+j_0(x)=\frac{\sin x}{x},\qquad n_0(x)=-\frac{\cos x}{x},
+\]
+\[
+j_1(x)=\frac{\sin x}{x^2}-\frac{\cos x}{x},\qquad
+n_1(x)=-\frac{\cos x}{x^2}-\frac{\sin x}{x}.
+\]
+球对称问题（$l=0$）只用 $j_0,n_0$，可以手算到底。例如球内 $u(r_0)=0$ 的球对称振动，
+条件 $j_0(kr_0)=0$ 就是 $\sin(kr_0)=0$，得 $k=n\pi/r_0$——与一维弦的 $n\pi/\ell$ 同一个形式。}
+
+\subhdr{7.4\quad $k$ 由球面齐次条件定（课件 p8 下半）}
+
+课件 p8 写：\textbf{「Eigenvalue $k$ is determined by the homogeneous boundary condition of the surface of the sphere.」}
+
+设球面齐次条件为 $u(r_0,\theta,\varphi)=0$（例如固定零温、理想导体球面）。球内解只含 $j_l$（$n_l$ 在 $r=0$ 发散，丢掉）：
+\[
+R_l(r)=C_l\,j_l(kr).
+\]
+球面条件 $j_l(kr_0)=0$ 要求 $kr_0$ 是 $j_l$ 的零点。记 $j_l$ 的第 $n$ 个正零点为 $x_{ln}$，则
+\begin{equation}
+k=k_{ln}=\frac{x_{ln}}{r_0},\qquad n=1,2,3,\dots
+\label{eq:kln}
+\end{equation}
+
+几个常用的零点：$j_0$ 的零点是 $n\pi$（$x_{0n}=n\pi$）；$j_1$ 的零点是 $\tan x=x$ 的正根（$x_{11}\approx4.4934$，
+$x_{12}\approx7.7253$）；$j_2$ 的零点约为 $5.7635,9.0950,\dots$。
+
+\textbf{与柱坐标的对照}：柱坐标的 $k$ 由 $J_m(ka)=0$ 定（$k=x_n^{(m)}/a$），零点间隔不等；
+球坐标的 $k$ 由 $j_l(kr_0)=0$ 定，$l=0$ 时零点等距（$n\pi$），$l\ge1$ 时间隔也不等。
+共同点：\textbf{谱的离散性来自边界上的零点，而不是来自区间的「长度」}。
+
+\subhdr{7.5\quad 三重级数：波动与输运的通解（课件 p9）}
+
+\textbf{波动}：$T''+a^2k^2T=0$ 的解是 $\cos(kat)$ 与 $\sin(kat)$。把三部分乘起来叠加：
+\begin{equation}
+u(r,\theta,\varphi,t)=\sum_{n=1}^{\infty}\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+R_l(k_{ln}r)\,P_l^m(\cos\theta)\,\Phi_m(\varphi)\,
+\big[C_{lnm}\cos(k_{ln}at)+D_{lnm}\sin(k_{ln}at)\big] .
+\label{eq:wavesol}
+\end{equation}
+
+\textbf{输运}：$T'+a^2k^2T=0$ 的解是 $e^{-a^2k^2t}$：
+\begin{equation}
+u(r,\theta,\varphi,t)=\sum_{n=1}^{\infty}\sum_{l=0}^{\infty}\sum_{m=0}^{l}
+R_l(k_{ln}r)\,P_l^m(\cos\theta)\,\Phi_m(\varphi)\,
+E_{lnm}\,e^{-a^2k_{ln}^2t} .
+\label{eq:transportsol}
+\end{equation}
+
+\textbf{三重和的指标来源}（三个指标各管一件事，缺一不可）：
+
+\begin{center}
+\tabtop
+\begin{tabular}{@{}L{0.10\linewidth}L{0.22\linewidth}L{0.56\linewidth}@{}}
+\thead{指标} & \thead{来自哪里} & \thead{由什么条件定} \\
+\tabmidrule
+$m$ & $\varphi$ 方向 & 周期条件 $\Phi(\varphi+2\pi)=\Phi(\varphi)$，$\mu=m^2$ \\
+$l$ & $\theta$ 方向 & $x=\pm1$ 有界（自然边界），$\lambda=l(l+1)$ \\
+$n$ & $r$ 方向 & 球面齐次条件 $j_l(kr_0)=0$，$k=k_{ln}$ \\
+\end{tabular}
+\tabbot
+\end{center}
+
+这与 §8.3 柱坐标的「三重和 $m,n,j$」是同一张表，只是第三个指标的来源从「$z$ 的两端条件」
+换成了「球面的零点条件」。
+
+\textbf{系数怎么定。}初始条件 $u(r,\theta,0)$ 与 $u_t(r,\theta,0)$ 分别在球内展开：
+先用 $j_l(k_{ln}r)$ 在 $[0,r_0]$ 上（带权 $r^2$）的正交性定 $n$，再用 $P_l^m$ 与 $\cos m\varphi/\sin m\varphi$ 定 $l,m$。
+三步正交性各管一个指标，顺序可以换，但不能漏。
+
+%=====================================================================

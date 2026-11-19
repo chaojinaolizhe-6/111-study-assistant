@@ -1,0 +1,222 @@
+﻿% ===================== 附录：练习详解 =====================
+\phantomsection\label{sec:app}
+\hdr{附录 A}{五道练习的详解}
+
+每块先复述题干与来源，再展开。做完一题再翻一题。
+
+\answerstart{P1}{自编，$l=2$ 的球内问题}{半径 $a$ 的球内 $\nabla^2u=0$，$u(a,\theta)=U_0P_2(\cos\theta)$。求 $u$，并指出 $|u|$ 的最大值位置。}
+
+\textbf{第 1 步（认阶）。}球面条件只含 $P_2(\cos\theta)$，即 $l=2$，且与 $\varphi$ 无关（$m=0$）。
+所以解只含 $l=2$、$m=0$ 那一项。
+
+\textbf{第 2 步（径向因子）。}球内丢掉 $r^{-(l+1)}$，$l=2$ 时只剩 $r^2$。设
+\[
+u=C\,r^2P_2(\cos\theta).
+\]
+
+\textbf{第 3 步（定系数）。}在 $r=a$ 上：
+\[
+C\,a^2P_2(\cos\theta)=U_0P_2(\cos\theta)
+\quad\Longrightarrow\quad
+C=\frac{U_0}{a^2}.
+\]
+所以
+\[
+u(r,\theta)=U_0\Big(\frac{r}{a}\Big)^2P_2(\cos\theta)
+=\frac{U_0}{2}\Big(\frac{r}{a}\Big)^2(3\cos^2\theta-1).
+\]
+
+\textbf{第 4 步（最大值位置）。}$r\le a$，所以 $(r/a)^2\le1$；$P_2(x)=\frac12(3x^2-1)$ 在 $x=\pm1$ 取最大值 $1$，
+在 $x=0$ 取最小值 $-\frac12$。两者相乘：
+\[
+|u|\le U_0,\qquad
+|u|=U_0\ \text{当且仅当}\ r=a,\ \theta=0\ \text{或}\ \pi .
+\]
+即最大值出现在球面的两个极点（$+z$ 与 $-z$ 方向）。
+
+\textbf{核对。}①$\nabla^2u=0$：$r^2P_2(\cos\theta)$ 是 $z$ 的二次调和多项式（等于 $z^2-r^2/3$ 的常数倍），调和 $\checkmark$；
+②球面取值：$r=a$ 时回到 $U_0P_2$ $\checkmark$；③$r=0$ 有界 $\checkmark$；④赤道 $\theta=\pi/2$ 上 $u=-\frac{U_0}{2}(r/a)^2<0$，与 $P_2$ 的符号一致 $\checkmark$。
+
+\textbf{直角坐标形式}（可选）：$P_2=(3z^2-r^2)/(2r^2)$，所以
+\[
+u=\frac{U_0}{2a^2}(3z^2-r^2).
+\]
+
+\answerstart{P2}{自编，Legendre 展开}{把 $f(\theta)=\cos^3\theta$ 按 $P_l$ 展开，求系数并验算。}
+
+\textbf{第 1 步（直接分解）。}令 $x=\cos\theta$，要分解 $x^3$。由
+\[
+P_1=x,\qquad P_3=\frac{5x^3-3x}{2}
+\]
+反解 $x^3$：
+\[
+x^3=\frac{2P_3+3P_1}{5}=\frac{3}{5}P_1+\frac{2}{5}P_3 .
+\]
+所以 $c_1=\frac35$、$c_3=\frac25$，其余系数为零。
+
+\textbf{第 2 步（正交性验算）。}公式
+\[
+c_l=\frac{2l+1}{2}\int_{-1}^{1}x^3P_l(x)\,dx .
+\]
+对 $l=1$：
+\[
+c_1=\frac{3}{2}\int_{-1}^1x^3\cdot x\,dx=\frac32\cdot\frac{2}{5}=\frac35 .
+\]
+对 $l=3$：
+\[
+c_3=\frac{7}{2}\int_{-1}^1x^3\cdot\frac{5x^3-3x}{2}\,dx
+=\frac74\Big(5\cdot\frac{2}{7}-3\cdot\frac{2}{5}\Big)
+=\frac74\Big(\frac{10}{7}-\frac65\Big)
+=\frac74\cdot\frac{8}{35}=\frac25 .
+\]
+两式与第 1 步一致。
+
+\textbf{第 3 步（为什么偶 $l$ 为零）。}$x^3$ 是奇函数；$P_l$ 的奇偶性与 $l$ 相同（$l$ 偶则偶）。
+奇函数乘偶函数是奇函数，在 $[-1,1]$ 上积分为零，所以 $c_0=c_2=c_4=\cdots=0$。
+$l>3$ 时也不需要算：$x^3$ 是三次多项式，与次数更高的 $P_l$ 正交（或直接用正交性公式，积分的被积函数次数不够）。
+
+\textbf{一句话}：\textbf{对称性先筛掉一半系数，显式分解再定剩下的}——这是 Legendre 展开最快的做法。
+
+\answerstart{P3}{自编，球壳 $a<r<b$}{内球面 $u(a)=0$，外球面 $u(b)=U_0\cos\theta$，求 $u$。}
+
+\textbf{第 1 步（认阶）。}边界含 $P_1(\cos\theta)$，故 $l=1$、$m=0$。
+
+\textbf{第 2 步（径向因子）。}球壳上 $r^1$ 与 $r^{-2}$ 都有界，两组都留：
+\[
+u(r,\theta)=\Big(Cr+\frac{D}{r^2}\Big)\cos\theta .
+\]
+
+\textbf{第 3 步（两个球面条件）。}
+\[
+\begin{cases}
+Ca+\dfrac{D}{a^2}=0,\\[6pt]
+Cb+\dfrac{D}{b^2}=U_0 .
+\end{cases}
+\]
+由第一式 $D=-Ca^3$，代入第二式：
+\[
+C\Big(b-\frac{a^3}{b^2}\Big)=U_0
+\quad\Longrightarrow\quad
+C=\frac{U_0b^2}{b^3-a^3},
+\]
+于是
+\[
+D=-\frac{U_0a^3b^2}{b^3-a^3}.
+\]
+
+\textbf{第 4 步（答案）。}
+\[
+u(r,\theta)=\frac{U_0b^2}{b^3-a^3}\Big(r-\frac{a^3}{r^2}\Big)\cos\theta .
+\]
+
+\textbf{核对。}①$r=a$：$a-\frac{a^3}{a^2}=0$ $\checkmark$；②$r=b$：$\frac{U_0b^2}{b^3-a^3}\cdot\frac{b^3-a^3}{b^2}=U_0$ $\checkmark$；
+③$a\to0$（退化成实心球）：$C\to U_0/b$、$D\to0$，$u\to U_0\frac{r}{b}\cos\theta$，与 §6.6 例 1 一致 $\checkmark$；
+④$\nabla^2u=0$：两项分别是 $z$ 与 $z/r^3$ 的常数倍，都调和 $\checkmark$。
+
+\answerstart{P4}{自编，球对称输运}{半径 $R$ 的球内，$u(r,0)=U_0$，$u(R,t)=0$。求球对称解。}
+
+\textbf{第 1 步（球对称的方程）。}$u=u(r,t)$，Laplace 算子只剩径向：
+\[
+u_t=a^2\frac{1}{r^2}\frac{\partial}{\partial r}\Big(r^2\frac{\partial u}{\partial r}\Big).
+\]
+
+\textbf{第 2 步（分离）。}设 $u=R(r)T(t)$：
+\[
+\frac{T'}{a^2T}=\frac{(r^2R')'}{r^2R}=-k^2
+\quad\Longrightarrow\quad
+T'+a^2k^2T=0,\qquad
+(r^2R')'+k^2r^2R=0 .
+\]
+这是 $l=0$ 的球贝塞尔方程。
+
+\textbf{第 3 步（径向解与 $k$）。}$l=0$ 时 $R=Cj_0(kr)+Dn_0(kr)$，$n_0$ 在 $r=0$ 发散，丢掉。$j_0(x)=\sin x/x$，所以
+\[
+R=C\,\frac{\sin(kr)}{kr}.
+\]
+球面零温：$\sin(kR)=0$，得
+\[
+k_n=\frac{n\pi}{R},\qquad n=1,2,3,\dots
+\]
+
+\textbf{第 4 步（时间因子与叠加）。}$T=e^{-a^2k^2t}$，故
+\[
+u(r,t)=\sum_{n=1}^{\infty}A_n\,\frac{\sin(k_nr)}{k_nr}\,e^{-a^2k_n^2t}.
+\]
+
+\textbf{第 5 步（定系数）。}用球贝塞尔的正交性（权 $r^2$）：
+\[
+\int_0^Rj_0(k_nr)j_0(k_mr)\,r^2dr=\frac{R^3}{2n^2\pi^2}\delta_{nm}
+\]
+（一般公式是 $\frac{R^3}{2}j_{l+1}(k_nR)^2$，$l=0$、$k_nR=n\pi$ 时 $j_1(n\pi)=(-1)^{n+1}/(n\pi)$，平方即 $1/(n^2\pi^2)$）。
+于是
+\[
+A_n=\frac{2n^2\pi^2}{R^3}\int_0^RU_0\,\frac{\sin(k_nr)}{k_nr}r^2dr
+=\frac{2n^2\pi^2U_0}{R^3k_n}\int_0^Rr\sin(k_nr)\,dr .
+\]
+分部积分：
+\[
+\int_0^Rr\sin(k_nr)\,dr=\Big[-\frac{r\cos(k_nr)}{k_n}+\frac{\sin(k_nr)}{k_n^2}\Big]_0^R
+=-\frac{R(-1)^n}{k_n}.
+\]
+代入并用 $k_n=n\pi/R$：
+\[
+A_n=\frac{2n^2\pi^2U_0}{R^3k_n}\cdot\Big(-\frac{R(-1)^n}{k_n}\Big)
+=\frac{2U_0(-1)^{n+1}}{1}=2U_0(-1)^{n+1}.
+\]
+
+\textbf{第 6 步（答案与前两项）。}
+\[
+u(r,t)=2U_0\sum_{n=1}^{\infty}(-1)^{n+1}\frac{\sin(n\pi r/R)}{n\pi r/R}\,e^{-a^2n^2\pi^2t/R^2}.
+\]
+前两项：
+\[
+u=2U_0\frac{\sin(\pi r/R)}{\pi r/R}e^{-a^2\pi^2t/R^2}
+-2U_0\frac{\sin(2\pi r/R)}{2\pi r/R}e^{-4a^2\pi^2t/R^2}+\cdots .
+\]
+
+\textbf{核对。}①$r=R$：$\sin(n\pi)=0$，$u(R,t)=0$ $\checkmark$；②$t=0$：用 $\sum_{n\ge1}(-1)^{n+1}\frac{\sin nx}{n}=\frac{x}{2}$（$0<x<\pi$），
+令 $x=\pi r/R$ 得 $u(r,0)=2U_0\cdot\frac{\pi r/R}{2}\big/\frac{\pi r}{R}=U_0$ $\checkmark$；
+③$t\to\infty$：首项指数最慢，$u\to0$，球面零温、热量不断流出，合理 $\checkmark$；
+④$r=0$ 有界：$\sin(k_nr)/(k_nr)\to1$ $\checkmark$。
+
+\answerstart{P5}{自编，带 $\varphi$ 依赖}{半径 $a$ 的球内 $\nabla^2u=0$，$u(a,\theta,\varphi)=U_0\sin\theta\cos\varphi$。求 $u$ 与直角坐标形式。}
+
+\textbf{第 1 步（认阶）。}边界里 $\sin\theta\cos\varphi$ 可拆成
+\[
+\sin\theta\cos\varphi=P_1^1(\cos\theta)\cos\varphi
+\]
+（用了 $P_1^1(x)=(1-x^2)^{1/2}=\sin\theta$，见 \eqref{eq:P11}）。所以 $l=1$、$m=1$，只含 $\cos\varphi$ 那一支。
+
+\textbf{第 2 步（设解）。}球内只留 $r^l=r$：
+\[
+u=C\,rP_1^1(\cos\theta)\cos\varphi=C\,r\sin\theta\cos\varphi .
+\]
+
+\textbf{第 3 步（定系数）。}在 $r=a$ 上：
+\[
+C\,a\sin\theta\cos\varphi=U_0\sin\theta\cos\varphi
+\quad\Longrightarrow\quad
+C=\frac{U_0}{a}.
+\]
+所以
+\[
+u(r,\theta,\varphi)=\frac{U_0}{a}\,r\sin\theta\cos\varphi .
+\]
+
+\textbf{第 4 步（直角坐标形式）。}因为 $x=r\sin\theta\cos\varphi$，
+\[
+u=\frac{U_0}{a}x .
+\]
+这是沿 $x$ 方向的均匀场。
+
+\textbf{核对。}①$\nabla^2x=0$ $\checkmark$；②球面 $r=a$：$u=U_0\sin\theta\cos\varphi$ $\checkmark$；③$r=0$ 有界 $\checkmark$；
+④与 P1 对照：P1 的边界是 $P_2$（$z^2$ 型），P5 的是 $P_1^1\cos\varphi$（$x$ 型）——两题的解分别是 $z^2-r^2/3$ 型与 $x$ 型，
+次数与直角坐标的对应关系一致（$l$ 次 → $l$ 次多项式）。
+
+\flowerrule
+
+\textbf{五题合起来看}：P1、P3、P5 练定系数（球内、球壳、带 $\varphi$），P2 练展开，P4 练球贝塞尔。
+四件事的共同骨架仍是 \S0 的六步：分离 $\to$ 定谱（$m$、$l$、$k$）$\to$ 按区域取舍 $\to$ 叠加 $\to$ 正交定系数 $\to$ 核对。
+把 P4 的 $j_l(kr)$ 换成 $r^l$、把 $e^{-a^2k^2t}$ 换成 $1$，它就退化成 P1 的结构——这正是「同一个方法」的意思。
+
+
