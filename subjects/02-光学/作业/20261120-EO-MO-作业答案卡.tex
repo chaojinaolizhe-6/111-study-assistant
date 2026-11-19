@@ -1,0 +1,123 @@
+%=====================================================================
+% 光学（02）Lecture 4 · 作业答案卡（English，供手抄上交）
+% 来源：Electro-optic & Magneto-optic Effects.pdf p82（= Homework EO MO.docx）
+% 数值核对：subjects/02-光学/讲义/eomo-check/verify_l4.py
+% 编译：xelatex 两遍
+%=====================================================================
+\documentclass[10.5pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{20pt}
+\renewcommand{\tabmid}{\noalign{\vskip 2pt{\color{petal}\hrule height 0.5pt}\vskip 3pt}}
+\settags{EO \& MO · 作业答案卡}{光学（02）· 外教 Lecture 4}
+\newcommand{\vdt}{\mathcal{V}}
+\geometry{left=1.9cm,right=1.9cm,top=1.8cm,bottom=2.0cm}
+\setlength{\parskip}{2.2pt}
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{violetdeep} Homework: Electro-optic \& Magneto-optic Effects}\\[5pt]
+{\color{petal}\small \ding{95}\enspace Answer sheet (courseware p82)\enspace \ding{96}}\\[4pt]
+{\small\color{inkgray}Handwrite in English;\ keep the four parts \textbf{Given} / \textbf{Formulas used} /
+\textbf{calculation} / \textbf{Answers with units};\ sign your name in English.}
+\end{center}
+\vspace{-2pt}
+{\color{petal}\hrule height 1pt}
+
+\subhdr{Problem 1 \ ---\ Pockels cell phase retardation}
+
+\textbf{Given}\quad KDP: $r=10.6\times10^{-12}\ \mathrm{m/V}$, $n=1.5$; crystal length
+$L=3.0\times10^{-2}\ \mathrm{m}$, electrode spacing (aperture) $d=5.0\times10^{-3}\ \mathrm{m}$,
+applied voltage $V=5.0\times10^{3}\ \mathrm{V}$; $\lambda=633\ \mathrm{nm}$. The field is across $d$ while the
+light travels along $L$, so this is the \emph{transverse} configuration.
+
+\textbf{Formulas used}\quad $E=V/d$;\quad
+$\Delta\phi=\dfrac{2\pi}{\lambda}n^{3}rE\,L$ (the two eigen-polarizations differ by $n^3rE$);\quad
+$V_\pi=(\lambda/2n^{3}r)\cdot(d/L)$;\quad $\Delta\phi=\pi V/V_\pi$.
+
+\textbf{Calculation}\quad
+\begin{equation*}
+E=\frac{5.0\times10^{3}}{5.0\times10^{-3}}=1.0\times10^{6}\ \mathrm{V/m},
+\end{equation*}
+\begin{equation*}
+\Delta\phi=\frac{2\pi}{633\times10^{-9}}\times1.5^{3}\times10.6\times10^{-12}\times1.0\times10^{6}\times3.0\times10^{-2}
+\approx1.07\times10^{1}\ \mathrm{rad},
+\end{equation*}
+\begin{equation*}
+V_\pi=\frac{633\times10^{-9}}{2\times1.5^{3}\times10.6\times10^{-12}}\times\frac{5.0\times10^{-3}}{3.0\times10^{-2}}
+\approx1.47\times10^{3}\ \mathrm{V}.
+\end{equation*}
+Check:\ $V_\pi=\pi V/\Delta\phi=\pi\times5000/10.65\approx1.47\times10^{3}\ \mathrm{V}$.
+
+\textbf{Answers}\quad (a) $\Delta\phi\approx1.1\times10^{1}\ \mathrm{rad}\approx610^{\circ}\ (\approx3.4\pi)$;\qquad
+(b) $V_\pi\approx1.5\times10^{3}\ \mathrm{V}\ (\approx1.5\ \mathrm{kV})$.
+
+\newpage
+\subhdr{Problem 2 \ ---\ Faraday rotation and a double pass}
+
+\textbf{Given}\quad $\lambda=589\ \mathrm{nm}$, $L=10\ \mathrm{cm}=0.10\ \mathrm{m}$, $B=0.5\ \mathrm{T}$,
+$\vdt=20\ \mathrm{rad/(T\cdot m)}$; single pass in (a), double pass (back and forth) in (b).
+
+\textbf{Formulas used}\quad $\theta=\vdt BL$;\quad
+$\theta_{\text{round trip}}=2\vdt BL$ (the Faraday effect is \emph{non-reciprocal}).
+
+\textbf{Calculation}\quad
+\begin{equation*}
+\text{(a)}\quad \theta=\vdt BL=20\times0.5\times0.10=1.0\ \mathrm{rad}\approx57.3^{\circ}.
+\end{equation*}
+\begin{equation*}
+\text{(b)}\quad \theta_{\text{round trip}}=2\vdt BL=2.0\ \mathrm{rad}\approx115^{\circ}.
+\end{equation*}
+
+\textbf{Explanation}\quad The sense of rotation is fixed by the magnetic field, not by the direction of
+propagation. On reflection $\mathbf k$ reverses but $\mathbf B$ does not, so the dielectric tensor and the two
+circular refractive indices $n_\pm$ are unchanged; the relative phase $\frac{2\pi}{\lambda}(n_+-n_-)L$
+accumulates a second time in the laboratory frame. The two passes therefore add, giving $2\theta$, whereas a
+\emph{reciprocal} rotator (natural optical activity) would give $-\theta$ on the return pass and cancel to zero.
+The doubling is not a coincidence: it is the signature of non-reciprocity.
+
+\textbf{Answers}\quad (a) $\theta=1.0\ \mathrm{rad}=57.3^{\circ}$;\qquad
+(b) $\theta_{\text{round trip}}=2.0\ \mathrm{rad}=115^{\circ}$, because the rotation sense is set by
+$\mathbf B$, not by $\mathbf k$, so the return pass adds another $+\theta$.
+
+\subhdr{Problem 3 \ ---\ Kerr effect versus Pockels effect}
+
+\textbf{Given}\quad Crystal A: centrosymmetric; crystal B: non-centrosymmetric; $E=10^{6}\ \mathrm{V/m}$ for both.
+Kerr data: $K=2\times10^{-14}\ \mathrm{m/V^{2}}$, $\lambda=633\ \mathrm{nm}$, $L=1.0\times10^{-2}\ \mathrm{m}$.
+
+\textbf{Formulas used}\quad
+\begin{itemize}
+\item $\Delta n=K\lambda E^{2}$ (quadratic electro-optic effect);
+\item $\Delta\phi=\dfrac{2\pi}{\lambda}\Delta n\,L$ (phase difference from birefringence);
+\item symmetry rule: in a centrosymmetric medium $\Delta n(+E)=\Delta n(-E)$, so every odd-order
+      term of $\Delta n(E)$ vanishes.
+\end{itemize}
+
+\textbf{Calculation}\quad
+(a) Crystal A has inversion symmetry, so the linear term is forbidden --- it shows the \textbf{Kerr effect only}.
+Crystal B allows the linear term --- it shows the \textbf{Pockels effect} (plus the Kerr effect, which is
+hidden under the much larger linear term).
+
+(b)
+\begin{equation*}
+\Delta n=K\lambda E^{2}=2\times10^{-14}\times633\times10^{-9}\times\left(10^{6}\right)^{2}
+\approx1.27\times10^{-8}\quad(\text{dimensionless}).
+\end{equation*}
+(c)
+\begin{equation*}
+\Delta\phi=\frac{2\pi}{\lambda}\Delta n\,L
+=\frac{2\pi}{633\times10^{-9}}\times1.27\times10^{-8}\times1.0\times10^{-2}
+\approx1.26\times10^{-3}\ \mathrm{rad}.
+\end{equation*}
+Equivalent check (substituting $\Delta n$ first cancels $\lambda$):
+$\Delta\phi=2\pi KLE^{2}\approx1.26\times10^{-3}\ \mathrm{rad}$.
+
+\textbf{Answers}\quad (a) A: Kerr only; B: Pockels (linear) and Kerr;\qquad
+(b) $\Delta n\approx1.3\times10^{-8}$;\qquad
+(c) $\Delta\phi\approx1.3\times10^{-3}\ \mathrm{rad}\ (\approx0.07^{\circ})$.
+
+\vspace{4pt}
+{\color{petal}\hrule height 0.6pt}
+{\small\color{inkgray}\textbf{Before handing in:} handwritten; four parts per problem; answers with units;
+name signed in English; placed on the instructor's desk before the lecture starts.}
+
+\end{document}

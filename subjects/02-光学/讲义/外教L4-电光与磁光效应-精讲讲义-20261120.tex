@@ -1,0 +1,2356 @@
+%=====================================================================
+% 光学（02）外教 Lecture 4 · Electro-optic & Magneto-optic Effects
+% 精讲讲义（中文讲解 + LaTeX 原生公式）
+% 来源：subjects/02-光学/课件/Electro-optic & Magneto-optic Effects.pdf（82 页）
+%       作业：subjects/02-光学/课件/Homework EO MO.docx（= 课件 p82）
+% 数值核对：subjects/02-光学/讲义/eomo-check/verify_l4.py（42 条断言）
+% 编译：xelatex -halt-on-error 两遍
+%=====================================================================
+\documentclass[11pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+\usepackage{graphicx}
+\setlength{\headheight}{22pt}
+% theme 的 \tabmid 在 tabular 内会落进首格，改成 \noalign 形式
+\renewcommand{\tabmid}{\noalign{\vskip 2pt{\color{petal}\hrule height 0.5pt}\vskip 3pt}}
+\settags{Electro-optic \& Magneto-optic · L4 精讲}{光学（02）· 外教 Lecture 4}
+\let\subhdrtheme\subhdr
+\renewcommand{\subhdr}[1]{\needspace{3\baselineskip}\subhdrtheme{#1}}
+\let\hdrorig\hdr
+\renewcommand{\hdr}[2]{\needspace{8\baselineskip}\hdrorig{#1}{#2}}
+\setlength{\emergencystretch}{1.6em}
+\tikzset{>={Stealth[length=2.0mm]},
+  box/.style={draw=violet,rounded corners=2pt,fill=bandviolet,align=center,inner sep=3.5pt},
+  boxc/.style={draw=petal,rounded corners=2pt,fill=bandcream,align=center,inner sep=3.5pt},
+  bx/.style={draw=violet,thick,align=center,inner sep=2pt}}
+% Verdet 常数用花体 V，避免与电压 V 撞符号
+\newcommand{\vdt}{\mathcal{V}}
+% 主题只给了 \callout{...}、\warnbox{...} 的命令形式，不能容纳分段、列表与行间公式。
+% 这里补两个视觉等价的环境（minipage + fcolorbox），供较长的提示框使用。
+\newsavebox{\dshbox}
+\newenvironment{Callout}{%
+  \par\medskip\noindent
+  \begin{lrbox}{\dshbox}\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
+}{%
+  \end{minipage}\end{lrbox}%
+  \fcolorbox{rulepurple}{bandviolet}{\usebox{\dshbox}}\par\medskip}
+\newenvironment{WarnBox}{%
+  \par\medskip\noindent
+  \begin{lrbox}{\dshbox}\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
+}{%
+  \end{minipage}\end{lrbox}%
+  \fcolorbox{rulepurple}{bandcream}{\usebox{\dshbox}}\par\medskip}
+
+\begin{document}
+
+\doctitle{电光与磁光效应（第四讲）}
+{普克尔斯盒 · 克尔效应 · 法拉第旋转 · 光隔离器}
+{依据：\texttt{Electro-optic \& Magneto-optic Effects.pdf}（82 页，Lecture 4）\\
+作业：课件 p82 三题 —— 题干见 §16，中文详解见附录 C，英文答题版见附录 D\\
+光学（02）｜整理日期 2026-11-20}
+
+
+%=====================================================================
+\hdr{§0}{这一讲要解决什么问题}
+
+前三讲分别是：怎么描述偏振（L1）、怎么算偏振态的变化（L2）、怎么用器件造和测偏振（L3）。
+这一讲把「外场」加进来：\textbf{不碰器件，只拧一个电压或一个磁场，光的偏振和强度就跟着变}。
+
+整堂课压成三句话：
+
+\textbf{一、场改的是折射率，不是光。} Kerr 和 Pockels 效应都是电场改了晶体的折射率椭球，
+于是两个正交偏振分量之间多出一个相位差 $\Gamma$；磁光效应同理，只是它把右旋和左旋圆偏振分开，
+改的是偏振面的方位。两者最后都落到同一个算式 $\Gamma=2\pi\Delta n\,L/\lambda$（§1）。
+
+\textbf{二、对称性决定「线性还是二次」。}有反演中心的材料，$\pm E$ 必须给同一个结果，
+所以奇次项被禁掉：只剩 $\Delta n\propto E^2$（Kerr）；没有反演中心才有 $\Delta n\propto E$（Pockels）。
+这一条判据能让你在没查表时就说出「这块晶体能不能做普克尔斯盒」（§2）。
+
+\textbf{三、同一句话里的两个方向，一个有、一个没有。}把一束光送进去再原路送回来：
+Faraday 旋转会继续同向累加（$2\theta$），自然旋光会原路退回去（$0$）。
+这个「非互易」是光隔离器能单向通光的全部理由，也是本讲作业第 2 题在问的事（§9、§12）。
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+\node[box,text width=13.2cm] (q) at (7.4,1.0)
+  {\textbf{核心问题：不换光学元件，只加外场 $\boldsymbol{E}$ 或 $\boldsymbol{B}$，怎么让光的偏振面、相位、强度跟着变？}};
+
+\node[box,text width=4.2cm] (e0) at (3.0,-0.9) {\textbf{电场支路}\\ 场改折射率椭球};
+\node[box,text width=4.2cm] (b0) at (11.4,-0.9) {\textbf{磁场支路}\\ 场把 RCP 与 LCP 分开};
+
+\node[box,text width=4.2cm] (e1) at (3.0,-2.4) {$\Delta n\propto E^2$：\textbf{Kerr}（§3）\\ 所有材料，弱};
+\node[box,text width=4.2cm] (e2) at (3.0,-3.7) {$\Delta n\propto E$：\textbf{Pockels}（§5--§6）\\ 仅非中心对称，强};
+\node[box,text width=4.2cm] (b1) at (11.4,-2.4) {$\theta=\vdt BL$：\textbf{Faraday}（§11）\\ 非互易：往返 $2\theta$};
+\node[box,text width=4.2cm] (b2) at (11.4,-3.7) {反射变：\textbf{MOKE}（§13）\\ 线双折射：Voigt（§14）};
+
+\node[boxc,text width=9.6cm] (m) at (7.4,-5.2)
+  {两条路落到同一把尺子：$\Gamma=\dfrac{2\pi}{\lambda}\Delta n\,L$（线性相位），或 $\theta$（方位角）};
+\node[boxc,text width=9.6cm] (m2) at (7.4,-6.4)
+  {正交检偏器读出强度：$T=\sin^{2}\dfrac{\Gamma}{2}=\sin^{2}\dfrac{\pi V}{2V_{\pi}}$（§7）};
+
+\node[box,text width=4.6cm] (d1) at (3.0,-7.9) {\textbf{Pockels 盒 / Kerr 盒}\\ 强度调制器 · 相位调制器 · Q 开关};
+\node[box,text width=4.6cm] (d2) at (11.4,-7.9) {\textbf{Faraday 旋转器}\\ 光隔离器 · 环形器 · 磁光存储};
+
+\node[boxc,text width=13.0cm] (k) at (7.4,-9.35)
+  {\textbf{一条判据贯穿全讲}：自然旋光（互易，往返 $0^\circ$）\\ vs.\ Faraday 旋转（非互易，往返 $2\theta$）——§9 与 §12 专门对照};
+
+\draw[->,violet] (q.south) -- ++(0,-0.35) -| (e0.north);
+\draw[->,violet] (q.south) -- ++(0,-0.35) -| (b0.north);
+\draw[->,violet] (e0)--(e1); \draw[->,violet] (e1)--(e2);
+\draw[->,violet] (b0)--(b1); \draw[->,violet] (b1)--(b2);
+\draw[->,violet] (e2.south) -- ++(0,-0.4) -| (m.north);
+\draw[->,violet] (b2.south) -- ++(0,-0.4) -| (m.north);
+\draw[->,violet] (m)--(m2);
+\draw[->,violet] (m2.south) -- ++(0,-0.35) -| (d1.north);
+\draw[->,violet] (m2.south) -- ++(0,-0.35) -| (d2.north);
+\draw[->,violet] (3.0,-8.45) -- (3.0,-8.85);
+\draw[->,violet] (11.4,-8.45) -- (11.4,-8.85);
+\node[text width=15.4cm,align=left,font=\scriptsize,text=inkgray] at (7.4,-11.0)
+ {读法：上排是「场怎么起作用」，中排是两条路共用的换算（先得到相位差或方位角），下排才是器件。\\
+  左边一支改的是\emph{线}双折射（两个正交线偏振的相位差），右边一支改的是\emph{圆}双折射（RCP 与 LCP 的相位差）——
+  这个区别决定了最下排那条互易性判据。};
+\end{tikzpicture}
+\end{center}
+
+\subhdr{0.1 页码路线：82 页课件对应到本讲义}
+
+{\small\color{inkgray}课件 p82 就是本次作业题面；p43--p52、p79--p81 是课件自带的三加三道例题，
+本讲义 §8 把它们当\emph{教学示范}讲（课件已给答案，不再作为独立练习）。}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{1.9cm}>{\raggedright}p{8.7cm}>{\raggedright\arraybackslash}p{4.6cm}@{}}
+\thead{课件页} & \thead{内容} & \thead{本讲义} \\
+\tabmid
+p1--p4 & 标题、计划与学习目标、为什么重要、效应分类表 & §0、§1 \\
+\tabmid
+p5--p6 & 偏振态与琼斯矢量、折射率与双折射、指标体、$\Gamma=2\pi\Delta nL/\lambda$ & §1.3--§1.5 \\
+\tabmid
+p7--p8 & 为什么有的线性有的二次（对称性）、材料类型表 & §2 \\
+\tabmid
+p9--p17 & Kerr：小史、$\Delta n=K\lambda E^2$、两种机理、常数表、温度与波长、液固对比、盒几何、响应时间 & §3 \\
+\tabmid
+p18--p20 & Kerr 三问 FAQ（反极性、为何还用它、光能否平行场） & §3.7 \\
+\tabmid
+p21--p32 & Pockels：小史、$\Delta n=-\tfrac12n^3rE$、对称性表、中心对称为何无线性项、张量 $r_{ij}$、纵横向、装置图、$V_\pi$、材料表、强度调制、对比表、工程难点 & §5--§7 \\
+\tabmid
+p33--p35 & Pockels 三问 FAQ（原子层面、纵横选型、速度极限） & §6.5、§7.7 \\
+\tabmid
+p36--p42 & 应用目录、通用振幅调制器、调制曲线、三个工作点、线性区、相位调制器与 MZI & §7 \\
+\tabmid
+p43--p52 & 例题 1（KDP 横向 $V_\pi$）、例题 2（Kerr 盒电压）、例题 3（强度调制） & §8 \\
+\tabmid
+p53--p59 & 磁光引言、MCB/MCD 与非互易、发现年表、名词表、介电张量、Faraday 公式、物理机制 & §10--§11 \\
+\tabmid
+p60--p65 & MOKE：原理、三种几何表、极向、纵向、横向 & §13 \\
+\tabmid
+p66--p69 & Voigt 与 Cotton--Mouton、磁性类型与磁光响应、磁光材料分类 & §14.1、§14.4、§15.4 \\
+\tabmid
+p70--p73 & 圆二色性、CD 的量、CD 光谱仪、CB 与 CD 对照 & §14.2--§14.3 \\
+\tabmid
+p74--p78 & 隔离器与环形器、磁光存储、三问 FAQ（非互易、Faraday vs MOKE、为何弱） & §12.4、§15 \\
+\tabmid
+p79--p81 & 磁光三道例题（TGG 转角、隔离器长度、两材料比较） & §8.4 \\
+\tabmid
+p82 & \textbf{本次作业三题} & §16、附录 C、附录 D \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{0.2 记号（全篇统一）}
+
+{\small\color{inkgray}课件把一个 $V$ 同时用作「电压」和「Verdet 常数」。本讲义把 Verdet 常数写成花体
+$\vdt$，电压一律写 $V$；作业里若照抄课件的 $V$，两个含义必须分句说明。}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.4cm}p{8.0cm}p{4.4cm}@{}}
+\thead{符号} & \thead{含义} & \thead{单位} \\
+\tabmid
+$E$, $V$, $d$ & 外加电场、电压、电极间距（横向几何中 $E=V/d$） & V/m, V, m \\
+\tabmid
+$L$（或 $l$） & 光在晶体中走过的长度 & m \\
+\tabmid
+$n$, $n_o$, $n_e$ & 未加场时的折射率；寻常光、非常光折射率 & 无量纲 \\
+\tabmid
+$\Delta n$ & 双折射（两种正交偏振的折射率差） & 无量纲 \\
+\tabmid
+$r$（$r_{63}$, $r_{33}$\dots） & 线性电光系数（Pockels 系数） & m/V（常用 pm/V） \\
+\tabmid
+$K$ & 二次电光系数（Kerr 常数） & m/V$^2$ \\
+\tabmid
+$\Gamma$（课件也写 $\Delta\phi$） & 相位延迟（retardation） & rad \\
+\tabmid
+$V_\pi$ & 半波电压：产生 $\Gamma=\pi$ 所需的电压 & V \\
+\tabmid
+$T$, $I$ & 透射率（归一化强度）、光强 & 无量纲, W/m$^2$ \\
+\tabmid
+$\vdt$ & Verdet 常数（本讲义专用符号） & rad/(T$\cdot$m) \\
+\tabmid
+$B$, $M$, $H$ & 磁感应强度、磁化强度、磁场强度 & T, A/m, A/m \\
+\tabmid
+$\theta$, $\psi$ & 偏振面转角、椭偏率（椭圆率角） & rad \\
+\tabmid
+$\varepsilon$, $\varepsilon_{xy}$, $Q$ & 介电常数、介电张量的非对角元、磁光常数（$Q=g/\varepsilon$） & 无量纲（相对值） \\
+\tabmid
+$r_{pp}$, $r_{ps}$ & 反射系数：$p\to p$、$p\to s$（MOKE 用） & 无量纲 \\
+\tabmid
+$d$, $A$, $g$ & CD 中的光程、吸光度、不对称因子 $g=\Delta A/A$ & m, 无量纲, 无量纲 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{0.3 怎么读这份讲义}
+
+\begin{itemize}
+\item 想先抓住骨架：只看 §0 的图和 §1、§2 的判据，再跳到 §12（互易性）——那是全讲最容易考、
+      也最容易在作业里翻车的一处。
+\item 要写作业：题干在 §16；动笔前先读 §5--§6 的 $\Gamma$ 与 $V_\pi$ 两式（作业第 1 题）、
+      §11--§12 的 $\theta=\vdt BL$ 与往返结论（第 2 题）、§2 的对称性判据与 §4 的 $\Delta n=K\lambda E^2$（第 3 题）。
+      详解在附录 C，英文答题版在附录 D。
+\item 只想过一遍工程应用：§7（调制器、Q 开关）与 §15（隔离器、环形器、磁光存储）。
+\end{itemize}
+
+%=====================================================================
+\hdr{§1}{外场改的是折射率：三个量、一条换算}
+
+\subhdr{1.1 先看这张分类表（课件 p4）}
+
+课件开篇就把全讲的五种效应按「谁在推、推出来的响应是几次方」摆成一张表。这张表是整讲的目录。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.0cm}p{4.2cm}p{7.0cm}@{}}
+\thead{外部影响} & \thead{效应} & \thead{场的依赖} \\
+\tabmid
+电场 $E$ & Kerr 效应 & 二次（$E^2$），所有材料 \\
+\tabmid
+电场 $E$ & Pockels 效应 & 线性（$E$），仅非中心对称 \\
+\tabmid
+磁场 $B$ & Faraday 效应 & 线性（$B$），透射 \\
+\tabmid
+磁场 $B$ & Cotton--Mouton（Voigt）效应 & 二次（$B^2$），横向 \\
+\tabmid
+无外场 & 自然旋光 & 介质自身的结构（手性），与场无关 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+这张表有一个立即可用的推论：\textbf{「线性」总是被对称性限制，「二次」从不被限制}。
+原因在 §2，一句话：有反演中心的介质，$\pm E$ 必须给出同一个结果，所以奇次项只能为零。
+读表时先把这条记在手边，后面每一节都会用到。
+
+\subhdr{1.2 为什么值得管这件事（课件 p3）}
+
+课件列的动机可以归成三类，正好对应三种「精度要求」：
+
+\begin{itemize}
+\item \textbf{要快}：通信里的电光调制器把数据编码到激光上，速率几十 GHz。这要求响应是电子的（fs 级），
+      而不是分子转动（ns 级）——§3.2 会看到这个差别把 Kerr 和 Pockels 分到两个应用领域。
+\item \textbf{要猛}：Q 开关把腔内储能一次性放出，得到巨脉冲，用于加工与聚变诊断（§7.7）。
+\item \textbf{要准}：磁场/电流传感器、陀螺、磁光存储读出头，靠的是「转角与磁场成正比」这一个线性关系（§11、§15）。
+\end{itemize}
+
+共同点不是「效应很神奇」，而是\textbf{它们都把「一个电学量」翻译成「一个可以被偏振片读出的角度或相位」}。
+整讲的工程内容都是这句话的展开。
+
+\subhdr{1.3 偏振态与琼斯矢量（课件 p5，回顾 L1--L2）}
+
+只回顾本讲要用的三件事。
+
+\textbf{（i）任意线偏振可以拆成一左一右两个圆偏振。}这是 Fresnel 解释旋光的全部基础（§9），
+也是磁光效应「把 RCP 与 LCP 的折射率分开」这句话能成立的前提：
+
+\begin{equation}
+\hat{e}_x=\frac{1}{\sqrt2}\left[\hat{e}_R+\hat{e}_L\right],\qquad
+\hat{e}_R=\frac{1}{\sqrt2}\binom{1}{-i},\qquad
+\hat{e}_L=\frac{1}{\sqrt2}\binom{1}{i}.
+\end{equation}
+
+\textbf{（ii）两个正交分量之间只差一个相位，合起来就是椭圆。}
+写 $\vec E=(E_x,\,E_y e^{i\delta})$，$\delta=0$ 或 $\pi$ 是线偏振，$\delta=\pm\pi/2$ 且 $|E_x|=|E_y|$ 是圆偏振，
+其余是椭圆。本讲所有「相位延迟 $\Gamma$」都只是这个 $\delta$ 被改了一个量。
+
+\textbf{（iii）手性约定各教材不同。}L1--L3 已经统一过：本课程按「迎着光看，电矢量逆时针转」记为左旋。
+写作业时把约定写在旁边，结论（「等幅 + $90^\circ$ = 圆」）与约定无关。
+
+\subhdr{1.4 双折射与指标体（课件 p6）}
+
+\textbf{折射率}定义相速度：$n=c/v$。\textbf{双折射}是两个正交偏振分量的折射率不同：
+$\Delta n=n_{\text{慢}}-n_{\text{快}}$。
+
+为什么用「指标体」（optical indicatrix）说话：折射率是各向异性的，方向不同 $n$ 不同，
+一个标量写不下。指标体是一个椭球，
+\begin{equation}
+\frac{x^2}{n_x^2}+\frac{y^2}{n_y^2}+\frac{z^2}{n_z^2}=1,
+\end{equation}
+它的三个半轴长度就是三个主轴方向的折射率。波沿某个方向传播时，允许的两个正交偏振方向
+就是与该方向垂直的截面椭圆的\emph{两个半轴}方向，相应的半轴长度就是这两个偏振看到的折射率。
+
+\begin{Callout}
+\textbf{本讲的统一语言。}电光效应与磁光效应的差别，可以精确地说成「它们各自把指标体怎么改」：
+\begin{itemize}
+\item Pockels / Kerr：电场把椭球\emph{变形}（轴长变、主轴方向也可能转）——改的是\textbf{线}双折射，
+      结果是两个\emph{线}偏振之间出现相位差 $\Gamma$。
+\item Faraday：磁场不改变线偏振的两个主轴，而是让右旋与左旋圆偏振的折射率不同——改的是\textbf{圆}双折射，
+      结果是整个偏振面\emph{转}一个角 $\theta$。
+\end{itemize}
+一个是「两个线偏振错开相位」，一个是「两个圆偏振错开相位」——这两个说法在 §12 会合，变成互易与非互易的判据。
+\end{Callout}
+
+\subhdr{1.5 从 $\Delta n$ 到可测量的相位差}
+
+这是全讲出现频率最高的一个换算，务必写熟：
+\begin{equation}
+\label{eq:gamma}
+\boxed{\;\Gamma=\frac{2\pi}{\lambda}\,\Delta n\,L\;}
+\end{equation}
+其中 $\lambda$ 是\emph{真空}波长，$L$ 是光在介质中走过的长度。
+
+推导只有一句：两个分量走过同一段几何路程 $L$，但相速度不同，所以相位各自累积
+$\phi_i=2\pi n_iL/\lambda$，相减就得到 (\ref{eq:gamma})。
+
+\begin{WarnBox}
+\textbf{三个常见错法。}
+（1）把 $\lambda$ 代成介质中的波长 $\lambda/n$——那样 $\Delta n$ 就会被多除一次 $n$；
+（2）把 $L$ 代成「样品厚度」但不看光是否斜入射——本讲全部按垂直入射、$L$ 就是电极间那段长度；
+（3）把 $\Gamma$ 与「延迟量」$\Delta=\Delta n\,L$（单位是米）混用。$\Delta$ 是光程差，$\Gamma$ 是相位差，两者差一个 $2\pi/\lambda$。
+\end{WarnBox}
+
+\textbf{小例（量级感）}：设 $\Delta n=1.0\times10^{-5}$，$L=1\ \mathrm{cm}$，$\lambda=633\ \mathrm{nm}$。
+
+\begin{equation}
+\Gamma=\frac{2\pi}{633\times10^{-9}}\times1.0\times10^{-5}\times0.01
+=\frac{2\pi\times1.0\times10^{-7}}{6.33\times10^{-7}}\approx0.99\ \mathrm{rad}\approx57^\circ .
+\end{equation}
+
+也就是说：\textbf{折射率只要被改动十万分之一，一厘米的晶体就能造出接近 $60^\circ$ 的相位差}。
+反过来，$\Gamma$ 可以被检偏器读到 $\lambda/1000$ 的精度，所以 $\Delta n$ 的灵敏度到 $10^{-8}$ 量级——
+这就是为什么电光与磁光效应虽然本身很弱，却仍然是精密的测量手段。
+
+%=====================================================================
+\hdr{§2}{对称性：为什么有的线性、有的二次}
+
+\subhdr{2.1 判据（课件 p7、p12、p24）}
+
+\begin{Callout}
+\textbf{判据。}把折射率的变化写成场的幂级数
+\begin{equation}
+\Delta n(E)=a_1E+a_2E^2+a_3E^3+\cdots
+\end{equation}
+若介质具有\textbf{反演中心}（centrosymmetric，即存在一点，把全部坐标 $\vec r\to-\vec r$ 后晶体与自身重合），
+则 $a_1=a_3=a_5=\cdots=0$：\textbf{只允许偶次项}。这时只剩 Kerr 效应。
+
+若介质\textbf{没有反演中心}，一次项允许存在，且通常远大于二次项：\textbf{Pockels 效应}。
+\end{Callout}
+
+这个判据的力量在于它不需要知道具体的原子结构：只要告诉我晶体有没有反演中心，我就能说出它能不能做普克尔斯盒。
+
+\subhdr{2.2 为什么会这样：完整论证}
+
+\textbf{第一步，物理要求。}反演中心意味着「把晶体绕中心转 $180^\circ$（等价于 $\vec r\to-\vec r$）后，
+晶体看上去一模一样」。所以「加 $+E$ 得到的折射率变化」与「加 $-E$ 得到的折射率变化」，
+在这块晶体里必须是\emph{同一个物理状态}：电场方向反转了，但晶体也跟着「反转」了，两者互相抵消。
+
+形式化地写：对中心对称介质，
+\begin{equation}
+\label{eq:inversion}
+\Delta n(+E)=\Delta n(-E)\qquad\text{对任意 }E .
+\end{equation}
+
+\textbf{第二步，代入级数。}把级数代进 (\ref{eq:inversion})：
+\begin{equation}
+a_1E+a_2E^2+a_3E^3+\cdots=a_1(-E)+a_2E^2+a_3(-E)^3+\cdots
+\end{equation}
+两边相减，偶次项全部消掉，剩下
+\begin{equation}
+2a_1E+2a_3E^3+2a_5E^5+\cdots=0\qquad\text{对任意 }E .
+\end{equation}
+
+\textbf{第三步，结论。}一个多项式对\emph{任意} $E$ 恒为零，只能所有系数为零：
+$a_1=a_3=a_5=\cdots=0$。若 $a_1\neq0$，就要求 $2a_1E\equiv0$，与「任意 $E$」矛盾。
+所以线性项必被禁掉，最低阶允许项是 $a_2E^2$——这就是 Kerr 效应。
+
+\aside{注意 (\ref{eq:inversion}) 里没有写成「$\Delta n$ 的符号翻转」。$n$ 是正数，$n$ 的变化量可以正可以负，
+但「$+E$ 与 $-E$ 给出同一个变化量」这句话是实的；Pockels 效应的特征恰恰是 $\Delta n(-E)=-\Delta n(+E)$
+（符号跟着场翻），这正是它被中心对称禁掉的原因。}
+
+\begin{center}
+\includegraphics[width=0.62\linewidth]{fig-l4/fig1-dn-vs-E.png}
+
+{\small\color{inkgray}图 0：奇函数与偶函数。两条曲线各自归一化到 $E=+E_0$ 处的值，所以只比较\emph{形状}：
+Pockels（深紫）关于原点反对称，反接电压就变色；Kerr（浅紫）关于竖轴对称，反接电压毫无变化。
+两者在实际量级上差约 $10^3$ 倍（§5.5），这里为看清对称性而做了归一化。}
+\end{center}
+
+\subhdr{2.3 小例：若真有线性项，会被看见吗}
+
+设某介质的形式系数 $a_1=1.0\times10^{-12}\ \mathrm{m/V}$、$a_2=1.0\times10^{-20}\ \mathrm{m/V^2}$，
+在 $E=1.0\times10^{6}\ \mathrm{V/m}$ 处：
+
+\begin{equation}
+a_1E=1.0\times10^{-6},\qquad a_2E^2=1.0\times10^{-8}.
+\end{equation}
+
+线性项比二次项大 $100$ 倍。假如它存在于一块有反演中心的晶体里，那么把电压反接，
+$\Delta n$ 会从 $+1.0\times10^{-6}$ 变成 $-1.0\times10^{-6}$——这在偏光显微镜下是肉眼可见的差别。
+既然实验上观察不到这种极性依赖，唯一的解释就是 $a_1$ 确实为零。这个数字对比也解释了另一件事：
+\textbf{一旦允许线性项，二次项就被压得可以忽略}（§3.1 会把它写成 $10^3$ 倍的量级差）。
+
+\subhdr{2.4 材料类型表（课件 p8）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright}p{7.4cm}>{\raggedright}p{3.8cm}>{\raggedright\arraybackslash}p{4.2cm}@{}}
+\thead{材料类型} & \thead{Pockels（线性）} & \thead{Kerr（二次）} \\
+\tabmid
+中心对称（玻璃、液体、Si、金刚石、NaCl） & 禁止 & 允许 \\
+\tabmid
+非中心对称（KDP、LiNbO$_3$、石英、GaAs） & 允许 & 也同时存在 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{2.5 判据的两个边界（别用过头）}
+
+第一，\textbf{「非中心对称」是必要条件，不是充分条件}。KDP 属于 $\bar42m$ 点群，有 $r_{63}$；
+但同一族里有的切型其有效系数为零，必须看张量的哪个分量被用上（§5.2）。
+
+第二，\textbf{课件特别点出 GaAs 是个「例外」}：它属于闪锌矿结构（$\bar43m$），没有反演中心，
+所以既有 Pockels 也有 Kerr。课件 p8 的脚注说它「重要」，是因为它在半导体激光与红外调制里常用；
+写「GaAs 是非中心对称的」这句话时要分清它\emph{看起来}像立方对称、但点群确实无中心。
+
+\begin{WarnBox}
+\textbf{一句话记住。}中心对称 $\Rightarrow$ 只能二次；非中心对称 $\Rightarrow$ 线性可用，二次仍存在。
+判断一块材料能不能做普克尔斯盒，只看\emph{点群}，不看硬度、透明范围、折射率大小——那些是第二步的工程选择（§6.3）。
+\end{WarnBox}
+
+%=====================================================================
+\hdr{§3}{Kerr 效应：折射率随 $E^2$ 变}
+
+\subhdr{3.1 公式与量纲（课件 p10）}
+
+\begin{equation}
+\label{eq:kerr}
+\boxed{\;\Delta n=K\,\lambda\,E^2\;}
+\end{equation}
+其中 $K$ 是 Kerr 常数（材料给定，单位 $\mathrm{m/V^2}$），$\lambda$ 是真空波长，$E$ 是外加场强。
+
+量纲先查一遍，免得把 $K$ 的单位记错：
+\begin{equation}
+[K]\,[\lambda]\,[E^2]=\frac{\mathrm{m}}{\mathrm{V^2}}\cdot\mathrm{m}\cdot\frac{\mathrm{V^2}}{\mathrm{m^2}}=1 .
+\end{equation}
+三个量的单位必须这样配平，结果才是无量纲的折射率差。这一步在作业第 3 题里会直接用到。
+
+\textbf{两条立刻能用的推论。}
+
+（i）\textbf{反接电压不变}。$E\to-E$ 时 $\Delta n$ 不变，因为 $(-E)^2=E^2$。
+换成 AC 驱动，$\Delta n$ 会以\emph{两倍}驱动频率振荡——这是 Kerr 盒做高压测量时的指纹（§4.4）。
+
+（ii）\textbf{两次方意味着「要么很长的 $L$、要么很高的 $E$」}。把 (\ref{eq:kerr}) 代进 (\ref{eq:gamma})：
+\begin{equation}
+\label{eq:gamma-kerr}
+\Gamma=\frac{2\pi}{\lambda}\,\Delta n\,L=2\pi K L E^2=2\pi K L\left(\frac{V}{d}\right)^{2}.
+\end{equation}
+注意 $\lambda$ \emph{消掉了}——Kerr 盒的延迟与光的波长无关（在 $K$ 本身随波长缓变的意义上）。
+这一点与 Pockels 的 $V_\pi\propto\lambda$ 很不一样，写作业第 3 题时值得顺手提一句。
+
+\subhdr{3.2 两种机理与两个时间尺度（课件 p11）}
+
+同一个 $E^2$ 现象背后有两种完全不同的物理，它们的时间尺度差三个数量级：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{6.2cm}@{}}
+\thead{机理} & \thead{在做什么} & \thead{响应时间} \\
+\tabmid
+分子取向 & 各向异性分子有永久偶极矩，场把它「拧」到同一个方向，宏观上出现各向异性 & 纳秒（由转动扩散限制；$\sim10\ \mathrm{ns}$ for 硝基苯） \\
+\tabmid
+电子畸变 & 场把原子/分子的电子云拉变形，诱导出偶极矩 & 飞秒（电子极化） \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\textbf{哪个占主导？}液体里是取向（分子能动，场能把它排队），固体里是电子（分子被晶格钉住，只能变形）。
+由此得到整讲反复用到的一条对应：
+\begin{equation}
+\text{液体：}K\text{ 大（}\sim10^{-12}\ \mathrm{m/V^2}\text{）、慢（ns）};\qquad
+\text{固体：}K\text{ 小（}\sim10^{-16}\ \mathrm{m/V^2}\text{）、快（fs）}.
+\end{equation}
+
+\subhdr{3.3 Kerr 常数的实际量级（课件 p13）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{5.0cm}p{3.6cm}p{6.0cm}@{}}
+\thead{材料} & \thead{$K$（$\mathrm{m/V^2}$）} & \thead{备注} \\
+\tabmid
+硝基苯 C$_6$H$_5$NO$_2$ & $\sim2.2\times10^{-12}$ & 已知最大；标准 Kerr 盒液体 \\
+\tabmid
+二硫化碳 CS$_2$ & $\sim3.6\times10^{-14}$ & 常用但有毒 \\
+\tabmid
+水 H$_2$O & $\sim4.4\times10^{-14}$ & 很弱；对生物重要 \\
+\tabmid
+苯 C$_6$H$_6$ & $\sim0.7\times10^{-14}$ & 中等 \\
+\tabmid
+火石玻璃 & $\sim10^{-16}$ & 很弱；需高场 \\
+\tabmid
+空气（1 atm） & $\sim10^{-19}$ & 极弱 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+读这张表要看出\textbf{四个数量级}的跨度：硝基苯比玻璃大约 $10^4$ 倍。这个比值直接决定了 §4.1 的工程结论：
+液体做 Kerr 盒是「大效应 + 慢 + 麻烦」，固体做 Kerr 盒是「快 + 弱到几乎不能用」。
+
+\subhdr{3.4 温度与波长依赖（课件 p14）}
+
+\textbf{温度}：液体里 $K$ 随温度下降，因为热运动在破坏分子的定向排列，近似有
+\begin{equation}
+K\propto\frac{1}{T}\qquad\text{（取向机理主导时）}.
+\end{equation}
+工程含义很硬：硝基苯在 $\sim5.7^\circ\mathrm{C}$ 就冻住了，这就是这类 Kerr 盒的\emph{工作下限}。
+
+\textbf{波长}：$K$ 一般随波长变短而增大，经验上 $K\propto\lambda^{-2}$ 到 $\lambda^{-3}$（随材料不同），
+根源是折射率色散。把这一条和 (\ref{eq:kerr}) 里的那个 $\lambda$ 合起来看：
+$\Delta n=K(\lambda)\lambda E^2$，所以 $\Delta n$ 对波长的依赖弱于「正比于 $\lambda$」，
+但仍不是完全相同——课件把 $\lambda$ 显式写在公式里，是为了让 $K$ 的单位与「不同波长可比」这两件事都成立。
+
+\subhdr{3.5 为什么 Kerr 效应在任何材料里都存在}
+
+回到 §2 的判据：$E^2$ 是偶函数，满足 (\ref{eq:inversion})，所以中心对称介质不禁它。这就解释了课件 p12 的清单：
+液体（硝基苯、CS$_2$、水）、气体（强场下）、玻璃与无定形体、中心对称晶体（Si、金刚石、NaCl）全都有 Kerr 效应。
+
+\textbf{反过来说}：对于\textbf{中心对称}材料，Kerr 是\emph{唯一}可用的电光效应。这句话在 §4.4 的第 2 问里会变成
+「既然 Pockels 更强，为什么还留着 Kerr 盒」的答案。
+
+%=====================================================================
+\hdr{§4}{Kerr 盒：数值实感、几何与三问}
+
+\subhdr{4.1 液体盒与固体盒（课件 p15）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.0cm}p{5.2cm}p{5.2cm}@{}}
+\thead{性质} & \thead{液体（硝基苯）} & \thead{固体（玻璃）} \\
+\tabmid
+Kerr 常数 & 大（$10^{-12}\ \mathrm{m/V^2}$） & 小（$10^{-16}\ \mathrm{m/V^2}$） \\
+\tabmid
+响应时间 & 纳秒（取向） & 飞秒（电子） \\
+\tabmid
+所需电压 & 中等（kV 级） & 极高（MV 级） \\
+\tabmid
+实用盒长 & 厘米 & 毫米 \\
+\tabmid
+维护 & 需密封 & 结实、紧凑 \\
+\tabmid
+温度稳定 & 差（冻结、挥发） & 极好 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{4.2 盒的几何（课件 p16）}
+
+标准 Kerr 盒用\textbf{横向几何}：电场垂直于光的传播方向，两块平行板电极浸在液体里；
+孔径受电极间距限制（典型 $1$--$10\ \mathrm{mm}$），通光长度 $1$--$10\ \mathrm{cm}$ 才够累出可用的延迟；
+前后各放一片偏振器、且相互正交，用来把相位差转成强度变化。
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+% 光轴
+\draw[->,inkgray] (-0.4,0) -- (14.2,0) node[right,text=inkgray]{\scriptsize 光轴};
+% 入射光（非偏振）
+\foreach \a in {20,55,90,125,160}{\draw[->,red!65!black] (0,0) -- ++(\a:0.42);}
+\node[align=center] at (0.1,-0.95) {\scriptsize 非偏振光};
+% 起偏器
+\draw[fill=bandcream,draw=petal] (1.6,-0.85) rectangle (1.95,0.85);
+\node[align=center] at (1.78,-1.25) {\scriptsize 起偏器};
+% 偏振光箭头（竖直）
+\draw[<->,violet,thick] (2.7,0) -- (2.7,0.55);
+\draw[<->,violet,thick] (3.2,0) -- (3.2,0.55);
+% Kerr 盒
+\draw[draw=violet,thick] (4.0,-1.0) rectangle (9.4,1.0);
+\draw[fill=bandviolet,draw=violet] (4.0,1.0) rectangle (9.4,1.22);
+\draw[fill=bandviolet,draw=violet] (4.0,-1.22) rectangle (9.4,-1.0);
+\node at (6.7,1.11) {\scriptsize $+$};
+\node at (6.7,-1.11) {\scriptsize $-$};
+% 场线
+\foreach \x in {4.6,5.4,6.2,7.0,7.8,8.6}{
+  \draw[->,violet] (\x,1.0) -- (\x,-1.0);}
+\node[align=center,text=violet] at (6.7,-1.75) {\scriptsize $E=V/d$，垂直于光传播方向};
+\node[align=center] at (6.7,1.62) {\scriptsize 电极（平行板）};
+% 出射光（椭圆）
+\draw[->,violet,thick] (10.0,0) .. controls (10.25,0.34) and (10.5,-0.34) .. (10.75,0.02);
+\draw[->,violet,thick] (10.75,0.02) .. controls (11.0,0.38) and (11.25,-0.30) .. (11.5,0.03);
+\node[align=center] at (10.85,-0.95) {\scriptsize 椭圆偏振};
+% 检偏器（与起偏器正交）
+\draw[fill=bandcream,draw=petal] (12.1,-0.85) rectangle (12.45,0.85);
+\draw[<->,violet,thick] (12.0,-0.5) -- (12.55,0.5);
+\node[align=center] at (12.28,-1.25) {\scriptsize 检偏器（正交）};
+\draw[->,red!65!black] (13.2,0) -- (14.0,0) node[below,text=black]{\scriptsize 探测器};
+\end{tikzpicture}
+\end{center}
+
+{\small\color{inkgray}图 1：Kerr 盒的横向几何。电场在电极板之间竖直向下，光沿水平方向穿过，
+两者垂直；因此 $E=V/d$ 里的 $d$ 是\emph{电极间距}，不是盒长。盒长 $L$ 决定累积多少延迟。}
+
+\subhdr{4.3 响应时间与速度上限（课件 p17）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{6.0cm}p{4.2cm}p{4.6cm}@{}}
+\thead{器件} & \thead{响应时间} & \thead{瓶颈} \\
+\tabmid
+液体 Kerr 盒 & $1$--$100\ \mathrm{ns}$ & 分子转动扩散（黏度、温度） \\
+\tabmid
+固体 Kerr 盒 & $<1\ \mathrm{ps}$ & 电子极化（极快但需极高场） \\
+\tabmid
+Pockels 盒 & ps--ns & 电子 + 声子 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+结论一句话：\textbf{要 GHz 以上调制，Pockels 盒占主导；Kerr 盒守着自己那块「大效应、大孔径、不挑极性」的地盘}（§4.4 第 2 问）。
+
+\subhdr{4.4 课件三问（p18--p20）}
+
+\textbf{问 1：既然是二次方，反接电压是不是没有影响？}是。$(-E)^2=E^2$，$\Delta n$ 不变。
+实践后果：用 AC 驱动 Kerr 盒时，\emph{正负半周给出同样的光学效果}，所以 $T(t)$ 以两倍频振荡。
+这与 Pockels 盒相反——后者反接电压就反转 $\Delta n$ 的符号。
+
+\textbf{问 2：Kerr 弱得多，为什么还留着它？}两个理由。其一，$E^2$ 是二阶过程，同场强下比 $E$ 小几个数量级；
+液体里又是「热运动对抗定向」的效率不高的机理。其二，它仍然不可替代的场合有四类：
+必须用中心对称材料时；测极高电压时（二次响应便于线性化读数）；需要大孔径液体介质时；
+以及超快固体 Kerr 门（光学 Kerr 效应，用于飞秒脉冲测量）。
+
+\textbf{问 3：光能不能沿着电场走？}标准盒子里不能——横向几何下，场\emph{定义}了一个光轴：
+平行于 $E$ 的偏振与垂直于 $E$ 的偏振看到不同折射率，这才是双折射的来源。若光平行于 $E$，
+它在横向平面内看到的是各向同性的（两个垂直方向等价），双折射为零。这条与 §6.1 的「纵向/横向」是同一件事的电场版。
+
+\subhdr{4.5 小例：一个硝基苯 Kerr 盒要多少电压}
+
+设液体为硝基苯，$K=2.2\times10^{-12}\ \mathrm{m/V^2}$，$L=1\ \mathrm{cm}$，极板间距 $d=2\ \mathrm{mm}$，
+要求四分之一波延迟 $\Gamma=\pi/2$。由 (\ref{eq:gamma-kerr}) 反解：
+\begin{equation}
+\left(\frac{V}{d}\right)^2=\frac{\Gamma}{2\pi KL}
+\;\Longrightarrow\;
+V=d\sqrt{\frac{\Gamma}{2\pi K L}} .
+\end{equation}
+先算分母：$2\pi KL=2\pi\times2.2\times10^{-12}\times0.01\approx1.38\times10^{-13}\ \mathrm{m/V^2}$，
+\begin{equation}
+\frac{V}{d}=\sqrt{\frac{\pi/2}{1.38\times10^{-13}}}\approx\sqrt{1.14\times10^{13}}
+\approx3.4\times10^{6}\ \mathrm{V/m},
+\qquad
+V\approx3.4\times10^{6}\times2\times10^{-3}\approx6.8\times10^{3}\ \mathrm{V}.
+\end{equation}
+
+\textbf{约 $6.7\ \mathrm{kV}$}，这才是硝基苯盒子能工作的量级。把同一个式子用在弱液体
+（$K\sim2\times10^{-14}$，即比硝基苯小 $100$ 倍）上，同样的 $d=2\ \mathrm{mm}$、$L=1\ \mathrm{cm}$ 就要 $7.1\times10^{4}\ \mathrm{V}$；
+再把间隙放大到 $d=1\ \mathrm{cm}$、盒子加长到 $L=5\ \mathrm{cm}$，就是 $1.5\times10^{5}\ \mathrm{V}$ 量级——
+课件 p46--p48 的例题正是这一组（见 §8.2）。
+
+两条经验因此成立：\textbf{（i）$V\propto d$，把电极间隙做小是降电压最有效的手段；
+（ii）$V\propto1/\sqrt{L}$，加长盒子只按平方根降电压}——与 Pockels 的 $V_\pi\propto d/L$（线性）不同（§6.2）。
+
+%=====================================================================
+\hdr{§5}{Pockels 效应：折射率随 $E$ 线性变}
+
+\subhdr{5.1 公式从哪里来（课件 p22）}
+
+\begin{equation}
+\label{eq:pockels}
+\boxed{\;\Delta n=-\frac{1}{2}n^3rE\;}
+\end{equation}
+
+这个式子里的 $\tfrac12$ 和 $n^3$ 不是约定，而是从「指标体」的定义算出来的。设电场让
+\emph{折射率平方的倒数}改变一个与场成正比的小量：
+\begin{equation}
+\label{eq:invn}
+\frac{1}{n'^2}=\frac{1}{n^2}+rE .
+\end{equation}
+这是电光效应最自然的写法，因为指标体方程里出现的正是 $1/n^2$（§1.4）。
+现在令 $n'=n+\delta n$，把左边展开到一阶：
+\begin{equation}
+\frac{1}{(n+\delta n)^2}=\frac{1}{n^2}\left(1+\frac{\delta n}{n}\right)^{-2}
+\approx\frac{1}{n^2}\left(1-2\frac{\delta n}{n}\right)
+=\frac{1}{n^2}-\frac{2\,\delta n}{n^3} .
+\end{equation}
+与 (\ref{eq:invn}) 比较，$1/n^2$ 抵消，剩下
+\begin{equation}
+-\frac{2\,\delta n}{n^3}=rE
+\;\Longrightarrow\;
+\delta n=-\frac{1}{2}n^3rE .
+\end{equation}
+
+所以：\textbf{$n^3$ 来自对 $1/n^2$ 求导，$\tfrac12$ 来自二次项的泰勒展开}。
+记住这个来历，就不会在作业里把 $n^3$ 写成 $n$、或把 $\tfrac12$ 丢掉。
+
+\begin{WarnBox}
+\textbf{最容易错的一处：$\tfrac12$ 在算 $\Gamma$ 时会「消失」。}
+式 (\ref{eq:pockels}) 说的是\emph{一个}偏振分量的折射率变化量。可是横向 Pockels 盒里，
+两个正交偏振看到的是 $n+\tfrac12n^3rE$ 与 $n-\tfrac12n^3rE$（符号相反），
+所以\textbf{两者之差}是
+\begin{equation}
+\label{eq:dnalpha}
+\Delta n_{\text{两模之间}}=n^3rE ,
+\end{equation}
+$\tfrac12$ 被两个模的差抵消掉了。把 (\ref{eq:dnalpha}) 代进 (\ref{eq:gamma}) 才得到课件的
+$\Gamma=\frac{2\pi}{\lambda}n^3rV\frac{L}{d}$。若误用 (\ref{eq:pockels}) 直接当 $\Delta n$，结果会差一倍——
+这是本章最常见的失分点。
+\end{WarnBox}
+
+\subhdr{5.2 张量形式：为什么必须写 $r_{ij}$（课件 p25）}
+
+Pockels 效应是各向异性的：给定电场方向，指标体会沿特定方向变形，变形量取决于晶体的取向。
+严格的写法是对\emph{逆介电张量}的六个独立分量逐项线性响应：
+\begin{equation}
+\Delta\!\left(\frac{1}{n^2}\right)_{\!i}=\sum_{j=1}^{3}r_{ij}E_j,
+\qquad i=1,\dots,6;\ j=x,y,z,
+\end{equation}
+$r_{ij}$ 是一个 $6\times3$ 的矩阵（原本是三阶张量 $r_{ijk}$ 的 27 个分量，用 Voigt 记法压成 18 个），
+其非零元由晶体的点群决定。
+
+\textbf{KDP 的情形}（$\bar42m$ 点群）：只有 $r_{41}=r_{52}$ 与 $r_{63}$ 非零。做纵向调制器时用的是 $r_{63}$：
+电场沿 $z$（光轴），光也沿 $z$ 传播，感生的主轴在 $xy$ 平面内\emph{转过 $45^\circ$}——
+原来沿 $x,y$ 的两个主轴变成沿 $x\pm y$ 方向。这件事的物理含义是：
+\textbf{一个各向同性（或单轴）的晶体被场变成了双轴晶体}，而双折射的大小正比于 $E$。
+
+\begin{Callout}
+\textbf{为什么「转 $45^\circ$」很要紧。}如果入射的线偏振沿 $x$（原来的主轴），它在这个新坐标系里
+是 $45^\circ$ 方向的等幅叠加，于是被完整地「劈」成两束等幅分量（$\cos45^\circ=\sin45^\circ$），
+延迟 $\Gamma$ 才能在后面的检偏器上全部转化为强度调制。若偏振沿新主轴，则只看到一个折射率，
+延迟为零，调制器完全不工作。§7.1 的装置图里那个「$45^\circ$」就是这么来的。
+\end{Callout}
+
+\subhdr{5.3 材料与对称类（课件 p23）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.2cm}p{4.4cm}p{5.8cm}@{}}
+\thead{晶类（点群）} & \thead{例子} & \thead{电光系数} \\
+\tabmid
+四方 $\bar42m$ & KDP（KH$_2$PO$_4$） & $r_{63}\approx10.5\ \mathrm{pm/V}$ \\
+\tabmid
+四方 $\bar42m$ & KD$^*$P（氘化） & $r_{63}\approx26\ \mathrm{pm/V}$ \\
+\tabmid
+三方 $3m$ & LiNbO$_3$ & $r_{33}\approx30.8\ \mathrm{pm/V}$ \\
+\tabmid
+立方 $\bar43m$ & GaAs & $r_{41}\approx1.4\ \mathrm{pm/V}$ \\
+\tabmid
+三方 $32$ & 石英 & $r_{11}\approx0.2\ \mathrm{pm/V}$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+课件在这张表下面写了一句「规则」：\textbf{有反演中心，Pockels 效应严格为零}。
+中心对称材料（Si、Ge、NaCl、金刚石、玻璃、液体、气体）只有 Kerr 效应可用。
+
+表里 $r$ 的单位是 $\mathrm{pm/V}=10^{-12}\ \mathrm{m/V}$。KDP 的 $10.5$ 与 §6.3 表里的 $10.5$ 是同一个数（课本常写 $10.6$）。
+
+\subhdr{5.4 课件 FAQ：原子层面到底发生了什么（p33）}
+
+问：为什么中心对称晶体里线性响应被禁，原子尺度上「禁」在哪里？
+
+答分两层。\textbf{数学层}在 §2.2 已经证完：$\Delta n(+E)=\Delta n(-E)$ 强制 $a_1=0$。
+\textbf{原子层}是这件事的实现方式：在非中心对称的晶体里，电子云与离子的排布本身就是不对称的，
+场一推，电子分布沿场方向平移、离子沿同一方向位移，两者的位移都\emph{正比于}场——于是介电响应出现一项 $\propto E$。
+在中心对称的晶体里，场把电子往一边推、把相邻的离子往反方向对称地推，
+一阶响应正好相互抵消，剩下的第一项非零贡献只能是 $E^2$。
+
+两层的对应关系值得记：\textbf{「一阶响应相互抵消」正是 (\ref{eq:inversion}) 那条恒等式的物理内容}。
+数学上写 $a_1=0$，物理上说「对称的推动给不出净的极化方向」。
+
+\subhdr{5.5 与 Kerr 的量级（课件 p31）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.0cm}p{5.0cm}p{4.6cm}@{}}
+\thead{性质} & \thead{Pockels（线性）} & \thead{Kerr（二次）} \\
+\tabmid
+场依赖 & $\Delta n\propto E$ & $\Delta n\propto E^2$ \\
+\tabmid
+对称性要求 & 仅非中心对称 & 所有材料 \\
+\tabmid
+典型强度 & 强（$r\sim1$--$30\ \mathrm{pm/V}$） & 弱（$K\sim10^{-14}$--$10^{-12}\ \mathrm{m/V^2}$） \\
+\tabmid
+响应时间 & ps（电子） & ns（液体）/ fs（固体） \\
+\tabmid
+驱动电压 & 中（$10^2$--$10^4\ \mathrm{V}$） & 高（$10^4$--$10^6\ \mathrm{V}$） \\
+\tabmid
+极性 & $\Delta n$ 随极性反号 & 与极性无关 \\
+\tabmid
+常用材料 & LiNbO$_3$、KDP、GaAs & 硝基苯、CS$_2$、玻璃 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\textbf{量级对比给个数}：在 $E=10^6\ \mathrm{V/m}$、$n=1.5$、$r=10\ \mathrm{pm/V}$ 下，
+Pockels 的 $\Delta n\approx\tfrac12n^3rE\approx1.7\times10^{-5}$；
+而 $\Delta n=K\lambda E^2$ 取 $K=2\times10^{-14}$、$\lambda=633\ \mathrm{nm}$ 时是 $1.3\times10^{-8}$。
+\textbf{相差约 $10^3$ 倍}——这就是「能用 Pockels 就不用 Kerr」的全部算术依据（也是作业第 3 题的一个自然对照）。
+
+%=====================================================================
+\hdr{§6}{纵向与横向、半波电压、材料选择}
+
+\subhdr{6.1 两种几何与两个公式（课件 p26）}
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+% ---- (a) 纵向 ----
+\node at (3.2,1.5) {\textbf{(a) 纵向：$\boldsymbol{E}\parallel\boldsymbol{k}$}};
+\draw[draw=violet,thick,fill=bandviolet] (1.4,-0.85) rectangle (5.0,0.85);
+\draw[draw=violet,thick,fill=petal!40] (1.4,-0.85) rectangle (1.52,0.85);
+\draw[draw=violet,thick,fill=petal!40] (4.88,-0.85) rectangle (5.0,0.85);
+\draw[->,red!65!black,thick] (0.1,0) -- (5.6,0);
+\foreach \x in {1.9,2.6,3.3,4.0,4.7}{\draw[->,violet] (\x,0.6) -- (\x,-0.6);}
+\node at (2.05,-1.15) {\scriptsize 透明电极};
+\node at (4.4,-1.15) {\scriptsize 透明电极};
+\node at (3.2,-1.15) {\scriptsize $L$};
+\draw[<->,inkgray] (1.52,-1.6) -- (4.88,-1.6);
+\node[align=center] at (3.2,-2.2)
+  {\scriptsize $\Gamma=\dfrac{2\pi}{\lambda}n^3rV$\\[2pt]\scriptsize 与 $L$、$d$ 都无关};
+
+% ---- (b) 横向 ----
+\node at (11.6,1.5) {\textbf{(b) 横向：$\boldsymbol{E}\perp\boldsymbol{k}$}};
+\draw[draw=violet,thick,fill=bandviolet] (9.8,-0.85) rectangle (13.4,0.85);
+\draw[draw=violet,thick,fill=petal!40] (9.8,0.85) rectangle (13.4,1.02);
+\draw[draw=violet,thick,fill=petal!40] (9.8,-1.02) rectangle (13.4,-0.85);
+\draw[->,red!65!black,thick] (8.5,0) -- (14.0,0);
+\foreach \x in {10.3,11.0,11.7,12.4,13.1}{\draw[->,violet] (\x,0.85) -- (\x,-0.85);}
+\node at (11.6,-1.45) {\scriptsize 电极（不透明，在侧面）};
+\draw[<->,inkgray] (13.85,-1.02) -- (13.85,1.02);
+\node[align=center] at (14.7,0) {\scriptsize $d$};
+\node[align=center] at (11.6,-2.35)
+  {\scriptsize $\Gamma=\dfrac{2\pi}{\lambda}n^3rV\dfrac{L}{d}$\\[2pt]\scriptsize 靠 $L/d$ 降电压};
+\end{tikzpicture}
+\end{center}
+
+{\small\color{inkgray}图 2：两种 Pockels 盒几何。纵向的电极必须透明（ITO 或薄金属），
+场与光同向，走过的长度与电极间距是同一个量，所以 $L/d=1$，公式里看不出几何；
+横向的电极在两侧，$d$ 是电极间距、$L$ 是通光长度，两者可以独立取，于是出现 $L/d$ 这个「免费增益」。}
+
+两者的推导只差一步：$E$ 的位置。
+
+\textbf{纵向}：$E=V/L$，代入 $\Gamma=\frac{2\pi}{\lambda}(n^3rE)L$：
+\begin{equation}
+\Gamma_{\parallel}=\frac{2\pi}{\lambda}(n^3r)\frac{V}{L}\,L=\frac{2\pi}{\lambda}n^3rV .
+\end{equation}
+$L$ 被消掉了——\textbf{纵向的延迟只看电压，与晶体多长无关}。
+
+\textbf{横向}：$E=V/d$，但光走过的还是 $L$：
+\begin{equation}
+\Gamma_{\perp}=\frac{2\pi}{\lambda}(n^3r)\frac{V}{d}\,L=\frac{2\pi}{\lambda}n^3rV\frac{L}{d} .
+\end{equation}
+
+\subhdr{6.2 半波电压 $V_\pi$（课件 p28）}
+
+定义：使 $\Gamma=\pi$ 所需的电压。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.4cm}p{6.6cm}p{3.6cm}@{}}
+\thead{几何} & \thead{$V_\pi$} & \thead{依赖} \\
+\tabmid
+纵向 & $V_\pi=\dfrac{\lambda}{2n^3r}$ & 只有材料与波长 \\
+\tabmid
+横向 & $V_\pi=\dfrac{\lambda}{2n^3r}\cdot\dfrac{d}{L}$ & 可用 $d/L$ 压低 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+推导就是把 $\Gamma=\pi$ 代进上一节两式再解 $V$。以横行为例：
+\begin{equation}
+\pi=\frac{2\pi}{\lambda}n^3rV_\pi\frac{L}{d}
+\;\Longrightarrow\;
+V_\pi=\frac{\lambda}{2n^3r}\cdot\frac{d}{L} .
+\end{equation}
+
+\textbf{一条常用的换算}：任何 Pockels 盒的延迟都可以写成
+\begin{equation}
+\label{eq:VpiV}
+\Gamma=\pi\frac{V}{V_\pi},
+\end{equation}
+因为 $V_\pi$ 的定义正是「让 $\Gamma$ 到 $\pi$ 的电压」，而 $\Gamma$ 线性正比于 $V$。
+这个关系在做作业第 1 题时比直接代公式更快，也自动保证 (a)(b) 两问自洽。
+
+\begin{Callout}
+\textbf{$V_\pi$ 是「材料的固有属性」还是「器件的属性」？}纵向的是前者（只看 $\lambda,n,r$），
+横向的是后者（还看 $d/L$）。这是选型的第一条：\textbf{要低电压就选横向}，
+因为长晶体、窄电极在工程上都能做到。
+
+课件的表还要再补一句提醒：表里的 $V_\pi$ 是\textbf{典型器件值}，不是由同一组 $n,r$ 算出来的。
+例如 KDP「$7.5\ \mathrm{kV}$ @ $633\ \mathrm{nm}$」这条，用 $\lambda/(2n^3r)$ 在 $546\ \mathrm{nm}$ 处正好得 $7.55\ \mathrm{kV}$，
+在 $633\ \mathrm{nm}$ 处则得 $8.75\ \mathrm{kV}$。做作业一律用公式算，不要照抄表（详见附录 B 第 3 条）。
+\end{Callout}
+
+\subhdr{6.3 常用材料（课件 p29）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.4cm}p{2.2cm}p{2.4cm}p{2.6cm}p{4.0cm}@{}}
+\thead{材料} & \thead{$r$ (pm/V)} & \thead{$V_\pi$ (kV)} & \thead{透光 ($\mu$m)} & \thead{备注} \\
+\tabmid
+KDP & 10.5 & 7.5 & 0.2--1.5 & 经典；易潮解 \\
+\tabmid
+KD$^*$P & 26 & 3.5 & 0.2--1.5 & $r$ 更大；Q 开关常用 \\
+\tabmid
+LiNbO$_3$ & 30.8 & 0.4（横向） & 0.4--4.5 & 工业标准；结实 \\
+\tabmid
+LiTaO$_3$ & 30.5 & 0.4（横向） & 0.4--4.5 & 与 LiNbO$_3$ 相似 \\
+\tabmid
+GaAs & 1.4 & 5 & 1--12 & 红外；半导体工艺 \\
+\tabmid
+BBO & 2.2 & 4 & 0.2--2 & 紫外 \\
+\tabmid
+石英 & 0.2 & 50 & 0.2--2 & 极弱；做传感器 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+选材料的顺序（工程视角，比背表有用）：\textbf{一、点群允许 Pockels 吗}（§2）→
+\textbf{二、工作波长透不透}（这一列决定能不能用）→ \textbf{三、$V_\pi$ 与几何能否做到}（§6.2）→
+\textbf{四、稳定性：潮解（KDP）、光折变（LiNbO$_3$ 高功率）、温度漂移}（§7.6）。
+
+\subhdr{6.4 横向为什么能降电压，以及它付出的代价}
+
+把 $V_\pi=\frac{\lambda}{2n^3r}\frac{d}{L}$ 拆开看两个可调量：
+\begin{itemize}
+\item 增大 $L$：晶体做长（例如 $2\ \mathrm{cm}$），电压按 $1/L$ 降；
+\item 减小 $d$：电极间距做窄（波导器件里 $d$ 可到几微米），电压按 $d$ 降。
+\end{itemize}
+乘积效应很猛：$L/d$ 从 $1$ 变到 $10$，电压就降十倍；波导 LiNbO$_3$ 的 $V_\pi$ 可以做到 $1\ \mathrm{V}$ 量级。
+
+代价有两个。第一，\textbf{温度}：横向盒的延迟建立在晶体的天然双折射上（$\Delta n$ 有温度系数），
+偏置点会漂；纵向的天然双折射对延迟没有贡献（光沿光轴走，两个方向同 $n$），所以温度稳定性更好。
+第二，\textbf{电极与光路的耦合}：横向要有足够大的通光孔径又不能挡住光，电极设计是主要工艺难点。
+
+\subhdr{6.5 课件 FAQ：纵横怎么选（p34）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.4cm}p{5.2cm}p{5.2cm}@{}}
+\thead{项目} & \thead{纵向} & \thead{横向} \\
+\tabmid
+场与光 & 平行 & 垂直 \\
+\tabmid
+电极 & 透明（ITO、薄金属） & 不透明，放侧面 \\
+\tabmid
+延迟 & $\Gamma=\frac{2\pi}{\lambda}n^3rV$ & $\Gamma=\frac{2\pi}{\lambda}n^3rV\frac{L}{d}$ \\
+\tabmid
+$V_\pi$ & 与长度无关 & 可用 $L/d$ 压低 \\
+\tabmid
+孔径 & 受电极限制 & 可做大 \\
+\tabmid
+温度稳定性 & 好 & 差（天然双折射漂移） \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+课件的结论值得原样记住：\textbf{纵向给 KDP/KD$^*$P 做 Q 开关}（$V_\pi$ 由材料定死，
+例如 KDP 约 $7.5\ \mathrm{kV}$，但孔径受透明电极限制，简单且温度稳）；
+\textbf{横向给 LiNbO$_3$ 做高速调制器}（长晶体 + 窄电极把 $V_\pi$ 压到几百伏以下，
+代价是偏置点漂移，需要主动控制）。
+
+%=====================================================================
+\hdr{§7}{从相位差到光强：调制器怎么工作}
+
+\subhdr{7.1 装置：为什么偏振器要放 $45^\circ$（课件 p37--p38）}
+
+一条标准的振幅调制链路只有四个块：\textbf{起偏器}（产生干净的线偏振）→ \textbf{电光晶体}
+（电压改变两个分量的相位差）→（可选）\textbf{$\lambda/4$ 波片或直流偏置}（把工作点挪到线性区）→
+\textbf{检偏器}（把相位变化转成强度变化）。
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+\draw[->,red!65!black,thick] (0,0) -- (12.6,0);
+% 起偏器
+\draw[fill=bandcream,draw=petal] (1.2,-0.8) rectangle (1.45,0.8);
+\draw[<->,violet,thick] (1.05,-0.55) -- (1.6,0.55);
+\node[align=center] at (1.33,-1.2) {\scriptsize 起偏器};
+% 晶体
+\draw[draw=violet,thick,fill=bandviolet] (3.0,-0.9) rectangle (5.8,0.9);
+\draw[dashed,inkgray] (3.0,0) -- (5.8,0);
+\draw[dashed,inkgray] (3.0,-0.75) -- (5.8,0.75);
+\node[align=center,text=violet] at (4.4,2.0) {\scriptsize 晶体主轴：$45^\circ$ 于起偏方向};
+\node[align=center] at (4.4,1.25) {\scriptsize 两分量等幅，延迟 $\Gamma(V)$};
+\draw[->,violet] (4.4,1.65) -- (4.15,0.75);
+\node[align=center] at (4.4,-1.3) {\scriptsize Pockels / Kerr 盒};
+% 波片
+\draw[fill=bandcream,draw=petal] (6.8,-0.8) rectangle (7.05,0.8);
+\node[align=center] at (6.93,-1.2) {\scriptsize $\lambda/4$ 偏置};
+% 检偏器
+\draw[fill=bandcream,draw=petal] (9.2,-0.8) rectangle (9.45,0.8);
+\draw[<->,violet,thick] (9.05,0.55) -- (9.6,-0.55);
+\node[align=center] at (9.33,-1.2) {\scriptsize 检偏器（正交）};
+\draw[->,red!65!black,thick] (10.6,0) -- (11.6,0) node[below,text=black]{\scriptsize 探测器};
+\node[align=center] at (11.0,0.55) {\scriptsize $T=\sin^{2}\dfrac{\Gamma}{2}$};
+\end{tikzpicture}
+\end{center}
+
+{\small\color{inkgray}图 3：振幅调制链路。晶体主轴与起偏方向成 $45^\circ$ 是关键（§5.2 的 box），
+否则一个分量拿不到光、延迟无法转成强度。}
+
+\subhdr{7.2 透射公式的推导}
+
+沿用图 3 的方位：起偏方向取 $x$，晶体主轴在 $\pm45^\circ$，检偏器在 $y$（正交）。
+
+\textbf{第一步，入晶体时等幅。}$E_x=1$ 在晶体坐标（$f$ 快轴与 $s$ 慢轴）上的分解是
+$E_f=E_s=1/\sqrt2$，两者同相。
+
+\textbf{第二步，出晶体时有相位差。}经过长度 $L$，慢轴多走 $\Gamma$：
+$E_f=1/\sqrt2$，$E_s=\frac{1}{\sqrt2}e^{i\Gamma}$。
+
+\textbf{第三步，投影到检偏器。}$f$ 轴在 $+45^\circ$、$s$ 轴在 $-45^\circ$，它们投到 $y$ 方向分别带
+$+1/\sqrt2$ 与 $-1/\sqrt2$ 的系数（符号相反是关键）：
+\begin{equation}
+E_y=\frac{1}{\sqrt2}\cdot\frac{1}{\sqrt2}
+-\frac{1}{\sqrt2}\cdot\frac{1}{\sqrt2}e^{i\Gamma}
+=\frac{1}{2}\left(1-e^{i\Gamma}\right).
+\end{equation}
+
+\textbf{第四步，取模方。}
+\begin{equation}
+T=\frac{I_{\text{out}}}{I_{\text{in}}}
+=\left|E_y\right|^2=\frac{1}{4}\left|1-e^{i\Gamma}\right|^2
+=\frac{1}{4}\left(1+1-2\cos\Gamma\right)
+=\frac{1-\cos\Gamma}{2}
+=\sin^{2}\frac{\Gamma}{2}.
+\end{equation}
+
+于是（课件 p30 的式子）
+\begin{equation}
+\label{eq:T}
+\boxed{\;T=\sin^{2}\frac{\Gamma}{2}=\sin^{2}\!\left(\frac{\pi V}{2V_\pi}\right)\;}
+\end{equation}
+最后一步用了 $\Gamma=\pi V/V_\pi$，即 (\ref{eq:VpiV})。
+
+\aside{若检偏器与起偏器\emph{平行}而不是正交，同样的推导给出 $T=\cos^2(\Gamma/2)=1-\sin^2(\Gamma/2)$：
+两条曲线互补。工程上无所谓哪种更好——但「正交 + 直流偏置 $\pi/2$」是最常见的一种，因为它零电压时全黑，
+暗态很干净。}
+
+\subhdr{7.3 三个工作点（课件 p39--p40）}
+
+\begin{center}
+\includegraphics[width=0.72\linewidth]{fig-l4/fig2-transmission.png}
+
+{\small\color{inkgray}图 4：$T$--$V$ 曲线（$T=\sin^2\frac{\pi V}{2V_\pi}$）。三个点：
+$V=0$ 全黑（null）、$V=V_\pi/2$ 半分（quadrature，也是线性区的中点）、$V=V_\pi$ 全透（peak）。
+每过一个 $V_\pi$，曲线重复一次。}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Null（$V=0$，$T=0$）}：全黑。若在这里直接叠加小交流信号，输出以\emph{两倍}频率振荡
+      （因为 $\sin^2$ 在零点附近是偶函数），并产生强烈的谐波失真——不能用来做模拟调制。
+\item \textbf{Quadrature / Q 点（$V=V_\pi/2$，$T=0.5$）}：曲线的\emph{拐点}，斜率最大。
+      在这里叠加小信号，输出忠实地复制输入波形，失真最小。方法是加 $\lambda/4$ 波片（块状器件）
+      或加一个 $V_\pi/2$ 的直流偏置（集成器件）。
+\item \textbf{Peak（$V=V_\pi$，$T=1$）}：偏振面正好转过 $90^\circ$，全部透过正交检偏器。
+\end{itemize}
+
+注意「null 点两倍频」与 §3.1 里 Kerr 盒「AC 驱动两倍频」是\emph{不同}的两件事：
+前者是 $\sin^2$ 在零点附近的偶对称（Pockels 盒也有），后者是 $\Delta n\propto E^2$ 的偶对称（只有 Kerr 有）。
+作业里若要区分，就抓住「$\Delta n$ 本身是否反号」这一条。
+
+\subhdr{7.4 线性调制区（课件 p41）}
+
+在 Q 点附近令 $V=V_\pi/2+v(t)$，$|v|\ll V_\pi$。记 $x=\frac{\pi v}{2V_\pi}$，则
+\begin{equation}
+T=\sin^{2}\!\left(\frac{\pi}{4}+x\right)=\frac{1+\sin 2x}{2}
+\approx\frac{1}{2}+x
+=\frac{1}{2}+\frac{\pi}{2}\,\frac{v(t)}{V_\pi}.
+\end{equation}
+（用了 $\sin^{2}(\pi/4+x)=\frac{1+\sin2x}{2}$ 与 $\sin2x\approx2x$。）
+
+\textbf{小例}：$V_\pi=4\ \mathrm{kV}$，加 $v=0.1\ \mathrm{kV}$ 的小信号。
+\begin{equation}
+\Delta T\approx\frac{\pi}{2}\cdot\frac{0.1}{4}\approx0.039\quad(\text{即 }3.9\%).
+\end{equation}
+精确值：$T(2.1\ \mathrm{kV})-T(2.0\ \mathrm{kV})=0.0392$，与线性近似差不到 $1\%$。
+这说明「小信号线性化」在 $|v|\lesssim0.1V_\pi$ 时已经很好用。
+
+代价也有两条：\textbf{偏置漂移}（温度、电荷俘获会让 Q 点跑掉，必须主动反馈，§7.6）与
+\textbf{大信号非线性}（$v$ 一大，$\sin2x$ 的三次项就出来，产生谐波）。
+
+\subhdr{7.5 相位调制器与马赫--曾德尔（课件 p42）}
+
+\textbf{纯相位调制}：撤掉检偏器，只留晶体。此时晶体的一个分量被延迟
+\begin{equation}
+\Delta\phi(V)=\frac{\pi V}{V_\pi},
+\end{equation}
+出射仍是线偏振（若偏振沿主轴），只是相位被电压调制。这就是相位调制器（PM）。
+
+\textbf{马赫--曾德尔调制器（MZI）}：把光分成两臂，只在一臂上加相位调制，再合起来：
+\begin{equation}
+T_{\text{MZI}}=\cos^{2}\!\left(\frac{\Delta\phi}{2}\right)
+=\cos^{2}\!\left(\frac{\pi V}{2V_\pi}\right).
+\end{equation}
+结构上的好处是：两臂的相位噪声共模抵消，而且可以用推挽驱动（一臂 $+\Delta\phi$、另一臂 $-\Delta\phi$），
+于是所需电压减半、啁啾（chirp）也小。这是光纤通信里最主流的调制器结构。
+
+\subhdr{7.6 工程难点与「速度极限到底在哪」（课件 p32、p35）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{4.0cm}p{10.0cm}@{}}
+\thead{难点} & \thead{现象与对策} \\
+\tabmid
+温度稳定 & 天然双折射随温度漂移 → 偏置点漂；需温控或补偿 \\
+\tabmid
+压电振铃 & 电压引起机械应变 → 声学共振；限制带宽，靠安装设计阻尼 \\
+\tabmid
+光学损伤 & 高功率密度损伤晶体；LiNbO$_3$ 高功率下有光折变；需功率管理 \\
+\tabmid
+驱动电子学 & 需要高压高速驱动；$>10\ \mathrm{GHz}$ 要用行波电极 \\
+\tabmid
+迟滞与漂移 & 电荷俘获 → 偏置漂移；需主动偏置控制 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+课件 p35 的第 3 问是这讲最值得记的一条「概念纠偏」：\textbf{Pockels 效应本身是飞秒级的，
+限制调制速度的从来不是材料}。真正卡住带宽的是五件事：
+
+（1）\textbf{RC 时间常数}：块状电极与晶体构成电容（几 pF），配 $50\ \Omega$ 驱动就是几 GHz 的低通；
+（2）\textbf{速度失配}：$>10\ \mathrm{GHz}$ 用行波电极时，微波折射率（LiNbO$_3$ 约 $4$--$5$）与光折射率（约 $2.2$）不同，
+调制波「追不上」光波，作用长度受限；
+（3）\textbf{微波损耗}：电极电阻与介质损耗随频率上升；
+（4）\textbf{压电振铃}：逆压电效应激发声学共振，$100\ \mathrm{MHz}$--$1\ \mathrm{GHz}$ 就有影响；
+（5）\textbf{驱动源}：$>40\ \mathrm{GHz}$、又要几十伏摆幅，本身就难做。
+
+现状：商用 LiNbO$_3$ 调制器 $40$--$100\ \mathrm{GHz}$；薄膜铌酸锂与等离子体结构在实验室已到 $100\ \mathrm{GHz}$ 以上。
+
+\subhdr{7.7 Q 开关：把电光效应当「腔门」用（课件 p36 的应用目录）}
+
+课件把 Q 开关列在应用里但没展开讲原理，这里补到能读懂器件的程度。
+
+\textbf{为什么要 Q 开关。}腔的品质因数 $Q$ 大致是「腔里存的能量 ÷ 每周期损耗的能量」。$Q$ 高，振荡阈值低，
+一旦起振反转粒子数就被迅速消耗，输出是连续的、功率受限于阈值；$Q$ 低，阈值高，泵浦可以先把
+反转粒子数\emph{攒}到远高于阈值，然后突然降低损耗，一次把储能放出来——这就是巨脉冲（脉宽 ns 级，
+峰值功率可到 GW）。
+
+\textbf{电光 Q 开关怎么接。}腔内放「起偏器 + Pockels 盒」，盒的主轴与起偏方向成 $45^\circ$。
+
+\begin{enumerate}
+\item \textbf{关闭态（加电压）}：盒调到\emph{单程} $\lambda/4$（即 $V=V_\pi/2$）。光往一趟走，两个分量差 $90^\circ$；
+      经端镜反射再走一趟，延迟\emph{继续累积}到 $180^\circ$——等效于一片半波片，偏振面转过 $90^\circ$，
+      回到起偏器时被挡住。腔损耗高，$Q$ 低，不振荡。
+\item \textbf{泵浦}：反转粒子数在这一段时间里堆积到很高。
+\item \textbf{打开（撤电压，ns 级）}：延迟消失，损耗骤降，$Q$ 变高，巨脉冲在几十个往返内建立。
+\end{enumerate}
+
+\textbf{两个值得注意的细节。}
+
+（i）为什么是 $V_\pi/2$ 而不是 $V_\pi$：因为光要\emph{走两趟}。这与 §6.2 里「单程」的 $V_\pi$ 定义不同，
+买器件时会看到「四分之一波电压」这个规格，就是为这个用法标的。
+
+（ii）为什么往返延迟会\emph{累积}：晶体的主轴由\emph{电场}确定，不随光的传播方向反号，
+所以回程看到的还是同一对快慢轴、同一个 $\Delta n$，相位差自然相加。
+\textbf{记住这句话}——§12 会看到 Faraday 旋转的「累积」有完全相同的原因（场定的方向不随 $k$ 反号），
+而自然旋光的「抵消」正因为它依赖的是介质的\emph{手性}而不是外场。
+
+\textbf{与 Kerr 盒 Q 开关的对比}：Kerr 盒也能做（大孔径、不挑极性），但所需电压高、液体维护麻烦，
+现代固体激光器几乎都用 Pockels 盒（KD$^*$P、BBO 或 LiNbO$_3$）。
+
+%=====================================================================
+\hdr{§8}{课件里的六道例题（教学示范）}
+
+{\small\color{inkgray}这六题课件已给完整解答，所以按\emph{教学示范}处理：正文给出完整演算，
+不作为需要先做的独立练习。作业三题（§16）用的是另一组数字，不给步骤。}
+
+\subhdr{8.1 例题 1：KDP 横向盒的半波电压（课件 p43--p45）}
+
+\textbf{已知}：KDP 横向盒，$L=2\ \mathrm{cm}$，电极间距 $d=5\ \mathrm{mm}$，$r_{63}=10.5\times10^{-12}\ \mathrm{m/V}$，
+$n_o=1.51$，$\lambda=1550\ \mathrm{nm}$。求 $V_\pi$。
+
+\textbf{解}：横向几何用 $\Gamma=\frac{2\pi}{\lambda}n_o^3r_{63}\frac{L}{d}V$，令 $\Gamma=\pi$：
+\begin{equation}
+V_\pi=\frac{\lambda}{2n_o^3r_{63}}\cdot\frac{d}{L}
+=\frac{1.55\times10^{-6}}{2\times1.51^3\times10.5\times10^{-12}}\cdot\frac{0.005}{0.02}.
+\end{equation}
+先算材料因子：$2\times1.51^3\times10.5\times10^{-12}\approx7.23\times10^{-11}\ \mathrm{m/V}$，于是
+\begin{equation}
+\frac{\lambda}{2n_o^3r_{63}}\approx\frac{1.55\times10^{-6}}{7.23\times10^{-11}}\approx2.14\times10^{4}\ \mathrm{V};
+\qquad
+V_\pi\approx2.14\times10^{4}\times0.25\approx5.36\times10^{3}\ \mathrm{V}.
+\end{equation}
+
+\textbf{答}：$V_\pi\approx5.4\ \mathrm{kV}$。
+
+\textbf{两点补充。}（i）把 $\lambda$ 从 $1550\ \mathrm{nm}$ 换到 $633\ \mathrm{nm}$，$V_\pi$ 按正比缩小到约 $2.2\ \mathrm{kV}$——
+半波电压与波长成正比。（ii）这里的 $n_o^3$ 与 $r_{63}$ 都取自 KDP 在近红外的值；
+作业第 1 题给的是 $n=1.5$、$r=10.6\ \mathrm{pm/V}$ 的简化值，道理一样。
+
+\subhdr{8.2 例题 2：液体 Kerr 盒的四分之一波电压（课件 p46--p48）}
+
+\textbf{已知}：$K=2.2\times10^{-14}\ \mathrm{m/V^2}$，$d=1\ \mathrm{cm}$，$L=5\ \mathrm{cm}$，
+$\lambda=632.8\ \mathrm{nm}$，要求 $\Gamma=\pi/2$。求 $V$。
+
+\textbf{解}：由 (\ref{eq:gamma-kerr})，
+\begin{equation}
+\Gamma=2\pi KL\left(\frac{V}{d}\right)^2
+\;\Longrightarrow\;
+\frac{V}{d}=\sqrt{\frac{\Gamma}{2\pi KL}} .
+\end{equation}
+分母：$2\pi KL=2\pi\times2.2\times10^{-14}\times0.05=6.91\times10^{-15}$。于是
+\begin{equation}
+\frac{V}{d}=\sqrt{\frac{\pi/2}{6.91\times10^{-15}}}\approx\sqrt{2.27\times10^{14}}\approx1.51\times10^{7}\ \mathrm{V/m},
+\qquad
+V\approx1.51\times10^{7}\times0.01\approx1.51\times10^{5}\ \mathrm{V}.
+\end{equation}
+
+\textbf{答}：$V\approx1.5\times10^{5}\ \mathrm{V}=150\ \mathrm{kV}$。
+
+\textbf{为什么要出这道题}：它让你对「Kerr 效应弱」有数字感。同一个 $L$、$d$ 下，硝基苯
+（$K$ 大约 $100$ 倍）只要约 $1.5\ \mathrm{kV}$ 量级的场强就能做到，而这里的 $K$ 比硝基苯小两个数量级，
+电压就要高一个数量级到 $150\ \mathrm{kV}$。顺带注意：延迟与 $\lambda$ 无关（$\lambda$ 在 (\ref{eq:gamma-kerr}) 里消掉了），
+题目给出 $632.8\ \mathrm{nm}$ 只是为提示光源。
+
+\subhdr{8.3 例题 3：Pockels 盒的强度调制（课件 p49--p52）}
+
+\textbf{已知}：Pockels 盒在正交偏振器之间，$V_\pi=4\ \mathrm{kV}$，输入 $I_{\text{in}}=2\ \mathrm{mW}$。
+求 (a) $I_{\text{out}}(V)$；(b) 透过最大值 $50\%$ 的电压；(c) 该电压下的输出功率。
+
+\textbf{解 (a)}：把 $\Gamma=\pi V/V_\pi$ 代入 (\ref{eq:T})：
+\begin{equation}
+I_{\text{out}}(V)=I_{\text{in}}\sin^{2}\!\left(\frac{\pi V}{2V_\pi}\right).
+\end{equation}
+
+\textbf{解 (b)}：令 $I_{\text{out}}=0.5I_{\text{in}}$（注意 $I_{\max}=I_{\text{in}}$，因为 $\sin^2$ 最大值为 $1$）：
+\begin{equation}
+\sin^{2}\!\left(\frac{\pi V}{2V_\pi}\right)=0.5
+\;\Longrightarrow\;
+\frac{\pi V}{2V_\pi}=\frac{\pi}{4}
+\;\Longrightarrow\;
+V=\frac{V_\pi}{2}=2\ \mathrm{kV}.
+\end{equation}
+
+\textbf{解 (c)}：$I_{\text{out}}=0.5\times2\ \mathrm{mW}=1\ \mathrm{mW}$。
+
+\textbf{答}：(a) $I_{\text{in}}\sin^{2}(\pi V/2V_\pi)$；(b) $2\ \mathrm{kV}$；(c) $1\ \mathrm{mW}$。
+
+\textbf{一句话点评}：这题就是 §7.3 的 Q 点。$50\%$ 处既是「一半光」，也是线性调制的最佳偏置点。
+
+\subhdr{8.4 例题 4--6：磁光三题（课件 p79--p81）}
+
+\textbf{例题 4（TGG 转角，p79）}：$L=5\ \mathrm{cm}$，$B=0.8\ \mathrm{T}$，$\vdt=40\ \mathrm{rad/(T\cdot m)}$。
+\begin{equation}
+\theta=\vdt BL=40\times0.8\times0.05=1.6\ \mathrm{rad}=91.7^\circ .
+\end{equation}
+
+\textbf{例题 5（隔离器长度，p80）}：要 $45^\circ$，$\vdt=25\ \mathrm{rad/(T\cdot m)}$，$B=0.5\ \mathrm{T}$。
+\begin{equation}
+L=\frac{\theta}{\vdt B}=\frac{\pi/4}{25\times0.5}=\frac{0.7854}{12.5}\approx0.0628\ \mathrm{m}\approx6.3\ \mathrm{cm}.
+\end{equation}
+
+\textbf{例题 6（两材料比较，p81）}：$B=0.3\ \mathrm{T}$，要 $45^\circ$；$\vdt_A=30$，$\vdt_B=120\ \mathrm{rad/(T\cdot m)}$。
+\begin{equation}
+L_A=\frac{0.7854}{30\times0.3}\approx0.087\ \mathrm{m}=8.7\ \mathrm{cm},
+\qquad
+L_B=\frac{0.7854}{120\times0.3}\approx0.022\ \mathrm{m}=2.2\ \mathrm{cm}.
+\end{equation}
+$\vdt$ 大 $4$ 倍，长度就短 $4$ 倍：\textbf{大 Verdet 常数的材料（如 TGG、Ce:YIG）是紧凑隔离器的前提}（§15.4）。
+
+%=====================================================================
+\hdr{§9}{自然旋光：一个必须拿来对照的「互易」样本}
+
+{\small\color{inkgray}课件 p2 的课程计划把「自然旋光（Fresnel 圆双折射、糖度计）」列为第 3 部分，
+但 p53 直接从电光跳到磁光，正课页里没有展开。它在 L2（旋光）与 L3（糖度计）已经讲过，
+这里只补到「足以和 Faraday 对照」的程度——因为 §12 的非互易性离开这个对照就讲不清。}
+
+\subhdr{9.1 现象与 Biot 定律}
+
+把一片偏振器与一片检偏器正交放置，中间插一根装糖溶液的管子，视场会亮起来；转动检偏器到某个角度
+又重新变黑——说明溶液把偏振面\emph{转了}一个角。这个角与浓度、与光程都成正比：
+\begin{equation}
+\label{eq:biot}
+\theta=[\alpha]\,c\,L ,
+\end{equation}
+$[\alpha]$ 是比旋光度（由材料、波长、温度决定），$c$ 是浓度，$L$ 是光程。这就是糖度计（saccharimetry）
+的全部原理：\textbf{测一个角度，反推一个浓度}。
+
+\subhdr{9.2 Fresnel 的圆双折射模型（为什么会转）}
+
+Fresnel 的解释只有一句话：\textbf{手性介质对右旋与左旋圆偏振的折射率不同}（圆双折射），
+而线偏振是这两者的等幅叠加，两者走完同一段长度后相位不同，合出来的线偏振自然转了个方位。
+
+\textbf{推导。}记 $\hat e_\pm=(\hat x\pm i\hat y)/\sqrt2$，两个模的折射率为 $n_\pm$。入射时等幅同相：
+\begin{equation}
+\vec E(0)=\frac{E_0}{\sqrt2}\left(\hat e_+ +\hat e_-\right).
+\end{equation}
+走完 $L$ 之后各自累积 $2\pi n_\pm L/\lambda$：
+\begin{equation}
+\vec E(L)=\frac{E_0}{\sqrt2}\left(\hat e_+\,e^{i2\pi n_+L/\lambda}+\hat e_-\,e^{i2\pi n_-L/\lambda}\right)
+=e^{i\bar\Phi}\,\frac{E_0}{\sqrt2}\left(\hat e_+\,e^{i\delta/2}+\hat e_-\,e^{-i\delta/2}\right),
+\end{equation}
+其中 $\bar\Phi=\pi(n_++n_-)L/\lambda$，$\delta=2\pi(n_+-n_-)L/\lambda$。把 $\hat e_\pm$ 展开：
+\begin{equation}
+\hat e_+\,e^{i\delta/2}+\hat e_-\,e^{-i\delta/2}
+=\sqrt2\left[\hat x\cos\frac{\delta}{2}-\hat y\sin\frac{\delta}{2}\right].
+\end{equation}
+右边是一个\emph{线}偏振，方位从 $\hat x$ 转了 $-\delta/2$。所以
+\begin{equation}
+\label{eq:oa}
+\boxed{\;\theta=\frac{\pi}{\lambda}\left(n_- -n_+\right)L=\frac{\pi}{\lambda}\,\Delta n_c\,L\;}
+\qquad \Delta n_c\equiv n_- -n_+ .
+\end{equation}
+
+形式与 (\ref{eq:gamma}) 一样：\textbf{相位差除以 2 就是方位角的转角}。这不是巧合——
+把 (\ref{eq:gamma}) 与 (\ref{eq:oa}) 并排看，$\Gamma\leftrightarrow\delta$、$2\theta\leftrightarrow\delta$，
+「转一个角 $\theta$」与「两个圆分量差 $2\theta$」是同一件事的两种说法。
+
+\subhdr{9.3 为什么它是互易的（\S12 的伏笔）}
+
+关键在 $\Delta n_c$ 的来源：它来自介质的\emph{螺旋结构}，而「右旋/左旋」这个标签是相对\emph{传播方向}定的。
+光反射回来时传播方向反了，于是同一束物理光在新的传播方向上对应的圆手性\emph{交换}：
+去程「快」的那个模，回程变「慢」。相位差被原路退回，净转角为零。这就是\textbf{互易}。
+
+微观上说得更清楚：自然旋光源于介质的空间色散（效应正比于波矢 $\vec k$，$\vec k$ 反号则效应反号），
+而 Faraday 效应源于磁化（效应正比于 $\vec B$，与 $\vec k$ 无关）。这句话是全讲最重要的一句对照，§12 会把它算实。
+
+%=====================================================================
+\hdr{§10}{磁光效应：一张表看清四类}
+
+\subhdr{10.1 定义与两个基本量（课件 p53--p54）}
+
+磁光（MO）效应是「光与\emph{磁化}介质相互作用，使偏振态、强度或相位改变」的一族现象。
+现象学上它们都表现为两个量：
+
+\begin{itemize}
+\item \textbf{磁圆双折射（MCB）}：RCP 与 LCP 的\emph{折射率}不同 → 偏振面\emph{转}（Faraday，§11）；
+\item \textbf{磁圆二色性（MCD）}：RCP 与 LCP 的\emph{吸收}不同 → 偏振态变\emph{椭圆}（§14.2）。
+\end{itemize}
+
+课件 p54 有一句话必须原样记住：\textbf{磁光效应的定义特征是「非互易」——一次传播中累积的旋转，
+不会因为反射或反向传播而抵消}。这句话就是 §12 的全部内容，也是隔离器能工作的唯一理由。
+
+\subhdr{10.2 介电张量：非对角元就是磁光效应（课件 p57）}
+
+各向同性介质的介电张量是对角的。磁化之后出现非对角元：
+\begin{equation}
+\underline{\underline{\varepsilon}}=\varepsilon_0
+\begin{pmatrix}
+\varepsilon & \varepsilon_{xy} & \varepsilon_{xz}\\
+-\varepsilon_{xy} & \varepsilon & -\varepsilon_{yz}\\
+-\varepsilon_{xz} & \varepsilon_{yz} & \varepsilon
+\end{pmatrix}
+=\varepsilon_0
+\begin{pmatrix}
+\varepsilon & iQ_z & iQ_y\\
+-iQ_z & \varepsilon & -iQ_x\\
+-iQ_y & iQ_x & \varepsilon
+\end{pmatrix},
+\end{equation}
+其中 $Q_j$ 是磁光常数（与磁化强度或外场成正比）。\textbf{对角元}给出无场时的各向同性响应，
+\textbf{非对角元}给出全部磁光效应；这就是为什么「磁光效应弱」等价于「$\varepsilon_{xy}$ 小」
+（$Q\sim10^{-5}$--$10^{-3}$，见 §15.2）。
+
+\textbf{三种几何给出三种效应}（课件 p57 的分类）：磁化平行于光的传播方向 → 透射时是 Faraday 效应、
+反射时是极向 MOKE；磁化垂直于传播方向 → 横向（Voigt/Cotton--Mouton）效应。
+课件把第三类写成「Absorption → Voigt Effect」，这个标签有问题：Voigt 效应是\emph{双折射}（相位），
+属于吸收的是 MCD。核对见附录 B 第 5 条。
+
+\subhdr{10.3 名词表（课件 p56）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.6cm}p{7.4cm}p{3.0cm}@{}}
+\thead{名称} & \thead{内容} & \thead{几何} \\
+\tabmid
+Faraday 旋转 & 透射光的偏振面旋转 & $\vec B\parallel\vec k$ \\
+\tabmid
+MO Kerr 效应（MOKE） & 反射光的偏振态改变（旋转 + 椭圆率） & 反射，表面敏感 \\
+\tabmid
+Voigt 效应 & 磁线双折射（气体） & $\vec B\perp\vec k$ \\
+\tabmid
+Cotton--Mouton 效应 & 磁线双折射（液体；与 Voigt 同一现象） & $\vec B\perp\vec k$ \\
+\tabmid
+MCD & LCP 与 RCP 的吸收差 & $\vec B\parallel\vec k$ \\
+\tabmid
+Zeeman 效应 & 磁场使谱线分裂 & 原子能级 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{10.4 年表（课件 p55）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.0cm}p{6.0cm}p{6.0cm}@{}}
+\thead{年份} & \thead{发现} & \thead{人物} \\
+\tabmid
+1845 & Faraday 效应 & Michael Faraday \\
+\tabmid
+1877 & （磁光）Kerr 效应 & John Kerr \\
+\tabmid
+1902 & Voigt 效应 & Woldemar Voigt \\
+\tabmid
+1907 & Cotton--Mouton 效应 & Aimé Cotton \& Henri Mouton \\
+\tabmid
+1957 & 首次磁光记录（MnBi） & — \\
+\tabmid
+1980s & 磁光盘商品化 & — \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+注意这里有两个 Kerr：\textbf{1875 年的电光 Kerr 效应}（§3，二次电光）与
+\textbf{1877 年的磁光 Kerr 效应}（§13，反射）。同名不同事，考试里常被拿来设陷阱。
+
+\subhdr{10.5 磁性类型决定磁光响应（课件 p68）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.2cm}p{3.4cm}p{3.6cm}p{3.4cm}@{}}
+\thead{类型} & \thead{磁化率 $\chi$} & \thead{$M$--$H$ 关系} & \thead{非对角元正比于} \\
+\tabmid
+顺磁 & 正、小 & 线性 & 外场 $H$ \\
+\tabmid
+抗磁 & 负、小 & 线性 & 外场 $H$ \\
+\tabmid
+铁磁 & 正、大 & 非线性（低场饱和） & 磁化强度 $M$ \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+所有材料都有磁光活性，强度差别在于磁性：铁磁材料的磁光常数比顺磁/抗磁高几个数量级，
+因为它的非对角元正比于\emph{自发磁化}而不是外加场的微小极化。这条是 §15.1 选材料的依据。
+
+%=====================================================================
+\hdr{§11}{Faraday 旋转：$\theta=\mathcal{V}BL$}
+
+\subhdr{11.1 公式与 Verdet 常数（课件 p58）}
+
+\begin{equation}
+\label{eq:faraday}
+\boxed{\;\theta=\vdt BL\;}
+\end{equation}
+$\vdt$ 是 Verdet 常数（单位 $\mathrm{rad/(T\cdot m)}$，符号与旋向约定有关），
+$B$ 是磁感应强度沿光传播方向的分量，$L$ 是光程。更一般地
+\begin{equation}
+\theta=\vdt\int \vec B\cdot\mathrm d\vec l ,
+\end{equation}
+这一行解释了 §12 里的一切：\textbf{转角由 $\vec B$ 与路径的相对取向决定}，所以光反向走时
+$\mathrm d\vec l$ 反号而 $\vec B$ 不反号，积分值按同样大小累积（不是抵消）。
+
+Faraday 1845 年发表。它在抗磁、顺磁、铁磁材料里都有；铁磁的钇铁石榴石（YIG）
+在可见与近红外的 Verdet 常数极大，是器件材料（§15.4）。
+
+\subhdr{11.2 从介电张量看：旋转与椭圆率是两个分量（课件 p59）}
+
+只考虑传播方向（取 $z$）上的两个圆模。把 §10.2 的张量作用到 $\vec E_\pm=E_x\pm iE_y$ 上：
+\begin{equation}
+D_\pm=\varepsilon_0\left(\varepsilon \mp i\varepsilon_{xy}\right)E_\pm
+\;\Longrightarrow\;
+n_\pm^2=\varepsilon \mp i\varepsilon_{xy} .
+\end{equation}
+于是
+\begin{equation}
+n_\pm\approx n\left(1\mp\frac{i\varepsilon_{xy}}{2\varepsilon}\right),\qquad n=\sqrt\varepsilon ,
+\end{equation}
+两个圆模的折射率之差 $n_+-n_-=-i\varepsilon_{xy}/n$ \textbf{是复数}，两个部分各管一件事：
+
+\begin{itemize}
+\item 虚部（等价于 $\varepsilon_{xy}$ 的实部）→ 相位差 → \textbf{旋转 $\theta$}（圆双折射，MCB）；
+\item 实部（等价于 $\varepsilon_{xy}$ 的虚部）→ 振幅差 → \textbf{椭圆率 $\psi$}（圆二色性，MCD）。
+\end{itemize}
+
+课件 p59 把它写成
+\begin{equation}
+\label{eq:eps-rot}
+\theta=-\frac{\omega}{2c}\,\mathrm{Im}\!\left(\frac{\varepsilon_{xy}}{\varepsilon}\right),
+\qquad
+\psi=\frac{\omega}{2c}\,\mathrm{Re}\!\left(\frac{\varepsilon_{xy}}{\varepsilon}\right),
+\end{equation}
+它给出的是\textbf{单位长度}的转角与椭偏率（再乘 $L$ 才是总角），系数里还含一个折射率因子，
+取决于 $\varepsilon$ 取绝对还是相对值。结构（Im 管旋转、Re 管椭圆）是对的，量级也是对的；
+但\textbf{答题与做题一律回到 (\ref{eq:faraday}) 这个可测量的形式}。核对见附录 B 第 1 条。
+
+\aside{为什么「旋转」与「椭圆率」共用同一个 $\varepsilon_{xy}$ 的两个部分？因为它们是同一个复数折射率差的实部与虚部——
+这与「复折射率 $n+i\kappa$ 的实部管相位、虚部管吸收」是同一件事。Kramers--Kronig 关系进一步说明：
+只要一个频率上有 CD，就必然在附近有对应的 CB（课件 p73 的表）。}
+
+\subhdr{11.3 Verdet 常数的实际数值}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{6.0cm}p{4.4cm}p{5.0cm}@{}}
+\thead{材料} & \thead{$\vdt$，$\mathrm{rad/(T\cdot m)}$} & \thead{备注} \\
+\tabmid
+TGG（铽镓石榴石） & $\sim40$（$633\ \mathrm{nm}$） & 可见--近红外主力 \\
+\tabmid
+普通玻璃 & $\sim10$--$20$ & 便宜、可做大孔径 \\
+\tabmid
+YIG（钇铁石榴石） & 近红外极大 & 铁磁，磁光器件 \\
+\tabmid
+Ce:YIG & 比 YIG 高一个量级 & 集成隔离器 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+量级感：$\vdt\sim20\ \mathrm{rad/(T\cdot m)}$、$B=1\ \mathrm{T}$ 时，要转 $45^\circ$ 需要
+$L=\theta/(\vdt B)=0.785/20\approx4\ \mathrm{cm}$。这就是为什么隔离器里的磁光棒总有几厘米长，
+而高 Verdet 材料（Ce:YIG）能把器件做到毫米级（§15.4）。
+
+%=====================================================================
+\hdr{§12}{非互易性：为什么往返是 $2\theta$}
+
+\subhdr{12.1 问题的提法}
+
+把一束偏振光送进介质，再从端面反射回来，重新穿过同一段介质。问出射的偏振面转了多少度。
+
+两个候选答案，差一个符号：
+\begin{itemize}
+\item \textbf{互易（光学活性）}：去程 $+\theta$，回程 $-\theta$，合计 $0$——旋光「退回去」。
+\item \textbf{非互易（Faraday）}：去程 $+\theta$，回程\emph{还是} $+\theta$，合计 $2\theta$。
+\end{itemize}
+
+课件 p76 的 FAQ 给的是后者，而且理由说得很准：\textbf{旋转方向由磁场方向定，不由光的传播方向定}。
+这一节把这个理由算实。
+
+\subhdr{12.2 严格论证：张量不变，相位照加}
+
+全部论证只用一件事：\textbf{介质的介电张量由 $\vec B$ 决定，而 $\vec B$ 在光反射时并不反号}。
+
+\textbf{第一步（正程）。}取固定的实验室坐标 $(\hat x,\hat y)$。在 $z=0$ 处入射线偏振，
+分解成两个圆模，等幅同相。走到 $z=L$（端镜处）：
+\begin{equation}
+\vec E(L)=\frac{E_0}{\sqrt2}\left(\hat e_+\,e^{ik_+L}+\hat e_-\,e^{ik_-L}\right),
+\qquad k_\pm=\frac{\omega}{c}n_\pm .
+\end{equation}
+由 §9.2 的算法，偏振面在实验室坐标里转了 $\theta=\frac{\pi}{\lambda}(n_- - n_+)L$。
+
+\textbf{第二步（反射）。}理想端镜把两个分量都乘上 $-1$（切向场反向），\emph{相对}相位不变：
+$\vec E'(L)=-\vec E(L)$。它的矢量分量与入射时相同，但传播方向变成 $-\hat z$。
+
+\textbf{第三步（回程）。}反向传播的模式因子是 $e^{-ik_\pm z}$（$k_\pm>0$）。从 $z=L$ 走到 $z=0$，
+相位变化是 $-k_\pm(0-L)=+k_\pm L$——与正程的 $+k_\pm L$ \emph{同号同大小}。于是
+\begin{equation}
+\vec E(0)\propto\frac{E_0}{\sqrt2}\left(\hat e_+\,e^{2ik_+L}+\hat e_-\,e^{2ik_-L}\right),
+\end{equation}
+两个圆分量之间的相对相位差是正程的两倍：
+\begin{equation}
+2(k_+-k_-)L \;\Longrightarrow\; \theta_{\text{往返}}=2\theta=2\vdt BL .
+\end{equation}
+
+
+\textbf{一句话总结}：正程与回程的差别只在于「往哪个方向走」，而 $n_\pm$ 由 $\vec B$ 定、
+跟往哪个方向走无关。这就是「非互易」的精确含义。
+
+\aside{用 Jones 矩阵写更短：在固定实验室基 $(\hat x,\hat y)$ 下，正程介质的作用是旋转矩阵 $R(\theta)$，
+回程介质的作用\emph{还是} $R(\theta)$（不是 $R(-\theta)$），所以往返是 $R(\theta)R(\theta)=R(2\theta)$。
+若写成 $R(\theta)R(-\theta)=I$，就是把一个非互易元件误当成了互易元件——这是本节唯一的坑。}
+
+\subhdr{12.3 与自然旋光的对照：为什么那边是 $0$}
+
+同样三步，把介质换成糖溶液或石英（§9）。差别出现在\textbf{$n_\pm$ 是否交换}：
+
+\begin{itemize}
+\item \textbf{自然旋光}：$n_\pm$ 的定义依赖「相对传播方向的手性」。回程时传播方向反号，
+      同一个物理螺旋对反向波呈现相反的手性，于是去程快的模在回程变慢：
+      $n_\pm^{\text{回}}=n_\mp^{\text{正}}$，相对相位差反号，$\theta_{\text{回}}=-\theta$，合计 $0$。
+\item \textbf{Faraday}：$n_\pm$ 的定义依赖 $\vec B$（轴矢量，由线圈电流定）。$\vec B$ 不随 $\vec k$ 反号，
+      所以 $n_\pm^{\text{回}}=n_\pm^{\text{正}}$，相对相位差同号，$\theta_{\text{回}}=+\theta$，合计 $2\theta$。
+\end{itemize}
+
+微观根源一句话：\textbf{自然旋光来自空间色散（效应 $\propto\vec k$），Faraday 来自磁化（效应 $\propto\vec B$）}。
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+% ---------- (a) Faraday ----------
+\node at (3.6,2.0) {\textbf{(a) Faraday：不抵消，$2\theta$}};
+\draw[->,inkgray] (0.2,0.9) -- (7.0,0.9);
+\draw[draw=violet,thick,fill=bandviolet] (2.4,0.35) rectangle (4.4,1.45);
+\node[align=center,text=violet] at (3.4,0.02) {\scriptsize 磁光介质（$\vec B$ 固定）};
+\draw[draw=violet,thick] (6.9,0.2) rectangle (7.15,1.6);
+\node[align=center] at (7.02,-0.55) {\scriptsize 端镜};
+\draw[<->,violet,thick] (0.6,0.65) -- (0.6,1.15); \node at (0.6,1.5) {\scriptsize $0^\circ$};
+\draw[<->,violet,thick] (5.0,0.52) -- (5.75,1.28); \node at (5.6,1.6) {\scriptsize $45^\circ$};
+\draw[<->,violet,thick] (6.0,0.9) -- (6.5,0.9); \node at (6.0,0.5) {\scriptsize $90^\circ$};
+\draw[->,red!65!black] (7.35,0.9) -- (7.9,0.9);
+\node[align=center] at (7.62,1.35) {\scriptsize 被挡住}; \draw[red!65!black,thick] (7.5,0.62) -- (7.75,1.18);
+\node[align=left,text=inkgray] at (3.9,-1.15)
+  {\scriptsize 回程再转 $45^\circ$ → 与起偏方向正交 → \textbf{隔离器原理}};
+
+% ---------- (b) 自然旋光 ----------
+\node at (3.6,-2.5) {\textbf{(b) 自然旋光：原路退回，$0$}};
+\draw[->,inkgray] (0.2,-3.6) -- (7.0,-3.6);
+\draw[draw=petal,thick,fill=bandcream] (2.4,-4.15) rectangle (4.4,-3.05);
+\node[align=center] at (3.4,-4.55) {\scriptsize 手性介质（无外场）};
+\draw[draw=petal,thick] (6.9,-4.3) rectangle (7.15,-2.9);
+\node[align=center] at (7.02,-4.9) {\scriptsize 端镜};
+\draw[<->,violet,thick] (0.6,-3.35) -- (0.6,-3.85); \node at (0.6,-3.05) {\scriptsize $0^\circ$};
+\draw[<->,violet,thick] (5.0,-3.98) -- (5.75,-3.22); \node at (5.6,-2.95) {\scriptsize $45^\circ$};
+\draw[<->,violet,thick] (6.0,-3.6) -- (6.5,-3.6); \node at (6.1,-4.02) {\scriptsize $0^\circ$};
+\draw[->,red!65!black] (7.35,-3.6) -- (7.9,-3.6);
+\node[align=center] at (7.62,-3.2) {\scriptsize 通过};
+\node[align=left,text=inkgray] at (3.9,-5.55)
+  {\scriptsize 回程反向抵消 $45^\circ$ → 回到 $0^\circ$ → \textbf{不能做隔离器}};
+\end{tikzpicture}
+\end{center}
+
+{\small\color{inkgray}图 5：同一段介质，光走两趟。(a) Faraday：转角按 $+45^\circ\to+90^\circ$ 累积；
+(b) 自然旋光：$+45^\circ\to0^\circ$ 退回。判据不是「有没有磁」，而是「决定旋向的量随不随 $\vec k$ 反号」。}
+
+\subhdr{12.4 光隔离器的构造（课件 p74）}
+
+图 5(a) 就是光隔离器的全部。三个元件沿光轴排好：
+\begin{enumerate}
+\item \textbf{起偏器}（方位 $0^\circ$）；
+\item \textbf{Faraday 旋转器}（转 $45^\circ$，用高 Verdet 材料 + 永磁体提供 $\vec B$）；
+\item \textbf{检偏器}（方位 $45^\circ$，与起偏器成 $45^\circ$）。
+\end{enumerate}
+\textbf{正向光}：$0^\circ\to45^\circ$，与检偏器一致，通过。
+\textbf{返回光}（由下游反射回来）：过检偏器后是 $45^\circ$，再过旋转器再加 $45^\circ$ → $90^\circ$，
+与起偏器（$0^\circ$）正交 → 被挡住。
+
+\textbf{关键点}：如果旋转器是「互易」的（例如一片 $\lambda/2$ 波片或一根糖溶液），返回光会退回 $0^\circ$
+并顺利穿过，隔离失效。\textbf{所以隔离器必须用非互易元件}——这就是整个 §12 的工程意义。
+
+两个配套名词：\textbf{隔离度}（isolation，返回光被压掉多少 dB，商用 $30$--$60\ \mathrm{dB}$）与
+\textbf{插入损耗}（forward insertion loss，通常 $0.5$--$1\ \mathrm{dB}$）。
+\textbf{环形器}是它的多端口推广：$1\to2\to3\to1$ 单向循环，靠同一套「非互易旋转 + 偏振分束」。
+
+\subhdr{12.5 关于作业第 2 题 (b) 的措辞}
+
+作业原文是「若光两次穿过棒（往返），总转角是多少？解释为什么结果不是简单地翻倍」。
+物理结论明确：\textbf{总转角是 $2\theta$}（课件 p76 的 FAQ 也是这么写的）。所以这句话不能被读成
+「答案不是 $2\theta$」。它要你说明的是\textbf{「为什么不能按『反向传播所以反向抵消』的直觉去算」}——
+也就是本节 12.2 的三步论证。若作业想考的是「为什么不是 $0$」，那答案就是非互易性本身。
+
+写法上最稳的一句：\emph{The rotation doubles in the laboratory frame because the sense of rotation is
+fixed by $\vec B$, not by the direction of propagation; unlike natural optical activity, the return pass
+adds another $+\theta$ instead of undoing the first one.} 附录 C 与附录 D 都按这个口径给答案。
+
+% ==== PART7 ====
+
+%=====================================================================
+\hdr{§13}{MOKE：反射时的偏振改变}
+
+\subhdr{13.1 定义与表面敏感性（课件 p60）}
+
+磁光 Kerr 效应（MOKE，1877）说的是：\textbf{线偏振光从磁化表面反射后，偏振态改变}（既有旋转 $\theta$，
+也有椭圆率 $\psi$）。它与 Faraday 效应同源（都来自 $\varepsilon_{xy}$），区别只在几何：一个透射、一个反射。
+
+\textbf{反射意味着表面敏感}：探测深度约为光的穿透深度，金属多层膜里约 $20\ \mathrm{nm}$。
+这是它在薄膜磁学里不可替代的原因——它只"看"表面那二十纳米。
+
+\begin{WarnBox}
+课件 p60 有一句话要加限定：「效应正比于\emph{沿光传播方向}的磁化分量」。
+这只对\textbf{极向（polar）}几何（磁化垂直于膜面）成立；纵向与横向几何的正比关系分别是
+「面内沿入射面的分量」与「面内垂直入射面的分量」（§13.2）。核对见附录 B 第 4 条。
+\end{WarnBox}
+
+\subhdr{13.2 三种几何（课件 p61）}
+
+\begin{center}
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+% 公共画法：膜面 y=0.55，光从左上到 (x0+1.3,0.55) 再反射到右上。
+% 磁化标记画在光束右侧，只标单字母 M；含义见图注与下方表，避免文字压住光路。
+% --- (a) polar ---
+\node at (1.9,2.25) {\textbf{(a) 极向 polar}};
+\draw[thick,violet] (0.0,0.55) -- (3.9,0.55);
+\draw[->,red!65!black] (0.1,1.75) -- (1.3,0.56);
+\draw[->,red!65!black] (1.3,0.56) -- (2.5,1.75);
+\node at (0.35,1.2) {\scriptsize 入};
+\node at (2.28,1.2) {\scriptsize 反};
+\draw[->,violet,thick] (3.15,0.62) -- (3.15,1.40);
+\node at (3.48,1.15) {\scriptsize $\vec M$};
+
+% --- (b) longitudinal ---
+\node at (6.9,2.25) {\textbf{(b) 纵向 longitudinal}};
+\draw[thick,violet] (5.0,0.55) -- (8.9,0.55);
+\draw[->,red!65!black] (5.1,1.75) -- (6.3,0.56);
+\draw[->,red!65!black] (6.3,0.56) -- (7.5,1.75);
+\node at (5.35,1.2) {\scriptsize 入};
+\node at (7.28,1.2) {\scriptsize 反};
+\draw[->,violet,thick] (6.55,0.28) -- (8.05,0.28);
+\node at (8.28,0.28) {\scriptsize $\vec M$};
+
+% --- (c) transverse ---
+\node at (11.9,2.25) {\textbf{(c) 横向 transverse}};
+\draw[thick,violet] (10.0,0.55) -- (13.9,0.55);
+\draw[->,red!65!black] (10.1,1.75) -- (11.3,0.56);
+\draw[->,red!65!black] (11.3,0.56) -- (12.5,1.75);
+\node at (10.35,1.2) {\scriptsize 入};
+\node at (12.28,1.2) {\scriptsize 反};
+\draw[violet,thick] (11.95,0.28) circle (0.12);
+\draw[violet,thick] (11.885,0.215) -- (12.015,0.345);
+\draw[violet,thick] (11.885,0.345) -- (12.015,0.215);
+\node at (12.28,0.28) {\scriptsize $\vec M$};
+\end{tikzpicture}
+\end{center}
+
+{\small\color{inkgray}图 6：MOKE 三种几何。紫色单箭头与 $\otimes$ 是磁化方向（$\otimes$ = 垂直纸面向里）。
+(a) $\vec M$ 垂直膜面；(b) $\vec M$ 在面内、平行入射面；(c) $\vec M$ 在面内、垂直入射面。
+判据是 $\vec M$ 相对「膜面法线」与「入射面」这两个方向的位置，与光从哪一侧来无关。}
+
+{\small\color{inkgray}图 6：MOKE 三种几何。$\otimes$ 表示磁化垂直纸面向里（在面内、垂直于入射面）。
+判据看 $\vec M$ 相对「表面法线」与「入射面」两个方向的位置。}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.2cm}p{5.0cm}p{5.8cm}@{}}
+\thead{几何} & \thead{磁化方向} & \thead{测什么} \\
+\tabmid
+极向 polar & 垂直样品表面 & 面外磁化；正入射也可测 \\
+\tabmid
+纵向 longitudinal & 面内、平行入射面 & 最常见的薄膜磁滞回线 \\
+\tabmid
+横向 transverse & 面内、垂直入射面 & 只测强度变化，不测旋转 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{13.3 复克尔转角（课件 p62--p63）}
+
+MOKE 测量的是「$p$ 偏振入射时出现的 $s$ 分量」——反射系数矩阵有了非对角元：
+\begin{equation}
+\label{eq:moke}
+\Phi=\theta+i\psi=\frac{r_{ps}}{r_{pp}} ,
+\qquad
+\Phi\propto \varepsilon_{xy}\ (\text{即}\propto Q),
+\end{equation}
+实部是旋转、虚部是椭圆率。$r_{ps}\neq0$ 的根源就是 $\varepsilon_{xy}$：没有磁化时，$p$ 与 $s$ 互不混合。
+
+极向几何下 $r_{ps}$ 的具体形式（课件 p63）是
+\begin{equation}
+\theta_p=\mathrm{Im}\!\left[
+\frac{\eta^2}{\eta^2-\sin^2\theta_i}\cdot
+\frac{\mp\sin\theta_i\tan\theta_i\,(\eta^2-1)}{\eta^2-\tan^2\theta_i}\cdot Q
+\right],
+\qquad
+\psi_p=\mathrm{Re}\,[\,\cdots\,],
+\end{equation}
+其中 $\eta=\eta_2/\eta_1$ 是磁光层与环境的复折射率之比，$\theta_i$ 是入射角，$Q=g/\varepsilon$。
+\textbf{这个式子的用途是判断趋势，不是拿来背}：$Q\to0$ 时 $\theta_p\to0$（无磁化无信号）；
+$\eta$ 与 $\theta_i$ 决定响应的大小与符号。考试若考，问到的是「$\Phi$ 的实部虚部各是什么」与「$Q$ 与什么成正比」。
+
+\subhdr{13.4 纵向与横向（课件 p64--p65）}
+
+\textbf{纵向 MOKE}：磁化在面内且平行入射面。$\theta_L$ 有与 $\theta_p$ 同构的表达式，但多一个
+$\sin\theta_i\eta^2/\sqrt{\eta^2-\sin^2\theta_i}$ 的因子。\textbf{关键性质：正入射时 $\theta_L=0$}——
+因为正入射没有"入射面"，纵向与极向无法区分，而只有垂直膜面的磁化才能在正入射下起作用。
+
+\textbf{横向 MOKE}：磁化在面内且垂直入射面。此时 $p$ 分量受影响、$s$ 分量不受影响，
+所以\textbf{偏振态不变、只改反射强度}：
+\begin{equation}
+\delta T=\frac{I_M-I_{-M}}{I_0}
+=-\mathrm{Im}\!\left[\frac{4\tan\theta_i\,\eta^2}{\eta^2-1}\cdot
+\frac{\eta^2}{\eta^2-\tan^2\theta_i}\cdot Q\right].
+\end{equation}
+$I_M$ 与 $I_{-M}$ 是相反磁化方向下的反射强度。$p$ 偏振斜入射时这个效应最大。
+
+\subhdr{13.5 Faraday 与 MOKE 的分工（课件 p77）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{5.2cm}@{}}
+\thead{项目} & \thead{Faraday} & \thead{MOKE} \\
+\tabmid
+几何 & 透射 & 反射 \\
+\tabmid
+测量量 & 透射偏振面的旋转 & 反射的旋转 + 椭圆率 \\
+\tabmid
+探测深度 & 整个样品厚度 & 表面（金属约 $20\ \mathrm{nm}$） \\
+\tabmid
+典型应用 & 隔离器、电流传感器 & 磁畴成像、薄膜表征 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+一句话：\textbf{要看体内用 Faraday，要看表面用 MOKE}。
+
+%=====================================================================
+\hdr{§14}{Voigt/Cotton--Mouton 与圆二色性}
+
+\subhdr{14.1 磁线双折射：Voigt 与 Cotton--Mouton（课件 p66--p67）}
+
+前面所有磁光效应都是\emph{圆}双折射或圆二色性（需要 $\vec M\parallel\vec k$）。若把磁化方向转到
+\emph{垂直}于传播方向，得到的是\emph{线}双折射，而且它是\emph{二次}的：
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.6cm}p{4.4cm}p{5.6cm}@{}}
+\thead{名称} & \thead{介质} & \thead{几何} \\
+\tabmid
+Voigt 效应（1902） & 气体、蒸气 & $\vec B\perp\vec k$，线双折射 \\
+\tabmid
+Cotton--Mouton 效应（1907） & 液体 & 同上，同一现象的液体版 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\textbf{怎么理解它的二次性}：磁化沿横向时，把磁化反号等价于绕传播轴转 $180^\circ$，
+而线双折射（$\vec E\parallel\vec M$ 与 $\vec E\perp\vec M$ 的相位差）在这个转动下不变——
+所以响应只能是 $M$ 的\emph{偶}函数，最低阶是 $M^2$。这与 §2 的对称性论证是同一套逻辑：
+\textbf{纵向效应（Faraday）是 $M$ 的奇函数，横向效应是偶函数}。
+
+定量上（课件 p67）：
+\begin{equation}
+\Delta n_{\text{LM}}\propto I_\parallel-I_\perp,\qquad \text{且}\ \Delta n_{\text{LM}}\sim M^2 ,
+\end{equation}
+$I_\parallel$、$I_\perp$ 是磁化平行/垂直于偏振时的反射或透射强度。介质表现得像一块光轴沿 $\vec M$ 的单轴晶体。
+量级上它比 Faraday 弱得多（$M^2$ 且系数小），主要用于气体与液晶的基础测量。
+
+\subhdr{14.2 圆二色性 CD（课件 p70--p72）}
+
+CD 是 RCP 与 LCP 的\emph{吸收}差——圆双折射的"吸收版"：
+\begin{equation}
+\label{eq:cd}
+CD=\Delta A=A_{LCP}-A_{RCP}=(\alpha_- -\alpha_+)\,d ,
+\end{equation}
+$\alpha_\pm$ 是两个圆偏振的吸收系数，$d$ 是光程。$\Delta A\neq0$ 时，一个圆分量被削得更多，
+出射光变成\emph{椭圆}偏振（这正是"二色性"的字面意思）。
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.6cm}p{2.6cm}p{7.4cm}@{}}
+\thead{量} & \thead{符号} & \thead{含义} \\
+\tabmid
+吸光度差 & $\Delta A$ & 原始 CD 信号 \\
+\tabmid
+摩尔椭圆率 & $[\theta]$ & 对浓度与光程归一（$\mathrm{deg\cdot cm^2\cdot dmol^{-1}}$） \\
+\tabmid
+不对称因子 & $g=\Delta A/A$ & 手性强弱，典型 $10^{-5}$--$10^{-3}$ \\
+\tabmid
+椭圆率角 & $\theta$（mdeg） & $\tan\theta=$ 椭圆短轴/长轴 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\textbf{物理来源}：介质必须对两个圆偏振"区别对待"，两种途径——
+（i）\textbf{手性}（缺镜面对称），如蛋白质、DNA、糖；（ii）\textbf{磁化}（MCD），连非手性样品也有。
+微观机制分别是电偶极–磁偶极干涉（自然 CD）与 Zeeman 分裂（MCD），结果都是复折射率不等：
+\begin{equation}
+\tilde n_+\neq\tilde n_-\quad\Longrightarrow\quad \Delta n\neq0\ (\text{CB})\ \text{且}\ \Delta\alpha\neq0\ (\text{CD}).
+\end{equation}
+
+\textbf{仪器（课件 p72）}：光源 → 滤光轮（选波长）→ 偏振器 → 光弹调制器或 $\lambda/4$ 片
+（交替产生 LCP 与 RCP）→ 样品池 → 探测器。测的是两个圆偏振下的吸收差，信噪比靠调制与锁相放大保证。
+
+\subhdr{14.3 CB 与 CD 的对照（课件 p73）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{3.0cm}p{5.4cm}p{5.2cm}@{}}
+\thead{方面} & \thead{圆双折射 CB} & \thead{圆二色性 CD} \\
+\tabmid
+差别在 & RCP 与 LCP 的\emph{相速}（折射率） & RCP 与 LCP 的\emph{吸收}（衰减） \\
+\tabmid
+物理量 & $\Delta n=n_+-n_-$（实部） & $\Delta\alpha=\alpha_+-\alpha_-$（虚部） \\
+\tabmid
+对光的作用 & 偏振面\emph{旋转} & 偏振态变\emph{椭圆} \\
+\tabmid
+联系 & \multicolumn{2}{l}{Kramers--Kronig 关系：一个频率上有 CD，附近必有 CB} \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+这张表把整讲的磁光部分收口了：\textbf{同一个复数的 $\varepsilon_{xy}$，实部给 CB（旋转）、虚部给 CD（椭圆）}；
+Faraday（§11）是它的透射版，MOKE（§13）是它的反射版，Voigt（§14.1）是横向的线双折射版。
+
+%=====================================================================
+\hdr{§15}{材料、增强手段与应用}
+
+\subhdr{15.1 磁光材料的四类（课件 p69）}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}>{\raggedright}p{3.2cm}>{\raggedright}p{5.6cm}>{\raggedright}p{3.6cm}>{\raggedright\arraybackslash}p{3.2cm}@{}}
+\thead{类型} & \thead{代表材料} & \thead{工艺} & \thead{适用条件} \\
+\tabmid
+铁磁金属 & Fe、Co、Ni、Fe$_{20}$Ni$_{80}$、Ag/Co、Tb$_{18}$Co$_{82}$ & 磁控溅射 & 室温；可见--近红外 \\
+\tabmid
+磁性电介质 & YIG、Bi:YIG、Ce:YIG、BIG、Fe$_3$O$_4$、CoFe$_2$O$_4$、EuS & 溅射、LPE、PLD & 室温；可见--近红外 \\
+\tabmid
+磁性半导体 & 石墨烯、InSb、InAs、Cd$_x$Mn$_{1-x}$Te & 外延 & 室温；太赫兹 \\
+\tabmid
+稀土化合物与拓扑材料 & EuS、EuO、CrI$_3$、MnBi、EuCd$_2$As$_2$ & 物理气相沉积 & 低温；可见--近红外 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+选材料的顺序与 §6.3 的电光材料类似：\textbf{一、工作波段} → \textbf{二、Verdet 常数 / 磁光常数}
+→ \textbf{三、能否在室温工作}（第三、四类多半要低温）→ \textbf{四、工艺兼容性}（能否集成到芯片上）。
+铁磁金属的磁光信号大但吸收也大（只适合反射式的 MOKE 或薄膜）；器件（隔离器）主要靠磁性电介质。
+
+\subhdr{15.2 为什么天然材料的磁光效应弱，怎么增强（课件 p78）}
+
+\textbf{弱的根源}：磁光效应来自自旋–轨道耦合，而自旋–轨道耦合相对交换劈裂与光跃迁能量是小量
+（它是相对论修正）。结果两个圆偏振的折射率差通常只有 $10^{-5}$--$10^{-3}$，单位长度的转角很小。
+
+\textbf{五条增强途径}：
+\begin{enumerate}
+\item \textbf{强自旋–轨道耦合的离子}：Ce$^{3+}$、Bi$^{3+}$、Tb$^{3+}$ 掺进石榴石，转角显著增大；
+\item \textbf{交换增强}：YIG 里交换场作用在稀土离子上，响应远超外场单独能给出的；
+\item \textbf{共振增强}：工作在跃迁附近（如 Ce:YIG 的 Ce$^{3+}\to$Fe$^{3+}$ 电荷转移），转角可升几个数量级；
+\item \textbf{多层膜与纳米结构}：等离子体或介质共振在局部增强相互作用；
+\item \textbf{强磁场 / 饱和磁化}：效应正比于磁化，先饱和再谈别的。
+\end{enumerate}
+这就是实用器件用 Ce:YIG、TGG 这类"工程化"材料、而不是简单铁磁金属的原因。
+
+\subhdr{15.3 磁光存储（课件 p75）}
+
+磁光盘（MO 盘）把 §13 的读法与热效应串起来：\textbf{写}——激光脉冲把一点加热到居里温度以上
+（矫顽力降到零），外场按数据位设定磁化方向，冷却后固定；\textbf{读}——极向 MOKE，
+读出光的偏振面按该点磁化方向转 $+\theta$ 或 $-\theta$，差分探测读出"0/1"（转角只有零点几度，
+所以对信噪比要求高）。历史：1957 年首次磁光记录（MnBi 薄膜），1980--1990 年代商品化。
+
+\subhdr{15.4 器件材料与传感}
+
+隔离器/环形器要的是「每特斯拉每米转多少度」：由 $L=\theta/(\vdt B)$ 可见 $\vdt$ 大 $4$ 倍、长度就短 $4$ 倍，
+所以选材就是「在目标波段找 $\vdt$ 最大、吸收最小的」——TGG 用于可见--近红外，Ce:YIG 用于集成（薄膜）器件。
+
+\textbf{光纤电流传感器}：绕被测导线一圈的光纤环里，Faraday 转角正比于环内总电流（安培环路定理）。
+技巧是\textbf{让同一束光走两趟做共模抑制}——Faraday 往返是 $2\theta$，而应力双折射这类互易效应往返抵消，
+信号加倍、干扰抵消（又一次用到 §12）。
+
+\textbf{一句话收口}：电光效应给「改相位」的旋钮，磁光效应给「改方位、且改不回来」的旋钮；
+两个旋钮加偏振器，就是调制器、Q 开关、隔离器三件主力器件。
+
+%=====================================================================
+\needspace{16\baselineskip}
+\hdr{§16}{作业（课件 p82）}
+
+{\small\color{inkgray}三题题干如下（不含关键步骤与答案）；中文详解见附录 C，英文可抄写版见附录 D。}
+
+\practice{P1}{课件 p82 Problem 1，第 1 题：Pockels 盒的相位延迟}{一块 KDP 晶体的普克尔斯盒，电光系数 $r=10.6\times10^{-12}\ \mathrm{m/V}$，
+晶体长 $3\ \mathrm{cm}$，两端加 $5\ \mathrm{kV}$ 电压（孔径即电极间距 $d=5\ \mathrm{mm}$），
+取 $n=1.5$、$\lambda=633\ \mathrm{nm}$。(a) 求感生的相位延迟 $\Delta\phi$；(b) 求这块晶体的半波电压 $V_\pi$。}
+{\textbf{几何判定}：给出 $L$ 与 $d$，电压加在 $d$ 上 → 横向几何，$E=V/d$；
+相位延迟用 $\Gamma=\frac{2\pi}{\lambda}n^3rE\,L$（注意两个模之差是 $n^3rE$，不带 $\frac12$）；
+$V_\pi$ 与 $\Gamma$ 的自洽关系 $\Gamma=\pi V/V_\pi$}{ans:P1}
+
+\practice{P2}{课件 p82 Problem 2，第 2 题：Faraday 旋转与往返}{波长 $\lambda=589\ \mathrm{nm}$ 的光束通过一根长 $L=10\ \mathrm{cm}$ 的玻璃棒，
+棒置于产生 $B=0.5\ \mathrm{T}$ 磁场的螺线管中。玻璃的 Verdet 常数为 $\vdt=20\ \mathrm{rad/(T\cdot m)}$。
+(a) 求偏振面的转角；(b) 若光两次穿过该棒（往返），总转角是多少？解释为什么结果不是"简单地翻倍"。}
+{\textbf{公式}：$\theta=\vdt BL$（$L$ 要化成米）；
+\textbf{非互易性}：旋转方向由 $\vec B$ 定，回程继续同向累加 → $2\theta$；
+\textbf{措辞}：题目要解释的是「为什么不能按反向传播吃掉去程的直觉去算」，而不是「答案不是 $2\theta$」}{ans:P2}
+
+\practice{P3}{课件 p82 Problem 3，第 3 题：Kerr 与 Pockels 的对照}{两块相同的电光晶体参与实验：晶体 A 中心对称，晶体 B 非中心对称。
+两者都加 $E=10^{6}\ \mathrm{V/m}$ 的电场。
+(a) 哪块显 Pockels 效应、哪块显 Kerr 效应？
+(b) Kerr 效应的感生双折射为 $\Delta n=K\lambda E^2$，其中 $K=2\times10^{-14}\ \mathrm{m/V^2}$、$\lambda=633\ \mathrm{nm}$，求 $\Delta n$。
+(c) 若晶体长 $L=1\ \mathrm{cm}$，求两个偏振分量之间的相位差 $\Delta\phi$。}
+{\textbf{对称性判据}：非中心对称才有线性项；
+\textbf{量纲}：$K\lambda E^2$ 三个单位的乘积要无量纲；
+\textbf{换算}：$\Delta\phi=\frac{2\pi}{\lambda}\Delta n\,L$，注意此处 $\lambda$ 会与 $\Delta n$ 里的 $\lambda$ 相消}{ans:P3}
+
+\clearpage
+\appendix
+
+%=====================================================================
+\hdr{附录 A}{公式速查}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{6.2cm}p{8.8cm}@{}}
+\thead{公式} & \thead{条件与说明} \\
+\tabmid
+$\Gamma=\dfrac{2\pi}{\lambda}\Delta n\,L$ & 任意双折射的相位延迟；$\lambda$ 为真空波长 \\
+\tabmid
+$\Delta n=K\lambda E^2$ & Kerr：所有材料；$K$ 单位 $\mathrm{m/V^2}$ \\
+\tabmid
+$\Gamma=2\pi KLE^2=2\pi KL\left(\dfrac{V}{d}\right)^2$ & Kerr 盒；$\lambda$ 已消去 \\
+\tabmid
+$\Delta n=-\dfrac12n^3rE$ & Pockels：\emph{单个}模的折射率变化（非中心对称材料） \\
+\tabmid
+$\Delta n_{\text{两模}}=n^3rE$ & Pockels：两个正交模之差；$\frac12$ 在此抵消 \\
+\tabmid
+$\Gamma_\parallel=\dfrac{2\pi}{\lambda}n^3rV$ & 纵向：与 $L$、$d$ 都无关 \\
+\tabmid
+$\Gamma_\perp=\dfrac{2\pi}{\lambda}n^3rV\dfrac{L}{d}$ & 横向：靠 $L/d$ 降电压 \\
+\tabmid
+$V_\pi=\dfrac{\lambda}{2n^3r}\cdot\dfrac{d}{L}$ & 纵向取 $d/L=1$ \\
+\tabmid
+$\Gamma=\pi\dfrac{V}{V_\pi}$ & 任何 Pockels 盒的通用换算 \\
+\tabmid
+$T=\sin^2\dfrac{\Gamma}{2}=\sin^2\dfrac{\pi V}{2V_\pi}$ & 正交偏振器之间 \\
+\tabmid
+$T\approx\dfrac12+\dfrac{\pi}{2}\dfrac{v}{V_\pi}$ & Q 点（$V=V_\pi/2$）附近的小信号线性化 \\
+\tabmid
+$\theta=[\alpha]\,c\,L$ & 自然旋光（Biot 定律）；糖度计 \\
+\tabmid
+$\theta=\dfrac{\pi}{\lambda}(n_--n_+)L$ & 圆双折射引起的转角（互易） \\
+\tabmid
+$\theta=\vdt BL=\vdt\displaystyle\int\vec B\cdot\mathrm d\vec l$ & Faraday 旋转（非互易） \\
+\tabmid
+$\theta_{\text{往返}}=2\vdt BL$ & Faraday 双程；隔离器的原理 \\
+\tabmid
+$\Phi=\theta+i\psi=\dfrac{r_{ps}}{r_{pp}}$ & MOKE 的复克尔转角 \\
+\tabmid
+$CD=\Delta A=(\alpha_--\alpha_+)d$ & 圆二色性；$g=\Delta A/A$ \\
+\tabmid
+$\delta T=\dfrac{I_M-I_{-M}}{I_0}$ & 横向 MOKE 的相对强度变化 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+%=====================================================================
+\hdr{附录 B}{缺口清单与口径核对}
+
+{\small\color{inkgray}本节记录两件事：课件跳过、而理解主线需要的环节（B.1）；课件原页里需要说明的口径问题（B.2）。
+后者一律经复算或按定义核对，不是凭印象判定。}
+
+\subhdr{B.1 课件跳过、本讲义补上的环节}
+
+\begin{center}
+\small
+\tabtop
+\begin{tabular}{@{}p{2.6cm}p{4.2cm}p{8.2cm}@{}}
+\thead{课件位置} & \thead{跳过什么} & \thead{本讲义补在哪里、为什么必须补} \\
+\tabmid
+p22 & $\Delta n=-\frac12n^3rE$ 直接给出 & §5.1 从 $1/n'^2=1/n^2+rE$ 一阶展开推出来；并且说明 $\frac12$ 在算两模之差时抵消（§5.1 的框） \\
+\tabmid
+p26、p30 & 纵横两式直接给出 & §6.1 用 $E=V/L$ 与 $E=V/d$ 各推一次，看清 $L$ 为什么在纵向被消掉 \\
+\tabmid
+p30 & $T=\sin^2(\Gamma/2)$ 直接给出 & §7.2 用琼斯矢量四步推出（关键在检偏器投影的两个符号相反） \\
+\tabmid
+p2（计划第 3 项） & 自然旋光与糖度计在正课页缺失 & §9 补齐 Fresnel 圆双折射的推导；§12 的非互易性离不开这个对照 \\
+\tabmid
+p36 & 只列了 Q 开关，没有原理页 & §7.7 补到能读懂器件：为什么用 $V_\pi/2$、为什么往返累积 \\
+\tabmid
+p57、p59 & 只给张量与非对角元 & §11.2 说明「旋转看 Im、椭圆看 Re」，并把公式还原成可测量的 $\theta=\vdt BL$ \\
+\tabmid
+p61--p65 & 三种 MOKE 只给结论与 $\theta_p$、$\theta_L$ 的公式 & §13 给出统一框架 $\Phi=r_{ps}/r_{pp}$，并说明正入射下 LMOKE 为零的原因 \\
+\end{tabular}
+\tabbot
+\normalsize
+\end{center}
+
+\subhdr{B.2 口径核对（六条）}
+
+\textbf{1.（p59）Faraday 公式缺少长度与折射率因子。}课件写作
+$\theta=-\frac{\omega}{2c}\mathrm{Im}(\varepsilon_{xy}/\varepsilon)$、$\psi=\frac{\omega}{2c}\mathrm{Re}(\varepsilon_{xy}/\varepsilon)$。
+按定义 $n_\pm^2=\varepsilon\mp i\varepsilon_{xy}$ 解出 $n_\pm\approx n\left(1\mp i\varepsilon_{xy}/2\varepsilon\right)$，
+$n_+-n_-=-i\varepsilon_{xy}/n$；再由 $\theta=\frac{\pi}{\lambda}(n_--n_+)L$ 得
+$\theta=-\frac{\omega L}{2c}\cdot n\,\mathrm{Im}(\varepsilon_{xy}/\varepsilon)$（同法得 $\psi$）。
+所以课件两式是\emph{单位长度}的量，并且省掉了因子 $n$（若把 $\varepsilon$ 当绝对值则可吸收进系数）。
+\textbf{结论}：结构与符号对，量纲要补 $L$；作业一律用 $\theta=\vdt BL$。
+
+\textbf{2.（p53/p56 与 p59）术语缩写。}p54 正确地说 MO 效应表现为 MCB（磁圆双折射）与 MCD（磁圆二色性）；
+p59 结尾却把 Faraday 效应称作 "Magnetic Circular Birefringence (MCD)"——缩写与名称对不上：
+圆\emph{双折射}是 MCB，MCD 是圆\emph{二色性}（吸收差）。按定义应为 MCB。
+
+\textbf{3.（p28）KDP 的 $V_\pi=7.5\ \mathrm{kV}$ 对应哪个波长。}由 $V_\pi=\lambda/(2n^3r)$，取 $n=1.51$、$r=10.5\ \mathrm{pm/V}$：
+$633\ \mathrm{nm}$ 得 $8.75\ \mathrm{kV}$，$546\ \mathrm{nm}$ 得 $7.55\ \mathrm{kV}$。
+表里的 $7.5\ \mathrm{kV}$ 与 $546\ \mathrm{nm}$ 吻合，标注的 $633\ \mathrm{nm}$ 应是沿用习惯值。表是"典型器件值"，
+与 p43--p45 例题的 $n$、$r$ 不是同一组，不能混用。
+
+\textbf{4.（p60）MOKE 的"沿传播方向的磁化分量"。}该说法只在极向几何成立。纵向 MOKE 正比于面内、平行入射面的分量，
+横向 MOKE 正比于面内、垂直入射面的分量；正入射时纵向与横向都不敏感（$\theta_L=0$）。
+
+\textbf{5.（p57）"Absorption → Voigt Effect"。}Voigt/Cotton--Mouton 是磁\emph{线双折射}（相位差），
+不是吸收效应；与吸收对应的是 MCD。该页的第三种分类应改为"横向几何 → Voigt 效应"。
+
+\textbf{6.（p13 与 p46）两个 $K$ 差 100 倍。}p13 表里硝基苯 $K\sim2.2\times10^{-12}\ \mathrm{m/V^2}$，
+p46 例题用 $K=2.2\times10^{-14}$。两者不是同一材料（后者接近 CS$_2$ 的量级），做题时按题给值算，
+不要拿 p13 的表去替换题目里的 $K$。
+
+%=====================================================================
+\hdr{附录 C}{作业三题详解（中文）}
+
+\answerstart{P1}{课件 p82 Problem 1}{KDP，$r=10.6\times10^{-12}\ \mathrm{m/V}$，$L=3\ \mathrm{cm}$，
+$V=5\ \mathrm{kV}$，$d=5\ \mathrm{mm}$，$n=1.5$，$\lambda=633\ \mathrm{nm}$。
+(a) 求 $\Delta\phi$；(b) 求 $V_\pi$。}
+
+\textbf{第一步：判定几何，写出 $E$。}题目给的 $d=5\ \mathrm{mm}$ 是孔径（电极间距），电压加在它上面，
+所以是\textbf{横向}配置：
+\begin{equation}
+E=\frac{V}{d}=\frac{5\times10^{3}}{5\times10^{-3}}=1.0\times10^{6}\ \mathrm{V/m}.
+\end{equation}
+（若读成纵向，则 $L$ 根本不出现在结果里；而题目特意给了 $L$，也特意给了 $d$——这是判定为横向的线索。）
+
+\textbf{第二步：$\Delta\phi$。}用 $\Gamma=\frac{2\pi}{\lambda}n^3rE\,L$，注意两模之差是 $n^3rE$（§5.1）：
+\begin{align}
+\Gamma&=\frac{2\pi}{633\times10^{-9}}\times(1.5)^3\times10.6\times10^{-12}\times1.0\times10^{6}\times0.03 \nonumber\\
+&=9.926\times10^{6}\times3.375\times10.6\times10^{-12}\times3.0\times10^{4}\nonumber\\
+&\approx10.65\ \mathrm{rad}.
+\end{align}
+换成角度与 $\pi$ 的倍数：$\Gamma\approx 10.65\times\frac{180^\circ}{\pi}\approx610^\circ$，
+或 $\Gamma\approx3.39\pi$。
+
+\textbf{第三步：$V_\pi$。}两条等价路线，用哪条都行。
+
+路线一（直接代公式）：
+\begin{equation}
+V_\pi=\frac{\lambda}{2n^3r}\cdot\frac{d}{L}
+=\frac{633\times10^{-9}}{2\times3.375\times10.6\times10^{-12}}\times\frac{5\times10^{-3}}{3\times10^{-2}}
+\approx1.47\times10^{3}\ \mathrm{V}.
+\end{equation}
+路线二（用自洽关系 $\Gamma=\pi V/V_\pi$）：
+\begin{equation}
+V_\pi=\frac{\pi V}{\Gamma}=\frac{\pi\times5000}{10.65}\approx1.47\times10^{3}\ \mathrm{V}.
+\end{equation}
+两条路线必须一致，这是\textbf{自检}：$10.65\approx\pi\times5000/1474$\ \checkmark。
+
+\textbf{答}：(a) $\Delta\phi\approx1.07\times10^{1}\ \mathrm{rad}\ (\approx610^\circ\approx3.4\pi)$；
+(b) $V_\pi\approx1.5\ \mathrm{kV}$。
+
+\textbf{点评}。(i) 施加的 $5\ \mathrm{kV}$ 已经是 $V_\pi$ 的 $3.4$ 倍，所以延迟超过了三个半波——
+这说明这块晶体"太长了"：同样的电压若只想要半波延迟，$L$ 应缩短到约 $0.9\ \mathrm{cm}$。
+(ii) 若把题目读成纵向配置，则 $\Delta\phi=1.78\ \mathrm{rad}$、$V_\pi=8.85\ \mathrm{kV}$；
+两种读法的差别正是「$E=V/L$ 还是 $E=V/d$」，写作业时把选择写出来即可。
+(iii) 实际器件工作在 $V_\pi/2\approx0.74\ \mathrm{kV}$（Q 点，§7.3），而不是 $V_\pi$。
+
+%---------------------------------------------------------------------
+\answerstart{P2}{课件 p82 Problem 2}{玻璃棒 $L=10\ \mathrm{cm}$、$B=0.5\ \mathrm{T}$、$\vdt=20\ \mathrm{rad/(T\cdot m)}$，
+$\lambda=589\ \mathrm{nm}$。(a) 转角；(b) 往返总转角并解释。}
+
+\textbf{(a)} 直接代 $\theta=\vdt BL$（$L$ 先化成米）：
+\begin{equation}
+\theta=20\times0.5\times0.10=1.0\ \mathrm{rad}\;\approx\;57.3^\circ .
+\end{equation}
+（$\mathrm{rad/(T\cdot m)}\times\mathrm{T}\times\mathrm{m}=\mathrm{rad}$，量纲自洽。）
+题目给的 $\lambda=589\ \mathrm{nm}$ 在公式里不出现——$\lambda$ 的影响藏在 $\vdt$ 里（$\vdt$ 随波长效增），
+所以答题时说明「$\vdt$ 已按该波长取值」即可。
+
+\textbf{(b)} 往返总转角：
+\begin{equation}
+\theta_{\text{往返}}=2\vdt BL=2.0\ \mathrm{rad}\approx114.6^\circ .
+\end{equation}
+
+\textbf{为什么不是「简单地翻倍」这句要这样理解。}物理上它\emph{确实}是两倍——但为什么是两倍而不是抵消，
+需要说清机制：
+
+\begin{enumerate}
+\item 旋转的\emph{方向}由 $\vec B$ 决定，不由光的传播方向决定。反射只把 $\vec k$ 反号，$\vec B$ 不变。
+\item 介质的介电张量由 $\vec B$ 固定，张量不变 → 两个圆偏振模的折射率 $n_\pm$ 在回程与去程\textbf{相同}。
+\item 用 $\theta=\vdt\int\vec B\cdot\mathrm d\vec l$ 看：去程 $\mathrm d\vec l\parallel\vec B$，回程 $\mathrm d\vec l\parallel-\vec B$——
+      但旋转的符号也随之定义了"相对 $\vec B$ 的正方向"，两趟在实验室坐标里是同向累加。
+      严格的相位计算（§12.2 三步）给出相对相位差 $2(k_+-k_-)L$，即 $2\theta$。
+\end{enumerate}
+
+\textbf{对照}：若换成糖溶液或石英（自然旋光），回程的 $n_\pm$ 交换，转角反号，往返合计为 $0$。
+所以「不能简单地按反向传播就抵消」才是这句话的要点；而「2 倍」是非互易性的\emph{结果}，不是巧合。
+
+若想让答案无懈可击，加一句英文：
+\emph{The doubling is not a coincidence: the rotation sense is locked to $\mathbf{B}$, so the return pass
+adds $+\theta$ again in the laboratory frame (total $2\theta$), whereas a reciprocal rotator would give $0$.}
+
+\textbf{答}：(a) $\theta=1.0\ \mathrm{rad}=57.3^\circ$；(b) $2\theta=2.0\ \mathrm{rad}=114.6^\circ$，因为 Faraday 效应非互易：
+决定旋向的是 $\vec B$ 而不是 $\vec k$，回程继续同向累加。
+
+%---------------------------------------------------------------------
+\answerstart{P3}{课件 p82 Problem 3}{A 中心对称、B 非中心对称，$E=10^{6}\ \mathrm{V/m}$。
+(a) 谁显 Pockels、谁显 Kerr；(b) $\Delta n=K\lambda E^2$，$K=2\times10^{-14}$、$\lambda=633\ \mathrm{nm}$，求 $\Delta n$；
+(c) $L=1\ \mathrm{cm}$，求 $\Delta\phi$。}
+
+\textbf{(a)} 由 §2 的判据：中心对称介质的 $\Delta n(E)$ 只能是 $E$ 的偶函数，奇次项被禁。
+\begin{itemize}
+\item \textbf{晶体 A（中心对称）}：Pockels 被禁，\textbf{只显 Kerr 效应}；
+\item \textbf{晶体 B（非中心对称）}：\textbf{显 Pockels 效应}（线性项允许，通常远大于二次项）；Kerr 效应也同时存在，
+      只是被线性项掩盖。
+\end{itemize}
+
+\textbf{(b)}
+\begin{equation}
+\Delta n=K\lambda E^2=2\times10^{-14}\times633\times10^{-9}\times\left(10^{6}\right)^2
+=2\times10^{-14}\times6.33\times10^{5}\approx1.27\times10^{-8}.
+\end{equation}
+量纲自检：$\frac{\mathrm{m}}{\mathrm{V^2}}\cdot\mathrm{m}\cdot\frac{\mathrm{V^2}}{\mathrm{m^2}}=1$（无量纲），\checkmark。
+
+\textbf{(c)}
+\begin{equation}
+\Delta\phi=\frac{2\pi}{\lambda}\Delta n\,L
+=\frac{2\pi}{633\times10^{-9}}\times1.27\times10^{-8}\times0.01
+\approx1.26\times10^{-3}\ \mathrm{rad}.
+\end{equation}
+换成角度约 $0.072^\circ$。
+
+\textbf{一个更快的算法（建议写在卷面上作为自检）}：把 $\Delta n=K\lambda E^2$ 直接代进 $\Delta\phi$，$\lambda$ 相消：
+\begin{equation}
+\Delta\phi=2\pi KLE^2=2\pi\times2\times10^{-14}\times0.01\times10^{12}\approx1.26\times10^{-3}\ \mathrm{rad},
+\end{equation}
+两式必须给出同一个数\ \checkmark。这个消去还说明：\textbf{Kerr 盒的相位延迟与波长无关}（在 $K$ 缓变的近似下）。
+
+\textbf{点评}。(i) $\Delta n\sim10^{-8}$ 比 Pockels 在同样场强下的 $\sim1.8\times10^{-5}$ 小约 $10^3$ 倍
+（$\frac12n^3rE$ 取 $n=1.5$、$r=10.6\ \mathrm{pm/V}$），这是「能用 Pockels 就不用 Kerr」的定量依据。
+(ii) 相位差只有 $10^{-3}\ \mathrm{rad}$，在正交检偏器下对应的强度变化 $\sim\sin^2(5\times10^{-4})\sim10^{-7}$——
+几乎测不出来。要做出可用的 Kerr 器件，必须把 $E$ 提高一到两个数量级、把 $L$ 加长，或换更强的 Kerr 液体。
+
+\textbf{答}：(a) A 显 Kerr、B 显 Pockels；(b) $\Delta n\approx1.3\times10^{-8}$；
+(c) $\Delta\phi\approx1.3\times10^{-3}\ \mathrm{rad}$（约 $0.07^\circ$）。
+
+%=====================================================================
+\hdr{附录 D}{English solution sheet · home assignment (courseware p82)}
+
+\callout{\textbf{How to use this appendix.} The three problems on courseware p82 are to be handed in
+\emph{handwritten in English}. Copy the working below; keep the four parts the instructor asks for:
+\textbf{Given}, \textbf{Formulas used}, \textbf{step-by-step calculation}, \textbf{final answers with units}.
+Sign your name in English and put the sheet on the desk before the lecture starts. The Chinese commentary
+stays in appendix C; this appendix contains only what goes on the paper.}
+
+\subhdr{D.1 Question 1 — Pockels cell phase retardation}
+
+\callout{\textbf{Problem 1.} A Pockels cell is made from a potassium dihydrogen phosphate (KDP) crystal with
+an electro-optic coefficient of $r=10.6\times10^{-12}\ \mathrm{m/V}$. The crystal is $3\ \mathrm{cm}$ long, and a
+voltage of $5\ \mathrm{kV}$ is applied across it (aperture $d=5\ \mathrm{mm}$). Assume $n=1.5$ and
+$\lambda=633\ \mathrm{nm}$. (a) Calculate the induced phase retardation $\Delta\phi$. (b) Determine the
+half-wave voltage $V_\pi$ for this crystal.}
+
+\textbf{Given}\quad KDP, $r=10.6\times10^{-12}\ \mathrm{m/V}$, $n=1.5$, $\lambda=633\ \mathrm{nm}$,
+crystal length $L=3.0\times10^{-2}\ \mathrm{m}$, electrode spacing $d=5.0\times10^{-3}\ \mathrm{m}$,
+applied voltage $V=5.0\times10^{3}\ \mathrm{V}$. The field is applied across $d$ and the light travels along
+$L$, so the configuration is \emph{transverse} and $E=V/d$.
+
+\textbf{Formulas used}\quad
+$E=\dfrac{V}{d}$;\quad $\Delta\phi=\dfrac{2\pi}{\lambda}\,n^{3}r\,E\,L$\quad
+(the two eigen-polarizations differ by $n^{3}rE$, not by $\tfrac12 n^{3}rE$);\quad
+$V_\pi=\dfrac{\lambda}{2n^{3}r}\cdot\dfrac{d}{L}$;\quad $\Delta\phi=\pi\dfrac{V}{V_\pi}$.
+
+\textbf{(a)}
+\begin{equation}
+E=\frac{5.0\times10^{3}}{5.0\times10^{-3}}=1.0\times10^{6}\ \mathrm{V/m},
+\end{equation}
+\begin{equation}
+\Delta\phi=\frac{2\pi}{633\times10^{-9}}\times1.5^{3}\times10.6\times10^{-12}\times1.0\times10^{6}\times3.0\times10^{-2}
+\approx1.07\times10^{1}\ \mathrm{rad}.
+\end{equation}
+That is $\Delta\phi\approx610^\circ$, or about $3.4\pi$.
+
+\textbf{(b)}
+\begin{equation}
+V_\pi=\frac{633\times10^{-9}}{2\times1.5^{3}\times10.6\times10^{-12}}\times\frac{5.0\times10^{-3}}{3.0\times10^{-2}}
+\approx1.47\times10^{3}\ \mathrm{V}.
+\end{equation}
+Check with the other route: $V_\pi=\pi V/\Delta\phi=\pi\times5.0\times10^{3}/10.65\approx1.47\times10^{3}\ \mathrm{V}$.
+
+\textbf{Answers}\quad (a) $\Delta\phi\approx1.1\times10^{1}\ \mathrm{rad}\ (\approx610^\circ\approx3.4\pi)$;\quad
+(b) $V_\pi\approx1.5\times10^{3}\ \mathrm{V}\ (\approx1.5\ \mathrm{kV})$.
+
+\subhdr{D.2 Question 2 — Faraday rotation and a double pass}
+
+\callout{\textbf{Problem 2.} A beam of light with wavelength $\lambda=589\ \mathrm{nm}$ passes through a glass
+rod of length $L=10\ \mathrm{cm}$ placed in a solenoid that produces a magnetic field $B=0.5\ \mathrm{T}$.
+The Verdet constant of the glass is $\mathcal{V}=20\ \mathrm{rad/(T\cdot m)}$.
+(a) Calculate the angle of rotation of the polarization plane.
+(b) If the light passes through the rod twice (back and forth), what is the total rotation angle?
+Explain why the result is not simply doubled.}
+
+\textbf{Given}\quad $L=0.10\ \mathrm{m}$, $B=0.5\ \mathrm{T}$, $\mathcal{V}=20\ \mathrm{rad/(T\cdot m)}$
+(taken at $\lambda=589\ \mathrm{nm}$), single pass in (a) and double pass in (b).
+
+\textbf{Formulas used}\quad $\theta=\mathcal{V}BL$;\quad for a double pass
+$\theta_{\text{round trip}}=2\mathcal{V}BL$ because the Faraday effect is \emph{non-reciprocal}.
+
+\textbf{(a)}
+\begin{equation}
+\theta=\mathcal{V}BL=20\times0.5\times0.10=1.0\ \mathrm{rad}\approx57.3^\circ .
+\end{equation}
+
+\textbf{(b)}
+\begin{equation}
+\theta_{\text{round trip}}=2\,\mathcal{V}BL=2.0\ \mathrm{rad}\approx115^\circ .
+\end{equation}
+
+\textbf{Explanation.} The sense of the rotation is fixed by the magnetic field, not by the direction of
+propagation. On reflection $\mathbf{k}$ reverses but $\mathbf{B}$ does not, so the dielectric tensor — and
+therefore the two circular refractive indices $n_\pm$ — are unchanged; the relative phase $2\pi(n_+-n_-)L/\lambda$
+accumulates a second time. In the laboratory frame the two passes add, giving $2\theta$, whereas a
+\emph{reciprocal} rotator (natural optical activity in sugar solution or quartz) would give $-\theta$ on the
+return pass and cancel to zero. The point of the question is that one must not apply the reciprocal
+"it comes back, so it undoes itself" intuition.
+
+\textbf{Answers}\quad (a) $\theta=1.0\ \mathrm{rad}=57.3^\circ$;\quad (b) $\theta_{\text{round trip}}=2.0\ \mathrm{rad}=115^\circ$,
+because the rotation sense is set by $\mathbf{B}$ and not by $\mathbf{k}$, so the return pass adds another $+\theta$.
+
+\subhdr{D.3 Question 3 — Kerr effect versus Pockels effect}
+
+\callout{\textbf{Problem 3.} Two identical electro-optic crystals are used in an experiment. Crystal A is
+centrosymmetric, and crystal B is non-centrosymmetric. An electric field $E=10^{6}\ \mathrm{V/m}$ is applied to
+both. (a) Which crystal will exhibit the Pockels effect? Which will exhibit the Kerr effect?
+(b) For the Kerr effect, the induced birefringence is $\Delta n=K\lambda E^{2}$, where
+$K=2\times10^{-14}\ \mathrm{m/V^{2}}$ and $\lambda=633\ \mathrm{nm}$. Calculate $\Delta n$.
+(c) If the crystal length is $L=1\ \mathrm{cm}$, calculate the phase difference $\Delta\phi$ between the two
+polarization components.}
+
+\textbf{Given}\quad crystal A centrosymmetric, crystal B non-centrosymmetric; $E=10^{6}\ \mathrm{V/m}$ for both;
+in (b,c) $K=2\times10^{-14}\ \mathrm{m/V^{2}}$, $\lambda=633\ \mathrm{nm}$, $L=1.0\times10^{-2}\ \mathrm{m}$.
+
+\textbf{Formulas used}\quad $\Delta n=K\lambda E^{2}$ (quadratic, allowed in every material);\quad
+$\Delta\phi=\dfrac{2\pi}{\lambda}\Delta n\,L$;\quad symmetry rule: in a centrosymmetric medium
+$\Delta n(+E)=\Delta n(-E)$, so all odd terms vanish.
+
+\textbf{(a)} Crystal A (centrosymmetric) has inversion symmetry, so the linear term is forbidden:
+it shows \textbf{only the Kerr effect}. Crystal B (non-centrosymmetric) allows the linear term: it shows the
+\textbf{Pockels effect} (and the Kerr effect as well, but the linear term dominates).
+
+\textbf{(b)}
+\begin{equation}
+\Delta n=K\lambda E^{2}=2\times10^{-14}\times633\times10^{-9}\times\left(10^{6}\right)^{2}
+\approx1.27\times10^{-8}.
+\end{equation}
+Dimension check: $\dfrac{\mathrm{m}}{\mathrm{V^{2}}}\cdot\mathrm{m}\cdot\dfrac{\mathrm{V^{2}}}{\mathrm{m^{2}}}=1$, dimensionless.
+
+\textbf{(c)}
+\begin{equation}
+\Delta\phi=\frac{2\pi}{\lambda}\Delta n\,L
+=\frac{2\pi}{633\times10^{-9}}\times1.27\times10^{-8}\times1.0\times10^{-2}
+\approx1.26\times10^{-3}\ \mathrm{rad}.
+\end{equation}
+Equivalently, substituting $\Delta n=K\lambda E^{2}$ first cancels $\lambda$:
+$\Delta\phi=2\pi KLE^{2}\approx1.26\times10^{-3}\ \mathrm{rad}$ (about $0.072^\circ$).
+
+\textbf{Answers}\quad (a) A: Kerr only; B: Pockels (linear) and Kerr;\quad
+(b) $\Delta n\approx1.3\times10^{-8}$;\quad (c) $\Delta\phi\approx1.3\times10^{-3}\ \mathrm{rad}\ (\approx0.07^\circ)$.
+
+\vspace{6pt}
+{\small\color{inkgray}\textbf{Before you hand it in:} handwritten; Given, formulas, calculations, answers with
+units; name signed in English; placed on the instructor's desk before the lecture starts. Each three-problem
+set is worth 30 points.}
+
+\end{document}
+

@@ -1,0 +1,146 @@
+\documentclass[fontset=windows,10pt]{ctexart}
+\usepackage[a4paper,top=8mm,bottom=6mm,left=10mm,right=10mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+
+\definecolor{deep}{HTML}{4A2E7A}
+\definecolor{mid}{HTML}{7B5EA7}
+\definecolor{soft}{HTML}{EFEAF8}
+\definecolor{ink}{HTML}{262626}
+\definecolor{good}{HTML}{2E7D4F}
+
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\linespread{0.94}
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{2.6pt}\setlength{\belowdisplayskip}{2.6pt}%
+  \setlength{\abovedisplayshortskip}{1.2pt}\setlength{\belowdisplayshortskip}{1.2pt}%
+}
+
+\newtcolorbox{card}[1]{enhanced,colback=soft,colframe=mid,coltitle=white,
+  fonttitle=\bfseries\small,title={#1},boxrule=0.6pt,arc=1.6mm,
+  left=2.6mm,right=2.6mm,top=1.1mm,bottom=1.1mm,
+  before skip=2.4pt,after skip=2.4pt,
+  segmentation style={draw=mid,solid,line width=0.6pt}}
+
+\newtcolorbox{plainbox}[1]{enhanced,colback=white,colframe=mid,boxrule=0.4pt,arc=1.4mm,
+  left=2.6mm,right=2.6mm,top=1.1mm,bottom=1.1mm,before skip=2pt,after skip=2pt}
+
+\newcommand{\kv}[1]{\textcolor{deep}{\bfseries #1}}
+\newcommand{\sect}[2]{\vspace{3pt}{\color{deep}\large\bfseries #1}\quad{\small\color{mid}#2}\par\vspace{1.5pt}}
+
+\begin{document}
+\enlargethispage{7mm}
+
+\begin{tcolorbox}[enhanced,colback=deep,colframe=deep,arc=1.6mm,left=4mm,right=4mm,top=2.4mm,bottom=2.4mm]
+{\color{white}\LARGE\bfseries 三种坐标系 · 本征值问题与解法}\\[1pt]
+{\color{white}\small 分离变量法速查卡 \quad|\quad 数学物理方法（II）第八章 §8.2--8.4 \quad|\quad 极坐标 · 柱坐标 · 球坐标}
+\end{tcolorbox}
+
+\sect{0\quad 通用主线}{分离 → 认领本征值问题 → 定本征值 → 叠加定系数}
+\begin{plainbox}{}
+\kv{(1) 分离}：设乘积形式代入方程，令每项只含一个变量，化成若干常微分方程。
+\kv{(2) 认领本征值问题}：带齐次边界、周期或有界条件的方向产生本征值，它同时出现在其它方向的方程里。
+\kv{(3) 定本征值}：只用\kv{齐次}条件（周期 / 有界 / 齐次边界）；\kv{非齐次}边界值不参与。
+\kv{(4) 定系数}：各本征函数相乘求和，用\kv{正交性}（Fourier 系数）由非齐次边界值定叠加系数。
+\end{plainbox}
+
+\sect{1\quad 极坐标}{圆域 / 环域，Laplace 或 Helmholtz：$u=R(r)\,\Phi(\varphi)$}
+\begin{card}{角向（周期条件定本征值）+ 径向（欧拉方程）}
+\[
+\Phi''+\lambda\Phi=0,\ \ \Phi(\varphi+2\pi)=\Phi(\varphi)
+\;\Longrightarrow\;
+\lambda=m^{2},\ m=0,1,2,\dots,\qquad \Phi_m=A_m\cos m\varphi+B_m\sin m\varphi
+\]
+\[
+r^{2}R''+rR'-m^{2}R=0
+\;\Longrightarrow\;
+R_m=\begin{cases} C_0+D_0\ln r, & m=0,\\[1pt] C_m r^{m}+D_m r^{-m}, & m\ge 1.\end{cases}
+\]
+\kv{圆内}：$r\to0$ 有界 $\Rightarrow D_m=0\ (m\ge1),\ D_0=0$；\kv{环域} $a<r<b$：四项全留。\quad
+\kv{定系数}：由 $r=a$ 上的给定值乘 $\cos m\varphi,\sin m\varphi$ 积分（正交性），求 $A_m,B_m,C_m,D_m$。
+\end{card}
+
+\sect{2\quad 柱坐标}{圆柱域：$u=R(r)\,\Phi(\varphi)\,Z(z)$}
+$\Phi$ 同极坐标：$\lambda=m^{2}$，$\Phi_m=A_m\cos m\varphi+B_m\sin m\varphi$。取分离常数 $\mu$：
+\[
+Z''-\mu Z=0,\qquad r^{2}R''+rR'+\bigl(\mu r^{2}-m^{2}\bigr)R=0 .
+\]
+{\small
+\renewcommand{\arraystretch}{1.28}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.145\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{0.315\textwidth}@{}}
+\toprule
+\kv{情形} & \kv{轴向 / 径向的解} & \kv{本征值怎么定}\\
+\midrule
+$\mu=k^{2}>0$ & $Z=C\cosh kz+D\sinh kz$；径向为\kv{贝塞尔方程}，$R=C_1J_m(kr)+C_2Y_m(kr)$ &
+$r=a$ 侧面齐次 $\Rightarrow J_m(ka)=0$，$k_n=x_n^{(m)}/a$\\
+\addlinespace[1pt]
+$\mu=-\nu^{2}<0$ & $Z=C\cos\nu z+D\sin\nu z$；径向为\kv{修正贝塞尔方程}，$R=C_1I_m(\nu r)+C_2K_m(\nu r)$ &
+$z=0,h$ 端面齐次 $\Rightarrow \nu_n=n\pi/h$；$r$ 向有界丢 $K_m$\\
+\addlinespace[1pt]
+$\mu=0$ & $Z=A+Bz$；径向退化为\kv{欧拉方程}，$R=Cr^{m}+Dr^{-m}$（$m=0$：$C+D\ln r$） &
+$m$ 仍由周期条件给；$A,B$ 由 $z$ 端面，$C,D$ 由侧面定\\
+\bottomrule
+\end{tabularx}
+}
+\kv{定系数}：由 $r=a$ 侧面或 $z=0,h$ 端面的给定值，按 $J_m(k_nr)$（或 $I_m$、$r^{m}$）与 $\cos m\varphi,\sin m\varphi$ 的\kv{双重正交性}展开。\\
+\kv{补充}：若时间方向给出 $T''+a^{2}k^{2}T=0$（Helmholtz，$\nabla^{2}u+k^{2}u=0$），则 $Z''+\nu^{2}Z=0$、$\nu_n=n\pi/h$，径向为 $J_m(\kappa r),Y_m(\kappa r)$，$\kappa^{2}=k^{2}-\nu_n^{2}$（若 $k^{2}<\nu_n^{2}$ 则换成 $I_m,K_m$）。
+
+\sect{3\quad 球坐标}{球域：$u=R(r)\,\Theta(\theta)\,\Phi(\varphi)$}
+\textbf{角向一（$\varphi$）}：$\lambda=m^{2}$，$\Phi_m=A_m\cos m\varphi+B_m\sin m\varphi$。\\
+\textbf{角向二（$\theta$）}：连带勒让德方程，「$\theta=0,\pi$ 有界」定本征值与 $m\le l$：
+\[
+\frac{1}{\sin\theta}\frac{d}{d\theta}\Bigl(\sin\theta\,\Theta'\Bigr)+\Bigl[\lambda-\frac{m^{2}}{\sin^{2}\theta}\Bigr]\Theta=0
+\;\Longrightarrow\;
+\lambda=l(l+1),\quad \Theta=P_l^{m}(\cos\theta),\quad m\le l .
+\]
+\begin{card}{径向（欧拉方程）、通解与定系数}
+\[
+r^{2}R''+2rR'-l(l+1)R=0
+\;\Longrightarrow\;
+R_l=C_l\,r^{l}+D_l\,r^{-(l+1)} .
+\]
+\kv{球内} $r<r_0$ 有界 $\Rightarrow D_l=0$；\kv{球外} $r\to\infty$ 有界 $\Rightarrow C_l=0$。\\
+{\small
+\[
+u(r,\theta,\varphi)=\sum_{l=0}^{\infty}\sum_{m=-l}^{\,l}\bigl(C_l r^{l}+D_l r^{-(l+1)}\bigr)P_l^{m}(\cos\theta)\bigl(A_m\cos m\varphi+B_m\sin m\varphi\bigr)
+\]}
+\kv{定系数}：球面 $r=a$ 的给定值按 $P_l^{m}(\cos\theta)\cos m\varphi$、$P_l^{m}(\cos\theta)\sin m\varphi$ 的\kv{正交性}展开。\\
+\kv{轴对称} $m=0$：退化为勒让德方程，$\Theta=P_l(\cos\theta)$，只剩 $\sum_l\bigl(C_lr^{l}+D_lr^{-(l+1)}\bigr)P_l(\cos\theta)$。
+\end{card}
+
+\sect{4\quad 三种坐标系对照}{同一套流程，只换「角向方程」和「径向方程」}
+{\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.095\textwidth} >{\raggedright\arraybackslash}p{0.145\textwidth} >{\raggedright\arraybackslash}p{0.245\textwidth} >{\raggedright\arraybackslash}p{0.255\textwidth} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\kv{坐标系} & \kv{分离形式} & \kv{角向方程 $\to$ 本征值 / 本征函数} & \kv{径向（轴向）方程 $\to$ 解} & \kv{系数由什么定}\\
+\midrule
+极坐标 & $R(r)\Phi(\varphi)$ & $\Phi''+m^{2}\Phi=0$＋周期 $\Rightarrow m=0,1,2,\dots$；$\cos m\varphi,\sin m\varphi$ & 欧拉：$r^{2}R''+rR'-m^{2}R=0\Rightarrow r^{\pm m},\ln r$ & $r=a$ 边界值（单重 Fourier）\\
+\addlinespace[1pt]
+柱坐标 & $R(r)\Phi(\varphi)Z(z)$ & 同上，$m=0,1,2,\dots$ & 贝塞尔 / 修正贝塞尔 / 欧拉，看 $\mu$ 符号；$Z$ 给 $\cosh kz,\sinh kz$ 或 $\cos\nu z,\sin\nu z$ & 侧面＋端面（双重级数）\\
+\addlinespace[1pt]
+球坐标 & $R(r)\Theta(\theta)\Phi(\varphi)$ & 连带勒让德：$l(l+1)$，$P_l^{m}(\cos\theta)$，且 $m\le l$ & 欧拉：$r^{2}R''+2rR'-l(l+1)R=0\Rightarrow r^{l},r^{-(l+1)}$ & 球面 $r=a$ 边界值（球谐展开）\\
+\bottomrule
+\end{tabularx}
+}
+
+\sect{5\quad 三个最容易丢分的地方}{}
+{\small
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}\setlength{\leftmargin}{5mm}
+\item \kv{$m\le l$}：$P_l^{m}$ 只在 $|m|\le l$ 时有意义，内层求和上限是 $l$ 而不是 $\infty$。
+\item \kv{$\mu$ 的三种情形要写全}：只写 $\mu>0$ 的贝塞尔会漏掉 $\mu<0$ 的修正贝塞尔与 $\mu=0$ 的欧拉解。
+\item \kv{本征值只由齐次条件定}：周期、有界、齐次边界定本征值；非齐次边界值只用来算系数（圆内丢 $r^{-m},\ln r$，球内丢 $r^{-(l+1)}$）。
+\end{itemize}
+}
+
+\vspace{0pt}
+{\scriptsize\color{mid} 依据：本课程课件 Chapter 8（§8.1 直角坐标、§8.2 极坐标、§8.3 柱坐标、§8.4 球坐标）与本征值表；整理 2026-11-20。}
+
+\end{document}
+

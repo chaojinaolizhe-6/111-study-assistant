@@ -1,0 +1,297 @@
+--- before
++++ after
+@@ -34,0 +35,3 @@
++
++% ---- 名词英文标注：淡墨斜体，紧跟在中文名词后的括号里 ----
++\newcommand{\EN}[1]{{\itshape\color{inkgray}#1}}
+@@ -4181 +4184 @@
+-\chapterbanner{6}{临界点与稳定性}{相图、稳定性定义与第一近似}{课件 \texttt{21\_22\_Phase.pdf}（43 页）与 \texttt{22-23\_Linearization.pdf}（18 页），2026-10-29／11-03}
++\chapterbanner{6}{临界点与稳定性}{相图（phase portrait）、稳定性定义与第一近似（first approximation）}{课件 \texttt{21\_22\_Phase.pdf}（43 页）与 \texttt{22-23\_Linearization.pdf}（18 页），2026-10-29／11-03}
+@@ -4214 +4217 @@
+-\item \textbf{分析语言}：稳定、渐近稳定、不稳定，三个词各自的严格含义（§4）。日常说"稳定"其实混着两个概念，必须拆开。
++\item \textbf{分析语言}：稳定（\EN{stable}）、渐近稳定（\EN{asymptotically stable}）、不稳定（\EN{unstable}），三个词各自的严格含义（§4）。日常说"稳定"其实混着两个概念，必须拆开。
+@@ -4237,3 +4240,3 @@
+-左边是"状态怎么变"，右边是"在当前位置该往哪变、变多快"。它不是一条要解的代数方程，而是一张地图：\textbf{平面上每个位置都贴了一支箭头}，箭头的方向与长度由 $\F$ 给出。这张图叫\textbf{速度场}，§1.1 专门讲它。
+-
+-\subhdr{0.4 记号表（查表用，不要求先背）}
++左边是"状态怎么变"，右边是"在当前位置该往哪变、变多快"。它不是一条要解的代数方程，而是一张地图：\textbf{平面上每个位置都贴了一支箭头}，箭头的方向与长度由 $\F$ 给出。这张图叫\textbf{速度场}（\EN{velocity field}），§1.1 专门讲它。
++
++\subhdr{0.4 记号表（查表用，不要求先背；名词英文见 §13）}
+@@ -4251 +4254 @@
+-$\X'=\F(\X)$ & 自治系统，$\F=(P,Q)^{\mathrm T}$ & §1.2\\
++$\X'=\F(\X)$ & 自治系统（\EN{autonomous system}），$\F=(P,Q)^{\mathrm T}$ & §1.2\\
+@@ -4253,7 +4256,7 @@
+-$\tau=\tr A$,\ $\Delta=\det A$ & 迹与行列式 & §2.2\\
+-$D=\tau^{2}-4\Delta$ & 特征方程的判别式 & §2.2\\
+-$\lambda_1,\ \lambda_2$ & 特征值（特征方程的根） & §2.2\\
+-$V$ & 实特征向量；复情形记 $w=u+\mathrm{i}v$ & §2.3\\
+-$\X^{*}$ & 临界点（平衡点） & §1.4\\
+-轨线、相图 & 解的像集；全部轨线的集合 & §1.3\\
+-平凡解 & 零解 $\X(t)\equiv\mathbf{0}$ & §4.5\\
++$\tau=\tr A$,\ $\Delta=\det A$ & 迹（\EN{trace}）与行列式（\EN{determinant}） & §2.2\\
++$D=\tau^{2}-4\Delta$ & 特征方程的判别式（\EN{discriminant}） & §2.2\\
++$\lambda_1,\ \lambda_2$ & 特征值（\EN{eigenvalue}，特征方程的根） & §2.2\\
++$V$ & 实特征向量（\EN{eigenvector}）；复情形记 $w=u+\mathrm{i}v$ & §2.3\\
++$\X^{*}$ & 临界点（\EN{critical point}，即平衡点） & §1.4\\
++轨线、相图 & 解的像集；全部轨线的集合（\EN{trajectory, phase portrait}） & §1.3\\
++平凡解（\EN{trivial solution}） & 零解 $\X(t)\equiv\mathbf{0}$ & §4.5\\
+@@ -4309 +4312 @@
+-则称它为\textbf{自治系统}（autonomous system）。
++则称它为\textbf{自治系统}（\EN{autonomous system}）。
+@@ -4323 +4326 @@
+-称为一条\textbf{轨线}（trajectory，或称相轨线）；全部轨线（连同方向）的集合叫\textbf{相图}（phase portrait）。
++称为一条\textbf{轨线}（\EN{trajectory}，也称\textbf{相轨线}、\EN{orbit}）；全部轨线（连同方向）的集合叫\textbf{相图}（\EN{phase portrait}），它画在\textbf{相平面}（\EN{phase plane}）上。
+@@ -4360 +4363 @@
+-\textbf{定义 1.3（临界点）}\ 若 $\X^{*}\in D$ 使 $\F(\X^{*})=\mathbf{0}$，则称 $\X^{*}$ 为系统 (1.1) 的\textbf{临界点}（critical point），也称\textbf{平衡点}、\textbf{驻点}；有些教材叫\textbf{奇点}（singular point）。
++\textbf{定义 1.3（临界点）}\ 若 $\X^{*}\in D$ 使 $\F(\X^{*})=\mathbf{0}$，则称 $\X^{*}$ 为系统 (1.1) 的\textbf{临界点}（\EN{critical point}），也称\textbf{平衡点}（\EN{equilibrium point}）、\textbf{驻点}（\EN{stationary point}）；有些教材叫\textbf{奇点}（\EN{singular point}）。
+@@ -4387 +4390 @@
+-用 (1.2) 走一遍：第一步，零箭头只有原点；第二步，在 $(1,0)$ 处 $\F=(0,1)$，箭头向上，所以是逆时针；第三步，箭头处处与半径垂直，绕圈而不螺旋，轨线是闭合圆。三步合起来，这张相图叫\textbf{中心}。
++用 (1.2) 走一遍：第一步，零箭头只有原点；第二步，在 $(1,0)$ 处 $\F=(0,1)$，箭头向上，所以是逆时针；第三步，箭头处处与半径垂直，绕圈而不螺旋，轨线是闭合圆。三步合起来，这张相图叫\textbf{中心}（\EN{center}）。
+@@ -4401 +4404 @@
+-是一族从原点射出的抛物线。三步合起来，这张相图叫\textbf{结点}。
++是一族从原点射出的抛物线。三步合起来，这张相图叫\textbf{结点}（\EN{node}）。
+@@ -4411 +4414 @@
+-\item \textbf{解的唯一性}：从同一个状态出发，不能有两套不同的后续演化。
++\item \textbf{解的唯一性}（\EN{uniqueness of solution}）：从同一个状态出发，不能有两套不同的后续演化。
+@@ -4420 +4423 @@
+-\warnbox{\textbf{只有自治，推不出"不相交"。}若右端含 $t$，时间平移就不再保持解，第 1 条的论证直接断掉；若右端只是连续、不满足李普希茨条件（例如 $x'=\sqrt{\abs{x}}$），从 $x=0$ 出发可以停在原地，也可以走开（$x=t^{2}/4$），两条解在同一处"分岔"。本讲只讨论 $\F\in C^{1}$ 的情形，作业里的右端都是多项式，两个前提自动满足。}
++\warnbox{\textbf{只有自治，推不出"不相交"。}若右端含 $t$，时间平移就不再保持解，第 1 条的论证直接断掉；若右端只是连续、不满足李普希茨（\EN{Lipschitz}）条件（例如 $x'=\sqrt{\abs{x}}$），从 $x=0$ 出发可以停在原地，也可以走开（$x=t^{2}/4$），两条解在同一处"分岔"。本讲只讨论 $\F\in C^{1}$ 的情形，作业里的右端都是多项式，两个前提自动满足。}
+@@ -4434,3 +4437,3 @@
+-两个写法完全等价：$x'=a_{11}x+a_{12}y$，$y'=a_{21}x+a_{22}y$。写成一个式子的好处是：下面所有结论都只依赖 $A$ 的\textbf{特征值}，与四个元素怎么排布无关。
+-
+-\subhdr{2.2 特征方程}
++两个写法完全等价：$x'=a_{11}x+a_{12}y$，$y'=a_{21}x+a_{22}y$。写成一个式子的好处是：下面所有结论都只依赖 $A$ 的\textbf{特征值}（\EN{eigenvalue}），与四个元素怎么排布无关。
++
++\subhdr{2.2 特征方程（characteristic equation）}
+@@ -4444 +4447 @@
+-于是 $V$ 是 $A$ 的特征向量，$\lambda$ 是特征值。要有非零解，必须
++于是 $V$ 是 $A$ 的特征向量（\EN{eigenvector}），$\lambda$ 是特征值。要有非零解，必须
+@@ -4451 +4454 @@
+-两根之和为 $\tau$，之积为 $\Delta$（韦达定理），判别式记
++两根之和为 $\tau$，之积为 $\Delta$（韦达定理），判别式（\EN{discriminant}）记
+@@ -4460 +4463 @@
+-若 $\lambda_1\neq\lambda_2$ 为实数，对应实特征向量 $V_1,V_2$，则通解为
++若 $\lambda_1\neq\lambda_2$ 为实数，对应实特征向量 $V_1,V_2$，则通解（\EN{general solution}）为
+@@ -4470 +4473 @@
+-若 $\lambda=\alpha+\mathrm{i}\beta$（$\beta\neq0$）是特征值，因 $A$ 实，$\bar\lambda=\alpha-\mathrm{i}\beta$ 也是。对应的特征向量可以取 $w=u+\mathrm{i}v$（$u,v$ 实向量）。把复解拆成实部与虚部：
++若 $\lambda=\alpha+\mathrm{i}\beta$（$\beta\neq0$）是特征值，因 $A$ 实，$\bar\lambda=\alpha-\mathrm{i}\beta$ 也是。对应的特征向量可以取 $w=u+\mathrm{i}v$（$u,v$ 实向量）。把复解拆成实部（\EN{real part}）与虚部（\EN{imaginary part}）：
+@@ -4486 +4489 @@
+-若 $\lambda_1=\lambda_2=\lambda=\tau/2$，要分两种，区别在于\textbf{几何重数} $g$（线性无关特征向量的个数）：
++若 $\lambda_1=\lambda_2=\lambda=\tau/2$，要分两种，区别在于\textbf{几何重数}（\EN{geometric multiplicity}）$g$——它指线性无关（\EN{linearly independent}）特征向量的个数：
+@@ -4520 +4523 @@
+-读者可能会问：$A$ 的四个元素千变万化，凭什么说类型只有五种？理由是\textbf{可逆线性变换保持相图结构}。
++读者可能会问：$A$ 的四个元素千变万化，凭什么说类型只有五种？理由是\textbf{可逆线性变换}（\EN{invertible linear transformation}）\textbf{保持相图结构}。
+@@ -4526 +4529 @@
+-也就是说：$A$ 的系统经一个可逆线性变换（拉伸、剪切，不折叠）后，就是 $B$ 的系统。可逆线性变换把直线映成直线、把闭曲线映成闭曲线、把"相切"映成"相切"、把"趋于原点"映成"趋于原点"。所以 $A$ 与 $B$ 的相图\textbf{拓扑上一样}，类型名当然一样。而任意矩阵都可以化到若尔当标准形，其对角元正是特征值。于是：
++也就是说：$A$ 的系统经一个可逆线性变换（拉伸、剪切，不折叠）后，就是 $B$ 的系统。可逆线性变换把直线映成直线、把闭曲线映成闭曲线、把"相切"映成"相切"、把"趋于原点"映成"趋于原点"。所以 $A$ 与 $B$ 的相图\textbf{拓扑等价}（\EN{topologically equivalent}），类型名当然一样。而任意矩阵都可以化到\textbf{若尔当标准形}（\EN{Jordan canonical form}），其对角元正是特征值。于是：
+@@ -4577 +4580 @@
+-\figblock[fig:kinds]{fig1-kinds.pdf}{0.99}{六种基本相图（本讲插图，数值积分绘制）。浅色为方向场，深色为轨线，虚线为特征方向。其中 (a)(c)(e) 正是作业第 1 题的三个系统：$A=\begin{pmatrix}3&2\\1&4\end{pmatrix}$、$A=\begin{pmatrix}-1&2\\-2&-1\end{pmatrix}$、$A=-I$；(b)(d)(f) 是对照用的标准例子。箭头的方向就是时间增加的方向。}
++\figblock[fig:kinds]{fig1-kinds.pdf}{0.99}{六种基本相图（本讲插图，数值积分绘制）。浅色为方向场（\EN{direction field}），深色为轨线，虚线为特征方向（\EN{eigendirection}）。其中 (a)(c)(e) 正是作业第 1 题的三个系统：$A=\begin{pmatrix}3&2\\1&4\end{pmatrix}$、$A=\begin{pmatrix}-1&2\\-2&-1\end{pmatrix}$、$A=-I$；(b)(d)(f) 是对照用的标准例子。箭头的方向就是时间增加的方向。}
+@@ -4600 +4603 @@
+-\subhdr{（3）焦点（focus）}
++\subhdr{（3）焦点（focus；课件作 spiral point）}
+@@ -4604 +4607 @@
+-形状：螺旋线，绕原点转无穷多圈，同时半径按 $\mathrm{e}^{\tau t/2}$ 缩放。由 (2.5)，极坐标下半径正比于 $\mathrm{e}^{\tau t/2}$，角度是 $\beta t$ 加常数，两者合起来就是对数螺线——每转一圈，半径乘同一个因子。
++形状：螺旋线，绕原点转无穷多圈，同时半径按 $\mathrm{e}^{\tau t/2}$ 缩放。由 (2.5)，极坐标下半径正比于 $\mathrm{e}^{\tau t/2}$，角度是 $\beta t$ 加常数，两者合起来就是对数螺线（\EN{logarithmic spiral}）——每转一圈，半径乘同一个因子。
+@@ -4621,2 +4624,2 @@
+-\item $g=2$（$A=\lambda I$）：每个方向都是特征方向，轨线是\textbf{过原点的直线束}，这种叫\textbf{临界结点}（也译星形结点、proper node）。(2.6) 里没有 $t$，所以 $y/x$ 是常数。
+-\item $g=1$：只有一个特征方向，其余轨线都\textbf{切着这一个方向}进出，叫\textbf{退化结点}（degenerate node）。(2.7) 里有 $t$ 因子，轨线会拐弯。
++\item $g=2$（$A=\lambda I$）：每个方向都是特征方向，轨线是\textbf{过原点的直线束}，这种叫\textbf{临界结点}（也译星形结点，\EN{proper node / star node}）。(2.6) 里没有 $t$，所以 $y/x$ 是常数。
++\item $g=1$：只有一个特征方向，其余轨线都\textbf{切着这一个方向}进出，叫\textbf{退化结点}（\EN{improper node / degenerate node}）。(2.7) 里有 $t$ 因子，轨线会拐弯。
+@@ -4638 +4641 @@
+-结点 & node（improper node） & $\Delta>0,\ D>0$ & 两条直线轨线，其余切于慢方向\\
++结点 & node & $\Delta>0,\ D>0$ & 两条直线轨线，其余切于慢方向\\
+@@ -4640 +4643 @@
+-焦点 & focus, spiral & $\Delta>0,\ D<0,\ \tau\neq0$ & 螺旋，无限多圈\\
++焦点 & focus（spiral point） & $\Delta>0,\ D<0,\ \tau\neq0$ & 螺旋，无限多圈\\
+@@ -4648 +4651 @@
+-注意英文的 "proper node" 与 "star node" 是同一个东西（对应中文"临界结点"），而 "improper node" 对应中文普通"结点"（$\lambda_1\neq\lambda_2$）。名字不同不要紧，条件 $\Delta>0,D>0$ 与 $g$ 才是判据。
++注意英文的 \EN{proper node} 与 \EN{star node} 是同一个东西（对应中文"临界结点"，$g=2$），而 \EN{improper node} 与 \EN{degenerate node} 是另一个东西（对应中文"退化结点"，$g=1$）；普通结点（$\lambda_1\neq\lambda_2$，$\Delta>0,D>0$）就叫 \EN{node}。名字不同不要紧，条件与 $g$ 才是判据。
+@@ -4724 +4727 @@
+-\textbf{定义 4.2（渐近稳定）}\ 若零解稳定，且存在 $\delta_0>0$，使得只要 $\norm{\X(0)}<\delta_0$，就有
++\textbf{定义 4.2（渐近稳定，asymptotically stable）}\ 若零解稳定，且存在 $\delta_0>0$，使得只要 $\norm{\X(0)}<\delta_0$，就有
+@@ -4730 +4733 @@
+-\textbf{定义 4.3（不稳定）}\ 若存在 $\eps>0$，使得对任意 $\delta>0$，总存在初值 $\X(0)$ 与时刻 $t_1>0$ 满足
++\textbf{定义 4.3（不稳定，unstable）}\ 若存在 $\eps>0$，使得对任意 $\delta>0$，总存在初值 $\X(0)$ 与时刻 $t_1>0$ 满足
+@@ -4769 +4772 @@
+-线性齐次系统 $\X'=A\X$ 永远有零解 $\X(t)\equiv\mathbf{0}$，这个解叫\textbf{平凡解}（trivial solution）。同时，$\mathbf{0}$ 又是它的临界点（因为 $A\mathbf{0}=\mathbf{0}$）。所以对这类系统，"平凡解的稳定性"、"原点的稳定性"、"临界点的稳定性"是同一句话。作业第 2 题写的是 "the stability of the trivial solution"，指的就是 $\X=\mathbf{0}$ 这个解。
++线性齐次系统 $\X'=A\X$ 永远有零解 $\X(t)\equiv\mathbf{0}$，这个解叫\textbf{平凡解}（\EN{trivial solution}）。同时，$\mathbf{0}$ 又是它的临界点（因为 $A\mathbf{0}=\mathbf{0}$）。所以对这类系统，"平凡解的稳定性"、"原点的稳定性"、"临界点的稳定性"是同一句话。作业第 2 题写的是 "the stability of the trivial solution"，指的就是 $\X=\mathbf{0}$ 这个解。
+@@ -4789 +4792 @@
+-\item[(i)] 若 $\operatorname{Re}\lambda_1<0$ 且 $\operatorname{Re}\lambda_2<0$，则零解\textbf{渐近稳定}（事实上是指数衰减：存在 $C,\gamma>0$ 使 $\norm{\X(t)}\le C\mathrm{e}^{-\gamma t}\norm{\X(0)}$）。
++\item[(i)] 若 $\operatorname{Re}\lambda_1<0$ 且 $\operatorname{Re}\lambda_2<0$，则零解\textbf{渐近稳定}（事实上是指数衰减，\EN{exponential decay}：存在 $C,\gamma>0$ 使 $\norm{\X(t)}\le C\mathrm{e}^{-\gamma t}\norm{\X(0)}$）。
+@@ -4791 +4794 @@
+-\item[(iii)] 若 $\operatorname{Re}\lambda_1\le0$、$\operatorname{Re}\lambda_2\le0$，且实部为零的特征值都满足"代数重数 $=$ 几何重数"（即没有非对角的若尔当块），则零解\textbf{稳定但不渐近稳定}。
++\item[(iii)] 若 $\operatorname{Re}\lambda_1\le0$、$\operatorname{Re}\lambda_2\le0$，且实部为零的特征值都满足"代数重数（\EN{algebraic multiplicity}）$=$ 几何重数"（即没有非对角的若尔当块），则零解\textbf{稳定但不渐近稳定}。
+@@ -4832 +4835 @@
+-\item $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$：$\tau=0$，$\Delta=0$，$\lambda=0$ 为二重根且 $g=1$。解为 $x=x_0+y_0t$，$y=y_0$，随 $t$ 线性增长，不稳定。这说明"$\tau=0$"也不能一概算稳定——要看有没有 $t$ 因子（即若尔当块）。
++\item $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$：$\tau=0$，$\Delta=0$，$\lambda=0$ 为二重根且 $g=1$。解为 $x=x_0+y_0t$，$y=y_0$，随 $t$ 线性增长，不稳定。这说明"$\tau=0$"也不能一概算稳定——要看有没有 $t$ 因子（即若尔当块，\EN{Jordan block}）。
+@@ -4854 +4857 @@
+-\subhdr{6.2 线性化就是一阶泰勒展开}
++\subhdr{6.2 线性化（linearization）就是一阶泰勒展开}
+@@ -4866 +4869 @@
+-其中 $\Jac(\X^{*})$ 叫\textbf{雅可比矩阵}（Jacobi matrix）。令 $\U=\X-\X^{*}$（把临界点平移到原点），则
++其中 $\Jac(\X^{*})$ 叫\textbf{雅可比矩阵}（\EN{Jacobian matrix}，有的书写 Jacobi matrix）。令 $\U=\X-\X^{*}$（把临界点平移到原点），则
+@@ -4876 +4879 @@
+-称为原系统在 $\X^{*}$ 处的\textbf{线性化系统}，$\Jac(\X^{*})$ 称为\textbf{线性部分}。
++称为原系统在 $\X^{*}$ 处的\textbf{线性化系统}（\EN{linearized system}），$\Jac(\X^{*})$ 称为\textbf{线性部分}（\EN{linear part}）。
+@@ -4882,3 +4885,3 @@
+-\textbf{定义 6.1（双曲）}\ 若 $\Jac(\X^{*})$ 的特征值全都满足 $\operatorname{Re}\lambda\neq0$，则称 $\X^{*}$ 为\textbf{双曲临界点}（hyperbolic critical point）。
+-
+-"双曲"这个词与双曲函数、双曲几何没有关系，它只是"特征值不落在虚轴上"的简称。它的用处是：\textbf{双曲时线性化可靠}。
++\textbf{定义 6.1（双曲）}\ 若 $\Jac(\X^{*})$ 的特征值全都满足 $\operatorname{Re}\lambda\neq0$，则称 $\X^{*}$ 为\textbf{双曲临界点}（\EN{hyperbolic critical point}）。
++
++"双曲"这个词与双曲函数、双曲几何没有关系，它只是"特征值不落在\textbf{虚轴}（\EN{imaginary axis}）上"的简称。它的用处是：\textbf{双曲时线性化可靠}。
+@@ -4888 +4891 @@
+-\textbf{定理 6.1（李雅普诺夫第一方法，稳定性部分）}\ 设 $\F\in C^{1}$，$\F(\mathbf{0})=\mathbf{0}$，$A=\Jac(\mathbf{0})$，$\lambda_1,\lambda_2$ 为 $A$ 的特征值。则
++\textbf{定理 6.1（李雅普诺夫第一方法，Lyapunov's first method；稳定性部分）}\ 设 $\F\in C^{1}$，$\F(\mathbf{0})=\mathbf{0}$，$A=\Jac(\mathbf{0})$，$\lambda_1,\lambda_2$ 为 $A$ 的特征值。则
+@@ -4897,0 +4901,2 @@
++课件把用一次项判稳定性这件事叫\textbf{第一近似}（\EN{first approximation}）：\textbf{第一近似系统}（\EN{system in the first approximation}）就是 (6.4)，而第一近似判不出结论的情形就是 §6.6。答"由第一近似可知……"与答"由定理 6.1 可知……"是同一句话的两种说法，考试里两种都算对。
++
+@@ -4923 +4928 @@
+-由格朗沃尔（Gronwall）不等式，$\varphi(t)\le K\norm{\X(0)}\mathrm{e}^{K\eps t}$，即
++由格朗沃尔（\EN{Gronwall}）不等式，$\varphi(t)\le K\norm{\X(0)}\mathrm{e}^{K\eps t}$，即
+@@ -4961 +4966 @@
+-\textbf{例 1}\ 无阻尼单摆（取 $g=\ell=1$）满足 $x''=-\sin x$，令 $y=x'$ 化为一阶系统
++\textbf{例 1}\ 无阻尼单摆（\EN{undamped pendulum}，取 $g=\ell=1$）满足 $x''=-\sin x$，令 $y=x'$ 化为一阶系统
+@@ -4977 +4982 @@
+-$k$ 为偶数（如 $(0,0)$，摆球在最低点）：$\lambda=\pm\mathrm{i}$，线性化是中心，\textbf{定理 6.1 不适用}。真实行为确实是中心（因为系统有能量守恒），但要证明它需要另找守恒量 $E=\frac{1}{2}y^{2}+1-\cos x$，不能靠线性化。这个例子说明：无结论时，要么另找方法，要么承认判断不了——不能硬套。
++$k$ 为偶数（如 $(0,0)$，摆球在最低点）：$\lambda=\pm\mathrm{i}$，线性化是中心，\textbf{定理 6.1 不适用}。真实行为确实是中心（因为系统有能量守恒），但要证明它需要另找守恒量（\EN{conserved quantity}）$E=\frac{1}{2}y^{2}+1-\cos x$，不能靠线性化。这个例子说明：无结论时，要么另找方法，要么承认判断不了——不能硬套。
+@@ -5020,3 +5025,3 @@
+-\figblock[fig:hw2]{fig4-hw2.pdf}{0.99}{第 2 题系统的相图（本讲数值绘制）。(a) 全局：四个临界点各带类型标签，$\times$ 为鞍点；鞍点的两条分界线把平面分成几个"流域"。(b) 原点放大：初值取得很小，轨线仍全部离开原点，且先沿 $x_2$ 轴（$\lambda=0.5$，增长较慢）离开，再被 $x_1$ 方向（$\lambda=1$，增长较快）拉走。}
+-
+-注意 (a) 与 (b) 的对照：从\textbf{局部}看，原点是"不稳定结点"；从\textbf{全局}看，从原点附近出发的轨线并不会跑到无穷，而是被另外两个稳定结点 $(1,0)$、$(0,2)$"接住"，或者绕过鞍点 $(0.5,0.5)$ 转向。这提醒一件事：\textbf{稳定性是局部性质}，定理 6.1 只说"原点附近"，不说"整个平面"。
++\figblock[fig:hw2]{fig4-hw2.pdf}{0.99}{第 2 题系统的相图（本讲数值绘制）。(a) 全局：四个临界点各带类型标签，$\times$ 为鞍点；鞍点的两条分界线（\EN{separatrix}）把平面分成几个"流域"。(b) 原点放大：初值取得很小，轨线仍全部离开原点，且先沿 $x_2$ 轴（$\lambda=0.5$，增长较慢）离开，再被 $x_1$ 方向（$\lambda=1$，增长较快）拉走。}
++
++注意 (a) 与 (b) 的对照：从\textbf{局部}（\EN{local}）看，原点是"不稳定结点"；从\textbf{全局}（\EN{global}）看，从原点附近出发的轨线并不会跑到无穷，而是被另外两个稳定结点 $(1,0)$、$(0,2)$"接住"，或者绕过鞍点 $(0.5,0.5)$ 转向。这提醒一件事：\textbf{稳定性是局部性质}，定理 6.1 只说"原点附近"，不说"整个平面"。
+@@ -5042 +5047 @@
+-\textbf{定义 7.1（正定）}\ 设 $V$ 在原点附近连续可微，$V(\mathbf{0})=0$。若对 $\X\neq\mathbf{0}$ 有 $V(\X)>0$，称 $V$ \textbf{正定}；若 $V(\X)\ge0$，称\textbf{半正定}。
++\textbf{定义 7.1（正定）}\ 设 $V$ 在原点附近连续可微，$V(\mathbf{0})=0$。若对 $\X\neq\mathbf{0}$ 有 $V(\X)>0$，称 $V$ \textbf{正定}（\EN{positive definite}）；若 $V(\X)\ge0$，称\textbf{半正定}（\EN{positive semi-definite}）。
+@@ -5049,3 +5054,3 @@
+-\item[(a)] 若 $U$ 上 $\dot V\le0$（半负定），则零解\textbf{稳定}；
+-\item[(b)] 若 $U\setminus\{\mathbf{0}\}$ 上 $\dot V<0$（负定），则零解\textbf{渐近稳定}；
+-\item[(c)] 若存在区域使 $V>0$ 且 $\dot V>0$（切塔耶夫条件），则零解\textbf{不稳定}。
++\item[(a)] 若 $U$ 上 $\dot V\le0$（半负定，\EN{negative semi-definite}），则零解\textbf{稳定}；
++\item[(b)] 若 $U\setminus\{\mathbf{0}\}$ 上 $\dot V<0$（负定，\EN{negative definite}），则零解\textbf{渐近稳定}；
++\item[(c)] 若存在区域使 $V>0$ 且 $\dot V>0$（切塔耶夫条件，\EN{Chetaev condition}），则零解\textbf{不稳定}。
+@@ -5056,3 +5061,3 @@
+-\subhdr{7.3 二次型怎么取}
+-
+-最常用的是 $V=ax^{2}+bxy+cy^{2}$。它正定的充要条件（西尔维斯特判据）是
++\subhdr{7.3 二次型（quadratic form）怎么取}
++
++最常用的是 $V=ax^{2}+bxy+cy^{2}$。它正定的充要条件（西尔维斯特判据，\EN{Sylvester's criterion}）是
+@@ -5201,0 +5207 @@
++§13 & 名词中英对照（考前查词） & 全章；题干原句的译法\\
+@@ -5206,0 +5213,106 @@
++
++%=====================================================================
++\hdr{§13}{名词中英对照（考前查用）}
++
++\textbf{这一节解决什么问题。}课件与考卷都是英文，讲义是中文；考场上真正卡住的常常不是方法，而是题干里那个词。下面按用途分成五组，只做对照，不重复推导。正文里每个词在首次出现处也已用灰色斜体注过一次（例如"临界点（\EN{critical point}）"），两处可以互相印证。全书级的简表在 §0.5，那里每章只收一两个词；本节把第 6 章的名词收全。
++
++\subhdr{13.1 相图与点型}
++
++\begin{minipage}{\linewidth}
++{\small
++\tabtop
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++\thead{中文} & \thead{英文} & \thead{中文} & \thead{英文}\\
++\end{tabular}
++\tabmid
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++相图 & \EN{phase portrait} & 轨线 & \EN{trajectory (orbit)}\\
++相平面 & \EN{phase plane} & 速度场 & \EN{velocity field}\\
++方向场 & \EN{direction field} & 自治系统 & \EN{autonomous system}\\
++临界点 & \EN{critical point} & 平衡点 & \EN{equilibrium point}\\
++奇点 & \EN{singular point} & 驻点 & \EN{stationary point}\\
++特征方向 & \EN{eigendirection} & 结点 & \EN{node}\\
++鞍点 & \EN{saddle point} & 焦点 & \EN{focus (spiral point)}\\
++中心 & \EN{center} & 临界结点 & \EN{proper node (star node)}\\
++退化结点 & \EN{improper node (degenerate node)} & 分界线 & \EN{separatrix}\\
++源 & \EN{source} & 汇 & \EN{sink}\\
++\end{tabular}
++\tabbot
++}
++\end{minipage}
++
++{\small\color{inkgray}末两行的 \EN{source} 与 \EN{sink} 是课件讲结点时的叫法（$\tau>0$ 的叫 source，$\tau<0$ 的叫 sink）；本书正文写成"不稳定结点""稳定结点"，指的是同一件事。\par}
++
++\subhdr{13.2 稳定性、线性化与方法}
++
++\begin{minipage}{\linewidth}
++{\small
++\tabtop
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++\thead{中文} & \thead{英文} & \thead{中文} & \thead{英文}\\
++\end{tabular}
++\tabmid
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++稳定 & \EN{stable} & 渐近稳定 & \EN{asymptotically stable}\\
++不稳定 & \EN{unstable} & 平凡解 & \EN{trivial solution}\\
++指数衰减 & \EN{exponential decay} & 有界 & \EN{bounded}\\
++雅可比矩阵 & \EN{Jacobian matrix} & 线性化 & \EN{linearization}\\
++线性化系统 & \EN{linearized system} & 线性部分 & \EN{linear part}\\
++第一近似 & \EN{first approximation} & 第一近似系统 & \EN{system in the first approximation}\\
++双曲临界点 & \EN{hyperbolic critical point} & 虚轴 & \EN{imaginary axis}\\
++拓扑等价 & \EN{topologically equivalent} & 邻域 & \EN{neighborhood}\\
++李雅普诺夫第一方法 & \EN{Lyapunov's first method} & 李雅普诺夫第二方法 & \EN{Lyapunov's second method}\\
++正定 & \EN{positive definite} & 负定 & \EN{negative definite}\\
++半正定 & \EN{positive semi-definite} & 半负定 & \EN{negative semi-definite}\\
++二次型 & \EN{quadratic form} & 西尔维斯特判据 & \EN{Sylvester's criterion}\\
++守恒量 & \EN{conserved quantity} & 格朗沃尔不等式 & \EN{Gronwall's inequality}\\
++局部 & \EN{local} & 全局 & \EN{global}\\
++单摆 & \EN{pendulum} & 逻辑斯蒂方程 & \EN{logistic equation}\\
++未扰解 & \EN{unperturbed solution} & 受扰解 & \EN{perturbed solution}\\
++\end{tabular}
++\tabbot
++}
++\end{minipage}
++
++\subhdr{13.3 矩阵与判据}
++
++\begin{minipage}{\linewidth}
++{\small
++\tabtop
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++\thead{中文} & \thead{英文} & \thead{中文} & \thead{英文}\\
++\end{tabular}
++\tabmid
++\begin{tabular}{@{}p{0.14\linewidth}p{0.31\linewidth}p{0.14\linewidth}p{0.31\linewidth}@{}}
++特征值 & \EN{eigenvalue} & 特征向量 & \EN{eigenvector}\\
++特征方程 & \EN{characteristic equation} & 迹 & \EN{trace}\\
++行列式 & \EN{determinant} & 判别式 & \EN{discriminant}\\
++几何重数 & \EN{geometric multiplicity} & 代数重数 & \EN{algebraic multiplicity}\\
++若尔当标准形 & \EN{Jordan canonical form} & 若尔当块 & \EN{Jordan block}\\
++通解 & \EN{general solution} & 线性无关 & \EN{linearly independent}\\
++可逆线性变换 & \EN{invertible linear transformation} & 二重根 & \EN{double root}\\
++初值 & \EN{initial value} & 唯一性 & \EN{uniqueness of solution}\\
++\end{tabular}
++\tabbot
++}
++\end{minipage}
++
++\subhdr{13.4 五组容易混的词}
++
++\begin{itemize}
++\item \EN{stable}（稳定）与 \EN{asymptotically stable}（渐近稳定）：前者只要求不跑远，后者还要求回来（§4.3）。
++\item \EN{proper node}（临界结点）与 \EN{improper node}（退化结点）：前者各方向都是特征方向（$g=2$），后者只有一个特征方向（$g=1$）。作业第 1 题 (2) 是前者。
++\item \EN{node}（结点）与 \EN{saddle point}（鞍点）：两者靠 $\Delta$ 的符号分家，与 $\tau$ 的符号无关；$\tau$ 只管进出（§3.6）。
++\item \EN{hyperbolic}（双曲）与 \EN{hyperbola}（双曲线）：前者是特征值实部不为零的条件，与双曲线没有关系（§6.3）。
++\item \EN{local}（局部）与 \EN{global}（全局）：定理 6.1 只保证临界点附近的事，远处的行为可以完全不同（§6.8、§6.9）。
++\end{itemize}
++
++\subhdr{13.5 题干原句}
++
++\qstem{\textbf{Determine the type of the critical point and study the stability.}}
++译：判定临界点的类型，并研究其稳定性。\textbf{两件事都要写}：先给类型（结点/鞍点/焦点/中心/临界结点/退化结点），再给稳定性（稳定/渐近稳定/不稳定），最后补一句依据（哪条定理、哪个特征值）。第 1 题的三个小问都是这一句；课件把它写成 \EN{critical point(s)}，括号里的复数只是通用写法，$\Delta\neq0$ 时线性系统只有一个临界点（§1.5）。
++
++\qstem{\textbf{Investigate the stability of the trivial solution.}}
++译：研究平凡解的稳定性。关键词是 \EN{trivial solution}（平凡解，即 $\X\equiv\mathbf{0}$），不是一般解；第 2 题问的正是原点。
++
++本讲义与考卷的英文标题：本章为 \EN{Critical Points and Stability}，两讲课件分别是 \EN{Phase Portrait}（相图）与 \EN{Linearization}（线性化）；课件里"第一近似下的稳定性"写作 \EN{stability in the first approximation}，与书中"线性化定理"是同一件事（§6.4）。
+@@ -6136 +6248 @@
+-特征方程 $\lambda^{2}+2\lambda+1=(\lambda+1)^{2}=0$，故 $\lambda=-1$ 是\textbf{二重}根。
++特征方程 $\lambda^{2}+2\lambda+1=(\lambda+1)^{2}=0$，故 $\lambda=-1$ 是\textbf{二重根}（\EN{double root}）。
+@@ -6241 +6353 @@
+-\textbf{自检}\ 取初值 $(0.01,\,0)$：此时 $x_2\equiv0$，方程组退化为 $x_1'=x_1(1-x_1)$（逻辑斯蒂方程），其解
++\textbf{自检}\ 取初值 $(0.01,\,0)$：此时 $x_2\equiv0$，方程组退化为 $x_1'=x_1(1-x_1)$（逻辑斯蒂方程，\EN{logistic equation}），其解
