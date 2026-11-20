@@ -1,6 +1,6 @@
 # GEMINI-INDEX · 学习助手云端入口
 
-> 自动生成于 2026-11-20 2026-11-20 09:22（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
+> 自动生成于 2026-11-20 2026-11-20 09:24（中国时间）。**请勿手工编辑**——每次同步前由 `tools/make-gemini-index.py` 重新生成。
 >
 > 仓库：`chaojinaolizhe-6/111-study-assistant`　分支：`main`
 > 本文件直达：https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/GEMINI-INDEX.md
@@ -231,8 +231,8 @@
 | 2026-11-21（+1d） | 外部截止 | `exam-ode-1121` | 作业/考试截止 | 微分方程 考试（10:05–11:45 综160）（截止 2026-11-21，状态 未开始） |
 | 2026-11-23（+3d） | 外部截止 | `exam-tm-w13` | 作业/考试截止 | 理论力学期中考试（第13周 2026-11-23~11-29，具体日期时间待定）（截止 2026-11-23，状态 待定） |
 | 2026-11-29（+9d） | 外部截止 | `exam-film-1129` | 作业/考试截止 | 影视鉴赏 考试（09:10–10:10 机房B601）（截止 2026-11-29，状态 未开始） |
-| 2026-12-06（+16d） | 外部截止 | `exam-marx-1206` | 作业/考试截止 | 马克思主义基本原理 考试（08:00–08:40 机房B606）（截止 2026-12-06，状态 未开始） |
 | 2026-12-18（+28d） | 外部截止 | `exam-optics-1218` | 作业/考试截止 | 光学 期末考试（2026-12-18 周五 3–4 节，约10:00–11:40；考场待定）（截止 2026-12-18，状态 未开始） |
+| 2026-12-27（+37d） | 外部截止 | `exam-history-1227` | 作业/考试截止 | 中国改革开放史 考试（14:20–15:00 机房B606）（截止 2026-12-27，状态 未开始） |
 
 完整排期（含'未来才开放、不得提前安排'的项）见 `plan/schedule.md`（`tools/schedule_reviews.py` 生成）。
 **最终下一步以 `.tutor/config/status-narrative.yml` 的 `next` 行 + `plan/today-<日期>.md` 为准**（那是人工判断，不是机械候选）。
@@ -341,7 +341,7 @@
 5. `tm-t5-1d-motion:milestone`（目标节点｜里程碑复核）— 独立求解理论力学 Topic 5 一维势场中的运动（能量积分） 的 milestone = 2026-11-08
 6. `ode-systems-const-coeff:milestone`（目标节点｜里程碑复核）— 独立求解常系数线性系统 Y′ = AY（微分方程·方程组章） 的 milestone = 2026-11-09
 
-未来才开放（**不得提前做**）6 条，最早一条 = `exam-ode-1121` @ 2026-11-21（微分方程 考试（10:05–11:45 综160）（截止 2026-11-21，状态 未开始））。
+未来才开放（**不得提前做**）5 条，最早一条 = `exam-ode-1121` @ 2026-11-21（微分方程 考试（10:05–11:45 综160）（截止 2026-11-21，状态 未开始））。
 
 【规则提醒】
 - 默认教学式：先让我短暂独立尝试 → 卡住给最小提示 → 收尾用无提示新题检查
@@ -382,7 +382,7 @@
 
 ---
 
-## 3. 文件直达 URL 索引（8624 个文件）
+## 3. 文件直达 URL 索引（8629 个文件）
 
 格式：`相对路径` → URL。标 `[LFS]` 的必须用 media 域名。
 （另有 1 个超过 60 MB 的文件未索引）
@@ -596,7 +596,7 @@
 - `plan/课表-2026秋-第6周起.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%AF%BE%E8%A1%A8-2026%E7%A7%8B-%E7%AC%AC6%E5%91%A8%E8%B5%B7.md
 - `plan/近两周安排汇总-20261114.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/plan/%E8%BF%91%E4%B8%A4%E5%91%A8%E5%AE%89%E6%8E%92%E6%B1%87%E6%80%BB-20261114.md
 
-### subjects（2870 个）
+### subjects（2875 个）
 
 - `subjects/01-理论力学/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/INDEX.md
 - `subjects/01-理论力学/progress.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/01-%E7%90%86%E8%AE%BA%E5%8A%9B%E5%AD%A6/progress.md
@@ -729,6 +729,11 @@
 - `subjects/02-光学/作业/20261120-EO-MO-作业答案卡.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-EO-MO-%E4%BD%9C%E4%B8%9A%E7%AD%94%E6%A1%88%E5%8D%A1.out
 - `subjects/02-光学/作业/20261120-EO-MO-作业答案卡.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-EO-MO-%E4%BD%9C%E4%B8%9A%E7%AD%94%E6%A1%88%E5%8D%A1.pdf
 - `subjects/02-光学/作业/20261120-EO-MO-作业答案卡.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-EO-MO-%E4%BD%9C%E4%B8%9A%E7%AD%94%E6%A1%88%E5%8D%A1.tex
+- `subjects/02-光学/作业/20261120-L3-p110-作业英文解答.aux` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-L3-p110-%E4%BD%9C%E4%B8%9A%E8%8B%B1%E6%96%87%E8%A7%A3%E7%AD%94.aux
+- `subjects/02-光学/作业/20261120-L3-p110-作业英文解答.log` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-L3-p110-%E4%BD%9C%E4%B8%9A%E8%8B%B1%E6%96%87%E8%A7%A3%E7%AD%94.log
+- `subjects/02-光学/作业/20261120-L3-p110-作业英文解答.out` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-L3-p110-%E4%BD%9C%E4%B8%9A%E8%8B%B1%E6%96%87%E8%A7%A3%E7%AD%94.out
+- `subjects/02-光学/作业/20261120-L3-p110-作业英文解答.pdf` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-L3-p110-%E4%BD%9C%E4%B8%9A%E8%8B%B1%E6%96%87%E8%A7%A3%E7%AD%94.pdf
+- `subjects/02-光学/作业/20261120-L3-p110-作业英文解答.tex` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/20261120-L3-p110-%E4%BD%9C%E4%B8%9A%E8%8B%B1%E6%96%87%E8%A7%A3%E7%AD%94.tex
 - `subjects/02-光学/作业/90017625e5100ca5920fa0b31b311bbf.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/90017625e5100ca5920fa0b31b311bbf.png
 - `subjects/02-光学/作业/INDEX.md` → https://raw.githubusercontent.com/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/INDEX.md
 - `subjects/02-光学/作业/第三课-课件页/p06-球面不成完善像.png` `[LFS]` → https://media.githubusercontent.com/media/chaojinaolizhe-6/111-study-assistant/main/subjects/02-%E5%85%89%E5%AD%A6/%E4%BD%9C%E4%B8%9A/%E7%AC%AC%E4%B8%89%E8%AF%BE-%E8%AF%BE%E4%BB%B6%E9%A1%B5/p06-%E7%90%83%E9%9D%A2%E4%B8%8D%E6%88%90%E5%AE%8C%E5%96%84%E5%83%8F.png
