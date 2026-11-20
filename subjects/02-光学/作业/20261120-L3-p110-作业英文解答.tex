@@ -1,0 +1,135 @@
+%=====================================================================
+% 光学（02）Lecture 3 · 作业答案卡（English，供手抄上交）
+% 来源：Polarization Devices 1.pdf p110（三个偏振器件与干涉问题）
+% 内容与 L3 讲义附录 D 一致（外教L3-偏振器件与干涉-精讲讲义-20261116.pdf p30--p31）
+% 编译：xelatex 两遍
+%=====================================================================
+\documentclass[10.5pt]{ctexart}
+\input{../../../.dsh/skills/lecture-deepdive/assets/theme-violet}
+\setlength{\headheight}{20pt}
+\renewcommand{\tabmid}{\noalign{\vskip 2pt{\color{petal}\hrule height 0.5pt}\vskip 3pt}}
+\settags{偏振器件 · L3 作业答案卡}{光学（02）· 外教 Lecture 3}
+\geometry{left=1.9cm,right=1.9cm,top=1.8cm,bottom=2.0cm}
+\setlength{\parskip}{2.2pt}
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{violetdeep} Homework: Polarization Devices \& Interference}\\[5pt]
+{\color{petal}\small \ding{95}\enspace Answer sheet (courseware p110)\enspace \ding{96}}\\[4pt]
+{\small\color{inkgray}Handwrite in English;\ keep the four parts \textbf{Given} / \textbf{Formulas used} /
+\textbf{calculation} / \textbf{Answers with units};\ sign your name in English.}
+\end{center}
+\vspace{-2pt}
+{\color{petal}\hrule height 1pt}
+
+\subhdr{Problem 1 \ ---\ two (or three) polarizing prisms}
+
+\textbf{Given}\quad Unpolarized light of intensity $I_0$; transmission planes of the two prisms at
+$\theta=45^{\circ}$; in (b) the second prism is rotated to $60^{\circ}$; in (c) a third prism is inserted at
+$30^{\circ}$ to the first.
+
+\textbf{Formulas used}\quad Unpolarized light through the first polarizer: $I_1=I_0/2$;\quad
+linearly polarized light through an analyzer (Malus' law): $I=I_{\text{before}}\cos^{2}\theta$.
+
+\textbf{Calculation}\quad
+(a) The first prism transmits one half; the second follows Malus' law:
+\begin{equation*}
+I_2=\frac{I_0}{2}\cos^{2}45^{\circ}=\frac{I_0}{2}\times\frac12=\frac{I_0}{4}=0.25\,I_0 .
+\end{equation*}
+(b) Only the angle changes:
+\begin{equation*}
+I_2=\frac{I_0}{2}\cos^{2}60^{\circ}=\frac{I_0}{2}\times\frac14=\frac{I_0}{8}=0.125\,I_0 .
+\end{equation*}
+(c) With three prisms the angles must be taken \emph{between neighbouring prisms}: $30^{\circ}$ from the first
+to the third, and $45^{\circ}-30^{\circ}=15^{\circ}$ from the third to the second:
+\begin{equation*}
+I_3=\frac{I_0}{2}\cos^{2}30^{\circ}\cos^{2}15^{\circ}
+=\frac{I_0}{2}\times0.750\times0.933\approx0.350\,I_0 .
+\end{equation*}
+
+\textbf{Explanation}\quad Each polarizer projects the vibration onto its own transmission axis. The inserted
+prism turns the vibration to $30^{\circ}$, so the projections onto the second prism no longer vanish; neither
+$\cos30^{\circ}$ nor $\cos15^{\circ}$ is zero. Intensities in a chain of polarizers are therefore \emph{not}
+additive, and a prism that would block light on its own lets some light through when it is inserted between
+two crossed ones.
+
+\textbf{Answers}\quad (a) $\dfrac{1}{4}I_0$ (25\%);\qquad (b) $\dfrac{1}{8}I_0$ (12.5\%);\qquad
+(c) $\approx0.35\,I_0$ (35\%), because the vibration is re-projected at each prism.
+
+\subhdr{Problem 2 \ ---\ half-wave plate of quartz}
+
+\textbf{Given}\quad $\lambda=633\ \mathrm{nm}$, quartz with $\Delta n=0.0091$, half-wave plate
+($\delta=\pi$); in (b) the incident azimuth is $20^{\circ}$ to the fast axis.
+
+\textbf{Formulas used}\quad Retardation $\Delta=\Delta n\,d$ and phase difference
+$\delta=\dfrac{2\pi}{\lambda}\Delta n\,d$;\quad half-wave condition $\Delta n\,d=\dfrac{\lambda}{2}$;\quad
+azimuth after a half-wave plate $\alpha_{\text{out}}=2\theta-\alpha_{\text{in}}$, where $\theta$ is the angle
+of the fast axis.
+
+\textbf{Calculation}\quad
+(a)
+\begin{equation*}
+d=\frac{\lambda}{2\Delta n}=\frac{633\ \mathrm{nm}}{2\times0.0091}
+=\frac{633}{0.0182}\ \mathrm{nm}\approx34\,780\ \mathrm{nm}\approx34.8\ \mu\mathrm{m}
+\end{equation*}
+which is the zero-order ($m=0$) plate, i.e.\ the thinnest possible one.
+(b) Take the fast axis as $0^{\circ}$, so $\theta=0^{\circ}$ and $\alpha_{\text{in}}=20^{\circ}$:
+\begin{equation*}
+\alpha_{\text{out}}=2\times0^{\circ}-20^{\circ}=-20^{\circ}.
+\end{equation*}
+The transmitted light is still linear, with its azimuth mirrored about the fast axis.
+(c) A half-wave plate reverses the sense of rotation, so circularly polarized light leaves circularly polarized
+with the \emph{opposite handedness} (left $\leftrightarrow$ right).
+(d) The same plate at $450\ \mathrm{nm}$ no longer gives half a wave:
+\begin{equation*}
+\frac{\Delta}{\lambda}=\frac{0.0091\times34\,780\ \mathrm{nm}}{450\ \mathrm{nm}}
+=\frac{316.5}{450}\approx0.703
+\quad\Longrightarrow\quad
+\delta=0.703\times360^{\circ}\approx253^{\circ},
+\end{equation*}
+which differs from $180^{\circ}$ by $73^{\circ}$: the emergent light is elliptical, not linear, so the plate
+does not act as a half-wave plate at this wavelength.
+
+\textbf{Answers}\quad (a) $d_{\min}\approx34.8\ \mu\mathrm{m}$;\qquad
+(b) $\alpha_{\text{out}}=-20^{\circ}$ (mirror image about the fast axis);\qquad
+(c) circular polarization of the opposite handedness;\qquad
+(d) at $450\ \mathrm{nm}$ the retardation is $0.70\lambda$ ($\delta\approx253^{\circ}$), so the output is elliptical.
+
+\subhdr{Problem 3 \ ---\ birefringent plate between crossed polarizers}
+
+\textbf{Given}\quad $d=30\ \mu\mathrm{m}=3.0\times10^{4}\ \mathrm{nm}$, $\Delta n=0.0091$, crossed polarizers,
+fast axis at $45^{\circ}$ to the polarizer, white light ($400$--$700\ \mathrm{nm}$).
+
+\textbf{Formulas used}\quad $\Delta=\Delta n\,d$;\quad transmitted intensity between crossed polarizers
+$I=I_0\sin^{2}2\varphi\,\sin^{2}\dfrac{\delta}{2}$ with $\delta=\dfrac{2\pi}{\lambda}\Delta$;\quad
+extinction when $\Delta=m\lambda$, i.e.\ $\lambda_m=\Delta/m$.
+
+\textbf{Calculation}\quad
+(a)
+\begin{equation*}
+\Delta=\Delta n\,d=0.0091\times30\ \mu\mathrm{m}=0.273\ \mu\mathrm{m}=273\ \mathrm{nm}.
+\end{equation*}
+(b) Extinction requires $\Delta=m\lambda$ with integer $m$, so $\lambda_1=273\ \mathrm{nm}$,
+$\lambda_2=136.5\ \mathrm{nm}$, $\lambda_3=91\ \mathrm{nm}$, \dots\ — all in the ultraviolet.
+\textbf{No wavelength in $400$--$700\ \mathrm{nm}$ is extinguished.} (At $546\ \mathrm{nm}$,
+$\Delta/\lambda=1/2$ and $\sin^{2}(\pi/2)=1$, i.e.\ a \emph{maximum}.)
+(c) The transmitted light is pale yellow-green: $\sin^{2}(\pi\Delta/\lambda)$ reaches $1$ near
+$546\ \mathrm{nm}$ and falls to about $0.89$ at $700\ \mathrm{nm}$ and $0.71$ at $400\ \mathrm{nm}$, so red and
+blue are attenuated more than green. With monochromatic light of $\lambda=273\ \mathrm{nm}$ (the $m=1$
+extinction, in the ultraviolet) the field is black because $\Delta=\lambda$, hence $\delta=2\pi$ and
+$\sin^{2}(\delta/2)=0$.
+(d) A wedge has a thickness that grows linearly along one direction, so $\Delta$ and $\delta$ also vary
+linearly: the field shows a set of \textbf{straight fringes parallel to the wedge edge}. Each fringe is a line
+of constant retardation (an isochromat) — bright and dark bands in monochromatic light, a sequence of coloured
+bands in white light (Newton's scale).
+
+\textbf{Answers}\quad (a) $\Delta=273\ \mathrm{nm}$;\qquad (b) none in the visible range (the extinctions lie
+at $273\ \mathrm{nm}$ and below);\qquad (c) pale yellow-green, black at $273\ \mathrm{nm}$ because
+$\delta=2\pi$;\qquad (d) straight fringes parallel to the wedge edge.
+
+\vspace{4pt}
+{\color{petal}\hrule height 0.6pt}
+{\small\color{inkgray}\textbf{Before handing in:} handwritten; four parts per problem; answers with units;
+name signed in English; placed on the instructor's desk before the lecture starts.}
+
+\end{document}
